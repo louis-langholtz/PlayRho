@@ -560,7 +560,7 @@ Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
         }
     }
     
-    constexpr auto k_tol = PLAYRHO_MAGIC(DefaultLinearSlop / Real{10});
+    PLAYRHO_CONSTEXPR const auto k_tol = PLAYRHO_MAGIC(DefaultLinearSlop / Real{10});
     return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
     GetFaceManifold(Manifold::e_faceB,
                     shapeB, xfB, edgeSepB.index1,

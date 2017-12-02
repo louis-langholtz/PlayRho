@@ -202,7 +202,7 @@ public:
         ShapeDrawer shapeDrawer;
         shapeDrawer.g_debugDraw = &drawer;
 
-        constexpr int e_maxCount = 4;
+        PLAYRHO_CONSTEXPR const int e_maxCount = 4;
         int count = 0;
         const auto aabb = ComputeAABB(circle, transform);
         m_world.QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {

@@ -48,52 +48,52 @@ namespace playrho {
         // Builder-styled methods...
 
         /// @brief Use the given type.
-        constexpr BodyDef& UseType(BodyType t) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseType(BodyType t) noexcept;
 
         /// @brief Use the given location.
-        constexpr BodyDef& UseLocation(Length2 l) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseLocation(Length2 l) noexcept;
         
         /// @brief Use the given angle.
-        constexpr BodyDef& UseAngle(Angle a) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseAngle(Angle a) noexcept;
         
         /// @brief Use the given linear velocity.
-        constexpr BodyDef& UseLinearVelocity(LinearVelocity2 v) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseLinearVelocity(LinearVelocity2 v) noexcept;
         
         /// @brief Use the given angular velocity.
-        constexpr BodyDef& UseAngularVelocity(AngularVelocity v) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseAngularVelocity(AngularVelocity v) noexcept;
         
         /// @brief Use the given linear acceleration.
-        constexpr BodyDef& UseLinearAcceleration(LinearAcceleration2 v) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseLinearAcceleration(LinearAcceleration2 v) noexcept;
         
         /// @brief Use the given angular acceleration.
-        constexpr BodyDef& UseAngularAcceleration(AngularAcceleration v) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseAngularAcceleration(AngularAcceleration v) noexcept;
         
         /// @brief Use the given linear damping.
-        constexpr BodyDef& UseLinearDamping(NonNegative<Frequency> v) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseLinearDamping(NonNegative<Frequency> v) noexcept;
         
         /// @brief Use the given angular damping.
-        constexpr BodyDef& UseAngularDamping(NonNegative<Frequency> v) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseAngularDamping(NonNegative<Frequency> v) noexcept;
         
         /// @brief Use the given under active time.
-        constexpr BodyDef& UseUnderActiveTime(Time v) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseUnderActiveTime(Time v) noexcept;
         
         /// @brief Use the given allow sleep value.
-        constexpr BodyDef& UseAllowSleep(bool value) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseAllowSleep(bool value) noexcept;
         
         /// @brief Use the given awake value.
-        constexpr BodyDef& UseAwake(bool value) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseAwake(bool value) noexcept;
         
         /// @brief Use the given fixed rotation state.
-        constexpr BodyDef& UseFixedRotation(bool value) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseFixedRotation(bool value) noexcept;
         
         /// @brief Use the given bullet state.
-        constexpr BodyDef& UseBullet(bool value) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseBullet(bool value) noexcept;
         
         /// @brief Use the given enabled state.
-        constexpr BodyDef& UseEnabled(bool value) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseEnabled(bool value) noexcept;
         
         /// @brief Use the given user data.
-        constexpr BodyDef& UseUserData(void* value) noexcept;
+        PLAYRHO_CONSTEXPR inline BodyDef& UseUserData(void* value) noexcept;
         
         // Public member variables...
         
@@ -159,97 +159,97 @@ namespace playrho {
         void* userData = nullptr;
     };
     
-    constexpr inline BodyDef& BodyDef::UseType(BodyType t) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseType(BodyType t) noexcept
     {
         type = t;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseLocation(Length2 l) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseLocation(Length2 l) noexcept
     {
         location = l;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseAngle(Angle a) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseAngle(Angle a) noexcept
     {
         angle = a;
         return *this;
     }
     
-    constexpr BodyDef& BodyDef::UseLinearVelocity(LinearVelocity2 v) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseLinearVelocity(LinearVelocity2 v) noexcept
     {
         linearVelocity = v;
         return *this;
     }
     
-    constexpr BodyDef& BodyDef::UseLinearAcceleration(LinearAcceleration2 v) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseLinearAcceleration(LinearAcceleration2 v) noexcept
     {
         linearAcceleration = v;
         return *this;
     }
     
-    constexpr BodyDef& BodyDef::UseAngularVelocity(AngularVelocity v) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseAngularVelocity(AngularVelocity v) noexcept
     {
         angularVelocity = v;
         return *this;
     }
     
-    constexpr BodyDef& BodyDef::UseAngularAcceleration(AngularAcceleration v) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseAngularAcceleration(AngularAcceleration v) noexcept
     {
         angularAcceleration = v;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseLinearDamping(NonNegative<Frequency> v) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseLinearDamping(NonNegative<Frequency> v) noexcept
     {
         linearDamping = v;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseAngularDamping(NonNegative<Frequency> v) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseAngularDamping(NonNegative<Frequency> v) noexcept
     {
         angularDamping = v;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseUnderActiveTime(Time v) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseUnderActiveTime(Time v) noexcept
     {
         underActiveTime = v;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseAllowSleep(bool value) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseAllowSleep(bool value) noexcept
     {
         allowSleep = value;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseAwake(bool value) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseAwake(bool value) noexcept
     {
         awake = value;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseFixedRotation(bool value) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseFixedRotation(bool value) noexcept
     {
         fixedRotation = value;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseBullet(bool value) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseBullet(bool value) noexcept
     {
         bullet = value;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseEnabled(bool value) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseEnabled(bool value) noexcept
     {
         enabled = value;
         return *this;
     }
     
-    constexpr inline BodyDef& BodyDef::UseUserData(void* value) noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef& BodyDef::UseUserData(void* value) noexcept
     {
         userData = value;
         return *this;
@@ -257,7 +257,7 @@ namespace playrho {
     
     /// @brief Gets the default body definition.
     /// @relatedalso BodyDef
-    constexpr BodyDef GetDefaultBodyDef() noexcept
+    PLAYRHO_CONSTEXPR inline BodyDef GetDefaultBodyDef() noexcept
     {
         return BodyDef{};
     }

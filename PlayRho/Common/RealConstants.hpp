@@ -50,13 +50,13 @@ namespace playrho {
 ///
 /// @sa https://en.wikipedia.org/wiki/Pi
 ///
-constexpr auto Pi = Real(3.14159265358979323846264338327950288);
+PLAYRHO_CONSTEXPR const auto Pi = Real(3.14159265358979323846264338327950288);
 
 /// @brief Square root of two.
 ///
 /// @sa https://en.wikipedia.org/wiki/Square_root_of_2
 ///
-constexpr auto SquareRootTwo =
+PLAYRHO_CONSTEXPR const auto SquareRootTwo =
     Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
 
 /// @defgroup DecimalUnitPrefices Decimal Unit Prefices
@@ -69,23 +69,23 @@ constexpr auto SquareRootTwo =
 
 /// @brief Centi (1 x 10^-2).
 /// @sa https://en.wikipedia.org/wiki/Centi-
-constexpr auto Centi = Real(1e-2);
+PLAYRHO_CONSTEXPR const auto Centi = Real(1e-2);
 
 /// @brief Deci (1 x 10^-1).
 /// @sa https://en.wikipedia.org/wiki/Deci-
-constexpr auto Deci = Real(1e-1);
+PLAYRHO_CONSTEXPR const auto Deci = Real(1e-1);
 
 /// @brief Kilo (1 x 10^3).
 /// @sa https://en.wikipedia.org/wiki/Kilo-
-constexpr auto Kilo = Real(1e3);
+PLAYRHO_CONSTEXPR const auto Kilo = Real(1e3);
 
 /// @brief Giga (1 x 10^9).
 /// @sa https://en.wikipedia.org/wiki/Giga-
-constexpr auto Giga = Real(1e9);
+PLAYRHO_CONSTEXPR const auto Giga = Real(1e9);
 
 /// @brief Yotta (1 x 10^24).
 /// @sa https://en.wikipedia.org/wiki/Yotta-
-constexpr auto Yotta = Real(1e24);
+PLAYRHO_CONSTEXPR const auto Yotta = Real(1e24);
 
 /// @}
 

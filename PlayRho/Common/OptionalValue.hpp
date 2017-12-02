@@ -21,6 +21,7 @@
 #ifndef PLAYRHO_COMMON_OPTIONALVALUE_HPP
 #define PLAYRHO_COMMON_OPTIONALVALUE_HPP
 
+#include <PlayRho/Defines.hpp>
 #include <cassert>
 #include <utility>
 
@@ -38,13 +39,13 @@ namespace playrho {
         /// @brief Value type.
         using value_type = T;
         
-        constexpr OptionalValue() = default;
+        PLAYRHO_CONSTEXPR inline OptionalValue() = default;
         
         /// @brief Copy constructor.
-        constexpr OptionalValue(const OptionalValue& other) = default;
+        PLAYRHO_CONSTEXPR inline OptionalValue(const OptionalValue& other) = default;
 
         /// @brief Move constructor.
-        constexpr OptionalValue(OptionalValue&& other) noexcept:
+        PLAYRHO_CONSTEXPR inline OptionalValue(OptionalValue&& other) noexcept:
             m_value{std::move(other.m_value)}, m_set{other.m_set}
         {
             // Intentionally empty.
@@ -53,27 +54,27 @@ namespace playrho {
         }
 
         /// @brief Initializing constructor.
-        constexpr explicit OptionalValue(T v);
+        PLAYRHO_CONSTEXPR inline explicit OptionalValue(T v);
 
         ~OptionalValue() = default;
 
         /// @brief Indirection operator.
-        constexpr const T& operator* () const;
+        PLAYRHO_CONSTEXPR const T& operator* () const;
 
         /// @brief Indirection operator.
-        constexpr T& operator* ();
+        PLAYRHO_CONSTEXPR inline T& operator* ();
         
         /// @brief Member of pointer operator.
-        constexpr const T* operator-> () const;
+        PLAYRHO_CONSTEXPR const T* operator-> () const;
         
         /// @brief Member of pointer operator.
-        constexpr T* operator-> ();
+        PLAYRHO_CONSTEXPR inline T* operator-> ();
 
         /// @brief bool operator.
-        constexpr explicit operator bool() const noexcept;
+        PLAYRHO_CONSTEXPR inline explicit operator bool() const noexcept;
 
         /// @brief Whether this optional value has a value.
-        constexpr bool has_value() const noexcept;
+        PLAYRHO_CONSTEXPR inline bool has_value() const noexcept;
         
         /// @brief Assignment operator.
         OptionalValue& operator= (const OptionalValue& other) = default;
@@ -92,13 +93,13 @@ namespace playrho {
         OptionalValue& operator= (T v);
 
         /// @brief Accesses the value.
-        constexpr T& value();
+        PLAYRHO_CONSTEXPR inline T& value();
 
         /// @brief Accesses the value.
-        constexpr const T& value() const;
+        PLAYRHO_CONSTEXPR const T& value() const;
         
         /// @brief Gets the value or provides the alternate given value instead.
-        constexpr T value_or(const T& alt) const;
+        PLAYRHO_CONSTEXPR inline T value_or(const T& alt) const;
         
         /// @brief Resets the optional value back to its default constructed state.
         void reset() noexcept
@@ -113,16 +114,16 @@ namespace playrho {
     };
     
     template<typename T>
-    constexpr OptionalValue<T>::OptionalValue(T v): m_value{v}, m_set{true} {}
+    PLAYRHO_CONSTEXPR inline OptionalValue<T>::OptionalValue(T v): m_value{v}, m_set{true} {}
     
     template<typename T>
-    constexpr bool OptionalValue<T>::has_value() const noexcept
+    PLAYRHO_CONSTEXPR inline bool OptionalValue<T>::has_value() const noexcept
     {
         return m_set;
     }
     
     template<typename T>
-    constexpr OptionalValue<T>::operator bool() const noexcept
+    PLAYRHO_CONSTEXPR inline OptionalValue<T>::operator bool() const noexcept
     {
         return m_set;
     }
@@ -136,47 +137,47 @@ namespace playrho {
     }
     
     template<typename T>
-    constexpr const T* OptionalValue<T>::operator->() const
+    PLAYRHO_CONSTEXPR const T* OptionalValue<T>::operator->() const
     {
         assert(m_set);
         return &m_value;
     }
     
     template<typename T>
-    constexpr T* OptionalValue<T>::operator->()
+    PLAYRHO_CONSTEXPR inline T* OptionalValue<T>::operator->()
     {
         assert(m_set);
         return &m_value;
     }
 
     template<typename T>
-    constexpr const T& OptionalValue<T>::operator*() const
+    PLAYRHO_CONSTEXPR const T& OptionalValue<T>::operator*() const
     {
         assert(m_set);
         return m_value;
     }
     
     template<typename T>
-    constexpr T& OptionalValue<T>::operator*()
+    PLAYRHO_CONSTEXPR inline T& OptionalValue<T>::operator*()
     {
         assert(m_set);
         return m_value;
     }
 
     template<typename T>
-    constexpr T& OptionalValue<T>::value()
+    PLAYRHO_CONSTEXPR inline T& OptionalValue<T>::value()
     {
         return m_value;
     }
     
     template<typename T>
-    constexpr const T& OptionalValue<T>::value() const
+    PLAYRHO_CONSTEXPR const T& OptionalValue<T>::value() const
     {
         return m_value;
     }
 
     template<typename T>
-    constexpr T OptionalValue<T>::value_or(const T& alt) const
+    PLAYRHO_CONSTEXPR inline T OptionalValue<T>::value_or(const T& alt) const
     {
         return m_set? m_value: alt;
     }

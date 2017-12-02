@@ -54,7 +54,7 @@ namespace playrho {
         };
         
         /// @brief Gets the default configuration for a VelocityConstraint.
-        static constexpr Conf GetDefaultConf() noexcept
+        static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept
         {
             return Conf{};
         }

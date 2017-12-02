@@ -22,6 +22,8 @@
 #ifndef PLAYRHO_COMMON_VERSION_HPP
 #define PLAYRHO_COMMON_VERSION_HPP
 
+#include <PlayRho/Defines.hpp>
+
 #include <cstdint>
 #include <string>
 
@@ -59,13 +61,13 @@ namespace playrho {
     };
     
     /// @brief Equality operator.
-    constexpr inline bool operator== (Version lhs, Version rhs)
+    PLAYRHO_CONSTEXPR inline bool operator== (Version lhs, Version rhs)
     {
         return lhs.major == rhs.major && lhs.minor == rhs.minor && lhs.revision == rhs.revision;
     }
     
     /// @brief Inequality operator.
-    constexpr inline bool operator!= (Version lhs, Version rhs)
+    PLAYRHO_CONSTEXPR inline bool operator!= (Version lhs, Version rhs)
     {
         return !(lhs == rhs);
     }

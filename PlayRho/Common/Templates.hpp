@@ -21,9 +21,12 @@
 #ifndef PLAYRHO_COMMON_TEMPLATES_HPP
 #define PLAYRHO_COMMON_TEMPLATES_HPP
 
+#include <PlayRho/Defines.hpp>
+
 #include <limits>
 #include <typeinfo>
 #include <type_traits>
+#include <tuple>
 
 namespace playrho
 {
@@ -33,16 +36,16 @@ namespace playrho
 
     /// @brief Gets an invalid value for the type.
     template <typename T>
-    constexpr T GetInvalid() noexcept
+    PLAYRHO_CONSTEXPR inline T GetInvalid() noexcept
     {
         static_assert(sizeof(T) == 0, "No available specialization");
     }
 
     /// @brief Determines if the given value is valid.
     template <typename T>
-    constexpr bool IsValid(const T& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const T& value) noexcept
     {
-        // Note: This is not necessarily a no-op!! But it is a "constexpr".
+        // Note: This is not necessarily a no-op!! But it is a "PLAYRHO_CONSTEXPR inline".
         //
         // From http://en.cppreference.com/w/cpp/numeric/math/isnan:
         //   "Another way to test if a floating-point value is NaN is
@@ -59,28 +62,28 @@ namespace playrho
     
     /// @brief Gets an invalid value for the float type.
     template <>
-    constexpr float GetInvalid() noexcept
+    PLAYRHO_CONSTEXPR inline float GetInvalid() noexcept
     {
         return std::numeric_limits<float>::signaling_NaN();
     }
     
     /// @brief Gets an invalid value for the double type.
     template <>
-    constexpr double GetInvalid() noexcept
+    PLAYRHO_CONSTEXPR inline double GetInvalid() noexcept
     {
         return std::numeric_limits<double>::signaling_NaN();
     }
     
     /// @brief Gets an invalid value for the long double type.
     template <>
-    constexpr long double GetInvalid() noexcept
+    PLAYRHO_CONSTEXPR inline long double GetInvalid() noexcept
     {
         return std::numeric_limits<long double>::signaling_NaN();
     }
     
     /// @brief Gets an invalid value for the std::size_t type.
     template <>
-    constexpr std::size_t GetInvalid() noexcept
+    PLAYRHO_CONSTEXPR inline std::size_t GetInvalid() noexcept
     {
         return static_cast<std::size_t>(-1);
     }
@@ -89,7 +92,7 @@ namespace playrho
     
     /// @brief Determines if the given value is valid.
     template <>
-    constexpr inline bool IsValid(const std::size_t& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const std::size_t& value) noexcept
     {
         return value != GetInvalid<std::size_t>();
     }
@@ -98,56 +101,56 @@ namespace playrho
     
     /// @brief Gets a pointer for the given variable.
     template <class T>
-    constexpr const T* GetPtr(const T* value) noexcept
+    PLAYRHO_CONSTEXPR const T* GetPtr(const T* value) noexcept
     {
         return value;
     }
     
     /// @brief Gets a pointer for the given variable.
     template <class T>
-    constexpr T* GetPtr(T* value) noexcept
+    PLAYRHO_CONSTEXPR inline T* GetPtr(T* value) noexcept
     {
         return value;
     }
     
     /// @brief Gets a pointer for the given variable.
     template <class T>
-    constexpr const T* GetPtr(const T& value) noexcept
+    PLAYRHO_CONSTEXPR const T* GetPtr(const T& value) noexcept
     {
         return &value;
     }
     
     /// @brief Gets a pointer for the given variable.
     template <class T>
-    constexpr T* GetPtr(T& value) noexcept
+    PLAYRHO_CONSTEXPR inline T* GetPtr(T& value) noexcept
     {
         return &value;
     }
 
     /// @brief Gets a reference for the given variable.
     template <class T>
-    constexpr const T& GetRef(const T* value) noexcept
+    PLAYRHO_CONSTEXPR const T& GetRef(const T* value) noexcept
     {
         return *value;
     }
     
     /// @brief Gets a reference for the given variable.
     template <class T>
-    constexpr T& GetRef(T* value) noexcept
+    PLAYRHO_CONSTEXPR inline T& GetRef(T* value) noexcept
     {
         return *value;
     }
     
     /// @brief Gets a reference for the given variable.
     template <class T>
-    constexpr const T& GetRef(const T& value) noexcept
+    PLAYRHO_CONSTEXPR const T& GetRef(const T& value) noexcept
     {
         return value;
     }
     
     /// @brief Gets a reference for the given variable.
     template <class T>
-    constexpr T& GetRef(T& value) noexcept
+    PLAYRHO_CONSTEXPR inline T& GetRef(T& value) noexcept
     {
         return value;
     }
@@ -206,9 +209,45 @@ namespace playrho
         decltype(T{} + T{}), decltype(T{} - T{}), decltype(T{} * T{}), decltype(T{} / T{})
     > >: std::true_type {};
     
+    /// @brief Has-type trait template class.
+    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
+    ///   "How do I find out if a tuple contains a type?".
+    /// @sa https://stackoverflow.com/a/25958302/7410358
+    template <typename T, typename Tuple>
+    struct HasType;
+    
+    /// @brief Has-type trait template class specialized for std::tuple classes.
+    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
+    ///   "How do I find out if a tuple contains a type?".
+    /// @sa https://stackoverflow.com/a/25958302/7410358
+    template <typename T>
+    struct HasType<T, std::tuple<>> : std::false_type {};
+    
+    /// @brief Has-type trait true class.
+    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
+    ///   "How do I find out if a tuple contains a type?".
+    /// @sa https://stackoverflow.com/a/25958302/7410358
+    template <typename T, typename... Ts>
+    struct HasType<T, std::tuple<T, Ts...>> : std::true_type {};
+    
+    /// @brief Has-type trait template super class.
+    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
+    ///   "How do I find out if a tuple contains a type?".
+    /// @sa https://stackoverflow.com/a/25958302/7410358
+    template <typename T, typename U, typename... Ts>
+    struct HasType<T, std::tuple<U, Ts...>> : HasType<T, std::tuple<Ts...>> {};
+
+    /// @brief Tuple contains type alias.
+    /// @details Alias in case the trait itself should be std::true_type or std::false_type.
+    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
+    ///   "How do I find out if a tuple contains a type?".
+    /// @sa https://stackoverflow.com/a/25958302/7410358
+    template <typename T, typename Tuple>
+    using TupleContainsType = typename HasType<T, Tuple>::type;
+    
     /// @brief Computes the absolute value of the given value.
     template <typename T>
-    constexpr inline T Abs(T a)
+    PLAYRHO_CONSTEXPR inline T Abs(T a)
     {
         return (a >= T{0}) ? a : -a;
     }

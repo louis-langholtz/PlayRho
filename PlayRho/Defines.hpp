@@ -42,4 +42,8 @@
 #define PLAYRHO_UNREACHABLE std::abort()
 #endif
 
+// Macro for constant expressions.
+// Value of this macro should either be 'constexpr' or empty.
+#define PLAYRHO_CONSTEXPR constexpr
+
 #endif /* PLAYRHO_DEFINES_HPP */

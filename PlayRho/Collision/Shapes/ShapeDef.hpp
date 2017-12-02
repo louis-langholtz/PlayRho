@@ -83,26 +83,26 @@ struct ShapeDefBuilder: ShapeDef
     // Note: don't use 'using ShapeDef::ShapeDef' here as it doesn't work in this context!
     
     /// @brief Default constructor.
-    constexpr ShapeDefBuilder() = default;
+    PLAYRHO_CONSTEXPR inline ShapeDefBuilder() = default;
 
     /// @brief Initializing constructor.
-    constexpr explicit ShapeDefBuilder(const ShapeDef& value) noexcept: ShapeDef{value} {}
+    PLAYRHO_CONSTEXPR inline explicit ShapeDefBuilder(const ShapeDef& value) noexcept: ShapeDef{value} {}
 
     /// @brief Uses the given vertex radius.
-    constexpr ConcreteConf& UseVertexRadius(NonNegative<Length> value) noexcept;
+    PLAYRHO_CONSTEXPR inline ConcreteConf& UseVertexRadius(NonNegative<Length> value) noexcept;
     
     /// @brief Uses the given friction.
-    constexpr ConcreteConf& UseFriction(NonNegative<Real> value) noexcept;
+    PLAYRHO_CONSTEXPR inline ConcreteConf& UseFriction(NonNegative<Real> value) noexcept;
     
     /// @brief Uses the given restitution.
-    constexpr ConcreteConf& UseRestitution(Finite<Real> value) noexcept;
+    PLAYRHO_CONSTEXPR inline ConcreteConf& UseRestitution(Finite<Real> value) noexcept;
     
     /// @brief Uses the given density.
-    constexpr ConcreteConf& UseDensity(NonNegative<AreaDensity> value) noexcept;
+    PLAYRHO_CONSTEXPR inline ConcreteConf& UseDensity(NonNegative<AreaDensity> value) noexcept;
 };
 
 template <typename ConcreteConf>
-constexpr ConcreteConf&
+PLAYRHO_CONSTEXPR inline ConcreteConf&
 ShapeDefBuilder<ConcreteConf>::UseVertexRadius(NonNegative<Length> value) noexcept
 {
     vertexRadius = value;
@@ -110,7 +110,7 @@ ShapeDefBuilder<ConcreteConf>::UseVertexRadius(NonNegative<Length> value) noexce
 }
 
 template <typename ConcreteConf>
-constexpr ConcreteConf&
+PLAYRHO_CONSTEXPR inline ConcreteConf&
 ShapeDefBuilder<ConcreteConf>::UseFriction(NonNegative<Real> value) noexcept
 {
     friction = value;
@@ -118,7 +118,7 @@ ShapeDefBuilder<ConcreteConf>::UseFriction(NonNegative<Real> value) noexcept
 }
 
 template <typename ConcreteConf>
-constexpr ConcreteConf&
+PLAYRHO_CONSTEXPR inline ConcreteConf&
 ShapeDefBuilder<ConcreteConf>::UseRestitution(Finite<Real> value) noexcept
 {
     restitution = value;
@@ -126,7 +126,7 @@ ShapeDefBuilder<ConcreteConf>::UseRestitution(Finite<Real> value) noexcept
 }
 
 template <typename ConcreteConf>
-constexpr ConcreteConf&
+PLAYRHO_CONSTEXPR inline ConcreteConf&
 ShapeDefBuilder<ConcreteConf>::UseDensity(NonNegative<AreaDensity> value) noexcept
 {
     density = value;

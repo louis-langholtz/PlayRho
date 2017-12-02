@@ -62,7 +62,7 @@ public:
     union VariantData;
     
     /// @brief Gets the invalid size value.
-    static constexpr Size GetInvalidSize() noexcept
+    static PLAYRHO_CONSTEXPR inline Size GetInvalidSize() noexcept
     {
         return static_cast<Size>(-1);
     }
@@ -70,26 +70,29 @@ public:
     /// @brief Strong type for DynamicTree heights.
     using Height = ContactCounter;
     
+    /// @brief Invalid height constant value.
+    static PLAYRHO_CONSTEXPR const auto InvalidHeight = static_cast<Height>(-1);
+
     /// @brief Gets the invalid height value.
-    static constexpr Height GetInvalidHeight() noexcept
+    static PLAYRHO_CONSTEXPR inline Height GetInvalidHeight() noexcept
     {
-        return static_cast<Height>(-1);
+        return InvalidHeight;
     }
     
     /// @brief Gets whether the given height is the height for an "unused" node.
-    static constexpr bool IsUnused(Height value) noexcept
+    static PLAYRHO_CONSTEXPR inline bool IsUnused(Height value) noexcept
     {
         return value == GetInvalidHeight();
     }
     
     /// @brief Gets whether the given height is the height for a "leaf" node.
-    static constexpr bool IsLeaf(Height value) noexcept
+    static PLAYRHO_CONSTEXPR inline bool IsLeaf(Height value) noexcept
     {
         return value == 0;
     }
     
     /// @brief Gets whether the given height is a height for a "branch" node.
-    static constexpr bool IsBranch(Height value) noexcept
+    static PLAYRHO_CONSTEXPR inline bool IsBranch(Height value) noexcept
     {
         return !IsUnused(value) && !IsLeaf(value);
     }
@@ -99,7 +102,7 @@ public:
     using RayCastCallback = std::function<Real(const RayCastInput&, Size)>;
 
     /// @brief Gets the default initial node capacity.
-    static constexpr Size GetDefaultInitialNodeCapacity() noexcept;
+    static PLAYRHO_CONSTEXPR inline Size GetDefaultInitialNodeCapacity() noexcept;
 
     /// @brief Constructing the tree initializes the node pool.
     explicit DynamicTree(Size nodeCapacity = GetDefaultInitialNodeCapacity());
@@ -364,7 +367,7 @@ struct DynamicTree::LeafData
 
 /// @brief Equality operator.
 /// @relatedalso DynamicTree::LeafData
-constexpr inline bool operator== (const DynamicTree::LeafData& lhs,
+PLAYRHO_CONSTEXPR inline bool operator== (const DynamicTree::LeafData& lhs,
                                   const DynamicTree::LeafData& rhs) noexcept
 {
     return lhs.fixture == rhs.fixture && lhs.childIndex == rhs.childIndex;
@@ -372,7 +375,7 @@ constexpr inline bool operator== (const DynamicTree::LeafData& lhs,
 
 /// @brief Inequality operator.
 /// @relatedalso DynamicTree::LeafData
-constexpr inline bool operator!= (const DynamicTree::LeafData& lhs,
+PLAYRHO_CONSTEXPR inline bool operator!= (const DynamicTree::LeafData& lhs,
                                   const DynamicTree::LeafData& rhs) noexcept
 {
     return !(lhs == rhs);
@@ -392,34 +395,34 @@ union DynamicTree::VariantData
     BranchData branch;
     
     /// @brief Default constructor.
-    constexpr VariantData() noexcept: unused{} {}
+    PLAYRHO_CONSTEXPR inline VariantData() noexcept: unused{} {}
 
     /// @brief Initializing constructor.
-    constexpr VariantData(UnusedData value) noexcept: unused{value} {}
+    PLAYRHO_CONSTEXPR inline VariantData(UnusedData value) noexcept: unused{value} {}
     
     /// @brief Initializing constructor.
-    constexpr VariantData(LeafData value) noexcept: leaf{value} {}
+    PLAYRHO_CONSTEXPR inline VariantData(LeafData value) noexcept: leaf{value} {}
     
     /// @brief Initializing constructor.
-    constexpr VariantData(BranchData value) noexcept: branch{value} {}
+    PLAYRHO_CONSTEXPR inline VariantData(BranchData value) noexcept: branch{value} {}
 };
 
 /// @brief Is unused.
 /// @details Determines whether the given DynamicTree node is an unused node.
 /// @relatedalso DynamicTree::TreeNode
-constexpr bool IsUnused(const DynamicTree::TreeNode& node) noexcept;
+PLAYRHO_CONSTEXPR inline bool IsUnused(const DynamicTree::TreeNode& node) noexcept;
 
 /// @brief Is leaf.
 /// @details Determines whether the given DynamicTree node is a leaf node.
 ///   Leaf nodes have a pointer to user data.
 /// @relatedalso DynamicTree::TreeNode
-constexpr bool IsLeaf(const DynamicTree::TreeNode& node) noexcept;
+PLAYRHO_CONSTEXPR inline bool IsLeaf(const DynamicTree::TreeNode& node) noexcept;
 
 /// @brief Is branch.
 /// @details Determines whether the given DynamicTree node is a branch node.
 ///   Branch nodes have 2 indices to child nodes.
 /// @relatedalso DynamicTree::TreeNode
-constexpr bool IsBranch(const DynamicTree::TreeNode& node) noexcept;
+PLAYRHO_CONSTEXPR inline bool IsBranch(const DynamicTree::TreeNode& node) noexcept;
 
 /// @brief A node in the dynamic tree.
 /// @note Users do not interact with this directly.
@@ -434,20 +437,20 @@ public:
     ~TreeNode() = default;
     
     /// @brief Copy constructor.
-    constexpr TreeNode(const TreeNode& other) = default;
+    PLAYRHO_CONSTEXPR inline TreeNode(const TreeNode& other) = default;
 
     /// @brief Move constructor.
-    constexpr TreeNode(TreeNode&& other) = default;
+    PLAYRHO_CONSTEXPR inline TreeNode(TreeNode&& other) = default;
 
     /// @brief Initializing constructor.
-    constexpr explicit TreeNode(Size other = DynamicTree::GetInvalidSize()) noexcept:
+    PLAYRHO_CONSTEXPR inline explicit TreeNode(Size other = DynamicTree::GetInvalidSize()) noexcept:
         m_other{other}, m_variant{UnusedData{}}
     {
         assert(IsUnused(m_height));
     }
 
     /// @brief Initializing constructor.
-    constexpr TreeNode(const LeafData& value, AABB2D aabb,
+    PLAYRHO_CONSTEXPR inline TreeNode(const LeafData& value, AABB2D aabb,
                        Size other = DynamicTree::GetInvalidSize()) noexcept:
         m_height{0}, m_other{other}, m_aabb{aabb}, m_variant{value}
     {
@@ -455,7 +458,7 @@ public:
     }
     
     /// @brief Initializing constructor.
-    constexpr TreeNode(const BranchData& value, AABB2D aabb, Height height,
+    PLAYRHO_CONSTEXPR inline TreeNode(const BranchData& value, AABB2D aabb, Height height,
                        Size other = DynamicTree::GetInvalidSize()) noexcept:
         m_height{height}, m_other{other}, m_aabb{aabb}, m_variant{value}
     {
@@ -470,7 +473,7 @@ public:
         m_aabb = other.m_aabb;
         switch (other.m_height)
         {
-            case DynamicTree::GetInvalidHeight():
+            case DynamicTree::InvalidHeight:
                 m_variant.unused = other.m_variant.unused;
                 break;
             case DynamicTree::Size{0}:
@@ -487,88 +490,88 @@ public:
     TreeNode& operator= (TreeNode&& other) = default;
     
     /// @brief Gets the node "height".
-    constexpr Height GetHeight() const noexcept
+    PLAYRHO_CONSTEXPR inline Height GetHeight() const noexcept
     {
         return m_height;
     }
     
     /// @brief Sets the node "height" to the given value.
-    constexpr TreeNode& SetHeight(Height value) noexcept
+    PLAYRHO_CONSTEXPR inline TreeNode& SetHeight(Height value) noexcept
     {
         m_height = value;
         return *this;
     }
     
     /// @brief Gets the node's "other" index.
-    constexpr Size GetOther() const noexcept
+    PLAYRHO_CONSTEXPR inline Size GetOther() const noexcept
     {
         return m_other;
     }
                 
     /// @brief Sets the node's "other" index to the given value.
-    constexpr TreeNode& SetOther(Size other) noexcept
+    PLAYRHO_CONSTEXPR inline TreeNode& SetOther(Size other) noexcept
     {
         m_other = other;
         return *this;
     }
 
     /// @brief Gets the node's AABB.
-    constexpr AABB2D GetAABB() const noexcept
+    PLAYRHO_CONSTEXPR inline AABB2D GetAABB() const noexcept
     {
         return m_aabb;
     }
 
     /// @brief Sets the node's AABB.
-    constexpr TreeNode& SetAABB(AABB2D value) noexcept
+    PLAYRHO_CONSTEXPR inline TreeNode& SetAABB(AABB2D value) noexcept
     {
         m_aabb = value;
         return *this;
     }
     
     /// @brief Gets the node as an "unused" value.
-    constexpr UnusedData AsUnused() const noexcept
+    PLAYRHO_CONSTEXPR inline UnusedData AsUnused() const noexcept
     {
         assert(IsUnused(m_height));
         return m_variant.unused;
     }
     
     /// @brief Gets the node as a "leaf" value.
-    constexpr LeafData AsLeaf() const noexcept
+    PLAYRHO_CONSTEXPR inline LeafData AsLeaf() const noexcept
     {
         assert(IsLeaf(m_height));
         return m_variant.leaf;
     }
     
     /// @brief Gets the node as a "branch" value.
-    constexpr BranchData AsBranch() const noexcept
+    PLAYRHO_CONSTEXPR inline BranchData AsBranch() const noexcept
     {
         assert(IsBranch(m_height));
         return m_variant.branch;
     }
 
     /// @brief Gets the node as an "unused" value.
-    constexpr UnusedData& AsUnused() noexcept
+    PLAYRHO_CONSTEXPR inline UnusedData& AsUnused() noexcept
     {
         assert(IsUnused(m_height));
         return m_variant.unused;
     }
     
     /// @brief Gets the node as a "leaf" value.
-    constexpr LeafData& AsLeaf() noexcept
+    PLAYRHO_CONSTEXPR inline LeafData& AsLeaf() noexcept
     {
         assert(IsLeaf(m_height));
         return m_variant.leaf;
     }
     
     /// @brief Gets the node as a "branch" value.
-    constexpr BranchData& AsBranch() noexcept
+    PLAYRHO_CONSTEXPR inline BranchData& AsBranch() noexcept
     {
         assert(IsBranch(m_height));
         return m_variant.branch;
     }
 
     /// @brief Assign's the node's value.
-    constexpr TreeNode& Assign(Size height, const UnusedData& value) noexcept
+    PLAYRHO_CONSTEXPR inline TreeNode& Assign(Size height, const UnusedData& value) noexcept
     {
         assert(height == DynamicTree::GetInvalidHeight());
         m_height = height;
@@ -577,7 +580,7 @@ public:
     }
     
     /// @brief Assign's the node's value.
-    constexpr TreeNode& Assign(Size height, const LeafData& value) noexcept
+    PLAYRHO_CONSTEXPR inline TreeNode& Assign(Size height, const LeafData& value) noexcept
     {
         assert(height == 0);
         m_height = height;
@@ -586,7 +589,7 @@ public:
     }
     
     /// @brief Assign's the node's value.
-    constexpr TreeNode& Assign(Size height, const BranchData& value) noexcept
+    PLAYRHO_CONSTEXPR inline TreeNode& Assign(Size height, const BranchData& value) noexcept
     {
         assert(height > 0);
         m_height = height;
@@ -611,7 +614,7 @@ private:
     VariantData m_variant;
 };
 
-constexpr DynamicTree::Size DynamicTree::GetDefaultInitialNodeCapacity() noexcept
+PLAYRHO_CONSTEXPR inline DynamicTree::Size DynamicTree::GetDefaultInitialNodeCapacity() noexcept
 {
     return Size{32};
 }
@@ -733,7 +736,7 @@ inline void DynamicTree::SetChild2(Size index, Size value) noexcept
 
 /// @brief Whether this node is free (or allocated).
 /// @relatedalso DynamicTree::TreeNode
-constexpr inline bool IsUnused(const DynamicTree::TreeNode& node) noexcept
+PLAYRHO_CONSTEXPR inline bool IsUnused(const DynamicTree::TreeNode& node) noexcept
 {
     return DynamicTree::IsUnused(node.GetHeight());
 }
@@ -742,7 +745,7 @@ constexpr inline bool IsUnused(const DynamicTree::TreeNode& node) noexcept
 /// @note This has constant complexity.
 /// @return <code>true</code> if this is a leaf node, <code>false</code> otherwise.
 /// @relatedalso DynamicTree::TreeNode
-constexpr inline bool IsLeaf(const DynamicTree::TreeNode& node) noexcept
+PLAYRHO_CONSTEXPR inline bool IsLeaf(const DynamicTree::TreeNode& node) noexcept
 {
     return DynamicTree::IsLeaf(node.GetHeight());
 }
@@ -750,14 +753,14 @@ constexpr inline bool IsLeaf(const DynamicTree::TreeNode& node) noexcept
 /// @brief Is branch.
 /// @details Determines whether the given node is a "branch" node.
 /// @relatedalso DynamicTree::TreeNode
-constexpr inline bool IsBranch(const DynamicTree::TreeNode& node) noexcept
+PLAYRHO_CONSTEXPR inline bool IsBranch(const DynamicTree::TreeNode& node) noexcept
 {
     return DynamicTree::IsBranch(node.GetHeight());
 }
 
 /// @brief Gets the AABB of the given DynamicTree node.
 /// @relatedalso DynamicTree::TreeNode
-constexpr inline AABB2D GetAABB(const DynamicTree::TreeNode& node) noexcept
+PLAYRHO_CONSTEXPR inline AABB2D GetAABB(const DynamicTree::TreeNode& node) noexcept
 {
     assert(!IsUnused(node));
     return node.GetAABB();
@@ -766,7 +769,7 @@ constexpr inline AABB2D GetAABB(const DynamicTree::TreeNode& node) noexcept
 /// @brief Gets the next index of the given node.
 /// @warning Behavior is undefined if the given node is not an "unused" node.
 /// @relatedalso DynamicTree::TreeNode
-constexpr inline DynamicTree::Size GetNext(const DynamicTree::TreeNode& node) noexcept
+PLAYRHO_CONSTEXPR inline DynamicTree::Size GetNext(const DynamicTree::TreeNode& node) noexcept
 {
     assert(IsUnused(node));
     return node.GetOther();

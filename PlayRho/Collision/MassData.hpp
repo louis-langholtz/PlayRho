@@ -54,14 +54,14 @@ namespace playrho {
     
     /// @brief MassData equality operator.
     /// @relatedalso MassData
-    constexpr bool operator== (MassData lhs, MassData rhs)
+    PLAYRHO_CONSTEXPR inline bool operator== (MassData lhs, MassData rhs)
     {
         return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
     }
     
     /// @brief MassData inequality operator.
     /// @relatedalso MassData
-    constexpr bool operator!= (MassData lhs, MassData rhs)
+    PLAYRHO_CONSTEXPR inline bool operator!= (MassData lhs, MassData rhs)
     {
         return !(lhs == rhs);
     }

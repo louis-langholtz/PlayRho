@@ -56,14 +56,14 @@ namespace playrho {
     
     /// @brief Determines if the given value is valid.
     template <>
-    constexpr inline bool IsValid(const Mat22& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const Mat22& value) noexcept
     {
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
     
     /// @brief Gets an invalid value for a Mat22.
     template <>
-    constexpr inline Mat22 GetInvalid() noexcept
+    PLAYRHO_CONSTEXPR inline Mat22 GetInvalid() noexcept
     {
         return Mat22{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
     }

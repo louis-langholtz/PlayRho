@@ -39,26 +39,26 @@ namespace playrho {
     public:
         
         /// @brief Gets the JointKey for the given bodies.
-        static constexpr JointKey Get(const Body* bodyA, const Body* bodyB) noexcept
+        static PLAYRHO_CONSTEXPR inline JointKey Get(const Body* bodyA, const Body* bodyB) noexcept
         {
             return (bodyA < bodyB)? JointKey{bodyA, bodyB}: JointKey{bodyB, bodyA};
         }
         
         /// @brief Gets body 1.
-        constexpr const Body* GetBody1() const noexcept
+        PLAYRHO_CONSTEXPR const Body* GetBody1() const noexcept
         {
             return m_body1;
         }
         
         /// @brief Gets body 2.
-        constexpr const Body* GetBody2() const
+        PLAYRHO_CONSTEXPR const Body* GetBody2() const
         {
             return m_body2;
         }
 
     private:
         /// @brief Initializing constructor.
-        constexpr JointKey(const Body* body1, const Body* body2):
+        PLAYRHO_CONSTEXPR inline JointKey(const Body* body1, const Body* body2):
         	m_body1(body1), m_body2(body2)
         {
             // Intentionally empty.
@@ -77,7 +77,7 @@ namespace playrho {
     JointKey GetJointKey(const Joint& joint) noexcept;
 
     /// @brief Compares the given joint keys.
-    constexpr int Compare(const JointKey& lhs, const JointKey& rhs) noexcept
+    PLAYRHO_CONSTEXPR inline int Compare(const JointKey& lhs, const JointKey& rhs) noexcept
     {
         if (lhs.GetBody1() < rhs.GetBody1())
         {
@@ -100,7 +100,7 @@ namespace playrho {
     
     /// @brief Determines whether the given key is for the given body.
     /// @relatedalso JointKey
-    constexpr bool IsFor(const JointKey key, const Body* body) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsFor(const JointKey key, const Body* body) noexcept
     {
         return body == key.GetBody1() || body == key.GetBody2();
     }
@@ -120,7 +120,7 @@ namespace std
     struct less<playrho::JointKey>
     {
         /// @brief Function object operator.
-        constexpr bool operator()(const playrho::JointKey& lhs,
+        PLAYRHO_CONSTEXPR inline bool operator()(const playrho::JointKey& lhs,
                                   const playrho::JointKey& rhs) const
         {
             return playrho::Compare(lhs, rhs) < 0;
@@ -133,7 +133,7 @@ namespace std
     {
         
         /// @brief Function object operator.
-        constexpr bool operator()( const playrho::JointKey& lhs, const playrho::JointKey& rhs ) const
+        PLAYRHO_CONSTEXPR inline bool operator()( const playrho::JointKey& lhs, const playrho::JointKey& rhs ) const
         {
             return playrho::Compare(lhs, rhs) == 0;
         }

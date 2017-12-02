@@ -32,16 +32,16 @@ namespace playrho {
     struct WorldDef
     {
         /// @brief Uses the given gravity value.
-        constexpr WorldDef& UseGravity(LinearAcceleration2 value) noexcept;
+        PLAYRHO_CONSTEXPR inline WorldDef& UseGravity(LinearAcceleration2 value) noexcept;
 
         /// @brief Uses the given min vertex radius value.
-        constexpr WorldDef& UseMinVertexRadius(Positive<Length> value) noexcept;
+        PLAYRHO_CONSTEXPR inline WorldDef& UseMinVertexRadius(Positive<Length> value) noexcept;
         
         /// @brief Uses the given max vertex radius value.
-        constexpr WorldDef& UseMaxVertexRadius(Positive<Length> value) noexcept;
+        PLAYRHO_CONSTEXPR inline WorldDef& UseMaxVertexRadius(Positive<Length> value) noexcept;
         
         /// @brief Uses the given value as the initial dynamic tree size.
-        constexpr WorldDef& UseInitialTreeSize(ContactCounter value) noexcept;
+        PLAYRHO_CONSTEXPR inline WorldDef& UseInitialTreeSize(ContactCounter value) noexcept;
 
         /// @brief Gravity.
         /// @details The acceleration all dynamic bodies are subject to.
@@ -71,25 +71,25 @@ namespace playrho {
         ContactCounter initialTreeSize = 4096;
     };
     
-    constexpr inline WorldDef& WorldDef::UseGravity(LinearAcceleration2 value) noexcept
+    PLAYRHO_CONSTEXPR inline WorldDef& WorldDef::UseGravity(LinearAcceleration2 value) noexcept
     {
         gravity = value;
         return *this;
     }
     
-    constexpr inline WorldDef& WorldDef::UseMinVertexRadius(Positive<Length> value) noexcept
+    PLAYRHO_CONSTEXPR inline WorldDef& WorldDef::UseMinVertexRadius(Positive<Length> value) noexcept
     {
         minVertexRadius = value;
         return *this;
     }
     
-    constexpr inline WorldDef& WorldDef::UseMaxVertexRadius(Positive<Length> value) noexcept
+    PLAYRHO_CONSTEXPR inline WorldDef& WorldDef::UseMaxVertexRadius(Positive<Length> value) noexcept
     {
         maxVertexRadius = value;
         return *this;
     }
     
-    constexpr inline WorldDef& WorldDef::UseInitialTreeSize(ContactCounter value) noexcept
+    PLAYRHO_CONSTEXPR inline WorldDef& WorldDef::UseInitialTreeSize(ContactCounter value) noexcept
     {
         initialTreeSize = value;
         return *this;
@@ -101,7 +101,7 @@ namespace playrho {
     ///     "cannot use defaulted constructor of 'Def' within 'World' outside of member functions
     ///      because 'gravity' has an initializer"
     /// @relatedalso WorldDef
-    constexpr WorldDef GetDefaultWorldDef() noexcept
+    PLAYRHO_CONSTEXPR inline WorldDef GetDefaultWorldDef() noexcept
     {
         return WorldDef{};
     }

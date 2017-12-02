@@ -29,7 +29,7 @@ namespace playrho {
     class BagOfDisks: public Test
     {
     public:
-        static constexpr auto Count = 180;
+        static PLAYRHO_CONSTEXPR const auto Count = 180;
 
         static Test::Conf GetTestConf()
         {

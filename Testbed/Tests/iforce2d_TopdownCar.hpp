@@ -173,7 +173,7 @@ public:
         
         //angular velocity
         const auto rotInertia = GetRotInertia(*m_body);
-        constexpr auto Tenth = Real{1} / Real{10};
+        PLAYRHO_CONSTEXPR const auto Tenth = Real{1} / Real{10};
         ApplyAngularImpulse(*m_body, m_currentTraction * Tenth * rotInertia * -GetAngularVelocity(*m_body));
         
         //forward linear velocity

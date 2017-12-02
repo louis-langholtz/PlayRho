@@ -105,7 +105,7 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
         const auto k00_times_k11 = Get<0>(k) * Get<1>(k);
         const auto k01_squared = Square(Get<2>(k));
         const auto k_diff = k00_times_k11 - k01_squared;
-        constexpr auto maxCondNum = PLAYRHO_MAGIC(Real(1000.0f));
+        PLAYRHO_CONSTEXPR const auto maxCondNum = PLAYRHO_MAGIC(Real(1000.0f));
         if (k00_squared < maxCondNum * k_diff)
         {
             // K is safe to invert.

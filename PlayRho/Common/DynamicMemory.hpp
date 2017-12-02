@@ -22,6 +22,7 @@
 #ifndef PLAYRHO_COMMON_DYNAMICMEMORY_HPP
 #define PLAYRHO_COMMON_DYNAMICMEMORY_HPP
 
+#include <PlayRho/Defines.hpp>
 #include <cstddef>
 
 namespace playrho

@@ -38,7 +38,7 @@ namespace playrho {
     WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept;
     
     /// @brief Gets the delta of the two points of the given witness points.
-    constexpr Length2 GetDelta(WitnessPoints arg) noexcept
+    PLAYRHO_CONSTEXPR inline Length2 GetDelta(WitnessPoints arg) noexcept
     {
         return arg.a - arg.b;
     }

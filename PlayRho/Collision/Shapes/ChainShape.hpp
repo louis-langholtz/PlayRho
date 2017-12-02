@@ -48,7 +48,7 @@ class ChainShape: public Shape
 public:
 
     /// @brief Gets the default vertex radius.
-    static constexpr NonNegative<Length> GetDefaultVertexRadius() noexcept
+    static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
         return DefaultLinearSlop * Real{2};
     }

@@ -40,42 +40,42 @@ namespace playrho
     /// @brief Determines if the given value is valid.
     /// @relatedalso Position
     template <>
-    constexpr inline bool IsValid(const Position& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const Position& value) noexcept
     {
         return IsValid(value.linear) && IsValid(value.angular);
     }
     
     /// @brief Equality operator.
     /// @relatedalso Position
-    constexpr inline bool operator==(const Position& lhs, const Position& rhs)
+    PLAYRHO_CONSTEXPR inline bool operator==(const Position& lhs, const Position& rhs)
     {
         return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
     }
     
     /// @brief Inequality operator.
     /// @relatedalso Position
-    constexpr inline bool operator!=(const Position& lhs, const Position& rhs)
+    PLAYRHO_CONSTEXPR inline bool operator!=(const Position& lhs, const Position& rhs)
     {
         return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
     }
     
     /// @brief Negation operator.
     /// @relatedalso Position
-    constexpr inline Position operator- (const Position& value)
+    PLAYRHO_CONSTEXPR inline Position operator- (const Position& value)
     {
         return Position{-value.linear, -value.angular};
     }
     
     /// @brief Positive operator.
     /// @relatedalso Position
-    constexpr inline Position operator+ (const Position& value)
+    PLAYRHO_CONSTEXPR inline Position operator+ (const Position& value)
     {
         return value;
     }
     
     /// @brief Addition assignment operator.
     /// @relatedalso Position
-    constexpr inline Position& operator+= (Position& lhs, const Position& rhs)
+    PLAYRHO_CONSTEXPR inline Position& operator+= (Position& lhs, const Position& rhs)
     {
         lhs.linear += rhs.linear;
         lhs.angular += rhs.angular;
@@ -84,14 +84,14 @@ namespace playrho
     
     /// @brief Addition operator.
     /// @relatedalso Position
-    constexpr inline Position operator+ (const Position& lhs, const Position& rhs)
+    PLAYRHO_CONSTEXPR inline Position operator+ (const Position& lhs, const Position& rhs)
     {
         return Position{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
     }
     
     /// @brief Subtraction assignment operator.
     /// @relatedalso Position
-    constexpr inline Position& operator-= (Position& lhs, const Position& rhs)
+    PLAYRHO_CONSTEXPR inline Position& operator-= (Position& lhs, const Position& rhs)
     {
         lhs.linear -= rhs.linear;
         lhs.angular -= rhs.angular;
@@ -100,20 +100,20 @@ namespace playrho
     
     /// @brief Subtraction operator.
     /// @relatedalso Position
-    constexpr inline Position operator- (const Position& lhs, const Position& rhs)
+    PLAYRHO_CONSTEXPR inline Position operator- (const Position& lhs, const Position& rhs)
     {
         return Position{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
     }
     
     /// @brief Multiplication operator.
-    constexpr inline Position operator* (const Position& pos, const Real scalar)
+    PLAYRHO_CONSTEXPR inline Position operator* (const Position& pos, const Real scalar)
     {
         return Position{pos.linear * scalar, pos.angular * scalar};
     }
     
     /// @brief Multiplication operator.
     /// @relatedalso Position
-    constexpr inline Position operator* (const Real scalar, const Position& pos)
+    PLAYRHO_CONSTEXPR inline Position operator* (const Real scalar, const Position& pos)
     {
         return Position{pos.linear * scalar, pos.angular * scalar};
     }
@@ -125,7 +125,7 @@ namespace playrho
     /// @return pos0 if pos0 == pos1 or beta == 0, pos1 if beta == 1, or at the given
     ///   unit interval value between pos0 and pos1.
     /// @relatedalso Position
-    constexpr Position GetPosition(const Position pos0, const Position pos1,
+    PLAYRHO_CONSTEXPR inline Position GetPosition(const Position pos0, const Position pos1,
                                    const Real beta) noexcept
     {
         assert(IsValid(pos0));

@@ -38,7 +38,7 @@ struct SolarSystemObject
     Time rotationalPeriod; ///< Rotational period.
 };
 
-static constexpr SolarSystemObject SolarSystemBodies[] = {
+static PLAYRHO_CONSTEXPR const SolarSystemObject SolarSystemBodies[] = {
     { "The Sun", 696342_km, 1988550000.0_Yg,     0.000_d,    0_Gm,   25.050_d },
     { "Mercury",   2439_km,        330.2_Yg,    87.969_d,   57_Gm,   58.646_d },
     { "Venus",     6051_km,       4868.5_Yg,   224.701_d,  108_Gm, -243.025_d },

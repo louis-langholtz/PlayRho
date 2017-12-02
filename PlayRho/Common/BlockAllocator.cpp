@@ -26,7 +26,7 @@
 namespace playrho {
 
 /// @brief Array of block sizes.
-static constexpr std::size_t s_blockSizes[BlockAllocator::BlockSizes] =
+static PLAYRHO_CONSTEXPR const std::size_t s_blockSizes[BlockAllocator::BlockSizes] =
 {
     16,        // 0
     32,        // 1
@@ -45,7 +45,7 @@ static constexpr std::size_t s_blockSizes[BlockAllocator::BlockSizes] =
 };
 
 /// @brief Block size lookup array.
-static constexpr std::uint8_t s_blockSizeLookup[BlockAllocator::MaxBlockSize + 1] =
+static PLAYRHO_CONSTEXPR const std::uint8_t s_blockSizeLookup[BlockAllocator::MaxBlockSize + 1] =
 {
     0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1-16

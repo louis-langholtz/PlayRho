@@ -76,7 +76,7 @@ namespace playrho {
         WorldManifold() = default;
         
         /// @brief Initializing constructor.
-        constexpr explicit WorldManifold(UnitVec2 normal) noexcept:
+        PLAYRHO_CONSTEXPR inline explicit WorldManifold(UnitVec2 normal) noexcept:
             m_normal{normal}
         {
             assert(IsValid(normal));
@@ -84,7 +84,7 @@ namespace playrho {
         }
         
         /// @brief Initializing constructor.
-        constexpr explicit WorldManifold(UnitVec2 normal, PointData ps0) noexcept:
+        PLAYRHO_CONSTEXPR inline explicit WorldManifold(UnitVec2 normal, PointData ps0) noexcept:
             m_normal{normal},
             m_points{ps0.location, GetInvalid<Length2>()},
             m_impulses{ps0.impulse, Momentum2{}},
@@ -95,7 +95,7 @@ namespace playrho {
         }
         
         /// @brief Initializing constructor.
-        constexpr explicit WorldManifold(UnitVec2 normal, PointData ps0, PointData ps1) noexcept:
+        PLAYRHO_CONSTEXPR inline explicit WorldManifold(UnitVec2 normal, PointData ps0, PointData ps1) noexcept:
             m_normal{normal},
             m_points{ps0.location, ps1.location},
             m_impulses{ps0.impulse, ps1.impulse},

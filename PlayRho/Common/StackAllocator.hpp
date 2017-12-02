@@ -46,7 +46,7 @@ public:
     };
 
     /// @brief Gets the default configuration.
-    static constexpr Configuration GetDefaultConfiguration()
+    static PLAYRHO_CONSTEXPR inline Configuration GetDefaultConfiguration()
     {
         return Configuration{};
     }

@@ -28,7 +28,7 @@ class DynamicTreeTest : public Test
 {
 public:
 
-    static constexpr auto e_actorCount = 128;
+    static PLAYRHO_CONSTEXPR const auto e_actorCount = 128;
 
     DynamicTreeTest()
     {

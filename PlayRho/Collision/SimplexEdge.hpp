@@ -43,29 +43,29 @@ namespace playrho {
         SimplexEdge() = default;
         
         /// @brief Copy constructor.
-        constexpr SimplexEdge(const SimplexEdge& copy) = default;
+        PLAYRHO_CONSTEXPR inline SimplexEdge(const SimplexEdge& copy) = default;
         
         /// @brief Initializing constructor.
         /// @param pA Point A in world coordinates.
         /// @param iA Index of point A within the shape that it comes from.
         /// @param pB Point B in world coordinates.
         /// @param iB Index of point B within the shape that it comes from.
-        constexpr SimplexEdge(Length2 pA, index_type iA, Length2 pB, index_type iB) noexcept;
+        PLAYRHO_CONSTEXPR inline SimplexEdge(Length2 pA, index_type iA, Length2 pB, index_type iB) noexcept;
         
         /// @brief Gets point A (in world coordinates).
-        constexpr auto GetPointA() const noexcept { return m_wA; }
+        PLAYRHO_CONSTEXPR inline auto GetPointA() const noexcept { return m_wA; }
         
         /// @brief Gets point B (in world coordinates).
-        constexpr auto GetPointB() const noexcept { return m_wB; }
+        PLAYRHO_CONSTEXPR inline auto GetPointB() const noexcept { return m_wB; }
 
         /// @brief Gets index A.
-        constexpr auto GetIndexA() const noexcept { return m_indexPair.a; }
+        PLAYRHO_CONSTEXPR inline auto GetIndexA() const noexcept { return m_indexPair.a; }
         
         /// @brief Gets index B.
-        constexpr auto GetIndexB() const noexcept { return m_indexPair.b; }
+        PLAYRHO_CONSTEXPR inline auto GetIndexB() const noexcept { return m_indexPair.b; }
 
         /// @brief Gets the index pair.
-        constexpr auto GetIndexPair() const noexcept { return m_indexPair; }
+        PLAYRHO_CONSTEXPR inline auto GetIndexPair() const noexcept { return m_indexPair; }
 
     private:
         Length2 m_wA; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
@@ -73,7 +73,7 @@ namespace playrho {
         IndexPair m_indexPair; ///< Index pair. @details Indices of points A and B. 2-bytes.
     };
     
-    constexpr inline SimplexEdge::SimplexEdge(Length2 pA, index_type iA,
+    PLAYRHO_CONSTEXPR inline SimplexEdge::SimplexEdge(Length2 pA, index_type iA,
                                               Length2 pB, index_type iB) noexcept:
         m_wA{pA}, m_wB{pB}, m_indexPair{iA, iB}
     {
@@ -82,13 +82,13 @@ namespace playrho {
     
     /// @brief Gets "w".
     /// @return 2D vector value of wB minus wA.
-    constexpr inline Length2 GetPointDelta(const SimplexEdge& sv) noexcept
+    PLAYRHO_CONSTEXPR inline Length2 GetPointDelta(const SimplexEdge& sv) noexcept
     {
         return sv.GetPointB() - sv.GetPointA();
     }
     
     /// @brief SimplexEdge equality operator.
-    constexpr inline bool operator== (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
+    PLAYRHO_CONSTEXPR inline bool operator== (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
     {
         return (lhs.GetPointA() == rhs.GetPointA())
             && (lhs.GetPointB() == rhs.GetPointB())
@@ -96,7 +96,7 @@ namespace playrho {
     }
     
     /// @brief SimplexEdge inequality operator.
-    constexpr inline bool operator!= (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
+    PLAYRHO_CONSTEXPR inline bool operator!= (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
     {
         return !(lhs == rhs);
     }

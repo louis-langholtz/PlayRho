@@ -38,25 +38,25 @@ struct MouseJointDef : public JointBuilder<MouseJointDef>
     /// @brief Super type.
     using super = JointBuilder<MouseJointDef>;
     
-    constexpr MouseJointDef() noexcept: super{JointType::Mouse} {}
+    PLAYRHO_CONSTEXPR inline MouseJointDef() noexcept: super{JointType::Mouse} {}
 
     /// @brief Initializing constructor.
-    constexpr MouseJointDef(NonNull<Body*> b) noexcept: super{super{JointType::Mouse}.UseBodyB(b)}
+    PLAYRHO_CONSTEXPR inline MouseJointDef(NonNull<Body*> b) noexcept: super{super{JointType::Mouse}.UseBodyB(b)}
     {
         // Intentionally empty.
     }
     
     /// @brief Use value for target.
-    constexpr MouseJointDef& UseTarget(Length2 v) noexcept;
+    PLAYRHO_CONSTEXPR inline MouseJointDef& UseTarget(Length2 v) noexcept;
 
     /// @brief Use value for max force.
-    constexpr MouseJointDef& UseMaxForce(NonNegative<Force> v) noexcept;
+    PLAYRHO_CONSTEXPR inline MouseJointDef& UseMaxForce(NonNegative<Force> v) noexcept;
 
     /// @brief Use value for frequency.
-    constexpr MouseJointDef& UseFrequency(NonNegative<Frequency> v) noexcept;
+    PLAYRHO_CONSTEXPR inline MouseJointDef& UseFrequency(NonNegative<Frequency> v) noexcept;
 
     /// @brief Use value for damping ratio.
-    constexpr MouseJointDef& UseDampingRatio(NonNegative<Real> v) noexcept;
+    PLAYRHO_CONSTEXPR inline MouseJointDef& UseDampingRatio(NonNegative<Real> v) noexcept;
 
     /// The initial world target point. This is assumed
     /// to coincide with the body anchor initially.
@@ -79,25 +79,25 @@ struct MouseJointDef : public JointBuilder<MouseJointDef>
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 };
 
-constexpr MouseJointDef& MouseJointDef::UseTarget(Length2 v) noexcept
+PLAYRHO_CONSTEXPR inline MouseJointDef& MouseJointDef::UseTarget(Length2 v) noexcept
 {
     target = v;
     return *this;
 }
 
-constexpr MouseJointDef& MouseJointDef::UseMaxForce(NonNegative<Force> v) noexcept
+PLAYRHO_CONSTEXPR inline MouseJointDef& MouseJointDef::UseMaxForce(NonNegative<Force> v) noexcept
 {
     maxForce = v;
     return *this;
 }
 
-constexpr MouseJointDef& MouseJointDef::UseFrequency(NonNegative<Frequency> v) noexcept
+PLAYRHO_CONSTEXPR inline MouseJointDef& MouseJointDef::UseFrequency(NonNegative<Frequency> v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-constexpr MouseJointDef& MouseJointDef::UseDampingRatio(NonNegative<Real> v) noexcept
+PLAYRHO_CONSTEXPR inline MouseJointDef& MouseJointDef::UseDampingRatio(NonNegative<Real> v) noexcept
 {
     dampingRatio = v;
     return *this;
