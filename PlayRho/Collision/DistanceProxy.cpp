@@ -19,6 +19,8 @@
 
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <algorithm>
+#include <iterator>
 
 namespace playrho {
 
@@ -28,44 +30,27 @@ bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
     {
         return false;
     }
-    if (lhs.GetVertexCount() != rhs.GetVertexCount())
-    {
-        return false;
-    }
-    const auto vertexCount = lhs.GetVertexCount();
-    if (vertexCount > 1)
-    {
-        for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-        {
-            if (lhs.GetVertex(i) != rhs.GetVertex(i))
-            {
-                return false;
-            }
-        }
-    }
-    else if (vertexCount == 1)
-    {
-        if (lhs.GetVertex(0) != rhs.GetVertex(0))
-        {
-            return false;
-        }
-    }
-    return true;
+
+    // No need to compare normals since they should be invariant to the vertices.
+    const auto lhr = lhs.GetVertices();
+    const auto rhr = rhs.GetVertices();
+    return std::equal(std::cbegin(lhr), std::cend(lhr), std::cbegin(rhr), std::cend(rhr));
 }
 
 DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept
 {
     auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
     auto maxValue = -std::numeric_limits<Length>::infinity(); ///< Max dot value.
-    const auto count = proxy.GetVertexCount();
-    for (auto i = decltype(count){0}; i < count; ++i)
+    auto i = DistanceProxy::size_type{0};
+    for (const auto& vertex: proxy.GetVertices())
     {
-        const auto value = Dot(proxy.GetVertex(i), d);
+        const auto value = Dot(vertex, d);
         if (maxValue < value)
         {
             maxValue = value;
             index = i;
         }
+        ++i;
     }
     return index;
 }

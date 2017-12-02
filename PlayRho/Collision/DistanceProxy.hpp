@@ -21,6 +21,7 @@
 #define PLAYRHO_COLLISION_DISTANCEPROXY_HPP
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Range.hpp>
 #include <vector>
 #include <algorithm>
 
@@ -55,6 +56,12 @@ namespace playrho
         
         /// @brief Invalid index.
         static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
+        
+        /// @brief Constant vertex pointer.
+        using ConstVertexPointer = const Length2*;
+        
+        /// @brief Constant vertex iterator.
+        using ConstVertexIterator = ConstVertexPointer;
         
         DistanceProxy() = default;
         
@@ -91,7 +98,7 @@ namespace playrho
         ///   more than <code>MaxShapeVertices</code> elements.
         ///
         DistanceProxy(const NonNegative<Length> vertexRadius, const size_type count,
-                                const Length2* vertices, const UnitVec2* normals) noexcept:
+                      const Length2* vertices, const UnitVec2* normals) noexcept:
 #ifndef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
             m_vertices{vertices},
             m_normals{normals},
@@ -119,6 +126,12 @@ namespace playrho
         /// @return Non-negative distance.
         auto GetVertexRadius() const noexcept { return m_vertexRadius; }
         
+        /// @brief Gets the range of vertices.
+        Range<ConstVertexIterator> GetVertices() const noexcept
+        {
+            return {m_vertices, m_vertices + m_count};
+        }
+
         /// Gets the vertex count.
         /// @details This is the count of valid vertex elements that this object provides.
         /// @return Value between 0 and <code>MaxShapeVertices</code>.

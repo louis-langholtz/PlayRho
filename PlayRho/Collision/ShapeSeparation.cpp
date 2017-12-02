@@ -25,30 +25,25 @@ namespace playrho {
 
 namespace {
 
-inline IndexSeparation GetMinIndexSeparation(const DistanceProxy& proxy,
-                                             UnitVec2 normal, Length2 offset)
+IndexSeparation GetMinIndexSeparation(Range<DistanceProxy::ConstVertexIterator> vertices,
+                                      UnitVec2 normal, Length2 offset)
 {
     // Search for the vector that's most anti-parallel to the normal.
     // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
-    
-    auto ap = IndexSeparation{
-        std::numeric_limits<Length>::infinity(),
-        IndexSeparation::InvalidIndex
-    };
-
-    const auto count = proxy.GetVertexCount();
-    for (auto j = decltype(count){0}; j < count; ++j)
+    auto separation = std::numeric_limits<Length>::infinity();
+    auto index = IndexSeparation::InvalidIndex;
+    auto j = decltype(index){0};
+    for (const auto& vertex: vertices)
     {
-        // Get distance from offset to proxy2.GetVertex(j) in direction of normal.
-        const auto s = Dot(normal, proxy.GetVertex(j) - offset);
-        if (ap.separation > s)
+        const auto s = Dot(normal, vertex - offset);
+        if (separation > s)
         {
-            ap.separation = s;
-            ap.index = j;
+            separation = s;
+            index = j;
         }
+        ++j;
     }
-  
-    return ap;
+    return IndexSeparation{separation, index};
 }
 
 } // anonymous namespace
@@ -72,31 +67,19 @@ IndexPairSeparation GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformat
         Transform(proxy2.GetVertex(2), xf),
         Transform(proxy2.GetVertex(3), xf),
     };
-        
+    
+    const auto vertices = Range<DistanceProxy::ConstVertexIterator>(p2vertices, p2vertices + 4);
     for (auto i = CounterType{0}; i < CounterType{4}; ++i)
     {
         // Get proxy1 normal and vertex relative to proxy2.
         const auto normal = proxy1.GetNormal(i);
         const auto offset = proxy1.GetVertex(i);
-        
-        // Search for the vector that's most anti-parallel to the normal.
-        // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
-        auto ap_separation = std::numeric_limits<Length>::infinity();
-        auto ap_index = IndexSeparation::InvalidIndex;
-        for (auto j = CounterType{0}; j < CounterType{4}; ++j)
+        const auto ap = GetMinIndexSeparation(vertices, normal, offset);
+        if (indexPairSep.separation < ap.separation)
         {
-            const auto s = Dot(normal, p2vertices[j] - offset);
-            if (ap_separation > s)
-            {
-                ap_separation = s;
-                ap_index = j;
-            }
-        }
-        if (indexPairSep.separation < ap_separation)
-        {
-            indexPairSep.separation = ap_separation;
+            indexPairSep.separation = ap.separation;
             indexPairSep.index1 = i;
-            indexPairSep.index2 = ap_index;
+            indexPairSep.index2 = ap.index;
         }
     }
     return indexPairSep;
@@ -114,13 +97,14 @@ IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, Transformation
         IndexPairSeparation::InvalidIndex
     };
     const auto count1 = proxy1.GetVertexCount();
+#if 1
     const auto xf = MulT(xf2, xf1);
     for (auto i = CounterType{0}; i < count1; ++i)
     {
         // Get proxy1 normal and vertex relative to proxy2.
         const auto normal = Rotate(proxy1.GetNormal(i), xf.q);
         const auto offset = Transform(proxy1.GetVertex(i), xf);
-        const auto ap = GetMinIndexSeparation(proxy2, normal, offset);
+        const auto ap = GetMinIndexSeparation(proxy2.GetVertices(), normal, offset);
         if (indexPairSep.separation < ap.separation)
         {
             indexPairSep.separation = ap.separation;
@@ -128,6 +112,32 @@ IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, Transformation
             indexPairSep.index2 = ap.index;
         }
     }
+#else
+    const auto xf = MulT(xf1, xf2);
+    Length2 p2vertices[256];
+    auto* p2v = p2vertices;
+    for (const auto vertex: proxy2.GetVertices())
+    {
+        *p2v = Transform(vertex, xf);
+        ++p2v;
+    }
+    const auto vertices = Range<DistanceProxy::ConstVertexIterator>(p2vertices, p2vertices + 4);
+    for (auto i = CounterType{0}; i < count1; ++i)
+    {
+        // Get proxy1 normal and vertex relative to proxy2.
+        //const auto normal = Rotate(proxy1.GetNormal(i), xf.q);
+        //const auto offset = Transform(proxy1.GetVertex(i), xf);
+        const auto normal = proxy1.GetNormal(i);
+        const auto offset = proxy1.GetVertex(i);
+        const auto ap = GetMinIndexSeparation(vertices, normal, offset);
+        if (indexPairSep.separation < ap.separation)
+        {
+            indexPairSep.separation = ap.separation;
+            indexPairSep.index1 = i;
+            indexPairSep.index2 = ap.index;
+        }
+    }
+#endif
     return indexPairSep;
 }
 
@@ -150,7 +160,7 @@ IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, Transformation
         // Get proxy1 normal and vertex relative to proxy2.
         const auto normal = Rotate(proxy1.GetNormal(i), xf.q);
         const auto offset = Transform(proxy1.GetVertex(i), xf);
-        const auto ap = GetMinIndexSeparation(proxy2, normal, offset);
+        const auto ap = GetMinIndexSeparation(proxy2.GetVertices(), normal, offset);
         if (ap.separation > stop)
         {
             return IndexPairSeparation{ap.separation, i, ap.index};
@@ -179,7 +189,7 @@ IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, const Distance
         // Get proxy1 normal and vertex relative to proxy2.
         const auto normal = proxy1.GetNormal(i);
         const auto offset = proxy1.GetVertex(i);
-        const auto ap = GetMinIndexSeparation(proxy2, normal, offset);
+        const auto ap = GetMinIndexSeparation(proxy2.GetVertices(), normal, offset);
         if (ap.separation > stop)
         {
             return IndexPairSeparation{ap.separation, i, ap.index};
