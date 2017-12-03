@@ -39,9 +39,12 @@ cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
+# Install section for installing stuff.
+# For graphiz info, see: https://chocolatey.org/packages/Graphviz
+# For graphviz.portable info, see: https://chocolatey.org/packages/graphviz.portable
 install:
   - if "%platform%" equ "noarch" choco install doxygen.portable
-  - if "%platform%" equ "noarch" choco install graphviz
+  - if "%platform%" equ "noarch" choco install graphviz.portable
   - if "%platform%" neq "noarch" cmake --version
   - if "%platform%" neq "noarch" git submodule update --init --recursive
   - if "%platform%" equ "x64" vcpkg install glew:x64-windows-static
