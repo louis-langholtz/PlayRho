@@ -47,22 +47,22 @@ struct RevoluteJointDef : public JointBuilder<RevoluteJointDef>
     /// @brief Super type.
     using super = JointBuilder<RevoluteJointDef>;
     
-    constexpr RevoluteJointDef() noexcept: super{JointType::Revolute} {}
+    PLAYRHO_CONSTEXPR inline RevoluteJointDef() noexcept: super{JointType::Revolute} {}
     
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
     RevoluteJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
     
     /// @brief Uses the given enable limit state value.
-    constexpr RevoluteJointDef& UseEnableLimit(bool v) noexcept;
+    PLAYRHO_CONSTEXPR inline RevoluteJointDef& UseEnableLimit(bool v) noexcept;
     
     /// @brief Uses the given lower angle value.
-    constexpr RevoluteJointDef& UseLowerAngle(Angle v) noexcept;
+    PLAYRHO_CONSTEXPR inline RevoluteJointDef& UseLowerAngle(Angle v) noexcept;
     
     /// @brief Uses the given upper angle value.
-    constexpr RevoluteJointDef& UseUpperAngle(Angle v) noexcept;
+    PLAYRHO_CONSTEXPR inline RevoluteJointDef& UseUpperAngle(Angle v) noexcept;
     
     /// @brief Uses the given enable motor state value.
-    constexpr RevoluteJointDef& UseEnableMotor(bool v) noexcept;
+    PLAYRHO_CONSTEXPR inline RevoluteJointDef& UseEnableMotor(bool v) noexcept;
 
     /// @brief Local anchor point relative to bodyA's origin.
     Length2 localAnchorA = Length2{};
@@ -93,25 +93,25 @@ struct RevoluteJointDef : public JointBuilder<RevoluteJointDef>
     Torque maxMotorTorque = 0;
 };
 
-constexpr RevoluteJointDef& RevoluteJointDef::UseEnableLimit(bool v) noexcept
+PLAYRHO_CONSTEXPR inline RevoluteJointDef& RevoluteJointDef::UseEnableLimit(bool v) noexcept
 {
     enableLimit = v;
     return *this;
 }
 
-constexpr RevoluteJointDef& RevoluteJointDef::UseLowerAngle(Angle v) noexcept
+PLAYRHO_CONSTEXPR inline RevoluteJointDef& RevoluteJointDef::UseLowerAngle(Angle v) noexcept
 {
     lowerAngle = v;
     return *this;
 }
 
-constexpr RevoluteJointDef& RevoluteJointDef::UseUpperAngle(Angle v) noexcept
+PLAYRHO_CONSTEXPR inline RevoluteJointDef& RevoluteJointDef::UseUpperAngle(Angle v) noexcept
 {
     upperAngle = v;
     return *this;
 }
 
-constexpr RevoluteJointDef& RevoluteJointDef::UseEnableMotor(bool v) noexcept
+PLAYRHO_CONSTEXPR inline RevoluteJointDef& RevoluteJointDef::UseEnableMotor(bool v) noexcept
 {
     enableMotor = v;
     return *this;

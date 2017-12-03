@@ -40,7 +40,7 @@ struct JointDef
     JointDef() = delete; // deleted to prevent direct instantiation.
     
     /// @brief Initializing constructor.
-    constexpr explicit JointDef(JointType t) noexcept : type{t}
+    PLAYRHO_CONSTEXPR inline explicit JointDef(JointType t) noexcept : type{t}
     {
         // Intentionally empty.
     }
@@ -81,34 +81,34 @@ struct JointBuilder : JointDef
     using reference = value_type&;
     
     /// @brief Initializing constructor.
-    constexpr explicit JointBuilder(JointType t) noexcept : JointDef{t}
+    PLAYRHO_CONSTEXPR inline explicit JointBuilder(JointType t) noexcept : JointDef{t}
     {
         // Intentionally empty.
     }
     
     /// @brief Use value for body A setting.
-    constexpr reference UseBodyA(Body* b) noexcept
+    PLAYRHO_CONSTEXPR inline reference UseBodyA(Body* b) noexcept
     {
         bodyA = b;
         return static_cast<reference>(*this);
     }
     
     /// @brief Use value for body B setting.
-    constexpr reference UseBodyB(Body* b) noexcept
+    PLAYRHO_CONSTEXPR inline reference UseBodyB(Body* b) noexcept
     {
         bodyB = b;
         return static_cast<reference>(*this);
     }
     
     /// @brief Use value for collide connected setting.
-    constexpr reference UseCollideConnected(bool v) noexcept
+    PLAYRHO_CONSTEXPR inline reference UseCollideConnected(bool v) noexcept
     {
         collideConnected = v;
         return static_cast<reference>(*this);
     }
     
     /// @brief Use value for user data setting.
-    constexpr reference UseUserData(void* v) noexcept
+    PLAYRHO_CONSTEXPR inline reference UseUserData(void* v) noexcept
     {
         userData = v;
         return static_cast<reference>(*this);

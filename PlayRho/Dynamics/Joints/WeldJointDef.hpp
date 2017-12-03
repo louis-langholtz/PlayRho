@@ -42,7 +42,7 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     /// @brief Super type.
     using super = JointBuilder<WeldJointDef>;
     
-    constexpr WeldJointDef() noexcept: super{JointType::Weld} {}
+    PLAYRHO_CONSTEXPR inline WeldJointDef() noexcept: super{JointType::Weld} {}
     
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, and reference angle using a world
@@ -53,10 +53,10 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     WeldJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
     
     /// @brief Uses the given frequency value.
-    constexpr WeldJointDef& UseFrequency(Frequency v) noexcept;
+    PLAYRHO_CONSTEXPR inline WeldJointDef& UseFrequency(Frequency v) noexcept;
     
     /// @brief Uses the given damping ratio.
-    constexpr WeldJointDef& UseDampingRatio(Real v) noexcept;
+    PLAYRHO_CONSTEXPR inline WeldJointDef& UseDampingRatio(Real v) noexcept;
     
     /// The local anchor point relative to bodyA's origin.
     Length2 localAnchorA = Length2{};
@@ -77,13 +77,13 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     Real dampingRatio = 0;
 };
 
-constexpr WeldJointDef& WeldJointDef::UseFrequency(Frequency v) noexcept
+PLAYRHO_CONSTEXPR inline WeldJointDef& WeldJointDef::UseFrequency(Frequency v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-constexpr WeldJointDef& WeldJointDef::UseDampingRatio(Real v) noexcept
+PLAYRHO_CONSTEXPR inline WeldJointDef& WeldJointDef::UseDampingRatio(Real v) noexcept
 {
     dampingRatio = v;
     return *this;

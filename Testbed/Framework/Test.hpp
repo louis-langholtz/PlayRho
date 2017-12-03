@@ -270,8 +270,8 @@ protected:
     
     using PointCount = int;
     using TextLinePos = int;
-    static constexpr auto k_maxContactPoints = PointCount{2048};
-    static constexpr auto DRAW_STRING_NEW_LINE = TextLinePos{16};
+    static PLAYRHO_CONSTEXPR const auto k_maxContactPoints = PointCount{2048};
+    static PLAYRHO_CONSTEXPR const auto DRAW_STRING_NEW_LINE = TextLinePos{16};
 
     virtual void PreStep(const Settings& settings, Drawer& drawer)
     {

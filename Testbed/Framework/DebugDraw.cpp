@@ -210,7 +210,7 @@ struct GLRenderPoints
 {
     GLRenderPoints()
     {
-        static constexpr char vs[] = \
+        static PLAYRHO_CONSTEXPR const char vs[] = \
         "#version 330\n"
         "uniform mat4 projectionMatrix;\n"
         "layout(location = 0) in vec2 v_position;\n"
@@ -224,7 +224,7 @@ struct GLRenderPoints
         "    gl_PointSize = v_size;\n"
         "}\n";
         
-        static constexpr char fs[] = \
+        static PLAYRHO_CONSTEXPR const char fs[] = \
         "#version 330\n"
         "in vec4 f_color;\n"
         "out vec4 color;\n"

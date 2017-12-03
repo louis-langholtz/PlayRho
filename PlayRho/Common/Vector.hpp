@@ -37,7 +37,7 @@ namespace playrho
 {
 
 /// @brief Vector.
-/// @details This is a <code>constexpr</code> and constructor enhanced
+/// @details This is a <code>PLAYRHO_CONSTEXPR inline</code> and constructor enhanced
 ///   <code>std::array</code>-like template class for types supporting the +, -, *, /
 ///   arithmetic operators ("arithmetic types" as defined by the <code>IsArithmetic</code>
 ///   type trait) that itself comes with non-member arithmetic operator support making
@@ -87,25 +87,25 @@ struct Vector
     /// @brief Default constructor.
     /// @note Defaulted explicitly.
     /// @note This constructor performs no action.
-    constexpr Vector() = default;
+    PLAYRHO_CONSTEXPR inline Vector() = default;
     
     /// @brief Initializing constructor.
     template<typename... Tail>
-    constexpr explicit Vector(typename std::enable_if<sizeof...(Tail)+1 == N, T>::type
+    PLAYRHO_CONSTEXPR inline explicit Vector(typename std::enable_if<sizeof...(Tail)+1 == N, T>::type
                      head, Tail... tail) noexcept: elements{head, T(tail)...}
     {
         // Intentionally empty.
     }
 
     /// @brief Gets the max size.
-    constexpr size_type max_size() const noexcept { return N; }
+    PLAYRHO_CONSTEXPR inline size_type max_size() const noexcept { return N; }
     
     /// @brief Gets the size.
-    constexpr size_type size() const noexcept { return N; }
+    PLAYRHO_CONSTEXPR inline size_type size() const noexcept { return N; }
     
     /// @brief Whether empty.
     /// @note Always false for N > 0.
-    constexpr bool empty() const noexcept { return N == 0; }
+    PLAYRHO_CONSTEXPR inline bool empty() const noexcept { return N == 0; }
     
     /// @brief Gets a "begin" iterator.
     iterator begin() noexcept { return iterator(elements); }
@@ -158,7 +158,7 @@ struct Vector
     /// @brief Gets a reference to the requested element.
     /// @note No bounds checking is performed.
     /// @warning Behavior is undefined if given a position equal to or greater than size().
-    constexpr reference operator[](size_type pos) noexcept
+    PLAYRHO_CONSTEXPR inline reference operator[](size_type pos) noexcept
     {
         assert(pos < size());
         return elements[pos];
@@ -167,7 +167,7 @@ struct Vector
     /// @brief Gets a constant reference to the requested element.
     /// @note No bounds checking is performed.
     /// @warning Behavior is undefined if given a position equal to or greater than size().
-    constexpr const_reference operator[](size_type pos) const noexcept
+    PLAYRHO_CONSTEXPR inline const_reference operator[](size_type pos) const noexcept
     {
         assert(pos < size());
         return elements[pos];
@@ -175,7 +175,7 @@ struct Vector
     
     /// @brief Gets a reference to the requested element.
     /// @throws InvalidArgument if given a position that's >= size().
-    constexpr reference at(size_type pos)
+    PLAYRHO_CONSTEXPR inline reference at(size_type pos)
     {
         if (pos >= size())
         {
@@ -186,7 +186,7 @@ struct Vector
     
     /// @brief Gets a constant reference to the requested element.
     /// @throws InvalidArgument if given a position that's >= size().
-    constexpr const_reference at(size_type pos) const
+    PLAYRHO_CONSTEXPR inline const_reference at(size_type pos) const
     {
         if (pos >= size())
         {
@@ -196,13 +196,13 @@ struct Vector
     }
     
     /// @brief Direct access to data.
-    constexpr pointer data() noexcept
+    PLAYRHO_CONSTEXPR inline pointer data() noexcept
     {
         return elements;
     }
     
     /// @brief Direct access to data.
-    constexpr const_pointer data() const noexcept
+    PLAYRHO_CONSTEXPR inline const_pointer data() const noexcept
     {
         return elements;
     }
@@ -217,7 +217,7 @@ struct Vector
 /// @brief Equality operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr bool operator== (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
+PLAYRHO_CONSTEXPR inline bool operator== (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
     for (auto i = static_cast<size_t>(0); i < N; ++i)
     {
@@ -232,7 +232,7 @@ constexpr bool operator== (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noe
 /// @brief Inequality operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr bool operator!= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
+PLAYRHO_CONSTEXPR inline bool operator!= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
     return !(lhs == rhs);
 }
@@ -240,7 +240,7 @@ constexpr bool operator!= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noe
 /// @brief Unary plus operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr auto operator+ (Vector<T, N> v) noexcept
+PLAYRHO_CONSTEXPR inline auto operator+ (Vector<T, N> v) noexcept
 {
     return v;
 }
@@ -248,7 +248,7 @@ constexpr auto operator+ (Vector<T, N> v) noexcept
 /// @brief Unary negation operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr auto operator- (Vector<T, N> v) noexcept
+PLAYRHO_CONSTEXPR inline auto operator- (Vector<T, N> v) noexcept
 {
     for (auto i = static_cast<size_t>(0); i < N; ++i)
     {
@@ -260,7 +260,7 @@ constexpr auto operator- (Vector<T, N> v) noexcept
 /// @brief Increments the left hand side value by the right hand side value.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr auto& operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
+PLAYRHO_CONSTEXPR inline auto& operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
     for (auto i = static_cast<size_t>(0); i < N; ++i)
     {
@@ -272,7 +272,7 @@ constexpr auto& operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 /// @brief Decrements the left hand side value by the right hand side value.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr auto& operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
+PLAYRHO_CONSTEXPR inline auto& operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
     for (auto i = static_cast<size_t>(0); i < N; ++i)
     {
@@ -284,7 +284,7 @@ constexpr auto& operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 /// @brief Adds two vectors component-wise.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr auto operator+ (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
+PLAYRHO_CONSTEXPR inline auto operator+ (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 {
     return lhs += rhs;
 }
@@ -292,7 +292,7 @@ constexpr auto operator+ (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 /// @brief Subtracts two vectors component-wise.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr auto operator- (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
+PLAYRHO_CONSTEXPR inline auto operator- (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 {
     return lhs -= rhs;
 }
@@ -300,7 +300,7 @@ constexpr auto operator- (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 /// @brief Multiplication assignment operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr auto& operator*= (Vector<T, N>& lhs, const Real rhs) noexcept
+PLAYRHO_CONSTEXPR inline auto& operator*= (Vector<T, N>& lhs, const Real rhs) noexcept
 {
     for (auto i = static_cast<size_t>(0); i < N; ++i)
     {
@@ -312,7 +312,7 @@ constexpr auto& operator*= (Vector<T, N>& lhs, const Real rhs) noexcept
 /// @brief Division assignment operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr auto& operator/= (Vector<T, N>& lhs, const Real rhs) noexcept
+PLAYRHO_CONSTEXPR inline auto& operator/= (Vector<T, N>& lhs, const Real rhs) noexcept
 {
     for (auto i = static_cast<size_t>(0); i < N; ++i)
     {
@@ -324,7 +324,7 @@ constexpr auto& operator/= (Vector<T, N>& lhs, const Real rhs) noexcept
 /// @brief Multiplication operator.
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
-constexpr auto operator* (const T1 s, const Vector<T2, N>& a) noexcept
+PLAYRHO_CONSTEXPR inline auto operator* (const T1 s, const Vector<T2, N>& a) noexcept
 {
     auto result = Vector<OT, N>{};
     for (auto i = static_cast<size_t>(0); i < N; ++i)
@@ -337,7 +337,7 @@ constexpr auto operator* (const T1 s, const Vector<T2, N>& a) noexcept
 /// @brief Multiplication operator.
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
-constexpr auto operator* (const Vector<T1, N>& a, const T2 s) noexcept
+PLAYRHO_CONSTEXPR inline auto operator* (const Vector<T1, N>& a, const T2 s) noexcept
 {
     auto result = Vector<OT, N>{};
     for (auto i = static_cast<size_t>(0); i < N; ++i)
@@ -350,7 +350,7 @@ constexpr auto operator* (const Vector<T1, N>& a, const T2 s) noexcept
 /// @brief Division operator.
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
-constexpr auto operator/ (const Vector<T1, N>& a, const T2 s) noexcept
+PLAYRHO_CONSTEXPR inline auto operator/ (const Vector<T1, N>& a, const T2 s) noexcept
 {
     auto result = Vector<OT, N>{};
     for (auto i = static_cast<size_t>(0); i < N; ++i)
@@ -363,7 +363,7 @@ constexpr auto operator/ (const Vector<T1, N>& a, const T2 s) noexcept
 /// @brief Multiplication operator.
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
-constexpr auto operator* (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
+PLAYRHO_CONSTEXPR inline auto operator* (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
 {
     auto result = Vector<OT, N>{};
     for (auto i = static_cast<size_t>(0); i < N; ++i)
@@ -376,7 +376,7 @@ constexpr auto operator* (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) no
 /// @brief Division operator.
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
-constexpr auto operator/ (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
+PLAYRHO_CONSTEXPR inline auto operator/ (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
 {
     auto result = Vector<OT, N>{};
     for (auto i = static_cast<size_t>(0); i < N; ++i)
@@ -389,7 +389,7 @@ constexpr auto operator/ (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) no
 /// @brief Lexicographical less-than operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr bool operator< (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
+PLAYRHO_CONSTEXPR inline bool operator< (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
     return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
                                         std::less<T>{});
@@ -398,7 +398,7 @@ constexpr bool operator< (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noex
 /// @brief Lexicographical less-than or equal-to operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr bool operator<= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
+PLAYRHO_CONSTEXPR inline bool operator<= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
     const auto lhsEnd = std::cend(lhs);
     const auto rhsEnd = std::cend(rhs);
@@ -409,7 +409,7 @@ constexpr bool operator<= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noe
 /// @brief Lexicographical greater-than operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr bool operator> (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
+PLAYRHO_CONSTEXPR inline bool operator> (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
     return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
                                         std::greater<T>{});
@@ -418,7 +418,7 @@ constexpr bool operator> (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noex
 /// @brief Lexicographical greater-than or equal-to operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr bool operator>= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
+PLAYRHO_CONSTEXPR inline bool operator>= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
     const auto lhsEnd = std::cend(lhs);
     const auto rhsEnd = std::cend(rhs);
@@ -429,7 +429,7 @@ constexpr bool operator>= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noe
 /// @brief Gets the I'th element of the given collection.
 /// @relatedalso Vector
 template <size_t I, size_t N, typename T>
-constexpr auto& Get(Vector<T, N>& v) noexcept
+PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
 {
     static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
     return v[I];
@@ -437,7 +437,7 @@ constexpr auto& Get(Vector<T, N>& v) noexcept
 
 /// @brief Gets the I'th element of the given collection.
 template <size_t I, size_t N, typename T>
-constexpr auto Get(const Vector<T, N>& v) noexcept
+PLAYRHO_CONSTEXPR inline auto Get(const Vector<T, N>& v) noexcept
 {
     static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
     return v[I];

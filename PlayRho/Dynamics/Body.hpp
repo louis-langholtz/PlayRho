@@ -85,7 +85,7 @@ public:
     using Contacts = std::vector<KeyedContactPtr>;
 
     /// @brief Invalid island index.
-    static constexpr auto InvalidIslandIndex = static_cast<BodyCounter>(-1);
+    static PLAYRHO_CONSTEXPR const auto InvalidIslandIndex = static_cast<BodyCounter>(-1);
 
     /// @brief Flags type.
     /// @note For internal use. Made public to facilitate unit testing.

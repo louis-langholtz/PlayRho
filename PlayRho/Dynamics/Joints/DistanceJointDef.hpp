@@ -43,7 +43,7 @@ struct DistanceJointDef : public JointBuilder<DistanceJointDef>
     /// @brief Super type.
     using super = JointBuilder<DistanceJointDef>;
     
-    constexpr DistanceJointDef() noexcept: super{JointType::Distance} {}
+    PLAYRHO_CONSTEXPR inline DistanceJointDef() noexcept: super{JointType::Distance} {}
     
     /// @brief Copy constructor.
     DistanceJointDef(const DistanceJointDef& copy) = default;
@@ -55,13 +55,13 @@ struct DistanceJointDef : public JointBuilder<DistanceJointDef>
                      Length2 anchorB = Length2{}) noexcept;
     
     /// @brief Uses the given length.
-    constexpr DistanceJointDef& UseLength(Length v) noexcept;
+    PLAYRHO_CONSTEXPR inline DistanceJointDef& UseLength(Length v) noexcept;
     
     /// @brief Uses the given frequency.
-    constexpr DistanceJointDef& UseFrequency(NonNegative<Frequency> v) noexcept;
+    PLAYRHO_CONSTEXPR inline DistanceJointDef& UseFrequency(NonNegative<Frequency> v) noexcept;
     
     /// @brief Uses the given damping ratio.
-    constexpr DistanceJointDef& UseDampingRatio(Real v) noexcept;
+    PLAYRHO_CONSTEXPR inline DistanceJointDef& UseDampingRatio(Real v) noexcept;
     
     /// @brief Local anchor point relative to bodyA's origin.
     Length2 localAnchorA = Length2{};
@@ -81,19 +81,19 @@ struct DistanceJointDef : public JointBuilder<DistanceJointDef>
     Real dampingRatio = 0;
 };
 
-constexpr DistanceJointDef& DistanceJointDef::UseLength(Length v) noexcept
+PLAYRHO_CONSTEXPR inline DistanceJointDef& DistanceJointDef::UseLength(Length v) noexcept
 {
     length = v;
     return *this;
 }
 
-constexpr DistanceJointDef& DistanceJointDef::UseFrequency(NonNegative<Frequency> v) noexcept
+PLAYRHO_CONSTEXPR inline DistanceJointDef& DistanceJointDef::UseFrequency(NonNegative<Frequency> v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-constexpr DistanceJointDef& DistanceJointDef::UseDampingRatio(Real v) noexcept
+PLAYRHO_CONSTEXPR inline DistanceJointDef& DistanceJointDef::UseDampingRatio(Real v) noexcept
 {
     dampingRatio = v;
     return *this;

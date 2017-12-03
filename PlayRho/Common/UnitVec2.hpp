@@ -58,32 +58,32 @@ public:
     /// @note This is the value for the 0/4 turned (0 angled) unit vector.
     /// @note This is the reverse perpendicular unit vector of the bottom oriented vector.
     /// @note This is the forward perpendicular unit vector of the top oriented vector.
-    static constexpr UnitVec2 GetRight() noexcept { return UnitVec2{1, 0}; }
+    static PLAYRHO_CONSTEXPR inline UnitVec2 GetRight() noexcept { return UnitVec2{1, 0}; }
 
     /// @brief Gets the top-ward oriented unit vector.
     /// @note This is the actual value for the 1/4 turned (90 degree angled) unit vector.
     /// @note This is the reverse perpendicular unit vector of the right oriented vector.
     /// @note This is the forward perpendicular unit vector of the left oriented vector.
-    static constexpr UnitVec2 GetTop() noexcept { return UnitVec2{0, 1}; }
+    static PLAYRHO_CONSTEXPR inline UnitVec2 GetTop() noexcept { return UnitVec2{0, 1}; }
 
     /// @brief Gets the left-ward oriented unit vector.
     /// @note This is the actual value for the 2/4 turned (180 degree angled) unit vector.
     /// @note This is the reverse perpendicular unit vector of the top oriented vector.
     /// @note This is the forward perpendicular unit vector of the bottom oriented vector.
-    static constexpr UnitVec2 GetLeft() noexcept { return UnitVec2{-1, 0}; }
+    static PLAYRHO_CONSTEXPR inline UnitVec2 GetLeft() noexcept { return UnitVec2{-1, 0}; }
 
     /// @brief Gets the bottom-ward oriented unit vector.
     /// @note This is the actual value for the 3/4 turned (270 degree angled) unit vector.
     /// @note This is the reverse perpendicular unit vector of the left oriented vector.
     /// @note This is the forward perpendicular unit vector of the right oriented vector.
-    static constexpr UnitVec2 GetBottom() noexcept { return UnitVec2{0, -1}; }
+    static PLAYRHO_CONSTEXPR inline UnitVec2 GetBottom() noexcept { return UnitVec2{0, -1}; }
 
     /// @brief Gets the non-oriented unit vector.
-    static constexpr UnitVec2 GetZero() noexcept { return UnitVec2{0, 0}; }
+    static PLAYRHO_CONSTEXPR inline UnitVec2 GetZero() noexcept { return UnitVec2{0, 0}; }
 
     /// @brief Gets the 45 degree unit vector.
     /// @details This is the unit vector in the positive X and Y quadrant where X == Y.
-    static constexpr UnitVec2 GetTopRight() noexcept
+    static PLAYRHO_CONSTEXPR inline UnitVec2 GetTopRight() noexcept
     {
         return UnitVec2{+SquareRootTwo/Real(2), +SquareRootTwo/Real(2)};
     }
@@ -91,13 +91,13 @@ public:
     /// @brief Gets the -45 degree unit vector.
     /// @details This is the unit vector in the positive X and negative Y quadrant
     ///   where |X| == |Y|.
-    static constexpr UnitVec2 GetBottomRight() noexcept
+    static PLAYRHO_CONSTEXPR inline UnitVec2 GetBottomRight() noexcept
     {
         return UnitVec2{+SquareRootTwo/Real(2), -SquareRootTwo/Real(2)};
     }
     
     /// @brief Gets the default fallback.
-    static constexpr UnitVec2 GetDefaultFallback() noexcept { return UnitVec2{}; }
+    static PLAYRHO_CONSTEXPR inline UnitVec2 GetDefaultFallback() noexcept { return UnitVec2{}; }
 
     /// @brief Polar coordinate.
     /// @details This is a direction and magnitude pair defined by the unit vector class.
@@ -117,17 +117,17 @@ public:
     ///
     static UnitVec2 Get(const Angle angle) noexcept;
 
-    constexpr UnitVec2() noexcept = default;
+    PLAYRHO_CONSTEXPR inline UnitVec2() noexcept = default;
     
     /// @brief Gets the max size.
-    constexpr size_type max_size() const noexcept { return size_type{2}; }
+    PLAYRHO_CONSTEXPR inline size_type max_size() const noexcept { return size_type{2}; }
     
     /// @brief Gets the size.
-    constexpr size_type size() const noexcept { return size_type{2}; }
+    PLAYRHO_CONSTEXPR inline size_type size() const noexcept { return size_type{2}; }
     
     /// @brief Whether empty.
     /// @note Always false for N > 0.
-    constexpr bool empty() const noexcept { return false; }
+    PLAYRHO_CONSTEXPR inline bool empty() const noexcept { return false; }
     
     /// @brief Gets a "begin" iterator.
     const_iterator begin() const noexcept { return const_iterator(m_elems); }
@@ -168,7 +168,7 @@ public:
     /// @brief Gets a constant reference to the requested element.
     /// @note No bounds checking is performed.
     /// @warning Behavior is undefined if given a position equal to or greater than size().
-    constexpr const_reference operator[](size_type pos) const noexcept
+    PLAYRHO_CONSTEXPR inline const_reference operator[](size_type pos) const noexcept
     {
         assert(pos < size());
         return m_elems[pos];
@@ -176,7 +176,7 @@ public:
     
     /// @brief Gets a constant reference to the requested element.
     /// @throws InvalidArgument if given a position that's >= size().
-    constexpr const_reference at(size_type pos) const
+    PLAYRHO_CONSTEXPR inline const_reference at(size_type pos) const
     {
         if (pos >= size())
         {
@@ -186,31 +186,31 @@ public:
     }
     
     /// @brief Direct access to data.
-    constexpr const_pointer data() const noexcept
+    PLAYRHO_CONSTEXPR inline const_pointer data() const noexcept
     {
         return m_elems;
     }
     
     /// @brief Gets the "X" value.
-    constexpr auto GetX() const noexcept { return m_elems[0]; }
+    PLAYRHO_CONSTEXPR inline auto GetX() const noexcept { return m_elems[0]; }
 
     /// @brief Gets the "Y" value.
-    constexpr auto GetY() const noexcept { return m_elems[1]; }
+    PLAYRHO_CONSTEXPR inline auto GetY() const noexcept { return m_elems[1]; }
 
     /// @brief Gets the cosine value.
-    constexpr auto cos() const noexcept { return m_elems[0]; }
+    PLAYRHO_CONSTEXPR inline auto cos() const noexcept { return m_elems[0]; }
 
     /// @brief Gets the sine value.
-    constexpr auto sin() const noexcept { return m_elems[1]; }
+    PLAYRHO_CONSTEXPR inline auto sin() const noexcept { return m_elems[1]; }
 
     /// @brief Flips the X and Y values.
-    constexpr inline UnitVec2 FlipXY() const noexcept { return UnitVec2{-GetX(), -GetY()}; }
+    PLAYRHO_CONSTEXPR inline UnitVec2 FlipXY() const noexcept { return UnitVec2{-GetX(), -GetY()}; }
 
     /// @brief Flips the X value.
-    constexpr inline UnitVec2 FlipX() const noexcept { return UnitVec2{-GetX(), GetY()}; }
+    PLAYRHO_CONSTEXPR inline UnitVec2 FlipX() const noexcept { return UnitVec2{-GetX(), GetY()}; }
 
     /// @brief Flips the Y value.
-    constexpr inline UnitVec2 FlipY() const noexcept { return UnitVec2{GetX(), -GetY()}; }
+    PLAYRHO_CONSTEXPR inline UnitVec2 FlipY() const noexcept { return UnitVec2{GetX(), -GetY()}; }
 
     /// @brief Rotates the unit vector by the given amount.
     ///
@@ -219,7 +219,7 @@ public:
     ///
     /// @return Result of rotating this unit vector by the given amount.
     ///
-    constexpr inline UnitVec2 Rotate(UnitVec2 amount) const noexcept
+    PLAYRHO_CONSTEXPR inline UnitVec2 Rotate(UnitVec2 amount) const noexcept
     {
         return UnitVec2{GetX() * amount.GetX() - GetY() * amount.GetY(),
                         GetY() * amount.GetX() + GetX() * amount.GetY()};
@@ -229,7 +229,7 @@ public:
     /// @details This returns the unit vector (-y, x).
     /// @return A counter-clockwise 90-degree rotation of this vector.
     /// @sa GetFwdPerpendicular.
-    constexpr inline UnitVec2 GetRevPerpendicular() const noexcept
+    PLAYRHO_CONSTEXPR inline UnitVec2 GetRevPerpendicular() const noexcept
     {
         // See http://mathworld.wolfram.com/PerpendicularVector.html
         return UnitVec2{-GetY(), GetX()};
@@ -239,20 +239,20 @@ public:
     /// @details This returns the unit vector (y, -x).
     /// @return A clockwise 90-degree rotation of this vector.
     /// @sa GetRevPerpendicular.
-    constexpr inline UnitVec2 GetFwdPerpendicular() const noexcept
+    PLAYRHO_CONSTEXPR inline UnitVec2 GetFwdPerpendicular() const noexcept
     {
         // See http://mathworld.wolfram.com/PerpendicularVector.html
         return UnitVec2{GetY(), -GetX()};
     }
 
     /// @brief Negation operator.
-    constexpr inline UnitVec2 operator-() const noexcept { return UnitVec2{-GetX(), -GetY()}; }
+    PLAYRHO_CONSTEXPR inline UnitVec2 operator-() const noexcept { return UnitVec2{-GetX(), -GetY()}; }
 
     /// @brief Positive operator.
-    constexpr inline UnitVec2 operator+() const noexcept { return UnitVec2{+GetX(), +GetY()}; }
+    PLAYRHO_CONSTEXPR inline UnitVec2 operator+() const noexcept { return UnitVec2{+GetX(), +GetY()}; }
 
     /// @brief Gets the absolute value.
-    constexpr inline UnitVec2 Absolute() const noexcept
+    PLAYRHO_CONSTEXPR inline UnitVec2 Absolute() const noexcept
     {
         return UnitVec2{Abs(GetX()), Abs(GetY())};
     }
@@ -260,7 +260,7 @@ public:
 private:
     
     /// @brief Initializing constructor.
-    constexpr UnitVec2(value_type x, value_type y) noexcept : m_elems{x, y}
+    PLAYRHO_CONSTEXPR inline UnitVec2(value_type x, value_type y) noexcept : m_elems{x, y}
     {
         // Intentionally empty.
     }
@@ -269,20 +269,20 @@ private:
 };
 
 /// @brief Gets the "X-axis".
-constexpr inline UnitVec2 GetXAxis(UnitVec2 rot) noexcept { return rot; }
+PLAYRHO_CONSTEXPR inline UnitVec2 GetXAxis(UnitVec2 rot) noexcept { return rot; }
 
 /// @brief Gets the "Y-axis".
 /// @note This is the reverse perpendicular vector of the given unit vector.
-constexpr inline UnitVec2 GetYAxis(UnitVec2 rot) noexcept { return rot.GetRevPerpendicular(); }
+PLAYRHO_CONSTEXPR inline UnitVec2 GetYAxis(UnitVec2 rot) noexcept { return rot.GetRevPerpendicular(); }
 
 /// @brief Equality operator.
-constexpr inline bool operator==(const UnitVec2 a, const UnitVec2 b) noexcept
+PLAYRHO_CONSTEXPR inline bool operator==(const UnitVec2 a, const UnitVec2 b) noexcept
 {
     return (a.GetX() == b.GetX()) && (a.GetY() == b.GetY());
 }
 
 /// @brief Inequality operator.
-constexpr inline bool operator!=(const UnitVec2 a, const UnitVec2 b) noexcept
+PLAYRHO_CONSTEXPR inline bool operator!=(const UnitVec2 a, const UnitVec2 b) noexcept
 {
     return (a.GetX() != b.GetX()) || (a.GetY() != b.GetY());
 }
@@ -293,7 +293,7 @@ constexpr inline bool operator!=(const UnitVec2 a, const UnitVec2 b) noexcept
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
 /// @sa GetFwdPerpendicular.
-constexpr inline UnitVec2 GetRevPerpendicular(const UnitVec2 vector) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec2 GetRevPerpendicular(const UnitVec2 vector) noexcept
 {
     return vector.GetRevPerpendicular();
 }
@@ -303,7 +303,7 @@ constexpr inline UnitVec2 GetRevPerpendicular(const UnitVec2 vector) noexcept
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
 /// @sa GetRevPerpendicular.
-constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
 {
     return vector.GetFwdPerpendicular();
 }
@@ -311,29 +311,29 @@ constexpr inline UnitVec2 GetFwdPerpendicular(const UnitVec2 vector) noexcept
 /// @brief Rotates a unit vector by the angle expressed by the second unit vector.
 /// @return Unit vector for the angle that's the sum of the two angles expressed by
 ///   the input unit vectors.
-constexpr inline UnitVec2 Rotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec2 Rotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
 {
     return vector.Rotate(angle);
 }
 
 /// @brief Inverse rotates a vector.
-constexpr inline UnitVec2 InverseRotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec2 InverseRotate(const UnitVec2 vector, const UnitVec2& angle) noexcept
 {
     return vector.Rotate(angle.FlipY());
 }
     
 /// @brief Gets an invalid value for the UnitVec2 type.
-template <> constexpr UnitVec2 GetInvalid() noexcept { return UnitVec2{}; }
+template <> PLAYRHO_CONSTEXPR inline UnitVec2 GetInvalid() noexcept { return UnitVec2{}; }
 
 /// @brief Determines if the given value is valid.
-template <> constexpr inline bool IsValid(const UnitVec2& value) noexcept
+template <> PLAYRHO_CONSTEXPR inline bool IsValid(const UnitVec2& value) noexcept
 {
     return IsValid(value.GetX()) && IsValid(value.GetY()) && (value != UnitVec2::GetZero());
 }
 
 /// @brief Gets the I'th element of the given collection.
 template <size_t I>
-constexpr UnitVec2::value_type Get(UnitVec2 v) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec2::value_type Get(UnitVec2 v) noexcept
 {
     static_assert(I < 2, "Index out of bounds in playrho::Get<> (playrho::UnitVec2)");
     switch (I)
@@ -345,14 +345,14 @@ constexpr UnitVec2::value_type Get(UnitVec2 v) noexcept
 
 /// @brief Gets the 0'th element of the given collection.
 template <>
-constexpr UnitVec2::value_type Get<0>(UnitVec2 v) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec2::value_type Get<0>(UnitVec2 v) noexcept
 {
     return v.GetX();
 }
 
 /// @brief Gets the 1'st element of the given collection.
 template <>
-constexpr UnitVec2::value_type Get<1>(UnitVec2 v) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec2::value_type Get<1>(UnitVec2 v) noexcept
 {
     return v.GetY();
 }

@@ -21,6 +21,7 @@
 #ifndef PLAYRHO_COMMON_INVALIDARGUMENT_HPP
 #define PLAYRHO_COMMON_INVALIDARGUMENT_HPP
 
+#include <PlayRho/Defines.hpp>
 #include <stdexcept>
 
 namespace playrho {

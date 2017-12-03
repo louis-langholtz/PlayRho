@@ -1266,7 +1266,7 @@ void Test::RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerI
     m_handledKeys.push_back(std::make_pair(KeyActionMods{key, action, mods}, id));
 }
 
-constexpr auto RAND_LIMIT = 32767;
+PLAYRHO_CONSTEXPR const auto RAND_LIMIT = 32767;
 
 Real playrho::RandomFloat()
 {

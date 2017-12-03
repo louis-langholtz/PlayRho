@@ -44,14 +44,14 @@ struct FixtureProxy
 
 /// @brief Equality operator
 /// @relatedalso FixtureProxy
-constexpr bool operator== (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
+PLAYRHO_CONSTEXPR inline bool operator== (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
 {
     return lhs.treeId == rhs.treeId;
 }
 
 /// @brief Inequality operator
 /// @relatedalso FixtureProxy
-constexpr bool operator!= (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
+PLAYRHO_CONSTEXPR inline bool operator!= (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
 {
     return !(lhs.treeId == rhs.treeId);
 }

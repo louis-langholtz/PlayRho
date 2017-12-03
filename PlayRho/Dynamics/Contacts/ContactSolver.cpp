@@ -38,7 +38,7 @@ namespace playrho {
 namespace {
 
 #if defined(B2_DEBUG_SOLVER)
-static constexpr auto k_errorTol = 1e-3_mps; ///< error tolerance
+static PLAYRHO_CONSTEXPR inline auto k_errorTol = 1e-3_mps; ///< error tolerance
 #endif
 
 struct VelocityPair

@@ -40,7 +40,7 @@ class EdgeShape : public Shape
 public:
     
     /// @brief Gets the default vertex radius.
-    static constexpr Length GetDefaultVertexRadius() noexcept
+    static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
     {
         return DefaultLinearSlop * Real{2};
     }
@@ -48,20 +48,20 @@ public:
     /// @brief Configuration data for edge shapes.
     struct Conf: public ShapeDefBuilder<Conf>
     {
-        constexpr Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+        PLAYRHO_CONSTEXPR inline Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
         {
             // Intentionally empty.
         }
         
         /// @brief Uses the given value for vertex 1.
-        constexpr Conf& UseVertex1(Length2 value) noexcept
+        PLAYRHO_CONSTEXPR inline Conf& UseVertex1(Length2 value) noexcept
         {
             vertex1 = value;
             return *this;
         }
 
         /// @brief Uses the given value for vertex 2.
-        constexpr Conf& UseVertex2(Length2 value) noexcept
+        PLAYRHO_CONSTEXPR inline Conf& UseVertex2(Length2 value) noexcept
         {
             vertex2 = value;
             return *this;
@@ -72,7 +72,7 @@ public:
     };
     
     /// @brief Gets the default configuration for an EdgeShape.
-    static constexpr Conf GetDefaultConf() noexcept
+    static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }

@@ -55,7 +55,7 @@ namespace playrho
         using size_type = std::remove_const<decltype(MaxShapeVertices)>::type;
         
         /// @brief Invalid index.
-        static constexpr size_type InvalidIndex = static_cast<size_type>(-1);
+        static PLAYRHO_CONSTEXPR const size_type InvalidIndex = static_cast<size_type>(-1);
         
         /// @brief Constant vertex pointer.
         using ConstVertexPointer = const Length2*;

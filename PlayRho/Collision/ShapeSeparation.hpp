@@ -38,13 +38,13 @@ namespace playrho
         using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
         
         /// @brief Gets the invalid distance.
-        static constexpr distance_type GetInvalidDistance() noexcept
+        static PLAYRHO_CONSTEXPR inline distance_type GetInvalidDistance() noexcept
         {
             return std::numeric_limits<Length>::max();
         }
 
         /// @brief Index type.
-        static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
+        static PLAYRHO_CONSTEXPR const index_type InvalidIndex = static_cast<index_type>(-1);
         
         distance_type separation = GetInvalidDistance(); ///< Separation.
         index_type index = InvalidIndex; ///< Index.
@@ -62,13 +62,13 @@ namespace playrho
         using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
         
         /// @brief Gets the invalid distance.
-        static constexpr distance_type GetInvalidDistance() noexcept
+        static PLAYRHO_CONSTEXPR inline distance_type GetInvalidDistance() noexcept
         {
             return std::numeric_limits<Length>::max();
         }
 
         /// @brief Invalid index.
-        static constexpr index_type InvalidIndex = static_cast<index_type>(-1);
+        static PLAYRHO_CONSTEXPR const index_type InvalidIndex = static_cast<index_type>(-1);
         
         distance_type separation = GetInvalidDistance(); ///< Separation.
         index_type index1 = InvalidIndex; ///< Index 1.

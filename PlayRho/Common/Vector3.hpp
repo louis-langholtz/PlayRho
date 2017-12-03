@@ -45,14 +45,14 @@ namespace playrho
     
     /// @brief Gets an invalid value for the Vec3 type.
     template <>
-    constexpr inline Vec3 GetInvalid() noexcept
+    PLAYRHO_CONSTEXPR inline Vec3 GetInvalid() noexcept
     {
         return Vec3{GetInvalid<Real>(), GetInvalid<Real>(), GetInvalid<Real>()};
     }
     
     /// @brief Determines whether the given vector contains finite coordinates.
     template <>
-    constexpr inline bool IsValid(const Vec3& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const Vec3& value) noexcept
     {
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value)) && IsValid(Get<2>(value));
     }

@@ -20,6 +20,8 @@
 #ifndef PLAYRHO_COMMON_ARRAYLIST_HPP
 #define PLAYRHO_COMMON_ARRAYLIST_HPP
 
+#include <PlayRho/Defines.hpp>
+
 #include <array>
 #include <cassert>
 #include <initializer_list>
@@ -50,7 +52,7 @@ namespace playrho
         /// @brief Constant pointer type.
         using const_pointer = const value_type*;
 
-        constexpr ArrayList() noexcept
+        PLAYRHO_CONSTEXPR inline ArrayList() noexcept
         {
             // Intentionally empty.
             // Note that defaulting this method instead of writing it out here,
@@ -58,7 +60,7 @@ namespace playrho
         }
 
         template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
-        constexpr explicit ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
+        PLAYRHO_CONSTEXPR inline explicit ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
             m_size{copy.size()},
             m_elements{copy.data()}
         {
@@ -91,13 +93,13 @@ namespace playrho
             }
         }
         
-        constexpr ArrayList& Append(const value_type& value)
+        PLAYRHO_CONSTEXPR inline ArrayList& Append(const value_type& value)
         {
             push_back(value);
             return *this;
         }
 
-        constexpr void push_back(const value_type& value) noexcept
+        PLAYRHO_CONSTEXPR inline void push_back(const value_type& value) noexcept
         {
             assert(m_size < MAXSIZE);
             m_elements[m_size] = value;
@@ -134,7 +136,7 @@ namespace playrho
             return m_elements[index];
         }
         
-        constexpr const_reference operator[](size_type index) const noexcept
+        PLAYRHO_CONSTEXPR inline const_reference operator[](size_type index) const noexcept
         {
             assert(index < MAXSIZE);
             return m_elements[index];
@@ -144,11 +146,11 @@ namespace playrho
         /// @details This is the number of elements that have been added to this collection.
         /// @return Value between 0 and the maximum size for this collection.
         /// @sa max_size().
-        constexpr size_type size() const noexcept { return m_size; }
+        PLAYRHO_CONSTEXPR inline size_type size() const noexcept { return m_size; }
         
         /// Gets the maximum size that this collection can be.
         /// @details This is the maximum number of elements that can be contained in this collection.
-        constexpr size_type max_size() const noexcept { return MAXSIZE; }
+        PLAYRHO_CONSTEXPR inline size_type max_size() const noexcept { return MAXSIZE; }
 
         auto data() const noexcept { return m_elements.data(); }
 

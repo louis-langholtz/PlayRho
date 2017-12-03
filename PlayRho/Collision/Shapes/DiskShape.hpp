@@ -41,7 +41,7 @@ class DiskShape : public Shape
 public:
     
     /// @brief Gets the default radius.
-    static constexpr Length GetDefaultRadius() noexcept
+    static PLAYRHO_CONSTEXPR inline Length GetDefaultRadius() noexcept
     {
         return DefaultLinearSlop * 2;
     }
@@ -49,13 +49,13 @@ public:
     /// @brief Configuration data for disk shapes.
     struct Conf: public ShapeDefBuilder<Conf>
     {
-        constexpr Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultRadius())}
+        PLAYRHO_CONSTEXPR inline Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultRadius())}
         {
             // Intentionally empty.
         }
         
         /// @brief Uses the given value as the location.
-        constexpr Conf& UseLocation(Length2 value) noexcept
+        PLAYRHO_CONSTEXPR inline Conf& UseLocation(Length2 value) noexcept
         {
             location = value;
             return *this;
@@ -66,7 +66,7 @@ public:
     };
 
     /// @brief Gets the default configuration.
-    static constexpr Conf GetDefaultConf() noexcept;
+    static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept;
 
     /// Initializing constructor.
     explicit DiskShape(const Conf& conf = GetDefaultConf()) noexcept:
@@ -129,7 +129,7 @@ private:
     Length2 m_location = Length2{};
 };
 
-constexpr DiskShape::Conf DiskShape::GetDefaultConf() noexcept
+PLAYRHO_CONSTEXPR inline DiskShape::Conf DiskShape::GetDefaultConf() noexcept
 {
     return Conf{};
 }

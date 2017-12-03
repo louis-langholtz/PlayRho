@@ -42,7 +42,7 @@ struct WheelJointDef : public JointBuilder<WheelJointDef>
     /// @brief Super type.
     using super = JointBuilder<WheelJointDef>;
     
-    constexpr WheelJointDef() noexcept: super{JointType::Wheel} {}
+    PLAYRHO_CONSTEXPR inline WheelJointDef() noexcept: super{JointType::Wheel} {}
     
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
@@ -50,19 +50,19 @@ struct WheelJointDef : public JointBuilder<WheelJointDef>
                   const UnitVec2 axis) noexcept;
     
     /// @brief Uses the given enable motor state value.
-    constexpr WheelJointDef& UseEnableMotor(bool v) noexcept;
+    PLAYRHO_CONSTEXPR inline WheelJointDef& UseEnableMotor(bool v) noexcept;
     
     /// @brief Uses the given max motor toque value.
-    constexpr WheelJointDef& UseMaxMotorTorque(Torque v) noexcept;
+    PLAYRHO_CONSTEXPR inline WheelJointDef& UseMaxMotorTorque(Torque v) noexcept;
     
     /// @brief Uses the given motor speed value.
-    constexpr WheelJointDef& UseMotorSpeed(AngularVelocity v) noexcept;
+    PLAYRHO_CONSTEXPR inline WheelJointDef& UseMotorSpeed(AngularVelocity v) noexcept;
     
     /// @brief Uses the given frequency value.
-    constexpr WheelJointDef& UseFrequency(Frequency v) noexcept;
+    PLAYRHO_CONSTEXPR inline WheelJointDef& UseFrequency(Frequency v) noexcept;
     
     /// @brief Uses the given damping ratio value.
-    constexpr WheelJointDef& UseDampingRatio(Real v) noexcept;
+    PLAYRHO_CONSTEXPR inline WheelJointDef& UseDampingRatio(Real v) noexcept;
     
     /// The local anchor point relative to bodyA's origin.
     Length2 localAnchorA = Length2{};
@@ -89,31 +89,31 @@ struct WheelJointDef : public JointBuilder<WheelJointDef>
     Real dampingRatio = 0.7f;
 };
 
-constexpr WheelJointDef& WheelJointDef::UseEnableMotor(bool v) noexcept
+PLAYRHO_CONSTEXPR inline WheelJointDef& WheelJointDef::UseEnableMotor(bool v) noexcept
 {
     enableMotor = v;
     return *this;
 }
 
-constexpr WheelJointDef& WheelJointDef::UseMaxMotorTorque(Torque v) noexcept
+PLAYRHO_CONSTEXPR inline WheelJointDef& WheelJointDef::UseMaxMotorTorque(Torque v) noexcept
 {
     maxMotorTorque = v;
     return *this;
 }
 
-constexpr WheelJointDef& WheelJointDef::UseMotorSpeed(AngularVelocity v) noexcept
+PLAYRHO_CONSTEXPR inline WheelJointDef& WheelJointDef::UseMotorSpeed(AngularVelocity v) noexcept
 {
     motorSpeed = v;
     return *this;
 }
 
-constexpr WheelJointDef& WheelJointDef::UseFrequency(Frequency v) noexcept
+PLAYRHO_CONSTEXPR inline WheelJointDef& WheelJointDef::UseFrequency(Frequency v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-constexpr WheelJointDef& WheelJointDef::UseDampingRatio(Real v) noexcept
+PLAYRHO_CONSTEXPR inline WheelJointDef& WheelJointDef::UseDampingRatio(Real v) noexcept
 {
     dampingRatio = v;
     return *this;

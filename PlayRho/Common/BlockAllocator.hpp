@@ -39,16 +39,16 @@ namespace playrho {
         using size_type = std::size_t;
         
         /// @brief Chunk size.
-        static constexpr auto ChunkSize = size_type{16 * 1024};
+        static PLAYRHO_CONSTEXPR const auto ChunkSize = size_type{16 * 1024};
         
         /// @brief Max block size (before using external allocator).
-        static constexpr auto MaxBlockSize = size_type{640};
+        static PLAYRHO_CONSTEXPR const auto MaxBlockSize = size_type{640};
 
         /// @brief Block sizes.
-        static constexpr auto BlockSizes = size_type{14};
+        static PLAYRHO_CONSTEXPR const auto BlockSizes = size_type{14};
         
         /// @brief Chunk array increment.
-        static constexpr auto ChunkArrayIncrement = size_type{128};
+        static PLAYRHO_CONSTEXPR const auto ChunkArrayIncrement = size_type{128};
         
         BlockAllocator();
         
@@ -120,7 +120,7 @@ namespace playrho {
         BlockDeallocator() = default;
 
         /// @brief Initializing constructor.
-        constexpr BlockDeallocator(BlockAllocator* a, size_type n) noexcept:
+        PLAYRHO_CONSTEXPR inline BlockDeallocator(BlockAllocator* a, size_type n) noexcept:
             allocator{a}, nelem{n}
         {
             // Intentionally empty.

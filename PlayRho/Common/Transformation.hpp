@@ -45,26 +45,26 @@ namespace playrho
     };
     
     /// @brief Identity transformation value.
-    constexpr auto Transform_identity = Transformation{Length2{0_m, 0_m}, UnitVec2::GetRight()};
+    PLAYRHO_CONSTEXPR const auto Transform_identity = Transformation{Length2{0_m, 0_m}, UnitVec2::GetRight()};
     
     /// @brief Determines if the given value is valid.
     /// @relatedalso Transformation
     template <>
-    constexpr inline bool IsValid(const Transformation& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const Transformation& value) noexcept
     {
         return IsValid(value.p) && IsValid(value.q);
     }
     
     /// @brief Equality operator.
     /// @relatedalso Transformation
-    constexpr inline bool operator== (Transformation lhs, Transformation rhs) noexcept
+    PLAYRHO_CONSTEXPR inline bool operator== (Transformation lhs, Transformation rhs) noexcept
     {
         return (lhs.p == rhs.p) && (lhs.q == rhs.q);
     }
     
     /// @brief Inequality operator.
     /// @relatedalso Transformation
-    constexpr inline bool operator!= (Transformation lhs, Transformation rhs) noexcept
+    PLAYRHO_CONSTEXPR inline bool operator!= (Transformation lhs, Transformation rhs) noexcept
     {
         return (lhs.p != rhs.p) || (lhs.q != rhs.q);
     }

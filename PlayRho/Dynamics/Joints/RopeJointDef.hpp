@@ -39,17 +39,17 @@ struct RopeJointDef : public JointBuilder<RopeJointDef>
     /// @brief Super type.
     using super = JointBuilder<RopeJointDef>;
     
-    constexpr RopeJointDef() noexcept: super{JointType::Rope} {}
+    PLAYRHO_CONSTEXPR inline RopeJointDef() noexcept: super{JointType::Rope} {}
     
     /// @brief Initializing constructor.
-    constexpr RopeJointDef(Body* bodyA, Body* bodyB) noexcept:
+    PLAYRHO_CONSTEXPR inline RopeJointDef(Body* bodyA, Body* bodyB) noexcept:
         super{super{JointType::Rope}.UseBodyA(bodyA).UseBodyB(bodyB)}
     {
         // Intentionally empty.
     }
     
     /// @brief Uses the given max length value.
-    constexpr RopeJointDef& UseMaxLength(Length v) noexcept;
+    PLAYRHO_CONSTEXPR inline RopeJointDef& UseMaxLength(Length v) noexcept;
     
     /// The local anchor point relative to bodyA's origin.
     Length2 localAnchorA = Length2{-1_m, 0_m};
@@ -61,7 +61,7 @@ struct RopeJointDef : public JointBuilder<RopeJointDef>
     Length maxLength = 0_m;
 };
 
-constexpr RopeJointDef& RopeJointDef::UseMaxLength(Length v) noexcept
+PLAYRHO_CONSTEXPR inline RopeJointDef& RopeJointDef::UseMaxLength(Length v) noexcept
 {
     maxLength = v;
     return *this;

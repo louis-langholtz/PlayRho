@@ -1208,9 +1208,9 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
 TEST(World, HeavyOnLight)
 {
-    constexpr auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
-    constexpr auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
-    constexpr auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
+    PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
+    PLAYRHO_CONSTEXPR const auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
+    PLAYRHO_CONSTEXPR const auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
 
     const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
     const auto upperBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
@@ -2002,13 +2002,13 @@ TEST(World, CollidingDynamicBodies)
 
 TEST(World, TilesComesToRest)
 {
-    constexpr auto LinearSlop = Meter / 1000;
-    constexpr auto AngularSlop = (Pi * 2 * 1_rad) / 180;
-    constexpr auto VertexRadius = LinearSlop * 2;
+    PLAYRHO_CONSTEXPR const auto LinearSlop = Meter / 1000;
+    PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * 2 * 1_rad) / 180;
+    PLAYRHO_CONSTEXPR const auto VertexRadius = LinearSlop * 2;
     const auto conf = PolygonShape::Conf{}.UseVertexRadius(VertexRadius);
     const auto m_world = std::make_unique<World>(WorldDef{}.UseMinVertexRadius(VertexRadius));
     
-    constexpr auto e_count = 36;
+    PLAYRHO_CONSTEXPR const auto e_count = 36;
     
     {
         const auto a = Real{0.5f};
@@ -2364,9 +2364,9 @@ TEST(World, TilesComesToRest)
 
 TEST(World, SpeedingBulletBallWontTunnel)
 {
-    constexpr auto LinearSlop = playrho::Meter / playrho::Real(1000);
-    constexpr auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
-    constexpr auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
+    PLAYRHO_CONSTEXPR const auto LinearSlop = playrho::Meter / playrho::Real(1000);
+    PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
+    PLAYRHO_CONSTEXPR const auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
     
     World world{WorldDef{}.UseGravity(LinearAcceleration2{}).UseMinVertexRadius(VertexRadius)};
 
@@ -2636,7 +2636,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         ASSERT_NE(ball_fixture, nullptr);
     }
 
-    constexpr unsigned numBodies = 1;
+    PLAYRHO_CONSTEXPR const unsigned numBodies = 1;
     Length2 last_opos[numBodies];
     Body *bodies[numBodies];
     for (auto i = decltype(numBodies){0}; i < numBodies; ++i)

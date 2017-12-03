@@ -37,7 +37,7 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     /// @brief Super type.
     using super = JointBuilder<MotorJointDef>;
     
-    constexpr MotorJointDef() noexcept: super{JointType::Motor} {}
+    PLAYRHO_CONSTEXPR inline MotorJointDef() noexcept: super{JointType::Motor} {}
     
     /// @brief Initialize the bodies and offsets using the current transforms.
     MotorJointDef(NonNull<Body*> bodyA, NonNull<Body*> bodyB) noexcept;

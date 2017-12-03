@@ -44,10 +44,10 @@ namespace playrho {
         using VertexCounter = std::remove_const<decltype(MaxShapeVertices)>::type;
         
         /// @brief Invalid vertex.
-        static constexpr auto InvalidVertex = static_cast<VertexCounter>(-1);
+        static PLAYRHO_CONSTEXPR const auto InvalidVertex = static_cast<VertexCounter>(-1);
         
         /// @brief Gets the default vertex radius for the MultiShape.
-        static constexpr Length GetDefaultVertexRadius() noexcept
+        static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
         {
             return DefaultLinearSlop * Real{2};
         }
@@ -55,14 +55,14 @@ namespace playrho {
         /// @brief Configuration data for multi-shape shapes.
         struct Conf: public ShapeDefBuilder<Conf>
         {
-            constexpr Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+            PLAYRHO_CONSTEXPR inline Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
             {
                 // Intentionally empty.
             }
         };
         
         /// @brief Gets the default configuration for a MultiShape.
-        static constexpr Conf GetDefaultConf() noexcept
+        static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept
         {
             return Conf{};
         }

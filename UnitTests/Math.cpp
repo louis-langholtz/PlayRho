@@ -373,16 +373,6 @@ TEST(Math, ComputeCentroidCenteredR1)
     EXPECT_EQ(average, center);
 }
 
-template <typename T>
-struct Results {
-    constexpr static auto expected_ctr = Vec2{0,0};
-};
-
-template <>
-struct Results<Fixed32> {
-    constexpr static auto expected_ctr = Vec2{0,0};
-};
-
 TEST(Math, ComputeCentroidCentered0R1000)
 {
     const auto hx = Real(1000);
@@ -536,7 +526,7 @@ TEST(Math, NextPowerOfTwo)
     EXPECT_EQ(NextPowerOfTwo(15u), 16u);
     EXPECT_EQ(NextPowerOfTwo(16u), 32u);
 
-    constexpr auto max = std::numeric_limits<std::uint32_t>::max() / 512;
+    PLAYRHO_CONSTEXPR const auto max = std::numeric_limits<std::uint32_t>::max() / 512;
     for (auto i = decltype(max){0}; i < max; ++i)
     {
         const auto next = std::pow(2, std::ceil(std::log(i + 1)/std::log(2)));
@@ -651,7 +641,7 @@ struct Coords {
 #if 0
 TEST(Math, LengthFasterThanHypot)
 {
-    constexpr auto iterations = unsigned(5000000);
+    PLAYRHO_CONSTEXPR inline auto iterations = unsigned(5000000);
     
     std::chrono::duration<double> elapsed_secs_length;
     std::chrono::duration<double> elapsed_secs_hypot;

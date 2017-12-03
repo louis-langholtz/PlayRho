@@ -23,6 +23,7 @@
 /// @file
 /// Declarations of the Filter struct and any free functions associated with it.
 
+#include <PlayRho/Defines.hpp>
 #include <cstdint>
 
 namespace playrho {
@@ -61,7 +62,7 @@ namespace playrho {
     
     /// @brief Equality operator.
     /// @relatedalso Filter
-    constexpr bool operator== (const Filter lhs, const Filter rhs) noexcept
+    PLAYRHO_CONSTEXPR inline bool operator== (const Filter lhs, const Filter rhs) noexcept
     {
         return lhs.categoryBits == rhs.categoryBits
             && lhs.maskBits == rhs.maskBits
@@ -70,7 +71,7 @@ namespace playrho {
 
     /// @brief Inequality operator.
     /// @relatedalso Filter
-    constexpr bool operator!= (const Filter lhs, const Filter rhs) noexcept
+    PLAYRHO_CONSTEXPR inline bool operator!= (const Filter lhs, const Filter rhs) noexcept
     {
         return !(lhs == rhs);
     }
