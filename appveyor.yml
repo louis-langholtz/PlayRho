@@ -40,11 +40,15 @@ cache:
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 # Install section for installing stuff.
+#
 # For graphiz info, see: https://chocolatey.org/packages/Graphviz
+# Seems the November 19, 2017 update broke the use of the 'dot' program.
+#
 # For graphviz.portable info, see: https://chocolatey.org/packages/graphviz.portable
+# Unfortunately, as of December 2, 2017, "the install of graphviz.portable was not successful".
 install:
   - if "%platform%" equ "noarch" choco install doxygen.portable
-  - if "%platform%" equ "noarch" choco install graphviz.portable
+  - if "%platform%" equ "noarch" choco install graphviz
   - if "%platform%" neq "noarch" cmake --version
   - if "%platform%" neq "noarch" git submodule update --init --recursive
   - if "%platform%" equ "x64" vcpkg install glew:x64-windows-static
