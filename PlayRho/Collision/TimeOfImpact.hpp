@@ -84,6 +84,9 @@ namespace playrho {
         Length targetDepth = DefaultLinearSlop * Real{3};
 
         /// @brief Tolerance.
+        /// @details Provides a +/- range from the target depth that defines a minimum and
+        ///   maximum target depth within which inclusively, time of impact calculating code
+        ///   is expected to return a "touching" status.
         /// @note Use the default value unless you really know what you're doing.
         /// @note Use 0 to require a TOI at exactly the target depth. This is ill-advised.
         NonNegative<Length> tolerance = NonNegative<Length>{DefaultLinearSlop / Real{4}};
@@ -189,6 +192,9 @@ namespace playrho {
             e_unknown,
             
             /// @brief Touching.
+            /// @details Indicates that the returned time of impact for two convex polygons
+            ///   is for a time at which the two polygons are within the minimum and maximum
+            ///   target range inclusively.
             /// @note This is a desirable result.
             /// @note Time of impact is the time when the two convex polygons "touch".
             e_touching,
@@ -197,12 +203,16 @@ namespace playrho {
             /// @details Indicates that the two convex polygons never actually collide
             ///   during their defined sweeps.
             /// @note This is a desirable result.
-            /// @note Time of impact should be 1.
+            /// @note Time of impact in this case is <code>tMax</code> (which is typically 1).
             e_separated,
             
             /// @brief Overlapped.
+            /// @details Indicates that the two convex polygons are closer to each other
+            ///   at the returned time than the target depth range allows for.
             /// @note Can happen if total radius of the two convex polygons is too small.
-            /// @note Time of impact is the time when the two convex polygons collide.
+            /// @note Can happen if the tolerance is too low.
+            /// @note Time of impact is the time when the two convex polygons have already
+            ///   collided too much.
             e_overlapped,
 
             /// @brief Max root iterations.

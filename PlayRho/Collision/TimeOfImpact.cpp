@@ -121,8 +121,8 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             return TOIOutput{t1, stats, TOIOutput::e_notFinite};
         }
 #endif
-        // If the shapes aren't separated, give up on continuous collision.
-        if (distSquared <= minTargetSquared)
+        // If shapes closer at time t1 than min-target squared, bail as overlapped.
+        if (distSquared < minTargetSquared)
         {
             /// XXX maybe should return TOIOutput{t1, stats, TOIOutput::e_belowMinTarget}?
             return TOIOutput{t1, stats, TOIOutput::e_overlapped};
@@ -130,6 +130,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
         if (distSquared <= maxTargetSquared) // Victory!
         {
+            // The two convex polygons are within the target range of each other at time t1!
             return TOIOutput{t1, stats, TOIOutput::e_touching};
         }
 
@@ -192,7 +193,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                 break;
             }
 
-            // From here on, t2MinSeparation.distance is < minTarget.
+            // From here on t2MinSeparation.distance is < minTarget; i.e. at t2, shapes too close.
 
             // Compute the initial separation of the witness points.
             const auto t1EvaluatedDistance = fcn.Evaluate(t2MinSeparation.indexPair, t1xfA, t1xfB);
