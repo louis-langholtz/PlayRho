@@ -329,6 +329,157 @@ TEST(TimeOfImpact, CirclesPassingParSepPathsDontCollide)
     }
 }
 
+TEST(TimeOfImpact, CirclesExactlyTouchingAtStart)
+{
+    const auto radius = 1_m;
+    
+    const Length2 circleVertices[] = {Length2{}};
+    const UnitVec2 circleNormals[] = {UnitVec2{}};
+    const auto circle = DistanceProxy{radius, 1, circleVertices, circleNormals};
+    
+    const auto circleSweep0 = Sweep{
+        Position{Length2{-1_m, 0_m}, 0_deg}
+    };
+    const auto circleSweep1 = Sweep{
+        Position{Length2{+1_m, 0_m}, 0_deg}
+    };
+    
+    const auto slop = 0_m;
+    const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3).UseTolerance(slop / 4);
+    const auto output = GetToiViaSat(circle, circleSweep0, circle, circleSweep1, limits);
+    
+    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.001);
+    EXPECT_EQ(output.stats.toi_iters, 1);
+}
+
+TEST(TimeOfImpact, EdgeCircleExactlyTouchingAtStart)
+{
+    const auto radius = 1_m;
+    
+    const auto v0 = Length2{-1_m, 0_m};
+    const auto v1 = Length2{+1_m, 0_m};
+    const Length2 edgeVertices[] = {v0, v1};
+    const auto n0 = GetUnitVector(v1 - v0);
+    const auto n1 = -n0;
+    const UnitVec2 edgeNormals[] = {n0, n1};
+    const auto edge = DistanceProxy{radius, 2, edgeVertices, edgeNormals};
+    
+    const Length2 circleVertices[] = {Length2{}};
+    const UnitVec2 circleNormals[] = {UnitVec2{}};
+    const auto circle = DistanceProxy{radius, 1, circleVertices, circleNormals};
+    
+    const auto edgeSweep = Sweep{
+        Position{Length2{-1_m, 0_m}, 0_deg}
+    };
+    const auto circleSweep = Sweep{
+        Position{Length2{radius * 2, 0_m}, 0_deg}
+    };
+    
+    const auto slop = 0_m;
+    const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3).UseTolerance(slop / 4);
+    const auto output = GetToiViaSat(edge, edgeSweep, circle, circleSweep, limits);
+    
+    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    EXPECT_NEAR(static_cast<double>(output.time), 0.0, 0.001);
+    EXPECT_EQ(output.stats.toi_iters, 1);
+}
+
+TEST(TimeOfImpact, EdgeCircleTolerantTouchingAsRounded)
+{
+    // This test will fail if the TOI code isn't using rounded radius of the edge end
+    const auto radius = 1_m;
+    
+    const auto v0 = Length2{-1_m, 0_m};
+    const auto v1 = Length2{+1_m, 0_m};
+    const Length2 edgeVertices[] = {v0, v1};
+    const auto n0 = GetUnitVector(v1 - v0);
+    const auto n1 = -n0;
+    const UnitVec2 edgeNormals[] = {n0, n1};
+    const auto edge = DistanceProxy{radius, 2, edgeVertices, edgeNormals};
+    
+    const Length2 circleVertices[] = {Length2{}};
+    const UnitVec2 circleNormals[] = {UnitVec2{}};
+    const auto circle = DistanceProxy{radius, 1, circleVertices, circleNormals};
+    
+    const auto edgeSweep = Sweep{
+        Position{Length2{-1_m, 0_m}, 0_deg}
+    };
+    const auto circleSweep = Sweep{
+        Position{Length2{2_m, 1_m}, 0_deg},
+        Position{Length2{1.5_m, 1_m}, 0_deg}
+    };
+    
+    const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0_m).UseTolerance(0.001_m);
+    const auto output = GetToiViaSat(edge, edgeSweep, circle, circleSweep, limits);
+    
+    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    EXPECT_NEAR(static_cast<double>(output.time), 0.53589820861816406, 0.53589820861816406 / 1000);
+    EXPECT_EQ(output.stats.toi_iters, 3);
+}
+
+TEST(TimeOfImpact, EdgeEdgeTolerantTouchingAsRounded)
+{
+    // This test will fail if the TOI code isn't using rounded radius of the edge end
+    const auto radius = 1_m;
+    
+    const auto v0 = Length2{-1_m, 0_m};
+    const auto v1 = Length2{+1_m, 0_m};
+    const Length2 edgeVertices[] = {v0, v1};
+    const auto n0 = GetUnitVector(v1 - v0);
+    const auto n1 = -n0;
+    const UnitVec2 edgeNormals[] = {n0, n1};
+    const auto edge = DistanceProxy{radius, 2, edgeVertices, edgeNormals};
+    
+    const auto edgeSweep0 = Sweep{
+        Position{Length2{-1_m, 0_m}, 0_deg}
+    };
+    const auto edgeSweep1 = Sweep{
+        Position{Length2{3_m, 1_m}, 0_deg},
+        Position{Length2{2.5_m, 1_m}, 0_deg}
+    };
+    
+    const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(0_m).UseTolerance(0.001_m);
+    const auto output = GetToiViaSat(edge, edgeSweep0, edge, edgeSweep1, limits);
+    
+    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    EXPECT_NEAR(static_cast<double>(output.time), 0.53589820861816406, 0.53589820861816406 / 1000);
+    EXPECT_EQ(output.stats.toi_iters, 3);
+}
+
+TEST(TimeOfImpact, EdgeCircleSeparated)
+{
+    // This test will fail if the TOI code isn't using rounded radius of the line end
+    const auto radius = 1_m;
+
+    const auto v0 = Length2{-1_m, 0_m};
+    const auto v1 = Length2{+1_m, 0_m};
+    const Length2 edgeVertices[] = {v0, v1};
+    const auto n0 = GetUnitVector(v1 - v0);
+    const auto n1 = -n0;
+    const UnitVec2 edgeNormals[] = {n0, n1};
+    const auto edge = DistanceProxy{radius, 2, edgeVertices, edgeNormals};
+    
+    const Length2 circleVertices[] = {Length2{}};
+    const UnitVec2 circleNormals[] = {UnitVec2{}};
+    const auto circle = DistanceProxy{radius, 1, circleVertices, circleNormals};
+    
+    const auto edgeSweep = Sweep{
+        Position{Length2{-1_m, 0_m}, 0_deg}
+    };
+    const auto circleSweep = Sweep{
+        Position{Length2{radius * 2, 0.5_m}, 0_deg}
+    };
+    
+    const auto slop = 0_m;
+    const auto limits = ToiConf{}.UseTimeMax(1).UseTargetDepth(slop * 3).UseTolerance(slop / 4);
+    const auto output = GetToiViaSat(edge, edgeSweep, circle, circleSweep, limits);
+    
+    EXPECT_EQ(output.state, TOIOutput::e_separated);
+    EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
+    EXPECT_EQ(output.stats.toi_iters, 1);
+}
+
 TEST(TimeOfImpact, RodCircleMissAt360)
 {
     const auto slop = Real{0.001f};
