@@ -41,22 +41,6 @@ namespace playrho {
             e_faceB
         };
         
-        /// Separation finder data.
-        struct Data
-        {
-            /// Index pair.
-            /// @details Pair of indices of vertices for which distance is being returned for.
-            /// @note The <code>a</code> index in this pair will be <code>InvalidIndex</code> for
-            ///   face-A type separarion finders.
-            /// @note The <code>b</code> index in this pair will be <code>InvalidIndex</code> for
-            ///   face-B type separarion finders.
-            IndexPair indexPair;
-
-            /// Distance.
-            /// @details Distance of separation between vertices indexed by the index-pair.
-            Length distance;
-        };
-        
         /// Gets a separation finder for the given inputs.
         ///
         /// @warning Behavior is undefined if given less than one index pair or more than three.
@@ -75,7 +59,8 @@ namespace playrho {
         /// Finds the minimum separation.
         /// @return indexes of proxy A's and proxy B's vertices that have the minimum
         ///    distance between them and what that distance is.
-        Data FindMinSeparation(const Transformation& xfA, const Transformation& xfB) const
+        IndexPairDistance FindMinSeparation(const Transformation& xfA,
+                                            const Transformation& xfB) const
         {
             switch (m_type)
             {
@@ -86,7 +71,7 @@ namespace playrho {
             
             // Should never be reached
             assert(false);
-            return Data{IndexPair{IndexPair::InvalidIndex, IndexPair::InvalidIndex}, 0};
+            return IndexPairDistance{0, InvalidIndexPair};
         }
         
         /// Evaluates the separation of the identified proxy vertices at the given time factor.
@@ -98,13 +83,14 @@ namespace playrho {
         /// @return Separation distance which will be negative when the given transforms put the
         ///    vertices on the opposite sides of the separating axis.
         ///
-        Length Evaluate(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const
+        Length Evaluate(const Transformation& xfA, const Transformation& xfB,
+                        IndexPair indexPair) const
         {
             switch (m_type)
             {
-                case e_points: return EvaluateForPoints(indexPair, xfA, xfB);
-                case e_faceA: return EvaluateForFaceA(indexPair, xfA, xfB);
-                case e_faceB: return EvaluateForFaceB(indexPair, xfA, xfB);
+                case e_points: return EvaluateForPoints(xfA, xfB, indexPair);
+                case e_faceA: return EvaluateForFaceA(xfA, xfB, indexPair);
+                case e_faceB: return EvaluateForFaceB(xfA, xfB, indexPair);
                 default: break;
             }
             assert(false);
@@ -131,22 +117,28 @@ namespace playrho {
         }
         
         /// @brief Finds the minimum separation for points.
-        Data FindMinSeparationForPoints(const Transformation& xfA, const Transformation& xfB) const;
+        IndexPairDistance FindMinSeparationForPoints(const Transformation& xfA,
+                                                     const Transformation& xfB) const;
         
         /// @brief Finds the minimum separation for face A.
-        Data FindMinSeparationForFaceA(const Transformation& xfA, const Transformation& xfB) const;
+        IndexPairDistance FindMinSeparationForFaceA(const Transformation& xfA,
+                                                    const Transformation& xfB) const;
         
         /// @brief Finds the minimum separation for face B.
-        Data FindMinSeparationForFaceB(const Transformation& xfA, const Transformation& xfB) const;
+        IndexPairDistance FindMinSeparationForFaceB(const Transformation& xfA,
+                                                    const Transformation& xfB) const;
         
         /// @brief Evaluates for points.
-        Length EvaluateForPoints(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+        Length EvaluateForPoints(const Transformation& xfA, const Transformation& xfB,
+                                 IndexPair indexPair) const;
         
         /// @brief Evaluates for face A.
-        Length EvaluateForFaceA(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+        Length EvaluateForFaceA(const Transformation& xfA, const Transformation& xfB,
+                                IndexPair indexPair) const;
         
         /// @brief Evaluates for face B.
-        Length EvaluateForFaceB(IndexPair indexPair, const Transformation& xfA, const Transformation& xfB) const;
+        Length EvaluateForFaceB(const Transformation& xfA, const Transformation& xfB,
+                                IndexPair indexPair) const;
         
         const DistanceProxy& m_proxyA; ///< Distance proxy A.
         const DistanceProxy& m_proxyB; ///< Distance proxy B.

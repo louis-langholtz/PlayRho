@@ -196,7 +196,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             // From here on t2MinSeparation.distance is < minTarget; i.e. at t2, shapes too close.
 
             // Compute the initial separation of the witness points.
-            const auto t1EvaluatedDistance = fcn.Evaluate(t2MinSeparation.indexPair, t1xfA, t1xfB);
+            const auto t1EvaluatedDistance = fcn.Evaluate(t1xfA, t1xfB, t2MinSeparation.indices);
 
             // Check for initial overlap. This might happen if the root finder
             // runs out of iterations.
@@ -262,7 +262,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
                 const auto txfA = GetTransformation(sweepA, t);
                 const auto txfB = GetTransformation(sweepB, t);
-                const auto s = fcn.Evaluate(t2MinSeparation.indexPair, txfA, txfB);
+                const auto s = fcn.Evaluate(txfA, txfB, t2MinSeparation.indices);
 
                 if (Abs(s - target) <= conf.tolerance) // Root finding succeeded!
                 {

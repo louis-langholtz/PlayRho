@@ -77,11 +77,11 @@ TEST(SeparationFinder, BehavesAsExpected)
     {
         // Prepare input for distance query.
         const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
-        const auto distance = Sqrt(GetMagnitudeSquared(witnessPoints.a - witnessPoints.b));
+        const auto distance = Sqrt(GetMagnitudeSquared(witnessPoints.first - witnessPoints.second));
 
         const auto minSeparation = fcn.FindMinSeparation(xfA, xfB);
 
-        EXPECT_EQ(minSeparation.indexPair, (IndexPair{IndexPair::InvalidIndex, 2}));
+        EXPECT_EQ(minSeparation.indices, (IndexPair{InvalidVertex, 2}));
         EXPECT_LT(minSeparation.distance, last_s);
         if (minSeparation.distance > 0_m)
         {
@@ -99,7 +99,7 @@ TEST(SeparationFinder, BehavesAsExpected)
         }
         last_min_sep = minSeparation.distance;
         
-        const auto s = fcn.Evaluate(minSeparation.indexPair, xfA, xfB);
+        const auto s = fcn.Evaluate(xfA, xfB, minSeparation.indices);
         EXPECT_EQ(s, minSeparation.distance);
         if (s >= 0_m)
         {

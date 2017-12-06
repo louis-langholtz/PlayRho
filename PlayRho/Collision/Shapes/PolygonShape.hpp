@@ -30,7 +30,7 @@ namespace playrho {
 
 /// @brief Polygon shape.
 /// @details A convex polygon. The interior of the polygon is to the left of each edge.
-///   Polygons have a maximum number of vertices equal to MaxShapeVertices.
+///   Polygons maximum number of vertices is defined by <code>MaxShapeVertices</code>.
 ///   In most cases you should not need many vertices for a convex polygon.
 /// @image html convex_concave.gif
 /// @note This data structure is 64-bytes large (with 4-byte Real).
@@ -38,16 +38,6 @@ namespace playrho {
 class PolygonShape : public Shape
 {
 public:
-
-    /// Vertex count type.
-    ///
-    /// @note This type must not support more than 255 vertices as that would conflict
-    ///   with the <code>ContactFeature::Index</code> type.
-    ///
-    using VertexCounter = std::remove_const<decltype(MaxShapeVertices)>::type;
-
-    /// @brief Invalid vertex.
-    static PLAYRHO_CONSTEXPR const auto InvalidVertex = static_cast<VertexCounter>(-1);
 
     /// @brief Gets the default vertex radius for the PolygonShape.
     static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
@@ -92,8 +82,8 @@ public:
     /// @param conf Configuration data for the shape.
     explicit PolygonShape(Length hx, Length hy, const Conf& conf = GetDefaultConf()) noexcept;
     
-    /// Creates a convex hull from the given array of local points.
-    /// The size of the span must be in the range [1, MaxShapeVertices].
+    /// @brief Creates a convex hull from the given array of local points.
+    /// @note The size of the span must be in the range [1, MaxShapeVertices].
     /// @warning the points may be re-ordered, even if they form a convex polygon
     /// @warning collinear points are handled but not removed. Collinear points
     /// may lead to poor stacking behavior.
@@ -197,11 +187,11 @@ inline DistanceProxy PolygonShape::GetChild(ChildCounter index) const
         throw InvalidArgument("only index of 0 is supported");
     }
     return DistanceProxy{GetVertexRadius(),
-        static_cast<DistanceProxy::size_type>(m_vertices.size()), m_vertices.data(),
+        static_cast<VertexCounter>(m_vertices.size()), m_vertices.data(),
         m_normals.data()};
 }
 
-inline PolygonShape::VertexCounter PolygonShape::GetVertexCount() const noexcept
+inline VertexCounter PolygonShape::GetVertexCount() const noexcept
 {
     return static_cast<VertexCounter>(m_vertices.size());
 }
@@ -224,7 +214,7 @@ inline UnitVec2 PolygonShape::GetNormal(VertexCounter index) const
 /// @note This must not be called for shapes with less than 2 vertices.
 /// @warning Behavior is undefined if called for a shape with less than 2 vertices.
 /// @relatedalso PolygonShape
-Length2 GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index);
+Length2 GetEdge(const PolygonShape& shape, VertexCounter index);
 
 /// Validate convexity of the given shape.
 /// @note This is a time consuming operation.

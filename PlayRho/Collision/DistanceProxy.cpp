@@ -37,11 +37,11 @@ bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
     return std::equal(std::cbegin(lhr), std::cend(lhr), std::cbegin(rhr), std::cend(rhr));
 }
 
-DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept
+VertexCounter GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept
 {
-    auto index = DistanceProxy::InvalidIndex; ///< Index of vertex that when dotted with d has the max value.
+    auto index = InvalidVertex; ///< Index of vertex that when dotted with d has the max value.
     auto maxValue = -std::numeric_limits<Length>::infinity(); ///< Max dot value.
-    auto i = DistanceProxy::size_type{0};
+    auto i = VertexCounter{0};
     for (const auto& vertex: proxy.GetVertices())
     {
         const auto value = Dot(vertex, d);

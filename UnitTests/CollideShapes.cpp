@@ -558,39 +558,39 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction1)
     switch (sizeof(Real))
     {
         case 4:
-            EXPECT_EQ(maxSep01_4x4.index1, decltype(maxSep01_4x4.index1){0}); // v0 of shape0
-            EXPECT_EQ(maxSep01_NxN.index1, decltype(maxSep01_NxN.index1){0}); // v0 of shape0
-            EXPECT_EQ(maxSep01_nos.index1, decltype(maxSep01_nos.index1){0}); // v0 of shape0
-            EXPECT_EQ(maxSep01_4x4.index2, decltype(maxSep01_4x4.index2){3}); // v3 of shape1
-            EXPECT_EQ(maxSep01_NxN.index2, decltype(maxSep01_NxN.index2){3}); // v3 of shape1
-            EXPECT_EQ(maxSep01_nos.index2, decltype(maxSep01_nos.index2){3}); // v3 of shape1
+            EXPECT_EQ(maxSep01_4x4.indices.first, decltype(maxSep01_4x4.indices.first){0}); // v0 of shape0
+            EXPECT_EQ(maxSep01_NxN.indices.first, decltype(maxSep01_NxN.indices.first){0}); // v0 of shape0
+            EXPECT_EQ(maxSep01_nos.indices.first, decltype(maxSep01_nos.indices.first){0}); // v0 of shape0
+            EXPECT_EQ(maxSep01_4x4.indices.second, decltype(maxSep01_4x4.indices.second){3}); // v3 of shape1
+            EXPECT_EQ(maxSep01_NxN.indices.second, decltype(maxSep01_NxN.indices.second){3}); // v3 of shape1
+            EXPECT_EQ(maxSep01_nos.indices.second, decltype(maxSep01_nos.indices.second){3}); // v3 of shape1
             break;
         case 8:
-            EXPECT_EQ(maxSep01_4x4.index1, decltype(maxSep01_4x4.index1){1}); // v1 of shape0
-            EXPECT_EQ(maxSep01_NxN.index1, decltype(maxSep01_NxN.index1){1}); // v1 of shape0
-            EXPECT_EQ(maxSep01_nos.index1, decltype(maxSep01_nos.index1){1}); // v1 of shape0
-            EXPECT_EQ(maxSep01_4x4.index2, decltype(maxSep01_4x4.index1){0}); // v0 of shape1
-            EXPECT_EQ(maxSep01_NxN.index2, decltype(maxSep01_NxN.index1){0}); // v0 of shape1
-            EXPECT_EQ(maxSep01_nos.index2, decltype(maxSep01_nos.index2){0}); // v0 of shape1
+            EXPECT_EQ(maxSep01_4x4.indices.first, decltype(maxSep01_4x4.indices.first){1}); // v1 of shape0
+            EXPECT_EQ(maxSep01_NxN.indices.first, decltype(maxSep01_NxN.indices.first){1}); // v1 of shape0
+            EXPECT_EQ(maxSep01_nos.indices.first, decltype(maxSep01_nos.indices.first){1}); // v1 of shape0
+            EXPECT_EQ(maxSep01_4x4.indices.second, decltype(maxSep01_4x4.indices.first){0}); // v0 of shape1
+            EXPECT_EQ(maxSep01_NxN.indices.second, decltype(maxSep01_NxN.indices.first){0}); // v0 of shape1
+            EXPECT_EQ(maxSep01_nos.indices.second, decltype(maxSep01_nos.indices.second){0}); // v0 of shape1
             break;
     }
     
-    EXPECT_EQ(maxSep10_4x4.index1, decltype(maxSep10_4x4.index1){3}); // v3 of shape1
-    EXPECT_EQ(maxSep10_NxN.index1, decltype(maxSep10_NxN.index1){3}); // v3 of shape1
-    EXPECT_EQ(maxSep10_nos.index1, decltype(maxSep10_nos.index1){3}); // v3 of shape1
-    EXPECT_EQ(maxSep10_4x4.index2, decltype(maxSep10_4x4.index1){1}); // v1 of shape0
-    EXPECT_EQ(maxSep10_NxN.index2, decltype(maxSep10_NxN.index1){1}); // v1 of shape0
-    EXPECT_EQ(maxSep10_nos.index2, decltype(maxSep10_nos.index2){1}); // v1 of shape0
+    EXPECT_EQ(maxSep10_4x4.indices.first, decltype(maxSep10_4x4.indices.first){3}); // v3 of shape1
+    EXPECT_EQ(maxSep10_NxN.indices.first, decltype(maxSep10_NxN.indices.first){3}); // v3 of shape1
+    EXPECT_EQ(maxSep10_nos.indices.first, decltype(maxSep10_nos.indices.first){3}); // v3 of shape1
+    EXPECT_EQ(maxSep10_4x4.indices.second, decltype(maxSep10_4x4.indices.first){1}); // v1 of shape0
+    EXPECT_EQ(maxSep10_NxN.indices.second, decltype(maxSep10_NxN.indices.first){1}); // v1 of shape0
+    EXPECT_EQ(maxSep10_nos.indices.second, decltype(maxSep10_nos.indices.second){1}); // v1 of shape0
     
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)), -2.0, std::abs(-2.0) / 100);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_NxN.separation / Meter)), -2.0, std::abs(-2.0) / 100);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_nos.separation / Meter)), -2.0, std::abs(-2.0) / 100);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.distance / Meter)), -2.0, std::abs(-2.0) / 100);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_NxN.distance / Meter)), -2.0, std::abs(-2.0) / 100);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_nos.distance / Meter)), -2.0, std::abs(-2.0) / 100);
 
-    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.distance / Meter)),
                 -0.82842707633972168, std::abs(-0.82842707633972168) / 100);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep10_NxN.separation / Meter)),
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_NxN.distance / Meter)),
                 -0.82842707633972168, std::abs(-0.82842707633972168) / 100);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep10_nos.separation / Meter)),
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_nos.distance / Meter)),
                 -0.82842707633972168, std::abs(-0.82842707633972168) / 100);
 }
 
@@ -614,25 +614,25 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction2)
     const auto maxSep10_NxN = GetMaxSeparation(child0, xfm1, child0, xfm0, totalRadius);
     
     
-    EXPECT_EQ(maxSep01_4x4.index1, decltype(maxSep01_4x4.index1){1}); // v0 of shape0
-    EXPECT_EQ(maxSep01_4x4.index1, maxSep01_NxN.index1);
-    EXPECT_EQ(maxSep01_4x4.index2, decltype(maxSep01_4x4.index1){0}); // v3 of shape1
-    EXPECT_EQ(maxSep01_4x4.index2, maxSep01_NxN.index2);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
+    EXPECT_EQ(maxSep01_4x4.indices.first, decltype(maxSep01_4x4.indices.first){1}); // v0 of shape0
+    EXPECT_EQ(maxSep01_4x4.indices.first, maxSep01_NxN.indices.first);
+    EXPECT_EQ(maxSep01_4x4.indices.second, decltype(maxSep01_4x4.indices.first){0}); // v3 of shape1
+    EXPECT_EQ(maxSep01_4x4.indices.second, maxSep01_NxN.indices.second);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.distance / Meter)),
                 -2.0, 0.0);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.separation / Meter)),
-                static_cast<double>(Real(maxSep01_NxN.separation / Meter)),
-                std::abs(static_cast<double>(Real(maxSep01_4x4.separation / Meter)) / 1000000.0));
+    EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.distance / Meter)),
+                static_cast<double>(Real(maxSep01_NxN.distance / Meter)),
+                std::abs(static_cast<double>(Real(maxSep01_4x4.distance / Meter)) / 1000000.0));
     
-    EXPECT_EQ(maxSep10_4x4.index1, decltype(maxSep10_4x4.index1){3}); // v3 of shape1
-    EXPECT_EQ(maxSep10_4x4.index1, maxSep10_NxN.index1);
-    EXPECT_EQ(maxSep10_4x4.index2, decltype(maxSep10_4x4.index1){1}); // v1 of shape0
-    EXPECT_EQ(maxSep10_4x4.index2, maxSep10_NxN.index2);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
+    EXPECT_EQ(maxSep10_4x4.indices.first, decltype(maxSep10_4x4.indices.first){3}); // v3 of shape1
+    EXPECT_EQ(maxSep10_4x4.indices.first, maxSep10_NxN.indices.first);
+    EXPECT_EQ(maxSep10_4x4.indices.second, decltype(maxSep10_4x4.indices.first){1}); // v1 of shape0
+    EXPECT_EQ(maxSep10_4x4.indices.second, maxSep10_NxN.indices.second);
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.distance / Meter)),
                 -2.0, 0.0);
-    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.separation / Meter)),
-                static_cast<double>(Real(maxSep10_NxN.separation / Meter)),
-                std::abs(static_cast<double>(Real(maxSep10_4x4.separation / Meter)) / 1000000.0));
+    EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.distance / Meter)),
+                static_cast<double>(Real(maxSep10_NxN.distance / Meter)),
+                std::abs(static_cast<double>(Real(maxSep10_4x4.distance / Meter)) / 1000000.0));
 }
 
 TEST(CollideShapes, SquareCornerTouchingSquareFaceAbove)

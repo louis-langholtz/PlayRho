@@ -41,12 +41,6 @@ namespace {
 static PLAYRHO_CONSTEXPR inline auto k_errorTol = 1e-3_mps; ///< error tolerance
 #endif
 
-struct VelocityPair
-{
-    Velocity vel_a;
-    Velocity vel_b;
-};
-
 /// Impulse change.
 ///
 /// @details
@@ -99,8 +93,8 @@ VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2 impu
 Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2 newImpulses)
 {
     const auto delta_v = GetVelocityDelta(vc, newImpulses - GetNormalImpulses(vc));
-    vc.GetBodyA()->SetVelocity(vc.GetBodyA()->GetVelocity() + delta_v.vel_a);
-    vc.GetBodyB()->SetVelocity(vc.GetBodyB()->GetVelocity() + delta_v.vel_b);
+    vc.GetBodyA()->SetVelocity(vc.GetBodyA()->GetVelocity() + delta_v.first);
+    vc.GetBodyB()->SetVelocity(vc.GetBodyB()->GetVelocity() + delta_v.second);
     SetNormalImpulses(vc, newImpulses);
     return std::max(Abs(newImpulses[0]), Abs(newImpulses[1]));
 }

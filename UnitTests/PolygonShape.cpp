@@ -123,7 +123,7 @@ TEST(PolygonShape, BoxConstruction)
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
 
-    ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
+    ASSERT_EQ(shape.GetVertexCount(), VertexCounter(4));
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
 
@@ -149,7 +149,7 @@ TEST(PolygonShape, Copy)
     ASSERT_EQ(shape.GetCentroid(), (Length2{}));
     ASSERT_EQ(shape.GetChildCount(), ChildCounter(1));
     ASSERT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
-    ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
+    ASSERT_EQ(shape.GetVertexCount(), VertexCounter(4));
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     ASSERT_EQ(shape.GetVertex(0), Length2(hx, -hy)); // bottom right
@@ -169,7 +169,7 @@ TEST(PolygonShape, Copy)
     EXPECT_EQ(copy.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(copy), PolygonShape::GetDefaultVertexRadius());
     
-    ASSERT_EQ(copy.GetVertexCount(), PolygonShape::VertexCounter(4));
+    ASSERT_EQ(copy.GetVertexCount(), VertexCounter(4));
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     
@@ -193,7 +193,7 @@ TEST(PolygonShape, Translate)
     ASSERT_EQ(shape.GetCentroid(), (Length2{}));
     ASSERT_EQ(shape.GetChildCount(), ChildCounter(1));
     ASSERT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
-    ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
+    ASSERT_EQ(shape.GetVertexCount(), VertexCounter(4));
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     ASSERT_EQ(shape.GetVertex(0), Length2(hx, -hy)); // bottom right
@@ -213,7 +213,7 @@ TEST(PolygonShape, Translate)
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
 
-    ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
+    ASSERT_EQ(shape.GetVertexCount(), VertexCounter(4));
 
     EXPECT_EQ(shape.GetVertex(0), Length2(hx, -hy) + new_ctr); // bottom right
     EXPECT_EQ(shape.GetVertex(1), Length2(hx, hy) + new_ctr); // top right
@@ -236,7 +236,7 @@ TEST(PolygonShape, SetAsBox)
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
-    ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
+    ASSERT_EQ(shape.GetVertexCount(), VertexCounter(4));
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     
@@ -261,7 +261,7 @@ TEST(PolygonShape, SetAsZeroCenteredRotatedBox)
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
-    ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
+    ASSERT_EQ(shape.GetVertexCount(), VertexCounter(4));
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     
@@ -288,7 +288,7 @@ TEST(PolygonShape, SetAsCenteredBox)
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
-    ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
+    ASSERT_EQ(shape.GetVertexCount(), VertexCounter(4));
     
     // vertices go counter-clockwise from lowest right-most (and normals follow their edges)...
     
@@ -316,7 +316,7 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
-    ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(4));
+    ASSERT_EQ(shape.GetVertexCount(), VertexCounter(4));
     
     // vertices go counter-clockwise (and normals follow their edges)...
     
@@ -354,7 +354,7 @@ TEST(PolygonShape, SetPoints)
     };
     shape.Set(points);
     
-    ASSERT_EQ(shape.GetVertexCount(), PolygonShape::VertexCounter(5));
+    ASSERT_EQ(shape.GetVertexCount(), VertexCounter(5));
 
     // vertices go counter-clockwise from lowest right-most...
 
@@ -377,7 +377,7 @@ TEST(PolygonShape, CanSetTwoPoints)
     PolygonShape shape;
     shape.SetVertexRadius(vertexRadius);
     shape.Set(points);
-    EXPECT_EQ(shape.GetVertexCount(), static_cast<PolygonShape::VertexCounter>(points.size()));
+    EXPECT_EQ(shape.GetVertexCount(), static_cast<VertexCounter>(points.size()));
     EXPECT_EQ(shape.GetVertex(0), points[1]);
     EXPECT_EQ(shape.GetVertex(1), points[0]);
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(shape.GetNormal(0)))),
@@ -401,7 +401,7 @@ TEST(PolygonShape, CanSetOnePoint)
     PolygonShape shape;
     shape.SetVertexRadius(vertexRadius);
     shape.Set(points);
-    EXPECT_EQ(shape.GetVertexCount(), static_cast<PolygonShape::VertexCounter>(points.size()));
+    EXPECT_EQ(shape.GetVertexCount(), static_cast<VertexCounter>(points.size()));
     EXPECT_EQ(shape.GetVertex(0), points[0]);
     EXPECT_FALSE(IsValid(shape.GetNormal(0)));
     EXPECT_EQ(shape.GetCentroid(), points[0]);

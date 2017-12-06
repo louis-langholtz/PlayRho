@@ -43,6 +43,7 @@
 #include <queue>
 #include <atomic>
 #include <ctime>
+#include <map>
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/OptionalValue.hpp>
@@ -77,15 +78,15 @@ static playrho::UnitVec2 GetRandUnitVec2(playrho::Angle lo, playrho::Angle hi)
 }
 
 static playrho::Transformation
-GetRandTransformation(playrho::Transformation xfm0, playrho::Transformation xfm1)
+GetRandTransformation(playrho::Position pos0, playrho::Position pos1)
 {
-    const auto x0 = GetX(xfm0.p) / playrho::Meter;
-    const auto y0 = GetY(xfm0.p) / playrho::Meter;
-    const auto a0 = GetAngle(xfm0.q) / playrho::Radian;
+    const auto x0 = playrho::Real{GetX(pos0.linear) / playrho::Meter};
+    const auto y0 = playrho::Real{GetY(pos0.linear) / playrho::Meter};
+    const auto a0 = playrho::Real{pos0.angular / playrho::Radian};
 
-    const auto x1 = GetX(xfm1.p) / playrho::Meter;
-    const auto y1 = GetY(xfm1.p) / playrho::Meter;
-    const auto a1 = GetAngle(xfm1.q) / playrho::Radian;
+    const auto x1 = playrho::Real{GetX(pos1.linear) / playrho::Meter};
+    const auto y1 = playrho::Real{GetY(pos1.linear) / playrho::Meter};
+    const auto a1 = playrho::Real{pos1.angular / playrho::Radian};
     
     const auto x = Rand(x0, x1) * playrho::Meter;
     const auto y = Rand(y0, y1) * playrho::Meter;
@@ -137,9 +138,9 @@ GetRandUnitVec2Pair(playrho::Angle lo, playrho::Angle hi)
 }
 
 static std::pair<playrho::Transformation, playrho::Transformation>
-GetRandTransformationPair(playrho::Transformation xfm0, playrho::Transformation xfm1)
+GetRandTransformationPair(playrho::Position pos0, playrho::Position pos1)
 {
-    return std::make_pair(GetRandTransformation(xfm0, xfm1), GetRandTransformation(xfm0, xfm1));
+    return std::make_pair(GetRandTransformation(pos0, pos1), GetRandTransformation(pos0, pos1));
 }
 
 static std::tuple<float, float, float> RandTriplet(float lo, float hi)
@@ -215,13 +216,13 @@ GetRandUnitVec2Pairs(unsigned count, playrho::Angle lo, playrho::Angle hi)
 }
 
 static std::vector<std::pair<playrho::Transformation, playrho::Transformation>>
-GetRandTransformationPairs(unsigned count, playrho::Transformation xfm0, playrho::Transformation xfm1)
+GetRandTransformationPairs(unsigned count, playrho::Position pos0, playrho::Position pos1)
 {
     auto rands = std::vector<std::pair<playrho::Transformation, playrho::Transformation>>{};
     rands.reserve(count);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
-        rands.push_back(GetRandTransformationPair(xfm0, xfm1));
+        rands.push_back(GetRandTransformationPair(pos0, pos1));
     }
     return rands;
 }
@@ -1205,50 +1206,43 @@ static void AABB2D(benchmark::State& state)
 
 // ----
 
-static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
-{
-    const auto rot0 = playrho::Angle{playrho::Real{360.0f} * playrho::Degree};
-    const auto xfm0 = playrho::Transformation{
-        playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter),
-        playrho::UnitVec2::Get(rot0)
-    }; // bottom
+using TransformationPair = std::pair<playrho::Transformation, playrho::Transformation>;
+using TransformationPairs = std::vector<TransformationPair>;
 
-    const auto rot1 = playrho::Angle{playrho::Real{  0.0f} * playrho::Degree};
-    const auto xfm1 = playrho::Transformation{
+static TransformationPairs GetTransformationPairs(unsigned count)
+{
+    static std::map<unsigned,TransformationPairs> xfms;
+
+    constexpr auto pos0 = playrho::Position{
+        playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter),
+        playrho::Angle{playrho::Real{  0.0f} * playrho::Degree}
+    }; // bottom
+    
+    constexpr auto pos1 = playrho::Position{
         playrho::Vec2{0, +2} * (playrho::Real(1) * playrho::Meter),
-        playrho::UnitVec2::Get(rot1)
+        playrho::Angle{playrho::Real{360.0f} * playrho::Degree}
     }; // top
     
+    auto it = xfms.find(count);
+    if (it == xfms.end())
+    {
+        const auto result = xfms.insert(std::make_pair(count, GetRandTransformationPairs(count, pos0, pos1)));
+        it = result.first;
+    }
+    
+    return it->second;
+}
+
+static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
+{
     const auto dim = playrho::Real(2) * playrho::Meter;
     const auto shape0 = playrho::PolygonShape(dim, dim);
     const auto shape1 = playrho::PolygonShape(dim, dim);
     
-    // Rotate square A and put it below square B.
-    // In ASCII art terms:
-    //
-    //   +---4---+
-    //   |   |   |
-    //   | B 3   |
-    //   |   |   |
-    //   |   2   |
-    //   |   |   |
-    //   |   1   |
-    //   |  /+\  |
-    //   2-1-*-1-2
-    //    /  1  \
-    //   / A |   \
-    //  +    2    +
-    //   \   |   /
-    //    \  3  /
-    //     \ | /
-    //      \4/
-    //       +
-    
     const auto child0 = shape0.GetChild(0);
     const auto child1 = shape1.GetChild(0);
     
-    const auto vals = GetRandTransformationPairs(static_cast<unsigned>(state.range()),
-                                                 xfm0, xfm1);
+    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _: state)
     {
         for (const auto& val: vals)
@@ -1260,50 +1254,37 @@ static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
     }
 }
 
-static void MaxSepBetweenRel4x4(benchmark::State& state)
+static void MaxSepBetweenRelSquaresNoStopCached(benchmark::State& state)
 {
-    const auto rot0 = playrho::Angle{playrho::Real{360.0f} * playrho::Degree};
-    const auto xfm0 = playrho::Transformation{
-        playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter),
-        playrho::UnitVec2::Get(rot0)
-    }; // bottom
-    
-    const auto rot1 = playrho::Angle{playrho::Real{  0.0f} * playrho::Degree};
-    const auto xfm1 = playrho::Transformation{
-        playrho::Vec2{0, +2} * (playrho::Real(1) * playrho::Meter),
-        playrho::UnitVec2::Get(rot1)
-    }; // top
-    
     const auto dim = playrho::Real(2) * playrho::Meter;
     const auto shape0 = playrho::PolygonShape(dim, dim);
     const auto shape1 = playrho::PolygonShape(dim, dim);
     
-    // Rotate square A and put it below square B.
-    // In ASCII art terms:
-    //
-    //   +---4---+
-    //   |   |   |
-    //   | B 3   |
-    //   |   |   |
-    //   |   2   |
-    //   |   |   |
-    //   |   1   |
-    //   |  /+\  |
-    //   2-1-*-1-2
-    //    /  1  \
-    //   / A |   \
-    //  +    2    +
-    //   \   |   /
-    //    \  3  /
-    //     \ | /
-    //      \4/
-    //       +
+    const auto child0 = shape0.GetChild(0);
+    const auto child1 = shape1.GetChild(0);
+    
+    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto xf0 = val.first;
+            const auto xf1 = val.second;
+            benchmark::DoNotOptimize(playrho::GetMaxSeparationCached(child0, xf0, child1, xf1));
+        }
+    }
+}
+
+static void MaxSepBetweenRel4x4(benchmark::State& state)
+{
+    const auto dim = playrho::Real(2) * playrho::Meter;
+    const auto shape0 = playrho::PolygonShape(dim, dim);
+    const auto shape1 = playrho::PolygonShape(dim, dim);
     
     const auto child0 = shape0.GetChild(0);
     const auto child1 = shape1.GetChild(0);
     
-    const auto vals = GetRandTransformationPairs(static_cast<unsigned>(state.range()),
-                                                 xfm0, xfm1);
+    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _: state)
     {
         for (const auto& val: vals)
@@ -1317,51 +1298,15 @@ static void MaxSepBetweenRel4x4(benchmark::State& state)
 
 static void MaxSepBetweenRelSquares(benchmark::State& state)
 {
-    // Most concerned about cases where the two AABBs already overlap (when there's already
-    // a contact).
-    const auto rot0 = playrho::Angle{playrho::Real{360.0f} * playrho::Degree};
-    const auto xfm0 = playrho::Transformation{
-        playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter),
-        playrho::UnitVec2::Get(rot0)
-    }; // bottom
-    
-    const auto rot1 = playrho::Angle{playrho::Real{  0.0f} * playrho::Degree};
-    const auto xfm1 = playrho::Transformation{
-        playrho::Vec2{0, +2} * (playrho::Real(1) * playrho::Meter),
-        playrho::UnitVec2::Get(rot1)
-    }; // top
-
     const auto dim = playrho::Real(2) * playrho::Meter;
     const auto shape0 = playrho::PolygonShape(dim, dim);
     const auto shape1 = playrho::PolygonShape(dim, dim);
-    
-    // Rotate square A and put it below square B.
-    // In ASCII art terms:
-    //
-    //   +---4---+
-    //   |   |   |
-    //   | B 3   |
-    //   |   |   |
-    //   |   2   |
-    //   |   |   |
-    //   |   1   |
-    //   |  /+\  |
-    //   2-1-*-1-2
-    //    /  1  \
-    //   / A |   \
-    //  +    2    +
-    //   \   |   /
-    //    \  3  /
-    //     \ | /
-    //      \4/
-    //       +
 
     const auto child0 = shape0.GetChild(0);
     const auto child1 = shape1.GetChild(0);
     const auto totalRadius = child0.GetVertexRadius() + child1.GetVertexRadius();
 
-    const auto vals = GetRandTransformationPairs(static_cast<unsigned>(state.range()),
-                                                 xfm0, xfm1);
+    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _: state)
     {
         for (const auto& val: vals)
@@ -1995,9 +1940,10 @@ BENCHMARK(AABB2D)->Arg(1000);
 // BENCHMARK(malloc_free_random_size);
 
 // BENCHMARK(MaxSepBetweenAbsSquares);
-BENCHMARK(MaxSepBetweenRel4x4)->Arg(10)->Arg(100)->Arg(1000);
-BENCHMARK(MaxSepBetweenRelSquaresNoStop)->Arg(10)->Arg(100)->Arg(1000);
-BENCHMARK(MaxSepBetweenRelSquares)->Arg(10)->Arg(100)->Arg(1000);
+BENCHMARK(MaxSepBetweenRel4x4)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+BENCHMARK(MaxSepBetweenRelSquaresNoStopCached)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+BENCHMARK(MaxSepBetweenRelSquaresNoStop)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
+BENCHMARK(MaxSepBetweenRelSquares)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
 
 BENCHMARK(ConstructAndAssignVC);
 BENCHMARK(SolveVC);

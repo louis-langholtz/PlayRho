@@ -36,9 +36,7 @@ namespace playrho {
 namespace {
 
 #ifdef DEFINE_GET_MANIFOLD
-using index_type = IndexPair::size_type;
-
-inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
+inline index_type GetEdgeIndex(VertexCounter i1, VertexCounter i2, VertexCounter count)
 {
     if (GetModuloNext(i1, count) == i2)
     {
@@ -48,7 +46,7 @@ inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
     {
         return i2;
     }
-    return IndexPair::InvalidIndex;
+    return InvalidVertex;
 }
 #endif
 
@@ -57,12 +55,12 @@ inline index_type GetEdgeIndex(index_type i1, index_type i2, index_type count)
 /// @param idx0 Index 0. This should be the index of the vertex and normal of shape0 that had the maximal
 ///    separation distance from any vertex in shape1.
 /// @param idx1 Index 1. This is the index of the vertex of shape1 that had the maximal separation distance
-//     from the edge of shape0 identified by idx0.
+///     from the edge of shape0 identified by idx0.
 Manifold GetFaceManifold(const Manifold::Type type,
                          const DistanceProxy& shape0, const Transformation& xf0,
-                         const IndexSeparation::index_type idx0,
+                         const VertexCounter idx0,
                          const DistanceProxy& shape1, const Transformation& xf1,
-                         const IndexSeparation::index_type idx1,
+                         const VertexCounter idx1,
                          const Manifold::Conf conf)
 {
     assert(type == Manifold::e_faceA || type == Manifold::e_faceB);
@@ -442,7 +440,7 @@ Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
     const auto edgeSepA = do4x4?
         GetMaxSeparation4x4(shapeA, xfA, shapeB, xfB):
         GetMaxSeparation(shapeA, xfA, shapeB, xfB);
-    if (edgeSepA.separation > totalRadius)
+    if (edgeSepA.distance > totalRadius)
     {
         return Manifold{};
     }
@@ -450,20 +448,20 @@ Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
     const auto edgeSepB = do4x4?
         GetMaxSeparation4x4(shapeB, xfB, shapeA, xfA):
         GetMaxSeparation(shapeB, xfB, shapeA, xfA);
-    if (edgeSepB.separation > totalRadius)
+    if (edgeSepB.distance > totalRadius)
     {
         return Manifold{};
     }
     
     const auto k_tol = PLAYRHO_MAGIC(conf.linearSlop / Real{10});
-    return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
+    return (edgeSepB.distance > (edgeSepA.distance + k_tol))?
         GetFaceManifold(Manifold::e_faceB,
-                        shapeB, xfB, edgeSepB.index1,
-                        shapeA, xfA, edgeSepB.index2,
+                        shapeB, xfB, edgeSepB.indices.first,
+                        shapeA, xfA, edgeSepB.indices.second,
                         conf):
         GetFaceManifold(Manifold::e_faceA,
-                        shapeA, xfA, edgeSepA.index1,
-                        shapeB, xfB, edgeSepA.index2,
+                        shapeA, xfA, edgeSepA.indices.first,
+                        shapeB, xfB, edgeSepA.indices.second,
                         conf);
 }
 
@@ -629,7 +627,7 @@ Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transfor
             case 1: // uniqB must be 2 or 3
             {
                 const auto b_idx0 = GetEdgeIndex(b_indices_array[0], b_indices_array[1], b_count);
-                assert(b_idx0 != IndexPair::InvalidIndex);
+                assert(b_idx0 != InvalidVertex);
                 const auto b_idx1 = GetModuloNext(b_idx0, b_count);
                 const auto b_v0 = proxyB.GetVertex(b_idx0);
                 const auto b_v1 = proxyB.GetVertex(b_idx1);
@@ -687,7 +685,7 @@ Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transfor
             case 1: // uniqA must be 2 or 3
             {
                 const auto a_idx0 = GetEdgeIndex(a_indices_array[0],a_indices_array[1], a_count);
-                assert(a_idx0 != IndexPair::InvalidIndex);
+                assert(a_idx0 != InvalidVertex);
                 const auto a_idx1 = GetModuloNext(a_idx0, a_count);
                 const auto a_v0 = proxyA.GetVertex(a_idx0);
                 const auto a_v1 = proxyA.GetVertex(a_idx1);

@@ -138,7 +138,7 @@ void PolygonShape::Accept(ShapeVisitor& visitor) const
     visitor.Visit(*this);
 }
 
-Length2 GetEdge(const PolygonShape& shape, PolygonShape::VertexCounter index)
+Length2 GetEdge(const PolygonShape& shape, VertexCounter index)
 {
     assert(shape.GetVertexCount() > 1);
 

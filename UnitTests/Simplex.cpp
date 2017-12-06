@@ -164,8 +164,8 @@ TEST(Simplex, Get1)
 {
     const auto va = Length2{-4_m, 33_m};
     const auto vb = Length2{901.5_m, 0.06_m};
-    const auto ia = SimplexEdge::index_type{2};
-    const auto ib = SimplexEdge::index_type{7};
+    const auto ia = VertexCounter{2};
+    const auto ib = VertexCounter{7};
     const auto sv = SimplexEdge{va, ia, vb, ib};
     
     const auto simplex = Simplex::Get(sv);
@@ -186,8 +186,8 @@ TEST(Simplex, Get2_of_same)
 {
     const auto va = Length2{-4_m, 33_m};
     const auto vb = Length2{901.5_m, 0.06_m};
-    const auto ia = SimplexEdge::index_type{2};
-    const auto ib = SimplexEdge::index_type{7};
+    const auto ia = VertexCounter{2};
+    const auto ib = VertexCounter{7};
     const auto sv = SimplexEdge{va, ia, vb, ib};
     
     const auto simplex = Simplex::Get(sv, sv);
@@ -209,14 +209,14 @@ TEST(Simplex, Get2_fwd_perp)
 {
     const auto va0 = Length2{-4_m, 33_m};
     const auto vb0 = Length2{901.5_m, 0.06_m};
-    const auto ia0 = SimplexEdge::index_type{2};
-    const auto ib0 = SimplexEdge::index_type{7};
+    const auto ia0 = VertexCounter{2};
+    const auto ib0 = VertexCounter{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
 
     const auto va1 = GetFwdPerpendicular(va0);
     const auto vb1 = GetFwdPerpendicular(vb0);
-    const auto ia1 = SimplexEdge::index_type{4};
-    const auto ib1 = SimplexEdge::index_type{1};
+    const auto ia1 = VertexCounter{4};
+    const auto ib1 = VertexCounter{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
     
     const auto simplex = Simplex::Get(sv0, sv1);
@@ -249,14 +249,14 @@ TEST(Simplex, Get2_rev_perp)
 {
     const auto va0 = Length2{-4_m, 33_m};
     const auto vb0 = Length2{901.5_m, 0.06_m};
-    const auto ia0 = SimplexEdge::index_type{2};
-    const auto ib0 = SimplexEdge::index_type{7};
+    const auto ia0 = VertexCounter{2};
+    const auto ib0 = VertexCounter{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
     
     const auto va1 = GetRevPerpendicular(va0);
     const auto vb1 = GetRevPerpendicular(vb0);
-    const auto ia1 = SimplexEdge::index_type{4};
-    const auto ib1 = SimplexEdge::index_type{1};
+    const auto ia1 = VertexCounter{4};
+    const auto ib1 = VertexCounter{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
     
     const auto simplex = Simplex::Get(sv0, sv1);
@@ -289,14 +289,14 @@ TEST(Simplex, Get2_rot_plus_45)
 {
     const auto va0 = Length2{-4_m, 33_m};
     const auto vb0 = Length2{901.5_m, 0.06_m};
-    const auto ia0 = SimplexEdge::index_type{2};
-    const auto ib0 = SimplexEdge::index_type{7};
+    const auto ia0 = VertexCounter{2};
+    const auto ib0 = VertexCounter{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
     
     const auto va1 = Rotate(va0, UnitVec2::Get(45_deg));
     const auto vb1 = Rotate(vb0, UnitVec2::Get(45_deg));
-    const auto ia1 = SimplexEdge::index_type{4};
-    const auto ib1 = SimplexEdge::index_type{1};
+    const auto ia1 = VertexCounter{4};
+    const auto ib1 = VertexCounter{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
     
     const auto simplex = Simplex::Get(sv0, sv1);
@@ -329,8 +329,8 @@ TEST(Simplex, Get2_rot45_half)
 {
     const auto va0 = Length2{-4_m, 33_m}; // upper left
     const auto vb0 = Length2{901_m, 6_m}; // lower right
-    const auto ia0 = SimplexEdge::index_type{2};
-    const auto ib0 = SimplexEdge::index_type{7};
+    const auto ia0 = VertexCounter{2};
+    const auto ib0 = VertexCounter{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
     
     const auto va1 = Rotate(va0, UnitVec2::Get(45_deg)) / 2; // Vec2{-13.081475, 10.253049}
@@ -339,8 +339,8 @@ TEST(Simplex, Get2_rot45_half)
     EXPECT_NEAR(double(Real{GetY(va1) / Meter}),  10.253049, 0.001);
     EXPECT_NEAR(double(Real{GetX(vb1) / Meter}), 316.4303,   0.001);
     EXPECT_NEAR(double(Real{GetY(vb1) / Meter}), 320.67291,  0.001);
-    const auto ia1 = SimplexEdge::index_type{4};
-    const auto ib1 = SimplexEdge::index_type{1};
+    const auto ia1 = VertexCounter{4};
+    const auto ib1 = VertexCounter{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
 
     const auto w1 = vb0 - va0; // Vec2{901, 6} - Vec2{-4, 33} = Vec2{905, -27}

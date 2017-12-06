@@ -36,16 +36,6 @@ namespace playrho {
     {
     public:
         
-        /// @brief Vertex count type.
-        ///
-        /// @note This type must not support more than 255 vertices as that would conflict
-        ///   with the <code>ContactFeature::Index</code> type.
-        ///
-        using VertexCounter = std::remove_const<decltype(MaxShapeVertices)>::type;
-        
-        /// @brief Invalid vertex.
-        static PLAYRHO_CONSTEXPR const auto InvalidVertex = static_cast<VertexCounter>(-1);
-        
         /// @brief Gets the default vertex radius for the MultiShape.
         static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
         {
@@ -129,7 +119,7 @@ namespace playrho {
         }
         const auto& child = m_children.at(index);
         return DistanceProxy{
-            GetVertexRadius(), static_cast<DistanceProxy::size_type>(child.vertices.size()),
+            GetVertexRadius(), static_cast<VertexCounter>(child.vertices.size()),
             child.vertices.data(), child.normals.data()
         };
     }
