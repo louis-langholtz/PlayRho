@@ -626,6 +626,20 @@ namespace playrho
         return static_cast<Real>(v) * Newton;
     }
     
+    /// @brief Abbreviation for meter squared unit of Area.
+    /// @sa SquareMeter
+    PLAYRHO_CONSTEXPR inline Area operator"" _m2(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * SquareMeter;
+    }
+    
+    /// @brief Abbreviation for meter squared unit of Area.
+    /// @sa SquareMeter
+    PLAYRHO_CONSTEXPR inline Area operator"" _m2(long double v) noexcept
+    {
+        return static_cast<Real>(v) * SquareMeter;
+    }
+    
     /// @brief Abbreviation for meter per second.
     /// @sa https://en.wikipedia.org/wiki/Metre_per_second
     /// @sa Meter
@@ -782,19 +796,8 @@ namespace playrho
 
 #if defined(USE_BOOST_UNITS)
     
-    /// @brief Is finite.
-    template <class Y>
-    inline auto IsFinite(const boost::units::quantity<Y, Real> v)
-    {
-        return boost::units::isfinite(v);
-    }
-    
-    /// @brief Is normal.
-    template <class Y>
-    inline auto IsNormal(const boost::units::quantity<Y, Real> v)
-    {
-        return boost::units::isnormal(v);
-    }
+    using boost::units::isfinite;
+    using boost::units::isnormal;
     
     /// @brief Almost zero.
     template <class Y>

@@ -34,8 +34,8 @@ TEST(SimplexEdge, ByteSize)
 
 TEST(SimplexEdge, InitializingConstructor)
 {
-    const auto iA = SimplexEdge::index_type{1};
-    const auto iB = SimplexEdge::index_type{2};
+    const auto iA = VertexCounter{1};
+    const auto iB = VertexCounter{2};
     const auto pA = Length2{2.2_m, -3.1_m};
     const auto pB = Length2{-9.2_m, 0.003_m};
 

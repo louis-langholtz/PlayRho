@@ -25,17 +25,17 @@ namespace playrho {
 
 namespace {
 
-    inline bool Find(IndexPair3 pairs, IndexPair key)
+    inline bool HasKey(IndexPair3 pairs, IndexPair key)
     {
         return pairs[0] == key || pairs[1] == key || pairs[2] == key;
     }
 
     inline SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA,
                                       const Transformation& xfA,
-                                      DistanceProxy::size_type idxA,
+                                      VertexCounter idxA,
                                       const DistanceProxy& proxyB,
                                       const Transformation& xfB,
-                                      DistanceProxy::size_type idxB)
+                                      VertexCounter idxB)
     {
         const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
         const auto wB = Transform(proxyB.GetVertex(idxB), xfB);
@@ -54,16 +54,16 @@ namespace {
         switch (count)
         {
             case 3:
-                simplexEdges[2] = GetSimplexEdge(proxyA, xfA, indexPairs[2].a,
-                                                 proxyB, xfB, indexPairs[2].b);
+                simplexEdges[2] = GetSimplexEdge(proxyA, xfA, indexPairs[2].first,
+                                                 proxyB, xfB, indexPairs[2].second);
                 // [[fallthrough]]
             case 2:
-                simplexEdges[1] = GetSimplexEdge(proxyA, xfA, indexPairs[1].a,
-                                                 proxyB, xfB, indexPairs[1].b);
+                simplexEdges[1] = GetSimplexEdge(proxyA, xfA, indexPairs[1].first,
+                                                 proxyB, xfB, indexPairs[1].second);
                 // [[fallthrough]]
             case 1:
-                simplexEdges[0] = GetSimplexEdge(proxyA, xfA, indexPairs[0].a,
-                                                 proxyB, xfB, indexPairs[0].b);
+                simplexEdges[0] = GetSimplexEdge(proxyA, xfA, indexPairs[0].first,
+                                                 proxyB, xfB, indexPairs[0].second);
                 // [[fallthrough]]
         }
         simplexEdges.size(static_cast<size_type>(count));
@@ -72,7 +72,7 @@ namespace {
 
 } // namespace
 
-WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
+PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept
 {
     auto pointA = Length2{};
     auto pointB = Length2{};
@@ -95,7 +95,7 @@ WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept
         std::cout << std::endl;
     }
 #endif
-    return WitnessPoints{pointA, pointB};
+    return PairLength2{pointA, pointB};
 }
 
 DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
@@ -184,12 +184,12 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
         }
 
         // Compute a tentative new simplex edge using support points.
-        const auto indexA = GetSupportIndex(proxyA, GetVec2(InverseRotate(-d, transformA.q)));
-        const auto indexB = GetSupportIndex(proxyB, GetVec2(InverseRotate(d, transformB.q)));
+        const auto indexA = GetSupportIndex(proxyA, InverseRotate(-d, transformA.q));
+        const auto indexB = GetSupportIndex(proxyB, InverseRotate(d, transformB.q));
 
         // Check for duplicate support points. This is the main termination criteria.
         // If there's a duplicate support point, code must exit loop to avoid cycling.
-        if (Find(savedIndices, IndexPair{indexA, indexB}))
+        if (HasKey(savedIndices, IndexPair{indexA, indexB}))
         {
             state = DistanceOutput::DuplicateIndexPair;
             break;

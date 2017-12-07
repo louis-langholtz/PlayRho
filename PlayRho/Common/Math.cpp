@@ -85,8 +85,8 @@ std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle sta
         while (i < slices)
         {
             const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
-            const auto x = radius * Cos(angleInRadians);
-            const auto y = radius * Sin(angleInRadians);
+            const auto x = radius * cos(angleInRadians);
+            const auto y = radius * sin(angleInRadians);
             vertices.emplace_back(x, y);
             ++i;
         }
@@ -98,8 +98,8 @@ std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle sta
         else
         {
             const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
-            const auto x = radius * Cos(angleInRadians);
-            const auto y = radius * Sin(angleInRadians);
+            const auto x = radius * cos(angleInRadians);
+            const auto y = radius * sin(angleInRadians);
             vertices.emplace_back(x, y);
         }
     }
@@ -115,7 +115,7 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
 {
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
-    auto sum = Real(0) * SquareMeter;
+    auto sum = 0_m2;
     const auto count = vertices.size();
     for (auto i = decltype(count){0}; i < count; ++i)
     {

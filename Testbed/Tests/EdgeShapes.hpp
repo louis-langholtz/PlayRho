@@ -75,8 +75,8 @@ public:
 
         {
             const auto w = 1.0f;
-            const auto b = w / (2.0f + Sqrt(2.0f));
-            const auto s = Sqrt(2.0f) * b;
+            const auto b = w / (2.0f + sqrt(2.0f));
+            const auto s = sqrt(2.0f) * b;
 
             m_polygons[2]->Set({
                 Vec2(0.5f * s, 0.0f) * 1_m,
@@ -169,7 +169,7 @@ public:
     {
         const auto L = Real(25);
         const auto point1 = Vec2(0.0f, 10.0f) * 1_m;
-        const auto d = Vec2(L * Cos(m_angle), -L * Abs(Sin(m_angle))) * 1_m;
+        const auto d = Vec2(L * cos(m_angle), -L * Abs(sin(m_angle))) * 1_m;
         const auto point2 = point1 + d;
 
         auto fixture = static_cast<Fixture*>(nullptr);

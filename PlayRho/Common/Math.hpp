@@ -127,103 +127,38 @@ PLAYRHO_CONSTEXPR inline bool IsOdd(T val) noexcept
 template<class TYPE>
 PLAYRHO_CONSTEXPR inline auto Square(TYPE t) noexcept { return t * t; }
 
-/// @brief Square root's the given value.
-template<typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Sqrt(T t)
-{
-    // Note that std::sqrt is not declared noexcept at cppreference.com.
-    // See: http://en.cppreference.com/w/cpp/numeric/math/sqrt
-    return std::sqrt(t);
-}
-
-/// @brief Computes the square root of the sum of the squares.
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Hypot(T x, T y)
-{
-    return std::hypot(x, y);
-}
-
-/// @brief Determines if the given argument is normal.
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type IsNormal(T arg)
-{
-    return std::isnormal(arg);
-}
-
-/// @brief Gets whether the given value is not-a-number.
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type IsNan(T arg)
-{
-    return std::isnan(arg);
-}
-
-/// @brief Gets whether the given value is finite.
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type IsFinite(T arg)
-{
-    return std::isfinite(arg);
-}
-
-/// @brief Rounds the given value.
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Round(T arg)
-{
-    return std::round(arg);
-}
-
-/// @brief Truncates the given value.
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Trunc(T arg)
-{
-    return std::trunc(arg);
-}
-
-/// @brief Determines whether the given value is negative.
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type SignBit(T value) noexcept
-{
-    return std::signbit(value);
-}
-
-/// @brief Gets the next representable value after the given from value and going towards
-///   the to value.
-template <typename T>
-inline T NextAfter(T from, T to)
-{
-    return static_cast<T>(std::nextafter(from, to));
-}
-
-/// @brief Computes the cosine of the argument.
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Cos(T arg)
-{
-    return std::cos(arg);
-}
-
-/// @brief Computes the sine of the argument.
-template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type Sin(T arg)
-{
-    return std::sin(arg);
-}
+using std::signbit;
+using std::nextafter;
+using std::trunc;
+using std::fmod;
+using std::isfinite;
+using std::round;
+using std::isnormal;
+using std::isnan;
+using std::hypot;
+using std::cos;
+using std::sin;
+using std::atan2;
+using std::sqrt;
+using std::pow;
 
 #ifdef USE_BOOST_UNITS
 /// @brief Square roots the given area.
-inline auto Sqrt(Area t)
+inline auto sqrt(Area t)
 {
-    return Sqrt(StripUnit(t)) * Meter;
+    return sqrt(StripUnit(t)) * Meter;
 }
 
 /// @brief Computes the cosine of the argument.
-inline Real Cos(Angle a)
+inline Real cos(Angle a)
 {
-    return Cos(Real{a / Radian});
+    return cos(Real{a / Radian});
 }
 
 /// @brief Computes the sine of the argument.
-inline Real Sin(Angle a)
+inline Real sin(Angle a)
 {
-    return Sin(Real{a / Radian});
+    return sin(Real{a / Radian});
 }
 #endif
 
@@ -233,7 +168,7 @@ inline Real Sin(Angle a)
 template<typename T>
 inline auto Atan2(T y, T x)
 {
-    return Angle{static_cast<Real>(std::atan2(StripUnit(y), StripUnit(x))) * Radian};
+    return Angle{static_cast<Real>(atan2(StripUnit(y), StripUnit(x))) * Radian};
 }
 
 /// @brief Computes the average of the given values.
@@ -303,11 +238,10 @@ AlmostEqual(T x, T y, int ulp = 2)
 /// @note Modulo via std::fmod appears slower than via std::trunc.
 /// @sa ModuloViaTrunc
 template <typename T>
-inline typename std::enable_if<std::is_floating_point<T>::value, T>::type
-ModuloViaFmod(T dividend, T divisor) noexcept
+inline auto ModuloViaFmod(T dividend, T divisor) noexcept
 {
     // Note: modulo via std::fmod appears slower than via std::trunc.
-    return static_cast<T>(std::fmod(dividend, divisor));
+    return static_cast<T>(fmod(dividend, divisor));
 }
 
 /// @brief Modulo operation using std::trunc.
@@ -317,7 +251,7 @@ template <typename T>
 inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
 {
     const auto quotient = dividend / divisor;
-    const auto integer = static_cast<T>(Trunc(quotient));
+    const auto integer = static_cast<T>(trunc(quotient));
     const auto remainder = quotient - integer;
     return remainder * divisor;
 }
@@ -408,7 +342,7 @@ PLAYRHO_CONSTEXPR inline auto GetMagnitudeSquared(T value) noexcept
 template <typename T>
 inline auto GetMagnitude(T value)
 {
-    return Sqrt(GetMagnitudeSquared(value));
+    return sqrt(GetMagnitudeSquared(value));
 }
 
 /// @brief Performs the dot product on two vectors (A and B).
@@ -438,9 +372,8 @@ inline auto GetMagnitude(T value)
 template <typename T1, typename T2>
 PLAYRHO_CONSTEXPR inline auto Dot(const T1 a, const T2 b) noexcept
 {
-    //static_assert(a.size() == b.size(), "Dot only for same sized values");
-    assert(a.size() == b.size());
-    
+    static_assert(std::tuple_size<T1>::value == std::tuple_size<T2>::value,
+                  "Dot only for same tuple-like sized types");
     using VT1 = typename T1::value_type;
     using VT2 = typename T2::value_type;
     using OT = decltype(VT1{} * VT2{});
@@ -487,10 +420,10 @@ template <class T1, class T2, std::enable_if_t<
     std::tuple_size<T1>::value == 2 && std::tuple_size<T2>::value == 2, int> = 0>
 PLAYRHO_CONSTEXPR inline auto Cross(T1 a, T2 b) noexcept
 {
-    assert(IsFinite(StripUnit(Get<0>(a))));
-    assert(IsFinite(StripUnit(Get<1>(a))));
-    assert(IsFinite(StripUnit(Get<0>(b))));
-    assert(IsFinite(StripUnit(Get<1>(b))));
+    assert(isfinite(StripUnit(Get<0>(a))));
+    assert(isfinite(StripUnit(Get<1>(a))));
+    assert(isfinite(StripUnit(Get<0>(b))));
+    assert(isfinite(StripUnit(Get<1>(b))));
 
     // Both vectors of same direction...
     // If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
@@ -504,8 +437,8 @@ PLAYRHO_CONSTEXPR inline auto Cross(T1 a, T2 b) noexcept
     // If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
     const auto minuend = Get<0>(a) * Get<1>(b);
     const auto subtrahend = Get<1>(a) * Get<0>(b);
-    assert(IsFinite(StripUnit(minuend)));
-    assert(IsFinite(StripUnit(subtrahend)));
+    assert(isfinite(StripUnit(minuend)));
+    assert(isfinite(StripUnit(subtrahend)));
     return minuend - subtrahend;
 }
 
@@ -519,12 +452,12 @@ template <class T1, class T2, std::enable_if_t<
     std::tuple_size<T1>::value == 3 && std::tuple_size<T2>::value == 3, int> = 0>
 PLAYRHO_CONSTEXPR inline auto Cross(T1 a, T2 b) noexcept
 {
-    assert(IsFinite(Get<0>(a)));
-    assert(IsFinite(Get<1>(a)));
-    assert(IsFinite(Get<2>(a)));
-    assert(IsFinite(Get<0>(b)));
-    assert(IsFinite(Get<1>(b)));
-    assert(IsFinite(Get<2>(b)));
+    assert(isfinite(Get<0>(a)));
+    assert(isfinite(Get<1>(a)));
+    assert(isfinite(Get<2>(a)));
+    assert(isfinite(Get<0>(b)));
+    assert(isfinite(Get<1>(b)));
+    assert(isfinite(Get<2>(b)));
 
     using OT = decltype(Get<0>(a) * Get<0>(b));
     return Vector<OT, 3>{
@@ -755,8 +688,8 @@ PLAYRHO_CONSTEXPR inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 template <class T>
 PLAYRHO_CONSTEXPR inline auto Rotate(const Vector2<T> vector, const UnitVec2& angle) noexcept
 {
-    const auto newX = (angle.cos() * GetX(vector)) - (angle.sin() * GetY(vector));
-    const auto newY = (angle.sin() * GetX(vector)) + (angle.cos() * GetY(vector));
+    const auto newX = (GetX(angle) * GetX(vector)) - (GetY(angle) * GetY(vector));
+    const auto newY = (GetY(angle) * GetX(vector)) + (GetX(angle) * GetY(vector));
     return Vector2<T>{newX, newY};
 }
 
@@ -770,8 +703,8 @@ PLAYRHO_CONSTEXPR inline auto Rotate(const Vector2<T> vector, const UnitVec2& an
 template <class T>
 PLAYRHO_CONSTEXPR inline auto InverseRotate(const Vector2<T> vector, const UnitVec2& angle) noexcept
 {
-    const auto newX = (angle.cos() * GetX(vector)) + (angle.sin() * GetY(vector));
-    const auto newY = (angle.cos() * GetY(vector)) - (angle.sin() * GetX(vector));
+    const auto newX = (GetX(angle) * GetX(vector)) + (GetY(angle) * GetY(vector));
+    const auto newY = (GetX(angle) * GetY(vector)) - (GetY(angle) * GetX(vector));
     return Vector2<T>{newX, newY};
 }
 

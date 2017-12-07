@@ -71,6 +71,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+
 #ifdef DO_PAR_UNSEQ
 #include <atomic>
 #endif
@@ -201,12 +202,6 @@ namespace {
 #endif
     }
     
-    struct VelocityPair
-    {
-        Velocity a;
-        Velocity b;
-    };
-    
     inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
     {
         auto vp = VelocityPair{
@@ -237,8 +232,8 @@ namespace {
             const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
             const auto LA = Cross(vcp.relA, P) / Radian;
             const auto LB = Cross(vcp.relB, P) / Radian;
-            vp.a -= Velocity{invMassA * P, invRotInertiaA * LA};
-            vp.b += Velocity{invMassB * P, invRotInertiaB * LB};
+            vp.first -= Velocity{invMassA * P, invRotInertiaA * LA};
+            vp.second += Velocity{invMassB * P, invRotInertiaB * LB};
         }
         return vp;
     }
@@ -250,8 +245,8 @@ namespace {
             const auto vp = CalcWarmStartVelocityDeltas(vc);
             const auto bodyA = vc.GetBodyA();
             const auto bodyB = vc.GetBodyB();
-            bodyA->SetVelocity(bodyA->GetVelocity() + vp.a);
-            bodyB->SetVelocity(bodyB->GetVelocity() + vp.b);
+            bodyA->SetVelocity(bodyA->GetVelocity() + vp.first);
+            bodyB->SetVelocity(bodyB->GetVelocity() + vp.second);
         });
     }
 
@@ -1409,7 +1404,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     
 World::ContactToiData World::GetSoonestContacts(size_t reserveSize)
 {
-    auto minToi = NextAfter(Real{1}, Real{0});
+    auto minToi = nextafter(Real{1}, Real{0});
     auto minContacts = std::vector<Contact*>();
     minContacts.reserve(reserveSize);
     for (auto&& contact: m_contacts)

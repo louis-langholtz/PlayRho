@@ -220,8 +220,8 @@ public:
         const auto b = 0.5f;
         const auto c = desiredHeight;
         
-        const auto quadraticSolution1 = ( -b - Sqrt( b*b - 4*a*c ) ) / (2*a);
-        const auto quadraticSolution2 = ( -b + Sqrt( b*b - 4*a*c ) ) / (2*a);
+        const auto quadraticSolution1 = ( -b - sqrt( b*b - 4*a*c ) ) / (2*a);
+        const auto quadraticSolution2 = ( -b + sqrt( b*b - 4*a*c ) ) / (2*a);
         
         auto v = quadraticSolution1;
         if ( v < decltype(v){} )

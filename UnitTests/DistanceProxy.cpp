@@ -112,7 +112,7 @@ TEST(DistanceProxy, TwoVecSupportIndex)
 TEST(DistanceProxy, ThreeVertices)
 {
     const auto radius = 33_m;
-    const auto count = DistanceProxy::size_type(3);
+    const auto count = VertexCounter(3);
     const auto v0 = Length2{1_m, 2_m};
     const auto v1 = Length2{-3_m, -4_m};
     const auto v2 = Length2{-6_m, 5_m};
@@ -203,13 +203,13 @@ TEST(DistanceProxy, GetMaxSeparationFromWorld)
     
     const auto result1 = GetMaxSeparation(squareDp, circleDp);
     
-    EXPECT_NEAR(static_cast<double>(Real(result1.separation / Meter)), 3.0, 0.0001);
-    EXPECT_EQ(result1.index1, static_cast<decltype(result1.index1)>(2));
-    EXPECT_EQ(result1.index2, static_cast<decltype(result1.index2)>(0));
+    EXPECT_NEAR(static_cast<double>(Real(result1.distance / Meter)), 3.0, 0.0001);
+    EXPECT_EQ(result1.indices.first, static_cast<decltype(result1.indices.first)>(2));
+    EXPECT_EQ(result1.indices.second, static_cast<decltype(result1.indices.second)>(0));
     
     const auto result2 = GetMaxSeparation(squareDp, circleDp, 0_m);
     
-    EXPECT_NEAR(static_cast<double>(Real(result2.separation / Meter)), 3.0, 0.0001);
-    EXPECT_EQ(result2.index1, static_cast<decltype(result2.index1)>(2));
-    EXPECT_EQ(result2.index2, static_cast<decltype(result2.index2)>(0));
+    EXPECT_NEAR(static_cast<double>(Real(result2.distance / Meter)), 3.0, 0.0001);
+    EXPECT_EQ(result2.indices.first, static_cast<decltype(result2.indices.first)>(2));
+    EXPECT_EQ(result2.indices.second, static_cast<decltype(result2.indices.second)>(0));
 }

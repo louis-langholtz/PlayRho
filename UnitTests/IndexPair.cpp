@@ -24,8 +24,8 @@ using namespace playrho;
 TEST(IndexPair, Init)
 {
     IndexPair ip{1, 2};
-    EXPECT_EQ(ip.a, 1);
-    EXPECT_EQ(ip.b, 2);
+    EXPECT_EQ(ip.first, 1);
+    EXPECT_EQ(ip.second, 2);
 }
 
 TEST(IndexPair, Equality)
@@ -48,8 +48,8 @@ TEST(IndexPair, Inequality)
 
 TEST(IndexPair, InvalidIndex)
 {
-    const auto invalid_index = IndexPair::InvalidIndex;
+    const auto invalid_index = InvalidVertex;
     IndexPair ip{invalid_index, 2};    
-    EXPECT_EQ(invalid_index, ip.a);
-    EXPECT_NE(invalid_index, ip.b);
+    EXPECT_EQ(invalid_index, ip.first);
+    EXPECT_NE(invalid_index, ip.second);
 }

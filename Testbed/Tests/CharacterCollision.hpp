@@ -201,7 +201,7 @@ public:
             Length2 vertices[6];
             for (auto i = 0; i < 6; ++i)
             {
-                vertices[i] = Vec2(0.5f * Cos(angle), 0.5f * Sin(angle)) * 1_m;
+                vertices[i] = Vec2(0.5f * cos(angle), 0.5f * sin(angle)) * 1_m;
                 angle += delta;
             }
 

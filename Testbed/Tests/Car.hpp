@@ -126,7 +126,7 @@ public:
             m_world.CreateJoint(jd);
 
             // AngularMomentum is L^2 M T^-1 QP^-1.
-            ApplyAngularImpulse(*body, 100 * SquareMeter * 1_kg / (1_s * 1_rad));
+            ApplyAngularImpulse(*body, 100_m2 * 1_kg / (1_s * 1_rad));
         }
 
         // Bridge

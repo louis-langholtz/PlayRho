@@ -71,7 +71,7 @@ public:
             m_time += settings.dt;
         }
 
-        const auto linearOffset = Vec2{6 * Sin(2 * m_time), 8 + 4 * Sin(m_time)} * 1_m;
+        const auto linearOffset = Vec2{6 * sin(2 * m_time), 8 + 4 * sin(m_time)} * 1_m;
 
         m_joint->SetLinearOffset(linearOffset);
         m_joint->SetAngularOffset(4_rad * m_time);

@@ -132,7 +132,7 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
 
     const auto child = foo.GetChild(0);
-    EXPECT_EQ(child.GetVertexCount(), DistanceProxy::size_type(1));
+    EXPECT_EQ(child.GetVertexCount(), VertexCounter(1));
     
     const auto massData = foo.GetMassData();
     EXPECT_NE(massData, defaultMassData);
@@ -168,7 +168,7 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
     
     const auto child = foo.GetChild(0);
-    EXPECT_EQ(child.GetVertexCount(), DistanceProxy::size_type(2));
+    EXPECT_EQ(child.GetVertexCount(), VertexCounter(2));
     
     const auto massData = foo.GetMassData();
     EXPECT_NE(massData, defaultMassData);
@@ -212,7 +212,7 @@ TEST(MultiShape, AddTwoConvexHullWithOnePoint)
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
 
     const auto child0 = foo.GetChild(0);
-    EXPECT_EQ(child0.GetVertexCount(), DistanceProxy::size_type(1));
+    EXPECT_EQ(child0.GetVertexCount(), VertexCounter(1));
     EXPECT_EQ(child0.GetVertex(0), p0);
     
     pointSet.clear();
@@ -224,7 +224,7 @@ TEST(MultiShape, AddTwoConvexHullWithOnePoint)
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{2});
     
     const auto child1 = foo.GetChild(1);
-    EXPECT_EQ(child1.GetVertexCount(), DistanceProxy::size_type(1));
+    EXPECT_EQ(child1.GetVertexCount(), VertexCounter(1));
     EXPECT_EQ(child1.GetVertex(0), p1);
 
     const auto massData = foo.GetMassData();

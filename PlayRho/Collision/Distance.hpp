@@ -27,20 +27,16 @@ namespace playrho {
 
     class DistanceProxy;
 
-    /// @brief Witness Points.
-    struct WitnessPoints
-    {
-        Length2 a; ///< Point A.
-        Length2 b; ///< Point B.
-    };
+    /// @brief Pair of Length2 values.
+    using PairLength2 = std::pair<Length2, Length2>;
     
     /// @brief Gets the witness points of the given simplex.
-    WitnessPoints GetWitnessPoints(const Simplex& simplex) noexcept;
+    PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept;
     
     /// @brief Gets the delta of the two points of the given witness points.
-    PLAYRHO_CONSTEXPR inline Length2 GetDelta(WitnessPoints arg) noexcept
+    PLAYRHO_CONSTEXPR inline Length2 GetDelta(PairLength2 arg) noexcept
     {
-        return arg.a - arg.b;
+        return arg.first - arg.second;
     }
     
     /// @brief Distance Configuration.

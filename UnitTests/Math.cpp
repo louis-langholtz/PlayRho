@@ -24,12 +24,12 @@
 
 using namespace playrho;
 
-TEST(Math, Sqrt)
+TEST(Math, sqrt)
 {
-    EXPECT_EQ(Sqrt(Real{0}), Real{0});
-    EXPECT_EQ(Sqrt(Real{4}), Real{2});
-    EXPECT_EQ(Sqrt(Real{25}), Real{5});
-    EXPECT_NE(Sqrt(std::numeric_limits<Real>::min()), Real(0));
+    EXPECT_EQ(sqrt(Real{0}), Real{0});
+    EXPECT_EQ(sqrt(Real{4}), Real{2});
+    EXPECT_EQ(sqrt(Real{25}), Real{5});
+    EXPECT_NE(sqrt(std::numeric_limits<Real>::min()), Real(0));
 
     EXPECT_NE(std::sqrt(std::numeric_limits<double>::min()), double(0));
     EXPECT_EQ(Square(std::sqrt(std::numeric_limits<double>::min())), std::numeric_limits<double>::min());
@@ -95,25 +95,25 @@ TEST(Math, Square)
     EXPECT_EQ(high, float(2.646978275714050648e-23));
 
     ASSERT_NE(Square(high), float(0));
-    ASSERT_EQ(Sqrt(Square(float(1))), float(1));
+    ASSERT_EQ(sqrt(Square(float(1))), float(1));
 #if 0
-    std::cout << "Sqrt(min) is: ";
+    std::cout << "sqrt(min) is: ";
     std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
-    std::cout << Sqrt(std::numeric_limits<float>::min());
+    std::cout << sqrt(std::numeric_limits<float>::min());
     std::cout << " aka ";
     std::cout << std::hexfloat;
-    std::cout << Sqrt(std::numeric_limits<float>::min());
+    std::cout << sqrt(std::numeric_limits<float>::min());
     std::cout << std::endl;
-    EXPECT_EQ(Sqrt(std::numeric_limits<float>::min()), float(0x1p-63)); // float(1.084202172485504434e-19)
+    EXPECT_EQ(sqrt(std::numeric_limits<float>::min()), float(0x1p-63)); // float(1.084202172485504434e-19)
 #endif
     
     // What is the smallest float a for which:
     // AlmostEqual(sqrt(square(a)), a) and AlmostEqual(square(sqrt(a)), a)
     // hold true?
     
-    const auto a = Sqrt(std::numeric_limits<float>::min());
-    EXPECT_TRUE(AlmostEqual(Square(Sqrt(a)), a));
-    EXPECT_TRUE(AlmostEqual(Sqrt(Square(a)), a));
+    const auto a = sqrt(std::numeric_limits<float>::min());
+    EXPECT_TRUE(AlmostEqual(Square(sqrt(a)), a));
+    EXPECT_TRUE(AlmostEqual(sqrt(Square(a)), a));
 }
 
 TEST(Math, Atan2)
@@ -227,23 +227,23 @@ TEST(Math, CrossProductOfTwoVecTwoIsAntiCommutative)
 
 TEST(Math, DotProductOfInvalidIsInvalid)
 {
-    EXPECT_TRUE(IsNan(Dot(GetInvalid<Vec2>(), GetInvalid<Vec2>())));
+    EXPECT_TRUE(isnan(Dot(GetInvalid<Vec2>(), GetInvalid<Vec2>())));
 
-    EXPECT_TRUE(IsNan(Dot(Vec2(0, 0), GetInvalid<Vec2>())));
-    EXPECT_TRUE(IsNan(Dot(Vec2(0, 0), Vec2(GetInvalid<Real>(), 0))));
-    EXPECT_TRUE(IsNan(Dot(Vec2(0, 0), Vec2(0, GetInvalid<Real>()))));
+    EXPECT_TRUE(isnan(Dot(Vec2(0, 0), GetInvalid<Vec2>())));
+    EXPECT_TRUE(isnan(Dot(Vec2(0, 0), Vec2(GetInvalid<Real>(), 0))));
+    EXPECT_TRUE(isnan(Dot(Vec2(0, 0), Vec2(0, GetInvalid<Real>()))));
     
-    EXPECT_TRUE(IsNan(Dot(GetInvalid<Vec2>(),             Vec2(0, 0))));
-    EXPECT_TRUE(IsNan(Dot(Vec2(GetInvalid<Real>(), 0), Vec2(0, 0))));
-    EXPECT_TRUE(IsNan(Dot(Vec2(0, GetInvalid<Real>()), Vec2(0, 0))));
+    EXPECT_TRUE(isnan(Dot(GetInvalid<Vec2>(),             Vec2(0, 0))));
+    EXPECT_TRUE(isnan(Dot(Vec2(GetInvalid<Real>(), 0), Vec2(0, 0))));
+    EXPECT_TRUE(isnan(Dot(Vec2(0, GetInvalid<Real>()), Vec2(0, 0))));
 
-    EXPECT_TRUE(IsNan(Dot(GetInvalid<Vec2>(), GetInvalid<UnitVec2>())));
-    //EXPECT_TRUE(IsNan(Dot(Vec2(0, 0),         GetInvalid<UnitVec2>())));
-    EXPECT_TRUE(IsNan(Dot(GetInvalid<Vec2>(), UnitVec2::GetZero())));
+    EXPECT_TRUE(isnan(Dot(GetInvalid<Vec2>(), GetInvalid<UnitVec2>())));
+    //EXPECT_TRUE(isnan(Dot(Vec2(0, 0),         GetInvalid<UnitVec2>())));
+    EXPECT_TRUE(isnan(Dot(GetInvalid<Vec2>(), UnitVec2::GetZero())));
 
-    EXPECT_TRUE(IsNan(Dot(GetInvalid<UnitVec2>(), GetInvalid<Vec2>())));
-    //EXPECT_TRUE(IsNan(Dot(GetInvalid<UnitVec2>(), Vec2(0, 0))));
-    EXPECT_TRUE(IsNan(Dot(UnitVec2::GetZero(),    GetInvalid<Vec2>())));
+    EXPECT_TRUE(isnan(Dot(GetInvalid<UnitVec2>(), GetInvalid<Vec2>())));
+    //EXPECT_TRUE(isnan(Dot(GetInvalid<UnitVec2>(), Vec2(0, 0))));
+    EXPECT_TRUE(isnan(Dot(UnitVec2::GetZero(),    GetInvalid<Vec2>())));
 }
 
 TEST(Math, Vec2NegationAndRotationIsOrderIndependent)

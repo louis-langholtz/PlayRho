@@ -57,7 +57,7 @@ TEST(StepConf, CopyConstruction)
 TEST(StepConf, maxTranslation)
 {
     const auto v = Real(1);
-    const auto n = std::nextafter(v, Real(0));
+    const auto n = nextafter(v, Real(0));
     const auto inc = v - n;
     ASSERT_GT(inc, Real(0));
     ASSERT_LT(inc, Real(1));
@@ -90,7 +90,7 @@ TEST(StepConf, maxTranslation)
 TEST(StepConf, maxRotation)
 {
     const auto v = Real(1);
-    const auto n = std::nextafter(v, Real(0));
+    const auto n = nextafter(v, Real(0));
     const auto inc = v - n;
     ASSERT_GT(inc, Real(0));
     ASSERT_LT(inc, Real(1));

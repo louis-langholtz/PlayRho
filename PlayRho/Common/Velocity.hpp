@@ -24,6 +24,7 @@
 
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2.hpp>
+#include <utility>
 
 namespace playrho
 {
@@ -151,6 +152,9 @@ namespace playrho
          */
         return Velocity{lhs.linear / rhs, lhs.angular / rhs};
     }
+    
+    /// @brief Velocity pair.
+    using VelocityPair = std::pair<Velocity, Velocity>;
     
 } // namespace playrho
 

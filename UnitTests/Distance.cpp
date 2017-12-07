@@ -47,13 +47,13 @@ TEST(Distance, MatchingCircles)
 
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(witnessPoints.a, pos1);
-    EXPECT_EQ(witnessPoints.b, pos1);
+    EXPECT_EQ(witnessPoints.first, pos1);
+    EXPECT_EQ(witnessPoints.second, pos1);
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip.first, VertexCounter{0});
+    EXPECT_EQ(ip.second, VertexCounter{0});
 
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{0});
@@ -74,19 +74,19 @@ TEST(Distance, OpposingCircles)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
-    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
+    EXPECT_EQ(GetX(witnessPoints.first), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.first), GetY(pos1));
 
-    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
-    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
+    EXPECT_EQ(GetX(witnessPoints.second), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.second), GetY(pos2));
 
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip.first, VertexCounter{0});
+    EXPECT_EQ(ip.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{0});
@@ -110,19 +110,19 @@ TEST(Distance, HorTouchingCircles)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
-    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
+    EXPECT_EQ(GetX(witnessPoints.first), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.first), GetY(pos1));
     
-    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
-    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
+    EXPECT_EQ(GetX(witnessPoints.second), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.second), GetY(pos2));
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip.first, VertexCounter{0});
+    EXPECT_EQ(ip.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{0});
@@ -143,19 +143,19 @@ TEST(Distance, OverlappingCirclesPN)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
-    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
+    EXPECT_EQ(GetX(witnessPoints.first), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.first), GetY(pos1));
     
-    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
-    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
+    EXPECT_EQ(GetX(witnessPoints.second), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.second), GetY(pos2));
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip.first, VertexCounter{0});
+    EXPECT_EQ(ip.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{0});
@@ -176,19 +176,19 @@ TEST(Distance, OverlappingCirclesNP)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
-    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
+    EXPECT_EQ(GetX(witnessPoints.first), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.first), GetY(pos1));
     
-    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
-    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
+    EXPECT_EQ(GetX(witnessPoints.second), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.second), GetY(pos2));
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip.first, VertexCounter{0});
+    EXPECT_EQ(ip.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{0});
@@ -210,19 +210,19 @@ TEST(Distance, SeparatedCircles)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos1));
-    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos1));
+    EXPECT_EQ(GetX(witnessPoints.first), GetX(pos1));
+    EXPECT_EQ(GetY(witnessPoints.first), GetY(pos1));
     
-    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos2));
-    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos2));
+    EXPECT_EQ(GetX(witnessPoints.second), GetX(pos2));
+    EXPECT_EQ(GetY(witnessPoints.second), GetY(pos2));
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip.first, VertexCounter{0});
+    EXPECT_EQ(ip.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{0});
@@ -249,23 +249,23 @@ TEST(Distance, EdgeCircleOverlapping)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos3));
-    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos3));
+    EXPECT_EQ(GetX(witnessPoints.first), GetX(pos3));
+    EXPECT_EQ(GetY(witnessPoints.first), GetY(pos3));
 
-    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos3));
-    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos3));
+    EXPECT_EQ(GetX(witnessPoints.second), GetX(pos3));
+    EXPECT_EQ(GetY(witnessPoints.second), GetY(pos3));
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip0.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip0.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip0.first, VertexCounter{0});
+    EXPECT_EQ(ip0.second, VertexCounter{0});
 
     const auto ip1 = conf.cache.GetIndexPair(1);
-    EXPECT_EQ(ip1.a, IndexPair::size_type{1});
-    EXPECT_EQ(ip1.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip1.first, VertexCounter{1});
+    EXPECT_EQ(ip1.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 4.0, 0.000001);
@@ -291,23 +291,23 @@ TEST(Distance, EdgeCircleOverlapping2)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), GetX(pos3));
-    EXPECT_EQ(GetY(witnessPoints.a), GetY(pos3));
+    EXPECT_EQ(GetX(witnessPoints.first), GetX(pos3));
+    EXPECT_EQ(GetY(witnessPoints.first), GetY(pos3));
     
-    EXPECT_EQ(GetX(witnessPoints.b), GetX(pos3));
-    EXPECT_EQ(GetY(witnessPoints.b), GetY(pos3));
+    EXPECT_EQ(GetX(witnessPoints.second), GetX(pos3));
+    EXPECT_EQ(GetY(witnessPoints.second), GetY(pos3));
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip0.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip0.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip0.first, VertexCounter{0});
+    EXPECT_EQ(ip0.second, VertexCounter{0});
     
     const auto ip1 = conf.cache.GetIndexPair(1);
-    EXPECT_EQ(ip1.a, IndexPair::size_type{1});
-    EXPECT_EQ(ip1.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip1.first, VertexCounter{1});
+    EXPECT_EQ(ip1.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{10});
@@ -333,23 +333,23 @@ TEST(Distance, EdgeCircleTouching)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), 2_m);
-    EXPECT_EQ(GetY(witnessPoints.a), 3_m);
+    EXPECT_EQ(GetX(witnessPoints.first), 2_m);
+    EXPECT_EQ(GetY(witnessPoints.first), 3_m);
     
-    EXPECT_EQ(GetX(witnessPoints.b), 2_m);
-    EXPECT_EQ(GetY(witnessPoints.b), 1_m);
+    EXPECT_EQ(GetX(witnessPoints.second), 2_m);
+    EXPECT_EQ(GetY(witnessPoints.second), 1_m);
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip0.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip0.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip0.first, VertexCounter{0});
+    EXPECT_EQ(ip0.second, VertexCounter{0});
     
     const auto ip1 = conf.cache.GetIndexPair(1);
-    EXPECT_EQ(ip1.a, IndexPair::size_type{1});
-    EXPECT_EQ(ip1.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip1.first, VertexCounter{1});
+    EXPECT_EQ(ip1.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 4.0, 0.000001);
@@ -384,23 +384,23 @@ TEST(Distance, HorEdgeSquareTouching)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), 1_m);
-    EXPECT_EQ(GetY(witnessPoints.a), 1_m);
+    EXPECT_EQ(GetX(witnessPoints.first), 1_m);
+    EXPECT_EQ(GetY(witnessPoints.first), 1_m);
     
-    EXPECT_EQ(GetX(witnessPoints.b), 1_m);
-    EXPECT_EQ(GetY(witnessPoints.b), 0_m);
+    EXPECT_EQ(GetX(witnessPoints.second), 1_m);
+    EXPECT_EQ(GetY(witnessPoints.second), 0_m);
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip0.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip0.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip0.first, VertexCounter{0});
+    EXPECT_EQ(ip0.second, VertexCounter{0});
     
     const auto ip1 = conf.cache.GetIndexPair(1);
-    EXPECT_EQ(ip1.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip1.b, IndexPair::size_type{1});
+    EXPECT_EQ(ip1.first, VertexCounter{0});
+    EXPECT_EQ(ip1.second, VertexCounter{1});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 8.0, 0.000001);
@@ -435,25 +435,25 @@ TEST(Distance, VerEdgeSquareTouching)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_NEAR(static_cast<double>(Real{Sqrt(GetMagnitudeSquared(witnessPoints.a - witnessPoints.b)) / Meter}),
+    EXPECT_NEAR(static_cast<double>(Real{sqrt(GetMagnitudeSquared(witnessPoints.first - witnessPoints.second)) / Meter}),
                 1.0, 0.000001);
-    EXPECT_EQ(GetX(witnessPoints.a), 3_m);
-    EXPECT_EQ(GetY(witnessPoints.a), 2_m);
+    EXPECT_EQ(GetX(witnessPoints.first), 3_m);
+    EXPECT_EQ(GetY(witnessPoints.first), 2_m);
     
-    EXPECT_EQ(GetX(witnessPoints.b), 4_m);
-    EXPECT_EQ(GetY(witnessPoints.b), 2_m);
+    EXPECT_EQ(GetX(witnessPoints.second), 4_m);
+    EXPECT_EQ(GetY(witnessPoints.second), 2_m);
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip0 = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip0.a, IndexPair::size_type{2});
-    EXPECT_EQ(ip0.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip0.first, VertexCounter{2});
+    EXPECT_EQ(ip0.second, VertexCounter{0});
     
     const auto ip1 = conf.cache.GetIndexPair(1);
-    EXPECT_EQ(ip1.a, IndexPair::size_type{3});
-    EXPECT_EQ(ip1.b, IndexPair::size_type{1});
+    EXPECT_EQ(ip1.first, VertexCounter{3});
+    EXPECT_EQ(ip1.second, VertexCounter{1});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{10});
@@ -480,19 +480,19 @@ TEST(Distance, SquareTwice)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), 2_m);
-    EXPECT_EQ(GetY(witnessPoints.a), 2_m);
+    EXPECT_EQ(GetX(witnessPoints.first), 2_m);
+    EXPECT_EQ(GetY(witnessPoints.first), 2_m);
 
-    EXPECT_EQ(GetX(witnessPoints.b), 2_m);
-    EXPECT_EQ(GetY(witnessPoints.b), 2_m);
+    EXPECT_EQ(GetX(witnessPoints.second), 2_m);
+    EXPECT_EQ(GetY(witnessPoints.second), 2_m);
 
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip.first, VertexCounter{0});
+    EXPECT_EQ(ip.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{0});
@@ -532,19 +532,19 @@ TEST(Distance, SquareSquareTouchingVertically)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), 4_m);
-    EXPECT_EQ(GetY(witnessPoints.a), 3_m);
+    EXPECT_EQ(GetX(witnessPoints.first), 4_m);
+    EXPECT_EQ(GetY(witnessPoints.first), 3_m);
     
-    EXPECT_EQ(GetX(witnessPoints.b), 4_m);
-    EXPECT_EQ(GetY(witnessPoints.b), 3_m);
+    EXPECT_EQ(GetX(witnessPoints.second), 4_m);
+    EXPECT_EQ(GetY(witnessPoints.second), 3_m);
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{3});
-    EXPECT_EQ(ip.b, IndexPair::size_type{1});
+    EXPECT_EQ(ip.first, VertexCounter{3});
+    EXPECT_EQ(ip.second, VertexCounter{1});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 4.0, 0.000001);
@@ -583,19 +583,19 @@ TEST(Distance, SquareSquareDiagonally)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), -1_m);
-    EXPECT_EQ(GetY(witnessPoints.a), -1_m);
+    EXPECT_EQ(GetX(witnessPoints.first), -1_m);
+    EXPECT_EQ(GetY(witnessPoints.first), -1_m);
     
-    EXPECT_EQ(GetX(witnessPoints.b), 1_m);
-    EXPECT_EQ(GetY(witnessPoints.b), 1_m);
+    EXPECT_EQ(GetX(witnessPoints.second), 1_m);
+    EXPECT_EQ(GetY(witnessPoints.second), 1_m);
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{2});
-    EXPECT_EQ(ip.b, IndexPair::size_type{3});
+    EXPECT_EQ(ip.first, VertexCounter{2});
+    EXPECT_EQ(ip.second, VertexCounter{3});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{0});
@@ -658,19 +658,19 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
-    EXPECT_EQ(GetX(witnessPoints.a), 0_m);
-    EXPECT_EQ(GetY(witnessPoints.a), 0.5_m);
+    EXPECT_EQ(GetX(witnessPoints.first), 0_m);
+    EXPECT_EQ(GetY(witnessPoints.first), 0.5_m);
     
-    EXPECT_EQ(GetX(witnessPoints.b), 0_m);
-    EXPECT_EQ(GetY(witnessPoints.b), 0.5_m);
+    EXPECT_EQ(GetX(witnessPoints.second), 0_m);
+    EXPECT_EQ(GetY(witnessPoints.second), 0.5_m);
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
     EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{3});
     
     const auto ip = conf.cache.GetIndexPair(0);
-    EXPECT_EQ(ip.a, IndexPair::size_type{0});
-    EXPECT_EQ(ip.b, IndexPair::size_type{0});
+    EXPECT_EQ(ip.first, VertexCounter{0});
+    EXPECT_EQ(ip.second, VertexCounter{0});
     
     EXPECT_EQ(true, conf.cache.IsMetricSet());
     EXPECT_EQ(conf.cache.GetMetric(), Real{-64});

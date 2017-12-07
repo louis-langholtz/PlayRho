@@ -260,7 +260,7 @@ public:
         const auto output = Distance(proxyA, xfmA, proxyB, xfmB, distanceConf);
         distanceConf.cache = Simplex::GetCache(output.simplex.GetEdges());
         const auto witnessPoints = GetWitnessPoints(output.simplex);
-        const auto outputDistance = Sqrt(GetMagnitudeSquared(witnessPoints.a - witnessPoints.b));
+        const auto outputDistance = sqrt(GetMagnitudeSquared(witnessPoints.first - witnessPoints.second));
         
         const auto rA = proxyA.GetVertexRadius();
         const auto rB = proxyB.GetVertexRadius();
@@ -273,17 +273,17 @@ public:
             // Shapes are still not overlapped.
             // Move the witness points to the outer surface.
             adjustedDistance -= totalRadius;
-            const auto normal = GetUnitVector(witnessPoints.b - witnessPoints.a);
-            adjustedWitnessPoints.a += rA * normal;
-            adjustedWitnessPoints.b -= rB * normal;
+            const auto normal = GetUnitVector(witnessPoints.second - witnessPoints.first);
+            adjustedWitnessPoints.first += rA * normal;
+            adjustedWitnessPoints.second -= rB * normal;
         }
         else
         {
             // Shapes are overlapped when radii are considered.
             // Move the witness points to the middle.
-            const auto p = (witnessPoints.a + witnessPoints.b) / Real{2};
-            adjustedWitnessPoints.a = p;
-            adjustedWitnessPoints.b = p;
+            const auto p = (witnessPoints.first + witnessPoints.second) / Real{2};
+            adjustedWitnessPoints.first = p;
+            adjustedWitnessPoints.second = p;
             adjustedDistance = 0;
         }
         
@@ -302,22 +302,22 @@ public:
         os << ".\n\n";
 
         os << "Max separation:\n";
-        os << "  " << static_cast<double>(Real{maxIndicesAB.separation / 1_m});
-        os << " for a-face[" << unsigned{maxIndicesAB.index1} << "]";
-        os << " b-vert[" << unsigned{maxIndicesAB.index2} << "].\n";
-        os << "  " << static_cast<double>(Real{maxIndicesBA.separation / 1_m});
-        os << " for b-face[" << unsigned{maxIndicesBA.index1} << "]";
-        os << " a-vert[" << unsigned{maxIndicesBA.index2} << "].\n\n";
+        os << "  " << static_cast<double>(Real{maxIndicesAB.distance / 1_m});
+        os << " for a-face[" << unsigned{maxIndicesAB.indices.first} << "]";
+        os << " b-vert[" << unsigned{maxIndicesAB.indices.second} << "].\n";
+        os << "  " << static_cast<double>(Real{maxIndicesBA.distance / 1_m});
+        os << " for b-face[" << unsigned{maxIndicesBA.indices.first} << "]";
+        os << " a-vert[" << unsigned{maxIndicesBA.indices.second} << "].\n\n";
 
-        if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.separation / 1_m}),
-                         static_cast<double>(Real{maxIndicesBA.separation / 1_m})))
+        if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.distance / 1_m}),
+                         static_cast<double>(Real{maxIndicesBA.distance / 1_m})))
         {
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);
             //assert(maxIndicesAB.index2 == maxIndicesBA.index1);
-            const auto ifaceA = maxIndicesAB.index1;
+            const auto ifaceA = maxIndicesAB.indices.first;
             const auto nA = InverseRotate(Rotate(shapeA->GetNormal(ifaceA), xfmA.q), xfmB.q);
             // shapeA face maxIndicesAB.index1 is coplanar to an edge intersecting shapeB vertex maxIndicesAB.index2
-            const auto i1 = maxIndicesAB.index2;
+            const auto i1 = maxIndicesAB.indices.second;
             const auto i0 = GetModuloPrev(i1, shapeB->GetVertexCount());
             const auto n0 = shapeB->GetNormal(i0);
             const auto n1 = shapeB->GetNormal(i1);
@@ -334,7 +334,7 @@ public:
                 i1;
 #endif
         }
-        else if (maxIndicesAB.separation > maxIndicesBA.separation)
+        else if (maxIndicesAB.distance > maxIndicesBA.distance)
         {
             // shape A face maxIndicesAB.index1 is least separated from shape B vertex maxIndicesAB.index2
             // Circles or Face-A manifold type.
@@ -352,13 +352,13 @@ public:
         {
             const auto size = output.simplex.GetSize();
             os << "Simplex info: size=" << unsigned{size} << ", wpt-a={";
-            os << static_cast<double>(Real{GetX(witnessPoints.a) / 1_m});
+            os << static_cast<double>(Real{GetX(witnessPoints.first) / 1_m});
             os << ",";
-            os << static_cast<double>(Real{GetY(witnessPoints.a) / 1_m});
+            os << static_cast<double>(Real{GetY(witnessPoints.first) / 1_m});
             os << "}, wpt-b={";
-            os << static_cast<double>(Real{GetX(witnessPoints.b) / 1_m});
+            os << static_cast<double>(Real{GetX(witnessPoints.second) / 1_m});
             os << ",";
-            os << static_cast<double>(Real{GetY(witnessPoints.b) / 1_m});
+            os << static_cast<double>(Real{GetY(witnessPoints.second) / 1_m});
             os << "}:\n";
             for (auto i = decltype(size){0}; i < size; ++i)
             {
@@ -453,18 +453,18 @@ public:
                 drawer.DrawSegment(edge.GetPointA(), edge.GetPointB(), simplexSegmentColor);
             }
 
-            if (adjustedWitnessPoints.a != adjustedWitnessPoints.b)
+            if (adjustedWitnessPoints.first != adjustedWitnessPoints.second)
             {
-                drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, adjustedPointColor);
-                drawer.DrawPoint(adjustedWitnessPoints.b, 4.0f, adjustedPointColor);
+                drawer.DrawPoint(adjustedWitnessPoints.first, 4.0f, adjustedPointColor);
+                drawer.DrawPoint(adjustedWitnessPoints.second, 4.0f, adjustedPointColor);
             }
             else
             {
-                drawer.DrawPoint(adjustedWitnessPoints.a, 4.0f, matchingPointColor);
+                drawer.DrawPoint(adjustedWitnessPoints.first, 4.0f, matchingPointColor);
             }
 
-            drawer.DrawPoint(witnessPoints.a, 4.0f, witnessPointColor);
-            drawer.DrawPoint(witnessPoints.b, 4.0f, witnessPointColor);
+            drawer.DrawPoint(witnessPoints.first, 4.0f, witnessPointColor);
+            drawer.DrawPoint(witnessPoints.second, 4.0f, witnessPointColor);
             
             for (auto&& edge: output.simplex.GetEdges())
             {

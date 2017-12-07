@@ -168,7 +168,7 @@ public:
                 };
                 const auto angle_from_center = GetAngle(centerPos);
                 const auto direction = angle_from_center + Pi * 1_rad;
-                const auto magnitude = Sqrt(Square(StripUnit(wall_length)) * 2) *
+                const auto magnitude = sqrt(Square(StripUnit(wall_length)) * 2) *
                 	GetMass(b) * 20_mps;
                 const auto impulse = Momentum2{magnitude * UnitVec2::Get(direction)};
                 ApplyLinearImpulse(b, impulse, b.GetWorldCenter());

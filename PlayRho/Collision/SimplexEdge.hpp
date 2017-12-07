@@ -35,10 +35,6 @@ namespace playrho {
     class SimplexEdge
     {
     public:
-        
-        /// @brief Index type.
-        using index_type = IndexPair::size_type;
-        
         /// @brief Default constructor.
         SimplexEdge() = default;
         
@@ -50,7 +46,8 @@ namespace playrho {
         /// @param iA Index of point A within the shape that it comes from.
         /// @param pB Point B in world coordinates.
         /// @param iB Index of point B within the shape that it comes from.
-        PLAYRHO_CONSTEXPR inline SimplexEdge(Length2 pA, index_type iA, Length2 pB, index_type iB) noexcept;
+        PLAYRHO_CONSTEXPR inline SimplexEdge(Length2 pA, VertexCounter iA,
+                                             Length2 pB, VertexCounter iB) noexcept;
         
         /// @brief Gets point A (in world coordinates).
         PLAYRHO_CONSTEXPR inline auto GetPointA() const noexcept { return m_wA; }
@@ -59,10 +56,10 @@ namespace playrho {
         PLAYRHO_CONSTEXPR inline auto GetPointB() const noexcept { return m_wB; }
 
         /// @brief Gets index A.
-        PLAYRHO_CONSTEXPR inline auto GetIndexA() const noexcept { return m_indexPair.a; }
+        PLAYRHO_CONSTEXPR inline auto GetIndexA() const noexcept { return m_indexPair.first; }
         
         /// @brief Gets index B.
-        PLAYRHO_CONSTEXPR inline auto GetIndexB() const noexcept { return m_indexPair.b; }
+        PLAYRHO_CONSTEXPR inline auto GetIndexB() const noexcept { return m_indexPair.second; }
 
         /// @brief Gets the index pair.
         PLAYRHO_CONSTEXPR inline auto GetIndexPair() const noexcept { return m_indexPair; }
@@ -73,8 +70,8 @@ namespace playrho {
         IndexPair m_indexPair; ///< Index pair. @details Indices of points A and B. 2-bytes.
     };
     
-    PLAYRHO_CONSTEXPR inline SimplexEdge::SimplexEdge(Length2 pA, index_type iA,
-                                              Length2 pB, index_type iB) noexcept:
+    PLAYRHO_CONSTEXPR inline SimplexEdge::SimplexEdge(Length2 pA, VertexCounter iA,
+                                                      Length2 pB, VertexCounter iB) noexcept:
         m_wA{pA}, m_wB{pB}, m_indexPair{iA, iB}
     {
         // Intentionally empty.

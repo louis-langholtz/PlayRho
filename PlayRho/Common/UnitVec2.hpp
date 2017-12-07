@@ -196,13 +196,7 @@ public:
 
     /// @brief Gets the "Y" value.
     PLAYRHO_CONSTEXPR inline auto GetY() const noexcept { return m_elems[1]; }
-
-    /// @brief Gets the cosine value.
-    PLAYRHO_CONSTEXPR inline auto cos() const noexcept { return m_elems[0]; }
-
-    /// @brief Gets the sine value.
-    PLAYRHO_CONSTEXPR inline auto sin() const noexcept { return m_elems[1]; }
-
+    
     /// @brief Flips the X and Y values.
     PLAYRHO_CONSTEXPR inline UnitVec2 FlipXY() const noexcept { return UnitVec2{-GetX(), -GetY()}; }
 

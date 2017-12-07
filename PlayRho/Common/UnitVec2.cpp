@@ -27,15 +27,15 @@ UnitVec2::PolarCoord UnitVec2::Get(const Real x, const Real y, const UnitVec2 fa
 {
     // Try the faster way first...
     const auto magnitudeSquared = x * x + y * y;
-    if (IsNormal(magnitudeSquared))
+    if (isnormal(magnitudeSquared))
     {
-        const auto magnitude = Sqrt(magnitudeSquared);
+        const auto magnitude = sqrt(magnitudeSquared);
         return std::make_pair(UnitVec2{x / magnitude, y / magnitude}, magnitude);
     }
     
     // Failed the faster way, try the more accurate and robust way...
-    const auto magnitude = Hypot(x, y);
-    if (IsNormal(magnitude))
+    const auto magnitude = hypot(x, y);
+    if (isnormal(magnitude))
     {
         return std::make_pair(UnitVec2{x / magnitude, y / magnitude}, magnitude);
     }
@@ -46,7 +46,7 @@ UnitVec2::PolarCoord UnitVec2::Get(const Real x, const Real y, const UnitVec2 fa
 
 UnitVec2 UnitVec2::Get(const Angle angle) noexcept
 {
-    return UnitVec2{Cos(angle), Sin(angle)};
+    return UnitVec2{cos(angle), sin(angle)};
 }
 
 } // namespace playrho

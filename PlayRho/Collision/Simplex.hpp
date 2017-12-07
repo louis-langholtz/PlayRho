@@ -254,7 +254,7 @@ namespace playrho {
                 const auto e0 = GetPointDelta(simplexEdges[0]);
                 const auto sgn = Cross(e12, -e0);
                 // If sgn > 0, then origin is left of e12, else origin is right of e12.
-                return (sgn > Real{0} * SquareMeter)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
+                return (sgn > 0_m2)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
             }
                 
             default:
@@ -272,13 +272,13 @@ namespace playrho {
             case 2:
             {
                 const auto delta = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
-                return Sqrt(GetMagnitudeSquared(GetVec2(delta)));
+                return StripUnit(sqrt(GetMagnitudeSquared(delta)));
             }
             case 3:
             {
                 const auto delta10 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
                 const auto delta20 = GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]);
-                return Cross(GetVec2(delta10), GetVec2(delta20));
+                return StripUnit(Cross(delta10, delta20));
             }
             default: break; // should not be reached
         }

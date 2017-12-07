@@ -21,59 +21,11 @@
 #define PLAYRHO_COLLISION_SHAPESEPARATION_HPP
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Collision/IndexPair.hpp>
 
 namespace playrho
 {
     class DistanceProxy;
-
-    /// Index separation.
-    /// @details This structure is used to keep track of the best separating axis.
-    struct IndexSeparation
-    {
-        
-        /// @brief Distance type.
-        using distance_type = Length;
-
-        /// @brief Index type.
-        using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
-        
-        /// @brief Gets the invalid distance.
-        static PLAYRHO_CONSTEXPR inline distance_type GetInvalidDistance() noexcept
-        {
-            return std::numeric_limits<Length>::max();
-        }
-
-        /// @brief Index type.
-        static PLAYRHO_CONSTEXPR const index_type InvalidIndex = static_cast<index_type>(-1);
-        
-        distance_type separation = GetInvalidDistance(); ///< Separation.
-        index_type index = InvalidIndex; ///< Index.
-    };
-    
-    /// Index pair separation.
-    /// @details This structure is used to keep track of the best separating axis.
-    struct IndexPairSeparation
-    {
-        
-        /// @brief Distance type.
-        using distance_type = Length;
-        
-        /// @brief Index type.
-        using index_type = std::remove_const<decltype(MaxShapeVertices)>::type;
-        
-        /// @brief Gets the invalid distance.
-        static PLAYRHO_CONSTEXPR inline distance_type GetInvalidDistance() noexcept
-        {
-            return std::numeric_limits<Length>::max();
-        }
-
-        /// @brief Invalid index.
-        static PLAYRHO_CONSTEXPR const index_type InvalidIndex = static_cast<index_type>(-1);
-        
-        distance_type separation = GetInvalidDistance(); ///< Separation.
-        index_type index1 = InvalidIndex; ///< Index 1.
-        index_type index2 = InvalidIndex; ///< Index 2.
-    };
     
     /// @brief Gets the max separation information.
     /// @note Prefer using this function - over the <code>GetMaxSeparation</code>
@@ -82,16 +34,16 @@ namespace playrho
     /// @return Index of the vertex and normal from <code>proxy1</code>,
     ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
     ///   distance from each other in the direction of that normal), and the maximal distance.
-    IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
-                                         const DistanceProxy& proxy2, Transformation xf2);
-
+    IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
+                                       const DistanceProxy& proxy2, Transformation xf2);
+    
     /// @brief Gets the max separation information.
     /// @return Index of the vertex and normal from <code>proxy1</code>,
     ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
     ///   distance from each other in the direction of that normal), and the maximal distance.
-    IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
-                                         const DistanceProxy& proxy2, Transformation xf2,
-                                         Length stop);
+    IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
+                                       const DistanceProxy& proxy2, Transformation xf2,
+                                       Length stop);
     
     /// @brief Gets the max separation information for the first four vertices of the two
     ///   given shapes.
@@ -100,16 +52,16 @@ namespace playrho
     /// @return Index of the vertex and normal from <code>proxy1</code>,
     ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
     ///   distance from each other in the direction of that normal), and the maximal distance.
-    IndexPairSeparation GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation xf1,
-                                            const DistanceProxy& proxy2, Transformation xf2);
+    IndexPairDistance GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation xf1,
+                                          const DistanceProxy& proxy2, Transformation xf2);
 
     /// @brief Gets the max separation information.
     /// @return Index of the vertex and normal from <code>proxy1</code>,
     ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
     ///   distance from each other in the direction of that normal), and the maximal distance.
-    IndexPairSeparation GetMaxSeparation(const DistanceProxy& proxy1,
-                                         const DistanceProxy& proxy2,
-                                         Length stop = MaxFloat * Meter);
+    IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1,
+                                       const DistanceProxy& proxy2,
+                                       Length stop = MaxFloat * Meter);
     
 } // namespace playrho
 

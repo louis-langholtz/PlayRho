@@ -50,13 +50,6 @@ namespace playrho
     class DistanceProxy
     {
     public:
-        /// @brief Size type.
-        /// @details Must be big enough to hold max posible count of vertices.
-        using size_type = std::remove_const<decltype(MaxShapeVertices)>::type;
-        
-        /// @brief Invalid index.
-        static PLAYRHO_CONSTEXPR const size_type InvalidIndex = static_cast<size_type>(-1);
-        
         /// @brief Constant vertex pointer.
         using ConstVertexPointer = const Length2*;
         
@@ -96,8 +89,12 @@ namespace playrho
         ///    <code>MaxShapeVertices</code> elements.
         /// @warning Behavior is undefined if the vertices collection has less than one element or
         ///   more than <code>MaxShapeVertices</code> elements.
+        /// @warning Behavior is undefined if the vertices are not in counter-clockwise order.
+        /// @warning Behavior is undefined if the shape defined by the vertices is not convex.
+        /// @warning Behavior is undefined if the normals aren't normals for adjacent vertices.
+        /// @warning Behavior is undefined if any normal is not unique.
         ///
-        DistanceProxy(const NonNegative<Length> vertexRadius, const size_type count,
+        DistanceProxy(const NonNegative<Length> vertexRadius, const VertexCounter count,
                       const Length2* vertices, const UnitVec2* normals) noexcept:
 #ifndef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
             m_vertices{vertices},
@@ -144,23 +141,23 @@ namespace playrho
         ///
         /// @warning Behavior is undefined if the index given is not less than the count of vertices
         ///   represented by this proxy.
-        /// @warning Behavior is undefined if InvalidIndex is given as the index value.
+        /// @warning Behavior is undefined if InvalidVertex is given as the index value.
         ///
         /// @return Vertex linear position (relative to the shape's origin) at the given index.
         ///
         /// @sa Distance.
         ///
-        auto GetVertex(size_type index) const noexcept
+        auto GetVertex(VertexCounter index) const noexcept
         {
-            assert(index != InvalidIndex);
+            assert(index != InvalidVertex);
             assert(index < m_count);
             return *(m_vertices + index);
         }
         
         /// @brief Gets the normal for the given index.
-        auto GetNormal(size_type index) const noexcept
+        auto GetNormal(VertexCounter index) const noexcept
         {
-            assert(index != InvalidIndex);
+            assert(index != InvalidVertex);
             assert(index < m_count);
             return *(m_normals + index);
         }
@@ -173,7 +170,7 @@ namespace playrho
         const Length2* m_vertices = nullptr; ///< Vertices.
         const UnitVec2* m_normals = nullptr; ///< Normals.
 #endif
-        size_type m_count = 0; ///< Count of valid elements of m_vertices.
+        VertexCounter m_count = 0; ///< Count of valid elements of m_vertices.
         NonNegative<Length> m_vertexRadius = 0_m; ///< Radius of the vertices of the associated shape.
     };
     
@@ -194,11 +191,31 @@ namespace playrho
     /// @note 0 is returned for a given zero length direction vector.
     /// @param proxy Distance proxy object to find index in if a valid index exists for it.
     /// @param d Direction vector to find index for.
-    /// @return InvalidIndex if d is invalid or the count of vertices is zero, otherwise a
+    /// @return InvalidVertex if d is invalid or the count of vertices is zero, otherwise a
     ///   value from 0 to one less than count.
     /// @sa GetVertexCount().
     /// @relatedalso DistanceProxy
-    DistanceProxy::size_type GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept;
+    template <class T>
+    inline VertexCounter GetSupportIndex(const DistanceProxy& proxy, T d) noexcept
+    {
+        using VT = typename T::value_type;
+        using OT = decltype(VT{} * 0_m);
+
+        auto index = InvalidVertex; ///< Index of vertex that when dotted with d has the max value.
+        auto maxValue = -std::numeric_limits<OT>::infinity(); ///< Max dot value.
+        auto i = VertexCounter{0};
+        for (const auto& vertex: proxy.GetVertices())
+        {
+            const auto value = Dot(vertex, d);
+            if (maxValue < value)
+            {
+                maxValue = value;
+                index = i;
+            }
+            ++i;
+        }
+        return index;
+    }
 
     /// @brief Finds the lowest right most vertex in the given collection.
     std::size_t FindLowestRightMostVertex(Span<const Length2> vertices);

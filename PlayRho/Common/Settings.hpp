@@ -116,9 +116,18 @@ PLAYRHO_CONSTEXPR const auto MaxFloat = std::numeric_limits<Real>::max(); // FLT
 /// @note For memory efficiency, uses the smallest integral type that can hold the value. 
 PLAYRHO_CONSTEXPR const auto MaxManifoldPoints = std::uint8_t{2};
 
-/// Maximum number of vertices for any shape type.
-/// @note For memory efficiency, uses the smallest integral type that can hold the value.
+/// @brief Maximum number of vertices for any shape type.
+/// @note For memory efficiency, uses the smallest integral type that can hold the value minus
+///   one that's left out as a sentinal value.
 PLAYRHO_CONSTEXPR const auto MaxShapeVertices = std::uint8_t{254};
+
+/// @brief Vertex count type.
+/// @note This type must not support more than 255 vertices as that would conflict
+///   with the <code>ContactFeature::Index</code> type.
+using VertexCounter = std::remove_const<decltype(MaxShapeVertices)>::type;
+
+/// @brief Invalid vertex index.
+PLAYRHO_CONSTEXPR const auto InvalidVertex = static_cast<VertexCounter>(-1);
 
 /// @brief Default linear slop.
 /// @details Length used as a collision and constraint tolerance.
