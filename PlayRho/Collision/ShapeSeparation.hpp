@@ -36,11 +36,7 @@ namespace playrho
     ///   distance from each other in the direction of that normal), and the maximal distance.
     IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
                                        const DistanceProxy& proxy2, Transformation xf2);
-
-    /// @brief Gets the max separation information via pre-caching some info.
-    IndexPairDistance GetMaxSeparationCached(const DistanceProxy& proxy1, Transformation xf1,
-                                             const DistanceProxy& proxy2, Transformation xf2);
-
+    
     /// @brief Gets the max separation information.
     /// @return Index of the vertex and normal from <code>proxy1</code>,
     ///   index of the vertex from <code>proxy2</code> (that had the maximum separation

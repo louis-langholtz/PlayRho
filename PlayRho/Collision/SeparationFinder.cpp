@@ -111,8 +111,8 @@ SeparationFinder::FindMinSeparationForPoints(const Transformation& xfA,
 {
     const auto dirA = InverseRotate(+m_axis, xfA.q);
     const auto dirB = InverseRotate(-m_axis, xfB.q);
-    const auto indexA = GetSupportIndex(m_proxyA, GetVec2(dirA));
-    const auto indexB = GetSupportIndex(m_proxyB, GetVec2(dirB));
+    const auto indexA = GetSupportIndex(m_proxyA, dirA);
+    const auto indexB = GetSupportIndex(m_proxyB, dirB);
     const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
     const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
     const auto delta = pointB - pointA;
@@ -127,7 +127,7 @@ SeparationFinder::FindMinSeparationForFaceA(const Transformation& xfA,
     const auto indexA = InvalidVertex;
     const auto pointA = Transform(m_localPoint, xfA);
     const auto dir = InverseRotate(-normal, xfB.q);
-    const auto indexB = GetSupportIndex(m_proxyB, GetVec2(dir));
+    const auto indexB = GetSupportIndex(m_proxyB, dir);
     const auto pointB = Transform(m_proxyB.GetVertex(indexB), xfB);
     const auto delta = pointB - pointA;
     return IndexPairDistance{Dot(delta, normal), IndexPair{indexA, indexB}};
@@ -139,7 +139,7 @@ SeparationFinder::FindMinSeparationForFaceB(const Transformation& xfA,
 {
     const auto normal = Rotate(m_axis, xfB.q);
     const auto dir = InverseRotate(-normal, xfA.q);
-    const auto indexA = GetSupportIndex(m_proxyA, GetVec2(dir));
+    const auto indexA = GetSupportIndex(m_proxyA, dir);
     const auto pointA = Transform(m_proxyA.GetVertex(indexA), xfA);
     const auto indexB = InvalidVertex;
     const auto pointB = Transform(m_localPoint, xfB);

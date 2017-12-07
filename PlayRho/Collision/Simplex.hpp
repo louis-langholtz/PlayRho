@@ -254,7 +254,7 @@ namespace playrho {
                 const auto e0 = GetPointDelta(simplexEdges[0]);
                 const auto sgn = Cross(e12, -e0);
                 // If sgn > 0, then origin is left of e12, else origin is right of e12.
-                return (sgn > Real{0} * SquareMeter)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
+                return (sgn > 0_m2)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
             }
                 
             default:

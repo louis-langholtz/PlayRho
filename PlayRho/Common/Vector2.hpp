@@ -72,7 +72,7 @@ namespace playrho
     /// @brief Gets the given value as a Vec2.
     PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const Vector2<Real> value)
     {
-        return {value};
+        return value;
     }
 
     /// @brief Gets an invalid value for the Vec2 type.

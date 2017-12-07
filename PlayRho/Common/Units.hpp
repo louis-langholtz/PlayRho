@@ -626,6 +626,20 @@ namespace playrho
         return static_cast<Real>(v) * Newton;
     }
     
+    /// @brief Abbreviation for meter squared unit of Area.
+    /// @sa SquareMeter
+    PLAYRHO_CONSTEXPR inline Area operator"" _m2(unsigned long long int v) noexcept
+    {
+        return static_cast<Real>(v) * SquareMeter;
+    }
+    
+    /// @brief Abbreviation for meter squared unit of Area.
+    /// @sa SquareMeter
+    PLAYRHO_CONSTEXPR inline Area operator"" _m2(long double v) noexcept
+    {
+        return static_cast<Real>(v) * SquareMeter;
+    }
+    
     /// @brief Abbreviation for meter per second.
     /// @sa https://en.wikipedia.org/wiki/Metre_per_second
     /// @sa Meter

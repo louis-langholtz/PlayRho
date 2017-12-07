@@ -195,7 +195,27 @@ namespace playrho
     ///   value from 0 to one less than count.
     /// @sa GetVertexCount().
     /// @relatedalso DistanceProxy
-    VertexCounter GetSupportIndex(const DistanceProxy& proxy, Vec2 d) noexcept;
+    template <class T>
+    inline VertexCounter GetSupportIndex(const DistanceProxy& proxy, T d) noexcept
+    {
+        using VT = typename T::value_type;
+        using OT = decltype(VT{} * 0_m);
+
+        auto index = InvalidVertex; ///< Index of vertex that when dotted with d has the max value.
+        auto maxValue = -std::numeric_limits<OT>::infinity(); ///< Max dot value.
+        auto i = VertexCounter{0};
+        for (const auto& vertex: proxy.GetVertices())
+        {
+            const auto value = Dot(vertex, d);
+            if (maxValue < value)
+            {
+                maxValue = value;
+                index = i;
+            }
+            ++i;
+        }
+        return index;
+    }
 
     /// @brief Finds the lowest right most vertex in the given collection.
     std::size_t FindLowestRightMostVertex(Span<const Length2> vertices);

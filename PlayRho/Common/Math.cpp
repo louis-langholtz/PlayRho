@@ -115,7 +115,7 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
 {
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
-    auto sum = Real(0) * SquareMeter;
+    auto sum = 0_m2;
     const auto count = vertices.size();
     for (auto i = decltype(count){0}; i < count; ++i)
     {

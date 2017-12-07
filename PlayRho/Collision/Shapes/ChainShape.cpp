@@ -33,7 +33,7 @@ namespace {
             const auto delta = vertices[i-1] - vertices[i];
             
             // XXX not quite right unit-wise but this works well enough.
-            if (GetMagnitudeSquared(GetVec2(delta)) * Meter <= DefaultLinearSlop)
+            if (GetMagnitudeSquared(delta) <= DefaultLinearSlop)
             {
                 return false;
             }

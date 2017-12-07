@@ -1254,27 +1254,6 @@ static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
     }
 }
 
-static void MaxSepBetweenRelSquaresNoStopCached(benchmark::State& state)
-{
-    const auto dim = playrho::Real(2) * playrho::Meter;
-    const auto shape0 = playrho::PolygonShape(dim, dim);
-    const auto shape1 = playrho::PolygonShape(dim, dim);
-    
-    const auto child0 = shape0.GetChild(0);
-    const auto child1 = shape1.GetChild(0);
-    
-    const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
-    for (auto _: state)
-    {
-        for (const auto& val: vals)
-        {
-            const auto xf0 = val.first;
-            const auto xf1 = val.second;
-            benchmark::DoNotOptimize(playrho::GetMaxSeparationCached(child0, xf0, child1, xf1));
-        }
-    }
-}
-
 static void MaxSepBetweenRel4x4(benchmark::State& state)
 {
     const auto dim = playrho::Real(2) * playrho::Meter;
@@ -1941,7 +1920,6 @@ BENCHMARK(AABB2D)->Arg(1000);
 
 // BENCHMARK(MaxSepBetweenAbsSquares);
 BENCHMARK(MaxSepBetweenRel4x4)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
-BENCHMARK(MaxSepBetweenRelSquaresNoStopCached)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
 BENCHMARK(MaxSepBetweenRelSquaresNoStop)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
 BENCHMARK(MaxSepBetweenRelSquares)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
 

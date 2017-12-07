@@ -438,9 +438,8 @@ inline auto GetMagnitude(T value)
 template <typename T1, typename T2>
 PLAYRHO_CONSTEXPR inline auto Dot(const T1 a, const T2 b) noexcept
 {
-    //static_assert(a.size() == b.size(), "Dot only for same sized values");
-    assert(a.size() == b.size());
-    
+    static_assert(std::tuple_size<T1>::value == std::tuple_size<T2>::value,
+                  "Dot only for same tuple-like sized types");
     using VT1 = typename T1::value_type;
     using VT2 = typename T2::value_type;
     using OT = decltype(VT1{} * VT2{});
