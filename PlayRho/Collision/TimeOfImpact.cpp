@@ -43,10 +43,10 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     assert(IsValid(sweepA));
     assert(IsValid(sweepB));
     assert(sweepA.GetAlpha0() == sweepB.GetAlpha0());
-    //assert(IsFinite(GetMagnitudeSquared(sweepA.pos0.linear - sweepB.pos0.linear)));
-    //assert(IsFinite(GetMagnitudeSquared(sweepA.pos0.linear - sweepB.pos1.linear)));
-    //assert(IsFinite(GetMagnitudeSquared(sweepA.pos1.linear - sweepB.pos0.linear)));
-    //assert(IsFinite(GetMagnitudeSquared(sweepA.pos1.linear - sweepB.pos1.linear)));
+    //assert(isfinite(GetMagnitudeSquared(sweepA.pos0.linear - sweepB.pos0.linear)));
+    //assert(isfinite(GetMagnitudeSquared(sweepA.pos0.linear - sweepB.pos1.linear)));
+    //assert(isfinite(GetMagnitudeSquared(sweepA.pos1.linear - sweepB.pos0.linear)));
+    //assert(isfinite(GetMagnitudeSquared(sweepA.pos1.linear - sweepB.pos1.linear)));
     assert(conf.tMax >= 0 && conf.tMax <=1);
 
     // CCD via the local separating axis method. This seeks progression
@@ -75,13 +75,13 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     //assert(minTarget > 0_m && !AlmostZero(minTarget / Meter));
     
     const auto minTargetSquared = Square(minTarget);
-    if (!IsFinite(minTargetSquared) && IsFinite(minTarget))
+    if (!isfinite(minTargetSquared) && isfinite(minTarget))
     {
         return TOIOutput{0, stats, TOIOutput::e_minTargetSquaredOverflow};
     }
 
     const auto maxTargetSquared = Square(maxTarget);
-    if (!IsFinite(maxTargetSquared) && IsFinite(maxTarget))
+    if (!isfinite(maxTargetSquared) && isfinite(maxTarget))
     {
         return TOIOutput{0, stats, TOIOutput::e_maxTargetSquaredOverflow};
     }
@@ -116,7 +116,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         // Get the real distance squared between shapes at the time of t1.
         const auto distSquared = GetMagnitudeSquared(GetDelta(GetWitnessPoints(dinfo.simplex)));
 #if 0
-        if (!IsFinite(distSquared))
+        if (!isfinite(distSquared))
         {
             return TOIOutput{t1, stats, TOIOutput::e_notFinite};
         }
@@ -234,7 +234,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                 {
                     state = TOIOutput::e_maxRootIters;
                 }
-                else if (std::nextafter(a1, a2) >= a2)
+                else if (nextafter(a1, a2) >= a2)
                 {
                     state = TOIOutput::e_nextAfter;
                 }

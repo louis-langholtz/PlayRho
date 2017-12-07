@@ -796,19 +796,8 @@ namespace playrho
 
 #if defined(USE_BOOST_UNITS)
     
-    /// @brief Is finite.
-    template <class Y>
-    inline auto IsFinite(const boost::units::quantity<Y, Real> v)
-    {
-        return boost::units::isfinite(v);
-    }
-    
-    /// @brief Is normal.
-    template <class Y>
-    inline auto IsNormal(const boost::units::quantity<Y, Real> v)
-    {
-        return boost::units::isnormal(v);
-    }
+    using boost::units::isfinite;
+    using boost::units::isnormal;
     
     /// @brief Almost zero.
     template <class Y>

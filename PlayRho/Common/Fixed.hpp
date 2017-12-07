@@ -664,38 +664,59 @@ namespace playrho
     }    
 
     /// @brief Square root's the given value.
-    /// @note This is a specialization of the Sqrt template function for Fixed types.
     /// @note This implementation isn't meant to be fast, only correct enough.
     template <typename BT, unsigned int FB>
-    inline auto Sqrt(Fixed<BT, FB> arg)
+    inline auto sqrt(Fixed<BT, FB> arg)
     {
         return static_cast<Fixed<BT, FB>>(std::sqrt(static_cast<long double>(arg)));
     }
 
     /// @brief Gets whether the given value is normal - i.e. not 0 nor infinite.
     template <typename BT, unsigned int FB>
-    inline bool IsNormal(Fixed<BT, FB> arg)
+    inline bool isnormal(Fixed<BT, FB> arg)
     {
         return arg != Fixed<BT, FB>{0} && arg.isfinite();
     }
     
     /// @brief Computes the sine of the argument for Fixed types.
     template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> Sin(Fixed<BT, FB> arg)
+    inline Fixed<BT, FB> sin(Fixed<BT, FB> arg)
     {
         return static_cast<Fixed<BT, FB>>(std::sin(static_cast<double>(arg)));
     }
     
     /// @brief Computes the cosine of the argument for Fixed types.
     template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> Cos(Fixed<BT, FB> arg)
+    inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
     {
         return static_cast<Fixed<BT, FB>>(std::cos(static_cast<double>(arg)));
     }
+    
+    /// @brief Computes the arc tangent.
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> atan2(Fixed<BT, FB> y, Fixed<BT, FB> x)
+    {
+        return static_cast<Fixed<BT, FB>>(std::atan2(static_cast<double>(y), static_cast<double>(x)));
+    }
 
+    /// @brief Computes the value of the base number raised to the power of the exponent.
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> pow(Fixed<BT, FB> base, Fixed<BT, FB> exp)
+    {
+        return static_cast<Fixed<BT, FB>>(std::pow(static_cast<double>(base),
+                                                   static_cast<double>(exp)));
+    }
+    
+    /// @brief Computes the value of the base number raised to the power of the exponent.
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> pow(Fixed<BT, FB> base, double exp)
+    {
+        return static_cast<Fixed<BT, FB>>(std::pow(static_cast<double>(base), exp));
+    }
+    
     /// @brief Computes the square root of the sum of the squares.
     template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> Hypot(Fixed<BT, FB> x, Fixed<BT, FB> y)
+    inline Fixed<BT, FB> hypot(Fixed<BT, FB> x, Fixed<BT, FB> y)
     {
         return static_cast<Fixed<BT, FB>>(std::hypot(static_cast<double>(x), static_cast<double>(y)));
     }
@@ -703,7 +724,7 @@ namespace playrho
     /// @brief Rounds the given value.
     /// @sa http://en.cppreference.com/w/cpp/numeric/math/round
     template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> Round(Fixed<BT, FB> value) noexcept
+    inline Fixed<BT, FB> round(Fixed<BT, FB> value) noexcept
     {
         const auto tmp = value + (Fixed<BT, FB>{1} / Fixed<BT, FB>{2});
         const auto truncated = static_cast<typename Fixed<BT, FB>::value_type>(tmp);
@@ -713,31 +734,46 @@ namespace playrho
     /// @brief Truncates the given value.
     /// @sa http://en.cppreference.com/w/c/numeric/math/trunc
     template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> Trunc(Fixed<BT, FB> arg)
+    inline Fixed<BT, FB> trunc(Fixed<BT, FB> arg)
     {
         return static_cast<Fixed<BT, FB>>(static_cast<long long>(arg));
     }
     
     /// @brief Determines whether the given value is negative.
     template <typename BT, unsigned int FB>
-    inline bool SignBit(Fixed<BT, FB> value) noexcept
+    inline bool signbit(Fixed<BT, FB> value) noexcept
     {
         return value.getsign() < 0;
     }
     
     /// @brief Gets whether the given value is not-a-number.
     template <typename BT, unsigned int FB>
-    PLAYRHO_CONSTEXPR inline bool IsNan(Fixed<BT, FB> value) noexcept
+    PLAYRHO_CONSTEXPR inline bool isnan(Fixed<BT, FB> value) noexcept
     {
         return value.Compare(0) == Fixed<BT, FB>::CmpResult::Incomparable;
     }
     
     /// @brief Gets whether the given value is finite.
     template <typename BT, unsigned int FB>
-    inline bool IsFinite(Fixed<BT, FB> value) noexcept
+    inline bool isfinite(Fixed<BT, FB> value) noexcept
     {
         return (value > Fixed<BT, FB>::GetNegativeInfinity())
             && (value < Fixed<BT, FB>::GetInfinity());
+    }
+    
+    /// @brief Next after function for Fixed types.
+    template <typename BT, unsigned int FB>
+    inline Fixed<BT, FB> nextafter(Fixed<BT, FB> from, Fixed<BT, FB> to) noexcept
+    {
+        if (from < to)
+        {
+            return static_cast<Fixed<BT, FB>>(from + Fixed<BT,FB>::GetMin());
+        }
+        if (from > to)
+        {
+            return static_cast<Fixed<BT, FB>>(from - Fixed<BT,FB>::GetMin());
+        }
+        return static_cast<Fixed<BT, FB>>(to);
     }
     
     /// @brief Computes the rounded value of the given value.
@@ -745,7 +781,7 @@ namespace playrho
     inline Fixed<BT, FB> RoundOff(Fixed<BT, FB> value, std::uint32_t precision = 100000)
     {
         const auto factor = Fixed<BT, FB>(precision);
-        return Round(value * factor) / factor;
+        return round(value * factor) / factor;
     }
 
     /// @brief Gets whether a given value is almost zero.
@@ -987,56 +1023,6 @@ namespace playrho
 
 namespace std
 {
-    // Generic Fixed
-    
-    /// @brief Computes the arc tangent.
-    /// @note Since C++11, std::atan2 may be specialized as:
-    ///   <code>Promoted atan2(Arithmetic1 y, Arithmetic2 x)</code>. Where <code>Promoted</code>
-    ///   must always be double for inputs of type Fixed.
-    template <typename BT, unsigned int FB>
-    inline double atan2(playrho::Fixed<BT, FB> y, playrho::Fixed<BT, FB> x)
-    {
-        return atan2(static_cast<double>(y), static_cast<double>(x));
-    }
-    
-    /// @brief Next after function specialization for Fixed types.
-    /// @note Since C++11, std::nextafter may be specialized as:
-    ///   <code>Promoted nextafter(Arithmetic from, Arithmetic to)</code>.
-    ///   Where <code>Promoted</code> must always be double for inputs of type Fixed.
-    template <typename BT, unsigned int FB>
-    inline double nextafter(playrho::Fixed<BT, FB> from, playrho::Fixed<BT, FB> to) noexcept
-    {
-        if (from < to)
-        {
-            return static_cast<double>(from + numeric_limits<playrho::Fixed<BT, FB>>::min());
-        }
-        if (from > to)
-        {
-            return static_cast<double>(from - numeric_limits<playrho::Fixed<BT, FB>>::min());
-        }
-        return static_cast<double>(to);
-    }
-    
-    /// @brief Computes the floating point remainder.
-    /// @note Since C++11, std::nextafter may be specialized as:
-    ///   <code>Promoted fmod(Arithmetic1 x, Arithmetic2 y)</code>.
-    ///   Where <code>Promoted</code> must always be double for inputs of type Fixed.
-    template <typename BT, unsigned int FB>
-    inline double fmod(playrho::Fixed<BT, FB> x, playrho::Fixed<BT, FB> y)
-    {
-        return fmod(static_cast<double>(x), static_cast<double>(y));
-    }
-    
-    /// @brief Computes the square root of the sum of the squares.
-    /// @note Since C++11, std::hypot may be specialized as:
-    ///   <code>Promoted hypot(Arithmetic1 x, Arithmetic2 y)</code>.
-    ///   Where <code>Promoted</code> must always be double for inputs of type Fixed.
-    template <typename BT, unsigned int FB>
-    inline double hypot(playrho::Fixed<BT, FB> x, playrho::Fixed<BT, FB> y)
-    {
-        return hypot(static_cast<double>(x), static_cast<double>(y));
-    }
-    
     /// @brief Template specialization of numeric limits for Fixed types.
     /// @sa http://en.cppreference.com/w/cpp/types/numeric_limits
     template <typename BT, unsigned int FB>

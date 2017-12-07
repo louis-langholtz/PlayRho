@@ -24,7 +24,7 @@ namespace playrho {
 
 bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept
 {
-    const auto delta = Real(1) - std::nextafter(Real(1), Real(0));
+    const auto delta = Real(1) - nextafter(Real(1), Real(0));
     return (conf.maxTranslation * delta) < Length{conf.tolerance};
 }
 

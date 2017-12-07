@@ -272,7 +272,7 @@ namespace playrho {
             case 2:
             {
                 const auto delta = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
-                return StripUnit(Sqrt(GetMagnitudeSquared(delta)));
+                return StripUnit(sqrt(GetMagnitudeSquared(delta)));
             }
             case 3:
             {

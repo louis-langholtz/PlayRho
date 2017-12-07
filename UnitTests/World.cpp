@@ -89,7 +89,7 @@ TEST(World, Def)
     const auto stepConf = StepConf{};
 
     const auto v = Real(1);
-    const auto n = std::nextafter(v, Real(0));
+    const auto n = nextafter(v, Real(0));
     const auto time_inc = (v - n) * 1_s;
     ASSERT_GT(time_inc, 0_s);
     ASSERT_LT(time_inc, 1_s);
@@ -1173,7 +1173,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     conf.regVelocityIterations = 0;
     conf.toiPositionIterations = 0;
     conf.toiVelocityIterations = 0;
-    conf.tolerance = std::nextafter(StripUnit(conf.targetDepth), Real{0}) * Meter;
+    conf.tolerance = nextafter(StripUnit(conf.targetDepth), Real{0}) * Meter;
 
     auto steps = unsigned{0};
     while (GetX(pos_a) < (x * Meter) && GetX(pos_b) > (-x * Meter))
@@ -1614,12 +1614,12 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
         }
         else // new_distance > distance
         {
-            if (Cos(angle) != 0)
+            if (cos(angle) != 0)
             {
                 EXPECT_LT(GetX(body1->GetLocation()), GetX(lastpos1));
                 EXPECT_GT(GetX(body2->GetLocation()), GetX(lastpos2));
             }
-            if (Sin(angle) != 0)
+            if (sin(angle) != 0)
             {
                 EXPECT_LT(GetY(body1->GetLocation()), GetY(lastpos1));
                 EXPECT_GT(GetY(body2->GetLocation()), GetY(lastpos2));
@@ -1817,12 +1817,12 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
         
         if (new_distance == distance)
         {
-            if (Cos(angle) != 0)
+            if (cos(angle) != 0)
             {
                 EXPECT_NE(GetX(body1->GetLocation()), GetX(lastpos1));
                 EXPECT_NE(GetX(body2->GetLocation()), GetX(lastpos2));
             }
-            if (Sin(angle) != 0)
+            if (sin(angle) != 0)
             {
                 EXPECT_NE(GetY(body1->GetLocation()), GetY(lastpos1));
                 EXPECT_NE(GetY(body2->GetLocation()), GetY(lastpos2));
@@ -2642,8 +2642,8 @@ TEST(World, MouseJointWontCauseTunnelling)
     for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
     {
         const auto angle = i * 2 * Pi / numBodies;
-        const auto x = ball_radius * Real(2.1) * Cos(angle);
-        const auto y = ball_radius * Real(2.1) * Sin(angle);
+        const auto x = ball_radius * Real(2.1) * cos(angle);
+        const auto y = ball_radius * Real(2.1) * sin(angle);
         body_def.location = Length2{x, y};
         bodies[i] = world.CreateBody(body_def);
         ASSERT_NE(bodies[i], nullptr);
@@ -2783,7 +2783,7 @@ TEST(World, MouseJointWontCauseTunnelling)
                 std::cout << " angl=" << angle;
                 std::cout << " ctoi=" << 0 + contact.GetToiCount();
                 std::cout << " solv=" << 0 + solved;
-                std::cout << " targ=(" << distance * Cos(angle) << "," << distance * Sin(angle) << ")";
+                std::cout << " targ=(" << distance * cos(angle) << "," << distance * sin(angle) << ")";
                 std::cout << " maxv=" << max_velocity;
                 std::cout << " rang=(" << min_x << "," << min_y << ")-(" << max_x << "," << max_y << ")";
                 std::cout << " bpos=(" << GetX(ball_body->GetLocation()) << "," << GetY(ball_body->GetLocation()) << ")";
@@ -2860,7 +2860,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         auto last_pos = ball_body->GetLocation();
         for (auto loops = unsigned{0};; ++loops)
         {
-            mouse_joint->SetTarget(Length2{distance * Cos(angle) * Meter, distance * Sin(angle) * Meter});
+            mouse_joint->SetTarget(Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
             angle += anglular_speed;
             distance += distance_speed;
 

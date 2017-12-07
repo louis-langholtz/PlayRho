@@ -80,17 +80,17 @@ static playrho::UnitVec2 GetRandUnitVec2(playrho::Angle lo, playrho::Angle hi)
 static playrho::Transformation
 GetRandTransformation(playrho::Position pos0, playrho::Position pos1)
 {
-    const auto x0 = playrho::Real{GetX(pos0.linear) / playrho::Meter};
-    const auto y0 = playrho::Real{GetY(pos0.linear) / playrho::Meter};
-    const auto a0 = playrho::Real{pos0.angular / playrho::Radian};
+    const auto x0 = static_cast<double>(playrho::Real{GetX(pos0.linear) / playrho::Meter});
+    const auto y0 = static_cast<double>(playrho::Real{GetY(pos0.linear) / playrho::Meter});
+    const auto a0 = static_cast<double>(playrho::Real{pos0.angular / playrho::Radian});
 
-    const auto x1 = playrho::Real{GetX(pos1.linear) / playrho::Meter};
-    const auto y1 = playrho::Real{GetY(pos1.linear) / playrho::Meter};
-    const auto a1 = playrho::Real{pos1.angular / playrho::Radian};
+    const auto x1 = static_cast<double>(playrho::Real{GetX(pos1.linear) / playrho::Meter});
+    const auto y1 = static_cast<double>(playrho::Real{GetY(pos1.linear) / playrho::Meter});
+    const auto a1 = static_cast<double>(playrho::Real{pos1.angular / playrho::Radian});
     
-    const auto x = Rand(x0, x1) * playrho::Meter;
-    const auto y = Rand(y0, y1) * playrho::Meter;
-    const auto a = Rand(a0, a1) * playrho::Radian;
+    const auto x = static_cast<playrho::Real>(Rand(x0, x1)) * playrho::Meter;
+    const auto y = static_cast<playrho::Real>(Rand(y0, y1)) * playrho::Meter;
+    const auto a = static_cast<playrho::Real>(Rand(a0, a1)) * playrho::Radian;
     
     return playrho::Transformation{playrho::Length2{x, y}, playrho::UnitVec2::Get(a)};
 }
@@ -1057,9 +1057,9 @@ static void UnitVectorFromVector(benchmark::State& state)
 static playrho::Vec2 GetUnitVec1(playrho::Vec2 vec, playrho::Vec2 fallback)
 {
     const auto magSquared = playrho::Square(vec[0]) + playrho::Square(vec[1]);
-    if (playrho::IsNormal(magSquared))
+    if (playrho::isnormal(magSquared))
     {
-        const auto mag = playrho::Sqrt(magSquared);
+        const auto mag = playrho::sqrt(magSquared);
         return playrho::Vec2{vec[0] / mag, vec[1] / mag};
     }
     return fallback;
@@ -1068,13 +1068,13 @@ static playrho::Vec2 GetUnitVec1(playrho::Vec2 vec, playrho::Vec2 fallback)
 static playrho::Vec2 GetUnitVec2(playrho::Vec2 vec, playrho::Vec2 fallback)
 {
     const auto magSquared = playrho::Square(vec[0]) + playrho::Square(vec[1]);
-    if (playrho::IsNormal(magSquared))
+    if (playrho::isnormal(magSquared))
     {
-        const auto mag = playrho::Sqrt(magSquared);
+        const auto mag = playrho::sqrt(magSquared);
         return playrho::Vec2{vec[0] / mag, vec[1] / mag};
     }
-    const auto mag = playrho::Hypot(vec[0], vec[1]);
-    if (playrho::IsNormal(mag))
+    const auto mag = playrho::hypot(vec[0], vec[1]);
+    if (playrho::isnormal(mag))
     {
         return playrho::Vec2{vec[0] / mag, vec[1] / mag};
     }

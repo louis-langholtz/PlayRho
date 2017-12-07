@@ -87,8 +87,8 @@ TEST(Transformation, Mul)
     EXPECT_EQ(GetX(xfm2.p), GetX(newP));
     EXPECT_EQ(GetY(xfm2.p), GetY(newP));
     
-    EXPECT_NEAR(double(xfm2.q.cos()), double(rotation2.cos()), 0.0001);
-    EXPECT_NEAR(double(xfm2.q.sin()), double(rotation2.sin()), 0.0001);
+    EXPECT_NEAR(double(GetX(xfm2.q)), double(GetX(rotation2)), 0.0001);
+    EXPECT_NEAR(double(GetY(xfm2.q)), double(GetY(rotation2)), 0.0001);
 }
 
 TEST(Transformation, MulSameAsTransformTwice)

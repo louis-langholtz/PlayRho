@@ -91,8 +91,8 @@ public:
 
         {
             const auto w = Real(1);
-            const auto b = w / (2.0f + Sqrt(2.0f));
-            const auto s = Sqrt(2.0f) * b;
+            const auto b = w / (2.0f + sqrt(2.0f));
+            const auto s = sqrt(2.0f) * b;
 
             m_polygons[2]->Set({
                 Vec2(0.5f * s, 0.0f) * 1_m,

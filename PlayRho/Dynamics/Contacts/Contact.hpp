@@ -49,7 +49,7 @@ class StepConf;
 inline Real MixFriction(Real friction1, Real friction2)
 {
     assert(friction1 >= Real(0) && friction2 >= Real(0));
-    return Sqrt(friction1 * friction2);
+    return sqrt(friction1 * friction2);
 }
 
 /// @brief Mixes restitution.

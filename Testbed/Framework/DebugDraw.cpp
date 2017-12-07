@@ -603,8 +603,8 @@ struct GLRenderTriangles
 
 DebugDraw::DebugDraw(Camera& camera):
     m_camera(camera),
-    m_cosInc{Cos((2 * Pi) / m_circleParts)},
-    m_sinInc{Sin((2 * Pi) / m_circleParts)}
+    m_cosInc{cos((2 * Pi) / m_circleParts)},
+    m_sinInc{sin((2 * Pi) / m_circleParts)}
 {
     m_points = new GLRenderPoints;
     m_lines = new GLRenderLines;

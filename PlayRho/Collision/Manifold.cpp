@@ -579,7 +579,7 @@ Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transfor
     const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
     const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
 
-    const auto distance = Sqrt(GetMagnitudeSquared(witnessPoints.a - witnessPoints.b));
+    const auto distance = sqrt(GetMagnitudeSquared(witnessPoints.a - witnessPoints.b));
     if (distance > totalRadius)
     {
         // no collision

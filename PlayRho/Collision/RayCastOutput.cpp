@@ -50,7 +50,7 @@ RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input
     }
     
     // Find the point of intersection of the line with the circle.
-    const auto a = -(c + Sqrt(sigma) * SquareMeter);
+    const auto a = -(c + sqrt(sigma) * SquareMeter);
     const auto fraction = Real{a / rr};
 
     // Is the intersection point on the segment?
@@ -171,7 +171,7 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
     const auto ray0 = transformedInput.p1;
     const auto ray = transformedInput.p2 - transformedInput.p1; // Ray delta (p2 - p1)
     
-    auto minT = NextAfter(Real{input.maxFraction}, Real(2));
+    auto minT = nextafter(Real{input.maxFraction}, Real(2));
     auto normalFound = GetInvalid<UnitVec2>();
     
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)

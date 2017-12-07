@@ -466,7 +466,7 @@ Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
     if (lsquared > Square(conf.maxTranslation))
     {
         // Scale back linear velocity so max translation not exceeded.
-        const auto ratio = conf.maxTranslation / Sqrt(lsquared);
+        const auto ratio = conf.maxTranslation / sqrt(lsquared);
         velocity.linear *= ratio;
     }
     
@@ -491,8 +491,8 @@ void RotateAboutWorldPoint(Body& body, Angle amount, Length2 worldPoint)
 {
     const auto xfm = body.GetTransformation();
     const auto p = xfm.p - worldPoint;
-    const auto c = Cos(amount);
-    const auto s = Sin(amount);
+    const auto c = cos(amount);
+    const auto s = sin(amount);
     const auto x = GetX(p) * c - GetY(p) * s;
     const auto y = GetX(p) * s + GetY(p) * c;
     const auto pos = Length2{x, y} + worldPoint;

@@ -1404,7 +1404,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     
 World::ContactToiData World::GetSoonestContacts(size_t reserveSize)
 {
-    auto minToi = NextAfter(Real{1}, Real{0});
+    auto minToi = nextafter(Real{1}, Real{0});
     auto minContacts = std::vector<Contact*>();
     minContacts.reserve(reserveSize);
     for (auto&& contact: m_contacts)

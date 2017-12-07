@@ -41,7 +41,7 @@ namespace playrho {
         /// @brief Gets the default minimum separation squared value.
         static Area GetDefaultMinSeparationSquared()
         {
-            return Sqrt(std::numeric_limits<Vec2::value_type>::min()) * SquareMeter;
+            return sqrt(std::numeric_limits<Vec2::value_type>::min()) * SquareMeter;
         }
         
         /// @brief Initializing constructor.
