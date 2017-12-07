@@ -272,13 +272,13 @@ namespace playrho {
             case 2:
             {
                 const auto delta = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
-                return Sqrt(GetMagnitudeSquared(GetVec2(delta)));
+                return StripUnit(Sqrt(GetMagnitudeSquared(delta)));
             }
             case 3:
             {
                 const auto delta10 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
                 const auto delta20 = GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]);
-                return Cross(GetVec2(delta10), GetVec2(delta20));
+                return StripUnit(Cross(delta10, delta20));
             }
             default: break; // should not be reached
         }
