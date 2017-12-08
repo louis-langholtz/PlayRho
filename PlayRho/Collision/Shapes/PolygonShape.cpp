@@ -105,17 +105,6 @@ PolygonShape::Conf& PolygonShape::Conf::Transform(Transformation xfm) noexcept
     return *this;
 }
 
-PolygonShape& PolygonShape::Transform(Transformation xfm) noexcept
-{
-    for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i)
-    {
-        m_vertices[i] = playrho::Transform(m_vertices[i], xfm);
-        m_normals[i] = Rotate(m_normals[i], xfm.q);
-    }
-    m_centroid = playrho::Transform(m_centroid, xfm);
-    return *this;
-}
-
 void PolygonShape::Set(Span<const Length2> points) noexcept
 {
     // Perform welding and copy vertices into local buffer.

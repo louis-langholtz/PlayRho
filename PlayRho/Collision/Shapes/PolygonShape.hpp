@@ -180,9 +180,6 @@ private:
     /// @param hy the half-height.
     void SetAsBox(Length hx, Length hy) noexcept;
     
-    /// @brief Transforms this polygon by the given transformation.
-    PolygonShape& Transform(Transformation xfm) noexcept;
-    
     /// Array of vertices.
     /// @details Consecutive vertices constitute "edges" of the polygon.
     std::vector<Length2> m_vertices;

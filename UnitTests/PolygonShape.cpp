@@ -286,7 +286,10 @@ TEST(PolygonShape, SetAsCenteredBox)
     const auto x_off = 10.2_m;
     const auto y_off = -5_m;
     const auto shape = PolygonShape{PolygonShape::Conf{}.SetAsBox(hx, hy, Length2(x_off, y_off), 0_deg)};
-    EXPECT_EQ(shape.GetCentroid(), Length2(x_off, y_off));
+    EXPECT_NEAR(static_cast<double>(Real{GetX(shape.GetCentroid())/Meter}),
+                static_cast<double>(Real{x_off/Meter}), 0.001);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(shape.GetCentroid())/Meter}),
+                static_cast<double>(Real{y_off/Meter}), 0.001);
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
@@ -309,11 +312,11 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
 {
     const auto hx = Real(2.3);
     const auto hy = Real(54.1);
-    const auto angle = 90_deg;
+    const auto angle = 90.01_deg;
     const auto shape = PolygonShape{PolygonShape::Conf{}.SetAsBox(hx * Meter, hy * Meter, Length2{}, angle)};
 
-    EXPECT_EQ(GetX(shape.GetCentroid()), 0_m);
-    EXPECT_EQ(GetY(shape.GetCentroid()), 0_m);
+    EXPECT_NEAR(static_cast<double>(Real{GetX(shape.GetCentroid())/Meter}), 0.0, 0.01);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(shape.GetCentroid())/Meter}), 0.0, 0.01);
     EXPECT_EQ(shape.GetChildCount(), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(shape), PolygonShape::GetDefaultVertexRadius());
     
@@ -321,26 +324,23 @@ TEST(PolygonShape, SetAsBoxAngledDegrees90)
     
     // vertices go counter-clockwise (and normals follow their edges)...
     
-    EXPECT_NEAR(double(Real{GetX(shape.GetVertex(0)) / Meter}), double( hy), 0.0002); // right
-    EXPECT_NEAR(double(Real{GetY(shape.GetVertex(0)) / Meter}), double(-hx), 0.0002); // bottom
-    EXPECT_NEAR(double(Real{GetX(shape.GetVertex(1)) / Meter}), double( hy), 0.0002); // right
-    EXPECT_NEAR(double(Real{GetY(shape.GetVertex(1)) / Meter}), double( hx), 0.0002); // top
-    EXPECT_NEAR(double(Real{GetX(shape.GetVertex(2)) / Meter}), double(-hy), 0.0002); // left
-    EXPECT_NEAR(double(Real{GetY(shape.GetVertex(2)) / Meter}), double( hx), 0.0002); // top
-    EXPECT_NEAR(double(Real{GetX(shape.GetVertex(3)) / Meter}), double(-hy), 0.0002); // left
-    EXPECT_NEAR(double(Real{GetY(shape.GetVertex(3)) / Meter}), double(-hx), 0.0002); // bottom
+    EXPECT_NEAR(double(Real{GetX(shape.GetVertex(0)) / Meter}), double( hy), 0.02); // right
+    EXPECT_NEAR(double(Real{GetY(shape.GetVertex(0)) / Meter}), double(-hx), 0.02); // bottom
+    EXPECT_NEAR(double(Real{GetX(shape.GetVertex(1)) / Meter}), double( hy), 0.02); // right
+    EXPECT_NEAR(double(Real{GetY(shape.GetVertex(1)) / Meter}), double( hx), 0.02); // top
+    EXPECT_NEAR(double(Real{GetX(shape.GetVertex(2)) / Meter}), double(-hy), 0.02); // left
+    EXPECT_NEAR(double(Real{GetY(shape.GetVertex(2)) / Meter}), double( hx), 0.02); // top
+    EXPECT_NEAR(double(Real{GetX(shape.GetVertex(3)) / Meter}), double(-hy), 0.02); // left
+    EXPECT_NEAR(double(Real{GetY(shape.GetVertex(3)) / Meter}), double(-hx), 0.02); // bottom
     
-    EXPECT_NEAR(double(shape.GetNormal(0).GetX()), +1.0, 0.00001);
-    EXPECT_NEAR(double(shape.GetNormal(0).GetY()),  0.0, 0.00001);
-
-    EXPECT_NEAR(double(shape.GetNormal(1).GetX()),  0.0, 0.0001);
-    EXPECT_NEAR(double(shape.GetNormal(1).GetY()), +1.0, 0.0001);
-    
-    EXPECT_NEAR(double(shape.GetNormal(2).GetX()), -1.0, 0.00001);
-    EXPECT_NEAR(double(shape.GetNormal(2).GetY()),  0.0, 0.00001);
-
-    EXPECT_NEAR(double(shape.GetNormal(3).GetX()),  0.0, 0.00001);
-    EXPECT_NEAR(double(shape.GetNormal(3).GetY()), -1.0, 0.00001);
+    EXPECT_NEAR(double(shape.GetNormal(0).GetX()), +1.0, 0.01);
+    EXPECT_NEAR(double(shape.GetNormal(0).GetY()),  0.0, 0.01);
+    EXPECT_NEAR(double(shape.GetNormal(1).GetX()),  0.0, 0.01);
+    EXPECT_NEAR(double(shape.GetNormal(1).GetY()), +1.0, 0.01);
+    EXPECT_NEAR(double(shape.GetNormal(2).GetX()), -1.0, 0.01);
+    EXPECT_NEAR(double(shape.GetNormal(2).GetY()),  0.0, 0.01);
+    EXPECT_NEAR(double(shape.GetNormal(3).GetX()),  0.0, 0.01);
+    EXPECT_NEAR(double(shape.GetNormal(3).GetY()), -1.0, 0.01);
 }
 
 TEST(PolygonShape, SetPoints)

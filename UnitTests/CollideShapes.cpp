@@ -615,7 +615,6 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction2)
     const auto maxSep01_NxN = GetMaxSeparation(child0, xfm0, child0, xfm1, totalRadius);
     const auto maxSep10_NxN = GetMaxSeparation(child0, xfm1, child0, xfm0, totalRadius);
     
-    
     EXPECT_EQ(maxSep01_4x4.indices.first, decltype(maxSep01_4x4.indices.first){1}); // v0 of shape0
     EXPECT_EQ(maxSep01_4x4.indices.first, maxSep01_NxN.indices.first);
     EXPECT_EQ(maxSep01_4x4.indices.second, decltype(maxSep01_4x4.indices.first){0}); // v3 of shape1
