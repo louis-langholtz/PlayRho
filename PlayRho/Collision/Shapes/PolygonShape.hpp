@@ -53,17 +53,26 @@ public:
             // Intentionally empty.
         }
         
+        /// @brief Uses the given vertices.
         inline Conf& UseVertices(const std::vector<Length2>& verts) noexcept
         {
             vertices = verts;
             return *this;
         }
         
+        /// @brief Sets the vertices for the described box.
         Conf& SetAsBox(Length hx, Length hy) noexcept;
+
+        /// @brief Sets the vertices for the described box.
         Conf& SetAsBox(Length hx, Length hy, Length2 center, Angle angle) noexcept;
+
+        /// @brief Sets the vertices to the given ones.
         Conf& Set(Span<const Length2> verts) noexcept;
+
+        /// @brief Transformas the set vertices.
         Conf& Transform(Transformation xfm) noexcept;
 
+        /// @brief Vertices container.
         std::vector<Length2> vertices;
     };
     
@@ -89,7 +98,7 @@ public:
     /// @brief Move constructor.
     PolygonShape(PolygonShape&& other) = default;
     
-    /// Initializing constructor for rectangles.
+    /// @brief Initializing constructor for rectangles.
     /// @param hx the half-width.
     /// @param hy the half-height.
     /// @param conf Configuration data for the shape.
