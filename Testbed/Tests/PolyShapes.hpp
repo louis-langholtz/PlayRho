@@ -70,9 +70,6 @@ public:
 
     PolyShapes()
     {
-        m_circle->SetDensity(1_kgpm2);
-        m_circle->SetFriction(Real(0.3f));
-
         // Ground body
         {
             const auto ground = m_world.CreateBody();
@@ -227,7 +224,8 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m);
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m,
+        DiskShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)));
 };
 
 } // namespace playrho

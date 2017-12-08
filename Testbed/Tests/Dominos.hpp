@@ -41,10 +41,8 @@ public:
         }
 
         {
-            const auto shape = std::make_shared<PolygonShape>(0.1_m, 1_m);
-            shape->SetDensity(20_kgpm2);
-            shape->SetFriction(Real(0.05f));
-
+            const auto shape = std::make_shared<PolygonShape>(0.1_m, 1_m,
+                                                              PolygonShape::Conf{}.SetDensity(20_kgpm2).SetFriction(Real(0.05f)));
             for (auto i = 0; i < 10; ++i)
             {
                 const auto body = m_world.CreateBody(BodyDef{}

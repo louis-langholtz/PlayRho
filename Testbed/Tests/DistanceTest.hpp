@@ -118,10 +118,11 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body && fixture)
             {
-                const auto shape = fixture->GetShape();
-                auto polygon = *static_cast<const PolygonShape*>(shape.get());
-                polygon.SetVertexRadius(shape->GetVertexRadius() + RadiusIncrement);
-                const auto newf = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
+                const auto polygon = static_cast<const PolygonShape*>(fixture->GetShape().get());
+                auto conf = PolygonShape::Conf{};
+                conf.Set(polygon->GetVertices());
+                conf.SetVertexRadius(polygon->GetVertexRadius() + RadiusIncrement);
+                const auto newf = body->CreateFixture(std::make_shared<PolygonShape>(conf));
                 fixtures.erase(fixtures.begin());
                 fixtures.insert(newf);
                 SetSelectedFixtures(fixtures);
@@ -139,9 +140,11 @@ public:
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= 0_m)
                 {
-                    PolygonShape polygon{*static_cast<const PolygonShape*>(shape.get())};
-                    polygon.SetVertexRadius(newVertexRadius);
-                    auto newf = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
+                    const auto polygon = static_cast<const PolygonShape*>(shape.get());
+                    auto conf = PolygonShape::Conf{};
+                    conf.Set(polygon->GetVertices());
+                    conf.SetVertexRadius(newVertexRadius);
+                    auto newf = body->CreateFixture(std::make_shared<PolygonShape>(conf));
                     if (newf)
                     {
                         fixtures.erase(fixtures.begin());

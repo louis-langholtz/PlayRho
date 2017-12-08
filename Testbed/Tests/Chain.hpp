@@ -32,10 +32,8 @@ public:
         const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
         {
-            const auto shape = std::make_shared<PolygonShape>(0.6_m, 0.125_m);
-            shape->SetDensity(20_kgpm2);
-            shape->SetFriction(Real(0.2f));
-
+            const auto shape = std::make_shared<PolygonShape>(0.6_m, 0.125_m,
+                PolygonShape::Conf{}.SetDensity(20_kgpm2).SetFriction(Real(0.2f)));
             const auto y = 25.0f;
             auto prevBody = ground;
             for (auto i = 0; i < 30; ++i)

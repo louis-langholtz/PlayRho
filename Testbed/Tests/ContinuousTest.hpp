@@ -47,12 +47,10 @@ public:
             bd.location = Vec2(0.0f, 20.0f) * 1_m;
             //bd.angle = 0.1f;
 
-            const auto shape = std::make_shared<PolygonShape>(2_m, 0.1_m);
-            shape->SetDensity(1_kgpm2);
-
+            const auto shape = std::make_shared<PolygonShape>(2_m, 0.1_m,
+                                                              PolygonShape::Conf{}.SetDensity(1_kgpm2));
             m_body = m_world.CreateBody(bd);
             m_body->CreateFixture(shape);
-
             m_angularVelocity = RandomFloat(-50.0f, 50.0f) * 1_rad / 1_s;
             //m_angularVelocity = 46.661274f;
             m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * 1_mps, m_angularVelocity});

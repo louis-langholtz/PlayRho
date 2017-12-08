@@ -35,23 +35,18 @@ public:
 
     SphereStack()
     {
-        {
-            const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
-        }
-        {
-            const auto shape = std::make_shared<DiskShape>(1_m);
-            shape->SetDensity(1_kgpm2);
+        const auto ground = m_world.CreateBody();
+        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
 
-            for (auto i = 0; i < e_count; ++i)
-            {
-                BodyDef bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Vec2(0, 4.0f + 3.0f * i) * 1_m;
-                m_bodies[i] = m_world.CreateBody(bd);
-                m_bodies[i]->CreateFixture(shape);
-                m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
-            }
+        const auto shape = std::make_shared<DiskShape>(1_m, DiskShape::Conf{}.SetDensity(1_kgpm2));
+        for (auto i = 0; i < e_count; ++i)
+        {
+            BodyDef bd;
+            bd.type = BodyType::Dynamic;
+            bd.location = Vec2(0, 4.0f + 3.0f * i) * 1_m;
+            m_bodies[i] = m_world.CreateBody(bd);
+            m_bodies[i]->CreateFixture(shape);
+            m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
         }
     }
 

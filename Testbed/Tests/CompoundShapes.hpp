@@ -42,8 +42,7 @@ public:
             conf.vertexRadius = 0.5_m;
             
             conf.location = Vec2{-0.5f, 0.5f} * 1_m;
-            const auto circle1 = std::make_shared<DiskShape>(conf);
-            circle1->SetDensity(2_kgpm2);
+            const auto circle1 = std::make_shared<DiskShape>(DiskShape::Conf(conf).SetDensity(2_kgpm2));
             conf.location = Vec2{0.5f, 0.5f} * 1_m;
             const auto circle2 = std::make_shared<DiskShape>(conf);
             for (auto i = 0; i < 10; ++i)

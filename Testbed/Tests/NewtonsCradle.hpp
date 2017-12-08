@@ -106,24 +106,23 @@ namespace playrho {
                 const auto body = m_world.CreateBody(bd);
                 
                 const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
-                auto shape = PolygonShape((frame_width/Real{2}), (frame_width / Real{24}));
-                shape.SetDensity(20_kgpm2);
+                const auto shape = PolygonShape::Conf{}.SetAsBox(frame_width / 2, frame_width / 24).SetDensity(20_kgpm2);
                 body->CreateFixture(std::make_shared<PolygonShape>(shape));
                 return body;
             }();
             
             for (auto i = decltype(m_num_arms){0}; i < m_num_arms; ++i)
             {
-                const auto x = (((i + Real(0.5f)) - Real(m_num_arms) / Real(2)) * frame_width_per_arm);
+                const auto x = (((i + Real(0.5f)) - Real(m_num_arms) / 2) * frame_width_per_arm);
                 
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.bullet = m_bullet_mode;
-                bd.location = Length2{x, frame_height - (arm_length / Real{2})};
+                bd.location = Length2{x, frame_height - (arm_length / 2)};
                 
                 m_swings[i] = m_world.CreateBody(bd);
                 CreateArm(m_swings[i], arm_length);
-                CreateBall(m_swings[i], Length2{0, -arm_length / Real{2}}, ball_radius);
+                CreateBall(m_swings[i], Length2{0, -arm_length / 2}, ball_radius);
                 
                 m_world.CreateJoint(RevoluteJointDef(m_frame, m_swings[i], Length2{x, frame_height}));
             }            
@@ -155,11 +154,10 @@ namespace playrho {
 
                 BodyDef def;
                 def.type = BodyType::Static;
-                def.location = Length2{frame_width / Real{2} + frame_width / Real{24}, frame_height - (arm_length / Real{2})};
+                def.location = Length2{frame_width / 2 + frame_width / 24, frame_height - (arm_length / 2)};
                 const auto body = m_world.CreateBody(def);
                 
-                auto shape = PolygonShape((frame_width/Real{24}), (arm_length / Real{2} + frame_width / Real{24}));
-                shape.SetDensity(20_kgpm2);
+                const auto shape = PolygonShape::Conf{}.SetAsBox(frame_width / 24, arm_length / 2 + frame_width / 24).SetDensity(20_kgpm2);
                 body->CreateFixture(std::make_shared<PolygonShape>(shape));
                 
                 m_right_side_wall = body;
@@ -179,8 +177,7 @@ namespace playrho {
                 };
                 const auto body = m_world.CreateBody(def);
                 
-                auto shape = PolygonShape(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24}));
-                shape.SetDensity(20_kgpm2);
+                const auto shape = PolygonShape::Conf{}.SetAsBox(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24})).SetDensity(20_kgpm2);
                 body->CreateFixture(std::make_shared<PolygonShape>(shape));
                 
                 m_left_side_wall = body;
@@ -218,8 +215,7 @@ namespace playrho {
 
         Fixture* CreateArm(Body* body, Length length = 10_m)
         {
-            auto shape = PolygonShape(length / Real{2000}, length / Real{2});
-            shape.SetDensity(20_kgpm2);
+            const auto shape = PolygonShape::Conf{}.SetAsBox(length / Real{2000}, length / Real{2}).SetDensity(20_kgpm2);
             return body->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 

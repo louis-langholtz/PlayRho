@@ -91,9 +91,9 @@ public:
 
     /// @brief Initializing constructor.
     explicit DiskShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
-        Shape{conf}, m_location{conf.location}
+        Shape{radius, conf}, m_location{conf.location}
     {
-        SetVertexRadius(radius);
+        // Intentionally empty.
     }
 
     /// @brief Copy constructor.

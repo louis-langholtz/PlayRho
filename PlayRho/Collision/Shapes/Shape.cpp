@@ -33,6 +33,15 @@ Shape::Shape(const ShapeDef& conf) noexcept:
     // Intentionally empty.
 }
 
+Shape::Shape(const Length vertexRadius, const ShapeDef& conf) noexcept:
+    m_vertexRadius{vertexRadius},
+    m_density{conf.density},
+    m_friction{conf.friction},
+    m_restitution{conf.restitution}
+{
+    // Intentionally empty.
+}
+
 // Free functions...
 
 bool TestPoint(const Shape& shape, Length2 point) noexcept

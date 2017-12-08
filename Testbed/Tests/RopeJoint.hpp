@@ -41,13 +41,10 @@ public:
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
 
         {
-            const auto rectangle = std::make_shared<PolygonShape>(0.5_m, 0.125_m);
-            rectangle->SetDensity(20_kgpm2);
-            rectangle->SetFriction(Real(0.2f));
-
-            const auto square = std::make_shared<PolygonShape>(1.5_m, 1.5_m);
-            square->SetDensity(100_kgpm2);
-            square->SetFriction(Real(0.2f));
+            const auto rectangle = std::make_shared<PolygonShape>(0.5_m, 0.125_m,
+                                                                  PolygonShape::Conf{}.SetDensity(20_kgpm2).SetFriction(Real(0.2f)));
+            const auto square = std::make_shared<PolygonShape>(1.5_m, 1.5_m,
+                                                               PolygonShape::Conf{}.SetDensity(100_kgpm2).SetFriction(Real(0.2f)));
 
             FixtureDef fd;
             fd.filter.categoryBits = 0x0001;

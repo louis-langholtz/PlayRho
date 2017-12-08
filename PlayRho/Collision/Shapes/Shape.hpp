@@ -98,47 +98,17 @@ public:
     ///
     NonNegative<Length> GetVertexRadius() const noexcept;
 
-    /// @brief Sets the vertex radius.
-    ///
-    /// @details This sets the radius from the vertex that the shape's "skin" should
-    ///   extend outward by. While any edges - line segments between multiple vertices -
-    ///   are straight, corners between them (the vertices) are rounded and treated
-    ///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
-    ///   therefore will be more prone to rolling or having other shapes more prone
-    ///   to roll off of them.
-    ///
-    /// @note This should be a non-negative value.
-    ///
-    /// @sa GetVertexRadius
-    ///
-    void SetVertexRadius(NonNegative<Length> vertexRadius) noexcept;
-
     /// @brief Gets the density of this fixture.
     /// @return Non-negative density (in mass per area).
     NonNegative<AreaDensity> GetDensity() const noexcept;
-
-    /// @brief Sets the density of this fixture.
-    /// @note This will _not_ automatically adjust the mass of the body.
-    ///   You must call Body::ResetMassData to update the body's mass.
-    /// @param density Non-negative density (in mass per area).
-    void SetDensity(NonNegative<AreaDensity> density) noexcept;
     
     /// @brief Gets the coefficient of friction.
     /// @return Value of 0 or higher.
     Real GetFriction() const noexcept;
     
-    /// @brief Sets the coefficient of friction.
-    /// @note This will _not_ change the friction of existing contacts.
-    /// @param friction Zero or higher (non-negative) co-efficient of friction.
-    void SetFriction(NonNegative<Real> friction) noexcept;
-    
     /// @brief Gets the coefficient of restitution.
     Real GetRestitution() const noexcept;
     
-    /// @brief Sets the coefficient of restitution.
-    /// @note This will _not_ change the restitution of existing contacts.
-    void SetRestitution(Finite<Real> restitution) noexcept;
-
 protected:
 
     /// @brief Default constructor.
@@ -149,6 +119,10 @@ protected:
     ///
     explicit Shape(const ShapeDef& conf) noexcept;
     
+    /// @brief Initializing constructor.
+    ///
+    Shape(const Length vertexRadius, const ShapeDef& conf) noexcept;
+
     /// @brief Copy constructor.
     Shape(const Shape& other) = default;
     
@@ -181,11 +155,6 @@ inline NonNegative<Length> Shape::GetVertexRadius() const noexcept
     return m_vertexRadius;
 }
 
-inline void Shape::SetVertexRadius(NonNegative<Length> vertexRadius) noexcept
-{
-    m_vertexRadius = vertexRadius;
-}
-
 inline NonNegative<AreaDensity> Shape::GetDensity() const noexcept
 {
     return m_density;
@@ -199,21 +168,6 @@ inline Real Shape::GetFriction() const noexcept
 inline Real Shape::GetRestitution() const noexcept
 {
     return m_restitution;
-}
-
-inline void Shape::SetDensity(NonNegative<AreaDensity> density) noexcept
-{
-    m_density = density;
-}
-
-inline void Shape::SetFriction(NonNegative<Real> friction) noexcept
-{
-    m_friction = friction;
-}
-
-inline void Shape::SetRestitution(Finite<Real> restitution) noexcept
-{
-    m_restitution = restitution;
 }
 
 // Free functions...

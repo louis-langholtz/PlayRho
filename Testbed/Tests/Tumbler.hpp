@@ -31,8 +31,6 @@ public:
     
     Tumbler()
     {
-        m_square->SetDensity(1_kgpm2);
-        m_disk->SetDensity(0.1_kgpm2);
         SetupTumblers(1);
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Speed up rotation.", [&](KeyActionMods) {
             ForAll<RevoluteJoint>(m_world, [=](RevoluteJoint& j) { IncMotorSpeed(j, +MotorInc); });
@@ -136,10 +134,12 @@ public:
 
     const AngularVelocity MotorInc = 0.5_rpm;
     int m_count = 0;
-    std::shared_ptr<PolygonShape> m_square = std::make_shared<PolygonShape>(0.125_m, 0.125_m);
+    std::shared_ptr<PolygonShape> m_square = std::make_shared<PolygonShape>(0.125_m, 0.125_m,
+                                                                            PolygonShape::Conf{}.SetDensity(1_kgpm2));
     std::shared_ptr<DiskShape> m_disk = std::make_shared<DiskShape>(DiskShape::Conf{}
                                                                     .UseVertexRadius(0.125_m)
-                                                                    .UseFriction(Real(0)));
+                                                                    .UseFriction(Real(0))
+                                                                    .SetDensity(0.1_kgpm2));
     std::shared_ptr<Shape> m_shape = m_square;
 };
 

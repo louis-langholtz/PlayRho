@@ -114,8 +114,8 @@ public:
             bd.type = BodyType::Dynamic;
             const auto body = m_world.CreateBody(bd);
 
-            const auto box = std::make_shared<PolygonShape>(10_m, 0.25_m);
-            box->SetDensity(1_kgpm2);
+            const auto box = std::make_shared<PolygonShape>(10_m, 0.25_m,
+                                                            PolygonShape::Conf{}.SetDensity(1_kgpm2));
             body->CreateFixture(box);
 
             RevoluteJointDef jd(ground, body, body->GetLocation());
@@ -131,9 +131,9 @@ public:
         // Bridge
         {
             const auto N = 20;
-            const auto shape = std::make_shared<PolygonShape>(1_m, 0.125_m);
-            shape->SetDensity(1_kgpm2);
-            shape->SetFriction(Real(0.6f));
+            const auto shape = std::make_shared<PolygonShape>(1_m, 0.125_m,
+                                                              PolygonShape::Conf{}
+                                                              .SetDensity(1_kgpm2).SetFriction(Real(0.6f)));
 
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i)
@@ -156,9 +156,8 @@ public:
 
         // Boxes
         {
-            const auto box = std::make_shared<PolygonShape>(0.5_m, 0.5_m);
-            box->SetDensity(0.5_kgpm2);
-
+            const auto box = std::make_shared<PolygonShape>(0.5_m, 0.5_m,
+                                                            PolygonShape::Conf{}.SetDensity(0.5_kgpm2));
             auto body = static_cast<Body*>(nullptr);
 
             BodyDef bd;

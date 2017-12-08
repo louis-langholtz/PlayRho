@@ -47,10 +47,6 @@ public:
 
     RayCast()
     {
-        m_circle->SetVertexRadius(0.5_m);
-        m_circle->SetFriction(Real(0.3f));
-        m_edge->SetFriction(Real(0.3f));
-        
         // Ground body
         const auto ground = m_world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m,
@@ -379,8 +375,10 @@ public:
     Body* m_bodies[e_maxBodies];
     int m_userData[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>();
-    std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m);
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(
+        DiskShape::Conf{}.SetVertexRadius(0.5_m).SetFriction(Real(0.3f)));
+    std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m,
+                                                                    EdgeShape::Conf{}.SetFriction(Real(0.3f)));
     Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;
 };

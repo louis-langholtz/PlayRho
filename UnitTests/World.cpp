@@ -766,8 +766,8 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
     const auto v2 = Length2{+1_m, 0_m};
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = 1_m;
+    conf.density = 1_kgpm2;
     const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
-    shape->SetDensity(1_kgpm2);
     ASSERT_EQ(shape->GetVertexRadius(), 1_m);
 
     const auto fixture = body->CreateFixture(shape);
@@ -1132,9 +1132,10 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     body_def.type = BodyType::Dynamic;
     body_def.bullet = true;
     
-    const auto shape = std::make_shared<DiskShape>(1_m);
-    shape->SetDensity(1_kgpm2);
-    shape->SetRestitution(Real(1));
+    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
+                                                   .SetRadius(1_m)
+                                                   .SetRestitution(Real(1))
+                                                   .SetDensity(1_kgpm2));
     
     body_def.location = Length2{-x * Meter, 0_m};
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
@@ -1390,9 +1391,8 @@ TEST(World, HeavyOnLight)
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
     const auto radius = 1_m;
-    const auto shape = std::make_shared<DiskShape>(radius);
-    shape->SetDensity(1_kgpm2);
-    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
+    const auto shape = std::make_shared<DiskShape>(radius, DiskShape::Conf{}
+                                                   .SetDensity(1_kgpm2).SetRestitution(Real(1)));
     const auto gravity = LinearAcceleration2{};
 
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1429,15 +1429,8 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 {
     const auto radius1 = 1_m;
     const auto radius2 = 0.6_m;
-    
-    const auto shape1 = std::make_shared<DiskShape>(radius1);
-    shape1->SetDensity(1_kgpm2);
-    shape1->SetRestitution(Real(1)); // changes where bodies will be after collision
-    
-    const auto shape2 = std::make_shared<DiskShape>(radius2);
-    shape2->SetDensity(1_kgpm2);
-    shape2->SetRestitution(Real(1)); // changes where bodies will be after collision
-
+    const auto shape1 = std::make_shared<DiskShape>(radius1, DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
+    const auto shape2 = std::make_shared<DiskShape>(radius2, DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
     const auto gravity = LinearAcceleration2{};
     
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1483,9 +1476,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.location = Length2{};
-    const auto shape = std::make_shared<DiskShape>(1_m);
-    shape->SetDensity(1_kgpm2);
-    shape->SetRestitution(Real(1));
+    const auto shape = std::make_shared<DiskShape>(1_m, DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
     for (auto i = 0; i < 2; ++i)
     {
         const auto body = world.CreateBody(body_def);
@@ -1555,11 +1546,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false; // separation is faster if true.
-    
-    const auto shape = std::make_shared<DiskShape>(radius * Meter);
-    shape->SetDensity(1_kgpm2);
-    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
-    
+    const auto shape = std::make_shared<DiskShape>(radius * Meter, DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
     const auto body1pos = Length2{(-radius/4) * Meter, 0_m};
     body_def.location = body1pos;
     const auto body1 = world.CreateBody(body_def);
@@ -1647,10 +1634,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 
 TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 {
-    const auto shape = std::make_shared<PolygonShape>(1_m, 1_m);
-    shape->SetDensity(1_kgpm2);
-    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
-
+    const auto shape = std::make_shared<PolygonShape>(1_m, 1_m, PolygonShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
     const auto gravity = LinearAcceleration2{};
     
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1720,9 +1704,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     body_def.bullet = false; // separation is faster if true.
     
     const auto half_dim = Real(64); // 1 causes additional y-axis separation
-    const auto shape = std::make_shared<PolygonShape>(half_dim * Meter, half_dim * Meter);
-    shape->SetDensity(1_kgpm2);
-    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
+    const auto shape = std::make_shared<PolygonShape>(half_dim * Meter, half_dim * Meter,
+                                                      PolygonShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
     
     const auto body1pos = Length2{Real(half_dim/2) * Meter, 0_m}; // 0 causes additional y-axis separation
     body_def.location = body1pos;
@@ -1878,9 +1861,8 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_EQ(world.GetGravity(), gravity);
     world.SetContactListener(&listener);
     
-    const auto shape = std::make_shared<DiskShape>(radius);
-    shape->SetDensity(1_kgpm2);
-    shape->SetRestitution(Real(1)); // changes where bodies will be after collision
+    const auto shape = std::make_shared<DiskShape>(radius,
+                                                   DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
 
     body_def.location = Length2{-(x + 1) * Meter, 0_m};
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
@@ -2034,8 +2016,8 @@ TEST(World, TilesComesToRest)
     
     {
         const auto a = Real{0.5f};
+        conf.SetDensity(5_kgpm2);
         const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter, conf);
-        shape->SetDensity(5_kgpm2);
         
         Length2 x(-7.0_m, 0.75_m);
         Length2 y;
@@ -2417,9 +2399,8 @@ TEST(World, SpeedingBulletBallWontTunnel)
     ASSERT_NE(ball_body, nullptr);
     
     const auto ball_radius = 0.01_m;
-    const auto circle_shape = std::make_shared<DiskShape>(ball_radius);
-    circle_shape->SetDensity(1_kgpm2);
-    circle_shape->SetRestitution(Real(1)); // changes where bodies will be after collision
+    const auto circle_shape = std::make_shared<DiskShape>(ball_radius,
+                                                          DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
     const auto ball_fixture = ball_body->CreateFixture(circle_shape);
     ASSERT_NE(ball_fixture, nullptr);
 
@@ -2628,8 +2609,8 @@ TEST(World, MouseJointWontCauseTunnelling)
     ASSERT_EQ(GetY(ball_body->GetLocation()), 0_m);
     
     const auto ball_radius = Real(half_box_width / 4) * Meter;
-    const auto object_shape = std::make_shared<PolygonShape>(ball_radius, ball_radius);
-    object_shape->SetDensity(10_kgpm2);
+    const auto object_shape = std::make_shared<PolygonShape>(ball_radius, ball_radius,
+                                                             PolygonShape::Conf{}.SetDensity(10_kgpm2));
     {
         const auto ball_fixture = ball_body->CreateFixture(object_shape);
         ASSERT_NE(ball_fixture, nullptr);
@@ -3102,14 +3083,11 @@ public:
         const auto ground = world.CreateBody();
         ground->CreateFixture(std::make_shared<EdgeShape>(Length2{-hw_ground, 0_m},
                                                           Length2{hw_ground, 0_m}));
-        
         const auto numboxes = boxes.size();
-        
         original_x = GetParam();
         
-        const auto boxShape = std::make_shared<PolygonShape>(hdim, hdim);
-        boxShape->SetDensity(1_kgpm2);
-        boxShape->SetFriction(Real(0.3f));
+        const auto boxShape = std::make_shared<PolygonShape>(hdim, hdim,
+             PolygonShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)));
         for (auto i = decltype(numboxes){0}; i < numboxes; ++i)
         {
             // (hdim + 0.05f) + (hdim * 2 + 0.1f) * i

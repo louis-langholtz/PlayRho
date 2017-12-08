@@ -59,8 +59,7 @@ public:
 #endif
         }
 
-        const auto shape = std::make_shared<DiskShape>(1_m);
-        shape->SetDensity(1_kgpm2);
+        const auto shape = std::make_shared<DiskShape>(1_m, DiskShape::Conf{}.SetDensity(1_kgpm2));
         for (auto i = 0; i < e_count; ++i)
         {
             BodyDef bd;

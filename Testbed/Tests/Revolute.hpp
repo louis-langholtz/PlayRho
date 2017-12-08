@@ -95,12 +95,11 @@ public:
 
         // Tests mass computation of a small object far from the origin
         {
-            auto polyShape = PolygonShape({
+            const auto polyShape = PolygonShape::Conf{}.Set({
                 Vec2(17.63f, 36.31f) * 1_m,
                 Vec2(17.52f, 36.69f) * 1_m,
                 Vec2(17.19f, 36.36f) * 1_m
-            });
-            polyShape.SetDensity(1_kgpm2);
+            }).SetDensity(1_kgpm2);
         
             const auto body = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
             body->CreateFixture(std::make_shared<PolygonShape>(polyShape));

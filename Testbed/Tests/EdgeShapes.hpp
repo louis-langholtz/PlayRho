@@ -37,9 +37,6 @@ public:
 
     EdgeShapes()
     {
-        m_circle->SetFriction(Real(0.3f));
-        m_circle->SetDensity(20_kgpm2);
-
         // Ground body
         {
             const auto ground = m_world.CreateBody();
@@ -206,7 +203,8 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m);
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m,
+        DiskShape::Conf{}.SetFriction(Real(0.3f)).SetDensity(20_kgpm2));
 
     Real m_angle;
 };
