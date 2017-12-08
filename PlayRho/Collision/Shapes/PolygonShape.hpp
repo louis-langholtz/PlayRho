@@ -48,14 +48,27 @@ public:
     /// @brief Configuration data for polygon shapes.
     struct Conf: public ShapeDefBuilder<Conf>
     {
-        PLAYRHO_CONSTEXPR inline Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+        inline Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
         {
             // Intentionally empty.
         }
+        
+        inline Conf& UseVertices(const std::vector<Length2>& verts) noexcept
+        {
+            vertices = verts;
+            return *this;
+        }
+        
+        Conf& SetAsBox(Length hx, Length hy) noexcept;
+        Conf& SetAsBox(Length hx, Length hy, Length2 center, Angle angle) noexcept;
+        Conf& Set(Span<const Length2> verts) noexcept;
+        Conf& Transform(Transformation xfm) noexcept;
+
+        std::vector<Length2> vertices;
     };
     
     /// @brief Gets the default configuration for a PolygonShape.
-    static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept
+    static inline Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }
@@ -67,7 +80,7 @@ public:
     explicit PolygonShape(const Conf& conf = GetDefaultConf()) noexcept:
         Shape{conf}
     {
-        // Intentionally empty.
+        Set(Span<const Length2>(conf.vertices.data(), conf.vertices.size()));
     }
 
     /// @brief Copy constructor.
@@ -104,29 +117,7 @@ public:
     MassData GetMassData() const noexcept override;
     
     void Accept(ShapeVisitor& visitor) const override;
-
-    /// Creates a convex hull from the given array of local points.
-    /// The size of the span must be in the range [1, MaxShapeVertices].
-    /// @warning the points may be re-ordered, even if they form a convex polygon
-    /// @warning collinear points are handled but not removed. Collinear points
-    /// may lead to poor stacking behavior.
-    void Set(Span<const Length2> points) noexcept;
-
-    /// Creates a convex hull from the given set of local points.
-    /// The size of the set must be in the range [1, MaxShapeVertices].
-    /// @warning the points may be re-ordered, even if they form a convex polygon
-    /// @warning collinear points are handled but not removed. Collinear points
-    ///   may lead to poor stacking behavior.
-    void Set(const VertexSet& points) noexcept;
     
-    /// Build vertices to represent an axis-aligned box centered on the local origin.
-    /// @param hx the half-width.
-    /// @param hy the half-height.
-    void SetAsBox(Length hx, Length hy) noexcept;
-    
-    /// @brief Transforms this polygon by the given transformation.
-    PolygonShape& Transform(Transformation xfm) noexcept;
-
     /// Gets the vertex count.
     /// @return value between 0 and MaxShapeVertices inclusive.
     /// @see MaxShapeVertices.
@@ -161,6 +152,28 @@ public:
     Length2 GetCentroid() const noexcept { return m_centroid; }
     
 private:
+    /// Creates a convex hull from the given array of local points.
+    /// The size of the span must be in the range [1, MaxShapeVertices].
+    /// @warning the points may be re-ordered, even if they form a convex polygon
+    /// @warning collinear points are handled but not removed. Collinear points
+    /// may lead to poor stacking behavior.
+    void Set(Span<const Length2> points) noexcept;
+    
+    /// Creates a convex hull from the given set of local points.
+    /// The size of the set must be in the range [1, MaxShapeVertices].
+    /// @warning the points may be re-ordered, even if they form a convex polygon
+    /// @warning collinear points are handled but not removed. Collinear points
+    ///   may lead to poor stacking behavior.
+    void Set(const VertexSet& points) noexcept;
+    
+    /// Build vertices to represent an axis-aligned box centered on the local origin.
+    /// @param hx the half-width.
+    /// @param hy the half-height.
+    void SetAsBox(Length hx, Length hy) noexcept;
+    
+    /// @brief Transforms this polygon by the given transformation.
+    PolygonShape& Transform(Transformation xfm) noexcept;
+    
     /// Array of vertices.
     /// @details Consecutive vertices constitute "edges" of the polygon.
     std::vector<Length2> m_vertices;
@@ -172,7 +185,7 @@ private:
     std::vector<UnitVec2> m_normals;
 
     /// Centroid of this shape.
-    Length2 m_centroid = Length2{};
+    Length2 m_centroid = GetInvalid<Length2>();
 };
 
 inline ChildCounter PolygonShape::GetChildCount() const noexcept
@@ -221,22 +234,6 @@ Length2 GetEdge(const PolygonShape& shape, VertexCounter index);
 /// @returns true if valid
 /// @relatedalso PolygonShape
 bool Validate(const PolygonShape& shape);
-
-/// Build vertices to represent an oriented box.
-/// @param shape Shape to set as a box.
-/// @param hx the half-width.
-/// @param hy the half-height.
-/// @param center the center of the box in local coordinates.
-/// @param angle the rotation of the box in local coordinates.
-/// @relatedalso PolygonShape
-void SetAsBox(PolygonShape& shape, Length hx, Length hy, Length2 center, Angle angle) noexcept;
-
-/// @brief Transforms the given shape by the given transformation.
-/// @relatedalso PolygonShape
-inline PolygonShape Transform(PolygonShape value, Transformation xfm) noexcept
-{
-    return value.Transform(xfm);
-}
 
 } // namespace playrho
 

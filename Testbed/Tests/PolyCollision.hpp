@@ -30,17 +30,10 @@ class PolyCollision : public Test
 public:
     PolyCollision()
     {
-        {
-            m_polygonA.SetAsBox(0.2_m, 0.4_m);
-            m_transformA = Transformation{Length2{}, UnitVec2::GetRight()};
-        }
-
-        {
-            m_polygonB.SetAsBox(0.5_m, 0.5_m);
-            m_positionB = Vec2(19.345284f, 1.5632932f) * 1_m;
-            m_angleB = 1.9160721_rad;
-            m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
-        }
+        m_transformA = Transformation{Length2{}, UnitVec2::GetRight()};
+        m_positionB = Vec2(19.345284f, 1.5632932f) * 1_m;
+        m_angleB = 1.9160721_rad;
+        m_transformB = Transformation{m_positionB, UnitVec2::Get(m_angleB)};
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Move Left", [&](KeyActionMods) {
             GetX(m_positionB) -= 0.1_m;
@@ -114,8 +107,8 @@ public:
         }
     }
     
-    PolygonShape m_polygonA;
-    PolygonShape m_polygonB;
+    PolygonShape m_polygonA{PolygonShape::Conf{}.SetAsBox(0.2_m, 0.4_m)};
+    PolygonShape m_polygonB{PolygonShape::Conf{}.SetAsBox(0.5_m, 0.5_m)};
 
     Transformation m_transformA;
     Transformation m_transformB;

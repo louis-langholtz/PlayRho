@@ -60,12 +60,12 @@ public:
             m_world.CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + Count, 5.0f) * 1_m});
         }
 
-        const auto polyshape = std::make_shared<PolygonShape>(PolygonShape::Conf{}.UseDensity(1_kgpm2));
-        polyshape->Set({
+        const auto conf = PolygonShape::Conf{}.UseDensity(1_kgpm2).UseVertices({
             Vec2(-0.5f, 0.0f) * 1_m,
             Vec2(0.5f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
+        const auto polyshape = std::make_shared<PolygonShape>(conf);
         for (auto i = 0; i < 2; ++i)
         {
             const auto body = m_world.CreateBody(BodyDef{}

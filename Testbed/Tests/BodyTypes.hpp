@@ -56,11 +56,9 @@ public:
             const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(-4, 5) * 1_m);
             m_platform = m_world.CreateBody(bd);
 
-            const auto conf = PolygonShape::Conf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2);
-            PolygonShape shape{conf};
-            SetAsBox(shape, 0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
-
-            m_platform->CreateFixture(std::make_shared<PolygonShape>(shape));
+            const auto conf = PolygonShape::Conf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2)
+                .SetAsBox(0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
+            m_platform->CreateFixture(std::make_shared<PolygonShape>(conf));
 
             RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0, 5) * 1_m);
             rjd.maxMotorTorque = 50_Nm;

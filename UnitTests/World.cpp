@@ -1519,11 +1519,12 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.location = Length2{};
-    auto shape = std::make_shared<PolygonShape>();
-    shape->SetVertexRadius(1_m);
-    shape->SetAsBox(2_m, 2_m);
-    shape->SetDensity(1_kgpm2);
-    shape->SetRestitution(Real(1));
+    auto conf = PolygonShape::Conf{};
+    conf.SetVertexRadius(1_m);
+    conf.SetAsBox(2_m, 2_m);
+    conf.SetDensity(1_kgpm2);
+    conf.SetRestitution(Real(1));
+    const auto shape = std::make_shared<PolygonShape>(conf);
     for (auto i = 0; i < 2; ++i)
     {
         const auto body = world.CreateBody(body_def);
@@ -2005,7 +2006,7 @@ TEST(World, TilesComesToRest)
     PLAYRHO_CONSTEXPR const auto LinearSlop = Meter / 1000;
     PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * 2 * 1_rad) / 180;
     PLAYRHO_CONSTEXPR const auto VertexRadius = LinearSlop * 2;
-    const auto conf = PolygonShape::Conf{}.UseVertexRadius(VertexRadius);
+    auto conf = PolygonShape::Conf{}.UseVertexRadius(VertexRadius);
     const auto m_world = std::make_unique<World>(WorldDef{}.UseMinVertexRadius(VertexRadius));
     
     PLAYRHO_CONSTEXPR const auto e_count = 36;
@@ -2023,9 +2024,8 @@ TEST(World, TilesComesToRest)
             GetX(position) = -N * a * Meter;
             for (auto i = 0; i < N; ++i)
             {
-                auto shape = PolygonShape{conf};
-                SetAsBox(shape, a * Meter, a * Meter, position, 0_deg);
-                ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+                conf.SetAsBox(a * Meter, a * Meter, position, 0_deg);
+                ground->CreateFixture(std::make_shared<PolygonShape>(conf));
                 GetX(position) += 2.0f * a * Meter;
             }
             GetY(position) -= 2.0f * a * Meter;
@@ -2562,21 +2562,21 @@ TEST(World, MouseJointWontCauseTunnelling)
     AABB2D container_aabb;
 
     BodyDef body_def;
-    EdgeShape edge_shape;
-    edge_shape.SetFriction(Real(0.4f));
-    edge_shape.SetRestitution(Real(0.94f)); // changes where bodies will be after collision
     body_def.type = BodyType::Static;
+
+    auto edgeConf = EdgeShape::Conf{};
+    edgeConf.UseFriction(Real(0.4f));
+    edgeConf.UseRestitution(Real(0.94f)); // changes where bodies will be after collision
     
     // Setup vertical bounderies
-    edge_shape.Set(Length2{0, +half_box_height * 2_m},
-                   Length2{0, -half_box_height * 2_m});
+    edgeConf.Set(Length2{0, +half_box_height * 2_m}, Length2{0, -half_box_height * 2_m});
 
     body_def.location = Length2{left_edge_x * Meter, 0_m};
     {
         const auto left_wall_body = world.CreateBody(body_def);
         ASSERT_NE(left_wall_body, nullptr);
         {
-            const auto wall_fixture = left_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape));
+            const auto wall_fixture = left_wall_body->CreateFixture(std::make_shared<EdgeShape>(edgeConf));
             ASSERT_NE(wall_fixture, nullptr);
         }
         Include(container_aabb, ComputeAABB(*left_wall_body));
@@ -2587,22 +2587,21 @@ TEST(World, MouseJointWontCauseTunnelling)
         const auto right_wall_body = world.CreateBody(body_def);
         ASSERT_NE(right_wall_body, nullptr);
         {
-            const auto wall_fixture = right_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape));
+            const auto wall_fixture = right_wall_body->CreateFixture(std::make_shared<EdgeShape>(edgeConf));
             ASSERT_NE(wall_fixture, nullptr);
         }
         Include(container_aabb, ComputeAABB(*right_wall_body));
     }
 
     // Setup horizontal bounderies
-    edge_shape.Set(Length2{-half_box_width * 2_m, 0_m},
-                   Length2{+half_box_width * 2_m, 0_m});
+    edgeConf.Set(Length2{-half_box_width * 2_m, 0_m}, Length2{+half_box_width * 2_m, 0_m});
     
     body_def.location = Length2{0, btm_edge_y * Meter};
     {
         const auto btm_wall_body = world.CreateBody(body_def);
         ASSERT_NE(btm_wall_body, nullptr);
         {
-            const auto wall_fixture = btm_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape));
+            const auto wall_fixture = btm_wall_body->CreateFixture(std::make_shared<EdgeShape>(edgeConf));
             ASSERT_NE(wall_fixture, nullptr);
         }
         Include(container_aabb, ComputeAABB(*btm_wall_body));
@@ -2613,7 +2612,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         const auto top_wall_body = world.CreateBody(body_def);
         ASSERT_NE(top_wall_body, nullptr);
         {
-            const auto wall_fixture = top_wall_body->CreateFixture(std::make_shared<EdgeShape>(edge_shape));
+            const auto wall_fixture = top_wall_body->CreateFixture(std::make_shared<EdgeShape>(edgeConf));
             ASSERT_NE(wall_fixture, nullptr);
         }
         Include(container_aabb, ComputeAABB(*top_wall_body));

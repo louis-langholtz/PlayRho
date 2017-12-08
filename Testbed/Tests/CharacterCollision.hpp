@@ -44,59 +44,59 @@ public:
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m));
 
         {
-            PolygonShape shape;
+            auto shape = PolygonShape::Conf{};
 
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(20.015f, 0.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 0.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(20.015f, 1.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 1.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(20.015f, 2.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 2.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(20.015f, 3.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 3.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(20.015f, 4.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 4.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(20.015f, 5.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 5.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(20.015f, 6.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 6.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
 
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(17.985f, 0.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 0.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(17.985f, 1.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 1.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(17.985f, 2.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 2.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(17.985f, 3.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 3.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(17.985f, 4.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 4.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(17.985f, 5.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 5.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 0.5_m, 0.5_m, Vec2(17.985f, 6.545f) * 1_m, 0_rad);
+            shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 6.545f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
         // Collinear edges.
         {
-            EdgeShape shape;
-            shape.Set(Vec2(-8.0f, 1.0f) * 1_m, Vec2(-6.0f, 1.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
-            shape.Set(Vec2(-6.0f, 1.0f) * 1_m, Vec2(-4.0f, 1.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
-            shape.Set(Vec2(-4.0f, 1.0f) * 1_m, Vec2(-2.0f, 1.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            auto conf = EdgeShape::Conf{};
+            conf.Set(Vec2(-8.0f, 1.0f) * 1_m, Vec2(-6.0f, 1.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            conf.Set(Vec2(-6.0f, 1.0f) * 1_m, Vec2(-4.0f, 1.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            conf.Set(Vec2(-4.0f, 1.0f) * 1_m, Vec2(-2.0f, 1.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
         }
 
         // Collinear 2-gons.
         {
-            PolygonShape shape;
-            shape.Set({Vec2(-8.0f, 20.0f) * 1_m, Vec2(-6.0f, 20.0f) * 1_m});
-            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            shape.Set({Vec2(-6.0f, 20.0f) * 1_m, Vec2(-4.0f, 20.0f) * 1_m});
-            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            shape.Set({Vec2(-4.0f, 20.0f) * 1_m, Vec2(-2.0f, 20.0f) * 1_m});
-            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            auto conf = PolygonShape::Conf{};
+            conf.UseVertices({Vec2(-8.0f, 20.0f) * 1_m, Vec2(-6.0f, 20.0f) * 1_m});
+            ground->CreateFixture(std::make_shared<PolygonShape>(conf));
+            conf.UseVertices({Vec2(-6.0f, 20.0f) * 1_m, Vec2(-4.0f, 20.0f) * 1_m});
+            ground->CreateFixture(std::make_shared<PolygonShape>(conf));
+            conf.UseVertices({Vec2(-4.0f, 20.0f) * 1_m, Vec2(-2.0f, 20.0f) * 1_m});
+            ground->CreateFixture(std::make_shared<PolygonShape>(conf));
         }
 
         // Chain shape
@@ -112,12 +112,12 @@ public:
 
         // Square tiles.
         {
-            PolygonShape shape;
-            SetAsBox(shape, 1_m, 1_m, Vec2(4.0f, 3.0f) * 1_m, 0_rad);
+            auto shape = PolygonShape::Conf{};
+            shape.SetAsBox(1_m, 1_m, Vec2(4.0f, 3.0f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 1_m, 1_m, Vec2(6.0f, 3.0f) * 1_m, 0_rad);
+            shape.SetAsBox(1_m, 1_m, Vec2(6.0f, 3.0f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
-            SetAsBox(shape, 1_m, 1_m, Vec2(8.0f, 3.0f) * 1_m, 0_rad);
+            shape.SetAsBox(1_m, 1_m, Vec2(8.0f, 3.0f) * 1_m, 0_rad);
             ground->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
@@ -198,18 +198,15 @@ public:
 
             auto angle = Real{0.0f};
             const auto delta = Real{Pi / 3.0f};
-            Length2 vertices[6];
+            auto vertices = std::vector<Length2>();
             for (auto i = 0; i < 6; ++i)
             {
-                vertices[i] = Vec2(0.5f * cos(angle), 0.5f * sin(angle)) * 1_m;
+                vertices.push_back(Vec2(0.5f * cos(angle), 0.5f * sin(angle)) * 1_m);
                 angle += delta;
             }
 
-            auto conf = PolygonShape::Conf{};
-            conf.density = 20_kgpm2;
-            auto hexshape = std::make_shared<PolygonShape>(conf);
-            hexshape->Set(Span<const Length2>(vertices, 6));
-            body->CreateFixture(hexshape);
+            auto conf = PolygonShape::Conf{}.UseDensity(20_kgpm2).UseVertices(vertices);
+            body->CreateFixture(std::make_shared<PolygonShape>(conf));
         }
 
         // Disk character

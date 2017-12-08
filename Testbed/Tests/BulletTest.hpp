@@ -37,8 +37,7 @@ public:
 
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m));
 
-            PolygonShape shape;
-            SetAsBox(shape, 0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad);
+            const auto shape = PolygonShape::Conf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad);
             body->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 
@@ -47,15 +46,15 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 4.0f) * 1_m;
 
-            PolygonShape box;
-            box.SetAsBox(2_m, 0.1_m);
-            box.SetDensity(1_kgpm2);
+            auto conf = PolygonShape::Conf{};
+            conf.UseDensity(1_kgpm2);
+            conf.SetAsBox(2_m, 0.1_m);
 
             m_body = m_world.CreateBody(bd);
-            m_body->CreateFixture(std::make_shared<PolygonShape>(box));
+            m_body->CreateFixture(std::make_shared<PolygonShape>(conf));
 
-            box.SetAsBox(0.25_m, 0.25_m);
-            box.SetDensity(100_kgpm2);
+            conf.UseDensity(100_kgpm2);
+            conf.SetAsBox(0.25_m, 0.25_m);
 
             //m_x = RandomFloat(-1.0f, 1.0f);
             m_x = 0.20352793f;
@@ -63,7 +62,7 @@ public:
             bd.bullet = true;
 
             m_bullet = m_world.CreateBody(bd);
-            m_bullet->CreateFixture(std::make_shared<PolygonShape>(box));
+            m_bullet->CreateFixture(std::make_shared<PolygonShape>(conf));
 
             m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * 1_mps, 0_rpm});
         }

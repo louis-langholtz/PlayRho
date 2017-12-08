@@ -40,7 +40,8 @@ public:
         const auto p5 = Vec2(6.0f * s, 1.5f) * 1_m;
         const auto p6 = Vec2(2.5f * s, 3.7f) * 1_m;
 
-        PolygonShape poly1, poly2;
+        auto poly1 = PolygonShape::Conf{};
+        auto poly2 = PolygonShape::Conf{};
         if (s > 0.0f)
         {
             poly1.Set({p1, p2, p3});
@@ -100,15 +101,16 @@ public:
             BodyDef bd;
             const auto ground = m_world.CreateBody(bd);
 
-            EdgeShape shape;
-            shape.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            auto conf = EdgeShape::Conf{};
+ 
+            conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
-            shape.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(-50.0f, 10.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(-50.0f, 10.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
-            shape.Set(Vec2(50.0f, 0.0f) * 1_m, Vec2(50.0f, 10.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Vec2(50.0f, 0.0f) * 1_m, Vec2(50.0f, 10.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
         }
 
         // Balls

@@ -91,14 +91,14 @@ public:
     {
         const auto b = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
                                           .UseLocation(at).UseAllowSleep(false));
-        auto shape = PolygonShape{PolygonShape::Conf{}.UseDensity(5_kgpm2)};
-        SetAsBox(shape, 0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
+        auto shape = PolygonShape::Conf{}.UseDensity(5_kgpm2);
+        shape.SetAsBox(0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, 0.5_m, 10_m, Vec2(-10,   0) * 1_m, 0_rad);
+        shape.SetAsBox(0.5_m, 10_m, Vec2(-10,   0) * 1_m, 0_rad);
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, 10_m, 0.5_m, Vec2(  0,  10) * 1_m, 0_rad);
+        shape.SetAsBox(10_m, 0.5_m, Vec2(  0,  10) * 1_m, 0_rad);
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
-        SetAsBox(shape, 10_m, 0.5_m, Vec2(  0, -10) * 1_m, 0_rad);
+        shape.SetAsBox(10_m, 0.5_m, Vec2(  0, -10) * 1_m, 0_rad);
         b->CreateFixture(std::make_shared<PolygonShape>(shape));
         return b;
     }

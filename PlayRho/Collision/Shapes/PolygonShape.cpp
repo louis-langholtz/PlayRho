@@ -65,10 +65,44 @@ void PolygonShape::SetAsBox(Length hx, Length hy) noexcept
     m_normals.emplace_back(UnitVec2::GetBottom());
 }
 
-void SetAsBox(PolygonShape& shape, Length hx, Length hy, Length2 center, Angle angle) noexcept
+PolygonShape::Conf& PolygonShape::Conf::SetAsBox(Length hx, Length hy) noexcept
 {
-    shape.SetAsBox(hx, hy);
-    shape.Transform(Transformation{center, UnitVec2::Get(angle)});
+    // vertices must be counter-clockwise
+
+    const auto btm_rgt = Length2{+hx, -hy};
+    const auto top_rgt = Length2{ hx,  hy};
+    const auto top_lft = Length2{-hx, +hy};
+    const auto btm_lft = Length2{-hx, -hy};
+    
+    vertices.clear();
+    vertices.emplace_back(btm_rgt);
+    vertices.emplace_back(top_rgt);
+    vertices.emplace_back(top_lft);
+    vertices.emplace_back(btm_lft);
+    
+    return *this;
+}
+
+PolygonShape::Conf& PolygonShape::Conf::Set(Span<const Length2> verts) noexcept
+{
+    vertices.assign(verts.cbegin(), verts.cend());
+    return *this;
+}
+    
+PolygonShape::Conf& PolygonShape::Conf::SetAsBox(Length hx, Length hy, Length2 center, Angle angle) noexcept
+{
+    SetAsBox(hx, hy);
+    Transform(Transformation{center, UnitVec2::Get(angle)});
+    return *this;
+}
+
+PolygonShape::Conf& PolygonShape::Conf::Transform(Transformation xfm) noexcept
+{
+    for (auto& v: vertices)
+    {
+        v = playrho::Transform(v, xfm);
+    }
+    return *this;
 }
 
 PolygonShape& PolygonShape::Transform(Transformation xfm) noexcept
@@ -96,7 +130,7 @@ void PolygonShape::Set(Span<const Length2> points) noexcept
 void PolygonShape::Set(const VertexSet& points) noexcept
 {
     m_vertices = GetConvexHullAsVector(points);
-    assert(!m_vertices.empty() && m_vertices.size() < std::numeric_limits<VertexCounter>::max());
+    assert(m_vertices.size() < std::numeric_limits<VertexCounter>::max());
     
     const auto count = static_cast<VertexCounter>(m_vertices.size());
 

@@ -37,8 +37,7 @@ public:
 
             body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m));
 
-            PolygonShape shape;
-            SetAsBox(shape, 0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad);
+            const auto shape = PolygonShape::Conf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad);
             body->CreateFixture(std::make_shared<PolygonShape>(shape));
         }
 

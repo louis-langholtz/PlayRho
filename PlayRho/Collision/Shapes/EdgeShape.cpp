@@ -27,15 +27,6 @@ MassData EdgeShape::GetMassData() const noexcept
     return playrho::GetMassData(GetVertexRadius(), GetDensity(), GetVertex1(), GetVertex2());
 }
 
-void EdgeShape::Set(Length2 v1, Length2 v2)
-{
-    m_vertices[0] = v1;
-    m_vertices[1] = v2;
-
-    m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
-    m_normals[1] = -m_normals[0];
-}
-
 void EdgeShape::Accept(ShapeVisitor& visitor) const
 {
     visitor.Visit(*this);

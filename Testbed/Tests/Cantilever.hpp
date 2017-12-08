@@ -145,9 +145,9 @@ public:
         }
 
         // Creates triangles
-        auto polyshape = std::make_shared<PolygonShape>();
-        polyshape->Set({Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
-        polyshape->SetDensity(1_kgpm2);
+        const auto conf = PolygonShape::Conf{}.UseDensity(1_kgpm2).UseVertices({
+            Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
+        const auto polyshape = std::make_shared<PolygonShape>(conf);
         for (auto i = 0; i < 2; ++i)
         {
             BodyDef bd;
@@ -158,8 +158,9 @@ public:
         }
 
         // Creates circles
-        const auto circleshape = std::make_shared<DiskShape>(0.5_m);
-        circleshape->SetDensity(1_kgpm2);
+        const auto circleshape = std::make_shared<DiskShape>(DiskShape::Conf{}
+                                                             .UseVertexRadius(0.5_m)
+                                                             .UseDensity(1_kgpm2));
         for (auto i = 0; i < 2; ++i)
         {
             BodyDef bd;

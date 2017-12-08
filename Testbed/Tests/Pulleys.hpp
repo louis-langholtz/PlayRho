@@ -39,11 +39,9 @@ public:
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = 2_m;
             conf.location = Vec2(-10.0f, y + b + L) * 1_m;
-            DiskShape circle(conf);
-            ground->CreateFixture(std::make_shared<DiskShape>(circle));
-
-            circle.SetLocation(Vec2(10.0f, y + b + L) * 1_m);
-            ground->CreateFixture(std::make_shared<DiskShape>(circle));
+            ground->CreateFixture(std::make_shared<DiskShape>(conf));
+            conf.location = Vec2(+10.0f, y + b + L) * 1_m;
+            ground->CreateFixture(std::make_shared<DiskShape>(conf));
         }
 
         {
