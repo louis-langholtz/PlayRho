@@ -66,6 +66,14 @@ public:
             vertex2 = value;
             return *this;
         }
+        
+        /// @brief Sets both vertices in one call.
+        PLAYRHO_CONSTEXPR inline Conf& Set(Length2 v1, Length2 v2) noexcept
+        {
+            vertex1 = v1;
+            vertex2 = v2;
+            return *this;
+        }
 
         Length2 vertex1 = Length2{}; ///< Vertex 1.
         Length2 vertex2 = Length2{}; ///< Vertex 2.
@@ -116,10 +124,7 @@ public:
     MassData GetMassData() const noexcept override;
     
     void Accept(ShapeVisitor& visitor) const override;
-
-    /// @brief Sets this as an isolated edge.
-    void Set(Length2 v1, Length2 v2);
-
+    
     /// @brief Gets vertex number 1 (of 2).
     Length2 GetVertex1() const noexcept { return m_vertices[0]; }
 

@@ -74,9 +74,9 @@ public:
             return body;
         }
 
-        PolygonShape shape2(Real{0.25f} * a * 1_m, Real{a} * 1_m);
+        auto shape2 = PolygonShape::Conf{};
         shape2.SetDensity(density);
-        SetAsBox(shape2, offset * 1_m, Real{0.25f} * a * 1_m, Vec2(0, -a) * 1_m, 0_rad);
+        shape2.SetAsBox(offset * 1_m, Real{0.25f} * a * 1_m, Vec2(0, -a) * 1_m, 0_rad);
         body->CreateFixture(std::make_shared<PolygonShape>(shape2));
 
         const auto a1 = Vec2(offset, -a) * 1_m;

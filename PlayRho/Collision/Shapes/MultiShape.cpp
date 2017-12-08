@@ -36,8 +36,9 @@ MassData MultiShape::GetMassData() const noexcept
     auto I = RotInertia(0);
 
     std::for_each(std::begin(m_children), std::end(m_children), [&](const ConvexHull& ch) {
+        const auto dp = ch.GetDistanceProxy(GetVertexRadius());
         const auto md = playrho::GetMassData(GetVertexRadius(), GetDensity(),
-                                      Span<const Length2>(ch.vertices.data(), ch.vertices.size()));
+            Span<const Length2>(dp.GetVertices().begin(), dp.GetVertexCount()));
         mass += Mass{md.mass};
         weightedCenter += md.center * Mass{md.mass};
         I += RotInertia{md.I};
@@ -47,7 +48,7 @@ MassData MultiShape::GetMassData() const noexcept
     return MassData{center, mass, I};
 }
 
-void MultiShape::AddConvexHull(const VertexSet& pointSet) noexcept
+MultiShape::ConvexHull MultiShape::ConvexHull::Get(const VertexSet& pointSet)
 {
     auto vertices = GetConvexHullAsVector(pointSet);
     assert(!vertices.empty() && vertices.size() < std::numeric_limits<VertexCounter>::max());
@@ -70,7 +71,12 @@ void MultiShape::AddConvexHull(const VertexSet& pointSet) noexcept
         normals.push_back(UnitVec2{});
     }
     
-    m_children.push_back(ConvexHull{vertices, normals});
+    return ConvexHull{vertices, normals};
+}
+
+void MultiShape::Conf::AddConvexHull(const VertexSet& pointSet) noexcept
+{
+    children.emplace_back(ConvexHull::Get(pointSet));
 }
 
 void MultiShape::Accept(ShapeVisitor &visitor) const

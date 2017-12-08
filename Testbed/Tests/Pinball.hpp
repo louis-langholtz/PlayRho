@@ -59,8 +59,7 @@ public:
             bd.location = p2;
             const auto rightFlipper = m_world.CreateBody(bd);
 
-            const auto box = std::make_shared<PolygonShape>(1.75_m, 0.1_m);
-            box->SetDensity(1_kgpm2);
+            const auto box = std::make_shared<PolygonShape>(1.75_m, 0.1_m, PolygonShape::Conf{}.SetDensity(1_kgpm2));
 
             leftFlipper->CreateFixture(box);
             rightFlipper->CreateFixture(box);

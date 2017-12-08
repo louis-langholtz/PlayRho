@@ -57,12 +57,11 @@ public:
         
         const auto ground = m_world.CreateBody();
         {
-            EdgeShape shape;
+            auto conf = EdgeShape::Conf{};
+            conf.UseDensity(0_kgpm2).UseFriction(Real(0.6f));
 
-            shape.Set(Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m);
-            shape.SetDensity(0_kgpm2);
-            shape.SetFriction(Real(0.6f));
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
             Real hs[10] = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
 
@@ -73,8 +72,8 @@ public:
             for (auto i = 0; i < 10; ++i)
             {
                 const auto y2 = hs[i];
-                shape.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m);
-                ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+                conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m);
+                ground->CreateFixture(std::make_shared<EdgeShape>(conf));
                 y1 = y2;
                 x += dx;
             }
@@ -82,30 +81,30 @@ public:
             for (auto i = 0; i < 10; ++i)
             {
                 const auto y2 = hs[i];
-                shape.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m);
-                ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+                conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m);
+                ground->CreateFixture(std::make_shared<EdgeShape>(conf));
                 y1 = y2;
                 x += dx;
             }
 
-            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 40.0f, 0.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 40.0f, 0.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
             x += 80.0f;
-            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 40.0f, 0.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 40.0f, 0.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
             x += 40.0f;
-            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 10.0f, 5.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 10.0f, 5.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
             x += 20.0f;
-            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 40.0f, 0.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Vec2(x, 0.0f) * 1_m, Vec2(x + 40.0f, 0.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
             x += 40.0f;
-            shape.Set(Vec2(x, 0.0f) * 1_m, Vec2(x, 20.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Vec2(x, 0.0f) * 1_m, Vec2(x, 20.0f) * 1_m);
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
         }
 
         // Teeter
@@ -115,8 +114,8 @@ public:
             bd.type = BodyType::Dynamic;
             const auto body = m_world.CreateBody(bd);
 
-            const auto box = std::make_shared<PolygonShape>(10_m, 0.25_m);
-            box->SetDensity(1_kgpm2);
+            const auto box = std::make_shared<PolygonShape>(10_m, 0.25_m,
+                                                            PolygonShape::Conf{}.SetDensity(1_kgpm2));
             body->CreateFixture(box);
 
             RevoluteJointDef jd(ground, body, body->GetLocation());
@@ -132,9 +131,9 @@ public:
         // Bridge
         {
             const auto N = 20;
-            const auto shape = std::make_shared<PolygonShape>(1_m, 0.125_m);
-            shape->SetDensity(1_kgpm2);
-            shape->SetFriction(Real(0.6f));
+            const auto shape = std::make_shared<PolygonShape>(1_m, 0.125_m,
+                                                              PolygonShape::Conf{}
+                                                              .SetDensity(1_kgpm2).SetFriction(Real(0.6f)));
 
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i)
@@ -157,9 +156,8 @@ public:
 
         // Boxes
         {
-            const auto box = std::make_shared<PolygonShape>(0.5_m, 0.5_m);
-            box->SetDensity(0.5_kgpm2);
-
+            const auto box = std::make_shared<PolygonShape>(0.5_m, 0.5_m,
+                                                            PolygonShape::Conf{}.SetDensity(0.5_kgpm2));
             auto body = static_cast<Body*>(nullptr);
 
             BodyDef bd;
@@ -188,21 +186,21 @@ public:
 
         // Car
         {
-            auto chassis = std::make_shared<PolygonShape>();
-            chassis->Set({
-                Vec2(-1.5f, -0.5f) * 1_m,
-                Vec2(1.5f, -0.5f) * 1_m,
-                Vec2(1.5f, 0.0f) * 1_m,
-                Vec2(0.0f, 0.9f) * 1_m,
-                Vec2(-1.15f, 0.9f) * 1_m,
-                Vec2(-1.5f, 0.2f) * 1_m
-            });
-            chassis->SetDensity(1_kgpm2);
+            const auto chassis = std::make_shared<PolygonShape>(PolygonShape::Conf{}
+                .UseDensity(1_kgpm2).UseVertices({
+                    Vec2(-1.5f, -0.5f) * 1_m,
+                    Vec2(1.5f, -0.5f) * 1_m,
+                    Vec2(1.5f, 0.0f) * 1_m,
+                    Vec2(0.0f, 0.9f) * 1_m,
+                    Vec2(-1.15f, 0.9f) * 1_m,
+                    Vec2(-1.5f, 0.2f) * 1_m
+                }));
 
-            const auto circle = std::make_shared<DiskShape>(0.4_m);
-            circle->SetDensity(1_kgpm2);
-            circle->SetFriction(Real(0.9f));
-
+            const auto circle = std::make_shared<DiskShape>(DiskShape::Conf{}
+                                                            .UseVertexRadius(0.4_m)
+                                                            .UseDensity(1_kgpm2)
+                                                            .UseFriction(Real(0.9f)));
+            
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 1.0f) * 1_m;

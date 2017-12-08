@@ -37,9 +37,6 @@ public:
 
     EdgeShapes()
     {
-        m_circle->SetFriction(Real(0.3f));
-        m_circle->SetDensity(20_kgpm2);
-
         // Ground body
         {
             const auto ground = m_world.CreateBody();
@@ -55,30 +52,29 @@ public:
             }
         }
 
-        for (auto i = 0; i < 4; ++i)
-        {
-            m_polygons[i] = std::make_shared<PolygonShape>();
-            m_polygons[i]->SetFriction(Real(0.3f));
-            m_polygons[i]->SetDensity(20_kgpm2);
-        }
-        
-        m_polygons[0]->Set({
+        auto conf = PolygonShape::Conf{};
+        conf.SetFriction(Real(0.3f));
+        conf.SetDensity(20_kgpm2);
+        conf.Set({
             Vec2(-0.5f, 0.0f) * 1_m,
             Vec2(0.5f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        m_polygons[1]->Set({
+        m_polygons[0] = std::make_shared<PolygonShape>(conf);
+        
+        conf.Set({
             Vec2(-0.1f, 0.0f) * 1_m,
             Vec2(0.1f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
+        m_polygons[1] = std::make_shared<PolygonShape>(conf);
 
         {
             const auto w = 1.0f;
             const auto b = w / (2.0f + sqrt(2.0f));
             const auto s = sqrt(2.0f) * b;
 
-            m_polygons[2]->Set({
+            conf.Set({
                 Vec2(0.5f * s, 0.0f) * 1_m,
                 Vec2(0.5f * w, b) * 1_m,
                 Vec2(0.5f * w, b + s) * 1_m,
@@ -88,9 +84,11 @@ public:
                 Vec2(-0.5f * w, b) * 1_m,
                 Vec2(-0.5f * s, 0.0f) * 1_m
             });
+            m_polygons[2] = std::make_shared<PolygonShape>(conf);
         }
 
-        m_polygons[3]->SetAsBox(0.5_m, 0.5_m);
+        conf.SetAsBox(0.5_m, 0.5_m);
+        m_polygons[3] = std::make_shared<PolygonShape>(conf);
 
         m_bodyIndex = 0;
         std::memset(m_bodies, 0, sizeof(m_bodies));
@@ -205,7 +203,8 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m);
+    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m,
+        DiskShape::Conf{}.SetFriction(Real(0.3f)).SetDensity(20_kgpm2));
 
     Real m_angle;
 };

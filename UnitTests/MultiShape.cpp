@@ -128,7 +128,8 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
     ASSERT_EQ(foo.GetVertexRadius(), conf.vertexRadius);
     ASSERT_EQ(foo.GetDensity(), conf.density);
 
-    foo.AddConvexHull(pointSet);
+    conf.AddConvexHull(pointSet);
+    foo = MultiShape{conf};
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
 
     const auto child = foo.GetChild(0);
@@ -164,7 +165,8 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     ASSERT_EQ(foo.GetVertexRadius(), conf.vertexRadius);
     ASSERT_EQ(foo.GetDensity(), conf.density);
     
-    foo.AddConvexHull(pointSet);
+    conf.AddConvexHull(pointSet);
+    foo = MultiShape{conf};
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
     
     const auto child = foo.GetChild(0);
@@ -208,7 +210,8 @@ TEST(MultiShape, AddTwoConvexHullWithOnePoint)
     pointSet.add(p0);
     ASSERT_EQ(pointSet.size(), std::size_t(1));
 
-    foo.AddConvexHull(pointSet);
+    conf.AddConvexHull(pointSet);
+    foo = MultiShape{conf};
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
 
     const auto child0 = foo.GetChild(0);
@@ -220,7 +223,8 @@ TEST(MultiShape, AddTwoConvexHullWithOnePoint)
     pointSet.add(p1);
     ASSERT_EQ(pointSet.size(), std::size_t(1));
     
-    foo.AddConvexHull(pointSet);
+    conf.AddConvexHull(pointSet);
+    foo = MultiShape{conf};
     EXPECT_EQ(foo.GetChildCount(), ChildCounter{2});
     
     const auto child1 = foo.GetChild(1);

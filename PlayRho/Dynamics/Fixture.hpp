@@ -143,10 +143,6 @@ public:
     /// @brief Gets the coefficient of restitution.
     Real GetRestitution() const noexcept;
 
-    /// @brief Sets the coefficient of restitution.
-    /// @note This will _not_ change the restitution of existing contacts.
-    void SetRestitution(Real restitution) noexcept;
-
     /// @brief Gets the proxy count.
     /// @note This will be zero until a world step has been run since this fixture's
     ///   creation.

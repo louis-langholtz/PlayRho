@@ -62,9 +62,9 @@ public:
         vertices[0] = Vec2(-1.0f, 0.0f) * 1_m;
         vertices[1] = Vec2(1.0f, 0.0f) * 1_m;
         vertices[2] = Vec2(0.0f, 2.0f) * 1_m;
-        PolygonShape polygon;
+        auto polygon = PolygonShape::Conf{};
+        polygon.UseDensity(1_kgpm2);
         polygon.Set(Span<const Length2>{vertices, 3});
-        polygon.SetDensity(1_kgpm2);
 
         FixtureDef triangleShapeDef;
 
@@ -115,8 +115,8 @@ public:
 
         // Small box
         polygon.SetAsBox(1_m, 0.5_m);
-        polygon.SetDensity(1_kgpm2);
-        polygon.SetRestitution(Real(0.1f));
+        polygon.UseDensity(1_kgpm2);
+        polygon.UseRestitution(Real(0.1f));
 
         FixtureDef boxShapeDef;
 
@@ -141,9 +141,7 @@ public:
 
         // Small circle
         auto circleConf = DiskShape::Conf{};
-        circleConf.vertexRadius = 1_m;
         circleConf.density = 1_kgpm2;
-        auto circle = DiskShape(circleConf);
 
         FixtureDef circleShapeDef;
 
@@ -156,15 +154,16 @@ public:
         circleBodyDef.location = Vec2(5.0f, 2.0f) * 1_m;
         
         const auto body5 = m_world.CreateBody(circleBodyDef);
-        body5->CreateFixture(std::make_shared<DiskShape>(circle), circleShapeDef);
+        circleConf.vertexRadius = 1_m;
+        body5->CreateFixture(std::make_shared<DiskShape>(circleConf), circleShapeDef);
 
         // Large circle
-        circle.SetRadius(circle.GetRadius() * Real{2});
         circleShapeDef.filter.groupIndex = k_largeGroup;
         circleBodyDef.location = Vec2(5.0f, 6.0f) * 1_m;
 
         const auto body6 = m_world.CreateBody(circleBodyDef);
-        body6->CreateFixture(std::make_shared<DiskShape>(circle), circleShapeDef);
+        circleConf.vertexRadius = circleConf.vertexRadius * 2;
+        body6->CreateFixture(std::make_shared<DiskShape>(circleConf), circleShapeDef);
     }
 };
     

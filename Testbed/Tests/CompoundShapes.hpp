@@ -42,8 +42,7 @@ public:
             conf.vertexRadius = 0.5_m;
             
             conf.location = Vec2{-0.5f, 0.5f} * 1_m;
-            const auto circle1 = std::make_shared<DiskShape>(conf);
-            circle1->SetDensity(2_kgpm2);
+            const auto circle1 = std::make_shared<DiskShape>(DiskShape::Conf(conf).SetDensity(2_kgpm2));
             conf.location = Vec2{0.5f, 0.5f} * 1_m;
             const auto circle2 = std::make_shared<DiskShape>(conf);
             for (auto i = 0; i < 10; ++i)
@@ -60,11 +59,12 @@ public:
         }
 
         {
-            const auto polygon1 = std::make_shared<PolygonShape>(0.25_m, 0.5_m);
-            polygon1->SetDensity(2_kgpm2);
-            auto polygon2 = std::make_shared<PolygonShape>();
-            polygon2->SetDensity(2_kgpm2);
-            SetAsBox(*polygon2, 0.25_m, 0.5_m, Vec2(0.0f, -0.5f) * 1_m, 0.5_rad * Pi);
+            auto conf = PolygonShape::Conf{};
+            conf.SetDensity(2_kgpm2);
+            const auto polygon1 = std::make_shared<PolygonShape>(0.25_m, 0.5_m, conf);
+            conf.SetDensity(2_kgpm2);
+            conf.SetAsBox(0.25_m, 0.5_m, Vec2(0.0f, -0.5f) * 1_m, 0.5_rad * Pi);
+            const auto polygon2 = std::make_shared<PolygonShape>(conf);
             for (int i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);
@@ -83,26 +83,28 @@ public:
             xf1.q = UnitVec2::Get(0.3524_rad * Pi);
             xf1.p = GetVec2(GetXAxis(xf1.q)) * 1_m;
 
-            auto triangle1 = std::make_shared<PolygonShape>();
-            triangle1->Set(Span<const Length2>{
+            auto triangleConf1 = PolygonShape::Conf{};
+            triangleConf1.Set(Span<const Length2>{
                 Transform(Vec2(-1.0f, 0.0f) * 1_m, xf1),
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf1),
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf1)
             });
-            triangle1->SetDensity(2_kgpm2);
+            triangleConf1.SetDensity(2_kgpm2);
+            const auto triangle1 = std::make_shared<PolygonShape>(triangleConf1);
 
             Transformation xf2;
             xf2.q = UnitVec2::Get(-0.3524_rad * Pi);
             xf2.p = -GetVec2(GetXAxis(xf2.q)) * 1_m;
 
-            auto triangle2 = std::make_shared<PolygonShape>();
-            triangle2->Set(Span<const Length2>{
+            auto trianglConf2 = PolygonShape::Conf{};
+            trianglConf2.Set(Span<const Length2>{
                 Transform(Vec2(-1.0f, 0.0f) * 1_m, xf2),
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf2),
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf2)
             });
-            triangle2->SetDensity(2_kgpm2);
-            
+            trianglConf2.SetDensity(2_kgpm2);
+            const auto triangle2 = std::make_shared<PolygonShape>(trianglConf2);
+
             for (auto i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);
@@ -117,16 +119,14 @@ public:
         }
 
         {
-            const auto bottom = std::make_shared<PolygonShape>(1.5_m, 0.15_m);
-            bottom->SetDensity(4_kgpm2);
-
-            auto left = std::make_shared<PolygonShape>();
-            left->SetDensity(4_kgpm2);
-            SetAsBox(*left, 0.15_m, 2.7_m, Vec2(-1.45f, 2.35f) * 1_m, +0.2_rad);
-
-            auto right = std::make_shared<PolygonShape>();
-            right->SetDensity(4_kgpm2);
-            SetAsBox(*right, 0.15_m, 2.7_m, Vec2(1.45f, 2.35f) * 1_m, -0.2_rad);
+            auto conf = PolygonShape::Conf{};
+            conf.SetDensity(4_kgpm2);
+            const auto bottom = std::make_shared<PolygonShape>(1.5_m, 0.15_m, conf);
+            conf.SetAsBox(0.15_m, 2.7_m, Vec2(-1.45f, 2.35f) * 1_m, +0.2_rad);
+            const auto left = std::make_shared<PolygonShape>(conf);
+            conf.SetDensity(4_kgpm2);
+            conf.SetAsBox(0.15_m, 2.7_m, Vec2(1.45f, 2.35f) * 1_m, -0.2_rad);
+            const auto right = std::make_shared<PolygonShape>(conf);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;

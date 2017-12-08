@@ -30,8 +30,6 @@ class TimeOfImpactTest : public Test
 public:
     TimeOfImpactTest()
     {
-        m_shapeA.SetAsBox(25_m, 5_m);
-        m_shapeB.SetAsBox(2.5_m, 2.5_m);
     }
     
     void PostStep(const Settings&, Drawer& drawer) override
@@ -116,9 +114,9 @@ public:
         }
 #endif
     }
-
-    PolygonShape m_shapeA;
-    PolygonShape m_shapeB;
+    
+    PolygonShape m_shapeA{PolygonShape::Conf{}.SetAsBox(25_m, 5_m)};
+    PolygonShape m_shapeB{PolygonShape::Conf{}.SetAsBox(2.5_m, 2.5_m)};
 };
 
 } // namespace playrho

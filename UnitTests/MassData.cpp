@@ -180,8 +180,7 @@ TEST(MassData, GetMassDataFreeFunctionForNoVertices)
 
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
-    auto shape = DiskShape(0);
-    shape.SetDensity(1_kgpm2);
+    const auto shape = DiskShape(DiskShape::Conf{}.SetRadius(0_m).SetDensity(1_kgpm2));
     const auto mass_data = shape.GetMassData();
     EXPECT_EQ(mass_data.mass, NonNegative<Mass>(0_kg));
     EXPECT_EQ(mass_data.I, RotInertia{0});
@@ -230,8 +229,8 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
     auto conf = PolygonShape::Conf{};
     conf.vertexRadius = 0;
     conf.density = density;
+    conf.SetAsBox(4_m, 1_m);
     auto shape = PolygonShape(conf);
-    shape.SetAsBox(4_m, 1_m);
     ASSERT_EQ(GetX(shape.GetCentroid()), 0_m);
     ASSERT_EQ(GetY(shape.GetCentroid()), 0_m);
     const auto mass_data = shape.GetMassData();
@@ -278,13 +277,8 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 {
     const auto v1 = Length2{-1_m, 1_m};
     const auto density = 1_kgpm2;
-    auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = 1_m;
-    conf.density = density;
-    auto shape = EdgeShape(conf);
-    shape.Set(v1, v1);
+    const auto shape = EdgeShape(EdgeShape::Conf{}.UseVertexRadius(1_m).UseDensity(density).Set(v1, v1));
     const auto mass_data = shape.GetMassData();
-    
     const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
 
     EXPECT_TRUE(AlmostEqual(StripUnit(mass_data.mass), StripUnit(circleMass)));
@@ -311,11 +305,7 @@ TEST(MassData, GetForCenteredEdge)
     ASSERT_NEAR(static_cast<double>(Real{circleArea / SquareMeter}),
                 0.78539818525314331, 0.78539818525314331 / 1000000.0);
 
-    auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = radius;
-    conf.density = density;
-    auto shape = EdgeShape(conf);
-    shape.Set(v1, v2);
+    const auto shape = EdgeShape(EdgeShape::Conf{}.UseVertexRadius(radius).UseDensity(density).Set(v1, v2));
     ASSERT_EQ(shape.GetVertexRadius(), radius);
     ASSERT_EQ(shape.GetVertex1(), v1);
     ASSERT_EQ(shape.GetVertex2(), v2);

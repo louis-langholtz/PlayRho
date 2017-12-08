@@ -41,8 +41,7 @@ public:
         ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
 
         {
-            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.5_m);
-            shape->SetDensity(5_kgpm2);
+            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.5_m, PolygonShape::Conf{}.SetDensity(5_kgpm2));
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;

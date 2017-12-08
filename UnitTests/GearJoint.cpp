@@ -107,6 +107,7 @@ TEST(GearJoint, IsOkay)
     const auto rj1 = world.CreateJoint(RevoluteJointDef{b1, b2, Length2{}});
     const auto rj2 = world.CreateJoint(RevoluteJointDef{b3, b4, Length2{}});
     EXPECT_TRUE(GearJoint::IsOkay(GearJointDef{rj1, rj2}));
+    EXPECT_FALSE(GearJoint::IsOkay(GearJointDef{rj1, rj1}));
 }
 
 TEST(GearJoint, Construction)

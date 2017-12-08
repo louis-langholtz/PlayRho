@@ -180,6 +180,29 @@ TEST(DistanceProxy, TestPoint)
     EXPECT_FALSE(TestPoint(dp, Length2{10_m, -10_m}));
 }
 
+TEST(DistanceProxy, GetMaxSeparationStopping)
+{
+    const auto pos1 = Length2{-1_m, -1_m};
+    const auto pos2 = Length2{+1_m, -1_m};
+    const auto pos3 = Length2{+1_m, +1_m};
+    const auto pos4 = Length2{-1_m, +1_m};
+    const Length2 vertices[] = {pos1, pos2, pos3, pos4};
+    const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
+    const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
+    const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
+    const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
+    const UnitVec2 normals[] = {n1, n2, n3, n4};
+    const auto radius = 1_m;
+    const auto dp = DistanceProxy{radius, 4, vertices, normals};
+    
+    const auto xfm1 = Transformation{Length2{-1_m, 0_m}, UnitVec2::Get(190_deg)};
+    const auto xfm2 = Transformation{Length2{+1_m, 0_m}, UnitVec2::Get( 95_deg)};
+    const auto resultRegular = GetMaxSeparation(dp, xfm1, dp, xfm2);
+    const auto resultStopped = GetMaxSeparation(dp, xfm1, dp, xfm2, -3_m);
+    
+    EXPECT_NE(resultRegular.distance, resultStopped.distance);
+}
+
 TEST(DistanceProxy, GetMaxSeparationFromWorld)
 {
     const auto pos1 = Length2{3_m, 1_m};

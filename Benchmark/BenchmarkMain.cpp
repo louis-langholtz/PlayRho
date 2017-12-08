@@ -1662,7 +1662,7 @@ static void DropTiles(int count)
     const auto linearSlop = playrho::Meter / 1000;
     const auto angularSlop = (playrho::Pi * 2 * playrho::Radian) / 180;
     const auto vertexRadius = linearSlop * 2;
-    const auto conf = playrho::PolygonShape::Conf{}.UseVertexRadius(vertexRadius);
+    auto conf = playrho::PolygonShape::Conf{}.UseVertexRadius(vertexRadius);
     auto m_world = playrho::World{
         playrho::WorldDef{}.UseMinVertexRadius(vertexRadius).UseInitialTreeSize(8192)
     };
@@ -1680,9 +1680,8 @@ static void DropTiles(int count)
             GetX(position) = -N * a * playrho::Meter;
             for (auto i = 0; i < N; ++i)
             {
-                auto shape = playrho::PolygonShape{conf};
-                SetAsBox(shape, a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
-                ground->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
+                conf.SetAsBox(a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
+                ground->CreateFixture(std::make_shared<playrho::PolygonShape>(conf));
                 GetX(position) += 2.0f * a * playrho::Meter;
             }
             GetY(position) -= 2.0f * a * playrho::Meter;
@@ -1691,8 +1690,9 @@ static void DropTiles(int count)
     
     {
         const auto a = playrho::Real{0.5f};
-        const auto shape = std::make_shared<playrho::PolygonShape>(a * playrho::Meter, a * playrho::Meter, conf);
-        shape->SetDensity(playrho::Real{5} * playrho::KilogramPerSquareMeter);
+        conf.SetAsBox(a * playrho::Meter, a * playrho::Meter);
+        conf.SetDensity(playrho::Real{5} * playrho::KilogramPerSquareMeter);
+        const auto shape = std::make_shared<playrho::PolygonShape>(conf);
         
         playrho::Length2 x(playrho::Real(-7.0f) * playrho::Meter, playrho::Real(0.75f) * playrho::Meter);
         playrho::Length2 y;
@@ -1775,18 +1775,16 @@ playrho::Body* Tumbler::CreateEnclosure(playrho::World& world)
     const auto b = world.CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic)
                                     .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                     .UseAllowSleep(false));
-    
-    playrho::PolygonShape shape;
+    playrho::PolygonShape::Conf shape;
     shape.SetDensity(5 * playrho::KilogramPerSquareMeter);
-    playrho::SetAsBox(shape, 0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
+    shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
     b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
-    playrho::SetAsBox(shape, 0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
+    shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
     b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
-    playrho::SetAsBox(shape, 10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
+    shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
     b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
-    playrho::SetAsBox(shape, 10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
+    shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
     b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
-    
     return b;
 }
 

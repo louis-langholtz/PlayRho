@@ -39,16 +39,13 @@ public:
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = 2_m;
             conf.location = Vec2(-10.0f, y + b + L) * 1_m;
-            DiskShape circle(conf);
-            ground->CreateFixture(std::make_shared<DiskShape>(circle));
-
-            circle.SetLocation(Vec2(10.0f, y + b + L) * 1_m);
-            ground->CreateFixture(std::make_shared<DiskShape>(circle));
+            ground->CreateFixture(std::make_shared<DiskShape>(conf));
+            conf.location = Vec2(+10.0f, y + b + L) * 1_m;
+            ground->CreateFixture(std::make_shared<DiskShape>(conf));
         }
 
         {
-            const auto shape = std::make_shared<PolygonShape>(a * 1_m, b * 1_m);
-            shape->SetDensity(5_kgpm2);
+            const auto shape = std::make_shared<PolygonShape>(a * 1_m, b * 1_m, PolygonShape::Conf{}.SetDensity(5_kgpm2));
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;

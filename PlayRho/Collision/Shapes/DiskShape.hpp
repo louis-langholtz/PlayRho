@@ -60,6 +60,20 @@ public:
             location = value;
             return *this;
         }
+        
+        /// @brief Sets the radius to the given value.
+        PLAYRHO_CONSTEXPR inline Conf& SetRadius(Length radius) noexcept
+        {
+            SetVertexRadius(radius);
+            return *this;
+        }
+        
+        /// @brief Sets the location to the given value.
+        PLAYRHO_CONSTEXPR inline Conf& SetLocation(const Length2 value) noexcept
+        {
+            location = value;
+            return *this;
+        }
 
         /// @brief Location for the disk shape to be centered at.
         Length2 location = Length2{};
@@ -77,9 +91,9 @@ public:
 
     /// @brief Initializing constructor.
     explicit DiskShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
-        Shape{conf}, m_location{conf.location}
+        Shape{radius, conf}, m_location{conf.location}
     {
-        SetVertexRadius(radius);
+        // Intentionally empty.
     }
 
     /// @brief Copy constructor.
@@ -108,21 +122,12 @@ public:
     /// @return Non-negative radius.
     NonNegative<Length> GetRadius() const noexcept { return GetVertexRadius(); }
     
-    /// @brief Sets the radius to the given value.
-    void SetRadius(Length radius) noexcept
-    {
-        SetVertexRadius(radius);
-    }
-
     /// @brief Gets the location of the center of this circle shape.
     /// @return The origin (0, 0) unless explicitly set otherwise on construction or via
     ///   the set location method.
     /// @sa SetPosition.
     Length2 GetLocation() const noexcept { return m_location; }
     
-    /// @brief Sets the location to the given value.
-    void SetLocation(const Length2 value) noexcept { m_location = value; }
-
 private:
     /// Location of the shape as initialized on construction or as assigned using the
     ///   SetPosition method.

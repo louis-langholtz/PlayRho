@@ -56,23 +56,22 @@ public:
             auto conf = EdgeShape::Conf{};
             conf.density = 0;
             conf.restitution = k_restitution;
-            EdgeShape shape(conf);
 
             // Left vertical
-            shape.Set(Length2{-20_m, -20_m}, Length2{-20_m, 20_m});
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Length2{-20_m, -20_m}, Length2{-20_m, 20_m});
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
             // Right vertical
-            shape.Set(Length2{20_m, -20_m}, Length2{20_m, 20_m});
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Length2{20_m, -20_m}, Length2{20_m, 20_m});
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
             // Top horizontal
-            shape.Set(Length2{-20_m, 20_m}, Length2{20_m, 20_m});
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Length2{-20_m, 20_m}, Length2{20_m, 20_m});
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
 
             // Bottom horizontal
-            shape.Set(Length2{-20_m, -20_m}, Length2{20_m, -20_m});
-            ground->CreateFixture(std::make_shared<EdgeShape>(shape));
+            conf.Set(Length2{-20_m, -20_m}, Length2{20_m, -20_m});
+            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
         }
 
         {

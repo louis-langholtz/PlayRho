@@ -281,12 +281,9 @@ private:
             Vec2(-1.15f, 0.9f) * 1_m,
             Vec2(-1.5f, 0.2f) * 1_m
         });
-        auto chassis = std::make_shared<PolygonShape>(Span<const Length2>(carVerts.data(), carVerts.size()));
-        chassis->SetDensity(1_kgpm2);
-        
-        const auto circle = std::make_shared<DiskShape>(0.4_m);
-        circle->SetDensity(1_kgpm2);
-        circle->SetFriction(Real(0.9f));
+        const auto chassis = std::make_shared<PolygonShape>(Span<const Length2>(carVerts.data(), carVerts.size()),
+                                                      PolygonShape::Conf{}.SetDensity(1_kgpm2));
+        const auto circle = std::make_shared<DiskShape>(0.4_m, DiskShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.9f)));
         
         const auto carLocation = center - Vec2(3.3f, 1.0f) * 1_m;
         const auto car = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(carLocation));

@@ -87,7 +87,7 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Len
 }
 
 MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
-                              Span<const Length2> vertices)
+                     Span<const Length2> vertices)
 {
     // See: https://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
     

@@ -48,8 +48,7 @@ public:
         }
 
         // Boxes
-        const auto boxshape = std::make_shared<PolygonShape>(0.5_m, 0.5_m);
-        boxshape->SetDensity(20_kgpm2);
+        const auto boxshape = std::make_shared<PolygonShape>(0.5_m, 0.5_m, PolygonShape::Conf{}.SetDensity(20_kgpm2));
         for (auto i = 0; i < 5; ++i)
         {
             BodyDef bd;

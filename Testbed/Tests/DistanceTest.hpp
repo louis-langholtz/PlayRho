@@ -118,10 +118,11 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body && fixture)
             {
-                const auto shape = fixture->GetShape();
-                auto polygon = *static_cast<const PolygonShape*>(shape.get());
-                polygon.SetVertexRadius(shape->GetVertexRadius() + RadiusIncrement);
-                const auto newf = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
+                const auto polygon = static_cast<const PolygonShape*>(fixture->GetShape().get());
+                auto conf = PolygonShape::Conf{};
+                conf.Set(polygon->GetVertices());
+                conf.SetVertexRadius(polygon->GetVertexRadius() + RadiusIncrement);
+                const auto newf = body->CreateFixture(std::make_shared<PolygonShape>(conf));
                 fixtures.erase(fixtures.begin());
                 fixtures.insert(newf);
                 SetSelectedFixtures(fixtures);
@@ -139,9 +140,11 @@ public:
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= 0_m)
                 {
-                    PolygonShape polygon{*static_cast<const PolygonShape*>(shape.get())};
-                    polygon.SetVertexRadius(newVertexRadius);
-                    auto newf = body->CreateFixture(std::make_shared<PolygonShape>(polygon));
+                    const auto polygon = static_cast<const PolygonShape*>(shape.get());
+                    auto conf = PolygonShape::Conf{};
+                    conf.Set(polygon->GetVertices());
+                    conf.SetVertexRadius(newVertexRadius);
+                    auto newf = body->CreateFixture(std::make_shared<PolygonShape>(conf));
                     if (newf)
                     {
                         fixtures.erase(fixtures.begin());
@@ -167,13 +170,13 @@ public:
         conf.density = 1_kgpm2;
 
         conf.vertexRadius = radius;
-        PolygonShape polygonA{conf};
+        auto polygonA = conf;
         //polygonA.SetAsBox(8.0f, 6.0f);
         polygonA.Set(Span<const Length2>{Vec2{-8, -6} * 1_m, Vec2{8, -6} * 1_m, Vec2{0, 6} * 1_m});
         m_bodyA->CreateFixture(std::make_shared<PolygonShape>(polygonA));
         
         conf.vertexRadius = radius * Real{2};
-        PolygonShape polygonB{conf};
+        auto polygonB = conf;
         // polygonB.SetAsBox(7.2_m, 0.8_m);
         polygonB.Set(Span<const Length2>{Vec2{-7.2f, 0} * 1_m, Vec2{+7.2f, 0} * 1_m});
         //polygonB.Set(Span<const Vec2>{Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});

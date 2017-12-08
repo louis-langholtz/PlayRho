@@ -41,10 +41,8 @@ public:
         }
 
         {
-            const auto shape = std::make_shared<PolygonShape>(0.1_m, 1_m);
-            shape->SetDensity(20_kgpm2);
-            shape->SetFriction(Real(0.05f));
-
+            const auto shape = std::make_shared<PolygonShape>(0.1_m, 1_m,
+                                                              PolygonShape::Conf{}.SetDensity(20_kgpm2).SetFriction(Real(0.05f)));
             for (auto i = 0; i < 10; ++i)
             {
                 const auto body = m_world.CreateBody(BodyDef{}
@@ -55,8 +53,8 @@ public:
         }
 
         {
-            PolygonShape shape;
-            SetAsBox(shape, 7.2_m, 0.25_m, Length2{}, 0.3_rad);
+            auto shape = PolygonShape::Conf{};
+            shape.SetAsBox(7.2_m, 0.25_m, Length2{}, 0.3_rad);
 
             BodyDef bd;
             bd.location = Vec2(1.2f, 6.0f) * 1_m;
@@ -105,17 +103,12 @@ public:
             auto conf = PolygonShape::Conf{};
             conf.density = 10_kgpm2;
             conf.friction = 0.1f;
-
-            PolygonShape shape{conf};
-
-            SetAsBox(shape, 1_m, 0.1_m, Vec2(0.0f, -0.9f) * 1_m, 0_rad);
-            b5->CreateFixture(std::make_shared<PolygonShape>(shape));
-
-            SetAsBox(shape, 0.1_m, 1_m, Vec2(-0.9f, 0.0f) * 1_m, 0_rad);
-            b5->CreateFixture(std::make_shared<PolygonShape>(shape));
-
-            SetAsBox(shape, 0.1_m, 1_m, Vec2(0.9f, 0.0f) * 1_m, 0_rad);
-            b5->CreateFixture(std::make_shared<PolygonShape>(shape));
+            conf.SetAsBox(1_m, 0.1_m, Vec2(0.0f, -0.9f) * 1_m, 0_rad);
+            b5->CreateFixture(std::make_shared<PolygonShape>(conf));
+            conf.SetAsBox(0.1_m, 1_m, Vec2(-0.9f, 0.0f) * 1_m, 0_rad);
+            b5->CreateFixture(std::make_shared<PolygonShape>(conf));
+            conf.SetAsBox(0.1_m, 1_m, Vec2(0.9f, 0.0f) * 1_m, 0_rad);
+            b5->CreateFixture(std::make_shared<PolygonShape>(conf));
         }
 
         m_world.CreateJoint(RevoluteJointDef{b1, b5, Vec2(6, 2) * 1_m}.UseCollideConnected(true));

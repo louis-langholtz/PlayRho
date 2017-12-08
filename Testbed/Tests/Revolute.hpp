@@ -75,8 +75,8 @@ public:
             circleConf.density = 5_kgpm2;
             m_ball->CreateFixture(std::make_shared<DiskShape>(circleConf), fd);
 
-            PolygonShape polygon_shape;
-            SetAsBox(polygon_shape, 10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
+            auto polygon_shape = PolygonShape::Conf{};
+            polygon_shape.SetAsBox(10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
             polygon_shape.SetDensity(2_kgpm2);
 
             BodyDef polygon_bd;
@@ -95,12 +95,11 @@ public:
 
         // Tests mass computation of a small object far from the origin
         {
-            auto polyShape = PolygonShape({
+            const auto polyShape = PolygonShape::Conf{}.Set({
                 Vec2(17.63f, 36.31f) * 1_m,
                 Vec2(17.52f, 36.69f) * 1_m,
                 Vec2(17.19f, 36.36f) * 1_m
-            });
-            polyShape.SetDensity(1_kgpm2);
+            }).SetDensity(1_kgpm2);
         
             const auto body = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
             body->CreateFixture(std::make_shared<PolygonShape>(polyShape));

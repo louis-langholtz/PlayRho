@@ -50,10 +50,8 @@ TEST(Fixture, CreateMatchesDef)
     const auto friction = Real(0.5);
     const auto restitution = Real(0.4);
     const auto isSensor = true;
-    const auto shapeA = std::make_shared<DiskShape>();
-    shapeA->SetFriction(friction);
-    shapeA->SetRestitution(restitution);
-    shapeA->SetDensity(density);
+    const auto conf = DiskShape::Conf{}.SetFriction(friction).SetRestitution(restitution).SetDensity(density);
+    const auto shapeA = std::make_shared<DiskShape>(conf);
 
     auto def = FixtureDef{};
     def.userData = userData;
@@ -122,10 +120,8 @@ TEST(Fixture, CopyConstructor)
     const auto friction = Real(0.5);
     const auto restitution = Real(0.4);
     const auto isSensor = true;
-    const auto shapeA = std::make_shared<DiskShape>();
-    shapeA->SetFriction(friction);
-    shapeA->SetRestitution(restitution);
-    shapeA->SetDensity(density);
+    const auto conf = DiskShape::Conf{}.SetFriction(friction).SetRestitution(restitution).SetDensity(density);
+    const auto shapeA = std::make_shared<DiskShape>(conf);
     
     auto def = FixtureDef{};
     def.userData = userData;
