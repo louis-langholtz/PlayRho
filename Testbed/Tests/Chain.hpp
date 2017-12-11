@@ -31,7 +31,7 @@ public:
     {
         const auto ground = m_world.CreateBody();
         ground->CreateFixture(Shape(GetGroundEdgeConf()));
-        const auto shape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetFriction(Real(0.2f)).SetAsBox(0.6_m, 0.125_m)};
+        const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).UseFriction(Real(0.2f)).SetAsBox(0.6_m, 0.125_m)};
         const auto y = 25.0f;
         auto prevBody = ground;
         for (auto i = 0; i < 30; ++i)

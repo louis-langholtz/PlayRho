@@ -75,7 +75,7 @@ public:
             body->CreateFixture(polyshape);
         }
 
-        const auto diskShape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).SetRadius(0.5_m)};
+        const auto diskShape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(0.5_m)};
         for (auto i = 0; i < 3; ++i)
         {
             const auto body = m_world.CreateBody(BodyDef{}

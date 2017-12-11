@@ -121,7 +121,7 @@ public:
                 const auto polygon = static_cast<const PolygonShapeConf*>(GetData(fixture->GetShape()));
                 auto conf = PolygonShapeConf{};
                 conf.Set(polygon->GetVertices());
-                conf.SetVertexRadius(polygon->vertexRadius + RadiusIncrement);
+                conf.UseVertexRadius(polygon->vertexRadius + RadiusIncrement);
                 const auto newf = body->CreateFixture(Shape{conf});
                 fixtures.erase(fixtures.begin());
                 fixtures.insert(newf);
@@ -143,7 +143,7 @@ public:
                     const auto polygon = static_cast<const PolygonShapeConf*>(GetData(shape));
                     auto conf = PolygonShapeConf{};
                     conf.Set(polygon->GetVertices());
-                    conf.SetVertexRadius(newVertexRadius);
+                    conf.UseVertexRadius(newVertexRadius);
                     auto newf = body->CreateFixture(Shape{conf});
                     if (newf)
                     {

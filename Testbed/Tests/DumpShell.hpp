@@ -70,9 +70,9 @@ public:
                 vs[2] = Vec2(-1.880589962005615e+00f, -1.365900039672852e-01f) * 1_m;
                 vs[3] = Vec2(3.972740173339844e-01f, -3.897832870483398e+00f) * 1_m;
                 shape.Set(Span<const Length2>(vs, 4));
-                shape.SetFriction(Real(2.000000029802322e-01f));
-                shape.SetRestitution(Real(0.000000000000000e+00f));
-                shape.SetDensity(Real{1.000000000000000e+00f} * 1_kgpm2);
+                shape.UseFriction(Real(2.000000029802322e-01f));
+                shape.UseRestitution(Real(0.000000000000000e+00f));
+                shape.UseDensity(Real{1.000000000000000e+00f} * 1_kgpm2);
                 FixtureDef fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
@@ -108,9 +108,9 @@ public:
                 vs[4] = Vec2(-2.590820074081421e+00f, -5.472509860992432e-01f) * 1_m;
                 vs[5] = Vec2(2.819370031356812e+00f, -5.402340292930603e-01f) * 1_m;
                 shape.Set(Span<const Length2>(vs, 6));
-                shape.SetFriction(Real(5.000000000000000e-01f));
-                shape.SetRestitution(Real(0.000000000000000e+00f));
-                shape.SetDensity(Real{5.000000000000000e+00f} * 1_kgpm2);
+                shape.UseFriction(Real(5.000000000000000e-01f));
+                shape.UseRestitution(Real(0.000000000000000e+00f));
+                shape.UseDensity(Real{5.000000000000000e+00f} * 1_kgpm2);
                 FixtureDef fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
@@ -143,9 +143,9 @@ public:
                 vs[2] = Vec2(-1.639146655797958e-01f, -4.428443312644958e-02f) * 1_m;
                 vs[3] = Vec2(1.639146357774734e-01f, -4.428444057703018e-02f) * 1_m;
                 shape.Set(Span<const Length2>(vs, 4));
-                shape.SetFriction(Real(9.499999880790710e-01f));
-                shape.SetRestitution(Real(0.000000000000000e+00f));
-                shape.SetDensity(Real{1.000000000000000e+01f} * 1_kgpm2);
+                shape.UseFriction(Real(9.499999880790710e-01f));
+                shape.UseRestitution(Real(0.000000000000000e+00f));
+                shape.UseDensity(Real{1.000000000000000e+01f} * 1_kgpm2);
                 FixtureDef fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);

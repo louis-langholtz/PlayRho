@@ -48,7 +48,7 @@ public:
     CollisionFiltering()
     {
         // Ground body
-        m_world.CreateBody()->CreateFixture(Shape(EdgeShapeConf{}.SetFriction(0.3f)
+        m_world.CreateBody()->CreateFixture(Shape(EdgeShapeConf{}.UseFriction(0.3f)
                         .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
         
         // Small triangle
@@ -90,7 +90,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-5.0f, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(Shape{PolygonShapeConf{}.SetDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)});
+            body->CreateFixture(Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)});
 
             PrismaticJointDef jd;
             jd.bodyA = body2;

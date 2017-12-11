@@ -101,7 +101,7 @@ namespace playrho {
             m_world.CreateJoint(RevoluteJointDef{prevBody, firstBody, vertices[0] + vertexOffset});
 
             const auto diskRadius = 0.15_m;
-            const auto diskShape = Shape(DiskShapeConf{}.UseVertexRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(Real(0)));
+            const auto diskShape = Shape(DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(Real(0)));
             auto angleIncrement = 90_deg;
             auto angle = 0_deg;
             const auto alpha = diskRadius;

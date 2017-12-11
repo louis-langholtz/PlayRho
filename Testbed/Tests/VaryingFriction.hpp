@@ -41,7 +41,7 @@ public:
         m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-10.5f, 11) * 1_m))->CreateFixture(sliderWall);
         m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-4, 6) * 1_m).UseAngle(-0.25_rad))->CreateFixture(sliderPlank);
         
-        auto shape = PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).SetDensity(25_kgpm2);
+        auto shape = PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(25_kgpm2);
         float friction[5] = {std::sqrt(std::numeric_limits<float>::max()), 0.5f, 0.35f, 0.1f, 0.0f};
         for (auto i = 0; i < 5; ++i)
         {
@@ -49,7 +49,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-15.0f + 4.0f * i, 28.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            shape.SetFriction(Real(friction[i]));
+            shape.UseFriction(Real(friction[i]));
             body->CreateFixture(Shape(shape));
         }
     }

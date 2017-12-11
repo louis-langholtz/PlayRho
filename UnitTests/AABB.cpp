@@ -465,7 +465,7 @@ TEST(AABB2D, ComputeIntersectingAABBForTwoFixtures)
 {
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
 
-    const auto shape = DiskShapeConf{}.UseVertexRadius(2_m);
+    const auto shape = DiskShapeConf{}.UseRadius(2_m);
     const auto shapeAabb = ComputeAABB(shape, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB2D{shapeInterval, shapeInterval}));
 
@@ -494,7 +494,7 @@ TEST(AABB2D, ComputeIntersectingAABBForContact)
 {
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
     
-    const auto shape = DiskShapeConf{}.UseVertexRadius(2_m);
+    const auto shape = DiskShapeConf{}.UseRadius(2_m);
     const auto shapeAabb = ComputeAABB(shape, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB2D{shapeInterval, shapeInterval}));
     

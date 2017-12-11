@@ -37,7 +37,7 @@ public:
             conf.vertexRadius = 0.5_m;
             
             conf.location = Vec2{-0.5f, 0.5f} * 1_m;
-            const auto circle1 = Shape{DiskShapeConf(conf).SetDensity(2_kgpm2)};
+            const auto circle1 = Shape{DiskShapeConf(conf).UseDensity(2_kgpm2)};
             conf.location = Vec2{0.5f, 0.5f} * 1_m;
             const auto circle2 = Shape(conf);
             for (auto i = 0; i < 10; ++i)
@@ -55,10 +55,10 @@ public:
 
         {
             auto conf = PolygonShapeConf{};
-            conf.SetDensity(2_kgpm2);
+            conf.UseDensity(2_kgpm2);
             conf.SetAsBox(0.25_m, 0.5_m);
             const auto polygon1 = Shape{conf};
-            conf.SetDensity(2_kgpm2);
+            conf.UseDensity(2_kgpm2);
             conf.SetAsBox(0.25_m, 0.5_m, Vec2(0.0f, -0.5f) * 1_m, 0.5_rad * Pi);
             const auto polygon2 = Shape{conf};
             for (int i = 0; i < 10; ++i)
@@ -85,7 +85,7 @@ public:
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf1),
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf1)
             });
-            triangleConf1.SetDensity(2_kgpm2);
+            triangleConf1.UseDensity(2_kgpm2);
             const auto triangle1 = Shape(triangleConf1);
 
             Transformation xf2;
@@ -98,7 +98,7 @@ public:
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf2),
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf2)
             });
-            trianglConf2.SetDensity(2_kgpm2);
+            trianglConf2.UseDensity(2_kgpm2);
             const auto triangle2 = Shape(trianglConf2);
 
             for (auto i = 0; i < 10; ++i)
@@ -116,12 +116,12 @@ public:
 
         {
             auto conf = PolygonShapeConf{};
-            conf.SetDensity(4_kgpm2);
+            conf.UseDensity(4_kgpm2);
             conf.SetAsBox(1.5_m, 0.15_m);
             const auto bottom = Shape{conf};
             conf.SetAsBox(0.15_m, 2.7_m, Vec2(-1.45f, 2.35f) * 1_m, +0.2_rad);
             const auto left = Shape{conf};
-            conf.SetDensity(4_kgpm2);
+            conf.UseDensity(4_kgpm2);
             conf.SetAsBox(0.15_m, 2.7_m, Vec2(1.45f, 2.35f) * 1_m, -0.2_rad);
             const auto right = Shape{conf};
 

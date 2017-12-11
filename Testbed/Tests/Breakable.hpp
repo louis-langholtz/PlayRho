@@ -41,7 +41,7 @@ public:
 
         // Breakable dynamic body
         {
-            auto conf = PolygonShapeConf{}.SetDensity(1_kgpm2);
+            auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;

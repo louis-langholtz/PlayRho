@@ -99,7 +99,7 @@ TEST(DiskShapeConf, Accept)
 #if 0
 TEST(DiskShapeConf, BaseVisitorForDiskShape)
 {
-    const auto shape = DiskShapeConf{}.SetRadius(2_m);
+    const auto shape = DiskShapeConf{}.UseRadius(2_m);
     auto visitor = IsVisitedShapeVisitor{};
     ASSERT_FALSE(visitor.IsVisited());
     shape.Accept(visitor);

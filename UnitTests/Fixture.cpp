@@ -50,7 +50,7 @@ TEST(Fixture, CreateMatchesDef)
     const auto friction = Real(0.5);
     const auto restitution = Real(0.4);
     const auto isSensor = true;
-    const auto conf = DiskShapeConf{}.SetFriction(friction).SetRestitution(restitution).SetDensity(density);
+    const auto conf = DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density);
     const auto shapeA = Shape(conf);
 
     auto def = FixtureDef{};
@@ -120,7 +120,7 @@ TEST(Fixture, CopyConstructor)
     const auto friction = Real(0.5);
     const auto restitution = Real(0.4);
     const auto isSensor = true;
-    const auto conf = DiskShapeConf{}.SetFriction(friction).SetRestitution(restitution).SetDensity(density);
+    const auto conf = DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density);
     const auto shapeA = Shape(conf);
     
     auto def = FixtureDef{};

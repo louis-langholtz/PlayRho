@@ -184,7 +184,7 @@ private:
         const auto right = Length2{+2_m, +2.5_m};
         {
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-            const auto conf = DiskConf{}.UseVertexRadius(0.7_m);
+            const auto conf = DiskConf{}.UseRadius(0.7_m);
             cbody->CreateFixture(DiskConf(conf).UseLocation(left));
             cbody->CreateFixture(DiskConf(conf).UseLocation(right));
         }
@@ -269,11 +269,11 @@ private:
             Vec2(-1.5f, 0.2f) * 1_m
         });
         const auto circle = Shape{
-            DiskShapeConf{}.SetDensity(1_kgpm2).SetFriction(Real(0.9f)).SetRadius(0.4_m)};
+            DiskShapeConf{}.UseDensity(1_kgpm2).UseFriction(Real(0.9f)).UseRadius(0.4_m)};
         
         const auto carLocation = center - Vec2(3.3f, 1.0f) * 1_m;
         const auto car = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(carLocation));
-        car->CreateFixture(PolygonShapeConf{}.SetDensity(1_kgpm2).Set(Span<const Length2>(carVerts.data(), carVerts.size())));
+        car->CreateFixture(PolygonShapeConf{}.UseDensity(1_kgpm2).Set(Span<const Length2>(carVerts.data(), carVerts.size())));
         
         const auto backWheel  = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(carLocation + Vec2(-1.0f, -0.65f) * 1_m));
         backWheel->CreateFixture(circle);
@@ -424,8 +424,8 @@ private:
     const BodyDef DynamicBD = BodyDef{}.UseType(BodyType::Dynamic);
     const Length RectHHeight = 0.25_m;
     const Length RectHWidth = 2_m;
-    Shape m_diskShape{DiskConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2)};
-    Shape m_smallDiskShape{DiskConf{}.UseVertexRadius(0.5_m).UseDensity(1_kgpm2).UseRestitution(Real(0))};
+    Shape m_diskShape{DiskConf{}.UseRadius(1_m).UseDensity(1_kgpm2)};
+    Shape m_smallDiskShape{DiskConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseRestitution(Real(0))};
     Shape m_squareShape{PolyConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m)};
     Shape m_rectShape{PolyConf{}.UseDensity(1_kgpm2).SetAsBox(RectHWidth, RectHHeight)};
     const Length2 offset = Length2{+2_m, 0_m};

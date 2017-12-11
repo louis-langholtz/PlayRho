@@ -46,7 +46,7 @@ public:
 
         // Creates left-end-fixed 8-part plank (below the top one)
         {
-            const auto shape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
+            const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -66,7 +66,7 @@ public:
 
         // Creates left-end-fixed 3-part plank at top
         {
-            const auto shape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(1_m, 0.125_m)};
+            const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(1_m, 0.125_m)};
             auto prevBody = ground;
             for (auto i = 0; i < 3; ++i)
             {
@@ -87,7 +87,7 @@ public:
 
         // Creates 8-part plank to the right of the fixed planks (but not farthest right)
         {
-            const auto shape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
+            const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -108,7 +108,7 @@ public:
 
         // Creates 8-part farthest-right plank
         {
-            const auto shape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
+            const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -142,7 +142,7 @@ public:
         }
 
         // Creates circles
-        const auto circleshape = Shape{DiskShapeConf{}.SetRadius(0.5_m).UseDensity(1_kgpm2)};
+        const auto circleshape = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2)};
         for (auto i = 0; i < 2; ++i)
         {
             auto bd = BodyDef{};

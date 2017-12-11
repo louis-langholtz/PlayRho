@@ -113,7 +113,7 @@ public:
             bd.location = Vec2(140.0f, 1.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(Shape{PolygonShapeConf{}.SetDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)});
+            body->CreateFixture(Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)});
 
             RevoluteJointDef jd(ground, body, body->GetLocation());
             jd.lowerAngle = -8_deg;
@@ -129,7 +129,7 @@ public:
         {
             const auto N = 20;
             const auto shape = Shape{
-                PolygonShapeConf{}.SetDensity(1_kgpm2).SetFriction(Real(0.6f)).SetAsBox(1_m, 0.125_m)
+                PolygonShapeConf{}.UseDensity(1_kgpm2).UseFriction(Real(0.6f)).SetAsBox(1_m, 0.125_m)
             };
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i)
@@ -151,7 +151,7 @@ public:
 
         // Boxes
         {
-            const auto box = Shape{PolygonShapeConf{}.SetDensity(0.5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
+            const auto box = Shape{PolygonShapeConf{}.UseDensity(0.5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
             auto body = static_cast<Body*>(nullptr);
 
             BodyDef bd;
@@ -191,7 +191,7 @@ public:
                 }));
 
             const auto circle = Shape{
-                DiskShapeConf{}.SetRadius(0.4_m).UseDensity(1_kgpm2).UseFriction(Real(0.9f))
+                DiskShapeConf{}.UseRadius(0.4_m).UseDensity(1_kgpm2).UseFriction(Real(0.9f))
             };
             
             BodyDef bd;

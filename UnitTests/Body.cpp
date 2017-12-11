@@ -562,7 +562,7 @@ TEST(Body, CalcGravitationalAcceleration)
     const auto l1 = Length2{-8_m, 0_m};
     const auto l2 = Length2{+8_m, 0_m};
     const auto l3 = Length2{+16_m, 0_m};
-    const auto shape = DiskShapeConf{}.UseVertexRadius(2_m).UseDensity(1e10_kgpm2);
+    const auto shape = DiskShapeConf{}.UseRadius(2_m).UseDensity(1e10_kgpm2);
     
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l1));
     b1->CreateFixture(shape);

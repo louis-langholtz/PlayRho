@@ -47,7 +47,7 @@ public:
         }
 
         // Boxes
-        const auto boxshape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)};
+        const auto boxshape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)};
         for (auto i = 0; i < 5; ++i)
         {
             BodyDef bd;

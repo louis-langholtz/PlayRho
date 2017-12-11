@@ -64,7 +64,7 @@ public:
 
         {
             const auto a = Real{0.5f};
-            const auto shape = Shape{PolygonShapeConf{}.SetDensity(5_kgpm2).SetAsBox(a * 1_m, a * 1_m)};
+            const auto shape = Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(a * 1_m, a * 1_m)};
 
             Vec2 x(-7.0f, 0.75f);
             Vec2 y;

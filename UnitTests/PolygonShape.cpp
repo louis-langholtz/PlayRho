@@ -362,7 +362,7 @@ TEST(PolygonShapeConf, CanSetTwoPoints)
         Vec2{+1, +0} * Meter
     };
     const auto vertexRadius = 2_m;
-    const auto shape = PolygonShapeConf{PolygonShapeConf{}.SetVertexRadius(vertexRadius).Set(points)};
+    const auto shape = PolygonShapeConf{PolygonShapeConf{}.UseVertexRadius(vertexRadius).Set(points)};
     EXPECT_EQ(shape.GetVertexCount(), static_cast<VertexCounter>(points.size()));
     EXPECT_EQ(shape.GetVertex(0), points[1]);
     EXPECT_EQ(shape.GetVertex(1), points[0]);
@@ -384,7 +384,7 @@ TEST(PolygonShapeConf, CanSetOnePoint)
 {
     const auto points = Vector<const Length2, 1>{Length2{}};
     const auto vertexRadius = 2_m;
-    const auto shape = PolygonShapeConf{PolygonShapeConf{}.SetVertexRadius(vertexRadius).Set(points)};
+    const auto shape = PolygonShapeConf{PolygonShapeConf{}.UseVertexRadius(vertexRadius).Set(points)};
     EXPECT_EQ(shape.GetVertexCount(), static_cast<VertexCounter>(points.size()));
     EXPECT_EQ(shape.GetVertex(0), points[0]);
     EXPECT_FALSE(IsValid(shape.GetNormal(0)));

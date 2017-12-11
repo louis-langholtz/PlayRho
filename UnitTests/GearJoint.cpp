@@ -186,7 +186,7 @@ TEST(GearJoint, GetGearJointDef)
 
 TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
 {
-    const auto circle = DiskShapeConf{}.SetRadius(0.2_m);
+    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -217,7 +217,7 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
 
 TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
 {
-    const auto circle = DiskShapeConf{}.SetRadius(0.2_m);
+    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -248,7 +248,7 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
 
 TEST(GearJoint, GetAnchorAandB)
 {
-    const auto circle = DiskShapeConf{}.SetRadius(0.2_m);
+    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};

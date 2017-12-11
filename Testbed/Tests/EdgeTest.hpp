@@ -77,9 +77,9 @@ public:
             const auto body = m_world.CreateBody(bd);
 
             auto shape = PolygonShapeConf{};
-            shape.SetVertexRadius(1_m);
+            shape.UseVertexRadius(1_m);
             shape.SetAsBox(0.5_m, 0.5_m);
-            shape.SetDensity(1_kgpm2);
+            shape.UseDensity(1_kgpm2);
             body->CreateFixture(Shape(shape));
         }
     }

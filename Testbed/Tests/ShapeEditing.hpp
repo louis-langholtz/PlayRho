@@ -39,7 +39,7 @@ public:
 
         auto shape = PolygonShapeConf{};
         shape.SetAsBox(4_m, 4_m, Length2{}, 0_deg);
-        shape.SetDensity(10_kgpm2);
+        shape.UseDensity(10_kgpm2);
         m_fixture1 = m_body->CreateFixture(Shape(shape));
 
         m_fixture2 = nullptr;

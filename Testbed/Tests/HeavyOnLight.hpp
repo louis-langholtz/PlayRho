@@ -38,8 +38,8 @@ public:
             .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m);
         
         const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
-        const auto smallerDiskConf = DiskShapeConf(diskConf).UseVertexRadius(0.5_m);
-        const auto biggerDiskConf = DiskShapeConf(diskConf).UseVertexRadius(5_m);
+        const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
+        const auto biggerDiskConf = DiskShapeConf(diskConf).UseRadius(5_m);
 
         m_world.CreateBody()->CreateFixture(Shape(groundConf));
         

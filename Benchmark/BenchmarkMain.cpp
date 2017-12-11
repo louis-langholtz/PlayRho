@@ -1585,7 +1585,7 @@ static void DropDisks(benchmark::State& state)
     auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::EarthlyGravity2D)};
 
     const auto diskRadius = 0.5f * playrho::Meter;
-    const auto diskDef = playrho::DiskShapeConf{}.UseVertexRadius(diskRadius);
+    const auto diskDef = playrho::DiskShapeConf{}.UseRadius(diskRadius);
     const auto shape = playrho::Shape{diskDef};
     const auto numDisks = state.range();
     for (auto i = decltype(numDisks){0}; i < numDisks; ++i)
@@ -1608,7 +1608,7 @@ static void DropDisks(benchmark::State& state)
 static void AddPairStressTest(benchmark::State& state, int count)
 {
     const auto diskConf = playrho::DiskShapeConf{}
-        .UseVertexRadius(playrho::Meter / 10)
+        .UseRadius(playrho::Meter / 10)
         .UseDensity(0.01f * playrho::KilogramPerSquareMeter);
     const auto diskShape = playrho::Shape{diskConf};
 
@@ -1693,7 +1693,7 @@ static void DropTiles(int count)
     {
         const auto a = playrho::Real{0.5f};
         conf.SetAsBox(a * playrho::Meter, a * playrho::Meter);
-        conf.SetDensity(playrho::Real{5} * playrho::KilogramPerSquareMeter);
+        conf.UseDensity(playrho::Real{5} * playrho::KilogramPerSquareMeter);
         const auto shape = playrho::Shape(conf);
         
         playrho::Length2 x(playrho::Real(-7.0f) * playrho::Meter, playrho::Real(0.75f) * playrho::Meter);
@@ -1777,7 +1777,7 @@ playrho::Body* Tumbler::CreateEnclosure(playrho::World& world)
                                     .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                     .UseAllowSleep(false));
     playrho::PolygonShapeConf shape;
-    shape.SetDensity(5 * playrho::KilogramPerSquareMeter);
+    shape.UseDensity(5 * playrho::KilogramPerSquareMeter);
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
     b->CreateFixture(shape);
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});

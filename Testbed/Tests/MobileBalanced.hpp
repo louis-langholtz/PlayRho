@@ -42,7 +42,7 @@ public:
         const auto a = 0.5_m;
         const auto h = Length2{0_m, a};
         const auto root = AddNode(ground, Length2{}, 0, 3.0f, a,
-                                  PolygonShapeConf{}.SetDensity(density).SetAsBox(a * 1_m / 4, a * 1_m));
+                                  PolygonShapeConf{}.UseDensity(density).SetAsBox(a * 1_m / 4, a * 1_m));
 
         auto jointDef = RevoluteJointDef{};
         jointDef.bodyA = ground;
@@ -71,7 +71,7 @@ public:
         }
 
         auto shape2 = PolygonShapeConf{};
-        shape2.SetDensity(density);
+        shape2.UseDensity(density);
         shape2.SetAsBox(offset * 1_m, a / 4, Length2{0_m, -a}, 0_rad);
         body->CreateFixture(Shape(shape2));
 

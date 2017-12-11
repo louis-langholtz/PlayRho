@@ -131,7 +131,7 @@ public:
     ///
     /// @note This must be a non-negative value.
     ///
-    /// @sa SetVertexRadius
+    /// @sa UseVertexRadius
     ///
     friend NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
     {

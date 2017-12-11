@@ -49,7 +49,7 @@ public:
 
         auto polygon = PolygonShapeConf{};
         polygon.Set(Span<const Length2>{vertices, 3});
-        polygon.SetDensity(1_kgpm2);
+        polygon.UseDensity(1_kgpm2);
 
         BodyDef triangleBodyDef;
         triangleBodyDef.type = BodyType::Dynamic;
@@ -92,12 +92,12 @@ public:
         // Small circle
         circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body5 = m_world.CreateBody(circleBodyDef);
-        body5->CreateFixture(Shape(DiskShapeConf{}.SetRadius(1_m).UseDensity(1_kgpm2)));
+        body5->CreateFixture(Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
 
         // Large circle
         circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body6 = m_world.CreateBody(circleBodyDef);
-        body6->CreateFixture(Shape(DiskShapeConf{}.SetRadius(2_m).UseDensity(1_kgpm2)));
+        body6->CreateFixture(Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
     }
 
     void PostStep(const Settings&, Drawer&) override

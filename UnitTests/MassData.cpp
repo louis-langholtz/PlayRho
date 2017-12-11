@@ -180,7 +180,7 @@ TEST(MassData, GetMassDataFreeFunctionForNoVertices)
 
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
-    const auto shape = DiskShapeConf{}.SetRadius(0_m).SetDensity(1_kgpm2);
+    const auto shape = DiskShapeConf{}.UseRadius(0_m).UseDensity(1_kgpm2);
     const auto mass_data = GetMassData(shape);
     EXPECT_EQ(mass_data.mass, NonNegative<Mass>(0_kg));
     EXPECT_EQ(mass_data.I, RotInertia{0});

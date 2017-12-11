@@ -128,7 +128,7 @@ public:
             const auto a = 2 * Pi * 1_rad / sso.rotationalPeriod;
             b->SetVelocity(Velocity{LinearVelocity2{0_mps, v}, a});
             const auto d = sso.mass / (Pi * Square(sso.radius));
-            const auto sconf = DiskShapeConf{}.UseVertexRadius(sso.radius).UseDensity(d);
+            const auto sconf = DiskShapeConf{}.UseRadius(sso.radius).UseDensity(d);
             const auto shape = Shape(sconf);
             b->CreateFixture(shape);
         }

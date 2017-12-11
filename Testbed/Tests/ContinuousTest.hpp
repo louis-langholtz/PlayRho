@@ -43,7 +43,7 @@ public:
             //bd.angle = 0.1f;
 
             m_body = m_world.CreateBody(bd);
-            m_body->CreateFixture(PolygonShapeConf{}.SetDensity(1_kgpm2).SetAsBox(2_m, 0.1_m));
+            m_body->CreateFixture(PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2_m, 0.1_m));
             m_angularVelocity = RandomFloat(-50.0f, 50.0f) * 1_rad / 1_s;
             //m_angularVelocity = 46.661274f;
             m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * 1_mps, m_angularVelocity});

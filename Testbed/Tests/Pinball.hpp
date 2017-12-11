@@ -59,7 +59,7 @@ public:
             bd.location = p2;
             const auto rightFlipper = m_world.CreateBody(bd);
 
-            const auto box = Shape(PolygonShapeConf{}.SetAsBox(1.75_m, 0.1_m).SetDensity(1_kgpm2));
+            const auto box = Shape(PolygonShapeConf{}.SetAsBox(1.75_m, 0.1_m).UseDensity(1_kgpm2));
             leftFlipper->CreateFixture(box);
             rightFlipper->CreateFixture(box);
 

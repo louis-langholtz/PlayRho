@@ -64,17 +64,10 @@ public:
         return *this;
     }
     
-    /// @brief Sets the radius to the given value.
-    PLAYRHO_CONSTEXPR inline DiskShapeConf& SetRadius(Length radius) noexcept
+    /// @brief Uses the given value as the radius.
+    PLAYRHO_CONSTEXPR inline DiskShapeConf& UseRadius(Length radius) noexcept
     {
         vertexRadius = radius;
-        return *this;
-    }
-    
-    /// @brief Sets the location to the given value.
-    PLAYRHO_CONSTEXPR inline DiskShapeConf& SetLocation(const Length2 value) noexcept
-    {
-        location = value;
         return *this;
     }
     

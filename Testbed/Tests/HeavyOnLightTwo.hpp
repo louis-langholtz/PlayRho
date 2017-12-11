@@ -57,8 +57,8 @@ public:
     
     const BodyDef DynBD = BodyDef{}.UseType(BodyType::Dynamic);
     const DiskShapeConf DiskDef = DiskShapeConf{}.UseDensity(10_kgpm2);
-    const Shape lilDisk = DiskShapeConf(DiskDef).SetRadius(0.5_m);
-    const Shape bigDisk = DiskShapeConf(DiskDef).SetRadius(5.0_m);
+    const Shape lilDisk = DiskShapeConf(DiskDef).UseRadius(0.5_m);
+    const Shape bigDisk = DiskShapeConf(DiskDef).UseRadius(5.0_m);
     Body* m_heavy = nullptr;
 };
 

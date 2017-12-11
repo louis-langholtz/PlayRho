@@ -29,7 +29,7 @@ using namespace playrho;
 TEST(CollideShapes, IdenticalOverlappingCircles)
 {
     const auto radius = 1_m;
-    const auto shape = DiskShapeConf{}.SetRadius(radius);
+    const auto shape = DiskShapeConf{}.UseRadius(radius);
     const auto position = Vec2{11, -4} * Meter;
     const auto xfm = Transformation{position, UnitVec2::GetRight()};
     
@@ -54,8 +54,8 @@ TEST(CollideShapes, CircleCircleOrientedHorizontally)
 {
     const auto r1 = 1_m;
     const auto r2 = 1_m;
-    const auto s1 = DiskShapeConf{}.SetRadius(r1);
-    const auto s2 = DiskShapeConf{}.SetRadius(r2);
+    const auto s1 = DiskShapeConf{}.UseRadius(r1);
+    const auto s2 = DiskShapeConf{}.UseRadius(r2);
     const auto p1 = Vec2{11, -4} * Meter;
     const auto p2 = Vec2{13, -4} * Meter;
     const auto t1 = Transformation{p1, UnitVec2::GetRight()};
@@ -82,8 +82,8 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 {
     const auto r1 = 1_m;
     const auto r2 = 1_m;
-    const auto s1 = DiskShapeConf{}.SetRadius(r1);
-    const auto s2 = DiskShapeConf{}.SetRadius(r2);
+    const auto s1 = DiskShapeConf{}.UseRadius(r1);
+    const auto s2 = DiskShapeConf{}.UseRadius(r2);
     const auto p1 = Vec2{7, -2} * Meter;
     const auto p2 = Vec2{7, -1} * Meter;
     
@@ -108,7 +108,7 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 {
     const auto circleRadius = 1_m;
-    const auto circle = DiskShapeConf{}.SetRadius(circleRadius);
+    const auto circle = DiskShapeConf{}.UseRadius(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -138,7 +138,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 TEST(CollideShapes, CircleTouchingTrianglePointLeft)
 {
     const auto circleRadius = 1_m;
-    const auto circle = DiskShapeConf{}.SetRadius(circleRadius);
+    const auto circle = DiskShapeConf{}.UseRadius(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -200,7 +200,7 @@ TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
     auto triangle = PolygonShapeConf{}
-            .SetVertexRadius(Real{0.0001f * 2} * Meter)
+            .UseVertexRadius(Real{0.0001f * 2} * Meter)
             .Set({triangleLeftPt, triangleRightPt, triangleTopPt});
     const auto circleXfm = Transformation{
         triangleRightPt + UnitVec2::Get(-45_deg) * circleRadius * Real(1.01),
@@ -1324,7 +1324,7 @@ TEST(CollideShapes, EdgeFooTriangle)
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
-    const auto polygon_shape = PolygonShapeConf{}.SetVertexRadius(0_m).Set({triangleLeftPt, triangleRightPt, triangleTopPt});
+    const auto polygon_shape = PolygonShapeConf{}.UseVertexRadius(0_m).Set({triangleLeftPt, triangleRightPt, triangleTopPt});
     const auto polygon_xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     
     const auto manifold = CollideShapes(GetChild(edge_shape, 0), edge_xfm,

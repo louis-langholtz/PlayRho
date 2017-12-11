@@ -161,7 +161,7 @@ public:
             const auto body = m_world.CreateBody(bd);
             
             const auto square = Shape{
-                PolygonShapeConf{}.SetFriction(Real(0)).SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)
+                PolygonShapeConf{}.UseFriction(Real(0)).UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)
             };
             body->CreateFixture(square);
             
@@ -179,7 +179,7 @@ public:
             bd.allowSleep = false;
 
             m_world.CreateBody(bd)->CreateFixture(Shape{
-                PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.25_m, 0.25_m)
+                PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.25_m, 0.25_m)
             });
         }
 

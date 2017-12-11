@@ -52,8 +52,8 @@ public:
             poly1.Set({p1, p3, p2});
             poly2.Set({Length2{}, p6 - p4, p5 - p4});
         }
-        poly1.SetDensity(1_kgpm2);
-        poly2.SetDensity(1_kgpm2);
+        poly1.UseDensity(1_kgpm2);
+        poly2.UseDensity(1_kgpm2);
 
         FixtureDef fd1, fd2;
         fd1.filter.groupIndex = -1;
@@ -136,7 +136,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
             m_chassis = m_world.CreateBody(bd);
-            m_chassis->CreateFixture(PolygonShapeConf{}.SetDensity(1_kgpm2).SetAsBox(2.5_m, 1_m), sd);
+            m_chassis->CreateFixture(PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2.5_m, 1_m), sd);
         }
 
         {

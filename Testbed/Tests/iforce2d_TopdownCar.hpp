@@ -254,7 +254,7 @@ public:
         vertices[7] = Vec2(-1.5f,  +0.0f) * 1_m;
         auto polygonShape = PolygonShapeConf{};
         polygonShape.Set(Span<const Length2>(vertices, 8));
-        polygonShape.SetDensity(0.1_kgpm2);
+        polygonShape.UseDensity(0.1_kgpm2);
         m_body->CreateFixture(Shape(polygonShape));
         
         //prepare common joint parameters
@@ -274,7 +274,7 @@ public:
 
         auto tireShape = PolygonShapeConf{};
         tireShape.SetAsBox(0.5_m, 1.25_m);
-        tireShape.SetDensity(1_kgpm2);
+        tireShape.UseDensity(1_kgpm2);
         const auto sharedTireShape = Shape(tireShape);
 
         TDTire* tire;

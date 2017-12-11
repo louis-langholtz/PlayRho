@@ -40,7 +40,7 @@ public:
             bd.angle = 0.5_rad * Pi;
             bd.allowSleep = false;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(PolygonShapeConf{}.SetDensity(5_kgpm2).SetAsBox(2_m, 0.5_m));
+            body->CreateFixture(PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(2_m, 0.5_m));
 
             // Bouncy limit
             const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));

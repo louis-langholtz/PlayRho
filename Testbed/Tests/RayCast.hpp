@@ -51,7 +51,7 @@ public:
         m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
         auto conf = PolygonShapeConf{};
-        conf.SetFriction(Real(0.3f));
+        conf.UseFriction(Real(0.3f));
         conf.Set({
             Vec2(-0.5f, 0.0f) * 1_m,
             Vec2(0.5f, 0.0f) * 1_m,
@@ -373,8 +373,8 @@ public:
     Body* m_bodies[e_maxBodies];
     int m_userData[e_maxBodies];
     Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
-    Shape m_circle = DiskShapeConf{}.SetVertexRadius(0.5_m).SetFriction(Real(0.3f));
-    Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.SetFriction(Real(0.3f))};
+    Shape m_circle = DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3f));
+    Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.UseFriction(Real(0.3f))};
     Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;
 };

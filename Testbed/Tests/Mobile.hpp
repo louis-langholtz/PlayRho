@@ -39,7 +39,7 @@ public:
         const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
 
         const auto a = Real{0.5f};
-        const auto shape = Shape(PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(Real{0.25f} * a * 1_m, a * 1_m));
+        const auto shape = Shape(PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(Real{0.25f} * a * 1_m, a * 1_m));
 
         RevoluteJointDef jointDef;
         jointDef.bodyA = ground;

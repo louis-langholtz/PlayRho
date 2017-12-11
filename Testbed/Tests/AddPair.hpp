@@ -38,7 +38,7 @@ public:
     {
         m_world.SetGravity(LinearAcceleration2{});
         {
-            const auto conf = DiskShapeConf{}.UseVertexRadius(1_dm).UseDensity(0.01_kgpm2);
+            const auto conf = DiskShapeConf{}.UseRadius(1_dm).UseDensity(0.01_kgpm2);
             const auto minX = -6.0f;
             const auto maxX = 0.0f;
             const auto minY = 4.0f;

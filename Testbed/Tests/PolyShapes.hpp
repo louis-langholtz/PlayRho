@@ -86,8 +86,8 @@ public:
         m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         auto conf = PolygonShapeConf{};
-        conf.SetDensity(1_kgpm2);
-        conf.SetFriction(Real(0.3f));
+        conf.UseDensity(1_kgpm2);
+        conf.UseFriction(Real(0.3f));
         conf.Set({Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
         m_polygons[0] = Shape(conf);
         conf.Set({Vec2(-0.1f, 0.0f) * 1_m, Vec2(0.1f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
@@ -234,7 +234,7 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
-    Shape m_circle = DiskShapeConf{}.SetRadius(0.5_m).SetDensity(1_kgpm2).SetFriction(Real(0.3f));
+    Shape m_circle = DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3f));
 };
 
 } // namespace playrho

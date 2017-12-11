@@ -59,7 +59,7 @@ public:
 #endif
         }
 
-        const auto shape = Shape{DiskShapeConf{}.SetDensity(1_kgpm2).SetRadius(1_m)};
+        const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)};
         for (auto i = 0; i < e_count; ++i)
         {
             BodyDef bd;

@@ -51,7 +51,7 @@ int main()
                                        .UseType(BodyType::Dynamic));
 
     // Define a disk shape for the ball body.
-    const auto disk = DiskShapeConf{}.SetRadius(1_m);
+    const auto disk = DiskShapeConf{}.UseRadius(1_m);
 
     // Add the disk shape to the ball body.
     ball->CreateFixture(disk);

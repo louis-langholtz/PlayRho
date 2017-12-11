@@ -99,22 +99,6 @@ struct ShapeDefBuilder: ShapeDef
     
     /// @brief Uses the given density.
     PLAYRHO_CONSTEXPR inline ConcreteConf& UseDensity(NonNegative<AreaDensity> value) noexcept;
-    
-    /// @brief Uses the given vertex radius.
-    /// @note Intended for namewise backward compatibility.
-    PLAYRHO_CONSTEXPR inline ConcreteConf& SetVertexRadius(Length v) noexcept;
-    
-    /// @brief Uses the given restitution.
-    /// @note Intended for namewise backward compatibility.
-    PLAYRHO_CONSTEXPR inline ConcreteConf& SetRestitution(Real v) noexcept;
-    
-    /// @brief Uses the given friction.
-    /// @note Intended for namewise backward compatibility.
-    PLAYRHO_CONSTEXPR inline ConcreteConf& SetFriction(Real v) noexcept;
-    
-    /// @brief Uses the given density.
-    /// @note Intended for namewise backward compatibility.
-    PLAYRHO_CONSTEXPR inline ConcreteConf& SetDensity(AreaDensity v) noexcept;
 };
 
 template <typename ConcreteConf>
@@ -146,38 +130,6 @@ PLAYRHO_CONSTEXPR inline ConcreteConf&
 ShapeDefBuilder<ConcreteConf>::UseDensity(NonNegative<AreaDensity> value) noexcept
 {
     density = value;
-    return static_cast<ConcreteConf&>(*this);
-}
-
-template <typename ConcreteConf>
-PLAYRHO_CONSTEXPR inline ConcreteConf&
-ShapeDefBuilder<ConcreteConf>::SetVertexRadius(Length v) noexcept
-{
-    vertexRadius = v;
-    return static_cast<ConcreteConf&>(*this);
-}
-
-template <typename ConcreteConf>
-PLAYRHO_CONSTEXPR inline ConcreteConf&
-ShapeDefBuilder<ConcreteConf>::SetRestitution(Real v) noexcept
-{
-    restitution = v;
-    return static_cast<ConcreteConf&>(*this);
-}
-
-template <typename ConcreteConf>
-PLAYRHO_CONSTEXPR inline ConcreteConf&
-ShapeDefBuilder<ConcreteConf>::SetFriction(Real v) noexcept
-{
-    friction = v;
-    return static_cast<ConcreteConf&>(*this);
-}
-
-template <typename ConcreteConf>
-PLAYRHO_CONSTEXPR inline ConcreteConf&
-ShapeDefBuilder<ConcreteConf>::SetDensity(AreaDensity v) noexcept
-{
-    density = v;
     return static_cast<ConcreteConf&>(*this);
 }
 
