@@ -25,7 +25,7 @@
 
 namespace playrho {
 
-class ConvexHull : public Test
+class ConvexHullTest : public Test
 {
 public:
     enum: std::size_t
@@ -33,7 +33,7 @@ public:
         e_count = 16
     };
 
-    ConvexHull()
+    ConvexHullTest()
     {
         Generate();
         m_auto = false;

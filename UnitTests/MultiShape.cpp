@@ -26,69 +26,69 @@
 
 using namespace playrho;
 
-TEST(MultiShape, ByteSize)
+TEST(MultiShapeConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN64)
 #if !defined(NDEBUG)
-            EXPECT_EQ(sizeof(MultiShape::Conf), std::size_t(56));
+            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(56));
 #else
-            EXPECT_EQ(sizeof(MultiShape::Conf), std::size_t(48));
+            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(48));
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)
-            EXPECT_EQ(sizeof(MultiShape::Conf), std::size_t(36));
+            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(36));
 #else
-            EXPECT_EQ(sizeof(MultiShape::Conf), std::size_t(32));
+            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(32));
 #endif
 #else
-            EXPECT_EQ(sizeof(MultiShape::Conf), std::size_t(40));
+            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(40));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(MultiShape::Conf), std::size_t(64)); break;
-        case 16: EXPECT_EQ(sizeof(MultiShape::Conf), std::size_t(112)); break;
+        case  8: EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(64)); break;
+        case 16: EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(112)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(MultiShape, DefaultConstruction)
+TEST(MultiShapeConf, DefaultConstruction)
 {
-    const auto foo = MultiShape::Conf{};
+    const auto foo = MultiShapeConf{};
     const auto defaultMassData = MassData{};
-    const auto defaultConf = MultiShape::Conf{};
+    const auto defaultConf = MultiShapeConf{};
     
-    EXPECT_EQ(typeid(foo), typeid(MultiShape::Conf));
+    EXPECT_EQ(typeid(foo), typeid(MultiShapeConf));
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(GetMassData(foo), defaultMassData);
     
-    EXPECT_EQ(GetVertexRadius(foo), MultiShape::GetDefaultVertexRadius());
+    EXPECT_EQ(GetVertexRadius(foo), MultiShapeConf::GetDefaultVertexRadius());
     EXPECT_EQ(GetDensity(foo), defaultConf.density);
     EXPECT_EQ(GetFriction(foo), defaultConf.friction);
     EXPECT_EQ(GetRestitution(foo), defaultConf.restitution);
 }
 
-TEST(MultiShape, GetInvalidChildThrows)
+TEST(MultiShapeConf, GetInvalidChildThrows)
 {
-    const auto foo = MultiShape::Conf{};
+    const auto foo = MultiShapeConf{};
     
     ASSERT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_THROW(GetChild(foo, 0), InvalidArgument);
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
-TEST(MultiShape, Accept)
+TEST(MultiShapeConf, Accept)
 {
     auto visited = false;
     auto shapeVisited = false;
     
-    const auto foo = MultiShape::Conf{};
+    const auto foo = MultiShapeConf{};
     ASSERT_FALSE(visited);
     ASSERT_FALSE(shapeVisited);
     Accept(Shape(foo), [&](const std::type_info &ti, const void *) {
         visited = true;
-        if (ti == typeid(MultiShape::Conf))
+        if (ti == typeid(MultiShapeConf))
         {
             shapeVisited = true;
         }
@@ -97,16 +97,16 @@ TEST(MultiShape, Accept)
     EXPECT_TRUE(shapeVisited);
 }
 #if 0
-TEST(MultiShape, BaseVisitorForDiskShape)
+TEST(MultiShapeConf, BaseVisitorForDiskShape)
 {
-    const auto shape = MultiShape::Conf{};
+    const auto shape = MultiShapeConf{};
     auto visitor = IsVisitedShapeVisitor{};
     ASSERT_FALSE(visitor.IsVisited());
     shape.Accept(visitor);
     EXPECT_TRUE(visitor.IsVisited());
 }
 #endif
-TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
+TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
 {
     const auto defaultMassData = MassData{};
     const auto center = Length2(1_m, -4_m);
@@ -116,18 +116,18 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
     pointSet.add(center);
     ASSERT_EQ(pointSet.size(), std::size_t(1));
 
-    auto conf = MultiShape::Conf{};
+    auto conf = MultiShapeConf{};
     conf.density = 2.3_kgpm2;
     conf.vertexRadius = 0.7_m;
 
-    auto foo = MultiShape::Conf{conf};
+    auto foo = MultiShapeConf{conf};
     ASSERT_EQ(GetChildCount(foo), ChildCounter{0});
     ASSERT_EQ(GetMassData(foo), defaultMassData);
     ASSERT_EQ(GetVertexRadius(foo), conf.vertexRadius);
     ASSERT_EQ(GetDensity(foo), conf.density);
 
     conf.AddConvexHull(pointSet);
-    foo = MultiShape::Conf{conf};
+    foo = MultiShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
 
     const auto child = GetChild(foo, 0);
@@ -141,7 +141,7 @@ TEST(MultiShape, AddConvexHullWithOnePointSameAsDisk)
     EXPECT_EQ(massData, diskMassData);
 }
 
-TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
+TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
 {
     const auto defaultMassData = MassData{};
     const auto p0 = Length2(1_m, -4_m);
@@ -153,18 +153,18 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     pointSet.add(p1);
     ASSERT_EQ(pointSet.size(), std::size_t(2));
     
-    auto conf = MultiShape::Conf{};
+    auto conf = MultiShapeConf{};
     conf.density = 2.3_kgpm2;
     conf.vertexRadius = 0.7_m;
     
-    auto foo = MultiShape::Conf{conf};
+    auto foo = MultiShapeConf{conf};
     ASSERT_EQ(GetChildCount(foo), ChildCounter{0});
     ASSERT_EQ(GetMassData(foo), defaultMassData);
     ASSERT_EQ(GetVertexRadius(foo), conf.vertexRadius);
     ASSERT_EQ(GetDensity(foo), conf.density);
     
     conf.AddConvexHull(pointSet);
-    foo = MultiShape::Conf{conf};
+    foo = MultiShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
     
     const auto child = GetChild(foo, 0);
@@ -184,7 +184,7 @@ TEST(MultiShape, AddConvexHullWithTwoPointsSameAsEdge)
     EXPECT_EQ(massData.mass, edgeMassData.mass);
 }
 
-TEST(MultiShape, AddTwoConvexHullWithOnePoint)
+TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
 {
     const auto defaultMassData = MassData{};
     const auto p0 = Length2(1_m, -4_m);
@@ -193,11 +193,11 @@ TEST(MultiShape, AddTwoConvexHullWithOnePoint)
     auto pointSet = VertexSet{};
     ASSERT_EQ(pointSet.size(), std::size_t(0));
 
-    auto conf = MultiShape::Conf{};
+    auto conf = MultiShapeConf{};
     conf.density = 2.3_kgpm2;
     conf.vertexRadius = 0.7_m;
     
-    auto foo = MultiShape::Conf{conf};
+    auto foo = MultiShapeConf{conf};
     ASSERT_EQ(GetChildCount(foo), ChildCounter{0});
     ASSERT_EQ(GetMassData(foo), defaultMassData);
     ASSERT_EQ(GetVertexRadius(foo), conf.vertexRadius);
@@ -209,7 +209,7 @@ TEST(MultiShape, AddTwoConvexHullWithOnePoint)
     ASSERT_EQ(pointSet.size(), std::size_t(1));
 
     conf.AddConvexHull(pointSet);
-    foo = MultiShape::Conf{conf};
+    foo = MultiShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
 
     const auto child0 = GetChild(foo, 0);
@@ -222,7 +222,7 @@ TEST(MultiShape, AddTwoConvexHullWithOnePoint)
     ASSERT_EQ(pointSet.size(), std::size_t(1));
     
     conf.AddConvexHull(pointSet);
-    foo = MultiShape::Conf{conf};
+    foo = MultiShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{2});
     
     const auto child1 = GetChild(foo, 1);

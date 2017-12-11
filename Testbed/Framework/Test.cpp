@@ -73,9 +73,9 @@ public:
         {
             Visit(*static_cast<const ChainShapeConf*>(data));
         }
-        else if (ti == typeid(MultiShape::Conf))
+        else if (ti == typeid(MultiShapeConf))
         {
-            Visit(*static_cast<const MultiShape::Conf*>(data));
+            Visit(*static_cast<const MultiShapeConf*>(data));
         }
     }
     
@@ -83,7 +83,7 @@ public:
     void Visit(const EdgeShapeConf& shape);
     void Visit(const PolygonShapeConf& shape);
     void Visit(const ChainShapeConf& shape);
-    void Visit(const MultiShape::Conf& shape);
+    void Visit(const MultiShapeConf& shape);
 
     void Draw(const DistanceProxy& proxy);
 
@@ -211,7 +211,7 @@ void ShapeDrawer::Visit(const PolygonShapeConf& shape)
     Draw(GetChild(shape, 0));
 }
 
-void ShapeDrawer::Visit(const MultiShape::Conf& shape)
+void ShapeDrawer::Visit(const MultiShapeConf& shape)
 {
     const auto count = GetChildCount(shape);
     for (auto i = decltype(count){0}; i < count; ++i)

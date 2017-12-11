@@ -67,7 +67,7 @@ namespace
         void Visit(const EdgeShapeConf& shape);
         void Visit(const PolygonShapeConf& shape);
         void Visit(const ChainShapeConf& shape);
-        void Visit(const MultiShape::Conf& shape);
+        void Visit(const MultiShapeConf& shape);
     };
     
     void ShapeDumper::Visit(const playrho::DiskShapeConf& s)
@@ -118,7 +118,7 @@ namespace
         log("    shape.CreateChain(vs, %d);\n", s.GetVertexCount());
     }
 
-    void ShapeDumper::Visit(const playrho::MultiShape::Conf&)
+    void ShapeDumper::Visit(const playrho::MultiShapeConf&)
     {
         // TODO
     }

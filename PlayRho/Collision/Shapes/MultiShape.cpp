@@ -27,7 +27,7 @@ namespace playrho {
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.
 /// @return Mass data for this shape.
-MassData GetMassData(const MultiShape::Conf& arg) noexcept
+MassData GetMassData(const MultiShapeConf& arg) noexcept
 {
     auto mass = 0_kg;
     const auto origin = Length2{};
@@ -37,7 +37,7 @@ MassData GetMassData(const MultiShape::Conf& arg) noexcept
     const auto density = arg.density;
 
     std::for_each(std::begin(arg.children), std::end(arg.children),
-                  [&](const MultiShape::ConvexHull& ch) {
+                  [&](const ConvexHull& ch) {
         const auto dp = ch.GetDistanceProxy(vertexRadius);
         const auto md = playrho::GetMassData(vertexRadius, density,
             Span<const Length2>(dp.GetVertices().begin(), dp.GetVertexCount()));
@@ -50,7 +50,7 @@ MassData GetMassData(const MultiShape::Conf& arg) noexcept
     return MassData{center, mass, I};
 }
 
-MultiShape::ConvexHull MultiShape::ConvexHull::Get(const VertexSet& pointSet)
+ConvexHull ConvexHull::Get(const VertexSet& pointSet)
 {
     auto vertices = GetConvexHullAsVector(pointSet);
     assert(!vertices.empty() && vertices.size() < std::numeric_limits<VertexCounter>::max());
@@ -76,7 +76,7 @@ MultiShape::ConvexHull MultiShape::ConvexHull::Get(const VertexSet& pointSet)
     return ConvexHull{vertices, normals};
 }
 
-void MultiShape::Conf::AddConvexHull(const VertexSet& pointSet) noexcept
+void MultiShapeConf::AddConvexHull(const VertexSet& pointSet) noexcept
 {
     children.emplace_back(ConvexHull::Get(pointSet));
 }
