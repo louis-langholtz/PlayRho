@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <set>
 
 using namespace playrho;

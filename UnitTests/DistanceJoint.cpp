@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 
 using namespace playrho;

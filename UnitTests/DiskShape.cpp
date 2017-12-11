@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 

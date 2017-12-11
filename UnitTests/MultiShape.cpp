@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Collision/Shapes/MultiShape.hpp>
+#include <PlayRho/Collision/Shapes/MultiShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 #include <array>

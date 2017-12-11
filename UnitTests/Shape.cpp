@@ -18,8 +18,8 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 #include <chrono>

@@ -25,7 +25,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <type_traits>
 #include <algorithm>
 #include <utility>

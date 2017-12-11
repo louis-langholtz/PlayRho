@@ -24,7 +24,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/FixtureDef.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
 

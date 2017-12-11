@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;

@@ -21,7 +21,7 @@
 #include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
 using namespace playrho;

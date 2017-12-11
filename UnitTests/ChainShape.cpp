@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Collision/Shapes/ChainShape.hpp>
+#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <array>
 

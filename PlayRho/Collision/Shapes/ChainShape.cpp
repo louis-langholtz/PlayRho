@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/ChainShape.hpp>
+#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 
 namespace playrho {
 

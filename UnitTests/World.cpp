@@ -25,9 +25,9 @@
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
-#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>

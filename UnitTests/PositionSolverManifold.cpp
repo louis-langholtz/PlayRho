@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 

@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;

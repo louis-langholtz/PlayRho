@@ -17,7 +17,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 
 namespace playrho {
 

@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/MultiShape.hpp>
+#include <PlayRho/Collision/Shapes/MultiShapeConf.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 #include <algorithm>
 

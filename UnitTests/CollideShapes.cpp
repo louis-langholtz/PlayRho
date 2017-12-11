@@ -20,9 +20,9 @@
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
-#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 
 using namespace playrho;
 

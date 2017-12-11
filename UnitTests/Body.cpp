@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 #include <chrono>
 

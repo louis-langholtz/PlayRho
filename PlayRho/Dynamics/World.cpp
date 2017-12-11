@@ -56,7 +56,7 @@
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
-#include <PlayRho/Collision/Shapes/ChainShape.hpp>
+#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/DynamicMemory.hpp>

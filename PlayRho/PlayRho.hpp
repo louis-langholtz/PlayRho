@@ -56,11 +56,11 @@ For mathemtical insight, see:
 
 #include <PlayRho/Common/Settings.hpp>
 
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
-#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
-#include <PlayRho/Collision/Shapes/ChainShape.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
-#include <PlayRho/Collision/Shapes/MultiShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/MultiShapeConf.hpp>
 
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
