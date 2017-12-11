@@ -37,7 +37,7 @@ namespace playrho {
 ///
 /// @ingroup PartsGroup
 ///
-class DiskShapeConf: public ShapeDefBuilder<DiskShapeConf>
+struct DiskShapeConf: ShapeDefBuilder<DiskShapeConf>
 {
 public:
     /// @brief Gets the default radius.
@@ -50,7 +50,8 @@ public:
     {
         // Intentionally empty.
     }
-    
+
+    /// @brief Initializing constructor.
     PLAYRHO_CONSTEXPR inline DiskShapeConf(Length radius): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(radius)}
     {
         // Intentionally empty.
@@ -77,11 +78,13 @@ public:
         return *this;
     }
     
+    /// @brief Gets the radius property.
     NonNegative<Length> GetRadius() const noexcept
     {
         return vertexRadius;
     }
     
+    /// @brief Gets the location.
     Length2 GetLocation() const noexcept
     {
         return location;
@@ -93,11 +96,13 @@ public:
 
 // Free functions...
 
+/// @brief Gets the "child" count of the given disk shape configuration.
 PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const DiskShapeConf&) noexcept
 {
     return 1;
 }
 
+/// @brief Gets the "child" of the given disk shape configuration.
 inline DistanceProxy GetChild(const DiskShapeConf& arg, ChildCounter index)
 {
     if (index != 0)
@@ -107,6 +112,7 @@ inline DistanceProxy GetChild(const DiskShapeConf& arg, ChildCounter index)
     return DistanceProxy{arg.vertexRadius, 1, &arg.location, nullptr};
 }
 
+/// @brief Gets the mass data of the given disk shape configuration.
 inline MassData GetMassData(const DiskShapeConf& arg) noexcept
 {
     return playrho::GetMassData(arg.vertexRadius, arg.density, arg.location);

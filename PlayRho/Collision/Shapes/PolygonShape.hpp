@@ -154,11 +154,14 @@ private:
 
 // Free functions...
 
+/// @brief Gets the "child" count for the given shape configuration.
+/// @return 1.
 PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const PolygonShapeConf&) noexcept
 {
     return 1;
 }
 
+/// @brief Gets the "child" shape for the given shape configuration.
 inline DistanceProxy GetChild(const PolygonShapeConf& arg, ChildCounter index)
 {
     if (index != 0)
@@ -169,6 +172,7 @@ inline DistanceProxy GetChild(const PolygonShapeConf& arg, ChildCounter index)
         arg.GetVertices().data(), arg.GetNormals().data()};
 }
 
+/// @brief Gets the mass data for the given shape configuration.
 inline MassData GetMassData(const PolygonShapeConf& arg) noexcept
 {
     return playrho::GetMassData(arg.vertexRadius, arg.density, arg.GetVertices());

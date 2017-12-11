@@ -187,6 +187,7 @@ namespace playrho
         return !(lhs == rhs);
     }
     
+    /// @brief Gets the vertex radius property of a given distance proxy.
     inline NonNegative<Length> GetVertexRadius(const DistanceProxy& arg) noexcept
     {
         return arg.GetVertexRadius();

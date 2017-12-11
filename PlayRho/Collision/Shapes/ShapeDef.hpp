@@ -189,21 +189,38 @@ struct ShapeConf: public ShapeDefBuilder<ShapeConf>
 
 // Free functions...
 
+/// @brief Equality operator.
+inline bool operator== (const ShapeDef& lhs, const ShapeDef& rhs) noexcept
+{
+    return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction &&
+    lhs.restitution == rhs.restitution && lhs.density == rhs.density;
+}
+
+/// @brief Inequality operator.
+inline bool operator!= (const ShapeDef& lhs, const ShapeDef& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
+/// @brief Gets the vertex radius of the given shape configuration.
 PLAYRHO_CONSTEXPR inline NonNegative<Length> GetVertexRadius(const ShapeDef& arg) noexcept
 {
     return arg.vertexRadius;
 }
 
+/// @brief Gets the density of the given shape configuration.
 PLAYRHO_CONSTEXPR inline NonNegative<AreaDensity> GetDensity(const ShapeDef& arg) noexcept
 {
     return arg.density;
 }
 
+/// @brief Gets the restitution of the given shape configuration.
 PLAYRHO_CONSTEXPR inline Finite<Real> GetRestitution(const ShapeDef& arg) noexcept
 {
     return arg.restitution;
 }
 
+/// @brief Gets the friction of the given shape configuration.
 PLAYRHO_CONSTEXPR inline NonNegative<Real> GetFriction(const ShapeDef& arg) noexcept
 {
     return arg.friction;

@@ -55,10 +55,13 @@ public:
     /// @brief Default constructor.
     ChainShapeConf();
     
+    /// @brief Sets the configuration up for representing a chain of the given vertices.
     ChainShapeConf& Set(std::vector<Length2> vertices);
 
+    /// @brief Adds the given vertex.
     ChainShapeConf& Add(Length2 vertex);
 
+    /// @brief Gets the "child" shape count.
     ChildCounter GetChildCount() const noexcept
     {
         // edge count = vertex count - 1
@@ -66,8 +69,10 @@ public:
         return (count > 1)? count - 1: count;
     }
 
+    /// @brief Gets the "child" shape at the given index.
     DistanceProxy GetChild(ChildCounter index) const;
     
+    /// @brief Gets the mass data.
     MassData GetMassData() const noexcept;
     
     /// @brief Gets the vertex count.
@@ -89,7 +94,20 @@ public:
         assert((0 <= index) && (index < GetVertexCount()));
         return m_normals[index];
     }
-
+    
+    /// @brief Equality operator.
+    friend bool operator== (const ChainShapeConf& lhs, const ChainShapeConf& rhs) noexcept
+    {
+        // Only need to check vertices are same since normals are calculated based on them.
+        return lhs.m_vertices == rhs.m_vertices;
+    }
+    
+    /// @brief Inequality operator.
+    friend bool operator!= (const ChainShapeConf& lhs, const ChainShapeConf& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+    
 private:
     std::vector<Length2> m_vertices; ///< Vertices.
     std::vector<UnitVec2> m_normals; ///< Normals.
@@ -97,16 +115,19 @@ private:
 
 // Free functions...
 
+/// @brief Gets the child count for a given chain shape configuration.
 inline ChildCounter GetChildCount(const ChainShapeConf& arg) noexcept
 {
     return arg.GetChildCount();
 }
 
+/// @brief Gets the "child" shape for a given chain shape configuration.
 inline DistanceProxy GetChild(const ChainShapeConf& arg, ChildCounter index)
 {
     return arg.GetChild(index);
 }
 
+/// @brief Gets the mass data for a given chain shape configuration.
 inline MassData GetMassData(const ChainShapeConf& arg) noexcept
 {
     return arg.GetMassData();

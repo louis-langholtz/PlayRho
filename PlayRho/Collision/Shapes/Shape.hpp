@@ -32,22 +32,28 @@
 
 namespace playrho {
 
+/// @brief Gets the friction of the given shape.
 Real GetFriction(const Shape& shape) noexcept;
+
+/// @brief Gets the restitution value of the given shape.
 Real GetRestitution(const Shape& shape) noexcept;
+
+/// @brief Gets the density of the given shape.
 NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
+
+/// @brief Gets the vertex radius of the given shape.
 NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
 
 /// @defgroup PartsGroup Shape Classes
-/// @brief Classes for describing shapes with material properties.
+/// @brief Classes for configuring shapes with material properties.
 /// @details These are classes that specify physical characteristics of: shape,
 ///   friction, density and restitution. They've historically been called shape classes
 ///   but are now &mdash; with the other properties like friction and density having been
 ///   moved into them &mdash; maybe better thought of as "parts".
 
-/// @brief A base abstract class for describing a type of shape.
+/// @brief Shape.
 ///
-/// @details This is a polymorphic abstract base class for shapes.
-///   A shape is used for collision detection. You can create a shape however you like.
+/// @details A shape is used for collision detection. You can create a shape however you like.
 ///   Shapes used for simulation in <code>World</code> are created automatically when a
 ///   <code>Fixture</code> is created. Shapes may encapsulate zero or more child shapes.
 ///
@@ -68,6 +74,7 @@ public:
     /// @details This is a base class that shouldn't ever be directly instantiated.
     Shape() = delete;
 
+    /// @brief Initializing constructor.
     template <typename T>
     Shape(T v): m_self{std::make_shared<Model<T>>(std::move(v))}
     {}
@@ -91,7 +98,8 @@ public:
         return shape.m_self->GetChildCount_();
     }
 
-    /// @brief Gets the child for the given index.
+    /// @brief Gets the "child" for the given index.
+    /// @param shape Shape to get "child" shape of.
     /// @param index Index to a child element of the shape. Value must be less
     ///   than the number of child primitives of the shape.
     /// @note The shape must remain in scope while the proxy is in use.
@@ -150,14 +158,13 @@ public:
         return shape.m_self->GetDensity_();
     }
     
+    /// @brief Gets a pointer to the underlying data.
+    /// @note Provided for introspective purposes like visitation.
+    /// @note Generally speaking, try to avoid using this method unless there's
+    ///   no other way to access the underlying data.
     friend const void* GetData(const Shape& shape) noexcept
     {
         return shape.m_self->GetData_();
-    }
-    
-    friend const void* GetAddress(const Shape& shape) noexcept
-    {
-        return shape.m_self.get();
     }
     
     /// @brief Accepts a visitor.
@@ -170,43 +177,78 @@ public:
         visitor(self->GetTypeInfo_(), self->GetData_());
     }
     
-    friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept;
-    
+    /// @brief Equality operator for shape to shape comparisons.
+    friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
+    {
+        return lhs.m_self == rhs.m_self || *lhs.m_self == *rhs.m_self;
+    }
+
+    /// @brief Inequality operator for shape to shape comparisons.
+    friend bool operator!= (const Shape& lhs, const Shape& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+
 private:
 
+    /// @brief Internal shape configuration concept.
+    /// @note Provides an interface for runtime polymorphism for shape configuration.
     struct Concept
     {
         virtual ~Concept() = default;
 
+        /// @brief Gets the "child" count.
         virtual ChildCounter GetChildCount_() const noexcept = 0;
+        
+        /// @brief Gets the "child" specified by the given index.
         virtual DistanceProxy GetChild_(ChildCounter index) const = 0;
+        
+        /// @brief Gets the mass data.
         virtual MassData GetMassData_() const noexcept = 0;
+        
+        /// @brief Gets the vertex radius.
         virtual NonNegative<Length> GetVertexRadius_() const noexcept = 0;
 
+        /// @brief Gets the density.
         virtual NonNegative<AreaDensity> GetDensity_() const noexcept = 0;
+        
+        /// @brief Gets the friction.
         virtual Real GetFriction_() const noexcept = 0;
+        
+        /// @brief Gets the restitution.
         virtual Real GetRestitution_() const noexcept = 0;
         
+        /// @brief Equality checking method.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
+        
+        /// @brief Gets the type information of the underlying configuration.
         virtual const std::type_info& GetTypeInfo_() const = 0;
+        
+        /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
         
+        /// @brief Equality operator.
         friend bool operator== (const Concept& lhs, const Concept &rhs) noexcept
         {
             return &lhs == &rhs || lhs.IsEqual_(rhs);
         }
         
+        /// @brief Inequality operator.
         friend bool operator!= (const Concept& lhs, const Concept &rhs) noexcept
         {
             return !(lhs == rhs);
         }
     };
 
+    /// @brief Internal model configuration concept.
+    /// @note Provides an implementation for runtime polymorphism for shape configuration.
     template <typename T>
     struct Model final: Concept
     {
+        /// @brief Type alias for the type of the data held.
         using data_type = T;
 
+        /// @brief Initializing constructor.
         Model(T arg): data{std::move(arg)} {}
         
         ChildCounter GetChildCount_() const noexcept override
@@ -262,21 +304,11 @@ private:
             return &data;
         }
 
-        T data;
+        T data; ///< Data.
     };
 
-    std::shared_ptr<const Concept> m_self;
+    std::shared_ptr<const Concept> m_self; ///< Self shared pointer.
 };
-
-inline bool operator== (const Shape& lhs, const Shape& rhs) noexcept
-{
-    return lhs.m_self == rhs.m_self || *lhs.m_self == *rhs.m_self;
-}
-
-inline bool operator!= (const Shape& lhs, const Shape& rhs) noexcept
-{
-    return !(lhs == rhs);
-}
 
 // Free functions...
 

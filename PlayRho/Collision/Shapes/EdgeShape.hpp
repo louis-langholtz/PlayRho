@@ -60,16 +60,19 @@ public:
     /// @brief Sets both vertices in one call.
     EdgeShapeConf& Set(Length2 vA, Length2 vB) noexcept;
     
+    /// @brief Gets vertex A.
     Length2 GetVertexA() const noexcept
     {
         return m_vertices[0];
     }
     
+    /// @brief Gets vertex B.
     Length2 GetVertexB() const noexcept
     {
         return m_vertices[1];
     }
     
+    /// @brief Gets the "child" shape.
     DistanceProxy GetChild() const noexcept
     {
         return DistanceProxy{vertexRadius, 2, m_vertices, m_normals};
@@ -82,11 +85,14 @@ private:
 
 // Free functions...
 
+/// @brief Gets the "child" count for the given shape configuration.
+/// @return 1.
 PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const EdgeShapeConf&) noexcept
 {
     return 1;
 }
 
+/// @brief Gets the "child" shape for the given shape configuration.
 inline DistanceProxy GetChild(const EdgeShapeConf& arg, ChildCounter index)
 {
     if (index != 0)
@@ -96,6 +102,7 @@ inline DistanceProxy GetChild(const EdgeShapeConf& arg, ChildCounter index)
     return arg.GetChild();
 }
 
+/// @brief Gets the mass data for the given shape configuration.
 inline MassData GetMassData(const EdgeShapeConf& arg) noexcept
 {
     return playrho::GetMassData(arg.vertexRadius, arg.density,

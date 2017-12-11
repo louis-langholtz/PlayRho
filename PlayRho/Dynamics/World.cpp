@@ -2810,7 +2810,7 @@ size_t GetShapeCount(const World& world) noexcept
     for_each(cbegin(world.GetBodies()), cend(world.GetBodies()), [&](const World::Bodies::value_type &b) {
         const auto fixtures = GetRef(b).GetFixtures();
         for_each(cbegin(fixtures), cend(fixtures), [&](const Body::Fixtures::value_type& f) {
-            shapes.insert(GetAddress(GetRef(f).GetShape()));
+            shapes.insert(GetData(GetRef(f).GetShape()));
         });
     });
     return shapes.size();
