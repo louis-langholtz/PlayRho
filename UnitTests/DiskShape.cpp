@@ -31,7 +31,7 @@ TEST(DiskShapeConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(28));
+            EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(24));
 #else
             EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(24));
 #endif

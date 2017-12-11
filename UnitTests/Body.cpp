@@ -260,6 +260,24 @@ TEST(Body, CreateFixture)
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
 }
 
+TEST(Body, DestroyFixture)
+{
+    World world;
+    const auto bodyA = world.CreateBody();
+    const auto bodyB = world.CreateBody();
+    ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
+    ASSERT_EQ(GetFixtureCount(*bodyB), std::size_t(0));
+
+    const auto fixtureA = bodyA->CreateFixture(DiskShapeConf(1_m), FixtureDef{});
+    ASSERT_NE(fixtureA, nullptr);
+    ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
+
+    EXPECT_FALSE(bodyB->DestroyFixture(fixtureA));
+    EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
+    EXPECT_TRUE(bodyA->DestroyFixture(fixtureA));
+    EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
+}
+
 TEST(Body, SetEnabled)
 {
     auto stepConf = StepConf{};
@@ -578,4 +596,28 @@ TEST(Body, CalcGravitationalAcceleration)
     
     const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(l3));
     EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration{});
+}
+
+TEST(Body, RotateAboutWorldPointFF)
+{
+    auto world = World{};
+    const auto body = world.CreateBody();
+    const auto locationA = body->GetLocation();
+    ASSERT_EQ(locationA, Length2(0_m, 0_m));
+    RotateAboutWorldPoint(*body, 90_deg, Length2{2_m, 0_m});
+    const auto locationB = body->GetLocation();
+    EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.0);
+    EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.0);
+}
+
+TEST(Body, RotateAboutLocalPointFF)
+{
+    auto world = World{};
+    const auto body = world.CreateBody();
+    const auto locationA = body->GetLocation();
+    ASSERT_EQ(locationA, Length2(0_m, 0_m));
+    RotateAboutLocalPoint(*body, 90_deg, Length2{2_m, 0_m});
+    const auto locationB = body->GetLocation();
+    EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.0);
+    EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.0);
 }

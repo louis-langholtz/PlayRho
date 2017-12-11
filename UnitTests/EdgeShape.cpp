@@ -30,7 +30,7 @@ TEST(EdgeShapeConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(52));
+            EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(48));
 #else
             EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(48));
 #endif

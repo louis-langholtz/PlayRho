@@ -236,3 +236,20 @@ TEST(DistanceProxy, GetMaxSeparationFromWorld)
     EXPECT_EQ(result2.indices.first, static_cast<decltype(result2.indices.first)>(2));
     EXPECT_EQ(result2.indices.second, static_cast<decltype(result2.indices.second)>(0));
 }
+
+TEST(DistanceProxy, Equality)
+{
+    const auto pos1 = Length2{3_m, 1_m};
+    const auto pos2 = Length2{3_m, 3_m};
+    const auto pos3 = Length2{1_m, 3_m};
+    const auto pos4 = Length2{1_m, 1_m};
+    const Length2 verts[] = {pos1, pos2, pos3, pos4};
+    const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
+    const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
+    const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
+    const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
+    const UnitVec2 norms[] = {n1, n2, n3, n4};
+
+    EXPECT_TRUE(DistanceProxy(0.0_m, 4, verts, norms) == DistanceProxy(0.0_m, 4, verts, norms));
+    EXPECT_FALSE(DistanceProxy(1.0_m, 4, verts, norms) == DistanceProxy(0.0_m, 4, verts, norms));
+}
