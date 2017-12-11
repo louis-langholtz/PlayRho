@@ -238,3 +238,49 @@ TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
     EXPECT_EQ(massData.mass, Mass{massDataP0.mass} + Mass{massDataP1.mass});
     EXPECT_EQ(massData.I, RotInertia{massDataP0.I} + RotInertia{massDataP1.I});
 }
+
+TEST(MultiShapeConf, Equality)
+{
+    EXPECT_TRUE(MultiShapeConf() == MultiShapeConf());
+    
+    auto pointSet = VertexSet{};
+    pointSet.add(Length2{1_m, 2_m});
+    
+    EXPECT_FALSE(MultiShapeConf().AddConvexHull(pointSet) == MultiShapeConf());
+    EXPECT_TRUE(MultiShapeConf().AddConvexHull(pointSet) == MultiShapeConf().AddConvexHull(pointSet));
+    
+    EXPECT_FALSE(MultiShapeConf().UseVertexRadius(10_m) == MultiShapeConf());
+    EXPECT_TRUE(MultiShapeConf().UseVertexRadius(10_m) == MultiShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_FALSE(MultiShapeConf().UseDensity(10_kgpm2) == MultiShapeConf());
+    EXPECT_TRUE(MultiShapeConf().UseDensity(10_kgpm2) == MultiShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_FALSE(MultiShapeConf().UseFriction(Real(10)) == MultiShapeConf());
+    EXPECT_TRUE(MultiShapeConf().UseFriction(Real(10)) == MultiShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_FALSE(MultiShapeConf().UseRestitution(Real(10)) == MultiShapeConf());
+    EXPECT_TRUE(MultiShapeConf().UseRestitution(Real(10)) == MultiShapeConf().UseRestitution(Real(10)));
+}
+
+TEST(MultiShapeConf, Inequality)
+{
+    EXPECT_FALSE(MultiShapeConf() != MultiShapeConf());
+    
+    auto pointSet = VertexSet{};
+    pointSet.add(Length2{1_m, 2_m});
+    
+    EXPECT_TRUE(MultiShapeConf().AddConvexHull(pointSet) != MultiShapeConf());
+    EXPECT_FALSE(MultiShapeConf().AddConvexHull(pointSet) != MultiShapeConf().AddConvexHull(pointSet));
+    
+    EXPECT_TRUE(MultiShapeConf().UseVertexRadius(10_m) != MultiShapeConf());
+    EXPECT_FALSE(MultiShapeConf().UseVertexRadius(10_m) != MultiShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_TRUE(MultiShapeConf().UseDensity(10_kgpm2) != MultiShapeConf());
+    EXPECT_FALSE(MultiShapeConf().UseDensity(10_kgpm2) != MultiShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_TRUE(MultiShapeConf().UseFriction(Real(10)) != MultiShapeConf());
+    EXPECT_FALSE(MultiShapeConf().UseFriction(Real(10)) != MultiShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_TRUE(MultiShapeConf().UseRestitution(Real(10)) != MultiShapeConf());
+    EXPECT_FALSE(MultiShapeConf().UseRestitution(Real(10)) != MultiShapeConf().UseRestitution(Real(10)));
+}

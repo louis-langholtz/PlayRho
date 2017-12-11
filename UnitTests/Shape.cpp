@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Distance.hpp>
@@ -90,7 +91,6 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
     }
 }
 
-
 TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 {
     const auto shape = PolygonShapeConf{2_m, 2_m};
@@ -136,4 +136,26 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
         
         EXPECT_LT(elapsed_test_overlap.count(), elapsed_collide_shapes.count());
     }
+}
+
+TEST(Shape, Equality)
+{
+    EXPECT_TRUE(Shape(EdgeShapeConf()) == Shape(EdgeShapeConf()));
+
+    const auto shapeA = Shape(DiskShapeConf{}.UseRadius(100_m));
+    const auto shapeB = Shape(DiskShapeConf{}.UseRadius(100_m));
+    EXPECT_TRUE(shapeA == shapeB);
+    
+    EXPECT_FALSE(Shape(DiskShapeConf()) == Shape(EdgeShapeConf()));
+}
+
+TEST(Shape, Inequality)
+{
+    EXPECT_FALSE(Shape(EdgeShapeConf()) != Shape(EdgeShapeConf()));
+    
+    const auto shapeA = Shape(DiskShapeConf{}.UseRadius(100_m));
+    const auto shapeB = Shape(DiskShapeConf{}.UseRadius(100_m));
+    EXPECT_FALSE(shapeA != shapeB);
+
+    EXPECT_TRUE(Shape(DiskShapeConf()) != Shape(EdgeShapeConf()));
 }

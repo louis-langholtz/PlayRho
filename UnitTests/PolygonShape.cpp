@@ -391,3 +391,43 @@ TEST(PolygonShapeConf, CanSetOnePoint)
     EXPECT_EQ(shape.GetCentroid(), points[0]);
     EXPECT_EQ(GetVertexRadius(shape), vertexRadius);
 }
+
+TEST(PolygonShapeConf, Equality)
+{
+    EXPECT_TRUE(PolygonShapeConf() == PolygonShapeConf());
+
+    EXPECT_FALSE(PolygonShapeConf().SetAsBox(1_m, 2_m) == PolygonShapeConf());
+    EXPECT_TRUE(PolygonShapeConf().SetAsBox(1_m, 2_m) == PolygonShapeConf().SetAsBox(1_m, 2_m));
+
+    EXPECT_FALSE(PolygonShapeConf().UseVertexRadius(10_m) == PolygonShapeConf());
+    EXPECT_TRUE(PolygonShapeConf().UseVertexRadius(10_m) == PolygonShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_FALSE(PolygonShapeConf().UseDensity(10_kgpm2) == PolygonShapeConf());
+    EXPECT_TRUE(PolygonShapeConf().UseDensity(10_kgpm2) == PolygonShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_FALSE(PolygonShapeConf().UseFriction(Real(10)) == PolygonShapeConf());
+    EXPECT_TRUE(PolygonShapeConf().UseFriction(Real(10)) == PolygonShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_FALSE(PolygonShapeConf().UseRestitution(Real(10)) == PolygonShapeConf());
+    EXPECT_TRUE(PolygonShapeConf().UseRestitution(Real(10)) == PolygonShapeConf().UseRestitution(Real(10)));
+}
+
+TEST(PolygonShapeConf, Inequality)
+{
+    EXPECT_FALSE(PolygonShapeConf() != PolygonShapeConf());
+    
+    EXPECT_TRUE(PolygonShapeConf().SetAsBox(1_m, 2_m) != PolygonShapeConf());
+    EXPECT_FALSE(PolygonShapeConf().SetAsBox(1_m, 2_m) != PolygonShapeConf().SetAsBox(1_m, 2_m));
+
+    EXPECT_TRUE(PolygonShapeConf().UseVertexRadius(10_m) != PolygonShapeConf());
+    EXPECT_FALSE(PolygonShapeConf().UseVertexRadius(10_m) != PolygonShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_TRUE(PolygonShapeConf().UseDensity(10_kgpm2) != PolygonShapeConf());
+    EXPECT_FALSE(PolygonShapeConf().UseDensity(10_kgpm2) != PolygonShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_TRUE(PolygonShapeConf().UseFriction(Real(10)) != PolygonShapeConf());
+    EXPECT_FALSE(PolygonShapeConf().UseFriction(Real(10)) != PolygonShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_TRUE(PolygonShapeConf().UseRestitution(Real(10)) != PolygonShapeConf());
+    EXPECT_FALSE(PolygonShapeConf().UseRestitution(Real(10)) != PolygonShapeConf().UseRestitution(Real(10)));
+}

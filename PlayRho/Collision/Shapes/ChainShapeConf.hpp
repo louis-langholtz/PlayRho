@@ -98,8 +98,10 @@ public:
     /// @brief Equality operator.
     friend bool operator== (const ChainShapeConf& lhs, const ChainShapeConf& rhs) noexcept
     {
-        // Only need to check vertices are same since normals are calculated based on them.
-        return lhs.m_vertices == rhs.m_vertices;
+        // Don't need to check normals since normals based on vertices.
+        return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
+            && lhs.restitution == rhs.restitution && lhs.density == rhs.density
+            && lhs.m_vertices == rhs.m_vertices;
     }
     
     /// @brief Inequality operator.

@@ -76,9 +76,10 @@ ConvexHull ConvexHull::Get(const VertexSet& pointSet)
     return ConvexHull{vertices, normals};
 }
 
-void MultiShapeConf::AddConvexHull(const VertexSet& pointSet) noexcept
+MultiShapeConf& MultiShapeConf::AddConvexHull(const VertexSet& pointSet) noexcept
 {
     children.emplace_back(ConvexHull::Get(pointSet));
+    return *this;
 }
 
 } // namespace playrho

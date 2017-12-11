@@ -85,6 +85,20 @@ private:
 
 // Free functions...
 
+/// @brief Equality operator.
+inline bool operator== (const EdgeShapeConf& lhs, const EdgeShapeConf& rhs) noexcept
+{
+    return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
+        && lhs.restitution == rhs.restitution && lhs.density == rhs.density
+        && lhs.GetVertexA() == rhs.GetVertexA() && lhs.GetVertexB() == rhs.GetVertexB();
+}
+
+/// @brief Inequality operator.
+inline bool operator!= (const EdgeShapeConf& lhs, const EdgeShapeConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the "child" count for the given shape configuration.
 /// @return 1.
 PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const EdgeShapeConf&) noexcept

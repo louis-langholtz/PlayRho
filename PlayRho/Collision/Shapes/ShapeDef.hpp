@@ -141,19 +141,6 @@ struct ShapeConf: public ShapeDefBuilder<ShapeConf>
 
 // Free functions...
 
-/// @brief Equality operator.
-inline bool operator== (const ShapeDef& lhs, const ShapeDef& rhs) noexcept
-{
-    return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction &&
-    lhs.restitution == rhs.restitution && lhs.density == rhs.density;
-}
-
-/// @brief Inequality operator.
-inline bool operator!= (const ShapeDef& lhs, const ShapeDef& rhs) noexcept
-{
-    return !(lhs == rhs);
-}
-
 /// @brief Gets the vertex radius of the given shape configuration.
 PLAYRHO_CONSTEXPR inline NonNegative<Length> GetVertexRadius(const ShapeDef& arg) noexcept
 {

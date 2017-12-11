@@ -246,3 +246,43 @@ TEST(ChainShapeConf, TooManyVertices)
     conf.vertexRadius = vertexRadius;
     EXPECT_THROW(conf.Set(std::vector<Length2>(MaxChildCount + 1)), InvalidArgument);
 }
+
+TEST(ChainShapeConf, Equality)
+{
+    EXPECT_TRUE(ChainShapeConf() == ChainShapeConf());
+
+    EXPECT_FALSE(ChainShapeConf().UseVertexRadius(10_m) == ChainShapeConf());
+    EXPECT_TRUE(ChainShapeConf().UseVertexRadius(10_m) == ChainShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_FALSE(ChainShapeConf().UseDensity(10_kgpm2) == ChainShapeConf());
+    EXPECT_TRUE(ChainShapeConf().UseDensity(10_kgpm2) == ChainShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_FALSE(ChainShapeConf().UseFriction(Real(10)) == ChainShapeConf());
+    EXPECT_TRUE(ChainShapeConf().UseFriction(Real(10)) == ChainShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_FALSE(ChainShapeConf().UseRestitution(Real(10)) == ChainShapeConf());
+    EXPECT_TRUE(ChainShapeConf().UseRestitution(Real(10)) == ChainShapeConf().UseRestitution(Real(10)));
+
+    EXPECT_FALSE(ChainShapeConf().Add(Length2(1_m, 2_m)) == ChainShapeConf());
+    EXPECT_TRUE(ChainShapeConf().Add(Length2(1_m, 2_m)) == ChainShapeConf().Add(Length2(1_m, 2_m)));
+}
+
+TEST(ChainShapeConf, Inequality)
+{
+    EXPECT_FALSE(ChainShapeConf() != ChainShapeConf());
+
+    EXPECT_TRUE(ChainShapeConf().UseVertexRadius(10_m) != ChainShapeConf());
+    EXPECT_FALSE(ChainShapeConf().UseVertexRadius(10_m) != ChainShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_TRUE(ChainShapeConf().UseDensity(10_kgpm2) != ChainShapeConf());
+    EXPECT_FALSE(ChainShapeConf().UseDensity(10_kgpm2) != ChainShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_TRUE(ChainShapeConf().UseFriction(Real(10)) != ChainShapeConf());
+    EXPECT_FALSE(ChainShapeConf().UseFriction(Real(10)) != ChainShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_TRUE(ChainShapeConf().UseRestitution(Real(10)) != ChainShapeConf());
+    EXPECT_FALSE(ChainShapeConf().UseRestitution(Real(10)) != ChainShapeConf().UseRestitution(Real(10)));
+
+    EXPECT_TRUE(ChainShapeConf().Add(Length2(1_m, 2_m)) != ChainShapeConf());
+    EXPECT_FALSE(ChainShapeConf().Add(Length2(1_m, 2_m)) != ChainShapeConf().Add(Length2(1_m, 2_m)));
+}

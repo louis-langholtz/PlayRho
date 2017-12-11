@@ -143,3 +143,45 @@ TEST(DiskShapeConf, ComputeAABB)
     EXPECT_EQ(GetX(GetCenter(aabb)), GetX(position));
     EXPECT_EQ(GetY(GetCenter(aabb)), GetY(position));
 }
+
+TEST(DiskShapeConf, Equality)
+{
+    EXPECT_TRUE(DiskShapeConf() == DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf().UseRadius(10_m));
+    EXPECT_FALSE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) == DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
+    
+    EXPECT_FALSE(DiskShapeConf().UseVertexRadius(10_m) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseVertexRadius(10_m) == DiskShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_FALSE(DiskShapeConf().UseDensity(10_kgpm2) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseDensity(10_kgpm2) == DiskShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_FALSE(DiskShapeConf().UseFriction(Real(10)) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseFriction(Real(10)) == DiskShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_FALSE(DiskShapeConf().UseRestitution(Real(10)) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseRestitution(Real(10)) == DiskShapeConf().UseRestitution(Real(10)));
+}
+
+TEST(DiskShapeConf, Inequality)
+{
+    EXPECT_FALSE(DiskShapeConf() != DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf().UseRadius(10_m));
+    EXPECT_TRUE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) != DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
+    
+    EXPECT_TRUE(DiskShapeConf().UseVertexRadius(10_m) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseVertexRadius(10_m) != DiskShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_TRUE(DiskShapeConf().UseDensity(10_kgpm2) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseDensity(10_kgpm2) != DiskShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_TRUE(DiskShapeConf().UseFriction(Real(10)) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseFriction(Real(10)) != DiskShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_TRUE(DiskShapeConf().UseRestitution(Real(10)) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseRestitution(Real(10)) != DiskShapeConf().UseRestitution(Real(10)));
+}

@@ -78,3 +78,43 @@ TEST(EdgeShapeConf, BaseVisitorForDiskShape)
     EXPECT_TRUE(visitor.IsVisited());
 }
 #endif
+
+TEST(EdgeShapeConf, Equality)
+{
+    EXPECT_TRUE(EdgeShapeConf() == EdgeShapeConf());
+
+    EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) == EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
+
+    EXPECT_FALSE(EdgeShapeConf().UseVertexRadius(10_m) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().UseVertexRadius(10_m) == EdgeShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_FALSE(EdgeShapeConf().UseDensity(10_kgpm2) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().UseDensity(10_kgpm2) == EdgeShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_FALSE(EdgeShapeConf().UseFriction(Real(10)) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().UseFriction(Real(10)) == EdgeShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) == EdgeShapeConf().UseRestitution(Real(10)));
+}
+
+TEST(EdgeShapeConf, Inequality)
+{
+    EXPECT_FALSE(EdgeShapeConf() != EdgeShapeConf());
+    
+    EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) != EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
+
+    EXPECT_TRUE(EdgeShapeConf().UseVertexRadius(10_m) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().UseVertexRadius(10_m) != EdgeShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_TRUE(EdgeShapeConf().UseDensity(10_kgpm2) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().UseDensity(10_kgpm2) != EdgeShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_TRUE(EdgeShapeConf().UseFriction(Real(10)) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().UseFriction(Real(10)) != EdgeShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) != EdgeShapeConf().UseRestitution(Real(10)));
+}

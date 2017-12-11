@@ -48,6 +48,19 @@ namespace playrho {
             };
         }
         
+        /// @brief Equality operator.
+        friend bool operator== (const ConvexHull& lhs, const ConvexHull& rhs) noexcept
+        {
+            // Only need to check vertices are same since normals are calculated based on them.
+            return lhs.vertices == rhs.vertices;
+        }
+        
+        /// @brief Inequality operator.
+        friend bool operator!= (const ConvexHull& lhs, const ConvexHull& rhs) noexcept
+        {
+            return !(lhs == rhs);
+        }
+        
     private:
         /// @brief Initializing constructor.
         ConvexHull(std::vector<Length2> verts, std::vector<UnitVec2> norms):
@@ -92,12 +105,26 @@ namespace playrho {
         /// @warning the points may be re-ordered, even if they form a convex polygon
         /// @warning collinear points are handled but not removed. Collinear points
         ///   may lead to poor stacking behavior.
-        void AddConvexHull(const VertexSet& pointSet) noexcept;
+        MultiShapeConf& AddConvexHull(const VertexSet& pointSet) noexcept;
         
         std::vector<ConvexHull> children; ///< Children.
     };
     
     // Free functions...
+
+    /// @brief Equality operator.
+    inline bool operator== (const MultiShapeConf& lhs, const MultiShapeConf& rhs) noexcept
+    {
+        return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
+            && lhs.restitution == rhs.restitution && lhs.density == rhs.density
+            && lhs.children == rhs.children;
+    }
+    
+    /// @brief Inequality operator.
+    inline bool operator!= (const MultiShapeConf& lhs, const MultiShapeConf& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
 
     /// @brief Gets the "child" count for the given shape configuration.
     inline ChildCounter GetChildCount(const MultiShapeConf& arg) noexcept

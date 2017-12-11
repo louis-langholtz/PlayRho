@@ -94,6 +94,21 @@ public:
     /// @brief Transforms the set vertices.
     PolygonShapeConf& Transform(Transformation xfm) noexcept;
     
+    /// @brief Equality operator.
+    friend bool operator== (const PolygonShapeConf& lhs, const PolygonShapeConf& rhs) noexcept
+    {
+        // Don't need to check normals nor centroid since they based on vertices.
+        return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
+            && lhs.restitution == rhs.restitution && lhs.density == rhs.density
+            && lhs.m_vertices == rhs.m_vertices;
+    }
+    
+    /// @brief Inequality operator.
+    friend bool operator!= (const PolygonShapeConf& lhs, const PolygonShapeConf& rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
+    
     /// Gets the vertex count.
     /// @return value between 0 and MaxShapeVertices inclusive.
     /// @see MaxShapeVertices.

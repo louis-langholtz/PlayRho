@@ -89,6 +89,20 @@ public:
 
 // Free functions...
 
+/// @brief Equality operator.
+inline bool operator== (const DiskShapeConf& lhs, const DiskShapeConf& rhs) noexcept
+{
+    return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
+        && lhs.restitution == rhs.restitution && lhs.density == rhs.density
+        && lhs.location == rhs.location;
+}
+
+/// @brief Inequality operator.
+inline bool operator!= (const DiskShapeConf& lhs, const DiskShapeConf& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 /// @brief Gets the "child" count of the given disk shape configuration.
 PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const DiskShapeConf&) noexcept
 {
