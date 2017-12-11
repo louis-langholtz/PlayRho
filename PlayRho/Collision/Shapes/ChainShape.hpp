@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_CHAINSHAPE_HPP
-#define PLAYRHO_COLLISION_SHAPES_CHAINSHAPE_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP
+#define PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
@@ -148,4 +148,4 @@ inline ChildCounter GetNextIndex(const ChainShapeConf& shape, ChildCounter index
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_CHAINSHAPE_HPP
+#endif // PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP

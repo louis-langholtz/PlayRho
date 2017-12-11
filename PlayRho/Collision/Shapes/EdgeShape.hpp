@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_EDGESHAPE_HPP
-#define PLAYRHO_COLLISION_SHAPES_EDGESHAPE_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
+#define PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
@@ -111,4 +111,4 @@ inline MassData GetMassData(const EdgeShapeConf& arg) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_EDGESHAPE_HPP
+#endif // PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP

@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_POLYGONSHAPE_HPP
-#define PLAYRHO_COLLISION_SHAPES_POLYGONSHAPE_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP
+#define PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
@@ -192,4 +192,4 @@ bool Validate(const PolygonShapeConf& shape);
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_POLYGONSHAPE_HPP
+#endif // PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP

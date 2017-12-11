@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_DISKSHAPE_HPP
-#define PLAYRHO_COLLISION_SHAPES_DISKSHAPE_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_DISKSHAPECONF_HPP
+#define PLAYRHO_COLLISION_SHAPES_DISKSHAPECONF_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
@@ -113,4 +113,4 @@ inline MassData GetMassData(const DiskShapeConf& arg) noexcept
 
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_DISKSHAPE_HPP
+#endif // PLAYRHO_COLLISION_SHAPES_DISKSHAPECONF_HPP

@@ -18,8 +18,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP
-#define PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_MULTISHAPECONF_HPP
+#define PLAYRHO_COLLISION_SHAPES_MULTISHAPECONF_HPP
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
@@ -121,4 +121,4 @@ namespace playrho {
     
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP
+#endif // PLAYRHO_COLLISION_SHAPES_MULTISHAPECONF_HPP
