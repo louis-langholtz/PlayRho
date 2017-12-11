@@ -30,7 +30,7 @@ public:
     BodyTypes()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape(EdgeShape::Conf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
+        ground->CreateFixture(Shape(EdgeShapeConf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
 
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Dynamic", [&](KeyActionMods) {
             m_platform->SetType(BodyType::Dynamic);

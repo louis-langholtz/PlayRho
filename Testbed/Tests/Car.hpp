@@ -57,7 +57,7 @@ public:
         
         const auto ground = m_world.CreateBody();
         {
-            auto conf = EdgeShape::Conf{};
+            auto conf = EdgeShapeConf{};
             conf.UseDensity(0_kgpm2).UseFriction(Real(0.6f));
 
             conf.Set(Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m);

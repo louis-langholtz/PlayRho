@@ -417,7 +417,7 @@ TEST(World, QueryAABB)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    const auto conf = EdgeShape::Conf{}.SetVertexRadius(1_m).SetDensity(1_kgpm2).Set(v1, v2);
+    const auto conf = EdgeShapeConf{}.SetVertexRadius(1_m).SetDensity(1_kgpm2).Set(v1, v2);
     ASSERT_EQ(GetChildCount(conf), ChildCounter(1));
     const auto fixture = body->CreateFixture(conf);
     ASSERT_NE(fixture, nullptr);
@@ -466,7 +466,7 @@ TEST(World, RayCast)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    const auto conf = EdgeShape::Conf{}.SetVertexRadius(1_m).SetDensity(1_kgpm2).Set(v1, v2);
+    const auto conf = EdgeShapeConf{}.SetVertexRadius(1_m).SetDensity(1_kgpm2).Set(v1, v2);
     const auto shape = Shape{conf};
     ASSERT_EQ(GetChildCount(shape), ChildCounter(1));
     const auto fixture = body->CreateFixture(shape);
@@ -514,7 +514,7 @@ TEST(World, ClearForcesFreeFunction)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    const auto conf = EdgeShape::Conf{}.SetVertexRadius(1_m).SetDensity(1_kgpm2).Set(v1, v2);
+    const auto conf = EdgeShapeConf{}.SetVertexRadius(1_m).SetDensity(1_kgpm2).Set(v1, v2);
     const auto shape = Shape{conf};
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
@@ -579,7 +579,7 @@ TEST(World, GetShapeCountFreeFunction)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    const auto shapeConf = EdgeShape::Conf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
+    const auto shapeConf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
 
     const auto shape1 = Shape{shapeConf};
     
@@ -609,7 +609,7 @@ TEST(World, GetFixtureCountFreeFunction)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    const auto shapeConf = EdgeShape::Conf{}
+    const auto shapeConf = EdgeShapeConf{}
         .UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
     
     const auto shape = Shape{shapeConf};
@@ -643,7 +643,7 @@ TEST(World, AwakenFreeFunction)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    const auto shape = Shape{EdgeShape::Conf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2)};
+    const auto shape = Shape{EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2)};
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
     
@@ -696,7 +696,7 @@ TEST(World, GetTouchingCountFreeFunction)
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
     
     
-    const auto groundConf = EdgeShape::Conf{}
+    const auto groundConf = EdgeShapeConf{}
         .Set(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter);
 
     const auto ground = world.CreateBody();
@@ -747,7 +747,7 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    const auto conf = EdgeShape::Conf{}.SetVertexRadius(1_m).SetDensity(1_kgpm2).Set(v1, v2);
+    const auto conf = EdgeShapeConf{}.SetVertexRadius(1_m).SetDensity(1_kgpm2).Set(v1, v2);
     const auto shape = Shape{conf};
     ASSERT_EQ(GetVertexRadius(shape), 1_m);
 
@@ -1193,7 +1193,7 @@ TEST(World, HeavyOnLight)
     const auto upperBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
     const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
 
-    const auto groundConf = EdgeShape::Conf{}
+    const auto groundConf = EdgeShapeConf{}
         .Set(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter);
     
     const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
@@ -2337,7 +2337,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto left_edge_x = -0.1_m;
     const auto right_edge_x = +0.1_m;
 
-    const auto edgeConf = EdgeShape::Conf{}
+    const auto edgeConf = EdgeShapeConf{}
         .UseVertexRadius(VertexRadius)
         .UseRestitution(Real(1))
         .Set(Length2{0_m, +10_m}, Length2{0_m, -10_m});
@@ -2516,7 +2516,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     BodyDef body_def;
     body_def.type = BodyType::Static;
 
-    auto edgeConf = EdgeShape::Conf{};
+    auto edgeConf = EdgeShapeConf{};
     edgeConf.UseFriction(Real(0.4f));
     edgeConf.UseRestitution(Real(0.94f)); // changes where bodies will be after collision
     
@@ -3051,7 +3051,7 @@ public:
     {
         const auto hw_ground = 40.0_m;
         const auto ground = world.CreateBody();
-        ground->CreateFixture(EdgeShape::Conf{}.Set(Length2{-hw_ground, 0_m}, Length2{hw_ground, 0_m}));
+        ground->CreateFixture(EdgeShapeConf{}.Set(Length2{-hw_ground, 0_m}, Length2{hw_ground, 0_m}));
         const auto numboxes = boxes.size();
         original_x = GetParam();
         

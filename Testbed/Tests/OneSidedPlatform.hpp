@@ -38,7 +38,7 @@ public:
     OneSidedPlatform()
     {
         // Ground
-        m_world.CreateBody()->CreateFixture(Shape{EdgeShape::Conf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
+        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Platform
         {

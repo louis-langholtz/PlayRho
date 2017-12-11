@@ -32,7 +32,7 @@ public:
     {
         {
             const auto body = m_world.CreateBody();
-            body->CreateFixture(Shape{EdgeShape::Conf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}});
+            body->CreateFixture(Shape{EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}});
             body->CreateFixture(Shape{PolygonShape::Conf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)});
         }
 

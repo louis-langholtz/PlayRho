@@ -30,7 +30,7 @@ public:
     Revolute()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
+        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
 
         {
             BodyDef bd;

@@ -64,7 +64,7 @@ namespace playrho {
             const auto vertices = GetCircleVertices(10_m, 90);
             const auto halfSegmentLength = GetMagnitude(vertices[1] - vertices[0]) / 2;
 
-            auto conf = EdgeShape::Conf{};
+            auto conf = EdgeShapeConf{};
             conf.vertexRadius = 0.125_m;
             conf.density = 10_kgpm2;
             conf.friction = 0.2f;

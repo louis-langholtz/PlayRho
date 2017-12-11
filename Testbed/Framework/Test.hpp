@@ -191,9 +191,9 @@ public:
 
 protected:
     
-    EdgeShape::Conf GetGroundEdgeConf() const noexcept
+    EdgeShapeConf GetGroundEdgeConf() const noexcept
     {
-        return EdgeShape::Conf{}.Set(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m);
+        return EdgeShapeConf{}.Set(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m);
     }
 
     struct Conf

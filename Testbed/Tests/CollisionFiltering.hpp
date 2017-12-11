@@ -48,7 +48,7 @@ public:
     CollisionFiltering()
     {
         // Ground body
-        m_world.CreateBody()->CreateFixture(Shape(EdgeShape::Conf{}.SetFriction(0.3f)
+        m_world.CreateBody()->CreateFixture(Shape(EdgeShapeConf{}.SetFriction(0.3f)
                         .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
         
         // Small triangle

@@ -41,7 +41,7 @@ public:
     {
         // Ground body
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m}});
+        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m}});
 
         {
             auto shape = PolygonShape::Conf{};
@@ -79,7 +79,7 @@ public:
 
         // Collinear edges.
         {
-            auto conf = EdgeShape::Conf{};
+            auto conf = EdgeShapeConf{};
             conf.Set(Vec2(-8.0f, 1.0f) * 1_m, Vec2(-6.0f, 1.0f) * 1_m);
             ground->CreateFixture(Shape(conf));
             conf.Set(Vec2(-6.0f, 1.0f) * 1_m, Vec2(-4.0f, 1.0f) * 1_m);

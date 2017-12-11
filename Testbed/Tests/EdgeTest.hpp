@@ -41,7 +41,7 @@ public:
             const auto v6 = Vec2(7.0f, 2.0f) * 1_m;
             const auto v7 = Vec2(10.0f, 0.0f) * 1_m;
 
-            auto conf = EdgeShape::Conf{};
+            auto conf = EdgeShapeConf{};
             conf.Set(v1, v2);
             ground->CreateFixture(Shape(conf));
             conf.Set(v2, v3);

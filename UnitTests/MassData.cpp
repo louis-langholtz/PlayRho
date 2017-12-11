@@ -261,10 +261,10 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
     const auto density = 2.1_kgpm2;
-    auto conf = EdgeShape::Conf{};
+    auto conf = EdgeShapeConf{};
     conf.vertexRadius = 0_m;
     conf.density = density;
-    const auto shape = EdgeShape::Conf(v1, v2, conf);
+    const auto shape = EdgeShapeConf(v1, v2, conf);
     const auto mass_data = GetMassData(shape);
     EXPECT_EQ(Real(Mass{mass_data.mass} / 1_kg), Real(0));
     EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * 1_kg / SquareRadian)}),
@@ -277,7 +277,7 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 {
     const auto v1 = Length2{-1_m, 1_m};
     const auto density = 1_kgpm2;
-    const auto shape = EdgeShape::Conf(EdgeShape::Conf{}.UseVertexRadius(1_m).UseDensity(density).Set(v1, v1));
+    const auto shape = EdgeShapeConf(EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(density).Set(v1, v1));
     const auto mass_data = GetMassData(shape);
     const auto circleMass = density * Pi * Square(GetVertexRadius(shape));
 
@@ -305,7 +305,7 @@ TEST(MassData, GetForCenteredEdge)
     ASSERT_NEAR(static_cast<double>(Real{circleArea / SquareMeter}),
                 0.78539818525314331, 0.78539818525314331 / 1000000.0);
 
-    const auto shape = EdgeShape::Conf(EdgeShape::Conf{}.UseVertexRadius(radius).UseDensity(density).Set(v1, v2));
+    const auto shape = EdgeShapeConf(EdgeShapeConf{}.UseVertexRadius(radius).UseDensity(density).Set(v1, v2));
     ASSERT_EQ(GetVertexRadius(shape), radius);
     ASSERT_EQ(shape.GetVertexA(), v1);
     ASSERT_EQ(shape.GetVertexB(), v2);

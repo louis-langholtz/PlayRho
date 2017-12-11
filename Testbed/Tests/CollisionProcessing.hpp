@@ -35,7 +35,7 @@ public:
         // Ground body
         {
             const auto ground = m_world.CreateBody();
-            ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}});
+            ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}});
         }
 
         auto xLo = -5.0f, xHi = 5.0f;

@@ -35,7 +35,7 @@ public:
 
     SphereStack()
     {
-        m_world.CreateBody()->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         const auto shape = Shape{DiskShapeConf{}.SetRadius(1_m).SetDensity(1_kgpm2)};
         for (auto i = 0; i < e_count; ++i)
         {

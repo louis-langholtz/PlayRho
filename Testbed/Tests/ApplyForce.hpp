@@ -53,7 +53,7 @@ public:
             bd.location = Length2(0_m, 20_m);
             ground = m_world.CreateBody(bd);
 
-            auto conf = EdgeShape::Conf{};
+            auto conf = EdgeShapeConf{};
             conf.density = 0;
             conf.restitution = k_restitution;
 

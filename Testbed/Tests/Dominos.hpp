@@ -31,7 +31,7 @@ public:
     Dominos()
     {
         const auto b1 = m_world.CreateBody();
-        b1->CreateFixture(EdgeShape::Conf(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+        b1->CreateFixture(EdgeShapeConf(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
 
         {
             BodyDef bd;

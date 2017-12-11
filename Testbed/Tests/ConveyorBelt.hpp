@@ -32,7 +32,7 @@ public:
     {
         // Ground
         m_world.CreateBody()->CreateFixture(Shape{
-            EdgeShape::Conf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
+            EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Platform
         {

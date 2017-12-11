@@ -83,7 +83,7 @@ public:
     PolyShapes()
     {
         // Ground body
-        m_world.CreateBody()->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         auto conf = PolygonShape::Conf{};
         conf.SetDensity(1_kgpm2);

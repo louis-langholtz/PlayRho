@@ -34,7 +34,7 @@ public:
         const auto upperBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 6.0f) * 1_m);
         const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * 1_m);
         
-        const auto groundConf = EdgeShape::Conf{}
+        const auto groundConf = EdgeShapeConf{}
             .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m);
         
         const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);

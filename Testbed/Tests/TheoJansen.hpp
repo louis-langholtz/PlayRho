@@ -101,7 +101,7 @@ public:
             BodyDef bd;
             const auto ground = m_world.CreateBody(bd);
 
-            auto conf = EdgeShape::Conf{};
+            auto conf = EdgeShapeConf{};
  
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
             ground->CreateFixture(Shape(conf));

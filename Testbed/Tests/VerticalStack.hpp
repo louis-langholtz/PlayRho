@@ -40,8 +40,8 @@ public:
     VerticalStack()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
-        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(20.0f, 0.0f) * 1_m, Vec2(20.0f, 20.0f) * 1_m}});
+        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(20.0f, 0.0f) * 1_m, Vec2(20.0f, 20.0f) * 1_m}});
 
         const float xs[] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
         assert(e_columnCount <= sizeof(xs)/sizeof(xs[0]));

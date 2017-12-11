@@ -46,7 +46,7 @@ public:
             {
                 const auto x2 = x1 + 0.5f;
                 const auto y2 = 2.0f * std::cos(x2 / 10.0f * static_cast<float>(Pi));
-                ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}});
+                ground->CreateFixture(Shape{EdgeShapeConf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}});
                 x1 = x2;
                 y1 = y2;
             }

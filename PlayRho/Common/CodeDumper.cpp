@@ -64,7 +64,7 @@ namespace
         void operator() (const std::type_info& ti, const void* data);
 
         void Visit(const DiskShapeConf& shape);
-        void Visit(const EdgeShape::Conf& shape);
+        void Visit(const EdgeShapeConf& shape);
         void Visit(const PolygonShape::Conf& shape);
         void Visit(const ChainShapeConf& shape);
         void Visit(const MultiShape::Conf& shape);
@@ -79,7 +79,7 @@ namespace
             static_cast<double>(StripUnit(Get<1>(s.GetLocation()))));
     }
     
-    void ShapeDumper::Visit(const playrho::EdgeShape::Conf& s)
+    void ShapeDumper::Visit(const playrho::EdgeShapeConf& s)
     {
         log("    EdgeShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.vertexRadius)));

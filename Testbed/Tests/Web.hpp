@@ -38,7 +38,7 @@ public:
     Web(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
             const auto shape = Shape{PolygonShape::Conf{}.SetDensity(5_kgpm2).SetAsBox(0.5_m, 0.5_m)};

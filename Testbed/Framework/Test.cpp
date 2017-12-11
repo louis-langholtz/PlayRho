@@ -61,9 +61,9 @@ public:
         {
             Visit(*static_cast<const DiskShapeConf*>(data));
         }
-        else if (ti == typeid(EdgeShape::Conf))
+        else if (ti == typeid(EdgeShapeConf))
         {
-            Visit(*static_cast<const EdgeShape::Conf*>(data));
+            Visit(*static_cast<const EdgeShapeConf*>(data));
         }
         else if (ti == typeid(PolygonShape::Conf))
         {
@@ -80,7 +80,7 @@ public:
     }
     
     void Visit(const DiskShapeConf& shape);
-    void Visit(const EdgeShape::Conf& shape);
+    void Visit(const EdgeShapeConf& shape);
     void Visit(const PolygonShape::Conf& shape);
     void Visit(const ChainShapeConf& shape);
     void Visit(const MultiShape::Conf& shape);
@@ -106,7 +106,7 @@ void ShapeDrawer::Visit(const DiskShapeConf& shape)
     drawer.DrawSegment(center, center + radius * axis, color);
 }
 
-void ShapeDrawer::Visit(const EdgeShape::Conf& shape)
+void ShapeDrawer::Visit(const EdgeShapeConf& shape)
 {
     const auto v1 = Transform(shape.GetVertexA(), xf);
     const auto v2 = Transform(shape.GetVertexB(), xf);
