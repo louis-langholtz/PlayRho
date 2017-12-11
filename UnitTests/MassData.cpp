@@ -194,8 +194,7 @@ TEST(MassData, GetForOriginCenteredCircle)
     conf.vertexRadius = 1_m;
     conf.location = Length2{};
     conf.density = 1_kgpm2;
-    const auto foo = DiskShapeConf{conf};
-    const auto mass_data = GetMassData(foo);
+    const auto mass_data = GetMassData(conf);
     EXPECT_EQ(Real{Mass{mass_data.mass} / 1_kg}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 1.5707964, 0.0005);
     const auto squareVertexRadius = Square(Length{conf.vertexRadius});
@@ -216,8 +215,7 @@ TEST(MassData, GetForCircle)
     conf.vertexRadius = radius;
     conf.location = position;
     conf.density = density;
-    const auto foo = DiskShapeConf{conf};
-    const auto mass_data = GetMassData(foo);
+    const auto mass_data = GetMassData(conf);
     EXPECT_EQ(Real{Mass{mass_data.mass} / 1_kg}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 7.85398, 0.003);
     EXPECT_EQ(mass_data.center, position);

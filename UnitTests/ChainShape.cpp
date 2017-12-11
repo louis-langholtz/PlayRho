@@ -34,7 +34,7 @@ TEST(ChainShapeConf, ByteSize)
 #if !defined(NDEBUG)
             EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(88));
 #else
-            EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(72));
+            EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(64));
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)

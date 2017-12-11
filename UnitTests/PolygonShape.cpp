@@ -33,7 +33,7 @@ TEST(PolygonShapeConf, ByteSize)
 #if !defined(NDEBUG)
             EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(96));
 #else
-            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(80));
+            EXPECT_EQ(sizeof(PolygonShapeConf), std::size_t(72));
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)

@@ -32,7 +32,7 @@ TEST(Shape, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(Shape), std::size_t(20));
+            EXPECT_EQ(sizeof(Shape), std::size_t(8));
 #else
             EXPECT_EQ(sizeof(Shape), std::size_t(16));
 #endif
