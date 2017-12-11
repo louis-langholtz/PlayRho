@@ -1,3 +1,16 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structplayrho_1_1SeparationFinder_1_1Data.html" title="Separation finder data. " alt="" coords="5,5,180,44"/>
+<area shape="rect" id="node1" href="$structplayrho_1_1ShapeDef.html" title="Base configuration for initializing shapes. " alt="" coords="5,200,137,225"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1ShapeDefBuilder.html" title="Builder configuration structure. " alt="" coords="185,5,358,44"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; ChainShapeConf \&gt;" alt="" coords="185,68,358,107"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; DiskShapeConf \&gt;" alt="" coords="185,131,358,169"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; EdgeShapeConf \&gt;" alt="" coords="185,193,358,232"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; MultiShapeConf \&gt;" alt="" coords="185,256,358,295"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; PolygonShapeConf \&gt;" alt="" coords="185,319,358,357"/>
+<area shape="rect" id="node13" href="$structplayrho_1_1ShapeDefBuilder.html" title="playrho::ShapeDefBuilder\l\&lt; ShapeConf \&gt;" alt="" coords="185,381,358,420"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1ChainShapeConf.html" title="Chain shape configuration. " alt="" coords="413,75,587,100"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1DiskShapeConf.html" title="Disk shape configuration. " alt="" coords="418,137,583,163"/>
+<area shape="rect" id="node8" href="$classplayrho_1_1EdgeShapeConf.html" title="Edge shape configuration. " alt="" coords="415,200,585,225"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1MultiShapeConf.html" title="The &quot;multi&#45;shape&quot; shape configuration. " alt="" coords="416,263,584,288"/>
+<area shape="rect" id="node12" href="$classplayrho_1_1PolygonShapeConf.html" title="Polygon shape configuration. " alt="" coords="406,325,594,351"/>
+<area shape="rect" id="node14" href="$structplayrho_1_1ShapeConf.html" title="Shape configuration structure. " alt="" coords="430,388,570,413"/>
 </map>

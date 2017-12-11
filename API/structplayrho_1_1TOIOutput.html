@@ -153,7 +153,7 @@ Public Attributes</h2></td></tr>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:acad38ef6ac1537641203f3eb15225235"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1TOIOutput.html">TOIOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1TOIOutput.html#acad38ef6ac1537641203f3eb15225235">GetToiViaSat</a> (const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;proxyA, const <a class="el" href="classplayrho_1_1Sweep.html">Sweep</a> &amp;sweepA, const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;proxyB, const <a class="el" href="classplayrho_1_1Sweep.html">Sweep</a> &amp;sweepB, <a class="el" href="structplayrho_1_1ToiConf.html">ToiConf</a> conf=<a class="el" href="namespaceplayrho.html#a4dd2e3047d7ac0836f8921a496e8d432">GetDefaultToiConf</a>())</td></tr>
+<tr class="memitem:acad38ef6ac1537641203f3eb15225235"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1TOIOutput.html">TOIOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1TOIOutput.html#acad38ef6ac1537641203f3eb15225235">GetToiViaSat</a> (const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;proxyA, const <a class="el" href="classplayrho_1_1Sweep.html">Sweep</a> &amp;sweepA, const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;proxyB, const <a class="el" href="classplayrho_1_1Sweep.html">Sweep</a> &amp;sweepB, <a class="el" href="structplayrho_1_1ToiConf.html">ToiConf</a> conf=<a class="el" href="namespaceplayrho.html#abb1706f5ee9f03fdec4a73d2c4d6ce6b">GetDefaultToiConf</a>())</td></tr>
 <tr class="memdesc:acad38ef6ac1537641203f3eb15225235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact for two disjoint convex sets using the Separating Axis Theorem.  <a href="#acad38ef6ac1537641203f3eb15225235">More...</a><br /></td></tr>
 <tr class="separator:acad38ef6ac1537641203f3eb15225235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -178,19 +178,21 @@ Related Functions</h2></td></tr>
 <p>Unknown state. </p><dl class="section note"><dt>Note</dt><dd>This is the default initialized state. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a7387423560f6283896f1c6af1f938991aa03eb76dce3674392a4997431bb983b7"></a>e_touching&#160;</td><td class="fielddoc"><p>Touching. </p>
-<dl class="section note"><dt>Note</dt><dd>This is a desirable result. </dd>
+<p>Indicates that the returned time of impact for two convex polygons is for a time at which the two polygons are within the minimum and maximum target range inclusively. </p><dl class="section note"><dt>Note</dt><dd>This is a desirable result. </dd>
 <dd>
 Time of impact is the time when the two convex polygons "touch". </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a7387423560f6283896f1c6af1f938991a8f70064ad03a98b993560de73ed5fa1b"></a>e_separated&#160;</td><td class="fielddoc"><p>Separated. </p>
 <p>Indicates that the two convex polygons never actually collide during their defined sweeps. </p><dl class="section note"><dt>Note</dt><dd>This is a desirable result. </dd>
 <dd>
-Time of impact should be 1. </dd></dl>
+Time of impact in this case is <code>tMax</code> (which is typically 1). </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a7387423560f6283896f1c6af1f938991ab22bfc4f78b826eb32a0079a9f0338c3"></a>e_overlapped&#160;</td><td class="fielddoc"><p>Overlapped. </p>
-<dl class="section note"><dt>Note</dt><dd>Can happen if total radius of the two convex polygons is too small. </dd>
+<p>Indicates that the two convex polygons are closer to each other at the returned time than the target depth range allows for. </p><dl class="section note"><dt>Note</dt><dd>Can happen if total radius of the two convex polygons is too small. </dd>
 <dd>
-Time of impact is the time when the two convex polygons collide. </dd></dl>
+Can happen if the tolerance is too low. </dd>
+<dd>
+Time of impact is the time when the two convex polygons have already collided too much. </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a7387423560f6283896f1c6af1f938991a36362566a28d97af1009889591d3c832"></a>e_maxRootIters&#160;</td><td class="fielddoc"><p>Max root iterations. </p>
 <p>Got to max number of root iterations allowed. </p><dl class="section note"><dt>Note</dt><dd>Can happen if the configured max number of root iterations is too low. </dd>
@@ -249,7 +251,7 @@ Can happen if the tolerance is too small. </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1ToiConf.html">ToiConf</a>&#160;</td>
-          <td class="paramname"><em>conf</em> = <code><a class="el" href="namespaceplayrho.html#a4dd2e3047d7ac0836f8921a496e8d432">GetDefaultToiConf</a>()</code>&#160;</td>
+          <td class="paramname"><em>conf</em> = <code><a class="el" href="namespaceplayrho.html#abb1706f5ee9f03fdec4a73d2c4d6ce6b">GetDefaultToiConf</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -294,7 +296,7 @@ This only works for two disjoint convex sets.</dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 30 2017 12:16:53 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 11 2017 12:59:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

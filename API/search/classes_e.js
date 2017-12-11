@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['point',['Point',['../structplayrho_1_1VelocityConstraint_1_1Point.html',1,'playrho::VelocityConstraint::Point'],['../structplayrho_1_1Manifold_1_1Point.html',1,'playrho::Manifold::Point']]],
+  ['point',['Point',['../structplayrho_1_1Manifold_1_1Point.html',1,'playrho::Manifold::Point'],['../structplayrho_1_1VelocityConstraint_1_1Point.html',1,'playrho::VelocityConstraint::Point']]],
   ['pointarray',['PointArray',['../structplayrho_1_1Manifold_1_1PointArray.html',1,'playrho::Manifold']]],
   ['pointdata',['PointData',['../structplayrho_1_1WorldManifold_1_1PointData.html',1,'playrho::WorldManifold']]],
   ['pointstates',['PointStates',['../structplayrho_1_1PointStates.html',1,'playrho']]],
-  ['polygonshape',['PolygonShape',['../classplayrho_1_1PolygonShape.html',1,'playrho']]],
+  ['polygonshapeconf',['PolygonShapeConf',['../classplayrho_1_1PolygonShapeConf.html',1,'playrho']]],
   ['position',['Position',['../structplayrho_1_1Position.html',1,'playrho']]],
   ['positionconstraint',['PositionConstraint',['../classplayrho_1_1PositionConstraint.html',1,'playrho']]],
   ['positionsolution',['PositionSolution',['../structplayrho_1_1PositionSolution.html',1,'playrho']]],

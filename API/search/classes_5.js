@@ -10,6 +10,5 @@ var searchData=
   ['flagguard',['FlagGuard',['../classplayrho_1_1FlagGuard.html',1,'playrho']]],
   ['frictionjoint',['FrictionJoint',['../classplayrho_1_1FrictionJoint.html',1,'playrho']]],
   ['frictionjointdef',['FrictionJointDef',['../structplayrho_1_1FrictionJointDef.html',1,'playrho']]],
-  ['functionaljointvisitor',['FunctionalJointVisitor',['../classplayrho_1_1FunctionalJointVisitor.html',1,'playrho']]],
-  ['functionalshapevisitor',['FunctionalShapeVisitor',['../classplayrho_1_1FunctionalShapeVisitor.html',1,'playrho']]]
+  ['functionaljointvisitor',['FunctionalJointVisitor',['../classplayrho_1_1FunctionalJointVisitor.html',1,'playrho']]]
 ];

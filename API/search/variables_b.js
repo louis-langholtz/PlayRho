@@ -16,7 +16,7 @@ var searchData=
   ['localaxisa',['localAxisA',['../structplayrho_1_1PrismaticJointDef.html#a70aaca7c999bc40f35c6f643ebdd9e17',1,'playrho::PrismaticJointDef::localAxisA()'],['../structplayrho_1_1WheelJointDef.html#abb8fad9d276699f893cd2df9d089ff13',1,'playrho::WheelJointDef::localAxisA()']]],
   ['localcenter',['localCenter',['../classplayrho_1_1Sweep.html#ae095c7b6f721a2c2c7f21c25741abfbd',1,'playrho::Sweep']]],
   ['localpoint',['localPoint',['../structplayrho_1_1Manifold_1_1Point.html#aa86c48d976b3a3b554558ff4eaa0b286',1,'playrho::Manifold::Point']]],
-  ['location',['location',['../structplayrho_1_1DiskShape_1_1Conf.html#a0baf7e4f2b19b86e0a9c8b5431e883e3',1,'playrho::DiskShape::Conf::location()'],['../structplayrho_1_1WorldManifold_1_1PointData.html#aeb76b1f72bc42c8fab8fc1cb10c5aa3b',1,'playrho::WorldManifold::PointData::location()'],['../structplayrho_1_1BodyDef.html#a970fbd4b771d5618a113d344bc113cd4',1,'playrho::BodyDef::location()']]],
+  ['location',['location',['../structplayrho_1_1DiskShapeConf.html#a8908a9927fbd5624817573e3c1fae8e9',1,'playrho::DiskShapeConf::location()'],['../structplayrho_1_1WorldManifold_1_1PointData.html#aeb76b1f72bc42c8fab8fc1cb10c5aa3b',1,'playrho::WorldManifold::PointData::location()'],['../structplayrho_1_1BodyDef.html#a970fbd4b771d5618a113d344bc113cd4',1,'playrho::BodyDef::location()']]],
   ['lowerangle',['lowerAngle',['../structplayrho_1_1RevoluteJointDef.html#abf733cf9074bb75ae172c7a5a2f81a82',1,'playrho::RevoluteJointDef']]],
   ['lowertranslation',['lowerTranslation',['../structplayrho_1_1PrismaticJointDef.html#ac0a4c0b0bac7cc1b738cfe88db76538c',1,'playrho::PrismaticJointDef']]]
 ];

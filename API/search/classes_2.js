@@ -1,10 +1,11 @@
 var searchData=
 [
   ['cache',['Cache',['../classplayrho_1_1Simplex_1_1Cache.html',1,'playrho::Simplex']]],
-  ['chainshape',['ChainShape',['../classplayrho_1_1ChainShape.html',1,'playrho']]],
+  ['chainshapeconf',['ChainShapeConf',['../classplayrho_1_1ChainShapeConf.html',1,'playrho']]],
   ['chunk',['Chunk',['../structplayrho_1_1BlockAllocator_1_1Chunk.html',1,'playrho::BlockAllocator']]],
   ['clipvertex',['ClipVertex',['../structplayrho_1_1ClipVertex.html',1,'playrho']]],
-  ['conf',['Conf',['../structplayrho_1_1Manifold_1_1Conf.html',1,'playrho::Manifold::Conf'],['../structplayrho_1_1MultiShape_1_1Conf.html',1,'playrho::MultiShape::Conf'],['../structplayrho_1_1VelocityConstraint_1_1Conf.html',1,'playrho::VelocityConstraint::Conf'],['../structplayrho_1_1PolygonShape_1_1Conf.html',1,'playrho::PolygonShape::Conf'],['../structplayrho_1_1ChainShape_1_1Conf.html',1,'playrho::ChainShape::Conf'],['../structplayrho_1_1DiskShape_1_1Conf.html',1,'playrho::DiskShape::Conf'],['../structplayrho_1_1EdgeShape_1_1Conf.html',1,'playrho::EdgeShape::Conf']]],
+  ['concept',['Concept',['../structplayrho_1_1Shape_1_1Concept.html',1,'playrho::Shape']]],
+  ['conf',['Conf',['../structplayrho_1_1Manifold_1_1Conf.html',1,'playrho::Manifold::Conf'],['../structplayrho_1_1VelocityConstraint_1_1Conf.html',1,'playrho::VelocityConstraint::Conf']]],
   ['configuration',['Configuration',['../structplayrho_1_1StackAllocator_1_1Configuration.html',1,'playrho::StackAllocator']]],
   ['constjointvisitor',['ConstJointVisitor',['../classplayrho_1_1ConstJointVisitor.html',1,'playrho']]],
   ['constraintsolverconf',['ConstraintSolverConf',['../structplayrho_1_1ConstraintSolverConf.html',1,'playrho']]],
@@ -16,5 +17,5 @@ var searchData=
   ['contactkey',['ContactKey',['../classplayrho_1_1ContactKey.html',1,'playrho']]],
   ['contactlistener',['ContactListener',['../classplayrho_1_1ContactListener.html',1,'playrho']]],
   ['contacttoidata',['ContactToiData',['../structplayrho_1_1World_1_1ContactToiData.html',1,'playrho::World']]],
-  ['convexhull',['ConvexHull',['../structplayrho_1_1MultiShape_1_1ConvexHull.html',1,'playrho::MultiShape']]]
+  ['convexhull',['ConvexHull',['../classplayrho_1_1ConvexHull.html',1,'playrho']]]
 ];

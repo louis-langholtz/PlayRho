@@ -122,6 +122,12 @@ $(function() {
 <li>const_value_type
 : <a class="el" href="classplayrho_1_1AllocatedArray.html#ad4c58287e44fbe5dff42c43459328138">playrho::AllocatedArray&lt; T, Deleter &gt;</a>
 </li>
+<li>ConstVertexIterator
+: <a class="el" href="classplayrho_1_1DistanceProxy.html#a7775430285811947f023887cb8a5491d">playrho::DistanceProxy</a>
+</li>
+<li>ConstVertexPointer
+: <a class="el" href="classplayrho_1_1DistanceProxy.html#a71d7ed840297f37ab00d48fb25b4422d">playrho::DistanceProxy</a>
+</li>
 <li>ContactKeyQueue
 : <a class="el" href="classplayrho_1_1World.html#a274b95c098f742bb8eb54fb2c44d6d2e">playrho::World</a>
 </li>
@@ -146,7 +152,8 @@ $(function() {
 
 <h3><a id="index_d"></a>- d -</h3><ul>
 <li>data_type
-: <a class="el" href="classplayrho_1_1Span.html#a71f2562f09ebcc2077d54844556707d6">playrho::Span&lt; T &gt;</a>
+: <a class="el" href="structplayrho_1_1Shape_1_1Model.html#a5e6fba2af35c71481a03e56d1be09c60">playrho::Shape::Model&lt; T &gt;</a>
+, <a class="el" href="classplayrho_1_1Span.html#a71f2562f09ebcc2077d54844556707d6">playrho::Span&lt; T &gt;</a>
 </li>
 <li>deleter_type
 : <a class="el" href="classplayrho_1_1AllocatedArray.html#ae45cc668488dda80f86798ece5177709">playrho::AllocatedArray&lt; T, Deleter &gt;</a>
@@ -163,10 +170,6 @@ $(function() {
 </li>
 <li>dist_sum_type
 : <a class="el" href="structplayrho_1_1TOIOutput_1_1Statistics.html#a3ddf7cb3c9575ed71940027186d11378">playrho::TOIOutput::Statistics</a>
-</li>
-<li>distance_type
-: <a class="el" href="structplayrho_1_1IndexPairSeparation.html#a1c5c5f50060543fdae2c142f2f6b5b3a">playrho::IndexPairSeparation</a>
-, <a class="el" href="structplayrho_1_1IndexSeparation.html#a7b96d58d2491dde016bb1760b8283bb8">playrho::IndexSeparation</a>
 </li>
 </ul>
 
@@ -212,9 +215,6 @@ $(function() {
 <li>index_type
 : <a class="el" href="classplayrho_1_1BodyConstraint.html#a956d40760a65195cc8b40a8dfaa2fbf2">playrho::BodyConstraint</a>
 , <a class="el" href="structplayrho_1_1Filter.html#a289ef26ff12cc3cb15d74062ce27fd72">playrho::Filter</a>
-, <a class="el" href="structplayrho_1_1IndexPairSeparation.html#a240cd0d4c33480b07e93babfe375112f">playrho::IndexPairSeparation</a>
-, <a class="el" href="structplayrho_1_1IndexSeparation.html#a1156256c9db417e15e0d3a64b750b07a">playrho::IndexSeparation</a>
-, <a class="el" href="classplayrho_1_1SimplexEdge.html#aca640c3895cb60a994a3a0326760becc">playrho::SimplexEdge</a>
 </li>
 <li>iteration_type
 : <a class="el" href="classplayrho_1_1ContactListener.html#aa4fd6a0776472a78483f4357f630e426">playrho::ContactListener</a>
@@ -283,7 +283,6 @@ $(function() {
 </li>
 <li>Proc
 : <a class="el" href="classplayrho_1_1FunctionalJointVisitor.html#acb9a22955d412a3b8caed9f24f9fb864">playrho::FunctionalJointVisitor</a>
-, <a class="el" href="classplayrho_1_1FunctionalShapeVisitor.html#a640425cb89bb8cb90c1cbb79eb1fee7f">playrho::FunctionalShapeVisitor</a>
 </li>
 <li>proxy_size_type
 : <a class="el" href="classplayrho_1_1World.html#a7dc8e68f3345d1fc92b55f48232a0e92">playrho::World</a>
@@ -349,9 +348,7 @@ $(function() {
 , <a class="el" href="structplayrho_1_1BlockAllocator_1_1Chunk.html#afb9d9f2cdbc2d42f20c8a3fb57882ac9">playrho::BlockAllocator::Chunk</a>
 , <a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">playrho::BlockAllocator</a>
 , <a class="el" href="structplayrho_1_1BlockDeallocator.html#a605c69aa30125de98e51e6ef94df25dd">playrho::BlockDeallocator</a>
-, <a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">playrho::DistanceProxy</a>
 , <a class="el" href="structplayrho_1_1FixtureProxy.html#aa423d44eb5a1c3180d1a7a11f7214ed3">playrho::FixtureProxy</a>
-, <a class="el" href="structplayrho_1_1IndexPair.html#acc9dd36bd6170c0ba210edba694a5d3b">playrho::IndexPair</a>
 , <a class="el" href="classplayrho_1_1Manifold.html#a0e5e47416a0a06361947e09f49cc2d16">playrho::Manifold</a>
 , <a class="el" href="classplayrho_1_1PositionConstraint.html#a28713553f215c193504d59202746dd41">playrho::PositionConstraint</a>
 , <a class="el" href="classplayrho_1_1Simplex.html#a922b8cc214d74a5c775ebcf0f976ff85">playrho::Simplex</a>
@@ -397,7 +394,6 @@ $(function() {
 </li>
 <li>Tuple
 : <a class="el" href="classplayrho_1_1FunctionalJointVisitor.html#a48a2d6bb484ac47771f0b9c25d15638d">playrho::FunctionalJointVisitor</a>
-, <a class="el" href="classplayrho_1_1FunctionalShapeVisitor.html#ac15552f3b8e755743b4698202d47c2cc">playrho::FunctionalShapeVisitor</a>
 </li>
 <li>type
 : <a class="el" href="structplayrho_1_1Voidify.html#a118c9570dc6c5126767ce8716a68abbb">playrho::Voidify&lt;... &gt;</a>
@@ -439,9 +435,8 @@ $(function() {
 , <a class="el" href="classplayrho_1_1UnitVec2.html#ab21b256a14b20403a84ed7d33dde9733">playrho::UnitVec2</a>
 , <a class="el" href="structplayrho_1_1Vector.html#a92ca95984a7bf625e8705b97245a7a8f">playrho::Vector&lt; T, N &gt;</a>
 </li>
-<li>VertexCounter
-: <a class="el" href="classplayrho_1_1MultiShape.html#a31232923d8793507c77b55d8c17ab5ff">playrho::MultiShape</a>
-, <a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">playrho::PolygonShape</a>
+<li>Visitor
+: <a class="el" href="classplayrho_1_1Shape.html#a4eb0607d83328036c907a2f8ee639b37">playrho::Shape</a>
 </li>
 </ul>
 
@@ -454,7 +449,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 30 2017 12:16:54 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 11 2017 12:59:11 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

@@ -20,7 +20,6 @@ var searchData=
   ['wider_3c_20std_3a_3auint64_5ft_20_3e',['Wider&lt; std::uint64_t &gt;',['../structplayrho_1_1Wider_3_01std_1_1uint64__t_01_4.html',1,'playrho']]],
   ['wider_3c_20std_3a_3auint8_5ft_20_3e',['Wider&lt; std::uint8_t &gt;',['../structplayrho_1_1Wider_3_01std_1_1uint8__t_01_4.html',1,'playrho']]],
   ['wider_3c_20toi_5fiter_5ftype_20_3e',['Wider&lt; toi_iter_type &gt;',['../structplayrho_1_1Wider.html',1,'playrho']]],
-  ['witnesspoints',['WitnessPoints',['../structplayrho_1_1WitnessPoints.html',1,'playrho']]],
   ['world',['World',['../classplayrho_1_1World.html',1,'playrho']]],
   ['worlddef',['WorldDef',['../structplayrho_1_1WorldDef.html',1,'playrho']]],
   ['worldmanifold',['WorldManifold',['../classplayrho_1_1WorldManifold.html',1,'playrho']]],

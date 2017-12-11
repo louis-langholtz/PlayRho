@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['a',['a',['../structplayrho_1_1WitnessPoints.html#a90ba10c66a24a16c8f9332cef7c99315',1,'playrho::WitnessPoints::a()'],['../structplayrho_1_1IndexPair.html#a06334874699e650d55816369951a4ccb',1,'playrho::IndexPair::a()']]],
   ['aabbextension',['aabbExtension',['../classplayrho_1_1StepConf.html#a2843eaacd8bc5a99f9764d734deb5399',1,'playrho::StepConf']]],
   ['added',['added',['../structplayrho_1_1PreStepStats.html#a9342f0dc6ecefd1d1519804f013cd164',1,'playrho::PreStepStats']]],
   ['allocation_5frecords',['allocation_records',['../structplayrho_1_1StackAllocator_1_1Configuration.html#a32f1e804766165759965182deb1db010',1,'playrho::StackAllocator::Configuration']]],

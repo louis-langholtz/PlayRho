@@ -157,9 +157,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a18857c8bcdb0587edf41a05e097301a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Body.html#a18857c8bcdb0587edf41a05e097301a1">Body</a> (<a class="el" href="classplayrho_1_1World.html">World</a> *world, const <a class="el" href="structplayrho_1_1BodyDef.html">BodyDef</a> &amp;bd)</td></tr>
 <tr class="memdesc:a18857c8bcdb0587edf41a05e097301a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor for unit testing purposes.  <a href="#a18857c8bcdb0587edf41a05e097301a1">More...</a><br /></td></tr>
 <tr class="separator:a18857c8bcdb0587edf41a05e097301a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c41613a76f61520797a7bd2a1fab1c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixture.html">Fixture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Body.html#a9c41613a76f61520797a7bd2a1fab1c2">CreateFixture</a> (const std::shared_ptr&lt; const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &gt; &amp;shape, const <a class="el" href="structplayrho_1_1FixtureDef.html">FixtureDef</a> &amp;def=<a class="el" href="namespaceplayrho.html#ad5b6f84e039d8f1c713fbf25b3953b8a">GetDefaultFixtureDef</a>(), bool resetMassData=true)</td></tr>
-<tr class="memdesc:a9c41613a76f61520797a7bd2a1fab1c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a fixture and attaches it to this body.  <a href="#a9c41613a76f61520797a7bd2a1fab1c2">More...</a><br /></td></tr>
-<tr class="separator:a9c41613a76f61520797a7bd2a1fab1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f9276713a623a4be80360039f368096"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Fixture.html">Fixture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Body.html#a0f9276713a623a4be80360039f368096">CreateFixture</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape, const <a class="el" href="structplayrho_1_1FixtureDef.html">FixtureDef</a> &amp;def=<a class="el" href="namespaceplayrho.html#a73cd4c9e1f0492648984ef47ffe5ab6a">GetDefaultFixtureDef</a>(), bool resetMassData=true)</td></tr>
+<tr class="memdesc:a0f9276713a623a4be80360039f368096"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a fixture and attaches it to this body.  <a href="#a0f9276713a623a4be80360039f368096">More...</a><br /></td></tr>
+<tr class="separator:a0f9276713a623a4be80360039f368096"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a211c816480f91d74fa46d51f584e2a50"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Body.html#a211c816480f91d74fa46d51f584e2a50">DestroyFixture</a> (<a class="el" href="classplayrho_1_1Fixture.html">Fixture</a> *fixture, bool resetMassData=true)</td></tr>
 <tr class="memdesc:a211c816480f91d74fa46d51f584e2a50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a fixture.  <a href="#a211c816480f91d74fa46d51f584e2a50">More...</a><br /></td></tr>
 <tr class="separator:a211c816480f91d74fa46d51f584e2a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -345,10 +345,10 @@ static <a class="el" href="classplayrho_1_1Body.html#aeea820d5f1eb504acd52aeef5c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a46c9a16685f41a9dd5d69d9a12a0cd03"><td class="memItemLeft" align="right" valign="top"><a id="a46c9a16685f41a9dd5d69d9a12a0cd03"></a>
-static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Body.html#a46c9a16685f41a9dd5d69d9a12a0cd03">InvalidIslandIndex</a> = static_cast&lt;<a class="el" href="namespaceplayrho.html#a4106d8a0e998a2485196534514527a5a">BodyCounter</a>&gt;(-1)</td></tr>
-<tr class="memdesc:a46c9a16685f41a9dd5d69d9a12a0cd03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid island index. <br /></td></tr>
-<tr class="separator:a46c9a16685f41a9dd5d69d9a12a0cd03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf05a8660343ca20afced4b4e8084392"><td class="memItemLeft" align="right" valign="top"><a id="acf05a8660343ca20afced4b4e8084392"></a>
+static PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Body.html#acf05a8660343ca20afced4b4e8084392">InvalidIslandIndex</a> = static_cast&lt;<a class="el" href="namespaceplayrho.html#a4106d8a0e998a2485196534514527a5a">BodyCounter</a>&gt;(-1)</td></tr>
+<tr class="memdesc:acf05a8660343ca20afced4b4e8084392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid island index. <br /></td></tr>
+<tr class="separator:acf05a8660343ca20afced4b4e8084392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -779,8 +779,8 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 </div>
 </div>
-<a id="a9c41613a76f61520797a7bd2a1fab1c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c41613a76f61520797a7bd2a1fab1c2">&#9670;&nbsp;</a></span>CreateFixture()</h2>
+<a id="a0f9276713a623a4be80360039f368096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f9276713a623a4be80360039f368096">&#9670;&nbsp;</a></span>CreateFixture()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -788,14 +788,14 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
         <tr>
           <td class="memname"><a class="el" href="classplayrho_1_1Fixture.html">Fixture</a> * playrho::Body::CreateFixture </td>
           <td>(</td>
-          <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;&#160;</td>
           <td class="paramname"><em>shape</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="structplayrho_1_1FixtureDef.html">FixtureDef</a> &amp;&#160;</td>
-          <td class="paramname"><em>def</em> = <code><a class="el" href="namespaceplayrho.html#ad5b6f84e039d8f1c713fbf25b3953b8a">GetDefaultFixtureDef</a>()</code>, </td>
+          <td class="paramname"><em>def</em> = <code><a class="el" href="namespaceplayrho.html#a73cd4c9e1f0492648984ef47ffe5ab6a">GetDefaultFixtureDef</a>()</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -833,8 +833,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="HelloWorld_8cpp-example.html#a5">HelloWorld.cpp</a>.</dd>
-</dl>
+
 </div>
 </div>
 <a id="a211c816480f91d74fa46d51f584e2a50"></a>
@@ -1225,7 +1224,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>This resets the mass data to the sum of the mass properties of the fixtures. </p><dl class="section note"><dt>Note</dt><dd>This method must be called after calling <code>CreateFixture</code> to update the body mass data properties unless <code>SetMassData</code> is used. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Body.html#aa29406774e358385944e32900ad5d4b0" title="Set the mass properties to override the mass properties of the fixtures. ">SetMassData</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1World.html#a7ecb30796f76238297392f3e776126ce">playrho::World::CreateFixture()</a>, <a class="el" href="classplayrho_1_1Body.html#aa4011a1e6d6f7fdd0cfb1e88333b7405">DestroyFixtures()</a>, <a class="el" href="classplayrho_1_1Body.html#a4ed0dd79d9f7802787f383eb54785a17">SetFixedRotation()</a>, and <a class="el" href="classplayrho_1_1World.html#a184fb6c487005cc114adca655ea0a629">playrho::World::SetType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1World.html#a93e6e26ae211c4d5262d0440c1ce9d80">playrho::World::CreateFixture()</a>, <a class="el" href="classplayrho_1_1Body.html#aa4011a1e6d6f7fdd0cfb1e88333b7405">DestroyFixtures()</a>, <a class="el" href="classplayrho_1_1Body.html#a4ed0dd79d9f7802787f383eb54785a17">SetFixedRotation()</a>, and <a class="el" href="classplayrho_1_1World.html#a184fb6c487005cc114adca655ea0a629">playrho::World::SetType()</a>.</p>
 
 </div>
 </div>
@@ -3649,7 +3648,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 30 2017 12:16:52 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 11 2017 12:59:09 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

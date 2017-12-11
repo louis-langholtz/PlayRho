@@ -10,6 +10,8 @@ var searchData=
   ['const_5freference',['const_reference',['../classplayrho_1_1AllocatedArray.html#a90eb0a613e6be348e7b92e4954bdcf6f',1,'playrho::AllocatedArray::const_reference()'],['../classplayrho_1_1ArrayList.html#a5294f5d27bbabd0ed897275d82f79cff',1,'playrho::ArrayList::const_reference()'],['../classplayrho_1_1UnitVec2.html#a44f0d6a1d1cf056cfb9829f806b4e150',1,'playrho::UnitVec2::const_reference()'],['../structplayrho_1_1Vector.html#a9da6840475f24afb0745263ad7a20314',1,'playrho::Vector::const_reference()']]],
   ['const_5freverse_5fiterator',['const_reverse_iterator',['../classplayrho_1_1UnitVec2.html#a38904f4d50c77dec4c5a98932c41f956',1,'playrho::UnitVec2::const_reverse_iterator()'],['../structplayrho_1_1Vector.html#a0ed34a0b33733cd906a69be2afeeeb1f',1,'playrho::Vector::const_reverse_iterator()']]],
   ['const_5fvalue_5ftype',['const_value_type',['../classplayrho_1_1AllocatedArray.html#ad4c58287e44fbe5dff42c43459328138',1,'playrho::AllocatedArray']]],
+  ['constvertexiterator',['ConstVertexIterator',['../classplayrho_1_1DistanceProxy.html#a7775430285811947f023887cb8a5491d',1,'playrho::DistanceProxy']]],
+  ['constvertexpointer',['ConstVertexPointer',['../classplayrho_1_1DistanceProxy.html#a71d7ed840297f37ab00d48fb25b4422d',1,'playrho::DistanceProxy']]],
   ['contactcounter',['ContactCounter',['../namespaceplayrho.html#a2bf0674233f83e8b83b30db98332e129',1,'playrho']]],
   ['contactkeyqueue',['ContactKeyQueue',['../classplayrho_1_1World.html#a274b95c098f742bb8eb54fb2c44d6d2e',1,'playrho::World']]],
   ['contactptr',['ContactPtr',['../namespaceplayrho.html#a1d4bfca7808bdec9bd073fec226692e6',1,'playrho']]],

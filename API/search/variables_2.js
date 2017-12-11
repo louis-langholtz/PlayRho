@@ -3,13 +3,14 @@ var searchData=
   ['cache',['cache',['../structplayrho_1_1DistanceConf.html#acabaf04809884e91dac6291a23854eed',1,'playrho::DistanceConf']]],
   ['categorybits',['categoryBits',['../structplayrho_1_1Filter.html#a70f8953a304f7c864cda8f937fc65bc7',1,'playrho::Filter']]],
   ['center',['center',['../structplayrho_1_1MassData.html#a67babb3222689d03ec386533829ea4d1',1,'playrho::MassData']]],
-  ['centi',['Centi',['../group__DecimalUnitPrefices.html#ga0367ca8edd23b32c868e3fe5f79082ef',1,'playrho']]],
+  ['centi',['Centi',['../group__DecimalUnitPrefices.html#ga387ed5b46cb1013ff38c0b32d98f2771',1,'playrho']]],
   ['cf',['cf',['../structplayrho_1_1ClipVertex.html#a955cf6eb1288ade5978fff9970c7a7df',1,'playrho::ClipVertex']]],
   ['child1',['child1',['../structplayrho_1_1DynamicTree_1_1BranchData.html#af5a15ab05e5b714782de0331d428cd8f',1,'playrho::DynamicTree::BranchData']]],
   ['child2',['child2',['../structplayrho_1_1DynamicTree_1_1BranchData.html#af5ac53810cebe7d56b7d00717883671e',1,'playrho::DynamicTree::BranchData']]],
   ['childindex',['childIndex',['../structplayrho_1_1DynamicTree_1_1LeafData.html#ae72c9e9c4383d83f33c71928efc45f60',1,'playrho::DynamicTree::LeafData']]],
-  ['chunkarrayincrement',['ChunkArrayIncrement',['../classplayrho_1_1BlockAllocator.html#ac18179ec3684a0ea35d0a8461083f51d',1,'playrho::BlockAllocator']]],
-  ['chunksize',['ChunkSize',['../classplayrho_1_1BlockAllocator.html#a81416ab2b8d29effab799523726c9cef',1,'playrho::BlockAllocator']]],
+  ['children',['children',['../structplayrho_1_1MultiShapeConf.html#ad8be8f787547a872e0511e3c8c7768c7',1,'playrho::MultiShapeConf']]],
+  ['chunkarrayincrement',['ChunkArrayIncrement',['../classplayrho_1_1BlockAllocator.html#aaadde145724fd41348278c662663949d',1,'playrho::BlockAllocator']]],
+  ['chunksize',['ChunkSize',['../classplayrho_1_1BlockAllocator.html#acfce2b627d68ea3589ed4088da5e2188',1,'playrho::BlockAllocator']]],
   ['collideconnected',['collideConnected',['../structplayrho_1_1JointDef.html#acafd0b10dfb458f30198ee9a307fc913',1,'playrho::JointDef']]],
   ['contactfeature',['contactFeature',['../structplayrho_1_1Manifold_1_1Point.html#ae7ca465a7cb914e14748d6f04348d789',1,'playrho::Manifold::Point']]],
   ['contacts',['contacts',['../structplayrho_1_1World_1_1ContactToiData.html#a99270c3e071b1df412dd9aaf8b1a9d1a',1,'playrho::World::ContactToiData']]],
@@ -23,5 +24,5 @@ var searchData=
   ['contactsupdatedtouching',['contactsUpdatedTouching',['../structplayrho_1_1ToiStepStats.html#ab0204469cd47268bd459ea7141ec26e9',1,'playrho::ToiStepStats']]],
   ['correctionfactor',['correctionFactor',['../structplayrho_1_1MotorJointDef.html#a6b05aae5f6533e8ed9ac465ff863db75',1,'playrho::MotorJointDef']]],
   ['count',['count',['../classplayrho_1_1ContactImpulsesList.html#a19eb91550a103f039b3e46cd84cee089',1,'playrho::ContactImpulsesList']]],
-  ['cubicmeter',['CubicMeter',['../group__PhysicalUnits.html#ga0107011ec7329a9ac267119f7ff941bb',1,'playrho']]]
+  ['cubicmeter',['CubicMeter',['../group__PhysicalUnits.html#gaba8521b8635553bd6e022847e790aad0',1,'playrho']]]
 ];

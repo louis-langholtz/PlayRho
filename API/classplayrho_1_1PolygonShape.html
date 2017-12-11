@@ -66,10 +66,9 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1PolygonShape-members.html">List of all members</a>  </div>
@@ -109,15 +108,9 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration data for polygon shapes.  <a href="structplayrho_1_1PolygonShape_1_1Conf.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:ae97e9ffaaae21ad914d52fd5473680a2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a> = std::remove_const&lt; decltype(<a class="el" href="namespaceplayrho.html#a0774f630ff2e5b9ed9e5f322700d44e4">MaxShapeVertices</a>)&gt;::type</td></tr>
-<tr class="memdesc:ae97e9ffaaae21ad914d52fd5473680a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex count type.  <a href="#ae97e9ffaaae21ad914d52fd5473680a2">More...</a><br /></td></tr>
-<tr class="separator:ae97e9ffaaae21ad914d52fd5473680a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a75ff14778d4d4f4f208ebc974162f4dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a75ff14778d4d4f4f208ebc974162f4dc">PolygonShape</a> (const <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a> &amp;conf=<a class="el" href="classplayrho_1_1PolygonShape.html#acafeade4fe5ea84381ba377600efe297">GetDefaultConf</a>()) noexcept</td></tr>
+<tr class="memitem:a75ff14778d4d4f4f208ebc974162f4dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a75ff14778d4d4f4f208ebc974162f4dc">PolygonShape</a> (const <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a> &amp;conf=<a class="el" href="classplayrho_1_1PolygonShape.html#ae147a0837fd40e05a9a3de6660579933">GetDefaultConf</a>()) noexcept</td></tr>
 <tr class="memdesc:a75ff14778d4d4f4f208ebc974162f4dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a75ff14778d4d4f4f208ebc974162f4dc">More...</a><br /></td></tr>
 <tr class="separator:a75ff14778d4d4f4f208ebc974162f4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c42058131c27eb9ac602757dd15c332"><td class="memItemLeft" align="right" valign="top"><a id="a8c42058131c27eb9ac602757dd15c332"></a>
@@ -128,11 +121,11 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a66b88db5b2a937090ad905aec1766963">PolygonShape</a> (<a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;&amp;other)=default</td></tr>
 <tr class="memdesc:a66b88db5b2a937090ad905aec1766963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
 <tr class="separator:a66b88db5b2a937090ad905aec1766963"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1fca70267cf14fd6a126cdd913ea244"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#ac1fca70267cf14fd6a126cdd913ea244">PolygonShape</a> (<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hx, <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hy, const <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a> &amp;conf=<a class="el" href="classplayrho_1_1PolygonShape.html#acafeade4fe5ea84381ba377600efe297">GetDefaultConf</a>()) noexcept</td></tr>
+<tr class="memitem:ac1fca70267cf14fd6a126cdd913ea244"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#ac1fca70267cf14fd6a126cdd913ea244">PolygonShape</a> (<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hx, <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hy, const <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a> &amp;conf=<a class="el" href="classplayrho_1_1PolygonShape.html#ae147a0837fd40e05a9a3de6660579933">GetDefaultConf</a>()) noexcept</td></tr>
 <tr class="memdesc:ac1fca70267cf14fd6a126cdd913ea244"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor for rectangles.  <a href="#ac1fca70267cf14fd6a126cdd913ea244">More...</a><br /></td></tr>
 <tr class="separator:ac1fca70267cf14fd6a126cdd913ea244"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f8d45dc03bda481fde821afc5817b8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a4f8d45dc03bda481fde821afc5817b8c">PolygonShape</a> (<a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt; points, const <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a> &amp;conf=<a class="el" href="classplayrho_1_1PolygonShape.html#acafeade4fe5ea84381ba377600efe297">GetDefaultConf</a>()) noexcept</td></tr>
-<tr class="memdesc:a4f8d45dc03bda481fde821afc5817b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a convex hull from the given array of local points. The size of the span must be in the range [1, MaxShapeVertices].  <a href="#a4f8d45dc03bda481fde821afc5817b8c">More...</a><br /></td></tr>
+<tr class="memitem:a4f8d45dc03bda481fde821afc5817b8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a4f8d45dc03bda481fde821afc5817b8c">PolygonShape</a> (<a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt; points, const <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a> &amp;conf=<a class="el" href="classplayrho_1_1PolygonShape.html#ae147a0837fd40e05a9a3de6660579933">GetDefaultConf</a>()) noexcept</td></tr>
+<tr class="memdesc:a4f8d45dc03bda481fde821afc5817b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a convex hull from the given array of local points.  <a href="#a4f8d45dc03bda481fde821afc5817b8c">More...</a><br /></td></tr>
 <tr class="separator:a4f8d45dc03bda481fde821afc5817b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d14ec0de34d1de9cffa43679d47a766"><td class="memItemLeft" align="right" valign="top"><a id="a1d14ec0de34d1de9cffa43679d47a766"></a>
 <a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a1d14ec0de34d1de9cffa43679d47a766">operator=</a> (const <a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;other)=default</td></tr>
@@ -154,26 +147,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ee737586fb45cfe6740efe49c5a2538"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a7ee737586fb45cfe6740efe49c5a2538">Accept</a> (<a class="el" href="classplayrho_1_1ShapeVisitor.html">ShapeVisitor</a> &amp;visitor) const override</td></tr>
 <tr class="memdesc:a7ee737586fb45cfe6740efe49c5a2538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts a visitor.  <a href="#a7ee737586fb45cfe6740efe49c5a2538">More...</a><br /></td></tr>
 <tr class="separator:a7ee737586fb45cfe6740efe49c5a2538"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec6aba72a7bcc5c233d643ad5fbede9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#aec6aba72a7bcc5c233d643ad5fbede9c">Set</a> (<a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt; points) noexcept</td></tr>
-<tr class="memdesc:aec6aba72a7bcc5c233d643ad5fbede9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a convex hull from the given array of local points. The size of the span must be in the range [1, MaxShapeVertices].  <a href="#aec6aba72a7bcc5c233d643ad5fbede9c">More...</a><br /></td></tr>
-<tr class="separator:aec6aba72a7bcc5c233d643ad5fbede9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0482e18f3f8759c35388688aed5154f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a0482e18f3f8759c35388688aed5154f5">Set</a> (const <a class="el" href="classplayrho_1_1VertexSet.html">VertexSet</a> &amp;points) noexcept</td></tr>
-<tr class="memdesc:a0482e18f3f8759c35388688aed5154f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a convex hull from the given set of local points. The size of the set must be in the range [1, MaxShapeVertices].  <a href="#a0482e18f3f8759c35388688aed5154f5">More...</a><br /></td></tr>
-<tr class="separator:a0482e18f3f8759c35388688aed5154f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ff8600ca7596d4b7c9918ac59bd20ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a2ff8600ca7596d4b7c9918ac59bd20ed">SetAsBox</a> (<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hx, <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hy) noexcept</td></tr>
-<tr class="memdesc:a2ff8600ca7596d4b7c9918ac59bd20ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build vertices to represent an axis-aligned box centered on the local origin.  <a href="#a2ff8600ca7596d4b7c9918ac59bd20ed">More...</a><br /></td></tr>
-<tr class="separator:a2ff8600ca7596d4b7c9918ac59bd20ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83a4772e5b0d4c4f7472b69b626b5d4b"><td class="memItemLeft" align="right" valign="top"><a id="a83a4772e5b0d4c4f7472b69b626b5d4b"></a>
-<a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a83a4772e5b0d4c4f7472b69b626b5d4b">Transform</a> (<a class="el" href="structplayrho_1_1Transformation.html">Transformation</a> xfm) noexcept</td></tr>
-<tr class="memdesc:a83a4772e5b0d4c4f7472b69b626b5d4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms this polygon by the given transformation. <br /></td></tr>
-<tr class="separator:a83a4772e5b0d4c4f7472b69b626b5d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b373f9589097743ea04da93040df537"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a6b373f9589097743ea04da93040df537">GetVertexCount</a> () const noexcept</td></tr>
-<tr class="memdesc:a6b373f9589097743ea04da93040df537"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex count.  <a href="#a6b373f9589097743ea04da93040df537">More...</a><br /></td></tr>
-<tr class="separator:a6b373f9589097743ea04da93040df537"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59bc9cde959d4ed541585c29c9da07a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a59bc9cde959d4ed541585c29c9da07a3">GetVertex</a> (<a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a> index) const</td></tr>
+<tr class="memitem:ac2467df03d775fc1df1deecc2e3e4ce6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#ac2467df03d775fc1df1deecc2e3e4ce6">GetVertexCount</a> () const noexcept</td></tr>
+<tr class="memdesc:ac2467df03d775fc1df1deecc2e3e4ce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex count.  <a href="#ac2467df03d775fc1df1deecc2e3e4ce6">More...</a><br /></td></tr>
+<tr class="separator:ac2467df03d775fc1df1deecc2e3e4ce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59bc9cde959d4ed541585c29c9da07a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a59bc9cde959d4ed541585c29c9da07a3">GetVertex</a> (<a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a> index) const</td></tr>
 <tr class="memdesc:a59bc9cde959d4ed541585c29c9da07a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vertex by index.  <a href="#a59bc9cde959d4ed541585c29c9da07a3">More...</a><br /></td></tr>
 <tr class="separator:a59bc9cde959d4ed541585c29c9da07a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb25ef3d127db369e5c5fe4ff2a18197"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1UnitVec2.html">UnitVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#afb25ef3d127db369e5c5fe4ff2a18197">GetNormal</a> (<a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a> index) const</td></tr>
+<tr class="memitem:afb25ef3d127db369e5c5fe4ff2a18197"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1UnitVec2.html">UnitVec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#afb25ef3d127db369e5c5fe4ff2a18197">GetNormal</a> (<a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a> index) const</td></tr>
 <tr class="memdesc:afb25ef3d127db369e5c5fe4ff2a18197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a normal by index.  <a href="#afb25ef3d127db369e5c5fe4ff2a18197">More...</a><br /></td></tr>
 <tr class="separator:afb25ef3d127db369e5c5fe4ff2a18197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81931e4216be3c814f5e862445e4b943"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a81931e4216be3c814f5e862445e4b943">GetVertices</a> () const noexcept</td></tr>
@@ -191,46 +171,43 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6b76df853ba0a82c33c9535cae23c850 inherit pub_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a6b76df853ba0a82c33c9535cae23c850">GetVertexRadius</a> () const noexcept</td></tr>
 <tr class="memdesc:a6b76df853ba0a82c33c9535cae23c850 inherit pub_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex radius.  <a href="classplayrho_1_1Shape.html#a6b76df853ba0a82c33c9535cae23c850">More...</a><br /></td></tr>
 <tr class="separator:a6b76df853ba0a82c33c9535cae23c850 inherit pub_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5c54d73365babc9969f9c0578f03d47 inherit pub_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#ab5c54d73365babc9969f9c0578f03d47">SetVertexRadius</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; vertexRadius) noexcept</td></tr>
-<tr class="memdesc:ab5c54d73365babc9969f9c0578f03d47 inherit pub_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the vertex radius.  <a href="classplayrho_1_1Shape.html#ab5c54d73365babc9969f9c0578f03d47">More...</a><br /></td></tr>
-<tr class="separator:ab5c54d73365babc9969f9c0578f03d47 inherit pub_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcfe1ca825a0224c9fcbd40266cec3bc inherit pub_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#afcfe1ca825a0224c9fcbd40266cec3bc">GetDensity</a> () const noexcept</td></tr>
 <tr class="memdesc:afcfe1ca825a0224c9fcbd40266cec3bc inherit pub_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the density of this fixture.  <a href="classplayrho_1_1Shape.html#afcfe1ca825a0224c9fcbd40266cec3bc">More...</a><br /></td></tr>
 <tr class="separator:afcfe1ca825a0224c9fcbd40266cec3bc inherit pub_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aade9199c59e3ec929c30fc74bd04a31a inherit pub_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#aade9199c59e3ec929c30fc74bd04a31a">SetDensity</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt; density) noexcept</td></tr>
-<tr class="memdesc:aade9199c59e3ec929c30fc74bd04a31a inherit pub_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the density of this fixture.  <a href="classplayrho_1_1Shape.html#aade9199c59e3ec929c30fc74bd04a31a">More...</a><br /></td></tr>
-<tr class="separator:aade9199c59e3ec929c30fc74bd04a31a inherit pub_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16f8a5e215e8b451f776ff4864d4fbc9 inherit pub_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a16f8a5e215e8b451f776ff4864d4fbc9">GetFriction</a> () const noexcept</td></tr>
 <tr class="memdesc:a16f8a5e215e8b451f776ff4864d4fbc9 inherit pub_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient of friction.  <a href="classplayrho_1_1Shape.html#a16f8a5e215e8b451f776ff4864d4fbc9">More...</a><br /></td></tr>
 <tr class="separator:a16f8a5e215e8b451f776ff4864d4fbc9 inherit pub_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a380019249a4073deae3534447cfc143b inherit pub_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a380019249a4073deae3534447cfc143b">SetFriction</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; friction) noexcept</td></tr>
-<tr class="memdesc:a380019249a4073deae3534447cfc143b inherit pub_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the coefficient of friction.  <a href="classplayrho_1_1Shape.html#a380019249a4073deae3534447cfc143b">More...</a><br /></td></tr>
-<tr class="separator:a380019249a4073deae3534447cfc143b inherit pub_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0219ee78b382d1749f3dd691a6e39425 inherit pub_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top"><a id="a0219ee78b382d1749f3dd691a6e39425"></a>
 <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a0219ee78b382d1749f3dd691a6e39425">GetRestitution</a> () const noexcept</td></tr>
 <tr class="memdesc:a0219ee78b382d1749f3dd691a6e39425 inherit pub_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient of restitution. <br /></td></tr>
 <tr class="separator:a0219ee78b382d1749f3dd691a6e39425 inherit pub_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a949546cd72eb2f99d0d605bd36f7db78 inherit pub_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a949546cd72eb2f99d0d605bd36f7db78">SetRestitution</a> (<a class="el" href="group__BoundedAliases.html#ga9cf75a03c4b0afaaba95d65ec8ce54b4">Finite</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; restitution) noexcept</td></tr>
-<tr class="memdesc:a949546cd72eb2f99d0d605bd36f7db78 inherit pub_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the coefficient of restitution.  <a href="classplayrho_1_1Shape.html#a949546cd72eb2f99d0d605bd36f7db78">More...</a><br /></td></tr>
-<tr class="separator:a949546cd72eb2f99d0d605bd36f7db78 inherit pub_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae2ae1c7da9b071fc7f8e10c33ec1c6eb"><td class="memItemLeft" align="right" valign="top"><a id="ae2ae1c7da9b071fc7f8e10c33ec1c6eb"></a>
-static constexpr <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#ae2ae1c7da9b071fc7f8e10c33ec1c6eb">GetDefaultVertexRadius</a> () noexcept</td></tr>
-<tr class="memdesc:ae2ae1c7da9b071fc7f8e10c33ec1c6eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default vertex radius for the <a class="el" href="classplayrho_1_1PolygonShape.html" title="Polygon shape. ">PolygonShape</a>. <br /></td></tr>
-<tr class="separator:ae2ae1c7da9b071fc7f8e10c33ec1c6eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acafeade4fe5ea84381ba377600efe297"><td class="memItemLeft" align="right" valign="top"><a id="acafeade4fe5ea84381ba377600efe297"></a>
-static constexpr <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#acafeade4fe5ea84381ba377600efe297">GetDefaultConf</a> () noexcept</td></tr>
-<tr class="memdesc:acafeade4fe5ea84381ba377600efe297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default configuration for a <a class="el" href="classplayrho_1_1PolygonShape.html" title="Polygon shape. ">PolygonShape</a>. <br /></td></tr>
-<tr class="separator:acafeade4fe5ea84381ba377600efe297"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eb5d417121aa13e9608b4329e25a440"><td class="memItemLeft" align="right" valign="top"><a id="a2eb5d417121aa13e9608b4329e25a440"></a>
+static PLAYRHO_CONSTEXPR <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a2eb5d417121aa13e9608b4329e25a440">GetDefaultVertexRadius</a> () noexcept</td></tr>
+<tr class="memdesc:a2eb5d417121aa13e9608b4329e25a440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default vertex radius for the <a class="el" href="classplayrho_1_1PolygonShape.html" title="Polygon shape. ">PolygonShape</a>. <br /></td></tr>
+<tr class="separator:a2eb5d417121aa13e9608b4329e25a440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae147a0837fd40e05a9a3de6660579933"><td class="memItemLeft" align="right" valign="top"><a id="ae147a0837fd40e05a9a3de6660579933"></a>
+static <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#ae147a0837fd40e05a9a3de6660579933">GetDefaultConf</a> () noexcept</td></tr>
+<tr class="memdesc:ae147a0837fd40e05a9a3de6660579933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default configuration for a <a class="el" href="classplayrho_1_1PolygonShape.html" title="Polygon shape. ">PolygonShape</a>. <br /></td></tr>
+<tr class="separator:ae147a0837fd40e05a9a3de6660579933"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a72f46ac2954bf2533a81246a327f1de4"><td class="memItemLeft" align="right" valign="top"><a id="a72f46ac2954bf2533a81246a327f1de4"></a>
-static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a72f46ac2954bf2533a81246a327f1de4">InvalidVertex</a> = static_cast&lt;<a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a>&gt;(-1)</td></tr>
-<tr class="memdesc:a72f46ac2954bf2533a81246a327f1de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid vertex. <br /></td></tr>
-<tr class="separator:a72f46ac2954bf2533a81246a327f1de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aec6aba72a7bcc5c233d643ad5fbede9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#aec6aba72a7bcc5c233d643ad5fbede9c">Set</a> (<a class="el" href="classplayrho_1_1Span.html">Span</a>&lt; const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> &gt; points) noexcept</td></tr>
+<tr class="memdesc:aec6aba72a7bcc5c233d643ad5fbede9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a convex hull from the given array of local points. The size of the span must be in the range [1, MaxShapeVertices].  <a href="#aec6aba72a7bcc5c233d643ad5fbede9c">More...</a><br /></td></tr>
+<tr class="separator:aec6aba72a7bcc5c233d643ad5fbede9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0482e18f3f8759c35388688aed5154f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a0482e18f3f8759c35388688aed5154f5">Set</a> (const <a class="el" href="classplayrho_1_1VertexSet.html">VertexSet</a> &amp;points) noexcept</td></tr>
+<tr class="memdesc:a0482e18f3f8759c35388688aed5154f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a convex hull from the given set of local points. The size of the set must be in the range [1, MaxShapeVertices].  <a href="#a0482e18f3f8759c35388688aed5154f5">More...</a><br /></td></tr>
+<tr class="separator:a0482e18f3f8759c35388688aed5154f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ff8600ca7596d4b7c9918ac59bd20ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a2ff8600ca7596d4b7c9918ac59bd20ed">SetAsBox</a> (<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hx, <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hy) noexcept</td></tr>
+<tr class="memdesc:a2ff8600ca7596d4b7c9918ac59bd20ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build vertices to represent an axis-aligned box centered on the local origin.  <a href="#a2ff8600ca7596d4b7c9918ac59bd20ed">More...</a><br /></td></tr>
+<tr class="separator:a2ff8600ca7596d4b7c9918ac59bd20ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83a4772e5b0d4c4f7472b69b626b5d4b"><td class="memItemLeft" align="right" valign="top"><a id="a83a4772e5b0d4c4f7472b69b626b5d4b"></a>
+<a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a83a4772e5b0d4c4f7472b69b626b5d4b">Transform</a> (<a class="el" href="structplayrho_1_1Transformation.html">Transformation</a> xfm) noexcept</td></tr>
+<tr class="memdesc:a83a4772e5b0d4c4f7472b69b626b5d4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms this polygon by the given transformation. <br /></td></tr>
+<tr class="separator:a83a4772e5b0d4c4f7472b69b626b5d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -241,7 +218,7 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a47a98b298b6200b24bff3022b0334f68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normals of edges.  <a href="#a47a98b298b6200b24bff3022b0334f68">More...</a><br /></td></tr>
 <tr class="separator:a47a98b298b6200b24bff3022b0334f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bf65315fe80a8fe8966092b624741c0"><td class="memItemLeft" align="right" valign="top"><a id="a7bf65315fe80a8fe8966092b624741c0"></a>
-<a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a7bf65315fe80a8fe8966092b624741c0">m_centroid</a> = <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>{}</td></tr>
+<a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a7bf65315fe80a8fe8966092b624741c0">m_centroid</a> = <a class="el" href="namespaceplayrho.html#a6d50ec068c76481e8c89ab8f8dd40892">GetInvalid</a>&lt;<a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&gt;()</td></tr>
 <tr class="memdesc:a7bf65315fe80a8fe8966092b624741c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Centroid of this shape. <br /></td></tr>
 <tr class="separator:a7bf65315fe80a8fe8966092b624741c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -249,18 +226,12 @@ Private Attributes</h2></td></tr>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:a1aaf0f09080cc1a7bd7da32d0c7c2811"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a1aaf0f09080cc1a7bd7da32d0c7c2811">GetEdge</a> (const <a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;shape, <a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">PolygonShape::VertexCounter</a> index)</td></tr>
-<tr class="memdesc:a1aaf0f09080cc1a7bd7da32d0c7c2811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identified edge of the given polygon shape.  <a href="#a1aaf0f09080cc1a7bd7da32d0c7c2811">More...</a><br /></td></tr>
-<tr class="separator:a1aaf0f09080cc1a7bd7da32d0c7c2811"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8148101494be751848fea9b809efbf84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a8148101494be751848fea9b809efbf84">GetEdge</a> (const <a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;shape, <a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a> index)</td></tr>
+<tr class="memdesc:a8148101494be751848fea9b809efbf84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identified edge of the given polygon shape.  <a href="#a8148101494be751848fea9b809efbf84">More...</a><br /></td></tr>
+<tr class="separator:a8148101494be751848fea9b809efbf84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d2196055fbb200dbd8a8630e7d14ae9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a4d2196055fbb200dbd8a8630e7d14ae9">Validate</a> (const <a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;shape)</td></tr>
 <tr class="memdesc:a4d2196055fbb200dbd8a8630e7d14ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate convexity of the given shape.  <a href="#a4d2196055fbb200dbd8a8630e7d14ae9">More...</a><br /></td></tr>
 <tr class="separator:a4d2196055fbb200dbd8a8630e7d14ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37f5b752fb2edb963c2027a77c7ea8e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a37f5b752fb2edb963c2027a77c7ea8e5">SetAsBox</a> (<a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;shape, <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hx, <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> hy, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> center, <a class="el" href="group__PhysicalQuantities.html#gab999341c050df340ff56a65816a63da9">Angle</a> angle) noexcept</td></tr>
-<tr class="memdesc:a37f5b752fb2edb963c2027a77c7ea8e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build vertices to represent an oriented box.  <a href="#a37f5b752fb2edb963c2027a77c7ea8e5">More...</a><br /></td></tr>
-<tr class="separator:a37f5b752fb2edb963c2027a77c7ea8e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a71364f5b072a1b29770acc42d30c40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1PolygonShape.html#a6a71364f5b072a1b29770acc42d30c40">Transform</a> (<a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> value, <a class="el" href="structplayrho_1_1Transformation.html">Transformation</a> xfm) noexcept</td></tr>
-<tr class="memdesc:a6a71364f5b072a1b29770acc42d30c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the given shape by the given transformation.  <a href="#a6a71364f5b072a1b29770acc42d30c40">More...</a><br /></td></tr>
-<tr class="separator:a6a71364f5b072a1b29770acc42d30c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header related_classplayrho_1_1Shape"><td colspan="2" onclick="javascript:toggleInherit('related_classplayrho_1_1Shape')"><img src="closed.png" alt="-"/>&#160;Related Functions inherited from <a class="el" href="classplayrho_1_1Shape.html">playrho::Shape</a></td></tr>
 <tr class="memitem:ac61062d7eb39f1af74f2cae076bb338f inherit related_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#ab95a145fd2dcc236e0a499b9abeaa62e">AABB2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#ac61062d7eb39f1af74f2cae076bb338f">ComputeAABB</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape, const <a class="el" href="structplayrho_1_1Transformation.html">Transformation</a> &amp;xf) noexcept</td></tr>
 <tr class="memdesc:ac61062d7eb39f1af74f2cae076bb338f inherit related_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> for the given shape with the given transformation.  <a href="classplayrho_1_1Shape.html#ac61062d7eb39f1af74f2cae076bb338f">More...</a><br /></td></tr>
@@ -285,6 +256,10 @@ Additional Inherited Members</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#af91c67ec700a44dfbee09f551926b997">Shape</a> (const <a class="el" href="structplayrho_1_1ShapeDef.html">ShapeDef</a> &amp;conf) noexcept</td></tr>
 <tr class="memdesc:af91c67ec700a44dfbee09f551926b997 inherit pro_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
 <tr class="separator:af91c67ec700a44dfbee09f551926b997 inherit pro_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a425656e475b5c36bd4ead46297f3c0fd inherit pro_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top"><a id="a425656e475b5c36bd4ead46297f3c0fd"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a425656e475b5c36bd4ead46297f3c0fd">Shape</a> (const <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> vertexRadius, const <a class="el" href="structplayrho_1_1ShapeDef.html">ShapeDef</a> &amp;conf) noexcept</td></tr>
+<tr class="memdesc:a425656e475b5c36bd4ead46297f3c0fd inherit pro_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
+<tr class="separator:a425656e475b5c36bd4ead46297f3c0fd inherit pro_methods_classplayrho_1_1Shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd4ced352cd9e479f1903f7b9dadacfc inherit pro_methods_classplayrho_1_1Shape"><td class="memItemLeft" align="right" valign="top"><a id="afd4ced352cd9e479f1903f7b9dadacfc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#afd4ced352cd9e479f1903f7b9dadacfc">Shape</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;other)=default</td></tr>
 <tr class="memdesc:afd4ced352cd9e479f1903f7b9dadacfc inherit pro_methods_classplayrho_1_1Shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
@@ -304,29 +279,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Polygon shape. </p>
-<p>A convex polygon. The interior of the polygon is to the left of each edge. Polygons have a maximum number of vertices equal to MaxShapeVertices. In most cases you should not need many vertices for a convex polygon. </p><div class="image">
+<p>A convex polygon. The interior of the polygon is to the left of each edge. Polygons maximum number of vertices is defined by <code>MaxShapeVertices</code>. In most cases you should not need many vertices for a convex polygon. </p><div class="image">
 <img src="convex_concave.gif" alt="convex_concave.gif"/>
 </div>
  <dl class="section note"><dt>Note</dt><dd>This data structure is 64-bytes large (with 4-byte Real). </dd></dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="ae97e9ffaaae21ad914d52fd5473680a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae97e9ffaaae21ad914d52fd5473680a2">&#9670;&nbsp;</a></span>VertexCounter</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">playrho::PolygonShape::VertexCounter</a> =  std::remove_const&lt;decltype(<a class="el" href="namespaceplayrho.html#a0774f630ff2e5b9ed9e5f322700d44e4">MaxShapeVertices</a>)&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Vertex count type. </p>
-<dl class="section note"><dt>Note</dt><dd>This type must not support more than 255 vertices as that would conflict with the <code><a class="el" href="structplayrho_1_1ContactFeature.html#ab960333ec02960bebf043a55ef1b6041" title="Index type. ">ContactFeature::Index</a></code> type. </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a75ff14778d4d4f4f208ebc974162f4dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75ff14778d4d4f4f208ebc974162f4dc">&#9670;&nbsp;</a></span>PolygonShape() <span class="overload">[1/3]</span></h2>
 
@@ -340,7 +297,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">playrho::PolygonShape::PolygonShape </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a> &amp;&#160;</td>
-          <td class="paramname"><em>conf</em> = <code><a class="el" href="classplayrho_1_1PolygonShape.html#acafeade4fe5ea84381ba377600efe297">GetDefaultConf</a>()</code></td><td>)</td>
+          <td class="paramname"><em>conf</em> = <code><a class="el" href="classplayrho_1_1PolygonShape.html#ae147a0837fd40e05a9a3de6660579933">GetDefaultConf</a>()</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -381,7 +338,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a> &amp;&#160;</td>
-          <td class="paramname"><em>conf</em> = <code><a class="el" href="classplayrho_1_1PolygonShape.html#acafeade4fe5ea84381ba377600efe297">GetDefaultConf</a>()</code>&#160;</td>
+          <td class="paramname"><em>conf</em> = <code><a class="el" href="classplayrho_1_1PolygonShape.html#ae147a0837fd40e05a9a3de6660579933">GetDefaultConf</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -427,7 +384,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="structplayrho_1_1PolygonShape_1_1Conf.html">Conf</a> &amp;&#160;</td>
-          <td class="paramname"><em>conf</em> = <code><a class="el" href="classplayrho_1_1PolygonShape.html#acafeade4fe5ea84381ba377600efe297">GetDefaultConf</a>()</code>&#160;</td>
+          <td class="paramname"><em>conf</em> = <code><a class="el" href="classplayrho_1_1PolygonShape.html#ae147a0837fd40e05a9a3de6660579933">GetDefaultConf</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -442,7 +399,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a convex hull from the given array of local points. The size of the span must be in the range [1, MaxShapeVertices]. </p>
+<p>Creates a convex hull from the given array of local points. </p>
+<dl class="section note"><dt>Note</dt><dd>The size of the span must be in the range [1, MaxShapeVertices]. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>the points may be re-ordered, even if they form a convex polygon </dd>
 <dd>
 collinear points are handled but not removed. Collinear points may lead to poor stacking behavior. </dd></dl>
@@ -599,7 +557,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
         <tr>
           <td class="memname"><a class="el" href="classplayrho_1_1UnitVec2.html">UnitVec2</a> playrho::PolygonShape::GetNormal </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -634,7 +592,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
         <tr>
           <td class="memname"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> playrho::PolygonShape::GetVertex </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">VertexCounter</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -649,12 +607,12 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 <p>Gets a vertex by index. </p>
 <p>Vertices go counter-clockwise. </p>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a1aaf0f09080cc1a7bd7da32d0c7c2811">playrho::GetEdge()</a>, and <a class="el" href="namespaceplayrho.html#a4d2196055fbb200dbd8a8630e7d14ae9">playrho::Validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a8148101494be751848fea9b809efbf84">playrho::GetEdge()</a>, and <a class="el" href="namespaceplayrho.html#a4d2196055fbb200dbd8a8630e7d14ae9">playrho::Validate()</a>.</p>
 
 </div>
 </div>
-<a id="a6b373f9589097743ea04da93040df537"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b373f9589097743ea04da93040df537">&#9670;&nbsp;</a></span>GetVertexCount()</h2>
+<a id="ac2467df03d775fc1df1deecc2e3e4ce6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2467df03d775fc1df1deecc2e3e4ce6">&#9670;&nbsp;</a></span>GetVertexCount()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -663,7 +621,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">PolygonShape::VertexCounter</a> playrho::PolygonShape::GetVertexCount </td>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a> playrho::PolygonShape::GetVertexCount </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -678,9 +636,9 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 
 <p>Gets the vertex count. </p>
 <dl class="section return"><dt>Returns</dt><dd>value between 0 and MaxShapeVertices inclusive. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a0774f630ff2e5b9ed9e5f322700d44e4" title="Maximum number of vertices for any shape type. ">MaxShapeVertices</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#ac43acb3229848771f11e519430b91725" title="Maximum number of vertices for any shape type. ">MaxShapeVertices</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a1aaf0f09080cc1a7bd7da32d0c7c2811">playrho::GetEdge()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#afb25ef3d127db369e5c5fe4ff2a18197">GetNormal()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a54a2a4339b46469957ea6bb82be0623b">GetNormals()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a59bc9cde959d4ed541585c29c9da07a3">GetVertex()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a81931e4216be3c814f5e862445e4b943">GetVertices()</a>, and <a class="el" href="namespaceplayrho.html#a4d2196055fbb200dbd8a8630e7d14ae9">playrho::Validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a8148101494be751848fea9b809efbf84">playrho::GetEdge()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#afb25ef3d127db369e5c5fe4ff2a18197">GetNormal()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a54a2a4339b46469957ea6bb82be0623b">GetNormals()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a59bc9cde959d4ed541585c29c9da07a3">GetVertex()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a81931e4216be3c814f5e862445e4b943">GetVertices()</a>, and <a class="el" href="namespaceplayrho.html#a4d2196055fbb200dbd8a8630e7d14ae9">playrho::Validate()</a>.</p>
 
 </div>
 </div>
@@ -731,7 +689,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -762,7 +720,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -803,7 +761,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -820,8 +778,8 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="a1aaf0f09080cc1a7bd7da32d0c7c2811"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1aaf0f09080cc1a7bd7da32d0c7c2811">&#9670;&nbsp;</a></span>GetEdge()</h2>
+<a id="a8148101494be751848fea9b809efbf84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8148101494be751848fea9b809efbf84">&#9670;&nbsp;</a></span>GetEdge()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -838,7 +796,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2">PolygonShape::VertexCounter</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a>&#160;</td>
           <td class="paramname"><em>index</em>&#160;</td>
         </tr>
         <tr>
@@ -857,110 +815,6 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 <p>Gets the identified edge of the given polygon shape. </p>
 <dl class="section note"><dt>Note</dt><dd>This must not be called for shapes with less than 2 vertices. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if called for a shape with less than 2 vertices. </dd></dl>
-
-</div>
-</div>
-<a id="a37f5b752fb2edb963c2027a77c7ea8e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37f5b752fb2edb963c2027a77c7ea8e5">&#9670;&nbsp;</a></span>SetAsBox()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SetAsBox </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> &amp;&#160;</td>
-          <td class="paramname"><em>shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td>
-          <td class="paramname"><em>hx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td>
-          <td class="paramname"><em>hy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td>
-          <td class="paramname"><em>center</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__PhysicalQuantities.html#gab999341c050df340ff56a65816a63da9">Angle</a>&#160;</td>
-          <td class="paramname"><em>angle</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Build vertices to represent an oriented box. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">shape</td><td><a class="el" href="classplayrho_1_1Shape.html" title="A base abstract class for describing a type of shape. ">Shape</a> to set as a box. </td></tr>
-    <tr><td class="paramname">hx</td><td>the half-width. </td></tr>
-    <tr><td class="paramname">hy</td><td>the half-height. </td></tr>
-    <tr><td class="paramname">center</td><td>the center of the box in local coordinates. </td></tr>
-    <tr><td class="paramname">angle</td><td>the rotation of the box in local coordinates. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a6a71364f5b072a1b29770acc42d30c40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a71364f5b072a1b29770acc42d30c40">&#9670;&nbsp;</a></span>Transform()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a> Transform </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1PolygonShape.html">PolygonShape</a>&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structplayrho_1_1Transformation.html">Transformation</a>&#160;</td>
-          <td class="paramname"><em>xfm</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Transforms the given shape by the given transformation. </p>
 
 </div>
 </div>
@@ -1045,7 +899,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 <p>Array of vertices. </p>
 <p>Consecutive vertices constitute "edges" of the polygon. </p>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1PolygonShape.html#a29f70f3e1b8dc0c5563db2aeafbba8ea">GetChild()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a96945d0043fd21ecfc5a49d68961f4a3">GetMassData()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a59bc9cde959d4ed541585c29c9da07a3">GetVertex()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a6b373f9589097743ea04da93040df537">GetVertexCount()</a>, and <a class="el" href="classplayrho_1_1PolygonShape.html#a81931e4216be3c814f5e862445e4b943">GetVertices()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1PolygonShape.html#a29f70f3e1b8dc0c5563db2aeafbba8ea">GetChild()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a96945d0043fd21ecfc5a49d68961f4a3">GetMassData()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a59bc9cde959d4ed541585c29c9da07a3">GetVertex()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#ac2467df03d775fc1df1deecc2e3e4ce6">GetVertexCount()</a>, and <a class="el" href="classplayrho_1_1PolygonShape.html#a81931e4216be3c814f5e862445e4b943">GetVertices()</a>.</p>
 
 </div>
 </div>
@@ -1056,7 +910,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 30 2017 12:16:53 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 8 2017 13:14:18 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

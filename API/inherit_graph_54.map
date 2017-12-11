@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structplayrho_1_1HasType.html" title="Has&#45;type trait template class. " alt="" coords="5,5,152,44"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1HasType_3_01T_00_01std_1_1tuple_3_4_01_4.html" title="Has&#45;type trait template class specialized for std::tuple classes. " alt="" coords="135,5,282,44"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1IsArithmetic.html" title="Template for determining if the given type is an &quot;arithmetic&quot; type. " alt="" coords="138,68,280,107"/>
 </map>

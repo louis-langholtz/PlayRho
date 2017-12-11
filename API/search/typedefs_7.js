@@ -1,7 +1,8 @@
 var searchData=
 [
   ['index',['Index',['../structplayrho_1_1ContactFeature.html#ab960333ec02960bebf043a55ef1b6041',1,'playrho::ContactFeature::Index()'],['../classplayrho_1_1ContactKey.html#a1c69522a3053348956b75c250fd19b80',1,'playrho::ContactKey::Index()']]],
-  ['index_5ftype',['index_type',['../structplayrho_1_1IndexSeparation.html#a1156256c9db417e15e0d3a64b750b07a',1,'playrho::IndexSeparation::index_type()'],['../structplayrho_1_1IndexPairSeparation.html#a240cd0d4c33480b07e93babfe375112f',1,'playrho::IndexPairSeparation::index_type()'],['../classplayrho_1_1SimplexEdge.html#aca640c3895cb60a994a3a0326760becc',1,'playrho::SimplexEdge::index_type()'],['../classplayrho_1_1BodyConstraint.html#a956d40760a65195cc8b40a8dfaa2fbf2',1,'playrho::BodyConstraint::index_type()'],['../structplayrho_1_1Filter.html#a289ef26ff12cc3cb15d74062ce27fd72',1,'playrho::Filter::index_type()']]],
+  ['index_5ftype',['index_type',['../classplayrho_1_1BodyConstraint.html#a956d40760a65195cc8b40a8dfaa2fbf2',1,'playrho::BodyConstraint::index_type()'],['../structplayrho_1_1Filter.html#a289ef26ff12cc3cb15d74062ce27fd72',1,'playrho::Filter::index_type()']]],
+  ['indexpair',['IndexPair',['../namespaceplayrho.html#a7d449e0a1528c10ae0f241713fb69b40',1,'playrho']]],
   ['indexpair3',['IndexPair3',['../namespaceplayrho.html#a704da3b24d9b1f9135e140dcd5420518',1,'playrho']]],
   ['invmass',['InvMass',['../group__PhysicalQuantities.html#ga370c2a37515b6a8e79468113554f8ba9',1,'playrho']]],
   ['invmass2',['InvMass2',['../namespaceplayrho.html#ab4f2424eab18780894e83bbc4127fe67',1,'playrho']]],

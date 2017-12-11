@@ -67,7 +67,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1DistanceProxy-members.html">List of all members</a>  </div>
@@ -85,16 +84,21 @@ Collaboration diagram for playrho::DistanceProxy:</div>
 <div class="dyncontent">
 <div class="center"><img src="classplayrho_1_1DistanceProxy__coll__graph.png" border="0" usemap="#playrho_1_1DistanceProxy_coll__map" alt="Collaboration graph"/></div>
 <map name="playrho_1_1DistanceProxy_coll__map" id="playrho_1_1DistanceProxy_coll__map">
-<area shape="rect" id="node3" href="classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="182,55,308,80"/>
-<area shape="rect" id="node5" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="166,104,323,129"/>
+<area shape="rect" id="node3" href="classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="192,92,317,117"/>
+<area shape="rect" id="node5" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="341,92,498,117"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ab2173f59547e2b22afe0050d787ae15f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a> = std::remove_const&lt; decltype(<a class="el" href="namespaceplayrho.html#a0774f630ff2e5b9ed9e5f322700d44e4">MaxShapeVertices</a>)&gt;::type</td></tr>
-<tr class="memdesc:ab2173f59547e2b22afe0050d787ae15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size type.  <a href="#ab2173f59547e2b22afe0050d787ae15f">More...</a><br /></td></tr>
-<tr class="separator:ab2173f59547e2b22afe0050d787ae15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71d7ed840297f37ab00d48fb25b4422d"><td class="memItemLeft" align="right" valign="top"><a id="a71d7ed840297f37ab00d48fb25b4422d"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a71d7ed840297f37ab00d48fb25b4422d">ConstVertexPointer</a> = const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> *</td></tr>
+<tr class="memdesc:a71d7ed840297f37ab00d48fb25b4422d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant vertex pointer. <br /></td></tr>
+<tr class="separator:a71d7ed840297f37ab00d48fb25b4422d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7775430285811947f023887cb8a5491d"><td class="memItemLeft" align="right" valign="top"><a id="a7775430285811947f023887cb8a5491d"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a7775430285811947f023887cb8a5491d">ConstVertexIterator</a> = <a class="el" href="classplayrho_1_1DistanceProxy.html#a71d7ed840297f37ab00d48fb25b4422d">ConstVertexPointer</a></td></tr>
+<tr class="memdesc:a7775430285811947f023887cb8a5491d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant vertex iterator. <br /></td></tr>
+<tr class="separator:a7775430285811947f023887cb8a5491d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -102,29 +106,26 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a080b34a3aa2ed5c979d445429bfc1426">DistanceProxy</a> (const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;copy) noexcept</td></tr>
 <tr class="memdesc:a080b34a3aa2ed5c979d445429bfc1426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:a080b34a3aa2ed5c979d445429bfc1426"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6873a2239db67efc4f8a51c4f86aa86a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a6873a2239db67efc4f8a51c4f86aa86a">DistanceProxy</a> (const <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; vertexRadius, const <a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a> count, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> *vertices, const <a class="el" href="classplayrho_1_1UnitVec2.html">UnitVec2</a> *normals) noexcept</td></tr>
-<tr class="memdesc:a6873a2239db67efc4f8a51c4f86aa86a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="#a6873a2239db67efc4f8a51c4f86aa86a">More...</a><br /></td></tr>
-<tr class="separator:a6873a2239db67efc4f8a51c4f86aa86a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf7dcf92f2235974d097a9a078c7ea59"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#adf7dcf92f2235974d097a9a078c7ea59">DistanceProxy</a> (const <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; vertexRadius, const <a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a> count, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> *vertices, const <a class="el" href="classplayrho_1_1UnitVec2.html">UnitVec2</a> *normals) noexcept</td></tr>
+<tr class="memdesc:adf7dcf92f2235974d097a9a078c7ea59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="#adf7dcf92f2235974d097a9a078c7ea59">More...</a><br /></td></tr>
+<tr class="separator:adf7dcf92f2235974d097a9a078c7ea59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4250838aed73631f4176494fa403c2cb"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a4250838aed73631f4176494fa403c2cb">GetVertexRadius</a> () const noexcept</td></tr>
 <tr class="memdesc:a4250838aed73631f4176494fa403c2cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertexRadius of the vertices of the associated shape.  <a href="#a4250838aed73631f4176494fa403c2cb">More...</a><br /></td></tr>
 <tr class="separator:a4250838aed73631f4176494fa403c2cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a675e84a1a76965d2cc2b9f10859f1738"><td class="memItemLeft" align="right" valign="top"><a id="a675e84a1a76965d2cc2b9f10859f1738"></a>
+<a class="el" href="classplayrho_1_1Range.html">Range</a>&lt; <a class="el" href="classplayrho_1_1DistanceProxy.html#a7775430285811947f023887cb8a5491d">ConstVertexIterator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a675e84a1a76965d2cc2b9f10859f1738">GetVertices</a> () const noexcept</td></tr>
+<tr class="memdesc:a675e84a1a76965d2cc2b9f10859f1738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the range of vertices. <br /></td></tr>
+<tr class="separator:a675e84a1a76965d2cc2b9f10859f1738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a938c6d80992f2e31b81a631c7169b74a"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a938c6d80992f2e31b81a631c7169b74a">GetVertexCount</a> () const noexcept</td></tr>
 <tr class="memdesc:a938c6d80992f2e31b81a631c7169b74a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex count.  <a href="#a938c6d80992f2e31b81a631c7169b74a">More...</a><br /></td></tr>
 <tr class="separator:a938c6d80992f2e31b81a631c7169b74a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae5879468b189e5ffcda04abafeaa922"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#aae5879468b189e5ffcda04abafeaa922">GetVertex</a> (<a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a> index) const noexcept</td></tr>
-<tr class="memdesc:aae5879468b189e5ffcda04abafeaa922"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vertex by index.  <a href="#aae5879468b189e5ffcda04abafeaa922">More...</a><br /></td></tr>
-<tr class="separator:aae5879468b189e5ffcda04abafeaa922"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a84084e277f8549e0443c8f8b0c2635"><td class="memItemLeft" align="right" valign="top"><a id="a8a84084e277f8549e0443c8f8b0c2635"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a8a84084e277f8549e0443c8f8b0c2635">GetNormal</a> (<a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a> index) const noexcept</td></tr>
-<tr class="memdesc:a8a84084e277f8549e0443c8f8b0c2635"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the normal for the given index. <br /></td></tr>
-<tr class="separator:a8a84084e277f8549e0443c8f8b0c2635"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a6b70c4ae80fb1f4d543f6263ecf35bb3"><td class="memItemLeft" align="right" valign="top"><a id="a6b70c4ae80fb1f4d543f6263ecf35bb3"></a>
-static constexpr <a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a6b70c4ae80fb1f4d543f6263ecf35bb3">InvalidIndex</a> = static_cast&lt;<a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a>&gt;(-1)</td></tr>
-<tr class="memdesc:a6b70c4ae80fb1f4d543f6263ecf35bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid index. <br /></td></tr>
-<tr class="separator:a6b70c4ae80fb1f4d543f6263ecf35bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8efb06976185a054153f8b6f6c3b2df"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#ae8efb06976185a054153f8b6f6c3b2df">GetVertex</a> (<a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a> index) const noexcept</td></tr>
+<tr class="memdesc:ae8efb06976185a054153f8b6f6c3b2df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vertex by index.  <a href="#ae8efb06976185a054153f8b6f6c3b2df">More...</a><br /></td></tr>
+<tr class="separator:ae8efb06976185a054153f8b6f6c3b2df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a862d79d494b9349413b1a7c260aff6"><td class="memItemLeft" align="right" valign="top"><a id="a9a862d79d494b9349413b1a7c260aff6"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a9a862d79d494b9349413b1a7c260aff6">GetNormal</a> (<a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a> index) const noexcept</td></tr>
+<tr class="memdesc:a9a862d79d494b9349413b1a7c260aff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the normal for the given index. <br /></td></tr>
+<tr class="separator:a9a862d79d494b9349413b1a7c260aff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -136,10 +137,10 @@ const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158
 const <a class="el" href="classplayrho_1_1UnitVec2.html">UnitVec2</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a73a4ff1702aa3b6241db9e3eb5f7da03">m_normals</a> = nullptr</td></tr>
 <tr class="memdesc:a73a4ff1702aa3b6241db9e3eb5f7da03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normals. <br /></td></tr>
 <tr class="separator:a73a4ff1702aa3b6241db9e3eb5f7da03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a3607408a1aee785526444765a8fc45"><td class="memItemLeft" align="right" valign="top"><a id="a6a3607408a1aee785526444765a8fc45"></a>
-<a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a6a3607408a1aee785526444765a8fc45">m_count</a> = 0</td></tr>
-<tr class="memdesc:a6a3607408a1aee785526444765a8fc45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count of valid elements of m_vertices. <br /></td></tr>
-<tr class="separator:a6a3607408a1aee785526444765a8fc45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c58b51ec78fc33da0420f68fb44a610"><td class="memItemLeft" align="right" valign="top"><a id="a0c58b51ec78fc33da0420f68fb44a610"></a>
+<a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a0c58b51ec78fc33da0420f68fb44a610">m_count</a> = 0</td></tr>
+<tr class="memdesc:a0c58b51ec78fc33da0420f68fb44a610"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count of valid elements of m_vertices. <br /></td></tr>
+<tr class="separator:a0c58b51ec78fc33da0420f68fb44a610"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27c74ddec48b366503ba9468bbcf8d8e"><td class="memItemLeft" align="right" valign="top"><a id="a27c74ddec48b366503ba9468bbcf8d8e"></a>
 <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a27c74ddec48b366503ba9468bbcf8d8e">m_vertexRadius</a> = 0_m</td></tr>
 <tr class="memdesc:a27c74ddec48b366503ba9468bbcf8d8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Radius of the vertices of the associated shape. <br /></td></tr>
@@ -161,9 +162,10 @@ Related Functions</h2></td></tr>
 <tr class="memitem:a1c65d94d98dea8f68c3dd32e90b888bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a1c65d94d98dea8f68c3dd32e90b888bb">operator!=</a> (const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;lhs, const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a1c65d94d98dea8f68c3dd32e90b888bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines with the two given distance proxies are not equal.  <a href="#a1c65d94d98dea8f68c3dd32e90b888bb">More...</a><br /></td></tr>
 <tr class="separator:a1c65d94d98dea8f68c3dd32e90b888bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13e620b55097d3179e73ac14e5256591"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">DistanceProxy::size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a13e620b55097d3179e73ac14e5256591">GetSupportIndex</a> (const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;proxy, <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> d) noexcept</td></tr>
-<tr class="memdesc:a13e620b55097d3179e73ac14e5256591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the supporting vertex index in the given direction for the given distance proxy.  <a href="#a13e620b55097d3179e73ac14e5256591">More...</a><br /></td></tr>
-<tr class="separator:a13e620b55097d3179e73ac14e5256591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56842a99ef8b82d792963a5eeb456767"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a56842a99ef8b82d792963a5eeb456767"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DistanceProxy.html#a56842a99ef8b82d792963a5eeb456767">GetSupportIndex</a> (const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;proxy, T d) noexcept</td></tr>
+<tr class="memdesc:a56842a99ef8b82d792963a5eeb456767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the supporting vertex index in the given direction for the given distance proxy.  <a href="#a56842a99ef8b82d792963a5eeb456767">More...</a><br /></td></tr>
+<tr class="separator:a56842a99ef8b82d792963a5eeb456767"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac9da7b3dd9e1dc5532a0f3c47f31f22e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TestPointGroup.html#gac9da7b3dd9e1dc5532a0f3c47f31f22e">TestPoint</a> (const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;proxy, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> point) noexcept</td></tr>
 <tr class="memdesc:gac9da7b3dd9e1dc5532a0f3c47f31f22e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests a point for containment in the given distance proxy.  <a href="group__TestPointGroup.html#gac9da7b3dd9e1dc5532a0f3c47f31f22e">More...</a><br /></td></tr>
 <tr class="separator:gac9da7b3dd9e1dc5532a0f3c47f31f22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,27 +179,9 @@ Related Functions</h2></td></tr>
   between two convex sets".</p>
 <dl class="section note"><dt>Note</dt><dd>This data structure is 24-bytes.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm">https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm</a> </dd></dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="ab2173f59547e2b22afe0050d787ae15f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2173f59547e2b22afe0050d787ae15f">&#9670;&nbsp;</a></span>size_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">playrho::DistanceProxy::size_type</a> =  std::remove_const&lt;decltype(<a class="el" href="namespaceplayrho.html#a0774f630ff2e5b9ed9e5f322700d44e4">MaxShapeVertices</a>)&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Size type. </p>
-<p>Must be big enough to hold max posible count of vertices. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6873a2239db67efc4f8a51c4f86aa86a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6873a2239db67efc4f8a51c4f86aa86a">&#9670;&nbsp;</a></span>DistanceProxy()</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="adf7dcf92f2235974d097a9a078c7ea59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf7dcf92f2235974d097a9a078c7ea59">&#9670;&nbsp;</a></span>DistanceProxy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -214,7 +198,7 @@ Related Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a>&#160;</td>
           <td class="paramname"><em>count</em>, </td>
         </tr>
         <tr>
@@ -254,13 +238,21 @@ Related Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The vertices collection must have more than zero elements and no more than <code>MaxShapeVertices</code> elements. </dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the vertices collection has less than one element or more than <code>MaxShapeVertices</code> elements. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the vertices collection has less than one element or more than <code>MaxShapeVertices</code> elements. </dd>
+<dd>
+Behavior is undefined if the vertices are not in counter-clockwise order. </dd>
+<dd>
+Behavior is undefined if the shape defined by the vertices is not convex. </dd>
+<dd>
+Behavior is undefined if the normals aren't normals for adjacent vertices. </dd>
+<dd>
+Behavior is undefined if any normal is not unique. </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aae5879468b189e5ffcda04abafeaa922"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae5879468b189e5ffcda04abafeaa922">&#9670;&nbsp;</a></span>GetVertex()</h2>
+<a id="ae8efb06976185a054153f8b6f6c3b2df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8efb06976185a054153f8b6f6c3b2df">&#9670;&nbsp;</a></span>GetVertex()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,7 +263,7 @@ Related Functions</h2></td></tr>
         <tr>
           <td class="memname">auto playrho::DistanceProxy::GetVertex </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">size_type</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a>&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -292,11 +284,11 @@ Related Functions</h2></td></tr>
 </dl>
 <dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the index given is not less than the count of vertices represented by this proxy. </dd>
 <dd>
-Behavior is undefined if InvalidIndex is given as the index value.</dd></dl>
+Behavior is undefined if InvalidVertex is given as the index value.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Vertex linear position (relative to the shape's origin) at the given index.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>Distance. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a05380ac6609b4f7b27e4c1ae9e9e7535">playrho::CollideShapes()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a45eafe957d5e21a37daf453f9b114163">playrho::SeparationFinder::EvaluateForFaceA()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a375b7881a41af8ea83efe0c8b3f9b3e6">playrho::SeparationFinder::EvaluateForFaceB()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a9ba9206796d18be4fb7451cbef09338a">playrho::SeparationFinder::EvaluateForPoints()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a8a17c3a10337c840c928f5c750c07c4a">playrho::SeparationFinder::FindMinSeparationForFaceA()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a38701a732aa40dc5c70970b122382cb3">playrho::SeparationFinder::FindMinSeparationForFaceB()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a6f82f0e62d89781e6488ddc093c275ff">playrho::SeparationFinder::FindMinSeparationForPoints()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#aecc1804bc7d37d3caf48181d46a38181">playrho::SeparationFinder::Get()</a>, <a class="el" href="namespaceplayrho.html#ae704de91e1e03a4a82d1f80aa4114a42">playrho::GetMaxSeparation()</a>, and <a class="el" href="namespaceplayrho.html#a4fdbdfa3b311c43f6811bb49f9865c34">playrho::GetMaxSeparation4x4()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a05380ac6609b4f7b27e4c1ae9e9e7535">playrho::CollideShapes()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#ac5733bcf08aba3fd460efa2b4b52589c">playrho::SeparationFinder::EvaluateForFaceA()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a86b6cfc010a4c4e2525e3091132b2b99">playrho::SeparationFinder::EvaluateForFaceB()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a8710baf9924396fdcf6162dce3b66e31">playrho::SeparationFinder::EvaluateForPoints()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a1cee591fd5d87fa66cd665f1951d62f1">playrho::SeparationFinder::FindMinSeparationForFaceA()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#ac6d56ee6fae4ee3f8b856728f5c79ebb">playrho::SeparationFinder::FindMinSeparationForFaceB()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#a375223554774f1af91b04d9ff869744d">playrho::SeparationFinder::FindMinSeparationForPoints()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#aecc1804bc7d37d3caf48181d46a38181">playrho::SeparationFinder::Get()</a>, <a class="el" href="namespaceplayrho.html#a57d5e171c69c247eab65897a187a3639">playrho::GetMaxSeparation()</a>, and <a class="el" href="namespaceplayrho.html#a05fc8206dc5160006786d320121536bd">playrho::GetMaxSeparation4x4()</a>.</p>
 
 </div>
 </div>
@@ -327,7 +319,7 @@ Behavior is undefined if InvalidIndex is given as the index value.</dd></dl>
 <p>This is the count of valid vertex elements that this object provides. </p><dl class="section return"><dt>Returns</dt><dd>Value between 0 and <code>MaxShapeVertices</code>. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This only returns 0 if this proxy was default constructed. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a05380ac6609b4f7b27e4c1ae9e9e7535">playrho::CollideShapes()</a>, <a class="el" href="namespaceplayrho.html#ac0bed42717184a2866593f4c3a6bfedd">playrho::Distance()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#aecc1804bc7d37d3caf48181d46a38181">playrho::SeparationFinder::Get()</a>, and <a class="el" href="namespaceplayrho.html#ae704de91e1e03a4a82d1f80aa4114a42">playrho::GetMaxSeparation()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a05380ac6609b4f7b27e4c1ae9e9e7535">playrho::CollideShapes()</a>, <a class="el" href="namespaceplayrho.html#ac0bed42717184a2866593f4c3a6bfedd">playrho::Distance()</a>, <a class="el" href="classplayrho_1_1SeparationFinder.html#aecc1804bc7d37d3caf48181d46a38181">playrho::SeparationFinder::Get()</a>, and <a class="el" href="namespaceplayrho.html#a57d5e171c69c247eab65897a187a3639">playrho::GetMaxSeparation()</a>.</p>
 
 </div>
 </div>
@@ -463,17 +455,19 @@ Behavior is undefined if InvalidIndex is given as the index value.</dd></dl>
 
 </div>
 </div>
-<a id="a13e620b55097d3179e73ac14e5256591"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13e620b55097d3179e73ac14e5256591">&#9670;&nbsp;</a></span>GetSupportIndex()</h2>
+<a id="a56842a99ef8b82d792963a5eeb456767"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56842a99ef8b82d792963a5eeb456767">&#9670;&nbsp;</a></span>GetSupportIndex()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1DistanceProxy.html#ab2173f59547e2b22afe0050d787ae15f">DistanceProxy::size_type</a> GetSupportIndex </td>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a> GetSupportIndex </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;&#160;</td>
           <td class="paramname"><em>proxy</em>, </td>
@@ -481,7 +475,7 @@ Behavior is undefined if InvalidIndex is given as the index value.</dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>&#160;</td>
+          <td class="paramtype">T&#160;</td>
           <td class="paramname"><em>d</em>&#160;</td>
         </tr>
         <tr>
@@ -506,8 +500,10 @@ Behavior is undefined if InvalidIndex is given as the index value.</dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>InvalidIndex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>InvalidVertex if d is invalid or the count of vertices is zero, otherwise a value from 0 to one less than count. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1DistanceProxy.html#a938c6d80992f2e31b81a631c7169b74a" title="Gets the vertex count. ">GetVertexCount()</a>. </dd></dl>
+<p>&lt; Index of vertex that when dotted with d has the max value.</p>
+<p>&lt; Max dot value. </p>
 
 </div>
 </div>
@@ -595,7 +591,7 @@ Behavior is undefined if InvalidIndex is given as the index value.</dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 30 2017 12:16:53 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 11 2017 12:59:09 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

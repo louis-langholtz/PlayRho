@@ -69,6 +69,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#related">Related Functions</a> &#124;
@@ -87,29 +88,30 @@ Collaboration diagram for playrho::DynamicTree:</div>
 <div class="dyncontent">
 <div class="center"><img src="classplayrho_1_1DynamicTree__coll__graph.png" border="0" usemap="#playrho_1_1DynamicTree_coll__map" alt="Collaboration graph"/></div>
 <map name="playrho_1_1DynamicTree_coll__map" id="playrho_1_1DynamicTree_coll__map">
-<area shape="rect" id="node35" href="classplayrho_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1082,499,1189,525"/>
-<area shape="rect" id="node2" href="classplayrho_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="2145,178,2297,217"/>
-<area shape="rect" id="node3" href="structplayrho_1_1AABB.html" title="playrho::AABB\&lt; 2 \&gt;" alt="" coords="1890,131,2029,157"/>
-<area shape="rect" id="node5" href="structplayrho_1_1AABB.html" title="N&#45;dimensional Axis Aligned Bounding Box. " alt="" coords="1642,131,1783,157"/>
-<area shape="rect" id="node6" href="unionplayrho_1_1DynamicTree_1_1VariantData.html" title="Variant data. " alt="" coords="1884,511,2035,550"/>
-<area shape="rect" id="node7" href="structplayrho_1_1DynamicTree_1_1BranchData.html" title="Branch data of a TreeNode. " alt="" coords="867,161,1019,199"/>
-<area shape="rect" id="node9" href="structplayrho_1_1DynamicTree_1_1LeafData.html" title="Leaf data of a TreeNode. " alt="" coords="1637,763,1788,802"/>
-<area shape="rect" id="node11" href="classplayrho_1_1Fixture.html" title="An association between a body and a shape. " alt="" coords="1417,1314,1530,1339"/>
-<area shape="rect" id="node12" href="unionplayrho_1_1Fixture_1_1FixtureProxies.html" title="Fixture proxies union. " alt="" coords="1055,1378,1217,1417"/>
-<area shape="rect" id="node15" href="structplayrho_1_1Filter.html" title="A holder for contact filtering data. " alt="" coords="1085,1329,1187,1354"/>
-<area shape="rect" id="node22" href="classplayrho_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1422,770,1525,795"/>
-<area shape="rect" id="node25" href="structplayrho_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1055,549,1217,574"/>
-<area shape="rect" id="node26" href="classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="659,878,784,903"/>
-<area shape="rect" id="node30" href="classplayrho_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion. " alt="" coords="1079,1055,1193,1081"/>
-<area shape="rect" id="node28" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="278,1021,452,1046"/>
-<area shape="rect" id="node31" href="structplayrho_1_1Position.html" title="Positional data structure. " alt="" coords="662,1113,781,1138"/>
+<area shape="rect" id="node35" href="classplayrho_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1096,499,1203,525"/>
+<area shape="rect" id="node2" href="classplayrho_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="2159,178,2310,217"/>
+<area shape="rect" id="node3" href="structplayrho_1_1AABB.html" title="playrho::AABB\&lt; 2 \&gt;" alt="" coords="1904,131,2042,157"/>
+<area shape="rect" id="node5" href="structplayrho_1_1AABB.html" title="N&#45;dimensional Axis Aligned Bounding Box. " alt="" coords="1656,131,1797,157"/>
+<area shape="rect" id="node6" href="unionplayrho_1_1DynamicTree_1_1VariantData.html" title="Variant data. " alt="" coords="1897,401,2049,439"/>
+<area shape="rect" id="node7" href="structplayrho_1_1DynamicTree_1_1BranchData.html" title="Branch data of a TreeNode. " alt="" coords="881,153,1032,191"/>
+<area shape="rect" id="node9" href="structplayrho_1_1DynamicTree_1_1LeafData.html" title="Leaf data of a TreeNode. " alt="" coords="1651,763,1802,802"/>
+<area shape="rect" id="node11" href="classplayrho_1_1Fixture.html" title="An association between a body and a shape. " alt="" coords="1431,1314,1544,1339"/>
+<area shape="rect" id="node12" href="unionplayrho_1_1Fixture_1_1FixtureProxies.html" title="Fixture proxies union. " alt="" coords="1069,1378,1230,1417"/>
+<area shape="rect" id="node15" href="structplayrho_1_1Filter.html" title="A holder for contact filtering data. " alt="" coords="1098,1329,1201,1354"/>
+<area shape="rect" id="node22" href="classplayrho_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1436,770,1539,795"/>
+<area shape="rect" id="node25" href="structplayrho_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1069,549,1230,574"/>
+<area shape="rect" id="node26" href="classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="672,878,798,903"/>
+<area shape="rect" id="node27" href="classplayrho_1_1Fixed.html" title="Template class for fixed&#45;point numbers. " alt="" coords="278,898,465,937"/>
+<area shape="rect" id="node30" href="classplayrho_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion. " alt="" coords="1093,1055,1206,1081"/>
+<area shape="rect" id="node28" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="284,1021,458,1046"/>
+<area shape="rect" id="node31" href="structplayrho_1_1Position.html" title="Positional data structure. " alt="" coords="675,1113,795,1138"/>
 <area shape="rect" id="node29" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="5,697,162,722"/>
-<area shape="rect" id="node33" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="600,371,843,397"/>
-<area shape="rect" id="node37" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="642,667,801,706"/>
-<area shape="rect" id="node40" href="classplayrho_1_1ContactFilter.html" title="Implement this class to provide collision filtering. In other words, you can implement this class if ..." alt="" coords="647,470,796,495"/>
-<area shape="rect" id="node42" href="classplayrho_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="639,569,804,594"/>
-<area shape="rect" id="node48" href="structplayrho_1_1Velocity.html" title="Velocity related data structure. " alt="" coords="1077,795,1195,821"/>
-<area shape="rect" id="node50" href="structplayrho_1_1DynamicTree_1_1UnusedData.html" title="Unused data of a TreeNode. " alt="" coords="1637,826,1788,865"/>
+<area shape="rect" id="node33" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="613,371,857,397"/>
+<area shape="rect" id="node37" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="656,667,815,706"/>
+<area shape="rect" id="node40" href="classplayrho_1_1ContactFilter.html" title="Implement this class to provide collision filtering. In other words, you can implement this class if ..." alt="" coords="661,470,809,495"/>
+<area shape="rect" id="node42" href="classplayrho_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="652,569,818,594"/>
+<area shape="rect" id="node48" href="structplayrho_1_1Velocity.html" title="Velocity related data structure. " alt="" coords="1090,795,1209,821"/>
+<area shape="rect" id="node50" href="structplayrho_1_1DynamicTree_1_1UnusedData.html" title="Unused data of a TreeNode. " alt="" coords="1651,826,1802,865"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -148,7 +150,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9e35a658d6e829606183a993556d8f9"><td class="memItemLeft" align="right" valign="top"><a id="aa9e35a658d6e829606183a993556d8f9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#aa9e35a658d6e829606183a993556d8f9">DynamicTree</a> (<a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a> nodeCapacity=<a class="el" href="classplayrho_1_1DynamicTree.html#a5d81ef4b6fa77499a8772bbe93cc7de6">GetDefaultInitialNodeCapacity</a>())</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#aa9e35a658d6e829606183a993556d8f9">DynamicTree</a> (<a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a> nodeCapacity=<a class="el" href="classplayrho_1_1DynamicTree.html#a4940f21bc81d59ae76c21ea1c0987167">GetDefaultInitialNodeCapacity</a>())</td></tr>
 <tr class="memdesc:aa9e35a658d6e829606183a993556d8f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructing the tree initializes the node pool. <br /></td></tr>
 <tr class="separator:aa9e35a658d6e829606183a993556d8f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0578d970e58b2e0747b07b42550a7504"><td class="memItemLeft" align="right" valign="top"><a id="a0578d970e58b2e0747b07b42550a7504"></a>
@@ -240,30 +242,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a5b3be7cf828a8c88ab0349e0d0fbb2fa"><td class="memItemLeft" align="right" valign="top"><a id="a5b3be7cf828a8c88ab0349e0d0fbb2fa"></a>
-static constexpr <a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a5b3be7cf828a8c88ab0349e0d0fbb2fa">GetInvalidSize</a> () noexcept</td></tr>
-<tr class="memdesc:a5b3be7cf828a8c88ab0349e0d0fbb2fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the invalid size value. <br /></td></tr>
-<tr class="separator:a5b3be7cf828a8c88ab0349e0d0fbb2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9caf885e9a014958cd2e98211fc5f8a"><td class="memItemLeft" align="right" valign="top"><a id="ab9caf885e9a014958cd2e98211fc5f8a"></a>
-static constexpr <a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#ab9caf885e9a014958cd2e98211fc5f8a">GetInvalidHeight</a> () noexcept</td></tr>
-<tr class="memdesc:ab9caf885e9a014958cd2e98211fc5f8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the invalid height value. <br /></td></tr>
-<tr class="separator:ab9caf885e9a014958cd2e98211fc5f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fd934d08aea1ae738c26be0f41abed3"><td class="memItemLeft" align="right" valign="top"><a id="a7fd934d08aea1ae738c26be0f41abed3"></a>
-static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a7fd934d08aea1ae738c26be0f41abed3">IsUnused</a> (<a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a> value) noexcept</td></tr>
-<tr class="memdesc:a7fd934d08aea1ae738c26be0f41abed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given height is the height for an "unused" node. <br /></td></tr>
-<tr class="separator:a7fd934d08aea1ae738c26be0f41abed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03375871fedaf1927d439401e9dee8f7"><td class="memItemLeft" align="right" valign="top"><a id="a03375871fedaf1927d439401e9dee8f7"></a>
-static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a03375871fedaf1927d439401e9dee8f7">IsLeaf</a> (<a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a> value) noexcept</td></tr>
-<tr class="memdesc:a03375871fedaf1927d439401e9dee8f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given height is the height for a "leaf" node. <br /></td></tr>
-<tr class="separator:a03375871fedaf1927d439401e9dee8f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57468a790ff540f830028af43fbb9e9c"><td class="memItemLeft" align="right" valign="top"><a id="a57468a790ff540f830028af43fbb9e9c"></a>
-static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a57468a790ff540f830028af43fbb9e9c">IsBranch</a> (<a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a> value) noexcept</td></tr>
-<tr class="memdesc:a57468a790ff540f830028af43fbb9e9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given height is a height for a "branch" node. <br /></td></tr>
-<tr class="separator:a57468a790ff540f830028af43fbb9e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d81ef4b6fa77499a8772bbe93cc7de6"><td class="memItemLeft" align="right" valign="top"><a id="a5d81ef4b6fa77499a8772bbe93cc7de6"></a>
-static constexpr <a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a5d81ef4b6fa77499a8772bbe93cc7de6">GetDefaultInitialNodeCapacity</a> () noexcept</td></tr>
-<tr class="memdesc:a5d81ef4b6fa77499a8772bbe93cc7de6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default initial node capacity. <br /></td></tr>
-<tr class="separator:a5d81ef4b6fa77499a8772bbe93cc7de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a666aa383d3d28272ed97e85737d46e05"><td class="memItemLeft" align="right" valign="top"><a id="a666aa383d3d28272ed97e85737d46e05"></a>
+static PLAYRHO_CONSTEXPR <a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a666aa383d3d28272ed97e85737d46e05">GetInvalidSize</a> () noexcept</td></tr>
+<tr class="memdesc:a666aa383d3d28272ed97e85737d46e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the invalid size value. <br /></td></tr>
+<tr class="separator:a666aa383d3d28272ed97e85737d46e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fbe445b63a89473792804e208edbb82"><td class="memItemLeft" align="right" valign="top"><a id="a0fbe445b63a89473792804e208edbb82"></a>
+static PLAYRHO_CONSTEXPR <a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a0fbe445b63a89473792804e208edbb82">GetInvalidHeight</a> () noexcept</td></tr>
+<tr class="memdesc:a0fbe445b63a89473792804e208edbb82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the invalid height value. <br /></td></tr>
+<tr class="separator:a0fbe445b63a89473792804e208edbb82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f1541a11a86664e8af88ea38dd94f7a"><td class="memItemLeft" align="right" valign="top"><a id="a8f1541a11a86664e8af88ea38dd94f7a"></a>
+static PLAYRHO_CONSTEXPR bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a8f1541a11a86664e8af88ea38dd94f7a">IsUnused</a> (<a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a> value) noexcept</td></tr>
+<tr class="memdesc:a8f1541a11a86664e8af88ea38dd94f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given height is the height for an "unused" node. <br /></td></tr>
+<tr class="separator:a8f1541a11a86664e8af88ea38dd94f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b6cf40b9c5a8f0e95af67e0f4616510"><td class="memItemLeft" align="right" valign="top"><a id="a8b6cf40b9c5a8f0e95af67e0f4616510"></a>
+static PLAYRHO_CONSTEXPR bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a8b6cf40b9c5a8f0e95af67e0f4616510">IsLeaf</a> (<a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a> value) noexcept</td></tr>
+<tr class="memdesc:a8b6cf40b9c5a8f0e95af67e0f4616510"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given height is the height for a "leaf" node. <br /></td></tr>
+<tr class="separator:a8b6cf40b9c5a8f0e95af67e0f4616510"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a7df3aabe496911a9cfd0f4b4d2f636"><td class="memItemLeft" align="right" valign="top"><a id="a4a7df3aabe496911a9cfd0f4b4d2f636"></a>
+static PLAYRHO_CONSTEXPR bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a4a7df3aabe496911a9cfd0f4b4d2f636">IsBranch</a> (<a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a> value) noexcept</td></tr>
+<tr class="memdesc:a4a7df3aabe496911a9cfd0f4b4d2f636"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given height is a height for a "branch" node. <br /></td></tr>
+<tr class="separator:a4a7df3aabe496911a9cfd0f4b4d2f636"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4940f21bc81d59ae76c21ea1c0987167"><td class="memItemLeft" align="right" valign="top"><a id="a4940f21bc81d59ae76c21ea1c0987167"></a>
+static PLAYRHO_CONSTEXPR <a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a4940f21bc81d59ae76c21ea1c0987167">GetDefaultInitialNodeCapacity</a> () noexcept</td></tr>
+<tr class="memdesc:a4940f21bc81d59ae76c21ea1c0987167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default initial node capacity. <br /></td></tr>
+<tr class="separator:a4940f21bc81d59ae76c21ea1c0987167"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a286ee2d77cca2060dadb3fa4239d1b75"><td class="memItemLeft" align="right" valign="top"><a id="a286ee2d77cca2060dadb3fa4239d1b75"></a>
+static PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a286ee2d77cca2060dadb3fa4239d1b75">InvalidHeight</a> = static_cast&lt;<a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a>&gt;(-1)</td></tr>
+<tr class="memdesc:a286ee2d77cca2060dadb3fa4239d1b75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid height constant value. <br /></td></tr>
+<tr class="separator:a286ee2d77cca2060dadb3fa4239d1b75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -277,7 +286,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7550df1edf962816f6b358938190d5b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a7550df1edf962816f6b358938190d5b7">AllocateNode</a> (const <a class="el" href="structplayrho_1_1DynamicTree_1_1LeafData.html">LeafData</a> &amp;node, <a class="el" href="namespaceplayrho.html#ab95a145fd2dcc236e0a499b9abeaa62e">AABB2D</a> aabb) noexcept</td></tr>
 <tr class="memdesc:a7550df1edf962816f6b358938190d5b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a leaf node.  <a href="#a7550df1edf962816f6b358938190d5b7">More...</a><br /></td></tr>
 <tr class="separator:a7550df1edf962816f6b358938190d5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebce6c374b80072a3a6f865c8504c18e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#aebce6c374b80072a3a6f865c8504c18e">AllocateNode</a> (const <a class="el" href="structplayrho_1_1DynamicTree_1_1BranchData.html">BranchData</a> &amp;node, <a class="el" href="namespaceplayrho.html#ab95a145fd2dcc236e0a499b9abeaa62e">AABB2D</a> aabb, <a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a> height, <a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a> parent=<a class="el" href="classplayrho_1_1DynamicTree.html#a5b3be7cf828a8c88ab0349e0d0fbb2fa">GetInvalidSize</a>()) noexcept</td></tr>
+<tr class="memitem:aebce6c374b80072a3a6f865c8504c18e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#aebce6c374b80072a3a6f865c8504c18e">AllocateNode</a> (const <a class="el" href="structplayrho_1_1DynamicTree_1_1BranchData.html">BranchData</a> &amp;node, <a class="el" href="namespaceplayrho.html#ab95a145fd2dcc236e0a499b9abeaa62e">AABB2D</a> aabb, <a class="el" href="classplayrho_1_1DynamicTree.html#a052ce6ef4e386c6ac4092aad3ed3aa29">Height</a> height, <a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a> parent=<a class="el" href="classplayrho_1_1DynamicTree.html#a666aa383d3d28272ed97e85737d46e05">GetInvalidSize</a>()) noexcept</td></tr>
 <tr class="memdesc:aebce6c374b80072a3a6f865c8504c18e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a branch node.  <a href="#aebce6c374b80072a3a6f865c8504c18e">More...</a><br /></td></tr>
 <tr class="separator:aebce6c374b80072a3a6f865c8504c18e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33e6a9f40e2ae07238b65b38ff466439"><td class="memItemLeft" align="right" valign="top"><a id="a33e6a9f40e2ae07238b65b38ff466439"></a>
@@ -343,8 +352,8 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a1a42344a30236cedb6bf6268169b2d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nodes.  <a href="#a1a42344a30236cedb6bf6268169b2d0c">More...</a><br /></td></tr>
 <tr class="separator:a1a42344a30236cedb6bf6268169b2d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0d92b45650397797069a1956d645e5b"><td class="memItemLeft" align="right" valign="top"><a id="ac0d92b45650397797069a1956d645e5b"></a>
-<a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#ac0d92b45650397797069a1956d645e5b">m_root</a> = <a class="el" href="classplayrho_1_1DynamicTree.html#a5b3be7cf828a8c88ab0349e0d0fbb2fa">GetInvalidSize</a>()</td></tr>
-<tr class="memdesc:ac0d92b45650397797069a1956d645e5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of root element in m_nodes or <a class="el" href="classplayrho_1_1DynamicTree.html#a5b3be7cf828a8c88ab0349e0d0fbb2fa" title="Gets the invalid size value. ">GetInvalidSize()</a>. <br /></td></tr>
+<a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#ac0d92b45650397797069a1956d645e5b">m_root</a> = <a class="el" href="classplayrho_1_1DynamicTree.html#a666aa383d3d28272ed97e85737d46e05">GetInvalidSize</a>()</td></tr>
+<tr class="memdesc:ac0d92b45650397797069a1956d645e5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index of root element in m_nodes or <a class="el" href="classplayrho_1_1DynamicTree.html#a666aa383d3d28272ed97e85737d46e05" title="Gets the invalid size value. ">GetInvalidSize()</a>. <br /></td></tr>
 <tr class="separator:ac0d92b45650397797069a1956d645e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86a672f5805194badf48a06cb6e36f0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1DynamicTree.html#a86a672f5805194badf48a06cb6e36f0e">m_nodeCount</a> = <a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>{0}</td></tr>
 <tr class="memdesc:a86a672f5805194badf48a06cb6e36f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Node count.  <a href="#a86a672f5805194badf48a06cb6e36f0e">More...</a><br /></td></tr>
@@ -504,7 +513,7 @@ This data structure is 32-bytes large (on at least one 64-bit platform).</dd></d
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classplayrho_1_1DynamicTree.html#a37641e8d4e8a8540e84bb5045d771993">Size</a>&#160;</td>
-          <td class="paramname"><em>parent</em> = <code><a class="el" href="classplayrho_1_1DynamicTree.html#a5b3be7cf828a8c88ab0349e0d0fbb2fa">GetInvalidSize</a>()</code>&#160;</td>
+          <td class="paramname"><em>parent</em> = <code><a class="el" href="classplayrho_1_1DynamicTree.html#a666aa383d3d28272ed97e85737d46e05">GetInvalidSize</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -617,7 +626,7 @@ This data structure is 32-bytes large (on at least one 64-bit platform).</dd></d
 
 <p>Creates a new leaf node. </p>
 <p>Creates a leaf node for a tight fitting <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> and a userData pointer. </p><dl class="section note"><dt>Note</dt><dd>The indices of leaf nodes that have been destroyed get reused for new nodes. </dd></dl>
-<dl class="section post"><dt>Postcondition</dt><dd>If the root index had been the <a class="el" href="classplayrho_1_1DynamicTree.html#a5b3be7cf828a8c88ab0349e0d0fbb2fa" title="Gets the invalid size value. ">GetInvalidSize()</a>, then it will be set to the index returned from this method. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>If the root index had been the <a class="el" href="classplayrho_1_1DynamicTree.html#a666aa383d3d28272ed97e85737d46e05" title="Gets the invalid size value. ">GetInvalidSize()</a>, then it will be set to the index returned from this method. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Index of the created leaf node. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1World.html#a5142d0d8b0656056aaed43104bb15064">playrho::World::CreateProxies()</a>.</p>
@@ -964,7 +973,7 @@ Specified node isn't referenced by any other nodes. </dd></dl>
 
 <p>Inserts the specified node. </p>
 <p>Does a leaf insertion of the node with the given index into the dynamic tree. </p><dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the given index is not valid. </dd></dl>
-<dl class="section post"><dt>Postcondition</dt><dd>The root index is set to the given index if the root index had been <a class="el" href="classplayrho_1_1DynamicTree.html#a5b3be7cf828a8c88ab0349e0d0fbb2fa" title="Gets the invalid size value. ">GetInvalidSize()</a>. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>The root index is set to the given index if the root index had been <a class="el" href="classplayrho_1_1DynamicTree.html#a666aa383d3d28272ed97e85737d46e05" title="Gets the invalid size value. ">GetInvalidSize()</a>. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1DynamicTree.html#a65bb89fc5cecb48f574c0e886d43ed18">CreateLeaf()</a>, and <a class="el" href="classplayrho_1_1DynamicTree.html#a35c410699ab138405252207177f77dc0">UpdateLeaf()</a>.</p>
 
@@ -1461,7 +1470,7 @@ The shift formula is: position -= newOrigin </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 30 2017 12:16:53 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 11 2017 12:59:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

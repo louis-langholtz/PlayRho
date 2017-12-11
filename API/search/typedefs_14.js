@@ -6,6 +6,8 @@ var searchData=
   ['vector2',['Vector2',['../namespaceplayrho.html#a97243f194a9406d0fdcf5f6f833851ab',1,'playrho']]],
   ['vector3',['Vector3',['../namespaceplayrho.html#ad07b44f811ac4c7551067fb1d3554ec5',1,'playrho']]],
   ['velocityconstraints',['VelocityConstraints',['../namespaceplayrho.html#a4bee5fdebe29417b162e789db51f0af9',1,'playrho']]],
-  ['vertexcounter',['VertexCounter',['../classplayrho_1_1MultiShape.html#a31232923d8793507c77b55d8c17ab5ff',1,'playrho::MultiShape::VertexCounter()'],['../classplayrho_1_1PolygonShape.html#ae97e9ffaaae21ad914d52fd5473680a2',1,'playrho::PolygonShape::VertexCounter()']]],
+  ['velocitypair',['VelocityPair',['../namespaceplayrho.html#a920f62816b78d8eeaeb6d4c8b17161eb',1,'playrho']]],
+  ['vertexcounter',['VertexCounter',['../namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9',1,'playrho']]],
+  ['visitor',['Visitor',['../classplayrho_1_1Shape.html#a4eb0607d83328036c907a2f8ee639b37',1,'playrho::Shape']]],
   ['voidt',['VoidT',['../namespaceplayrho.html#abbe7bbcc6786a7468f4d7da7a484a65f',1,'playrho']]]
 ];

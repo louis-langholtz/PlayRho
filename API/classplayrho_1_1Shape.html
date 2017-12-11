@@ -65,32 +65,22 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1Shape-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">playrho::Shape Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__PartsGroup.html">Shape Classes</a></div></div>  </div>
+<div class="title">playrho::Shape Class Reference<div class="ingroups"><a class="el" href="group__PartsGroup.html">Shape Classes</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A base abstract class for describing a type of shape.  
+<p><a class="el" href="classplayrho_1_1Shape.html" title="Shape. ">Shape</a>.  
  <a href="classplayrho_1_1Shape.html#details">More...</a></p>
 
 <p><code>#include &lt;Shape.hpp&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for playrho::Shape:</div>
-<div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1Shape__inherit__graph.png" border="0" usemap="#playrho_1_1Shape_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1Shape_inherit__map" id="playrho_1_1Shape_inherit__map">
-<area shape="rect" id="node2" href="classplayrho_1_1ChainShape.html" title="Chain shape. " alt="" coords="171,5,317,31"/>
-<area shape="rect" id="node3" href="classplayrho_1_1DiskShape.html" title="Disk shape. " alt="" coords="175,55,312,80"/>
-<area shape="rect" id="node4" href="classplayrho_1_1EdgeShape.html" title="Edge shape. " alt="" coords="173,104,315,129"/>
-<area shape="rect" id="node5" href="classplayrho_1_1MultiShape.html" title="The &quot;multi&#45;shape&quot; shape. " alt="" coords="174,153,314,179"/>
-<area shape="rect" id="node6" href="classplayrho_1_1PolygonShape.html" title="Polygon shape. " alt="" coords="164,203,324,228"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::Shape:</div>
 <div class="dyncontent">
@@ -101,55 +91,32 @@ Collaboration diagram for playrho::Shape:</div>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Shape_1_1Concept.html">Concept</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal shape configuration concept.  <a href="structplayrho_1_1Shape_1_1Concept.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Shape_1_1Model.html">Model</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal model configuration concept.  <a href="structplayrho_1_1Shape_1_1Model.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a4eb0607d83328036c907a2f8ee639b37"><td class="memItemLeft" align="right" valign="top"><a id="a4eb0607d83328036c907a2f8ee639b37"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a4eb0607d83328036c907a2f8ee639b37">Visitor</a> = std::function&lt; void(const std::type_info &amp;ti, const void *data)&gt;</td></tr>
+<tr class="memdesc:a4eb0607d83328036c907a2f8ee639b37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visitor type alias for underlying shape configuration. <br /></td></tr>
+<tr class="separator:a4eb0607d83328036c907a2f8ee639b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa2990e8b8ca2a59784d5739ff3fac88c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#aa2990e8b8ca2a59784d5739ff3fac88c">GetChildCount</a> () const noexcept=0</td></tr>
-<tr class="memdesc:aa2990e8b8ca2a59784d5739ff3fac88c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of child primitives of the shape.  <a href="#aa2990e8b8ca2a59784d5739ff3fac88c">More...</a><br /></td></tr>
-<tr class="separator:aa2990e8b8ca2a59784d5739ff3fac88c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa627703af2bf224abc52f3d575c2664a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#aa627703af2bf224abc52f3d575c2664a">GetChild</a> (<a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> index) const =0</td></tr>
-<tr class="memdesc:aa627703af2bf224abc52f3d575c2664a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the child for the given index.  <a href="#aa627703af2bf224abc52f3d575c2664a">More...</a><br /></td></tr>
-<tr class="separator:aa627703af2bf224abc52f3d575c2664a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a984cc0eb352498670d804332e897dc51"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structplayrho_1_1MassData.html">MassData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a984cc0eb352498670d804332e897dc51">GetMassData</a> () const noexcept=0</td></tr>
-<tr class="memdesc:a984cc0eb352498670d804332e897dc51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the mass properties of this shape using its dimensions and density.  <a href="#a984cc0eb352498670d804332e897dc51">More...</a><br /></td></tr>
-<tr class="separator:a984cc0eb352498670d804332e897dc51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb02df9d17b6a6b230e8ef5f4e430d75"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#aeb02df9d17b6a6b230e8ef5f4e430d75">Accept</a> (<a class="el" href="classplayrho_1_1ShapeVisitor.html">ShapeVisitor</a> &amp;visitor) const =0</td></tr>
-<tr class="memdesc:aeb02df9d17b6a6b230e8ef5f4e430d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts a visitor.  <a href="#aeb02df9d17b6a6b230e8ef5f4e430d75">More...</a><br /></td></tr>
-<tr class="separator:aeb02df9d17b6a6b230e8ef5f4e430d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b76df853ba0a82c33c9535cae23c850"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a6b76df853ba0a82c33c9535cae23c850">GetVertexRadius</a> () const noexcept</td></tr>
-<tr class="memdesc:a6b76df853ba0a82c33c9535cae23c850"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex radius.  <a href="#a6b76df853ba0a82c33c9535cae23c850">More...</a><br /></td></tr>
-<tr class="separator:a6b76df853ba0a82c33c9535cae23c850"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5c54d73365babc9969f9c0578f03d47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#ab5c54d73365babc9969f9c0578f03d47">SetVertexRadius</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; vertexRadius) noexcept</td></tr>
-<tr class="memdesc:ab5c54d73365babc9969f9c0578f03d47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the vertex radius.  <a href="#ab5c54d73365babc9969f9c0578f03d47">More...</a><br /></td></tr>
-<tr class="separator:ab5c54d73365babc9969f9c0578f03d47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcfe1ca825a0224c9fcbd40266cec3bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#afcfe1ca825a0224c9fcbd40266cec3bc">GetDensity</a> () const noexcept</td></tr>
-<tr class="memdesc:afcfe1ca825a0224c9fcbd40266cec3bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the density of this fixture.  <a href="#afcfe1ca825a0224c9fcbd40266cec3bc">More...</a><br /></td></tr>
-<tr class="separator:afcfe1ca825a0224c9fcbd40266cec3bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aade9199c59e3ec929c30fc74bd04a31a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#aade9199c59e3ec929c30fc74bd04a31a">SetDensity</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt; density) noexcept</td></tr>
-<tr class="memdesc:aade9199c59e3ec929c30fc74bd04a31a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the density of this fixture.  <a href="#aade9199c59e3ec929c30fc74bd04a31a">More...</a><br /></td></tr>
-<tr class="separator:aade9199c59e3ec929c30fc74bd04a31a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16f8a5e215e8b451f776ff4864d4fbc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a16f8a5e215e8b451f776ff4864d4fbc9">GetFriction</a> () const noexcept</td></tr>
-<tr class="memdesc:a16f8a5e215e8b451f776ff4864d4fbc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient of friction.  <a href="#a16f8a5e215e8b451f776ff4864d4fbc9">More...</a><br /></td></tr>
-<tr class="separator:a16f8a5e215e8b451f776ff4864d4fbc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a380019249a4073deae3534447cfc143b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a380019249a4073deae3534447cfc143b">SetFriction</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; friction) noexcept</td></tr>
-<tr class="memdesc:a380019249a4073deae3534447cfc143b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the coefficient of friction.  <a href="#a380019249a4073deae3534447cfc143b">More...</a><br /></td></tr>
-<tr class="separator:a380019249a4073deae3534447cfc143b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0219ee78b382d1749f3dd691a6e39425"><td class="memItemLeft" align="right" valign="top"><a id="a0219ee78b382d1749f3dd691a6e39425"></a>
-<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a0219ee78b382d1749f3dd691a6e39425">GetRestitution</a> () const noexcept</td></tr>
-<tr class="memdesc:a0219ee78b382d1749f3dd691a6e39425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient of restitution. <br /></td></tr>
-<tr class="separator:a0219ee78b382d1749f3dd691a6e39425"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a949546cd72eb2f99d0d605bd36f7db78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a949546cd72eb2f99d0d605bd36f7db78">SetRestitution</a> (<a class="el" href="group__BoundedAliases.html#ga9cf75a03c4b0afaaba95d65ec8ce54b4">Finite</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; restitution) noexcept</td></tr>
-<tr class="memdesc:a949546cd72eb2f99d0d605bd36f7db78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the coefficient of restitution.  <a href="#a949546cd72eb2f99d0d605bd36f7db78">More...</a><br /></td></tr>
-<tr class="separator:a949546cd72eb2f99d0d605bd36f7db78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a9ab657104a33233abeef991ff69d5c13"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a9ab657104a33233abeef991ff69d5c13">Shape</a> ()=default</td></tr>
-<tr class="memdesc:a9ab657104a33233abeef991ff69d5c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a9ab657104a33233abeef991ff69d5c13">More...</a><br /></td></tr>
-<tr class="separator:a9ab657104a33233abeef991ff69d5c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af91c67ec700a44dfbee09f551926b997"><td class="memItemLeft" align="right" valign="top"><a id="af91c67ec700a44dfbee09f551926b997"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#af91c67ec700a44dfbee09f551926b997">Shape</a> (const <a class="el" href="structplayrho_1_1ShapeDef.html">ShapeDef</a> &amp;conf) noexcept</td></tr>
-<tr class="memdesc:af91c67ec700a44dfbee09f551926b997"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
-<tr class="separator:af91c67ec700a44dfbee09f551926b997"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00f37325e0c433878d2d30257a9a3c5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a00f37325e0c433878d2d30257a9a3c5e">Shape</a> ()=delete</td></tr>
+<tr class="memdesc:a00f37325e0c433878d2d30257a9a3c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a00f37325e0c433878d2d30257a9a3c5e">More...</a><br /></td></tr>
+<tr class="separator:a00f37325e0c433878d2d30257a9a3c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88f453765fe2059ad4f8fef917ab1393"><td class="memTemplParams" colspan="2"><a id="a88f453765fe2059ad4f8fef917ab1393"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a88f453765fe2059ad4f8fef917ab1393"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a88f453765fe2059ad4f8fef917ab1393">Shape</a> (T v)</td></tr>
+<tr class="memdesc:a88f453765fe2059ad4f8fef917ab1393"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
+<tr class="separator:a88f453765fe2059ad4f8fef917ab1393"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd4ced352cd9e479f1903f7b9dadacfc"><td class="memItemLeft" align="right" valign="top"><a id="afd4ced352cd9e479f1903f7b9dadacfc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#afd4ced352cd9e479f1903f7b9dadacfc">Shape</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;other)=default</td></tr>
 <tr class="memdesc:afd4ced352cd9e479f1903f7b9dadacfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
@@ -169,22 +136,49 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:af485e87381eae8306c3ad9ea6f6e0121"><td class="memItemLeft" align="right" valign="top"><a id="af485e87381eae8306c3ad9ea6f6e0121"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#af485e87381eae8306c3ad9ea6f6e0121">m_vertexRadius</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&gt;{0_m}</td></tr>
-<tr class="memdesc:af485e87381eae8306c3ad9ea6f6e0121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex radius. <br /></td></tr>
-<tr class="separator:af485e87381eae8306c3ad9ea6f6e0121"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada0034ec3167d7d0563279e3b26ac267"><td class="memItemLeft" align="right" valign="top"><a id="ada0034ec3167d7d0563279e3b26ac267"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#ada0034ec3167d7d0563279e3b26ac267">m_density</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a>&gt;{0_kgpm2}</td></tr>
-<tr class="memdesc:ada0034ec3167d7d0563279e3b26ac267"><td class="mdescLeft">&#160;</td><td class="mdescRight">AreaDensity. <br /></td></tr>
-<tr class="separator:ada0034ec3167d7d0563279e3b26ac267"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8a789c6d95e300f8d68725993e1169f"><td class="memItemLeft" align="right" valign="top"><a id="ad8a789c6d95e300f8d68725993e1169f"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#ad8a789c6d95e300f8d68725993e1169f">m_friction</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&gt;{<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{2} / <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{10}}</td></tr>
-<tr class="memdesc:ad8a789c6d95e300f8d68725993e1169f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Friction as a coefficient. <br /></td></tr>
-<tr class="separator:ad8a789c6d95e300f8d68725993e1169f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47dc9dc6b0d2e643de848512e5f474da"><td class="memItemLeft" align="right" valign="top"><a id="a47dc9dc6b0d2e643de848512e5f474da"></a>
-<a class="el" href="group__BoundedAliases.html#ga9cf75a03c4b0afaaba95d65ec8ce54b4">Finite</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a47dc9dc6b0d2e643de848512e5f474da">m_restitution</a> = <a class="el" href="group__BoundedAliases.html#ga9cf75a03c4b0afaaba95d65ec8ce54b4">Finite</a>&lt;<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&gt;{0}</td></tr>
-<tr class="memdesc:a47dc9dc6b0d2e643de848512e5f474da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restitution as a coefficient. <br /></td></tr>
-<tr class="separator:a47dc9dc6b0d2e643de848512e5f474da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d34c9faf87d117f6f80a87a34d5fe91"><td class="memItemLeft" align="right" valign="top"><a id="a5d34c9faf87d117f6f80a87a34d5fe91"></a>
+std::shared_ptr&lt; const <a class="el" href="structplayrho_1_1Shape_1_1Concept.html">Concept</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a5d34c9faf87d117f6f80a87a34d5fe91">m_self</a></td></tr>
+<tr class="memdesc:a5d34c9faf87d117f6f80a87a34d5fe91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Self shared pointer. <br /></td></tr>
+<tr class="separator:a5d34c9faf87d117f6f80a87a34d5fe91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ac04194136cade2a9cb3db0ce6234b3fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#ac04194136cade2a9cb3db0ce6234b3fc">GetChildCount</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape) noexcept</td></tr>
+<tr class="memdesc:ac04194136cade2a9cb3db0ce6234b3fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of child primitives of the shape.  <a href="#ac04194136cade2a9cb3db0ce6234b3fc">More...</a><br /></td></tr>
+<tr class="separator:ac04194136cade2a9cb3db0ce6234b3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef5a495e8d68c39d47d049f51ec5452f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#aef5a495e8d68c39d47d049f51ec5452f">GetChild</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape, <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> index)</td></tr>
+<tr class="memdesc:aef5a495e8d68c39d47d049f51ec5452f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the "child" for the given index.  <a href="#aef5a495e8d68c39d47d049f51ec5452f">More...</a><br /></td></tr>
+<tr class="separator:aef5a495e8d68c39d47d049f51ec5452f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f9e8db270c93956369ac55920c462d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1MassData.html">MassData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a1f9e8db270c93956369ac55920c462d7">GetMassData</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape) noexcept</td></tr>
+<tr class="memdesc:a1f9e8db270c93956369ac55920c462d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the mass properties of this shape using its dimensions and density.  <a href="#a1f9e8db270c93956369ac55920c462d7">More...</a><br /></td></tr>
+<tr class="separator:a1f9e8db270c93956369ac55920c462d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5321a7da13179141da8f849904e67278"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a5321a7da13179141da8f849904e67278">GetVertexRadius</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape) noexcept</td></tr>
+<tr class="memdesc:a5321a7da13179141da8f849904e67278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex radius.  <a href="#a5321a7da13179141da8f849904e67278">More...</a><br /></td></tr>
+<tr class="separator:a5321a7da13179141da8f849904e67278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7391adc084afda958cdb54b10229990c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a7391adc084afda958cdb54b10229990c">GetFriction</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape) noexcept</td></tr>
+<tr class="memdesc:a7391adc084afda958cdb54b10229990c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient of friction.  <a href="#a7391adc084afda958cdb54b10229990c">More...</a><br /></td></tr>
+<tr class="separator:a7391adc084afda958cdb54b10229990c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab731ba8dc3b08ed048d5348def3f0ab6"><td class="memItemLeft" align="right" valign="top"><a id="ab731ba8dc3b08ed048d5348def3f0ab6"></a>
+<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#ab731ba8dc3b08ed048d5348def3f0ab6">GetRestitution</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape) noexcept</td></tr>
+<tr class="memdesc:ab731ba8dc3b08ed048d5348def3f0ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient of restitution. <br /></td></tr>
+<tr class="separator:ab731ba8dc3b08ed048d5348def3f0ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a154958fa91ee5653a279fc28e1472ab8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a154958fa91ee5653a279fc28e1472ab8">GetDensity</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape) noexcept</td></tr>
+<tr class="memdesc:a154958fa91ee5653a279fc28e1472ab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the density of this fixture.  <a href="#a154958fa91ee5653a279fc28e1472ab8">More...</a><br /></td></tr>
+<tr class="separator:a154958fa91ee5653a279fc28e1472ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b3ae4694d7e8995f4500e9a84e25046"><td class="memItemLeft" align="right" valign="top">const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a2b3ae4694d7e8995f4500e9a84e25046">GetData</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape) noexcept</td></tr>
+<tr class="memdesc:a2b3ae4694d7e8995f4500e9a84e25046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a pointer to the underlying data.  <a href="#a2b3ae4694d7e8995f4500e9a84e25046">More...</a><br /></td></tr>
+<tr class="separator:a2b3ae4694d7e8995f4500e9a84e25046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8bc3d9aacdc87c35d2d7bedb4a93d7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#ad8bc3d9aacdc87c35d2d7bedb4a93d7a">Accept</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape, const <a class="el" href="classplayrho_1_1Shape.html#a4eb0607d83328036c907a2f8ee639b37">Visitor</a> &amp;visitor)</td></tr>
+<tr class="memdesc:ad8bc3d9aacdc87c35d2d7bedb4a93d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts a visitor.  <a href="#ad8bc3d9aacdc87c35d2d7bedb4a93d7a">More...</a><br /></td></tr>
+<tr class="separator:ad8bc3d9aacdc87c35d2d7bedb4a93d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab78335ce5150860eca7156ef23cc6c4"><td class="memItemLeft" align="right" valign="top"><a id="aab78335ce5150860eca7156ef23cc6c4"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#aab78335ce5150860eca7156ef23cc6c4">operator==</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;lhs, const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:aab78335ce5150860eca7156ef23cc6c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator for shape to shape comparisons. <br /></td></tr>
+<tr class="separator:aab78335ce5150860eca7156ef23cc6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8725ac7fabaac950fabc413b492da29e"><td class="memItemLeft" align="right" valign="top"><a id="a8725ac7fabaac950fabc413b492da29e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a8725ac7fabaac950fabc413b492da29e">operator!=</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;lhs, const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a8725ac7fabaac950fabc413b492da29e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator for shape to shape comparisons. <br /></td></tr>
+<tr class="separator:a8725ac7fabaac950fabc413b492da29e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
@@ -196,21 +190,18 @@ Related Functions</h2></td></tr>
 <tr class="memitem:gaada5f6c5635166baaf1bc81636d8b93a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a591831bdaa7b9d1f786607c9333f1a02">RayCastOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__RayCastGroup.html#gaada5f6c5635166baaf1bc81636d8b93a">RayCast</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape, <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> childIndex, const <a class="el" href="structplayrho_1_1RayCastInput.html">RayCastInput</a> &amp;input, const <a class="el" href="structplayrho_1_1Transformation.html">Transformation</a> &amp;transform) noexcept</td></tr>
 <tr class="memdesc:gaada5f6c5635166baaf1bc81636d8b93a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cast a ray against the child of the given shape.  <a href="group__RayCastGroup.html#gaada5f6c5635166baaf1bc81636d8b93a">More...</a><br /></td></tr>
 <tr class="separator:gaada5f6c5635166baaf1bc81636d8b93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b9ed4801a893034e30b84c303adde14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Shape.html#a3b9ed4801a893034e30b84c303adde14">GetVertexRadius</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape) noexcept</td></tr>
-<tr class="memdesc:a3b9ed4801a893034e30b84c303adde14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex radius of the given shape.  <a href="#a3b9ed4801a893034e30b84c303adde14">More...</a><br /></td></tr>
-<tr class="separator:a3b9ed4801a893034e30b84c303adde14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafcfbf811dc989043838f0a4c7c64b59b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TestPointGroup.html#gafcfbf811dc989043838f0a4c7c64b59b">TestPoint</a> (const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;shape, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> point) noexcept</td></tr>
 <tr class="memdesc:gafcfbf811dc989043838f0a4c7c64b59b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test a point for containment in the given shape.  <a href="group__TestPointGroup.html#gafcfbf811dc989043838f0a4c7c64b59b">More...</a><br /></td></tr>
 <tr class="separator:gafcfbf811dc989043838f0a4c7c64b59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A base abstract class for describing a type of shape. </p>
-<p>This is a polymorphic abstract base class for shapes. A shape is used for collision detection. You can create a shape however you like. Shapes used for simulation in <code><a class="el" href="classplayrho_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a></code> are created automatically when a <code><a class="el" href="classplayrho_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a></code> is created. Shapes may encapsulate zero or more child shapes.</p>
+<div class="textblock"><p><a class="el" href="classplayrho_1_1Shape.html" title="Shape. ">Shape</a>. </p>
+<p>A shape is used for collision detection. You can create a shape however you like. Shapes used for simulation in <code><a class="el" href="classplayrho_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a></code> are created automatically when a <code><a class="el" href="classplayrho_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a></code> is created. Shapes may encapsulate zero or more child shapes.</p>
 <dl class="section note"><dt>Note</dt><dd>This data structure is 32-bytes large (on at least one 64-bit platform).</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9ab657104a33233abeef991ff69d5c13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ab657104a33233abeef991ff69d5c13">&#9670;&nbsp;</a></span>Shape()</h2>
+<a id="a00f37325e0c433878d2d30257a9a3c5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00f37325e0c433878d2d30257a9a3c5e">&#9670;&nbsp;</a></span>Shape()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,7 +218,7 @@ Related Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -237,9 +228,9 @@ Related Functions</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="aeb02df9d17b6a6b230e8ef5f4e430d75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb02df9d17b6a6b230e8ef5f4e430d75">&#9670;&nbsp;</a></span>Accept()</h2>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="ad8bc3d9aacdc87c35d2d7bedb4a93d7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8bc3d9aacdc87c35d2d7bedb4a93d7a">&#9670;&nbsp;</a></span>Accept</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -248,359 +239,35 @@ Related Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void playrho::Shape::Accept </td>
+          <td class="memname">void Accept </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1ShapeVisitor.html">ShapeVisitor</a> &amp;&#160;</td>
-          <td class="paramname"><em>visitor</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html#a4eb0607d83328036c907a2f8ee639b37">Visitor</a> &amp;&#160;</td>
+          <td class="paramname"><em>visitor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Accepts a visitor. </p>
-<p>This is the Accept method definition of a "visitor design pattern" for for doing shape subclass specific types of processing for a constant shape. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1ShapeVisitor.html" title="Vistor interface for Shape instances. ">ShapeVisitor</a> </dd>
-<dd>
-<a href="https://en.wikipedia.org/wiki/Visitor_pattern">https://en.wikipedia.org/wiki/Visitor_pattern</a> </dd></dl>
-
-<p>Implemented in <a class="el" href="classplayrho_1_1EdgeShape.html#ad821ec15dbf58c8691999c3dd032dc2f">playrho::EdgeShape</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a7ee737586fb45cfe6740efe49c5a2538">playrho::PolygonShape</a>, <a class="el" href="classplayrho_1_1DiskShape.html#a7c59e94820a937c82b6b2d0fa3018d24">playrho::DiskShape</a>, <a class="el" href="classplayrho_1_1ChainShape.html#a0a32323f9c6acb8809bf25291381646c">playrho::ChainShape</a>, and <a class="el" href="classplayrho_1_1MultiShape.html#ab6ce923ef3cb4e362e960ff3a53b65b7">playrho::MultiShape</a>.</p>
+<p>This is the "accept" method definition of a "visitor design pattern" for doing shape configuration specific types of processing for a constant shape. </p><dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Visitor_pattern">https://en.wikipedia.org/wiki/Visitor_pattern</a> </dd></dl>
 
 </div>
 </div>
-<a id="aa627703af2bf224abc52f3d575c2664a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa627703af2bf224abc52f3d575c2664a">&#9670;&nbsp;</a></span>GetChild()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> playrho::Shape::GetChild </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a>&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the child for the given index. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Index to a child element of the shape. Value must be less than the number of child primitives of the shape. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>The shape must remain in scope while the proxy is in use. </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if the given index is out of range. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Shape.html#aa2990e8b8ca2a59784d5739ff3fac88c" title="Gets the number of child primitives of the shape. ">GetChildCount</a> </dd></dl>
-
-<p>Implemented in <a class="el" href="classplayrho_1_1EdgeShape.html#a56ddb9c95539786021e02499f472e31d">playrho::EdgeShape</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a29f70f3e1b8dc0c5563db2aeafbba8ea">playrho::PolygonShape</a>, <a class="el" href="classplayrho_1_1DiskShape.html#a4ac8f47d72f510fc6443099f7f72cbcc">playrho::DiskShape</a>, <a class="el" href="classplayrho_1_1ChainShape.html#afcc6cfa391761c1ed668eb1ea10924c9">playrho::ChainShape</a>, and <a class="el" href="classplayrho_1_1MultiShape.html#a887876a45b2ac17a6ac4fe93a085167d">playrho::MultiShape</a>.</p>
-
-</div>
-</div>
-<a id="aa2990e8b8ca2a59784d5739ff3fac88c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2990e8b8ca2a59784d5739ff3fac88c">&#9670;&nbsp;</a></span>GetChildCount()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> playrho::Shape::GetChildCount </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the number of child primitives of the shape. </p>
-<dl class="section return"><dt>Returns</dt><dd>Non-negative count. </dd></dl>
-
-<p>Implemented in <a class="el" href="classplayrho_1_1EdgeShape.html#ac83f0806d395ee5b4977c2269c5164ab">playrho::EdgeShape</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a37a2bbefc403d53f28932765acdfa98b">playrho::PolygonShape</a>, <a class="el" href="classplayrho_1_1DiskShape.html#a4c1c7049055af66b3e3b92ba2bb65593">playrho::DiskShape</a>, <a class="el" href="classplayrho_1_1ChainShape.html#a10364983524ece10749e3c8b351af671">playrho::ChainShape</a>, and <a class="el" href="classplayrho_1_1MultiShape.html#a0f4bc2954462566539db2869779dcb8f">playrho::MultiShape</a>.</p>
-
-</div>
-</div>
-<a id="afcfe1ca825a0224c9fcbd40266cec3bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcfe1ca825a0224c9fcbd40266cec3bc">&#9670;&nbsp;</a></span>GetDensity()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt; playrho::Shape::GetDensity </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the density of this fixture. </p>
-<dl class="section return"><dt>Returns</dt><dd>Non-negative density (in mass per area). </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1MultiShape.html#a4c6c8fee52202a8761e8b5cb6d6f8030">playrho::MultiShape::GetMassData()</a>, <a class="el" href="classplayrho_1_1ChainShape.html#aa82bf948a6cafb90a3e067660dfd0ad0">playrho::ChainShape::GetMassData()</a>, <a class="el" href="classplayrho_1_1DiskShape.html#a33499bb9539070c8b65d68d7f51bb727">playrho::DiskShape::GetMassData()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a96945d0043fd21ecfc5a49d68961f4a3">playrho::PolygonShape::GetMassData()</a>, and <a class="el" href="classplayrho_1_1EdgeShape.html#a5fde10d13dbb254d35ee3f7af5e1b525">playrho::EdgeShape::GetMassData()</a>.</p>
-
-</div>
-</div>
-<a id="a16f8a5e215e8b451f776ff4864d4fbc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16f8a5e215e8b451f776ff4864d4fbc9">&#9670;&nbsp;</a></span>GetFriction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> playrho::Shape::GetFriction </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the coefficient of friction. </p>
-<dl class="section return"><dt>Returns</dt><dd>Value of 0 or higher. </dd></dl>
-
-</div>
-</div>
-<a id="a984cc0eb352498670d804332e897dc51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a984cc0eb352498670d804332e897dc51">&#9670;&nbsp;</a></span>GetMassData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="structplayrho_1_1MassData.html">MassData</a> playrho::Shape::GetMassData </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the mass properties of this shape using its dimensions and density. </p>
-<dl class="section return"><dt>Returns</dt><dd>Mass data for this shape. </dd></dl>
-
-<p>Implemented in <a class="el" href="classplayrho_1_1EdgeShape.html#a5fde10d13dbb254d35ee3f7af5e1b525">playrho::EdgeShape</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a96945d0043fd21ecfc5a49d68961f4a3">playrho::PolygonShape</a>, <a class="el" href="classplayrho_1_1DiskShape.html#a33499bb9539070c8b65d68d7f51bb727">playrho::DiskShape</a>, <a class="el" href="classplayrho_1_1ChainShape.html#aa82bf948a6cafb90a3e067660dfd0ad0">playrho::ChainShape</a>, and <a class="el" href="classplayrho_1_1MultiShape.html#a4c6c8fee52202a8761e8b5cb6d6f8030">playrho::MultiShape</a>.</p>
-
-</div>
-</div>
-<a id="a6b76df853ba0a82c33c9535cae23c850"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b76df853ba0a82c33c9535cae23c850">&#9670;&nbsp;</a></span>GetVertexRadius()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; playrho::Shape::GetVertexRadius </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the vertex radius. </p>
-<p>This gets the radius from the vertex that the shape's "skin" should extend outward by. While any edges - line segments between multiple vertices - are straight, corners between them (the vertices) are rounded and treated as rounded. Shapes with larger vertex radiuses compared to edge lengths therefore will be more prone to rolling or having other shapes more prone to roll off of them. Here's an image of a <a class="el" href="classplayrho_1_1PolygonShape.html" title="Polygon shape. ">PolygonShape</a> with it's skin drawn:</p>
-<div class="image">
-<img src="SkinnedPolygon.png" alt="SkinnedPolygon.png"/>
-</div>
-<dl class="section note"><dt>Note</dt><dd>This must be a non-negative value.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Shape.html#ab5c54d73365babc9969f9c0578f03d47" title="Sets the vertex radius. ">SetVertexRadius</a> </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1MultiShape.html#a887876a45b2ac17a6ac4fe93a085167d">playrho::MultiShape::GetChild()</a>, <a class="el" href="classplayrho_1_1ChainShape.html#afcc6cfa391761c1ed668eb1ea10924c9">playrho::ChainShape::GetChild()</a>, <a class="el" href="classplayrho_1_1DiskShape.html#a4ac8f47d72f510fc6443099f7f72cbcc">playrho::DiskShape::GetChild()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a29f70f3e1b8dc0c5563db2aeafbba8ea">playrho::PolygonShape::GetChild()</a>, <a class="el" href="classplayrho_1_1EdgeShape.html#a56ddb9c95539786021e02499f472e31d">playrho::EdgeShape::GetChild()</a>, <a class="el" href="classplayrho_1_1MultiShape.html#a4c6c8fee52202a8761e8b5cb6d6f8030">playrho::MultiShape::GetMassData()</a>, <a class="el" href="classplayrho_1_1ChainShape.html#aa82bf948a6cafb90a3e067660dfd0ad0">playrho::ChainShape::GetMassData()</a>, <a class="el" href="classplayrho_1_1DiskShape.html#a33499bb9539070c8b65d68d7f51bb727">playrho::DiskShape::GetMassData()</a>, <a class="el" href="classplayrho_1_1PolygonShape.html#a96945d0043fd21ecfc5a49d68961f4a3">playrho::PolygonShape::GetMassData()</a>, <a class="el" href="classplayrho_1_1EdgeShape.html#a5fde10d13dbb254d35ee3f7af5e1b525">playrho::EdgeShape::GetMassData()</a>, and <a class="el" href="classplayrho_1_1DiskShape.html#a81eecff3ef5b5d6d75b7de5285c07f78">playrho::DiskShape::GetRadius()</a>.</p>
-
-</div>
-</div>
-<a id="aade9199c59e3ec929c30fc74bd04a31a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aade9199c59e3ec929c30fc74bd04a31a">&#9670;&nbsp;</a></span>SetDensity()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void playrho::Shape::SetDensity </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt;&#160;</td>
-          <td class="paramname"><em>density</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the density of this fixture. </p>
-<dl class="section note"><dt>Note</dt><dd>This will <em>not</em> automatically adjust the mass of the body. You must call <a class="el" href="classplayrho_1_1Body.html#a1da721b67ed4d0643c9c20ce27ff8aa0" title="Resets the mass data properties. ">Body::ResetMassData</a> to update the body's mass. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">density</td><td>Non-negative density (in mass per area). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a380019249a4073deae3534447cfc143b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a380019249a4073deae3534447cfc143b">&#9670;&nbsp;</a></span>SetFriction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void playrho::Shape::SetFriction </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt;&#160;</td>
-          <td class="paramname"><em>friction</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the coefficient of friction. </p>
-<dl class="section note"><dt>Note</dt><dd>This will <em>not</em> change the friction of existing contacts. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">friction</td><td>Zero or higher (non-negative) co-efficient of friction. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a949546cd72eb2f99d0d605bd36f7db78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a949546cd72eb2f99d0d605bd36f7db78">&#9670;&nbsp;</a></span>SetRestitution()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void playrho::Shape::SetRestitution </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__BoundedAliases.html#ga9cf75a03c4b0afaaba95d65ec8ce54b4">Finite</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt;&#160;</td>
-          <td class="paramname"><em>restitution</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the coefficient of restitution. </p>
-<dl class="section note"><dt>Note</dt><dd>This will <em>not</em> change the restitution of existing contacts. </dd></dl>
-
-</div>
-</div>
-<a id="ab5c54d73365babc9969f9c0578f03d47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5c54d73365babc9969f9c0578f03d47">&#9670;&nbsp;</a></span>SetVertexRadius()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void playrho::Shape::SetVertexRadius </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td>
-          <td class="paramname"><em>vertexRadius</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the vertex radius. </p>
-<p>This sets the radius from the vertex that the shape's "skin" should extend outward by. While any edges - line segments between multiple vertices - are straight, corners between them (the vertices) are rounded and treated as rounded. Shapes with larger vertex radiuses compared to edge lengths therefore will be more prone to rolling or having other shapes more prone to roll off of them.</p>
-<dl class="section note"><dt>Note</dt><dd>This should be a non-negative value.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Shape.html#a6b76df853ba0a82c33c9535cae23c850" title="Gets the vertex radius. ">GetVertexRadius</a> </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1DiskShape.html#a5a2d9246aa89879d5dfec7ebd739ba86">playrho::DiskShape::SetRadius()</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="ac61062d7eb39f1af74f2cae076bb338f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac61062d7eb39f1af74f2cae076bb338f">&#9670;&nbsp;</a></span>ComputeAABB()</h2>
 
@@ -639,8 +306,8 @@ Related Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a3b9ed4801a893034e30b84c303adde14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b9ed4801a893034e30b84c303adde14">&#9670;&nbsp;</a></span>GetVertexRadius()</h2>
+<a id="aef5a495e8d68c39d47d049f51ec5452f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef5a495e8d68c39d47d049f51ec5452f">&#9670;&nbsp;</a></span>GetChild</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -649,7 +316,62 @@ Related Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; GetVertexRadius </td>
+          <td class="memname"><a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> GetChild </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a>&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the "child" for the given index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shape</td><td><a class="el" href="classplayrho_1_1Shape.html" title="Shape. ">Shape</a> to get "child" shape of. </td></tr>
+    <tr><td class="paramname">index</td><td>Index to a child element of the shape. Value must be less than the number of child primitives of the shape. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The shape must remain in scope while the proxy is in use. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if the given index is out of range. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Shape.html#ac04194136cade2a9cb3db0ce6234b3fc" title="Gets the number of child primitives of the shape. ">GetChildCount</a> </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1Shape_1_1Model.html#aeece4128ca260166c51215c59eb120ba">playrho::Shape::Model&lt; T &gt;::GetChild_()</a>.</p>
+
+</div>
+</div>
+<a id="ac04194136cade2a9cb3db0ce6234b3fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac04194136cade2a9cb3db0ce6234b3fc">&#9670;&nbsp;</a></span>GetChildCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> GetChildCount </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;&#160;</td>
           <td class="paramname"><em>shape</em></td><td>)</td>
@@ -658,14 +380,175 @@ Related Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the vertex radius of the given shape. </p>
-<p>Gets the radius of every vertex of this shape. This is used for collision handling. </p><dl class="section note"><dt>Note</dt><dd>This value should never be less than zero.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Shape.html#a6b76df853ba0a82c33c9535cae23c850" title="Gets the vertex radius. ">Shape::GetVertexRadius</a> </dd></dl>
+<p>Gets the number of child primitives of the shape. </p>
+<dl class="section return"><dt>Returns</dt><dd>Non-negative count. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1Shape_1_1Model.html#a17ef6bc1f5afac88a742011dece57deb">playrho::Shape::Model&lt; T &gt;::GetChildCount_()</a>.</p>
+
+</div>
+</div>
+<a id="a2b3ae4694d7e8995f4500e9a84e25046"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b3ae4694d7e8995f4500e9a84e25046">&#9670;&nbsp;</a></span>GetData</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const void* GetData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets a pointer to the underlying data. </p>
+<dl class="section note"><dt>Note</dt><dd>Provided for introspective purposes like visitation. </dd>
+<dd>
+Generally speaking, try to avoid using this method unless there's no other way to access the underlying data. </dd></dl>
+
+</div>
+</div>
+<a id="a154958fa91ee5653a279fc28e1472ab8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a154958fa91ee5653a279fc28e1472ab8">&#9670;&nbsp;</a></span>GetDensity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a>&gt; GetDensity </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the density of this fixture. </p>
+<dl class="section return"><dt>Returns</dt><dd>Non-negative density (in mass per area). </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1Shape_1_1Model.html#a74abd5afedb50fbfdce12199c9c05cd8">playrho::Shape::Model&lt; T &gt;::GetDensity_()</a>.</p>
+
+</div>
+</div>
+<a id="a7391adc084afda958cdb54b10229990c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7391adc084afda958cdb54b10229990c">&#9670;&nbsp;</a></span>GetFriction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> GetFriction </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the coefficient of friction. </p>
+<dl class="section return"><dt>Returns</dt><dd>Value of 0 or higher. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1Shape_1_1Model.html#ac3f88cfc185dd2776a544b909c88b000">playrho::Shape::Model&lt; T &gt;::GetFriction_()</a>.</p>
+
+</div>
+</div>
+<a id="a1f9e8db270c93956369ac55920c462d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f9e8db270c93956369ac55920c462d7">&#9670;&nbsp;</a></span>GetMassData</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structplayrho_1_1MassData.html">MassData</a> GetMassData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the mass properties of this shape using its dimensions and density. </p>
+<dl class="section return"><dt>Returns</dt><dd>Mass data for this shape. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1Shape_1_1Model.html#ad7083a1ca94d690a353b051811f8eea8">playrho::Shape::Model&lt; T &gt;::GetMassData_()</a>.</p>
+
+</div>
+</div>
+<a id="a5321a7da13179141da8f849904e67278"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5321a7da13179141da8f849904e67278">&#9670;&nbsp;</a></span>GetVertexRadius</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&gt; GetVertexRadius </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1Shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the vertex radius. </p>
+<p>This gets the radius from the vertex that the shape's "skin" should extend outward by. While any edges - line segments between multiple vertices - are straight, corners between them (the vertices) are rounded and treated as rounded. Shapes with larger vertex radiuses compared to edge lengths therefore will be more prone to rolling or having other shapes more prone to roll off of them. Here's an image of a shape configured via a <a class="el" href="classplayrho_1_1PolygonShapeConf.html" title="Polygon shape configuration. ">PolygonShapeConf</a> with it's skin drawn:</p>
+<div class="image">
+<img src="SkinnedPolygon.png" alt="SkinnedPolygon.png"/>
+</div>
+<dl class="section note"><dt>Note</dt><dd>This must be a non-negative value.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>UseVertexRadius </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1Shape_1_1Model.html#a3e7a641855ac25062f2ff4c402ee5547">playrho::Shape::Model&lt; T &gt;::GetVertexRadius_()</a>.</p>
 
 </div>
 </div>
@@ -673,12 +556,11 @@ Related Functions</h2></td></tr>
 <li>Shape.hpp</li>
 <li>AABB.hpp</li>
 <li>RayCastOutput.hpp</li>
-<li>Shape.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 30 2017 12:16:53 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Dec 11 2017 12:59:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>
