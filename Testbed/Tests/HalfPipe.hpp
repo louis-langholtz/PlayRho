@@ -30,7 +30,7 @@ namespace playrho {
         {
             const auto pipeBody = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0, 20) * 1_m));
             {
-                auto conf = ChainShape::Conf{};
+                auto conf = ChainShapeConf{};
                 conf.UseFriction(Real(1));
                 conf.Set(GetCircleVertices(20_m, 90, 180_deg, Real(0.5f)));
                 pipeBody->CreateFixture(Shape{conf});

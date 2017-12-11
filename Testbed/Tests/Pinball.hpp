@@ -34,7 +34,7 @@ public:
         // Ground body
         const auto ground = m_world.CreateBody();
         {
-            auto conf = ChainShape::Conf{};
+            auto conf = ChainShapeConf{};
             conf.Add(Vec2(0.0f, -2.0f) * 1_m);
             conf.Add(Vec2(8.0f, 6.0f) * 1_m);
             conf.Add(Vec2(8.0f, 20.0f) * 1_m);

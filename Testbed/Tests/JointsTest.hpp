@@ -357,7 +357,7 @@ private:
         {
             const auto lftEye = m_world.CreateBody(BodyDef(StaticBD).UseLocation(ctr + lftOffs));
             const auto rgtEye = m_world.CreateBody(BodyDef(StaticBD).UseLocation(ctr + rgtOffs));
-            auto cconf = ChainShape::Conf{};
+            auto cconf = ChainShapeConf{};
             cconf.restitution = 0;
             cconf.friction = 0;
             cconf.Set(GetCircleVertices(1.8_m, 24, 0_deg, 1));

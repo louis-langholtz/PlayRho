@@ -69,9 +69,9 @@ public:
         {
             Visit(*static_cast<const PolygonShape::Conf*>(data));
         }
-        else if (ti == typeid(ChainShape::Conf))
+        else if (ti == typeid(ChainShapeConf))
         {
-            Visit(*static_cast<const ChainShape::Conf*>(data));
+            Visit(*static_cast<const ChainShapeConf*>(data));
         }
         else if (ti == typeid(MultiShape::Conf))
         {
@@ -82,7 +82,7 @@ public:
     void Visit(const DiskShape::Conf& shape);
     void Visit(const EdgeShape::Conf& shape);
     void Visit(const PolygonShape::Conf& shape);
-    void Visit(const ChainShape::Conf& shape);
+    void Visit(const ChainShapeConf& shape);
     void Visit(const MultiShape::Conf& shape);
 
     void Draw(const DistanceProxy& proxy);
@@ -131,7 +131,7 @@ void ShapeDrawer::Visit(const EdgeShape::Conf& shape)
     }
 }
 
-void ShapeDrawer::Visit(const ChainShape::Conf& shape)
+void ShapeDrawer::Visit(const ChainShapeConf& shape)
 {
     const auto count = shape.GetVertexCount();
     const auto r = GetVertexRadius(shape);

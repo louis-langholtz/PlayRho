@@ -53,7 +53,7 @@ namespace playrho {
                 SetAngularVelocity(*m_ground, angularVelocity - 0.1_rad / Second);
             });
 
-            auto boundaryConf = ChainShape::Conf{}.UseFriction(Real(100));
+            auto boundaryConf = ChainShapeConf{}.UseFriction(Real(100));
             boundaryConf.UseVertexRadius(0.04_m);
             boundaryConf.Add(Vec2(-12, +20) * 1_m);
             boundaryConf.Add(Vec2(-12,  +0) * 1_m);

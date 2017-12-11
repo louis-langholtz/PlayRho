@@ -30,7 +30,7 @@
 
 namespace playrho {
 
-/// @brief Chain shape.
+/// @brief Chain shape configuration.
 ///
 /// @details A chain shape is a free form sequence of line segments.
 /// The chain has two-sided collision, so you can use inside and outside collision.
@@ -43,97 +43,86 @@ namespace playrho {
 ///
 /// @ingroup PartsGroup
 ///
-class ChainShape
+class ChainShapeConf: public ShapeDefBuilder<ChainShapeConf>
 {
 public:
-
     /// @brief Gets the default vertex radius.
     static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
         return DefaultLinearSlop * 2;
     }
-    
-    /// @brief Configuration data for chain shapes.
-    class Conf: public ShapeDefBuilder<Conf>
+
+    ChainShapeConf(): ShapeDefBuilder{ShapeDef{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}}
     {
-    public:
-        Conf(): ShapeDefBuilder{ShapeDef{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}}
-        {
-            // Intentionally empty.
-        }
-        
-        Conf& Set(std::vector<Length2> vertices);
-        Conf& Add(Length2 vertex);
-
-        ChildCounter GetChildCount() const noexcept
-        {
-            // edge count = vertex count - 1
-            const auto count = GetVertexCount();
-            return (count > 1)? count - 1: count;
-        }
-
-        DistanceProxy GetChild(ChildCounter index) const;
-        
-        MassData GetMassData() const noexcept;
-        
-        /// @brief Gets the vertex count.
-        ChildCounter GetVertexCount() const noexcept
-        {
-            return static_cast<ChildCounter>(m_vertices.size());
-        }
-        
-        /// @brief Gets a vertex by index.
-        Length2 GetVertex(ChildCounter index) const
-        {
-            assert((0 <= index) && (index < GetVertexCount()));
-            return m_vertices[index];
-        }
-        
-        /// @brief Gets the normal at the given index.
-        UnitVec2 GetNormal(ChildCounter index) const
-        {
-            assert((0 <= index) && (index < GetVertexCount()));
-            return m_normals[index];
-        }
-
-    private:
-        std::vector<Length2> m_vertices; ///< Vertices.
-        std::vector<UnitVec2> m_normals; ///< Normals.
-    };
-
-    /// @brief Gets the default configuration.
-    static Conf GetDefaultConf() noexcept
-    {
-        return Conf{};
+        // Intentionally empty.
     }
+    
+    ChainShapeConf& Set(std::vector<Length2> vertices);
+
+    ChainShapeConf& Add(Length2 vertex);
+
+    ChildCounter GetChildCount() const noexcept
+    {
+        // edge count = vertex count - 1
+        const auto count = GetVertexCount();
+        return (count > 1)? count - 1: count;
+    }
+
+    DistanceProxy GetChild(ChildCounter index) const;
+    
+    MassData GetMassData() const noexcept;
+    
+    /// @brief Gets the vertex count.
+    ChildCounter GetVertexCount() const noexcept
+    {
+        return static_cast<ChildCounter>(m_vertices.size());
+    }
+    
+    /// @brief Gets a vertex by index.
+    Length2 GetVertex(ChildCounter index) const
+    {
+        assert((0 <= index) && (index < GetVertexCount()));
+        return m_vertices[index];
+    }
+    
+    /// @brief Gets the normal at the given index.
+    UnitVec2 GetNormal(ChildCounter index) const
+    {
+        assert((0 <= index) && (index < GetVertexCount()));
+        return m_normals[index];
+    }
+
+private:
+    std::vector<Length2> m_vertices; ///< Vertices.
+    std::vector<UnitVec2> m_normals; ///< Normals.
 };
 
 // Free functions...
 
-inline ChildCounter GetChildCount(const ChainShape::Conf& arg) noexcept
+inline ChildCounter GetChildCount(const ChainShapeConf& arg) noexcept
 {
     return arg.GetChildCount();
 }
 
-inline DistanceProxy GetChild(const ChainShape::Conf& arg, ChildCounter index)
+inline DistanceProxy GetChild(const ChainShapeConf& arg, ChildCounter index)
 {
     return arg.GetChild(index);
 }
 
-inline MassData GetMassData(const ChainShape::Conf& arg) noexcept
+inline MassData GetMassData(const ChainShapeConf& arg) noexcept
 {
     return arg.GetMassData();
 }
 
 /// @brief Determines whether the given shape is looped.
-inline bool IsLooped(const ChainShape::Conf& shape) noexcept
+inline bool IsLooped(const ChainShapeConf& shape) noexcept
 {
     const auto count = shape.GetVertexCount();
     return (count > 1)? (shape.GetVertex(count - 1) == shape.GetVertex(0)): false;
 }
 
 /// @brief Gets the next index after the given index for the given shape.
-inline ChildCounter GetNextIndex(const ChainShape::Conf& shape, ChildCounter index) noexcept
+inline ChildCounter GetNextIndex(const ChainShapeConf& shape, ChildCounter index) noexcept
 {
     return GetModuloNext(index, shape.GetVertexCount());
 }

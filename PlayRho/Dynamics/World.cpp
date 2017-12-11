@@ -2854,7 +2854,7 @@ Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions, const Sha
 {
     const auto body = world.CreateBody();
     
-    auto conf = ChainShape::Conf{};
+    auto conf = ChainShapeConf{};
     conf.restitution = baseConf.restitution;
     conf.vertexRadius = baseConf.vertexRadius;
     conf.friction = baseConf.friction;

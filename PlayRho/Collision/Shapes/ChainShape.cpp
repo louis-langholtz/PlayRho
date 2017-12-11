@@ -42,7 +42,7 @@ namespace {
 #endif
 } // anonymous namespace
 
-ChainShape::Conf& ChainShape::Conf::Set(std::vector<Length2> vertices)
+ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
 {
     const auto count = vertices.size();
     if (count > MaxChildCount)
@@ -75,7 +75,7 @@ ChainShape::Conf& ChainShape::Conf::Set(std::vector<Length2> vertices)
     return *this;
 }
 
-ChainShape::Conf& ChainShape::Conf::Add(Length2 vertex)
+ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
 {
     if (m_vertices.size() > 0)
     {
@@ -92,7 +92,7 @@ ChainShape::Conf& ChainShape::Conf::Add(Length2 vertex)
     return *this;
 }
 
-MassData ChainShape::Conf::GetMassData() const noexcept
+MassData ChainShapeConf::GetMassData() const noexcept
 {
     const auto density = this->density;
     if (density > AreaDensity(0))
@@ -134,7 +134,7 @@ MassData ChainShape::Conf::GetMassData() const noexcept
     return MassData{};
 }
 
-DistanceProxy ChainShape::Conf::GetChild(ChildCounter index) const
+DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
 {
     if (index >= GetChildCount())
     {

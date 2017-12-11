@@ -25,70 +25,70 @@
 
 using namespace playrho;
 
-TEST(ChainShape, ByteSize)
+TEST(ChainShapeConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN64)
 #if !defined(NDEBUG)
-            EXPECT_EQ(sizeof(ChainShape::Conf), std::size_t(88));
+            EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(88));
 #else
-            EXPECT_EQ(sizeof(ChainShape::Conf), std::size_t(72));
+            EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(72));
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)
-            EXPECT_EQ(sizeof(ChainShape::Conf), std::size_t(52));
+            EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(52));
 #else
-            EXPECT_EQ(sizeof(ChainShape::Conf), std::size_t(44));
+            EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(44));
 #endif
 #else
-            EXPECT_EQ(sizeof(ChainShape::Conf), std::size_t(64));
+            EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(64));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(ChainShape::Conf), std::size_t(88)); break;
-        case 16: EXPECT_EQ(sizeof(ChainShape::Conf), std::size_t(128)); break;
+        case  8: EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(88)); break;
+        case 16: EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(128)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(ChainShape, DefaultConstruction)
+TEST(ChainShapeConf, DefaultConstruction)
 {
-    const auto foo = ChainShape::Conf{};
+    const auto foo = ChainShapeConf{};
     const auto defaultMassData = MassData{};
-    const auto defaultConf = ChainShape::Conf{};
+    const auto defaultConf = ChainShapeConf{};
     
-    EXPECT_EQ(typeid(foo), typeid(ChainShape::Conf));
+    EXPECT_EQ(typeid(foo), typeid(ChainShapeConf));
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{0});
     EXPECT_EQ(GetMassData(foo), defaultMassData);
     
-    EXPECT_EQ(GetVertexRadius(foo), ChainShape::GetDefaultVertexRadius());
+    EXPECT_EQ(GetVertexRadius(foo), ChainShapeConf::GetDefaultVertexRadius());
     EXPECT_EQ(GetDensity(foo), defaultConf.density);
     EXPECT_EQ(GetFriction(foo), defaultConf.friction);
     EXPECT_EQ(GetRestitution(foo), defaultConf.restitution);
 }
 
-TEST(ChainShape, GetInvalidChildThrows)
+TEST(ChainShapeConf, GetInvalidChildThrows)
 {
-    const auto foo = ChainShape::Conf{};
+    const auto foo = ChainShapeConf{};
     
     ASSERT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_THROW(GetChild(foo, 0), InvalidArgument);
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
-TEST(ChainShape, Accept)
+TEST(ChainShapeConf, Accept)
 {
     auto visited = false;
     auto shapeVisited = false;
-    const auto foo = ChainShape::Conf{};
+    const auto foo = ChainShapeConf{};
     ASSERT_FALSE(visited);
     ASSERT_FALSE(shapeVisited);
     
     Accept(Shape(foo), [&](const std::type_info& ti, const void*) {
         visited = true;
-        if (ti == typeid(ChainShape::Conf))
+        if (ti == typeid(ChainShapeConf))
         {
             shapeVisited = true;
         }
@@ -97,7 +97,7 @@ TEST(ChainShape, Accept)
     EXPECT_TRUE(shapeVisited);
 }
 
-TEST(ChainShape, OneVertexLikeDisk)
+TEST(ChainShapeConf, OneVertexLikeDisk)
 {
     const auto vertexRadius = 1_m;
     const auto density = 1_kgpm2;
@@ -105,11 +105,11 @@ TEST(ChainShape, OneVertexLikeDisk)
     const auto expectedMassData = ::GetMassData(vertexRadius, density, location);
     const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 1, &location, nullptr};
 
-    auto conf = ChainShape::Conf{};
+    auto conf = ChainShapeConf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
     conf.Add(location);
-    auto foo = ChainShape::Conf{conf};
+    auto foo = ChainShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{1});
     EXPECT_EQ(GetVertexRadius(foo), vertexRadius);
@@ -119,7 +119,7 @@ TEST(ChainShape, OneVertexLikeDisk)
     EXPECT_EQ(child, expectedDistanceProxy);
 }
 
-TEST(ChainShape, TwoVertexLikeEdge)
+TEST(ChainShapeConf, TwoVertexLikeEdge)
 {
     const auto vertexRadius = 1_m;
     const auto density = NonNegative<AreaDensity>(1_kgpm2);
@@ -127,18 +127,18 @@ TEST(ChainShape, TwoVertexLikeEdge)
         Length2{0_m, 0_m}, Length2(4_m, 0_m)
     }};
     
-    auto conf = ChainShape::Conf{};
+    auto conf = ChainShapeConf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
     conf.Add(locations[0]);
     conf.Add(locations[1]);
-    auto foo = ChainShape::Conf{conf};
+    auto foo = ChainShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{2});
     EXPECT_EQ(GetVertexRadius(foo), vertexRadius);
 }
 
-TEST(ChainShape, TwoVertexDpLikeEdgeDp)
+TEST(ChainShapeConf, TwoVertexDpLikeEdgeDp)
 {
     const auto vertexRadius = 1_m;
     const auto density = NonNegative<AreaDensity>(1_kgpm2);
@@ -148,19 +148,19 @@ TEST(ChainShape, TwoVertexDpLikeEdgeDp)
     const auto normals = std::array<UnitVec2, 2>{{UnitVec2::GetTop(), UnitVec2::GetBottom()}};
     const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 2, locations.data(), normals.data()};
     
-    auto conf = ChainShape::Conf{};
+    auto conf = ChainShapeConf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
     conf.Add(locations[0]);
     conf.Add(locations[1]);
-    auto foo = ChainShape::Conf{conf};
+    auto foo = ChainShapeConf{conf};
     ASSERT_EQ(GetChildCount(foo), ChildCounter{1});
     
     const auto child = GetChild(foo, 0);
     EXPECT_EQ(child, expectedDistanceProxy);
 }
 
-TEST(ChainShape, TwoVertexMassLikeEdgeMass)
+TEST(ChainShapeConf, TwoVertexMassLikeEdgeMass)
 {
     const auto vertexRadius = 1_m;
     const auto density = NonNegative<AreaDensity>(1_kgpm2);
@@ -169,12 +169,12 @@ TEST(ChainShape, TwoVertexMassLikeEdgeMass)
     }};
     const auto expectedMassData = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
     
-    auto conf = ChainShape::Conf{};
+    auto conf = ChainShapeConf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
     conf.Add(locations[0]);
     conf.Add(locations[1]);
-    auto foo = ChainShape::Conf{conf};
+    auto foo = ChainShapeConf{conf};
     
     const auto massData = GetMassData(foo);
     EXPECT_NEAR(static_cast<double>(Real{GetX(massData.center)/1_m}),
@@ -187,7 +187,7 @@ TEST(ChainShape, TwoVertexMassLikeEdgeMass)
     EXPECT_EQ(massData.I, expectedMassData.I);
 }
 
-TEST(ChainShape, FourVertex)
+TEST(ChainShapeConf, FourVertex)
 {
     const auto vertexRadius = 1_m;
     const auto density = 1_kgpm2;
@@ -200,11 +200,11 @@ TEST(ChainShape, FourVertex)
     }};
     const auto edgeMassData0 = ::GetMassData(vertexRadius, density, locations[0], locations[1]);
 
-    auto conf = ChainShape::Conf{};
+    auto conf = ChainShapeConf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
     conf.Set(std::vector<Length2>(std::begin(locations), std::end(locations)));
-    auto foo = ChainShape::Conf{conf};
+    auto foo = ChainShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{4});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{5});
     EXPECT_EQ(GetVertexRadius(foo), vertexRadius);
@@ -215,18 +215,18 @@ TEST(ChainShape, FourVertex)
     EXPECT_EQ(massData.mass, NonNegative<Mass>{expectedMass});
 }
 
-TEST(ChainShape, WithCircleVertices)
+TEST(ChainShapeConf, WithCircleVertices)
 {
     const auto circleRadius = 4_m;
     const auto vertices = GetCircleVertices(circleRadius, 4, 0_deg, Real(1) / Real(2));
     const auto density = 1_kgpm2;
     const auto vertexRadius = 1_m / 10;
 
-    auto conf = ChainShape::Conf{};
+    auto conf = ChainShapeConf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
     conf.Set(vertices);
-    auto foo = ChainShape::Conf{conf};
+    auto foo = ChainShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{4});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{5});
     EXPECT_EQ(GetVertexRadius(foo), vertexRadius);
@@ -236,12 +236,12 @@ TEST(ChainShape, WithCircleVertices)
     EXPECT_NEAR(static_cast<double>(Real(GetY(massData.center) / 1_m)), 2.4142134189605713, 0.0001);
 }
 
-TEST(ChainShape, TooManyVertices)
+TEST(ChainShapeConf, TooManyVertices)
 {
     const auto density = 1_kgpm2;
     const auto vertexRadius = 1_m / 10;
     
-    auto conf = ChainShape::Conf{};
+    auto conf = ChainShapeConf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
     EXPECT_THROW(conf.Set(std::vector<Length2>(MaxChildCount + 1)), InvalidArgument);

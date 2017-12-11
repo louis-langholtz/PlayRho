@@ -66,7 +66,7 @@ namespace
         void Visit(const DiskShape::Conf& shape);
         void Visit(const EdgeShape::Conf& shape);
         void Visit(const PolygonShape::Conf& shape);
-        void Visit(const ChainShape::Conf& shape);
+        void Visit(const ChainShapeConf& shape);
         void Visit(const MultiShape::Conf& shape);
     };
     
@@ -105,7 +105,7 @@ namespace
         log("    shape.Set(vs, %d);\n", vertexCount);
     }
     
-    void ShapeDumper::Visit(const playrho::ChainShape::Conf& s)
+    void ShapeDumper::Visit(const playrho::ChainShapeConf& s)
     {
         log("    ChainShape shape;\n");
         log("    Vec2 vs[%d];\n", s.GetVertexCount());

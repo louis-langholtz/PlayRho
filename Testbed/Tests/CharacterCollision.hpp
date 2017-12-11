@@ -102,7 +102,7 @@ public:
         // Chain shape
         {
             const auto body = m_world.CreateBody(BodyDef{}.UseAngle(45_deg));
-            auto conf = ChainShape::Conf{};
+            auto conf = ChainShapeConf{};
             conf.Add(Vec2(5.0f, 7.0f) * 1_m);
             conf.Add(Vec2(6.0f, 8.0f) * 1_m);
             conf.Add(Vec2(7.0f, 8.0f) * 1_m);
@@ -123,7 +123,7 @@ public:
 
         // Square made from an edge loop. Collision should be smooth.
         {
-            auto conf = ChainShape::Conf{};
+            auto conf = ChainShapeConf{};
             conf.Add(Vec2(-1.0f, 3.0f) * 1_m);
             conf.Add(Vec2(1.0f, 3.0f) * 1_m);
             conf.Add(Vec2(1.0f, 5.0f) * 1_m);
@@ -135,7 +135,7 @@ public:
         // Edge loop. Collision should be smooth.
         {
             const auto body = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-10.0f, 4.0f) * 1_m));
-            auto conf = ChainShape::Conf{};
+            auto conf = ChainShapeConf{};
             conf.Add(Length2{});
             conf.Add(Vec2(6.0f, 0.0f) * 1_m);
             conf.Add(Vec2(6.0f, 2.0f) * 1_m);

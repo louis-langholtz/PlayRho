@@ -50,7 +50,7 @@ namespace playrho {
             };
             m_orbiter->SetVelocity(velocity);
             
-            auto conf = ChainShape::Conf{};
+            auto conf = ChainShapeConf{};
             conf.Set(GetCircleVertices(20_m, 180));
             conf.UseVertexRadius(0.1_m);
             conf.UseDensity(1_kgpm2);
