@@ -30,8 +30,6 @@
 
 namespace playrho {
 
-class EdgeShape;
-
 /// @brief Chain shape.
 ///
 /// @details A chain shape is a free form sequence of line segments.

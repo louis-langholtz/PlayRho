@@ -136,7 +136,6 @@
 		4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2.hpp */; };
 		4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3FF1E54E7CB00574143 /* StepConf.cpp */; };
 		476E8ABE1FC8CD9F00705BB5 /* UnitVec2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476E8ABD1FC8CD9F00705BB5 /* UnitVec2.cpp */; };
-		476E8AC31FCF926F00705BB5 /* FunctionalShapeVisitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 476E8AC11FCF926F00705BB5 /* FunctionalShapeVisitor.hpp */; };
 		476E8AC71FCFA0D400705BB5 /* FunctionalJointVisitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 476E8AC51FCFA0D400705BB5 /* FunctionalJointVisitor.hpp */; };
 		4775A9381E05B032001C2332 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4775A9371E05B032001C2332 /* StepConf.cpp */; };
 		47791F801F92DB0700E257AF /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47791F7A1F92D78F00E257AF /* imgui_draw.cpp */; };
@@ -206,7 +205,6 @@
 		47CF984B1DF9C4A30077F5F2 /* ShapeSeparation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */; };
 		47CF984D1DF9C4A30077F5F2 /* ShapeSeparation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */; };
 		47CF98501E0088ED0077F5F2 /* Angle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47CF984F1E0088ED0077F5F2 /* Angle.cpp */; };
-		47D28D871F6DD9540094C032 /* ShapeVisitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47D28D851F6DD9540094C032 /* ShapeVisitor.hpp */; };
 		47D28D8B1F6DEABF0094C032 /* JointVisitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47D28D891F6DEABF0094C032 /* JointVisitor.hpp */; };
 		47D28D8E1F6E2C7C0094C032 /* JointType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47D28D8C1F6E2C7C0094C032 /* JointType.cpp */; };
 		47D28D8F1F6E2C7C0094C032 /* JointType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47D28D8D1F6E2C7C0094C032 /* JointType.hpp */; };
@@ -514,7 +512,6 @@
 		4768D3FA1E414A0100574143 /* Vector2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2.hpp; sourceTree = "<group>"; };
 		4768D3FF1E54E7CB00574143 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		476E8ABD1FC8CD9F00705BB5 /* UnitVec2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UnitVec2.cpp; sourceTree = "<group>"; };
-		476E8AC11FCF926F00705BB5 /* FunctionalShapeVisitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FunctionalShapeVisitor.hpp; sourceTree = "<group>"; };
 		476E8AC51FCFA0D400705BB5 /* FunctionalJointVisitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FunctionalJointVisitor.hpp; sourceTree = "<group>"; };
 		476E8AC91FD0FB1100705BB5 /* PlayRho.profdata */ = {isa = PBXFileReference; lastKnownFileType = file; path = PlayRho.profdata; sourceTree = "<group>"; };
 		477329D61F9BEFA200C521B4 /* SolarSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SolarSystem.hpp; sourceTree = "<group>"; };
@@ -590,7 +587,6 @@
 		47CF98491DF9C4A30077F5F2 /* ShapeSeparation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShapeSeparation.cpp; sourceTree = "<group>"; };
 		47CF984A1DF9C4A30077F5F2 /* ShapeSeparation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeSeparation.hpp; sourceTree = "<group>"; };
 		47CF984F1E0088ED0077F5F2 /* Angle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Angle.cpp; sourceTree = "<group>"; };
-		47D28D851F6DD9540094C032 /* ShapeVisitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShapeVisitor.hpp; sourceTree = "<group>"; };
 		47D28D891F6DEABF0094C032 /* JointVisitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointVisitor.hpp; sourceTree = "<group>"; };
 		47D28D8C1F6E2C7C0094C032 /* JointType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JointType.cpp; sourceTree = "<group>"; };
 		47D28D8D1F6E2C7C0094C032 /* JointType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointType.hpp; sourceTree = "<group>"; };
@@ -953,7 +949,6 @@
 				80BB8938141C3E5900F1753A /* DiskShape.hpp */,
 				80BB8939141C3E5900F1753A /* EdgeShape.cpp */,
 				80BB893A141C3E5900F1753A /* EdgeShape.hpp */,
-				476E8AC11FCF926F00705BB5 /* FunctionalShapeVisitor.hpp */,
 				474AFBF61EB1B2CB002AA6C8 /* MultiShape.cpp */,
 				474AFBF71EB1B2CB002AA6C8 /* MultiShape.hpp */,
 				80BB893B141C3E5900F1753A /* PolygonShape.cpp */,
@@ -961,7 +956,6 @@
 				470F9B051EDB8F62007EF7B6 /* Shape.cpp */,
 				80BB893D141C3E5900F1753A /* Shape.hpp */,
 				473E019C1F80ACBE00D58CC8 /* ShapeDef.hpp */,
-				47D28D851F6DD9540094C032 /* ShapeVisitor.hpp */,
 			);
 			path = Shapes;
 			sourceTree = "<group>";
@@ -1315,7 +1309,6 @@
 				4734B2211DC1340500F15E29 /* Span.hpp in Headers */,
 				80BB8998141C3E5900F1753A /* DiskShape.hpp in Headers */,
 				472724301E315E1A00C64921 /* Fixed.hpp in Headers */,
-				476E8AC31FCF926F00705BB5 /* FunctionalShapeVisitor.hpp in Headers */,
 				47C85D211F0DA14500F70C56 /* Templates.hpp in Headers */,
 				80BB899A141C3E5900F1753A /* EdgeShape.hpp in Headers */,
 				470F94CC1EC4D95D00AA3C82 /* BodyAtty.hpp in Headers */,
@@ -1359,7 +1352,6 @@
 				478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
 				80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */,
 				47B58F661F64D2B500354C34 /* Real.hpp in Headers */,
-				47D28D871F6DD9540094C032 /* ShapeVisitor.hpp in Headers */,
 				4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */,
 				4787D6E71F2ED62C008C115E /* WheelJointDef.hpp in Headers */,
 				470F94E31ECBB3A100AA3C82 /* Range.hpp in Headers */,

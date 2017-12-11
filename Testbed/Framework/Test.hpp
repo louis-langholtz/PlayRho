@@ -23,7 +23,6 @@
 #include <PlayRho/PlayRho.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
-#include <PlayRho/Collision/Shapes/FunctionalShapeVisitor.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
 #include <PlayRho/Common/Range.hpp>
