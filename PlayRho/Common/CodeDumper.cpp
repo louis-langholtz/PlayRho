@@ -61,7 +61,29 @@ namespace
     class ShapeDumper
     {
     public:
-        void operator() (const std::type_info& ti, const void* data);
+        void operator() (const std::type_info& ti, const void* data)
+        {
+            if (ti == typeid(DiskShapeConf))
+            {
+                Visit(*static_cast<const DiskShapeConf*>(data));
+            }
+            else if (ti == typeid(EdgeShapeConf))
+            {
+                Visit(*static_cast<const EdgeShapeConf*>(data));
+            }
+            else if (ti == typeid(PolygonShapeConf))
+            {
+                Visit(*static_cast<const PolygonShapeConf*>(data));
+            }
+            else if (ti == typeid(ChainShapeConf))
+            {
+                Visit(*static_cast<const ChainShapeConf*>(data));
+            }
+            else if (ti == typeid(MultiShapeConf))
+            {
+                Visit(*static_cast<const MultiShapeConf*>(data));
+            }
+        }
 
         void Visit(const DiskShapeConf& shape);
         void Visit(const EdgeShapeConf& shape);
