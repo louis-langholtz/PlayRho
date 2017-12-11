@@ -31,7 +31,7 @@ public:
     Prismatic()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
             BodyDef bd;
@@ -40,18 +40,13 @@ public:
             bd.angle = 0.5_rad * Pi;
             bd.allowSleep = false;
             const auto body = m_world.CreateBody(bd);
-            
-            auto polygonConf = PolygonShape::Conf{};
-            polygonConf.density = 5_kgpm2;
-            body->CreateFixture(std::make_shared<PolygonShape>(2_m, 0.5_m, polygonConf));
+            body->CreateFixture(PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(2_m, 0.5_m));
 
             // Bouncy limit
             const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
             PrismaticJointDef pjd(ground, body, Length2{}, axis);
-
             // Non-bouncy limit
             //pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
-
             pjd.motorSpeed = 10_rad / 1_s;
             pjd.maxMotorForce = 10000_N;
             pjd.enableMotor = true;

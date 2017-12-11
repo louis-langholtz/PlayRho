@@ -67,7 +67,7 @@ struct ShapeDef
     /// @note This must be a non-negative value.
     /// @note Use 0 to indicate that the shape's associated mass should be 0.
     ///
-    NonNegative<AreaDensity> density = NonNegative<AreaDensity>{0};
+    NonNegative<AreaDensity> density = NonNegative<AreaDensity>{0_kgpm2};
 };
 
 /// @brief Builder configuration structure.
@@ -99,22 +99,6 @@ struct ShapeDefBuilder: ShapeDef
     
     /// @brief Uses the given density.
     PLAYRHO_CONSTEXPR inline ConcreteConf& UseDensity(NonNegative<AreaDensity> value) noexcept;
-    
-    /// @brief Uses the given vertex radius.
-    /// @note Intended for namewise backward compatibility.
-    PLAYRHO_CONSTEXPR inline ConcreteConf& SetVertexRadius(Length v) noexcept;
-    
-    /// @brief Uses the given restitution.
-    /// @note Intended for namewise backward compatibility.
-    PLAYRHO_CONSTEXPR inline ConcreteConf& SetRestitution(Real v) noexcept;
-    
-    /// @brief Uses the given friction.
-    /// @note Intended for namewise backward compatibility.
-    PLAYRHO_CONSTEXPR inline ConcreteConf& SetFriction(Real v) noexcept;
-    
-    /// @brief Uses the given density.
-    /// @note Intended for namewise backward compatibility.
-    PLAYRHO_CONSTEXPR inline ConcreteConf& SetDensity(AreaDensity v) noexcept;
 };
 
 template <typename ConcreteConf>
@@ -149,43 +133,37 @@ ShapeDefBuilder<ConcreteConf>::UseDensity(NonNegative<AreaDensity> value) noexce
     return static_cast<ConcreteConf&>(*this);
 }
 
-template <typename ConcreteConf>
-PLAYRHO_CONSTEXPR inline ConcreteConf&
-ShapeDefBuilder<ConcreteConf>::SetVertexRadius(Length v) noexcept
-{
-    vertexRadius = v;
-    return static_cast<ConcreteConf&>(*this);
-}
-
-template <typename ConcreteConf>
-PLAYRHO_CONSTEXPR inline ConcreteConf&
-ShapeDefBuilder<ConcreteConf>::SetRestitution(Real v) noexcept
-{
-    restitution = v;
-    return static_cast<ConcreteConf&>(*this);
-}
-
-template <typename ConcreteConf>
-PLAYRHO_CONSTEXPR inline ConcreteConf&
-ShapeDefBuilder<ConcreteConf>::SetFriction(Real v) noexcept
-{
-    friction = v;
-    return static_cast<ConcreteConf&>(*this);
-}
-
-template <typename ConcreteConf>
-PLAYRHO_CONSTEXPR inline ConcreteConf&
-ShapeDefBuilder<ConcreteConf>::SetDensity(AreaDensity v) noexcept
-{
-    density = v;
-    return static_cast<ConcreteConf&>(*this);
-}
-
 /// @brief Shape configuration structure.
 struct ShapeConf: public ShapeDefBuilder<ShapeConf>
 {
     using ShapeDefBuilder::ShapeDefBuilder;
 };
+
+// Free functions...
+
+/// @brief Gets the vertex radius of the given shape configuration.
+PLAYRHO_CONSTEXPR inline NonNegative<Length> GetVertexRadius(const ShapeDef& arg) noexcept
+{
+    return arg.vertexRadius;
+}
+
+/// @brief Gets the density of the given shape configuration.
+PLAYRHO_CONSTEXPR inline NonNegative<AreaDensity> GetDensity(const ShapeDef& arg) noexcept
+{
+    return arg.density;
+}
+
+/// @brief Gets the restitution of the given shape configuration.
+PLAYRHO_CONSTEXPR inline Finite<Real> GetRestitution(const ShapeDef& arg) noexcept
+{
+    return arg.restitution;
+}
+
+/// @brief Gets the friction of the given shape configuration.
+PLAYRHO_CONSTEXPR inline NonNegative<Real> GetFriction(const ShapeDef& arg) noexcept
+{
+    return arg.friction;
+}
 
 } // namespace playrho
 

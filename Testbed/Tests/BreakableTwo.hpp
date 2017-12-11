@@ -37,9 +37,6 @@ public:
 
     BreakableTwo(): Test(GetTestConf())
     {
-        const auto vr = 2 * DefaultLinearSlop;
-        const auto polygonConf = PolygonShape::Conf{}.UseVertexRadius(vr).SetDensity(100_kgpm2);
-        m_shape = std::make_shared<PolygonShape>(0.5_m - vr, 0.5_m - vr, polygonConf);
         m_world.SetGravity(LinearAcceleration2{});
 
         Body* bodies[20 * 20];
@@ -109,7 +106,8 @@ public:
     }
 
 private:
-    std::shared_ptr<PolygonShape> m_shape;
+    const Length vr = 2 * DefaultLinearSlop;
+    Shape m_shape{PolygonShapeConf{}.UseVertexRadius(vr).UseDensity(100_kgpm2).SetAsBox(0.5_m - vr, 0.5_m - vr)};
     Body* m_body = nullptr;
 };
 

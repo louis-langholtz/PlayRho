@@ -23,7 +23,6 @@
 #include <PlayRho/PlayRho.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
-#include <PlayRho/Collision/Shapes/FunctionalShapeVisitor.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
 #include <PlayRho/Common/Range.hpp>
@@ -192,9 +191,9 @@ public:
 
 protected:
     
-    EdgeShape::Conf GetGroundEdgeConf() const noexcept
+    EdgeShapeConf GetGroundEdgeConf() const noexcept
     {
-        return EdgeShape::Conf{}.UseVertex1(Vec2(-40, 0) * 1_m).UseVertex2(Vec2(40, 0) * 1_m);
+        return EdgeShapeConf{}.Set(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m);
     }
 
     struct Conf

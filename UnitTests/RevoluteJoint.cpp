@@ -26,8 +26,8 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 
 using namespace playrho;
 
@@ -204,7 +204,7 @@ TEST(RevoluteJoint, MaxMotorTorque)
 
 TEST(RevoluteJoint, MovesDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(0.2_m);
+    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -232,9 +232,8 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 
 TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                    .UseVertexRadius(0.2_m)
-                                                    .UseDensity(1_kgpm2));
+    const auto circle = DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2);
+
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -313,11 +312,10 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
 
-    const auto shape1 = std::make_shared<PolygonShape>(PolygonShape::Conf{}.SetAsBox(1_m, 1_m));
+    const auto shape1 = PolygonShapeConf{}.SetAsBox(1_m, 1_m);
     b1->CreateFixture(shape1);
     
-    const auto shape2 = std::make_shared<PolygonShape>(
-        PolygonShape::Conf{}.SetAsBox(0.5_m, 0.5_m).SetDensity(1_kgpm2));
+    const auto shape2 = PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(1_kgpm2);
     b2->CreateFixture(shape2);
     
     auto jd = RevoluteJointDef{b1, b2, Length2{}};

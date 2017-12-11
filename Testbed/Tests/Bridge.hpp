@@ -33,13 +33,14 @@ public:
     Bridge()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
+        ground->CreateFixture(Shape(GetGroundEdgeConf()));
 
         {
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.density = 20_kgpm2;
             conf.friction = 0.2f;
-            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.125_m, conf);
+            conf.SetAsBox(0.5_m, 0.125_m);
+            const auto shape = Shape{conf};
             auto prevBody = ground;
             for (auto i = 0; i < Count; ++i)
             {
@@ -60,12 +61,12 @@ public:
             m_world.CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + Count, 5.0f) * 1_m});
         }
 
-        const auto conf = PolygonShape::Conf{}.UseDensity(1_kgpm2).UseVertices({
+        const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).UseVertices({
             Vec2(-0.5f, 0.0f) * 1_m,
             Vec2(0.5f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        const auto polyshape = std::make_shared<PolygonShape>(conf);
+        const auto polyshape = Shape(conf);
         for (auto i = 0; i < 2; ++i)
         {
             const auto body = m_world.CreateBody(BodyDef{}
@@ -74,9 +75,7 @@ public:
             body->CreateFixture(polyshape);
         }
 
-        const auto diskShape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                           .UseDensity(1_kgpm2)
-                                                           .UseVertexRadius(0.5_m));
+        const auto diskShape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(0.5_m)};
         for (auto i = 0; i < 3; ++i)
         {
             const auto body = m_world.CreateBody(BodyDef{}

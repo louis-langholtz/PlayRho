@@ -33,18 +33,18 @@ public:
     VaryingRestitution()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
+        ground->CreateFixture(Shape(GetGroundEdgeConf()));
 
         Real restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
-        auto shape = DiskShape::Conf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2);
+        auto shape = DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2);
         for (auto i = 0; i < 7; ++i)
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(Real(-10 + 3 * i), 20) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            shape.SetRestitution(restitution[i]);
-            body->CreateFixture(std::make_shared<DiskShape>(shape));
+            shape.UseRestitution(restitution[i]);
+            body->CreateFixture(Shape(shape));
         }
     }
 };

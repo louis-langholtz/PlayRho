@@ -32,18 +32,30 @@ namespace playrho {
 /// This callback is called by World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use TestOverlap to determine which fixtures
 /// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
-class ShapeDrawer: public IsVisitedShapeVisitor
+class ShapeDrawer
 {
 public:
 
-    void Visit(const DiskShape& shape) override
+    void operator() (const std::type_info& ti, const void* data)
+    {
+        if (ti == typeid(DiskShapeConf))
+        {
+            Visit(*static_cast<const DiskShapeConf*>(data));
+        }
+        else if (ti == typeid(PolygonShapeConf))
+        {
+            Visit(*static_cast<const PolygonShapeConf*>(data));
+        }
+    }
+
+    void Visit(const DiskShapeConf& shape)
     {
         const auto center = Transform(shape.GetLocation(), m_xf);
         const auto radius = shape.GetRadius();
         g_debugDraw->DrawCircle(center, radius, m_color);
     }
 
-    void Visit(const PolygonShape& shape) override
+    void Visit(const PolygonShapeConf& shape)
     {
         const auto vertexCount = shape.GetVertexCount();
         auto vertices = std::vector<Length2>(vertexCount);
@@ -71,18 +83,15 @@ public:
     PolyShapes()
     {
         // Ground body
-        {
-            const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
-        }
+        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
-        auto conf = PolygonShape::Conf{};
-        conf.SetDensity(1_kgpm2);
-        conf.SetFriction(Real(0.3f));
+        auto conf = PolygonShapeConf{};
+        conf.UseDensity(1_kgpm2);
+        conf.UseFriction(Real(0.3f));
         conf.Set({Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
-        m_polygons[0] = std::make_shared<PolygonShape>(conf);
+        m_polygons[0] = Shape(conf);
         conf.Set({Vec2(-0.1f, 0.0f) * 1_m, Vec2(0.1f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
-        m_polygons[1] = std::make_shared<PolygonShape>(conf);
+        m_polygons[1] = Shape(conf);
         {
             const auto w = Real(1);
             const auto b = w / (2.0f + sqrt(2.0f));
@@ -98,10 +107,10 @@ public:
                 Vec2(-0.5f * w, b) * 1_m,
                 Vec2(-0.5f * s, 0.0f) * 1_m
             });
-            m_polygons[2] = std::make_shared<PolygonShape>(conf);
+            m_polygons[2] = Shape(conf);
         }
         conf.SetAsBox(0.5_m, 0.5_m);
-        m_polygons[3] = std::make_shared<PolygonShape>(conf);
+        m_polygons[3] = Shape(conf);
 
         m_bodyIndex = 0;
         std::memset(m_bodies, 0, sizeof(m_bodies));
@@ -185,10 +194,9 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        auto circleConf = DiskShape::Conf{};
+        auto circleConf = DiskShapeConf{};
         circleConf.location = Vec2(0.0f, 1.1f) * 1_m;
         circleConf.vertexRadius = 2_m;
-        const auto circle = DiskShape{circleConf};
 
         const auto transform = Transform_identity;
 
@@ -197,19 +205,21 @@ public:
 
         PLAYRHO_CONSTEXPR const int e_maxCount = 4;
         int count = 0;
-        const auto aabb = ComputeAABB(circle, transform);
+        const auto circleChild = GetChild(circleConf, 0);
+        const auto aabb = ComputeAABB(circleChild, transform);
         m_world.QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
             if (count < e_maxCount)
             {
                 const auto xfm = GetTransformation(*f);
                 const auto shape = f->GetShape();
-                const auto shapeChild = shape->GetChild(0);
-                const auto circleChild = circle.GetChild(0);
+                const auto shapeChild = GetChild(shape, 0);
                 const auto overlap = TestOverlap(shapeChild, xfm, circleChild, transform);
                 if (overlap >= Area{0})
                 {
                     shapeDrawer.m_xf = xfm;
-                    shape->Accept(shapeDrawer);
+                    Accept(shape, [&](const std::type_info& ti, const void* data) {
+                        shapeDrawer(ti, data);
+                    });
                     ++count;
                 }
                 return true;
@@ -218,14 +228,13 @@ public:
         });
 
         const auto color = Color(0.4f, 0.7f, 0.8f);
-        drawer.DrawCircle(circle.GetLocation(), circle.GetRadius(), color);
+        drawer.DrawCircle(circleConf.GetLocation(), circleConf.GetRadius(), color);
     }
 
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
-    std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m,
-        DiskShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)));
+    Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
+    Shape m_circle = DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3f));
 };
 
 } // namespace playrho

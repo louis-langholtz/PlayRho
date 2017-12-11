@@ -118,11 +118,11 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body && fixture)
             {
-                const auto polygon = static_cast<const PolygonShape*>(fixture->GetShape().get());
-                auto conf = PolygonShape::Conf{};
+                const auto polygon = static_cast<const PolygonShapeConf*>(GetData(fixture->GetShape()));
+                auto conf = PolygonShapeConf{};
                 conf.Set(polygon->GetVertices());
-                conf.SetVertexRadius(polygon->GetVertexRadius() + RadiusIncrement);
-                const auto newf = body->CreateFixture(std::make_shared<PolygonShape>(conf));
+                conf.UseVertexRadius(polygon->vertexRadius + RadiusIncrement);
+                const auto newf = body->CreateFixture(Shape{conf});
                 fixtures.erase(fixtures.begin());
                 fixtures.insert(newf);
                 SetSelectedFixtures(fixtures);
@@ -136,15 +136,15 @@ public:
             if (body && fixture)
             {
                 const auto shape = fixture->GetShape();
-                const auto lastLegitVertexRadius = shape->GetVertexRadius();
+                const auto lastLegitVertexRadius = GetVertexRadius(shape);
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= 0_m)
                 {
-                    const auto polygon = static_cast<const PolygonShape*>(shape.get());
-                    auto conf = PolygonShape::Conf{};
+                    const auto polygon = static_cast<const PolygonShapeConf*>(GetData(shape));
+                    auto conf = PolygonShapeConf{};
                     conf.Set(polygon->GetVertices());
-                    conf.SetVertexRadius(newVertexRadius);
-                    auto newf = body->CreateFixture(std::make_shared<PolygonShape>(conf));
+                    conf.UseVertexRadius(newVertexRadius);
+                    auto newf = body->CreateFixture(Shape{conf});
                     if (newf)
                     {
                         fixtures.erase(fixtures.begin());
@@ -166,21 +166,21 @@ public:
     void CreateFixtures()
     {
         const auto radius = RadiusIncrement * Real{20};
-        auto conf = PolygonShape::Conf{};
+        auto conf = PolygonShapeConf{};
         conf.density = 1_kgpm2;
 
         conf.vertexRadius = radius;
         auto polygonA = conf;
         //polygonA.SetAsBox(8.0f, 6.0f);
         polygonA.Set(Span<const Length2>{Vec2{-8, -6} * 1_m, Vec2{8, -6} * 1_m, Vec2{0, 6} * 1_m});
-        m_bodyA->CreateFixture(std::make_shared<PolygonShape>(polygonA));
+        m_bodyA->CreateFixture(Shape(polygonA));
         
         conf.vertexRadius = radius * Real{2};
         auto polygonB = conf;
         // polygonB.SetAsBox(7.2_m, 0.8_m);
         polygonB.Set(Span<const Length2>{Vec2{-7.2f, 0} * 1_m, Vec2{+7.2f, 0} * 1_m});
         //polygonB.Set(Span<const Vec2>{Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
-        m_bodyB->CreateFixture(std::make_shared<PolygonShape>(polygonB));
+        m_bodyB->CreateFixture(Shape(polygonB));
     }
 
     static const Fixture* GetFixture(Body* body)
@@ -243,11 +243,11 @@ public:
     {
         m_status.clear();
 
-        const auto shapeA = static_cast<const PolygonShape*>(GetFixture(m_bodyA)->GetShape().get());
-        const auto shapeB = static_cast<const PolygonShape*>(GetFixture(m_bodyB)->GetShape().get());
+        const auto shapeA = GetFixture(m_bodyA)->GetShape();
+        const auto shapeB = GetFixture(m_bodyB)->GetShape();
 
-        const auto proxyA = shapeA->GetChild(0);
-        const auto proxyB = shapeB->GetChild(0);
+        const auto proxyA = GetChild(shapeA, 0);
+        const auto proxyB = GetChild(shapeB, 0);
         const auto xfmA = m_bodyA->GetTransformation();
         const auto xfmB = m_bodyB->GetTransformation();
 
@@ -315,15 +315,17 @@ public:
         if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.distance / 1_m}),
                          static_cast<double>(Real{maxIndicesBA.distance / 1_m})))
         {
+            const auto childA = GetChild(shapeA, 0);
+            const auto childB = GetChild(shapeB, 0);
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);
             //assert(maxIndicesAB.index2 == maxIndicesBA.index1);
             const auto ifaceA = maxIndicesAB.indices.first;
-            const auto nA = InverseRotate(Rotate(shapeA->GetNormal(ifaceA), xfmA.q), xfmB.q);
+            const auto nA = InverseRotate(Rotate(childA.GetNormal(ifaceA), xfmA.q), xfmB.q);
             // shapeA face maxIndicesAB.index1 is coplanar to an edge intersecting shapeB vertex maxIndicesAB.index2
             const auto i1 = maxIndicesAB.indices.second;
-            const auto i0 = GetModuloPrev(i1, shapeB->GetVertexCount());
-            const auto n0 = shapeB->GetNormal(i0);
-            const auto n1 = shapeB->GetNormal(i1);
+            const auto i0 = GetModuloPrev(i1, childB.GetVertexCount());
+            const auto n0 = childB.GetNormal(i0);
+            const auto n1 = childB.GetNormal(i1);
             const auto s0 = Dot(nA, n0);
             const auto s1 = Dot(nA, n1);
             assert(s0 != s1);

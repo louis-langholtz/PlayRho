@@ -38,17 +38,14 @@ public:
     OneSidedPlatform()
     {
         // Ground
-        {
-            const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m));
-        }
+        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Platform
         {
             BodyDef bd;
             bd.location = Vec2(0.0f, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            m_platform = body->CreateFixture(std::make_shared<PolygonShape>(3_m, 0.5_m));
+            m_platform = body->CreateFixture(PolygonShapeConf{}.SetAsBox(3_m, 0.5_m));
             m_bottom = Real(10.0f - 0.5f) * 1_m;
             m_top = Real(10.0f + 0.5f) * 1_m;
         }
@@ -59,10 +56,10 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 12.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.vertexRadius = m_radius;
             conf.density = 20_kgpm2;
-            m_character = body->CreateFixture(std::make_shared<DiskShape>(conf));
+            m_character = body->CreateFixture(Shape(conf));
             body->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
         }
     }
@@ -86,8 +83,7 @@ public:
 
 #if 1
         const auto position = m_character->GetBody()->GetLocation();
-
-        if (GetY(position) < m_top + m_radius - m_platform->GetShape()->GetVertexRadius())
+        if (GetY(position) < m_top + m_radius - GetVertexRadius(m_platform->GetShape()))
         {
             contact.UnsetEnabled();
         }

@@ -21,7 +21,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
@@ -131,7 +131,7 @@ TEST(FrictionJoint, GetFrictionJointDef)
 
 TEST(FrictionJoint, WithDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(0.2_m);
+    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};

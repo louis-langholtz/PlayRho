@@ -37,14 +37,12 @@ namespace playrho {
             bd.type = BodyType::Static;
             bd.location = m_center;
             const auto ctrBody = m_world.CreateBody(bd);
-            ctrBody->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(3_m)));
+            ctrBody->CreateFixture(DiskShapeConf{}.UseRadius(3_m));
 
             bd.type = BodyType::Dynamic;
             bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
             m_orbiter = m_world.CreateBody(bd);
-            m_orbiter->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                                 .UseVertexRadius(0.5_m)
-                                                                 .UseDensity(1_kgpm2)));
+            m_orbiter->CreateFixture(DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2));
             
             const auto velocity = Velocity{
                 Vec2{Pi * radius / 2, 0} * 1_mps,
@@ -52,11 +50,11 @@ namespace playrho {
             };
             m_orbiter->SetVelocity(velocity);
             
-            auto conf = ChainShape::Conf{};
-            conf.vertices = GetCircleVertices(20_m, 180);
+            auto conf = ChainShapeConf{};
+            conf.Set(GetCircleVertices(20_m, 180));
             conf.UseVertexRadius(0.1_m);
             conf.UseDensity(1_kgpm2);
-            const auto outerCicle = std::make_shared<ChainShape>(conf);
+            const auto outerCicle = Shape(conf);
 
             bd.type = BodyType::Dynamic;
             bd.location = m_center;

@@ -19,8 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/ChainShape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
+#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 
 namespace playrho {
 
@@ -43,38 +42,68 @@ namespace {
 #endif
 } // anonymous namespace
 
-ChainShape::ChainShape(const Conf& conf):
-    Shape{conf}
+ChainShapeConf::ChainShapeConf():
+    ShapeDefBuilder{ShapeDef{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}}
 {
-    const auto count = conf.vertices.size();
+    // Intentionally empty.
+}
+
+ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
+{
+    const auto count = vertices.size();
     if (count > MaxChildCount)
     {
         throw InvalidArgument("too many vertices");
     }
 
-    m_vertices = conf.vertices;
-    
+    m_vertices = vertices;
     if (count > 1)
     {
-        auto vprev = m_vertices[0];
-        for (auto i = decltype(count){1}; i < count; ++i)
+        auto vprev = Length2{};
+        auto first = true;
+        for (const auto v: m_vertices)
         {
-            // Get the normal and push it and its reverse.
-            // This "doubling up" of the normals, makes the GetChild() method work.
-            const auto v = m_vertices[i];
-            const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
-            m_normals.push_back(normal);
-            m_normals.push_back(-normal);
+            if (!first)
+            {
+                // Get the normal and push it and its reverse.
+                // This "doubling up" of the normals, makes the GetChild() method work.
+                const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
+                m_normals.push_back(normal);
+                m_normals.push_back(-normal);
+            }
+            else
+            {
+                first = false;
+            }
             vprev = v;
         }
     }
+    return *this;
 }
 
-MassData ChainShape::GetMassData() const noexcept
+ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
 {
-    const auto density = GetDensity();
+    if (m_vertices.size() > 0)
+    {
+        auto vprev = m_vertices.back();
+        m_vertices.emplace_back(vertex);
+        const auto normal = GetUnitVector(GetFwdPerpendicular(vertex - vprev));
+        m_normals.push_back(normal);
+        m_normals.push_back(-normal);
+    }
+    else
+    {
+        m_vertices.emplace_back(vertex);
+    }
+    return *this;
+}
+
+MassData ChainShapeConf::GetMassData() const noexcept
+{
+    const auto density = this->density;
     if (density > AreaDensity(0))
     {
+        const auto vertexRadius = this->vertexRadius;
         const auto vertexCount = GetVertexCount();
         if (vertexCount > 1)
         {
@@ -83,7 +112,6 @@ MassData ChainShape::GetMassData() const noexcept
             auto I = RotInertia{0};
             auto area = Area(0);
             auto center = Length2{};
-            const auto vertexRadius = GetVertexRadius();
             auto vprev = GetVertex(0);
             const auto circle_area = Square(vertexRadius) * Pi;
             for (auto i = decltype(vertexCount){1}; i < vertexCount; ++i)
@@ -106,36 +134,25 @@ MassData ChainShape::GetMassData() const noexcept
         }
         if (vertexCount == 1)
         {
-            return playrho::GetMassData(GetVertexRadius(), density, GetVertex(0));
+            return playrho::GetMassData(vertexRadius, density, GetVertex(0));
         }
     }
     return MassData{};
 }
 
-ChildCounter ChainShape::GetChildCount() const noexcept
-{
-    // edge count = vertex count - 1
-    const auto count = GetVertexCount();
-    return (count > 1)? count - 1: count;
-}
-
-DistanceProxy ChainShape::GetChild(ChildCounter index) const
+DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
 {
     if (index >= GetChildCount())
     {
         throw InvalidArgument("index out of range");
     }
+    const auto vertexRadius = this->vertexRadius;
     const auto vertexCount = GetVertexCount();
     if (vertexCount > 1)
     {
-        return DistanceProxy{GetVertexRadius(), 2, &m_vertices[index], &m_normals[index * 2]};
+        return DistanceProxy{vertexRadius, 2, &m_vertices[index], &m_normals[index * 2]};
     }
-    return DistanceProxy{GetVertexRadius(), 1, &m_vertices[0], nullptr};
-}
-
-void ChainShape::Accept(ShapeVisitor &visitor) const
-{
-    visitor.Visit(*this);
+    return DistanceProxy{vertexRadius, 1, &m_vertices[0], nullptr};
 }
 
 } // namespace playrho

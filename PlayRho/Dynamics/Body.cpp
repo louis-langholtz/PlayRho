@@ -111,7 +111,7 @@ void Body::SetType(BodyType type)
     m_world->SetType(*this, type);
 }
 
-Fixture* Body::CreateFixture(const std::shared_ptr<const Shape>& shape, const FixtureDef& def,
+Fixture* Body::CreateFixture(const Shape& shape, const FixtureDef& def,
                              bool resetMassData)
 {
     return m_world->CreateFixture(*this, shape, def, resetMassData);

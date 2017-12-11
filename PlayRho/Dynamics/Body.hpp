@@ -168,7 +168,7 @@ public:
     ///
     /// @sa PhysicalEntities
     ///
-    Fixture* CreateFixture(const std::shared_ptr<const Shape>& shape,
+    Fixture* CreateFixture(const Shape& shape,
                            const FixtureDef& def = GetDefaultFixtureDef(),
                            bool resetMassData = true);
 

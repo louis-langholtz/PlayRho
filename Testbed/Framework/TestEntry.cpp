@@ -100,7 +100,7 @@ static const TestEntry testEntries[] =
     {"Basic Slider Crank", MakeUniqueTest<BasicSliderCrank>},
     {"Slider Crank", MakeUniqueTest<SliderCrank>},
     {"Sphere Stack", MakeUniqueTest<SphereStack>},
-    {"Convex Hull", MakeUniqueTest<ConvexHull>},
+    {"Convex Hull", MakeUniqueTest<ConvexHullTest>},
     {"Tumbler", MakeUniqueTest<Tumbler>},
     {"Ray-Cast", MakeUniqueTest<class RayCast>},
     {"Dump Shell", MakeUniqueTest<DumpShell>},

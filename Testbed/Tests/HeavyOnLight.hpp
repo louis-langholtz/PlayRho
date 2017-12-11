@@ -34,22 +34,20 @@ public:
         const auto upperBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 6.0f) * 1_m);
         const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * 1_m);
         
-        const auto groundConf = EdgeShape::Conf{}
-            .UseVertex1(Vec2(-40.0f, 0.0f) * 1_m)
-            .UseVertex2(Vec2(40.0f, 0.0f) * 1_m);
+        const auto groundConf = EdgeShapeConf{}
+            .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m);
         
-        const auto diskConf = DiskShape::Conf{}.UseDensity(10_kgpm2);
-        const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(0.5_m);
-        const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(5_m);
+        const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
+        const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
+        const auto biggerDiskConf = DiskShapeConf(diskConf).UseRadius(5_m);
 
-        const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+        m_world.CreateBody()->CreateFixture(Shape(groundConf));
         
         const auto lowerBody = m_world.CreateBody(lowerBodyDef);
         const auto upperBody = m_world.CreateBody(upperBodyDef);
 
-        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
-        m_top = upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
+        lowerBody->CreateFixture(Shape(smallerDiskConf));
+        m_top = upperBody->CreateFixture(Shape(biggerDiskConf));
         
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "increase density of top shape", [&](KeyActionMods) {
             ChangeDensity(+1_kgpm2);
@@ -61,7 +59,7 @@ public:
 
     void ChangeDensity(AreaDensity change)
     {
-        const auto oldDensity = m_top->GetShape()->GetDensity();
+        const auto oldDensity = m_top->GetDensity();
         const auto newDensity = std::max(oldDensity + change, 1_kgpm2);
         if (newDensity != oldDensity)
         {
@@ -70,10 +68,10 @@ public:
             const auto wasSelected = selectedFixture == m_top;
             const auto body = m_top->GetBody();
             body->DestroyFixture(m_top);
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.vertexRadius = 5_m;
             conf.density = newDensity;
-            m_top = body->CreateFixture(std::make_shared<DiskShape>(conf));
+            m_top = body->CreateFixture(Shape(conf));
             if (wasSelected)
             {
                 selectedFixtures.erase(selectedFixtures.begin());
@@ -87,7 +85,7 @@ public:
     {
         std::stringstream stream;
         stream << "Area density of top shape: ";
-        stream << double(Real{m_top->GetShape()->GetDensity() / 1_kgpm2});
+        stream << double(Real{m_top->GetDensity() / 1_kgpm2});
         stream << " kg/m^2.";
         m_status = stream.str();
     }

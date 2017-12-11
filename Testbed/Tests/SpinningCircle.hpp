@@ -48,19 +48,19 @@ namespace playrho {
             bodyDef.location = Vec2{0, 14} * 1_m;
             const auto body2 = m_world.CreateBody(bodyDef);
             
-            auto shapeConf = DiskShape::Conf{};
+            auto shapeConf = DiskShapeConf{};
             shapeConf.density = 10_kgpm2;
 
             shapeConf.vertexRadius = 2_m;
             shapeConf.location = Length2{};
-            auto circle = std::make_shared<DiskShape>(shapeConf);
+            auto circle = Shape(shapeConf);
 
             shapeConf.vertexRadius = 1.5_m;
             shapeConf.location = Vec2{0,  3} * 1_m;
-            auto circleA = std::make_shared<DiskShape>(shapeConf);
+            auto circleA = Shape(shapeConf);
             shapeConf.vertexRadius = 1.5_m;
             shapeConf.location = Vec2{0, -3} * 1_m;
-            auto circleB = std::make_shared<DiskShape>(shapeConf);
+            auto circleB = Shape(shapeConf);
             
             body1->CreateFixture(circleA);
             body1->CreateFixture(circleB);

@@ -39,15 +39,12 @@ public:
     {
         const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
 
-        const auto a = Real{0.5f};
-        const auto h = Vec2(0.0f, a) * 1_m;
+        const auto a = 0.5_m;
+        const auto h = Length2{0_m, a};
+        const auto root = AddNode(ground, Length2{}, 0, 3.0f, a,
+                                  PolygonShapeConf{}.UseDensity(density).SetAsBox(a * 1_m / 4, a * 1_m));
 
-        auto conf = PolygonShape::Conf{};
-        conf.density = density;
-        const auto shape = std::make_shared<const PolygonShape>(Real{0.25f} * a * 1_m, a * 1_m, conf);
-        const auto root = AddNode(ground, Length2{}, 0, 3.0f, a, shape);
-
-        RevoluteJointDef jointDef;
+        auto jointDef = RevoluteJointDef{};
         jointDef.bodyA = ground;
         jointDef.bodyB = root;
         jointDef.localAnchorA = Length2{};
@@ -56,10 +53,9 @@ public:
     }
 
     Body* AddNode(const Body* parent, const Length2 localAnchor, const int depth,
-                  const Real offset, const Real a, std::shared_ptr<const Shape> shape)
+                  const Real offset, const Length a, Shape shape)
     {
-        const auto h = Vec2(0.0f, a) * 1_m;
-
+        const auto h = Length2{0_m, a};
         const auto p = parent->GetLocation() + localAnchor - h;
 
         BodyDef bodyDef;
@@ -74,15 +70,15 @@ public:
             return body;
         }
 
-        auto shape2 = PolygonShape::Conf{};
-        shape2.SetDensity(density);
-        shape2.SetAsBox(offset * 1_m, Real{0.25f} * a * 1_m, Vec2(0, -a) * 1_m, 0_rad);
-        body->CreateFixture(std::make_shared<PolygonShape>(shape2));
+        auto shape2 = PolygonShapeConf{};
+        shape2.UseDensity(density);
+        shape2.SetAsBox(offset * 1_m, a / 4, Length2{0_m, -a}, 0_rad);
+        body->CreateFixture(Shape(shape2));
 
-        const auto a1 = Vec2(offset, -a) * 1_m;
-        const auto a2 = Vec2(-offset, -a) * 1_m;
-        const auto body1 = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
-        const auto body2 = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
+        const auto a1 = Length2{offset * 1_m, -a};
+        const auto a2 = Length2{-offset * 1_m, -a};
+        const auto body1 = AddNode(body, a1, depth + 1, offset / 2, a, shape);
+        const auto body2 = AddNode(body, a2, depth + 1, offset / 2, a, shape);
 
         RevoluteJointDef jointDef;
         jointDef.bodyA = body;

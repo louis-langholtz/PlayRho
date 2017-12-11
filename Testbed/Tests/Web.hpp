@@ -38,10 +38,10 @@ public:
     Web(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
-            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.5_m, PolygonShape::Conf{}.SetDensity(5_kgpm2));
+            const auto shape = Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;

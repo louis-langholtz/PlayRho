@@ -41,19 +41,19 @@ public:
             const auto v6 = Vec2(7.0f, 2.0f) * 1_m;
             const auto v7 = Vec2(10.0f, 0.0f) * 1_m;
 
-            auto conf = EdgeShape::Conf{};
+            auto conf = EdgeShapeConf{};
             conf.Set(v1, v2);
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape(conf));
             conf.Set(v2, v3);
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape(conf));
             conf.Set(v3, v4);
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape(conf));
             conf.Set(v4, v5);
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape(conf));
             conf.Set(v5, v6);
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape(conf));
             conf.Set(v6, v7);
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape(conf));
         }
 
         {
@@ -63,10 +63,10 @@ public:
             bd.allowSleep = false;
             const auto body = m_world.CreateBody(bd);
 
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = 0.5_m;
-            body->CreateFixture(std::make_shared<DiskShape>(conf));
+            body->CreateFixture(Shape(conf));
         }
 
         {
@@ -76,11 +76,11 @@ public:
             bd.allowSleep = false;
             const auto body = m_world.CreateBody(bd);
 
-            auto shape = PolygonShape::Conf{};
-            shape.SetVertexRadius(1_m);
+            auto shape = PolygonShapeConf{};
+            shape.UseVertexRadius(1_m);
             shape.SetAsBox(0.5_m, 0.5_m);
-            shape.SetDensity(1_kgpm2);
-            body->CreateFixture(std::make_shared<PolygonShape>(shape));
+            shape.UseDensity(1_kgpm2);
+            body->CreateFixture(Shape(shape));
         }
     }
 };

@@ -62,7 +62,7 @@ TEST(DistanceProxy, OneVecInitialization)
     const auto vertex0 = Length2{2_m, -3_m};
     const auto normal0 = UnitVec2{};
     const DistanceProxy foo{radius, 1, &vertex0, &normal0};
-    EXPECT_EQ(radius, foo.GetVertexRadius());
+    EXPECT_EQ(radius, GetVertexRadius(foo));
     EXPECT_EQ(1, foo.GetVertexCount());
     EXPECT_EQ(vertex0, foo.GetVertex(0));
 }
@@ -87,7 +87,7 @@ TEST(DistanceProxy, TwoVecInitialization)
     const auto normal0 = GetUnitVector(vertex1 - vertex0);
     const UnitVec2 normals[] = {normal0, -normal0};
     const DistanceProxy foo{radius, 2, vertices, normals};
-    EXPECT_EQ(radius, foo.GetVertexRadius());
+    EXPECT_EQ(radius, GetVertexRadius(foo));
     EXPECT_EQ(2, foo.GetVertexCount());
     EXPECT_EQ(vertex0, foo.GetVertex(0));
     EXPECT_EQ(vertex1, foo.GetVertex(1));
@@ -124,7 +124,7 @@ TEST(DistanceProxy, ThreeVertices)
     
     const DistanceProxy foo{radius, 3, vertices, normals};
     
-    EXPECT_EQ(foo.GetVertexRadius(), radius);
+    EXPECT_EQ(GetVertexRadius(foo), radius);
     ASSERT_EQ(foo.GetVertexCount(), count);
     EXPECT_EQ(GetX(foo.GetVertex(0)), GetX(v0));
     EXPECT_EQ(GetY(foo.GetVertex(0)), GetY(v0));
@@ -235,4 +235,21 @@ TEST(DistanceProxy, GetMaxSeparationFromWorld)
     EXPECT_NEAR(static_cast<double>(Real(result2.distance / Meter)), 3.0, 0.0001);
     EXPECT_EQ(result2.indices.first, static_cast<decltype(result2.indices.first)>(2));
     EXPECT_EQ(result2.indices.second, static_cast<decltype(result2.indices.second)>(0));
+}
+
+TEST(DistanceProxy, Equality)
+{
+    const auto pos1 = Length2{3_m, 1_m};
+    const auto pos2 = Length2{3_m, 3_m};
+    const auto pos3 = Length2{1_m, 3_m};
+    const auto pos4 = Length2{1_m, 1_m};
+    const Length2 verts[] = {pos1, pos2, pos3, pos4};
+    const auto n1 = GetUnitVector(GetFwdPerpendicular(pos2 - pos1));
+    const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
+    const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
+    const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
+    const UnitVec2 norms[] = {n1, n2, n3, n4};
+
+    EXPECT_TRUE(DistanceProxy(0.0_m, 4, verts, norms) == DistanceProxy(0.0_m, 4, verts, norms));
+    EXPECT_FALSE(DistanceProxy(1.0_m, 4, verts, norms) == DistanceProxy(0.0_m, 4, verts, norms));
 }

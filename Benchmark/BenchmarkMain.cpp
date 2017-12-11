@@ -55,8 +55,8 @@
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 static float Rand(float lo, float hi)
 {
@@ -1236,11 +1236,11 @@ static TransformationPairs GetTransformationPairs(unsigned count)
 static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
 {
     const auto dim = playrho::Real(2) * playrho::Meter;
-    const auto shape0 = playrho::PolygonShape(dim, dim);
-    const auto shape1 = playrho::PolygonShape(dim, dim);
+    const auto shape0 = playrho::PolygonShapeConf(dim, dim);
+    const auto shape1 = playrho::PolygonShapeConf(dim, dim);
     
-    const auto child0 = shape0.GetChild(0);
-    const auto child1 = shape1.GetChild(0);
+    const auto child0 = GetChild(shape0, 0);
+    const auto child1 = GetChild(shape1, 0);
     
     const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _: state)
@@ -1257,11 +1257,11 @@ static void MaxSepBetweenRelSquaresNoStop(benchmark::State& state)
 static void MaxSepBetweenRel4x4(benchmark::State& state)
 {
     const auto dim = playrho::Real(2) * playrho::Meter;
-    const auto shape0 = playrho::PolygonShape(dim, dim);
-    const auto shape1 = playrho::PolygonShape(dim, dim);
+    const auto shape0 = playrho::PolygonShapeConf(dim, dim);
+    const auto shape1 = playrho::PolygonShapeConf(dim, dim);
     
-    const auto child0 = shape0.GetChild(0);
-    const auto child1 = shape1.GetChild(0);
+    const auto child0 = GetChild(shape0, 0);
+    const auto child1 = GetChild(shape1, 0);
     
     const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
     for (auto _: state)
@@ -1278,11 +1278,11 @@ static void MaxSepBetweenRel4x4(benchmark::State& state)
 static void MaxSepBetweenRelSquares(benchmark::State& state)
 {
     const auto dim = playrho::Real(2) * playrho::Meter;
-    const auto shape0 = playrho::PolygonShape(dim, dim);
-    const auto shape1 = playrho::PolygonShape(dim, dim);
+    const auto shape0 = playrho::PolygonShapeConf(dim, dim);
+    const auto shape1 = playrho::PolygonShapeConf(dim, dim);
 
-    const auto child0 = shape0.GetChild(0);
-    const auto child1 = shape1.GetChild(0);
+    const auto child0 = GetChild(shape0, 0);
+    const auto child1 = GetChild(shape1, 0);
     const auto totalRadius = child0.GetVertexRadius() + child1.GetVertexRadius();
 
     const auto vals = GetTransformationPairs(static_cast<unsigned>(state.range()));
@@ -1305,8 +1305,8 @@ static void MaxSepBetweenAbsSquares(benchmark::State& state)
     const auto xfm1 = playrho::Transformation{playrho::Vec2{0, +2} * (playrho::Real(1) * playrho::Meter), playrho::UnitVec2::GetRight()}; // top
 
     const auto dim = playrho::Real(2) * playrho::Meter;
-    const auto shape0 = playrho::PolygonShape{dim, dim}.Transform(xfm0);
-    const auto shape1 = playrho::PolygonShape{dim, dim}.Transform(xfm1);
+    const auto shape0 = playrho::PolygonShapeConf{dim, dim}.Transform(xfm0);
+    const auto shape1 = playrho::PolygonShapeConf{dim, dim}.Transform(xfm1);
     
     // Rotate square A and put it below square B.
     // In ASCII art terms:
@@ -1329,8 +1329,8 @@ static void MaxSepBetweenAbsSquares(benchmark::State& state)
     //      \4/
     //       +
     
-    const auto child0 = shape0.GetChild(0);
-    const auto child1 = shape1.GetChild(0);
+    const auto child0 = GetChild(shape0, 0);
+    const auto child1 = GetChild(shape1, 0);
     const auto totalRadius = child0.GetVertexRadius() + child1.GetVertexRadius();
     
     for (auto _: state)
@@ -1345,7 +1345,7 @@ static void ManifoldForTwoSquares1(benchmark::State& state)
     const auto dim = playrho::Real(2) * playrho::Meter;
     
     // creates a square
-    const auto shape = playrho::PolygonShape(dim, dim);
+    const auto shape = playrho::PolygonShapeConf(dim, dim);
     
     const auto rot0 = playrho::Angle{playrho::Real{45.0f} * playrho::Degree};
     const auto xfm0 = playrho::Transformation{playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter), playrho::UnitVec2::Get(rot0)}; // bottom
@@ -1374,18 +1374,18 @@ static void ManifoldForTwoSquares1(benchmark::State& state)
 
     for (auto _: state)
     {
-        // CollideShapes(shape.GetChild(0), xfm0, shape.GetChild(0), xfm1);
-        benchmark::DoNotOptimize(playrho::CollideShapes(shape.GetChild(0), xfm0, shape.GetChild(0), xfm1));
+        // CollideShapes(GetChild(shape, 0), xfm0, GetChild(shape, 0), xfm1);
+        benchmark::DoNotOptimize(playrho::CollideShapes(GetChild(shape, 0), xfm0, GetChild(shape, 0), xfm1));
     }
 }
 
 static void ManifoldForTwoSquares2(benchmark::State& state)
 {
     // Shape A: square
-    const auto shape0 = playrho::PolygonShape(playrho::Real{2} * playrho::Meter, playrho::Real{2} * playrho::Meter);
+    const auto shape0 = playrho::PolygonShapeConf(playrho::Real{2} * playrho::Meter, playrho::Real{2} * playrho::Meter);
     
     // Shape B: wide rectangle
-    const auto shape1 = playrho::PolygonShape(playrho::Real{3} * playrho::Meter, playrho::Real{1.5f} * playrho::Meter);
+    const auto shape1 = playrho::PolygonShapeConf(playrho::Real{3} * playrho::Meter, playrho::Real{1.5f} * playrho::Meter);
     
     const auto xfm0 = playrho::Transformation{
         playrho::Vec2{-2, 0} * (playrho::Real(1) * playrho::Meter),
@@ -1411,8 +1411,8 @@ static void ManifoldForTwoSquares2(benchmark::State& state)
     //
     for (auto _: state)
     {
-        //CollideShapes(shape0.GetChild(0), xfm0, shape1.GetChild(0), xfm1);
-        benchmark::DoNotOptimize(CollideShapes(shape0.GetChild(0), xfm0, shape1.GetChild(0), xfm1));
+        //CollideShapes(GetChild(shape0, 0), xfm0, GetChild(shape1, 0), xfm1);
+        benchmark::DoNotOptimize(CollideShapes(GetChild(shape0, 0), xfm0, GetChild(shape1, 0), xfm1));
     }
 }
 
@@ -1585,8 +1585,8 @@ static void DropDisks(benchmark::State& state)
     auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::EarthlyGravity2D)};
 
     const auto diskRadius = 0.5f * playrho::Meter;
-    const auto diskDef = playrho::DiskShape::Conf{}.UseVertexRadius(diskRadius);
-    const auto shape = std::make_shared<playrho::DiskShape>(diskDef);
+    const auto diskDef = playrho::DiskShapeConf{}.UseRadius(diskRadius);
+    const auto shape = playrho::Shape{diskDef};
     const auto numDisks = state.range();
     for (auto i = decltype(numDisks){0}; i < numDisks; ++i)
     {
@@ -1607,13 +1607,15 @@ static void DropDisks(benchmark::State& state)
 
 static void AddPairStressTest(benchmark::State& state, int count)
 {
-    const auto diskConf = playrho::DiskShape::Conf{}
-        .UseVertexRadius(playrho::Meter / 10)
+    const auto diskConf = playrho::DiskShapeConf{}
+        .UseRadius(playrho::Meter / 10)
         .UseDensity(0.01f * playrho::KilogramPerSquareMeter);
-    const auto diskShape = std::make_shared<playrho::DiskShape>(diskConf);
+    const auto diskShape = playrho::Shape{diskConf};
 
-    const auto polygonConf = playrho::PolygonShape::Conf{}.UseDensity(1.0f * playrho::KilogramPerSquareMeter);
-    const auto rectShape = std::make_shared<playrho::PolygonShape>(1.5f * playrho::Meter, 1.5f * playrho::Meter, polygonConf);
+    const auto rectShape = playrho::Shape{
+        playrho::PolygonShapeConf{}.UseDensity(1.0f * playrho::KilogramPerSquareMeter)
+        .SetAsBox(1.5f * playrho::Meter, 1.5f * playrho::Meter)
+    };
     
     const auto rectBodyDef = playrho::BodyDef{}
         .UseType(playrho::BodyType::Dynamic)
@@ -1662,7 +1664,7 @@ static void DropTiles(int count)
     const auto linearSlop = playrho::Meter / 1000;
     const auto angularSlop = (playrho::Pi * 2 * playrho::Radian) / 180;
     const auto vertexRadius = linearSlop * 2;
-    auto conf = playrho::PolygonShape::Conf{}.UseVertexRadius(vertexRadius);
+    auto conf = playrho::PolygonShapeConf{}.UseVertexRadius(vertexRadius);
     auto m_world = playrho::World{
         playrho::WorldDef{}.UseMinVertexRadius(vertexRadius).UseInitialTreeSize(8192)
     };
@@ -1681,7 +1683,7 @@ static void DropTiles(int count)
             for (auto i = 0; i < N; ++i)
             {
                 conf.SetAsBox(a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
-                ground->CreateFixture(std::make_shared<playrho::PolygonShape>(conf));
+                ground->CreateFixture(conf);
                 GetX(position) += 2.0f * a * playrho::Meter;
             }
             GetY(position) -= 2.0f * a * playrho::Meter;
@@ -1691,8 +1693,8 @@ static void DropTiles(int count)
     {
         const auto a = playrho::Real{0.5f};
         conf.SetAsBox(a * playrho::Meter, a * playrho::Meter);
-        conf.SetDensity(playrho::Real{5} * playrho::KilogramPerSquareMeter);
-        const auto shape = std::make_shared<playrho::PolygonShape>(conf);
+        conf.UseDensity(playrho::Real{5} * playrho::KilogramPerSquareMeter);
+        const auto shape = playrho::Shape(conf);
         
         playrho::Length2 x(playrho::Real(-7.0f) * playrho::Meter, playrho::Real(0.75f) * playrho::Meter);
         playrho::Length2 y;
@@ -1759,8 +1761,7 @@ private:
     playrho::World m_world;
     playrho::StepConf m_stepConf;
     playrho::Length m_squareLen = 0.125f * playrho::Meter;
-    std::shared_ptr<playrho::PolygonShape> m_square =
-        std::make_shared<playrho::PolygonShape>(m_squareLen, m_squareLen);
+    playrho::Shape m_square = playrho::PolygonShapeConf(m_squareLen, m_squareLen);
 };
 
 Tumbler::Tumbler()
@@ -1775,16 +1776,16 @@ playrho::Body* Tumbler::CreateEnclosure(playrho::World& world)
     const auto b = world.CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic)
                                     .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                     .UseAllowSleep(false));
-    playrho::PolygonShape::Conf shape;
-    shape.SetDensity(5 * playrho::KilogramPerSquareMeter);
+    playrho::PolygonShapeConf shape;
+    shape.UseDensity(5 * playrho::KilogramPerSquareMeter);
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
+    b->CreateFixture(shape);
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
+    b->CreateFixture(shape);
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
+    b->CreateFixture(shape);
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(std::make_shared<playrho::PolygonShape>(shape));
+    b->CreateFixture(shape);
     return b;
 }
 

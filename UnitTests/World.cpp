@@ -25,9 +25,9 @@
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
-#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
@@ -240,9 +240,7 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
     
-    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                   .UseDensity(1_kgpm2)
-                                                   .UseVertexRadius(1_m));
+    const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b1->CreateFixture(shape);
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
@@ -317,9 +315,7 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
     
-    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                   .UseDensity(1_kgpm2)
-                                                   .UseVertexRadius(1_m));
+    const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b1->CreateFixture(shape);
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
@@ -421,12 +417,9 @@ TEST(World, QueryAABB)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = 1_m;
-    conf.density = 1_kgpm2;
-    const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
-    ASSERT_EQ(shape->GetChildCount(), ChildCounter(1));
-    const auto fixture = body->CreateFixture(shape);
+    const auto conf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
+    ASSERT_EQ(GetChildCount(conf), ChildCounter(1));
+    const auto fixture = body->CreateFixture(conf);
     ASSERT_NE(fixture, nullptr);
     
     auto stepConf = StepConf{};
@@ -473,11 +466,9 @@ TEST(World, RayCast)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = 1_m;
-    conf.density = 1_kgpm2;
-    const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
-    ASSERT_EQ(shape->GetChildCount(), ChildCounter(1));
+    const auto conf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
+    const auto shape = Shape{conf};
+    ASSERT_EQ(GetChildCount(shape), ChildCounter(1));
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
     
@@ -523,10 +514,8 @@ TEST(World, ClearForcesFreeFunction)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = 1_m;
-    conf.density = 1_kgpm2;
-    const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
+    const auto conf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
+    const auto shape = Shape{conf};
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
 
@@ -588,13 +577,11 @@ TEST(World, GetShapeCountFreeFunction)
     const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, nullptr);
     
-    const auto shapeConf = EdgeShape::Conf{}
-        .UseVertexRadius(1_m)
-        .UseDensity(1_kgpm2);
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
+    const auto shapeConf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
 
-    const auto shape1 = std::make_shared<EdgeShape>(v1, v2, shapeConf);
+    const auto shape1 = Shape{shapeConf};
     
     const auto fixture1 = body->CreateFixture(shape1);
     ASSERT_NE(fixture1, nullptr);
@@ -604,8 +591,8 @@ TEST(World, GetShapeCountFreeFunction)
     ASSERT_NE(fixture2, nullptr);
     EXPECT_EQ(GetShapeCount(world), std::size_t(1));
     
-    const auto shape2 = std::make_shared<EdgeShape>(v1, v2, shapeConf);
-    
+    const auto shape2 = Shape{shapeConf};
+
     const auto fixture3 = body->CreateFixture(shape2);
     ASSERT_NE(fixture3, nullptr);
     EXPECT_EQ(GetShapeCount(world), std::size_t(2));
@@ -620,13 +607,12 @@ TEST(World, GetFixtureCountFreeFunction)
     const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, nullptr);
     
-    const auto shapeConf = EdgeShape::Conf{}
-        .UseVertexRadius(1_m)
-        .UseDensity(1_kgpm2);
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
+    const auto shapeConf = EdgeShapeConf{}
+        .UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
     
-    const auto shape = std::make_shared<EdgeShape>(v1, v2, shapeConf);
+    const auto shape = Shape{shapeConf};
     
     const auto fixture1 = body->CreateFixture(shape);
     ASSERT_NE(fixture1, nullptr);
@@ -657,10 +643,7 @@ TEST(World, AwakenFreeFunction)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    const auto shape = std::make_shared<EdgeShape>(v1, v2,
-                                                   EdgeShape::Conf{}
-                                                   .UseVertexRadius(1_m)
-                                                   .UseDensity(1_kgpm2));
+    const auto shape = Shape{EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2)};
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
     
@@ -687,9 +670,10 @@ TEST(World, CreateSquareEnclosingBody)
     for (auto& f: fixtures)
     {
         const auto s = f->GetShape();
-        for (auto i = ChildCounter{0}; i < s->GetChildCount(); ++i)
+        const auto childCount = GetChildCount(s);
+        for (auto i = ChildCounter{0}; i < childCount; ++i)
         {
-            const auto child = s->GetChild(i);
+            const auto child = GetChild(s, i);
             const auto numVertices = child.GetVertexCount();
             for (auto j = decltype(numVertices){0}; j < numVertices; ++j)
             {
@@ -712,20 +696,19 @@ TEST(World, GetTouchingCountFreeFunction)
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
     
     
-    const auto groundConf = EdgeShape::Conf{}
-        .UseVertex1(Vec2(-40.0f, 0.0f) * Meter)
-        .UseVertex2(Vec2(40.0f, 0.0f) * Meter);
+    const auto groundConf = EdgeShapeConf{}
+        .Set(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter);
 
     const auto ground = world.CreateBody();
-    ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+    ground->CreateFixture(Shape(groundConf));
 
     const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
     const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
-    const auto diskConf = DiskShape::Conf{}.UseDensity(10_kgpm2);
-    const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(0.5_m);
+    const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
+    const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
 
     const auto lowerBody = world.CreateBody(lowerBodyDef);
-    lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
+    lowerBody->CreateFixture(Shape(smallerDiskConf));
     
     while (GetAwakeCount(world) > 0)
     {
@@ -764,26 +747,22 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
-    auto conf = EdgeShape::Conf{};
-    conf.vertexRadius = 1_m;
-    conf.density = 1_kgpm2;
-    const auto shape = std::make_shared<EdgeShape>(v1, v2, conf);
-    ASSERT_EQ(shape->GetVertexRadius(), 1_m);
+    const auto conf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
+    const auto shape = Shape{conf};
+    ASSERT_EQ(GetVertexRadius(shape), 1_m);
 
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
     ASSERT_EQ(fixture->GetDensity(), 1_kgpm2);
 
-    const auto circleMass = Mass{fixture->GetDensity() * (Pi * Square(shape->GetVertexRadius()))};
-    const auto rectMass = Mass{fixture->GetDensity() * (shape->GetVertexRadius() * Real{2} * GetMagnitude(v2 - v1))};
+    const auto circleMass = Mass{fixture->GetDensity() * (Pi * Square(GetVertexRadius(shape)))};
+    const auto rectMass = Mass{fixture->GetDensity() * (GetVertexRadius(shape) * 2 * GetMagnitude(v2 - v1))};
     const auto totalMass = Mass{circleMass + rectMass};
     
     EXPECT_EQ(body->GetType(), BodyType::Dynamic);
     EXPECT_NEAR(static_cast<double>(Real{body->GetInvMass() * 1_kg}),
                 static_cast<double>(Real{1_kg / totalMass}),
                 0.000001);
-
-    ASSERT_NE(fixture->GetShape(), nullptr);
 }
 
 TEST(World, CreateAndDestroyJoint)
@@ -1132,10 +1111,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     body_def.type = BodyType::Dynamic;
     body_def.bullet = true;
     
-    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                   .SetRadius(1_m)
-                                                   .SetRestitution(Real(1))
-                                                   .SetDensity(1_kgpm2));
+    const auto shape = Shape{DiskShapeConf{}.UseRadius(1_m).UseRestitution(Real(1)).UseDensity(1_kgpm2)};
     
     body_def.location = Length2{-x * Meter, 0_m};
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
@@ -1217,13 +1193,12 @@ TEST(World, HeavyOnLight)
     const auto upperBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
     const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
 
-    const auto groundConf = EdgeShape::Conf{}
-        .UseVertex1(Vec2(-40.0f, 0.0f) * Meter)
-        .UseVertex2(Vec2(40.0f, 0.0f) * Meter);
+    const auto groundConf = EdgeShapeConf{}
+        .Set(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter);
     
-    const auto diskConf = DiskShape::Conf{}.UseDensity(10_kgpm2);
-    const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(0.5_m);
-    const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(5.0_m);
+    const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
+    const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
+    const auto biggerDiskConf = DiskShapeConf(diskConf).UseRadius(5.0_m);
     
     const auto baseStepConf = []() {
         auto step = StepConf{}.SetInvTime(60_Hz);
@@ -1262,14 +1237,14 @@ TEST(World, HeavyOnLight)
     {
         auto world = World{WorldDef{}.UseMinVertexRadius(SmallerLinearSlop)};
         const auto ground = world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+        ground->CreateFixture(Shape(groundConf));
 
         const auto lowerBody = world.CreateBody(lowerBodyDef);
         const auto upperBody = world.CreateBody(upperBodyDef);
         ASSERT_LT(GetY(lowerBody->GetLocation()), GetY(upperBody->GetLocation()));
 
-        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
-        upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
+        lowerBody->CreateFixture(Shape(smallerDiskConf));
+        upperBody->CreateFixture(Shape(biggerDiskConf));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
         
         auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
@@ -1290,14 +1265,14 @@ TEST(World, HeavyOnLight)
     {
         auto world = World{WorldDef{}.UseMinVertexRadius(SmallerLinearSlop)};
         const auto ground = world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+        ground->CreateFixture(Shape(groundConf));
         
         const auto upperBody = world.CreateBody(upperBodyDef);
         const auto lowerBody = world.CreateBody(lowerBodyDef);
         ASSERT_LT(GetY(lowerBody->GetLocation()), GetY(upperBody->GetLocation()));
 
-        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
-        upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
+        lowerBody->CreateFixture(Shape(smallerDiskConf));
+        upperBody->CreateFixture(Shape(biggerDiskConf));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
         
         auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
@@ -1319,14 +1294,14 @@ TEST(World, HeavyOnLight)
     {
         auto world = World{WorldDef{}.UseMinVertexRadius(SmallerLinearSlop)};
         const auto ground = world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+        ground->CreateFixture(Shape(groundConf));
         
         const auto lowerBody = world.CreateBody(lowerBodyDef);
         const auto upperBody = world.CreateBody(upperBodyDef);
         ASSERT_LT(GetY(lowerBody->GetLocation()), GetY(upperBody->GetLocation()));
 
-        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
-        upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
+        lowerBody->CreateFixture(Shape(smallerDiskConf));
+        upperBody->CreateFixture(Shape(biggerDiskConf));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
         
         auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
@@ -1354,14 +1329,14 @@ TEST(World, HeavyOnLight)
     {
         auto world = World{WorldDef{}.UseMinVertexRadius(SmallerLinearSlop)};
         const auto ground = world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(groundConf));
+        ground->CreateFixture(Shape(groundConf));
         
         const auto upperBody = world.CreateBody(upperBodyDef);
         const auto lowerBody = world.CreateBody(lowerBodyDef);
         ASSERT_LT(GetY(lowerBody->GetLocation()), GetY(upperBody->GetLocation()));
 
-        lowerBody->CreateFixture(std::make_shared<DiskShape>(smallerDiskConf));
-        upperBody->CreateFixture(std::make_shared<DiskShape>(biggerDiskConf));
+        lowerBody->CreateFixture(Shape(smallerDiskConf));
+        upperBody->CreateFixture(Shape(biggerDiskConf));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
         
         auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
@@ -1391,8 +1366,7 @@ TEST(World, HeavyOnLight)
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
     const auto radius = 1_m;
-    const auto shape = std::make_shared<DiskShape>(radius, DiskShape::Conf{}
-                                                   .SetDensity(1_kgpm2).SetRestitution(Real(1)));
+    const auto shape = Shape{DiskShapeConf{}.UseRadius(radius).UseDensity(1_kgpm2).UseRestitution(Real(1))};
     const auto gravity = LinearAcceleration2{};
 
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1429,8 +1403,8 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 {
     const auto radius1 = 1_m;
     const auto radius2 = 0.6_m;
-    const auto shape1 = std::make_shared<DiskShape>(radius1, DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
-    const auto shape2 = std::make_shared<DiskShape>(radius2, DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
+    const auto shape1 = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius1));
+    const auto shape2 = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius2));
     const auto gravity = LinearAcceleration2{};
     
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1476,7 +1450,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.location = Length2{};
-    const auto shape = std::make_shared<DiskShape>(1_m, DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
+    const auto shape = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(1_m));
     for (auto i = 0; i < 2; ++i)
     {
         const auto body = world.CreateBody(body_def);
@@ -1510,12 +1484,12 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.location = Length2{};
-    auto conf = PolygonShape::Conf{};
-    conf.SetVertexRadius(1_m);
+    auto conf = PolygonShapeConf{};
+    conf.UseVertexRadius(1_m);
     conf.SetAsBox(2_m, 2_m);
-    conf.SetDensity(1_kgpm2);
-    conf.SetRestitution(Real(1));
-    const auto shape = std::make_shared<PolygonShape>(conf);
+    conf.UseDensity(1_kgpm2);
+    conf.UseRestitution(Real(1));
+    const auto shape = Shape{conf};
     for (auto i = 0; i < 2; ++i)
     {
         const auto body = world.CreateBody(body_def);
@@ -1546,7 +1520,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false; // separation is faster if true.
-    const auto shape = std::make_shared<DiskShape>(radius * Meter, DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
+    const auto shape = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius * Meter));
     const auto body1pos = Length2{(-radius/4) * Meter, 0_m};
     body_def.location = body1pos;
     const auto body1 = world.CreateBody(body_def);
@@ -1634,7 +1608,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 
 TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 {
-    const auto shape = std::make_shared<PolygonShape>(1_m, 1_m, PolygonShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
+    const auto shape = Shape(PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).SetAsBox(1_m, 1_m));
     const auto gravity = LinearAcceleration2{};
     
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1704,8 +1678,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     body_def.bullet = false; // separation is faster if true.
     
     const auto half_dim = Real(64); // 1 causes additional y-axis separation
-    const auto shape = std::make_shared<PolygonShape>(half_dim * Meter, half_dim * Meter,
-                                                      PolygonShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
+    const auto shape = Shape(PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).SetAsBox(half_dim * Meter, half_dim * Meter));
     
     const auto body1pos = Length2{Real(half_dim/2) * Meter, 0_m}; // 0 causes additional y-axis separation
     body_def.location = body1pos;
@@ -1861,8 +1834,7 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_EQ(world.GetGravity(), gravity);
     world.SetContactListener(&listener);
     
-    const auto shape = std::make_shared<DiskShape>(radius,
-                                                   DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
+    const auto shape = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius));
 
     body_def.location = Length2{-(x + 1) * Meter, 0_m};
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
@@ -1988,7 +1960,7 @@ TEST(World, TilesComesToRest)
     PLAYRHO_CONSTEXPR const auto LinearSlop = Meter / 1000;
     PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * 2 * 1_rad) / 180;
     PLAYRHO_CONSTEXPR const auto VertexRadius = LinearSlop * 2;
-    auto conf = PolygonShape::Conf{}.UseVertexRadius(VertexRadius);
+    auto conf = PolygonShapeConf{}.UseVertexRadius(VertexRadius);
     const auto m_world = std::make_unique<World>(WorldDef{}.UseMinVertexRadius(VertexRadius));
     
     PLAYRHO_CONSTEXPR const auto e_count = 36;
@@ -2007,7 +1979,7 @@ TEST(World, TilesComesToRest)
             for (auto i = 0; i < N; ++i)
             {
                 conf.SetAsBox(a * Meter, a * Meter, position, 0_deg);
-                ground->CreateFixture(std::make_shared<PolygonShape>(conf));
+                ground->CreateFixture(Shape{conf});
                 GetX(position) += 2.0f * a * Meter;
             }
             GetY(position) -= 2.0f * a * Meter;
@@ -2016,8 +1988,9 @@ TEST(World, TilesComesToRest)
     
     {
         const auto a = Real{0.5f};
-        conf.SetDensity(5_kgpm2);
-        const auto shape = std::make_shared<PolygonShape>(a * Meter, a * Meter, conf);
+        conf.UseDensity(5_kgpm2);
+        conf.SetAsBox(a * Meter, a * Meter);
+        const auto shape = Shape(conf);
         
         Length2 x(-7.0_m, 0.75_m);
         Length2 y;
@@ -2364,12 +2337,11 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto left_edge_x = -0.1_m;
     const auto right_edge_x = +0.1_m;
 
-    const auto edgeConf = EdgeShape::Conf{}
+    const auto edgeConf = EdgeShapeConf{}
         .UseVertexRadius(VertexRadius)
         .UseRestitution(Real(1))
-        .UseVertex1(Length2{0_m, +10_m})
-        .UseVertex2(Length2{0_m, -10_m});
-    const auto edge_shape = std::make_shared<EdgeShape>(edgeConf);
+        .Set(Length2{0_m, +10_m}, Length2{0_m, -10_m});
+    const auto edge_shape = Shape(edgeConf);
 
     BodyDef body_def;
     body_def.type = BodyType::Static;
@@ -2399,8 +2371,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     ASSERT_NE(ball_body, nullptr);
     
     const auto ball_radius = 0.01_m;
-    const auto circle_shape = std::make_shared<DiskShape>(ball_radius,
-                                                          DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)));
+    const auto circle_shape = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(ball_radius));
     const auto ball_fixture = ball_body->CreateFixture(circle_shape);
     ASSERT_NE(ball_fixture, nullptr);
 
@@ -2545,7 +2516,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     BodyDef body_def;
     body_def.type = BodyType::Static;
 
-    auto edgeConf = EdgeShape::Conf{};
+    auto edgeConf = EdgeShapeConf{};
     edgeConf.UseFriction(Real(0.4f));
     edgeConf.UseRestitution(Real(0.94f)); // changes where bodies will be after collision
     
@@ -2557,7 +2528,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         const auto left_wall_body = world.CreateBody(body_def);
         ASSERT_NE(left_wall_body, nullptr);
         {
-            const auto wall_fixture = left_wall_body->CreateFixture(std::make_shared<EdgeShape>(edgeConf));
+            const auto wall_fixture = left_wall_body->CreateFixture(Shape(edgeConf));
             ASSERT_NE(wall_fixture, nullptr);
         }
         Include(container_aabb, ComputeAABB(*left_wall_body));
@@ -2568,7 +2539,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         const auto right_wall_body = world.CreateBody(body_def);
         ASSERT_NE(right_wall_body, nullptr);
         {
-            const auto wall_fixture = right_wall_body->CreateFixture(std::make_shared<EdgeShape>(edgeConf));
+            const auto wall_fixture = right_wall_body->CreateFixture(Shape(edgeConf));
             ASSERT_NE(wall_fixture, nullptr);
         }
         Include(container_aabb, ComputeAABB(*right_wall_body));
@@ -2582,7 +2553,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         const auto btm_wall_body = world.CreateBody(body_def);
         ASSERT_NE(btm_wall_body, nullptr);
         {
-            const auto wall_fixture = btm_wall_body->CreateFixture(std::make_shared<EdgeShape>(edgeConf));
+            const auto wall_fixture = btm_wall_body->CreateFixture(Shape(edgeConf));
             ASSERT_NE(wall_fixture, nullptr);
         }
         Include(container_aabb, ComputeAABB(*btm_wall_body));
@@ -2593,7 +2564,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         const auto top_wall_body = world.CreateBody(body_def);
         ASSERT_NE(top_wall_body, nullptr);
         {
-            const auto wall_fixture = top_wall_body->CreateFixture(std::make_shared<EdgeShape>(edgeConf));
+            const auto wall_fixture = top_wall_body->CreateFixture(Shape(edgeConf));
             ASSERT_NE(wall_fixture, nullptr);
         }
         Include(container_aabb, ComputeAABB(*top_wall_body));
@@ -2609,8 +2580,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     ASSERT_EQ(GetY(ball_body->GetLocation()), 0_m);
     
     const auto ball_radius = Real(half_box_width / 4) * Meter;
-    const auto object_shape = std::make_shared<PolygonShape>(ball_radius, ball_radius,
-                                                             PolygonShape::Conf{}.SetDensity(10_kgpm2));
+    const auto object_shape = Shape(PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(ball_radius, ball_radius));
     {
         const auto ball_fixture = ball_body->CreateFixture(object_shape);
         ASSERT_NE(ball_fixture, nullptr);
@@ -2988,7 +2958,7 @@ static void smaller_still_conserves_momentum(bool bullet, Real multiplier, Real 
         };
         world.SetContactListener(&listener);
 
-        const auto shape = std::make_shared<DiskShape>(scale * radius * Meter);
+        const auto shape = DiskShapeConf{}.UseRadius(scale * radius * Meter);
         ASSERT_EQ(shape->GetRadius(), scale * radius);
         
         auto fixture_def = FixtureDef{}.UseDensity(1);
@@ -3081,13 +3051,11 @@ public:
     {
         const auto hw_ground = 40.0_m;
         const auto ground = world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Length2{-hw_ground, 0_m},
-                                                          Length2{hw_ground, 0_m}));
+        ground->CreateFixture(EdgeShapeConf{}.Set(Length2{-hw_ground, 0_m}, Length2{hw_ground, 0_m}));
         const auto numboxes = boxes.size();
         original_x = GetParam();
         
-        const auto boxShape = std::make_shared<PolygonShape>(hdim, hdim,
-             PolygonShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)));
+        const auto boxShape = Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).UseFriction(Real(0.3f)).SetAsBox(hdim, hdim)};
         for (auto i = decltype(numboxes){0}; i < numboxes; ++i)
         {
             // (hdim + 0.05f) + (hdim * 2 + 0.1f) * i

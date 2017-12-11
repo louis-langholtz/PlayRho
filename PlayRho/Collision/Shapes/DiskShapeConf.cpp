@@ -1,5 +1,5 @@
 /*
- * Original work Copyright (c) 2006-2010 Erin Catto http://www.box2d.org
+ * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
@@ -17,19 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 namespace playrho {
-
-MassData EdgeShape::GetMassData() const noexcept
-{
-    return playrho::GetMassData(GetVertexRadius(), GetDensity(), GetVertex1(), GetVertex2());
-}
-
-void EdgeShape::Accept(ShapeVisitor& visitor) const
-{
-    visitor.Visit(*this);
-}
 
 } // namespace playrho

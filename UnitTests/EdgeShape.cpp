@@ -19,63 +19,102 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Collision/Shapes/EdgeShape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;
 
-TEST(EdgeShape, ByteSize)
+TEST(EdgeShapeConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(EdgeShape), std::size_t(52));
+            EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(48));
 #else
-            EXPECT_EQ(sizeof(EdgeShape), std::size_t(56));
+            EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(48));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(EdgeShape), std::size_t(104)); break;
-        case 16: EXPECT_EQ(sizeof(EdgeShape), std::size_t(208)); break;
+        case  8: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(96)); break;
+        case 16: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(192)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(EdgeShape, GetInvalidChildThrows)
+TEST(EdgeShapeConf, GetInvalidChildThrows)
 {
-    EdgeShape foo{};
+    const auto foo = EdgeShapeConf{};
     
-    ASSERT_EQ(foo.GetChildCount(), ChildCounter{1});
-    EXPECT_NO_THROW(foo.GetChild(0));
-    EXPECT_THROW(foo.GetChild(1), InvalidArgument);
+    ASSERT_EQ(GetChildCount(foo), ChildCounter{1});
+    EXPECT_NO_THROW(GetChild(foo, 0));
+    EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
-TEST(EdgeShape, Accept)
+TEST(EdgeShapeConf, Accept)
 {
-    class Visitor: public IsVisitedShapeVisitor
-    {
-    public:
-        void Visit(const EdgeShape&) override
+    auto visited = false;
+    auto shapeVisited = false;
+    const auto foo = EdgeShapeConf{};
+    ASSERT_FALSE(visited);
+    ASSERT_FALSE(shapeVisited);
+    Accept(Shape(foo), [&](const std::type_info& ti, const void*) {
+        visited = true;
+        if (ti == typeid(EdgeShapeConf))
         {
-            visited = true;
+            shapeVisited = true;
         }
-        bool visited = false;
-    };
-
-    EdgeShape foo{};
-    Visitor v;
-    ASSERT_FALSE(v.visited);
-    ASSERT_FALSE(v.IsVisited());
-    foo.Accept(v);
-    EXPECT_TRUE(v.visited);
-    EXPECT_FALSE(v.IsVisited());
+    });
+    EXPECT_TRUE(visited);
+    EXPECT_TRUE(shapeVisited);
 }
 
-TEST(EdgeShape, BaseVisitorForDiskShape)
+#if 0
+TEST(EdgeShapeConf, BaseVisitorForDiskShape)
 {
-    const auto shape = EdgeShape{};
+    const auto shape = EdgeShapeConf{};
     auto visitor = IsVisitedShapeVisitor{};
     ASSERT_FALSE(visitor.IsVisited());
     shape.Accept(visitor);
     EXPECT_TRUE(visitor.IsVisited());
+}
+#endif
+
+TEST(EdgeShapeConf, Equality)
+{
+    EXPECT_TRUE(EdgeShapeConf() == EdgeShapeConf());
+
+    EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) == EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
+
+    EXPECT_FALSE(EdgeShapeConf().UseVertexRadius(10_m) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().UseVertexRadius(10_m) == EdgeShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_FALSE(EdgeShapeConf().UseDensity(10_kgpm2) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().UseDensity(10_kgpm2) == EdgeShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_FALSE(EdgeShapeConf().UseFriction(Real(10)) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().UseFriction(Real(10)) == EdgeShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) == EdgeShapeConf());
+    EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) == EdgeShapeConf().UseRestitution(Real(10)));
+}
+
+TEST(EdgeShapeConf, Inequality)
+{
+    EXPECT_FALSE(EdgeShapeConf() != EdgeShapeConf());
+    
+    EXPECT_TRUE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)) != EdgeShapeConf().Set(Length2(1_m, 2_m), Length2(3_m, 4_m)));
+
+    EXPECT_TRUE(EdgeShapeConf().UseVertexRadius(10_m) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().UseVertexRadius(10_m) != EdgeShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_TRUE(EdgeShapeConf().UseDensity(10_kgpm2) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().UseDensity(10_kgpm2) != EdgeShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_TRUE(EdgeShapeConf().UseFriction(Real(10)) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().UseFriction(Real(10)) != EdgeShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_TRUE(EdgeShapeConf().UseRestitution(Real(10)) != EdgeShapeConf());
+    EXPECT_FALSE(EdgeShapeConf().UseRestitution(Real(10)) != EdgeShapeConf().UseRestitution(Real(10)));
 }

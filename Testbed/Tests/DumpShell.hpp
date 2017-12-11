@@ -63,23 +63,23 @@ public:
             bodies[0] = m_world.CreateBody(bd);
 
             {
-                auto shape = PolygonShape::Conf{};
+                auto shape = PolygonShapeConf{};
                 Length2 vs[8];
                 vs[0] = Vec2(7.733039855957031e-01f, -1.497260034084320e-01f) * 1_m;
                 vs[1] = Vec2(-4.487270116806030e-01f, 1.138330027461052e-01f) * 1_m;
                 vs[2] = Vec2(-1.880589962005615e+00f, -1.365900039672852e-01f) * 1_m;
                 vs[3] = Vec2(3.972740173339844e-01f, -3.897832870483398e+00f) * 1_m;
                 shape.Set(Span<const Length2>(vs, 4));
-                shape.SetFriction(Real(2.000000029802322e-01f));
-                shape.SetRestitution(Real(0.000000000000000e+00f));
-                shape.SetDensity(Real{1.000000000000000e+00f} * 1_kgpm2);
+                shape.UseFriction(Real(2.000000029802322e-01f));
+                shape.UseRestitution(Real(0.000000000000000e+00f));
+                shape.UseDensity(Real{1.000000000000000e+00f} * 1_kgpm2);
                 FixtureDef fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(0);
 
-                bodies[0]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
+                bodies[0]->CreateFixture(Shape(shape), fd);
             }
         }
         {
@@ -99,7 +99,7 @@ public:
             bodies[1] = m_world.CreateBody(bd);
 
             {
-                auto shape = PolygonShape::Conf{};
+                auto shape = PolygonShapeConf{};
                 Length2 vs[8];
                 vs[0] = Vec2(3.473900079727173e+00f, -2.009889930486679e-01f) * 1_m;
                 vs[1] = Vec2(3.457079887390137e+00f, 3.694039955735207e-02f) * 1_m;
@@ -108,15 +108,15 @@ public:
                 vs[4] = Vec2(-2.590820074081421e+00f, -5.472509860992432e-01f) * 1_m;
                 vs[5] = Vec2(2.819370031356812e+00f, -5.402340292930603e-01f) * 1_m;
                 shape.Set(Span<const Length2>(vs, 6));
-                shape.SetFriction(Real(5.000000000000000e-01f));
-                shape.SetRestitution(Real(0.000000000000000e+00f));
-                shape.SetDensity(Real{5.000000000000000e+00f} * 1_kgpm2);
+                shape.UseFriction(Real(5.000000000000000e-01f));
+                shape.UseRestitution(Real(0.000000000000000e+00f));
+                shape.UseDensity(Real{5.000000000000000e+00f} * 1_kgpm2);
                 FixtureDef fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(0);
-                bodies[1]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
+                bodies[1]->CreateFixture(Shape(shape), fd);
             }
         }
         {
@@ -136,22 +136,22 @@ public:
             bodies[2] = m_world.CreateBody(bd);
 
             {
-                auto shape = PolygonShape::Conf{};
+                auto shape = PolygonShapeConf{};
                 Length2 vs[8];
                 vs[0] = Vec2(1.639146506786346e-01f, 4.428443685173988e-02f) * 1_m;
                 vs[1] = Vec2(-1.639146655797958e-01f, 4.428443685173988e-02f) * 1_m;
                 vs[2] = Vec2(-1.639146655797958e-01f, -4.428443312644958e-02f) * 1_m;
                 vs[3] = Vec2(1.639146357774734e-01f, -4.428444057703018e-02f) * 1_m;
                 shape.Set(Span<const Length2>(vs, 4));
-                shape.SetFriction(Real(9.499999880790710e-01f));
-                shape.SetRestitution(Real(0.000000000000000e+00f));
-                shape.SetDensity(Real{1.000000000000000e+01f} * 1_kgpm2);
+                shape.UseFriction(Real(9.499999880790710e-01f));
+                shape.UseRestitution(Real(0.000000000000000e+00f));
+                shape.UseDensity(Real{1.000000000000000e+01f} * 1_kgpm2);
                 FixtureDef fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(-3);
-                bodies[2]->CreateFixture(std::make_shared<PolygonShape>(shape), fd);
+                bodies[2]->CreateFixture(Shape(shape), fd);
             }
         }
         Free(joints);

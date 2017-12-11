@@ -1,5 +1,5 @@
 /*
- * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+ * Original work Copyright (c) 2006-2010 Erin Catto http://www.box2d.org
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
@@ -17,19 +17,32 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 
 namespace playrho {
 
-MassData DiskShape::GetMassData() const noexcept
+EdgeShapeConf::EdgeShapeConf():
+    ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
 {
-    return playrho::GetMassData(GetVertexRadius(), GetDensity(), GetLocation());
+    // Intentionally empty.
 }
 
-void DiskShape::Accept(ShapeVisitor& visitor) const
+EdgeShapeConf::EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf) noexcept:
+    ShapeDefBuilder{conf}, m_vertices{vA, vB}
 {
-    visitor.Visit(*this);
+    const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
+    m_normals[0] = normal;
+    m_normals[1] = -normal;
+}
+
+EdgeShapeConf& EdgeShapeConf::Set(Length2 vA, Length2 vB) noexcept
+{
+    m_vertices[0] = vA;
+    m_vertices[1] = vB;
+    const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
+    m_normals[0] = normal;
+    m_normals[1] = -normal;
+    return *this;
 }
 
 } // namespace playrho

@@ -31,7 +31,7 @@ class HeavyOnLightTwo : public Test
 public:
     HeavyOnLightTwo()
     {
-        m_world.CreateBody()->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
+        m_world.CreateBody()->CreateFixture(Shape(GetGroundEdgeConf()));
         // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
         m_world.CreateBody(BodyDef(DynBD).UseLocation(Length2{0_m, 2.5_m}))->CreateFixture(lilDisk);
         m_world.CreateBody(BodyDef(DynBD).UseLocation(Length2{0_m, 3.5_m}))->CreateFixture(lilDisk);
@@ -56,9 +56,9 @@ public:
     }
     
     const BodyDef DynBD = BodyDef{}.UseType(BodyType::Dynamic);
-    const DiskShape::Conf DiskDef = DiskShape::Conf{}.UseDensity(10_kgpm2);
-    const std::shared_ptr<DiskShape> lilDisk = std::make_shared<DiskShape>(0.5_m, DiskDef);
-    const std::shared_ptr<DiskShape> bigDisk = std::make_shared<DiskShape>(5.0_m, DiskDef);
+    const DiskShapeConf DiskDef = DiskShapeConf{}.UseDensity(10_kgpm2);
+    const Shape lilDisk = DiskShapeConf(DiskDef).UseRadius(0.5_m);
+    const Shape bigDisk = DiskShapeConf(DiskDef).UseRadius(5.0_m);
     Body* m_heavy = nullptr;
 };
 

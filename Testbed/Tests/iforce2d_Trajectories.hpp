@@ -43,22 +43,22 @@ public:
     {
         //add four walls to the ground body
         FixtureDef myFixtureDef;
-        auto polygonShape = PolygonShape::Conf{};
+        auto polygonShape = PolygonShapeConf{};
         polygonShape.SetAsBox(20_m, 1_m); //ground
-        m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
         polygonShape.SetAsBox(20_m, 1_m, Vec2(0, 40) * 1_m, 0_rad); //ceiling
-        m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
         polygonShape.SetAsBox(1_m, 20_m, Vec2(-20, 20) * 1_m, 0_rad); //left wall
-        m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
         polygonShape.SetAsBox(1_m, 20_m, Vec2(20, 20) * 1_m, 0_rad); //right wall
-        m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
         
         //small ledges for target practice
-        polygonShape.SetFriction(Real(0.95f));
+        polygonShape.UseFriction(Real(0.95f));
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(3, 35) * 1_m, 0_rad);
-        m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(13, 30) * 1_m, 0_rad);
-        m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
         
         //another ledge which we can move with the mouse
         BodyDef kinematicBody;
@@ -71,22 +71,20 @@ public:
         verts[1] = Length2(  w,    0_m);
         verts[2] = Length2(  0_m,   -w);
         polygonShape.Set(Span<const Length2>(verts, 3));
-        m_targetBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
+        m_targetBody->CreateFixture(Shape(polygonShape), myFixtureDef);
         verts[0] = Length2(  0_m, -2*w);
         verts[2] = Length2(  0_m,   -w);
         verts[1] = Length2( -w,    0_m);
         polygonShape.Set(Span<const Length2>(verts, 3));
-        m_targetBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
+        m_targetBody->CreateFixture(Shape(polygonShape), myFixtureDef);
         
         //create dynamic circle body
         BodyDef myBodyDef;
         myBodyDef.type = BodyType::Dynamic;
         myBodyDef.location = Vec2(-15, 5) * 1_m;
         m_launcherBody = m_world.CreateBody(myBodyDef);
-        m_launcherBody->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                                  .UseVertexRadius(2_m)
-                                                                  .UseFriction(Real(0.95f))
-                                                                  .UseDensity(1_kgpm2)), myFixtureDef);
+        m_launcherBody->CreateFixture(DiskShapeConf{}.UseRadius(2_m).UseFriction(Real(0.95f)).UseDensity(1_kgpm2),
+                                      myFixtureDef);
         
         //pin the circle in place
         RevoluteJointDef revoluteJointDef;
@@ -103,15 +101,14 @@ public:
         myBodyDef.location = Length2(0_m, -5_m);//will be positioned later
         m_littleBox = m_world.CreateBody(myBodyDef);
         polygonShape.SetAsBox( 0.5_m, 0.5_m );
-        polygonShape.SetDensity(1_kgpm2);
-        m_littleBox->CreateFixture(std::make_shared<PolygonShape>(polygonShape), myFixtureDef);
+        polygonShape.UseDensity(1_kgpm2);
+        m_littleBox->CreateFixture(Shape(polygonShape), myFixtureDef);
         
         //ball for computer 'player' to fire
         m_littleBox2 = m_world.CreateBody(myBodyDef);
-        m_littleBox2->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                                .UseVertexRadius(BallSize * 1_m)
-                                                                .UseFriction(Real(0.95f))
-                                                                .UseDensity(1_kgpm2)), myFixtureDef);
+        m_littleBox2->CreateFixture(DiskShapeConf{}.UseRadius(BallSize * 1_m)
+                                    .UseFriction(Real(0.95f)).UseDensity(1_kgpm2),
+                                    myFixtureDef);
         
         m_firing = false;
         m_littleBox->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});

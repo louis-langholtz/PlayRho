@@ -21,7 +21,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
@@ -148,7 +148,7 @@ TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 
 TEST(WorldManifold, GetForContact)
 {
-    const auto shape = std::make_shared<DiskShape>();
+    const auto shape = DiskShapeConf{};
     auto bA = Body{nullptr, BodyDef{}};
     auto bB = Body{nullptr, BodyDef{}};
     auto fA = Fixture{&bA, FixtureDef{}, shape};

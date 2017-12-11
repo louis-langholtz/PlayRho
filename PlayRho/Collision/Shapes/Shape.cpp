@@ -24,32 +24,14 @@
 
 namespace playrho {
 
-Shape::Shape(const ShapeDef& conf) noexcept:
-    m_vertexRadius{conf.vertexRadius},
-    m_density{conf.density},
-    m_friction{conf.friction},
-    m_restitution{conf.restitution}
-{
-    // Intentionally empty.
-}
-
-Shape::Shape(const Length vertexRadius, const ShapeDef& conf) noexcept:
-    m_vertexRadius{vertexRadius},
-    m_density{conf.density},
-    m_friction{conf.friction},
-    m_restitution{conf.restitution}
-{
-    // Intentionally empty.
-}
-
 // Free functions...
 
 bool TestPoint(const Shape& shape, Length2 point) noexcept
 {
-    const auto childCount = shape.GetChildCount();
+    const auto childCount = GetChildCount(shape);
     for (auto i = decltype(childCount){0}; i < childCount; ++i)
     {
-        if (playrho::TestPoint(shape.GetChild(i), point))
+        if (playrho::TestPoint(GetChild(shape, i), point))
         {
             return true;
         }

@@ -53,25 +53,24 @@ namespace playrho {
                 SetAngularVelocity(*m_ground, angularVelocity - 0.1_rad / Second);
             });
 
-            auto boundaryConf = ChainShape::Conf{}.UseFriction(Real(100));
+            auto boundaryConf = ChainShapeConf{}.UseFriction(Real(100));
             boundaryConf.UseVertexRadius(0.04_m);
-            boundaryConf.vertices.push_back(Vec2(-12, +20) * 1_m);
-            boundaryConf.vertices.push_back(Vec2(-12,  +0) * 1_m);
-            boundaryConf.vertices.push_back(Vec2(+12,  +0) * 1_m);
-            boundaryConf.vertices.push_back(Vec2(+12, +20) * 1_m);
-            m_ground->CreateFixture(std::make_shared<ChainShape>(boundaryConf));
+            boundaryConf.Add(Vec2(-12, +20) * 1_m);
+            boundaryConf.Add(Vec2(-12,  +0) * 1_m);
+            boundaryConf.Add(Vec2(+12,  +0) * 1_m);
+            boundaryConf.Add(Vec2(+12, +20) * 1_m);
+            m_ground->CreateFixture(Shape(boundaryConf));
             
             const auto vertices = GetCircleVertices(10_m, 90);
             const auto halfSegmentLength = GetMagnitude(vertices[1] - vertices[0]) / 2;
 
-            auto conf = EdgeShape::Conf{};
+            auto conf = EdgeShapeConf{};
             conf.vertexRadius = 0.125_m;
             conf.density = 10_kgpm2;
             conf.friction = 0.2f;
-            conf.vertex1 = Length2{-halfSegmentLength, 0_m};
-            conf.vertex2 = Length2{+halfSegmentLength, 0_m};
+            conf.Set(Length2{-halfSegmentLength, 0_m}, Length2{+halfSegmentLength, 0_m});
             const auto vertexOffset = Vec2(0, 14) * 1_m;
-            const auto shape = std::make_shared<EdgeShape>(conf);
+            const auto shape = Shape(conf);
             auto prevBody = static_cast<Body*>(nullptr);
             auto firstBody = static_cast<Body*>(nullptr);
             auto prevVertex = Optional<Length2>{};
@@ -102,11 +101,7 @@ namespace playrho {
             m_world.CreateJoint(RevoluteJointDef{prevBody, firstBody, vertices[0] + vertexOffset});
 
             const auto diskRadius = 0.15_m;
-            const auto diskShape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                               .UseVertexRadius(diskRadius)
-                                                               .UseDensity(10_kgpm2)
-                                                               .UseFriction(Real(0)));
-            
+            const auto diskShape = Shape(DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(Real(0)));
             auto angleIncrement = 90_deg;
             auto angle = 0_deg;
             const auto alpha = diskRadius;

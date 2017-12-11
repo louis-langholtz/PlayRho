@@ -18,8 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/MultiShape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
+#include <PlayRho/Collision/Shapes/MultiShapeConf.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 #include <algorithm>
 
@@ -28,16 +27,19 @@ namespace playrho {
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.
 /// @return Mass data for this shape.
-MassData MultiShape::GetMassData() const noexcept
+MassData GetMassData(const MultiShapeConf& arg) noexcept
 {
     auto mass = 0_kg;
     const auto origin = Length2{};
     auto weightedCenter = origin * Kilogram;
     auto I = RotInertia(0);
+    const auto vertexRadius = arg.vertexRadius;
+    const auto density = arg.density;
 
-    std::for_each(std::begin(m_children), std::end(m_children), [&](const ConvexHull& ch) {
-        const auto dp = ch.GetDistanceProxy(GetVertexRadius());
-        const auto md = playrho::GetMassData(GetVertexRadius(), GetDensity(),
+    std::for_each(std::begin(arg.children), std::end(arg.children),
+                  [&](const ConvexHull& ch) {
+        const auto dp = ch.GetDistanceProxy(vertexRadius);
+        const auto md = playrho::GetMassData(vertexRadius, density,
             Span<const Length2>(dp.GetVertices().begin(), dp.GetVertexCount()));
         mass += Mass{md.mass};
         weightedCenter += md.center * Mass{md.mass};
@@ -48,7 +50,7 @@ MassData MultiShape::GetMassData() const noexcept
     return MassData{center, mass, I};
 }
 
-MultiShape::ConvexHull MultiShape::ConvexHull::Get(const VertexSet& pointSet)
+ConvexHull ConvexHull::Get(const VertexSet& pointSet)
 {
     auto vertices = GetConvexHullAsVector(pointSet);
     assert(!vertices.empty() && vertices.size() < std::numeric_limits<VertexCounter>::max());
@@ -74,14 +76,10 @@ MultiShape::ConvexHull MultiShape::ConvexHull::Get(const VertexSet& pointSet)
     return ConvexHull{vertices, normals};
 }
 
-void MultiShape::Conf::AddConvexHull(const VertexSet& pointSet) noexcept
+MultiShapeConf& MultiShapeConf::AddConvexHull(const VertexSet& pointSet) noexcept
 {
     children.emplace_back(ConvexHull::Get(pointSet));
-}
-
-void MultiShape::Accept(ShapeVisitor &visitor) const
-{
-    visitor.Visit(*this);
+    return *this;
 }
 
 } // namespace playrho

@@ -22,7 +22,7 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 
 using namespace playrho;
 
@@ -45,8 +45,8 @@ TEST(SeparationFinder, ByteSize)
 
 TEST(SeparationFinder, BehavesAsExpected)
 {
-    const auto shape = PolygonShape{0.5_m, 0.5_m};
-    const auto distproxy = shape.GetChild(0);
+    const auto shape = PolygonShapeConf{0.5_m, 0.5_m};
+    const auto distproxy = GetChild(shape, 0);
 
     const auto x = Real(100);
     const auto sweepA = Sweep{

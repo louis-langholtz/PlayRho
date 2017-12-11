@@ -31,6 +31,7 @@
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/FixtureDef.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <limits>
 #include <memory>
 #include <vector>
@@ -39,7 +40,6 @@
 namespace playrho {
 
 class Body;
-class Shape;
 
 /// @brief An association between a body and a shape.
 ///
@@ -74,14 +74,14 @@ public:
     ///    AreaDensity must be greater-than-or-equal-to zero.
     /// @param shape Sharable shape to associate fixture with. Must be non-null.
     ///
-    Fixture(NonNull<Body*> body, const FixtureDef& def, const std::shared_ptr<const Shape>& shape):
+    Fixture(NonNull<Body*> body, const FixtureDef& def, const Shape& shape):
         m_body{body},
         m_userData{def.userData},
         m_shape{shape},
         m_filter{def.filter},
         m_isSensor{def.isSensor}
     {
-        assert(shape);
+        // Intentionally empty.
     }
     
     /// @brief Copy constructor.
@@ -101,7 +101,7 @@ public:
     
     /// @brief Gets the child shape.
     /// @details The shape is not modifiable. Use a new fixture instead.
-    std::shared_ptr<const Shape> GetShape() const noexcept;
+    Shape GetShape() const noexcept;
     
     /// @brief Set if this fixture is a sensor.
     void SetSensor(bool sensor) noexcept;
@@ -185,7 +185,7 @@ private:
     /// @note Set on construction.
     /// @note Either null or pointer to a heap-memory private copy of the assigned shape.
     /// @note 16-bytes.
-    std::shared_ptr<const Shape> m_shape;
+    Shape m_shape;
     
     FixtureProxies m_proxies; ///< Collection of fixture proxies for the assigned shape. 8-bytes.
     
@@ -198,7 +198,7 @@ private:
     bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
 };
 
-inline std::shared_ptr<const Shape> Fixture::GetShape() const noexcept
+inline Shape Fixture::GetShape() const noexcept
 {
     return m_shape;
 }
@@ -272,6 +272,21 @@ inline void Fixture::ResetProxies() noexcept
         m_proxies.asBuffer.reset();
     }
     m_proxyCount = 0;
+}
+
+inline Real Fixture::GetFriction() const noexcept
+{
+    return playrho::GetFriction(m_shape);
+}
+
+inline Real Fixture::GetRestitution() const noexcept
+{
+    return playrho::GetRestitution(m_shape);
+}
+
+inline AreaDensity Fixture::GetDensity() const noexcept
+{
+    return playrho::GetDensity(m_shape);
 }
 
 // Free functions...

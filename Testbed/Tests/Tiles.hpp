@@ -54,8 +54,7 @@ public:
                 GetX(position) = -N * a;
                 for (auto i = 0; i < N; ++i)
                 {
-                    const auto shape = PolygonShape::Conf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg);
-                    ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+                    ground->CreateFixture(PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg));
                     ++m_fixtureCount;
                     GetX(position) += 2.0f * a;
                 }
@@ -65,7 +64,7 @@ public:
 
         {
             const auto a = Real{0.5f};
-            const auto shape = std::make_shared<PolygonShape>(a * 1_m, a * 1_m, PolygonShape::Conf{}.SetDensity(5_kgpm2));
+            const auto shape = Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(a * 1_m, a * 1_m)};
 
             Vec2 x(-7.0f, 0.75f);
             Vec2 y;

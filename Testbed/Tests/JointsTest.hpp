@@ -36,23 +36,11 @@ public:
         return conf;
     }
     
-    using DiskConf = DiskShape::Conf;
-    using PolyConf = PolygonShape::Conf;
+    using DiskConf = DiskShapeConf;
+    using PolyConf = PolygonShapeConf;
 
     JointsTest(): Test(GetTestConf())
     {
-        m_diskShape = std::make_shared<DiskShape>(DiskConf{}
-                  .UseVertexRadius(1_m).UseDensity(1_kgpm2));
-        m_smallDiskShape = std::make_shared<DiskShape>(DiskConf{}
-                                                       .UseVertexRadius(0.5_m)
-                                                       .UseDensity(1_kgpm2)
-                                                       .UseRestitution(Real(0)));
-        m_squareShape = std::make_shared<PolygonShape>(PolygonShape{0.5_m, 0.5_m,
-            PolyConf{}.UseDensity(1_kgpm2)
-        });
-        m_rectShape = std::make_shared<PolygonShape>(PolygonShape{RectHWidth, RectHHeight,
-            PolyConf{}.UseDensity(1_kgpm2)});
-
         // Eleven joint types. Arrange demos in a 4 column by 3 row layout.
          const auto columnStart = -1.5f * ColumnSize;
 
@@ -196,13 +184,12 @@ private:
         const auto right = Length2{+2_m, +2.5_m};
         {
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-            const auto conf = DiskConf{}.UseVertexRadius(0.7_m);
-            cbody->CreateFixture(std::make_shared<DiskShape>(DiskConf(conf).UseLocation(left)));
-            cbody->CreateFixture(std::make_shared<DiskShape>(DiskConf(conf).UseLocation(right)));
+            const auto conf = DiskConf{}.UseRadius(0.7_m);
+            cbody->CreateFixture(DiskConf(conf).UseLocation(left));
+            cbody->CreateFixture(DiskConf(conf).UseLocation(right));
         }
         {
-            const auto pconf = PolyConf{}.UseDensity(5_kgpm2);
-            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.5_m, pconf);
+            const auto shape = Shape{PolyConf{}.UseDensity(5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
             const auto ganchor1 = center + left;
             const auto ganchor2 = center + right;
             const auto anchor1 = ganchor1 - Length2{0_m, 1.5_m};
@@ -224,8 +211,8 @@ private:
     {
         const auto containerBody = SetupContainer(center);
 
-        const auto sr = m_smallDiskShape->GetVertexRadius();
-        const auto nr = m_diskShape->GetVertexRadius();
+        const auto sr = GetVertexRadius(m_smallDiskShape);
+        const auto nr = GetVertexRadius(m_diskShape);
         const auto tr = sr + nr;
         const auto bd1 = BodyDef(DynamicBD).UseLocation(center - Length2{tr, 0_m});
         const auto body1 = m_world.CreateBody(bd1);
@@ -260,11 +247,11 @@ private:
         const auto joint3 = static_cast<PrismaticJoint*>(m_world.CreateJoint(jd3));
         
         auto jd4 = GearJointDef{joint1, joint2};
-        jd4.ratio = m_diskShape->GetRadius() / m_smallDiskShape->GetRadius();
+        jd4.ratio = GetVertexRadius(m_diskShape) / GetVertexRadius(m_smallDiskShape);
         m_gearJoint0 = static_cast<GearJoint*>(m_world.CreateJoint(jd4));
         
         auto jd5 = GearJointDef{joint2, joint3};
-        jd5.ratio = -1.0f / (m_diskShape->GetRadius() / 1_m);
+        jd5.ratio = -1.0f / (GetVertexRadius(m_diskShape) / 1_m);
         m_gearJoint1 = static_cast<GearJoint*>(m_world.CreateJoint(jd5));
     }
 
@@ -281,13 +268,12 @@ private:
             Vec2(-1.15f, 0.9f) * 1_m,
             Vec2(-1.5f, 0.2f) * 1_m
         });
-        const auto chassis = std::make_shared<PolygonShape>(Span<const Length2>(carVerts.data(), carVerts.size()),
-                                                      PolygonShape::Conf{}.SetDensity(1_kgpm2));
-        const auto circle = std::make_shared<DiskShape>(0.4_m, DiskShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.9f)));
+        const auto circle = Shape{
+            DiskShapeConf{}.UseDensity(1_kgpm2).UseFriction(Real(0.9f)).UseRadius(0.4_m)};
         
         const auto carLocation = center - Vec2(3.3f, 1.0f) * 1_m;
         const auto car = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(carLocation));
-        car->CreateFixture(chassis);
+        car->CreateFixture(PolygonShapeConf{}.UseDensity(1_kgpm2).Set(Span<const Length2>(carVerts.data(), carVerts.size())));
         
         const auto backWheel  = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(carLocation + Vec2(-1.0f, -0.65f) * 1_m));
         backWheel->CreateFixture(circle);
@@ -371,11 +357,11 @@ private:
         {
             const auto lftEye = m_world.CreateBody(BodyDef(StaticBD).UseLocation(ctr + lftOffs));
             const auto rgtEye = m_world.CreateBody(BodyDef(StaticBD).UseLocation(ctr + rgtOffs));
-            auto cconf = ChainShape::Conf{};
+            auto cconf = ChainShapeConf{};
             cconf.restitution = 0;
             cconf.friction = 0;
-            cconf.vertices = GetCircleVertices(1.8_m, 24, 0_deg, 1);
-            const auto eyeEnc = std::make_shared<ChainShape>(cconf);
+            cconf.Set(GetCircleVertices(1.8_m, 24, 0_deg, 1));
+            const auto eyeEnc = Shape(cconf);
             lftEye->CreateFixture(eyeEnc);
             rgtEye->CreateFixture(eyeEnc);
         }
@@ -438,10 +424,10 @@ private:
     const BodyDef DynamicBD = BodyDef{}.UseType(BodyType::Dynamic);
     const Length RectHHeight = 0.25_m;
     const Length RectHWidth = 2_m;
-    std::shared_ptr<DiskShape> m_diskShape;
-    std::shared_ptr<DiskShape> m_smallDiskShape;
-    std::shared_ptr<PolygonShape> m_squareShape;
-    std::shared_ptr<PolygonShape> m_rectShape;
+    Shape m_diskShape{DiskConf{}.UseRadius(1_m).UseDensity(1_kgpm2)};
+    Shape m_smallDiskShape{DiskConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseRestitution(Real(0))};
+    Shape m_squareShape{PolyConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m)};
+    Shape m_rectShape{PolyConf{}.UseDensity(1_kgpm2).SetAsBox(RectHWidth, RectHHeight)};
     const Length2 offset = Length2{+2_m, 0_m};
     
     double m_time = 0;

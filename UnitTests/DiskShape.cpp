@@ -19,103 +19,102 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;
 
-TEST(DiskShape, ByteSize)
+TEST(DiskShapeConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(DiskShape), std::size_t(28));
+            EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(24));
 #else
-            EXPECT_EQ(sizeof(DiskShape), std::size_t(32));
+            EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(24));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(DiskShape), std::size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(DiskShape), std::size_t(112)); break;
+        case  8: EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(48)); break;
+        case 16: EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(96)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(DiskShape, DefaultConstruction)
+TEST(DiskShapeConf, DefaultConstruction)
 {
-    DiskShape foo{};
+    const auto foo = DiskShapeConf{};
     
-    EXPECT_EQ(typeid(foo), typeid(DiskShape));
-    EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
-    EXPECT_EQ(foo.GetRadius(), DiskShape::GetDefaultRadius());
+    EXPECT_EQ(typeid(foo), typeid(DiskShapeConf));
+    EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
+    EXPECT_EQ(foo.GetRadius(), DiskShapeConf::GetDefaultRadius());
     EXPECT_EQ(GetX(foo.GetLocation()), 0_m);
     EXPECT_EQ(GetY(foo.GetLocation()), 0_m);
 }
 
-TEST(DiskShape, InitConstruction)
+TEST(DiskShapeConf, InitConstruction)
 {
     const auto radius = 1_m;
     const auto position = Length2{-1_m, 1_m};
-    auto conf = DiskShape::Conf{};
+    auto conf = DiskShapeConf{};
     conf.vertexRadius = radius;
     conf.location = position;
-    DiskShape foo{conf};
+    Shape foo{conf};
     
-    EXPECT_EQ(typeid(foo), typeid(DiskShape));
-    EXPECT_EQ(foo.GetChildCount(), ChildCounter{1});
-    EXPECT_EQ(foo.GetRadius(), radius);
-    EXPECT_EQ(GetX(foo.GetLocation()), GetX(position));
-    EXPECT_EQ(GetY(foo.GetLocation()), GetY(position));
+    EXPECT_EQ(typeid(foo), typeid(Shape));
+    EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
+    EXPECT_EQ(GetVertexRadius(foo), radius);
+    EXPECT_EQ(GetX(conf.GetLocation()), GetX(position));
+    EXPECT_EQ(GetY(conf.GetLocation()), GetY(position));
 }
 
-TEST(DiskShape, GetInvalidChildThrows)
+TEST(DiskShapeConf, GetInvalidChildThrows)
 {
-    DiskShape foo{};
+    Shape foo{DiskShapeConf{}};
     
-    ASSERT_EQ(foo.GetChildCount(), ChildCounter{1});
-    EXPECT_NO_THROW(foo.GetChild(0));
-    EXPECT_THROW(foo.GetChild(1), InvalidArgument);
+    ASSERT_EQ(GetChildCount(foo), ChildCounter{1});
+    EXPECT_NO_THROW(GetChild(foo, 0));
+    EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
-TEST(DiskShape, Accept)
+TEST(DiskShapeConf, Accept)
 {
-    class Visitor: public IsVisitedShapeVisitor
-    {
-    public:
-        void Visit(const DiskShape&) override
+    auto visited = false;
+    auto diskVisited = false;
+    Shape foo{DiskShapeConf{}};
+    ASSERT_FALSE(visited);
+    ASSERT_FALSE(diskVisited);
+    Accept(foo, [&](const std::type_info &ti, const void *){
+        visited = true;
+        if (ti == typeid(DiskShapeConf))
         {
-            visited = true;
+            diskVisited = true;
         }
-        bool visited = false;
-    };
-
-    DiskShape foo{};
-    Visitor v;
-    ASSERT_FALSE(v.visited);
-    ASSERT_FALSE(v.IsVisited());
-    foo.Accept(v);
-    EXPECT_TRUE(v.visited);
-    EXPECT_FALSE(v.IsVisited());
+    });
+    EXPECT_TRUE(visited);
+    EXPECT_TRUE(diskVisited);
 }
 
-TEST(DiskShape, BaseVisitorForDiskShape)
+#if 0
+TEST(DiskShapeConf, BaseVisitorForDiskShape)
 {
-    const auto shape = DiskShape{2_m};
+    const auto shape = DiskShapeConf{}.UseRadius(2_m);
     auto visitor = IsVisitedShapeVisitor{};
     ASSERT_FALSE(visitor.IsVisited());
     shape.Accept(visitor);
     EXPECT_TRUE(visitor.IsVisited());
 }
+#endif
 
-TEST(DiskShape, TestPoint)
+TEST(DiskShapeConf, TestPoint)
 {
     const auto radius = 1_m;
     const auto position = Length2{};
-    auto conf = DiskShape::Conf{};
+    auto conf = DiskShapeConf{};
     conf.vertexRadius = radius;
     conf.location = position;
-    DiskShape foo{conf};
+    Shape foo{conf};
     EXPECT_TRUE(TestPoint(foo, Length2{ 0_m,  0_m}));
     EXPECT_TRUE(TestPoint(foo, Length2{+1_m,  0_m}));
     EXPECT_TRUE(TestPoint(foo, Length2{ 0_m, +1_m}));
@@ -126,14 +125,14 @@ TEST(DiskShape, TestPoint)
     EXPECT_FALSE(TestPoint(foo, Length2{+0.9_m,  +0.9_m}));
 }
 
-TEST(DiskShape, ComputeAABB)
+TEST(DiskShapeConf, ComputeAABB)
 {
     const auto radius = 2.4_m;
     const auto position = Length2{2_m, 1_m};
-    auto conf = DiskShape::Conf{};
+    auto conf = DiskShapeConf{};
     conf.vertexRadius = radius;
     conf.location = position;
-    DiskShape foo{conf};
+    Shape foo{conf};
     const auto aabb = ComputeAABB(foo, Transform_identity);
     EXPECT_EQ(GetX(GetLowerBound(aabb)), GetX(position) - radius);
     EXPECT_EQ(GetY(GetLowerBound(aabb)), GetY(position) - radius);
@@ -143,4 +142,46 @@ TEST(DiskShape, ComputeAABB)
     EXPECT_TRUE(AlmostEqual(StripUnit(GetY(GetExtents(aabb))), StripUnit(radius)));
     EXPECT_EQ(GetX(GetCenter(aabb)), GetX(position));
     EXPECT_EQ(GetY(GetCenter(aabb)), GetY(position));
+}
+
+TEST(DiskShapeConf, Equality)
+{
+    EXPECT_TRUE(DiskShapeConf() == DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf().UseRadius(10_m));
+    EXPECT_FALSE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) == DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
+    
+    EXPECT_FALSE(DiskShapeConf().UseVertexRadius(10_m) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseVertexRadius(10_m) == DiskShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_FALSE(DiskShapeConf().UseDensity(10_kgpm2) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseDensity(10_kgpm2) == DiskShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_FALSE(DiskShapeConf().UseFriction(Real(10)) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseFriction(Real(10)) == DiskShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_FALSE(DiskShapeConf().UseRestitution(Real(10)) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseRestitution(Real(10)) == DiskShapeConf().UseRestitution(Real(10)));
+}
+
+TEST(DiskShapeConf, Inequality)
+{
+    EXPECT_FALSE(DiskShapeConf() != DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf().UseRadius(10_m));
+    EXPECT_TRUE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) != DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
+    
+    EXPECT_TRUE(DiskShapeConf().UseVertexRadius(10_m) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseVertexRadius(10_m) != DiskShapeConf().UseVertexRadius(10_m));
+    
+    EXPECT_TRUE(DiskShapeConf().UseDensity(10_kgpm2) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseDensity(10_kgpm2) != DiskShapeConf().UseDensity(10_kgpm2));
+    
+    EXPECT_TRUE(DiskShapeConf().UseFriction(Real(10)) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseFriction(Real(10)) != DiskShapeConf().UseFriction(Real(10)));
+    
+    EXPECT_TRUE(DiskShapeConf().UseRestitution(Real(10)) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseRestitution(Real(10)) != DiskShapeConf().UseRestitution(Real(10)));
 }

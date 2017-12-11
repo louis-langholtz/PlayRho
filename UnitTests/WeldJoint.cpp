@@ -25,7 +25,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
 
@@ -142,7 +142,7 @@ TEST(WeldJoint, GetWeldJointDef)
 
 TEST(WeldJoint, WithDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(0.2_m);
+    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -164,7 +164,7 @@ TEST(WeldJoint, WithDynamicCircles)
 
 TEST(WeldJoint, WithDynamicCircles2)
 {
-    const auto circle = std::make_shared<DiskShape>(0.2_m);
+    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};

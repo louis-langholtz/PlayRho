@@ -30,18 +30,17 @@ public:
 
     ShapeEditing()
     {
-        const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.location = Vec2(0.0f, 10.0f) * 1_m;
         m_body = m_world.CreateBody(bd);
 
-        auto shape = PolygonShape::Conf{};
+        auto shape = PolygonShapeConf{};
         shape.SetAsBox(4_m, 4_m, Length2{}, 0_deg);
-        shape.SetDensity(10_kgpm2);
-        m_fixture1 = m_body->CreateFixture(std::make_shared<PolygonShape>(shape));
+        shape.UseDensity(10_kgpm2);
+        m_fixture1 = m_body->CreateFixture(Shape(shape));
 
         m_fixture2 = nullptr;
 
@@ -50,11 +49,11 @@ public:
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Create a shape.", [&](KeyActionMods) {
             if (!m_fixture2)
             {
-                auto conf = DiskShape::Conf{};
+                auto conf = DiskShapeConf{};
                 conf.vertexRadius = 3_m;
                 conf.location = Vec2(0.5f, -4.0f) * 1_m;
                 conf.density = 10_kgpm2;
-                m_fixture2 = m_body->CreateFixture(std::make_shared<DiskShape>(conf));
+                m_fixture2 = m_body->CreateFixture(Shape(conf));
                 m_body->SetAwake();
             }
         });

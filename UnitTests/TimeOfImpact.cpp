@@ -19,7 +19,7 @@
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShape.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <set>
 
 using namespace playrho;
@@ -736,16 +736,16 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
 {
     // The data for shapes and sweeps comes from PlayRho/Testbed/Tests/TimeOfImpact.hpp
 
-    const auto shapeA = PolygonShape{
-        PolygonShape::Conf{}.SetVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(25.0_m, 5.0_m)
+    const auto shapeA = PolygonShapeConf{
+        PolygonShapeConf{}.UseVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(25.0_m, 5.0_m)
     };
 
-    const auto shapeB = PolygonShape{
-        PolygonShape::Conf{}.SetVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(2.5_m, 2.5_m)
+    const auto shapeB = PolygonShapeConf{
+        PolygonShapeConf{}.UseVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(2.5_m, 2.5_m)
     };
 
-    const auto dpA = shapeA.GetChild(0);
-    const auto dpB = shapeB.GetChild(0);
+    const auto dpA = GetChild(shapeA, 0);
+    const auto dpB = GetChild(shapeB, 0);
 
     const auto sweepA = Sweep{
         Position{Length2{-11_m, 10_m}, 2.95000005_rad},
@@ -837,10 +837,10 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
         0.000199999995_m, 4, vertices, normals
     };
     
-    auto shapeB = PolygonShape{
-        PolygonShape::Conf{}.SetVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(0.5_m, 0.5_m)
+    auto shapeB = PolygonShapeConf{
+        PolygonShapeConf{}.UseVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(0.5_m, 0.5_m)
     };
-    const auto dpB = shapeB.GetChild(0);
+    const auto dpB = GetChild(shapeB, 0);
     
     const auto conf = ToiConf{}
         .UseMaxToiIters(200)

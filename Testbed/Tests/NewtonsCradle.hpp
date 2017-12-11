@@ -106,8 +106,8 @@ namespace playrho {
                 const auto body = m_world.CreateBody(bd);
                 
                 const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
-                const auto shape = PolygonShape::Conf{}.SetAsBox(frame_width / 2, frame_width / 24).SetDensity(20_kgpm2);
-                body->CreateFixture(std::make_shared<PolygonShape>(shape));
+                const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 2, frame_width / 24).UseDensity(20_kgpm2);
+                body->CreateFixture(Shape(shape));
                 return body;
             }();
             
@@ -157,8 +157,8 @@ namespace playrho {
                 def.location = Length2{frame_width / 2 + frame_width / 24, frame_height - (arm_length / 2)};
                 const auto body = m_world.CreateBody(def);
                 
-                const auto shape = PolygonShape::Conf{}.SetAsBox(frame_width / 24, arm_length / 2 + frame_width / 24).SetDensity(20_kgpm2);
-                body->CreateFixture(std::make_shared<PolygonShape>(shape));
+                const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 24, arm_length / 2 + frame_width / 24).UseDensity(20_kgpm2);
+                body->CreateFixture(Shape(shape));
                 
                 m_right_side_wall = body;
             }
@@ -177,8 +177,8 @@ namespace playrho {
                 };
                 const auto body = m_world.CreateBody(def);
                 
-                const auto shape = PolygonShape::Conf{}.SetAsBox(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24})).SetDensity(20_kgpm2);
-                body->CreateFixture(std::make_shared<PolygonShape>(shape));
+                const auto shape = PolygonShapeConf{}.SetAsBox(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24})).UseDensity(20_kgpm2);
+                body->CreateFixture(Shape(shape));
                 
                 m_left_side_wall = body;
             }
@@ -204,19 +204,19 @@ namespace playrho {
 
         Fixture* CreateBall(Body* body, Length2 pos, Length radius)
         {
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.vertexRadius = radius;
             conf.location = pos;
             conf.density = 20_kgpm2;
             conf.restitution = 1;
             conf.friction = 0;
-            return body->CreateFixture(std::make_shared<DiskShape>(conf));
+            return body->CreateFixture(Shape(conf));
         }
 
         Fixture* CreateArm(Body* body, Length length = 10_m)
         {
-            const auto shape = PolygonShape::Conf{}.SetAsBox(length / Real{2000}, length / Real{2}).SetDensity(20_kgpm2);
-            return body->CreateFixture(std::make_shared<PolygonShape>(shape));
+            const auto shape = PolygonShapeConf{}.SetAsBox(length / Real{2000}, length / Real{2}).UseDensity(20_kgpm2);
+            return body->CreateFixture(Shape(shape));
         }
 
         void ToggleRightSideWall()

@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyDef.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 
 using namespace playrho;
@@ -114,8 +114,8 @@ TEST(DistanceJoint, Construction)
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
-
-    const auto shape = std::make_shared<DiskShape>(0.2_m);
+    
+    const auto shape = DiskShapeConf{}.UseRadius(0.2_m);
     
     const auto location1 = Length2{-1_m, 0_m};
     const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
@@ -169,7 +169,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2{0, Real(10) * MeterPerSquareSecond})};
     
-    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(0.2_m).SetDensity(1_kgpm2));    
+    const auto shape = DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2);
     const auto location1 = Length2{-10_m, 10_m};
     const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(body1->GetLocation(), location1);

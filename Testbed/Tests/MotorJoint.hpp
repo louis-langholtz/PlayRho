@@ -42,16 +42,13 @@ public:
     MotorJointTest(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m));
+        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Define motorized body
         const auto body = m_world.CreateBody(BodyDef{}
                                              .UseType(BodyType::Dynamic)
                                              .UseLocation(Vec2(0.0f, 8.0f) * 1_m));
-
-        const auto conf = PolygonShape::Conf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2);
-        body->CreateFixture(std::make_shared<PolygonShape>(2_m, 0.5_m, conf));
-
+        body->CreateFixture(PolygonShapeConf{}.SetAsBox(2_m, 0.5_m).UseFriction(Real(0.6f)).UseDensity(2_kgpm2));
         auto mjd = MotorJointDef{ground, body};
         mjd.maxForce = 1000_N;
         mjd.maxTorque = 1000_Nm;

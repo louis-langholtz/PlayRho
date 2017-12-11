@@ -56,7 +56,7 @@
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
-#include <PlayRho/Collision/Shapes/ChainShape.hpp>
+#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/DynamicMemory.hpp>
@@ -303,8 +303,8 @@ namespace {
             const auto bodyConstraintA = At(bodies, bodyA);
             const auto bodyConstraintB = At(bodies, bodyB);
             
-            const auto radiusA = GetVertexRadius(*shapeA);
-            const auto radiusB = GetVertexRadius(*shapeB);
+            const auto radiusA = GetVertexRadius(shapeA);
+            const auto radiusB = GetVertexRadius(shapeB);
             
             return PositionConstraint{
                 manifold, *bodyConstraintA, radiusA, *bodyConstraintB, radiusB
@@ -344,8 +344,8 @@ namespace {
             const auto bodyConstraintA = At(bodies, bodyA);
             const auto bodyConstraintB = At(bodies, bodyB);
             
-            const auto radiusA = shapeA->GetVertexRadius();
-            const auto radiusB = shapeB->GetVertexRadius();
+            const auto radiusA = GetVertexRadius(shapeA);
+            const auto radiusB = GetVertexRadius(shapeB);
     
             const auto xfA = GetTransformation(bodyConstraintA->GetPosition(),
                                                bodyConstraintA->GetLocalCenter());
@@ -1990,7 +1990,7 @@ void World::RayCast(Length2 point1, Length2 point2, RayCastCallback callback) co
         const auto index = leafData.childIndex;
         const auto shape = fixture->GetShape();
         const auto body = fixture->GetBody();
-        const auto child = shape->GetChild(index);
+        const auto child = GetChild(shape, index);
         const auto transformation = body->GetTransformation();
         const auto output = playrho::RayCast(child, input, transformation);
         if (output.has_value())
@@ -2548,7 +2548,7 @@ void World::SetType(Body& body, BodyType type)
     }
 }
 
-Fixture* World::CreateFixture(Body& body, const std::shared_ptr<const Shape>& shape,
+Fixture* World::CreateFixture(Body& body, const Shape& shape,
                               const FixtureDef& def, bool resetMassData)
 {
     if (body.GetWorld() != this)
@@ -2556,11 +2556,7 @@ Fixture* World::CreateFixture(Body& body, const std::shared_ptr<const Shape>& sh
         throw InvalidArgument("World::CreateFixture: invalid body");
     }
 
-    if (!shape)
-    {
-        throw InvalidArgument("World::CreateFixture: null shape");
-    }
-    const auto vr = GetVertexRadius(*shape);
+    const auto vr = GetVertexRadius(shape);
     if (!(vr >= GetMinVertexRadius()))
     {
         throw InvalidArgument("World::CreateFixture: vertex radius < min");
@@ -2665,11 +2661,11 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
     const auto xfm = GetTransformation(fixture);
     
     // Reserve proxy space and create proxies in the broad-phase.
-    const auto childCount = shape->GetChildCount();
+    const auto childCount = GetChildCount(shape);
     auto proxies = std::make_unique<FixtureProxy[]>(childCount);
     for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
     {
-        const auto dp = shape->GetChild(childIndex);
+        const auto dp = GetChild(shape, childIndex);
         const auto aabb = ComputeAABB(dp, xfm);
 
         // Note: treeId from CreateLeaf can be higher than the number of fixture proxies.
@@ -2757,7 +2753,7 @@ ContactCounter World::Synchronize(Fixture& fixture,
         const auto treeId = proxy.treeId;
         
         // Compute an AABB that covers the swept shape (may miss some rotation effect).
-        const auto aabb = ComputeAABB(shape->GetChild(childIndex), xfm1, xfm2);
+        const auto aabb = ComputeAABB(GetChild(shape, childIndex), xfm1, xfm2);
         if (!Contains(m_tree.GetAABB(treeId), aabb))
         {
             const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
@@ -2810,11 +2806,11 @@ size_t GetFixtureCount(const World& world) noexcept
 
 size_t GetShapeCount(const World& world) noexcept
 {
-    auto shapes = std::set<const Shape*>();
+    auto shapes = std::set<const void*>();
     for_each(cbegin(world.GetBodies()), cend(world.GetBodies()), [&](const World::Bodies::value_type &b) {
         const auto fixtures = GetRef(b).GetFixtures();
         for_each(cbegin(fixtures), cend(fixtures), [&](const Body::Fixtures::value_type& f) {
-            shapes.insert(GetRef(f).GetShape().get());
+            shapes.insert(GetData(GetRef(f).GetShape()));
         });
     });
     return shapes.size();
@@ -2858,7 +2854,7 @@ Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions, const Sha
 {
     const auto body = world.CreateBody();
     
-    auto conf = ChainShape::Conf{};
+    auto conf = ChainShapeConf{};
     conf.restitution = baseConf.restitution;
     conf.vertexRadius = baseConf.vertexRadius;
     conf.friction = baseConf.friction;
@@ -2871,13 +2867,13 @@ Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions, const Sha
     const auto topLeft  = Length2(-halfWidth, +halfHeight);
     const auto topRight = Length2(+halfWidth, +halfHeight);
     
-    conf.vertices.push_back(btmRight);
-    conf.vertices.push_back(topRight);
-    conf.vertices.push_back(topLeft);
-    conf.vertices.push_back(btmLeft);
-    conf.vertices.push_back(conf.vertices[0]);
+    conf.Add(btmRight);
+    conf.Add(topRight);
+    conf.Add(topLeft);
+    conf.Add(btmLeft);
+    conf.Add(conf.GetVertex(0));
     
-    body->CreateFixture(std::make_shared<ChainShape>(conf));
+    body->CreateFixture(Shape{conf});
     
     return body;
 }

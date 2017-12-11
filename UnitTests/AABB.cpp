@@ -25,7 +25,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <type_traits>
 #include <algorithm>
 #include <utility>
@@ -416,8 +416,8 @@ TEST(AABB2D, StreamOutputOperator)
 
 TEST(AABB2D, ComputeAabbForFixtureAtBodyOrigin)
 {
-    const auto shape = std::make_shared<DiskShape>();
-    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+    const auto shape = DiskShapeConf{};
+    const auto shapeAabb = ComputeAABB(Shape(shape), Transformation{});
 
     World world;
     const auto body = world.CreateBody();
@@ -430,8 +430,8 @@ TEST(AABB2D, ComputeAabbForFixtureAtBodyOrigin)
 
 TEST(AABB2D, ComputeAabbForFixtureOffFromBodyOrigin)
 {
-    const auto shape = std::make_shared<DiskShape>();
-    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+    const auto shape = DiskShapeConf{};
+    const auto shapeAabb = ComputeAABB(shape, Transformation{});
     
     const auto bodyLocation = Length2{2_m, 3_m};
     World world;
@@ -446,8 +446,8 @@ TEST(AABB2D, ComputeAabbForFixtureOffFromBodyOrigin)
 
 TEST(AABB2D, ComputeIntersectingAABBForSameFixture)
 {
-    const auto shape = std::make_shared<DiskShape>();
-    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+    const auto shape = DiskShapeConf{};
+    const auto shapeAabb = ComputeAABB(shape, Transformation{});
     
     World world;
     const auto body = world.CreateBody();
@@ -465,8 +465,8 @@ TEST(AABB2D, ComputeIntersectingAABBForTwoFixtures)
 {
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
 
-    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2_m));
-    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+    const auto shape = DiskShapeConf{}.UseRadius(2_m);
+    const auto shapeAabb = ComputeAABB(shape, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB2D{shapeInterval, shapeInterval}));
 
     const auto bodyLocation0 = Length2{+1_m, 0_m};
@@ -494,8 +494,8 @@ TEST(AABB2D, ComputeIntersectingAABBForContact)
 {
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
     
-    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}.UseVertexRadius(2_m));
-    const auto shapeAabb = ComputeAABB(*shape, Transformation{});
+    const auto shape = DiskShapeConf{}.UseRadius(2_m);
+    const auto shapeAabb = ComputeAABB(shape, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB2D{shapeInterval, shapeInterval}));
     
     const auto bodyLocation0 = Length2{+1_m, 0_m};

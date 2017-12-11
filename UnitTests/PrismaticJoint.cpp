@@ -21,7 +21,7 @@
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Collision/Shapes/DiskShape.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
 
@@ -216,7 +216,7 @@ TEST(PrismaticJoint, GetLinearVelocity)
 
 TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
 {
-    const auto circle = std::make_shared<DiskShape>(0.2_m);
+    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};

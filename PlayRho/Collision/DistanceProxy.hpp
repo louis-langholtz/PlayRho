@@ -174,6 +174,8 @@ namespace playrho
         NonNegative<Length> m_vertexRadius = 0_m; ///< Radius of the vertices of the associated shape.
     };
     
+    // Free functions...
+    
     /// @brief Determines with the two given distance proxies are equal.
     /// @relatedalso DistanceProxy
     bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept;
@@ -183,6 +185,12 @@ namespace playrho
     inline bool operator!= (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
     {
         return !(lhs == rhs);
+    }
+    
+    /// @brief Gets the vertex radius property of a given distance proxy.
+    inline NonNegative<Length> GetVertexRadius(const DistanceProxy& arg) noexcept
+    {
+        return arg.GetVertexRadius();
     }
     
     /// @brief Gets the supporting vertex index in the given direction for the given distance proxy.

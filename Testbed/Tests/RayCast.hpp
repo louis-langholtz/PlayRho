@@ -48,24 +48,22 @@ public:
     RayCast()
     {
         // Ground body
-        const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m,
-                                                          Vec2(40.0f, 0.0f) * 1_m));
+        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
-        auto conf = PolygonShape::Conf{};
-        conf.SetFriction(Real(0.3f));
+        auto conf = PolygonShapeConf{};
+        conf.UseFriction(Real(0.3f));
         conf.Set({
             Vec2(-0.5f, 0.0f) * 1_m,
             Vec2(0.5f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        m_polygons[0] = std::make_shared<PolygonShape>(conf);
+        m_polygons[0] = Shape(conf);
         conf.Set({
             Vec2(-0.1f, 0.0f) * 1_m,
             Vec2(0.1f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        m_polygons[1] = std::make_shared<PolygonShape>(conf);
+        m_polygons[1] = Shape(conf);
         {
             const auto w = 1.0f;
             const auto b = w / (2.0f + sqrt(2.0f));
@@ -82,9 +80,9 @@ public:
                 Vec2(-0.5f * s, 0.0f) * 1_m
             });
         }
-        m_polygons[2] = std::make_shared<PolygonShape>(conf);
+        m_polygons[2] = Shape(conf);
         conf.SetAsBox(0.5_m, 0.5_m);
-        m_polygons[3] = std::make_shared<PolygonShape>(conf);
+        m_polygons[3] = Shape(conf);
         std::memset(m_bodies, 0, sizeof(m_bodies));
         
         RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "drop triangles that should be ignored by the ray.", [&](KeyActionMods kam) {
@@ -339,7 +337,7 @@ public:
             //vertices[2] = Vec2(22.875f, 3.0f);
             //vertices[3] = Vec2(-22.875f, 3.0f);
 
-            PolygonShape shape;
+            PolygonShapeConf shape;
             //shape.Set(vertices, 4);
             shape.SetAsBox(22.875f, 3.0f);
 
@@ -374,11 +372,9 @@ public:
     int m_bodyIndex = 0;
     Body* m_bodies[e_maxBodies];
     int m_userData[e_maxBodies];
-    std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(
-        DiskShape::Conf{}.SetVertexRadius(0.5_m).SetFriction(Real(0.3f)));
-    std::shared_ptr<EdgeShape> m_edge = std::make_shared<EdgeShape>(Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m,
-                                                                    EdgeShape::Conf{}.SetFriction(Real(0.3f)));
+    Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
+    Shape m_circle = DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3f));
+    Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.UseFriction(Real(0.3f))};
     Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;
 };
