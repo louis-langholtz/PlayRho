@@ -1484,7 +1484,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.location = Length2{};
-    auto conf = PolygonShape::Conf{};
+    auto conf = PolygonShapeConf{};
     conf.SetVertexRadius(1_m);
     conf.SetAsBox(2_m, 2_m);
     conf.SetDensity(1_kgpm2);
@@ -1608,7 +1608,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 
 TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 {
-    const auto shape = Shape(PolygonShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetAsBox(1_m, 1_m));
+    const auto shape = Shape(PolygonShapeConf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetAsBox(1_m, 1_m));
     const auto gravity = LinearAcceleration2{};
     
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1678,7 +1678,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     body_def.bullet = false; // separation is faster if true.
     
     const auto half_dim = Real(64); // 1 causes additional y-axis separation
-    const auto shape = Shape(PolygonShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetAsBox(half_dim * Meter, half_dim * Meter));
+    const auto shape = Shape(PolygonShapeConf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetAsBox(half_dim * Meter, half_dim * Meter));
     
     const auto body1pos = Length2{Real(half_dim/2) * Meter, 0_m}; // 0 causes additional y-axis separation
     body_def.location = body1pos;
@@ -1960,7 +1960,7 @@ TEST(World, TilesComesToRest)
     PLAYRHO_CONSTEXPR const auto LinearSlop = Meter / 1000;
     PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * 2 * 1_rad) / 180;
     PLAYRHO_CONSTEXPR const auto VertexRadius = LinearSlop * 2;
-    auto conf = PolygonShape::Conf{}.UseVertexRadius(VertexRadius);
+    auto conf = PolygonShapeConf{}.UseVertexRadius(VertexRadius);
     const auto m_world = std::make_unique<World>(WorldDef{}.UseMinVertexRadius(VertexRadius));
     
     PLAYRHO_CONSTEXPR const auto e_count = 36;
@@ -2580,7 +2580,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     ASSERT_EQ(GetY(ball_body->GetLocation()), 0_m);
     
     const auto ball_radius = Real(half_box_width / 4) * Meter;
-    const auto object_shape = Shape(PolygonShape::Conf{}.SetDensity(10_kgpm2).SetAsBox(ball_radius, ball_radius));
+    const auto object_shape = Shape(PolygonShapeConf{}.SetDensity(10_kgpm2).SetAsBox(ball_radius, ball_radius));
     {
         const auto ball_fixture = ball_body->CreateFixture(object_shape);
         ASSERT_NE(ball_fixture, nullptr);
@@ -3055,7 +3055,7 @@ public:
         const auto numboxes = boxes.size();
         original_x = GetParam();
         
-        const auto boxShape = Shape{PolygonShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)).SetAsBox(hdim, hdim)};
+        const auto boxShape = Shape{PolygonShapeConf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)).SetAsBox(hdim, hdim)};
         for (auto i = decltype(numboxes){0}; i < numboxes; ++i)
         {
             // (hdim + 0.05f) + (hdim * 2 + 0.1f) * i

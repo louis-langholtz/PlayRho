@@ -107,8 +107,8 @@ public:
         }
     }
     
-    PolygonShape::Conf m_polygonA{PolygonShape::Conf{}.SetAsBox(0.2_m, 0.4_m)};
-    PolygonShape::Conf m_polygonB{PolygonShape::Conf{}.SetAsBox(0.5_m, 0.5_m)};
+    PolygonShapeConf m_polygonA{PolygonShapeConf{}.SetAsBox(0.2_m, 0.4_m)};
+    PolygonShapeConf m_polygonB{PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m)};
 
     Transformation m_transformA;
     Transformation m_transformB;

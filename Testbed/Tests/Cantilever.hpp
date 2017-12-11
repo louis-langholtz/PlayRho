@@ -46,7 +46,7 @@ public:
 
         // Creates left-end-fixed 8-part plank (below the top one)
         {
-            const auto shape = Shape{PolygonShape::Conf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
+            const auto shape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -66,7 +66,7 @@ public:
 
         // Creates left-end-fixed 3-part plank at top
         {
-            const auto shape = Shape{PolygonShape::Conf{}.SetDensity(20_kgpm2).SetAsBox(1_m, 0.125_m)};
+            const auto shape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(1_m, 0.125_m)};
             auto prevBody = ground;
             for (auto i = 0; i < 3; ++i)
             {
@@ -87,7 +87,7 @@ public:
 
         // Creates 8-part plank to the right of the fixed planks (but not farthest right)
         {
-            const auto shape = Shape{PolygonShape::Conf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
+            const auto shape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -108,7 +108,7 @@ public:
 
         // Creates 8-part farthest-right plank
         {
-            const auto shape = Shape{PolygonShape::Conf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
+            const auto shape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.125_m)};
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
@@ -129,7 +129,7 @@ public:
         }
 
         // Creates triangles
-        const auto conf = PolygonShape::Conf{}.UseDensity(1_kgpm2).UseVertices({
+        const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).UseVertices({
             Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
         const auto polyshape = Shape{conf};
         for (auto i = 0; i < 2; ++i)

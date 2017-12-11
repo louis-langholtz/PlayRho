@@ -36,7 +36,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
     const auto old_vB = Velocity{LinearVelocity2{}, 0_deg / 1_s};
 
     const auto dim = 2_m;
-    const auto shape = PolygonShape::Conf(dim, dim);
+    const auto shape = PolygonShapeConf(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(GetChild(shape, 0), xfmA, GetChild(shape, 0), xfmB);
@@ -79,7 +79,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
     const auto old_vB = Velocity{};
     
     const auto dim = 2_m;
-    const auto shape = PolygonShape::Conf(dim, dim);
+    const auto shape = PolygonShapeConf(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(GetChild(shape, 0), xfmA, GetChild(shape, 0), xfmB);
@@ -117,7 +117,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
 {
     const auto dim = 2_m;
-    const auto shape = PolygonShape::Conf(dim, dim);
+    const auto shape = PolygonShapeConf(dim, dim);
     const auto xfmA = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto xfmB = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto manifold = CollideShapes(GetChild(shape, 0), xfmA, GetChild(shape, 0), xfmB);
@@ -171,7 +171,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     const auto old_vB = Velocity{};
     
     const auto dim = 2_m;
-    const auto shape = PolygonShape::Conf(dim, dim);
+    const auto shape = PolygonShapeConf(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(GetChild(shape, 0), xfmA, GetChild(shape, 0), xfmB);
@@ -225,7 +225,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     const auto old_vB = Velocity{};
 
     const auto dim = 2_m;
-    const auto shape = PolygonShape::Conf(dim, dim);
+    const auto shape = PolygonShapeConf(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(GetChild(shape, 0), xfmA, GetChild(shape, 0), xfmB);
@@ -279,7 +279,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     const auto old_vB = Velocity{};
 
     const auto dim = 2_m;
-    const auto shape = PolygonShape::Conf(dim, dim);
+    const auto shape = PolygonShapeConf(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(GetChild(shape, 0), xfmA, GetChild(shape, 0), xfmB);
@@ -345,7 +345,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     const auto old_vB = Velocity{};
 
     const auto dim = 2_m;
-    const auto shape = PolygonShape::Conf(dim, dim);
+    const auto shape = PolygonShapeConf(dim, dim);
     const auto xfmA = Transformation{old_pA.linear, UnitVec2::Get(old_pA.angular)};
     const auto xfmB = Transformation{old_pB.linear, UnitVec2::Get(old_pB.angular)};
     const auto manifold = CollideShapes(GetChild(shape, 0), xfmA, GetChild(shape, 0), xfmB);
@@ -404,7 +404,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
 TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 {
     const auto dim = 2_m;
-    const auto shape = PolygonShape::Conf(dim, dim);
+    const auto shape = PolygonShapeConf(dim, dim);
     const auto xfmA = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto xfmB = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto manifold = CollideShapes(GetChild(shape, 0), xfmA, GetChild(shape, 0), xfmB);

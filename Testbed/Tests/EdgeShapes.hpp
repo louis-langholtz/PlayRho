@@ -52,7 +52,7 @@ public:
             }
         }
 
-        auto conf = PolygonShape::Conf{};
+        auto conf = PolygonShapeConf{};
         conf.SetFriction(Real(0.3f));
         conf.SetDensity(20_kgpm2);
         conf.Set({
@@ -202,7 +202,7 @@ public:
 
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
-    Shape m_polygons[4] = {PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}};
+    Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
     Shape m_circle = Shape{DiskShapeConf{}.SetRadius(0.5_m).SetFriction(Real(0.3f)).SetDensity(20_kgpm2)};
 
     Real m_angle;

@@ -37,7 +37,7 @@ public:
     }
     
     using DiskConf = DiskShapeConf;
-    using PolyConf = PolygonShape::Conf;
+    using PolyConf = PolygonShapeConf;
 
     JointsTest(): Test(GetTestConf())
     {
@@ -273,7 +273,7 @@ private:
         
         const auto carLocation = center - Vec2(3.3f, 1.0f) * 1_m;
         const auto car = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(carLocation));
-        car->CreateFixture(PolygonShape::Conf{}.SetDensity(1_kgpm2).Set(Span<const Length2>(carVerts.data(), carVerts.size())));
+        car->CreateFixture(PolygonShapeConf{}.SetDensity(1_kgpm2).Set(Span<const Length2>(carVerts.data(), carVerts.size())));
         
         const auto backWheel  = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(carLocation + Vec2(-1.0f, -0.65f) * 1_m));
         backWheel->CreateFixture(circle);

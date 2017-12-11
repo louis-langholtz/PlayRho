@@ -40,8 +40,8 @@ public:
         const auto p5 = Vec2(6.0f * s, 1.5f) * 1_m;
         const auto p6 = Vec2(2.5f * s, 3.7f) * 1_m;
 
-        auto poly1 = PolygonShape::Conf{};
-        auto poly2 = PolygonShape::Conf{};
+        auto poly1 = PolygonShapeConf{};
+        auto poly2 = PolygonShapeConf{};
         if (s > 0.0f)
         {
             poly1.Set({p1, p2, p3});
@@ -136,7 +136,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
             m_chassis = m_world.CreateBody(bd);
-            m_chassis->CreateFixture(PolygonShape::Conf{}.SetDensity(1_kgpm2).SetAsBox(2.5_m, 1_m), sd);
+            m_chassis->CreateFixture(PolygonShapeConf{}.SetDensity(1_kgpm2).SetAsBox(2.5_m, 1_m), sd);
         }
 
         {

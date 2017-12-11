@@ -65,7 +65,7 @@ namespace
 
         void Visit(const DiskShapeConf& shape);
         void Visit(const EdgeShapeConf& shape);
-        void Visit(const PolygonShape::Conf& shape);
+        void Visit(const PolygonShapeConf& shape);
         void Visit(const ChainShapeConf& shape);
         void Visit(const MultiShape::Conf& shape);
     };
@@ -91,7 +91,7 @@ namespace
             static_cast<double>(StripUnit(Get<1>(s.GetVertexB()))));
     }
     
-    void ShapeDumper::Visit(const playrho::PolygonShape::Conf& s)
+    void ShapeDumper::Visit(const playrho::PolygonShapeConf& s)
     {
         const auto vertexCount = s.GetVertexCount();
         log("    PolygonShape shape;\n");

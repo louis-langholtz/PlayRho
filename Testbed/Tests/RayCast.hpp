@@ -50,7 +50,7 @@ public:
         // Ground body
         m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
-        auto conf = PolygonShape::Conf{};
+        auto conf = PolygonShapeConf{};
         conf.SetFriction(Real(0.3f));
         conf.Set({
             Vec2(-0.5f, 0.0f) * 1_m,
@@ -337,7 +337,7 @@ public:
             //vertices[2] = Vec2(22.875f, 3.0f);
             //vertices[3] = Vec2(-22.875f, 3.0f);
 
-            PolygonShape shape;
+            PolygonShapeConf shape;
             //shape.Set(vertices, 4);
             shape.SetAsBox(22.875f, 3.0f);
 
@@ -372,7 +372,7 @@ public:
     int m_bodyIndex = 0;
     Body* m_bodies[e_maxBodies];
     int m_userData[e_maxBodies];
-    Shape m_polygons[4] = {PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}};
+    Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
     Shape m_circle = DiskShapeConf{}.SetVertexRadius(0.5_m).SetFriction(Real(0.3f));
     Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.SetFriction(Real(0.3f))};
     Real m_angle = 0.0f;

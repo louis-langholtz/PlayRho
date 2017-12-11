@@ -89,7 +89,7 @@ public:
     {
         const auto b = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic)
                                           .UseLocation(at).UseAllowSleep(false));
-        auto shape = PolygonShape::Conf{}.UseDensity(5_kgpm2);
+        auto shape = PolygonShapeConf{}.UseDensity(5_kgpm2);
         shape.SetAsBox(0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
         b->CreateFixture(Shape(shape));
         shape.SetAsBox(0.5_m, 10_m, Vec2(-10,   0) * 1_m, 0_rad);
@@ -134,7 +134,7 @@ public:
 
     const AngularVelocity MotorInc = 0.5_rpm;
     int m_count = 0;
-    Shape m_square = Shape{PolygonShape::Conf{}.SetAsBox(0.125_m, 0.125_m).SetDensity(1_kgpm2)};
+    Shape m_square = Shape{PolygonShapeConf{}.SetAsBox(0.125_m, 0.125_m).SetDensity(1_kgpm2)};
     Shape m_disk = Shape{DiskShapeConf{}.UseVertexRadius(0.125_m).UseFriction(Real(0)).SetDensity(0.1_kgpm2)};
     Shape m_shape = m_square;
 };

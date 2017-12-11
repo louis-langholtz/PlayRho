@@ -74,7 +74,7 @@ public:
             circleConf.density = 5_kgpm2;
             m_ball->CreateFixture(Shape(circleConf), fd);
 
-            auto polygon_shape = PolygonShape::Conf{};
+            auto polygon_shape = PolygonShapeConf{};
             polygon_shape.SetAsBox(10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
             polygon_shape.SetDensity(2_kgpm2);
 
@@ -94,7 +94,7 @@ public:
 
         // Tests mass computation of a small object far from the origin
         {
-            const auto polyShape = PolygonShape::Conf{}.Set({
+            const auto polyShape = PolygonShapeConf{}.Set({
                 Vec2(17.63f, 36.31f) * 1_m,
                 Vec2(17.52f, 36.69f) * 1_m,
                 Vec2(17.19f, 36.36f) * 1_m

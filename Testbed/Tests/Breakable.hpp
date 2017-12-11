@@ -41,7 +41,7 @@ public:
 
         // Breakable dynamic body
         {
-            auto conf = PolygonShape::Conf{}.SetDensity(1_kgpm2);
+            auto conf = PolygonShapeConf{}.SetDensity(1_kgpm2);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
@@ -137,8 +137,8 @@ public:
     Body* m_body1;
     LinearVelocity2 m_velocity;
     AngularVelocity m_angularVelocity;
-    PolygonShape::Conf m_shape1;
-    PolygonShape::Conf m_shape2;
+    PolygonShapeConf m_shape1;
+    PolygonShapeConf m_shape2;
     Fixture* m_piece1;
     Fixture* m_piece2;
 

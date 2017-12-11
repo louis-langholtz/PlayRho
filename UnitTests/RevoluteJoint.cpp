@@ -312,10 +312,10 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
 
-    const auto shape1 = PolygonShape::Conf{}.SetAsBox(1_m, 1_m);
+    const auto shape1 = PolygonShapeConf{}.SetAsBox(1_m, 1_m);
     b1->CreateFixture(shape1);
     
-    const auto shape2 = PolygonShape::Conf{}.SetAsBox(0.5_m, 0.5_m).SetDensity(1_kgpm2);
+    const auto shape2 = PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).SetDensity(1_kgpm2);
     b2->CreateFixture(shape2);
     
     auto jd = RevoluteJointDef{b1, b2, Length2{}};

@@ -30,150 +30,144 @@
 
 namespace playrho {
 
-/// @brief Polygon shape.
+/// @brief Polygon shape configuration.
 /// @details A convex polygon. The interior of the polygon is to the left of each edge.
 ///   Polygons maximum number of vertices is defined by <code>MaxShapeVertices</code>.
 ///   In most cases you should not need many vertices for a convex polygon.
 /// @image html convex_concave.gif
 /// @note This data structure is 64-bytes large (with 4-byte Real).
 /// @ingroup PartsGroup
-class PolygonShape
+class PolygonShapeConf: public ShapeDefBuilder<PolygonShapeConf>
 {
 public:
-
-    /// @brief Gets the default vertex radius for the PolygonShape.
+    /// @brief Gets the default vertex radius for the PolygonShapeConf.
     static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
     {
         return DefaultLinearSlop * 2;
     }
-
-    /// @brief Configuration data for polygon shapes.
-    class Conf: public ShapeDefBuilder<Conf>
-    {
-    public:
-        Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
-        {
-            // Intentionally empty.
-        }
-
-        Conf(Length hx, Length hy, const Conf& conf = GetDefaultConf()) noexcept:
-            ShapeDefBuilder{conf}
-        {
-            SetAsBox(hx, hy);
-        }
-        
-        /// @brief Creates a convex hull from the given array of local points.
-        /// @note The size of the span must be in the range [1, MaxShapeVertices].
-        /// @warning the points may be re-ordered, even if they form a convex polygon
-        /// @warning collinear points are handled but not removed. Collinear points
-        /// may lead to poor stacking behavior.
-        explicit Conf(Span<const Length2> points, const Conf& conf = GetDefaultConf()) noexcept:
-            ShapeDefBuilder{conf}
-        {
-            Set(points);
-        }
-
-        /// @brief Uses the given vertices.
-        Conf& UseVertices(const std::vector<Length2>& verts) noexcept;
-        
-        /// @brief Sets the vertices to represent an axis-aligned box centered on the local origin.
-        /// @param hx the half-width.
-        /// @param hy the half-height.
-        Conf& SetAsBox(Length hx, Length hy) noexcept;
-
-        /// @brief Sets the vertices for the described box.
-        Conf& SetAsBox(Length hx, Length hy, Length2 center, Angle angle) noexcept;
-
-        /// @brief Sets the vertices to a convex hull of the given ones.
-        /// @note The size of the span must be in the range [1, MaxShapeVertices].
-        /// @warning Points may be re-ordered, even if they form a convex polygon
-        /// @warning Collinear points are handled but not removed. Collinear points
-        ///   may lead to poor stacking behavior.
-        Conf& Set(Span<const Length2> verts) noexcept;
-        
-        /// @brief Sets the vertices to a convex hull of the given ones.
-        /// @note The size of the span must be in the range [1, MaxShapeVertices].
-        /// @warning Points may be re-ordered, even if they form a convex polygon
-        /// @warning Collinear points are handled but not removed. Collinear points
-        ///   may lead to poor stacking behavior.
-        Conf& Set(const VertexSet& points) noexcept;
-        
-        /// @brief Transforms the set vertices.
-        Conf& Transform(Transformation xfm) noexcept;
-        
-        /// Gets the vertex count.
-        /// @return value between 0 and MaxShapeVertices inclusive.
-        /// @see MaxShapeVertices.
-        VertexCounter GetVertexCount() const noexcept
-        {
-            return static_cast<VertexCounter>(m_vertices.size());
-        }
-        
-        /// Gets a vertex by index.
-        /// @details Vertices go counter-clockwise.
-        Length2 GetVertex(VertexCounter index) const
-        {
-            assert(0 <= index && index < GetVertexCount());
-            return m_vertices[index];
-        }
-        
-        /// Gets a normal by index.
-        /// @details
-        /// These are 90-degree clockwise-rotated (outward-facing) unit-vectors of the edges defined
-        /// by consecutive pairs of vertices starting with vertex 0.
-        /// @param index Index of the normal to get.
-        /// @return Normal for the given index.
-        UnitVec2 GetNormal(VertexCounter index) const
-        {
-            assert(0 <= index && index < GetVertexCount());
-            return m_normals[index];
-        }
-
-        /// Gets the span of vertices.
-        /// @details Vertices go counter-clockwise.
-        Span<const Length2> GetVertices() const noexcept
-        {
-            return Span<const Length2>(&m_vertices[0], GetVertexCount());
-        }
-        
-        /// @brief Gets the span of normals.
-        Span<const UnitVec2> GetNormals() const noexcept
-        {
-            return Span<const UnitVec2>(&m_normals[0], GetVertexCount());
-        }
-        
-        /// @brief Gets the centroid.
-        Length2 GetCentroid() const noexcept { return m_centroid; }
-
-    private:
-        /// @brief Array of vertices.
-        /// @details Consecutive vertices constitute "edges" of the polygon.
-        std::vector<Length2> m_vertices;
-        
-        /// @brief Normals of edges.
-        /// @details These are 90-degree clockwise-rotated unit-vectors of the vectors defined
-        ///   by consecutive pairs of elements of vertices.
-        std::vector<UnitVec2> m_normals;
-        
-        /// Centroid of this shape.
-        Length2 m_centroid = GetInvalid<Length2>();
-    };
     
-    /// @brief Gets the default configuration for a PolygonShape.
-    static inline Conf GetDefaultConf() noexcept
+    /// @brief Gets the default configuration for a PolygonShapeConf.
+    static inline PolygonShapeConf GetDefaultConf() noexcept
     {
-        return Conf{};
+        return PolygonShapeConf{};
     }
+    
+    PolygonShapeConf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+    {
+        // Intentionally empty.
+    }
+    
+    PolygonShapeConf(Length hx, Length hy, const PolygonShapeConf& conf = GetDefaultConf()) noexcept:
+        ShapeDefBuilder{conf}
+    {
+        SetAsBox(hx, hy);
+    }
+    
+    /// @brief Creates a convex hull from the given array of local points.
+    /// @note The size of the span must be in the range [1, MaxShapeVertices].
+    /// @warning the points may be re-ordered, even if they form a convex polygon
+    /// @warning collinear points are handled but not removed. Collinear points
+    /// may lead to poor stacking behavior.
+    explicit PolygonShapeConf(Span<const Length2> points, const PolygonShapeConf& conf = GetDefaultConf()) noexcept:
+        ShapeDefBuilder{conf}
+    {
+        Set(points);
+    }
+    
+    /// @brief Uses the given vertices.
+    PolygonShapeConf& UseVertices(const std::vector<Length2>& verts) noexcept;
+    
+    /// @brief Sets the vertices to represent an axis-aligned box centered on the local origin.
+    /// @param hx the half-width.
+    /// @param hy the half-height.
+    PolygonShapeConf& SetAsBox(Length hx, Length hy) noexcept;
+    
+    /// @brief Sets the vertices for the described box.
+    PolygonShapeConf& SetAsBox(Length hx, Length hy, Length2 center, Angle angle) noexcept;
+    
+    /// @brief Sets the vertices to a convex hull of the given ones.
+    /// @note The size of the span must be in the range [1, MaxShapeVertices].
+    /// @warning Points may be re-ordered, even if they form a convex polygon
+    /// @warning Collinear points are handled but not removed. Collinear points
+    ///   may lead to poor stacking behavior.
+    PolygonShapeConf& Set(Span<const Length2> verts) noexcept;
+    
+    /// @brief Sets the vertices to a convex hull of the given ones.
+    /// @note The size of the span must be in the range [1, MaxShapeVertices].
+    /// @warning Points may be re-ordered, even if they form a convex polygon
+    /// @warning Collinear points are handled but not removed. Collinear points
+    ///   may lead to poor stacking behavior.
+    PolygonShapeConf& Set(const VertexSet& points) noexcept;
+    
+    /// @brief Transforms the set vertices.
+    PolygonShapeConf& Transform(Transformation xfm) noexcept;
+    
+    /// Gets the vertex count.
+    /// @return value between 0 and MaxShapeVertices inclusive.
+    /// @see MaxShapeVertices.
+    VertexCounter GetVertexCount() const noexcept
+    {
+        return static_cast<VertexCounter>(m_vertices.size());
+    }
+    
+    /// Gets a vertex by index.
+    /// @details Vertices go counter-clockwise.
+    Length2 GetVertex(VertexCounter index) const
+    {
+        assert(0 <= index && index < GetVertexCount());
+        return m_vertices[index];
+    }
+    
+    /// Gets a normal by index.
+    /// @details
+    /// These are 90-degree clockwise-rotated (outward-facing) unit-vectors of the edges defined
+    /// by consecutive pairs of vertices starting with vertex 0.
+    /// @param index Index of the normal to get.
+    /// @return Normal for the given index.
+    UnitVec2 GetNormal(VertexCounter index) const
+    {
+        assert(0 <= index && index < GetVertexCount());
+        return m_normals[index];
+    }
+    
+    /// Gets the span of vertices.
+    /// @details Vertices go counter-clockwise.
+    Span<const Length2> GetVertices() const noexcept
+    {
+        return Span<const Length2>(&m_vertices[0], GetVertexCount());
+    }
+    
+    /// @brief Gets the span of normals.
+    Span<const UnitVec2> GetNormals() const noexcept
+    {
+        return Span<const UnitVec2>(&m_normals[0], GetVertexCount());
+    }
+    
+    /// @brief Gets the centroid.
+    Length2 GetCentroid() const noexcept { return m_centroid; }
+    
+private:
+    /// @brief Array of vertices.
+    /// @details Consecutive vertices constitute "edges" of the polygon.
+    std::vector<Length2> m_vertices;
+    
+    /// @brief Normals of edges.
+    /// @details These are 90-degree clockwise-rotated unit-vectors of the vectors defined
+    ///   by consecutive pairs of elements of vertices.
+    std::vector<UnitVec2> m_normals;
+    
+    /// Centroid of this shape.
+    Length2 m_centroid = GetInvalid<Length2>();
 };
 
 // Free functions...
 
-PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const PolygonShape::Conf&) noexcept
+PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const PolygonShapeConf&) noexcept
 {
     return 1;
 }
 
-inline DistanceProxy GetChild(const PolygonShape::Conf& arg, ChildCounter index)
+inline DistanceProxy GetChild(const PolygonShapeConf& arg, ChildCounter index)
 {
     if (index != 0)
     {
@@ -183,7 +177,7 @@ inline DistanceProxy GetChild(const PolygonShape::Conf& arg, ChildCounter index)
         arg.GetVertices().data(), arg.GetNormals().data()};
 }
 
-inline MassData GetMassData(const PolygonShape::Conf& arg) noexcept
+inline MassData GetMassData(const PolygonShapeConf& arg) noexcept
 {
     return playrho::GetMassData(arg.vertexRadius, arg.density, arg.GetVertices());
 }
@@ -191,14 +185,14 @@ inline MassData GetMassData(const PolygonShape::Conf& arg) noexcept
 /// Gets the identified edge of the given polygon shape.
 /// @note This must not be called for shapes with less than 2 vertices.
 /// @warning Behavior is undefined if called for a shape with less than 2 vertices.
-/// @relatedalso PolygonShape
-Length2 GetEdge(const PolygonShape::Conf& shape, VertexCounter index);
+/// @relatedalso PolygonShapeConf
+Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index);
 
 /// Validate convexity of the given shape.
 /// @note This is a time consuming operation.
 /// @returns true if valid
-/// @relatedalso PolygonShape
-bool Validate(const PolygonShape::Conf& shape);
+/// @relatedalso PolygonShapeConf
+bool Validate(const PolygonShapeConf& shape);
 
 } // namespace playrho
 

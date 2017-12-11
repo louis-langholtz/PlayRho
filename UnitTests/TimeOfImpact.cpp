@@ -736,12 +736,12 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
 {
     // The data for shapes and sweeps comes from PlayRho/Testbed/Tests/TimeOfImpact.hpp
 
-    const auto shapeA = PolygonShape::Conf{
-        PolygonShape::Conf{}.SetVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(25.0_m, 5.0_m)
+    const auto shapeA = PolygonShapeConf{
+        PolygonShapeConf{}.SetVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(25.0_m, 5.0_m)
     };
 
-    const auto shapeB = PolygonShape::Conf{
-        PolygonShape::Conf{}.SetVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(2.5_m, 2.5_m)
+    const auto shapeB = PolygonShapeConf{
+        PolygonShapeConf{}.SetVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(2.5_m, 2.5_m)
     };
 
     const auto dpA = GetChild(shapeA, 0);
@@ -837,8 +837,8 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
         0.000199999995_m, 4, vertices, normals
     };
     
-    auto shapeB = PolygonShape::Conf{
-        PolygonShape::Conf{}.SetVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(0.5_m, 0.5_m)
+    auto shapeB = PolygonShapeConf{
+        PolygonShapeConf{}.SetVertexRadius(Real{0.0001f * 2} * Meter).SetAsBox(0.5_m, 0.5_m)
     };
     const auto dpB = GetChild(shapeB, 0);
     

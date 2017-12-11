@@ -36,7 +36,7 @@ public:
         ground->CreateFixture(Shape(GetGroundEdgeConf()));
 
         {
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.density = 20_kgpm2;
             conf.friction = 0.2f;
             conf.SetAsBox(0.5_m, 0.125_m);
@@ -61,7 +61,7 @@ public:
             m_world.CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + Count, 5.0f) * 1_m});
         }
 
-        const auto conf = PolygonShape::Conf{}.UseDensity(1_kgpm2).UseVertices({
+        const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).UseVertices({
             Vec2(-0.5f, 0.0f) * 1_m,
             Vec2(0.5f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m

@@ -43,7 +43,7 @@ public:
     {
         //add four walls to the ground body
         FixtureDef myFixtureDef;
-        auto polygonShape = PolygonShape::Conf{};
+        auto polygonShape = PolygonShapeConf{};
         polygonShape.SetAsBox(20_m, 1_m); //ground
         m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
         polygonShape.SetAsBox(20_m, 1_m, Vec2(0, 40) * 1_m, 0_rad); //ceiling

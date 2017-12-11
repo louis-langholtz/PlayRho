@@ -76,7 +76,7 @@ public:
             bd.allowSleep = false;
             const auto body = m_world.CreateBody(bd);
 
-            auto shape = PolygonShape::Conf{};
+            auto shape = PolygonShapeConf{};
             shape.SetVertexRadius(1_m);
             shape.SetAsBox(0.5_m, 0.5_m);
             shape.SetDensity(1_kgpm2);

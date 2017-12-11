@@ -40,14 +40,14 @@ public:
             bd.location = Vec2(-5.0f, 5.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
 
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.friction = 0.8f;
             conf.SetAsBox(10_m, 0.5_m);
             m_platform = body->CreateFixture(Shape{conf});
         }
 
         // Boxes
-        const auto boxshape = Shape{PolygonShape::Conf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)};
+        const auto boxshape = Shape{PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)};
         for (auto i = 0; i < 5; ++i)
         {
             BodyDef bd;

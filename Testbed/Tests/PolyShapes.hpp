@@ -42,9 +42,9 @@ public:
         {
             Visit(*static_cast<const DiskShapeConf*>(data));
         }
-        else if (ti == typeid(PolygonShape::Conf))
+        else if (ti == typeid(PolygonShapeConf))
         {
-            Visit(*static_cast<const PolygonShape::Conf*>(data));
+            Visit(*static_cast<const PolygonShapeConf*>(data));
         }
     }
 
@@ -55,7 +55,7 @@ public:
         g_debugDraw->DrawCircle(center, radius, m_color);
     }
 
-    void Visit(const PolygonShape::Conf& shape)
+    void Visit(const PolygonShapeConf& shape)
     {
         const auto vertexCount = shape.GetVertexCount();
         auto vertices = std::vector<Length2>(vertexCount);
@@ -85,7 +85,7 @@ public:
         // Ground body
         m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
-        auto conf = PolygonShape::Conf{};
+        auto conf = PolygonShapeConf{};
         conf.SetDensity(1_kgpm2);
         conf.SetFriction(Real(0.3f));
         conf.Set({Vec2(-0.5f, 0.0f) * 1_m, Vec2(0.5f, 0.0f) * 1_m, Vec2(0.0f, 1.5f) * 1_m});
@@ -233,7 +233,7 @@ public:
 
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
-    Shape m_polygons[4] = {PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}};
+    Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
     Shape m_circle = DiskShapeConf{}.SetRadius(0.5_m).SetDensity(1_kgpm2).SetFriction(Real(0.3f));
 };
 

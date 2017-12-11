@@ -55,7 +55,7 @@ public:
         const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true)
             .UseLocation(Length2{-40_m, 5_m}).UseLinearVelocity(LinearVelocity2{150_mps, 0_mps});
         const auto body = m_world.CreateBody(bd);
-        const auto conf = PolygonShape::Conf{}.UseDensity(1.0_kgpm2).SetAsBox(1.5_m, 1.5_m);
+        const auto conf = PolygonShapeConf{}.UseDensity(1.0_kgpm2).SetAsBox(1.5_m, 1.5_m);
         body->CreateFixture(Shape{conf});
     }
 };

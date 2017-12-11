@@ -42,7 +42,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 7.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(PolygonShape::Conf{}.SetDensity(2_kgpm2).SetAsBox(0.5_m, 2_m));
+                body->CreateFixture(PolygonShapeConf{}.SetDensity(2_kgpm2).SetAsBox(0.5_m, 2_m));
 
                 RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 5.0f) * 1_m};
                 rjd.motorSpeed = Pi * 1_rad / 1_s;
@@ -59,7 +59,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 13.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(PolygonShape::Conf{}.SetDensity(2_kgpm2).SetAsBox(0.5_m, 4_m));
+                body->CreateFixture(PolygonShapeConf{}.SetDensity(2_kgpm2).SetAsBox(0.5_m, 4_m));
 
                 RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 9.0f) * 1_m};
                 rjd.enableMotor = false;
@@ -75,7 +75,7 @@ public:
                 bd.fixedRotation = true;
                 bd.location = Vec2(0.0f, 17.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(PolygonShape::Conf{}.SetDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m));
+                body->CreateFixture(PolygonShapeConf{}.SetDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m));
                 m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f) * 1_m});
 
                 PrismaticJointDef pjd(ground, body, Vec2(0.0f, 17.0f) * 1_m, UnitVec2::GetTop());
@@ -89,7 +89,7 @@ public:
                 BodyDef bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 23.0f) * 1_m;
-                m_world.CreateBody(bd)->CreateFixture(PolygonShape::Conf{}.SetDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m));
+                m_world.CreateBody(bd)->CreateFixture(PolygonShapeConf{}.SetDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m));
             }
         }
         RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "toggle friction", [&](KeyActionMods) {

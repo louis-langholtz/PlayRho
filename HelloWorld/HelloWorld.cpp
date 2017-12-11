@@ -40,7 +40,7 @@ int main()
 
     // Define the ground shape. Use a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
-    const auto box = PolygonShape::Conf{}.SetAsBox(50_m, 10_m);
+    const auto box = PolygonShapeConf{}.SetAsBox(50_m, 10_m);
 
     // Add the box shape to the ground body.
     ground->CreateFixture(box);

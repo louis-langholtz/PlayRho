@@ -93,7 +93,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 
 TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 {
-    const auto shape = PolygonShape::Conf{2_m, 2_m};
+    const auto shape = PolygonShapeConf{2_m, 2_m};
     const auto xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto child = GetChild(shape, 0);
 

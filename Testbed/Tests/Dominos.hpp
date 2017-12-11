@@ -37,12 +37,12 @@ public:
             BodyDef bd;
             bd.location = Vec2(-1.5f, 10.0f) * 1_m;
             const auto ground = m_world.CreateBody(bd);
-            ground->CreateFixture(PolygonShape::Conf{6_m, 0.25_m});
+            ground->CreateFixture(PolygonShapeConf{6_m, 0.25_m});
         }
 
         {
             const auto shape = Shape{
-                PolygonShape::Conf{}.SetDensity(20_kgpm2).SetFriction(Real(0.05f)).SetAsBox(0.1_m, 1_m)
+                PolygonShapeConf{}.SetDensity(20_kgpm2).SetFriction(Real(0.05f)).SetAsBox(0.1_m, 1_m)
             };
             for (auto i = 0; i < 10; ++i)
             {
@@ -54,7 +54,7 @@ public:
         }
 
         {
-            auto shape = PolygonShape::Conf{};
+            auto shape = PolygonShapeConf{};
             shape.SetAsBox(7.2_m, 0.25_m, Length2{}, 0.3_rad);
 
             BodyDef bd;
@@ -64,7 +64,7 @@ public:
         }
 
         const auto b2 = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-7.0f, 4.0f) * 1_m));
-        b2->CreateFixture(PolygonShape::Conf{}.SetAsBox(0.25_m, 1.5_m));
+        b2->CreateFixture(PolygonShapeConf{}.SetAsBox(0.25_m, 1.5_m));
 
         Body* b3;
         {
@@ -73,7 +73,7 @@ public:
             bd.location = Vec2(-0.9f, 1.0f) * 1_m;
             bd.angle = -0.15_rad;
             b3 = m_world.CreateBody(bd);
-            b3->CreateFixture(PolygonShape::Conf{}.SetDensity(10_kgpm2).SetAsBox(6_m, 0.125_m));
+            b3->CreateFixture(PolygonShapeConf{}.SetDensity(10_kgpm2).SetAsBox(6_m, 0.125_m));
         }
 
         m_world.CreateJoint(RevoluteJointDef{b1, b3, Vec2(-2, 1) * 1_m}.UseCollideConnected(true));
@@ -84,7 +84,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f, 15.0f) * 1_m;
             b4 = m_world.CreateBody(bd);
-            b4->CreateFixture(PolygonShape::Conf{}.SetDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m));
+            b4->CreateFixture(PolygonShapeConf{}.SetDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m));
         }
 
         m_world.CreateJoint(RevoluteJointDef{b2, b4, Vec2(-7, 15) * 1_m}.UseCollideConnected(true));
@@ -96,7 +96,7 @@ public:
             bd.location = Vec2(6.5f, 3.0f) * 1_m;
             b5 = m_world.CreateBody(bd);
 
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.density = 10_kgpm2;
             conf.friction = 0.1f;
             conf.SetAsBox(1_m, 0.1_m, Vec2(0.0f, -0.9f) * 1_m, 0_rad);
@@ -115,7 +115,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(6.5f, 4.1f) * 1_m;
             b6 = m_world.CreateBody(bd);
-            b6->CreateFixture(PolygonShape::Conf(1_m, 0.1_m).SetDensity(30_kgpm2));
+            b6->CreateFixture(PolygonShapeConf(1_m, 0.1_m).SetDensity(30_kgpm2));
         }
 
         m_world.CreateJoint(RevoluteJointDef{b5, b6, Vec2(7.5f, 4.0f) * 1_m}
@@ -128,7 +128,7 @@ public:
             bd.location = Vec2(7.4f, 1.0f) * 1_m;
 
             b7 = m_world.CreateBody(bd);
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.density = 10_kgpm2;
             conf.SetAsBox(0.1_m, 1_m);
             b7->CreateFixture(Shape{conf});

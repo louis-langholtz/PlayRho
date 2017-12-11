@@ -44,7 +44,7 @@ public:
         ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m}});
 
         {
-            auto shape = PolygonShape::Conf{};
+            auto shape = PolygonShapeConf{};
 
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 0.545f) * 1_m, 0_rad);
             ground->CreateFixture(Shape(shape));
@@ -90,7 +90,7 @@ public:
 
         // Collinear 2-gons.
         {
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.UseVertices({Vec2(-8.0f, 20.0f) * 1_m, Vec2(-6.0f, 20.0f) * 1_m});
             ground->CreateFixture(Shape{conf});
             conf.UseVertices({Vec2(-6.0f, 20.0f) * 1_m, Vec2(-4.0f, 20.0f) * 1_m});
@@ -112,7 +112,7 @@ public:
 
         // Square tiles.
         {
-            auto shape = PolygonShape::Conf{};
+            auto shape = PolygonShapeConf{};
             shape.SetAsBox(1_m, 1_m, Vec2(4.0f, 3.0f) * 1_m, 0_rad);
             ground->CreateFixture(Shape(shape));
             shape.SetAsBox(1_m, 1_m, Vec2(6.0f, 3.0f) * 1_m, 0_rad);
@@ -161,7 +161,7 @@ public:
             const auto body = m_world.CreateBody(bd);
             
             const auto square = Shape{
-                PolygonShape::Conf{}.SetFriction(Real(0)).SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)
+                PolygonShapeConf{}.SetFriction(Real(0)).SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)
             };
             body->CreateFixture(square);
             
@@ -179,7 +179,7 @@ public:
             bd.allowSleep = false;
 
             m_world.CreateBody(bd)->CreateFixture(Shape{
-                PolygonShape::Conf{}.SetDensity(20_kgpm2).SetAsBox(0.25_m, 0.25_m)
+                PolygonShapeConf{}.SetDensity(20_kgpm2).SetAsBox(0.25_m, 0.25_m)
             });
         }
 
@@ -202,7 +202,7 @@ public:
                 angle += delta;
             }
 
-            auto conf = PolygonShape::Conf{}.UseDensity(20_kgpm2).UseVertices(vertices);
+            auto conf = PolygonShapeConf{}.UseDensity(20_kgpm2).UseVertices(vertices);
             body->CreateFixture(Shape{conf});
         }
 

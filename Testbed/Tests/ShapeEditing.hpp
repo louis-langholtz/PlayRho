@@ -37,7 +37,7 @@ public:
         bd.location = Vec2(0.0f, 10.0f) * 1_m;
         m_body = m_world.CreateBody(bd);
 
-        auto shape = PolygonShape::Conf{};
+        auto shape = PolygonShapeConf{};
         shape.SetAsBox(4_m, 4_m, Length2{}, 0_deg);
         shape.SetDensity(10_kgpm2);
         m_fixture1 = m_body->CreateFixture(Shape(shape));

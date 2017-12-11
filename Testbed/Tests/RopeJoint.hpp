@@ -42,10 +42,10 @@ public:
 
         {
             const auto rectangle = Shape{
-                PolygonShape::Conf{}.SetDensity(20_kgpm2).SetFriction(Real(0.2f)).SetAsBox(0.5_m, 0.125_m)
+                PolygonShapeConf{}.SetDensity(20_kgpm2).SetFriction(Real(0.2f)).SetAsBox(0.5_m, 0.125_m)
             };
             const auto square = Shape{
-                PolygonShape::Conf{}.SetDensity(100_kgpm2).SetFriction(Real(0.2f)).SetAsBox(1.5_m, 1.5_m)
+                PolygonShapeConf{}.SetDensity(100_kgpm2).SetFriction(Real(0.2f)).SetAsBox(1.5_m, 1.5_m)
             };
 
             FixtureDef fd;

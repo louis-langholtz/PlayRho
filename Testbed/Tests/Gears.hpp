@@ -34,7 +34,7 @@ public:
 
         const auto circle1 = DiskShapeConf{}.SetRadius(1_m).SetDensity(5_kgpm2);
         const auto circle2 = DiskShapeConf{}.SetRadius(2_m).SetDensity(5_kgpm2);
-        const auto box = Shape{PolygonShape::Conf{}.SetAsBox(0.5_m, 5_m).SetDensity(5_kgpm2)};
+        const auto box = Shape{PolygonShapeConf{}.SetAsBox(0.5_m, 5_m).SetDensity(5_kgpm2)};
     
         {
             auto bd1 = BodyDef{};

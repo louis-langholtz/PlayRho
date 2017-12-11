@@ -39,7 +39,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-8.0f, 20.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.density = 2_kgpm2;
             conf.SetAsBox(4_m, 1_m);
             body->CreateFixture(Shape(conf));
@@ -53,7 +53,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(4.0f, 20.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.density = 2_kgpm2;
             conf.SetAsBox(8_m, 1_m);
             body->CreateFixture(Shape(conf));
@@ -68,7 +68,7 @@ public:
             bd.fixedRotation = true;
             bd.location = Vec2(12.0f, 20.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            const auto conf = PolygonShape::Conf{}.UseDensity(2_kgpm2).SetAsBox(3_m, 3_m);
+            const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(3_m, 3_m);
             body->CreateFixture(Shape(conf));
             m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f) * 1_m});
             const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f) * 1_m, UnitVec2::GetRight()};

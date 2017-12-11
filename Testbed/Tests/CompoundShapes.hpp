@@ -54,7 +54,7 @@ public:
         }
 
         {
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.SetDensity(2_kgpm2);
             conf.SetAsBox(0.25_m, 0.5_m);
             const auto polygon1 = Shape{conf};
@@ -79,7 +79,7 @@ public:
             xf1.q = UnitVec2::Get(0.3524_rad * Pi);
             xf1.p = GetVec2(GetXAxis(xf1.q)) * 1_m;
 
-            auto triangleConf1 = PolygonShape::Conf{};
+            auto triangleConf1 = PolygonShapeConf{};
             triangleConf1.Set(Span<const Length2>{
                 Transform(Vec2(-1.0f, 0.0f) * 1_m, xf1),
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf1),
@@ -92,7 +92,7 @@ public:
             xf2.q = UnitVec2::Get(-0.3524_rad * Pi);
             xf2.p = -GetVec2(GetXAxis(xf2.q)) * 1_m;
 
-            auto trianglConf2 = PolygonShape::Conf{};
+            auto trianglConf2 = PolygonShapeConf{};
             trianglConf2.Set(Span<const Length2>{
                 Transform(Vec2(-1.0f, 0.0f) * 1_m, xf2),
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf2),
@@ -115,7 +115,7 @@ public:
         }
 
         {
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.SetDensity(4_kgpm2);
             conf.SetAsBox(1.5_m, 0.15_m);
             const auto bottom = Shape{conf};

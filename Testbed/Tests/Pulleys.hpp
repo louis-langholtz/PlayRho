@@ -46,7 +46,7 @@ public:
 
         {
             const auto shape = Shape{
-                PolygonShape::Conf{}.SetAsBox(a * 1_m, b * 1_m).SetDensity(5_kgpm2)};
+                PolygonShapeConf{}.SetAsBox(a * 1_m, b * 1_m).SetDensity(5_kgpm2)};
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;

@@ -73,7 +73,7 @@ namespace playrho {
             const auto halfSide = sideLength / Real{2} - skinWidth;
             const auto relPos = Length2{(col - 2) * sideLength, (row - 2) * sideLength};
             
-            auto conf = PolygonShape::Conf{};
+            auto conf = PolygonShapeConf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = skinWidth;
             conf.SetAsBox(halfSide, halfSide);

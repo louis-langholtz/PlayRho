@@ -48,7 +48,7 @@ public:
 
         const auto hdim = Real{0.1f}; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
         const auto shape = Shape{
-            PolygonShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)).SetAsBox(hdim * 1_m, hdim * 1_m)
+            PolygonShapeConf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)).SetAsBox(hdim * 1_m, hdim * 1_m)
         };
         for (auto j = 0; j < e_columnCount; ++j)
         {

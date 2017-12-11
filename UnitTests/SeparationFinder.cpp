@@ -45,7 +45,7 @@ TEST(SeparationFinder, ByteSize)
 
 TEST(SeparationFinder, BehavesAsExpected)
 {
-    const auto shape = PolygonShape::Conf{0.5_m, 0.5_m};
+    const auto shape = PolygonShapeConf{0.5_m, 0.5_m};
     const auto distproxy = GetChild(shape, 0);
 
     const auto x = Real(100);

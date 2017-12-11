@@ -252,7 +252,7 @@ public:
         vertices[5] = Vec2(-2.8f,  +5.5f) * 1_m;
         vertices[6] = Vec2(-3.0f,  +2.5f) * 1_m;
         vertices[7] = Vec2(-1.5f,  +0.0f) * 1_m;
-        auto polygonShape = PolygonShape::Conf{};
+        auto polygonShape = PolygonShapeConf{};
         polygonShape.Set(Span<const Length2>(vertices, 8));
         polygonShape.SetDensity(0.1_kgpm2);
         m_body->CreateFixture(Shape(polygonShape));
@@ -272,7 +272,7 @@ public:
         const auto backTireMaxLateralImpulse = 9_Ns; // 8.5f;
         const auto frontTireMaxLateralImpulse = 9_Ns; // 7.5f;
 
-        auto tireShape = PolygonShape::Conf{};
+        auto tireShape = PolygonShapeConf{};
         tireShape.SetAsBox(0.5_m, 1.25_m);
         tireShape.SetDensity(1_kgpm2);
         const auto sharedTireShape = Shape(tireShape);
@@ -389,7 +389,7 @@ public:
             BodyDef bodyDef;
             m_groundBody = m_world.CreateBody(bodyDef);
             
-            auto polygonShape = PolygonShape::Conf{};
+            auto polygonShape = PolygonShapeConf{};
             FixtureDef fixtureDef;
             fixtureDef.isSensor = true;
             

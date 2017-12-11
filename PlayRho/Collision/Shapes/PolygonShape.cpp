@@ -22,7 +22,7 @@
 
 namespace playrho {
 
-PolygonShape::Conf& PolygonShape::Conf::SetAsBox(Length hx, Length hy) noexcept
+PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy) noexcept
 {
     m_centroid = Length2{};
 
@@ -49,12 +49,12 @@ PolygonShape::Conf& PolygonShape::Conf::SetAsBox(Length hx, Length hy) noexcept
 }
 
 /// @brief Uses the given vertices.
-PolygonShape::Conf& PolygonShape::Conf::UseVertices(const std::vector<Length2>& verts) noexcept
+PolygonShapeConf& PolygonShapeConf::UseVertices(const std::vector<Length2>& verts) noexcept
 {
     return Set(Span<const Length2>(verts.data(), verts.size()));
 }
     
-PolygonShape::Conf& PolygonShape::Conf::SetAsBox(Length hx, Length hy,
+PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy,
                                                  Length2 center, Angle angle) noexcept
 {
     SetAsBox(hx, hy);
@@ -62,7 +62,7 @@ PolygonShape::Conf& PolygonShape::Conf::SetAsBox(Length hx, Length hy,
     return *this;
 }
 
-PolygonShape::Conf& PolygonShape::Conf::Transform(Transformation xfm) noexcept
+PolygonShapeConf& PolygonShapeConf::Transform(Transformation xfm) noexcept
 {
     for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i)
     {
@@ -73,7 +73,7 @@ PolygonShape::Conf& PolygonShape::Conf::Transform(Transformation xfm) noexcept
     return *this;
 }
 
-PolygonShape::Conf& PolygonShape::Conf::Set(Span<const Length2> points) noexcept
+PolygonShapeConf& PolygonShapeConf::Set(Span<const Length2> points) noexcept
 {
     // Perform welding and copy vertices into local buffer.
     auto point_set = VertexSet(Square(DefaultLinearSlop));
@@ -84,7 +84,7 @@ PolygonShape::Conf& PolygonShape::Conf::Set(Span<const Length2> points) noexcept
     return Set(point_set);
 }
 
-PolygonShape::Conf& PolygonShape::Conf::Set(const VertexSet& points) noexcept
+PolygonShapeConf& PolygonShapeConf::Set(const VertexSet& points) noexcept
 {
     m_vertices = GetConvexHullAsVector(points);
     assert(m_vertices.size() < std::numeric_limits<VertexCounter>::max());
@@ -126,7 +126,7 @@ PolygonShape::Conf& PolygonShape::Conf::Set(const VertexSet& points) noexcept
     return *this;
 }
 
-Length2 GetEdge(const PolygonShape::Conf& shape, VertexCounter index)
+Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index)
 {
     assert(shape.GetVertexCount() > 1);
 
@@ -135,7 +135,7 @@ Length2 GetEdge(const PolygonShape::Conf& shape, VertexCounter index)
     return shape.GetVertex(i1) - shape.GetVertex(i0);
 }
 
-bool Validate(const PolygonShape::Conf& shape)
+bool Validate(const PolygonShapeConf& shape)
 {
     const auto count = shape.GetVertexCount();
     for (auto i = decltype(count){0}; i < count; ++i)

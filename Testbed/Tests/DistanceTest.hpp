@@ -118,8 +118,8 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body && fixture)
             {
-                const auto polygon = static_cast<const PolygonShape::Conf*>(GetData(fixture->GetShape()));
-                auto conf = PolygonShape::Conf{};
+                const auto polygon = static_cast<const PolygonShapeConf*>(GetData(fixture->GetShape()));
+                auto conf = PolygonShapeConf{};
                 conf.Set(polygon->GetVertices());
                 conf.SetVertexRadius(polygon->vertexRadius + RadiusIncrement);
                 const auto newf = body->CreateFixture(Shape{conf});
@@ -140,8 +140,8 @@ public:
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= 0_m)
                 {
-                    const auto polygon = static_cast<const PolygonShape::Conf*>(GetData(shape));
-                    auto conf = PolygonShape::Conf{};
+                    const auto polygon = static_cast<const PolygonShapeConf*>(GetData(shape));
+                    auto conf = PolygonShapeConf{};
                     conf.Set(polygon->GetVertices());
                     conf.SetVertexRadius(newVertexRadius);
                     auto newf = body->CreateFixture(Shape{conf});
@@ -166,7 +166,7 @@ public:
     void CreateFixtures()
     {
         const auto radius = RadiusIncrement * Real{20};
-        auto conf = PolygonShape::Conf{};
+        auto conf = PolygonShapeConf{};
         conf.density = 1_kgpm2;
 
         conf.vertexRadius = radius;

@@ -115,8 +115,8 @@ public:
 #endif
     }
     
-    PolygonShape::Conf m_shapeA{PolygonShape::Conf{}.SetAsBox(25_m, 5_m)};
-    PolygonShape::Conf m_shapeB{PolygonShape::Conf{}.SetAsBox(2.5_m, 2.5_m)};
+    PolygonShapeConf m_shapeA{PolygonShapeConf{}.SetAsBox(25_m, 5_m)};
+    PolygonShapeConf m_shapeB{PolygonShapeConf{}.SetAsBox(2.5_m, 2.5_m)};
 };
 
 } // namespace playrho

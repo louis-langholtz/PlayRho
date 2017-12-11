@@ -56,7 +56,7 @@ public:
         vertices[0] = Vec2(-1.0f, 0.0f) * 1_m;
         vertices[1] = Vec2(1.0f, 0.0f) * 1_m;
         vertices[2] = Vec2(0.0f, 2.0f) * 1_m;
-        auto polygon = PolygonShape::Conf{};
+        auto polygon = PolygonShapeConf{};
         polygon.UseDensity(1_kgpm2);
         polygon.Set(Span<const Length2>{vertices, 3});
 
@@ -90,7 +90,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-5.0f, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(Shape{PolygonShape::Conf{}.SetDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)});
+            body->CreateFixture(Shape{PolygonShapeConf{}.SetDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)});
 
             PrismaticJointDef jd;
             jd.bodyA = body2;
