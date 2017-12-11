@@ -35,7 +35,7 @@ public:
         // Ground body
         {
             const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m));
+            ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}});
         }
 
         auto xLo = -5.0f, xHi = 5.0f;
@@ -56,7 +56,7 @@ public:
         triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body1 = m_world.CreateBody(triangleBodyDef);
-        body1->CreateFixture(std::make_shared<PolygonShape>(polygon));
+        body1->CreateFixture(Shape(polygon));
 
         // Large triangle (recycle definitions)
         vertices[0] *= 2.0f;
@@ -67,7 +67,7 @@ public:
         triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body2 = m_world.CreateBody(triangleBodyDef);
-        body2->CreateFixture(std::make_shared<PolygonShape>(polygon));
+        body2->CreateFixture(Shape(polygon));
         
         // Small box
         polygon.SetAsBox(1_m, 0.5_m);
@@ -77,14 +77,14 @@ public:
         boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body3 = m_world.CreateBody(boxBodyDef);
-        body3->CreateFixture(std::make_shared<PolygonShape>(polygon));
+        body3->CreateFixture(Shape(polygon));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
         boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         
         const auto body4 = m_world.CreateBody(boxBodyDef);
-        body4->CreateFixture(std::make_shared<PolygonShape>(polygon));
+        body4->CreateFixture(Shape(polygon));
 
         BodyDef circleBodyDef;
         circleBodyDef.type = BodyType::Dynamic;
@@ -92,16 +92,12 @@ public:
         // Small circle
         circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body5 = m_world.CreateBody(circleBodyDef);
-        body5->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                         .UseVertexRadius(1_m)
-                                                         .UseDensity(1_kgpm2)));
+        body5->CreateFixture(Shape(DiskShape::Conf{}.SetRadius(1_m).UseDensity(1_kgpm2)));
 
         // Large circle
         circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body6 = m_world.CreateBody(circleBodyDef);
-        body6->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                         .UseVertexRadius(2_m)
-                                                         .UseDensity(1_kgpm2)));
+        body6->CreateFixture(Shape(DiskShape::Conf{}.SetRadius(2_m).UseDensity(1_kgpm2)));
     }
 
     void PostStep(const Settings&, Drawer&) override

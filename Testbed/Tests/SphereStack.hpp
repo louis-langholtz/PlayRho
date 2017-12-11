@@ -35,10 +35,8 @@ public:
 
     SphereStack()
     {
-        const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
-
-        const auto shape = std::make_shared<DiskShape>(1_m, DiskShape::Conf{}.SetDensity(1_kgpm2));
+        m_world.CreateBody()->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        const auto shape = Shape{DiskShape::Conf{}.SetRadius(1_m).SetDensity(1_kgpm2)};
         for (auto i = 0; i < e_count; ++i)
         {
             BodyDef bd;

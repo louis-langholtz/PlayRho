@@ -31,26 +31,19 @@ public:
     ContinuousTest()
     {
         {
-            BodyDef bd;
-            bd.location = Length2{};
-            Body* body = m_world.CreateBody(bd);
-
-            body->CreateFixture(std::make_shared<EdgeShape>(Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m));
-
-            const auto shape = PolygonShape::Conf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad);
-            body->CreateFixture(std::make_shared<PolygonShape>(shape));
+            const auto body = m_world.CreateBody();
+            body->CreateFixture(Shape{EdgeShape::Conf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}});
+            body->CreateFixture(Shape{PolygonShape::Conf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)});
         }
 
         {
-            BodyDef bd;
+            auto bd = BodyDef{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 20.0f) * 1_m;
             //bd.angle = 0.1f;
 
-            const auto shape = std::make_shared<PolygonShape>(2_m, 0.1_m,
-                                                              PolygonShape::Conf{}.SetDensity(1_kgpm2));
             m_body = m_world.CreateBody(bd);
-            m_body->CreateFixture(shape);
+            m_body->CreateFixture(PolygonShape::Conf{}.SetDensity(1_kgpm2).SetAsBox(2_m, 0.1_m));
             m_angularVelocity = RandomFloat(-50.0f, 50.0f) * 1_rad / 1_s;
             //m_angularVelocity = 46.661274f;
             m_body->SetVelocity(Velocity{Vec2(0.0f, -100.0f) * 1_mps, m_angularVelocity});

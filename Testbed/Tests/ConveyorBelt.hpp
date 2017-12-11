@@ -31,10 +31,8 @@ public:
     ConveyorBelt()
     {
         // Ground
-        {
-            const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m));
-        }
+        m_world.CreateBody()->CreateFixture(Shape{
+            EdgeShape::Conf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Platform
         {
@@ -44,11 +42,12 @@ public:
 
             auto conf = PolygonShape::Conf{};
             conf.friction = 0.8f;
-            m_platform = body->CreateFixture(std::make_shared<PolygonShape>(10_m, 0.5_m, conf));
+            conf.SetAsBox(10_m, 0.5_m);
+            m_platform = body->CreateFixture(Shape{conf});
         }
 
         // Boxes
-        const auto boxshape = std::make_shared<PolygonShape>(0.5_m, 0.5_m, PolygonShape::Conf{}.SetDensity(20_kgpm2));
+        const auto boxshape = Shape{PolygonShape::Conf{}.SetDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)};
         for (auto i = 0; i < 5; ++i)
         {
             BodyDef bd;

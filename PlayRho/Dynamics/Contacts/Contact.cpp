@@ -63,8 +63,6 @@ Contact::Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB):
     m_restitution{MixRestitution(fA->GetRestitution(), fB->GetRestitution())}
 {
     assert(fA != fB);
-    assert(fA->GetShape());
-    assert(fB->GetShape());
     assert(fA->GetBody() != fB->GetBody());
 }
 
@@ -94,14 +92,14 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
     const auto xfA = fixtureA->GetBody()->GetTransformation();
     const auto shapeB = fixtureB->GetShape();
     const auto xfB = fixtureB->GetBody()->GetTransformation();
-    const auto childA = shapeA->GetChild(indexA);
-    const auto childB = shapeB->GetChild(indexB);
+    const auto childA = GetChild(shapeA, indexA);
+    const auto childB = GetChild(shapeB, indexB);
 
     // NOTE: Ideally, the touching state returned by the TestOverlap function
     //   agrees 100% of the time with that returned from the CollideShapes function.
     //   This is not always the case however especially as the separation or overlap
     //   approaches zero.
-#define OVERLAP_TOLERANCE (SquareMeter / Real(1e3))
+#define OVERLAP_TOLERANCE (SquareMeter / Real(20))
 
     const auto sensor = fixtureA->IsSensor() || fixtureB->IsSensor();
     if (sensor)
@@ -299,8 +297,8 @@ TOIOutput CalcToi(const Contact& contact, ToiConf conf)
     const auto bA = fA->GetBody();
     const auto bB = fB->GetBody();
 
-    const auto proxyA = fA->GetShape()->GetChild(contact.GetChildIndexA());
-    const auto proxyB = fB->GetShape()->GetChild(contact.GetChildIndexB());
+    const auto proxyA = GetChild(fA->GetShape(), contact.GetChildIndexA());
+    const auto proxyB = GetChild(fB->GetShape(), contact.GetChildIndexB());
 
     // Large rotations can make the root finder of TimeOfImpact fail, so normalize sweep angles.
     const auto sweepA = GetNormalized(bA->GetSweep());

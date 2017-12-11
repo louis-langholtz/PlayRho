@@ -73,7 +73,7 @@ public:
         conf.vertexRadius = radius;
         conf.density = 1_kgpm2;
         conf.friction = 0.1f;
-        const auto shape = std::make_shared<DiskShape>(conf);
+        const auto shape = Shape(conf);
 
         for (auto j = 0; j < e_columnCount; ++j)
         {
@@ -116,30 +116,25 @@ public:
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
         //bd.allowSleep = false;
-
-        const auto body = m_world.CreateBody(bd);
         
         auto conf = DiskShape::Conf{};
         conf.density = 1_kgpm2;
         conf.restitution = 0.8f;
         conf.vertexRadius = radius;
-        body->CreateFixture(std::make_shared<DiskShape>(conf));
+        m_world.CreateBody(bd)->CreateFixture(Shape(conf));
     }
 
     void CreateBox()
     {
         const auto side_length = wall_length / Real{5}; // 4
-
-        auto conf = PolygonShape::Conf{};
-        conf.density = 1_kgpm2;
-        conf.restitution = 0; // originally 0.8
-        
+        // originally restitution was 0.8f
         BodyDef bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
-        const auto body = m_world.CreateBody(bd);
-        body->CreateFixture(std::make_shared<PolygonShape>(side_length/Real{2}, side_length/Real{2}, conf));
+        m_world.CreateBody(bd)->CreateFixture(Shape{
+            PolygonShape::Conf{}.UseDensity(1_kgpm2).UseRestitution(0).SetAsBox(side_length/2, side_length/2)
+        });
     }
 
     void ToggleBulletMode()

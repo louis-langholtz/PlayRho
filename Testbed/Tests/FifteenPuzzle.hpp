@@ -76,6 +76,7 @@ namespace playrho {
             auto conf = PolygonShape::Conf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = skinWidth;
+            conf.SetAsBox(halfSide, halfSide);
             
             BodyDef bd;
             bd.type = BodyType::Dynamic;
@@ -83,7 +84,7 @@ namespace playrho {
             bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
             bd.linearDamping = 20_Hz;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(std::make_shared<PolygonShape>(halfSide, halfSide, conf));
+            body->CreateFixture(conf);
             
             return body;
         }

@@ -30,8 +30,7 @@ public:
     Revolute()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m,
-                                                          Vec2( 40.0f, 0.0f) * 1_m));
+        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
 
         {
             BodyDef bd;
@@ -42,7 +41,7 @@ public:
             auto circleConf = DiskShape::Conf{};
             circleConf.vertexRadius = 0.5_m;
             circleConf.density = 5_kgpm2;
-            body->CreateFixture(std::make_shared<DiskShape>(circleConf));
+            body->CreateFixture(Shape(circleConf));
 
             const auto w = 100.0f;
             body->SetVelocity(Velocity{
@@ -73,7 +72,7 @@ public:
             auto circleConf = DiskShape::Conf{};
             circleConf.vertexRadius = 3_m;
             circleConf.density = 5_kgpm2;
-            m_ball->CreateFixture(std::make_shared<DiskShape>(circleConf), fd);
+            m_ball->CreateFixture(Shape(circleConf), fd);
 
             auto polygon_shape = PolygonShape::Conf{};
             polygon_shape.SetAsBox(10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
@@ -84,7 +83,7 @@ public:
             polygon_bd.type = BodyType::Dynamic;
             polygon_bd.bullet = true;
             const auto polygon_body = m_world.CreateBody(polygon_bd);
-            polygon_body->CreateFixture(std::make_shared<PolygonShape>(polygon_shape));
+            polygon_body->CreateFixture(Shape(polygon_shape));
 
             RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
             rjd.lowerAngle = -0.25_rad * Pi;
@@ -102,7 +101,7 @@ public:
             }).SetDensity(1_kgpm2);
         
             const auto body = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
-            body->CreateFixture(std::make_shared<PolygonShape>(polyShape));
+            body->CreateFixture(Shape(polyShape));
         }
         
         RegisterForKey(GLFW_KEY_L, GLFW_PRESS, 0, "Limits", [&](KeyActionMods) {

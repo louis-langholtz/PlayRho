@@ -30,10 +30,10 @@ public:
 
     VaryingFriction()
     {
-        m_world.CreateBody()->CreateFixture(std::make_shared<EdgeShape>(GetGroundEdgeConf()));
+        m_world.CreateBody()->CreateFixture(Shape(GetGroundEdgeConf()));
         
-        const auto sliderPlank = std::make_shared<PolygonShape>(13_m, 0.25_m);
-        const auto sliderWall = std::make_shared<PolygonShape>(0.25_m, 1_m);
+        const auto sliderPlank = Shape{PolygonShape::Conf{}.SetAsBox(13_m, 0.25_m)};
+        const auto sliderWall = Shape{PolygonShape::Conf{}.SetAsBox(0.25_m, 1_m)};
         
         m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-4, 22) * 1_m).UseAngle(-0.25_rad))->CreateFixture(sliderPlank);
         m_world.CreateBody(BodyDef{}.UseLocation(Vec2(10.5f, 19) * 1_m))->CreateFixture(sliderWall);
@@ -45,12 +45,12 @@ public:
         float friction[5] = {std::sqrt(std::numeric_limits<float>::max()), 0.5f, 0.35f, 0.1f, 0.0f};
         for (auto i = 0; i < 5; ++i)
         {
-            BodyDef bd;
+            auto bd = BodyDef{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-15.0f + 4.0f * i, 28.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
             shape.SetFriction(Real(friction[i]));
-            body->CreateFixture(std::make_shared<PolygonShape>(shape));
+            body->CreateFixture(Shape(shape));
         }
     }
 };

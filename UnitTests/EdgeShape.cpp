@@ -20,7 +20,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/Shapes/EdgeShape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;
 
@@ -30,47 +30,45 @@ TEST(EdgeShape, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(EdgeShape), std::size_t(52));
+            EXPECT_EQ(sizeof(EdgeShape::Conf), std::size_t(52));
 #else
-            EXPECT_EQ(sizeof(EdgeShape), std::size_t(56));
+            EXPECT_EQ(sizeof(EdgeShape::Conf), std::size_t(48));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(EdgeShape), std::size_t(104)); break;
-        case 16: EXPECT_EQ(sizeof(EdgeShape), std::size_t(208)); break;
+        case  8: EXPECT_EQ(sizeof(EdgeShape::Conf), std::size_t(104)); break;
+        case 16: EXPECT_EQ(sizeof(EdgeShape::Conf), std::size_t(208)); break;
         default: FAIL(); break;
     }
 }
 
 TEST(EdgeShape, GetInvalidChildThrows)
 {
-    EdgeShape foo{};
+    const auto foo = EdgeShape::Conf{};
     
-    ASSERT_EQ(foo.GetChildCount(), ChildCounter{1});
-    EXPECT_NO_THROW(foo.GetChild(0));
-    EXPECT_THROW(foo.GetChild(1), InvalidArgument);
+    ASSERT_EQ(GetChildCount(foo), ChildCounter{1});
+    EXPECT_NO_THROW(GetChild(foo, 0));
+    EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
 TEST(EdgeShape, Accept)
 {
-    class Visitor: public IsVisitedShapeVisitor
-    {
-    public:
-        void Visit(const EdgeShape&) override
+    auto visited = false;
+    auto shapeVisited = false;
+    const auto foo = EdgeShape::Conf{};
+    ASSERT_FALSE(visited);
+    ASSERT_FALSE(shapeVisited);
+    Accept(Shape(foo), [&](const std::type_info& ti, const void*) {
+        visited = true;
+        if (ti == typeid(EdgeShape::Conf))
         {
-            visited = true;
+            shapeVisited = true;
         }
-        bool visited = false;
-    };
-
-    EdgeShape foo{};
-    Visitor v;
-    ASSERT_FALSE(v.visited);
-    ASSERT_FALSE(v.IsVisited());
-    foo.Accept(v);
-    EXPECT_TRUE(v.visited);
-    EXPECT_FALSE(v.IsVisited());
+    });
+    EXPECT_TRUE(visited);
+    EXPECT_TRUE(shapeVisited);
 }
 
+#if 0
 TEST(EdgeShape, BaseVisitorForDiskShape)
 {
     const auto shape = EdgeShape{};
@@ -79,3 +77,4 @@ TEST(EdgeShape, BaseVisitorForDiskShape)
     shape.Accept(visitor);
     EXPECT_TRUE(visitor.IsVisited());
 }
+#endif

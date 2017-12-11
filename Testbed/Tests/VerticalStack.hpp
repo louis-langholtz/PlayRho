@@ -40,15 +40,16 @@ public:
     VerticalStack()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(20.0f, 0.0f) * 1_m, Vec2(20.0f, 20.0f) * 1_m));
+        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(20.0f, 0.0f) * 1_m, Vec2(20.0f, 20.0f) * 1_m}});
 
         const float xs[] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
         assert(e_columnCount <= sizeof(xs)/sizeof(xs[0]));
 
         const auto hdim = Real{0.1f}; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
-        const auto shape = std::make_shared<PolygonShape>(hdim * 1_m, hdim * 1_m,
-                                                          PolygonShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)));
+        const auto shape = Shape{
+            PolygonShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.3f)).SetAsBox(hdim * 1_m, hdim * 1_m)
+        };
         for (auto j = 0; j < e_columnCount; ++j)
         {
             for (auto i = 0; i < e_rowCount; ++i)
@@ -61,9 +62,7 @@ public:
                 //const auto x = i % 2 == 0 ? -0.01f : 0.01f;
                 //bd.position = Vec2(xs[j] + x, (hdim - hdim/20) + (hdim * 2 - hdim / 20) * i);
                 bd.location = Vec2(xs[j] + x, (i + 1) * hdim * 4) * 1_m;
-                
-                const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                m_world.CreateBody(bd)->CreateFixture(shape);
             }
         }
 
@@ -90,9 +89,7 @@ public:
     }
 
     Body* m_bullet;
-    std::shared_ptr<DiskShape> m_bulletshape = std::make_shared<DiskShape>(
-        DiskShape::Conf{}.SetVertexRadius(0.25_m).SetDensity(20_kgpm2).SetRestitution(Real(0.05f))
-    );
+    Shape m_bulletshape = DiskShape::Conf{}.SetVertexRadius(0.25_m).SetDensity(20_kgpm2).SetRestitution(Real(0.05f));
 };
     
 } // namespace playrho

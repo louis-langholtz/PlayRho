@@ -181,7 +181,7 @@ TEST(MotorJoint, GetMotorJointDef)
 
 TEST(MotorJoint, WithDynamicCircles)
 {
-    const auto circle = std::make_shared<DiskShape>(0.2_m);
+    const auto circle = DiskShape::Conf{}.SetRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -207,7 +207,7 @@ TEST(MotorJoint, WithDynamicCircles)
 
 TEST(MotorJoint, SetLinearOffset)
 {
-    const auto circle = std::make_shared<DiskShape>(0.2_m);
+    const auto circle = DiskShape::Conf{}.SetRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -231,7 +231,7 @@ TEST(MotorJoint, SetLinearOffset)
 
 TEST(MotorJoint, SetAngularOffset)
 {
-    const auto circle = std::make_shared<DiskShape>(0.2_m);
+    const auto circle = DiskShape::Conf{}.SetRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};

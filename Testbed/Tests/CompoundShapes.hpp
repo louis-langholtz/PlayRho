@@ -30,21 +30,16 @@ class CompoundShapes : public Test
 public:
     CompoundShapes()
     {
-        {
-            BodyDef bd;
-            bd.location = Length2{};
-            const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m));
-        }
-
+        m_world.CreateBody()->CreateFixture(Shape{EdgeShape::Conf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
+        
         {
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = 0.5_m;
             
             conf.location = Vec2{-0.5f, 0.5f} * 1_m;
-            const auto circle1 = std::make_shared<DiskShape>(DiskShape::Conf(conf).SetDensity(2_kgpm2));
+            const auto circle1 = Shape{DiskShape::Conf(conf).SetDensity(2_kgpm2)};
             conf.location = Vec2{0.5f, 0.5f} * 1_m;
-            const auto circle2 = std::make_shared<DiskShape>(conf);
+            const auto circle2 = Shape(conf);
             for (auto i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);
@@ -61,10 +56,11 @@ public:
         {
             auto conf = PolygonShape::Conf{};
             conf.SetDensity(2_kgpm2);
-            const auto polygon1 = std::make_shared<PolygonShape>(0.25_m, 0.5_m, conf);
+            conf.SetAsBox(0.25_m, 0.5_m);
+            const auto polygon1 = Shape{conf};
             conf.SetDensity(2_kgpm2);
             conf.SetAsBox(0.25_m, 0.5_m, Vec2(0.0f, -0.5f) * 1_m, 0.5_rad * Pi);
-            const auto polygon2 = std::make_shared<PolygonShape>(conf);
+            const auto polygon2 = Shape{conf};
             for (int i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);
@@ -90,7 +86,7 @@ public:
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf1)
             });
             triangleConf1.SetDensity(2_kgpm2);
-            const auto triangle1 = std::make_shared<PolygonShape>(triangleConf1);
+            const auto triangle1 = Shape(triangleConf1);
 
             Transformation xf2;
             xf2.q = UnitVec2::Get(-0.3524_rad * Pi);
@@ -103,7 +99,7 @@ public:
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf2)
             });
             trianglConf2.SetDensity(2_kgpm2);
-            const auto triangle2 = std::make_shared<PolygonShape>(trianglConf2);
+            const auto triangle2 = Shape(trianglConf2);
 
             for (auto i = 0; i < 10; ++i)
             {
@@ -121,12 +117,13 @@ public:
         {
             auto conf = PolygonShape::Conf{};
             conf.SetDensity(4_kgpm2);
-            const auto bottom = std::make_shared<PolygonShape>(1.5_m, 0.15_m, conf);
+            conf.SetAsBox(1.5_m, 0.15_m);
+            const auto bottom = Shape{conf};
             conf.SetAsBox(0.15_m, 2.7_m, Vec2(-1.45f, 2.35f) * 1_m, +0.2_rad);
-            const auto left = std::make_shared<PolygonShape>(conf);
+            const auto left = Shape{conf};
             conf.SetDensity(4_kgpm2);
             conf.SetAsBox(0.15_m, 2.7_m, Vec2(1.45f, 2.35f) * 1_m, -0.2_rad);
-            const auto right = std::make_shared<PolygonShape>(conf);
+            const auto right = Shape{conf};
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;

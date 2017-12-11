@@ -129,7 +129,7 @@ public:
             b->SetVelocity(Velocity{LinearVelocity2{0_mps, v}, a});
             const auto d = sso.mass / (Pi * Square(sso.radius));
             const auto sconf = DiskShape::Conf{}.UseVertexRadius(sso.radius).UseDensity(d);
-            const auto shape = std::make_shared<DiskShape>(sconf);
+            const auto shape = Shape(sconf);
             b->CreateFixture(shape);
         }
         RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0,

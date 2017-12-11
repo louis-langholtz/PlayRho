@@ -71,8 +71,8 @@ public:
         const auto body1 = m_world.CreateBody(bd1);
         const auto body2 = m_world.CreateBody(bd2);
 
-        body1->CreateFixture(std::make_shared<PolygonShape>(poly1), fd1);
-        body2->CreateFixture(std::make_shared<PolygonShape>(poly2), fd2);
+        body1->CreateFixture(Shape(poly1), fd1);
+        body2->CreateFixture(Shape(poly2), fd2);
 
         // Using a soft distance constraint can reduce some jitter.
         // It also makes the structure seem a bit more fluid by
@@ -104,20 +104,20 @@ public:
             auto conf = EdgeShape::Conf{};
  
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape(conf));
 
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(-50.0f, 10.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape(conf));
 
             conf.Set(Vec2(50.0f, 0.0f) * 1_m, Vec2(50.0f, 10.0f) * 1_m);
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape(conf));
         }
 
         // Balls
         auto circleConf = DiskShape::Conf{};
         circleConf.vertexRadius = 0.25_m;
         circleConf.density = 1_kgpm2;
-        const auto circle = std::make_shared<DiskShape>(circleConf);
+        const auto circle = Shape(circleConf);
         for (auto i = 0; i < 40; ++i)
         {
             BodyDef bd;
@@ -136,9 +136,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
             m_chassis = m_world.CreateBody(bd);
-            auto polygonConf = PolygonShape::Conf{};
-            polygonConf.density = 1_kgpm2;
-            m_chassis->CreateFixture(std::make_shared<PolygonShape>(2.5_m, 1_m, polygonConf), sd);
+            m_chassis->CreateFixture(PolygonShape::Conf{}.SetDensity(1_kgpm2).SetAsBox(2.5_m, 1_m), sd);
         }
 
         {
@@ -151,7 +149,7 @@ public:
             auto conf = DiskShape::Conf{};
             conf.vertexRadius = 1.6_m;
             conf.density = 1_kgpm2;
-            m_wheel->CreateFixture(std::make_shared<DiskShape>(conf), sd);
+            m_wheel->CreateFixture(Shape(conf), sd);
         }
 
         {

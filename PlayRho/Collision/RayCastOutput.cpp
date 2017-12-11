@@ -21,7 +21,6 @@
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <utility>
 
@@ -233,7 +232,7 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
 RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
                       const RayCastInput& input, const Transformation& transform) noexcept
 {
-    return RayCast(shape.GetChild(childIndex), input, transform);
+    return RayCast(GetChild(shape, childIndex), input, transform);
 }
 
 } // namespace playrho

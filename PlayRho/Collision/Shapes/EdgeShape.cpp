@@ -18,18 +18,7 @@
  */
 
 #include <PlayRho/Collision/Shapes/EdgeShape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 
 namespace playrho {
-
-MassData EdgeShape::GetMassData() const noexcept
-{
-    return playrho::GetMassData(GetVertexRadius(), GetDensity(), GetVertex1(), GetVertex2());
-}
-
-void EdgeShape::Accept(ShapeVisitor& visitor) const
-{
-    visitor.Visit(*this);
-}
 
 } // namespace playrho

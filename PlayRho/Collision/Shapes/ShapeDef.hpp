@@ -67,7 +67,7 @@ struct ShapeDef
     /// @note This must be a non-negative value.
     /// @note Use 0 to indicate that the shape's associated mass should be 0.
     ///
-    NonNegative<AreaDensity> density = NonNegative<AreaDensity>{0};
+    NonNegative<AreaDensity> density = NonNegative<AreaDensity>{0_kgpm2};
 };
 
 /// @brief Builder configuration structure.
@@ -186,6 +186,28 @@ struct ShapeConf: public ShapeDefBuilder<ShapeConf>
 {
     using ShapeDefBuilder::ShapeDefBuilder;
 };
+
+// Free functions...
+
+PLAYRHO_CONSTEXPR inline NonNegative<Length> GetVertexRadius(const ShapeDef& arg) noexcept
+{
+    return arg.vertexRadius;
+}
+
+PLAYRHO_CONSTEXPR inline NonNegative<AreaDensity> GetDensity(const ShapeDef& arg) noexcept
+{
+    return arg.density;
+}
+
+PLAYRHO_CONSTEXPR inline Finite<Real> GetRestitution(const ShapeDef& arg) noexcept
+{
+    return arg.restitution;
+}
+
+PLAYRHO_CONSTEXPR inline NonNegative<Real> GetFriction(const ShapeDef& arg) noexcept
+{
+    return arg.friction;
+}
 
 } // namespace playrho
 

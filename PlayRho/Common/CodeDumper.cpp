@@ -40,8 +40,8 @@
 #include <PlayRho/Collision/Shapes/EdgeShape.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShape.hpp>
 #include <PlayRho/Collision/Shapes/ChainShape.hpp>
+#include <PlayRho/Collision/Shapes/MultiShape.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeVisitor.hpp>
 
 #include <cstdarg>
 
@@ -58,17 +58,19 @@ namespace
         va_end(args);
     }
     
-    class ShapeDumper: public ShapeVisitor
+    class ShapeDumper
     {
     public:
-        void Visit(const DiskShape& shape) override;
-        void Visit(const EdgeShape& shape) override;
-        void Visit(const PolygonShape& shape) override;
-        void Visit(const ChainShape& shape) override;
-        void Visit(const MultiShape& shape) override;
+        void operator() (const std::type_info& ti, const void* data);
+
+        void Visit(const DiskShape::Conf& shape);
+        void Visit(const EdgeShape::Conf& shape);
+        void Visit(const PolygonShape::Conf& shape);
+        void Visit(const ChainShape::Conf& shape);
+        void Visit(const MultiShape::Conf& shape);
     };
     
-    void ShapeDumper::Visit(const playrho::DiskShape& s)
+    void ShapeDumper::Visit(const playrho::DiskShape::Conf& s)
     {
         log("    DiskShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.GetRadius())));
@@ -77,19 +79,19 @@ namespace
             static_cast<double>(StripUnit(Get<1>(s.GetLocation()))));
     }
     
-    void ShapeDumper::Visit(const playrho::EdgeShape& s)
+    void ShapeDumper::Visit(const playrho::EdgeShape::Conf& s)
     {
         log("    EdgeShape shape;\n");
-        log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(GetVertexRadius(s))));
+        log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.vertexRadius)));
         log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n",
-            static_cast<double>(StripUnit(Get<0>(s.GetVertex1()))),
-            static_cast<double>(StripUnit(Get<1>(s.GetVertex1()))));
+            static_cast<double>(StripUnit(Get<0>(s.GetVertexA()))),
+            static_cast<double>(StripUnit(Get<1>(s.GetVertexA()))));
         log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n",
-            static_cast<double>(StripUnit(Get<0>(s.GetVertex2()))),
-            static_cast<double>(StripUnit(Get<1>(s.GetVertex2()))));
+            static_cast<double>(StripUnit(Get<0>(s.GetVertexB()))),
+            static_cast<double>(StripUnit(Get<1>(s.GetVertexB()))));
     }
     
-    void ShapeDumper::Visit(const playrho::PolygonShape& s)
+    void ShapeDumper::Visit(const playrho::PolygonShape::Conf& s)
     {
         const auto vertexCount = s.GetVertexCount();
         log("    PolygonShape shape;\n");
@@ -103,7 +105,7 @@ namespace
         log("    shape.Set(vs, %d);\n", vertexCount);
     }
     
-    void ShapeDumper::Visit(const playrho::ChainShape& s)
+    void ShapeDumper::Visit(const playrho::ChainShape::Conf& s)
     {
         log("    ChainShape shape;\n");
         log("    Vec2 vs[%d];\n", s.GetVertexCount());
@@ -116,7 +118,7 @@ namespace
         log("    shape.CreateChain(vs, %d);\n", s.GetVertexCount());
     }
 
-    void ShapeDumper::Visit(const playrho::MultiShape&)
+    void ShapeDumper::Visit(const playrho::MultiShape::Conf&)
     {
         // TODO
     }
@@ -251,7 +253,9 @@ void playrho::Dump(const Fixture& fixture, std::size_t bodyIndex)
     
     const auto shape = fixture.GetShape();
     ShapeDumper shapeDumper;
-    shape->Accept(shapeDumper);
+    Accept(shape, [&](const std::type_info& ti, const void* data) {
+        shapeDumper(ti, data);
+    });
     
     log("\n");
     log("    fd.shape = &shape;\n");

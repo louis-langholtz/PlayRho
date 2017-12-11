@@ -62,7 +62,7 @@ TEST(DistanceProxy, OneVecInitialization)
     const auto vertex0 = Length2{2_m, -3_m};
     const auto normal0 = UnitVec2{};
     const DistanceProxy foo{radius, 1, &vertex0, &normal0};
-    EXPECT_EQ(radius, foo.GetVertexRadius());
+    EXPECT_EQ(radius, GetVertexRadius(foo));
     EXPECT_EQ(1, foo.GetVertexCount());
     EXPECT_EQ(vertex0, foo.GetVertex(0));
 }
@@ -87,7 +87,7 @@ TEST(DistanceProxy, TwoVecInitialization)
     const auto normal0 = GetUnitVector(vertex1 - vertex0);
     const UnitVec2 normals[] = {normal0, -normal0};
     const DistanceProxy foo{radius, 2, vertices, normals};
-    EXPECT_EQ(radius, foo.GetVertexRadius());
+    EXPECT_EQ(radius, GetVertexRadius(foo));
     EXPECT_EQ(2, foo.GetVertexCount());
     EXPECT_EQ(vertex0, foo.GetVertex(0));
     EXPECT_EQ(vertex1, foo.GetVertex(1));
@@ -124,7 +124,7 @@ TEST(DistanceProxy, ThreeVertices)
     
     const DistanceProxy foo{radius, 3, vertices, normals};
     
-    EXPECT_EQ(foo.GetVertexRadius(), radius);
+    EXPECT_EQ(GetVertexRadius(foo), radius);
     ASSERT_EQ(foo.GetVertexCount(), count);
     EXPECT_EQ(GetX(foo.GetVertex(0)), GetX(v0));
     EXPECT_EQ(GetY(foo.GetVertex(0)), GetY(v0));

@@ -36,16 +36,13 @@ public:
 
     Breakable()
     {
-        auto conf = PolygonShape::Conf{}.SetDensity(1_kgpm2);
-
         // Ground body
-        {
-            const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
-        }
+        m_world.CreateBody()->CreateFixture(Shape(EdgeShape::Conf{}.Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
 
         // Breakable dynamic body
         {
+            auto conf = PolygonShape::Conf{}.SetDensity(1_kgpm2);
+
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 40.0f) * 1_m;
@@ -53,11 +50,11 @@ public:
             m_body1 = m_world.CreateBody(bd);
 
             conf.SetAsBox(0.5_m, 0.5_m, Vec2(-0.5f, 0.0f) * 1_m, 0_rad);
-            m_shape1 = std::make_shared<PolygonShape>(conf);
+            m_shape1 = conf;
             m_piece1 = m_body1->CreateFixture(m_shape1);
 
             conf.SetAsBox(0.5_m, 0.5_m, Vec2(0.5f, 0.0f) * 1_m, 0_rad);
-            m_shape2 = std::make_shared<PolygonShape>(conf);
+            m_shape2 = conf;
             m_piece2 = m_body1->CreateFixture(m_shape2);
         }
 
@@ -140,8 +137,8 @@ public:
     Body* m_body1;
     LinearVelocity2 m_velocity;
     AngularVelocity m_angularVelocity;
-    std::shared_ptr<PolygonShape> m_shape1;
-    std::shared_ptr<PolygonShape> m_shape2;
+    PolygonShape::Conf m_shape1;
+    PolygonShape::Conf m_shape2;
     Fixture* m_piece1;
     Fixture* m_piece2;
 

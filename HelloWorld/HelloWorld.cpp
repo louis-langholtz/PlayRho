@@ -40,7 +40,7 @@ int main()
 
     // Define the ground shape. Use a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
-    const auto box = std::make_shared<PolygonShape>(50_m, 10_m);
+    const auto box = PolygonShape::Conf{}.SetAsBox(50_m, 10_m);
 
     // Add the box shape to the ground body.
     ground->CreateFixture(box);
@@ -51,7 +51,7 @@ int main()
                                        .UseType(BodyType::Dynamic));
 
     // Define a disk shape for the ball body.
-    const auto disk = std::make_shared<DiskShape>(1_m);
+    const auto disk = DiskShape::Conf{}.SetRadius(1_m);
 
     // Add the disk shape to the ball body.
     ball->CreateFixture(disk);

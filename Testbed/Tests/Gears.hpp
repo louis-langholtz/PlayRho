@@ -30,11 +30,11 @@ public:
     Gears()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m));
+        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
 
-        const auto circle1 = std::make_shared<DiskShape>(1_m, DiskShape::Conf{}.SetDensity(5_kgpm2));
-        const auto circle2 = std::make_shared<DiskShape>(2_m, DiskShape::Conf{}.SetDensity(5_kgpm2));
-        const auto box = std::make_shared<PolygonShape>(0.5_m, 5_m, PolygonShape::Conf{}.SetDensity(5_kgpm2));
+        const auto circle1 = DiskShape::Conf{}.SetRadius(1_m).SetDensity(5_kgpm2);
+        const auto circle2 = DiskShape::Conf{}.SetRadius(2_m).SetDensity(5_kgpm2);
+        const auto box = Shape{PolygonShape::Conf{}.SetAsBox(0.5_m, 5_m).SetDensity(5_kgpm2)};
     
         {
             auto bd1 = BodyDef{};
@@ -58,7 +58,7 @@ public:
             auto joint2 = m_world.CreateJoint(RevoluteJointDef{body2, body3, bd3.location});
 
             auto jd4 = GearJointDef{joint1, joint2};
-            jd4.ratio = circle2->GetRadius() / circle1->GetRadius();
+            jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
             m_world.CreateJoint(jd4);
         }
 
@@ -100,11 +100,11 @@ public:
             m_joint3 = static_cast<PrismaticJoint*>(m_world.CreateJoint(jd3));
 
             auto jd4 = GearJointDef{m_joint1, m_joint2};
-            jd4.ratio = circle2->GetRadius() / circle1->GetRadius();
+            jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
             m_joint4 = static_cast<GearJoint*>(m_world.CreateJoint(jd4));
 
             auto jd5 = GearJointDef{m_joint2, m_joint3};
-            jd5.ratio = -1.0f / (circle2->GetRadius() / 1_m);
+            jd5.ratio = -1.0f / (circle2.GetRadius() / 1_m);
             m_joint5 = static_cast<GearJoint*>(m_world.CreateJoint(jd5));
         }
     }

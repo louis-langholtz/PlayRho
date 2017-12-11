@@ -20,8 +20,10 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_DISKSHAPE_HPP
 #define PLAYRHO_COLLISION_SHAPES_DISKSHAPE_HPP
 
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/MassData.hpp>
 
 namespace playrho {
 
@@ -36,7 +38,7 @@ namespace playrho {
 ///
 /// @ingroup PartsGroup
 ///
-class DiskShape : public Shape
+class DiskShape
 {
 public:
     
@@ -54,6 +56,11 @@ public:
             // Intentionally empty.
         }
         
+        PLAYRHO_CONSTEXPR inline Conf(Length radius): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(radius)}
+        {
+            // Intentionally empty.
+        }
+
         /// @brief Uses the given value as the location.
         PLAYRHO_CONSTEXPR inline Conf& UseLocation(Length2 value) noexcept
         {
@@ -74,64 +81,23 @@ public:
             location = value;
             return *this;
         }
-
+        
+        NonNegative<Length> GetRadius() const noexcept
+        {
+            return vertexRadius;
+        }
+        
+        Length2 GetLocation() const noexcept
+        {
+            return location;
+        }
+        
         /// @brief Location for the disk shape to be centered at.
         Length2 location = Length2{};
     };
 
     /// @brief Gets the default configuration.
     static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept;
-
-    /// Initializing constructor.
-    explicit DiskShape(const Conf& conf = GetDefaultConf()) noexcept:
-        Shape{conf}, m_location{conf.location}
-    {
-        // Intentionally empty.
-    }
-
-    /// @brief Initializing constructor.
-    explicit DiskShape(const Length radius, const Conf& conf = GetDefaultConf()) noexcept:
-        Shape{radius, conf}, m_location{conf.location}
-    {
-        // Intentionally empty.
-    }
-
-    /// @brief Copy constructor.
-    DiskShape(const DiskShape& other) = default;
-
-    /// @brief Move constructor.
-    DiskShape(DiskShape&& other) = default;
-    
-    ~DiskShape() override = default;
-
-    /// @brief Copy assignment operator.
-    DiskShape& operator= (const DiskShape& other) = default;
-    
-    /// @brief Move assignment operator.
-    DiskShape& operator= (DiskShape&& other) = default;
-    
-    ChildCounter GetChildCount() const noexcept override;
-
-    DistanceProxy GetChild(ChildCounter index) const override;
-
-    MassData GetMassData() const noexcept override;
-    
-    void Accept(ShapeVisitor& visitor) const override;
-
-    /// @brief Gets the "radius" of the shape.
-    /// @return Non-negative radius.
-    NonNegative<Length> GetRadius() const noexcept { return GetVertexRadius(); }
-    
-    /// @brief Gets the location of the center of this circle shape.
-    /// @return The origin (0, 0) unless explicitly set otherwise on construction or via
-    ///   the set location method.
-    /// @sa SetPosition.
-    Length2 GetLocation() const noexcept { return m_location; }
-    
-private:
-    /// Location of the shape as initialized on construction or as assigned using the
-    ///   SetPosition method.
-    Length2 m_location = Length2{};
 };
 
 PLAYRHO_CONSTEXPR inline DiskShape::Conf DiskShape::GetDefaultConf() noexcept
@@ -139,18 +105,25 @@ PLAYRHO_CONSTEXPR inline DiskShape::Conf DiskShape::GetDefaultConf() noexcept
     return Conf{};
 }
 
-inline ChildCounter DiskShape::GetChildCount() const noexcept
+// Free functions...
+
+PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const DiskShape::Conf&) noexcept
 {
     return 1;
 }
 
-inline DistanceProxy DiskShape::GetChild(ChildCounter index) const
+inline DistanceProxy GetChild(const DiskShape::Conf& arg, ChildCounter index)
 {
     if (index != 0)
     {
         throw InvalidArgument("only index of 0 is supported");
     }
-    return DistanceProxy{GetVertexRadius(), 1, &m_location, nullptr};
+    return DistanceProxy{arg.vertexRadius, 1, &arg.location, nullptr};
+}
+
+inline MassData GetMassData(const DiskShape::Conf& arg) noexcept
+{
+    return playrho::GetMassData(arg.vertexRadius, arg.density, arg.location);
 }
 
 } // namespace playrho

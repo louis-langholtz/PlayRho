@@ -254,7 +254,7 @@ TEST(Body, CreateFixture)
     const auto body = world.CreateBody();
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(0));
 
-    const auto valid_shape = std::make_shared<DiskShape>(1_m);
+    const auto valid_shape = DiskShape::Conf(1_m);
     EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
 
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
@@ -265,8 +265,8 @@ TEST(Body, SetEnabled)
     auto stepConf = StepConf{};
     World world;
     const auto body = world.CreateBody();
-    const auto valid_shape = std::make_shared<DiskShape>(1_m);
-    
+    const auto valid_shape = DiskShape::Conf(1_m);
+
     const auto fixture = body->CreateFixture(valid_shape, FixtureDef{});
     ASSERT_NE(fixture, nullptr);
     ASSERT_TRUE(body->IsEnabled());
@@ -298,7 +298,7 @@ TEST(Body, SetFixedRotation)
 {
     World world;
     const auto body = world.CreateBody();
-    const auto valid_shape = std::make_shared<DiskShape>(1_m);
+    const auto valid_shape = DiskShape::Conf(1_m);
 
     ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
     ASSERT_FALSE(body->IsFixedRotation());
@@ -326,15 +326,13 @@ TEST(Body, CreateAndDestroyFixture)
     conf.vertexRadius = 2.871_m;
     conf.location = Vec2{1.912f, -77.31f} * 1_m;
     conf.density = 1_kgpm2;
-    const auto shape = std::make_shared<DiskShape>(conf);
+    const auto shape = Shape(conf);
     
     {
         auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
         const auto fshape = fixture->GetShape();
-        ASSERT_NE(fshape, nullptr);
-        EXPECT_EQ(typeid(fshape.get()), typeid(const Shape*));
-        EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
-        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation(), shape->GetLocation());
+        EXPECT_EQ(GetVertexRadius(fshape), GetVertexRadius(shape));
+        EXPECT_EQ(static_cast<const DiskShape::Conf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
         EXPECT_FALSE(body->GetFixtures().empty());
         {
             int i = 0;
@@ -363,10 +361,8 @@ TEST(Body, CreateAndDestroyFixture)
     {
         auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
         const auto fshape = fixture->GetShape();
-        ASSERT_NE(fshape, nullptr);
-        EXPECT_EQ(typeid(fshape.get()), typeid(const Shape*));
-        EXPECT_EQ(GetVertexRadius(*fshape), GetVertexRadius(*shape));
-        EXPECT_EQ(static_cast<const DiskShape*>(fshape.get())->GetLocation(), shape->GetLocation());
+        EXPECT_EQ(GetVertexRadius(fshape), GetVertexRadius(shape));
+        EXPECT_EQ(static_cast<const DiskShape::Conf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
         EXPECT_FALSE(body->GetFixtures().empty());
         {
             int i = 0;
@@ -430,7 +426,7 @@ TEST(Body, CreateLotsOfFixtures)
     conf.vertexRadius = 2.871_m;
     conf.location = Vec2{1.912f, -77.31f} * 1_m;
     conf.density = 1.3_kgpm2;
-    const auto shape = std::make_shared<DiskShape>(conf);
+    const auto shape = Shape(conf);
     const auto num = 5000;
     std::chrono::time_point<std::chrono::system_clock> start, end;
     
@@ -566,10 +562,7 @@ TEST(Body, CalcGravitationalAcceleration)
     const auto l1 = Length2{-8_m, 0_m};
     const auto l2 = Length2{+8_m, 0_m};
     const auto l3 = Length2{+16_m, 0_m};
-
-    const auto shape = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                   .UseVertexRadius(2_m)
-                                                   .UseDensity(1e10_kgpm2));
+    const auto shape = DiskShape::Conf{}.UseVertexRadius(2_m).UseDensity(1e10_kgpm2);
     
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l1));
     b1->CreateFixture(shape);

@@ -48,15 +48,9 @@ public:
     CollisionFiltering()
     {
         // Ground body
-        {
-            auto conf = EdgeShape::Conf{};
-            conf.friction = 0.3f;
-
-            BodyDef bd;
-            const auto ground = m_world.CreateBody(bd);
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m, conf));
-        }
-
+        m_world.CreateBody()->CreateFixture(Shape(EdgeShape::Conf{}.SetFriction(0.3f)
+                        .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
+        
         // Small triangle
         Length2 vertices[3];
         vertices[0] = Vec2(-1.0f, 0.0f) * 1_m;
@@ -77,7 +71,7 @@ public:
         triangleBodyDef.location = Vec2(-5.0f, 2.0f) * 1_m;
 
         const auto body1 = m_world.CreateBody(triangleBodyDef);
-        body1->CreateFixture(std::make_shared<PolygonShape>(polygon), triangleShapeDef);
+        body1->CreateFixture(Shape(polygon), triangleShapeDef);
 
         // Large triangle (recycle definitions)
         vertices[0] *= 2.0f;
@@ -89,16 +83,14 @@ public:
         triangleBodyDef.fixedRotation = true; // look at me!
 
         const auto body2 = m_world.CreateBody(triangleBodyDef);
-        body2->CreateFixture(std::make_shared<PolygonShape>(polygon), triangleShapeDef);
+        body2->CreateFixture(Shape(polygon), triangleShapeDef);
 
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-5.0f, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            auto conf = PolygonShape::Conf{};
-            conf.density = 1_kgpm2;
-            body->CreateFixture(std::make_shared<PolygonShape>(0.5_m, 1_m, conf));
+            body->CreateFixture(Shape{PolygonShape::Conf{}.SetDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)});
 
             PrismaticJointDef jd;
             jd.bodyA = body2;
@@ -129,7 +121,7 @@ public:
         boxBodyDef.location = Vec2(0.0f, 2.0f) * 1_m;
 
         const auto body3 = m_world.CreateBody(boxBodyDef);
-        body3->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
+        body3->CreateFixture(Shape(polygon), boxShapeDef);
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
@@ -137,7 +129,7 @@ public:
         boxBodyDef.location = Vec2(0.0f, 6.0f) * 1_m;
 
         const auto body4 = m_world.CreateBody(boxBodyDef);
-        body4->CreateFixture(std::make_shared<PolygonShape>(polygon), boxShapeDef);
+        body4->CreateFixture(Shape(polygon), boxShapeDef);
 
         // Small circle
         auto circleConf = DiskShape::Conf{};
@@ -155,7 +147,7 @@ public:
         
         const auto body5 = m_world.CreateBody(circleBodyDef);
         circleConf.vertexRadius = 1_m;
-        body5->CreateFixture(std::make_shared<DiskShape>(circleConf), circleShapeDef);
+        body5->CreateFixture(Shape(circleConf), circleShapeDef);
 
         // Large circle
         circleShapeDef.filter.groupIndex = k_largeGroup;
@@ -163,7 +155,7 @@ public:
 
         const auto body6 = m_world.CreateBody(circleBodyDef);
         circleConf.vertexRadius = circleConf.vertexRadius * 2;
-        body6->CreateFixture(std::make_shared<DiskShape>(circleConf), circleShapeDef);
+        body6->CreateFixture(Shape(circleConf), circleShapeDef);
     }
 };
     

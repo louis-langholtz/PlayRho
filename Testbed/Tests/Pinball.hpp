@@ -35,14 +35,14 @@ public:
         const auto ground = m_world.CreateBody();
         {
             auto conf = ChainShape::Conf{};
-            conf.vertices.push_back(Vec2(0.0f, -2.0f) * 1_m);
-            conf.vertices.push_back(Vec2(8.0f, 6.0f) * 1_m);
-            conf.vertices.push_back(Vec2(8.0f, 20.0f) * 1_m);
-            conf.vertices.push_back(Vec2(-8.0f, 20.0f) * 1_m);
-            conf.vertices.push_back(Vec2(-8.0f, 6.0f) * 1_m);
-            conf.vertices.push_back(conf.vertices[0]); // to loop back around completely.
+            conf.Add(Vec2(0.0f, -2.0f) * 1_m);
+            conf.Add(Vec2(8.0f, 6.0f) * 1_m);
+            conf.Add(Vec2(8.0f, 20.0f) * 1_m);
+            conf.Add(Vec2(-8.0f, 20.0f) * 1_m);
+            conf.Add(Vec2(-8.0f, 6.0f) * 1_m);
+            conf.Add(conf.GetVertex(0)); // to loop back around completely.
             conf.UseDensity(0_kgpm2);
-            ground->CreateFixture(std::make_shared<ChainShape>(conf));
+            ground->CreateFixture(Shape(conf));
         }
 
         // Flippers
@@ -59,8 +59,7 @@ public:
             bd.location = p2;
             const auto rightFlipper = m_world.CreateBody(bd);
 
-            const auto box = std::make_shared<PolygonShape>(1.75_m, 0.1_m, PolygonShape::Conf{}.SetDensity(1_kgpm2));
-
+            const auto box = Shape(PolygonShape::Conf{}.SetAsBox(1.75_m, 0.1_m).SetDensity(1_kgpm2));
             leftFlipper->CreateFixture(box);
             rightFlipper->CreateFixture(box);
 
@@ -98,7 +97,7 @@ public:
             auto conf = DiskShape::Conf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = 0.2_m;
-            m_ball->CreateFixture(std::make_shared<DiskShape>(conf));
+            m_ball->CreateFixture(Shape(conf));
         }
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "To control the flippers", [&](KeyActionMods) {

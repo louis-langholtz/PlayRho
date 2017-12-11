@@ -35,15 +35,13 @@ public:
     Pyramid()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+        ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         const auto a = 0.5_m;
-        const auto shape = std::make_shared<PolygonShape>(a, a, PolygonShape::Conf{}.SetDensity(5_kgpm2));
-
+        const auto shape = Shape{PolygonShape::Conf{}.SetAsBox(a, a).SetDensity(5_kgpm2)};
         auto x = Vec2(-7.0f, 0.75f);
         const auto deltaX = Vec2(0.5625f, 1.25f);
         const auto deltaY = Vec2(1.125f, 0.0f);
-
         Vec2 y;
         for (auto i = 0; i < e_count; ++i)
         {

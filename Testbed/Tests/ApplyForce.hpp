@@ -59,19 +59,19 @@ public:
 
             // Left vertical
             conf.Set(Length2{-20_m, -20_m}, Length2{-20_m, 20_m});
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape{conf});
 
             // Right vertical
             conf.Set(Length2{20_m, -20_m}, Length2{20_m, 20_m});
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape{conf});
 
             // Top horizontal
             conf.Set(Length2{-20_m, 20_m}, Length2{20_m, 20_m});
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape{conf});
 
             // Bottom horizontal
             conf.Set(Length2{-20_m, -20_m}, Length2{20_m, -20_m});
-            ground->CreateFixture(std::make_shared<EdgeShape>(conf));
+            ground->CreateFixture(Shape{conf});
         }
 
         {
@@ -87,7 +87,7 @@ public:
             auto conf = PolygonShape::Conf{};
 
             conf.density = 4_kgpm2;
-            const auto poly1 = PolygonShape(Span<const Length2>(vertices, 3), conf);
+            const auto poly1 = PolygonShape::Conf(Span<const Length2>(vertices, 3), conf);
 
             Transformation xf2;
             xf2.q = UnitVec2::Get(-0.3524_rad * Pi);
@@ -98,7 +98,7 @@ public:
             vertices[2] = Transform(Length2{0_m, 0.5_m}, xf2);
 
             conf.density = 2_kgpm2;
-            const auto poly2 = PolygonShape(Span<const Length2>(vertices, 3), conf);
+            const auto poly2 = PolygonShape::Conf(Span<const Length2>(vertices, 3), conf);
 
             BodyDef bd;
             bd.type = BodyType::Dynamic;
@@ -108,15 +108,16 @@ public:
             bd.angle = Pi * 1_rad;
             bd.allowSleep = false;
             m_body = m_world.CreateBody(bd);
-            m_body->CreateFixture(std::make_shared<PolygonShape>(poly1));
-            m_body->CreateFixture(std::make_shared<PolygonShape>(poly2));
+            m_body->CreateFixture(Shape(poly1));
+            m_body->CreateFixture(Shape(poly2));
         }
 
         {
             auto conf = PolygonShape::Conf{};
             conf.density = 1_kgpm2;
             conf.friction = Real{0.3f};
-            const auto shape = std::make_shared<PolygonShape>(0.5_m, 0.5_m, conf);
+            conf.SetAsBox(0.5_m, 0.5_m);
+            const auto shape = Shape(conf);
 
             const auto gravity = LinearAcceleration{10_mps2};
             for (auto i = 0; i < 10; ++i)

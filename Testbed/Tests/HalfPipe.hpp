@@ -26,24 +26,19 @@ namespace playrho {
     class HalfPipe : public Test
     {
     public:
-        
         HalfPipe()
         {
             const auto pipeBody = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0, 20) * 1_m));
             {
                 auto conf = ChainShape::Conf{};
                 conf.UseFriction(Real(1));
-                conf.vertices = GetCircleVertices(20_m, 90, 180_deg, Real(0.5f));
-                pipeBody->CreateFixture(std::make_shared<ChainShape>(conf));
+                conf.Set(GetCircleVertices(20_m, 90, 180_deg, Real(0.5f)));
+                pipeBody->CreateFixture(Shape{conf});
             }
-
             const auto ballBody = m_world.CreateBody(BodyDef{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(Vec2(-19, 28) * 1_m));
-            ballBody->CreateFixture(std::make_shared<DiskShape>(DiskShape::Conf{}
-                                    .UseDensity(0.01_kgpm2)
-                                    .UseVertexRadius(1_m)
-                                    .UseFriction(Real(1))));
+            ballBody->CreateFixture(DiskShape::Conf{}.UseDensity(0.01_kgpm2).SetRadius(1_m).UseFriction(Real(1)));
         }
     };
     

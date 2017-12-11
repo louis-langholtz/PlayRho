@@ -59,21 +59,6 @@ Fixture::Fixture(const Fixture& other):
     }
 }
 
-AreaDensity Fixture::GetDensity() const noexcept
-{
-    return m_shape->GetDensity();
-}
-
-Real Fixture::GetFriction() const noexcept
-{
-    return m_shape->GetFriction();
-}
-
-Real Fixture::GetRestitution() const noexcept
-{
-    return m_shape->GetRestitution();
-}
-
 FixtureProxy Fixture::GetProxy(ChildCounter index) const noexcept
 {
     assert(index < GetProxyCount());
@@ -122,7 +107,7 @@ void Fixture::SetSensor(bool sensor) noexcept
 
 bool TestPoint(const Fixture& f, Length2 p) noexcept
 {
-    return TestPoint(*f.GetShape(), InverseTransform(p, GetTransformation(f)));
+    return TestPoint(f.GetShape(), InverseTransform(p, GetTransformation(f)));
 }
 
 void SetAwake(const Fixture& f) noexcept

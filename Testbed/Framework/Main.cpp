@@ -1143,11 +1143,11 @@ static void EntityUI(const Shape& shape)
 {
     ImGui::ItemWidthContext itemWidthCtx(60);
 
-    const auto density = shape.GetDensity();
-    const auto vertexRadius = shape.GetVertexRadius();
-    const auto friction = shape.GetFriction();
-    const auto restitution = shape.GetRestitution();
-    const auto childCount = shape.GetChildCount();
+    const auto density = GetDensity(shape);
+    const auto vertexRadius = GetVertexRadius(shape);
+    const auto friction = GetFriction(shape);
+    const auto restitution = GetRestitution(shape);
+    const auto childCount = GetChildCount(shape);
 
     ImGui::LabelText("Density (kg/m^2)", "%.2e",
                      static_cast<double>(Real{density * SquareMeter / Kilogram}));
@@ -1245,10 +1245,10 @@ static void EntityUI(Fixture& fixture)
     }
     
     {
-        const auto shape = fixture.GetShape().get();
-        if (ImGui::TreeNodeEx(shape, 0, "Shape/Part"))
+        const auto& shape = fixture.GetShape();
+        if (ImGui::TreeNodeEx(&shape, 0, "Shape/Part"))
         {
-            EntityUI(*shape);
+            EntityUI(shape);
             ImGui::TreePop();
         }
     }

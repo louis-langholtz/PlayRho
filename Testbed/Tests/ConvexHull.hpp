@@ -69,8 +69,7 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        const auto conf = PolygonShape::Conf{};
-        const auto shape = PolygonShape{Span<const Length2>{&m_points[0], m_points.size()}, conf};
+        const auto shape = PolygonShape::Conf{}.Set(Span<const Length2>{&m_points[0], m_points.size()});
 
         drawer.DrawPolygon(shape.GetVertices().begin(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
 

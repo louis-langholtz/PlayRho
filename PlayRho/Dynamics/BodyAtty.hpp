@@ -48,7 +48,7 @@ class BodyAtty
 private:
     
     /// @brief Creates a fixture.
-    static Fixture* CreateFixture(Body& b, std::shared_ptr<const Shape> shape, const FixtureDef& def)
+    static Fixture* CreateFixture(Body& b, Shape shape, const FixtureDef& def)
     {
         const auto fixture = new Fixture{&b, def, std::move(shape)};
         b.m_fixtures.push_back(fixture);

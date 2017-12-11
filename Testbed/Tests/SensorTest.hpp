@@ -38,7 +38,7 @@ public:
     {
         {
             const auto ground = m_world.CreateBody();
-            ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+            ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
 #if 0
             {
@@ -54,22 +54,20 @@ public:
                 auto conf = DiskShape::Conf{};
                 conf.vertexRadius = 5_m;
                 conf.location = Vec2(0.0f, 10.0f) * 1_m;
-                m_sensor = ground->CreateFixture(std::make_shared<DiskShape>(conf), fd);
+                m_sensor = ground->CreateFixture(Shape(conf), fd);
             }
 #endif
         }
 
-        const auto shape = std::make_shared<DiskShape>(1_m, DiskShape::Conf{}.SetDensity(1_kgpm2));
+        const auto shape = Shape{DiskShape::Conf{}.SetDensity(1_kgpm2).SetRadius(1_m)};
         for (auto i = 0; i < e_count; ++i)
         {
             BodyDef bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f + 3.0f * i, 20.0f) * 1_m;
             bd.userData = m_touching + i;
-
             m_touching[i] = false;
             m_bodies[i] = m_world.CreateBody(bd);
-
             m_bodies[i]->CreateFixture(shape);
         }
     }
@@ -141,12 +139,9 @@ public:
 
             const auto body = m_bodies[i];
             const auto ground = m_sensor->GetBody();
-
-            const auto circle = static_cast<const DiskShape*>(m_sensor->GetShape().get());
+            const auto circle = static_cast<const DiskShape::Conf*>(GetData(m_sensor->GetShape()));
             const auto center = GetWorldPoint(*ground, circle->GetLocation());
-
             const auto position = body->GetLocation();
-
             const auto d = center - position;
             if (AlmostZero(GetMagnitudeSquared(d) / SquareMeter))
             {

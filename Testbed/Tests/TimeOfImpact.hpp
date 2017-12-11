@@ -43,8 +43,8 @@ public:
             Position{Vec2(54.595478f, -51.083473f) * 1_m + offset, 513.62781_rad}
         };
 
-        const auto output = GetToiViaSat(m_shapeA.GetChild(0), sweepA,
-                                         m_shapeB.GetChild(0), sweepB);
+        const auto output = GetToiViaSat(GetChild(m_shapeA, 0), sweepA,
+                                         GetChild(m_shapeB, 0), sweepB);
 
         std::stringstream stream;
         stream << "At TOI ";
@@ -115,8 +115,8 @@ public:
 #endif
     }
     
-    PolygonShape m_shapeA{PolygonShape::Conf{}.SetAsBox(25_m, 5_m)};
-    PolygonShape m_shapeB{PolygonShape::Conf{}.SetAsBox(2.5_m, 2.5_m)};
+    PolygonShape::Conf m_shapeA{PolygonShape::Conf{}.SetAsBox(25_m, 5_m)};
+    PolygonShape::Conf m_shapeB{PolygonShape::Conf{}.SetAsBox(2.5_m, 2.5_m)};
 };
 
 } // namespace playrho

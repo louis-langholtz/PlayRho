@@ -30,7 +30,7 @@ public:
     BodyTypes()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m));
+        ground->CreateFixture(Shape(EdgeShape::Conf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
 
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Dynamic", [&](KeyActionMods) {
             m_platform->SetType(BodyType::Dynamic);
@@ -47,8 +47,8 @@ public:
         {
             const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m);
             m_attachment = m_world.CreateBody(bd);
-            const auto conf = PolygonShape::Conf{}.UseDensity(2_kgpm2);
-            m_attachment->CreateFixture(std::make_shared<PolygonShape>(0.5_m, 2_m, conf));
+            const auto conf = PolygonShape::Conf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m);
+            m_attachment->CreateFixture(Shape(conf));
         }
 
         // Define platform
@@ -58,7 +58,7 @@ public:
 
             const auto conf = PolygonShape::Conf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2)
                 .SetAsBox(0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
-            m_platform->CreateFixture(std::make_shared<PolygonShape>(conf));
+            m_platform->CreateFixture(Shape{conf});
 
             RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0, 5) * 1_m);
             rjd.maxMotorTorque = 50_Nm;
@@ -81,8 +81,8 @@ public:
             const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 8) * 1_m);
             const auto body = m_world.CreateBody(bd);
 
-            const auto conf = PolygonShape::Conf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2);
-            body->CreateFixture(std::make_shared<PolygonShape>(0.75_m, 0.75_m, conf));
+            const auto conf = PolygonShape::Conf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2).SetAsBox(0.75_m, 0.75_m);
+            body->CreateFixture(Shape(conf));
         }
     }
 

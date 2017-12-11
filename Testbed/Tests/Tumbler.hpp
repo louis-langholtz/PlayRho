@@ -91,13 +91,13 @@ public:
                                           .UseLocation(at).UseAllowSleep(false));
         auto shape = PolygonShape::Conf{}.UseDensity(5_kgpm2);
         shape.SetAsBox(0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
-        b->CreateFixture(std::make_shared<PolygonShape>(shape));
+        b->CreateFixture(Shape(shape));
         shape.SetAsBox(0.5_m, 10_m, Vec2(-10,   0) * 1_m, 0_rad);
-        b->CreateFixture(std::make_shared<PolygonShape>(shape));
+        b->CreateFixture(Shape(shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0,  10) * 1_m, 0_rad);
-        b->CreateFixture(std::make_shared<PolygonShape>(shape));
+        b->CreateFixture(Shape(shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0, -10) * 1_m, 0_rad);
-        b->CreateFixture(std::make_shared<PolygonShape>(shape));
+        b->CreateFixture(Shape(shape));
         return b;
     }
     
@@ -134,13 +134,9 @@ public:
 
     const AngularVelocity MotorInc = 0.5_rpm;
     int m_count = 0;
-    std::shared_ptr<PolygonShape> m_square = std::make_shared<PolygonShape>(0.125_m, 0.125_m,
-                                                                            PolygonShape::Conf{}.SetDensity(1_kgpm2));
-    std::shared_ptr<DiskShape> m_disk = std::make_shared<DiskShape>(DiskShape::Conf{}
-                                                                    .UseVertexRadius(0.125_m)
-                                                                    .UseFriction(Real(0))
-                                                                    .SetDensity(0.1_kgpm2));
-    std::shared_ptr<Shape> m_shape = m_square;
+    Shape m_square = Shape{PolygonShape::Conf{}.SetAsBox(0.125_m, 0.125_m).SetDensity(1_kgpm2)};
+    Shape m_disk = Shape{DiskShape::Conf{}.UseVertexRadius(0.125_m).UseFriction(Real(0)).SetDensity(0.1_kgpm2)};
+    Shape m_shape = m_square;
 };
 
 } // namespace playrho

@@ -63,7 +63,7 @@ private:
     
     /// @brief Creates a new fixture for the given body and with the given settings.
     static auto Create(Body* body, const FixtureDef& def,
-                           const std::shared_ptr<const Shape>& shape)
+                           const Shape& shape)
     {
         return new Fixture{body, def, shape};
     }

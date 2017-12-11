@@ -46,7 +46,7 @@ public:
             {
                 const auto x2 = x1 + 0.5f;
                 const auto y2 = 2.0f * std::cos(x2 / 10.0f * static_cast<float>(Pi));
-                ground->CreateFixture(std::make_shared<EdgeShape>(Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m));
+                ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}});
                 x1 = x2;
                 y1 = y2;
             }
@@ -60,14 +60,14 @@ public:
             Vec2(0.5f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        m_polygons[0] = std::make_shared<PolygonShape>(conf);
+        m_polygons[0] = Shape(conf);
         
         conf.Set({
             Vec2(-0.1f, 0.0f) * 1_m,
             Vec2(0.1f, 0.0f) * 1_m,
             Vec2(0.0f, 1.5f) * 1_m
         });
-        m_polygons[1] = std::make_shared<PolygonShape>(conf);
+        m_polygons[1] = Shape(conf);
 
         {
             const auto w = 1.0f;
@@ -84,11 +84,11 @@ public:
                 Vec2(-0.5f * w, b) * 1_m,
                 Vec2(-0.5f * s, 0.0f) * 1_m
             });
-            m_polygons[2] = std::make_shared<PolygonShape>(conf);
+            m_polygons[2] = Shape(conf);
         }
 
         conf.SetAsBox(0.5_m, 0.5_m);
-        m_polygons[3] = std::make_shared<PolygonShape>(conf);
+        m_polygons[3] = Shape(conf);
 
         m_bodyIndex = 0;
         std::memset(m_bodies, 0, sizeof(m_bodies));
@@ -202,9 +202,8 @@ public:
 
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
-    std::shared_ptr<PolygonShape> m_polygons[4];
-    std::shared_ptr<DiskShape> m_circle = std::make_shared<DiskShape>(0.5_m,
-        DiskShape::Conf{}.SetFriction(Real(0.3f)).SetDensity(20_kgpm2));
+    Shape m_polygons[4] = {PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}};
+    Shape m_circle = Shape{DiskShape::Conf{}.SetRadius(0.5_m).SetFriction(Real(0.3f)).SetDensity(20_kgpm2)};
 
     Real m_angle;
 };

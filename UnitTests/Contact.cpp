@@ -56,7 +56,7 @@ TEST(Contact, IsNotCopyAssignable)
 
 TEST(Contact, SetAwake)
 {
-    const auto shape = std::make_shared<DiskShape>();
+    const auto shape = DiskShape::Conf{};
     auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
@@ -77,34 +77,34 @@ TEST(Contact, SetAwake)
 
 TEST(Contact, ResetFriction)
 {
-    const auto shape = std::make_shared<DiskShape>();
+    const auto shape = DiskShape::Conf{};
     auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
     auto c = Contact{&fA, 0u, &fB, 0u};
 
-    ASSERT_GT(shape->GetFriction(), Real(0));
-    ASSERT_NEAR(static_cast<double>(c.GetFriction()), static_cast<double>(shape->GetFriction()), 0.01);
-    c.SetFriction(shape->GetFriction() * Real(2));
-    ASSERT_NE(c.GetFriction(), shape->GetFriction());
+    ASSERT_GT(GetFriction(shape), Real(0));
+    ASSERT_NEAR(static_cast<double>(c.GetFriction()), static_cast<double>(GetFriction(shape)), 0.01);
+    c.SetFriction(GetFriction(shape) * Real(2));
+    ASSERT_NE(c.GetFriction(), GetFriction(shape));
     ResetFriction(c);
-    EXPECT_NEAR(static_cast<double>(c.GetFriction()), static_cast<double>(shape->GetFriction()), 0.01);
+    EXPECT_NEAR(static_cast<double>(c.GetFriction()), static_cast<double>(GetFriction(shape)), 0.01);
 }
 
 TEST(Contact, ResetRestitution)
 {
-    const auto shape = std::make_shared<DiskShape>();
+    const auto shape = DiskShape::Conf{};
     auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
     auto fB = Fixture{&bB, FixtureDef{}, shape};
     auto c = Contact{&fA, 0u, &fB, 0u};
 
-    ASSERT_EQ(shape->GetRestitution(), Real(0));
-    ASSERT_EQ(c.GetRestitution(), shape->GetRestitution());
+    ASSERT_EQ(GetRestitution(shape), Real(0));
+    ASSERT_EQ(c.GetRestitution(), GetRestitution(shape));
     c.SetRestitution(Real(2));
-    ASSERT_NE(c.GetRestitution(), shape->GetRestitution());
+    ASSERT_NE(c.GetRestitution(), GetRestitution(shape));
     ResetRestitution(c);
-    EXPECT_EQ(c.GetRestitution(), shape->GetRestitution());
+    EXPECT_EQ(c.GetRestitution(), GetRestitution(shape));
 }

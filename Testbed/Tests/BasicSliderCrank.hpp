@@ -41,7 +41,8 @@ public:
             const auto body = m_world.CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = 2_kgpm2;
-            body->CreateFixture(std::make_shared<PolygonShape>(4_m, 1_m, conf));
+            conf.SetAsBox(4_m, 1_m);
+            body->CreateFixture(Shape(conf));
             m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f) * 1_m});
             prevBody = body;
         }
@@ -54,7 +55,8 @@ public:
             const auto body = m_world.CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = 2_kgpm2;
-            body->CreateFixture(std::make_shared<PolygonShape>(8_m, 1_m, conf));
+            conf.SetAsBox(8_m, 1_m);
+            body->CreateFixture(Shape(conf));
             m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f) * 1_m});
             prevBody = body;
         }
@@ -66,8 +68,8 @@ public:
             bd.fixedRotation = true;
             bd.location = Vec2(12.0f, 20.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            const auto conf = PolygonShape::Conf{}.UseDensity(2_kgpm2);
-            body->CreateFixture(std::make_shared<PolygonShape>(3_m, 3_m, conf));
+            const auto conf = PolygonShape::Conf{}.UseDensity(2_kgpm2).SetAsBox(3_m, 3_m);
+            body->CreateFixture(Shape(conf));
             m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f) * 1_m});
             const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f) * 1_m, UnitVec2::GetRight()};
             m_world.CreateJoint(pjd);

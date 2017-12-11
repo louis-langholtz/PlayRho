@@ -178,7 +178,7 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
 
 MassData GetMassData(const Fixture& f)
 {
-    return f.GetShape()->GetMassData();
+    return GetMassData(f.GetShape());
 }
 
 MassData ComputeMassData(const Body& body) noexcept

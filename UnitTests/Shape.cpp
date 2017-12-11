@@ -34,7 +34,7 @@ TEST(Shape, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(Shape), std::size_t(20));
 #else
-            EXPECT_EQ(sizeof(Shape), std::size_t(24));
+            EXPECT_EQ(sizeof(Shape), std::size_t(16));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(Shape), std::size_t(40)); break;
@@ -45,9 +45,9 @@ TEST(Shape, ByteSize)
 
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 {
-    const auto shape = DiskShape{2_m};
+    const auto shape = DiskShape::Conf{2_m};
     const auto xfm = Transformation{Length2{}, UnitVec2::GetRight()};
-    const auto child = shape.GetChild(0);
+    const auto child = GetChild(shape, 0);
 
     const auto maxloops = 1000000u;
 
@@ -93,9 +93,9 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 
 TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 {
-    const auto shape = PolygonShape{2_m, 2_m};
+    const auto shape = PolygonShape::Conf{2_m, 2_m};
     const auto xfm = Transformation{Length2{}, UnitVec2::GetRight()};
-    const auto child = shape.GetChild(0);
+    const auto child = GetChild(shape, 0);
 
     const auto maxloops = 1000000u;
     

@@ -46,7 +46,7 @@ static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, 
     }
 }
 
-class ShapeDrawer: public ShapeVisitor
+class ShapeDrawer
 {
 public:
     ShapeDrawer(Drawer& d, Color c, bool s, Transformation t):
@@ -54,12 +54,36 @@ public:
     {
         // Intentionally empty.
     }
-
-    void Visit(const DiskShape& shape) override;
-    void Visit(const EdgeShape& shape) override;
-    void Visit(const PolygonShape& shape) override;
-    void Visit(const ChainShape& shape) override;
-    void Visit(const MultiShape& shape) override;
+    
+    void operator() (const std::type_info& ti, const void* data)
+    {
+        if (ti == typeid(DiskShape::Conf))
+        {
+            Visit(*static_cast<const DiskShape::Conf*>(data));
+        }
+        else if (ti == typeid(EdgeShape::Conf))
+        {
+            Visit(*static_cast<const EdgeShape::Conf*>(data));
+        }
+        else if (ti == typeid(PolygonShape::Conf))
+        {
+            Visit(*static_cast<const PolygonShape::Conf*>(data));
+        }
+        else if (ti == typeid(ChainShape::Conf))
+        {
+            Visit(*static_cast<const ChainShape::Conf*>(data));
+        }
+        else if (ti == typeid(MultiShape::Conf))
+        {
+            Visit(*static_cast<const MultiShape::Conf*>(data));
+        }
+    }
+    
+    void Visit(const DiskShape::Conf& shape);
+    void Visit(const EdgeShape::Conf& shape);
+    void Visit(const PolygonShape::Conf& shape);
+    void Visit(const ChainShape::Conf& shape);
+    void Visit(const MultiShape::Conf& shape);
 
     void Draw(const DistanceProxy& proxy);
 
@@ -69,7 +93,7 @@ public:
     Transformation xf;
 };
 
-void ShapeDrawer::Visit(const DiskShape& shape)
+void ShapeDrawer::Visit(const DiskShape::Conf& shape)
 {
     const auto center = Transform(shape.GetLocation(), xf);
     const auto radius = shape.GetRadius();
@@ -82,15 +106,15 @@ void ShapeDrawer::Visit(const DiskShape& shape)
     drawer.DrawSegment(center, center + radius * axis, color);
 }
 
-void ShapeDrawer::Visit(const EdgeShape& shape)
+void ShapeDrawer::Visit(const EdgeShape::Conf& shape)
 {
-    const auto v1 = Transform(shape.GetVertex1(), xf);
-    const auto v2 = Transform(shape.GetVertex2(), xf);
+    const auto v1 = Transform(shape.GetVertexA(), xf);
+    const auto v2 = Transform(shape.GetVertexB(), xf);
     drawer.DrawSegment(v1, v2, color);
 
     if (skins)
     {
-        const auto r = shape.GetVertexRadius();
+        const auto r = GetVertexRadius(shape);
         if (r > 0_m)
         {
             const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
@@ -107,10 +131,10 @@ void ShapeDrawer::Visit(const EdgeShape& shape)
     }
 }
 
-void ShapeDrawer::Visit(const ChainShape& shape)
+void ShapeDrawer::Visit(const ChainShape::Conf& shape)
 {
     const auto count = shape.GetVertexCount();
-    const auto r = shape.GetVertexRadius();
+    const auto r = GetVertexRadius(shape);
     const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
 
     auto v1 = Transform(shape.GetVertex(0), xf);
@@ -151,7 +175,7 @@ void ShapeDrawer::Draw(const DistanceProxy& shape)
     }
 
     const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
-    const auto r = shape.GetVertexRadius();
+    const auto r = GetVertexRadius(shape);
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
     {
         if (i > 0)
@@ -182,17 +206,17 @@ void ShapeDrawer::Draw(const DistanceProxy& shape)
     }
 }
 
-void ShapeDrawer::Visit(const PolygonShape& shape)
+void ShapeDrawer::Visit(const PolygonShape::Conf& shape)
 {
-    Draw(shape.GetChild(0));
+    Draw(GetChild(shape, 0));
 }
 
-void ShapeDrawer::Visit(const MultiShape& shape)
+void ShapeDrawer::Visit(const MultiShape::Conf& shape)
 {
-    const auto count = shape.GetChildCount();
+    const auto count = GetChildCount(shape);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
-        Draw(shape.GetChild(i));
+        Draw(GetChild(shape, i));
     }
 }
 
@@ -201,7 +225,9 @@ static void Draw(Drawer& drawer, const Fixture& fixture, const Color& color, boo
     const auto xf = GetTransformation(fixture);
     auto shapeDrawer = ShapeDrawer{drawer, color, skins, xf};
     const auto shape = fixture.GetShape();
-    shape->Accept(shapeDrawer);
+    Accept(shape, [&](const std::type_info& ti, const void* data) {
+        shapeDrawer(ti, data);
+    });
 }
 
 static Color GetColor(const Body& body)
@@ -605,7 +631,7 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
     conf.vertexRadius = m_bombRadius;
     conf.density = m_bombDensity;
     conf.restitution = 0.0f;
-    m_bomb->CreateFixture(std::make_shared<DiskShape>(conf));
+    m_bomb->CreateFixture(Shape{conf});
 }
 
 static void ShowHelpMarker(const char* desc)

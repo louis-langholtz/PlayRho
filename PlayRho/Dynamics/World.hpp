@@ -34,6 +34,7 @@
 #include <PlayRho/Dynamics/WorldCallbacks.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
+#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/ContactAtty.hpp>
 #include <PlayRho/Dynamics/JointAtty.hpp>
@@ -321,7 +322,7 @@ public:
     /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
     ///    maximum vertex radius.
     /// @throws WrongState if this method is called while the world is locked.
-    Fixture* CreateFixture(Body& body, const std::shared_ptr<const Shape>& shape,
+    Fixture* CreateFixture(Body& body, const Shape& shape,
                            const FixtureDef& def = GetDefaultFixtureDef(),
                            bool resetMassData = true);
 

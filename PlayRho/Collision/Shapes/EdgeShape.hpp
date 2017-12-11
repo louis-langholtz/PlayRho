@@ -20,8 +20,10 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_EDGESHAPE_HPP
 #define PLAYRHO_COLLISION_SHAPES_EDGESHAPE_HPP
 
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/MassData.hpp>
 
 namespace playrho {
 
@@ -35,7 +37,7 @@ namespace playrho {
 ///
 /// @ingroup PartsGroup
 ///
-class EdgeShape : public Shape
+class EdgeShape
 {
 public:
     
@@ -46,114 +48,82 @@ public:
     }
 
     /// @brief Configuration data for edge shapes.
-    struct Conf: public ShapeDefBuilder<Conf>
+    class Conf: public ShapeDefBuilder<Conf>
     {
-        PLAYRHO_CONSTEXPR inline Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+    public:
+        Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
         {
             // Intentionally empty.
         }
         
-        /// @brief Uses the given value for vertex 1.
-        PLAYRHO_CONSTEXPR inline Conf& UseVertex1(Length2 value) noexcept
+        /// @brief Initializing constructor.
+        Conf(Length2 vA, Length2 vB, const Conf& conf = GetDefaultConf()) noexcept:
+            ShapeDefBuilder{conf},
+            m_vertices{vA, vB}
         {
-            vertex1 = value;
-            return *this;
-        }
-
-        /// @brief Uses the given value for vertex 2.
-        PLAYRHO_CONSTEXPR inline Conf& UseVertex2(Length2 value) noexcept
-        {
-            vertex2 = value;
-            return *this;
+            const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
+            m_normals[0] = normal;
+            m_normals[1] = -normal;
         }
         
         /// @brief Sets both vertices in one call.
-        PLAYRHO_CONSTEXPR inline Conf& Set(Length2 v1, Length2 v2) noexcept
+        inline Conf& Set(Length2 vA, Length2 vB) noexcept
         {
-            vertex1 = v1;
-            vertex2 = v2;
+            m_vertices[0] = vA;
+            m_vertices[1] = vB;
+            const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
+            m_normals[0] = normal;
+            m_normals[1] = -normal;
             return *this;
         }
-
-        Length2 vertex1 = Length2{}; ///< Vertex 1.
-        Length2 vertex2 = Length2{}; ///< Vertex 2.
+        
+        Length2 GetVertexA() const noexcept
+        {
+            return m_vertices[0];
+        }
+        
+        Length2 GetVertexB() const noexcept
+        {
+            return m_vertices[1];
+        }
+        
+        DistanceProxy GetChild() const noexcept
+        {
+            return DistanceProxy{vertexRadius, 2, m_vertices, m_normals};
+        }
+        
+    private:
+        Length2 m_vertices[2] = {Length2{}, Length2{}}; ///< Vertices
+        UnitVec2 m_normals[2] = {UnitVec2{}, UnitVec2{}}; ///< Normals.
     };
     
     /// @brief Gets the default configuration for an EdgeShape.
-    static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept
+    static inline Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }
-
-    /// @brief Initializing constructor.
-    explicit EdgeShape(const Conf& conf = GetDefaultConf()) noexcept:
-        Shape{conf},
-        m_vertices{conf.vertex1, conf.vertex2}
-    {
-        m_normals[0] = GetUnitVector(GetFwdPerpendicular(conf.vertex2 - conf.vertex1));
-        m_normals[1] = -m_normals[0];
-    }
-
-    /// @brief Initializing constructor.
-    EdgeShape(Length2 v1, Length2 v2, const Conf& conf = GetDefaultConf()) noexcept:
-        Shape{conf},
-        m_vertices{v1, v2}
-    {
-        m_normals[0] = GetUnitVector(GetFwdPerpendicular(v2 - v1));
-        m_normals[1] = -m_normals[0];
-    }
-
-    /// @brief Copy constructor.
-    EdgeShape(const EdgeShape& other) = default;
-    
-    /// @brief Move constructor.
-    EdgeShape(EdgeShape&& other) = default;
-    
-    ~EdgeShape() override = default;
-    
-    /// @brief Copy assignment operator.
-    EdgeShape& operator= (const EdgeShape& other) = default;
-    
-    /// @brief Move assignment operator.
-    EdgeShape& operator= (EdgeShape&& other) = default;
-
-    ChildCounter GetChildCount() const noexcept override;
-
-    DistanceProxy GetChild(ChildCounter index) const override;
-
-    MassData GetMassData() const noexcept override;
-    
-    void Accept(ShapeVisitor& visitor) const override;
-    
-    /// @brief Gets vertex number 1 (of 2).
-    Length2 GetVertex1() const noexcept { return m_vertices[0]; }
-
-    /// @brief Gets vertex number 2 (of 2).
-    Length2 GetVertex2() const noexcept { return m_vertices[1]; }
-
-    /// @brief Gets normal number 1 (of 2).
-    UnitVec2 GetNormal1() const noexcept { return m_normals[0]; }
-
-    /// @brief Gets normal number 2 (of 2).
-    UnitVec2 GetNormal2() const noexcept { return m_normals[1]; }
-
-private:
-    Length2 m_vertices[2]; ///< Vertices
-    UnitVec2 m_normals[2]; ///< Normals.
 };
 
-inline ChildCounter EdgeShape::GetChildCount() const noexcept
+// Free functions...
+
+PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const EdgeShape::Conf&) noexcept
 {
     return 1;
 }
 
-inline DistanceProxy EdgeShape::GetChild(ChildCounter index) const
+inline DistanceProxy GetChild(const EdgeShape::Conf& arg, ChildCounter index)
 {
     if (index != 0)
     {
         throw InvalidArgument("only index of 0 is supported");
     }
-    return DistanceProxy{GetVertexRadius(), 2, m_vertices, m_normals};
+    return arg.GetChild();
+}
+
+inline MassData GetMassData(const EdgeShape::Conf& arg) noexcept
+{
+    return playrho::GetMassData(arg.vertexRadius, arg.density,
+                                arg.GetVertexA(), arg.GetVertexB());
 }
 
 } // namespace playrho

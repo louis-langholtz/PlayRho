@@ -31,18 +31,19 @@ public:
     Dominos()
     {
         const auto b1 = m_world.CreateBody();
-        b1->CreateFixture(std::make_shared<EdgeShape>(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+        b1->CreateFixture(EdgeShape::Conf(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
 
         {
             BodyDef bd;
             bd.location = Vec2(-1.5f, 10.0f) * 1_m;
             const auto ground = m_world.CreateBody(bd);
-            ground->CreateFixture(std::make_shared<PolygonShape>(PolygonShape{6_m, 0.25_m}));
+            ground->CreateFixture(PolygonShape::Conf{6_m, 0.25_m});
         }
 
         {
-            const auto shape = std::make_shared<PolygonShape>(0.1_m, 1_m,
-                                                              PolygonShape::Conf{}.SetDensity(20_kgpm2).SetFriction(Real(0.05f)));
+            const auto shape = Shape{
+                PolygonShape::Conf{}.SetDensity(20_kgpm2).SetFriction(Real(0.05f)).SetAsBox(0.1_m, 1_m)
+            };
             for (auto i = 0; i < 10; ++i)
             {
                 const auto body = m_world.CreateBody(BodyDef{}
@@ -59,11 +60,11 @@ public:
             BodyDef bd;
             bd.location = Vec2(1.2f, 6.0f) * 1_m;
             const auto ground = m_world.CreateBody(bd);
-            ground->CreateFixture(std::make_shared<PolygonShape>(shape));
+            ground->CreateFixture(Shape(shape));
         }
 
         const auto b2 = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-7.0f, 4.0f) * 1_m));
-        b2->CreateFixture(std::make_shared<PolygonShape>(0.25_m, 1.5_m));
+        b2->CreateFixture(PolygonShape::Conf{}.SetAsBox(0.25_m, 1.5_m));
 
         Body* b3;
         {
@@ -71,11 +72,8 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-0.9f, 1.0f) * 1_m;
             bd.angle = -0.15_rad;
-
             b3 = m_world.CreateBody(bd);
-            auto conf = PolygonShape::Conf{};
-            conf.density = 10_kgpm2;
-            b3->CreateFixture(std::make_shared<PolygonShape>(6_m, 0.125_m, conf));
+            b3->CreateFixture(PolygonShape::Conf{}.SetDensity(10_kgpm2).SetAsBox(6_m, 0.125_m));
         }
 
         m_world.CreateJoint(RevoluteJointDef{b1, b3, Vec2(-2, 1) * 1_m}.UseCollideConnected(true));
@@ -86,9 +84,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f, 15.0f) * 1_m;
             b4 = m_world.CreateBody(bd);
-            auto conf = PolygonShape::Conf{};
-            conf.density = 10_kgpm2;
-            b4->CreateFixture(std::make_shared<PolygonShape>(0.25_m, 0.25_m, conf));
+            b4->CreateFixture(PolygonShape::Conf{}.SetDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m));
         }
 
         m_world.CreateJoint(RevoluteJointDef{b2, b4, Vec2(-7, 15) * 1_m}.UseCollideConnected(true));
@@ -104,11 +100,11 @@ public:
             conf.density = 10_kgpm2;
             conf.friction = 0.1f;
             conf.SetAsBox(1_m, 0.1_m, Vec2(0.0f, -0.9f) * 1_m, 0_rad);
-            b5->CreateFixture(std::make_shared<PolygonShape>(conf));
+            b5->CreateFixture(Shape{conf});
             conf.SetAsBox(0.1_m, 1_m, Vec2(-0.9f, 0.0f) * 1_m, 0_rad);
-            b5->CreateFixture(std::make_shared<PolygonShape>(conf));
+            b5->CreateFixture(Shape{conf});
             conf.SetAsBox(0.1_m, 1_m, Vec2(0.9f, 0.0f) * 1_m, 0_rad);
-            b5->CreateFixture(std::make_shared<PolygonShape>(conf));
+            b5->CreateFixture(Shape{conf});
         }
 
         m_world.CreateJoint(RevoluteJointDef{b1, b5, Vec2(6, 2) * 1_m}.UseCollideConnected(true));
@@ -119,9 +115,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(6.5f, 4.1f) * 1_m;
             b6 = m_world.CreateBody(bd);
-            auto conf = PolygonShape::Conf{};
-            conf.density = 30_kgpm2;
-            b6->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(1_m, 0.1_m, conf)));
+            b6->CreateFixture(PolygonShape::Conf(1_m, 0.1_m).SetDensity(30_kgpm2));
         }
 
         m_world.CreateJoint(RevoluteJointDef{b5, b6, Vec2(7.5f, 4.0f) * 1_m}
@@ -136,7 +130,8 @@ public:
             b7 = m_world.CreateBody(bd);
             auto conf = PolygonShape::Conf{};
             conf.density = 10_kgpm2;
-            b7->CreateFixture(std::make_shared<PolygonShape>(PolygonShape(0.1_m, 1_m, conf)));
+            conf.SetAsBox(0.1_m, 1_m);
+            b7->CreateFixture(Shape{conf});
         }
 
         DistanceJointDef djd;
@@ -153,7 +148,7 @@ public:
             auto conf = DiskShape::Conf{};
             conf.density = 10_kgpm2;
             conf.vertexRadius = radius;
-            const auto shape = std::make_shared<DiskShape>(conf);
+            const auto shape = Shape(conf);
             for (auto i = 0; i < 4; ++i)
             {
                 BodyDef bd;

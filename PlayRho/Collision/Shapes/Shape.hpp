@@ -26,8 +26,16 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
+#include <memory>
+#include <functional>
+#include <utility>
 
 namespace playrho {
+
+Real GetFriction(const Shape& shape) noexcept;
+Real GetRestitution(const Shape& shape) noexcept;
+NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
+NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
 
 /// @defgroup PartsGroup Shape Classes
 /// @brief Classes for describing shapes with material properties.
@@ -35,9 +43,6 @@ namespace playrho {
 ///   friction, density and restitution. They've historically been called shape classes
 ///   but are now &mdash; with the other properties like friction and density having been
 ///   moved into them &mdash; maybe better thought of as "parts".
-
-class ShapeVisitor;
-struct ShapeDef;
 
 /// @brief A base abstract class for describing a type of shape.
 ///
@@ -56,11 +61,35 @@ class Shape
 {
 public:
     
-    virtual ~Shape() = default;
+    /// @brief Visitor type alias for underlying shape configuration.
+    using Visitor = std::function<void(const std::type_info& ti, const void* data)>;
+
+    /// @brief Default constructor.
+    /// @details This is a base class that shouldn't ever be directly instantiated.
+    Shape() = delete;
+
+    template <typename T>
+    Shape(T v): m_self{std::make_shared<Model<T>>(std::move(v))}
+    {}
+    
+    /// @brief Copy constructor.
+    Shape(const Shape& other) = default;
+    
+    /// @brief Move constructor.
+    Shape(Shape&& other) = default;
+    
+    /// @brief Copy assignment operator.
+    Shape& operator= (const Shape& other) = default;
+    
+    /// @brief Move assignment operator.
+    Shape& operator= (Shape&& other) = default;
 
     /// @brief Gets the number of child primitives of the shape.
     /// @return Non-negative count.
-    virtual ChildCounter GetChildCount() const noexcept = 0;
+    friend ChildCounter GetChildCount(const Shape& shape) noexcept
+    {
+        return shape.m_self->GetChildCount_();
+    }
 
     /// @brief Gets the child for the given index.
     /// @param index Index to a child element of the shape. Value must be less
@@ -68,18 +97,17 @@ public:
     /// @note The shape must remain in scope while the proxy is in use.
     /// @throws InvalidArgument if the given index is out of range.
     /// @sa GetChildCount
-    virtual DistanceProxy GetChild(ChildCounter index) const = 0;
+    friend DistanceProxy GetChild(const Shape& shape, ChildCounter index)
+    {
+        return shape.m_self->GetChild_(index);
+    }
     
     /// @brief Gets the mass properties of this shape using its dimensions and density.
     /// @return Mass data for this shape.
-    virtual MassData GetMassData() const noexcept = 0;
-
-    /// @brief Accepts a visitor.
-    /// @details This is the Accept method definition of a "visitor design pattern" for
-    ///   for doing shape subclass specific types of processing for a constant shape.
-    /// @sa ShapeVisitor
-    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
-    virtual void Accept(ShapeVisitor& visitor) const = 0;
+    friend MassData GetMassData(const Shape& shape) noexcept
+    {
+        return shape.m_self->GetMassData_();
+    }
     
     /// @brief Gets the vertex radius.
     ///
@@ -96,92 +124,160 @@ public:
     ///
     /// @sa SetVertexRadius
     ///
-    NonNegative<Length> GetVertexRadius() const noexcept;
-
-    /// @brief Gets the density of this fixture.
-    /// @return Non-negative density (in mass per area).
-    NonNegative<AreaDensity> GetDensity() const noexcept;
+    friend NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
+    {
+        return shape.m_self->GetVertexRadius_();
+    }
     
     /// @brief Gets the coefficient of friction.
     /// @return Value of 0 or higher.
-    Real GetFriction() const noexcept;
+    friend Real GetFriction(const Shape& shape) noexcept
+    {
+        return shape.m_self->GetFriction_();
+    }
     
     /// @brief Gets the coefficient of restitution.
-    Real GetRestitution() const noexcept;
-    
-protected:
+    friend Real GetRestitution(const Shape& shape) noexcept
+    {
+        return shape.m_self->GetRestitution_();
+    }
 
-    /// @brief Default constructor.
-    /// @details This is a base class that shouldn't ever be directly instantiated.
-    Shape() = default;
+    /// @brief Gets the density of this fixture.
+    /// @return Non-negative density (in mass per area).
+    friend NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept
+    {
+        return shape.m_self->GetDensity_();
+    }
     
-    /// @brief Initializing constructor.
-    ///
-    explicit Shape(const ShapeDef& conf) noexcept;
+    friend const void* GetData(const Shape& shape) noexcept
+    {
+        return shape.m_self->GetData_();
+    }
     
-    /// @brief Initializing constructor.
-    ///
-    Shape(const Length vertexRadius, const ShapeDef& conf) noexcept;
-
-    /// @brief Copy constructor.
-    Shape(const Shape& other) = default;
+    friend const void* GetAddress(const Shape& shape) noexcept
+    {
+        return shape.m_self.get();
+    }
     
-    /// @brief Move constructor.
-    Shape(Shape&& other) = default;
-
-    /// @brief Copy assignment operator.
-    Shape& operator= (const Shape& other) = default;
+    /// @brief Accepts a visitor.
+    /// @details This is the "accept" method definition of a "visitor design pattern"
+    ///   for doing shape configuration specific types of processing for a constant shape.
+    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+    friend void Accept(const Shape& shape, const Visitor& visitor)
+    {
+        const auto self = shape.m_self;
+        visitor(self->GetTypeInfo_(), self->GetData_());
+    }
     
-    /// @brief Move assignment operator.
-    Shape& operator= (Shape&& other) = default;
-
+    friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept;
+    
 private:
-    
-    /// @brief Vertex radius.
-    NonNegative<Length> m_vertexRadius = NonNegative<Length>{0_m};
-    
-    /// @brief AreaDensity.
-    NonNegative<AreaDensity> m_density = NonNegative<AreaDensity>{0_kgpm2};
-    
-    /// @brief Friction as a coefficient.
-    NonNegative<Real> m_friction = NonNegative<Real>{Real{2} / Real{10}};
 
-    /// @brief Restitution as a coefficient.
-    Finite<Real> m_restitution = Finite<Real>{0};
+    struct Concept
+    {
+        virtual ~Concept() = default;
+
+        virtual ChildCounter GetChildCount_() const noexcept = 0;
+        virtual DistanceProxy GetChild_(ChildCounter index) const = 0;
+        virtual MassData GetMassData_() const noexcept = 0;
+        virtual NonNegative<Length> GetVertexRadius_() const noexcept = 0;
+
+        virtual NonNegative<AreaDensity> GetDensity_() const noexcept = 0;
+        virtual Real GetFriction_() const noexcept = 0;
+        virtual Real GetRestitution_() const noexcept = 0;
+
+        friend bool operator== (const Concept& lhs, const Concept &rhs) noexcept
+        {
+            return &lhs == &rhs || lhs.IsEqual_(rhs);
+        }
+
+        friend bool operator!= (const Concept& lhs, const Concept &rhs) noexcept
+        {
+            return !(lhs == rhs);
+        }
+        
+        virtual bool IsEqual_(const Concept& other) const noexcept = 0;
+        virtual const std::type_info& GetTypeInfo_() const = 0;
+        virtual const void* GetData_() const noexcept = 0;
+    };
+
+    template <typename T>
+    struct Model final: Concept
+    {
+        using data_type = T;
+
+        Model(T arg): data{std::move(arg)} {}
+        
+        ChildCounter GetChildCount_() const noexcept override
+        {
+            return GetChildCount(data);
+        }
+
+        DistanceProxy GetChild_(ChildCounter index) const override
+        {
+            return GetChild(data, index);
+        }
+
+        MassData GetMassData_() const noexcept override
+        {
+            return GetMassData(data);
+        }
+        
+        NonNegative<Length> GetVertexRadius_() const noexcept override
+        {
+            return GetVertexRadius(data);
+        }
+        
+        NonNegative<AreaDensity> GetDensity_() const noexcept override
+        {
+            return GetDensity(data);
+        }
+        
+        Real GetFriction_() const noexcept override
+        {
+            return GetFriction(data);
+        }
+        
+        Real GetRestitution_() const noexcept override
+        {
+            return GetRestitution(data);
+        }
+        
+        bool IsEqual_(const Concept& other) const noexcept override
+        {
+            return (GetTypeInfo_() == other.GetTypeInfo_()) &&
+            (data == *static_cast<const T*>(other.GetData_()));
+        }
+        
+        const std::type_info& GetTypeInfo_() const override
+        {
+            return typeid(data_type);
+        }
+        
+        const void* GetData_() const noexcept override
+        {
+            // Note address of "data" not necessarily same as address of "this" since
+            // base class is virtual.
+            return &data;
+        }
+
+        T data;
+    };
+
+    std::shared_ptr<const Concept> m_self;
 };
 
-inline NonNegative<Length> Shape::GetVertexRadius() const noexcept
+inline bool operator== (const Shape& lhs, const Shape& rhs) noexcept
 {
-    return m_vertexRadius;
+    return lhs.m_self == rhs.m_self || *lhs.m_self == *rhs.m_self;
 }
 
-inline NonNegative<AreaDensity> Shape::GetDensity() const noexcept
+inline bool operator!= (const Shape& lhs, const Shape& rhs) noexcept
 {
-    return m_density;
-}
-
-inline Real Shape::GetFriction() const noexcept
-{
-    return m_friction;
-}
-
-inline Real Shape::GetRestitution() const noexcept
-{
-    return m_restitution;
+    return !(lhs == rhs);
 }
 
 // Free functions...
-
-/// @brief Gets the vertex radius of the given shape.
-/// @details Gets the radius of every vertex of this shape.
-/// This is used for collision handling.
-/// @note This value should never be less than zero.
-/// @relatedalso Shape
-/// @sa Shape::GetVertexRadius
-inline NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
-{
-    return shape.GetVertexRadius();
-}
 
 /// @brief Test a point for containment in the given shape.
 /// @param shape Shape to use for test.

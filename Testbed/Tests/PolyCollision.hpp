@@ -65,8 +65,8 @@ public:
     {
         NOT_USED(settings);
 
-        const auto proxyA = m_polygonA.GetChild(0);
-        const auto proxyB = m_polygonB.GetChild(0);
+        const auto proxyA = GetChild(m_polygonA, 0);
+        const auto proxyB = GetChild(m_polygonB, 0);
 
         const auto manifold = CollideShapes(proxyA, m_transformA, proxyB, m_transformB);
         const auto pointCount = manifold.GetPointCount();
@@ -107,8 +107,8 @@ public:
         }
     }
     
-    PolygonShape m_polygonA{PolygonShape::Conf{}.SetAsBox(0.2_m, 0.4_m)};
-    PolygonShape m_polygonB{PolygonShape::Conf{}.SetAsBox(0.5_m, 0.5_m)};
+    PolygonShape::Conf m_polygonA{PolygonShape::Conf{}.SetAsBox(0.2_m, 0.4_m)};
+    PolygonShape::Conf m_polygonB{PolygonShape::Conf{}.SetAsBox(0.5_m, 0.5_m)};
 
     Transformation m_transformA;
     Transformation m_transformB;

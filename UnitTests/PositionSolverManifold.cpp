@@ -51,7 +51,7 @@ TEST(PositionSolverManifold, InitializingConstructor)
 TEST(PositionSolverManifold, GetPSM)
 {
     // wide rectangle
-    const auto shape0 = PolygonShape(3_m, 1.5_m);
+    const auto shape0 = PolygonShape::Conf(3_m, 1.5_m);
     ASSERT_EQ(GetX(shape0.GetVertex(0)), +3.0_m); // right
     ASSERT_EQ(GetY(shape0.GetVertex(0)), -1.5_m); // bottom
     ASSERT_EQ(GetX(shape0.GetVertex(1)), +3.0_m); // right
@@ -62,7 +62,7 @@ TEST(PositionSolverManifold, GetPSM)
     ASSERT_EQ(GetY(shape0.GetVertex(3)), -1.5_m); // bottom
     
     // square
-    const auto shape1 = PolygonShape(2_m, 2_m);
+    const auto shape1 = PolygonShape::Conf(2_m, 2_m);
     ASSERT_EQ(GetX(shape1.GetVertex(0)), +2_m); // right
     ASSERT_EQ(GetY(shape1.GetVertex(0)), -2_m); // bottom
     ASSERT_EQ(GetX(shape1.GetVertex(1)), +2_m); // right
@@ -76,7 +76,7 @@ TEST(PositionSolverManifold, GetPSM)
     const auto xfm1 = Transformation{Length2{+2_m, 0_m}, UnitVec2::GetRight()}; // right
     
     // put wide rectangle on left, square on right
-    const auto manifold = CollideShapes(shape0.GetChild(0), xfm0, shape1.GetChild(0), xfm1);
+    const auto manifold = CollideShapes(GetChild(shape0, 0), xfm0, GetChild(shape1, 0), xfm1);
     
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     

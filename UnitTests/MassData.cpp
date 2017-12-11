@@ -180,8 +180,8 @@ TEST(MassData, GetMassDataFreeFunctionForNoVertices)
 
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
-    const auto shape = DiskShape(DiskShape::Conf{}.SetRadius(0_m).SetDensity(1_kgpm2));
-    const auto mass_data = shape.GetMassData();
+    const auto shape = DiskShape::Conf{}.SetRadius(0_m).SetDensity(1_kgpm2);
+    const auto mass_data = GetMassData(shape);
     EXPECT_EQ(mass_data.mass, NonNegative<Mass>(0_kg));
     EXPECT_EQ(mass_data.I, RotInertia{0});
     EXPECT_EQ(GetX(mass_data.center), 0_m);
@@ -194,8 +194,8 @@ TEST(MassData, GetForOriginCenteredCircle)
     conf.vertexRadius = 1_m;
     conf.location = Length2{};
     conf.density = 1_kgpm2;
-    const auto foo = DiskShape{conf};
-    const auto mass_data = foo.GetMassData();
+    const auto foo = DiskShape::Conf{conf};
+    const auto mass_data = GetMassData(foo);
     EXPECT_EQ(Real{Mass{mass_data.mass} / 1_kg}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 1.5707964, 0.0005);
     const auto squareVertexRadius = Square(Length{conf.vertexRadius});
@@ -216,8 +216,8 @@ TEST(MassData, GetForCircle)
     conf.vertexRadius = radius;
     conf.location = position;
     conf.density = density;
-    const auto foo = DiskShape{conf};
-    const auto mass_data = foo.GetMassData();
+    const auto foo = DiskShape::Conf{conf};
+    const auto mass_data = GetMassData(foo);
     EXPECT_EQ(Real{Mass{mass_data.mass} / 1_kg}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 7.85398, 0.003);
     EXPECT_EQ(mass_data.center, position);
@@ -230,10 +230,10 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
     conf.vertexRadius = 0;
     conf.density = density;
     conf.SetAsBox(4_m, 1_m);
-    auto shape = PolygonShape(conf);
+    auto shape = conf;
     ASSERT_EQ(GetX(shape.GetCentroid()), 0_m);
     ASSERT_EQ(GetY(shape.GetCentroid()), 0_m);
-    const auto mass_data = shape.GetMassData();
+    const auto mass_data = GetMassData(shape);
     EXPECT_TRUE(AlmostEqual(Real(Mass{mass_data.mass} / 1_kg),
                              Real((density / KilogramPerSquareMeter) * (8 * 2))));
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
@@ -264,8 +264,8 @@ TEST(MassData, GetForZeroVertexRadiusEdge)
     auto conf = EdgeShape::Conf{};
     conf.vertexRadius = 0_m;
     conf.density = density;
-    const auto shape = EdgeShape(v1, v2, conf);
-    const auto mass_data = shape.GetMassData();
+    const auto shape = EdgeShape::Conf(v1, v2, conf);
+    const auto mass_data = GetMassData(shape);
     EXPECT_EQ(Real(Mass{mass_data.mass} / 1_kg), Real(0));
     EXPECT_NEAR(double(Real{RotInertia{mass_data.I} / (SquareMeter * 1_kg / SquareRadian)}),
                 0.0, 0.00001);
@@ -277,9 +277,9 @@ TEST(MassData, GetForSamePointedEdgeIsSameAsCircle)
 {
     const auto v1 = Length2{-1_m, 1_m};
     const auto density = 1_kgpm2;
-    const auto shape = EdgeShape(EdgeShape::Conf{}.UseVertexRadius(1_m).UseDensity(density).Set(v1, v1));
-    const auto mass_data = shape.GetMassData();
-    const auto circleMass = density * Pi * Square(shape.GetVertexRadius());
+    const auto shape = EdgeShape::Conf(EdgeShape::Conf{}.UseVertexRadius(1_m).UseDensity(density).Set(v1, v1));
+    const auto mass_data = GetMassData(shape);
+    const auto circleMass = density * Pi * Square(GetVertexRadius(shape));
 
     EXPECT_TRUE(AlmostEqual(StripUnit(mass_data.mass), StripUnit(circleMass)));
     EXPECT_TRUE(IsValid(mass_data.I));
@@ -305,11 +305,11 @@ TEST(MassData, GetForCenteredEdge)
     ASSERT_NEAR(static_cast<double>(Real{circleArea / SquareMeter}),
                 0.78539818525314331, 0.78539818525314331 / 1000000.0);
 
-    const auto shape = EdgeShape(EdgeShape::Conf{}.UseVertexRadius(radius).UseDensity(density).Set(v1, v2));
-    ASSERT_EQ(shape.GetVertexRadius(), radius);
-    ASSERT_EQ(shape.GetVertex1(), v1);
-    ASSERT_EQ(shape.GetVertex2(), v2);
-    ASSERT_EQ(shape.GetDensity(), density);
+    const auto shape = EdgeShape::Conf(EdgeShape::Conf{}.UseVertexRadius(radius).UseDensity(density).Set(v1, v2));
+    ASSERT_EQ(GetVertexRadius(shape), radius);
+    ASSERT_EQ(shape.GetVertexA(), v1);
+    ASSERT_EQ(shape.GetVertexB(), v2);
+    ASSERT_EQ(GetDensity(shape), density);
     
     const auto vertices = Vector<Length2, 4>{
         Length2(-2_m, +0.5_m),
@@ -347,7 +347,7 @@ TEST(MassData, GetForCenteredEdge)
     EXPECT_NEAR(static_cast<double>(Real{I / (1_kg * SquareMeter / SquareRadian)}),
                 18.703510284423828, 18.703510284423828 / 1000000.0);
 
-    const auto mass_data = shape.GetMassData();
+    const auto mass_data = GetMassData(shape);
     EXPECT_EQ(mass_data.mass, density * area);
     {
         EXPECT_NEAR(static_cast<double>(Real{RotInertia{mass_data.I} / (SquareMeter * 1_kg / SquareRadian)}),

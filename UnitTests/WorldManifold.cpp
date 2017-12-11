@@ -148,7 +148,7 @@ TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 
 TEST(WorldManifold, GetForContact)
 {
-    const auto shape = std::make_shared<DiskShape>();
+    const auto shape = DiskShape::Conf{};
     auto bA = Body{nullptr, BodyDef{}};
     auto bB = Body{nullptr, BodyDef{}};
     auto fA = Fixture{&bA, FixtureDef{}, shape};

@@ -21,8 +21,10 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP
 #define PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP
 
-#include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/MassData.hpp>
 #include <vector>
 
 namespace playrho {
@@ -32,7 +34,7 @@ namespace playrho {
     /// @brief The "multi-shape" shape.
     /// @details Composes zero or more convex shapes into what can be a concave shape.
     /// @ingroup PartsGroup
-    class MultiShape: public Shape
+    class MultiShape
     {
     public:
         /// @brief Convex hull.
@@ -72,7 +74,7 @@ namespace playrho {
         /// @brief Gets the default vertex radius for the MultiShape.
         static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
         {
-            return DefaultLinearSlop * Real{2};
+            return DefaultLinearSlop * 2;
         }
         
         /// @brief Configuration data for multi-shape shapes.
@@ -98,49 +100,27 @@ namespace playrho {
         {
             return Conf{};
         }
-        
-        /// @brief Default constructor.
-        /// @details Constructs a polygon shape with a 0,0 centroid and vertex count of 0.
-        /// @note Polygons with a vertex count less than 1 are "degenerate" and should be
-        ///   treated as invalid.
-        explicit MultiShape(const Conf& conf = GetDefaultConf()) noexcept:
-            Shape{conf}, m_children{conf.children}
-        {
-            // Intentionally empty.
-        }
-        
-        /// @brief Copy constructor.
-        MultiShape(const MultiShape&) = default;
-        
-        ~MultiShape() override = default;
-        
-        ChildCounter GetChildCount() const noexcept override;
-        
-        DistanceProxy GetChild(ChildCounter index) const override;
-        
-        MassData GetMassData() const noexcept override;
-                
-        void Accept(ShapeVisitor& visitor) const override;
-
-    private:
-        std::vector<ConvexHull> m_children; ///< Children.
     };
     
-    inline ChildCounter MultiShape::GetChildCount() const noexcept
+    // Free functions...
+
+    inline ChildCounter GetChildCount(const MultiShape::Conf& arg) noexcept
     {
-        return static_cast<ChildCounter>(m_children.size());
+        return static_cast<ChildCounter>(arg.children.size());
     }
     
-    inline DistanceProxy MultiShape::GetChild(ChildCounter index) const
+    inline DistanceProxy GetChild(const MultiShape::Conf& arg, ChildCounter index)
     {
-        if (index >= GetChildCount())
+        if (index >= GetChildCount(arg))
         {
             throw InvalidArgument("index out of range");
         }
-        const auto& child = m_children.at(index);
-        return child.GetDistanceProxy(GetVertexRadius());
+        const auto& child = arg.children.at(index);
+        return child.GetDistanceProxy(arg.vertexRadius);
     }
-
+    
+    MassData GetMassData(const MultiShape::Conf& arg) noexcept;
+    
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_MULTISHAPE_HPP

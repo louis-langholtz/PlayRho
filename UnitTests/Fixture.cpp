@@ -51,7 +51,7 @@ TEST(Fixture, CreateMatchesDef)
     const auto restitution = Real(0.4);
     const auto isSensor = true;
     const auto conf = DiskShape::Conf{}.SetFriction(friction).SetRestitution(restitution).SetDensity(density);
-    const auto shapeA = std::make_shared<DiskShape>(conf);
+    const auto shapeA = Shape(conf);
 
     auto def = FixtureDef{};
     def.userData = userData;
@@ -73,7 +73,7 @@ TEST(Fixture, CreateMatchesDef)
 
 TEST(Fixture, SetSensor)
 {
-    const auto shapeA = std::make_shared<DiskShape>();
+    const auto shapeA = DiskShape::Conf{};
     const auto bodyCtrPos = Length2(1_m, 2_m);
     
     World world;
@@ -89,7 +89,7 @@ TEST(Fixture, SetSensor)
 
 TEST(Fixture, TestPointFreeFunction)
 {
-    const auto shapeA = std::make_shared<DiskShape>();
+    const auto shapeA = DiskShape::Conf{};
     const auto bodyCtrPos = Length2(1_m, 2_m);
 
     World world;
@@ -101,8 +101,8 @@ TEST(Fixture, TestPointFreeFunction)
 
 TEST(Fixture, SetAwakeFreeFunction)
 {
-    const auto shapeA = std::make_shared<DiskShape>();
-    
+    const auto shapeA = DiskShape::Conf{};
+
     World world;
     const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     body->UnsetAwake();
@@ -121,7 +121,7 @@ TEST(Fixture, CopyConstructor)
     const auto restitution = Real(0.4);
     const auto isSensor = true;
     const auto conf = DiskShape::Conf{}.SetFriction(friction).SetRestitution(restitution).SetDensity(density);
-    const auto shapeA = std::make_shared<DiskShape>(conf);
+    const auto shapeA = Shape(conf);
     
     auto def = FixtureDef{};
     def.userData = userData;

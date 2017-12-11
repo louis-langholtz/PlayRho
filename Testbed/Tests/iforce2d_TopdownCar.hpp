@@ -96,7 +96,7 @@ private:
     
 public:
     
-    TDTire(World* world, std::shared_ptr<PolygonShape> tireShape)
+    TDTire(World* world, Shape tireShape)
     {
         BodyDef bodyDef;
         bodyDef.type = BodyType::Dynamic;
@@ -255,7 +255,7 @@ public:
         auto polygonShape = PolygonShape::Conf{};
         polygonShape.Set(Span<const Length2>(vertices, 8));
         polygonShape.SetDensity(0.1_kgpm2);
-        m_body->CreateFixture(std::make_shared<PolygonShape>(polygonShape));
+        m_body->CreateFixture(Shape(polygonShape));
         
         //prepare common joint parameters
         RevoluteJointDef jointDef;
@@ -275,7 +275,7 @@ public:
         auto tireShape = PolygonShape::Conf{};
         tireShape.SetAsBox(0.5_m, 1.25_m);
         tireShape.SetDensity(1_kgpm2);
-        const auto sharedTireShape = std::make_shared<PolygonShape>(tireShape);
+        const auto sharedTireShape = Shape(tireShape);
 
         TDTire* tire;
 
@@ -394,11 +394,11 @@ public:
             fixtureDef.isSensor = true;
             
             polygonShape.SetAsBox(9_m, 7_m, Vec2(-10,15) * 1_m, 20_deg );
-            groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
+            groundAreaFixture = m_groundBody->CreateFixture(Shape(polygonShape), fixtureDef);
             groundAreaFixture->SetUserData( new GroundAreaFUD( 0.5f, false ) );
             
             polygonShape.SetAsBox(9_m, 5_m, Vec2(5,20) * 1_m, -40_deg );
-            groundAreaFixture = m_groundBody->CreateFixture(std::make_shared<PolygonShape>(polygonShape), fixtureDef);
+            groundAreaFixture = m_groundBody->CreateFixture(Shape(polygonShape), fixtureDef);
             groundAreaFixture->SetUserData( new GroundAreaFUD( 0.2f, false ) );
         }
         
