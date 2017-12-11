@@ -66,7 +66,7 @@ public:
     /// @brief Sets the radius to the given value.
     PLAYRHO_CONSTEXPR inline DiskShapeConf& SetRadius(Length radius) noexcept
     {
-        SetVertexRadius(radius);
+        vertexRadius = radius;
         return *this;
     }
     

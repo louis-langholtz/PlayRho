@@ -186,20 +186,20 @@ private:
         virtual NonNegative<AreaDensity> GetDensity_() const noexcept = 0;
         virtual Real GetFriction_() const noexcept = 0;
         virtual Real GetRestitution_() const noexcept = 0;
-
-        friend bool operator== (const Concept& lhs, const Concept &rhs) noexcept
-        {
-            return &lhs == &rhs || lhs.IsEqual_(rhs);
-        }
-
-        friend bool operator!= (const Concept& lhs, const Concept &rhs) noexcept
-        {
-            return !(lhs == rhs);
-        }
         
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
         virtual const std::type_info& GetTypeInfo_() const = 0;
         virtual const void* GetData_() const noexcept = 0;
+        
+        friend bool operator== (const Concept& lhs, const Concept &rhs) noexcept
+        {
+            return &lhs == &rhs || lhs.IsEqual_(rhs);
+        }
+        
+        friend bool operator!= (const Concept& lhs, const Concept &rhs) noexcept
+        {
+            return !(lhs == rhs);
+        }
     };
 
     template <typename T>

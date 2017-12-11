@@ -22,6 +22,26 @@
 
 namespace playrho {
 
+PolygonShapeConf::PolygonShapeConf():
+    ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+{
+    // Intentionally empty.
+}
+
+PolygonShapeConf::PolygonShapeConf(Length hx, Length hy,
+                                   const PolygonShapeConf& conf) noexcept:
+    ShapeDefBuilder{conf}
+{
+    SetAsBox(hx, hy);
+}
+
+PolygonShapeConf::PolygonShapeConf(Span<const Length2> points,
+                                   const PolygonShapeConf& conf) noexcept:
+    ShapeDefBuilder{conf}
+{
+    Set(points);
+}
+
 PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy) noexcept
 {
     m_centroid = Length2{};

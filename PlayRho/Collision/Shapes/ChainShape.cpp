@@ -42,6 +42,12 @@ namespace {
 #endif
 } // anonymous namespace
 
+ChainShapeConf::ChainShapeConf():
+    ShapeDefBuilder{ShapeDef{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}}
+{
+    // Intentionally empty.
+}
+
 ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
 {
     const auto count = vertices.size();

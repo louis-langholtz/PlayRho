@@ -52,10 +52,8 @@ public:
         return DefaultLinearSlop * 2;
     }
 
-    ChainShapeConf(): ShapeDefBuilder{ShapeDef{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}}
-    {
-        // Intentionally empty.
-    }
+    /// @brief Default constructor.
+    ChainShapeConf();
     
     ChainShapeConf& Set(std::vector<Length2> vertices);
 

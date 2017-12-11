@@ -52,31 +52,13 @@ public:
         return EdgeShapeConf{};
     }
 
-    EdgeShapeConf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
-    {
-        // Intentionally empty.
-    }
+    EdgeShapeConf();
     
     /// @brief Initializing constructor.
-    EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf = GetDefaultConf()) noexcept:
-        ShapeDefBuilder{conf},
-        m_vertices{vA, vB}
-    {
-        const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
-        m_normals[0] = normal;
-        m_normals[1] = -normal;
-    }
+    EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf = GetDefaultConf()) noexcept;
     
     /// @brief Sets both vertices in one call.
-    inline EdgeShapeConf& Set(Length2 vA, Length2 vB) noexcept
-    {
-        m_vertices[0] = vA;
-        m_vertices[1] = vB;
-        const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
-        m_normals[0] = normal;
-        m_normals[1] = -normal;
-        return *this;
-    }
+    EdgeShapeConf& Set(Length2 vA, Length2 vB) noexcept;
     
     Length2 GetVertexA() const noexcept
     {

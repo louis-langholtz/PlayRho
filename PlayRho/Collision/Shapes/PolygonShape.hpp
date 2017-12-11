@@ -52,27 +52,19 @@ public:
         return PolygonShapeConf{};
     }
     
-    PolygonShapeConf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
-    {
-        // Intentionally empty.
-    }
+    PolygonShapeConf();
     
-    PolygonShapeConf(Length hx, Length hy, const PolygonShapeConf& conf = GetDefaultConf()) noexcept:
-        ShapeDefBuilder{conf}
-    {
-        SetAsBox(hx, hy);
-    }
+    /// @brief Initializing constructor for a 4-sided box polygon.
+    PolygonShapeConf(Length hx, Length hy,
+                     const PolygonShapeConf& conf = GetDefaultConf()) noexcept;
     
     /// @brief Creates a convex hull from the given array of local points.
     /// @note The size of the span must be in the range [1, MaxShapeVertices].
     /// @warning the points may be re-ordered, even if they form a convex polygon
     /// @warning collinear points are handled but not removed. Collinear points
     /// may lead to poor stacking behavior.
-    explicit PolygonShapeConf(Span<const Length2> points, const PolygonShapeConf& conf = GetDefaultConf()) noexcept:
-        ShapeDefBuilder{conf}
-    {
-        Set(points);
-    }
+    explicit PolygonShapeConf(Span<const Length2> points,
+                              const PolygonShapeConf& conf = GetDefaultConf()) noexcept;
     
     /// @brief Uses the given vertices.
     PolygonShapeConf& UseVertices(const std::vector<Length2>& verts) noexcept;
