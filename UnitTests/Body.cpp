@@ -606,8 +606,8 @@ TEST(Body, RotateAboutWorldPointFF)
     ASSERT_EQ(locationA, Length2(0_m, 0_m));
     RotateAboutWorldPoint(*body, 90_deg, Length2{2_m, 0_m});
     const auto locationB = body->GetLocation();
-    EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.0);
-    EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.0);
+    EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.001);
+    EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.001);
 }
 
 TEST(Body, RotateAboutLocalPointFF)
@@ -618,6 +618,6 @@ TEST(Body, RotateAboutLocalPointFF)
     ASSERT_EQ(locationA, Length2(0_m, 0_m));
     RotateAboutLocalPoint(*body, 90_deg, Length2{2_m, 0_m});
     const auto locationB = body->GetLocation();
-    EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.0);
-    EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.0);
+    EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.001);
+    EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.001);
 }
