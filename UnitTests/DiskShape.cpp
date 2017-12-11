@@ -36,8 +36,8 @@ TEST(DiskShapeConf, ByteSize)
             EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(24));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(112)); break;
+        case  8: EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(48)); break;
+        case 16: EXPECT_EQ(sizeof(DiskShapeConf), std::size_t(96)); break;
         default: FAIL(); break;
     }
 }

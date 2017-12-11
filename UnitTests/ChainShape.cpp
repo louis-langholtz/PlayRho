@@ -46,8 +46,8 @@ TEST(ChainShapeConf, ByteSize)
             EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(64));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(88)); break;
-        case 16: EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(128)); break;
+        case  8: EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(80)); break;
+        case 16: EXPECT_EQ(sizeof(ChainShapeConf), std::size_t(112)); break;
         default: FAIL(); break;
     }
 }

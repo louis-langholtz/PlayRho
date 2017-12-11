@@ -37,8 +37,8 @@ TEST(Shape, ByteSize)
             EXPECT_EQ(sizeof(Shape), std::size_t(16));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(Shape), std::size_t(40)); break;
-        case 16: EXPECT_EQ(sizeof(Shape), std::size_t(80)); break;
+        case  8: EXPECT_EQ(sizeof(Shape), std::size_t(16)); break;
+        case 16: EXPECT_EQ(sizeof(Shape), std::size_t(16)); break;
         default: FAIL(); break;
     }
 }

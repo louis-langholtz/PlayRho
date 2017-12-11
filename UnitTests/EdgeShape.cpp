@@ -35,8 +35,8 @@ TEST(EdgeShapeConf, ByteSize)
             EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(48));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(104)); break;
-        case 16: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(208)); break;
+        case  8: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(96)); break;
+        case 16: EXPECT_EQ(sizeof(EdgeShapeConf), std::size_t(192)); break;
         default: FAIL(); break;
     }
 }
