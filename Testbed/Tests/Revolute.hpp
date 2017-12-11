@@ -38,7 +38,7 @@ public:
 
             bd.location = Vec2(-10.0f, 20.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            auto circleConf = DiskShape::Conf{};
+            auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 0.5_m;
             circleConf.density = 5_kgpm2;
             body->CreateFixture(Shape(circleConf));
@@ -69,7 +69,7 @@ public:
             fd.filter.maskBits = 1;
 
             m_ball = m_world.CreateBody(circle_bd);
-            auto circleConf = DiskShape::Conf{};
+            auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 3_m;
             circleConf.density = 5_kgpm2;
             m_ball->CreateFixture(Shape(circleConf), fd);

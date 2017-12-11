@@ -36,7 +36,7 @@ public:
 
         const auto ground = m_world.CreateBody();
         {
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.vertexRadius = 2_m;
             conf.location = Vec2(-10.0f, y + b + L) * 1_m;
             ground->CreateFixture(Shape(conf));

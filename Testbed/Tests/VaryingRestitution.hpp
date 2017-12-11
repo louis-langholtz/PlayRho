@@ -36,7 +36,7 @@ public:
         ground->CreateFixture(Shape(GetGroundEdgeConf()));
 
         Real restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
-        auto shape = DiskShape::Conf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2);
+        auto shape = DiskShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2);
         for (auto i = 0; i < 7; ++i)
         {
             BodyDef bd;

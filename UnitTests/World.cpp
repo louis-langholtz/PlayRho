@@ -240,7 +240,7 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
     
-    const auto shape = Shape{DiskShape::Conf{}.UseDensity(1_kgpm2).UseVertexRadius(1_m)};
+    const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseVertexRadius(1_m)};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b1->CreateFixture(shape);
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
@@ -315,7 +315,7 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
     
-    const auto shape = Shape{DiskShape::Conf{}.UseDensity(1_kgpm2).UseVertexRadius(1_m)};
+    const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseVertexRadius(1_m)};
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
     b1->CreateFixture(shape);
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
@@ -704,8 +704,8 @@ TEST(World, GetTouchingCountFreeFunction)
 
     const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
     const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
-    const auto diskConf = DiskShape::Conf{}.UseDensity(10_kgpm2);
-    const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(0.5_m);
+    const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
+    const auto smallerDiskConf = DiskShapeConf(diskConf).UseVertexRadius(0.5_m);
 
     const auto lowerBody = world.CreateBody(lowerBodyDef);
     lowerBody->CreateFixture(Shape(smallerDiskConf));
@@ -1111,7 +1111,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     body_def.type = BodyType::Dynamic;
     body_def.bullet = true;
     
-    const auto shape = Shape{DiskShape::Conf{}.SetRadius(1_m).SetRestitution(Real(1)).SetDensity(1_kgpm2)};
+    const auto shape = Shape{DiskShapeConf{}.SetRadius(1_m).SetRestitution(Real(1)).SetDensity(1_kgpm2)};
     
     body_def.location = Length2{-x * Meter, 0_m};
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
@@ -1196,9 +1196,9 @@ TEST(World, HeavyOnLight)
     const auto groundConf = EdgeShape::Conf{}
         .Set(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter);
     
-    const auto diskConf = DiskShape::Conf{}.UseDensity(10_kgpm2);
-    const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(0.5_m);
-    const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(5.0_m);
+    const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
+    const auto smallerDiskConf = DiskShapeConf(diskConf).UseVertexRadius(0.5_m);
+    const auto biggerDiskConf = DiskShapeConf(diskConf).UseVertexRadius(5.0_m);
     
     const auto baseStepConf = []() {
         auto step = StepConf{}.SetInvTime(60_Hz);
@@ -1366,7 +1366,7 @@ TEST(World, HeavyOnLight)
 TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
     const auto radius = 1_m;
-    const auto shape = Shape{DiskShape::Conf{}.SetRadius(radius).SetDensity(1_kgpm2).SetRestitution(Real(1))};
+    const auto shape = Shape{DiskShapeConf{}.SetRadius(radius).SetDensity(1_kgpm2).SetRestitution(Real(1))};
     const auto gravity = LinearAcceleration2{};
 
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1403,8 +1403,8 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 {
     const auto radius1 = 1_m;
     const auto radius2 = 0.6_m;
-    const auto shape1 = Shape(DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(radius1));
-    const auto shape2 = Shape(DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(radius2));
+    const auto shape1 = Shape(DiskShapeConf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(radius1));
+    const auto shape2 = Shape(DiskShapeConf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(radius2));
     const auto gravity = LinearAcceleration2{};
     
     World world{WorldDef{}.UseGravity(gravity)};
@@ -1450,7 +1450,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.location = Length2{};
-    const auto shape = Shape(DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(1_m));
+    const auto shape = Shape(DiskShapeConf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(1_m));
     for (auto i = 0; i < 2; ++i)
     {
         const auto body = world.CreateBody(body_def);
@@ -1520,7 +1520,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     auto body_def = BodyDef{};
     body_def.type = BodyType::Dynamic;
     body_def.bullet = false; // separation is faster if true.
-    const auto shape = Shape(DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(radius * Meter));
+    const auto shape = Shape(DiskShapeConf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(radius * Meter));
     const auto body1pos = Length2{(-radius/4) * Meter, 0_m};
     body_def.location = body1pos;
     const auto body1 = world.CreateBody(body_def);
@@ -1834,7 +1834,7 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_EQ(world.GetGravity(), gravity);
     world.SetContactListener(&listener);
     
-    const auto shape = Shape(DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(radius));
+    const auto shape = Shape(DiskShapeConf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(radius));
 
     body_def.location = Length2{-(x + 1) * Meter, 0_m};
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
@@ -2371,7 +2371,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     ASSERT_NE(ball_body, nullptr);
     
     const auto ball_radius = 0.01_m;
-    const auto circle_shape = Shape(DiskShape::Conf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(ball_radius));
+    const auto circle_shape = Shape(DiskShapeConf{}.SetDensity(1_kgpm2).SetRestitution(Real(1)).SetRadius(ball_radius));
     const auto ball_fixture = ball_body->CreateFixture(circle_shape);
     ASSERT_NE(ball_fixture, nullptr);
 
@@ -2958,7 +2958,7 @@ static void smaller_still_conserves_momentum(bool bullet, Real multiplier, Real 
         };
         world.SetContactListener(&listener);
 
-        const auto shape = DiskShape::Conf{}.SetRadius(scale * radius * Meter);
+        const auto shape = DiskShapeConf{}.SetRadius(scale * radius * Meter);
         ASSERT_EQ(shape->GetRadius(), scale * radius);
         
         auto fixture_def = FixtureDef{}.UseDensity(1);

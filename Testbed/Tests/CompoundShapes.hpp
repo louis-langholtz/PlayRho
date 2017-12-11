@@ -33,11 +33,11 @@ public:
         m_world.CreateBody()->CreateFixture(Shape{EdgeShape::Conf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
         
         {
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.vertexRadius = 0.5_m;
             
             conf.location = Vec2{-0.5f, 0.5f} * 1_m;
-            const auto circle1 = Shape{DiskShape::Conf(conf).SetDensity(2_kgpm2)};
+            const auto circle1 = Shape{DiskShapeConf(conf).SetDensity(2_kgpm2)};
             conf.location = Vec2{0.5f, 0.5f} * 1_m;
             const auto circle2 = Shape(conf);
             for (auto i = 0; i < 10; ++i)

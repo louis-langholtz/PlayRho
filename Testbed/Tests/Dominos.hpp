@@ -145,7 +145,7 @@ public:
 
         {
             const auto radius = 0.2_m;
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.density = 10_kgpm2;
             conf.vertexRadius = radius;
             const auto shape = Shape(conf);

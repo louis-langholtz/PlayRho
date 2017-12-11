@@ -37,9 +37,9 @@ public:
         const auto groundConf = EdgeShape::Conf{}
             .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m);
         
-        const auto diskConf = DiskShape::Conf{}.UseDensity(10_kgpm2);
-        const auto smallerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(0.5_m);
-        const auto biggerDiskConf = DiskShape::Conf(diskConf).UseVertexRadius(5_m);
+        const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
+        const auto smallerDiskConf = DiskShapeConf(diskConf).UseVertexRadius(0.5_m);
+        const auto biggerDiskConf = DiskShapeConf(diskConf).UseVertexRadius(5_m);
 
         m_world.CreateBody()->CreateFixture(Shape(groundConf));
         
@@ -68,7 +68,7 @@ public:
             const auto wasSelected = selectedFixture == m_top;
             const auto body = m_top->GetBody();
             body->DestroyFixture(m_top);
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.vertexRadius = 5_m;
             conf.density = newDensity;
             m_top = body->CreateFixture(Shape(conf));

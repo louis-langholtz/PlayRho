@@ -131,7 +131,7 @@ TEST(FrictionJoint, GetFrictionJointDef)
 
 TEST(FrictionJoint, WithDynamicCircles)
 {
-    const auto circle = DiskShape::Conf{}.SetRadius(0.2_m);
+    const auto circle = DiskShapeConf{}.SetRadius(0.2_m);
     World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};

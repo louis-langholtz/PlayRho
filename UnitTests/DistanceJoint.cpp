@@ -115,7 +115,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
     
-    const auto shape = DiskShape::Conf{}.SetRadius(0.2_m);
+    const auto shape = DiskShapeConf{}.SetRadius(0.2_m);
     
     const auto location1 = Length2{-1_m, 0_m};
     const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
@@ -169,7 +169,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
     World world{WorldDef{}.UseGravity(LinearAcceleration2{0, Real(10) * MeterPerSquareSecond})};
     
-    const auto shape = DiskShape::Conf{}.UseVertexRadius(0.2_m).SetDensity(1_kgpm2);    
+    const auto shape = DiskShapeConf{}.UseVertexRadius(0.2_m).SetDensity(1_kgpm2);    
     const auto location1 = Length2{-10_m, 10_m};
     const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(body1->GetLocation(), location1);

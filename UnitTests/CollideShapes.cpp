@@ -29,7 +29,7 @@ using namespace playrho;
 TEST(CollideShapes, IdenticalOverlappingCircles)
 {
     const auto radius = 1_m;
-    const auto shape = DiskShape::Conf{}.SetRadius(radius);
+    const auto shape = DiskShapeConf{}.SetRadius(radius);
     const auto position = Vec2{11, -4} * Meter;
     const auto xfm = Transformation{position, UnitVec2::GetRight()};
     
@@ -54,8 +54,8 @@ TEST(CollideShapes, CircleCircleOrientedHorizontally)
 {
     const auto r1 = 1_m;
     const auto r2 = 1_m;
-    const auto s1 = DiskShape::Conf{}.SetRadius(r1);
-    const auto s2 = DiskShape::Conf{}.SetRadius(r2);
+    const auto s1 = DiskShapeConf{}.SetRadius(r1);
+    const auto s2 = DiskShapeConf{}.SetRadius(r2);
     const auto p1 = Vec2{11, -4} * Meter;
     const auto p2 = Vec2{13, -4} * Meter;
     const auto t1 = Transformation{p1, UnitVec2::GetRight()};
@@ -82,8 +82,8 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 {
     const auto r1 = 1_m;
     const auto r2 = 1_m;
-    const auto s1 = DiskShape::Conf{}.SetRadius(r1);
-    const auto s2 = DiskShape::Conf{}.SetRadius(r2);
+    const auto s1 = DiskShapeConf{}.SetRadius(r1);
+    const auto s2 = DiskShapeConf{}.SetRadius(r2);
     const auto p1 = Vec2{7, -2} * Meter;
     const auto p2 = Vec2{7, -1} * Meter;
     
@@ -108,7 +108,7 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
 TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 {
     const auto circleRadius = 1_m;
-    const auto circle = DiskShape::Conf{}.SetRadius(circleRadius);
+    const auto circle = DiskShapeConf{}.SetRadius(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -138,7 +138,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 TEST(CollideShapes, CircleTouchingTrianglePointLeft)
 {
     const auto circleRadius = 1_m;
-    const auto circle = DiskShape::Conf{}.SetRadius(circleRadius);
+    const auto circle = DiskShapeConf{}.SetRadius(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -168,7 +168,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointLeft)
 TEST(CollideShapes, CircleTouchingTrianglePointRight)
 {
     const auto circleRadius = 1_m;
-    const auto circle = DiskShape::Conf(circleRadius);
+    const auto circle = DiskShapeConf(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -195,7 +195,7 @@ TEST(CollideShapes, CircleTouchingTrianglePointRight)
 TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
 {
     const auto circleRadius = 1_m;
-    const auto circle = DiskShape::Conf(circleRadius);
+    const auto circle = DiskShapeConf(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -220,7 +220,7 @@ TEST(CollideShapes, CircleJustPastTrianglePointRightDoesntCollide)
 TEST(CollideShapes, CircleOverRightFaceOfTriangle)
 {
     const auto circleRadius = 1_m;
-    const auto circle = DiskShape::Conf(circleRadius);
+    const auto circle = DiskShapeConf(circleRadius);
     const auto triangleTopPt = Vec2{0, +1} * Meter;
     const auto triangleLeftPt = Vec2{-1, -1} * Meter;
     const auto triangleRightPt = Vec2{+1, -1} * Meter;
@@ -256,7 +256,7 @@ TEST(CollideShapes, CircleOverRightFaceOfTriangle)
 TEST(CollideShapes, CircleOverLeftFaceOfTriangle)
 {
     const auto circleRadius = 1_m;
-    const auto circle = DiskShape::Conf(circleRadius);
+    const auto circle = DiskShapeConf(circleRadius);
     const auto triangle = PolygonShape::Conf({Vec2{-1, -1} * Meter, Vec2{+1, -1} * Meter, Vec2{0, +1} * Meter});
     const auto circleXfm = Transformation{
         Vec2{-1, 1} * Meter,
@@ -298,7 +298,7 @@ TEST(CollideShapes, TallRectangleLeftCircleRight)
     ASSERT_EQ(s1.GetVertex(2), (Vec2{-hx, +hy} * Meter)); // top left
     ASSERT_EQ(s1.GetVertex(3), (Vec2{-hx, -hy} * Meter)); // bottom left
 
-    const auto s2 = DiskShape::Conf{r2};
+    const auto s2 = DiskShapeConf{r2};
     
     const auto p1 = Vec2{-1, 0} * Meter;
     const auto p2 = Vec2{3, 0} * Meter;

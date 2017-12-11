@@ -32,8 +32,8 @@ public:
         const auto ground = m_world.CreateBody();
         ground->CreateFixture(Shape{EdgeShape::Conf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
 
-        const auto circle1 = DiskShape::Conf{}.SetRadius(1_m).SetDensity(5_kgpm2);
-        const auto circle2 = DiskShape::Conf{}.SetRadius(2_m).SetDensity(5_kgpm2);
+        const auto circle1 = DiskShapeConf{}.SetRadius(1_m).SetDensity(5_kgpm2);
+        const auto circle2 = DiskShapeConf{}.SetRadius(2_m).SetDensity(5_kgpm2);
         const auto box = Shape{PolygonShape::Conf{}.SetAsBox(0.5_m, 5_m).SetDensity(5_kgpm2)};
     
         {

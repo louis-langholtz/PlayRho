@@ -36,7 +36,7 @@ public:
         return conf;
     }
     
-    using DiskConf = DiskShape::Conf;
+    using DiskConf = DiskShapeConf;
     using PolyConf = PolygonShape::Conf;
 
     JointsTest(): Test(GetTestConf())
@@ -269,7 +269,7 @@ private:
             Vec2(-1.5f, 0.2f) * 1_m
         });
         const auto circle = Shape{
-            DiskShape::Conf{}.SetDensity(1_kgpm2).SetFriction(Real(0.9f)).SetRadius(0.4_m)};
+            DiskShapeConf{}.SetDensity(1_kgpm2).SetFriction(Real(0.9f)).SetRadius(0.4_m)};
         
         const auto carLocation = center - Vec2(3.3f, 1.0f) * 1_m;
         const auto car = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(carLocation));

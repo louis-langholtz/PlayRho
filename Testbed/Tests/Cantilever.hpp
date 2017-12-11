@@ -142,7 +142,7 @@ public:
         }
 
         // Creates circles
-        const auto circleshape = Shape{DiskShape::Conf{}.SetRadius(0.5_m).UseDensity(1_kgpm2)};
+        const auto circleshape = Shape{DiskShapeConf{}.SetRadius(0.5_m).UseDensity(1_kgpm2)};
         for (auto i = 0; i < 2; ++i)
         {
             auto bd = BodyDef{};

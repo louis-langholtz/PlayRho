@@ -89,7 +89,7 @@ public:
     }
 
     Body* m_bullet;
-    Shape m_bulletshape = DiskShape::Conf{}.SetVertexRadius(0.25_m).SetDensity(20_kgpm2).SetRestitution(Real(0.05f));
+    Shape m_bulletshape = DiskShapeConf{}.SetVertexRadius(0.25_m).SetDensity(20_kgpm2).SetRestitution(Real(0.05f));
 };
     
 } // namespace playrho

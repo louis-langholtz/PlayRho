@@ -254,7 +254,7 @@ TEST(Body, CreateFixture)
     const auto body = world.CreateBody();
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(0));
 
-    const auto valid_shape = DiskShape::Conf(1_m);
+    const auto valid_shape = DiskShapeConf(1_m);
     EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
 
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
@@ -265,7 +265,7 @@ TEST(Body, SetEnabled)
     auto stepConf = StepConf{};
     World world;
     const auto body = world.CreateBody();
-    const auto valid_shape = DiskShape::Conf(1_m);
+    const auto valid_shape = DiskShapeConf(1_m);
 
     const auto fixture = body->CreateFixture(valid_shape, FixtureDef{});
     ASSERT_NE(fixture, nullptr);
@@ -298,7 +298,7 @@ TEST(Body, SetFixedRotation)
 {
     World world;
     const auto body = world.CreateBody();
-    const auto valid_shape = DiskShape::Conf(1_m);
+    const auto valid_shape = DiskShapeConf(1_m);
 
     ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
     ASSERT_FALSE(body->IsFixedRotation());
@@ -322,7 +322,7 @@ TEST(Body, CreateAndDestroyFixture)
     EXPECT_TRUE(body->GetFixtures().empty());
     EXPECT_FALSE(body->IsMassDataDirty());
 
-    auto conf = DiskShape::Conf{};
+    auto conf = DiskShapeConf{};
     conf.vertexRadius = 2.871_m;
     conf.location = Vec2{1.912f, -77.31f} * 1_m;
     conf.density = 1_kgpm2;
@@ -332,7 +332,7 @@ TEST(Body, CreateAndDestroyFixture)
         auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
         const auto fshape = fixture->GetShape();
         EXPECT_EQ(GetVertexRadius(fshape), GetVertexRadius(shape));
-        EXPECT_EQ(static_cast<const DiskShape::Conf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
+        EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
         EXPECT_FALSE(body->GetFixtures().empty());
         {
             int i = 0;
@@ -362,7 +362,7 @@ TEST(Body, CreateAndDestroyFixture)
         auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
         const auto fshape = fixture->GetShape();
         EXPECT_EQ(GetVertexRadius(fshape), GetVertexRadius(shape));
-        EXPECT_EQ(static_cast<const DiskShape::Conf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
+        EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
         EXPECT_FALSE(body->GetFixtures().empty());
         {
             int i = 0;
@@ -422,7 +422,7 @@ TEST(Body, CreateLotsOfFixtures)
 {
     BodyDef bd;
     bd.type = BodyType::Dynamic;
-    auto conf = DiskShape::Conf{};
+    auto conf = DiskShapeConf{};
     conf.vertexRadius = 2.871_m;
     conf.location = Vec2{1.912f, -77.31f} * 1_m;
     conf.density = 1.3_kgpm2;
@@ -562,7 +562,7 @@ TEST(Body, CalcGravitationalAcceleration)
     const auto l1 = Length2{-8_m, 0_m};
     const auto l2 = Length2{+8_m, 0_m};
     const auto l3 = Length2{+16_m, 0_m};
-    const auto shape = DiskShape::Conf{}.UseVertexRadius(2_m).UseDensity(1e10_kgpm2);
+    const auto shape = DiskShapeConf{}.UseVertexRadius(2_m).UseDensity(1e10_kgpm2);
     
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l1));
     b1->CreateFixture(shape);

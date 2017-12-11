@@ -138,7 +138,7 @@ TEST(RopeJoint, GetRopeJointDef)
 
 TEST(RopeJoint, WithDynamicCircles)
 {
-    const auto circle = DiskShape::Conf{}.SetRadius(0.2_m);
+    const auto circle = DiskShapeConf{}.SetRadius(0.2_m);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};

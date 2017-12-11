@@ -191,7 +191,7 @@ public:
                 }));
 
             const auto circle = Shape{
-                DiskShape::Conf{}.SetRadius(0.4_m).UseDensity(1_kgpm2).UseFriction(Real(0.9f))
+                DiskShapeConf{}.SetRadius(0.4_m).UseDensity(1_kgpm2).UseFriction(Real(0.9f))
             };
             
             BodyDef bd;

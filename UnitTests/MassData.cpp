@@ -180,7 +180,7 @@ TEST(MassData, GetMassDataFreeFunctionForNoVertices)
 
 TEST(MassData, GetForZeroVertexRadiusCircle)
 {
-    const auto shape = DiskShape::Conf{}.SetRadius(0_m).SetDensity(1_kgpm2);
+    const auto shape = DiskShapeConf{}.SetRadius(0_m).SetDensity(1_kgpm2);
     const auto mass_data = GetMassData(shape);
     EXPECT_EQ(mass_data.mass, NonNegative<Mass>(0_kg));
     EXPECT_EQ(mass_data.I, RotInertia{0});
@@ -190,11 +190,11 @@ TEST(MassData, GetForZeroVertexRadiusCircle)
 
 TEST(MassData, GetForOriginCenteredCircle)
 {
-    auto conf = DiskShape::Conf{};
+    auto conf = DiskShapeConf{};
     conf.vertexRadius = 1_m;
     conf.location = Length2{};
     conf.density = 1_kgpm2;
-    const auto foo = DiskShape::Conf{conf};
+    const auto foo = DiskShapeConf{conf};
     const auto mass_data = GetMassData(foo);
     EXPECT_EQ(Real{Mass{mass_data.mass} / 1_kg}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 1.5707964, 0.0005);
@@ -212,11 +212,11 @@ TEST(MassData, GetForCircle)
     const auto radius = 1_m;
     const auto position = Length2{-1_m, 1_m};
     const auto density = 1_kgpm2;
-    auto conf = DiskShape::Conf{};
+    auto conf = DiskShapeConf{};
     conf.vertexRadius = radius;
     conf.location = position;
     conf.density = density;
-    const auto foo = DiskShape::Conf{conf};
+    const auto foo = DiskShapeConf{conf};
     const auto mass_data = GetMassData(foo);
     EXPECT_EQ(Real{Mass{mass_data.mass} / 1_kg}, Pi);
     EXPECT_NEAR(double(StripUnit(mass_data.I)), 7.85398, 0.003);

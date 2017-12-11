@@ -204,7 +204,7 @@ namespace playrho {
 
         Fixture* CreateBall(Body* body, Length2 pos, Length radius)
         {
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.vertexRadius = radius;
             conf.location = pos;
             conf.density = 20_kgpm2;

@@ -63,7 +63,7 @@ public:
             bd.allowSleep = false;
             const auto body = m_world.CreateBody(bd);
 
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = 0.5_m;
             body->CreateFixture(Shape(conf));

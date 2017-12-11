@@ -203,7 +203,7 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     Shape m_polygons[4] = {PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}};
-    Shape m_circle = Shape{DiskShape::Conf{}.SetRadius(0.5_m).SetFriction(Real(0.3f)).SetDensity(20_kgpm2)};
+    Shape m_circle = Shape{DiskShapeConf{}.SetRadius(0.5_m).SetFriction(Real(0.3f)).SetDensity(20_kgpm2)};
 
     Real m_angle;
 };

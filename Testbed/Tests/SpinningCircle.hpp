@@ -48,7 +48,7 @@ namespace playrho {
             bodyDef.location = Vec2{0, 14} * 1_m;
             const auto body2 = m_world.CreateBody(bodyDef);
             
-            auto shapeConf = DiskShape::Conf{};
+            auto shapeConf = DiskShapeConf{};
             shapeConf.density = 10_kgpm2;
 
             shapeConf.vertexRadius = 2_m;

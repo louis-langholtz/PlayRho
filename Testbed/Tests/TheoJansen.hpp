@@ -114,7 +114,7 @@ public:
         }
 
         // Balls
-        auto circleConf = DiskShape::Conf{};
+        auto circleConf = DiskShapeConf{};
         circleConf.vertexRadius = 0.25_m;
         circleConf.density = 1_kgpm2;
         const auto circle = Shape(circleConf);
@@ -146,7 +146,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
             m_wheel = m_world.CreateBody(bd);
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.vertexRadius = 1.6_m;
             conf.density = 1_kgpm2;
             m_wheel->CreateFixture(Shape(conf), sd);

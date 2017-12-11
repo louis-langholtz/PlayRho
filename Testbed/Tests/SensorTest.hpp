@@ -51,7 +51,7 @@ public:
             {
                 FixtureDef fd;
                 fd.isSensor = true;
-                auto conf = DiskShape::Conf{};
+                auto conf = DiskShapeConf{};
                 conf.vertexRadius = 5_m;
                 conf.location = Vec2(0.0f, 10.0f) * 1_m;
                 m_sensor = ground->CreateFixture(Shape(conf), fd);
@@ -59,7 +59,7 @@ public:
 #endif
         }
 
-        const auto shape = Shape{DiskShape::Conf{}.SetDensity(1_kgpm2).SetRadius(1_m)};
+        const auto shape = Shape{DiskShapeConf{}.SetDensity(1_kgpm2).SetRadius(1_m)};
         for (auto i = 0; i < e_count; ++i)
         {
             BodyDef bd;
@@ -139,7 +139,7 @@ public:
 
             const auto body = m_bodies[i];
             const auto ground = m_sensor->GetBody();
-            const auto circle = static_cast<const DiskShape::Conf*>(GetData(m_sensor->GetShape()));
+            const auto circle = static_cast<const DiskShapeConf*>(GetData(m_sensor->GetShape()));
             const auto center = GetWorldPoint(*ground, circle->GetLocation());
             const auto position = body->GetLocation();
             const auto d = center - position;

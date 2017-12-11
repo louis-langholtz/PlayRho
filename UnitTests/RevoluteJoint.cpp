@@ -204,7 +204,7 @@ TEST(RevoluteJoint, MaxMotorTorque)
 
 TEST(RevoluteJoint, MovesDynamicCircles)
 {
-    const auto circle = DiskShape::Conf{}.SetRadius(0.2_m);
+    const auto circle = DiskShapeConf{}.SetRadius(0.2_m);
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -232,7 +232,7 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 
 TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 {
-    const auto circle = DiskShape::Conf{}.UseVertexRadius(0.2_m).UseDensity(1_kgpm2);
+    const auto circle = DiskShapeConf{}.UseVertexRadius(0.2_m).UseDensity(1_kgpm2);
 
     World world;
     const auto p1 = Length2{-1_m, 0_m};

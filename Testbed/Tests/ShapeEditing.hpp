@@ -49,7 +49,7 @@ public:
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Create a shape.", [&](KeyActionMods) {
             if (!m_fixture2)
             {
-                auto conf = DiskShape::Conf{};
+                auto conf = DiskShapeConf{};
                 conf.vertexRadius = 3_m;
                 conf.location = Vec2(0.5f, -4.0f) * 1_m;
                 conf.density = 10_kgpm2;

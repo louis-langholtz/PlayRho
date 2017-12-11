@@ -56,7 +56,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 12.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            auto conf = DiskShape::Conf{};
+            auto conf = DiskShapeConf{};
             conf.vertexRadius = m_radius;
             conf.density = 20_kgpm2;
             m_character = body->CreateFixture(Shape(conf));

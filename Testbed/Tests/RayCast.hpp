@@ -373,7 +373,7 @@ public:
     Body* m_bodies[e_maxBodies];
     int m_userData[e_maxBodies];
     Shape m_polygons[4] = {PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}};
-    Shape m_circle = DiskShape::Conf{}.SetVertexRadius(0.5_m).SetFriction(Real(0.3f));
+    Shape m_circle = DiskShapeConf{}.SetVertexRadius(0.5_m).SetFriction(Real(0.3f));
     Shape m_edge = Shape{EdgeShape::Conf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.SetFriction(Real(0.3f))};
     Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;

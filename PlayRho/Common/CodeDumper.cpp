@@ -63,14 +63,14 @@ namespace
     public:
         void operator() (const std::type_info& ti, const void* data);
 
-        void Visit(const DiskShape::Conf& shape);
+        void Visit(const DiskShapeConf& shape);
         void Visit(const EdgeShape::Conf& shape);
         void Visit(const PolygonShape::Conf& shape);
         void Visit(const ChainShapeConf& shape);
         void Visit(const MultiShape::Conf& shape);
     };
     
-    void ShapeDumper::Visit(const playrho::DiskShape::Conf& s)
+    void ShapeDumper::Visit(const playrho::DiskShapeConf& s)
     {
         log("    DiskShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.GetRadius())));

@@ -1585,7 +1585,7 @@ static void DropDisks(benchmark::State& state)
     auto world = playrho::World{playrho::WorldDef{}.UseGravity(playrho::EarthlyGravity2D)};
 
     const auto diskRadius = 0.5f * playrho::Meter;
-    const auto diskDef = playrho::DiskShape::Conf{}.UseVertexRadius(diskRadius);
+    const auto diskDef = playrho::DiskShapeConf{}.UseVertexRadius(diskRadius);
     const auto shape = playrho::Shape{diskDef};
     const auto numDisks = state.range();
     for (auto i = decltype(numDisks){0}; i < numDisks; ++i)
@@ -1607,7 +1607,7 @@ static void DropDisks(benchmark::State& state)
 
 static void AddPairStressTest(benchmark::State& state, int count)
 {
-    const auto diskConf = playrho::DiskShape::Conf{}
+    const auto diskConf = playrho::DiskShapeConf{}
         .UseVertexRadius(playrho::Meter / 10)
         .UseDensity(0.01f * playrho::KilogramPerSquareMeter);
     const auto diskShape = playrho::Shape{diskConf};

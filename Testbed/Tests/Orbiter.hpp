@@ -37,12 +37,12 @@ namespace playrho {
             bd.type = BodyType::Static;
             bd.location = m_center;
             const auto ctrBody = m_world.CreateBody(bd);
-            ctrBody->CreateFixture(DiskShape::Conf{}.UseVertexRadius(3_m));
+            ctrBody->CreateFixture(DiskShapeConf{}.UseVertexRadius(3_m));
 
             bd.type = BodyType::Dynamic;
             bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
             m_orbiter = m_world.CreateBody(bd);
-            m_orbiter->CreateFixture(DiskShape::Conf{}.SetRadius(0.5_m).UseDensity(1_kgpm2));
+            m_orbiter->CreateFixture(DiskShapeConf{}.SetRadius(0.5_m).UseDensity(1_kgpm2));
             
             const auto velocity = Velocity{
                 Vec2{Pi * radius / 2, 0} * 1_mps,

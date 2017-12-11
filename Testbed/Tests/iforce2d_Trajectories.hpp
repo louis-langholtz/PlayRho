@@ -83,7 +83,7 @@ public:
         myBodyDef.type = BodyType::Dynamic;
         myBodyDef.location = Vec2(-15, 5) * 1_m;
         m_launcherBody = m_world.CreateBody(myBodyDef);
-        m_launcherBody->CreateFixture(DiskShape::Conf{}.SetRadius(2_m).UseFriction(Real(0.95f)).UseDensity(1_kgpm2),
+        m_launcherBody->CreateFixture(DiskShapeConf{}.SetRadius(2_m).UseFriction(Real(0.95f)).UseDensity(1_kgpm2),
                                       myFixtureDef);
         
         //pin the circle in place
@@ -106,7 +106,7 @@ public:
         
         //ball for computer 'player' to fire
         m_littleBox2 = m_world.CreateBody(myBodyDef);
-        m_littleBox2->CreateFixture(DiskShape::Conf{}.SetRadius(BallSize * 1_m)
+        m_littleBox2->CreateFixture(DiskShapeConf{}.SetRadius(BallSize * 1_m)
                                     .UseFriction(Real(0.95f)).UseDensity(1_kgpm2),
                                     myFixtureDef);
         

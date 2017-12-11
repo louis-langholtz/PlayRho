@@ -27,92 +27,78 @@
 
 namespace playrho {
 
-/// @brief Disk shape.
+/// @brief Disk shape configuration.
 ///
 /// @details A disk shape "is the region in a plane bounded by a circle". This is a
 ///   two-dimensional solid round shape. This used to be called the circle shape but
 ///   that's now used for hollow round shapes.
 ///
 /// @sa https://en.wikipedia.org/wiki/Disk_(mathematics)
-/// @sa CircleShape.
 ///
 /// @ingroup PartsGroup
 ///
-class DiskShape
+class DiskShapeConf: public ShapeDefBuilder<DiskShapeConf>
 {
 public:
-    
     /// @brief Gets the default radius.
     static PLAYRHO_CONSTEXPR inline Length GetDefaultRadius() noexcept
     {
         return DefaultLinearSlop * 2;
     }
 
-    /// @brief Configuration data for disk shapes.
-    struct Conf: public ShapeDefBuilder<Conf>
+    PLAYRHO_CONSTEXPR inline DiskShapeConf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultRadius())}
     {
-        PLAYRHO_CONSTEXPR inline Conf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultRadius())}
-        {
-            // Intentionally empty.
-        }
-        
-        PLAYRHO_CONSTEXPR inline Conf(Length radius): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(radius)}
-        {
-            // Intentionally empty.
-        }
+        // Intentionally empty.
+    }
+    
+    PLAYRHO_CONSTEXPR inline DiskShapeConf(Length radius): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(radius)}
+    {
+        // Intentionally empty.
+    }
 
-        /// @brief Uses the given value as the location.
-        PLAYRHO_CONSTEXPR inline Conf& UseLocation(Length2 value) noexcept
-        {
-            location = value;
-            return *this;
-        }
-        
-        /// @brief Sets the radius to the given value.
-        PLAYRHO_CONSTEXPR inline Conf& SetRadius(Length radius) noexcept
-        {
-            SetVertexRadius(radius);
-            return *this;
-        }
-        
-        /// @brief Sets the location to the given value.
-        PLAYRHO_CONSTEXPR inline Conf& SetLocation(const Length2 value) noexcept
-        {
-            location = value;
-            return *this;
-        }
-        
-        NonNegative<Length> GetRadius() const noexcept
-        {
-            return vertexRadius;
-        }
-        
-        Length2 GetLocation() const noexcept
-        {
-            return location;
-        }
-        
-        /// @brief Location for the disk shape to be centered at.
-        Length2 location = Length2{};
-    };
-
-    /// @brief Gets the default configuration.
-    static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept;
+    /// @brief Uses the given value as the location.
+    PLAYRHO_CONSTEXPR inline DiskShapeConf& UseLocation(Length2 value) noexcept
+    {
+        location = value;
+        return *this;
+    }
+    
+    /// @brief Sets the radius to the given value.
+    PLAYRHO_CONSTEXPR inline DiskShapeConf& SetRadius(Length radius) noexcept
+    {
+        SetVertexRadius(radius);
+        return *this;
+    }
+    
+    /// @brief Sets the location to the given value.
+    PLAYRHO_CONSTEXPR inline DiskShapeConf& SetLocation(const Length2 value) noexcept
+    {
+        location = value;
+        return *this;
+    }
+    
+    NonNegative<Length> GetRadius() const noexcept
+    {
+        return vertexRadius;
+    }
+    
+    Length2 GetLocation() const noexcept
+    {
+        return location;
+    }
+    
+    /// @brief Location for the disk shape to be centered at.
+    Length2 location = Length2{};
 };
-
-PLAYRHO_CONSTEXPR inline DiskShape::Conf DiskShape::GetDefaultConf() noexcept
-{
-    return Conf{};
-}
 
 // Free functions...
 
-PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const DiskShape::Conf&) noexcept
+PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const DiskShapeConf&) noexcept
 {
     return 1;
 }
 
-inline DistanceProxy GetChild(const DiskShape::Conf& arg, ChildCounter index)
+inline DistanceProxy GetChild(const DiskShapeConf& arg, ChildCounter index)
 {
     if (index != 0)
     {
@@ -121,7 +107,7 @@ inline DistanceProxy GetChild(const DiskShape::Conf& arg, ChildCounter index)
     return DistanceProxy{arg.vertexRadius, 1, &arg.location, nullptr};
 }
 
-inline MassData GetMassData(const DiskShape::Conf& arg) noexcept
+inline MassData GetMassData(const DiskShapeConf& arg) noexcept
 {
     return playrho::GetMassData(arg.vertexRadius, arg.density, arg.location);
 }

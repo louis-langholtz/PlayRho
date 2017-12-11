@@ -38,9 +38,9 @@ public:
 
     void operator() (const std::type_info& ti, const void* data)
     {
-        if (ti == typeid(DiskShape::Conf))
+        if (ti == typeid(DiskShapeConf))
         {
-            Visit(*static_cast<const DiskShape::Conf*>(data));
+            Visit(*static_cast<const DiskShapeConf*>(data));
         }
         else if (ti == typeid(PolygonShape::Conf))
         {
@@ -48,7 +48,7 @@ public:
         }
     }
 
-    void Visit(const DiskShape::Conf& shape)
+    void Visit(const DiskShapeConf& shape)
     {
         const auto center = Transform(shape.GetLocation(), m_xf);
         const auto radius = shape.GetRadius();
@@ -194,7 +194,7 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        auto circleConf = DiskShape::Conf{};
+        auto circleConf = DiskShapeConf{};
         circleConf.location = Vec2(0.0f, 1.1f) * 1_m;
         circleConf.vertexRadius = 2_m;
 
@@ -234,7 +234,7 @@ public:
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
     Shape m_polygons[4] = {PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}, PolygonShape::Conf{}};
-    Shape m_circle = DiskShape::Conf{}.SetRadius(0.5_m).SetDensity(1_kgpm2).SetFriction(Real(0.3f));
+    Shape m_circle = DiskShapeConf{}.SetRadius(0.5_m).SetDensity(1_kgpm2).SetFriction(Real(0.3f));
 };
 
 } // namespace playrho

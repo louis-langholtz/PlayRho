@@ -135,7 +135,7 @@ public:
     const AngularVelocity MotorInc = 0.5_rpm;
     int m_count = 0;
     Shape m_square = Shape{PolygonShape::Conf{}.SetAsBox(0.125_m, 0.125_m).SetDensity(1_kgpm2)};
-    Shape m_disk = Shape{DiskShape::Conf{}.UseVertexRadius(0.125_m).UseFriction(Real(0)).SetDensity(0.1_kgpm2)};
+    Shape m_disk = Shape{DiskShapeConf{}.UseVertexRadius(0.125_m).UseFriction(Real(0)).SetDensity(0.1_kgpm2)};
     Shape m_shape = m_square;
 };
 

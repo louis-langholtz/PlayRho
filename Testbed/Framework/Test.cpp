@@ -57,9 +57,9 @@ public:
     
     void operator() (const std::type_info& ti, const void* data)
     {
-        if (ti == typeid(DiskShape::Conf))
+        if (ti == typeid(DiskShapeConf))
         {
-            Visit(*static_cast<const DiskShape::Conf*>(data));
+            Visit(*static_cast<const DiskShapeConf*>(data));
         }
         else if (ti == typeid(EdgeShape::Conf))
         {
@@ -79,7 +79,7 @@ public:
         }
     }
     
-    void Visit(const DiskShape::Conf& shape);
+    void Visit(const DiskShapeConf& shape);
     void Visit(const EdgeShape::Conf& shape);
     void Visit(const PolygonShape::Conf& shape);
     void Visit(const ChainShapeConf& shape);
@@ -93,7 +93,7 @@ public:
     Transformation xf;
 };
 
-void ShapeDrawer::Visit(const DiskShape::Conf& shape)
+void ShapeDrawer::Visit(const DiskShapeConf& shape)
 {
     const auto center = Transform(shape.GetLocation(), xf);
     const auto radius = shape.GetRadius();
@@ -627,7 +627,7 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
     m_bomb = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true)
                                 .UseLocation(at).UseLinearVelocity(v));
 
-    auto conf = DiskShape::Conf{};
+    auto conf = DiskShapeConf{};
     conf.vertexRadius = m_bombRadius;
     conf.density = m_bombDensity;
     conf.restitution = 0.0f;

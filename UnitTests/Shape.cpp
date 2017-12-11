@@ -45,7 +45,7 @@ TEST(Shape, ByteSize)
 
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 {
-    const auto shape = DiskShape::Conf{2_m};
+    const auto shape = DiskShapeConf{2_m};
     const auto xfm = Transformation{Length2{}, UnitVec2::GetRight()};
     const auto child = GetChild(shape, 0);
 

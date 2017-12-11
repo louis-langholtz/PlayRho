@@ -69,7 +69,7 @@ public:
         });
         
         const auto radius = 0.5_m;
-        auto conf = DiskShape::Conf{};
+        auto conf = DiskShapeConf{};
         conf.vertexRadius = radius;
         conf.density = 1_kgpm2;
         conf.friction = 0.1f;
@@ -117,7 +117,7 @@ public:
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
         //bd.allowSleep = false;
         
-        auto conf = DiskShape::Conf{};
+        auto conf = DiskShapeConf{};
         conf.density = 1_kgpm2;
         conf.restitution = 0.8f;
         conf.vertexRadius = radius;

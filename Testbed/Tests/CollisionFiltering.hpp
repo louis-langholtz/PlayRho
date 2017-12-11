@@ -132,7 +132,7 @@ public:
         body4->CreateFixture(Shape(polygon), boxShapeDef);
 
         // Small circle
-        auto circleConf = DiskShape::Conf{};
+        auto circleConf = DiskShapeConf{};
         circleConf.density = 1_kgpm2;
 
         FixtureDef circleShapeDef;

@@ -56,7 +56,7 @@ TEST(Contact, IsNotCopyAssignable)
 
 TEST(Contact, SetAwake)
 {
-    const auto shape = DiskShape::Conf{};
+    const auto shape = DiskShapeConf{};
     auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
@@ -77,7 +77,7 @@ TEST(Contact, SetAwake)
 
 TEST(Contact, ResetFriction)
 {
-    const auto shape = DiskShape::Conf{};
+    const auto shape = DiskShapeConf{};
     auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
@@ -94,7 +94,7 @@ TEST(Contact, ResetFriction)
 
 TEST(Contact, ResetRestitution)
 {
-    const auto shape = DiskShape::Conf{};
+    const auto shape = DiskShapeConf{};
     auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
     auto fA = Fixture{&bA, FixtureDef{}, shape};
