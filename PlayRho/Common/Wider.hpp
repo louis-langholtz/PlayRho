@@ -21,6 +21,7 @@
 #ifndef PLAYRHO_COMMON_WIDER_HPP
 #define PLAYRHO_COMMON_WIDER_HPP
 
+#include <PlayRho/Defines.hpp>
 #include <cstdint>
 #include <type_traits>
 
@@ -75,32 +76,31 @@ template <> struct Wider<double> {
     using type = long double; ///< Wider type.
 };
 
-#ifndef _WIN32
-// Note: __int128_t not defined for Windows!
-    
+#ifdef PLAYRHO_INT128
 /// @brief Specialization of the Wider trait for signed 64-bit integers.
 template <> struct Wider<std::int64_t> {
-    using type = __int128_t; ///< Wider type.
+    using type = PLAYRHO_INT128; ///< Wider type.
 };
+#endif
 
+#ifdef PLAYRHO_UINT128
 /// @brief Specialization of the Wider trait for unsigned 64-bit integers.
 template <> struct Wider<std::uint64_t> {
-    using type = __uint128_t; ///< Wider type.
+    using type = PLAYRHO_UINT128; ///< Wider type.
 };
-
 #endif
 
 } // namespace playrho
 
 namespace std {
 
-#ifndef _WIN32
+#if defined(PLAYRHO_INT128) && defined(PLAYRHO_UINT128)
 // This might already be defined by the standard library header, but
 // define it here explicitly in case it's not.
 
 /// @brief Make unsigned specialization for the __int128_t type.
-template <> struct make_unsigned<__int128_t> {
-    using type = __uint128_t; ///< Wider type.
+template <> struct make_unsigned<PLAYRHO_INT128> {
+    using type = PLAYRHO_UINT128; ///< Wider type.
 };
 #endif
 

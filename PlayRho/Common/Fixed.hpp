@@ -919,7 +919,7 @@ namespace playrho
         return "Fixed32";
     }
 
-#ifndef _WIN32
+#ifdef PLAYRHO_INT128
     // Fixed64 free functions.
 
     /// @brief 64-bit fixed precision type.
@@ -1017,7 +1017,7 @@ namespace playrho
         return "Fixed64";
     }
 
-#endif /* !_WIN32 */
+#endif /* PLAYRHO_INT128 */
 
 } // namespace playrho
 
