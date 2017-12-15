@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Collision/ContactFeature.hpp>
+#include <sstream>
 
 using namespace playrho;
 
@@ -96,4 +97,19 @@ TEST(ContactFeature, NotEquals)
         const auto cf2 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_face, 1};
         EXPECT_NE(cf1, cf2);
     }
+}
+
+TEST(ContactFeature, GetName)
+{
+    EXPECT_STREQ(GetName(ContactFeature::e_face), "face");
+    EXPECT_STREQ(GetName(ContactFeature::e_vertex), "vertex");
+    EXPECT_STREQ(GetName(static_cast<ContactFeature::Type>(100)), "unknown");
+}
+
+TEST(ContactFeature, StreamOutput)
+{
+    std::ostringstream os;
+    os << ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_face, 2};
+    const auto result = os.str();
+    EXPECT_STREQ(result.c_str(), "{vertex,1,face,2}");
 }

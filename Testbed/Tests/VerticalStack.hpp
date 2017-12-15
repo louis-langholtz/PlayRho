@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <array>
 
-namespace playrho {
+namespace testbed {
 
 class VerticalStack : public Test
 {
@@ -92,6 +92,6 @@ public:
     Shape m_bulletshape = DiskShapeConf{}.UseRadius(0.25_m).UseDensity(20_kgpm2).UseRestitution(Real(0.05f));
 };
     
-} // namespace playrho
+} // namespace testbed
 
 #endif

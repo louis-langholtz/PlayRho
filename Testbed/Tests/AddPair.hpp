@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class AddPair : public Test
 {
@@ -38,28 +38,30 @@ public:
     {
         m_world.SetGravity(LinearAcceleration2{});
         {
-            const auto conf = DiskShapeConf{}.UseRadius(1_dm).UseDensity(0.01_kgpm2);
             const auto minX = -6.0f;
             const auto maxX = 0.0f;
             const auto minY = 4.0f;
             const auto maxY = 6.0f;
             const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
+            const auto shape = Shape{
+                DiskShapeConf{}.UseRadius(0.1f * Meter).UseDensity(0.01f * KilogramPerSquareMeter)
+            };
             for (auto i = 0; i < 400; ++i)
             {
-                const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * 1_m;
+                const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
                 const auto body = m_world.CreateBody(BodyDef(bd).UseLocation(location));
-                body->CreateFixture(Shape{conf});
+                body->CreateFixture(shape);
             }
         }
         const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true)
-            .UseLocation(Length2{-40_m, 5_m}).UseLinearVelocity(LinearVelocity2{150_mps, 0_mps});
+            .UseLocation(Length2{-40 * Meter, 5 * Meter}).UseLinearVelocity(LinearVelocity2{150 * MeterPerSecond, 0 * MeterPerSecond});
         const auto body = m_world.CreateBody(bd);
-        const auto conf = PolygonShapeConf{}.UseDensity(1.0_kgpm2).SetAsBox(1.5_m, 1.5_m);
+        const auto conf = PolygonShapeConf{}.UseDensity(1.0f * KilogramPerSquareMeter).SetAsBox(1.5f * Meter, 1.5_m);
         body->CreateFixture(Shape{conf});
     }
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

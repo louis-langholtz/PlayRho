@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class SphereStack : public Test
 {
@@ -51,6 +51,6 @@ public:
     Body* m_bodies[e_count];
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

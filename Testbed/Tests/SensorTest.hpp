@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 // This is used to test sensor shapes.
 class SensorTest : public Test
@@ -149,7 +149,7 @@ public:
             }
 
             const auto F = Force2{GetUnitVector(d) * 100_N};
-            ApplyForce(*body, F, position);
+            playrho::ApplyForce(*body, F, position);
         }
     }
 
@@ -158,6 +158,6 @@ public:
     bool m_touching[e_count];
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

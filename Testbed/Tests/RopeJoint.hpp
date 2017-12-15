@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 /// This test shows how a rope joint can be used to stabilize a chain of
 /// bodies with a heavy payload. Notice that the rope joint just prevents
@@ -114,6 +114,6 @@ public:
     Joint* m_rope;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif /* PLAYRHO_TESTS_ROPE_JOINT_HPP */

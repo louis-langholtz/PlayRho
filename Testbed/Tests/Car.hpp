@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <sstream>
 
-namespace playrho {
+namespace testbed {
 
 // This is a fun demo that shows off the wheel joint
 class Car : public Test
@@ -255,6 +255,6 @@ public:
     WheelJoint* m_spring2;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class ApplyForce : public Test
 {
@@ -156,6 +156,6 @@ public:
     Body* m_body;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

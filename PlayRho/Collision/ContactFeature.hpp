@@ -23,9 +23,9 @@
 #define PLAYRHO_COLLISION_CONTACTFEATURE_HPP
 
 #include <PlayRho/Common/Math.hpp>
+#include <ostream>
 
-namespace playrho
-{
+namespace playrho {
 
 /// @brief Contact Feature.
 /// @details The features that intersect to form the contact point.
@@ -107,6 +107,32 @@ PLAYRHO_CONSTEXPR inline bool operator==(ContactFeature lhs, ContactFeature rhs)
 PLAYRHO_CONSTEXPR inline bool operator!=(ContactFeature lhs, ContactFeature rhs) noexcept
 {
     return !(lhs == rhs);
+}
+
+/// @brief Gets the human readable name for the given contact feature type.
+inline const char* GetName(ContactFeature::Type type) noexcept
+{
+    switch (type)
+    {
+        case ContactFeature::e_face: return "face";
+        case ContactFeature::e_vertex: return "vertex";
+    }
+    return "unknown";
+}
+
+/// @brief Stream output operator.
+inline ::std::ostream& operator<<(::std::ostream& os, const ContactFeature& value)
+{
+    os << "{";
+    os << GetName(value.typeA);
+    os << ",";
+    os << unsigned(value.indexA);
+    os << ",";
+    os << GetName(value.typeB);
+    os << ",";
+    os << unsigned(value.indexB);
+    os << "}";
+    return os;
 }
 
 }; // namespace playrho

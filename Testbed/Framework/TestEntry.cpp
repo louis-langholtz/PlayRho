@@ -83,7 +83,7 @@
 #include "../Tests/iforce2d_TopdownCar.hpp"
 #include "../Tests/iforce2d_Trajectories.hpp"
 
-namespace playrho {
+namespace testbed {
 
 /// @brief Internal test entries array
 ///
@@ -169,4 +169,4 @@ Span<const TestEntry> GetTestEntries()
     return Span<const TestEntry>(testEntries, numTestEntries);
 }
 
-} // namespace playrho
+} // namespace testbed

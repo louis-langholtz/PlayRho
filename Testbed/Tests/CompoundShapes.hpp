@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 // TODO_ERIN test joints on compounds.
 class CompoundShapes : public Test
@@ -136,6 +136,6 @@ public:
     }
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

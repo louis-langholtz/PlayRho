@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 /// This is a test of typical character collision scenarios. This does not
 /// show how you should implement a character in your application.
@@ -248,6 +248,6 @@ public:
     Body* m_character;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

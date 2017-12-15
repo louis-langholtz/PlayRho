@@ -27,7 +27,7 @@
 // NOTE: we are intentionally filtering one of the polygons, therefore
 // the ray will always miss one type of polygon.
 
-namespace playrho {
+namespace testbed {
 
 class RayCast : public Test
 {
@@ -379,6 +379,6 @@ public:
     Mode m_mode = Mode::e_closest;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

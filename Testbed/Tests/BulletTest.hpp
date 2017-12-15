@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class BulletTest : public Test
 {
@@ -88,6 +88,6 @@ public:
     Real m_x;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

@@ -70,8 +70,8 @@ before_build:
 # Only builds Benchmark app for Release builds. No sense benchmarking Debug builds.
 build_script:
   - if "%platform%" neq "noarch" cd %APPVEYOR_BUILD_FOLDER%\Build
-  - if "%configuration%" equ "Debug" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%triplet% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON ..
-  - if "%configuration%" equ "Release" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%triplet% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_BENCHMARK=ON ..
+  - if "%configuration%" equ "Debug" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%triplet% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DCMAKE_CXX_FLAGS=/D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING ..
+  - if "%configuration%" equ "Release" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%triplet% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_BENCHMARK=ON -DCMAKE_CXX_FLAGS=/D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING ..
   - if "%platform%" neq "noarch" cmake --build . --config "%configuration%"
   - if "%platform%" equ "noarch" cd %APPVEYOR_BUILD_FOLDER%\Documentation
   - if "%platform%" equ "noarch" set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%

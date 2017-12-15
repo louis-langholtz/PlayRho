@@ -38,32 +38,45 @@
 #include <limits>
 #include <set>
 
-namespace playrho {
+/// @brief Adds the entire playrho namespace into any code that includes this file.
+/// @warning Using a namespace like this within a header file is ill advised. It's done
+///   here only to make it easier to use PlayRho code in subclasses of testbed::Test.
+using namespace playrho;
+
+namespace testbed {
 
 /// Test settings. Some can be controlled in the GUI.
 struct Settings
 {
-    float maxTranslation = static_cast<float>(Real{DefaultMaxTranslation / Meter});
+    float maxTranslation = static_cast<float>(Real{
+        DefaultMaxTranslation / Meter});
     float maxRotation = 90; // in degrees
 
     float dt = 1.0f / 60; // in seconds.
     float minDt = 1.0f / 120;
     float maxDt = 1.0f / 5;
 
-    float minStillTimeToSleep = static_cast<float>(Real{DefaultMinStillTimeToSleep / Second});
-    float maxLinearCorrection = static_cast<float>(Real{DefaultMaxLinearCorrection / Meter}); // in meters
-    float maxAngularCorrection = static_cast<float>(Real{DefaultMaxAngularCorrection / Degree}); // in degrees
+    float minStillTimeToSleep = static_cast<float>(Real{
+        DefaultMinStillTimeToSleep / Second});
+    float maxLinearCorrection = static_cast<float>(Real{
+        DefaultMaxLinearCorrection / Meter}); // in meters
+    float maxAngularCorrection = static_cast<float>(Real{
+        DefaultMaxAngularCorrection / Degree}); // in degrees
 
     /// @brief Linear slop.
     /// @note Explicily coded to default to the same value as used in Erin's Box2D 2.3.2
-    float linearSlop = static_cast<float>(Real{DefaultLinearSlop / Meter});
+    float linearSlop = static_cast<float>(Real{
+        DefaultLinearSlop / Meter});
     
     /// @brief Angular slop.
     /// @note Explicily coded to default to the same value as used in Erin's Box2D 2.3.2
-    float angularSlop = static_cast<float>(Real{DefaultAngularSlop / Radian});
+    float angularSlop = static_cast<float>(Real{
+        DefaultAngularSlop / Radian});
     
-    float regMinSeparation = static_cast<float>(Real{DefaultLinearSlop / Meter}) * -3.0f;
-    float toiMinSeparation = static_cast<float>(Real{DefaultLinearSlop / Meter}) * -1.5f;
+    float regMinSeparation = static_cast<float>(Real{
+        DefaultLinearSlop / Meter}) * -3.0f;
+    float toiMinSeparation = static_cast<float>(Real{
+        DefaultLinearSlop / Meter}) * -1.5f;
 
     float cameraZoom = 1.0f;
 
@@ -95,7 +108,6 @@ struct Settings
 class Test : public ContactListener
 {
 public:
-    
     using KeyHandlerID = std::size_t;
     
     using KeyID = int;
@@ -193,7 +205,8 @@ protected:
     
     EdgeShapeConf GetGroundEdgeConf() const noexcept
     {
-        return EdgeShapeConf{}.Set(Vec2(-40, 0) * 1_m, Vec2(40, 0) * 1_m);
+        return EdgeShapeConf{}.Set(Vec2(-40, 0) * Meter,
+                                            Vec2( 40, 0) * Meter);
     }
 
     struct Conf
@@ -202,8 +215,9 @@ protected:
         /// @note Explicitly uses -10 for gravity here to behave more like
         ///   Erin Catto's Box2D Testbed (which uses -10 for Earthly gravity).
         WorldDef worldDef = WorldDef{}.UseGravity(LinearAcceleration2{
-            Real(0.0f) * MeterPerSquareSecond, -Real(10.0f) * MeterPerSquareSecond
-        }).UseMinVertexRadius(0.0002_m);
+            Real(0.0f) * MeterPerSquareSecond,
+            -Real(10.0f) * MeterPerSquareSecond
+        }).UseMinVertexRadius(0.0002f * Meter);
 
         Settings settings;
         
@@ -269,19 +283,15 @@ protected:
     
     using PointCount = int;
     using TextLinePos = int;
-    static PLAYRHO_CONSTEXPR const auto k_maxContactPoints = PointCount{2048};
-    static PLAYRHO_CONSTEXPR const auto DRAW_STRING_NEW_LINE = TextLinePos{16};
+    static constexpr const auto k_maxContactPoints = PointCount{2048};
+    static constexpr const auto DRAW_STRING_NEW_LINE = TextLinePos{16};
 
-    virtual void PreStep(const Settings& settings, Drawer& drawer)
+    virtual void PreStep(const Settings&, Drawer&)
     {
-        NOT_USED(settings);
-        NOT_USED(drawer);
     }
 
-    virtual void PostStep(const Settings& settings, Drawer& drawer)
+    virtual void PostStep(const Settings&, Drawer&)
     {
-        NOT_USED(settings);
-        NOT_USED(drawer);        
     }
 
     void ResetWorld(const World& saved);
@@ -320,8 +330,8 @@ protected:
 
     std::string m_status;
     TextLinePos m_textLine = TextLinePos{30};
-    AreaDensity m_bombDensity = 20_kgpm2;
-    Length m_bombRadius = 0.3_m;
+    AreaDensity m_bombDensity = 20 * KilogramPerSquareMeter;
+    Length m_bombRadius = 0.3f * Meter;
 
 private:
     void DrawStats(const StepConf& stepConf, UiState& ui);
@@ -345,7 +355,7 @@ private:
     Length2 m_bombSpawnPoint;
     bool m_bombSpawning = false;
     Length2 m_mouseWorld = Length2{};
-    Time m_lastDeltaTime = 0_s;
+    Time m_lastDeltaTime = 0 * Second;
     double m_sumDeltaTime = 0.0;
     int m_stepCount = 0;
     StepStats m_stepStats;
@@ -410,8 +420,6 @@ inline bool IsWithin(const Container& container, const T& element) noexcept
     return it != last;
 }
 
-::std::ostream& operator<<(::std::ostream& os, const ContactFeature& value);
-
 template <class T>
 inline void ForAll(World& world, const std::function<void(T& e)>& action);
 
@@ -425,6 +433,6 @@ inline void ForAll(World& world, const std::function<void(RevoluteJoint& e)>& ac
     });
 }
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

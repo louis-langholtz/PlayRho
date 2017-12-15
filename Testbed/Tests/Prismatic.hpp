@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 // The motor in this test gets smoother with higher velocity iterations.
 class Prismatic : public Test
@@ -81,6 +81,6 @@ public:
     PrismaticJoint* m_joint;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

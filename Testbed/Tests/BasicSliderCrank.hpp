@@ -22,14 +22,14 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 // A basic slider crank created for GDC tutorial: Understanding Constraints
 class BasicSliderCrank : public Test
 {
 public:
     BasicSliderCrank()
-    {
+    {        
         const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 17.0f) * 1_m));
         auto prevBody = ground;
         
@@ -77,6 +77,6 @@ public:
     }
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

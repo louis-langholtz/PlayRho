@@ -23,7 +23,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class JointsTest: public Test
 {
@@ -450,7 +450,7 @@ private:
     RopeJoint* m_ropeJoint = nullptr;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif // JointsTest_hpp
 

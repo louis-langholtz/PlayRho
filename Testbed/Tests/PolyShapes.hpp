@@ -27,7 +27,7 @@
 /// This tests stacking. It also shows how to use World::Query
 /// and TestOverlap.
 
-namespace playrho {
+namespace testbed {
 
 /// This callback is called by World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use TestOverlap to determine which fixtures
@@ -237,6 +237,6 @@ public:
     Shape m_circle = DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3f));
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

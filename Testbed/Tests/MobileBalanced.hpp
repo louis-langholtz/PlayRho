@@ -22,16 +22,13 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class MobileBalanced : public Test
 {
 public:
 
-    enum
-    {
-        e_depth = 4
-    };
+    static constexpr int MaxDepth = 4;
 
     const AreaDensity density = 20_kgpm2;
 
@@ -42,7 +39,7 @@ public:
         const auto a = 0.5_m;
         const auto h = Length2{0_m, a};
         const auto root = AddNode(ground, Length2{}, 0, 3.0f, a,
-                                  PolygonShapeConf{}.UseDensity(density).SetAsBox(a * 1_m / 4, a * 1_m));
+                                  PolygonShapeConf{}.UseDensity(density).SetAsBox(a / 4, a));
 
         auto jointDef = RevoluteJointDef{};
         jointDef.bodyA = ground;
@@ -65,7 +62,7 @@ public:
 
         body->CreateFixture(shape);
 
-        if (depth == e_depth)
+        if (depth == MaxDepth)
         {
             return body;
         }
@@ -96,6 +93,6 @@ public:
     }
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

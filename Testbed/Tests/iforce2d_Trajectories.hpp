@@ -22,7 +22,7 @@
 #ifndef IFORCE2D_TRAJECTORIES_HPP
 #define IFORCE2D_TRAJECTORIES_HPP
 
-namespace playrho {
+namespace testbed {
 
 /// @brief iforce2d's Trajectories demo.
 /// @details This is a port of iforce2d's Trajectories demo to the PlayRho Testbed.
@@ -331,6 +331,6 @@ public:
     const Real BallSize = 0.25f;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif // IFORCE2D_TRAJECTORIES_HPP

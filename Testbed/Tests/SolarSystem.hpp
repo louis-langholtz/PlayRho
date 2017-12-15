@@ -23,7 +23,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 /// @brief Solar system demo.
 /// @sa https://en.wikipedia.org/wiki/Solar_System
@@ -191,6 +191,6 @@ public:
     const Body* m_focalBody = nullptr;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif /* SolarSystem_hpp */

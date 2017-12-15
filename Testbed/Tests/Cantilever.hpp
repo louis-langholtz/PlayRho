@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 // It is difficult to make a cantilever made of links completely rigid with weld joints.
 // You will have to use a high number of iterations to make them stiff.
@@ -156,6 +156,6 @@ public:
     Body* m_middle;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

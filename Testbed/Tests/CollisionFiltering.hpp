@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 // This is a test of collision filtering.
 // There is a triangle, a box, and a circle.
@@ -48,8 +48,8 @@ public:
     CollisionFiltering()
     {
         // Ground body
-        m_world.CreateBody()->CreateFixture(Shape(EdgeShapeConf{}.UseFriction(0.3f)
-                        .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
+        m_world.CreateBody()->CreateFixture(Shape(EdgeShapeConf{}
+            .UseFriction(NonNegative<Real>(0.3f)).Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
         
         // Small triangle
         Length2 vertices[3];
@@ -159,6 +159,6 @@ public:
     }
 };
     
-} // namespace playrho
+} // namespace testbed
 
 #endif

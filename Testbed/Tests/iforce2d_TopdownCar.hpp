@@ -26,7 +26,7 @@
 #include <vector>
 #include <set>
 
-namespace playrho {
+namespace testbed {
 
 using ControlStateType = unsigned int;
 
@@ -486,6 +486,6 @@ public:
     TDCar* m_car;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

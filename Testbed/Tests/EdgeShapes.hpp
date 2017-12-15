@@ -24,7 +24,7 @@
 #include <cmath>
 #include <cstring>
 
-namespace playrho {
+namespace testbed {
 
 class EdgeShapes : public Test
 {
@@ -208,6 +208,6 @@ public:
     Real m_angle;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class ContinuousTest : public Test
 {
@@ -69,6 +69,6 @@ public:
     AngularVelocity m_angularVelocity;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

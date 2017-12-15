@@ -26,6 +26,7 @@
 #include <utility>
 #include "imgui.h"
 
+using namespace testbed;
 using namespace playrho;
 
 static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
@@ -1294,7 +1295,7 @@ void Test::RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerI
 
 PLAYRHO_CONSTEXPR const auto RAND_LIMIT = 32767;
 
-Real playrho::RandomFloat()
+Real testbed::RandomFloat()
 {
     auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
     r /= RAND_LIMIT;
@@ -1302,7 +1303,7 @@ Real playrho::RandomFloat()
     return r;
 }
 
-Real playrho::RandomFloat(Real lo, Real hi)
+Real testbed::RandomFloat(Real lo, Real hi)
 {
     auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
     r /= RAND_LIMIT;
@@ -1310,26 +1311,3 @@ Real playrho::RandomFloat(Real lo, Real hi)
     return r;
 }
 
-static const char* GetName(ContactFeature::Type type)
-{
-    switch (type)
-    {
-        case ContactFeature::e_face: return "face";
-        case ContactFeature::e_vertex: return "vertex";
-    }
-    return "unknown";
-}
-
-::std::ostream& playrho::operator<<(::std::ostream& os, const ContactFeature& value)
-{
-    os << "{";
-    os << ::GetName(value.typeA);
-    os << ",";
-    os << unsigned(value.indexA);
-    os << ",";
-    os << ::GetName(value.typeB);
-    os << ",";
-    os << unsigned(value.indexB);
-    os << "}";
-    return os;
-}

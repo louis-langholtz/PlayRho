@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class ShapeEditing : public Test
 {
@@ -87,6 +87,6 @@ public:
     bool m_sensor;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

@@ -32,7 +32,9 @@
 
 #include "imgui.h"
 
-namespace playrho {
+using namespace playrho;
+
+namespace testbed {
 
 Camera g_camera;
 

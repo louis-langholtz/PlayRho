@@ -66,6 +66,7 @@
 #define snprintf _snprintf
 #endif
 
+using namespace testbed;
 using namespace playrho;
 
 class TestSuite;

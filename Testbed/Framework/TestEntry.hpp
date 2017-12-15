@@ -23,8 +23,7 @@
 #include <PlayRho/Common/Span.hpp>
 #include <memory>
 
-namespace playrho
-{
+namespace testbed {
 
 class Test;
 
@@ -54,8 +53,8 @@ struct TestEntry
 /// @note This serves as a wrapper to avoid any possible startup-time dependencies issues that
 ///   might be caused by having global data defined in a different file than it's used in.
 ///
-Span<const TestEntry> GetTestEntries();
+playrho::Span<const TestEntry> GetTestEntries();
 
-} // namespace playrho
+} // namespace testbed
 
 #endif /* PLAYRHO_TEST_ENTRY_HPP */

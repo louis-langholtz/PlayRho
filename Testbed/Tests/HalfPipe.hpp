@@ -21,7 +21,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
     
     class HalfPipe : public Test
     {

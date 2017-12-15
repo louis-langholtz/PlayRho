@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <sstream>
 
-namespace playrho {
+namespace testbed {
 
 class Confined : public Test
 {
@@ -133,7 +133,7 @@ public:
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
         m_world.CreateBody(bd)->CreateFixture(Shape{
-            PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(0).SetAsBox(side_length/2, side_length/2)
+            PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Finite<Real>(0)).SetAsBox(side_length/2, side_length/2)
         });
     }
 
@@ -207,6 +207,6 @@ public:
     Body* m_enclosure = nullptr;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif
