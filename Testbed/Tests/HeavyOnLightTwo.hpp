@@ -24,7 +24,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class HeavyOnLightTwo : public Test
 {
@@ -62,6 +62,6 @@ public:
     Body* m_heavy = nullptr;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

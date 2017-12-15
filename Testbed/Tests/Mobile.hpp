@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class Mobile : public Test
 {
@@ -84,6 +84,6 @@ public:
     }
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

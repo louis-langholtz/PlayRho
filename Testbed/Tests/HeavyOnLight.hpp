@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class HeavyOnLight : public Test
 {
@@ -93,6 +93,6 @@ public:
     Fixture* m_top = nullptr;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

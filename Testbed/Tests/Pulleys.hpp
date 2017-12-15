@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class Pulleys : public Test
 {
@@ -88,6 +88,6 @@ public:
     PulleyJoint* m_joint1;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

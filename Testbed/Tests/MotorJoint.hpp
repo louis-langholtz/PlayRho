@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 /// This test shows how to use a motor joint. A motor joint
 /// can be used to animate a dynamic body. With finite motor forces
@@ -81,6 +81,6 @@ public:
     bool m_go = true;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif /* PLAYRHO_TESTS_MOTOR_JOINT_HPP */

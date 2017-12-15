@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <PlayRho/Common/DynamicMemory.hpp>
 
-namespace playrho {
+namespace testbed {
 
 // This test holds worlds dumped using Dump(World&).
 class DumpShell : public Test
@@ -162,6 +162,6 @@ public:
     }
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

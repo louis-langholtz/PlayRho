@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class Pyramid : public Test
 {
@@ -60,6 +60,6 @@ public:
     }
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

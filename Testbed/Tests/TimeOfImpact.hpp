@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <vector>
 
-namespace playrho {
+namespace testbed {
 
 class TimeOfImpactTest : public Test
 {
@@ -119,6 +119,6 @@ public:
     PolygonShapeConf m_shapeB{PolygonShapeConf{}.SetAsBox(2.5_m, 2.5_m)};
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif /* PLAYRHO_TESTS_TIME_OF_IMPACT_HPP */

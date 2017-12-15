@@ -25,7 +25,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class TheoJansen : public Test
 {
@@ -196,6 +196,6 @@ public:
     AngularVelocity m_motorSpeed;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif // THEO_JANSEN_HPP

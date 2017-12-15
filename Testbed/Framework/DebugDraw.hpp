@@ -23,7 +23,7 @@
 #include <PlayRho/PlayRho.hpp>
 #include "Drawer.hpp"
 
-namespace playrho {
+namespace testbed {
 
 struct GLRenderPoints;
 struct GLRenderLines;
@@ -81,9 +81,9 @@ struct Camera
 
 extern Camera g_camera;
     
-Length2 ConvertScreenToWorld(const Coord2D screenPoint, const Camera& camera = g_camera);
-AABB2D ConvertScreenToWorld(const Camera& camera = g_camera);
-Coord2D ConvertWorldToScreen(const Length2 worldPoint, const Camera& camera = g_camera);
+playrho::Length2 ConvertScreenToWorld(const Coord2D screenPoint, const Camera& camera = g_camera);
+playrho::AABB2D ConvertScreenToWorld(const Camera& camera = g_camera);
+Coord2D ConvertWorldToScreen(const playrho::Length2 worldPoint, const Camera& camera = g_camera);
 ProjectionMatrix GetProjectionMatrix(float zBias, const Camera& camera = g_camera);
 
 class DebugDraw : public Drawer
@@ -93,41 +93,41 @@ public:
 
     virtual ~DebugDraw() noexcept;
     
-    void DrawPolygon(const Length2* vertices, size_type vertexCount, const Color& color) override;
+    void DrawPolygon(const playrho::Length2* vertices, size_type vertexCount, const Color& color) override;
 
-    void DrawSolidPolygon(const Length2* vertices, size_type vertexCount, const Color& color) override;
+    void DrawSolidPolygon(const playrho::Length2* vertices, size_type vertexCount, const Color& color) override;
 
-    void DrawCircle(const Length2& center, Length radius, const Color& color) override;
+    void DrawCircle(const playrho::Length2& center, playrho::Length radius, const Color& color) override;
 
-    void DrawSolidCircle(const Length2& center, Length radius, const Color& color) override;
+    void DrawSolidCircle(const playrho::Length2& center, playrho::Length radius, const Color& color) override;
 
-    void DrawSegment(const Length2& p1, const Length2& p2, const Color& color) override;
+    void DrawSegment(const playrho::Length2& p1, const playrho::Length2& p2, const Color& color) override;
 
-    void DrawSegment(const Length2& p1, const Color& c1,
-                     const Length2& p2, const Color& c2) override;
+    void DrawSegment(const playrho::Length2& p1, const Color& c1,
+                     const playrho::Length2& p2, const Color& c2) override;
 
-    void DrawPoint(const Length2& p, float size, const Color& color) override;
+    void DrawPoint(const playrho::Length2& p, float size, const Color& color) override;
 
-    void DrawString(const Length2& p, TextAlign align, const char* string, ...) override;
+    void DrawString(const playrho::Length2& p, TextAlign align, const char* string, ...) override;
 
     void Flush() override;
     
-    Length2 GetTranslation() const override;
+    playrho::Length2 GetTranslation() const override;
 
-    void SetTranslation(Length2 value) override;
+    void SetTranslation(playrho::Length2 value) override;
 
 private:
-    void DrawTriangle(const Length2& p1, const Length2& p2, const Length2& p3, const Color& color);
+    void DrawTriangle(const playrho::Length2& p1, const playrho::Length2& p2, const playrho::Length2& p3, const Color& color);
 
     Camera& m_camera;
     GLRenderPoints* m_points;
     GLRenderLines* m_lines;
     GLRenderTriangles* m_triangles;
     int m_circleParts = 16;
-    Real m_cosInc;
-    Real m_sinInc;
+    playrho::Real m_cosInc;
+    playrho::Real m_sinInc;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

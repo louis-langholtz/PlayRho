@@ -21,7 +21,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
     
     class SpinningCircle : public Test
     {
@@ -70,6 +70,6 @@ namespace playrho {
         }
     };
     
-} // namespace playrho
+} // namespace testbed
 
 #endif

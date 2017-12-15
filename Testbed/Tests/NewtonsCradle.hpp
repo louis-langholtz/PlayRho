@@ -23,7 +23,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
     
     /// Newton's Cradle test.
     /// @details
@@ -263,6 +263,6 @@ namespace playrho {
         Body *m_swings[5];
     };
 
-} // namespace playrho
+} // namespace testbed
         
 #endif /* PLAYRHO_NEWTONS_CRADLE_HPP */

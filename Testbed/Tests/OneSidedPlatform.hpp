@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class OneSidedPlatform : public Test
 {
@@ -114,6 +114,6 @@ public:
     Fixture* m_character;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

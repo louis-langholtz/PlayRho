@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 // This tests distance joints, body destruction, and joint destruction.
 class Web : public Test
@@ -189,6 +189,6 @@ public:
     Joint* m_joints[8];
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

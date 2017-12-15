@@ -23,7 +23,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
     
     /// @brief 15 Puzzle.
     /// @sa https://en.wikipedia.org/wiki/15_puzzle
@@ -90,6 +90,6 @@ namespace playrho {
         }
     };
     
-} // namespace playrho
+} // namespace testbed
 
 #endif /* FifteenPuzzle_hpp */

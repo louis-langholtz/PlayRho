@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 /// This tests bullet collision and provides an example of a gameplay scenario.
 /// This also uses a loop shape.
@@ -128,6 +128,6 @@ public:
     bool m_button = false;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

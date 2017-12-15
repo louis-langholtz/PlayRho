@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class Revolute : public Test
 {
@@ -116,6 +116,6 @@ public:
     RevoluteJoint* m_joint;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

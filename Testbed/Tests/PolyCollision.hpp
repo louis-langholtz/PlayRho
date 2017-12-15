@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <vector>
 
-namespace playrho {
+namespace testbed {
 
 class PolyCollision : public Test
 {
@@ -117,6 +117,6 @@ public:
     Angle m_angleB;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

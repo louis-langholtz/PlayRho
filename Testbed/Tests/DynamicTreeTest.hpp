@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class DynamicTreeTest : public Test
 {
@@ -189,7 +189,7 @@ public:
     {
         auto actor = static_cast<Actor*>(m_tree.GetLeafData(treeId));
 
-        const auto output = playrho::RayCast(actor->aabb, input);
+        const auto output = RayCast(actor->aabb, input);
 
         if (output.has_value())
         {
@@ -286,7 +286,7 @@ private:
             const auto aabb0 = actor->aabb;
             MoveAABB(&actor->aabb);
             const auto displacement = GetCenter(actor->aabb) - GetCenter(aabb0);
-            if (!playrho::Contains(m_tree.GetAABB(actor->treeId), actor->aabb))
+            if (!Contains(m_tree.GetAABB(actor->treeId), actor->aabb))
             {
                 const auto newAabb = GetDisplacedAABB(GetFattenedAABB(actor->aabb, extension), multiplier * displacement);
                 m_tree.UpdateLeaf(actor->treeId, newAabb);
@@ -316,7 +316,7 @@ private:
 
     void Query()
     {
-        playrho::Query(m_tree, m_queryAABB, [&](DynamicTree::Size nodeId){ return QueryCallback(nodeId); });
+        Query(m_tree, m_queryAABB, [&](DynamicTree::Size nodeId){ return QueryCallback(nodeId); });
 
         for (auto i = decltype(e_actorCount){0}; i < e_actorCount; ++i)
         {
@@ -338,7 +338,7 @@ private:
         auto input = m_rayCastInput;
 
         // Ray cast against the dynamic tree.
-        playrho::RayCast(m_tree, input, [&](const RayCastInput& rci, DynamicTree::Size treeId) {
+        RayCast(m_tree, input, [&](const RayCastInput& rci, DynamicTree::Size treeId) {
             return RayCastCallback(rci, treeId);
         });
 
@@ -352,7 +352,7 @@ private:
                 continue;
             }
 
-            const auto output = playrho::RayCast(m_actors[i].aabb, input);
+            const auto output = RayCast(m_actors[i].aabb, input);
             if (output.has_value())
             {
                 bruteActor = m_actors + i;
@@ -380,6 +380,6 @@ private:
     bool m_automated;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

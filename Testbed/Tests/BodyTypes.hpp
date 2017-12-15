@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class BodyTypes : public Test
 {
@@ -87,7 +87,7 @@ public:
     }
 
     void PreStep(const Settings&, Drawer&) override
-    {
+    {        
         // Drive the kinematic body.
         if (m_platform->GetType() == BodyType::Kinematic)
         {
@@ -110,6 +110,6 @@ public:
     Real m_speed;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

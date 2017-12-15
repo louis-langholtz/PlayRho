@@ -22,20 +22,20 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
-    
-    /// Profiling data. Times are in milliseconds.
-    struct Profile
-    {
-        Real step = Real(0);
-        Real collide = Real(0);
-        Real solve = Real(0);
-        Real solveInit = Real(0);
-        Real solveVelocity = Real(0);
-        Real solvePosition = Real(0);
-        Real broadphase = Real(0);
-        Real solveTOI = Real(0);
-    };
+namespace testbed {
+
+/// Profiling data. Times are in milliseconds.
+struct Profile
+{
+    Real step = Real(0);
+    Real collide = Real(0);
+    Real solve = Real(0);
+    Real solveInit = Real(0);
+    Real solveVelocity = Real(0);
+    Real solvePosition = Real(0);
+    Real broadphase = Real(0);
+    Real solveTOI = Real(0);
+};
 }
 
 #endif /* PLAYRHO_PROFILE_HPP */

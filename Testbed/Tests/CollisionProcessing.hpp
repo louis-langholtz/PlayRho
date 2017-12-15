@@ -23,7 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <algorithm>
 
-namespace playrho {
+namespace testbed {
 
 // This test shows collision processing and tests
 // deferred body destruction.
@@ -157,6 +157,6 @@ public:
     }
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

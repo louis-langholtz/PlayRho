@@ -19,14 +19,14 @@
 
 #include "Drawer.hpp"
 
-using namespace playrho;
+using namespace testbed;
 
 Drawer::~Drawer() noexcept
 {
     // Intentionally empty.
 }
 
-Color playrho::Brighten(Color color, float factor)
+Color testbed::Brighten(Color color, float factor)
 {
     return Color(color.r * factor, color.g * factor, color.b * factor, color.a);
 }

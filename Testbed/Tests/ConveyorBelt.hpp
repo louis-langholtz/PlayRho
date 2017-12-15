@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class ConveyorBelt : public Test
 {
@@ -79,6 +79,6 @@ public:
     Fixture* m_platform;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

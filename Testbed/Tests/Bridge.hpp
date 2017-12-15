@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class Bridge : public Test
 {
@@ -31,7 +31,7 @@ public:
     static PLAYRHO_CONSTEXPR const auto Count = 30;
 
     Bridge()
-    {
+    {        
         const auto ground = m_world.CreateBody();
         ground->CreateFixture(Shape(GetGroundEdgeConf()));
 
@@ -88,6 +88,6 @@ public:
     Body* m_middle;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

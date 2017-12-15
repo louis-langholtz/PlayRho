@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 // This is used to test sensor shapes.
 class Breakable : public Test
@@ -62,7 +62,8 @@ public:
         m_broke = false;
     }
 
-    void PostSolve(Contact&, const ContactImpulsesList& impulse, ContactListener::iteration_type) override
+    void PostSolve(Contact&, const ContactImpulsesList& impulse,
+                   ContactListener::iteration_type) override
     {
         if (m_broke)
         {
@@ -88,7 +89,7 @@ public:
     }
 
     void Break()
-    {
+    {        
         // Create two bodies from one.
         const auto body1 = m_piece1->GetBody();
         const auto center = body1->GetWorldCenter();
@@ -146,6 +147,6 @@ public:
     bool m_break;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

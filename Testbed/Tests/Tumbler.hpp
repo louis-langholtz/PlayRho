@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 class Tumbler : public Test
 {
@@ -139,6 +139,6 @@ public:
     Shape m_shape = m_square;
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

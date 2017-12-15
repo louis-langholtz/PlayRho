@@ -22,7 +22,7 @@
 
 #include "../Framework/Test.hpp"
 
-namespace playrho {
+namespace testbed {
 
 // Note: even with a restitution of 1.0, there is some energy change
 // due to position correction.
@@ -49,6 +49,6 @@ public:
     }
 };
 
-} // namespace playrho
+} // namespace testbed
 
 #endif

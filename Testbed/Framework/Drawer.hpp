@@ -22,7 +22,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
+namespace testbed {
 
 /// RGBA Color.
 /// @details Color for drawing. Each value has the range [0,1].
@@ -31,10 +31,10 @@ struct Color
     Color() = default;
     
     PLAYRHO_CONSTEXPR inline Color(float ri, float gi, float bi, float ai = 1):
-        r(Clamp(ri, 0.0f, 1.0f)),
-        g(Clamp(gi, 0.0f, 1.0f)),
-        b(Clamp(bi, 0.0f, 1.0f)),
-        a(Clamp(ai, 0.0f, 1.0f))
+        r(playrho::Clamp(ri, 0.0f, 1.0f)),
+        g(playrho::Clamp(gi, 0.0f, 1.0f)),
+        b(playrho::Clamp(bi, 0.0f, 1.0f)),
+        a(playrho::Clamp(ai, 0.0f, 1.0f))
     {
         // Intentionally empty.
     }
@@ -71,43 +71,43 @@ public:
     virtual ~Drawer() noexcept = 0;
 
     /// Draw a closed polygon provided in CCW order.
-    virtual void DrawPolygon(const Length2* vertices, size_type vertexCount, const Color& color) = 0;
+    virtual void DrawPolygon(const playrho::Length2* vertices, size_type vertexCount, const Color& color) = 0;
 
     /// Draw a solid closed polygon provided in CCW order.
-    virtual void DrawSolidPolygon(const Length2* vertices, size_type vertexCount, const Color& color) = 0;
+    virtual void DrawSolidPolygon(const playrho::Length2* vertices, size_type vertexCount, const Color& color) = 0;
 
     /// Draw a circle.
-    virtual void DrawCircle(const Length2& center, Length radius, const Color& color) = 0;
+    virtual void DrawCircle(const playrho::Length2& center, playrho::Length radius, const Color& color) = 0;
     
     /// Draw a solid circle.
-    virtual void DrawSolidCircle(const Length2& center, Length radius, const Color& color) = 0;
+    virtual void DrawSolidCircle(const playrho::Length2& center, playrho::Length radius, const Color& color) = 0;
  
     /// Draws a line segment from point 1 to point 2.
-    virtual void DrawSegment(const Length2& p1, const Length2& p2, const Color& c) = 0;
+    virtual void DrawSegment(const playrho::Length2& p1, const playrho::Length2& p2, const Color& c) = 0;
 
     /// Draws a line segment from point 1 to point 2 in color 1 to color 2.
-    virtual void DrawSegment(const Length2& p1, const Color& c1,
-                             const Length2& p2, const Color& c2) = 0;
+    virtual void DrawSegment(const playrho::Length2& p1, const Color& c1,
+                             const playrho::Length2& p2, const Color& c2) = 0;
 
-    virtual void DrawPoint(const Length2& p, float size, const Color& color) = 0;
+    virtual void DrawPoint(const playrho::Length2& p, float size, const Color& color) = 0;
     
     /// Draws a string at the given world coordinates.
-    virtual void DrawString(const Length2& p, TextAlign align, const char* string, ...) = 0;
+    virtual void DrawString(const playrho::Length2& p, TextAlign align, const char* string, ...) = 0;
         
     virtual void Flush() = 0;
     
-    virtual void SetTranslation(Length2 value) = 0;
+    virtual void SetTranslation(playrho::Length2 value) = 0;
 
-    virtual Length2 GetTranslation() const = 0;
+    virtual playrho::Length2 GetTranslation() const = 0;
 };
 
 /// @brief Draws segment with a single constant color.
-inline void DrawSegment(Drawer& drawer, const Length2& p1, const Length2& p2,
+inline void DrawSegment(Drawer& drawer, const playrho::Length2& p1, const playrho::Length2& p2,
                         const Color& color)
 {
     drawer.DrawSegment(p1, p2, color);
 }
 
-} // namespace playrho
+} // namespace testbed
 
 #endif
