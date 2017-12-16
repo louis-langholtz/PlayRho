@@ -221,7 +221,7 @@ public:
     Length2 GetLocation() const noexcept;
 
     /// @brief Gets the body's sweep.
-    const Sweep& GetSweep() const noexcept;
+    const Sweep2D& GetSweep() const noexcept;
 
     /// @brief Get the angle.
     /// @return the current world rotation angle.
@@ -510,7 +510,7 @@ private:
     /// This is essentially the cached result of <code>GetTransform1(m_sweep)</code>. 16-bytes.
     Transformation m_xf;
 
-    Sweep m_sweep; ///< Sweep motion for CCD. 36-bytes.
+    Sweep2D m_sweep; ///< Sweep motion for CCD. 36-bytes.
 
     Velocity2D m_velocity; ///< Velocity (linear and angular). 12-bytes.
     FlagsType m_flags = 0; ///< Flags. 2-bytes.
@@ -584,7 +584,7 @@ inline Length2 Body::GetLocation() const noexcept
     return GetTransformation().p;
 }
 
-inline const Sweep& Body::GetSweep() const noexcept
+inline const Sweep2D& Body::GetSweep() const noexcept
 {
     return m_sweep;
 }

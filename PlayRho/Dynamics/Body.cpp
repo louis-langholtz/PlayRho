@@ -145,7 +145,7 @@ void Body::ResetMassData()
     {
         m_invMass = 0;
         m_invRotI = 0;
-        m_sweep = Sweep{Position2D{GetLocation(), GetAngle()}};
+        m_sweep = Sweep2D{Position2D{GetLocation(), GetAngle()}};
         UnsetMassDataDirty();
         return;
     }
@@ -174,7 +174,7 @@ void Body::ResetMassData()
 
     // Move center of mass.
     const auto oldCenter = GetWorldCenter();
-    m_sweep = Sweep{Position2D{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
+    m_sweep = Sweep2D{Position2D{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
     const auto newCenter = GetWorldCenter();
 
     // Update center of mass velocity.
@@ -214,7 +214,7 @@ void Body::SetMassData(const MassData& massData)
 
     // Move center of mass.
     const auto oldCenter = GetWorldCenter();
-    m_sweep = Sweep{
+    m_sweep = Sweep2D{
         Position2D{Transform(massData.center, GetTransformation()), GetAngle()},
         massData.center
     };
@@ -284,7 +284,7 @@ void Body::SetTransform(Length2 location, Angle angle)
     const auto xfm = Transformation{location, UnitVec2::Get(angle)};
     SetTransformation(xfm);
 
-    m_sweep = Sweep{Position2D{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
+    m_sweep = Sweep2D{Position2D{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
     
     GetWorld()->RegisterForProxies(this);
 }

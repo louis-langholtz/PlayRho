@@ -183,7 +183,7 @@ private:
     }
     
     /// @brief Sets the sweep value of the given body.
-    static void SetSweep(Body& b, const Sweep value) noexcept
+    static void SetSweep(Body& b, const Sweep2D value) noexcept
     {
         assert(b.IsSpeedable() || value.pos0 == value.pos1);
         b.m_sweep = value;
@@ -224,7 +224,7 @@ private:
     }
     
     /// @brief Restores the given body's sweep to the given sweep value.
-    static void Restore(Body& b, const Sweep value) noexcept
+    static void Restore(Body& b, const Sweep2D value) noexcept
     {
         BodyAtty::SetSweep(b, value);
         BodyAtty::SetTransformation(b, GetTransform1(value));

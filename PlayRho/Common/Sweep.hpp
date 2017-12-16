@@ -29,7 +29,7 @@
 namespace playrho
 {
     
-    /// @brief Description of a "sweep" of motion.
+    /// @brief Description of a "sweep" of motion in 2-D space.
     ///
     /// @details This describes the motion of a body/shape for TOI computation.
     ///   Shapes are defined with respect to the body origin, which may
@@ -38,18 +38,18 @@ namespace playrho
     ///
     /// @note This data structure is likely 36-bytes (at least on 64-bit platforms).
     ///
-    class Sweep
+    class Sweep2D
     {
     public:
 
         /// @brief Default constructor.
-        Sweep() = default;
+        Sweep2D() = default;
         
         /// @brief Copy constructor.
-        PLAYRHO_CONSTEXPR inline Sweep(const Sweep& copy) = default;
+        PLAYRHO_CONSTEXPR inline Sweep2D(const Sweep2D& copy) = default;
         
         /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline Sweep(const Position2D p0, const Position2D p1,
+        PLAYRHO_CONSTEXPR inline Sweep2D(const Position2D p0, const Position2D p1,
                         const Length2 lc = Length2{0_m, 0_m},
                         Real a0 = 0) noexcept:
         	pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
@@ -59,9 +59,9 @@ namespace playrho
         }
         
         /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline explicit Sweep(const Position2D p,
+        PLAYRHO_CONSTEXPR inline explicit Sweep2D(const Position2D p,
                                  const Length2 lc = Length2{0_m, 0_m}):
-        	Sweep{p, p, lc, 0}
+        	Sweep2D{p, p, lc, 0}
         {
             // Intentionally empty.
         }
@@ -107,7 +107,7 @@ namespace playrho
         Real alpha0 = 0;
     };
     
-    inline void Sweep::Advance0(const Real alpha) noexcept
+    inline void Sweep2D::Advance0(const Real alpha) noexcept
     {
         assert(IsValid(alpha));
         assert(alpha >= 0);
@@ -119,7 +119,7 @@ namespace playrho
         alpha0 = alpha;
     }
     
-    inline void Sweep::ResetAlpha0() noexcept
+    inline void Sweep2D::ResetAlpha0() noexcept
     {
         alpha0 = 0;
     }
@@ -129,7 +129,7 @@ namespace playrho
     /// @brief Determines if the given value is valid.
     /// @relatedalso Transformation
     template <>
-    PLAYRHO_CONSTEXPR inline bool IsValid(const Sweep& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const Sweep2D& value) noexcept
     {
         return IsValid(value.pos0) && IsValid(value.pos1)
             && IsValid(value.GetLocalCenter()) && IsValid(value.GetAlpha0());

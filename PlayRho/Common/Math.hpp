@@ -298,7 +298,7 @@ inline Position2D GetNormalized(const Position2D& val) noexcept
 /// @return Sweep with its pos0 angle to be between -2 pi and 2 pi
 ///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
 /// @relatedalso Sweep
-inline Sweep GetNormalized(Sweep sweep) noexcept
+inline Sweep2D GetNormalized(Sweep2D sweep) noexcept
 {
     const auto pos0a = GetNormalized(sweep.pos0.angular);
     const auto d = sweep.pos0.angular - pos0a;
@@ -825,7 +825,7 @@ inline Transformation GetTransformation(const Position2D pos, const Length2 loca
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
 /// @return Transformation of the given sweep at the specified time.
-inline Transformation GetTransformation(const Sweep& sweep, const Real beta) noexcept
+inline Transformation GetTransformation(const Sweep2D& sweep, const Real beta) noexcept
 {
     assert(beta >= 0);
     assert(beta <= 1);
@@ -837,7 +837,7 @@ inline Transformation GetTransformation(const Sweep& sweep, const Real beta) noe
 /// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time zero.
-inline Transformation GetTransform0(const Sweep& sweep) noexcept
+inline Transformation GetTransform0(const Sweep2D& sweep) noexcept
 {
     return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
 }
@@ -847,7 +847,7 @@ inline Transformation GetTransform0(const Sweep& sweep) noexcept
 /// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time one.
-inline Transformation GetTransform1(const Sweep& sweep) noexcept
+inline Transformation GetTransform1(const Sweep2D& sweep) noexcept
 {
     return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }

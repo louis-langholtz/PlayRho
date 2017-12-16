@@ -49,11 +49,11 @@ TEST(SeparationFinder, BehavesAsExpected)
     const auto distproxy = GetChild(shape, 0);
 
     const auto x = Real(100);
-    const auto sweepA = Sweep{
+    const auto sweepA = Sweep2D{
         Position2D{Length2{-x * Meter, 0_m}, 0_deg},
         Position2D{Length2{+x * Meter, 0_m}, 0_deg}
     };
-    const auto sweepB = Sweep{
+    const auto sweepB = Sweep2D{
         Position2D{Length2{+x * Meter, 0_m}, 0_deg},
         Position2D{Length2{-x * Meter, 0_m}, 0_deg}
     };

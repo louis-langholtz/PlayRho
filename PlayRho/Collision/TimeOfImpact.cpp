@@ -36,8 +36,8 @@ inline DistanceConf GetDistanceConf(const ToiConf& conf)
 
 } // anonymous namespace
 
-TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
-                       const DistanceProxy& proxyB, const Sweep& sweepB,
+TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep2D& sweepA,
+                       const DistanceProxy& proxyB, const Sweep2D& sweepB,
                        ToiConf conf)
 {
     assert(IsValid(sweepA));
