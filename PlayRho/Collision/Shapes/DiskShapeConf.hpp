@@ -120,7 +120,7 @@ inline DistanceProxy GetChild(const DiskShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the mass data of the given disk shape configuration.
-inline MassData GetMassData(const DiskShapeConf& arg) noexcept
+inline MassData2D GetMassData(const DiskShapeConf& arg) noexcept
 {
     return playrho::GetMassData(arg.vertexRadius, arg.density, arg.location);
 }

@@ -55,7 +55,7 @@ TEST(ChainShapeConf, ByteSize)
 TEST(ChainShapeConf, DefaultConstruction)
 {
     const auto foo = ChainShapeConf{};
-    const auto defaultMassData = MassData{};
+    const auto defaultMassData = MassData2D{};
     const auto defaultConf = ChainShapeConf{};
     
     EXPECT_EQ(typeid(foo), typeid(ChainShapeConf));

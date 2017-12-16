@@ -184,7 +184,7 @@ void Body::ResetMassData()
     UnsetMassDataDirty();
 }
 
-void Body::SetMassData(const MassData& massData)
+void Body::SetMassData(const MassData2D& massData)
 {
     if (m_world->IsLocked())
     {

@@ -144,7 +144,7 @@ namespace playrho {
     }
     
     /// @brief Gets the mass data for the given shape configuration.
-    MassData GetMassData(const MultiShapeConf& arg) noexcept;
+    MassData2D GetMassData(const MultiShapeConf& arg) noexcept;
     
 } // namespace playrho
 

@@ -28,16 +28,16 @@ TEST(MassData, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(MassData), std::size_t(16)); break;
-        case  8: EXPECT_EQ(sizeof(MassData), std::size_t(32)); break;
-        case 16: EXPECT_EQ(sizeof(MassData), std::size_t(64)); break;
+        case  4: EXPECT_EQ(sizeof(MassData2D), std::size_t(16)); break;
+        case  8: EXPECT_EQ(sizeof(MassData2D), std::size_t(32)); break;
+        case 16: EXPECT_EQ(sizeof(MassData2D), std::size_t(64)); break;
         default: FAIL(); break;
     }
 }
 
 TEST(MassData, DefaultConstruct)
 {
-    MassData foo;
+    MassData2D foo;
     EXPECT_EQ(foo.center, (Length2{}));
     EXPECT_EQ(foo.mass, 0_kg);
     EXPECT_EQ(foo.I, RotInertia(0));
@@ -45,36 +45,36 @@ TEST(MassData, DefaultConstruct)
 
 TEST(MassData, Traits)
 {
-    EXPECT_TRUE(std::is_default_constructible<MassData>::value);
-    // EXPECT_FALSE(std::is_nothrow_default_constructible<MassData>::value); // clang-3.7 and 4.0
-    // EXPECT_TRUE(std::is_nothrow_default_constructible<MassData>::value); // gcc 6.3
-    EXPECT_FALSE(std::is_trivially_default_constructible<MassData>::value);
+    EXPECT_TRUE(std::is_default_constructible<MassData2D>::value);
+    // EXPECT_FALSE(std::is_nothrow_default_constructible<MassData2D>::value); // clang-3.7 and 4.0
+    // EXPECT_TRUE(std::is_nothrow_default_constructible<MassData2D>::value); // gcc 6.3
+    EXPECT_FALSE(std::is_trivially_default_constructible<MassData2D>::value);
     
-    EXPECT_FALSE((std::is_constructible<MassData, Length2, Mass, RotInertia>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2, Mass>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2, NonNegative<Mass>, NonNegative<RotInertia>>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2, NonNegative<Mass>>::value));
-    EXPECT_FALSE((std::is_constructible<MassData, Length2>::value));
-    EXPECT_TRUE((std::is_constructible<MassData>::value));
-    // EXPECT_FALSE(std::is_nothrow_constructible<MassData>::value); // clang 3.7 and 4.0
-    // EXPECT_TRUE(std::is_nothrow_constructible<MassData>::value); // gcc 6.3
-    EXPECT_FALSE((std::is_trivially_constructible<MassData, Length2, Mass, RotInertia>::value));
+    EXPECT_FALSE((std::is_constructible<MassData2D, Length2, Mass, RotInertia>::value));
+    EXPECT_FALSE((std::is_constructible<MassData2D, Length2, Mass>::value));
+    EXPECT_FALSE((std::is_constructible<MassData2D, Length2>::value));
+    EXPECT_FALSE((std::is_constructible<MassData2D, Length2, NonNegative<Mass>, NonNegative<RotInertia>>::value));
+    EXPECT_FALSE((std::is_constructible<MassData2D, Length2, NonNegative<Mass>>::value));
+    EXPECT_FALSE((std::is_constructible<MassData2D, Length2>::value));
+    EXPECT_TRUE((std::is_constructible<MassData2D>::value));
+    // EXPECT_FALSE(std::is_nothrow_constructible<MassData2D>::value); // clang 3.7 and 4.0
+    // EXPECT_TRUE(std::is_nothrow_constructible<MassData2D>::value); // gcc 6.3
+    EXPECT_FALSE((std::is_trivially_constructible<MassData2D, Length2, Mass, RotInertia>::value));
     
-    EXPECT_TRUE(std::is_copy_constructible<MassData>::value);
-    // EXPECT_TRUE(std::is_nothrow_copy_constructible<MassData>::value); // with clang-4.0 gcc 6.3
-    // EXPECT_FALSE(std::is_nothrow_copy_constructible<MassData>::value); // with clang-3.7
-    // EXPECT_TRUE(std::is_trivially_copy_constructible<MassData>::value); // with clang-4.0
-    // EXPECT_FALSE(std::is_trivially_copy_constructible<MassData>::value); // with clang-3.7
+    EXPECT_TRUE(std::is_copy_constructible<MassData2D>::value);
+    // EXPECT_TRUE(std::is_nothrow_copy_constructible<MassData2D>::value); // with clang-4.0 gcc 6.3
+    // EXPECT_FALSE(std::is_nothrow_copy_constructible<MassData2D>::value); // with clang-3.7
+    // EXPECT_TRUE(std::is_trivially_copy_constructible<MassData2D>::value); // with clang-4.0
+    // EXPECT_FALSE(std::is_trivially_copy_constructible<MassData2D>::value); // with clang-3.7
     
-    EXPECT_TRUE(std::is_copy_assignable<MassData>::value);
-    // EXPECT_TRUE(std::is_nothrow_copy_assignable<MassData>::value); // with clang-4.0 gcc 6.3
-    // EXPECT_FALSE(std::is_nothrow_copy_assignable<MassData>::value); // with clang-3.7
-    EXPECT_FALSE(std::is_trivially_copy_assignable<MassData>::value);
+    EXPECT_TRUE(std::is_copy_assignable<MassData2D>::value);
+    // EXPECT_TRUE(std::is_nothrow_copy_assignable<MassData2D>::value); // with clang-4.0 gcc 6.3
+    // EXPECT_FALSE(std::is_nothrow_copy_assignable<MassData2D>::value); // with clang-3.7
+    EXPECT_FALSE(std::is_trivially_copy_assignable<MassData2D>::value);
     
-    EXPECT_TRUE(std::is_destructible<MassData>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<MassData>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<MassData>::value);
+    EXPECT_TRUE(std::is_destructible<MassData2D>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<MassData2D>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<MassData2D>::value);
 }
 
 TEST(MassData, GetAreaOfPolygon)
@@ -233,7 +233,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
     ASSERT_EQ(GetY(shape.GetCentroid()), 0_m);
     const auto mass_data = GetMassData(shape);
     EXPECT_TRUE(AlmostEqual(Real(Mass{mass_data.mass} / 1_kg),
-                             Real((density / KilogramPerSquareMeter) * (8 * 2))));
+                             Real((density / 1_kgpm2) * (8 * 2))));
     EXPECT_NEAR(double(StripUnit(mass_data.I)),
                 90.666664 * double(StripUnit(density)),
                 0.008);
@@ -362,13 +362,13 @@ TEST(MassData, GetForCenteredEdge)
 
 TEST(MassData, Equals)
 {
-    const auto foo = MassData{};
+    const auto foo = MassData2D{};
     EXPECT_TRUE(foo == foo);
     
-    const auto boo = MassData{};
+    const auto boo = MassData2D{};
     EXPECT_TRUE(foo == boo);
     
-    const auto poo = MassData{
+    const auto poo = MassData2D{
         Length2(1_m, 1_m), 4_kg, RotInertia{2_kg * SquareMeter / SquareRadian}
     };
     EXPECT_FALSE(foo == poo);
@@ -376,13 +376,13 @@ TEST(MassData, Equals)
 
 TEST(MassData, NotEquals)
 {
-    const auto foo = MassData{};
+    const auto foo = MassData2D{};
     EXPECT_FALSE(foo != foo);
     
-    const auto boo = MassData{};
+    const auto boo = MassData2D{};
     EXPECT_FALSE(foo != boo);
     
-    const auto poo = MassData{
+    const auto poo = MassData2D{
         Length2(1_m, 1_m), 4_kg, RotInertia{2_kg * SquareMeter / SquareRadian}
     };
     EXPECT_TRUE(foo != poo);

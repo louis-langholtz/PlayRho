@@ -56,7 +56,7 @@ TEST(MultiShapeConf, ByteSize)
 TEST(MultiShapeConf, DefaultConstruction)
 {
     const auto foo = MultiShapeConf{};
-    const auto defaultMassData = MassData{};
+    const auto defaultMassData = MassData2D{};
     const auto defaultConf = MultiShapeConf{};
     
     EXPECT_EQ(typeid(foo), typeid(MultiShapeConf));
@@ -108,7 +108,7 @@ TEST(MultiShapeConf, BaseVisitorForDiskShape)
 #endif
 TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
 {
-    const auto defaultMassData = MassData{};
+    const auto defaultMassData = MassData2D{};
     const auto center = Length2(1_m, -4_m);
 
     auto pointSet = VertexSet{};
@@ -143,7 +143,7 @@ TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
 
 TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
 {
-    const auto defaultMassData = MassData{};
+    const auto defaultMassData = MassData2D{};
     const auto p0 = Length2(1_m, -4_m);
     const auto p1 = Length2(1_m, +4_m);
     
@@ -186,7 +186,7 @@ TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
 
 TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
 {
-    const auto defaultMassData = MassData{};
+    const auto defaultMassData = MassData2D{};
     const auto p0 = Length2(1_m, -4_m);
     const auto p1 = Length2(1_m, +4_m);
 

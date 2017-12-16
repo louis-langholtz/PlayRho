@@ -33,6 +33,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/Joints/JointKey.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
+#include <PlayRho/Collision/MassData.hpp>
 
 #include <vector>
 #include <memory>
@@ -46,7 +47,6 @@ class World;
 struct FixtureDef;
 class Shape;
 struct BodyDef;
-struct MassData;
 
 /// @brief Physical entity that exists within a World.
 ///
@@ -277,7 +277,7 @@ public:
     /// @note Creating or destroying fixtures can also alter the mass.
     /// @note This function has no effect if the body isn't dynamic.
     /// @param massData the mass properties.
-    void SetMassData(const MassData& massData);
+    void SetMassData(const MassData2D& massData);
 
     /// @brief Resets the mass data properties.
     /// @details This resets the mass data to the sum of the mass properties of the fixtures.
