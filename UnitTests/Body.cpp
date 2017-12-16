@@ -554,7 +554,7 @@ TEST(Body, GetAccelerationFF)
     ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
     ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
     
-    EXPECT_EQ(GetAcceleration(*body), Acceleration{});
+    EXPECT_EQ(GetAcceleration(*body), Acceleration2D{});
 }
 
 TEST(Body, SetAccelerationFF)
@@ -566,7 +566,7 @@ TEST(Body, SetAccelerationFF)
     ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
     ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
  
-    const auto newAccel = Acceleration{
+    const auto newAccel = Acceleration2D{
         LinearAcceleration2{2_mps2, 3_mps2}, AngularAcceleration{1.2f * RadianPerSquareSecond}
     };
     SetAcceleration(*body, newAccel);
@@ -584,7 +584,7 @@ TEST(Body, CalcGravitationalAcceleration)
     
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l1));
     b1->CreateFixture(shape);
-    EXPECT_EQ(CalcGravitationalAcceleration(*b1), Acceleration{});
+    EXPECT_EQ(CalcGravitationalAcceleration(*b1), Acceleration2D{});
     
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l2));
     b2->CreateFixture(shape);
@@ -595,7 +595,7 @@ TEST(Body, CalcGravitationalAcceleration)
     EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
     
     const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(l3));
-    EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration{});
+    EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration2D{});
 }
 
 TEST(Body, RotateAboutWorldPointFF)

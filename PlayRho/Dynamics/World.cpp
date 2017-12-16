@@ -2836,14 +2836,14 @@ BodyCounter Awaken(World& world) noexcept
     return awoken;
 }
 
-void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept
+void SetAccelerations(World& world, std::function<Acceleration2D(const Body& b)> fn) noexcept
 {
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), fn(GetRef(b)));
     });
 }
 
-void SetAccelerations(World& world, Acceleration acceleration) noexcept
+void SetAccelerations(World& world, Acceleration2D acceleration) noexcept
 {
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), acceleration);

@@ -531,7 +531,7 @@ TEST(World, ClearForcesFreeFunction)
 TEST(World, SetAccelerationsFunctionalFF)
 {
     World world;
-    const auto a1 = Acceleration{
+    const auto a1 = Acceleration2D{
         LinearAcceleration2{1_mps2, 2_mps2}, 2.1f * RadianPerSquareSecond
     };
     const auto a2 = a1 * 2;

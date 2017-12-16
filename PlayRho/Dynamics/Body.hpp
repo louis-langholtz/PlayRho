@@ -859,18 +859,18 @@ inline void Body::UnsetIslandedFlag() noexcept
 /// @brief Gets the given body's acceleration.
 /// @param body Body whose acceleration should be returned.
 /// @relatedalso Body
-inline Acceleration GetAcceleration(const Body& body) noexcept
+inline Acceleration2D GetAcceleration(const Body& body) noexcept
 {
-    return Acceleration{body.GetLinearAcceleration(), body.GetAngularAcceleration()};
+    return Acceleration2D{body.GetLinearAcceleration(), body.GetAngularAcceleration()};
 }
 
 /// @brief Sets the accelerations on the given body.
 /// @note This has no effect on non-accelerable bodies.
 /// @note A non-zero acceleration will also awaken the body.
 /// @param body Body whose acceleration should be set.
-/// @param value Acceleration value to set.
+/// @param value Acceleration2D value to set.
 /// @relatedalso Body
-inline void SetAcceleration(Body& body, Acceleration value) noexcept
+inline void SetAcceleration(Body& body, Acceleration2D value) noexcept
 {
     body.SetAcceleration(value.linear, value.angular);
 }
@@ -880,7 +880,7 @@ inline void SetAcceleration(Body& body, Acceleration value) noexcept
 /// @relatedalso Body
 /// @return Zero acceleration if given body is has no mass, else the acceleration of
 ///    the body due to the gravitational attraction to the other bodies.
-Acceleration CalcGravitationalAcceleration(const Body& body) noexcept;
+Acceleration2D CalcGravitationalAcceleration(const Body& body) noexcept;
     
 /// @brief Awakens the body if it's asleep.
 /// @relatedalso Body

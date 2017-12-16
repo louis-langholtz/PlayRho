@@ -521,7 +521,7 @@ Force2 GetCentripetalForce(const Body& body, Length2 axis)
     return Force2{dir * mass * Square(magnitudeOfVelocity) / radius};
 }
 
-Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
+Acceleration2D CalcGravitationalAcceleration(const Body& body) noexcept
 {
     const auto m1 = GetMass(body);
     if (m1 != 0_kg)
@@ -546,9 +546,9 @@ Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
             sumForce += f * dir;
         }
         // F = m a... i.e.  a = F / m.
-        return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
+        return Acceleration2D{sumForce / m1, 0 * RadianPerSquareSecond};
     }
-    return Acceleration{};
+    return Acceleration2D{};
 }
 
 } // namespace playrho

@@ -1110,18 +1110,18 @@ BodyCounter Awaken(World& world) noexcept;
 
 /// @brief Sets the accelerations of all the world's bodies.
 /// @relatedalso World
-void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept;
+void SetAccelerations(World& world, std::function<Acceleration2D(const Body& b)> fn) noexcept;
 
 /// @brief Sets the accelerations of all the world's bodies to the given value.
 /// @relatedalso World
-void SetAccelerations(World& world, Acceleration acceleration) noexcept;
+void SetAccelerations(World& world, Acceleration2D acceleration) noexcept;
 
 /// @brief Clears forces.
 /// @details Manually clear the force buffer on all bodies.
 /// @relatedalso World
 inline void ClearForces(World& world) noexcept
 {
-    SetAccelerations(world, Acceleration{world.GetGravity(), 0 * RadianPerSquareSecond});
+    SetAccelerations(world, Acceleration2D{world.GetGravity(), 0 * RadianPerSquareSecond});
 }
 
 /// @brief Creates a rectanglular enclosure.
