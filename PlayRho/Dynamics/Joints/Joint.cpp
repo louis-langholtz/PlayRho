@@ -155,13 +155,13 @@ BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* ke
     auto last = std::end(container);
     auto first = std::begin(container);
     first = std::lower_bound(first, last, key, [](const BodyConstraintPair &a, const Body* b){
-        return a.first < b;
+        return std::get<const Body*>(a) < b;
     });
-    if (first == last || key != (*first).first)
+    if ((first == last) || (key != std::get<const Body*>(*first)))
     {
         throw std::out_of_range{"invalid key"};
     }
-    return (*first).second;
+    return std::get<BodyConstraintPtr>(*first);
 }
 #endif
 

@@ -232,8 +232,8 @@ namespace {
             const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
             const auto LA = Cross(vcp.relA, P) / Radian;
             const auto LB = Cross(vcp.relB, P) / Radian;
-            vp.first -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-            vp.second += Velocity2D{invMassB * P, invRotInertiaB * LB};
+            std::get<0>(vp) -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+            std::get<1>(vp) += Velocity2D{invMassB * P, invRotInertiaB * LB};
         }
         return vp;
     }
@@ -245,8 +245,8 @@ namespace {
             const auto vp = CalcWarmStartVelocityDeltas(vc);
             const auto bodyA = vc.GetBodyA();
             const auto bodyB = vc.GetBodyB();
-            bodyA->SetVelocity(bodyA->GetVelocity() + vp.first);
-            bodyB->SetVelocity(bodyB->GetVelocity() + vp.second);
+            bodyA->SetVelocity(bodyA->GetVelocity() + std::get<0>(vp));
+            bodyB->SetVelocity(bodyB->GetVelocity() + std::get<1>(vp));
         });
     }
 
@@ -266,7 +266,7 @@ namespace {
         });
 #ifdef USE_VECTOR_MAP
         sort(begin(map), end(map), [](BodyConstraintPair a, BodyConstraintPair b) {
-            return a.first < b.first;
+            return std::get<const Body*>(a) < std::get<const Body*>(b);
         });
 #endif
         return map;
@@ -595,7 +595,7 @@ void World::Clear() noexcept
         delete GetPtr(b);
     });
     for_each(cbegin(m_contacts), cend(m_contacts), [&](const Contacts::value_type& c){
-        delete GetPtr(c.second);
+        delete GetPtr(std::get<Contact*>(c));
     });
 
     m_bodies.clear();
@@ -639,7 +639,7 @@ void World::CopyContacts(const std::map<const Body*, Body*>& bodyMap,
 {
     for (const auto& contact: range)
     {
-        auto& otherContact = GetRef(contact.second);
+        auto& otherContact = GetRef(std::get<Contact*>(contact));
         const auto otherFixtureA = otherContact.GetFixtureA();
         const auto otherFixtureB = otherContact.GetFixtureB();
         const auto childIndexA = otherContact.GetChildIndexA();
@@ -652,7 +652,7 @@ void World::CopyContacts(const std::map<const Body*, Body*>& bodyMap,
         assert(newContact);
         if (newContact != nullptr)
         {
-            const auto key = contact.first;
+            const auto key = std::get<ContactKey>(contact);
             m_contacts.push_back(KeyedContactPtr{key, newContact});
 
             BodyAtty::Insert(*newBodyA, key, newContact);
@@ -1088,8 +1088,8 @@ void World::AddJointsToIsland(Island& island, BodyStack& stack, const Body* b)
     const auto joints = b->GetJoints();
     for_each(cbegin(joints), cend(joints), [&](const Body::KeyedJointPtr& ji) {
         // Use data of ji before dereferencing its pointers.
-        const auto other = ji.first;
-        const auto joint = ji.second;
+        const auto other = std::get<Body*>(ji);
+        const auto joint = std::get<Joint*>(ji);
         assert(other == nullptr || other->IsEnabled() || !other->IsAwake());
         if (!IsIslanded(joint) && ((other == nullptr) || other->IsEnabled()))
         {
@@ -1141,7 +1141,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
         BodyAtty::UnsetIslanded(GetRef(b));
     });
     for_each(begin(m_contacts), end(m_contacts), [](Contacts::value_type& c) {
-        ContactAtty::UnsetIslanded(GetRef(c.second));
+        ContactAtty::UnsetIslanded(GetRef(std::get<Contact*>(c)));
     });
     for_each(begin(m_joints), end(m_joints), [](Joints::value_type& j) {
         JointAtty::UnsetIslanded(GetRef(j));
@@ -1328,7 +1328,7 @@ void World::ResetBodiesForSolveTOI()
 void World::ResetContactsForSolveTOI()
 {
     for_each(begin(m_contacts), end(m_contacts), [&](Contacts::value_type &c) {
-        auto& contact = GetRef(c.second);
+        auto& contact = GetRef(std::get<Contact*>(c));
         ContactAtty::UnsetIslanded(contact);
         ContactAtty::UnsetToi(contact);
         ContactAtty::ResetToiCount(contact);
@@ -1343,7 +1343,7 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     
     for (auto&& contact: m_contacts)
     {
-        auto& c = GetRef(contact.second);
+        auto& c = GetRef(std::get<Contact*>(contact));
         if (c.HasValidToi())
         {
             ++results.numValidTOI;
@@ -1409,7 +1409,7 @@ World::ContactToiData World::GetSoonestContacts(size_t reserveSize)
     minContacts.reserve(reserveSize);
     for (auto&& contact: m_contacts)
     {
-        const auto c = GetPtr(contact.second);
+        const auto c = GetPtr(std::get<Contact*>(contact));
         if (c->HasValidToi())
         {
             const auto toi = c->GetToi();
@@ -2097,7 +2097,7 @@ void World::Destroy(Contact* contact, Body* from)
     
     const auto it = find_if(cbegin(m_contacts), cend(m_contacts),
                             [&](const Contacts::value_type& c) {
-        return GetPtr(c.second) == contact;
+        return GetPtr(std::get<Contact*>(c)) == contact;
     });
     if (it != cend(m_contacts))
     {
@@ -2110,8 +2110,8 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
     const auto beforeSize = contacts.size();
     contacts.erase(std::remove_if(begin(contacts), end(contacts), [&](Contacts::value_type& c)
     {
-        const auto key = c.first;
-        auto& contact = GetRef(c.second);
+        const auto key = std::get<ContactKey>(c);
+        auto& contact = GetRef(std::get<Contact*>(c));
         
         if (!TestOverlap(m_tree, key.GetMin(), key.GetMax()))
         {
@@ -2170,7 +2170,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     // Update awake contacts.
     for_each(/*execution::par_unseq,*/ begin(contacts), end(contacts),
              [&](Contacts::value_type& c) {
-        auto& contact = GetRef(c.second);
+        auto& contact = GetRef(std::get<Contact*>(c));
 #if 0
         ContactAtty::Update(contact, updateConf, m_contactListener);
         ++updated;
@@ -2371,7 +2371,7 @@ bool World::Add(ContactKey key)
     
     const auto contacts = searchBody->GetContacts();
     const auto it = find_if(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
-        return ci.first == key;
+        return std::get<ContactKey>(ci) == key;
     });
     if (it != cend(contacts))
     {
@@ -2790,7 +2790,7 @@ ContactCounter GetTouchingCount(const World& world) noexcept
     const auto contacts = world.GetContacts();
     return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
                                                 [&](const World::Contacts::value_type &c) {
-        return GetRef(c.second).IsTouching();
+        return GetRef(std::get<Contact*>(c)).IsTouching();
     }));
 }
 

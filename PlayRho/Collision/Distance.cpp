@@ -54,16 +54,16 @@ namespace {
         switch (count)
         {
             case 3:
-                simplexEdges[2] = GetSimplexEdge(proxyA, xfA, indexPairs[2].first,
-                                                 proxyB, xfB, indexPairs[2].second);
+                simplexEdges[2] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[2]),
+                                                 proxyB, xfB, std::get<1>(indexPairs[2]));
                 // [[fallthrough]]
             case 2:
-                simplexEdges[1] = GetSimplexEdge(proxyA, xfA, indexPairs[1].first,
-                                                 proxyB, xfB, indexPairs[1].second);
+                simplexEdges[1] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[1]),
+                                                 proxyB, xfB, std::get<1>(indexPairs[1]));
                 // [[fallthrough]]
             case 1:
-                simplexEdges[0] = GetSimplexEdge(proxyA, xfA, indexPairs[0].first,
-                                                 proxyB, xfB, indexPairs[0].second);
+                simplexEdges[0] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[0]),
+                                                 proxyB, xfB, std::get<1>(indexPairs[0]));
                 // [[fallthrough]]
         }
         simplexEdges.size(static_cast<size_type>(count));

@@ -266,7 +266,7 @@ void Body::SetTransformation(Transformation2D value) noexcept
     {
         m_xf = value;
         std::for_each(cbegin(m_contacts), cend(m_contacts), [&](KeyedContactPtr ci) {
-            ci.second->FlagForUpdating();
+            std::get<Contact*>(ci)->FlagForUpdating();
         });
     }
 }
@@ -353,7 +353,7 @@ bool Body::Insert(ContactKey key, Contact* contact)
 #ifndef NDEBUG
     // Prevent the same contact from being added more than once...
     const auto it = std::find_if(cbegin(m_contacts), cend(m_contacts), [&](KeyedContactPtr ci) {
-        return ci.second == contact;
+        return std::get<Contact*>(ci) == contact;
     });
     assert(it == end(m_contacts));
     if (it != end(m_contacts))
@@ -369,7 +369,7 @@ bool Body::Insert(ContactKey key, Contact* contact)
 bool Body::Erase(const Joint* joint)
 {
     const auto it = std::find_if(begin(m_joints), end(m_joints), [&](KeyedJointPtr ji) {
-        return ji.second == joint;
+        return std::get<Joint*>(ji) == joint;
     });
     if (it != end(m_joints))
     {
@@ -382,7 +382,7 @@ bool Body::Erase(const Joint* joint)
 bool Body::Erase(const Contact* contact)
 {
     const auto it = std::find_if(begin(m_contacts), end(m_contacts), [&](KeyedContactPtr ci) {
-        return ci.second == contact;
+        return std::get<Contact*>(ci) == contact;
     });
     if (it != end(m_contacts))
     {
@@ -415,7 +415,7 @@ bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     // Does a joint prevent collision?
     const auto joints = lhs.GetJoints();
     const auto it = std::find_if(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr ji) {
-        return (ji.first == &rhs) && !(ji.second->GetCollideConnected());
+        return (std::get<0>(ji) == &rhs) && !(std::get<Joint*>(ji)->GetCollideConnected());
     });
     return it == end(joints);
 }
@@ -542,7 +542,7 @@ Acceleration2D CalcGravitationalAcceleration(const Body& body) noexcept
             const auto dir = GetUnitVector(delta);
             const auto rr = GetMagnitudeSquared(delta);
             const auto orderedMass = std::minmax(m1, m2);
-            const auto f = (BigG * orderedMass.first) * (orderedMass.second / rr);
+            const auto f = (BigG * std::get<0>(orderedMass)) * (std::get<1>(orderedMass) / rr);
             sumForce += f * dir;
         }
         // F = m a... i.e.  a = F / m.

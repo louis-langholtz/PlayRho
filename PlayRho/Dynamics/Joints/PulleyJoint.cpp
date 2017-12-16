@@ -179,13 +179,13 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     // Get the pulley axes.
     const auto pA = Length2{posA.linear + rA - m_groundAnchorA};
     const auto uvresultA = UnitVec2::Get(pA[0]/Meter, pA[1]/Meter);
-    const auto uA = uvresultA.first;
-    const auto lengthA = uvresultA.second * Meter;
+    const auto uA = std::get<UnitVec2>(uvresultA);
+    const auto lengthA = std::get<Real>(uvresultA) * 1_m;
 
     const auto pB = Length2{posB.linear + rB - m_groundAnchorB};
     const auto uvresultB = UnitVec2::Get(pB[0]/Meter, pB[1]/Meter);
-    const auto uB = uvresultB.first;
-    const auto lengthB = uvresultB.second * Meter;
+    const auto uB = std::get<UnitVec2>(uvresultB);
+    const auto lengthB = std::get<Real>(uvresultB) * 1_m;
 
     // Compute effective mass.
     const auto ruA = Length{Cross(rA, uA)};

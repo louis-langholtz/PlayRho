@@ -212,7 +212,7 @@ namespace playrho {
         
         /// @brief Internal pair type accepting constructor.
         PLAYRHO_CONSTEXPR inline explicit Interval(pair_type pair) noexcept:
-            m_min{pair.first}, m_max{pair.second}
+            m_min{std::get<0>(pair)}, m_max{std::get<1>(pair)}
         {
             // Intentionally empty.
         }

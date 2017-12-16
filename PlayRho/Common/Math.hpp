@@ -947,7 +947,7 @@ PLAYRHO_CONSTEXPR inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcep
 template <class T>
 inline UnitVec2 GetUnitVector(Vector2<T> value, UnitVec2 fallback = UnitVec2::GetDefaultFallback())
 {
-    return UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), fallback).first;
+    return std::get<0>(UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), fallback));
 }
     
 /// @brief Gets the vertices for a circle described by the given parameters.

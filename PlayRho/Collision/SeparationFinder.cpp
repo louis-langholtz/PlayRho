@@ -31,15 +31,15 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
     assert(proxyB.GetVertexCount() > 0);
     
     const auto numIndices = GetNumIndices(indices);
-    const auto type = (numIndices == 1)? e_points: ((indices[0].first == indices[1].first)? e_faceB: e_faceA);
+    const auto type = (numIndices == 1)? e_points: ((std::get<0>(indices[0]) == std::get<0>(indices[1]))? e_faceB: e_faceA);
     
     switch (type)
     {
         case e_points:
         {
             const auto ip0 = indices[0];
-            const auto localPointA = proxyA.GetVertex(ip0.first);
-            const auto localPointB = proxyB.GetVertex(ip0.second);
+            const auto localPointA = proxyA.GetVertex(std::get<0>(ip0));
+            const auto localPointB = proxyB.GetVertex(std::get<1>(ip0));
             const auto pointA = Transform(localPointA, xfA);
             const auto pointB = Transform(localPointB, xfB);
             const auto axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
@@ -51,18 +51,18 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
             const auto ip1 = indices[1];
             
             // Two points on B and one on A.
-            const auto localPointB1 = proxyB.GetVertex(ip0.second);
-            const auto localPointB2 = proxyB.GetVertex(ip1.second);
+            const auto localPointB1 = proxyB.GetVertex(std::get<1>(ip0));
+            const auto localPointB2 = proxyB.GetVertex(std::get<1>(ip1));
             const auto lpDelta = localPointB2 - localPointB1;
             
             const auto axis = GetUnitVector(GetFwdPerpendicular(lpDelta),
                                             UnitVec2::GetZero());
             const auto normal = Rotate(axis, xfB.q);
             
-            const auto localPoint = (localPointB1 + localPointB2) / Real(2);
+            const auto localPoint = (localPointB1 + localPointB2) / 2;
             const auto pointB = Transform(localPoint, xfB);
             
-            const auto localPointA = proxyA.GetVertex(ip0.first);
+            const auto localPointA = proxyA.GetVertex(std::get<0>(ip0));
             const auto pointA = Transform(localPointA, xfA);
             
             const auto deltaPoint = pointA - pointB;
@@ -78,17 +78,17 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
             const auto ip1 = indices[1];
             
             // Two points on A and one or two points on B.
-            const auto localPointA1 = proxyA.GetVertex(ip0.first);
-            const auto localPointA2 = proxyA.GetVertex(ip1.first);
+            const auto localPointA1 = proxyA.GetVertex(std::get<0>(ip0));
+            const auto localPointA2 = proxyA.GetVertex(std::get<0>(ip1));
             const auto delta = localPointA2 - localPointA1;
             
             const auto axis = GetUnitVector(GetFwdPerpendicular(delta), UnitVec2::GetZero());
             const auto normal = Rotate(axis, xfA.q);
             
-            const auto localPoint = (localPointA1 + localPointA2) / Real(2);
+            const auto localPoint = (localPointA1 + localPointA2) / 2;
             const auto pointA = Transform(localPoint, xfA);
             
-            const auto localPointB = proxyB.GetVertex(ip0.second);
+            const auto localPointB = proxyB.GetVertex(std::get<1>(ip0));
             const auto pointB = Transform(localPointB, xfB);
             
             const auto deltaPoint = pointB - pointA;
@@ -150,8 +150,8 @@ SeparationFinder::FindMinSeparationForFaceB(const Transformation2D& xfA,
 Length SeparationFinder::EvaluateForPoints(const Transformation2D& xfA, const Transformation2D& xfB,
                                            IndexPair indexPair) const
 {
-    const auto pointA = Transform(m_proxyA.GetVertex(indexPair.first), xfA);
-    const auto pointB = Transform(m_proxyB.GetVertex(indexPair.second), xfB);
+    const auto pointA = Transform(m_proxyA.GetVertex(std::get<0>(indexPair)), xfA);
+    const auto pointB = Transform(m_proxyB.GetVertex(std::get<1>(indexPair)), xfB);
     const auto delta = pointB - pointA;
     return Dot(delta, m_axis);
 }
@@ -161,7 +161,7 @@ Length SeparationFinder::EvaluateForFaceA(const Transformation2D& xfA, const Tra
 {
     const auto normal = Rotate(m_axis, xfA.q);
     const auto pointA = Transform(m_localPoint, xfA);
-    const auto pointB = Transform(m_proxyB.GetVertex(indexPair.second), xfB);
+    const auto pointB = Transform(m_proxyB.GetVertex(std::get<1>(indexPair)), xfB);
     const auto delta = pointB - pointA;
     return Dot(delta, normal);
 }
@@ -171,7 +171,7 @@ Length SeparationFinder::EvaluateForFaceB(const Transformation2D& xfA, const Tra
 {
     const auto normal = Rotate(m_axis, xfB.q);
     const auto pointB = Transform(m_localPoint, xfB);
-    const auto pointA = Transform(m_proxyA.GetVertex(indexPair.first), xfA);
+    const auto pointA = Transform(m_proxyA.GetVertex(std::get<0>(indexPair)), xfA);
     const auto delta = pointA - pointB;
     return Dot(delta, normal);
 }

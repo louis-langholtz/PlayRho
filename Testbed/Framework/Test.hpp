@@ -37,6 +37,7 @@
 #include <algorithm>
 #include <limits>
 #include <set>
+#include <utility>
 
 /// @brief Adds the entire playrho namespace into any code that includes this file.
 /// @warning Using a namespace like this within a header file is ill advised. It's done
@@ -164,7 +165,7 @@ public:
     
     const std::string& GetKeyHandlerInfo(KeyHandlerID id) const
     {
-        return m_keyHandlers[id].first;
+        return std::get<0>(m_keyHandlers[id]);
     }
     
     SizedRange<HandledKeys::const_iterator> GetHandledKeys() const
@@ -330,7 +331,7 @@ protected:
 
     std::string m_status;
     TextLinePos m_textLine = TextLinePos{30};
-    AreaDensity m_bombDensity = 20 * KilogramPerSquareMeter;
+    AreaDensity m_bombDensity = 20_kgpm2;
     Length m_bombRadius = 0.3f * Meter;
 
 private:

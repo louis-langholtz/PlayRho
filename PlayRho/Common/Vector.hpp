@@ -403,7 +403,7 @@ PLAYRHO_CONSTEXPR inline bool operator<= (const Vector<T, N>& lhs, const Vector<
     const auto lhsEnd = std::cend(lhs);
     const auto rhsEnd = std::cend(rhs);
     const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs), rhsEnd);
-    return (diff.first == lhsEnd) || (*diff.first < *diff.second);
+    return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) < *std::get<1>(diff));
 }
 
 /// @brief Lexicographical greater-than operator.
@@ -423,7 +423,7 @@ PLAYRHO_CONSTEXPR inline bool operator>= (const Vector<T, N>& lhs, const Vector<
     const auto lhsEnd = std::cend(lhs);
     const auto rhsEnd = std::cend(rhs);
     const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs), rhsEnd);
-    return (diff.first == lhsEnd) || (*diff.first > *diff.second);
+    return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) > *std::get<1>(diff));
 }
 
 /// @brief Gets the I'th element of the given collection.

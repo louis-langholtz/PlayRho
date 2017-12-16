@@ -93,8 +93,8 @@ VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2 impu
 Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2 newImpulses)
 {
     const auto delta_v = GetVelocityDelta(vc, newImpulses - GetNormalImpulses(vc));
-    vc.GetBodyA()->SetVelocity(vc.GetBodyA()->GetVelocity() + delta_v.first);
-    vc.GetBodyB()->SetVelocity(vc.GetBodyB()->GetVelocity() + delta_v.second);
+    vc.GetBodyA()->SetVelocity(vc.GetBodyA()->GetVelocity() + std::get<0>(delta_v));
+    vc.GetBodyB()->SetVelocity(vc.GetBodyB()->GetVelocity() + std::get<1>(delta_v));
     SetNormalImpulses(vc, newImpulses);
     return std::max(Abs(newImpulses[0]), Abs(newImpulses[1]));
 }

@@ -77,7 +77,7 @@ TEST(SeparationFinder, BehavesAsExpected)
     {
         // Prepare input for distance query.
         const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
-        const auto distance = sqrt(GetMagnitudeSquared(witnessPoints.first - witnessPoints.second));
+        const auto distance = GetMagnitude(std::get<0>(witnessPoints) - std::get<1>(witnessPoints));
 
         const auto minSeparation = fcn.FindMinSeparation(xfA, xfB);
 
