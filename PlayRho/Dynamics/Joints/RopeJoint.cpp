@@ -194,8 +194,8 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto angImpulseA = Cross(rA, linImpulse) / Radian;
     const auto angImpulseB = Cross(rB, linImpulse) / Radian;
 
-    posA -= Position{bodyConstraintA->GetInvMass() * linImpulse, bodyConstraintA->GetInvRotInertia() * angImpulseA};
-    posB += Position{bodyConstraintB->GetInvMass() * linImpulse, bodyConstraintB->GetInvRotInertia() * angImpulseB};
+    posA -= Position2D{bodyConstraintA->GetInvMass() * linImpulse, bodyConstraintA->GetInvRotInertia() * angImpulseA};
+    posB += Position2D{bodyConstraintB->GetInvMass() * linImpulse, bodyConstraintB->GetInvRotInertia() * angImpulseB};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);

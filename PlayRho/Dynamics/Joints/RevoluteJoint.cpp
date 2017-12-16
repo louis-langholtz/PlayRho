@@ -411,8 +411,8 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         GetY(GetY(K)) = eyy;
         const auto P = -Solve(K, C);
 
-        posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
-        posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
+        posA -= Position2D{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
+        posB += Position2D{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
     }
 
     bodyConstraintA->SetPosition(posA);

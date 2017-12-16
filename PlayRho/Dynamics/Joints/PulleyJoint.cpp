@@ -205,8 +205,8 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto PA = -impulse * uA;
     const auto PB = -m_ratio * impulse * uB;
 
-    posA += Position{invMassA * PA, invRotInertiaA * Cross(rA, PA) / Radian};
-    posB += Position{invMassB * PB, invRotInertiaB * Cross(rB, PB) / Radian};
+    posA += Position2D{invMassA * PA, invRotInertiaA * Cross(rA, PA) / Radian};
+    posB += Position2D{invMassB * PB, invRotInertiaB * Cross(rB, PB) / Radian};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);

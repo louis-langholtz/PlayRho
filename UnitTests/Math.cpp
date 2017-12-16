@@ -608,7 +608,7 @@ TEST(Math, GetPosition)
     const auto y = Real{5.515012264251709e+00f};
     const auto value = Real{0.0866042823f};
 
-    const auto oldPos = Position{Vec2{x, y} * Meter, 0_rad};
+    const auto oldPos = Position2D{Vec2{x, y} * Meter, 0_rad};
     const auto newPos = GetPosition(oldPos, oldPos, value);
     
     EXPECT_EQ(oldPos.linear, newPos.linear);

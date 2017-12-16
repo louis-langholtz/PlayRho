@@ -398,19 +398,19 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     const auto impulse = ((invMass > 0)? -C / invMass: 0) * Kilogram * Meter;
 
-    posA += Position{
+    posA += Position2D{
         bodyConstraintA->GetInvMass() * impulse * JvAC,
         bodyConstraintA->GetInvRotInertia() * impulse * JwA * Meter / Radian
     };
-    posB += Position{
+    posB += Position2D{
         bodyConstraintB->GetInvMass() * impulse * JvBD,
         bodyConstraintB->GetInvRotInertia() * impulse * JwB * Meter / Radian
     };
-    posC -= Position{
+    posC -= Position2D{
         bodyConstraintC->GetInvMass() * impulse * JvAC,
         bodyConstraintC->GetInvRotInertia() * impulse * JwC * Meter / Radian
     };
-    posD -= Position{
+    posD -= Position2D{
         bodyConstraintD->GetInvMass() * impulse * JvBD,
         bodyConstraintD->GetInvRotInertia() * impulse * JwD * Meter / Radian
     };

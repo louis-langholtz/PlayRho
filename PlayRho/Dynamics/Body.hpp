@@ -913,7 +913,7 @@ bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept;
 
 /// @brief Gets the "position 1" Position information for the given body.
 /// @relatedalso Body
-inline Position GetPosition1(const Body& body) noexcept
+inline Position2D GetPosition1(const Body& body) noexcept
 {
     return body.GetSweep().pos1;
 }

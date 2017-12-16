@@ -288,9 +288,9 @@ inline Angle GetNormalized(Angle value) noexcept
 /// @brief Gets the "normalized" position.
 /// @details Enforces a wrap-around of one rotation on the angular position.
 /// @note Use to prevent unbounded angles in positions.
-inline Position GetNormalized(const Position& val) noexcept
+inline Position2D GetNormalized(const Position2D& val) noexcept
 {
-    return Position{val.linear, GetNormalized(val.angular)};
+    return Position2D{val.linear, GetNormalized(val.angular)};
 }
 
 /// @brief Gets a sweep with the given sweeps's angles normalized.
@@ -814,7 +814,7 @@ PLAYRHO_CONSTEXPR inline Transformation GetTransformation(const Length2 ctr, con
 }
 
 /// @brief Gets the transformation for the given values.
-inline Transformation GetTransformation(const Position pos, const Length2 local_ctr) noexcept
+inline Transformation GetTransformation(const Position2D pos, const Length2 local_ctr) noexcept
 {
     assert(IsValid(pos));
     assert(IsValid(local_ctr));

@@ -162,7 +162,7 @@ private:
     }
     
     /// @brief Sets the position0 value of the given body to the given position.
-    static void SetPosition0(Body& b, const Position value) noexcept
+    static void SetPosition0(Body& b, const Position2D value) noexcept
     {
         assert(b.IsSpeedable() || b.m_sweep.pos0 == value);
         b.m_sweep.pos0 = value;
@@ -170,7 +170,7 @@ private:
     
     /// Sets the body sweep's position 1 value.
     /// @note This sets what Body::GetWorldCenter returns.
-    static void SetPosition1(Body& b, const Position value) noexcept
+    static void SetPosition1(Body& b, const Position2D value) noexcept
     {
         assert(b.IsSpeedable() || b.m_sweep.pos1 == value);
         b.m_sweep.pos1 = value;

@@ -78,7 +78,7 @@ static playrho::UnitVec2 GetRandUnitVec2(playrho::Angle lo, playrho::Angle hi)
 }
 
 static playrho::Transformation
-GetRandTransformation(playrho::Position pos0, playrho::Position pos1)
+GetRandTransformation(playrho::Position2D pos0, playrho::Position2D pos1)
 {
     const auto x0 = static_cast<double>(playrho::Real{GetX(pos0.linear) / playrho::Meter});
     const auto y0 = static_cast<double>(playrho::Real{GetY(pos0.linear) / playrho::Meter});
@@ -138,7 +138,7 @@ GetRandUnitVec2Pair(playrho::Angle lo, playrho::Angle hi)
 }
 
 static std::pair<playrho::Transformation, playrho::Transformation>
-GetRandTransformationPair(playrho::Position pos0, playrho::Position pos1)
+GetRandTransformationPair(playrho::Position2D pos0, playrho::Position2D pos1)
 {
     return std::make_pair(GetRandTransformation(pos0, pos1), GetRandTransformation(pos0, pos1));
 }
@@ -216,7 +216,7 @@ GetRandUnitVec2Pairs(unsigned count, playrho::Angle lo, playrho::Angle hi)
 }
 
 static std::vector<std::pair<playrho::Transformation, playrho::Transformation>>
-GetRandTransformationPairs(unsigned count, playrho::Position pos0, playrho::Position pos1)
+GetRandTransformationPairs(unsigned count, playrho::Position2D pos0, playrho::Position2D pos1)
 {
     auto rands = std::vector<std::pair<playrho::Transformation, playrho::Transformation>>{};
     rands.reserve(count);
@@ -1213,12 +1213,12 @@ static TransformationPairs GetTransformationPairs(unsigned count)
 {
     static std::map<unsigned,TransformationPairs> xfms;
 
-    constexpr auto pos0 = playrho::Position{
+    constexpr auto pos0 = playrho::Position2D{
         playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter),
         playrho::Angle{playrho::Real{  0.0f} * playrho::Degree}
     }; // bottom
     
-    constexpr auto pos1 = playrho::Position{
+    constexpr auto pos1 = playrho::Position2D{
         playrho::Vec2{0, +2} * (playrho::Real(1) * playrho::Meter),
         playrho::Angle{playrho::Real{360.0f} * playrho::Degree}
     }; // top
@@ -1431,14 +1431,14 @@ static void ConstructAndAssignVC(benchmark::State& state)
     const auto worldManifold = playrho::WorldManifold{normal, ps0};
     
     const auto locA = playrho::Length2{playrho::Real(+1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
-    const auto posA = playrho::Position{locA, playrho::Angle(0)};
+    const auto posA = playrho::Position2D{locA, playrho::Angle(0)};
     const auto velA = playrho::Velocity{
         playrho::LinearVelocity2{playrho::Real(-0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
     
     const auto locB = playrho::Length2{playrho::Real(-1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
-    const auto posB = playrho::Position{locB, playrho::Angle(0)};
+    const auto posB = playrho::Position2D{locB, playrho::Angle(0)};
     const auto velB = playrho::Velocity{
         playrho::LinearVelocity2{playrho::Real(+0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
@@ -1512,14 +1512,14 @@ static void SolveVC(benchmark::State& state)
     const auto worldManifold = playrho::WorldManifold{normal, ps0};
     
     const auto locA = playrho::Length2{playrho::Real(+1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
-    const auto posA = playrho::Position{locA, playrho::Angle(0)};
+    const auto posA = playrho::Position2D{locA, playrho::Angle(0)};
     const auto velA = playrho::Velocity{
         playrho::LinearVelocity2{playrho::Real(-0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
 
     const auto locB = playrho::Length2{playrho::Real(-1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
-    const auto posB = playrho::Position{locB, playrho::Angle(0)};
+    const auto posB = playrho::Position2D{locB, playrho::Angle(0)};
     const auto velB = playrho::Velocity{
         playrho::LinearVelocity2{playrho::Real(+0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}

@@ -530,8 +530,8 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
         // Product of InvMass * P is: L
         // Product of InvRotInertia * L{A,B} is: QP
         return PositionSolution{
-            -Position{invMassA * P, invRotInertiaA * LA},
-            +Position{invMassB * P, invRotInertiaB * LB},
+            -Position2D{invMassA * P, invRotInertiaA * LA},
+            +Position2D{invMassB * P, invRotInertiaB * LB},
             separation
         };
     };

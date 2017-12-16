@@ -31,8 +31,8 @@ namespace playrho {
     /// @brief Solution for position constraint.
     struct PositionSolution
     {
-        Position pos_a; ///< Position A.
-        Position pos_b; ///< Position B.
+        Position2D pos_a; ///< Position A.
+        Position2D pos_b; ///< Position B.
         Length min_separation; ///< Min separation.
     };
 

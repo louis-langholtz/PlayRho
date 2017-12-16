@@ -149,7 +149,7 @@ namespace {
             const auto velocity = bc.GetVelocity();
             const auto translation = h * velocity.linear;
             const auto rotation = h * velocity.angular;
-            bc.SetPosition(bc.GetPosition() + Position{translation, rotation});
+            bc.SetPosition(bc.GetPosition() + Position2D{translation, rotation});
         });
     }
     
@@ -1668,7 +1668,7 @@ World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contac
     return results;
 }
 
-void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
+void World::UpdateBody(Body& body, const Position2D& pos, const Velocity& vel)
 {
     assert(IsValid(pos));
     assert(IsValid(vel));

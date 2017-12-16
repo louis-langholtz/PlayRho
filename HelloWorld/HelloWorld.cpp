@@ -50,11 +50,8 @@ int main()
                                        .UseLocation(Length2{0_m, 4_m})
                                        .UseType(BodyType::Dynamic));
 
-    // Define a disk shape for the ball body.
-    const auto disk = DiskShapeConf{}.UseRadius(1_m);
-
-    // Add the disk shape to the ball body.
-    ball->CreateFixture(disk);
+    // Define a disk shape for the ball body and create a fixture to add it.
+    ball->CreateFixture(DiskShapeConf{}.UseRadius(1_m));
 
     // Prepare for simulation. Typically code uses a time step of 1/60 of a second
     // (60Hz). The defaults are setup for that and to generally provide a high

@@ -49,7 +49,7 @@ namespace playrho
         PLAYRHO_CONSTEXPR inline Sweep(const Sweep& copy) = default;
         
         /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline Sweep(const Position p0, const Position p1,
+        PLAYRHO_CONSTEXPR inline Sweep(const Position2D p0, const Position2D p1,
                         const Length2 lc = Length2{0_m, 0_m},
                         Real a0 = 0) noexcept:
         	pos0{p0}, pos1{p1}, localCenter{lc}, alpha0{a0}
@@ -59,7 +59,7 @@ namespace playrho
         }
         
         /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline explicit Sweep(const Position p,
+        PLAYRHO_CONSTEXPR inline explicit Sweep(const Position2D p,
                                  const Length2 lc = Length2{0_m, 0_m}):
         	Sweep{p, p, lc, 0}
         {
@@ -91,10 +91,10 @@ namespace playrho
         void ResetAlpha0() noexcept;
         
         /// @brief Center world position and world angle at time "0".
-        Position pos0;
+        Position2D pos0;
 
         /// @brief Center world position and world angle at time "1".
-        Position pos1;
+        Position2D pos1;
         
     private:
         /// @brief Local center of mass position.

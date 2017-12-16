@@ -36,11 +36,11 @@ public:
     {
         const auto offset = Vec2{Real(-35), Real(70)} * 1_m;
         const auto sweepA = Sweep{
-            Position{Vec2(24.0f, -60.0f) * 1_m + offset, 2.95_rad}
+            Position2D{Vec2(24.0f, -60.0f) * 1_m + offset, 2.95_rad}
         };
         const auto sweepB = Sweep{
-            Position{Vec2(53.474274f, -50.252514f) * 1_m + offset, 513.36676_rad},
-            Position{Vec2(54.595478f, -51.083473f) * 1_m + offset, 513.62781_rad}
+            Position2D{Vec2(53.474274f, -50.252514f) * 1_m + offset, 513.36676_rad},
+            Position2D{Vec2(54.595478f, -51.083473f) * 1_m + offset, 513.62781_rad}
         };
 
         const auto output = GetToiViaSat(GetChild(m_shapeA, 0), sweepA,

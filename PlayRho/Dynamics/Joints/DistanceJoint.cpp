@@ -234,8 +234,8 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto impulse = -m_mass * C;
     const auto P = impulse * u;
 
-    posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
-    posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
+    posA -= Position2D{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
+    posB += Position2D{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);

@@ -301,8 +301,8 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
     const auto LA = impulse * sAy / Radian;
     const auto LB = impulse * sBy / Radian;
 
-    posA -= Position{invMassA * P, invRotInertiaA * LA};
-    posB += Position{invMassB * P, invRotInertiaB * LB};
+    posA -= Position2D{invMassA * P, invRotInertiaA * LA};
+    posB += Position2D{invMassB * P, invRotInertiaB * LB};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);

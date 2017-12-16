@@ -30,8 +30,8 @@ static PLAYRHO_CONSTEXPR const auto Baumgarte = Real{2} / Real{10};
 
 TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
-    const auto old_pA = Position{Vec2{-2, 0} * Meter, 0_deg};
-    const auto old_pB = Position{Vec2{+2, 0} * Meter, 0_deg};
+    const auto old_pA = Position2D{Vec2{-2, 0} * Meter, 0_deg};
+    const auto old_pB = Position2D{Vec2{+2, 0} * Meter, 0_deg};
     const auto old_vA = Velocity{LinearVelocity2{}, 0_deg / 1_s};
     const auto old_vB = Velocity{LinearVelocity2{}, 0_deg / 1_s};
 
@@ -73,8 +73,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 
 TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 {
-    const auto old_pA = Position{Vec2{0, -2} * Meter, 0_deg};
-    const auto old_pB = Position{Vec2{0, +2} * Meter, 0_deg};
+    const auto old_pA = Position2D{Vec2{0, -2} * Meter, 0_deg};
+    const auto old_pB = Position2D{Vec2{0, +2} * Meter, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
     
@@ -126,8 +126,8 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
     
     const auto lcA = Length2{};
     const auto lcB = Length2{};
-    const auto old_pA = Position{Length2{}, 0_deg};
-    const auto old_pB = Position{Length2{}, 0_deg};
+    const auto old_pA = Position2D{Length2{}, 0_deg};
+    const auto old_pB = Position2D{Length2{}, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
     auto bA = BodyConstraint{
@@ -164,8 +164,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     const auto ctr_x = Real(100);
     
     // square A is left of square B
-    const auto old_pA = Position{Vec2{ctr_x - 1, 0} * Meter, 0_deg};
-    const auto old_pB = Position{Vec2{ctr_x + 1, 0} * Meter, 0_deg};
+    const auto old_pA = Position2D{Vec2{ctr_x - 1, 0} * Meter, 0_deg};
+    const auto old_pB = Position2D{Vec2{ctr_x + 1, 0} * Meter, 0_deg};
 
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
@@ -219,8 +219,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     const auto ctr_x = Real(100);
     
     // square A is right of square B
-    const auto old_pA = Position{Vec2{ctr_x + 1, 0} * Meter, 0_deg};
-    const auto old_pB = Position{Vec2{ctr_x - 1, 0} * Meter, 0_deg};
+    const auto old_pA = Position2D{Vec2{ctr_x + 1, 0} * Meter, 0_deg};
+    const auto old_pB = Position2D{Vec2{ctr_x - 1, 0} * Meter, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
@@ -273,8 +273,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     const auto ctr_y = Real(100);
     
     // square A is below square B
-    const auto old_pA = Position{Vec2{0, ctr_y - 1} * Meter, 0_deg};
-    const auto old_pB = Position{Vec2{0, ctr_y + 1} * Meter, 0_deg};
+    const auto old_pA = Position2D{Vec2{0, ctr_y - 1} * Meter, 0_deg};
+    const auto old_pB = Position2D{Vec2{0, ctr_y + 1} * Meter, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
@@ -339,8 +339,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     const auto ctr_y = Real(100);
 
     // square A is above square B
-    const auto old_pA = Position{Vec2{0, ctr_y + 1} * Meter, 0_deg};
-    const auto old_pB = Position{Vec2{0, ctr_y - 1} * Meter, 0_deg};
+    const auto old_pA = Position2D{Vec2{0, ctr_y + 1} * Meter, 0_deg};
+    const auto old_pB = Position2D{Vec2{0, ctr_y - 1} * Meter, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
@@ -411,8 +411,8 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
     ASSERT_EQ(manifold.GetType(), Manifold::e_faceA);
     ASSERT_EQ(manifold.GetPointCount(), 2);
 
-    const auto old_pA = Position{Length2{}, 0_deg};
-    const auto old_pB = Position{Length2{}, 0_deg};
+    const auto old_pA = Position2D{Length2{}, 0_deg};
+    const auto old_pB = Position2D{Length2{}, 0_deg};
     const auto old_vA = Velocity{};
     const auto old_vB = Velocity{};
 
