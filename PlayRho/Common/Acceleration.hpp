@@ -27,7 +27,7 @@
 
 namespace playrho
 {
-    /// @brief Acceleration related data structure.
+    /// @brief 2-D acceleration related data structure.
     /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
     struct Acceleration2D
     {
