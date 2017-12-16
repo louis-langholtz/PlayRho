@@ -94,8 +94,8 @@ IndexPairDistance GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformatio
         if (separation < ap.distance)
         {
             separation = ap.distance;
-            indexPair.first = i;
-            indexPair.second = ap.indices.first;
+            std::get<0>(indexPair) = i;
+            std::get<1>(indexPair) = std::get<0>(ap.indices);
         }
     }
     return IndexPairDistance{separation, indexPair};
@@ -119,8 +119,8 @@ IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D
         if (separation < ap.distance)
         {
             separation = ap.distance;
-            indexPair.first = i;
-            indexPair.second = ap.indices.first;
+            std::get<0>(indexPair) = i;
+            std::get<1>(indexPair) = std::get<0>(ap.indices);
         }
     }
     return IndexPairDistance{separation, indexPair};
@@ -143,13 +143,13 @@ IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D
         const auto ap = GetMinIndexSeparation(proxy2.GetVertices(), normal, offset);
         if (ap.distance > stop)
         {
-            return IndexPairDistance{ap.distance, IndexPair{i, ap.indices.first}};
+            return IndexPairDistance{ap.distance, IndexPair{i, std::get<0>(ap.indices)}};
         }
         if (separation < ap.distance)
         {
             separation = ap.distance;
-            indexPair.first = i;
-            indexPair.second = ap.indices.first;
+            std::get<0>(indexPair) = i;
+            std::get<1>(indexPair) = std::get<0>(ap.indices);
         }
     }
     return IndexPairDistance{separation, indexPair};
@@ -170,13 +170,13 @@ IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, const DistancePr
         const auto ap = GetMinIndexSeparation(proxy2.GetVertices(), normal, offset);
         if (ap.distance > stop)
         {
-            return IndexPairDistance{ap.distance, IndexPair{i, ap.indices.first}};
+            return IndexPairDistance{ap.distance, IndexPair{i, std::get<0>(ap.indices)}};
         }
         if (separation < ap.distance)
         {
             separation = ap.distance;
-            indexPair.first = i;
-            indexPair.second = ap.indices.first;
+            std::get<0>(indexPair) = i;
+            std::get<1>(indexPair) = std::get<0>(ap.indices);
         }
     }
     return IndexPairDistance{separation, indexPair};

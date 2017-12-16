@@ -79,8 +79,8 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto posDelta = Length2{(posB.linear + m_rB) - (posA.linear + m_rA)};
     
     const auto uvresult = UnitVec2::Get(posDelta[0]/Meter, posDelta[1]/Meter);
-    const auto uv = uvresult.first;
-    m_length = uvresult.second * Meter;
+    const auto uv = std::get<UnitVec2>(uvresult);
+    m_length = std::get<Real>(uvresult) * 1_m;
 
     const auto C = m_length - m_maxLength;
     m_state = (C > 0_m)? e_atUpperLimit: e_inactiveLimit;
@@ -183,8 +183,8 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto posDelta = (posB.linear + rB) - (posA.linear + rA);
     
     const auto uvresult = UnitVec2::Get(posDelta[0]/Meter, posDelta[1]/Meter);
-    const auto u = uvresult.first;
-    const auto length = uvresult.second * Meter;
+    const auto u = std::get<UnitVec2>(uvresult);
+    const auto length = std::get<Real>(uvresult) * 1_m;
     
     const auto C = Clamp(length - m_maxLength, 0_m, conf.maxLinearCorrection);
 

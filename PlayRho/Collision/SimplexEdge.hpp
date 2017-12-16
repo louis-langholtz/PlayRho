@@ -56,10 +56,10 @@ namespace playrho {
         PLAYRHO_CONSTEXPR inline auto GetPointB() const noexcept { return m_wB; }
 
         /// @brief Gets index A.
-        PLAYRHO_CONSTEXPR inline auto GetIndexA() const noexcept { return m_indexPair.first; }
+        PLAYRHO_CONSTEXPR inline auto GetIndexA() const noexcept { return std::get<0>(m_indexPair); }
         
         /// @brief Gets index B.
-        PLAYRHO_CONSTEXPR inline auto GetIndexB() const noexcept { return m_indexPair.second; }
+        PLAYRHO_CONSTEXPR inline auto GetIndexB() const noexcept { return std::get<1>(m_indexPair); }
 
         /// @brief Gets the index pair.
         PLAYRHO_CONSTEXPR inline auto GetIndexPair() const noexcept { return m_indexPair; }

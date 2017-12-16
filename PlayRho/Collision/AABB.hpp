@@ -148,7 +148,7 @@ namespace playrho {
         const auto rhsEnd = std::cend(rhs.ranges);
         const auto diff = std::mismatch(std::cbegin(lhs.ranges), lhsEnd,
                                         std::cbegin(rhs.ranges), rhsEnd);
-        return (diff.first == lhsEnd) || (*diff.first < *diff.second);
+        return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) < *std::get<1>(diff));
     }
     
     /// @brief Greater-than operator.
@@ -170,7 +170,7 @@ namespace playrho {
         const auto rhsEnd = std::cend(rhs.ranges);
         const auto diff = std::mismatch(std::cbegin(lhs.ranges), lhsEnd,
                                         std::cbegin(rhs.ranges), rhsEnd);
-        return (diff.first == lhsEnd) || (*diff.first > *diff.second);
+        return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) > *std::get<1>(diff));
     }
 
     /// @brief Tests for overlap between two axis aligned bounding boxes.

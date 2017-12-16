@@ -236,7 +236,7 @@ private:
         auto joints = std::move(b.m_joints);
         assert(b.m_joints.empty());
         std::for_each(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr j) {
-            callback(*(j.second));
+            callback(*(std::get<Joint*>(j)));
         });
     }
     

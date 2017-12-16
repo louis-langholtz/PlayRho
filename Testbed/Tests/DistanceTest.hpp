@@ -22,6 +22,7 @@
 
 #include "../Framework/Test.hpp"
 #include <sstream>
+#include <utility>
 
 namespace testbed {
 
@@ -263,7 +264,7 @@ public:
         const auto output = Distance(proxyA, xfmA, proxyB, xfmB, distanceConf);
         distanceConf.cache = Simplex::GetCache(output.simplex.GetEdges());
         const auto witnessPoints = GetWitnessPoints(output.simplex);
-        const auto outputDistance = sqrt(GetMagnitudeSquared(witnessPoints.first - witnessPoints.second));
+        const auto outputDistance = GetMagnitude(std::get<0>(witnessPoints) - std::get<1>(witnessPoints));
         
         const auto rA = proxyA.GetVertexRadius();
         const auto rB = proxyB.GetVertexRadius();
@@ -276,17 +277,17 @@ public:
             // Shapes are still not overlapped.
             // Move the witness points to the outer surface.
             adjustedDistance -= totalRadius;
-            const auto normal = GetUnitVector(witnessPoints.second - witnessPoints.first);
-            adjustedWitnessPoints.first += rA * normal;
-            adjustedWitnessPoints.second -= rB * normal;
+            const auto normal = GetUnitVector(std::get<1>(witnessPoints) - std::get<0>(witnessPoints));
+            std::get<0>(adjustedWitnessPoints) += rA * normal;
+            std::get<1>(adjustedWitnessPoints) -= rB * normal;
         }
         else
         {
             // Shapes are overlapped when radii are considered.
             // Move the witness points to the middle.
-            const auto p = (witnessPoints.first + witnessPoints.second) / Real{2};
-            adjustedWitnessPoints.first = p;
-            adjustedWitnessPoints.second = p;
+            const auto p = (std::get<0>(witnessPoints) + std::get<1>(witnessPoints)) / Real{2};
+            std::get<0>(adjustedWitnessPoints) = p;
+            std::get<1>(adjustedWitnessPoints) = p;
             adjustedDistance = 0;
         }
         
@@ -306,11 +307,11 @@ public:
 
         os << "Max separation:\n";
         os << "  " << static_cast<double>(Real{maxIndicesAB.distance / 1_m});
-        os << " for a-face[" << unsigned{maxIndicesAB.indices.first} << "]";
-        os << " b-vert[" << unsigned{maxIndicesAB.indices.second} << "].\n";
+        os << " for a-face[" << unsigned{std::get<0>(maxIndicesAB.indices)} << "]";
+        os << " b-vert[" << unsigned{std::get<1>(maxIndicesAB.indices)} << "].\n";
         os << "  " << static_cast<double>(Real{maxIndicesBA.distance / 1_m});
-        os << " for b-face[" << unsigned{maxIndicesBA.indices.first} << "]";
-        os << " a-vert[" << unsigned{maxIndicesBA.indices.second} << "].\n\n";
+        os << " for b-face[" << unsigned{std::get<0>(maxIndicesBA.indices)} << "]";
+        os << " a-vert[" << unsigned{std::get<1>(maxIndicesBA.indices)} << "].\n\n";
 
         if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.distance / 1_m}),
                          static_cast<double>(Real{maxIndicesBA.distance / 1_m})))
@@ -319,10 +320,10 @@ public:
             const auto childB = GetChild(shapeB, 0);
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);
             //assert(maxIndicesAB.index2 == maxIndicesBA.index1);
-            const auto ifaceA = maxIndicesAB.indices.first;
+            const auto ifaceA = std::get<0>(maxIndicesAB.indices);
             const auto nA = InverseRotate(Rotate(childA.GetNormal(ifaceA), xfmA.q), xfmB.q);
             // shapeA face maxIndicesAB.index1 is coplanar to an edge intersecting shapeB vertex maxIndicesAB.index2
-            const auto i1 = maxIndicesAB.indices.second;
+            const auto i1 = std::get<1>(maxIndicesAB.indices);
             const auto i0 = GetModuloPrev(i1, childB.GetVertexCount());
             const auto n0 = childB.GetNormal(i0);
             const auto n1 = childB.GetNormal(i1);
@@ -357,13 +358,13 @@ public:
         {
             const auto size = output.simplex.GetSize();
             os << "Simplex info: size=" << unsigned{size} << ", wpt-a={";
-            os << static_cast<double>(Real{GetX(witnessPoints.first) / 1_m});
+            os << static_cast<double>(Real{GetX(std::get<0>(witnessPoints)) / 1_m});
             os << ",";
-            os << static_cast<double>(Real{GetY(witnessPoints.first) / 1_m});
+            os << static_cast<double>(Real{GetY(std::get<0>(witnessPoints)) / 1_m});
             os << "}, wpt-b={";
-            os << static_cast<double>(Real{GetX(witnessPoints.second) / 1_m});
+            os << static_cast<double>(Real{GetX(std::get<1>(witnessPoints)) / 1_m});
             os << ",";
-            os << static_cast<double>(Real{GetY(witnessPoints.second) / 1_m});
+            os << static_cast<double>(Real{GetY(std::get<1>(witnessPoints)) / 1_m});
             os << "}:\n";
             for (auto i = decltype(size){0}; i < size; ++i)
             {
@@ -458,18 +459,18 @@ public:
                 drawer.DrawSegment(edge.GetPointA(), edge.GetPointB(), simplexSegmentColor);
             }
 
-            if (adjustedWitnessPoints.first != adjustedWitnessPoints.second)
+            if (std::get<0>(adjustedWitnessPoints) != std::get<1>(adjustedWitnessPoints))
             {
-                drawer.DrawPoint(adjustedWitnessPoints.first, 4.0f, adjustedPointColor);
-                drawer.DrawPoint(adjustedWitnessPoints.second, 4.0f, adjustedPointColor);
+                drawer.DrawPoint(std::get<0>(adjustedWitnessPoints), 4.0f, adjustedPointColor);
+                drawer.DrawPoint(std::get<1>(adjustedWitnessPoints), 4.0f, adjustedPointColor);
             }
             else
             {
-                drawer.DrawPoint(adjustedWitnessPoints.first, 4.0f, matchingPointColor);
+                drawer.DrawPoint(std::get<0>(adjustedWitnessPoints), 4.0f, matchingPointColor);
             }
 
-            drawer.DrawPoint(witnessPoints.first, 4.0f, witnessPointColor);
-            drawer.DrawPoint(witnessPoints.second, 4.0f, witnessPointColor);
+            drawer.DrawPoint(std::get<0>(witnessPoints), 4.0f, witnessPointColor);
+            drawer.DrawPoint(std::get<1>(witnessPoints), 4.0f, witnessPointColor);
             
             for (auto&& edge: output.simplex.GetEdges())
             {

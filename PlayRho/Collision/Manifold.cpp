@@ -453,15 +453,15 @@ Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation2D& xfA,
         return Manifold{};
     }
     
-    const auto k_tol = PLAYRHO_MAGIC(conf.linearSlop / Real{10});
+    const auto k_tol = PLAYRHO_MAGIC(conf.linearSlop / 10);
     return (edgeSepB.distance > (edgeSepA.distance + k_tol))?
         GetFaceManifold(Manifold::e_faceB,
-                        shapeB, xfB, edgeSepB.indices.first,
-                        shapeA, xfA, edgeSepB.indices.second,
+                        shapeB, xfB, std::get<0>(edgeSepB.indices),
+                        shapeA, xfA, std::get<1>(edgeSepB.indices),
                         conf):
         GetFaceManifold(Manifold::e_faceA,
-                        shapeA, xfA, edgeSepA.indices.first,
-                        shapeB, xfB, edgeSepA.indices.second,
+                        shapeA, xfA, std::get<0>(edgeSepA.indices),
+                        shapeB, xfB, std::get<1>(edgeSepA.indices),
                         conf);
 }
 

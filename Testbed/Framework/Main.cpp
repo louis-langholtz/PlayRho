@@ -708,10 +708,11 @@ static void AboutTestUI()
             //ImGui::SetColumnWidth(2, 200);
             for (auto& handledKey: handledKeys)
             {
-                const auto keyID = handledKey.first.key;
-                const auto mods = handledKey.first.mods;
+                const auto keyActionMods = std::get<0>(handledKey);
+                const auto keyID = keyActionMods.key;
+                const auto mods = keyActionMods.mods;
                 
-                ImGui::TextUnformatted(GetKeyActionName(handledKey.first.action));
+                ImGui::TextUnformatted(GetKeyActionName(keyActionMods.action));
                 ImGui::NextColumn();
                 
                 if (std::isgraph(keyID))
@@ -722,15 +723,15 @@ static void AboutTestUI()
                 }
                 else
                 {
-                    ImGui::Text("%s", GetKeyShortName(handledKey.first.key));
-                    if (ImGui::IsItemHovered() && GetKeyLongName(handledKey.first.key))
+                    ImGui::Text("%s", GetKeyShortName(keyID));
+                    if (ImGui::IsItemHovered() && GetKeyLongName(keyID))
                     {
-                        ImGui::SetTooltip("%s", GetKeyLongName(handledKey.first.key));
+                        ImGui::SetTooltip("%s", GetKeyLongName(keyID));
                     }
                 }
                 ImGui::NextColumn();
                 //ImGui::SameLine();
-                const auto info = test->GetKeyHandlerInfo(handledKey.second);
+                const auto info = test->GetKeyHandlerInfo(std::get<1>(handledKey));
                 ImGui::TextWrapped("%s", info.c_str());
                 ImGui::NextColumn();
             }
@@ -2016,7 +2017,7 @@ static void CollectionUI(const BodyJointsRange& joints)
     auto i = 0;
     for (auto& e: joints)
     {
-        const auto j = e.second;
+        const auto j = std::get<1>(e);
         const auto flags = 0;
         if (ImGui::TreeNodeEx(j, flags, "Joint %d (%s)", i, ToString(GetType(*j))))
         {
@@ -2032,7 +2033,7 @@ static void CollectionUI(const ContactsRange& contacts)
     auto i = 0;
     for (auto& ct: contacts)
     {
-        const auto e = ct.second;
+        const auto e = std::get<1>(ct);
         const auto flags = 0;
         if (ImGui::TreeNodeEx(e, flags, "Contact %d%s",
                               i, ((e->IsTouching())? " (touching)": "")))

@@ -1270,7 +1270,7 @@ void Test::KeyboardHandler(KeyID key, KeyAction action, KeyMods mods)
 {
     for (const auto& handledKey: m_handledKeys)
     {
-        const auto& keyActionMods = handledKey.first;
+        const auto& keyActionMods = std::get<0>(handledKey);
         if (keyActionMods.key != key)
         {
             continue;
@@ -1283,8 +1283,8 @@ void Test::KeyboardHandler(KeyID key, KeyAction action, KeyMods mods)
         {
             continue;
         }
-        const auto handlerID = handledKey.second;
-        m_keyHandlers[handlerID].second(KeyActionMods{key, action, mods});
+        const auto handlerID = std::get<1>(handledKey);
+        std::get<1>(m_keyHandlers[handlerID])(KeyActionMods{key, action, mods});
     }
 }
 

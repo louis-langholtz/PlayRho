@@ -108,7 +108,7 @@ namespace playrho {
     /// @brief Gets the joint pointer from the given value.
     inline Joint* GetJointPtr(std::pair<JointKey, Joint*> value)
     {
-        return value.second;
+        return std::get<Joint*>(value);
     }
     
 } // namespace playrho

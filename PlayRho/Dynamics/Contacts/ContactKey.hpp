@@ -58,13 +58,13 @@ namespace playrho
         /// @brief Gets the minimum index value.
         PLAYRHO_CONSTEXPR inline Index GetMin() const noexcept
         {
-            return m_ids.first;
+            return std::get<0>(m_ids);
         }
         
         /// @brief Gets the maximum index value.
         PLAYRHO_CONSTEXPR inline Index GetMax() const noexcept
         {
-            return m_ids.second;
+            return std::get<1>(m_ids);
         }
 
     private:
@@ -125,7 +125,7 @@ namespace playrho
     /// @brief Gets the contact pointer for the given value.
     inline Contact* GetContactPtr(KeyedContactPtr value)
     {
-        return value.second;
+        return std::get<1>(value);
     }
 
 } // namespace playrho
