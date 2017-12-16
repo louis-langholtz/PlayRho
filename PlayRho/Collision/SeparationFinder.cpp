@@ -23,8 +23,8 @@
 namespace playrho {
 
 SeparationFinder SeparationFinder::Get(IndexPair3 indices,
-                                       const DistanceProxy& proxyA, const Transformation& xfA,
-                                       const DistanceProxy& proxyB, const Transformation& xfB)
+                                       const DistanceProxy& proxyA, const Transformation2D& xfA,
+                                       const DistanceProxy& proxyB, const Transformation2D& xfB)
 {
     assert(GetNumIndices(indices) > 0);
     assert(proxyA.GetVertexCount() > 0);
@@ -106,8 +106,8 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
 }
 
 IndexPairDistance
-SeparationFinder::FindMinSeparationForPoints(const Transformation& xfA,
-                                             const Transformation& xfB) const
+SeparationFinder::FindMinSeparationForPoints(const Transformation2D& xfA,
+                                             const Transformation2D& xfB) const
 {
     const auto dirA = InverseRotate(+m_axis, xfA.q);
     const auto dirB = InverseRotate(-m_axis, xfB.q);
@@ -120,8 +120,8 @@ SeparationFinder::FindMinSeparationForPoints(const Transformation& xfA,
 }
 
 IndexPairDistance
-SeparationFinder::FindMinSeparationForFaceA(const Transformation& xfA,
-                                            const Transformation& xfB) const
+SeparationFinder::FindMinSeparationForFaceA(const Transformation2D& xfA,
+                                            const Transformation2D& xfB) const
 {
     const auto normal = Rotate(m_axis, xfA.q);
     const auto indexA = InvalidVertex;
@@ -134,8 +134,8 @@ SeparationFinder::FindMinSeparationForFaceA(const Transformation& xfA,
 }
 
 IndexPairDistance
-SeparationFinder::FindMinSeparationForFaceB(const Transformation& xfA,
-                                            const Transformation& xfB) const
+SeparationFinder::FindMinSeparationForFaceB(const Transformation2D& xfA,
+                                            const Transformation2D& xfB) const
 {
     const auto normal = Rotate(m_axis, xfB.q);
     const auto dir = InverseRotate(-normal, xfA.q);
@@ -147,7 +147,7 @@ SeparationFinder::FindMinSeparationForFaceB(const Transformation& xfA,
     return IndexPairDistance{Dot(delta, normal), IndexPair{indexA, indexB}};
 }
 
-Length SeparationFinder::EvaluateForPoints(const Transformation& xfA, const Transformation& xfB,
+Length SeparationFinder::EvaluateForPoints(const Transformation2D& xfA, const Transformation2D& xfB,
                                            IndexPair indexPair) const
 {
     const auto pointA = Transform(m_proxyA.GetVertex(indexPair.first), xfA);
@@ -156,7 +156,7 @@ Length SeparationFinder::EvaluateForPoints(const Transformation& xfA, const Tran
     return Dot(delta, m_axis);
 }
 
-Length SeparationFinder::EvaluateForFaceA(const Transformation& xfA, const Transformation& xfB,
+Length SeparationFinder::EvaluateForFaceA(const Transformation2D& xfA, const Transformation2D& xfB,
                                           IndexPair indexPair) const
 {
     const auto normal = Rotate(m_axis, xfA.q);
@@ -166,7 +166,7 @@ Length SeparationFinder::EvaluateForFaceA(const Transformation& xfA, const Trans
     return Dot(delta, normal);
 }
 
-Length SeparationFinder::EvaluateForFaceB(const Transformation& xfA, const Transformation& xfB,
+Length SeparationFinder::EvaluateForFaceB(const Transformation2D& xfA, const Transformation2D& xfB,
                                           IndexPair indexPair) const
 {
     const auto normal = Rotate(m_axis, xfB.q);

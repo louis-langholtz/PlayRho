@@ -57,9 +57,9 @@ inline index_type GetEdgeIndex(VertexCounter i1, VertexCounter i2, VertexCounter
 /// @param idx1 Index 1. This is the index of the vertex of shape1 that had the maximal separation distance
 ///     from the edge of shape0 identified by idx0.
 Manifold GetFaceManifold(const Manifold::Type type,
-                         const DistanceProxy& shape0, const Transformation& xf0,
+                         const DistanceProxy& shape0, const Transformation2D& xf0,
                          const VertexCounter idx0,
-                         const DistanceProxy& shape1, const Transformation& xf1,
+                         const DistanceProxy& shape1, const Transformation2D& xf1,
                          const VertexCounter idx1,
                          const Manifold::Conf conf)
 {
@@ -276,8 +276,8 @@ Manifold GetFaceManifold(const Manifold::Type type,
 }
 
 Manifold CollideShapes(Manifold::Type type, Length totalRadius,
-                       const DistanceProxy& shape, const Transformation& sxf,
-                       Length2 point, const Transformation& xfm)
+                       const DistanceProxy& shape, const Transformation2D& sxf,
+                       Length2 point, const Transformation2D& xfm)
 {
     // Computes the center of the circle in the frame of the polygon.
     const auto cLocal = InverseTransform(Transform(point, xfm), sxf); ///< Center of circle in frame of polygon.
@@ -388,8 +388,8 @@ Manifold CollideShapes(Manifold::Type type, Length totalRadius,
     return Manifold{};
 }
 
-inline Manifold CollideShapes(Length2 locationA, const Transformation& xfA,
-                              Length2 locationB, const Transformation& xfB,
+inline Manifold CollideShapes(Length2 locationA, const Transformation2D& xfA,
+                              Length2 locationB, const Transformation2D& xfB,
                               Length totalRadius) noexcept
 {
     const auto pA = Transform(locationA, xfA);
@@ -407,8 +407,8 @@ inline Manifold CollideShapes(Length2 locationA, const Transformation& xfA,
  * All CollideShapes functions return a Manifold object.
  */
 
-Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
-                       const DistanceProxy& shapeB, const Transformation& xfB,
+Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation2D& xfA,
+                       const DistanceProxy& shapeB, const Transformation2D& xfB,
                        Manifold::Conf conf)
 {
     // Assumes called after detecting AABB overlap.

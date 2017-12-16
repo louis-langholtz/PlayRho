@@ -134,7 +134,7 @@ RayCastOutput RayCast(const AABB2D& aabb, const RayCastInput& input) noexcept
 }
 
 RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
-                      const Transformation& transform) noexcept
+                      const Transformation2D& transform) noexcept
 {
     const auto vertexCount = proxy.GetVertexCount();
     assert(vertexCount > 0);
@@ -230,7 +230,7 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
 }
 
 RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
-                      const RayCastInput& input, const Transformation& transform) noexcept
+                      const RayCastInput& input, const Transformation2D& transform) noexcept
 {
     return RayCast(GetChild(shape, childIndex), input, transform);
 }

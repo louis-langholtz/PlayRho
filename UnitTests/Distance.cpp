@@ -25,8 +25,8 @@ using namespace playrho;
 TEST(Distance, MatchingCircles)
 {
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
     const auto pos1 = Length2{2_m, 2_m};
     const auto pos2 = Length2{2_m, 2_m};
     const auto normal = UnitVec2{};
@@ -62,8 +62,8 @@ TEST(Distance, MatchingCircles)
 TEST(Distance, OpposingCircles)
 {
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
     const auto pos1 = Length2{2_m, 2_m};
     const auto pos2 = Length2{-2_m, -2_m};
     const auto normal = UnitVec2{};
@@ -101,8 +101,8 @@ TEST(Distance, HorTouchingCircles)
     const auto normal = UnitVec2{};
 
     const auto output = [&]() {
-        Transformation xf1 = Transform_identity;
-        Transformation xf2 = Transform_identity;
+        Transformation2D xf1 = Transform_identity;
+        Transformation2D xf2 = Transform_identity;
         DistanceProxy dp1{2_m, 1, &pos1, &normal};
         DistanceProxy dp2{2_m, 1, &pos2, &normal};
         return Distance(dp1, xf1, dp2, xf2, conf);
@@ -131,8 +131,8 @@ TEST(Distance, HorTouchingCircles)
 TEST(Distance, OverlappingCirclesPN)
 {
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
     const auto pos1 = Length2{1_m, 1_m};
     const auto pos2 = Length2{-1_m, -1_m};
     const auto normal = UnitVec2{};
@@ -164,8 +164,8 @@ TEST(Distance, OverlappingCirclesPN)
 TEST(Distance, OverlappingCirclesNP)
 {
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
     const auto pos1 = Length2{-1_m, -1_m};
     const auto pos2 = Length2{1_m, 1_m};
     const auto normal = UnitVec2{};
@@ -198,8 +198,8 @@ TEST(Distance, OverlappingCirclesNP)
 TEST(Distance, SeparatedCircles)
 {
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
     const auto pos1 = Length2{2_m, 2_m};
     const auto pos2 = Length2{-2_m, -2_m};
     const auto normal = UnitVec2{};
@@ -231,8 +231,8 @@ TEST(Distance, SeparatedCircles)
 TEST(Distance, EdgeCircleOverlapping)
 {
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
 
     const auto pos1 = Length2{0_m, 2_m};
     const auto pos2 = Length2{4_m, 2_m};
@@ -274,8 +274,8 @@ TEST(Distance, EdgeCircleOverlapping)
 TEST(Distance, EdgeCircleOverlapping2)
 {
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
     
     const auto pos1 = Length2{-3_m, 2_m};
     const auto pos2 = Length2{7_m, 2_m};
@@ -316,8 +316,8 @@ TEST(Distance, EdgeCircleOverlapping2)
 TEST(Distance, EdgeCircleTouching)
 {
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
     
     const auto pos1 = Length2{0_m, 3_m};
     const auto pos2 = Length2{4_m, 3_m};
@@ -377,8 +377,8 @@ TEST(Distance, HorEdgeSquareTouching)
     DistanceProxy dp2{0.5_m, 2, vertices, normals};
     
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
 
     const auto output = Distance(dp1, xf1, dp2, xf2, conf);
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -428,8 +428,8 @@ TEST(Distance, VerEdgeSquareTouching)
     DistanceProxy dp2{0.5_m, 2, vertices, normals};
     
     DistanceConf conf;
-    Transformation xf1 = Transform_identity;
-    Transformation xf2 = Transform_identity;
+    Transformation2D xf1 = Transform_identity;
+    Transformation2D xf2 = Transform_identity;
     
     const auto output = Distance(dp1, xf1, dp2, xf2, conf);
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -474,7 +474,7 @@ TEST(Distance, SquareTwice)
     DistanceProxy dp1{0.05_m, 4, square, squareNormals};
 
     DistanceConf conf;
-    Transformation xfm = Transform_identity;
+    Transformation2D xfm = Transform_identity;
     
     const auto output = Distance(dp1, xfm, dp1, xfm, conf);
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -526,7 +526,7 @@ TEST(Distance, SquareSquareTouchingVertically)
     DistanceProxy dp2{0.05_m, 4, square2, normals2};
 
     DistanceConf conf;
-    Transformation xfm = Transform_identity;
+    Transformation2D xfm = Transform_identity;
     
     const auto output = Distance(dp1, xfm, dp2, xfm, conf);
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -577,7 +577,7 @@ TEST(Distance, SquareSquareDiagonally)
     DistanceProxy dp2{0.05_m, 4, square2, normals2};
     
     DistanceConf conf;
-    Transformation xfm = Transform_identity;
+    Transformation2D xfm = Transform_identity;
     
     const auto output = Distance(dp1, xfm, dp2, xfm, conf);
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());
@@ -652,7 +652,7 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
     DistanceProxy dp2{NonNegative<Length>{0}, 4, square2, normals2};
     
     DistanceConf conf;
-    Transformation xfm = Transform_identity;
+    Transformation2D xfm = Transform_identity;
     
     const auto output = Distance(dp1, xfm, dp2, xfm, conf);
     conf.cache = Simplex::GetCache(output.simplex.GetEdges());

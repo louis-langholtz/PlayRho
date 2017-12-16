@@ -31,10 +31,10 @@ namespace {
     }
 
     inline SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA,
-                                      const Transformation& xfA,
+                                      const Transformation2D& xfA,
                                       VertexCounter idxA,
                                       const DistanceProxy& proxyB,
-                                      const Transformation& xfB,
+                                      const Transformation2D& xfB,
                                       VertexCounter idxB)
     {
         const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
@@ -43,8 +43,8 @@ namespace {
     }
     
     inline SimplexEdges GetSimplexEdges(const IndexPair3 indexPairs,
-                                          const DistanceProxy& proxyA, const Transformation& xfA,
-                                          const DistanceProxy& proxyB, const Transformation& xfB)
+                                          const DistanceProxy& proxyA, const Transformation2D& xfA,
+                                          const DistanceProxy& proxyB, const Transformation2D& xfB)
     {
         /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxSimplexEdges)>::type;
@@ -98,8 +98,8 @@ PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept
     return PairLength2{pointA, pointB};
 }
 
-DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
-                        const DistanceProxy& proxyB, const Transformation& transformB,
+DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation2D& transformA,
+                        const DistanceProxy& proxyB, const Transformation2D& transformB,
                         DistanceConf conf)
 {
     assert(proxyA.GetVertexCount() > 0);
@@ -204,8 +204,8 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
     return DistanceOutput{simplex, iter, state};
 }
 
-Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
-                 const DistanceProxy& proxyB, const Transformation& xfB,
+Area TestOverlap(const DistanceProxy& proxyA, const Transformation2D& xfA,
+                 const DistanceProxy& proxyB, const Transformation2D& xfB,
                  DistanceConf conf)
 {
     const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB, conf);

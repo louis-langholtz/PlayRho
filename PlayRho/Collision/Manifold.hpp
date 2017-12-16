@@ -26,7 +26,7 @@
 namespace playrho {
 
     class DistanceProxy;
-    struct Transformation;
+    struct Transformation2D;
     
     /// @brief A collision description for the collision two convex shapes.
     ///
@@ -559,8 +559,8 @@ namespace playrho {
     ///
     /// @relatedalso Manifold
     ///
-    Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
-                           const DistanceProxy& shapeB, const Transformation& xfB,
+    Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation2D& xfA,
+                           const DistanceProxy& shapeB, const Transformation2D& xfB,
                            Manifold::Conf conf = GetDefaultManifoldConf());
 #if 0
     Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,

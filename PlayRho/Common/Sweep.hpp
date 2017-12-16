@@ -127,7 +127,7 @@ namespace playrho
     // Free functions...
     
     /// @brief Determines if the given value is valid.
-    /// @relatedalso Transformation
+    /// @relatedalso Transformation2D
     template <>
     PLAYRHO_CONSTEXPR inline bool IsValid(const Sweep2D& value) noexcept
     {

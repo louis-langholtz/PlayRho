@@ -423,9 +423,9 @@ TEST(Body, SetTransform)
     bd.type = BodyType::Dynamic;
     World world;
     const auto body = world.CreateBody(bd);
-    const auto xfm1 = Transformation{Length2{}, UnitVec2::GetRight()};
+    const auto xfm1 = Transformation2D{Length2{}, UnitVec2::GetRight()};
     ASSERT_EQ(body->GetTransformation(), xfm1);
-    const auto xfm2 = Transformation{Vec2(10, -12) * 1_m, UnitVec2::GetLeft()};
+    const auto xfm2 = Transformation2D{Vec2(10, -12) * 1_m, UnitVec2::GetLeft()};
     body->SetTransform(xfm2.p, GetAngle(xfm2.q));
     EXPECT_EQ(body->GetTransformation().p, xfm2.p);
     EXPECT_NEAR(static_cast<double>(GetX(body->GetTransformation().q)),

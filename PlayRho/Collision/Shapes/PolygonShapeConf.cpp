@@ -78,11 +78,11 @@ PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy,
                                                  Length2 center, Angle angle) noexcept
 {
     SetAsBox(hx, hy);
-    Transform(Transformation{center, UnitVec2::Get(angle)});
+    Transform(Transformation2D{center, UnitVec2::Get(angle)});
     return *this;
 }
 
-PolygonShapeConf& PolygonShapeConf::Transform(Transformation xfm) noexcept
+PolygonShapeConf& PolygonShapeConf::Transform(Transformation2D xfm) noexcept
 {
     for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i)
     {

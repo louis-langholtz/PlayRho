@@ -182,8 +182,8 @@ namespace playrho {
     /// @relatedalso Manifold
     ///
     WorldManifold GetWorldManifold(const Manifold& manifold,
-                                   Transformation xfA, Length radiusA,
-                                   Transformation xfB, Length radiusB);
+                                   Transformation2D xfA, Length radiusA,
+                                   Transformation2D xfB, Length radiusB);
     
     /// Gets the world manifold for the given data.
     ///

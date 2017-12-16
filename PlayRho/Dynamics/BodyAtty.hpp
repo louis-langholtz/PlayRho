@@ -191,7 +191,7 @@ private:
     
     /// Sets the body's transformation.
     /// @note This sets what Body::GetLocation returns.
-    static void SetTransformation(Body& b, const Transformation value) noexcept
+    static void SetTransformation(Body& b, const Transformation2D value) noexcept
     {
         b.SetTransformation(value);
     }

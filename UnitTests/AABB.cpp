@@ -417,7 +417,7 @@ TEST(AABB2D, StreamOutputOperator)
 TEST(AABB2D, ComputeAabbForFixtureAtBodyOrigin)
 {
     const auto shape = DiskShapeConf{};
-    const auto shapeAabb = ComputeAABB(Shape(shape), Transformation{});
+    const auto shapeAabb = ComputeAABB(Shape(shape), Transformation2D{});
 
     World world;
     const auto body = world.CreateBody();
@@ -431,7 +431,7 @@ TEST(AABB2D, ComputeAabbForFixtureAtBodyOrigin)
 TEST(AABB2D, ComputeAabbForFixtureOffFromBodyOrigin)
 {
     const auto shape = DiskShapeConf{};
-    const auto shapeAabb = ComputeAABB(shape, Transformation{});
+    const auto shapeAabb = ComputeAABB(shape, Transformation2D{});
     
     const auto bodyLocation = Length2{2_m, 3_m};
     World world;
@@ -447,7 +447,7 @@ TEST(AABB2D, ComputeAabbForFixtureOffFromBodyOrigin)
 TEST(AABB2D, ComputeIntersectingAABBForSameFixture)
 {
     const auto shape = DiskShapeConf{};
-    const auto shapeAabb = ComputeAABB(shape, Transformation{});
+    const auto shapeAabb = ComputeAABB(shape, Transformation2D{});
     
     World world;
     const auto body = world.CreateBody();
@@ -466,7 +466,7 @@ TEST(AABB2D, ComputeIntersectingAABBForTwoFixtures)
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
 
     const auto shape = DiskShapeConf{}.UseRadius(2_m);
-    const auto shapeAabb = ComputeAABB(shape, Transformation{});
+    const auto shapeAabb = ComputeAABB(shape, Transformation2D{});
     ASSERT_EQ(shapeAabb, (AABB2D{shapeInterval, shapeInterval}));
 
     const auto bodyLocation0 = Length2{+1_m, 0_m};
@@ -495,7 +495,7 @@ TEST(AABB2D, ComputeIntersectingAABBForContact)
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
     
     const auto shape = DiskShapeConf{}.UseRadius(2_m);
-    const auto shapeAabb = ComputeAABB(shape, Transformation{});
+    const auto shapeAabb = ComputeAABB(shape, Transformation2D{});
     ASSERT_EQ(shapeAabb, (AABB2D{shapeInterval, shapeInterval}));
     
     const auto bodyLocation0 = Length2{+1_m, 0_m};

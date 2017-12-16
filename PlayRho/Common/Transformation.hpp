@@ -29,8 +29,7 @@
 /// @file
 /// Definition of the Transformation class and free functions directly associated with it.
 
-namespace playrho
-{
+namespace playrho {
     
     /// @brief Describes a geometric transformation.
     /// @details A transform contains translation and rotation. It is used to represent
@@ -38,33 +37,33 @@ namespace playrho
     /// @note The default transformation is the identity transformation - the transformation
     ///   which neither translates nor rotates a location.
     /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
-    struct Transformation
+    struct Transformation2D
     {
         Length2 p = Length2{}; ///< Translational portion of the transformation. 8-bytes.
         UnitVec2 q = UnitVec2::GetRight(); ///< Rotational portion of the transformation. 8-bytes.
     };
     
     /// @brief Identity transformation value.
-    PLAYRHO_CONSTEXPR const auto Transform_identity = Transformation{Length2{0_m, 0_m}, UnitVec2::GetRight()};
+    PLAYRHO_CONSTEXPR const auto Transform_identity = Transformation2D{Length2{0_m, 0_m}, UnitVec2::GetRight()};
     
     /// @brief Determines if the given value is valid.
-    /// @relatedalso Transformation
+    /// @relatedalso Transformation2D
     template <>
-    PLAYRHO_CONSTEXPR inline bool IsValid(const Transformation& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const Transformation2D& value) noexcept
     {
         return IsValid(value.p) && IsValid(value.q);
     }
     
     /// @brief Equality operator.
-    /// @relatedalso Transformation
-    PLAYRHO_CONSTEXPR inline bool operator== (Transformation lhs, Transformation rhs) noexcept
+    /// @relatedalso Transformation2D
+    PLAYRHO_CONSTEXPR inline bool operator== (Transformation2D lhs, Transformation2D rhs) noexcept
     {
         return (lhs.p == rhs.p) && (lhs.q == rhs.q);
     }
     
     /// @brief Inequality operator.
-    /// @relatedalso Transformation
-    PLAYRHO_CONSTEXPR inline bool operator!= (Transformation lhs, Transformation rhs) noexcept
+    /// @relatedalso Transformation2D
+    PLAYRHO_CONSTEXPR inline bool operator!= (Transformation2D lhs, Transformation2D rhs) noexcept
     {
         return (lhs.p != rhs.p) || (lhs.q != rhs.q);
     }

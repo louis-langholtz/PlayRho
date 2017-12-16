@@ -2722,7 +2722,7 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
 }
 
 ContactCounter World::Synchronize(Body& body,
-                                  Transformation xfm1, Transformation xfm2,
+                                  Transformation2D xfm1, Transformation2D xfm2,
                                   Real multiplier, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
@@ -2738,7 +2738,7 @@ ContactCounter World::Synchronize(Body& body,
 }
 
 ContactCounter World::Synchronize(Fixture& fixture,
-                                  Transformation xfm1, Transformation xfm2,
+                                  Transformation2D xfm1, Transformation2D xfm2,
                                   Length2 displacement, Length extension)
 {
     assert(::playrho::IsValid(xfm1));

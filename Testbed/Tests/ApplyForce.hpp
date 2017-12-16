@@ -75,7 +75,7 @@ public:
         }
 
         {
-            Transformation xf1;
+            Transformation2D xf1;
             xf1.q = UnitVec2::Get(0.3524_rad * Pi);
             xf1.p = GetVec2(GetXAxis(xf1.q)) * 1_m;
 
@@ -89,7 +89,7 @@ public:
             conf.density = 4_kgpm2;
             const auto poly1 = PolygonShapeConf(Span<const Length2>(vertices, 3), conf);
 
-            Transformation xf2;
+            Transformation2D xf2;
             xf2.q = UnitVec2::Get(-0.3524_rad * Pi);
             xf2.p = GetVec2(-GetXAxis(xf2.q)) * 1_m;
 

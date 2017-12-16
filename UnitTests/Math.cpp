@@ -301,7 +301,7 @@ TEST(Math, TransformIsRotatePlusTranslate)
     const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
-    const auto transformation = Transformation{translation, rotation};
+    const auto transformation = Transformation2D{translation, rotation};
     
     const auto transformed_vector = Transform(vector, transformation);
     const auto alt = Rotate(vector, rotation) + translation;
@@ -314,7 +314,7 @@ TEST(Math, InverseTransformIsUntranslateAndInverseRotate)
     const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
-    const auto transformation = Transformation{translation, rotation};
+    const auto transformation = Transformation2D{translation, rotation};
     
     const auto inv_vector = InverseTransform(vector, transformation);
     const auto alt = InverseRotate(vector - translation, rotation);
@@ -327,7 +327,7 @@ TEST(Math, InverseTransformTransformedIsOriginal)
     const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
-    const auto transformation = Transformation{translation, rotation};
+    const auto transformation = Transformation2D{translation, rotation};
 
     const auto transformed_vector = Transform(vector, transformation);
     const auto inverse_transformed_vector = InverseTransform(transformed_vector, transformation);
@@ -343,7 +343,7 @@ TEST(Math, TransformInverseTransformedIsOriginal)
     const auto vector = Length2{19_m, -0.5_m};
     const auto translation = Length2{-3_m, +5_m};
     const auto rotation = UnitVec2::GetTop();
-    const auto transformation = Transformation{translation, rotation};
+    const auto transformation = Transformation2D{translation, rotation};
 
     const auto inverse_transformed_vector = InverseTransform(vector, transformation);
     const auto transformed_inverse_vector = Transform(inverse_transformed_vector, transformation);

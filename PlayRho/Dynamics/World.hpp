@@ -715,14 +715,14 @@ private:
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   body's fixtures.
     ContactCounter Synchronize(Body& body,
-                               Transformation xfm1, Transformation xfm2,
+                               Transformation2D xfm1, Transformation2D xfm2,
                                Real multiplier, Length extension);
 
     /// @brief Synchronizes the given fixture.
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   fixture shape's children.
     ContactCounter Synchronize(Fixture& fixture,
-                               Transformation xfm1, Transformation xfm2,
+                               Transformation2D xfm1, Transformation2D xfm2,
                                Length2 displacement, Length extension);
     
     /// @brief Creates and destroys proxies.

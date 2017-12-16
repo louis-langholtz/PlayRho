@@ -259,7 +259,7 @@ void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angul
     m_angularAcceleration = angular;
 }
 
-void Body::SetTransformation(Transformation value) noexcept
+void Body::SetTransformation(Transformation2D value) noexcept
 {
     assert(IsValid(value));
     if (m_xf != value)
@@ -281,7 +281,7 @@ void Body::SetTransform(Length2 location, Angle angle)
         throw WrongState("Body::SetTransform: world is locked");
     }
 
-    const auto xfm = Transformation{location, UnitVec2::Get(angle)};
+    const auto xfm = Transformation2D{location, UnitVec2::Get(angle)};
     SetTransformation(xfm);
 
     m_sweep = Sweep2D{Position2D{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};

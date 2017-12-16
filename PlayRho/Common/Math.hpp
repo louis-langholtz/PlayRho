@@ -719,7 +719,7 @@ PLAYRHO_CONSTEXPR inline auto InverseRotate(const Vector2<T> vector, const UnitV
 /// @param v 2-D position to transform (to rotate and then translate).
 /// @param xfm Transformation (a translation and rotation) to apply to the given vector.
 /// @return Rotated and translated vector.
-PLAYRHO_CONSTEXPR inline Length2 Transform(const Length2 v, const Transformation xfm) noexcept
+PLAYRHO_CONSTEXPR inline Length2 Transform(const Length2 v, const Transformation2D xfm) noexcept
 {
     return Rotate(v, xfm.q) + xfm.p;
 }
@@ -734,7 +734,7 @@ PLAYRHO_CONSTEXPR inline Length2 Transform(const Length2 v, const Transformation
 /// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
 /// @param T Transformation (a translation and rotation) to inversely apply to the given vector.
 /// @return Inverse transformed vector.
-PLAYRHO_CONSTEXPR inline Length2 InverseTransform(const Length2 v, const Transformation T) noexcept
+PLAYRHO_CONSTEXPR inline Length2 InverseTransform(const Length2 v, const Transformation2D T) noexcept
 {
     const auto v2 = v - T.p;
     return InverseRotate(v2, T.q);
@@ -743,18 +743,18 @@ PLAYRHO_CONSTEXPR inline Length2 InverseTransform(const Length2 v, const Transfo
 /// @brief Multiplies a given transformation by another given transformation.
 /// @note v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
 ///          = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
-PLAYRHO_CONSTEXPR inline Transformation Mul(const Transformation& A, const Transformation& B) noexcept
+PLAYRHO_CONSTEXPR inline Transformation2D Mul(const Transformation2D& A, const Transformation2D& B) noexcept
 {
-    return Transformation{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
+    return Transformation2D{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
 }
 
 /// @brief Inverse multiplies a given transformation by another given transformation.
 /// @note v2 = A.q' * (B.q * v1 + B.p - A.p)
 ///          = A.q' * B.q * v1 + A.q' * (B.p - A.p)
-PLAYRHO_CONSTEXPR inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
+PLAYRHO_CONSTEXPR inline Transformation2D MulT(const Transformation2D& A, const Transformation2D& B) noexcept
 {
     const auto dp = B.p - A.p;
-    return Transformation{InverseRotate(dp, A.q), B.q.Rotate(A.q.FlipY())};
+    return Transformation2D{InverseRotate(dp, A.q), B.q.Rotate(A.q.FlipY())};
 }
 
 /// @brief Gets the absolute value of the given value.
@@ -806,15 +806,15 @@ inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
 }
 
 /// @brief Gets the transformation for the given values.
-PLAYRHO_CONSTEXPR inline Transformation GetTransformation(const Length2 ctr, const UnitVec2 rot,
+PLAYRHO_CONSTEXPR inline Transformation2D GetTransformation(const Length2 ctr, const UnitVec2 rot,
                                                   const Length2 localCtr) noexcept
 {
     assert(IsValid(rot));
-    return Transformation{ctr - (Rotate(localCtr, rot)), rot};
+    return Transformation2D{ctr - (Rotate(localCtr, rot)), rot};
 }
 
 /// @brief Gets the transformation for the given values.
-inline Transformation GetTransformation(const Position2D pos, const Length2 local_ctr) noexcept
+inline Transformation2D GetTransformation(const Position2D pos, const Length2 local_ctr) noexcept
 {
     assert(IsValid(pos));
     assert(IsValid(local_ctr));
@@ -825,7 +825,7 @@ inline Transformation GetTransformation(const Position2D pos, const Length2 loca
 /// @param sweep Sweep data to get the transform from.
 /// @param beta Time factor in [0,1], where 0 indicates alpha0.
 /// @return Transformation of the given sweep at the specified time.
-inline Transformation GetTransformation(const Sweep2D& sweep, const Real beta) noexcept
+inline Transformation2D GetTransformation(const Sweep2D& sweep, const Real beta) noexcept
 {
     assert(beta >= 0);
     assert(beta <= 1);
@@ -837,7 +837,7 @@ inline Transformation GetTransformation(const Sweep2D& sweep, const Real beta) n
 /// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time zero.
-inline Transformation GetTransform0(const Sweep2D& sweep) noexcept
+inline Transformation2D GetTransform0(const Sweep2D& sweep) noexcept
 {
     return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
 }
@@ -847,7 +847,7 @@ inline Transformation GetTransform0(const Sweep2D& sweep) noexcept
 /// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time one.
-inline Transformation GetTransform1(const Sweep2D& sweep) noexcept
+inline Transformation2D GetTransform1(const Sweep2D& sweep) noexcept
 {
     return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
 }

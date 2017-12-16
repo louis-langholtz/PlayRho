@@ -92,7 +92,7 @@ public:
     PolygonShapeConf& Set(const VertexSet& points) noexcept;
     
     /// @brief Transforms the set vertices.
-    PolygonShapeConf& Transform(Transformation xfm) noexcept;
+    PolygonShapeConf& Transform(Transformation2D xfm) noexcept;
     
     /// @brief Equality operator.
     friend bool operator== (const PolygonShapeConf& lhs, const PolygonShapeConf& rhs) noexcept

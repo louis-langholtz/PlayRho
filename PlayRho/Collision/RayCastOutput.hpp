@@ -74,7 +74,7 @@ namespace playrho
     /// @param transform Transform to be applied to the distance-proxy to get world coordinates.
     /// @relatedalso DistanceProxy
     RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
-                          const Transformation& transform) noexcept;
+                          const Transformation2D& transform) noexcept;
     
     /// @brief Cast a ray against the child of the given shape.
     /// @note This is a convenience function for calling the raycast against a distance-proxy.
@@ -84,7 +84,7 @@ namespace playrho
     /// @param transform Transform to be applied to the child of the shape.
     /// @relatedalso Shape
     RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
-                          const RayCastInput& input, const Transformation& transform) noexcept;
+                          const RayCastInput& input, const Transformation2D& transform) noexcept;
 
     /// @}
 

@@ -205,7 +205,7 @@ public:
     /// @brief Gets the body transform for the body's origin.
     /// @return the world transform of the body's origin.
     /// @sa GetLocation.
-    Transformation GetTransformation() const noexcept;
+    Transformation2D GetTransformation() const noexcept;
 
     /// @brief Gets the world body origin location.
     /// @details This is the location of the body's origin relative to its world.
@@ -499,7 +499,7 @@ private:
     ///   method updates the current transformation and flags each associated contact
     ///   for updating.
     /// @warning Behavior is undefined if value is invalid.
-    void SetTransformation(Transformation value) noexcept;
+    void SetTransformation(Transformation2D value) noexcept;
 
     //
     // Member variables. Try to keep total size small.
@@ -508,7 +508,7 @@ private:
     /// Transformation for body origin.
     /// @details
     /// This is essentially the cached result of <code>GetTransform1(m_sweep)</code>. 16-bytes.
-    Transformation m_xf;
+    Transformation2D m_xf;
 
     Sweep2D m_sweep; ///< Sweep motion for CCD. 36-bytes.
 
@@ -574,7 +574,7 @@ inline BodyType Body::GetType() const noexcept
     return BodyType::Static;
 }
 
-inline Transformation Body::GetTransformation() const noexcept
+inline Transformation2D Body::GetTransformation() const noexcept
 {
     return m_xf;
 }

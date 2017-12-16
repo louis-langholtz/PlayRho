@@ -39,7 +39,7 @@ namespace playrho {
     class Body;
     class Contact;
     class DistanceProxy;
-    struct Transformation;
+    struct Transformation2D;
     
     /// @brief N-dimensional Axis Aligned Bounding Box.
     ///
@@ -421,7 +421,7 @@ namespace playrho {
     /// @param xf World transform of the shape.
     /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
     /// @relatedalso DistanceProxy
-    AABB2D ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept;
+    AABB2D ComputeAABB(const DistanceProxy& proxy, const Transformation2D& xf) noexcept;
     
     /// @brief Computes the AABB.
     /// @details Computes the Axis Aligned Bounding Box (AABB) for the given child shape
@@ -433,11 +433,11 @@ namespace playrho {
     /// @return AABB for the proxy shape or the default AABB if the proxy has a zero vertex count.
     /// @relatedalso DistanceProxy
     AABB2D ComputeAABB(const DistanceProxy& proxy,
-                     const Transformation& xfm0, const Transformation& xfm1) noexcept;
+                     const Transformation2D& xfm0, const Transformation2D& xfm1) noexcept;
     
     /// @brief Computes the AABB for the given shape with the given transformation.
     /// @relatedalso Shape
-    AABB2D ComputeAABB(const Shape& shape, const Transformation& xf) noexcept;
+    AABB2D ComputeAABB(const Shape& shape, const Transformation2D& xf) noexcept;
     
     /// @brief Computes the AABB for the given fixture.
     /// @details This is the AABB of the entire shape of the given fixture at the body's

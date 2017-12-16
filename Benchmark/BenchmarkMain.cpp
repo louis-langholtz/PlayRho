@@ -77,7 +77,7 @@ static playrho::UnitVec2 GetRandUnitVec2(playrho::Angle lo, playrho::Angle hi)
     return playrho::UnitVec2::Get(playrho::Real{a} * playrho::Radian);
 }
 
-static playrho::Transformation
+static playrho::Transformation2D
 GetRandTransformation(playrho::Position2D pos0, playrho::Position2D pos1)
 {
     const auto x0 = static_cast<double>(playrho::Real{GetX(pos0.linear) / playrho::Meter});
@@ -92,7 +92,7 @@ GetRandTransformation(playrho::Position2D pos0, playrho::Position2D pos1)
     const auto y = static_cast<playrho::Real>(Rand(y0, y1)) * playrho::Meter;
     const auto a = static_cast<playrho::Real>(Rand(a0, a1)) * playrho::Radian;
     
-    return playrho::Transformation{playrho::Length2{x, y}, playrho::UnitVec2::Get(a)};
+    return playrho::Transformation2D{playrho::Length2{x, y}, playrho::UnitVec2::Get(a)};
 }
 
 static std::vector<float> Rands(unsigned count, float lo, float hi)
@@ -137,7 +137,7 @@ GetRandUnitVec2Pair(playrho::Angle lo, playrho::Angle hi)
     return std::make_pair(GetRandUnitVec2(lo, hi), GetRandUnitVec2(lo, hi));
 }
 
-static std::pair<playrho::Transformation, playrho::Transformation>
+static std::pair<playrho::Transformation2D, playrho::Transformation2D>
 GetRandTransformationPair(playrho::Position2D pos0, playrho::Position2D pos1)
 {
     return std::make_pair(GetRandTransformation(pos0, pos1), GetRandTransformation(pos0, pos1));
@@ -215,10 +215,10 @@ GetRandUnitVec2Pairs(unsigned count, playrho::Angle lo, playrho::Angle hi)
     return rands;
 }
 
-static std::vector<std::pair<playrho::Transformation, playrho::Transformation>>
+static std::vector<std::pair<playrho::Transformation2D, playrho::Transformation2D>>
 GetRandTransformationPairs(unsigned count, playrho::Position2D pos0, playrho::Position2D pos1)
 {
-    auto rands = std::vector<std::pair<playrho::Transformation, playrho::Transformation>>{};
+    auto rands = std::vector<std::pair<playrho::Transformation2D, playrho::Transformation2D>>{};
     rands.reserve(count);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
@@ -1206,7 +1206,7 @@ static void AABB2D(benchmark::State& state)
 
 // ----
 
-using TransformationPair = std::pair<playrho::Transformation, playrho::Transformation>;
+using TransformationPair = std::pair<playrho::Transformation2D, playrho::Transformation2D>;
 using TransformationPairs = std::vector<TransformationPair>;
 
 static TransformationPairs GetTransformationPairs(unsigned count)
@@ -1348,8 +1348,8 @@ static void ManifoldForTwoSquares1(benchmark::State& state)
     const auto shape = playrho::PolygonShapeConf(dim, dim);
     
     const auto rot0 = playrho::Angle{playrho::Real{45.0f} * playrho::Degree};
-    const auto xfm0 = playrho::Transformation{playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter), playrho::UnitVec2::Get(rot0)}; // bottom
-    const auto xfm1 = playrho::Transformation{playrho::Vec2{0, +2} * (playrho::Real(1) * playrho::Meter), playrho::UnitVec2::GetRight()}; // top
+    const auto xfm0 = playrho::Transformation2D{playrho::Vec2{0, -2} * (playrho::Real(1) * playrho::Meter), playrho::UnitVec2::Get(rot0)}; // bottom
+    const auto xfm1 = playrho::Transformation2D{playrho::Vec2{0, +2} * (playrho::Real(1) * playrho::Meter), playrho::UnitVec2::GetRight()}; // top
     
     // Rotate square A and put it below square B.
     // In ASCII art terms:
@@ -1387,11 +1387,11 @@ static void ManifoldForTwoSquares2(benchmark::State& state)
     // Shape B: wide rectangle
     const auto shape1 = playrho::PolygonShapeConf(playrho::Real{3} * playrho::Meter, playrho::Real{1.5f} * playrho::Meter);
     
-    const auto xfm0 = playrho::Transformation{
+    const auto xfm0 = playrho::Transformation2D{
         playrho::Vec2{-2, 0} * (playrho::Real(1) * playrho::Meter),
         playrho::UnitVec2::GetRight()
     }; // left
-    const auto xfm1 = playrho::Transformation{
+    const auto xfm1 = playrho::Transformation2D{
         playrho::Vec2{+2, 0} * (playrho::Real(1) * playrho::Meter),
         playrho::UnitVec2::GetRight()
     }; // right
