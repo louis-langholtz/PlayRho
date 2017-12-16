@@ -525,7 +525,7 @@ private:
     /// @param body Body to update.
     /// @param pos New position to set the given body to.
     /// @param vel New velocity to set the given body to.
-    static void UpdateBody(Body& body, const Position2D& pos, const Velocity& vel);
+    static void UpdateBody(Body& body, const Position2D& pos, const Velocity2D& vel);
 
     /// @brief Reset bodies for solve TOI.
     void ResetBodiesForSolveTOI();

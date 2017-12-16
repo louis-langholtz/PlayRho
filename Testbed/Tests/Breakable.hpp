@@ -113,8 +113,8 @@ public:
         const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity / 1_rad;
         const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity / 1_rad;
 
-        body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
-        body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
+        body1->SetVelocity(Velocity2D{velocity1, m_angularVelocity});
+        body2->SetVelocity(Velocity2D{velocity2, m_angularVelocity});
     }
 
     void PreStep(const Settings&, Drawer&) override

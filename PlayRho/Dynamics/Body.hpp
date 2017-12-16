@@ -234,13 +234,13 @@ public:
     Length2 GetLocalCenter() const noexcept;
 
     /// @brief Gets the velocity.
-    Velocity GetVelocity() const noexcept;
+    Velocity2D GetVelocity() const noexcept;
 
     /// @brief Sets the body's velocity (linear and angular velocity).
     /// @note This method does nothing if this body is not speedable.
     /// @note A non-zero velocity will awaken this body.
     /// @sa SetAwake, SetUnderActiveTime.
-    void SetVelocity(const Velocity& velocity) noexcept;
+    void SetVelocity(const Velocity2D& velocity) noexcept;
 
     /// @brief Sets the linear and rotational accelerations on this body.
     /// @note This has no effect on non-accelerable bodies.
@@ -512,7 +512,7 @@ private:
 
     Sweep m_sweep; ///< Sweep motion for CCD. 36-bytes.
 
-    Velocity m_velocity; ///< Velocity (linear and angular). 12-bytes.
+    Velocity2D m_velocity; ///< Velocity (linear and angular). 12-bytes.
     FlagsType m_flags = 0; ///< Flags. 2-bytes.
 
     /// @brief Linear acceleration.
@@ -604,7 +604,7 @@ inline Length2 Body::GetLocalCenter() const noexcept
     return GetSweep().GetLocalCenter();
 }
 
-inline Velocity Body::GetVelocity() const noexcept
+inline Velocity2D Body::GetVelocity() const noexcept
 {
     return m_velocity;
 }
@@ -687,7 +687,7 @@ inline void Body::UnsetAwake() noexcept
     {
         UnsetAwakeFlag();
         m_underActiveTime = 0;
-        m_velocity = Velocity{LinearVelocity2{}, 0_rpm};
+        m_velocity = Velocity2D{LinearVelocity2{}, 0_rpm};
     }
 }
 
@@ -1097,7 +1097,7 @@ inline AngularVelocity GetAngularVelocity(const Body& body) noexcept
 /// @relatedalso Body
 inline void SetLinearVelocity(Body& body, const LinearVelocity2 v) noexcept
 {
-    body.SetVelocity(Velocity{v, GetAngularVelocity(body)});
+    body.SetVelocity(Velocity2D{v, GetAngularVelocity(body)});
 }
 
 /// @brief Sets the angular velocity.
@@ -1106,7 +1106,7 @@ inline void SetLinearVelocity(Body& body, const LinearVelocity2 v) noexcept
 /// @relatedalso Body
 inline void SetAngularVelocity(Body& body, AngularVelocity omega) noexcept
 {
-    body.SetVelocity(Velocity{GetLinearVelocity(body), omega});
+    body.SetVelocity(Velocity2D{GetLinearVelocity(body), omega});
 }
 
 /// @brief Gets the world coordinates of a point given in coordinates relative to the body's origin.
@@ -1203,7 +1203,7 @@ inline Torque GetTorque(const Body& body) noexcept
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
 /// @param conf Movement configuration. This defines caps on linear and angular speeds.
 /// @relatedalso Body
-Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept;
+Velocity2D GetVelocity(const Body& body, Time h, MovementConf conf) noexcept;
 
 /// @brief Gets the world index for the given body.
 /// @relatedalso Body

@@ -83,7 +83,7 @@ public:
                 
                 m_bullet = m_world.CreateBody(bd);
                 m_bullet->CreateFixture(m_bulletshape);
-                m_bullet->SetVelocity(Velocity{Vec2(400.0f, 0.0f) * 1_mps, 0_rpm});
+                m_bullet->SetVelocity(Velocity2D{Vec2(400.0f, 0.0f) * 1_mps, 0_rpm});
             }
         });
     }

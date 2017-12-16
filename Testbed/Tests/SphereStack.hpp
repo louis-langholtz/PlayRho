@@ -44,7 +44,7 @@ public:
             bd.location = Vec2(0, 4.0f + 3.0f * i) * 1_m;
             m_bodies[i] = m_world.CreateBody(bd);
             m_bodies[i]->CreateFixture(shape);
-            m_bodies[i]->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
+            m_bodies[i]->SetVelocity(Velocity2D{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
         }
     }
 

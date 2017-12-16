@@ -32,8 +32,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {
     const auto old_pA = Position2D{Vec2{-2, 0} * Meter, 0_deg};
     const auto old_pB = Position2D{Vec2{+2, 0} * Meter, 0_deg};
-    const auto old_vA = Velocity{LinearVelocity2{}, 0_deg / 1_s};
-    const auto old_vB = Velocity{LinearVelocity2{}, 0_deg / 1_s};
+    const auto old_vA = Velocity2D{LinearVelocity2{}, 0_deg / 1_s};
+    const auto old_vB = Velocity2D{LinearVelocity2{}, 0_deg / 1_s};
 
     const auto dim = 2_m;
     const auto shape = PolygonShapeConf(dim, dim);
@@ -75,8 +75,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
 {
     const auto old_pA = Position2D{Vec2{0, -2} * Meter, 0_deg};
     const auto old_pB = Position2D{Vec2{0, +2} * Meter, 0_deg};
-    const auto old_vA = Velocity{};
-    const auto old_vB = Velocity{};
+    const auto old_vA = Velocity2D{};
+    const auto old_vB = Velocity2D{};
     
     const auto dim = 2_m;
     const auto shape = PolygonShapeConf(dim, dim);
@@ -128,8 +128,8 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
     const auto lcB = Length2{};
     const auto old_pA = Position2D{Length2{}, 0_deg};
     const auto old_pB = Position2D{Length2{}, 0_deg};
-    const auto old_vA = Velocity{};
-    const auto old_vB = Velocity{};
+    const auto old_vA = Velocity2D{};
+    const auto old_vB = Velocity2D{};
     auto bA = BodyConstraint{
         Real(1) / 1_kg,
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
@@ -167,8 +167,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
     const auto old_pA = Position2D{Vec2{ctr_x - 1, 0} * Meter, 0_deg};
     const auto old_pB = Position2D{Vec2{ctr_x + 1, 0} * Meter, 0_deg};
 
-    const auto old_vA = Velocity{};
-    const auto old_vB = Velocity{};
+    const auto old_vA = Velocity2D{};
+    const auto old_vB = Velocity2D{};
     
     const auto dim = 2_m;
     const auto shape = PolygonShapeConf(dim, dim);
@@ -221,8 +221,8 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
     // square A is right of square B
     const auto old_pA = Position2D{Vec2{ctr_x + 1, 0} * Meter, 0_deg};
     const auto old_pB = Position2D{Vec2{ctr_x - 1, 0} * Meter, 0_deg};
-    const auto old_vA = Velocity{};
-    const auto old_vB = Velocity{};
+    const auto old_vA = Velocity2D{};
+    const auto old_vB = Velocity2D{};
 
     const auto dim = 2_m;
     const auto shape = PolygonShapeConf(dim, dim);
@@ -275,8 +275,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     // square A is below square B
     const auto old_pA = Position2D{Vec2{0, ctr_y - 1} * Meter, 0_deg};
     const auto old_pB = Position2D{Vec2{0, ctr_y + 1} * Meter, 0_deg};
-    const auto old_vA = Velocity{};
-    const auto old_vB = Velocity{};
+    const auto old_vA = Velocity2D{};
+    const auto old_vB = Velocity2D{};
 
     const auto dim = 2_m;
     const auto shape = PolygonShapeConf(dim, dim);
@@ -341,8 +341,8 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     // square A is above square B
     const auto old_pA = Position2D{Vec2{0, ctr_y + 1} * Meter, 0_deg};
     const auto old_pB = Position2D{Vec2{0, ctr_y - 1} * Meter, 0_deg};
-    const auto old_vA = Velocity{};
-    const auto old_vB = Velocity{};
+    const auto old_vA = Velocity2D{};
+    const auto old_vB = Velocity2D{};
 
     const auto dim = 2_m;
     const auto shape = PolygonShapeConf(dim, dim);
@@ -413,8 +413,8 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
 
     const auto old_pA = Position2D{Length2{}, 0_deg};
     const auto old_pB = Position2D{Length2{}, 0_deg};
-    const auto old_vA = Velocity{};
-    const auto old_vB = Velocity{};
+    const auto old_vA = Velocity2D{};
+    const auto old_vB = Velocity2D{};
 
     const auto lcA = Length2{};
     const auto lcB = Length2{};

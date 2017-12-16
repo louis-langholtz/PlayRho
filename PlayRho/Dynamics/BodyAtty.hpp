@@ -97,7 +97,7 @@ private:
             case BodyType::Static:
                 b.UnsetAwakeFlag();
                 b.m_underActiveTime = 0;
-                b.m_velocity = Velocity{LinearVelocity2{}, 0_rpm};
+                b.m_velocity = Velocity2D{LinearVelocity2{}, 0_rpm};
                 b.m_sweep.pos0 = b.m_sweep.pos1;
                 break;
         }
@@ -198,7 +198,7 @@ private:
     
     /// Sets the body's velocity.
     /// @note This sets what Body::GetVelocity returns.
-    static void SetVelocity(Body& b, Velocity value) noexcept
+    static void SetVelocity(Body& b, Velocity2D value) noexcept
     {
         b.m_velocity = value;
     }

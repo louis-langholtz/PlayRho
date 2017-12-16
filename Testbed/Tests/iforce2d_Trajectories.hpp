@@ -116,7 +116,7 @@ public:
         
         m_firing2 = false;
         m_littleBox2->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
-        m_littleBox2->SetVelocity(Velocity{});
+        m_littleBox2->SetVelocity(Velocity2D{});
 
         SetMouseWorld(Vec2(11,22) * 1_m);//sometimes is not set
         
@@ -124,7 +124,7 @@ public:
             const auto launchSpeed = LinearVelocity2(m_launchSpeed, 0_mps);
             m_littleBox->SetAwake();
             m_littleBox->SetAcceleration(Gravity, AngularAcceleration{});
-            m_littleBox->SetVelocity(Velocity{});
+            m_littleBox->SetVelocity(Velocity2D{});
             m_littleBox->SetTransform(GetWorldPoint(*m_launcherBody, Vec2(3,0) * 1_m),
                                       m_launcherBody->GetAngle());
             const auto rotVec = GetWorldVector(*m_launcherBody, UnitVec2::GetRight());
@@ -134,7 +134,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Reset projectile.", [&](KeyActionMods) {
             m_littleBox->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
-            m_littleBox->SetVelocity(Velocity{});
+            m_littleBox->SetVelocity(Velocity2D{});
             m_firing = false;
         });
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase launch speed.", [&](KeyActionMods) {
@@ -146,7 +146,7 @@ public:
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Launch computer controlled projectile.", [&](KeyActionMods) {
             m_littleBox2->SetAwake();
             m_littleBox2->SetAcceleration(Gravity, AngularAcceleration{});
-            m_littleBox2->SetVelocity(Velocity{});
+            m_littleBox2->SetVelocity(Velocity2D{});
             const auto launchVel = getComputerLaunchVelocity();
             const auto computerStartingPosition = Vec2(15,5) * 1_m;
             m_littleBox2->SetTransform(computerStartingPosition, 0_rad);
@@ -155,7 +155,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "Reset computer controlled projectile.", [&](KeyActionMods) {
             m_littleBox2->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
-            m_littleBox2->SetVelocity(Velocity{});
+            m_littleBox2->SetVelocity(Velocity2D{});
             m_firing2 = false;
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Hold down & use left mouse button to move the computer's target", [&](KeyActionMods) {

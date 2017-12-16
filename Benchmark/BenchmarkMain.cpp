@@ -1432,14 +1432,14 @@ static void ConstructAndAssignVC(benchmark::State& state)
     
     const auto locA = playrho::Length2{playrho::Real(+1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
     const auto posA = playrho::Position2D{locA, playrho::Angle(0)};
-    const auto velA = playrho::Velocity{
+    const auto velA = playrho::Velocity2D{
         playrho::LinearVelocity2{playrho::Real(-0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
     
     const auto locB = playrho::Length2{playrho::Real(-1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
     const auto posB = playrho::Position2D{locB, playrho::Angle(0)};
-    const auto velB = playrho::Velocity{
+    const auto velB = playrho::Velocity2D{
         playrho::LinearVelocity2{playrho::Real(+0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
@@ -1513,14 +1513,14 @@ static void SolveVC(benchmark::State& state)
     
     const auto locA = playrho::Length2{playrho::Real(+1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
     const auto posA = playrho::Position2D{locA, playrho::Angle(0)};
-    const auto velA = playrho::Velocity{
+    const auto velA = playrho::Velocity2D{
         playrho::LinearVelocity2{playrho::Real(-0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };
 
     const auto locB = playrho::Length2{playrho::Real(-1) * playrho::Meter, playrho::Real(0) * playrho::Meter};
     const auto posB = playrho::Position2D{locB, playrho::Angle(0)};
-    const auto velB = playrho::Velocity{
+    const auto velB = playrho::Velocity2D{
         playrho::LinearVelocity2{playrho::Real(+0.5) * playrho::MeterPerSecond, playrho::Real(0) * playrho::MeterPerSecond},
         playrho::AngularVelocity{playrho::Real(0) * playrho::RadianPerSecond}
     };

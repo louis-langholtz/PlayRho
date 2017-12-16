@@ -47,10 +47,10 @@ static PLAYRHO_CONSTEXPR inline auto k_errorTol = 1e-3_mps; ///< error tolerance
 /// This describes the change in impulse necessary for a solution.
 /// To apply this: let P = magnitude * direction, then
 ///   the change to body A's velocity is
-///   -Velocity{vc.GetBodyA()->GetInvMass() * P,
+///   -Velocity2D{vc.GetBodyA()->GetInvMass() * P,
 ///       Radian * vc.GetBodyA()->GetInvRotInertia() * Cross(vcp.relA, P)}
 ///   the change to body B's velocity is
-///   +Velocity{vc.GetBodyB()->GetInvMass() * P,
+///   +Velocity2D{vc.GetBodyB()->GetInvMass() * P,
 ///       Radian * vc.GetBodyB()->GetInvRotInertia() * Cross(vcp.relB, P)}
 ///   and the new impulse = oldImpulse + magnitude.
 ///
@@ -85,8 +85,8 @@ VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2 impu
         (Cross(GetPointRelPosB(vc, 0), P0) + Cross(GetPointRelPosB(vc, 1), P1)) / Radian
     };
     return VelocityPair{
-        -Velocity{invMassA * P, invRotInertiaA * LA},
-        +Velocity{invMassB * P, invRotInertiaB * LB}
+        -Velocity2D{invMassA * P, invRotInertiaA * LA},
+        +Velocity2D{invMassB * P, invRotInertiaB * LB}
     };
 }
 
@@ -352,8 +352,8 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
         const auto P = incImpulse * direction;
         const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
         const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
+        newVelA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity2D{invMassB * P, invRotInertiaB * LB};
         maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
 
         // Note: using newImpulse, instead of oldImpulse + incImpulse, results in
@@ -412,8 +412,8 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto P = incImpulse * direction;
         const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
         const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
-        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
+        newVelA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity2D{invMassB * P, invRotInertiaB * LB};
         maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
         
         // Note: using newImpulse, instead of oldImpulse + incImpulse, results in

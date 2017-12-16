@@ -497,8 +497,8 @@ TEST(Math, ComputeCentroidOfHexagonalVertices)
 
 TEST(Math, GetContactRelVelocity)
 {
-    const auto velA = Velocity{LinearVelocity2(+1_mps, +4_mps), 3.2f * RadianPerSecond};
-    const auto velB = Velocity{LinearVelocity2(+3_mps, +1_mps), 0.4f * RadianPerSecond};
+    const auto velA = Velocity2D{LinearVelocity2(+1_mps, +4_mps), 3.2f * RadianPerSecond};
+    const auto velB = Velocity2D{LinearVelocity2(+3_mps, +1_mps), 0.4f * RadianPerSecond};
     const auto relA = Length2{};
     const auto relB = Length2{};
     const auto result = GetContactRelVelocity(velA, relA, velB, relB);

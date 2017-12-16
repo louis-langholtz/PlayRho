@@ -180,8 +180,8 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto LA = AngularMomentum{(m_impulse * m_sAy + m_springImpulse * m_sAx) / Radian + m_motorImpulse};
         const auto LB = AngularMomentum{(m_impulse * m_sBy + m_springImpulse * m_sBx) / Radian + m_motorImpulse};
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -221,8 +221,8 @@ bool WheelJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
         const auto LA = AngularMomentum{impulse * m_sAx / Radian};
         const auto LB = AngularMomentum{impulse * m_sBx / Radian};
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
 
     // Solve rotational motor constraint
@@ -250,8 +250,8 @@ bool WheelJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
         const auto LA = AngularMomentum{impulse * m_sAy / Radian};
         const auto LB = AngularMomentum{impulse * m_sBy / Radian};
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
 
     if ((velA != oldVelA) || (velB != oldVelB))

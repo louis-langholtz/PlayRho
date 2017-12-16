@@ -2376,7 +2376,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     ASSERT_NE(ball_fixture, nullptr);
 
     const auto velocity = LinearVelocity2{+1_mps, 0_mps};
-    ball_body->SetVelocity(Velocity{velocity, 0_deg / 1_s});
+    ball_body->SetVelocity(Velocity2D{velocity, 0_deg / 1_s});
 
     const auto time_inc = .01_s;
     auto step = StepConf{};
@@ -2435,7 +2435,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             else if (listener.begin_contacts > last_contact_count)
             {
                 ++increments;
-                ball_body->SetVelocity(Velocity{
+                ball_body->SetVelocity(Velocity2D{
                     LinearVelocity2{
                         static_cast<Real>(increments) * GetX(velocity),
                         GetY(ball_body->GetVelocity().linear)
@@ -2477,7 +2477,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
             else if (listener.begin_contacts > last_contact_count)
             {
                 ++increments;
-                ball_body->SetVelocity(Velocity{
+                ball_body->SetVelocity(Velocity2D{
                     LinearVelocity2{
                         -static_cast<Real>(increments) * GetX(velocity),
                         GetY(ball_body->GetVelocity().linear)
@@ -2491,7 +2491,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
         }
         
         ++increments;
-        ball_body->SetVelocity(Velocity{
+        ball_body->SetVelocity(Velocity2D{
             LinearVelocity2{
                 static_cast<Real>(increments) * GetX(velocity),
                 GetY(ball_body->GetVelocity().linear)

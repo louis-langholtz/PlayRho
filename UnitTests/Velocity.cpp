@@ -25,9 +25,9 @@ TEST(Velocity, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(Velocity), std::size_t(12)); break;
-        case  8: EXPECT_EQ(sizeof(Velocity), std::size_t(24)); break;
-        case 16: EXPECT_EQ(sizeof(Velocity), std::size_t(48)); break;
+        case  4: EXPECT_EQ(sizeof(Velocity2D), std::size_t(12)); break;
+        case  8: EXPECT_EQ(sizeof(Velocity2D), std::size_t(24)); break;
+        case 16: EXPECT_EQ(sizeof(Velocity2D), std::size_t(48)); break;
         default: FAIL(); break;
     }
 }

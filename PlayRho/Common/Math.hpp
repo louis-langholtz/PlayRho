@@ -870,8 +870,8 @@ inline Real Normalize(Vec2& vector)
 /// @note If relA and relB are the zero vectors, the resulting value is simply
 ///    velB.linear - velA.linear.
 inline LinearVelocity2
-GetContactRelVelocity(const Velocity velA, const Length2 relA,
-                      const Velocity velB, const Length2 relB) noexcept
+GetContactRelVelocity(const Velocity2D velA, const Length2 relA,
+                      const Velocity2D velB, const Length2 relB) noexcept
 {
 #if 0 // Using std::fma appears to be slower!
     const auto revPerpRelB = GetRevPerpendicular(relB);
@@ -974,7 +974,7 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices);
 /// @}
 
 /// @brief Gets whether the given velocity is "under active" based on the given tolerances.
-inline bool IsUnderActive(Velocity velocity,
+inline bool IsUnderActive(Velocity2D velocity,
                           LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
 {
     const auto linVelSquared = GetMagnitudeSquared(velocity.linear);

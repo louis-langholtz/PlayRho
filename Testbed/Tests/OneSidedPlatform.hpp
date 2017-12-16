@@ -60,7 +60,7 @@ public:
             conf.vertexRadius = m_radius;
             conf.density = 20_kgpm2;
             m_character = body->CreateFixture(Shape(conf));
-            body->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
+            body->SetVelocity(Velocity2D{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
         }
     }
 

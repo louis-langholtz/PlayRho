@@ -94,7 +94,7 @@ Body::Body(World* world, const BodyDef& bd):
     assert(IsValid(bd.angularVelocity));
     assert(IsValid(m_xf));
 
-    SetVelocity(Velocity{bd.linearVelocity, bd.angularVelocity});
+    SetVelocity(Velocity2D{bd.linearVelocity, bd.angularVelocity});
     SetAcceleration(bd.linearAcceleration, bd.angularAcceleration);
     SetUnderActiveTime(bd.underActiveTime);
 }
@@ -227,7 +227,7 @@ void Body::SetMassData(const MassData& massData)
     UnsetMassDataDirty();
 }
 
-void Body::SetVelocity(const Velocity& velocity) noexcept
+void Body::SetVelocity(const Velocity2D& velocity) noexcept
 {
     if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm))
     {
@@ -438,7 +438,7 @@ BodyCounter GetWorldIndex(const Body* body) noexcept
     return BodyCounter(-1);
 }
 
-Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
+Velocity2D GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();

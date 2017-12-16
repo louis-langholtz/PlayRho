@@ -40,7 +40,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_K, GLFW_PRESS, 0, "Kinematic", [&](KeyActionMods) {
             m_platform->SetType(BodyType::Kinematic);
-            m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0) * 1_mps, 0_rpm});
+            m_platform->SetVelocity(Velocity2D{Vec2(-m_speed, 0) * 1_mps, 0_rpm});
         });
 
         // Define attachment
@@ -97,7 +97,7 @@ public:
             if ((GetX(p) < -10_m && GetX(velocity.linear) < 0_mps) ||
                 (GetX(p) > +10_m && GetX(velocity.linear) > 0_mps))
             {
-                m_platform->SetVelocity(Velocity{
+                m_platform->SetVelocity(Velocity2D{
                     LinearVelocity2{-GetX(velocity.linear), GetY(velocity.linear)},
                     velocity.angular
                 });

@@ -205,8 +205,8 @@ namespace {
     inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
     {
         auto vp = VelocityPair{
-            Velocity{LinearVelocity2{}, 0_rpm},
-            Velocity{LinearVelocity2{}, 0_rpm}
+            Velocity2D{LinearVelocity2{}, 0_rpm},
+            Velocity2D{LinearVelocity2{}, 0_rpm}
         };
         
         const auto normal = vc.GetNormal();
@@ -232,8 +232,8 @@ namespace {
             const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
             const auto LA = Cross(vcp.relA, P) / Radian;
             const auto LB = Cross(vcp.relB, P) / Radian;
-            vp.first -= Velocity{invMassA * P, invRotInertiaA * LA};
-            vp.second += Velocity{invMassB * P, invRotInertiaB * LB};
+            vp.first -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+            vp.second += Velocity2D{invMassB * P, invRotInertiaB * LB};
         }
         return vp;
     }
@@ -1668,7 +1668,7 @@ World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contac
     return results;
 }
 
-void World::UpdateBody(Body& body, const Position2D& pos, const Velocity& vel)
+void World::UpdateBody(Body& body, const Position2D& pos, const Velocity2D& vel)
 {
     assert(IsValid(pos));
     assert(IsValid(vel));

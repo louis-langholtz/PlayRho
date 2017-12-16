@@ -225,7 +225,7 @@ TEST(Body, WorldCreated)
 
 TEST(Body, SetVelocityDoesNothingToStatic)
 {
-    const auto zeroVelocity = Velocity{
+    const auto zeroVelocity = Velocity2D{
         LinearVelocity2{0_mps, 0_mps},
         AngularVelocity{Real(0) * RadianPerSecond}
     };
@@ -239,7 +239,7 @@ TEST(Body, SetVelocityDoesNothingToStatic)
     ASSERT_FALSE(body->IsAccelerable());
     ASSERT_EQ(body->GetVelocity(), zeroVelocity);
     
-    const auto velocity = Velocity{
+    const auto velocity = Velocity2D{
         LinearVelocity2{1.1_mps, 1.1_mps},
         AngularVelocity{Real(1.1) * RadianPerSecond}
     };
