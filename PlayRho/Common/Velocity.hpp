@@ -37,7 +37,7 @@ namespace playrho
     };
     
     /// @brief Determines if the given value is valid.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     template <>
     PLAYRHO_CONSTEXPR inline bool IsValid(const Velocity2D& value) noexcept
     {
@@ -45,21 +45,21 @@ namespace playrho
     }
     
     /// @brief Equality operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline bool operator==(const Velocity2D& lhs, const Velocity2D& rhs)
     {
         return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
     }
     
     /// @brief Inequality operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline bool operator!=(const Velocity2D& lhs, const Velocity2D& rhs)
     {
         return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
     }
     
     /// @brief Multiplication assignment operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D& operator*= (Velocity2D& lhs, const Real rhs)
     {
         lhs.linear *= rhs;
@@ -68,7 +68,7 @@ namespace playrho
     }
     
     /// @brief Division assignment operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D& operator/= (Velocity2D& lhs, const Real rhs)
     {
         lhs.linear /= rhs;
@@ -77,7 +77,7 @@ namespace playrho
     }
     
     /// @brief Addition assignment operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D& operator+= (Velocity2D& lhs, const Velocity2D& rhs)
     {
         lhs.linear += rhs.linear;
@@ -86,14 +86,14 @@ namespace playrho
     }
     
     /// @brief Addition operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D operator+ (const Velocity2D& lhs, const Velocity2D& rhs)
     {
         return Velocity2D{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
     }
     
     /// @brief Subtraction assignment operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D& operator-= (Velocity2D& lhs, const Velocity2D& rhs)
     {
         lhs.linear -= rhs.linear;
@@ -102,42 +102,42 @@ namespace playrho
     }
     
     /// @brief Subtraction operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D operator- (const Velocity2D& lhs, const Velocity2D& rhs)
     {
         return Velocity2D{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
     }
     
     /// @brief Negation operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D operator- (const Velocity2D& value)
     {
         return Velocity2D{-value.linear, -value.angular};
     }
     
     /// @brief Positive operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D operator+ (const Velocity2D& value)
     {
         return value;
     }
     
     /// @brief Multiplication operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D operator* (const Velocity2D& lhs, const Real rhs)
     {
         return Velocity2D{lhs.linear * rhs, lhs.angular * rhs};
     }
     
     /// @brief Multiplication operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D operator* (const Real lhs, const Velocity2D& rhs)
     {
         return Velocity2D{rhs.linear * lhs, rhs.angular * lhs};
     }
     
     /// @brief Division operator.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     PLAYRHO_CONSTEXPR inline Velocity2D operator/ (const Velocity2D& lhs, const Real rhs)
     {
         /*

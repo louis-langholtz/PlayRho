@@ -1153,13 +1153,13 @@ TEST(TimeOfImpact, BelowMinTarget)
     const auto proxyA = DistanceProxy{radius, 1, &pos, nullptr};
     const auto proxyB = DistanceProxy{radius, 1, &pos, nullptr};
 
-    const auto sweepA = Sweep{
-        Position{Length2{-2e18_m, 0_m}, 0_deg},
-        Position{Length2{+0_m, 0_m}, 0_deg}
+    const auto sweepA = Sweep2D{
+        Position2D{Length2{-2e18_m, 0_m}, 0_deg},
+        Position2D{Length2{+0_m, 0_m}, 0_deg}
     };
-    const auto sweepB = Sweep{
-        Position{Length2{+2e18_m, 0_m}, 0_deg},
-        Position{Length2{+0_m, 0_m}, 0_deg}
+    const auto sweepB = Sweep2D{
+        Position2D{Length2{+2e18_m, 0_m}, 0_deg},
+        Position2D{Length2{+0_m, 0_m}, 0_deg}
     };
     const auto conf = ToiConf{}
         .UseTargetDepth(0.002_m)

@@ -297,7 +297,7 @@ inline Position2D GetNormalized(const Position2D& val) noexcept
 /// @param sweep Sweep to return with its angles normalized.
 /// @return Sweep with its pos0 angle to be between -2 pi and 2 pi
 ///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
-/// @relatedalso Sweep
+/// @relatedalso Sweep2D
 inline Sweep2D GetNormalized(Sweep2D sweep) noexcept
 {
     const auto pos0a = GetNormalized(sweep.pos0.angular);

@@ -456,10 +456,10 @@ TEST(ContactSolver, SolveVelocityConstraint1)
     const auto linear_velocity = Vec2{1, 1};
     const auto angular_velocity = 0_deg;
 
-    const auto old_pA = Position{Vec2{0, 0}, 0_deg};
-    const auto old_pB = Position{Vec2{0, 0}, 0_deg};
-    const auto vel_a = Velocity{linear_velocity, angular_velocity};
-    const auto vel_b = Velocity{linear_velocity, angular_velocity};
+    const auto old_pA = Position2D{Vec2{0, 0}, 0_deg};
+    const auto old_pB = Position2D{Vec2{0, 0}, 0_deg};
+    const auto vel_a = Velocity2D{linear_velocity, angular_velocity};
+    const auto vel_b = Velocity2D{linear_velocity, angular_velocity};
     const auto lcA = Vec2{};
     const auto lcB = Vec2{};
 
@@ -519,11 +519,11 @@ TEST(ContactSolver, SolveVelocityConstraint2)
     const auto linear_velocity = Vec2{1, 1};
     const auto angular_velocity = 0_deg;
     
-    const auto old_pA = Position{Vec2{0, 0}, 0_deg};
-    const auto old_pB = Position{Vec2{0, 0}, 0_deg};
+    const auto old_pA = Position2D{Vec2{0, 0}, 0_deg};
+    const auto old_pB = Position2D{Vec2{0, 0}, 0_deg};
     
-    auto vel_a = Velocity{linear_velocity, angular_velocity};
-    auto vel_b = Velocity{linear_velocity, angular_velocity};
+    auto vel_a = Velocity2D{linear_velocity, angular_velocity};
+    auto vel_b = Velocity2D{linear_velocity, angular_velocity};
     
     const auto lcA = Vec2{};
     const auto lcB = Vec2{};

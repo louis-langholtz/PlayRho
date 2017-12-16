@@ -39,7 +39,7 @@ namespace playrho {
     };
     
     /// @brief Determines if the given value is valid.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     template <>
     PLAYRHO_CONSTEXPR inline bool IsValid(const Position2D& value) noexcept
     {
@@ -47,35 +47,35 @@ namespace playrho {
     }
     
     /// @brief Equality operator.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline bool operator==(const Position2D& lhs, const Position2D& rhs)
     {
         return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
     }
     
     /// @brief Inequality operator.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline bool operator!=(const Position2D& lhs, const Position2D& rhs)
     {
         return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
     }
     
     /// @brief Negation operator.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline Position2D operator- (const Position2D& value)
     {
         return Position2D{-value.linear, -value.angular};
     }
     
     /// @brief Positive operator.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline Position2D operator+ (const Position2D& value)
     {
         return value;
     }
     
     /// @brief Addition assignment operator.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline Position2D& operator+= (Position2D& lhs, const Position2D& rhs)
     {
         lhs.linear += rhs.linear;
@@ -84,14 +84,14 @@ namespace playrho {
     }
     
     /// @brief Addition operator.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline Position2D operator+ (const Position2D& lhs, const Position2D& rhs)
     {
         return Position2D{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
     }
     
     /// @brief Subtraction assignment operator.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline Position2D& operator-= (Position2D& lhs, const Position2D& rhs)
     {
         lhs.linear -= rhs.linear;
@@ -100,7 +100,7 @@ namespace playrho {
     }
     
     /// @brief Subtraction operator.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline Position2D operator- (const Position2D& lhs, const Position2D& rhs)
     {
         return Position2D{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
@@ -113,7 +113,7 @@ namespace playrho {
     }
     
     /// @brief Multiplication operator.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline Position2D operator* (const Real scalar, const Position2D& pos)
     {
         return Position2D{pos.linear * scalar, pos.angular * scalar};
@@ -125,7 +125,7 @@ namespace playrho {
     /// @param beta Unit interval (value between 0 and 1) of travel between pos0 and pos1.
     /// @return pos0 if pos0 == pos1 or beta == 0, pos1 if beta == 1, or at the given
     ///   unit interval value between pos0 and pos1.
-    /// @relatedalso Position
+    /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline Position2D GetPosition(const Position2D pos0, const Position2D pos1,
                                    const Real beta) noexcept
     {
