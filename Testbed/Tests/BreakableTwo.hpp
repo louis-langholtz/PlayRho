@@ -108,8 +108,8 @@ public:
 private:
     const Length vr = 2 * DefaultLinearSlop;
     Shape m_shape{
-        PolygonShapeConf{}.UseVertexRadius(vr).UseDensity(100 * KilogramPerSquareMeter)
-        .SetAsBox(0.5f * Meter - vr, 0.5f * Meter - vr)
+        PolygonShapeConf{}.UseVertexRadius(vr).UseDensity(100_kgpm2)
+        .SetAsBox(0.5_m - vr, 0.5_m - vr)
     };
     Body* m_body = nullptr;
 };

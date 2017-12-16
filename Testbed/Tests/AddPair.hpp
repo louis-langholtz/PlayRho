@@ -44,7 +44,7 @@ public:
             const auto maxY = 6.0f;
             const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
             const auto shape = Shape{
-                DiskShapeConf{}.UseRadius(0.1f * Meter).UseDensity(0.01f * KilogramPerSquareMeter)
+                DiskShapeConf{}.UseRadius(0.1_m).UseDensity(0.01_kgpm2)
             };
             for (auto i = 0; i < 400; ++i)
             {
@@ -55,9 +55,9 @@ public:
             }
         }
         const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true)
-            .UseLocation(Length2{-40 * Meter, 5 * Meter}).UseLinearVelocity(LinearVelocity2{150 * MeterPerSecond, 0 * MeterPerSecond});
+            .UseLocation(Length2{-40_m, 5_m}).UseLinearVelocity(LinearVelocity2{150_mps, 0_mps});
         const auto body = m_world.CreateBody(bd);
-        const auto conf = PolygonShapeConf{}.UseDensity(1.0f * KilogramPerSquareMeter).SetAsBox(1.5f * Meter, 1.5_m);
+        const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(1.5_m, 1.5_m);
         body->CreateFixture(Shape{conf});
     }
 };
