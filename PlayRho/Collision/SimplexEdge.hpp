@@ -30,7 +30,7 @@ namespace playrho {
     /// @details This is the locations (in world coordinates) and indices of a pair of vertices
     /// from two shapes (shape A and shape B).
     ///
-    /// @note This data structure is 28-bytes large (on at least one 64-bit platform).
+    /// @note This data structure is 20-bytes large (on at least one 64-bit platform).
     ///
     class SimplexEdge
     {
