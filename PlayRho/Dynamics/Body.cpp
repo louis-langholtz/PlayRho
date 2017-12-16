@@ -80,7 +80,7 @@ Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
 
 Body::Body(World* world, const BodyDef& bd):
     m_xf{bd.location, UnitVec2::Get(bd.angle)},
-    m_sweep{Position{bd.location, bd.angle}},
+    m_sweep{Position2D{bd.location, bd.angle}},
     m_flags{GetFlags(bd)},
     m_world{world},
     m_userData{bd.userData},
@@ -94,7 +94,7 @@ Body::Body(World* world, const BodyDef& bd):
     assert(IsValid(bd.angularVelocity));
     assert(IsValid(m_xf));
 
-    SetVelocity(Velocity{bd.linearVelocity, bd.angularVelocity});
+    SetVelocity(Velocity2D{bd.linearVelocity, bd.angularVelocity});
     SetAcceleration(bd.linearAcceleration, bd.angularAcceleration);
     SetUnderActiveTime(bd.underActiveTime);
 }
@@ -145,7 +145,7 @@ void Body::ResetMassData()
     {
         m_invMass = 0;
         m_invRotI = 0;
-        m_sweep = Sweep{Position{GetLocation(), GetAngle()}};
+        m_sweep = Sweep2D{Position2D{GetLocation(), GetAngle()}};
         UnsetMassDataDirty();
         return;
     }
@@ -174,7 +174,7 @@ void Body::ResetMassData()
 
     // Move center of mass.
     const auto oldCenter = GetWorldCenter();
-    m_sweep = Sweep{Position{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
+    m_sweep = Sweep2D{Position2D{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
     const auto newCenter = GetWorldCenter();
 
     // Update center of mass velocity.
@@ -184,7 +184,7 @@ void Body::ResetMassData()
     UnsetMassDataDirty();
 }
 
-void Body::SetMassData(const MassData& massData)
+void Body::SetMassData(const MassData2D& massData)
 {
     if (m_world->IsLocked())
     {
@@ -214,8 +214,8 @@ void Body::SetMassData(const MassData& massData)
 
     // Move center of mass.
     const auto oldCenter = GetWorldCenter();
-    m_sweep = Sweep{
-        Position{Transform(massData.center, GetTransformation()), GetAngle()},
+    m_sweep = Sweep2D{
+        Position2D{Transform(massData.center, GetTransformation()), GetAngle()},
         massData.center
     };
 
@@ -227,7 +227,7 @@ void Body::SetMassData(const MassData& massData)
     UnsetMassDataDirty();
 }
 
-void Body::SetVelocity(const Velocity& velocity) noexcept
+void Body::SetVelocity(const Velocity2D& velocity) noexcept
 {
     if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm))
     {
@@ -259,7 +259,7 @@ void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angul
     m_angularAcceleration = angular;
 }
 
-void Body::SetTransformation(Transformation value) noexcept
+void Body::SetTransformation(Transformation2D value) noexcept
 {
     assert(IsValid(value));
     if (m_xf != value)
@@ -281,10 +281,10 @@ void Body::SetTransform(Length2 location, Angle angle)
         throw WrongState("Body::SetTransform: world is locked");
     }
 
-    const auto xfm = Transformation{location, UnitVec2::Get(angle)};
+    const auto xfm = Transformation2D{location, UnitVec2::Get(angle)};
     SetTransformation(xfm);
 
-    m_sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
+    m_sweep = Sweep2D{Position2D{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
     
     GetWorld()->RegisterForProxies(this);
 }
@@ -438,7 +438,7 @@ BodyCounter GetWorldIndex(const Body* body) noexcept
     return BodyCounter(-1);
 }
 
-Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
+Velocity2D GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();
@@ -521,7 +521,7 @@ Force2 GetCentripetalForce(const Body& body, Length2 axis)
     return Force2{dir * mass * Square(magnitudeOfVelocity) / radius};
 }
 
-Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
+Acceleration2D CalcGravitationalAcceleration(const Body& body) noexcept
 {
     const auto m1 = GetMass(body);
     if (m1 != 0_kg)
@@ -546,9 +546,9 @@ Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
             sumForce += f * dir;
         }
         // F = m a... i.e.  a = F / m.
-        return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
+        return Acceleration2D{sumForce / m1, 0 * RadianPerSquareSecond};
     }
-    return Acceleration{};
+    return Acceleration2D{};
 }
 
 } // namespace playrho

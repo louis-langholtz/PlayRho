@@ -27,39 +27,39 @@
 
 namespace playrho
 {
-    /// @brief Acceleration related data structure.
+    /// @brief 2-D acceleration related data structure.
     /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
-    struct Acceleration
+    struct Acceleration2D
     {
         LinearAcceleration2 linear; ///< Linear acceleration.
         AngularAcceleration angular; ///< Angular acceleration.
     };
     
     /// @brief Determines if the given value is valid.
-    /// @relatedalso Acceleration
+    /// @relatedalso Acceleration2D
     template <>
-    PLAYRHO_CONSTEXPR inline bool IsValid(const Acceleration& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const Acceleration2D& value) noexcept
     {
         return IsValid(value.linear) && IsValid(value.angular);
     }
     
     /// @brief Equality operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline bool operator==(const Acceleration& lhs, const Acceleration& rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline bool operator==(const Acceleration2D& lhs, const Acceleration2D& rhs)
     {
         return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
     }
     
     /// @brief Inequality operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline bool operator!=(const Acceleration& lhs, const Acceleration& rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline bool operator!=(const Acceleration2D& lhs, const Acceleration2D& rhs)
     {
         return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
     }
     
     /// @brief Multiplication assignment operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration& operator*= (Acceleration& lhs, const Real rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D& operator*= (Acceleration2D& lhs, const Real rhs)
     {
         lhs.linear *= rhs;
         lhs.angular *= rhs;
@@ -67,8 +67,8 @@ namespace playrho
     }
     
     /// @brief Division assignment operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration& operator/= (Acceleration& lhs, const Real rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D& operator/= (Acceleration2D& lhs, const Real rhs)
     {
         lhs.linear /= rhs;
         lhs.angular /= rhs;
@@ -76,8 +76,8 @@ namespace playrho
     }
     
     /// @brief Addition assignment operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration& operator+= (Acceleration& lhs, const Acceleration& rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D& operator+= (Acceleration2D& lhs, const Acceleration2D& rhs)
     {
         lhs.linear += rhs.linear;
         lhs.angular += rhs.angular;
@@ -85,15 +85,15 @@ namespace playrho
     }
     
     /// @brief Addition operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration operator+ (const Acceleration& lhs, const Acceleration& rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D operator+ (const Acceleration2D& lhs, const Acceleration2D& rhs)
     {
-        return Acceleration{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
+        return Acceleration2D{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
     }
     
     /// @brief Subtraction assignment operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration& operator-= (Acceleration& lhs, const Acceleration& rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D& operator-= (Acceleration2D& lhs, const Acceleration2D& rhs)
     {
         lhs.linear -= rhs.linear;
         lhs.angular -= rhs.angular;
@@ -101,43 +101,43 @@ namespace playrho
     }
     
     /// @brief Subtraction operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration operator- (const Acceleration& lhs, const Acceleration& rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D operator- (const Acceleration2D& lhs, const Acceleration2D& rhs)
     {
-        return Acceleration{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
+        return Acceleration2D{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
     }
     
     /// @brief Negation operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration operator- (const Acceleration& value)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D operator- (const Acceleration2D& value)
     {
-        return Acceleration{-value.linear, -value.angular};
+        return Acceleration2D{-value.linear, -value.angular};
     }
     
     /// @brief Positive operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration operator+ (const Acceleration& value)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D operator+ (const Acceleration2D& value)
     {
         return value;
     }
     
     /// @brief Multiplication operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration operator* (const Acceleration& lhs, const Real rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D operator* (const Acceleration2D& lhs, const Real rhs)
     {
-        return Acceleration{lhs.linear * rhs, lhs.angular * rhs};
+        return Acceleration2D{lhs.linear * rhs, lhs.angular * rhs};
     }
     
     /// @brief Multiplication operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration operator* (const Real lhs, const Acceleration& rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D operator* (const Real lhs, const Acceleration2D& rhs)
     {
-        return Acceleration{rhs.linear * lhs, rhs.angular * lhs};
+        return Acceleration2D{rhs.linear * lhs, rhs.angular * lhs};
     }
     
     /// @brief Division operator.
-    /// @relatedalso Acceleration
-    PLAYRHO_CONSTEXPR inline Acceleration operator/ (const Acceleration& lhs, const Real rhs)
+    /// @relatedalso Acceleration2D
+    PLAYRHO_CONSTEXPR inline Acceleration2D operator/ (const Acceleration2D& lhs, const Real rhs)
     {
         /*
          * While it can be argued that division operations shouldn't be supported due to
@@ -149,7 +149,7 @@ namespace playrho
          * on down to the Vec2 and Angle types (rather than manually rewriting the divisions
          * as multiplications).
          */
-        return Acceleration{lhs.linear / rhs, lhs.angular / rhs};
+        return Acceleration2D{lhs.linear / rhs, lhs.angular / rhs};
     }
     
 } // namespace playrho

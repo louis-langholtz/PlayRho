@@ -73,7 +73,7 @@ public:
     DistanceProxy GetChild(ChildCounter index) const;
     
     /// @brief Gets the mass data.
-    MassData GetMassData() const noexcept;
+    MassData2D GetMassData() const noexcept;
     
     /// @brief Gets the vertex count.
     ChildCounter GetVertexCount() const noexcept
@@ -130,7 +130,7 @@ inline DistanceProxy GetChild(const ChainShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the mass data for a given chain shape configuration.
-inline MassData GetMassData(const ChainShapeConf& arg) noexcept
+inline MassData2D GetMassData(const ChainShapeConf& arg) noexcept
 {
     return arg.GetMassData();
 }

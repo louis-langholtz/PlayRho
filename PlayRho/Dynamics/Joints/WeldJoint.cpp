@@ -179,8 +179,8 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
         const auto LA = L + AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = L + AngularMomentum{Cross(m_rB, P) / Radian};
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -233,8 +233,8 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -255,8 +255,8 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto LA = L + AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = L + AngularMomentum{Cross(m_rB, P) / Radian};
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
 
     if ((velA != oldVelA) || (velB != oldVelB))
@@ -334,8 +334,8 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         const auto LA = Cross(rA, P) / Radian;
         const auto LB = Cross(rB, P) / Radian;
 
-        posA -= Position{invMassA * P, invRotInertiaA * LA};
-        posB += Position{invMassB * P, invRotInertiaB * LB};
+        posA -= Position2D{invMassA * P, invRotInertiaA * LA};
+        posB += Position2D{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -363,8 +363,8 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         const auto LA = L + Cross(rA, P) / Radian;
         const auto LB = L + Cross(rB, P) / Radian;
 
-        posA -= Position{invMassA * P, invRotInertiaA * LA};
-        posB += Position{invMassB * P, invRotInertiaB * LB};
+        posA -= Position2D{invMassA * P, invRotInertiaA * LA};
+        posB += Position2D{invMassB * P, invRotInertiaB * LB};
     }
 
     bodyConstraintA->SetPosition(posA);

@@ -240,19 +240,19 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
 
     if (step.doWarmStart)
     {
-        velA += Velocity{
+        velA += Velocity2D{
             (bodyConstraintA->GetInvMass() * m_impulse) * m_JvAC,
             bodyConstraintA->GetInvRotInertia() * m_impulse * m_JwA / Radian
         };
-        velB += Velocity{
+        velB += Velocity2D{
             (bodyConstraintB->GetInvMass() * m_impulse) * m_JvBD,
             bodyConstraintB->GetInvRotInertia() * m_impulse * m_JwB / Radian
         };
-        velC -= Velocity{
+        velC -= Velocity2D{
             (bodyConstraintC->GetInvMass() * m_impulse) * m_JvAC,
             bodyConstraintC->GetInvRotInertia() * m_impulse * m_JwC / Radian
         };
-        velD -= Velocity{
+        velD -= Velocity2D{
             (bodyConstraintD->GetInvMass() * m_impulse) * m_JvBD,
             bodyConstraintD->GetInvRotInertia() * m_impulse * m_JwD / Radian
         };
@@ -289,19 +289,19 @@ bool GearJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto impulse = Momentum{-m_mass * Kilogram * Cdot};
     m_impulse += impulse;
 
-    velA += Velocity{
+    velA += Velocity2D{
         (bodyConstraintA->GetInvMass() * impulse) * m_JvAC,
         bodyConstraintA->GetInvRotInertia() * impulse * m_JwA / Radian
     };
-    velB += Velocity{
+    velB += Velocity2D{
         (bodyConstraintB->GetInvMass() * impulse) * m_JvBD,
         bodyConstraintB->GetInvRotInertia() * impulse * m_JwB / Radian
     };
-    velC -= Velocity{
+    velC -= Velocity2D{
         (bodyConstraintC->GetInvMass() * impulse) * m_JvAC,
         bodyConstraintC->GetInvRotInertia() * impulse * m_JwC / Radian
     };
-    velD -= Velocity{
+    velD -= Velocity2D{
         (bodyConstraintD->GetInvMass() * impulse) * m_JvBD,
         bodyConstraintD->GetInvRotInertia() * impulse * m_JwD / Radian
     };
@@ -398,19 +398,19 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     const auto impulse = ((invMass > 0)? -C / invMass: 0) * Kilogram * Meter;
 
-    posA += Position{
+    posA += Position2D{
         bodyConstraintA->GetInvMass() * impulse * JvAC,
         bodyConstraintA->GetInvRotInertia() * impulse * JwA * Meter / Radian
     };
-    posB += Position{
+    posB += Position2D{
         bodyConstraintB->GetInvMass() * impulse * JvBD,
         bodyConstraintB->GetInvRotInertia() * impulse * JwB * Meter / Radian
     };
-    posC -= Position{
+    posC -= Position2D{
         bodyConstraintC->GetInvMass() * impulse * JvAC,
         bodyConstraintC->GetInvRotInertia() * impulse * JwC * Meter / Radian
     };
-    posD -= Position{
+    posD -= Position2D{
         bodyConstraintD->GetInvMass() * impulse * JvBD,
         bodyConstraintD->GetInvRotInertia() * impulse * JwD * Meter / Radian
     };

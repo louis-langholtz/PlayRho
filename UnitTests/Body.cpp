@@ -225,7 +225,7 @@ TEST(Body, WorldCreated)
 
 TEST(Body, SetVelocityDoesNothingToStatic)
 {
-    const auto zeroVelocity = Velocity{
+    const auto zeroVelocity = Velocity2D{
         LinearVelocity2{0_mps, 0_mps},
         AngularVelocity{Real(0) * RadianPerSecond}
     };
@@ -239,7 +239,7 @@ TEST(Body, SetVelocityDoesNothingToStatic)
     ASSERT_FALSE(body->IsAccelerable());
     ASSERT_EQ(body->GetVelocity(), zeroVelocity);
     
-    const auto velocity = Velocity{
+    const auto velocity = Velocity2D{
         LinearVelocity2{1.1_mps, 1.1_mps},
         AngularVelocity{Real(1.1) * RadianPerSecond}
     };
@@ -423,9 +423,9 @@ TEST(Body, SetTransform)
     bd.type = BodyType::Dynamic;
     World world;
     const auto body = world.CreateBody(bd);
-    const auto xfm1 = Transformation{Length2{}, UnitVec2::GetRight()};
+    const auto xfm1 = Transformation2D{Length2{}, UnitVec2::GetRight()};
     ASSERT_EQ(body->GetTransformation(), xfm1);
-    const auto xfm2 = Transformation{Vec2(10, -12) * 1_m, UnitVec2::GetLeft()};
+    const auto xfm2 = Transformation2D{Vec2(10, -12) * 1_m, UnitVec2::GetLeft()};
     body->SetTransform(xfm2.p, GetAngle(xfm2.q));
     EXPECT_EQ(body->GetTransformation().p, xfm2.p);
     EXPECT_NEAR(static_cast<double>(GetX(body->GetTransformation().q)),
@@ -554,7 +554,7 @@ TEST(Body, GetAccelerationFF)
     ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
     ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
     
-    EXPECT_EQ(GetAcceleration(*body), Acceleration{});
+    EXPECT_EQ(GetAcceleration(*body), Acceleration2D{});
 }
 
 TEST(Body, SetAccelerationFF)
@@ -566,7 +566,7 @@ TEST(Body, SetAccelerationFF)
     ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
     ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
  
-    const auto newAccel = Acceleration{
+    const auto newAccel = Acceleration2D{
         LinearAcceleration2{2_mps2, 3_mps2}, AngularAcceleration{1.2f * RadianPerSquareSecond}
     };
     SetAcceleration(*body, newAccel);
@@ -584,7 +584,7 @@ TEST(Body, CalcGravitationalAcceleration)
     
     const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l1));
     b1->CreateFixture(shape);
-    EXPECT_EQ(CalcGravitationalAcceleration(*b1), Acceleration{});
+    EXPECT_EQ(CalcGravitationalAcceleration(*b1), Acceleration2D{});
     
     const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l2));
     b2->CreateFixture(shape);
@@ -595,7 +595,7 @@ TEST(Body, CalcGravitationalAcceleration)
     EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
     
     const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(l3));
-    EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration{});
+    EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration2D{});
 }
 
 TEST(Body, RotateAboutWorldPointFF)

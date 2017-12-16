@@ -43,7 +43,7 @@ namespace playrho {
         
         /// @brief Initializing constructor.
         PLAYRHO_CONSTEXPR inline BodyConstraint(InvMass invMass, InvRotInertia invRotI, Length2 localCenter,
-                                 Position position, Velocity velocity) noexcept:
+                                 Position2D position, Velocity2D velocity) noexcept:
             m_position{position},
             m_velocity{velocity},
             m_localCenter{localCenter},
@@ -69,24 +69,24 @@ namespace playrho {
         Length2 GetLocalCenter() const noexcept;
         
         /// @brief Gets the position of the body.
-        Position GetPosition() const noexcept;
+        Position2D GetPosition() const noexcept;
         
         /// @brief Gets the velocity of the body.
-        Velocity GetVelocity() const noexcept;
+        Velocity2D GetVelocity() const noexcept;
         
         /// @brief Sets the position of the body.
         /// @param value A valid position value to set for the represented body.
         /// @warning Behavior is undefined if the given value is not valid.
-        BodyConstraint& SetPosition(Position value) noexcept;
+        BodyConstraint& SetPosition(Position2D value) noexcept;
         
         /// @brief Sets the velocity of the body.
         /// @param value A valid velocity value to set for the represented body.
         /// @warning Behavior is undefined if the given value is not valid.
-        BodyConstraint& SetVelocity(Velocity value) noexcept;
+        BodyConstraint& SetVelocity(Velocity2D value) noexcept;
         
     private:
-        Position m_position; ///< Body position data.
-        Velocity m_velocity; ///< Body velocity data.
+        Position2D m_position; ///< Body position data.
+        Velocity2D m_velocity; ///< Body velocity data.
         Length2 m_localCenter; ///< Local center of the associated body's sweep.
         InvMass m_invMass; ///< Inverse mass of associated body (a non-negative value).
 
@@ -110,24 +110,24 @@ namespace playrho {
         return m_localCenter;
     }
     
-    inline Position BodyConstraint::GetPosition() const noexcept
+    inline Position2D BodyConstraint::GetPosition() const noexcept
     {
         return m_position;
     }
     
-    inline Velocity BodyConstraint::GetVelocity() const noexcept
+    inline Velocity2D BodyConstraint::GetVelocity() const noexcept
     {
         return m_velocity;
     }
     
-    inline BodyConstraint& BodyConstraint::SetPosition(Position value) noexcept
+    inline BodyConstraint& BodyConstraint::SetPosition(Position2D value) noexcept
     {
         assert(IsValid(value));
         m_position = value;
         return *this;
     }
     
-    inline BodyConstraint& BodyConstraint::SetVelocity(Velocity value) noexcept
+    inline BodyConstraint& BodyConstraint::SetVelocity(Velocity2D value) noexcept
     {
         assert(IsValid(value));
         m_velocity = value;

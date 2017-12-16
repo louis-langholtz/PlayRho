@@ -188,8 +188,8 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian} + L;
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian} + L;
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -293,8 +293,8 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian} + L;
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian} + L;
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -310,8 +310,8 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
 
     if ((velA != oldVelA) || (velB != oldVelB))
@@ -411,8 +411,8 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         GetY(GetY(K)) = eyy;
         const auto P = -Solve(K, C);
 
-        posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
-        posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
+        posA -= Position2D{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
+        posB += Position2D{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
     }
 
     bodyConstraintA->SetPosition(posA);

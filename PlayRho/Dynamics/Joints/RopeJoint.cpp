@@ -117,8 +117,8 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
 
-        velA -= Velocity{bodyConstraintA->GetInvMass() * P, invRotInertiaA * crossAP};
-        velB += Velocity{bodyConstraintB->GetInvMass() * P, invRotInertiaB * crossBP};
+        velA -= Velocity2D{bodyConstraintA->GetInvMass() * P, invRotInertiaA * crossAP};
+        velB += Velocity2D{bodyConstraintB->GetInvMass() * P, invRotInertiaB * crossBP};
     }
     else
     {
@@ -158,8 +158,8 @@ bool RopeJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
     const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
 
-    velA -= Velocity{bodyConstraintA->GetInvMass() * P, bodyConstraintA->GetInvRotInertia() * crossAP};
-    velB += Velocity{bodyConstraintB->GetInvMass() * P, bodyConstraintB->GetInvRotInertia() * crossBP};
+    velA -= Velocity2D{bodyConstraintA->GetInvMass() * P, bodyConstraintA->GetInvRotInertia() * crossAP};
+    velB += Velocity2D{bodyConstraintB->GetInvMass() * P, bodyConstraintB->GetInvRotInertia() * crossBP};
 
     bodyConstraintA->SetVelocity(velA);
     bodyConstraintB->SetVelocity(velB);
@@ -194,8 +194,8 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto angImpulseA = Cross(rA, linImpulse) / Radian;
     const auto angImpulseB = Cross(rB, linImpulse) / Radian;
 
-    posA -= Position{bodyConstraintA->GetInvMass() * linImpulse, bodyConstraintA->GetInvRotInertia() * angImpulseA};
-    posB += Position{bodyConstraintB->GetInvMass() * linImpulse, bodyConstraintB->GetInvRotInertia() * angImpulseB};
+    posA -= Position2D{bodyConstraintA->GetInvMass() * linImpulse, bodyConstraintA->GetInvRotInertia() * angImpulseA};
+    posB += Position2D{bodyConstraintB->GetInvMass() * linImpulse, bodyConstraintB->GetInvRotInertia() * angImpulseB};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);

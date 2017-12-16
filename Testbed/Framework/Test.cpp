@@ -50,7 +50,7 @@ static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, 
 class ShapeDrawer
 {
 public:
-    ShapeDrawer(Drawer& d, Color c, bool s, Transformation t):
+    ShapeDrawer(Drawer& d, Color c, bool s, Transformation2D t):
         drawer{d}, color{c}, skins{s}, xf{t}
     {
         // Intentionally empty.
@@ -91,7 +91,7 @@ public:
     Drawer& drawer;
     Color color;
     bool skins;
-    Transformation xf;
+    Transformation2D xf;
 };
 
 void ShapeDrawer::Visit(const DiskShapeConf& shape)

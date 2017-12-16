@@ -195,8 +195,8 @@ TEST(DistanceProxy, GetMaxSeparationStopping)
     const auto radius = 1_m;
     const auto dp = DistanceProxy{radius, 4, vertices, normals};
     
-    const auto xfm1 = Transformation{Length2{-1_m, 0_m}, UnitVec2::Get(190_deg)};
-    const auto xfm2 = Transformation{Length2{+1_m, 0_m}, UnitVec2::Get( 95_deg)};
+    const auto xfm1 = Transformation2D{Length2{-1_m, 0_m}, UnitVec2::Get(190_deg)};
+    const auto xfm2 = Transformation2D{Length2{+1_m, 0_m}, UnitVec2::Get( 95_deg)};
     const auto resultRegular = GetMaxSeparation(dp, xfm1, dp, xfm2);
     const auto resultStopped = GetMaxSeparation(dp, xfm1, dp, xfm2, -3_m);
     

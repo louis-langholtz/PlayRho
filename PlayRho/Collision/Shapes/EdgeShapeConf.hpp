@@ -117,7 +117,7 @@ inline DistanceProxy GetChild(const EdgeShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the mass data for the given shape configuration.
-inline MassData GetMassData(const EdgeShapeConf& arg) noexcept
+inline MassData2D GetMassData(const EdgeShapeConf& arg) noexcept
 {
     return playrho::GetMassData(arg.vertexRadius, arg.density,
                                 arg.GetVertexA(), arg.GetVertexB());

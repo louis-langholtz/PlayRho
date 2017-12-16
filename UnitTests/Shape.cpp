@@ -47,7 +47,7 @@ TEST(Shape, ByteSize)
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 {
     const auto shape = DiskShapeConf{2_m};
-    const auto xfm = Transformation{Length2{}, UnitVec2::GetRight()};
+    const auto xfm = Transformation2D{Length2{}, UnitVec2::GetRight()};
     const auto child = GetChild(shape, 0);
 
     const auto maxloops = 1000000u;
@@ -94,7 +94,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
 TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
 {
     const auto shape = PolygonShapeConf{2_m, 2_m};
-    const auto xfm = Transformation{Length2{}, UnitVec2::GetRight()};
+    const auto xfm = Transformation2D{Length2{}, UnitVec2::GetRight()};
     const auto child = GetChild(shape, 0);
 
     const auto maxloops = 1000000u;

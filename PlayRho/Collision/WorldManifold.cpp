@@ -28,8 +28,8 @@ namespace playrho {
 namespace {
 
 inline WorldManifold GetForCircles(const Manifold& manifold,
-                                   const Transformation xfA, const Length radiusA,
-                                   const Transformation xfB, const Length radiusB)
+                                   const Transformation2D xfA, const Length radiusA,
+                                   const Transformation2D xfB, const Length radiusB)
 {
     assert(manifold.GetPointCount() == 1);
 
@@ -45,8 +45,8 @@ inline WorldManifold GetForCircles(const Manifold& manifold,
 }
 
 inline WorldManifold GetForFaceA(const Manifold& manifold,
-                                 const Transformation xfA, const Length radiusA,
-                                 const Transformation xfB, const Length radiusB)
+                                 const Transformation2D xfA, const Length radiusA,
+                                 const Transformation2D xfB, const Length radiusB)
 {
     const auto normal = Rotate(manifold.GetLocalNormal(), xfA.q);
     const auto planePoint = Transform(manifold.GetLocalPoint(), xfA);
@@ -72,8 +72,8 @@ inline WorldManifold GetForFaceA(const Manifold& manifold,
 }
 
 inline WorldManifold GetForFaceB(const Manifold& manifold,
-                                 const Transformation xfA, const Length radiusA,
-                                 const Transformation xfB, const Length radiusB)
+                                 const Transformation2D xfA, const Length radiusA,
+                                 const Transformation2D xfB, const Length radiusB)
 {
     const auto normal = Rotate(manifold.GetLocalNormal(), xfB.q);
     const auto planePoint = Transform(manifold.GetLocalPoint(), xfB);
@@ -102,8 +102,8 @@ inline WorldManifold GetForFaceB(const Manifold& manifold,
 } // anonymous namespace
 
 WorldManifold GetWorldManifold(const Manifold& manifold,
-                               Transformation xfA, Length radiusA,
-                               Transformation xfB, Length radiusB)
+                               Transformation2D xfA, Length radiusA,
+                               Transformation2D xfB, Length radiusB)
 {
     const auto type = manifold.GetType();
 

@@ -29,7 +29,7 @@
 
 namespace playrho {
 
-AABB2D ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept
+AABB2D ComputeAABB(const DistanceProxy& proxy, const Transformation2D& xf) noexcept
 {
     assert(IsValid(xf));
     auto result = AABB2D{};
@@ -41,7 +41,7 @@ AABB2D ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcep
 }
 
 AABB2D ComputeAABB(const DistanceProxy& proxy,
-                   const Transformation& xfm0, const Transformation& xfm1) noexcept
+                   const Transformation2D& xfm0, const Transformation2D& xfm1) noexcept
 {
     assert(IsValid(xfm0));
     assert(IsValid(xfm1));
@@ -54,7 +54,7 @@ AABB2D ComputeAABB(const DistanceProxy& proxy,
     return GetFattenedAABB(result, proxy.GetVertexRadius());
 }
 
-AABB2D ComputeAABB(const Shape& shape, const Transformation& xf) noexcept
+AABB2D ComputeAABB(const Shape& shape, const Transformation2D& xf) noexcept
 {
     auto sum = AABB2D{};
     const auto childCount = GetChildCount(shape);

@@ -67,7 +67,7 @@ public:
     }
     
     Color m_color = Color(0.95f, 0.95f, 0.6f);
-    Transformation m_xf;
+    Transformation2D m_xf;
     Drawer* g_debugDraw;
 };
 

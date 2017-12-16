@@ -73,8 +73,8 @@ TEST(WorldManifold, UnitVecConstruction)
 TEST(WorldManifold, GetWorldManifoldForUnsetManifold)
 {
     const auto manifold = Manifold{};
-    const auto xfA = Transformation{Length2{(4-1) * Meter, 0_m}, UnitVec2::GetRight()};
-    const auto xfB = Transformation{Length2{(4+1) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto xfA = Transformation2D{Length2{(4-1) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto xfB = Transformation2D{Length2{(4+1) * Meter, 0_m}, UnitVec2::GetRight()};
     const auto rA = 1_m;
     const auto rB = 1_m;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
@@ -86,10 +86,10 @@ TEST(WorldManifold, GetWorldManifoldForUnsetManifold)
 TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);
-    const auto xfA = Transformation{
+    const auto xfA = Transformation2D{
         Length2{Real(4-1) * Meter, 0_m}, UnitVec2::GetRight()
     };
-    const auto xfB = Transformation{
+    const auto xfB = Transformation2D{
         Length2{Real(4+1) * Meter, 0_m}, UnitVec2::GetRight()
     };
     const auto rA = 1_m;
@@ -107,10 +107,10 @@ TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);
-    const auto xfA = Transformation{
+    const auto xfA = Transformation2D{
         Length2{Real(7-0.5) * Meter, 0_m}, UnitVec2::GetRight()
     };
-    const auto xfB = Transformation{
+    const auto xfB = Transformation2D{
         Length2{Real(7+0.5) * Meter, 0_m}, UnitVec2::GetRight()
     };
     const auto rA = 1_m;
@@ -128,8 +128,8 @@ TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);
-    const auto xfA = Transformation{Length2{Real(3-0) * Meter, 0_m}, UnitVec2::GetRight()};
-    const auto xfB = Transformation{Length2{Real(3+0) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto xfA = Transformation2D{Length2{Real(3-0) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto xfB = Transformation2D{Length2{Real(3+0) * Meter, 0_m}, UnitVec2::GetRight()};
     const auto rA = 1_m;
     const auto rB = 1_m;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);

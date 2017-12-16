@@ -44,7 +44,7 @@ public:
             body->CreateFixture(Shape(circleConf));
 
             const auto w = 100.0f;
-            body->SetVelocity(Velocity{
+            body->SetVelocity(Velocity2D{
                 Vec2(-8.0f * w, 0.0f) * 1_mps, w * 1_rad / 1_s
             });
             

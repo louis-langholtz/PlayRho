@@ -112,7 +112,7 @@ public:
     
     /// @brief Gets the mass properties of this shape using its dimensions and density.
     /// @return Mass data for this shape.
-    friend MassData GetMassData(const Shape& shape) noexcept
+    friend MassData2D GetMassData(const Shape& shape) noexcept
     {
         return shape.m_self->GetMassData_();
     }
@@ -204,7 +204,7 @@ private:
         virtual DistanceProxy GetChild_(ChildCounter index) const = 0;
         
         /// @brief Gets the mass data.
-        virtual MassData GetMassData_() const noexcept = 0;
+        virtual MassData2D GetMassData_() const noexcept = 0;
         
         /// @brief Gets the vertex radius.
         virtual NonNegative<Length> GetVertexRadius_() const noexcept = 0;
@@ -261,7 +261,7 @@ private:
             return GetChild(data, index);
         }
 
-        MassData GetMassData_() const noexcept override
+        MassData2D GetMassData_() const noexcept override
         {
             return GetMassData(data);
         }

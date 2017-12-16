@@ -242,8 +242,8 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto LB = L + (Pxs2 * Meter + PzLength * m_a2) / Radian;
 
         // InvRotInertia is L^-2 M^-1 QP^2
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -287,8 +287,8 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
         const auto LA = impulse * m_a1 / Radian;
         const auto LB = impulse * m_a2 / Radian;
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
 
     const auto velDelta = velB.linear - velA.linear;
@@ -335,8 +335,8 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
             (GetX(df) * m_s2 + GetY(df) * Meter + GetZ(df) * m_a2) * NewtonSecond / Radian
         };
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -356,8 +356,8 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
             (GetX(df) * m_s2 + GetY(df) * Meter) * NewtonSecond / Radian
         };
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
 
     if ((velA != oldVelA) || (velB != oldVelB))
@@ -509,8 +509,8 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
     const auto LA = (GetX(impulse) * s1 + GetY(impulse) * Meter + GetZ(impulse) * a1) * Kilogram * Meter / Radian;
     const auto LB = (GetX(impulse) * s2 + GetY(impulse) * Meter + GetZ(impulse) * a2) * Kilogram * Meter / Radian;
 
-    posA -= Position{Length2{invMassA * P}, invRotInertiaA * LA};
-    posB += Position{invMassB * P, invRotInertiaB * LB};
+    posA -= Position2D{Length2{invMassA * P}, invRotInertiaA * LA};
+    posB += Position2D{invMassB * P, invRotInertiaB * LB};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);

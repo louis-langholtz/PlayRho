@@ -33,7 +33,7 @@ namespace playrho {
 
 class Body;
 class StepConf;
-struct Velocity;
+struct Velocity2D;
 struct ConstraintSolverConf;
 class BodyConstraint;
 class JointVisitor;

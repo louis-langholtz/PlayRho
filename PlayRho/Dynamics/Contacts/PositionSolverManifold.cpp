@@ -30,8 +30,8 @@ namespace {
 /// @param plp Point's local point. Location of shape B in local coordinates.
 /// @note The returned separation is the magnitude of the positional difference of the two points.
 ///   This is always a non-negative amount.
-inline PositionSolverManifold GetForCircles(const Transformation& xfA, Length2 lp,
-                                            const Transformation& xfB, Length2 plp)
+inline PositionSolverManifold GetForCircles(const Transformation2D& xfA, Length2 lp,
+                                            const Transformation2D& xfB, Length2 plp)
 {
     const auto pointA = Transform(lp, xfA);
     const auto pointB = Transform(plp, xfB);
@@ -51,8 +51,8 @@ inline PositionSolverManifold GetForCircles(const Transformation& xfA, Length2 l
 /// @param plp Point's local point. Location for shape B in local coordinates.
 /// @return Separation is the dot-product of the positional difference between the two points in
 ///   the direction of the world normal.
-inline PositionSolverManifold GetForFaceA(const Transformation& xfA, Length2 lp, UnitVec2 ln,
-                                          const Transformation& xfB, Length2 plp)
+inline PositionSolverManifold GetForFaceA(const Transformation2D& xfA, Length2 lp, UnitVec2 ln,
+                                          const Transformation2D& xfB, Length2 plp)
 {
     const auto planePoint = Transform(lp, xfA);
     const auto normal = Rotate(ln, xfA.q);
@@ -70,8 +70,8 @@ inline PositionSolverManifold GetForFaceA(const Transformation& xfA, Length2 lp,
 /// @param plp Point's local point. Location for shape A in local coordinates.
 /// @return Separation is the dot-product of the positional difference between the two points in
 ///   the direction of the world normal.
-inline PositionSolverManifold GetForFaceB(const Transformation& xfB, Length2 lp, UnitVec2 ln,
-                                          const Transformation& xfA, Length2 plp)
+inline PositionSolverManifold GetForFaceB(const Transformation2D& xfB, Length2 lp, UnitVec2 ln,
+                                          const Transformation2D& xfA, Length2 plp)
 {
     const auto planePoint = Transform(lp, xfB);
     const auto normal = Rotate(ln, xfB.q);
@@ -84,7 +84,7 @@ inline PositionSolverManifold GetForFaceB(const Transformation& xfB, Length2 lp,
 } // unnamed namespace
 
 PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
-                              const Transformation& xfA, const Transformation& xfB)
+                              const Transformation2D& xfA, const Transformation2D& xfB)
 {
     assert(manifold.GetType() != Manifold::e_unset);
     assert(manifold.GetPointCount() > 0);

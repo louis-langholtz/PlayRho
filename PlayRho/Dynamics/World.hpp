@@ -525,7 +525,7 @@ private:
     /// @param body Body to update.
     /// @param pos New position to set the given body to.
     /// @param vel New velocity to set the given body to.
-    static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
+    static void UpdateBody(Body& body, const Position2D& pos, const Velocity2D& vel);
 
     /// @brief Reset bodies for solve TOI.
     void ResetBodiesForSolveTOI();
@@ -715,14 +715,14 @@ private:
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   body's fixtures.
     ContactCounter Synchronize(Body& body,
-                               Transformation xfm1, Transformation xfm2,
+                               Transformation2D xfm1, Transformation2D xfm2,
                                Real multiplier, Length extension);
 
     /// @brief Synchronizes the given fixture.
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   fixture shape's children.
     ContactCounter Synchronize(Fixture& fixture,
-                               Transformation xfm1, Transformation xfm2,
+                               Transformation2D xfm1, Transformation2D xfm2,
                                Length2 displacement, Length extension);
     
     /// @brief Creates and destroys proxies.
@@ -1110,18 +1110,18 @@ BodyCounter Awaken(World& world) noexcept;
 
 /// @brief Sets the accelerations of all the world's bodies.
 /// @relatedalso World
-void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept;
+void SetAccelerations(World& world, std::function<Acceleration2D(const Body& b)> fn) noexcept;
 
 /// @brief Sets the accelerations of all the world's bodies to the given value.
 /// @relatedalso World
-void SetAccelerations(World& world, Acceleration acceleration) noexcept;
+void SetAccelerations(World& world, Acceleration2D acceleration) noexcept;
 
 /// @brief Clears forces.
 /// @details Manually clear the force buffer on all bodies.
 /// @relatedalso World
 inline void ClearForces(World& world) noexcept
 {
-    SetAccelerations(world, Acceleration{world.GetGravity(), 0 * RadianPerSquareSecond});
+    SetAccelerations(world, Acceleration2D{world.GetGravity(), 0 * RadianPerSquareSecond});
 }
 
 /// @brief Creates a rectanglular enclosure.

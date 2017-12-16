@@ -153,8 +153,8 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         // Product is: L^-2 M^-1 QP^2 M L^2 T^-1 = QP^2 T^-1
         const auto LA = Cross(m_rA, P) / Radian;
         const auto LB = Cross(m_rB, P) / Radian;
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -189,8 +189,8 @@ bool DistanceJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     const auto P = impulse * m_u;
     const auto LA = Cross(m_rA, P) / Radian;
     const auto LB = Cross(m_rB, P) / Radian;
-    velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-    velB += Velocity{invMassB * P, invRotInertiaB * LB};
+    velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+    velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
 
     bodyConstraintA->SetVelocity(velA);
     bodyConstraintB->SetVelocity(velB);
@@ -234,8 +234,8 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto impulse = -m_mass * C;
     const auto P = impulse * u;
 
-    posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
-    posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
+    posA -= Position2D{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
+    posB += Position2D{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);

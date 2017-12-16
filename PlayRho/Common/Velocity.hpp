@@ -28,39 +28,39 @@
 
 namespace playrho
 {
-    /// @brief Velocity related data structure.
+    /// @brief 2-D velocity related data structure.
     /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
-    struct Velocity
+    struct Velocity2D
     {
         LinearVelocity2 linear; ///< Linear velocity.
         AngularVelocity angular; ///< Angular velocity.
     };
     
     /// @brief Determines if the given value is valid.
-    /// @relatedalso Velocity
+    /// @relatedalso Velocity2D
     template <>
-    PLAYRHO_CONSTEXPR inline bool IsValid(const Velocity& value) noexcept
+    PLAYRHO_CONSTEXPR inline bool IsValid(const Velocity2D& value) noexcept
     {
         return IsValid(value.linear) && IsValid(value.angular);
     }
     
     /// @brief Equality operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline bool operator==(const Velocity& lhs, const Velocity& rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline bool operator==(const Velocity2D& lhs, const Velocity2D& rhs)
     {
         return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
     }
     
     /// @brief Inequality operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline bool operator!=(const Velocity& lhs, const Velocity& rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline bool operator!=(const Velocity2D& lhs, const Velocity2D& rhs)
     {
         return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
     }
     
     /// @brief Multiplication assignment operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity& operator*= (Velocity& lhs, const Real rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D& operator*= (Velocity2D& lhs, const Real rhs)
     {
         lhs.linear *= rhs;
         lhs.angular *= rhs;
@@ -68,8 +68,8 @@ namespace playrho
     }
     
     /// @brief Division assignment operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity& operator/= (Velocity& lhs, const Real rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D& operator/= (Velocity2D& lhs, const Real rhs)
     {
         lhs.linear /= rhs;
         lhs.angular /= rhs;
@@ -77,8 +77,8 @@ namespace playrho
     }
     
     /// @brief Addition assignment operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D& operator+= (Velocity2D& lhs, const Velocity2D& rhs)
     {
         lhs.linear += rhs.linear;
         lhs.angular += rhs.angular;
@@ -86,15 +86,15 @@ namespace playrho
     }
     
     /// @brief Addition operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity operator+ (const Velocity& lhs, const Velocity& rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D operator+ (const Velocity2D& lhs, const Velocity2D& rhs)
     {
-        return Velocity{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
+        return Velocity2D{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
     }
     
     /// @brief Subtraction assignment operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity& operator-= (Velocity& lhs, const Velocity& rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D& operator-= (Velocity2D& lhs, const Velocity2D& rhs)
     {
         lhs.linear -= rhs.linear;
         lhs.angular -= rhs.angular;
@@ -102,43 +102,43 @@ namespace playrho
     }
     
     /// @brief Subtraction operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity operator- (const Velocity& lhs, const Velocity& rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D operator- (const Velocity2D& lhs, const Velocity2D& rhs)
     {
-        return Velocity{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
+        return Velocity2D{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
     }
     
     /// @brief Negation operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity operator- (const Velocity& value)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D operator- (const Velocity2D& value)
     {
-        return Velocity{-value.linear, -value.angular};
+        return Velocity2D{-value.linear, -value.angular};
     }
     
     /// @brief Positive operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity operator+ (const Velocity& value)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D operator+ (const Velocity2D& value)
     {
         return value;
     }
     
     /// @brief Multiplication operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity operator* (const Velocity& lhs, const Real rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D operator* (const Velocity2D& lhs, const Real rhs)
     {
-        return Velocity{lhs.linear * rhs, lhs.angular * rhs};
+        return Velocity2D{lhs.linear * rhs, lhs.angular * rhs};
     }
     
     /// @brief Multiplication operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity operator* (const Real lhs, const Velocity& rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D operator* (const Real lhs, const Velocity2D& rhs)
     {
-        return Velocity{rhs.linear * lhs, rhs.angular * lhs};
+        return Velocity2D{rhs.linear * lhs, rhs.angular * lhs};
     }
     
     /// @brief Division operator.
-    /// @relatedalso Velocity
-    PLAYRHO_CONSTEXPR inline Velocity operator/ (const Velocity& lhs, const Real rhs)
+    /// @relatedalso Velocity2D
+    PLAYRHO_CONSTEXPR inline Velocity2D operator/ (const Velocity2D& lhs, const Real rhs)
     {
         /*
          * While it can be argued that division operations shouldn't be supported due to
@@ -150,11 +150,11 @@ namespace playrho
          * on down to the Vec2 and Angle types (rather than manually rewriting the divisions
          * as multiplications).
          */
-        return Velocity{lhs.linear / rhs, lhs.angular / rhs};
+        return Velocity2D{lhs.linear / rhs, lhs.angular / rhs};
     }
     
     /// @brief Velocity pair.
-    using VelocityPair = std::pair<Velocity, Velocity>;
+    using VelocityPair = std::pair<Velocity2D, Velocity2D>;
     
 } // namespace playrho
 

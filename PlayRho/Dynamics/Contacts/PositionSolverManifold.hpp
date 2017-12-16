@@ -56,7 +56,7 @@ namespace playrho {
     ///   the separation between the points of the manifold. To account for the vertex radiuses,
     ///   the total vertex radius must be subtracted from this separation distance.
     PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
-                                  const Transformation& xfA, const Transformation& xfB);
+                                  const Transformation2D& xfA, const Transformation2D& xfB);
 
 } // namespace playrho
 

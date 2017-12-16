@@ -82,8 +82,8 @@ namespace playrho {
     /// @return Closest points between the two shapes and the count of iterations it took to
     ///   determine them. The iteration count will always be greater than zero unless
     ///   <code>DefaultMaxDistanceIters</code> is zero.
-    DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
-                            const DistanceProxy& proxyB, const Transformation& transformB,
+    DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation2D& transformA,
+                            const DistanceProxy& proxyB, const Transformation2D& transformB,
                             DistanceConf conf = DistanceConf{});
  
     /// @brief Determine if two generic shapes overlap.
@@ -92,8 +92,8 @@ namespace playrho {
     ///   the CollideShapes function. This is not always the case however especially when the
     ///   separation or overlap distance is closer to zero.
     ///
-    Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
-                     const DistanceProxy& proxyB, const Transformation& xfB,
+    Area TestOverlap(const DistanceProxy& proxyA, const Transformation2D& xfA,
+                     const DistanceProxy& proxyB, const Transformation2D& xfB,
                      DistanceConf conf = DistanceConf{});
 
 } // namespace playrho

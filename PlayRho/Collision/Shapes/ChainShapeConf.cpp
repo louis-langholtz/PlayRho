@@ -61,7 +61,7 @@ ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
     {
         auto vprev = Length2{};
         auto first = true;
-        for (const auto v: m_vertices)
+        for (const auto& v: m_vertices)
         {
             if (!first)
             {
@@ -98,7 +98,7 @@ ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
     return *this;
 }
 
-MassData ChainShapeConf::GetMassData() const noexcept
+MassData2D ChainShapeConf::GetMassData() const noexcept
 {
     const auto density = this->density;
     if (density > AreaDensity(0))
@@ -130,14 +130,14 @@ MassData ChainShapeConf::GetMassData() const noexcept
                 vprev = v;
             }
             center /= StripUnit(area);
-            return MassData{center, mass, I};
+            return MassData2D{center, mass, I};
         }
         if (vertexCount == 1)
         {
             return playrho::GetMassData(vertexRadius, density, GetVertex(0));
         }
     }
-    return MassData{};
+    return MassData2D{};
 }
 
 DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const

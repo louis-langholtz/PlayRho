@@ -26,7 +26,7 @@
 namespace playrho {
 
     class DistanceProxy;
-    struct Transformation;
+    struct Transformation2D;
         
     /// Separation finder.
     class SeparationFinder
@@ -53,14 +53,14 @@ namespace playrho {
         /// @param xfB Transformation B.
         ///
         static SeparationFinder Get(IndexPair3 indices,
-                                    const DistanceProxy& proxyA, const Transformation& xfA,
-                                    const DistanceProxy& proxyB, const Transformation& xfB);
+                                    const DistanceProxy& proxyA, const Transformation2D& xfA,
+                                    const DistanceProxy& proxyB, const Transformation2D& xfB);
         
         /// Finds the minimum separation.
         /// @return indexes of proxy A's and proxy B's vertices that have the minimum
         ///    distance between them and what that distance is.
-        IndexPairDistance FindMinSeparation(const Transformation& xfA,
-                                            const Transformation& xfB) const
+        IndexPairDistance FindMinSeparation(const Transformation2D& xfA,
+                                            const Transformation2D& xfB) const
         {
             switch (m_type)
             {
@@ -83,7 +83,7 @@ namespace playrho {
         /// @return Separation distance which will be negative when the given transforms put the
         ///    vertices on the opposite sides of the separating axis.
         ///
-        Length Evaluate(const Transformation& xfA, const Transformation& xfB,
+        Length Evaluate(const Transformation2D& xfA, const Transformation2D& xfB,
                         IndexPair indexPair) const
         {
             switch (m_type)
@@ -117,27 +117,27 @@ namespace playrho {
         }
         
         /// @brief Finds the minimum separation for points.
-        IndexPairDistance FindMinSeparationForPoints(const Transformation& xfA,
-                                                     const Transformation& xfB) const;
+        IndexPairDistance FindMinSeparationForPoints(const Transformation2D& xfA,
+                                                     const Transformation2D& xfB) const;
         
         /// @brief Finds the minimum separation for face A.
-        IndexPairDistance FindMinSeparationForFaceA(const Transformation& xfA,
-                                                    const Transformation& xfB) const;
+        IndexPairDistance FindMinSeparationForFaceA(const Transformation2D& xfA,
+                                                    const Transformation2D& xfB) const;
         
         /// @brief Finds the minimum separation for face B.
-        IndexPairDistance FindMinSeparationForFaceB(const Transformation& xfA,
-                                                    const Transformation& xfB) const;
+        IndexPairDistance FindMinSeparationForFaceB(const Transformation2D& xfA,
+                                                    const Transformation2D& xfB) const;
         
         /// @brief Evaluates for points.
-        Length EvaluateForPoints(const Transformation& xfA, const Transformation& xfB,
+        Length EvaluateForPoints(const Transformation2D& xfA, const Transformation2D& xfB,
                                  IndexPair indexPair) const;
         
         /// @brief Evaluates for face A.
-        Length EvaluateForFaceA(const Transformation& xfA, const Transformation& xfB,
+        Length EvaluateForFaceA(const Transformation2D& xfA, const Transformation2D& xfB,
                                 IndexPair indexPair) const;
         
         /// @brief Evaluates for face B.
-        Length EvaluateForFaceB(const Transformation& xfA, const Transformation& xfB,
+        Length EvaluateForFaceB(const Transformation2D& xfA, const Transformation2D& xfB,
                                 IndexPair indexPair) const;
         
         const DistanceProxy& m_proxyA; ///< Distance proxy A.

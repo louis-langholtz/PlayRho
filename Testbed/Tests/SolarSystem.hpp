@@ -126,7 +126,7 @@ public:
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
             const auto b = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(l));
             const auto a = 2 * Pi * 1_rad / sso.rotationalPeriod;
-            b->SetVelocity(Velocity{LinearVelocity2{0_mps, v}, a});
+            b->SetVelocity(Velocity2D{LinearVelocity2{0_mps, v}, a});
             const auto d = sso.mass / (Pi * Square(sso.radius));
             const auto sconf = DiskShapeConf{}.UseRadius(sso.radius).UseDensity(d);
             const auto shape = Shape(sconf);

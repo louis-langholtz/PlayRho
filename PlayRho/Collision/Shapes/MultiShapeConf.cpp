@@ -27,7 +27,7 @@ namespace playrho {
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.
 /// @return Mass data for this shape.
-MassData GetMassData(const MultiShapeConf& arg) noexcept
+MassData2D GetMassData(const MultiShapeConf& arg) noexcept
 {
     auto mass = 0_kg;
     const auto origin = Length2{};
@@ -47,7 +47,7 @@ MassData GetMassData(const MultiShapeConf& arg) noexcept
     });
 
     const auto center = (mass > 0_kg)? weightedCenter / mass: origin;
-    return MassData{center, mass, I};
+    return MassData2D{center, mass, I};
 }
 
 ConvexHull ConvexHull::Get(const VertexSet& pointSet)

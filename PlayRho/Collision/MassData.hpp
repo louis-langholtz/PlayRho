@@ -35,11 +35,11 @@ namespace playrho {
 
     /// @brief Mass data.
     /// @details This holds the mass data computed for a shape.
-    /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
+    template <std::size_t N>
     struct MassData
     {
         /// @brief Position of the shape's centroid relative to the shape's origin.
-        Length2 center = Length2{};
+        Vector<Length, N> center = Vector<Length, N>{};
         
         /// @brief Mass of the shape in kilograms.
         NonNegative<Mass> mass = NonNegative<Mass>{0};
@@ -50,18 +50,24 @@ namespace playrho {
         NonNegative<RotInertia> I = NonNegative<RotInertia>{0};
     };
     
+    /// @brief Mass data alias for 2-D objects.
+    /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
+    using MassData2D = MassData<2>;
+    
     // Free functions...
     
     /// @brief MassData equality operator.
     /// @relatedalso MassData
-    PLAYRHO_CONSTEXPR inline bool operator== (MassData lhs, MassData rhs)
+    template <std::size_t N>
+    PLAYRHO_CONSTEXPR inline bool operator== (MassData<N> lhs, MassData<N> rhs)
     {
         return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
     }
     
     /// @brief MassData inequality operator.
     /// @relatedalso MassData
-    PLAYRHO_CONSTEXPR inline bool operator!= (MassData lhs, MassData rhs)
+    template <std::size_t N>
+    PLAYRHO_CONSTEXPR inline bool operator!= (MassData<N> lhs, MassData<N> rhs)
     {
         return !(lhs == rhs);
     }
@@ -74,7 +80,7 @@ namespace playrho {
     ///
     /// @relatedalso MassData
     ///
-    MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location);
+    MassData2D GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location);
 
     /// @brief Computes the mass data for a linear shape.
     ///
@@ -85,12 +91,12 @@ namespace playrho {
     ///
     /// @relatedalso MassData
     ///
-    MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1);
+    MassData2D GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1);
 
     /// @brief Gets the mass data for the given collection of vertices with the given
     ///    properties.
     /// @relatedalso MassData
-    MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
+    MassData2D GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
                          Span<const Length2> vertices);
     
     /// @brief Computes the mass data for the given fixture.
@@ -104,7 +110,7 @@ namespace playrho {
     ///
     /// @relatedalso Fixture
     ///
-    MassData GetMassData(const Fixture& f);
+    MassData2D GetMassData(const Fixture& f);
     
     /// @brief Computes the body's mass data.
     /// @details This basically accumulates the mass data over all fixtures.
@@ -112,13 +118,13 @@ namespace playrho {
     ///   mass to get the averaged center.
     /// @return accumalated mass data for all fixtures associated with the given body.
     /// @relatedalso Body
-    MassData ComputeMassData(const Body& body) noexcept;
+    MassData2D ComputeMassData(const Body& body) noexcept;
     
     
     /// @brief Gets the mass data of the body.
     /// @return a struct containing the mass, inertia and center of the body.
     /// @relatedalso Body
-    MassData GetMassData(const Body& body) noexcept;
+    MassData2D GetMassData(const Body& body) noexcept;
     
 } // namespace playrho
 

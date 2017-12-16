@@ -60,8 +60,8 @@ IndexPairDistance GetMinIndexSeparation(Range<DistanceProxy::ConstVertexIterator
 
 } // anonymous namespace
 
-IndexPairDistance GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation xf1,
-                                      const DistanceProxy& proxy2, Transformation xf2)
+IndexPairDistance GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation2D xf1,
+                                      const DistanceProxy& proxy2, Transformation2D xf2)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -101,8 +101,8 @@ IndexPairDistance GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformatio
     return IndexPairDistance{separation, indexPair};
 }
 
-IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
-                                   const DistanceProxy& proxy2, Transformation xf2)
+IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D xf1,
+                                   const DistanceProxy& proxy2, Transformation2D xf2)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -126,8 +126,8 @@ IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation x
     return IndexPairDistance{separation, indexPair};
 }
 
-IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
-                                   const DistanceProxy& proxy2, Transformation xf2,
+IndexPairDistance GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D xf1,
+                                   const DistanceProxy& proxy2, Transformation2D xf2,
                                    Length stop)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.

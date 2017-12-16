@@ -149,7 +149,7 @@ namespace {
             const auto velocity = bc.GetVelocity();
             const auto translation = h * velocity.linear;
             const auto rotation = h * velocity.angular;
-            bc.SetPosition(bc.GetPosition() + Position{translation, rotation});
+            bc.SetPosition(bc.GetPosition() + Position2D{translation, rotation});
         });
     }
     
@@ -205,8 +205,8 @@ namespace {
     inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
     {
         auto vp = VelocityPair{
-            Velocity{LinearVelocity2{}, 0_rpm},
-            Velocity{LinearVelocity2{}, 0_rpm}
+            Velocity2D{LinearVelocity2{}, 0_rpm},
+            Velocity2D{LinearVelocity2{}, 0_rpm}
         };
         
         const auto normal = vc.GetNormal();
@@ -232,8 +232,8 @@ namespace {
             const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
             const auto LA = Cross(vcp.relA, P) / Radian;
             const auto LB = Cross(vcp.relB, P) / Radian;
-            vp.first -= Velocity{invMassA * P, invRotInertiaA * LA};
-            vp.second += Velocity{invMassB * P, invRotInertiaB * LB};
+            vp.first -= Velocity2D{invMassA * P, invRotInertiaA * LA};
+            vp.second += Velocity2D{invMassB * P, invRotInertiaB * LB};
         }
         return vp;
     }
@@ -1668,7 +1668,7 @@ World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contac
     return results;
 }
 
-void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
+void World::UpdateBody(Body& body, const Position2D& pos, const Velocity2D& vel)
 {
     assert(IsValid(pos));
     assert(IsValid(vel));
@@ -2722,7 +2722,7 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
 }
 
 ContactCounter World::Synchronize(Body& body,
-                                  Transformation xfm1, Transformation xfm2,
+                                  Transformation2D xfm1, Transformation2D xfm2,
                                   Real multiplier, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
@@ -2738,7 +2738,7 @@ ContactCounter World::Synchronize(Body& body,
 }
 
 ContactCounter World::Synchronize(Fixture& fixture,
-                                  Transformation xfm1, Transformation xfm2,
+                                  Transformation2D xfm1, Transformation2D xfm2,
                                   Length2 displacement, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
@@ -2836,14 +2836,14 @@ BodyCounter Awaken(World& world) noexcept
     return awoken;
 }
 
-void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept
+void SetAccelerations(World& world, std::function<Acceleration2D(const Body& b)> fn) noexcept
 {
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), fn(GetRef(b)));
     });
 }
 
-void SetAccelerations(World& world, Acceleration acceleration) noexcept
+void SetAccelerations(World& world, Acceleration2D acceleration) noexcept
 {
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), acceleration);

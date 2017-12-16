@@ -153,7 +153,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         m_impulse *= step.dtRatio;
         const auto P = m_impulse;
         const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
-        velB += Velocity{bodyConstraintB->GetInvMass() * P, bodyConstraintB->GetInvRotInertia() * crossBP};
+        velB += Velocity2D{bodyConstraintB->GetInvMass() * P, bodyConstraintB->GetInvRotInertia() * crossBP};
     }
     else
     {
@@ -185,7 +185,7 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     const auto incImpulse = (m_impulse - oldImpulse);
     const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
 
-    velB += Velocity{
+    velB += Velocity2D{
         bodyConstraintB->GetInvMass() * incImpulse,
         bodyConstraintB->GetInvRotInertia() * angImpulseB
     };

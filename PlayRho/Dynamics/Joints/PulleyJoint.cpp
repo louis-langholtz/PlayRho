@@ -114,8 +114,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto PA = -(m_impulse) * m_uA;
         const auto PB = (-m_ratio * m_impulse) * m_uB;
 
-        velA += Velocity{invMassA * PA, invRotInertiaA * Cross(m_rA, PA) / Radian};
-        velB += Velocity{invMassB * PB, invRotInertiaB * Cross(m_rB, PB) / Radian};
+        velA += Velocity2D{invMassA * PA, invRotInertiaA * Cross(m_rA, PA) / Radian};
+        velB += Velocity2D{invMassB * PB, invRotInertiaB * Cross(m_rB, PB) / Radian};
     }
     else
     {
@@ -148,8 +148,8 @@ bool PulleyJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Ste
 
     const auto PA = -impulse * m_uA;
     const auto PB = -m_ratio * impulse * m_uB;
-    velA += Velocity{invMassA * PA, invRotInertiaA * Cross(m_rA, PA) / Radian};
-    velB += Velocity{invMassB * PB, invRotInertiaB * Cross(m_rB, PB) / Radian};
+    velA += Velocity2D{invMassA * PA, invRotInertiaA * Cross(m_rA, PA) / Radian};
+    velB += Velocity2D{invMassB * PB, invRotInertiaB * Cross(m_rB, PB) / Radian};
 
     bodyConstraintA->SetVelocity(velA);
     bodyConstraintB->SetVelocity(velB);
@@ -205,8 +205,8 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto PA = -impulse * uA;
     const auto PB = -m_ratio * impulse * uB;
 
-    posA += Position{invMassA * PA, invRotInertiaA * Cross(rA, PA) / Radian};
-    posB += Position{invMassB * PB, invRotInertiaB * Cross(rB, PB) / Radian};
+    posA += Position2D{invMassA * PA, invRotInertiaA * Cross(rA, PA) / Radian};
+    posB += Position2D{invMassB * PB, invRotInertiaB * Cross(rB, PB) / Radian};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);

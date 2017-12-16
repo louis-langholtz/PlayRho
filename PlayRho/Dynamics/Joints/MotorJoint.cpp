@@ -132,8 +132,8 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
 
-        velA -= Velocity{invMassA * P, invRotInertiaA * (crossAP + m_angularImpulse)};
-        velB += Velocity{invMassB * P, invRotInertiaB * (crossBP + m_angularImpulse)};
+        velA -= Velocity2D{invMassA * P, invRotInertiaA * (crossAP + m_angularImpulse)};
+        velB += Velocity2D{invMassB * P, invRotInertiaB * (crossBP + m_angularImpulse)};
     }
     else
     {
@@ -208,8 +208,8 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
             solved = false;
         }
 
-        velA -= Velocity{invMassA * incImpulse, invRotInertiaA * angImpulseA};
-        velB += Velocity{invMassB * incImpulse, invRotInertiaB * angImpulseB};
+        velA -= Velocity2D{invMassA * incImpulse, invRotInertiaA * angImpulseA};
+        velB += Velocity2D{invMassB * incImpulse, invRotInertiaB * angImpulseB};
     }
 
     bodyConstraintA->SetVelocity(velA);
