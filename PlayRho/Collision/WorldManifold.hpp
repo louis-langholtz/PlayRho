@@ -37,11 +37,6 @@ namespace playrho {
     ///
     class WorldManifold
     {
-    public:
-        
-        /// @brief Size type.
-        using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
-
     private:
         UnitVec2 m_normal = GetInvalid<UnitVec2>(); ///< world vector pointing from A to B
         
@@ -60,6 +55,9 @@ namespace playrho {
         
     public:
         
+        /// @brief Size type.
+        using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
+
         /// @brief Point data for world manifold.
         /// @note This data structure is 20-bytes large at least on one 64-bit architecture.
         struct PointData

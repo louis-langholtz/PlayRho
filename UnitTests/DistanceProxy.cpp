@@ -227,14 +227,14 @@ TEST(DistanceProxy, GetMaxSeparationFromWorld)
     const auto result1 = GetMaxSeparation(squareDp, circleDp);
     
     EXPECT_NEAR(static_cast<double>(Real(result1.distance / Meter)), 3.0, 0.0001);
-    EXPECT_EQ(std::get<0>(result1.indices), static_cast<decltype(std::get<0>(result1.indices))>(2));
-    EXPECT_EQ(std::get<1>(result1.indices), static_cast<decltype(std::get<1>(result1.indices))>(0));
+    EXPECT_EQ(result1.firstShape, static_cast<VertexCounter>(2));
+    EXPECT_EQ(std::get<0>(result1.secondShape), static_cast<VertexCounter>(0));
     
     const auto result2 = GetMaxSeparation(squareDp, circleDp, 0_m);
     
     EXPECT_NEAR(static_cast<double>(Real(result2.distance / Meter)), 3.0, 0.0001);
-    EXPECT_EQ(std::get<0>(result2.indices), static_cast<decltype(std::get<0>(result2.indices))>(2));
-    EXPECT_EQ(std::get<1>(result2.indices), static_cast<decltype(std::get<1>(result2.indices))>(0));
+    EXPECT_EQ(result2.firstShape, static_cast<VertexCounter>(2));
+    EXPECT_EQ(std::get<0>(result2.secondShape), static_cast<VertexCounter>(0));
 }
 
 TEST(DistanceProxy, Equality)

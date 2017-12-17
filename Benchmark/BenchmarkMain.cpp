@@ -58,6 +58,11 @@
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
+// #define BENCHMARK_BOX2D
+#ifdef BENCHMARK_BOX2D
+#include <Box2D/Box2D.h>
+#endif // BENCHMARK_BOX2D
+
 static float Rand(float lo, float hi)
 {
     const auto u = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX); // # between 0 and 1
@@ -1659,24 +1664,24 @@ static void AddPairStressTest400(benchmark::State& state)
     AddPairStressTest(state, 400);
 }
 
-static void DropTiles(int count)
+static void DropTilesPlayRho(int count)
 {
-    const auto linearSlop = playrho::Meter / 1000;
-    const auto angularSlop = (playrho::Pi * 2 * playrho::Radian) / 180;
+    const auto linearSlop = 0.005f * playrho::Meter;
+    const auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
     const auto vertexRadius = linearSlop * 2;
     auto conf = playrho::PolygonShapeConf{}.UseVertexRadius(vertexRadius);
-    auto m_world = playrho::World{
+    auto world = playrho::World{
         playrho::WorldDef{}.UseMinVertexRadius(vertexRadius).UseInitialTreeSize(8192)
     };
     
     {
-        const auto a = playrho::Real{0.5f};
-        const auto ground = m_world.CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2{0, -a * playrho::Meter}));
+        const auto a = 0.5f;
+        const auto ground = world.CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2{0, -a * playrho::Meter}));
         
         const auto N = 200;
         const auto M = 10;
         playrho::Length2 position;
-        GetY(position) = playrho::Real(0.0f) * playrho::Meter;
+        GetY(position) = 0.0f * playrho::Meter;
         for (auto j = 0; j < M; ++j)
         {
             GetX(position) = -N * a * playrho::Meter;
@@ -1691,15 +1696,15 @@ static void DropTiles(int count)
     }
     
     {
-        const auto a = playrho::Real{0.5f};
+        const auto a = 0.5f;
         conf.SetAsBox(a * playrho::Meter, a * playrho::Meter);
-        conf.UseDensity(playrho::Real{5} * playrho::KilogramPerSquareMeter);
+        conf.UseDensity(5.0f * playrho::KilogramPerSquareMeter);
         const auto shape = playrho::Shape(conf);
         
-        playrho::Length2 x(playrho::Real(-7.0f) * playrho::Meter, playrho::Real(0.75f) * playrho::Meter);
+        playrho::Length2 x(-7.0f * playrho::Meter, 0.75f * playrho::Meter);
         playrho::Length2 y;
-        const auto deltaX = playrho::Length2(playrho::Real(0.5625f) * playrho::Meter, playrho::Real(1.25f) * playrho::Meter);
-        const auto deltaY = playrho::Length2(playrho::Real(1.125f) * playrho::Meter, playrho::Real(0.0f) * playrho::Meter);
+        const auto deltaX = playrho::Length2(0.5625f * playrho::Meter, 1.25f * playrho::Meter);
+        const auto deltaY = playrho::Length2(1.125f * playrho::Meter, 0.0f * playrho::Meter);
         
         for (auto i = 0; i < count; ++i)
         {
@@ -1707,7 +1712,7 @@ static void DropTiles(int count)
             
             for (auto j = i; j < count; ++j)
             {
-                const auto body = m_world.CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic).UseLocation(y));
+                const auto body = world.CreateBody(playrho::BodyDef{}.UseType(playrho::BodyType::Dynamic).UseLocation(y));
                 body->CreateFixture(shape);
                 y += deltaY;
             }
@@ -1719,31 +1724,120 @@ static void DropTiles(int count)
     auto step = playrho::StepConf{};
     step.SetTime(playrho::Second / 60);
     step.linearSlop = linearSlop;
-    step.regMinSeparation = -linearSlop * playrho::Real(3);
-    step.toiMinSeparation = -linearSlop * playrho::Real(1.5f);
-    step.targetDepth = linearSlop * playrho::Real(3);
-    step.tolerance = linearSlop / playrho::Real(4);
-    step.maxLinearCorrection = linearSlop * playrho::Real(40);
-    step.maxAngularCorrection = angularSlop * playrho::Real{4};
-    step.aabbExtension = linearSlop * playrho::Real(20);
-    step.maxTranslation = playrho::Length{playrho::Meter * playrho::Real(4)};
-    step.velocityThreshold = (playrho::Real{8} / playrho::Real{10}) * playrho::MeterPerSecond;
-    step.maxSubSteps = std::uint8_t{48};
+    step.angularSlop = angularSlop;
+    step.regMinSeparation = -linearSlop * 3;
+    step.toiMinSeparation = -linearSlop * 1.5f;
+    step.targetDepth = linearSlop * 3;
+    step.tolerance = linearSlop / 4;
+    step.maxLinearCorrection = 0.2f * playrho::Meter;
+    step.maxAngularCorrection = (8.0f / 180.0f * playrho::Pi) * playrho::Radian;
+    step.aabbExtension = 0.1f * playrho::Meter;
+    step.maxTranslation = 2.0f * playrho::Meter;
+    step.velocityThreshold = 1.0f * playrho::MeterPerSecond;
+    step.maxSubSteps = std::uint8_t{8};
 
-    while (GetAwakeCount(m_world) > 0)
+    while (GetAwakeCount(world) > 0)
     {
-        m_world.Step(step);
+        world.Step(step);
     }
 }
 
-static void TilesComesToRest(benchmark::State& state)
+#ifdef BENCHMARK_BOX2D
+static unsigned GetAwakeCount(const b2World& world)
+{
+    auto count = 0u;
+    for (auto body = world.GetBodyList(); body; body = body->GetNext())
+    {
+        if (body->IsAwake())
+            ++count;
+    }
+    return count;
+}
+
+static void DropTilesBox2D(int count)
+{
+    b2Vec2 gravity;
+    gravity.Set(0.0f, -10.0f);
+    b2World world(gravity);
+    {
+        const auto a = 0.5f;
+        auto bodyDef = b2BodyDef{};
+        bodyDef.position = b2Vec2{0, -a};
+        const auto ground = world.CreateBody(&bodyDef);
+        
+        const auto N = 200;
+        const auto M = 10;
+        b2Vec2 position;
+        position.y = 0.0f;
+        for (auto j = 0; j < M; ++j)
+        {
+            position.x = -N * a;
+            for (auto i = 0; i < N; ++i)
+            {
+                b2PolygonShape shape;
+                shape.SetAsBox(a, a, position, 0.0f);
+                ground->CreateFixture(&shape, 0.0f);
+                position.x += 2.0f * a;
+            }
+            position.y -= 2.0f * a;
+        }
+    }
+
+    {
+        const auto a = 0.5f;
+        b2PolygonShape shape;
+        shape.SetAsBox(a, a);
+        
+        b2Vec2 x(-7.0f, 0.75f);
+        b2Vec2 y;
+        b2Vec2 deltaX(0.5625f, 1.25f);
+        b2Vec2 deltaY(1.125f, 0.0f);
+        
+        for (auto i = 0; i < count; ++i)
+        {
+            y = x;
+
+            for (auto j = i; j < count; ++j)
+            {
+                b2BodyDef bd;
+                bd.type = b2_dynamicBody;
+                bd.position = y;
+                const auto body = world.CreateBody(&bd);
+                body->CreateFixture(&shape, 5.0f);
+                y += deltaY;
+            }
+            
+            x += deltaX;
+        }
+    }
+
+    auto awake = 0u;
+    while ((awake = GetAwakeCount(world)) > 0)
+    {
+        world.Step(1.0f/60, 8, 3);
+    }
+}
+#endif // BENCHMARK_BOX2D
+
+static void TilesRestPlayRho(benchmark::State& state)
 {
     const auto range = state.range();
     for (auto _: state)
     {
-        DropTiles(range);
+        DropTilesPlayRho(range);
     }
 }
+
+#ifdef BENCHMARK_BOX2D
+static void TilesRestBox2D(benchmark::State& state)
+{
+    const auto range = state.range();
+    for (auto _: state)
+    {
+        DropTilesBox2D(range);
+    }
+}
+#endif // BENCHMARK_BOX2D
 
 class Tumbler
 {
@@ -1950,7 +2044,11 @@ BENCHMARK(TumblerAdd100SquaresPlus100Steps);
 BENCHMARK(TumblerAdd200SquaresPlus200Steps);
 BENCHMARK(AddPairStressTest400)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(17)->Arg(18)->Arg(19)->Arg(20)->Arg(30);
 
-BENCHMARK(TilesComesToRest)->Arg(12)->Arg(20)->Arg(36);
+BENCHMARK(TilesRestPlayRho)->Arg(12)->Arg(20)->Arg(36);
+
+#ifdef BENCHMARK_BOX2D
+BENCHMARK(TilesRestBox2D)->Arg(12)->Arg(20)->Arg(36);
+#endif // BENCHMARK_BOX2D
 
 // BENCHMARK_MAIN()
 int main(int argc, char** argv)

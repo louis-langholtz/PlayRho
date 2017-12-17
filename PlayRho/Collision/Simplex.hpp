@@ -23,15 +23,23 @@
 #include <PlayRho/Common/ArrayList.hpp>
 #include <PlayRho/Common/Vector.hpp>
 #include <PlayRho/Collision/SimplexEdge.hpp>
+#include <array>
 
 namespace playrho {
 
-    /// Simplex edge collection.
-    ///
-    /// @note This data is 28 * 3 + 4 = 88-bytes large (on at least one 64-bit platform).
-    ///
+    /// @brief Simplex edge collection.
+    /// @note This data is 20 * 3 + 4 = 64-bytes large (on at least one 64-bit platform).
     using SimplexEdges = ArrayList<SimplexEdge, MaxSimplexEdges,
         std::remove_const<decltype(MaxSimplexEdges)>::type>;
+    
+    /// @brief Gets index pairs for the given edges collection.
+    IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept;
+    
+    /// @brief Calculates the "search direction" for the given simplex edge list.
+    /// @param simplexEdges A one or two edge list.
+    /// @warning Behavior is undefined if the given edge list has zero edges.
+    /// @return "search direction" vector.
+    Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept;
 
     /// @brief An encapsulation of a point, line segment, or triangle.
     ///
@@ -65,71 +73,26 @@ namespace playrho {
         using Coefficients = ArrayList<Real, MaxSimplexEdges,
             std::remove_const<decltype(MaxSimplexEdges)>::type>;
         
-        /// Simplex cache.
-        ///
-        /// @details Used to warm start Distance.
-        /// Caches particular information from a simplex - a related metric and up-to 3 index pairs.
-        ///
-        /// @invariant As the metric and list of index pairs should be values from a snapshot of a
-        ///   simplex, the metric and list of index pairs must not vary independent of each other.
-        ///   As such, this data structure only allows these values to be changed in unison via object
-        ///   construction or object assignment.
-        ///
+        /// @brief Simplex cache.
+        /// @details Used to warm start Distance. Caches particular information from a simplex:
+        ///   a related metric and up-to 3 index pairs.
         /// @note This data structure is 12-bytes large.
-        ///
-        class Cache
+        struct Cache
         {
-        public:
-            Cache() = default;
-            
-            /// @brief Copy constructor.
-            Cache(const Cache& copy) = default;
-            
-            /// @brief Initializing constructor.
-            PLAYRHO_CONSTEXPR inline Cache(Real metric, IndexPair3 indices) noexcept;
-            
-            ~Cache() noexcept = default;
-
-            /// Gets the metric that was set.
-            /// @warning Behavior is undefined if metric was not previously set.
-            ///   The IsMetricSet() method can be used to check dynamically if unsure.
-            /// @sa SetMetric.
-            /// @sa IsMetricSet.
-            /// @return Value previously set.
-            PLAYRHO_CONSTEXPR inline Real GetMetric() const noexcept;
-            
-            /// @brief Is metric set.
-            PLAYRHO_CONSTEXPR inline bool IsMetricSet() const noexcept;
-            
-            /// @brief Gets indices.
-            PLAYRHO_CONSTEXPR inline IndexPair3 GetIndices() const noexcept;
-            
-            /// @brief Gets the index pair for the given index.
-            PLAYRHO_CONSTEXPR inline IndexPair GetIndexPair(size_type index) const noexcept;
-            
-        private:
-            Real m_metric = GetInvalid<Real>(); ///< Metric. @details This is a length or area value.            
+            /// @brief Metric.
+            /// @details Metric based on a length or area value of edges.
+            Real metric = GetInvalid<Real>();
 
             /// @brief Indices.
             /// @details Collection of index-pairs.
-            IndexPair3 m_indices{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
+            IndexPair3 indices = InvalidIndexPair3;
         };
-
+        
         /// @brief Gets the cache value for the given edges.
         static Cache GetCache(const SimplexEdges& edges) noexcept;
         
-        /// Gets index pairs for the given edges collection.
-        ///
-        static IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept;
-
-        /// Calculates the "search direction" for the given simplex edge list.
-        /// @param simplexEdges A one or two edge list.
-        /// @warning Behavior is undefined if the given edge list has zero edges.
-        /// @return "search direction" vector.
-        static PLAYRHO_CONSTEXPR inline Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept;
-        
         /// Gets the given simplex's "metric".
-        static inline Real CalcMetric(const SimplexEdges& simplexEdges);
+        static Real CalcMetric(const SimplexEdges& simplexEdges);
 
         /// @brief Gets the Simplex for the given simplex edge.
         static Simplex Get(const SimplexEdge& s0) noexcept;
@@ -194,95 +157,9 @@ namespace playrho {
         Coefficients m_normalizedWeights;
     };
 
-    PLAYRHO_CONSTEXPR inline Simplex::Cache::Cache(Real metric, IndexPair3 indices) noexcept:
-        m_metric{metric}, m_indices{indices}
-    {
-        // Intentionally empty
-    }
-
-    PLAYRHO_CONSTEXPR inline Real Simplex::Cache::GetMetric() const noexcept
-    {
-        assert(IsMetricSet());
-        return m_metric;
-    }
-    
-    PLAYRHO_CONSTEXPR inline bool Simplex::Cache::IsMetricSet() const noexcept
-    {
-        return GetNumIndices(m_indices) > std::size_t{0};
-    }
-    
-    PLAYRHO_CONSTEXPR inline IndexPair3 Simplex::Cache::GetIndices() const noexcept
-    {
-        return m_indices;
-    }
-    
-    PLAYRHO_CONSTEXPR inline IndexPair Simplex::Cache::GetIndexPair(size_type index) const noexcept
-    {
-        return m_indices[index];
-    }
-
     inline Simplex::Cache Simplex::GetCache(const SimplexEdges& edges) noexcept
     {
-        return Simplex::Cache{Simplex::CalcMetric(edges), Simplex::GetIndexPairs(edges)};
-    }
-
-    inline IndexPair3 Simplex::GetIndexPairs(const SimplexEdges& collection) noexcept
-    {
-        auto list = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
-        switch (collection.size())
-        {
-            case 3: list[2] = collection[2].GetIndexPair(); // fall through
-            case 2: list[1] = collection[1].GetIndexPair(); // fall through
-            case 1: list[0] = collection[0].GetIndexPair(); // fall through
-        }
-        return list;
-    }
-
-    PLAYRHO_CONSTEXPR inline Length2 Simplex::CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
-    {
-        assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
-        switch (simplexEdges.size())
-        {
-            case 1:
-            {
-                return -GetPointDelta(simplexEdges[0]);
-            }
-
-            case 2:
-            {
-                const auto e12 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
-                const auto e0 = GetPointDelta(simplexEdges[0]);
-                const auto sgn = Cross(e12, -e0);
-                // If sgn > 0, then origin is left of e12, else origin is right of e12.
-                return (sgn > 0_m2)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
-            }
-                
-            default:
-                return Length2{0_m, 0_m};
-        }
-    }
-
-    inline Real Simplex::CalcMetric(const SimplexEdges& simplexEdges)
-    {
-        assert(simplexEdges.size() < 4);
-        switch (simplexEdges.size())
-        {
-            case 0: return Real{0};
-            case 1: return Real{0};
-            case 2:
-            {
-                const auto delta = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
-                return StripUnit(sqrt(GetMagnitudeSquared(delta)));
-            }
-            case 3:
-            {
-                const auto delta10 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
-                const auto delta20 = GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]);
-                return StripUnit(Cross(delta10, delta20));
-            }
-            default: break; // should not be reached
-        }
-        return Real{0};
+        return Simplex::Cache{Simplex::CalcMetric(edges), GetIndexPairs(edges)};
     }
 
     inline Simplex::Simplex(const SimplexEdges& simplexEdges,

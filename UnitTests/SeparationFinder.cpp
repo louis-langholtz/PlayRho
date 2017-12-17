@@ -66,7 +66,7 @@ TEST(SeparationFinder, BehavesAsExpected)
     DistanceConf conf;
     auto distanceInfo = Distance(distproxy, xfA, distproxy, xfB, conf);
     conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
-    const auto fcn = SeparationFinder::Get(conf.cache.GetIndices(), distproxy, xfA, distproxy, xfB);
+    const auto fcn = SeparationFinder::Get(conf.cache.indices, distproxy, xfA, distproxy, xfB);
     EXPECT_EQ(fcn.GetType(), SeparationFinder::e_faceA);
     EXPECT_NEAR(static_cast<double>(GetX(GetVec2(fcn.GetAxis()))), 1.0, 0.000001);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(fcn.GetAxis()))), 0.0, 0.000001);
@@ -111,7 +111,7 @@ TEST(SeparationFinder, BehavesAsExpected)
         }
         EXPECT_LT(s, last_s);
         
-        //t = std::nextafter(t, 1.0f);
+        //t = nextafter(t, 1.0f);
         t += Real(.001);
         last_distance = distance;
         last_s = s;

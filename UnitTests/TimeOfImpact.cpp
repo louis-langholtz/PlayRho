@@ -664,7 +664,7 @@ TEST(TimeOfImpact, SucceedsWithClosingSpeedOf800_2)
 
     auto touching = true;
     auto iterations = 0u;
-    for (auto t = output.time; t > 0; t = std::nextafter(t, 0.0f))
+    for (auto t = output.time; t > 0; t = nextafter(t, 0.0f))
     {
         const auto conf2 = ToiConf{}.UseMaxToiIters(200).UseMaxRootIters(200).UseTimeMax(t);
         const auto output2 = TimeOfImpact(proxyA, sweepA, proxyB, sweepB, conf2);

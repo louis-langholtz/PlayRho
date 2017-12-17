@@ -27,12 +27,11 @@
 #include <cstdint>
 #include <limits>
 #include <cassert>
-#include <cmath>
 #include <type_traits>
 #include <iostream>
 
-namespace playrho
-{
+namespace playrho {
+
     /// @brief Template class for fixed-point numbers.
     ///
     /// @details This is a fixed point type template for a given base type using a given number
@@ -661,127 +660,6 @@ namespace playrho
     {
         lhs %= rhs;
         return lhs;
-    }    
-
-    /// @brief Square root's the given value.
-    /// @note This implementation isn't meant to be fast, only correct enough.
-    template <typename BT, unsigned int FB>
-    inline auto sqrt(Fixed<BT, FB> arg)
-    {
-        return static_cast<Fixed<BT, FB>>(std::sqrt(static_cast<long double>(arg)));
-    }
-
-    /// @brief Gets whether the given value is normal - i.e. not 0 nor infinite.
-    template <typename BT, unsigned int FB>
-    inline bool isnormal(Fixed<BT, FB> arg)
-    {
-        return arg != Fixed<BT, FB>{0} && arg.isfinite();
-    }
-    
-    /// @brief Computes the sine of the argument for Fixed types.
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> sin(Fixed<BT, FB> arg)
-    {
-        return static_cast<Fixed<BT, FB>>(std::sin(static_cast<double>(arg)));
-    }
-    
-    /// @brief Computes the cosine of the argument for Fixed types.
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
-    {
-        return static_cast<Fixed<BT, FB>>(std::cos(static_cast<double>(arg)));
-    }
-    
-    /// @brief Computes the arc tangent.
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> atan2(Fixed<BT, FB> y, Fixed<BT, FB> x)
-    {
-        return static_cast<Fixed<BT, FB>>(std::atan2(static_cast<double>(y), static_cast<double>(x)));
-    }
-
-    /// @brief Computes the value of the base number raised to the power of the exponent.
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> pow(Fixed<BT, FB> base, Fixed<BT, FB> exp)
-    {
-        return static_cast<Fixed<BT, FB>>(std::pow(static_cast<double>(base),
-                                                   static_cast<double>(exp)));
-    }
-    
-    /// @brief Computes the value of the base number raised to the power of the exponent.
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> pow(Fixed<BT, FB> base, double exp)
-    {
-        return static_cast<Fixed<BT, FB>>(std::pow(static_cast<double>(base), exp));
-    }
-    
-    /// @brief Computes the square root of the sum of the squares.
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> hypot(Fixed<BT, FB> x, Fixed<BT, FB> y)
-    {
-        return static_cast<Fixed<BT, FB>>(std::hypot(static_cast<double>(x), static_cast<double>(y)));
-    }
-    
-    /// @brief Rounds the given value.
-    /// @sa http://en.cppreference.com/w/cpp/numeric/math/round
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> round(Fixed<BT, FB> value) noexcept
-    {
-        const auto tmp = value + (Fixed<BT, FB>{1} / Fixed<BT, FB>{2});
-        const auto truncated = static_cast<typename Fixed<BT, FB>::value_type>(tmp);
-        return Fixed<BT, FB>{truncated, 0};
-    }
-    
-    /// @brief Truncates the given value.
-    /// @sa http://en.cppreference.com/w/c/numeric/math/trunc
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> trunc(Fixed<BT, FB> arg)
-    {
-        return static_cast<Fixed<BT, FB>>(static_cast<long long>(arg));
-    }
-    
-    /// @brief Determines whether the given value is negative.
-    template <typename BT, unsigned int FB>
-    inline bool signbit(Fixed<BT, FB> value) noexcept
-    {
-        return value.getsign() < 0;
-    }
-    
-    /// @brief Gets whether the given value is not-a-number.
-    template <typename BT, unsigned int FB>
-    PLAYRHO_CONSTEXPR inline bool isnan(Fixed<BT, FB> value) noexcept
-    {
-        return value.Compare(0) == Fixed<BT, FB>::CmpResult::Incomparable;
-    }
-    
-    /// @brief Gets whether the given value is finite.
-    template <typename BT, unsigned int FB>
-    inline bool isfinite(Fixed<BT, FB> value) noexcept
-    {
-        return (value > Fixed<BT, FB>::GetNegativeInfinity())
-            && (value < Fixed<BT, FB>::GetInfinity());
-    }
-    
-    /// @brief Next after function for Fixed types.
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> nextafter(Fixed<BT, FB> from, Fixed<BT, FB> to) noexcept
-    {
-        if (from < to)
-        {
-            return static_cast<Fixed<BT, FB>>(from + Fixed<BT,FB>::GetMin());
-        }
-        if (from > to)
-        {
-            return static_cast<Fixed<BT, FB>>(from - Fixed<BT,FB>::GetMin());
-        }
-        return static_cast<Fixed<BT, FB>>(to);
-    }
-    
-    /// @brief Computes the rounded value of the given value.
-    template <typename BT, unsigned int FB>
-    inline Fixed<BT, FB> RoundOff(Fixed<BT, FB> value, std::uint32_t precision = 100000)
-    {
-        const auto factor = Fixed<BT, FB>(precision);
-        return round(value * factor) / factor;
     }
 
     /// @brief Gets whether a given value is almost zero.
@@ -1020,87 +898,5 @@ namespace playrho
 #endif /* PLAYRHO_INT128 */
 
 } // namespace playrho
-
-namespace std
-{
-    /// @brief Template specialization of numeric limits for Fixed types.
-    /// @sa http://en.cppreference.com/w/cpp/types/numeric_limits
-    template <typename BT, unsigned int FB>
-    class numeric_limits<playrho::Fixed<BT,FB>>
-    {
-    public:
-        static PLAYRHO_CONSTEXPR const bool is_specialized = true; ///< Type is specialized.
-        
-        /// @brief Gets the min value available for the type.
-        static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> min() noexcept { return playrho::Fixed<BT,FB>::GetMin(); }
-
-        /// @brief Gets the max value available for the type.
-        static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> max() noexcept    { return playrho::Fixed<BT,FB>::GetMax(); }
-
-        /// @brief Gets the lowest value available for the type.
-        static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> lowest() noexcept { return playrho::Fixed<BT,FB>::GetLowest(); }
-        
-        /// @brief Number of radix digits that can be represented.
-        static PLAYRHO_CONSTEXPR const int digits = playrho::Fixed<BT,FB>::WholeBits - 1;
-
-        /// @brief Number of decimal digits that can be represented.
-        static PLAYRHO_CONSTEXPR const int digits10 = playrho::Fixed<BT,FB>::WholeBits - 1;
-        
-        /// @brief Number of decimal digits necessary to differentiate all values.
-        static PLAYRHO_CONSTEXPR const int max_digits10 = 5; // TODO(lou): check this
-        
-        static PLAYRHO_CONSTEXPR const bool is_signed = true; ///< Identifies signed types.
-        static PLAYRHO_CONSTEXPR const bool is_integer = false; ///< Identifies integer types.
-        static PLAYRHO_CONSTEXPR const bool is_exact = true; ///< Identifies exact type.
-        static PLAYRHO_CONSTEXPR const int radix = 0; ///< Radix used by the type.
-
-        /// @brief Gets the epsilon value for the type.
-        static PLAYRHO_CONSTEXPR inline playrho::Fixed32 epsilon() noexcept { return playrho::Fixed<BT,FB>{0}; } // TODO(lou)
-        
-        /// @brief Gets the round error value for the type.
-        static PLAYRHO_CONSTEXPR inline playrho::Fixed32 round_error() noexcept { return playrho::Fixed<BT,FB>{0}; } // TODO(lou)
-        
-        /// @brief One more than smallest negative power of the radix that's a valid
-        ///    normalized floating-point value.
-        static PLAYRHO_CONSTEXPR const int min_exponent = 0;
-
-        /// @brief Smallest negative power of ten that's a valid normalized floating-point value.
-        static PLAYRHO_CONSTEXPR const int min_exponent10 = 0;
-        
-        /// @brief One more than largest integer power of radix that's a valid finite
-        ///   floating-point value.
-        static PLAYRHO_CONSTEXPR const int max_exponent = 0;
-        
-        /// @brief Largest integer power of 10 that's a valid finite floating-point value.
-        static PLAYRHO_CONSTEXPR const int max_exponent10 = 0;
-        
-        static PLAYRHO_CONSTEXPR const bool has_infinity = true; ///< Whether can represent infinity.
-        static PLAYRHO_CONSTEXPR const bool has_quiet_NaN = true; ///< Whether can represent quiet-NaN.
-        static PLAYRHO_CONSTEXPR const bool has_signaling_NaN = false; ///< Whether can represent signaling-NaN.
-        static PLAYRHO_CONSTEXPR const float_denorm_style has_denorm = denorm_absent; ///< Denorm style used.
-        static PLAYRHO_CONSTEXPR const bool has_denorm_loss = false; ///< Has denorm loss amount.
-
-        /// @brief Gets the infinite value for the type.
-        static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> infinity() noexcept { return playrho::Fixed<BT,FB>::GetInfinity(); }
-        
-        /// @brief Gets the quiet NaN value for the type.
-        static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> quiet_NaN() noexcept { return playrho::Fixed<BT,FB>::GetNaN(); }
-
-        /// @brief Gets the signaling NaN value for the type.
-        static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> signaling_NaN() noexcept { return playrho::Fixed<BT,FB>{0}; }
-        
-        /// @brief Gets the denorm value for the type.
-        static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> denorm_min() noexcept { return playrho::Fixed<BT,FB>{0}; }
-        
-        static PLAYRHO_CONSTEXPR const bool is_iec559 = false; ///< @brief Not an IEEE 754 floating-point type.
-        static PLAYRHO_CONSTEXPR const bool is_bounded = true; ///< Type bounded: has limited precision.
-        static PLAYRHO_CONSTEXPR const bool is_modulo = false; ///< Doesn't modulo arithmetic overflows.
-        
-        static PLAYRHO_CONSTEXPR const bool traps = false; ///< Doesn't do traps.
-        static PLAYRHO_CONSTEXPR const bool tinyness_before = false; ///< Doesn't detect tinyness before rounding.
-        static PLAYRHO_CONSTEXPR const float_round_style round_style = round_toward_zero; ///< Rounds down.
-    };
-    
-} // namespace std
 
 #endif // PLAYRHO_COMMON_FIXED_HPP

@@ -1180,7 +1180,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     // steps = t / time_inc = 200
     EXPECT_GE(steps, 199u);
     EXPECT_LE(steps, 201u);
-    //EXPECT_EQ(int64_t(steps), static_cast<int64_t>(std::round(((x * 2) / x) / time_inc)));
+    //EXPECT_EQ(int64_t(steps), static_cast<int64_t>(round(((x * 2) / x) / time_inc)));
 }
 
 TEST(World, HeavyOnLight)
@@ -2880,7 +2880,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     }
 #if 0
     std::cout << "angle=" << angle;
-    std::cout << " target=(" << distance * std::cos(angle) << "," << distance * std::sin(angle) << ")";
+    std::cout << " target=(" << distance * cos(angle) << "," << distance * sin(angle) << ")";
     std::cout << " maxvel=" << max_velocity;
     std::cout << " range=(" << min_x << "," << min_y << ")-(" << max_x << "," << max_y << ")";
     std::cout << std::endl;

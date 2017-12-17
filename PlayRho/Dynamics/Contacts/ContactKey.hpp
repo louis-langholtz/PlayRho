@@ -39,37 +39,37 @@ namespace playrho
     class ContactKey
     {
     public:
-        
-        /// @brief Index type.
-        using Index = ContactCounter;
-        
         PLAYRHO_CONSTEXPR inline ContactKey() noexcept
         {
             // Intentionally empty
         }
         
         /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline ContactKey(Index fp1, Index fp2) noexcept:
+        PLAYRHO_CONSTEXPR inline ContactKey(ContactCounter fp1, ContactCounter fp2) noexcept:
             m_ids{std::minmax(fp1, fp2)}
         {
             // Intentionally empty
         }
 
         /// @brief Gets the minimum index value.
-        PLAYRHO_CONSTEXPR inline Index GetMin() const noexcept
+        PLAYRHO_CONSTEXPR inline ContactCounter GetMin() const noexcept
         {
             return std::get<0>(m_ids);
         }
         
         /// @brief Gets the maximum index value.
-        PLAYRHO_CONSTEXPR inline Index GetMax() const noexcept
+        PLAYRHO_CONSTEXPR inline ContactCounter GetMax() const noexcept
         {
             return std::get<1>(m_ids);
         }
 
     private:
-        /// @brief Index ID pair.
-        std::pair<Index, Index> m_ids{static_cast<Index>(-1), static_cast<Index>(-1)};
+        /// @brief Contact counter ID pair.
+        /// @note Uses <code>std::pair</code> given that <code>std::minmax</code> returns
+        ///   this type making it the most natural type for this class.
+        std::pair<ContactCounter, ContactCounter> m_ids{
+            static_cast<ContactCounter>(-1), static_cast<ContactCounter>(-1)
+        };
     };
 
     /// @brief Equality operator.

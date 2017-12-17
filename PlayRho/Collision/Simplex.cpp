@@ -21,6 +21,40 @@
 
 namespace playrho {
 
+IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept
+{
+    auto list = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
+    switch (collection.size())
+    {
+        case 3: list[2] = collection[2].GetIndexPair(); // fall through
+        case 2: list[1] = collection[1].GetIndexPair(); // fall through
+        case 1: list[0] = collection[0].GetIndexPair(); // fall through
+    }
+    return list;
+}
+
+Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
+{
+    assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
+    switch (simplexEdges.size())
+    {
+        case 1:
+        {
+            return -GetPointDelta(simplexEdges[0]);
+        }
+        case 2:
+        {
+            const auto e12 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
+            const auto e0 = GetPointDelta(simplexEdges[0]);
+            const auto sgn = Cross(e12, -e0);
+            // If sgn > 0, then origin is left of e12, else origin is right of e12.
+            return (sgn > 0_m2)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
+        }
+        default:
+            return Length2{0_m, 0_m};
+    }
+}
+
 Simplex Simplex::Get(const SimplexEdge& s0) noexcept
 {
     return Simplex{{s0}, {1}};
@@ -183,6 +217,29 @@ Simplex Simplex::Get(const SimplexEdges& edges) noexcept
         default: break;
     }
     return Simplex{};
+}
+
+Real Simplex::CalcMetric(const SimplexEdges& simplexEdges)
+{
+    assert(simplexEdges.size() < 4);
+    switch (simplexEdges.size())
+    {
+        case 0: return Real{0};
+        case 1: return Real{0};
+        case 2:
+        {
+            const auto delta = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
+            return StripUnit(GetMagnitude(delta)); // Length
+        }
+        case 3:
+        {
+            const auto delta10 = GetPointDelta(simplexEdges[1]) - GetPointDelta(simplexEdges[0]);
+            const auto delta20 = GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]);
+            return StripUnit(Cross(delta10, delta20)); // Area
+        }
+        default: break; // should not be reached
+    }
+    return Real{0};
 }
 
 } // namespace playrho

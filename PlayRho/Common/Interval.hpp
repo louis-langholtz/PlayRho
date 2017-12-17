@@ -208,6 +208,8 @@ namespace playrho {
         
     private:
         /// @brief Internal pair type.
+        /// @note Uses <code>std::pair</code> since it's the most natural type given that
+        ///   <code>std::minmax</code> returns it.
         using pair_type = std::pair<value_type, value_type>;
         
         /// @brief Internal pair type accepting constructor.

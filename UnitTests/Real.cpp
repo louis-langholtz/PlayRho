@@ -75,7 +75,7 @@ TEST(Real, BiggerValsIdenticallyInaccurate)
     auto val = Real(1);
     for (auto i = 0; i < 16; ++i)
     {
-        const auto next = std::nextafter(val, std::numeric_limits<decltype(val)>::max());
+        const auto next = nextafter(val, std::numeric_limits<decltype(val)>::max());
         const auto delta = static_cast<float>(next - val);
         ASSERT_EQ(val + (delta / 2.0f), val);
 #if 0

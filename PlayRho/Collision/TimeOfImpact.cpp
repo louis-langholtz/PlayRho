@@ -25,17 +25,6 @@
 
 namespace playrho {
 
-namespace {
-        
-inline DistanceConf GetDistanceConf(const ToiConf& conf)
-{
-    auto distanceConf = DistanceConf{};
-    distanceConf.maxIterations = conf.maxDistIters;
-    return distanceConf;
-}
-
-} // anonymous namespace
-
 TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep2D& sweepA,
                        const DistanceProxy& proxyB, const Sweep2D& sweepB,
                        ToiConf conf)
@@ -43,10 +32,6 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep2D& sweepA,
     assert(IsValid(sweepA));
     assert(IsValid(sweepB));
     assert(sweepA.GetAlpha0() == sweepB.GetAlpha0());
-    //assert(isfinite(GetMagnitudeSquared(sweepA.pos0.linear - sweepB.pos0.linear)));
-    //assert(isfinite(GetMagnitudeSquared(sweepA.pos0.linear - sweepB.pos1.linear)));
-    //assert(isfinite(GetMagnitudeSquared(sweepA.pos1.linear - sweepB.pos0.linear)));
-    //assert(isfinite(GetMagnitudeSquared(sweepA.pos1.linear - sweepB.pos1.linear)));
     assert(conf.tMax >= 0 && conf.tMax <=1);
 
     // CCD via the local separating axis method. This seeks progression
@@ -59,20 +44,10 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep2D& sweepA,
     {
         return TOIOutput{0, stats, TOIOutput::e_targetDepthExceedsTotalRadius};
     }
-    //assert(conf.targetDepth >= conf.tolerance);
     
     const auto target = totalRadius - conf.targetDepth;
-    //assert(target != totalRadius);
-    //assert(target > conf.tolerance);
-    
     const auto maxTarget = std::max(target + conf.tolerance, 0_m);
-    //assert(maxTarget != target);
-    //assert(maxTarget <= totalRadius);
-    
     const auto minTarget = std::max(target - conf.tolerance, 0_m);
-    //assert(minTarget != target);
-    //assert(minTarget < maxTarget);
-    //assert(minTarget > 0_m && !AlmostZero(minTarget / Meter));
     
     const auto minTargetSquared = Square(minTarget);
     if (!isfinite(minTargetSquared) && isfinite(minTarget))
@@ -137,7 +112,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep2D& sweepA,
         // From here on, the real distance squared at time t1 is > than maxTargetSquared
 
         // Initialize the separating axis.
-        const auto fcn = SeparationFinder::Get(distanceConf.cache.GetIndices(),
+        const auto fcn = SeparationFinder::Get(distanceConf.cache.indices,
                                                proxyA, t1xfA, proxyB, t1xfB);
 
         // Compute the TOI on the separating axis. We do this by successively

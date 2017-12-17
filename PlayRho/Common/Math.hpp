@@ -32,13 +32,29 @@
 #include <PlayRho/Common/Transformation.hpp>
 #include <PlayRho/Common/Sweep.hpp>
 #include <PlayRho/Common/Matrix.hpp>
+#include <PlayRho/Common/FixedMath.hpp>
 
 #include <cmath>
 #include <vector>
 #include <numeric>
 
-namespace playrho
-{
+namespace playrho {
+
+// Import common standard mathematical functions into the playrho namespace...
+using std::signbit;
+using std::nextafter;
+using std::trunc;
+using std::fmod;
+using std::isfinite;
+using std::round;
+using std::isnormal;
+using std::isnan;
+using std::hypot;
+using std::cos;
+using std::sin;
+using std::atan2;
+using std::sqrt;
+using std::pow;
 
 // Other templates.
 
@@ -91,8 +107,8 @@ PLAYRHO_CONSTEXPR inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
     return StripUnit(v.get());
 }
 
-/// @defgroup Math Mathematical Functions
-/// @brief Functions for common mathematical operations.
+/// @defgroup Math Additional Mathematical Functions
+/// @brief Additional functions for common mathematical operations.
 /// @details These are non-member non-friend functions for mathematical operations
 ///   especially those with mixed input and output types.
 /// @{
@@ -126,21 +142,6 @@ PLAYRHO_CONSTEXPR inline bool IsOdd(T val) noexcept
 /// @brief Squares the given value.
 template<class TYPE>
 PLAYRHO_CONSTEXPR inline auto Square(TYPE t) noexcept { return t * t; }
-
-using std::signbit;
-using std::nextafter;
-using std::trunc;
-using std::fmod;
-using std::isfinite;
-using std::round;
-using std::isnormal;
-using std::isnan;
-using std::hypot;
-using std::cos;
-using std::sin;
-using std::atan2;
-using std::sqrt;
-using std::pow;
 
 #ifdef USE_BOOST_UNITS
 /// @brief Square roots the given area.
@@ -190,11 +191,11 @@ inline auto Average(Span<const T> span)
 
 /// @brief Computes the rounded value of the given value.
 template <typename T>
-inline typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+inline typename std::enable_if<IsArithmetic<T>::value, T>::type
 RoundOff(T value, unsigned precision = 100000)
 {
     const auto factor = static_cast<T>(precision);
-    return std::round(value * factor) / factor;
+    return round(value * factor) / factor;
 }
 
 /// @brief Computes the rounded value of the given value.
@@ -322,8 +323,8 @@ inline Angle GetAngle(const Vector2<T> value)
 }
 
 /// @brief Gets the square of the magnitude of the given iterable value.
-/// @note For performance, use this instead of GetMagnitude(T value) (if possible).
-/// @return Non-negative value.
+/// @note For performance, use this instead of <code>GetMagnitude(T value)</code> (if possible).
+/// @return Non-negative value from 0 to infinity, or NaN.
 template <typename T>
 PLAYRHO_CONSTEXPR inline auto GetMagnitudeSquared(T value) noexcept
 {
@@ -784,8 +785,8 @@ inline Mat22 Abs(const Mat22& A)
 template <typename T>
 PLAYRHO_CONSTEXPR inline T Clamp(T value, T low, T high) noexcept
 {
-    const auto tmp = (value > high)? high: value; // std::isnan(high)? a: Min(a, high);
-    return (tmp < low)? low: tmp; // std::isnan(low)? b: Max(b, low);
+    const auto tmp = (value > high)? high: value; // isnan(high)? a: Min(a, high);
+    return (tmp < low)? low: tmp; // isnan(low)? b: Max(b, low);
 }
 
 /// @brief Gets the next largest power of 2

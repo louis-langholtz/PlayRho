@@ -21,7 +21,7 @@
 
 using namespace playrho;
 
-TEST(SimplexCache, ByteSizeIs_12_16_or_32)
+TEST(SimplexCache, ByteSize)
 {
     switch (sizeof(Real))
     {
@@ -41,19 +41,13 @@ TEST(SimplexCache, DefaultInit)
 {
     {
         Simplex::Cache foo;
-        EXPECT_EQ(std::uint8_t{0}, GetNumIndices(foo.GetIndices()));
-        EXPECT_FALSE(foo.IsMetricSet());
-        
-        // Can't test following cause of undefined behavior (assert's in debug build).
-        //EXPECT_FALSE(IsValid(foo.GetMetric()));
+        EXPECT_EQ(std::uint8_t{0}, GetNumValidIndices(foo.indices));
+        EXPECT_FALSE(IsValid(foo.metric));
     }
     {
         Simplex::Cache foo{};
-        EXPECT_EQ(std::uint8_t{0}, GetNumIndices(foo.GetIndices()));
-        EXPECT_FALSE(foo.IsMetricSet());
-        
-        // Can't test following cause of undefined behavior (assert's in debug build).
-        //EXPECT_FALSE(IsValid(foo.GetMetric()));
+        EXPECT_EQ(std::uint8_t{0}, GetNumValidIndices(foo.indices));
+        EXPECT_FALSE(IsValid(foo.metric));
     }
 }
 
@@ -64,9 +58,8 @@ TEST(SimplexCache, InitializingConstructor)
         const auto indices = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
         Simplex::Cache foo{metric, indices};
         
-        EXPECT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){0});
-        EXPECT_FALSE(foo.IsMetricSet());
-        //EXPECT_EQ(foo.GetMetric(), metric);
+        EXPECT_EQ(GetNumValidIndices(foo.indices), decltype(GetNumValidIndices(foo.indices)){0});
+        EXPECT_EQ(foo.metric, metric);
     }
     {
         const auto ip0 = IndexPair{0, 0};
@@ -74,11 +67,10 @@ TEST(SimplexCache, InitializingConstructor)
         const auto metric = Real(-1.4);
         Simplex::Cache foo{metric, IndexPair3{{ip0, ip1, InvalidIndexPair}}};
         
-        EXPECT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){2});
-        EXPECT_EQ(foo.GetIndexPair(0), ip0);
-        EXPECT_EQ(foo.GetIndexPair(1), ip1);
-        EXPECT_TRUE(foo.IsMetricSet());
-        EXPECT_EQ(foo.GetMetric(), metric);
+        EXPECT_EQ(GetNumValidIndices(foo.indices), decltype(GetNumValidIndices(foo.indices)){2});
+        EXPECT_EQ(std::get<0>(foo.indices), ip0);
+        EXPECT_EQ(std::get<1>(foo.indices), ip1);
+        EXPECT_EQ(foo.metric, metric);
     }
     {
         const auto ip0 = IndexPair{0, 0};
@@ -87,12 +79,11 @@ TEST(SimplexCache, InitializingConstructor)
         const auto metric = Real(-1.4);
         Simplex::Cache foo{metric, IndexPair3{{ip0, ip1, ip2}}};
         
-        EXPECT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){3});
-        EXPECT_EQ(foo.GetIndexPair(0), ip0);
-        EXPECT_EQ(foo.GetIndexPair(1), ip1);
-        EXPECT_EQ(foo.GetIndexPair(2), ip2);
-        EXPECT_TRUE(foo.IsMetricSet());
-        EXPECT_EQ(foo.GetMetric(), metric);
+        EXPECT_EQ(GetNumValidIndices(foo.indices), decltype(GetNumValidIndices(foo.indices)){3});
+        EXPECT_EQ(std::get<0>(foo.indices), ip0);
+        EXPECT_EQ(std::get<1>(foo.indices), ip1);
+        EXPECT_EQ(std::get<2>(foo.indices), ip2);
+        EXPECT_EQ(foo.metric, metric);
     }
 }
 
@@ -102,9 +93,8 @@ TEST(SimplexCache, Assignment)
     const auto indices = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
     Simplex::Cache foo{metric, indices};
     
-    ASSERT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){0});
-    ASSERT_FALSE(foo.IsMetricSet());
-    //ASSERT_EQ(foo.GetMetric(), metric);
+    ASSERT_EQ(GetNumValidIndices(foo.indices), decltype(GetNumValidIndices(foo.indices)){0});
+    ASSERT_EQ(foo.metric, metric);
     
     const auto ip0 = IndexPair{0, 0};
     const auto ip1 = IndexPair{1, 0};
@@ -114,12 +104,11 @@ TEST(SimplexCache, Assignment)
     
     foo = roo;
     
-    EXPECT_EQ(GetNumIndices(foo.GetIndices()), decltype(GetNumIndices(foo.GetIndices())){3});
-    EXPECT_EQ(foo.GetIndexPair(0), ip0);
-    EXPECT_EQ(foo.GetIndexPair(1), ip1);
-    EXPECT_EQ(foo.GetIndexPair(2), ip2);
-    EXPECT_TRUE(foo.IsMetricSet());
-    EXPECT_EQ(foo.GetMetric(), roo_metric);
+    EXPECT_EQ(GetNumValidIndices(foo.indices), decltype(GetNumValidIndices(foo.indices)){3});
+    EXPECT_EQ(std::get<0>(foo.indices), ip0);
+    EXPECT_EQ(std::get<1>(foo.indices), ip1);
+    EXPECT_EQ(std::get<2>(foo.indices), ip2);
+    EXPECT_EQ(foo.metric, roo_metric);
 }
 
 TEST(SimplexEdgeList, ByteSize)

@@ -28,8 +28,11 @@
 
 namespace playrho {
     
-    /// Index pair.
+    /// @brief Index pair.
     /// @note This data structure is at least 2-bytes large.
+    /// @note Using <code>std::array</code> would make more sense if it weren't for the
+    ///   fact that <code>std::pair</code>, but not <code>std::array</code>, has
+    ///   <code>constexpr</code> equality and inequality operators.
     using IndexPair = std::pair<VertexCounter, VertexCounter>;
     
     /// @brief Invalid index pair value.
@@ -37,14 +40,24 @@ namespace playrho {
         InvalidVertex, InvalidVertex
     };
     
-    /// @brief Index pairs.
+    /// @brief Array of three IndexPair elements.
+    /// @note An element having the <code>InvalidIndexPair</code> value, denotes an
+    ///   unused or invalid elements.
     /// @note This data type is 6-bytes large (on at least one 64-bit platform).
     using IndexPair3 = std::array<IndexPair, MaxSimplexEdges>;
+    
+    /// @brief Invalid array of three IndexPair elements.
+    PLAYRHO_CONSTEXPR const auto InvalidIndexPair3 = IndexPair3{{
+        InvalidIndexPair, InvalidIndexPair, InvalidIndexPair
+    }};
     
     static_assert(MaxSimplexEdges == 3, "Invalid assumption about size of MaxSimplexEdges");
 
     /// @brief Gets the number of valid indices in the given collection of index pairs.
-    PLAYRHO_CONSTEXPR inline std::size_t GetNumIndices(IndexPair3 pairs) noexcept
+    /// @note Any element with a value of <code>InvalidIndexPair</code> is interpretted
+    ///   as being invalid in this context.
+    /// @return Value between 0 and 3 inclusive.
+    PLAYRHO_CONSTEXPR inline std::size_t GetNumValidIndices(IndexPair3 pairs) noexcept
     {
         return std::size_t{3}
         - ((std::get<0>(pairs) == InvalidIndexPair)? 1u: 0u)
@@ -52,9 +65,76 @@ namespace playrho {
         - ((std::get<2>(pairs) == InvalidIndexPair)? 1u: 0u);
     }
     
-    /// Index pair distance.
+    /// @brief Checks whether the given collection of index pairs is empty.
+    PLAYRHO_CONSTEXPR inline bool IsEmpty(IndexPair3 pairs) noexcept
+    {
+        return GetNumValidIndices(pairs) == 0;
+    }
+    
+    /// @brief Gets the dynamic size of the given collection of index pairs.
+    /// @note This just calls <code>GetNumValidIndices</code>.
+    /// @sa GetNumValidIndices
+    PLAYRHO_CONSTEXPR inline auto GetSize(IndexPair3 pairs) -> decltype(GetNumValidIndices(pairs))
+    {
+        return GetNumValidIndices(pairs);
+    }
+    
+    /// @brief Gets the maximum sizeof the given container of index pairs.
+    /// @return Always returns 3.
+    PLAYRHO_CONSTEXPR inline auto GetMaxSize(IndexPair3 pairs) -> decltype(pairs.max_size())
+    {
+        return pairs.max_size();
+    }
+    
+    /// @brief Vertex counter array template alias.
+    template <std::size_t N>
+    using VertexCounterArray = std::array<VertexCounter, N>;
+    
+    /// @brief 2-element vertex counter array.
+    using VertexCounter2 = VertexCounterArray<2>;
+    
+    /// @brief Length and vertex counter array of indices.
+    template <std::size_t N>
+    struct LengthIndices
+    {
+        Length distance; ///< Distance.
+        VertexCounterArray<N> indices; ///< Array of vertex indices.
+    };
+    
+    /// @brief Length and vertex counter array of indices for 2-D space.
+    using LengthIndices2D = LengthIndices<2>;
+
+    /// @brief Separation information.
+    template <std::size_t N>
+    struct SeparationInfo
+    {
+        Length distance; ///< Distance.
+        VertexCounter firstShape; ///< First shape vertex index.
+        VertexCounterArray<N> secondShape; ///< Second shape vertex indices.
+    };
+    
+    /// @brief Gets first shape vertex index.
+    template <std::size_t N>
+    VertexCounter GetFirstShapeVertexIdx(const SeparationInfo<N>& info) noexcept
+    {
+        return info.firstShape;
+    }
+    
+    /// @brief Gets second shape vertex indices.
+    template <VertexCounter M, std::size_t N>
+    VertexCounter GetSecondShapeVertexIdx(const SeparationInfo<N>& info) noexcept
+    {
+        return std::get<M>(info.secondShape);
+    }
+
+    /// @brief Separation information alias for 2-D space.
+    using SeparationInfo2D = SeparationInfo<2>;
+
+    /// @brief A length associated with two vertex counter indices.
     /// @details This structure is used to keep track of the best separating axis.
-    struct IndexPairDistance
+    /// @note Any element can be invalid as indicated by the use of the invalid sentinel
+    ///   for the type.
+    struct LengthIndexPair
     {
         Length distance = GetInvalid<Length>(); ///< Separation.
         IndexPair indices = InvalidIndexPair; ///< Index pair.

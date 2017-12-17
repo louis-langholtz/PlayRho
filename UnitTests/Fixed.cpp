@@ -18,6 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Common/Fixed.hpp>
+#include <PlayRho/Common/FixedLimits.hpp>
 #include <PlayRho/Common/Math.hpp>
 #include <iostream>
 
@@ -120,7 +121,7 @@ DECL_INT_CONSTRUCTION_AND_COMPARE_TEST(Fixed32)
 DECL_INT_CONSTRUCTION_AND_COMPARE_TEST(Fixed64)
 #endif
 
-// Tests of std::isfinite(Fixed<T>)
+// Tests of isfinite(Fixed<T>)
 
 #define DECL_ISFINITE_TEST(type) \
 TEST(type, isfinite) \

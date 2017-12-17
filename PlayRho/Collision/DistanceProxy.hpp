@@ -56,6 +56,12 @@ namespace playrho
         /// @brief Constant vertex iterator.
         using ConstVertexIterator = ConstVertexPointer;
         
+        /// @brief Constant normal pointer.
+        using ConstNormalPointer = const UnitVec2*;
+        
+        /// @brief Constant normal iterator.
+        using ConstNormalIterator = ConstNormalPointer;
+
         DistanceProxy() = default;
         
         /// @brief Copy constructor.
@@ -128,6 +134,12 @@ namespace playrho
         {
             return {m_vertices, m_vertices + m_count};
         }
+        
+        /// @brief Gets the range of normal.
+        Range<ConstNormalIterator> GetNormals() const noexcept
+        {
+            return {m_normals, m_normals + m_count};
+        }
 
         /// Gets the vertex count.
         /// @details This is the count of valid vertex elements that this object provides.
@@ -198,23 +210,23 @@ namespace playrho
     ///   vector and returns its index.
     /// @note 0 is returned for a given zero length direction vector.
     /// @param proxy Distance proxy object to find index in if a valid index exists for it.
-    /// @param d Direction vector to find index for.
+    /// @param dir Direction vector to find index for.
     /// @return InvalidVertex if d is invalid or the count of vertices is zero, otherwise a
     ///   value from 0 to one less than count.
     /// @sa GetVertexCount().
     /// @relatedalso DistanceProxy
     template <class T>
-    inline VertexCounter GetSupportIndex(const DistanceProxy& proxy, T d) noexcept
+    inline VertexCounter GetSupportIndex(const DistanceProxy& proxy, T dir) noexcept
     {
         using VT = typename T::value_type;
         using OT = decltype(VT{} * 0_m);
 
-        auto index = InvalidVertex; ///< Index of vertex that when dotted with d has the max value.
+        auto index = InvalidVertex; ///< Index of vertex that when dotted with dir has the max value.
         auto maxValue = -std::numeric_limits<OT>::infinity(); ///< Max dot value.
         auto i = VertexCounter{0};
         for (const auto& vertex: proxy.GetVertices())
         {
-            const auto value = Dot(vertex, d);
+            const auto value = Dot(vertex, dir);
             if (maxValue < value)
             {
                 maxValue = value;

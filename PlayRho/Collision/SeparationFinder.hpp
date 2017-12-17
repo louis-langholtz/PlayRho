@@ -59,7 +59,7 @@ namespace playrho {
         /// Finds the minimum separation.
         /// @return indexes of proxy A's and proxy B's vertices that have the minimum
         ///    distance between them and what that distance is.
-        IndexPairDistance FindMinSeparation(const Transformation2D& xfA,
+        LengthIndexPair FindMinSeparation(const Transformation2D& xfA,
                                             const Transformation2D& xfB) const
         {
             switch (m_type)
@@ -71,7 +71,7 @@ namespace playrho {
             
             // Should never be reached
             assert(false);
-            return IndexPairDistance{0, InvalidIndexPair};
+            return LengthIndexPair{0, InvalidIndexPair};
         }
         
         /// Evaluates the separation of the identified proxy vertices at the given time factor.
@@ -117,15 +117,15 @@ namespace playrho {
         }
         
         /// @brief Finds the minimum separation for points.
-        IndexPairDistance FindMinSeparationForPoints(const Transformation2D& xfA,
+        LengthIndexPair FindMinSeparationForPoints(const Transformation2D& xfA,
                                                      const Transformation2D& xfB) const;
         
         /// @brief Finds the minimum separation for face A.
-        IndexPairDistance FindMinSeparationForFaceA(const Transformation2D& xfA,
+        LengthIndexPair FindMinSeparationForFaceA(const Transformation2D& xfA,
                                                     const Transformation2D& xfB) const;
         
         /// @brief Finds the minimum separation for face B.
-        IndexPairDistance FindMinSeparationForFaceB(const Transformation2D& xfA,
+        LengthIndexPair FindMinSeparationForFaceB(const Transformation2D& xfA,
                                                     const Transformation2D& xfB) const;
         
         /// @brief Evaluates for points.
