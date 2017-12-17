@@ -246,15 +246,33 @@ void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angul
     assert(IsValid(linear));
     assert(IsValid(angular));
 
-    if ((linear != LinearAcceleration2{}) || (angular != AngularAcceleration{0}))
+    if ((m_linearAcceleration == linear) && (m_angularAcceleration == angular))
     {
-        if (!IsAccelerable())
+        // no change, bail...
+        return;
+    }
+    
+    if (!IsAccelerable())
+    {
+        if ((linear != LinearAcceleration2{}) || (angular != AngularAcceleration{0}))
         {
+            // non-accelerable bodies can only be set to zero acceleration, bail...
             return;
         }
-        SetAwakeFlag();
-        ResetUnderActiveTime();
     }
+    else
+    {
+        if ((m_angularAcceleration < angular) ||
+            (GetMagnitudeSquared(m_linearAcceleration) < GetMagnitudeSquared(linear)) ||
+            (playrho::GetAngle(m_linearAcceleration) != playrho::GetAngle(linear)) ||
+            (signbit(m_angularAcceleration) != signbit(angular)))
+        {
+            // Increasing accel or changing direction of accel, awake & reset time.
+            SetAwakeFlag();
+            ResetUnderActiveTime();
+        }
+    }
+    
     m_linearAcceleration = linear;
     m_angularAcceleration = angular;
 }

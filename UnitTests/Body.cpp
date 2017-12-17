@@ -436,6 +436,134 @@ TEST(Body, SetTransform)
                 0.001);
 }
 
+TEST(Body, SetAcceleration)
+{
+    const auto someLinearAccel = LinearAcceleration2{2 * MeterPerSquareSecond, 3 * MeterPerSquareSecond};
+    const auto someAngularAccel = 2 * RadianPerSquareSecond;
+
+    {
+        auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+        const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Static));
+        ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        ASSERT_FALSE(body->IsAwake());
+        body->UnsetAwake();
+        ASSERT_FALSE(body->IsAwake());
+        
+        body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
+        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(body->IsAwake());
+
+        body->SetAcceleration(LinearAcceleration2{}, someAngularAccel);
+        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(body->IsAwake());
+
+        body->SetAcceleration(someLinearAccel, AngularAcceleration{});
+        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(body->IsAwake());
+    }
+    
+    // Kinematic and dynamic bodies awake at creation...
+    {
+        auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+        const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Kinematic));
+        ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        ASSERT_TRUE(body->IsAwake());
+        body->UnsetAwake();
+        ASSERT_FALSE(body->IsAwake());
+        
+        body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
+        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(body->IsAwake());
+        
+        body->SetAcceleration(LinearAcceleration2{}, someAngularAccel);
+        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(body->IsAwake());
+        
+        body->SetAcceleration(someLinearAccel, AngularAcceleration{});
+        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(body->IsAwake());
+    }
+    
+    // Dynamic bodies take a non-zero linear or angular acceleration.
+    {
+        auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+        const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+        ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        ASSERT_TRUE(body->IsAwake());
+        body->UnsetAwake();
+        ASSERT_FALSE(body->IsAwake());
+        
+        body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
+        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(body->IsAwake());
+        
+        body->SetAcceleration(LinearAcceleration2{}, someAngularAccel);
+        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
+        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel);
+        EXPECT_TRUE(body->IsAwake());
+        
+        body->SetAcceleration(someLinearAccel, AngularAcceleration{});
+        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel);
+        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
+        EXPECT_TRUE(body->IsAwake());
+        
+        body->SetAcceleration(someLinearAccel, someAngularAccel);
+        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel);
+        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel);
+        EXPECT_TRUE(body->IsAwake());
+
+        body->UnsetAwake();
+        ASSERT_FALSE(body->IsAwake());
+        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel);
+        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel);
+        
+        // Reseting to same acceleration shouldn't change asleep status...
+        body->SetAcceleration(someLinearAccel, someAngularAccel);
+        EXPECT_FALSE(body->IsAwake());
+        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel);
+        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel);
+        
+        // Seting to lower acceleration shouldn't change asleep status...
+        body->SetAcceleration(someLinearAccel * 0.5f, someAngularAccel * 0.9f);
+        EXPECT_FALSE(body->IsAwake());
+        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * 0.5f);
+        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 0.9f);
+
+        // Seting to higher acceleration or new direction should awaken...
+        body->SetAcceleration(someLinearAccel * 1.5f, someAngularAccel * 1.9f);
+        EXPECT_TRUE(body->IsAwake());
+        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * 1.5f);
+        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 1.9f);
+        body->UnsetAwake();
+        ASSERT_FALSE(body->IsAwake());
+        body->SetAcceleration(someLinearAccel * 1.5f, someAngularAccel * 2.0f);
+        EXPECT_TRUE(body->IsAwake());
+        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * 1.5f);
+        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 2.0f);
+        body->UnsetAwake();
+        ASSERT_FALSE(body->IsAwake());
+        body->SetAcceleration(someLinearAccel * 2.0f, someAngularAccel * 2.0f);
+        EXPECT_TRUE(body->IsAwake());
+        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * 2.0f);
+        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 2.0f);
+        body->UnsetAwake();
+        ASSERT_FALSE(body->IsAwake());
+        body->SetAcceleration(someLinearAccel * -1.0f, someAngularAccel * 2.0f);
+        EXPECT_TRUE(body->IsAwake());
+        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * -1.0f);
+        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 2.0f);
+    }
+}
+
 TEST(Body, CreateLotsOfFixtures)
 {
     BodyDef bd;
