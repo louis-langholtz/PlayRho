@@ -25,20 +25,23 @@
 namespace playrho {
     
     /// @brief Pre-phase per-step statistics.
+    /// @note This data structure is 24-bytes large (on at least one 64-bit platform).
     struct PreStepStats
     {
         /// @brief Counter type.
         using counter_type = std::uint32_t;
 
         counter_type proxiesMoved = 0; ///< Proxies moved count.
-        counter_type ignored = 0; ///< Ignored count.
-        counter_type destroyed = 0; ///< Destroyed count.
-        counter_type updated = 0; ///< Updated count.
-        counter_type skipped = 0; ///< Skipped count.
-        counter_type added = 0; ///< Added count.
+        counter_type destroyed = 0; ///< Count of contacts destroyed.
+        counter_type added = 0; ///< Count of contacts added.
+        counter_type ignored = 0; ///< Count of contacts ignored during update processing.
+        counter_type updated = 0; ///< Count of contacts updated (during update processing).
+        counter_type skipped = 0; ///< Count of contacts Skipped (during update processing).
     };
     
     /// @brief Regular-phase per-step statistics.
+    /// @note This data structure is 32-bytes large (on at least one 64-bit platform with
+    ///   4-byte Real type).
     struct RegStepStats
     {
         /// @brief Counter type.
@@ -50,8 +53,8 @@ namespace playrho {
         /// @brief Max incremental impulse.
         Momentum maxIncImpulse = 0;
         
-        counter_type islandsFound = 0; ///< Islands found count.
-        counter_type islandsSolved = 0; ///< Islands solved count.
+        BodyCounter islandsFound = 0; ///< Islands found count.
+        BodyCounter islandsSolved = 0; ///< Islands solved count.
         counter_type contactsAdded = 0; ///< Contacts added count.
         counter_type bodiesSlept = 0; ///< Bodies slept count.
         counter_type proxiesMoved = 0; ///< Proxies moved count.
@@ -60,6 +63,8 @@ namespace playrho {
     };
     
     /// @brief TOI-phase per-step statistics.
+    /// @note This data structure is 60-bytes large (on at least one 64-bit platform with
+    ///   4-byte Real type).
     struct ToiStepStats
     {
         /// @brief Counter type.
@@ -101,8 +106,10 @@ namespace playrho {
     /// @brief Per-step statistics.
     ///
     /// @details These are statistics output from the World::Step method.
+    /// @note This data structure is 116-bytes large (on at least one 64-bit platform with
+    ///   4-byte Real type).
     /// @note Efficient transfer of this data is predicated on compiler support for
-    ///   "return-value-optimization" - a form of "copy elision".
+    ///   "named-return-value-optimization" (NRVO) - a form of "copy elision".
     ///
     /// @sa World::Step.
     /// @sa https://en.wikipedia.org/wiki/Return_value_optimization

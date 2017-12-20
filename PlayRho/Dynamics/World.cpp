@@ -1922,6 +1922,7 @@ StepStats World::Step(const StepConf& conf)
         throw WrongState("World::Step: world is locked");
     }
 
+    // "Named return value optimization" (NRVO) will make returning this more efficient.
     auto stepStats = StepStats{};
     {
         FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
