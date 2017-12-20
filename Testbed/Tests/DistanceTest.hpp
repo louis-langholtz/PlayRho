@@ -307,11 +307,11 @@ public:
 
         os << "Max separation:\n";
         os << "  " << static_cast<double>(Real{maxIndicesAB.distance / 1_m});
-        os << " for a-face[" << unsigned{std::get<0>(maxIndicesAB.indices)} << "]";
-        os << " b-vert[" << unsigned{std::get<1>(maxIndicesAB.indices)} << "].\n";
+        os << " for a-face[" << unsigned{GetFirstShapeVertexIdx(maxIndicesAB)} << "]";
+        os << " b-vert[" << unsigned{GetSecondShapeVertexIdx<0>(maxIndicesAB)} << "].\n";
         os << "  " << static_cast<double>(Real{maxIndicesBA.distance / 1_m});
-        os << " for b-face[" << unsigned{std::get<0>(maxIndicesBA.indices)} << "]";
-        os << " a-vert[" << unsigned{std::get<1>(maxIndicesBA.indices)} << "].\n\n";
+        os << " for b-face[" << unsigned{GetFirstShapeVertexIdx(maxIndicesBA)} << "]";
+        os << " a-vert[" << unsigned{GetSecondShapeVertexIdx<0>(maxIndicesBA)} << "].\n\n";
 
         if (AlmostEqual(static_cast<double>(Real{maxIndicesAB.distance / 1_m}),
                          static_cast<double>(Real{maxIndicesBA.distance / 1_m})))
@@ -320,10 +320,10 @@ public:
             const auto childB = GetChild(shapeB, 0);
             //assert(maxIndicesAB.index1 == maxIndicesBA.index2);
             //assert(maxIndicesAB.index2 == maxIndicesBA.index1);
-            const auto ifaceA = std::get<0>(maxIndicesAB.indices);
+            const auto ifaceA = GetFirstShapeVertexIdx(maxIndicesAB);
             const auto nA = InverseRotate(Rotate(childA.GetNormal(ifaceA), xfmA.q), xfmB.q);
             // shapeA face maxIndicesAB.index1 is coplanar to an edge intersecting shapeB vertex maxIndicesAB.index2
-            const auto i1 = std::get<1>(maxIndicesAB.indices);
+            const auto i1 = GetSecondShapeVertexIdx<0>(maxIndicesAB);
             const auto i0 = GetModuloPrev(i1, childB.GetVertexCount());
             const auto n0 = childB.GetNormal(i0);
             const auto n1 = childB.GetNormal(i1);

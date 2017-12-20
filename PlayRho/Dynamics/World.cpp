@@ -2495,7 +2495,7 @@ PreStepStats::counter_type World::SynchronizeProxies(const StepConf& conf)
     auto proxiesMoved = PreStepStats::counter_type{0};
     for_each(begin(m_bodiesForProxies), end(m_bodiesForProxies), [&](Body *b) {
         const auto xfm = b->GetTransformation();
-        assert(GetTransform0(b->GetSweep()) == xfm);
+        // Not always true: assert(GetTransform0(b->GetSweep()) == xfm);
         proxiesMoved += Synchronize(*b, xfm, xfm, conf.displaceMultiplier, conf.aabbExtension);
     });
     m_bodiesForProxies.clear();
@@ -2818,7 +2818,8 @@ size_t GetShapeCount(const World& world) noexcept
 
 BodyCounter GetAwakeCount(const World& world) noexcept
 {
-    return static_cast<BodyCounter>(count_if(cbegin(world.GetBodies()), cend(world.GetBodies()),
+    const auto bodies = world.GetBodies();
+    return static_cast<BodyCounter>(count_if(cbegin(bodies), cend(bodies),
                                              [&](const World::Bodies::value_type &b) {
                                                  return GetRef(b).IsAwake(); }));
 }

@@ -20,6 +20,7 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Simplex.hpp>
+#include <PlayRho/Collision/TimeOfImpact.hpp>
 
 namespace playrho {
 
@@ -43,14 +44,14 @@ namespace {
     }
     
     inline SimplexEdges GetSimplexEdges(const IndexPair3 indexPairs,
-                                          const DistanceProxy& proxyA, const Transformation2D& xfA,
-                                          const DistanceProxy& proxyB, const Transformation2D& xfB)
+                                        const DistanceProxy& proxyA, const Transformation2D& xfA,
+                                        const DistanceProxy& proxyB, const Transformation2D& xfB)
     {
         /// @brief Size type.
         using size_type = std::remove_const<decltype(MaxSimplexEdges)>::type;
 
         SimplexEdges simplexEdges;
-        const auto count = GetNumIndices(indexPairs);
+        const auto count = GetNumValidIndices(indexPairs);
         switch (count)
         {
             case 3:
@@ -71,6 +72,13 @@ namespace {
     }
 
 } // namespace
+
+DistanceConf GetDistanceConf(const ToiConf& conf) noexcept
+{
+    auto distanceConf = DistanceConf{};
+    distanceConf.maxIterations = conf.maxDistIters;
+    return distanceConf;
+}
 
 PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept
 {
@@ -107,14 +115,16 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation2D& tra
     assert(proxyB.GetVertexCount() > 0);
     assert(IsValid(transformB.p));
 
+    auto savedIndices = conf.cache.indices;
+
     // Initialize the simplex.
-    auto simplexEdges = GetSimplexEdges(conf.cache.GetIndices(), proxyA, transformA, proxyB, transformB);
+    auto simplexEdges = GetSimplexEdges(savedIndices, proxyA, transformA, proxyB, transformB);
 
     // Compute the new simplex metric, if it is substantially different than
     // old metric then flush the simplex.
     if (simplexEdges.size() > 1)
     {
-        const auto metric1 = conf.cache.GetMetric();
+        const auto metric1 = conf.cache.metric;
         const auto metric2 = Simplex::CalcMetric(simplexEdges);
         if ((metric2 < (metric1 / 2)) || (metric2 > (metric1 * 2)) || (metric2 < 0) || AlmostZero(metric2))
         {
@@ -122,9 +132,10 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation2D& tra
         }
     }
 
-    if (simplexEdges.size() == 0)
+    if (IsEmpty(simplexEdges))
     {
         simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, 0, proxyB, transformB, 0));
+        savedIndices = IndexPair3{{IndexPair{0, 0}, InvalidIndexPair, InvalidIndexPair}};
     }
 
     auto simplex = Simplex{};
@@ -139,15 +150,12 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation2D& tra
     while (iter < conf.maxIterations)
     {
         ++iter;
-
-        // Copy simplex so we can identify duplicates and prevent cycling.
-        const auto savedIndices = Simplex::GetIndexPairs(simplexEdges);
-
+        
         simplex = Simplex::Get(simplexEdges);
         simplexEdges = simplex.GetEdges();
 
-        // If we have max points (3), then the origin is in the corresponding triangle.
-        if (simplexEdges.size() == simplexEdges.max_size())
+        // If have max simplex edges (3), then the origin is in corresponding triangle.
+        if (IsFull(simplexEdges))
         {
             state = DistanceOutput::MaxPoints;
             break;
@@ -166,7 +174,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation2D& tra
         distanceSqr1 = distanceSqr2;
 #endif
         // Get search direction.
-        const auto d = Simplex::CalcSearchDirection(simplexEdges);
+        const auto d = CalcSearchDirection(simplexEdges);
         assert(IsValid(d));
 
         // Ensure the search direction is numerically fit.
@@ -197,6 +205,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation2D& tra
 
         // New edge is ok and needed.
         simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, indexA, proxyB, transformB, indexB));
+        savedIndices = GetIndexPairs(simplexEdges);
     }
 
     // Note: simplexEdges is same here as simplex.GetSimplexEdges().

@@ -26,17 +26,20 @@
 namespace playrho {
 
     class DistanceProxy;
+    struct ToiConf;
 
     /// @brief Pair of Length2 values.
-    using PairLength2 = std::array<Length2, 2>;
+    /// @note Uses <code>std::pair</code> because this is a pair and also because
+    ///   <code>std::pair</code> has more support for constant expressions.
+    using PairLength2 = std::pair<Length2, Length2>;
     
     /// @brief Gets the witness points of the given simplex.
     PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept;
     
-    /// @brief Gets the delta of the two points of the given witness points.
+    /// @brief Gets the delta to go from the first element to the second.
     PLAYRHO_CONSTEXPR inline Length2 GetDelta(PairLength2 arg) noexcept
     {
-        return std::get<0>(arg) - std::get<1>(arg);
+        return std::get<1>(arg) - std::get<0>(arg);
     }
     
     /// @brief Distance Configuration.
@@ -48,11 +51,13 @@ namespace playrho {
         Simplex::Cache cache; ///< Cache.
         iteration_type maxIterations = DefaultMaxDistanceIters; ///< Max iterations.
     };
+    
+    /// @brief Gets the distance configuration for the given time of impact configuration.
+    DistanceConf GetDistanceConf(const ToiConf& conf) noexcept;
 
     /// @brief Distance Output.
     struct DistanceOutput
     {
-        
         /// @brief State of the distance output.
         enum State: std::uint8_t
         {

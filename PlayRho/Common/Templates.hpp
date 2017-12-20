@@ -52,7 +52,7 @@ namespace playrho
         //    to compare it with itself:
         //      bool is_nan(double x) { return x != x; }
         //
-        // So for all T, for which std::isnan() is implemented, this should work
+        // So for all T, for which isnan() is implemented, this should work
         // correctly and quite usefully!
         //
         return value == value;
@@ -251,7 +251,39 @@ namespace playrho
     {
         return (a >= T{0}) ? a : -a;
     }
+
+    /// @brief Checks whether the given container is empty.
+    /// @note This is from <code>std::empty</code> for C++17.
+    /// @sa http://en.cppreference.com/w/cpp/iterator/empty
+    template <class T>
+    PLAYRHO_CONSTEXPR inline auto IsEmpty(const T& arg) -> decltype(arg.empty())
+    {
+        return arg.empty();
+    }
+
+    /// @brief Gets the current size of the given container.
+    /// @note This is from <code>std::size</code> for C++17.
+    /// @sa http://en.cppreference.com/w/cpp/iterator/size
+    template <class T>
+    PLAYRHO_CONSTEXPR inline auto GetSize(const T& arg) -> decltype(arg.size())
+    {
+        return arg.size();
+    }
     
+    /// @brief Gets the maximum size of the given container.
+    template <class T>
+    PLAYRHO_CONSTEXPR inline auto GetMaxSize(const T& arg) -> decltype(arg.max_size())
+    {
+        return arg.max_size();
+    }
+
+    /// @brief Checks whether the given container is full.
+    template <class T>
+    PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(GetSize(arg) == arg.max_size())
+    {
+        return GetSize(arg) == GetMaxSize(arg);
+    }
+
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_TEMPLATES_HPP

@@ -78,7 +78,7 @@ namespace playrho {
     }
     
     /// @brief Gets "w".
-    /// @return 2D vector value of wB minus wA.
+    /// @return 2D vector value of the simplex edge's point B minus its point A.
     PLAYRHO_CONSTEXPR inline Length2 GetPointDelta(const SimplexEdge& sv) noexcept
     {
         return sv.GetPointB() - sv.GetPointA();

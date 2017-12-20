@@ -555,29 +555,29 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction1)
     switch (sizeof(Real))
     {
         case 4:
-            EXPECT_EQ(std::get<0>(maxSep01_4x4.indices), VertexCounter{0}); // v0 of shape0
-            EXPECT_EQ(std::get<0>(maxSep01_NxN.indices), VertexCounter{0}); // v0 of shape0
-            EXPECT_EQ(std::get<0>(maxSep01_nos.indices), VertexCounter{0}); // v0 of shape0
-            EXPECT_EQ(std::get<1>(maxSep01_4x4.indices), VertexCounter{3}); // v3 of shape1
-            EXPECT_EQ(std::get<1>(maxSep01_NxN.indices), VertexCounter{3}); // v3 of shape1
-            EXPECT_EQ(std::get<1>(maxSep01_nos.indices), VertexCounter{3}); // v3 of shape1
+            EXPECT_EQ(GetFirstShapeVertexIdx( maxSep01_4x4), VertexCounter{0}); // v0 of shape0
+            EXPECT_EQ(GetFirstShapeVertexIdx( maxSep01_NxN), VertexCounter{0}); // v0 of shape0
+            EXPECT_EQ(GetFirstShapeVertexIdx( maxSep01_nos), VertexCounter{0}); // v0 of shape0
+            EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_4x4), VertexCounter{3}); // v3 of shape1
+            EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_NxN), VertexCounter{3}); // v3 of shape1
+            EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_nos), VertexCounter{3}); // v3 of shape1
             break;
         case 8:
-            EXPECT_EQ(std::get<0>(maxSep01_4x4.indices), VertexCounter{1}); // v1 of shape0
-            EXPECT_EQ(std::get<0>(maxSep01_NxN.indices), VertexCounter{1}); // v1 of shape0
-            EXPECT_EQ(std::get<0>(maxSep01_nos.indices), VertexCounter{1}); // v1 of shape0
-            EXPECT_EQ(std::get<1>(maxSep01_4x4.indices), VertexCounter{0}); // v0 of shape1
-            EXPECT_EQ(std::get<1>(maxSep01_NxN.indices), VertexCounter{0}); // v0 of shape1
-            EXPECT_EQ(std::get<1>(maxSep01_nos.indices), VertexCounter{0}); // v0 of shape1
+            EXPECT_EQ(GetFirstShapeVertexIdx(maxSep01_4x4), VertexCounter{1}); // v1 of shape0
+            EXPECT_EQ(GetFirstShapeVertexIdx(maxSep01_NxN), VertexCounter{1}); // v1 of shape0
+            EXPECT_EQ(GetFirstShapeVertexIdx(maxSep01_nos), VertexCounter{1}); // v1 of shape0
+            EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_4x4), VertexCounter{0}); // v0 of shape1
+            EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_NxN), VertexCounter{0}); // v0 of shape1
+            EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_nos), VertexCounter{0}); // v0 of shape1
             break;
     }
     
-    EXPECT_EQ(std::get<0>(maxSep10_4x4.indices), VertexCounter{3}); // v3 of shape1
-    EXPECT_EQ(std::get<0>(maxSep10_NxN.indices), VertexCounter{3}); // v3 of shape1
-    EXPECT_EQ(std::get<0>(maxSep10_nos.indices), VertexCounter{3}); // v3 of shape1
-    EXPECT_EQ(std::get<1>(maxSep10_4x4.indices), VertexCounter{1}); // v1 of shape0
-    EXPECT_EQ(std::get<1>(maxSep10_NxN.indices), VertexCounter{1}); // v1 of shape0
-    EXPECT_EQ(std::get<1>(maxSep10_nos.indices), VertexCounter{1}); // v1 of shape0
+    EXPECT_EQ(GetFirstShapeVertexIdx(maxSep10_4x4), VertexCounter{3}); // v3 of shape1
+    EXPECT_EQ(GetFirstShapeVertexIdx(maxSep10_NxN), VertexCounter{3}); // v3 of shape1
+    EXPECT_EQ(GetFirstShapeVertexIdx(maxSep10_nos), VertexCounter{3}); // v3 of shape1
+    EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep10_4x4), VertexCounter{1}); // v1 of shape0
+    EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep10_NxN), VertexCounter{1}); // v1 of shape0
+    EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep10_nos), VertexCounter{1}); // v1 of shape0
     
     EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.distance / Meter)), -2.0, std::abs(-2.0) / 100);
     EXPECT_NEAR(static_cast<double>(Real(maxSep01_NxN.distance / Meter)), -2.0, std::abs(-2.0) / 100);
@@ -610,20 +610,20 @@ TEST(CollideShapes, GetMaxSeparationFreeFunction2)
     const auto maxSep01_NxN = GetMaxSeparation(child0, xfm0, child0, xfm1, totalRadius);
     const auto maxSep10_NxN = GetMaxSeparation(child0, xfm1, child0, xfm0, totalRadius);
     
-    EXPECT_EQ(std::get<0>(maxSep01_4x4.indices), VertexCounter{1}); // v0 of shape0
-    EXPECT_EQ(std::get<0>(maxSep01_4x4.indices), std::get<0>(maxSep01_NxN.indices));
-    EXPECT_EQ(std::get<1>(maxSep01_4x4.indices), VertexCounter{0}); // v3 of shape1
-    EXPECT_EQ(std::get<1>(maxSep01_4x4.indices), std::get<1>(maxSep01_NxN.indices));
+    EXPECT_EQ(GetFirstShapeVertexIdx(maxSep01_4x4), VertexCounter{1}); // v0 of shape0
+    EXPECT_EQ(GetFirstShapeVertexIdx(maxSep01_4x4), GetFirstShapeVertexIdx(maxSep01_NxN));
+    EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_4x4), VertexCounter{0}); // v3 of shape1
+    EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep01_4x4), GetSecondShapeVertexIdx<0>(maxSep01_NxN));
     EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.distance / Meter)),
                 -2.0, 0.0);
     EXPECT_NEAR(static_cast<double>(Real(maxSep01_4x4.distance / Meter)),
                 static_cast<double>(Real(maxSep01_NxN.distance / Meter)),
                 std::abs(static_cast<double>(Real(maxSep01_4x4.distance / Meter)) / 1000000.0));
     
-    EXPECT_EQ(std::get<0>(maxSep10_4x4.indices), VertexCounter{3}); // v3 of shape1
-    EXPECT_EQ(std::get<0>(maxSep10_4x4.indices), std::get<0>(maxSep10_NxN.indices));
-    EXPECT_EQ(std::get<1>(maxSep10_4x4.indices), VertexCounter{1}); // v1 of shape0
-    EXPECT_EQ(std::get<1>(maxSep10_4x4.indices), std::get<1>(maxSep10_NxN.indices));
+    EXPECT_EQ(GetFirstShapeVertexIdx(maxSep10_4x4), VertexCounter{3}); // v3 of shape1
+    EXPECT_EQ(GetFirstShapeVertexIdx(maxSep10_4x4), GetFirstShapeVertexIdx(maxSep10_NxN));
+    EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep10_4x4), VertexCounter{1}); // v1 of shape0
+    EXPECT_EQ(GetSecondShapeVertexIdx<0>(maxSep10_4x4), GetSecondShapeVertexIdx<0>(maxSep10_NxN));
     EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.distance / Meter)),
                 -2.0, 0.0);
     EXPECT_NEAR(static_cast<double>(Real(maxSep10_4x4.distance / Meter)),

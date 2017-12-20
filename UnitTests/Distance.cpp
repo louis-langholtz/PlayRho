@@ -37,13 +37,13 @@ TEST(Distance, MatchingCircles)
     const auto edges = output.simplex.GetEdges();
     ASSERT_EQ(edges.size(), std::uint8_t(1));
 
-    const auto ips = Simplex::GetIndexPairs(edges);
+    const auto ips = GetIndexPairs(edges);
     EXPECT_EQ(ips[0], (IndexPair{0, 0}));
     EXPECT_EQ(ips[1], InvalidIndexPair);
     EXPECT_EQ(ips[2], InvalidIndexPair);
 
     conf.cache = Simplex::GetCache(edges);
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{1});
 
     const auto witnessPoints = GetWitnessPoints(output.simplex);
 
@@ -51,12 +51,11 @@ TEST(Distance, MatchingCircles)
     EXPECT_EQ(std::get<1>(witnessPoints), pos1);
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{0});
 
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{0});
+    EXPECT_EQ(conf.cache.metric, Real{0});
 }
 
 TEST(Distance, OpposingCircles)
@@ -82,14 +81,13 @@ TEST(Distance, OpposingCircles)
 
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{1});
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{0});
+    EXPECT_EQ(conf.cache.metric, Real{0});
 }
 
 TEST(Distance, HorTouchingCircles)
@@ -118,14 +116,13 @@ TEST(Distance, HorTouchingCircles)
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{1});
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{0});
+    EXPECT_EQ(conf.cache.metric, Real{0});
 }
 
 TEST(Distance, OverlappingCirclesPN)
@@ -151,14 +148,13 @@ TEST(Distance, OverlappingCirclesPN)
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{1});
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{0});
+    EXPECT_EQ(conf.cache.metric, Real{0});
 }
 
 TEST(Distance, OverlappingCirclesNP)
@@ -184,14 +180,13 @@ TEST(Distance, OverlappingCirclesNP)
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{1});
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{0});
+    EXPECT_EQ(conf.cache.metric, Real{0});
 }
 
 
@@ -218,14 +213,13 @@ TEST(Distance, SeparatedCircles)
     
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{1});
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{0});
+    EXPECT_EQ(conf.cache.metric, Real{0});
 }
 
 TEST(Distance, EdgeCircleOverlapping)
@@ -257,18 +251,17 @@ TEST(Distance, EdgeCircleOverlapping)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{2});
     
-    const auto ip0 = conf.cache.GetIndexPair(0);
+    const auto ip0 = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip0), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip0), VertexCounter{0});
 
-    const auto ip1 = conf.cache.GetIndexPair(1);
+    const auto ip1 = std::get<1>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip1), VertexCounter{1});
     EXPECT_EQ(std::get<1>(ip1), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 4.0, 0.000001);
+    EXPECT_NEAR(static_cast<double>(conf.cache.metric), 4.0, 0.000001);
 }
 
 TEST(Distance, EdgeCircleOverlapping2)
@@ -299,18 +292,17 @@ TEST(Distance, EdgeCircleOverlapping2)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{2});
     
-    const auto ip0 = conf.cache.GetIndexPair(0);
+    const auto ip0 = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip0), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip0), VertexCounter{0});
     
-    const auto ip1 = conf.cache.GetIndexPair(1);
+    const auto ip1 = std::get<1>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip1), VertexCounter{1});
     EXPECT_EQ(std::get<1>(ip1), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{10});
+    EXPECT_EQ(conf.cache.metric, Real{10});
 }
 
 TEST(Distance, EdgeCircleTouching)
@@ -341,18 +333,17 @@ TEST(Distance, EdgeCircleTouching)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{2});
     
-    const auto ip0 = conf.cache.GetIndexPair(0);
+    const auto ip0 = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip0), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip0), VertexCounter{0});
     
-    const auto ip1 = conf.cache.GetIndexPair(1);
+    const auto ip1 = std::get<1>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip1), VertexCounter{1});
     EXPECT_EQ(std::get<1>(ip1), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 4.0, 0.000001);
+    EXPECT_NEAR(static_cast<double>(conf.cache.metric), 4.0, 0.000001);
 }
 
 TEST(Distance, HorEdgeSquareTouching)
@@ -392,18 +383,17 @@ TEST(Distance, HorEdgeSquareTouching)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{2});
     
-    const auto ip0 = conf.cache.GetIndexPair(0);
+    const auto ip0 = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip0), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip0), VertexCounter{0});
     
-    const auto ip1 = conf.cache.GetIndexPair(1);
+    const auto ip1 = std::get<1>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip1), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip1), VertexCounter{1});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 8.0, 0.000001);
+    EXPECT_NEAR(static_cast<double>(conf.cache.metric), 8.0, 0.000001);
 }
 
 TEST(Distance, VerEdgeSquareTouching)
@@ -445,18 +435,17 @@ TEST(Distance, VerEdgeSquareTouching)
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{2});
     
-    const auto ip0 = conf.cache.GetIndexPair(0);
+    const auto ip0 = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip0), VertexCounter{2});
     EXPECT_EQ(std::get<1>(ip0), VertexCounter{0});
     
-    const auto ip1 = conf.cache.GetIndexPair(1);
+    const auto ip1 = std::get<1>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip1), VertexCounter{3});
     EXPECT_EQ(std::get<1>(ip1), VertexCounter{1});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{10});
+    EXPECT_EQ(conf.cache.metric, Real{10});
 }
 
 TEST(Distance, SquareTwice)
@@ -488,14 +477,13 @@ TEST(Distance, SquareTwice)
 
     EXPECT_EQ(decltype(output.iterations){1}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{1});
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{0});
+    EXPECT_EQ(conf.cache.metric, Real{0});
 }
 
 
@@ -540,14 +528,13 @@ TEST(Distance, SquareSquareTouchingVertically)
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{2});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{2});
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{3});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{1});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_NEAR(static_cast<double>(conf.cache.GetMetric()), 4.0, 0.000001);
+    EXPECT_NEAR(static_cast<double>(conf.cache.metric), 4.0, 0.000001);
 }
 
 TEST(Distance, SquareSquareDiagonally)
@@ -591,14 +578,13 @@ TEST(Distance, SquareSquareDiagonally)
     
     EXPECT_EQ(decltype(output.iterations){2}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{1});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{1});
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{2});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{3});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{0});
+    EXPECT_EQ(conf.cache.metric, Real{0});
 }
 
 TEST(Distance, SquareSquareOverlappingDiagnally)
@@ -666,12 +652,11 @@ TEST(Distance, SquareSquareOverlappingDiagnally)
     
     EXPECT_EQ(decltype(output.iterations){3}, output.iterations);
     
-    EXPECT_EQ(GetNumIndices(conf.cache.GetIndices()), std::uint8_t{3});
+    EXPECT_EQ(GetNumValidIndices(conf.cache.indices), std::uint8_t{3});
     
-    const auto ip = conf.cache.GetIndexPair(0);
+    const auto ip = std::get<0>(conf.cache.indices);
     EXPECT_EQ(std::get<0>(ip), VertexCounter{0});
     EXPECT_EQ(std::get<1>(ip), VertexCounter{0});
     
-    EXPECT_EQ(true, conf.cache.IsMetricSet());
-    EXPECT_EQ(conf.cache.GetMetric(), Real{-64});
+    EXPECT_EQ(conf.cache.metric, Real{-64});
 }
