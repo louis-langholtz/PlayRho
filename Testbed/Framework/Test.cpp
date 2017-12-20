@@ -666,6 +666,11 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
     const auto firstColumnWidth = 65.0f;
 
     ImGui::Text("Step #=%d (@%fs):", m_stepCount, m_sumDeltaTime);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("%s", "# of steps performed so far for the current test "
+                          "and the elapsed simulated time.");
+    }
     ImGui::Separator();
 
     {
@@ -674,10 +679,22 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::TextUnformatted("Times:");
         ImGui::NextColumn();
         ImGui::Value("Current", m_curStepDuration.count(), "%f");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Compute time of last step.");
+        }
         ImGui::NextColumn();
         ImGui::Value("Max", m_maxStepDuration.count(), "%f");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Maximum compute time of all steps so far for the current test.");
+        }
         ImGui::NextColumn();
         ImGui::Value("Sum", m_sumStepDuration.count(), "%f");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Sum compute time of all steps so far for the current test.");
+        }
         ImGui::NextColumn();
     }
 
@@ -718,26 +735,46 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::TextUnformatted("Pre-step:");
         ImGui::NextColumn();
         ImGui::Value("cts-add", m_stepStats.pre.added);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Contacts added.");
+        }
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
             os << "c-ign: " << m_stepStats.pre.ignored << "/" << m_sumContactsIgnoredPre;
             return os.str();
         }());
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Contacts ignored over running total ignored.");
+        }
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
             os << "c-skip: " << m_stepStats.pre.skipped << "/" << m_sumContactsSkippedPre;
             return os.str();
         }());
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Contacts skipped over running total skipped.");
+        }
         ImGui::NextColumn();
         ImGui::Value("c-del", m_stepStats.pre.destroyed);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Contacts deleted.");
+        }
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
             os << "c-upd: " << m_stepStats.pre.updated << "/" << m_sumContactsUpdatedPre;
             return os.str();
         }());
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("%s", "Contacts updated over running total updated.");
+        }
         ImGui::NextColumn();
     }
 
