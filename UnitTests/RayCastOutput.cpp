@@ -101,13 +101,29 @@ TEST(RayCastOutput, RayCastLocationFreeFunctionMisses)
 
 TEST(RayCastOutput, RayCastAabbFreeFunction)
 {
-    AABB2D aabb;
     const auto p1 = Length2(10_m, 2_m);
     const auto p2 = Length2(0_m, 2_m);
     const auto maxFraction = Real(1);
-    RayCastInput input{p1, p2, maxFraction};
-    const auto output = RayCast(aabb, input);
-    EXPECT_FALSE(output.has_value());
+    const auto input = RayCastInput{p1, p2, maxFraction};
+    {
+        const auto aabb = AABB2D{};
+        const auto output = RayCast(aabb, input);
+        EXPECT_FALSE(output.has_value());
+    }
+    {
+        const auto aabb = AABB2D{LengthInterval{9_m, 11_m}, LengthInterval{3_m, 1_m}};
+        const auto output = RayCast(aabb, input);
+        EXPECT_FALSE(output.has_value());
+    }
+    {
+        auto aabb = AABB2D{};
+        aabb.ranges[0].Include(4_m).Include(5_m);
+        aabb.ranges[1].Include(1_m).Include(3_m);
+        const auto output = RayCast(aabb, input);
+        ASSERT_TRUE(output.has_value());
+        EXPECT_NEAR(static_cast<double>(output->fraction), 0.5, 0.0001);
+        EXPECT_EQ(output->normal, UnitVec2::GetRight());
+    }
 }
 
 TEST(RayCastOutput, RayCastDistanceProxyFF)
