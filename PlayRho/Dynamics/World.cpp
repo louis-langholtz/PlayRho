@@ -1402,11 +1402,11 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     return results;
 }
     
-World::ContactToiData World::GetSoonestContacts(size_t reserveSize)
+World::ContactToiData World::GetSoonestContact() const noexcept
 {
     auto minToi = nextafter(Real{1}, Real{0});
-    auto minContacts = std::vector<Contact*>();
-    minContacts.reserve(reserveSize);
+    auto found = static_cast<Contact*>(nullptr);
+    auto count = ContactCounter{0};
     for (auto&& contact: m_contacts)
     {
         const auto c = GetPtr(std::get<Contact*>(contact));
@@ -1416,17 +1416,17 @@ World::ContactToiData World::GetSoonestContacts(size_t reserveSize)
             if (minToi > toi)
             {
                 minToi = toi;
-                minContacts.clear();
-                minContacts.push_back(c);
+                found = c;
+                count = 1;
             }
             else if (minToi == toi)
             {
                 // Have multiple contacts at the current minimum time of impact.
-                minContacts.push_back(c);
+                ++count;
             }
         }
     }
-    return ContactToiData{minContacts, minToi};
+    return ContactToiData{found, minToi, count};
 }
 
 ToiStepStats World::SolveToi(const StepConf& conf)
@@ -1451,9 +1451,10 @@ ToiStepStats World::SolveToi(const StepConf& conf)
         stats.maxRootIters = std::max(stats.maxRootIters, updateData.maxRootIters);
         stats.maxToiIters = std::max(stats.maxToiIters, updateData.maxToiIters);
         
-        const auto next = GetSoonestContacts(updateData.numValidTOI + updateData.numUpdatedTOI);
-        const auto ncount = next.contacts.size();
-        if (ncount == 0)
+        const auto next = GetSoonestContact();
+        const auto contact = next.contact;
+        const auto ncount = next.simultaneous;
+        if (!contact)
         {
             // No more TOI events to handle within the current time step. Done!
             SetStepComplete(true);
@@ -1464,33 +1465,29 @@ ToiStepStats World::SolveToi(const StepConf& conf)
                                           static_cast<decltype(stats.maxSimulContacts)>(ncount));
         stats.contactsFound += static_cast<ContactCounter>(ncount);
         auto islandsFound = 0u;
-        for (auto&& contact: next.contacts)
+        if (!IsIslanded(contact))
         {
-            if (!IsIslanded(contact))
+            /*
+             * Confirm that contact is as it's supposed to be according to contract of the
+             * GetSoonestContacts method from which this contact was obtained.
+             */
+            assert(contact->IsEnabled());
+            assert(!HasSensor(*contact));
+            assert(IsActive(*contact));
+            assert(IsImpenetrable(*contact));
+            
+            const auto solverResults = SolveToi(conf, *contact);
+            stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
+            stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
+            stats.islandsSolved += solverResults.solved;
+            stats.sumPosIters += solverResults.positionIterations;
+            stats.sumVelIters += solverResults.velocityIterations;
+            if ((solverResults.positionIterations > 0) || (solverResults.velocityIterations > 0))
             {
-                /*
-                 * Confirm that contact is as it's supposed to be according to contract of the
-                 * GetSoonestContacts method from which this contact was obtained.
-                 */
-                assert(contact->IsEnabled());
-                assert(!HasSensor(*contact));
-                assert(IsActive(*contact));
-                assert(IsImpenetrable(*contact));
-
-                const auto solverResults = SolveToi(conf, *contact);
-                stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
-                stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
-                stats.islandsSolved += solverResults.solved;
-                stats.sumPosIters += solverResults.positionIterations;
-                stats.sumVelIters += solverResults.velocityIterations;
-                if ((solverResults.positionIterations > 0) || (solverResults.velocityIterations > 0))
-                {
-                    ++islandsFound;
-                }
-                stats.contactsUpdatedTouching += solverResults.contactsUpdated;
-                stats.contactsSkippedTouching += solverResults.contactsSkipped;
-                break; // TODO(lou): get working without breaking.
+                ++islandsFound;
             }
+            stats.contactsUpdatedTouching += solverResults.contactsUpdated;
+            stats.contactsSkippedTouching += solverResults.contactsSkipped;
         }
         stats.islandsFound += islandsFound;
 

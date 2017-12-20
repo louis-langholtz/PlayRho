@@ -604,11 +604,12 @@ private:
         ContactCounter erased = 0; ///< Erased.
     };
     
-    /// @brief Contacts TOI data.
+    /// @brief Contact TOI data.
     struct ContactToiData
     {
-        std::vector<Contact*> contacts; ///< Contacts for which the time of impact is relavant.
+        Contact* contact = nullptr; ///< Contact for which the time of impact is relavant.
         Real toi = std::numeric_limits<Real>::infinity(); ///< Time of impact (TOI) as a fractional value between 0 and 1.
+        ContactCounter simultaneous = 0; ///< Count of simultaneous contacts at this TOI.
     };
 
     /// @brief Update contacts data.
@@ -637,9 +638,9 @@ private:
 
     /// @brief Gets the soonest contact.
     /// @details This finds the contact with the lowest (soonest) time of impact.
-    /// @return Contacts with the least time of impact and its time of impact, or null contact.
-    ///  These contacts will all be enabled, not have sensors, be active, and impenetrable.
-    ContactToiData GetSoonestContacts(std::size_t reserveSize);
+    /// @return Contact with the least time of impact and its time of impact, or null contact.
+    ///  A non-null contact will be enabled, not have sensors, be active, and impenetrable.
+    ContactToiData GetSoonestContact() const noexcept;
 
     /// @brief Determines whether this world has new fixtures.
     bool HasNewFixtures() const noexcept;
