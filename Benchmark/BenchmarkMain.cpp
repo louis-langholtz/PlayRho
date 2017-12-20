@@ -44,6 +44,13 @@
 #include <atomic>
 #include <ctime>
 #include <map>
+#include <type_traits>
+#include <functional>
+
+// #define BENCHMARK_GCDISPATCH
+#ifdef BENCHMARK_GCDISPATCH
+#include <dispatch/dispatch.h>
+#endif // BENCHMARK_GCDISPATCH
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/OptionalValue.hpp>
@@ -573,6 +580,36 @@ static void AsyncFutureAsync(benchmark::State& state)
         f.get();
     }
 }
+
+#ifdef BENCHMARK_GCDISPATCH
+template <typename F, typename ...Args>
+auto gcd_async(F&& f, Args&&... args) -> std::future<typename std::result_of<F (Args...)>::type>
+{
+    using result_type = typename std::result_of<F (Args...)>::type;
+    using packaged_type = std::packaged_task<result_type ()>;
+    
+    auto p = new packaged_type(std::bind(std::forward<F>(f), std::forward<Args>(args)...));
+    auto result = p->get_future();
+    dispatch_async_f(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                     p, [](void* f_) {
+                         packaged_type* f = static_cast<packaged_type*>(f_);
+                         (*f)();
+                         delete f;
+                     });
+    
+    return result;
+}
+
+static void AsyncFutureDispatch(benchmark::State& state)
+{
+    std::future<void> f;
+    for (auto _: state)
+    {
+        benchmark::DoNotOptimize(f = gcd_async(noopFunc));
+        f.get();
+    }
+}
+#endif // BENCHMARK_GCDISPATCH
 
 static void ThreadCreateAndDestroy(benchmark::State& state)
 {
@@ -1610,7 +1647,7 @@ static void DropDisks(benchmark::State& state)
     }
 }
 
-static void AddPairStressTest(benchmark::State& state, int count)
+static void AddPairStressTestPlayRho(benchmark::State& state, int count)
 {
     const auto diskConf = playrho::DiskShapeConf{}
         .UseRadius(playrho::Meter / 10)
@@ -1628,8 +1665,25 @@ static void AddPairStressTest(benchmark::State& state, int count)
         .UseLocation(playrho::Length2{-40.0f * playrho::Meter, 5.0f * playrho::Meter})
         .UseLinearVelocity(playrho::LinearVelocity2{playrho::Vec2(150.0f, 0.0f) * playrho::MeterPerSecond});
 
+    constexpr auto linearSlop = 0.005f * playrho::Meter;
+    constexpr auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
+
     const auto worldDef = playrho::WorldDef{}.UseGravity(playrho::LinearAcceleration2{}).UseInitialTreeSize(8192);
-    const auto stepConf = playrho::StepConf{};
+    auto stepConf = playrho::StepConf{};
+    stepConf.SetTime(playrho::Second / 60);
+    stepConf.linearSlop = linearSlop;
+    stepConf.angularSlop = angularSlop;
+    stepConf.regMinSeparation = -linearSlop * 3;
+    stepConf.toiMinSeparation = -linearSlop * 1.5f;
+    stepConf.targetDepth = linearSlop * 3;
+    stepConf.tolerance = linearSlop / 4;
+    stepConf.maxLinearCorrection = 0.2f * playrho::Meter;
+    stepConf.maxAngularCorrection = (8.0f / 180.0f * playrho::Pi) * playrho::Radian;
+    stepConf.aabbExtension = 0.1f * playrho::Meter;
+    stepConf.maxTranslation = 2.0f * playrho::Meter;
+    stepConf.velocityThreshold = 1.0f * playrho::MeterPerSecond;
+    stepConf.maxSubSteps = std::uint8_t{8};
+
     const auto minX = -6.0f;
     const auto maxX = 0.0f;
     const auto minY = 4.0f;
@@ -1659,27 +1713,81 @@ static void AddPairStressTest(benchmark::State& state, int count)
     }
 }
 
-static void AddPairStressTest400(benchmark::State& state)
+static void AddPairStressTestPlayRho400(benchmark::State& state)
 {
-    AddPairStressTest(state, 400);
+    AddPairStressTestPlayRho(state, 400);
 }
+
+#ifdef BENCHMARK_BOX2D
+static void AddPairStressTestBox2D(benchmark::State& state, int count)
+{
+    const auto gravity = b2Vec2(0.0f,0.0f);
+    const auto minX = -6.0f;
+    const auto maxX = 0.0f;
+    const auto minY = 4.0f;
+    const auto maxY = 6.0f;
+    b2CircleShape circle;
+    circle.m_p.SetZero();
+    circle.m_radius = 0.1f;
+    
+    b2PolygonShape shape;
+    shape.SetAsBox(1.5f, 1.5f);
+    for (auto _: state)
+    {
+        state.PauseTiming();
+        b2World world(gravity);
+        {
+            for (auto i = 0; i < count; ++i)
+            {
+                b2BodyDef bd;
+                bd.type = b2_dynamicBody;
+                bd.position = b2Vec2(Rand(minX, maxX), Rand(minY, maxY));
+                const auto body = world.CreateBody(&bd);
+                body->CreateFixture(&circle, 0.01f);
+            }
+        }
+        b2BodyDef bd;
+        bd.type = b2_dynamicBody;
+        bd.position.Set(-40.0f,5.0f);
+        bd.bullet = true;
+        const auto body = world.CreateBody(&bd);
+        body->CreateFixture(&shape, 1.0f);
+        body->SetLinearVelocity(b2Vec2(150.0f, 0.0f));
+        for (auto i = 0; i < state.range(); ++i)
+        {
+            world.Step(1.0f/60, 8, 3);
+        }
+        state.ResumeTiming();
+        
+        world.Step(1.0f/60, 8, 3);
+    }
+}
+
+static void AddPairStressTestBox2D400(benchmark::State& state)
+{
+    AddPairStressTestBox2D(state, 400);
+}
+#endif // BENCHMARK_BOX2D
 
 static void DropTilesPlayRho(int count)
 {
-    const auto linearSlop = 0.005f * playrho::Meter;
-    const auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
-    const auto vertexRadius = linearSlop * 2;
+    constexpr auto linearSlop = 0.005f * playrho::Meter;
+    constexpr auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
+    constexpr auto vertexRadius = linearSlop * 2;
+    constexpr auto gravity = playrho::LinearAcceleration2{
+        0.0f * playrho::MeterPerSquareSecond, -10.0f * playrho::MeterPerSquareSecond
+    };
     auto conf = playrho::PolygonShapeConf{}.UseVertexRadius(vertexRadius);
     auto world = playrho::World{
-        playrho::WorldDef{}.UseMinVertexRadius(vertexRadius).UseInitialTreeSize(8192)
+        playrho::WorldDef{}.UseMinVertexRadius(vertexRadius).UseInitialTreeSize(8192).UseGravity(gravity)
     };
     
     {
-        const auto a = 0.5f;
+        constexpr auto a = 0.5f;
         const auto ground = world.CreateBody(playrho::BodyDef{}.UseLocation(playrho::Length2{0, -a * playrho::Meter}));
         
-        const auto N = 200;
-        const auto M = 10;
+        constexpr auto N = 200;
+        constexpr auto M = 10;
         playrho::Length2 position;
         GetY(position) = 0.0f * playrho::Meter;
         for (auto j = 0; j < M; ++j)
@@ -1696,15 +1804,15 @@ static void DropTilesPlayRho(int count)
     }
     
     {
-        const auto a = 0.5f;
+        constexpr auto a = 0.5f;
         conf.SetAsBox(a * playrho::Meter, a * playrho::Meter);
         conf.UseDensity(5.0f * playrho::KilogramPerSquareMeter);
         const auto shape = playrho::Shape(conf);
         
         playrho::Length2 x(-7.0f * playrho::Meter, 0.75f * playrho::Meter);
         playrho::Length2 y;
-        const auto deltaX = playrho::Length2(0.5625f * playrho::Meter, 1.25f * playrho::Meter);
-        const auto deltaY = playrho::Length2(1.125f * playrho::Meter, 0.0f * playrho::Meter);
+        constexpr auto deltaX = playrho::Length2(0.5625f * playrho::Meter, 1.25f * playrho::Meter);
+        constexpr auto deltaY = playrho::Length2(1.125f * playrho::Meter, 0.0f * playrho::Meter);
         
         for (auto i = 0; i < count; ++i)
         {
@@ -2024,6 +2132,9 @@ BENCHMARK(ManifoldForTwoSquares2);
 
 BENCHMARK(AsyncFutureDeferred);
 BENCHMARK(AsyncFutureAsync);
+#ifdef BENCHMARK_GCDISPATCH
+BENCHMARK(AsyncFutureDispatch);
+#endif // BENCHMARK_GCDISPATCH
 BENCHMARK(ThreadCreateAndDestroy);
 BENCHMARK(MultiThreadQD);
 BENCHMARK(MultiThreadQDE);
@@ -2042,10 +2153,13 @@ BENCHMARK(DropDisks)->Arg(0)->Arg(1)->Arg(10)->Arg(100)->Arg(1000)->Arg(10000);
 
 BENCHMARK(TumblerAdd100SquaresPlus100Steps);
 BENCHMARK(TumblerAdd200SquaresPlus200Steps);
-BENCHMARK(AddPairStressTest400)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(17)->Arg(18)->Arg(19)->Arg(20)->Arg(30);
+
+BENCHMARK(AddPairStressTestPlayRho400)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(17)->Arg(18)->Arg(19)->Arg(20)->Arg(30);
+#ifdef BENCHMARK_BOX2D
+BENCHMARK(AddPairStressTestBox2D400)->Arg(0)->Arg(10)->Arg(15)->Arg(16)->Arg(17)->Arg(18)->Arg(19)->Arg(20)->Arg(30);
+#endif // BENCHMARK_BOX2D
 
 BENCHMARK(TilesRestPlayRho)->Arg(12)->Arg(20)->Arg(36);
-
 #ifdef BENCHMARK_BOX2D
 BENCHMARK(TilesRestBox2D)->Arg(12)->Arg(20)->Arg(36);
 #endif // BENCHMARK_BOX2D
