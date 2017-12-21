@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -41,7 +43,7 @@ namespace playrho {
             e_faceB
         };
         
-        /// Gets a separation finder for the given inputs.
+        /// @brief Gets a separation finder for the given inputs.
         ///
         /// @warning Behavior is undefined if given less than one index pair or more than three.
         ///
@@ -56,23 +58,11 @@ namespace playrho {
                                     const DistanceProxy& proxyA, const Transformation2D& xfA,
                                     const DistanceProxy& proxyB, const Transformation2D& xfB);
         
-        /// Finds the minimum separation.
+        /// @brief Finds the minimum separation.
         /// @return indexes of proxy A's and proxy B's vertices that have the minimum
         ///    distance between them and what that distance is.
         LengthIndexPair FindMinSeparation(const Transformation2D& xfA,
-                                            const Transformation2D& xfB) const
-        {
-            switch (m_type)
-            {
-                case e_points: return FindMinSeparationForPoints(xfA, xfB);
-                case e_faceA: return FindMinSeparationForFaceA(xfA, xfB);
-                case e_faceB: return FindMinSeparationForFaceB(xfA, xfB);
-            }
-            
-            // Should never be reached
-            assert(false);
-            return LengthIndexPair{0, InvalidIndexPair};
-        }
+                                          const Transformation2D& xfB) const;
         
         /// Evaluates the separation of the identified proxy vertices at the given time factor.
         ///
@@ -84,18 +74,7 @@ namespace playrho {
         ///    vertices on the opposite sides of the separating axis.
         ///
         Length Evaluate(const Transformation2D& xfA, const Transformation2D& xfB,
-                        IndexPair indexPair) const
-        {
-            switch (m_type)
-            {
-                case e_points: return EvaluateForPoints(xfA, xfB, indexPair);
-                case e_faceA: return EvaluateForFaceA(xfA, xfB, indexPair);
-                case e_faceB: return EvaluateForFaceB(xfA, xfB, indexPair);
-                default: break;
-            }
-            assert(false);
-            return 0_m;
-        }
+                        IndexPair indexPair) const;
         
         /// @brief Gets the type.
         PLAYRHO_CONSTEXPR inline Type GetType() const noexcept;
