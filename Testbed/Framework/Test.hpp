@@ -383,7 +383,9 @@ private:
     Length m_minRegSep = std::numeric_limits<Length>::infinity();
     Length m_maxRegSep = -std::numeric_limits<Length>::infinity();
     Length m_minToiSep = 0;
-
+    
+    std::uint32_t m_maxSimulContacts = 0;
+    
     using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
     using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
     using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
