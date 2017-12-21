@@ -38,6 +38,7 @@ namespace playrho {
 /// Since there may be many vertices, they are allocated on the memory heap.
 ///
 /// @image html Chain1.png
+/// @image html SelfIntersect.png
 ///
 /// @warning The chain will not collide properly if there are self-intersections.
 ///
