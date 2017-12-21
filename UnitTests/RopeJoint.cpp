@@ -82,7 +82,11 @@ TEST(RopeJoint, ByteSize)
 
 TEST(RopeJoint, Construction)
 {
-    RopeJointDef def;
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+
+    auto def = RopeJointDef{b0, b1};
     RopeJoint joint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -95,6 +99,8 @@ TEST(RopeJoint, Construction)
 
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
+    EXPECT_EQ(joint.GetAnchorA(), Length2(-1_m, 0_m));
+    EXPECT_EQ(joint.GetAnchorB(), Length2(+1_m, 0_m));
     EXPECT_EQ(joint.GetMaxLength(), def.maxLength);
     EXPECT_EQ(joint.GetLimitState(), Joint::e_inactiveLimit);
     

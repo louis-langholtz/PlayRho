@@ -83,6 +83,8 @@ TEST(RevoluteJoint, Construction)
 
     EXPECT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
+    EXPECT_EQ(joint.GetAnchorA(), Length2(4_m, 5_m));
+    EXPECT_EQ(joint.GetAnchorB(), Length2(6_m, 7_m));
     EXPECT_EQ(joint.GetLowerLimit(), jd.lowerAngle);
     EXPECT_EQ(joint.GetUpperLimit(), jd.upperAngle);
     EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);

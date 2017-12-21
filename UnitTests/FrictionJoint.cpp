@@ -79,7 +79,11 @@ TEST(FrictionJointDef, InitializingConstructor)
 
 TEST(FrictionJoint, Construction)
 {
-    FrictionJointDef def;
+    World world;
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+
+    auto def = FrictionJointDef{b0, b1, Length2{}};
     FrictionJoint joint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -92,6 +96,8 @@ TEST(FrictionJoint, Construction)
     
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
+    EXPECT_EQ(joint.GetAnchorA(), Length2(0_m, 0_m));
+    EXPECT_EQ(joint.GetAnchorB(), Length2(0_m, 0_m));
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
     EXPECT_EQ(joint.GetMaxTorque(), def.maxTorque);
     

@@ -55,7 +55,7 @@ struct RopeJointDef : public JointBuilder<RopeJointDef>
     Length2 localAnchorA = Length2{-1_m, 0_m};
     
     /// The local anchor point relative to bodyB's origin.
-    Length2 localAnchorB = Length2{1_m, 0_m};
+    Length2 localAnchorB = Length2{+1_m, 0_m};
     
     /// The maximum length of the rope.
     Length maxLength = 0_m;
