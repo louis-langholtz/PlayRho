@@ -370,11 +370,12 @@ TEST(World, SetGravity)
 
 TEST(World, CreateAndDestroyBody)
 {
-    World world;
-    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    auto world = World{};
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
+    ASSERT_EQ(GetJointCount(world), JointCounter(0));
 
-    const auto body = world.CreateBody();
-    EXPECT_NE(body, nullptr);
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Static));
+    ASSERT_NE(body, nullptr);
     EXPECT_EQ(body->GetType(), BodyType::Static);
     EXPECT_FALSE(body->IsSpeedable());
     EXPECT_FALSE(body->IsAccelerable());
@@ -388,12 +389,23 @@ TEST(World, CreateAndDestroyBody)
     const auto& first = GetRef(*bodies1.begin());
     EXPECT_EQ(body, &first);
 
+    const auto body2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
+
+    const auto joint = world.CreateJoint(DistanceJointDef{body, body2});
+    ASSERT_NE(joint, nullptr);
+    EXPECT_EQ(GetJointCount(world), JointCounter(1));
+
     world.Destroy(body);
-    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    EXPECT_EQ(GetJointCount(world), JointCounter(0));
+
     const auto& bodies0 = world.GetBodies();
-    EXPECT_TRUE(bodies0.empty());
-    EXPECT_EQ(bodies0.size(), BodyCounter(0));
-    EXPECT_EQ(bodies0.begin(), bodies0.end());
+    EXPECT_FALSE(bodies0.empty());
+    EXPECT_EQ(bodies0.size(), BodyCounter(1));
+    EXPECT_NE(bodies0.begin(), bodies0.end());
+    world.Destroy(body2);
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
 }
 
 TEST(World, CreateAndDestroyFixture)
@@ -406,9 +418,13 @@ TEST(World, CreateAndDestroyFixture)
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
     ASSERT_EQ(GetFixtureCount(*bodyB), std::size_t(0));
     
+    EXPECT_THROW(world.CreateFixture(*bodyA, DiskShapeConf(0_m)), InvalidArgument);
+    EXPECT_THROW(world.CreateFixture(*bodyA, DiskShapeConf(WorldDef{}.maxVertexRadius * 2)), InvalidArgument);
+
     const auto fixtureA = world.CreateFixture(*bodyA, DiskShapeConf(1_m));
     ASSERT_NE(fixtureA, nullptr);
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
+    EXPECT_FALSE(other.TouchProxies(*fixtureA));
     
     EXPECT_TRUE(world.DestroyFixture(fixtureA));
     EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
@@ -422,6 +438,48 @@ TEST(World, CreateAndDestroyFixture)
     EXPECT_FALSE(world.DestroyFixture(fixtureC));
     
     EXPECT_THROW(world.CreateFixture(*bodyC, DiskShapeConf(1_m)), InvalidArgument);
+}
+
+TEST(World, SynchronizeProxies)
+{
+    auto world = World{};
+    const auto stepConf = StepConf{};
+    
+    EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
+    const auto bodyA = world.CreateBody();
+    world.CreateFixture(*bodyA, DiskShapeConf(1_m));
+    EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
+    SetLocation(*bodyA, Length2{10_m, -4_m});
+    EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(1));
+}
+
+TEST(World, SetTypeOfBody)
+{
+    auto world = World{};
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_EQ(body->GetType(), BodyType::Dynamic);
+    auto other = World{};
+    other.SetType(*body, BodyType::Static);
+    EXPECT_EQ(body->GetType(), BodyType::Dynamic);
+    world.SetType(*body, BodyType::Static);
+    EXPECT_EQ(body->GetType(), BodyType::Static);
+}
+
+TEST(World, RegisterBodyForProxies)
+{
+    auto world = World{};
+    EXPECT_FALSE(world.RegisterForProxies(static_cast<Body*>(nullptr)));
+    const auto body = world.CreateBody();
+    EXPECT_TRUE(world.RegisterForProxies(body));
+}
+
+TEST(World, RegisterFixtureForProxies)
+{
+    auto world = World{};
+    EXPECT_FALSE(world.RegisterForProxies(static_cast<Fixture*>(nullptr)));
+    const auto body = world.CreateBody();
+    const auto fixture = body->CreateFixture(DiskShapeConf(1_m));
+    EXPECT_TRUE(world.RegisterForProxies(fixture));
 }
 
 TEST(World, QueryAABB)

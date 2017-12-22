@@ -24,7 +24,7 @@
 
 using namespace playrho;
 
-TEST(PositionSolverManifold, ByteSizeIs_20_40_or_80)
+TEST(PositionSolverManifold, ByteSize)
 {
     switch (sizeof(Real))
     {
@@ -142,5 +142,11 @@ TEST(PositionSolverManifold, GetPSM)
         EXPECT_NEAR(static_cast<double>(Real{psm1.m_separation/Meter}), -1.0, 0.00001);
         EXPECT_TRUE(AlmostEqual(Real{GetX(psm1.m_point) / Meter}, Real(0)));
         EXPECT_TRUE(AlmostEqual(Real{GetY(psm1.m_point) / Meter}, Real(+1.5)));
+    }
+    {
+        const auto psm = GetPSM(Manifold{}, 0, xfm0, xfm1);
+        EXPECT_FALSE(IsValid(psm.m_normal));
+        EXPECT_FALSE(IsValid(psm.m_point));
+        EXPECT_FALSE(IsValid(psm.m_separation));
     }
 }

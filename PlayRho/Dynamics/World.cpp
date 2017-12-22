@@ -2698,14 +2698,11 @@ void World::DestroyProxies(Fixture& fixture)
 bool World::TouchProxies(Fixture& fixture) noexcept
 {
     const auto body = fixture.GetBody();
-    if (body != nullptr)
+    const auto world = body->GetWorld();
+    if (world == this)
     {
-        const auto world = body->GetWorld();
-        if (world == this)
-        {
-            InternalTouchProxies(fixture);
-            return true;
-        }
+        InternalTouchProxies(fixture);
+        return true;
     }
     return false;
 }
