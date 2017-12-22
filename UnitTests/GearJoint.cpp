@@ -112,12 +112,12 @@ TEST(GearJoint, IsOkay)
 
 TEST(GearJoint, Construction)
 {
-    Body body{nullptr, BodyDef{}};
-    RevoluteJointDef rdef{&body, &body, Length2{}};
-    RevoluteJoint revJoint1{rdef};
-    RevoluteJoint revJoint2{rdef};
-    GearJointDef def{&revJoint1, &revJoint2};
-    GearJoint joint{def};
+    auto body = Body{nullptr, BodyDef{}};
+    auto rdef = RevoluteJointDef{&body, &body, Length2{}};
+    auto revJoint1 = RevoluteJoint{rdef};
+    auto revJoint2 = RevoluteJoint{rdef};
+    auto def = GearJointDef{&revJoint1, &revJoint2};
+    auto joint = GearJoint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.joint1->GetBodyB());
@@ -136,6 +136,18 @@ TEST(GearJoint, Construction)
     TypeJointVisitor visitor;
     joint.Accept(visitor);
     EXPECT_EQ(visitor.GetType().value(), JointType::Gear);
+}
+
+TEST(GearJoint, ShiftOrigin)
+{
+    auto body = Body{nullptr, BodyDef{}};
+    auto rdef = RevoluteJointDef{&body, &body, Length2{}};
+    auto revJoint1 = RevoluteJoint{rdef};
+    auto revJoint2 = RevoluteJoint{rdef};
+    auto def = GearJointDef{&revJoint1, &revJoint2};
+    auto joint = GearJoint{def};
+    const auto newOrigin = Length2{1_m, 1_m};
+    EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
 }
 
 TEST(GearJoint, SetRatio)

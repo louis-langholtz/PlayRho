@@ -90,7 +90,7 @@ public:
     NonNegative<Real> GetDampingRatio() const noexcept;
 
     /// Implement Joint::ShiftOrigin
-    void ShiftOrigin(const Length2 newOrigin) override;
+    bool ShiftOrigin(const Length2 newOrigin) override;
 
 private:
     void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,

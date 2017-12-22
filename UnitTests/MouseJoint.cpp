@@ -96,11 +96,10 @@ TEST(MouseJoint, DefaultInitialized)
 
 TEST(MouseJoint, GetLocalAnchorB)
 {
-    World world;
-    
+    auto world = World{};
     const auto bA = world.CreateBody();
-    ASSERT_NE(bA, nullptr);
     const auto bB = world.CreateBody();
+    ASSERT_NE(bA, nullptr);
     ASSERT_NE(bB, nullptr);
     
     auto def = MouseJointDef{};
@@ -114,6 +113,25 @@ TEST(MouseJoint, GetLocalAnchorB)
     
     const auto joint = MouseJoint{def};
     EXPECT_EQ(joint.GetLocalAnchorB(), def.target);
+}
+
+TEST(MouseJoint, ShiftOrigin)
+{
+    auto world = World{};
+    const auto bA = world.CreateBody();
+    const auto bB = world.CreateBody();
+    ASSERT_NE(bA, nullptr);
+    ASSERT_NE(bB, nullptr);
+    auto def = MouseJointDef{};
+    def.bodyA = bA;
+    def.bodyB = bB;
+    def.target = Length2(-1.4_m, -2_m);
+    auto joint = MouseJoint{def};
+    ASSERT_EQ(joint.GetTarget(), def.target);
+    
+    const auto newOrigin = Length2{1_m, 1_m};
+    EXPECT_TRUE(joint.ShiftOrigin(newOrigin));
+    EXPECT_EQ(joint.GetTarget(), def.target - newOrigin);
 }
 
 TEST(MouseJointDef, GetMouseJointDefFreeFunction)

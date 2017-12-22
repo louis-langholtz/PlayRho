@@ -222,9 +222,10 @@ AngularMomentum MouseJoint::GetAngularReaction() const
     return AngularMomentum{0};
 }
 
-void MouseJoint::ShiftOrigin(const Length2 newOrigin)
+bool MouseJoint::ShiftOrigin(const Length2 newOrigin)
 {
     m_targetA -= newOrigin;
+    return true;
 }
 
 } // namespace playrho

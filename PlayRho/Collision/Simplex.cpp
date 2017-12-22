@@ -210,10 +210,10 @@ Simplex Simplex::Get(const SimplexEdges& edges) noexcept
     assert(count < 4);
     switch (count)
     {
-        case 0: return Simplex{};
         case 1: return Get(edges[0]);
         case 2: return Get(edges[0], edges[1]);
         case 3: return Get(edges[0], edges[1], edges[2]);
+        case 0: break;
         default: break;
     }
     return Simplex{};
@@ -224,7 +224,6 @@ Real Simplex::CalcMetric(const SimplexEdges& simplexEdges)
     assert(simplexEdges.size() < 4);
     switch (simplexEdges.size())
     {
-        case 0: return Real{0};
         case 1: return Real{0};
         case 2:
         {
@@ -237,6 +236,7 @@ Real Simplex::CalcMetric(const SimplexEdges& simplexEdges)
             const auto delta20 = GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]);
             return StripUnit(Cross(delta10, delta20)); // Area
         }
+        case 0: break;
         default: break; // should not be reached
     }
     return Real{0};

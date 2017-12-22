@@ -89,8 +89,8 @@ TEST(DistanceJointDef, UseDampingRatio)
 
 TEST(DistanceJoint, Construction)
 {
-    DistanceJointDef def;
-    DistanceJoint joint{def};
+    auto def = DistanceJointDef{};
+    auto joint = DistanceJoint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
@@ -109,6 +109,14 @@ TEST(DistanceJoint, Construction)
     TypeJointVisitor visitor;
     joint.Accept(visitor);
     EXPECT_EQ(visitor.GetType().value(), JointType::Distance);
+}
+
+TEST(DistanceJoint, ShiftOrigin)
+{
+    auto def = DistanceJointDef{};
+    auto joint = DistanceJoint{def};
+    const auto newOrigin = Length2{1_m, 1_m};
+    EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
 }
 
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)

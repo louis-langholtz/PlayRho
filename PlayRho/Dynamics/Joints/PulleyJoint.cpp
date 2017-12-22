@@ -234,10 +234,11 @@ AngularMomentum PulleyJoint::GetAngularReaction() const
     return AngularMomentum{0};
 }
 
-void PulleyJoint::ShiftOrigin(const Length2 newOrigin)
+bool PulleyJoint::ShiftOrigin(const Length2 newOrigin)
 {
     m_groundAnchorA -= newOrigin;
     m_groundAnchorB -= newOrigin;
+    return true;
 }
 
 Length GetCurrentLengthA(const PulleyJoint& joint)

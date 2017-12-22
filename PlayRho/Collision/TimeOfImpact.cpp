@@ -278,7 +278,7 @@ const char *GetName(TOIOutput::State state) noexcept
 {
     switch (state)
     {
-        case TOIOutput::e_unknown: return "unknown";
+        case TOIOutput::e_unknown: break;
         case TOIOutput::e_touching: return "touching";
         case TOIOutput::e_separated: return "separated";
         case TOIOutput::e_overlapped: return "overlapped";
@@ -292,6 +292,7 @@ const char *GetName(TOIOutput::State state) noexcept
         case TOIOutput::e_maxTargetSquaredOverflow: return "max-target-squared-overflow";
         case TOIOutput::e_notFinite: return "not-finite";
     }
+    assert(state == TOIOutput::e_unknown);
     return "unknown";
 }
 

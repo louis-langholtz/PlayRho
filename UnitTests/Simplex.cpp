@@ -368,8 +368,18 @@ TEST(Simplex, Get2_rot45_half)
 TEST(Simplex, GetOfSimplexVertices)
 {
     Simplex foo;
-
     const auto roo = Simplex::Get(foo.GetEdges());
-    
     EXPECT_EQ(foo.GetSize(), roo.GetSize());
+}
+
+TEST(Simplex, CalcSearchDirectionOfEmpty)
+{
+    auto se = SimplexEdges{};
+    EXPECT_EQ(CalcSearchDirection(se), Length2{});
+}
+
+TEST(Simplex, CalcMetricOfEmpty)
+{
+    auto se = SimplexEdges{};
+    EXPECT_EQ(Simplex::CalcMetric(se), Real(0));
 }

@@ -48,16 +48,9 @@ public:
 
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
-
     Length2 GetAnchorA() const override;
-
     Length2 GetAnchorB() const override;
-
-    /// @brief Get the linear reaction.
     Momentum2 GetLinearReaction() const override;
-
-    /// @brief Gets the angular reaction.
-    /// @note This is always zero for a distance joint.
     AngularMomentum GetAngularReaction() const override;
 
     /// @brief Gets the local anchor point relative to bodyA's origin.

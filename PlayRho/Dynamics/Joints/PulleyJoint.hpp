@@ -52,19 +52,18 @@ public:
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
+    Length2 GetAnchorA() const override;
+    Length2 GetAnchorB() const override;
+    Momentum2 GetLinearReaction() const override;
+    AngularMomentum GetAngularReaction() const override;
+    bool ShiftOrigin(const Length2 newOrigin) override;
 
     /// @brief Gets the local anchor A.
     Length2 GetLocalAnchorA() const noexcept;
 
     /// @brief Gets the local anchor B.
     Length2 GetLocalAnchorB() const noexcept;
-
-    Length2 GetAnchorA() const override;
-    Length2 GetAnchorB() const override;
-
-    Momentum2 GetLinearReaction() const override;
-    AngularMomentum GetAngularReaction() const override;
-
+    
     /// Get the first ground anchor.
     Length2 GetGroundAnchorA() const noexcept;
 
@@ -79,9 +78,6 @@ public:
 
     /// Get the pulley ratio.
     Real GetRatio() const noexcept;
-
-    /// Implement Joint::ShiftOrigin
-    void ShiftOrigin(const Length2 newOrigin) override;
 
 private:
 

@@ -114,8 +114,8 @@ TEST(MotorJoint, ByteSize)
 
 TEST(MotorJoint, Construction)
 {
-    MotorJointDef def;
-    MotorJoint joint{def};
+    auto def = MotorJointDef{};
+    auto joint = MotorJoint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
@@ -134,6 +134,14 @@ TEST(MotorJoint, Construction)
     TypeJointVisitor visitor;
     joint.Accept(visitor);
     EXPECT_EQ(visitor.GetType().value(), JointType::Motor);
+}
+
+TEST(MotorJoint, ShiftOrigin)
+{
+    auto def = MotorJointDef{};
+    auto joint = MotorJoint{def};
+    const auto newOrigin = Length2{1_m, 1_m};
+    EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
 }
 
 TEST(MotorJoint, SetCorrectionFactor)
