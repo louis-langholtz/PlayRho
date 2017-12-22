@@ -35,7 +35,6 @@ IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept
 
 Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
 {
-    assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
     switch (simplexEdges.size())
     {
         case 1:
@@ -51,8 +50,10 @@ Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
             return (sgn > 0_m2)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
         }
         default:
-            return Length2{0_m, 0_m};
+            break;
     }
+    assert(simplexEdges.size() < 4);
+    return Length2{0_m, 0_m};
 }
 
 Simplex Simplex::Get(const SimplexEdge& s0) noexcept
