@@ -37,16 +37,6 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
     
     switch (type)
     {
-        case e_points:
-        {
-            const auto ip0 = indices[0];
-            const auto localPointA = proxyA.GetVertex(std::get<0>(ip0));
-            const auto localPointB = proxyB.GetVertex(std::get<1>(ip0));
-            const auto pointA = Transform(localPointA, xfA);
-            const auto pointB = Transform(localPointB, xfB);
-            const auto axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
-            return SeparationFinder{proxyA, proxyB, axis, GetInvalid<Length2>(), type};
-        }
         case e_faceB:
         {
             const auto ip0 = indices[0];
@@ -91,10 +81,18 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
                 localPoint, type
             };
         }
+        case e_points:
+            break;
     }
 
-    PLAYRHO_UNREACHABLE;
-    return SeparationFinder{proxyA, proxyB, UnitVec2{}, GetInvalid<Length2>(), type};
+    assert(type == e_points);
+    const auto ip0 = indices[0];
+    const auto localPointA = proxyA.GetVertex(std::get<0>(ip0));
+    const auto localPointB = proxyB.GetVertex(std::get<1>(ip0));
+    const auto pointA = Transform(localPointA, xfA);
+    const auto pointB = Transform(localPointB, xfB);
+    const auto axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
+    return SeparationFinder{proxyA, proxyB, axis, GetInvalid<Length2>(), type};
 }
 
 LengthIndexPair SeparationFinder::FindMinSeparation(const Transformation2D& xfA,
@@ -102,12 +100,12 @@ LengthIndexPair SeparationFinder::FindMinSeparation(const Transformation2D& xfA,
 {
     switch (m_type)
     {
-        case e_points: return FindMinSeparationForPoints(xfA, xfB);
         case e_faceA: return FindMinSeparationForFaceA(xfA, xfB);
         case e_faceB: return FindMinSeparationForFaceB(xfA, xfB);
+        case e_points: break;
     }
-    PLAYRHO_UNREACHABLE;
-    return LengthIndexPair{0, InvalidIndexPair};
+    assert(m_type == e_points);
+    return FindMinSeparationForPoints(xfA, xfB);
 }
 
 Length SeparationFinder::Evaluate(const Transformation2D& xfA, const Transformation2D& xfB,
@@ -115,12 +113,12 @@ Length SeparationFinder::Evaluate(const Transformation2D& xfA, const Transformat
 {
     switch (m_type)
     {
-        case e_points: return EvaluateForPoints(xfA, xfB, indexPair);
         case e_faceA: return EvaluateForFaceA(xfA, xfB, indexPair);
         case e_faceB: return EvaluateForFaceB(xfA, xfB, indexPair);
+        case e_points: break;
     }
-    PLAYRHO_UNREACHABLE;
-    return 0_m;
+    assert(m_type == e_points);
+    return EvaluateForPoints(xfA, xfB, indexPair);
 }
 
 LengthIndexPair
