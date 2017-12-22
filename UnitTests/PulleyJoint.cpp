@@ -125,8 +125,7 @@ TEST(PulleyJoint, ShiftOrigin)
     
     const auto newOrigin = Length2{1_m, 1_m};
 
-    joint.ShiftOrigin(newOrigin);
-
+    EXPECT_TRUE(joint.ShiftOrigin(newOrigin));
     EXPECT_EQ(joint.GetGroundAnchorA(), def.groundAnchorA - newOrigin);
     EXPECT_EQ(joint.GetGroundAnchorB(), def.groundAnchorB - newOrigin);
 }

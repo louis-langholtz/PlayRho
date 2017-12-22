@@ -46,7 +46,7 @@ TEST(PrismaticJoint, ByteSize)
 
 TEST(PrismaticJoint, EnableLimit)
 {
-    World world;
+    auto world = World{};
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
     
@@ -69,6 +69,24 @@ TEST(PrismaticJoint, EnableLimit)
     TypeJointVisitor visitor;
     joint.Accept(visitor);
     EXPECT_EQ(visitor.GetType().value(), JointType::Prismatic);
+}
+
+TEST(PrismaticJoint, ShiftOrigin)
+{
+    auto world = World{};
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = PrismaticJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
+    
+    auto joint = PrismaticJoint{jd};
+
+    const auto newOrigin = Length2{1_m, 1_m};
+    EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
 }
 
 TEST(PrismaticJoint, EnableMotor)

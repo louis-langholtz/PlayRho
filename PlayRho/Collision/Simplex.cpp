@@ -35,7 +35,6 @@ IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept
 
 Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
 {
-    assert((simplexEdges.size() == 1) || (simplexEdges.size() == 2));
     switch (simplexEdges.size())
     {
         case 1:
@@ -51,8 +50,10 @@ Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
             return (sgn > 0_m2)? GetRevPerpendicular(e12): GetFwdPerpendicular(e12);
         }
         default:
-            return Length2{0_m, 0_m};
+            break;
     }
+    assert(simplexEdges.size() < 4);
+    return Length2{0_m, 0_m};
 }
 
 Simplex Simplex::Get(const SimplexEdge& s0) noexcept
@@ -210,10 +211,10 @@ Simplex Simplex::Get(const SimplexEdges& edges) noexcept
     assert(count < 4);
     switch (count)
     {
-        case 0: return Simplex{};
         case 1: return Get(edges[0]);
         case 2: return Get(edges[0], edges[1]);
         case 3: return Get(edges[0], edges[1], edges[2]);
+        case 0: break;
         default: break;
     }
     return Simplex{};
@@ -224,7 +225,6 @@ Real Simplex::CalcMetric(const SimplexEdges& simplexEdges)
     assert(simplexEdges.size() < 4);
     switch (simplexEdges.size())
     {
-        case 0: return Real{0};
         case 1: return Real{0};
         case 2:
         {
@@ -237,6 +237,7 @@ Real Simplex::CalcMetric(const SimplexEdges& simplexEdges)
             const auto delta20 = GetPointDelta(simplexEdges[2]) - GetPointDelta(simplexEdges[0]);
             return StripUnit(Cross(delta10, delta20)); // Area
         }
+        case 0: break;
         default: break; // should not be reached
     }
     return Real{0};

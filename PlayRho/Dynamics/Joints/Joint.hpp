@@ -130,7 +130,8 @@ public:
     bool GetCollideConnected() const noexcept;
 
     /// @brief Shifts the origin for any points stored in world coordinates.
-    virtual void ShiftOrigin(const Length2 newOrigin) { NOT_USED(newOrigin);  }
+    /// @return <code>true</code> if shift done, <code>false</code> otherwise.
+    virtual bool ShiftOrigin(const Length2) { return false;  }
 
 protected:
     

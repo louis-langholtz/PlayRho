@@ -779,12 +779,13 @@ const char* GetName(Manifold::Type type) noexcept
 {
     switch (type)
     {
-        case Manifold::e_unset: return "unset";
+        case Manifold::e_unset: break;
         case Manifold::e_circles: return "circles";
         case Manifold::e_faceA: return "face-a";
         case Manifold::e_faceB: return "face-b";
     }
-    PLAYRHO_UNREACHABLE;
+    assert(type == Manifold::e_unset);
+    return "unset";
 }
 
 bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept
