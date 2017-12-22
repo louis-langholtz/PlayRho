@@ -94,7 +94,7 @@ TEST(PulleyJoint, Construction)
 
 TEST(PulleyJoint, GetAnchorAandB)
 {
-    World world;
+    auto world = World{};
     
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
@@ -128,4 +128,32 @@ TEST(PulleyJoint, ShiftOrigin)
     EXPECT_TRUE(joint.ShiftOrigin(newOrigin));
     EXPECT_EQ(joint.GetGroundAnchorA(), def.groundAnchorA - newOrigin);
     EXPECT_EQ(joint.GetGroundAnchorB(), def.groundAnchorB - newOrigin);
+}
+
+TEST(PulleyJoint, GetCurrentLength)
+{
+    auto world = World{};
+    
+    const auto loc0 = Length2{+1_m, -3_m};
+    const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
+    
+    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    
+    auto jd = PulleyJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
+    
+    auto joint = PulleyJoint{jd};
+    ASSERT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
+    ASSERT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
+    ASSERT_EQ(joint.GetGroundAnchorA(), jd.groundAnchorA);
+    ASSERT_EQ(joint.GetGroundAnchorB(), jd.groundAnchorB);
+    
+    const auto lenA = GetMagnitude(GetWorldPoint(*joint.GetBodyA(), jd.localAnchorA - jd.groundAnchorA));
+    const auto lenB = GetMagnitude(GetWorldPoint(*joint.GetBodyB(), jd.localAnchorB - jd.groundAnchorB));
+    EXPECT_EQ(GetCurrentLengthA(joint), lenA);
+    EXPECT_EQ(GetCurrentLengthB(joint), lenB);
 }

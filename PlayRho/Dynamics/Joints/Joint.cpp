@@ -43,8 +43,6 @@ namespace playrho {
 
 Joint* Joint::Create(const JointDef& def)
 {
-    assert(def.type != JointType::Unknown);
-
     switch (def.type)
     {
         case JointType::Distance:
@@ -70,10 +68,9 @@ Joint* Joint::Create(const JointDef& def)
         case JointType::Motor:
             return Create<MotorJoint>(static_cast<const MotorJointDef&>(def));
         case JointType::Unknown:
-            throw InvalidArgument("Joint::Create: Unknown joint type");
+            break;
     }
-
-    PLAYRHO_UNREACHABLE;
+    throw InvalidArgument("Joint::Create: Unknown joint type");
 }
 
 Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
@@ -175,12 +172,13 @@ const char* ToString(Joint::LimitState val) noexcept
 {
     switch (val)
     {
-        case Joint::e_inactiveLimit: return "inactive";
         case Joint::e_atLowerLimit: return "at lower";
         case Joint::e_atUpperLimit: return "at upper";
         case Joint::e_equalLimits: return "equal";
+        case Joint::e_inactiveLimit: break;
     }
-    return "unknown";
+    assert(val == Joint::e_inactiveLimit);
+    return "inactive";
 }
 
 } // namespace playrho

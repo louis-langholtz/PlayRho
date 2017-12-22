@@ -797,6 +797,8 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_TRUE(world.GetJoints().empty());
     EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
+    
+    EXPECT_THROW(world.CreateJoint(JointDef{JointType::Unknown}), InvalidArgument);
 }
 
 TEST(World, MaxBodies)

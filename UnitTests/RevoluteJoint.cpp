@@ -144,22 +144,53 @@ TEST(RevoluteJoint, MotorSpeed)
 
 TEST(RevoluteJoint, EnableLimit)
 {
-    World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    auto world = World{};
+    const auto b0 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    ASSERT_EQ(b0->GetInvRotInertia(), InvRotInertia(0));
+    ASSERT_EQ(b1->GetInvRotInertia(), InvRotInertia(0));
     
     auto jd = RevoluteJointDef{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
+    jd.enableLimit = false;
     
-    auto joint = RevoluteJoint{jd};
-    EXPECT_FALSE(joint.IsLimitEnabled());
-    joint.EnableLimit(false);
-    EXPECT_FALSE(joint.IsLimitEnabled());
-    joint.EnableLimit(true);
-    EXPECT_TRUE(joint.IsLimitEnabled());
+    const auto joint = static_cast<RevoluteJoint*>(world.CreateJoint(jd));
+    ASSERT_NE(joint, nullptr);
+    ASSERT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
+    ASSERT_FALSE(joint->IsLimitEnabled());
+
+    joint->EnableLimit(false);
+    EXPECT_FALSE(joint->IsLimitEnabled());
+    joint->EnableLimit(true);
+    EXPECT_TRUE(joint->IsLimitEnabled());
+    
+    auto stepConf = StepConf{};
+    world.Step(stepConf);
+    EXPECT_TRUE(joint->IsLimitEnabled());
+    EXPECT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit); // since b0 & b1 inv rot inertia 0
+    
+    const auto shape = Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
+    b0->CreateFixture(shape);
+    b1->CreateFixture(shape);
+    ASSERT_NE(b0->GetInvRotInertia(), InvRotInertia(0));
+    ASSERT_NE(b1->GetInvRotInertia(), InvRotInertia(0));
+    
+    world.Step(stepConf);
+    EXPECT_TRUE(joint->IsLimitEnabled());
+    EXPECT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
+    
+    joint->SetLimits(-45_deg, +45_deg);
+    ASSERT_TRUE(joint->IsLimitEnabled());
+    ASSERT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
+    world.Step(stepConf);
+    
+    EXPECT_TRUE(joint->IsLimitEnabled());
+    EXPECT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
+    
+    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
 }
 
 TEST(RevoluteJoint, SetLimits)
