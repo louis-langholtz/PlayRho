@@ -396,6 +396,34 @@ TEST(World, CreateAndDestroyBody)
     EXPECT_EQ(bodies0.begin(), bodies0.end());
 }
 
+TEST(World, CreateAndDestroyFixture)
+{
+    auto world = World{};
+    auto other = World{};
+
+    const auto bodyA = world.CreateBody();
+    const auto bodyB = world.CreateBody();
+    ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
+    ASSERT_EQ(GetFixtureCount(*bodyB), std::size_t(0));
+    
+    const auto fixtureA = world.CreateFixture(*bodyA, DiskShapeConf(1_m));
+    ASSERT_NE(fixtureA, nullptr);
+    ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
+    
+    EXPECT_TRUE(world.DestroyFixture(fixtureA));
+    EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
+    
+    EXPECT_FALSE(world.DestroyFixture(nullptr));
+    
+    const auto bodyC = other.CreateBody();
+    ASSERT_NE(bodyC, nullptr);
+    const auto fixtureC = other.CreateFixture(*bodyC, DiskShapeConf(1_m));
+    ASSERT_NE(fixtureC, nullptr);
+    EXPECT_FALSE(world.DestroyFixture(fixtureC));
+    
+    EXPECT_THROW(world.CreateFixture(*bodyC, DiskShapeConf(1_m)), InvalidArgument);
+}
+
 TEST(World, QueryAABB)
 {
     const auto zeroG = LinearAcceleration2{
