@@ -97,3 +97,21 @@ TEST(BlockAllocator, aligns_data)
     foo.Free(p_char2, sizeof(char));
     foo.Free(p_char1, sizeof(char));
 }
+
+TEST(BlockAllocator, AllocateReturnsNullForZero)
+{
+    BlockAllocator foo;
+    ASSERT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
+    EXPECT_EQ(foo.Allocate(0), nullptr);
+    EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
+}
+
+TEST(BlockAllocator, AllocateNonNullForOverMaxBlockSize)
+{
+    BlockAllocator foo;
+    ASSERT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
+    const auto mem = foo.Allocate(BlockAllocator::MaxBlockSize * 2);
+    EXPECT_NE(mem, nullptr);
+    EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
+    foo.Free(mem, BlockAllocator::MaxBlockSize * 2);
+}

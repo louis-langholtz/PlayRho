@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -35,16 +37,6 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
     
     switch (type)
     {
-        case e_points:
-        {
-            const auto ip0 = indices[0];
-            const auto localPointA = proxyA.GetVertex(std::get<0>(ip0));
-            const auto localPointB = proxyB.GetVertex(std::get<1>(ip0));
-            const auto pointA = Transform(localPointA, xfA);
-            const auto pointB = Transform(localPointB, xfB);
-            const auto axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
-            return SeparationFinder{proxyA, proxyB, axis, GetInvalid<Length2>(), type};
-        }
         case e_faceB:
         {
             const auto ip0 = indices[0];
@@ -89,11 +81,44 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
                 localPoint, type
             };
         }
-        default: break;
+        case e_points:
+            break;
     }
 
-    // Should never be reached
-    return SeparationFinder{proxyA, proxyB, UnitVec2{}, GetInvalid<Length2>(), type};
+    assert(type == e_points);
+    const auto ip0 = indices[0];
+    const auto localPointA = proxyA.GetVertex(std::get<0>(ip0));
+    const auto localPointB = proxyB.GetVertex(std::get<1>(ip0));
+    const auto pointA = Transform(localPointA, xfA);
+    const auto pointB = Transform(localPointB, xfB);
+    const auto axis = GetUnitVector(pointB - pointA, UnitVec2::GetZero());
+    return SeparationFinder{proxyA, proxyB, axis, GetInvalid<Length2>(), type};
+}
+
+LengthIndexPair SeparationFinder::FindMinSeparation(const Transformation2D& xfA,
+                                                    const Transformation2D& xfB) const
+{
+    switch (m_type)
+    {
+        case e_faceA: return FindMinSeparationForFaceA(xfA, xfB);
+        case e_faceB: return FindMinSeparationForFaceB(xfA, xfB);
+        case e_points: break;
+    }
+    assert(m_type == e_points);
+    return FindMinSeparationForPoints(xfA, xfB);
+}
+
+Length SeparationFinder::Evaluate(const Transformation2D& xfA, const Transformation2D& xfB,
+                                  IndexPair indexPair) const
+{
+    switch (m_type)
+    {
+        case e_faceA: return EvaluateForFaceA(xfA, xfB, indexPair);
+        case e_faceB: return EvaluateForFaceB(xfA, xfB, indexPair);
+        case e_points: break;
+    }
+    assert(m_type == e_points);
+    return EvaluateForPoints(xfA, xfB, indexPair);
 }
 
 LengthIndexPair

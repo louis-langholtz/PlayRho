@@ -53,6 +53,8 @@ namespace playrho {
     ///   platform), it is intentionally 64-byte aligned making it 64-byte large (on 64-bit
     ///   platforms with 4-byte Real).
     ///
+    /// @image html manifolds.png
+    ///
     /// @sa Contact, PositionConstraint, VelocityConstraint
     /// @sa https://en.wikipedia.org/wiki/Convex_set
     /// @sa http://box2d.org/files/GDC2007/GDC2007_Catto_Erin_Physics2.ppt
