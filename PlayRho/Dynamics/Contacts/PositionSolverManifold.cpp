@@ -86,9 +86,6 @@ inline PositionSolverManifold GetForFaceB(const Transformation2D& xfB, Length2 l
 PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
                               const Transformation2D& xfA, const Transformation2D& xfB)
 {
-    assert(manifold.GetType() != Manifold::e_unset);
-    assert(manifold.GetPointCount() > 0);
-    
     switch (manifold.GetType())
     {
     case Manifold::e_circles:
@@ -103,8 +100,7 @@ PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type inde
     case Manifold::e_unset:
         break;
     }
-
-    // should not be reached
+    assert(manifold.GetType() == Manifold::e_unset);
     return PositionSolverManifold{GetInvalid<UnitVec2>(), GetInvalid<Length2>(), GetInvalid<Length>()};
 }
 

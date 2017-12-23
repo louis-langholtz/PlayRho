@@ -95,7 +95,7 @@ public:
     void SetMaxMotorTorque(Torque torque);
 
     /// @brief Gets the max motor torque.
-    Torque GetMaxMotorTorque() const noexcept { return m_maxMotorTorque; }
+    Torque GetMaxMotorTorque() const noexcept;
 
     /// Get the linear reaction.
     Momentum2 GetLinearReaction() const override;
@@ -168,6 +168,11 @@ inline bool RevoluteJoint::IsMotorEnabled() const noexcept
 inline AngularVelocity RevoluteJoint::GetMotorSpeed() const noexcept
 {
     return m_motorSpeed;
+}
+
+inline Torque RevoluteJoint::GetMaxMotorTorque() const noexcept
+{
+    return m_maxMotorTorque;
 }
 
 inline Joint::LimitState RevoluteJoint::GetLimitState() const noexcept

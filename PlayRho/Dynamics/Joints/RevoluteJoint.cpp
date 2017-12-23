@@ -28,6 +28,49 @@
 
 namespace playrho {
 
+namespace {
+
+Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA,
+               InvMass invMassB, Length2 rB, InvRotInertia invRotInertiaB)
+{
+    const auto totInvI = invRotInertiaA + invRotInertiaB;
+    
+    const auto exx = InvMass{
+        invMassA + (Square(GetY(rA)) * invRotInertiaA / SquareRadian) +
+        invMassB + (Square(GetY(rB)) * invRotInertiaB / SquareRadian)
+    };
+    const auto eyx = InvMass{
+        (-GetY(rA) * GetX(rA) * invRotInertiaA / SquareRadian) +
+        (-GetY(rB) * GetX(rB) * invRotInertiaB / SquareRadian)
+    };
+    const auto ezx = InvMass{
+        (-GetY(rA) * invRotInertiaA * Meter / SquareRadian) +
+        (-GetY(rB) * invRotInertiaB * Meter / SquareRadian)
+    };
+    const auto eyy = InvMass{
+        invMassA + (Square(GetX(rA)) * invRotInertiaA / SquareRadian) +
+        invMassB + (Square(GetX(rB)) * invRotInertiaB / SquareRadian)
+    };
+    const auto ezy = InvMass{
+        (GetX(rA) * invRotInertiaA * Meter / SquareRadian) +
+        (GetX(rB) * invRotInertiaB * Meter / SquareRadian)
+    };
+    
+    auto mass = Mat33{};
+    GetX(GetX(mass)) = StripUnit(exx);
+    GetX(GetY(mass)) = StripUnit(eyx);
+    GetX(GetZ(mass)) = StripUnit(ezx);
+    GetY(GetX(mass)) = GetX(GetY(mass));
+    GetY(GetY(mass)) = StripUnit(eyy);
+    GetY(GetZ(mass)) = StripUnit(ezy);
+    GetZ(GetX(mass)) = GetX(GetZ(mass));
+    GetZ(GetY(mass)) = GetY(GetZ(mass));
+    GetZ(GetZ(mass)) = StripUnit(totInvI);
+    return mass;
+}
+
+} // unnamed namespace
+
 // Point-to-point constraint
 // C = p2 - p1
 // Cdot = v2 - v1
@@ -65,7 +108,7 @@ void RevoluteJoint::Accept(JointVisitor& visitor)
 {
     visitor.Visit(*this);
 }
-
+    
 void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                                             const StepConf& step,
                                             const ConstraintSolverConf& conf)
@@ -99,39 +142,9 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
     
     const auto totInvI = invRotInertiaA + invRotInertiaB;
-
     const auto fixedRotation = (totInvI == InvRotInertia{0});
 
-    const auto exx = InvMass{
-        invMassA + (Square(GetY(m_rA)) * invRotInertiaA / SquareRadian) +
-        invMassB + (Square(GetY(m_rB)) * invRotInertiaB / SquareRadian)
-    };
-    const auto eyx = InvMass{
-        (-GetY(m_rA) * GetX(m_rA) * invRotInertiaA / SquareRadian) +
-        (-GetY(m_rB) * GetX(m_rB) * invRotInertiaB / SquareRadian)
-    };
-    const auto ezx = InvMass{
-        (-GetY(m_rA) * invRotInertiaA * Meter / SquareRadian) +
-        (-GetY(m_rB) * invRotInertiaB * Meter / SquareRadian)
-    };
-    const auto eyy = InvMass{
-        invMassA + (Square(GetX(m_rA)) * invRotInertiaA / SquareRadian) +
-        invMassB + (Square(GetX(m_rB)) * invRotInertiaB / SquareRadian)
-    };
-    const auto ezy = InvMass{
-        (GetX(m_rA) * invRotInertiaA * Meter / SquareRadian) +
-        (GetX(m_rB) * invRotInertiaB * Meter / SquareRadian)
-    };
-    GetX(GetX(m_mass)) = StripUnit(exx);
-    GetX(GetY(m_mass)) = StripUnit(eyx);
-    GetX(GetZ(m_mass)) = StripUnit(ezx);
-    GetY(GetX(m_mass)) = GetX(GetY(m_mass));
-    GetY(GetY(m_mass)) = StripUnit(eyy);
-    GetY(GetZ(m_mass)) = StripUnit(ezy);
-    GetZ(GetX(m_mass)) = GetX(GetZ(m_mass));
-    GetZ(GetY(m_mass)) = GetY(GetZ(m_mass));
-    GetZ(GetZ(m_mass)) = StripUnit(totInvI);
-
+    m_mass = GetMat33(invMassA, m_rA, invRotInertiaA, invMassB, m_rB, invRotInertiaB);
     m_motorMass = (totInvI > InvRotInertia{0})? RotInertia{Real{1} / totInvI}: RotInertia{0};
 
     if (!m_enableMotor || fixedRotation)
@@ -142,7 +155,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     if (m_enableLimit && !fixedRotation)
     {
         const auto jointAngle = aB - aA - GetReferenceAngle();
-        if (Abs(m_upperAngle - m_lowerAngle) < (Real{2} * conf.angularSlop))
+        if (Abs(m_upperAngle - m_lowerAngle) < (conf.angularSlop * 2))
         {
             m_limitState = e_equalLimits;
         }
@@ -162,7 +175,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
                 GetZ(m_impulse) = 0;
             }
         }
-        else
+        else // jointAngle > m_lowerAngle && jointAngle < m_upperAngle
         {
             m_limitState = e_inactiveLimit;
             GetZ(m_impulse) = 0;
@@ -259,33 +272,38 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
             GetZ(m_impulse) = 0;
         };
         
-        if (m_limitState == e_equalLimits)
+        switch (m_limitState)
         {
-            m_impulse += impulse;
-        }
-        else if (m_limitState == e_atLowerLimit)
-        {
-            const auto newImpulse = GetZ(m_impulse) + GetZ(impulse);
-            if (newImpulse < 0)
+            case e_atLowerLimit:
             {
-                UpdateImpulseProc();
+                const auto newImpulse = GetZ(m_impulse) + GetZ(impulse);
+                if (newImpulse < 0)
+                {
+                    UpdateImpulseProc();
+                }
+                else
+                {
+                    m_impulse += impulse;
+                }
+                break;
             }
-            else
+            case e_atUpperLimit:
             {
+                const auto newImpulse = GetZ(m_impulse) + GetZ(impulse);
+                if (newImpulse > 0)
+                {
+                    UpdateImpulseProc();
+                }
+                else
+                {
+                    m_impulse += impulse;
+                }
+                break;
+            }
+            default:
+                assert(m_limitState == e_equalLimits);
                 m_impulse += impulse;
-            }
-        }
-        else if (m_limitState == e_atUpperLimit)
-        {
-            const auto newImpulse = GetZ(m_impulse) + GetZ(impulse);
-            if (newImpulse > 0)
-            {
-                UpdateImpulseProc();
-            }
-            else
-            {
-                m_impulse += impulse;
-            }
+                break;
         }
 
         const auto P = Momentum2{GetX(impulse) * NewtonSecond, GetY(impulse) * NewtonSecond};
@@ -338,37 +356,44 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
 
     // Solve angular limit constraint.
     auto angularError = 0_rad;
-    if (m_enableLimit && m_limitState != e_inactiveLimit && !fixedRotation)
+    if (m_enableLimit && (m_limitState != e_inactiveLimit) && !fixedRotation)
     {
         const auto angle = posB.angular - posA.angular - GetReferenceAngle();
 
         // RotInertia is L^2 M QP^-2, Angle is QP, so RotInertia * Angle is L^2 M QP^-1.
         auto limitImpulse = Real{0} * SquareMeter * Kilogram / Radian;
 
-        if (m_limitState == e_equalLimits)
+        switch (m_limitState)
         {
-            // Prevent large angular corrections
-            const auto C = Clamp(angle - m_lowerAngle, -conf.maxAngularCorrection, conf.maxAngularCorrection);
-            limitImpulse = -m_motorMass * C;
-            angularError = Abs(C);
-        }
-        else if (m_limitState == e_atLowerLimit)
-        {
-            auto C = angle - m_lowerAngle;
-            angularError = -C;
-
-            // Prevent large angular corrections and allow some slop.
-            C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, 0_rad);
-            limitImpulse = -m_motorMass * C;
-        }
-        else if (m_limitState == e_atUpperLimit)
-        {
-            auto C = angle - m_upperAngle;
-            angularError = C;
-
-            // Prevent large angular corrections and allow some slop.
-            C = Clamp(C - conf.angularSlop, 0_rad, conf.maxAngularCorrection);
-            limitImpulse = -m_motorMass * C;
+            case e_atLowerLimit:
+            {
+                auto C = angle - m_lowerAngle;
+                angularError = -C;
+                
+                // Prevent large angular corrections and allow some slop.
+                C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, 0_rad);
+                limitImpulse = -m_motorMass * C;
+                break;
+            }
+            case e_atUpperLimit:
+            {
+                auto C = angle - m_upperAngle;
+                angularError = C;
+                
+                // Prevent large angular corrections and allow some slop.
+                C = Clamp(C - conf.angularSlop, 0_rad, conf.maxAngularCorrection);
+                limitImpulse = -m_motorMass * C;
+                break;
+            }
+            default:
+            {
+                assert(m_limitState == e_equalLimits);
+                // Prevent large angular corrections
+                const auto C = Clamp(angle - m_lowerAngle, -conf.maxAngularCorrection, conf.maxAngularCorrection);
+                limitImpulse = -m_motorMass * C;
+                angularError = Abs(C);
+                break;
+            }
         }
 
         // InvRotInertia is L^-2 M^-1 QP^2, limitImpulse is L^2 M QP^-1, so product is QP.

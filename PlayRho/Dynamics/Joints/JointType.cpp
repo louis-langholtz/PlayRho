@@ -46,9 +46,9 @@ const char* ToString(JointType type) noexcept
         case JointType::Friction: return "Friction";
         case JointType::Rope: return "Rope";
         case JointType::Motor: return "Motor";
-        case JointType::Unknown: return "Unknown";
+        case JointType::Unknown: break;
     }
-    // Ensure "all control paths return a value" (as Visual Studio warns otherwise)...
+    assert(type == JointType::Unknown);
     return "Unknown";
 }
 

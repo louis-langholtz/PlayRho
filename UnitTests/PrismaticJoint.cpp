@@ -44,6 +44,27 @@ TEST(PrismaticJoint, ByteSize)
     }
 }
 
+TEST(PrismaticJoint, Construction)
+{
+    auto world = World{};
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto jd = PrismaticJointDef{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
+    
+    auto joint = PrismaticJoint{jd};
+    EXPECT_EQ(joint.GetBodyA(), b0);
+    EXPECT_EQ(joint.GetBodyB(), b1);
+    EXPECT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
+    EXPECT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
+    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
+    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+}
+
 TEST(PrismaticJoint, EnableLimit)
 {
     auto world = World{};

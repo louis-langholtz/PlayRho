@@ -749,3 +749,18 @@ TEST(Body, RotateAboutLocalPointFF)
     EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.001);
     EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.001);
 }
+
+TEST(Body, GetCentripetalForce)
+{
+    const auto l1 = Length2{-8_m, 0_m};
+    auto world = World{};
+    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l1));
+    const auto shape = DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2);
+    body->CreateFixture(shape);
+    SetLinearVelocity(*body, LinearVelocity2{2_mps, 3_mps});
+    EXPECT_EQ(GetLinearVelocity(*body), LinearVelocity2(2_mps, 3_mps));
+    
+    const auto force = GetCentripetalForce(*body, Length2{1_m, 10_m});
+    EXPECT_NEAR(static_cast<double>(Real(GetX(force)/Newton)), 8.1230141222476959, 0.01);
+    EXPECT_NEAR(static_cast<double>(Real(GetY(force)/Newton)), 9.0255714952945709, 0.01);
+}

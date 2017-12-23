@@ -28,6 +28,48 @@
 
 namespace playrho {
 
+namespace {
+
+Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA,
+               InvMass invMassB, Length2 rB, InvRotInertia invRotInertiaB)
+{
+    const auto exx = InvMass{
+        invMassA + Square(GetY(rA)) * invRotInertiaA / SquareRadian +
+        invMassB + Square(GetY(rB)) * invRotInertiaB / SquareRadian
+    };
+    const auto eyx = InvMass{
+        -GetY(rA) * GetX(rA) * invRotInertiaA / SquareRadian +
+        -GetY(rB) * GetX(rB) * invRotInertiaB / SquareRadian
+    };
+    const auto ezx = InvMass{
+        -GetY(rA) * invRotInertiaA * Meter / SquareRadian +
+        -GetY(rB) * invRotInertiaB * Meter / SquareRadian
+    };
+    const auto eyy = InvMass{
+        invMassA + Square(GetX(rA)) * invRotInertiaA / SquareRadian +
+        invMassB + Square(GetX(rB)) * invRotInertiaB / SquareRadian
+    };
+    const auto ezy = InvMass{
+        GetX(rA) * invRotInertiaA * Meter / SquareRadian +
+        GetX(rB) * invRotInertiaB * Meter / SquareRadian
+    };
+    const auto ezz = InvMass{(invRotInertiaA + invRotInertiaB) * SquareMeter / SquareRadian};
+    
+    Mat33 K;
+    GetX(GetX(K)) = StripUnit(exx);
+    GetX(GetY(K)) = StripUnit(eyx);
+    GetX(GetZ(K)) = StripUnit(ezx);
+    GetY(GetX(K)) = GetX(GetY(K));
+    GetY(GetY(K)) = StripUnit(eyy);
+    GetY(GetZ(K)) = StripUnit(ezy);
+    GetZ(GetX(K)) = GetX(GetZ(K));
+    GetZ(GetY(K)) = GetY(GetZ(K));
+    GetZ(GetZ(K)) = StripUnit(ezz);
+    return K;
+}
+
+} // unnamed namespace
+
 // Point-to-point constraint
 // C = p2 - p1
 // Cdot = v2 - v1
@@ -94,39 +136,7 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     //     [  -r1y*invRotInertiaA*r1x-r2y*invRotInertiaB*r2x, invMassA+r1x^2*invRotInertiaA+invMassB+r2x^2*invRotInertiaB,           r1x*invRotInertiaA+r2x*invRotInertiaB]
     //     [          -r1y*invRotInertiaA-r2y*invRotInertiaB,           r1x*invRotInertiaA+r2x*invRotInertiaB,                   invRotInertiaA+invRotInertiaB]
 
-    const auto exx = InvMass{
-        invMassA + Square(GetY(m_rA)) * invRotInertiaA / SquareRadian +
-        invMassB + Square(GetY(m_rB)) * invRotInertiaB / SquareRadian
-    };
-    const auto eyx = InvMass{
-        -GetY(m_rA) * GetX(m_rA) * invRotInertiaA / SquareRadian +
-        -GetY(m_rB) * GetX(m_rB) * invRotInertiaB / SquareRadian
-    };
-    const auto ezx = InvMass{
-        -GetY(m_rA) * invRotInertiaA * Meter / SquareRadian +
-        -GetY(m_rB) * invRotInertiaB * Meter / SquareRadian
-    };
-    const auto eyy = InvMass{
-        invMassA + Square(GetX(m_rA)) * invRotInertiaA / SquareRadian +
-        invMassB + Square(GetX(m_rB)) * invRotInertiaB / SquareRadian
-    };
-    const auto ezy = InvMass{
-        GetX(m_rA) * invRotInertiaA * Meter / SquareRadian +
-        GetX(m_rB) * invRotInertiaB * Meter / SquareRadian
-    };
-    const auto ezz = InvMass{(invRotInertiaA + invRotInertiaB) * SquareMeter / SquareRadian};
-
-    Mat33 K;
-    GetX(GetX(K)) = StripUnit(exx);
-    GetX(GetY(K)) = StripUnit(eyx);
-    GetX(GetZ(K)) = StripUnit(ezx);
-    GetY(GetX(K)) = GetX(GetY(K));
-    GetY(GetY(K)) = StripUnit(eyy);
-    GetY(GetZ(K)) = StripUnit(ezy);
-    GetZ(GetX(K)) = GetX(GetZ(K));
-    GetZ(GetY(K)) = GetY(GetZ(K));
-    GetZ(GetZ(K)) = StripUnit(ezz);
-
+    const auto K = GetMat33(invMassA, m_rA, invRotInertiaA, invMassB, m_rB, invRotInertiaB);
     if (m_frequency > 0_Hz)
     {
         m_mass = GetInverse22(K);
@@ -290,39 +300,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     auto positionError = 0_m;
     auto angularError = 0_deg;
 
-    const auto exx = InvMass{
-        invMassA + Square(GetY(rA)) * invRotInertiaA / SquareRadian +
-        invMassB + Square(GetY(rB)) * invRotInertiaB / SquareRadian
-    };
-    const auto eyx = InvMass{
-        -GetY(rA) * GetX(rA) * invRotInertiaA / SquareRadian +
-        -GetY(rB) * GetX(rB) * invRotInertiaB / SquareRadian
-    };
-    const auto ezx = InvMass{
-        -GetY(rA) * invRotInertiaA * Meter / SquareRadian +
-        -GetY(rB) * invRotInertiaB * Meter / SquareRadian
-    };
-    const auto eyy = InvMass{
-        invMassA + Square(GetX(rA)) * invRotInertiaA / SquareRadian +
-        invMassB + Square(GetX(rB)) * invRotInertiaB / SquareRadian
-    };
-    const auto ezy = InvMass{
-        GetX(rA) * invRotInertiaA * Meter / SquareRadian +
-        GetX(rB) * invRotInertiaB * Meter / SquareRadian
-    };
-    const auto ezz = InvMass{(invRotInertiaA + invRotInertiaB) * SquareMeter / SquareRadian};
-
-    Mat33 K;
-    GetX(GetX(K)) = StripUnit(exx);
-    GetX(GetY(K)) = StripUnit(eyx);
-    GetX(GetZ(K)) = StripUnit(ezx);
-    GetY(GetX(K)) = GetX(GetY(K));
-    GetY(GetY(K)) = StripUnit(eyy);
-    GetY(GetZ(K)) = StripUnit(ezy);
-    GetZ(GetX(K)) = GetX(GetZ(K));
-    GetZ(GetY(K)) = GetY(GetZ(K));
-    GetZ(GetZ(K)) = StripUnit(ezz);
-
+    const auto K = GetMat33(invMassA, rA, invRotInertiaA, invMassB, rB, invRotInertiaB);
     if (m_frequency > 0_Hz)
     {
         const auto C1 = Length2{(posB.linear + rB) - (posA.linear + rA)};

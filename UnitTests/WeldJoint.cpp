@@ -186,3 +186,26 @@ TEST(WeldJoint, WithDynamicCircles2)
     EXPECT_EQ(b1->GetAngle(), 0_deg);
     EXPECT_EQ(b2->GetAngle(), 0_deg);
 }
+
+TEST(WeldJoint, GetAnchorAandB)
+{
+    auto world = World{};
+    
+    const auto loc0 = Length2{+1_m, -3_m};
+    const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
+    const auto anchor = Length2(2_m, 1_m);
+
+    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    
+    auto jd = WeldJointDef{b0, b1, anchor};
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
+    const auto joint = static_cast<WeldJoint*>(world.CreateJoint(jd));
+    ASSERT_NE(joint, nullptr);
+    
+    ASSERT_EQ(joint->GetLocalAnchorA(), jd.localAnchorA);
+    ASSERT_EQ(joint->GetLocalAnchorB(), jd.localAnchorB);
+    EXPECT_EQ(joint->GetAnchorA(), loc0 + jd.localAnchorA);
+    EXPECT_EQ(joint->GetAnchorB(), loc1 + jd.localAnchorB);
+}
