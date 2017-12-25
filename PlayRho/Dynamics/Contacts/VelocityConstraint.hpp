@@ -35,7 +35,7 @@ namespace playrho {
     /// @invariant The "K" value cannot be changed independent of: the total inverse mass,
     ///   the normal, and the point relative positions.
     /// @invariant The normal mass cannot be changed independent of: the "K" value.
-    /// @invariant The velocity biasses cannot be changed independent of: the normal, and the
+    /// @invariant The velocity biases cannot be changed independent of: the normal, and the
     ///   point relative positions.
     ///
     class VelocityConstraint
@@ -176,8 +176,8 @@ namespace playrho {
         /// @note Default initialized to values that make this point ineffective if it got
         ///   processed counter to being a valid point per the point count property.
         ///   This allows both points to be unconditionally processed which may be faster
-        ///   if it'd otherwise cause branch-misprediction and depending on the cost of
-        ///   branch mis-prediction.
+        ///   if it'd otherwise cause branch misprediction and depending on the cost of
+        ///   branch misprediction.
         /// @note This structure is at least 36-bytes large.
         ///
         struct Point

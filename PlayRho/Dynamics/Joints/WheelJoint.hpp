@@ -30,7 +30,7 @@ namespace playrho {
 /// @brief Wheel joint.
 ///
 /// @details This joint provides two degrees of freedom: translation along an axis
-///   fixed in bodyA and rotation in the plane. In other words, it is a point to
+///   fixed in body A and rotation in the plane. In other words, it is a point to
 ///   line constraint with a rotational motor and a linear spring/damper.
 ///
 /// @note This joint is designed for vehicle suspensions.
@@ -55,10 +55,10 @@ public:
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
-    /// The local anchor point relative to bodyA's origin.
+    /// The local anchor point relative to body A's origin.
     Length2 GetLocalAnchorA() const { return m_localAnchorA; }
 
-    /// The local anchor point relative to bodyB's origin.
+    /// The local anchor point relative to body B's origin.
     Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// The local joint axis relative to bodyA.
@@ -121,13 +121,13 @@ private:
     bool m_enableMotor; ///< Enable motor. <code>true</code> if motor is enabled.
 
     // Solver temp    
-    UnitVec2 m_ax; ///< AX directional.
-    UnitVec2 m_ay; ///< AY directional.
+    UnitVec2 m_ax; ///< Solver A X directional.
+    UnitVec2 m_ay; ///< Solver A Y directional.
 
-    Length m_sAx; ///< sAx location.
-    Length m_sBx; ///< sBx location.
-    Length m_sAy; ///< sAy location.
-    Length m_sBy; ///< sBy location.
+    Length m_sAx; ///< Solver A x location.
+    Length m_sBx; ///< Solver B x location.
+    Length m_sAy; ///< Solver A y location.
+    Length m_sBy; ///< Solver B y location.
 
     Mass m_mass = 0_kg; ///< Mass.
     RotInertia m_motorMass = RotInertia{0}; ///< Motor mass.

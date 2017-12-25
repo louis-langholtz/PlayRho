@@ -955,7 +955,7 @@ inline UnitVec2 GetUnitVector(Vector2<T> value, UnitVec2 fallback = UnitVec2::Ge
 std::vector<Length2> GetCircleVertices(Length radius, unsigned slices,
                                         Angle start = 0_deg, Real turns = Real{1});
 
-/// @brief Gets the area of a cirlce.
+/// @brief Gets the area of a circle.
 NonNegative<Area> GetAreaOfCircle(Length radius);
 
 /// @brief Gets the area of a polygon.

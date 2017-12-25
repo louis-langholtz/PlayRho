@@ -35,7 +35,7 @@ namespace playrho {
     /// @brief Template class for fixed-point numbers.
     ///
     /// @details This is a fixed point type template for a given base type using a given number
-    ///   of fraction bits that satisfies the "LiteralType" concept.
+    ///   of fraction bits that satisfies the <code>LiteralType</code> concept.
     ///
     /// @note For a 32-bit sized fixed point type with a 14-bit fraction part
     ///   0.000061035156250 is the smallest double precision value that can be represented.
@@ -338,7 +338,7 @@ namespace playrho {
             return *this;
         }
         
-        /// @brief bool operator.
+        /// @brief Boolean operator.
         explicit PLAYRHO_CONSTEXPR inline operator bool() const noexcept
         {
             return m_value != 0;

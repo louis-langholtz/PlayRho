@@ -64,10 +64,10 @@ struct WheelJointDef : public JointBuilder<WheelJointDef>
     /// @brief Uses the given damping ratio value.
     PLAYRHO_CONSTEXPR inline WheelJointDef& UseDampingRatio(Real v) noexcept;
     
-    /// The local anchor point relative to bodyA's origin.
+    /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
     
-    /// The local anchor point relative to bodyB's origin.
+    /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
     
     /// The local translation axis in bodyA.

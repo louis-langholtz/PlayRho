@@ -40,6 +40,8 @@ namespace playrho {
 ///
 /// @image html prismaticJoint.gif
 ///
+/// @sa https://en.wikipedia.org/wiki/Prismatic_joint
+///
 class PrismaticJoint : public Joint
 {
 public:
@@ -56,10 +58,10 @@ public:
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
-    /// @brief Gets the local anchor point relative to bodyA's origin.
+    /// @brief Gets the local anchor point relative to body A's origin.
     Length2 GetLocalAnchorA() const { return m_localAnchorA; }
 
-    /// @brief Gets the local anchor point relative to bodyB's origin.
+    /// @brief Gets the local anchor point relative to body B's origin.
     Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// @brief Gets local joint axis relative to bodyA.

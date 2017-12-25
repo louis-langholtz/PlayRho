@@ -63,10 +63,10 @@ struct DistanceJointDef : public JointBuilder<DistanceJointDef>
     /// @brief Uses the given damping ratio.
     PLAYRHO_CONSTEXPR inline DistanceJointDef& UseDampingRatio(Real v) noexcept;
     
-    /// @brief Local anchor point relative to bodyA's origin.
+    /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
     
-    /// @brief Local anchor point relative to bodyB's origin.
+    /// @brief Local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
     
     /// @brief Natural length between the anchor points.

@@ -144,7 +144,7 @@ public:
     /// @warning This function is locked during callbacks.
     /// @return Pointer to newly created body.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @throws LengthError if this operation would create more than MaxBodies.
+    /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
     /// @sa PhysicalEntities
     Body* CreateBody(const BodyDef& def = GetDefaultBodyDef());
 
@@ -382,7 +382,7 @@ private:
         /// Locked.
         e_locked        = 0x0002,
 
-        /// Substepping.
+        /// Sub-stepping.
         e_substepping   = 0x0020,
         
         /// Step complete. @details Used for sub-stepping. @sa e_substepping.
@@ -607,7 +607,7 @@ private:
     /// @brief Contact TOI data.
     struct ContactToiData
     {
-        Contact* contact = nullptr; ///< Contact for which the time of impact is relavant.
+        Contact* contact = nullptr; ///< Contact for which the time of impact is relevant.
         Real toi = std::numeric_limits<Real>::infinity(); ///< Time of impact (TOI) as a fractional value between 0 and 1.
         ContactCounter simultaneous = 0; ///< Count of simultaneous contacts at this TOI.
     };

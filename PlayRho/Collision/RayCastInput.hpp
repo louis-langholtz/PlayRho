@@ -31,7 +31,8 @@
 namespace playrho {
 
     /// @brief Ray-cast input data.
-    /// @details The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+    /// @details The ray extends from <code>p1</code> to
+    ///   <code>p1 + maxFraction * (p2 - p1)</code>.
     struct RayCastInput
     {
         Length2 p1; ///< Point 1.

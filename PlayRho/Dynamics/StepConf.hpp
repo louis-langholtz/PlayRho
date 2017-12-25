@@ -40,7 +40,7 @@ class StepConf
 {
 public:
     /// @brief Step iterations type.
-    /// @details A type for countining iterations per-step.
+    /// @details A type for counting iterations per-step.
     /// @note The special value of -1 is reserved for signifying an invalid iteration value.
     using iteration_type = TimestepIters;
 
@@ -57,7 +57,7 @@ public:
     /// @sa GetTime().
     Frequency GetInvTime() const noexcept { return invTime; }
     
-    /// @brief Sets the delte time and inverse time from the given value and its inverse respectively.
+    /// @brief Sets the delta time and inverse time from the given value and its inverse respectively.
     /// @note Used in both the regular and TOI phases of step processing.
     /// @post Getting the delta time will return this value.
     /// @post The inverse delta time value is the inverse of the given value or zero if the value is zero.
@@ -151,7 +151,7 @@ public:
     Momentum toiMinMomentum = DefaultToiMinMomentum;
 
     /// @brief Target depth.
-    /// @details Target depth of overlap for calculating the TOI for CCD elligible bodies.
+    /// @details Target depth of overlap for calculating the TOI for CCD eligible bodies.
     /// @note Recommend value that's less than twice the world's minimum vertex radius.
     /// @note Used in the TOI phase of step processing.
     Length targetDepth = DefaultLinearSlop * Real{3};
@@ -173,7 +173,7 @@ public:
     /// @brief Maximum translation.
     ///
     /// @details The maximum amount a body can translate in a single step. This represents
-    ///   an upper bound on the maximum linear velocity of a body of maxTranslation / time.
+    ///   an upper bound on the maximum linear velocity of a body of max-translation per time.
     ///
     /// @note If you want or need to support a higher maximum linear speed, then instead
     ///   of changing this value, decrease the step's time value. So for example, rather
@@ -188,7 +188,7 @@ public:
     /// @brief Maximum rotation.
     ///
     /// @details The maximum amount a body can rotate in a single step. This represents
-    ///   an upper bound on the maximum angular speed of a body of maxRotation / time.
+    ///   an upper bound on the maximum angular speed of a body of max rotation / time.
     ///
     /// @warning This value should be less than Pi * Radian.
     ///

@@ -37,10 +37,10 @@ namespace playrho
 
     /// @brief Distance Proxy.
     ///
-    /// @details A distance proxy aggragates a convex set of vertices and a vertexRadius
-    ///   of those vertices. This can be visualized as a convex N-gon with rounded corners.
+    /// @details A distance proxy aggregates a convex set of vertices and a vertex radius of
+    ///   those vertices. This can be visualized as a convex N-sided polygon with rounded corners.
     ///   It's meant to represent any single portion of a shape identified by its child-index.
-    ///   These are used by the GJK algorithm: "a method for determining the minimium distance
+    ///   These are used by the G.J.K. algorithm: "a method for determining the minimum distance
     ///   between two convex sets".
     ///
     /// @note This data structure is 24-bytes.
@@ -125,7 +125,7 @@ namespace playrho
 #endif
         }
         
-        /// Gets the vertexRadius of the vertices of the associated shape.
+        /// Gets the vertex radius of the vertices of the associated shape.
         /// @return Non-negative distance.
         auto GetVertexRadius() const noexcept { return m_vertexRadius; }
         
@@ -151,9 +151,10 @@ namespace playrho
         ///
         /// @param index Index value less than the count of vertices represented by this proxy.
         ///
-        /// @warning Behavior is undefined if the index given is not less than the count of vertices
-        ///   represented by this proxy.
-        /// @warning Behavior is undefined if InvalidVertex is given as the index value.
+        /// @warning Behavior is undefined if the index given is not less than the count of
+        ///   vertices represented by this proxy.
+        /// @warning Behavior is undefined if <code>InvalidVertex</code> is given as the index
+        ///   value.
         ///
         /// @return Vertex linear position (relative to the shape's origin) at the given index.
         ///
@@ -211,8 +212,8 @@ namespace playrho
     /// @note 0 is returned for a given zero length direction vector.
     /// @param proxy Distance proxy object to find index in if a valid index exists for it.
     /// @param dir Direction vector to find index for.
-    /// @return InvalidVertex if d is invalid or the count of vertices is zero, otherwise a
-    ///   value from 0 to one less than count.
+    /// @return <code>InvalidVertex</code> if d is invalid or the count of vertices is zero,
+    ///   otherwise a value from 0 to one less than count.
     /// @sa GetVertexCount().
     /// @relatedalso DistanceProxy
     template <class T>
@@ -221,8 +222,8 @@ namespace playrho
         using VT = typename T::value_type;
         using OT = decltype(VT{} * 0_m);
 
-        auto index = InvalidVertex; ///< Index of vertex that when dotted with dir has the max value.
-        auto maxValue = -std::numeric_limits<OT>::infinity(); ///< Max dot value.
+        auto index = InvalidVertex; // Index of vertex that when dotted with dir has the max value.
+        auto maxValue = -std::numeric_limits<OT>::infinity(); // Max dot value.
         auto i = VertexCounter{0};
         for (const auto& vertex: proxy.GetVertices())
         {

@@ -42,9 +42,9 @@ namespace playrho {
 ///
 /// @note This can be implemented using any of the fundamental floating point types (
 ///   <code>float</code>, <code>double</code>, or <code>long double</code>).
-/// @note This can also be implemented using a "LiteralType" that has the necessary support:
-///   all common mathematical functions, support for infinity and NaN, and a specialization
-///   of the <code>std::numeric_limits</code> class template for it.
+/// @note This can also be implemented using a <code>LiteralType</code> that has the necessary
+///   support: all common mathematical functions, support for infinity and NaN, and a
+///   specialization of the <code>std::numeric_limits</code> class template for it.
 /// @note At present, the <code>Fixed32</code> and <code>Fixed64</code> aliases of the
 ///   <code>Fixed</code> template type are provided as examples of qualifying literal types
 ///   though the usability of <code>Fixed32</code> is limited and its use is discouraged.

@@ -53,10 +53,10 @@ public:
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
-    /// @brief Gets the local anchor point relative to bodyA's origin.
+    /// @brief Gets the local anchor point relative to body A's origin.
     Length2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }
 
-    /// @brief Gets the local anchor point relative to bodyB's origin.
+    /// @brief Gets the local anchor point relative to body B's origin.
     Length2 GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
     /// @brief Sets the natural length.

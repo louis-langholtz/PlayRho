@@ -270,14 +270,14 @@ namespace playrho {
     
     // Common logical operations for BoundedValue<T, lo, hi> OP BoundedValue<T, lo, hi>
 
-    /// @brief BoundedValue equality operator.
+    /// @brief Bounded value equality operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator== (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} == T{rhs};
     }
     
-    /// @brief BoundedValue inequality operator.
+    /// @brief Bounded value inequality operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator!= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
@@ -286,56 +286,56 @@ namespace playrho {
 
     // Logical operations for numerical BoundedValue<T, lo, hi> OP BoundedValue<T, lo, hi>
 
-    /// @brief BoundedValue less-than or equal-to operator.
+    /// @brief Bounded value less-than or equal-to operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator<= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} <= T{rhs};
     }
     
-    /// @brief BoundedValue greater-than or equal-to operator.
+    /// @brief Bounded value greater-than or equal-to operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator>= (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} >= T{rhs};
     }
     
-    /// @brief BoundedValue less-than operator.
+    /// @brief Bounded value less-than operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator< (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} < T{rhs};
     }
     
-    /// @brief BoundedValue greater-than operator.
+    /// @brief Bounded value greater-than operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator> (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} > T{rhs};
     }
     
-    /// @brief BoundedValue multiplication operator.
+    /// @brief Bounded value multiplication operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator* (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} * T{rhs};
     }
     
-    /// @brief BoundedValue division operator.
+    /// @brief Bounded value division operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator/ (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} / T{rhs};
     }
     
-    /// @brief BoundedValue addition operator.
+    /// @brief Bounded value addition operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator+ (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return T{lhs} + T{rhs};
     }
     
-    /// @brief BoundedValue subtraction operator.
+    /// @brief Bounded value subtraction operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator- (const BoundedValue<T, lo, hi> lhs, const BoundedValue<T, lo, hi> rhs)
     {
@@ -344,14 +344,14 @@ namespace playrho {
 
     // Commmon logical operations for BoundedValue<T, lo, hi> OP T
 
-    /// @brief BoundedValue equality operator.
+    /// @brief Bounded value equality operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator== (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} == rhs;
     }
     
-    /// @brief BoundedValue inequality operator.
+    /// @brief Bounded value inequality operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator!= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
@@ -360,56 +360,56 @@ namespace playrho {
     
     // Logical operations for numerical BoundedValue<T, lo, hi> OP T
 
-    /// @brief BoundedValue less-than or equal-to operator.
+    /// @brief Bounded value less-than or equal-to operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator<= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} <= rhs;
     }
     
-    /// @brief BoundedValue greater-than or equal-to operator.
+    /// @brief Bounded value greater-than or equal-to operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator>= (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} >= rhs;
     }
     
-    /// @brief BoundedValue less-than operator.
+    /// @brief Bounded value less-than operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator< (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} < rhs;
     }
     
-    /// @brief BoundedValue greater-than operator.
+    /// @brief Bounded value greater-than operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator> (const BoundedValue<T, lo, hi> lhs, const T rhs)
     {
         return T{lhs} > rhs;
     }
     
-    /// @brief BoundedValue multiplication operator.
+    /// @brief Bounded value multiplication operator.
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator* (const BoundedValue<T, lo, hi> lhs, const U rhs)
     {
         return T{lhs} * rhs;
     }
     
-    /// @brief BoundedValue division operator.
+    /// @brief Bounded value division operator.
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator/ (const BoundedValue<T, lo, hi> lhs, const U rhs)
     {
         return T{lhs} / rhs;
     }
     
-    /// @brief BoundedValue addition operator.
+    /// @brief Bounded value addition operator.
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator+ (const BoundedValue<T, lo, hi> lhs, const U rhs)
     {
         return T{lhs} + rhs;
     }
     
-    /// @brief BoundedValue subtraction operator.
+    /// @brief Bounded value subtraction operator.
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator- (const BoundedValue<T, lo, hi> lhs, const U rhs)
     {
@@ -418,14 +418,14 @@ namespace playrho {
 
     // Commmon logical operations for T OP BoundedValue<T, lo, hi>
 
-    /// @brief BoundedValue equality operator.
+    /// @brief Bounded value equality operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator== (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return lhs == T{rhs};
     }
     
-    /// @brief BoundedValue inequality operator.
+    /// @brief Bounded value inequality operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator!= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
@@ -434,56 +434,56 @@ namespace playrho {
     
     // Logical operations for numerical T OP BoundedValue<T, lo, hi>
 
-    /// @brief BoundedValue less-than or equal-to operator.
+    /// @brief Bounded value less-than or equal-to operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator<= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return lhs <= T{rhs};
     }
     
-    /// @brief BoundedValue greater-than or equal-to operator.
+    /// @brief Bounded value greater-than or equal-to operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator>= (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return lhs >= T{rhs};
     }
     
-    /// @brief BoundedValue less-than operator.
+    /// @brief Bounded value less-than operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator< (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return lhs < T{rhs};
     }
     
-    /// @brief BoundedValue greater-than operator.
+    /// @brief Bounded value greater-than operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline bool operator> (const T lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return lhs > T{rhs};
     }
     
-    /// @brief BoundedValue multiplication operator.
+    /// @brief Bounded value multiplication operator.
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator* (const U lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return lhs * T{rhs};
     }
     
-    /// @brief BoundedValue division operator.
+    /// @brief Bounded value division operator.
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator/ (const U lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return lhs / T{rhs};
     }
     
-    /// @brief BoundedValue addition operator.
+    /// @brief Bounded value addition operator.
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator+ (const U lhs, const BoundedValue<T, lo, hi> rhs)
     {
         return lhs + T{rhs};
     }
     
-    /// @brief BoundedValue subtraction operator.
+    /// @brief Bounded value subtraction operator.
     template <typename T, typename U, LoValueCheck lo, HiValueCheck hi>
     PLAYRHO_CONSTEXPR inline auto operator- (const U lhs, const BoundedValue<T, lo, hi> rhs)
     {
@@ -542,7 +542,7 @@ namespace playrho {
     
     /// @}
  
-    /// @brief BoundedValue stream output operator.
+    /// @brief Bounded value stream output operator.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     ::std::ostream& operator<<(::std::ostream& os, const BoundedValue<T, lo, hi>& value)
     {

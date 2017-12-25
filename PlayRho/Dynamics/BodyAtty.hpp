@@ -109,7 +109,7 @@ private:
         b.SetAwakeFlag();
     }
     
-    /// @brief Sets the mass data dity flag for the given body.
+    /// @brief Sets the mass data dirty flag for the given body.
     static void SetMassDataDirty(Body& b) noexcept
     {
         b.SetMassDataDirty();

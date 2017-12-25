@@ -122,7 +122,11 @@ namespace playrho {
         const DistanceProxy& m_proxyA; ///< Distance proxy A.
         const DistanceProxy& m_proxyB; ///< Distance proxy B.
         const UnitVec2 m_axis; ///< Axis. @details Directional vector of the axis of separation.
-        const Length2 m_localPoint; ///< Local point. @note Only used if type is e_faceA or e_faceB.
+
+        /// @brief Local point.
+        /// @note Only used if type is <code>e_faceA</code> or <code>e_faceB</code>.
+        const Length2 m_localPoint;
+        
         const Type m_type; ///< The type of this instance.
     };
 

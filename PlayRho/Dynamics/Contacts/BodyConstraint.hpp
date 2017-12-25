@@ -28,7 +28,7 @@ namespace playrho {
     
     /// @brief Body Constraint.
     /// @details Body data related to constraint processing.
-    /// @note Only position and velocity is independently changable after construction.
+    /// @note Only position and velocity is independently changeable after construction.
     /// @note This data structure is 40-bytes large (with 4-byte Real on at least one
     ///   64-bit platform).
     class BodyConstraint

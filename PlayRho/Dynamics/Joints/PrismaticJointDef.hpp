@@ -65,16 +65,16 @@ struct PrismaticJointDef : public JointBuilder<PrismaticJointDef>
     /// @brief Uses the given enable motor state value.
     PrismaticJointDef& UseEnableMotor(bool v) noexcept;
     
-    /// The local anchor point relative to bodyA's origin.
+    /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
     
-    /// The local anchor point relative to bodyB's origin.
+    /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
     
-    /// The local translation unit axis in bodyA.
+    /// The local translation unit axis in body A.
     UnitVec2 localAxisA = UnitVec2::GetRight();
     
-    /// The constrained angle between the bodies: bodyB_angle - bodyA_angle.
+    /// The constrained angle between the bodies: body B's angle minus body A's angle.
     Angle referenceAngle = 0_deg;
     
     /// Enable/disable the joint limit.

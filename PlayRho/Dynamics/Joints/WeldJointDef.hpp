@@ -58,10 +58,10 @@ struct WeldJointDef : public JointBuilder<WeldJointDef>
     /// @brief Uses the given damping ratio.
     PLAYRHO_CONSTEXPR inline WeldJointDef& UseDampingRatio(Real v) noexcept;
     
-    /// The local anchor point relative to bodyA's origin.
+    /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
     
-    /// The local anchor point relative to bodyB's origin.
+    /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
     
     /// The bodyB angle minus bodyA angle in the reference state (radians).

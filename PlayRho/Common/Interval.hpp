@@ -285,7 +285,7 @@ namespace playrho {
     }
 
     /// @brief Equality operator.
-    /// @note Satisfies the EqualityComparable concept for Interval objects.
+    /// @note Satisfies the <code>EqualityComparable</code> concept for Interval objects.
     /// @relatedalso Interval
     /// @sa http://en.cppreference.com/w/cpp/concept/EqualityComparable
     template <typename T>
@@ -295,7 +295,7 @@ namespace playrho {
     }
     
     /// @brief Inequality operator.
-    /// @note Satisfies the EqualityComparable concept for Interval objects.
+    /// @note Satisfies the <code>EqualityComparable</code> concept for Interval objects.
     /// @relatedalso Interval
     /// @sa http://en.cppreference.com/w/cpp/concept/EqualityComparable
     template <typename T>
@@ -307,10 +307,10 @@ namespace playrho {
     /// @brief Less-than operator.
     /// @note Provides a "strict weak ordering" relation.
     /// @note This is a lexicographical comparison.
-    /// @note Obeys the LessThanComparable concept:
-    ///   for all a, !(a < a); if (a < b) then !(b < a); if (a < b) and (b < c)
+    /// @note Obeys the <code>LessThanComparable</code> concept:
+    ///   <code>for all a, !(a < a); if (a < b) then !(b < a); if (a < b) and (b < c)
     ///   then (a < c); with equiv = !(a < b) && !(b < a), if equiv(a, b) and equiv(b, c),
-    ///   then equiv(a, c).
+    ///   then equiv(a, c).</code>
     /// @relatedalso Interval
     /// @sa https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
     /// @sa http://en.cppreference.com/w/cpp/concept/LessThanComparable

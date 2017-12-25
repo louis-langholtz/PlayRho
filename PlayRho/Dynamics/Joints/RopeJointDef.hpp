@@ -51,10 +51,10 @@ struct RopeJointDef : public JointBuilder<RopeJointDef>
     /// @brief Uses the given max length value.
     PLAYRHO_CONSTEXPR inline RopeJointDef& UseMaxLength(Length v) noexcept;
     
-    /// The local anchor point relative to bodyA's origin.
+    /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{-1_m, 0_m};
     
-    /// The local anchor point relative to bodyB's origin.
+    /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{+1_m, 0_m};
     
     /// The maximum length of the rope.

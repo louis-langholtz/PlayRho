@@ -28,7 +28,7 @@ namespace playrho {
     class DistanceProxy;
     struct ToiConf;
 
-    /// @brief Pair of Length2 values.
+    /// @brief Pair of <code>Length2</code> values.
     /// @note Uses <code>std::pair</code> because this is a pair and also because
     ///   <code>std::pair</code> has more support for constant expressions.
     using PairLength2 = std::pair<Length2, Length2>;
@@ -82,9 +82,9 @@ namespace playrho {
     /// @note On the first call, the Simplex::Cache.count should be set to zero.
     /// @image html distance.png
     /// @param proxyA Proxy A.
-    /// @param transformA Transoform of A.
+    /// @param transformA Transform of A.
     /// @param proxyB Proxy B.
-    /// @param transformB Transoform of B.
+    /// @param transformB Transform of B.
     /// @param conf Configuration to use including the simplex cache for assisting the determination.
     /// @relatedalso DistanceConf
     /// @return Closest points between the two shapes and the count of iterations it took to
@@ -97,8 +97,8 @@ namespace playrho {
     /// @brief Determine if two generic shapes overlap.
     ///
     /// @note The returned touching state information typically agrees with that returned from
-    ///   the CollideShapes function. This is not always the case however especially when the
-    ///   separation or overlap distance is closer to zero.
+    ///   the <code>CollideShapes</code> function. This is not always the case however
+    ///   especially when the separation or overlap distance is closer to zero.
     ///
     Area TestOverlap(const DistanceProxy& proxyA, const Transformation2D& xfA,
                      const DistanceProxy& proxyB, const Transformation2D& xfB,

@@ -33,7 +33,7 @@ enum class BodyType
     /// Static body type.
     /// @details
     /// Static bodies have no mass, have no forces applied to them, and aren't moved by
-    /// physical processeses. They are impenetrable.
+    /// physical processes. They are impenetrable.
     /// @note Physics applied: none.
     Static = 0,
     

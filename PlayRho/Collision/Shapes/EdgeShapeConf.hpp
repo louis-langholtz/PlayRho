@@ -46,7 +46,7 @@ public:
         return DefaultLinearSlop * Real{2};
     }
     
-    /// @brief Gets the default configuration for an EdgeShapeConf.
+    /// @brief Gets the default configuration.
     static inline EdgeShapeConf GetDefaultConf() noexcept
     {
         return EdgeShapeConf{};

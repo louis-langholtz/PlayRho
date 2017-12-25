@@ -33,7 +33,7 @@ class Joint;
 /// @brief Abstract base Joint definition class.
 /// @details Joint definitions are used to construct joints.
 /// @note This class is not meant to be directly instantiated; it is meant
-///   to be inherreted from.
+///   to be inherited from.
 struct JointDef
 {
     /// Deleted default constructor for abstract base class.
