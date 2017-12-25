@@ -62,7 +62,7 @@ struct ShapeDef
     ///
     Finite<Real> restitution = Finite<Real>{0};
     
-    /// @brief AreaDensity of the associated shape.
+    /// @brief Area density of the associated shape.
     ///
     /// @note This must be a non-negative value.
     /// @note Use 0 to indicate that the shape's associated mass should be 0.

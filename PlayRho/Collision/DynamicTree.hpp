@@ -21,7 +21,7 @@
 #define PLAYRHO_COLLISION_DYNAMICTREE_HPP
 
 /// @file
-/// Declaration of the DynamicTree class.
+/// Declaration of the <code>DynamicTree</code> class.
 
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
@@ -41,7 +41,7 @@ class Fixture;
 ///   queries such as volume queries and ray casts. Leafs are proxies
 ///   with an AABB.
 ///
-/// @note This code was inspired by Nathanael Presson's btDbvt.
+/// @note This code was inspired by Nathanael Presson's <code>btDbvt</code>.
 /// @note Nodes are pooled and relocatable, so we use node indices rather than pointers.
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
@@ -67,7 +67,7 @@ public:
         return static_cast<Size>(-1);
     }
     
-    /// @brief Strong type for DynamicTree heights.
+    /// @brief Strong type for heights.
     using Height = ContactCounter;
     
     /// @brief Invalid height constant value.
@@ -98,7 +98,7 @@ public:
     }
 
     /// @brief Ray cast callback function.
-    /// @note Return 0 to terminate raycasting, or > 0 to update the segment bounding box.
+    /// @note Return 0 to terminate ray casting, or > 0 to update the segment bounding box.
     using RayCastCallback = std::function<Real(const RayCastInput&, Size)>;
 
     /// @brief Gets the default initial node capacity.
@@ -123,12 +123,12 @@ public:
     DynamicTree& operator= (DynamicTree&& other) noexcept;
 
     /// @brief Creates a new leaf node.
-    /// @details Creates a leaf node for a tight fitting AABB and a userData pointer.
+    /// @details Creates a leaf node for a tight fitting AABB and the given data.
     /// @note The indices of leaf nodes that have been destroyed get reused for new nodes.
-    /// @post If the root index had been the GetInvalidSize(), then it will be set to the index
-    ///   returned from this method.
+    /// @post If the root index had been the <code>GetInvalidSize()</code>, then it will
+    ///   be set to the index returned from this method.
     /// @return Index of the created leaf node.
-    Size CreateLeaf(const AABB2D& aabb, LeafData leafData);
+    Size CreateLeaf(const AABB2D& aabb, const LeafData& leafData);
 
     /// @brief Destroys a leaf node.
     /// @warning Behavior is undefined if the given index is not valid.
@@ -158,7 +158,7 @@ public:
     /// @warning Behavior is undefined if the given index is not valid.
     Height GetHeight(Size index) const noexcept;
     
-    /// @brief Gets BranchData for the identified node.
+    /// @brief Gets the branch data for the identified node.
     /// @warning Behavior is undefined if the given index in not a valid branch node.
     BranchData GetBranchData(Size index) const noexcept;
 
@@ -197,8 +197,8 @@ public:
 
     /// @brief Shifts the world origin.
     /// @note Useful for large worlds.
-    /// @note The shift formula is: position -= newOrigin
-    /// @param newOrigin the new origin with respect to the old origin
+    /// @note The shift formula is: <code>position -= newOrigin</code>.
+    /// @param newOrigin the new origin with respect to the old origin.
     void ShiftOrigin(Length2 newOrigin);
     
     /// @brief Computes the height of the tree from a given node.
@@ -259,7 +259,8 @@ private:
     /// @brief Inserts the specified node.
     /// @details Does a leaf insertion of the node with the given index into the dynamic tree.
     /// @warning Behavior is undefined if the given index is not valid.
-    /// @post The root index is set to the given index if the root index had been GetInvalidSize().
+    /// @post The root index is set to the given index if the root index had been
+    ///   <code>GetInvalidSize()</code>.
     void InsertLeaf(Size index);
 
     /// @brief Removes the specified node.
@@ -279,7 +280,7 @@ private:
     /// @brief Sets the parent node index of the node identified by the given index.
     void SetParent(Size index, Size newParent) noexcept;
     
-    /// @brief Sets the hieght of the node identified by the given index to the given value.
+    /// @brief Sets the height of the node identified by the given index to the given value.
     void SetHeight(Size index, Height value) noexcept;
 
     /// @brief Gets the child-1 index value of the node identified by the given index.
@@ -305,7 +306,7 @@ private:
     
     TreeNode* m_nodes; ///< Nodes. @details Initialized on construction.
 
-    Size m_root = GetInvalidSize(); ///< Index of root element in m_nodes or GetInvalidSize().
+    Size m_root = GetInvalidSize(); ///< Index of root element in m_nodes or <code>GetInvalidSize()</code>.
 
     Size m_nodeCount = Size{0}; ///< Node count. @details Count of currently allocated nodes.
     Size m_nodeCapacity; ///< Node capacity. @details Size of buffer allocated for nodes.
@@ -315,24 +316,25 @@ private:
     Size m_freeListIndex = Size{0}; ///< Free list. @details Index to free nodes.
 };
 
-/// @brief Unused data of a TreeNode.
+/// @brief Unused data of a tree node.
 struct DynamicTree::UnusedData
 {
     // Intentionally empty.
     // This exists for symetry and as placeholder in case this needs to later be used.
 };
 
-/// @brief Branch data of a TreeNode.
+/// @brief Branch data of a tree node.
 struct DynamicTree::BranchData
 {
     Size child1; ///< @brief Child 1.
     Size child2; ///< @brief Child 2.
 };
 
-/// @brief Leaf data of a TreeNode.
-/// @details This is the leaf node specific data for a DynamicTree::TreeNode. It's data that only
-///   pertains to leaf nodes.
-/// @note This class is used in the DynamicTree::VariantData union within a DynamicTree::TreeNode.
+/// @brief Leaf data of a tree node.
+/// @details This is the leaf node specific data for a <code>DynamicTree::TreeNode</code>.
+///   It's data that only pertains to leaf nodes.
+/// @note This class is used in the <code>DynamicTree::VariantData</code> union within a
+///   <code>DynamicTree::TreeNode</code>.
 ///   This has ramifications on this class's data contents and size.
 struct DynamicTree::LeafData
 {
@@ -408,18 +410,18 @@ union DynamicTree::VariantData
 };
 
 /// @brief Is unused.
-/// @details Determines whether the given DynamicTree node is an unused node.
+/// @details Determines whether the given dynamic tree node is an unused node.
 /// @relatedalso DynamicTree::TreeNode
 PLAYRHO_CONSTEXPR inline bool IsUnused(const DynamicTree::TreeNode& node) noexcept;
 
 /// @brief Is leaf.
-/// @details Determines whether the given DynamicTree node is a leaf node.
+/// @details Determines whether the given dynamic tree node is a leaf node.
 ///   Leaf nodes have a pointer to user data.
 /// @relatedalso DynamicTree::TreeNode
 PLAYRHO_CONSTEXPR inline bool IsLeaf(const DynamicTree::TreeNode& node) noexcept;
 
 /// @brief Is branch.
-/// @details Determines whether the given DynamicTree node is a branch node.
+/// @details Determines whether the given dynamic tree node is a branch node.
 ///   Branch nodes have 2 indices to child nodes.
 /// @relatedalso DynamicTree::TreeNode
 PLAYRHO_CONSTEXPR inline bool IsBranch(const DynamicTree::TreeNode& node) noexcept;
@@ -601,7 +603,7 @@ private:
     /// @brief Height.
     /// @details "Height" for tree balancing.
     /// @note 0 if leaf node.
-    /// @note Value of DynamicTree::GetInvalidHeight() if free/un-allocated node.
+    /// @note Value of <code>DynamicTree::GetInvalidHeight()</code> if free (unallocated) node.
     Height m_height = GetInvalidHeight();
 
     /// @brief Other node.
@@ -758,7 +760,7 @@ PLAYRHO_CONSTEXPR inline bool IsBranch(const DynamicTree::TreeNode& node) noexce
     return DynamicTree::IsBranch(node.GetHeight());
 }
 
-/// @brief Gets the AABB of the given DynamicTree node.
+/// @brief Gets the AABB of the given dynamic tree node.
 /// @relatedalso DynamicTree::TreeNode
 PLAYRHO_CONSTEXPR inline AABB2D GetAABB(const DynamicTree::TreeNode& node) noexcept
 {
@@ -800,9 +802,9 @@ inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
     return (index != DynamicTree::GetInvalidSize())? tree.GetHeight(index): DynamicTree::Height{0};
 }
 
-/// @brief Gets the AABB for the given DynamicTree.
+/// @brief Gets the AABB for the given dynamic tree.
 /// @details Gets the AABB that encloses all other AABB instances that are within the
-///   given DynamicTree.
+///   given dynamic tree.
 /// @return Enclosing AABB or the "unset" AABB.
 /// @relatedalso DynamicTree
 inline AABB2D GetAABB(const DynamicTree& tree) noexcept
@@ -834,7 +836,7 @@ inline Real ComputePerimeterRatio(const DynamicTree& tree) noexcept
     return 0;
 }
 
-/// @brief Opcodes for DynamicTree callbacks.
+/// @brief Opcodes for dynamic tree callbacks.
 enum class DynamicTreeOpcode
 {
     End,
@@ -857,10 +859,11 @@ void Query(const DynamicTree& tree, const AABB2D& aabb,
 /// @note Performance is roughly k * log(n), where k is the number of collisions and n is the
 ///   number of leaf nodes in the tree.
 ///
-/// @param tree Dynamic tree to raycast.
-/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
+/// @param tree Dynamic tree to ray cast.
+/// @param input the ray-cast input data. The ray extends from <code>p1</code> to
+///   <code>p1 + maxFraction * (p2 - p1)</code>.
 /// @param callback A callback instance function that's called for each leaf that is hit
-///   by the ray. The callback should return 0 to terminate raycasting, or greater than 0
+///   by the ray. The callback should return 0 to terminate ray casting, or greater than 0
 ///   to update the segment bounding box. Values less than zero are ignored.
 ///
 void RayCast(const DynamicTree& tree, const RayCastInput& input,

@@ -30,7 +30,7 @@ class Contact;
 class Joint;
 
 /// @brief Definition of a self-contained constraint "island".
-/// @details A container of bodies contacts and joints relavent to handling world dynamics.
+/// @details A container of bodies contacts and joints relevant to handling world dynamics.
 /// @note This is an internal class.
 /// @note This data structure is 72-bytes large (on at least one 64-bit platform).
 struct Island
@@ -82,15 +82,15 @@ inline bool IsFullOfContacts(const Island& island)
     return island.m_contacts.size() == island.m_contacts.max_size();
 }
 
-/// @brief Counts the number of occurrances of the given entry in the given island.
+/// @brief Counts the number of occurrences of the given entry in the given island.
 /// @relatedalso Island
 std::size_t Count(const Island& island, const Body* entry);
 
-/// @brief Counts the number of occurrances of the given entry in the given island.
+/// @brief Counts the number of occurrences of the given entry in the given island.
 /// @relatedalso Island
 std::size_t Count(const Island& island, const Contact* entry);
 
-/// @brief Counts the number of occurrances of the given entry in the given island.
+/// @brief Counts the number of occurrences of the given entry in the given island.
 /// @relatedalso Island
 std::size_t Count(const Island& island, const Joint* entry);
 

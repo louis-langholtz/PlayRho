@@ -23,7 +23,7 @@
 #define PLAYRHO_COLLISION_MASSDATA_HPP
 
 /// @file
-/// Declaration of the MassData structure and associated free functions.
+/// Declaration of the <code>MassData</code> structure and associated free functions.
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -56,7 +56,7 @@ namespace playrho {
     
     // Free functions...
     
-    /// @brief MassData equality operator.
+    /// @brief Equality operator for mass data.
     /// @relatedalso MassData
     template <std::size_t N>
     PLAYRHO_CONSTEXPR inline bool operator== (MassData<N> lhs, MassData<N> rhs)
@@ -64,7 +64,7 @@ namespace playrho {
         return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
     }
     
-    /// @brief MassData inequality operator.
+    /// @brief Inequality operator for mass data.
     /// @relatedalso MassData
     template <std::size_t N>
     PLAYRHO_CONSTEXPR inline bool operator!= (MassData<N> lhs, MassData<N> rhs)
@@ -74,7 +74,7 @@ namespace playrho {
 
     /// @brief Computes the mass data for a circular shape.
     ///
-    /// @param r Radius of the circlular shape.
+    /// @param r Radius of the circular shape.
     /// @param density Areal density of mass.
     /// @param location Location of the center of the shape.
     ///
@@ -116,13 +116,13 @@ namespace playrho {
     /// @details This basically accumulates the mass data over all fixtures.
     /// @note The center is the mass weighted sum of all fixture centers. Divide it by the
     ///   mass to get the averaged center.
-    /// @return accumalated mass data for all fixtures associated with the given body.
+    /// @return accumulated mass data for all fixtures associated with the given body.
     /// @relatedalso Body
     MassData2D ComputeMassData(const Body& body) noexcept;
     
     
     /// @brief Gets the mass data of the body.
-    /// @return a struct containing the mass, inertia and center of the body.
+    /// @return Data structure containing the mass, inertia, and center of the body.
     /// @relatedalso Body
     MassData2D GetMassData(const Body& body) noexcept;
     

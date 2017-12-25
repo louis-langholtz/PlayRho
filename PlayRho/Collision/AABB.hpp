@@ -47,11 +47,11 @@ namespace playrho {
     ///   bounding box (AABB) which is a type of bounding volume.
     ///
     /// @note This class satisfies at least the following concepts: all the basic concepts,
-    ///   EqualityComparable, and Swappable.
-    /// @note This class is composed of &mdash; as in contains and owns &mdash N
+    ///   <code>EqualityComparable</code>, and <code>Swappable</code>.
+    /// @note This class is composed of &mdash; as in contains and owns &mdash; N
     ///   <code>LengthInterval</code> variables.
-    /// @note Non-defaulted methods of this class are marked noexcept and expect that
-    ///   the Length type doesn't throw.
+    /// @note Non-defaulted methods of this class are marked <code>noexcept</code> and expect
+    ///   that the Length type doesn't throw.
     ///
     /// @sa https://en.wikipedia.org/wiki/Bounding_volume
     /// @sa http://en.cppreference.com/w/cpp/concept
@@ -240,7 +240,7 @@ namespace playrho {
     ///   containment is defined as being equal-to or within an AABB.
     /// @note The "unset" AABB is contained by all valid AABBs including the "unset"
     ///   AABB itself.
-    /// @param a AABB to test whether it constains the second AABB.
+    /// @param a AABB to test whether it contains the second AABB.
     /// @param b AABB to test whether it's contained by the first AABB.
     /// @relatedalso AABB
     template <std::size_t N>

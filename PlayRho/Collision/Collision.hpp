@@ -46,8 +46,8 @@ enum class PointState
 };
 
 /// @brief Point states.
-/// @details The states pertain to the transition from manifold1 manifold2.
-///   So state1 is either persist or remove while state2 is either add or persist.
+/// @details The states pertain to the transition from an old manifold to a new manifold.
+///   So state 1 is either persist or remove while state 2 is either add or persist.
 struct PointStates
 {
     /// @brief State 1.
@@ -69,7 +69,7 @@ struct ClipVertex
     ContactFeature cf; ///< Contact feature information. 4-bytes.
 };
 
-/// @brief Clip list for ClipSegmentToLine.
+/// @brief Clip list for <code>ClipSegmentToLine</code>.
 /// @sa ClipSegmentToLine.
 /// @note This data structure is at least 24-bytes large.
 using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;

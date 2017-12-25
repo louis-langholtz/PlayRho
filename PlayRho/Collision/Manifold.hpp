@@ -33,7 +33,7 @@ namespace playrho {
     /// @details
     /// This describes zero, one, or two points of contact for which impulses should be applied to
     /// most naturally resolve those contacts. Ideally the manifold is calculated at the earliest
-    /// point in time of contact occuring. The further past that time, the less natural contact
+    /// point in time of contact occurring. The further past that time, the less natural contact
     /// resolution of solid bodies will be - eventually resulting in oddities like tunneling.
     ///
     /// Multiple types of contact are supported: clip point versus plane with radius, point versus
@@ -95,7 +95,7 @@ namespace playrho {
 
             /// Face-A type.
             /// @details Indicates: local point is center of face A, local normal is normal on shape A, and the
-            ///   local points of Point instances are the local center of cirlce B or a clip point of polygon B
+            ///   local points of Point instances are the local center of circle B or a clip point of polygon B
             ///   where the contact feature will be <code>ContactFeature{e_face, i, e_vertex, j}</code> or
             ///   <code>ContactFeature{e_face, i, e_face, j} where i and j are indexes for the vertex or edge
             ///   of shapes A and B respectively.</code>.
@@ -103,7 +103,7 @@ namespace playrho {
 
             /// Face-B type.
             /// @details Indicates: local point is center of face B, local normal is normal on shape B, and the
-            ///   local points of Point instances are the local center of cirlce A or a clip point of polygon A
+            ///   local points of Point instances are the local center of circle A or a clip point of polygon A
             ///   where the contact feature will be <code>ContactFeature{e_face, i, e_vertex, j}</code> or
             ///   <code>ContactFeature{e_face, i, e_face, j} where i and j are indexes for the vertex or edge
             ///   of shapes A and B respectively.</code>.
@@ -125,7 +125,7 @@ namespace playrho {
             /// @brief Local point.
             /// @details Usage depends on manifold type.
             /// @note For circles type manifolds, this is the local center of circle B.
-            /// @note For face-A type manifolds, this is the local center of "cirlce" B or a clip
+            /// @note For face-A type manifolds, this is the local center of "circle" B or a clip
             /// point of shape B. It is also the point at which impulse forces should be relatively
             /// applied for position resolution.
             /// @note For face-B type manifolds, this is the local center of "circle" A or a clip
@@ -310,17 +310,18 @@ namespace playrho {
         /// Gets the type of this manifold.
         ///
         /// @note This must be a constant expression in order to use it in the context
-        ///   of the IsValid specialized template function for it.
+        ///   of the <code>IsValid</code> specialized template function for it.
         ///
         PLAYRHO_CONSTEXPR inline Type GetType() const noexcept { return m_type; }
         
         /// Gets the manifold point count.
         ///
         /// @details This is the count of contact points for this manifold.
-        ///   Only up to this many points can be validly accessed using the GetPoint() method.
+        ///   Only up to this many points can be validly accessed using the
+        ///   <code>GetPoint()</code> method.
         /// @note Non-zero values indicate that the two shapes are touching.
         ///
-        /// @return Value between 0 and MaxManifoldPoints.
+        /// @return Value between 0 and <code>MaxManifoldPoints</code>.
         ///
         /// @sa MaxManifoldPoints.
         /// @sa AddPoint().
@@ -371,8 +372,8 @@ namespace playrho {
         
         /// Adds a new point.
         /// @details This can be called once for circle type manifolds,
-        ///   and up to twice for face-A or face-B type manifolds.
-        /// GetPointCount() can be called to find out how many points have already been added.
+        ///   and up to twice for face-A or face-B type manifolds. <code>GetPointCount()</code>
+        ///   can be called to find out how many points have already been added.
         /// @warning Behavior is undefined if this object's type is e_unset.
         /// @warning Behavior is undefined if this is called more than twice.
         void AddPoint(const Point& mp) noexcept;
@@ -431,7 +432,7 @@ namespace playrho {
         /// @param t Manifold type.
         /// @param ln Local normal.
         /// @param lp Local point.
-        /// @param n number of points defined in arary.
+        /// @param n number of points defined in array.
         /// @param mpa Manifold point array.
         PLAYRHO_CONSTEXPR inline Manifold(Type t, UnitVec2 ln, Length2 lp, size_type n, const PointArray& mpa) noexcept;
         
@@ -457,7 +458,7 @@ namespace playrho {
         /// @brief Linear slop.
         Length linearSlop = DefaultLinearSlop;
 
-        /// Targetted depth of impact.
+        /// @brief Targeted depth of impact.
         /// @note Value must be less than twice the minimum vertex radius of any shape.
         Length targetDepth = DefaultLinearSlop * Real{3};
         
@@ -556,8 +557,8 @@ namespace playrho {
     /// @brief Calculates the relevant collision manifold.
     ///
     /// @note The returned touching state information typically agrees with that returned from
-    ///   the DistanceProxy-based TestOverlap function. This is not always the case however
-    ///   especially when the separation or overlap distance is closer to zero.
+    ///   the distance-proxy-based <code>TestOverlap</code> function. This is not always the
+    ///   case however especially when the separation or overlap distance is closer to zero.
     ///
     /// @relatedalso Manifold
     ///

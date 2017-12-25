@@ -401,7 +401,7 @@ private:
     {
         if (settings.dt > 0)
         {
-            // For any joints that need accumalated time...
+            // For any joints that need accumulated time...
             m_time += settings.dt;
         }
 

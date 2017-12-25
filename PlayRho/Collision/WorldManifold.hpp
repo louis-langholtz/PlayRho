@@ -29,7 +29,7 @@ namespace playrho {
 
     /// @brief Essentially a Manifold expressed in world coordinate terms.
     ///
-    /// @details Used to recoginze the current state of a contact manifold in world coordinates.
+    /// @details Used to recognize the current state of a contact manifold in world coordinates.
     ///
     /// @note This data structure is 48-bytes large (on at least one 64-bit platform).
     ///

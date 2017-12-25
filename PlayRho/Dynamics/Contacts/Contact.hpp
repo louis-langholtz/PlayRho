@@ -55,14 +55,14 @@ inline Real MixFriction(Real friction1, Real friction2)
 /// @brief Mixes restitution.
 ///
 /// @details Restitution mixing law. The idea is allow for anything to bounce off an inelastic
-///   surface. For example, a superball bounces on anything.
+///   surface. For example, a super ball bounces on anything.
 ///
 inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 {
     return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
 
-/// @brief A potential contact between the chidren of two Fixture objects.
+/// @brief A potential contact between the children of two Fixture objects.
 ///
 /// @details The class manages contact between two shapes. A contact exists for each overlapping
 ///   AABB in the broad-phase (except if filtered). Therefore a contact object may exist
@@ -195,7 +195,7 @@ public:
     /// @note This is only valid if a TOI has been set.
     /// @sa void SetToi(Real toi).
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
-    ///   means no actual impact in current time slot), otheriwse undefined.
+    ///   means no actual impact in current time slot), otherwise undefined.
     Real GetToi() const;
 
     /// @brief Flags the contact for filtering.

@@ -35,7 +35,8 @@ namespace playrho
     class DistanceProxy;
     
     /// @brief Ray-cast hit data.
-    /// @details The ray hits at p1 + fraction * (p2 - p1), where p1 and p2 come from RayCastInput.
+    /// @details The ray hits at <code>p1 + fraction * (p2 - p1)</code>, where
+    ///   <code>p1</code> and <code>p2</code> come from <code>RayCastInput</code>.
     struct RayCastHit
     {        
         /// @brief Surface normal in world coordinates at the point of contact.
@@ -47,7 +48,7 @@ namespace playrho
     };
 
     /// @brief Ray cast output.
-    /// @details This is a type alias for an optional RayCastHit instance.
+    /// @details This is a type alias for an optional <code>RayCastHit</code> instance.
     /// @sa RayCast, Optional, RayCastHit
     using RayCastOutput = Optional<RayCastHit>;
     
@@ -77,7 +78,7 @@ namespace playrho
                           const Transformation2D& transform) noexcept;
     
     /// @brief Cast a ray against the child of the given shape.
-    /// @note This is a convenience function for calling the raycast against a distance-proxy.
+    /// @note This is a convenience function for calling the ray cast against a distance-proxy.
     /// @param shape Shape.
     /// @param childIndex Child index.
     /// @param input the ray-cast input parameters.

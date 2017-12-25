@@ -38,7 +38,7 @@ namespace playrho
     ///   (or 8 using Real of float).
     using Vec2 = Vector2<Real>;
     
-    /// @brief 2-element vector of Length quanties.
+    /// @brief 2-element vector of Length quantities.
     /// @note Often used as a 2-dimensional distance or location vector.
     using Length2 = Vector2<Length>;
 

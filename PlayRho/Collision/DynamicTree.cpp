@@ -226,7 +226,7 @@ DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept
     return (it != m_nodes + m_nodeCapacity)? static_cast<Size>(it - m_nodes): GetInvalidSize();
 }
 
-DynamicTree::Size DynamicTree::CreateLeaf(const AABB2D& aabb, LeafData leafData)
+DynamicTree::Size DynamicTree::CreateLeaf(const AABB2D& aabb, const LeafData& leafData)
 {
     assert(IsValid(aabb));
     const auto index = AllocateNode(leafData, aabb);

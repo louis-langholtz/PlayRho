@@ -21,6 +21,7 @@
 #ifndef PLAYRHO_COMMON_RANGE_HPP
 #define PLAYRHO_COMMON_RANGE_HPP
 
+#include <PlayRho/Defines.hpp>
 #include <cstddef>
 
 namespace playrho

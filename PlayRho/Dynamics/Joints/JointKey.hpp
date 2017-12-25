@@ -115,7 +115,7 @@ namespace playrho {
 
 namespace std
 {
-    /// @brief Function object for performaing less-than comparisons between two joint keys.
+    /// @brief Function object for performing less-than comparisons between two joint keys.
     template <>
     struct less<playrho::JointKey>
     {
@@ -127,7 +127,7 @@ namespace std
         }
     };
     
-    /// @brief Function object for performaing equal-to comparisons between two joint keys.
+    /// @brief Function object for performing equal-to comparisons between two joint keys.
     template <>
     struct equal_to<playrho::JointKey>
     {

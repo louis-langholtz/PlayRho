@@ -39,8 +39,8 @@ namespace playrho {
     /// @note Max target distance must be less than or equal to the total radius as the target
     ///   range has to be chosen such that the contact manifold will have a greater than zero
     ///   contact point count.
-    /// @note A max target of totalRadius - DefaultLinearSlop * x where x is <= 1 is increasingly slower
-    ///   as x goes below 1.
+    /// @note A max target of <code>totalRadius - DefaultLinearSlop * x</code> where
+    ///   <code>x is <= 1</code> is increasingly slower as x goes below 1.
     /// @note Min target distance needs to be significantly less than the max target distance and
     ///   significantly more than 0.
     ///
@@ -92,8 +92,8 @@ namespace playrho {
         NonNegative<Length> tolerance = NonNegative<Length>{DefaultLinearSlop / Real{4}};
         
         /// @brief Maximum number of root finder iterations.
-        /// @details This is the maximum number of iterations for calculating the 1D root of
-        ///    <code>f(t) - (totalRadius - targetDepth) < tolerance</code>
+        /// @details This is the maximum number of iterations for calculating the 1-dimensional
+        ///   root of <code>f(t) - (totalRadius - targetDepth) < tolerance</code>
         /// where <code>f(t)</code> is the distance between the shapes at time <code>t</code>,
         /// and <code>totalRadius</code> is the sum of the vertex radiuses of 2 distance proxies.
         /// @note This value never needs to be more than the number of iterations needed to
@@ -265,8 +265,8 @@ namespace playrho {
     /// If you change the time interval, you should call this function again.
     ///
     /// @sa https://en.wikipedia.org/wiki/Hyperplane_separation_theorem
-    /// @pre The given sweeps are both at the same alpha0.
-    /// @warning Behavior is undefined if sweeps are not at the same alpha0.
+    /// @pre The given sweeps are both at the same alpha-0.
+    /// @warning Behavior is undefined if sweeps are not at the same alpha-0.
     /// @warning Behavior is undefined if conf's <code>tMax</code> is not between 0 and 1 inclusive.
     /// @note Uses Distance to compute the contact point and normal at the time of impact.
     /// @note This only works for two disjoint convex sets.

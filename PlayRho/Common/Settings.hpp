@@ -118,7 +118,7 @@ PLAYRHO_CONSTEXPR const auto MaxManifoldPoints = std::uint8_t{2};
 
 /// @brief Maximum number of vertices for any shape type.
 /// @note For memory efficiency, uses the smallest integral type that can hold the value minus
-///   one that's left out as a sentinal value.
+///   one that's left out as a sentinel value.
 PLAYRHO_CONSTEXPR const auto MaxShapeVertices = std::uint8_t{254};
 
 /// @brief Vertex count type.
@@ -220,7 +220,8 @@ using ContactCounter = Wider<BodyCounter>::type;
 PLAYRHO_CONSTEXPR const auto InvalidContactIndex = static_cast<ContactCounter>(-1);
 
 /// @brief Maximum number of contacts in a world (2147319811).
-/// @details Uses the formula for the maximum number of edges in an unidirectional graph of MaxBodies nodes. 
+/// @details Uses the formula for the maximum number of edges in an unidirectional graph of
+///   <code>MaxBodies</code> nodes.
 /// This occurs when every possible body is connected to every other body.
 PLAYRHO_CONSTEXPR const auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodies - 1} / ContactCounter{2};
 

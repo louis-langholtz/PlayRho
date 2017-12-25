@@ -35,18 +35,18 @@ namespace playrho {
     ///   <code>constexpr</code> equality and inequality operators.
     using IndexPair = std::pair<VertexCounter, VertexCounter>;
     
-    /// @brief Invalid index pair value.
+    /// @brief Invalid index-pair value.
     PLAYRHO_CONSTEXPR const auto InvalidIndexPair = IndexPair{
         InvalidVertex, InvalidVertex
     };
     
-    /// @brief Array of three IndexPair elements.
+    /// @brief Array of three index-pair elements.
     /// @note An element having the <code>InvalidIndexPair</code> value, denotes an
     ///   unused or invalid elements.
     /// @note This data type is 6-bytes large (on at least one 64-bit platform).
     using IndexPair3 = std::array<IndexPair, MaxSimplexEdges>;
     
-    /// @brief Invalid array of three IndexPair elements.
+    /// @brief Invalid array of three index-pair elements.
     PLAYRHO_CONSTEXPR const auto InvalidIndexPair3 = IndexPair3{{
         InvalidIndexPair, InvalidIndexPair, InvalidIndexPair
     }};
@@ -54,7 +54,7 @@ namespace playrho {
     static_assert(MaxSimplexEdges == 3, "Invalid assumption about size of MaxSimplexEdges");
 
     /// @brief Gets the number of valid indices in the given collection of index pairs.
-    /// @note Any element with a value of <code>InvalidIndexPair</code> is interpretted
+    /// @note Any element with a value of <code>InvalidIndexPair</code> is interpreted
     ///   as being invalid in this context.
     /// @return Value between 0 and 3 inclusive.
     PLAYRHO_CONSTEXPR inline std::size_t GetNumValidIndices(IndexPair3 pairs) noexcept
@@ -79,7 +79,7 @@ namespace playrho {
         return GetNumValidIndices(pairs);
     }
     
-    /// @brief Gets the maximum sizeof the given container of index pairs.
+    /// @brief Gets the maximum size of the given container of index pairs.
     /// @return Always returns 3.
     PLAYRHO_CONSTEXPR inline auto GetMaxSize(IndexPair3 pairs) -> decltype(pairs.max_size())
     {

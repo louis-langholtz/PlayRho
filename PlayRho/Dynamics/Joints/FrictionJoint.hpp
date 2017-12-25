@@ -51,10 +51,10 @@ public:
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
 
-    /// The local anchor point relative to bodyA's origin.
+    /// The local anchor point relative to body A's origin.
     Length2 GetLocalAnchorA() const { return m_localAnchorA; }
 
-    /// The local anchor point relative to bodyB's origin.
+    /// The local anchor point relative to body B's origin.
     Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// Set the maximum friction force in N.

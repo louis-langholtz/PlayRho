@@ -165,7 +165,7 @@ namespace playrho
     /// @sa https://en.wikipedia.org/wiki/Area
     using Area = PLAYRHO_QUANTITY(boost::units::si::area);
     
-    /// @brief Aereal/surface density quantity.
+    /// @brief Aereal (surface) density quantity.
     /// @details This is the type alias for the area density quantity. It's a derived quantity.
     /// @note This quantity's dimensions are: mass per area (M L^-2).
     /// @note The SI derived unit of area density is kilogram per meter-squared.

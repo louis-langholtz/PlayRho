@@ -818,7 +818,7 @@ TEST(TimeOfImpact, ToleranceReachedWithT1Of1)
         Position2D{Length2{14.3689451_m, 0.500254989_m}, 0.000260060915_rad}
     };
 
-    // Note that these vertices are interpretted by code using the DistanceProxy as
+    // Note that these vertices are interpreted by code using the DistanceProxy as
     // being relative to the body's origin. Don't confuse the locations as being in
     // world coordinates.
     const Length2 vertices[] = {

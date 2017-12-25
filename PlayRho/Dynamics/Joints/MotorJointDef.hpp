@@ -57,7 +57,7 @@ struct MotorJointDef : public JointBuilder<MotorJointDef>
     /// @brief Uses the given correction factor.
     MotorJointDef& UseCorrectionFactor(Real v) noexcept;
     
-    /// @brief Position of bodyB minus the position of bodyA, in bodyA's frame.
+    /// @brief Position of bodyB minus the position of bodyA, in body A's frame.
     Length2 linearOffset = Length2{};
     
     /// @brief Angle of bodyB minus angle of bodyA.

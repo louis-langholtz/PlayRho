@@ -30,7 +30,7 @@ namespace playrho
     /// @brief Gets the max separation information.
     /// @note Prefer using this function - over the <code>GetMaxSeparation</code>
     ///   function that takes a stopping length - when it's already known that the two
-    ///   convex shapes's AABBs overlap.
+    ///   convex shapes' AABBs overlap.
     /// @return Index of the vertex and normal from <code>proxy1</code>,
     ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
     ///   distance from each other in the direction of that normal), and the maximal distance.
@@ -47,8 +47,8 @@ namespace playrho
     
     /// @brief Gets the max separation information for the first four vertices of the two
     ///   given shapes.
-    /// @details This is a version of the get-max-separation functions that is optimzed for
-    ///   two quadrilateral (4-vertice) polygons.
+    /// @details This is a version of the get-max-separation functions that is optimized for
+    ///   two quadrilateral (4-sided) polygons.
     /// @return Index of the vertex and normal from <code>proxy1</code>,
     ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
     ///   distance from each other in the direction of that normal), and the maximal distance.

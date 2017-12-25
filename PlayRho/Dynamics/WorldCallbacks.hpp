@@ -141,7 +141,7 @@ public:
     /// @brief End contact callback.
     ///
     /// @details Called when the contact's "touching" property becomes false, or just before
-    ///   the contactis destroyed.
+    ///   the contact is destroyed.
     ///
     /// @note This contact persists until the broadphase determines there's no overlap anymore
     ///   between the two fixtures.

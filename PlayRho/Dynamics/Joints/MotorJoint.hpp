@@ -81,7 +81,7 @@ public:
     void SetCorrectionFactor(Real factor);
     
     /// @brief Gets the angular error.
-    /// @note This is caluclated by the <code>InitVelocityConstraints</code> method.
+    /// @note This is calculated by the <code>InitVelocityConstraints</code> method.
     Angle GetAngularError() const noexcept;
 
 private:
