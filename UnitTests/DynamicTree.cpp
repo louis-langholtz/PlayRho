@@ -83,6 +83,11 @@ TEST(DynamicTree, DefaultConstruction)
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::Height(0));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(0));
     EXPECT_TRUE(foo.Validate());
+    EXPECT_EQ(foo.FindReference(DynamicTree::GetInvalidSize()),
+              foo.GetNodeCapacity() - 1u);
+    ASSERT_GT(foo.GetNodeCapacity(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.FindReference(DynamicTree::Size(0)),
+              DynamicTree::GetInvalidSize());
 }
 
 TEST(DynamicTree, ZeroCapacityConstructionThrows)
@@ -97,6 +102,8 @@ TEST(DynamicTree, InitializingConstruction)
     EXPECT_EQ(foo.GetNodeCapacity(), initCapacity);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
     EXPECT_TRUE(foo.Validate());
+    EXPECT_EQ(foo.FindReference(DynamicTree::GetInvalidSize()),
+              foo.GetNodeCapacity() - 1u);
 }
 
 TEST(DynamicTree, CopyConstruction)
@@ -148,6 +155,7 @@ TEST(DynamicTree, CopyAssignment)
         Length2{1_m, 1_m}
     };
     const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{nullptr, nullptr, 0u});
+    EXPECT_EQ(orig.FindReference(pid), DynamicTree::GetInvalidSize());
     {
         DynamicTree copy;
         copy = orig;
@@ -158,6 +166,7 @@ TEST(DynamicTree, CopyAssignment)
         EXPECT_EQ(copy.GetNodeCount(), orig.GetNodeCount());
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
         EXPECT_EQ(copy.GetLeafData(pid), orig.GetLeafData(pid));
+        EXPECT_EQ(copy.FindReference(pid), DynamicTree::GetInvalidSize());
     }
 }
 
@@ -199,6 +208,10 @@ TEST(DynamicTree, FourIdenticalProxies)
     
     ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    ASSERT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+    ASSERT_TRUE(foo.ValidateStructure(DynamicTree::GetInvalidSize()));
+    ASSERT_TRUE(foo.ValidateMetrics(DynamicTree::GetInvalidSize()));
+    ASSERT_TRUE(foo.Validate());
 
     const auto aabb = AABB2D{
         Length2{3_m, 1_m},
@@ -208,8 +221,12 @@ TEST(DynamicTree, FourIdenticalProxies)
 
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
+        EXPECT_EQ(pid, DynamicTree::Size(0));
         EXPECT_EQ(foo.GetAABB(pid), aabb);
         EXPECT_EQ(foo.GetLeafData(pid), leafData);
+        ASSERT_EQ(foo.GetRootIndex(), pid);
+        EXPECT_TRUE(foo.ValidateStructure(pid));
+        EXPECT_TRUE(foo.ValidateMetrics(pid));
     }
 
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
@@ -221,8 +238,11 @@ TEST(DynamicTree, FourIdenticalProxies)
 
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
+        EXPECT_EQ(pid, DynamicTree::Size(1));
         EXPECT_EQ(foo.GetAABB(pid), aabb);
         EXPECT_EQ(foo.GetLeafData(pid), leafData);
+        EXPECT_TRUE(foo.ValidateStructure(pid));
+        EXPECT_TRUE(foo.ValidateMetrics(pid));
     }
 
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(3));
@@ -234,10 +254,14 @@ TEST(DynamicTree, FourIdenticalProxies)
     
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
+        EXPECT_EQ(pid, DynamicTree::Size(3));
         EXPECT_EQ(foo.GetAABB(pid), aabb);
         EXPECT_EQ(foo.GetLeafData(pid), leafData);
+        EXPECT_TRUE(foo.ValidateStructure(pid));
+        EXPECT_TRUE(foo.ValidateMetrics(pid));
     }
     
+    EXPECT_TRUE(DynamicTree::IsBranch(foo.GetHeight(DynamicTree::Size(4))));
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(5));
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(2));
@@ -247,19 +271,30 @@ TEST(DynamicTree, FourIdenticalProxies)
     
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
+        EXPECT_EQ(pid, DynamicTree::Size(5));
         EXPECT_EQ(foo.GetAABB(pid), aabb);
         EXPECT_EQ(foo.GetLeafData(pid), leafData);
+        EXPECT_TRUE(foo.ValidateStructure(pid));
+        EXPECT_TRUE(foo.ValidateMetrics(pid));
     }
     
+    EXPECT_TRUE(DynamicTree::IsLeaf(foo.GetHeight(DynamicTree::Size(5))));
+    EXPECT_TRUE(DynamicTree::IsBranch(foo.GetHeight(DynamicTree::Size(6))));
+    EXPECT_EQ(foo.FindReference(DynamicTree::Size(5)), DynamicTree::Size(6));
+    EXPECT_EQ(foo.FindReference(DynamicTree::Size(6)), DynamicTree::Size(3));
+
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(7));
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(2));
     EXPECT_EQ(foo.GetMaxBalance(), DynamicTree::Height(0));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(7));
     EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(2));
+
+    EXPECT_TRUE(foo.Validate());
     
     foo.RebuildBottomUp();
     
+    EXPECT_TRUE(foo.Validate());
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(7));
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(3));

@@ -221,6 +221,12 @@ public:
     /// @brief Finds the lowest cost node.
     /// @warning Behavior is undefined if the tree doesn't have a valid root.
     Size FindLowestCostNode(AABB2D leafAABB) const noexcept;
+    
+    /// @brief Finds first node which references the given index.
+    /// @note Primarily intended for unit testing and/or debugging.
+    /// @return Index of node referencing the given index, or the value of
+    ///   <code>GetInvalidSize()</code>.
+    Size FindReference(Size index) const noexcept;
 
 private:
     
@@ -241,10 +247,7 @@ private:
     /// @post The free list no longer references the returned index.
     Size AllocateNode(const BranchData& node, AABB2D aabb, Height height,
                       Size parent = GetInvalidSize()) noexcept;
-    
-    /// @brief Finds first node which references the given index.
-    Size FindReference(Size index) const noexcept;
-
+ 
     /// @brief Frees the specified node.
     ///
     /// @warning Behavior is undefined if the given index is not valid.

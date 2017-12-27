@@ -200,8 +200,6 @@ void DynamicTree::FreeNode(Size index) noexcept
     assert(!IsUnused(m_nodes[index].GetHeight()));
     //assert(GetParent(index) == GetInvalidSize());
     assert(index != m_freeListIndex);
-    //const auto found = FindReference(index);
-    //assert(found == GetInvalidSize());
     m_nodes[index] = TreeNode{m_freeListIndex};
     m_freeListIndex = index;
     --m_nodeCount;
@@ -244,6 +242,11 @@ void DynamicTree::DestroyLeaf(Size index)
 
     m_leafCount--;
     RemoveLeaf(index);
+
+#ifndef NDEBUG
+    const auto found = FindReference(index);
+    assert(found == GetInvalidSize());
+#endif
     FreeNode(index);
 }
 
@@ -386,6 +389,10 @@ void DynamicTree::RemoveLeaf(Size leaf)
         m_root = sibling;
         SetParent(leaf, GetInvalidSize());
     }
+#ifndef NDEBUG
+    const auto found = FindReference(parent);
+    assert(found == GetInvalidSize());
+#endif
     FreeNode(parent);
 }
 
