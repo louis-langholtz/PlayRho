@@ -71,15 +71,15 @@ namespace playrho
         ///   constructor.
         Length2 GetLocalCenter() const noexcept { return localCenter; }
         
-        /// @brief Gets the alpha0 for this sweep.
+        /// @brief Gets the alpha 0 for this sweep.
         /// @return Value between 0 and less than 1.
         Real GetAlpha0() const noexcept { return alpha0; }
         
         /// @brief Advances the sweep by a factor of the difference between the given time alpha
-        ///   and the sweep's alpha0.
+        ///   and the sweep's alpha 0.
         /// @details This advances position 0 (<code>pos0</code>) of the sweep towards position
         ///   1 (<code>pos1</code>) by a factor of the difference between the given alpha and
-        ///   the alpha0.
+        ///   the alpha 0.
         ///
         /// @param alpha Valid new time factor in [0,1) to update the sweep to. Behavior is
         ///   undefined if value is invalid.
@@ -102,7 +102,8 @@ namespace playrho
         Length2 localCenter = Length2{0_m, 0_m};
         
         /// @brief Fraction of the current time step in the range [0,1]
-        /// @note pos0.linear and pos0.angular are the positions at alpha0.
+        /// @note <code>pos0.linear</code> and <code>pos0.angular</code> are the positions at
+        ///   <code>alpha0</code>.
         /// @note 4-bytes.
         Real alpha0 = 0;
     };

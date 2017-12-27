@@ -44,7 +44,7 @@ namespace playrho
     /// @warning this should be called outside of a time step.
     void Dump(const World& world);
     
-    /// Dump body to a log file
+    /// Dump body to a log file.
     void Dump(const Body& body, std::size_t bodyIndex);
     
     /// Dump joint to the log file.
@@ -53,7 +53,7 @@ namespace playrho
     /// Dump fixture to log file.
     void Dump(const Fixture& fixture, std::size_t bodyIndex);
 
-    /// Dump joint to dmLog
+    /// Dump joint to log file.
     void Dump(const DistanceJoint& joint, std::size_t index);
 
     /// Dump joint to the log file.
@@ -71,7 +71,7 @@ namespace playrho
     /// @brief Dumps the joint to the log file.
     void Dump(const PrismaticJoint& joint, std::size_t index);
 
-    /// Dump joint to dmLog
+    /// Dump joint to log file.
     void Dump(const PulleyJoint& joint, std::size_t index);
 
     /// @brief Dumps the joint to the log file.

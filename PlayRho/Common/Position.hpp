@@ -122,9 +122,11 @@ namespace playrho {
     /// Gets the position between two positions at a given unit interval.
     /// @param pos0 Position at unit interval value of 0.
     /// @param pos1 Position at unit interval value of 1.
-    /// @param beta Unit interval (value between 0 and 1) of travel between pos0 and pos1.
-    /// @return pos0 if pos0 == pos1 or beta == 0, pos1 if beta == 1, or at the given
-    ///   unit interval value between pos0 and pos1.
+    /// @param beta Unit interval (value between 0 and 1) of travel between position 0 and
+    ///   position 1.
+    /// @return position 0 if <code>pos0 == pos1</code> or <code>beta == 0</code>,
+    ///   position 1 if <code>beta == 1</code>, or at the given unit interval value
+    ///   between position 0 and position 1.
     /// @relatedalso Position2D
     PLAYRHO_CONSTEXPR inline Position2D GetPosition(const Position2D pos0, const Position2D pos1,
                                    const Real beta) noexcept

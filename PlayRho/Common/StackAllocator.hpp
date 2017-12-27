@@ -29,7 +29,7 @@ namespace playrho {
 /// This is a stack allocator used for fast per step allocations.
 /// You must nest allocate/free pairs. The code will assert
 /// if you try to interleave multiple allocate/free pairs.
-/// @note This class satisfies the C++11 std::unique_ptr() Deleter concept.
+/// @note This class satisfies the C++11 <code>std::unique_ptr()</code> Deleter concept.
 /// @note This data structure is 64-bytes large (on at least one 64-bit platform).
 class StackAllocator
 {
@@ -84,7 +84,7 @@ public:
 
     /// Functional operator for freeing memory allocated by this object.
     /// @details This method frees memory (like called Free) and allows this object
-    ///   to be used as deleter to std::unique_ptr.
+    ///   to be used as deleter to <code>std::unique_ptr</code>.
     void operator()(void *p) noexcept
     {
         Free(p);
@@ -139,7 +139,7 @@ private:
     {
         void* data; ///< Data.
         size_type size; ///< Size.
-        bool usedMalloc; ///< Whether malloc was used.
+        bool usedMalloc; ///< Whether <code>malloc</code> was used.
     };
     
     char* const m_data; ///< Data.

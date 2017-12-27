@@ -156,8 +156,8 @@ namespace playrho
     }
     
     /// @brief Gets the library defined name for the given type.
-    /// @details Provides an interface to a specializable function for getting C-style
-    ///   null-terminated array of characters that names the type.
+    /// @details Provides an interface to a function that can be specialized for getting
+    ///   a C-style null-terminated array of characters that names the type.
     /// @return Non-null pointer to C-style string name of specified type.
     template <typename T>
     inline const char* GetTypeName() noexcept
@@ -210,37 +210,38 @@ namespace playrho
     > >: std::true_type {};
     
     /// @brief Has-type trait template class.
-    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
-    ///   "How do I find out if a tuple contains a type?".
+    /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
+    ///   to the question of: "How do I find out if a tuple contains a type?".
     /// @sa https://stackoverflow.com/a/25958302/7410358
     template <typename T, typename Tuple>
     struct HasType;
     
-    /// @brief Has-type trait template class specialized for std::tuple classes.
-    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
-    ///   "How do I find out if a tuple contains a type?".
+    /// @brief Has-type trait template class specialized for <code>std::tuple</code> classes.
+    /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
+    ///   to the question of: "How do I find out if a tuple contains a type?".
     /// @sa https://stackoverflow.com/a/25958302/7410358
     template <typename T>
     struct HasType<T, std::tuple<>> : std::false_type {};
     
     /// @brief Has-type trait true class.
-    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
-    ///   "How do I find out if a tuple contains a type?".
+    /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
+    ///   to the question of: "How do I find out if a tuple contains a type?".
     /// @sa https://stackoverflow.com/a/25958302/7410358
     template <typename T, typename... Ts>
     struct HasType<T, std::tuple<T, Ts...>> : std::true_type {};
     
     /// @brief Has-type trait template super class.
-    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
-    ///   "How do I find out if a tuple contains a type?".
+    /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
+    ///   to the question of: "How do I find out if a tuple contains a type?".
     /// @sa https://stackoverflow.com/a/25958302/7410358
     template <typename T, typename U, typename... Ts>
     struct HasType<T, std::tuple<U, Ts...>> : HasType<T, std::tuple<Ts...>> {};
 
     /// @brief Tuple contains type alias.
-    /// @details Alias in case the trait itself should be std::true_type or std::false_type.
-    /// @note This is from Piotr Skotnicki's answer on StackOverflow to the question of
-    ///   "How do I find out if a tuple contains a type?".
+    /// @details Alias in case the trait itself should be <code>std::true_type</code> or
+    ///   <code>std::false_type</code>.
+    /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
+    ///   to the question of: "How do I find out if a tuple contains a type?".
     /// @sa https://stackoverflow.com/a/25958302/7410358
     template <typename T, typename Tuple>
     using TupleContainsType = typename HasType<T, Tuple>::type;

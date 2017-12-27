@@ -165,7 +165,7 @@ namespace playrho
         std::array<value_type,MAXSIZE> m_elements;
     };
     
-    /// @brief ArrayList append operator.
+    /// @brief <code>ArrayList</code> append operator.
     template <typename T, std::size_t S>
     ArrayList<T, S>& operator+= (ArrayList<T, S>& lhs, const typename ArrayList<T, S>::data_type& rhs)
     {
@@ -173,7 +173,7 @@ namespace playrho
         return lhs;
     }
 
-    /// @brief ArrayList add operator.
+    /// @brief <code>ArrayList</code> add operator.
     template <typename T, std::size_t S>
     ArrayList<T, S> operator+ (ArrayList<T, S> lhs, const typename ArrayList<T, S>::data_type& rhs)
     {
@@ -185,7 +185,7 @@ namespace playrho
 
 namespace std {
 
-    /// Tuple size specialization for ArrayList classes.
+    /// Tuple size specialization for <code>ArrayList</code> classes.
     template< class T, size_t N, typename SIZE_TYPE >
     class tuple_size< playrho::ArrayList<T, N, SIZE_TYPE> >: public integral_constant<size_t, N>
     {

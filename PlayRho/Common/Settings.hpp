@@ -42,7 +42,7 @@
 /**
  * @namespace playrho
  *
- * Namespace for all PlayRho related names.
+ * Name space for all PlayRho related names.
  */
 namespace playrho {
 namespace details {
@@ -204,7 +204,7 @@ PLAYRHO_CONSTEXPR const auto DefaultRegMinMomentum = Momentum{0_Ns / 100};
 PLAYRHO_CONSTEXPR const auto DefaultToiMinMomentum = Momentum{0_Ns / 100};
 
 /// @brief Maximum number of bodies in a world.
-/// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
+/// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
 PLAYRHO_CONSTEXPR const auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
@@ -226,7 +226,7 @@ PLAYRHO_CONSTEXPR const auto InvalidContactIndex = static_cast<ContactCounter>(-
 PLAYRHO_CONSTEXPR const auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodies - 1} / ContactCounter{2};
 
 /// @brief Maximum number of joints in a world.
-/// @note This is 65534 based off std::uint16_t and eliminating one value for invalid.
+/// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
 PLAYRHO_CONSTEXPR const auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 

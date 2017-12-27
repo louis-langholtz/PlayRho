@@ -79,8 +79,8 @@ namespace std {
         static PLAYRHO_CONSTEXPR const bool has_infinity = true; ///< Whether can represent infinity.
         static PLAYRHO_CONSTEXPR const bool has_quiet_NaN = true; ///< Whether can represent quiet-NaN.
         static PLAYRHO_CONSTEXPR const bool has_signaling_NaN = false; ///< Whether can represent signaling-NaN.
-        static PLAYRHO_CONSTEXPR const float_denorm_style has_denorm = denorm_absent; ///< Denorm style used.
-        static PLAYRHO_CONSTEXPR const bool has_denorm_loss = false; ///< Has denorm loss amount.
+        static PLAYRHO_CONSTEXPR const float_denorm_style has_denorm = denorm_absent; ///< <code>Denorm</code> style used.
+        static PLAYRHO_CONSTEXPR const bool has_denorm_loss = false; ///< Has <code>denorm</code> loss amount.
         
         /// @brief Gets the infinite value for the type.
         static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> infinity() noexcept { return playrho::Fixed<BT,FB>::GetInfinity(); }
@@ -91,7 +91,7 @@ namespace std {
         /// @brief Gets the signaling NaN value for the type.
         static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> signaling_NaN() noexcept { return playrho::Fixed<BT,FB>{0}; }
         
-        /// @brief Gets the denorm value for the type.
+        /// @brief Gets the <code>denorm</code> value for the type.
         static PLAYRHO_CONSTEXPR inline playrho::Fixed<BT,FB> denorm_min() noexcept { return playrho::Fixed<BT,FB>{0}; }
         
         static PLAYRHO_CONSTEXPR const bool is_iec559 = false; ///< @brief Not an IEEE 754 floating-point type.
@@ -99,7 +99,7 @@ namespace std {
         static PLAYRHO_CONSTEXPR const bool is_modulo = false; ///< Doesn't modulo arithmetic overflows.
         
         static PLAYRHO_CONSTEXPR const bool traps = false; ///< Doesn't do traps.
-        static PLAYRHO_CONSTEXPR const bool tinyness_before = false; ///< Doesn't detect tinyness before rounding.
+        static PLAYRHO_CONSTEXPR const bool tinyness_before = false; ///< Doesn't detect <code>tinyness</code> before rounding.
         static PLAYRHO_CONSTEXPR const float_round_style round_style = round_toward_zero; ///< Rounds down.
     };
     

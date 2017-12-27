@@ -143,10 +143,10 @@ public:
     /// @details Called when the contact's "touching" property becomes false, or just before
     ///   the contact is destroyed.
     ///
-    /// @note This contact persists until the broadphase determines there's no overlap anymore
+    /// @note This contact persists until the broad phase determines there's no overlap anymore
     ///   between the two fixtures.
-    /// @note If the contact's "touching" property becomes true again, BeginContact will be called
-    ///   again for this contact.
+    /// @note If the contact's "touching" property becomes true again, <code>BeginContact</code>
+    ///   will be called again for this contact.
     ///
     /// @param contact Contact that's about to be destroyed or whose "touching" property has become
     ///   false.
@@ -165,9 +165,9 @@ public:
     /// @note This is called only for awake bodies.
     /// @note This is called even when the number of contact points is zero.
     /// @note This is not called for sensors.
-    /// @note If you set the number of contact points to zero, you will not
-    ///   get an EndContact callback. However, you may get a BeginContact callback
-    ///   the next step.
+    /// @note If you set the number of contact points to zero, you will not get an
+    ///   <code>EndContact</code> callback. However, you may get a <code>BeginContact</code>
+    ///   callback the next step.
     ///
     virtual void PreSolve(Contact& contact, const Manifold& oldManifold) = 0;
 

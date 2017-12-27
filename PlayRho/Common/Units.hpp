@@ -165,7 +165,7 @@ namespace playrho
     /// @sa https://en.wikipedia.org/wiki/Area
     using Area = PLAYRHO_QUANTITY(boost::units::si::area);
     
-    /// @brief Aereal (surface) density quantity.
+    /// @brief Area (surface) density quantity.
     /// @details This is the type alias for the area density quantity. It's a derived quantity.
     /// @note This quantity's dimensions are: mass per area (M L^-2).
     /// @note The SI derived unit of area density is kilogram per meter-squared.
@@ -239,7 +239,7 @@ namespace playrho
     using SecondMomentOfArea = PLAYRHO_QUANTITY(boost::units::si::second_moment_of_area);
     
     /// @brief Rotational inertia quantity.
-    /// @details This is the type alias for the rotational intertia quantity. It's a
+    /// @details This is the type alias for the rotational inertia quantity. It's a
     ///   derived quantity that's also called the moment of inertia or angular mass.
     /// @note This quantity's dimensions are: length-squared mass per angle-squared (L^2 M QP^-2).
     /// @note The SI derived unit of rotational inertia is the kilogram per meter-squared.
@@ -298,7 +298,7 @@ namespace playrho
     /// @sa PhysicalQuantities.
     /// @{
 
-    /// @brief Second unit of Time.
+    /// @brief Second unit of time.
     /// @sa Time.
     PLAYRHO_CONSTEXPR const auto Second = PLAYRHO_UNIT(Time, boost::units::si::second);
 
@@ -307,48 +307,48 @@ namespace playrho
     PLAYRHO_CONSTEXPR const auto SquareSecond = Second * Second;
 
     /// @brief Hertz unit of Frequency.
-    /// @details Represents the hertz unit of Frequency (Hz).
+    /// @details Represents the hertz unit of frequency (Hz).
     /// @sa Frequency.
     /// @sa https://en.wikipedia.org/wiki/Hertz
     PLAYRHO_CONSTEXPR const auto Hertz = PLAYRHO_UNIT(Frequency, boost::units::si::hertz);
 
     /// @brief Meter unit of Length.
-    /// @details A unit of the Length quantity.
+    /// @details A unit of the length quantity.
     /// @sa Length.
     PLAYRHO_CONSTEXPR const auto Meter = PLAYRHO_UNIT(Length, boost::units::si::meter);
 
-    /// @brief Meter per second unit of LinearVelocity.
+    /// @brief Meter per second unit of linear velocity.
     /// @sa LinearVelocity.
     PLAYRHO_CONSTEXPR const auto MeterPerSecond = PLAYRHO_UNIT(LinearVelocity,
         boost::units::si::meter_per_second);
 
-    /// @brief Meter per square second unit of LinearAcceleration.
+    /// @brief Meter per square second unit of linear acceleration.
     /// @sa LinearAcceleration.
     PLAYRHO_CONSTEXPR const auto MeterPerSquareSecond = PLAYRHO_UNIT(LinearAcceleration,
         boost::units::si::meter_per_second_squared);
 
-    /// @brief Kilogram unit of Mass.
+    /// @brief Kilogram unit of mass.
     /// @sa Mass.
     PLAYRHO_CONSTEXPR const auto Kilogram = PLAYRHO_UNIT(Mass, boost::units::si::kilogram);
 
-    /// @brief Square meter unit of Area.
+    /// @brief Square meter unit of area.
     /// @sa Area.
     PLAYRHO_CONSTEXPR const auto SquareMeter = PLAYRHO_UNIT(Area, boost::units::si::square_meter);
 
-    /// @brief Cubic meter unit of Volume.
+    /// @brief Cubic meter unit of volume.
     PLAYRHO_CONSTEXPR const auto CubicMeter = Meter * Meter * Meter;
 
-    /// @brief Kilogram per square meter unit of AreaDensity.
+    /// @brief Kilogram per square meter unit of area density.
     /// @sa AreaDensity.
     PLAYRHO_CONSTEXPR const auto KilogramPerSquareMeter = PLAYRHO_UNIT(AreaDensity,
         boost::units::si::kilogram_per_square_meter);
 
-    /// @brief Radian unit of Angle.
+    /// @brief Radian unit of angle.
     /// @sa Angle.
     /// @sa Degree.
     PLAYRHO_CONSTEXPR const auto Radian = PLAYRHO_UNIT(Angle, boost::units::si::radian);
     
-    /// @brief Degree unit of Angle quantity.
+    /// @brief Degree unit of angle quantity.
     /// @sa Angle.
     /// @sa Radian.
     PLAYRHO_CONSTEXPR const auto Degree = Angle{Radian * Pi / Real{180}};
@@ -358,40 +358,40 @@ namespace playrho
     /// @sa Radian.
     PLAYRHO_CONSTEXPR const auto SquareRadian = Radian * Radian;
 
-    /// @brief Radian per second unit of AngularVelocity.
+    /// @brief Radian per second unit of angular velocity.
     /// @sa AngularVelocity.
     PLAYRHO_CONSTEXPR const auto RadianPerSecond = PLAYRHO_UNIT(AngularVelocity,
         boost::units::si::radian_per_second);
     
-    /// @brief Degree per second unit of AngularVelocity.
+    /// @brief Degree per second unit of angular velocity.
     /// @sa AngularVelocity.
     PLAYRHO_CONSTEXPR const auto DegreePerSecond = AngularVelocity{RadianPerSecond * Degree / Radian};
 
-    /// @brief Radian per square second unit of AngularAcceleration.
+    /// @brief Radian per square second unit of angular acceleration.
     /// @sa AngularAcceleration.
     PLAYRHO_CONSTEXPR const auto RadianPerSquareSecond = Radian / (Second * Second);
 
-    /// @brief Degree per square second unit of AngularAcceleration.
+    /// @brief Degree per square second unit of angular acceleration.
     /// @sa AngularAcceleration.
     PLAYRHO_CONSTEXPR const auto DegreePerSquareSecond = Degree / (Second * Second);
 
-    /// @brief Newton unit of Force.
+    /// @brief Newton unit of force.
     /// @sa Force.
     PLAYRHO_CONSTEXPR const auto Newton = PLAYRHO_UNIT(Force, boost::units::si::newton);
 
-    /// @brief Newton meter unit of Torque.
+    /// @brief Newton meter unit of torque.
     /// @sa Torque.
     PLAYRHO_CONSTEXPR const auto NewtonMeter = PLAYRHO_UNIT(Torque, boost::units::si::newton_meter);
 
-    /// @brief Newton second unit of Momentum.
+    /// @brief Newton second unit of momentum.
     /// @sa Momentum.
     PLAYRHO_CONSTEXPR const auto NewtonSecond = Newton * Second;
     
-    /// @brief Newton meter second unit of AngularMomentum.
+    /// @brief Newton meter second unit of angular momentum.
     /// @sa AngularMomentum.
     PLAYRHO_CONSTEXPR const auto NewtonMeterSecond = NewtonMeter * Second;
     
-    /// @brief Revolutions per minute units of AngularVelocity.
+    /// @brief Revolutions per minute units of angular velocity.
     /// @sa AngularVelocity
     PLAYRHO_CONSTEXPR const auto RevolutionsPerMinute = 2 * Pi * Radian / (Real{60} * Second);
     
