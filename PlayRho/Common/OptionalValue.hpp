@@ -29,7 +29,7 @@ namespace playrho {
     
     /// @brief Optional value template class.
     /// @details An implementation of the optional value type idea.
-    /// @note This is meant to be functionally compatible with C++17's std::optional.
+    /// @note This is meant to be compatible with <code>std::optional</code> from C++ 17.
     /// @note Use of this type directly is discouraged. Use the Optional type alias instead.
     template<typename T>
     class OptionalValue
@@ -70,7 +70,7 @@ namespace playrho {
         /// @brief Member of pointer operator.
         PLAYRHO_CONSTEXPR inline T* operator-> ();
 
-        /// @brief bool operator.
+        /// @brief Boolean operator.
         PLAYRHO_CONSTEXPR inline explicit operator bool() const noexcept;
 
         /// @brief Whether this optional value has a value.
@@ -110,7 +110,7 @@ namespace playrho {
         
     private:
         value_type m_value = value_type{}; ///< Underlying value.
-        bool m_set = false; ///< Whether this optional's value is set.
+        bool m_set = false; ///< Whether <code>m_value</code> is set.
     };
     
     template<typename T>

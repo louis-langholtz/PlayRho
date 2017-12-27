@@ -62,9 +62,9 @@ namespace playrho {
         /// @note This data structure is 20-bytes large at least on one 64-bit architecture.
         struct PointData
         {
-            Length2 location; ///< Location of point or the invalid Length2 value.
+            Length2 location; ///< Location of point or the invalid value.
             Momentum2 impulse; ///< "Normal" and "tangent" impulses at the point.
-            Length separation; ///< Separation at point or the invalid Length value.
+            Length separation; ///< Separation at point or the invalid value.
         };
         
         /// Default constructor.

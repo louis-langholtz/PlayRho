@@ -124,8 +124,8 @@ public:
     ///   are straight, corners between them (the vertices) are rounded and treated
     ///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
     ///   therefore will be more prone to rolling or having other shapes more prone
-    ///   to roll off of them. Here's an image of a shape configured via a PolygonShapeConf
-    ///   with it's skin drawn:
+    ///   to roll off of them. Here's an image of a shape configured via a
+    ///   <code>PolygonShapeConf</code> with it's skin drawn:
     ///
     /// @image html SkinnedPolygon.png
     ///

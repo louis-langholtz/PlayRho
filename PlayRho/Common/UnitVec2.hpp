@@ -316,7 +316,7 @@ PLAYRHO_CONSTEXPR inline UnitVec2 InverseRotate(const UnitVec2 vector, const Uni
     return vector.Rotate(angle.FlipY());
 }
     
-/// @brief Gets an invalid value for the UnitVec2 type.
+/// @brief Gets an invalid value for the <code>UnitVec2</code> type.
 template <> PLAYRHO_CONSTEXPR inline UnitVec2 GetInvalid() noexcept { return UnitVec2{}; }
 
 /// @brief Determines if the given value is valid.
@@ -325,7 +325,7 @@ template <> PLAYRHO_CONSTEXPR inline bool IsValid(const UnitVec2& value) noexcep
     return IsValid(value.GetX()) && IsValid(value.GetY()) && (value != UnitVec2::GetZero());
 }
 
-/// @brief Gets the I'th element of the given collection.
+/// @brief Gets the specified element of the given collection.
 template <size_t I>
 PLAYRHO_CONSTEXPR inline UnitVec2::value_type Get(UnitVec2 v) noexcept
 {
@@ -337,14 +337,14 @@ PLAYRHO_CONSTEXPR inline UnitVec2::value_type Get(UnitVec2 v) noexcept
     }
 }
 
-/// @brief Gets the 0'th element of the given collection.
+/// @brief Gets element 0 of the given collection.
 template <>
 PLAYRHO_CONSTEXPR inline UnitVec2::value_type Get<0>(UnitVec2 v) noexcept
 {
     return v.GetX();
 }
 
-/// @brief Gets the 1'st element of the given collection.
+/// @brief Gets element 1 of the given collection.
 template <>
 PLAYRHO_CONSTEXPR inline UnitVec2::value_type Get<1>(UnitVec2 v) noexcept
 {
@@ -361,11 +361,11 @@ inline ::std::ostream& operator<<(::std::ostream& os, const UnitVec2& value)
 
 namespace std {
 
-/// @brief Tuple size info for UnitVec2
+/// @brief Tuple size info for <code>UnitVec2</code>.
 template<>
 class tuple_size< playrho::UnitVec2 >: public std::integral_constant<size_t, 2> {};
 
-/// @brief Tuple element type info for UnitVec2
+/// @brief Tuple element type info for <code>UnitVec2</code>.
 template<std::size_t I>
 class tuple_element<I, playrho::UnitVec2>
 {

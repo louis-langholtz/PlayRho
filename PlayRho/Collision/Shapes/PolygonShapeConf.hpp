@@ -40,13 +40,13 @@ namespace playrho {
 class PolygonShapeConf: public ShapeDefBuilder<PolygonShapeConf>
 {
 public:
-    /// @brief Gets the default vertex radius for the PolygonShapeConf.
+    /// @brief Gets the default vertex radius for the <code>PolygonShapeConf</code>.
     static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
     {
         return DefaultLinearSlop * 2;
     }
     
-    /// @brief Gets the default configuration for a PolygonShapeConf.
+    /// @brief Gets the default configuration for a <code>PolygonShapeConf</code>.
     static inline PolygonShapeConf GetDefaultConf() noexcept
     {
         return PolygonShapeConf{};
@@ -59,7 +59,7 @@ public:
                      const PolygonShapeConf& conf = GetDefaultConf()) noexcept;
     
     /// @brief Creates a convex hull from the given array of local points.
-    /// @note The size of the span must be in the range [1, MaxShapeVertices].
+    /// @note The size of the span must be in the range [1, <code>MaxShapeVertices</code>].
     /// @warning the points may be re-ordered, even if they form a convex polygon
     /// @warning collinear points are handled but not removed. Collinear points
     /// may lead to poor stacking behavior.
@@ -78,14 +78,14 @@ public:
     PolygonShapeConf& SetAsBox(Length hx, Length hy, Length2 center, Angle angle) noexcept;
     
     /// @brief Sets the vertices to a convex hull of the given ones.
-    /// @note The size of the span must be in the range [1, MaxShapeVertices].
+    /// @note The size of the span must be in the range [1, <code>MaxShapeVertices</code>].
     /// @warning Points may be re-ordered, even if they form a convex polygon
     /// @warning Collinear points are handled but not removed. Collinear points
     ///   may lead to poor stacking behavior.
     PolygonShapeConf& Set(Span<const Length2> verts) noexcept;
     
     /// @brief Sets the vertices to a convex hull of the given ones.
-    /// @note The size of the span must be in the range [1, MaxShapeVertices].
+    /// @note The size of the span must be in the range [1, <code>MaxShapeVertices</code>].
     /// @warning Points may be re-ordered, even if they form a convex polygon
     /// @warning Collinear points are handled but not removed. Collinear points
     ///   may lead to poor stacking behavior.
@@ -110,8 +110,8 @@ public:
     }
     
     /// Gets the vertex count.
-    /// @return value between 0 and MaxShapeVertices inclusive.
-    /// @see MaxShapeVertices.
+    /// @return value between 0 and <code>MaxShapeVertices</code> inclusive.
+    /// @see MaxShapeVertices
     VertexCounter GetVertexCount() const noexcept
     {
         return static_cast<VertexCounter>(m_vertices.size());

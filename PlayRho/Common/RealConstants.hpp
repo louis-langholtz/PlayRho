@@ -41,11 +41,12 @@ namespace playrho {
 ///
 /// @note While the include file definition of M_PI may be a POSIX compliance requirement
 ///   and initially attractive to use, it's apparently not a C++ standards requirement
-///   and casually including it pollutes the namespace of all code that uses this library.
-///   Whatever the case, MSVS2017 doesn't make it part of the cmath include without enabling
-///   _USE_MATH_DEFINES. So rather than add yet more C-preprocessor macros to all
-///   sources that this library may be compiled with, it's simply hard-coded in here
-///   instead using a C++ mechanism that also keeps it with the enclosing namespace.
+///   and casually including it pollutes the name space of all code that uses this library.
+///   Whatever the case, MSVC 2017 doesn't make it part of the <code>cmath</code> include
+///   without enabling <code>_USE_MATH_DEFINES</code>. So rather than add yet more
+///   C preprocessor macros to all sources that this library may be compiled with, it's
+///   simply hard-coded in here instead using a C++ mechanism that also keeps it with the
+///   enclosing name space.
 /// @note Any narrowing is intentional.
 ///
 /// @sa https://en.wikipedia.org/wiki/Pi
@@ -67,23 +68,23 @@ PLAYRHO_CONSTEXPR const auto SquareRootTwo =
 /// @sa https://en.wikipedia.org/wiki/Metric_prefix
 /// @{
 
-/// @brief Centi (1 x 10^-2).
+/// @brief Centi- (1 x 10^-2).
 /// @sa https://en.wikipedia.org/wiki/Centi-
 PLAYRHO_CONSTEXPR const auto Centi = Real(1e-2);
 
-/// @brief Deci (1 x 10^-1).
+/// @brief Deci- (1 x 10^-1).
 /// @sa https://en.wikipedia.org/wiki/Deci-
 PLAYRHO_CONSTEXPR const auto Deci = Real(1e-1);
 
-/// @brief Kilo (1 x 10^3).
+/// @brief Kilo- (1 x 10^3).
 /// @sa https://en.wikipedia.org/wiki/Kilo-
 PLAYRHO_CONSTEXPR const auto Kilo = Real(1e3);
 
-/// @brief Giga (1 x 10^9).
+/// @brief Giga- (1 x 10^9).
 /// @sa https://en.wikipedia.org/wiki/Giga-
 PLAYRHO_CONSTEXPR const auto Giga = Real(1e9);
 
-/// @brief Yotta (1 x 10^24).
+/// @brief Yotta- (1 x 10^24).
 /// @sa https://en.wikipedia.org/wiki/Yotta-
 PLAYRHO_CONSTEXPR const auto Yotta = Real(1e24);
 

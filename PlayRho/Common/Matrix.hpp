@@ -48,7 +48,7 @@ namespace playrho {
     /// @brief 2 by 2 matrix of Mass elements.
     using Mass22 = Matrix22<Mass>;
 
-    /// @brief 2 by 2 matrix of InvMass elements.
+    /// @brief 2 by 2 matrix of <code>InvMass</code> elements.
     using InvMass22 = Matrix22<InvMass>;
     
     /// @brief 3 by 3 matrix of Real elements.
@@ -61,7 +61,7 @@ namespace playrho {
         return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
     }
     
-    /// @brief Gets an invalid value for a Mat22.
+    /// @brief Gets an invalid value for a <code>Mat22</code>.
     template <>
     PLAYRHO_CONSTEXPR inline Mat22 GetInvalid() noexcept
     {

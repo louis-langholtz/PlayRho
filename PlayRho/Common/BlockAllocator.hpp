@@ -136,13 +136,13 @@ namespace playrho {
         size_type nelem; ///< Number of elements.
     };
     
-    /// @brief BlockAllocator equality operator.
+    /// @brief <code>BlockAllocator</code> equality operator.
     inline bool operator==(const BlockAllocator& a, const BlockAllocator& b)
     {
         return &a == &b;
     }
     
-    /// @brief BlockAllocator inequality operator.
+    /// @brief <code>BlockAllocator</code> inequality operator.
     inline bool operator!=(const BlockAllocator& a, const BlockAllocator& b)
     {
         return &a != &b;

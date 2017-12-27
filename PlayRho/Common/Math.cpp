@@ -46,7 +46,7 @@ Length2 ComputeCentroid(const Span<const Length2>& vertices)
     auto c = Length2{} * Area{0};
     auto area = Area{0};
     
-    // pRef is the reference point for forming triangles.
+    // <code>pRef</code> is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
     const auto pRef = Average(vertices);
 

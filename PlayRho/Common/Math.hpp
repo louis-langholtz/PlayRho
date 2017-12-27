@@ -204,7 +204,7 @@ inline Vec2 RoundOff(Vec2 value, std::uint32_t precision = 100000)
     return Vec2{RoundOff(value[0], precision), RoundOff(value[1], precision)};
 }
 
-/// @brief Gets a Vec2 representation of the given value.
+/// @brief Gets a <code>Vec2</code> representation of the given value.
 PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const UnitVec2 value)
 {
     return Vec2{Get<0>(value), Get<1>(value)};
@@ -235,8 +235,8 @@ AlmostEqual(T x, T y, int ulp = 2)
     return (Abs(x - y) < (std::numeric_limits<T>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
 }
 
-/// @brief Modulo operation using std::fmod.
-/// @note Modulo via std::fmod appears slower than via std::trunc.
+/// @brief Modulo operation using <code>std::fmod</code>.
+/// @note Modulo via <code>std::fmod</code> appears slower than via <code>std::trunc</code>.
 /// @sa ModuloViaTrunc
 template <typename T>
 inline auto ModuloViaFmod(T dividend, T divisor) noexcept
@@ -245,8 +245,8 @@ inline auto ModuloViaFmod(T dividend, T divisor) noexcept
     return static_cast<T>(fmod(dividend, divisor));
 }
 
-/// @brief Modulo operation using std::trunc.
-/// @note Modulo via std::fmod appears slower than via std::trunc.
+/// @brief Modulo operation using <code>std::trunc</code>.
+/// @note Modulo via <code>std::fmod</code> appears slower than via <code>std::trunc</code>.
 /// @sa ModuloViaFmod
 template <typename T>
 inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
@@ -294,10 +294,10 @@ inline Position2D GetNormalized(const Position2D& val) noexcept
     return Position2D{val.linear, GetNormalized(val.angular)};
 }
 
-/// @brief Gets a sweep with the given sweeps's angles normalized.
+/// @brief Gets a sweep with the given sweep's angles normalized.
 /// @param sweep Sweep to return with its angles normalized.
-/// @return Sweep with its pos0 angle to be between -2 pi and 2 pi
-///    and its pos1 angle reduced by the amount pos0's angle was reduced by.
+/// @return Sweep with its position 0 angle to be between -2 pi and 2 pi and its
+///   position 1 angle reduced by the amount the position 0 angle was reduced by.
 /// @relatedalso Sweep2D
 inline Sweep2D GetNormalized(Sweep2D sweep) noexcept
 {
@@ -357,8 +357,8 @@ inline auto GetMagnitude(T value)
 ///   (at an angle of +/- 90 degrees from each other).
 ///
 /// @note This operation is commutative. I.e. Dot(a, b) == Dot(b, a).
-/// @note If A and B are the same vectors, GetMagnitudeSquared(Vec2) returns the same value
-///   using effectively one less input parameter.
+/// @note If A and B are the same vectors, <code>GetMagnitudeSquared(Vec2)</code> returns
+///   the same value using effectively one less input parameter.
 /// @note This is similar to the <code>std::inner_product</code> standard library algorithm
 ///   except benchmark tests suggest this implementation is faster at least for
 ///   <code>Vec2</code> like instances.
@@ -742,16 +742,16 @@ PLAYRHO_CONSTEXPR inline Length2 InverseTransform(const Length2 v, const Transfo
 }
 
 /// @brief Multiplies a given transformation by another given transformation.
-/// @note v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
-///          = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p
+/// @note <code>v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
+///                = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p</code>
 PLAYRHO_CONSTEXPR inline Transformation2D Mul(const Transformation2D& A, const Transformation2D& B) noexcept
 {
     return Transformation2D{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
 }
 
 /// @brief Inverse multiplies a given transformation by another given transformation.
-/// @note v2 = A.q' * (B.q * v1 + B.p - A.p)
-///          = A.q' * B.q * v1 + A.q' * (B.p - A.p)
+/// @note <code>v2 = A.q' * (B.q * v1 + B.p - A.p)
+///                = A.q' * B.q * v1 + A.q' * (B.p - A.p)</code>
 PLAYRHO_CONSTEXPR inline Transformation2D MulT(const Transformation2D& A, const Transformation2D& B) noexcept
 {
     const auto dp = B.p - A.p;
@@ -791,10 +791,10 @@ PLAYRHO_CONSTEXPR inline T Clamp(T value, T low, T high) noexcept
 
 /// @brief Gets the next largest power of 2
 /// @details
-/// Given a binary integer value x, the next largest power of 2 can be computed by a SWAR algorithm
-/// that recursively "folds" the upper bits into the lower bits. This process yields a bit vector with
-/// the same most significant 1 as x, but all 1's below it. Adding 1 to that value yields the next
-/// largest power of 2. For a 64-bit value:"
+/// Given a binary integer value x, the next largest power of 2 can be computed by a S.W.A.R.
+/// algorithm that recursively "folds" the upper bits into the lower bits. This process yields
+/// a bit vector with the same most significant 1 as x, but all one's below it. Adding 1 to
+/// that value yields the next largest power of 2. For a 64-bit value:"
 inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
 {
     x |= (x >>  1u);
@@ -824,7 +824,7 @@ inline Transformation2D GetTransformation(const Position2D pos, const Length2 lo
 
 /// @brief Gets the interpolated transform at a specific time.
 /// @param sweep Sweep data to get the transform from.
-/// @param beta Time factor in [0,1], where 0 indicates alpha0.
+/// @param beta Time factor in [0,1], where 0 indicates alpha 0.
 /// @return Transformation of the given sweep at the specified time.
 inline Transformation2D GetTransformation(const Sweep2D& sweep, const Real beta) noexcept
 {
@@ -834,7 +834,7 @@ inline Transformation2D GetTransformation(const Sweep2D& sweep, const Real beta)
 }
 
 /// @brief Gets the transform at "time" zero.
-/// @note This is like calling GetTransformation(sweep, 0), except more efficiently.
+/// @note This is like calling <code>GetTransformation(sweep, 0)</code>, except more efficiently.
 /// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time zero.
@@ -844,7 +844,7 @@ inline Transformation2D GetTransform0(const Sweep2D& sweep) noexcept
 }
 
 /// @brief Gets the transform at "time" one.
-/// @note This is like calling GetTransformation(sweep, 1.0), except more efficiently.
+/// @note This is like calling <code>GetTransformation(sweep, 1.0)</code>, except more efficiently.
 /// @sa GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time one.
@@ -868,8 +868,8 @@ inline Real Normalize(Vec2& vector)
 }
 
 /// @brief Gets the contact relative velocity.
-/// @note If relA and relB are the zero vectors, the resulting value is simply
-///    velB.linear - velA.linear.
+/// @note If <code>relA</code> and <code>relB</code> are the zero vectors, the resulting
+///    value is simply <code>velB.linear - velA.linear</code>.
 inline LinearVelocity2
 GetContactRelVelocity(const Velocity2D velA, const Length2 relA,
                       const Velocity2D velB, const Length2 relB) noexcept

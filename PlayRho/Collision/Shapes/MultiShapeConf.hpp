@@ -83,25 +83,26 @@ namespace playrho {
     /// @ingroup PartsGroup
     struct MultiShapeConf: public ShapeDefBuilder<MultiShapeConf>
     {
-        /// @brief Gets the default vertex radius for the MultiShapeConf.
+        /// @brief Gets the default vertex radius for the <code>MultiShapeConf</code>.
         static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
         {
             return DefaultLinearSlop * 2;
         }
         
-        /// @brief Gets the default configuration for a MultiShapeConf.
+        /// @brief Gets the default configuration for a <code>MultiShapeConf</code>.
         static inline MultiShapeConf GetDefaultConf() noexcept
         {
             return MultiShapeConf{};
         }
         
-        inline MultiShapeConf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+        inline MultiShapeConf():
+            ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
         {
             // Intentionally empty.
         }
         
         /// Creates a convex hull from the given set of local points.
-        /// The size of the set must be in the range [1, MaxShapeVertices].
+        /// The size of the set must be in the range [1, <code>MaxShapeVertices</code>].
         /// @warning the points may be re-ordered, even if they form a convex polygon
         /// @warning collinear points are handled but not removed. Collinear points
         ///   may lead to poor stacking behavior.

@@ -269,7 +269,7 @@ public:
     /// Often floating division is much slower than multiplication.
     /// As such, it's likely faster to multiply values by this inverse value than to redivide
     /// them all the time by the rotational inertia.
-    /// @return Inverse rotational intertia (in 1/kg-m^2).
+    /// @return Inverse rotational inertia (in 1/kg-m^2).
     InvRotInertia GetInvRotInertia() const noexcept;
 
     /// @brief Set the mass properties to override the mass properties of the fixtures.

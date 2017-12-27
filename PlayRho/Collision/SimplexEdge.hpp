@@ -78,13 +78,13 @@ namespace playrho {
     }
     
     /// @brief Gets "w".
-    /// @return 2D vector value of the simplex edge's point B minus its point A.
+    /// @return 2-dimensional vector value of the simplex edge's point B minus its point A.
     PLAYRHO_CONSTEXPR inline Length2 GetPointDelta(const SimplexEdge& sv) noexcept
     {
         return sv.GetPointB() - sv.GetPointA();
     }
     
-    /// @brief SimplexEdge equality operator.
+    /// @brief Equality operator for <code>SimplexEdge</code>.
     PLAYRHO_CONSTEXPR inline bool operator== (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
     {
         return (lhs.GetPointA() == rhs.GetPointA())
@@ -92,7 +92,7 @@ namespace playrho {
             && (lhs.GetIndexPair() == rhs.GetIndexPair());
     }
     
-    /// @brief SimplexEdge inequality operator.
+    /// @brief Inequality operator for <code>SimplexEdge</code>.
     PLAYRHO_CONSTEXPR inline bool operator!= (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
     {
         return !(lhs == rhs);

@@ -164,7 +164,7 @@ public:
     /// @warning This function is locked during callbacks.
     /// @return Pointer to newly created joint.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @throws LengthError if this operation would create more than MaxJoints.
+    /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @throws InvalidArgument if the given definition is not allowed.
     /// @sa PhysicalEntities
     Joint* CreateJoint(const JointDef& def);
@@ -194,9 +194,11 @@ public:
     ///   do velocity or position resolutions respectively of the contacting bodies.
     /// @note While body velocities are updated accordingly (per the sum of forces acting on them),
     ///   body positions (barring any collisions) are updated as if they had moved the entire time
-    ///   step at those resulting velocities. In other words, a body initially at p0 going v0 fast
-    ///   with a sum acceleration of a, after time t and barring any collisions, will have a new
-    ///   velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
+    ///   step at those resulting velocities. In other words, a body initially at position 0
+    ///   (<code>p0</code>) going velocity 0 (<code>v0</code>) fast with a sum acceleration of
+    ///   <code>a</code>, after time <code>t</code> and barring any collisions, will have a new
+    ///   velocity (<code>v1</code>) of <code>v0 + (a * t)</code> and a new position
+    ///   (<code>p1</code>) of <code>p0 + v1 * t</code>.
     ///
     /// @post Static bodies are unmoved.
     /// @post Kinetic bodies are moved based on their previous velocities.
@@ -264,7 +266,7 @@ public:
 
     /// @brief Gets the world contact range.
     /// @warning contacts are created and destroyed in the middle of a time step.
-    /// Use ContactListener to avoid missing contacts.
+    /// Use <code>ContactListener</code> to avoid missing contacts.
     /// @return World contacts sized-range.
     SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
     
@@ -289,7 +291,7 @@ public:
 
     /// @brief Shifts the world origin.
     /// @note Useful for large worlds.
-    /// @note The body shift formula is: position -= newOrigin
+    /// @note The body shift formula is: <code>position -= newOrigin</code>.
     /// @param newOrigin the new origin with respect to the old origin
     /// @throws WrongState if this method is called while the world is locked.
     void ShiftOrigin(Length2 newOrigin);
@@ -333,7 +335,8 @@ public:
     ///   All fixtures attached to a body are implicitly destroyed when the body is destroyed.
     ///
     /// @warning This function is locked during callbacks.
-    /// @note Make sure to explicitly call ResetMassData after fixtures have been destroyed.
+    /// @note Make sure to explicitly call <code>ResetMassData</code> after fixtures have been
+    ///   destroyed.
     ///
     /// @param fixture the fixture to be removed.
     /// @param resetMassData Whether or not to reset the mass data of the associated body.
@@ -432,8 +435,9 @@ private:
     /// @brief Solves the given island (regularly).
     ///
     /// @details This:
-    ///   1. Updates every island-body's sweep.pos0 to its sweep.pos1.
-    ///   2. Updates every island-body's sweep.pos1 to the new normalized "solved" position for it.
+    ///   1. Updates every island-body's <code>sweep.pos0</code> to its <code>sweep.pos1</code>.
+    ///   2. Updates every island-body's <code>sweep.pos1</code> to the new normalized "solved"
+    ///      position for it.
     ///   3. Updates every island-body's velocity to the new accelerated, dampened, and "solved"
     ///      velocity for it.
     ///   4. Synchronizes every island-body's transform (by updating it to transform one of the
@@ -476,7 +480,7 @@ private:
     /// @brief Adds joints to the island.
     void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
     
-    /// @brief Removes unspeedables from the is islanded state.
+    /// @brief Removes <em>unspeedables</em> from the is <em>islanded</em> state.
     Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
 
     /// @brief Solves the step using successive time of impact (TOI) events.
@@ -501,9 +505,9 @@ private:
     /// @brief Solves the time of impact for bodies 0 and 1 of the given island.
     ///
     /// @details This:
-    ///   1. Updates pos0 of the sweeps of bodies 0 and 1.
-    ///   2. Updates pos1 of the sweeps, the transforms, and the velocities of the other bodies
-    ///      in this island.
+    ///   1. Updates position 0 of the sweeps of bodies 0 and 1.
+    ///   2. Updates position 1 of the sweeps, the transforms, and the velocities of the other
+    ///      bodies in this island.
     ///
     /// @pre <code>island.m_bodies</code> contains at least two bodies, the first two of which
     ///   are bodies 0 and 1.
@@ -680,7 +684,8 @@ private:
     /// if all of the following are true:
     ///   1. The bodies of the fixtures of the proxies are not the one and the same.
     ///   2. No contact already exists for these two proxies.
-    ///   3. The bodies of the proxies should collide (according to Body::ShouldCollide).
+    ///   3. The bodies of the proxies should collide (according to
+    ///      <code>Body::ShouldCollide</code>).
     ///   4. The contact filter says the fixtures of the proxies should collide.
     ///   5. There exists a contact-create function for the pair of shapes of the proxies.
     /// @post The size of the <code>m_contacts</code> collection is one greater-than it was
@@ -778,7 +783,7 @@ private:
     Joints m_joints; ///< Joint collection.
 
     /// @brief Container of contacts.
-    /// @note In the "AddPair" stress-test, 401 bodies can have some 31000 contacts
+    /// @note In the <em>add pair</em> stress-test, 401 bodies can have some 31000 contacts
     ///   during a given time step.
     Contacts m_contacts;
 
@@ -1066,9 +1071,10 @@ ContactCounter GetTouchingCount(const World& world) noexcept;
 ///
 /// @note While body velocities are updated accordingly (per the sum of forces acting on them),
 ///   body positions (barring any collisions) are updated as if they had moved the entire time
-///   step at those resulting velocities. In other words, a body initially at p0 going v0 fast
-///   with a sum acceleration of a, after time t and barring any collisions, will have a new
-///   velocity (v1) of v0 + (a * t) and a new position (p1) of p0 + v1 * t.
+///   step at those resulting velocities. In other words, a body initially at <code>p0</code>
+///   going <code>v0</code> fast with a sum acceleration of <code>a</code>, after time
+///   <code>t</code> and barring any collisions, will have a new velocity (<code>v1</code>) of
+///   <code>v0 + (a * t)</code> and a new position (<code>p1</code>) of <code>p0 + v1 * t</code>.
 ///
 /// @warning Varying the time step may lead to non-physical behaviors.
 ///
@@ -1125,7 +1131,7 @@ inline void ClearForces(World& world) noexcept
     SetAccelerations(world, Acceleration2D{world.GetGravity(), 0 * RadianPerSquareSecond});
 }
 
-/// @brief Creates a rectanglular enclosure.
+/// @brief Creates a rectangular enclosure.
 /// @relatedalso World
 Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions,
                                      const ShapeDef& baseConf);

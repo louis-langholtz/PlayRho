@@ -787,9 +787,9 @@ namespace playrho {
         return result == Fixed32::CmpResult::GreaterThan;
     }
     
-    /// @brief Gets the specialized name for the Fixed32 type.
+    /// @brief Gets the specialized name for the <code>Fixed32</code> type.
     /// @details Provides an interface to a specialized function for getting C-style
-    ///   null-terminated array of characters that names the Fixed32 type.
+    ///   null-terminated array of characters that names the <code>Fixed32</code> type.
     /// @return Non-null pointer to C-style string name of specified type.
     template <>
     inline const char* GetTypeName<Fixed32>() noexcept
@@ -880,14 +880,14 @@ namespace playrho {
         return result == Fixed64::CmpResult::GreaterThan;
     }
 
-    /// @brief Specialization of the Wider trait for Fixed32 type.
+    /// @brief Specialization of the Wider trait for the <code>Fixed32</code> type.
     template<> struct Wider<Fixed32> {
         using type = Fixed64; ///< Wider type.
     };
     
-    /// @brief Gets the specialized name for the Fixed64 type.
+    /// @brief Gets the specialized name for the <code>Fixed64</code> type.
     /// @details Provides an interface to a specialized function for getting C-style
-    ///   null-terminated array of characters that names the Fixed64 type.
+    ///   null-terminated array of characters that names the <code>Fixed64</code> type.
     /// @return Non-null pointer to C-style string name of specified type.
     template <>
     inline const char* GetTypeName<Fixed64>() noexcept

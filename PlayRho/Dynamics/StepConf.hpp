@@ -232,7 +232,7 @@ public:
     
     /// @brief AABB extension.
     /// @details This is the extension that will be applied to Axis Aligned Bounding Box
-    ///    objects used in "broadphase" collision detection. This fattens AABBs in the
+    ///    objects used in broad phase collision detection. This fattens AABBs in the
     ///    dynamic tree. This allows proxies to move by a small amount without triggering
     ///    a tree adjustment.
     /// @note Should be greater than 0.
