@@ -340,7 +340,7 @@ TEST(PolygonShapeConf, SetPoints)
         Vec2{-1, -2} * Meter,
         Vec2{-4, -1} * Meter
     };
-    const auto shape = PolygonShapeConf{PolygonShapeConf{}.Set(points)};
+    const auto shape = PolygonShapeConf{}.Set(points);
 
     ASSERT_EQ(shape.GetVertexCount(), VertexCounter(5));
 
@@ -353,6 +353,27 @@ TEST(PolygonShapeConf, SetPoints)
     EXPECT_EQ(shape.GetVertex(4), points[2]);
     
     EXPECT_TRUE(Validate(shape));
+}
+
+TEST(PolygonShapeConf, UseVertices)
+{
+    const auto p0 = Length2{1_m, 2_m};
+    const auto p1 = Length2{3_m, 4_m};
+
+    auto conf = PolygonShapeConf{};
+    ASSERT_EQ(conf.GetVertexCount(), 0);
+    conf.UseVertices(std::vector<Length2>{});
+    EXPECT_EQ(conf.GetVertexCount(), 0);
+    EXPECT_FALSE(IsValid(conf.GetCentroid()));
+    conf.UseVertices(std::vector<Length2>{p0});
+    EXPECT_EQ(conf.GetVertexCount(), 1);
+    EXPECT_EQ(conf.GetVertex(0), p0);
+    EXPECT_TRUE(IsValid(conf.GetCentroid()));
+    conf.UseVertices(std::vector<Length2>{p0, p1});
+    EXPECT_EQ(conf.GetVertexCount(), 2);
+    EXPECT_EQ(conf.GetVertex(0), p1);
+    EXPECT_EQ(conf.GetVertex(1), p0);
+    EXPECT_TRUE(IsValid(conf.GetCentroid()));
 }
 
 TEST(PolygonShapeConf, CanSetTwoPoints)

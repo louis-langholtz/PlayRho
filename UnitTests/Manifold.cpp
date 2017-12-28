@@ -230,7 +230,19 @@ TEST(Manifold, EqualsFreeFunction)
     EXPECT_FALSE(faceA000 == foo);
     EXPECT_FALSE(faceA000 == faceA001);
     EXPECT_TRUE(faceA0001 == faceA0010);
+    EXPECT_FALSE(faceA001 == faceA0001);
     EXPECT_FALSE(faceA0010 == faceA0011);
+    
+    const auto circle01 = Manifold::GetForCircles(lp0, 0, lp1, 1);
+    const auto circle10 = Manifold::GetForCircles(lp1, 1, lp0, 0);
+    EXPECT_TRUE(circle01 == circle01);
+    EXPECT_FALSE(circle01 == circle10);
+    
+    const auto faceB0010 = Manifold::GetForFaceB(ln0, lp0, mp1, mp0);
+    const auto faceB0011 = Manifold::GetForFaceB(ln0, lp0, mp1, mp1);
+    
+    EXPECT_TRUE(faceB0010 == faceB0010);
+    EXPECT_FALSE(faceB0010 == faceB0011);
 }
 
 TEST(Manifold, NotEqualsFreeFunction)

@@ -83,6 +83,22 @@ TEST(WorldManifold, GetWorldManifoldForUnsetManifold)
     EXPECT_FALSE(IsValid(wm.GetNormal()));
 }
 
+TEST(WorldManifold, GetForFaceEmptyManifoldA)
+{
+    const auto m = Manifold::GetForFaceA(UnitVec2::GetTop(), Length2{});
+    const auto wm = GetWorldManifold(m, Transformation2D{}, 1_m, Transformation2D{}, 1_m);
+    EXPECT_EQ(wm.GetNormal(), UnitVec2::GetTop());
+    EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
+}
+
+TEST(WorldManifold, GetForFaceEmptyManifoldB)
+{
+    const auto m = Manifold::GetForFaceB(UnitVec2::GetLeft(), Length2{});
+    const auto wm = GetWorldManifold(m, Transformation2D{}, 1_m, Transformation2D{}, 1_m);
+    EXPECT_EQ(wm.GetNormal(), UnitVec2::GetRight());
+    EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
+}
+
 TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);

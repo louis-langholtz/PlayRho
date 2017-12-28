@@ -69,6 +69,10 @@ public:
 
     /// Enable/disable the joint motor.
     void EnableMotor(bool flag);
+    
+    /// @brief Gets the computed motor mass.
+    /// @note This is zero unless motor is enabled and either body has any rotational intertia.
+    RotInertia GetMotorMass() const noexcept { return m_motorMass; }
 
     /// Set the angular motor speed.
     void SetMotorSpeed(AngularVelocity speed);
