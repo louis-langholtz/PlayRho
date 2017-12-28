@@ -54,6 +54,21 @@ TEST(Contact, IsNotCopyAssignable)
     EXPECT_FALSE(std::is_copy_assignable<Contact>::value);    
 }
 
+TEST(Contact, Enabled)
+{
+    const auto shape = DiskShapeConf{};
+    auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
+    auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
+    auto fA = Fixture{&bA, FixtureDef{}, shape};
+    auto fB = Fixture{&bB, FixtureDef{}, shape};
+    auto c = Contact{&fA, 0u, &fB, 0u};
+    EXPECT_TRUE(c.IsEnabled());
+    c.UnsetEnabled();
+    EXPECT_FALSE(c.IsEnabled());
+    c.SetEnabled();
+    EXPECT_TRUE(c.IsEnabled());
+}
+
 TEST(Contact, SetAwake)
 {
     const auto shape = DiskShapeConf{};

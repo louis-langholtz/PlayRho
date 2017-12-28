@@ -256,7 +256,7 @@ TEST(WheelJoint, GetWheelJointDef)
 
 TEST(WheelJoint, WithDynamicCircles)
 {
-    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
+    const auto circle = DiskShapeConf{}.UseRadius(2_m).UseDensity(10_kgpm2);
     auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -275,4 +275,18 @@ TEST(WheelJoint, WithDynamicCircles)
     EXPECT_EQ(b1->GetAngle(), 0_deg);
     EXPECT_EQ(b2->GetAngle(), 0_deg);
     EXPECT_EQ(GetAngularVelocity(*joint), 0 * RadianPerSecond);
+    EXPECT_EQ(joint->GetMotorMass(), RotInertia(0));
+    
+    joint->SetSpringFrequency(0_Hz);
+    Step(world, 1_s);
+    EXPECT_FALSE(joint->IsMotorEnabled());
+    EXPECT_EQ(joint->GetSpringFrequency(), 0_Hz);
+    EXPECT_EQ(joint->GetLinearReaction(), Momentum2{});
+    EXPECT_EQ(joint->GetMotorMass(), RotInertia(0));
+
+    joint->EnableMotor(true);
+    EXPECT_TRUE(joint->IsMotorEnabled());
+    Step(world, 1_s);
+    EXPECT_NEAR(static_cast<double>(StripUnit(joint->GetMotorMass())),
+                125.66370391845703, 0.1);
 }

@@ -210,6 +210,8 @@ TEST(DynamicTree, FourIdenticalProxies)
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
     ASSERT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
     ASSERT_TRUE(foo.ValidateStructure(DynamicTree::GetInvalidSize()));
+    ASSERT_FALSE(foo.ValidateStructure(foo.GetNodeCapacity() + 1));
+    ASSERT_FALSE(foo.ValidateMetrics(foo.GetNodeCapacity() + 1));
     ASSERT_TRUE(foo.ValidateMetrics(DynamicTree::GetInvalidSize()));
     ASSERT_TRUE(foo.Validate());
 
@@ -417,4 +419,41 @@ TEST(DynamicTree, CapacityIncreases)
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(4));
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(7));
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(8));
+}
+
+TEST(DynamicTree, QueryFF)
+{
+    auto foo = DynamicTree{};
+    auto ncalls = 0;
+    Query(foo, AABB2D{}, [&] (DynamicTree::Size) {
+        ++ncalls;
+        return DynamicTreeOpcode::End;
+    });
+    EXPECT_EQ(ncalls, 0);
+    foo.CreateLeaf(AABB2D{}, DynamicTree::LeafData{nullptr, nullptr, 0});
+    Query(foo, AABB2D{}, [&] (DynamicTree::Size) {
+        ++ncalls;
+        return DynamicTreeOpcode::End;
+    });
+    EXPECT_EQ(ncalls, 0);
+    foo.CreateLeaf(AABB2D{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
+                   DynamicTree::LeafData{nullptr, nullptr, 0});
+    Query(foo, AABB2D{}, [&] (DynamicTree::Size) {
+        ++ncalls;
+        return DynamicTreeOpcode::End;
+    });
+    EXPECT_EQ(ncalls, 0);
+    foo.CreateLeaf(AABB2D{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
+                   DynamicTree::LeafData{nullptr, nullptr, 0});
+    Query(foo, AABB2D{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
+        ++ncalls;
+        return DynamicTreeOpcode::End;
+    });
+    EXPECT_EQ(ncalls, 1);
+    ncalls = 0;
+    Query(foo, AABB2D{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
+        ++ncalls;
+        return DynamicTreeOpcode::Continue;
+    });
+    EXPECT_EQ(ncalls, 2);
 }
