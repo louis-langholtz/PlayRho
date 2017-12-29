@@ -24,6 +24,7 @@
 #include <array>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(ChainShapeConf, ByteSize)
 {
@@ -55,7 +56,7 @@ TEST(ChainShapeConf, ByteSize)
 TEST(ChainShapeConf, DefaultConstruction)
 {
     const auto foo = ChainShapeConf{};
-    const auto defaultMassData = MassData2D{};
+    const auto defaultMassData = MassData{};
     const auto defaultConf = ChainShapeConf{};
     
     EXPECT_EQ(typeid(foo), typeid(ChainShapeConf));
@@ -145,7 +146,7 @@ TEST(ChainShapeConf, TwoVertexDpLikeEdgeDp)
     const auto locations = std::array<Length2, 2>{{
         Length2{0_m, 0_m}, Length2(4_m, 0_m)
     }};
-    const auto normals = std::array<UnitVec2, 2>{{UnitVec2::GetTop(), UnitVec2::GetBottom()}};
+    const auto normals = std::array<UnitVec, 2>{{UnitVec::GetTop(), UnitVec::GetBottom()}};
     const auto expectedDistanceProxy = DistanceProxy{vertexRadius, 2, locations.data(), normals.data()};
     
     auto conf = ChainShapeConf{};

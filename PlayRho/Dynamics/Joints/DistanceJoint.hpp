@@ -23,9 +23,10 @@
 #define PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/DistanceJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Distance Joint.
 ///
@@ -41,10 +42,10 @@ class DistanceJoint : public Joint
 public:
     
     /// @brief Is the given definition okay.
-    static bool IsOkay(const DistanceJointDef& data) noexcept;
+    static bool IsOkay(const DistanceJointConf& data) noexcept;
 
     /// @brief Initializing constructor.
-    DistanceJoint(const DistanceJointDef& data);
+    DistanceJoint(const DistanceJointConf& data);
 
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -80,9 +81,9 @@ public:
 
 private:
 
-    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step, const
-                                 ConstraintSolverConf&) override;
-    bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;
+    void InitVelocityConstraints(BodyConstraintsMap& bodies, const playrho::StepConf& step,
+                                 const ConstraintSolverConf&) override;
+    bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const playrho::StepConf& step) override;
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                   const ConstraintSolverConf& conf) const override;
 
@@ -99,7 +100,7 @@ private:
     InvMass m_invGamma; ///< Inverse gamma.
     LinearVelocity m_bias; ///< Bias.
     Mass m_mass; ///< Mass.
-    UnitVec2 m_u; ///< "u" directional.
+    UnitVec m_u; ///< "u" directional.
     Length2 m_rA; ///< Relative A position.
     Length2 m_rB; ///< Relative B position.
 };
@@ -134,6 +135,7 @@ inline Real DistanceJoint::GetDampingRatio() const noexcept
     return m_dampingRatio;
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINT_HPP

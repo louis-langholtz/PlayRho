@@ -27,6 +27,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 // Linear constraint (point-to-line)
 // d = pB - pA = xB + rB - xA - rA
@@ -44,7 +45,7 @@ namespace playrho {
 // Cdot = wB - wA
 // J = [0 0 -1 0 0 1]
 
-WheelJoint::WheelJoint(const WheelJointDef& def):
+WheelJoint::WheelJoint(const WheelJointConf& def):
     Joint(def),
     m_localAnchorA(def.localAnchorA),
     m_localAnchorB(def.localAnchorB),
@@ -84,8 +85,8 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto invMassB = bodyConstraintB->GetInvMass();
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
-    const auto qA = UnitVec2::Get(posA.angular);
-    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
 
     // Compute the effective masses.
     const auto rA = Length2{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
@@ -149,7 +150,7 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     {
         m_springImpulse = 0;
 
-        m_ax = UnitVec2::GetZero();
+        m_ax = UnitVec::GetZero();
         m_sAx = 0_m;
         m_sBx = 0_m;
     }
@@ -180,8 +181,8 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto LA = AngularMomentum{(m_impulse * m_sAy + m_springImpulse * m_sAx) / Radian + m_motorImpulse};
         const auto LB = AngularMomentum{(m_impulse * m_sBy + m_springImpulse * m_sBx) / Radian + m_motorImpulse};
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -221,8 +222,8 @@ bool WheelJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
         const auto LA = AngularMomentum{impulse * m_sAx / Radian};
         const auto LB = AngularMomentum{impulse * m_sBx / Radian};
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
 
     // Solve rotational motor constraint
@@ -250,8 +251,8 @@ bool WheelJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
         const auto LA = AngularMomentum{impulse * m_sAy / Radian};
         const auto LB = AngularMomentum{impulse * m_sBy / Radian};
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
 
     if ((velA != oldVelA) || (velB != oldVelB))
@@ -276,8 +277,8 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
     const auto invMassB = bodyConstraintB->GetInvMass();
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
-    const auto qA = UnitVec2::Get(posA.angular);
-    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
 
     const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
@@ -301,8 +302,8 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
     const auto LA = impulse * sAy / Radian;
     const auto LB = impulse * sBy / Radian;
 
-    posA -= Position2D{invMassA * P, invRotInertiaA * LA};
-    posB += Position2D{invMassB * P, invRotInertiaB * LB};
+    posA -= Position{invMassA * P, invRotInertiaA * LA};
+    posB += Position{invMassB * P, invRotInertiaB * LB};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);
@@ -375,4 +376,5 @@ AngularVelocity GetAngularVelocity(const WheelJoint& joint) noexcept
     return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }
 
+} // namespace d2
 } // namespace playrho

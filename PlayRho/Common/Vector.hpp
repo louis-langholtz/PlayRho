@@ -33,8 +33,7 @@
 #include <PlayRho/Common/Real.hpp>
 #include <PlayRho/Common/Templates.hpp>
 
-namespace playrho
-{
+namespace playrho {
 
 /// @brief Vector.
 /// @details This is a <code>PLAYRHO_CONSTEXPR inline</code> and constructor enhanced

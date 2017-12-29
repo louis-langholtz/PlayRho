@@ -48,7 +48,7 @@ public:
             const auto shape = Shape{
                 PolygonShapeConf{}.SetAsBox(a * 1_m, b * 1_m).UseDensity(5_kgpm2)};
 
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
 
             //bd.fixedRotation = true;
@@ -64,10 +64,10 @@ public:
             const auto anchor2 = Vec2(10.0f, y + b) * 1_m;
             const auto groundAnchor1 = Vec2(-10.0f, y + b + L) * 1_m;
             const auto groundAnchor2 = Vec2(10.0f, y + b + L) * 1_m;
-            const auto pulleyDef = PulleyJointDef{body1, body2,
+            const auto pulleyConf = PulleyJointConf{body1, body2,
                 groundAnchor1, groundAnchor2, anchor1, anchor2}.UseRatio(1.5f);
 
-            m_joint1 = static_cast<PulleyJoint*>(m_world.CreateJoint(pulleyDef));
+            m_joint1 = static_cast<PulleyJoint*>(m_world.CreateJoint(pulleyConf));
         }
     }
 

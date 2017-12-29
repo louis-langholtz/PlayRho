@@ -23,7 +23,7 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 #include <PlayRho/Common/Span.hpp>
-#include <PlayRho/Common/UnitVec2.hpp>
+#include <PlayRho/Common/UnitVec.hpp>
 #include <PlayRho/Common/Vector2.hpp>
 #include <PlayRho/Common/Vector3.hpp>
 #include <PlayRho/Common/Position.hpp>
@@ -204,10 +204,18 @@ inline Vec2 RoundOff(Vec2 value, std::uint32_t precision = 100000)
     return Vec2{RoundOff(value[0], precision), RoundOff(value[1], precision)};
 }
 
-/// @brief Gets a <code>Vec2</code> representation of the given value.
-PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const UnitVec2 value)
+/// @brief Gets the absolute value of the given value.
+template <>
+inline Vec2 Abs(Vec2 a)
 {
-    return Vec2{Get<0>(value), Get<1>(value)};
+    return Vec2{Abs(a[0]), Abs(a[1])};
+}
+
+/// @brief Gets the absolute value of the given value.
+template <>
+inline d2::UnitVec Abs(d2::UnitVec a)
+{
+    return a.Absolute();
 }
 
 /// @brief Gets whether a given value is almost zero.
@@ -284,34 +292,6 @@ inline Angle GetNormalized(Angle value) noexcept
         angleInRadians += Pi * 2;
     }
     return angleInRadians * Radian;
-}
-
-/// @brief Gets the "normalized" position.
-/// @details Enforces a wrap-around of one rotation on the angular position.
-/// @note Use to prevent unbounded angles in positions.
-inline Position2D GetNormalized(const Position2D& val) noexcept
-{
-    return Position2D{val.linear, GetNormalized(val.angular)};
-}
-
-/// @brief Gets a sweep with the given sweep's angles normalized.
-/// @param sweep Sweep to return with its angles normalized.
-/// @return Sweep with its position 0 angle to be between -2 pi and 2 pi and its
-///   position 1 angle reduced by the amount the position 0 angle was reduced by.
-/// @relatedalso Sweep2D
-inline Sweep2D GetNormalized(Sweep2D sweep) noexcept
-{
-    const auto pos0a = GetNormalized(sweep.pos0.angular);
-    const auto d = sweep.pos0.angular - pos0a;
-    sweep.pos0.angular = pos0a;
-    sweep.pos1.angular -= d;
-    return sweep;
-}
-
-/// @brief Gets the angle of the given unit vector.
-inline Angle GetAngle(const UnitVec2 value)
-{
-    return Atan2(GetY(value), GetX(value));
 }
 
 /// @brief Gets the angle.
@@ -618,40 +598,6 @@ PLAYRHO_CONSTEXPR inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noe
     return Vec2{Dot(v, GetX(A)), Dot(v, GetY(A))};
 }
 
-/// @brief Multiplication operator.
-template <class T, LoValueCheck lo, HiValueCheck hi>
-PLAYRHO_CONSTEXPR inline Vector2<T> operator* (BoundedValue<T, lo, hi> s, UnitVec2 u) noexcept
-{
-    return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
-}
-
-/// @brief Multiplication operator.
-template <class T>
-PLAYRHO_CONSTEXPR inline Vector2<T> operator* (const T s, const UnitVec2 u) noexcept
-{
-    return Vector2<T>{u.GetX() * s, u.GetY() * s};
-}
-
-/// @brief Multiplication operator.
-template <class T, LoValueCheck lo, HiValueCheck hi>
-PLAYRHO_CONSTEXPR inline Vector2<T> operator* (UnitVec2 u, BoundedValue<T, lo, hi> s) noexcept
-{
-    return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
-}
-
-/// @brief Multiplication operator.
-template <class T>
-PLAYRHO_CONSTEXPR inline Vector2<T> operator* (const UnitVec2 u, const T s) noexcept
-{
-    return Vector2<T>{u.GetX() * s, u.GetY() * s};
-}
-
-/// @brief Division operator.
-PLAYRHO_CONSTEXPR inline Vec2 operator/ (const UnitVec2 u, const UnitVec2::value_type s) noexcept
-{
-    return Vec2{GetX(u) / s, GetY(u) / s};
-}
-
 /// @brief Computes A * B.
 PLAYRHO_CONSTEXPR inline Mat22 Mul(const Mat22& A, const Mat22& B) noexcept
 {
@@ -679,97 +625,6 @@ PLAYRHO_CONSTEXPR inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
         GetX(GetX(A)) * v[0] + GetX(GetY(A)) * v[1],
         GetY(GetX(A)) * v[0] + GetY(GetY(A)) * v[1]
     };
-}
-
-/// @brief Rotates a vector by a given angle.
-/// @details This rotates a vector by the angle expressed by the angle parameter.
-/// @param vector Vector to forward rotate.
-/// @param angle Expresses the angle to forward rotate the given vector by.
-/// @sa InverseRotate.
-template <class T>
-PLAYRHO_CONSTEXPR inline auto Rotate(const Vector2<T> vector, const UnitVec2& angle) noexcept
-{
-    const auto newX = (GetX(angle) * GetX(vector)) - (GetY(angle) * GetY(vector));
-    const auto newY = (GetY(angle) * GetX(vector)) + (GetX(angle) * GetY(vector));
-    return Vector2<T>{newX, newY};
-}
-
-/// @brief Inverse rotates a vector.
-/// @details This is the inverse of rotating a vector - it undoes what rotate does. I.e.
-///   this effectively subtracts from the angle of the given vector the angle that's
-///   expressed by the angle parameter.
-/// @param vector Vector to reverse rotate.
-/// @param angle Expresses the angle to reverse rotate the given vector by.
-/// @sa Rotate.
-template <class T>
-PLAYRHO_CONSTEXPR inline auto InverseRotate(const Vector2<T> vector, const UnitVec2& angle) noexcept
-{
-    const auto newX = (GetX(angle) * GetX(vector)) + (GetY(angle) * GetY(vector));
-    const auto newY = (GetX(angle) * GetY(vector)) - (GetY(angle) * GetX(vector));
-    return Vector2<T>{newX, newY};
-}
-
-/// @brief Transforms the given 2-D vector with the given transformation.
-/// @details
-/// Rotate and translate the given 2-D linear position according to the rotation and translation
-/// defined by the given transformation.
-/// @note Passing the output of this function to <code>InverseTransform</code> (with the same
-/// transformation again) will result in the original vector being returned.
-/// @note For a 2-D linear position of the origin (0, 0), the result is simply the translation.
-/// @sa <code>InverseTransform</code>.
-/// @param v 2-D position to transform (to rotate and then translate).
-/// @param xfm Transformation (a translation and rotation) to apply to the given vector.
-/// @return Rotated and translated vector.
-PLAYRHO_CONSTEXPR inline Length2 Transform(const Length2 v, const Transformation2D xfm) noexcept
-{
-    return Rotate(v, xfm.q) + xfm.p;
-}
-
-/// @brief Inverse transforms the given 2-D vector with the given transformation.
-/// @details
-/// Inverse translate and rotate the given 2-D vector according to the translation and rotation
-/// defined by the given transformation.
-/// @note Passing the output of this function to <code>Transform</code> (with the same
-/// transformation again) will result in the original vector being returned.
-/// @sa <code>Transform</code>.
-/// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
-/// @param T Transformation (a translation and rotation) to inversely apply to the given vector.
-/// @return Inverse transformed vector.
-PLAYRHO_CONSTEXPR inline Length2 InverseTransform(const Length2 v, const Transformation2D T) noexcept
-{
-    const auto v2 = v - T.p;
-    return InverseRotate(v2, T.q);
-}
-
-/// @brief Multiplies a given transformation by another given transformation.
-/// @note <code>v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
-///                = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p</code>
-PLAYRHO_CONSTEXPR inline Transformation2D Mul(const Transformation2D& A, const Transformation2D& B) noexcept
-{
-    return Transformation2D{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
-}
-
-/// @brief Inverse multiplies a given transformation by another given transformation.
-/// @note <code>v2 = A.q' * (B.q * v1 + B.p - A.p)
-///                = A.q' * B.q * v1 + A.q' * (B.p - A.p)</code>
-PLAYRHO_CONSTEXPR inline Transformation2D MulT(const Transformation2D& A, const Transformation2D& B) noexcept
-{
-    const auto dp = B.p - A.p;
-    return Transformation2D{InverseRotate(dp, A.q), B.q.Rotate(A.q.FlipY())};
-}
-
-/// @brief Gets the absolute value of the given value.
-template <>
-inline Vec2 Abs(Vec2 a)
-{
-    return Vec2{Abs(a[0]), Abs(a[1])};
-}
-
-/// @brief Gets the absolute value of the given value.
-template <>
-inline UnitVec2 Abs(UnitVec2 a)
-{
-    return a.Absolute();
 }
 
 /// @brief Gets the absolute value of the given value.
@@ -806,53 +661,6 @@ inline std::uint64_t NextPowerOfTwo(std::uint64_t x)
     return x + 1;
 }
 
-/// @brief Gets the transformation for the given values.
-PLAYRHO_CONSTEXPR inline Transformation2D GetTransformation(const Length2 ctr, const UnitVec2 rot,
-                                                  const Length2 localCtr) noexcept
-{
-    assert(IsValid(rot));
-    return Transformation2D{ctr - (Rotate(localCtr, rot)), rot};
-}
-
-/// @brief Gets the transformation for the given values.
-inline Transformation2D GetTransformation(const Position2D pos, const Length2 local_ctr) noexcept
-{
-    assert(IsValid(pos));
-    assert(IsValid(local_ctr));
-    return GetTransformation(pos.linear, UnitVec2::Get(pos.angular), local_ctr);
-}
-
-/// @brief Gets the interpolated transform at a specific time.
-/// @param sweep Sweep data to get the transform from.
-/// @param beta Time factor in [0,1], where 0 indicates alpha 0.
-/// @return Transformation of the given sweep at the specified time.
-inline Transformation2D GetTransformation(const Sweep2D& sweep, const Real beta) noexcept
-{
-    assert(beta >= 0);
-    assert(beta <= 1);
-    return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
-}
-
-/// @brief Gets the transform at "time" zero.
-/// @note This is like calling <code>GetTransformation(sweep, 0)</code>, except more efficiently.
-/// @sa GetTransformation(const Sweep& sweep, Real beta).
-/// @param sweep Sweep data to get the transform from.
-/// @return Transformation of the given sweep at time zero.
-inline Transformation2D GetTransform0(const Sweep2D& sweep) noexcept
-{
-    return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
-}
-
-/// @brief Gets the transform at "time" one.
-/// @note This is like calling <code>GetTransformation(sweep, 1.0)</code>, except more efficiently.
-/// @sa GetTransformation(const Sweep& sweep, Real beta).
-/// @param sweep Sweep data to get the transform from.
-/// @return Transformation of the given sweep at time one.
-inline Transformation2D GetTransform1(const Sweep2D& sweep) noexcept
-{
-    return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
-}
-
 /// @brief Converts the given vector into a unit vector and returns its original length.
 inline Real Normalize(Vec2& vector)
 {
@@ -865,43 +673,6 @@ inline Real Normalize(Vec2& vector)
         return length;
     }
     return 0;
-}
-
-/// @brief Gets the contact relative velocity.
-/// @note If <code>relA</code> and <code>relB</code> are the zero vectors, the resulting
-///    value is simply <code>velB.linear - velA.linear</code>.
-inline LinearVelocity2
-GetContactRelVelocity(const Velocity2D velA, const Length2 relA,
-                      const Velocity2D velB, const Length2 relB) noexcept
-{
-#if 0 // Using std::fma appears to be slower!
-    const auto revPerpRelB = GetRevPerpendicular(relB);
-    const auto xRevPerpRelB = StripUnit(revPerpRelB.x);
-    const auto yRevPerpRelB = StripUnit(revPerpRelB.y);
-    const auto angVelB = StripUnit(velB.angular);
-    const auto xLinVelB = StripUnit(velB.linear.x);
-    const auto yLinVelB = StripUnit(velB.linear.y);
-    const auto xFmaB = std::fma(xRevPerpRelB, angVelB, xLinVelB);
-    const auto yFmaB = std::fma(yRevPerpRelB, angVelB, yLinVelB);
-    
-    const auto revPerpRelA = GetRevPerpendicular(relA);
-    const auto xRevPerpRelA = StripUnit(revPerpRelA.x);
-    const auto yRevPerpRelA = StripUnit(revPerpRelA.y);
-    const auto angVelA = StripUnit(velA.angular);
-    const auto xLinVelA = StripUnit(velA.linear.x);
-    const auto yLinVelA = StripUnit(velA.linear.y);
-    const auto xFmaA = std::fma(xRevPerpRelA, angVelA, xLinVelA);
-    const auto yFmaA = std::fma(yRevPerpRelA, angVelA, yLinVelA);
-    
-    const auto deltaFmaX = xFmaB - xFmaA;
-    const auto deltaFmaY = yFmaB - yFmaA;
-    
-    return Vec2{deltaFmaX, deltaFmaY} * MeterPerSecond;
-#else
-    const auto velBrot = GetRevPerpendicular(relB) * (velB.angular / Radian);
-    const auto velArot = GetRevPerpendicular(relA) * (velA.angular / Radian);
-    return (velB.linear + velBrot) - (velA.linear + velArot);
-#endif
 }
 
 /// @brief Computes the centroid of a counter-clockwise array of 3 or more vertices.
@@ -938,18 +709,6 @@ PLAYRHO_CONSTEXPR inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcep
 {
     return (a1 > a2)? 360_deg - (a1 - a2): a2 - a1;
 }
-
-/// Gets the unit vector for the given value.
-/// @param value Value to get the unit vector for.
-/// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
-///   calculated from the given value.
-/// @return value divided by its length if length not almost zero otherwise invalid value.
-/// @sa AlmostEqual.
-template <class T>
-inline UnitVec2 GetUnitVector(Vector2<T> value, UnitVec2 fallback = UnitVec2::GetDefaultFallback())
-{
-    return std::get<0>(UnitVec2::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), fallback));
-}
     
 /// @brief Gets the vertices for a circle described by the given parameters.
 std::vector<Length2> GetCircleVertices(Length radius, unsigned slices,
@@ -974,8 +733,251 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices);
 
 /// @}
 
+namespace d2 {
+
+/// @brief Gets a <code>Vec2</code> representation of the given value.
+PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const UnitVec value)
+{
+    return Vec2{Get<0>(value), Get<1>(value)};
+}
+
+/// @brief Gets the angle of the given unit vector.
+inline Angle GetAngle(const UnitVec value)
+{
+    return Atan2(GetY(value), GetX(value));
+}
+
+/// @brief Multiplication operator.
+template <class T, LoValueCheck lo, HiValueCheck hi>
+PLAYRHO_CONSTEXPR inline Vector2<T> operator* (BoundedValue<T, lo, hi> s, UnitVec u) noexcept
+{
+    return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
+}
+
+/// @brief Multiplication operator.
+template <class T>
+PLAYRHO_CONSTEXPR inline Vector2<T> operator* (const T s, const UnitVec u) noexcept
+{
+    return Vector2<T>{u.GetX() * s, u.GetY() * s};
+}
+
+/// @brief Multiplication operator.
+template <class T, LoValueCheck lo, HiValueCheck hi>
+PLAYRHO_CONSTEXPR inline Vector2<T> operator* (UnitVec u, BoundedValue<T, lo, hi> s) noexcept
+{
+    return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
+}
+
+/// @brief Multiplication operator.
+template <class T>
+PLAYRHO_CONSTEXPR inline Vector2<T> operator* (const UnitVec u, const T s) noexcept
+{
+    return Vector2<T>{u.GetX() * s, u.GetY() * s};
+}
+
+/// @brief Division operator.
+PLAYRHO_CONSTEXPR inline Vec2 operator/ (const UnitVec u, const UnitVec::value_type s) noexcept
+{
+    return Vec2{GetX(u) / s, GetY(u) / s};
+}
+
+/// @brief Rotates a vector by a given angle.
+/// @details This rotates a vector by the angle expressed by the angle parameter.
+/// @param vector Vector to forward rotate.
+/// @param angle Expresses the angle to forward rotate the given vector by.
+/// @sa InverseRotate.
+template <class T>
+PLAYRHO_CONSTEXPR inline auto Rotate(const Vector2<T> vector, const UnitVec& angle) noexcept
+{
+    const auto newX = (GetX(angle) * GetX(vector)) - (GetY(angle) * GetY(vector));
+    const auto newY = (GetY(angle) * GetX(vector)) + (GetX(angle) * GetY(vector));
+    return Vector2<T>{newX, newY};
+}
+
+/// @brief Inverse rotates a vector.
+/// @details This is the inverse of rotating a vector - it undoes what rotate does. I.e.
+///   this effectively subtracts from the angle of the given vector the angle that's
+///   expressed by the angle parameter.
+/// @param vector Vector to reverse rotate.
+/// @param angle Expresses the angle to reverse rotate the given vector by.
+/// @sa Rotate.
+template <class T>
+PLAYRHO_CONSTEXPR inline auto InverseRotate(const Vector2<T> vector, const UnitVec& angle) noexcept
+{
+    const auto newX = (GetX(angle) * GetX(vector)) + (GetY(angle) * GetY(vector));
+    const auto newY = (GetX(angle) * GetY(vector)) - (GetY(angle) * GetX(vector));
+    return Vector2<T>{newX, newY};
+}
+
+/// Gets the unit vector for the given value.
+/// @param value Value to get the unit vector for.
+/// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
+///   calculated from the given value.
+/// @return value divided by its length if length not almost zero otherwise invalid value.
+/// @sa AlmostEqual.
+template <class T>
+inline UnitVec GetUnitVector(Vector2<T> value, UnitVec fallback = UnitVec::GetDefaultFallback())
+{
+    return std::get<0>(UnitVec::Get(StripUnit(GetX(value)), StripUnit(GetY(value)), fallback));
+}
+
+/// @brief Gets the "normalized" position.
+/// @details Enforces a wrap-around of one rotation on the angular position.
+/// @note Use to prevent unbounded angles in positions.
+inline Position GetNormalized(const Position& val) noexcept
+{
+    return Position{val.linear, playrho::GetNormalized(val.angular)};
+}
+
+/// @brief Gets a sweep with the given sweep's angles normalized.
+/// @param sweep Sweep to return with its angles normalized.
+/// @return Sweep with its position 0 angle to be between -2 pi and 2 pi and its
+///   position 1 angle reduced by the amount the position 0 angle was reduced by.
+/// @relatedalso Sweep
+inline Sweep GetNormalized(Sweep sweep) noexcept
+{
+    const auto pos0a = playrho::GetNormalized(sweep.pos0.angular);
+    const auto d = sweep.pos0.angular - pos0a;
+    sweep.pos0.angular = pos0a;
+    sweep.pos1.angular -= d;
+    return sweep;
+}
+
+/// @brief Transforms the given 2-D vector with the given transformation.
+/// @details
+/// Rotate and translate the given 2-D linear position according to the rotation and translation
+/// defined by the given transformation.
+/// @note Passing the output of this function to <code>InverseTransform</code> (with the same
+/// transformation again) will result in the original vector being returned.
+/// @note For a 2-D linear position of the origin (0, 0), the result is simply the translation.
+/// @sa <code>InverseTransform</code>.
+/// @param v 2-D position to transform (to rotate and then translate).
+/// @param xfm Transformation (a translation and rotation) to apply to the given vector.
+/// @return Rotated and translated vector.
+PLAYRHO_CONSTEXPR inline Length2 Transform(const Length2 v, const Transformation xfm) noexcept
+{
+    return Rotate(v, xfm.q) + xfm.p;
+}
+
+/// @brief Inverse transforms the given 2-D vector with the given transformation.
+/// @details
+/// Inverse translate and rotate the given 2-D vector according to the translation and rotation
+/// defined by the given transformation.
+/// @note Passing the output of this function to <code>Transform</code> (with the same
+/// transformation again) will result in the original vector being returned.
+/// @sa <code>Transform</code>.
+/// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
+/// @param T Transformation (a translation and rotation) to inversely apply to the given vector.
+/// @return Inverse transformed vector.
+PLAYRHO_CONSTEXPR inline Length2 InverseTransform(const Length2 v, const Transformation T) noexcept
+{
+    const auto v2 = v - T.p;
+    return InverseRotate(v2, T.q);
+}
+
+/// @brief Multiplies a given transformation by another given transformation.
+/// @note <code>v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
+///                = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p</code>
+PLAYRHO_CONSTEXPR inline Transformation Mul(const Transformation& A, const Transformation& B) noexcept
+{
+    return Transformation{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
+}
+
+/// @brief Inverse multiplies a given transformation by another given transformation.
+/// @note <code>v2 = A.q' * (B.q * v1 + B.p - A.p)
+///                = A.q' * B.q * v1 + A.q' * (B.p - A.p)</code>
+PLAYRHO_CONSTEXPR inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
+{
+    const auto dp = B.p - A.p;
+    return Transformation{InverseRotate(dp, A.q), B.q.Rotate(A.q.FlipY())};
+}
+
+/// @brief Gets the transformation for the given values.
+PLAYRHO_CONSTEXPR inline Transformation GetTransformation(const Length2 ctr, const UnitVec rot,
+                                                            const Length2 localCtr) noexcept
+{
+    assert(IsValid(rot));
+    return Transformation{ctr - (Rotate(localCtr, rot)), rot};
+}
+
+/// @brief Gets the transformation for the given values.
+inline Transformation GetTransformation(const Position pos, const Length2 local_ctr) noexcept
+{
+    assert(IsValid(pos));
+    assert(IsValid(local_ctr));
+    return GetTransformation(pos.linear, UnitVec::Get(pos.angular), local_ctr);
+}
+
+/// @brief Gets the interpolated transform at a specific time.
+/// @param sweep Sweep data to get the transform from.
+/// @param beta Time factor in [0,1], where 0 indicates alpha 0.
+/// @return Transformation of the given sweep at the specified time.
+inline Transformation GetTransformation(const Sweep& sweep, const Real beta) noexcept
+{
+    assert(beta >= 0);
+    assert(beta <= 1);
+    return GetTransformation(GetPosition(sweep.pos0, sweep.pos1, beta), sweep.GetLocalCenter());
+}
+
+/// @brief Gets the transform at "time" zero.
+/// @note This is like calling <code>GetTransformation(sweep, 0)</code>, except more efficiently.
+/// @sa GetTransformation(const Sweep& sweep, Real beta).
+/// @param sweep Sweep data to get the transform from.
+/// @return Transformation of the given sweep at time zero.
+inline Transformation GetTransform0(const Sweep& sweep) noexcept
+{
+    return GetTransformation(sweep.pos0, sweep.GetLocalCenter());
+}
+
+/// @brief Gets the transform at "time" one.
+/// @note This is like calling <code>GetTransformation(sweep, 1.0)</code>, except more efficiently.
+/// @sa GetTransformation(const Sweep& sweep, Real beta).
+/// @param sweep Sweep data to get the transform from.
+/// @return Transformation of the given sweep at time one.
+inline Transformation GetTransform1(const Sweep& sweep) noexcept
+{
+    return GetTransformation(sweep.pos1, sweep.GetLocalCenter());
+}
+
+/// @brief Gets the contact relative velocity.
+/// @note If <code>relA</code> and <code>relB</code> are the zero vectors, the resulting
+///    value is simply <code>velB.linear - velA.linear</code>.
+inline LinearVelocity2
+GetContactRelVelocity(const Velocity velA, const Length2 relA,
+                      const Velocity velB, const Length2 relB) noexcept
+{
+#if 0 // Using std::fma appears to be slower!
+    const auto revPerpRelB = GetRevPerpendicular(relB);
+    const auto xRevPerpRelB = StripUnit(revPerpRelB.x);
+    const auto yRevPerpRelB = StripUnit(revPerpRelB.y);
+    const auto angVelB = StripUnit(velB.angular);
+    const auto xLinVelB = StripUnit(velB.linear.x);
+    const auto yLinVelB = StripUnit(velB.linear.y);
+    const auto xFmaB = std::fma(xRevPerpRelB, angVelB, xLinVelB);
+    const auto yFmaB = std::fma(yRevPerpRelB, angVelB, yLinVelB);
+    
+    const auto revPerpRelA = GetRevPerpendicular(relA);
+    const auto xRevPerpRelA = StripUnit(revPerpRelA.x);
+    const auto yRevPerpRelA = StripUnit(revPerpRelA.y);
+    const auto angVelA = StripUnit(velA.angular);
+    const auto xLinVelA = StripUnit(velA.linear.x);
+    const auto yLinVelA = StripUnit(velA.linear.y);
+    const auto xFmaA = std::fma(xRevPerpRelA, angVelA, xLinVelA);
+    const auto yFmaA = std::fma(yRevPerpRelA, angVelA, yLinVelA);
+    
+    const auto deltaFmaX = xFmaB - xFmaA;
+    const auto deltaFmaY = yFmaB - yFmaA;
+    
+    return Vec2{deltaFmaX, deltaFmaY} * MeterPerSecond;
+#else
+    const auto velBrot = GetRevPerpendicular(relB) * (velB.angular / Radian);
+    const auto velArot = GetRevPerpendicular(relA) * (velA.angular / Radian);
+    return (velB.linear + velBrot) - (velA.linear + velArot);
+#endif
+}
+
 /// @brief Gets whether the given velocity is "under active" based on the given tolerances.
-inline bool IsUnderActive(Velocity2D velocity,
+inline bool IsUnderActive(Velocity velocity,
                           LinearVelocity linSleepTol, AngularVelocity angSleepTol) noexcept
 {
     const auto linVelSquared = GetMagnitudeSquared(velocity.linear);
@@ -983,6 +985,7 @@ inline bool IsUnderActive(Velocity2D velocity,
     return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_MATH_HPP

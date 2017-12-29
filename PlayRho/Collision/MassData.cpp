@@ -28,8 +28,9 @@
 #include <PlayRho/Dynamics/Body.hpp>
 
 namespace playrho {
+namespace d2 {
 
-MassData2D GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location)
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location)
 {
     // Uses parallel axis theorem, perpendicular axis theorem, and the second moment of area.
     // See: https://en.wikipedia.org/wiki/Second_moment_of_area
@@ -49,16 +50,16 @@ MassData2D GetMassData(Length r, NonNegative<AreaDensity> density, Length2 locat
     const auto mass = Mass{AreaDensity{density} * area};
     const auto Iz = SecondMomentOfArea{area * ((r_squared / Real{2}) + GetMagnitudeSquared(location))};
     const auto I = RotInertia{Iz * AreaDensity{density} / SquareRadian};
-    return MassData2D{location, mass, I};
+    return MassData{location, mass, I};
 }
 
-MassData2D GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1)
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1)
 {
     const auto r_squared = Area{r * r};
     const auto circle_area = r_squared * Pi;
     const auto circle_mass = density * circle_area;
     const auto d = v1 - v0;
-    const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec2::GetZero())) * r;
+    const auto offset = GetRevPerpendicular(GetUnitVector(d, UnitVec::GetZero())) * r;
     const auto b = GetMagnitude(d);
     const auto h = r * Real{2};
     const auto rect_mass = density * b * h;
@@ -83,10 +84,10 @@ MassData2D GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, L
     assert(I1 >= SecondMomentOfArea{0});
     assert(I_z >= SecondMomentOfArea{0});
     const auto I = RotInertia{(I0 + I1 + I_z) * density / SquareRadian};
-    return MassData2D{center, totalMass, I};
+    return MassData{center, totalMass, I};
 }
 
-MassData2D GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
+MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
                      Span<const Length2> vertices)
 {
     // See: https://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
@@ -119,11 +120,11 @@ MassData2D GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     switch (count)
     {
         case 0:
-            return MassData2D{};
+            return MassData{};
         case 1:
-            return playrho::GetMassData(vertexRadius, density, vertices[0]);
+            return playrho::d2::GetMassData(vertexRadius, density, vertices[0]);
         case 2:
-            return playrho::GetMassData(vertexRadius, density, vertices[0], vertices[1]);;
+            return playrho::d2::GetMassData(vertexRadius, density, vertices[0], vertices[1]);
         default:
             break;
     }
@@ -173,15 +174,15 @@ MassData2D GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     const auto intertialLever = massCenterOffset - centerOffset;
     const auto massDataI = RotInertia{((AreaDensity{density} * I) + (mass * intertialLever)) / SquareRadian};
     
-    return MassData2D{massDataCenter, mass, massDataI};
+    return MassData{massDataCenter, mass, massDataI};
 }
 
-MassData2D GetMassData(const Fixture& f)
+MassData GetMassData(const Fixture& f)
 {
     return GetMassData(f.GetShape());
 }
 
-MassData2D ComputeMassData(const Body& body) noexcept
+MassData ComputeMassData(const Body& body) noexcept
 {
     auto mass = 0_kg;
     auto I = RotInertia{0};
@@ -197,13 +198,14 @@ MassData2D ComputeMassData(const Body& body) noexcept
             I += RotInertia{massData.I};
         }
     }
-    return MassData2D{center, mass, I};
+    return MassData{center, mass, I};
 }
 
-MassData2D GetMassData(const Body& body) noexcept
+MassData GetMassData(const Body& body) noexcept
 {
     const auto I = GetLocalRotInertia(body);
-    return MassData2D{body.GetLocalCenter(), GetMass(body), I};
+    return MassData{body.GetLocalCenter(), GetMass(body), I};
 }
 
+} // namespace d2
 } // namespace playrho

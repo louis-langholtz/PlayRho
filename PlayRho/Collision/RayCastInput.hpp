@@ -29,6 +29,7 @@
 #include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
+namespace d2 {
 
     /// @brief Ray-cast input data.
     /// @details The ray extends from <code>p1</code> to
@@ -44,6 +45,7 @@ namespace playrho {
         UnitInterval<Real> maxFraction = UnitInterval<Real>{0};
     };
     
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_RAYCASTINPUT_HPP

@@ -23,9 +23,10 @@
 #define PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/MouseJointConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Mouse Joint.
 ///
@@ -46,10 +47,10 @@ class MouseJoint : public Joint
 public:
 
     /// @brief Is the given definition okay.
-    static bool IsOkay(const MouseJointDef& def) noexcept;
+    static bool IsOkay(const MouseJointConf& def) noexcept;
 
     /// @brief Initializing constructor.
-    MouseJoint(const MouseJointDef& def);
+    MouseJoint(const MouseJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -157,6 +158,7 @@ inline NonNegative<Real> MouseJoint::GetDampingRatio() const noexcept
     return m_dampingRatio;
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINT_HPP

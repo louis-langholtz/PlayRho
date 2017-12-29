@@ -20,7 +20,7 @@
  */
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/JointDef.hpp>
+#include <PlayRho/Dynamics/Joints/JointConf.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 #include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
@@ -40,40 +40,41 @@
 #include <algorithm>
 
 namespace playrho {
+namespace d2 {
 
-Joint* Joint::Create(const JointDef& def)
+Joint* Joint::Create(const JointConf& def)
 {
     switch (def.type)
     {
         case JointType::Distance:
-            return Create<DistanceJoint>(static_cast<const DistanceJointDef&>(def));
+            return Create<DistanceJoint>(static_cast<const DistanceJointConf&>(def));
         case JointType::Mouse:
-            return Create<MouseJoint>(static_cast<const MouseJointDef&>(def));
+            return Create<MouseJoint>(static_cast<const MouseJointConf&>(def));
         case JointType::Prismatic:
-            return Create<PrismaticJoint>(static_cast<const PrismaticJointDef&>(def));
+            return Create<PrismaticJoint>(static_cast<const PrismaticJointConf&>(def));
         case JointType::Revolute:
-            return Create<RevoluteJoint>(static_cast<const RevoluteJointDef&>(def));
+            return Create<RevoluteJoint>(static_cast<const RevoluteJoinConf&>(def));
         case JointType::Pulley:
-            return Create<PulleyJoint>(static_cast<const PulleyJointDef&>(def));
+            return Create<PulleyJoint>(static_cast<const PulleyJointConf&>(def));
         case JointType::Gear:
-            return Create<GearJoint>(static_cast<const GearJointDef&>(def));
+            return Create<GearJoint>(static_cast<const GearJointConf&>(def));
         case JointType::Wheel:
-            return Create<WheelJoint>(static_cast<const WheelJointDef&>(def));
+            return Create<WheelJoint>(static_cast<const WheelJointConf&>(def));
         case JointType::Weld:
-            return Create<WeldJoint>(static_cast<const WeldJointDef&>(def));
+            return Create<WeldJoint>(static_cast<const WeldJointConf&>(def));
         case JointType::Friction:
-            return Create<FrictionJoint>(static_cast<const FrictionJointDef&>(def));
+            return Create<FrictionJoint>(static_cast<const FrictionJointConf&>(def));
         case JointType::Rope:
-            return Create<RopeJoint>(static_cast<const RopeJointDef&>(def));
+            return Create<RopeJoint>(static_cast<const RopeJointConf&>(def));
         case JointType::Motor:
-            return Create<MotorJoint>(static_cast<const MotorJointDef&>(def));
+            return Create<MotorJoint>(static_cast<const MotorJointConf&>(def));
         case JointType::Unknown:
             break;
     }
     throw InvalidArgument("Joint::Create: Unknown joint type");
 }
 
-Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
+Joint::FlagsType Joint::GetFlags(const JointConf& def) noexcept
 {
     auto flags = Joint::FlagsType(0);
     if (def.collideConnected)
@@ -83,7 +84,7 @@ Joint::FlagsType Joint::GetFlags(const JointDef& def) noexcept
     return flags;
 }
 
-Joint::Joint(const JointDef& def):
+Joint::Joint(const JointConf& def):
     m_bodyA{def.bodyA}, m_bodyB{def.bodyB}, m_userData{def.userData}, m_flags{GetFlags(def)}
 {
     // Intentionally empty.
@@ -94,7 +95,7 @@ void Joint::Destroy(const Joint* joint)
     delete joint;
 }
 
-bool Joint::IsOkay(const JointDef& def) noexcept
+bool Joint::IsOkay(const JointConf& def) noexcept
 {
     return def.bodyA != def.bodyB;
 }
@@ -181,4 +182,5 @@ const char* ToString(Joint::LimitState val) noexcept
     return "inactive";
 }
 
+} // namespace d2
 } // namespace playrho

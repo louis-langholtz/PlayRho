@@ -23,10 +23,11 @@
 #define PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Prismatic Joint.
 ///
@@ -47,7 +48,7 @@ class PrismaticJoint : public Joint
 public:
     
     /// @brief Copy constructor.
-    PrismaticJoint(const PrismaticJointDef& def);
+    PrismaticJoint(const PrismaticJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -65,7 +66,7 @@ public:
     Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// @brief Gets local joint axis relative to bodyA.
-    UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
+    UnitVec GetLocalAxisA() const { return m_localXAxisA; }
 
     /// @brief Gets the reference angle.
     Angle GetReferenceAngle() const { return m_referenceAngle; }
@@ -121,8 +122,8 @@ private:
     // Solver shared
     Length2 m_localAnchorA; ///< Local anchor A.
     Length2 m_localAnchorB; ///< Local anchor B.
-    UnitVec2 m_localXAxisA; ///< Local X axis A.
-    UnitVec2 m_localYAxisA; ///< Local Y axis A.
+    UnitVec m_localXAxisA; ///< Local X axis A.
+    UnitVec m_localYAxisA; ///< Local Y axis A.
     Angle m_referenceAngle; ///< Reference angle.
     Vec3 m_impulse = Vec3{}; ///< Impulse.
     Momentum m_motorImpulse = 0; ///< Motor impulse.
@@ -135,8 +136,8 @@ private:
     LimitState m_limitState = e_inactiveLimit; ///< Limit state.
 
     // Solver temp
-    UnitVec2 m_axis = UnitVec2::GetZero(); ///< Axis.
-    UnitVec2 m_perp = UnitVec2::GetZero(); ///< Perpendicular.
+    UnitVec m_axis = UnitVec::GetZero(); ///< Axis.
+    UnitVec m_perp = UnitVec::GetZero(); ///< Perpendicular.
     Length m_s1; ///< Location S1.
     Length m_s2; ///< Location S2.
     Length m_a1; ///< Location A1.
@@ -190,6 +191,7 @@ inline Force GetMotorForce(const PrismaticJoint& joint, Frequency inv_dt) noexce
     return joint.GetMotorImpulse() * inv_dt;
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINT_HPP

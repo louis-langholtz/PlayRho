@@ -23,12 +23,13 @@
 #define PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 #include <vector>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Chain shape configuration.
 ///
@@ -44,7 +45,7 @@ namespace playrho {
 ///
 /// @ingroup PartsGroup
 ///
-class ChainShapeConf: public ShapeDefBuilder<ChainShapeConf>
+class ChainShapeConf: public ShapeBuilder<ChainShapeConf>
 {
 public:
     /// @brief Gets the default vertex radius.
@@ -74,7 +75,7 @@ public:
     DistanceProxy GetChild(ChildCounter index) const;
     
     /// @brief Gets the mass data.
-    MassData2D GetMassData() const noexcept;
+    MassData GetMassData() const noexcept;
     
     /// @brief Gets the vertex count.
     ChildCounter GetVertexCount() const noexcept
@@ -90,7 +91,7 @@ public:
     }
     
     /// @brief Gets the normal at the given index.
-    UnitVec2 GetNormal(ChildCounter index) const
+    UnitVec GetNormal(ChildCounter index) const
     {
         assert((0 <= index) && (index < GetVertexCount()));
         return m_normals[index];
@@ -113,7 +114,7 @@ public:
     
 private:
     std::vector<Length2> m_vertices; ///< Vertices.
-    std::vector<UnitVec2> m_normals; ///< Normals.
+    std::vector<UnitVec> m_normals; ///< Normals.
 };
 
 // Free functions...
@@ -131,7 +132,7 @@ inline DistanceProxy GetChild(const ChainShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the mass data for a given chain shape configuration.
-inline MassData2D GetMassData(const ChainShapeConf& arg) noexcept
+inline MassData GetMassData(const ChainShapeConf& arg) noexcept
 {
     return arg.GetMassData();
 }
@@ -149,6 +150,7 @@ inline ChildCounter GetNextIndex(const ChainShapeConf& shape, ChildCounter index
     return GetModuloNext(index, shape.GetVertexCount());
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP

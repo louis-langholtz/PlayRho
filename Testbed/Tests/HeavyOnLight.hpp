@@ -30,9 +30,9 @@ public:
     
     HeavyOnLight()
     {
-        const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
-        const auto upperBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 6.0f) * 1_m);
-        const auto lowerBodyDef = BodyDef(bd).UseLocation(Vec2(0.0f, 0.5f) * 1_m);
+        const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
+        const auto upperBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 6.0f) * 1_m);
+        const auto lowerBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 0.5f) * 1_m);
         
         const auto groundConf = EdgeShapeConf{}
             .Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m);
@@ -43,8 +43,8 @@ public:
 
         m_world.CreateBody()->CreateFixture(Shape(groundConf));
         
-        const auto lowerBody = m_world.CreateBody(lowerBodyDef);
-        const auto upperBody = m_world.CreateBody(upperBodyDef);
+        const auto lowerBody = m_world.CreateBody(lowerBodyConf);
+        const auto upperBody = m_world.CreateBody(upperBodyConf);
 
         lowerBody->CreateFixture(Shape(smallerDiskConf));
         m_top = upperBody->CreateFixture(Shape(biggerDiskConf));

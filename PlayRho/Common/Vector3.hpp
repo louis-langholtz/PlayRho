@@ -25,38 +25,38 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector.hpp>
 
-namespace playrho
+namespace playrho {
+
+/// @brief Vector with 3-elements.
+/// @note This is just a C++11 alias template for 3-element uses of the Vector template.
+template <typename T>
+using Vector3 = Vector<T, 3>;
+
+/// A 3D column vector with 3 elements.
+/// @note This data structure is 3 times the size of <code>Real</code> -
+///   i.e. 12-bytes (with 4-byte Real).
+using Vec3 = Vector3<Real>;
+
+/// @brief 3-element vector of Mass quantities.
+using Mass3 = Vector3<Mass>;
+
+/// @brief 3-element vector of InvMass quantities.
+using InvMass3 = Vector3<InvMass>;
+
+/// @brief Gets an invalid value for the Vec3 type.
+template <>
+PLAYRHO_CONSTEXPR inline Vec3 GetInvalid() noexcept
 {
-    /// @brief Vector with 3-elements.
-    /// @note This is just a C++11 alias template for 3-element uses of the Vector template.
-    template <typename T>
-    using Vector3 = Vector<T, 3>;
-    
-    /// A 3D column vector with 3 elements.
-    /// @note This data structure is 3 times the size of <code>Real</code> -
-    ///   i.e. 12-bytes (with 4-byte Real).
-    using Vec3 = Vector3<Real>;
-    
-    /// @brief 3-element vector of Mass quantities.
-    using Mass3 = Vector3<Mass>;
-    
-    /// @brief 3-element vector of InvMass quantities.
-    using InvMass3 = Vector3<InvMass>;
-    
-    /// @brief Gets an invalid value for the Vec3 type.
-    template <>
-    PLAYRHO_CONSTEXPR inline Vec3 GetInvalid() noexcept
-    {
-        return Vec3{GetInvalid<Real>(), GetInvalid<Real>(), GetInvalid<Real>()};
-    }
-    
-    /// @brief Determines whether the given vector contains finite coordinates.
-    template <>
-    PLAYRHO_CONSTEXPR inline bool IsValid(const Vec3& value) noexcept
-    {
-        return IsValid(Get<0>(value)) && IsValid(Get<1>(value)) && IsValid(Get<2>(value));
-    }
-    
+    return Vec3{GetInvalid<Real>(), GetInvalid<Real>(), GetInvalid<Real>()};
+}
+
+/// @brief Determines whether the given vector contains finite coordinates.
+template <>
+PLAYRHO_CONSTEXPR inline bool IsValid(const Vec3& value) noexcept
+{
+    return IsValid(Get<0>(value)) && IsValid(Get<1>(value)) && IsValid(Get<2>(value));
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_VECTOR3_HPP

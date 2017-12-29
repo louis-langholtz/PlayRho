@@ -22,6 +22,7 @@
 #include <cmath>
 
 namespace playrho {
+namespace d2 {
 
 PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept
 {
@@ -64,7 +65,7 @@ PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2)
     return retval;
 }
 
-ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length offset,
+ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec& normal, Length offset,
                            ContactFeature::Index indexA)
 {
     ClipList vOut;
@@ -107,4 +108,5 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length o
     return vOut;
 }
 
+} // namespace d2
 } // namespace playrho

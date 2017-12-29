@@ -27,6 +27,7 @@
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Joint attorney.
 ///
@@ -41,7 +42,7 @@ class JointAtty
 private:
     /// @brief Creates a new joint based on the given definition.
     /// @throws InvalidArgument if given a joint definition with a type that's not recognized.
-    static Joint* Create(const playrho::JointDef &def)
+    static Joint* Create(const JointConf &def)
     {
         return Joint::Create(def);
     }
@@ -54,7 +55,7 @@ private:
     
     /// @brief Initializes the velocity constraints for the given joint with the given data.
     static void InitVelocityConstraints(Joint& j, BodyConstraintsMap &bodies,
-                                        const playrho::StepConf &step,
+                                        const StepConf &step,
                                         const ConstraintSolverConf &conf)
     {
         j.InitVelocityConstraints(bodies, step, conf);
@@ -62,7 +63,7 @@ private:
     
     /// @brief Solves the velocity constraints for the given joint with the given data.
     static bool SolveVelocityConstraints(Joint& j, BodyConstraintsMap &bodies,
-                                         const playrho::StepConf &conf)
+                                         const StepConf &conf)
     {
         return j.SolveVelocityConstraints(bodies, conf);
     }
@@ -95,6 +96,7 @@ private:
     friend class World;
 };
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTATTY_HPP

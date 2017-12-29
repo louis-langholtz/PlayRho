@@ -20,6 +20,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(BodyConstraint, ByteSizeIs_40_80_or_160)
 {

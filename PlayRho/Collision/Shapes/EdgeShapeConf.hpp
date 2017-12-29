@@ -21,11 +21,12 @@
 #define PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Edge shape configuration.
 ///
@@ -37,7 +38,7 @@ namespace playrho {
 ///
 /// @ingroup PartsGroup
 ///
-class EdgeShapeConf: public ShapeDefBuilder<EdgeShapeConf>
+class EdgeShapeConf: public ShapeBuilder<EdgeShapeConf>
 {
 public:
     /// @brief Gets the default vertex radius.
@@ -80,7 +81,7 @@ public:
     
 private:
     Length2 m_vertices[2] = {Length2{}, Length2{}}; ///< Vertices
-    UnitVec2 m_normals[2] = {UnitVec2{}, UnitVec2{}}; ///< Normals.
+    UnitVec m_normals[2] = {UnitVec{}, UnitVec{}}; ///< Normals.
 };
 
 // Free functions...
@@ -117,12 +118,13 @@ inline DistanceProxy GetChild(const EdgeShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the mass data for the given shape configuration.
-inline MassData2D GetMassData(const EdgeShapeConf& arg) noexcept
+inline MassData GetMassData(const EdgeShapeConf& arg) noexcept
 {
-    return playrho::GetMassData(arg.vertexRadius, arg.density,
-                                arg.GetVertexA(), arg.GetVertexB());
+    return playrho::d2::GetMassData(arg.vertexRadius, arg.density,
+                                    arg.GetVertexA(), arg.GetVertexB());
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP

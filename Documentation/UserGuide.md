@@ -56,7 +56,7 @@ PlayRho is composed of three modules: Common, Collision, and Dynamics. The Commo
 
 PlayRho works with floating point numbers and tolerances have to be used to try to make PlayRho perform well enough for things like games. These tolerances have been tuned to work better with meters-kilogram-second (MKS) units. In particular, PlayRho has been tuned to work best with moving shapes between 0.1 and 10 meters. So this means objects between soup cans and buses in size are more ideally suited for the default tuning. Static shapes may be up to 50 meters long without trouble.
 
-Being a 2D physics engine, it is tempting to use pixels as your units. Unfortunately this may lead to a poorer simulation and less desirable behavior. An object of length 200 pixels would be seen by PlayRho as the size of a 45 story building.
+Being a 2-dimensional physics engine, it is tempting to use pixels as your units. Unfortunately this may lead to a poorer simulation and less desirable behavior. An object of length 200 pixels would be seen by PlayRho as the size of a 45 story building.
 
 Think of PlayRho bodies as moving billboards upon which you attach your artwork. The billboard may move in a unit system of meters, but you can convert that to pixel coordinates with a scaling factor. You can then use those pixel coordinates to place your sprites, etc. You can also account for flipped coordinate axes.
 
@@ -84,7 +84,7 @@ Since fixtures (shapes) must be parented to a body, they are created and destroy
 
 There is also shortcut to create a fixture directly from the shape and density.
 
-    Fixture* Body::CreateFixture(const Shape* shape, Density density);
+    Fixture* Body::CreateFixture(const Shape& shape, Density density);
 
 Factories do not retain references to the definitions. So you can create definitions on the stack and keep them in temporary resources.
 

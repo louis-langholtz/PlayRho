@@ -20,6 +20,7 @@
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 
 namespace playrho {
+namespace d2 {
 
 namespace {
 
@@ -30,13 +31,13 @@ namespace {
 /// @param plp Point's local point. Location of shape B in local coordinates.
 /// @note The returned separation is the magnitude of the positional difference of the two points.
 ///   This is always a non-negative amount.
-inline PositionSolverManifold GetForCircles(const Transformation2D& xfA, Length2 lp,
-                                            const Transformation2D& xfB, Length2 plp)
+inline PositionSolverManifold GetForCircles(const Transformation& xfA, Length2 lp,
+                                            const Transformation& xfB, Length2 plp)
 {
     const auto pointA = Transform(lp, xfA);
     const auto pointB = Transform(plp, xfB);
     const auto delta = pointB - pointA; // The edge from pointA to pointB
-    const auto normal = GetUnitVector(delta, UnitVec2::GetZero()); // The direction of the edge.
+    const auto normal = GetUnitVector(delta, UnitVec::GetZero()); // The direction of the edge.
     const auto midpoint = (pointA + pointB) / Real{2};
     const auto separation = Dot(delta, normal); // The length of edge without doing sqrt again.
     return PositionSolverManifold{normal, midpoint, separation};
@@ -51,8 +52,8 @@ inline PositionSolverManifold GetForCircles(const Transformation2D& xfA, Length2
 /// @param plp Point's local point. Location for shape B in local coordinates.
 /// @return Separation is the dot-product of the positional difference between the two points in
 ///   the direction of the world normal.
-inline PositionSolverManifold GetForFaceA(const Transformation2D& xfA, Length2 lp, UnitVec2 ln,
-                                          const Transformation2D& xfB, Length2 plp)
+inline PositionSolverManifold GetForFaceA(const Transformation& xfA, Length2 lp, UnitVec ln,
+                                          const Transformation& xfB, Length2 plp)
 {
     const auto planePoint = Transform(lp, xfA);
     const auto normal = Rotate(ln, xfA.q);
@@ -70,8 +71,8 @@ inline PositionSolverManifold GetForFaceA(const Transformation2D& xfA, Length2 l
 /// @param plp Point's local point. Location for shape A in local coordinates.
 /// @return Separation is the dot-product of the positional difference between the two points in
 ///   the direction of the world normal.
-inline PositionSolverManifold GetForFaceB(const Transformation2D& xfB, Length2 lp, UnitVec2 ln,
-                                          const Transformation2D& xfA, Length2 plp)
+inline PositionSolverManifold GetForFaceB(const Transformation& xfB, Length2 lp, UnitVec ln,
+                                          const Transformation& xfA, Length2 plp)
 {
     const auto planePoint = Transform(lp, xfB);
     const auto normal = Rotate(ln, xfB.q);
@@ -84,7 +85,7 @@ inline PositionSolverManifold GetForFaceB(const Transformation2D& xfB, Length2 l
 } // unnamed namespace
 
 PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
-                              const Transformation2D& xfA, const Transformation2D& xfB)
+                              const Transformation& xfA, const Transformation& xfB)
 {
     switch (manifold.GetType())
     {
@@ -101,7 +102,8 @@ PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type inde
         break;
     }
     assert(manifold.GetType() == Manifold::e_unset);
-    return PositionSolverManifold{GetInvalid<UnitVec2>(), GetInvalid<Length2>(), GetInvalid<Length>()};
+    return PositionSolverManifold{GetInvalid<UnitVec>(), GetInvalid<Length2>(), GetInvalid<Length>()};
 }
 
+} // namespace d2
 } // namespace playrho

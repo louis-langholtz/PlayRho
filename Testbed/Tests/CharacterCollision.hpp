@@ -101,7 +101,7 @@ public:
 
         // Chain shape
         {
-            const auto body = m_world.CreateBody(BodyDef{}.UseAngle(45_deg));
+            const auto body = m_world.CreateBody(BodyConf{}.UseAngle(45_deg));
             auto conf = ChainShapeConf{};
             conf.Add(Vec2(5.0f, 7.0f) * 1_m);
             conf.Add(Vec2(6.0f, 8.0f) * 1_m);
@@ -134,7 +134,7 @@ public:
 
         // Edge loop. Collision should be smooth.
         {
-            const auto body = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-10.0f, 4.0f) * 1_m));
+            const auto body = m_world.CreateBody(BodyConf{}.UseLocation(Vec2(-10.0f, 4.0f) * 1_m));
             auto conf = ChainShapeConf{};
             conf.Add(Length2{});
             conf.Add(Vec2(6.0f, 0.0f) * 1_m);
@@ -152,7 +152,7 @@ public:
 
         // Square character 1
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = false;
             bd.allowSleep = false;
@@ -172,7 +172,7 @@ public:
 
         // Square character 2
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Vec2(-5.0f, 5.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = true;
@@ -185,7 +185,7 @@ public:
 
         // Hexagon character
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Vec2(-5.0f, 8.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = true;
@@ -208,7 +208,7 @@ public:
 
         // Disk character
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Vec2(3.0f, 5.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = true;
@@ -223,7 +223,7 @@ public:
 
         // Disk character
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Vec2(-7.0f, 6.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             bd.allowSleep = false;

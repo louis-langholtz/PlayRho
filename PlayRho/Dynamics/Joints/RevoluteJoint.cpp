@@ -27,6 +27,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 namespace {
 
@@ -84,7 +85,7 @@ Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA,
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-RevoluteJoint::RevoluteJoint(const RevoluteJointDef& def):
+RevoluteJoint::RevoluteJoint(const RevoluteJoinConf& def):
     Joint{def},
     m_localAnchorA{def.localAnchorA},
     m_localAnchorB{def.localAnchorB},
@@ -126,8 +127,8 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto aB = bodyConstraintB->GetPosition().angular;
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto qA = UnitVec2::Get(aA);
-    const auto qB = UnitVec2::Get(aB);
+    const auto qA = UnitVec::Get(aA);
+    const auto qB = UnitVec::Get(aB);
 
     m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
@@ -201,8 +202,8 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian} + L;
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian} + L;
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -311,8 +312,8 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian} + L;
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian} + L;
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -328,8 +329,8 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
 
     if ((velA != oldVelA) || (velB != oldVelB))
@@ -404,8 +405,8 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
     // Solve point-to-point constraint.
     auto positionError = Area{0};
     {
-        const auto qA = UnitVec2::Get(posA.angular);
-        const auto qB = UnitVec2::Get(posB.angular);
+        const auto qA = UnitVec::Get(posA.angular);
+        const auto qB = UnitVec::Get(posB.angular);
 
         const auto rA = Length2{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
         const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
@@ -436,8 +437,8 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
         GetY(GetY(K)) = eyy;
         const auto P = -Solve(K, C);
 
-        posA -= Position2D{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
-        posB += Position2D{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
+        posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
+        posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
     }
 
     bodyConstraintA->SetPosition(posA);
@@ -540,4 +541,5 @@ AngularVelocity GetAngularVelocity(const RevoluteJoint& joint)
     return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
 }
 
+} // namespace d2
 } // namespace playrho

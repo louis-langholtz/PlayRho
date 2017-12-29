@@ -20,15 +20,16 @@
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 EdgeShapeConf::EdgeShapeConf():
-    ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+    ShapeBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
 {
     // Intentionally empty.
 }
 
 EdgeShapeConf::EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf) noexcept:
-    ShapeDefBuilder{conf}, m_vertices{vA, vB}
+    ShapeBuilder{conf}, m_vertices{vA, vB}
 {
     const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
     m_normals[0] = normal;
@@ -45,4 +46,5 @@ EdgeShapeConf& EdgeShapeConf::Set(Length2 vA, Length2 vB) noexcept
     return *this;
 }
 
+} // namespace d2
 } // namespace playrho

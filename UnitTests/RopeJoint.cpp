@@ -23,32 +23,33 @@
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
-TEST(RopeJointDef, ByteSize)
+TEST(RopeJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(RopeJointDef), std::size_t(40));
+            EXPECT_EQ(sizeof(RopeJointConf), std::size_t(40));
 #else
-            EXPECT_EQ(sizeof(RopeJointDef), std::size_t(64));
+            EXPECT_EQ(sizeof(RopeJointConf), std::size_t(64));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(RopeJointDef), std::size_t(80)); break;
-        case 16: EXPECT_EQ(sizeof(RopeJointDef), std::size_t(128)); break;
+        case  8: EXPECT_EQ(sizeof(RopeJointConf), std::size_t(80)); break;
+        case 16: EXPECT_EQ(sizeof(RopeJointConf), std::size_t(128)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(RopeJointDef, DefaultConstruction)
+TEST(RopeJointConf, DefaultConstruction)
 {
-    RopeJointDef def{};
+    RopeJointConf def{};
     
     EXPECT_EQ(def.type, JointType::Rope);
     EXPECT_EQ(def.bodyA, nullptr);
@@ -86,7 +87,7 @@ TEST(RopeJoint, Construction)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
 
-    auto def = RopeJointDef{b0, b1};
+    auto def = RopeJointConf{b0, b1};
     RopeJoint joint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -109,11 +110,11 @@ TEST(RopeJoint, Construction)
     EXPECT_EQ(visitor.GetType().value(), JointType::Rope);
 }
 
-TEST(RopeJoint, GetRopeJointDef)
+TEST(RopeJoint, GetRopeJointConf)
 {
-    auto bodyA = Body{nullptr, BodyDef{}};
-    auto bodyB = Body{nullptr, BodyDef{}};
-    RopeJointDef def{&bodyA, &bodyB};
+    auto bodyA = Body{nullptr, BodyConf{}};
+    auto bodyB = Body{nullptr, BodyConf{}};
+    RopeJointConf def{&bodyA, &bodyB};
     const auto localAnchorA = Length2{-2_m, 0_m};
     const auto localAnchorB = Length2{+2_m, 0_m};
     def.localAnchorA = localAnchorA;
@@ -130,7 +131,7 @@ TEST(RopeJoint, GetRopeJointDef)
     ASSERT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
     ASSERT_EQ(joint.GetMaxLength(), def.maxLength);
     
-    const auto cdef = GetRopeJointDef(joint);
+    const auto cdef = GetRopeJointConf(joint);
     EXPECT_EQ(cdef.type, JointType::Rope);
     EXPECT_EQ(cdef.bodyA, &bodyA);
     EXPECT_EQ(cdef.bodyB, &bodyB);
@@ -145,14 +146,14 @@ TEST(RopeJoint, GetRopeJointDef)
 TEST(RopeJoint, WithDynamicCircles)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    const auto jd = RopeJointDef{b1, b2};
+    const auto jd = RopeJointConf{b1, b2};
     world.CreateJoint(jd);
     Step(world, 1_s);
     EXPECT_GT(GetX(b1->GetLocation()), -1_m);

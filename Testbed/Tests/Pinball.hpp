@@ -50,7 +50,7 @@ public:
             const auto p1 = Vec2(-2.0f, 0.0f) * 1_m;
             const auto p2 = Vec2(+2.0f, 0.0f) * 1_m;
 
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
 
             bd.location = p1;
@@ -63,7 +63,7 @@ public:
             leftFlipper->CreateFixture(box);
             rightFlipper->CreateFixture(box);
 
-            RevoluteJointDef jd;
+            RevoluteJoinConf jd;
             jd.bodyA = ground;
             jd.localAnchorB = Length2{};
             jd.enableMotor = true;
@@ -87,7 +87,7 @@ public:
 
         // Disk character
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Vec2(1.0f, 15.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             bd.bullet = true;

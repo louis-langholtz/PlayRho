@@ -28,6 +28,7 @@
 
 using namespace testbed;
 using namespace playrho;
+using namespace playrho::d2;
 
 static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
 {
@@ -35,14 +36,14 @@ static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, 
     auto lastAngle = 0_deg;
     for (auto angle = 5_deg; angle < angleDiff; angle += 5_deg)
     {
-        const auto c0 = p + r * UnitVec2::Get(a0 + lastAngle);
-        const auto c1 = p + r * UnitVec2::Get(a0 + angle);
+        const auto c0 = p + r * UnitVec::Get(a0 + lastAngle);
+        const auto c1 = p + r * UnitVec::Get(a0 + angle);
         drawer.DrawSegment(c0, c1, color);
         lastAngle = angle;
     }
     {
-        const auto c0 = p + r * UnitVec2::Get(a0 + lastAngle);
-        const auto c1 = p + r * UnitVec2::Get(a1);
+        const auto c0 = p + r * UnitVec::Get(a0 + lastAngle);
+        const auto c1 = p + r * UnitVec::Get(a1);
         drawer.DrawSegment(c0, c1, color);
     }
 }
@@ -50,7 +51,7 @@ static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, 
 class ShapeDrawer
 {
 public:
-    ShapeDrawer(Drawer& d, Color c, bool s, Transformation2D t):
+    ShapeDrawer(Drawer& d, Color c, bool s, Transformation t):
         drawer{d}, color{c}, skins{s}, xf{t}
     {
         // Intentionally empty.
@@ -91,7 +92,7 @@ public:
     Drawer& drawer;
     Color color;
     bool skins;
-    Transformation2D xf;
+    Transformation xf;
 };
 
 void ShapeDrawer::Visit(const DiskShapeConf& shape)
@@ -312,7 +313,7 @@ static void Draw(Drawer& drawer, const Joint& joint)
     }
 }
 
-static void Draw(Drawer& drawer, const AABB2D& aabb, const Color& color)
+static void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
 {
     Length2 vs[4];
     vs[0] = Length2{aabb.ranges[0].GetMin(), aabb.ranges[1].GetMin()};
@@ -414,7 +415,7 @@ void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
 }
 
 Test::Test(Conf conf):
-    m_world(conf.worldDef),
+    m_world(conf.worldConf),
     m_neededSettings(conf.neededSettings),
     m_settings(conf.settings),
     m_description(conf.description),
@@ -432,7 +433,7 @@ Test::~Test()
 {
 }
 
-void Test::ResetWorld(const playrho::World &saved)
+void Test::ResetWorld(const World &saved)
 {
     ClearSelectedFixtures();
 
@@ -517,7 +518,7 @@ void Test::MouseDown(const Length2& p)
     }
 
     // Make a small box.
-    const auto aabb = GetFattenedAABB(AABB2D{p}, 1_m / 1000);
+    const auto aabb = GetFattenedAABB(AABB{p}, 1_m / 1000);
 
     auto fixtures = FixtureSet{};
 
@@ -536,7 +537,7 @@ void Test::MouseDown(const Length2& p)
         const auto body = (*(fixtures.begin()))->GetBody();
         if (body->GetType() == BodyType::Dynamic)
         {
-            auto md = MouseJointDef{};
+            auto md = MouseJointConf{};
             md.bodyB = body;
             md.target = p;
             md.maxForce = Real(10000.0f) * GetMass(*body) * MeterPerSquareSecond;
@@ -625,7 +626,7 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
         m_world.Destroy(m_bomb);
     }
 
-    m_bomb = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true)
+    m_bomb = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
                                 .UseLocation(at).UseLinearVelocity(v));
 
     auto conf = DiskShapeConf{};
@@ -1084,8 +1085,8 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
             const auto headLength = length / Real(10);
             const auto p1 = point.position;
             const auto p2 = p1 + length * point.normal;
-            const auto p2_left = p2 - headLength * Rotate(point.normal, UnitVec2::GetTopRight());
-            const auto p2_right = p2 - headLength * Rotate(point.normal, UnitVec2::GetBottomRight());
+            const auto p2_left = p2 - headLength * Rotate(point.normal, UnitVec::GetTopRight());
+            const auto p2_right = p2 - headLength * Rotate(point.normal, UnitVec::GetBottomRight());
             drawer.DrawSegment(p1, p2, Brighten(normalImpulseColor, selected? lighten: darken));
             drawer.DrawSegment(p2, p2_left, Brighten(normalImpulseColor, selected? lighten: darken));
             drawer.DrawSegment(p2, p2_right, Brighten(normalImpulseColor, selected? lighten: darken));

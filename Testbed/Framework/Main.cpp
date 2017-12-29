@@ -68,6 +68,7 @@
 
 using namespace testbed;
 using namespace playrho;
+using namespace playrho::d2;
 
 class TestSuite;
 class Selection;

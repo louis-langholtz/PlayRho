@@ -24,6 +24,7 @@
 #include <iomanip>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 // This is a simple example of building and running a simulation using PlayRho.
 // The code creates a large box to be the ground and a small disk to be a ball
@@ -36,7 +37,7 @@ int main()
 
     // Call world's body creation method which allocates memory for ground body.
     // The body is also added to the world.
-    const auto ground = world.CreateBody(BodyDef{}.UseLocation(Length2{0_m, -10_m}));
+    const auto ground = world.CreateBody(BodyConf{}.UseLocation(Length2{0_m, -10_m}));
 
     // Define the ground shape. Use a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
@@ -46,7 +47,7 @@ int main()
     ground->CreateFixture(box);
 
     // Define location above ground for a "dynamic" body & call world's body creation method.
-    const auto ball = world.CreateBody(BodyDef{}
+    const auto ball = world.CreateBody(BodyConf{}
                                        .UseLocation(Length2{0_m, 4_m})
                                        .UseType(BodyType::Dynamic));
 

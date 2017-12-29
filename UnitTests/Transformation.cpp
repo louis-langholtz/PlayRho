@@ -20,30 +20,31 @@
 #include <PlayRho/Common/Math.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(Transformation, ByteSizeIs_16_32_or_64)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(Transformation2D), std::size_t(16)); break;
-        case  8: EXPECT_EQ(sizeof(Transformation2D), std::size_t(32)); break;
-        case 16: EXPECT_EQ(sizeof(Transformation2D), std::size_t(64)); break;
+        case  4: EXPECT_EQ(sizeof(Transformation), std::size_t(16)); break;
+        case  8: EXPECT_EQ(sizeof(Transformation), std::size_t(32)); break;
+        case 16: EXPECT_EQ(sizeof(Transformation), std::size_t(64)); break;
         default: FAIL(); break;
     }
 }
 
 TEST(Transformation, DefaultConstruct)
 {
-    const Transformation2D xfm;
+    const Transformation xfm;
     EXPECT_EQ(xfm.p, Length2{});
-    EXPECT_EQ(xfm.q, UnitVec2::GetRight());
+    EXPECT_EQ(xfm.q, UnitVec::GetRight());
 }
 
 TEST(Transformation, Initialize)
 {
     const auto translation = Length2{2_m, 4_m};
-    const auto rotation = UnitVec2::Get(1_rad * Real{Pi / 2});
-    const Transformation2D xfm{translation, rotation};
+    const auto rotation = UnitVec::Get(1_rad * Real{Pi / 2});
+    const Transformation xfm{translation, rotation};
     EXPECT_EQ(translation, xfm.p);
     EXPECT_EQ(rotation, xfm.q);
 }
@@ -51,20 +52,20 @@ TEST(Transformation, Initialize)
 TEST(Transformation, Equality)
 {
     const auto translation = Length2{2_m, 4_m};
-    const auto rotation = UnitVec2::Get(1_rad * Real{Pi / 2});
-    const Transformation2D xfm{translation, rotation};
+    const auto rotation = UnitVec::Get(1_rad * Real{Pi / 2});
+    const Transformation xfm{translation, rotation};
     EXPECT_EQ(xfm, xfm);
 }
 
 TEST(Transformation, Inequality)
 {
     const auto translation1 = Length2{2_m, 4_m};
-    const auto rotation1 = UnitVec2::Get(1_rad * Pi * Real{0.7f});
-    const Transformation2D xfm1{translation1, rotation1};
+    const auto rotation1 = UnitVec::Get(1_rad * Pi * Real{0.7f});
+    const Transformation xfm1{translation1, rotation1};
 
     const auto translation2 = Length2{-3_m, 37_m};
-    const auto rotation2 = UnitVec2::Get(1_rad * Pi * Real{0.002f});
-    const Transformation2D xfm2{translation2, rotation2};
+    const auto rotation2 = UnitVec::Get(1_rad * Pi * Real{0.002f});
+    const Transformation xfm2{translation2, rotation2};
 
     ASSERT_NE(translation1, translation2);
     ASSERT_NE(rotation1, rotation2);
@@ -74,12 +75,12 @@ TEST(Transformation, Inequality)
 TEST(Transformation, Mul)
 {
     const auto translation1 = Length2{2_m, 4_m};
-    const auto rotation1 = UnitVec2::Get(1_rad * Real{Pi / 2});
-    const Transformation2D xfm{translation1, rotation1};
+    const auto rotation1 = UnitVec::Get(1_rad * Real{Pi / 2});
+    const Transformation xfm{translation1, rotation1};
 
     const auto xfm2 = Mul(xfm, xfm);
     const Vec2 translation2{4, 8};
-    const auto rotation2 = UnitVec2::Get(1_rad * Pi);
+    const auto rotation2 = UnitVec::Get(1_rad * Pi);
 
     const auto Ap = xfm.p;
     const auto Bp = xfm.p;
@@ -94,8 +95,8 @@ TEST(Transformation, Mul)
 TEST(Transformation, MulSameAsTransformTwice)
 {
     const auto translation1 = Length2{2_m, 4_m};
-    const auto rotation1 = UnitVec2::Get(1_rad * Real{Pi / 2});
-    const Transformation2D xfm{translation1, rotation1};
+    const auto rotation1 = UnitVec::Get(1_rad * Real{Pi / 2});
+    const Transformation xfm{translation1, rotation1};
     const auto xfm2 = Mul(xfm, xfm);
 
     const auto location = Length2{-23.4_m, 0.81_m};

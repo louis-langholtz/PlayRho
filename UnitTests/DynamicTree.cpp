@@ -23,6 +23,7 @@
 #include <type_traits>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(DynamicTree, ByteSize)
 {
@@ -119,7 +120,7 @@ TEST(DynamicTree, CopyConstruction)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
 
-    const auto aabb = AABB2D{
+    const auto aabb = AABB{
         Length2{0_m, 0_m},
         Length2(1_m, 1_m)
     };
@@ -150,7 +151,7 @@ TEST(DynamicTree, CopyAssignment)
         EXPECT_EQ(copy.GetMaxBalance(), orig.GetMaxBalance());
     }
     
-    const auto aabb = AABB2D{
+    const auto aabb = AABB{
         Length2{0_m, 0_m},
         Length2{1_m, 1_m}
     };
@@ -177,7 +178,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
     ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
 
-    const auto aabb = AABB2D{
+    const auto aabb = AABB{
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
@@ -215,7 +216,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     ASSERT_TRUE(foo.ValidateMetrics(DynamicTree::GetInvalidSize()));
     ASSERT_TRUE(foo.Validate());
 
-    const auto aabb = AABB2D{
+    const auto aabb = AABB{
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
@@ -309,7 +310,7 @@ TEST(DynamicTree, MoveConstruction)
 {
     DynamicTree foo;
     
-    const auto aabb = AABB2D{
+    const auto aabb = AABB{
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
@@ -349,7 +350,7 @@ TEST(DynamicTree, MoveAssignment)
 {
     DynamicTree foo;
     
-    const auto aabb = AABB2D{
+    const auto aabb = AABB{
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
@@ -394,7 +395,7 @@ TEST(DynamicTree, CapacityIncreases)
     ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(1));
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
 
-    const auto aabb = AABB2D{
+    const auto aabb = AABB{
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
@@ -425,33 +426,33 @@ TEST(DynamicTree, QueryFF)
 {
     auto foo = DynamicTree{};
     auto ncalls = 0;
-    Query(foo, AABB2D{}, [&] (DynamicTree::Size) {
+    Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
-    foo.CreateLeaf(AABB2D{}, DynamicTree::LeafData{nullptr, nullptr, 0});
-    Query(foo, AABB2D{}, [&] (DynamicTree::Size) {
+    foo.CreateLeaf(AABB{}, DynamicTree::LeafData{nullptr, nullptr, 0});
+    Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
-    foo.CreateLeaf(AABB2D{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
+    foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
                    DynamicTree::LeafData{nullptr, nullptr, 0});
-    Query(foo, AABB2D{}, [&] (DynamicTree::Size) {
+    Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
-    foo.CreateLeaf(AABB2D{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
+    foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
                    DynamicTree::LeafData{nullptr, nullptr, 0});
-    Query(foo, AABB2D{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
+    Query(foo, AABB{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 1);
     ncalls = 0;
-    Query(foo, AABB2D{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
+    Query(foo, AABB{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::Continue;
     });

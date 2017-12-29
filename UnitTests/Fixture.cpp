@@ -25,6 +25,7 @@
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(Fixture, ByteSize)
 {
@@ -43,7 +44,7 @@ TEST(Fixture, ByteSize)
     }
 }
 
-TEST(Fixture, CreateMatchesDef)
+TEST(Fixture, CreateMatchesConf)
 {
     const auto density = 2_kgpm2;
     int variable;
@@ -54,7 +55,7 @@ TEST(Fixture, CreateMatchesDef)
     const auto conf = DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density);
     const auto shapeA = Shape(conf);
 
-    auto def = FixtureDef{};
+    auto def = FixtureConf{};
     def.userData = userData;
     def.isSensor = isSensor;
 
@@ -78,7 +79,7 @@ TEST(Fixture, SetSensor)
     const auto bodyCtrPos = Length2(1_m, 2_m);
     
     World world;
-    const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
+    const auto body = world.CreateBody(BodyConf{}.UseLocation(bodyCtrPos));
     const auto fixture = body->CreateFixture(shapeA);
     fixture->SetSensor(true);
     EXPECT_TRUE(fixture->IsSensor());
@@ -94,7 +95,7 @@ TEST(Fixture, TestPointFreeFunction)
     const auto bodyCtrPos = Length2(1_m, 2_m);
 
     World world;
-    const auto body = world.CreateBody(BodyDef{}.UseLocation(bodyCtrPos));
+    const auto body = world.CreateBody(BodyConf{}.UseLocation(bodyCtrPos));
     const auto fixture = body->CreateFixture(shapeA);
     EXPECT_TRUE(TestPoint(*fixture, bodyCtrPos));
     EXPECT_FALSE(TestPoint(*fixture, Length2{}));
@@ -105,7 +106,7 @@ TEST(Fixture, SetAwakeFreeFunction)
     const auto shapeA = DiskShapeConf{};
 
     World world;
-    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     body->UnsetAwake();
     ASSERT_FALSE(body->IsAwake());
     const auto fixture = body->CreateFixture(shapeA);
@@ -122,7 +123,7 @@ TEST(Fixture, CopyConstructor)
     const auto restitution = Real(0.4);
     const auto isSensor = true;
     
-    auto def = FixtureDef{};
+    auto def = FixtureConf{};
     def.userData = userData;
     def.isSensor = isSensor;
     

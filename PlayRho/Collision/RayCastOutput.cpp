@@ -25,6 +25,7 @@
 #include <utility>
 
 namespace playrho {
+namespace d2 {
 
 RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input) noexcept
 {
@@ -55,14 +56,14 @@ RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input
     // Is the intersection point on the segment?
     if ((fraction >= Real{0}) && (fraction <= input.maxFraction))
     {
-        const auto normal = GetUnitVector(s + fraction * raySegment, UnitVec2::GetZero());
+        const auto normal = GetUnitVector(s + fraction * raySegment, UnitVec::GetZero());
         return RayCastOutput{{normal, fraction}};
     }
     
     return RayCastOutput{};
 }
 
-RayCastOutput RayCast(const AABB2D& aabb, const RayCastInput& input) noexcept
+RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input) noexcept
 {
     // From Real-time Collision Detection, p179.
 
@@ -72,7 +73,7 @@ RayCastOutput RayCast(const AABB2D& aabb, const RayCastInput& input) noexcept
     const auto p1 = input.p1;
     const auto pDelta = input.p2 - input.p1;
     
-    UnitVec2 normal;
+    UnitVec normal;
     
     for (auto i = decltype(pDelta.max_size()){0}; i < pDelta.max_size(); ++i)
     {
@@ -107,8 +108,8 @@ RayCastOutput RayCast(const AABB2D& aabb, const RayCastInput& input) noexcept
             if (tmin < t1)
             {
                 normal = (i == 0)?
-                    ((s < 0)? UnitVec2::GetLeft(): UnitVec2::GetRight()):
-                    ((s < 0)? UnitVec2::GetBottom(): UnitVec2::GetTop());
+                    ((s < 0)? UnitVec::GetLeft(): UnitVec::GetRight()):
+                    ((s < 0)? UnitVec::GetBottom(): UnitVec::GetTop());
                 tmin = t1;
             }
             
@@ -134,7 +135,7 @@ RayCastOutput RayCast(const AABB2D& aabb, const RayCastInput& input) noexcept
 }
 
 RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
-                      const Transformation2D& transform) noexcept
+                      const Transformation& transform) noexcept
 {
     const auto vertexCount = proxy.GetVertexCount();
     assert(vertexCount > 0);
@@ -171,7 +172,7 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
     const auto ray = transformedInput.p2 - transformedInput.p1; // Ray delta (p2 - p1)
     
     auto minT = nextafter(Real{input.maxFraction}, Real(2));
-    auto normalFound = GetInvalid<UnitVec2>();
+    auto normalFound = GetInvalid<UnitVec>();
     
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
     {
@@ -230,9 +231,10 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
 }
 
 RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
-                      const RayCastInput& input, const Transformation2D& transform) noexcept
+                      const RayCastInput& input, const Transformation& transform) noexcept
 {
     return RayCast(GetChild(shape, childIndex), input, transform);
 }
 
+} // namespace d2
 } // namespace playrho

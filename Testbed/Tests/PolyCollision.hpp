@@ -30,34 +30,34 @@ class PolyCollision : public Test
 public:
     PolyCollision()
     {
-        m_transformA = Transformation2D{Length2{}, UnitVec2::GetRight()};
+        m_transformA = Transformation{Length2{}, UnitVec::GetRight()};
         m_positionB = Vec2(19.345284f, 1.5632932f) * 1_m;
         m_angleB = 1.9160721_rad;
-        m_transformB = Transformation2D{m_positionB, UnitVec2::Get(m_angleB)};
+        m_transformB = Transformation{m_positionB, UnitVec::Get(m_angleB)};
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Move Left", [&](KeyActionMods) {
             GetX(m_positionB) -= 0.1_m;
-            m_transformB = Transformation2D{m_positionB, UnitVec2::Get(m_angleB)};
+            m_transformB = Transformation{m_positionB, UnitVec::Get(m_angleB)};
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Move Right", [&](KeyActionMods) {
             GetX(m_positionB) += 0.1_m;
-            m_transformB = Transformation2D{m_positionB, UnitVec2::Get(m_angleB)};
+            m_transformB = Transformation{m_positionB, UnitVec::Get(m_angleB)};
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Move Down", [&](KeyActionMods) {
             GetY(m_positionB) -= 0.1_m;
-            m_transformB = Transformation2D{m_positionB, UnitVec2::Get(m_angleB)};
+            m_transformB = Transformation{m_positionB, UnitVec::Get(m_angleB)};
         });
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Move Up", [&](KeyActionMods) {
             GetY(m_positionB) += 0.1_m;
-            m_transformB = Transformation2D{m_positionB, UnitVec2::Get(m_angleB)};
+            m_transformB = Transformation{m_positionB, UnitVec::Get(m_angleB)};
         });
         RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Rotate Counter Clockwise", [&](KeyActionMods) {
             m_angleB += 0.1_rad * Pi;
-            m_transformB = Transformation2D{m_positionB, UnitVec2::Get(m_angleB)};
+            m_transformB = Transformation{m_positionB, UnitVec::Get(m_angleB)};
         });
         RegisterForKey(GLFW_KEY_E, GLFW_PRESS, 0, "Rotate Clockwise", [&](KeyActionMods) {
             m_angleB -= 0.1_rad * Pi;
-            m_transformB = Transformation2D{m_positionB, UnitVec2::Get(m_angleB)};
+            m_transformB = Transformation{m_positionB, UnitVec::Get(m_angleB)};
         });
     }
 
@@ -110,8 +110,8 @@ public:
     PolygonShapeConf m_polygonA{PolygonShapeConf{}.SetAsBox(0.2_m, 0.4_m)};
     PolygonShapeConf m_polygonB{PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m)};
 
-    Transformation2D m_transformA;
-    Transformation2D m_transformB;
+    Transformation m_transformA;
+    Transformation m_transformB;
 
     Length2 m_positionB;
     Angle m_angleB;

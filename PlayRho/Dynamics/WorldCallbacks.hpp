@@ -24,8 +24,9 @@
 #include <algorithm>
 
 namespace playrho {
+namespace d2 {
 
-class UnitVec2;
+class UnitVec;
 class Fixture;
 class Joint;
 class Contact;
@@ -185,6 +186,7 @@ public:
                            iteration_type solved) = 0;
 };
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_WORLDCALLBACKS_HPP

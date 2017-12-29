@@ -23,14 +23,15 @@
 #define PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/FrictionJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Friction joint.
 ///
-/// @details This is used for top-down friction. It provides 2D translational friction
+/// @details This is used for top-down friction. It provides 2-D translational friction
 ///   and angular friction.
 ///
 /// @ingroup JointsGroup
@@ -40,7 +41,7 @@ class FrictionJoint : public Joint
 public:
     
     /// @brief Initializing constructor.
-    FrictionJoint(const FrictionJointDef& def);
+    FrictionJoint(const FrictionJointConf& def);
 
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -113,6 +114,7 @@ inline NonNegative<Torque> FrictionJoint::GetMaxTorque() const
     return m_maxTorque;
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINT_HPP

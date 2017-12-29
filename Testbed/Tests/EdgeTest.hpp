@@ -57,7 +57,7 @@ public:
         }
 
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-0.5f, 0.6f) * 1_m;
             bd.allowSleep = false;
@@ -70,7 +70,7 @@ public:
         }
 
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(1.0f, 0.6f) * 1_m;
             bd.allowSleep = false;

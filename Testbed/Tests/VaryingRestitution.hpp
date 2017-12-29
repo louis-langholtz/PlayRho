@@ -39,7 +39,7 @@ public:
         auto shape = DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2);
         for (auto i = 0; i < 7; ++i)
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(Real(-10 + 3 * i), 20) * 1_m;
             const auto body = m_world.CreateBody(bd);

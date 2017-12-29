@@ -23,6 +23,7 @@
 #include <PlayRho/Collision/Manifold.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(PositionSolverManifold, ByteSize)
 {
@@ -37,7 +38,7 @@ TEST(PositionSolverManifold, ByteSize)
 
 TEST(PositionSolverManifold, InitializingConstructor)
 {
-    const auto normal = UnitVec2::GetBottom();
+    const auto normal = UnitVec::GetBottom();
     const auto point = Length2{-1_m, 3_m};
     const auto separation = 8.12_m;
     
@@ -72,8 +73,8 @@ TEST(PositionSolverManifold, GetPSM)
     ASSERT_EQ(GetX(shape1.GetVertex(3)), -2_m); // left
     ASSERT_EQ(GetY(shape1.GetVertex(3)), -2_m); // bottom
     
-    const auto xfm0 = Transformation2D{Length2{-2_m, 0_m}, UnitVec2::GetRight()}; // left
-    const auto xfm1 = Transformation2D{Length2{+2_m, 0_m}, UnitVec2::GetRight()}; // right
+    const auto xfm0 = Transformation{Length2{-2_m, 0_m}, UnitVec::GetRight()}; // left
+    const auto xfm1 = Transformation{Length2{+2_m, 0_m}, UnitVec::GetRight()}; // right
     
     // put wide rectangle on left, square on right
     const auto manifold = CollideShapes(GetChild(shape0, 0), xfm0, GetChild(shape1, 0), xfm1);

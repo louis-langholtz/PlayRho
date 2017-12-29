@@ -55,11 +55,11 @@ public:
         poly1.UseDensity(1_kgpm2);
         poly2.UseDensity(1_kgpm2);
 
-        FixtureDef fd1, fd2;
+        FixtureConf fd1, fd2;
         fd1.filter.groupIndex = -1;
         fd2.filter.groupIndex = -1;
         
-        BodyDef bd1, bd2;
+        BodyConf bd1, bd2;
         bd1.type = BodyType::Dynamic;
         bd2.type = BodyType::Dynamic;
         bd1.location = m_offset;
@@ -78,15 +78,15 @@ public:
         // It also makes the structure seem a bit more fluid by
         // acting like a suspension system.
 
-        m_world.CreateJoint(DistanceJointDef{body1, body2, p2 + m_offset, p5 + m_offset}
+        m_world.CreateJoint(DistanceJointConf{body1, body2, p2 + m_offset, p5 + m_offset}
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(DistanceJointDef{body1, body2, p3 + m_offset, p4 + m_offset}
+        m_world.CreateJoint(DistanceJointConf{body1, body2, p3 + m_offset, p4 + m_offset}
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(DistanceJointDef{body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset}
+        m_world.CreateJoint(DistanceJointConf{body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset}
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(DistanceJointDef{body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset}
+        m_world.CreateJoint(DistanceJointConf{body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset}
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(RevoluteJointDef{body2, m_chassis, p4 + m_offset});
+        m_world.CreateJoint(RevoluteJoinConf{body2, m_chassis, p4 + m_offset});
     }
 
     TheoJansen()
@@ -98,7 +98,7 @@ public:
 
         // Ground
         {
-            BodyDef bd;
+            BodyConf bd;
             const auto ground = m_world.CreateBody(bd);
 
             auto conf = EdgeShapeConf{};
@@ -120,7 +120,7 @@ public:
         const auto circle = Shape(circleConf);
         for (auto i = 0; i < 40; ++i)
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m;
 
@@ -130,9 +130,9 @@ public:
 
         // Chassis
         {
-            FixtureDef sd;
+            FixtureConf sd;
             sd.filter.groupIndex = -1;
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
             m_chassis = m_world.CreateBody(bd);
@@ -140,9 +140,9 @@ public:
         }
 
         {
-            FixtureDef sd;
+            FixtureConf sd;
             sd.filter.groupIndex = -1;
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
             m_wheel = m_world.CreateBody(bd);
@@ -153,7 +153,7 @@ public:
         }
 
         {
-            RevoluteJointDef jd{m_wheel, m_chassis, pivot + m_offset};
+            RevoluteJoinConf jd{m_wheel, m_chassis, pivot + m_offset};
             jd.collideConnected = false;
             jd.motorSpeed = m_motorSpeed;
             jd.maxMotorTorque = 400_Nm;

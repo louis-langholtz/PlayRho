@@ -32,6 +32,7 @@
 #define PLAYRHO_MAGIC(x) (x)
 
 namespace playrho {
+namespace d2 {
 
 namespace {
 
@@ -53,8 +54,8 @@ inline index_type GetEdgeIndex(VertexCounter i1, VertexCounter i2, VertexCounter
 using VertexCounterPair = std::pair<VertexCounter, VertexCounter>;
     
 VertexCounterPair
-GetMostAntiParallelEdge(UnitVec2 shape0_rel_n0, const Transformation2D& xf0,
-                        const DistanceProxy& shape1, const Transformation2D& xf1,
+GetMostAntiParallelEdge(UnitVec shape0_rel_n0, const Transformation& xf0,
+                        const DistanceProxy& shape1, const Transformation& xf1,
                         const VertexCounter2 indices1) noexcept
 {
     const auto firstIdx = std::get<0>(indices1);
@@ -76,7 +77,7 @@ GetMostAntiParallelEdge(UnitVec2 shape0_rel_n0, const Transformation2D& xf0,
 }
 
 ClipList GetClipPoints(Length2 shape0_abs_v0, Length2 shape0_abs_v1, VertexCounterPair shape0_e,
-                       UnitVec2 shape0_abs_e0_dir,
+                       UnitVec shape0_abs_e0_dir,
                        Length2 shape1_abs_v0, Length2 shape1_abs_v1, VertexCounterPair shape1_e)
 {
     // Gets the two vertices in world coordinates and their face-vertex contact features
@@ -99,9 +100,9 @@ ClipList GetClipPoints(Length2 shape0_abs_v0, Length2 shape0_abs_v1, VertexCount
 /// @param indices1 Index 1. This is the first and possibly second index of the vertex of shape1
 ///   that had the maximal separation distance from the edge of shape0 identified by idx0.
 Manifold GetFaceManifold(bool flipped,
-                         const DistanceProxy& shape0, const Transformation2D& xf0,
+                         const DistanceProxy& shape0, const Transformation& xf0,
                          const VertexCounter idx0,
-                         const DistanceProxy& shape1, const Transformation2D& xf1,
+                         const DistanceProxy& shape1, const Transformation& xf1,
                          const VertexCounter2 indices1,
                          const Manifold::Conf conf)
 {
@@ -274,8 +275,8 @@ Manifold GetFaceManifold(bool flipped,
 
 /// @brief Computes manifolds for face-to-point collision.
 Manifold GetFacePointManifold(bool flipped, Length totalRadius,
-                              const DistanceProxy& shape, const Transformation2D& sxf,
-                              Length2 point, const Transformation2D& xfm)
+                              const DistanceProxy& shape, const Transformation& sxf,
+                              Length2 point, const Transformation& xfm)
 {
     // Computes the center of the circle in the frame of the polygon.
     const auto cLocal = InverseTransform(Transform(point, xfm), sxf); ///< Center of circle in frame of polygon.
@@ -370,8 +371,8 @@ Manifold GetFacePointManifold(bool flipped, Length totalRadius,
                                  ContactFeature::e_vertex, 0, point);
 }
 
-Manifold GetPointPointManifold(Length2 locationA, const Transformation2D& xfA,
-                               Length2 locationB, const Transformation2D& xfB,
+Manifold GetPointPointManifold(Length2 locationA, const Transformation& xfA,
+                               Length2 locationB, const Transformation& xfB,
                                Length totalRadius) noexcept
 {
     const auto pA = Transform(locationA, xfA);
@@ -389,8 +390,8 @@ Manifold GetPointPointManifold(Length2 locationA, const Transformation2D& xfA,
  * All CollideShapes functions return a Manifold object.
  */
 
-Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation2D& xfA,
-                       const DistanceProxy& shapeB, const Transformation2D& xfB,
+Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
+                       const DistanceProxy& shapeB, const Transformation& xfB,
                        Manifold::Conf conf)
 {
     // Assumes called after detecting AABB overlap.
@@ -488,8 +489,8 @@ Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
     {
         Length2 verticesA[4];
         Length2 verticesB[4];
-        UnitVec2 normalsA[4];
-        UnitVec2 normalsB[4];
+        UnitVec normalsA[4];
+        UnitVec normalsB[4];
         
         verticesA[0] = Transform(shapeA.GetVertex(0), xfA);
         verticesA[1] = Transform(shapeA.GetVertex(1), xfA);
@@ -762,7 +763,7 @@ Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transfor
             }
             case 3:
             {
-                const auto ln = UnitVec2::GetLeft();
+                const auto ln = UnitVec::GetLeft();
                 const auto lp = Length2{};
                 return Manifold::GetForFaceA(ln, lp);
             }
@@ -913,4 +914,5 @@ Length2 GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
 }
 #endif
 
+} // namespace d2
 } // namespace playrho

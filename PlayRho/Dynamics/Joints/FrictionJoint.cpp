@@ -26,6 +26,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 // Point-to-point constraint
 // Cdot = v2 - v1
@@ -39,7 +40,7 @@ namespace playrho {
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-FrictionJoint::FrictionJoint(const FrictionJointDef& def):
+FrictionJoint::FrictionJoint(const FrictionJointConf& def):
     Joint(def),
     m_localAnchorA(def.localAnchorA),
     m_localAnchorB(def.localAnchorB),
@@ -70,8 +71,8 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
     auto velB = bodyConstraintB->GetVelocity();
 
     // Compute the effective mass matrix.
-    m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), UnitVec2::Get(posA.angular));
-    m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), UnitVec2::Get(posB.angular));
+    m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), UnitVec::Get(posA.angular));
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), UnitVec::Get(posB.angular));
 
     // J = [-I -r1_skew I r2_skew]
     //     [ 0       -1 0       1]
@@ -124,8 +125,8 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
         const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
         
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * (crossAP + m_angularImpulse)};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * (crossBP + m_angularImpulse)};
+        velA -= Velocity{invMassA * P, invRotInertiaA * (crossAP + m_angularImpulse)};
+        velB += Velocity{invMassB * P, invRotInertiaB * (crossBP + m_angularImpulse)};
     }
     else
     {
@@ -185,7 +186,7 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
 
         if (GetMagnitudeSquared(m_linearImpulse) > Square(maxImpulse))
         {
-            m_linearImpulse = GetUnitVector(m_linearImpulse, UnitVec2::GetZero()) * maxImpulse;
+            m_linearImpulse = GetUnitVector(m_linearImpulse, UnitVec::GetZero()) * maxImpulse;
         }
 
         const auto incImpulse = Momentum2{m_linearImpulse - oldImpulse};
@@ -197,8 +198,8 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
             solved = false;
         }
 
-        velA -= Velocity2D{bodyConstraintA->GetInvMass() * incImpulse, invRotInertiaA * angImpulseA};
-        velB += Velocity2D{bodyConstraintB->GetInvMass() * incImpulse, invRotInertiaB * angImpulseB};
+        velA -= Velocity{bodyConstraintA->GetInvMass() * incImpulse, invRotInertiaA * angImpulseA};
+        velB += Velocity{bodyConstraintB->GetInvMass() * incImpulse, invRotInertiaB * angImpulseB};
     }
 
     bodyConstraintA->SetVelocity(velA);
@@ -232,4 +233,5 @@ AngularMomentum FrictionJoint::GetAngularReaction() const
     return m_angularImpulse;
 }
 
+} // namespace d2
 } // namespace playrho

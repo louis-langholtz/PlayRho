@@ -24,6 +24,7 @@
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(DiskShapeConf, ByteSize)
 {

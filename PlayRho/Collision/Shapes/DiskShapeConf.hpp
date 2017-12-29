@@ -21,11 +21,12 @@
 #define PLAYRHO_COLLISION_SHAPES_DISKSHAPECONF_HPP
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Disk shape configuration.
 ///
@@ -37,7 +38,7 @@ namespace playrho {
 ///
 /// @ingroup PartsGroup
 ///
-struct DiskShapeConf: ShapeDefBuilder<DiskShapeConf>
+struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
 {
 public:
     /// @brief Gets the default radius.
@@ -46,13 +47,13 @@ public:
         return DefaultLinearSlop * 2;
     }
 
-    PLAYRHO_CONSTEXPR inline DiskShapeConf(): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultRadius())}
+    PLAYRHO_CONSTEXPR inline DiskShapeConf(): ShapeBuilder{ShapeConf{}.UseVertexRadius(GetDefaultRadius())}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR inline DiskShapeConf(Length radius): ShapeDefBuilder{ShapeConf{}.UseVertexRadius(radius)}
+    PLAYRHO_CONSTEXPR inline DiskShapeConf(Length radius): ShapeBuilder{ShapeConf{}.UseVertexRadius(radius)}
     {
         // Intentionally empty.
     }
@@ -120,11 +121,12 @@ inline DistanceProxy GetChild(const DiskShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the mass data of the given disk shape configuration.
-inline MassData2D GetMassData(const DiskShapeConf& arg) noexcept
+inline MassData GetMassData(const DiskShapeConf& arg) noexcept
 {
-    return playrho::GetMassData(arg.vertexRadius, arg.density, arg.location);
+    return playrho::d2::GetMassData(arg.vertexRadius, arg.density, arg.location);
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_DISKSHAPECONF_HPP

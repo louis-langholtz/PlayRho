@@ -34,19 +34,19 @@ public:
 
     MobileBalanced()
     {
-        const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
+        const auto ground = m_world.CreateBody(BodyConf{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
 
         const auto a = 0.5_m;
         const auto h = Length2{0_m, a};
         const auto root = AddNode(ground, Length2{}, 0, 3.0f, a,
                                   PolygonShapeConf{}.UseDensity(density).SetAsBox(a / 4, a));
 
-        auto jointDef = RevoluteJointDef{};
-        jointDef.bodyA = ground;
-        jointDef.bodyB = root;
-        jointDef.localAnchorA = Length2{};
-        jointDef.localAnchorB = h;
-        m_world.CreateJoint(jointDef);
+        auto jointConf = RevoluteJoinConf{};
+        jointConf.bodyA = ground;
+        jointConf.bodyB = root;
+        jointConf.localAnchorA = Length2{};
+        jointConf.localAnchorB = h;
+        m_world.CreateJoint(jointConf);
     }
 
     Body* AddNode(const Body* parent, const Length2 localAnchor, const int depth,
@@ -55,10 +55,10 @@ public:
         const auto h = Length2{0_m, a};
         const auto p = parent->GetLocation() + localAnchor - h;
 
-        BodyDef bodyDef;
-        bodyDef.type = BodyType::Dynamic;
-        bodyDef.location = p;
-        const auto body = m_world.CreateBody(bodyDef);
+        BodyConf bodyConf;
+        bodyConf.type = BodyType::Dynamic;
+        bodyConf.location = p;
+        const auto body = m_world.CreateBody(bodyConf);
 
         body->CreateFixture(shape);
 
@@ -77,17 +77,17 @@ public:
         const auto body1 = AddNode(body, a1, depth + 1, offset / 2, a, shape);
         const auto body2 = AddNode(body, a2, depth + 1, offset / 2, a, shape);
 
-        RevoluteJointDef jointDef;
-        jointDef.bodyA = body;
-        jointDef.localAnchorB = h;
+        RevoluteJoinConf jointConf;
+        jointConf.bodyA = body;
+        jointConf.localAnchorB = h;
 
-        jointDef.localAnchorA = a1;
-        jointDef.bodyB = body1;
-        m_world.CreateJoint(jointDef);
+        jointConf.localAnchorA = a1;
+        jointConf.bodyB = body1;
+        m_world.CreateJoint(jointConf);
 
-        jointDef.localAnchorA = a2;
-        jointDef.bodyB = body2;
-        m_world.CreateJoint(jointDef);
+        jointConf.localAnchorA = a2;
+        jointConf.bodyB = body2;
+        m_world.CreateJoint(jointConf);
 
         return body;
     }

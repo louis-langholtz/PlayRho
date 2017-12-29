@@ -32,13 +32,13 @@ public:
 
     DumpShell()
     {
-        //Source code dump of Box2D scene: issue304-minimal-case.rube
+        //Source code dump of Box scene: issue304-minimal-case.rube
         //
         //  Created by R.U.B.E 1.3.0
-        //  Using Box2D version 2.3.0
+        //  Using Box version 2.3.0
         //  Wed April 3 2013 04:33:28
         //
-        //  This code is originally intended for use in the Box2D testbed,
+        //  This code is originally intended for use in the Box testbed,
         //  but you can easily use it in other applications by providing
         //  a World for use as the 'm_world' variable in the code below.
 
@@ -47,7 +47,7 @@ public:
         Body** bodies = (Body**)Alloc(3 * sizeof(Body*));
         Joint** joints = (Joint**)Alloc(0 * sizeof(Joint*));
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType(0);
             bd.location = Vec2(2.587699890136719e-02f, 5.515012264251709e+00f) * 1_m;
             bd.angle = 0_rad;
@@ -73,7 +73,7 @@ public:
                 shape.UseFriction(Real(2.000000029802322e-01f));
                 shape.UseRestitution(Real(0.000000000000000e+00f));
                 shape.UseDensity(Real{1.000000000000000e+00f} * 1_kgpm2);
-                FixtureDef fd;
+                FixtureConf fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
@@ -83,7 +83,7 @@ public:
             }
         }
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType(2);
             bd.location = Vec2(-3.122138977050781e-02f, 7.535382270812988e+00f) * 1_m;
             bd.angle = -1.313644275069237e-02_rad;
@@ -111,7 +111,7 @@ public:
                 shape.UseFriction(Real(5.000000000000000e-01f));
                 shape.UseRestitution(Real(0.000000000000000e+00f));
                 shape.UseDensity(Real{5.000000000000000e+00f} * 1_kgpm2);
-                FixtureDef fd;
+                FixtureConf fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
@@ -120,7 +120,7 @@ public:
             }
         }
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType(2);
             bd.location = Vec2(-7.438077926635742e-01f, 6.626811981201172e+00f) * 1_m;
             bd.angle = -1.884713363647461e+01_rad;
@@ -146,7 +146,7 @@ public:
                 shape.UseFriction(Real(9.499999880790710e-01f));
                 shape.UseRestitution(Real(0.000000000000000e+00f));
                 shape.UseDensity(Real{1.000000000000000e+01f} * 1_kgpm2);
-                FixtureDef fd;
+                FixtureConf fd;
                 fd.isSensor = bool(0);
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);

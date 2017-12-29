@@ -23,9 +23,10 @@
 #define PLAYRHO_DYNAMICS_JOINTS_WELDJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/WeldJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Weld joint.
 ///
@@ -39,7 +40,7 @@ class WeldJoint : public Joint
 public:
     
     /// @brief Initializing constructor.
-    WeldJoint(const WeldJointDef& def);
+    WeldJoint(const WeldJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -96,6 +97,7 @@ private:
     Mat33 m_mass; ///< Mass.
 };
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_WELDJOINT_HPP

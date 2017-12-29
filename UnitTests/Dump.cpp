@@ -106,7 +106,7 @@ TEST(Dump, OneBodyWorld)
     buf << "m_world->SetGravity\\(g\\);\n";
     buf << "Body\\*\\* bodies = \\(Body\\*\\*\\)Alloc\\(1 \\* sizeof\\(Body\\*\\)\\);\n";
     buf << "{\n";
-    buf << "  BodyDef bd;\n";
+    buf << "  BodyConf bd;\n";
     buf << "  bd\\.type = BodyType\\(0\\);\n";
     buf << "  bd\\.position = Vec2\\(0\\.000000000000000e\\+00f, 0\\.000000000000000e\\+00f\\);\n";
     buf << "  bd\\.angle = 0\\.000000000000000e\\+00f;\n";

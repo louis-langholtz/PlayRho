@@ -23,32 +23,33 @@
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
-TEST(WheelJointDef, ByteSize)
+TEST(WheelJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(WheelJointDef), std::size_t(64));
+            EXPECT_EQ(sizeof(WheelJointConf), std::size_t(64));
 #else
-            EXPECT_EQ(sizeof(WheelJointDef), std::size_t(88));
+            EXPECT_EQ(sizeof(WheelJointConf), std::size_t(88));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(WheelJointDef), std::size_t(128)); break;
-        case 16: EXPECT_EQ(sizeof(WheelJointDef), std::size_t(224)); break;
+        case  8: EXPECT_EQ(sizeof(WheelJointConf), std::size_t(128)); break;
+        case 16: EXPECT_EQ(sizeof(WheelJointConf), std::size_t(224)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(WheelJointDef, DefaultConstruction)
+TEST(WheelJointConf, DefaultConstruction)
 {
-    WheelJointDef def{};
+    WheelJointConf def{};
     
     EXPECT_EQ(def.type, JointType::Wheel);
     EXPECT_EQ(def.bodyA, nullptr);
@@ -58,7 +59,7 @@ TEST(WheelJointDef, DefaultConstruction)
     
     EXPECT_EQ(def.localAnchorA, (Length2{}));
     EXPECT_EQ(def.localAnchorB, (Length2{}));
-    EXPECT_EQ(def.localAxisA, UnitVec2::GetRight());
+    EXPECT_EQ(def.localAxisA, UnitVec::GetRight());
     EXPECT_FALSE(def.enableMotor);
     EXPECT_EQ(def.maxMotorTorque, Torque(0));
     EXPECT_EQ(def.motorSpeed, 0_rpm);
@@ -87,7 +88,7 @@ TEST(WheelJoint, ByteSize)
 
 TEST(WheelJoint, Construction)
 {
-    WheelJointDef def;
+    WheelJointConf def;
     WheelJoint joint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -120,7 +121,7 @@ TEST(WheelJoint, EnableMotor)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
     
-    auto jd = WheelJointDef{};
+    auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -140,7 +141,7 @@ TEST(WheelJoint, MotorSpeed)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
     
-    auto jd = WheelJointDef{};
+    auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -160,7 +161,7 @@ TEST(WheelJoint, MaxMotorTorque)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
     
-    auto jd = WheelJointDef{};
+    auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -181,10 +182,10 @@ TEST(WheelJoint, GetAnchorAandB)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
     
-    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
     
-    auto jd = WheelJointDef{};
+    auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -204,10 +205,10 @@ TEST(WheelJoint, GetJointTranslation)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{+1_m, +3_m};
     
-    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
     
-    auto jd = WheelJointDef{};
+    auto jd = WheelJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(-1_m, 5_m);
@@ -217,9 +218,9 @@ TEST(WheelJoint, GetJointTranslation)
     EXPECT_EQ(GetJointTranslation(joint), Length(2_m));
 }
 
-TEST(WheelJoint, GetWheelJointDef)
+TEST(WheelJoint, GetWheelJointConf)
 {
-    WheelJointDef def;
+    WheelJointConf def;
     WheelJoint joint{def};
     
     ASSERT_EQ(GetType(joint), def.type);
@@ -237,7 +238,7 @@ TEST(WheelJoint, GetWheelJointDef)
     ASSERT_EQ(joint.GetSpringFrequency(), def.frequency);
     ASSERT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
     
-    const auto cdef = GetWheelJointDef(joint);
+    const auto cdef = GetWheelJointConf(joint);
     EXPECT_EQ(cdef.type, JointType::Wheel);
     EXPECT_EQ(cdef.bodyA, nullptr);
     EXPECT_EQ(cdef.bodyB, nullptr);
@@ -246,7 +247,7 @@ TEST(WheelJoint, GetWheelJointDef)
     
     EXPECT_EQ(cdef.localAnchorA, (Length2{}));
     EXPECT_EQ(cdef.localAnchorB, (Length2{}));
-    EXPECT_EQ(cdef.localAxisA, UnitVec2::GetRight());
+    EXPECT_EQ(cdef.localAxisA, UnitVec::GetRight());
     EXPECT_FALSE(cdef.enableMotor);
     EXPECT_EQ(cdef.maxMotorTorque, Torque(0));
     EXPECT_EQ(cdef.motorSpeed, 0_rpm);
@@ -257,15 +258,15 @@ TEST(WheelJoint, GetWheelJointDef)
 TEST(WheelJoint, WithDynamicCircles)
 {
     const auto circle = DiskShapeConf{}.UseRadius(2_m).UseDensity(10_kgpm2);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     const auto anchor = Length2(2_m, 1_m);
-    const auto jd = WheelJointDef{b1, b2, anchor, UnitVec2::GetRight()};
+    const auto jd = WheelJointConf{b1, b2, anchor, UnitVec::GetRight()};
     const auto joint = static_cast<WheelJoint*>(world.CreateJoint(jd));
     Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);

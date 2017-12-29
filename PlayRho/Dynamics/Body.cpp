@@ -20,7 +20,7 @@
  */
 
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
@@ -32,11 +32,12 @@
 #include <utility>
 
 namespace playrho {
+namespace d2 {
 
 using std::begin;
 using std::end;
 
-Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
+Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
 {
     // @invariant Only bodies that allow sleeping, can be put to sleep.
     // @invariant Only "speedable" bodies can be awake.
@@ -78,13 +79,13 @@ Body::FlagsType Body::GetFlags(const BodyDef& bd) noexcept
     return flags;
 }
 
-Body::Body(World* world, const BodyDef& bd):
-    m_xf{bd.location, UnitVec2::Get(bd.angle)},
-    m_sweep{Position2D{bd.location, bd.angle}},
+Body::Body(World* world, const BodyConf& bd):
+    m_xf{bd.location, UnitVec::Get(bd.angle)},
+    m_sweep{Position{bd.location, bd.angle}},
     m_flags{GetFlags(bd)},
     m_world{world},
     m_userData{bd.userData},
-    m_invMass{(bd.type == BodyType::Dynamic)? InvMass{Real{1} / Kilogram}: InvMass{0}},
+    m_invMass{(bd.type == playrho::BodyType::Dynamic)? InvMass{Real{1} / Kilogram}: InvMass{0}},
     m_linearDamping{bd.linearDamping},
     m_angularDamping{bd.angularDamping}
 {
@@ -94,7 +95,7 @@ Body::Body(World* world, const BodyDef& bd):
     assert(IsValid(bd.angularVelocity));
     assert(IsValid(m_xf));
 
-    SetVelocity(Velocity2D{bd.linearVelocity, bd.angularVelocity});
+    SetVelocity(Velocity{bd.linearVelocity, bd.angularVelocity});
     SetAcceleration(bd.linearAcceleration, bd.angularAcceleration);
     SetUnderActiveTime(bd.underActiveTime);
 }
@@ -106,12 +107,12 @@ Body::~Body()
     assert(m_fixtures.empty());
 }
 
-void Body::SetType(BodyType type)
+void Body::SetType(playrho::BodyType type)
 {
     m_world->SetType(*this, type);
 }
 
-Fixture* Body::CreateFixture(const Shape& shape, const FixtureDef& def,
+Fixture* Body::CreateFixture(const Shape& shape, const FixtureConf& def,
                              bool resetMassData)
 {
     return m_world->CreateFixture(*this, shape, def, resetMassData);
@@ -145,7 +146,7 @@ void Body::ResetMassData()
     {
         m_invMass = 0;
         m_invRotI = 0;
-        m_sweep = Sweep2D{Position2D{GetLocation(), GetAngle()}};
+        m_sweep = Sweep{Position{GetLocation(), GetAngle()}};
         UnsetMassDataDirty();
         return;
     }
@@ -174,7 +175,7 @@ void Body::ResetMassData()
 
     // Move center of mass.
     const auto oldCenter = GetWorldCenter();
-    m_sweep = Sweep2D{Position2D{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
+    m_sweep = Sweep{Position{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
     const auto newCenter = GetWorldCenter();
 
     // Update center of mass velocity.
@@ -184,7 +185,7 @@ void Body::ResetMassData()
     UnsetMassDataDirty();
 }
 
-void Body::SetMassData(const MassData2D& massData)
+void Body::SetMassData(const MassData& massData)
 {
     if (m_world->IsLocked())
     {
@@ -214,8 +215,8 @@ void Body::SetMassData(const MassData2D& massData)
 
     // Move center of mass.
     const auto oldCenter = GetWorldCenter();
-    m_sweep = Sweep2D{
-        Position2D{Transform(massData.center, GetTransformation()), GetAngle()},
+    m_sweep = Sweep{
+        Position{Transform(massData.center, GetTransformation()), GetAngle()},
         massData.center
     };
 
@@ -227,7 +228,7 @@ void Body::SetMassData(const MassData2D& massData)
     UnsetMassDataDirty();
 }
 
-void Body::SetVelocity(const Velocity2D& velocity) noexcept
+void Body::SetVelocity(const Velocity& velocity) noexcept
 {
     if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm))
     {
@@ -277,7 +278,7 @@ void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angul
     m_angularAcceleration = angular;
 }
 
-void Body::SetTransformation(Transformation2D value) noexcept
+void Body::SetTransformation(Transformation value) noexcept
 {
     assert(IsValid(value));
     if (m_xf != value)
@@ -299,10 +300,10 @@ void Body::SetTransform(Length2 location, Angle angle)
         throw WrongState("Body::SetTransform: world is locked");
     }
 
-    const auto xfm = Transformation2D{location, UnitVec2::Get(angle)};
+    const auto xfm = Transformation{location, UnitVec::Get(angle)};
     SetTransformation(xfm);
 
-    m_sweep = Sweep2D{Position2D{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
+    m_sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
     
     GetWorld()->RegisterForProxies(this);
 }
@@ -456,7 +457,7 @@ BodyCounter GetWorldIndex(const Body* body) noexcept
     return BodyCounter(-1);
 }
 
-Velocity2D GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
+Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();
@@ -539,7 +540,7 @@ Force2 GetCentripetalForce(const Body& body, Length2 axis)
     return Force2{dir * mass * Square(magnitudeOfVelocity) / radius};
 }
 
-Acceleration2D CalcGravitationalAcceleration(const Body& body) noexcept
+Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
 {
     const auto m1 = GetMass(body);
     if (m1 != 0_kg)
@@ -564,9 +565,10 @@ Acceleration2D CalcGravitationalAcceleration(const Body& body) noexcept
             sumForce += f * dir;
         }
         // F = m a... i.e.  a = F / m.
-        return Acceleration2D{sumForce / m1, 0 * RadianPerSquareSecond};
+        return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
     }
-    return Acceleration2D{};
+    return Acceleration{};
 }
 
+} // namespace d2
 } // namespace playrho

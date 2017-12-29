@@ -23,9 +23,10 @@
 #define PLAYRHO_DYNAMICS_JOINTS_ROPEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/RopeJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Rope joint.
 ///
@@ -45,7 +46,7 @@ class RopeJoint : public Joint
 public:
     
     /// @brief Initializing constructor.
-    RopeJoint(const RopeJointDef& data);
+    RopeJoint(const RopeJointConf& data);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -87,13 +88,14 @@ private:
     Momentum m_impulse = 0_Ns; ///< Impulse.
 
     // Solver temp
-    UnitVec2 m_u; ///< U direction.
+    UnitVec m_u; ///< U direction.
     Length2 m_rA; ///< Relative A.
     Length2 m_rB; ///< Relative B.
     Mass m_mass = 0_kg; ///< Mass.
     LimitState m_state = e_inactiveLimit; ///< Limit state.
 };
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_ROPEJOINT_HPP

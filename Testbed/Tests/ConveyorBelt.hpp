@@ -36,7 +36,7 @@ public:
 
         // Platform
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Vec2(-5.0f, 5.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
 
@@ -50,7 +50,7 @@ public:
         const auto boxshape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)};
         for (auto i = 0; i < 5; ++i)
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);

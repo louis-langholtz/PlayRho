@@ -21,12 +21,13 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(DistanceJoint, ByteSize)
 {
@@ -49,9 +50,9 @@ TEST(DistanceJoint, ByteSize)
     }
 }
 
-TEST(DistanceJointDef, DefaultConstruction)
+TEST(DistanceJointConf, DefaultConstruction)
 {
-    DistanceJointDef def;
+    DistanceJointConf def;
 
     EXPECT_EQ(def.type, JointType::Distance);
     EXPECT_EQ(def.bodyA, nullptr);
@@ -66,30 +67,30 @@ TEST(DistanceJointDef, DefaultConstruction)
     EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
-TEST(DistanceJointDef, UseLength)
+TEST(DistanceJointConf, UseLength)
 {
     const auto value = Length(31_m);
-    EXPECT_NE(DistanceJointDef{}.length, value);
-    EXPECT_EQ(DistanceJointDef{}.UseLength(value).length, value);
+    EXPECT_NE(DistanceJointConf{}.length, value);
+    EXPECT_EQ(DistanceJointConf{}.UseLength(value).length, value);
 }
 
-TEST(DistanceJointDef, UseFrequency)
+TEST(DistanceJointConf, UseFrequency)
 {
     const auto value = 19_Hz;
-    EXPECT_NE(DistanceJointDef{}.frequency, value);
-    EXPECT_EQ(DistanceJointDef{}.UseFrequency(value).frequency, value);
+    EXPECT_NE(DistanceJointConf{}.frequency, value);
+    EXPECT_EQ(DistanceJointConf{}.UseFrequency(value).frequency, value);
 }
 
-TEST(DistanceJointDef, UseDampingRatio)
+TEST(DistanceJointConf, UseDampingRatio)
 {
     const auto value = Real(0.4);
-    EXPECT_NE(DistanceJointDef{}.dampingRatio, value);
-    EXPECT_EQ(DistanceJointDef{}.UseDampingRatio(value).dampingRatio, value);
+    EXPECT_NE(DistanceJointConf{}.dampingRatio, value);
+    EXPECT_EQ(DistanceJointConf{}.UseDampingRatio(value).dampingRatio, value);
 }
 
 TEST(DistanceJoint, Construction)
 {
-    auto def = DistanceJointDef{};
+    auto def = DistanceJointConf{};
     auto joint = DistanceJoint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -113,7 +114,7 @@ TEST(DistanceJoint, Construction)
 
 TEST(DistanceJoint, ShiftOrigin)
 {
-    auto def = DistanceJointDef{};
+    auto def = DistanceJointConf{};
     auto joint = DistanceJoint{def};
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
@@ -121,21 +122,21 @@ TEST(DistanceJoint, ShiftOrigin)
 
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
-    World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
     
     const auto shape = DiskShapeConf{}.UseRadius(0.2_m);
     
     const auto location1 = Length2{-1_m, 0_m};
-    const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
+    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(body1->GetLocation(), location1);
     ASSERT_NE(body1->CreateFixture(shape), nullptr);
     
     const auto location2 = Length2{+1_m, 0_m};
-    const auto body2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location2));
+    const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(body2->GetLocation(), location2);
     ASSERT_NE(body2->CreateFixture(shape), nullptr);
     
-    DistanceJointDef jointdef;
+    DistanceJointConf jointdef;
     jointdef.bodyA = body1;
     jointdef.bodyB = body2;
     jointdef.collideConnected = false;
@@ -175,20 +176,20 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 
 TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
-    World world{WorldDef{}.UseGravity(LinearAcceleration2{0, Real(10) * MeterPerSquareSecond})};
+    World world{WorldConf{}.UseGravity(LinearAcceleration2{0, Real(10) * MeterPerSquareSecond})};
     
     const auto shape = DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2);
     const auto location1 = Length2{-10_m, 10_m};
-    const auto body1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location1));
+    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(body1->GetLocation(), location1);
     ASSERT_NE(body1->CreateFixture(shape), nullptr);
     
     const auto location2 = Length2{+10_m, -10_m};
-    const auto body2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(location2));
+    const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(body2->GetLocation(), location2);
     ASSERT_NE(body2->CreateFixture(shape), nullptr);
     
-    DistanceJointDef jointdef;
+    DistanceJointConf jointdef;
     jointdef.bodyA = body1;
     jointdef.bodyB = body2;
     jointdef.collideConnected = false;
@@ -229,7 +230,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
                 double(Real{jointdef.length / Meter}), 0.1);
 }
 
-TEST(DistanceJointDef, GetDistanceJointDefFreeFunction)
+TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
 {
     World world;
     
@@ -238,7 +239,7 @@ TEST(DistanceJointDef, GetDistanceJointDefFreeFunction)
     const auto bB = world.CreateBody();
     ASSERT_NE(bB, nullptr);
     
-    auto def = DistanceJointDef{};
+    auto def = DistanceJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
     def.collideConnected = false;
@@ -250,7 +251,7 @@ TEST(DistanceJointDef, GetDistanceJointDefFreeFunction)
     def.dampingRatio = Real(0.8);
     
     const auto joint = DistanceJoint{def};
-    const auto got = GetDistanceJointDef(joint);
+    const auto got = GetDistanceJointConf(joint);
     
     EXPECT_EQ(def.bodyA, got.bodyA);
     EXPECT_EQ(def.bodyB, got.bodyB);

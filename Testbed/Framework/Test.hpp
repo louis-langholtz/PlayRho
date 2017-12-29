@@ -43,6 +43,7 @@
 /// @warning Using a namespace like this within a header file is ill advised. It's done
 ///   here only to make it easier to use PlayRho code in subclasses of testbed::Test.
 using namespace playrho;
+using namespace playrho::d2;
 
 namespace testbed {
 
@@ -214,8 +215,8 @@ protected:
     {
         /// @brief World definition/configuration data.
         /// @note Explicitly uses -10 for gravity here to behave more like
-        ///   Erin Catto's Box2D Testbed (which uses -10 for Earthly gravity).
-        WorldDef worldDef = WorldDef{}.UseGravity(LinearAcceleration2{
+        ///   Erin Catto's Box Testbed (which uses -10 for Earthly gravity).
+        WorldConf worldConf = WorldConf{}.UseGravity(LinearAcceleration2{
             Real(0.0f) * MeterPerSquareSecond,
             -Real(10.0f) * MeterPerSquareSecond
         }).UseMinVertexRadius(0.0002f * Meter);
@@ -240,7 +241,7 @@ protected:
     {
         Fixture* fixtureA;
         Fixture* fixtureB;
-        UnitVec2 normal;
+        UnitVec normal;
         Length2 position;
         PointState state;
         Momentum normalImpulse;
@@ -348,7 +349,7 @@ private:
 
     FixtureSet m_selectedFixtures;
     BodySet m_selectedBodies;
-    AABB2D m_maxAABB;
+    AABB m_maxAABB;
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
     Body* m_bomb = nullptr;

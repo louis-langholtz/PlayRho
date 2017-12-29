@@ -23,53 +23,53 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 
 namespace playrho {
-
+namespace d2 {
 namespace {
 
-    inline bool HasKey(IndexPair3 pairs, IndexPair key)
-    {
-        return pairs[0] == key || pairs[1] == key || pairs[2] == key;
-    }
+inline bool HasKey(IndexPair3 pairs, IndexPair key)
+{
+    return pairs[0] == key || pairs[1] == key || pairs[2] == key;
+}
 
-    inline SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA,
-                                      const Transformation2D& xfA,
-                                      VertexCounter idxA,
-                                      const DistanceProxy& proxyB,
-                                      const Transformation2D& xfB,
-                                      VertexCounter idxB)
-    {
-        const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
-        const auto wB = Transform(proxyB.GetVertex(idxB), xfB);
-        return SimplexEdge{wA, idxA, wB, idxB};
-    }
-    
-    inline SimplexEdges GetSimplexEdges(const IndexPair3 indexPairs,
-                                        const DistanceProxy& proxyA, const Transformation2D& xfA,
-                                        const DistanceProxy& proxyB, const Transformation2D& xfB)
-    {
-        /// @brief Size type.
-        using size_type = std::remove_const<decltype(MaxSimplexEdges)>::type;
+inline SimplexEdge GetSimplexEdge(const DistanceProxy& proxyA,
+                                  const Transformation& xfA,
+                                  VertexCounter idxA,
+                                  const DistanceProxy& proxyB,
+                                  const Transformation& xfB,
+                                  VertexCounter idxB)
+{
+    const auto wA = Transform(proxyA.GetVertex(idxA), xfA);
+    const auto wB = Transform(proxyB.GetVertex(idxB), xfB);
+    return SimplexEdge{wA, idxA, wB, idxB};
+}
 
-        SimplexEdges simplexEdges;
-        const auto count = GetNumValidIndices(indexPairs);
-        switch (count)
-        {
-            case 3:
-                simplexEdges[2] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[2]),
-                                                 proxyB, xfB, std::get<1>(indexPairs[2]));
-                // [[fallthrough]]
-            case 2:
-                simplexEdges[1] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[1]),
-                                                 proxyB, xfB, std::get<1>(indexPairs[1]));
-                // [[fallthrough]]
-            case 1:
-                simplexEdges[0] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[0]),
-                                                 proxyB, xfB, std::get<1>(indexPairs[0]));
-                // [[fallthrough]]
-        }
-        simplexEdges.size(static_cast<size_type>(count));
-        return simplexEdges;
+inline SimplexEdges GetSimplexEdges(const IndexPair3 indexPairs,
+                                    const DistanceProxy& proxyA, const Transformation& xfA,
+                                    const DistanceProxy& proxyB, const Transformation& xfB)
+{
+    /// @brief Size type.
+    using size_type = std::remove_const<decltype(MaxSimplexEdges)>::type;
+
+    SimplexEdges simplexEdges;
+    const auto count = GetNumValidIndices(indexPairs);
+    switch (count)
+    {
+        case 3:
+            simplexEdges[2] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[2]),
+                                             proxyB, xfB, std::get<1>(indexPairs[2]));
+            // [[fallthrough]]
+        case 2:
+            simplexEdges[1] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[1]),
+                                             proxyB, xfB, std::get<1>(indexPairs[1]));
+            // [[fallthrough]]
+        case 1:
+            simplexEdges[0] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[0]),
+                                             proxyB, xfB, std::get<1>(indexPairs[0]));
+            // [[fallthrough]]
     }
+    simplexEdges.size(static_cast<size_type>(count));
+    return simplexEdges;
+}
 
 } // namespace
 
@@ -106,8 +106,8 @@ PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept
     return PairLength2{pointA, pointB};
 }
 
-DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation2D& transformA,
-                        const DistanceProxy& proxyB, const Transformation2D& transformB,
+DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
+                        const DistanceProxy& proxyB, const Transformation& transformB,
                         DistanceConf conf)
 {
     assert(proxyA.GetVertexCount() > 0);
@@ -213,8 +213,8 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation2D& tra
     return DistanceOutput{simplex, iter, state};
 }
 
-Area TestOverlap(const DistanceProxy& proxyA, const Transformation2D& xfA,
-                 const DistanceProxy& proxyB, const Transformation2D& xfB,
+Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
+                 const DistanceProxy& proxyB, const Transformation& xfB,
                  DistanceConf conf)
 {
     const auto distanceInfo = Distance(proxyA, xfA, proxyB, xfB, conf);
@@ -226,4 +226,5 @@ Area TestOverlap(const DistanceProxy& proxyA, const Transformation2D& xfA,
     return totalRadiusSquared - distanceSquared;
 }
 
+} // namespace d2
 } // namespace playrho

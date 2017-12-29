@@ -22,11 +22,12 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
-#include <PlayRho/Dynamics/FixtureDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(Contact, ByteSize)
 {
@@ -57,10 +58,10 @@ TEST(Contact, IsNotCopyAssignable)
 TEST(Contact, Enabled)
 {
     const auto shape = DiskShapeConf{};
-    auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
-    auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
-    auto fA = Fixture{&bA, FixtureDef{}, shape};
-    auto fB = Fixture{&bB, FixtureDef{}, shape};
+    auto bA = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
+    auto bB = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
+    auto fA = Fixture{&bA, FixtureConf{}, shape};
+    auto fB = Fixture{&bB, FixtureConf{}, shape};
     auto c = Contact{&fA, 0u, &fB, 0u};
     EXPECT_TRUE(c.IsEnabled());
     c.UnsetEnabled();
@@ -72,10 +73,10 @@ TEST(Contact, Enabled)
 TEST(Contact, SetAwake)
 {
     const auto shape = DiskShapeConf{};
-    auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
-    auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
-    auto fA = Fixture{&bA, FixtureDef{}, shape};
-    auto fB = Fixture{&bB, FixtureDef{}, shape};
+    auto bA = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
+    auto bB = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
+    auto fA = Fixture{&bA, FixtureConf{}, shape};
+    auto fB = Fixture{&bB, FixtureConf{}, shape};
     const auto c = Contact{&fA, 0u, &fB, 0u};
     
     bA.UnsetAwake();
@@ -93,10 +94,10 @@ TEST(Contact, SetAwake)
 TEST(Contact, ResetFriction)
 {
     const auto shape = DiskShapeConf{};
-    auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
-    auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
-    auto fA = Fixture{&bA, FixtureDef{}, shape};
-    auto fB = Fixture{&bB, FixtureDef{}, shape};
+    auto bA = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
+    auto bB = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
+    auto fA = Fixture{&bA, FixtureConf{}, shape};
+    auto fB = Fixture{&bB, FixtureConf{}, shape};
     auto c = Contact{&fA, 0u, &fB, 0u};
 
     ASSERT_GT(GetFriction(shape), Real(0));
@@ -110,10 +111,10 @@ TEST(Contact, ResetFriction)
 TEST(Contact, ResetRestitution)
 {
     const auto shape = DiskShapeConf{};
-    auto bA = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
-    auto bB = Body{nullptr, BodyDef{}.UseType(BodyType::Dynamic)};
-    auto fA = Fixture{&bA, FixtureDef{}, shape};
-    auto fB = Fixture{&bB, FixtureDef{}, shape};
+    auto bA = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
+    auto bB = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
+    auto fA = Fixture{&bA, FixtureConf{}, shape};
+    auto fB = Fixture{&bB, FixtureConf{}, shape};
     auto c = Contact{&fA, 0u, &fB, 0u};
 
     ASSERT_EQ(GetRestitution(shape), Real(0));

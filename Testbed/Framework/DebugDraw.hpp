@@ -82,7 +82,7 @@ struct Camera
 extern Camera g_camera;
     
 playrho::Length2 ConvertScreenToWorld(const Coord2D screenPoint, const Camera& camera = g_camera);
-playrho::AABB2D ConvertScreenToWorld(const Camera& camera = g_camera);
+playrho::d2::AABB ConvertScreenToWorld(const Camera& camera = g_camera);
 Coord2D ConvertWorldToScreen(const playrho::Length2 worldPoint, const Camera& camera = g_camera);
 ProjectionMatrix GetProjectionMatrix(float zBias, const Camera& camera = g_camera);
 

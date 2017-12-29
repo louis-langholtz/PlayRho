@@ -28,8 +28,7 @@
 #include <type_traits>
 #include <tuple>
 
-namespace playrho
-{
+namespace playrho {
 
     /// @brief "Not used" annotator.
     template<class... T> void NOT_USED(T&&...){}

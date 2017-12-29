@@ -23,9 +23,10 @@
 #define PLAYRHO_DYNAMICS_JOINTS_MOTORJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/MotorJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Motor joint.
 ///
@@ -39,7 +40,7 @@ class MotorJoint : public Joint
 public:
     
     /// @brief Initializing constructor.
-    MotorJoint(const MotorJointDef& def);
+    MotorJoint(const MotorJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -160,6 +161,7 @@ inline Angle MotorJoint::GetAngularError() const noexcept
     return m_angularError;
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_MOTORJOINT_HPP

@@ -32,8 +32,10 @@
 #include <utility>
 
 namespace playrho {
+namespace d2 {
 
 class Fixture;
+class Body;
 
 /// @brief A dynamic AABB tree broad-phase.
 ///
@@ -128,7 +130,7 @@ public:
     /// @post If the root index had been the <code>GetInvalidSize()</code>, then it will
     ///   be set to the index returned from this method.
     /// @return Index of the created leaf node.
-    Size CreateLeaf(const AABB2D& aabb, const LeafData& leafData);
+    Size CreateLeaf(const AABB& aabb, const LeafData& leafData);
 
     /// @brief Destroys a leaf node.
     /// @warning Behavior is undefined if the given index is not valid.
@@ -138,7 +140,7 @@ public:
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Leaf node's ID. Behavior is undefined if this is not a valid ID.
     /// @param aabb New axis aligned bounding box for the leaf node.
-    void UpdateLeaf(Size index, const AABB2D& aabb);
+    void UpdateLeaf(Size index, const AABB& aabb);
 
     /// @brief Gets the user data for the node identified by the given identifier.
     /// @warning Behavior is undefined if the given index is not valid.
@@ -152,7 +154,7 @@ public:
     /// @brief Gets the AABB for a leaf or branch (a non-unused node).
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Leaf or branch node's ID. Must be a valid ID.
-    AABB2D GetAABB(Size index) const noexcept;
+    AABB GetAABB(Size index) const noexcept;
 
     /// @brief Gets the height value for the identified node.
     /// @warning Behavior is undefined if the given index is not valid.
@@ -220,7 +222,7 @@ public:
 
     /// @brief Finds the lowest cost node.
     /// @warning Behavior is undefined if the tree doesn't have a valid root.
-    Size FindLowestCostNode(AABB2D leafAABB) const noexcept;
+    Size FindLowestCostNode(AABB leafAABB) const noexcept;
     
     /// @brief Finds first node which references the given index.
     /// @note Primarily intended for unit testing and/or debugging.
@@ -240,12 +242,12 @@ private:
 
     /// @brief Allocates a leaf node.
     /// @details This allocates a node from the free list as a leaf node.
-    Size AllocateNode(const LeafData& node, AABB2D aabb) noexcept;
+    Size AllocateNode(const LeafData& node, AABB aabb) noexcept;
 
     /// @brief Allocates a branch node.
     /// @details This allocates a node from the free list as a branch node.
     /// @post The free list no longer references the returned index.
-    Size AllocateNode(const BranchData& node, AABB2D aabb, Height height,
+    Size AllocateNode(const BranchData& node, AABB aabb, Height height,
                       Size parent = GetInvalidSize()) noexcept;
  
     /// @brief Frees the specified node.
@@ -299,7 +301,7 @@ private:
     void SetChild2(Size index, Size value) noexcept;
     
     /// @brief Sets the AABB of the node identified by the given index to the given value.
-    void SetAABB(Size index, AABB2D value) noexcept;
+    void SetAABB(Size index, AABB value) noexcept;
     
     /// @brief Swaps the child index of the node identified by the given index.
     void SwapChild(Size index, Size oldChild, Size newChild) noexcept;
@@ -455,7 +457,7 @@ public:
     }
 
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR inline TreeNode(const LeafData& value, AABB2D aabb,
+    PLAYRHO_CONSTEXPR inline TreeNode(const LeafData& value, AABB aabb,
                        Size other = DynamicTree::GetInvalidSize()) noexcept:
         m_height{0}, m_other{other}, m_aabb{aabb}, m_variant{value}
     {
@@ -463,7 +465,7 @@ public:
     }
     
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR inline TreeNode(const BranchData& value, AABB2D aabb, Height height,
+    PLAYRHO_CONSTEXPR inline TreeNode(const BranchData& value, AABB aabb, Height height,
                        Size other = DynamicTree::GetInvalidSize()) noexcept:
         m_height{height}, m_other{other}, m_aabb{aabb}, m_variant{value}
     {
@@ -521,13 +523,13 @@ public:
     }
 
     /// @brief Gets the node's AABB.
-    PLAYRHO_CONSTEXPR inline AABB2D GetAABB() const noexcept
+    PLAYRHO_CONSTEXPR inline AABB GetAABB() const noexcept
     {
         return m_aabb;
     }
 
     /// @brief Sets the node's AABB.
-    PLAYRHO_CONSTEXPR inline TreeNode& SetAABB(AABB2D value) noexcept
+    PLAYRHO_CONSTEXPR inline TreeNode& SetAABB(AABB value) noexcept
     {
         m_aabb = value;
         return *this;
@@ -613,7 +615,7 @@ private:
     Size m_other = DynamicTree::GetInvalidSize(); ///< Index of another node.
     
     /// @brief AABB.
-    AABB2D m_aabb;
+    AABB m_aabb;
     
     /// @brief Variant data for the node.
     VariantData m_variant;
@@ -658,7 +660,7 @@ inline void DynamicTree::SetHeight(Size index, Height value) noexcept
     m_nodes[index].SetHeight(value);
 }
 
-inline AABB2D DynamicTree::GetAABB(Size index) const noexcept
+inline AABB DynamicTree::GetAABB(Size index) const noexcept
 {
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);
@@ -666,7 +668,7 @@ inline AABB2D DynamicTree::GetAABB(Size index) const noexcept
     return m_nodes[index].GetAABB();
 }
 
-inline void DynamicTree::SetAABB(Size index, AABB2D value) noexcept
+inline void DynamicTree::SetAABB(Size index, AABB value) noexcept
 {
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);
@@ -765,7 +767,7 @@ PLAYRHO_CONSTEXPR inline bool IsBranch(const DynamicTree::TreeNode& node) noexce
 
 /// @brief Gets the AABB of the given dynamic tree node.
 /// @relatedalso DynamicTree::TreeNode
-PLAYRHO_CONSTEXPR inline AABB2D GetAABB(const DynamicTree::TreeNode& node) noexcept
+PLAYRHO_CONSTEXPR inline AABB GetAABB(const DynamicTree::TreeNode& node) noexcept
 {
     assert(!IsUnused(node));
     return node.GetAABB();
@@ -810,10 +812,10 @@ inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
 ///   given dynamic tree.
 /// @return Enclosing AABB or the "unset" AABB.
 /// @relatedalso DynamicTree
-inline AABB2D GetAABB(const DynamicTree& tree) noexcept
+inline AABB GetAABB(const DynamicTree& tree) noexcept
 {
     const auto index = tree.GetRootIndex();
-    return (index != DynamicTree::GetInvalidSize())? tree.GetAABB(index): AABB2D{};
+    return (index != DynamicTree::GetInvalidSize())? tree.GetAABB(index): AABB{};
 }
 
 /// @brief Tests for overlap of the elements identified in the given dynamic tree.
@@ -851,7 +853,7 @@ using DynamicTreeSizeCB = std::function<DynamicTreeOpcode(DynamicTree::Size)>;
 
 /// @brief Query the given dynamic tree and find nodes overlapping the given AABB.
 /// @note The callback instance is called for each leaf node that overlaps the supplied AABB.
-void Query(const DynamicTree& tree, const AABB2D& aabb,
+void Query(const DynamicTree& tree, const AABB& aabb,
            const DynamicTreeSizeCB& callback);
 
 /// @brief Ray-cast against the leafs in the given tree.
@@ -872,6 +874,7 @@ void Query(const DynamicTree& tree, const AABB2D& aabb,
 void RayCast(const DynamicTree& tree, const RayCastInput& input,
              const DynamicTree::RayCastCallback& callback);
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_DYNAMICTREE_HPP

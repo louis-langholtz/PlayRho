@@ -30,12 +30,12 @@ class BasicSliderCrank : public Test
 public:
     BasicSliderCrank()
     {        
-        const auto ground = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(0.0f, 17.0f) * 1_m));
+        const auto ground = m_world.CreateBody(BodyConf{}.UseLocation(Vec2(0.0f, 17.0f) * 1_m));
         auto prevBody = ground;
         
         // Define crank.
         {
-            BodyDef bd;
+            auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-8.0f, 20.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
@@ -43,13 +43,13 @@ public:
             conf.density = 2_kgpm2;
             conf.SetAsBox(4_m, 1_m);
             body->CreateFixture(Shape(conf));
-            m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-12.0f, 20.0f) * 1_m});
+            m_world.CreateJoint(RevoluteJoinConf{prevBody, body, Vec2(-12.0f, 20.0f) * 1_m});
             prevBody = body;
         }
         
         // Define connecting rod
         {
-            BodyDef bd;
+            auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(4.0f, 20.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
@@ -57,21 +57,21 @@ public:
             conf.density = 2_kgpm2;
             conf.SetAsBox(8_m, 1_m);
             body->CreateFixture(Shape(conf));
-            m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-4.0f, 20.0f) * 1_m});
+            m_world.CreateJoint(RevoluteJoinConf{prevBody, body, Vec2(-4.0f, 20.0f) * 1_m});
             prevBody = body;
         }
         
         // Define piston
         {
-            BodyDef bd;
+            auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = true;
             bd.location = Vec2(12.0f, 20.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(3_m, 3_m);
             body->CreateFixture(Shape(conf));
-            m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(12.0f, 20.0f) * 1_m});
-            const PrismaticJointDef pjd{ground, body, Vec2(12.0f, 17.0f) * 1_m, UnitVec2::GetRight()};
+            m_world.CreateJoint(RevoluteJoinConf{prevBody, body, Vec2(12.0f, 20.0f) * 1_m});
+            const PrismaticJointConf pjd{ground, body, Vec2(12.0f, 17.0f) * 1_m, UnitVec::GetRight()};
             m_world.CreateJoint(pjd);
         }
     }

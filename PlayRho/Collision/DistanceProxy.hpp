@@ -27,12 +27,13 @@
 
 // Define IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS to implement the DistanceProxy class
 // using buffers instead of pointers. Note that timing tests suggest implementing with
-// buffers is significantly slower. Using buffers could make subclassing the Shape class
+// buffers is significantly slower. Using buffers could make defining new shapes
 // easier though so a buffering code alternative is kept in the source code for now.
 // #define IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
 
-namespace playrho
-{
+namespace playrho {
+namespace d2 {
+
     class Shape;
 
     /// @brief Distance Proxy.
@@ -57,7 +58,7 @@ namespace playrho
         using ConstVertexIterator = ConstVertexPointer;
         
         /// @brief Constant normal pointer.
-        using ConstNormalPointer = const UnitVec2*;
+        using ConstNormalPointer = const UnitVec*;
         
         /// @brief Constant normal iterator.
         using ConstNormalIterator = ConstNormalPointer;
@@ -82,7 +83,7 @@ namespace playrho
 #endif
        }
 
-        /// Initializing constructor.
+        /// @brief Initializing constructor.
         ///
         /// @details Constructs a distance proxy for n-point shape (like a polygon).
         ///
@@ -101,7 +102,7 @@ namespace playrho
         /// @warning Behavior is undefined if any normal is not unique.
         ///
         DistanceProxy(const NonNegative<Length> vertexRadius, const VertexCounter count,
-                      const Length2* vertices, const UnitVec2* normals) noexcept:
+                      const Length2* vertices, const UnitVec* normals) noexcept:
 #ifndef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
             m_vertices{vertices},
             m_normals{normals},
@@ -178,10 +179,10 @@ namespace playrho
     private:
 #ifdef IMPLEMENT_DISTANCEPROXY_WITH_BUFFERS
         Length2 m_vertices[MaxShapeVertices]; ///< Vertices.
-        UnitVec2 m_normals[MaxShapeVertices]; ///< Normals.
+        UnitVec m_normals[MaxShapeVertices]; ///< Normals.
 #else
         const Length2* m_vertices = nullptr; ///< Vertices.
-        const UnitVec2* m_normals = nullptr; ///< Normals.
+        const UnitVec* m_normals = nullptr; ///< Normals.
 #endif
         VertexCounter m_count = 0; ///< Count of valid elements of m_vertices.
         NonNegative<Length> m_vertexRadius = 0_m; ///< Radius of the vertices of the associated shape.
@@ -252,6 +253,7 @@ namespace playrho
     /// @ingroup TestPointGroup
     bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept;
     
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_DISTANCEPROXY_HPP

@@ -31,7 +31,7 @@ public:
     BulletTest()
     {
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Length2{};
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(Shape(EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
@@ -39,7 +39,7 @@ public:
         }
 
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 4.0f) * 1_m;
 
@@ -61,18 +61,18 @@ public:
             m_bullet = m_world.CreateBody(bd);
             m_bullet->CreateFixture(Shape{conf});
 
-            m_bullet->SetVelocity(Velocity2D{Vec2{0.0f, -50.0f} * 1_mps, 0_rpm});
+            m_bullet->SetVelocity(Velocity{Vec2{0.0f, -50.0f} * 1_mps, 0_rpm});
         }
     }
 
     void Launch()
     {
         m_body->SetTransform(Vec2(0.0f, 4.0f) * 1_m, 0_rad);
-        m_body->SetVelocity(Velocity2D{LinearVelocity2{}, 0_rpm});
+        m_body->SetVelocity(Velocity{LinearVelocity2{}, 0_rpm});
 
         m_x = RandomFloat(-1.0f, 1.0f);
         m_bullet->SetTransform(Vec2(m_x, 10.0f) * 1_m, 0_rad);
-        m_bullet->SetVelocity(Velocity2D{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
+        m_bullet->SetVelocity(Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
     }
 
     void PostStep(const Settings&, Drawer&) override

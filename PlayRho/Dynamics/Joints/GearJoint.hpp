@@ -23,10 +23,11 @@
 #define PLAYRHO_DYNAMICS_JOINTS_GEARJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/GearJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Gear joint.
 ///
@@ -47,10 +48,10 @@ class GearJoint : public Joint
 public:
     
     /// @brief Is the given definition okay.
-    static bool IsOkay(const GearJointDef& data) noexcept;
+    static bool IsOkay(const GearJointConf& data) noexcept;
 
     /// @brief Initializing constructor.
-    GearJoint(const GearJointDef& data);
+    GearJoint(const GearJointConf& data);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -107,8 +108,8 @@ private:
     Length2 m_localAnchorC; ///< Local anchor C.
     Length2 m_localAnchorD; ///< Local anchor D.
 
-    UnitVec2 m_localAxisC; ///< Local axis C.
-    UnitVec2 m_localAxisD; ///< Local axis D.
+    UnitVec m_localAxisC; ///< Local axis C.
+    UnitVec m_localAxisD; ///< Local axis D.
 
     Angle m_referenceAngleA; ///< Reference angle A.
     Angle m_referenceAngleB; ///< Reference angle B.
@@ -138,6 +139,7 @@ inline Real GearJoint::GetConstant() const noexcept
     return m_constant;
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_GEARJOINT_HPP

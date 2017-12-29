@@ -43,7 +43,7 @@ public:
         {
             auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2);
 
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 40.0f) * 1_m;
             bd.angle = Pi * 0.25_rad;
@@ -97,7 +97,7 @@ public:
         body1->DestroyFixture(m_piece2);
         m_piece2 = nullptr;
 
-        BodyDef bd;
+        BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.location = body1->GetLocation();
         bd.angle = body1->GetAngle();
@@ -113,8 +113,8 @@ public:
         const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity / 1_rad;
         const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity / 1_rad;
 
-        body1->SetVelocity(Velocity2D{velocity1, m_angularVelocity});
-        body2->SetVelocity(Velocity2D{velocity2, m_angularVelocity});
+        body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
+        body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
     }
 
     void PreStep(const Settings&, Drawer&) override

@@ -123,7 +123,7 @@ public:
             m_bodies[m_bodyIndex] = nullptr;
         }
 
-        BodyDef bd;
+        BodyConf bd;
 
         const auto x = RandomFloat(-10.0f, 10.0f);
         const auto y = RandomFloat(10.0f, 20.0f);
@@ -172,9 +172,9 @@ public:
 
         auto fixture = static_cast<Fixture*>(nullptr);
         Length2 point;
-        UnitVec2 normal;
+        UnitVec normal;
 
-        m_world.RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2 p, UnitVec2 n) {
+        m_world.RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2 p, UnitVec n) {
             fixture = f;
             point = p;
             normal = n;

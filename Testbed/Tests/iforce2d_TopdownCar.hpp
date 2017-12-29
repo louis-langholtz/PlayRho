@@ -98,9 +98,9 @@ public:
     
     TDTire(World* world, Shape tireShape)
     {
-        BodyDef bodyDef;
-        bodyDef.type = BodyType::Dynamic;
-        m_body = world->CreateBody(bodyDef);
+        BodyConf bodyConf;
+        bodyConf.type = BodyType::Dynamic;
+        m_body = world->CreateBody(bodyConf);
         
         const auto fixture = m_body->CreateFixture(tireShape);
         fixture->SetUserData( new CarTireFUD() );
@@ -150,14 +150,14 @@ public:
     
     LinearVelocity2 getLateralVelocity() const
     {
-        const auto currentRightNormal = GetWorldVector(*m_body, UnitVec2::GetRight());
+        const auto currentRightNormal = GetWorldVector(*m_body, UnitVec::GetRight());
         const auto vel = GetLinearVelocity(*m_body);
         return Dot(currentRightNormal, vel) * currentRightNormal;
     }
     
     LinearVelocity2 getForwardVelocity() const
     {
-        const auto currentForwardNormal = GetWorldVector(*m_body, UnitVec2::GetTop());
+        const auto currentForwardNormal = GetWorldVector(*m_body, UnitVec::GetTop());
         const auto vel = GetLinearVelocity(*m_body);
         return Dot(currentForwardNormal, vel) * currentForwardNormal;
     }
@@ -178,8 +178,8 @@ public:
         
         //forward linear velocity
         const auto forwardVelocity = getForwardVelocity();
-        const auto uvresult = UnitVec2::Get(StripUnit(GetX(forwardVelocity)), StripUnit(GetY(forwardVelocity)));
-        const auto forwardDir = std::get<UnitVec2>(uvresult);
+        const auto uvresult = UnitVec::Get(StripUnit(GetX(forwardVelocity)), StripUnit(GetY(forwardVelocity)));
+        const auto forwardDir = std::get<UnitVec>(uvresult);
         const auto currentForwardSpeed = std::get<Real>(uvresult) * 1_mps;
         const auto dragForceMagnitude = -2 * currentForwardSpeed;
         const auto newForce = Force2{m_currentTraction * dragForceMagnitude * forwardDir * 1_kg / 1_s};
@@ -197,7 +197,7 @@ public:
         }
         
         //find current speed in forward direction
-        const auto currentForwardNormal = GetWorldVector(*m_body, UnitVec2::GetTop());
+        const auto currentForwardNormal = GetWorldVector(*m_body, UnitVec::GetTop());
         const auto currentSpeed = Dot(getForwardVelocity(), currentForwardNormal);
         
         //apply necessary force
@@ -238,9 +238,9 @@ public:
     TDCar(World* world)
     {
         //create car body
-        BodyDef bodyDef;
-        bodyDef.type = BodyType::Dynamic;
-        m_body = world->CreateBody(bodyDef);
+        BodyConf bodyConf;
+        bodyConf.type = BodyType::Dynamic;
+        m_body = world->CreateBody(bodyConf);
         m_body->SetAngularDamping(3_Hz);
         
         Length2 vertices[8];
@@ -258,12 +258,12 @@ public:
         m_body->CreateFixture(Shape(polygonShape));
         
         //prepare common joint parameters
-        RevoluteJointDef jointDef;
-        jointDef.bodyA = m_body;
-        jointDef.enableLimit = true;
-        jointDef.lowerAngle = 0_deg;
-        jointDef.upperAngle = 0_deg;
-        jointDef.localAnchorB = Length2{}; //center of tire
+        RevoluteJoinConf jointConf;
+        jointConf.bodyA = m_body;
+        jointConf.enableLimit = true;
+        jointConf.lowerAngle = 0_deg;
+        jointConf.upperAngle = 0_deg;
+        jointConf.localAnchorB = Length2{}; //center of tire
         
         const auto maxForwardSpeed = 250_mps;
         const auto maxBackwardSpeed = -40_mps;
@@ -282,33 +282,33 @@ public:
         //back left tire (starts at absolute 0, 0 but pulled into place by joint)
         tire = new TDTire{world, sharedTireShape};
         tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
-        jointDef.bodyB = tire->GetBody();
-        jointDef.localAnchorA = Vec2(-3, 0.75f) * 1_m; // sets car relative location of tire
-        world->CreateJoint(jointDef);
+        jointConf.bodyB = tire->GetBody();
+        jointConf.localAnchorA = Vec2(-3, 0.75f) * 1_m; // sets car relative location of tire
+        world->CreateJoint(jointConf);
         m_tires.push_back(tire);
         
         //back right tire (starts at absolute 0, 0 but pulled into place by joint)
         tire = new TDTire{world, sharedTireShape};
         tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
-        jointDef.bodyB = tire->GetBody();
-        jointDef.localAnchorA = Vec2(+3, 0.75f) * 1_m; // sets car relative location of tire
-        world->CreateJoint(jointDef);
+        jointConf.bodyB = tire->GetBody();
+        jointConf.localAnchorA = Vec2(+3, 0.75f) * 1_m; // sets car relative location of tire
+        world->CreateJoint(jointConf);
         m_tires.push_back(tire);
         
         //front left tire (starts at absolute 0, 0 but pulled into place by joint)
         tire = new TDTire{world, sharedTireShape};
         tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
-        jointDef.bodyB = tire->GetBody();
-        jointDef.localAnchorA = Vec2(-3, 8.5f) * 1_m; // sets car relative location of tire
-        flJoint = static_cast<RevoluteJoint*>(world->CreateJoint(jointDef));
+        jointConf.bodyB = tire->GetBody();
+        jointConf.localAnchorA = Vec2(-3, 8.5f) * 1_m; // sets car relative location of tire
+        flJoint = static_cast<RevoluteJoint*>(world->CreateJoint(jointConf));
         m_tires.push_back(tire);
         
         //front right tire (starts at absolute 0, 0 but pulled into place by joint)
         tire = new TDTire{world, sharedTireShape};
         tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
-        jointDef.bodyB = tire->GetBody();
-        jointDef.localAnchorA = Vec2(+3, 8.5f) * 1_m; // sets car relative location of tire
-        frJoint = static_cast<RevoluteJoint*>(world->CreateJoint(jointDef));
+        jointConf.bodyB = tire->GetBody();
+        jointConf.localAnchorA = Vec2(+3, 8.5f) * 1_m; // sets car relative location of tire
+        frJoint = static_cast<RevoluteJoint*>(world->CreateJoint(jointConf));
         m_tires.push_back(tire);
     }
     
@@ -373,7 +373,7 @@ public:
     {
         auto conf = Test::Conf{};
         conf.seeAlso = "https://www.iforce2d.net/b2dtut/projected-trajectory";
-        conf.credits = "Originally written by Chris Campbell for Box2D. Ported to PlayRho by Louis Langholtz.";
+        conf.credits = "Originally written by Chris Campbell for Box. Ported to PlayRho by Louis Langholtz.";
         return conf;
     }
 
@@ -386,19 +386,19 @@ public:
         {
             Fixture* groundAreaFixture;
 
-            BodyDef bodyDef;
-            m_groundBody = m_world.CreateBody(bodyDef);
+            BodyConf bodyConf;
+            m_groundBody = m_world.CreateBody(bodyConf);
             
             auto polygonShape = PolygonShapeConf{};
-            FixtureDef fixtureDef;
-            fixtureDef.isSensor = true;
+            FixtureConf fixtureConf;
+            fixtureConf.isSensor = true;
             
             polygonShape.SetAsBox(9_m, 7_m, Vec2(-10,15) * 1_m, 20_deg );
-            groundAreaFixture = m_groundBody->CreateFixture(Shape(polygonShape), fixtureDef);
+            groundAreaFixture = m_groundBody->CreateFixture(Shape(polygonShape), fixtureConf);
             groundAreaFixture->SetUserData( new GroundAreaFUD( 0.5f, false ) );
             
             polygonShape.SetAsBox(9_m, 5_m, Vec2(5,20) * 1_m, -40_deg );
-            groundAreaFixture = m_groundBody->CreateFixture(Shape(polygonShape), fixtureDef);
+            groundAreaFixture = m_groundBody->CreateFixture(Shape(polygonShape), fixtureConf);
             groundAreaFixture->SetUserData( new GroundAreaFUD( 0.2f, false ) );
         }
         

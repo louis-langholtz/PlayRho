@@ -51,11 +51,11 @@ public:
         polygon.Set(Span<const Length2>{vertices, 3});
         polygon.UseDensity(1_kgpm2);
 
-        BodyDef triangleBodyDef;
-        triangleBodyDef.type = BodyType::Dynamic;
-        triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        BodyConf triangleBodyConf;
+        triangleBodyConf.type = BodyType::Dynamic;
+        triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body1 = m_world.CreateBody(triangleBodyDef);
+        const auto body1 = m_world.CreateBody(triangleBodyConf);
         body1->CreateFixture(Shape(polygon));
 
         // Large triangle (recycle definitions)
@@ -64,39 +64,39 @@ public:
         vertices[2] *= 2.0f;
         polygon.Set(Span<const Length2>{vertices, 3});
 
-        triangleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body2 = m_world.CreateBody(triangleBodyDef);
+        const auto body2 = m_world.CreateBody(triangleBodyConf);
         body2->CreateFixture(Shape(polygon));
         
         // Small box
         polygon.SetAsBox(1_m, 0.5_m);
 
-        BodyDef boxBodyDef;
-        boxBodyDef.type = BodyType::Dynamic;
-        boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        BodyConf boxBodyConf;
+        boxBodyConf.type = BodyType::Dynamic;
+        boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body3 = m_world.CreateBody(boxBodyDef);
+        const auto body3 = m_world.CreateBody(boxBodyConf);
         body3->CreateFixture(Shape(polygon));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
-        boxBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         
-        const auto body4 = m_world.CreateBody(boxBodyDef);
+        const auto body4 = m_world.CreateBody(boxBodyConf);
         body4->CreateFixture(Shape(polygon));
 
-        BodyDef circleBodyDef;
-        circleBodyDef.type = BodyType::Dynamic;
+        BodyConf circleBodyConf;
+        circleBodyConf.type = BodyType::Dynamic;
 
         // Small circle
-        circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
-        const auto body5 = m_world.CreateBody(circleBodyDef);
+        circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        const auto body5 = m_world.CreateBody(circleBodyConf);
         body5->CreateFixture(Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
 
         // Large circle
-        circleBodyDef.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
-        const auto body6 = m_world.CreateBody(circleBodyDef);
+        circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
+        const auto body6 = m_world.CreateBody(circleBodyConf);
         body6->CreateFixture(Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
     }
 

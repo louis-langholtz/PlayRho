@@ -43,7 +43,7 @@ public:
         {
             const auto shape = Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
 
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
 
             bd.location = Vec2(-5.0f, 5.0f) * 1_m;
@@ -62,7 +62,7 @@ public:
             m_bodies[3] = m_world.CreateBody(bd);
             m_bodies[3]->CreateFixture(shape);
 
-            DistanceJointDef jd;
+            DistanceJointConf jd;
             Length2 p1, p2, d;
 
             jd.frequency = 2_Hz;

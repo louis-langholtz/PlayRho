@@ -29,7 +29,7 @@
 #include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
-#include <PlayRho/Dynamics/FixtureDef.hpp>
+#include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <limits>
@@ -38,6 +38,7 @@
 #include <array>
 
 namespace playrho {
+namespace d2 {
 
 class Body;
 
@@ -74,7 +75,7 @@ public:
     ///    AreaDensity must be greater-than-or-equal-to zero.
     /// @param shape Sharable shape to associate fixture with. Must be non-null.
     ///
-    Fixture(NonNull<Body*> body, const FixtureDef& def, const Shape& shape):
+    Fixture(NonNull<Body*> body, const FixtureConf& def, const Shape& shape):
         m_body{body},
         m_userData{def.userData},
         m_shape{shape},
@@ -276,17 +277,17 @@ inline void Fixture::ResetProxies() noexcept
 
 inline Real Fixture::GetFriction() const noexcept
 {
-    return playrho::GetFriction(m_shape);
+    return playrho::d2::GetFriction(m_shape);
 }
 
 inline Real Fixture::GetRestitution() const noexcept
 {
-    return playrho::GetRestitution(m_shape);
+    return playrho::d2::GetRestitution(m_shape);
 }
 
 inline AreaDensity Fixture::GetDensity() const noexcept
 {
-    return playrho::GetDensity(m_shape);
+    return playrho::d2::GetDensity(m_shape);
 }
 
 // Free functions...
@@ -309,8 +310,9 @@ void SetAwake(const Fixture& f) noexcept;
 /// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.
 ///   behavior is undefined if the fixture has <code>nullptr</code> as its associated body.
 /// @relatedalso Fixture
-Transformation2D GetTransformation(const Fixture& f) noexcept;
+Transformation GetTransformation(const Fixture& f) noexcept;
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_FIXTURE_HPP

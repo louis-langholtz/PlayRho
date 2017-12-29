@@ -26,6 +26,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 // p = attached point, m = mouse point
 // C = p - m
@@ -36,7 +37,7 @@ namespace playrho {
 // w k % (rx i + ry j) = w * (-ry i + rx j)
 
 
-bool MouseJoint::IsOkay(const MouseJointDef& def) noexcept
+bool MouseJoint::IsOkay(const MouseJointConf& def) noexcept
 {
     if (!Joint::IsOkay(def))
     {
@@ -49,7 +50,7 @@ bool MouseJoint::IsOkay(const MouseJointDef& def) noexcept
     return true;
 }
 
-MouseJoint::MouseJoint(const MouseJointDef& def):
+MouseJoint::MouseJoint(const MouseJointConf& def):
     Joint{def},
     m_targetA{def.target},
     m_localAnchorB{def.bodyB?
@@ -113,7 +114,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto posB = bodyConstraintB->GetPosition();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qB = UnitVec::Get(posB.angular);
 
     const auto mass = GetMass(*GetBodyB());
 
@@ -153,7 +154,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         m_impulse *= step.dtRatio;
         const auto P = m_impulse;
         const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
-        velB += Velocity2D{bodyConstraintB->GetInvMass() * P, bodyConstraintB->GetInvRotInertia() * crossBP};
+        velB += Velocity{bodyConstraintB->GetInvMass() * P, bodyConstraintB->GetInvRotInertia() * crossBP};
     }
     else
     {
@@ -179,13 +180,13 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     const auto maxImpulse = step.GetTime() * Force{m_maxForce};
     if (GetMagnitudeSquared(m_impulse) > Square(maxImpulse))
     {
-        m_impulse = GetUnitVector(m_impulse, UnitVec2::GetZero()) * maxImpulse;
+        m_impulse = GetUnitVector(m_impulse, UnitVec::GetZero()) * maxImpulse;
     }
 
     const auto incImpulse = (m_impulse - oldImpulse);
     const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
 
-    velB += Velocity2D{
+    velB += Velocity{
         bodyConstraintB->GetInvMass() * incImpulse,
         bodyConstraintB->GetInvRotInertia() * angImpulseB
     };
@@ -228,4 +229,5 @@ bool MouseJoint::ShiftOrigin(const Length2 newOrigin)
     return true;
 }
 
+} // namespace d2
 } // namespace playrho

@@ -92,7 +92,7 @@ public:
 
         auto conf = Test::Conf{};
         conf.description = os.str();
-        conf.worldDef = WorldDef{}.UseMaxVertexRadius(1e7_km);
+        conf.worldConf = WorldConf{}.UseMaxVertexRadius(1e7_km);
         conf.neededSettings = 0;
         conf.neededSettings |= (1u << NeedLinearSlopField);
         conf.neededSettings |= (1u << NeedCameraZoom);
@@ -114,7 +114,7 @@ public:
         m_bombRadius = 100_km;
         m_bombDensity = 2e12_kgpm2;
         m_world.SetGravity(LinearAcceleration2{});
-        const auto DynamicBD = BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true);
+        const auto DynamicBD = BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true);
         for (auto& sso: SolarSystemBodies)
         {
             const auto p = sso.orbitalPeriod;
@@ -124,9 +124,9 @@ public:
             const auto l = Length2{odds? -sso.aveDist: sso.aveDist, 0_m};
             const auto v = (p != 0_s)? (c / p) * (odds? -1: +1): 0_mps;
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-            const auto b = m_world.CreateBody(BodyDef(DynamicBD).UseLocation(l));
+            const auto b = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(l));
             const auto a = 2 * Pi * 1_rad / sso.rotationalPeriod;
-            b->SetVelocity(Velocity2D{LinearVelocity2{0_mps, v}, a});
+            b->SetVelocity(Velocity{LinearVelocity2{0_mps, v}, a});
             const auto d = sso.mass / (Pi * Square(sso.radius));
             const auto sconf = DiskShapeConf{}.UseRadius(sso.radius).UseDensity(d);
             const auto shape = Shape(sconf);

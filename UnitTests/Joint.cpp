@@ -20,48 +20,49 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/JointDef.hpp>
+#include <PlayRho/Dynamics/Joints/JointConf.hpp>
 #include <type_traits>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(JointBuilder, Construction)
 {
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.type, JointType::Unknown);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.bodyA, nullptr);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.bodyB, nullptr);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.collideConnected, false);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Unknown}.userData, nullptr);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Gear}.type, JointType::Gear);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.type, JointType::Rope);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.type, JointType::Unknown);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.bodyA, nullptr);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.bodyB, nullptr);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.collideConnected, false);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.userData, nullptr);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Gear}.type, JointType::Gear);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.type, JointType::Rope);
 }
 
 TEST(JointBuilder, UseBodyA)
 {
     const auto b = reinterpret_cast<Body*>(2);
-    EXPECT_NE(JointBuilder<JointDef>{JointType::Rope}.bodyA, b);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.UseBodyA(b).bodyA, b);
+    EXPECT_NE(JointBuilder<JointConf>{JointType::Rope}.bodyA, b);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.UseBodyA(b).bodyA, b);
 }
 
 TEST(JointBuilder, UseBodyB)
 {
     const auto b = reinterpret_cast<Body*>(77);
-    EXPECT_NE(JointBuilder<JointDef>{JointType::Rope}.bodyB, b);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.UseBodyB(b).bodyB, b);
+    EXPECT_NE(JointBuilder<JointConf>{JointType::Rope}.bodyB, b);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.UseBodyB(b).bodyB, b);
 }
 
 TEST(JointBuilder, UseCollideConnected)
 {
     const auto cc = true;
-    EXPECT_NE(JointBuilder<JointDef>{JointType::Rope}.collideConnected, cc);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.UseCollideConnected(cc).collideConnected, cc);
+    EXPECT_NE(JointBuilder<JointConf>{JointType::Rope}.collideConnected, cc);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.UseCollideConnected(cc).collideConnected, cc);
 }
 
 TEST(JointBuilder, UseUserData)
 {
     const auto d = reinterpret_cast<void*>(318);
-    EXPECT_NE(JointBuilder<JointDef>{JointType::Rope}.userData, d);
-    EXPECT_EQ(JointBuilder<JointDef>{JointType::Rope}.UseUserData(d).userData, d);
+    EXPECT_NE(JointBuilder<JointConf>{JointType::Rope}.userData, d);
+    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.UseUserData(d).userData, d);
 }
 
 TEST(Joint, ByteSize)
@@ -99,7 +100,7 @@ TEST(Joint, Traits)
 
 TEST(Joint, StaticIsOkay)
 {
-    using Builder = JointBuilder<JointDef>;
+    using Builder = JointBuilder<JointConf>;
     EXPECT_FALSE(Joint::IsOkay(Builder{JointType::Unknown}));
     EXPECT_FALSE(Joint::IsOkay(Builder{JointType::Friction}));
     const auto b1 = reinterpret_cast<Body*>(0x1);

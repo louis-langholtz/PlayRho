@@ -38,13 +38,13 @@ public:
 
             // Define crank.
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 7.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m));
 
-                RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 5.0f) * 1_m};
+                RevoluteJoinConf rjd{prevBody, body, Vec2(0.0f, 5.0f) * 1_m};
                 rjd.motorSpeed = Pi * 1_rad / 1_s;
                 rjd.maxMotorTorque = 10000_Nm;
                 rjd.enableMotor = true;
@@ -55,13 +55,13 @@ public:
 
             // Define follower.
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 13.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 4_m));
 
-                RevoluteJointDef rjd{prevBody, body, Vec2(0.0f, 9.0f) * 1_m};
+                RevoluteJoinConf rjd{prevBody, body, Vec2(0.0f, 9.0f) * 1_m};
                 rjd.enableMotor = false;
                 m_world.CreateJoint(rjd);
 
@@ -70,15 +70,15 @@ public:
 
             // Define piston
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.fixedRotation = true;
                 bd.location = Vec2(0.0f, 17.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m));
-                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(0.0f, 17.0f) * 1_m});
+                m_world.CreateJoint(RevoluteJoinConf{prevBody, body, Vec2(0.0f, 17.0f) * 1_m});
 
-                PrismaticJointDef pjd(ground, body, Vec2(0.0f, 17.0f) * 1_m, UnitVec2::GetTop());
+                PrismaticJointConf pjd(ground, body, Vec2(0.0f, 17.0f) * 1_m, UnitVec::GetTop());
                 pjd.maxMotorForce = 1000_N;
                 pjd.enableMotor = true;
                 m_joint2 = static_cast<PrismaticJoint*>(m_world.CreateJoint(pjd));
@@ -86,7 +86,7 @@ public:
 
             // Create a payload
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 23.0f) * 1_m;
                 m_world.CreateBody(bd)->CreateFixture(PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m));

@@ -36,17 +36,17 @@ namespace testbed {
         {
             m_world.SetGravity(LinearAcceleration2{});
 
-            auto bodyDef = BodyDef{};
-            bodyDef.type = BodyType::Dynamic;
-            bodyDef.angularVelocity = 45_deg / 1_s;
-            bodyDef.linearVelocity = LinearVelocity2{};
-            bodyDef.linearDamping = 0.8_Hz;
-            bodyDef.bullet = true;
+            auto bodyConf = BodyConf{};
+            bodyConf.type = BodyType::Dynamic;
+            bodyConf.angularVelocity = 45_deg / 1_s;
+            bodyConf.linearVelocity = LinearVelocity2{};
+            bodyConf.linearDamping = 0.8_Hz;
+            bodyConf.bullet = true;
 
-            bodyDef.location = Vec2{0, 26} * 1_m;
-            const auto body1 = m_world.CreateBody(bodyDef);
-            bodyDef.location = Vec2{0, 14} * 1_m;
-            const auto body2 = m_world.CreateBody(bodyDef);
+            bodyConf.location = Vec2{0, 26} * 1_m;
+            const auto body1 = m_world.CreateBody(bodyConf);
+            bodyConf.location = Vec2{0, 14} * 1_m;
+            const auto body2 = m_world.CreateBody(bodyConf);
             
             auto shapeConf = DiskShapeConf{};
             shapeConf.density = 10_kgpm2;

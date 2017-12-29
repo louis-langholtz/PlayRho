@@ -29,103 +29,103 @@
 #include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
-    
-    class Fixture;
-    class Body;
+namespace detail {
 
-    /// @brief Mass data.
-    /// @details This holds the mass data computed for a shape.
-    template <std::size_t N>
-    struct MassData
-    {
-        /// @brief Position of the shape's centroid relative to the shape's origin.
-        Vector<Length, N> center = Vector<Length, N>{};
-        
-        /// @brief Mass of the shape in kilograms.
-        NonNegative<Mass> mass = NonNegative<Mass>{0};
+/// @brief Mass data.
+/// @details This holds the mass data computed for a shape.
+template <std::size_t N>
+struct MassData
+{
+    /// @brief Position of the shape's centroid relative to the shape's origin.
+    Vector<Length, N> center = Vector<Length, N>{};
+    
+    /// @brief Mass of the shape in kilograms.
+    NonNegative<Mass> mass = NonNegative<Mass>{0};
+    
+    /// @brief Rotational inertia, a.k.a. moment of inertia.
+    /// @details This is the rotational inertia of the shape about the local origin.
+    /// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
+    NonNegative<RotInertia> I = NonNegative<RotInertia>{0};
+};
 
-        /// @brief Rotational inertia, a.k.a. moment of inertia.
-        /// @details This is the rotational inertia of the shape about the local origin.
-        /// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
-        NonNegative<RotInertia> I = NonNegative<RotInertia>{0};
-    };
-    
-    /// @brief Mass data alias for 2-D objects.
-    /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
-    using MassData2D = MassData<2>;
-    
-    // Free functions...
-    
-    /// @brief Equality operator for mass data.
-    /// @relatedalso MassData
-    template <std::size_t N>
-    PLAYRHO_CONSTEXPR inline bool operator== (MassData<N> lhs, MassData<N> rhs)
-    {
-        return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
-    }
-    
-    /// @brief Inequality operator for mass data.
-    /// @relatedalso MassData
-    template <std::size_t N>
-    PLAYRHO_CONSTEXPR inline bool operator!= (MassData<N> lhs, MassData<N> rhs)
-    {
-        return !(lhs == rhs);
-    }
+// Free functions...
 
-    /// @brief Computes the mass data for a circular shape.
-    ///
-    /// @param r Radius of the circular shape.
-    /// @param density Areal density of mass.
-    /// @param location Location of the center of the shape.
-    ///
-    /// @relatedalso MassData
-    ///
-    MassData2D GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location);
+/// @brief Equality operator for mass data.
+/// @relatedalso MassData
+template <std::size_t N>
+PLAYRHO_CONSTEXPR inline bool operator== (MassData<N> lhs, MassData<N> rhs)
+{
+    return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
+}
 
-    /// @brief Computes the mass data for a linear shape.
-    ///
-    /// @param r Radius of the vertices of the linear shape.
-    /// @param density Areal density of mass.
-    /// @param v0 Location of vertex zero.
-    /// @param v1 Location of vertex one.
-    ///
-    /// @relatedalso MassData
-    ///
-    MassData2D GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1);
+/// @brief Inequality operator for mass data.
+/// @relatedalso MassData
+template <std::size_t N>
+PLAYRHO_CONSTEXPR inline bool operator!= (MassData<N> lhs, MassData<N> rhs)
+{
+    return !(lhs == rhs);
+}
+} // namespace detail
 
-    /// @brief Gets the mass data for the given collection of vertices with the given
-    ///    properties.
-    /// @relatedalso MassData
-    MassData2D GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
-                         Span<const Length2> vertices);
-    
-    /// @brief Computes the mass data for the given fixture.
-    ///
-    /// @details
-    /// The mass data is based on the density and the shape of the fixture.
-    /// The rotational inertia is about the shape's origin.
-    /// @note This operation may be expensive.
-    ///
-    /// @param f Fixture to compute the mass data for.
-    ///
-    /// @relatedalso Fixture
-    ///
-    MassData2D GetMassData(const Fixture& f);
-    
-    /// @brief Computes the body's mass data.
-    /// @details This basically accumulates the mass data over all fixtures.
-    /// @note The center is the mass weighted sum of all fixture centers. Divide it by the
-    ///   mass to get the averaged center.
-    /// @return accumulated mass data for all fixtures associated with the given body.
-    /// @relatedalso Body
-    MassData2D ComputeMassData(const Body& body) noexcept;
-    
-    
-    /// @brief Gets the mass data of the body.
-    /// @return Data structure containing the mass, inertia, and center of the body.
-    /// @relatedalso Body
-    MassData2D GetMassData(const Body& body) noexcept;
-    
+namespace d2 {
+
+class Fixture;
+class Body;
+
+/// @brief Mass data alias for 2-D objects.
+/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
+using MassData = detail::MassData<2>;
+
+/// @brief Computes the mass data for a circular shape.
+///
+/// @param r Radius of the circular shape.
+/// @param density Areal density of mass.
+/// @param location Location of the center of the shape.
+///
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location);
+
+/// @brief Computes the mass data for a linear shape.
+///
+/// @param r Radius of the vertices of the linear shape.
+/// @param density Areal density of mass.
+/// @param v0 Location of vertex zero.
+/// @param v1 Location of vertex one.
+///
+MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1);
+
+/// @brief Gets the mass data for the given collection of vertices with the given
+///    properties.
+MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
+                     Span<const Length2> vertices);
+
+/// @brief Computes the mass data for the given fixture.
+///
+/// @details
+/// The mass data is based on the density and the shape of the fixture.
+/// The rotational inertia is about the shape's origin.
+/// @note This operation may be expensive.
+///
+/// @param f Fixture to compute the mass data for.
+///
+/// @relatedalso Fixture
+///
+MassData GetMassData(const Fixture& f);
+
+/// @brief Computes the body's mass data.
+/// @details This basically accumulates the mass data over all fixtures.
+/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
+///   mass to get the averaged center.
+/// @return accumulated mass data for all fixtures associated with the given body.
+/// @relatedalso Body
+MassData ComputeMassData(const Body& body) noexcept;
+
+
+/// @brief Gets the mass data of the body.
+/// @return Data structure containing the mass, inertia, and center of the body.
+/// @relatedalso Body
+MassData GetMassData(const Body& body) noexcept;
+
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_MASSDATA_HPP

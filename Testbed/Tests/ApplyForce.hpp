@@ -36,7 +36,7 @@ public:
             const auto lv = Length2{0_m, -200_m};
             const auto f = Force2{GetWorldVector(*m_body, lv) * 1_kg / (1_s * 1_s)};
             const auto p = GetWorldPoint(*m_body, Length2{0_m, 2_m});
-            playrho::ApplyForce(*m_body, f, p);
+            playrho::d2::ApplyForce(*m_body, f, p);
         });
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Apply Counter-Clockwise Torque", [&](KeyActionMods) {
             ApplyTorque(*m_body, 50_Nm);
@@ -49,9 +49,7 @@ public:
 
         Body* ground;
         {
-            BodyDef bd;
-            bd.location = Length2(0_m, 20_m);
-            ground = m_world.CreateBody(bd);
+            ground = m_world.CreateBody(BodyConf{}.UseLocation(Length2(0_m, 20_m)));
 
             auto conf = EdgeShapeConf{};
             conf.density = 0;
@@ -75,8 +73,8 @@ public:
         }
 
         {
-            Transformation2D xf1;
-            xf1.q = UnitVec2::Get(0.3524_rad * Pi);
+            Transformation xf1;
+            xf1.q = UnitVec::Get(0.3524_rad * Pi);
             xf1.p = GetVec2(GetXAxis(xf1.q)) * 1_m;
 
             Length2 vertices[3];
@@ -89,8 +87,8 @@ public:
             conf.density = 4_kgpm2;
             const auto poly1 = PolygonShapeConf(Span<const Length2>(vertices, 3), conf);
 
-            Transformation2D xf2;
-            xf2.q = UnitVec2::Get(-0.3524_rad * Pi);
+            Transformation xf2;
+            xf2.q = UnitVec::Get(-0.3524_rad * Pi);
             xf2.p = GetVec2(-GetXAxis(xf2.q)) * 1_m;
 
             vertices[0] = Transform(Length2{-1_m, 0_m}, xf2);
@@ -100,7 +98,7 @@ public:
             conf.density = 2_kgpm2;
             const auto poly2 = PolygonShapeConf(Span<const Length2>(vertices, 3), conf);
 
-            BodyDef bd;
+            auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.angularDamping = 2_Hz;
             bd.linearDamping = 0.5_Hz;
@@ -122,11 +120,9 @@ public:
             const auto gravity = LinearAcceleration{10_mps2};
             for (auto i = 0; i < 10; ++i)
             {
-                BodyDef bd;
-                bd.type = BodyType::Dynamic;
-                bd.location = Length2{0_m, (5.0f + 1.54f * i) * 1_m};
-                const auto body = m_world.CreateBody(bd);
-
+                const auto location = Length2{0_m, (5.0f + 1.54f * i) * 1_m};
+                const auto body = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic)
+                                                     .UseLocation(location));
                 body->CreateFixture(shape);
 
                 const auto I = GetLocalRotInertia(*body); // RotInertia: M * L^2 QP^-2
@@ -137,17 +133,14 @@ public:
                 const auto radiusSquaredUnitless = 2 * I * invMass * SquareRadian / SquareMeter;
                 const auto radius = Length{sqrt(Real{radiusSquaredUnitless}) * 1_m};
 
-                FrictionJointDef jd;
+                auto jd = FrictionJointConf{};
                 jd.localAnchorA = Length2{};
                 jd.localAnchorB = Length2{};
                 jd.bodyA = ground;
                 jd.bodyB = body;
                 jd.collideConnected = true;
                 jd.maxForce = mass * gravity;
-
-                // Torque is L^2 M T^-2 QP^-1.
                 jd.maxTorque = mass * radius * gravity / 1_rad;
-
                 m_world.CreateJoint(jd);
             }
         }

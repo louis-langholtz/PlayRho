@@ -23,11 +23,12 @@
 #include <algorithm>
 
 namespace playrho {
+namespace d2 {
 
 /// Computes the mass properties of this shape using its dimensions and density.
 /// The inertia tensor is computed about the local origin.
 /// @return Mass data for this shape.
-MassData2D GetMassData(const MultiShapeConf& arg) noexcept
+MassData GetMassData(const MultiShapeConf& arg) noexcept
 {
     auto mass = 0_kg;
     const auto origin = Length2{};
@@ -39,7 +40,7 @@ MassData2D GetMassData(const MultiShapeConf& arg) noexcept
     std::for_each(std::begin(arg.children), std::end(arg.children),
                   [&](const ConvexHull& ch) {
         const auto dp = ch.GetDistanceProxy(vertexRadius);
-        const auto md = playrho::GetMassData(vertexRadius, density,
+        const auto md = playrho::d2::GetMassData(vertexRadius, density,
             Span<const Length2>(dp.GetVertices().begin(), dp.GetVertexCount()));
         mass += Mass{md.mass};
         weightedCenter += md.center * Mass{md.mass};
@@ -47,7 +48,7 @@ MassData2D GetMassData(const MultiShapeConf& arg) noexcept
     });
 
     const auto center = (mass > 0_kg)? weightedCenter / mass: origin;
-    return MassData2D{center, mass, I};
+    return MassData{center, mass, I};
 }
 
 ConvexHull ConvexHull::Get(const VertexSet& pointSet)
@@ -57,7 +58,7 @@ ConvexHull ConvexHull::Get(const VertexSet& pointSet)
     
     const auto count = static_cast<VertexCounter>(vertices.size());
     
-    auto normals = std::vector<UnitVec2>();
+    auto normals = std::vector<UnitVec>();
     if (count > 1)
     {
         // Compute normals.
@@ -70,7 +71,7 @@ ConvexHull ConvexHull::Get(const VertexSet& pointSet)
     }
     else if (count == 1)
     {
-        normals.push_back(UnitVec2{});
+        normals.push_back(UnitVec{});
     }
     
     return ConvexHull{vertices, normals};
@@ -82,4 +83,5 @@ MultiShapeConf& MultiShapeConf::AddConvexHull(const VertexSet& pointSet) noexcep
     return *this;
 }
 
+} // namespace d2
 } // namespace playrho

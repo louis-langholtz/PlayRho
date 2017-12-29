@@ -100,7 +100,7 @@ namespace testbed {
                 return;
             }
             m_frame = [&]() {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Static;
                 bd.location = Length2{0, frame_height};
                 const auto body = m_world.CreateBody(bd);
@@ -115,7 +115,7 @@ namespace testbed {
             {
                 const auto x = (((i + Real(0.5f)) - Real(m_num_arms) / 2) * frame_width_per_arm);
                 
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.bullet = m_bullet_mode;
                 bd.location = Length2{x, frame_height - (arm_length / 2)};
@@ -124,7 +124,7 @@ namespace testbed {
                 CreateArm(m_swings[i], arm_length);
                 CreateBall(m_swings[i], Length2{0, -arm_length / 2}, ball_radius);
                 
-                m_world.CreateJoint(RevoluteJointDef(m_frame, m_swings[i], Length2{x, frame_height}));
+                m_world.CreateJoint(RevoluteJoinConf(m_frame, m_swings[i], Length2{x, frame_height}));
             }            
         }
 
@@ -152,7 +152,7 @@ namespace testbed {
             if (!m_right_side_wall) {
                 const auto frame_width = static_cast<Real>(m_num_arms) * frame_width_per_arm;
 
-                BodyDef def;
+                BodyConf def;
                 def.type = BodyType::Static;
                 def.location = Length2{frame_width / 2 + frame_width / 24, frame_height - (arm_length / 2)};
                 const auto body = m_world.CreateBody(def);
@@ -169,7 +169,7 @@ namespace testbed {
             if (!m_left_side_wall) {
                 const auto frame_width = static_cast<Real>(m_num_arms) * frame_width_per_arm;
 
-                BodyDef def;
+                BodyConf def;
                 def.type = BodyType::Static;
                 def.location = Length2{
                     -(frame_width / Real{2} + frame_width / Real{24}),

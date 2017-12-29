@@ -32,7 +32,8 @@ For source code, please see: https://github.com/louis-langholtz/PlayRho .
 For issues, visit: https://github.com/louis-langholtz/PlayRho/issues .
 
 For coding, simply begin by including the <code>PlayRho/PlayRho.hpp</code> file and
-make an instance of the <a href="classplayrho_1_1World.html"><code>World</code></a> class.
+ make an instance of the
+ <a href="classplayrho_1_1World.html"><code>playrho::d2::World</code></a> class.
 For a more elaborate starting point, see the
  <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a> example application.
 
@@ -54,6 +55,18 @@ For mathemtical insight, see:
 ///    These classes are all sub-classed from sub-classes of the C++ Standard Library
 ///    std::exception class.
 
+/// @namespace std
+/// Name space for specializations of the standard library.
+
+/// @namespace playrho
+/// Name space for all PlayRho related names.
+
+/// @namespace playrho::d2
+/// Name space for 2-dimensionally related PlayRho names.
+
+/// @namespace playrho::detail
+/// Name space for internal/detail related PlayRho names.
+
 #include <PlayRho/Common/Settings.hpp>
 
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -69,7 +82,7 @@ For mathemtical insight, see:
 #include <PlayRho/Collision/DistanceProxy.hpp>
 
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/WorldCallbacks.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>

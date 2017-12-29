@@ -18,7 +18,7 @@
 
 #include "gtest/gtest.h"
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
@@ -28,6 +28,7 @@
 #include <chrono>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(Body, ContactsByteSize)
 {
@@ -166,8 +167,8 @@ TEST(Body, Traits)
 
 TEST(Body, GetFlagsStatic)
 {
-    EXPECT_TRUE(Body::GetFlags(BodyDef{}.UseFixedRotation(true)) & Body::e_fixedRotationFlag);
-    EXPECT_TRUE(Body::GetFlags(BodyDef{}
+    EXPECT_TRUE(Body::GetFlags(BodyConf{}.UseFixedRotation(true)) & Body::e_fixedRotationFlag);
+    EXPECT_TRUE(Body::GetFlags(BodyConf{}
                                .UseAwake(false)
                                .UseAllowSleep(false)
                                .UseType(BodyType::Dynamic)) & Body::e_awakeFlag);
@@ -225,7 +226,7 @@ TEST(Body, WorldCreated)
 
 TEST(Body, SetVelocityDoesNothingToStatic)
 {
-    const auto zeroVelocity = Velocity2D{
+    const auto zeroVelocity = Velocity{
         LinearVelocity2{0_mps, 0_mps},
         AngularVelocity{Real(0) * RadianPerSecond}
     };
@@ -239,7 +240,7 @@ TEST(Body, SetVelocityDoesNothingToStatic)
     ASSERT_FALSE(body->IsAccelerable());
     ASSERT_EQ(body->GetVelocity(), zeroVelocity);
     
-    const auto velocity = Velocity2D{
+    const auto velocity = Velocity{
         LinearVelocity2{1.1_mps, 1.1_mps},
         AngularVelocity{Real(1.1) * RadianPerSecond}
     };
@@ -255,7 +256,7 @@ TEST(Body, CreateFixture)
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(0));
 
     const auto valid_shape = DiskShapeConf(1_m);
-    EXPECT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
+    EXPECT_NE(body->CreateFixture(valid_shape, FixtureConf{}), nullptr);
 
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
 }
@@ -268,7 +269,7 @@ TEST(Body, DestroyFixture)
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
     ASSERT_EQ(GetFixtureCount(*bodyB), std::size_t(0));
 
-    const auto fixtureA = bodyA->CreateFixture(DiskShapeConf(1_m), FixtureDef{});
+    const auto fixtureA = bodyA->CreateFixture(DiskShapeConf(1_m), FixtureConf{});
     ASSERT_NE(fixtureA, nullptr);
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
 
@@ -285,7 +286,7 @@ TEST(Body, SetEnabled)
     const auto body = world.CreateBody();
     const auto valid_shape = DiskShapeConf(1_m);
 
-    const auto fixture = body->CreateFixture(valid_shape, FixtureDef{});
+    const auto fixture = body->CreateFixture(valid_shape, FixtureConf{});
     ASSERT_NE(fixture, nullptr);
     ASSERT_TRUE(body->IsEnabled());
     ASSERT_EQ(fixture->GetProxyCount(), 0u);
@@ -318,7 +319,7 @@ TEST(Body, SetFixedRotation)
     const auto body = world.CreateBody();
     const auto valid_shape = DiskShapeConf(1_m);
 
-    ASSERT_NE(body->CreateFixture(valid_shape, FixtureDef{}), nullptr);
+    ASSERT_NE(body->CreateFixture(valid_shape, FixtureConf{}), nullptr);
     ASSERT_FALSE(body->IsFixedRotation());
 
     // Test that set fixed rotation to flag already set is not a toggle
@@ -347,7 +348,7 @@ TEST(Body, CreateAndDestroyFixture)
     const auto shape = Shape(conf);
     
     {
-        auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
+        auto fixture = body->CreateFixture(shape, FixtureConf{}, false);
         const auto fshape = fixture->GetShape();
         EXPECT_EQ(GetVertexRadius(fshape), GetVertexRadius(shape));
         EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
@@ -377,7 +378,7 @@ TEST(Body, CreateAndDestroyFixture)
     }
     
     {
-        auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
+        auto fixture = body->CreateFixture(shape, FixtureConf{}, false);
         const auto fshape = fixture->GetShape();
         EXPECT_EQ(GetVertexRadius(fshape), GetVertexRadius(shape));
         EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
@@ -404,7 +405,7 @@ TEST(Body, CreateAndDestroyFixture)
 
 TEST(Body, SetType)
 {
-    BodyDef bd;
+    BodyConf bd;
     bd.type = BodyType::Dynamic;
     World world;
     const auto body = world.CreateBody(bd);
@@ -419,13 +420,13 @@ TEST(Body, SetType)
 
 TEST(Body, SetTransform)
 {
-    BodyDef bd;
+    BodyConf bd;
     bd.type = BodyType::Dynamic;
     World world;
     const auto body = world.CreateBody(bd);
-    const auto xfm1 = Transformation2D{Length2{}, UnitVec2::GetRight()};
+    const auto xfm1 = Transformation{Length2{}, UnitVec::GetRight()};
     ASSERT_EQ(body->GetTransformation(), xfm1);
-    const auto xfm2 = Transformation2D{Vec2(10, -12) * 1_m, UnitVec2::GetLeft()};
+    const auto xfm2 = Transformation{Vec2(10, -12) * 1_m, UnitVec::GetLeft()};
     body->SetTransform(xfm2.p, GetAngle(xfm2.q));
     EXPECT_EQ(body->GetTransformation().p, xfm2.p);
     EXPECT_NEAR(static_cast<double>(GetX(body->GetTransformation().q)),
@@ -442,8 +443,8 @@ TEST(Body, SetAcceleration)
     const auto someAngularAccel = 2 * RadianPerSquareSecond;
 
     {
-        auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-        const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Static));
+        auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+        const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
         ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
         ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
         ASSERT_FALSE(body->IsAwake());
@@ -468,8 +469,8 @@ TEST(Body, SetAcceleration)
     
     // Kinematic and dynamic bodies awake at creation...
     {
-        auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-        const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Kinematic));
+        auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+        const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Kinematic));
         ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
         ASSERT_TRUE(body->IsAwake());
         body->UnsetAwake();
@@ -493,8 +494,8 @@ TEST(Body, SetAcceleration)
     
     // Dynamic bodies take a non-zero linear or angular acceleration.
     {
-        auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
-        const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+        auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+        const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
         ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
         ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
         ASSERT_TRUE(body->IsAwake());
@@ -566,7 +567,7 @@ TEST(Body, SetAcceleration)
 
 TEST(Body, CreateLotsOfFixtures)
 {
-    BodyDef bd;
+    BodyConf bd;
     bd.type = BodyType::Dynamic;
     auto conf = DiskShapeConf{};
     conf.vertexRadius = 2.871_m;
@@ -586,7 +587,7 @@ TEST(Body, CreateLotsOfFixtures)
         
         for (auto i = decltype(num){0}; i < num; ++i)
         {
-            auto fixture = body->CreateFixture(shape, FixtureDef{}, false);
+            auto fixture = body->CreateFixture(shape, FixtureConf{}, false);
             ASSERT_NE(fixture, nullptr);
         }
         body->ResetMassData();
@@ -615,7 +616,7 @@ TEST(Body, CreateLotsOfFixtures)
         
         for (auto i = decltype(num){0}; i < num; ++i)
         {
-            auto fixture = body->CreateFixture(shape, FixtureDef{}, true);
+            auto fixture = body->CreateFixture(shape, FixtureConf{}, true);
             ASSERT_NE(fixture, nullptr);
         }
         
@@ -676,25 +677,25 @@ TEST(Body, ApplyLinearAccelDoesNothingToStatic)
 TEST(Body, GetAccelerationFF)
 {
     World world;
-    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
     
     ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
     ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
     
-    EXPECT_EQ(GetAcceleration(*body), Acceleration2D{});
+    EXPECT_EQ(GetAcceleration(*body), Acceleration{});
 }
 
 TEST(Body, SetAccelerationFF)
 {
     World world;
-    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
     
     ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
     ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
  
-    const auto newAccel = Acceleration2D{
+    const auto newAccel = Acceleration{
         LinearAcceleration2{2_mps2, 3_mps2}, AngularAcceleration{1.2f * RadianPerSquareSecond}
     };
     SetAcceleration(*body, newAccel);
@@ -703,18 +704,18 @@ TEST(Body, SetAccelerationFF)
 
 TEST(Body, CalcGravitationalAcceleration)
 {
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
 
     const auto l1 = Length2{-8_m, 0_m};
     const auto l2 = Length2{+8_m, 0_m};
     const auto l3 = Length2{+16_m, 0_m};
     const auto shape = DiskShapeConf{}.UseRadius(2_m).UseDensity(1e10_kgpm2);
     
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l1));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
     b1->CreateFixture(shape);
-    EXPECT_EQ(CalcGravitationalAcceleration(*b1), Acceleration2D{});
+    EXPECT_EQ(CalcGravitationalAcceleration(*b1), Acceleration{});
     
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l2));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
     b2->CreateFixture(shape);
     const auto accel = CalcGravitationalAcceleration(*b1);
     EXPECT_NEAR(static_cast<double>(Real(GetX(accel.linear)/MeterPerSquareSecond)),
@@ -722,8 +723,8 @@ TEST(Body, CalcGravitationalAcceleration)
     EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
     EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
     
-    const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Static).UseLocation(l3));
-    EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration2D{});
+    const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseLocation(l3));
+    EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration{});
 }
 
 TEST(Body, RotateAboutWorldPointFF)
@@ -754,7 +755,7 @@ TEST(Body, GetCentripetalForce)
 {
     const auto l1 = Length2{-8_m, 0_m};
     auto world = World{};
-    const auto body = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(l1));
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
     const auto shape = DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2);
     body->CreateFixture(shape);
     SetLinearVelocity(*body, LinearVelocity2{2_mps, 3_mps});

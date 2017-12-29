@@ -20,6 +20,7 @@
 #include <PlayRho/Collision/SimplexEdge.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(SimplexEdge, ByteSize)
 {

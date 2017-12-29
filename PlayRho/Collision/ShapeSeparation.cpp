@@ -22,6 +22,7 @@
 #include <algorithm>
 
 namespace playrho {
+namespace d2 {
 
 namespace {
 
@@ -32,8 +33,8 @@ namespace {
 /// @param vertices Vertices from second convex shape.
 /// @return Minimum separation and index or indices of the vertex or edge respectively
 ///   for which that's found.
-LengthIndices2D GetMinSeparationInfo(Length2 origin, UnitVec2 direction,
-                                     Range<DistanceProxy::ConstVertexIterator> vertices)
+LengthIndices GetMinSeparationInfo(Length2 origin, UnitVec direction,
+                                   Range<DistanceProxy::ConstVertexIterator> vertices)
 {
     // Search for vertices most anti-parallel to directional normal from origin.
     // See: https://en.wikipedia.org/wiki/Antiparallel_(mathematics)#Antiparallel_vectors
@@ -58,13 +59,13 @@ LengthIndices2D GetMinSeparationInfo(Length2 origin, UnitVec2 direction,
         }
         ++i;
     }
-    return LengthIndices2D{minSeparation, {{first, second}}};
+    return LengthIndices{minSeparation, {{first, second}}};
 }
 
 } // anonymous namespace
 
-SeparationInfo2D GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation2D xf1,
-                                     const DistanceProxy& proxy2, Transformation2D xf2)
+SeparationInfo GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation xf1,
+                                   const DistanceProxy& proxy2, Transformation xf2)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -102,11 +103,11 @@ SeparationInfo2D GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation
             firstIndex = i;
         }
     }
-    return SeparationInfo2D{separation, firstIndex, secondIndices};
+    return SeparationInfo{separation, firstIndex, secondIndices};
 }
 
-SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D xf1,
-                                  const DistanceProxy& proxy2, Transformation2D xf2)
+SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
+                                const DistanceProxy& proxy2, Transformation xf2)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -128,12 +129,12 @@ SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D 
             firstIndex = i;
         }
     }
-    return SeparationInfo2D{separation, firstIndex, secondIndices};
+    return SeparationInfo{separation, firstIndex, secondIndices};
 }
 
-SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D xf1,
-                                  const DistanceProxy& proxy2, Transformation2D xf2,
-                                  Length stop)
+SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
+                                const DistanceProxy& proxy2, Transformation xf2,
+                                Length stop)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -149,7 +150,7 @@ SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D 
         const auto ap = GetMinSeparationInfo(origin, normal, proxy2.GetVertices());
         if (stop < ap.distance)
         {
-            return SeparationInfo2D{ap.distance, i, ap.indices};
+            return SeparationInfo{ap.distance, i, ap.indices};
         }
         if (separation < ap.distance)
         {
@@ -158,11 +159,11 @@ SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D 
             firstIndex = i;
         }
     }
-    return SeparationInfo2D{separation, firstIndex, secondIndices};
+    return SeparationInfo{separation, firstIndex, secondIndices};
 }
 
-SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, const DistanceProxy& proxy2,
-                                  Length stop)
+SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, const DistanceProxy& proxy2,
+                                Length stop)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -177,7 +178,7 @@ SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, const DistancePro
         const auto ap = GetMinSeparationInfo(origin, normal, proxy2.GetVertices());
         if (stop < ap.distance)
         {
-            return SeparationInfo2D{ap.distance, i, ap.indices};
+            return SeparationInfo{ap.distance, i, ap.indices};
         }
         if (separation < ap.distance)
         {
@@ -186,7 +187,8 @@ SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, const DistancePro
             firstIndex = i;
         }
     }
-    return SeparationInfo2D{separation, firstIndex, secondIndices};
+    return SeparationInfo{separation, firstIndex, secondIndices};
 }
     
+} // namespace d2
 } // namespace playrho

@@ -24,10 +24,11 @@
 #include <PlayRho/Dynamics/World.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
-TEST(PulleyJointDef, DefaultConstruction)
+TEST(PulleyJointConf, DefaultConstruction)
 {
-    PulleyJointDef def;
+    PulleyJointConf def;
     
     EXPECT_EQ(def.type, JointType::Pulley);
     EXPECT_EQ(def.bodyA, nullptr);
@@ -42,11 +43,11 @@ TEST(PulleyJointDef, DefaultConstruction)
     EXPECT_EQ(def.ratio, Real(1));
 }
 
-TEST(PulleyJointDef, UseRatio)
+TEST(PulleyJointConf, UseRatio)
 {
     const auto value = Real(31);
-    EXPECT_NE(PulleyJointDef{}.ratio, value);
-    EXPECT_EQ(PulleyJointDef{}.UseRatio(value).ratio, value);
+    EXPECT_NE(PulleyJointConf{}.ratio, value);
+    EXPECT_EQ(PulleyJointConf{}.UseRatio(value).ratio, value);
 }
 
 TEST(PulleyJoint, ByteSize)
@@ -68,7 +69,7 @@ TEST(PulleyJoint, ByteSize)
 
 TEST(PulleyJoint, Construction)
 {
-    PulleyJointDef def;
+    PulleyJointConf def;
     PulleyJoint joint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -99,10 +100,10 @@ TEST(PulleyJoint, GetAnchorAandB)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
     
-    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
     
-    auto jd = PulleyJointDef{};
+    auto jd = PulleyJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -117,7 +118,7 @@ TEST(PulleyJoint, GetAnchorAandB)
 
 TEST(PulleyJoint, ShiftOrigin)
 {
-    PulleyJointDef def;
+    PulleyJointConf def;
     PulleyJoint joint{def};
     
     ASSERT_EQ(joint.GetGroundAnchorA(), def.groundAnchorA);
@@ -137,10 +138,10 @@ TEST(PulleyJoint, GetCurrentLength)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
     
-    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
     
-    auto jd = PulleyJointDef{};
+    auto jd = PulleyJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);

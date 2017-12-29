@@ -32,7 +32,7 @@ public:
     {
         m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
-        BodyDef bd;
+        BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.location = Vec2(0.0f, 10.0f) * 1_m;
         m_body = m_world.CreateBody(bd);
