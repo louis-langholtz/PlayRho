@@ -42,26 +42,26 @@ public:
     iforce2d_Trajectories(): Test(GetTestConf()), m_groundBody{m_world.CreateBody()}
     {
         //add four walls to the ground body
-        FixtureDef myFixtureDef;
+        FixtureConf myFixtureConf;
         auto polygonShape = PolygonShapeConf{};
         polygonShape.SetAsBox(20_m, 1_m); //ground
-        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         polygonShape.SetAsBox(20_m, 1_m, Vec2(0, 40) * 1_m, 0_rad); //ceiling
-        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         polygonShape.SetAsBox(1_m, 20_m, Vec2(-20, 20) * 1_m, 0_rad); //left wall
-        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         polygonShape.SetAsBox(1_m, 20_m, Vec2(20, 20) * 1_m, 0_rad); //right wall
-        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         
         //small ledges for target practice
         polygonShape.UseFriction(Real(0.95f));
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(3, 35) * 1_m, 0_rad);
-        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(13, 30) * 1_m, 0_rad);
-        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureDef);
+        m_groundBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         
         //another ledge which we can move with the mouse
-        BodyDef kinematicBody;
+        BodyConf kinematicBody;
         kinematicBody.type = BodyType::Kinematic;
         kinematicBody.location = Length2{11_m, 22_m};
         m_targetBody = m_world.CreateBody(kinematicBody);
@@ -71,44 +71,44 @@ public:
         verts[1] = Length2(  w,    0_m);
         verts[2] = Length2(  0_m,   -w);
         polygonShape.Set(Span<const Length2>(verts, 3));
-        m_targetBody->CreateFixture(Shape(polygonShape), myFixtureDef);
+        m_targetBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         verts[0] = Length2(  0_m, -2*w);
         verts[2] = Length2(  0_m,   -w);
         verts[1] = Length2( -w,    0_m);
         polygonShape.Set(Span<const Length2>(verts, 3));
-        m_targetBody->CreateFixture(Shape(polygonShape), myFixtureDef);
+        m_targetBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         
         //create dynamic circle body
-        BodyDef myBodyDef;
-        myBodyDef.type = BodyType::Dynamic;
-        myBodyDef.location = Vec2(-15, 5) * 1_m;
-        m_launcherBody = m_world.CreateBody(myBodyDef);
+        BodyConf myBodyConf;
+        myBodyConf.type = BodyType::Dynamic;
+        myBodyConf.location = Vec2(-15, 5) * 1_m;
+        m_launcherBody = m_world.CreateBody(myBodyConf);
         m_launcherBody->CreateFixture(DiskShapeConf{}.UseRadius(2_m).UseFriction(Real(0.95f)).UseDensity(1_kgpm2),
-                                      myFixtureDef);
+                                      myFixtureConf);
         
         //pin the circle in place
-        RevoluteJointDef revoluteJointDef;
-        revoluteJointDef.bodyA = m_groundBody;
-        revoluteJointDef.bodyB = m_launcherBody;
-        revoluteJointDef.localAnchorA = Length2(-15_m, 5_m);
-        revoluteJointDef.localAnchorB = Length2(0_m, 0_m);
-        revoluteJointDef.enableMotor = true;
-        revoluteJointDef.maxMotorTorque = 250_Nm;
-        revoluteJointDef.motorSpeed = 0;
-        m_world.CreateJoint( revoluteJointDef );
+        RevoluteJoinConf revoluteJointConf;
+        revoluteJointConf.bodyA = m_groundBody;
+        revoluteJointConf.bodyB = m_launcherBody;
+        revoluteJointConf.localAnchorA = Length2(-15_m, 5_m);
+        revoluteJointConf.localAnchorB = Length2(0_m, 0_m);
+        revoluteJointConf.enableMotor = true;
+        revoluteJointConf.maxMotorTorque = 250_Nm;
+        revoluteJointConf.motorSpeed = 0;
+        m_world.CreateJoint( revoluteJointConf );
         
         //create dynamic box body to fire
-        myBodyDef.location = Length2(0_m, -5_m);//will be positioned later
-        m_littleBox = m_world.CreateBody(myBodyDef);
+        myBodyConf.location = Length2(0_m, -5_m);//will be positioned later
+        m_littleBox = m_world.CreateBody(myBodyConf);
         polygonShape.SetAsBox( 0.5_m, 0.5_m );
         polygonShape.UseDensity(1_kgpm2);
-        m_littleBox->CreateFixture(Shape(polygonShape), myFixtureDef);
+        m_littleBox->CreateFixture(Shape(polygonShape), myFixtureConf);
         
         //ball for computer 'player' to fire
-        m_littleBox2 = m_world.CreateBody(myBodyDef);
+        m_littleBox2 = m_world.CreateBody(myBodyConf);
         m_littleBox2->CreateFixture(DiskShapeConf{}.UseRadius(BallSize * 1_m)
                                     .UseFriction(Real(0.95f)).UseDensity(1_kgpm2),
-                                    myFixtureDef);
+                                    myFixtureConf);
         
         m_firing = false;
         m_littleBox->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
@@ -116,7 +116,7 @@ public:
         
         m_firing2 = false;
         m_littleBox2->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
-        m_littleBox2->SetVelocity(Velocity2D{});
+        m_littleBox2->SetVelocity(Velocity{});
 
         SetMouseWorld(Vec2(11,22) * 1_m);//sometimes is not set
         
@@ -124,17 +124,17 @@ public:
             const auto launchSpeed = LinearVelocity2(m_launchSpeed, 0_mps);
             m_littleBox->SetAwake();
             m_littleBox->SetAcceleration(Gravity, AngularAcceleration{});
-            m_littleBox->SetVelocity(Velocity2D{});
+            m_littleBox->SetVelocity(Velocity{});
             m_littleBox->SetTransform(GetWorldPoint(*m_launcherBody, Vec2(3,0) * 1_m),
                                       m_launcherBody->GetAngle());
-            const auto rotVec = GetWorldVector(*m_launcherBody, UnitVec2::GetRight());
+            const auto rotVec = GetWorldVector(*m_launcherBody, UnitVec::GetRight());
             const auto speed = Rotate(launchSpeed, rotVec);
             SetLinearVelocity(*m_littleBox, speed);
             m_firing = true;
         });
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Reset projectile.", [&](KeyActionMods) {
             m_littleBox->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
-            m_littleBox->SetVelocity(Velocity2D{});
+            m_littleBox->SetVelocity(Velocity{});
             m_firing = false;
         });
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase launch speed.", [&](KeyActionMods) {
@@ -146,7 +146,7 @@ public:
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Launch computer controlled projectile.", [&](KeyActionMods) {
             m_littleBox2->SetAwake();
             m_littleBox2->SetAcceleration(Gravity, AngularAcceleration{});
-            m_littleBox2->SetVelocity(Velocity2D{});
+            m_littleBox2->SetVelocity(Velocity{});
             const auto launchVel = getComputerLaunchVelocity();
             const auto computerStartingPosition = Vec2(15,5) * 1_m;
             m_littleBox2->SetTransform(computerStartingPosition, 0_rad);
@@ -155,7 +155,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "Reset computer controlled projectile.", [&](KeyActionMods) {
             m_littleBox2->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
-            m_littleBox2->SetVelocity(Velocity2D{});
+            m_littleBox2->SetVelocity(Velocity{});
             m_firing2 = false;
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Hold down & use left mouse button to move the computer's target", [&](KeyActionMods) {
@@ -248,7 +248,7 @@ public:
     void PreStep(const Settings&, Drawer& drawer) override
     {
         const auto startingPosition = GetWorldPoint(*m_launcherBody, Vec2(3,0) * 1_m);
-        const auto rotVec = GetWorldVector(*m_launcherBody, UnitVec2::GetRight());
+        const auto rotVec = GetWorldVector(*m_launcherBody, UnitVec::GetRight());
         const auto startingVelocity = Rotate(LinearVelocity2(m_launchSpeed, 0_mps), rotVec);
         
         if ( !m_firing )
@@ -264,7 +264,7 @@ public:
             
             if (i > 0) {
                 m_world.RayCast(lastTP, trajectoryPosition, [&](Fixture* f, ChildCounter,
-                                                                 Length2 p, UnitVec2) {
+                                                                 Length2 p, UnitVec) {
                     if (f->GetBody() == m_littleBox)
                     {
                         return World::RayCastOpcode::IgnoreFixture;

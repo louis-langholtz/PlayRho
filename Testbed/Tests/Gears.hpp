@@ -37,39 +37,39 @@ public:
         const auto box = Shape{PolygonShapeConf{}.SetAsBox(0.5_m, 5_m).UseDensity(5_kgpm2)};
     
         {
-            auto bd1 = BodyDef{};
+            auto bd1 = BodyConf{};
             bd1.type = BodyType::Static;
             bd1.location = Vec2(10.0f, 9.0f) * 1_m;
             const auto body1 = m_world.CreateBody(bd1);
 
-            auto bd2 = BodyDef{};
+            auto bd2 = BodyConf{};
             bd2.type = BodyType::Dynamic;
             bd2.location = Vec2(10.0f, 8.0f) * 1_m;
             const auto body2 = m_world.CreateBody(bd2);
             body2->CreateFixture(box);
 
-            auto bd3 = BodyDef{};
+            auto bd3 = BodyConf{};
             bd3.type = BodyType::Dynamic;
             bd3.location = Vec2(10.0f, 6.0f) * 1_m;
             const auto body3 = m_world.CreateBody(bd3);
             body3->CreateFixture(circle2);
 
-            auto joint1 = m_world.CreateJoint(RevoluteJointDef{body2, body1, bd1.location});
-            auto joint2 = m_world.CreateJoint(RevoluteJointDef{body2, body3, bd3.location});
+            auto joint1 = m_world.CreateJoint(RevoluteJoinConf{body2, body1, bd1.location});
+            auto joint2 = m_world.CreateJoint(RevoluteJoinConf{body2, body3, bd3.location});
 
-            auto jd4 = GearJointDef{joint1, joint2};
+            auto jd4 = GearJointConf{joint1, joint2};
             jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
             m_world.CreateJoint(jd4);
         }
 
         {
-            auto bd1 = BodyDef{};
+            auto bd1 = BodyConf{};
             bd1.type = BodyType::Dynamic;
             bd1.location = Vec2(-3.0f, 12.0f) * 1_m;
             const auto body1 = m_world.CreateBody(bd1);
             body1->CreateFixture(circle1);
 
-            auto jd1 = RevoluteJointDef{};
+            auto jd1 = RevoluteJoinConf{};
             jd1.bodyA = ground;
             jd1.bodyB = body1;
             jd1.localAnchorA = GetLocalPoint(*ground, bd1.location);
@@ -77,33 +77,33 @@ public:
             jd1.referenceAngle = body1->GetAngle() - ground->GetAngle();
             m_joint1 = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd1));
 
-            auto bd2 = BodyDef{};
+            auto bd2 = BodyConf{};
             bd2.type = BodyType::Dynamic;
             bd2.location = Vec2(0.0f, 12.0f) * 1_m;
             const auto body2 = m_world.CreateBody(bd2);
             body2->CreateFixture(circle2);
 
-            auto jd2 = RevoluteJointDef{ground, body2, bd2.location};
+            auto jd2 = RevoluteJoinConf{ground, body2, bd2.location};
             m_joint2 = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd2));
 
-            auto bd3 = BodyDef{};
+            auto bd3 = BodyConf{};
             bd3.type = BodyType::Dynamic;
             bd3.location = Vec2(2.5f, 12.0f) * 1_m;
             const auto body3 = m_world.CreateBody(bd3);
             body3->CreateFixture(box);
 
-            auto jd3 = PrismaticJointDef{ground, body3, bd3.location, UnitVec2::GetTop()};
+            auto jd3 = PrismaticJointConf{ground, body3, bd3.location, UnitVec::GetTop()};
             jd3.lowerTranslation = -5_m;
             jd3.upperTranslation = 5_m;
             jd3.enableLimit = true;
 
             m_joint3 = static_cast<PrismaticJoint*>(m_world.CreateJoint(jd3));
 
-            auto jd4 = GearJointDef{m_joint1, m_joint2};
+            auto jd4 = GearJointConf{m_joint1, m_joint2};
             jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
             m_joint4 = static_cast<GearJoint*>(m_world.CreateJoint(jd4));
 
-            auto jd5 = GearJointDef{m_joint2, m_joint3};
+            auto jd5 = GearJointConf{m_joint2, m_joint3};
             jd5.ratio = -1.0f / (circle2.GetRadius() / 1_m);
             m_joint5 = static_cast<GearJoint*>(m_world.CreateJoint(jd5));
         }

@@ -24,6 +24,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
     /// Contact Position Constraint.
     /// @note This structure is 88-bytes large on at least one 64-bit platform.
@@ -76,6 +77,7 @@ namespace playrho {
         Length m_radiusB; // 4-bytes.
     };
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_CONTACTS_POSITIONCONSTRAINT_HPP

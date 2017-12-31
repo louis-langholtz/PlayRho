@@ -28,6 +28,7 @@
 #include <algorithm>
 
 namespace playrho {
+namespace d2 {
 
 using std::cbegin;
 using std::cend;
@@ -115,7 +116,7 @@ void SetAwake(const Fixture& f) noexcept
     f.GetBody()->SetAwake();
 }
 
-Transformation2D GetTransformation(const Fixture& f) noexcept
+Transformation GetTransformation(const Fixture& f) noexcept
 {
     assert(static_cast<Body*>(f.GetBody()) != nullptr);
 
@@ -129,4 +130,5 @@ Transformation2D GetTransformation(const Fixture& f) noexcept
     return f.GetBody()->GetTransformation();
 }
 
+} // namespace d2
 } // namespace playrho

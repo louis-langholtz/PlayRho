@@ -20,6 +20,7 @@
 #include <PlayRho/Common/VertexSet.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(VertexSet, ByteSize)
 {

@@ -23,32 +23,33 @@
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
-TEST(WeldJointDef, ByteSize)
+TEST(WeldJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(WeldJointDef), std::size_t(48));
+            EXPECT_EQ(sizeof(WeldJointConf), std::size_t(48));
 #else
-            EXPECT_EQ(sizeof(WeldJointDef), std::size_t(72));
+            EXPECT_EQ(sizeof(WeldJointConf), std::size_t(72));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(WeldJointDef), std::size_t(96)); break;
-        case 16: EXPECT_EQ(sizeof(WeldJointDef), std::size_t(160)); break;
+        case  8: EXPECT_EQ(sizeof(WeldJointConf), std::size_t(96)); break;
+        case 16: EXPECT_EQ(sizeof(WeldJointConf), std::size_t(160)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(WeldJointDef, DefaultConstruction)
+TEST(WeldJointConf, DefaultConstruction)
 {
-    WeldJointDef def{};
+    WeldJointConf def{};
     
     EXPECT_EQ(def.type, JointType::Weld);
     EXPECT_EQ(def.bodyA, nullptr);
@@ -84,7 +85,7 @@ TEST(WeldJoint, ByteSize)
 
 TEST(WeldJoint, Construction)
 {
-    WeldJointDef def;
+    WeldJointConf def;
     WeldJoint joint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -106,12 +107,12 @@ TEST(WeldJoint, Construction)
     EXPECT_EQ(visitor.GetType().value(), JointType::Weld);
 }
 
-TEST(WeldJoint, GetWeldJointDef)
+TEST(WeldJoint, GetWeldJointConf)
 {
-    auto bodyA = Body{nullptr, BodyDef{}};
-    auto bodyB = Body{nullptr, BodyDef{}};
+    auto bodyA = Body{nullptr, BodyConf{}};
+    auto bodyB = Body{nullptr, BodyConf{}};
     const auto anchor = Length2(2_m, 1_m);
-    WeldJointDef def{&bodyA, &bodyB, anchor};
+    WeldJointConf def{&bodyA, &bodyB, anchor};
     WeldJoint joint{def};
     
     ASSERT_EQ(GetType(joint), def.type);
@@ -126,7 +127,7 @@ TEST(WeldJoint, GetWeldJointDef)
     ASSERT_EQ(joint.GetFrequency(), def.frequency);
     ASSERT_EQ(joint.GetDampingRatio(), def.dampingRatio);
     
-    const auto cdef = GetWeldJointDef(joint);
+    const auto cdef = GetWeldJointConf(joint);
     EXPECT_EQ(cdef.type, JointType::Weld);
     EXPECT_EQ(cdef.bodyA, &bodyA);
     EXPECT_EQ(cdef.bodyB, &bodyB);
@@ -143,15 +144,15 @@ TEST(WeldJoint, GetWeldJointDef)
 TEST(WeldJoint, WithDynamicCircles)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     const auto anchor = Length2(2_m, 1_m);
-    const auto jd = WeldJointDef{b1, b2, anchor};
+    const auto jd = WeldJointConf{b1, b2, anchor};
     world.CreateJoint(jd);
     Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
@@ -165,15 +166,15 @@ TEST(WeldJoint, WithDynamicCircles)
 TEST(WeldJoint, WithDynamicCircles2)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     const auto anchor = Length2(2_m, 1_m);
-    const auto jd = WeldJointDef{b1, b2, anchor}.UseFrequency(10_Hz);
+    const auto jd = WeldJointConf{b1, b2, anchor}.UseFrequency(10_Hz);
     const auto joint = static_cast<WeldJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
     ASSERT_EQ(joint->GetFrequency(), 10_Hz);
@@ -195,10 +196,10 @@ TEST(WeldJoint, GetAnchorAandB)
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
     const auto anchor = Length2(2_m, 1_m);
 
-    const auto b0 = world.CreateBody(BodyDef{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyDef{}.UseLocation(loc1));
+    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
+    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
     
-    auto jd = WeldJointDef{b0, b1, anchor};
+    auto jd = WeldJointConf{b0, b1, anchor};
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     const auto joint = static_cast<WeldJoint*>(world.CreateJoint(jd));

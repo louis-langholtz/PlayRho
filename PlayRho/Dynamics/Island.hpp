@@ -24,6 +24,7 @@
 #include <vector>
 
 namespace playrho {
+namespace d2 {
 
 class Body;
 class Contact;
@@ -94,6 +95,7 @@ std::size_t Count(const Island& island, const Contact* entry);
 /// @relatedalso Island
 std::size_t Count(const Island& island, const Joint* entry);
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_ISLAND_HPP

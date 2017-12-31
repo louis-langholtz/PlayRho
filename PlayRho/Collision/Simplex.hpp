@@ -26,6 +26,7 @@
 #include <array>
 
 namespace playrho {
+namespace d2 {
 
     /// @brief Simplex edge collection.
     /// @note This data is 20 * 3 + 4 = 64-bytes large (on at least one 64-bit platform).
@@ -214,6 +215,7 @@ namespace playrho {
         }
     }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SIMPLEX_HPP

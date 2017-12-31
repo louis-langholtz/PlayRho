@@ -24,6 +24,7 @@
 #include <algorithm>
 
 namespace playrho {
+namespace d2 {
 
 DynamicTree::DynamicTree(Size nodeCapacity):
     m_nodes{Alloc<TreeNode>(nodeCapacity)},
@@ -158,14 +159,14 @@ void DynamicTree::SetNodeCapacity(Size value) noexcept
     m_freeListIndex = m_nodeCount;
 }
 
-DynamicTree::Size DynamicTree::AllocateNode(const LeafData& node, AABB2D aabb) noexcept
+DynamicTree::Size DynamicTree::AllocateNode(const LeafData& node, AABB aabb) noexcept
 {
     const auto index = AllocateNode();
     m_nodes[index] = TreeNode{node, aabb};
     return index;
 }
 
-DynamicTree::Size DynamicTree::AllocateNode(const BranchData& node, AABB2D aabb,
+DynamicTree::Size DynamicTree::AllocateNode(const BranchData& node, AABB aabb,
                                             Height height, Size parent) noexcept
 {
     assert(height > 0);
@@ -224,7 +225,7 @@ DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept
     return (it != m_nodes + m_nodeCapacity)? static_cast<Size>(it - m_nodes): GetInvalidSize();
 }
 
-DynamicTree::Size DynamicTree::CreateLeaf(const AABB2D& aabb, const LeafData& leafData)
+DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, const LeafData& leafData)
 {
     assert(IsValid(aabb));
     const auto index = AllocateNode(leafData, aabb);
@@ -250,7 +251,7 @@ void DynamicTree::DestroyLeaf(Size index)
     FreeNode(index);
 }
 
-void DynamicTree::UpdateLeaf(Size index, const AABB2D& aabb)
+void DynamicTree::UpdateLeaf(Size index, const AABB& aabb)
 {
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);
@@ -261,7 +262,7 @@ void DynamicTree::UpdateLeaf(Size index, const AABB2D& aabb)
     InsertLeaf(index);
 }
 
-DynamicTree::Size DynamicTree::FindLowestCostNode(AABB2D leafAABB) const noexcept
+DynamicTree::Size DynamicTree::FindLowestCostNode(AABB leafAABB) const noexcept
 {
     assert(m_root != GetInvalidSize());
     assert(IsValid(leafAABB));
@@ -289,7 +290,7 @@ DynamicTree::Size DynamicTree::FindLowestCostNode(AABB2D leafAABB) const noexcep
         
         // Cost function to calculate cost of descending into specified child
         auto costFunc = [&](Size child) {
-            const auto childAabb = playrho::GetAABB(m_nodes[child]);
+            const auto childAabb = playrho::d2::GetAABB(m_nodes[child]);
             const auto leafCost = GetPerimeter(GetEnclosingAABB(leafAABB, childAabb))
                 + inheritanceCost;
             return (IsLeaf(m_nodes[child].GetHeight()))? leafCost: leafCost - GetPerimeter(childAabb);
@@ -667,7 +668,7 @@ bool DynamicTree::Validate() const
         ++freeCount;
     }
 
-    if ((m_root != GetInvalidSize()) && (playrho::GetHeight(*this) != playrho::ComputeHeight(*this)))
+    if ((m_root != GetInvalidSize()) && (playrho::d2::GetHeight(*this) != playrho::d2::ComputeHeight(*this)))
     {
         return false;
     }
@@ -787,7 +788,7 @@ void DynamicTree::ShiftOrigin(Length2 newOrigin)
 
 // Free functions...
 
-void Query(const DynamicTree& tree, const AABB2D& aabb, const DynamicTreeSizeCB& callback)
+void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& callback)
 {
     GrowableStack<DynamicTree::Size, 256> stack;
     stack.push(tree.GetRootIndex());
@@ -829,7 +830,7 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
     const auto delta = p2 - p1;
     
     // v is perpendicular to the segment.
-    const auto v = GetRevPerpendicular(GetUnitVector(delta, UnitVec2::GetZero()));
+    const auto v = GetRevPerpendicular(GetUnitVector(delta, UnitVec::GetZero()));
     const auto abs_v = Abs(v);
     
     // Separating axis for segment (Gino, p80).
@@ -838,7 +839,7 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
     auto maxFraction = input.maxFraction;
     
     // Build a bounding box for the segment.
-    auto segmentAABB = AABB2D{p1, p1 + maxFraction * delta};
+    auto segmentAABB = AABB{p1, p1 + maxFraction * delta};
     
     GrowableStack<DynamicTree::Size, 256> stack;
     stack.push(tree.GetRootIndex());
@@ -891,10 +892,11 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
                 // Update segment bounding box.
                 maxFraction = value;
                 const auto t = p1 + maxFraction * (p2 - p1);
-                segmentAABB = AABB2D{p1, t};
+                segmentAABB = AABB{p1, t};
             }
         }
     }
 }
 
+} // namespace d2
 } // namespace playrho

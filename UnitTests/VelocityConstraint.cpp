@@ -22,6 +22,7 @@
 #include <PlayRho/Collision/WorldManifold.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(VelocityConstraint, ByteSize)
 {
@@ -80,7 +81,7 @@ TEST(VelocityConstraint, InitializingConstructor)
     
     auto bodyA = BodyConstraint{};
     auto bodyB = BodyConstraint{};
-    const auto normal = UnitVec2::GetTop();
+    const auto normal = UnitVec::GetTop();
 
     const VelocityConstraint vc{contact_index, friction, restitution, tangent_speed, bodyA, bodyB, normal};
 
@@ -101,7 +102,7 @@ TEST(VelocityConstraint, AddPoint)
 
     auto bodyA = BodyConstraint{};
     auto bodyB = BodyConstraint{};
-    const auto normal = UnitVec2::GetTop();
+    const auto normal = UnitVec::GetTop();
 
     VelocityConstraint vc{contact_index, friction, restitution, tangent_speed, bodyA, bodyB, normal};
 

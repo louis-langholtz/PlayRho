@@ -42,7 +42,7 @@ public:
             const auto maxX = 0.0f;
             const auto minY = 4.0f;
             const auto maxY = 6.0f;
-            const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
             const auto shape = Shape{
                 DiskShapeConf{}.UseRadius(0.1_m).UseDensity(0.01_kgpm2)
             };
@@ -50,11 +50,11 @@ public:
             {
                 const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-                const auto body = m_world.CreateBody(BodyDef(bd).UseLocation(location));
+                const auto body = m_world.CreateBody(BodyConf(bd).UseLocation(location));
                 body->CreateFixture(shape);
             }
         }
-        const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseBullet(true)
+        const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
             .UseLocation(Length2{-40_m, 5_m}).UseLinearVelocity(LinearVelocity2{150_mps, 0_mps});
         const auto body = m_world.CreateBody(bd);
         const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(1.5_m, 1.5_m);

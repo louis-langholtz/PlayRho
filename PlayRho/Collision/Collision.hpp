@@ -33,8 +33,6 @@
 
 namespace playrho {
 
-class Manifold;
-
 /// @brief Point state enumeration.
 /// @note This is used for determining the state of contact points.
 enum class PointState
@@ -56,7 +54,11 @@ struct PointStates
     /// @brief State 2.
     PointState state2[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
 };
-    
+
+namespace d2 {
+
+class Manifold;
+
 /// @brief Computes the point states given two manifolds.
 PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept;
 
@@ -82,11 +84,10 @@ using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 /// @param offset Offset of the plane with which to determine intersection.
 /// @param indexA Index of vertex A.
 /// @return List of zero one or two clip points.
-ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec2& normal, Length offset,
+ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec& normal, Length offset,
                            ContactFeature::Index indexA);
 
-// ---------------- Inline Functions ------------------------------------------
-
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_COLLISION_HPP

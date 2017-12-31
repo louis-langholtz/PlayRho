@@ -45,10 +45,11 @@
 
 #include <cstdarg>
 
-using namespace playrho;
+namespace playrho {
+namespace d2 {
 
-namespace
-{
+namespace {
+
     // You can modify this to use your logging facility.
     void log(const char* string, ...)
     {
@@ -92,7 +93,7 @@ namespace
         void Visit(const MultiShapeConf& shape);
     };
     
-    void ShapeDumper::Visit(const playrho::DiskShapeConf& s)
+    void ShapeDumper::Visit(const DiskShapeConf& s)
     {
         log("    DiskShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.GetRadius())));
@@ -101,7 +102,7 @@ namespace
             static_cast<double>(StripUnit(Get<1>(s.GetLocation()))));
     }
     
-    void ShapeDumper::Visit(const playrho::EdgeShapeConf& s)
+    void ShapeDumper::Visit(const EdgeShapeConf& s)
     {
         log("    EdgeShape shape;\n");
         log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.vertexRadius)));
@@ -113,7 +114,7 @@ namespace
             static_cast<double>(StripUnit(Get<1>(s.GetVertexB()))));
     }
     
-    void ShapeDumper::Visit(const playrho::PolygonShapeConf& s)
+    void ShapeDumper::Visit(const PolygonShapeConf& s)
     {
         const auto vertexCount = s.GetVertexCount();
         log("    PolygonShape shape;\n");
@@ -127,7 +128,7 @@ namespace
         log("    shape.Set(vs, %d);\n", vertexCount);
     }
     
-    void ShapeDumper::Visit(const playrho::ChainShapeConf& s)
+    void ShapeDumper::Visit(const ChainShapeConf& s)
     {
         log("    ChainShape shape;\n");
         log("    Vec2 vs[%d];\n", s.GetVertexCount());
@@ -140,13 +141,13 @@ namespace
         log("    shape.CreateChain(vs, %d);\n", s.GetVertexCount());
     }
 
-    void ShapeDumper::Visit(const playrho::MultiShapeConf&)
+    void ShapeDumper::Visit(const MultiShapeConf&)
     {
         // TODO
     }
 }
 
-void playrho::Dump(const World& world)
+void Dump(const World& world)
 {
     const auto gravity = world.GetGravity();
     log("Vec2 g(%.15lef, %.15lef);\n",
@@ -181,10 +182,10 @@ void playrho::Dump(const World& world)
     log("bodies = nullptr;\n");
 }
 
-void playrho::Dump(const Body& body, std::size_t bodyIndex)
+void Dump(const Body& body, std::size_t bodyIndex)
 {
     log("{\n");
-    log("  BodyDef bd;\n");
+    log("  BodyConf bd;\n");
     log("  bd.type = BodyType(%d);\n", body.GetType());
     log("  bd.position = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real(Get<0>(body.GetLocation()) / Meter)),
@@ -215,7 +216,7 @@ void playrho::Dump(const Body& body, std::size_t bodyIndex)
     log("}\n");
 }
 
-void playrho::Dump(const Joint& joint, std::size_t index)
+void Dump(const Joint& joint, std::size_t index)
 {
     switch (GetType(joint))
     {
@@ -258,9 +259,9 @@ void playrho::Dump(const Joint& joint, std::size_t index)
     }
 }
 
-void playrho::Dump(const Fixture& fixture, std::size_t bodyIndex)
+void Dump(const Fixture& fixture, std::size_t bodyIndex)
 {
-    log("    FixtureDef fd;\n");
+    log("    FixtureConf fd;\n");
     log("    fd.friction = %.15lef;\n", static_cast<double>(fixture.GetFriction()));
     log("    fd.restitution = %.15lef;\n", static_cast<double>(fixture.GetRestitution()));
     log("    fd.density = %.15lef;\n",
@@ -285,9 +286,9 @@ void playrho::Dump(const Fixture& fixture, std::size_t bodyIndex)
     log("    bodies[%d]->CreateFixture(fd);\n", bodyIndex);
 }
 
-void playrho::Dump(const DistanceJoint& joint, std::size_t index)
+void Dump(const DistanceJoint& joint, std::size_t index)
 {
-    log("  DistanceJointDef jd;\n");
+    log("  DistanceJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -305,9 +306,9 @@ void playrho::Dump(const DistanceJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const FrictionJoint& joint, std::size_t index)
+void Dump(const FrictionJoint& joint, std::size_t index)
 {
-    log("  FrictionJointDef jd;\n");
+    log("  FrictionJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -324,9 +325,9 @@ void playrho::Dump(const FrictionJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const GearJoint& joint, std::size_t index)
+void Dump(const GearJoint& joint, std::size_t index)
 {
-    log("  GearJointDef jd;\n");
+    log("  GearJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -336,9 +337,9 @@ void playrho::Dump(const GearJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const MotorJoint& joint, std::size_t index)
+void Dump(const MotorJoint& joint, std::size_t index)
 {
-    log("  MotorJointDef jd;\n");
+    log("  MotorJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -355,9 +356,9 @@ void playrho::Dump(const MotorJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const MouseJoint& joint, std::size_t index)
+void Dump(const MouseJoint& joint, std::size_t index)
 {
-    log("  MouseJointDef jd;\n");
+    log("  MouseJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -372,9 +373,9 @@ void playrho::Dump(const MouseJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const PrismaticJoint& joint, std::size_t index)
+void Dump(const PrismaticJoint& joint, std::size_t index)
 {
-    log("  PrismaticJointDef jd;\n");
+    log("  PrismaticJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -401,9 +402,9 @@ void playrho::Dump(const PrismaticJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const PulleyJoint& joint, std::size_t index)
+void Dump(const PulleyJoint& joint, std::size_t index)
 {
-    log("  PulleyJointDef jd;\n");
+    log("  PulleyJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -427,9 +428,9 @@ void playrho::Dump(const PulleyJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const RevoluteJoint& joint, std::size_t index)
+void Dump(const RevoluteJoint& joint, std::size_t index)
 {
-    log("  RevoluteJointDef jd;\n");
+    log("  RevoluteJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -454,9 +455,9 @@ void playrho::Dump(const RevoluteJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const RopeJoint& joint, std::size_t index)
+void Dump(const RopeJoint& joint, std::size_t index)
 {
-    log("  RopeJointDef jd;\n");
+    log("  RopeJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -471,9 +472,9 @@ void playrho::Dump(const RopeJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const WeldJoint& joint, std::size_t index)
+void Dump(const WeldJoint& joint, std::size_t index)
 {
-    log("  WeldJointDef jd;\n");
+    log("  WeldJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -491,9 +492,9 @@ void playrho::Dump(const WeldJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void playrho::Dump(const WheelJoint& joint, std::size_t index)
+void Dump(const WheelJoint& joint, std::size_t index)
 {
-    log("  WheelJointDef jd;\n");
+    log("  WheelJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
@@ -516,3 +517,6 @@ void playrho::Dump(const WheelJoint& joint, std::size_t index)
     log("  jd.dampingRatio = %.15lef;\n", joint.GetSpringDampingRatio());
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
+
+} // namespace d2
+} // namespace playrho

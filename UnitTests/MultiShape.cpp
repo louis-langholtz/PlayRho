@@ -25,6 +25,7 @@
 #include <array>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(MultiShapeConf, ByteSize)
 {
@@ -56,7 +57,7 @@ TEST(MultiShapeConf, ByteSize)
 TEST(MultiShapeConf, DefaultConstruction)
 {
     const auto foo = MultiShapeConf{};
-    const auto defaultMassData = MassData2D{};
+    const auto defaultMassData = MassData{};
     const auto defaultConf = MultiShapeConf{};
     
     EXPECT_EQ(typeid(foo), typeid(MultiShapeConf));
@@ -108,7 +109,7 @@ TEST(MultiShapeConf, BaseVisitorForDiskShape)
 #endif
 TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
 {
-    const auto defaultMassData = MassData2D{};
+    const auto defaultMassData = MassData{};
     const auto center = Length2(1_m, -4_m);
 
     auto pointSet = VertexSet{};
@@ -137,13 +138,13 @@ TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
     EXPECT_NE(massData, defaultMassData);
     EXPECT_EQ(massData.center, center);
     
-    const auto diskMassData = playrho::GetMassData(conf.vertexRadius, conf.density, center);
+    const auto diskMassData = playrho::d2::GetMassData(conf.vertexRadius, conf.density, center);
     EXPECT_EQ(massData, diskMassData);
 }
 
 TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
 {
-    const auto defaultMassData = MassData2D{};
+    const auto defaultMassData = MassData{};
     const auto p0 = Length2(1_m, -4_m);
     const auto p1 = Length2(1_m, +4_m);
     
@@ -174,7 +175,7 @@ TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
     EXPECT_NE(massData, defaultMassData);
     EXPECT_EQ(massData.center, (p0 + p1) / Real(2));
     
-    const auto edgeMassData = playrho::GetMassData(conf.vertexRadius, conf.density, p0, p1);
+    const auto edgeMassData = playrho::d2::GetMassData(conf.vertexRadius, conf.density, p0, p1);
     EXPECT_EQ(massData.center, edgeMassData.center);
     /// @note Units of L^-2 M^-1 QP^2.
 
@@ -186,7 +187,7 @@ TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
 
 TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
 {
-    const auto defaultMassData = MassData2D{};
+    const auto defaultMassData = MassData{};
     const auto p0 = Length2(1_m, -4_m);
     const auto p1 = Length2(1_m, +4_m);
 
@@ -233,8 +234,8 @@ TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
     EXPECT_NE(massData, defaultMassData);
     EXPECT_EQ(massData.center, (p0 + p1) / Real(2));
     
-    const auto massDataP0 = playrho::GetMassData(conf.vertexRadius, conf.density, p0);
-    const auto massDataP1 = playrho::GetMassData(conf.vertexRadius, conf.density, p1);
+    const auto massDataP0 = playrho::d2::GetMassData(conf.vertexRadius, conf.density, p0);
+    const auto massDataP1 = playrho::d2::GetMassData(conf.vertexRadius, conf.density, p1);
     EXPECT_EQ(massData.mass, Mass{massDataP0.mass} + Mass{massDataP1.mass});
     EXPECT_EQ(massData.I, RotInertia{massDataP0.I} + RotInertia{massDataP1.I});
 }

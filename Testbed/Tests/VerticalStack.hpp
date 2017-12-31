@@ -54,7 +54,7 @@ public:
         {
             for (auto i = 0; i < e_rowCount; ++i)
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
 
                 const auto x = 0.0f;
@@ -76,14 +76,14 @@ public:
             }
             
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.bullet = true;
                 bd.location = Vec2(-31.0f, 5.0f) * 1_m;
                 
                 m_bullet = m_world.CreateBody(bd);
                 m_bullet->CreateFixture(m_bulletshape);
-                m_bullet->SetVelocity(Velocity2D{Vec2(400.0f, 0.0f) * 1_mps, 0_rpm});
+                m_bullet->SetVelocity(Velocity{Vec2(400.0f, 0.0f) * 1_mps, 0_rpm});
             }
         });
     }

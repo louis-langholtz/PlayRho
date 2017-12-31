@@ -29,6 +29,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 // Gear Joint:
 // C0 = (coordinate1 + ratio * coordinate2)_initial
@@ -58,7 +59,7 @@ inline bool IsValidType(JointType t) noexcept
 
 } // unnamed namespace
 
-bool GearJoint::IsOkay(const GearJointDef& def) noexcept
+bool GearJoint::IsOkay(const GearJointConf& def) noexcept
 {
     const auto t1 = GetType(*def.joint1);
     const auto t2 = GetType(*def.joint2);
@@ -73,7 +74,7 @@ bool GearJoint::IsOkay(const GearJointDef& def) noexcept
     return true;
 }
 
-GearJoint::GearJoint(const GearJointDef& def):
+GearJoint::GearJoint(const GearJointConf& def):
     Joint(def),
     m_joint1(def.joint1),
     m_joint2(def.joint2),
@@ -101,7 +102,7 @@ GearJoint::GearJoint(const GearJointDef& def):
         m_localAnchorC = revolute->GetLocalAnchorA();
         m_localAnchorA = revolute->GetLocalAnchorB();
         m_referenceAngleA = revolute->GetReferenceAngle();
-        m_localAxisC = UnitVec2::GetZero();
+        m_localAxisC = UnitVec::GetZero();
         coordinateA = (aA - aC - m_referenceAngleA) / Radian;
     }
     else // if (m_typeA != JointType::Revolute)
@@ -132,7 +133,7 @@ GearJoint::GearJoint(const GearJointDef& def):
         m_localAnchorD = revolute->GetLocalAnchorA();
         m_localAnchorB = revolute->GetLocalAnchorB();
         m_referenceAngleB = revolute->GetReferenceAngle();
-        m_localAxisD = UnitVec2::GetZero();
+        m_localAxisD = UnitVec::GetZero();
         coordinateB = (aB - aD - m_referenceAngleB) / Radian;
     }
     else
@@ -181,10 +182,10 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     auto velD = bodyConstraintD->GetVelocity();
     const auto aD = bodyConstraintD->GetPosition().angular;
 
-    const auto qA = UnitVec2::Get(aA);
-    const auto qB = UnitVec2::Get(aB);
-    const auto qC = UnitVec2::Get(aC);
-    const auto qD = UnitVec2::Get(aD);
+    const auto qA = UnitVec::Get(aA);
+    const auto qB = UnitVec::Get(aB);
+    const auto qC = UnitVec::Get(aC);
+    const auto qD = UnitVec::Get(aD);
 
     auto invMass = Real{0}; // Unitless to double for either linear mass or angular mass.
 
@@ -240,19 +241,19 @@ void GearJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
 
     if (step.doWarmStart)
     {
-        velA += Velocity2D{
+        velA += Velocity{
             (bodyConstraintA->GetInvMass() * m_impulse) * m_JvAC,
             bodyConstraintA->GetInvRotInertia() * m_impulse * m_JwA / Radian
         };
-        velB += Velocity2D{
+        velB += Velocity{
             (bodyConstraintB->GetInvMass() * m_impulse) * m_JvBD,
             bodyConstraintB->GetInvRotInertia() * m_impulse * m_JwB / Radian
         };
-        velC -= Velocity2D{
+        velC -= Velocity{
             (bodyConstraintC->GetInvMass() * m_impulse) * m_JvAC,
             bodyConstraintC->GetInvRotInertia() * m_impulse * m_JwC / Radian
         };
-        velD -= Velocity2D{
+        velD -= Velocity{
             (bodyConstraintD->GetInvMass() * m_impulse) * m_JvBD,
             bodyConstraintD->GetInvRotInertia() * m_impulse * m_JwD / Radian
         };
@@ -289,19 +290,19 @@ bool GearJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto impulse = Momentum{-m_mass * Kilogram * Cdot};
     m_impulse += impulse;
 
-    velA += Velocity2D{
+    velA += Velocity{
         (bodyConstraintA->GetInvMass() * impulse) * m_JvAC,
         bodyConstraintA->GetInvRotInertia() * impulse * m_JwA / Radian
     };
-    velB += Velocity2D{
+    velB += Velocity{
         (bodyConstraintB->GetInvMass() * impulse) * m_JvBD,
         bodyConstraintB->GetInvRotInertia() * impulse * m_JwB / Radian
     };
-    velC -= Velocity2D{
+    velC -= Velocity{
         (bodyConstraintC->GetInvMass() * impulse) * m_JvAC,
         bodyConstraintC->GetInvRotInertia() * impulse * m_JwC / Radian
     };
-    velD -= Velocity2D{
+    velD -= Velocity{
         (bodyConstraintD->GetInvMass() * impulse) * m_JvBD,
         bodyConstraintD->GetInvRotInertia() * impulse * m_JwD / Radian
     };
@@ -326,10 +327,10 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     auto posC = bodyConstraintC->GetPosition();
     auto posD = bodyConstraintD->GetPosition();
 
-    const auto qA = UnitVec2::Get(posA.angular);
-    const auto qB = UnitVec2::Get(posB.angular);
-    const auto qC = UnitVec2::Get(posC.angular);
-    const auto qD = UnitVec2::Get(posD.angular);
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
+    const auto qC = UnitVec::Get(posC.angular);
+    const auto qD = UnitVec::Get(posD.angular);
 
     const auto linearError = 0_m;
 
@@ -398,19 +399,19 @@ bool GearJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
 
     const auto impulse = ((invMass > 0)? -C / invMass: 0) * Kilogram * Meter;
 
-    posA += Position2D{
+    posA += Position{
         bodyConstraintA->GetInvMass() * impulse * JvAC,
         bodyConstraintA->GetInvRotInertia() * impulse * JwA * Meter / Radian
     };
-    posB += Position2D{
+    posB += Position{
         bodyConstraintB->GetInvMass() * impulse * JvBD,
         bodyConstraintB->GetInvRotInertia() * impulse * JwB * Meter / Radian
     };
-    posC -= Position2D{
+    posC -= Position{
         bodyConstraintC->GetInvMass() * impulse * JvAC,
         bodyConstraintC->GetInvRotInertia() * impulse * JwC * Meter / Radian
     };
-    posD -= Position2D{
+    posD -= Position{
         bodyConstraintD->GetInvMass() * impulse * JvBD,
         bodyConstraintD->GetInvRotInertia() * impulse * JwD * Meter / Radian
     };
@@ -450,4 +451,5 @@ void GearJoint::SetRatio(Real ratio)
     m_ratio = ratio;
 }
 
+} // namespace d2
 } // namespace playrho

@@ -48,19 +48,19 @@ public:
                 PolygonShapeConf{}.UseDensity(100_kgpm2).UseFriction(Real(0.2f)).SetAsBox(1.5_m, 1.5_m)
             };
 
-            FixtureDef fd;
+            FixtureConf fd;
             fd.filter.categoryBits = 0x0001;
             fd.filter.maskBits = 0xFFFF & ~0x0002;
 
             const auto N = 10;
             const auto y = 15.0f;
-            m_ropeDef.localAnchorA = Vec2(0.0f, y) * 1_m;
+            m_ropeConf.localAnchorA = Vec2(0.0f, y) * 1_m;
 
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i)
             {
                 auto shape = rectangle;
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.5f + 1.0f * i, y) * 1_m;
                 if (i == N - 1)
@@ -75,20 +75,20 @@ public:
 
                 body->CreateFixture(shape, fd);
 
-                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(Real(i), y) * 1_m});
+                m_world.CreateJoint(RevoluteJoinConf{prevBody, body, Vec2(Real(i), y) * 1_m});
 
                 prevBody = body;
             }
 
-            m_ropeDef.localAnchorB = Length2{};
+            m_ropeConf.localAnchorB = Length2{};
 
             const auto extraLength = 0.01f;
-            m_ropeDef.maxLength = Real(N - 1.0f + extraLength) * 1_m;
-            m_ropeDef.bodyB = prevBody;
+            m_ropeConf.maxLength = Real(N - 1.0f + extraLength) * 1_m;
+            m_ropeConf.bodyB = prevBody;
         }
 
-        m_ropeDef.bodyA = ground;
-        m_rope = m_world.CreateJoint(m_ropeDef);
+        m_ropeConf.bodyA = ground;
+        m_rope = m_world.CreateJoint(m_ropeConf);
         
         RegisterForKey(GLFW_KEY_J, GLFW_PRESS, 0, "Toggle the rope joint", [&](KeyActionMods) {
             if (m_rope)
@@ -98,7 +98,7 @@ public:
             }
             else
             {
-                m_rope = m_world.CreateJoint(m_ropeDef);
+                m_rope = m_world.CreateJoint(m_ropeConf);
             }
         });
     }
@@ -110,7 +110,7 @@ public:
         m_status = stream.str();
     }
 
-    RopeJointDef m_ropeDef;
+    RopeJointConf m_ropeConf;
     Joint* m_rope;
 };
 

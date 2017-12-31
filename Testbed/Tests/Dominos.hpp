@@ -34,7 +34,7 @@ public:
         b1->CreateFixture(EdgeShapeConf(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
 
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Vec2(-1.5f, 10.0f) * 1_m;
             const auto ground = m_world.CreateBody(bd);
             ground->CreateFixture(PolygonShapeConf{6_m, 0.25_m});
@@ -46,7 +46,7 @@ public:
             };
             for (auto i = 0; i < 10; ++i)
             {
-                const auto body = m_world.CreateBody(BodyDef{}
+                const auto body = m_world.CreateBody(BodyConf{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(Vec2(-6.0f + 1.0f * i, 11.25f) * 1_m));
                 body->CreateFixture(shape);
@@ -57,18 +57,18 @@ public:
             auto shape = PolygonShapeConf{};
             shape.SetAsBox(7.2_m, 0.25_m, Length2{}, 0.3_rad);
 
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Vec2(1.2f, 6.0f) * 1_m;
             const auto ground = m_world.CreateBody(bd);
             ground->CreateFixture(Shape(shape));
         }
 
-        const auto b2 = m_world.CreateBody(BodyDef{}.UseLocation(Vec2(-7.0f, 4.0f) * 1_m));
+        const auto b2 = m_world.CreateBody(BodyConf{}.UseLocation(Vec2(-7.0f, 4.0f) * 1_m));
         b2->CreateFixture(PolygonShapeConf{}.SetAsBox(0.25_m, 1.5_m));
 
         Body* b3;
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-0.9f, 1.0f) * 1_m;
             bd.angle = -0.15_rad;
@@ -76,22 +76,22 @@ public:
             b3->CreateFixture(PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(6_m, 0.125_m));
         }
 
-        m_world.CreateJoint(RevoluteJointDef{b1, b3, Vec2(-2, 1) * 1_m}.UseCollideConnected(true));
+        m_world.CreateJoint(RevoluteJoinConf{b1, b3, Vec2(-2, 1) * 1_m}.UseCollideConnected(true));
 
         Body* b4;
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f, 15.0f) * 1_m;
             b4 = m_world.CreateBody(bd);
             b4->CreateFixture(PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m));
         }
 
-        m_world.CreateJoint(RevoluteJointDef{b2, b4, Vec2(-7, 15) * 1_m}.UseCollideConnected(true));
+        m_world.CreateJoint(RevoluteJoinConf{b2, b4, Vec2(-7, 15) * 1_m}.UseCollideConnected(true));
 
         Body* b5;
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(6.5f, 3.0f) * 1_m;
             b5 = m_world.CreateBody(bd);
@@ -107,23 +107,23 @@ public:
             b5->CreateFixture(Shape{conf});
         }
 
-        m_world.CreateJoint(RevoluteJointDef{b1, b5, Vec2(6, 2) * 1_m}.UseCollideConnected(true));
+        m_world.CreateJoint(RevoluteJoinConf{b1, b5, Vec2(6, 2) * 1_m}.UseCollideConnected(true));
 
         Body* b6;
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(6.5f, 4.1f) * 1_m;
             b6 = m_world.CreateBody(bd);
             b6->CreateFixture(PolygonShapeConf(1_m, 0.1_m).UseDensity(30_kgpm2));
         }
 
-        m_world.CreateJoint(RevoluteJointDef{b5, b6, Vec2(7.5f, 4.0f) * 1_m}
+        m_world.CreateJoint(RevoluteJoinConf{b5, b6, Vec2(7.5f, 4.0f) * 1_m}
                              .UseCollideConnected(true));
 
         Body* b7;
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(7.4f, 1.0f) * 1_m;
 
@@ -134,7 +134,7 @@ public:
             b7->CreateFixture(Shape{conf});
         }
 
-        DistanceJointDef djd;
+        DistanceJointConf djd;
         djd.bodyA = b3;
         djd.bodyB = b7;
         djd.localAnchorA = Vec2(6.0f, 0.0f) * 1_m;
@@ -151,7 +151,7 @@ public:
             const auto shape = Shape(conf);
             for (auto i = 0; i < 4; ++i)
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Length2{5.9_m + 2 * radius * static_cast<Real>(i), 2.4_m};
                 const auto body = m_world.CreateBody(bd);

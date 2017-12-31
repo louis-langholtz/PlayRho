@@ -22,6 +22,7 @@
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 namespace {
 #if 0
@@ -43,7 +44,7 @@ namespace {
 } // anonymous namespace
 
 ChainShapeConf::ChainShapeConf():
-    ShapeDefBuilder{ShapeDef{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}}
+    ShapeBuilder{ShapeConf{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}}
 {
     // Intentionally empty.
 }
@@ -98,7 +99,7 @@ ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
     return *this;
 }
 
-MassData2D ChainShapeConf::GetMassData() const noexcept
+MassData ChainShapeConf::GetMassData() const noexcept
 {
     const auto density = this->density;
     if (density > AreaDensity(0))
@@ -117,7 +118,7 @@ MassData2D ChainShapeConf::GetMassData() const noexcept
             for (auto i = decltype(vertexCount){1}; i < vertexCount; ++i)
             {
                 const auto v = GetVertex(i);
-                const auto massData = playrho::GetMassData(vertexRadius, density, vprev, v);
+                const auto massData = playrho::d2::GetMassData(vertexRadius, density, vprev, v);
                 mass += Mass{massData.mass};
                 center += Real{Mass{massData.mass} / Kilogram} * massData.center;
                 I += RotInertia{massData.I};
@@ -130,14 +131,14 @@ MassData2D ChainShapeConf::GetMassData() const noexcept
                 vprev = v;
             }
             center /= StripUnit(area);
-            return MassData2D{center, mass, I};
+            return MassData{center, mass, I};
         }
         if (vertexCount == 1)
         {
-            return playrho::GetMassData(vertexRadius, density, GetVertex(0));
+            return playrho::d2::GetMassData(vertexRadius, density, GetVertex(0));
         }
     }
-    return MassData2D{};
+    return MassData{};
 }
 
 DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
@@ -155,4 +156,5 @@ DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
     return DistanceProxy{vertexRadius, 1, &m_vertices[0], nullptr};
 }
 
+} // namespace d2
 } // namespace playrho

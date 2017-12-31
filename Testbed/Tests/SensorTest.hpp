@@ -42,19 +42,17 @@ public:
 
 #if 0
             {
-                FixtureDef sd;
+                auto sd = FixtureConf{};
                 sd.SetAsBox(10_m, 2_m, Vec2(0.0f, 20.0f) * 1_m, 0.0f);
                 sd.isSensor = true;
                 m_sensor = ground->CreateFixture(sd);
             }
 #else
             {
-                FixtureDef fd;
-                fd.isSensor = true;
                 auto conf = DiskShapeConf{};
                 conf.vertexRadius = 5_m;
                 conf.location = Vec2(0.0f, 10.0f) * 1_m;
-                m_sensor = ground->CreateFixture(Shape(conf), fd);
+                m_sensor = ground->CreateFixture(Shape(conf), FixtureConf{}.UseIsSensor(true));
             }
 #endif
         }
@@ -62,7 +60,7 @@ public:
         const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)};
         for (auto i = 0; i < e_count; ++i)
         {
-            BodyDef bd;
+            auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f + 3.0f * i, 20.0f) * 1_m;
             bd.userData = m_touching + i;
@@ -149,7 +147,7 @@ public:
             }
 
             const auto F = Force2{GetUnitVector(d) * 100_N};
-            playrho::ApplyForce(*body, F, position);
+            playrho::d2::ApplyForce(*body, F, position);
         }
     }
 

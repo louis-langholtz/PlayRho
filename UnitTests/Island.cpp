@@ -22,6 +22,7 @@
 #include <type_traits>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(IslandBodyContainer, BytesSize)
 {

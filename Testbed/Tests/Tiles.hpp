@@ -41,7 +41,7 @@ public:
 
         {
             const auto a = Real{0.5f};
-            BodyDef bd;
+            BodyConf bd;
             GetY(bd.location) = -a * 1_m;
             const auto ground = m_world.CreateBody(bd);
 
@@ -77,7 +77,7 @@ public:
 
                 for (auto j = i; j < e_count; ++j)
                 {
-                    BodyDef bd;
+                    BodyConf bd;
                     bd.type = BodyType::Dynamic;
                     bd.location = y * 1_m;
 

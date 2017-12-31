@@ -78,7 +78,7 @@ namespace testbed {
             conf.vertexRadius = skinWidth;
             conf.SetAsBox(halfSide, halfSide);
             
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.bullet = true;
             bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};

@@ -27,6 +27,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 namespace {
 
@@ -84,7 +85,7 @@ Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA,
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-WeldJoint::WeldJoint(const WeldJointDef& def):
+WeldJoint::WeldJoint(const WeldJointConf& def):
     Joint(def),
     m_localAnchorA(def.localAnchorA),
     m_localAnchorB(def.localAnchorB),
@@ -121,8 +122,8 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
     const auto invMassB = bodyConstraintB->GetInvMass();
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
 
-    const auto qA = UnitVec2::Get(posA.angular);
-    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
 
     m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
@@ -189,8 +190,8 @@ void WeldJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepCo
         const auto LA = L + AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = L + AngularMomentum{Cross(m_rB, P) / Radian};
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -243,8 +244,8 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -265,8 +266,8 @@ bool WeldJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto LA = L + AngularMomentum{Cross(m_rA, P) / Radian};
         const auto LB = L + AngularMomentum{Cross(m_rB, P) / Radian};
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
 
     if ((velA != oldVelA) || (velB != oldVelB))
@@ -286,8 +287,8 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     auto posA = bodyConstraintA->GetPosition();
     auto posB = bodyConstraintB->GetPosition();
 
-    const auto qA = UnitVec2::Get(posA.angular);
-    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
 
     const auto invMassA = bodyConstraintA->GetInvMass();
     const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
@@ -312,8 +313,8 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         const auto LA = Cross(rA, P) / Radian;
         const auto LB = Cross(rB, P) / Radian;
 
-        posA -= Position2D{invMassA * P, invRotInertiaA * LA};
-        posB += Position2D{invMassB * P, invRotInertiaB * LB};
+        posA -= Position{invMassA * P, invRotInertiaA * LA};
+        posB += Position{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -341,8 +342,8 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         const auto LA = L + Cross(rA, P) / Radian;
         const auto LB = L + Cross(rB, P) / Radian;
 
-        posA -= Position2D{invMassA * P, invRotInertiaA * LA};
-        posB += Position2D{invMassB * P, invRotInertiaB * LB};
+        posA -= Position{invMassA * P, invRotInertiaA * LA};
+        posB += Position{invMassB * P, invRotInertiaB * LB};
     }
 
     bodyConstraintA->SetPosition(posA);
@@ -372,4 +373,5 @@ AngularMomentum WeldJoint::GetAngularReaction() const
     return AngularMomentum{GetZ(m_impulse) * SquareMeter * Kilogram / (Second * Radian)};
 }
 
+} // namespace d2
 } // namespace playrho

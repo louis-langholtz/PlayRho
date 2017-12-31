@@ -24,6 +24,7 @@
 #define PLAYRHO_MAGIC(x) (x)
 
 namespace playrho {
+namespace d2 {
 
 namespace {
 
@@ -182,4 +183,5 @@ void VelocityConstraint::AddPoint(Momentum normalImpulse, Momentum tangentImpuls
     ++m_pointCount;
 }
 
+} // namespace d2
 } // namespace playrho

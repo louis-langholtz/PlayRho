@@ -26,6 +26,7 @@
 #include <PlayRho/Common/OptionalValue.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Typing JointVisitor.
 /// @details Records the type of joint that gets visited.
@@ -171,6 +172,7 @@ private:
     bool m_writable = false; ///< Whether visited type was writable.
 };
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_TYPEJOINTVISITOR_HPP

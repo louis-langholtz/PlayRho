@@ -32,7 +32,7 @@ Generally speaking, don't change the formatting of pre-existing code.
 ### Code Indentation
 Code indentation should be done using 4-spaces for every level of code indentation desired. Tabs should not be used for this.
 
-### Class Head Names Begin With Capitalized Letter
+### Class Names Begin With Capitalized Letter
 Both `class` and `struct` class definition names should begin with a capitalized letter.
 
 ## Naming

@@ -34,6 +34,7 @@
 #include <utility>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Body attorney.
 ///
@@ -48,7 +49,7 @@ class BodyAtty
 private:
     
     /// @brief Creates a fixture.
-    static Fixture* CreateFixture(Body& b, Shape shape, const FixtureDef& def)
+    static Fixture* CreateFixture(Body& b, Shape shape, const FixtureConf& def)
     {
         const auto fixture = new Fixture{&b, def, std::move(shape)};
         b.m_fixtures.push_back(fixture);
@@ -97,7 +98,7 @@ private:
             case BodyType::Static:
                 b.UnsetAwakeFlag();
                 b.m_underActiveTime = 0;
-                b.m_velocity = Velocity2D{LinearVelocity2{}, 0_rpm};
+                b.m_velocity = Velocity{LinearVelocity2{}, 0_rpm};
                 b.m_sweep.pos0 = b.m_sweep.pos1;
                 break;
         }
@@ -162,7 +163,7 @@ private:
     }
     
     /// @brief Sets the position0 value of the given body to the given position.
-    static void SetPosition0(Body& b, const Position2D value) noexcept
+    static void SetPosition0(Body& b, const Position value) noexcept
     {
         assert(b.IsSpeedable() || b.m_sweep.pos0 == value);
         b.m_sweep.pos0 = value;
@@ -170,7 +171,7 @@ private:
     
     /// Sets the body sweep's position 1 value.
     /// @note This sets what Body::GetWorldCenter returns.
-    static void SetPosition1(Body& b, const Position2D value) noexcept
+    static void SetPosition1(Body& b, const Position value) noexcept
     {
         assert(b.IsSpeedable() || b.m_sweep.pos1 == value);
         b.m_sweep.pos1 = value;
@@ -183,7 +184,7 @@ private:
     }
     
     /// @brief Sets the sweep value of the given body.
-    static void SetSweep(Body& b, const Sweep2D value) noexcept
+    static void SetSweep(Body& b, const Sweep value) noexcept
     {
         assert(b.IsSpeedable() || value.pos0 == value.pos1);
         b.m_sweep = value;
@@ -191,14 +192,14 @@ private:
     
     /// Sets the body's transformation.
     /// @note This sets what Body::GetLocation returns.
-    static void SetTransformation(Body& b, const Transformation2D value) noexcept
+    static void SetTransformation(Body& b, const Transformation value) noexcept
     {
         b.SetTransformation(value);
     }
     
     /// Sets the body's velocity.
     /// @note This sets what Body::GetVelocity returns.
-    static void SetVelocity(Body& b, Velocity2D value) noexcept
+    static void SetVelocity(Body& b, Velocity value) noexcept
     {
         b.m_velocity = value;
     }
@@ -224,7 +225,7 @@ private:
     }
     
     /// @brief Restores the given body's sweep to the given sweep value.
-    static void Restore(Body& b, const Sweep2D value) noexcept
+    static void Restore(Body& b, const Sweep value) noexcept
     {
         BodyAtty::SetSweep(b, value);
         BodyAtty::SetTransformation(b, GetTransform1(value));
@@ -284,6 +285,7 @@ private:
     friend class World;
 };
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_BODYATTY_HPP

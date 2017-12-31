@@ -130,7 +130,7 @@ public:
             m_bodies[m_bodyIndex] = nullptr;
         }
 
-        BodyDef bd;
+        BodyConf bd;
 
         const auto x = RandomFloat(-10.0f, 10.0f);
         const auto y = RandomFloat(0.0f, 20.0f);
@@ -204,10 +204,10 @@ public:
         {
             auto hit = false;
             Length2 point;
-            UnitVec2 normal;
+            UnitVec normal;
 
             m_world.RayCast(point1, point2, [&](Fixture* f, const ChildCounter,
-                                                 const Length2& p, const UnitVec2& n)
+                                                 const Length2& p, const UnitVec& n)
             {
                 const auto body = f->GetBody();
                 const auto userData = body->GetUserData();
@@ -248,12 +248,12 @@ public:
         {
             auto hit = false;
             Length2 point;
-            UnitVec2 normal;
+            UnitVec normal;
 
             // This callback finds any hit. Polygon 0 is filtered. For this type of query we are
             // just checking for obstruction, so the actual fixture and hit point are irrelevant.
             m_world.RayCast(point1, point2, [&](Fixture* f, const ChildCounter,
-                                                 const Length2& p, const UnitVec2& n)
+                                                 const Length2& p, const UnitVec& n)
             {
                 const auto body = f->GetBody();
                 const auto userData = body->GetUserData();
@@ -297,7 +297,7 @@ public:
             // The fixtures are not necessary reported in order, so we might not capture
             // the closest fixture.
             m_world.RayCast(point1, point2, [&](Fixture* f, const ChildCounter,
-                                                 const Length2& p, const UnitVec2& n)
+                                                 const Length2& p, const UnitVec& n)
             {
                 const auto body = f->GetBody();
                 const auto userData = body->GetUserData();

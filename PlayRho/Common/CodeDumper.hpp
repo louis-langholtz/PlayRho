@@ -22,8 +22,9 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace playrho
-{
+namespace playrho {
+namespace d2 {
+
     class World;
     class Body;
     class Joint;
@@ -86,6 +87,7 @@ namespace playrho
     /// @brief Dumps the joint to the log file.
     void Dump(const WheelJoint& joint, std::size_t index);
     
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_CODEDUMPER_HPP

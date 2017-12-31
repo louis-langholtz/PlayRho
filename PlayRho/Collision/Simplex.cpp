@@ -20,6 +20,7 @@
 #include <PlayRho/Collision/Simplex.hpp>
 
 namespace playrho {
+namespace d2 {
 
 IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept
 {
@@ -241,4 +242,5 @@ Real Simplex::CalcMetric(const SimplexEdges& simplexEdges)
     return Real{0};
 }
 
+} // namespace d2
 } // namespace playrho

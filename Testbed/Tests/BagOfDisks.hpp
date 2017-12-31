@@ -40,7 +40,7 @@ public:
     
     BagOfDisks(): Test(GetTestConf())
     {
-        m_ground = m_world.CreateBody(BodyDef{}.UseType(BodyType::Kinematic));
+        m_ground = m_world.CreateBody(BodyConf{}.UseType(BodyType::Kinematic));
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase counter-clockwise angular velocity",
                        [&](KeyActionMods) {
@@ -80,7 +80,7 @@ public:
             {
                 const auto midPoint = (vertex + *prevVertex) / 2;
                 const auto angle = GetAngle(vertex - *prevVertex);
-                const auto body = m_world.CreateBody(BodyDef{}
+                const auto body = m_world.CreateBody(BodyConf{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseBullet(true)
                                                       .UseLocation(midPoint + vertexOffset)
@@ -88,7 +88,7 @@ public:
                 body->CreateFixture(shape);
                 if (prevBody)
                 {
-                    m_world.CreateJoint(RevoluteJointDef{body, prevBody, *prevVertex + vertexOffset});
+                    m_world.CreateJoint(RevoluteJoinConf{body, prevBody, *prevVertex + vertexOffset});
                 }
                 else
                 {
@@ -98,7 +98,7 @@ public:
             }
             prevVertex = vertex;
         }
-        m_world.CreateJoint(RevoluteJointDef{prevBody, firstBody, vertices[0] + vertexOffset});
+        m_world.CreateJoint(RevoluteJoinConf{prevBody, firstBody, vertices[0] + vertexOffset});
 
         const auto diskRadius = 0.15_m;
         const auto diskShape = Shape(DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(Real(0)));
@@ -109,9 +109,9 @@ public:
         for (auto i = 0; i < 2000; ++i)
         {
             const auto radius = alpha + beta * angle;
-            const auto unitVector = UnitVec2::Get(angle);
+            const auto unitVector = UnitVec::Get(angle);
             const auto location = radius * unitVector;
-            const auto body = m_world.CreateBody(BodyDef{}
+            const auto body = m_world.CreateBody(BodyConf{}
                                                   .UseType(BodyType::Dynamic)
                                                   .UseLocation(location + vertexOffset));
             body->CreateFixture(diskShape);

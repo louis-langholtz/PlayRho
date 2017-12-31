@@ -23,9 +23,10 @@
 #define PLAYRHO_DYNAMICS_JOINTS_WHEELJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/WheelJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Wheel joint.
 ///
@@ -44,7 +45,7 @@ class WheelJoint : public Joint
 public:
     
     /// @brief Initializing constructor.
-    WheelJoint(const WheelJointDef& def);
+    WheelJoint(const WheelJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -62,7 +63,7 @@ public:
     Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// The local joint axis relative to bodyA.
-    UnitVec2 GetLocalAxisA() const { return m_localXAxisA; }
+    UnitVec GetLocalAxisA() const { return m_localXAxisA; }
 
     /// Is the joint motor enabled?
     bool IsMotorEnabled() const noexcept { return m_enableMotor; }
@@ -110,8 +111,8 @@ private:
     // Solver shared
     Length2 m_localAnchorA; ///< Local anchor A.
     Length2 m_localAnchorB; ///< Local anchor B.
-    UnitVec2 m_localXAxisA; ///< Local X axis A.
-    UnitVec2 m_localYAxisA; ///< Local Y axis A.
+    UnitVec m_localXAxisA; ///< Local X axis A.
+    UnitVec m_localYAxisA; ///< Local Y axis A.
 
     Frequency m_frequency; ///< Frequency.
     Real m_dampingRatio; ///< Damping ratio.
@@ -125,8 +126,8 @@ private:
     bool m_enableMotor; ///< Enable motor. <code>true</code> if motor is enabled.
 
     // Solver temp    
-    UnitVec2 m_ax; ///< Solver A X directional.
-    UnitVec2 m_ay; ///< Solver A Y directional.
+    UnitVec m_ax; ///< Solver A X directional.
+    UnitVec m_ay; ///< Solver A Y directional.
 
     Length m_sAx; ///< Solver A x location.
     Length m_sBx; ///< Solver B x location.
@@ -192,6 +193,7 @@ inline Torque GetMotorTorque(const WheelJoint& joint, Frequency inv_dt) noexcept
     return joint.GetAngularReaction() * inv_dt;
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_WHEELJOINT_HPP

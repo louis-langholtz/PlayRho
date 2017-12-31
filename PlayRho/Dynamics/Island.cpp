@@ -29,7 +29,7 @@
 /*
 Position Correction Notes
 =========================
-I tried the several algorithms for position correction of the 2D revolute joint.
+I tried the several algorithms for position correction of the 2-D revolute joint.
 I looked at these systems:
 - simple pendulum (1m diameter sphere on massless 5m stick) with initial angular velocity of 100 rad/s.
 - suspension bridge with 30 1m long planks of length 1m.
@@ -122,6 +122,7 @@ stored in a single array since multiple arrays lead to multiple misses.
 */
 
 namespace playrho {
+namespace d2 {
 
 using std::count;
 using std::cbegin;
@@ -154,4 +155,5 @@ std::size_t Count(const Island& island, const Joint* entry)
                                           entry));
 }
 
+} // namespace d2
 } // namespace playrho

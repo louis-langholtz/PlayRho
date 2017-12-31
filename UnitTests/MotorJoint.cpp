@@ -23,32 +23,33 @@
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
-TEST(MotorJointDef, ByteSize)
+TEST(MotorJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(MotorJointDef), std::size_t(44));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(44));
 #else
-            EXPECT_EQ(sizeof(MotorJointDef), std::size_t(64));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(64));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(MotorJointDef), std::size_t(88)); break;
-        case 16: EXPECT_EQ(sizeof(MotorJointDef), std::size_t(144)); break;
+        case  8: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(88)); break;
+        case 16: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(144)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(MotorJointDef, DefaultConstruction)
+TEST(MotorJointConf, DefaultConstruction)
 {
-    MotorJointDef def{};
+    MotorJointConf def{};
     
     EXPECT_EQ(def.type, JointType::Motor);
     EXPECT_EQ(def.bodyA, nullptr);
@@ -63,7 +64,7 @@ TEST(MotorJointDef, DefaultConstruction)
     EXPECT_EQ(def.correctionFactor, Real(0.3));
 }
 
-TEST(MotorJointDef, BuilderConstruction)
+TEST(MotorJointConf, BuilderConstruction)
 {
     const auto bodyA = reinterpret_cast<Body*>(0x1);
     const auto bodyB = reinterpret_cast<Body*>(0x2);
@@ -75,7 +76,7 @@ TEST(MotorJointDef, BuilderConstruction)
     const auto maxForce = 22_N;
     const auto maxTorque = 31_Nm;
     const auto correctionFactor = Real(0.44f);
-    const auto def = MotorJointDef{}
+    const auto def = MotorJointConf{}
         .UseBodyA(bodyA).UseBodyB(bodyB).UseCollideConnected(collideConnected).UseUserData(userData)
         .UseLinearOffset(linearOffset).UseAngularOffset(angularOffset)
         .UseMaxForce(maxForce).UseMaxTorque(maxTorque).UseCorrectionFactor(correctionFactor);
@@ -114,7 +115,7 @@ TEST(MotorJoint, ByteSize)
 
 TEST(MotorJoint, Construction)
 {
-    auto def = MotorJointDef{};
+    auto def = MotorJointConf{};
     auto joint = MotorJoint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -138,7 +139,7 @@ TEST(MotorJoint, Construction)
 
 TEST(MotorJoint, ShiftOrigin)
 {
-    auto def = MotorJointDef{};
+    auto def = MotorJointConf{};
     auto joint = MotorJoint{def};
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
@@ -146,7 +147,7 @@ TEST(MotorJoint, ShiftOrigin)
 
 TEST(MotorJoint, SetCorrectionFactor)
 {
-    MotorJointDef def;
+    MotorJointConf def;
     MotorJoint joint{def};
     
     ASSERT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
@@ -156,9 +157,9 @@ TEST(MotorJoint, SetCorrectionFactor)
     EXPECT_EQ(joint.GetCorrectionFactor(), Real(0.9));
 }
 
-TEST(MotorJoint, GetMotorJointDef)
+TEST(MotorJoint, GetMotorJointConf)
 {
-    MotorJointDef def;
+    MotorJointConf def;
     MotorJoint joint{def};
     
     ASSERT_EQ(GetType(joint), def.type);
@@ -173,7 +174,7 @@ TEST(MotorJoint, GetMotorJointDef)
     ASSERT_EQ(joint.GetMaxTorque(), def.maxTorque);
     ASSERT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
     
-    const auto cdef = GetMotorJointDef(joint);
+    const auto cdef = GetMotorJointConf(joint);
     EXPECT_EQ(cdef.type, JointType::Motor);
     EXPECT_EQ(cdef.bodyA, nullptr);
     EXPECT_EQ(cdef.bodyB, nullptr);
@@ -190,15 +191,15 @@ TEST(MotorJoint, GetMotorJointDef)
 TEST(MotorJoint, WithDynamicCircles)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     //const auto anchor = Length2(2_m, 1_m);
-    const auto jd = MotorJointDef{b1, b2};
+    const auto jd = MotorJointConf{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
     EXPECT_EQ(joint->GetAnchorA(), p1);
@@ -216,15 +217,15 @@ TEST(MotorJoint, WithDynamicCircles)
 TEST(MotorJoint, SetLinearOffset)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     //const auto anchor = Length2(2_m, 1_m);
-    const auto jd = MotorJointDef{b1, b2};
+    const auto jd = MotorJointConf{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
     EXPECT_EQ(joint->GetAnchorA(), p1);
@@ -240,15 +241,15 @@ TEST(MotorJoint, SetLinearOffset)
 TEST(MotorJoint, SetAngularOffset)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     //const auto anchor = Length2(2_m, 1_m);
-    const auto jd = MotorJointDef{b1, b2};
+    const auto jd = MotorJointConf{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
     EXPECT_EQ(joint->GetAnchorA(), p1);

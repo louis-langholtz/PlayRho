@@ -27,6 +27,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 // 1-D constrained system
 // m (v2 - v1) = lambda
@@ -43,7 +44,7 @@ namespace playrho {
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
 
-bool DistanceJoint::IsOkay(const DistanceJointDef& def) noexcept
+bool DistanceJoint::IsOkay(const DistanceJointConf& def) noexcept
 {
     if (!Joint::IsOkay(def))
     {
@@ -52,7 +53,7 @@ bool DistanceJoint::IsOkay(const DistanceJointDef& def) noexcept
     return true;
 }
 
-DistanceJoint::DistanceJoint(const DistanceJointDef& def):
+DistanceJoint::DistanceJoint(const DistanceJointConf& def):
     Joint(def),
     m_localAnchorA(def.localAnchorA),
     m_localAnchorB(def.localAnchorB),
@@ -74,7 +75,7 @@ void DistanceJoint::Accept(JointVisitor& visitor)
 }
 
 void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
-                                            const StepConf& step,
+                                            const playrho::StepConf& step,
                                             const ConstraintSolverConf&)
 {
     auto& bodyConstraintA = At(bodies, GetBodyA());
@@ -91,16 +92,16 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto posB = bodyConstraintB->GetPosition();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto qA = UnitVec2::Get(posA.angular);
-    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
 
     m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
     const auto deltaLocation = Length2{(posB.linear + m_rB) - (posA.linear + m_rA)};
 
     // Handle singularity.
-    const auto uvresult = UnitVec2::Get(deltaLocation[0]/Meter, deltaLocation[1]/Meter);
-    m_u = std::get<UnitVec2>(uvresult);
+    const auto uvresult = UnitVec::Get(deltaLocation[0]/Meter, deltaLocation[1]/Meter);
+    m_u = std::get<UnitVec>(uvresult);
     const auto length = std::get<Real>(uvresult) * 1_m;
 
     const auto crAu = Length{Cross(m_rA, m_u)} / Radian;
@@ -153,8 +154,8 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         // Product is: L^-2 M^-1 QP^2 M L^2 T^-1 = QP^2 T^-1
         const auto LA = Cross(m_rA, P) / Radian;
         const auto LB = Cross(m_rB, P) / Radian;
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -189,8 +190,8 @@ bool DistanceJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     const auto P = impulse * m_u;
     const auto LA = Cross(m_rA, P) / Radian;
     const auto LB = Cross(m_rB, P) / Radian;
-    velA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-    velB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+    velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+    velB += Velocity{invMassB * P, invRotInertiaB * LB};
 
     bodyConstraintA->SetVelocity(velA);
     bodyConstraintB->SetVelocity(velB);
@@ -218,15 +219,15 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     auto posA = bodyConstraintA->GetPosition();
     auto posB = bodyConstraintB->GetPosition();
 
-    const auto qA = UnitVec2::Get(posA.angular);
-    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
 
     const auto rA = Length2{Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA)};
     const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
     const auto relLoc = Length2{(posB.linear + rB) - (posA.linear + rA)};
 
-    const auto uvresult = UnitVec2::Get(relLoc[0]/Meter, relLoc[1]/Meter);
-    const auto u = std::get<UnitVec2>(uvresult);
+    const auto uvresult = UnitVec::Get(relLoc[0]/Meter, relLoc[1]/Meter);
+    const auto u = std::get<UnitVec>(uvresult);
     const auto length = std::get<Real>(uvresult) * 1_m;
     const auto deltaLength = length - m_length;
     const auto C = Clamp(deltaLength, -conf.maxLinearCorrection, conf.maxLinearCorrection);
@@ -234,8 +235,8 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto impulse = -m_mass * C;
     const auto P = impulse * u;
 
-    posA -= Position2D{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
-    posB += Position2D{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
+    posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
+    posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);
@@ -263,4 +264,5 @@ AngularMomentum DistanceJoint::GetAngularReaction() const
     return AngularMomentum{0};
 }
 
+} // namespace d2
 } // namespace playrho

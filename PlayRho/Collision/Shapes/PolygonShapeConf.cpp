@@ -21,23 +21,24 @@
 #include <PlayRho/Common/VertexSet.hpp>
 
 namespace playrho {
+namespace d2 {
 
 PolygonShapeConf::PolygonShapeConf():
-    ShapeDefBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+    ShapeBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
 {
     // Intentionally empty.
 }
 
 PolygonShapeConf::PolygonShapeConf(Length hx, Length hy,
                                    const PolygonShapeConf& conf) noexcept:
-    ShapeDefBuilder{conf}
+    ShapeBuilder{conf}
 {
     SetAsBox(hx, hy);
 }
 
 PolygonShapeConf::PolygonShapeConf(Span<const Length2> points,
                                    const PolygonShapeConf& conf) noexcept:
-    ShapeDefBuilder{conf}
+    ShapeBuilder{conf}
 {
     Set(points);
 }
@@ -60,10 +61,10 @@ PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy) noexcept
     m_vertices.emplace_back(btm_lft);
 
     m_normals.clear();
-    m_normals.emplace_back(UnitVec2::GetRight());
-    m_normals.emplace_back(UnitVec2::GetTop());
-    m_normals.emplace_back(UnitVec2::GetLeft());
-    m_normals.emplace_back(UnitVec2::GetBottom());
+    m_normals.emplace_back(UnitVec::GetRight());
+    m_normals.emplace_back(UnitVec::GetTop());
+    m_normals.emplace_back(UnitVec::GetLeft());
+    m_normals.emplace_back(UnitVec::GetBottom());
     
     return *this;
 }
@@ -78,18 +79,18 @@ PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy,
                                                  Length2 center, Angle angle) noexcept
 {
     SetAsBox(hx, hy);
-    Transform(Transformation2D{center, UnitVec2::Get(angle)});
+    Transform(Transformation{center, UnitVec::Get(angle)});
     return *this;
 }
 
-PolygonShapeConf& PolygonShapeConf::Transform(Transformation2D xfm) noexcept
+PolygonShapeConf& PolygonShapeConf::Transform(Transformation xfm) noexcept
 {
     for (auto i = decltype(GetVertexCount()){0}; i < GetVertexCount(); ++i)
     {
-        m_vertices[i] = playrho::Transform(m_vertices[i], xfm);
+        m_vertices[i] = playrho::d2::Transform(m_vertices[i], xfm);
         m_normals[i] = Rotate(m_normals[i], xfm.q);
     }
-    m_centroid = playrho::Transform(m_centroid, xfm);
+    m_centroid = playrho::d2::Transform(m_centroid, xfm);
     return *this;
 }
 
@@ -123,7 +124,7 @@ PolygonShapeConf& PolygonShapeConf::Set(const VertexSet& points) noexcept
     }
     else if (count == 1)
     {
-        m_normals.emplace_back(UnitVec2{});
+        m_normals.emplace_back(UnitVec{});
     }
 
     // Compute the polygon centroid.
@@ -184,4 +185,5 @@ bool Validate(const PolygonShapeConf& shape)
     return true;
 }
 
+} // namespace d2
 } // namespace playrho

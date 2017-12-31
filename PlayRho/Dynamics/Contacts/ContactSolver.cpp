@@ -34,7 +34,7 @@
 #endif
 
 namespace playrho {
-
+namespace d2 {
 namespace {
 
 #if defined(B2_DEBUG_SOLVER)
@@ -47,17 +47,17 @@ static PLAYRHO_CONSTEXPR inline auto k_errorTol = 1e-3_mps; ///< error tolerance
 /// This describes the change in impulse necessary for a solution.
 /// To apply this: let P = magnitude * direction, then
 ///   the change to body A's velocity is
-///   -Velocity2D{vc.GetBodyA()->GetInvMass() * P,
+///   -Velocity{vc.GetBodyA()->GetInvMass() * P,
 ///       Radian * vc.GetBodyA()->GetInvRotInertia() * Cross(vcp.relA, P)}
 ///   the change to body B's velocity is
-///   +Velocity2D{vc.GetBodyB()->GetInvMass() * P,
+///   +Velocity{vc.GetBodyB()->GetInvMass() * P,
 ///       Radian * vc.GetBodyB()->GetInvRotInertia() * Cross(vcp.relB, P)}
 ///   and the new impulse = oldImpulse + magnitude.
 ///
 struct ImpulseChange
 {
     Momentum magnitude; ///< Magnitude.
-    UnitVec2 direction; ///< Direction.
+    UnitVec direction; ///< Direction.
 };
 
 VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2 impulses)
@@ -85,8 +85,8 @@ VelocityPair GetVelocityDelta(const VelocityConstraint& vc, const Momentum2 impu
         (Cross(GetPointRelPosB(vc, 0), P0) + Cross(GetPointRelPosB(vc, 1), P1)) / Radian
     };
     return VelocityPair{
-        -Velocity2D{invMassA * P, invRotInertiaA * LA},
-        +Velocity2D{invMassB * P, invRotInertiaB * LB}
+        -Velocity{invMassA * P, invRotInertiaA * LA},
+        +Velocity{invMassB * P, invRotInertiaB * LB}
     };
 }
 
@@ -238,7 +238,7 @@ inline Momentum BlockSolveNormalConstraint(VelocityConstraint& vc)
     // b = vn0 - velocityBias
     //
     // The system is solved using the "Total enumeration method" (s. Murty). The complementary constraint vn_i * x_i
-    // implies that we must have in any solution either vn_i = 0 or x_i = 0. So for the 2D contact problem the cases
+    // implies that we must have in any solution either vn_i = 0 or x_i = 0. So for the 2-D contact problem the cases
     // vn1 = 0 and vn2 = 0, x1 = 0 and x2 = 0, x1 = 0 and vn2 = 0, x2 = 0 and vn1 = 0 need to be tested. The first valid
     // solution that satisfies the problem is chosen.
     //
@@ -352,8 +352,8 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
         const auto P = incImpulse * direction;
         const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
         const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
-        newVelA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        newVelB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
         maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
 
         // Note: using newImpulse, instead of oldImpulse + incImpulse, results in
@@ -412,8 +412,8 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto P = incImpulse * direction;
         const auto LA = AngularMomentum{Cross(vcp.relA, P) / Radian};
         const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
-        newVelA -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-        newVelB += Velocity2D{invMassB * P, invRotInertiaB * LB};
+        newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
         maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
         
         // Note: using newImpulse, instead of oldImpulse + incImpulse, results in
@@ -452,58 +452,60 @@ inline Momentum SolveNormalConstraint(VelocityConstraint& vc)
 }
 
 }; // anonymous namespace
-    
+
+} // namespace d2
+
 namespace GaussSeidel {
 
-Momentum SolveVelocityConstraint(VelocityConstraint& vc)
+Momentum SolveVelocityConstraint(d2::VelocityConstraint& vc)
 {
     auto maxIncImpulse = 0_Ns;
     
     // Applies frictional changes to velocity.
-    maxIncImpulse = std::max(maxIncImpulse, SolveTangentConstraint(vc));
+    maxIncImpulse = std::max(maxIncImpulse, d2::SolveTangentConstraint(vc));
     
     // Applies restitutional changes to velocity.
-    maxIncImpulse = std::max(maxIncImpulse, SolveNormalConstraint(vc));
+    maxIncImpulse = std::max(maxIncImpulse, d2::SolveNormalConstraint(vc));
     
     return maxIncImpulse;
 }
 
-PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
-                                                const bool moveA, const bool moveB,
-                                                ConstraintSolverConf conf)
+d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
+                                           const bool moveA, const bool moveB,
+                                           ConstraintSolverConf conf)
 {
     assert(IsValid(conf.resolutionRate));
     assert(IsValid(conf.linearSlop));
     assert(IsValid(conf.maxLinearCorrection));
-
+    
     const auto bodyA = pc.GetBodyA();
     const auto bodyB = pc.GetBodyB();
-
+    
     const auto invMassA = moveA? bodyA->GetInvMass(): InvMass{0};
     const auto invRotInertiaA = moveA? bodyA->GetInvRotInertia(): InvRotInertia{0};
     const auto localCenterA = bodyA->GetLocalCenter();
-
+    
     const auto invMassB = moveB? bodyB->GetInvMass(): InvMass{0};
     const auto invRotInertiaB = moveB? bodyB->GetInvRotInertia(): InvRotInertia{0};
     const auto localCenterB = bodyB->GetLocalCenter();
-
+    
     // Compute inverse mass total.
     // This must be > 0 unless doing TOI solving and neither bodies were the bodies specified.
     const auto invMassTotal = invMassA + invMassB;
     assert(invMassTotal >= InvMass{0});
-
+    
     const auto totalRadius = pc.GetRadiusA() + pc.GetRadiusB();
-
-    const auto solver_fn = [&](const PositionSolverManifold psm,
+    
+    const auto solver_fn = [&](const d2::PositionSolverManifold psm,
                                const Length2 pA, const Length2 pB) {
         const auto separation = psm.m_separation - totalRadius;
         // Positive separation means shapes not overlapping and not touching.
         // Zero separation means shapes are touching.
         // Negative separation means shapes are overlapping.
-
+        
         const auto rA = Length2{psm.m_point - pA};
         const auto rB = Length2{psm.m_point - pB};
-
+        
         // Compute the effective mass.
         const auto K = InvMass{[&]() {
             const auto rnA = Length{Cross(rA, psm.m_normal)} / Radian;
@@ -514,31 +516,31 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
             const auto invRotMassB = InvMass{invRotInertiaB * Square(rnB)};
             return invMassTotal + invRotMassA + invRotMassB;
         }()};
-
+        
         assert(K >= InvMass{0});
         
         // Prevent large corrections & don't push separation above -conf.linearSlop.
         const auto C = -Clamp(conf.resolutionRate * (separation + conf.linearSlop),
                               -conf.maxLinearCorrection, 0_m);
-
+        
         // Compute response factors...
         const auto P = Length2{psm.m_normal * C} / K; // L M
         const auto LA = Cross(rA, P) / Radian; // L^2 M QP^-1
         const auto LB = Cross(rB, P) / Radian; // L^2 M QP^-1
-
+        
         // InvMass is M^-1, and InvRotInertia is L^-2 M^-1 QP^2.
         // Product of InvMass * P is: L
         // Product of InvRotInertia * L{A,B} is: QP
-        return PositionSolution{
-            -Position2D{invMassA * P, invRotInertiaA * LA},
-            +Position2D{invMassB * P, invRotInertiaB * LB},
+        return d2::PositionSolution{
+            -d2::Position{invMassA * P, invRotInertiaA * LA},
+            +d2::Position{invMassB * P, invRotInertiaB * LB},
             separation
         };
     };
-
+    
     auto posA = bodyA->GetPosition();
     auto posB = bodyB->GetPosition();
-
+    
     // Solve normal constraints
     const auto pointCount = pc.manifold.GetPointCount();
     switch (pointCount)
@@ -548,7 +550,7 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
             const auto psm0 = GetPSM(pc.manifold, 0,
                                      GetTransformation(posA, localCenterA),
                                      GetTransformation(posB, localCenterB));
-            return PositionSolution{posA, posB, 0} + solver_fn(psm0, posA.linear, posB.linear);
+            return d2::PositionSolution{posA, posB, 0} + solver_fn(psm0, posA.linear, posB.linear);
         }
         case 2:
         {
@@ -559,32 +561,32 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
             const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
             posA += s0.pos_a;
             posB += s0.pos_b;
-
+            
             const auto psm1 = GetPSM(pc.manifold, 1,
                                      GetTransformation(posA, localCenterA),
                                      GetTransformation(posB, localCenterB));
             const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
             posA += s1.pos_a;
             posB += s1.pos_b;
-
+            
             return PositionSolution{posA, posB, std::min(s0.min_separation, s1.min_separation)};
 #else
             const auto xfA = GetTransformation(posA, localCenterA);
             const auto xfB = GetTransformation(posB, localCenterB);
-
+            
             // solve most penatrating point first or solve simultaneously if about the same penetration
             const auto psm0 = GetPSM(pc.manifold, 0, xfA, xfB);
             const auto psm1 = GetPSM(pc.manifold, 1, xfA, xfB);
-
+            
             assert(IsValid(psm0.m_separation) && IsValid(psm1.m_separation));
-
+            
             if (AlmostEqual(StripUnit(psm0.m_separation), StripUnit(psm1.m_separation)))
             {
                 const auto s0 = solver_fn(psm0, posA.linear, posB.linear);
                 const auto s1 = solver_fn(psm1, posA.linear, posB.linear);
                 //assert(s0.pos_a.angular == -s1.pos_a.angular);
                 //assert(s0.pos_b.angular == -s1.pos_b.angular);
-                return PositionSolution{
+                return d2::PositionSolution{
                     posA + s0.pos_a + s1.pos_a,
                     posB + s0.pos_b + s1.pos_b,
                     s0.min_separation
@@ -601,7 +603,7 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
                 const auto s1 = solver_fn(psm1_prime, posA.linear, posB.linear);
                 posA += s1.pos_a;
                 posB += s1.pos_b;
-                return PositionSolution{posA, posB, s0.min_separation};
+                return d2::PositionSolution{posA, posB, s0.min_separation};
             }
             if (psm1.m_separation < psm0.m_separation)
             {
@@ -614,15 +616,16 @@ PositionSolution SolvePositionConstraint(const PositionConstraint& pc,
                 const auto s0 = solver_fn(psm0_prime, posA.linear, posB.linear);
                 posA += s0.pos_a;
                 posB += s0.pos_b;
-                return PositionSolution{posA, posB, s1.min_separation};
+                return d2::PositionSolution{posA, posB, s1.min_separation};
             }
 #endif
             // reaches here if one or both psm separation values was NaN (and NDEBUG is defined).
         }
         default: break;
     }
-    return PositionSolution{posA, posB, std::numeric_limits<Length>::infinity()};
+    return d2::PositionSolution{posA, posB, std::numeric_limits<Length>::infinity()};
 }
 
 } // namespace GaussSeidel
+
 } // namespace playrho

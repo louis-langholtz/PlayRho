@@ -20,6 +20,7 @@
 #include <PlayRho/Collision/Simplex.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(SimplexCache, ByteSize)
 {
@@ -282,8 +283,8 @@ TEST(Simplex, Get2_rot_plus_45)
     const auto ib0 = VertexCounter{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
     
-    const auto va1 = Rotate(va0, UnitVec2::Get(45_deg));
-    const auto vb1 = Rotate(vb0, UnitVec2::Get(45_deg));
+    const auto va1 = Rotate(va0, UnitVec::Get(45_deg));
+    const auto vb1 = Rotate(vb0, UnitVec::Get(45_deg));
     const auto ia1 = VertexCounter{4};
     const auto ib1 = VertexCounter{1};
     const auto sv1 = SimplexEdge{va1, ia1, vb1, ib1};
@@ -322,8 +323,8 @@ TEST(Simplex, Get2_rot45_half)
     const auto ib0 = VertexCounter{7};
     const auto sv0 = SimplexEdge{va0, ia0, vb0, ib0};
     
-    const auto va1 = Rotate(va0, UnitVec2::Get(45_deg)) / 2; // Vec2{-13.081475, 10.253049}
-    const auto vb1 = Rotate(vb0, UnitVec2::Get(45_deg)) / 2; // Vec2{316.4303, 320.67291}
+    const auto va1 = Rotate(va0, UnitVec::Get(45_deg)) / 2; // Vec2{-13.081475, 10.253049}
+    const auto vb1 = Rotate(vb0, UnitVec::Get(45_deg)) / 2; // Vec2{316.4303, 320.67291}
     EXPECT_NEAR(double(Real{GetX(va1) / Meter}), -13.081475, 0.001);
     EXPECT_NEAR(double(Real{GetY(va1) / Meter}),  10.253049, 0.001);
     EXPECT_NEAR(double(Real{GetX(vb1) / Meter}), 316.4303,   0.001);

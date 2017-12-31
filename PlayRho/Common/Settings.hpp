@@ -39,13 +39,8 @@
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Wider.hpp>
 
-/**
- * @namespace playrho
- *
- * Name space for all PlayRho related names.
- */
 namespace playrho {
-namespace details {
+namespace detail {
 
 /// @brief Defaults object for real types.
 template <typename T>
@@ -87,7 +82,7 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
     }
 };
 
-} // namespace details
+} // namespace detail
 
 /// @brief Maximum number of supportable edges in a simplex.
 PLAYRHO_CONSTEXPR const auto MaxSimplexEdges = std::uint8_t{3};
@@ -136,13 +131,13 @@ PLAYRHO_CONSTEXPR const auto InvalidVertex = static_cast<VertexCounter>(-1);
 ///   between bodies at rest.
 /// @note Smaller values relative to sizes of bodies increases the time it takes
 ///   for bodies to come to rest.
-PLAYRHO_CONSTEXPR const auto DefaultLinearSlop = details::Defaults<Real>::GetLinearSlop();
+PLAYRHO_CONSTEXPR const auto DefaultLinearSlop = detail::Defaults<Real>::GetLinearSlop();
 
 /// @brief Default minimum vertex radius.
 PLAYRHO_CONSTEXPR const auto DefaultMinVertexRadius = DefaultLinearSlop * Real{2};
 
 /// @brief Default maximum vertex radius.
-PLAYRHO_CONSTEXPR const auto DefaultMaxVertexRadius = details::Defaults<Real>::GetMaxVertexRadius();
+PLAYRHO_CONSTEXPR const auto DefaultMaxVertexRadius = detail::Defaults<Real>::GetMaxVertexRadius();
 
 /// @brief Default AABB extension amount.
 PLAYRHO_CONSTEXPR const auto DefaultAabbExtension = DefaultLinearSlop * Real{20};

@@ -21,7 +21,7 @@
 #define PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
@@ -29,6 +29,7 @@
 #include <vector>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Polygon shape configuration.
 /// @details A convex polygon. The interior of the polygon is to the left of each edge.
@@ -37,7 +38,7 @@ namespace playrho {
 /// @image html convex_concave.gif
 /// @note This data structure is 64-bytes large (with 4-byte Real).
 /// @ingroup PartsGroup
-class PolygonShapeConf: public ShapeDefBuilder<PolygonShapeConf>
+class PolygonShapeConf: public ShapeBuilder<PolygonShapeConf>
 {
 public:
     /// @brief Gets the default vertex radius for the <code>PolygonShapeConf</code>.
@@ -92,7 +93,7 @@ public:
     PolygonShapeConf& Set(const VertexSet& points) noexcept;
     
     /// @brief Transforms the set vertices.
-    PolygonShapeConf& Transform(Transformation2D xfm) noexcept;
+    PolygonShapeConf& Transform(Transformation xfm) noexcept;
     
     /// @brief Equality operator.
     friend bool operator== (const PolygonShapeConf& lhs, const PolygonShapeConf& rhs) noexcept
@@ -131,7 +132,7 @@ public:
     /// by consecutive pairs of vertices starting with vertex 0.
     /// @param index Index of the normal to get.
     /// @return Normal for the given index.
-    UnitVec2 GetNormal(VertexCounter index) const
+    UnitVec GetNormal(VertexCounter index) const
     {
         assert(0 <= index && index < GetVertexCount());
         return m_normals[index];
@@ -145,9 +146,9 @@ public:
     }
     
     /// @brief Gets the span of normals.
-    Span<const UnitVec2> GetNormals() const noexcept
+    Span<const UnitVec> GetNormals() const noexcept
     {
-        return Span<const UnitVec2>(&m_normals[0], GetVertexCount());
+        return Span<const UnitVec>(&m_normals[0], GetVertexCount());
     }
     
     /// @brief Gets the centroid.
@@ -161,7 +162,7 @@ private:
     /// @brief Normals of edges.
     /// @details These are 90-degree clockwise-rotated unit-vectors of the vectors defined
     ///   by consecutive pairs of elements of vertices.
-    std::vector<UnitVec2> m_normals;
+    std::vector<UnitVec> m_normals;
     
     /// Centroid of this shape.
     Length2 m_centroid = GetInvalid<Length2>();
@@ -188,9 +189,9 @@ inline DistanceProxy GetChild(const PolygonShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the mass data for the given shape configuration.
-inline MassData2D GetMassData(const PolygonShapeConf& arg) noexcept
+inline MassData GetMassData(const PolygonShapeConf& arg) noexcept
 {
-    return playrho::GetMassData(arg.vertexRadius, arg.density, arg.GetVertices());
+    return playrho::d2::GetMassData(arg.vertexRadius, arg.density, arg.GetVertices());
 }
 
 /// Gets the identified edge of the given polygon shape.
@@ -205,6 +206,7 @@ Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index);
 /// @relatedalso PolygonShapeConf
 bool Validate(const PolygonShapeConf& shape);
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_POLYGONSHAPECONF_HPP

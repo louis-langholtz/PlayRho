@@ -21,7 +21,7 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/BodyAtty.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
@@ -55,7 +55,7 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 
 #include <PlayRho/Common/LengthError.hpp>
@@ -92,8 +92,9 @@ using std::transform;
 using std::sort;
 using std::unique;
 
-namespace playrho
-{
+namespace playrho {
+namespace d2 {
+
 /// @brief Body pointer alias.
 using BodyPtr = Body*;
 
@@ -111,9 +112,9 @@ using VelocityConstraints = std::vector<VelocityConstraint>;
 
 namespace {
 
-    inline ConstraintSolverConf GetRegConstraintSolverConf(const StepConf& conf)
+    inline playrho::ConstraintSolverConf GetRegConstraintSolverConf(const playrho::StepConf& conf)
     {
-        return ConstraintSolverConf{}
+        return playrho::ConstraintSolverConf{}
             .UseResolutionRate(conf.regResolutionRate)
             .UseLinearSlop(conf.linearSlop)
             .UseAngularSlop(conf.angularSlop)
@@ -121,9 +122,9 @@ namespace {
             .UseMaxAngularCorrection(conf.maxAngularCorrection);
     }
     
-    inline ConstraintSolverConf GetToiConstraintSolverConf(const StepConf& conf)
+    inline playrho::ConstraintSolverConf GetToiConstraintSolverConf(const playrho::StepConf& conf)
     {
-        return ConstraintSolverConf{}
+        return playrho::ConstraintSolverConf{}
             .UseResolutionRate(conf.toiResolutionRate)
             .UseLinearSlop(conf.linearSlop)
             .UseAngularSlop(conf.angularSlop)
@@ -131,7 +132,7 @@ namespace {
             .UseMaxAngularCorrection(conf.maxAngularCorrection);
     }
     
-    inline ToiConf GetToiConf(const StepConf& conf)
+    inline ToiConf GetToiConf(const playrho::StepConf& conf)
     {
         return ToiConf{}
             .UseTimeMax(1)
@@ -149,7 +150,7 @@ namespace {
             const auto velocity = bc.GetVelocity();
             const auto translation = h * velocity.linear;
             const auto rotation = h * velocity.angular;
-            bc.SetPosition(bc.GetPosition() + Position2D{translation, rotation});
+            bc.SetPosition(bc.GetPosition() + Position{translation, rotation});
         });
     }
     
@@ -205,8 +206,8 @@ namespace {
     inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
     {
         auto vp = VelocityPair{
-            Velocity2D{LinearVelocity2{}, 0_rpm},
-            Velocity2D{LinearVelocity2{}, 0_rpm}
+            Velocity{LinearVelocity2{}, 0_rpm},
+            Velocity{LinearVelocity2{}, 0_rpm}
         };
         
         const auto normal = vc.GetNormal();
@@ -232,8 +233,8 @@ namespace {
             const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
             const auto LA = Cross(vcp.relA, P) / Radian;
             const auto LB = Cross(vcp.relB, P) / Radian;
-            std::get<0>(vp) -= Velocity2D{invMassA * P, invRotInertiaA * LA};
-            std::get<1>(vp) += Velocity2D{invMassB * P, invRotInertiaB * LB};
+            std::get<0>(vp) -= Velocity{invMassA * P, invRotInertiaA * LA};
+            std::get<1>(vp) += Velocity{invMassB * P, invRotInertiaB * LB};
         }
         return vp;
     }
@@ -508,7 +509,7 @@ namespace {
     
 } // anonymous namespace
 
-World::World(const WorldDef& def):
+World::World(const WorldConf& def):
     m_tree{def.initialTreeSize},
     m_gravity{def.gravity},
     m_minVertexRadius{def.minVertexRadius},
@@ -609,13 +610,13 @@ void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
 {
     for (const auto& otherBody: range)
     {
-        const auto newBody = CreateBody(GetBodyDef(GetRef(otherBody)));
+        const auto newBody = CreateBody(GetBodyConf(GetRef(otherBody)));
         for (const auto& of: GetRef(otherBody).GetFixtures())
         {
             const auto& otherFixture = GetRef(of);
             const auto shape = otherFixture.GetShape();
-            const auto fixtureDef = GetFixtureDef(otherFixture);
-            const auto newFixture = BodyAtty::CreateFixture(*newBody, shape, fixtureDef);
+            const auto fixtureConf = GetFixtureConf(otherFixture);
+            const auto newFixture = BodyAtty::CreateFixture(*newBody, shape, fixtureConf);
             fixtureMap[&otherFixture] = newFixture;
             const auto childCount = otherFixture.GetProxyCount();
             auto proxies = std::make_unique<FixtureProxy[]>(childCount);
@@ -689,7 +690,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
 
         void Visit(const RevoluteJoint& oldJoint) override
         {
-            auto def = GetRevoluteJointDef(oldJoint);
+            auto def = GetRevoluteJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -697,7 +698,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
         
         void Visit(const PrismaticJoint& oldJoint) override
         {
-            auto def = GetPrismaticJointDef(oldJoint);
+            auto def = GetPrismaticJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -705,7 +706,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
 
         void Visit(const DistanceJoint& oldJoint) override
         {
-            auto def = GetDistanceJointDef(oldJoint);
+            auto def = GetDistanceJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -713,7 +714,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
         
         void Visit(const PulleyJoint& oldJoint) override
         {
-            auto def = GetPulleyJointDef(oldJoint);
+            auto def = GetPulleyJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -721,7 +722,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
         
         void Visit(const MouseJoint& oldJoint) override
         {
-            auto def = GetMouseJointDef(oldJoint);
+            auto def = GetMouseJointConf(oldJoint);
             def.bodyA = (def.bodyA)? bodyMap.at(def.bodyA): nullptr;
             def.bodyB = (def.bodyB)? bodyMap.at(def.bodyB): nullptr;
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -729,7 +730,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
         
         void Visit(const GearJoint& oldJoint) override
         {
-            auto def = GetGearJointDef(oldJoint);
+            auto def = GetGearJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             def.joint1 = jointMap.at(def.joint1);
@@ -739,7 +740,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
 
         void Visit(const WheelJoint& oldJoint) override
         {
-            auto def = GetWheelJointDef(oldJoint);
+            auto def = GetWheelJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -747,7 +748,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
 
         void Visit(const WeldJoint& oldJoint) override
         {
-            auto def = GetWeldJointDef(oldJoint);
+            auto def = GetWeldJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -755,7 +756,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
 
         void Visit(const FrictionJoint& oldJoint) override
         {
-            auto def = GetFrictionJointDef(oldJoint);
+            auto def = GetFrictionJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -763,7 +764,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
 
         void Visit(const RopeJoint& oldJoint) override
         {
-            auto def = GetRopeJointDef(oldJoint);
+            auto def = GetRopeJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -771,7 +772,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
 
         void Visit(const MotorJoint& oldJoint) override
         {
-            auto def = GetMotorJointDef(oldJoint);
+            auto def = GetMotorJointConf(oldJoint);
             def.bodyA = bodyMap.at(def.bodyA);
             def.bodyB = bodyMap.at(def.bodyB);
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
@@ -810,7 +811,7 @@ void World::SetGravity(LinearAcceleration2 gravity) noexcept
     }
 }
 
-Body* World::CreateBody(const BodyDef& def)
+Body* World::CreateBody(const BodyConf& def)
 {
     if (IsLocked())
     {
@@ -889,7 +890,7 @@ void World::Destroy(Body* body)
     Remove(*body);
 }
 
-Joint* World::CreateJoint(const JointDef& def)
+Joint* World::CreateJoint(const JointConf& def)
 {
     if (IsLocked())
     {
@@ -1665,7 +1666,7 @@ World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contac
     return results;
 }
 
-void World::UpdateBody(Body& body, const Position2D& pos, const Velocity2D& vel)
+void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
 {
     assert(IsValid(pos));
     assert(IsValid(vel));
@@ -1969,7 +1970,7 @@ StepStats World::Step(const StepConf& conf)
     return stepStats;
 }
 
-void World::QueryAABB(const AABB2D& aabb, QueryFixtureCallback callback) const
+void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
 {
     Query(m_tree, aabb, [&](DynamicTree::Size treeId) {
         const auto leafData = m_tree.GetLeafData(treeId);
@@ -1980,7 +1981,7 @@ void World::QueryAABB(const AABB2D& aabb, QueryFixtureCallback callback) const
 
 void World::RayCast(Length2 point1, Length2 point2, RayCastCallback callback) const
 {
-    playrho::RayCast(m_tree, RayCastInput{point1, point2, Real{1}},
+    d2::RayCast(m_tree, RayCastInput{point1, point2, Real{1}},
                    [&](const RayCastInput& input, DynamicTree::Size treeId)
     {
         const auto leafData = m_tree.GetLeafData(treeId);
@@ -1990,7 +1991,7 @@ void World::RayCast(Length2 point1, Length2 point2, RayCastCallback callback) co
         const auto body = fixture->GetBody();
         const auto child = GetChild(shape, index);
         const auto transformation = body->GetTransformation();
-        const auto output = playrho::RayCast(child, input, transformation);
+        const auto output = playrho::d2::RayCast(child, input, transformation);
         if (output.has_value())
         {
             const auto fraction = output->fraction;
@@ -2126,7 +2127,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
             const auto bodyA = fixtureA->GetBody();
             const auto bodyB = fixtureB->GetBody();
 
-            if (!::playrho::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
+            if (!::playrho::d2::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
             {
                 InternalDestroy(&contact);
                 return true;
@@ -2325,7 +2326,7 @@ bool World::Add(ContactKey key)
     assert(bodyA != bodyB);
     
     // Does a joint override collision? Is at least one body dynamic?
-    if (!::playrho::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
+    if (!::playrho::d2::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
     {
         return false;
     }
@@ -2500,7 +2501,7 @@ PreStepStats::counter_type World::SynchronizeProxies(const StepConf& conf)
     return proxiesMoved;
 }
 
-void World::SetType(Body& body, BodyType type)
+void World::SetType(Body& body, playrho::BodyType type)
 {
     if (body.GetWorld() != this)
     {
@@ -2547,7 +2548,7 @@ void World::SetType(Body& body, BodyType type)
 }
 
 Fixture* World::CreateFixture(Body& body, const Shape& shape,
-                              const FixtureDef& def, bool resetMassData)
+                              const FixtureConf& def, bool resetMassData)
 {
     if (body.GetWorld() != this)
     {
@@ -2664,7 +2665,7 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
     for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
     {
         const auto dp = GetChild(shape, childIndex);
-        const auto aabb = ComputeAABB(dp, xfm);
+        const auto aabb = playrho::d2::ComputeAABB(dp, xfm);
 
         // Note: treeId from CreateLeaf can be higher than the number of fixture proxies.
         const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
@@ -2717,7 +2718,7 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
 }
 
 ContactCounter World::Synchronize(Body& body,
-                                  Transformation2D xfm1, Transformation2D xfm2,
+                                  Transformation xfm1, Transformation xfm2,
                                   Real multiplier, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
@@ -2733,7 +2734,7 @@ ContactCounter World::Synchronize(Body& body,
 }
 
 ContactCounter World::Synchronize(Fixture& fixture,
-                                  Transformation2D xfm1, Transformation2D xfm2,
+                                  Transformation xfm1, Transformation xfm2,
                                   Length2 displacement, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
@@ -2824,7 +2825,7 @@ BodyCounter Awaken(World& world) noexcept
     // Can't use count_if since body gets modified.
     auto awoken = BodyCounter{0};
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
-        if (playrho::Awaken(GetRef(b)))
+        if (playrho::d2::Awaken(GetRef(b)))
         {
             ++awoken;
         }
@@ -2832,21 +2833,21 @@ BodyCounter Awaken(World& world) noexcept
     return awoken;
 }
 
-void SetAccelerations(World& world, std::function<Acceleration2D(const Body& b)> fn) noexcept
+void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept
 {
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), fn(GetRef(b)));
     });
 }
 
-void SetAccelerations(World& world, Acceleration2D acceleration) noexcept
+void SetAccelerations(World& world, Acceleration acceleration) noexcept
 {
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), acceleration);
     });
 }
 
-Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions, const ShapeDef& baseConf)
+Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions, const ShapeConf& baseConf)
 {
     const auto body = world.CreateBody();
     
@@ -2893,4 +2894,5 @@ Body* FindClosestBody(const World& world, Length2 location) noexcept
     return found;
 }
 
+} // namespace d2
 } // namespace playrho

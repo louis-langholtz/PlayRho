@@ -33,8 +33,8 @@ public:
     {
         m_world.CreateBody()->CreateFixture(Shape(GetGroundEdgeConf()));
         // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-        m_world.CreateBody(BodyDef(DynBD).UseLocation(Length2{0_m, 2.5_m}))->CreateFixture(lilDisk);
-        m_world.CreateBody(BodyDef(DynBD).UseLocation(Length2{0_m, 3.5_m}))->CreateFixture(lilDisk);
+        m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 2.5_m}))->CreateFixture(lilDisk);
+        m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 3.5_m}))->CreateFixture(lilDisk);
         RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
             ToggleHeavy();
         });
@@ -50,15 +50,15 @@ public:
         else
         {
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-            m_heavy = m_world.CreateBody(BodyDef(DynBD).UseLocation(Length2{0_m, 9_m}));
+            m_heavy = m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 9_m}));
             m_heavy->CreateFixture(bigDisk);
         }
     }
     
-    const BodyDef DynBD = BodyDef{}.UseType(BodyType::Dynamic);
-    const DiskShapeConf DiskDef = DiskShapeConf{}.UseDensity(10_kgpm2);
-    const Shape lilDisk = DiskShapeConf(DiskDef).UseRadius(0.5_m);
-    const Shape bigDisk = DiskShapeConf(DiskDef).UseRadius(5.0_m);
+    const BodyConf DynBD = BodyConf{}.UseType(BodyType::Dynamic);
+    const DiskShapeConf DiskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
+    const Shape lilDisk = DiskShapeConf(DiskConf).UseRadius(0.5_m);
+    const Shape bigDisk = DiskShapeConf(DiskConf).UseRadius(5.0_m);
     Body* m_heavy = nullptr;
 };
 

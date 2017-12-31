@@ -34,7 +34,7 @@ public:
         ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f, 10.0f) * 1_m;
             bd.angle = 0.5_rad * Pi;
@@ -44,7 +44,7 @@ public:
 
             // Bouncy limit
             const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
-            PrismaticJointDef pjd(ground, body, Length2{}, axis);
+            PrismaticJointConf pjd(ground, body, Length2{}, axis);
             // Non-bouncy limit
             //pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
             pjd.motorSpeed = 10_rad / 1_s;

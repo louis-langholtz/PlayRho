@@ -30,28 +30,29 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
-namespace
+namespace {
+
+inline Manifold::Conf GetManifoldConf(const playrho::StepConf& conf)
 {
-    inline Manifold::Conf GetManifoldConf(const StepConf& conf)
-    {
-        auto manifoldConf = Manifold::Conf{};
-        manifoldConf.linearSlop = conf.linearSlop;
-        manifoldConf.tolerance = conf.tolerance;
-        manifoldConf.targetDepth = conf.targetDepth;
-        manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
-        return manifoldConf;
-    }
-    
-    inline DistanceConf GetDistanceConf(const StepConf& conf)
-    {
-        DistanceConf distanceConf;
-        distanceConf.maxIterations = conf.maxDistanceIters;
-        return distanceConf;
-    }
+    auto manifoldConf = Manifold::Conf{};
+    manifoldConf.linearSlop = conf.linearSlop;
+    manifoldConf.tolerance = conf.tolerance;
+    manifoldConf.targetDepth = conf.targetDepth;
+    manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
+    return manifoldConf;
+}
+
+inline DistanceConf GetDistanceConf(const playrho::StepConf& conf)
+{
+    DistanceConf distanceConf;
+    distanceConf.maxIterations = conf.maxDistanceIters;
+    return distanceConf;
+}
 } // namespace
 
-Contact::UpdateConf Contact::GetUpdateConf(const StepConf& conf) noexcept
+Contact::UpdateConf Contact::GetUpdateConf(const playrho::StepConf& conf) noexcept
 {
     return UpdateConf{GetDistanceConf(conf), GetManifoldConf(conf)};
 }
@@ -310,4 +311,5 @@ TOIOutput CalcToi(const Contact& contact, ToiConf conf)
     return GetToiViaSat(proxyA, sweepA, proxyB, sweepB, conf);
 }
 
+} // namespace d2
 } // namespace playrho

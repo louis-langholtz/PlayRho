@@ -109,13 +109,13 @@ public:
 
         // Teeter
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.location = Vec2(140.0f, 1.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)});
 
-            RevoluteJointDef jd(ground, body, body->GetLocation());
+            RevoluteJoinConf jd(ground, body, body->GetLocation());
             jd.lowerAngle = -8_deg;
             jd.upperAngle = +8_deg;
             jd.enableLimit = true;
@@ -134,18 +134,18 @@ public:
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i)
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(161.0f + 2.0f * i, -0.125f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
-                m_world.CreateJoint(RevoluteJointDef{prevBody, body,
+                m_world.CreateJoint(RevoluteJoinConf{prevBody, body,
                     Vec2(160.0f + 2.0f * i, -0.125f) * 1_m});
 
                 prevBody = body;
             }
-            m_world.CreateJoint(RevoluteJointDef{prevBody, ground,
+            m_world.CreateJoint(RevoluteJoinConf{prevBody, ground,
                 Vec2(160.0f + 2.0f * N, -0.125f) * 1_m});
         }
 
@@ -154,7 +154,7 @@ public:
             const auto box = Shape{PolygonShapeConf{}.UseDensity(0.5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
             auto body = static_cast<Body*>(nullptr);
 
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
 
             bd.location = Vec2(230.0f, 0.5f) * 1_m;
@@ -194,7 +194,7 @@ public:
                 DiskShapeConf{}.UseRadius(0.4_m).UseDensity(1_kgpm2).UseFriction(Real(0.9f))
             };
             
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(0.0f, 1.0f) * 1_m;
             m_car = m_world.CreateBody(bd);
@@ -208,10 +208,10 @@ public:
             m_wheel2 = m_world.CreateBody(bd);
             m_wheel2->CreateFixture(circle);
 
-            const auto axis = UnitVec2::GetTop();
+            const auto axis = UnitVec::GetTop();
 
             {
-                WheelJointDef jd(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
+                WheelJointConf jd(m_car, m_wheel1, m_wheel1->GetLocation(), axis);
                 jd.motorSpeed = 0_rpm;
                 jd.maxMotorTorque = 20_Nm;
                 jd.enableMotor = true;
@@ -220,7 +220,7 @@ public:
                 m_spring1 = static_cast<WheelJoint*>(m_world.CreateJoint(jd));
             }
             {
-                WheelJointDef jd(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
+                WheelJointConf jd(m_car, m_wheel2, m_wheel2->GetLocation(), axis);
                 jd.motorSpeed = 0_rpm;
                 jd.maxMotorTorque = 10_Nm;
                 jd.enableMotor = false;

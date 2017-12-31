@@ -20,9 +20,9 @@
  */
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
 
 namespace playrho {
+namespace d2 {
 
 // Free functions...
 
@@ -31,7 +31,7 @@ bool TestPoint(const Shape& shape, Length2 point) noexcept
     const auto childCount = GetChildCount(shape);
     for (auto i = decltype(childCount){0}; i < childCount; ++i)
     {
-        if (playrho::TestPoint(GetChild(shape, i), point))
+        if (playrho::d2::TestPoint(GetChild(shape, i), point))
         {
             return true;
         }
@@ -39,4 +39,5 @@ bool TestPoint(const Shape& shape, Length2 point) noexcept
     return false;
 }
 
+} // namespace d2
 } // namespace playrho

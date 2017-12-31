@@ -26,6 +26,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 // Point-to-point constraint
 // Cdot = v2 - v1
@@ -39,7 +40,7 @@ namespace playrho {
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-MotorJoint::MotorJoint(const MotorJointDef& def):
+MotorJoint::MotorJoint(const MotorJointConf& def):
     Joint(def),
     m_linearOffset(def.linearOffset),
     m_angularOffset(def.angularOffset),
@@ -71,8 +72,8 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto posB = bodyConstraintB->GetPosition();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto qA = UnitVec2::Get(posA.angular);
-    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
 
     // Compute the effective mass matrix.
     m_rA = Rotate(-bodyConstraintA->GetLocalCenter(), qA);
@@ -132,8 +133,8 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
         const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
 
-        velA -= Velocity2D{invMassA * P, invRotInertiaA * (crossAP + m_angularImpulse)};
-        velB += Velocity2D{invMassB * P, invRotInertiaB * (crossBP + m_angularImpulse)};
+        velA -= Velocity{invMassA * P, invRotInertiaA * (crossAP + m_angularImpulse)};
+        velB += Velocity{invMassB * P, invRotInertiaB * (crossBP + m_angularImpulse)};
     }
     else
     {
@@ -196,7 +197,7 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
         if (GetMagnitudeSquared(m_linearImpulse) > Square(maxImpulse))
         {
-            m_linearImpulse = GetUnitVector(m_linearImpulse, UnitVec2::GetZero()) * maxImpulse;
+            m_linearImpulse = GetUnitVector(m_linearImpulse, UnitVec::GetZero()) * maxImpulse;
         }
 
         const auto incImpulse = m_linearImpulse - oldImpulse;
@@ -208,8 +209,8 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
             solved = false;
         }
 
-        velA -= Velocity2D{invMassA * incImpulse, invRotInertiaA * angImpulseA};
-        velB += Velocity2D{invMassB * incImpulse, invRotInertiaB * angImpulseB};
+        velA -= Velocity{invMassA * incImpulse, invRotInertiaA * angImpulseA};
+        velB += Velocity{invMassB * incImpulse, invRotInertiaB * angImpulseB};
     }
 
     bodyConstraintA->SetVelocity(velA);
@@ -259,4 +260,5 @@ void MotorJoint::SetAngularOffset(Angle angularOffset)
     }
 }
 
+} // namespace d2
 } // namespace playrho

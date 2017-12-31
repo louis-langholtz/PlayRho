@@ -22,6 +22,7 @@
 #define PLAYRHO_DYNAMICS_JOINTS_JOINTVISITOR_HPP
 
 namespace playrho {
+namespace d2 {
 
 class RevoluteJoint;
 class PrismaticJoint;
@@ -156,6 +157,7 @@ public:
     void Visit(MotorJoint& j) override { Visit(static_cast<const MotorJoint&>(j)); }
 };
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_JOINTVISITOR_HPP

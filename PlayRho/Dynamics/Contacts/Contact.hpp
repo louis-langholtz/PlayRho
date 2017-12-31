@@ -30,12 +30,6 @@
 
 namespace playrho {
 
-class Body;
-class Fixture;
-class ContactListener;
-struct ToiConf;
-class StepConf;
-
 /// @brief Mixes friction.
 ///
 /// @details Friction mixing formula. The idea is to allow either fixture to drive the
@@ -61,6 +55,15 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 {
     return (restitution1 > restitution2) ? restitution1 : restitution2;
 }
+
+struct ToiConf;
+class StepConf;
+
+namespace d2 {
+
+class Body;
+class Fixture;
+class ContactListener;
 
 /// @brief A potential contact between the children of two Fixture objects.
 ///
@@ -562,6 +565,7 @@ void ResetRestitution(Contact& contact) noexcept;
 /// @relatedalso Contact
 TOIOutput CalcToi(const Contact& contact, ToiConf conf);
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP

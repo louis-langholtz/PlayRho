@@ -45,11 +45,11 @@ public:
         ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Define motorized body
-        const auto body = m_world.CreateBody(BodyDef{}
+        const auto body = m_world.CreateBody(BodyConf{}
                                              .UseType(BodyType::Dynamic)
                                              .UseLocation(Vec2(0.0f, 8.0f) * 1_m));
         body->CreateFixture(PolygonShapeConf{}.SetAsBox(2_m, 0.5_m).UseFriction(Real(0.6f)).UseDensity(2_kgpm2));
-        auto mjd = MotorJointDef{ground, body};
+        auto mjd = MotorJointConf{ground, body};
         mjd.maxForce = 1000_N;
         mjd.maxTorque = 1000_Nm;
         m_joint = (MotorJoint*)m_world.CreateJoint(mjd);

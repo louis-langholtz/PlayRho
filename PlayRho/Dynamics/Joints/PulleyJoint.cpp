@@ -27,6 +27,7 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+namespace d2 {
 
 // Pulley:
 // length1 = norm(p1 - s1)
@@ -40,7 +41,7 @@ namespace playrho {
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
-PulleyJoint::PulleyJoint(const PulleyJointDef& def):
+PulleyJoint::PulleyJoint(const PulleyJointConf& def):
     Joint(def),
     m_groundAnchorA(def.groundAnchorA),
     m_groundAnchorB(def.groundAnchorB),
@@ -81,8 +82,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
     auto velB = bodyConstraintB->GetVelocity();
 
-    const auto qA = UnitVec2::Get(posA.angular);
-    const auto qB = UnitVec2::Get(posB.angular);
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
 
     m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
@@ -91,8 +92,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto pulleyAxisA = Length2{posA.linear + m_rA - m_groundAnchorA};
     const auto pulleyAxisB = Length2{posB.linear + m_rB - m_groundAnchorB};
 
-    m_uA = GetUnitVector(pulleyAxisA, UnitVec2::GetZero());
-    m_uB = GetUnitVector(pulleyAxisB, UnitVec2::GetZero());
+    m_uA = GetUnitVector(pulleyAxisA, UnitVec::GetZero());
+    m_uB = GetUnitVector(pulleyAxisB, UnitVec::GetZero());
 
     // Compute effective mass.
     const auto ruA = Cross(m_rA, m_uA);
@@ -114,8 +115,8 @@ void PulleyJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto PA = -(m_impulse) * m_uA;
         const auto PB = (-m_ratio * m_impulse) * m_uB;
 
-        velA += Velocity2D{invMassA * PA, invRotInertiaA * Cross(m_rA, PA) / Radian};
-        velB += Velocity2D{invMassB * PB, invRotInertiaB * Cross(m_rB, PB) / Radian};
+        velA += Velocity{invMassA * PA, invRotInertiaA * Cross(m_rA, PA) / Radian};
+        velB += Velocity{invMassB * PB, invRotInertiaB * Cross(m_rB, PB) / Radian};
     }
     else
     {
@@ -148,8 +149,8 @@ bool PulleyJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Ste
 
     const auto PA = -impulse * m_uA;
     const auto PB = -m_ratio * impulse * m_uB;
-    velA += Velocity2D{invMassA * PA, invRotInertiaA * Cross(m_rA, PA) / Radian};
-    velB += Velocity2D{invMassB * PB, invRotInertiaB * Cross(m_rB, PB) / Radian};
+    velA += Velocity{invMassA * PA, invRotInertiaA * Cross(m_rA, PA) / Radian};
+    velB += Velocity{invMassB * PB, invRotInertiaB * Cross(m_rB, PB) / Radian};
 
     bodyConstraintA->SetVelocity(velA);
     bodyConstraintB->SetVelocity(velB);
@@ -172,19 +173,19 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     auto posB = bodyConstraintB->GetPosition();
 
     const auto rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(),
-                           UnitVec2::Get(posA.angular));
+                           UnitVec::Get(posA.angular));
     const auto rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(),
-                           UnitVec2::Get(posB.angular));
+                           UnitVec::Get(posB.angular));
 
     // Get the pulley axes.
     const auto pA = Length2{posA.linear + rA - m_groundAnchorA};
-    const auto uvresultA = UnitVec2::Get(pA[0]/Meter, pA[1]/Meter);
-    const auto uA = std::get<UnitVec2>(uvresultA);
+    const auto uvresultA = UnitVec::Get(pA[0]/Meter, pA[1]/Meter);
+    const auto uA = std::get<UnitVec>(uvresultA);
     const auto lengthA = std::get<Real>(uvresultA) * 1_m;
 
     const auto pB = Length2{posB.linear + rB - m_groundAnchorB};
-    const auto uvresultB = UnitVec2::Get(pB[0]/Meter, pB[1]/Meter);
-    const auto uB = std::get<UnitVec2>(uvresultB);
+    const auto uvresultB = UnitVec::Get(pB[0]/Meter, pB[1]/Meter);
+    const auto uB = std::get<UnitVec>(uvresultB);
     const auto lengthB = std::get<Real>(uvresultB) * 1_m;
 
     // Compute effective mass.
@@ -205,8 +206,8 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto PA = -impulse * uA;
     const auto PB = -m_ratio * impulse * uB;
 
-    posA += Position2D{invMassA * PA, invRotInertiaA * Cross(rA, PA) / Radian};
-    posB += Position2D{invMassB * PB, invRotInertiaB * Cross(rB, PB) / Radian};
+    posA += Position{invMassA * PA, invRotInertiaA * Cross(rA, PA) / Radian};
+    posB += Position{invMassB * PB, invRotInertiaB * Cross(rB, PB) / Radian};
 
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);
@@ -253,4 +254,5 @@ Length GetCurrentLengthB(const PulleyJoint& joint)
                                    joint.GetLocalAnchorB()) - joint.GetGroundAnchorB());
 }
 
+} // namespace d2
 } // namespace playrho

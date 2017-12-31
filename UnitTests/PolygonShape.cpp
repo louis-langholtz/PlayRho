@@ -23,6 +23,7 @@
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(PolygonShapeConf, ByteSize)
 {
@@ -196,7 +197,7 @@ TEST(PolygonShapeConf, Translate)
     
     const auto new_ctr = Length2{-3_m, 67_m};
     shape = PolygonShapeConf{
-        PolygonShapeConf{}.SetAsBox(hx, hy).Transform(Transformation2D{new_ctr, UnitVec2::GetRight()})
+        PolygonShapeConf{}.SetAsBox(hx, hy).Transform(Transformation{new_ctr, UnitVec::GetRight()})
     };
 
     EXPECT_NEAR(static_cast<double>(Real{GetX(shape.GetCentroid())/Meter}),

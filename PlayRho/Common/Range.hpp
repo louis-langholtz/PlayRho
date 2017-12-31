@@ -24,8 +24,7 @@
 #include <PlayRho/Defines.hpp>
 #include <cstddef>
 
-namespace playrho
-{
+namespace playrho {
     
     /// @brief Template range value class.
     template <typename IT>

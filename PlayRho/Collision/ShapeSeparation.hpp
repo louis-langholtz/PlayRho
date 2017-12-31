@@ -23,46 +23,48 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
 
-namespace playrho
-{
-    class DistanceProxy;
-    
-    /// @brief Gets the max separation information.
-    /// @note Prefer using this function - over the <code>GetMaxSeparation</code>
-    ///   function that takes a stopping length - when it's already known that the two
-    ///   convex shapes' AABBs overlap.
-    /// @return Index of the vertex and normal from <code>proxy1</code>,
-    ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
-    ///   distance from each other in the direction of that normal), and the maximal distance.
-    SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D xf1,
-                                      const DistanceProxy& proxy2, Transformation2D xf2);
-    
-    /// @brief Gets the max separation information.
-    /// @return Index of the vertex and normal from <code>proxy1</code>,
-    ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
-    ///   distance from each other in the direction of that normal), and the maximal distance.
-    SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1, Transformation2D xf1,
-                                      const DistanceProxy& proxy2, Transformation2D xf2,
-                                      Length stop);
-    
-    /// @brief Gets the max separation information for the first four vertices of the two
-    ///   given shapes.
-    /// @details This is a version of the get-max-separation functions that is optimized for
-    ///   two quadrilateral (4-sided) polygons.
-    /// @return Index of the vertex and normal from <code>proxy1</code>,
-    ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
-    ///   distance from each other in the direction of that normal), and the maximal distance.
-    SeparationInfo2D GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation2D xf1,
-                                         const DistanceProxy& proxy2, Transformation2D xf2);
+namespace playrho {
+namespace d2 {
 
-    /// @brief Gets the max separation information.
-    /// @return Index of the vertex and normal from <code>proxy1</code>,
-    ///   index of the vertex from <code>proxy2</code> (that had the maximum separation
-    ///   distance from each other in the direction of that normal), and the maximal distance.
-    SeparationInfo2D GetMaxSeparation(const DistanceProxy& proxy1,
-                                      const DistanceProxy& proxy2,
-                                      Length stop = MaxFloat * Meter);
-    
+class DistanceProxy;
+
+/// @brief Gets the max separation information.
+/// @note Prefer using this function - over the <code>GetMaxSeparation</code>
+///   function that takes a stopping length - when it's already known that the two
+///   convex shapes' AABBs overlap.
+/// @return Index of the vertex and normal from <code>proxy1</code>,
+///   index of the vertex from <code>proxy2</code> (that had the maximum separation
+///   distance from each other in the direction of that normal), and the maximal distance.
+SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
+                                  const DistanceProxy& proxy2, Transformation xf2);
+
+/// @brief Gets the max separation information.
+/// @return Index of the vertex and normal from <code>proxy1</code>,
+///   index of the vertex from <code>proxy2</code> (that had the maximum separation
+///   distance from each other in the direction of that normal), and the maximal distance.
+SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
+                                  const DistanceProxy& proxy2, Transformation xf2,
+                                  Length stop);
+
+/// @brief Gets the max separation information for the first four vertices of the two
+///   given shapes.
+/// @details This is a version of the get-max-separation functions that is optimized for
+///   two quadrilateral (4-sided) polygons.
+/// @return Index of the vertex and normal from <code>proxy1</code>,
+///   index of the vertex from <code>proxy2</code> (that had the maximum separation
+///   distance from each other in the direction of that normal), and the maximal distance.
+SeparationInfo GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation xf1,
+                                     const DistanceProxy& proxy2, Transformation xf2);
+
+/// @brief Gets the max separation information.
+/// @return Index of the vertex and normal from <code>proxy1</code>,
+///   index of the vertex from <code>proxy2</code> (that had the maximum separation
+///   distance from each other in the direction of that normal), and the maximal distance.
+SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1,
+                                  const DistanceProxy& proxy2,
+                                  Length stop = MaxFloat * Meter);
+
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPESEPARATION_HPP

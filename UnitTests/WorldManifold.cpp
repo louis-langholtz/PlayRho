@@ -25,10 +25,11 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
-#include <PlayRho/Dynamics/FixtureDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/Dynamics/FixtureConf.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(WorldManifold, ByteSize)
 {
@@ -62,19 +63,19 @@ TEST(WorldManifold, DefaultConstruction)
 
 TEST(WorldManifold, UnitVecConstruction)
 {
-    const auto normal = UnitVec2::GetLeft();
+    const auto normal = UnitVec::GetLeft();
     const auto wm = WorldManifold{normal};
     
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
     EXPECT_TRUE(IsValid(wm.GetNormal()));
-    EXPECT_EQ(wm.GetNormal(), UnitVec2::GetLeft());
+    EXPECT_EQ(wm.GetNormal(), UnitVec::GetLeft());
 }
 
 TEST(WorldManifold, GetWorldManifoldForUnsetManifold)
 {
     const auto manifold = Manifold{};
-    const auto xfA = Transformation2D{Length2{(4-1) * Meter, 0_m}, UnitVec2::GetRight()};
-    const auto xfB = Transformation2D{Length2{(4+1) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto xfA = Transformation{Length2{(4-1) * Meter, 0_m}, UnitVec::GetRight()};
+    const auto xfB = Transformation{Length2{(4+1) * Meter, 0_m}, UnitVec::GetRight()};
     const auto rA = 1_m;
     const auto rB = 1_m;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
@@ -85,28 +86,28 @@ TEST(WorldManifold, GetWorldManifoldForUnsetManifold)
 
 TEST(WorldManifold, GetForFaceEmptyManifoldA)
 {
-    const auto m = Manifold::GetForFaceA(UnitVec2::GetTop(), Length2{});
-    const auto wm = GetWorldManifold(m, Transformation2D{}, 1_m, Transformation2D{}, 1_m);
-    EXPECT_EQ(wm.GetNormal(), UnitVec2::GetTop());
+    const auto m = Manifold::GetForFaceA(UnitVec::GetTop(), Length2{});
+    const auto wm = GetWorldManifold(m, Transformation{}, 1_m, Transformation{}, 1_m);
+    EXPECT_EQ(wm.GetNormal(), UnitVec::GetTop());
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
 }
 
 TEST(WorldManifold, GetForFaceEmptyManifoldB)
 {
-    const auto m = Manifold::GetForFaceB(UnitVec2::GetLeft(), Length2{});
-    const auto wm = GetWorldManifold(m, Transformation2D{}, 1_m, Transformation2D{}, 1_m);
-    EXPECT_EQ(wm.GetNormal(), UnitVec2::GetRight());
+    const auto m = Manifold::GetForFaceB(UnitVec::GetLeft(), Length2{});
+    const auto wm = GetWorldManifold(m, Transformation{}, 1_m, Transformation{}, 1_m);
+    EXPECT_EQ(wm.GetNormal(), UnitVec::GetRight());
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
 }
 
 TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);
-    const auto xfA = Transformation2D{
-        Length2{Real(4-1) * Meter, 0_m}, UnitVec2::GetRight()
+    const auto xfA = Transformation{
+        Length2{Real(4-1) * Meter, 0_m}, UnitVec::GetRight()
     };
-    const auto xfB = Transformation2D{
-        Length2{Real(4+1) * Meter, 0_m}, UnitVec2::GetRight()
+    const auto xfB = Transformation{
+        Length2{Real(4+1) * Meter, 0_m}, UnitVec::GetRight()
     };
     const auto rA = 1_m;
     const auto rB = 1_m;
@@ -123,11 +124,11 @@ TEST(WorldManifold, GetWorldManifoldForCirclesTouchingManifold)
 TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);
-    const auto xfA = Transformation2D{
-        Length2{Real(7-0.5) * Meter, 0_m}, UnitVec2::GetRight()
+    const auto xfA = Transformation{
+        Length2{Real(7-0.5) * Meter, 0_m}, UnitVec::GetRight()
     };
-    const auto xfB = Transformation2D{
-        Length2{Real(7+0.5) * Meter, 0_m}, UnitVec2::GetRight()
+    const auto xfB = Transformation{
+        Length2{Real(7+0.5) * Meter, 0_m}, UnitVec::GetRight()
     };
     const auto rA = 1_m;
     const auto rB = 1_m;
@@ -144,8 +145,8 @@ TEST(WorldManifold, GetWorldManifoldForCirclesHalfOverlappingManifold)
 TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 {
     const auto manifold = Manifold::GetForCircles(Length2{}, 0, Length2{}, 0);
-    const auto xfA = Transformation2D{Length2{Real(3-0) * Meter, 0_m}, UnitVec2::GetRight()};
-    const auto xfB = Transformation2D{Length2{Real(3+0) * Meter, 0_m}, UnitVec2::GetRight()};
+    const auto xfA = Transformation{Length2{Real(3-0) * Meter, 0_m}, UnitVec::GetRight()};
+    const auto xfB = Transformation{Length2{Real(3+0) * Meter, 0_m}, UnitVec::GetRight()};
     const auto rA = 1_m;
     const auto rB = 1_m;
     const auto wm = GetWorldManifold(manifold, xfA, rA, xfB, rB);
@@ -165,10 +166,10 @@ TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 TEST(WorldManifold, GetForContact)
 {
     const auto shape = DiskShapeConf{};
-    auto bA = Body{nullptr, BodyDef{}};
-    auto bB = Body{nullptr, BodyDef{}};
-    auto fA = Fixture{&bA, FixtureDef{}, shape};
-    auto fB = Fixture{&bB, FixtureDef{}, shape};
+    auto bA = Body{nullptr, BodyConf{}};
+    auto bB = Body{nullptr, BodyConf{}};
+    auto fA = Fixture{&bA, FixtureConf{}, shape};
+    auto fB = Fixture{&bB, FixtureConf{}, shape};
     const auto c = Contact{&fA, 0u, &fB, 0u};
 
     const auto wm = GetWorldManifold(c);

@@ -33,6 +33,7 @@
 #include "imgui.h"
 
 using namespace playrho;
+using namespace playrho::d2;
 
 namespace testbed {
 
@@ -143,7 +144,7 @@ Length2 ConvertScreenToWorld(const Coord2D ps, const Camera& camera)
     return Length2{x * Meter, y * Meter};
 }
 
-AABB2D ConvertScreenToWorld(const Camera& camera)
+AABB ConvertScreenToWorld(const Camera& camera)
 {
     const auto w = float(camera.m_width);
     const auto h = float(camera.m_height);
@@ -154,7 +155,7 @@ AABB2D ConvertScreenToWorld(const Camera& camera)
     const auto lower = camera.m_center - extents;
     const auto upper = camera.m_center + extents;
     
-    return AABB2D{
+    return AABB{
         Length2{Real{lower.x} * Meter, Real{lower.y} * Meter},
         Length2{Real{upper.x} * Meter, Real{upper.y} * Meter}
     };

@@ -22,6 +22,7 @@
 #include <PlayRho/Dynamics/WorldCallbacks.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(ContactImpulsesList, ByteSize)
 {

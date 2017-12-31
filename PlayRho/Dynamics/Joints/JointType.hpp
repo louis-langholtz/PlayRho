@@ -27,6 +27,7 @@
 #include <cstdint>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Enumeration of joint types.
 enum class JointType : std::uint8_t
@@ -55,6 +56,7 @@ JointType GetType(const Joint& joint) noexcept;
 /// @return C-style English-language human-readable string uniquely identifying the joint type.
 const char* ToString(JointType type) noexcept;
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP

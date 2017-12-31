@@ -39,20 +39,20 @@ public:
     using size_type = std::size_t;
 
     /// @brief Stack allocator configuration data.
-    struct Configuration
+    struct Conf
     {
         size_type preallocation_size = 100 * 1024; ///< Preallocation size.
         size_type allocation_records = 32; ///< Allocation records.
     };
 
     /// @brief Gets the default configuration.
-    static PLAYRHO_CONSTEXPR inline Configuration GetDefaultConfiguration()
+    static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf()
     {
-        return Configuration{};
+        return Conf{};
     }
 
     /// @brief Initializing constructor.
-    explicit StackAllocator(Configuration config = GetDefaultConfiguration()) noexcept;
+    explicit StackAllocator(Conf config = GetDefaultConf()) noexcept;
 
     ~StackAllocator() noexcept;
 

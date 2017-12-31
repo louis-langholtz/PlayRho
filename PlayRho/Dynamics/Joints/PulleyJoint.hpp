@@ -23,9 +23,10 @@
 #define PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Pulley joint.
 ///
@@ -48,7 +49,7 @@ class PulleyJoint : public Joint
 public:
     
     /// @brief Initializing constructor.
-    PulleyJoint(const PulleyJointDef& data);
+    PulleyJoint(const PulleyJointConf& data);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -81,7 +82,8 @@ public:
 
 private:
 
-    void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
+    void InitVelocityConstraints(BodyConstraintsMap& bodies,
+                                 const StepConf& step,
                                  const ConstraintSolverConf&) override;
     bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf&) override;
     bool SolvePositionConstraints(BodyConstraintsMap& bodies,
@@ -100,8 +102,8 @@ private:
     Momentum m_impulse = 0_Ns; ///< Impulse.
 
     // Solver temp (recalculated every call to InitVelocityConstraints).
-    UnitVec2 m_uA; ///< Unit vector A.
-    UnitVec2 m_uB; ///< Unit vector B.
+    UnitVec m_uA; ///< Unit vector A.
+    UnitVec m_uB; ///< Unit vector B.
     Length2 m_rA; ///< Relative A.
     Length2 m_rB; ///< Relative B.
     Mass m_mass; ///< Mass.
@@ -150,6 +152,7 @@ Length GetCurrentLengthA(const PulleyJoint& joint);
 /// @relatedalso PulleyJoint
 Length GetCurrentLengthB(const PulleyJoint& joint);
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINT_HPP

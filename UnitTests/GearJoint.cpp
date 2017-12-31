@@ -21,61 +21,62 @@
 #include "gtest/gtest.h"
 
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
-#include <PlayRho/Dynamics/Joints/DistanceJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <type_traits>
 
 using namespace playrho;
+using namespace playrho::d2;
 
-TEST(GearJointDef, ByteSize)
+TEST(GearJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(GearJointDef), std::size_t(32));
+            EXPECT_EQ(sizeof(GearJointConf), std::size_t(32));
 #else
-            EXPECT_EQ(sizeof(GearJointDef), std::size_t(64));
+            EXPECT_EQ(sizeof(GearJointConf), std::size_t(64));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(GearJointDef), std::size_t(64)); break;
-        case 16: EXPECT_EQ(sizeof(GearJointDef), std::size_t(80)); break;
+        case  8: EXPECT_EQ(sizeof(GearJointConf), std::size_t(64)); break;
+        case 16: EXPECT_EQ(sizeof(GearJointConf), std::size_t(80)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(GearJointDef, Traits)
+TEST(GearJointConf, Traits)
 {
-    EXPECT_FALSE(std::is_default_constructible<GearJointDef>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<GearJointDef>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<GearJointDef>::value);
+    EXPECT_FALSE(std::is_default_constructible<GearJointConf>::value);
+    EXPECT_FALSE(std::is_nothrow_default_constructible<GearJointConf>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<GearJointConf>::value);
     
-    EXPECT_FALSE(std::is_constructible<GearJointDef>::value);
-    EXPECT_FALSE(std::is_nothrow_constructible<GearJointDef>::value);
-    EXPECT_FALSE(std::is_trivially_constructible<GearJointDef>::value);
+    EXPECT_FALSE(std::is_constructible<GearJointConf>::value);
+    EXPECT_FALSE(std::is_nothrow_constructible<GearJointConf>::value);
+    EXPECT_FALSE(std::is_trivially_constructible<GearJointConf>::value);
     
-    EXPECT_TRUE(std::is_copy_constructible<GearJointDef>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<GearJointDef>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<GearJointDef>::value);
+    EXPECT_TRUE(std::is_copy_constructible<GearJointConf>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<GearJointConf>::value);
+    EXPECT_TRUE(std::is_trivially_copy_constructible<GearJointConf>::value);
     
-    EXPECT_TRUE(std::is_copy_assignable<GearJointDef>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<GearJointDef>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<GearJointDef>::value);
+    EXPECT_TRUE(std::is_copy_assignable<GearJointConf>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<GearJointConf>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable<GearJointConf>::value);
     
-    EXPECT_TRUE(std::is_destructible<GearJointDef>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<GearJointDef>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<GearJointDef>::value);
+    EXPECT_TRUE(std::is_destructible<GearJointConf>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<GearJointConf>::value);
+    EXPECT_TRUE(std::is_trivially_destructible<GearJointConf>::value);
 }
 
-TEST(GearJointDef, ConstructionRequiresNonNullJoints)
+TEST(GearJointConf, ConstructionRequiresNonNullJoints)
 {
-    EXPECT_THROW(GearJointDef(nullptr, nullptr), InvalidArgument);
+    EXPECT_THROW(GearJointConf(nullptr, nullptr), InvalidArgument);
 }
 
 TEST(GearJoint, ByteSize)
@@ -102,21 +103,21 @@ TEST(GearJoint, IsOkay)
     const auto b2 = world.CreateBody();
     const auto b3 = world.CreateBody();
     const auto b4 = world.CreateBody();
-    const auto dj = world.CreateJoint(DistanceJointDef{b1, b2});
-    EXPECT_FALSE(GearJoint::IsOkay(GearJointDef{dj, dj}));
-    const auto rj1 = world.CreateJoint(RevoluteJointDef{b1, b2, Length2{}});
-    const auto rj2 = world.CreateJoint(RevoluteJointDef{b3, b4, Length2{}});
-    EXPECT_TRUE(GearJoint::IsOkay(GearJointDef{rj1, rj2}));
-    EXPECT_FALSE(GearJoint::IsOkay(GearJointDef{rj1, rj1}));
+    const auto dj = world.CreateJoint(DistanceJointConf{b1, b2});
+    EXPECT_FALSE(GearJoint::IsOkay(GearJointConf{dj, dj}));
+    const auto rj1 = world.CreateJoint(RevoluteJoinConf{b1, b2, Length2{}});
+    const auto rj2 = world.CreateJoint(RevoluteJoinConf{b3, b4, Length2{}});
+    EXPECT_TRUE(GearJoint::IsOkay(GearJointConf{rj1, rj2}));
+    EXPECT_FALSE(GearJoint::IsOkay(GearJointConf{rj1, rj1}));
 }
 
 TEST(GearJoint, Construction)
 {
-    auto body = Body{nullptr, BodyDef{}};
-    auto rdef = RevoluteJointDef{&body, &body, Length2{}};
+    auto body = Body{nullptr, BodyConf{}};
+    auto rdef = RevoluteJoinConf{&body, &body, Length2{}};
     auto revJoint1 = RevoluteJoint{rdef};
     auto revJoint2 = RevoluteJoint{rdef};
-    auto def = GearJointDef{&revJoint1, &revJoint2};
+    auto def = GearJointConf{&revJoint1, &revJoint2};
     auto joint = GearJoint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -140,11 +141,11 @@ TEST(GearJoint, Construction)
 
 TEST(GearJoint, ShiftOrigin)
 {
-    auto body = Body{nullptr, BodyDef{}};
-    auto rdef = RevoluteJointDef{&body, &body, Length2{}};
+    auto body = Body{nullptr, BodyConf{}};
+    auto rdef = RevoluteJoinConf{&body, &body, Length2{}};
     auto revJoint1 = RevoluteJoint{rdef};
     auto revJoint2 = RevoluteJoint{rdef};
-    auto def = GearJointDef{&revJoint1, &revJoint2};
+    auto def = GearJointConf{&revJoint1, &revJoint2};
     auto joint = GearJoint{def};
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
@@ -152,24 +153,24 @@ TEST(GearJoint, ShiftOrigin)
 
 TEST(GearJoint, SetRatio)
 {
-    Body body{nullptr, BodyDef{}};
-    RevoluteJointDef rdef{&body, &body, Length2{}};
+    Body body{nullptr, BodyConf{}};
+    RevoluteJoinConf rdef{&body, &body, Length2{}};
     RevoluteJoint revJoint1{rdef};
     RevoluteJoint revJoint2{rdef};
-    auto def = GearJointDef{&revJoint1, &revJoint2};
+    auto def = GearJointConf{&revJoint1, &revJoint2};
     auto joint = GearJoint{def};
     ASSERT_EQ(joint.GetRatio(), Real(1));
     joint.SetRatio(Real(2));
     EXPECT_EQ(joint.GetRatio(), Real(2));
 }
 
-TEST(GearJoint, GetGearJointDef)
+TEST(GearJoint, GetGearJointConf)
 {
-    Body body{nullptr, BodyDef{}};
-    RevoluteJointDef rdef{&body, &body, Length2{}};
+    Body body{nullptr, BodyConf{}};
+    RevoluteJoinConf rdef{&body, &body, Length2{}};
     RevoluteJoint revJoint1{rdef};
     RevoluteJoint revJoint2{rdef};
-    GearJointDef def{&revJoint1, &revJoint2};
+    GearJointConf def{&revJoint1, &revJoint2};
     GearJoint joint{def};
     
     ASSERT_EQ(GetType(joint), def.type);
@@ -184,7 +185,7 @@ TEST(GearJoint, GetGearJointDef)
     ASSERT_EQ(joint.GetJoint2(), def.joint2);
     ASSERT_EQ(joint.GetRatio(), def.ratio);
     
-    const auto cdef = GetGearJointDef(joint);
+    const auto cdef = GetGearJointConf(joint);
     EXPECT_EQ(cdef.type, JointType::Gear);
     EXPECT_EQ(cdef.bodyA, def.joint1->GetBodyB());
     EXPECT_EQ(cdef.bodyB, def.joint2->GetBodyB());
@@ -199,20 +200,20 @@ TEST(GearJoint, GetGearJointDef)
 TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto p3 = Length2{+2_m, 0_m};
     const auto p4 = Length2{+3_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p3));
-    const auto b4 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p4));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
+    const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    GearJointDef def{
-        world.CreateJoint(RevoluteJointDef{b1, b2, Length2{}}),
-        world.CreateJoint(RevoluteJointDef{b4, b3, Length2{}})
+    GearJointConf def{
+        world.CreateJoint(RevoluteJoinConf{b1, b2, Length2{}}),
+        world.CreateJoint(RevoluteJoinConf{b4, b3, Length2{}})
     };
     ASSERT_NE(def.joint1, nullptr);
     ASSERT_NE(def.joint2, nullptr);
@@ -230,20 +231,20 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
 TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto p3 = Length2{+2_m, 0_m};
     const auto p4 = Length2{+3_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p3));
-    const auto b4 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p4));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
+    const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    GearJointDef def{
-        world.CreateJoint(PrismaticJointDef{b1, b2, Length2{}, UnitVec2::GetTop()}),
-        world.CreateJoint(PrismaticJointDef{b4, b3, Length2{}, UnitVec2::GetTop()})
+    GearJointConf def{
+        world.CreateJoint(PrismaticJointConf{b1, b2, Length2{}, UnitVec::GetTop()}),
+        world.CreateJoint(PrismaticJointConf{b4, b3, Length2{}, UnitVec::GetTop()})
     };
     ASSERT_NE(def.joint1, nullptr);
     ASSERT_NE(def.joint2, nullptr);
@@ -261,20 +262,20 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
 TEST(GearJoint, GetAnchorAandB)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto p3 = Length2{+2_m, 0_m};
     const auto p4 = Length2{+3_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto b3 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p3));
-    const auto b4 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p4));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
+    const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    GearJointDef def{
-        world.CreateJoint(RevoluteJointDef{b1, b2, Length2{}}),
-        world.CreateJoint(RevoluteJointDef{b4, b3, Length2{}})
+    GearJointConf def{
+        world.CreateJoint(RevoluteJoinConf{b1, b2, Length2{}}),
+        world.CreateJoint(RevoluteJoinConf{b4, b3, Length2{}})
     };
     ASSERT_NE(def.joint1, nullptr);
     ASSERT_NE(def.joint2, nullptr);

@@ -29,6 +29,7 @@
 #include <memory>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Fixture attorney.
 ///
@@ -62,7 +63,7 @@ private:
     }
     
     /// @brief Creates a new fixture for the given body and with the given settings.
-    static auto Create(Body* body, const FixtureDef& def,
+    static auto Create(Body* body, const FixtureConf& def,
                            const Shape& shape)
     {
         return new Fixture{body, def, shape};
@@ -71,6 +72,7 @@ private:
     friend class World;
 };
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_FIXTUREATTY_HPP

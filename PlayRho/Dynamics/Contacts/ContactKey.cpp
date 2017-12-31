@@ -26,6 +26,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
+namespace d2 {
 
 ContactKey GetContactKey(const Fixture& fixtureA, ChildCounter childIndexA,
                          const Fixture& fixtureB, ChildCounter childIndexB) noexcept
@@ -40,4 +41,5 @@ ContactKey GetContactKey(const Contact& contact) noexcept
                          *contact.GetFixtureB(), contact.GetChildIndexB());
 }
 
+} // namespace d2
 } // namespace playrho

@@ -41,7 +41,7 @@ public:
     {
         m_world.SetGravity(LinearAcceleration2{});
 
-        const auto def = BodyDef{}
+        const auto def = BodyConf{}
             .UseType(BodyType::Dynamic)
             .UseLinearDamping(0.9_Hz)
         	.UseAngularDamping(0.9_Hz);

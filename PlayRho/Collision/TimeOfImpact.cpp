@@ -25,8 +25,32 @@
 
 namespace playrho {
 
-TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep2D& sweepA,
-                       const DistanceProxy& proxyB, const Sweep2D& sweepB,
+const char *GetName(TOIOutput::State state) noexcept
+{
+    switch (state)
+    {
+        case TOIOutput::e_unknown: break;
+        case TOIOutput::e_touching: return "touching";
+        case TOIOutput::e_separated: return "separated";
+        case TOIOutput::e_overlapped: return "overlapped";
+        case TOIOutput::e_nextAfter: return "next-after";
+        case TOIOutput::e_maxRootIters: return "max-root-iters";
+        case TOIOutput::e_maxToiIters: return "max-toi-iters";
+        case TOIOutput::e_belowMinTarget: return "below-min-target";
+        case TOIOutput::e_maxDistIters: return "max-dist-iters";
+        case TOIOutput::e_targetDepthExceedsTotalRadius: return "target-depth-exceeds-total-radius";
+        case TOIOutput::e_minTargetSquaredOverflow: return "min-target-squared-overflow";
+        case TOIOutput::e_maxTargetSquaredOverflow: return "max-target-squared-overflow";
+        case TOIOutput::e_notFinite: return "not-finite";
+    }
+    assert(state == TOIOutput::e_unknown);
+    return "unknown";
+}
+
+namespace d2 {
+
+TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
+                       const DistanceProxy& proxyB, const Sweep& sweepB,
                        ToiConf conf)
 {
     assert(IsValid(sweepA));
@@ -258,7 +282,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep2D& sweepA,
                 {
                     a2 = t;
                     s2 = s;
-                }                
+                }
             }
 
             // Found a new t2: t2, t2xfA, and t2xfB have been updated.
@@ -274,26 +298,5 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep2D& sweepA,
     return TOIOutput{t1, stats, TOIOutput::e_maxToiIters};
 }
 
-const char *GetName(TOIOutput::State state) noexcept
-{
-    switch (state)
-    {
-        case TOIOutput::e_unknown: break;
-        case TOIOutput::e_touching: return "touching";
-        case TOIOutput::e_separated: return "separated";
-        case TOIOutput::e_overlapped: return "overlapped";
-        case TOIOutput::e_nextAfter: return "next-after";
-        case TOIOutput::e_maxRootIters: return "max-root-iters";
-        case TOIOutput::e_maxToiIters: return "max-toi-iters";
-        case TOIOutput::e_belowMinTarget: return "below-min-target";
-        case TOIOutput::e_maxDistIters: return "max-dist-iters";
-        case TOIOutput::e_targetDepthExceedsTotalRadius: return "target-depth-exceeds-total-radius";
-        case TOIOutput::e_minTargetSquaredOverflow: return "min-target-squared-overflow";
-        case TOIOutput::e_maxTargetSquaredOverflow: return "max-target-squared-overflow";
-        case TOIOutput::e_notFinite: return "not-finite";
-    }
-    assert(state == TOIOutput::e_unknown);
-    return "unknown";
-}
-
+} // namespace d2
 } // namespace playrho

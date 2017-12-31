@@ -105,13 +105,13 @@ namespace playrho {
     
     /// @brief Per-step statistics.
     ///
-    /// @details These are statistics output from the World::Step method.
+    /// @details These are statistics output from the d2::World::Step method.
     /// @note This data structure is 116-bytes large (on at least one 64-bit platform with
     ///   4-byte Real type).
     /// @note Efficient transfer of this data is predicated on compiler support for
     ///   "named-return-value-optimization" (NRVO) - a form of "copy elision".
     ///
-    /// @sa World::Step.
+    /// @sa d2::World::Step.
     /// @sa https://en.wikipedia.org/wiki/Return_value_optimization
     /// @sa http://en.cppreference.com/w/cpp/language/copy_elision
     ///

@@ -50,13 +50,13 @@ public:
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
-                auto bd = BodyDef{};
+                auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.5f + 1.0f * i, 5.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
-                m_world.CreateJoint(WeldJointDef{
+                m_world.CreateJoint(WeldJointConf{
                     prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * 1_m
                 });
 
@@ -70,13 +70,13 @@ public:
             auto prevBody = ground;
             for (auto i = 0; i < 3; ++i)
             {
-                auto bd = BodyDef{};
+                auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.0f + 2.0f * i, 15.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
-                auto jd = WeldJointDef{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * 1_m};
+                auto jd = WeldJointConf{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * 1_m};
                 jd.frequency = 5_Hz;
                 jd.dampingRatio = 0.7f;
                 m_world.CreateJoint(jd);
@@ -91,14 +91,14 @@ public:
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
-                auto bd = BodyDef{};
+                auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-4.5f + 1.0f * i, 5.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
                 if (i > 0)
                 {
-                    m_world.CreateJoint(WeldJointDef{
+                    m_world.CreateJoint(WeldJointConf{
                         prevBody, body, Vec2(-5.0f + 1.0f * i, 5.0f) * 1_m
                     });
                 }
@@ -112,14 +112,14 @@ public:
             auto prevBody = ground;
             for (auto i = 0; i < e_count; ++i)
             {
-                auto bd = BodyDef{};
+                auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(5.5f + 1.0f * i, 10.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
                 if (i > 0)
                 {
-                    auto jd = WeldJointDef{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * 1_m};
+                    auto jd = WeldJointConf{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * 1_m};
                     jd.frequency = 8_Hz;
                     jd.dampingRatio = 0.7f;
                     m_world.CreateJoint(jd);
@@ -134,7 +134,7 @@ public:
         const auto polyshape = Shape{conf};
         for (auto i = 0; i < 2; ++i)
         {
-            auto bd = BodyDef{};
+            auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
@@ -145,7 +145,7 @@ public:
         const auto circleshape = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2)};
         for (auto i = 0; i < 2; ++i)
         {
-            auto bd = BodyDef{};
+            auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);

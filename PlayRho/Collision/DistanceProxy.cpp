@@ -23,6 +23,7 @@
 #include <iterator>
 
 namespace playrho {
+namespace d2 {
 
 bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
 {
@@ -170,4 +171,5 @@ bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept
     return true;
 }
 
+} // namespace d2
 } // namespace playrho

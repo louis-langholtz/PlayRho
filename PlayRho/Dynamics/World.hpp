@@ -27,14 +27,14 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Range.hpp>
-#include <PlayRho/Dynamics/WorldDef.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/BodyAtty.hpp>
-#include <PlayRho/Dynamics/FixtureDef.hpp>
+#include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/WorldCallbacks.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Collision/Shapes/ShapeDef.hpp>
+#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/ContactAtty.hpp>
 #include <PlayRho/Dynamics/JointAtty.hpp>
@@ -48,17 +48,20 @@
 
 namespace playrho {
 
-struct BodyDef;
-struct JointDef;
-struct FixtureDef;
+class StepConf;
+enum class BodyType;
+
+namespace d2 {
+
+struct BodyConf;
+struct JointConf;
+struct FixtureConf;
 class Body;
 class Contact;
 class Fixture;
 class Joint;
 struct Island;
-class StepConf;
 class Shape;
-enum class BodyType;
 
 /// @defgroup PhysicalEntities Physical Entity Classes
 ///
@@ -110,7 +113,7 @@ public:
     
     /// @brief Constructs a world object.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
-    explicit World(const WorldDef& def = GetDefaultWorldDef());
+    explicit World(const WorldConf& def = GetDefaultWorldConf());
 
     /// @brief Copy constructor.
     World(const World& other);
@@ -146,7 +149,7 @@ public:
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
     /// @sa PhysicalEntities
-    Body* CreateBody(const BodyDef& def = GetDefaultBodyDef());
+    Body* CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
     /// @brief Destroys the given body.
     /// @note This function is locked during callbacks.
@@ -167,7 +170,7 @@ public:
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @throws InvalidArgument if the given definition is not allowed.
     /// @sa PhysicalEntities
-    Joint* CreateJoint(const JointDef& def);
+    Joint* CreateJoint(const JointConf& def);
 
     /// @brief Destroys a joint.
     /// @details This may cause the connected bodies to begin colliding.
@@ -221,7 +224,7 @@ public:
     /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
     /// @param aabb the query box.
     /// @param callback User implemented callback function.
-    void QueryAABB(const AABB2D& aabb, QueryFixtureCallback callback) const;
+    void QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const;
 
     /// @brief Ray-cast operation code.
     ///
@@ -233,7 +236,7 @@ public:
     using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture,
                                                         ChildCounter child,
                                                         Length2 point,
-                                                        UnitVec2 normal)>;
+                                                        UnitVec normal)>;
 
     /// @brief Ray-cast the world for all fixtures in the path of the ray.
     ///
@@ -308,7 +311,7 @@ public:
     /// @brief Sets the type of the given body.
     /// @note This may alter the body's mass and velocity.
     /// @throws WrongState if this method is called while the world is locked.
-    void SetType(Body& body, BodyType type);
+    void SetType(Body& body, playrho::BodyType type);
 
     /// @brief Register for proxies for the given fixture.
     bool RegisterForProxies(Fixture* fixture);
@@ -325,7 +328,7 @@ public:
     ///    maximum vertex radius.
     /// @throws WrongState if this method is called while the world is locked.
     Fixture* CreateFixture(Body& body, const Shape& shape,
-                           const FixtureDef& def = GetDefaultFixtureDef(),
+                           const FixtureConf& def = GetDefaultFixtureConf(),
                            bool resetMassData = true);
 
     /// @brief Destroys a fixture.
@@ -529,7 +532,7 @@ private:
     /// @param body Body to update.
     /// @param pos New position to set the given body to.
     /// @param vel New velocity to set the given body to.
-    static void UpdateBody(Body& body, const Position2D& pos, const Velocity2D& vel);
+    static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
 
     /// @brief Reset bodies for solve TOI.
     void ResetBodiesForSolveTOI();
@@ -721,14 +724,14 @@ private:
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   body's fixtures.
     ContactCounter Synchronize(Body& body,
-                               Transformation2D xfm1, Transformation2D xfm2,
+                               Transformation xfm1, Transformation xfm2,
                                Real multiplier, Length extension);
 
     /// @brief Synchronizes the given fixture.
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   fixture shape's children.
     ContactCounter Synchronize(Fixture& fixture,
-                               Transformation2D xfm1, Transformation2D xfm2,
+                               Transformation xfm1, Transformation xfm2,
                                Length2 displacement, Length extension);
     
     /// @brief Creates and destroys proxies.
@@ -1117,28 +1120,28 @@ BodyCounter Awaken(World& world) noexcept;
 
 /// @brief Sets the accelerations of all the world's bodies.
 /// @relatedalso World
-void SetAccelerations(World& world, std::function<Acceleration2D(const Body& b)> fn) noexcept;
+void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept;
 
 /// @brief Sets the accelerations of all the world's bodies to the given value.
 /// @relatedalso World
-void SetAccelerations(World& world, Acceleration2D acceleration) noexcept;
+void SetAccelerations(World& world, Acceleration acceleration) noexcept;
 
 /// @brief Clears forces.
 /// @details Manually clear the force buffer on all bodies.
 /// @relatedalso World
 inline void ClearForces(World& world) noexcept
 {
-    SetAccelerations(world, Acceleration2D{world.GetGravity(), 0 * RadianPerSquareSecond});
+    SetAccelerations(world, Acceleration{world.GetGravity(), 0 * RadianPerSquareSecond});
 }
 
 /// @brief Creates a rectangular enclosure.
 /// @relatedalso World
 Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions,
-                                     const ShapeDef& baseConf);
+                                     const ShapeConf& baseConf);
 
 /// @brief Creates a square enclosure.
 /// @relatedalso World
-inline Body* CreateSquareEnclosingBody(World& world, Length size, const ShapeDef& baseConf)
+inline Body* CreateSquareEnclosingBody(World& world, Length size, const ShapeConf& baseConf)
 {
     return CreateRectangularEnclosingBody(world, Length2{size, size}, baseConf);
 }
@@ -1147,6 +1150,7 @@ inline Body* CreateSquareEnclosingBody(World& world, Length size, const ShapeDef
 /// @relatedalso World
 Body* FindClosestBody(const World& world, Length2 location) noexcept;
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_WORLD_HPP

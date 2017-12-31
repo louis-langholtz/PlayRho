@@ -22,6 +22,7 @@
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(JointType, ToString)
 {

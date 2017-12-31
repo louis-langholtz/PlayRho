@@ -79,7 +79,7 @@ public:
         {
             for (auto i = 0; i < e_rowCount; ++i)
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2{
                     -10.0f + (2.1f * j + 1.0f + 0.01f * i) * (radius / 1_m),
@@ -111,7 +111,7 @@ public:
     {
         const auto radius = wall_length/ 10; // 2
 
-        BodyDef bd;
+        BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
@@ -128,7 +128,7 @@ public:
     {
         const auto side_length = wall_length / Real{5}; // 4
         // originally restitution was 0.8f
-        BodyDef bd;
+        BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
@@ -165,7 +165,7 @@ public:
                 const auto direction = angle_from_center + Pi * 1_rad;
                 const auto magnitude = sqrt(Square(StripUnit(wall_length)) * 2) *
                 	GetMass(b) * 20_mps;
-                const auto impulse = Momentum2{magnitude * UnitVec2::Get(direction)};
+                const auto impulse = Momentum2{magnitude * UnitVec::Get(direction)};
                 ApplyLinearImpulse(b, impulse, b.GetWorldCenter());
             }
         }        

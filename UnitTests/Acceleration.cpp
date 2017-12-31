@@ -22,31 +22,32 @@
 #include <PlayRho/Common/Acceleration.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(Acceleration, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(Acceleration2D), std::size_t(12)); break;
-        case  8: EXPECT_EQ(sizeof(Acceleration2D), std::size_t(24)); break;
-        case 16: EXPECT_EQ(sizeof(Acceleration2D), std::size_t(48)); break;
+        case  4: EXPECT_EQ(sizeof(Acceleration), std::size_t(12)); break;
+        case  8: EXPECT_EQ(sizeof(Acceleration), std::size_t(24)); break;
+        case 16: EXPECT_EQ(sizeof(Acceleration), std::size_t(48)); break;
         default: FAIL(); break;
     }
 }
 
 TEST(Acceleration, Addition)
 {
-    EXPECT_EQ(Acceleration2D{} + Acceleration2D{}, Acceleration2D{});
-    EXPECT_EQ((Acceleration2D{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond})
-            + (Acceleration2D{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond}),
-              (Acceleration2D{LinearAcceleration2{2_mps2, 2_mps2}, 2 * RadianPerSquareSecond}));
+    EXPECT_EQ(Acceleration{} + Acceleration{}, Acceleration{});
+    EXPECT_EQ((Acceleration{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond})
+            + (Acceleration{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond}),
+              (Acceleration{LinearAcceleration2{2_mps2, 2_mps2}, 2 * RadianPerSquareSecond}));
 }
 
 TEST(Acceleration, Subtraction)
 {
-    EXPECT_EQ(Acceleration2D{} - Acceleration2D{}, Acceleration2D{});
-    EXPECT_EQ((Acceleration2D{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond})
-            - (Acceleration2D{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond}),
-              (Acceleration2D{LinearAcceleration2{0_mps2, 0_mps2}, 0 * RadianPerSquareSecond}));
+    EXPECT_EQ(Acceleration{} - Acceleration{}, Acceleration{});
+    EXPECT_EQ((Acceleration{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond})
+            - (Acceleration{LinearAcceleration2{1_mps2, 1_mps2}, 1 * RadianPerSquareSecond}),
+              (Acceleration{LinearAcceleration2{0_mps2, 0_mps2}, 0 * RadianPerSquareSecond}));
 }
 

@@ -23,9 +23,10 @@
 #define PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJointDef.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJoinConf.hpp>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Revolute Joint.
 ///
@@ -49,7 +50,7 @@ class RevoluteJoint : public Joint
 public:
     
     /// @brief Initializing constructor.
-    RevoluteJoint(const RevoluteJointDef& def);
+    RevoluteJoint(const RevoluteJoinConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -204,6 +205,7 @@ inline Torque GetMotorTorque(const RevoluteJoint& joint, Frequency inv_dt) noexc
     return joint.GetMotorImpulse() * inv_dt;
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINT_HPP

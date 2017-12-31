@@ -23,6 +23,7 @@
 #include <vector>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(DistanceProxy, ByteSize)
 {
@@ -60,7 +61,7 @@ TEST(DistanceProxy, OneVecInitialization)
 {
     const auto radius = 1_m;
     const auto vertex0 = Length2{2_m, -3_m};
-    const auto normal0 = UnitVec2{};
+    const auto normal0 = UnitVec{};
     const DistanceProxy foo{radius, 1, &vertex0, &normal0};
     EXPECT_EQ(radius, GetVertexRadius(foo));
     EXPECT_EQ(1, foo.GetVertexCount());
@@ -71,7 +72,7 @@ TEST(DistanceProxy, OneVecSupportIndex)
 {
     const auto radius = 1_m;
     const auto vertex0 = Length2{2_m, -3_m};
-    const auto normal0 = UnitVec2{};
+    const auto normal0 = UnitVec{};
     const DistanceProxy foo{radius, 1, &vertex0, &normal0};
     EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(vertex0)));
     EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2{})));
@@ -85,7 +86,7 @@ TEST(DistanceProxy, TwoVecInitialization)
     const auto vertex1 = Length2{-10_m, -1_m};
     const Length2 vertices[] = {vertex0, vertex1};
     const auto normal0 = GetUnitVector(vertex1 - vertex0);
-    const UnitVec2 normals[] = {normal0, -normal0};
+    const UnitVec normals[] = {normal0, -normal0};
     const DistanceProxy foo{radius, 2, vertices, normals};
     EXPECT_EQ(radius, GetVertexRadius(foo));
     EXPECT_EQ(2, foo.GetVertexCount());
@@ -100,7 +101,7 @@ TEST(DistanceProxy, TwoVecSupportIndex)
     const auto vertex1 = Length2{-10_m, -1_m};
     const Length2 vertices[] = {vertex0, vertex1};
     const auto normal0 = GetUnitVector(vertex1 - vertex0);
-    const UnitVec2 normals[] = {normal0, -normal0};
+    const UnitVec normals[] = {normal0, -normal0};
     const DistanceProxy foo{radius, 2, vertices, normals};
     EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(vertex0)));
     EXPECT_EQ(0, GetSupportIndex(foo, GetVec2(Length2{GetY(vertex0), GetX(vertex0)})));
@@ -120,7 +121,7 @@ TEST(DistanceProxy, ThreeVertices)
     const auto n0 = GetUnitVector(v1 - v0);
     const auto n1 = GetUnitVector(v2 - v1);
     const auto n2 = GetUnitVector(v0 - v2);
-    const UnitVec2 normals[] = {n0, n1, n2};
+    const UnitVec normals[] = {n0, n1, n2};
     
     const DistanceProxy foo{radius, 3, vertices, normals};
     
@@ -160,7 +161,7 @@ TEST(DistanceProxy, TestPoint)
     const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
     const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
     const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
-    const UnitVec2 squareNormals[] = {n1, n2, n3, n4};
+    const UnitVec squareNormals[] = {n1, n2, n3, n4};
     const auto radius = 0.5_m;
     DistanceProxy dp{radius, 4, squareVerts, squareNormals};
 
@@ -191,12 +192,12 @@ TEST(DistanceProxy, GetMaxSeparationStopping)
     const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
     const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
     const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
-    const UnitVec2 normals[] = {n1, n2, n3, n4};
+    const UnitVec normals[] = {n1, n2, n3, n4};
     const auto radius = 1_m;
     const auto dp = DistanceProxy{radius, 4, vertices, normals};
     
-    const auto xfm1 = Transformation2D{Length2{-1_m, 0_m}, UnitVec2::Get(190_deg)};
-    const auto xfm2 = Transformation2D{Length2{+1_m, 0_m}, UnitVec2::Get( 95_deg)};
+    const auto xfm1 = Transformation{Length2{-1_m, 0_m}, UnitVec::Get(190_deg)};
+    const auto xfm2 = Transformation{Length2{+1_m, 0_m}, UnitVec::Get( 95_deg)};
     const auto resultRegular = GetMaxSeparation(dp, xfm1, dp, xfm2);
     const auto resultStopped = GetMaxSeparation(dp, xfm1, dp, xfm2, -3_m);
     
@@ -214,14 +215,14 @@ TEST(DistanceProxy, GetMaxSeparationFromWorld)
     const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
     const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
     const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
-    const UnitVec2 squareNormals[] = {n1, n2, n3, n4};
+    const UnitVec squareNormals[] = {n1, n2, n3, n4};
     const auto radius = 0.5_m;
     const auto squareDp = DistanceProxy{radius, 4, squareVerts, squareNormals};
     
     const auto pos5 = Length2{-2_m, 2_m};
     const Length2 circleVerts[] = {pos5};
-    const auto n5 = UnitVec2::GetZero();
-    const UnitVec2 circleNormals[] = {n5};
+    const auto n5 = UnitVec::GetZero();
+    const UnitVec circleNormals[] = {n5};
     const auto circleDp = DistanceProxy{radius, 1, circleVerts, circleNormals};
     
     const auto result1 = GetMaxSeparation(squareDp, circleDp);
@@ -248,7 +249,7 @@ TEST(DistanceProxy, Equality)
     const auto n2 = GetUnitVector(GetFwdPerpendicular(pos3 - pos2));
     const auto n3 = GetUnitVector(GetFwdPerpendicular(pos4 - pos3));
     const auto n4 = GetUnitVector(GetFwdPerpendicular(pos1 - pos4));
-    const UnitVec2 norms[] = {n1, n2, n3, n4};
+    const UnitVec norms[] = {n1, n2, n3, n4};
 
     EXPECT_TRUE(DistanceProxy(0.0_m, 4, verts, norms) == DistanceProxy(0.0_m, 4, verts, norms));
     EXPECT_FALSE(DistanceProxy(1.0_m, 4, verts, norms) == DistanceProxy(0.0_m, 4, verts, norms));

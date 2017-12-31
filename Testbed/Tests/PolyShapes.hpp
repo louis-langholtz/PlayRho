@@ -67,7 +67,7 @@ public:
     }
     
     Color m_color = Color(0.95f, 0.95f, 0.6f);
-    Transformation2D m_xf;
+    Transformation m_xf;
     Drawer* g_debugDraw;
 };
 
@@ -153,7 +153,7 @@ public:
             m_bodies[m_bodyIndex] = nullptr;
         }
 
-        BodyDef bd;
+        BodyConf bd;
         bd.type = BodyType::Dynamic;
 
         const auto x = RandomFloat(-2.0f, 2.0f);

@@ -28,11 +28,12 @@
 /// Definitions for the AABB class.
 
 namespace playrho {
+namespace d2 {
 
-AABB2D ComputeAABB(const DistanceProxy& proxy, const Transformation2D& xf) noexcept
+AABB ComputeAABB(const DistanceProxy& proxy, const Transformation& xf) noexcept
 {
     assert(IsValid(xf));
-    auto result = AABB2D{};
+    auto result = AABB{};
     for (const auto& vertex: proxy.GetVertices())
     {
         Include(result, Transform(vertex, xf));
@@ -40,12 +41,12 @@ AABB2D ComputeAABB(const DistanceProxy& proxy, const Transformation2D& xf) noexc
     return GetFattenedAABB(result, proxy.GetVertexRadius());
 }
 
-AABB2D ComputeAABB(const DistanceProxy& proxy,
-                   const Transformation2D& xfm0, const Transformation2D& xfm1) noexcept
+AABB ComputeAABB(const DistanceProxy& proxy,
+                   const Transformation& xfm0, const Transformation& xfm1) noexcept
 {
     assert(IsValid(xfm0));
     assert(IsValid(xfm1));
-    auto result = AABB2D{};
+    auto result = AABB{};
     for (const auto& vertex: proxy.GetVertices())
     {
         Include(result, Transform(vertex, xfm0));
@@ -54,9 +55,9 @@ AABB2D ComputeAABB(const DistanceProxy& proxy,
     return GetFattenedAABB(result, proxy.GetVertexRadius());
 }
 
-AABB2D ComputeAABB(const Shape& shape, const Transformation2D& xf) noexcept
+AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept
 {
-    auto sum = AABB2D{};
+    auto sum = AABB{};
     const auto childCount = GetChildCount(shape);
     for (auto i = decltype(childCount){0}; i < childCount; ++i)
     {
@@ -65,14 +66,14 @@ AABB2D ComputeAABB(const Shape& shape, const Transformation2D& xf) noexcept
     return sum;
 }
 
-AABB2D ComputeAABB(const Fixture& fixture) noexcept
+AABB ComputeAABB(const Fixture& fixture) noexcept
 {
     return ComputeAABB(fixture.GetShape(), fixture.GetBody()->GetTransformation());
 }
 
-AABB2D ComputeAABB(const Body& body)
+AABB ComputeAABB(const Body& body)
 {
-    auto sum = AABB2D{};
+    auto sum = AABB{};
     const auto xf = body.GetTransformation();
     for (auto&& f: body.GetFixtures())
     {
@@ -81,7 +82,7 @@ AABB2D ComputeAABB(const Body& body)
     return sum;
 }
 
-AABB2D ComputeIntersectingAABB(const Fixture& fA, ChildCounter iA,
+AABB ComputeIntersectingAABB(const Fixture& fA, ChildCounter iA,
                              const Fixture& fB, ChildCounter iB) noexcept
 {
     const auto xA = fA.GetBody()->GetTransformation();
@@ -93,10 +94,11 @@ AABB2D ComputeIntersectingAABB(const Fixture& fA, ChildCounter iA,
     return GetIntersectingAABB(aabbA, aabbB);
 }
 
-AABB2D ComputeIntersectingAABB(const Contact& contact)
+AABB ComputeIntersectingAABB(const Contact& contact)
 {
     return ComputeIntersectingAABB(*contact.GetFixtureA(), contact.GetChildIndexA(),
                                    *contact.GetFixtureB(), contact.GetChildIndexB());
 }
 
+} // namespace d2
 } // namespace playrho

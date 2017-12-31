@@ -30,14 +30,16 @@
 #include <stdexcept>
 
 namespace playrho {
+class StepConf;
+struct ConstraintSolverConf;
+
+namespace d2 {
 
 class Body;
-class StepConf;
-struct Velocity2D;
-struct ConstraintSolverConf;
+struct Velocity;
 class BodyConstraint;
 class JointVisitor;
-struct JointDef;
+struct JointConf;
 
 /// @defgroup JointsGroup Joint Classes
 /// @brief The user creatable classes that specify constraints on one or more Body instances.
@@ -82,7 +84,7 @@ public:
     };
 
     /// @brief Is the given definition okay.
-    static bool IsOkay(const JointDef& def) noexcept;
+    static bool IsOkay(const JointConf& def) noexcept;
 
     virtual ~Joint() = default;
 
@@ -136,7 +138,7 @@ public:
 protected:
     
     /// @brief Initializing constructor.
-    explicit Joint(const JointDef& def);
+    explicit Joint(const JointConf& def);
 
 private:
     friend class JointAtty;
@@ -154,7 +156,7 @@ private:
     };
 
     /// @brief Gets the flags value for the given joint definition.
-    static FlagsType GetFlags(const JointDef& def) noexcept;
+    static FlagsType GetFlags(const JointConf& def) noexcept;
 
     /// @brief Dynamically allocates and instantiates the out-type from the given data.
     template <class OUT_TYPE, class IN_TYPE>
@@ -169,7 +171,7 @@ private:
     
     /// @brief Creates a new joint based on the given definition.
     /// @throws InvalidArgument if given a joint definition with a type that's not recognized.
-    static Joint* Create(const JointDef& def);
+    static Joint* Create(const JointConf& def);
 
     /// @brief Destroys the given joint.
     /// @note This calls the joint's destructor.
@@ -178,14 +180,16 @@ private:
     /// @brief Initializes velocity constraint data based on the given solver data.
     /// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
     /// @sa SolveVelocityConstraints.
-    virtual void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
+    virtual void InitVelocityConstraints(BodyConstraintsMap& bodies,
+                                         const playrho::StepConf& step,
                                          const ConstraintSolverConf& conf) = 0;
 
     /// @brief Solves velocity constraint.
     /// @pre <code>InitVelocityConstraints</code> has been called.
     /// @sa InitVelocityConstraints.
     /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
-    virtual bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) = 0;
+    virtual bool SolveVelocityConstraints(BodyConstraintsMap& bodies,
+                                          const playrho::StepConf& step) = 0;
 
     /// @brief Solves the position constraint.
     /// @return <code>true</code> if the position errors are within tolerance.
@@ -282,6 +286,7 @@ inline void IncMotorSpeed(T& j, AngularVelocity delta)
     j.SetMotorSpeed(j.GetMotorSpeed() + delta);
 }
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP

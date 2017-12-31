@@ -23,6 +23,7 @@
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 
 namespace playrho {
+namespace d2 {
 
 JointType GetType(const Joint& joint) noexcept
 {
@@ -52,4 +53,5 @@ const char* ToString(JointType type) noexcept
     return "Unknown";
 }
 
+} // namespace d2
 } // namespace playrho

@@ -24,10 +24,11 @@
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyDef.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(FrictionJoint, ByteSize)
 {
@@ -46,9 +47,9 @@ TEST(FrictionJoint, ByteSize)
     }
 }
 
-TEST(FrictionJointDef, DefaultConstruction)
+TEST(FrictionJointConf, DefaultConstruction)
 {
-    FrictionJointDef def{};
+    FrictionJointConf def{};
 
     EXPECT_EQ(def.type, JointType::Friction);
     EXPECT_EQ(def.bodyA, nullptr);
@@ -62,15 +63,15 @@ TEST(FrictionJointDef, DefaultConstruction)
     EXPECT_EQ(def.maxTorque, 0_Nm);
 }
 
-TEST(FrictionJointDef, InitializingConstructor)
+TEST(FrictionJointConf, InitializingConstructor)
 {
-    World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto anchor = Length2{0_m, 0_m};
-    const auto def = FrictionJointDef{b1, b2, anchor};
+    const auto def = FrictionJointConf{b1, b2, anchor};
     EXPECT_EQ(def.bodyA, b1);
     EXPECT_EQ(def.bodyB, b2);
     EXPECT_EQ(def.localAnchorA, GetLocalPoint(*b1, anchor));
@@ -83,7 +84,7 @@ TEST(FrictionJoint, Construction)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
 
-    auto def = FrictionJointDef{b0, b1, Length2{}};
+    auto def = FrictionJointConf{b0, b1, Length2{}};
     FrictionJoint joint{def};
     
     EXPECT_EQ(GetType(joint), def.type);
@@ -106,9 +107,9 @@ TEST(FrictionJoint, Construction)
     EXPECT_EQ(visitor.GetType().value(), JointType::Friction);
 }
 
-TEST(FrictionJoint, GetFrictionJointDef)
+TEST(FrictionJoint, GetFrictionJointConf)
 {
-    FrictionJointDef def;
+    FrictionJointConf def;
     FrictionJoint joint{def};
     
     ASSERT_EQ(GetType(joint), def.type);
@@ -122,7 +123,7 @@ TEST(FrictionJoint, GetFrictionJointDef)
     ASSERT_EQ(joint.GetMaxForce(), def.maxForce);
     ASSERT_EQ(joint.GetMaxTorque(), def.maxTorque);
     
-    const auto cdef = GetFrictionJointDef(joint);
+    const auto cdef = GetFrictionJointConf(joint);
     EXPECT_EQ(cdef.type, JointType::Friction);
     EXPECT_EQ(cdef.bodyA, nullptr);
     EXPECT_EQ(cdef.bodyB, nullptr);
@@ -138,14 +139,14 @@ TEST(FrictionJoint, GetFrictionJointDef)
 TEST(FrictionJoint, WithDynamicCircles)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    World world{WorldDef{}.UseGravity(LinearAcceleration2{})};
+    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    auto jd = FrictionJointDef{};
+    auto jd = FrictionJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;
     world.CreateJoint(jd);

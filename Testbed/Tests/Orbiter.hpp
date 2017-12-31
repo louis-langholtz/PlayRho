@@ -31,7 +31,7 @@ namespace testbed {
         {
             m_world.SetGravity(LinearAcceleration2{});
 
-            BodyDef bd;
+            BodyConf bd;
             const auto radius = Real{12.0f};
 
             bd.type = BodyType::Static;
@@ -44,7 +44,7 @@ namespace testbed {
             m_orbiter = m_world.CreateBody(bd);
             m_orbiter->CreateFixture(DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2));
             
-            const auto velocity = Velocity2D{
+            const auto velocity = Velocity{
                 Vec2{Pi * radius / 2, 0} * 1_mps,
                 360_deg / 1_s
             };

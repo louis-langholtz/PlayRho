@@ -33,7 +33,7 @@ public:
         ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
 
         {
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
 
             bd.location = Vec2(-10.0f, 20.0f) * 1_m;
@@ -44,11 +44,11 @@ public:
             body->CreateFixture(Shape(circleConf));
 
             const auto w = 100.0f;
-            body->SetVelocity(Velocity2D{
+            body->SetVelocity(Velocity{
                 Vec2(-8.0f * w, 0.0f) * 1_mps, w * 1_rad / 1_s
             });
             
-            RevoluteJointDef rjd(ground, body, Vec2(-10.0f, 12.0f) * 1_m);
+            RevoluteJoinConf rjd(ground, body, Vec2(-10.0f, 12.0f) * 1_m);
             rjd.motorSpeed = Pi * 1_rad / 1_s;
             rjd.maxMotorTorque = 10000_Nm;
             rjd.enableMotor = false;
@@ -61,11 +61,11 @@ public:
         }
 
         {
-            BodyDef circle_bd;
+            BodyConf circle_bd;
             circle_bd.type = BodyType::Dynamic;
             circle_bd.location = Vec2(5.0f, 30.0f) * 1_m;
 
-            FixtureDef fd;
+            FixtureConf fd;
             fd.filter.maskBits = 1;
 
             m_ball = m_world.CreateBody(circle_bd);
@@ -78,14 +78,14 @@ public:
             polygon_shape.SetAsBox(10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
             polygon_shape.UseDensity(2_kgpm2);
 
-            BodyDef polygon_bd;
+            BodyConf polygon_bd;
             polygon_bd.location = Vec2(20.0f, 10.0f) * 1_m;
             polygon_bd.type = BodyType::Dynamic;
             polygon_bd.bullet = true;
             const auto polygon_body = m_world.CreateBody(polygon_bd);
             polygon_body->CreateFixture(Shape(polygon_shape));
 
-            RevoluteJointDef rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
+            RevoluteJoinConf rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
             rjd.lowerAngle = -0.25_rad * Pi;
             rjd.upperAngle = 0_rad * Pi;
             rjd.enableLimit = true;
@@ -100,7 +100,7 @@ public:
                 Vec2(17.19f, 36.36f) * 1_m
             }).UseDensity(1_kgpm2);
         
-            const auto body = m_world.CreateBody(BodyDef{}.UseType(BodyType::Dynamic));
+            const auto body = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
             body->CreateFixture(Shape(polyShape));
         }
         

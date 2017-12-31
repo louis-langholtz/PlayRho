@@ -48,7 +48,7 @@ public:
             y = x;
             for (auto j = i; j < e_count; ++j)
             {
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = y * 1_m;
                 const auto body = m_world.CreateBody(bd);

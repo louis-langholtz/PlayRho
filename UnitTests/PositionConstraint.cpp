@@ -20,6 +20,7 @@
 #include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(PositionConstraint, ByteSize)
 {

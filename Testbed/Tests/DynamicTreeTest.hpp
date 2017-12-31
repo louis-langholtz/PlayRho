@@ -48,7 +48,7 @@ public:
         m_stepCount = 0;
 
         const auto h = m_worldExtent;
-        m_queryAABB = AABB2D{Vec2(-3.0f, -4.0f + h) * 1_m, Vec2(5.0f, 6.0f + h) * 1_m};
+        m_queryAABB = AABB{Vec2(-3.0f, -4.0f + h) * 1_m, Vec2(5.0f, 6.0f + h) * 1_m};
 
         m_rayCastInput.p1 = Vec2(-5.0f, 5.0f + h) * 1_m;
         m_rayCastInput.p2 = Vec2(7.0f, -4.0f + h) * 1_m;
@@ -206,23 +206,23 @@ private:
 
     struct Actor
     {
-        AABB2D aabb;
+        AABB aabb;
         Real fraction;
         bool overlap;
         DynamicTree::Size treeId;
     };
 
-    AABB2D GetRandomAABB()
+    AABB GetRandomAABB()
     {
         const auto w = Vec2(m_proxyExtent * 2, m_proxyExtent * 2) * 1_m;
         //aabb->lowerBound.x = -m_proxyExtent;
         //aabb->lowerBound.y = -m_proxyExtent + m_worldExtent;
         const auto lowerBound = Vec2(RandomFloat(-m_worldExtent, m_worldExtent), RandomFloat(0.0f, 2.0f * m_worldExtent)) * 1_m;
         const auto upperBound = lowerBound + w;
-        return AABB2D{lowerBound, upperBound};
+        return AABB{lowerBound, upperBound};
     }
 
-    void MoveAABB(AABB2D* aabb)
+    void MoveAABB(AABB* aabb)
     {
         const auto d = Vec2{RandomFloat(-0.5f, 0.5f), RandomFloat(-0.5f, 0.5f)} * 1_m;
         //d.x = 2.0f;
@@ -371,7 +371,7 @@ private:
     Real m_proxyExtent;
 
     DynamicTree m_tree;
-    AABB2D m_queryAABB;
+    AABB m_queryAABB;
     RayCastInput m_rayCastInput;
     RayCastOutput m_rayCastOutput;
     Actor* m_rayActor;

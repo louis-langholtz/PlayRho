@@ -30,104 +30,107 @@
 #include <functional>
 #include <cassert>
 
-namespace playrho
+namespace playrho {
+
+/// @brief Key value class for contacts.
+class ContactKey
 {
-    class Fixture;
-    class Contact;
-
-    /// @brief Key value class for contacts.
-    class ContactKey
+public:
+    PLAYRHO_CONSTEXPR inline ContactKey() noexcept
     {
-    public:
-        PLAYRHO_CONSTEXPR inline ContactKey() noexcept
-        {
-            // Intentionally empty
-        }
-        
-        /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline ContactKey(ContactCounter fp1, ContactCounter fp2) noexcept:
-            m_ids{std::minmax(fp1, fp2)}
-        {
-            // Intentionally empty
-        }
+        // Intentionally empty
+    }
+    
+    /// @brief Initializing constructor.
+    PLAYRHO_CONSTEXPR inline ContactKey(ContactCounter fp1, ContactCounter fp2) noexcept:
+        m_ids{std::minmax(fp1, fp2)}
+    {
+        // Intentionally empty
+    }
 
-        /// @brief Gets the minimum index value.
-        PLAYRHO_CONSTEXPR inline ContactCounter GetMin() const noexcept
-        {
-            return std::get<0>(m_ids);
-        }
-        
-        /// @brief Gets the maximum index value.
-        PLAYRHO_CONSTEXPR inline ContactCounter GetMax() const noexcept
-        {
-            return std::get<1>(m_ids);
-        }
+    /// @brief Gets the minimum index value.
+    PLAYRHO_CONSTEXPR inline ContactCounter GetMin() const noexcept
+    {
+        return std::get<0>(m_ids);
+    }
+    
+    /// @brief Gets the maximum index value.
+    PLAYRHO_CONSTEXPR inline ContactCounter GetMax() const noexcept
+    {
+        return std::get<1>(m_ids);
+    }
 
-    private:
-        /// @brief Contact counter ID pair.
-        /// @note Uses <code>std::pair</code> given that <code>std::minmax</code> returns
-        ///   this type making it the most natural type for this class.
-        std::pair<ContactCounter, ContactCounter> m_ids{
-            static_cast<ContactCounter>(-1), static_cast<ContactCounter>(-1)
-        };
+private:
+    /// @brief Contact counter ID pair.
+    /// @note Uses <code>std::pair</code> given that <code>std::minmax</code> returns
+    ///   this type making it the most natural type for this class.
+    std::pair<ContactCounter, ContactCounter> m_ids{
+        static_cast<ContactCounter>(-1), static_cast<ContactCounter>(-1)
     };
+};
 
-    /// @brief Equality operator.
-    PLAYRHO_CONSTEXPR inline bool operator== (const ContactKey lhs, const ContactKey rhs) noexcept
-    {
-        return lhs.GetMin() == rhs.GetMin() && lhs.GetMax() == rhs.GetMax();
-    }
-    
-    /// @brief Inequality operator.
-    PLAYRHO_CONSTEXPR inline bool operator!= (const ContactKey lhs, const ContactKey rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
+/// @brief Equality operator.
+PLAYRHO_CONSTEXPR inline bool operator== (const ContactKey lhs, const ContactKey rhs) noexcept
+{
+    return lhs.GetMin() == rhs.GetMin() && lhs.GetMax() == rhs.GetMax();
+}
 
-    /// @brief Less-than operator.
-    PLAYRHO_CONSTEXPR inline bool operator< (const ContactKey lhs, const ContactKey rhs) noexcept
-    {
-        return (lhs.GetMin() < rhs.GetMin())
-            || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() < rhs.GetMax()));
-    }
-    
-    /// @brief Less-than or equal-to operator.
-    PLAYRHO_CONSTEXPR inline bool operator<= (const ContactKey lhs, const ContactKey rhs) noexcept
-    {
-        return (lhs.GetMin() < rhs.GetMin())
-        || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() <= rhs.GetMax()));
-    }
-    
-    /// @brief Greater-than operator.
-    PLAYRHO_CONSTEXPR inline bool operator> (const ContactKey lhs, const ContactKey rhs) noexcept
-    {
-        return (lhs.GetMin() > rhs.GetMin())
-            || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() > rhs.GetMax()));
-    }
-    
-    /// @brief Greater-than or equal-to operator.
-    PLAYRHO_CONSTEXPR inline bool operator>= (const ContactKey lhs, const ContactKey rhs) noexcept
-    {
-        return (lhs.GetMin() > rhs.GetMin())
-        || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() >= rhs.GetMax()));
-    }
+/// @brief Inequality operator.
+PLAYRHO_CONSTEXPR inline bool operator!= (const ContactKey lhs, const ContactKey rhs) noexcept
+{
+    return !(lhs == rhs);
+}
 
-    /// @brief Keyed contact pointer.
-    using KeyedContactPtr = std::pair<ContactKey, Contact*>;
-    
-    /// @brief Gets the ContactKey for the given parameters.
-    ContactKey GetContactKey(const Fixture& fixtureA, ChildCounter childIndexA,
-                             const Fixture& fixtureB, ChildCounter childIndexB) noexcept;
-    
-    /// @brief Gets the ContactKey for the given contact.
-    ContactKey GetContactKey(const Contact& contact) noexcept;
+/// @brief Less-than operator.
+PLAYRHO_CONSTEXPR inline bool operator< (const ContactKey lhs, const ContactKey rhs) noexcept
+{
+    return (lhs.GetMin() < rhs.GetMin())
+        || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() < rhs.GetMax()));
+}
 
-    /// @brief Gets the contact pointer for the given value.
-    inline Contact* GetContactPtr(KeyedContactPtr value)
-    {
-        return std::get<1>(value);
-    }
+/// @brief Less-than or equal-to operator.
+PLAYRHO_CONSTEXPR inline bool operator<= (const ContactKey lhs, const ContactKey rhs) noexcept
+{
+    return (lhs.GetMin() < rhs.GetMin())
+    || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() <= rhs.GetMax()));
+}
 
+/// @brief Greater-than operator.
+PLAYRHO_CONSTEXPR inline bool operator> (const ContactKey lhs, const ContactKey rhs) noexcept
+{
+    return (lhs.GetMin() > rhs.GetMin())
+        || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() > rhs.GetMax()));
+}
+
+/// @brief Greater-than or equal-to operator.
+PLAYRHO_CONSTEXPR inline bool operator>= (const ContactKey lhs, const ContactKey rhs) noexcept
+{
+    return (lhs.GetMin() > rhs.GetMin())
+    || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() >= rhs.GetMax()));
+}
+
+namespace d2 {
+
+class Fixture;
+class Contact;
+
+/// @brief Keyed contact pointer.
+using KeyedContactPtr = std::pair<ContactKey, Contact*>;
+
+/// @brief Gets the ContactKey for the given parameters.
+ContactKey GetContactKey(const Fixture& fixtureA, ChildCounter childIndexA,
+                         const Fixture& fixtureB, ChildCounter childIndexB) noexcept;
+
+/// @brief Gets the ContactKey for the given contact.
+ContactKey GetContactKey(const Contact& contact) noexcept;
+
+/// @brief Gets the contact pointer for the given value.
+inline Contact* GetContactPtr(KeyedContactPtr value)
+{
+    return std::get<1>(value);
+}
+
+} // namespace d2
 } // namespace playrho
 
 namespace std

@@ -44,12 +44,12 @@ public:
             auto prevBody = ground;
             for (auto i = 0; i < Count; ++i)
             {
-                const auto body = m_world.CreateBody(BodyDef{}
+                const auto body = m_world.CreateBody(BodyConf{}
                                                      .UseType(BodyType::Dynamic)
                                                      .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
                 body->CreateFixture(shape);
 
-                m_world.CreateJoint(RevoluteJointDef{prevBody, body, Vec2(-15.0f + i, 5.0f) * 1_m});
+                m_world.CreateJoint(RevoluteJoinConf{prevBody, body, Vec2(-15.0f + i, 5.0f) * 1_m});
 
                 if (i == (Count >> 1))
                 {
@@ -58,7 +58,7 @@ public:
                 prevBody = body;
             }
 
-            m_world.CreateJoint(RevoluteJointDef{prevBody, ground, Vec2(-15.0f + Count, 5.0f) * 1_m});
+            m_world.CreateJoint(RevoluteJoinConf{prevBody, ground, Vec2(-15.0f + Count, 5.0f) * 1_m});
         }
 
         const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).UseVertices({
@@ -69,7 +69,7 @@ public:
         const auto polyshape = Shape(conf);
         for (auto i = 0; i < 2; ++i)
         {
-            const auto body = m_world.CreateBody(BodyDef{}
+            const auto body = m_world.CreateBody(BodyConf{}
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m));
             body->CreateFixture(polyshape);
@@ -78,7 +78,7 @@ public:
         const auto diskShape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(0.5_m)};
         for (auto i = 0; i < 3; ++i)
         {
-            const auto body = m_world.CreateBody(BodyDef{}
+            const auto body = m_world.CreateBody(BodyConf{}
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m));
             body->CreateFixture(diskShape);

@@ -28,67 +28,68 @@
 #include <PlayRho/Common/OptionalValue.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 
-namespace playrho
+namespace playrho {
+namespace d2 {
+
+struct RayCastInput;
+class Shape;
+class DistanceProxy;
+
+/// @brief Ray-cast hit data.
+/// @details The ray hits at <code>p1 + fraction * (p2 - p1)</code>, where
+///   <code>p1</code> and <code>p2</code> come from <code>RayCastInput</code>.
+struct RayCastHit
 {
-    struct RayCastInput;
-    class Shape;
-    class DistanceProxy;
-    
-    /// @brief Ray-cast hit data.
-    /// @details The ray hits at <code>p1 + fraction * (p2 - p1)</code>, where
-    ///   <code>p1</code> and <code>p2</code> come from <code>RayCastInput</code>.
-    struct RayCastHit
-    {        
-        /// @brief Surface normal in world coordinates at the point of contact.
-        UnitVec2 normal;
+    /// @brief Surface normal in world coordinates at the point of contact.
+    UnitVec normal;
 
-        /// @brief Fraction.
-        /// @note This is a unit interval value - a value between 0 and 1 - or it's invalid.
-        UnitInterval<Real> fraction = UnitInterval<Real>{0};
-    };
+    /// @brief Fraction.
+    /// @note This is a unit interval value - a value between 0 and 1 - or it's invalid.
+    UnitInterval<Real> fraction = UnitInterval<Real>{0};
+};
 
-    /// @brief Ray cast output.
-    /// @details This is a type alias for an optional <code>RayCastHit</code> instance.
-    /// @sa RayCast, Optional, RayCastHit
-    using RayCastOutput = Optional<RayCastHit>;
-    
-    /// @defgroup RayCastGroup Ray Casting Functions
-    /// @brief Collection of functions that do ray casting.
-    /// @image html raycast.png
-    /// @{
+/// @brief Ray cast output.
+/// @details This is a type alias for an optional <code>RayCastHit</code> instance.
+/// @sa RayCast, Optional, RayCastHit
+using RayCastOutput = Optional<RayCastHit>;
 
-    /// @brief Cast a ray against a circle of a given radius at the given location.
-    /// @param radius Radius of the circle.
-    /// @param location Location in world coordinates of the circle.
-    /// @param input Ray-cast input parameters.
-    RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input) noexcept;
+/// @defgroup RayCastGroup Ray Casting Functions
+/// @brief Collection of functions that do ray casting.
+/// @image html raycast.png
+/// @{
 
-    /// @brief Cast a ray against the given AABB.
-    /// @param aabb Axis Aligned Bounding Box.
-    /// @param input the ray-cast input parameters.
-    /// @relatedalso AABB
-    RayCastOutput RayCast(const AABB2D& aabb, const RayCastInput& input) noexcept;
-    
-    /// @brief Cast a ray against the distance proxy.
-    /// @param proxy Distance-proxy object (in local coordinates).
-    /// @param input Ray-cast input parameters.
-    /// @param transform Transform to be applied to the distance-proxy to get world coordinates.
-    /// @relatedalso DistanceProxy
-    RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
-                          const Transformation2D& transform) noexcept;
-    
-    /// @brief Cast a ray against the child of the given shape.
-    /// @note This is a convenience function for calling the ray cast against a distance-proxy.
-    /// @param shape Shape.
-    /// @param childIndex Child index.
-    /// @param input the ray-cast input parameters.
-    /// @param transform Transform to be applied to the child of the shape.
-    /// @relatedalso Shape
-    RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
-                          const RayCastInput& input, const Transformation2D& transform) noexcept;
+/// @brief Cast a ray against a circle of a given radius at the given location.
+/// @param radius Radius of the circle.
+/// @param location Location in world coordinates of the circle.
+/// @param input Ray-cast input parameters.
+RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input) noexcept;
 
-    /// @}
+/// @brief Cast a ray against the given AABB.
+/// @param aabb Axis Aligned Bounding Box.
+/// @param input the ray-cast input parameters.
+RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input) noexcept;
 
+/// @brief Cast a ray against the distance proxy.
+/// @param proxy Distance-proxy object (in local coordinates).
+/// @param input Ray-cast input parameters.
+/// @param transform Transform to be applied to the distance-proxy to get world coordinates.
+/// @relatedalso DistanceProxy
+RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
+                      const Transformation& transform) noexcept;
+
+/// @brief Cast a ray against the child of the given shape.
+/// @note This is a convenience function for calling the ray cast against a distance-proxy.
+/// @param shape Shape.
+/// @param childIndex Child index.
+/// @param input the ray-cast input parameters.
+/// @param transform Transform to be applied to the child of the shape.
+/// @relatedalso Shape
+RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
+                      const RayCastInput& input, const Transformation& transform) noexcept;
+
+/// @}
+
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_RAYCASTOUTPUT_HPP

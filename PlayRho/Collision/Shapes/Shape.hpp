@@ -31,6 +31,7 @@
 #include <utility>
 
 namespace playrho {
+namespace d2 {
 
 /// @brief Gets the friction of the given shape.
 Real GetFriction(const Shape& shape) noexcept;
@@ -112,7 +113,7 @@ public:
     
     /// @brief Gets the mass properties of this shape using its dimensions and density.
     /// @return Mass data for this shape.
-    friend MassData2D GetMassData(const Shape& shape) noexcept
+    friend MassData GetMassData(const Shape& shape) noexcept
     {
         return shape.m_self->GetMassData_();
     }
@@ -204,7 +205,7 @@ private:
         virtual DistanceProxy GetChild_(ChildCounter index) const = 0;
         
         /// @brief Gets the mass data.
-        virtual MassData2D GetMassData_() const noexcept = 0;
+        virtual MassData GetMassData_() const noexcept = 0;
         
         /// @brief Gets the vertex radius.
         virtual NonNegative<Length> GetVertexRadius_() const noexcept = 0;
@@ -261,7 +262,7 @@ private:
             return GetChild(data, index);
         }
 
-        MassData2D GetMassData_() const noexcept override
+        MassData GetMassData_() const noexcept override
         {
             return GetMassData(data);
         }
@@ -321,6 +322,7 @@ private:
 /// @ingroup TestPointGroup
 bool TestPoint(const Shape& shape, Length2 point) noexcept;
 
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_SHAPE_HPP

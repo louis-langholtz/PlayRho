@@ -43,7 +43,7 @@ public:
             for (auto i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x + 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
@@ -64,7 +64,7 @@ public:
             for (int i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x - 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
@@ -75,8 +75,8 @@ public:
         }
 
         {
-            Transformation2D xf1;
-            xf1.q = UnitVec2::Get(0.3524_rad * Pi);
+            Transformation xf1;
+            xf1.q = UnitVec::Get(0.3524_rad * Pi);
             xf1.p = GetVec2(GetXAxis(xf1.q)) * 1_m;
 
             auto triangleConf1 = PolygonShapeConf{};
@@ -88,8 +88,8 @@ public:
             triangleConf1.UseDensity(2_kgpm2);
             const auto triangle1 = Shape(triangleConf1);
 
-            Transformation2D xf2;
-            xf2.q = UnitVec2::Get(-0.3524_rad * Pi);
+            Transformation xf2;
+            xf2.q = UnitVec::Get(-0.3524_rad * Pi);
             xf2.p = -GetVec2(GetXAxis(xf2.q)) * 1_m;
 
             auto trianglConf2 = PolygonShapeConf{};
@@ -104,7 +104,7 @@ public:
             for (auto i = 0; i < 10; ++i)
             {
                 const auto x = RandomFloat(-0.1f, 0.1f);
-                BodyDef bd;
+                BodyConf bd;
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x, 2.05f + 2.5f * i) * 1_m;
                 bd.angle = 0_rad;
@@ -125,7 +125,7 @@ public:
             conf.SetAsBox(0.15_m, 2.7_m, Vec2(1.45f, 2.35f) * 1_m, -0.2_rad);
             const auto right = Shape{conf};
 
-            BodyDef bd;
+            BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2( 0.0f, 2.0f ) * 1_m;
             const auto body = m_world.CreateBody(bd);

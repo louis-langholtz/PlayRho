@@ -25,8 +25,6 @@
 
 namespace playrho {
 
-class Fixture;
-
 /// @brief Fixture proxy.
 /// @details This proxy is used internally to connect fixtures to the broad-phase.
 /// @note This data structure is 4-bytes large (on at least one 64-bit platform).

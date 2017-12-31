@@ -20,6 +20,7 @@
 #include <PlayRho/Collision/Manifold.hpp>
 
 using namespace playrho;
+using namespace playrho::d2;
 
 TEST(Manifold, ByteSize)
 {
@@ -66,7 +67,7 @@ TEST(Manifold, GetForCircles)
 
 TEST(Manifold, GetForFaceA)
 {
-    const auto ln = UnitVec2::GetLeft();
+    const auto ln = UnitVec::GetLeft();
     const auto lp = Length2{};
     {
         Manifold foo = Manifold::GetForFaceA(ln, lp);
@@ -118,7 +119,7 @@ TEST(Manifold, GetForFaceA)
 
 TEST(Manifold, GetForFaceB)
 {
-    const auto ln = UnitVec2::GetLeft();
+    const auto ln = UnitVec::GetLeft();
     const auto lp = Length2{};
     {
         Manifold foo = Manifold::GetForFaceB(ln, lp);
@@ -195,8 +196,8 @@ TEST(Manifold, PointEqualsFreeFunction)
 
 TEST(Manifold, EqualsFreeFunction)
 {
-    const auto ln0 = UnitVec2::GetLeft();
-    const auto ln1 = UnitVec2::GetRight();
+    const auto ln0 = UnitVec::GetLeft();
+    const auto ln1 = UnitVec::GetRight();
     const auto lp0 = Length2{0_m, 0_m};
     const auto lp1 = Length2(1_m, 1_m);
     const auto foo = Manifold::GetForFaceB(ln0, lp0);
@@ -204,7 +205,7 @@ TEST(Manifold, EqualsFreeFunction)
     const auto poo = Manifold::GetForFaceA(ln0, lp0);
     const auto goo = Manifold::GetForFaceA(ln0, lp1);
     const auto too = Manifold::GetForFaceA(ln1, lp0);
-    //const auto nottoo = Manifold::GetForFaceA(UnitVec2{}, lp0);
+    //const auto nottoo = Manifold::GetForFaceA(UnitVec{}, lp0);
     const auto localPoint1 = Length2{1_m, 2_m};
     const auto cf1 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 2};
     const auto cf2 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1};
@@ -247,8 +248,8 @@ TEST(Manifold, EqualsFreeFunction)
 
 TEST(Manifold, NotEqualsFreeFunction)
 {
-    const auto ln0 = UnitVec2::GetLeft();
-    const auto ln1 = UnitVec2::GetRight();
+    const auto ln0 = UnitVec::GetLeft();
+    const auto ln1 = UnitVec::GetRight();
     const auto lp0 = Length2{0_m, 0_m};
     const auto lp1 = Length2(1_m, 1_m);
     const auto foo = Manifold::GetForFaceB(ln0, lp0);

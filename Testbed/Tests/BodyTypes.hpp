@@ -40,12 +40,12 @@ public:
         });
         RegisterForKey(GLFW_KEY_K, GLFW_PRESS, 0, "Kinematic", [&](KeyActionMods) {
             m_platform->SetType(BodyType::Kinematic);
-            m_platform->SetVelocity(Velocity2D{Vec2(-m_speed, 0) * 1_mps, 0_rpm});
+            m_platform->SetVelocity(Velocity{Vec2(-m_speed, 0) * 1_mps, 0_rpm});
         });
 
         // Define attachment
         {
-            const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m);
             m_attachment = m_world.CreateBody(bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m);
             m_attachment->CreateFixture(Shape(conf));
@@ -53,19 +53,19 @@ public:
 
         // Define platform
         {
-            const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(-4, 5) * 1_m);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(-4, 5) * 1_m);
             m_platform = m_world.CreateBody(bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2)
                 .SetAsBox(0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
             m_platform->CreateFixture(Shape{conf});
 
-            RevoluteJointDef rjd(m_attachment, m_platform, Vec2(0, 5) * 1_m);
+            RevoluteJoinConf rjd(m_attachment, m_platform, Vec2(0, 5) * 1_m);
             rjd.maxMotorTorque = 50_Nm;
             rjd.enableMotor = true;
             m_world.CreateJoint(rjd);
 
-            PrismaticJointDef pjd(ground, m_platform, Vec2(0, 5) * 1_m, UnitVec2::GetRight());
+            PrismaticJointConf pjd(ground, m_platform, Vec2(0, 5) * 1_m, UnitVec::GetRight());
             pjd.maxMotorForce = 1000_N;
             pjd.enableMotor = true;
             pjd.lowerTranslation = -10_m;
@@ -78,7 +78,7 @@ public:
 
         // Create a payload
         {
-            const auto bd = BodyDef{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 8) * 1_m);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 8) * 1_m);
             const auto body = m_world.CreateBody(bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2).SetAsBox(0.75_m, 0.75_m);
@@ -97,7 +97,7 @@ public:
             if ((GetX(p) < -10_m && GetX(velocity.linear) < 0_mps) ||
                 (GetX(p) > +10_m && GetX(velocity.linear) > 0_mps))
             {
-                m_platform->SetVelocity(Velocity2D{
+                m_platform->SetVelocity(Velocity{
                     LinearVelocity2{-GetX(velocity.linear), GetY(velocity.linear)},
                     velocity.angular
                 });

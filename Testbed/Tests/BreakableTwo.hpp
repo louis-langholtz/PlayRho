@@ -41,19 +41,19 @@ public:
 
         Body* bodies[20 * 20];
         const auto startLoc = Length2{-10_m, 10_m};
-        const auto bd = BodyDef{}.UseType(BodyType::Dynamic);
+        const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
         for (auto y = 0; y < 20; ++y)
         {
             for (auto x = 0; x < 20; ++x)
             {
                 const auto location = startLoc + Length2{x * 1_m, y * 1_m};
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-                bodies[y * 20 + x] = m_world.CreateBody(BodyDef(bd).UseLocation(location));
+                bodies[y * 20 + x] = m_world.CreateBody(BodyConf(bd).UseLocation(location));
                 bodies[y * 20 + x]->CreateFixture(m_shape);
                 
                 if (x > 0)
                 {
-                    const auto jd = WeldJointDef{
+                    const auto jd = WeldJointConf{
                         bodies[y * 20 + x - 1],
                         bodies[y * 20 + x],
                         location + Length2{-0.5_m, 0_m}
@@ -62,7 +62,7 @@ public:
                 }
                 if (y > 0)
                 {
-                    const auto jd = WeldJointDef{
+                    const auto jd = WeldJointConf{
                         bodies[(y - 1) * 20 + x],
                         bodies[(y + 0) * 20 + x],
                         location + Length2{0_m, -0.5_m}
