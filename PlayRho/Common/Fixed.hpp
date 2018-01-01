@@ -37,9 +37,6 @@ namespace playrho {
     /// @details This is a fixed point type template for a given base type using a given number
     ///   of fraction bits that satisfies the <code>LiteralType</code> concept.
     ///
-    /// @note For a 32-bit sized fixed point type with a 14-bit fraction part
-    ///   0.000061035156250 is the smallest double precision value that can be represented.
-    ///
     /// @sa https://en.wikipedia.org/wiki/Fixed-point_arithmetic
     /// @sa http://en.cppreference.com/w/cpp/concept/LiteralType
     ///
@@ -697,9 +694,12 @@ namespace playrho {
 
     /// @brief 32-bit fixed precision type.
     ///
-    /// @note The available numeric fidelity of any 32-bit fixed point type is very limited.
+    /// @warning The available numeric fidelity of any 32-bit fixed point type is very limited.
     ///   Using a 32-bit fixed point type for Real should only be considered for simulations
     ///   where it's been found to work and where the dynamics won't be changing between runs.
+    ///
+    /// @note Maximum value (with 9 fraction bits) is approximately 4194303.99609375.
+    /// @note Minimum value (with 9 fraction bits) is approximately 0.001953125.
     ///
     using Fixed32 = Fixed<std::int32_t,9>;
 
@@ -801,6 +801,10 @@ namespace playrho {
     // Fixed64 free functions.
 
     /// @brief 64-bit fixed precision type.
+    ///
+    /// @note Minimum value (with 24 fraction bits) is approximately 5.9604644775390625e-08.
+    /// @note Maximum value (with 24 fraction bits) is approximately 549755813888.
+    ///
     using Fixed64 = Fixed<std::int64_t,24>;
     
     /// @brief Gets an invalid value.

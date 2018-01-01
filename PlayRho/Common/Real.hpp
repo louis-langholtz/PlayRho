@@ -47,7 +47,7 @@ namespace playrho {
 ///   specialization of the <code>std::numeric_limits</code> class template for it.
 /// @note At present, the <code>Fixed32</code> and <code>Fixed64</code> aliases of the
 ///   <code>Fixed</code> template type are provided as examples of qualifying literal types
-///   though the usability of <code>Fixed32</code> is limited and its use is discouraged.
+///   though the usability of these are limited and their use is discouraged.
 ///
 /// @note Regarding division:
 ///  - While dividing 1 by a real, caching the result, and then doing multiplications with the
