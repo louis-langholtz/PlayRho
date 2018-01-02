@@ -411,6 +411,8 @@ TEST(Fixed32, log)
     // Error gets pretty bad...
     ASSERT_NEAR(static_cast<double>(log(491.721)), 6.1979114824747752, 0.01);
     EXPECT_NEAR(static_cast<double>(log(Fixed32(491.721))), log(491.721), 1.517);
+    
+    EXPECT_EQ(static_cast<double>(log(Fixed32::GetInfinity())), log(std::numeric_limits<double>::infinity()));
 }
 
 TEST(Fixed32, exp)
@@ -461,6 +463,26 @@ TEST(Fixed32, exp)
 
 TEST(Fixed32, intpow)
 {
+    ASSERT_NEAR(static_cast<double>(pow(0.0, 0)), 1.0, 0.0);
+    ASSERT_NEAR(static_cast<double>(pow(0.0, +1)), 0.0, 0.0);
+    ASSERT_FALSE(isfinite(static_cast<double>(pow(0.0, -1))));
+
+    EXPECT_NEAR(static_cast<double>(pow(Fixed32(0), 0)), 1.0, 0.0);
+    EXPECT_NEAR(static_cast<double>(pow(Fixed32(0), +1)), 0.0, 0.0);
+    EXPECT_FALSE(isfinite(static_cast<double>(pow(Fixed32(0), -1))));
+
+    EXPECT_EQ(static_cast<double>(pow(Fixed32::GetNegativeInfinity(), -1)),
+              pow(-std::numeric_limits<double>::infinity(), -1));
+    EXPECT_EQ(static_cast<double>(pow(Fixed32::GetNegativeInfinity(), +1)),
+              pow(-std::numeric_limits<double>::infinity(), +1));
+    EXPECT_EQ(static_cast<double>(pow(Fixed32::GetNegativeInfinity(), +2)),
+              pow(-std::numeric_limits<double>::infinity(), +2));
+    EXPECT_EQ(static_cast<double>(pow(Fixed32::GetInfinity(), +2)),
+              pow(std::numeric_limits<double>::infinity(), +2));
+    EXPECT_EQ(static_cast<double>(pow(Fixed32::GetInfinity(), -2)),
+              pow(std::numeric_limits<double>::infinity(), -2));
+
+    EXPECT_NEAR(static_cast<double>(pow(Fixed32(0), 1)), pow(0.0, 1), 0.0);
     EXPECT_NEAR(static_cast<double>(pow(Fixed32(0), 0)), pow(0.0, 0), 0.0);
     EXPECT_NEAR(static_cast<double>(pow(Fixed32(1), 0)), pow(1.0, 0), 0.0);
     EXPECT_NEAR(static_cast<double>(pow(Fixed32(1), +44)), pow(1.0, +44), 0.0);
@@ -646,6 +668,14 @@ TEST(Fixed64, cos)
     EXPECT_NEAR(static_cast<double>(cos(Fixed64(-10))), std::cos(-10), 0.002);
 }
 #endif
+
+TEST(Fixed32, atan)
+{
+    EXPECT_NEAR(static_cast<double>(atan(Fixed32::GetInfinity())),
+                atan(std::numeric_limits<double>::infinity()), 0.001);
+    EXPECT_NEAR(static_cast<double>(atan(Fixed32::GetNegativeInfinity())),
+                atan(-std::numeric_limits<double>::infinity()), 0.001);
+}
 
 TEST(Fixed32, atan2_specials)
 {
