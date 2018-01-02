@@ -621,10 +621,10 @@ TEST(Fixed32, cos)
     EXPECT_NEAR(static_cast<double>(cos(Fixed32(-pi/2))), std::cos(-pi/2), 0.015);
     EXPECT_NEAR(static_cast<double>(cos(Fixed32(+3))), std::cos(+3.0), 0.015);
     EXPECT_NEAR(static_cast<double>(cos(Fixed32(-3))), std::cos(-3.0), 0.015);
-    EXPECT_NEAR(static_cast<double>(cos(Fixed64(+8))), std::cos(+8), 0.015);
-    EXPECT_NEAR(static_cast<double>(cos(Fixed64(-8))), std::cos(-8), 0.015);
-    EXPECT_NEAR(static_cast<double>(cos(Fixed64(+10))), std::cos(+10), 0.015);
-    EXPECT_NEAR(static_cast<double>(cos(Fixed64(-10))), std::cos(-10), 0.015);
+    EXPECT_NEAR(static_cast<double>(cos(Fixed32(+8))), std::cos(+8), 0.015);
+    EXPECT_NEAR(static_cast<double>(cos(Fixed32(-8))), std::cos(-8), 0.015);
+    EXPECT_NEAR(static_cast<double>(cos(Fixed32(+10))), std::cos(+10), 0.015);
+    EXPECT_NEAR(static_cast<double>(cos(Fixed32(-10))), std::cos(-10), 0.015);
 }
 
 #ifdef PLAYRHO_INT128
