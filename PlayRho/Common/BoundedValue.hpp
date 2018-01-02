@@ -22,6 +22,7 @@
 #define PLAYRHO_COMMON_BOUNDEDVALUE_HPP
 
 #include <PlayRho/Common/InvalidArgument.hpp>
+#include <PlayRho/Common/Templates.hpp>
 
 #include <limits>
 #include <type_traits>
@@ -60,10 +61,17 @@ namespace playrho {
         /// @brief Gets the "one" value.
         static PLAYRHO_CONSTEXPR inline T one() noexcept { return T(0); }
     };
+
+    template<class T, class = void>
+    struct HasOne: std::false_type {};
     
+    /// @brief Template specialization for valid/acceptable "arithmetic" types.
+    template<class T>
+    struct HasOne<T, VoidT<decltype(T(1)) > >: std::true_type {};
+
     /// @brief Specialization of the value check helper.
     template <typename T>
-    struct ValueCheckHelper<T, typename std::enable_if<std::is_arithmetic<T>::value>::type>
+    struct ValueCheckHelper<T, typename std::enable_if<HasOne<T>::value>::type>
     {
         /// @brief Has one.
         static PLAYRHO_CONSTEXPR const bool has_one = true;

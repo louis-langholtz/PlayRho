@@ -122,7 +122,7 @@ TEST(RayCastOutput, RayCastAabbFreeFunction)
         aabb.ranges[1].Include(1_m).Include(3_m);
         const auto output = RayCast(aabb, input);
         ASSERT_TRUE(output.has_value());
-        EXPECT_NEAR(static_cast<double>(output->fraction), 0.5, 0.0001);
+        EXPECT_NEAR(static_cast<double>(Real{output->fraction}), 0.5, 0.0001);
         EXPECT_EQ(output->normal, UnitVec::GetRight());
     }
 }
