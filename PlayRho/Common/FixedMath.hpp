@@ -78,7 +78,7 @@ constexpr Fixed<BT, FB> pow(Fixed<BT, FB> value, int n)
     }
     if (value == Fixed<BT, FB>::GetInfinity())
     {
-        return Fixed<BT, FB>{0};
+        return (n < 0)? Fixed<BT, FB>{0}: Fixed<BT, FB>::GetInfinity();
     }
     
     const auto doReciprocal = (n < 0);
