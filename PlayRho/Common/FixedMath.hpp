@@ -98,9 +98,11 @@ constexpr Fixed<BT, FB> pow(Fixed<BT, FB> value, int n)
 
 namespace detail {
 
+/// @brief Fixed point pi value.
 template <typename BT, unsigned int FB>
 constexpr const auto FixedPi = Fixed<BT, FB>{3.14159265358979323846264338327950288};
 
+/// @brief Computes the factorial.
 constexpr inline auto factorial(std::int64_t n)
 {
     // n! = n·(n – 1)·(n – 2) · · · 3·2·1
@@ -112,6 +114,12 @@ constexpr inline auto factorial(std::int64_t n)
     return res;
 }
 
+/// @brief Computes Euler's number raised to the given power argument.
+/// @note Uses Maclaurin series approximation.
+/// @sa http://en.cppreference.com/w/cpp/numeric/math/exp
+/// @sa https://en.wikipedia.org/wiki/Taylor_series
+/// @sa https://en.wikipedia.org/wiki/Exponentiation
+/// @sa https://en.wikipedia.org/wiki/Exponential_function
 template <typename BT, unsigned int FB, int N = 6>
 constexpr inline Fixed<BT, FB> exp(Fixed<BT, FB> arg)
 {
@@ -141,6 +149,7 @@ constexpr inline Fixed<BT, FB> exp(Fixed<BT, FB> arg)
 }
 
 /// @brief Computes the natural logarithm.
+/// @note A better method may be explained in https://math.stackexchange.com/a/61236/408405
 /// @sa http://en.cppreference.com/w/cpp/numeric/math/log
 /// @sa https://en.wikipedia.org/wiki/Natural_logarithm
 template <typename BT, unsigned int FB, int N = 6>
@@ -193,6 +202,8 @@ Fixed<BT, FB> log(Fixed<BT, FB> arg)
     return res;
 }
 
+/// @brief Computes the sine of the given argument via Maclaurin series approximation.
+/// @sa https://en.wikipedia.org/wiki/Taylor_series
 template <typename BT, unsigned int FB, int N = 5>
 constexpr inline Fixed<BT, FB> sin(Fixed<BT, FB> arg)
 {
@@ -220,6 +231,8 @@ constexpr inline Fixed<BT, FB> sin(Fixed<BT, FB> arg)
     return res;
 }
 
+/// @brief Computes the cosine of the given argument via Maclaurin series approximation.
+/// @sa https://en.wikipedia.org/wiki/Taylor_series
 template <typename BT, unsigned int FB, int N = 5>
 constexpr inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
 {
@@ -245,6 +258,9 @@ constexpr inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
     return res;
 }
 
+/// @brief Computes the arctangent of the given argument via Maclaurin series approximation.
+/// @sa http://en.cppreference.com/w/cpp/numeric/math/atan
+/// @sa https://en.wikipedia.org/wiki/Taylor_series
 template <typename BT, unsigned int FB, int N = 5>
 constexpr inline Fixed<BT, FB> atan(Fixed<BT, FB> arg)
 {
@@ -355,6 +371,7 @@ inline bool isnormal(Fixed<BT, FB> arg)
 
 namespace detail {
 
+/// @brief Normalizes the given angular argument.
 template <typename BT, unsigned int FB>
 inline auto AngularNormalize(Fixed<BT, FB> angleInRadians)
 {
@@ -442,6 +459,8 @@ inline Fixed<BT, FB> atan2(Fixed<BT, FB> y, Fixed<BT, FB> x)
     return Fixed<BT, FB>::GetNaN();
 }
 
+/// @brief Computes the natural logarithm of the given argument.
+/// @sa http://en.cppreference.com/w/cpp/numeric/math/log
 template <typename BT, unsigned int FB>
 inline Fixed<BT, FB> log(Fixed<BT, FB> arg)
 {
