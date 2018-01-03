@@ -223,9 +223,6 @@ Related Functions</h2></td></tr>
 <tr class="memitem:a066828295fc1238756f5adf1f3502343"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a066828295fc1238756f5adf1f3502343">GetEdge</a> (const <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html">PolygonShapeConf</a> &amp;shape, <a class="el" href="namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9">VertexCounter</a> index)</td></tr>
 <tr class="memdesc:a066828295fc1238756f5adf1f3502343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identified edge of the given polygon shape.  <a href="#a066828295fc1238756f5adf1f3502343">More...</a><br /></td></tr>
 <tr class="separator:a066828295fc1238756f5adf1f3502343"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab80e6b82cac785feb0b28c21721a576f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#ab80e6b82cac785feb0b28c21721a576f">Validate</a> (const <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html">PolygonShapeConf</a> &amp;shape)</td></tr>
-<tr class="memdesc:ab80e6b82cac785feb0b28c21721a576f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate convexity of the given shape.  <a href="#ab80e6b82cac785feb0b28c21721a576f">More...</a><br /></td></tr>
-<tr class="separator:ab80e6b82cac785feb0b28c21721a576f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -356,7 +353,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 <p>Gets a vertex by index. </p>
 <p>Vertices go counter-clockwise. </p>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a066828295fc1238756f5adf1f3502343">playrho::d2::GetEdge()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#ab80e6b82cac785feb0b28c21721a576f">playrho::d2::Validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a066828295fc1238756f5adf1f3502343">playrho::d2::GetEdge()</a>.</p>
 
 </div>
 </div>
@@ -387,7 +384,7 @@ collinear points are handled but not removed. Collinear points may lead to poor 
 <dl class="section return"><dt>Returns</dt><dd>value between 0 and <code>MaxShapeVertices</code> inclusive. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#ac43acb3229848771f11e519430b91725" title="Maximum number of vertices for any shape type. ">MaxShapeVertices</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a8724a7f055248bd5f3ba5103fdcc6901">playrho::d2::GetChild()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a066828295fc1238756f5adf1f3502343">playrho::d2::GetEdge()</a>, <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a717c9833aa73b9c7ba8a831ac1ed849f">GetNormal()</a>, <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a5d8edab6a66d2fb2d4fe6f239778f996">GetNormals()</a>, <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#ae8f44760bbca63a7d2f24e61ef0ae483">GetVertex()</a>, <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#af204b554caf67699a0266a98283ad65d">GetVertices()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#ab80e6b82cac785feb0b28c21721a576f">playrho::d2::Validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a8724a7f055248bd5f3ba5103fdcc6901">playrho::d2::GetChild()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a066828295fc1238756f5adf1f3502343">playrho::d2::GetEdge()</a>, <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a717c9833aa73b9c7ba8a831ac1ed849f">GetNormal()</a>, <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a5d8edab6a66d2fb2d4fe6f239778f996">GetNormals()</a>, <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#ae8f44760bbca63a7d2f24e61ef0ae483">GetVertex()</a>, and <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#af204b554caf67699a0266a98283ad65d">GetVertices()</a>.</p>
 
 </div>
 </div>
@@ -574,36 +571,6 @@ Collinear points are handled but not removed. Collinear points may lead to poor 
 
 </div>
 </div>
-<a id="ab80e6b82cac785feb0b28c21721a576f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab80e6b82cac785feb0b28c21721a576f">&#9670;&nbsp;</a></span>Validate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Validate </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html">PolygonShapeConf</a> &amp;&#160;</td>
-          <td class="paramname"><em>shape</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Validate convexity of the given shape. </p>
-<dl class="section note"><dt>Note</dt><dd>This is a time consuming operation. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>true if valid </dd></dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="ab93dbe4acf0b1ae7d4e224f9dedcbfc3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab93dbe4acf0b1ae7d4e224f9dedcbfc3">&#9670;&nbsp;</a></span>m_normals</h2>
@@ -666,7 +633,7 @@ Collinear points are handled but not removed. Collinear points may lead to poor 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jan 2 2018 18:34:32 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jan 3 2018 11:17:40 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

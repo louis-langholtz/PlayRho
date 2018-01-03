@@ -12,7 +12,7 @@ var searchData=
   ['jointbuilder_3c_20mousejointconf_20_3e',['JointBuilder&lt; MouseJointConf &gt;',['../structplayrho_1_1d2_1_1JointBuilder.html',1,'playrho::d2']]],
   ['jointbuilder_3c_20prismaticjointconf_20_3e',['JointBuilder&lt; PrismaticJointConf &gt;',['../structplayrho_1_1d2_1_1JointBuilder.html',1,'playrho::d2']]],
   ['jointbuilder_3c_20pulleyjointconf_20_3e',['JointBuilder&lt; PulleyJointConf &gt;',['../structplayrho_1_1d2_1_1JointBuilder.html',1,'playrho::d2']]],
-  ['jointbuilder_3c_20revolutejoinconf_20_3e',['JointBuilder&lt; RevoluteJoinConf &gt;',['../structplayrho_1_1d2_1_1JointBuilder.html',1,'playrho::d2']]],
+  ['jointbuilder_3c_20revolutejointconf_20_3e',['JointBuilder&lt; RevoluteJointConf &gt;',['../structplayrho_1_1d2_1_1JointBuilder.html',1,'playrho::d2']]],
   ['jointbuilder_3c_20ropejointconf_20_3e',['JointBuilder&lt; RopeJointConf &gt;',['../structplayrho_1_1d2_1_1JointBuilder.html',1,'playrho::d2']]],
   ['jointbuilder_3c_20weldjointconf_20_3e',['JointBuilder&lt; WeldJointConf &gt;',['../structplayrho_1_1d2_1_1JointBuilder.html',1,'playrho::d2']]],
   ['jointbuilder_3c_20wheeljointconf_20_3e',['JointBuilder&lt; WheelJointConf &gt;',['../structplayrho_1_1d2_1_1JointBuilder.html',1,'playrho::d2']]],
