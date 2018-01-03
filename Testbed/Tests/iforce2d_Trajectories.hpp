@@ -87,7 +87,7 @@ public:
                                       myFixtureConf);
         
         //pin the circle in place
-        RevoluteJoinConf revoluteJointConf;
+        RevoluteJointConf revoluteJointConf;
         revoluteJointConf.bodyA = m_groundBody;
         revoluteJointConf.bodyB = m_launcherBody;
         revoluteJointConf.localAnchorA = Length2(-15_m, 5_m);

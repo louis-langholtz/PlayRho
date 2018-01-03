@@ -41,7 +41,7 @@ public:
         const auto root = AddNode(ground, Length2{}, 0, 3.0f, a,
                                   PolygonShapeConf{}.UseDensity(density).SetAsBox(a / 4, a));
 
-        auto jointConf = RevoluteJoinConf{};
+        auto jointConf = RevoluteJointConf{};
         jointConf.bodyA = ground;
         jointConf.bodyB = root;
         jointConf.localAnchorA = Length2{};
@@ -77,7 +77,7 @@ public:
         const auto body1 = AddNode(body, a1, depth + 1, offset / 2, a, shape);
         const auto body2 = AddNode(body, a2, depth + 1, offset / 2, a, shape);
 
-        RevoluteJoinConf jointConf;
+        RevoluteJointConf jointConf;
         jointConf.bodyA = body;
         jointConf.localAnchorB = h;
 

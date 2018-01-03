@@ -49,7 +49,7 @@ public:
                                                      .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
                 body->CreateFixture(shape);
 
-                m_world.CreateJoint(RevoluteJoinConf{prevBody, body, Vec2(-15.0f + i, 5.0f) * 1_m});
+                m_world.CreateJoint(RevoluteJointConf{prevBody, body, Vec2(-15.0f + i, 5.0f) * 1_m});
 
                 if (i == (Count >> 1))
                 {
@@ -58,7 +58,7 @@ public:
                 prevBody = body;
             }
 
-            m_world.CreateJoint(RevoluteJoinConf{prevBody, ground, Vec2(-15.0f + Count, 5.0f) * 1_m});
+            m_world.CreateJoint(RevoluteJointConf{prevBody, ground, Vec2(-15.0f + Count, 5.0f) * 1_m});
         }
 
         const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).UseVertices({

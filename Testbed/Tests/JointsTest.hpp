@@ -144,7 +144,7 @@ private:
         fb->CreateFixture(m_rectShape);
         const auto mb = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(center + offset));
         mb->CreateFixture(m_rectShape);
-        auto jd = RevoluteJoinConf{fb, mb, center};
+        auto jd = RevoluteJointConf{fb, mb, center};
         m_revoluteJoint = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd));
         SetupContainer(center);
     }
@@ -218,7 +218,7 @@ private:
         const auto body1 = m_world.CreateBody(bd1);
         body1->CreateFixture(m_smallDiskShape);
         
-        auto jd1 = RevoluteJoinConf{};
+        auto jd1 = RevoluteJointConf{};
         jd1.bodyA = containerBody;
         jd1.bodyB = body1;
         jd1.localAnchorA = GetLocalPoint(*containerBody, bd1.location);
@@ -230,7 +230,7 @@ private:
         const auto body2 = m_world.CreateBody(bd2);
         body2->CreateFixture(m_diskShape);
         
-        const auto jd2 = RevoluteJoinConf{containerBody, body2, bd2.location};
+        const auto jd2 = RevoluteJointConf{containerBody, body2, bd2.location};
         const auto joint2 = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd2));
         
         auto bd3 = BodyConf(DynamicBD)

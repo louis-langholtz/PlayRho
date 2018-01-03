@@ -258,7 +258,7 @@ public:
         m_body->CreateFixture(Shape(polygonShape));
         
         //prepare common joint parameters
-        RevoluteJoinConf jointConf;
+        RevoluteJointConf jointConf;
         jointConf.bodyA = m_body;
         jointConf.enableLimit = true;
         jointConf.lowerAngle = 0_deg;

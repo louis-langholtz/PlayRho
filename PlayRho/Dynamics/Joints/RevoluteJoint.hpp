@@ -23,7 +23,7 @@
 #define PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoinConf.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -50,7 +50,7 @@ class RevoluteJoint : public Joint
 public:
     
     /// @brief Initializing constructor.
-    RevoluteJoint(const RevoluteJoinConf& def);
+    RevoluteJoint(const RevoluteJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;

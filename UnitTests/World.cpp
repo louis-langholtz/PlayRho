@@ -256,8 +256,8 @@ TEST(World, CopyConstruction)
     const auto b5 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     b5->CreateFixture(shape);
 
-    const auto rj1 = world.CreateJoint(RevoluteJoinConf{b1, b2, Length2{}});
-    const auto rj2 = world.CreateJoint(RevoluteJoinConf{b3, b4, Length2{}});
+    const auto rj1 = world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}});
+    const auto rj2 = world.CreateJoint(RevoluteJointConf{b3, b4, Length2{}});
     world.CreateJoint(PrismaticJointConf{b1, b2, Length2{}, UnitVec::GetRight()});
     world.CreateJoint(PulleyJointConf{b1, b2, Length2{}, Length2{},
         Length2{}, Length2{}}.UseRatio(Real(1)));
@@ -322,7 +322,7 @@ TEST(World, CopyAssignment)
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     b2->CreateFixture(shape);
     
-    world.CreateJoint(RevoluteJoinConf{b1, b2, Length2{}});
+    world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}});
     world.CreateJoint(PrismaticJointConf{b1, b2, Length2{}, UnitVec::GetRight()});
     world.CreateJoint(PulleyJointConf{b1, b2, Length2{}, Length2{},
         Length2{}, Length2{}}.UseRatio(Real(1)));

@@ -76,7 +76,7 @@ public:
             b3->CreateFixture(PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(6_m, 0.125_m));
         }
 
-        m_world.CreateJoint(RevoluteJoinConf{b1, b3, Vec2(-2, 1) * 1_m}.UseCollideConnected(true));
+        m_world.CreateJoint(RevoluteJointConf{b1, b3, Vec2(-2, 1) * 1_m}.UseCollideConnected(true));
 
         Body* b4;
         {
@@ -87,7 +87,7 @@ public:
             b4->CreateFixture(PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m));
         }
 
-        m_world.CreateJoint(RevoluteJoinConf{b2, b4, Vec2(-7, 15) * 1_m}.UseCollideConnected(true));
+        m_world.CreateJoint(RevoluteJointConf{b2, b4, Vec2(-7, 15) * 1_m}.UseCollideConnected(true));
 
         Body* b5;
         {
@@ -107,7 +107,7 @@ public:
             b5->CreateFixture(Shape{conf});
         }
 
-        m_world.CreateJoint(RevoluteJoinConf{b1, b5, Vec2(6, 2) * 1_m}.UseCollideConnected(true));
+        m_world.CreateJoint(RevoluteJointConf{b1, b5, Vec2(6, 2) * 1_m}.UseCollideConnected(true));
 
         Body* b6;
         {
@@ -118,7 +118,7 @@ public:
             b6->CreateFixture(PolygonShapeConf(1_m, 0.1_m).UseDensity(30_kgpm2));
         }
 
-        m_world.CreateJoint(RevoluteJoinConf{b5, b6, Vec2(7.5f, 4.0f) * 1_m}
+        m_world.CreateJoint(RevoluteJointConf{b5, b6, Vec2(7.5f, 4.0f) * 1_m}
                              .UseCollideConnected(true));
 
         Body* b7;

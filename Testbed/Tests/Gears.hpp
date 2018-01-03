@@ -54,8 +54,8 @@ public:
             const auto body3 = m_world.CreateBody(bd3);
             body3->CreateFixture(circle2);
 
-            auto joint1 = m_world.CreateJoint(RevoluteJoinConf{body2, body1, bd1.location});
-            auto joint2 = m_world.CreateJoint(RevoluteJoinConf{body2, body3, bd3.location});
+            auto joint1 = m_world.CreateJoint(RevoluteJointConf{body2, body1, bd1.location});
+            auto joint2 = m_world.CreateJoint(RevoluteJointConf{body2, body3, bd3.location});
 
             auto jd4 = GearJointConf{joint1, joint2};
             jd4.ratio = circle2.GetRadius() / circle1.GetRadius();
@@ -69,7 +69,7 @@ public:
             const auto body1 = m_world.CreateBody(bd1);
             body1->CreateFixture(circle1);
 
-            auto jd1 = RevoluteJoinConf{};
+            auto jd1 = RevoluteJointConf{};
             jd1.bodyA = ground;
             jd1.bodyB = body1;
             jd1.localAnchorA = GetLocalPoint(*ground, bd1.location);
@@ -83,7 +83,7 @@ public:
             const auto body2 = m_world.CreateBody(bd2);
             body2->CreateFixture(circle2);
 
-            auto jd2 = RevoluteJoinConf{ground, body2, bd2.location};
+            auto jd2 = RevoluteJointConf{ground, body2, bd2.location};
             m_joint2 = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd2));
 
             auto bd3 = BodyConf{};

@@ -43,27 +43,27 @@ class RevoluteJoint;
 ///    1. you might not know where the center of mass will be;
 ///    2. if you add/remove shapes from a body and recompute the mass,
 ///       the joints will be broken.
-struct RevoluteJoinConf : public JointBuilder<RevoluteJoinConf>
+struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
 {
     /// @brief Super type.
-    using super = JointBuilder<RevoluteJoinConf>;
+    using super = JointBuilder<RevoluteJointConf>;
     
-    PLAYRHO_CONSTEXPR inline RevoluteJoinConf() noexcept: super{JointType::Revolute} {}
+    PLAYRHO_CONSTEXPR inline RevoluteJointConf() noexcept: super{JointType::Revolute} {}
     
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
-    RevoluteJoinConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
+    RevoluteJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
     
     /// @brief Uses the given enable limit state value.
-    PLAYRHO_CONSTEXPR inline RevoluteJoinConf& UseEnableLimit(bool v) noexcept;
+    PLAYRHO_CONSTEXPR inline RevoluteJointConf& UseEnableLimit(bool v) noexcept;
     
     /// @brief Uses the given lower angle value.
-    PLAYRHO_CONSTEXPR inline RevoluteJoinConf& UseLowerAngle(Angle v) noexcept;
+    PLAYRHO_CONSTEXPR inline RevoluteJointConf& UseLowerAngle(Angle v) noexcept;
     
     /// @brief Uses the given upper angle value.
-    PLAYRHO_CONSTEXPR inline RevoluteJoinConf& UseUpperAngle(Angle v) noexcept;
+    PLAYRHO_CONSTEXPR inline RevoluteJointConf& UseUpperAngle(Angle v) noexcept;
     
     /// @brief Uses the given enable motor state value.
-    PLAYRHO_CONSTEXPR inline RevoluteJoinConf& UseEnableMotor(bool v) noexcept;
+    PLAYRHO_CONSTEXPR inline RevoluteJointConf& UseEnableMotor(bool v) noexcept;
 
     /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
@@ -94,25 +94,25 @@ struct RevoluteJoinConf : public JointBuilder<RevoluteJoinConf>
     Torque maxMotorTorque = 0;
 };
 
-PLAYRHO_CONSTEXPR inline RevoluteJoinConf& RevoluteJoinConf::UseEnableLimit(bool v) noexcept
+PLAYRHO_CONSTEXPR inline RevoluteJointConf& RevoluteJointConf::UseEnableLimit(bool v) noexcept
 {
     enableLimit = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline RevoluteJoinConf& RevoluteJoinConf::UseLowerAngle(Angle v) noexcept
+PLAYRHO_CONSTEXPR inline RevoluteJointConf& RevoluteJointConf::UseLowerAngle(Angle v) noexcept
 {
     lowerAngle = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline RevoluteJoinConf& RevoluteJoinConf::UseUpperAngle(Angle v) noexcept
+PLAYRHO_CONSTEXPR inline RevoluteJointConf& RevoluteJointConf::UseUpperAngle(Angle v) noexcept
 {
     upperAngle = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline RevoluteJoinConf& RevoluteJoinConf::UseEnableMotor(bool v) noexcept
+PLAYRHO_CONSTEXPR inline RevoluteJointConf& RevoluteJointConf::UseEnableMotor(bool v) noexcept
 {
     enableMotor = v;
     return *this;
@@ -120,7 +120,7 @@ PLAYRHO_CONSTEXPR inline RevoluteJoinConf& RevoluteJoinConf::UseEnableMotor(bool
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso RevoluteJoint
-RevoluteJoinConf GetRevoluteJointConf(const RevoluteJoint& joint) noexcept;
+RevoluteJointConf GetRevoluteJointConf(const RevoluteJoint& joint) noexcept;
 
 } // namespace d2
 } // namespace playrho
