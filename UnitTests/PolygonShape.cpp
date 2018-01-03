@@ -126,7 +126,7 @@ TEST(PolygonShapeConf, BoxConstruction)
     EXPECT_EQ(shape.GetNormal(2) * Real{1}, Vec2(-1, 0));
     EXPECT_EQ(shape.GetNormal(3) * Real{1}, Vec2(0, -1));
     
-    EXPECT_TRUE(Validate(shape));
+    EXPECT_TRUE(Validate(shape.GetVertices()));
 }
 
 TEST(PolygonShapeConf, Copy)
@@ -353,7 +353,7 @@ TEST(PolygonShapeConf, SetPoints)
     EXPECT_EQ(shape.GetVertex(3), points[3]);
     EXPECT_EQ(shape.GetVertex(4), points[2]);
     
-    EXPECT_TRUE(Validate(shape));
+    EXPECT_TRUE(Validate(shape.GetVertices()));
 }
 
 TEST(PolygonShapeConf, UseVertices)
@@ -399,7 +399,7 @@ TEST(PolygonShapeConf, CanSetTwoPoints)
     EXPECT_EQ(shape.GetCentroid(), Average(Span<const Length2>(points.data(), points.size())));
     EXPECT_EQ(GetVertexRadius(shape), vertexRadius);
 
-    EXPECT_TRUE(Validate(shape));
+    EXPECT_TRUE(Validate(shape.GetVertices()));
 }
 
 TEST(PolygonShapeConf, CanSetOnePoint)
@@ -452,4 +452,18 @@ TEST(PolygonShapeConf, Inequality)
     
     EXPECT_TRUE(PolygonShapeConf().UseRestitution(Real(10)) != PolygonShapeConf());
     EXPECT_FALSE(PolygonShapeConf().UseRestitution(Real(10)) != PolygonShapeConf().UseRestitution(Real(10)));
+}
+
+TEST(PolygonShapeConf, ValidateFF)
+{
+    auto vertices = std::vector<Length2>{};
+    EXPECT_TRUE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
+    vertices.push_back(Length2{0_m, 0_m});
+    EXPECT_TRUE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
+    vertices.push_back(Length2{1_m, 1_m});
+    EXPECT_TRUE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
+    vertices.push_back(Length2{-1_m, 1_m});
+    EXPECT_TRUE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
+    vertices.push_back(Length2{+2_m, 1_m});
+    EXPECT_FALSE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
 }

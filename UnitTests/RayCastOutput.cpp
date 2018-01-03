@@ -24,6 +24,8 @@
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 
 #include <type_traits>
 
@@ -162,6 +164,19 @@ TEST(RayCastOutput, RayCastDistanceProxyFF)
         const auto output = RayCast(dp, input1, Transform_identity);
         EXPECT_FALSE(output.has_value());
     }
+}
+
+TEST(RayCastOutput, RayCastShapeFF)
+{
+    const auto p1 = Length2{+4_m, 0_m}; // bottom right
+    const auto p2 = Length2{+0_m, 0_m}; // top right
+    const auto maxFraction = Real(1);
+    const auto input = RayCastInput{p1, p2, maxFraction};
+    const auto xfm = Transform_identity;
+    const auto output = RayCast(DiskShapeConf{1_m}, ChildCounter{0}, input, xfm);
+    EXPECT_TRUE(output.has_value());
+    EXPECT_EQ(output->normal, d2::UnitVec::GetRight());
+    EXPECT_NEAR(static_cast<double>(output->fraction), 0.75, 0.01);
 }
 
 TEST(RayCastHit, ByteSize)

@@ -53,7 +53,7 @@ Joint* Joint::Create(const JointConf& def)
         case JointType::Prismatic:
             return Create<PrismaticJoint>(static_cast<const PrismaticJointConf&>(def));
         case JointType::Revolute:
-            return Create<RevoluteJoint>(static_cast<const RevoluteJoinConf&>(def));
+            return Create<RevoluteJoint>(static_cast<const RevoluteJointConf&>(def));
         case JointType::Pulley:
             return Create<PulleyJoint>(static_cast<const PulleyJointConf&>(def));
         case JointType::Gear:

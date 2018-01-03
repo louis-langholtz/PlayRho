@@ -55,7 +55,7 @@ TEST(RevoluteJoint, Construction)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
 
-    auto jd = RevoluteJoinConf{};
+    auto jd = RevoluteJointConf{};
 
     jd.bodyA = b0;
     jd.bodyB = b1;
@@ -112,7 +112,7 @@ TEST(RevoluteJoint, EnableMotor)
     ASSERT_EQ(b0->GetVelocity(), Velocity{});
     ASSERT_EQ(b1->GetVelocity(), Velocity{});
     
-    auto jd = RevoluteJoinConf{};
+    auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -185,7 +185,7 @@ TEST(RevoluteJoint, MotorSpeed)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
     
-    auto jd = RevoluteJoinConf{};
+    auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -207,7 +207,7 @@ TEST(RevoluteJoint, EnableLimit)
     ASSERT_EQ(b0->GetInvRotInertia(), InvRotInertia(0));
     ASSERT_EQ(b1->GetInvRotInertia(), InvRotInertia(0));
     
-    auto jd = RevoluteJoinConf{};
+    auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -256,7 +256,7 @@ TEST(RevoluteJoint, SetLimits)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
     
-    auto jd = RevoluteJoinConf{};
+    auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -278,7 +278,7 @@ TEST(RevoluteJoint, MaxMotorTorque)
     const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     
-    auto jd = RevoluteJoinConf{};
+    auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
@@ -318,7 +318,7 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    auto jd = RevoluteJoinConf{};
+    auto jd = RevoluteJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;
     world.CreateJoint(jd);
@@ -347,7 +347,7 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
-    auto jd = RevoluteJoinConf{b1, b2, Length2{}};
+    auto jd = RevoluteJointConf{b1, b2, Length2{}};
     jd.enableLimit = true;
     ASSERT_EQ(jd.lowerAngle, 0_deg);
     ASSERT_EQ(jd.upperAngle, 0_deg);
@@ -424,7 +424,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     const auto shape2 = PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(1_kgpm2);
     b2->CreateFixture(shape2);
     
-    auto jd = RevoluteJoinConf{b1, b2, Length2{}};
+    auto jd = RevoluteJointConf{b1, b2, Length2{}};
     const auto joint = world.CreateJoint(jd);
     
     for (auto i = 0; i < 1000; ++i)

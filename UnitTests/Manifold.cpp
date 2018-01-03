@@ -241,9 +241,13 @@ TEST(Manifold, EqualsFreeFunction)
     
     const auto faceB0010 = Manifold::GetForFaceB(ln0, lp0, mp1, mp0);
     const auto faceB0011 = Manifold::GetForFaceB(ln0, lp0, mp1, mp1);
-    
+    const auto faceB0111 = Manifold::GetForFaceB(ln0, lp1, mp1, mp1);
+    const auto faceB1011 = Manifold::GetForFaceB(ln0, lp1, mp1, mp1);
+
     EXPECT_TRUE(faceB0010 == faceB0010);
     EXPECT_FALSE(faceB0010 == faceB0011);
+    EXPECT_FALSE(faceB0111 == faceB0011);
+    EXPECT_FALSE(faceB1011 == faceB0011);
 }
 
 TEST(Manifold, NotEqualsFreeFunction)

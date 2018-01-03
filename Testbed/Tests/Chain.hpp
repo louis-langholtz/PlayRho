@@ -41,7 +41,7 @@ public:
             bd.location = Vec2(0.5f + i, y) * 1_m;
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(shape);
-            m_world.CreateJoint(RevoluteJoinConf(prevBody, body, Vec2(Real(i), y) * 1_m));
+            m_world.CreateJoint(RevoluteJointConf(prevBody, body, Vec2(Real(i), y) * 1_m));
             prevBody = body;
         }
     }

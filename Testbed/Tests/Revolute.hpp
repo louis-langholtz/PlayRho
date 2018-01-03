@@ -48,7 +48,7 @@ public:
                 Vec2(-8.0f * w, 0.0f) * 1_mps, w * 1_rad / 1_s
             });
             
-            RevoluteJoinConf rjd(ground, body, Vec2(-10.0f, 12.0f) * 1_m);
+            RevoluteJointConf rjd(ground, body, Vec2(-10.0f, 12.0f) * 1_m);
             rjd.motorSpeed = Pi * 1_rad / 1_s;
             rjd.maxMotorTorque = 10000_Nm;
             rjd.enableMotor = false;
@@ -85,7 +85,7 @@ public:
             const auto polygon_body = m_world.CreateBody(polygon_bd);
             polygon_body->CreateFixture(Shape(polygon_shape));
 
-            RevoluteJoinConf rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
+            RevoluteJointConf rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
             rjd.lowerAngle = -0.25_rad * Pi;
             rjd.upperAngle = 0_rad * Pi;
             rjd.enableLimit = true;

@@ -200,11 +200,11 @@ inline MassData GetMassData(const PolygonShapeConf& arg) noexcept
 /// @relatedalso PolygonShapeConf
 Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index);
 
-/// Validate convexity of the given shape.
+/// @brief Validates the convexity of the given collection of vertices.
 /// @note This is a time consuming operation.
-/// @returns true if valid
-/// @relatedalso PolygonShapeConf
-bool Validate(const PolygonShapeConf& shape);
+/// @returns <code>true</code> if the given collection of vertices is indeed convex,
+///   <code>false</code> otherwise.
+bool Validate(const Span<const Length2> verts);
 
 } // namespace d2
 } // namespace playrho

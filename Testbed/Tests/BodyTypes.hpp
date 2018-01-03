@@ -60,7 +60,7 @@ public:
                 .SetAsBox(0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
             m_platform->CreateFixture(Shape{conf});
 
-            RevoluteJoinConf rjd(m_attachment, m_platform, Vec2(0, 5) * 1_m);
+            RevoluteJointConf rjd(m_attachment, m_platform, Vec2(0, 5) * 1_m);
             rjd.maxMotorTorque = 50_Nm;
             rjd.enableMotor = true;
             m_world.CreateJoint(rjd);

@@ -124,7 +124,7 @@ namespace testbed {
                 CreateArm(m_swings[i], arm_length);
                 CreateBall(m_swings[i], Length2{0, -arm_length / 2}, ball_radius);
                 
-                m_world.CreateJoint(RevoluteJoinConf(m_frame, m_swings[i], Length2{x, frame_height}));
+                m_world.CreateJoint(RevoluteJointConf(m_frame, m_swings[i], Length2{x, frame_height}));
             }            
         }
 

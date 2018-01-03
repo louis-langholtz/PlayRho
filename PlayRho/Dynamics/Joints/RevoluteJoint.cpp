@@ -85,7 +85,7 @@ Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA,
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-RevoluteJoint::RevoluteJoint(const RevoluteJoinConf& def):
+RevoluteJoint::RevoluteJoint(const RevoluteJointConf& def):
     Joint{def},
     m_localAnchorA{def.localAnchorA},
     m_localAnchorB{def.localAnchorB},

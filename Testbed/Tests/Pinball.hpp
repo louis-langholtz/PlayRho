@@ -63,7 +63,7 @@ public:
             leftFlipper->CreateFixture(box);
             rightFlipper->CreateFixture(box);
 
-            RevoluteJoinConf jd;
+            RevoluteJointConf jd;
             jd.bodyA = ground;
             jd.localAnchorB = Length2{};
             jd.enableMotor = true;

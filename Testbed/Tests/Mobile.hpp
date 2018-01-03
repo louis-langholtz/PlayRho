@@ -41,7 +41,7 @@ public:
         const auto a = Real{0.5f};
         const auto shape = Shape(PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(Real{0.25f} * a * 1_m, a * 1_m));
 
-        RevoluteJoinConf jointConf;
+        RevoluteJointConf jointConf;
         jointConf.bodyA = ground;
         jointConf.bodyB = AddNode(ground, Length2{}, 0, 3.0f, static_cast<float>(a), shape);
         jointConf.localAnchorA = Length2{};
@@ -68,7 +68,7 @@ public:
         const auto a1 = Vec2(offset, -a) * 1_m;
         const auto a2 = Vec2(-offset, -a) * 1_m;
 
-        RevoluteJoinConf jointConf;
+        RevoluteJointConf jointConf;
         jointConf.bodyA = body;
         jointConf.localAnchorB = h;
 

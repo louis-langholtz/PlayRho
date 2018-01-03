@@ -156,32 +156,29 @@ Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index)
     return shape.GetVertex(i1) - shape.GetVertex(i0);
 }
 
-bool Validate(const PolygonShapeConf& shape)
+bool Validate(Span<const Length2> verts)
 {
-    const auto count = shape.GetVertexCount();
+    const auto count = verts.size();
     for (auto i = decltype(count){0}; i < count; ++i)
     {
         const auto i1 = i;
         const auto i2 = GetModuloNext(i1, count);
-        const auto p = shape.GetVertex(i1);
-        const auto e = shape.GetVertex(i2) - p;
-        
+        const auto p = verts[i1];
+        const auto e = verts[i2] - p;
         for (auto j = decltype(count){0}; j < count; ++j)
         {
             if ((j == i1) || (j == i2))
             {
                 continue;
             }
-            
-            const auto v = shape.GetVertex(j) - p;
+            const auto v = verts[j] - p;
             const auto c = Cross(e, v);
-            if (c < Area{0})
+            if (c < 0_m2)
             {
                 return false;
             }
         }
     }
-    
     return true;
 }
 

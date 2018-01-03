@@ -86,7 +86,7 @@ public:
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
         m_world.CreateJoint(DistanceJointConf{body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset}
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(RevoluteJoinConf{body2, m_chassis, p4 + m_offset});
+        m_world.CreateJoint(RevoluteJointConf{body2, m_chassis, p4 + m_offset});
     }
 
     TheoJansen()
@@ -153,7 +153,7 @@ public:
         }
 
         {
-            RevoluteJoinConf jd{m_wheel, m_chassis, pivot + m_offset};
+            RevoluteJointConf jd{m_wheel, m_chassis, pivot + m_offset};
             jd.collideConnected = false;
             jd.motorSpeed = m_motorSpeed;
             jd.maxMotorTorque = 400_Nm;

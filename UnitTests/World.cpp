@@ -256,8 +256,8 @@ TEST(World, CopyConstruction)
     const auto b5 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     b5->CreateFixture(shape);
 
-    const auto rj1 = world.CreateJoint(RevoluteJoinConf{b1, b2, Length2{}});
-    const auto rj2 = world.CreateJoint(RevoluteJoinConf{b3, b4, Length2{}});
+    const auto rj1 = world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}});
+    const auto rj2 = world.CreateJoint(RevoluteJointConf{b3, b4, Length2{}});
     world.CreateJoint(PrismaticJointConf{b1, b2, Length2{}, UnitVec::GetRight()});
     world.CreateJoint(PulleyJointConf{b1, b2, Length2{}, Length2{},
         Length2{}, Length2{}}.UseRatio(Real(1)));
@@ -322,7 +322,7 @@ TEST(World, CopyAssignment)
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     b2->CreateFixture(shape);
     
-    world.CreateJoint(RevoluteJoinConf{b1, b2, Length2{}});
+    world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}});
     world.CreateJoint(PrismaticJointConf{b1, b2, Length2{}, UnitVec::GetRight()});
     world.CreateJoint(PulleyJointConf{b1, b2, Length2{}, Length2{},
         Length2{}, Length2{}}.UseRatio(Real(1)));
@@ -369,25 +369,47 @@ TEST(World, SetGravity)
     EXPECT_NE(world.GetGravity(), gravity);
 }
 
-TEST(World, CreateAndDestroyBody)
+TEST(World, CreateDestroyEmptyStaticBody)
 {
     auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
-    ASSERT_EQ(GetJointCount(world), JointCounter(0));
-
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
     ASSERT_NE(body, nullptr);
+    
     EXPECT_EQ(body->GetType(), BodyType::Static);
     EXPECT_FALSE(body->IsSpeedable());
     EXPECT_FALSE(body->IsAccelerable());
     EXPECT_TRUE(body->IsImpenetrable());
-
+    
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     const auto& bodies1 = world.GetBodies();
     EXPECT_FALSE(bodies1.empty());
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto& first = GetRef(*bodies1.begin());
+    EXPECT_EQ(body, &first);
+    
+    world.Destroy(body);
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    const auto& bodies2 = world.GetBodies();
+    EXPECT_TRUE(bodies2.empty());
+    EXPECT_EQ(bodies2.size(), BodyCounter(0));
+}
+
+TEST(World, CreateDestroyJoinedBodies)
+{
+    auto world = World{};
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
+    ASSERT_EQ(GetJointCount(world), JointCounter(0));
+
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    const auto& bodies1 = world.GetBodies();
+    EXPECT_FALSE(bodies1.empty());
+    EXPECT_EQ(bodies1.size(), BodyCounter(1));
+    EXPECT_NE(bodies1.begin(), bodies1.end());
+    const auto& first = GetRef(*bodies1.begin());
+    ASSERT_NE(body, nullptr);
     EXPECT_EQ(body, &first);
 
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
@@ -407,6 +429,43 @@ TEST(World, CreateAndDestroyBody)
     EXPECT_NE(bodies0.begin(), bodies0.end());
     world.Destroy(body2);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+}
+
+TEST(World, CreateDestroyContactingBodies)
+{
+    auto world = World{};
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
+    ASSERT_EQ(GetJointCount(world), JointCounter(0));
+    auto contacts = world.GetContacts();
+    ASSERT_TRUE(contacts.empty());
+    ASSERT_EQ(contacts.size(), ContactCounter(0));
+
+    const auto l1 = Length2{};
+    const auto l2 = Length2{};
+
+    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
+    
+    EXPECT_NE(body1->CreateFixture(DiskShapeConf{1_m}.UseDensity(1_kgpm2)), nullptr);
+    EXPECT_NE(body2->CreateFixture(DiskShapeConf{1_m}.UseDensity(1_kgpm2)), nullptr);
+    EXPECT_EQ(GetFixtureCount(world), std::size_t(2));
+    
+    auto stepConf = StepConf{};
+    world.Step(stepConf);
+    contacts = world.GetContacts();
+    EXPECT_FALSE(contacts.empty());
+    EXPECT_EQ(contacts.size(), ContactCounter(1));
+
+    world.Destroy(body1);
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    world.Destroy(body2);
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    contacts = world.GetContacts();
+    EXPECT_TRUE(contacts.empty());
+    EXPECT_EQ(contacts.size(), ContactCounter(0));
+    EXPECT_EQ(GetFixtureCount(world), std::size_t(0));
 }
 
 TEST(World, CreateAndDestroyFixture)

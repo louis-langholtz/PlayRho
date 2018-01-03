@@ -115,7 +115,7 @@ public:
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)});
 
-            RevoluteJoinConf jd(ground, body, body->GetLocation());
+            RevoluteJointConf jd(ground, body, body->GetLocation());
             jd.lowerAngle = -8_deg;
             jd.upperAngle = +8_deg;
             jd.enableLimit = true;
@@ -140,12 +140,12 @@ public:
                 const auto body = m_world.CreateBody(bd);
                 body->CreateFixture(shape);
 
-                m_world.CreateJoint(RevoluteJoinConf{prevBody, body,
+                m_world.CreateJoint(RevoluteJointConf{prevBody, body,
                     Vec2(160.0f + 2.0f * i, -0.125f) * 1_m});
 
                 prevBody = body;
             }
-            m_world.CreateJoint(RevoluteJoinConf{prevBody, ground,
+            m_world.CreateJoint(RevoluteJointConf{prevBody, ground,
                 Vec2(160.0f + 2.0f * N, -0.125f) * 1_m});
         }
 

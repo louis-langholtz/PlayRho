@@ -1994,7 +1994,7 @@ playrho::d2::Body* Tumbler::CreateEnclosure(playrho::d2::World& world)
 playrho::d2::RevoluteJoint* Tumbler::CreateRevoluteJoint(playrho::d2::World& world,
                                                      playrho::d2::Body* stable, playrho::d2::Body* turn)
 {
-    playrho::d2::RevoluteJoinConf jd;
+    playrho::d2::RevoluteJointConf jd;
     jd.bodyA = stable;
     jd.bodyB = turn;
     jd.localAnchorA = playrho::Vec2(0.0f, 10.0f) * playrho::Meter;

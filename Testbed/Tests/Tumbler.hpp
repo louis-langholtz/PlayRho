@@ -103,7 +103,7 @@ public:
     
     RevoluteJoint* CreateRevoluteJoint(Body* turn)
     {
-        RevoluteJoinConf jd;
+        RevoluteJointConf jd;
         jd.bodyA = m_world.CreateBody(BodyConf{}.UseLocation(GetLocation(*turn)));
         jd.bodyB = turn;
         jd.referenceAngle = 0_rad;

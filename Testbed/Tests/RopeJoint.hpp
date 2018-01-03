@@ -75,7 +75,7 @@ public:
 
                 body->CreateFixture(shape, fd);
 
-                m_world.CreateJoint(RevoluteJoinConf{prevBody, body, Vec2(Real(i), y) * 1_m});
+                m_world.CreateJoint(RevoluteJointConf{prevBody, body, Vec2(Real(i), y) * 1_m});
 
                 prevBody = body;
             }

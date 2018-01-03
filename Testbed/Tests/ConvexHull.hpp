@@ -79,7 +79,7 @@ public:
             drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * 1_m, Drawer::Left, "%d", i);
         }
 
-        if (!Validate(shape))
+        if (!Validate(shape.GetVertices()))
         {
             m_status = "Note: Invalid convex hull";
         }
