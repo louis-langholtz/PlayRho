@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTDEF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_JOINTDEF_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTCONF_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_JOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
 #include <cstdint>
@@ -123,4 +123,4 @@ void Set(JointConf& def, const Joint& joint) noexcept;
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_JOINTDEF_HPP
+#endif // PLAYRHO_DYNAMICS_JOINTS_JOINTCONF_HPP

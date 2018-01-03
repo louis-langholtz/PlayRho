@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_BODYDEF_HPP
-#define PLAYRHO_DYNAMICS_BODYDEF_HPP
+#ifndef PLAYRHO_DYNAMICS_BODYCONF_HPP
+#define PLAYRHO_DYNAMICS_BODYCONF_HPP
 
 /// @file
 /// Declarations of the BodyConf struct and free functions associated with it.
@@ -271,4 +271,4 @@ BodyConf GetBodyConf(const Body& body) noexcept;
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_BODYDEF_HPP
+#endif // PLAYRHO_DYNAMICS_BODYCONF_HPP

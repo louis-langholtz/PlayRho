@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_COLLISION_SHAPES_SHAPEDEF_HPP
-#define PLAYRHO_COLLISION_SHAPES_SHAPEDEF_HPP
+#ifndef PLAYRHO_COLLISION_SHAPES_SHAPECONF_HPP
+#define PLAYRHO_COLLISION_SHAPES_SHAPECONF_HPP
 
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -173,4 +173,4 @@ PLAYRHO_CONSTEXPR inline NonNegative<Real> GetFriction(const BaseShapeConf& arg)
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_COLLISION_SHAPES_SHAPEDEF_HPP
+#endif // PLAYRHO_COLLISION_SHAPES_SHAPECONF_HPP

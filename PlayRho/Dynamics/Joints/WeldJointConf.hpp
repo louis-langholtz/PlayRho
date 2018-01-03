@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_WELDJOINTDEF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_WELDJOINTDEF_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -97,4 +97,4 @@ WeldJointConf GetWeldJointConf(const WeldJoint& joint) noexcept;
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_WELDJOINTDEF_HPP
+#endif // PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP

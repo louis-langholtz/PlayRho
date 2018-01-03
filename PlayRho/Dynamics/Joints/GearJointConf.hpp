@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_GEARJOINTDEF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_GEARJOINTDEF_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_GEARJOINTCONF_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_GEARJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -70,4 +70,4 @@ GearJointConf GetGearJointConf(const GearJoint& joint) noexcept;
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_GEARJOINTDEF_HPP
+#endif // PLAYRHO_DYNAMICS_JOINTS_GEARJOINTCONF_HPP
