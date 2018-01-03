@@ -17,8 +17,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_WORLDDEF_HPP
-#define PLAYRHO_DYNAMICS_WORLDDEF_HPP
+#ifndef PLAYRHO_DYNAMICS_WORLDCONF_HPP
+#define PLAYRHO_DYNAMICS_WORLDCONF_HPP
 
 /// @file
 /// Declarations of the WorldConf class.
@@ -110,4 +110,4 @@ PLAYRHO_CONSTEXPR inline WorldConf GetDefaultWorldConf() noexcept
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDDEF_HPP
+#endif // PLAYRHO_DYNAMICS_WORLDCONF_HPP

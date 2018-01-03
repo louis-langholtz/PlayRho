@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_FIXTUREDEF_HPP
-#define PLAYRHO_DYNAMICS_FIXTUREDEF_HPP
+#ifndef PLAYRHO_DYNAMICS_FIXTURECONF_HPP
+#define PLAYRHO_DYNAMICS_FIXTURECONF_HPP
 
 /// @file
 /// Declarations of the FixtureConf struct and any free functions associated with it.
@@ -93,4 +93,4 @@ FixtureConf GetFixtureConf(const Fixture& fixture) noexcept;
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_FIXTUREDEF_HPP
+#endif // PLAYRHO_DYNAMICS_FIXTURECONF_HPP

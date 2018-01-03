@@ -19,8 +19,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#ifndef PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINTDEF_HPP
-#define PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINTDEF_HPP
+#ifndef PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINTCONF_HPP
+#define PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 #include <PlayRho/Common/BoundedValue.hpp>
@@ -107,4 +107,4 @@ DistanceJointConf GetDistanceJointConf(const DistanceJoint& joint) noexcept;
 } // namespace d2
 } // namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINTDEF_HPP
+#endif // PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINTCONF_HPP
