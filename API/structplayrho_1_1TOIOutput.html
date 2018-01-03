@@ -153,7 +153,7 @@ Public Attributes</h2></td></tr>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:acad38ef6ac1537641203f3eb15225235"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1TOIOutput.html">TOIOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1TOIOutput.html#acad38ef6ac1537641203f3eb15225235">GetToiViaSat</a> (const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;proxyA, const <a class="el" href="classplayrho_1_1Sweep.html">Sweep</a> &amp;sweepA, const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;proxyB, const <a class="el" href="classplayrho_1_1Sweep.html">Sweep</a> &amp;sweepB, <a class="el" href="structplayrho_1_1ToiConf.html">ToiConf</a> conf=<a class="el" href="namespaceplayrho.html#abb1706f5ee9f03fdec4a73d2c4d6ce6b">GetDefaultToiConf</a>())</td></tr>
+<tr class="memitem:acad38ef6ac1537641203f3eb15225235"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1TOIOutput.html">TOIOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1TOIOutput.html#acad38ef6ac1537641203f3eb15225235">GetToiViaSat</a> (const DistanceProxy &amp;proxyA, const Sweep &amp;sweepA, const DistanceProxy &amp;proxyB, const Sweep &amp;sweepB, <a class="el" href="structplayrho_1_1ToiConf.html">ToiConf</a> conf=<a class="el" href="namespaceplayrho.html#abb1706f5ee9f03fdec4a73d2c4d6ce6b">GetDefaultToiConf</a>())</td></tr>
 <tr class="memdesc:acad38ef6ac1537641203f3eb15225235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact for two disjoint convex sets using the Separating Axis Theorem.  <a href="#acad38ef6ac1537641203f3eb15225235">More...</a><br /></td></tr>
 <tr class="separator:acad38ef6ac1537641203f3eb15225235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -226,25 +226,25 @@ Can happen if the tolerance is too small. </dd></dl>
         <tr>
           <td class="memname"><a class="el" href="structplayrho_1_1TOIOutput.html">TOIOutput</a> GetToiViaSat </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramtype">const DistanceProxy &amp;&#160;</td>
           <td class="paramname"><em>proxyA</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1Sweep.html">Sweep</a> &amp;&#160;</td>
+          <td class="paramtype">const Sweep &amp;&#160;</td>
           <td class="paramname"><em>sweepA</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1DistanceProxy.html">DistanceProxy</a> &amp;&#160;</td>
+          <td class="paramtype">const DistanceProxy &amp;&#160;</td>
           <td class="paramname"><em>proxyB</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1Sweep.html">Sweep</a> &amp;&#160;</td>
+          <td class="paramtype">const Sweep &amp;&#160;</td>
           <td class="paramname"><em>sweepB</em>, </td>
         </tr>
         <tr>
@@ -267,21 +267,21 @@ Can happen if the tolerance is too small. </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the time of impact for two disjoint convex sets using the Separating Axis Theorem. </p>
-<p>Computes the upper bound on time before two shapes penetrate too much. Time is represented as a fraction between [0,tMax]. This uses a swept separating axis and may miss some intermediate, non-tunneling collision. If you change the time interval, you should call this function again.</p>
+<p>Computes the upper bound on time before two shapes penetrate too much. Time is represented as a fraction between [0,<code>tMax</code>]. This uses a swept separating axis and may miss some intermediate, non-tunneling collision. If you change the time interval, you should call this function again.</p>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Hyperplane_separation_theorem">https://en.wikipedia.org/wiki/Hyperplane_separation_theorem</a> </dd></dl>
-<dl class="section pre"><dt>Precondition</dt><dd>The given sweeps are both at the same alpha0. </dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if sweeps are not at the same alpha0. </dd>
+<dl class="section pre"><dt>Precondition</dt><dd>The given sweeps are both at the same alpha-0. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if sweeps are not at the same alpha-0. </dd>
 <dd>
-Behavior is undefined if conf's <code>tMax</code> is not between 0 and 1 inclusive. </dd></dl>
+Behavior is undefined if the configuration's <code>tMax</code> is not between 0 and 1 inclusive. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Uses Distance to compute the contact point and normal at the time of impact. </dd>
 <dd>
 This only works for two disjoint convex sets.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">proxyA</td><td>Proxy A. The proxy's vertex count must be 1 or more. </td></tr>
-    <tr><td class="paramname">sweepA</td><td><a class="el" href="classplayrho_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion. ">Sweep</a> A. <a class="el" href="classplayrho_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion. ">Sweep</a> of motion for shape represented by proxy A. </td></tr>
+    <tr><td class="paramname">sweepA</td><td>Sweep A. Sweep of motion for shape represented by proxy A. </td></tr>
     <tr><td class="paramname">proxyB</td><td>Proxy B. The proxy's vertex count must be 1 or more. </td></tr>
-    <tr><td class="paramname">sweepB</td><td><a class="el" href="classplayrho_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion. ">Sweep</a> B. <a class="el" href="classplayrho_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion. ">Sweep</a> of motion for shape represented by proxy B. </td></tr>
+    <tr><td class="paramname">sweepB</td><td>Sweep B. Sweep of motion for shape represented by proxy B. </td></tr>
     <tr><td class="paramname">conf</td><td>Configuration details for on calculation. Like the targeted depth of penetration.</td></tr>
   </table>
   </dd>
@@ -296,7 +296,7 @@ This only works for two disjoint convex sets.</dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 11 2017 12:59:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jan 2 2018 18:34:32 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

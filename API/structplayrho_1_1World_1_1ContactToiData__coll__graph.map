@@ -1,2 +1,16 @@
 <map id="playrho::World::ContactToiData" name="playrho::World::ContactToiData">
+<area shape="rect" id="node2" href="$classplayrho_1_1Contact2D.html" title="A potential contact between the children of two Fixture2D objects. " alt="" coords="1730,219,1866,245"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1Manifold2D.html" title="A collision description for the collision two convex shapes. " alt="" coords="1401,269,1541,294"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="422,310,596,335"/>
+<area shape="rect" id="node12" href="$structplayrho_1_1Manifold2D_1_1Point.html" title="Data for a point of collision in a Manifold. " alt="" coords="776,257,916,295"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="150,335,307,361"/>
+<area shape="rect" id="node8" href="$classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="1108,158,1234,183"/>
+<area shape="rect" id="node14" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature. " alt="" coords="427,142,591,167"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1Manifold2D_1_1PointArray.html" title="Point array structure. " alt="" coords="1101,259,1241,298"/>
+<area shape="rect" id="node19" href="$classplayrho_1_1Fixture2D.html" title="An association between a body and a shape. " alt="" coords="1406,461,1536,486"/>
+<area shape="rect" id="node20" href="$unionplayrho_1_1Fixture2D_1_1FixtureProxies.html" title="Fixture proxies union. " alt="" coords="1106,473,1236,511"/>
+<area shape="rect" id="node24" href="$structplayrho_1_1Filter.html" title="A holder for contact filtering data. " alt="" coords="1120,598,1222,623"/>
+<area shape="rect" id="node28" href="$classplayrho_1_1Shape2D.html" title="Shape2D. " alt="" coords="1107,697,1235,722"/>
+<area shape="rect" id="node32" href="$structplayrho_1_1Wider.html" title="playrho::Wider\&lt; BodyCounter \&gt;" alt="" coords="1694,401,1902,426"/>
+<area shape="rect" id="node33" href="$structplayrho_1_1Wider.html" title="Wider data type obtainer. " alt="" coords="1402,559,1540,585"/>
 </map>

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['dampingratio',['dampingRatio',['../structplayrho_1_1DistanceJointDef.html#ac887d539abccca66a4e98bd446a8bdf7',1,'playrho::DistanceJointDef::dampingRatio()'],['../structplayrho_1_1MouseJointDef.html#a0fad622e3ebdda8a4ca243f8df6cf107',1,'playrho::MouseJointDef::dampingRatio()'],['../structplayrho_1_1WeldJointDef.html#a0474e4d3efa5452ebaf36241bede203c',1,'playrho::WeldJointDef::dampingRatio()'],['../structplayrho_1_1WheelJointDef.html#a61e2e9a833c37c0335f9b3b66fd09cc3',1,'playrho::WheelJointDef::dampingRatio()']]],
-  ['data',['data',['../structplayrho_1_1Shape_1_1Model.html#a5a4fc5e123255f7265b521d2b24ae9f1',1,'playrho::Shape::Model::data()'],['../structplayrho_1_1StackAllocator_1_1AllocationRecord.html#a3852baf545ea9c93c693470ac454bdd5',1,'playrho::StackAllocator::AllocationRecord::data()']]],
+  ['dampingratio',['dampingRatio',['../structplayrho_1_1d2_1_1DistanceJointConf.html#a2867b1456cf01d9f41e3b5471462fb3f',1,'playrho::d2::DistanceJointConf::dampingRatio()'],['../structplayrho_1_1d2_1_1MouseJointConf.html#a38cb713e8956da66268a7f8403e84469',1,'playrho::d2::MouseJointConf::dampingRatio()'],['../structplayrho_1_1d2_1_1WeldJointConf.html#afee42514df393a55d877e40e7029f272',1,'playrho::d2::WeldJointConf::dampingRatio()'],['../structplayrho_1_1d2_1_1WheelJointConf.html#a5f4a94799d991dc1c2de5697be080a77',1,'playrho::d2::WheelJointConf::dampingRatio()']]],
+  ['data',['data',['../structplayrho_1_1d2_1_1Shape_1_1Model.html#ab23b083636faf4fa9e72f384625b8599',1,'playrho::d2::Shape::Model::data()'],['../structplayrho_1_1StackAllocator_1_1AllocationRecord.html#a3852baf545ea9c93c693470ac454bdd5',1,'playrho::StackAllocator::AllocationRecord::data()']]],
   ['deci',['Deci',['../group__DecimalUnitPrefices.html#gac718685329c6b54f97b4be173133b3d3',1,'playrho']]],
   ['defaultaabbextension',['DefaultAabbExtension',['../namespaceplayrho.html#a17f7efd19057d7a44d9d997f7e78b7b4',1,'playrho']]],
   ['defaultangularsleeptolerance',['DefaultAngularSleepTolerance',['../namespaceplayrho.html#a5e86e9585daf0c5ae48263653f206c56',1,'playrho']]],
@@ -29,14 +29,14 @@ var searchData=
   ['degree',['Degree',['../group__PhysicalUnits.html#gac6669d827e3af130893c46f8b68c3256',1,'playrho']]],
   ['degreepersecond',['DegreePerSecond',['../group__PhysicalUnits.html#ga5ecdcb8e17745b805b88c63c21323eb6',1,'playrho']]],
   ['degreepersquaresecond',['DegreePerSquareSecond',['../group__PhysicalUnits.html#ga22c7220de367fc0c06ded92c49ed1ccc',1,'playrho']]],
-  ['density',['density',['../structplayrho_1_1ShapeDef.html#aa0bc4805871c1d350f475408837f255b',1,'playrho::ShapeDef']]],
+  ['density',['density',['../structplayrho_1_1d2_1_1BaseShapeConf.html#abe78bd0fbe69b87761bc6aa967cf4656',1,'playrho::d2::BaseShapeConf']]],
   ['destroyed',['destroyed',['../structplayrho_1_1PreStepStats.html#a62ba523ddae45bd7f16766075b5d71ee',1,'playrho::PreStepStats']]],
   ['digits',['digits',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#aaaab3362202ef0dbe74cc9a42069903d',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
   ['digits10',['digits10',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#ac84cf3e46868e0ccab0327bc3113eb03',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
   ['displacemultiplier',['displaceMultiplier',['../classplayrho_1_1StepConf.html#adf8c8af6cc3464d9d035d58ac27e9cbb',1,'playrho::StepConf']]],
-  ['distance',['distance',['../structplayrho_1_1IndexPairDistance.html#a20625a237f62668f4e545b6e4d8b1423',1,'playrho::IndexPairDistance::distance()'],['../structplayrho_1_1Contact_1_1UpdateConf.html#aa680d87de47e385a06c84cf4d876a760',1,'playrho::Contact::UpdateConf::distance()']]],
+  ['distance',['distance',['../structplayrho_1_1detail_1_1LengthIndices.html#ae65542d848e941bbadd0e87514161a72',1,'playrho::detail::LengthIndices::distance()'],['../structplayrho_1_1detail_1_1SeparationInfo.html#a52e9b815b891868dea807e7163cb62cf',1,'playrho::detail::SeparationInfo::distance()'],['../structplayrho_1_1LengthIndexPair.html#ae536eb1885cee2b803e82e8171ab9eb9',1,'playrho::LengthIndexPair::distance()'],['../structplayrho_1_1d2_1_1Contact_1_1UpdateConf.html#a76c2c1974a7799d85d232d5cd1c521fa',1,'playrho::d2::Contact::UpdateConf::distance()']]],
   ['doblocksolve',['doBlocksolve',['../classplayrho_1_1StepConf.html#a628dca6d25124bf34e9c3c830b691c4d',1,'playrho::StepConf']]],
   ['dotoi',['doToi',['../classplayrho_1_1StepConf.html#a281a00a1aea4cd4a3390b16b4d49e881',1,'playrho::StepConf']]],
   ['dowarmstart',['doWarmStart',['../classplayrho_1_1StepConf.html#a15442afc3e0dc7b585a950938440f3eb',1,'playrho::StepConf']]],
-  ['dtratio',['dtRatio',['../structplayrho_1_1VelocityConstraint_1_1Conf.html#a1d22598ed0e6e771cb39d72dbbc54195',1,'playrho::VelocityConstraint::Conf::dtRatio()'],['../classplayrho_1_1StepConf.html#a457b239d0d715ceab05b1c78425633a0',1,'playrho::StepConf::dtRatio()']]]
+  ['dtratio',['dtRatio',['../structplayrho_1_1d2_1_1VelocityConstraint_1_1Conf.html#a318e6cdd10c95ad32829125160a8950a',1,'playrho::d2::VelocityConstraint::Conf::dtRatio()'],['../classplayrho_1_1StepConf.html#a457b239d0d715ceab05b1c78425633a0',1,'playrho::StepConf::dtRatio()']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bounded_20value_20types',['Bounded Value Types',['../group__BoundedAliases.html',1,'']]]
+  ['additional_20mathematical_20functions',['Additional Mathematical Functions',['../group__Math.html',1,'']]]
 ];

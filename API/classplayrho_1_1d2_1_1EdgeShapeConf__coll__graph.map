@@ -1,0 +1,10 @@
+<map id="playrho::d2::EdgeShapeConf" name="playrho::d2::EdgeShapeConf">
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="playrho::d2::ShapeBuilder\l\&lt; EdgeShapeConf \&gt;" alt="" coords="1395,153,1569,192"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes. " alt="" coords="806,111,998,136"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure. " alt="" coords="1047,153,1222,192"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="441,55,600,93"/>
+<area shape="rect" id="node15" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="642,217,782,243"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="150,131,309,169"/>
+<area shape="rect" id="node14" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="151,309,308,335"/>
+<area shape="rect" id="node12" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="434,279,608,304"/>
+</map>

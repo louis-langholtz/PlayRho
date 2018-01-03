@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['weldjoint',['WeldJoint',['../classplayrho_1_1WeldJoint.html#a9de0bb05313d0a119d28b19a30aefad9',1,'playrho::WeldJoint']]],
-  ['weldjointdef',['WeldJointDef',['../structplayrho_1_1WeldJointDef.html#afe4477dba1d7b7d6f4d2fe31696b32bd',1,'playrho::WeldJointDef']]],
-  ['wheeljoint',['WheelJoint',['../classplayrho_1_1WheelJoint.html#a62143ee6306371e4b2290aeea925ff95',1,'playrho::WheelJoint']]],
-  ['wheeljointdef',['WheelJointDef',['../structplayrho_1_1WheelJointDef.html#aeda3307193ebb1f5b8916e5f4288dce0',1,'playrho::WheelJointDef']]],
-  ['world',['World',['../classplayrho_1_1World.html#ad2768ab2dee93f1f3741db009fc1a319',1,'playrho::World::World(const WorldDef &amp;def=GetDefaultWorldDef())'],['../classplayrho_1_1World.html#a7cc3c3b9e0ce6111b07e355d68f69649',1,'playrho::World::World(const World &amp;other)']]],
-  ['worldmanifold',['WorldManifold',['../classplayrho_1_1WorldManifold.html#a26d5a9765dc2cc341636d530bec95785',1,'playrho::WorldManifold::WorldManifold()=default'],['../classplayrho_1_1WorldManifold.html#ac6836827012b86265b041fa44170b83a',1,'playrho::WorldManifold::WorldManifold(UnitVec2 normal) noexcept'],['../classplayrho_1_1WorldManifold.html#afdce1abcc19f56e0af1f5f1235b2227b',1,'playrho::WorldManifold::WorldManifold(UnitVec2 normal, PointData ps0) noexcept'],['../classplayrho_1_1WorldManifold.html#a42c489709f8f1cc839d73f05b71adf88',1,'playrho::WorldManifold::WorldManifold(UnitVec2 normal, PointData ps0, PointData ps1) noexcept']]]
+  ['weldjoint',['WeldJoint',['../classplayrho_1_1d2_1_1WeldJoint.html#a115372c85e776c85cfc4046ab43bda1c',1,'playrho::d2::WeldJoint']]],
+  ['weldjointconf',['WeldJointConf',['../structplayrho_1_1d2_1_1WeldJointConf.html#aa32cd925d79d6b7550ef25bcff30f63c',1,'playrho::d2::WeldJointConf']]],
+  ['wheeljoint',['WheelJoint',['../classplayrho_1_1d2_1_1WheelJoint.html#aa85867ae68f327b3aeabcd8cb487d090',1,'playrho::d2::WheelJoint']]],
+  ['wheeljointconf',['WheelJointConf',['../structplayrho_1_1d2_1_1WheelJointConf.html#a735e4dc90926ef58ae72aceb269986ec',1,'playrho::d2::WheelJointConf']]],
+  ['world',['World',['../classplayrho_1_1d2_1_1World.html#aa89b7fd6debfc04e3f41018deab88d29',1,'playrho::d2::World::World(const WorldConf &amp;def=GetDefaultWorldConf())'],['../classplayrho_1_1d2_1_1World.html#ae0dbefcd9b9d640f7013360f040c392f',1,'playrho::d2::World::World(const World &amp;other)']]],
+  ['worldmanifold',['WorldManifold',['../classplayrho_1_1d2_1_1WorldManifold.html#a82f1ad79d18712eb0a8ad4692c063083',1,'playrho::d2::WorldManifold::WorldManifold()=default'],['../classplayrho_1_1d2_1_1WorldManifold.html#a4c1dcda784537d670bd0e56d521353ff',1,'playrho::d2::WorldManifold::WorldManifold(UnitVec normal) noexcept'],['../classplayrho_1_1d2_1_1WorldManifold.html#a60d0596178ab601b2245c72086d7410e',1,'playrho::d2::WorldManifold::WorldManifold(UnitVec normal, PointData ps0) noexcept'],['../classplayrho_1_1d2_1_1WorldManifold.html#a580709ef695ac742f154f6d213bae285',1,'playrho::d2::WorldManifold::WorldManifold(UnitVec normal, PointData ps0, PointData ps1) noexcept']]]
 ];

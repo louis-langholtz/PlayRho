@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['decimal_20unit_20prefices',['Decimal Unit Prefices',['../group__DecimalUnitPrefices.html',1,'']]]
+  ['bounded_20value_20types',['Bounded Value Types',['../group__BoundedAliases.html',1,'']]]
 ];

@@ -1,0 +1,7 @@
+<map id="playrho::d2::ChainShapeConf" name="playrho::d2::ChainShapeConf">
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="playrho::d2::ShapeBuilder\l\&lt; ChainShapeConf \&gt;" alt="" coords="1322,67,1497,105"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes. " alt="" coords="730,80,922,105"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure. " alt="" coords="971,101,1146,140"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="424,153,583,192"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="146,181,305,220"/>
+</map>

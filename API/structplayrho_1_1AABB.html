@@ -215,9 +215,9 @@ Related Functions</h2></td></tr>
 <tr class="memitem:a7098e68e6e1bc1f058077b74dc8a43d4"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1AABB.html#a7098e68e6e1bc1f058077b74dc8a43d4">GetPerimeter</a> (const <a class="el" href="namespaceplayrho.html#ab95a145fd2dcc236e0a499b9abeaa62e">AABB2D</a> &amp;aabb) noexcept</td></tr>
 <tr class="memdesc:a7098e68e6e1bc1f058077b74dc8a43d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the perimeter length of the 2-dimensional <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a>.  <a href="#a7098e68e6e1bc1f058077b74dc8a43d4">More...</a><br /></td></tr>
 <tr class="separator:a7098e68e6e1bc1f058077b74dc8a43d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga423b50f62e241655f71181976a51832b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a591831bdaa7b9d1f786607c9333f1a02">RayCastOutput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__RayCastGroup.html#ga423b50f62e241655f71181976a51832b">RayCast</a> (const <a class="el" href="namespaceplayrho.html#ab95a145fd2dcc236e0a499b9abeaa62e">AABB2D</a> &amp;aabb, const <a class="el" href="structplayrho_1_1RayCastInput.html">RayCastInput</a> &amp;input) noexcept</td></tr>
-<tr class="memdesc:ga423b50f62e241655f71181976a51832b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cast a ray against the given <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a>.  <a href="group__RayCastGroup.html#ga423b50f62e241655f71181976a51832b">More...</a><br /></td></tr>
-<tr class="separator:ga423b50f62e241655f71181976a51832b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e559611eb9cc4da8e6ac7405b077927"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a93a047723db73bd15a3b47d7695fce15">RayCastOutput2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__RayCastGroup.html#ga3e559611eb9cc4da8e6ac7405b077927">RayCast</a> (const <a class="el" href="namespaceplayrho.html#ab95a145fd2dcc236e0a499b9abeaa62e">AABB2D</a> &amp;aabb, const <a class="el" href="structplayrho_1_1RayCastInput2D.html">RayCastInput2D</a> &amp;input) noexcept</td></tr>
+<tr class="memdesc:ga3e559611eb9cc4da8e6ac7405b077927"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cast a ray against the given <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a>.  <a href="group__RayCastGroup.html#ga3e559611eb9cc4da8e6ac7405b077927">More...</a><br /></td></tr>
+<tr class="separator:ga3e559611eb9cc4da8e6ac7405b077927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;std::size_t N&gt;<br />
@@ -225,11 +225,11 @@ struct playrho::AABB&lt; N &gt;</h3>
 
 <p>N-dimensional Axis Aligned Bounding Box. </p>
 <p>This is a concrete value class template for an N-dimensional axis aligned bounding box (<a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a>) which is a type of bounding volume.</p>
-<dl class="section note"><dt>Note</dt><dd>This class satisfies at least the following concepts: all the basic concepts, EqualityComparable, and Swappable. </dd>
+<dl class="section note"><dt>Note</dt><dd>This class satisfies at least the following concepts: all the basic concepts, <code>EqualityComparable</code>, and <code>Swappable</code>. </dd>
 <dd>
-This class is composed of &mdash; as in contains and owns &amp;mdash N <code>LengthInterval</code> variables. </dd>
+This class is composed of &mdash; as in contains and owns &mdash; N <code>LengthInterval</code> variables. </dd>
 <dd>
-Non-defaulted methods of this class are marked noexcept and expect that the Length type doesn't throw.</dd></dl>
+Non-defaulted methods of this class are marked <code>noexcept</code> and expect that the Length type doesn't throw.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Bounding_volume">https://en.wikipedia.org/wiki/Bounding_volume</a> </dd>
 <dd>
 <a href="http://en.cppreference.com/w/cpp/concept">http://en.cppreference.com/w/cpp/concept</a> </dd></dl>
@@ -391,7 +391,7 @@ template&lt;std::size_t N&gt; </div>
 <p>Whether the first <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> contains the entirety of the second <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> where containment is defined as being equal-to or within an <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a>. </p><dl class="section note"><dt>Note</dt><dd>The "unset" <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> is contained by all valid AABBs including the "unset" <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> itself. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">a</td><td><a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> to test whether it constains the second <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a>. </td></tr>
+    <tr><td class="paramname">a</td><td><a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> to test whether it contains the second <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a>. </td></tr>
     <tr><td class="paramname">b</td><td><a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> to test whether it's contained by the first <a class="el" href="structplayrho_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a>. </td></tr>
   </table>
   </dd>
@@ -1182,7 +1182,7 @@ template&lt;std::size_t N&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 11 2017 12:59:09 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 29 2017 22:13:39 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

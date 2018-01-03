@@ -1,16 +1,17 @@
 var searchData=
 [
-  ['i',['I',['../structplayrho_1_1MassData.html#a534cbe3ce9ccdef681e05600ff40ffdc',1,'playrho::MassData']]],
-  ['ignored',['ignored',['../structplayrho_1_1PreStepStats.html#a935bdc19edba8c3a8e4e83203d5ff534',1,'playrho::PreStepStats::ignored()'],['../structplayrho_1_1World_1_1UpdateContactsStats.html#accfcf9c38d1b67b44155b69199687c69',1,'playrho::World::UpdateContactsStats::ignored()'],['../structplayrho_1_1World_1_1DestroyContactsStats.html#a575a8d11199327075084999c3fb699a7',1,'playrho::World::DestroyContactsStats::ignored()']]],
-  ['impulse',['impulse',['../structplayrho_1_1WorldManifold_1_1PointData.html#a0e89e0f708e11eb78fd5267e3330061a',1,'playrho::WorldManifold::PointData']]],
+  ['i',['I',['../structplayrho_1_1detail_1_1MassData.html#abc772e841838fddea807268d27dddb55',1,'playrho::detail::MassData']]],
+  ['ignored',['ignored',['../structplayrho_1_1PreStepStats.html#a935bdc19edba8c3a8e4e83203d5ff534',1,'playrho::PreStepStats::ignored()'],['../structplayrho_1_1d2_1_1World_1_1UpdateContactsStats.html#aa2180802191d926d467130c0a313ee3d',1,'playrho::d2::World::UpdateContactsStats::ignored()'],['../structplayrho_1_1d2_1_1World_1_1DestroyContactsStats.html#afddfb485e3f2999a708c1b5fdaa74364',1,'playrho::d2::World::DestroyContactsStats::ignored()']]],
+  ['impulse',['impulse',['../structplayrho_1_1d2_1_1WorldManifold_1_1PointData.html#a7f514ec10ce3a9610e5fd89cdb45eae6',1,'playrho::d2::WorldManifold::PointData']]],
   ['indexa',['indexA',['../structplayrho_1_1ContactFeature.html#ac1bd8a9bfa4c1cdb13e0e603e945d786',1,'playrho::ContactFeature']]],
   ['indexb',['indexB',['../structplayrho_1_1ContactFeature.html#ab540beeb299389dccbac7381e4e39f6a',1,'playrho::ContactFeature']]],
-  ['indices',['indices',['../structplayrho_1_1IndexPairDistance.html#a0dab528294e7dd2d362eb066cdfe3144',1,'playrho::IndexPairDistance']]],
-  ['initialtreesize',['initialTreeSize',['../structplayrho_1_1WorldDef.html#a9a568783c32f1f7b7376d536f778d327',1,'playrho::WorldDef']]],
+  ['indices',['indices',['../structplayrho_1_1detail_1_1LengthIndices.html#ac0afe75cf5e5314e21346c52ca71209e',1,'playrho::detail::LengthIndices::indices()'],['../structplayrho_1_1LengthIndexPair.html#ad6a89b69c4a84810b16b3be86f74e6b8',1,'playrho::LengthIndexPair::indices()'],['../structplayrho_1_1d2_1_1Simplex_1_1Cache.html#a1f737deec07431d60875cb33adc9d5dc',1,'playrho::d2::Simplex::Cache::indices()']]],
+  ['initialtreesize',['initialTreeSize',['../structplayrho_1_1d2_1_1WorldConf.html#aa40a06645a5a4104e518d44c9716c2f9',1,'playrho::d2::WorldConf']]],
   ['invalidcontactindex',['InvalidContactIndex',['../namespaceplayrho.html#a21662261fc1db26e8f50313731c1f0d3',1,'playrho']]],
-  ['invalidheight',['InvalidHeight',['../classplayrho_1_1DynamicTree.html#a286ee2d77cca2060dadb3fa4239d1b75',1,'playrho::DynamicTree']]],
+  ['invalidheight',['InvalidHeight',['../classplayrho_1_1d2_1_1DynamicTree.html#a285d8dd9781ab775ceaf5b7f5bde8e8a',1,'playrho::d2::DynamicTree']]],
   ['invalidindexpair',['InvalidIndexPair',['../namespaceplayrho.html#a9ae0d4494c5f273d7bae9489ea22cf15',1,'playrho']]],
-  ['invalidislandindex',['InvalidIslandIndex',['../classplayrho_1_1Body.html#acf05a8660343ca20afced4b4e8084392',1,'playrho::Body']]],
+  ['invalidindexpair3',['InvalidIndexPair3',['../namespaceplayrho.html#a7a6ff7b1718107009f0242e8919d96a7',1,'playrho']]],
+  ['invalidislandindex',['InvalidIslandIndex',['../classplayrho_1_1d2_1_1Body.html#a6bd29bf731c14abe8c1456f9c7adc0af',1,'playrho::d2::Body']]],
   ['invaliditeration',['InvalidIteration',['../classplayrho_1_1StepConf.html#ad2b3f810f4540f2a7e507ed4b1b68cd1',1,'playrho::StepConf']]],
   ['invalidvertex',['InvalidVertex',['../namespaceplayrho.html#ab13e92f7c6118e3ac33ea8f769dd51a3',1,'playrho']]],
   ['invtime',['invTime',['../classplayrho_1_1StepConf.html#a6c95f6e2d1d3c4694b59889bef0d7e2b',1,'playrho::StepConf']]],
@@ -21,8 +22,8 @@ var searchData=
   ['is_5fmodulo',['is_modulo',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#ad7a5136cc562413091f7c5f099e8ce46',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
   ['is_5fsigned',['is_signed',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#aa9972cea6e5df25fef64abae27f0797c',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
   ['is_5fspecialized',['is_specialized',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a1fff6a1ac83b9d37cc3a79f80f3cd60e',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
-  ['islandsfound',['islandsFound',['../structplayrho_1_1RegStepStats.html#a1183f26025853b67716b72787f845e4e',1,'playrho::RegStepStats::islandsFound()'],['../structplayrho_1_1ToiStepStats.html#ae466af8e97bb15813097cec240589f44',1,'playrho::ToiStepStats::islandsFound()']]],
-  ['islandssolved',['islandsSolved',['../structplayrho_1_1RegStepStats.html#afd6f3de6f7f5ed194b2f4e87145da513',1,'playrho::RegStepStats::islandsSolved()'],['../structplayrho_1_1ToiStepStats.html#aba23e37196c26b7b6afa20156e846727',1,'playrho::ToiStepStats::islandsSolved()']]],
-  ['issensor',['isSensor',['../structplayrho_1_1FixtureDef.html#a49830a520c0fcca286f1d763b60f99ca',1,'playrho::FixtureDef']]],
-  ['iterations',['iterations',['../structplayrho_1_1DistanceOutput.html#a0e16a06c66077c9ce6cb454572d46ca1',1,'playrho::DistanceOutput']]]
+  ['islandsfound',['islandsFound',['../structplayrho_1_1RegStepStats.html#ab7d450a02ef4369564d88a69b53cc915',1,'playrho::RegStepStats::islandsFound()'],['../structplayrho_1_1ToiStepStats.html#ae466af8e97bb15813097cec240589f44',1,'playrho::ToiStepStats::islandsFound()']]],
+  ['islandssolved',['islandsSolved',['../structplayrho_1_1RegStepStats.html#a47e17195aadb3418bab41d74262f0358',1,'playrho::RegStepStats::islandsSolved()'],['../structplayrho_1_1ToiStepStats.html#aba23e37196c26b7b6afa20156e846727',1,'playrho::ToiStepStats::islandsSolved()']]],
+  ['issensor',['isSensor',['../structplayrho_1_1d2_1_1FixtureConf.html#a6ee27d488bf91f504acadd259fa36798',1,'playrho::d2::FixtureConf']]],
+  ['iterations',['iterations',['../structplayrho_1_1d2_1_1DistanceOutput.html#a3e530bb6c13140f89aa96893d816683c',1,'playrho::d2::DistanceOutput']]]
 ];

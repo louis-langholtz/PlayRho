@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classplayrho_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> Constraint.  
+<p>Body Constraint.  
  <a href="classplayrho_1_1BodyConstraint.html#details">More...</a></p>
 
 <p><code>#include &lt;BodyConstraint.hpp&gt;</code></p>
@@ -84,10 +84,10 @@ Collaboration diagram for playrho::BodyConstraint:</div>
 <div class="center"><img src="classplayrho_1_1BodyConstraint__coll__graph.png" border="0" usemap="#playrho_1_1BodyConstraint_coll__map" alt="Collaboration graph"/></div>
 <map name="playrho_1_1BodyConstraint_coll__map" id="playrho_1_1BodyConstraint_coll__map">
 <area shape="rect" id="node2" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="485,15,659,40"/>
-<area shape="rect" id="node11" href="structplayrho_1_1Position.html" title="Positional data structure. " alt="" coords="810,77,930,103"/>
+<area shape="rect" id="node10" href="structplayrho_1_1Position2D.html" title="2&#45;D positional data structure. " alt="" coords="802,77,938,103"/>
 <area shape="rect" id="node4" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="150,71,307,96"/>
-<area shape="rect" id="node8" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="464,127,681,152"/>
-<area shape="rect" id="node7" href="structplayrho_1_1Velocity.html" title="Velocity related data structure. " alt="" coords="811,127,929,152"/>
+<area shape="rect" id="node7" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="464,127,681,152"/>
+<area shape="rect" id="node6" href="structplayrho_1_1Velocity2D.html" title="2&#45;D velocity related data structure. " alt="" coords="802,127,938,152"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -100,10 +100,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a601c35fa50d950303b62e2b9a3d5e9fa"><td class="memItemLeft" align="right" valign="top"><a id="a601c35fa50d950303b62e2b9a3d5e9fa"></a>
-PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#a601c35fa50d950303b62e2b9a3d5e9fa">BodyConstraint</a> (<a class="el" href="group__PhysicalQuantities.html#ga370c2a37515b6a8e79468113554f8ba9">InvMass</a> invMass, <a class="el" href="group__PhysicalQuantities.html#gafa6edf71110d3eef58f39dcbb8067ef4">InvRotInertia</a> invRotI, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> localCenter, <a class="el" href="structplayrho_1_1Position.html">Position</a> position, <a class="el" href="structplayrho_1_1Velocity.html">Velocity</a> velocity) noexcept</td></tr>
-<tr class="memdesc:a601c35fa50d950303b62e2b9a3d5e9fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
-<tr class="separator:a601c35fa50d950303b62e2b9a3d5e9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ff27ebfe888876c38165ee3dd07c75e"><td class="memItemLeft" align="right" valign="top"><a id="a0ff27ebfe888876c38165ee3dd07c75e"></a>
+PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#a0ff27ebfe888876c38165ee3dd07c75e">BodyConstraint</a> (<a class="el" href="group__PhysicalQuantities.html#ga370c2a37515b6a8e79468113554f8ba9">InvMass</a> invMass, <a class="el" href="group__PhysicalQuantities.html#gafa6edf71110d3eef58f39dcbb8067ef4">InvRotInertia</a> invRotI, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> localCenter, <a class="el" href="structplayrho_1_1Position2D.html">Position2D</a> position, <a class="el" href="structplayrho_1_1Velocity2D.html">Velocity2D</a> velocity) noexcept</td></tr>
+<tr class="memdesc:a0ff27ebfe888876c38165ee3dd07c75e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
+<tr class="separator:a0ff27ebfe888876c38165ee3dd07c75e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac598200e61d6f39dafacef7d682d35f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga370c2a37515b6a8e79468113554f8ba9">InvMass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#ac598200e61d6f39dafacef7d682d35f1">GetInvMass</a> () const noexcept</td></tr>
 <tr class="memdesc:ac598200e61d6f39dafacef7d682d35f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse mass of this body representation.  <a href="#ac598200e61d6f39dafacef7d682d35f1">More...</a><br /></td></tr>
 <tr class="separator:ac598200e61d6f39dafacef7d682d35f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,31 +114,31 @@ PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#ac086305fc728f000113904677b073c15">GetLocalCenter</a> () const noexcept</td></tr>
 <tr class="memdesc:ac086305fc728f000113904677b073c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the location of the body's center of mass in local coordinates. <br /></td></tr>
 <tr class="separator:ac086305fc728f000113904677b073c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd40e9961acce399ddae4fe2ed0c4db6"><td class="memItemLeft" align="right" valign="top"><a id="acd40e9961acce399ddae4fe2ed0c4db6"></a>
-<a class="el" href="structplayrho_1_1Position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#acd40e9961acce399ddae4fe2ed0c4db6">GetPosition</a> () const noexcept</td></tr>
-<tr class="memdesc:acd40e9961acce399ddae4fe2ed0c4db6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the position of the body. <br /></td></tr>
-<tr class="separator:acd40e9961acce399ddae4fe2ed0c4db6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaed9fe68086446010cd48f27ee9b8ef0"><td class="memItemLeft" align="right" valign="top"><a id="aaed9fe68086446010cd48f27ee9b8ef0"></a>
-<a class="el" href="structplayrho_1_1Velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#aaed9fe68086446010cd48f27ee9b8ef0">GetVelocity</a> () const noexcept</td></tr>
-<tr class="memdesc:aaed9fe68086446010cd48f27ee9b8ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the velocity of the body. <br /></td></tr>
-<tr class="separator:aaed9fe68086446010cd48f27ee9b8ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9fd19226b54ebaec37302c0e3c515ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1BodyConstraint.html">BodyConstraint</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#aa9fd19226b54ebaec37302c0e3c515ae">SetPosition</a> (<a class="el" href="structplayrho_1_1Position.html">Position</a> value) noexcept</td></tr>
-<tr class="memdesc:aa9fd19226b54ebaec37302c0e3c515ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the body.  <a href="#aa9fd19226b54ebaec37302c0e3c515ae">More...</a><br /></td></tr>
-<tr class="separator:aa9fd19226b54ebaec37302c0e3c515ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fded237ebd163793101687e636df4bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1BodyConstraint.html">BodyConstraint</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#a0fded237ebd163793101687e636df4bb">SetVelocity</a> (<a class="el" href="structplayrho_1_1Velocity.html">Velocity</a> value) noexcept</td></tr>
-<tr class="memdesc:a0fded237ebd163793101687e636df4bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the velocity of the body.  <a href="#a0fded237ebd163793101687e636df4bb">More...</a><br /></td></tr>
-<tr class="separator:a0fded237ebd163793101687e636df4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a149c177fd6ddcb265b1048b531bd0334"><td class="memItemLeft" align="right" valign="top"><a id="a149c177fd6ddcb265b1048b531bd0334"></a>
+<a class="el" href="structplayrho_1_1Position2D.html">Position2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#a149c177fd6ddcb265b1048b531bd0334">GetPosition</a> () const noexcept</td></tr>
+<tr class="memdesc:a149c177fd6ddcb265b1048b531bd0334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the position of the body. <br /></td></tr>
+<tr class="separator:a149c177fd6ddcb265b1048b531bd0334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0cd248db67453bf926d6137cc8cd8d5"><td class="memItemLeft" align="right" valign="top"><a id="aa0cd248db67453bf926d6137cc8cd8d5"></a>
+<a class="el" href="structplayrho_1_1Velocity2D.html">Velocity2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#aa0cd248db67453bf926d6137cc8cd8d5">GetVelocity</a> () const noexcept</td></tr>
+<tr class="memdesc:aa0cd248db67453bf926d6137cc8cd8d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the velocity of the body. <br /></td></tr>
+<tr class="separator:aa0cd248db67453bf926d6137cc8cd8d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcc610179a5e655bb4d17fd3528c4824"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1BodyConstraint.html">BodyConstraint</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#abcc610179a5e655bb4d17fd3528c4824">SetPosition</a> (<a class="el" href="structplayrho_1_1Position2D.html">Position2D</a> value) noexcept</td></tr>
+<tr class="memdesc:abcc610179a5e655bb4d17fd3528c4824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the body.  <a href="#abcc610179a5e655bb4d17fd3528c4824">More...</a><br /></td></tr>
+<tr class="separator:abcc610179a5e655bb4d17fd3528c4824"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab011da389d77d4f1cd4b7ee3f99a98ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1BodyConstraint.html">BodyConstraint</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#ab011da389d77d4f1cd4b7ee3f99a98ce">SetVelocity</a> (<a class="el" href="structplayrho_1_1Velocity2D.html">Velocity2D</a> value) noexcept</td></tr>
+<tr class="memdesc:ab011da389d77d4f1cd4b7ee3f99a98ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the velocity of the body.  <a href="#ab011da389d77d4f1cd4b7ee3f99a98ce">More...</a><br /></td></tr>
+<tr class="separator:ab011da389d77d4f1cd4b7ee3f99a98ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a96776656858ef9beacf8bbcb1fc22241"><td class="memItemLeft" align="right" valign="top"><a id="a96776656858ef9beacf8bbcb1fc22241"></a>
-<a class="el" href="structplayrho_1_1Position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#a96776656858ef9beacf8bbcb1fc22241">m_position</a></td></tr>
-<tr class="memdesc:a96776656858ef9beacf8bbcb1fc22241"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> position data. <br /></td></tr>
-<tr class="separator:a96776656858ef9beacf8bbcb1fc22241"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac71922ea25144c8e50eeead6b89b6a0d"><td class="memItemLeft" align="right" valign="top"><a id="ac71922ea25144c8e50eeead6b89b6a0d"></a>
-<a class="el" href="structplayrho_1_1Velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#ac71922ea25144c8e50eeead6b89b6a0d">m_velocity</a></td></tr>
-<tr class="memdesc:ac71922ea25144c8e50eeead6b89b6a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> velocity data. <br /></td></tr>
-<tr class="separator:ac71922ea25144c8e50eeead6b89b6a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a651cb7968c5fc5edd0ae118eae645ef8"><td class="memItemLeft" align="right" valign="top"><a id="a651cb7968c5fc5edd0ae118eae645ef8"></a>
+<a class="el" href="structplayrho_1_1Position2D.html">Position2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#a651cb7968c5fc5edd0ae118eae645ef8">m_position</a></td></tr>
+<tr class="memdesc:a651cb7968c5fc5edd0ae118eae645ef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Body position data. <br /></td></tr>
+<tr class="separator:a651cb7968c5fc5edd0ae118eae645ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a835cf6a52dfba81c031f01acd7102b"><td class="memItemLeft" align="right" valign="top"><a id="a1a835cf6a52dfba81c031f01acd7102b"></a>
+<a class="el" href="structplayrho_1_1Velocity2D.html">Velocity2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#a1a835cf6a52dfba81c031f01acd7102b">m_velocity</a></td></tr>
+<tr class="memdesc:a1a835cf6a52dfba81c031f01acd7102b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Body velocity data. <br /></td></tr>
+<tr class="separator:a1a835cf6a52dfba81c031f01acd7102b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc6b220c138cfe2a44731318beaf93f6"><td class="memItemLeft" align="right" valign="top"><a id="afc6b220c138cfe2a44731318beaf93f6"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BodyConstraint.html#afc6b220c138cfe2a44731318beaf93f6">m_localCenter</a></td></tr>
 <tr class="memdesc:afc6b220c138cfe2a44731318beaf93f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local center of the associated body's sweep. <br /></td></tr>
@@ -153,8 +153,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:afb07fa8a6ea4da2ae60a4e5b55d49338"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classplayrho_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> Constraint. </p>
-<p><a class="el" href="classplayrho_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> data related to constraint processing. </p><dl class="section note"><dt>Note</dt><dd>Only position and velocity is independently changable after construction. </dd>
+<div class="textblock"><p>Body Constraint. </p>
+<p>Body data related to constraint processing. </p><dl class="section note"><dt>Note</dt><dd>Only position and velocity is independently changeable after construction. </dd>
 <dd>
 This data structure is 40-bytes large (with 4-byte Real on at least one 64-bit platform). </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -184,7 +184,7 @@ This data structure is 40-bytes large (with 4-byte Real on at least one 64-bit p
 <p>Gets the inverse mass of this body representation. </p>
 <dl class="section return"><dt>Returns</dt><dd>Value &gt;= 0. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a2e401c6c03716e8b7629a671ee1e16bf">playrho::GetBodyConstraint()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a4d2bcbbb2212a191c631858620f66dec">playrho::GetBodyConstraint()</a>.</p>
 
 </div>
 </div>
@@ -216,8 +216,8 @@ This data structure is 40-bytes large (with 4-byte Real on at least one 64-bit p
 
 </div>
 </div>
-<a id="aa9fd19226b54ebaec37302c0e3c515ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9fd19226b54ebaec37302c0e3c515ae">&#9670;&nbsp;</a></span>SetPosition()</h2>
+<a id="abcc610179a5e655bb4d17fd3528c4824"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcc610179a5e655bb4d17fd3528c4824">&#9670;&nbsp;</a></span>SetPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +228,7 @@ This data structure is 40-bytes large (with 4-byte Real on at least one 64-bit p
         <tr>
           <td class="memname"><a class="el" href="classplayrho_1_1BodyConstraint.html">BodyConstraint</a> &amp; playrho::BodyConstraint::SetPosition </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structplayrho_1_1Position.html">Position</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1Position2D.html">Position2D</a>&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
@@ -251,8 +251,8 @@ This data structure is 40-bytes large (with 4-byte Real on at least one 64-bit p
 
 </div>
 </div>
-<a id="a0fded237ebd163793101687e636df4bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fded237ebd163793101687e636df4bb">&#9670;&nbsp;</a></span>SetVelocity()</h2>
+<a id="ab011da389d77d4f1cd4b7ee3f99a98ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab011da389d77d4f1cd4b7ee3f99a98ce">&#9670;&nbsp;</a></span>SetVelocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -263,7 +263,7 @@ This data structure is 40-bytes large (with 4-byte Real on at least one 64-bit p
         <tr>
           <td class="memname"><a class="el" href="classplayrho_1_1BodyConstraint.html">BodyConstraint</a> &amp; playrho::BodyConstraint::SetVelocity </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structplayrho_1_1Velocity.html">Velocity</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1Velocity2D.html">Velocity2D</a>&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
@@ -292,7 +292,7 @@ This data structure is 40-bytes large (with 4-byte Real on at least one 64-bit p
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 11 2017 12:59:09 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 29 2017 21:47:39 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

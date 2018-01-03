@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['joint_20classes',['Joint Classes',['../group__JointsGroup.html',1,'']]]
+  ['decimal_20unit_20prefices',['Decimal Unit Prefices',['../group__DecimalUnitPrefices.html',1,'']]]
 ];

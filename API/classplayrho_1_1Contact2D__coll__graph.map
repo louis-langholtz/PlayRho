@@ -1,0 +1,13 @@
+<map id="playrho::Contact2D" name="playrho::Contact2D">
+<area shape="rect" id="node2" href="$classplayrho_1_1Manifold2D.html" title="A collision description for the collision two convex shapes. " alt="" coords="1401,262,1541,287"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="422,226,596,251"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1Manifold2D_1_1Point.html" title="Data for a point of collision in a Manifold. " alt="" coords="776,153,916,191"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="150,265,307,290"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1UnitVec2.html" title="2&#45;D unit vector. " alt="" coords="1108,295,1234,321"/>
+<area shape="rect" id="node13" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature. " alt="" coords="427,107,591,133"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1Manifold2D_1_1PointArray.html" title="Point array structure. " alt="" coords="1101,169,1241,207"/>
+<area shape="rect" id="node18" href="$classplayrho_1_1Fixture2D.html" title="An association between a body and a shape. " alt="" coords="1406,505,1536,530"/>
+<area shape="rect" id="node19" href="$unionplayrho_1_1Fixture2D_1_1FixtureProxies.html" title="Fixture proxies union. " alt="" coords="1106,446,1236,485"/>
+<area shape="rect" id="node23" href="$structplayrho_1_1Filter.html" title="A holder for contact filtering data. " alt="" coords="1120,571,1222,597"/>
+<area shape="rect" id="node27" href="$classplayrho_1_1Shape2D.html" title="Shape2D. " alt="" coords="1107,670,1235,695"/>
+</map>

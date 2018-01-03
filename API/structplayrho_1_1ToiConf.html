@@ -164,7 +164,7 @@ Related Functions</h2></td></tr>
 <p>These parameters effect time of impact calculations by limiting the definitions of time and impact. If total radius is expressed as TR, and target depth as TD, then: the max target distance is (TR - TD) + tolerance; and the min target distance is (TR - TD) - tolerance.</p>
 <dl class="section note"><dt>Note</dt><dd>Max target distance must be less than or equal to the total radius as the target range has to be chosen such that the contact manifold will have a greater than zero contact point count. </dd>
 <dd>
-A max target of totalRadius - DefaultLinearSlop * x where x is &lt;= 1 is increasingly slower as x goes below 1. </dd>
+A max target of <code>totalRadius - DefaultLinearSlop * x</code> where <code>x is &lt;= 1</code> is increasingly slower as x goes below 1. </dd>
 <dd>
 Min target distance needs to be significantly less than the max target distance and significantly more than 0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SolvePositionConstraints </dd>
@@ -212,9 +212,9 @@ SolveTOIPositionConstraints </dd></dl>
 </div><div class="memdoc">
 
 <p>Maximum number of root finder iterations. </p>
-<p>This is the maximum number of iterations for calculating the 1D root of <code>f(t) - (totalRadius - targetDepth) &lt; tolerance</code> where <code>f(t)</code> is the distance between the shapes at time <code>t</code>, and <code>totalRadius</code> is the sum of the vertex radiuses of 2 distance proxies. </p><dl class="section note"><dt>Note</dt><dd>This value never needs to be more than the number of iterations needed to achieve full machine precision. </dd></dl>
+<p>This is the maximum number of iterations for calculating the 1-dimensional root of <code>f(t) - (totalRadius - targetDepth) &lt; tolerance</code> where <code>f(t)</code> is the distance between the shapes at time <code>t</code>, and <code>totalRadius</code> is the sum of the vertex radiuses of 2 distance proxies. </p><dl class="section note"><dt>Note</dt><dd>This value never needs to be more than the number of iterations needed to achieve full machine precision. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#acad38ef6ac1537641203f3eb15225235">playrho::GetToiViaSat()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>.</p>
 
 </div>
 </div>
@@ -233,7 +233,7 @@ SolveTOIPositionConstraints </dd></dl>
 <p>Targeted depth of impact. </p>
 <dl class="section note"><dt>Note</dt><dd>Value must be less than twice the minimum vertex radius of any shape. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#acad38ef6ac1537641203f3eb15225235">playrho::GetToiViaSat()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>.</p>
 
 </div>
 </div>
@@ -254,7 +254,7 @@ SolveTOIPositionConstraints </dd></dl>
 <dd>
 Use 0 to require a TOI at exactly the target depth. This is ill-advised. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#acad38ef6ac1537641203f3eb15225235">playrho::GetToiViaSat()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>.</p>
 
 </div>
 </div>
@@ -264,7 +264,7 @@ Use 0 to require a TOI at exactly the target depth. This is ill-advised. </dd></
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 11 2017 12:59:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jan 2 2018 18:34:32 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

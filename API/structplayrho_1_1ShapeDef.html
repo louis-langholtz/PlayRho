@@ -118,7 +118,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:afb2a548444fab8ce391a79cd23881548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restitution (elasticity) of the associated shape.  <a href="#afb2a548444fab8ce391a79cd23881548">More...</a><br /></td></tr>
 <tr class="separator:afb2a548444fab8ce391a79cd23881548"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0bc4805871c1d350f475408837f255b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1ShapeDef.html#aa0bc4805871c1d350f475408837f255b">density</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a>&gt;{0_kgpm2}</td></tr>
-<tr class="memdesc:aa0bc4805871c1d350f475408837f255b"><td class="mdescLeft">&#160;</td><td class="mdescRight">AreaDensity of the associated shape.  <a href="#aa0bc4805871c1d350f475408837f255b">More...</a><br /></td></tr>
+<tr class="memdesc:aa0bc4805871c1d350f475408837f255b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Area density of the associated shape.  <a href="#aa0bc4805871c1d350f475408837f255b">More...</a><br /></td></tr>
 <tr class="separator:aa0bc4805871c1d350f475408837f255b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -137,12 +137,12 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>AreaDensity of the associated shape. </p>
+<p>Area density of the associated shape. </p>
 <dl class="section note"><dt>Note</dt><dd>This must be a non-negative value. </dd>
 <dd>
 Use 0 to indicate that the shape's associated mass should be 0. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a24b24cbb3841739885e9dd37a4c69af6">playrho::CreateRectangularEnclosingBody()</a>, and <a class="el" href="classplayrho_1_1ChainShapeConf.html#aa9d96000a84d247a02d2d0368ea21312">playrho::ChainShapeConf::GetMassData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a0b8595f7afaedc70b7abeec9969a0a68">playrho::CreateRectangularEnclosingBody()</a>, and <a class="el" href="classplayrho_1_1ChainShapeConf.html#aed591a5c1867498c95341e31686e7af1">playrho::ChainShapeConf::GetMassData()</a>.</p>
 
 </div>
 </div>
@@ -165,7 +165,7 @@ This is usually in the range [0,1]. </dd>
 <dd>
 The square-root of the product of this value multiplied by a touching fixture's friction becomes the friction coefficient for the contact. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a24b24cbb3841739885e9dd37a4c69af6">playrho::CreateRectangularEnclosingBody()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a0b8595f7afaedc70b7abeec9969a0a68">playrho::CreateRectangularEnclosingBody()</a>.</p>
 
 </div>
 </div>
@@ -186,7 +186,7 @@ The square-root of the product of this value multiplied by a touching fixture's 
 <dd>
 This is usually in the range [0,1]. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a24b24cbb3841739885e9dd37a4c69af6">playrho::CreateRectangularEnclosingBody()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a0b8595f7afaedc70b7abeec9969a0a68">playrho::CreateRectangularEnclosingBody()</a>.</p>
 
 </div>
 </div>
@@ -206,7 +206,7 @@ This is usually in the range [0,1]. </dd></dl>
 <p>This is the radius from the vertex that the shape's "skin" should extend outward by. While any edges &mdash; line segments between multiple vertices &mdash; are straight, corners between them (the vertices) are rounded and treated as rounded. Shapes with larger vertex radiuses compared to edge lengths therefore will be more prone to rolling or having other shapes more prone to roll off of them.</p>
 <dl class="section note"><dt>Note</dt><dd>This should be a non-negative value. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a24b24cbb3841739885e9dd37a4c69af6">playrho::CreateRectangularEnclosingBody()</a>, <a class="el" href="classplayrho_1_1ChainShapeConf.html#a1530ca95ad5a1f50f266503943e2378d">playrho::ChainShapeConf::GetChild()</a>, <a class="el" href="classplayrho_1_1EdgeShapeConf.html#ada70d6c054a176f22e21e0dac559907a">playrho::EdgeShapeConf::GetChild()</a>, <a class="el" href="namespaceplayrho.html#a8891bac38b17dd4bbaead00a29583e75">playrho::GetChild()</a>, <a class="el" href="classplayrho_1_1ChainShapeConf.html#aa9d96000a84d247a02d2d0368ea21312">playrho::ChainShapeConf::GetMassData()</a>, <a class="el" href="structplayrho_1_1DiskShapeConf.html#a96ab49412f9bb1ebc0e75c3f2380cbf1">playrho::DiskShapeConf::GetRadius()</a>, and <a class="el" href="structplayrho_1_1DiskShapeConf.html#abc9cf2dc0a29b993dc9f5e2a2c99d155">playrho::DiskShapeConf::UseRadius()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a0b8595f7afaedc70b7abeec9969a0a68">playrho::CreateRectangularEnclosingBody()</a>, <a class="el" href="classplayrho_1_1ChainShapeConf.html#a00d318c9ddc637bb12d30d54310b4956">playrho::ChainShapeConf::GetChild()</a>, <a class="el" href="classplayrho_1_1EdgeShapeConf.html#a5f3f5eca30e35949768574d47c2b6e1d">playrho::EdgeShapeConf::GetChild()</a>, <a class="el" href="namespaceplayrho.html#a1b3b90e88e85099409d10ed5627f84f1">playrho::GetChild()</a>, <a class="el" href="classplayrho_1_1ChainShapeConf.html#aed591a5c1867498c95341e31686e7af1">playrho::ChainShapeConf::GetMassData()</a>, <a class="el" href="structplayrho_1_1DiskShapeConf.html#a96ab49412f9bb1ebc0e75c3f2380cbf1">playrho::DiskShapeConf::GetRadius()</a>, and <a class="el" href="structplayrho_1_1DiskShapeConf.html#abc9cf2dc0a29b993dc9f5e2a2c99d155">playrho::DiskShapeConf::UseRadius()</a>.</p>
 
 </div>
 </div>
@@ -216,7 +216,7 @@ This is usually in the range [0,1]. </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 11 2017 12:59:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 29 2017 22:13:41 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

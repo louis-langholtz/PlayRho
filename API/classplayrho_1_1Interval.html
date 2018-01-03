@@ -165,9 +165,8 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-types"></a>
 Private Types</h2></td></tr>
-<tr class="memitem:a10cf0f7f8c15ba2ff9cfee82c8b759d9"><td class="memItemLeft" align="right" valign="top"><a id="a10cf0f7f8c15ba2ff9cfee82c8b759d9"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Interval.html#a10cf0f7f8c15ba2ff9cfee82c8b759d9">pair_type</a> = std::pair&lt; <a class="el" href="classplayrho_1_1Interval.html#af3f2912d491535ecbe0f8b03da2357b7">value_type</a>, <a class="el" href="classplayrho_1_1Interval.html#af3f2912d491535ecbe0f8b03da2357b7">value_type</a> &gt;</td></tr>
-<tr class="memdesc:a10cf0f7f8c15ba2ff9cfee82c8b759d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal pair type. <br /></td></tr>
+<tr class="memitem:a10cf0f7f8c15ba2ff9cfee82c8b759d9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Interval.html#a10cf0f7f8c15ba2ff9cfee82c8b759d9">pair_type</a> = std::pair&lt; <a class="el" href="classplayrho_1_1Interval.html#af3f2912d491535ecbe0f8b03da2357b7">value_type</a>, <a class="el" href="classplayrho_1_1Interval.html#af3f2912d491535ecbe0f8b03da2357b7">value_type</a> &gt;</td></tr>
+<tr class="memdesc:a10cf0f7f8c15ba2ff9cfee82c8b759d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal pair type.  <a href="#a10cf0f7f8c15ba2ff9cfee82c8b759d9">More...</a><br /></td></tr>
 <tr class="separator:a10cf0f7f8c15ba2ff9cfee82c8b759d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -240,6 +239,33 @@ class playrho::Interval&lt; T &gt;</h3>
 <p>This type encapsulates an interval as a min-max value range relationship. </p><dl class="section invariant"><dt>Invariant</dt><dd>The min and max values can only be the result of <code>std::minmax(a, b)</code> or the special values of the "highest" and "lowest" values supported by the type for this class respectively indicating the "unset" value. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Interval_(mathematics)">https://en.wikipedia.org/wiki/Interval_(mathematics)</a> </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a10cf0f7f8c15ba2ff9cfee82c8b759d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10cf0f7f8c15ba2ff9cfee82c8b759d9">&#9670;&nbsp;</a></span>pair_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classplayrho_1_1Interval.html">playrho::Interval</a>&lt; T &gt;::<a class="el" href="classplayrho_1_1Interval.html#a10cf0f7f8c15ba2ff9cfee82c8b759d9">pair_type</a> =  std::pair&lt;<a class="el" href="classplayrho_1_1Interval.html#af3f2912d491535ecbe0f8b03da2357b7">value_type</a>, <a class="el" href="classplayrho_1_1Interval.html#af3f2912d491535ecbe0f8b03da2357b7">value_type</a>&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal pair type. </p>
+<dl class="section note"><dt>Note</dt><dd>Uses <code>std::pair</code> since it's the most natural type given that <code>std::minmax</code> returns it. </dd></dl>
+
+</div>
+</div>
 <a id="af3f2912d491535ecbe0f8b03da2357b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3f2912d491535ecbe0f8b03da2357b7">&#9670;&nbsp;</a></span>value_type</h2>
 
@@ -875,7 +901,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Inequality operator. </p>
-<dl class="section note"><dt>Note</dt><dd>Satisfies the EqualityComparable concept for <a class="el" href="classplayrho_1_1Interval.html" title="Interval template type. ">Interval</a> objects.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Satisfies the <code>EqualityComparable</code> concept for <a class="el" href="classplayrho_1_1Interval.html" title="Interval template type. ">Interval</a> objects.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="http://en.cppreference.com/w/cpp/concept/EqualityComparable">http://en.cppreference.com/w/cpp/concept/EqualityComparable</a> </dd></dl>
 
 </div>
@@ -921,7 +947,7 @@ template&lt;typename T &gt; </div>
 <dd>
 This is a lexicographical comparison. </dd>
 <dd>
-Obeys the LessThanComparable concept: for all a, !(a &lt; a); if (a &lt; b) then !(b &lt; a); if (a &lt; b) and (b &lt; c) then (a &lt; c); with equiv = !(a &lt; b) &amp;&amp; !(b &lt; a), if equiv(a, b) and equiv(b, c), then equiv(a, c).</dd></dl>
+Obeys the <code>LessThanComparable</code> concept: <code>for all a, !(a &lt; a); if (a &lt; b) then !(b &lt; a); if (a &lt; b) and (b &lt; c) then (a &lt; c); with equiv = !(a &lt; b) &amp;&amp; !(b &lt; a), if equiv(a, b) and equiv(b, c), then equiv(a, c).</code></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings">https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings</a> </dd>
 <dd>
 <a href="http://en.cppreference.com/w/cpp/concept/LessThanComparable">http://en.cppreference.com/w/cpp/concept/LessThanComparable</a> </dd></dl>
@@ -1009,7 +1035,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Equality operator. </p>
-<dl class="section note"><dt>Note</dt><dd>Satisfies the EqualityComparable concept for <a class="el" href="classplayrho_1_1Interval.html" title="Interval template type. ">Interval</a> objects.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Satisfies the <code>EqualityComparable</code> concept for <a class="el" href="classplayrho_1_1Interval.html" title="Interval template type. ">Interval</a> objects.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="http://en.cppreference.com/w/cpp/concept/EqualityComparable">http://en.cppreference.com/w/cpp/concept/EqualityComparable</a> </dd></dl>
 
 </div>
@@ -1109,7 +1135,7 @@ This is a lexicographical comparison.</dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 11 2017 12:59:10 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jan 2 2018 18:34:32 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>
