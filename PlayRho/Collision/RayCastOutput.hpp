@@ -27,11 +27,11 @@
 #include <PlayRho/Common/BoundedValue.hpp>
 #include <PlayRho/Common/OptionalValue.hpp>
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/RayCastInput.hpp>
 
 namespace playrho {
 namespace d2 {
 
-struct RayCastInput;
 class Shape;
 class DistanceProxy;
 
