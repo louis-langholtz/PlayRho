@@ -77,7 +77,7 @@ public:
     {
         if (m_count == m_capacity)
         {
-            T* old = m_stack;
+            const auto old = m_stack;
             m_capacity *= GetBufferGrowthRate();
             m_stack = Alloc<T>(m_capacity);
             std::memcpy(m_stack, old, m_count * sizeof(T));

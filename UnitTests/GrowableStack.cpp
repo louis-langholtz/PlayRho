@@ -67,4 +67,16 @@ TEST(GrowableStack, PushAndPop)
     foo.pop();
     EXPECT_EQ(foo.size(), T::CountType(4));
     EXPECT_EQ(foo.capacity(), T::GetInitialCapacity() * T::GetBufferGrowthRate());
+
+    foo.push(5);
+    foo.push(6);
+    foo.push(7);
+    foo.push(8);
+    EXPECT_EQ(foo.size(), T::CountType(8));
+    EXPECT_EQ(foo.capacity(), T::CountType(8));
+
+    foo.push(9);
+    EXPECT_EQ(foo.size(), T::CountType(9));
+    EXPECT_EQ(foo.capacity(), T::CountType(16));
 }
+
