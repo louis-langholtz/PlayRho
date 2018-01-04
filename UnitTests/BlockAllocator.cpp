@@ -110,8 +110,25 @@ TEST(BlockAllocator, AllocateNonNullForOverMaxBlockSize)
 {
     BlockAllocator foo;
     ASSERT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
-    const auto mem = foo.Allocate(BlockAllocator::MaxBlockSize * 2);
+    const auto mem = foo.Allocate(BlockAllocator::GetMaxBlockSize() * 2);
     EXPECT_NE(mem, nullptr);
     EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
-    foo.Free(mem, BlockAllocator::MaxBlockSize * 2);
+    foo.Free(mem, BlockAllocator::GetMaxBlockSize() * 2);
+}
+
+TEST(BlockAllocator, KeepsAllocatingAfterIncrement)
+{
+    BlockAllocator foo;
+    for (auto count = BlockAllocator::GetChunkArrayIncrement(); count != 0; --count)
+    {
+        for (auto times = BlockAllocator::ChunkSize/ BlockAllocator::GetMaxBlockSize(); times != 0; --times)
+        {
+            const auto mem = foo.Allocate(BlockAllocator::GetMaxBlockSize());
+            ASSERT_NE(mem, nullptr);
+        }
+    }
+    EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::GetChunkArrayIncrement());
+    const auto mem = foo.Allocate(BlockAllocator::GetMaxBlockSize());
+    EXPECT_NE(mem, nullptr);
+    EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::GetChunkArrayIncrement() + 1);
 }

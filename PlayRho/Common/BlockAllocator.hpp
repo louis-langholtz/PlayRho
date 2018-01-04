@@ -24,6 +24,12 @@
 
 namespace playrho {
 
+    /// @brief Allocator block sizes array data.
+    PLAYRHO_CONSTEXPR const std::size_t AllocatorBlockSizes[] =
+    {
+        16, 32, 64, 96, 128, 160, 192, 224, 256, 320, 384, 448, 512, 640,
+    };
+    
     /// Block allocator.
     ///
     /// This is a small object allocator used for allocating small
@@ -37,18 +43,21 @@ namespace playrho {
         
         /// @brief Size type.
         using size_type = std::size_t;
-        
+
         /// @brief Chunk size.
         static PLAYRHO_CONSTEXPR const auto ChunkSize = size_type{16 * 1024};
         
         /// @brief Max block size (before using external allocator).
-        static PLAYRHO_CONSTEXPR const auto MaxBlockSize = size_type{640};
-
-        /// @brief Block sizes.
-        static PLAYRHO_CONSTEXPR const auto BlockSizes = size_type{14};
+        static PLAYRHO_CONSTEXPR size_type GetMaxBlockSize() noexcept
+        {
+            return AllocatorBlockSizes[GetSize(AllocatorBlockSizes) - 1];
+        }
         
         /// @brief Chunk array increment.
-        static PLAYRHO_CONSTEXPR const auto ChunkArrayIncrement = size_type{128};
+        static PLAYRHO_CONSTEXPR size_type GetChunkArrayIncrement() noexcept
+        {
+            return size_type{128};
+        }
         
         BlockAllocator();
         
@@ -64,7 +73,7 @@ namespace playrho {
 
         /// Allocates memory.
         /// @details Allocates uninitialized storage.
-        ///   Uses <code>Alloc</code> if the size is larger than <code>MaxBlockSize</code>.
+        ///   Uses <code>Alloc</code> if the size is larger than <code>GetMaxBlockSize()</code>.
         ///   Otherwise looks for an appropriately sized block from the free list.
         ///   Failing that, <code>Alloc</code> is used to grow the free list from which
         ///   memory is returned.
@@ -78,8 +87,8 @@ namespace playrho {
             return static_cast<T*>(Allocate(n * sizeof(T)));
         }
         
-        /// Free memory.
-        /// @details This will use free if the size is larger than <code>MaxBlockSize</code>.
+        /// @brief Frees memory.
+        /// @details This will use free if the size is larger than <code>GetMaxBlockSize()</code>.
         void Free(void* p, size_type n);
         
         /// Clears this allocator.
@@ -97,9 +106,9 @@ namespace playrho {
         struct Block;
         
         size_type m_chunkCount = 0; ///< Chunk count.
-        size_type m_chunkSpace = ChunkArrayIncrement; ///< Chunk space.
+        size_type m_chunkSpace = GetChunkArrayIncrement(); ///< Chunk space.
         Chunk* m_chunks; ///< Chunks array.
-        Block* m_freeLists[BlockSizes]; ///< Free lists.
+        Block* m_freeLists[GetSize(AllocatorBlockSizes)]; ///< Free lists.
     };
     
     /// @brief Deletes the given pointer by calling the pointed-to object's destructor and

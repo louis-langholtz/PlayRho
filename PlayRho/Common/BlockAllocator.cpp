@@ -25,27 +25,36 @@
 
 namespace playrho {
 
-/// @brief Array of block sizes.
-static PLAYRHO_CONSTEXPR const std::size_t s_blockSizes[BlockAllocator::BlockSizes] =
+static_assert(GetSize(AllocatorBlockSizes) == 14,
+              "Invalid number of elements of AllocatorBlockSizes");
+static_assert(BlockAllocator::GetMaxBlockSize() == 640,
+              "Invalid maximum block size of AllocatorBlockSizes");
+
+#if 0
+struct LookupTable
 {
-    16,        // 0
-    32,        // 1
-    64,        // 2
-    96,        // 3
-    128,    // 4
-    160,    // 5
-    192,    // 6
-    224,    // 7
-    256,    // 8
-    320,    // 9
-    384,    // 10
-    448,    // 11
-    512,    // 12
-    640,    // 13
+    constexpr LookupTable(): elements()
+    {
+        constexpr auto maxIndex = BlockAllocator::GetMaxBlockSize() + 1;
+        auto j = std::uint8_t{0};
+        elements[0] = 0;
+        for (auto i = std::size_t{1}; i < maxIndex; ++i)
+        {
+            if (i > AllocatorBlockSizes[j])
+            {
+                ++j;
+            }
+            elements[i] = j;
+        }
+    }
+    
+    std::uint8_t elements[BlockAllocator::GetMaxBlockSize() + 1];
 };
+static constexpr const LookupTable BlockSizeLookup;
+#endif
 
 /// @brief Block size lookup array.
-static PLAYRHO_CONSTEXPR const std::uint8_t s_blockSizeLookup[BlockAllocator::MaxBlockSize + 1] =
+static PLAYRHO_CONSTEXPR const std::uint8_t s_blockSizeLookup[BlockAllocator::GetMaxBlockSize() + 1] =
 {
     0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1-16
@@ -71,6 +80,13 @@ static PLAYRHO_CONSTEXPR const std::uint8_t s_blockSizeLookup[BlockAllocator::Ma
     13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, // 608-640
 };
 
+/// @brief Gets the block size index for the given data block size.
+static inline std::uint8_t GetBlockSizeIndex(std::size_t n)
+{
+    assert(n < GetSize(s_blockSizeLookup));
+    return s_blockSizeLookup[n];
+}
+
 /// @brief Chunk.
 struct BlockAllocator::Chunk
 {
@@ -89,7 +105,8 @@ struct BlockAllocator::Block
 BlockAllocator::BlockAllocator():
     m_chunks(Alloc<Chunk>(m_chunkSpace))
 {
-    static_assert(BlockSizes < std::numeric_limits<std::uint8_t>::max(), "BlockSizes too big");
+    static_assert(GetSize(AllocatorBlockSizes) < std::numeric_limits<std::uint8_t>::max(),
+                  "AllocatorBlockSizes too big");
     std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
     std::memset(m_freeLists, 0, sizeof(m_freeLists));
 }
@@ -100,7 +117,6 @@ BlockAllocator::~BlockAllocator() noexcept
     {
         playrho::Free(m_chunks[i].blocks);
     }
-
     playrho::Free(m_chunks);
 }
 
@@ -111,16 +127,13 @@ void* BlockAllocator::Allocate(size_type n)
         return nullptr;
     }
 
-    assert(0 < n);
-
-    if (n > MaxBlockSize)
+    if (n > GetMaxBlockSize())
     {
         return Alloc(n);
     }
 
-    const auto index = s_blockSizeLookup[n];
-    assert((0 <= index) && (index < BlockSizes));
-
+    const auto index = GetBlockSizeIndex(n);
+    assert((0 <= index) && (index < GetSize(m_freeLists)));
     {
         const auto block = m_freeLists[index];
         if (block != nullptr)
@@ -132,9 +145,9 @@ void* BlockAllocator::Allocate(size_type n)
 
     if (m_chunkCount == m_chunkSpace)
     {
-        m_chunkSpace += ChunkArrayIncrement;
+        m_chunkSpace += GetChunkArrayIncrement();
         m_chunks = Realloc<Chunk>(m_chunks, m_chunkSpace);
-        std::memset(m_chunks + m_chunkCount, 0, ChunkArrayIncrement * sizeof(Chunk));
+        std::memset(m_chunks + m_chunkCount, 0, GetChunkArrayIncrement() * sizeof(Chunk));
     }
 
     const auto chunk = m_chunks + m_chunkCount;
@@ -142,23 +155,20 @@ void* BlockAllocator::Allocate(size_type n)
 #if defined(_DEBUG)
     std::memset(chunk->blocks, 0xcd, ChunkSize);
 #endif
-    const auto blockSize = s_blockSizes[index];
+    const auto blockSize = AllocatorBlockSizes[index];
     assert(blockSize > 0);
     chunk->blockSize = blockSize;
     const auto blockCount = ChunkSize / blockSize;
     assert((blockCount * blockSize) <= ChunkSize);
+    const auto chunkBlocks = reinterpret_cast<std::int8_t*>(chunk->blocks);
     for (auto i = decltype(blockCount){0}; i < blockCount - 1; ++i)
     {
-        const auto block = reinterpret_cast<Block*>(reinterpret_cast<std::int8_t*>(chunk->blocks)
-                                                    + blockSize * i);
-        const auto next = reinterpret_cast<Block*>(reinterpret_cast<std::int8_t*>(chunk->blocks)
-                                                   + blockSize * (i + 1));
+        const auto block = reinterpret_cast<Block*>(chunkBlocks + blockSize * i);
+        const auto next  = reinterpret_cast<Block*>(chunkBlocks + blockSize * (i + 1));
         block->next = next;
     }
-    const auto last = reinterpret_cast<Block*>(reinterpret_cast<std::int8_t*>(chunk->blocks)
-                                               + blockSize * (blockCount - 1));
+    const auto last = reinterpret_cast<Block*>(chunkBlocks + blockSize * (blockCount - 1));
     last->next = nullptr;
-
     m_freeLists[index] = chunk->blocks->next;
     ++m_chunkCount;
 
@@ -167,50 +177,42 @@ void* BlockAllocator::Allocate(size_type n)
 
 void BlockAllocator::Free(void* p, size_type n)
 {
-    if (n == 0)
-    {
-        return;
-    }
-
-    assert(n > 0);
-
-    if (n > MaxBlockSize)
+    if (n > GetMaxBlockSize())
     {
         playrho::Free(p);
-        return;
     }
-
-    const auto index = s_blockSizeLookup[n];
-    assert((0 <= index) && (index < BlockSizes));
-
-#ifdef _DEBUG
-    // Verify the memory address and size is valid.
-    const auto blockSize = s_blockSizes[index];
-    bool found = false;
-    for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
+    else if (n > 0)
     {
-        const auto chunk = m_chunks + i;
-        if (chunk->blockSize != blockSize)
+        const auto index = GetBlockSizeIndex(n);
+        assert((0 <= index) && (index < GetSize(m_freeLists)));
+#ifdef _DEBUG
+        // Verify the memory address and size is valid.
+        assert((0 <= index) && (index < GetSize(AllocatorBlockSizes)));
+        const auto blockSize = AllocatorBlockSizes[index];
+        bool found = false;
+        for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)
         {
-            assert(((std::int8_t*)p + blockSize <= (std::int8_t*)chunk->blocks) || ((std::int8_t*)chunk->blocks + ChunkSize <= (std::int8_t*)p));
-        }
-        else
-        {
-            if (((std::int8_t*)chunk->blocks <= (std::int8_t*)p) && ((std::int8_t*)p + blockSize <= (std::int8_t*)chunk->blocks + ChunkSize))
+            const auto chunk = m_chunks + i;
+            const auto chunkBlocks = (std::int8_t*)chunk->blocks;
+            if (chunk->blockSize != blockSize)
             {
-                found = true;
+                assert(((std::int8_t*)p + blockSize <= chunkBlocks) || (chunkBlocks + ChunkSize <= (std::int8_t*)p));
+            }
+            else
+            {
+                if ((chunkBlocks <= (std::int8_t*)p) && ((std::int8_t*)p + blockSize <= chunkBlocks + ChunkSize))
+                {
+                    found = true;
+                }
             }
         }
-    }
-
-    assert(found);
-
-    std::memset(p, 0xfd, blockSize);
+        assert(found);
+        std::memset(p, 0xfd, blockSize);
 #endif
-
-    const auto block = static_cast<Block*>(p);
-    block->next = m_freeLists[index];
-    m_freeLists[index] = block;
+        const auto block = static_cast<Block*>(p);
+        block->next = m_freeLists[index];
+        m_freeLists[index] = block;
+    }
 }
 
 void BlockAllocator::Clear()

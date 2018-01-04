@@ -284,6 +284,10 @@ namespace playrho {
         return GetSize(arg) == GetMaxSize(arg);
     }
 
+    /// @brief Gets the compile-time size of a C-style array.
+    template <class T, std::size_t N>
+    PLAYRHO_CONSTEXPR inline std::size_t GetSize(T (&)[N]) { return N; }
+    
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_TEMPLATES_HPP
