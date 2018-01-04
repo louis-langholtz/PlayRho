@@ -146,10 +146,7 @@ bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept
             maxIdx = i;
         }
     }
-    if (maxIdx >= count)
-    {
-        return false;
-    }
+    assert(maxIdx < count);
     
     const auto v0 = proxy.GetVertex(maxIdx);
     const auto v1 = proxy.GetVertex(GetModuloNext(maxIdx, count));
