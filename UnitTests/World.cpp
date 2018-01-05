@@ -606,7 +606,15 @@ TEST(World, RayCast)
     };
     World world{WorldConf{}.UseGravity(zeroG)};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
-    
+
+    const auto p0 = Length2{-10_m, +3_m};
+    const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p0));
+    ASSERT_NE(b0->CreateFixture(DiskShapeConf{1_m}), nullptr);
+
+    const auto p1 = Length2{+1_m, 0_m};
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    ASSERT_NE(b1->CreateFixture(DiskShapeConf{0.1_m}), nullptr);
+
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, nullptr);
     ASSERT_EQ(body->GetType(), BodyType::Dynamic);
@@ -631,12 +639,13 @@ TEST(World, RayCast)
     world.Step(stepConf);
     
     {
-        const auto p1 = Length2{-2_m, 0_m};
-        const auto p2 = Length2{+2_m, 0_m};
+        const auto p2 = Length2{-2_m, 0_m};
+        const auto p3 = Length2{+2_m, 0_m};
 
         auto foundOurs = 0;
         auto foundOthers = 0;
-        world.RayCast(p1, p2, [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
+        const auto retval = world.RayCast(p2, p3,
+                    [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
                 ++foundOurs;
@@ -647,7 +656,54 @@ TEST(World, RayCast)
             }
             return World::RayCastOpcode::ResetRay;
         });
+        EXPECT_FALSE(retval);
         EXPECT_EQ(foundOurs, 1);
+        EXPECT_EQ(foundOthers, 1);
+    }
+    
+    {
+        const auto p2 = Length2{-2_m, 0_m};
+        const auto p3 = Length2{+2_m, 0_m};
+        
+        auto foundOurs = 0;
+        auto foundOthers = 0;
+        const auto retval = world.RayCast(p2, p3,
+                    [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
+            if (f == fixture && i == 0)
+            {
+                ++foundOurs;
+            }
+            else
+            {
+                ++foundOthers;
+            }
+            return World::RayCastOpcode::Terminate;
+        });
+        EXPECT_TRUE(retval);
+        EXPECT_EQ(foundOurs, 1);
+        EXPECT_EQ(foundOthers, 0);
+    }
+    
+    {
+        const auto p2 = Length2{-3_m,  0_m};
+        const auto p3 = Length2{+2_m, 10_m};
+        
+        auto foundOurs = 0;
+        auto foundOthers = 0;
+        const auto retval = world.RayCast(p2, p3,
+          [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
+            if (f == fixture && i == 0)
+            {
+                ++foundOurs;
+            }
+            else
+            {
+                ++foundOthers;
+            }
+            return World::RayCastOpcode::ResetRay;
+        });
+        EXPECT_FALSE(retval);
+        EXPECT_EQ(foundOurs, 0);
         EXPECT_EQ(foundOthers, 0);
     }
 }

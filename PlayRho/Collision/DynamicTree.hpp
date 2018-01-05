@@ -871,7 +871,10 @@ void Query(const DynamicTree& tree, const AABB& aabb,
 ///   by the ray. The callback should return 0 to terminate ray casting, or greater than 0
 ///   to update the segment bounding box. Values less than zero are ignored.
 ///
-void RayCast(const DynamicTree& tree, const RayCastInput& input,
+/// @return <code>true</code> if terminated at the callback's request,
+///   <code>false</code> otherwise.
+///
+bool RayCast(const DynamicTree& tree, RayCastInput input,
              const DynamicTree::RayCastCallback& callback);
 
 } // namespace d2

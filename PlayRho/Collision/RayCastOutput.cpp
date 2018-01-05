@@ -225,5 +225,12 @@ RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
     return RayCast(GetChild(shape, childIndex), input, transform);
 }
 
+AABB GetAABB(const RayCastInput& input) noexcept
+{
+    const auto totalDelta = input.p2 - input.p1;
+    const auto fractDelta = input.maxFraction * totalDelta;
+    return AABB{input.p1, input.p1 + fractDelta};
+}
+
 } // namespace d2
 } // namespace playrho

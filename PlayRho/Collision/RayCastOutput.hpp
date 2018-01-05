@@ -89,6 +89,9 @@ RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
 
 /// @}
 
+/// @brief Gets the AABB for the given ray cast input data.
+AABB GetAABB(const RayCastInput& input) noexcept;
+
 } // namespace d2
 } // namespace playrho
 

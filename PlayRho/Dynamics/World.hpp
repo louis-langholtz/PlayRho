@@ -247,7 +247,9 @@ public:
     /// @param point2 Ray ending point.
     /// @param callback A user implemented callback function.
     ///
-    void RayCast(Length2 point1, Length2 point2, RayCastCallback callback) const;
+    /// @return <code>true</code> if terminated by callback, <code>false</code> otherwise.
+    ///
+    bool RayCast(Length2 point1, Length2 point2, RayCastCallback callback) const;
 
     /// @brief Gets the world body range for this world.
     /// @return Body range that can be iterated over using its begin and end methods
