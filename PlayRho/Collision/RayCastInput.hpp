@@ -29,21 +29,27 @@
 #include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
+namespace detail {
+
+/// @brief Ray-cast input data for N-dimensions.
+/// @note The ray extends from <code>p1</code> to <code>p1 + maxFraction * (p2 - p1)</code>.
+template <std::size_t N>
+struct RayCastInput
+{
+    Vector<Length, N> p1; ///< Point 1.
+    Vector<Length, N> p2; ///< Point 2.
+    
+    /// @brief Max fraction.
+    /// @details Unit interval value - a value between 0 and 1 inclusive.
+    UnitInterval<Real> maxFraction = UnitInterval<Real>{0};
+};
+
+} // namespace detail
+
 namespace d2 {
 
-    /// @brief Ray-cast input data.
-    /// @details The ray extends from <code>p1</code> to
-    ///   <code>p1 + maxFraction * (p2 - p1)</code>.
-    struct RayCastInput
-    {
-        Length2 p1; ///< Point 1.
-
-        Length2 p2; ///< Point 2.
-
-        /// @brief Max fraction.
-        /// @details Unit interval value - a value between 0 and 1 inclusive.
-        UnitInterval<Real> maxFraction = UnitInterval<Real>{0};
-    };
+    /// @brief Ray cast input data for 2-dimensions.
+    using RayCastInput = playrho::detail::RayCastInput<2>;
     
 } // namespace d2
 } // namespace playrho

@@ -361,12 +361,20 @@ TEST(World, SetGravity)
         Real(-4.2) * MeterPerSquareSecond,
         Real(3.4) * MeterPerSquareSecond
     };
-    World world;
+    
+    auto world = World{};
     EXPECT_NE(world.GetGravity(), gravity);
     world.SetGravity(gravity);
-    EXPECT_EQ(world.GetGravity(), gravity);    
+    EXPECT_EQ(world.GetGravity(), gravity);
     world.SetGravity(-gravity);
     EXPECT_NE(world.GetGravity(), gravity);
+    
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    EXPECT_EQ(body->GetLinearAcceleration(), -gravity);
+
+    const auto zeroG = LinearAcceleration2{0_mps2, 0_mps2};
+    world.SetGravity(zeroG);
+    EXPECT_EQ(body->GetLinearAcceleration(), zeroG);
 }
 
 TEST(World, CreateDestroyEmptyStaticBody)

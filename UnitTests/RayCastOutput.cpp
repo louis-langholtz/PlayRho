@@ -107,25 +107,32 @@ TEST(RayCastOutput, RayCastAabbFreeFunction)
     const auto p1 = Length2(10_m, 2_m);
     const auto p2 = Length2(0_m, 2_m);
     const auto maxFraction = Real(1);
-    const auto input = RayCastInput{p1, p2, maxFraction};
     {
         const auto aabb = AABB{};
-        const auto output = RayCast(aabb, input);
-        EXPECT_FALSE(output.has_value());
+        EXPECT_FALSE(RayCast(aabb, RayCastInput{p1, p2, maxFraction}).has_value());
     }
     {
         const auto aabb = AABB{LengthInterval{9_m, 11_m}, LengthInterval{3_m, 1_m}};
-        const auto output = RayCast(aabb, input);
-        EXPECT_FALSE(output.has_value());
+        EXPECT_FALSE(RayCast(aabb, RayCastInput{p1, p2, maxFraction}).has_value());
+        EXPECT_TRUE( RayCast(aabb, RayCastInput{p2, p1, maxFraction}).has_value());
     }
     {
         auto aabb = AABB{};
         aabb.ranges[0].Include(4_m).Include(5_m);
         aabb.ranges[1].Include(1_m).Include(3_m);
-        const auto output = RayCast(aabb, input);
-        ASSERT_TRUE(output.has_value());
-        EXPECT_NEAR(static_cast<double>(Real{output->fraction}), 0.5, 0.0001);
-        EXPECT_EQ(output->normal, UnitVec::GetRight());
+        
+        const auto output1 = RayCast(aabb, RayCastInput{p1, p2, maxFraction});
+        ASSERT_TRUE(output1.has_value());
+        EXPECT_NEAR(static_cast<double>(Real{output1->fraction}), 0.5, 0.0001);
+        EXPECT_EQ(output1->normal, UnitVec::GetRight());
+        
+        const auto output2 = RayCast(aabb, RayCastInput{p2, p1, maxFraction});
+        ASSERT_TRUE(output2.has_value());
+        EXPECT_NEAR(static_cast<double>(Real{output2->fraction}), 0.4, 0.0001);
+        EXPECT_EQ(output2->normal, UnitVec::GetLeft());
+
+        const auto output3 = RayCast(aabb, RayCastInput{Length2{}, Length2{5_m, 6_m}, maxFraction});
+        ASSERT_FALSE(output3.has_value());
     }
 }
 

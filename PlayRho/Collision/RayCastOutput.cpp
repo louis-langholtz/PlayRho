@@ -67,55 +67,44 @@ RayCastOutput RayCast(const AABB& aabb, const RayCastInput& input) noexcept
 {
     // From Real-time Collision Detection, p179.
 
+    auto normal = UnitVec{};
     auto tmin = -MaxFloat;
     auto tmax = MaxFloat;
     
     const auto p1 = input.p1;
     const auto pDelta = input.p2 - input.p1;
-    
-    UnitVec normal;
-    
     for (auto i = decltype(pDelta.max_size()){0}; i < pDelta.max_size(); ++i)
     {
         const auto p1i = p1[i];
         const auto pdi = pDelta[i];
-        const auto lbi = GetLowerBound(aabb)[i];
-        const auto ubi = GetUpperBound(aabb)[i];
+        const auto range = aabb.ranges[i];
 
         if (AlmostZero(pdi))
         {
             // Parallel.
-            if ((p1i < lbi) || (ubi < p1i))
+            if ((p1i < range.GetMin()) || (p1i > range.GetMax()))
             {
                 return RayCastOutput{};
             }
         }
         else
         {
-            auto t1 = Real{(lbi - p1i) / pdi};
-            auto t2 = Real{(ubi - p1i) / pdi};
-            
-            // Sign of the normal vector.
-            auto s = -1;
-            
+            auto t1 = Real{(range.GetMin() - p1i) / pdi};
+            auto t2 = Real{(range.GetMax() - p1i) / pdi};
+            auto s = -1; // Sign of the normal vector.
             if (t1 > t2)
             {
                 std::swap(t1, t2);
                 s = 1;
             }
-            
-            // Push the min up
             if (tmin < t1)
             {
                 normal = (i == 0)?
                     ((s < 0)? UnitVec::GetLeft(): UnitVec::GetRight()):
                     ((s < 0)? UnitVec::GetBottom(): UnitVec::GetTop());
-                tmin = t1;
+                tmin = t1; // Push the min up
             }
-            
-            // Pull the max down
-            tmax = std::min(tmax, t2);
-            
+            tmax = std::min(tmax, t2); // Pull the max down
             if (tmin > tmax)
             {
                 return RayCastOutput{};
