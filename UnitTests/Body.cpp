@@ -464,6 +464,17 @@ TEST(Body, SetMassData)
         EXPECT_EQ(GetRotInertia(*body), rotInertia);
     }
     
+    // has no rotational effect on fixed rotation dynamic bodies...
+    {
+        auto world = World{};
+        const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseFixedRotation(true));
+        EXPECT_EQ(GetMass(*body), 1_kg);
+        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+        body->SetMassData(massData);
+        EXPECT_EQ(GetMass(*body), mass);
+        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+    }
+
     // has no effect on static bodies...
     {
         auto world = World{};
