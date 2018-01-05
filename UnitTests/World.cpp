@@ -660,6 +660,52 @@ TEST(World, RayCast)
         EXPECT_EQ(foundOurs, 1);
         EXPECT_EQ(foundOthers, 1);
     }
+    
+    {
+        const auto p2 = Length2{-2_m, 0_m};
+        const auto p3 = Length2{+2_m, 0_m};
+        
+        auto foundOurs = 0;
+        auto foundOthers = 0;
+        const auto retval = world.RayCast(p2, p3,
+                    [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
+            if (f == fixture && i == 0)
+            {
+                ++foundOurs;
+            }
+            else
+            {
+                ++foundOthers;
+            }
+            return World::RayCastOpcode::Terminate;
+        });
+        EXPECT_TRUE(retval);
+        EXPECT_EQ(foundOurs, 1);
+        EXPECT_EQ(foundOthers, 0);
+    }
+    
+    {
+        const auto p2 = Length2{-3_m,  0_m};
+        const auto p3 = Length2{+2_m, 10_m};
+        
+        auto foundOurs = 0;
+        auto foundOthers = 0;
+        const auto retval = world.RayCast(p2, p3,
+          [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
+            if (f == fixture && i == 0)
+            {
+                ++foundOurs;
+            }
+            else
+            {
+                ++foundOthers;
+            }
+            return World::RayCastOpcode::ResetRay;
+        });
+        EXPECT_FALSE(retval);
+        EXPECT_EQ(foundOurs, 0);
+        EXPECT_EQ(foundOthers, 0);
+    }
 }
 
 TEST(World, ClearForcesFreeFunction)
