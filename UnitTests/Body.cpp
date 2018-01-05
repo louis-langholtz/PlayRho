@@ -407,7 +407,7 @@ TEST(Body, SetType)
 {
     BodyConf bd;
     bd.type = BodyType::Dynamic;
-    World world;
+    auto world = World{};
     const auto body = world.CreateBody(bd);
     ASSERT_EQ(body->GetType(), BodyType::Dynamic);
     body->SetType(BodyType::Static);
@@ -416,6 +416,64 @@ TEST(Body, SetType)
     EXPECT_EQ(body->GetType(), BodyType::Kinematic);
     body->SetType(BodyType::Dynamic);
     EXPECT_EQ(body->GetType(), BodyType::Dynamic);
+}
+
+TEST(Body, StaticIsExpected)
+{
+    auto world = World{};
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
+    EXPECT_FALSE(body->IsAccelerable());
+    EXPECT_FALSE(body->IsSpeedable());
+    EXPECT_TRUE( body->IsImpenetrable());
+}
+
+TEST(Body, KinematicIsExpected)
+{
+    auto world = World{};
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Kinematic));
+    EXPECT_FALSE(body->IsAccelerable());
+    EXPECT_TRUE( body->IsSpeedable());
+    EXPECT_TRUE( body->IsImpenetrable());
+}
+
+TEST(Body, DynamicIsExpected)
+{
+    auto world = World{};
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    EXPECT_TRUE(body->IsAccelerable());
+    EXPECT_TRUE(body->IsSpeedable());
+    EXPECT_FALSE(body->IsImpenetrable());
+}
+
+TEST(Body, SetMassData)
+{
+    const auto center = Length2{0_m, 0_m};
+    const auto mass = 32_kg;
+    const auto rotInertiaUnits = SquareMeter * Kilogram / SquareRadian;
+    const auto rotInertia = 3 * rotInertiaUnits; // L^2 M QP^-2
+    const auto massData = MassData{center, mass, rotInertia};
+    
+    // has effect on dynamic bodies...
+    {
+        auto world = World{};
+        const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+        EXPECT_EQ(GetMass(*body), 1_kg);
+        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+        body->SetMassData(massData);
+        EXPECT_EQ(GetMass(*body), mass);
+        EXPECT_EQ(GetRotInertia(*body), rotInertia);
+    }
+    
+    // has no effect on static bodies...
+    {
+        auto world = World{};
+        const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
+        EXPECT_EQ(GetMass(*body), 0_kg);
+        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+        body->SetMassData(massData);
+        EXPECT_EQ(GetMass(*body), 0_kg);
+        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+    }
 }
 
 TEST(Body, SetTransform)
