@@ -19,6 +19,7 @@
 
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Common/GrowableStack.hpp>
+#include <PlayRho/Collision/RayCastOutput.hpp>
 
 #include <cstring>
 #include <algorithm>
@@ -822,28 +823,15 @@ void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& c
     }
 }
 
-void RayCast(const DynamicTree& tree, const RayCastInput& input,
+bool RayCast(const DynamicTree& tree, RayCastInput input,
              const DynamicTree::RayCastCallback& callback)
 {
-    const auto p1 = input.p1;
-    const auto p2 = input.p2;
-    const auto delta = p2 - p1;
-    
-    // v is perpendicular to the segment.
-    const auto v = GetRevPerpendicular(GetUnitVector(delta, UnitVec::GetZero()));
+    const auto v = GetRevPerpendicular(GetUnitVector(input.p2 - input.p1, UnitVec::GetZero()));
     const auto abs_v = Abs(v);
-    
-    // Separating axis for segment (Gino, p80).
-    // |dot(v, p1 - c)| > dot(|v|, h)
-    
-    auto maxFraction = input.maxFraction;
-    
-    // Build a bounding box for the segment.
-    auto segmentAABB = AABB{p1, p1 + maxFraction * delta};
+    auto segmentAABB = d2::GetAABB(input);
     
     GrowableStack<DynamicTree::Size, 256> stack;
     stack.push(tree.GetRootIndex());
-    
     while (!stack.empty())
     {
         const auto index = stack.top();
@@ -863,7 +851,7 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
         // |dot(v, p1 - ctr)| > dot(|v|, extents)
         const auto center = GetCenter(aabb);
         const auto extents = GetExtents(aabb);
-        const auto separation = Abs(Dot(v, p1 - center)) - Dot(abs_v, extents);
+        const auto separation = Abs(Dot(v, input.p1 - center)) - Dot(abs_v, extents);
         if (separation > 0_m)
         {
             continue;
@@ -878,24 +866,20 @@ void RayCast(const DynamicTree& tree, const RayCastInput& input,
         else
         {
             assert(DynamicTree::IsLeaf(tree.GetHeight(index)));
-            
-            const auto subInput = RayCastInput{input.p1, input.p2, maxFraction};
-            const auto value = callback(subInput, index);
+            const auto value = callback(input, index);
             if (value == 0)
             {
-                // The client has terminated the ray cast.
-                return;
+                return true; // Callback has terminated the ray cast.
             }
-            
             if (value > 0)
             {
                 // Update segment bounding box.
-                maxFraction = value;
-                const auto t = p1 + maxFraction * (p2 - p1);
-                segmentAABB = AABB{p1, t};
+                input.maxFraction = value;
+                segmentAABB = d2::GetAABB(input);
             }
         }
     }
+    return false;
 }
 
 } // namespace d2

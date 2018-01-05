@@ -1979,10 +1979,10 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
     });
 }
 
-void World::RayCast(Length2 point1, Length2 point2, RayCastCallback callback) const
+bool World::RayCast(Length2 point1, Length2 point2, RayCastCallback callback) const
 {
-    d2::RayCast(m_tree, RayCastInput{point1, point2, Real{1}},
-                   [&](const RayCastInput& input, DynamicTree::Size treeId)
+    return d2::RayCast(m_tree, RayCastInput{point1, point2, Real{1}},
+                       [&](const RayCastInput& input, DynamicTree::Size treeId)
     {
         const auto leafData = m_tree.GetLeafData(treeId);
         const auto fixture = leafData.fixture;
@@ -2011,13 +2011,11 @@ void World::RayCast(Length2 point1, Length2 point2, RayCastCallback callback) co
             // The second way, does not have this problem.
             //
             const auto point = input.p1 + (input.p2 - input.p1) * fraction;
-            
-            // Callback return states: terminate (0), ignore (< 0), clip (< 1), reset (1).
             const auto opcode = callback(fixture, index, point, output->normal);
             switch (opcode)
             {
-                case RayCastOpcode::Terminate: return Real(0);
-                case RayCastOpcode::IgnoreFixture: return Real(-1);
+                case RayCastOpcode::Terminate: return Real{0};
+                case RayCastOpcode::IgnoreFixture: return Real{-1};
                 case RayCastOpcode::ClipRay: return Real{fraction};
                 case RayCastOpcode::ResetRay: return Real{input.maxFraction};
             }
