@@ -110,6 +110,16 @@ TEST(ArrayList, add)
         EXPECT_FALSE(list.empty());
         EXPECT_EQ(std::distance(list.begin(), list.end()), 1);
         EXPECT_EQ(*list.begin(), value);
+
+        EXPECT_TRUE(list.add(2));
+        EXPECT_EQ(list.size(), decltype(list.size()){2});
+        EXPECT_TRUE(list.add(3));
+        EXPECT_EQ(list.size(), decltype(list.size()){3});
+        EXPECT_TRUE(list.add(4));
+        EXPECT_EQ(list.size(), decltype(list.size()){4});
+
+        EXPECT_FALSE(list.add(5));
+        EXPECT_EQ(list.size(), decltype(list.size()){4});
     }
 }
 
