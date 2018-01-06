@@ -50,7 +50,6 @@
 		47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47315E031E28A66100DDA856 /* RevoluteJoint.cpp */; };
 		4731DDFA1DC7C9B000E7F931 /* Simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DDF91DC7C9B000E7F931 /* Simplex.cpp */; };
 		4731DDFC1DC8FBEE00E7F931 /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DDFB1DC8FBEE00E7F931 /* Island.cpp */; };
-		4731DE0A1DD7A4E000E7F931 /* ContactFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE091DD7A4E000E7F931 /* ContactFilter.cpp */; };
 		4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */; };
 		4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */; };
 		4731DE1E1DDD0B8700E7F931 /* DynamicTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */; };
@@ -423,7 +422,6 @@
 		47315E031E28A66100DDA856 /* RevoluteJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJoint.cpp; sourceTree = "<group>"; };
 		4731DDF91DC7C9B000E7F931 /* Simplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simplex.cpp; sourceTree = "<group>"; };
 		4731DDFB1DC8FBEE00E7F931 /* Island.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Island.cpp; sourceTree = "<group>"; };
-		4731DE091DD7A4E000E7F931 /* ContactFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactFilter.cpp; sourceTree = "<group>"; };
 		4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureProxy.cpp; sourceTree = "<group>"; };
 		4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureProxy.hpp; sourceTree = "<group>"; };
 		4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicTree.cpp; sourceTree = "<group>"; };
@@ -804,7 +802,6 @@
 				474BC3F61D41278800447DCD /* CollideShapes.cpp */,
 				475A94601D9996B6000CA9A8 /* Contact.cpp */,
 				474BC3F71D41278800447DCD /* ContactFeature.cpp */,
-				4731DE091DD7A4E000E7F931 /* ContactFilter.cpp */,
 				473273201F44AB9B00E22AE2 /* ContactImpulsesList.cpp */,
 				473971A91D9F0E4E00F7137F /* ContactSolver.cpp */,
 				474BC3F51D41278800447DCD /* DiskShape.cpp */,
@@ -1619,7 +1616,6 @@
 				47C85D121EFB0CD600F70C56 /* RopeJoint.cpp in Sources */,
 				47CF98501E0088ED0077F5F2 /* Angle.cpp in Sources */,
 				47C85D0C1EFA2C1C00F70C56 /* Version.cpp in Sources */,
-				4731DE0A1DD7A4E000E7F931 /* ContactFilter.cpp in Sources */,
 				47C85D0E1EFAE03700F70C56 /* WeldJoint.cpp in Sources */,
 				47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */,
 				4734B2361DC39F3E00F15E29 /* SimplexEdge.cpp in Sources */,

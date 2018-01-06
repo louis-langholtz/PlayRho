@@ -909,6 +909,7 @@ inline bool Unawaken(Body& body) noexcept
 
 /// @brief Should collide.
 /// @details Determines whether a body should possibly be able to collide with the other body.
+/// @relatedalso Body
 /// @return true if either body is dynamic and no joint prevents collision, false otherwise.
 bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept;
 

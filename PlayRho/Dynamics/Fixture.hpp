@@ -122,7 +122,8 @@ public:
 
     /// @brief Refilter the fixture.
     /// @note Call this if you want to establish collision that was previously disabled by
-    ///   ContactFilter::ShouldCollide.
+    ///   <code>ShouldCollide(const Fixture&, const Fixture&)</code>.
+    /// @sa bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
     void Refilter();
 
     /// Get the user data that was assigned in the fixture definition. Use this to
@@ -312,6 +313,15 @@ void SetAwake(const Fixture& f) noexcept;
 /// @relatedalso Fixture
 Transformation GetTransformation(const Fixture& f) noexcept;
 
+/// @brief Whether contact calculations should be performed between the two fixtures.
+/// @return <code>true</code> if contact calculations should be performed between these
+///   two fixtures; <code>false</code> otherwise.
+/// @relatedalso Fixture
+inline bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
+{
+    return ShouldCollide(fixtureA.GetFilterData(), fixtureB.GetFilterData());
+}
+    
 } // namespace d2
 } // namespace playrho
 

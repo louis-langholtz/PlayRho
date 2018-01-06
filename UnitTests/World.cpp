@@ -57,20 +57,20 @@ TEST(World, ByteSize)
             // Size is OS dependent.
             // Seems linux containers are bigger in size...
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(256));
+            EXPECT_EQ(sizeof(World), std::size_t(240));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(256));
+            EXPECT_EQ(sizeof(World), std::size_t(240));
 #endif
             break;
         }
         case  8:
         {
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(280));
+            EXPECT_EQ(sizeof(World), std::size_t(264));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(280));
+            EXPECT_EQ(sizeof(World), std::size_t(264));
 #endif
             break;
         }
@@ -423,13 +423,26 @@ TEST(World, CreateDestroyJoinedBodies)
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
 
+    body->CreateFixture(DiskShapeConf{1_m});
+    body2->CreateFixture(DiskShapeConf{1_m});
+
+    EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
+    
+    auto stepConf = StepConf{};
+    world.Step(stepConf);
+    ASSERT_EQ(world.GetContacts().size(), ContactCounter(1));
+    const auto c0 = world.GetContacts().begin();
+    EXPECT_FALSE(c0->second->NeedsFiltering());
+
     const auto joint = world.CreateJoint(DistanceJointConf{body, body2});
     ASSERT_NE(joint, nullptr);
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
+    EXPECT_TRUE(c0->second->NeedsFiltering());
 
     world.Destroy(body);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
+    EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
 
     const auto& bodies0 = world.GetBodies();
     EXPECT_FALSE(bodies0.empty());

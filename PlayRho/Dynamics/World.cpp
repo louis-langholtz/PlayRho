@@ -528,7 +528,6 @@ World::World(const World& other):
     m_gravity{other.m_gravity},
     m_destructionListener{other.m_destructionListener},
     m_contactListener{other.m_contactListener},
-    m_contactFilter{other.m_contactFilter},
     m_flags{other.m_flags},
     m_inv_dt0{other.m_inv_dt0},
     m_minVertexRadius{other.m_minVertexRadius},
@@ -548,7 +547,6 @@ World& World::operator= (const World& other)
     m_gravity = other.m_gravity;
     m_destructionListener = other.m_destructionListener;
     m_contactListener = other.m_contactListener;
-    m_contactFilter = other.m_contactFilter;
     m_flags = other.m_flags;
     m_inv_dt0 = other.m_inv_dt0;
     m_minVertexRadius = other.m_minVertexRadius;
@@ -584,7 +582,7 @@ void World::Clear() noexcept
         BodyAtty::ClearContacts(b);
         BodyAtty::ClearJoints(b);
         BodyAtty::ClearFixtures(b, [&](Fixture& fixture) {
-            if (m_destructionListener != nullptr)
+            if (m_destructionListener)
             {
                 m_destructionListener->SayGoodbye(fixture);
             }
@@ -865,7 +863,7 @@ void World::Destroy(Body* body)
     
     // Delete the attached joints.
     BodyAtty::ClearJoints(*body, [&](Joint& joint) {
-        if (m_destructionListener != nullptr)
+        if (m_destructionListener)
         {
             m_destructionListener->SayGoodbye(joint);
         }
@@ -880,7 +878,7 @@ void World::Destroy(Body* body)
     
     // Delete the attached fixtures. This destroys broad-phase proxies.
     BodyAtty::ClearFixtures(*body, [&](Fixture& fixture) {
-        if (m_destructionListener != nullptr)
+        if (m_destructionListener)
         {
             m_destructionListener->SayGoodbye(fixture);
         }
@@ -2125,7 +2123,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
             const auto bodyA = fixtureA->GetBody();
             const auto bodyB = fixtureB->GetBody();
 
-            if (!::playrho::d2::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
+            if (!ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(*fixtureA, *fixtureB))
             {
                 InternalDestroy(&contact);
                 return true;
@@ -2324,7 +2322,7 @@ bool World::Add(ContactKey key)
     assert(bodyA != bodyB);
     
     // Does a joint override collision? Is at least one body dynamic?
-    if (!::playrho::d2::ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(fixtureA, fixtureB))
+    if (!ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(*fixtureA, *fixtureB))
     {
         return false;
     }

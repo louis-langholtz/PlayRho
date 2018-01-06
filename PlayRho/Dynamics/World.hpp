@@ -133,11 +133,6 @@ public:
     /// remain in scope.
     void SetDestructionListener(DestructionListener* listener) noexcept;
 
-    /// Register a contact filter to provide specific control over collision.
-    /// Otherwise the default filter is used. The listener is
-    /// owned by you and must remain in scope. 
-    void SetContactFilter(ContactFilter* filter) noexcept;
-
     /// Register a contact event listener. The listener is owned by you and must
     /// remain in scope.
     void SetContactListener(ContactListener* listener) noexcept;
@@ -674,9 +669,6 @@ private:
     /// @brief Update contacts.
     UpdateContactsStats UpdateContacts(Contacts& contacts, const StepConf& conf);
     
-    /// @brief Determines whether the two fixtures should collide.
-    bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
-
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
     ///   and decrements the contact manager's contact count.
@@ -689,8 +681,7 @@ private:
     /// if all of the following are true:
     ///   1. The bodies of the fixtures of the proxies are not the one and the same.
     ///   2. No contact already exists for these two proxies.
-    ///   3. The bodies of the proxies should collide (according to
-    ///      <code>Body::ShouldCollide</code>).
+    ///   3. The bodies of the proxies should collide (according to <code>ShouldCollide</code>).
     ///   4. The contact filter says the fixtures of the proxies should collide.
     ///   5. There exists a contact-create function for the pair of shapes of the proxies.
     /// @post The size of the <code>m_contacts</code> collection is one greater-than it was
@@ -698,7 +689,7 @@ private:
     /// @param key ID's of dynamic tree entries identifying the fixture proxies involved.
     /// @return <code>true</code> if a new contact was indeed added (and created),
     ///   else <code>false</code>.
-    /// @sa bool Body::ShouldCollide(const Body* other) const
+    /// @sa bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     bool Add(ContactKey key);
     
     /// @brief Registers the given dynamic tree ID for processing.
@@ -780,8 +771,6 @@ private:
     ProxyQueue m_proxies; ///< Proxies queue.
     FixtureQueue m_fixturesForProxies; ///< Fixtures for proxies queue.
     BodyQueue m_bodiesForProxies; ///< Bodies for proxies queue.
-
-    ContactFilter m_defaultFilter; ///< Default contact filter. 8-bytes.
     
     Bodies m_bodies; ///< Body collection.
 
@@ -797,8 +786,6 @@ private:
     DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
     
     ContactListener* m_contactListener = nullptr; ///< Contact listener. 8-bytes.
-    
-    ContactFilter* m_contactFilter = &m_defaultFilter; ///< Contact filter. 8-bytes.
     
     FlagsType m_flags = e_stepComplete; ///< Flags.
 
@@ -957,19 +944,9 @@ inline void World::SetDestructionListener(DestructionListener* listener) noexcep
     m_destructionListener = listener;
 }
 
-inline void World::SetContactFilter(ContactFilter* filter) noexcept
-{
-    m_contactFilter = filter;
-}
-
 inline void World::SetContactListener(ContactListener* listener) noexcept
 {
     m_contactListener = listener;
-}
-
-inline bool World::ShouldCollide(const Fixture *fixtureA, const Fixture *fixtureB)
-{
-    return (m_contactFilter == nullptr) || m_contactFilter->ShouldCollide(fixtureA, fixtureB);
 }
 
 inline bool World::IsIslanded(const Body* body) const noexcept
