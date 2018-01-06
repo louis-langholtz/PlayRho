@@ -22,11 +22,3 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(ContactFilter, ByteSizeIs8)
-{
-#if defined(_WIN32) && !defined(_WIN64)
-    EXPECT_EQ(sizeof(ContactFilter), std::size_t(4));
-#else
-    EXPECT_EQ(sizeof(ContactFilter), std::size_t(8));
-#endif
-}

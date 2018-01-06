@@ -49,23 +49,6 @@ public:
     virtual void SayGoodbye(Fixture& fixture) = 0;
 };
 
-/// Implement this class to provide collision filtering. In other words, you can implement
-/// this class if you want finer control over contact creation.
-/// @note This data structure is 8-bytes large (on at least one 64-bit platform).
-class ContactFilter
-{
-public:
-    virtual ~ContactFilter() = default;
-
-    /// @brief Whether contact calculations should be performed between these two shapes.
-    /// @warning for performance reasons this is only called when the AABBs begin to overlap.
-    /// @note If you implement your own collision filter you may want to build from the
-    ///   implementation of this method.
-    /// @return <code>true</code> if contact calculations should be performed between these
-    ///   two shapes; <code>false</code> otherwise.
-    virtual bool ShouldCollide(const Fixture* fixtureA, const Fixture* fixtureB);
-};
-
 /// Contact Impulse.
 /// @details
 /// Used for reporting. Impulses are used instead of forces because

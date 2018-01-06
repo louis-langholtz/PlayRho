@@ -29,6 +29,7 @@
 namespace playrho {
     
     /// @brief A holder for contact filtering data.
+    /// @note This data structure size is 6-bytes.
     struct Filter
     {
         /// @brief Bits type definition.
@@ -77,6 +78,7 @@ namespace playrho {
     }
 
     /// @brief Determines whether collision processing should be performed.
+    /// @relatedalso Filter
     inline bool ShouldCollide(const Filter filterA, const Filter filterB) noexcept
     {
         if ((filterA.groupIndex == filterB.groupIndex) && (filterA.groupIndex != 0))

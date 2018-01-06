@@ -57,20 +57,20 @@ TEST(World, ByteSize)
             // Size is OS dependent.
             // Seems linux containers are bigger in size...
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(256));
+            EXPECT_EQ(sizeof(World), std::size_t(240));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(256));
+            EXPECT_EQ(sizeof(World), std::size_t(240));
 #endif
             break;
         }
         case  8:
         {
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(280));
+            EXPECT_EQ(sizeof(World), std::size_t(264));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(280));
+            EXPECT_EQ(sizeof(World), std::size_t(264));
 #endif
             break;
         }
