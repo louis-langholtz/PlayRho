@@ -423,13 +423,26 @@ TEST(World, CreateDestroyJoinedBodies)
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
 
+    body->CreateFixture(DiskShapeConf{1_m});
+    body2->CreateFixture(DiskShapeConf{1_m});
+
+    EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
+    
+    auto stepConf = StepConf{};
+    world.Step(stepConf);
+    ASSERT_EQ(world.GetContacts().size(), ContactCounter(1));
+    const auto c0 = world.GetContacts().begin();
+    EXPECT_FALSE(c0->second->NeedsFiltering());
+
     const auto joint = world.CreateJoint(DistanceJointConf{body, body2});
     ASSERT_NE(joint, nullptr);
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
+    EXPECT_TRUE(c0->second->NeedsFiltering());
 
     world.Destroy(body);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
+    EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
 
     const auto& bodies0 = world.GetBodies();
     EXPECT_FALSE(bodies0.empty());
