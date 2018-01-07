@@ -23,6 +23,9 @@
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+class StepConf;
+
 namespace d2 {
 
 class VelocityConstraint;
@@ -154,6 +157,12 @@ inline ConstraintSolverConf GetDefaultToiPositionSolverConf()
     // For solving TOI events, use a faster/higher resolution rate than normally used.
     return ConstraintSolverConf{}.UseResolutionRate(Real(0.75));
 }
+
+/// @brief Gets the regular phase constraint solver configuration for the given step configuration.
+ConstraintSolverConf GetRegConstraintSolverConf(const StepConf& conf) noexcept;
+
+/// @brief Gets the TOI phase constraint solver configuration for the given step configuration.
+ConstraintSolverConf GetToiConstraintSolverConf(const StepConf& conf) noexcept;
 
 namespace GaussSeidel {
 

@@ -23,6 +23,7 @@
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Common/OptionalValue.hpp>
 
 #include <algorithm>
@@ -452,8 +453,28 @@ inline Momentum SolveNormalConstraint(VelocityConstraint& vc)
 }
 
 }; // anonymous namespace
-
+    
 } // namespace d2
+
+ConstraintSolverConf GetRegConstraintSolverConf(const StepConf& conf) noexcept
+{
+    return ConstraintSolverConf{}
+        .UseResolutionRate(conf.regResolutionRate)
+        .UseLinearSlop(conf.linearSlop)
+        .UseAngularSlop(conf.angularSlop)
+        .UseMaxLinearCorrection(conf.maxLinearCorrection)
+        .UseMaxAngularCorrection(conf.maxAngularCorrection);
+}
+
+ConstraintSolverConf GetToiConstraintSolverConf(const StepConf& conf) noexcept
+{
+    return ConstraintSolverConf{}
+        .UseResolutionRate(conf.toiResolutionRate)
+        .UseLinearSlop(conf.linearSlop)
+        .UseAngularSlop(conf.angularSlop)
+        .UseMaxLinearCorrection(conf.maxLinearCorrection)
+        .UseMaxAngularCorrection(conf.maxAngularCorrection);
+}
 
 namespace GaussSeidel {
 

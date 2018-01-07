@@ -24,6 +24,9 @@
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 namespace playrho {
+
+class StepConf;
+
 namespace d2 {
 
 class WorldManifold;
@@ -352,6 +355,14 @@ inline void VelocityConstraint::SetTangentImpulseAtPoint(VelocityConstraint::siz
 }
 
 // Free functions...
+
+/// @brief Gets the regular phase velocity constraint configuration from the given
+///   step configuration.
+VelocityConstraint::Conf GetRegVelocityConstraintConf(const StepConf& conf) noexcept;
+
+/// @brief Gets the TOI phase velocity constraint configuration from the given
+///   step configuration.
+VelocityConstraint::Conf GetToiVelocityConstraintConf(const StepConf& conf) noexcept;
 
 /// Gets the normal of the velocity constraint contact in world coordinates.
 /// @note This value is set via the velocity constraint's <code>SetNormal</code> method.

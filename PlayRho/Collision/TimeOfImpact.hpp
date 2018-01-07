@@ -26,6 +26,8 @@
 
 namespace playrho {
 
+class StepConf;
+    
 /// @brief Time of impact configuration.
 ///
 /// @details These parameters effect time of impact calculations by limiting the definitions
@@ -144,6 +146,9 @@ PLAYRHO_CONSTEXPR inline auto GetDefaultToiConf()
 {
     return ToiConf{};
 }
+
+/// @brief Gets the time of impact configuration for the given step configuration.
+ToiConf GetToiConf(const StepConf& conf) noexcept;
 
 /// @brief Output data for time of impact.
 struct TOIOutput

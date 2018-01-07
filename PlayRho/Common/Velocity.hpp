@@ -1,6 +1,5 @@
 /*
- * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -28,6 +27,8 @@
 
 namespace playrho {
 namespace d2 {
+
+class VelocityConstraint;
 
 /// @brief 2-D velocity related data structure.
 /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
@@ -148,7 +149,10 @@ PLAYRHO_CONSTEXPR inline Velocity operator/ (const Velocity& lhs, const Real rhs
 
 /// @brief Velocity pair.
 using VelocityPair = std::pair<Velocity, Velocity>;
-
+    
+/// @brief Calculates the "warm start" velocity deltas for the given velocity constraint.
+VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc);
+    
 } // namespace d2
 
 /// @brief Determines if the given value is valid.

@@ -31,6 +31,7 @@
 #include <PlayRho/Dynamics/JointAtty.hpp>
 #include <PlayRho/Dynamics/ContactAtty.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
+#include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
@@ -111,37 +112,6 @@ using PositionConstraints = std::vector<PositionConstraint>;
 using VelocityConstraints = std::vector<VelocityConstraint>;
 
 namespace {
-
-    inline playrho::ConstraintSolverConf GetRegConstraintSolverConf(const playrho::StepConf& conf)
-    {
-        return playrho::ConstraintSolverConf{}
-            .UseResolutionRate(conf.regResolutionRate)
-            .UseLinearSlop(conf.linearSlop)
-            .UseAngularSlop(conf.angularSlop)
-            .UseMaxLinearCorrection(conf.maxLinearCorrection)
-            .UseMaxAngularCorrection(conf.maxAngularCorrection);
-    }
-    
-    inline playrho::ConstraintSolverConf GetToiConstraintSolverConf(const playrho::StepConf& conf)
-    {
-        return playrho::ConstraintSolverConf{}
-            .UseResolutionRate(conf.toiResolutionRate)
-            .UseLinearSlop(conf.linearSlop)
-            .UseAngularSlop(conf.angularSlop)
-            .UseMaxLinearCorrection(conf.maxLinearCorrection)
-            .UseMaxAngularCorrection(conf.maxAngularCorrection);
-    }
-    
-    inline ToiConf GetToiConf(const playrho::StepConf& conf)
-    {
-        return ToiConf{}
-            .UseTimeMax(1)
-            .UseTargetDepth(conf.targetDepth)
-            .UseTolerance(conf.tolerance)
-            .UseMaxRootIters(conf.maxToiRootIters)
-            .UseMaxToiIters(conf.maxToiIters)
-            .UseMaxDistIters(conf.maxDistanceIters);
-    }
     
     inline void IntegratePositions(BodyConstraints& bodies, Time h)
     {
@@ -152,17 +122,6 @@ namespace {
             const auto rotation = h * velocity.angular;
             bc.SetPosition(bc.GetPosition() + Position{translation, rotation});
         });
-    }
-    
-    inline ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc)
-    {
-        ContactImpulsesList impulse;
-        const auto count = vc.GetPointCount();
-        for (auto j = decltype(count){0}; j < count; ++j)
-        {
-            impulse.AddEntry(GetNormalImpulseAtPoint(vc, j), GetTangentImpulseAtPoint(vc, j));
-        }
-        return impulse;
     }
     
     /// Reports the given constraints to the listener.
@@ -201,42 +160,6 @@ namespace {
             assignProc(i);
         }
 #endif
-    }
-    
-    inline VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
-    {
-        auto vp = VelocityPair{
-            Velocity{LinearVelocity2{}, 0_rpm},
-            Velocity{LinearVelocity2{}, 0_rpm}
-        };
-        
-        const auto normal = vc.GetNormal();
-        const auto tangent = vc.GetTangent();
-        const auto pointCount = vc.GetPointCount();
-        const auto bodyA = vc.GetBodyA();
-        const auto bodyB = vc.GetBodyB();
-
-        const auto invMassA = bodyA->GetInvMass();
-        const auto invRotInertiaA = bodyA->GetInvRotInertia();
-        
-        const auto invMassB = bodyB->GetInvMass();
-        const auto invRotInertiaB = bodyB->GetInvRotInertia();
-        
-        for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
-        {
-            // inverse moment of inertia : L^-2 M^-1 QP^2
-            // P is M L T^-2
-            // GetPointRelPosA() is Length2
-            // Cross(Length2, P) is: M L^2 T^-2
-            // L^-2 M^-1 QP^2 M L^2 T^-2 is: QP^2 T^-2
-            const auto& vcp = vc.GetPointAt(j);
-            const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
-            const auto LA = Cross(vcp.relA, P) / Radian;
-            const auto LB = Cross(vcp.relB, P) / Radian;
-            std::get<0>(vp) -= Velocity{invMassA * P, invRotInertiaA * LA};
-            std::get<1>(vp) += Velocity{invMassB * P, invRotInertiaB * LB};
-        }
-        return vp;
     }
     
     inline void WarmStartVelocities(const VelocityConstraints& velConstraints)
@@ -491,20 +414,6 @@ namespace {
                 contact->FlagForFiltering();
             }
         }
-    }
-
-    inline VelocityConstraint::Conf GetRegVelocityConstraintConf(const StepConf& conf)
-    {
-        return VelocityConstraint::Conf{
-            conf.doWarmStart? conf.dtRatio: 0,
-            conf.velocityThreshold,
-            conf.doBlocksolve
-        };
-    }
-    
-    inline VelocityConstraint::Conf GetToiVelocityConstraintConf(const StepConf& conf)
-    {
-        return VelocityConstraint::Conf{0, conf.velocityThreshold, conf.doBlocksolve};
     }
     
 } // anonymous namespace

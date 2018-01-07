@@ -19,7 +19,7 @@
  */
 
 #include "gtest/gtest.h"
-#include <PlayRho/Dynamics/WorldCallbacks.hpp>
+#include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

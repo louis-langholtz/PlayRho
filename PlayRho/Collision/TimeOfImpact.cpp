@@ -21,6 +21,7 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/SeparationFinder.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <algorithm>
 
 namespace playrho {
@@ -45,6 +46,17 @@ const char *GetName(TOIOutput::State state) noexcept
     }
     assert(state == TOIOutput::e_unknown);
     return "unknown";
+}
+
+ToiConf GetToiConf(const StepConf& conf) noexcept
+{
+    return ToiConf{}
+        .UseTimeMax(1)
+        .UseTargetDepth(conf.targetDepth)
+        .UseTolerance(conf.tolerance)
+        .UseMaxRootIters(conf.maxToiRootIters)
+        .UseMaxToiIters(conf.maxToiIters)
+        .UseMaxDistIters(conf.maxDistanceIters);
 }
 
 namespace d2 {
@@ -85,9 +97,9 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         return TOIOutput{0, stats, TOIOutput::e_maxTargetSquaredOverflow};
     }
 
-    auto t1 = Real{0}; // Will be set to value of t2
-    auto t1xfA = GetTransformation(sweepA, t1);
-    auto t1xfB = GetTransformation(sweepB, t1);
+    auto timeLo = Real{0}; // Will be set to value of timeHi
+    auto timeLoXfA = GetTransformation(sweepA, timeLo);
+    auto timeLoXfB = GetTransformation(sweepB, timeLo);
 
     // Prepare input for distance query.
     auto distanceConf = GetDistanceConf(conf);
@@ -98,131 +110,129 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     {
         // Get information on the distance between shapes. We can also use the results
         // to get a separating axis.
-        const auto dinfo = Distance(proxyA, t1xfA, proxyB, t1xfB, distanceConf);
+        const auto dinfo = Distance(proxyA, timeLoXfA, proxyB, timeLoXfB, distanceConf);
         ++stats.toi_iters;
         stats.sum_dist_iters += dinfo.iterations;
         stats.max_dist_iters = std::max(stats.max_dist_iters, dinfo.iterations);
 
         if (dinfo.state == DistanceOutput::HitMaxIters)
         {
-            return TOIOutput{t1, stats, TOIOutput::e_maxDistIters};
+            return TOIOutput{timeLo, stats, TOIOutput::e_maxDistIters};
         }
-
         assert(dinfo.state != DistanceOutput::Unknown);
-
         distanceConf.cache = Simplex::GetCache(dinfo.simplex.GetEdges());
         
-        // Get the real distance squared between shapes at the time of t1.
+        // Get the real distance squared between shapes at the time of timeLo.
         const auto distSquared = GetMagnitudeSquared(GetDelta(GetWitnessPoints(dinfo.simplex)));
 #if 0
         if (!isfinite(distSquared))
         {
-            return TOIOutput{t1, stats, TOIOutput::e_notFinite};
+            return TOIOutput{timeLo, stats, TOIOutput::e_notFinite};
         }
 #endif
-        // If shapes closer at time t1 than min-target squared, bail as overlapped.
+        // If shapes closer at time timeLo than min-target squared, bail as overlapped.
         if (distSquared < minTargetSquared)
         {
-            /// XXX maybe should return TOIOutput{t1, stats, TOIOutput::e_belowMinTarget}?
-            return TOIOutput{t1, stats, TOIOutput::e_overlapped};
+            /// XXX maybe should return TOIOutput{timeLo, stats, TOIOutput::e_belowMinTarget}?
+            return TOIOutput{timeLo, stats, TOIOutput::e_overlapped};
         }
 
         if (distSquared <= maxTargetSquared) // Victory!
         {
-            // The two convex polygons are within the target range of each other at time t1!
-            return TOIOutput{t1, stats, TOIOutput::e_touching};
+            // The two convex polygons are within the target range of each other at time timeLo!
+            return TOIOutput{timeLo, stats, TOIOutput::e_touching};
         }
 
-        // From here on, the real distance squared at time t1 is > than maxTargetSquared
+        // From here on, the real distance squared at time timeLo is > than maxTargetSquared
 
         // Initialize the separating axis.
         const auto fcn = SeparationFinder::Get(distanceConf.cache.indices,
-                                               proxyA, t1xfA, proxyB, t1xfB);
+                                               proxyA, timeLoXfA, proxyB, timeLoXfB);
 
         // Compute the TOI on the separating axis. We do this by successively
         // resolving the deepest point. This loop is bounded by the number of vertices.
-        auto t2 = conf.tMax; // t2 goes to values between t1 and t2.
-        auto t2xfA = GetTransformation(sweepA, t2);
-        auto t2xfB = GetTransformation(sweepB, t2);
+        auto timeHi = conf.tMax; // timeHi goes to values between timeLo and timeHi.
+        auto timeHiXfA = GetTransformation(sweepA, timeHi);
+        auto timeHiXfB = GetTransformation(sweepB, timeHi);
 
         auto pbIter = decltype(MaxShapeVertices){0};
         for (; pbIter < MaxShapeVertices; ++pbIter)
         {
-            // Find the deepest point at t2. Store the witness point indices.
-            const auto t2MinSeparation = fcn.FindMinSeparation(t2xfA, t2xfB);
+            // Find the deepest point at timeHi. Store the witness point indices.
+            const auto timeHiMinSep = fcn.FindMinSeparation(timeHiXfA, timeHiXfB);
 
             // Is the final configuration separated?
-            if (t2MinSeparation.distance > maxTarget)
+            if (timeHiMinSep.distance > maxTarget)
             {
                 // Victory! No collision occurs within time span.
-                assert(t2 == conf.tMax);
+                assert(timeHi == conf.tMax);
                 // Formerly this used tMax as in...
                 // return TOIOutput{TOIOutput::e_separated, tMax};
-                // t2 seems more appropriate however given s2 was derived from it.
-                // Meanwhile t2 always seems equal to input.tMax at this point.
+                // timeHi seems more appropriate however given s2 was derived from it.
+                // Meanwhile timeHi always seems equal to input.tMax at this point.
                 stats.sum_finder_iters += pbIter;
-                return TOIOutput{t2, stats, TOIOutput::e_separated};
+                return TOIOutput{timeHi, stats, TOIOutput::e_separated};
             }
 
-            // From here on, t2MinSeparation.distance <= maxTarget
+            // From here on, timeHiMinSep.distance <= maxTarget
 
             // Has the separation reached tolerance?
-            if (t2MinSeparation.distance >= minTarget)
+            if (timeHiMinSep.distance >= minTarget)
             {
-                if (t2 == t1)
+                if (timeHi == timeLo)
                 {
                     //
-                    // Can't advance t1 since t2 already the same.
+                    // Can't advance timeLo since timeHi already the same.
                     //
                     // This state happens when the real distance is greater than maxTarget but the
-                    // t2MinSeparation distance is less than maxTarget. If function not stopped,
+                    // timeHiMinSep distance is less than maxTarget. If function not stopped,
                     // it runs till stats.toi_iters == conf.maxToiIters and returns a failed state.
                     // Given that the function can't advance anymore, there's no need to run
-                    // anymore. Additionally, given that t1 is the same as t2 and the real
+                    // anymore. Additionally, given that timeLo is the same as timeHi and the real
                     // distance is separated, this function can return the separated state.
                     //
                     stats.sum_finder_iters += pbIter;
-                    return TOIOutput{t2, stats, TOIOutput::e_separated};
+                    return TOIOutput{timeHi, stats, TOIOutput::e_separated};
                 }
 
                 // Advance the sweeps
-                t1 = t2;
-                t1xfA = t2xfA;
-                t1xfB = t2xfB;
+                timeLo = timeHi;
+                timeLoXfA = timeHiXfA;
+                timeLoXfB = timeHiXfB;
                 break;
             }
 
-            // From here on t2MinSeparation.distance is < minTarget; i.e. at t2, shapes too close.
+            // From here on timeHiMinSep.distance is < minTarget; i.e. at timeHi, shapes too close.
 
             // Compute the initial separation of the witness points.
-            const auto t1EvaluatedDistance = fcn.Evaluate(t1xfA, t1xfB, t2MinSeparation.indices);
+            const auto timeLoEvalDistance = fcn.Evaluate(timeLoXfA, timeLoXfB, timeHiMinSep.indices);
 
             // Check for initial overlap. This might happen if the root finder
             // runs out of iterations.
             //assert(s1 >= minTarget);
-            if (t1EvaluatedDistance < minTarget)
+            if (timeLoEvalDistance < minTarget)
             {
                 stats.sum_finder_iters += pbIter;
-                return TOIOutput{t1, stats, TOIOutput::e_belowMinTarget};
+                return TOIOutput{timeLo, stats, TOIOutput::e_belowMinTarget};
             }
 
             // Check for touching
-            if (t1EvaluatedDistance <= maxTarget)
+            if (timeLoEvalDistance <= maxTarget)
             {
-                // Victory! t1 should hold the TOI (could be 0.0).
+                // Victory! timeLo should hold the TOI (could be 0.0).
                 stats.sum_finder_iters += pbIter;
-                return TOIOutput{t1, stats, TOIOutput::e_touching};
+                return TOIOutput{timeLo, stats, TOIOutput::e_touching};
             }
 
-            // Now: t1EvaluatedDistance > maxTarget
+            // Now: timeLoEvalDistance > maxTarget
 
             // Compute 1D root of: f(t) - target = 0
-            auto a1 = t1;
-            auto a2 = t2;
-            auto s1 = t1EvaluatedDistance;
-            auto s2 = t2MinSeparation.distance;
+            auto a1 = timeLo;
+            auto a2 = timeHi;
+            auto s1 = timeLoEvalDistance;
+            auto s2 = timeHiMinSep.distance;
             auto roots = decltype(conf.maxRootIters){0}; // counts # times f(t) checked
-            auto t = t1;
+            auto t = timeLo;
             for (;;)
             {
                 assert(!AlmostZero(s2 - s1));
@@ -261,14 +271,14 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
                 const auto txfA = GetTransformation(sweepA, t);
                 const auto txfB = GetTransformation(sweepB, t);
-                const auto s = fcn.Evaluate(txfA, txfB, t2MinSeparation.indices);
+                const auto s = fcn.Evaluate(txfA, txfB, timeHiMinSep.indices);
 
                 if (Abs(s - target) <= conf.tolerance) // Root finding succeeded!
                 {
-                    assert(t != t2);
-                    t2 = t; // t2 holds a tentative value for t1
-                    t2xfA = txfA;
-                    t2xfB = txfB;
+                    assert(t != timeHi);
+                    timeHi = t; // timeHi holds a tentative value for timeLo
+                    timeHiXfA = txfA;
+                    timeHiXfB = txfB;
                     break; // leave before roots can be == conf.maxRootIters
                 }
 
@@ -285,7 +295,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                 }
             }
 
-            // Found a new t2: t2, t2xfA, and t2xfB have been updated.
+            // Found a new timeHi: timeHi, timeHiXfA, and timeHiXfB have been updated.
             stats.sum_root_iters += roots;
             stats.max_root_iters = std::max(stats.max_root_iters, roots);
         }
@@ -295,7 +305,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
     // stats.toi_iters == conf.maxToiIters
     // Root finder got stuck.
     // This can happen if the two shapes never actually collide within their sweeps.
-    return TOIOutput{t1, stats, TOIOutput::e_maxToiIters};
+    return TOIOutput{timeLo, stats, TOIOutput::e_maxToiIters};
 }
 
 } // namespace d2
