@@ -18,6 +18,7 @@
  */
 
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 
@@ -181,6 +182,20 @@ void VelocityConstraint::AddPoint(Momentum normalImpulse, Momentum tangentImpuls
     m_points[m_pointCount] = GetPoint(normalImpulse * conf.dtRatio, tangentImpulse * conf.dtRatio,
                                       relA, relB, conf);
     ++m_pointCount;
+}
+
+VelocityConstraint::Conf GetRegVelocityConstraintConf(const StepConf& conf) noexcept
+{
+    return VelocityConstraint::Conf{
+        conf.doWarmStart? conf.dtRatio: 0,
+        conf.velocityThreshold,
+        conf.doBlocksolve
+    };
+}
+
+VelocityConstraint::Conf GetToiVelocityConstraintConf(const StepConf& conf) noexcept
+{
+    return VelocityConstraint::Conf{0, conf.velocityThreshold, conf.doBlocksolve};
 }
 
 } // namespace d2

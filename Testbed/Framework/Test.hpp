@@ -25,6 +25,7 @@
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
+#include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Common/Range.hpp>
 #include "Drawer.hpp"
 #include "UiState.hpp"

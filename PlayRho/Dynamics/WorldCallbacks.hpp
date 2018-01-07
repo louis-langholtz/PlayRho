@@ -26,11 +26,11 @@
 namespace playrho {
 namespace d2 {
 
-class UnitVec;
 class Fixture;
 class Joint;
 class Contact;
 class Manifold;
+class ContactImpulsesList;
 
 /// Joints and fixtures are destroyed when their associated
 /// body is destroyed. Implement this listener so that you
@@ -48,54 +48,6 @@ public:
     /// to the destruction of its parent body.
     virtual void SayGoodbye(Fixture& fixture) = 0;
 };
-
-/// Contact Impulse.
-/// @details
-/// Used for reporting. Impulses are used instead of forces because
-/// sub-step forces may approach infinity for rigid body collisions. These
-/// match up one-to-one with the contact points in Manifold.
-class ContactImpulsesList
-{
-public:
-    
-    /// @brief Counter type.
-    using Counter = std::remove_const<decltype(MaxManifoldPoints)>::type;
-
-    /// @brief Gets the count.
-    Counter GetCount() const noexcept { return count; }
-
-    /// @brief Gets the given indexed entry normal.
-    Momentum GetEntryNormal(Counter index) const noexcept { return normalImpulses[index]; }
-
-    /// @brief Gets the given indexed entry tangent.
-    Momentum GetEntryTanget(Counter index) const noexcept { return tangentImpulses[index]; }
-    
-    /// @brief Adds an entry of the given data.
-    void AddEntry(Momentum normal, Momentum tangent) noexcept
-    {
-        assert(count < MaxManifoldPoints);
-        normalImpulses[count] = normal;
-        tangentImpulses[count] = tangent;
-        ++count;
-    }
-
-private:
-    Momentum normalImpulses[MaxManifoldPoints]; ///< Normal impulses.
-    Momentum tangentImpulses[MaxManifoldPoints]; ///< Tangent impulses.
-    Counter count = 0; ///< Count of entries added.
-};
-
-/// @brief Gets the maximum normal impulse from the given contact impulses list.
-inline Momentum GetMaxNormalImpulse(const ContactImpulsesList& impulses) noexcept
-{
-    auto maxImpulse = 0_Ns;
-    const auto count = impulses.GetCount();
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
-        maxImpulse = std::max(maxImpulse, impulses.GetEntryNormal(i));
-    }
-    return maxImpulse;
-}
 
 /// @brief A pure-virtual interface for "listeners" for contacts.
 ///
