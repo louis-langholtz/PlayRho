@@ -39,7 +39,7 @@ public:
     
     DistanceTest(): Test(GetTestConf())
     {
-        m_world.SetGravity(LinearAcceleration2{});
+        m_gravity = LinearAcceleration2{};
 
         const auto def = BodyConf{}
             .UseType(BodyType::Dynamic)

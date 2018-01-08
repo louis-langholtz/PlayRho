@@ -30,8 +30,8 @@ public:
     
     ApplyForce()
     {
-        m_world.SetGravity(LinearAcceleration2{});
-
+        m_gravity = LinearAcceleration2{};
+        
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Apply Force", [&](KeyActionMods) {
             const auto lv = Length2{0_m, -200_m};
             const auto f = Force2{GetWorldVector(*m_body, lv) * 1_kg / (1_s * 1_s)};

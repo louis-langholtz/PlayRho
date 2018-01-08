@@ -58,20 +58,20 @@ TEST(World, ByteSize)
             // Size is OS dependent.
             // Seems linux containers are bigger in size...
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(240));
+            EXPECT_EQ(sizeof(World), std::size_t(232));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(240));
+            EXPECT_EQ(sizeof(World), std::size_t(232));
 #endif
             break;
         }
         case  8:
         {
 #ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(264));
+            EXPECT_EQ(sizeof(World), std::size_t(248));
 #endif
 #ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(264));
+            EXPECT_EQ(sizeof(World), std::size_t(248));
 #endif
             break;
         }
@@ -85,7 +85,6 @@ TEST(World, Conf)
     const auto worldConf = WorldConf{};
     const auto defaultConf = GetDefaultWorldConf();
     
-    EXPECT_EQ(defaultConf.gravity, worldConf.gravity);
     EXPECT_EQ(defaultConf.maxVertexRadius, worldConf.maxVertexRadius);
     EXPECT_EQ(defaultConf.minVertexRadius, worldConf.minVertexRadius);
     const auto stepConf = StepConf{};
@@ -139,8 +138,6 @@ TEST(World, DefaultInit)
     EXPECT_EQ(GetHeight(world.GetTree()), World::proxy_size_type(0));
     EXPECT_EQ(ComputePerimeterRatio(world.GetTree()), Real(0));
 
-    EXPECT_EQ(world.GetGravity(), EarthlyGravity);
-
     {
         const auto& bodies = world.GetBodies();
         EXPECT_TRUE(bodies.empty());
@@ -171,12 +168,7 @@ TEST(World, DefaultInit)
 
 TEST(World, Init)
 {
-    const auto gravity = LinearAcceleration2{
-        Real(-4.2) * MeterPerSquareSecond,
-        Real(3.4) * MeterPerSquareSecond
-    };
-    World world{WorldConf{}.UseGravity(gravity)};
-    EXPECT_EQ(world.GetGravity(), gravity);
+    World world{};
     EXPECT_FALSE(world.IsLocked());
     
     {
@@ -231,7 +223,6 @@ TEST(World, CopyConstruction)
 
     {
         const auto copy = World{world};
-        EXPECT_EQ(world.GetGravity(), copy.GetGravity());
         EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
         EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
         EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
@@ -277,7 +268,6 @@ TEST(World, CopyConstruction)
 
     {
         const auto copy = World{world};
-        EXPECT_EQ(world.GetGravity(), copy.GetGravity());
         EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
         EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
         EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
@@ -306,7 +296,6 @@ TEST(World, CopyAssignment)
     {
         auto copy = World{};
         copy = world;
-        EXPECT_EQ(world.GetGravity(), copy.GetGravity());
         EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
         EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
         EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
@@ -334,7 +323,6 @@ TEST(World, CopyAssignment)
     {
         auto copy = World{};
         copy = world;
-        EXPECT_EQ(world.GetGravity(), copy.GetGravity());
         EXPECT_EQ(world.GetMinVertexRadius(), copy.GetMinVertexRadius());
         EXPECT_EQ(world.GetMaxVertexRadius(), copy.GetMaxVertexRadius());
         EXPECT_EQ(world.GetJoints().size(), copy.GetJoints().size());
@@ -354,28 +342,6 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
         EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
     }
-}
-
-TEST(World, SetGravity)
-{
-    const auto gravity = LinearAcceleration2{
-        Real(-4.2) * MeterPerSquareSecond,
-        Real(3.4) * MeterPerSquareSecond
-    };
-    
-    auto world = World{};
-    EXPECT_NE(world.GetGravity(), gravity);
-    world.SetGravity(gravity);
-    EXPECT_EQ(world.GetGravity(), gravity);
-    world.SetGravity(-gravity);
-    EXPECT_NE(world.GetGravity(), gravity);
-    
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    EXPECT_EQ(body->GetLinearAcceleration(), -gravity);
-
-    const auto zeroG = LinearAcceleration2{0_mps2, 0_mps2};
-    world.SetGravity(zeroG);
-    EXPECT_EQ(body->GetLinearAcceleration(), zeroG);
 }
 
 TEST(World, CreateDestroyEmptyStaticBody)
@@ -566,10 +532,7 @@ TEST(World, RegisterFixtureForProxies)
 
 TEST(World, QueryAABB)
 {
-    const auto zeroG = LinearAcceleration2{
-        Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond
-    };
-    World world{WorldConf{}.UseGravity(zeroG)};
+    auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
@@ -580,8 +543,8 @@ TEST(World, QueryAABB)
     ASSERT_FALSE(body->IsImpenetrable());
     ASSERT_EQ(GetX(body->GetLocation()), 0_m);
     ASSERT_EQ(GetY(body->GetLocation()), 0_m);
-    ASSERT_EQ(GetX(body->GetLinearAcceleration()), GetX(world.GetGravity()));
-    ASSERT_EQ(GetY(body->GetLinearAcceleration()), GetY(world.GetGravity()));
+    ASSERT_EQ(GetX(body->GetLinearAcceleration()), 0_mps2);
+    ASSERT_EQ(GetY(body->GetLinearAcceleration()), 0_mps2);
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
@@ -615,10 +578,7 @@ TEST(World, QueryAABB)
 
 TEST(World, RayCast)
 {
-    const auto zeroG = LinearAcceleration2{
-        Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond
-    };
-    World world{WorldConf{}.UseGravity(zeroG)};
+    World world{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
 
     const auto p0 = Length2{-10_m, +3_m};
@@ -637,8 +597,8 @@ TEST(World, RayCast)
     ASSERT_FALSE(body->IsImpenetrable());
     ASSERT_EQ(GetX(body->GetLocation()), 0_m);
     ASSERT_EQ(GetY(body->GetLocation()), 0_m);
-    ASSERT_EQ(GetX(body->GetLinearAcceleration()), GetX(world.GetGravity()));
-    ASSERT_EQ(GetY(body->GetLinearAcceleration()), GetY(world.GetGravity()));
+    ASSERT_EQ(GetX(body->GetLinearAcceleration()), 0_mps2);
+    ASSERT_EQ(GetY(body->GetLinearAcceleration()), 0_mps2);
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
@@ -727,14 +687,14 @@ TEST(World, ClearForcesFreeFunction)
     World world;
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
     ASSERT_NE(body, nullptr);
     ASSERT_EQ(body->GetType(), BodyType::Dynamic);
     ASSERT_TRUE(body->IsSpeedable());
     ASSERT_TRUE(body->IsAccelerable());
     ASSERT_FALSE(body->IsImpenetrable());
-    ASSERT_EQ(GetX(body->GetLinearAcceleration()), GetX(world.GetGravity()));
-    ASSERT_EQ(GetY(body->GetLinearAcceleration()), GetY(world.GetGravity()));
+    ASSERT_EQ(GetX(body->GetLinearAcceleration()), GetX(EarthlyGravity));
+    ASSERT_EQ(GetY(body->GetLinearAcceleration()), GetY(EarthlyGravity));
     
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
@@ -744,12 +704,12 @@ TEST(World, ClearForcesFreeFunction)
     ASSERT_NE(fixture, nullptr);
 
     ApplyForceToCenter(*body, Force2(2_N, 4_N));
-    ASSERT_NE(GetX(body->GetLinearAcceleration()), GetX(world.GetGravity()));
-    ASSERT_NE(GetY(body->GetLinearAcceleration()), GetY(world.GetGravity()));
+    ASSERT_NE(GetX(body->GetLinearAcceleration()), GetX(EarthlyGravity));
+    ASSERT_NE(GetY(body->GetLinearAcceleration()), GetY(EarthlyGravity));
     
     ClearForces(world);
-    EXPECT_EQ(GetX(body->GetLinearAcceleration()), GetX(world.GetGravity()));
-    EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(world.GetGravity()));
+    EXPECT_EQ(GetX(body->GetLinearAcceleration()), 0_mps2);
+    EXPECT_EQ(GetY(body->GetLinearAcceleration()), 0_mps2);
 }
 
 TEST(World, SetAccelerationsFunctionalFF)
@@ -794,7 +754,7 @@ TEST(World, FindClosestBodyFF)
 
 TEST(World, GetShapeCountFreeFunction)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    World world{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetShapeCount(world), std::size_t(0));
     
@@ -824,7 +784,7 @@ TEST(World, GetShapeCountFreeFunction)
 
 TEST(World, GetFixtureCountFreeFunction)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    World world{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetFixtureCount(world), std::size_t(0));
     
@@ -853,7 +813,7 @@ TEST(World, GetFixtureCountFreeFunction)
 
 TEST(World, AwakenFreeFunction)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    World world{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
@@ -1059,13 +1019,12 @@ TEST(World, MaxJoints)
 
 TEST(World, StepZeroTimeDoesNothing)
 {
-    const auto gravity = EarthlyGravity;
-    
-    World world{WorldConf{}.UseGravity(gravity)};
+    World world{};
     
     BodyConf def;
     def.location = Length2{31.9_m, -19.24_m};
     def.type = BodyType::Dynamic;
+    def.linearAcceleration = EarthlyGravity;
     
     const auto body = world.CreateBody(def);
     ASSERT_NE(body, nullptr);
@@ -1073,7 +1032,7 @@ TEST(World, StepZeroTimeDoesNothing)
     EXPECT_EQ(GetX(GetLinearVelocity(*body)), 0_mps);
     EXPECT_EQ(GetY(GetLinearVelocity(*body)), 0_mps);
     EXPECT_EQ(GetX(body->GetLinearAcceleration()), Real{0.0f} * MeterPerSquareSecond);
-    EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(gravity));
+    EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(EarthlyGravity));
     
     const auto time_inc = 0_s;
     
@@ -1083,7 +1042,7 @@ TEST(World, StepZeroTimeDoesNothing)
     {
         Step(world, time_inc);
         
-        EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(gravity));
+        EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(EarthlyGravity));
         
         EXPECT_EQ(GetX(body->GetLocation()), GetX(def.location));
         EXPECT_EQ(GetY(body->GetLocation()), GetY(pos));
@@ -1097,17 +1056,17 @@ TEST(World, StepZeroTimeDoesNothing)
 
 TEST(World, GravitationalBodyMovement)
 {
+    const auto a = Real(-10);
+
     auto p0 = Length2{0_m, 1_m};
 
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
     body_def.location = p0;
+    body_def.linearAcceleration = LinearAcceleration2{0, a * MeterPerSquareSecond};
 
-    const auto a = Real(-10);
-    const auto gravity = LinearAcceleration2{0, a * MeterPerSquareSecond};
     const auto t = .01_s;
-    
-    World world{WorldConf{}.UseGravity(gravity)};
+    auto world = World{};
 
     const auto body = world.CreateBody(body_def);
     ASSERT_NE(body, nullptr);
@@ -1142,7 +1101,7 @@ TEST(World, GravitationalBodyMovement)
 #if 0
 TEST(World, BodyAngleDoesntGrowUnbounded)
 {
-    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{};
     const auto body = world.CreateBody(BodyConf{}
                                        .UseType(BodyType::Dynamic)
                                        .UseAngularVelocity(10_rad / Second));
@@ -1164,13 +1123,12 @@ TEST(World, BodyAngleDoesntGrowUnbounded)
 
 TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 {
-    const auto gravity = EarthlyGravity;
-    
-    World world{WorldConf{}.UseGravity(gravity)};
+    auto world = World{};
     
     BodyConf def;
     def.location = Length2{31.9_m, -19.24_m};
     def.type = BodyType::Dynamic;
+    def.linearAcceleration = EarthlyGravity;
     
     const auto body = world.CreateBody(def);
     ASSERT_NE(body, nullptr);
@@ -1178,7 +1136,7 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
     EXPECT_EQ(GetX(GetLinearVelocity(*body)), 0_mps);
     EXPECT_EQ(GetY(GetLinearVelocity(*body)), 0_mps);
     EXPECT_EQ(GetX(body->GetLinearAcceleration()), Real{0.0f} * MeterPerSquareSecond);
-    EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(gravity));
+    EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(EarthlyGravity));
     
     const auto time_inc = 0.01_s;
     
@@ -1188,17 +1146,17 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
     {
         Step(world, time_inc, 0, 0);
         
-        EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(gravity));
+        EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(EarthlyGravity));
         
         EXPECT_EQ(GetX(body->GetLocation()), GetX(def.location));
         EXPECT_LT(GetY(body->GetLocation()), GetY(pos));
-        EXPECT_EQ(GetY(body->GetLocation()), GetY(pos) + ((GetY(vel) + GetY(gravity) * time_inc) * time_inc));
+        EXPECT_EQ(GetY(body->GetLocation()), GetY(pos) + ((GetY(vel) + GetY(EarthlyGravity) * time_inc) * time_inc));
         pos = body->GetLocation();
         
         EXPECT_EQ(GetX(GetLinearVelocity(*body)), 0_mps);
         EXPECT_LT(GetY(GetLinearVelocity(*body)), GetY(vel));
         EXPECT_TRUE(AlmostEqual(Real{GetY(GetLinearVelocity(*body)) / 1_mps},
-                                Real{(GetY(vel) + GetY(gravity) * time_inc) / 1_mps}));
+                                Real{(GetY(vel) + GetY(EarthlyGravity) * time_inc) / 1_mps}));
         vel = GetLinearVelocity(*body);
     }
 }
@@ -1206,14 +1164,13 @@ TEST(World, BodyAccelPerSpecWithNoVelOrPosIterations)
 
 TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
 {
-    const auto gravity = EarthlyGravity;
-    
-    World world{WorldConf{}.UseGravity(gravity)};
+    World world{};
     
     BodyConf def;
     def.location = Length2{31.9_m, -19.24_m};
     def.linearVelocity = LinearVelocity2{0, -9.8_mps};
     def.type = BodyType::Dynamic;
+    def.linearAcceleration = EarthlyGravity;
     
     const auto body = world.CreateBody(def);
     ASSERT_NE(body, nullptr);
@@ -1221,7 +1178,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
     EXPECT_EQ(GetX(GetLinearVelocity(*body)), 0_mps);
     EXPECT_EQ(GetY(GetLinearVelocity(*body)), -9.8_mps);
     EXPECT_EQ(GetX(body->GetLinearAcceleration()), Real{0.0f} * MeterPerSquareSecond);
-    EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(gravity));
+    EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(EarthlyGravity));
     
     const auto time_inc = -0.01_s;
     auto stepConf = StepConf{};
@@ -1238,17 +1195,17 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
     {
         world.Step(stepConf);
         
-        EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(gravity));
+        EXPECT_EQ(GetY(body->GetLinearAcceleration()), GetY(EarthlyGravity));
         
         EXPECT_EQ(GetX(body->GetLocation()), GetX(def.location));
         EXPECT_GT(GetY(body->GetLocation()), GetY(pos));
-        EXPECT_EQ(GetY(body->GetLocation()), GetY(pos) + ((GetY(vel) + GetY(gravity) * time_inc) * time_inc));
+        EXPECT_EQ(GetY(body->GetLocation()), GetY(pos) + ((GetY(vel) + GetY(EarthlyGravity) * time_inc) * time_inc));
         pos = body->GetLocation();
         
         EXPECT_EQ(GetX(GetLinearVelocity(*body)), 0_mps);
         EXPECT_GT(GetY(GetLinearVelocity(*body)), GetY(vel));
         EXPECT_TRUE(AlmostEqual(Real{GetY(GetLinearVelocity(*body)) / 1_mps},
-                                Real{(GetY(vel) + GetY(gravity) * time_inc) / 1_mps}));
+                                Real{(GetY(vel) + GetY(EarthlyGravity) * time_inc) / 1_mps}));
         vel = GetLinearVelocity(*body);
     }
 }
@@ -1326,8 +1283,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
         [&](Contact&) {},
     };
 
-    const auto gravity = LinearAcceleration2{};
-    World world{WorldConf{}.UseGravity(gravity)};
+    World world{};
     world.SetContactListener(&listener);
     
     ASSERT_EQ(listener.begin_contacts, unsigned(0));
@@ -1415,7 +1371,7 @@ TEST(World, HeavyOnLight)
     PLAYRHO_CONSTEXPR const auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
     PLAYRHO_CONSTEXPR const auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
 
-    const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
+    const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity);
     const auto upperBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
     const auto lowerBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
 
@@ -1593,9 +1549,8 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 {
     const auto radius = 1_m;
     const auto shape = Shape{DiskShapeConf{}.UseRadius(radius).UseDensity(1_kgpm2).UseRestitution(Real(1))};
-    const auto gravity = LinearAcceleration2{};
 
-    World world{WorldConf{}.UseGravity(gravity)};
+    auto world = World{};
     
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
@@ -1631,9 +1586,8 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
     const auto radius2 = 0.6_m;
     const auto shape1 = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius1));
     const auto shape2 = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius2));
-    const auto gravity = LinearAcceleration2{};
     
-    World world{WorldConf{}.UseGravity(gravity)};
+    World world{};
     
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
@@ -1665,7 +1619,7 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
 
 TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    World world{};
     MyContactListener listener{
         [&](Contact&, const Manifold&) {},
         [&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
@@ -1699,7 +1653,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 
 TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    World world{};
     MyContactListener listener{
         [&](Contact&, const Manifold&) {},
         [&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
@@ -1740,8 +1694,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 {
     const auto radius = Real(1);
     
-    const auto gravity = LinearAcceleration2{};
-    World world{WorldConf{}.UseGravity(gravity)};
+    World world{};
     
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
@@ -1835,9 +1788,8 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 {
     const auto shape = Shape(PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).SetAsBox(1_m, 1_m));
-    const auto gravity = LinearAcceleration2{};
     
-    World world{WorldConf{}.UseGravity(gravity)};
+    World world{};
     
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
@@ -1896,8 +1848,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
      * This tests at a high level what the position solver code does with overlapping shapes.
      */
 
-    const auto gravity = LinearAcceleration2{};
-    World world{WorldConf{}.UseGravity(gravity)};
+    World world{};
     
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
@@ -2055,9 +2006,7 @@ TEST(World, CollidingDynamicBodies)
         [&](Contact&) {},
     };
 
-    const auto gravity = LinearAcceleration2{};
-    World world{WorldConf{}.UseGravity(gravity)};
-    EXPECT_EQ(world.GetGravity(), gravity);
+    World world{};
     world.SetContactListener(&listener);
     
     const auto shape = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius));
@@ -2229,7 +2178,7 @@ TEST(World, TilesComesToRest)
             
             for (auto j = i; j < e_count; ++j)
             {
-                const auto body = m_world->CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(y));
+                const auto body = m_world->CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(y).UseLinearAcceleration(EarthlyGravity));
                 body->CreateFixture(shape);
                 y += deltaY;
             }
@@ -2549,7 +2498,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
     PLAYRHO_CONSTEXPR const auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
     
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{}).UseMinVertexRadius(VertexRadius)};
+    World world{WorldConf{}.UseMinVertexRadius(VertexRadius)};
 
     MyContactListener listener{
         [](Contact&, const Manifold&) {},
@@ -2727,7 +2676,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
 TEST(World, MouseJointWontCauseTunnelling)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    World world{};
     
     const auto half_box_width = Real(0.2);
     const auto left_edge_x = -half_box_width;
@@ -3291,6 +3240,9 @@ public:
             boxes[i] = box;
         }
         
+        SetAccelerations(world, Acceleration{LinearAcceleration2{
+            Real(0) * MeterPerSquareSecond, -Real(10) * MeterPerSquareSecond
+        }, 0 * RadianPerSquareSecond});
         const auto stepConf = StepConf{}.SetTime(1_s / 60);
         while (loopsTillSleeping < maxLoops)
         {
@@ -3304,9 +3256,7 @@ public:
     }
 
 protected:
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{
-        Real(0) * MeterPerSquareSecond, -Real(10) * MeterPerSquareSecond
-    })};
+    World world{};
     std::size_t loopsTillSleeping = 0;
     const std::size_t maxLoops = 10000;
     std::vector<Body*> boxes{10};

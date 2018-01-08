@@ -89,7 +89,7 @@ class Shape;
 ///
 /// @note World instances are composed of &mdash; i.e. contain and own &mdash; Body, Joint,
 ///   and Contact instances.
-/// @note This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit
+/// @note This data structure is 232-bytes large (with 4-byte Real on at least one 64-bit
 ///   platform).
 ///
 /// @sa Body, Joint, Contact
@@ -279,12 +279,6 @@ public:
 
     /// @brief Gets access to the broad-phase dynamic tree information.
     const DynamicTree& GetTree() const noexcept;
-    
-    /// @brief Changes the global gravity vector.
-    void SetGravity(LinearAcceleration2 gravity) noexcept;
-    
-    /// @brief Gets the global gravity vector.
-    LinearAcceleration2 GetGravity() const noexcept;
 
     /// @brief Is the world locked (in the middle of a time step).
     bool IsLocked() const noexcept;
@@ -780,9 +774,7 @@ private:
     /// @note In the <em>add pair</em> stress-test, 401 bodies can have some 31000 contacts
     ///   during a given time step.
     Contacts m_contacts;
-
-    LinearAcceleration2 m_gravity; ///< Gravity setting. 8-bytes.
-
+    
     DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
     
     ContactListener* m_contactListener = nullptr; ///< Contact listener. 8-bytes.
@@ -858,11 +850,6 @@ inline SizedRange<World::Joints::iterator> World::GetJoints() noexcept
 inline SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
 {
     return {m_contacts.begin(), m_contacts.end(), m_contacts.size()};
-}
-
-inline LinearAcceleration2 World::GetGravity() const noexcept
-{
-    return m_gravity;
 }
 
 inline bool World::IsLocked() const noexcept
@@ -1105,12 +1092,19 @@ void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> f
 /// @relatedalso World
 void SetAccelerations(World& world, Acceleration acceleration) noexcept;
 
+/// @brief Sets the accelerations of all the world's bodies to the given value.
+/// @note This will leave the angular acceleration alone.
+/// @relatedalso World
+void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept;
+
 /// @brief Clears forces.
 /// @details Manually clear the force buffer on all bodies.
 /// @relatedalso World
 inline void ClearForces(World& world) noexcept
 {
-    SetAccelerations(world, Acceleration{world.GetGravity(), 0 * RadianPerSquareSecond});
+    SetAccelerations(world, Acceleration{
+        LinearAcceleration2{0_mps2, 0_mps2}, 0 * RadianPerSquareSecond
+    });
 }
 
 /// @brief Creates a rectangular enclosure.

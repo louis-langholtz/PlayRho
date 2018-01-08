@@ -153,6 +153,8 @@ public:
         const auto body6 = m_world.CreateBody(circleBodyConf);
         circleConf.vertexRadius = circleConf.vertexRadius * 2;
         body6->CreateFixture(Shape(circleConf), circleShapeConf);
+        
+        SetAccelerations(m_world, m_gravity);
     }
 };
     

@@ -45,7 +45,7 @@ public:
 
         // Define attachment
         {
-            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m).UseLinearAcceleration(m_gravity);
             m_attachment = m_world.CreateBody(bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m);
             m_attachment->CreateFixture(Shape(conf));
@@ -53,7 +53,7 @@ public:
 
         // Define platform
         {
-            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(-4, 5) * 1_m);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(-4, 5) * 1_m).UseLinearAcceleration(m_gravity);
             m_platform = m_world.CreateBody(bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2)
@@ -78,7 +78,7 @@ public:
 
         // Create a payload
         {
-            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 8) * 1_m);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 8) * 1_m).UseLinearAcceleration(m_gravity);
             const auto body = m_world.CreateBody(bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6f)).UseDensity(2_kgpm2).SetAsBox(0.75_m, 0.75_m);

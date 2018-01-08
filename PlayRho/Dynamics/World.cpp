@@ -420,7 +420,6 @@ namespace {
 
 World::World(const WorldConf& def):
     m_tree{def.initialTreeSize},
-    m_gravity{def.gravity},
     m_minVertexRadius{def.minVertexRadius},
     m_maxVertexRadius{def.maxVertexRadius}
 {
@@ -434,7 +433,6 @@ World::World(const WorldConf& def):
 
 World::World(const World& other):
     m_tree{other.m_tree},
-    m_gravity{other.m_gravity},
     m_destructionListener{other.m_destructionListener},
     m_contactListener{other.m_contactListener},
     m_flags{other.m_flags},
@@ -453,7 +451,6 @@ World& World::operator= (const World& other)
 {
     Clear();
     
-    m_gravity = other.m_gravity;
     m_destructionListener = other.m_destructionListener;
     m_contactListener = other.m_contactListener;
     m_flags = other.m_flags;
@@ -704,20 +701,6 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
     }
 }
 
-void World::SetGravity(LinearAcceleration2 gravity) noexcept
-{
-    if (m_gravity != gravity)
-    {
-        const auto diff = gravity - m_gravity;
-        for (auto& b: m_bodies)
-        {
-            auto& body = GetRef(b);
-            ApplyLinearAcceleration(body, diff);
-        }
-        m_gravity = gravity;
-    }
-}
-
 Body* World::CreateBody(const BodyConf& def)
 {
     if (IsLocked())
@@ -742,7 +725,6 @@ Body* World::CreateBody(const BodyConf& def)
     //
     m_bodies.push_back(&b);
 
-    b.SetAcceleration(m_gravity, AngularAcceleration{0});
     return &b;
 }
 
@@ -2443,8 +2425,6 @@ void World::SetType(Body& body, playrho::BodyType type)
     else
     {
         body.SetAwake();
-        body.SetAcceleration(body.IsAccelerable()? GetGravity(): LinearAcceleration2{},
-                             AngularAcceleration{0});
         const auto fixtures = body.GetFixtures();
         for_each(begin(fixtures), end(fixtures), [&](Body::Fixtures::value_type& f) {
             InternalTouchProxies(GetRef(f));
@@ -2749,6 +2729,13 @@ void SetAccelerations(World& world, Acceleration acceleration) noexcept
 {
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), acceleration);
+    });
+}
+
+void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
+{
+    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
+        SetLinearAcceleration(GetRef(b), acceleration);
     });
 }
 

@@ -149,12 +149,6 @@ namespace {
 
 void Dump(const World& world)
 {
-    const auto gravity = world.GetGravity();
-    log("Vec2 g(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(gravity) / MeterPerSquareSecond}),
-        static_cast<double>(Real{Get<1>(gravity) / MeterPerSquareSecond}));
-    log("m_world->SetGravity(g);\n");
-    
     const auto& bodies = world.GetBodies();
     log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", bodies.size());
     auto i = std::size_t{0};

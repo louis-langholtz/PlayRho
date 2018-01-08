@@ -158,6 +158,8 @@ public:
                 body->CreateFixture(shape);
             }
         }
+        
+        SetAccelerations(m_world, m_gravity);
     }
 };
 

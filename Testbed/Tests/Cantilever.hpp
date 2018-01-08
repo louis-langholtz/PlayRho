@@ -151,6 +151,8 @@ public:
             const auto body = m_world.CreateBody(bd);
             body->CreateFixture(circleshape);
         }
+        
+        SetAccelerations(m_world, m_gravity);
     }
 
     Body* m_middle;

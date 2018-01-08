@@ -1580,7 +1580,7 @@ static void SolveVC(benchmark::State& state)
 
 static void WorldStep(benchmark::State& state)
 {
-    auto world = playrho::d2::World{playrho::d2::WorldConf{}.UseGravity(playrho::LinearAcceleration2{})};
+    auto world = playrho::d2::World{playrho::d2::WorldConf{/* zero G */}};
     const auto stepConf = playrho::StepConf{};
     for (auto _: state)
     {
@@ -1590,7 +1590,7 @@ static void WorldStep(benchmark::State& state)
 
 static void WorldStepWithStatsStatic(benchmark::State& state)
 {
-    auto world = playrho::d2::World{playrho::d2::WorldConf{}.UseGravity(playrho::LinearAcceleration2{})};
+    auto world = playrho::d2::World{playrho::d2::WorldConf{/* zero G */}};
     const auto stepConf = playrho::StepConf{};
     auto stepStats = playrho::StepStats{};
     const auto numBodies = state.range();
@@ -1624,7 +1624,7 @@ static void WorldStepWithStatsDynamicBodies(benchmark::State& state)
 
 static void DropDisks(benchmark::State& state)
 {
-    auto world = playrho::d2::World{playrho::d2::WorldConf{}.UseGravity(playrho::d2::EarthlyGravity)};
+    auto world = playrho::d2::World{};
 
     const auto diskRadius = 0.5f * playrho::Meter;
     const auto diskConf = playrho::d2::DiskShapeConf{}.UseRadius(diskRadius);
@@ -1636,7 +1636,8 @@ static void DropDisks(benchmark::State& state)
         const auto location = playrho::Length2{x, 0 * playrho::Meter};
         const auto body = world.CreateBody(playrho::d2::BodyConf{}
                                            .UseType(playrho::BodyType::Dynamic)
-                                           .UseLocation(location));
+                                           .UseLocation(location)
+                                           .UseLinearAcceleration(playrho::d2::EarthlyGravity));
         body->CreateFixture(shape);
     }
 
@@ -1668,7 +1669,7 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
     constexpr auto linearSlop = 0.005f * playrho::Meter;
     constexpr auto angularSlop = (2.0f / 180.0f * playrho::Pi) * playrho::Radian;
 
-    const auto worldConf = playrho::d2::WorldConf{}.UseGravity(playrho::LinearAcceleration2{}).UseInitialTreeSize(8192);
+    const auto worldConf = playrho::d2::WorldConf{/* zero G */}.UseInitialTreeSize(8192);
     auto stepConf = playrho::StepConf{};
     stepConf.SetTime(playrho::Second / 60);
     stepConf.linearSlop = linearSlop;
@@ -1779,12 +1780,13 @@ static void DropTilesPlayRho(int count)
     };
     auto conf = playrho::d2::PolygonShapeConf{}.UseVertexRadius(vertexRadius);
     auto world = playrho::d2::World{
-        playrho::d2::WorldConf{}.UseMinVertexRadius(vertexRadius).UseInitialTreeSize(8192).UseGravity(gravity)
+        playrho::d2::WorldConf{}.UseMinVertexRadius(vertexRadius).UseInitialTreeSize(8192)
     };
     
     {
         constexpr auto a = 0.5f;
-        const auto ground = world.CreateBody(playrho::d2::BodyConf{}.UseLocation(playrho::Length2{0, -a * playrho::Meter}));
+        const auto ground = world.CreateBody(playrho::d2::BodyConf{}
+                                             .UseLocation(playrho::Length2{0, -a * playrho::Meter}));
         
         constexpr auto N = 200;
         constexpr auto M = 10;
@@ -1820,7 +1822,10 @@ static void DropTilesPlayRho(int count)
             
             for (auto j = i; j < count; ++j)
             {
-                const auto body = world.CreateBody(playrho::d2::BodyConf{}.UseType(playrho::BodyType::Dynamic).UseLocation(y));
+                const auto body = world.CreateBody(playrho::d2::BodyConf{}
+                                                   .UseType(playrho::BodyType::Dynamic)
+                                                   .UseLocation(y)
+                                                   .UseLinearAcceleration(gravity));
                 body->CreateFixture(shape);
                 y += deltaY;
             }
@@ -2018,7 +2023,8 @@ void Tumbler::AddSquare()
 {
     const auto b = m_world.CreateBody(playrho::d2::BodyConf{}
                                       .UseType(playrho::BodyType::Dynamic)
-                                      .UseLocation(playrho::Vec2(0, 10) * playrho::Meter));
+                                      .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
+                                      .UseLinearAcceleration(playrho::d2::EarthlyGravity));
     b->CreateFixture(m_square);
 }
 

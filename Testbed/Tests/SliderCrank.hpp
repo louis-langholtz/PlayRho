@@ -92,6 +92,7 @@ public:
                 m_world.CreateBody(bd)->CreateFixture(PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m));
             }
         }
+        SetAccelerations(m_world, m_gravity);
         RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "toggle friction", [&](KeyActionMods) {
             m_joint2->EnableMotor(!m_joint2->IsMotorEnabled());
             m_joint2->GetBodyB()->SetAwake();

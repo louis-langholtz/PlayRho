@@ -174,6 +174,8 @@ public:
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
         
+        SetAccelerations(m_world, m_gravity);
+
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Left", [&](KeyActionMods) {
             m_motorJoint->SetMotorSpeed(-m_motorSpeed);
         });

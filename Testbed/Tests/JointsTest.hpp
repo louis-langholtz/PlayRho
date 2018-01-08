@@ -421,7 +421,7 @@ private:
     const Length RowSize = +10_m;
     const Length ColumnSize = +10_m;
     const BodyConf StaticBD = BodyConf{}.UseType(BodyType::Static);
-    const BodyConf DynamicBD = BodyConf{}.UseType(BodyType::Dynamic);
+    const BodyConf DynamicBD = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
     const Length RectHHeight = 0.25_m;
     const Length RectHWidth = 2_m;
     Shape m_diskShape{DiskConf{}.UseRadius(1_m).UseDensity(1_kgpm2)};

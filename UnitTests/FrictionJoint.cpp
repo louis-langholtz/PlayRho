@@ -65,7 +65,7 @@ TEST(FrictionJointConf, DefaultConstruction)
 
 TEST(FrictionJointConf, InitializingConstructor)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    World world{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
@@ -139,7 +139,7 @@ TEST(FrictionJoint, GetFrictionJointConf)
 TEST(FrictionJoint, WithDynamicCircles)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    World world{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));

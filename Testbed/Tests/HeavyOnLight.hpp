@@ -30,7 +30,7 @@ public:
     
     HeavyOnLight()
     {
-        const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
+        const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
         const auto upperBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 6.0f) * 1_m);
         const auto lowerBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 0.5f) * 1_m);
         

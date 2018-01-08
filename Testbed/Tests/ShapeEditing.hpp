@@ -34,6 +34,7 @@ public:
         
         BodyConf bd;
         bd.type = BodyType::Dynamic;
+        bd.linearAcceleration = m_gravity;
         bd.location = Vec2(0.0f, 10.0f) * 1_m;
         m_body = m_world.CreateBody(bd);
 

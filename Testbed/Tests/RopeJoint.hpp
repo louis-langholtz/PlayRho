@@ -62,6 +62,7 @@ public:
                 auto shape = rectangle;
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
+                bd.linearAcceleration = m_gravity;
                 bd.location = Vec2(0.5f + 1.0f * i, y) * 1_m;
                 if (i == N - 1)
                 {

@@ -123,7 +123,7 @@ public:
         RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Launch projectile.", [&](KeyActionMods) {
             const auto launchSpeed = LinearVelocity2(m_launchSpeed, 0_mps);
             m_littleBox->SetAwake();
-            m_littleBox->SetAcceleration(Gravity, AngularAcceleration{});
+            m_littleBox->SetAcceleration(m_gravity, AngularAcceleration{});
             m_littleBox->SetVelocity(Velocity{});
             m_littleBox->SetTransform(GetWorldPoint(*m_launcherBody, Vec2(3,0) * 1_m),
                                       m_launcherBody->GetAngle());
@@ -145,7 +145,7 @@ public:
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Launch computer controlled projectile.", [&](KeyActionMods) {
             m_littleBox2->SetAwake();
-            m_littleBox2->SetAcceleration(Gravity, AngularAcceleration{});
+            m_littleBox2->SetAcceleration(m_gravity, AngularAcceleration{});
             m_littleBox2->SetVelocity(Velocity{});
             const auto launchVel = getComputerLaunchVelocity();
             const auto computerStartingPosition = Vec2(15,5) * 1_m;
@@ -175,7 +175,7 @@ public:
     {
         const auto t = 1_s / 60.0f;
         const auto stepVelocity = t * startingVelocity; // m/s
-        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_gravity; // m/s/s
         
         return startingPosition + n * stepVelocity + 0.5f * (n*n+n) * stepGravity;
     }
@@ -185,7 +185,7 @@ public:
     {
         const auto t = 1_s / 60.0f;
         const auto stepVelocity = t * startingVelocity; // m/s
-        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_gravity; // m/s/s
         return -float(Real(GetY(stepVelocity) / GetY(stepGravity))) - 1;
     }
     
@@ -197,7 +197,7 @@ public:
         
         const auto t = 1_s / 60.0f;
         const auto stepVelocity = t * startingVelocity; // m/s
-        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_gravity; // m/s/s
         
         const auto n = -GetY(stepVelocity) / GetY(stepGravity) - 1;
         
@@ -211,7 +211,7 @@ public:
             return 0_mps;
         
         const auto t = 1_s / 60.0f;
-        const auto stepGravity = t * t * m_world.GetGravity(); // m/s/s
+        const auto stepGravity = t * t * m_gravity; // m/s/s
         
         //quadratic equation setup
         const auto a = 0.5f / GetY(stepGravity);
@@ -327,7 +327,7 @@ public:
     bool m_firing;
     bool m_firing2;
     LinearVelocity m_launchSpeed;
-    const LinearAcceleration2 Gravity{0 * MeterPerSquareSecond, -10 * MeterPerSquareSecond};
+    const LinearAcceleration2 m_gravity{0 * MeterPerSquareSecond, -10 * MeterPerSquareSecond};
     const Real BallSize = 0.25f;
 };
 

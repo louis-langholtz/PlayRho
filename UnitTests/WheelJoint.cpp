@@ -258,7 +258,7 @@ TEST(WheelJoint, GetWheelJointConf)
 TEST(WheelJoint, WithDynamicCircles)
 {
     const auto circle = DiskShapeConf{}.UseRadius(2_m).UseDensity(10_kgpm2);
-    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));

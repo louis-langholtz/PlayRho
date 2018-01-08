@@ -191,7 +191,7 @@ TEST(MotorJoint, GetMotorJointConf)
 TEST(MotorJoint, WithDynamicCircles)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
@@ -217,7 +217,7 @@ TEST(MotorJoint, WithDynamicCircles)
 TEST(MotorJoint, SetLinearOffset)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
@@ -241,7 +241,7 @@ TEST(MotorJoint, SetLinearOffset)
 TEST(MotorJoint, SetAngularOffset)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));

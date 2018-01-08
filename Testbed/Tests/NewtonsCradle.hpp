@@ -117,6 +117,7 @@ namespace testbed {
                 
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
+                bd.linearAcceleration = m_gravity;
                 bd.bullet = m_bullet_mode;
                 bd.location = Length2{x, frame_height - (arm_length / 2)};
                 

@@ -57,6 +57,7 @@ public:
 
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
+        bodyConf.linearAcceleration = m_gravity;
         bodyConf.location = p;
         const auto body = m_world.CreateBody(bodyConf);
 

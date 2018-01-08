@@ -122,7 +122,7 @@ TEST(DistanceJoint, ShiftOrigin)
 
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    World world{};
     
     const auto shape = DiskShapeConf{}.UseRadius(0.2_m);
     
@@ -176,7 +176,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 
 TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{0, Real(10) * MeterPerSquareSecond})};
+    auto world = World{};
     
     const auto shape = DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2);
     const auto location1 = Length2{-10_m, 10_m};
@@ -203,7 +203,10 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     auto oldDistance = GetMagnitude(body1->GetLocation() - body2->GetLocation());
     
     auto distanceMet = 0u;
-    StepConf stepConf;
+    auto stepConf = StepConf{};
+    SetAccelerations(world, Acceleration{
+        LinearAcceleration2{0, 10 * MeterPerSquareSecond}, 0 * RadianPerSquareSecond
+    });
     for (auto i = 0u; !distanceMet || i < distanceMet + 1000; ++i)
     {
         world.Step(stepConf);

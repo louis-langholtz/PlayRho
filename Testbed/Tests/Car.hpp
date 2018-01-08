@@ -229,6 +229,7 @@ public:
                 m_spring2 = static_cast<WheelJoint*>(m_world.CreateJoint(jd));
             }
         }
+        SetAccelerations(m_world, m_gravity);
     }
 
     void PreStep(const Settings&, Drawer& drawer) override

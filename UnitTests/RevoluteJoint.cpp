@@ -107,8 +107,8 @@ TEST(RevoluteJoint, Construction)
 TEST(RevoluteJoint, EnableMotor)
 {
     World world;
-    const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
     ASSERT_EQ(b0->GetVelocity(), Velocity{});
     ASSERT_EQ(b1->GetVelocity(), Velocity{});
     
@@ -314,8 +314,8 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1).UseLinearAcceleration(EarthlyGravity));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2).UseLinearAcceleration(EarthlyGravity));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     auto jd = RevoluteJointConf{};
@@ -343,8 +343,8 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1).UseLinearAcceleration(EarthlyGravity));
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2).UseLinearAcceleration(EarthlyGravity));
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     auto jd = RevoluteJointConf{b1, b2, Length2{}};
@@ -408,10 +408,7 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 {
-    World world{WorldConf{}.UseGravity(LinearAcceleration2{
-        Real(0) * MeterPerSquareSecond,
-        -Real(10) * MeterPerSquareSecond
-    })};
+    auto world = World{};
     
     const auto p1 = Length2{0_m, 4_m}; // Vec2{-1, 0};
     const auto p2 = Length2{0_m, -2_m}; // Vec2{+1, 0};
@@ -427,6 +424,9 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     auto jd = RevoluteJointConf{b1, b2, Length2{}};
     const auto joint = world.CreateJoint(jd);
     
+    SetAccelerations(world, Acceleration{
+        LinearAcceleration2{0, -10 * MeterPerSquareSecond}, 0 * RadianPerSquareSecond
+    });
     for (auto i = 0; i < 1000; ++i)
     {
         Step(world, 0.1_s);

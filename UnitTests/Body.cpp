@@ -135,6 +135,7 @@ TEST(Body, ByteSize)
 #else
             EXPECT_EQ(sizeof(Body), std::size_t(120 + allSize));
 #endif
+            EXPECT_EQ(sizeof(Body), std::size_t(192));
             break;
         case  8: EXPECT_EQ(sizeof(Body), std::size_t(216 + allSize)); break;
         case 16: EXPECT_EQ(sizeof(Body), std::size_t(496)); break;
@@ -512,7 +513,7 @@ TEST(Body, SetAcceleration)
     const auto someAngularAccel = 2 * RadianPerSquareSecond;
 
     {
-        auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+        auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
         ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
         ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
@@ -538,7 +539,7 @@ TEST(Body, SetAcceleration)
     
     // Kinematic and dynamic bodies awake at creation...
     {
-        auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+        auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Kinematic));
         ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
         ASSERT_TRUE(body->IsAwake());
@@ -563,7 +564,7 @@ TEST(Body, SetAcceleration)
     
     // Dynamic bodies take a non-zero linear or angular acceleration.
     {
-        auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+        auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
         ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
         ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
@@ -773,7 +774,7 @@ TEST(Body, SetAccelerationFF)
 
 TEST(Body, CalcGravitationalAcceleration)
 {
-    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{};
 
     const auto l1 = Length2{-8_m, 0_m};
     const auto l2 = Length2{+8_m, 0_m};

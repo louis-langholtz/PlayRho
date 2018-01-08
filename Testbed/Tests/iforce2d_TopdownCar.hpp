@@ -379,7 +379,7 @@ public:
 
     iforce2d_TopdownCar(): Test(GetTestConf())
     {
-        m_world.SetGravity(LinearAcceleration2{});
+        m_gravity = LinearAcceleration2{};
         m_world.SetDestructionListener(&m_destructionListener);
         
         //set up ground areas

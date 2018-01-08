@@ -257,7 +257,7 @@ TEST(PrismaticJoint, GetLinearVelocity)
 TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
-    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));

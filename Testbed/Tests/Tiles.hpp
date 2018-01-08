@@ -80,6 +80,7 @@ public:
                     BodyConf bd;
                     bd.type = BodyType::Dynamic;
                     bd.location = y * 1_m;
+                    bd.linearAcceleration = m_gravity;
 
                     const auto body = m_world.CreateBody(bd);
                     body->CreateFixture(shape);

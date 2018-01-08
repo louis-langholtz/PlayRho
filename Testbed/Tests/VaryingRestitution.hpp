@@ -41,6 +41,7 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
+            bd.linearAcceleration = m_gravity;
             bd.location = Vec2(Real(-10 + 3 * i), 20) * 1_m;
             const auto body = m_world.CreateBody(bd);
             shape.UseRestitution(restitution[i]);

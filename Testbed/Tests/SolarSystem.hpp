@@ -113,7 +113,6 @@ public:
     {
         m_bombRadius = 100_km;
         m_bombDensity = 2e12_kgpm2;
-        m_world.SetGravity(LinearAcceleration2{});
         const auto DynamicBD = BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true);
         for (auto& sso: SolarSystemBodies)
         {
