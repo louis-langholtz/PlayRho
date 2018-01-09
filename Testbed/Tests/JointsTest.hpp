@@ -61,7 +61,7 @@ public:
         centerY -= RowSize;
         {
             auto centerX = columnStart;
-            SetupMouseJoint(Length2{centerX, centerY});
+            SetupTargetJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
             SetupPrismaticJoint(Length2{centerX, centerY});
             centerX += ColumnSize;
@@ -118,13 +118,13 @@ private:
         {
             // For the mouse joints...
             const auto mouseWorld = GetMouseWorld();
-            if (m_lftMouseJoint)
+            if (m_lftTargetJoint)
             {
-                m_lftMouseJoint->SetTarget(mouseWorld);
+                m_lftTargetJoint->SetTarget(mouseWorld);
             }
-            if (m_rgtMouseJoint)
+            if (m_rgtTargetJoint)
             {
-                m_rgtMouseJoint->SetTarget(mouseWorld);
+                m_rgtTargetJoint->SetTarget(mouseWorld);
             }
         }
     }
@@ -347,7 +347,7 @@ private:
         SetupContainer(center);
     }
     
-    void SetupMouseJoint(Length2 ctr)
+    void SetupTargetJoint(Length2 ctr)
     {
         SetupContainer(ctr);
 
@@ -375,11 +375,11 @@ private:
         lftPup->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
         rgtPup->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
 
-        m_lftMouseJoint = static_cast<TargetJoint*>(m_world.CreateJoint(TargetJointConf{lftPup}
+        m_lftTargetJoint = static_cast<TargetJoint*>(m_world.CreateJoint(TargetJointConf{lftPup}
                                                                        .UseMaxForce(200_N)
                                                                        .UseFrequency(2_Hz)
                                                                        .UseTarget(GetLocation(*lftPup))));
-        m_rgtMouseJoint = static_cast<TargetJoint*>(m_world.CreateJoint(TargetJointConf{rgtPup}
+        m_rgtTargetJoint = static_cast<TargetJoint*>(m_world.CreateJoint(TargetJointConf{rgtPup}
                                                                        .UseMaxForce(200_N)
                                                                        .UseFrequency(2_Hz)
                                                                        .UseTarget(GetLocation(*rgtPup))));
@@ -432,8 +432,8 @@ private:
     
     double m_time = 0;
     Length2 m_motorJointCenter = Length2{};
-    TargetJoint* m_lftMouseJoint = nullptr;
-    TargetJoint* m_rgtMouseJoint = nullptr;
+    TargetJoint* m_lftTargetJoint = nullptr;
+    TargetJoint* m_rgtTargetJoint = nullptr;
     MotorJoint* m_motorJoint = nullptr;
     WheelJoint* m_wheelJoint0 = nullptr;
     WheelJoint* m_wheelJoint1 = nullptr;

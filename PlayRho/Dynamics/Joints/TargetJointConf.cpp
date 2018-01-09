@@ -25,7 +25,7 @@
 namespace playrho {
 namespace d2 {
 
-TargetJointConf GetMouseJointConf(const TargetJoint& joint) noexcept
+TargetJointConf GetTargetJointConf(const TargetJoint& joint) noexcept
 {
     auto def = TargetJointConf{};
     

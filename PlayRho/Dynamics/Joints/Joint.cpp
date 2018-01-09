@@ -48,7 +48,7 @@ Joint* Joint::Create(const JointConf& def)
     {
         case JointType::Distance:
             return Create<DistanceJoint>(static_cast<const DistanceJointConf&>(def));
-        case JointType::Mouse:
+        case JointType::Target:
             return Create<TargetJoint>(static_cast<const TargetJointConf&>(def));
         case JointType::Prismatic:
             return Create<PrismaticJoint>(static_cast<const PrismaticJointConf&>(def));

@@ -74,7 +74,7 @@ TEST(TargetJoint, DefaultInitialized)
     const auto def = TargetJointConf{};
     auto joint = TargetJoint{def};
     
-    EXPECT_EQ(GetType(joint), JointType::Mouse);
+    EXPECT_EQ(GetType(joint), JointType::Target);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetAnchorA(), def.target);
@@ -91,7 +91,7 @@ TEST(TargetJoint, DefaultInitialized)
     
     TypeJointVisitor visitor;
     joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Mouse);
+    EXPECT_EQ(visitor.GetType().value(), JointType::Target);
     EXPECT_TRUE(visitor.GetWritable());
 }
 
@@ -135,7 +135,7 @@ TEST(TargetJoint, ShiftOrigin)
     EXPECT_EQ(joint.GetTarget(), def.target - newOrigin);
 }
 
-TEST(TargetJointConf, GetMouseJointDefFreeFunction)
+TEST(TargetJointConf, GetTargetJointDefFreeFunction)
 {
     World world;
     
@@ -154,7 +154,7 @@ TEST(TargetJointConf, GetMouseJointDefFreeFunction)
     def.dampingRatio = Real(0.8);
 
     const auto joint = TargetJoint{def};
-    const auto got = GetMouseJointConf(joint);
+    const auto got = GetTargetJointConf(joint);
     
     EXPECT_EQ(def.bodyA, got.bodyA);
     EXPECT_EQ(def.bodyB, got.bodyB);

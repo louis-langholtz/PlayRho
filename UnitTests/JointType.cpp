@@ -30,7 +30,7 @@ TEST(JointType, ToString)
     EXPECT_STREQ(ToString(JointType::Prismatic), "Prismatic");
     EXPECT_STREQ(ToString(JointType::Distance), "Distance");
     EXPECT_STREQ(ToString(JointType::Pulley), "Pulley");
-    EXPECT_STREQ(ToString(JointType::Mouse), "Mouse");
+    EXPECT_STREQ(ToString(JointType::Target), "Target");
     EXPECT_STREQ(ToString(JointType::Gear), "Gear");
     EXPECT_STREQ(ToString(JointType::Wheel), "Wheel");
     EXPECT_STREQ(ToString(JointType::Weld), "Weld");

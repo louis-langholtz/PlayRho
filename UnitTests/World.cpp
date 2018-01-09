@@ -2747,7 +2747,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     }
 }
 
-TEST(World, MouseJointWontCauseTunnelling)
+TEST(World, TargetJointWontCauseTunnelling)
 {
     World world{};
     

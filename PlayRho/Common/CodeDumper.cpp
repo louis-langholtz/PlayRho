@@ -229,7 +229,7 @@ void Dump(const Joint& joint, std::size_t index)
         case JointType::Weld:
             Dump(static_cast<const WeldJoint&>(joint), index);
             break;
-        case JointType::Mouse:
+        case JointType::Target:
             Dump(static_cast<const TargetJoint&>(joint), index);
             break;
         case JointType::Revolute:

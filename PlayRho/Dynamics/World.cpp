@@ -626,7 +626,7 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
         
         void Visit(const TargetJoint& oldJoint) override
         {
-            auto def = GetMouseJointConf(oldJoint);
+            auto def = GetTargetJointConf(oldJoint);
             def.bodyA = (def.bodyA)? bodyMap.at(def.bodyA): nullptr;
             def.bodyB = (def.bodyB)? bodyMap.at(def.bodyB): nullptr;
             jointMap[&oldJoint] = Add(JointAtty::Create(def));

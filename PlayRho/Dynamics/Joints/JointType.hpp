@@ -37,7 +37,7 @@ enum class JointType : std::uint8_t
     Prismatic,
     Distance,
     Pulley,
-    Mouse,
+    Target,
     Gear,
     Wheel,
     Weld,

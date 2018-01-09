@@ -28,7 +28,7 @@
 namespace playrho {
 namespace d2 {
 
-/// @brief Mouse Joint.
+/// @brief Target Joint.
 ///
 /// @details A mouse joint is used to make a point on a body track a
 ///   specified world point. This a soft constraint with a maximum

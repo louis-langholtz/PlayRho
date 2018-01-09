@@ -80,12 +80,12 @@ public:
 
     void Visit(const TargetJoint& /*joint*/) override
     {
-        m_type = JointType::Mouse;
+        m_type = JointType::Target;
     }
 
     void Visit(TargetJoint& /*joint*/) override
     {
-        m_type = JointType::Mouse;
+        m_type = JointType::Target;
         m_writable = true;
     }
     

@@ -40,7 +40,7 @@ const char* ToString(JointType type) noexcept
         case JointType::Prismatic: return "Prismatic";
         case JointType::Distance: return "Distance";
         case JointType::Pulley: return "Pulley";
-        case JointType::Mouse: return "Mouse";
+        case JointType::Target: return "Target";
         case JointType::Gear: return "Gear";
         case JointType::Wheel: return "Wheel";
         case JointType::Weld: return "Weld";

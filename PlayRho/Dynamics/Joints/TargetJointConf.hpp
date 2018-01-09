@@ -32,17 +32,17 @@ namespace d2 {
 class TargetJoint;
 class Body;
 
-/// @brief Mouse joint definition.
+/// @brief Target joint definition.
 /// @details This requires a world target point, tuning parameters, and the time step.
 struct TargetJointConf : public JointBuilder<TargetJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<TargetJointConf>;
     
-    PLAYRHO_CONSTEXPR inline TargetJointConf() noexcept: super{JointType::Mouse} {}
+    PLAYRHO_CONSTEXPR inline TargetJointConf() noexcept: super{JointType::Target} {}
 
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR inline TargetJointConf(NonNull<Body*> b) noexcept: super{super{JointType::Mouse}.UseBodyB(b)}
+    PLAYRHO_CONSTEXPR inline TargetJointConf(NonNull<Body*> b) noexcept: super{super{JointType::Target}.UseBodyB(b)}
     {
         // Intentionally empty.
     }
@@ -106,7 +106,7 @@ PLAYRHO_CONSTEXPR inline TargetJointConf& TargetJointConf::UseDampingRatio(NonNe
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso TargetJoint
-TargetJointConf GetMouseJointConf(const TargetJoint& joint) noexcept;
+TargetJointConf GetTargetJointConf(const TargetJoint& joint) noexcept;
 
 } // namespace d2
 } // namespace playrho

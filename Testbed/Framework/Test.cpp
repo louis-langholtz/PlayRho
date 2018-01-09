@@ -296,7 +296,7 @@ static void Draw(Drawer& drawer, const Joint& joint)
         }
             break;
 
-        case JointType::Mouse:
+        case JointType::Target:
             // don't draw this
             break;
 
