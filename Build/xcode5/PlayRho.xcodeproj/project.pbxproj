@@ -160,8 +160,8 @@
 		4787D6CB1F2EA3A1008C115E /* GearJointConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6C91F2EA3A1008C115E /* GearJointConf.hpp */; };
 		4787D6CE1F2EC902008C115E /* MotorJointConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6CC1F2EC902008C115E /* MotorJointConf.cpp */; };
 		4787D6CF1F2EC902008C115E /* MotorJointConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */; };
-		4787D6D21F2ECB8D008C115E /* MouseJointConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6D01F2ECB8D008C115E /* MouseJointConf.cpp */; };
-		4787D6D31F2ECB8E008C115E /* MouseJointConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6D11F2ECB8D008C115E /* MouseJointConf.hpp */; };
+		4787D6D21F2ECB8D008C115E /* TargetJointConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6D01F2ECB8D008C115E /* TargetJointConf.cpp */; };
+		4787D6D31F2ECB8E008C115E /* TargetJointConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6D11F2ECB8D008C115E /* TargetJointConf.hpp */; };
 		4787D6D61F2ECD87008C115E /* PulleyJointConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6D41F2ECD87008C115E /* PulleyJointConf.cpp */; };
 		4787D6D71F2ECD87008C115E /* PulleyJointConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4787D6D51F2ECD87008C115E /* PulleyJointConf.hpp */; };
 		4787D6DA1F2ECFFB008C115E /* RevoluteJointConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4787D6D81F2ECFFB008C115E /* RevoluteJointConf.cpp */; };
@@ -546,8 +546,8 @@
 		4787D6C91F2EA3A1008C115E /* GearJointConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GearJointConf.hpp; sourceTree = "<group>"; };
 		4787D6CC1F2EC902008C115E /* MotorJointConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotorJointConf.cpp; sourceTree = "<group>"; };
 		4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MotorJointConf.hpp; sourceTree = "<group>"; };
-		4787D6D01F2ECB8D008C115E /* MouseJointConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseJointConf.cpp; sourceTree = "<group>"; };
-		4787D6D11F2ECB8D008C115E /* MouseJointConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MouseJointConf.hpp; sourceTree = "<group>"; };
+		4787D6D01F2ECB8D008C115E /* TargetJointConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TargetJointConf.cpp; sourceTree = "<group>"; };
+		4787D6D11F2ECB8D008C115E /* TargetJointConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TargetJointConf.hpp; sourceTree = "<group>"; };
 		4787D6D41F2ECD87008C115E /* PulleyJointConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PulleyJointConf.cpp; sourceTree = "<group>"; };
 		4787D6D51F2ECD87008C115E /* PulleyJointConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PulleyJointConf.hpp; sourceTree = "<group>"; };
 		4787D6D81F2ECFFB008C115E /* RevoluteJointConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJointConf.cpp; sourceTree = "<group>"; };
@@ -1110,8 +1110,8 @@
 				80620F8E168B934600D46C8D /* MotorJoint.hpp */,
 				4787D6CC1F2EC902008C115E /* MotorJointConf.cpp */,
 				4787D6CD1F2EC902008C115E /* MotorJointConf.hpp */,
-				4787D6D01F2ECB8D008C115E /* MouseJointConf.cpp */,
-				4787D6D11F2ECB8D008C115E /* MouseJointConf.hpp */,
+				4787D6D01F2ECB8D008C115E /* TargetJointConf.cpp */,
+				4787D6D11F2ECB8D008C115E /* TargetJointConf.hpp */,
 				80BB8978141C3E5900F1753A /* PrismaticJoint.cpp */,
 				80BB8979141C3E5900F1753A /* PrismaticJoint.hpp */,
 				4787D6B81F2E946E008C115E /* PrismaticJointConf.cpp */,
@@ -1382,7 +1382,7 @@
 				470F94DB1EC8C37500AA3C82 /* JointKey.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */,
-				4787D6D31F2ECB8E008C115E /* MouseJointConf.hpp in Headers */,
+				4787D6D31F2ECB8E008C115E /* TargetJointConf.hpp in Headers */,
 				80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */,
 				4787D6C31F2E9DC0008C115E /* DistanceJointConf.hpp in Headers */,
 				80BB89C1141C3E5900F1753A /* ContactSolver.hpp in Headers */,
@@ -1698,7 +1698,7 @@
 				80BB8997141C3E5900F1753A /* DiskShapeConf.cpp in Sources */,
 				80BB8999141C3E5900F1753A /* EdgeShapeConf.cpp in Sources */,
 				4731DE2C1DDF94A600E7F931 /* AABB.cpp in Sources */,
-				4787D6D21F2ECB8D008C115E /* MouseJointConf.cpp in Sources */,
+				4787D6D21F2ECB8D008C115E /* TargetJointConf.cpp in Sources */,
 				80BB899B141C3E5900F1753A /* PolygonShapeConf.cpp in Sources */,
 				80BB899E141C3E5900F1753A /* BlockAllocator.cpp in Sources */,
 				80BB89A3141C3E5900F1753A /* Math.cpp in Sources */,

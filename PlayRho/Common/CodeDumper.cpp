@@ -352,7 +352,7 @@ void Dump(const MotorJoint& joint, std::size_t index)
 
 void Dump(const TargetJoint& joint, std::size_t index)
 {
-    log("  MouseJointConf jd;\n");
+    log("  TargetJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());

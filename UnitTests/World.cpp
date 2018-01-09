@@ -263,7 +263,7 @@ TEST(World, CopyConstruction)
     world.CreateJoint(RopeJointConf{b4, b5});
     world.CreateJoint(MotorJointConf{b4, b5});
     world.CreateJoint(WheelJointConf{b4, b5, Length2{}, UnitVec::GetRight()});
-    world.CreateJoint(MouseJointConf{b4});
+    world.CreateJoint(TargetJointConf{b4});
     world.CreateJoint(GearJointConf{rj1, rj2});
 
     auto stepConf = StepConf{};
@@ -2858,7 +2858,7 @@ TEST(World, MouseJointWontCauseTunnelling)
     const auto spare_body = world.CreateBody(bodyConf);
 
     const auto mouse_joint = [&]() {
-        MouseJointConf mjd;
+        TargetJointConf mjd;
         mjd.bodyA = spare_body;
         mjd.bodyB = ball_body;
         const auto ball_body_pos = ball_body->GetLocation();

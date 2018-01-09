@@ -24,41 +24,41 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(MouseJointConf, UseTarget)
+TEST(TargetJointConf, UseTarget)
 {
     const auto value = Length2(19_m, -9_m);
-    EXPECT_NE(MouseJointConf{}.target, value);
-    EXPECT_EQ(MouseJointConf{}.UseTarget(value).target, value);
+    EXPECT_NE(TargetJointConf{}.target, value);
+    EXPECT_EQ(TargetJointConf{}.UseTarget(value).target, value);
 }
 
-TEST(MouseJointConf, UseMaxForce)
+TEST(TargetJointConf, UseMaxForce)
 {
     const auto value = Force(19_N);
-    EXPECT_NE(MouseJointConf{}.maxForce, value);
-    EXPECT_EQ(MouseJointConf{}.UseMaxForce(value).maxForce, value);
+    EXPECT_NE(TargetJointConf{}.maxForce, value);
+    EXPECT_EQ(TargetJointConf{}.UseMaxForce(value).maxForce, value);
 }
 
-TEST(MouseJointConf, UseFrequency)
+TEST(TargetJointConf, UseFrequency)
 {
     const auto value = 19_Hz;
-    EXPECT_NE(MouseJointConf{}.frequency, value);
-    EXPECT_EQ(MouseJointConf{}.UseFrequency(value).frequency, value);
+    EXPECT_NE(TargetJointConf{}.frequency, value);
+    EXPECT_EQ(TargetJointConf{}.UseFrequency(value).frequency, value);
 }
 
-TEST(MouseJointConf, UseDampingRatio)
+TEST(TargetJointConf, UseDampingRatio)
 {
     const auto value = Real(0.4);
-    EXPECT_NE(MouseJointConf{}.dampingRatio, value);
-    EXPECT_EQ(MouseJointConf{}.UseDampingRatio(value).dampingRatio, value);
+    EXPECT_NE(TargetJointConf{}.dampingRatio, value);
+    EXPECT_EQ(TargetJointConf{}.UseDampingRatio(value).dampingRatio, value);
 }
 
-TEST(MouseJoint, ByteSize)
+TEST(TargetJoint, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(MouseJoint), std::size_t(92));
+            EXPECT_EQ(sizeof(TargetJoint), std::size_t(92));
 #else
             EXPECT_EQ(sizeof(TargetJoint), std::size_t(112));
 #endif
@@ -69,9 +69,9 @@ TEST(MouseJoint, ByteSize)
     }
 }
 
-TEST(MouseJoint, DefaultInitialized)
+TEST(TargetJoint, DefaultInitialized)
 {
-    const auto def = MouseJointConf{};
+    const auto def = TargetJointConf{};
     auto joint = TargetJoint{def};
     
     EXPECT_EQ(GetType(joint), JointType::Mouse);
@@ -95,7 +95,7 @@ TEST(MouseJoint, DefaultInitialized)
     EXPECT_TRUE(visitor.GetWritable());
 }
 
-TEST(MouseJoint, GetLocalAnchorB)
+TEST(TargetJoint, GetLocalAnchorB)
 {
     auto world = World{};
     const auto bA = world.CreateBody();
@@ -103,7 +103,7 @@ TEST(MouseJoint, GetLocalAnchorB)
     ASSERT_NE(bA, nullptr);
     ASSERT_NE(bB, nullptr);
     
-    auto def = MouseJointConf{};
+    auto def = TargetJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
@@ -116,14 +116,14 @@ TEST(MouseJoint, GetLocalAnchorB)
     EXPECT_EQ(joint.GetLocalAnchorB(), def.target);
 }
 
-TEST(MouseJoint, ShiftOrigin)
+TEST(TargetJoint, ShiftOrigin)
 {
     auto world = World{};
     const auto bA = world.CreateBody();
     const auto bB = world.CreateBody();
     ASSERT_NE(bA, nullptr);
     ASSERT_NE(bB, nullptr);
-    auto def = MouseJointConf{};
+    auto def = TargetJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
     def.target = Length2(-1.4_m, -2_m);
@@ -135,7 +135,7 @@ TEST(MouseJoint, ShiftOrigin)
     EXPECT_EQ(joint.GetTarget(), def.target - newOrigin);
 }
 
-TEST(MouseJointConf, GetMouseJointDefFreeFunction)
+TEST(TargetJointConf, GetMouseJointDefFreeFunction)
 {
     World world;
     
@@ -144,7 +144,7 @@ TEST(MouseJointConf, GetMouseJointDefFreeFunction)
     const auto bB = world.CreateBody();
     ASSERT_NE(bB, nullptr);
 
-    auto def = MouseJointConf{};
+    auto def = TargetJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);

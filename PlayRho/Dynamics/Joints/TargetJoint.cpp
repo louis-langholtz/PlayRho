@@ -37,7 +37,7 @@ namespace d2 {
 // w k % (rx i + ry j) = w * (-ry i + rx j)
 
 
-bool TargetJoint::IsOkay(const MouseJointConf& def) noexcept
+bool TargetJoint::IsOkay(const TargetJointConf& def) noexcept
 {
     if (!Joint::IsOkay(def))
     {
@@ -50,7 +50,7 @@ bool TargetJoint::IsOkay(const MouseJointConf& def) noexcept
     return true;
 }
 
-TargetJoint::TargetJoint(const MouseJointConf& def):
+TargetJoint::TargetJoint(const TargetJointConf& def):
     Joint{def},
     m_targetA{def.target},
     m_localAnchorB{def.bodyB?

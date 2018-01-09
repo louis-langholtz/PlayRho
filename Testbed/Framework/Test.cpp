@@ -542,7 +542,7 @@ void Test::MouseDown(const Length2& p)
         const auto body = (*(fixtures.begin()))->GetBody();
         if (body->GetType() == BodyType::Dynamic)
         {
-            auto md = MouseJointConf{};
+            auto md = TargetJointConf{};
             md.bodyB = body;
             md.target = p;
             md.maxForce = Real(10000.0f) * GetMass(*body) * MeterPerSquareSecond;

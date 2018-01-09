@@ -23,7 +23,7 @@
 #define PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -47,10 +47,10 @@ class TargetJoint : public Joint
 public:
 
     /// @brief Is the given definition okay.
-    static bool IsOkay(const MouseJointConf& def) noexcept;
+    static bool IsOkay(const TargetJointConf& def) noexcept;
 
     /// @brief Initializing constructor.
-    TargetJoint(const MouseJointConf& def);
+    TargetJoint(const TargetJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
