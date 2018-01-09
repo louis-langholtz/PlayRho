@@ -94,7 +94,7 @@ For mathemtical insight, see:
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>

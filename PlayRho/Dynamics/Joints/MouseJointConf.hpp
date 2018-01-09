@@ -29,7 +29,7 @@
 namespace playrho {
 namespace d2 {
 
-class MouseJoint;
+class TargetJoint;
 class Body;
 
 /// @brief Mouse joint definition.
@@ -105,8 +105,8 @@ PLAYRHO_CONSTEXPR inline MouseJointConf& MouseJointConf::UseDampingRatio(NonNega
 }
 
 /// @brief Gets the definition data for the given joint.
-/// @relatedalso MouseJoint
-MouseJointConf GetMouseJointConf(const MouseJoint& joint) noexcept;
+/// @relatedalso TargetJoint
+MouseJointConf GetMouseJointConf(const TargetJoint& joint) noexcept;
 
 } // namespace d2
 } // namespace playrho

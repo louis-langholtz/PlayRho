@@ -52,8 +52,8 @@ public:
         Proc<      DistanceJoint&>,
         Proc<const PulleyJoint&>,
         Proc<      PulleyJoint&>,
-        Proc<const MouseJoint&>,
-        Proc<      MouseJoint&>,
+        Proc<const TargetJoint&>,
+        Proc<      TargetJoint&>,
         Proc<const GearJoint&>,
         Proc<      GearJoint&>,
         Proc<const WheelJoint&>,
@@ -89,8 +89,8 @@ public:
     void Visit(DistanceJoint& arg) override { Handle<decltype(arg)>(arg); }
     void Visit(const PulleyJoint& arg) override { Handle<decltype(arg)>(arg); }
     void Visit(PulleyJoint& arg) override { Handle<decltype(arg)>(arg); }
-    void Visit(const MouseJoint& arg) override { Handle<decltype(arg)>(arg); }
-    void Visit(MouseJoint& arg) override { Handle<decltype(arg)>(arg); }
+    void Visit(const TargetJoint& arg) override { Handle<decltype(arg)>(arg); }
+    void Visit(TargetJoint& arg) override { Handle<decltype(arg)>(arg); }
     void Visit(const GearJoint& arg) override { Handle<decltype(arg)>(arg); }
     void Visit(GearJoint& arg) override { Handle<decltype(arg)>(arg); }
     void Visit(const WheelJoint& arg) override { Handle<decltype(arg)>(arg); }

@@ -20,12 +20,12 @@
  */
 
 #include <PlayRho/Dynamics/Joints/MouseJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 
 namespace playrho {
 namespace d2 {
 
-MouseJointConf GetMouseJointConf(const MouseJoint& joint) noexcept
+MouseJointConf GetMouseJointConf(const TargetJoint& joint) noexcept
 {
     auto def = MouseJointConf{};
     

@@ -32,7 +32,7 @@
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
@@ -2867,7 +2867,7 @@ TEST(World, MouseJointWontCauseTunnelling)
             GetY(ball_body_pos) + ball_radius / Real{2}
         };
         mjd.maxForce = Real(1000) * GetMass(*ball_body) * MeterPerSquareSecond;
-        return static_cast<MouseJoint*>(world.CreateJoint(mjd));
+        return static_cast<TargetJoint*>(world.CreateJoint(mjd));
     }();
     ASSERT_NE(mouse_joint, nullptr);
 

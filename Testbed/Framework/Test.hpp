@@ -354,7 +354,7 @@ private:
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
     Body* m_bomb = nullptr;
-    MouseJoint* m_mouseJoint = nullptr;
+    TargetJoint* m_mouseJoint = nullptr;
     Length2 m_bombSpawnPoint;
     bool m_bombSpawning = false;
     Length2 m_mouseWorld = Length2{};

@@ -29,7 +29,7 @@
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
@@ -230,7 +230,7 @@ void Dump(const Joint& joint, std::size_t index)
             Dump(static_cast<const WeldJoint&>(joint), index);
             break;
         case JointType::Mouse:
-            Dump(static_cast<const MouseJoint&>(joint), index);
+            Dump(static_cast<const TargetJoint&>(joint), index);
             break;
         case JointType::Revolute:
             Dump(static_cast<const RevoluteJoint&>(joint), index);
@@ -350,7 +350,7 @@ void Dump(const MotorJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const MouseJoint& joint, std::size_t index)
+void Dump(const TargetJoint& joint, std::size_t index)
 {
     log("  MouseJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));

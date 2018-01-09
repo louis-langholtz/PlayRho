@@ -42,7 +42,7 @@ namespace d2 {
 ///
 /// @ingroup JointsGroup
 ///
-class MouseJoint : public Joint
+class TargetJoint : public Joint
 {
 public:
 
@@ -50,7 +50,7 @@ public:
     static bool IsOkay(const MouseJointConf& def) noexcept;
 
     /// @brief Initializing constructor.
-    MouseJoint(const MouseJointConf& def);
+    TargetJoint(const MouseJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -118,42 +118,42 @@ private:
     LinearVelocity2 m_C; ///< Velocity constant.
 };
 
-inline Length2 MouseJoint::GetLocalAnchorB() const noexcept
+inline Length2 TargetJoint::GetLocalAnchorB() const noexcept
 {
     return m_localAnchorB;
 }
 
-inline Length2 MouseJoint::GetTarget() const noexcept
+inline Length2 TargetJoint::GetTarget() const noexcept
 {
     return m_targetA;
 }
 
-inline void MouseJoint::SetMaxForce(NonNegative<Force> force) noexcept
+inline void TargetJoint::SetMaxForce(NonNegative<Force> force) noexcept
 {
     m_maxForce = force;
 }
 
-inline NonNegative<Force> MouseJoint::GetMaxForce() const noexcept
+inline NonNegative<Force> TargetJoint::GetMaxForce() const noexcept
 {
     return m_maxForce;
 }
 
-inline void MouseJoint::SetFrequency(NonNegative<Frequency> hz) noexcept
+inline void TargetJoint::SetFrequency(NonNegative<Frequency> hz) noexcept
 {
     m_frequency = hz;
 }
 
-inline NonNegative<Frequency> MouseJoint::GetFrequency() const noexcept
+inline NonNegative<Frequency> TargetJoint::GetFrequency() const noexcept
 {
     return m_frequency;
 }
 
-inline void MouseJoint::SetDampingRatio(NonNegative<Real> ratio) noexcept
+inline void TargetJoint::SetDampingRatio(NonNegative<Real> ratio) noexcept
 {
     m_dampingRatio = ratio;
 }
 
-inline NonNegative<Real> MouseJoint::GetDampingRatio() const noexcept
+inline NonNegative<Real> TargetJoint::GetDampingRatio() const noexcept
 {
     return m_dampingRatio;
 }

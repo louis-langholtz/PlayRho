@@ -375,11 +375,11 @@ private:
         lftPup->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
         rgtPup->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
 
-        m_lftMouseJoint = static_cast<MouseJoint*>(m_world.CreateJoint(MouseJointConf{lftPup}
+        m_lftMouseJoint = static_cast<TargetJoint*>(m_world.CreateJoint(MouseJointConf{lftPup}
                                                                        .UseMaxForce(200_N)
                                                                        .UseFrequency(2_Hz)
                                                                        .UseTarget(GetLocation(*lftPup))));
-        m_rgtMouseJoint = static_cast<MouseJoint*>(m_world.CreateJoint(MouseJointConf{rgtPup}
+        m_rgtMouseJoint = static_cast<TargetJoint*>(m_world.CreateJoint(MouseJointConf{rgtPup}
                                                                        .UseMaxForce(200_N)
                                                                        .UseFrequency(2_Hz)
                                                                        .UseTarget(GetLocation(*rgtPup))));
@@ -432,8 +432,8 @@ private:
     
     double m_time = 0;
     Length2 m_motorJointCenter = Length2{};
-    MouseJoint* m_lftMouseJoint = nullptr;
-    MouseJoint* m_rgtMouseJoint = nullptr;
+    TargetJoint* m_lftMouseJoint = nullptr;
+    TargetJoint* m_rgtMouseJoint = nullptr;
     MotorJoint* m_motorJoint = nullptr;
     WheelJoint* m_wheelJoint0 = nullptr;
     WheelJoint* m_wheelJoint1 = nullptr;

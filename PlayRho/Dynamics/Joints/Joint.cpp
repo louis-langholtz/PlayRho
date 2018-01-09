@@ -23,7 +23,7 @@
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
@@ -49,7 +49,7 @@ Joint* Joint::Create(const JointConf& def)
         case JointType::Distance:
             return Create<DistanceJoint>(static_cast<const DistanceJointConf&>(def));
         case JointType::Mouse:
-            return Create<MouseJoint>(static_cast<const MouseJointConf&>(def));
+            return Create<TargetJoint>(static_cast<const MouseJointConf&>(def));
         case JointType::Prismatic:
             return Create<PrismaticJoint>(static_cast<const PrismaticJointConf&>(def));
         case JointType::Revolute:

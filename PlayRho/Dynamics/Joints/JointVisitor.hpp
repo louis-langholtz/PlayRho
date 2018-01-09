@@ -28,7 +28,7 @@ class RevoluteJoint;
 class PrismaticJoint;
 class DistanceJoint;
 class PulleyJoint;
-class MouseJoint;
+class TargetJoint;
 class GearJoint;
 class WheelJoint;
 class WeldJoint;
@@ -71,11 +71,11 @@ public:
     /// @brief Visits a PulleyJoint.
     virtual void Visit(PulleyJoint& joint) = 0;
 
-    /// @brief Visits a MouseJoint.
-    virtual void Visit(const MouseJoint& joint) = 0;
+    /// @brief Visits a TargetJoint.
+    virtual void Visit(const TargetJoint& joint) = 0;
 
-    /// @brief Visits a MouseJoint.
-    virtual void Visit(MouseJoint& joint) = 0;
+    /// @brief Visits a TargetJoint.
+    virtual void Visit(TargetJoint& joint) = 0;
 
     /// @brief Visits a GearJoint.
     virtual void Visit(const GearJoint& joint) = 0;
@@ -141,8 +141,8 @@ public:
     void Visit(DistanceJoint& j) override { Visit(static_cast<const DistanceJoint&>(j)); }
     void Visit(const PulleyJoint& j) override = 0;
     void Visit(PulleyJoint& j) override { Visit(static_cast<const PulleyJoint&>(j)); }
-    void Visit(const MouseJoint& j) override = 0;
-    void Visit(MouseJoint& j) override { Visit(static_cast<const MouseJoint&>(j)); }
+    void Visit(const TargetJoint& j) override = 0;
+    void Visit(TargetJoint& j) override { Visit(static_cast<const TargetJoint&>(j)); }
     void Visit(const GearJoint& j) override = 0;
     void Visit(GearJoint& j) override { Visit(static_cast<const GearJoint&>(j)); }
     void Visit(const WheelJoint& j) override = 0;
