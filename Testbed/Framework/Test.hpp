@@ -273,7 +273,7 @@ protected:
 
     // This is called when a joint in the world is implicitly destroyed
     // because an attached body is destroyed. This gives us a chance to
-    // nullify the mouse joint.
+    // nullify the target joint.
     class DestructionListenerImpl : public DestructionListener
     {
     public:
@@ -354,7 +354,7 @@ private:
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
     Body* m_bomb = nullptr;
-    TargetJoint* m_mouseJoint = nullptr;
+    TargetJoint* m_targetJoint = nullptr;
     Length2 m_bombSpawnPoint;
     bool m_bombSpawning = false;
     Length2 m_mouseWorld = Length2{};

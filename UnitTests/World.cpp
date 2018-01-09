@@ -2857,7 +2857,7 @@ TEST(World, TargetJointWontCauseTunnelling)
     BodyConf bodyConf;
     const auto spare_body = world.CreateBody(bodyConf);
 
-    const auto mouse_joint = [&]() {
+    const auto target_joint = [&]() {
         TargetJointConf mjd;
         mjd.bodyA = spare_body;
         mjd.bodyB = ball_body;
@@ -2869,7 +2869,7 @@ TEST(World, TargetJointWontCauseTunnelling)
         mjd.maxForce = Real(1000) * GetMass(*ball_body) * MeterPerSquareSecond;
         return static_cast<TargetJoint*>(world.CreateJoint(mjd));
     }();
-    ASSERT_NE(mouse_joint, nullptr);
+    ASSERT_NE(target_joint, nullptr);
 
     ball_body->SetAwake();
 
@@ -3058,7 +3058,7 @@ TEST(World, TargetJointWontCauseTunnelling)
         auto last_pos = ball_body->GetLocation();
         for (auto loops = unsigned{0};; ++loops)
         {
-            mouse_joint->SetTarget(Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
+            target_joint->SetTarget(Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
             angle += anglular_speed;
             distance += distance_speed;
 
@@ -3087,7 +3087,7 @@ TEST(World, TargetJointWontCauseTunnelling)
 
             if (loops > 50)
             {
-                if (GetX(mouse_joint->GetTarget()) < 0_m)
+                if (GetX(target_joint->GetTarget()) < 0_m)
                 {
                     if (GetX(ball_body->GetLocation()) >= GetX(last_pos))
                         break;                    
@@ -3097,7 +3097,7 @@ TEST(World, TargetJointWontCauseTunnelling)
                     if (GetX(ball_body->GetLocation()) <= GetX(last_pos))
                         break;
                 }
-                if (GetY(mouse_joint->GetTarget()) < 0_m)
+                if (GetY(target_joint->GetTarget()) < 0_m)
                 {
                     if (GetY(ball_body->GetLocation()) >= GetY(last_pos))
                         break;

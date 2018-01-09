@@ -116,7 +116,7 @@ private:
             // empty
         }
         {
-            // For the mouse joints...
+            // For the target joints...
             const auto mouseWorld = GetMouseWorld();
             if (m_lftTargetJoint)
             {
