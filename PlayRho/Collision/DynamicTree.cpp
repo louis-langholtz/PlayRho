@@ -19,7 +19,6 @@
 
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Common/GrowableStack.hpp>
-#include <PlayRho/Collision/RayCastOutput.hpp>
 
 #include <cstring>
 #include <algorithm>
@@ -532,55 +531,28 @@ bool DynamicTree::ValidateStructure(Size index) const noexcept
     {
         return true;
     }
-
     if (index == m_root)
     {
-        if (GetParent(index) != GetInvalidSize())
-        {
-            return false;
-        }
+        assert(GetParent(index) == GetInvalidSize());
     }
-
     if (index >= m_nodeCapacity)
     {
         return false;
     }
-    
     if (IsLeaf(m_nodes[index].GetHeight()))
     {
         return true;
     }
-    
+#ifndef NDEBUG
     const auto child1 = m_nodes[index].AsBranch().child1;
     const auto child2 = m_nodes[index].AsBranch().child2;
-
-    if (child1 >= m_nodeCapacity)
-    {
-        return false;
-    }
-    if (child2 >= m_nodeCapacity)
-    {
-        return false;
-    }
-
-    if (m_nodes[child1].GetOther() != index)
-    {
-        return false;
-    }
-    if (m_nodes[child2].GetOther() != index)
-    {
-        return false;
-    }
-
-    if (!ValidateStructure(child1))
-    {
-        return false;
-    }
-    if (!ValidateStructure(child2))
-    {
-        return false;
-    }
-    
+#endif
+    assert(child1 < m_nodeCapacity);
+    assert(child2 < m_nodeCapacity);
+    assert(m_nodes[child1].GetOther() == index);
+    assert(m_nodes[child2].GetOther() == index);
+    assert(ValidateStructure(child1));
+    assert(ValidateStructure(child2));
     return true;
 }
 
@@ -601,83 +573,50 @@ bool DynamicTree::ValidateMetrics(Size index) const noexcept
         return true;
     }
     
+#ifndef NDEBUG
     const auto child1 = m_nodes[index].AsBranch().child1;
     const auto child2 = m_nodes[index].AsBranch().child2;
-
-    if (child1 >= m_nodeCapacity)
-    {
-        return false;
-    }
-    if (child2 >= m_nodeCapacity)
-    {
-        return false;
-    }
-
+#endif
+    assert(child1 < m_nodeCapacity);
+    assert(child2 < m_nodeCapacity);
+#ifndef NDEBUG
     const auto childNode1 = m_nodes + child1;
     const auto childNode2 = m_nodes + child2;
-
+#endif
     {
+#ifndef NDEBUG
         const auto height1 = childNode1->GetHeight();
         const auto height2 = childNode2->GetHeight();
         const auto height = 1 + std::max(height1, height2);
-        if (m_nodes[index].GetHeight() != height)
-        {
-            return false;
-        }
+#endif
+        assert(m_nodes[index].GetHeight() == height);
     }
     {
+#ifndef NDEBUG
         const auto aabb = GetEnclosingAABB(childNode1->GetAABB(), childNode2->GetAABB());
-        if (aabb != m_nodes[index].GetAABB())
-        {
-            return false;
-        }
+#endif
+        assert(aabb == m_nodes[index].GetAABB());
     }
-
-    if (!ValidateMetrics(child1))
-    {
-        return false;
-    }
-    if (!ValidateMetrics(child2))
-    {
-        return false;
-    }
-    
+    assert(ValidateMetrics(child1));
+    assert(ValidateMetrics(child2));
     return true;
 }
 
 bool DynamicTree::Validate() const
 {
-    if (!ValidateStructure(m_root))
-    {
-        return false;
-    }
-
-    if (!ValidateMetrics(m_root))
-    {
-        return false;
-    }
+    assert(ValidateStructure(m_root));
+    assert(ValidateMetrics(m_root));
 
     auto freeCount = Size{0};
     auto freeIndex = m_freeListIndex;
     while (freeIndex != GetInvalidSize())
     {
-        if (freeIndex >= GetNodeCapacity())
-        {
-            return false;
-        }
+        assert(freeIndex < GetNodeCapacity());
         freeIndex = (m_nodes + freeIndex)->GetOther();
         ++freeCount;
     }
-
-    if ((m_root != GetInvalidSize()) && (playrho::d2::GetHeight(*this) != playrho::d2::ComputeHeight(*this)))
-    {
-        return false;
-    }
-    if ((GetNodeCount() + freeCount) != GetNodeCapacity())
-    {
-        return false;
-    }
-    
+    assert((m_root == GetInvalidSize()) || (playrho::d2::GetHeight(*this) == playrho::d2::ComputeHeight(*this)));
+    assert((GetNodeCount() + freeCount) == GetNodeCapacity());
     return true;
 }
 
@@ -821,65 +760,6 @@ void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& c
             }
         }
     }
-}
-
-bool RayCast(const DynamicTree& tree, RayCastInput input,
-             const DynamicTree::RayCastCallback& callback)
-{
-    const auto v = GetRevPerpendicular(GetUnitVector(input.p2 - input.p1, UnitVec::GetZero()));
-    const auto abs_v = Abs(v);
-    auto segmentAABB = d2::GetAABB(input);
-    
-    GrowableStack<DynamicTree::Size, 256> stack;
-    stack.push(tree.GetRootIndex());
-    while (!stack.empty())
-    {
-        const auto index = stack.top();
-        stack.pop();
-        if (index == DynamicTree::GetInvalidSize())
-        {
-            continue;
-        }
-        
-        const auto aabb = tree.GetAABB(index);
-        if (!TestOverlap(aabb, segmentAABB))
-        {
-            continue;
-        }
-        
-        // Separating axis for segment (Gino, p80).
-        // |dot(v, p1 - ctr)| > dot(|v|, extents)
-        const auto center = GetCenter(aabb);
-        const auto extents = GetExtents(aabb);
-        const auto separation = Abs(Dot(v, input.p1 - center)) - Dot(abs_v, extents);
-        if (separation > 0_m)
-        {
-            continue;
-        }
-        
-        if (DynamicTree::IsBranch(tree.GetHeight(index)))
-        {
-            const auto branchData = tree.GetBranchData(index);
-            stack.push(branchData.child1);
-            stack.push(branchData.child2);
-        }
-        else
-        {
-            assert(DynamicTree::IsLeaf(tree.GetHeight(index)));
-            const auto value = callback(input, index);
-            if (value == 0)
-            {
-                return true; // Callback has terminated the ray cast.
-            }
-            if (value > 0)
-            {
-                // Update segment bounding box.
-                input.maxFraction = value;
-                segmentAABB = d2::GetAABB(input);
-            }
-        }
-    }
-    return false;
 }
 
 } // namespace d2

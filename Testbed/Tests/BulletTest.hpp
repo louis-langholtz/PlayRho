@@ -41,6 +41,7 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
+            bd.linearAcceleration = m_gravity;
             bd.location = Vec2(0.0f, 4.0f) * 1_m;
 
             auto conf = PolygonShapeConf{};

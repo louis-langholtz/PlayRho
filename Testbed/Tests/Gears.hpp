@@ -107,6 +107,8 @@ public:
             jd5.ratio = -1.0f / (circle2.GetRadius() / 1_m);
             m_joint5 = static_cast<GearJoint*>(m_world.CreateJoint(jd5));
         }
+        
+        SetAccelerations(m_world, m_gravity);
     }
 
     void PostStep(const Settings&, Drawer&) override

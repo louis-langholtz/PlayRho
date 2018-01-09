@@ -236,6 +236,8 @@ public:
             conf.vertexRadius = 0.25_m;
             m_character->CreateFixture(Shape(conf));
         }
+        
+        SetAccelerations(m_world, m_gravity);
     }
 
     void PreStep(const Settings&, Drawer&) override

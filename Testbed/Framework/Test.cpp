@@ -397,6 +397,11 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
     return found;
 }
 
+const LinearAcceleration2 Test::Gravity = LinearAcceleration2{
+    Real(0.0f) * MeterPerSquareSecond,
+    -Real(10.0f) * MeterPerSquareSecond
+};
+
 bool Test::Contains(const FixtureSet& fixtures, const Fixture* f) noexcept
 {
     return fixtures.find(const_cast<Fixture*>(f)) != fixtures.end();
@@ -627,7 +632,8 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
     }
 
     m_bomb = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
-                                .UseLocation(at).UseLinearVelocity(v));
+                                .UseLocation(at).UseLinearVelocity(v)
+                                .UseLinearAcceleration(m_gravity));
 
     auto conf = DiskShapeConf{};
     conf.vertexRadius = m_bombRadius;

@@ -130,14 +130,26 @@ TEST(Body, ByteSize)
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(Body), std::size_t(108 + allSize));
+#if defined(_WIN64)
+            EXPECT_EQ(sizeof(Body), std::size_t(192));
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+            // Win32 debug
+            EXPECT_EQ(sizeof(Body), std::size_t(192));
 #else
-            EXPECT_EQ(sizeof(Body), std::size_t(120 + allSize));
+            // Win32 release
+            EXPECT_EQ(sizeof(Body), std::size_t(144));
+#endif
+#else
+            EXPECT_EQ(sizeof(Body), std::size_t(192));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(Body), std::size_t(216 + allSize)); break;
-        case 16: EXPECT_EQ(sizeof(Body), std::size_t(496)); break;
+        case  8:
+            EXPECT_EQ(sizeof(Body), std::size_t(288));
+            break;
+        case 16:
+            EXPECT_EQ(sizeof(Body), std::size_t(496));
+            break;
         default: FAIL(); break;
     }
 }
@@ -512,7 +524,7 @@ TEST(Body, SetAcceleration)
     const auto someAngularAccel = 2 * RadianPerSquareSecond;
 
     {
-        auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+        auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
         ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
         ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
@@ -538,7 +550,7 @@ TEST(Body, SetAcceleration)
     
     // Kinematic and dynamic bodies awake at creation...
     {
-        auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+        auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Kinematic));
         ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
         ASSERT_TRUE(body->IsAwake());
@@ -563,7 +575,7 @@ TEST(Body, SetAcceleration)
     
     // Dynamic bodies take a non-zero linear or angular acceleration.
     {
-        auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+        auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
         ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
         ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
@@ -773,7 +785,7 @@ TEST(Body, SetAccelerationFF)
 
 TEST(Body, CalcGravitationalAcceleration)
 {
-    auto world = World{WorldConf{}.UseGravity(LinearAcceleration2{})};
+    auto world = World{};
 
     const auto l1 = Length2{-8_m, 0_m};
     const auto l2 = Length2{+8_m, 0_m};

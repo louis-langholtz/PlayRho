@@ -56,6 +56,7 @@ public:
 
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
+        bodyConf.linearAcceleration = m_gravity;
         bodyConf.location = parent->GetLocation() + localAnchor - h;
         const auto body = m_world.CreateBody(bodyConf);
         body->CreateFixture(shape);

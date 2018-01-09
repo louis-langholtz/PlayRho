@@ -81,10 +81,11 @@ public:
                 const auto midPoint = (vertex + *prevVertex) / 2;
                 const auto angle = GetAngle(vertex - *prevVertex);
                 const auto body = m_world.CreateBody(BodyConf{}
-                                                      .UseType(BodyType::Dynamic)
-                                                      .UseBullet(true)
-                                                      .UseLocation(midPoint + vertexOffset)
-                                                      .UseAngle(angle));
+                                                     .UseType(BodyType::Dynamic)
+                                                     .UseBullet(true)
+                                                     .UseLocation(midPoint + vertexOffset)
+                                                     .UseAngle(angle)
+                                                     .UseLinearAcceleration(m_gravity));
                 body->CreateFixture(shape);
                 if (prevBody)
                 {
@@ -112,8 +113,9 @@ public:
             const auto unitVector = UnitVec::Get(angle);
             const auto location = radius * unitVector;
             const auto body = m_world.CreateBody(BodyConf{}
-                                                  .UseType(BodyType::Dynamic)
-                                                  .UseLocation(location + vertexOffset));
+                                                 .UseType(BodyType::Dynamic)
+                                                 .UseLocation(location + vertexOffset)
+                                                 .UseLinearAcceleration(m_gravity));
             body->CreateFixture(diskShape);
             angle += angleIncrement;
             angleIncrement *= 0.999f;

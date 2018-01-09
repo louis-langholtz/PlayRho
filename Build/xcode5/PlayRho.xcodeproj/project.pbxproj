@@ -715,7 +715,6 @@
 		80BB8A4D141C3E8600F1753A /* DistanceTest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DistanceTest.hpp; sourceTree = "<group>"; };
 		80BB8A4E141C3E8600F1753A /* Dominos.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Dominos.hpp; sourceTree = "<group>"; };
 		80BB8A4F141C3E8600F1753A /* DumpShell.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DumpShell.hpp; sourceTree = "<group>"; };
-		80BB8A50141C3E8600F1753A /* DynamicTreeTest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DynamicTreeTest.hpp; sourceTree = "<group>"; };
 		80BB8A51141C3E8600F1753A /* EdgeShapes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeShapes.hpp; sourceTree = "<group>"; };
 		80BB8A52141C3E8600F1753A /* EdgeTest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeTest.hpp; sourceTree = "<group>"; };
 		80BB8A53141C3E8600F1753A /* Gears.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Gears.hpp; sourceTree = "<group>"; };
@@ -1217,7 +1216,6 @@
 				80BB8A4D141C3E8600F1753A /* DistanceTest.hpp */,
 				80BB8A4E141C3E8600F1753A /* Dominos.hpp */,
 				80BB8A4F141C3E8600F1753A /* DumpShell.hpp */,
-				80BB8A50141C3E8600F1753A /* DynamicTreeTest.hpp */,
 				80BB8A51141C3E8600F1753A /* EdgeShapes.hpp */,
 				80BB8A52141C3E8600F1753A /* EdgeTest.hpp */,
 				473E01991F805D0F00D58CC8 /* FifteenPuzzle.hpp */,

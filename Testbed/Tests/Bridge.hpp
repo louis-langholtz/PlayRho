@@ -46,6 +46,7 @@ public:
             {
                 const auto body = m_world.CreateBody(BodyConf{}
                                                      .UseType(BodyType::Dynamic)
+                                                     .UseLinearAcceleration(m_gravity)
                                                      .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
                 body->CreateFixture(shape);
 
@@ -71,6 +72,7 @@ public:
         {
             const auto body = m_world.CreateBody(BodyConf{}
                                                  .UseType(BodyType::Dynamic)
+                                                 .UseLinearAcceleration(m_gravity)
                                                  .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m));
             body->CreateFixture(polyshape);
         }
@@ -80,6 +82,7 @@ public:
         {
             const auto body = m_world.CreateBody(BodyConf{}
                                                  .UseType(BodyType::Dynamic)
+                                                 .UseLinearAcceleration(m_gravity)
                                                  .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m));
             body->CreateFixture(diskShape);
         }

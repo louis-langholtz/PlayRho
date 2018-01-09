@@ -33,9 +33,6 @@ namespace d2 {
 /// @brief World configuration data.
 struct WorldConf
 {
-    /// @brief Uses the given gravity value.
-    PLAYRHO_CONSTEXPR inline WorldConf& UseGravity(LinearAcceleration2 value) noexcept;
-
     /// @brief Uses the given min vertex radius value.
     PLAYRHO_CONSTEXPR inline WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
     
@@ -44,11 +41,6 @@ struct WorldConf
     
     /// @brief Uses the given value as the initial dynamic tree size.
     PLAYRHO_CONSTEXPR inline WorldConf& UseInitialTreeSize(ContactCounter value) noexcept;
-
-    /// @brief Gravity.
-    /// @details The acceleration all dynamic bodies are subject to.
-    /// @note Use <code>LinearAcceleration2{}</code> to disable gravity.
-    LinearAcceleration2 gravity = EarthlyGravity;
     
     /// @brief Minimum vertex radius.
     /// @details This is the minimum vertex radius that this world establishes which bodies
@@ -72,12 +64,6 @@ struct WorldConf
     /// @brief Initial tree size.
     ContactCounter initialTreeSize = 4096;
 };
-
-PLAYRHO_CONSTEXPR inline WorldConf& WorldConf::UseGravity(LinearAcceleration2 value) noexcept
-{
-    gravity = value;
-    return *this;
-}
 
 PLAYRHO_CONSTEXPR inline WorldConf& WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept
 {

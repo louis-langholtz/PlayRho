@@ -155,6 +155,7 @@ public:
 
         BodyConf bd;
         bd.type = BodyType::Dynamic;
+        bd.linearAcceleration = m_gravity;
 
         const auto x = RandomFloat(-2.0f, 2.0f);
         bd.location = Vec2(x, 10.0f) * 1_m;

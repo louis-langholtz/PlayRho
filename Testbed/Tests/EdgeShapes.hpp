@@ -130,6 +130,7 @@ public:
         bd.location = Vec2(x, y) * 1_m;
         bd.angle = 1_rad * RandomFloat(-Pi, Pi);
         bd.type = BodyType::Dynamic;
+        bd.linearAcceleration = m_gravity;
 
         if (index == 4)
         {
@@ -174,11 +175,12 @@ public:
         Length2 point;
         UnitVec normal;
 
-        m_world.RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2 p, UnitVec n) {
+        RayCast(m_world.GetTree(), RayCastInput{point1, point2, 1},
+                        [&](Fixture* f, ChildCounter, Length2 p, UnitVec n) {
             fixture = f;
             point = p;
             normal = n;
-            return World::RayCastOpcode::ClipRay;
+            return RayCastOpcode::ClipRay;
         });
 
         if (fixture)

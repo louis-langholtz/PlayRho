@@ -29,8 +29,8 @@ namespace testbed {
         
         Orbiter()
         {
-            m_world.SetGravity(LinearAcceleration2{});
-
+            m_gravity = LinearAcceleration2{};
+            
             BodyConf bd;
             const auto radius = Real{12.0f};
 

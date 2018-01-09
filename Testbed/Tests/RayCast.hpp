@@ -206,8 +206,8 @@ public:
             Length2 point;
             UnitVec normal;
 
-            m_world.RayCast(point1, point2, [&](Fixture* f, const ChildCounter,
-                                                 const Length2& p, const UnitVec& n)
+            d2::RayCast(m_world.GetTree(), RayCastInput{point1, point2, 1},
+                    [&](Fixture* f, const ChildCounter, const Length2& p, const UnitVec& n)
             {
                 const auto body = f->GetBody();
                 const auto userData = body->GetUserData();
@@ -218,7 +218,7 @@ public:
                     {
                         // Instruct the calling code to ignore this fixture and
                         // continue the ray-cast to the next fixture.
-                        return World::RayCastOpcode::IgnoreFixture;
+                        return RayCastOpcode::IgnoreFixture;
                     }
                 }
 
@@ -229,7 +229,7 @@ public:
                 // Instruct the calling code to clip the ray and
                 // continue the ray-cast to the next fixture. WARNING: do not assume that fixtures
                 // are reported in order. However, by clipping, we can always get the closest fixture.
-                return World::RayCastOpcode::ClipRay;
+                return RayCastOpcode::ClipRay;
             });
 
             if (hit)
@@ -252,8 +252,8 @@ public:
 
             // This callback finds any hit. Polygon 0 is filtered. For this type of query we are
             // just checking for obstruction, so the actual fixture and hit point are irrelevant.
-            m_world.RayCast(point1, point2, [&](Fixture* f, const ChildCounter,
-                                                 const Length2& p, const UnitVec& n)
+            d2::RayCast(m_world.GetTree(), RayCastInput{point1, point2, 1},
+                        [&](Fixture* f, const ChildCounter, const Length2& p, const UnitVec& n)
             {
                 const auto body = f->GetBody();
                 const auto userData = body->GetUserData();
@@ -264,7 +264,7 @@ public:
                     {
                         // Instruct the calling code to ignore this fixture
                         // and continue the ray-cast to the next fixture.
-                        return World::RayCastOpcode::IgnoreFixture;
+                        return RayCastOpcode::IgnoreFixture;
                     }
                 }
                 
@@ -274,7 +274,7 @@ public:
                 
                 // At this point we have a hit, so we know the ray is obstructed.
                 // Instruct the calling code to terminate the ray-cast.
-                return World::RayCastOpcode::Terminate;
+                return RayCastOpcode::Terminate;
             });
 
             if (hit)
@@ -296,8 +296,8 @@ public:
             // This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
             // The fixtures are not necessary reported in order, so we might not capture
             // the closest fixture.
-            m_world.RayCast(point1, point2, [&](Fixture* f, const ChildCounter,
-                                                 const Length2& p, const UnitVec& n)
+            d2::RayCast(m_world.GetTree(), RayCastInput{point1, point2, 1},
+                        [&](Fixture* f, const ChildCounter, const Length2& p, const UnitVec& n)
             {
                 const auto body = f->GetBody();
                 const auto userData = body->GetUserData();
@@ -308,7 +308,7 @@ public:
                     {
                         // Instruct the calling code to ignore this fixture
                         // and continue the ray-cast to the next fixture.
-                        return World::RayCastOpcode::IgnoreFixture;
+                        return RayCastOpcode::IgnoreFixture;
                     }
                 }
                 
@@ -318,7 +318,7 @@ public:
                 drawer.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
                 
                 // Instruct the caller to continue without clipping the ray.
-                return World::RayCastOpcode::ResetRay;
+                return RayCastOpcode::ResetRay;
             });
         }
 

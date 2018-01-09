@@ -52,6 +52,7 @@ public:
 
             BodyConf bd;
             bd.type = BodyType::Dynamic;
+            bd.linearAcceleration = m_gravity;
 
             bd.location = p1;
             const auto leftFlipper = m_world.CreateBody(bd);
@@ -90,6 +91,7 @@ public:
             BodyConf bd;
             bd.location = Vec2(1.0f, 15.0f) * 1_m;
             bd.type = BodyType::Dynamic;
+            bd.linearAcceleration = m_gravity;
             bd.bullet = true;
 
             m_ball = m_world.CreateBody(bd);

@@ -420,7 +420,6 @@ namespace {
 
 World::World(const WorldConf& def):
     m_tree{def.initialTreeSize},
-    m_gravity{def.gravity},
     m_minVertexRadius{def.minVertexRadius},
     m_maxVertexRadius{def.maxVertexRadius}
 {
@@ -434,7 +433,6 @@ World::World(const WorldConf& def):
 
 World::World(const World& other):
     m_tree{other.m_tree},
-    m_gravity{other.m_gravity},
     m_destructionListener{other.m_destructionListener},
     m_contactListener{other.m_contactListener},
     m_flags{other.m_flags},
@@ -453,7 +451,6 @@ World& World::operator= (const World& other)
 {
     Clear();
     
-    m_gravity = other.m_gravity;
     m_destructionListener = other.m_destructionListener;
     m_contactListener = other.m_contactListener;
     m_flags = other.m_flags;
@@ -704,20 +701,6 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
     }
 }
 
-void World::SetGravity(LinearAcceleration2 gravity) noexcept
-{
-    if (m_gravity != gravity)
-    {
-        const auto diff = gravity - m_gravity;
-        for (auto& b: m_bodies)
-        {
-            auto& body = GetRef(b);
-            ApplyLinearAcceleration(body, diff);
-        }
-        m_gravity = gravity;
-    }
-}
-
 Body* World::CreateBody(const BodyConf& def)
 {
     if (IsLocked())
@@ -742,7 +725,6 @@ Body* World::CreateBody(const BodyConf& def)
     //
     m_bodies.push_back(&b);
 
-    b.SetAcceleration(m_gravity, AngularAcceleration{0});
     return &b;
 }
 
@@ -1886,51 +1868,6 @@ void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
     });
 }
 
-bool World::RayCast(Length2 point1, Length2 point2, RayCastCallback callback) const
-{
-    return d2::RayCast(m_tree, RayCastInput{point1, point2, Real{1}},
-                       [&](const RayCastInput& input, DynamicTree::Size treeId)
-    {
-        const auto leafData = m_tree.GetLeafData(treeId);
-        const auto fixture = leafData.fixture;
-        const auto index = leafData.childIndex;
-        const auto shape = fixture->GetShape();
-        const auto body = fixture->GetBody();
-        const auto child = GetChild(shape, index);
-        const auto transformation = body->GetTransformation();
-        const auto output = playrho::d2::RayCast(child, input, transformation);
-        if (output.has_value())
-        {
-            const auto fraction = output->fraction;
-            assert(fraction >= 0 && fraction <= 1);
-         
-            // Here point can be calculated these two ways:
-            //   (1) point = p1 * (1 - fraction) + p2 * fraction
-            //   (2) point = p1 + (p2 - p1) * fraction.
-            //
-            // The first way however suffers from the fact that:
-            //     a * (1 - fraction) + a * fraction != a
-            // for all values of a and fraction between 0 and 1 when a and fraction are
-            // floating point types.
-            // This leads to the posibility that (p1 == p2) && (point != p1 || point != p2),
-            // which may be pretty surprising to the callback. So this way SHOULD NOT be used.
-            //
-            // The second way, does not have this problem.
-            //
-            const auto point = input.p1 + (input.p2 - input.p1) * fraction;
-            const auto opcode = callback(fixture, index, point, output->normal);
-            switch (opcode)
-            {
-                case RayCastOpcode::Terminate: return Real{0};
-                case RayCastOpcode::IgnoreFixture: return Real{-1};
-                case RayCastOpcode::ClipRay: return Real{fraction};
-                case RayCastOpcode::ResetRay: return Real{input.maxFraction};
-            }
-        }
-        return Real{input.maxFraction};
-    });
-}
-
 void World::ShiftOrigin(Length2 newOrigin)
 {
     if (IsLocked())
@@ -2443,8 +2380,6 @@ void World::SetType(Body& body, playrho::BodyType type)
     else
     {
         body.SetAwake();
-        body.SetAcceleration(body.IsAccelerable()? GetGravity(): LinearAcceleration2{},
-                             AngularAcceleration{0});
         const auto fixtures = body.GetFixtures();
         for_each(begin(fixtures), end(fixtures), [&](Body::Fixtures::value_type& f) {
             InternalTouchProxies(GetRef(f));
@@ -2749,6 +2684,13 @@ void SetAccelerations(World& world, Acceleration acceleration) noexcept
 {
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), acceleration);
+    });
+}
+
+void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
+{
+    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
+        SetLinearAcceleration(GetRef(b), acceleration);
     });
 }
 

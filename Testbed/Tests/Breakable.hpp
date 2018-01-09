@@ -45,6 +45,7 @@ public:
 
             BodyConf bd;
             bd.type = BodyType::Dynamic;
+            bd.linearAcceleration = m_gravity;
             bd.location = Vec2(0.0f, 40.0f) * 1_m;
             bd.angle = Pi * 0.25_rad;
             m_body1 = m_world.CreateBody(bd);
@@ -99,6 +100,7 @@ public:
 
         BodyConf bd;
         bd.type = BodyType::Dynamic;
+        bd.linearAcceleration = m_gravity;
         bd.location = body1->GetLocation();
         bd.angle = body1->GetAngle();
 

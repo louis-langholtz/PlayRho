@@ -48,9 +48,9 @@ struct RayCastInput
 
 namespace d2 {
 
-    /// @brief Ray cast input data for 2-dimensions.
-    using RayCastInput = playrho::detail::RayCastInput<2>;
-    
+/// @brief Ray cast input data for 2-dimensions.
+using RayCastInput = playrho::detail::RayCastInput<2>;
+
 } // namespace d2
 } // namespace playrho
 

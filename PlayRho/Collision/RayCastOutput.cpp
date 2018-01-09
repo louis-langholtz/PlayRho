@@ -17,11 +17,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/GrowableStack.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 #include <utility>
 
 namespace playrho {
@@ -225,11 +229,100 @@ RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
     return RayCast(GetChild(shape, childIndex), input, transform);
 }
 
-AABB GetAABB(const RayCastInput& input) noexcept
+bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCastCB& callback)
 {
-    const auto totalDelta = input.p2 - input.p1;
-    const auto fractDelta = input.maxFraction * totalDelta;
-    return AABB{input.p1, input.p1 + fractDelta};
+    const auto v = GetRevPerpendicular(GetUnitVector(input.p2 - input.p1, UnitVec::GetZero()));
+    const auto abs_v = Abs(v);
+    auto segmentAABB = d2::GetAABB(input);
+    
+    GrowableStack<ContactCounter, 256> stack;
+    stack.push(tree.GetRootIndex());
+    while (!stack.empty())
+    {
+        const auto index = stack.top();
+        stack.pop();
+        if (index == DynamicTree::GetInvalidSize())
+        {
+            continue;
+        }
+        
+        const auto aabb = tree.GetAABB(index);
+        if (!TestOverlap(aabb, segmentAABB))
+        {
+            continue;
+        }
+        
+        // Separating axis for segment (Gino, p80).
+        // |dot(v, p1 - ctr)| > dot(|v|, extents)
+        const auto center = GetCenter(aabb);
+        const auto extents = GetExtents(aabb);
+        const auto separation = Abs(Dot(v, input.p1 - center)) - Dot(abs_v, extents);
+        if (separation > 0_m)
+        {
+            continue;
+        }
+        
+        if (DynamicTree::IsBranch(tree.GetHeight(index)))
+        {
+            const auto branchData = tree.GetBranchData(index);
+            stack.push(branchData.child1);
+            stack.push(branchData.child2);
+        }
+        else
+        {
+            assert(DynamicTree::IsLeaf(tree.GetHeight(index)));
+            const auto leafData = tree.GetLeafData(index);
+            const auto value = callback(leafData.fixture, leafData.childIndex, input);
+            if (value == 0)
+            {
+                return true; // Callback has terminated the ray cast.
+            }
+            if (value > 0)
+            {
+                // Update segment bounding box.
+                input.maxFraction = value;
+                segmentAABB = d2::GetAABB(input);
+            }
+        }
+    }
+    return false;
+}
+
+bool RayCast(const DynamicTree& tree, const RayCastInput& rci, FixtureRayCastCB callback)
+{
+    return RayCast(tree, rci, [callback](Fixture* fixture, ChildCounter index, const RayCastInput& input) {
+        const auto output = RayCast(GetChild(fixture->GetShape(), index), input,
+                                    fixture->GetBody()->GetTransformation());
+        if (output.has_value())
+        {
+            const auto fraction = output->fraction;
+            assert(fraction >= 0 && fraction <= 1);
+            
+            // Here point can be calculated these two ways:
+            //   (1) point = p1 * (1 - fraction) + p2 * fraction
+            //   (2) point = p1 + (p2 - p1) * fraction.
+            //
+            // The first way however suffers from the fact that:
+            //     a * (1 - fraction) + a * fraction != a
+            // for all values of a and fraction between 0 and 1 when a and fraction are
+            // floating point types.
+            // This leads to the posibility that (p1 == p2) && (point != p1 || point != p2),
+            // which may be pretty surprising to the callback. So this way SHOULD NOT be used.
+            //
+            // The second way, does not have this problem.
+            //
+            const auto point = input.p1 + (input.p2 - input.p1) * fraction;
+            const auto opcode = callback(fixture, index, point, output->normal);
+            switch (opcode)
+            {
+                case RayCastOpcode::Terminate: return Real{0};
+                case RayCastOpcode::IgnoreFixture: return Real{-1};
+                case RayCastOpcode::ClipRay: return Real{fraction};
+                case RayCastOpcode::ResetRay: return Real{input.maxFraction};
+            }
+        }
+        return Real{input.maxFraction};
+    });
 }
 
 } // namespace d2

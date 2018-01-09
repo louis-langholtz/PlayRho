@@ -98,6 +98,8 @@ public:
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body6 = m_world.CreateBody(circleBodyConf);
         body6->CreateFixture(Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
+        
+        SetAccelerations(m_world, m_gravity);
     }
 
     void PostStep(const Settings&, Drawer&) override

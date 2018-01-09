@@ -89,7 +89,7 @@ class Shape;
 ///
 /// @note World instances are composed of &mdash; i.e. contain and own &mdash; Body, Joint,
 ///   and Contact instances.
-/// @note This data structure is 352-bytes large (with 4-byte Real on at least one 64-bit
+/// @note This data structure is 232-bytes large (with 4-byte Real on at least one 64-bit
 ///   platform).
 ///
 /// @sa Body, Joint, Contact
@@ -221,31 +221,6 @@ public:
     /// @param callback User implemented callback function.
     void QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const;
 
-    /// @brief Ray-cast operation code.
-    ///
-    /// @details Instructs the <code>RayCast</code> method on what to do next.
-    ///
-    enum class RayCastOpcode;
-
-    /// @brief Ray cast callback function signature.
-    using RayCastCallback = std::function<RayCastOpcode(Fixture* fixture,
-                                                        ChildCounter child,
-                                                        Length2 point,
-                                                        UnitVec normal)>;
-
-    /// @brief Ray-cast the world for all fixtures in the path of the ray.
-    ///
-    /// @note The callback controls whether you get the closest point, any point, or n-points.
-    /// @note The ray-cast ignores shapes that contain the starting point.
-    ///
-    /// @param point1 Ray starting point.
-    /// @param point2 Ray ending point.
-    /// @param callback A user implemented callback function.
-    ///
-    /// @return <code>true</code> if terminated by callback, <code>false</code> otherwise.
-    ///
-    bool RayCast(Length2 point1, Length2 point2, RayCastCallback callback) const;
-
     /// @brief Gets the world body range for this world.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
@@ -279,12 +254,6 @@ public:
 
     /// @brief Gets access to the broad-phase dynamic tree information.
     const DynamicTree& GetTree() const noexcept;
-    
-    /// @brief Changes the global gravity vector.
-    void SetGravity(LinearAcceleration2 gravity) noexcept;
-    
-    /// @brief Gets the global gravity vector.
-    LinearAcceleration2 GetGravity() const noexcept;
 
     /// @brief Is the world locked (in the middle of a time step).
     bool IsLocked() const noexcept;
@@ -780,9 +749,7 @@ private:
     /// @note In the <em>add pair</em> stress-test, 401 bodies can have some 31000 contacts
     ///   during a given time step.
     Contacts m_contacts;
-
-    LinearAcceleration2 m_gravity; ///< Gravity setting. 8-bytes.
-
+    
     DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
     
     ContactListener* m_contactListener = nullptr; ///< Contact listener. 8-bytes.
@@ -813,28 +780,6 @@ private:
 ///   This is an example of how to use the World class.
 ///
 
-/// @brief World ray cast opcode enumeration.
-enum class World::RayCastOpcode
-{
-    /// @brief End the ray-cast search for fixtures.
-    /// @details Use this to stop searching for fixtures.
-    Terminate,
-    
-    /// @brief Ignore the current fixture.
-    /// @details Use this to continue searching for fixtures along the ray.
-    IgnoreFixture,
-    
-    /// @brief Clip the ray end to the current point.
-    /// @details Use this shorten the ray to the current point and to continue searching
-    ///   for fixtures now along the newly shortened ray.
-    ClipRay,
-    
-    /// @brief Reset the ray end back to the second point.
-    /// @details Use this to restore the ray to its full length and to continue searching
-    ///    for fixtures now along the restored full length ray.
-    ResetRay
-};
-
 inline SizedRange<World::Bodies::iterator> World::GetBodies() noexcept
 {
     return {m_bodies.begin(), m_bodies.end(), m_bodies.size()};
@@ -858,11 +803,6 @@ inline SizedRange<World::Joints::iterator> World::GetJoints() noexcept
 inline SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
 {
     return {m_contacts.begin(), m_contacts.end(), m_contacts.size()};
-}
-
-inline LinearAcceleration2 World::GetGravity() const noexcept
-{
-    return m_gravity;
 }
 
 inline bool World::IsLocked() const noexcept
@@ -1105,12 +1045,19 @@ void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> f
 /// @relatedalso World
 void SetAccelerations(World& world, Acceleration acceleration) noexcept;
 
+/// @brief Sets the accelerations of all the world's bodies to the given value.
+/// @note This will leave the angular acceleration alone.
+/// @relatedalso World
+void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept;
+
 /// @brief Clears forces.
 /// @details Manually clear the force buffer on all bodies.
 /// @relatedalso World
 inline void ClearForces(World& world) noexcept
 {
-    SetAccelerations(world, Acceleration{world.GetGravity(), 0 * RadianPerSquareSecond});
+    SetAccelerations(world, Acceleration{
+        LinearAcceleration2{0_mps2, 0_mps2}, 0 * RadianPerSquareSecond
+    });
 }
 
 /// @brief Creates a rectangular enclosure.

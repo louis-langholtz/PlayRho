@@ -50,6 +50,7 @@ public:
 
             BodyConf bd;
             bd.type = BodyType::Dynamic;
+            bd.linearAcceleration = m_gravity;
 
             //bd.fixedRotation = true;
             bd.location = Vec2(-10.0f, y) * 1_m;

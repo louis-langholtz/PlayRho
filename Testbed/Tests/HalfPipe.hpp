@@ -37,7 +37,8 @@ namespace testbed {
             }
             const auto ballBody = m_world.CreateBody(BodyConf{}
                                                       .UseType(BodyType::Dynamic)
-                                                      .UseLocation(Vec2(-19, 28) * 1_m));
+                                                      .UseLocation(Vec2(-19, 28) * 1_m)
+                                                     .UseLinearAcceleration(m_gravity));
             ballBody->CreateFixture(DiskShapeConf{}.UseDensity(0.01_kgpm2).UseRadius(1_m).UseFriction(Real(1)));
         }
     };

@@ -24,7 +24,6 @@
 /// Declaration of the <code>DynamicTree</code> class.
 
 #include <PlayRho/Collision/AABB.hpp>
-#include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Common/Settings.hpp>
 
 #include <functional>
@@ -98,10 +97,6 @@ public:
     {
         return !IsUnused(value) && !IsLeaf(value);
     }
-
-    /// @brief Ray cast callback function.
-    /// @note Return 0 to terminate ray casting, or > 0 to update the segment bounding box.
-    using RayCastCallback = std::function<Real(const RayCastInput&, Size)>;
 
     /// @brief Gets the default initial node capacity.
     static PLAYRHO_CONSTEXPR inline Size GetDefaultInitialNodeCapacity() noexcept;
@@ -375,7 +370,7 @@ struct DynamicTree::LeafData
 /// @brief Equality operator.
 /// @relatedalso DynamicTree::LeafData
 PLAYRHO_CONSTEXPR inline bool operator== (const DynamicTree::LeafData& lhs,
-                                  const DynamicTree::LeafData& rhs) noexcept
+                                          const DynamicTree::LeafData& rhs) noexcept
 {
     return lhs.fixture == rhs.fixture && lhs.childIndex == rhs.childIndex;
 }
@@ -383,7 +378,7 @@ PLAYRHO_CONSTEXPR inline bool operator== (const DynamicTree::LeafData& lhs,
 /// @brief Inequality operator.
 /// @relatedalso DynamicTree::LeafData
 PLAYRHO_CONSTEXPR inline bool operator!= (const DynamicTree::LeafData& lhs,
-                                  const DynamicTree::LeafData& rhs) noexcept
+                                          const DynamicTree::LeafData& rhs) noexcept
 {
     return !(lhs == rhs);
 }
@@ -855,27 +850,6 @@ using DynamicTreeSizeCB = std::function<DynamicTreeOpcode(DynamicTree::Size)>;
 /// @note The callback instance is called for each leaf node that overlaps the supplied AABB.
 void Query(const DynamicTree& tree, const AABB& aabb,
            const DynamicTreeSizeCB& callback);
-
-/// @brief Ray-cast against the leafs in the given tree.
-///
-/// @note This relies on the callback to perform an exact ray-cast in the case where the
-///    leaf node contains a shape.
-/// @note The callback also performs collision filtering.
-/// @note Performance is roughly k * log(n), where k is the number of collisions and n is the
-///   number of leaf nodes in the tree.
-///
-/// @param tree Dynamic tree to ray cast.
-/// @param input the ray-cast input data. The ray extends from <code>p1</code> to
-///   <code>p1 + maxFraction * (p2 - p1)</code>.
-/// @param callback A callback instance function that's called for each leaf that is hit
-///   by the ray. The callback should return 0 to terminate ray casting, or greater than 0
-///   to update the segment bounding box. Values less than zero are ignored.
-///
-/// @return <code>true</code> if terminated at the callback's request,
-///   <code>false</code> otherwise.
-///
-bool RayCast(const DynamicTree& tree, RayCastInput input,
-             const DynamicTree::RayCastCallback& callback);
 
 } // namespace d2
 } // namespace playrho

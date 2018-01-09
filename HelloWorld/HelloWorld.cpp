@@ -49,7 +49,8 @@ int main()
     // Define location above ground for a "dynamic" body & call world's body creation method.
     const auto ball = world.CreateBody(BodyConf{}
                                        .UseLocation(Length2{0_m, 4_m})
-                                       .UseType(BodyType::Dynamic));
+                                       .UseType(BodyType::Dynamic)
+                                       .UseLinearAcceleration(EarthlyGravity));
 
     // Define a disk shape for the ball body and create a fixture to add it.
     ball->CreateFixture(DiskShapeConf{}.UseRadius(1_m));

@@ -104,6 +104,8 @@ public:
             body->CreateFixture(Shape(polyShape));
         }
         
+        SetAccelerations(m_world, m_gravity);
+
         RegisterForKey(GLFW_KEY_L, GLFW_PRESS, 0, "Limits", [&](KeyActionMods) {
             m_joint->EnableLimit(!m_joint->IsLimitEnabled());
         });

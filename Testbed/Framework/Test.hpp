@@ -204,6 +204,8 @@ public:
 
     World m_world;
 
+    static const LinearAcceleration2 Gravity;
+    
 protected:
     
     EdgeShapeConf GetGroundEdgeConf() const noexcept
@@ -217,10 +219,7 @@ protected:
         /// @brief World definition/configuration data.
         /// @note Explicitly uses -10 for gravity here to behave more like
         ///   Erin Catto's Box Testbed (which uses -10 for Earthly gravity).
-        WorldConf worldConf = WorldConf{}.UseGravity(LinearAcceleration2{
-            Real(0.0f) * MeterPerSquareSecond,
-            -Real(10.0f) * MeterPerSquareSecond
-        }).UseMinVertexRadius(0.0002f * Meter);
+        WorldConf worldConf = WorldConf{}.UseMinVertexRadius(0.0002f * Meter);
 
         Settings settings;
         
@@ -335,6 +334,7 @@ protected:
     TextLinePos m_textLine = TextLinePos{30};
     AreaDensity m_bombDensity = 20_kgpm2;
     Length m_bombRadius = 0.3f * Meter;
+    LinearAcceleration2 m_gravity = Gravity;
 
 private:
     void DrawStats(const StepConf& stepConf, UiState& ui);

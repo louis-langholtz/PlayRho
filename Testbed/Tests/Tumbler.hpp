@@ -88,7 +88,8 @@ public:
     Body* CreateEnclosure(Length2 at)
     {
         const auto b = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic)
-                                          .UseLocation(at).UseAllowSleep(false));
+                                          .UseLocation(at).UseAllowSleep(false)
+                                          .UseLinearAcceleration(m_gravity));
         auto shape = PolygonShapeConf{}.UseDensity(5_kgpm2);
         shape.SetAsBox(0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
         b->CreateFixture(Shape(shape));
@@ -116,6 +117,7 @@ public:
     void CreateTumblee(Length2 at)
     {
         const auto b = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
+                                          .UseLinearAcceleration(m_gravity)
                                           .UseUserData(reinterpret_cast<void*>(1)));
         b->CreateFixture(m_shape);
     }

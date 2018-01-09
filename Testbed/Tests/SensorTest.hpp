@@ -62,6 +62,7 @@ public:
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
+            bd.linearAcceleration = m_gravity;
             bd.location = Vec2(-10.0f + 3.0f * i, 20.0f) * 1_m;
             bd.userData = m_touching + i;
             m_touching[i] = false;

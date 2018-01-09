@@ -82,6 +82,8 @@ public:
             shape.UseDensity(1_kgpm2);
             body->CreateFixture(Shape(shape));
         }
+        
+        SetAccelerations(m_world, m_gravity);
     }
 };
 

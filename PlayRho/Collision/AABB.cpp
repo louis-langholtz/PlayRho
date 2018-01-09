@@ -20,6 +20,7 @@
  */
 
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
@@ -100,6 +101,13 @@ AABB ComputeIntersectingAABB(const Contact& contact)
 {
     return ComputeIntersectingAABB(*contact.GetFixtureA(), contact.GetChildIndexA(),
                                    *contact.GetFixtureB(), contact.GetChildIndexB());
+}
+
+AABB GetAABB(const RayCastInput& input) noexcept
+{
+    const auto totalDelta = input.p2 - input.p1;
+    const auto fractDelta = input.maxFraction * totalDelta;
+    return AABB{input.p1, input.p1 + fractDelta};
 }
 
 } // namespace d2

@@ -39,6 +39,7 @@ public:
 
     Confined()
     {
+        m_gravity = LinearAcceleration2{};
         m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Create Circle", [&](KeyActionMods) {
@@ -89,8 +90,6 @@ public:
                 body->CreateFixture(shape);
             }
         }
-
-        m_world.SetGravity(LinearAcceleration2{});
     }
     
     Body* CreateEnclosure(Length vertexRadius, Length wallLength)

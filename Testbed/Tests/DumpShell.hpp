@@ -43,7 +43,7 @@ public:
         //  a World for use as the 'm_world' variable in the code below.
 
         LinearAcceleration2 g(Real{0.000000000000000e+00f} * MeterPerSquareSecond, Real{-1.000000000000000e+01f} * MeterPerSquareSecond);
-        m_world.SetGravity(g);
+        m_gravity = g;
         Body** bodies = (Body**)Alloc(3 * sizeof(Body*));
         Joint** joints = (Joint**)Alloc(0 * sizeof(Joint*));
         {
@@ -154,6 +154,8 @@ public:
                 bodies[2]->CreateFixture(Shape(shape), fd);
             }
         }
+        
+        SetAccelerations(m_world, m_gravity);
         Free(joints);
         Free(bodies);
         joints = nullptr;
