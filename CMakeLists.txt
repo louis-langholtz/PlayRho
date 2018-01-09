@@ -49,6 +49,14 @@ option(PLAYRHO_ENABLE_COVERAGE "Enable code coverage generation." OFF)
 set(PLAYRHO_VERSION 0.9.0)
 set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
+# Tell Microsoft Visual C (MSVC) to enable unwind semantics since it doesn't by default.
+# For info on MSVC Exception Handling Model see:
+#   https://msdn.microsoft.com/en-us/library/1deeycx5.aspx
+# Perhaps this should be a build option for all platforms?
+if(MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -EHsc")
+endif()
+
 # The PlayRho library.
 add_subdirectory(PlayRho)
 
