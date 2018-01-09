@@ -531,55 +531,28 @@ bool DynamicTree::ValidateStructure(Size index) const noexcept
     {
         return true;
     }
-
     if (index == m_root)
     {
-        if (GetParent(index) != GetInvalidSize())
-        {
-            return false;
-        }
+        assert(GetParent(index) == GetInvalidSize());
     }
-
     if (index >= m_nodeCapacity)
     {
         return false;
     }
-    
     if (IsLeaf(m_nodes[index].GetHeight()))
     {
         return true;
     }
-    
+#ifndef NDEBUG
     const auto child1 = m_nodes[index].AsBranch().child1;
     const auto child2 = m_nodes[index].AsBranch().child2;
-
-    if (child1 >= m_nodeCapacity)
-    {
-        return false;
-    }
-    if (child2 >= m_nodeCapacity)
-    {
-        return false;
-    }
-
-    if (m_nodes[child1].GetOther() != index)
-    {
-        return false;
-    }
-    if (m_nodes[child2].GetOther() != index)
-    {
-        return false;
-    }
-
-    if (!ValidateStructure(child1))
-    {
-        return false;
-    }
-    if (!ValidateStructure(child2))
-    {
-        return false;
-    }
-    
+#endif
+    assert(child1 < m_nodeCapacity);
+    assert(child2 < m_nodeCapacity);
+    assert(m_nodes[child1].GetOther() == index);
+    assert(m_nodes[child2].GetOther() == index);
+    assert(ValidateStructure(child1));
+    assert(ValidateStructure(child2));
     return true;
 }
 
@@ -600,83 +573,50 @@ bool DynamicTree::ValidateMetrics(Size index) const noexcept
         return true;
     }
     
+#ifndef NDEBUG
     const auto child1 = m_nodes[index].AsBranch().child1;
     const auto child2 = m_nodes[index].AsBranch().child2;
-
-    if (child1 >= m_nodeCapacity)
-    {
-        return false;
-    }
-    if (child2 >= m_nodeCapacity)
-    {
-        return false;
-    }
-
+#endif
+    assert(child1 < m_nodeCapacity);
+    assert(child2 < m_nodeCapacity);
+#ifndef NDEBUG
     const auto childNode1 = m_nodes + child1;
     const auto childNode2 = m_nodes + child2;
-
+#endif
     {
+#ifndef NDEBUG
         const auto height1 = childNode1->GetHeight();
         const auto height2 = childNode2->GetHeight();
         const auto height = 1 + std::max(height1, height2);
-        if (m_nodes[index].GetHeight() != height)
-        {
-            return false;
-        }
+#endif
+        assert(m_nodes[index].GetHeight() == height);
     }
     {
+#ifndef NDEBUG
         const auto aabb = GetEnclosingAABB(childNode1->GetAABB(), childNode2->GetAABB());
-        if (aabb != m_nodes[index].GetAABB())
-        {
-            return false;
-        }
+#endif
+        assert(aabb == m_nodes[index].GetAABB());
     }
-
-    if (!ValidateMetrics(child1))
-    {
-        return false;
-    }
-    if (!ValidateMetrics(child2))
-    {
-        return false;
-    }
-    
+    assert(ValidateMetrics(child1));
+    assert(ValidateMetrics(child2));
     return true;
 }
 
 bool DynamicTree::Validate() const
 {
-    if (!ValidateStructure(m_root))
-    {
-        return false;
-    }
-
-    if (!ValidateMetrics(m_root))
-    {
-        return false;
-    }
+    assert(ValidateStructure(m_root));
+    assert(ValidateMetrics(m_root));
 
     auto freeCount = Size{0};
     auto freeIndex = m_freeListIndex;
     while (freeIndex != GetInvalidSize())
     {
-        if (freeIndex >= GetNodeCapacity())
-        {
-            return false;
-        }
+        assert(freeIndex < GetNodeCapacity());
         freeIndex = (m_nodes + freeIndex)->GetOther();
         ++freeCount;
     }
-
-    if ((m_root != GetInvalidSize()) && (playrho::d2::GetHeight(*this) != playrho::d2::ComputeHeight(*this)))
-    {
-        return false;
-    }
-    if ((GetNodeCount() + freeCount) != GetNodeCapacity())
-    {
-        return false;
-    }
-    
+    assert((m_root == GetInvalidSize()) || (playrho::d2::GetHeight(*this) == playrho::d2::ComputeHeight(*this)));
+    assert((GetNodeCount() + freeCount) == GetNodeCapacity());
     return true;
 }
 

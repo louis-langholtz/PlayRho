@@ -663,6 +663,75 @@ TEST(World, RayCast)
     }
     
     {
+        const auto p2 = Length2{-2_m, 0_m};
+        const auto p3 = Length2{+2_m, 0_m};
+        
+        auto foundOurs = 0;
+        auto foundOthers = 0;
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
+                                    [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
+            if (f == fixture && i == 0)
+            {
+                ++foundOurs;
+            }
+            else
+            {
+                ++foundOthers;
+            }
+            return RayCastOpcode::IgnoreFixture;
+        });
+        EXPECT_FALSE(retval);
+        EXPECT_EQ(foundOurs, 1);
+        EXPECT_EQ(foundOthers, 1);
+    }
+    
+    {
+        const auto p2 = Length2{ +5_m, 0_m};
+        const auto p3 = Length2{+10_m, 0_m};
+        
+        auto foundOurs = 0;
+        auto foundOthers = 0;
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
+                                    [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
+            if (f == fixture && i == 0)
+            {
+                ++foundOurs;
+            }
+            else
+            {
+                ++foundOthers;
+            }
+            return RayCastOpcode::IgnoreFixture;
+        });
+        EXPECT_FALSE(retval);
+        EXPECT_EQ(foundOurs, 0);
+        EXPECT_EQ(foundOthers, 0);
+    }
+    
+    {
+        const auto p2 = Length2{-2_m, 0_m};
+        const auto p3 = Length2{+2_m, 0_m};
+        
+        auto foundOurs = 0;
+        auto foundOthers = 0;
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
+                                    [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
+            if (f == fixture && i == 0)
+            {
+                ++foundOurs;
+            }
+            else
+            {
+                ++foundOthers;
+            }
+            return RayCastOpcode::ClipRay;
+        });
+        EXPECT_TRUE(retval);
+        EXPECT_EQ(foundOurs, 1);
+        EXPECT_EQ(foundOthers, 0);
+    }
+    
+    {
         const auto p2 = Length2{-3_m,  0_m};
         const auto p3 = Length2{+2_m, 10_m};
         
