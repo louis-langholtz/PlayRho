@@ -19,7 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
@@ -37,7 +37,7 @@ namespace d2 {
 // w k % (rx i + ry j) = w * (-ry i + rx j)
 
 
-bool MouseJoint::IsOkay(const MouseJointConf& def) noexcept
+bool TargetJoint::IsOkay(const TargetJointConf& def) noexcept
 {
     if (!Joint::IsOkay(def))
     {
@@ -50,7 +50,7 @@ bool MouseJoint::IsOkay(const MouseJointConf& def) noexcept
     return true;
 }
 
-MouseJoint::MouseJoint(const MouseJointConf& def):
+TargetJoint::TargetJoint(const TargetJointConf& def):
     Joint{def},
     m_targetA{def.target},
     m_localAnchorB{def.bodyB?
@@ -64,17 +64,17 @@ MouseJoint::MouseJoint(const MouseJointConf& def):
     assert(IsValid(def.dampingRatio));
 }
 
-void MouseJoint::Accept(JointVisitor& visitor) const
+void TargetJoint::Accept(JointVisitor& visitor) const
 {
     visitor.Visit(*this);
 }
 
-void MouseJoint::Accept(JointVisitor& visitor)
+void TargetJoint::Accept(JointVisitor& visitor)
 {
     visitor.Visit(*this);
 }
 
-void MouseJoint::SetTarget(const Length2 target) noexcept
+void TargetJoint::SetTarget(const Length2 target) noexcept
 {
     assert(IsValid(target));
     if (m_targetA != target)
@@ -85,7 +85,7 @@ void MouseJoint::SetTarget(const Length2 target) noexcept
     }
 }
 
-Mass22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept
+Mass22 TargetJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept
 {
     // K    = [(1/m1 + 1/m2) * eye(2) - skew(r1) * invI1 * skew(r1) - skew(r2) * invI2 * skew(r2)]
     //      = [1/m1+1/m2     0    ] + invI1 * [r1.y*r1.y -r1.x*r1.y] + invI2 * [r1.y*r1.y -r1.x*r1.y]
@@ -106,7 +106,7 @@ Mass22 MouseJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noex
     return Invert(K);
 }
 
-void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
+void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                          const ConstraintSolverConf&)
 {
     auto& bodyConstraintB = At(bodies, GetBodyB());
@@ -164,7 +164,7 @@ void MouseJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     bodyConstraintB->SetVelocity(velB);
 }
 
-bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
+bool TargetJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
@@ -196,34 +196,34 @@ bool MouseJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     return incImpulse == Momentum2{};
 }
 
-bool MouseJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
+bool TargetJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const ConstraintSolverConf& conf) const
 {
     NOT_USED(bodies);
     NOT_USED(conf);
     return true;
 }
 
-Length2 MouseJoint::GetAnchorA() const
+Length2 TargetJoint::GetAnchorA() const
 {
     return GetTarget();
 }
 
-Length2 MouseJoint::GetAnchorB() const
+Length2 TargetJoint::GetAnchorB() const
 {
     return GetBodyB()? GetWorldPoint(*GetBodyB(), GetLocalAnchorB()): GetInvalid<Length2>();
 }
 
-Momentum2 MouseJoint::GetLinearReaction() const
+Momentum2 TargetJoint::GetLinearReaction() const
 {
     return m_impulse;
 }
 
-AngularMomentum MouseJoint::GetAngularReaction() const
+AngularMomentum TargetJoint::GetAngularReaction() const
 {
     return AngularMomentum{0};
 }
 
-bool MouseJoint::ShiftOrigin(const Length2 newOrigin)
+bool TargetJoint::ShiftOrigin(const Length2 newOrigin)
 {
     m_targetA -= newOrigin;
     return true;

@@ -32,7 +32,7 @@
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
@@ -263,7 +263,7 @@ TEST(World, CopyConstruction)
     world.CreateJoint(RopeJointConf{b4, b5});
     world.CreateJoint(MotorJointConf{b4, b5});
     world.CreateJoint(WheelJointConf{b4, b5, Length2{}, UnitVec::GetRight()});
-    world.CreateJoint(MouseJointConf{b4});
+    world.CreateJoint(TargetJointConf{b4});
     world.CreateJoint(GearJointConf{rj1, rj2});
 
     auto stepConf = StepConf{};
@@ -2747,7 +2747,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     }
 }
 
-TEST(World, MouseJointWontCauseTunnelling)
+TEST(World, TargetJointWontCauseTunnelling)
 {
     World world{};
     
@@ -2857,8 +2857,8 @@ TEST(World, MouseJointWontCauseTunnelling)
     BodyConf bodyConf;
     const auto spare_body = world.CreateBody(bodyConf);
 
-    const auto mouse_joint = [&]() {
-        MouseJointConf mjd;
+    const auto target_joint = [&]() {
+        TargetJointConf mjd;
         mjd.bodyA = spare_body;
         mjd.bodyB = ball_body;
         const auto ball_body_pos = ball_body->GetLocation();
@@ -2867,9 +2867,9 @@ TEST(World, MouseJointWontCauseTunnelling)
             GetY(ball_body_pos) + ball_radius / Real{2}
         };
         mjd.maxForce = Real(1000) * GetMass(*ball_body) * MeterPerSquareSecond;
-        return static_cast<MouseJoint*>(world.CreateJoint(mjd));
+        return static_cast<TargetJoint*>(world.CreateJoint(mjd));
     }();
-    ASSERT_NE(mouse_joint, nullptr);
+    ASSERT_NE(target_joint, nullptr);
 
     ball_body->SetAwake();
 
@@ -3058,7 +3058,7 @@ TEST(World, MouseJointWontCauseTunnelling)
         auto last_pos = ball_body->GetLocation();
         for (auto loops = unsigned{0};; ++loops)
         {
-            mouse_joint->SetTarget(Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
+            target_joint->SetTarget(Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
             angle += anglular_speed;
             distance += distance_speed;
 
@@ -3087,7 +3087,7 @@ TEST(World, MouseJointWontCauseTunnelling)
 
             if (loops > 50)
             {
-                if (GetX(mouse_joint->GetTarget()) < 0_m)
+                if (GetX(target_joint->GetTarget()) < 0_m)
                 {
                     if (GetX(ball_body->GetLocation()) >= GetX(last_pos))
                         break;                    
@@ -3097,7 +3097,7 @@ TEST(World, MouseJointWontCauseTunnelling)
                     if (GetX(ball_body->GetLocation()) <= GetX(last_pos))
                         break;
                 }
-                if (GetY(mouse_joint->GetTarget()) < 0_m)
+                if (GetY(target_joint->GetTarget()) < 0_m)
                 {
                     if (GetY(ball_body->GetLocation()) >= GetY(last_pos))
                         break;

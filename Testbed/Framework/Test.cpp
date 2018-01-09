@@ -296,7 +296,7 @@ static void Draw(Drawer& drawer, const Joint& joint)
         }
             break;
 
-        case JointType::Mouse:
+        case JointType::Target:
             // don't draw this
             break;
 
@@ -409,9 +409,9 @@ bool Test::Contains(const FixtureSet& fixtures, const Fixture* f) noexcept
 
 void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
 {
-    if (test->m_mouseJoint == &joint)
+    if (test->m_targetJoint == &joint)
     {
-        test->m_mouseJoint = nullptr;
+        test->m_targetJoint = nullptr;
     }
     else
     {
@@ -517,7 +517,7 @@ void Test::MouseDown(const Length2& p)
 {
     m_mouseWorld = p;
 
-    if (m_mouseJoint)
+    if (m_targetJoint)
     {
         return;
     }
@@ -542,11 +542,11 @@ void Test::MouseDown(const Length2& p)
         const auto body = (*(fixtures.begin()))->GetBody();
         if (body->GetType() == BodyType::Dynamic)
         {
-            auto md = MouseJointConf{};
+            auto md = TargetJointConf{};
             md.bodyB = body;
             md.target = p;
             md.maxForce = Real(10000.0f) * GetMass(*body) * MeterPerSquareSecond;
-            m_mouseJoint = static_cast<MouseJoint*>(m_world.CreateJoint(md));
+            m_targetJoint = static_cast<TargetJoint*>(m_world.CreateJoint(md));
             body->SetAwake();
         }
     }
@@ -579,7 +579,7 @@ void Test::ShiftMouseDown(const Length2& p)
 {
     m_mouseWorld = p;
 
-    if (m_mouseJoint)
+    if (m_targetJoint)
     {
         return;
     }
@@ -589,10 +589,10 @@ void Test::ShiftMouseDown(const Length2& p)
 
 void Test::MouseUp(const Length2& p)
 {
-    if (m_mouseJoint)
+    if (m_targetJoint)
     {
-        m_world.Destroy(m_mouseJoint);
-        m_mouseJoint = nullptr;
+        m_world.Destroy(m_targetJoint);
+        m_targetJoint = nullptr;
     }
 
     if (m_bombSpawning)
@@ -605,9 +605,9 @@ void Test::MouseMove(const Length2& p)
 {
     m_mouseWorld = p;
 
-    if (m_mouseJoint)
+    if (m_targetJoint)
     {
-        m_mouseJoint->SetTarget(p);
+        m_targetJoint->SetTarget(p);
     }
 }
 
@@ -1136,12 +1136,12 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     if (settings.pause)
     {
-        if ((settings.dt == 0) && m_mouseJoint)
+        if ((settings.dt == 0) && m_targetJoint)
         {
-            const auto bodyB = m_mouseJoint->GetBodyB();
-            const auto anchorB = m_mouseJoint->GetAnchorB();
+            const auto bodyB = m_targetJoint->GetBodyB();
+            const auto anchorB = m_targetJoint->GetAnchorB();
             const auto centerB = bodyB->GetLocation();
-            const auto destB = m_mouseJoint->GetTarget();
+            const auto destB = m_targetJoint->GetTarget();
             //m_points.clear();
             bodyB->SetTransform(destB - (anchorB - centerB), bodyB->GetAngle());
         }
@@ -1276,10 +1276,10 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
                              ImVec2(600, 100));
     }
 
-    if (m_mouseJoint)
+    if (m_targetJoint)
     {
-        const auto p1 = m_mouseJoint->GetAnchorB();
-        const auto p2 = m_mouseJoint->GetTarget();
+        const auto p1 = m_targetJoint->GetAnchorB();
+        const auto p2 = m_targetJoint->GetTarget();
 
         drawer.DrawPoint(p1, 4.0f, Color{0.0f, 1.0f, 0.0f});
         drawer.DrawPoint(p2, 4.0f, Color{0.0f, 1.0f, 0.0f});

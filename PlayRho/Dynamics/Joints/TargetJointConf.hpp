@@ -29,35 +29,35 @@
 namespace playrho {
 namespace d2 {
 
-class MouseJoint;
+class TargetJoint;
 class Body;
 
-/// @brief Mouse joint definition.
+/// @brief Target joint definition.
 /// @details This requires a world target point, tuning parameters, and the time step.
-struct MouseJointConf : public JointBuilder<MouseJointConf>
+struct TargetJointConf : public JointBuilder<TargetJointConf>
 {
     /// @brief Super type.
-    using super = JointBuilder<MouseJointConf>;
+    using super = JointBuilder<TargetJointConf>;
     
-    PLAYRHO_CONSTEXPR inline MouseJointConf() noexcept: super{JointType::Mouse} {}
+    PLAYRHO_CONSTEXPR inline TargetJointConf() noexcept: super{JointType::Target} {}
 
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR inline MouseJointConf(NonNull<Body*> b) noexcept: super{super{JointType::Mouse}.UseBodyB(b)}
+    PLAYRHO_CONSTEXPR inline TargetJointConf(NonNull<Body*> b) noexcept: super{super{JointType::Target}.UseBodyB(b)}
     {
         // Intentionally empty.
     }
     
     /// @brief Use value for target.
-    PLAYRHO_CONSTEXPR inline MouseJointConf& UseTarget(Length2 v) noexcept;
+    PLAYRHO_CONSTEXPR inline TargetJointConf& UseTarget(Length2 v) noexcept;
 
     /// @brief Use value for max force.
-    PLAYRHO_CONSTEXPR inline MouseJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
+    PLAYRHO_CONSTEXPR inline TargetJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
 
     /// @brief Use value for frequency.
-    PLAYRHO_CONSTEXPR inline MouseJointConf& UseFrequency(NonNegative<Frequency> v) noexcept;
+    PLAYRHO_CONSTEXPR inline TargetJointConf& UseFrequency(NonNegative<Frequency> v) noexcept;
 
     /// @brief Use value for damping ratio.
-    PLAYRHO_CONSTEXPR inline MouseJointConf& UseDampingRatio(NonNegative<Real> v) noexcept;
+    PLAYRHO_CONSTEXPR inline TargetJointConf& UseDampingRatio(NonNegative<Real> v) noexcept;
 
     /// The initial world target point. This is assumed
     /// to coincide with the body anchor initially.
@@ -80,33 +80,33 @@ struct MouseJointConf : public JointBuilder<MouseJointConf>
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 };
 
-PLAYRHO_CONSTEXPR inline MouseJointConf& MouseJointConf::UseTarget(Length2 v) noexcept
+PLAYRHO_CONSTEXPR inline TargetJointConf& TargetJointConf::UseTarget(Length2 v) noexcept
 {
     target = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline MouseJointConf& MouseJointConf::UseMaxForce(NonNegative<Force> v) noexcept
+PLAYRHO_CONSTEXPR inline TargetJointConf& TargetJointConf::UseMaxForce(NonNegative<Force> v) noexcept
 {
     maxForce = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline MouseJointConf& MouseJointConf::UseFrequency(NonNegative<Frequency> v) noexcept
+PLAYRHO_CONSTEXPR inline TargetJointConf& TargetJointConf::UseFrequency(NonNegative<Frequency> v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline MouseJointConf& MouseJointConf::UseDampingRatio(NonNegative<Real> v) noexcept
+PLAYRHO_CONSTEXPR inline TargetJointConf& TargetJointConf::UseDampingRatio(NonNegative<Real> v) noexcept
 {
     dampingRatio = v;
     return *this;
 }
 
 /// @brief Gets the definition data for the given joint.
-/// @relatedalso MouseJoint
-MouseJointConf GetMouseJointConf(const MouseJoint& joint) noexcept;
+/// @relatedalso TargetJoint
+TargetJointConf GetTargetJointConf(const TargetJoint& joint) noexcept;
 
 } // namespace d2
 } // namespace playrho

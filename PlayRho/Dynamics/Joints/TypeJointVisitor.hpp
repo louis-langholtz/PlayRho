@@ -78,14 +78,14 @@ public:
         m_writable = true;
     }
 
-    void Visit(const MouseJoint& /*joint*/) override
+    void Visit(const TargetJoint& /*joint*/) override
     {
-        m_type = JointType::Mouse;
+        m_type = JointType::Target;
     }
 
-    void Visit(MouseJoint& /*joint*/) override
+    void Visit(TargetJoint& /*joint*/) override
     {
-        m_type = JointType::Mouse;
+        m_type = JointType::Target;
         m_writable = true;
     }
     

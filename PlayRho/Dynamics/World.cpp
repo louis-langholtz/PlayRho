@@ -39,7 +39,7 @@
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
@@ -624,9 +624,9 @@ void World::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
             jointMap[&oldJoint] = Add(JointAtty::Create(def));
         }
         
-        void Visit(const MouseJoint& oldJoint) override
+        void Visit(const TargetJoint& oldJoint) override
         {
-            auto def = GetMouseJointConf(oldJoint);
+            auto def = GetTargetJointConf(oldJoint);
             def.bodyA = (def.bodyA)? bodyMap.at(def.bodyA): nullptr;
             def.bodyB = (def.bodyB)? bodyMap.at(def.bodyB): nullptr;
             jointMap[&oldJoint] = Add(JointAtty::Create(def));

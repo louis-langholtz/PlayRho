@@ -33,7 +33,7 @@ namespace d2 {
     class FrictionJoint;
     class GearJoint;
     class MotorJoint;
-    class MouseJoint;
+    class TargetJoint;
     class PrismaticJoint;
     class PulleyJoint;
     class RevoluteJoint;
@@ -67,7 +67,7 @@ namespace d2 {
     void Dump(const MotorJoint& joint, std::size_t index);
 
     /// @brief Dumps the joint to the log file.
-    void Dump(const MouseJoint& joint, std::size_t index);
+    void Dump(const TargetJoint& joint, std::size_t index);
 
     /// @brief Dumps the joint to the log file.
     void Dump(const PrismaticJoint& joint, std::size_t index);

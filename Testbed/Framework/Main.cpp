@@ -1551,7 +1551,7 @@ static void EntityUI(PulleyJoint& j)
     ImGui::LabelText("Ratio", "%f", static_cast<double>(j.GetRatio()));
 }
 
-static void EntityUI(MouseJoint& j)
+static void EntityUI(TargetJoint& j)
 {
     {
         const auto target = j.GetTarget();
@@ -1872,8 +1872,8 @@ public:
     void Visit(const PulleyJoint&) override {}
     void Visit(PulleyJoint& j) override { EntityUI(j); }
 
-    void Visit(const MouseJoint&) override {}
-    void Visit(MouseJoint& j) override { EntityUI(j); }
+    void Visit(const TargetJoint&) override {}
+    void Visit(TargetJoint& j) override { EntityUI(j); }
 
     void Visit(const GearJoint&) override {}
     void Visit(GearJoint& j) override { EntityUI(j); }

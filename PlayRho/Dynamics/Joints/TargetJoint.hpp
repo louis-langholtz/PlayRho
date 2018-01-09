@@ -23,34 +23,34 @@
 #define PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINT_HPP
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/MouseJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
 
 namespace playrho {
 namespace d2 {
 
-/// @brief Mouse Joint.
+/// @brief Target Joint.
 ///
-/// @details A mouse joint is used to make a point on a body track a
+/// @details A target joint is used to make a point on a body track a
 ///   specified world point. This a soft constraint with a maximum
 ///   force. This allows the constraint to stretch and without
 ///   applying huge forces.
 /// @note This joint is not documented in the manual because it was
 ///   developed to be used in the testbed. If you want to learn how to
-///   use the mouse joint, look at the testbed.
+///   use the target joint, look at the testbed.
 /// @note This structure is 120-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
 /// @ingroup JointsGroup
 ///
-class MouseJoint : public Joint
+class TargetJoint : public Joint
 {
 public:
 
     /// @brief Is the given definition okay.
-    static bool IsOkay(const MouseJointConf& def) noexcept;
+    static bool IsOkay(const TargetJointConf& def) noexcept;
 
     /// @brief Initializing constructor.
-    MouseJoint(const MouseJointConf& def);
+    TargetJoint(const TargetJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
@@ -118,42 +118,42 @@ private:
     LinearVelocity2 m_C; ///< Velocity constant.
 };
 
-inline Length2 MouseJoint::GetLocalAnchorB() const noexcept
+inline Length2 TargetJoint::GetLocalAnchorB() const noexcept
 {
     return m_localAnchorB;
 }
 
-inline Length2 MouseJoint::GetTarget() const noexcept
+inline Length2 TargetJoint::GetTarget() const noexcept
 {
     return m_targetA;
 }
 
-inline void MouseJoint::SetMaxForce(NonNegative<Force> force) noexcept
+inline void TargetJoint::SetMaxForce(NonNegative<Force> force) noexcept
 {
     m_maxForce = force;
 }
 
-inline NonNegative<Force> MouseJoint::GetMaxForce() const noexcept
+inline NonNegative<Force> TargetJoint::GetMaxForce() const noexcept
 {
     return m_maxForce;
 }
 
-inline void MouseJoint::SetFrequency(NonNegative<Frequency> hz) noexcept
+inline void TargetJoint::SetFrequency(NonNegative<Frequency> hz) noexcept
 {
     m_frequency = hz;
 }
 
-inline NonNegative<Frequency> MouseJoint::GetFrequency() const noexcept
+inline NonNegative<Frequency> TargetJoint::GetFrequency() const noexcept
 {
     return m_frequency;
 }
 
-inline void MouseJoint::SetDampingRatio(NonNegative<Real> ratio) noexcept
+inline void TargetJoint::SetDampingRatio(NonNegative<Real> ratio) noexcept
 {
     m_dampingRatio = ratio;
 }
 
-inline NonNegative<Real> MouseJoint::GetDampingRatio() const noexcept
+inline NonNegative<Real> TargetJoint::GetDampingRatio() const noexcept
 {
     return m_dampingRatio;
 }
