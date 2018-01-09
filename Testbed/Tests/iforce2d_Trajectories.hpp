@@ -262,18 +262,20 @@ public:
         for (auto i = 0; i < 300; ++i) { //5 seconds, should be long enough to hit something
             const auto trajectoryPosition = getTrajectoryPoint(startingPosition, startingVelocity, i * 1.0f);
             
-            if (i > 0) {
-                m_world.RayCast(lastTP, trajectoryPosition, [&](Fixture* f, ChildCounter,
-                                                                 Length2 p, UnitVec) {
+            if (i > 0)
+            {
+                d2::RayCast(m_world.GetTree(), RayCastInput{lastTP, trajectoryPosition, 1},
+                                [&](Fixture* f, ChildCounter, Length2 p, UnitVec) {
                     if (f->GetBody() == m_littleBox)
                     {
-                        return World::RayCastOpcode::IgnoreFixture;
+                        return RayCastOpcode::IgnoreFixture;
                     }
                     hit = true;
                     point = p;
-                    return World::RayCastOpcode::Terminate;
+                    return RayCastOpcode::Terminate;
                 });
-                if (hit) {
+                if (hit)
+                {
                     if (i % 2 == 0)
                     {
                         drawer.DrawSegment(trajectoryPosition, point, Color(1, 1, 0));

@@ -175,11 +175,12 @@ public:
         Length2 point;
         UnitVec normal;
 
-        m_world.RayCast(point1, point2, [&](Fixture* f, ChildCounter, Length2 p, UnitVec n) {
+        RayCast(m_world.GetTree(), RayCastInput{point1, point2, 1},
+                        [&](Fixture* f, ChildCounter, Length2 p, UnitVec n) {
             fixture = f;
             point = p;
             normal = n;
-            return World::RayCastOpcode::ClipRay;
+            return RayCastOpcode::ClipRay;
         });
 
         if (fixture)

@@ -30,6 +30,8 @@
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Collision.hpp>
+#include <PlayRho/Collision/RayCastInput.hpp>
+#include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Dynamics/Joints/MouseJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
@@ -75,7 +77,9 @@ TEST(World, ByteSize)
 #endif
             break;
         }
-        case 16: EXPECT_EQ(sizeof(World), std::size_t(320)); break;
+        case 16:
+            EXPECT_EQ(sizeof(World), std::size_t(272));
+            break;
         default: FAIL(); break;
     }
 }
@@ -183,9 +187,9 @@ TEST(World, Init)
         const auto p1 = Length2{0_m, 0_m};
         const auto p2 = Length2{100_m, 0_m};
         auto calls = 0;
-        world.RayCast(p1, p2, [&](Fixture*, ChildCounter, Length2, UnitVec) {
+        RayCast(world.GetTree(), RayCastInput{p1, p2, 1}, [&](Fixture*, ChildCounter, Length2, UnitVec) {
             ++calls;
-            return World::RayCastOpcode::ResetRay;
+            return RayCastOpcode::ResetRay;
         });
         EXPECT_EQ(calls, 0);
     }
@@ -618,7 +622,7 @@ TEST(World, RayCast)
 
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = world.RayCast(p2, p3,
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
                     [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
@@ -628,7 +632,7 @@ TEST(World, RayCast)
             {
                 ++foundOthers;
             }
-            return World::RayCastOpcode::ResetRay;
+            return RayCastOpcode::ResetRay;
         });
         EXPECT_FALSE(retval);
         EXPECT_EQ(foundOurs, 1);
@@ -641,7 +645,7 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = world.RayCast(p2, p3,
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
                     [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
@@ -651,7 +655,7 @@ TEST(World, RayCast)
             {
                 ++foundOthers;
             }
-            return World::RayCastOpcode::Terminate;
+            return RayCastOpcode::Terminate;
         });
         EXPECT_TRUE(retval);
         EXPECT_EQ(foundOurs, 1);
@@ -664,7 +668,7 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = world.RayCast(p2, p3,
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
           [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
@@ -674,7 +678,7 @@ TEST(World, RayCast)
             {
                 ++foundOthers;
             }
-            return World::RayCastOpcode::ResetRay;
+            return RayCastOpcode::ResetRay;
         });
         EXPECT_FALSE(retval);
         EXPECT_EQ(foundOurs, 0);

@@ -130,15 +130,26 @@ TEST(Body, ByteSize)
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(Body), std::size_t(108 + allSize));
-#else
-            EXPECT_EQ(sizeof(Body), std::size_t(120 + allSize));
-#endif
+#if defined(_WIN64)
             EXPECT_EQ(sizeof(Body), std::size_t(192));
+#elif defined(_WIN32)
+#if !defined(NDEBUG)
+            // Win32 debug
+            EXPECT_EQ(sizeof(Body), std::size_t(192));
+#else
+            // Win32 release
+            EXPECT_EQ(sizeof(Body), std::size_t(144));
+#endif
+#else
+            EXPECT_EQ(sizeof(Body), std::size_t(192));
+#endif
             break;
-        case  8: EXPECT_EQ(sizeof(Body), std::size_t(216 + allSize)); break;
-        case 16: EXPECT_EQ(sizeof(Body), std::size_t(496)); break;
+        case  8:
+            EXPECT_EQ(sizeof(Body), std::size_t(288));
+            break;
+        case 16:
+            EXPECT_EQ(sizeof(Body), std::size_t(496));
+            break;
         default: FAIL(); break;
     }
 }

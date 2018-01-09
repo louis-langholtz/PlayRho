@@ -19,7 +19,6 @@
 
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Common/GrowableStack.hpp>
-#include <PlayRho/Collision/RayCastOutput.hpp>
 
 #include <cstring>
 #include <algorithm>
@@ -821,65 +820,6 @@ void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& c
             }
         }
     }
-}
-
-bool RayCast(const DynamicTree& tree, RayCastInput input,
-             const DynamicTree::RayCastCallback& callback)
-{
-    const auto v = GetRevPerpendicular(GetUnitVector(input.p2 - input.p1, UnitVec::GetZero()));
-    const auto abs_v = Abs(v);
-    auto segmentAABB = d2::GetAABB(input);
-    
-    GrowableStack<DynamicTree::Size, 256> stack;
-    stack.push(tree.GetRootIndex());
-    while (!stack.empty())
-    {
-        const auto index = stack.top();
-        stack.pop();
-        if (index == DynamicTree::GetInvalidSize())
-        {
-            continue;
-        }
-        
-        const auto aabb = tree.GetAABB(index);
-        if (!TestOverlap(aabb, segmentAABB))
-        {
-            continue;
-        }
-        
-        // Separating axis for segment (Gino, p80).
-        // |dot(v, p1 - ctr)| > dot(|v|, extents)
-        const auto center = GetCenter(aabb);
-        const auto extents = GetExtents(aabb);
-        const auto separation = Abs(Dot(v, input.p1 - center)) - Dot(abs_v, extents);
-        if (separation > 0_m)
-        {
-            continue;
-        }
-        
-        if (DynamicTree::IsBranch(tree.GetHeight(index)))
-        {
-            const auto branchData = tree.GetBranchData(index);
-            stack.push(branchData.child1);
-            stack.push(branchData.child2);
-        }
-        else
-        {
-            assert(DynamicTree::IsLeaf(tree.GetHeight(index)));
-            const auto value = callback(input, index);
-            if (value == 0)
-            {
-                return true; // Callback has terminated the ray cast.
-            }
-            if (value > 0)
-            {
-                // Update segment bounding box.
-                input.maxFraction = value;
-                segmentAABB = d2::GetAABB(input);
-            }
-        }
-    }
-    return false;
 }
 
 } // namespace d2

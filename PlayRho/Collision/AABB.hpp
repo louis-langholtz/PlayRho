@@ -36,6 +36,8 @@ namespace playrho {
 
 namespace detail {
 
+template <std::size_t N> struct RayCastInput;
+
 /// @brief N-dimensional Axis Aligned Bounding Box.
 ///
 /// @details This is a concrete value class template for an N-dimensional axis aligned
@@ -455,10 +457,15 @@ AABB ComputeAABB(const Body& body);
 ///   of the AABB for child A of the shape of fixture A with the AABB for child B of
 ///   the shape of fixture B.
 AABB ComputeIntersectingAABB(const Fixture& fA, ChildCounter iA,
-                               const Fixture& fB, ChildCounter iB) noexcept;
+                             const Fixture& fB, ChildCounter iB) noexcept;
 
 /// @brief Computes the intersecting AABB for the given contact.
+/// @relatedalso Contact
 AABB ComputeIntersectingAABB(const Contact& contact);
+    
+/// @brief Gets the AABB for the given ray cast input data.
+/// @relatedalso playrho::detail::RayCastInput<2>
+AABB GetAABB(const playrho::detail::RayCastInput<2>& input) noexcept;
 
 } // namespace d2
 
