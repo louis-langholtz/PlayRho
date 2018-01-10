@@ -154,6 +154,19 @@ namespace playrho {
         return value;
     }
     
+    /// @brief Template function for visiting objects.
+    /// @note Specialize this function to tie in application specific handling for types which
+    ///   don't already have specialized handling.
+    /// @param object Object to visit.
+    /// @param userData Optionally provided user data.
+    template <typename T>
+    inline void Visit(const T& object, void* userData)
+    {
+        NOT_USED(object);
+        NOT_USED(userData);
+        // Intentionally does nothing by default.
+    }
+    
     /// @brief Gets the library defined name for the given type.
     /// @details Provides an interface to a function that can be specialized for getting
     ///   a C-style null-terminated array of characters that names the type.

@@ -199,54 +199,42 @@ void ShapeDrawer::Visit(const MultiShapeConf& shape)
 }
 
 namespace playrho {
-namespace d2 {
 
 template <>
-void DrawConf(const EdgeShapeConf& shape, void* userData) noexcept
+void Visit(const d2::EdgeShapeConf& shape, void* userData)
 {
     const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    // No op.
-    //std::cout << "Hello disk!\n";
     shapeDrawer->Visit(shape);
 }
 
 template <>
-void DrawConf(const DiskShapeConf& shape, void* userData) noexcept
+void Visit(const d2::DiskShapeConf& shape, void* userData)
 {
     const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    // No op.
-    //std::cout << "Hello disk!\n";
     shapeDrawer->Visit(shape);
 }
 
 template <>
-void DrawConf(const PolygonShapeConf& shape, void* userData) noexcept
+void Visit(const d2::PolygonShapeConf& shape, void* userData)
 {
     const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    // No op.
-    //std::cout << "Hello polygon!\n";
     shapeDrawer->Visit(shape);
 }
 
 template <>
-void DrawConf(const ChainShapeConf& shape, void* userData) noexcept
+void Visit(const d2::ChainShapeConf& shape, void* userData)
 {
     const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    // No op.
-    //std::cout << "Hello polygon!\n";
     shapeDrawer->Visit(shape);
 }
 
 template <>
-void DrawConf(const MultiShapeConf& shape, void* userData) noexcept
+void Visit(const d2::MultiShapeConf& shape, void* userData)
 {
     const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    // No op.
-    //std::cout << "Hello polygon!\n";
     shapeDrawer->Visit(shape);
 }
 
-} // namespace d2
 } // namespace playrho
 
 static void Draw(Drawer& drawer, const Fixture& fixture, const Color& color, bool skins)
@@ -254,7 +242,7 @@ static void Draw(Drawer& drawer, const Fixture& fixture, const Color& color, boo
     const auto xf = GetTransformation(fixture);
     auto shapeDrawer = ShapeDrawer{drawer, color, skins, xf};
     const auto shape = fixture.GetShape();
-    playrho::d2::Draw(shape, &shapeDrawer);
+    playrho::Visit(shape, &shapeDrawer);
 }
 
 static Color GetColor(const Body& body)

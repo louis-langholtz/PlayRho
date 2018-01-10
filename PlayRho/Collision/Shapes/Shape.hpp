@@ -31,6 +31,17 @@
 #include <utility>
 
 namespace playrho {
+
+namespace d2 {
+class Shape;
+} // namespace d2
+
+/// @brief Visits the given shape with the potentially non-null user data pointer.
+/// @note This is a specialization of the <code>Visit</code> function template for the
+///   <code>d2::Shape</code> class.
+template <>
+void Visit(const d2::Shape& shape, void* userData);
+
 namespace d2 {
 
 // Forward declare functions.
@@ -105,21 +116,7 @@ bool operator== (const Shape& lhs, const Shape& rhs) noexcept;
 /// @brief Inequality operator for shape to shape comparisons.
 bool operator!= (const Shape& lhs, const Shape& rhs) noexcept;
 
-/// @brief Template draw function.
-/// @param shapeConf Shape configuration object.
-/// @param userData Optionally provide user data.
-template <typename T>
-inline void DrawConf(const T& shapeConf, void* userData) noexcept
-{
-    NOT_USED(shapeConf);
-    NOT_USED(userData);
-    // No op.
-}
-
-/// @brief Draws the given shape with the given transformation.
-void Draw(const Shape& shape, void* userData) noexcept;
-
-// Now declare the shape class...
+// Now define the shape class...
     
 /// @defgroup PartsGroup Shape Classes
 /// @brief Classes for configuring shapes with material properties.
@@ -199,9 +196,9 @@ public:
         return shape.m_self->GetDensity_();
     }
     
-    friend void Draw(const Shape& shape, void* userData) noexcept
+    friend void Visit<Shape>(const Shape& shape, void* userData)
     {
-        return shape.m_self->Draw_(userData);
+        return shape.m_self->Visit_(userData);
     }
     
     friend const void* GetData(const Shape& shape) noexcept
@@ -255,7 +252,7 @@ private:
         virtual Real GetRestitution_() const noexcept = 0;
         
         /// @brief Draws the shape.
-        virtual void Draw_(void* userData) const noexcept = 0;
+        virtual void Visit_(void* userData) const = 0;
         
         /// @brief Equality checking method.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
@@ -325,9 +322,9 @@ private:
             return GetRestitution(data);
         }
         
-        void Draw_(void* userData) const noexcept override
+        void Visit_(void* userData) const override
         {
-            DrawConf(data, userData);
+            Visit(data, userData);
         }
         
         bool IsEqual_(const Concept& other) const noexcept override
