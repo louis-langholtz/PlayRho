@@ -33,18 +33,94 @@
 namespace playrho {
 namespace d2 {
 
-/// @brief Gets the friction of the given shape.
+// Forward declare functions.
+// Note that these may be friend functions but that declaring these within the class that
+// they're to be friends of, doesn't also declare their names within the namespace in terms
+// of lookup.
+
+/// @brief Gets the number of child primitives of the shape.
+/// @return Non-negative count.
+ChildCounter GetChildCount(const Shape& shape) noexcept;
+
+/// @brief Gets the "child" for the given index.
+/// @param shape Shape to get "child" shape of.
+/// @param index Index to a child element of the shape. Value must be less
+///   than the number of child primitives of the shape.
+/// @note The shape must remain in scope while the proxy is in use.
+/// @throws InvalidArgument if the given index is out of range.
+/// @sa GetChildCount
+DistanceProxy GetChild(const Shape& shape, ChildCounter index);
+
+/// @brief Gets the mass properties of this shape using its dimensions and density.
+/// @return Mass data for this shape.
+MassData GetMassData(const Shape& shape) noexcept;
+
+/// @brief Gets the coefficient of friction.
+/// @return Value of 0 or higher.
 Real GetFriction(const Shape& shape) noexcept;
 
-/// @brief Gets the restitution value of the given shape.
+/// @brief Gets the coefficient of restitution value of the given shape.
 Real GetRestitution(const Shape& shape) noexcept;
 
 /// @brief Gets the density of the given shape.
+/// @return Non-negative density (in mass per area).
 NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
 
 /// @brief Gets the vertex radius of the given shape.
+///
+/// @details This gets the radius from the vertex that the shape's "skin" should
+///   extend outward by. While any edges - line segments between multiple vertices -
+///   are straight, corners between them (the vertices) are rounded and treated
+///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
+///   therefore will be more prone to rolling or having other shapes more prone
+///   to roll off of them. Here's an image of a shape configured via a
+///   <code>PolygonShapeConf</code> with it's skin drawn:
+///
+/// @image html SkinnedPolygon.png
+///
+/// @note This must be a non-negative value.
+///
+/// @sa UseVertexRadius
+///
 NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
 
+/// @brief Gets a pointer to the underlying data.
+/// @note Provided for introspective purposes like visitation.
+/// @note Generally speaking, try to avoid using this method unless there's
+///   no other way to access the underlying data.
+const void* GetData(const Shape& shape) noexcept;
+
+/// @brief Visitor type alias for underlying shape configuration.
+using TypeInfoVisitor = std::function<void(const std::type_info& ti, const void* data)>;
+
+/// @brief Accepts a visitor.
+/// @details This is the "accept" method definition of a "visitor design pattern"
+///   for doing shape configuration specific types of processing for a constant shape.
+/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+void Accept(const Shape& shape, const TypeInfoVisitor& visitor);
+
+/// @brief Equality operator for shape to shape comparisons.
+bool operator== (const Shape& lhs, const Shape& rhs) noexcept;
+
+/// @brief Inequality operator for shape to shape comparisons.
+bool operator!= (const Shape& lhs, const Shape& rhs) noexcept;
+
+/// @brief Template draw function.
+/// @param shapeConf Shape configuration object.
+/// @param userData Optionally provide user data.
+template <typename T>
+inline void DrawConf(const T& shapeConf, void* userData) noexcept
+{
+    NOT_USED(shapeConf);
+    NOT_USED(userData);
+    // No op.
+}
+
+/// @brief Draws the given shape with the given transformation.
+void Draw(const Shape& shape, void* userData) noexcept;
+
+// Now declare the shape class...
+    
 /// @defgroup PartsGroup Shape Classes
 /// @brief Classes for configuring shapes with material properties.
 /// @details These are classes that specify physical characteristics of: shape,
@@ -67,10 +143,6 @@ NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
 class Shape
 {
 public:
-    
-    /// @brief Visitor type alias for underlying shape configuration.
-    using Visitor = std::function<void(const std::type_info& ti, const void* data)>;
-
     /// @brief Default constructor.
     /// @details This is a base class that shouldn't ever be directly instantiated.
     Shape() = delete;
@@ -92,99 +164,62 @@ public:
     /// @brief Move assignment operator.
     Shape& operator= (Shape&& other) = default;
 
-    /// @brief Gets the number of child primitives of the shape.
-    /// @return Non-negative count.
     friend ChildCounter GetChildCount(const Shape& shape) noexcept
     {
         return shape.m_self->GetChildCount_();
     }
 
-    /// @brief Gets the "child" for the given index.
-    /// @param shape Shape to get "child" shape of.
-    /// @param index Index to a child element of the shape. Value must be less
-    ///   than the number of child primitives of the shape.
-    /// @note The shape must remain in scope while the proxy is in use.
-    /// @throws InvalidArgument if the given index is out of range.
-    /// @sa GetChildCount
     friend DistanceProxy GetChild(const Shape& shape, ChildCounter index)
     {
         return shape.m_self->GetChild_(index);
     }
     
-    /// @brief Gets the mass properties of this shape using its dimensions and density.
-    /// @return Mass data for this shape.
     friend MassData GetMassData(const Shape& shape) noexcept
     {
         return shape.m_self->GetMassData_();
     }
     
-    /// @brief Gets the vertex radius.
-    ///
-    /// @details This gets the radius from the vertex that the shape's "skin" should
-    ///   extend outward by. While any edges - line segments between multiple vertices -
-    ///   are straight, corners between them (the vertices) are rounded and treated
-    ///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
-    ///   therefore will be more prone to rolling or having other shapes more prone
-    ///   to roll off of them. Here's an image of a shape configured via a
-    ///   <code>PolygonShapeConf</code> with it's skin drawn:
-    ///
-    /// @image html SkinnedPolygon.png
-    ///
-    /// @note This must be a non-negative value.
-    ///
-    /// @sa UseVertexRadius
-    ///
     friend NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
     {
         return shape.m_self->GetVertexRadius_();
     }
     
-    /// @brief Gets the coefficient of friction.
-    /// @return Value of 0 or higher.
     friend Real GetFriction(const Shape& shape) noexcept
     {
         return shape.m_self->GetFriction_();
     }
     
-    /// @brief Gets the coefficient of restitution.
     friend Real GetRestitution(const Shape& shape) noexcept
     {
         return shape.m_self->GetRestitution_();
     }
 
-    /// @brief Gets the density of this fixture.
-    /// @return Non-negative density (in mass per area).
     friend NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept
     {
         return shape.m_self->GetDensity_();
     }
     
-    /// @brief Gets a pointer to the underlying data.
-    /// @note Provided for introspective purposes like visitation.
-    /// @note Generally speaking, try to avoid using this method unless there's
-    ///   no other way to access the underlying data.
+    friend void Draw(const Shape& shape, void* userData) noexcept
+    {
+        return shape.m_self->Draw_(userData);
+    }
+    
     friend const void* GetData(const Shape& shape) noexcept
     {
         return shape.m_self->GetData_();
     }
     
-    /// @brief Accepts a visitor.
-    /// @details This is the "accept" method definition of a "visitor design pattern"
-    ///   for doing shape configuration specific types of processing for a constant shape.
-    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
-    friend void Accept(const Shape& shape, const Visitor& visitor)
+    friend void Accept(const Shape& shape, const TypeInfoVisitor& visitor)
     {
         const auto self = shape.m_self;
         visitor(self->GetTypeInfo_(), self->GetData_());
     }
     
-    /// @brief Equality operator for shape to shape comparisons.
     friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
     {
         return lhs.m_self == rhs.m_self || *lhs.m_self == *rhs.m_self;
     }
 
-    /// @brief Inequality operator for shape to shape comparisons.
     friend bool operator!= (const Shape& lhs, const Shape& rhs) noexcept
     {
         return !(lhs == rhs);
@@ -218,6 +253,9 @@ private:
         
         /// @brief Gets the restitution.
         virtual Real GetRestitution_() const noexcept = 0;
+        
+        /// @brief Draws the shape.
+        virtual void Draw_(void* userData) const noexcept = 0;
         
         /// @brief Equality checking method.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
@@ -287,6 +325,11 @@ private:
             return GetRestitution(data);
         }
         
+        void Draw_(void* userData) const noexcept override
+        {
+            DrawConf(data, userData);
+        }
+        
         bool IsEqual_(const Concept& other) const noexcept override
         {
             return (GetTypeInfo_() == other.GetTypeInfo_()) &&
@@ -311,7 +354,7 @@ private:
     std::shared_ptr<const Concept> m_self; ///< Self shared pointer.
 };
 
-// Free functions...
+// Forward declare any other related free functions...
 
 /// @brief Test a point for containment in the given shape.
 /// @param shape Shape to use for test.

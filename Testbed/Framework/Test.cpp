@@ -57,30 +57,6 @@ public:
         // Intentionally empty.
     }
     
-    void operator() (const std::type_info& ti, const void* data)
-    {
-        if (ti == typeid(DiskShapeConf))
-        {
-            Visit(*static_cast<const DiskShapeConf*>(data));
-        }
-        else if (ti == typeid(EdgeShapeConf))
-        {
-            Visit(*static_cast<const EdgeShapeConf*>(data));
-        }
-        else if (ti == typeid(PolygonShapeConf))
-        {
-            Visit(*static_cast<const PolygonShapeConf*>(data));
-        }
-        else if (ti == typeid(ChainShapeConf))
-        {
-            Visit(*static_cast<const ChainShapeConf*>(data));
-        }
-        else if (ti == typeid(MultiShapeConf))
-        {
-            Visit(*static_cast<const MultiShapeConf*>(data));
-        }
-    }
-    
     void Visit(const DiskShapeConf& shape);
     void Visit(const EdgeShapeConf& shape);
     void Visit(const PolygonShapeConf& shape);
@@ -222,14 +198,63 @@ void ShapeDrawer::Visit(const MultiShapeConf& shape)
     }
 }
 
+namespace playrho {
+namespace d2 {
+
+template <>
+void DrawConf(const EdgeShapeConf& shape, void* userData) noexcept
+{
+    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
+    // No op.
+    //std::cout << "Hello disk!\n";
+    shapeDrawer->Visit(shape);
+}
+
+template <>
+void DrawConf(const DiskShapeConf& shape, void* userData) noexcept
+{
+    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
+    // No op.
+    //std::cout << "Hello disk!\n";
+    shapeDrawer->Visit(shape);
+}
+
+template <>
+void DrawConf(const PolygonShapeConf& shape, void* userData) noexcept
+{
+    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
+    // No op.
+    //std::cout << "Hello polygon!\n";
+    shapeDrawer->Visit(shape);
+}
+
+template <>
+void DrawConf(const ChainShapeConf& shape, void* userData) noexcept
+{
+    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
+    // No op.
+    //std::cout << "Hello polygon!\n";
+    shapeDrawer->Visit(shape);
+}
+
+template <>
+void DrawConf(const MultiShapeConf& shape, void* userData) noexcept
+{
+    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
+    // No op.
+    //std::cout << "Hello polygon!\n";
+    shapeDrawer->Visit(shape);
+}
+
+} // namespace d2
+} // namespace playrho
+
 static void Draw(Drawer& drawer, const Fixture& fixture, const Color& color, bool skins)
 {
     const auto xf = GetTransformation(fixture);
     auto shapeDrawer = ShapeDrawer{drawer, color, skins, xf};
     const auto shape = fixture.GetShape();
-    Accept(shape, [&](const std::type_info& ti, const void* data) {
-        shapeDrawer(ti, data);
-    });
+    playrho::d2::Draw(shape, &shapeDrawer);
 }
 
 static Color GetColor(const Body& body)
