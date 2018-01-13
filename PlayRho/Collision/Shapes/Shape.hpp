@@ -32,12 +32,9 @@
 #include <typeinfo>
 
 namespace playrho {
-
 namespace d2 {
+
 class Shape;
-} // namespace d2
-
-namespace d2 {
 
 // Forward declare functions.
 // Note that these may be friend functions but that declaring these within the class that
@@ -89,6 +86,10 @@ NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
 /// @sa UseVertexRadius
 ///
 NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
+
+/// @brief Visits the given shape with the potentially non-null user data pointer.
+/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+void Visit(const Shape& shape, void* userData);
 
 /// @brief Gets a pointer to the underlying data.
 /// @note Provided for introspective purposes like visitation.
@@ -215,13 +216,9 @@ public:
         return shape.m_self->GetDensity_();
     }
     
-    /// @brief Visits the given shape with the potentially non-null user data pointer.
-    /// @note This is a specialization of the <code>Visit</code> function template for the
-    ///   <code>d2::Shape</code> class.
-    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
-    friend void Visit<Shape>(const Shape& shape, void* userData)
+    friend void Visit(const Shape& shape, void* userData)
     {
-        return shape.m_self->Visit_(userData);
+        shape.m_self->Visit_(userData);
     }
     
     friend const void* GetData(const Shape& shape) noexcept
@@ -353,7 +350,7 @@ private:
         
         void Visit_(void* userData) const override
         {
-            Visit(data, userData);
+            ::playrho::Visit(data, userData);
         }
         
         bool IsEqual_(const Concept& other) const noexcept override
@@ -382,7 +379,7 @@ private:
     std::shared_ptr<const Concept> m_self; ///< Self shared pointer.
 };
 
-// Forward declare any other related free functions...
+// Related free functions...
 
 /// @brief Test a point for containment in the given shape.
 /// @param shape Shape to use for test.
@@ -394,6 +391,17 @@ private:
 bool TestPoint(const Shape& shape, Length2 point) noexcept;
 
 } // namespace d2
+
+/// @brief Visits the given shape with the potentially non-null user data pointer.
+/// @note This is a specialization of the <code>Visit</code> function template for the
+///   <code>d2::Shape</code> class.
+/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+template <>
+inline void Visit<d2::Shape>(const d2::Shape& shape, void* userData)
+{
+    return d2::Visit(shape, userData);
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
