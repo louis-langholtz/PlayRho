@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <typeinfo>
@@ -69,6 +69,19 @@ TEST(PolygonShapeConf, GetInvalidChildThrows)
     ASSERT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_NO_THROW(GetChild(foo, 0));
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
+}
+
+TEST(PolygonShapeConf, Visit)
+{
+    const auto s = Shape{PolygonShapeConf{}};
+    auto data = UnitTestsVisitorData{};
+    ASSERT_EQ(data.visitedDisk, 0);
+    ASSERT_EQ(data.visitedEdge, 0);
+    ASSERT_EQ(data.visitedPolygon, 0);
+    ASSERT_EQ(data.visitedChain, 0);
+    ASSERT_EQ(data.visitedMulti, 0);
+    Visit(s, &data);
+    EXPECT_EQ(data.visitedPolygon, 1);
 }
 
 TEST(PolygonShapeConf, Accept)

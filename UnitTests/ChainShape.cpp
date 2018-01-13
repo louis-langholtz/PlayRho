@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <array>
@@ -78,6 +78,23 @@ TEST(ChainShapeConf, GetInvalidChildThrows)
     ASSERT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_THROW(GetChild(foo, 0), InvalidArgument);
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
+}
+
+TEST(ChainShapeConf, Visit)
+{
+    const auto s = Shape{ChainShapeConf{}};
+    auto data = UnitTestsVisitorData{};
+    ASSERT_EQ(data.visitedDisk, 0);
+    ASSERT_EQ(data.visitedEdge, 0);
+    ASSERT_EQ(data.visitedPolygon, 0);
+    ASSERT_EQ(data.visitedChain, 0);
+    ASSERT_EQ(data.visitedMulti, 0);
+    Visit(s, &data);
+    EXPECT_EQ(data.visitedDisk, 0);
+    EXPECT_EQ(data.visitedEdge, 0);
+    EXPECT_EQ(data.visitedPolygon, 0);
+    EXPECT_EQ(data.visitedChain, 1);
+    EXPECT_EQ(data.visitedMulti, 0);
 }
 
 TEST(ChainShapeConf, Accept)

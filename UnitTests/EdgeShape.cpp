@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <typeinfo>
@@ -50,6 +50,19 @@ TEST(EdgeShapeConf, GetInvalidChildThrows)
     ASSERT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_NO_THROW(GetChild(foo, 0));
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
+}
+
+TEST(EdgeShapeConf, Visit)
+{
+    const auto s = Shape{EdgeShapeConf{}};
+    auto data = UnitTestsVisitorData{};
+    ASSERT_EQ(data.visitedDisk, 0);
+    ASSERT_EQ(data.visitedEdge, 0);
+    ASSERT_EQ(data.visitedPolygon, 0);
+    ASSERT_EQ(data.visitedChain, 0);
+    ASSERT_EQ(data.visitedMulti, 0);
+    Visit(s, &data);
+    EXPECT_EQ(data.visitedEdge, 1);
 }
 
 TEST(EdgeShapeConf, Accept)
