@@ -37,13 +37,6 @@ namespace d2 {
 class Shape;
 } // namespace d2
 
-/// @brief Visits the given shape with the potentially non-null user data pointer.
-/// @note This is a specialization of the <code>Visit</code> function template for the
-///   <code>d2::Shape</code> class.
-/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
-template <>
-void Visit(const d2::Shape& shape, void* userData);
-
 namespace d2 {
 
 // Forward declare functions.
@@ -222,6 +215,10 @@ public:
         return shape.m_self->GetDensity_();
     }
     
+    /// @brief Visits the given shape with the potentially non-null user data pointer.
+    /// @note This is a specialization of the <code>Visit</code> function template for the
+    ///   <code>d2::Shape</code> class.
+    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
     friend void Visit<Shape>(const Shape& shape, void* userData)
     {
         return shape.m_self->Visit_(userData);
