@@ -181,6 +181,7 @@
 		47928F351E5FE19C00EE6E9E /* BodyConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F341E5FE19C00EE6E9E /* BodyConstraint.cpp */; };
 		47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F361E66539000EE6E9E /* FrictionJoint.cpp */; };
 		47928F391E66586400EE6E9E /* DistanceJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F381E66586400EE6E9E /* DistanceJoint.cpp */; };
+		47928F5D200ABCAE00A5DD5B /* double.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47928F5C200ABCAE00A5DD5B /* double.cpp */; };
 		479B63C01ED8B64300D49BC7 /* BoundedValue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 479B63BD1ED8B64300D49BC7 /* BoundedValue.hpp */; };
 		479B63C31ED9CAC300D49BC7 /* BoundedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */; };
 		47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AB01B91D6FA40C0084D721 /* Dump.cpp */; };
@@ -568,6 +569,7 @@
 		47928F361E66539000EE6E9E /* FrictionJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrictionJoint.cpp; sourceTree = "<group>"; };
 		47928F381E66586400EE6E9E /* DistanceJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceJoint.cpp; sourceTree = "<group>"; };
 		47928F5A2009E83500A5DD5B /* UnitTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UnitTests.hpp; sourceTree = "<group>"; };
+		47928F5C200ABCAE00A5DD5B /* double.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = double.cpp; sourceTree = "<group>"; };
 		479B63BD1ED8B64300D49BC7 /* BoundedValue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BoundedValue.hpp; sourceTree = "<group>"; };
 		479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoundedValue.cpp; sourceTree = "<group>"; };
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
@@ -816,6 +818,7 @@
 				474BC3F91D41278800447DCD /* DistanceProxy.cpp */,
 				47AB01B91D6FA40C0084D721 /* Dump.cpp */,
 				4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */,
+				47928F5C200ABCAE00A5DD5B /* double.cpp */,
 				47D61F771F1FE3B700E702BD /* EdgeShape.cpp */,
 				474BC3FA1D41278800447DCD /* Epsilon.cpp */,
 				475931D11F26ABBD009BACA3 /* Filter.cpp */,
@@ -1630,6 +1633,7 @@
 				47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */,
 				4734B2361DC39F3E00F15E29 /* SimplexEdge.cpp in Sources */,
 				4731DDFA1DC7C9B000E7F931 /* Simplex.cpp in Sources */,
+				47928F5D200ABCAE00A5DD5B /* double.cpp in Sources */,
 				47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */,
 				472724231E310BB400C64921 /* Real.cpp in Sources */,
 				47FFD0FB1DAC3EFC000D6D0E /* VelocityConstraint.cpp in Sources */,
@@ -1972,7 +1976,7 @@
 				LD_GENERATE_MAP_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+                OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx;
 				USE_HEADERMAP = NO;
 			};
@@ -2043,9 +2047,9 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
-				LLVM_LTO = NO;
+                LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+                OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx;
 				USE_HEADERMAP = NO;
 			};

@@ -593,6 +593,9 @@ TEST(World, RayCast)
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     ASSERT_NE(b1->CreateFixture(Shape{DiskShapeConf{0.1_m}}), nullptr);
 
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseLocation(Length2{-100_m, -100_m}));
+    ASSERT_NE(b2->CreateFixture(Shape{EdgeShapeConf{Length2{}, Length2{-20_m, -20_m}}}), nullptr);
+
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, nullptr);
     ASSERT_EQ(body->GetType(), BodyType::Dynamic);
@@ -752,6 +755,16 @@ TEST(World, RayCast)
         EXPECT_FALSE(retval);
         EXPECT_EQ(foundOurs, 0);
         EXPECT_EQ(foundOthers, 0);
+    }
+    {
+        auto found = 0;
+        const auto rci = RayCastInput{Length2{-100_m, -101_m}, Length2{-120_m, -121_m}, Real{0.9f}};
+        const auto retval = RayCast(world.GetTree(), rci, [&](Fixture*, ChildCounter, Length2, UnitVec) {
+            ++found;
+            return RayCastOpcode::Terminate;
+        });
+        EXPECT_FALSE(retval);
+        EXPECT_EQ(found, 0);
     }
 }
 

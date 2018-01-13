@@ -90,6 +90,10 @@ TEST(MultiShapeConf, Visit)
     ASSERT_EQ(data.visitedChain, 0);
     ASSERT_EQ(data.visitedMulti, 0);
     Visit(s, &data);
+    EXPECT_EQ(data.visitedDisk, 0);
+    EXPECT_EQ(data.visitedEdge, 0);
+    EXPECT_EQ(data.visitedPolygon, 0);
+    EXPECT_EQ(data.visitedChain, 0);
     EXPECT_EQ(data.visitedMulti, 1);
 }
 
