@@ -1313,9 +1313,9 @@ void Test::RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerI
     m_handledKeys.push_back(std::make_pair(KeyActionMods{key, action, mods}, id));
 }
 
-PLAYRHO_CONSTEXPR const auto RAND_LIMIT = 32767;
+constexpr const auto RAND_LIMIT = 32767;
 
-Real testbed::RandomFloat()
+Real RandomFloat()
 {
     auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
     r /= RAND_LIMIT;
@@ -1323,7 +1323,7 @@ Real testbed::RandomFloat()
     return r;
 }
 
-Real testbed::RandomFloat(Real lo, Real hi)
+Real RandomFloat(Real lo, Real hi)
 {
     auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
     r /= RAND_LIMIT;
