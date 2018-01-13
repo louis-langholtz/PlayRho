@@ -39,7 +39,7 @@ public:
         const auto a = 0.5_m;
         const auto h = Length2{0_m, a};
         const auto root = AddNode(ground, Length2{}, 0, 3.0f, a,
-                                  PolygonShapeConf{}.UseDensity(density).SetAsBox(a / 4, a));
+                                  Shape{PolygonShapeConf{}.UseDensity(density).SetAsBox(a / 4, a)});
 
         auto jointConf = RevoluteJointConf{};
         jointConf.bodyA = ground;

@@ -75,7 +75,7 @@ TEST(Fixture, CreateMatchesConf)
 
 TEST(Fixture, SetSensor)
 {
-    const auto shapeA = DiskShapeConf{};
+    const auto shapeA = Shape{DiskShapeConf{}};
     const auto bodyCtrPos = Length2(1_m, 2_m);
     
     World world;
@@ -91,7 +91,7 @@ TEST(Fixture, SetSensor)
 
 TEST(Fixture, TestPointFreeFunction)
 {
-    const auto shapeA = DiskShapeConf{};
+    const auto shapeA = Shape{DiskShapeConf{}};
     const auto bodyCtrPos = Length2(1_m, 2_m);
 
     World world;
@@ -103,7 +103,7 @@ TEST(Fixture, TestPointFreeFunction)
 
 TEST(Fixture, SetAwakeFreeFunction)
 {
-    const auto shapeA = DiskShapeConf{};
+    const auto shapeA = Shape{DiskShapeConf{}};
 
     World world;
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));

@@ -180,7 +180,7 @@ TEST(RayCastOutput, RayCastShapeFF)
     const auto maxFraction = Real(1);
     const auto input = RayCastInput{p1, p2, maxFraction};
     const auto xfm = Transform_identity;
-    const auto output = RayCast(DiskShapeConf{1_m}, ChildCounter{0}, input, xfm);
+    const auto output = RayCast(Shape{DiskShapeConf{1_m}}, ChildCounter{0}, input, xfm);
     EXPECT_TRUE(output.has_value());
     EXPECT_EQ(output->normal, d2::UnitVec::GetRight());
     EXPECT_NEAR(static_cast<double>(output->fraction), 0.75, 0.01);

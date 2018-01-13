@@ -26,9 +26,10 @@
 #include <utility>
 #include "imgui.h"
 
-using namespace testbed;
 using namespace playrho;
 using namespace playrho::d2;
+
+namespace testbed {
 
 static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
 {
@@ -48,94 +49,7 @@ static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, 
     }
 }
 
-class ShapeDrawer
-{
-public:
-    ShapeDrawer(Drawer& d, Color c, bool s, Transformation t):
-        drawer{d}, color{c}, skins{s}, xf{t}
-    {
-        // Intentionally empty.
-    }
-    
-    void Visit(const DiskShapeConf& shape);
-    void Visit(const EdgeShapeConf& shape);
-    void Visit(const PolygonShapeConf& shape);
-    void Visit(const ChainShapeConf& shape);
-    void Visit(const MultiShapeConf& shape);
-
-    void Draw(const DistanceProxy& proxy);
-
-    Drawer& drawer;
-    Color color;
-    bool skins;
-    Transformation xf;
-};
-
-void ShapeDrawer::Visit(const DiskShapeConf& shape)
-{
-    const auto center = Transform(shape.GetLocation(), xf);
-    const auto radius = shape.GetRadius();
-    const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
-    drawer.DrawSolidCircle(center, radius, fillColor);
-    drawer.DrawCircle(center, radius, color);
-
-    // Draw a line fixed in the circle to animate rotation.
-    const auto axis = Rotate(Vec2{Real{1}, Real{0}}, xf.q);
-    drawer.DrawSegment(center, center + radius * axis, color);
-}
-
-void ShapeDrawer::Visit(const EdgeShapeConf& shape)
-{
-    const auto v1 = Transform(shape.GetVertexA(), xf);
-    const auto v2 = Transform(shape.GetVertexB(), xf);
-    drawer.DrawSegment(v1, v2, color);
-
-    if (skins)
-    {
-        const auto r = GetVertexRadius(shape);
-        if (r > 0_m)
-        {
-            const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
-            const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
-            const auto offset = worldNormal0 * r;
-            drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
-            drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
-
-            const auto angle0 = GetAngle(worldNormal0);
-            const auto angle1 = GetAngle(-worldNormal0);
-            DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
-            DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
-        }
-    }
-}
-
-void ShapeDrawer::Visit(const ChainShapeConf& shape)
-{
-    const auto count = shape.GetVertexCount();
-    const auto r = GetVertexRadius(shape);
-    const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
-
-    auto v1 = Transform(shape.GetVertex(0), xf);
-    for (auto i = decltype(count){1}; i < count; ++i)
-    {
-        const auto v2 = Transform(shape.GetVertex(i), xf);
-        drawer.DrawSegment(v1, v2, color);
-        if (skins && r > 0_m)
-        {
-            const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
-            const auto offset = worldNormal0 * r;
-            drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
-            drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
-            const auto angle0 = GetAngle(worldNormal0);
-            const auto angle1 = GetAngle(-worldNormal0);
-            DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
-            DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
-        }
-        v1 = v2;
-    }
-}
-
-void ShapeDrawer::Draw(const DistanceProxy& shape)
+static void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, Transformation xf)
 {
     const auto vertexCount = shape.GetVertexCount();
     auto vertices = std::vector<Length2>(vertexCount);
@@ -146,12 +60,12 @@ void ShapeDrawer::Draw(const DistanceProxy& shape)
     const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
     drawer.DrawSolidPolygon(&vertices[0], vertexCount, fillColor);
     drawer.DrawPolygon(&vertices[0], vertexCount, color);
-
+    
     if (!skins)
     {
         return;
     }
-
+    
     const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
     const auto r = GetVertexRadius(shape);
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
@@ -184,65 +98,112 @@ void ShapeDrawer::Draw(const DistanceProxy& shape)
     }
 }
 
-void ShapeDrawer::Visit(const PolygonShapeConf& shape)
+void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, Transformation xf)
 {
-    Draw(GetChild(shape, 0));
+    const auto center = Transform(shape.GetLocation(), xf);
+    const auto radius = shape.GetRadius();
+    const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
+    drawer.DrawSolidCircle(center, radius, fillColor);
+    drawer.DrawCircle(center, radius, color);
+
+    // Draw a line fixed in the circle to animate rotation.
+    const auto axis = Rotate(Vec2{Real{1}, Real{0}}, xf.q);
+    drawer.DrawSegment(center, center + radius * axis, color);
 }
 
-void ShapeDrawer::Visit(const MultiShapeConf& shape)
+void Draw(Drawer& drawer, const EdgeShapeConf& shape, Color color, bool skins, Transformation xf)
+{
+    const auto v1 = Transform(shape.GetVertexA(), xf);
+    const auto v2 = Transform(shape.GetVertexB(), xf);
+    drawer.DrawSegment(v1, v2, color);
+
+    if (skins)
+    {
+        const auto r = GetVertexRadius(shape);
+        if (r > 0_m)
+        {
+            const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
+            const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
+            const auto offset = worldNormal0 * r;
+            drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
+            drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
+
+            const auto angle0 = GetAngle(worldNormal0);
+            const auto angle1 = GetAngle(-worldNormal0);
+            DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
+            DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
+        }
+    }
+}
+
+void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins, Transformation xf)
+{
+    const auto count = shape.GetVertexCount();
+    const auto r = GetVertexRadius(shape);
+    const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
+
+    auto v1 = Transform(shape.GetVertex(0), xf);
+    for (auto i = decltype(count){1}; i < count; ++i)
+    {
+        const auto v2 = Transform(shape.GetVertex(i), xf);
+        drawer.DrawSegment(v1, v2, color);
+        if (skins && r > 0_m)
+        {
+            const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
+            const auto offset = worldNormal0 * r;
+            drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
+            drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
+            const auto angle0 = GetAngle(worldNormal0);
+            const auto angle1 = GetAngle(-worldNormal0);
+            DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
+            DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
+        }
+        v1 = v2;
+    }
+}
+
+void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins, Transformation xf)
+{
+    Draw(drawer, GetChild(shape, 0), color, skins, xf);
+}
+
+void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins, Transformation xf)
 {
     const auto count = GetChildCount(shape);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
-        Draw(GetChild(shape, i));
+        Draw(drawer, GetChild(shape, i), color, skins, xf);
     }
 }
-
-namespace playrho {
-
-template <>
-void Visit(const d2::EdgeShapeConf& shape, void* userData)
-{
-    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    shapeDrawer->Visit(shape);
-}
-
-template <>
-void Visit(const d2::DiskShapeConf& shape, void* userData)
-{
-    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    shapeDrawer->Visit(shape);
-}
-
-template <>
-void Visit(const d2::PolygonShapeConf& shape, void* userData)
-{
-    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    shapeDrawer->Visit(shape);
-}
-
-template <>
-void Visit(const d2::ChainShapeConf& shape, void* userData)
-{
-    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    shapeDrawer->Visit(shape);
-}
-
-template <>
-void Visit(const d2::MultiShapeConf& shape, void* userData)
-{
-    const auto shapeDrawer = static_cast<ShapeDrawer*>(userData);
-    shapeDrawer->Visit(shape);
-}
-
-} // namespace playrho
 
 static void Draw(Drawer& drawer, const Fixture& fixture, const Color& color, bool skins)
 {
     const auto xf = GetTransformation(fixture);
-    auto shapeDrawer = ShapeDrawer{drawer, color, skins, xf};
-    const auto shape = fixture.GetShape();
-    playrho::Visit(shape, &shapeDrawer);
+#if 0
+    auto visitor = FunctionalVisitor{};
+    visitor.visitDisk = [&](const d2::DiskShapeConf& shape) {
+        Draw(drawer, shape, color, xf);
+    };
+    visitor.visitEdge = [&](const d2::EdgeShapeConf& shape) {
+        Draw(drawer, shape, color, skins, xf);
+    };
+    visitor.visitPolygon = [&](const d2::PolygonShapeConf& shape) {
+        Draw(drawer, shape, color, skins, xf);
+    };
+    visitor.visitChain = [&](const d2::ChainShapeConf& shape) {
+        Draw(drawer, shape, color, skins, xf);
+    };
+    visitor.visitMulti = [&](const d2::MultiShapeConf& shape) {
+        Draw(drawer, shape, color, skins, xf);
+    };
+#else
+    auto visitor = VisitorData{};
+    visitor.drawer = &drawer;
+    visitor.xf = xf;
+    visitor.color = color;
+    visitor.skins = skins;
+#endif
+    playrho::Visit(fixture.GetShape(), &visitor);
 }
 
 static Color GetColor(const Body& body)
@@ -1369,4 +1330,6 @@ Real testbed::RandomFloat(Real lo, Real hi)
     r = (hi - lo) * r + lo;
     return r;
 }
+    
+} // namespace testbed
 

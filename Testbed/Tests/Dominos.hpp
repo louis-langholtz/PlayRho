@@ -31,13 +31,13 @@ public:
     Dominos()
     {
         const auto b1 = m_world.CreateBody();
-        b1->CreateFixture(EdgeShapeConf(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m));
+        b1->CreateFixture(Shape{EdgeShapeConf(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)});
 
         {
             BodyConf bd;
             bd.location = Vec2(-1.5f, 10.0f) * 1_m;
             const auto ground = m_world.CreateBody(bd);
-            ground->CreateFixture(PolygonShapeConf{6_m, 0.25_m});
+            ground->CreateFixture(Shape{PolygonShapeConf{6_m, 0.25_m}});
         }
 
         {
@@ -64,7 +64,7 @@ public:
         }
 
         const auto b2 = m_world.CreateBody(BodyConf{}.UseLocation(Vec2(-7.0f, 4.0f) * 1_m));
-        b2->CreateFixture(PolygonShapeConf{}.SetAsBox(0.25_m, 1.5_m));
+        b2->CreateFixture(Shape{PolygonShapeConf{}.SetAsBox(0.25_m, 1.5_m)});
 
         Body* b3;
         {
@@ -73,7 +73,7 @@ public:
             bd.location = Vec2(-0.9f, 1.0f) * 1_m;
             bd.angle = -0.15_rad;
             b3 = m_world.CreateBody(bd);
-            b3->CreateFixture(PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(6_m, 0.125_m));
+            b3->CreateFixture(Shape{PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(6_m, 0.125_m)});
         }
 
         m_world.CreateJoint(RevoluteJointConf{b1, b3, Vec2(-2, 1) * 1_m}.UseCollideConnected(true));
@@ -84,7 +84,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f, 15.0f) * 1_m;
             b4 = m_world.CreateBody(bd);
-            b4->CreateFixture(PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m));
+            b4->CreateFixture(Shape{PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m)});
         }
 
         m_world.CreateJoint(RevoluteJointConf{b2, b4, Vec2(-7, 15) * 1_m}.UseCollideConnected(true));
@@ -115,7 +115,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(6.5f, 4.1f) * 1_m;
             b6 = m_world.CreateBody(bd);
-            b6->CreateFixture(PolygonShapeConf(1_m, 0.1_m).UseDensity(30_kgpm2));
+            b6->CreateFixture(Shape{PolygonShapeConf(1_m, 0.1_m).UseDensity(30_kgpm2)});
         }
 
         m_world.CreateJoint(RevoluteJointConf{b5, b6, Vec2(7.5f, 4.0f) * 1_m}

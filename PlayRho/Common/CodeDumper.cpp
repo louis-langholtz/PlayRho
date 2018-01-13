@@ -59,92 +59,6 @@ namespace {
         va_end(args);
     }
     
-    class ShapeDumper
-    {
-    public:
-        void operator() (const std::type_info& ti, const void* data)
-        {
-            if (ti == typeid(DiskShapeConf))
-            {
-                Visit(*static_cast<const DiskShapeConf*>(data));
-            }
-            else if (ti == typeid(EdgeShapeConf))
-            {
-                Visit(*static_cast<const EdgeShapeConf*>(data));
-            }
-            else if (ti == typeid(PolygonShapeConf))
-            {
-                Visit(*static_cast<const PolygonShapeConf*>(data));
-            }
-            else if (ti == typeid(ChainShapeConf))
-            {
-                Visit(*static_cast<const ChainShapeConf*>(data));
-            }
-            else if (ti == typeid(MultiShapeConf))
-            {
-                Visit(*static_cast<const MultiShapeConf*>(data));
-            }
-        }
-
-        void Visit(const DiskShapeConf& shape);
-        void Visit(const EdgeShapeConf& shape);
-        void Visit(const PolygonShapeConf& shape);
-        void Visit(const ChainShapeConf& shape);
-        void Visit(const MultiShapeConf& shape);
-    };
-    
-    void ShapeDumper::Visit(const DiskShapeConf& s)
-    {
-        log("    DiskShape shape;\n");
-        log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.GetRadius())));
-        log("    shape.m_p = Vec2(%.15lef, %.15lef);\n",
-            static_cast<double>(StripUnit(Get<0>(s.GetLocation()))),
-            static_cast<double>(StripUnit(Get<1>(s.GetLocation()))));
-    }
-    
-    void ShapeDumper::Visit(const EdgeShapeConf& s)
-    {
-        log("    EdgeShape shape;\n");
-        log("    shape.m_radius = %.15lef;\n", static_cast<double>(StripUnit(s.vertexRadius)));
-        log("    shape.m_vertex1.Set(%.15lef, %.15lef);\n",
-            static_cast<double>(StripUnit(Get<0>(s.GetVertexA()))),
-            static_cast<double>(StripUnit(Get<1>(s.GetVertexA()))));
-        log("    shape.m_vertex2.Set(%.15lef, %.15lef);\n",
-            static_cast<double>(StripUnit(Get<0>(s.GetVertexB()))),
-            static_cast<double>(StripUnit(Get<1>(s.GetVertexB()))));
-    }
-    
-    void ShapeDumper::Visit(const PolygonShapeConf& s)
-    {
-        const auto vertexCount = s.GetVertexCount();
-        log("    PolygonShape shape;\n");
-        log("    Vec2 vs[%d];\n", vertexCount);
-        for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-        {
-            log("    vs[%d].Set(%.15lef, %.15lef);\n", i,
-                static_cast<double>(StripUnit(Get<0>(s.GetVertex(i)))),
-                static_cast<double>(StripUnit(Get<1>(s.GetVertex(i)))));
-        }
-        log("    shape.Set(vs, %d);\n", vertexCount);
-    }
-    
-    void ShapeDumper::Visit(const ChainShapeConf& s)
-    {
-        log("    ChainShape shape;\n");
-        log("    Vec2 vs[%d];\n", s.GetVertexCount());
-        for (auto i = decltype(s.GetVertexCount()){0}; i < s.GetVertexCount(); ++i)
-        {
-            log("    vs[%d].Set(%.15lef, %.15lef);\n", i,
-                static_cast<double>(StripUnit(Get<0>(s.GetVertex(i)))),
-                static_cast<double>(StripUnit(Get<1>(s.GetVertex(i)))));
-        }
-        log("    shape.CreateChain(vs, %d);\n", s.GetVertexCount());
-    }
-
-    void ShapeDumper::Visit(const MultiShapeConf&)
-    {
-        // TODO
-    }
 }
 
 void Dump(const World& world)
@@ -267,13 +181,12 @@ void Dump(const Fixture& fixture, std::size_t bodyIndex)
         fixture.GetFilterData().maskBits);
     log("    fd.filter.groupIndex = Filter::index_type(%d);\n",
         fixture.GetFilterData().groupIndex);
-    
+#if 0
     const auto shape = fixture.GetShape();
-    ShapeDumper shapeDumper;
-    Accept(shape, [&](const std::type_info& ti, const void* data) {
-        shapeDumper(ti, data);
-    });
-    
+    std::ostringstream os;
+    os << shape << "\n";
+    log(os.str().c_str());
+#endif
     log("\n");
     log("    fd.shape = &shape;\n");
     log("\n");

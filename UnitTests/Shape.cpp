@@ -24,6 +24,7 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 #include <chrono>
+#include <typeinfo>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -43,6 +44,57 @@ TEST(Shape, ByteSize)
         case 16: EXPECT_EQ(sizeof(Shape), std::size_t(16)); break;
         default: FAIL(); break;
     }
+}
+
+TEST(Shape, Traits)
+{
+    EXPECT_FALSE(std::is_default_constructible<Shape>::value);
+    EXPECT_FALSE(std::is_nothrow_default_constructible<Shape>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<Shape>::value);
+    
+    // Construction with any 1 supporting argument should succeed...
+    using X = DiskShapeConf;
+    EXPECT_TRUE((std::is_constructible<Shape, X>::value));
+    EXPECT_FALSE((std::is_nothrow_constructible<Shape, X>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<Shape, X>::value));
+
+    // Construction with 2 arguments should fail...
+    EXPECT_FALSE((std::is_constructible<Shape, X, X>::value));
+    EXPECT_FALSE((std::is_nothrow_constructible<Shape, X, X>::value));
+    EXPECT_FALSE((std::is_trivially_constructible<Shape, X, X>::value));
+    
+    EXPECT_TRUE(std::is_copy_constructible<Shape>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<Shape>::value);
+    EXPECT_FALSE(std::is_trivially_copy_constructible<Shape>::value);
+    
+    EXPECT_TRUE(std::is_move_constructible<Shape>::value);
+    EXPECT_TRUE(std::is_nothrow_move_constructible<Shape>::value);
+    EXPECT_FALSE(std::is_trivially_move_constructible<Shape>::value);
+    
+    EXPECT_TRUE(std::is_copy_assignable<Shape>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<Shape>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable<Shape>::value);
+    
+    EXPECT_TRUE(std::is_move_assignable<Shape>::value);
+    EXPECT_TRUE(std::is_nothrow_move_assignable<Shape>::value);
+    EXPECT_FALSE(std::is_trivially_move_assignable<Shape>::value);
+    
+    EXPECT_TRUE(std::is_destructible<Shape>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<Shape>::value);
+    EXPECT_FALSE(std::is_trivially_destructible<Shape>::value);
+}
+
+TEST(Shape, types)
+{
+    const auto sc = DiskShapeConf{1_m};
+    const auto s1 = Shape{sc};
+    ASSERT_EQ(typeid(Shape), typeid(s1));
+    const auto& st1 = GetUseTypeInfo(s1);
+    ASSERT_NE(st1, typeid(Shape));
+    EXPECT_EQ(st1, typeid(sc));
+    const auto s2 = Shape{s1}; // This should copy construct
+    const auto& st2 = GetUseTypeInfo(s2);
+    EXPECT_EQ(st2, typeid(sc)); // Confirm s2 was a copy construction
 }
 
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)

@@ -21,6 +21,7 @@
 #define PLAYRHO_TEST_HPP
 
 #include <PlayRho/PlayRho.hpp>
+#include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
@@ -408,6 +409,14 @@ private:
     std::deque<std::size_t> m_numTouchingPerStep;
 };
 
+struct VisitorData
+{
+    Drawer* drawer;
+    Transformation xf;
+    Color color;
+    bool skins;
+};
+
 // Free functions...
 
 /// Random number in range [-1,1]
@@ -438,6 +447,51 @@ inline void ForAll(World& world, const std::function<void(RevoluteJoint& e)>& ac
     });
 }
 
+void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, Transformation xf);
+void Draw(Drawer& drawer, const EdgeShapeConf& shape, Color color, bool skins, Transformation xf);
+void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins, Transformation xf);
+void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins, Transformation xf);
+void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins, Transformation xf);
+
 } // namespace testbed
+
+namespace playrho {
+
+template <>
+inline void Visit(const d2::DiskShapeConf& shape, void* userData)
+{
+    const auto data = static_cast<testbed::VisitorData*>(userData);
+    Draw(*(data->drawer), shape, data->color, data->xf);
+}
+
+template <>
+inline void Visit(const d2::EdgeShapeConf& shape, void* userData)
+{
+    const auto data = static_cast<testbed::VisitorData*>(userData);
+    Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
+}
+
+template <>
+inline void Visit(const d2::PolygonShapeConf& shape, void* userData)
+{
+    const auto data = static_cast<testbed::VisitorData*>(userData);
+    Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
+}
+
+template <>
+inline void Visit(const d2::ChainShapeConf& shape, void* userData)
+{
+    const auto data = static_cast<testbed::VisitorData*>(userData);
+    Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
+}
+
+template <>
+inline void Visit(const d2::MultiShapeConf& shape, void* userData)
+{
+    const auto data = static_cast<testbed::VisitorData*>(userData);
+    Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
+}
+
+} // namespace playrho
 
 #endif

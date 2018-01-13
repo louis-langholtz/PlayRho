@@ -159,6 +159,7 @@ namespace playrho {
     ///   don't already have specialized handling.
     /// @param object Object to visit.
     /// @param userData Optionally provided user data.
+    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
     template <typename T>
     inline void Visit(const T& object, void* userData)
     {

@@ -23,6 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <vector>
 #include <cstring>
+#include <typeinfo>
 
 /// This tests stacking. It also shows how to use World::Query
 /// and TestOverlap.
@@ -214,7 +215,7 @@ public:
                 const auto xfm = GetTransformation(*f);
                 const auto shape = f->GetShape();
                 const auto overlap = TestOverlap(GetChild(shape, 0), xfm, circleChild, transform);
-                if (overlap >= Area{0})
+                if (overlap >= 0_m2)
                 {
 #if 0
                     shapeDrawer.m_xf = xfm;
@@ -235,8 +236,11 @@ public:
 
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
-    Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
-    Shape m_circle = DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3f));
+    Shape m_polygons[4] = {
+        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
+        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
+    };
+    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3f))};
 };
 
 } // namespace testbed

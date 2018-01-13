@@ -23,6 +23,7 @@
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 #include <array>
+#include <typeinfo>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -81,6 +82,7 @@ TEST(MultiShapeConf, GetInvalidChildThrows)
 
 TEST(MultiShapeConf, Accept)
 {
+#if 0
     auto visited = false;
     auto shapeVisited = false;
     
@@ -96,7 +98,9 @@ TEST(MultiShapeConf, Accept)
     });
     EXPECT_TRUE(visited);
     EXPECT_TRUE(shapeVisited);
+#endif
 }
+
 #if 0
 TEST(MultiShapeConf, BaseVisitorForDiskShape)
 {

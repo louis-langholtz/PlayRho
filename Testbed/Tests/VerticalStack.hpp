@@ -91,7 +91,7 @@ public:
     }
 
     Body* m_bullet;
-    Shape m_bulletshape = DiskShapeConf{}.UseRadius(0.25_m).UseDensity(20_kgpm2).UseRestitution(Real(0.05f));
+    Shape m_bulletshape = Shape{DiskShapeConf{}.UseRadius(0.25_m).UseDensity(20_kgpm2).UseRestitution(Real(0.05f))};
 };
     
 } // namespace testbed

@@ -60,8 +60,8 @@ TEST(Contact, Enabled)
     const auto shape = DiskShapeConf{};
     auto bA = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
-    auto fA = Fixture{&bA, FixtureConf{}, shape};
-    auto fB = Fixture{&bB, FixtureConf{}, shape};
+    auto fA = Fixture{&bA, FixtureConf{}, Shape{shape}};
+    auto fB = Fixture{&bB, FixtureConf{}, Shape{shape}};
     auto c = Contact{&fA, 0u, &fB, 0u};
     EXPECT_TRUE(c.IsEnabled());
     c.UnsetEnabled();
@@ -75,8 +75,8 @@ TEST(Contact, SetAwake)
     const auto shape = DiskShapeConf{};
     auto bA = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
-    auto fA = Fixture{&bA, FixtureConf{}, shape};
-    auto fB = Fixture{&bB, FixtureConf{}, shape};
+    auto fA = Fixture{&bA, FixtureConf{}, Shape{shape}};
+    auto fB = Fixture{&bB, FixtureConf{}, Shape{shape}};
     const auto c = Contact{&fA, 0u, &fB, 0u};
     
     bA.UnsetAwake();
@@ -96,8 +96,8 @@ TEST(Contact, ResetFriction)
     const auto shape = DiskShapeConf{};
     auto bA = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
-    auto fA = Fixture{&bA, FixtureConf{}, shape};
-    auto fB = Fixture{&bB, FixtureConf{}, shape};
+    auto fA = Fixture{&bA, FixtureConf{}, Shape{shape}};
+    auto fB = Fixture{&bB, FixtureConf{}, Shape{shape}};
     auto c = Contact{&fA, 0u, &fB, 0u};
 
     ASSERT_GT(GetFriction(shape), Real(0));
@@ -113,8 +113,8 @@ TEST(Contact, ResetRestitution)
     const auto shape = DiskShapeConf{};
     auto bA = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
     auto bB = Body{nullptr, BodyConf{}.UseType(BodyType::Dynamic)};
-    auto fA = Fixture{&bA, FixtureConf{}, shape};
-    auto fB = Fixture{&bB, FixtureConf{}, shape};
+    auto fA = Fixture{&bA, FixtureConf{}, Shape{shape}};
+    auto fB = Fixture{&bB, FixtureConf{}, Shape{shape}};
     auto c = Contact{&fA, 0u, &fB, 0u};
 
     ASSERT_EQ(GetRestitution(shape), Real(0));

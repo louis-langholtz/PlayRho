@@ -29,6 +29,7 @@
 #include <memory>
 #include <functional>
 #include <utility>
+#include <typeinfo>
 
 namespace playrho {
 
@@ -39,6 +40,7 @@ class Shape;
 /// @brief Visits the given shape with the potentially non-null user data pointer.
 /// @note This is a specialization of the <code>Visit</code> function template for the
 ///   <code>d2::Shape</code> class.
+/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
 template <>
 void Visit(const d2::Shape& shape, void* userData);
 
@@ -46,8 +48,8 @@ namespace d2 {
 
 // Forward declare functions.
 // Note that these may be friend functions but that declaring these within the class that
-// they're to be friends of, doesn't also declare their names within the namespace in terms
-// of lookup.
+// they're to be friends of, doesn't also insure that they're found within the namespace
+// in terms of lookup.
 
 /// @brief Gets the number of child primitives of the shape.
 /// @return Non-negative count.
@@ -101,6 +103,11 @@ NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
 ///   no other way to access the underlying data.
 const void* GetData(const Shape& shape) noexcept;
 
+/// @brief Gets the type info of the use of the given shape.
+/// @note This is not the same as calling <code>typeid(Shape)</code>.
+/// @return Type info of the underlying value's type.
+const std::type_info& GetUseTypeInfo(const Shape& shape);
+
 /// @brief Visitor type alias for underlying shape configuration.
 using TypeInfoVisitor = std::function<void(const std::type_info& ti, const void* data)>;
 
@@ -131,23 +138,42 @@ bool operator!= (const Shape& lhs, const Shape& rhs) noexcept;
 ///   Shapes used for simulation in <code>World</code> are created automatically when a
 ///   <code>Fixture</code> is created. Shapes may encapsulate zero or more child shapes.
 ///
+/// @note This class implements polymorphism without inheritance. This is based on a technique
+///   that's described by Sean Parent in his January 2017 Norwegian Developers Conference
+///   London talk "Better Code: Runtime Polymorphism". With this implementation, different
+///   shapes types can be had by constructing instances of this class with the different types
+///   that provide the required support. Different shapes of a given type meanwhile are had by
+///   providing different values for the type.
+///
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
 /// @ingroup PartsGroup
 ///
 /// @sa Fixture
+/// @sa https://youtu.be/QGcVXgEVMJg
 ///
 class Shape
 {
 public:
     /// @brief Default constructor.
-    /// @details This is a base class that shouldn't ever be directly instantiated.
     Shape() = delete;
 
     /// @brief Initializing constructor.
+    /// @param arg Configuration value to construct a shape instance for.
+    /// @note Only usable with types of values that have all of the support functions required
+    ///   by this class. The compiler emits errors if the given type doesn't.
+    /// @sa GetChildCount
+    /// @sa GetChild
+    /// @sa GetMassData
+    /// @sa GetVertexRadius
+    /// @sa GetDensity
+    /// @sa GetFriction
+    /// @sa GetRestitution
     template <typename T>
-    Shape(T v): m_self{std::make_shared<Model<T>>(std::move(v))}
-    {}
+    explicit Shape(T arg): m_self{std::make_shared<Model<T>>(std::move(arg))}
+    {
+        // Intentionally empty.
+    }
     
     /// @brief Copy constructor.
     Shape(const Shape& other) = default;
@@ -206,10 +232,15 @@ public:
         return shape.m_self->GetData_();
     }
     
+    friend const std::type_info& GetUseTypeInfo(const Shape& shape)
+    {
+        return shape.m_self->GetUseTypeInfo_();
+    }
+
     friend void Accept(const Shape& shape, const TypeInfoVisitor& visitor)
     {
         const auto self = shape.m_self;
-        visitor(self->GetTypeInfo_(), self->GetData_());
+        visitor(self->GetUseTypeInfo_(), self->GetData_());
     }
     
     friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
@@ -257,8 +288,9 @@ private:
         /// @brief Equality checking method.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
         
-        /// @brief Gets the type information of the underlying configuration.
-        virtual const std::type_info& GetTypeInfo_() const = 0;
+        /// @brief Gets the use type information.
+        /// @return Type info of the underlying value's type.
+        virtual const std::type_info& GetUseTypeInfo_() const = 0;
         
         /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
@@ -329,11 +361,13 @@ private:
         
         bool IsEqual_(const Concept& other) const noexcept override
         {
-            return (GetTypeInfo_() == other.GetTypeInfo_()) &&
-            (data == *static_cast<const T*>(other.GetData_()));
+            // Would be preferable to do this without using any kind of RTTI system.
+            // But how would that be done?
+            return (GetUseTypeInfo_() == other.GetUseTypeInfo_()) &&
+                (data == *static_cast<const T*>(other.GetData_()));
         }
         
-        const std::type_info& GetTypeInfo_() const override
+        const std::type_info& GetUseTypeInfo_() const override
         {
             return typeid(data_type);
         }

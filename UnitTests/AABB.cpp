@@ -422,7 +422,7 @@ TEST(AABB, ComputeAabbForFixtureAtBodyOrigin)
 
     World world;
     const auto body = world.CreateBody();
-    const auto fixture = body->CreateFixture(shape);
+    const auto fixture = body->CreateFixture(Shape{shape});
     const auto fixtureAabb = ComputeAABB(*fixture);
     
     ASSERT_NE(shapeAabb, AABB{});
@@ -432,12 +432,12 @@ TEST(AABB, ComputeAabbForFixtureAtBodyOrigin)
 TEST(AABB, ComputeAabbForFixtureOffFromBodyOrigin)
 {
     const auto shape = DiskShapeConf{};
-    const auto shapeAabb = ComputeAABB(shape, Transformation{});
+    const auto shapeAabb = ComputeAABB(Shape{shape}, Transformation{});
     
     const auto bodyLocation = Length2{2_m, 3_m};
     World world;
     const auto body = world.CreateBody(BodyConf{}.UseLocation(bodyLocation));
-    const auto fixture = body->CreateFixture(shape);
+    const auto fixture = body->CreateFixture(Shape{shape});
     const auto fixtureAabb = ComputeAABB(*fixture);
     
     ASSERT_NE(shapeAabb, AABB{});
@@ -448,11 +448,11 @@ TEST(AABB, ComputeAabbForFixtureOffFromBodyOrigin)
 TEST(AABB, ComputeIntersectingAABBForSameFixture)
 {
     const auto shape = DiskShapeConf{};
-    const auto shapeAabb = ComputeAABB(shape, Transformation{});
+    const auto shapeAabb = ComputeAABB(Shape{shape}, Transformation{});
     
     World world;
     const auto body = world.CreateBody();
-    const auto fixture = body->CreateFixture(shape);
+    const auto fixture = body->CreateFixture(Shape{shape});
     const auto fixtureAabb = ComputeAABB(*fixture);
     
     const auto intersectingAabb = ComputeIntersectingAABB(*fixture, 0, *fixture, 0);
@@ -467,7 +467,7 @@ TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
 
     const auto shape = DiskShapeConf{}.UseRadius(2_m);
-    const auto shapeAabb = ComputeAABB(shape, Transformation{});
+    const auto shapeAabb = ComputeAABB(Shape{shape}, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
 
     const auto bodyLocation0 = Length2{+1_m, 0_m};
@@ -477,8 +477,8 @@ TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
     const auto body0 = world.CreateBody(BodyConf{}.UseLocation(bodyLocation0));
     const auto body1 = world.CreateBody(BodyConf{}.UseLocation(bodyLocation1));
 
-    const auto fixture0 = body0->CreateFixture(shape);
-    const auto fixture1 = body1->CreateFixture(shape);
+    const auto fixture0 = body0->CreateFixture(Shape{shape});
+    const auto fixture1 = body1->CreateFixture(Shape{shape});
 
     const auto fixtureAabb0 = ComputeAABB(*fixture0);
     const auto fixtureAabb1 = ComputeAABB(*fixture1);
@@ -496,7 +496,7 @@ TEST(AABB, ComputeIntersectingAABBForContact)
     const auto shapeInterval = LengthInterval{-2_m, +2_m};
     
     const auto shape = DiskShapeConf{}.UseRadius(2_m);
-    const auto shapeAabb = ComputeAABB(shape, Transformation{});
+    const auto shapeAabb = ComputeAABB(Shape{shape}, Transformation{});
     ASSERT_EQ(shapeAabb, (AABB{shapeInterval, shapeInterval}));
     
     const auto bodyLocation0 = Length2{+1_m, 0_m};
@@ -506,8 +506,8 @@ TEST(AABB, ComputeIntersectingAABBForContact)
     const auto body0 = world.CreateBody(BodyConf{}.UseLocation(bodyLocation0));
     const auto body1 = world.CreateBody(BodyConf{}.UseLocation(bodyLocation1));
     
-    const auto fixture0 = body0->CreateFixture(shape);
-    const auto fixture1 = body1->CreateFixture(shape);
+    const auto fixture0 = body0->CreateFixture(Shape{shape});
+    const auto fixture1 = body1->CreateFixture(Shape{shape});
     
     const auto fixtureAabb0 = ComputeAABB(*fixture0);
     const auto fixtureAabb1 = ComputeAABB(*fixture1);

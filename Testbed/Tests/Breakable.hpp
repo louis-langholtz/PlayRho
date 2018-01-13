@@ -34,28 +34,30 @@ public:
         e_count = 7
     };
 
-    Breakable()
+    static PolygonShapeConf GetShapeConf1() noexcept
+    {
+        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Vec2(-0.5f, 0.0f) * 1_m, 0_rad);
+    }
+    
+    static PolygonShapeConf GetShapeConf2() noexcept
+    {
+        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Vec2(+0.5f, 0.0f) * 1_m, 0_rad);
+    }
+    
+    Breakable(): m_shape1{GetShapeConf1()}, m_shape2{GetShapeConf2()}
     {
         // Ground body
         m_world.CreateBody()->CreateFixture(Shape(EdgeShapeConf{}.Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
 
         // Breakable dynamic body
         {
-            auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2);
-
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(0.0f, 40.0f) * 1_m;
             bd.angle = Pi * 0.25_rad;
             m_body1 = m_world.CreateBody(bd);
-
-            conf.SetAsBox(0.5_m, 0.5_m, Vec2(-0.5f, 0.0f) * 1_m, 0_rad);
-            m_shape1 = conf;
             m_piece1 = m_body1->CreateFixture(m_shape1);
-
-            conf.SetAsBox(0.5_m, 0.5_m, Vec2(0.5f, 0.0f) * 1_m, 0_rad);
-            m_shape2 = conf;
             m_piece2 = m_body1->CreateFixture(m_shape2);
         }
 
@@ -140,8 +142,8 @@ public:
     Body* m_body1;
     LinearVelocity2 m_velocity;
     AngularVelocity m_angularVelocity;
-    PolygonShapeConf m_shape1;
-    PolygonShapeConf m_shape2;
+    Shape m_shape1;
+    Shape m_shape2;
     Fixture* m_piece1;
     Fixture* m_piece2;
 

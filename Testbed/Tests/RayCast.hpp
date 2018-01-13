@@ -372,8 +372,11 @@ public:
     int m_bodyIndex = 0;
     Body* m_bodies[e_maxBodies];
     int m_userData[e_maxBodies];
-    Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
-    Shape m_circle = DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3f));
+    Shape m_polygons[4] = {
+        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
+        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
+    };
+    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3f))};
     Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.UseFriction(Real(0.3f))};
     Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;

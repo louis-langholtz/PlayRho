@@ -54,7 +54,7 @@ public:
                 GetX(position) = -N * a;
                 for (auto i = 0; i < N; ++i)
                 {
-                    ground->CreateFixture(PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg));
+                    ground->CreateFixture(Shape{PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg)});
                     ++m_fixtureCount;
                     GetX(position) += 2.0f * a;
                 }

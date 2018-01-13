@@ -83,8 +83,8 @@ public:
         myBodyConf.type = BodyType::Dynamic;
         myBodyConf.location = Vec2(-15, 5) * 1_m;
         m_launcherBody = m_world.CreateBody(myBodyConf);
-        m_launcherBody->CreateFixture(DiskShapeConf{}.UseRadius(2_m).UseFriction(Real(0.95f)).UseDensity(1_kgpm2),
-                                      myFixtureConf);
+        m_launcherBody->CreateFixture(Shape{DiskShapeConf{}.UseRadius(2_m)
+            .UseFriction(Real(0.95f)).UseDensity(1_kgpm2)}, myFixtureConf);
         
         //pin the circle in place
         RevoluteJointConf revoluteJointConf;
@@ -106,9 +106,8 @@ public:
         
         //ball for computer 'player' to fire
         m_littleBox2 = m_world.CreateBody(myBodyConf);
-        m_littleBox2->CreateFixture(DiskShapeConf{}.UseRadius(BallSize * 1_m)
-                                    .UseFriction(Real(0.95f)).UseDensity(1_kgpm2),
-                                    myFixtureConf);
+        m_littleBox2->CreateFixture(Shape{DiskShapeConf{}.UseRadius(BallSize * 1_m)
+            .UseFriction(Real(0.95f)).UseDensity(1_kgpm2)}, myFixtureConf);
         
         m_firing = false;
         m_littleBox->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
