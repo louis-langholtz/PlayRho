@@ -89,7 +89,7 @@ NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
 
 /// @brief Visits the given shape with the potentially non-null user data pointer.
 /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
-void Visit(const Shape& shape, void* userData);
+bool Visit(const Shape& shape, void* userData);
 
 /// @brief Gets a pointer to the underlying data.
 /// @note Provided for introspective purposes like visitation.
@@ -216,9 +216,9 @@ public:
         return shape.m_self->GetDensity_();
     }
     
-    friend void Visit(const Shape& shape, void* userData)
+    friend bool Visit(const Shape& shape, void* userData)
     {
-        shape.m_self->Visit_(userData);
+        return shape.m_self->Visit_(userData);
     }
     
     friend const void* GetData(const Shape& shape) noexcept
@@ -277,7 +277,7 @@ private:
         virtual Real GetRestitution_() const noexcept = 0;
         
         /// @brief Draws the shape.
-        virtual void Visit_(void* userData) const = 0;
+        virtual bool Visit_(void* userData) const = 0;
         
         /// @brief Equality checking method.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
@@ -348,9 +348,9 @@ private:
             return GetRestitution(data);
         }
         
-        void Visit_(void* userData) const override
+        bool Visit_(void* userData) const override
         {
-            ::playrho::Visit(data, userData);
+            return ::playrho::Visit(data, userData);
         }
         
         bool IsEqual_(const Concept& other) const noexcept override
@@ -397,7 +397,7 @@ bool TestPoint(const Shape& shape, Length2 point) noexcept;
 ///   <code>d2::Shape</code> class.
 /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
 template <>
-inline void Visit<d2::Shape>(const d2::Shape& shape, void* userData)
+inline bool Visit<d2::Shape>(const d2::Shape& shape, void* userData)
 {
     return d2::Visit(shape, userData);
 }

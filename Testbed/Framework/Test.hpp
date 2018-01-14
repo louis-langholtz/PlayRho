@@ -458,38 +458,43 @@ void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins, 
 namespace playrho {
 
 template <>
-inline void Visit(const d2::DiskShapeConf& shape, void* userData)
+inline bool Visit(const d2::DiskShapeConf& shape, void* userData)
 {
     const auto data = static_cast<testbed::VisitorData*>(userData);
     Draw(*(data->drawer), shape, data->color, data->xf);
+    return true;
 }
 
 template <>
-inline void Visit(const d2::EdgeShapeConf& shape, void* userData)
+inline bool Visit(const d2::EdgeShapeConf& shape, void* userData)
 {
     const auto data = static_cast<testbed::VisitorData*>(userData);
     Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
+    return true;
 }
 
 template <>
-inline void Visit(const d2::PolygonShapeConf& shape, void* userData)
+inline bool Visit(const d2::PolygonShapeConf& shape, void* userData)
 {
     const auto data = static_cast<testbed::VisitorData*>(userData);
     Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
+    return true;
 }
 
 template <>
-inline void Visit(const d2::ChainShapeConf& shape, void* userData)
+inline bool Visit(const d2::ChainShapeConf& shape, void* userData)
 {
     const auto data = static_cast<testbed::VisitorData*>(userData);
     Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
+    return true;
 }
 
 template <>
-inline void Visit(const d2::MultiShapeConf& shape, void* userData)
+inline bool Visit(const d2::MultiShapeConf& shape, void* userData)
 {
     const auto data = static_cast<testbed::VisitorData*>(userData);
     Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
+    return true;
 }
 
 } // namespace playrho

@@ -155,15 +155,16 @@ namespace playrho {
     }
     
     /// @brief Template function for visiting objects.
-    /// @note Specialize this function to tie in application specific handling for types which
-    ///   don't already have specialized handling.
+    /// @note Specialize this function to tie in application specific handling for types
+    ///   which don't already have specialized handling. Specializations should always
+    ///   return <code>true</code>.
     /// @note First parameter is the object to visit.
     /// @note Second parameter is user data or the <code>nullptr</code>.
     /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
     template <typename T>
-    inline void Visit(const T& /*object*/, void* /*userData*/)
+    inline bool Visit(const T& /*object*/, void* /*userData*/)
     {
-        // Intentionally does nothing by default.
+        return false;
     }
     
     /// @brief Gets the library defined name for the given type.

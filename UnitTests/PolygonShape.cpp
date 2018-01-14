@@ -80,7 +80,7 @@ TEST(PolygonShapeConf, Visit)
     ASSERT_EQ(data.visitedPolygon, 0);
     ASSERT_EQ(data.visitedChain, 0);
     ASSERT_EQ(data.visitedMulti, 0);
-    Visit(s, &data);
+    EXPECT_TRUE(Visit(s, &data));
     EXPECT_EQ(data.visitedPolygon, 1);
 }
 
