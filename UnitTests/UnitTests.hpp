@@ -42,7 +42,7 @@ struct DiskShapeConf;
 class EdgeShapeConf;
 class PolygonShapeConf;
 class ChainShapeConf;
-class MultiShapeConf;
+struct MultiShapeConf;
 
 } // namespace d2
 
