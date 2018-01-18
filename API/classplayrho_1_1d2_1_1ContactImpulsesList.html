@@ -68,6 +68,7 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1d2_1_1ContactImpulsesList-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">playrho::d2::ContactImpulsesList Class Reference</div>  </div>
@@ -77,7 +78,7 @@ $(function() {
 <p><a class="el" href="classplayrho_1_1d2_1_1Contact.html" title="A potential contact between the children of two Fixture objects. ">Contact</a> Impulse.  
  <a href="classplayrho_1_1d2_1_1ContactImpulsesList.html#details">More...</a></p>
 
-<p><code>#include &lt;WorldCallbacks.hpp&gt;</code></p>
+<p><code>#include &lt;ContactImpulsesList.hpp&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::ContactImpulsesList:</div>
 <div class="dyncontent">
@@ -124,17 +125,54 @@ Private Attributes</h2></td></tr>
 <a class="el" href="classplayrho_1_1d2_1_1ContactImpulsesList.html#afd836a0f7f5fa78a93b249eb81ea48dd">Counter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1ContactImpulsesList.html#adcd343ded0e95212ea49c693558c1c7b">count</a> = 0</td></tr>
 <tr class="memdesc:adcd343ded0e95212ea49c693558c1c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count of entries added. <br /></td></tr>
 <tr class="separator:adcd343ded0e95212ea49c693558c1c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a07f0d8f5fce9556590d8e7e40289ae33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga1d281ffd7cf8e2c8897d03a1cae9f1f8">Momentum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1ContactImpulsesList.html#a07f0d8f5fce9556590d8e7e40289ae33">GetMaxNormalImpulse</a> (const <a class="el" href="classplayrho_1_1d2_1_1ContactImpulsesList.html">ContactImpulsesList</a> &amp;impulses) noexcept</td></tr>
+<tr class="memdesc:a07f0d8f5fce9556590d8e7e40289ae33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the maximum normal impulse from the given contact impulses list.  <a href="#a07f0d8f5fce9556590d8e7e40289ae33">More...</a><br /></td></tr>
+<tr class="separator:a07f0d8f5fce9556590d8e7e40289ae33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classplayrho_1_1d2_1_1Contact.html" title="A potential contact between the children of two Fixture objects. ">Contact</a> Impulse. </p>
 <p>Used for reporting. Impulses are used instead of forces because sub-step forces may approach infinity for rigid body collisions. These match up one-to-one with the contact points in <a class="el" href="classplayrho_1_1d2_1_1Manifold.html" title="A collision description for the collision two convex shapes. ">Manifold</a>. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>WorldCallbacks.hpp</li>
+</div><h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a07f0d8f5fce9556590d8e7e40289ae33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07f0d8f5fce9556590d8e7e40289ae33">&#9670;&nbsp;</a></span>GetMaxNormalImpulse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__PhysicalQuantities.html#ga1d281ffd7cf8e2c8897d03a1cae9f1f8">Momentum</a> GetMaxNormalImpulse </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1ContactImpulsesList.html">ContactImpulsesList</a> &amp;&#160;</td>
+          <td class="paramname"><em>impulses</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the maximum normal impulse from the given contact impulses list. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>ContactImpulsesList.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 3 2018 11:17:40 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

@@ -490,6 +490,13 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:a06f67e158a928ef59e4263facac8fb0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Point state enumeration.  <a href="namespaceplayrho.html#a06f67e158a928ef59e4263facac8fb0b">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a06f67e158a928ef59e4263facac8fb0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66189f1fe36ac717e284ab1099171106"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a66189f1fe36ac717e284ab1099171106">RayCastOpcode</a> { <a class="el" href="namespaceplayrho.html#a66189f1fe36ac717e284ab1099171106a056fa3d840f48b7bfbbd68c19a4797b3">RayCastOpcode::Terminate</a>, 
+<a class="el" href="namespaceplayrho.html#a66189f1fe36ac717e284ab1099171106aaf8767ee039cdc51717435bb815da593">RayCastOpcode::IgnoreFixture</a>, 
+<a class="el" href="namespaceplayrho.html#a66189f1fe36ac717e284ab1099171106a8dcfe18b6245b17c9cd69d5af7ef1847">RayCastOpcode::ClipRay</a>, 
+<a class="el" href="namespaceplayrho.html#a66189f1fe36ac717e284ab1099171106a4592f28dc9d11de3ce507bebafd9de16">RayCastOpcode::ResetRay</a>
+ }<tr class="memdesc:a66189f1fe36ac717e284ab1099171106"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ray cast opcode enumeration.  <a href="namespaceplayrho.html#a66189f1fe36ac717e284ab1099171106">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a66189f1fe36ac717e284ab1099171106"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57593cac21168ed673c77a11d18a35ec"><td class="memItemLeft" align="right" valign="top"><a id="a57593cac21168ed673c77a11d18a35ec"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a57593cac21168ed673c77a11d18a35ec">LoValueCheck</a> { <br />
 &#160;&#160;<b>Any</b>, 
 <b>AboveZero</b>, 
@@ -581,10 +588,18 @@ template&lt;VertexCounter M, std::size_t N&gt; </td></tr>
 <tr class="memitem:ad596c747e4643415e312ad69bef2a03b"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad596c747e4643415e312ad69bef2a03b">IsValid</a> (const <a class="el" href="classplayrho_1_1d2_1_1Manifold.html">d2::Manifold</a> &amp;value) noexcept</td></tr>
 <tr class="memdesc:ad596c747e4643415e312ad69bef2a03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the given manifold is valid.  <a href="#ad596c747e4643415e312ad69bef2a03b">More...</a><br /></td></tr>
 <tr class="separator:ad596c747e4643415e312ad69bef2a03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5088fa473b382571a89d042e8a310bee"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a5088fa473b382571a89d042e8a310bee"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a5088fa473b382571a89d042e8a310bee">Visit&lt; d2::Shape &gt;</a> (const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">d2::Shape</a> &amp;shape, void *userData)</td></tr>
+<tr class="memdesc:a5088fa473b382571a89d042e8a310bee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visits the given shape with the potentially non-null user data pointer.  <a href="#a5088fa473b382571a89d042e8a310bee">More...</a><br /></td></tr>
+<tr class="separator:a5088fa473b382571a89d042e8a310bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb29c9575dd4eeac1ff13136d9a56494"><td class="memItemLeft" align="right" valign="top"><a id="acb29c9575dd4eeac1ff13136d9a56494"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#acb29c9575dd4eeac1ff13136d9a56494">GetName</a> (<a class="el" href="structplayrho_1_1TOIOutput.html#a7387423560f6283896f1c6af1f938991">TOIOutput::State</a> state) noexcept</td></tr>
 <tr class="memdesc:acb29c9575dd4eeac1ff13136d9a56494"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a human readable name for the given output state. <br /></td></tr>
 <tr class="separator:acb29c9575dd4eeac1ff13136d9a56494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9864179cb9a35cb6665d429656ad0e9b"><td class="memItemLeft" align="right" valign="top"><a id="a9864179cb9a35cb6665d429656ad0e9b"></a>
+<a class="el" href="structplayrho_1_1ToiConf.html">ToiConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a9864179cb9a35cb6665d429656ad0e9b">GetToiConf</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf) noexcept</td></tr>
+<tr class="memdesc:a9864179cb9a35cb6665d429656ad0e9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact configuration for the given step configuration. <br /></td></tr>
+<tr class="separator:a9864179cb9a35cb6665d429656ad0e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb1706f5ee9f03fdec4a73d2c4d6ce6b"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#abb1706f5ee9f03fdec4a73d2c4d6ce6b">GetDefaultToiConf</a> ()</td></tr>
 <tr class="memdesc:abb1706f5ee9f03fdec4a73d2c4d6ce6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default time of impact configuration.  <a href="#abb1706f5ee9f03fdec4a73d2c4d6ce6b">More...</a><br /></td></tr>
 <tr class="separator:abb1706f5ee9f03fdec4a73d2c4d6ce6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -602,6 +617,10 @@ template&lt;typename T , std::size_t S&gt; </td></tr>
 <tr class="memitem:a2410eb16decdbb7ed8ce34c06327161b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a2410eb16decdbb7ed8ce34c06327161b">operator+</a> (<a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt; lhs, const typename <a class="el" href="classplayrho_1_1ArrayList.html">ArrayList</a>&lt; T, S &gt;::data_type &amp;rhs)</td></tr>
 <tr class="memdesc:a2410eb16decdbb7ed8ce34c06327161b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classplayrho_1_1ArrayList.html" title="Array list. ">ArrayList</a></code> add operator. <br /></td></tr>
 <tr class="separator:a2410eb16decdbb7ed8ce34c06327161b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d45df992becf6fd54bb224344dcfd82"><td class="memItemLeft" align="right" valign="top"><a id="a8d45df992becf6fd54bb224344dcfd82"></a>
+static std::uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a8d45df992becf6fd54bb224344dcfd82">GetBlockSizeIndex</a> (std::size_t n)</td></tr>
+<tr class="memdesc:a8d45df992becf6fd54bb224344dcfd82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the block size index for the given data block size. <br /></td></tr>
+<tr class="separator:a8d45df992becf6fd54bb224344dcfd82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02f6b57cf0f7bc53f9339381007d9b84"><td class="memTemplParams" colspan="2"><a id="a02f6b57cf0f7bc53f9339381007d9b84"></a>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a02f6b57cf0f7bc53f9339381007d9b84"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a02f6b57cf0f7bc53f9339381007d9b84">Delete</a> (const T *p, <a class="el" href="classplayrho_1_1BlockAllocator.html">BlockAllocator</a> &amp;allocator)</td></tr>
@@ -1406,6 +1425,10 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a740409a73c321d59d72dae06bd0ae890"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a740409a73c321d59d72dae06bd0ae890">GetRef</a> (T &amp;value) noexcept</td></tr>
 <tr class="memdesc:a740409a73c321d59d72dae06bd0ae890"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a reference for the given variable. <br /></td></tr>
 <tr class="separator:a740409a73c321d59d72dae06bd0ae890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d72a91d98ac22b6b7603f9747bca314"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a4d72a91d98ac22b6b7603f9747bca314"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a4d72a91d98ac22b6b7603f9747bca314">Visit</a> (const T &amp;, void *)</td></tr>
+<tr class="memdesc:a4d72a91d98ac22b6b7603f9747bca314"><td class="mdescLeft">&#160;</td><td class="mdescRight">Template function for visiting objects.  <a href="#a4d72a91d98ac22b6b7603f9747bca314">More...</a><br /></td></tr>
+<tr class="separator:a4d72a91d98ac22b6b7603f9747bca314"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09121345512aa02387efe31575450d6c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a09121345512aa02387efe31575450d6c"><td class="memTemplItemLeft" align="right" valign="top">const char *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a09121345512aa02387efe31575450d6c">GetTypeName</a> () noexcept</td></tr>
 <tr class="memdesc:a09121345512aa02387efe31575450d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the library defined name for the given type.  <a href="#a09121345512aa02387efe31575450d6c">More...</a><br /></td></tr>
@@ -1448,6 +1471,11 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a331d0f9eebffe5a6de76b5124975bdbf"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a331d0f9eebffe5a6de76b5124975bdbf">IsFull</a> (const T &amp;arg) -&gt; decltype(<a class="el" href="namespaceplayrho.html#ad0c4ceb8ef2cef80108a8d9dcb0da945">GetSize</a>(arg)==arg.max_size())</td></tr>
 <tr class="memdesc:a331d0f9eebffe5a6de76b5124975bdbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the given container is full. <br /></td></tr>
 <tr class="separator:a331d0f9eebffe5a6de76b5124975bdbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa952a45e627aa1a3cf8f83be23ec533"><td class="memTemplParams" colspan="2"><a id="afa952a45e627aa1a3cf8f83be23ec533"></a>
+template&lt;class T , std::size_t N&gt; </td></tr>
+<tr class="memitem:afa952a45e627aa1a3cf8f83be23ec533"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#afa952a45e627aa1a3cf8f83be23ec533">GetSize</a> (T(&amp;)[N])</td></tr>
+<tr class="memdesc:afa952a45e627aa1a3cf8f83be23ec533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the compile-time size of a C-style array. <br /></td></tr>
+<tr class="separator:afa952a45e627aa1a3cf8f83be23ec533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85222e60032cfff157b66b69d86a7941"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
 <tr class="memitem:a85222e60032cfff157b66b69d86a7941"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a85222e60032cfff157b66b69d86a7941">IsValid</a> (const <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">d2::Transformation</a> &amp;value) noexcept</td></tr>
 <tr class="memdesc:a85222e60032cfff157b66b69d86a7941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid.  <a href="#a85222e60032cfff157b66b69d86a7941">More...</a><br /></td></tr>
@@ -1770,6 +1798,14 @@ PLAYRHO_CONSTEXPR bool&#160;</td><td class="memItemRight" valign="bottom"><a cla
 PLAYRHO_CONSTEXPR bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af78b58a8a5896dc5d9dfbe4cd83265eb">operator&gt;=</a> (const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> lhs, const <a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> rhs) noexcept</td></tr>
 <tr class="memdesc:af78b58a8a5896dc5d9dfbe4cd83265eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater-than or equal-to operator. <br /></td></tr>
 <tr class="separator:af78b58a8a5896dc5d9dfbe4cd83265eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacaf6573afe5f3fb0803faa353dc9c65"><td class="memItemLeft" align="right" valign="top"><a id="aacaf6573afe5f3fb0803faa353dc9c65"></a>
+<a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aacaf6573afe5f3fb0803faa353dc9c65">GetRegConstraintSolverConf</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf) noexcept</td></tr>
+<tr class="memdesc:aacaf6573afe5f3fb0803faa353dc9c65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the regular phase constraint solver configuration for the given step configuration. <br /></td></tr>
+<tr class="separator:aacaf6573afe5f3fb0803faa353dc9c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdb8daa84d36ac948934ee05eb4cb242"><td class="memItemLeft" align="right" valign="top"><a id="afdb8daa84d36ac948934ee05eb4cb242"></a>
+<a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#afdb8daa84d36ac948934ee05eb4cb242">GetToiConstraintSolverConf</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf) noexcept</td></tr>
+<tr class="memdesc:afdb8daa84d36ac948934ee05eb4cb242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the TOI phase constraint solver configuration for the given step configuration. <br /></td></tr>
+<tr class="separator:afdb8daa84d36ac948934ee05eb4cb242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c5bfe19319bd53279df8e97a75c1aee"><td class="memItemLeft" align="right" valign="top"><a id="a0c5bfe19319bd53279df8e97a75c1aee"></a>
 <a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a0c5bfe19319bd53279df8e97a75c1aee">GetDefaultPositionSolverConf</a> ()</td></tr>
 <tr class="memdesc:a0c5bfe19319bd53279df8e97a75c1aee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default position solver configuration. <br /></td></tr>
@@ -1784,10 +1820,9 @@ PLAYRHO_CONSTEXPR bool&#160;</td><td class="memItemRight" valign="bottom"><a cla
 <tr class="memitem:ab177f652a925ae4e4a236a597dbe6d07"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ab177f652a925ae4e4a236a597dbe6d07">operator!=</a> (const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> lhs, const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> rhs) noexcept</td></tr>
 <tr class="memdesc:ab177f652a925ae4e4a236a597dbe6d07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator.  <a href="#ab177f652a925ae4e4a236a597dbe6d07">More...</a><br /></td></tr>
 <tr class="separator:ab177f652a925ae4e4a236a597dbe6d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70f4220f5e2b99c6367c1f420fbb7380"><td class="memItemLeft" align="right" valign="top"><a id="a70f4220f5e2b99c6367c1f420fbb7380"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a70f4220f5e2b99c6367c1f420fbb7380">ShouldCollide</a> (const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> filterA, const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> filterB) noexcept</td></tr>
-<tr class="memdesc:a70f4220f5e2b99c6367c1f420fbb7380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether collision processing should be performed. <br /></td></tr>
-<tr class="separator:a70f4220f5e2b99c6367c1f420fbb7380"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a223329721a8138f316898ed9a4877250"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a223329721a8138f316898ed9a4877250">ShouldCollide</a> (const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> filterA, const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> filterB) noexcept</td></tr>
+<tr class="memdesc:a223329721a8138f316898ed9a4877250"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether collision processing should be performed.  <a href="#a223329721a8138f316898ed9a4877250">More...</a><br /></td></tr>
+<tr class="separator:a223329721a8138f316898ed9a4877250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fa7929a7c9cfd63177dcf77c3116bf1"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7fa7929a7c9cfd63177dcf77c3116bf1">operator==</a> (const <a class="el" href="structplayrho_1_1FixtureProxy.html">FixtureProxy</a> &amp;lhs, const <a class="el" href="structplayrho_1_1FixtureProxy.html">FixtureProxy</a> &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a7fa7929a7c9cfd63177dcf77c3116bf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator.  <a href="#a7fa7929a7c9cfd63177dcf77c3116bf1">More...</a><br /></td></tr>
 <tr class="separator:a7fa7929a7c9cfd63177dcf77c3116bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1812,12 +1847,12 @@ Variables</h2></td></tr>
 <tr class="memitem:a7a6ff7b1718107009f0242e8919d96a7"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7a6ff7b1718107009f0242e8919d96a7">InvalidIndexPair3</a></td></tr>
 <tr class="memdesc:a7a6ff7b1718107009f0242e8919d96a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid array of three index-pair elements.  <a href="#a7a6ff7b1718107009f0242e8919d96a7">More...</a><br /></td></tr>
 <tr class="separator:a7a6ff7b1718107009f0242e8919d96a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24732e0fe47b97b8b93baa6a8f4833b1"><td class="memItemLeft" align="right" valign="top">static PLAYRHO_CONSTEXPR const std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a24732e0fe47b97b8b93baa6a8f4833b1">s_blockSizes</a> [<a class="el" href="classplayrho_1_1BlockAllocator.html#ae959c34947a4df9fc5cc8229d0f29176">BlockAllocator::BlockSizes</a>]</td></tr>
-<tr class="memdesc:a24732e0fe47b97b8b93baa6a8f4833b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of block sizes.  <a href="#a24732e0fe47b97b8b93baa6a8f4833b1">More...</a><br /></td></tr>
-<tr class="separator:a24732e0fe47b97b8b93baa6a8f4833b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ec33549981735d2fd278d7a6a5efa2b"><td class="memItemLeft" align="right" valign="top">static PLAYRHO_CONSTEXPR const std::uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a4ec33549981735d2fd278d7a6a5efa2b">s_blockSizeLookup</a> [<a class="el" href="classplayrho_1_1BlockAllocator.html#a457b68668af1d0a358ca9d92019905ff">BlockAllocator::MaxBlockSize</a>+1]</td></tr>
-<tr class="memdesc:a4ec33549981735d2fd278d7a6a5efa2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block size lookup array.  <a href="#a4ec33549981735d2fd278d7a6a5efa2b">More...</a><br /></td></tr>
-<tr class="separator:a4ec33549981735d2fd278d7a6a5efa2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea8c760ae98e855ef8ba9c976fa732b5"><td class="memItemLeft" align="right" valign="top">static PLAYRHO_CONSTEXPR const std::uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#aea8c760ae98e855ef8ba9c976fa732b5">s_blockSizeLookup</a> [<a class="el" href="classplayrho_1_1BlockAllocator.html#a2845e1a67f12b93c3bd543e72f6655f0">BlockAllocator::GetMaxBlockSize</a>()+1]</td></tr>
+<tr class="memdesc:aea8c760ae98e855ef8ba9c976fa732b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block size lookup array.  <a href="#aea8c760ae98e855ef8ba9c976fa732b5">More...</a><br /></td></tr>
+<tr class="separator:aea8c760ae98e855ef8ba9c976fa732b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14624c80f5b2f01b49d878764aa55af0"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR const std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a14624c80f5b2f01b49d878764aa55af0">AllocatorBlockSizes</a> []</td></tr>
+<tr class="memdesc:a14624c80f5b2f01b49d878764aa55af0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocator block sizes array data.  <a href="#a14624c80f5b2f01b49d878764aa55af0">More...</a><br /></td></tr>
+<tr class="separator:a14624c80f5b2f01b49d878764aa55af0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83e2e155484aefe7098ddf4248bff8ca"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a83e2e155484aefe7098ddf4248bff8ca">Pi</a> = <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>(3.14159265358979323846264338327950288)</td></tr>
 <tr class="memdesc:a83e2e155484aefe7098ddf4248bff8ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pi.  <a href="#a83e2e155484aefe7098ddf4248bff8ca">More...</a><br /></td></tr>
 <tr class="separator:a83e2e155484aefe7098ddf4248bff8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2518,6 +2553,45 @@ dynamic: positive mass, non-zero velocity determined by forces, moved by solver 
 
 </div>
 </div>
+<a id="a66189f1fe36ac717e284ab1099171106"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66189f1fe36ac717e284ab1099171106">&#9670;&nbsp;</a></span>RayCastOpcode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceplayrho.html#a66189f1fe36ac717e284ab1099171106">playrho::RayCastOpcode</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ray cast opcode enumeration. </p>
+<p>Instructs some ray casting methods on what to do next. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a66189f1fe36ac717e284ab1099171106a056fa3d840f48b7bfbbd68c19a4797b3"></a>Terminate&#160;</td><td class="fielddoc"><p>End the ray-cast search for fixtures. </p>
+<p>Use this to stop searching for fixtures. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a66189f1fe36ac717e284ab1099171106aaf8767ee039cdc51717435bb815da593"></a>IgnoreFixture&#160;</td><td class="fielddoc"><p>Ignore the current fixture. </p>
+<p>Use this to continue searching for fixtures along the ray. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a66189f1fe36ac717e284ab1099171106a8dcfe18b6245b17c9cd69d5af7ef1847"></a>ClipRay&#160;</td><td class="fielddoc"><p>Clip the ray end to the current point. </p>
+<p>Use this shorten the ray to the current point and to continue searching for fixtures now along the newly shortened ray. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a66189f1fe36ac717e284ab1099171106a4592f28dc9d11de3ce507bebafd9de16"></a>ResetRay&#160;</td><td class="fielddoc"><p>Reset the ray end back to the second point. </p>
+<p>Use this to restore the ray to its full length and to continue searching for fixtures now along the restored full length ray. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a5908a18311a865763d65130dcdf40052"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5908a18311a865763d65130dcdf40052">&#9670;&nbsp;</a></span>Alloc()</h2>
@@ -2538,7 +2612,7 @@ dynamic: positive mass, non-zero velocity determined by forces, moved by solver 
 <p>Allocates memory. </p>
 <dl class="section note"><dt>Note</dt><dd>Implement this function to use your own memory allocator. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1BlockAllocator.html#abbb25555e5d25ed67a4748136ff7b8ed">playrho::BlockAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1StackAllocator.html#ac8e979666fdf6c46afcfabd9917b388a">playrho::StackAllocator::Allocate()</a>, and <a class="el" href="classplayrho_1_1StackAllocator.html#a1ff66212305cb343da5b90937c1a98a6">playrho::StackAllocator::StackAllocator()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1StackAllocator.html#ac8e979666fdf6c46afcfabd9917b388a">playrho::StackAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#abbb25555e5d25ed67a4748136ff7b8ed">playrho::BlockAllocator::Allocate()</a>, and <a class="el" href="classplayrho_1_1StackAllocator.html#a1ff66212305cb343da5b90937c1a98a6">playrho::StackAllocator::StackAllocator()</a>.</p>
 
 </div>
 </div>
@@ -2571,7 +2645,7 @@ template&lt;typename BT , unsigned int FB&gt; </div>
 <p>Gets whether a given value is almost zero. </p>
 <p>An almost zero value is "subnormal". Dividing by these values can lead to odd results like a divide by zero trap occurring. </p><dl class="section return"><dt>Returns</dt><dd><code>true</code> if the given value is almost zero, <code>false</code> otherwise. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="group__Math.html#gae64bf6eddbb1ef8c6e00b1af2326cc12">AlmostEqual()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a073a93c54a20aa68f2c56e759b7976ab">playrho::d2::ClipSegmentToLine()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">ComputeCentroid()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::Distance()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a6b3f70c38074739bd8f6468f7064f0d5">playrho::d2::MouseJoint::InitVelocityConstraints()</a>, <a class="el" href="group__Math.html#gaa93fcc5a3b89a2c26ebeb2ba69e31a6d">Invert()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">Normalize()</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a1371b014e0d2b3efa90aadb95d112e3b">playrho::d2::PulleyJoint::PulleyJoint()</a>, <a class="el" href="group__RayCastGroup.html#gad7a1b955a57a2bb043750bf32cde2549">playrho::d2::RayCast()</a>, and <a class="el" href="group__Math.html#ga48e5d966eb9e5d6b126f7fbe10d3b697">Solve()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="group__Math.html#gae64bf6eddbb1ef8c6e00b1af2326cc12">AlmostEqual()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a073a93c54a20aa68f2c56e759b7976ab">playrho::d2::ClipSegmentToLine()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">ComputeCentroid()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::Distance()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a7304da106cfaa394b4d0179ded468aa6">playrho::d2::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, <a class="el" href="group__Math.html#gaa93fcc5a3b89a2c26ebeb2ba69e31a6d">Invert()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">Normalize()</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a1371b014e0d2b3efa90aadb95d112e3b">playrho::d2::PulleyJoint::PulleyJoint()</a>, <a class="el" href="group__RayCastGroup.html#gad7a1b955a57a2bb043750bf32cde2549">playrho::d2::RayCast()</a>, and <a class="el" href="group__Math.html#ga48e5d966eb9e5d6b126f7fbe10d3b697">Solve()</a>.</p>
 
 </div>
 </div>
@@ -2685,7 +2759,7 @@ template&lt;typename T &gt; </div>
 <p>Gets the center of the given interval. </p>
 <dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the difference between the given range's max and min values overflows the range of the <code><a class="el" href="classplayrho_1_1Interval.html#af3f2912d491535ecbe0f8b03da2357b7" title="Value type. ">Interval::value_type</a></code>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#aa6b5dced85e53e9622fcb42beed1e9c8">playrho::d2::RayCast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="group__RayCastGroup.html#gadf0ec62e1852e3bc9b017eae4a5616b4">playrho::d2::RayCast()</a>.</p>
 
 </div>
 </div>
@@ -3014,7 +3088,7 @@ template&lt;&gt; </div>
 <dl class="section note"><dt>Note</dt><dd>This just calls <code>GetNumValidIndices</code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#adaa1d36f29e78ecf1d24460013b56560" title="Gets the number of valid indices in the given collection of index pairs. ">GetNumValidIndices</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1detail.html#a69db919dd0fd89175d3e6386508e0d87">playrho::detail::GetDimensions()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a4f671c547cf8f5deecfa5bbf08899f14">playrho::d2::GetPerimeter()</a>, and <a class="el" href="namespaceplayrho.html#a331d0f9eebffe5a6de76b5124975bdbf">IsFull()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1BlockAllocator.html#abbb25555e5d25ed67a4748136ff7b8ed">playrho::BlockAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a06536ee49cdb1a8c2f79de7522c8bd33">playrho::BlockAllocator::Free()</a>, <a class="el" href="namespaceplayrho.html#a8d45df992becf6fd54bb224344dcfd82">GetBlockSizeIndex()</a>, <a class="el" href="namespaceplayrho_1_1detail.html#a69db919dd0fd89175d3e6386508e0d87">playrho::detail::GetDimensions()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a2845e1a67f12b93c3bd543e72f6655f0">playrho::BlockAllocator::GetMaxBlockSize()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a4f671c547cf8f5deecfa5bbf08899f14">playrho::d2::GetPerimeter()</a>, and <a class="el" href="namespaceplayrho.html#a331d0f9eebffe5a6de76b5124975bdbf">IsFull()</a>.</p>
 
 </div>
 </div>
@@ -3535,7 +3609,7 @@ template&lt;&gt; </div>
 
 <p>Gets whether the given manifold is valid. </p>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Sweep.html#a3597bd76c2b89f3b7f217692071fde47">playrho::d2::Sweep::Advance0()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a44cc65808fd89570707b3af1bc87eb36">playrho::d2::ComputeAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ae18a4d20126e2b38e9840992b4bf0791">playrho::d2::DynamicTree::CreateLeaf()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::Distance()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a153aeeb44400486c3a14c9e61fe7b197">playrho::d2::DynamicTree::FindLowestCostNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a1b9c651f93348723973bb0e08c4bc9ac">playrho::d2::VelocityConstraint::GetPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldManifold.html#ae1cb8e651628460be908ba768c7d3883">playrho::d2::WorldManifold::GetPointCount()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#aa791f769d7311d093e53b09c772b78d6">playrho::d2::GetPosition()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a41583becf8482b534e9ce54ecd5601f7">playrho::d2::GetTransformation()</a>, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a6b3f70c38074739bd8f6468f7064f0d5">playrho::d2::MouseJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a1461443b91c3f02f90a7d509cd49f64f">playrho::d2::MouseJoint::IsOkay()</a>, <a class="el" href="namespaceplayrho.html#a75eaa3e476bb7117d67e6df9fbfef61b">IsValid()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae216d87f0c3ab4660646133f58f3fb30">playrho::d2::Body::SetAcceleration()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a9245b78f8c2437be65aa74a58a6c5988">playrho::d2::MotorJoint::SetCorrectionFactor()</a>, <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#ac2ab5427fcb2b91bc821d47275f111be">playrho::d2::BodyConstraint::SetPosition()</a>, <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#af302322eccd08aac5d314bb2b8b7a215">playrho::d2::GearJoint::SetRatio()</a>, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#ab20433ffc591b0955e51fd51250e6020">playrho::d2::MouseJoint::SetTarget()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a51f40a6566392899980a0ba431e1aa89">playrho::d2::Body::SetTransform()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7c2bb05f34ad19f785a9cf88d5920b77">playrho::d2::Body::SetTransformation()</a>, <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a911b6c49a7b561071794b80a437337dd">playrho::d2::BodyConstraint::SetVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a3b6e89d33fa0b8079216182421966d8f">playrho::d2::MouseJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#abecb08ff48f11998024ebb2ddf00300e">playrho::d2::World::Synchronize()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a35b79e2bb6204b41236efa1ecb251c14">playrho::d2::World::UpdateBody()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Sweep.html#a3597bd76c2b89f3b7f217692071fde47">playrho::d2::Sweep::Advance0()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a44cc65808fd89570707b3af1bc87eb36">playrho::d2::ComputeAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ae18a4d20126e2b38e9840992b4bf0791">playrho::d2::DynamicTree::CreateLeaf()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::Distance()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a153aeeb44400486c3a14c9e61fe7b197">playrho::d2::DynamicTree::FindLowestCostNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a1b9c651f93348723973bb0e08c4bc9ac">playrho::d2::VelocityConstraint::GetPoint()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldManifold.html#ae1cb8e651628460be908ba768c7d3883">playrho::d2::WorldManifold::GetPointCount()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#aa791f769d7311d093e53b09c772b78d6">playrho::d2::GetPosition()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a41583becf8482b534e9ce54ecd5601f7">playrho::d2::GetTransformation()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a344d49a15bfc2ddc9ef00643c43eed04">playrho::d2::TargetJoint::IsOkay()</a>, <a class="el" href="namespaceplayrho.html#a75eaa3e476bb7117d67e6df9fbfef61b">IsValid()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae216d87f0c3ab4660646133f58f3fb30">playrho::d2::Body::SetAcceleration()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a9245b78f8c2437be65aa74a58a6c5988">playrho::d2::MotorJoint::SetCorrectionFactor()</a>, <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#ac2ab5427fcb2b91bc821d47275f111be">playrho::d2::BodyConstraint::SetPosition()</a>, <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#af302322eccd08aac5d314bb2b8b7a215">playrho::d2::GearJoint::SetRatio()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#adccc0a4d534ff19819851e22011da795">playrho::d2::TargetJoint::SetTarget()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a51f40a6566392899980a0ba431e1aa89">playrho::d2::Body::SetTransform()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7c2bb05f34ad19f785a9cf88d5920b77">playrho::d2::Body::SetTransformation()</a>, <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html#a911b6c49a7b561071794b80a437337dd">playrho::d2::BodyConstraint::SetVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a63c767a86e1ece9f5a5e2d3f2ae38e23">playrho::d2::TargetJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#abecb08ff48f11998024ebb2ddf00300e">playrho::d2::World::Synchronize()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a35b79e2bb6204b41236efa1ecb251c14">playrho::d2::World::UpdateBody()</a>.</p>
 
 </div>
 </div>
@@ -4926,7 +5000,151 @@ template&lt;typename T , std::size_t N&gt; </div>
 
 </div>
 </div>
+<a id="a223329721a8138f316898ed9a4877250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a223329721a8138f316898ed9a4877250">&#9670;&nbsp;</a></span>ShouldCollide()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ShouldCollide </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1Filter.html">Filter</a>&#160;</td>
+          <td class="paramname"><em>filterA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1Filter.html">Filter</a>&#160;</td>
+          <td class="paramname"><em>filterB</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines whether collision processing should be performed. </p>
+
+</div>
+</div>
+<a id="a4d72a91d98ac22b6b7603f9747bca314"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d72a91d98ac22b6b7603f9747bca314">&#9670;&nbsp;</a></span>Visit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool playrho::Visit </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Template function for visiting objects. </p>
+<dl class="section note"><dt>Note</dt><dd>Specialize this function to tie in application specific handling for types which don't already have specialized handling. Specializations should always return <code>true</code>. </dd>
+<dd>
+First parameter is the object to visit. </dd>
+<dd>
+Second parameter is user data or the <code>nullptr</code>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Visitor_pattern">https://en.wikipedia.org/wiki/Visitor_pattern</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5088fa473b382571a89d042e8a310bee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5088fa473b382571a89d042e8a310bee">&#9670;&nbsp;</a></span>Visit< d2::Shape >()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="namespaceplayrho.html#a4d72a91d98ac22b6b7603f9747bca314">playrho::Visit</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Shape.html">d2::Shape</a> &gt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">d2::Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userData</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Visits the given shape with the potentially non-null user data pointer. </p>
+<dl class="section note"><dt>Note</dt><dd>This is a specialization of the <code>Visit</code> function template for the <code><a class="el" href="classplayrho_1_1d2_1_1Shape.html" title="Shape. ">d2::Shape</a></code> class. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Visitor_pattern">https://en.wikipedia.org/wiki/Visitor_pattern</a> </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a14624c80f5b2f01b49d878764aa55af0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14624c80f5b2f01b49d878764aa55af0">&#9670;&nbsp;</a></span>AllocatorBlockSizes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PLAYRHO_CONSTEXPR const std::size_t playrho::AllocatorBlockSizes[]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">    {</div><div class="line">        16, 32, 64, 96, 128, 160, 192, 224, 256, 320, 384, 448, 512, 640,</div><div class="line">    }</div></div><!-- fragment -->
+<p>Allocator block sizes array data. </p>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1BlockAllocator.html#abbb25555e5d25ed67a4748136ff7b8ed">playrho::BlockAllocator::Allocate()</a>, and <a class="el" href="classplayrho_1_1BlockAllocator.html#a06536ee49cdb1a8c2f79de7522c8bd33">playrho::BlockAllocator::Free()</a>.</p>
+
+</div>
+</div>
 <a id="a5e86e9585daf0c5ae48263653f206c56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5e86e9585daf0c5ae48263653f206c56">&#9670;&nbsp;</a></span>DefaultAngularSleepTolerance</h2>
 
@@ -5253,12 +5471,12 @@ template&lt;typename T , std::size_t N&gt; </div>
 Any narrowing is intentional.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Pi">https://en.wikipedia.org/wiki/Pi</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="group__Math.html#ga0eb57dabfe8d3db9e509a6b493173358">GetAreaOfCircle()</a>, <a class="el" href="group__Math.html#ga3b8e8abc999b0c63cf1921b0edcf0b36">GetCircleVertices()</a>, <a class="el" href="group__Math.html#ga8c036532db1260373b97c1d85360894c">GetDelta()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a9b3b93dcaddc83a77e35b87b54960d5e">playrho::d2::GetMassData()</a>, <a class="el" href="classplayrho_1_1d2_1_1ChainShapeConf.html#a212282d094f3bb26c9182f72eac6319d">playrho::d2::ChainShapeConf::GetMassData()</a>, <a class="el" href="group__Math.html#ga156a2abff11f978a8df25efbf0c10147">GetNormalized()</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a6b3f70c38074739bd8f6468f7064f0d5">playrho::d2::MouseJoint::InitVelocityConstraints()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint::InitVelocityConstraints()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="group__Math.html#ga0eb57dabfe8d3db9e509a6b493173358">GetAreaOfCircle()</a>, <a class="el" href="group__Math.html#ga3b8e8abc999b0c63cf1921b0edcf0b36">GetCircleVertices()</a>, <a class="el" href="group__Math.html#ga8c036532db1260373b97c1d85360894c">GetDelta()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a9b3b93dcaddc83a77e35b87b54960d5e">playrho::d2::GetMassData()</a>, <a class="el" href="classplayrho_1_1d2_1_1ChainShapeConf.html#a212282d094f3bb26c9182f72eac6319d">playrho::d2::ChainShapeConf::GetMassData()</a>, <a class="el" href="group__Math.html#ga156a2abff11f978a8df25efbf0c10147">GetNormalized()</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint::InitVelocityConstraints()</a>.</p>
 
 </div>
 </div>
-<a id="a4ec33549981735d2fd278d7a6a5efa2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ec33549981735d2fd278d7a6a5efa2b">&#9670;&nbsp;</a></span>s_blockSizeLookup</h2>
+<a id="aea8c760ae98e855ef8ba9c976fa732b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea8c760ae98e855ef8ba9c976fa732b5">&#9670;&nbsp;</a></span>s_blockSizeLookup</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5267,7 +5485,7 @@ Any narrowing is intentional.</dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR const std::uint8_t playrho::s_blockSizeLookup[<a class="el" href="classplayrho_1_1BlockAllocator.html#a457b68668af1d0a358ca9d92019905ff">BlockAllocator::MaxBlockSize</a>+1]</td>
+          <td class="memname">PLAYRHO_CONSTEXPR const std::uint8_t playrho::s_blockSizeLookup[<a class="el" href="classplayrho_1_1BlockAllocator.html#a2845e1a67f12b93c3bd543e72f6655f0">BlockAllocator::GetMaxBlockSize</a>()+1]</td>
         </tr>
       </table>
   </td>
@@ -5278,30 +5496,6 @@ Any narrowing is intentional.</dd></dl>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    0,</div><div class="line">    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, </div><div class="line">    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, </div><div class="line">    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, </div><div class="line">    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, </div><div class="line">    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, </div><div class="line">    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, </div><div class="line">    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, </div><div class="line">    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, </div><div class="line">    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, </div><div class="line">    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, </div><div class="line">    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, </div><div class="line">    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, </div><div class="line">    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, </div><div class="line">    11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, </div><div class="line">    11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, </div><div class="line">    12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, </div><div class="line">    12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, </div><div class="line">    13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, </div><div class="line">    13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, </div><div class="line">    13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, </div><div class="line">    13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, </div><div class="line">}</div></div><!-- fragment -->
 <p>Block size lookup array. </p>
-
-</div>
-</div>
-<a id="a24732e0fe47b97b8b93baa6a8f4833b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24732e0fe47b97b8b93baa6a8f4833b1">&#9670;&nbsp;</a></span>s_blockSizes</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR const std::size_t playrho::s_blockSizes[<a class="el" href="classplayrho_1_1BlockAllocator.html#ae959c34947a4df9fc5cc8229d0f29176">BlockAllocator::BlockSizes</a>]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{</div><div class="line">    16,        </div><div class="line">    32,        </div><div class="line">    64,        </div><div class="line">    96,        </div><div class="line">    128,    </div><div class="line">    160,    </div><div class="line">    192,    </div><div class="line">    224,    </div><div class="line">    256,    </div><div class="line">    320,    </div><div class="line">    384,    </div><div class="line">    448,    </div><div class="line">    512,    </div><div class="line">    640,    </div><div class="line">}</div></div><!-- fragment -->
-<p>Array of block sizes. </p>
 
 </div>
 </div>
@@ -5328,7 +5522,7 @@ Any narrowing is intentional.</dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 3 2018 11:17:39 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 18 2018 15:36:44 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

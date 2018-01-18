@@ -226,6 +226,9 @@ Related Functions</h2></td></tr>
 <tr class="memitem:a0daaf455abb76a6e73564741eedee365"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a0daaf455abb76a6e73564741eedee365">GetTransformation</a> (const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;f) noexcept</td></tr>
 <tr class="memdesc:a0daaf455abb76a6e73564741eedee365"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the transformation associated with the given fixture.  <a href="#a0daaf455abb76a6e73564741eedee365">More...</a><br /></td></tr>
 <tr class="separator:a0daaf455abb76a6e73564741eedee365"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83e0703de7a5f33d9a17c36f1aa43615"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a83e0703de7a5f33d9a17c36f1aa43615">ShouldCollide</a> (const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixtureA, const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixtureB) noexcept</td></tr>
+<tr class="memdesc:a83e0703de7a5f33d9a17c36f1aa43615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether contact calculations should be performed between the two fixtures.  <a href="#a83e0703de7a5f33d9a17c36f1aa43615">More...</a><br /></td></tr>
+<tr class="separator:a83e0703de7a5f33d9a17c36f1aa43615"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8db5cea675ddb8590ba6787a048a58b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html">FixtureConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a8db5cea675ddb8590ba6787a048a58b2">GetFixtureConf</a> (const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixture) noexcept</td></tr>
 <tr class="memdesc:a8db5cea675ddb8590ba6787a048a58b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the fixture definition for the given fixture.  <a href="#a8db5cea675ddb8590ba6787a048a58b2">More...</a><br /></td></tr>
 <tr class="separator:a8db5cea675ddb8590ba6787a048a58b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -349,7 +352,7 @@ This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit arc
 <p>Gets the parent body of this fixture. </p>
 <dl class="section return"><dt>Returns</dt><dd>Non-null pointer to the parent body. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a68f3d6b8ed4709b6b99bd8e096a9960e">playrho::d2::CalcToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a59c023fdafd285a822ab524dc608da23">playrho::d2::World::CreateAndDestroyProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c1dd07c339f21e11244a8d47ac42f0">playrho::d2::World::CreateProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a5a947481a969b326325f6182d7e514ba">playrho::d2::Body::DestroyFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aeca3cb1d43b9f3aedf97b5a91adb5a8f">playrho::d2::World::DestroyFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a0e6afe3f7c9b8d748c32c79b6177c387">playrho::d2::World::InternalDestroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab61e61ee05835899a0a47c7a236b9202">playrho::d2::World::ProcessContactsForTOI()</a>, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a585e0019655a53829279eceabca4fdd6">Refilter()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#af1363ebdc61a599ae898d352f67106a3">playrho::d2::World::RegisterForProxies()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a22dffd905bdf83b0dd24a6c33a52fd84">playrho::d2::World::SolveToi()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a68f3d6b8ed4709b6b99bd8e096a9960e">playrho::d2::CalcToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a59c023fdafd285a822ab524dc608da23">playrho::d2::World::CreateAndDestroyProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c1dd07c339f21e11244a8d47ac42f0">playrho::d2::World::CreateProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a5a947481a969b326325f6182d7e514ba">playrho::d2::Body::DestroyFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aeca3cb1d43b9f3aedf97b5a91adb5a8f">playrho::d2::World::DestroyFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a0e6afe3f7c9b8d748c32c79b6177c387">playrho::d2::World::InternalDestroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab61e61ee05835899a0a47c7a236b9202">playrho::d2::World::ProcessContactsForTOI()</a>, <a class="el" href="group__RayCastGroup.html#ga9616b36d2baba2023d1a5fcf10a5126a">playrho::d2::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a585e0019655a53829279eceabca4fdd6">Refilter()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#af1363ebdc61a599ae898d352f67106a3">playrho::d2::World::RegisterForProxies()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a22dffd905bdf83b0dd24a6c33a52fd84">playrho::d2::World::SolveToi()</a>.</p>
 
 </div>
 </div>
@@ -499,7 +502,7 @@ This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit arc
 <p>Gets the child shape. </p>
 <p>The shape is not modifiable. Use a new fixture instead. </p>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c1dd07c339f21e11244a8d47ac42f0">playrho::d2::World::CreateProxies()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#af26a4091d87146921b05bfdd000f09de">playrho::d2::Dump()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#adfdaf5afb737a4eb88daa57a82819c0c">playrho::d2::GetMassData()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a606b5ae5321be48763b7997b954c8793">playrho::d2::World::RayCast()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a6530e5de0aa7aabfdb8e48821a5d29ba">playrho::d2::World::Synchronize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c1dd07c339f21e11244a8d47ac42f0">playrho::d2::World::CreateProxies()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#af26a4091d87146921b05bfdd000f09de">playrho::d2::Dump()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#adfdaf5afb737a4eb88daa57a82819c0c">playrho::d2::GetMassData()</a>, <a class="el" href="group__RayCastGroup.html#ga9616b36d2baba2023d1a5fcf10a5126a">playrho::d2::RayCast()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a6530e5de0aa7aabfdb8e48821a5d29ba">playrho::d2::World::Synchronize()</a>.</p>
 
 </div>
 </div>
@@ -549,7 +552,8 @@ This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit arc
 </div><div class="memdoc">
 
 <p>Refilter the fixture. </p>
-<dl class="section note"><dt>Note</dt><dd>Call this if you want to establish collision that was previously disabled by <a class="el" href="classplayrho_1_1d2_1_1ContactFilter.html#a4d61c30aba0e3d91cf29c576def39e2f" title="Whether contact calculations should be performed between these two shapes. ">ContactFilter::ShouldCollide</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Call this if you want to establish collision that was previously disabled by <code><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a83e0703de7a5f33d9a17c36f1aa43615" title="Whether contact calculations should be performed between the two fixtures. ">ShouldCollide(const Fixture&amp;, const Fixture&amp;)</a></code>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>bool <a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a83e0703de7a5f33d9a17c36f1aa43615" title="Whether contact calculations should be performed between the two fixtures. ">ShouldCollide(const Fixture&amp; fixtureA, const Fixture&amp; fixtureB)</a> noexcept </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a8332326cfd6a500f6e641853e9a4298b">SetFilterData()</a>.</p>
 
@@ -778,6 +782,47 @@ This automatically calls Refilter. </dd></dl>
 
 </div>
 </div>
+<a id="a83e0703de7a5f33d9a17c36f1aa43615"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83e0703de7a5f33d9a17c36f1aa43615">&#9670;&nbsp;</a></span>ShouldCollide()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ShouldCollide </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;&#160;</td>
+          <td class="paramname"><em>fixtureA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;&#160;</td>
+          <td class="paramname"><em>fixtureB</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether contact calculations should be performed between the two fixtures. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if contact calculations should be performed between these two fixtures; <code>false</code> otherwise. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a83e0703de7a5f33d9a17c36f1aa43615">playrho::d2::ShouldCollide()</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a9679d441814f3c1e74f89c9933fceed3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9679d441814f3c1e74f89c9933fceed3">&#9670;&nbsp;</a></span>m_proxyCount</h2>
@@ -847,7 +892,7 @@ Either null or pointer to a heap-memory private copy of the assigned shape. </dd
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 3 2018 11:17:40 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

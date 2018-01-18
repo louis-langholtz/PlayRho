@@ -117,9 +117,13 @@ Related Functions</h2></td></tr>
 <tr class="memitem:ab177f652a925ae4e4a236a597dbe6d07"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Filter.html#ab177f652a925ae4e4a236a597dbe6d07">operator!=</a> (const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> lhs, const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> rhs) noexcept</td></tr>
 <tr class="memdesc:ab177f652a925ae4e4a236a597dbe6d07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator.  <a href="#ab177f652a925ae4e4a236a597dbe6d07">More...</a><br /></td></tr>
 <tr class="separator:ab177f652a925ae4e4a236a597dbe6d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a223329721a8138f316898ed9a4877250"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Filter.html#a223329721a8138f316898ed9a4877250">ShouldCollide</a> (const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> filterA, const <a class="el" href="structplayrho_1_1Filter.html">Filter</a> filterB) noexcept</td></tr>
+<tr class="memdesc:a223329721a8138f316898ed9a4877250"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether collision processing should be performed.  <a href="#a223329721a8138f316898ed9a4877250">More...</a><br /></td></tr>
+<tr class="separator:a223329721a8138f316898ed9a4877250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A holder for contact filtering data. </p>
+<dl class="section note"><dt>Note</dt><dd>This data structure size is 6-bytes. </dd></dl>
 </div><h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="ab177f652a925ae4e4a236a597dbe6d07"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab177f652a925ae4e4a236a597dbe6d07">&#9670;&nbsp;</a></span>operator!=()</h2>
@@ -197,6 +201,44 @@ Related Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a223329721a8138f316898ed9a4877250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a223329721a8138f316898ed9a4877250">&#9670;&nbsp;</a></span>ShouldCollide()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ShouldCollide </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1Filter.html">Filter</a>&#160;</td>
+          <td class="paramname"><em>filterA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1Filter.html">Filter</a>&#160;</td>
+          <td class="paramname"><em>filterB</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines whether collision processing should be performed. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a70f8953a304f7c864cda8f937fc65bc7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70f8953a304f7c864cda8f937fc65bc7">&#9670;&nbsp;</a></span>categoryBits</h2>
@@ -261,7 +303,7 @@ Related Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 3 2018 11:17:39 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 18 2018 15:36:44 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

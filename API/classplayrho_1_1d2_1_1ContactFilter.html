@@ -79,16 +79,16 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4d61c30aba0e3d91cf29c576def39e2f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1ContactFilter.html#a4d61c30aba0e3d91cf29c576def39e2f">ShouldCollide</a> (const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *fixtureA, const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *fixtureB)</td></tr>
-<tr class="memdesc:a4d61c30aba0e3d91cf29c576def39e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether contact calculations should be performed between these two shapes.  <a href="#a4d61c30aba0e3d91cf29c576def39e2f">More...</a><br /></td></tr>
-<tr class="separator:a4d61c30aba0e3d91cf29c576def39e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbf1f55b37ca969da0b7eb8b8045a900"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1ContactFilter.html#afbf1f55b37ca969da0b7eb8b8045a900">ShouldCollide</a> (const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixtureA, const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixtureB)</td></tr>
+<tr class="memdesc:afbf1f55b37ca969da0b7eb8b8045a900"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether contact calculations should be performed between these two shapes.  <a href="#afbf1f55b37ca969da0b7eb8b8045a900">More...</a><br /></td></tr>
+<tr class="separator:afbf1f55b37ca969da0b7eb8b8045a900"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implement this class to provide collision filtering. In other words, you can implement this class if you want finer control over contact creation. </p>
 <dl class="section note"><dt>Note</dt><dd>This data structure is 8-bytes large (on at least one 64-bit platform). </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4d61c30aba0e3d91cf29c576def39e2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d61c30aba0e3d91cf29c576def39e2f">&#9670;&nbsp;</a></span>ShouldCollide()</h2>
+<a id="afbf1f55b37ca969da0b7eb8b8045a900"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbf1f55b37ca969da0b7eb8b8045a900">&#9670;&nbsp;</a></span>ShouldCollide()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -99,13 +99,13 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool playrho::d2::ContactFilter::ShouldCollide </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;&#160;</td>
           <td class="paramname"><em>fixtureA</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;&#160;</td>
           <td class="paramname"><em>fixtureB</em>&#160;</td>
         </tr>
         <tr>
@@ -126,8 +126,6 @@ Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>If you implement your own collision filter you may want to build from the implementation of this method. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if contact calculations should be performed between these two shapes; <code>false</code> otherwise. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#abc671049aadfb1fc61c56dbd0cb87a9a">playrho::d2::World::ShouldCollide()</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -137,7 +135,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 3 2018 11:17:40 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 6 2018 13:32:47 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

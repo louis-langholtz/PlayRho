@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['s_5fblocksizelookup',['s_blockSizeLookup',['../namespaceplayrho.html#a4ec33549981735d2fd278d7a6a5efa2b',1,'playrho']]],
-  ['s_5fblocksizes',['s_blockSizes',['../namespaceplayrho.html#a24732e0fe47b97b8b93baa6a8f4833b1',1,'playrho']]],
+  ['s_5fblocksizelookup',['s_blockSizeLookup',['../namespaceplayrho.html#aea8c760ae98e855ef8ba9c976fa732b5',1,'playrho']]],
   ['scalefactor',['ScaleFactor',['../classplayrho_1_1Fixed.html#a6fd0ab9129e38130d77f6128c522db8e',1,'playrho::Fixed']]],
   ['second',['Second',['../group__PhysicalUnits.html#ga52ac917bbbd4ffab2322fb6f4f8d27c3',1,'playrho']]],
   ['secondshape',['secondShape',['../structplayrho_1_1detail_1_1SeparationInfo.html#a889ca2d038a15d1243ed8d7c56eee94c',1,'playrho::detail::SeparationInfo']]],

@@ -7,5 +7,6 @@ var searchData=
   ['getfriction',['GetFriction',['../classplayrho_1_1d2_1_1Shape.html#a7391adc084afda958cdb54b10229990c',1,'playrho::d2::Shape']]],
   ['getmassdata',['GetMassData',['../classplayrho_1_1d2_1_1Shape.html#a1f9e8db270c93956369ac55920c462d7',1,'playrho::d2::Shape']]],
   ['getrestitution',['GetRestitution',['../classplayrho_1_1d2_1_1Shape.html#ab731ba8dc3b08ed048d5348def3f0ab6',1,'playrho::d2::Shape']]],
+  ['getusetypeinfo',['GetUseTypeInfo',['../classplayrho_1_1d2_1_1Shape.html#aa799b992737c1bf10967d04381813a67',1,'playrho::d2::Shape']]],
   ['getvertexradius',['GetVertexRadius',['../classplayrho_1_1d2_1_1Shape.html#a5321a7da13179141da8f849904e67278',1,'playrho::d2::Shape']]]
 ];

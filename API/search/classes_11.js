@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['targetjoint',['TargetJoint',['../classplayrho_1_1d2_1_1TargetJoint.html',1,'playrho::d2']]],
+  ['targetjointconf',['TargetJointConf',['../structplayrho_1_1d2_1_1TargetJointConf.html',1,'playrho::d2']]],
   ['toiconf',['ToiConf',['../structplayrho_1_1ToiConf.html',1,'playrho']]],
   ['toioutput',['TOIOutput',['../structplayrho_1_1TOIOutput.html',1,'playrho']]],
   ['toistepstats',['ToiStepStats',['../structplayrho_1_1ToiStepStats.html',1,'playrho']]],

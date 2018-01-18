@@ -10,6 +10,5 @@ var searchData=
   ['vertexcounter',['VertexCounter',['../namespaceplayrho.html#a16da705f1b3c51c7fd1b9b1162c258b9',1,'playrho']]],
   ['vertexcounter2',['VertexCounter2',['../namespaceplayrho.html#ae2ea03f9c65d074dfd1aa21b6352f293',1,'playrho']]],
   ['vertexcounterarray',['VertexCounterArray',['../namespaceplayrho.html#a0a8c8047429035c030e233c9503cbec9',1,'playrho']]],
-  ['visitor',['Visitor',['../classplayrho_1_1d2_1_1Shape.html#a941a9d0ba778fae7a63951874c9c7f9e',1,'playrho::d2::Shape']]],
   ['voidt',['VoidT',['../namespaceplayrho.html#abbe7bbcc6786a7468f4d7da7a484a65f',1,'playrho']]]
 ];

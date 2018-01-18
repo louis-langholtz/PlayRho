@@ -150,7 +150,7 @@ $(function() {
 : <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#ace4bc67cfc09d4b7450b7266cd43ab08">playrho::d2::GearJoint</a>
 </li>
 <li>m_C
-: <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a00939f7ed3e6f5aa5d7008e4df2bc73d">playrho::d2::MouseJoint</a>
+: <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a4c9a0cb6b01bfabf636fd807ce402866">playrho::d2::TargetJoint</a>
 </li>
 <li>m_capacity
 : <a class="el" href="classplayrho_1_1GrowableStack.html#ad07d94d47bf57ea49f3cafac12c864cf">playrho::GrowableStack&lt; T, N &gt;</a>
@@ -171,9 +171,6 @@ $(function() {
 : <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a3572a9ca2777725f43f2d7736b03bdb4">playrho::d2::GearJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a7a9d179a939a6898742202bc661be26a">playrho::d2::PulleyJoint</a>
 </li>
-<li>m_contactFilter
-: <a class="el" href="classplayrho_1_1d2_1_1World.html#a3b3cac0f053462b5f388b467009755ba">playrho::d2::World</a>
-</li>
 <li>m_contactListener
 : <a class="el" href="classplayrho_1_1d2_1_1World.html#abf74e2d555f960c12714b310fd64215b">playrho::d2::World</a>
 </li>
@@ -191,16 +188,13 @@ $(function() {
 </li>
 <li>m_dampingRatio
 : <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a17a9b38363c80b2b42d09a237d9f2809">playrho::d2::DistanceJoint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a1c273d99e33109977f15e2f9972a57ce">playrho::d2::MouseJoint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a47e353073e922dc75a9f98b6ec962680">playrho::d2::TargetJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a6b5e346665c11d46a76aefa8a86da6f0">playrho::d2::WeldJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a7d3a4c660ce3db5bbe082f4daf0d95b9">playrho::d2::WheelJoint</a>
 </li>
 <li>m_data
 : <a class="el" href="classplayrho_1_1AllocatedArray.html#a9e5c2b65511635deb824688d0851cf3d">playrho::AllocatedArray&lt; T, Deleter &gt;</a>
 , <a class="el" href="classplayrho_1_1StackAllocator.html#a458a928fbff32f61a66e7a8438ecdb67">playrho::StackAllocator</a>
-</li>
-<li>m_defaultFilter
-: <a class="el" href="classplayrho_1_1d2_1_1World.html#a4f041394a4e98e37dc63380d251c2172">playrho::d2::World</a>
 </li>
 <li>m_deleter
 : <a class="el" href="classplayrho_1_1AllocatedArray.html#a0d57a133d2b3b2c62fb88ea7648173dc">playrho::AllocatedArray&lt; T, Deleter &gt;</a>
@@ -260,11 +254,11 @@ $(function() {
 : <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a40af7931238a387012abf9f954d8cc6c">playrho::d2::DynamicTree</a>
 </li>
 <li>m_freeLists
-: <a class="el" href="classplayrho_1_1BlockAllocator.html#a03dba7996a3f17a0054567ae9f4d521e">playrho::BlockAllocator</a>
+: <a class="el" href="classplayrho_1_1BlockAllocator.html#a44d54f8f3ec35f2dc2400ca00e4d79af">playrho::BlockAllocator</a>
 </li>
 <li>m_frequency
 : <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a7bc93a9b33c9a8b37803c39a4c74515c">playrho::d2::DistanceJoint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a58ae88e41cbb35d8b64e57cf92395031">playrho::d2::MouseJoint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a7fabe0740d150d3fcd36535c2e3127dc">playrho::d2::TargetJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a46e6a69746cbf1065cf62c009323b824">playrho::d2::WeldJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a0df2c954ab89e386af5f41baeab36a3a">playrho::d2::WheelJoint</a>
 </li>
@@ -273,12 +267,9 @@ $(function() {
 , <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a829378345ea11577308fb0825acb6a11">playrho::d2::VelocityConstraint</a>
 </li>
 <li>m_gamma
-: <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a365e197e77149703ca7b120be41a95ce">playrho::d2::MouseJoint</a>
+: <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a18d582f88902a0f0d70dfcfc4cd0bdc5">playrho::d2::TargetJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#ac401b91e446f7dae623e8c52d7304f92">playrho::d2::WeldJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a5027172dedfede8ae41ef1d5885f3830">playrho::d2::WheelJoint</a>
-</li>
-<li>m_gravity
-: <a class="el" href="classplayrho_1_1d2_1_1World.html#a3ab4584d20943b33a149eca5f43353c4">playrho::d2::World</a>
 </li>
 <li>m_groundAnchorA
 : <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a9593d6ca1a069538bf8ca5c8a3c76fd4">playrho::d2::PulleyJoint</a>
@@ -295,11 +286,11 @@ $(function() {
 <li>m_impulse
 : <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#ad48a3d799483742f9d3ed05bb0a8d674">playrho::d2::DistanceJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a09b9b0a047ba5036c9beb3f57c9f0849">playrho::d2::GearJoint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a9b7d4a42a25ecd5ec0e4b440bc0861bc">playrho::d2::MouseJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ac1724ec0ed12c6a5ec34d0e41e10652c">playrho::d2::PrismaticJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a57543f80422361f661045e76f6fe406c">playrho::d2::PulleyJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a3adb45b9326fb4fef2d455aac2f6f829">playrho::d2::RevoluteJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a9610fa037b9164952717d1321b3593e3">playrho::d2::RopeJoint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#ae2d2f57dc0e34250aa08286e1b900b3d">playrho::d2::TargetJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#ac23f5b2be3fb398584185420a9c98c01">playrho::d2::WeldJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a4093a0d748605625a4612fc3d488de31">playrho::d2::WheelJoint</a>
 </li>
@@ -420,11 +411,11 @@ $(function() {
 : <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a36f6bc182edd8458c8150371cae1714d">playrho::d2::DistanceJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a15b0c876d8b0cc5f708809708edf34b8">playrho::d2::FrictionJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#ae143b8eb9a84d7091dfd8321fc1d4793">playrho::d2::GearJoint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a38b58a4da401dda0d96fb980781c7226">playrho::d2::MouseJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a7438a488d6b28ea05341e52295b8d3fa">playrho::d2::PrismaticJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#ad0b9e4f8e68045c8dafb213fa43c9da5">playrho::d2::PulleyJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a0f322924344af44e6a74b97fb6efb9b5">playrho::d2::RevoluteJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#afed6efe03c8c36009ff173caf0438fd0">playrho::d2::RopeJoint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a7dfc70ea58b4d90a4a08b5e0eecc74df">playrho::d2::TargetJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a38da89e9f4fd5ed61c5624dfb8d5987c">playrho::d2::WeldJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#afa97e5d458f28531a8bd2ee4c48934ee">playrho::d2::WheelJoint</a>
 </li>
@@ -470,10 +461,10 @@ $(function() {
 <li>m_mass
 : <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a20e4ffe90cecbd7b791764d9ffb23be0">playrho::d2::DistanceJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#aeb15839d26973ba418a1c7e9b153289e">playrho::d2::GearJoint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a4f3be6e72b0816e050bd523305a28d08">playrho::d2::MouseJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a910d067223f6a6a3d6b13435726fa660">playrho::d2::PulleyJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a54bb44c7b7472141b2fff55a80d81719">playrho::d2::RevoluteJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#af7b9fc444fb6ac82024b3db45503f3f3">playrho::d2::RopeJoint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#abc6ec8c67daea8826ad47582e9c2c6fe">playrho::d2::TargetJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a00ae99e4ee3787ddfde68a3fcde8594a">playrho::d2::WeldJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#ac41e9419159e94592d6d19cf921272c3">playrho::d2::WheelJoint</a>
 </li>
@@ -492,7 +483,7 @@ $(function() {
 <li>m_maxForce
 : <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a7cf68eaea051d7ae8c203aac862e0acf">playrho::d2::FrictionJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a8807aea7bfe857d499cc358040cb98cf">playrho::d2::MotorJoint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a1dd144e11633651a93df578725b3e59c">playrho::d2::MouseJoint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a44b8569933bedbfda53a0ec3c3743c99">playrho::d2::TargetJoint</a>
 </li>
 <li>m_maxLength
 : <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a15f6e748169d045f9539606cd3c39602">playrho::d2::RopeJoint</a>
@@ -621,10 +612,10 @@ $(function() {
 : <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a0d07eaee916bc79d413b6b892c555059">playrho::d2::DistanceJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a2da126523d650b64585da71dca130ac5">playrho::d2::FrictionJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a447239566ead2c138c3a90640bd2afb3">playrho::d2::MotorJoint</a>
-, <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#af70164e84bf2cf5492b42dfb16455e27">playrho::d2::MouseJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#aa4a52f85646216421accccab523f9503">playrho::d2::PulleyJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a1cbf4d01caa5d850bf095ff9acbdc7ea">playrho::d2::RevoluteJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#ab37de2512a02a8c3817f608a125ffce1">playrho::d2::RopeJoint</a>
+, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#aa6d5c3ca9b74b291ed3c5ffda6cb6123">playrho::d2::TargetJoint</a>
 , <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a8a5308bb4992f9a664c0d7a84bcf3447">playrho::d2::WeldJoint</a>
 </li>
 <li>m_referenceAngle
@@ -707,7 +698,7 @@ $(function() {
 , <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a863e55f817d2d7c60a3ef5f613b25fc7">playrho::d2::VelocityConstraint</a>
 </li>
 <li>m_targetA
-: <a class="el" href="classplayrho_1_1d2_1_1MouseJoint.html#a68b6c457caf4a9b4a8a4aed8824de95c">playrho::d2::MouseJoint</a>
+: <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a27095042e45aedcac5b1f31e5849608e">playrho::d2::TargetJoint</a>
 </li>
 <li>m_toi
 : <a class="el" href="classplayrho_1_1d2_1_1Contact.html#a3302b1cce9b62f50664dc411aae7c0c9">playrho::d2::Contact</a>
@@ -823,9 +814,6 @@ $(function() {
 : <a class="el" href="structplayrho_1_1ConstraintSolverConf.html#a253a4bc881f71c58f227fe7effa739ec">playrho::ConstraintSolverConf</a>
 , <a class="el" href="classplayrho_1_1StepConf.html#a5eb64a27f2fb8884d6dd4565ed691f66">playrho::StepConf</a>
 </li>
-<li>MaxBlockSize
-: <a class="el" href="classplayrho_1_1BlockAllocator.html#a457b68668af1d0a358ca9d92019905ff">playrho::BlockAllocator</a>
-</li>
 <li>maxCirclesRatio
 : <a class="el" href="structplayrho_1_1d2_1_1Manifold_1_1Conf.html#ae311a665bbb972916ca896be04ace473">playrho::d2::Manifold::Conf</a>
 , <a class="el" href="classplayrho_1_1StepConf.html#a46c9f8cd3881c7f65056c485110230ab">playrho::StepConf</a>
@@ -841,10 +829,10 @@ $(function() {
 <li>maxForce
 : <a class="el" href="structplayrho_1_1d2_1_1FrictionJointConf.html#a951dfd6ab71a10b2bf897c519b486e6a">playrho::d2::FrictionJointConf</a>
 , <a class="el" href="structplayrho_1_1d2_1_1MotorJointConf.html#ae72dd67a4e667a4543e9b58bc5279a16">playrho::d2::MotorJointConf</a>
-, <a class="el" href="structplayrho_1_1d2_1_1MouseJointConf.html#afd127912e5556afc10ce79a346b5c617">playrho::d2::MouseJointConf</a>
+, <a class="el" href="structplayrho_1_1d2_1_1TargetJointConf.html#a749a955e6dc7a4e5a7ded98234247e54">playrho::d2::TargetJointConf</a>
 </li>
 <li>maxFraction
-: <a class="el" href="structplayrho_1_1d2_1_1RayCastInput.html#a532ca930d11747fca85d8e2999d8ede5">playrho::d2::RayCastInput</a>
+: <a class="el" href="structplayrho_1_1detail_1_1RayCastInput.html#aa0b141435d73218cda9930d7cc723ef7">playrho::detail::RayCastInput&lt; N &gt;</a>
 </li>
 <li>maxIncImpulse
 : <a class="el" href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html#a1f9a3084ccf18b8fb81d8938112dda71">playrho::d2::World::IslandSolverResults</a>
@@ -938,7 +926,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 3 2018 11:17:41 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 18 2018 15:36:46 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

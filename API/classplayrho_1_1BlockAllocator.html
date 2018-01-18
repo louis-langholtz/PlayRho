@@ -68,6 +68,7 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classplayrho_1_1BlockAllocator-members.html">List of all members</a>  </div>
@@ -84,6 +85,10 @@ $(function() {
 Collaboration diagram for playrho::BlockAllocator:</div>
 <div class="dyncontent">
 <div class="center"><img src="classplayrho_1_1BlockAllocator__coll__graph.png" border="0" usemap="#playrho_1_1BlockAllocator_coll__map" alt="Collaboration graph"/></div>
+<map name="playrho_1_1BlockAllocator_coll__map" id="playrho_1_1BlockAllocator_coll__map">
+<area shape="rect" id="node2" href="structplayrho_1_1BlockAllocator_1_1Block.html" title="Block. " alt="" coords="5,43,162,81"/>
+<area shape="rect" id="node4" href="structplayrho_1_1BlockAllocator_1_1Chunk.html" title="Chunk. " alt="" coords="297,84,454,123"/>
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -125,7 +130,7 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memdesc:a10c24f4502f0aedf3195da11635e241f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates an array. <br /></td></tr>
 <tr class="separator:a10c24f4502f0aedf3195da11635e241f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06536ee49cdb1a8c2f79de7522c8bd33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a06536ee49cdb1a8c2f79de7522c8bd33">Free</a> (void *p, <a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a> n)</td></tr>
-<tr class="memdesc:a06536ee49cdb1a8c2f79de7522c8bd33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free memory.  <a href="#a06536ee49cdb1a8c2f79de7522c8bd33">More...</a><br /></td></tr>
+<tr class="memdesc:a06536ee49cdb1a8c2f79de7522c8bd33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees memory.  <a href="#a06536ee49cdb1a8c2f79de7522c8bd33">More...</a><br /></td></tr>
 <tr class="separator:a06536ee49cdb1a8c2f79de7522c8bd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12d8426f4a31b8ed042b2a62699d04e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a12d8426f4a31b8ed042b2a62699d04e4">Clear</a> ()</td></tr>
 <tr class="memdesc:a12d8426f4a31b8ed042b2a62699d04e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears this allocator.  <a href="#a12d8426f4a31b8ed042b2a62699d04e4">More...</a><br /></td></tr>
@@ -135,24 +140,23 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a8bec3ad25a09721b7e4ec1bac8b4325c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the chunk count. <br /></td></tr>
 <tr class="separator:a8bec3ad25a09721b7e4ec1bac8b4325c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a2845e1a67f12b93c3bd543e72f6655f0"><td class="memItemLeft" align="right" valign="top"><a id="a2845e1a67f12b93c3bd543e72f6655f0"></a>
+static PLAYRHO_CONSTEXPR <a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a2845e1a67f12b93c3bd543e72f6655f0">GetMaxBlockSize</a> () noexcept</td></tr>
+<tr class="memdesc:a2845e1a67f12b93c3bd543e72f6655f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max block size (before using external allocator). <br /></td></tr>
+<tr class="separator:a2845e1a67f12b93c3bd543e72f6655f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16d1df885149404c0ba18fdc85b3442c"><td class="memItemLeft" align="right" valign="top"><a id="a16d1df885149404c0ba18fdc85b3442c"></a>
+static PLAYRHO_CONSTEXPR <a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a16d1df885149404c0ba18fdc85b3442c">GetChunkArrayIncrement</a> () noexcept</td></tr>
+<tr class="memdesc:a16d1df885149404c0ba18fdc85b3442c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1BlockAllocator_1_1Chunk.html" title="Chunk. ">Chunk</a> array increment. <br /></td></tr>
+<tr class="separator:a16d1df885149404c0ba18fdc85b3442c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:acfce2b627d68ea3589ed4088da5e2188"><td class="memItemLeft" align="right" valign="top"><a id="acfce2b627d68ea3589ed4088da5e2188"></a>
 static PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#acfce2b627d68ea3589ed4088da5e2188">ChunkSize</a> = <a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{16 * 1024}</td></tr>
 <tr class="memdesc:acfce2b627d68ea3589ed4088da5e2188"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1BlockAllocator_1_1Chunk.html" title="Chunk. ">Chunk</a> size. <br /></td></tr>
 <tr class="separator:acfce2b627d68ea3589ed4088da5e2188"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a457b68668af1d0a358ca9d92019905ff"><td class="memItemLeft" align="right" valign="top"><a id="a457b68668af1d0a358ca9d92019905ff"></a>
-static PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a457b68668af1d0a358ca9d92019905ff">MaxBlockSize</a> = <a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{640}</td></tr>
-<tr class="memdesc:a457b68668af1d0a358ca9d92019905ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max block size (before using external allocator). <br /></td></tr>
-<tr class="separator:a457b68668af1d0a358ca9d92019905ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae959c34947a4df9fc5cc8229d0f29176"><td class="memItemLeft" align="right" valign="top"><a id="ae959c34947a4df9fc5cc8229d0f29176"></a>
-static PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#ae959c34947a4df9fc5cc8229d0f29176">BlockSizes</a> = <a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{14}</td></tr>
-<tr class="memdesc:ae959c34947a4df9fc5cc8229d0f29176"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1BlockAllocator_1_1Block.html" title="Block. ">Block</a> sizes. <br /></td></tr>
-<tr class="separator:ae959c34947a4df9fc5cc8229d0f29176"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaadde145724fd41348278c662663949d"><td class="memItemLeft" align="right" valign="top"><a id="aaadde145724fd41348278c662663949d"></a>
-static PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#aaadde145724fd41348278c662663949d">ChunkArrayIncrement</a> = <a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>{128}</td></tr>
-<tr class="memdesc:aaadde145724fd41348278c662663949d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1BlockAllocator_1_1Chunk.html" title="Chunk. ">Chunk</a> array increment. <br /></td></tr>
-<tr class="separator:aaadde145724fd41348278c662663949d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -161,17 +165,17 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a2c3bc3655496cb673ca4ffe39ea98239"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1BlockAllocator_1_1Chunk.html" title="Chunk. ">Chunk</a> count. <br /></td></tr>
 <tr class="separator:a2c3bc3655496cb673ca4ffe39ea98239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04d6e24e6afbd2be6455d120eb1e671a"><td class="memItemLeft" align="right" valign="top"><a id="a04d6e24e6afbd2be6455d120eb1e671a"></a>
-<a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a04d6e24e6afbd2be6455d120eb1e671a">m_chunkSpace</a> = <a class="el" href="classplayrho_1_1BlockAllocator.html#aaadde145724fd41348278c662663949d">ChunkArrayIncrement</a></td></tr>
+<a class="el" href="classplayrho_1_1BlockAllocator.html#ae039f1fd9e0cdafe92d108cf5dc3d663">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a04d6e24e6afbd2be6455d120eb1e671a">m_chunkSpace</a> = <a class="el" href="classplayrho_1_1BlockAllocator.html#a16d1df885149404c0ba18fdc85b3442c">GetChunkArrayIncrement</a>()</td></tr>
 <tr class="memdesc:a04d6e24e6afbd2be6455d120eb1e671a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1BlockAllocator_1_1Chunk.html" title="Chunk. ">Chunk</a> space. <br /></td></tr>
 <tr class="separator:a04d6e24e6afbd2be6455d120eb1e671a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d7d83a13903d6163fb3a544f1c290b8"><td class="memItemLeft" align="right" valign="top"><a id="a1d7d83a13903d6163fb3a544f1c290b8"></a>
 <a class="el" href="structplayrho_1_1BlockAllocator_1_1Chunk.html">Chunk</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a1d7d83a13903d6163fb3a544f1c290b8">m_chunks</a></td></tr>
 <tr class="memdesc:a1d7d83a13903d6163fb3a544f1c290b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chunks array. <br /></td></tr>
 <tr class="separator:a1d7d83a13903d6163fb3a544f1c290b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03dba7996a3f17a0054567ae9f4d521e"><td class="memItemLeft" align="right" valign="top"><a id="a03dba7996a3f17a0054567ae9f4d521e"></a>
-<a class="el" href="structplayrho_1_1BlockAllocator_1_1Block.html">Block</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a03dba7996a3f17a0054567ae9f4d521e">m_freeLists</a> [<a class="el" href="classplayrho_1_1BlockAllocator.html#ae959c34947a4df9fc5cc8229d0f29176">BlockSizes</a>]</td></tr>
-<tr class="memdesc:a03dba7996a3f17a0054567ae9f4d521e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free lists. <br /></td></tr>
-<tr class="separator:a03dba7996a3f17a0054567ae9f4d521e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44d54f8f3ec35f2dc2400ca00e4d79af"><td class="memItemLeft" align="right" valign="top"><a id="a44d54f8f3ec35f2dc2400ca00e4d79af"></a>
+<a class="el" href="structplayrho_1_1BlockAllocator_1_1Block.html">Block</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1BlockAllocator.html#a44d54f8f3ec35f2dc2400ca00e4d79af">m_freeLists</a> [<a class="el" href="namespaceplayrho.html#ad0c4ceb8ef2cef80108a8d9dcb0da945">GetSize</a>(<a class="el" href="namespaceplayrho.html#a14624c80f5b2f01b49d878764aa55af0">AllocatorBlockSizes</a>)]</td></tr>
+<tr class="memdesc:a44d54f8f3ec35f2dc2400ca00e4d79af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free lists. <br /></td></tr>
+<tr class="separator:a44d54f8f3ec35f2dc2400ca00e4d79af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="structplayrho_1_1BlockAllocator_1_1Block.html" title="Block. ">Block</a> allocator. </p>
@@ -195,7 +199,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Allocates memory. </p>
-<p>Allocates uninitialized storage. Uses <code>Alloc</code> if the size is larger than <code>MaxBlockSize</code>. Otherwise looks for an appropriately sized block from the free list. Failing that, <code>Alloc</code> is used to grow the free list from which memory is returned. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a5908a18311a865763d65130dcdf40052" title="Allocates memory. ">Alloc</a>. </dd></dl>
+<p>Allocates uninitialized storage. Uses <code>Alloc</code> if the size is larger than <code><a class="el" href="classplayrho_1_1BlockAllocator.html#a2845e1a67f12b93c3bd543e72f6655f0" title="Max block size (before using external allocator). ">GetMaxBlockSize()</a></code>. Otherwise looks for an appropriately sized block from the free list. Failing that, <code>Alloc</code> is used to grow the free list from which memory is returned. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a5908a18311a865763d65130dcdf40052" title="Allocates memory. ">Alloc</a>. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1BlockAllocator.html#a10c24f4502f0aedf3195da11635e241f">AllocateArray()</a>.</p>
 
@@ -247,8 +251,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Free memory. </p>
-<p>This will use free if the size is larger than <code>MaxBlockSize</code>. </p>
+<p>Frees memory. </p>
+<p>This will use free if the size is larger than <code><a class="el" href="classplayrho_1_1BlockAllocator.html#a2845e1a67f12b93c3bd543e72f6655f0" title="Max block size (before using external allocator). ">GetMaxBlockSize()</a></code>. </p>
 
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho.html#a02f6b57cf0f7bc53f9339381007d9b84">playrho::Delete()</a>, and <a class="el" href="structplayrho_1_1BlockDeallocator.html#aa73d0ec0e811cdc17fdfabf2ad90f04c">playrho::BlockDeallocator::operator()()</a>.</p>
 
@@ -261,7 +265,7 @@ Private Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 3 2018 11:17:39 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 18 2018 15:36:44 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

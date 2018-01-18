@@ -1,8 +1,6 @@
 <map id="playrho::d2::WorldConf" name="playrho::d2::WorldConf">
-<area shape="rect" id="node2" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="536,55,695,93"/>
-<area shape="rect" id="node4" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="150,55,309,93"/>
-<area shape="rect" id="node8" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="151,117,308,143"/>
-<area shape="rect" id="node6" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="494,129,738,155"/>
-<area shape="rect" id="node9" href="$structplayrho_1_1Wider.html" title="playrho::Wider\&lt; BodyCounter \&gt;" alt="" coords="512,203,720,228"/>
-<area shape="rect" id="node10" href="$structplayrho_1_1Wider.html" title="Wider data type obtainer. " alt="" coords="160,216,298,241"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="65,192,224,231"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="92,92,251,131"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Wider.html" title="playrho::Wider\&lt; BodyCounter \&gt;" alt="" coords="248,199,456,224"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1Wider.html" title="Wider data type obtainer. " alt="" coords="283,99,421,124"/>
 </map>

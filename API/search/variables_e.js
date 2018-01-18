@@ -1,8 +1,8 @@
 var searchData=
 [
   ['p',['p',['../structplayrho_1_1d2_1_1Transformation.html#ab2b20471f74fef015279a0bb396210e1',1,'playrho::d2::Transformation']]],
-  ['p1',['p1',['../structplayrho_1_1d2_1_1RayCastInput.html#a5afbb1811706b5ac2af5071b760df78f',1,'playrho::d2::RayCastInput']]],
-  ['p2',['p2',['../structplayrho_1_1d2_1_1RayCastInput.html#af3a04559db96c55cda1a2290f98359d8',1,'playrho::d2::RayCastInput']]],
+  ['p1',['p1',['../structplayrho_1_1detail_1_1RayCastInput.html#ae704520881afed2dde9ad52c23466250',1,'playrho::detail::RayCastInput']]],
+  ['p2',['p2',['../structplayrho_1_1detail_1_1RayCastInput.html#ac2bf0abf53cc75c30d40e38440688dbc',1,'playrho::detail::RayCastInput']]],
   ['pi',['Pi',['../namespaceplayrho.html#a83e2e155484aefe7098ddf4248bff8ca',1,'playrho']]],
   ['pos0',['pos0',['../classplayrho_1_1d2_1_1Sweep.html#afd1e30ab1f1cfc33d1cef14028815fcb',1,'playrho::d2::Sweep']]],
   ['pos1',['pos1',['../classplayrho_1_1d2_1_1Sweep.html#ab5e2f463dbb73884d939921442975d70',1,'playrho::d2::Sweep']]],

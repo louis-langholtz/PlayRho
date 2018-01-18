@@ -134,14 +134,17 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a0294e853ae87bae114509d48e0fda45f">GetRestitution_</a> () const noexcept override</td></tr>
 <tr class="memdesc:a0294e853ae87bae114509d48e0fda45f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the restitution. <br /></td></tr>
 <tr class="separator:a0294e853ae87bae114509d48e0fda45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f3a290b10857b4e37409e431166fcfb"><td class="memItemLeft" align="right" valign="top"><a id="a6f3a290b10857b4e37409e431166fcfb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a6f3a290b10857b4e37409e431166fcfb">Visit_</a> (void *userData) const override</td></tr>
+<tr class="memdesc:a6f3a290b10857b4e37409e431166fcfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the shape. <br /></td></tr>
+<tr class="separator:a6f3a290b10857b4e37409e431166fcfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87f7b8779ca32813f32864187ac4bdd0"><td class="memItemLeft" align="right" valign="top"><a id="a87f7b8779ca32813f32864187ac4bdd0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a87f7b8779ca32813f32864187ac4bdd0">IsEqual_</a> (const <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html">Concept</a> &amp;other) const noexcept override</td></tr>
 <tr class="memdesc:a87f7b8779ca32813f32864187ac4bdd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality checking method. <br /></td></tr>
 <tr class="separator:a87f7b8779ca32813f32864187ac4bdd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a336a9dde29ac8cb132d418c969654bbc"><td class="memItemLeft" align="right" valign="top"><a id="a336a9dde29ac8cb132d418c969654bbc"></a>
-const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a336a9dde29ac8cb132d418c969654bbc">GetTypeInfo_</a> () const override</td></tr>
-<tr class="memdesc:a336a9dde29ac8cb132d418c969654bbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the type information of the underlying configuration. <br /></td></tr>
-<tr class="separator:a336a9dde29ac8cb132d418c969654bbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a0dcf5455848ecbf6dbfbd4bf4f8242"><td class="memItemLeft" align="right" valign="top">const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a3a0dcf5455848ecbf6dbfbd4bf4f8242">GetUseTypeInfo_</a> () const override</td></tr>
+<tr class="memdesc:a3a0dcf5455848ecbf6dbfbd4bf4f8242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the use type information.  <a href="#a3a0dcf5455848ecbf6dbfbd4bf4f8242">More...</a><br /></td></tr>
+<tr class="separator:a3a0dcf5455848ecbf6dbfbd4bf4f8242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdb83b02edddc59a919e7231fe6818b4"><td class="memItemLeft" align="right" valign="top"><a id="acdb83b02edddc59a919e7231fe6818b4"></a>
 const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#acdb83b02edddc59a919e7231fe6818b4">GetData_</a> () const noexcept override</td></tr>
 <tr class="memdesc:acdb83b02edddc59a919e7231fe6818b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the data for the underlying configuration. <br /></td></tr>
@@ -160,13 +163,48 @@ struct playrho::d2::Shape::Model&lt; T &gt;</h3>
 
 <p>Internal model configuration concept. </p>
 <dl class="section note"><dt>Note</dt><dd>Provides an implementation for runtime polymorphism for shape configuration. </dd></dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3a0dcf5455848ecbf6dbfbd4bf4f8242"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a0dcf5455848ecbf6dbfbd4bf4f8242">&#9670;&nbsp;</a></span>GetUseTypeInfo_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::type_info&amp; <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html">playrho::d2::Shape::Model</a>&lt; T &gt;::GetUseTypeInfo_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the use type information. </p>
+<dl class="section return"><dt>Returns</dt><dd>Type info of the underlying value's type. </dd></dl>
+
+<p>Implements <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#ad8ec5399d78c30c72a6e6e68afbbff15">playrho::d2::Shape::Concept</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a87f7b8779ca32813f32864187ac4bdd0">playrho::d2::Shape::Model&lt; T &gt;::IsEqual_()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>Shape.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 3 2018 11:17:40 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

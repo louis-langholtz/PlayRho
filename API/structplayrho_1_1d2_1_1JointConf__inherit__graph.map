@@ -3,11 +3,11 @@
 <area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; FrictionJointConf \&gt;" alt="" coords="587,321,751,360"/>
 <area shape="rect" id="node6" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; GearJointConf \&gt;" alt="" coords="587,5,751,44"/>
 <area shape="rect" id="node8" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; MotorJointConf \&gt;" alt="" coords="587,140,751,179"/>
-<area shape="rect" id="node10" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; MouseJointConf \&gt;" alt="" coords="587,71,751,109"/>
-<area shape="rect" id="node12" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; PrismaticJointConf \&gt;" alt="" coords="587,649,751,688"/>
-<area shape="rect" id="node14" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; PulleyJointConf \&gt;" alt="" coords="587,384,751,423"/>
-<area shape="rect" id="node16" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; RevoluteJointConf \&gt;" alt="" coords="587,512,751,551"/>
-<area shape="rect" id="node18" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; RopeJointConf \&gt;" alt="" coords="587,767,751,805"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; PrismaticJointConf \&gt;" alt="" coords="587,71,751,109"/>
+<area shape="rect" id="node12" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; PulleyJointConf \&gt;" alt="" coords="587,649,751,688"/>
+<area shape="rect" id="node14" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; RevoluteJointConf \&gt;" alt="" coords="587,384,751,423"/>
+<area shape="rect" id="node16" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; RopeJointConf \&gt;" alt="" coords="587,512,751,551"/>
+<area shape="rect" id="node18" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; TargetJointConf \&gt;" alt="" coords="587,767,751,805"/>
 <area shape="rect" id="node20" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; WeldJointConf \&gt;" alt="" coords="587,448,751,487"/>
 <area shape="rect" id="node22" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; WheelJointConf \&gt;" alt="" coords="587,577,751,616"/>
 <area shape="rect" id="node24" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="206,384,401,409"/>
@@ -15,11 +15,11 @@
 <area shape="rect" id="node5" href="$structplayrho_1_1d2_1_1FrictionJointConf.html" title="Friction joint definition. " alt="" coords="806,328,1001,353"/>
 <area shape="rect" id="node7" href="$structplayrho_1_1d2_1_1GearJointConf.html" title="Gear joint definition. " alt="" coords="813,12,994,37"/>
 <area shape="rect" id="node9" href="$structplayrho_1_1d2_1_1MotorJointConf.html" title="Motor joint definition. " alt="" coords="811,147,996,172"/>
-<area shape="rect" id="node11" href="$structplayrho_1_1d2_1_1MouseJointConf.html" title="Mouse joint definition. " alt="" coords="808,77,999,103"/>
-<area shape="rect" id="node13" href="$structplayrho_1_1d2_1_1PrismaticJointConf.html" title="Prismatic joint definition. " alt="" coords="800,656,1006,681"/>
-<area shape="rect" id="node15" href="$structplayrho_1_1d2_1_1PulleyJointConf.html" title="Pulley joint definition. " alt="" coords="810,391,997,416"/>
-<area shape="rect" id="node17" href="$structplayrho_1_1d2_1_1RevoluteJointConf.html" title="Revolute joint definition. " alt="" coords="801,519,1005,544"/>
-<area shape="rect" id="node19" href="$structplayrho_1_1d2_1_1RopeJointConf.html" title="Rope joint definition. " alt="" coords="812,773,995,799"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1d2_1_1PrismaticJointConf.html" title="Prismatic joint definition. " alt="" coords="800,77,1006,103"/>
+<area shape="rect" id="node13" href="$structplayrho_1_1d2_1_1PulleyJointConf.html" title="Pulley joint definition. " alt="" coords="810,656,997,681"/>
+<area shape="rect" id="node15" href="$structplayrho_1_1d2_1_1RevoluteJointConf.html" title="Revolute joint definition. " alt="" coords="801,391,1005,416"/>
+<area shape="rect" id="node17" href="$structplayrho_1_1d2_1_1RopeJointConf.html" title="Rope joint definition. " alt="" coords="812,519,995,544"/>
+<area shape="rect" id="node19" href="$structplayrho_1_1d2_1_1TargetJointConf.html" title="Target joint definition. " alt="" coords="809,773,997,799"/>
 <area shape="rect" id="node21" href="$structplayrho_1_1d2_1_1WeldJointConf.html" title="Weld joint definition. " alt="" coords="813,455,994,480"/>
 <area shape="rect" id="node23" href="$structplayrho_1_1d2_1_1WheelJointConf.html" title="Wheel joint definition. " alt="" coords="809,584,998,609"/>
 </map>

@@ -114,14 +114,17 @@ virtual <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167
 virtual <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a235ce655f2541326811ea782625d1240">GetRestitution_</a> () const noexcept=0</td></tr>
 <tr class="memdesc:a235ce655f2541326811ea782625d1240"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the restitution. <br /></td></tr>
 <tr class="separator:a235ce655f2541326811ea782625d1240"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a05c07d8e987a542d3247f7199fac78"><td class="memItemLeft" align="right" valign="top"><a id="a9a05c07d8e987a542d3247f7199fac78"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a9a05c07d8e987a542d3247f7199fac78">Visit_</a> (void *userData) const =0</td></tr>
+<tr class="memdesc:a9a05c07d8e987a542d3247f7199fac78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the shape. <br /></td></tr>
+<tr class="separator:a9a05c07d8e987a542d3247f7199fac78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c1fe8d532d34d70b77fe54a9238c4ee"><td class="memItemLeft" align="right" valign="top"><a id="a7c1fe8d532d34d70b77fe54a9238c4ee"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a7c1fe8d532d34d70b77fe54a9238c4ee">IsEqual_</a> (const <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html">Concept</a> &amp;other) const noexcept=0</td></tr>
 <tr class="memdesc:a7c1fe8d532d34d70b77fe54a9238c4ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality checking method. <br /></td></tr>
 <tr class="separator:a7c1fe8d532d34d70b77fe54a9238c4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfd35f6d8f690b8cd2d84580ed418c3f"><td class="memItemLeft" align="right" valign="top"><a id="abfd35f6d8f690b8cd2d84580ed418c3f"></a>
-virtual const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#abfd35f6d8f690b8cd2d84580ed418c3f">GetTypeInfo_</a> () const =0</td></tr>
-<tr class="memdesc:abfd35f6d8f690b8cd2d84580ed418c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the type information of the underlying configuration. <br /></td></tr>
-<tr class="separator:abfd35f6d8f690b8cd2d84580ed418c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8ec5399d78c30c72a6e6e68afbbff15"><td class="memItemLeft" align="right" valign="top">virtual const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#ad8ec5399d78c30c72a6e6e68afbbff15">GetUseTypeInfo_</a> () const =0</td></tr>
+<tr class="memdesc:ad8ec5399d78c30c72a6e6e68afbbff15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the use type information.  <a href="#ad8ec5399d78c30c72a6e6e68afbbff15">More...</a><br /></td></tr>
+<tr class="separator:ad8ec5399d78c30c72a6e6e68afbbff15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab527f70b26af44030cace857f6e522ff"><td class="memItemLeft" align="right" valign="top"><a id="ab527f70b26af44030cace857f6e522ff"></a>
 virtual const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#ab527f70b26af44030cace857f6e522ff">GetData_</a> () const noexcept=0</td></tr>
 <tr class="memdesc:ab527f70b26af44030cace857f6e522ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the data for the underlying configuration. <br /></td></tr>
@@ -141,13 +144,44 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Internal shape configuration concept. </p>
 <dl class="section note"><dt>Note</dt><dd>Provides an interface for runtime polymorphism for shape configuration. </dd></dl>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad8ec5399d78c30c72a6e6e68afbbff15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8ec5399d78c30c72a6e6e68afbbff15">&#9670;&nbsp;</a></span>GetUseTypeInfo_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const std::type_info&amp; playrho::d2::Shape::Concept::GetUseTypeInfo_ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the use type information. </p>
+<dl class="section return"><dt>Returns</dt><dd>Type info of the underlying value's type. </dd></dl>
+
+<p>Implemented in <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a3a0dcf5455848ecbf6dbfbd4bf4f8242">playrho::d2::Shape::Model&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>Shape.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 3 2018 11:17:40 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

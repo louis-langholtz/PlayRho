@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['raycastcallback',['RayCastCallback',['../classplayrho_1_1d2_1_1DynamicTree.html#adb4ec3aa7f880dc780077ca8c9888bee',1,'playrho::d2::DynamicTree::RayCastCallback()'],['../classplayrho_1_1d2_1_1World.html#a1bd103da87809ab70deee5f770b9ab2b',1,'playrho::d2::World::RayCastCallback()']]],
+  ['raycastinput',['RayCastInput',['../namespaceplayrho_1_1d2.html#adf053dc4cae3fabb24f6e3c8b8697ffb',1,'playrho::d2']]],
   ['raycastoutput',['RayCastOutput',['../namespaceplayrho_1_1d2.html#a2e8717982c2c73b571dfe16d45a38ecf',1,'playrho::d2']]],
   ['real',['Real',['../namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87',1,'playrho']]],
   ['reference',['reference',['../classplayrho_1_1AllocatedArray.html#a06b33c73b0f980ad278fddc8edfff64f',1,'playrho::AllocatedArray::reference()'],['../classplayrho_1_1ArrayList.html#af8df8532d007eec85164392f49348636',1,'playrho::ArrayList::reference()'],['../structplayrho_1_1Vector.html#a1dac8a92ef859aec019358fed5b4badd',1,'playrho::Vector::reference()'],['../structplayrho_1_1d2_1_1JointBuilder.html#a733fc319651379e8afa36146bebe68df',1,'playrho::d2::JointBuilder::reference()']]],

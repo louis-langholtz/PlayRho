@@ -11,7 +11,6 @@ var searchData=
   ['contact',['Contact',['../classplayrho_1_1d2_1_1Contact.html',1,'playrho::d2']]],
   ['contactatty',['ContactAtty',['../classplayrho_1_1d2_1_1ContactAtty.html',1,'playrho::d2']]],
   ['contactfeature',['ContactFeature',['../structplayrho_1_1ContactFeature.html',1,'playrho']]],
-  ['contactfilter',['ContactFilter',['../classplayrho_1_1d2_1_1ContactFilter.html',1,'playrho::d2']]],
   ['contactimpulseslist',['ContactImpulsesList',['../classplayrho_1_1d2_1_1ContactImpulsesList.html',1,'playrho::d2']]],
   ['contactkey',['ContactKey',['../classplayrho_1_1ContactKey.html',1,'playrho']]],
   ['contactlistener',['ContactListener',['../classplayrho_1_1d2_1_1ContactListener.html',1,'playrho::d2']]],

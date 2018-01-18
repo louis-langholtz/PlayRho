@@ -4,6 +4,7 @@ var searchData=
   ['added',['added',['../structplayrho_1_1PreStepStats.html#a9342f0dc6ecefd1d1519804f013cd164',1,'playrho::PreStepStats']]],
   ['allocation_5frecords',['allocation_records',['../structplayrho_1_1StackAllocator_1_1Conf.html#a38007c811dfeed6d390c38ede273f8a7',1,'playrho::StackAllocator::Conf']]],
   ['allocator',['allocator',['../structplayrho_1_1BlockDeallocator.html#adc65140a048daae726102b98ef3b7191',1,'playrho::BlockDeallocator']]],
+  ['allocatorblocksizes',['AllocatorBlockSizes',['../namespaceplayrho.html#a14624c80f5b2f01b49d878764aa55af0',1,'playrho']]],
   ['allowsleep',['allowSleep',['../structplayrho_1_1d2_1_1BodyConf.html#a9ff6df501796f81620a27a612c9cfa8b',1,'playrho::d2::BodyConf']]],
   ['alpha0',['alpha0',['../classplayrho_1_1d2_1_1Sweep.html#a0eedb59adb18445b4e17d88bdf33e933',1,'playrho::d2::Sweep']]],
   ['angle',['angle',['../structplayrho_1_1d2_1_1BodyConf.html#a3a3fe86a4a6bb6e255dd0c20bd527a57',1,'playrho::d2::BodyConf']]],
