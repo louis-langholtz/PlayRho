@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Common/UnitVec.hpp>
 #include <PlayRho/Common/Math.hpp>
 #include <iostream>

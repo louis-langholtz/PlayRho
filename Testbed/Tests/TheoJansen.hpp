@@ -136,7 +136,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
             m_chassis = m_world.CreateBody(bd);
-            m_chassis->CreateFixture(PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2.5_m, 1_m), sd);
+            m_chassis->CreateFixture(Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2.5_m, 1_m)}, sd);
         }
 
         {

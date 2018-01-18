@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -144,8 +144,8 @@ TEST(FrictionJoint, WithDynamicCircles)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    b1->CreateFixture(circle);
-    b2->CreateFixture(circle);
+    b1->CreateFixture(Shape{circle});
+    b2->CreateFixture(Shape{circle});
     auto jd = FrictionJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;

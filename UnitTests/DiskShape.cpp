@@ -18,10 +18,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <typeinfo>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -79,8 +80,26 @@ TEST(DiskShapeConf, GetInvalidChildThrows)
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
+TEST(DiskShapeConf, Visit)
+{
+    const auto s = Shape{DiskShapeConf{}};
+    auto data = UnitTestsVisitorData{};
+    ASSERT_EQ(data.visitedDisk, 0);
+    ASSERT_EQ(data.visitedEdge, 0);
+    ASSERT_EQ(data.visitedPolygon, 0);
+    ASSERT_EQ(data.visitedChain, 0);
+    ASSERT_EQ(data.visitedMulti, 0);
+    EXPECT_TRUE(Visit(s, &data));
+    EXPECT_EQ(data.visitedDisk, 1);
+    EXPECT_EQ(data.visitedEdge, 0);
+    EXPECT_EQ(data.visitedPolygon, 0);
+    EXPECT_EQ(data.visitedChain, 0);
+    EXPECT_EQ(data.visitedMulti, 0);
+}
+
 TEST(DiskShapeConf, Accept)
 {
+#if 0
     auto visited = false;
     auto diskVisited = false;
     Shape foo{DiskShapeConf{}};
@@ -95,6 +114,7 @@ TEST(DiskShapeConf, Accept)
     });
     EXPECT_TRUE(visited);
     EXPECT_TRUE(diskVisited);
+#endif
 }
 
 #if 0

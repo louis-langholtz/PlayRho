@@ -16,7 +16,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Common/StackAllocator.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
 #include <type_traits>

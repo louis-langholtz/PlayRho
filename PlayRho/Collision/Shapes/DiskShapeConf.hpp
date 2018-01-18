@@ -40,7 +40,6 @@ namespace d2 {
 ///
 struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
 {
-public:
     /// @brief Gets the default radius.
     static PLAYRHO_CONSTEXPR inline Length GetDefaultRadius() noexcept
     {

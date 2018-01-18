@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
@@ -263,8 +263,8 @@ TEST(WheelJoint, WithDynamicCircles)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    b1->CreateFixture(circle);
-    b2->CreateFixture(circle);
+    b1->CreateFixture(Shape{circle});
+    b2->CreateFixture(Shape{circle});
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = WheelJointConf{b1, b2, anchor, UnitVec::GetRight()};
     const auto joint = static_cast<WheelJoint*>(world.CreateJoint(jd));

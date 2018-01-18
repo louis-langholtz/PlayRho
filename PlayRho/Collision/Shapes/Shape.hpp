@@ -29,22 +29,96 @@
 #include <memory>
 #include <functional>
 #include <utility>
+#include <typeinfo>
 
 namespace playrho {
 namespace d2 {
 
-/// @brief Gets the friction of the given shape.
+class Shape;
+
+// Forward declare functions.
+// Note that these may be friend functions but that declaring these within the class that
+// they're to be friends of, doesn't also insure that they're found within the namespace
+// in terms of lookup.
+
+/// @brief Gets the number of child primitives of the shape.
+/// @return Non-negative count.
+ChildCounter GetChildCount(const Shape& shape) noexcept;
+
+/// @brief Gets the "child" for the given index.
+/// @param shape Shape to get "child" shape of.
+/// @param index Index to a child element of the shape. Value must be less
+///   than the number of child primitives of the shape.
+/// @note The shape must remain in scope while the proxy is in use.
+/// @throws InvalidArgument if the given index is out of range.
+/// @sa GetChildCount
+DistanceProxy GetChild(const Shape& shape, ChildCounter index);
+
+/// @brief Gets the mass properties of this shape using its dimensions and density.
+/// @return Mass data for this shape.
+MassData GetMassData(const Shape& shape) noexcept;
+
+/// @brief Gets the coefficient of friction.
+/// @return Value of 0 or higher.
 Real GetFriction(const Shape& shape) noexcept;
 
-/// @brief Gets the restitution value of the given shape.
+/// @brief Gets the coefficient of restitution value of the given shape.
 Real GetRestitution(const Shape& shape) noexcept;
 
 /// @brief Gets the density of the given shape.
+/// @return Non-negative density (in mass per area).
 NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
 
 /// @brief Gets the vertex radius of the given shape.
+///
+/// @details This gets the radius from the vertex that the shape's "skin" should
+///   extend outward by. While any edges - line segments between multiple vertices -
+///   are straight, corners between them (the vertices) are rounded and treated
+///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
+///   therefore will be more prone to rolling or having other shapes more prone
+///   to roll off of them. Here's an image of a shape configured via a
+///   <code>PolygonShapeConf</code> with it's skin drawn:
+///
+/// @image html SkinnedPolygon.png
+///
+/// @note This must be a non-negative value.
+///
+/// @sa UseVertexRadius
+///
 NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
 
+/// @brief Visits the given shape with the potentially non-null user data pointer.
+/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+bool Visit(const Shape& shape, void* userData);
+
+/// @brief Gets a pointer to the underlying data.
+/// @note Provided for introspective purposes like visitation.
+/// @note Generally speaking, try to avoid using this method unless there's
+///   no other way to access the underlying data.
+const void* GetData(const Shape& shape) noexcept;
+
+/// @brief Gets the type info of the use of the given shape.
+/// @note This is not the same as calling <code>typeid(Shape)</code>.
+/// @return Type info of the underlying value's type.
+const std::type_info& GetUseTypeInfo(const Shape& shape);
+
+/// @brief Visitor type alias for underlying shape configuration.
+using TypeInfoVisitor = std::function<void(const std::type_info& ti, const void* data)>;
+
+/// @brief Accepts a visitor.
+/// @details This is the "accept" method definition of a "visitor design pattern"
+///   for doing shape configuration specific types of processing for a constant shape.
+/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+void Accept(const Shape& shape, const TypeInfoVisitor& visitor);
+
+/// @brief Equality operator for shape to shape comparisons.
+bool operator== (const Shape& lhs, const Shape& rhs) noexcept;
+
+/// @brief Inequality operator for shape to shape comparisons.
+bool operator!= (const Shape& lhs, const Shape& rhs) noexcept;
+
+// Now define the shape class...
+    
 /// @defgroup PartsGroup Shape Classes
 /// @brief Classes for configuring shapes with material properties.
 /// @details These are classes that specify physical characteristics of: shape,
@@ -58,27 +132,42 @@ NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
 ///   Shapes used for simulation in <code>World</code> are created automatically when a
 ///   <code>Fixture</code> is created. Shapes may encapsulate zero or more child shapes.
 ///
+/// @note This class implements polymorphism without inheritance. This is based on a technique
+///   that's described by Sean Parent in his January 2017 Norwegian Developers Conference
+///   London talk "Better Code: Runtime Polymorphism". With this implementation, different
+///   shapes types can be had by constructing instances of this class with the different types
+///   that provide the required support. Different shapes of a given type meanwhile are had by
+///   providing different values for the type.
+///
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
 /// @ingroup PartsGroup
 ///
 /// @sa Fixture
+/// @sa https://youtu.be/QGcVXgEVMJg
 ///
 class Shape
 {
 public:
-    
-    /// @brief Visitor type alias for underlying shape configuration.
-    using Visitor = std::function<void(const std::type_info& ti, const void* data)>;
-
     /// @brief Default constructor.
-    /// @details This is a base class that shouldn't ever be directly instantiated.
     Shape() = delete;
 
     /// @brief Initializing constructor.
+    /// @param arg Configuration value to construct a shape instance for.
+    /// @note Only usable with types of values that have all of the support functions required
+    ///   by this class. The compiler emits errors if the given type doesn't.
+    /// @sa GetChildCount
+    /// @sa GetChild
+    /// @sa GetMassData
+    /// @sa GetVertexRadius
+    /// @sa GetDensity
+    /// @sa GetFriction
+    /// @sa GetRestitution
     template <typename T>
-    Shape(T v): m_self{std::make_shared<Model<T>>(std::move(v))}
-    {}
+    explicit Shape(T arg): m_self{std::make_shared<Model<T>>(std::move(arg))}
+    {
+        // Intentionally empty.
+    }
     
     /// @brief Copy constructor.
     Shape(const Shape& other) = default;
@@ -92,99 +181,67 @@ public:
     /// @brief Move assignment operator.
     Shape& operator= (Shape&& other) = default;
 
-    /// @brief Gets the number of child primitives of the shape.
-    /// @return Non-negative count.
     friend ChildCounter GetChildCount(const Shape& shape) noexcept
     {
         return shape.m_self->GetChildCount_();
     }
 
-    /// @brief Gets the "child" for the given index.
-    /// @param shape Shape to get "child" shape of.
-    /// @param index Index to a child element of the shape. Value must be less
-    ///   than the number of child primitives of the shape.
-    /// @note The shape must remain in scope while the proxy is in use.
-    /// @throws InvalidArgument if the given index is out of range.
-    /// @sa GetChildCount
     friend DistanceProxy GetChild(const Shape& shape, ChildCounter index)
     {
         return shape.m_self->GetChild_(index);
     }
     
-    /// @brief Gets the mass properties of this shape using its dimensions and density.
-    /// @return Mass data for this shape.
     friend MassData GetMassData(const Shape& shape) noexcept
     {
         return shape.m_self->GetMassData_();
     }
     
-    /// @brief Gets the vertex radius.
-    ///
-    /// @details This gets the radius from the vertex that the shape's "skin" should
-    ///   extend outward by. While any edges - line segments between multiple vertices -
-    ///   are straight, corners between them (the vertices) are rounded and treated
-    ///   as rounded. Shapes with larger vertex radiuses compared to edge lengths
-    ///   therefore will be more prone to rolling or having other shapes more prone
-    ///   to roll off of them. Here's an image of a shape configured via a
-    ///   <code>PolygonShapeConf</code> with it's skin drawn:
-    ///
-    /// @image html SkinnedPolygon.png
-    ///
-    /// @note This must be a non-negative value.
-    ///
-    /// @sa UseVertexRadius
-    ///
     friend NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
     {
         return shape.m_self->GetVertexRadius_();
     }
     
-    /// @brief Gets the coefficient of friction.
-    /// @return Value of 0 or higher.
     friend Real GetFriction(const Shape& shape) noexcept
     {
         return shape.m_self->GetFriction_();
     }
     
-    /// @brief Gets the coefficient of restitution.
     friend Real GetRestitution(const Shape& shape) noexcept
     {
         return shape.m_self->GetRestitution_();
     }
 
-    /// @brief Gets the density of this fixture.
-    /// @return Non-negative density (in mass per area).
     friend NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept
     {
         return shape.m_self->GetDensity_();
     }
     
-    /// @brief Gets a pointer to the underlying data.
-    /// @note Provided for introspective purposes like visitation.
-    /// @note Generally speaking, try to avoid using this method unless there's
-    ///   no other way to access the underlying data.
+    friend bool Visit(const Shape& shape, void* userData)
+    {
+        return shape.m_self->Visit_(userData);
+    }
+    
     friend const void* GetData(const Shape& shape) noexcept
     {
         return shape.m_self->GetData_();
     }
     
-    /// @brief Accepts a visitor.
-    /// @details This is the "accept" method definition of a "visitor design pattern"
-    ///   for doing shape configuration specific types of processing for a constant shape.
-    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
-    friend void Accept(const Shape& shape, const Visitor& visitor)
+    friend const std::type_info& GetUseTypeInfo(const Shape& shape)
+    {
+        return shape.m_self->GetUseTypeInfo_();
+    }
+
+    friend void Accept(const Shape& shape, const TypeInfoVisitor& visitor)
     {
         const auto self = shape.m_self;
-        visitor(self->GetTypeInfo_(), self->GetData_());
+        visitor(self->GetUseTypeInfo_(), self->GetData_());
     }
     
-    /// @brief Equality operator for shape to shape comparisons.
     friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
     {
         return lhs.m_self == rhs.m_self || *lhs.m_self == *rhs.m_self;
     }
 
-    /// @brief Inequality operator for shape to shape comparisons.
     friend bool operator!= (const Shape& lhs, const Shape& rhs) noexcept
     {
         return !(lhs == rhs);
@@ -219,11 +276,15 @@ private:
         /// @brief Gets the restitution.
         virtual Real GetRestitution_() const noexcept = 0;
         
+        /// @brief Draws the shape.
+        virtual bool Visit_(void* userData) const = 0;
+        
         /// @brief Equality checking method.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
         
-        /// @brief Gets the type information of the underlying configuration.
-        virtual const std::type_info& GetTypeInfo_() const = 0;
+        /// @brief Gets the use type information.
+        /// @return Type info of the underlying value's type.
+        virtual const std::type_info& GetUseTypeInfo_() const = 0;
         
         /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
@@ -287,13 +348,20 @@ private:
             return GetRestitution(data);
         }
         
-        bool IsEqual_(const Concept& other) const noexcept override
+        bool Visit_(void* userData) const override
         {
-            return (GetTypeInfo_() == other.GetTypeInfo_()) &&
-            (data == *static_cast<const T*>(other.GetData_()));
+            return ::playrho::Visit(data, userData);
         }
         
-        const std::type_info& GetTypeInfo_() const override
+        bool IsEqual_(const Concept& other) const noexcept override
+        {
+            // Would be preferable to do this without using any kind of RTTI system.
+            // But how would that be done?
+            return (GetUseTypeInfo_() == other.GetUseTypeInfo_()) &&
+                (data == *static_cast<const T*>(other.GetData_()));
+        }
+        
+        const std::type_info& GetUseTypeInfo_() const override
         {
             return typeid(data_type);
         }
@@ -311,7 +379,7 @@ private:
     std::shared_ptr<const Concept> m_self; ///< Self shared pointer.
 };
 
-// Free functions...
+// Related free functions...
 
 /// @brief Test a point for containment in the given shape.
 /// @param shape Shape to use for test.
@@ -323,6 +391,17 @@ private:
 bool TestPoint(const Shape& shape, Length2 point) noexcept;
 
 } // namespace d2
+
+/// @brief Visits the given shape with the potentially non-null user data pointer.
+/// @note This is a specialization of the <code>Visit</code> function template for the
+///   <code>d2::Shape</code> class.
+/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+template <>
+inline bool Visit<d2::Shape>(const d2::Shape& shape, void* userData)
+{
+    return d2::Visit(shape, userData);
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_SHAPE_HPP

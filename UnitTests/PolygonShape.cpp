@@ -18,9 +18,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <typeinfo>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -70,8 +71,22 @@ TEST(PolygonShapeConf, GetInvalidChildThrows)
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
+TEST(PolygonShapeConf, Visit)
+{
+    const auto s = Shape{PolygonShapeConf{}};
+    auto data = UnitTestsVisitorData{};
+    ASSERT_EQ(data.visitedDisk, 0);
+    ASSERT_EQ(data.visitedEdge, 0);
+    ASSERT_EQ(data.visitedPolygon, 0);
+    ASSERT_EQ(data.visitedChain, 0);
+    ASSERT_EQ(data.visitedMulti, 0);
+    EXPECT_TRUE(Visit(s, &data));
+    EXPECT_EQ(data.visitedPolygon, 1);
+}
+
 TEST(PolygonShapeConf, Accept)
 {
+#if 0
     auto visited = false;
     auto shapeVisited = false;
     const auto foo = PolygonShapeConf{};
@@ -86,6 +101,7 @@ TEST(PolygonShapeConf, Accept)
     });
     EXPECT_TRUE(visited);
     EXPECT_TRUE(shapeVisited);
+#endif
 }
 
 TEST(PolygonShapeConf, FindLowestRightMostVertex)

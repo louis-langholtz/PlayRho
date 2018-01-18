@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
@@ -199,7 +199,7 @@ TEST(GearJoint, GetGearJointConf)
 
 TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
 {
-    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
+    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -230,7 +230,7 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
 
 TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
 {
-    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
+    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -261,7 +261,7 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
 
 TEST(GearJoint, GetAnchorAandB)
 {
-    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
+    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};

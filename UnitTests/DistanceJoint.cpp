@@ -16,7 +16,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
@@ -124,7 +124,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
     World world{};
     
-    const auto shape = DiskShapeConf{}.UseRadius(0.2_m);
+    const auto shape = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     
     const auto location1 = Length2{-1_m, 0_m};
     const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
@@ -178,7 +178,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 {
     auto world = World{};
     
-    const auto shape = DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2);
+    const auto shape = Shape{DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2)};
     const auto location1 = Length2{-10_m, 10_m};
     const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(body1->GetLocation(), location1);

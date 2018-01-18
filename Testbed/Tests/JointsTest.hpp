@@ -185,8 +185,8 @@ private:
         {
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
             const auto conf = DiskConf{}.UseRadius(0.7_m);
-            cbody->CreateFixture(DiskConf(conf).UseLocation(left));
-            cbody->CreateFixture(DiskConf(conf).UseLocation(right));
+            cbody->CreateFixture(Shape{DiskConf(conf).UseLocation(left)});
+            cbody->CreateFixture(Shape{DiskConf(conf).UseLocation(right)});
         }
         {
             const auto shape = Shape{PolyConf{}.UseDensity(5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
@@ -273,7 +273,9 @@ private:
         
         const auto carLocation = center - Vec2(3.3f, 1.0f) * 1_m;
         const auto car = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(carLocation));
-        car->CreateFixture(PolygonShapeConf{}.UseDensity(1_kgpm2).Set(Span<const Length2>(carVerts.data(), carVerts.size())));
+        car->CreateFixture(Shape{
+            PolygonShapeConf{}.UseDensity(1_kgpm2).Set(Span<const Length2>(carVerts.data(), carVerts.size()))
+        });
         
         const auto backWheel  = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(carLocation + Vec2(-1.0f, -0.65f) * 1_m));
         backWheel->CreateFixture(circle);

@@ -1798,7 +1798,7 @@ static void DropTilesPlayRho(int count)
             for (auto i = 0; i < N; ++i)
             {
                 conf.SetAsBox(a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
-                ground->CreateFixture(conf);
+                ground->CreateFixture(playrho::d2::Shape{conf});
                 GetX(position) += 2.0f * a * playrho::Meter;
             }
             GetY(position) -= 2.0f * a * playrho::Meter;
@@ -1968,7 +1968,9 @@ private:
     playrho::d2::World m_world;
     playrho::StepConf m_stepConf;
     playrho::Length m_squareLen = 0.125f * playrho::Meter;
-    playrho::d2::Shape m_square = playrho::d2::PolygonShapeConf(m_squareLen, m_squareLen);
+    playrho::d2::Shape m_square = playrho::d2::Shape{
+        playrho::d2::PolygonShapeConf(m_squareLen, m_squareLen)
+    };
 };
 
 Tumbler::Tumbler()
@@ -1986,13 +1988,13 @@ playrho::d2::Body* Tumbler::CreateEnclosure(playrho::d2::World& world)
     playrho::d2::PolygonShapeConf shape;
     shape.UseDensity(5 * playrho::KilogramPerSquareMeter);
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(shape);
+    b->CreateFixture(playrho::d2::Shape{shape});
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(shape);
+    b->CreateFixture(playrho::d2::Shape{shape});
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(shape);
+    b->CreateFixture(playrho::d2::Shape{shape});
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(shape);
+    b->CreateFixture(playrho::d2::Shape{shape});
     return b;
 }
 

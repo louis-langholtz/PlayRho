@@ -18,12 +18,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <cmath>
 #include <algorithm>
 #include <limits>
 #include <iostream>
 #include <cstring>
+#include <type_traits>
 
 TEST(float, BiggerValsIncreasinglyInaccurate)
 {
@@ -355,4 +356,18 @@ TEST(float, zero)
     EXPECT_EQ(-0.0f / 1.0f, 0.0f);
     EXPECT_TRUE(-3.0f * 0.0f == +0.0f);
     EXPECT_EQ(-3.0f * 0.0f, -0.0f);
+}
+
+TEST(float, GetInvalid)
+{
+    auto val = playrho::GetInvalid<float>();
+    EXPECT_TRUE(std::isnan(val));
+    const auto same = std::is_same<decltype(val), float>::value;
+    EXPECT_TRUE(same);
+}
+
+TEST(float, GetTypeName)
+{
+    const auto name = playrho::GetTypeName<float>();
+    EXPECT_STREQ(name, "float");
 }

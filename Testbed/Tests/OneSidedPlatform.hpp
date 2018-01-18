@@ -45,7 +45,7 @@ public:
             BodyConf bd;
             bd.location = Vec2(0.0f, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            m_platform = body->CreateFixture(PolygonShapeConf{}.SetAsBox(3_m, 0.5_m));
+            m_platform = body->CreateFixture(Shape{PolygonShapeConf{}.SetAsBox(3_m, 0.5_m)});
             m_bottom = Real(10.0f - 0.5f) * 1_m;
             m_top = Real(10.0f + 0.5f) * 1_m;
         }

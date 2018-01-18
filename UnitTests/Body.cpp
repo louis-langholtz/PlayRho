@@ -16,7 +16,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -267,7 +267,7 @@ TEST(Body, CreateFixture)
     const auto body = world.CreateBody();
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(0));
 
-    const auto valid_shape = DiskShapeConf(1_m);
+    const auto valid_shape = Shape{DiskShapeConf(1_m)};
     EXPECT_NE(body->CreateFixture(valid_shape, FixtureConf{}), nullptr);
 
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
@@ -281,7 +281,7 @@ TEST(Body, DestroyFixture)
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
     ASSERT_EQ(GetFixtureCount(*bodyB), std::size_t(0));
 
-    const auto fixtureA = bodyA->CreateFixture(DiskShapeConf(1_m), FixtureConf{});
+    const auto fixtureA = bodyA->CreateFixture(Shape{DiskShapeConf(1_m)}, FixtureConf{});
     ASSERT_NE(fixtureA, nullptr);
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
 
@@ -296,7 +296,7 @@ TEST(Body, SetEnabled)
     auto stepConf = StepConf{};
     World world;
     const auto body = world.CreateBody();
-    const auto valid_shape = DiskShapeConf(1_m);
+    const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
     const auto fixture = body->CreateFixture(valid_shape, FixtureConf{});
     ASSERT_NE(fixture, nullptr);
@@ -329,7 +329,7 @@ TEST(Body, SetFixedRotation)
 {
     World world;
     const auto body = world.CreateBody();
-    const auto valid_shape = DiskShapeConf(1_m);
+    const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
     ASSERT_NE(body->CreateFixture(valid_shape, FixtureConf{}), nullptr);
     ASSERT_FALSE(body->IsFixedRotation());
@@ -790,7 +790,7 @@ TEST(Body, CalcGravitationalAcceleration)
     const auto l1 = Length2{-8_m, 0_m};
     const auto l2 = Length2{+8_m, 0_m};
     const auto l3 = Length2{+16_m, 0_m};
-    const auto shape = DiskShapeConf{}.UseRadius(2_m).UseDensity(1e10_kgpm2);
+    const auto shape = Shape{DiskShapeConf{}.UseRadius(2_m).UseDensity(1e10_kgpm2)};
     
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
     b1->CreateFixture(shape);
@@ -837,7 +837,7 @@ TEST(Body, GetCentripetalForce)
     const auto l1 = Length2{-8_m, 0_m};
     auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
-    const auto shape = DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2);
+    const auto shape = Shape{DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)};
     body->CreateFixture(shape);
     SetLinearVelocity(*body, LinearVelocity2{2_mps, 3_mps});
     EXPECT_EQ(GetLinearVelocity(*body), LinearVelocity2(2_mps, 3_mps));

@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -310,7 +310,7 @@ TEST(RevoluteJoint, MaxMotorTorque)
 
 TEST(RevoluteJoint, MovesDynamicCircles)
 {
-    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
+    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     World world;
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -338,7 +338,7 @@ TEST(RevoluteJoint, MovesDynamicCircles)
 
 TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 {
-    const auto circle = DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2);
+    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2)};
 
     World world;
     const auto p1 = Length2{-1_m, 0_m};
@@ -415,10 +415,10 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
 
-    const auto shape1 = PolygonShapeConf{}.SetAsBox(1_m, 1_m);
+    const auto shape1 = Shape{PolygonShapeConf{}.SetAsBox(1_m, 1_m)};
     b1->CreateFixture(shape1);
     
-    const auto shape2 = PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(1_kgpm2);
+    const auto shape2 = Shape{PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(1_kgpm2)};
     b2->CreateFixture(shape2);
     
     auto jd = RevoluteJointConf{b1, b2, Length2{}};

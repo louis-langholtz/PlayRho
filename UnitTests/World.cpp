@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
@@ -394,8 +394,8 @@ TEST(World, CreateDestroyJoinedBodies)
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
 
-    body->CreateFixture(DiskShapeConf{1_m});
-    body2->CreateFixture(DiskShapeConf{1_m});
+    body->CreateFixture(Shape{DiskShapeConf{1_m}});
+    body2->CreateFixture(Shape{DiskShapeConf{1_m}});
 
     EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
     
@@ -440,8 +440,8 @@ TEST(World, CreateDestroyContactingBodies)
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
     
-    EXPECT_NE(body1->CreateFixture(DiskShapeConf{1_m}.UseDensity(1_kgpm2)), nullptr);
-    EXPECT_NE(body2->CreateFixture(DiskShapeConf{1_m}.UseDensity(1_kgpm2)), nullptr);
+    EXPECT_NE(body1->CreateFixture(Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), nullptr);
+    EXPECT_NE(body2->CreateFixture(Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), nullptr);
     EXPECT_EQ(GetFixtureCount(world), std::size_t(2));
     
     auto stepConf = StepConf{};
@@ -470,10 +470,10 @@ TEST(World, CreateAndDestroyFixture)
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
     ASSERT_EQ(GetFixtureCount(*bodyB), std::size_t(0));
     
-    EXPECT_THROW(world.CreateFixture(*bodyA, DiskShapeConf(0_m)), InvalidArgument);
-    EXPECT_THROW(world.CreateFixture(*bodyA, DiskShapeConf(WorldConf{}.maxVertexRadius * 2)), InvalidArgument);
+    EXPECT_THROW(world.CreateFixture(*bodyA, Shape{DiskShapeConf(0_m)}), InvalidArgument);
+    EXPECT_THROW(world.CreateFixture(*bodyA, Shape{DiskShapeConf(WorldConf{}.maxVertexRadius * 2)}), InvalidArgument);
 
-    const auto fixtureA = world.CreateFixture(*bodyA, DiskShapeConf(1_m));
+    const auto fixtureA = world.CreateFixture(*bodyA, Shape{DiskShapeConf(1_m)});
     ASSERT_NE(fixtureA, nullptr);
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
     EXPECT_FALSE(other.TouchProxies(*fixtureA));
@@ -485,11 +485,11 @@ TEST(World, CreateAndDestroyFixture)
     
     const auto bodyC = other.CreateBody();
     ASSERT_NE(bodyC, nullptr);
-    const auto fixtureC = other.CreateFixture(*bodyC, DiskShapeConf(1_m));
+    const auto fixtureC = other.CreateFixture(*bodyC, Shape{DiskShapeConf(1_m)});
     ASSERT_NE(fixtureC, nullptr);
     EXPECT_FALSE(world.DestroyFixture(fixtureC));
     
-    EXPECT_THROW(world.CreateFixture(*bodyC, DiskShapeConf(1_m)), InvalidArgument);
+    EXPECT_THROW(world.CreateFixture(*bodyC, Shape{DiskShapeConf(1_m)}), InvalidArgument);
 }
 
 TEST(World, SynchronizeProxies)
@@ -499,7 +499,7 @@ TEST(World, SynchronizeProxies)
     
     EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
     const auto bodyA = world.CreateBody();
-    world.CreateFixture(*bodyA, DiskShapeConf(1_m));
+    world.CreateFixture(*bodyA, Shape{DiskShapeConf(1_m)});
     EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
     SetLocation(*bodyA, Length2{10_m, -4_m});
     EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(1));
@@ -530,7 +530,7 @@ TEST(World, RegisterFixtureForProxies)
     auto world = World{};
     EXPECT_FALSE(world.RegisterForProxies(static_cast<Fixture*>(nullptr)));
     const auto body = world.CreateBody();
-    const auto fixture = body->CreateFixture(DiskShapeConf(1_m));
+    const auto fixture = body->CreateFixture(Shape{DiskShapeConf(1_m)});
     EXPECT_TRUE(world.RegisterForProxies(fixture));
 }
 
@@ -554,7 +554,7 @@ TEST(World, QueryAABB)
     const auto v2 = Length2{+1_m, 0_m};
     const auto conf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
     ASSERT_EQ(GetChildCount(conf), ChildCounter(1));
-    const auto fixture = body->CreateFixture(conf);
+    const auto fixture = body->CreateFixture(Shape{conf});
     ASSERT_NE(fixture, nullptr);
     
     auto stepConf = StepConf{};
@@ -587,11 +587,14 @@ TEST(World, RayCast)
 
     const auto p0 = Length2{-10_m, +3_m};
     const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p0));
-    ASSERT_NE(b0->CreateFixture(DiskShapeConf{1_m}), nullptr);
+    ASSERT_NE(b0->CreateFixture(Shape{DiskShapeConf{1_m}}), nullptr);
 
     const auto p1 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    ASSERT_NE(b1->CreateFixture(DiskShapeConf{0.1_m}), nullptr);
+    ASSERT_NE(b1->CreateFixture(Shape{DiskShapeConf{0.1_m}}), nullptr);
+
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseLocation(Length2{-100_m, -100_m}));
+    ASSERT_NE(b2->CreateFixture(Shape{EdgeShapeConf{Length2{}, Length2{-20_m, -20_m}}}), nullptr);
 
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, nullptr);
@@ -752,6 +755,16 @@ TEST(World, RayCast)
         EXPECT_FALSE(retval);
         EXPECT_EQ(foundOurs, 0);
         EXPECT_EQ(foundOthers, 0);
+    }
+    {
+        auto found = 0;
+        const auto rci = RayCastInput{Length2{-100_m, -101_m}, Length2{-120_m, -121_m}, Real{0.9f}};
+        const auto retval = RayCast(world.GetTree(), rci, [&](Fixture*, ChildCounter, Length2, UnitVec) {
+            ++found;
+            return RayCastOpcode::Terminate;
+        });
+        EXPECT_FALSE(retval);
+        EXPECT_EQ(found, 0);
     }
 }
 
@@ -3299,7 +3312,7 @@ public:
     {
         const auto hw_ground = 40.0_m;
         const auto ground = world.CreateBody();
-        ground->CreateFixture(EdgeShapeConf{}.Set(Length2{-hw_ground, 0_m}, Length2{hw_ground, 0_m}));
+        ground->CreateFixture(Shape{EdgeShapeConf{}.Set(Length2{-hw_ground, 0_m}, Length2{hw_ground, 0_m})});
         const auto numboxes = boxes.size();
         original_x = GetParam();
         

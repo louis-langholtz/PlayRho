@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
@@ -143,7 +143,7 @@ TEST(WeldJoint, GetWeldJointConf)
 
 TEST(WeldJoint, WithDynamicCircles)
 {
-    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
+    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
@@ -165,7 +165,7 @@ TEST(WeldJoint, WithDynamicCircles)
 
 TEST(WeldJoint, WithDynamicCircles2)
 {
-    const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
+    const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};

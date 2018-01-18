@@ -23,6 +23,7 @@
 #include "../Framework/Test.hpp"
 #include <vector>
 #include <cstring>
+#include <typeinfo>
 
 /// This tests stacking. It also shows how to use World::Query
 /// and TestOverlap.
@@ -52,7 +53,7 @@ public:
     {
         const auto center = Transform(shape.GetLocation(), m_xf);
         const auto radius = shape.GetRadius();
-        g_debugDraw->DrawCircle(center, radius, m_color);
+        debugDraw->DrawCircle(center, radius, m_color);
     }
 
     void Visit(const PolygonShapeConf& shape)
@@ -63,12 +64,12 @@ public:
         {
             vertices[i] = Transform(shape.GetVertex(i), m_xf);
         }
-        g_debugDraw->DrawPolygon(&vertices[0], vertexCount, m_color);
+        debugDraw->DrawPolygon(&vertices[0], vertexCount, m_color);
     }
     
     Color m_color = Color(0.95f, 0.95f, 0.6f);
     Transformation m_xf;
-    Drawer* g_debugDraw;
+    Drawer* debugDraw;
 };
 
 class PolyShapes : public Test
@@ -115,19 +116,19 @@ public:
         m_bodyIndex = 0;
         std::memset(m_bodies, 0, sizeof(m_bodies));
         
-        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+        RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "drop triangle", [&](KeyActionMods kam) {
             Create(kam.key - GLFW_KEY_1);
         });
-        RegisterForKey(GLFW_KEY_2, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+        RegisterForKey(GLFW_KEY_2, GLFW_PRESS, 0, "drop thin triangle", [&](KeyActionMods kam) {
             Create(kam.key - GLFW_KEY_1);
         });
-        RegisterForKey(GLFW_KEY_3, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+        RegisterForKey(GLFW_KEY_3, GLFW_PRESS, 0, "drop octagon", [&](KeyActionMods kam) {
             Create(kam.key - GLFW_KEY_1);
         });
-        RegisterForKey(GLFW_KEY_4, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+        RegisterForKey(GLFW_KEY_4, GLFW_PRESS, 0, "drop square", [&](KeyActionMods kam) {
             Create(kam.key - GLFW_KEY_1);
         });
-        RegisterForKey(GLFW_KEY_5, GLFW_PRESS, 0, "drop stuff", [&](KeyActionMods kam) {
+        RegisterForKey(GLFW_KEY_5, GLFW_PRESS, 0, "drop disk", [&](KeyActionMods kam) {
             Create(kam.key - GLFW_KEY_1);
         });
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "(de)activate some bodies", [&](KeyActionMods) {
@@ -202,7 +203,7 @@ public:
         const auto transform = Transform_identity;
 
         ShapeDrawer shapeDrawer;
-        shapeDrawer.g_debugDraw = &drawer;
+        shapeDrawer.debugDraw = &drawer;
 
         PLAYRHO_CONSTEXPR const int e_maxCount = 4;
         int count = 0;
@@ -213,14 +214,15 @@ public:
             {
                 const auto xfm = GetTransformation(*f);
                 const auto shape = f->GetShape();
-                const auto shapeChild = GetChild(shape, 0);
-                const auto overlap = TestOverlap(shapeChild, xfm, circleChild, transform);
-                if (overlap >= Area{0})
+                const auto overlap = TestOverlap(GetChild(shape, 0), xfm, circleChild, transform);
+                if (overlap >= 0_m2)
                 {
+#if 0
                     shapeDrawer.m_xf = xfm;
                     Accept(shape, [&](const std::type_info& ti, const void* data) {
                         shapeDrawer(ti, data);
                     });
+#endif
                     ++count;
                 }
                 return true;
@@ -234,8 +236,11 @@ public:
 
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
-    Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
-    Shape m_circle = DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3f));
+    Shape m_polygons[4] = {
+        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
+        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
+    };
+    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3f))};
 };
 
 } // namespace testbed

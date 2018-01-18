@@ -19,9 +19,20 @@
  */
 
 #include "UnitTests.hpp"
+#include <type_traits>
+#include <cmath>
 
-int main(int argc, char** argv)
+TEST(double, GetInvalid)
 {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    auto val = playrho::GetInvalid<double>();
+    EXPECT_TRUE(std::isnan(val));
+    const auto same = std::is_same<decltype(val), double>::value;
+    EXPECT_TRUE(same);
 }
+
+TEST(double, GetTypeName)
+{
+    const auto name = playrho::GetTypeName<double>();
+    EXPECT_STREQ(name, "double");
+}
+

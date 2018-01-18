@@ -18,7 +18,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include "gtest/gtest.h"
+#include "UnitTests.hpp"
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -165,7 +165,7 @@ TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 
 TEST(WorldManifold, GetForContact)
 {
-    const auto shape = DiskShapeConf{};
+    const auto shape = Shape{DiskShapeConf{}};
     auto bA = Body{nullptr, BodyConf{}};
     auto bB = Body{nullptr, BodyConf{}};
     auto fA = Fixture{&bA, FixtureConf{}, shape};

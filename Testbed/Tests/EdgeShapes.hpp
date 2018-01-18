@@ -204,7 +204,10 @@ public:
 
     int m_bodyIndex;
     Body* m_bodies[e_maxBodies];
-    Shape m_polygons[4] = {PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}, PolygonShapeConf{}};
+    Shape m_polygons[4] = {
+        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
+        Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
+    };
     Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3f)).UseDensity(20_kgpm2)};
 
     Real m_angle;
