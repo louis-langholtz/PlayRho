@@ -126,12 +126,14 @@ WorldManifold GetWorldManifold(const Manifold& manifold,
 WorldManifold GetWorldManifold(const Contact& contact)
 {
     const auto fA = contact.GetFixtureA();
+    const auto iA = contact.GetChildIndexA();
     const auto xfA = GetTransformation(*fA);
-    const auto radiusA = GetVertexRadius(fA->GetShape());
+    const auto radiusA = GetVertexRadius(fA->GetShape(), iA);
 
     const auto fB = contact.GetFixtureB();
+    const auto iB = contact.GetChildIndexB();
     const auto xfB = GetTransformation(*fB);
-    const auto radiusB = GetVertexRadius(fB->GetShape());
+    const auto radiusB = GetVertexRadius(fB->GetShape(), iB);
 
     return GetWorldManifold(contact.GetManifold(), xfA, radiusA, xfB, radiusB);
 }

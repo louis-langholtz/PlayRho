@@ -42,9 +42,9 @@ class EdgeShapeConf: public ShapeBuilder<EdgeShapeConf>
 {
 public:
     /// @brief Gets the default vertex radius.
-    static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
+    static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
-        return DefaultLinearSlop * Real{2};
+        return NonNegative<Length>{DefaultLinearSlop * Real{2}};
     }
     
     /// @brief Gets the default configuration.
@@ -53,7 +53,7 @@ public:
         return EdgeShapeConf{};
     }
 
-    EdgeShapeConf();
+    EdgeShapeConf() = default;
     
     /// @brief Initializing constructor.
     EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf = GetDefaultConf()) noexcept;
@@ -61,6 +61,9 @@ public:
     /// @brief Sets both vertices in one call.
     EdgeShapeConf& Set(Length2 vA, Length2 vB) noexcept;
     
+    /// @brief Uses the given vertex radius.
+    EdgeShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
+
     /// @brief Gets vertex A.
     Length2 GetVertexA() const noexcept
     {
@@ -79,10 +82,29 @@ public:
         return DistanceProxy{vertexRadius, 2, m_vertices, m_normals};
     }
     
+    /// @brief Vertex radius.
+    ///
+    /// @details This is the radius from the vertex that the shape's "skin" should
+    ///   extend outward by. While any edges &mdash; line segments between multiple
+    ///   vertices &mdash; are straight, corners between them (the vertices) are
+    ///   rounded and treated as rounded. Shapes with larger vertex radiuses compared
+    ///   to edge lengths therefore will be more prone to rolling or having other
+    ///   shapes more prone to roll off of them.
+    ///
+    /// @note This should be a non-negative value.
+    ///
+    NonNegative<Length> vertexRadius = GetDefaultVertexRadius();
+
 private:
     Length2 m_vertices[2] = {Length2{}, Length2{}}; ///< Vertices
     UnitVec m_normals[2] = {UnitVec{}, UnitVec{}}; ///< Normals.
 };
+
+inline EdgeShapeConf& EdgeShapeConf::UseVertexRadius(NonNegative<Length> value) noexcept
+{
+    vertexRadius = value;
+    return *this;
+}
 
 // Free functions...
 
@@ -115,6 +137,18 @@ inline DistanceProxy GetChild(const EdgeShapeConf& arg, ChildCounter index)
         throw InvalidArgument("only index of 0 is supported");
     }
     return arg.GetChild();
+}
+
+/// @brief Gets the vertex radius of the given shape configuration.
+inline NonNegative<Length> GetVertexRadius(const EdgeShapeConf& arg) noexcept
+{
+    return arg.vertexRadius;
+}
+
+/// @brief Gets the vertex radius of the given shape configuration.
+inline NonNegative<Length> GetVertexRadius(const EdgeShapeConf& arg, ChildCounter) noexcept
+{
+    return GetVertexRadius(arg);
 }
 
 /// @brief Gets the mass data for the given shape configuration.

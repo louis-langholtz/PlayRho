@@ -84,7 +84,7 @@ public:
 
 #if 1
         const auto position = m_character->GetBody()->GetLocation();
-        if (GetY(position) < m_top + m_radius - GetVertexRadius(m_platform->GetShape()))
+        if (GetY(position) < m_top + m_radius - GetVertexRadius(m_platform->GetShape(), 0))
         {
             contact.UnsetEnabled();
         }

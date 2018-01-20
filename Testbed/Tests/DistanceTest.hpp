@@ -137,7 +137,7 @@ public:
             if (body && fixture)
             {
                 const auto shape = fixture->GetShape();
-                const auto lastLegitVertexRadius = GetVertexRadius(shape);
+                const auto lastLegitVertexRadius = GetVertexRadius(shape, 0);
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= 0_m)
                 {

@@ -23,8 +23,58 @@
 
 namespace playrho {
 namespace d2 {
+namespace {
 
-// Free functions...
+struct DefaultShapeConf
+{
+};
+
+ChildCounter GetChildCount(const DefaultShapeConf&) noexcept
+{
+    return 0;
+}
+
+DistanceProxy GetChild(const DefaultShapeConf&, ChildCounter)
+{
+    throw InvalidArgument("index out of range");
+}
+
+MassData GetMassData(const DefaultShapeConf&) noexcept
+{
+    return MassData{};
+}
+
+Real GetFriction(const DefaultShapeConf&) noexcept
+{
+    return Real{0};
+}
+
+Real GetRestitution(const DefaultShapeConf&) noexcept
+{
+    return Real{0};
+}
+
+NonNegative<AreaDensity> GetDensity(const DefaultShapeConf&) noexcept
+{
+    return NonNegative<AreaDensity>{0_kgpm2};
+}
+
+NonNegative<Length> GetVertexRadius(const DefaultShapeConf&, ChildCounter)
+{
+    throw InvalidArgument("index out of range");
+}
+
+constexpr bool operator== (const DefaultShapeConf&, const DefaultShapeConf&) noexcept
+{
+    return true;
+}
+
+} // annonymous namespace
+
+Shape::Shape(): m_self{std::make_shared<Model<DefaultShapeConf>>(DefaultShapeConf{})}
+{
+    // Intentionally empty.
+}
 
 bool TestPoint(const Shape& shape, Length2 point) noexcept
 {

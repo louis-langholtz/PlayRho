@@ -41,18 +41,15 @@ namespace d2 {
 struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
 {
     /// @brief Gets the default radius.
-    static PLAYRHO_CONSTEXPR inline Length GetDefaultRadius() noexcept
+    static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultRadius() noexcept
     {
-        return DefaultLinearSlop * 2;
+        return NonNegative<Length>{DefaultLinearSlop * 2};
     }
 
-    PLAYRHO_CONSTEXPR inline DiskShapeConf(): ShapeBuilder{ShapeConf{}.UseVertexRadius(GetDefaultRadius())}
-    {
-        // Intentionally empty.
-    }
+    PLAYRHO_CONSTEXPR DiskShapeConf() = default;
 
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR inline DiskShapeConf(Length radius): ShapeBuilder{ShapeConf{}.UseVertexRadius(radius)}
+    PLAYRHO_CONSTEXPR inline DiskShapeConf(NonNegative<Length> r): vertexRadius{r}
     {
         // Intentionally empty.
     }
@@ -65,9 +62,9 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
     }
     
     /// @brief Uses the given value as the radius.
-    PLAYRHO_CONSTEXPR inline DiskShapeConf& UseRadius(Length radius) noexcept
+    PLAYRHO_CONSTEXPR inline DiskShapeConf& UseRadius(NonNegative<Length> r) noexcept
     {
-        vertexRadius = radius;
+        vertexRadius = r;
         return *this;
     }
     
@@ -83,6 +80,19 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
         return location;
     }
     
+    /// @brief Vertex radius.
+    ///
+    /// @details This is the radius from the vertex that the shape's "skin" should
+    ///   extend outward by. While any edges &mdash; line segments between multiple
+    ///   vertices &mdash; are straight, corners between them (the vertices) are
+    ///   rounded and treated as rounded. Shapes with larger vertex radiuses compared
+    ///   to edge lengths therefore will be more prone to rolling or having other
+    ///   shapes more prone to roll off of them.
+    ///
+    /// @note This should be a non-negative value.
+    ///
+    NonNegative<Length> vertexRadius = GetDefaultRadius();
+
     /// @brief Location for the disk shape to be centered at.
     Length2 location = Length2{};
 };
@@ -117,6 +127,19 @@ inline DistanceProxy GetChild(const DiskShapeConf& arg, ChildCounter index)
         throw InvalidArgument("only index of 0 is supported");
     }
     return DistanceProxy{arg.vertexRadius, 1, &arg.location, nullptr};
+}
+
+/// @brief Gets the vertex radius of the given shape configuration.
+PLAYRHO_CONSTEXPR inline NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg) noexcept
+{
+    return arg.vertexRadius;
+}
+
+/// @brief Gets the vertex radius of the given shape configuration.
+PLAYRHO_CONSTEXPR inline NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg,
+                                                             ChildCounter) noexcept
+{
+    return GetVertexRadius(arg);
 }
 
 /// @brief Gets the mass data of the given disk shape configuration.

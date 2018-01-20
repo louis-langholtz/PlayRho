@@ -510,6 +510,16 @@ inline void Contact::UnsetIslanded() noexcept
     m_flags &= ~e_islandFlag;
 }
 
+inline ChildCounter Contact::GetChildIndexA() const noexcept
+{
+    return m_indexA;
+}
+
+inline ChildCounter Contact::GetChildIndexB() const noexcept
+{
+    return m_indexB;
+}
+
 // Free functions...
 
 /// @brief Contact pointer type.
@@ -535,6 +545,20 @@ inline Fixture* GetFixtureA(const Contact& contact) noexcept
 inline Fixture* GetFixtureB(const Contact& contact) noexcept
 {
     return contact.GetFixtureB();
+}
+
+/// @brief Gets the child index A of the given contact.
+/// @relatedalso Contact
+inline ChildCounter GetChildIndexA(const Contact& contact) noexcept
+{
+    return contact.GetChildIndexA();
+}
+
+/// @brief Gets the child index B of the given contact.
+/// @relatedalso Contact
+inline ChildCounter GetChildIndexB(const Contact& contact) noexcept
+{
+    return contact.GetChildIndexB();
 }
 
 /// @brief Whether the given contact has a sensor.

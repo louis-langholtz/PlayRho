@@ -1147,18 +1147,17 @@ static void EntityUI(const Shape& shape)
     ImGui::ItemWidthContext itemWidthCtx(60);
 
     const auto density = GetDensity(shape);
-    const auto vertexRadius = GetVertexRadius(shape);
+    //const auto vertexRadius = GetVertexRadius(shape);
     const auto friction = GetFriction(shape);
     const auto restitution = GetRestitution(shape);
     const auto childCount = GetChildCount(shape);
 
     ImGui::LabelText("Density (kg/m^2)", "%.2e",
                      static_cast<double>(Real{density * SquareMeter / Kilogram}));
-    ImGui::LabelText("Vertex Radius (m)", "%.2e",
-                     static_cast<double>(Real{vertexRadius / Meter}));
     ImGui::LabelText("Friction", "%f", static_cast<double>(friction));
     ImGui::LabelText("Restitution", "%f", static_cast<double>(restitution));
     ImGui::LabelText("Child Count", "%u", childCount);
+    //ImGui::LabelText("Vertex Radius (m)", "%.2e", static_cast<double>(Real{vertexRadius / Meter}));
 }
 
 static void EntityUI(Fixture& fixture)

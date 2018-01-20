@@ -51,7 +51,7 @@ public:
     /// @brief Gets the default vertex radius.
     static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
-        return DefaultLinearSlop * 2;
+        return NonNegative<Length>{DefaultLinearSlop * Real{2}};
     }
 
     /// @brief Default constructor.
@@ -77,6 +77,9 @@ public:
     /// @brief Gets the mass data.
     MassData GetMassData() const noexcept;
     
+    /// @brief Uses the given vertex radius.
+    inline ChainShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
+
     /// @brief Gets the vertex count.
     ChildCounter GetVertexCount() const noexcept
     {
@@ -112,10 +115,29 @@ public:
         return !(lhs == rhs);
     }
     
+    /// @brief Vertex radius.
+    ///
+    /// @details This is the radius from the vertex that the shape's "skin" should
+    ///   extend outward by. While any edges &mdash; line segments between multiple
+    ///   vertices &mdash; are straight, corners between them (the vertices) are
+    ///   rounded and treated as rounded. Shapes with larger vertex radiuses compared
+    ///   to edge lengths therefore will be more prone to rolling or having other
+    ///   shapes more prone to roll off of them.
+    ///
+    /// @note This should be a non-negative value.
+    ///
+    NonNegative<Length> vertexRadius = GetDefaultVertexRadius();
+
 private:
     std::vector<Length2> m_vertices; ///< Vertices.
     std::vector<UnitVec> m_normals; ///< Normals.
 };
+
+inline ChainShapeConf& ChainShapeConf::UseVertexRadius(NonNegative<Length> value) noexcept
+{
+    vertexRadius = value;
+    return *this;
+}
 
 // Free functions...
 
@@ -148,6 +170,18 @@ inline bool IsLooped(const ChainShapeConf& shape) noexcept
 inline ChildCounter GetNextIndex(const ChainShapeConf& shape, ChildCounter index) noexcept
 {
     return GetModuloNext(index, shape.GetVertexCount());
+}
+
+/// @brief Gets the vertex radius of the given shape configuration.
+inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg)
+{
+    return arg.vertexRadius;
+}
+
+/// @brief Gets the vertex radius of the given shape configuration.
+inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg, ChildCounter)
+{
+    return GetVertexRadius(arg);
 }
 
 } // namespace d2

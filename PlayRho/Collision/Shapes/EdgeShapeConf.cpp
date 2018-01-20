@@ -22,14 +22,8 @@
 namespace playrho {
 namespace d2 {
 
-EdgeShapeConf::EdgeShapeConf():
-    ShapeBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
-{
-    // Intentionally empty.
-}
-
 EdgeShapeConf::EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf) noexcept:
-    ShapeBuilder{conf}, m_vertices{vA, vB}
+    ShapeBuilder{conf}, vertexRadius{conf.vertexRadius}, m_vertices{vA, vB}
 {
     const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
     m_normals[0] = normal;

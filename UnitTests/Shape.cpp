@@ -50,7 +50,7 @@ TEST(Shape, ByteSize)
 
 TEST(Shape, Traits)
 {
-    EXPECT_FALSE(std::is_default_constructible<Shape>::value);
+    EXPECT_TRUE(std::is_default_constructible<Shape>::value);
     EXPECT_FALSE(std::is_nothrow_default_constructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<Shape>::value);
     
@@ -84,6 +84,21 @@ TEST(Shape, Traits)
     EXPECT_TRUE(std::is_destructible<Shape>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_destructible<Shape>::value);
+}
+
+TEST(Shape, DefaultConstruction)
+{
+    const auto s = Shape{};
+    EXPECT_EQ(GetMassData(s), MassData());
+    EXPECT_EQ(GetFriction(s), Real(0));
+    EXPECT_EQ(GetRestitution(s), Real(0));
+    EXPECT_EQ(GetDensity(s), 0_kgpm2);
+    EXPECT_THROW(GetVertexRadius(s, 0), InvalidArgument);
+    EXPECT_EQ(GetChildCount(s), 0);
+    EXPECT_THROW(GetChild(s, 0), InvalidArgument);
+    EXPECT_TRUE(s == s);
+    const auto t = Shape{};
+    EXPECT_TRUE(s == t);
 }
 
 TEST(Shape, types)
@@ -234,7 +249,7 @@ MassData GetMassData(const X&) noexcept
     return MassData{};
 }
 
-NonNegative<Length> GetVertexRadius(const X&) noexcept
+NonNegative<Length> GetVertexRadius(const X&, ChildCounter) noexcept
 {
     return 0_m;
 }

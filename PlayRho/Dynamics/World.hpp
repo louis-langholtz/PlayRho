@@ -1063,13 +1063,14 @@ inline void ClearForces(World& world) noexcept
 /// @brief Creates a rectangular enclosure.
 /// @relatedalso World
 Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions,
-                                     const ShapeConf& baseConf);
+                                     const ShapeConf& baseConf, Length thickness);
 
 /// @brief Creates a square enclosure.
 /// @relatedalso World
-inline Body* CreateSquareEnclosingBody(World& world, Length size, const ShapeConf& baseConf)
+inline Body* CreateSquareEnclosingBody(World& world, Length size, const ShapeConf& baseConf,
+                                       Length thickness)
 {
-    return CreateRectangularEnclosingBody(world, Length2{size, size}, baseConf);
+    return CreateRectangularEnclosingBody(world, Length2{size, size}, baseConf, thickness);
 }
     
 /// @brief Finds body in given world that's closest to the given location.

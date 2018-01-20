@@ -43,11 +43,7 @@ namespace {
 #endif
 } // anonymous namespace
 
-ChainShapeConf::ChainShapeConf():
-    ShapeBuilder{ShapeConf{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}}
-{
-    // Intentionally empty.
-}
+ChainShapeConf::ChainShapeConf() = default;
 
 ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
 {
@@ -104,7 +100,6 @@ MassData ChainShapeConf::GetMassData() const noexcept
     const auto density = this->density;
     if (density > AreaDensity(0))
     {
-        const auto vertexRadius = this->vertexRadius;
         const auto vertexCount = GetVertexCount();
         if (vertexCount > 1)
         {
@@ -147,7 +142,6 @@ DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
     {
         throw InvalidArgument("index out of range");
     }
-    const auto vertexRadius = this->vertexRadius;
     const auto vertexCount = GetVertexCount();
     if (vertexCount > 1)
     {

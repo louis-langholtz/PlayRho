@@ -33,19 +33,6 @@ namespace d2 {
 /// @note This is a nested base value class for initializing shapes.
 struct BaseShapeConf
 {
-    /// @brief Vertex radius.
-    ///
-    /// @details This is the radius from the vertex that the shape's "skin" should
-    ///   extend outward by. While any edges &mdash; line segments between multiple
-    ///   vertices &mdash; are straight, corners between them (the vertices) are
-    ///   rounded and treated as rounded. Shapes with larger vertex radiuses compared
-    ///   to edge lengths therefore will be more prone to rolling or having other
-    ///   shapes more prone to roll off of them.
-    ///
-    /// @note This should be a non-negative value.
-    ///
-    NonNegative<Length> vertexRadius = NonNegative<Length>{DefaultLinearSlop * Real{2}};
-    
     /// @brief Friction coefficient.
     ///
     /// @note This must be a value between 0 and +infinity. It is safer however to
@@ -92,9 +79,6 @@ struct ShapeBuilder: BaseShapeConf
     {
         // Intentionally empty.
     }
-
-    /// @brief Uses the given vertex radius.
-    PLAYRHO_CONSTEXPR inline ConcreteConf& UseVertexRadius(NonNegative<Length> value) noexcept;
     
     /// @brief Uses the given friction.
     PLAYRHO_CONSTEXPR inline ConcreteConf& UseFriction(NonNegative<Real> value) noexcept;
@@ -105,14 +89,6 @@ struct ShapeBuilder: BaseShapeConf
     /// @brief Uses the given density.
     PLAYRHO_CONSTEXPR inline ConcreteConf& UseDensity(NonNegative<AreaDensity> value) noexcept;
 };
-
-template <typename ConcreteConf>
-PLAYRHO_CONSTEXPR inline ConcreteConf&
-ShapeBuilder<ConcreteConf>::UseVertexRadius(NonNegative<Length> value) noexcept
-{
-    vertexRadius = value;
-    return static_cast<ConcreteConf&>(*this);
-}
 
 template <typename ConcreteConf>
 PLAYRHO_CONSTEXPR inline ConcreteConf&
@@ -145,12 +121,6 @@ struct ShapeConf: public ShapeBuilder<ShapeConf>
 };
 
 // Free functions...
-
-/// @brief Gets the vertex radius of the given shape configuration.
-PLAYRHO_CONSTEXPR inline NonNegative<Length> GetVertexRadius(const BaseShapeConf& arg) noexcept
-{
-    return arg.vertexRadius;
-}
 
 /// @brief Gets the density of the given shape configuration.
 PLAYRHO_CONSTEXPR inline NonNegative<AreaDensity> GetDensity(const BaseShapeConf& arg) noexcept
