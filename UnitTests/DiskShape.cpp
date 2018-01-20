@@ -66,7 +66,7 @@ TEST(DiskShapeConf, InitConstruction)
     
     EXPECT_EQ(typeid(foo), typeid(Shape));
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
-    EXPECT_EQ(GetVertexRadius(foo), radius);
+    EXPECT_EQ(GetVertexRadius(foo, 0), radius);
     EXPECT_EQ(GetX(conf.GetLocation()), GetX(position));
     EXPECT_EQ(GetY(conf.GetLocation()), GetY(position));
 }
@@ -173,8 +173,8 @@ TEST(DiskShapeConf, Equality)
     EXPECT_FALSE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) == DiskShapeConf());
     EXPECT_TRUE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) == DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
     
-    EXPECT_FALSE(DiskShapeConf().UseVertexRadius(10_m) == DiskShapeConf());
-    EXPECT_TRUE(DiskShapeConf().UseVertexRadius(10_m) == DiskShapeConf().UseVertexRadius(10_m));
+    EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf());
+    EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) == DiskShapeConf().UseRadius(10_m));
     
     EXPECT_FALSE(DiskShapeConf().UseDensity(10_kgpm2) == DiskShapeConf());
     EXPECT_TRUE(DiskShapeConf().UseDensity(10_kgpm2) == DiskShapeConf().UseDensity(10_kgpm2));
@@ -194,8 +194,8 @@ TEST(DiskShapeConf, Inequality)
     EXPECT_TRUE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) != DiskShapeConf());
     EXPECT_FALSE(DiskShapeConf().UseLocation(Length2(1_m, 2_m)) != DiskShapeConf().UseLocation(Length2(1_m, 2_m)));
     
-    EXPECT_TRUE(DiskShapeConf().UseVertexRadius(10_m) != DiskShapeConf());
-    EXPECT_FALSE(DiskShapeConf().UseVertexRadius(10_m) != DiskShapeConf().UseVertexRadius(10_m));
+    EXPECT_TRUE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf());
+    EXPECT_FALSE(DiskShapeConf().UseRadius(10_m) != DiskShapeConf().UseRadius(10_m));
     
     EXPECT_TRUE(DiskShapeConf().UseDensity(10_kgpm2) != DiskShapeConf());
     EXPECT_FALSE(DiskShapeConf().UseDensity(10_kgpm2) != DiskShapeConf().UseDensity(10_kgpm2));

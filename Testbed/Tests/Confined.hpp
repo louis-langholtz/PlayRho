@@ -95,7 +95,7 @@ public:
     Body* CreateEnclosure(Length vertexRadius, Length wallLength)
     {
         const auto body = CreateSquareEnclosingBody(m_world, wallLength, ShapeConf{
-            }.UseVertexRadius(vertexRadius).UseRestitution(Finite<Real>(0)));
+            }.UseRestitution(Finite<Real>(0)), vertexRadius);
         SetLocation(*body, Length2{0_m, 20_m});
         return body;
     }

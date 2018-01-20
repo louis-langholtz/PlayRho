@@ -23,11 +23,7 @@
 namespace playrho {
 namespace d2 {
 
-PolygonShapeConf::PolygonShapeConf():
-    ShapeBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
-{
-    // Intentionally empty.
-}
+PolygonShapeConf::PolygonShapeConf() = default;
 
 PolygonShapeConf::PolygonShapeConf(Length hx, Length hy,
                                    const PolygonShapeConf& conf) noexcept:

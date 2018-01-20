@@ -65,7 +65,6 @@ TEST(MultiShapeConf, DefaultConstruction)
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(GetMassData(foo), defaultMassData);
     
-    EXPECT_EQ(GetVertexRadius(foo), MultiShapeConf::GetDefaultVertexRadius());
     EXPECT_EQ(GetDensity(foo), defaultConf.density);
     EXPECT_EQ(GetFriction(foo), defaultConf.friction);
     EXPECT_EQ(GetRestitution(foo), defaultConf.restitution);
@@ -128,6 +127,7 @@ TEST(MultiShapeConf, BaseVisitorForDiskShape)
     EXPECT_TRUE(visitor.IsVisited());
 }
 #endif
+
 TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
 {
     const auto defaultMassData = MassData{};
@@ -140,17 +140,16 @@ TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
 
     auto conf = MultiShapeConf{};
     conf.density = 2.3_kgpm2;
-    conf.vertexRadius = 0.7_m;
 
     auto foo = MultiShapeConf{conf};
     ASSERT_EQ(GetChildCount(foo), ChildCounter{0});
     ASSERT_EQ(GetMassData(foo), defaultMassData);
-    ASSERT_EQ(GetVertexRadius(foo), conf.vertexRadius);
     ASSERT_EQ(GetDensity(foo), conf.density);
 
-    conf.AddConvexHull(pointSet);
+    conf.AddConvexHull(pointSet, 0.7_m);
     foo = MultiShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
+    EXPECT_EQ(GetVertexRadius(foo, 0), 0.7_m);
 
     const auto child = GetChild(foo, 0);
     EXPECT_EQ(child.GetVertexCount(), VertexCounter(1));
@@ -159,7 +158,7 @@ TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
     EXPECT_NE(massData, defaultMassData);
     EXPECT_EQ(massData.center, center);
     
-    const auto diskMassData = playrho::d2::GetMassData(conf.vertexRadius, conf.density, center);
+    const auto diskMassData = playrho::d2::GetMassData(0.7_m, conf.density, center);
     EXPECT_EQ(massData, diskMassData);
 }
 
@@ -177,18 +176,17 @@ TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
     
     auto conf = MultiShapeConf{};
     conf.density = 2.3_kgpm2;
-    conf.vertexRadius = 0.7_m;
     
     auto foo = MultiShapeConf{conf};
     ASSERT_EQ(GetChildCount(foo), ChildCounter{0});
     ASSERT_EQ(GetMassData(foo), defaultMassData);
-    ASSERT_EQ(GetVertexRadius(foo), conf.vertexRadius);
     ASSERT_EQ(GetDensity(foo), conf.density);
     
-    conf.AddConvexHull(pointSet);
+    conf.AddConvexHull(pointSet, 0.7_m);
     foo = MultiShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
-    
+    EXPECT_EQ(GetVertexRadius(foo, 0), 0.7_m);
+
     const auto child = GetChild(foo, 0);
     EXPECT_EQ(child.GetVertexCount(), VertexCounter(2));
     
@@ -196,7 +194,7 @@ TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
     EXPECT_NE(massData, defaultMassData);
     EXPECT_EQ(massData.center, (p0 + p1) / Real(2));
     
-    const auto edgeMassData = playrho::d2::GetMassData(conf.vertexRadius, conf.density, p0, p1);
+    const auto edgeMassData = playrho::d2::GetMassData(0.7_m, conf.density, p0, p1);
     EXPECT_EQ(massData.center, edgeMassData.center);
     /// @note Units of L^-2 M^-1 QP^2.
 
@@ -217,12 +215,10 @@ TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
 
     auto conf = MultiShapeConf{};
     conf.density = 2.3_kgpm2;
-    conf.vertexRadius = 0.7_m;
     
     auto foo = MultiShapeConf{conf};
     ASSERT_EQ(GetChildCount(foo), ChildCounter{0});
     ASSERT_EQ(GetMassData(foo), defaultMassData);
-    ASSERT_EQ(GetVertexRadius(foo), conf.vertexRadius);
     ASSERT_EQ(GetDensity(foo), conf.density);
     
     pointSet.clear();
@@ -230,9 +226,10 @@ TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
     pointSet.add(p0);
     ASSERT_EQ(pointSet.size(), std::size_t(1));
 
-    conf.AddConvexHull(pointSet);
+    conf.AddConvexHull(pointSet, 0.7_m);
     foo = MultiShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
+    EXPECT_EQ(GetVertexRadius(foo, 0), 0.7_m);
 
     const auto child0 = GetChild(foo, 0);
     EXPECT_EQ(child0.GetVertexCount(), VertexCounter(1));
@@ -243,10 +240,11 @@ TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
     pointSet.add(p1);
     ASSERT_EQ(pointSet.size(), std::size_t(1));
     
-    conf.AddConvexHull(pointSet);
+    conf.AddConvexHull(pointSet, 0.7_m);
     foo = MultiShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{2});
-    
+    EXPECT_EQ(GetVertexRadius(foo, 1), 0.7_m);
+
     const auto child1 = GetChild(foo, 1);
     EXPECT_EQ(child1.GetVertexCount(), VertexCounter(1));
     EXPECT_EQ(child1.GetVertex(0), p1);
@@ -255,8 +253,8 @@ TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
     EXPECT_NE(massData, defaultMassData);
     EXPECT_EQ(massData.center, (p0 + p1) / Real(2));
     
-    const auto massDataP0 = playrho::d2::GetMassData(conf.vertexRadius, conf.density, p0);
-    const auto massDataP1 = playrho::d2::GetMassData(conf.vertexRadius, conf.density, p1);
+    const auto massDataP0 = playrho::d2::GetMassData(0.7_m, conf.density, p0);
+    const auto massDataP1 = playrho::d2::GetMassData(0.7_m, conf.density, p1);
     EXPECT_EQ(massData.mass, Mass{massDataP0.mass} + Mass{massDataP1.mass});
     EXPECT_EQ(massData.I, RotInertia{massDataP0.I} + RotInertia{massDataP1.I});
 }
@@ -270,9 +268,6 @@ TEST(MultiShapeConf, Equality)
     
     EXPECT_FALSE(MultiShapeConf().AddConvexHull(pointSet) == MultiShapeConf());
     EXPECT_TRUE(MultiShapeConf().AddConvexHull(pointSet) == MultiShapeConf().AddConvexHull(pointSet));
-    
-    EXPECT_FALSE(MultiShapeConf().UseVertexRadius(10_m) == MultiShapeConf());
-    EXPECT_TRUE(MultiShapeConf().UseVertexRadius(10_m) == MultiShapeConf().UseVertexRadius(10_m));
     
     EXPECT_FALSE(MultiShapeConf().UseDensity(10_kgpm2) == MultiShapeConf());
     EXPECT_TRUE(MultiShapeConf().UseDensity(10_kgpm2) == MultiShapeConf().UseDensity(10_kgpm2));
@@ -293,9 +288,6 @@ TEST(MultiShapeConf, Inequality)
     
     EXPECT_TRUE(MultiShapeConf().AddConvexHull(pointSet) != MultiShapeConf());
     EXPECT_FALSE(MultiShapeConf().AddConvexHull(pointSet) != MultiShapeConf().AddConvexHull(pointSet));
-    
-    EXPECT_TRUE(MultiShapeConf().UseVertexRadius(10_m) != MultiShapeConf());
-    EXPECT_FALSE(MultiShapeConf().UseVertexRadius(10_m) != MultiShapeConf().UseVertexRadius(10_m));
     
     EXPECT_TRUE(MultiShapeConf().UseDensity(10_kgpm2) != MultiShapeConf());
     EXPECT_FALSE(MultiShapeConf().UseDensity(10_kgpm2) != MultiShapeConf().UseDensity(10_kgpm2));

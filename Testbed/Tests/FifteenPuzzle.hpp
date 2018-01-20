@@ -43,9 +43,8 @@ namespace testbed {
         FifteenPuzzle(): Test(GetTestConf())
         {
             m_gravity = LinearAcceleration2{};
-            const auto enclosure = CreateSquareEnclosingBody(m_world,
-                16_m + 2 * GetVertexRadius(), ShapeConf{}
-                .UseVertexRadius(GetVertexRadius()));
+            const auto enclosure = CreateSquareEnclosingBody(m_world, 16_m + 2 * GetVertexRadius(),
+                                                             ShapeConf{}, GetVertexRadius());
             SetLocation(*enclosure, GetCenter());
             
             for (auto i = 0; i < 15; ++i)

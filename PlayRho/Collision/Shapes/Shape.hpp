@@ -69,7 +69,7 @@ Real GetRestitution(const Shape& shape) noexcept;
 /// @return Non-negative density (in mass per area).
 NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
 
-/// @brief Gets the vertex radius of the given shape.
+/// @brief Gets the vertex radius of the indexed child of the given shape.
 ///
 /// @details This gets the radius from the vertex that the shape's "skin" should
 ///   extend outward by. While any edges - line segments between multiple vertices -
@@ -79,13 +79,18 @@ NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
 ///   to roll off of them. Here's an image of a shape configured via a
 ///   <code>PolygonShapeConf</code> with it's skin drawn:
 ///
+/// @param shape Shape to get child's vertex radius for.
+/// @param idx Child index to get vertex radius for.
+///
 /// @image html SkinnedPolygon.png
 ///
 /// @note This must be a non-negative value.
 ///
 /// @sa UseVertexRadius
 ///
-NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept;
+/// @throws InvalidArgument if the child index is not less than the child count.
+///
+NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx);
 
 /// @brief Visits the given shape with the potentially non-null user data pointer.
 /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
@@ -128,9 +133,10 @@ bool operator!= (const Shape& lhs, const Shape& rhs) noexcept;
 
 /// @brief Shape.
 ///
-/// @details A shape is used for collision detection. You can create a shape however you like.
-///   Shapes used for simulation in <code>World</code> are created automatically when a
-///   <code>Fixture</code> is created. Shapes may encapsulate zero or more child shapes.
+/// @details A shape is used for collision detection. You can create a shape from any
+///   supporting type. Shapes are conceptually made up of zero or more convex child shapes
+///   where each child shape is made up of zero or more vertices and an associated radius
+///   called its "vertex radius".
 ///
 /// @note This class implements polymorphism without inheritance. This is based on a technique
 ///   that's described by Sean Parent in his January 2017 Norwegian Developers Conference
@@ -150,7 +156,8 @@ class Shape
 {
 public:
     /// @brief Default constructor.
-    Shape() = delete;
+    /// @throws std::bad_alloc if there's a failure allocating storage.
+    Shape();
 
     /// @brief Initializing constructor.
     /// @param arg Configuration value to construct a shape instance for.
@@ -163,6 +170,7 @@ public:
     /// @sa GetDensity
     /// @sa GetFriction
     /// @sa GetRestitution
+    /// @throws std::bad_alloc if there's a failure allocating storage.
     template <typename T>
     explicit Shape(T arg): m_self{std::make_shared<Model<T>>(std::move(arg))}
     {
@@ -196,9 +204,9 @@ public:
         return shape.m_self->GetMassData_();
     }
     
-    friend NonNegative<Length> GetVertexRadius(const Shape& shape) noexcept
+    friend NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx)
     {
-        return shape.m_self->GetVertexRadius_();
+        return shape.m_self->GetVertexRadius_(idx);
     }
     
     friend Real GetFriction(const Shape& shape) noexcept
@@ -265,7 +273,8 @@ private:
         virtual MassData GetMassData_() const noexcept = 0;
         
         /// @brief Gets the vertex radius.
-        virtual NonNegative<Length> GetVertexRadius_() const noexcept = 0;
+        /// @param idx Child index to get vertex radius for.
+        virtual NonNegative<Length> GetVertexRadius_(ChildCounter idx) const = 0;
 
         /// @brief Gets the density.
         virtual NonNegative<AreaDensity> GetDensity_() const noexcept = 0;
@@ -328,9 +337,9 @@ private:
             return GetMassData(data);
         }
         
-        NonNegative<Length> GetVertexRadius_() const noexcept override
+        NonNegative<Length> GetVertexRadius_(ChildCounter idx) const override
         {
-            return GetVertexRadius(data);
+            return GetVertexRadius(data, idx);
         }
         
         NonNegative<AreaDensity> GetDensity_() const noexcept override

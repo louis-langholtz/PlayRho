@@ -211,13 +211,14 @@ namespace {
     {
         auto constraints = PositionConstraints{};
         constraints.reserve(contacts.size());
-        transform(cbegin(contacts), cend(contacts), back_inserter(constraints),
-                  [&](const Contact *contact) {
+        transform(cbegin(contacts), cend(contacts), back_inserter(constraints), [&](const Contact *contact) {
             const auto& manifold = static_cast<const Contact*>(contact)->GetManifold();
             
             const auto& fixtureA = *(GetFixtureA(*contact));
             const auto& fixtureB = *(GetFixtureB(*contact));
-            
+            const auto indexA = GetChildIndexA(*contact);
+            const auto indexB = GetChildIndexB(*contact);
+
             const auto bodyA = GetBodyA(*contact);
             const auto shapeA = fixtureA.GetShape();
             
@@ -227,8 +228,8 @@ namespace {
             const auto bodyConstraintA = At(bodies, bodyA);
             const auto bodyConstraintB = At(bodies, bodyB);
             
-            const auto radiusA = GetVertexRadius(shapeA);
-            const auto radiusB = GetVertexRadius(shapeB);
+            const auto radiusA = GetVertexRadius(shapeA, indexA);
+            const auto radiusB = GetVertexRadius(shapeB, indexB);
             
             return PositionConstraint{
                 manifold, *bodyConstraintA, radiusA, *bodyConstraintB, radiusB
@@ -250,15 +251,16 @@ namespace {
     {
         auto velConstraints = VelocityConstraints{};
         velConstraints.reserve(contacts.size());
-        transform(cbegin(contacts), cend(contacts), back_inserter(velConstraints),
-                  [&](const ContactPtr& contact) {
+        transform(cbegin(contacts), cend(contacts), back_inserter(velConstraints), [&](const ContactPtr& contact) {
             const auto& manifold = contact->GetManifold();
             const auto fixtureA = contact->GetFixtureA();
             const auto fixtureB = contact->GetFixtureB();
             const auto friction = contact->GetFriction();
             const auto restitution = contact->GetRestitution();
             const auto tangentSpeed = contact->GetTangentSpeed();
-            
+            const auto indexA = GetChildIndexA(*contact);
+            const auto indexB = GetChildIndexB(*contact);
+
             const auto bodyA = fixtureA->GetBody();
             const auto shapeA = fixtureA->GetShape();
             
@@ -268,8 +270,8 @@ namespace {
             const auto bodyConstraintA = At(bodies, bodyA);
             const auto bodyConstraintB = At(bodies, bodyB);
             
-            const auto radiusA = GetVertexRadius(shapeA);
-            const auto radiusB = GetVertexRadius(shapeB);
+            const auto radiusA = GetVertexRadius(shapeA, indexA);
+            const auto radiusB = GetVertexRadius(shapeB, indexB);
     
             const auto xfA = GetTransformation(bodyConstraintA->GetPosition(),
                                                bodyConstraintA->GetLocalCenter());
@@ -2395,14 +2397,18 @@ Fixture* World::CreateFixture(Body& body, const Shape& shape,
         throw InvalidArgument("World::CreateFixture: invalid body");
     }
 
-    const auto vr = GetVertexRadius(shape);
-    if (!(vr >= GetMinVertexRadius()))
+    const auto childCount = GetChildCount(shape);
+    for (auto i = ChildCounter{0}; i < childCount; ++i)
     {
-        throw InvalidArgument("World::CreateFixture: vertex radius < min");
-    }
-    if (!(vr <= GetMaxVertexRadius()))
-    {
-        throw InvalidArgument("World::CreateFixture: vertex radius > max");
+        const auto vr = GetVertexRadius(shape, i);
+        if (!(vr >= GetMinVertexRadius()))
+        {
+            throw InvalidArgument("World::CreateFixture: vertex radius < min");
+        }
+        if (!(vr <= GetMaxVertexRadius()))
+        {
+            throw InvalidArgument("World::CreateFixture: vertex radius > max");
+        }
     }
     
     if (IsLocked())
@@ -2694,15 +2700,16 @@ void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
     });
 }
 
-Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions, const ShapeConf& baseConf)
+Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions, const ShapeConf& baseConf,
+                                     Length thickness)
 {
     const auto body = world.CreateBody();
     
     auto conf = ChainShapeConf{};
     conf.restitution = baseConf.restitution;
-    conf.vertexRadius = baseConf.vertexRadius;
     conf.friction = baseConf.friction;
     conf.density = baseConf.density;
+    conf.vertexRadius = thickness;
     
     const auto halfWidth = GetX(dimensions) / Real{2};
     const auto halfHeight = GetY(dimensions) / Real{2};

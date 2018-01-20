@@ -67,16 +67,6 @@ Contact::Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB):
     assert(fA->GetBody() != fB->GetBody());
 }
 
-ChildCounter Contact::GetChildIndexA() const noexcept
-{
-    return m_indexA;
-}
-
-ChildCounter Contact::GetChildIndexB() const noexcept
-{
-    return m_indexB;
-}
-
 void Contact::Update(const UpdateConf& conf, ContactListener* listener)
 {
     const auto oldManifold = m_manifold;

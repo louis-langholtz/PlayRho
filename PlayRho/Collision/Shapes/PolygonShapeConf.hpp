@@ -42,9 +42,9 @@ class PolygonShapeConf: public ShapeBuilder<PolygonShapeConf>
 {
 public:
     /// @brief Gets the default vertex radius for the <code>PolygonShapeConf</code>.
-    static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
+    static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
-        return DefaultLinearSlop * 2;
+        return NonNegative<Length>{DefaultLinearSlop * 2};
     }
     
     /// @brief Gets the default configuration for a <code>PolygonShapeConf</code>.
@@ -67,6 +67,9 @@ public:
     explicit PolygonShapeConf(Span<const Length2> points,
                               const PolygonShapeConf& conf = GetDefaultConf()) noexcept;
     
+    /// @brief Uses the given vertex radius.
+    PolygonShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
+
     /// @brief Uses the given vertices.
     PolygonShapeConf& UseVertices(const std::vector<Length2>& verts) noexcept;
     
@@ -154,6 +157,19 @@ public:
     /// @brief Gets the centroid.
     Length2 GetCentroid() const noexcept { return m_centroid; }
     
+    /// @brief Vertex radius.
+    ///
+    /// @details This is the radius from the vertex that the shape's "skin" should
+    ///   extend outward by. While any edges &mdash; line segments between multiple
+    ///   vertices &mdash; are straight, corners between them (the vertices) are
+    ///   rounded and treated as rounded. Shapes with larger vertex radiuses compared
+    ///   to edge lengths therefore will be more prone to rolling or having other
+    ///   shapes more prone to roll off of them.
+    ///
+    /// @note This should be a non-negative value.
+    ///
+    NonNegative<Length> vertexRadius = GetDefaultVertexRadius();
+    
 private:
     /// @brief Array of vertices.
     /// @details Consecutive vertices constitute "edges" of the polygon.
@@ -167,6 +183,12 @@ private:
     /// Centroid of this shape.
     Length2 m_centroid = GetInvalid<Length2>();
 };
+
+inline PolygonShapeConf& PolygonShapeConf::UseVertexRadius(NonNegative<Length> value) noexcept
+{
+    vertexRadius = value;
+    return *this;
+}
 
 // Free functions...
 
@@ -186,6 +208,18 @@ inline DistanceProxy GetChild(const PolygonShapeConf& arg, ChildCounter index)
     }
     return DistanceProxy{arg.vertexRadius, arg.GetVertexCount(),
         arg.GetVertices().data(), arg.GetNormals().data()};
+}
+
+/// @brief Gets the vertex radius of the given shape configuration.
+inline NonNegative<Length> GetVertexRadius(const PolygonShapeConf& arg) noexcept
+{
+    return arg.vertexRadius;
+}
+
+/// @brief Gets the vertex radius of the given shape configuration.
+inline NonNegative<Length> GetVertexRadius(const PolygonShapeConf& arg, ChildCounter) noexcept
+{
+    return GetVertexRadius(arg);
 }
 
 /// @brief Gets the mass data for the given shape configuration.

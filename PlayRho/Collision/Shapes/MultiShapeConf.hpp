@@ -38,10 +38,11 @@ class ConvexHull
 public:
     
     /// @brief Gets the convex hull for the given set of vertices.
-    static ConvexHull Get(const VertexSet& pointSet);
+    static ConvexHull Get(const VertexSet& pointSet, NonNegative<Length> vertexRadius =
+                          NonNegative<Length>{DefaultLinearSlop * Real{2}});
     
     /// @brief Gets the distance proxy for this convex hull.
-    DistanceProxy GetDistanceProxy(Length vertexRadius) const
+    DistanceProxy GetDistanceProxy() const
     {
         return DistanceProxy{
             vertexRadius, static_cast<VertexCounter>(vertices.size()),
@@ -49,11 +50,18 @@ public:
         };
     }
     
+    /// @brief Gets the vertex radius of this convex hull.
+    /// @return Non-negative distance.
+    NonNegative<Length> GetVertexRadius() const noexcept
+    {
+        return vertexRadius;
+    }
+    
     /// @brief Equality operator.
     friend bool operator== (const ConvexHull& lhs, const ConvexHull& rhs) noexcept
     {
-        // Only need to check vertices are same since normals are calculated based on them.
-        return lhs.vertices == rhs.vertices;
+        // No need to check normals - they're based on vertices.
+        return lhs.vertexRadius == rhs.vertexRadius && lhs.vertices == rhs.vertices;
     }
     
     /// @brief Inequality operator.
@@ -64,8 +72,9 @@ public:
     
 private:
     /// @brief Initializing constructor.
-    ConvexHull(std::vector<Length2> verts, std::vector<UnitVec> norms):
-        vertices{verts}, normals{norms}
+    ConvexHull(std::vector<Length2> verts, std::vector<UnitVec> norms,
+               NonNegative<Length> vr):
+        vertices{verts}, normals{norms}, vertexRadius{vr}
     {}
     
     /// Array of vertices.
@@ -77,6 +86,19 @@ private:
     /// These are 90-degree clockwise-rotated unit-vectors of the vectors defined by
     /// consecutive pairs of elements of vertices.
     std::vector<UnitVec> normals;
+
+    /// @brief Vertex radius.
+    ///
+    /// @details This is the radius from the vertex that the shape's "skin" should
+    ///   extend outward by. While any edges &mdash; line segments between multiple
+    ///   vertices &mdash; are straight, corners between them (the vertices) are
+    ///   rounded and treated as rounded. Shapes with larger vertex radiuses compared
+    ///   to edge lengths therefore will be more prone to rolling or having other
+    ///   shapes more prone to roll off of them.
+    ///
+    /// @note This should be a non-negative value.
+    ///
+    NonNegative<Length> vertexRadius;
 };
 
 /// @brief The "multi-shape" shape configuration.
@@ -85,9 +107,9 @@ private:
 struct MultiShapeConf: public ShapeBuilder<MultiShapeConf>
 {
     /// @brief Gets the default vertex radius for the <code>MultiShapeConf</code>.
-    static PLAYRHO_CONSTEXPR inline Length GetDefaultVertexRadius() noexcept
+    static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
-        return DefaultLinearSlop * 2;
+        return NonNegative<Length>{DefaultLinearSlop * 2};
     }
     
     /// @brief Gets the default configuration for a <code>MultiShapeConf</code>.
@@ -97,7 +119,7 @@ struct MultiShapeConf: public ShapeBuilder<MultiShapeConf>
     }
     
     inline MultiShapeConf():
-        ShapeBuilder{ShapeConf{}.UseVertexRadius(GetDefaultVertexRadius())}
+        ShapeBuilder{ShapeConf{}}
     {
         // Intentionally empty.
     }
@@ -107,7 +129,8 @@ struct MultiShapeConf: public ShapeBuilder<MultiShapeConf>
     /// @warning the points may be re-ordered, even if they form a convex polygon
     /// @warning collinear points are handled but not removed. Collinear points
     ///   may lead to poor stacking behavior.
-    MultiShapeConf& AddConvexHull(const VertexSet& pointSet) noexcept;
+    MultiShapeConf& AddConvexHull(const VertexSet& pointSet, NonNegative<Length> vertexRadius =
+                                  GetDefaultVertexRadius()) noexcept;
     
     std::vector<ConvexHull> children; ///< Children.
 };
@@ -117,9 +140,8 @@ struct MultiShapeConf: public ShapeBuilder<MultiShapeConf>
 /// @brief Equality operator.
 inline bool operator== (const MultiShapeConf& lhs, const MultiShapeConf& rhs) noexcept
 {
-    return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
-        && lhs.restitution == rhs.restitution && lhs.density == rhs.density
-        && lhs.children == rhs.children;
+    return lhs.friction == rhs.friction && lhs.restitution == rhs.restitution
+        && lhs.density == rhs.density && lhs.children == rhs.children;
 }
 
 /// @brief Inequality operator.
@@ -141,12 +163,21 @@ inline DistanceProxy GetChild(const MultiShapeConf& arg, ChildCounter index)
     {
         throw InvalidArgument("index out of range");
     }
-    const auto& child = arg.children.at(index);
-    return child.GetDistanceProxy(arg.vertexRadius);
+    return arg.children[index].GetDistanceProxy();
 }
 
 /// @brief Gets the mass data for the given shape configuration.
 MassData GetMassData(const MultiShapeConf& arg) noexcept;
+
+/// @brief Gets the vertex radius of the given shape configuration.
+inline NonNegative<Length> GetVertexRadius(const MultiShapeConf& arg, ChildCounter index)
+{
+    if (index >= GetChildCount(arg))
+    {
+        throw InvalidArgument("index out of range");
+    }
+    return arg.children[index].GetVertexRadius();
+}
 
 } // namespace d2
 } // namespace playrho

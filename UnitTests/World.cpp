@@ -931,7 +931,7 @@ TEST(World, CreateSquareEnclosingBody)
 {
     World world;
     Body* body = nullptr;
-    EXPECT_NO_THROW(body = CreateSquareEnclosingBody(world, 2_m, ShapeConf{}));
+    EXPECT_NO_THROW(body = CreateSquareEnclosingBody(world, 2_m, ShapeConf{}, DefaultLinearSlop * Real{2}));
     ASSERT_NE(body, nullptr);
     EXPECT_EQ(body->GetType(), BodyType::Static);
     const auto fixtures = body->GetFixtures();
@@ -1019,14 +1019,14 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
     const auto v2 = Length2{+1_m, 0_m};
     const auto conf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
     const auto shape = Shape{conf};
-    ASSERT_EQ(GetVertexRadius(shape), 1_m);
+    ASSERT_EQ(GetVertexRadius(shape, 0), 1_m);
 
     const auto fixture = body->CreateFixture(shape);
     ASSERT_NE(fixture, nullptr);
     ASSERT_EQ(fixture->GetDensity(), 1_kgpm2);
 
-    const auto circleMass = Mass{fixture->GetDensity() * (Pi * Square(GetVertexRadius(shape)))};
-    const auto rectMass = Mass{fixture->GetDensity() * (GetVertexRadius(shape) * 2 * GetMagnitude(v2 - v1))};
+    const auto circleMass = Mass{fixture->GetDensity() * (Pi * Square(GetVertexRadius(shape, 0)))};
+    const auto rectMass = Mass{fixture->GetDensity() * (GetVertexRadius(shape, 0) * 2 * GetMagnitude(v2 - v1))};
     const auto totalMass = Mass{circleMass + rectMass};
     
     EXPECT_EQ(body->GetType(), BodyType::Dynamic);

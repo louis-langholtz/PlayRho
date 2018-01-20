@@ -132,7 +132,7 @@ private:
     Body* SetupContainer(Length2 center)
     {
         const auto b = CreateRectangularEnclosingBody(m_world, Length2{ColumnSize, RowSize},
-                                                      ShapeConf{});
+                                                      ShapeConf{}, DefaultLinearSlop * Real{2});
         SetLocation(*b, center);
         return b;
     }
@@ -211,8 +211,8 @@ private:
     {
         const auto containerBody = SetupContainer(center);
 
-        const auto sr = GetVertexRadius(m_smallDiskShape);
-        const auto nr = GetVertexRadius(m_diskShape);
+        const auto sr = GetVertexRadius(m_smallDiskShape, 0);
+        const auto nr = GetVertexRadius(m_diskShape, 0);
         const auto tr = sr + nr;
         const auto bd1 = BodyConf(DynamicBD).UseLocation(center - Length2{tr, 0_m});
         const auto body1 = m_world.CreateBody(bd1);
@@ -247,11 +247,11 @@ private:
         const auto joint3 = static_cast<PrismaticJoint*>(m_world.CreateJoint(jd3));
         
         auto jd4 = GearJointConf{joint1, joint2};
-        jd4.ratio = GetVertexRadius(m_diskShape) / GetVertexRadius(m_smallDiskShape);
+        jd4.ratio = GetVertexRadius(m_diskShape, 0) / GetVertexRadius(m_smallDiskShape, 0);
         m_gearJoint0 = static_cast<GearJoint*>(m_world.CreateJoint(jd4));
         
         auto jd5 = GearJointConf{joint2, joint3};
-        jd5.ratio = -1.0f / (GetVertexRadius(m_diskShape) / 1_m);
+        jd5.ratio = -1.0f / (GetVertexRadius(m_diskShape, 0) / 1_m);
         m_gearJoint1 = static_cast<GearJoint*>(m_world.CreateJoint(jd5));
     }
 
