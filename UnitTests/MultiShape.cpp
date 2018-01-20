@@ -43,14 +43,14 @@ TEST(MultiShapeConf, ByteSize)
 #if !defined(NDEBUG)
             EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(36));
 #else
-            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(28));
+            EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(24));
 #endif
 #else
             EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(40));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(96)); break;
+        case  8: EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(48)); break;
+        case 16: EXPECT_EQ(sizeof(MultiShapeConf), std::size_t(80)); break;
         default: FAIL(); break;
     }
 }
@@ -64,10 +64,11 @@ TEST(MultiShapeConf, DefaultConstruction)
     EXPECT_EQ(typeid(foo), typeid(MultiShapeConf));
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(GetMassData(foo), defaultMassData);
-    
     EXPECT_EQ(GetDensity(foo), defaultConf.density);
     EXPECT_EQ(GetFriction(foo), defaultConf.friction);
     EXPECT_EQ(GetRestitution(foo), defaultConf.restitution);
+    EXPECT_THROW(GetChild(foo, 0), InvalidArgument);
+    EXPECT_THROW(GetVertexRadius(foo, 0), InvalidArgument);
 }
 
 TEST(MultiShapeConf, GetInvalidChildThrows)

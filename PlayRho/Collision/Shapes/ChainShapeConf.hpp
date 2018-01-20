@@ -51,7 +51,7 @@ public:
     /// @brief Gets the default vertex radius.
     static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
-        return DefaultLinearSlop * 2;
+        return NonNegative<Length>{DefaultLinearSlop * Real{2}};
     }
 
     /// @brief Default constructor.
@@ -126,7 +126,7 @@ public:
     ///
     /// @note This should be a non-negative value.
     ///
-    NonNegative<Length> vertexRadius = NonNegative<Length>{DefaultLinearSlop * Real{2}};
+    NonNegative<Length> vertexRadius = GetDefaultVertexRadius();
 
 private:
     std::vector<Length2> m_vertices; ///< Vertices.
@@ -173,13 +173,13 @@ inline ChildCounter GetNextIndex(const ChainShapeConf& shape, ChildCounter index
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg) noexcept
+inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg)
 {
     return arg.vertexRadius;
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg, ChildCounter) noexcept
+inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg, ChildCounter)
 {
     return GetVertexRadius(arg);
 }

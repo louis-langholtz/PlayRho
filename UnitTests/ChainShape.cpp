@@ -64,11 +64,12 @@ TEST(ChainShapeConf, DefaultConstruction)
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{0});
     EXPECT_EQ(GetMassData(foo), defaultMassData);
-    
     for (auto i = ChildCounter{0}; i < GetChildCount(foo); ++i)
     {
         EXPECT_EQ(GetVertexRadius(foo, i), ChainShapeConf::GetDefaultVertexRadius());
     }
+    EXPECT_THROW(GetChild(foo, GetChildCount(foo)), InvalidArgument);
+    EXPECT_EQ(GetVertexRadius(foo, GetChildCount(foo)), ChainShapeConf::GetDefaultVertexRadius());
     EXPECT_EQ(GetDensity(foo), defaultConf.density);
     EXPECT_EQ(GetFriction(foo), defaultConf.friction);
     EXPECT_EQ(GetRestitution(foo), defaultConf.restitution);

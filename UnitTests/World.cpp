@@ -965,21 +965,18 @@ TEST(World, GetTouchingCountFreeFunction)
     world.Step(stepConf);
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
     
-    
     const auto groundConf = EdgeShapeConf{}
         .Set(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter);
-
     const auto ground = world.CreateBody();
     ground->CreateFixture(Shape(groundConf));
 
-    const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
-    const auto lowerBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 0.5f) * Meter);
+    const auto lowerBodyConf = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 0.5f) * Meter);
     const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
     const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
-
     const auto lowerBody = world.CreateBody(lowerBodyConf);
     lowerBody->CreateFixture(Shape(smallerDiskConf));
     
+    ASSERT_EQ(GetAwakeCount(world), 1);
     while (GetAwakeCount(world) > 0)
     {
         world.Step(stepConf);
@@ -1609,9 +1606,11 @@ TEST(World, HeavyOnLight)
         
         auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
         auto numSteps = 0ul;
+        EXPECT_EQ(GetAwakeCount(world), 2);
         while (GetAwakeCount(world) > 0)
         {
             world.Step(smallerStepConf);
+            EXPECT_EQ(GetTouchingCount(world), 2);
             upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(upperBody->GetLocation()));
             ++numSteps;
         }
@@ -1628,6 +1627,25 @@ TEST(World, HeavyOnLight)
         }
 
         EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9476470947265625, 0.001);
+    }
+    
+    // Create upper body, then lower body using the smaller step conf, and using sensors
+    {
+        auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
+        const auto ground = world.CreateBody();
+        ground->CreateFixture(Shape(groundConf));
+        
+        const auto upperBody = world.CreateBody(upperBodyConf);
+        const auto lowerBody = world.CreateBody(lowerBodyConf);
+        ASSERT_LT(GetY(lowerBody->GetLocation()), GetY(upperBody->GetLocation()));
+        
+        lowerBody->CreateFixture(Shape(smallerDiskConf), FixtureConf{}.UseIsSensor(true));
+        upperBody->CreateFixture(Shape(biggerDiskConf), FixtureConf{}.UseIsSensor(true));
+        ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
+        
+        EXPECT_EQ(GetAwakeCount(world), 2);
+        world.Step(smallerStepConf);
+        EXPECT_EQ(GetTouchingCount(world), 2);
     }
 }
 
