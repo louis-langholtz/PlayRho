@@ -70,16 +70,11 @@
 #include <Box2D/Box2D.h>
 #endif // BENCHMARK_BOX2D
 
-static float Rand(float lo, float hi)
+template <typename T>
+static T Rand(T lo, T hi)
 {
-    const auto u = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX); // # between 0 and 1
-    return (hi - lo) * u + lo;
-}
-
-static double Rand(double lo, double hi)
-{
-    const auto u = static_cast<double>(std::rand()) / static_cast<double>(RAND_MAX); // # between 0 and 1
-    return (hi - lo) * u + lo;
+    const auto u = std::rand() / static_cast<float>(RAND_MAX); // # between 0 and 1
+    return static_cast<T>((hi - lo) * u) + lo;
 }
 
 static playrho::d2::UnitVec GetRandUnitVec2(playrho::Angle lo, playrho::Angle hi)
@@ -107,9 +102,10 @@ GetRandTransformation(playrho::d2::Position pos0, playrho::d2::Position pos1)
     return playrho::d2::Transformation{playrho::Length2{x, y}, playrho::d2::UnitVec::Get(a)};
 }
 
-static std::vector<float> Rands(unsigned count, float lo, float hi)
+template <typename T>
+static std::vector<T> Rands(unsigned count, T lo, T hi)
 {
-    auto rands = std::vector<float>{};
+    auto rands = std::vector<T>{};
     rands.reserve(count);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
@@ -118,25 +114,8 @@ static std::vector<float> Rands(unsigned count, float lo, float hi)
     return rands;
 }
 
-static std::vector<double> Rands(unsigned count, double lo, double hi)
-{
-    auto rands = std::vector<double>{};
-    rands.reserve(count);
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
-        rands.push_back(Rand(lo, hi));
-    }
-    return rands;
-}
-
-static std::pair<float, float> RandPair(float lo, float hi)
-{
-    const auto first = Rand(lo, hi);
-    const auto second = Rand(lo, hi);
-    return std::make_pair(first, second);
-}
-
-static std::pair<double, double> RandPair(double lo, double hi)
+template <typename T>
+static std::pair<T, T> RandPair(T lo, T hi)
 {
     const auto first = Rand(lo, hi);
     const auto second = Rand(lo, hi);
@@ -155,7 +134,8 @@ GetRandTransformationPair(playrho::d2::Position pos0, playrho::d2::Position pos1
     return std::make_pair(GetRandTransformation(pos0, pos1), GetRandTransformation(pos0, pos1));
 }
 
-static std::tuple<float, float, float> RandTriplet(float lo, float hi)
+template <typename T>
+static std::tuple<T, T, T> RandTriplet(T lo, T hi)
 {
     const auto first = Rand(lo, hi);
     const auto second = Rand(lo, hi);
@@ -163,15 +143,8 @@ static std::tuple<float, float, float> RandTriplet(float lo, float hi)
     return std::make_tuple(first, second, third);
 }
 
-static std::tuple<double, double, double> RandTriplet(double lo, double hi)
-{
-    const auto first = Rand(lo, hi);
-    const auto second = Rand(lo, hi);
-    const auto third = Rand(lo, hi);
-    return std::make_tuple(first, second, third);
-}
-
-static std::tuple<float, float, float, float> RandQuad(float lo, float hi)
+template <typename T>
+static std::tuple<T, T, T, T> RandQuad(T lo, T hi)
 {
     const auto first = Rand(lo, hi);
     const auto second = Rand(lo, hi);
@@ -180,7 +153,8 @@ static std::tuple<float, float, float, float> RandQuad(float lo, float hi)
     return std::make_tuple(first, second, third, fourth);
 }
 
-static std::tuple<float, float, float, float, float, float, float, float> RandOctet(float lo, float hi)
+template <typename T>
+static std::tuple<T, T, T, T, T, T, T, T> RandOctet(T lo, T hi)
 {
     const auto first = Rand(lo, hi);
     const auto second = Rand(lo, hi);
@@ -193,20 +167,10 @@ static std::tuple<float, float, float, float, float, float, float, float> RandOc
     return std::make_tuple(first, second, third, fourth, fifth, sixth, seventh, eighth);
 }
 
-static std::vector<std::pair<float, float>> RandPairs(unsigned count, float lo, float hi)
+template <typename T>
+static std::vector<std::pair<T, T>> RandPairs(unsigned count, T lo, T hi)
 {
-    auto rands = std::vector<std::pair<float, float>>{};
-    rands.reserve(count);
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
-        rands.push_back(RandPair(lo, hi));
-    }
-    return rands;
-}
-
-static std::vector<std::pair<double, double>> RandPairs(unsigned count, double lo, double hi)
-{
-    auto rands = std::vector<std::pair<double, double>>{};
+    auto rands = std::vector<std::pair<T, T>>{};
     rands.reserve(count);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
@@ -239,9 +203,10 @@ GetRandTransformationPairs(unsigned count, playrho::d2::Position pos0, playrho::
     return rands;
 }
 
-static std::vector<std::tuple<float, float, float>> RandTriplets(unsigned count, float lo, float hi)
+template <typename T>
+static std::vector<std::tuple<T, T, T>> RandTriplets(unsigned count, T lo, T hi)
 {
-    auto rands = std::vector<std::tuple<float, float, float>>{};
+    auto rands = std::vector<std::tuple<T, T, T>>{};
     rands.reserve(count);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
@@ -250,20 +215,10 @@ static std::vector<std::tuple<float, float, float>> RandTriplets(unsigned count,
     return rands;
 }
 
-static std::vector<std::tuple<double, double, double>> RandTriplets(unsigned count, double lo, double hi)
+template <typename T>
+static std::vector<std::tuple<T, T, T, T>> RandQuads(unsigned count, T lo, T hi)
 {
-    auto rands = std::vector<std::tuple<double, double, double>>{};
-    rands.reserve(count);
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
-        rands.push_back(RandTriplet(lo, hi));
-    }
-    return rands;
-}
-
-static std::vector<std::tuple<float, float, float, float>> RandQuads(unsigned count, float lo, float hi)
-{
-    auto rands = std::vector<std::tuple<float, float, float, float>>{};
+    auto rands = std::vector<std::tuple<T, T, T, T>>{};
     rands.reserve(count);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
@@ -272,7 +227,8 @@ static std::vector<std::tuple<float, float, float, float>> RandQuads(unsigned co
     return rands;
 }
 
-static std::vector<std::tuple<float, float, float, float, float, float, float, float>> RandOctets(unsigned count, float lo, float hi)
+template <typename T>
+static std::vector<std::tuple<T, T, T, T, T, T, T, T>> RandOctets(unsigned count, T lo, T hi)
 {
     auto rands = std::vector<std::tuple<float, float, float, float, float, float, float, float>>{};
     rands.reserve(count);
@@ -1227,6 +1183,354 @@ static void CrossProduct(benchmark::State& state)
     }
 }
 
+static void IntervalIsIntersecting(benchmark::State& state)
+{
+    const auto vals = RandQuads(static_cast<unsigned>(state.range()),
+                                playrho::Real{-100.0f}, playrho::Real{100.0f});
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto c = std::get<2>(val);
+            const auto d = std::get<3>(val);
+            const auto i0 = playrho::Interval<playrho::Real>{a, b};
+            const auto i1 = playrho::Interval<playrho::Real>{c, d};
+            benchmark::DoNotOptimize(playrho::IsIntersecting(i0, i1));
+        }
+    }
+}
+
+static void LessFloat(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f, 100.0f);
+    //auto c = 0.0f;
+    auto c = false;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a < b);
+            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LessDouble(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0, 100.0);
+    //auto c = 0.0f;
+    auto c = false;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a < b);
+            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LessEqualFloat(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f, 100.0f);
+    //auto c = 0.0f;
+    auto c = false;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a <= b);
+            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LessEqualDouble(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0, 100.0);
+    auto c = false;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a <= b);
+            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LesserFloat(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f, 100.0f);
+    auto c = 0.0f;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a < b)? a: b;
+            static_assert(std::is_same<decltype(v), const float>::value, "not float");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LesserDouble(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0, 100.0);
+    auto c = 0.0;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a < b)? a: b;
+            static_assert(std::is_same<decltype(v), const double>::value, "not double");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LesserEqualFloat(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f, 100.0f);
+    auto c = 0.0f;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a <= b)? a: b;
+            static_assert(std::is_same<decltype(v), const float>::value, "not float");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LesserEqualDouble(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0, 100.0);
+    auto c = 0.0;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a <= b)? a: b;
+            static_assert(std::is_same<decltype(v), const double>::value, "not double");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LesserEqualLength(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f * playrho::Meter, 100.0f * playrho::Meter);
+    auto c = 0.0f * playrho::Meter;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a <= b)? a: b;
+            static_assert(std::is_same<decltype(v), const playrho::Length>::value, "not Length");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void MinFloat(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f, 100.0f);
+    auto c = 0.0f;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = std::min(a, b);
+            static_assert(std::is_same<decltype(v), const float>::value, "not float");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void MinDouble(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0, 100.0);
+    auto c = 0.0;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = std::min(a, b);
+            static_assert(std::is_same<decltype(v), const double>::value, "not double");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LessLength(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f * playrho::Meter, 100.0f * playrho::Meter);
+    //auto c = 0.0f * playrho::Meter;
+    auto c = false;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a < b);
+            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LessEqualLength(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f * playrho::Meter, 100.0f * playrho::Meter);
+    //auto c = 0.0f * playrho::Meter;
+    auto c = false;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = (a <= b);
+            static_assert(std::is_same<decltype(v), const bool>::value, "not bool");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LesserLength(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f * playrho::Meter, 100.0f * playrho::Meter);
+    auto c = 0.0f * playrho::Meter;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            static_assert(std::is_same<decltype(b), const playrho::Length>::value, "not Length");
+            const auto v = (a < b)? a: b;
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void MinLength(benchmark::State& state)
+{
+    const auto vals = RandPairs(static_cast<unsigned>(state.range()),
+                                -100.0f * playrho::Meter, 100.0f * playrho::Meter);
+    auto c = 0.0f * playrho::Meter;
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto v = std::min(a, b);
+            static_assert(std::is_same<decltype(v), const playrho::Length>::value, "not Length");
+            benchmark::DoNotOptimize(c = v);
+        }
+    }
+}
+
+static void LengthIntervalIsIntersecting(benchmark::State& state)
+{
+    const auto vals = RandQuads(static_cast<unsigned>(state.range()), -100.0f * playrho::Meter, 100.0f * playrho::Meter);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto a = std::get<0>(val);
+            const auto b = std::get<1>(val);
+            const auto c = std::get<2>(val);
+            const auto d = std::get<3>(val);
+            const auto i0 = playrho::LengthInterval{a, b};
+            const auto i1 = playrho::LengthInterval{c, d};
+            benchmark::DoNotOptimize(playrho::IsIntersecting(i0, i1));
+        }
+    }
+}
+
+static void AabbTestOverlap(benchmark::State& state)
+{
+    const auto vals = RandOctets(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto p0 = playrho::Length2{std::get<0>(val) * playrho::Meter, std::get<1>(val) * playrho::Meter};
+            const auto p1 = playrho::Length2{std::get<2>(val) * playrho::Meter, std::get<3>(val) * playrho::Meter};
+            const auto p2 = playrho::Length2{std::get<4>(val) * playrho::Meter, std::get<5>(val) * playrho::Meter};
+            const auto p3 = playrho::Length2{std::get<6>(val) * playrho::Meter, std::get<7>(val) * playrho::Meter};
+            const auto aabb0 = playrho::d2::AABB{p0, p1};
+            const auto aabb1 = playrho::d2::AABB{p2, p3};
+            benchmark::DoNotOptimize(playrho::d2::TestOverlap(aabb0, aabb1));
+        }
+    }
+}
+
+static void AabbContains(benchmark::State& state)
+{
+    const auto vals = RandOctets(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
+    for (auto _: state)
+    {
+        for (const auto& val: vals)
+        {
+            const auto p0 = playrho::Length2{std::get<0>(val) * playrho::Meter, std::get<1>(val) * playrho::Meter};
+            const auto p1 = playrho::Length2{std::get<2>(val) * playrho::Meter, std::get<3>(val) * playrho::Meter};
+            const auto p2 = playrho::Length2{std::get<4>(val) * playrho::Meter, std::get<5>(val) * playrho::Meter};
+            const auto p3 = playrho::Length2{std::get<6>(val) * playrho::Meter, std::get<7>(val) * playrho::Meter};
+            const auto aabb0 = playrho::d2::AABB{p0, p1};
+            const auto aabb1 = playrho::d2::AABB{p2, p3};
+            benchmark::DoNotOptimize(playrho::d2::Contains(aabb0, aabb1));
+        }
+    }
+}
+
 static void AABB(benchmark::State& state)
 {
     const auto vals = RandOctets(static_cast<unsigned>(state.range()), -100.0f, 100.0f);
@@ -2124,6 +2428,30 @@ BENCHMARK(UnitVectorFromVector)->Arg(1000);
 BENCHMARK(UnitVectorFromVectorAndBack)->Arg(1000);
 BENCHMARK(UnitVecFromAngle)->Arg(1000);
 
+BENCHMARK(LessLength)->Arg(1000);
+BENCHMARK(LessFloat)->Arg(1000);
+BENCHMARK(LessDouble)->Arg(1000);
+
+BENCHMARK(LessEqualLength)->Arg(1000);
+BENCHMARK(LessEqualFloat)->Arg(1000);
+BENCHMARK(LessEqualDouble)->Arg(1000);
+
+BENCHMARK(LesserLength)->Arg(1000);
+BENCHMARK(LesserFloat)->Arg(1000);
+BENCHMARK(LesserDouble)->Arg(1000);
+
+BENCHMARK(LesserEqualLength)->Arg(1000);
+BENCHMARK(LesserEqualFloat)->Arg(1000);
+BENCHMARK(LesserEqualDouble)->Arg(1000);
+
+BENCHMARK(MinLength)->Arg(1000);
+BENCHMARK(MinFloat)->Arg(1000);
+BENCHMARK(MinDouble)->Arg(1000);
+
+BENCHMARK(IntervalIsIntersecting)->Arg(1000);
+BENCHMARK(LengthIntervalIsIntersecting)->Arg(1000);
+BENCHMARK(AabbTestOverlap)->Arg(1000);
+BENCHMARK(AabbContains)->Arg(1000);
 BENCHMARK(AABB)->Arg(1000);
 // BENCHMARK(malloc_free_random_size);
 
