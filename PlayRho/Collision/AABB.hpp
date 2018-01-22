@@ -64,10 +64,17 @@ struct AABB
     /// @note If an unset AABB is added to another AABB, the result will be the other AABB.
     PLAYRHO_CONSTEXPR inline AABB() = default;
     
-    /// @brief Initializing copy constructor.
+    /// @brief Initializing constructor.
+    /// @details Initializing constructor supporting construction by the same number of elements
+    ///   as this AABB template type is defined for.
+    /// @note For example this enables a 2-dimensional AABB to be constructed as:
+    /// @code{.cpp}
+    /// const auto aabb = AABB<2>{LengthInterval{1_m, 4_m}, LengthInterval{-3_m, 3_m}};
+    /// @endcode
     template<typename... Tail>
-    PLAYRHO_CONSTEXPR inline AABB(typename std::enable_if<sizeof...(Tail)+1 == N, LengthInterval>::type head,
-                   Tail... tail) noexcept: ranges{head, LengthInterval(tail)...}
+    PLAYRHO_CONSTEXPR inline AABB(typename std::enable_if<sizeof...(Tail)+1 == N,
+                                  LengthInterval>::type head, Tail... tail) noexcept:
+        ranges{head, LengthInterval(tail)...}
     {
         // Intentionally empty.
     }
