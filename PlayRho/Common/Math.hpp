@@ -566,10 +566,12 @@ PLAYRHO_CONSTEXPR inline auto GetFwdPerpendicular(const T vector) noexcept
 }
 
 /// @brief Multiplies an N-element vector by an N-by-N matrix.
+/// @note The matrix is a *transformation matrix*.
 /// @param v Vector.
-/// @param A Matrix to multiply the vector by.
+/// @param m Matrix to multiply the vector by.
+/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
 template <std::size_t N, typename T1, typename T2>
-PLAYRHO_CONSTEXPR inline auto Transform(const Vector<T1, N> v, const Matrix<T2, N, N>& A) noexcept
+PLAYRHO_CONSTEXPR inline auto Transform(const Vector<T1, N> v, const Matrix<T2, N, N>& m) noexcept
 {
     using OT = decltype(T1{} * T2{});
     auto result = Vector<OT, N>{};
@@ -577,7 +579,7 @@ PLAYRHO_CONSTEXPR inline auto Transform(const Vector<T1, N> v, const Matrix<T2, 
     {
         for (auto j = static_cast<std::size_t>(0); j < N; ++j)
         {
-            result[i] += A[i][j] * v[j];
+            result[i] += m[i][j] * v[j];
         }
     }
     return result;
