@@ -1610,7 +1610,7 @@ TEST(World, HeavyOnLight)
         while (GetAwakeCount(world) > 0)
         {
             world.Step(smallerStepConf);
-            EXPECT_EQ(GetTouchingCount(world), 2);
+            EXPECT_EQ(GetTouchingCount(world), ContactCounter(2));
             upperBodysLowestPoint = std::min(upperBodysLowestPoint, GetY(upperBody->GetLocation()));
             ++numSteps;
         }
@@ -1643,9 +1643,9 @@ TEST(World, HeavyOnLight)
         upperBody->CreateFixture(Shape(biggerDiskConf), FixtureConf{}.UseIsSensor(true));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
         
-        EXPECT_EQ(GetAwakeCount(world), 2);
+        EXPECT_EQ(GetAwakeCount(world), BodyCounter(2));
         world.Step(smallerStepConf);
-        EXPECT_EQ(GetTouchingCount(world), 2);
+        EXPECT_EQ(GetTouchingCount(world), ContactCounter(2));
     }
 }
 

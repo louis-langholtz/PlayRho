@@ -94,7 +94,7 @@ TEST(Shape, DefaultConstruction)
     EXPECT_EQ(GetRestitution(s), Real(0));
     EXPECT_EQ(GetDensity(s), 0_kgpm2);
     EXPECT_THROW(GetVertexRadius(s, 0), InvalidArgument);
-    EXPECT_EQ(GetChildCount(s), 0);
+    EXPECT_EQ(GetChildCount(s), ChildCounter(0));
     EXPECT_THROW(GetChild(s, 0), InvalidArgument);
     EXPECT_TRUE(s == s);
     const auto t = Shape{};
