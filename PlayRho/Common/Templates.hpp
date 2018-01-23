@@ -162,7 +162,7 @@ namespace playrho {
     /// @note Second parameter is user data or the <code>nullptr</code>.
     /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
     template <typename T>
-    inline bool Visit(const T& /*object*/, void* /*userData*/)
+    bool Visit(const T& /*object*/, void* /*userData*/)
     {
         return false;
     }
