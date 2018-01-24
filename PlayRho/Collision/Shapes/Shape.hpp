@@ -92,6 +92,10 @@ NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
 ///
 NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx);
 
+/// @brief Transforms all of the given shape's vertices by the given transformation matrix.
+/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+void Transform(Shape& shape, const Mat22& m) noexcept;
+
 /// @brief Visits the given shape with the potentially non-null user data pointer.
 /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
 bool Visit(const Shape& shape, void* userData);
@@ -224,6 +228,13 @@ public:
         return shape.m_self->GetDensity_();
     }
     
+    friend void Transform(Shape& shape, const Mat22& m) noexcept
+    {
+        auto copy = shape.m_self->Clone();
+        copy->Transform_(m);
+        shape.m_self = std::unique_ptr<const Shape::Concept>{std::move(copy)};
+    }
+    
     friend bool Visit(const Shape& shape, void* userData)
     {
         return shape.m_self->Visit_(userData);
@@ -263,6 +274,9 @@ private:
     {
         virtual ~Concept() = default;
 
+        /// @brief Clones this concept and returns a pointer to a mutable copy.
+        virtual std::unique_ptr<Concept> Clone() const = 0;
+        
         /// @brief Gets the "child" count.
         virtual ChildCounter GetChildCount_() const noexcept = 0;
         
@@ -284,6 +298,10 @@ private:
         
         /// @brief Gets the restitution.
         virtual Real GetRestitution_() const noexcept = 0;
+        
+        /// @brief Transforms all of the shape's vertices by the given transformation matrix.
+        /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+        virtual void Transform_(const Mat22& m) noexcept = 0;
         
         /// @brief Draws the shape.
         virtual bool Visit_(void* userData) const = 0;
@@ -322,6 +340,11 @@ private:
         /// @brief Initializing constructor.
         Model(T arg): data{std::move(arg)} {}
         
+        std::unique_ptr<Concept> Clone() const override
+        {
+            return std::make_unique<Model>(data);
+        }
+
         ChildCounter GetChildCount_() const noexcept override
         {
             return GetChildCount(data);
@@ -357,6 +380,11 @@ private:
             return GetRestitution(data);
         }
         
+        void Transform_(const Mat22& m) noexcept override
+        {
+            Transform(data, m);
+        }
+
         bool Visit_(void* userData) const override
         {
             return ::playrho::Visit(data, userData);

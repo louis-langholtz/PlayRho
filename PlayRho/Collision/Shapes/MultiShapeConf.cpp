@@ -21,6 +21,7 @@
 #include <PlayRho/Collision/Shapes/MultiShapeConf.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 #include <algorithm>
+#include <iterator>
 
 namespace playrho {
 namespace d2 {
@@ -76,10 +77,29 @@ ConvexHull ConvexHull::Get(const VertexSet& pointSet, NonNegative<Length> vertex
     return ConvexHull{vertices, normals, vertexRadius};
 }
 
+ConvexHull& ConvexHull::Transform(const Mat22& m) noexcept
+{
+    auto newPoints = VertexSet{};
+    for (const auto v: vertices)
+    {
+        newPoints.add(playrho::Transform(v, m));
+    }
+    *this = Get(newPoints, vertexRadius);
+    return *this;
+}
+
 MultiShapeConf& MultiShapeConf::AddConvexHull(const VertexSet& pointSet,
                                               NonNegative<Length> vertexRadius) noexcept
 {
     children.emplace_back(ConvexHull::Get(pointSet, vertexRadius));
+    return *this;
+}
+
+MultiShapeConf& MultiShapeConf::Transform(const Mat22& m) noexcept
+{
+    std::for_each(std::begin(children), std::end(children), [=](ConvexHull& child){
+        child.Transform(m);
+    });
     return *this;
 }
 

@@ -264,6 +264,11 @@ Finite<Real> GetRestitution(const X&) noexcept
     return Real{0};
 }
 
+void Transform(X&, const Mat22&) noexcept
+{
+    // Intentionally empty.
+}
+
 NonNegative<Real> GetFriction(const X&) noexcept
 {
     return Real{0};

@@ -43,10 +43,11 @@ namespace testbed {
         FifteenPuzzle(): Test(GetTestConf())
         {
             m_gravity = LinearAcceleration2{};
-            const auto enclosure = CreateSquareEnclosingBody(m_world, 16_m + 2 * GetVertexRadius(),
-                                                             ShapeConf{}, GetVertexRadius());
+            auto conf = GetChainShapeConf(16_m + 2 * GetVertexRadius());
+            conf.UseVertexRadius(GetVertexRadius());
+            const auto enclosure = m_world.CreateBody();
+            enclosure->CreateFixture(Shape{conf});
             SetLocation(*enclosure, GetCenter());
-            
             for (auto i = 0; i < 15; ++i)
             {
                 const auto row = 3 - i / 4;

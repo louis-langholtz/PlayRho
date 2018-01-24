@@ -927,33 +927,6 @@ TEST(World, AwakenFreeFunction)
     EXPECT_TRUE(body->IsAwake());
 }
 
-TEST(World, CreateSquareEnclosingBody)
-{
-    World world;
-    Body* body = nullptr;
-    EXPECT_NO_THROW(body = CreateSquareEnclosingBody(world, 2_m, ShapeConf{}, DefaultLinearSlop * Real{2}));
-    ASSERT_NE(body, nullptr);
-    EXPECT_EQ(body->GetType(), BodyType::Static);
-    const auto fixtures = body->GetFixtures();
-    EXPECT_GT(fixtures.size(), decltype(fixtures.size()){0});
-    auto vertices = std::set<Length2>();
-    for (auto& f: fixtures)
-    {
-        const auto s = f->GetShape();
-        const auto childCount = GetChildCount(s);
-        for (auto i = ChildCounter{0}; i < childCount; ++i)
-        {
-            const auto child = GetChild(s, i);
-            const auto numVertices = child.GetVertexCount();
-            for (auto j = decltype(numVertices){0}; j < numVertices; ++j)
-            {
-                vertices.insert(child.GetVertex(j));
-            }
-        }
-    }
-    EXPECT_EQ(vertices.size(), decltype(vertices.size()){4});
-}
-
 TEST(World, GetTouchingCountFreeFunction)
 {
     World world;

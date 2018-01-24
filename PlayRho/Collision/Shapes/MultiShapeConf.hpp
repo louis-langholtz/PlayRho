@@ -57,6 +57,10 @@ public:
         return vertexRadius;
     }
     
+    /// @brief Transforms all the vertices by the given transformation matrix.
+    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    ConvexHull& Transform(const Mat22& m) noexcept;
+
     /// @brief Equality operator.
     friend bool operator== (const ConvexHull& lhs, const ConvexHull& rhs) noexcept
     {
@@ -132,6 +136,10 @@ struct MultiShapeConf: public ShapeBuilder<MultiShapeConf>
     MultiShapeConf& AddConvexHull(const VertexSet& pointSet, NonNegative<Length> vertexRadius =
                                   GetDefaultVertexRadius()) noexcept;
     
+    /// @brief Transforms the vertices of all the children by the given transformation matrix.
+    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    MultiShapeConf& Transform(const Mat22& m) noexcept;
+
     std::vector<ConvexHull> children; ///< Children.
 };
 
@@ -177,6 +185,14 @@ inline NonNegative<Length> GetVertexRadius(const MultiShapeConf& arg, ChildCount
         throw InvalidArgument("index out of range");
     }
     return arg.children[index].GetVertexRadius();
+}
+
+/// @brief Transforms the given multi shape configuration by the given
+///   transformation matrix.
+/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+inline void Transform(MultiShapeConf& arg, const Mat22& m) noexcept
+{
+    arg.Transform(m);
 }
 
 } // namespace d2

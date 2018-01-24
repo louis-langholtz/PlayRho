@@ -321,3 +321,20 @@ TEST(ChainShapeConf, Inequality)
     EXPECT_TRUE(ChainShapeConf().Add(Length2(1_m, 2_m)) != ChainShapeConf());
     EXPECT_FALSE(ChainShapeConf().Add(Length2(1_m, 2_m)) != ChainShapeConf().Add(Length2(1_m, 2_m)));
 }
+
+TEST(ChainShapeConf, GetSquareChainShapeConf)
+{
+    const auto conf = GetChainShapeConf(2_m);
+    auto vertices = std::set<Length2>();
+    const auto childCount = GetChildCount(conf);
+    for (auto i = ChildCounter{0}; i < childCount; ++i)
+    {
+        const auto child = GetChild(conf, i);
+        const auto numVertices = child.GetVertexCount();
+        for (auto j = decltype(numVertices){0}; j < numVertices; ++j)
+        {
+            vertices.insert(child.GetVertex(j));
+        }
+    }
+    EXPECT_EQ(vertices.size(), decltype(vertices.size()){4});
+}

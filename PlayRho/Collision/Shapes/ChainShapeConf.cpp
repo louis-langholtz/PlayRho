@@ -20,6 +20,9 @@
  */
 
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
+#include <PlayRho/Collision/AABB.hpp>
+#include <algorithm>
+#include <iterator>
 
 namespace playrho {
 namespace d2 {
@@ -54,7 +57,14 @@ ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
     }
 
     m_vertices = vertices;
-    if (count > 1)
+    ResetNormals();
+    return *this;
+}
+
+void ChainShapeConf::ResetNormals()
+{
+    m_normals.clear();
+    if (m_vertices.size() > std::size_t{1})
     {
         auto vprev = Length2{};
         auto first = true;
@@ -75,6 +85,14 @@ ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
             vprev = v;
         }
     }
+}
+
+ChainShapeConf& ChainShapeConf::Transform(const Mat22& m) noexcept
+{
+    std::for_each(std::begin(m_vertices), std::end(m_vertices), [=](Length2& v){
+        v = playrho::Transform(v, m);
+    });
+    ResetNormals();
     return *this;
 }
 
@@ -148,6 +166,45 @@ DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
         return DistanceProxy{vertexRadius, 2, &m_vertices[index], &m_normals[index * 2]};
     }
     return DistanceProxy{vertexRadius, 1, &m_vertices[0], nullptr};
+}
+
+// Free functions...
+
+ChainShapeConf GetChainShapeConf(Length2 dimensions)
+{
+    auto conf = ChainShapeConf{};
+
+    const auto halfWidth = GetX(dimensions) / Real{2};
+    const auto halfHeight = GetY(dimensions) / Real{2};
+    
+    const auto btmLeft  = Length2(-halfWidth, -halfHeight);
+    const auto btmRight = Length2(+halfWidth, -halfHeight);
+    const auto topLeft  = Length2(-halfWidth, +halfHeight);
+    const auto topRight = Length2(+halfWidth, +halfHeight);
+    
+    conf.Add(btmRight);
+    conf.Add(topRight);
+    conf.Add(topLeft);
+    conf.Add(btmLeft);
+    conf.Add(conf.GetVertex(0));
+    
+    return conf;
+}
+
+ChainShapeConf GetChainShapeConf(const AABB& arg)
+{
+    auto conf = ChainShapeConf{};
+    
+    const auto rangeX = arg.ranges[0];
+    const auto rangeY = arg.ranges[1];
+    
+    conf.Add(Length2{rangeX.GetMax(), rangeY.GetMin()}); // bottom right
+    conf.Add(Length2{rangeX.GetMax(), rangeY.GetMax()}); // top right
+    conf.Add(Length2{rangeX.GetMin(), rangeY.GetMax()}); // top left
+    conf.Add(Length2{rangeX.GetMin(), rangeY.GetMin()}); // bottom left
+    conf.Add(conf.GetVertex(0)); // close the chain around to first point
+    
+    return conf;
 }
 
 } // namespace d2

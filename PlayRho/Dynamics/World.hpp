@@ -34,7 +34,6 @@
 #include <PlayRho/Dynamics/WorldCallbacks.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/ContactAtty.hpp>
 #include <PlayRho/Dynamics/JointAtty.hpp>
@@ -62,6 +61,7 @@ class Fixture;
 class Joint;
 struct Island;
 class Shape;
+struct ShapeConf;
 
 /// @defgroup PhysicalEntities Physical Entity Classes
 ///
@@ -1058,19 +1058,6 @@ inline void ClearForces(World& world) noexcept
     SetAccelerations(world, Acceleration{
         LinearAcceleration2{0_mps2, 0_mps2}, 0 * RadianPerSquareSecond
     });
-}
-
-/// @brief Creates a rectangular enclosure.
-/// @relatedalso World
-Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions,
-                                     const ShapeConf& baseConf, Length thickness);
-
-/// @brief Creates a square enclosure.
-/// @relatedalso World
-inline Body* CreateSquareEnclosingBody(World& world, Length size, const ShapeConf& baseConf,
-                                       Length thickness)
-{
-    return CreateRectangularEnclosingBody(world, Length2{size, size}, baseConf, thickness);
 }
     
 /// @brief Finds body in given world that's closest to the given location.

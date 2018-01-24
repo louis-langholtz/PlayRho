@@ -90,6 +90,16 @@ PolygonShapeConf& PolygonShapeConf::Transform(Transformation xfm) noexcept
     return *this;
 }
 
+PolygonShapeConf& PolygonShapeConf::Transform(const Mat22& m) noexcept
+{
+    auto newPoints = VertexSet{};
+    for (const auto v: m_vertices)
+    {
+        newPoints.add(playrho::Transform(v, m));
+    }
+    return Set(newPoints);
+}
+
 PolygonShapeConf& PolygonShapeConf::Set(Span<const Length2> points) noexcept
 {
     // Perform welding and copy vertices into local buffer.

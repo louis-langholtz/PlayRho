@@ -54,6 +54,11 @@ Real GetRestitution(const DefaultShapeConf&) noexcept
     return Real{0};
 }
 
+void Transform(DefaultShapeConf&, const Mat22&) noexcept
+{
+    // Intentionally empty.
+}
+
 NonNegative<AreaDensity> GetDensity(const DefaultShapeConf&) noexcept
 {
     return NonNegative<AreaDensity>{0_kgpm2};

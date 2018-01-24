@@ -40,5 +40,12 @@ EdgeShapeConf& EdgeShapeConf::Set(Length2 vA, Length2 vB) noexcept
     return *this;
 }
 
+EdgeShapeConf& EdgeShapeConf::Transform(const Mat22& m) noexcept
+{
+    const auto newA = playrho::Transform(GetVertexA(), m);
+    const auto newB = playrho::Transform(GetVertexB(), m);
+    return Set(newA, newB);
+}
+
 } // namespace d2
 } // namespace playrho

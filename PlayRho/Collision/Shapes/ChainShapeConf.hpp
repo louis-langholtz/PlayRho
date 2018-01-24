@@ -26,6 +26,7 @@
 #include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/Collision/AABB.hpp>
 #include <vector>
 
 namespace playrho {
@@ -57,11 +58,16 @@ public:
     /// @brief Default constructor.
     ChainShapeConf();
     
-    /// @brief Sets the configuration up for representing a chain of the given vertices.
-    ChainShapeConf& Set(std::vector<Length2> vertices);
-
+    /// @brief Sets the configuration up for representing a chain of vertices as given.
+    ChainShapeConf& Set(std::vector<Length2> arg);
+    
     /// @brief Adds the given vertex.
     ChainShapeConf& Add(Length2 vertex);
+    
+    /// @brief Transforms all the vertices by the given transformation matrix.
+    /// @note This updates the normals too.
+    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    ChainShapeConf& Transform(const Mat22& m) noexcept;
 
     /// @brief Gets the "child" shape count.
     ChildCounter GetChildCount() const noexcept
@@ -78,7 +84,7 @@ public:
     MassData GetMassData() const noexcept;
     
     /// @brief Uses the given vertex radius.
-    inline ChainShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
+    ChainShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
 
     /// @brief Gets the vertex count.
     ChildCounter GetVertexCount() const noexcept
@@ -129,6 +135,9 @@ public:
     NonNegative<Length> vertexRadius = GetDefaultVertexRadius();
 
 private:
+    /// @brief Resets the normals based on the current vertices.
+    void ResetNormals();
+
     std::vector<Length2> m_vertices; ///< Vertices.
     std::vector<UnitVec> m_normals; ///< Normals.
 };
@@ -183,6 +192,28 @@ inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg, ChildCount
 {
     return GetVertexRadius(arg);
 }
+
+/// @brief Transforms the given chain shape configuration's vertices by the given
+///   transformation matrix.
+/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+inline void Transform(ChainShapeConf& arg, const Mat22& m) noexcept
+{
+    arg.Transform(m);
+}
+
+/// @brief Gets an enclosing chain shape configuration for an axis aligned rectangle of the
+///    given dimensions (width and height).
+ChainShapeConf GetChainShapeConf(Length2 dimensions);
+
+/// @brief Gets an enclosing chain shape configuration for an axis aligned square of the
+///    given dimension.
+inline ChainShapeConf GetChainShapeConf(Length dimension)
+{
+    return GetChainShapeConf(Length2{dimension, dimension});
+}
+
+/// @brief Gets an enclosing chain shape configuration for the given axis aligned box.
+ChainShapeConf GetChainShapeConf(const AABB& arg);
 
 } // namespace d2
 } // namespace playrho
