@@ -80,7 +80,8 @@ ConvexHull ConvexHull::Get(const VertexSet& pointSet, NonNegative<Length> vertex
 ConvexHull& ConvexHull::Transform(const Mat22& m) noexcept
 {
     auto newPoints = VertexSet{};
-    for (const auto v: vertices)
+    // clang++ recommends the following loop variable 'v' be of reference type (instead of value).
+    for (const auto& v: vertices)
     {
         newPoints.add(playrho::Transform(v, m));
     }
