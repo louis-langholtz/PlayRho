@@ -367,3 +367,24 @@ TEST(ChainShapeConf, GetSquareChainShapeConf)
     }
     EXPECT_EQ(vertices.size(), decltype(vertices.size()){4});
 }
+
+TEST(ChainShapeConf, GetAabbChainShapeConf)
+{
+    const auto v0 = Length2{2_m, -3_m};
+    const auto v1 = Length2{2_m,  4_m};
+    const auto v2 = Length2{1_m,  4_m};
+    const auto v3 = Length2{1_m, -3_m};
+    auto aabb = AABB{};
+    Include(aabb, v0);
+    Include(aabb, v1);
+    Include(aabb, v2);
+    Include(aabb, v3);
+    const auto conf = GetChainShapeConf(aabb);
+    EXPECT_EQ(conf.GetChildCount(), ChildCounter(4));
+    EXPECT_EQ(conf.GetVertexCount(), ChildCounter(5));
+    EXPECT_EQ(conf.GetVertex(0), v0);
+    EXPECT_EQ(conf.GetVertex(1), v1);
+    EXPECT_EQ(conf.GetVertex(2), v2);
+    EXPECT_EQ(conf.GetVertex(3), v3);
+    EXPECT_EQ(conf.GetVertex(4), v0);
+}
