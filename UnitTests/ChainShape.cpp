@@ -122,6 +122,35 @@ TEST(ChainShapeConf, Accept)
 #endif
 }
 
+TEST(ChainShapeConf, TransformFF)
+{
+    {
+        auto foo = ChainShapeConf{};
+        auto tmp = foo;
+        Transform(foo, Mat22{});
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        auto foo = ChainShapeConf{};
+        auto tmp = foo;
+        Transform(foo, Mat22{Vec2{1, 0}, Vec2{0, 1}});
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = ChainShapeConf{};
+        foo.Add(v1);
+        foo.Add(v2);
+        auto tmp = foo;
+        Transform(foo, Mat22{Vec2{2, 0}, Vec2{0, 2}});
+        EXPECT_NE(foo, tmp);
+        ASSERT_EQ(foo.GetVertexCount(), ChildCounter(2));
+        EXPECT_EQ(foo.GetVertex(0), v1 * 2);
+        EXPECT_EQ(foo.GetVertex(1), v2 * 2);
+    }
+}
+
 TEST(ChainShapeConf, OneVertexLikeDisk)
 {
     const auto vertexRadius = 1_m;

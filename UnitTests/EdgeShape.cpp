@@ -52,6 +52,40 @@ TEST(EdgeShapeConf, GetInvalidChildThrows)
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
+TEST(EdgeShapeConf, TransformFF)
+{
+    {
+        auto foo = EdgeShapeConf{};
+        auto tmp = foo;
+        Transform(foo, Mat22{});
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        auto foo = EdgeShapeConf{};
+        auto tmp = foo;
+        Transform(foo, Mat22{Vec2{1, 0}, Vec2{0, 1}});
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = EdgeShapeConf{v1, v2};
+        auto tmp = foo;
+        Transform(foo, Mat22{Vec2{1, 0}, Vec2{0, 1}});
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = EdgeShapeConf{v1, v2};
+        auto tmp = foo;
+        Transform(foo, Mat22{Vec2{2, 0}, Vec2{0, 2}});
+        EXPECT_NE(foo, tmp);
+        EXPECT_EQ(foo.GetVertexA(), v1 * 2);
+        EXPECT_EQ(foo.GetVertexB(), v2 * 2);
+    }
+}
+
 TEST(EdgeShapeConf, Visit)
 {
     const auto s = Shape{EdgeShapeConf{}};
