@@ -186,8 +186,8 @@ namespace playrho
 namespace std {
 
     /// Tuple size specialization for <code>ArrayList</code> classes.
-    template< class T, size_t N, typename SIZE_TYPE >
-    class tuple_size< playrho::ArrayList<T, N, SIZE_TYPE> >: public integral_constant<size_t, N>
+    template< class T, std::size_t N, typename SIZE_TYPE >
+    class tuple_size< playrho::ArrayList<T, N, SIZE_TYPE> >: public integral_constant<std::size_t, N>
     {
         // Intentionally empty.
     };

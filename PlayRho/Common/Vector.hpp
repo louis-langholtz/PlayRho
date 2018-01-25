@@ -225,7 +225,7 @@ struct IsVector<Vector<T, N>>: std::true_type {};
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline bool operator== (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         if (lhs[i] != rhs[i])
         {
@@ -260,7 +260,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T, decltype(-T{})>::value, Vector<T, N>>::type
 operator- (Vector<T, N> v) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         v[i] = -v[i];
     }
@@ -274,7 +274,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>&>::type
 operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         lhs[i] += rhs[i];
     }
@@ -288,7 +288,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>&>::type
 operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         lhs[i] -= rhs[i];
     }
@@ -322,7 +322,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T1, decltype(T1{} * T2{})>::value, Vector<T1, N>&>::type
 operator*= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         lhs[i] *= rhs;
     }
@@ -336,7 +336,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T1, decltype(T1{} / T2{})>::value, Vector<T1, N>&>::type
 operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         lhs[i] /= rhs;
     }
@@ -400,7 +400,7 @@ operator* (const T1 s, Vector<T2, N> a) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         result[i] = s * a[i];
     }
@@ -418,7 +418,7 @@ operator* (Vector<T1, N> a, const T2 s) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         result[i] = a[i] * s;
     }
@@ -434,7 +434,7 @@ operator/ (Vector<T1, N> a, const T2 s) noexcept
 {
     // Can't base this off of /= since result type in this case can be different
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         result[i] = a[i] / s;
     }
@@ -448,7 +448,7 @@ template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} *
 PLAYRHO_CONSTEXPR inline auto operator* (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
 {
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         result[i] = lhs[i] * rhs[i];
     }
@@ -461,7 +461,7 @@ template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} /
 PLAYRHO_CONSTEXPR inline auto operator/ (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
 {
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         result[i] = lhs[i] / rhs[i];
     }
@@ -511,7 +511,7 @@ PLAYRHO_CONSTEXPR inline bool operator>= (const Vector<T, N>& lhs, const Vector<
 
 /// @brief Gets the I'th element of the given collection.
 /// @relatedalso Vector
-template <size_t I, size_t N, typename T>
+template <std::size_t I, std::size_t N, typename T>
 PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
 {
     static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
@@ -519,7 +519,7 @@ PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
 }
 
 /// @brief Gets the I'th element of the given collection.
-template <size_t I, size_t N, typename T>
+template <std::size_t I, std::size_t N, typename T>
 PLAYRHO_CONSTEXPR inline auto Get(const Vector<T, N>& v) noexcept
 {
     static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
@@ -532,9 +532,9 @@ template <typename T, std::size_t N>
 ::std::ostream& operator<< (::std::ostream& os, const Vector<T, N>& value)
 {
     os << "{";
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
-        if (i > static_cast<size_t>(0))
+        if (i > static_cast<std::size_t>(0))
         {
             os << ',';
         }
@@ -550,10 +550,10 @@ namespace std {
     
     /// @brief Tuple size info for playrho::Vector
     template<class T, std::size_t N>
-    class tuple_size< playrho::Vector<T, N> >: public std::integral_constant<size_t, N> {};
+    class tuple_size< playrho::Vector<T, N> >: public std::integral_constant<std::size_t, N> {};
     
     /// @brief Tuple element type info for playrho::Vector
-    template<std::size_t I, class T, size_t N>
+    template<std::size_t I, class T, std::size_t N>
     class tuple_element<I, playrho::Vector<T, N>>
     {
     public:

@@ -24,6 +24,7 @@
 #include <sstream>
 #include <type_traits>
 #include <algorithm>
+#include <cstddef>
 
 using namespace playrho;
 
@@ -34,7 +35,7 @@ TEST(Vector, IsVector)
     EXPECT_TRUE((IsVector<Vector<Vector<float, 1>, 1>>::value));
     EXPECT_FALSE(IsVector<int>::value);
     EXPECT_FALSE(IsVector<float>::value);
-    EXPECT_FALSE(IsVector<nullptr_t>::value);
+    EXPECT_FALSE(IsVector<std::nullptr_t>::value);
 }
 
 TEST(Vector, Equality)

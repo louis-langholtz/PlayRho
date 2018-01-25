@@ -114,7 +114,7 @@ struct AABB
 template <std::size_t N>
 PLAYRHO_CONSTEXPR inline bool operator== (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         if (lhs.ranges[i] != rhs.ranges[i])
         {
