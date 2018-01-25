@@ -209,6 +209,18 @@ namespace playrho {
     /// @brief Void type templated alias.
     template<class... Ts> using VoidT = typename Voidify<Ts...>::type;
     
+    template<class T1, class T2, class = void>
+    struct IsMultipliable: std::false_type {};
+    
+    template<class T1, class T2>
+    struct IsMultipliable<T1, T2, VoidT<decltype(T1{} * T2{})> >: std::true_type {};
+    
+    template<class T1, class T2, class = void>
+    struct IsDivisable: std::false_type {};
+    
+    template<class T1, class T2>
+    struct IsDivisable<T1, T2, VoidT<decltype(T1{} / T2{})> >: std::true_type {};
+
     /// @brief Template for determining if the given type is an "arithmetic" type.
     /// @note In the context of this library, "arithmetic" types are all types which
     ///   have +, -, *, / arithmetic operator support.

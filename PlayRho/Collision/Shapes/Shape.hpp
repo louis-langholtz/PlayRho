@@ -94,7 +94,10 @@ NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx);
 
 /// @brief Transforms all of the given shape's vertices by the given transformation matrix.
 /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
-void Transform(Shape& shape, const Mat22& m) noexcept;
+/// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
+///   by the constructor for the model's underlying data type.
+/// @throws std::bad_alloc if there's a failure allocating storage.
+void Transform(Shape& shape, const Mat22& m);
 
 /// @brief Visits the given shape with the potentially non-null user data pointer.
 /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
@@ -228,7 +231,7 @@ public:
         return shape.m_self->GetDensity_();
     }
     
-    friend void Transform(Shape& shape, const Mat22& m) noexcept
+    friend void Transform(Shape& shape, const Mat22& m)
     {
         auto copy = shape.m_self->Clone();
         copy->Transform_(m);
@@ -275,6 +278,9 @@ private:
         virtual ~Concept() = default;
 
         /// @brief Clones this concept and returns a pointer to a mutable copy.
+        /// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
+        ///   by the constructor for the model's underlying data type.
+        /// @throws std::bad_alloc if there's a failure allocating storage.
         virtual std::unique_ptr<Concept> Clone() const = 0;
         
         /// @brief Gets the "child" count.
@@ -301,7 +307,7 @@ private:
         
         /// @brief Transforms all of the shape's vertices by the given transformation matrix.
         /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
-        virtual void Transform_(const Mat22& m) noexcept = 0;
+        virtual void Transform_(const Mat22& m) = 0;
         
         /// @brief Draws the shape.
         virtual bool Visit_(void* userData) const = 0;
@@ -380,7 +386,7 @@ private:
             return GetRestitution(data);
         }
         
-        void Transform_(const Mat22& m) noexcept override
+        void Transform_(const Mat22& m) override
         {
             Transform(data, m);
         }

@@ -97,8 +97,9 @@ TEST(Shape, DefaultConstruction)
     EXPECT_EQ(GetChildCount(s), ChildCounter(0));
     EXPECT_THROW(GetChild(s, 0), InvalidArgument);
     EXPECT_TRUE(s == s);
-    const auto t = Shape{};
+    auto t = Shape{};
     EXPECT_TRUE(s == t);
+    EXPECT_NO_THROW(Transform(t, Mat22{}));
 }
 
 TEST(Shape, types)

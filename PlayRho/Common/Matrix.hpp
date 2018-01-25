@@ -35,7 +35,7 @@ namespace playrho {
 /// @note N is the number of columns of the matrix.
 /// @sa https://en.wikipedia.org/wiki/Matrix_(mathematics)
 template <typename T, std::size_t M, std::size_t N>
-using Matrix = Vector<Vector<T, N>, M>;
+    using Matrix = Vector<Vector<T, N>, M>;
 
 /// @brief 2 by 2 matrix.
 template <typename T>
@@ -69,48 +69,6 @@ template <>
 PLAYRHO_CONSTEXPR inline Mat22 GetInvalid() noexcept
 {
     return Mat22{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
-}
-
-/// @brief Multiplies an A-by-B matrix by a B-by-C matrix.
-/// @note From Wikipedia:
-///   > Multiplication of two matrices is defined if and only if the number of columns
-///   > of the left matrix is the same as the number of rows of the right matrix.
-/// @note Matrix multiplication is not commutative.
-/// @note Algorithmically speaking, this implementation is called the "naive" algorithm.
-///   For small matrices, like 3-by-3 or smaller matrices, its complexity shouldn't be an issue.
-///   The matrix dimensions are compile time constants anyway which can help compilers
-///   automatically identify loop unrolling and hardware level parallelism opportunities.
-/// @param lhs Left-hand-side matrix.
-/// @param rhs Right-hand-side matrix.
-/// @return A-by-C matrix product of the left-hand-side matrix and the right-hand-side matrix.
-/// @sa https://en.wikipedia.org/wiki/Matrix_multiplication
-/// @sa https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm
-/// @sa https://en.wikipedia.org/wiki/Commutative_property
-/// @relatedalso Vector
-template <typename T1, typename T2, std::size_t A, std::size_t B, std::size_t C>
-PLAYRHO_CONSTEXPR inline
-auto operator* (const Matrix<T1, A, B>& lhs, const Matrix<T2, B, C>& rhs) noexcept
-{
-    using OT = decltype(T1{} * T2{});
-    auto result = Matrix<OT, A, C>{};
-    for (auto a = static_cast<std::size_t>(0); a < A; ++a)
-    {
-        for (auto c = static_cast<std::size_t>(0); c < C; ++c)
-        {
-            // So for 2x3 lhs matrix * 3*2 rhs matrix... result is 2x2 matrix:
-            // result[0][0] = lhs[0][0] * rhs[0][0] + lhs[0][1] * rhs[1][0] + lhs[0][2] * rhs[2][0]
-            // result[0][1] = lhs[0][0] * rhs[0][1] + lhs[0][1] * rhs[1][1] + lhs[0][2] * rhs[2][1]
-            // result[1][0] = lhs[1][0] * rhs[0][0] + lhs[1][1] * rhs[1][0] + lhs[1][2] * rhs[2][0]
-            // result[1][1] = lhs[1][0] * rhs[0][1] + lhs[1][1] * rhs[1][1] + lhs[1][2] * rhs[2][1]
-            auto element = OT{};
-            for (auto b = static_cast<std::size_t>(0); b < B; ++b)
-            {
-                element += lhs[a][b] * rhs[b][c];
-            }
-            result[a][c] = element;
-        }
-    }
-    return result;
 }
 
 /// @brief Matrix addition operator for two same-type, same-sized matrices.

@@ -27,6 +27,16 @@
 
 using namespace playrho;
 
+TEST(Vector, IsVector)
+{
+    EXPECT_TRUE((IsVector<Vector<int, 2>>::value));
+    EXPECT_TRUE((IsVector<Vector<float, 1>>::value));
+    EXPECT_TRUE((IsVector<Vector<Vector<float, 1>, 1>>::value));
+    EXPECT_FALSE(IsVector<int>::value);
+    EXPECT_FALSE(IsVector<float>::value);
+    EXPECT_FALSE(IsVector<nullptr_t>::value);
+}
+
 TEST(Vector, Equality)
 {
     Vector<int, 10> a;
