@@ -63,6 +63,10 @@ public:
     
     /// @brief Uses the given vertex radius.
     EdgeShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
+    
+    /// @brief Transforms both vertices by the given transformation matrix.
+    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    EdgeShapeConf& Transform(const Mat22& m) noexcept;
 
     /// @brief Gets vertex A.
     Length2 GetVertexA() const noexcept
@@ -156,6 +160,13 @@ inline MassData GetMassData(const EdgeShapeConf& arg) noexcept
 {
     return playrho::d2::GetMassData(arg.vertexRadius, arg.density,
                                     arg.GetVertexA(), arg.GetVertexB());
+}
+
+/// @brief Transforms the given shape configuration's vertices by the given transformation matrix.
+/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+inline void Transform(EdgeShapeConf& arg, const Mat22& m) noexcept
+{
+    arg.Transform(m);
 }
 
 } // namespace d2

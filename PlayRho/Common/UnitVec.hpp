@@ -318,7 +318,7 @@ PLAYRHO_CONSTEXPR inline UnitVec InverseRotate(const UnitVec vector, const UnitV
 }
 
 /// @brief Gets the specified element of the given collection.
-template <size_t I>
+template <std::size_t I>
 PLAYRHO_CONSTEXPR inline UnitVec::value_type Get(UnitVec v) noexcept
 {
     static_assert(I < 2, "Index out of bounds in playrho::Get<> (playrho::UnitVec)");
@@ -366,7 +366,7 @@ namespace std {
 
 /// @brief Tuple size info for <code>playrho::d2::UnitVec</code>.
 template<>
-class tuple_size< playrho::d2::UnitVec >: public std::integral_constant<size_t, 2> {};
+class tuple_size< playrho::d2::UnitVec >: public std::integral_constant<std::size_t, 2> {};
 
 /// @brief Tuple element type info for <code>playrho::d2::UnitVec</code>.
 template<std::size_t I>

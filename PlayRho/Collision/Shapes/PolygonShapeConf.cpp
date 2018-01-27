@@ -90,6 +90,17 @@ PolygonShapeConf& PolygonShapeConf::Transform(Transformation xfm) noexcept
     return *this;
 }
 
+PolygonShapeConf& PolygonShapeConf::Transform(const Mat22& m) noexcept
+{
+    auto newPoints = VertexSet{};
+    // clang++ recommends the following loop variable 'v' be of reference type (instead of value).
+    for (const auto& v: m_vertices)
+    {
+        newPoints.add(m * v);
+    }
+    return Set(newPoints);
+}
+
 PolygonShapeConf& PolygonShapeConf::Set(Span<const Length2> points) noexcept
 {
     // Perform welding and copy vertices into local buffer.

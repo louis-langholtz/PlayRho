@@ -68,6 +68,14 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
         return *this;
     }
     
+    /// @brief Transforms the location by the given transformation matrix.
+    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    PLAYRHO_CONSTEXPR inline DiskShapeConf& Transform(const Mat22& m) noexcept
+    {
+        location = m * location;
+        return *this;
+    }
+    
     /// @brief Gets the radius property.
     NonNegative<Length> GetRadius() const noexcept
     {
@@ -146,6 +154,14 @@ PLAYRHO_CONSTEXPR inline NonNegative<Length> GetVertexRadius(const DiskShapeConf
 inline MassData GetMassData(const DiskShapeConf& arg) noexcept
 {
     return playrho::d2::GetMassData(arg.vertexRadius, arg.density, arg.location);
+}
+
+/// @brief Transforms the given shape configuration's vertices by the given
+///   transformation matrix.
+/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+inline void Transform(DiskShapeConf& arg, const Mat22& m) noexcept
+{
+    arg.Transform(m);
 }
 
 } // namespace d2

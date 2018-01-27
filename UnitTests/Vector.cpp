@@ -24,8 +24,19 @@
 #include <sstream>
 #include <type_traits>
 #include <algorithm>
+#include <cstddef>
 
 using namespace playrho;
+
+TEST(Vector, IsVector)
+{
+    EXPECT_TRUE((IsVector<Vector<int, 2>>::value));
+    EXPECT_TRUE((IsVector<Vector<float, 1>>::value));
+    EXPECT_TRUE((IsVector<Vector<Vector<float, 1>, 1>>::value));
+    EXPECT_FALSE(IsVector<int>::value);
+    EXPECT_FALSE(IsVector<float>::value);
+    EXPECT_FALSE(IsVector<std::nullptr_t>::value);
+}
 
 TEST(Vector, Equality)
 {
@@ -215,4 +226,24 @@ TEST(Vector, ReverseIterateWith_rbeginend)
             ++n;
         }
     }
+}
+
+TEST(Vector, ScalarTimesVector)
+{
+    const auto s = 2_m;
+    const auto v = Vector<Length, 3>{1_m, 2_m, 3_m};
+    const auto r = s * v;
+    EXPECT_EQ(Get<0>(r), 2_m2);
+    EXPECT_EQ(Get<1>(r), 4_m2);
+    EXPECT_EQ(Get<2>(r), 6_m2);
+}
+
+TEST(Vector, VectorTimesScalar)
+{
+    const auto v = Vector<Length, 3>{1_m, 2_m, 3_m};
+    const auto s = 10_m;
+    const auto r = v * s;
+    EXPECT_EQ(Get<0>(r), 10_m2);
+    EXPECT_EQ(Get<1>(r), 20_m2);
+    EXPECT_EQ(Get<2>(r), 30_m2);
 }

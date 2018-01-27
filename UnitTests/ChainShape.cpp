@@ -122,6 +122,35 @@ TEST(ChainShapeConf, Accept)
 #endif
 }
 
+TEST(ChainShapeConf, TransformFF)
+{
+    {
+        auto foo = ChainShapeConf{};
+        auto tmp = foo;
+        Transform(foo, Mat22{});
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        auto foo = ChainShapeConf{};
+        auto tmp = foo;
+        Transform(foo, GetIdentity<Mat22>());
+        EXPECT_EQ(foo, tmp);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        auto foo = ChainShapeConf{};
+        foo.Add(v1);
+        foo.Add(v2);
+        auto tmp = foo;
+        Transform(foo, GetIdentity<Mat22>() * 2);
+        EXPECT_NE(foo, tmp);
+        ASSERT_EQ(foo.GetVertexCount(), ChildCounter(2));
+        EXPECT_EQ(foo.GetVertex(0), v1 * 2);
+        EXPECT_EQ(foo.GetVertex(1), v2 * 2);
+    }
+}
+
 TEST(ChainShapeConf, OneVertexLikeDisk)
 {
     const auto vertexRadius = 1_m;
@@ -320,4 +349,42 @@ TEST(ChainShapeConf, Inequality)
 
     EXPECT_TRUE(ChainShapeConf().Add(Length2(1_m, 2_m)) != ChainShapeConf());
     EXPECT_FALSE(ChainShapeConf().Add(Length2(1_m, 2_m)) != ChainShapeConf().Add(Length2(1_m, 2_m)));
+}
+
+TEST(ChainShapeConf, GetSquareChainShapeConf)
+{
+    const auto conf = GetChainShapeConf(2_m);
+    auto vertices = std::set<Length2>();
+    const auto childCount = GetChildCount(conf);
+    for (auto i = ChildCounter{0}; i < childCount; ++i)
+    {
+        const auto child = GetChild(conf, i);
+        const auto numVertices = child.GetVertexCount();
+        for (auto j = decltype(numVertices){0}; j < numVertices; ++j)
+        {
+            vertices.insert(child.GetVertex(j));
+        }
+    }
+    EXPECT_EQ(vertices.size(), decltype(vertices.size()){4});
+}
+
+TEST(ChainShapeConf, GetAabbChainShapeConf)
+{
+    const auto v0 = Length2{2_m, -3_m};
+    const auto v1 = Length2{2_m,  4_m};
+    const auto v2 = Length2{1_m,  4_m};
+    const auto v3 = Length2{1_m, -3_m};
+    auto aabb = AABB{};
+    Include(aabb, v0);
+    Include(aabb, v1);
+    Include(aabb, v2);
+    Include(aabb, v3);
+    const auto conf = GetChainShapeConf(aabb);
+    EXPECT_EQ(conf.GetChildCount(), ChildCounter(4));
+    EXPECT_EQ(conf.GetVertexCount(), ChildCounter(5));
+    EXPECT_EQ(conf.GetVertex(0), v0);
+    EXPECT_EQ(conf.GetVertex(1), v1);
+    EXPECT_EQ(conf.GetVertex(2), v2);
+    EXPECT_EQ(conf.GetVertex(3), v3);
+    EXPECT_EQ(conf.GetVertex(4), v0);
 }

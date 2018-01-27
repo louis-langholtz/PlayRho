@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -563,33 +565,24 @@ PLAYRHO_CONSTEXPR inline auto GetFwdPerpendicular(const T vector) noexcept
     return T{GetY(vector), -GetX(vector)};
 }
 
-/// Multiply a matrix times a vector. If a rotation matrix is provided,
-/// then this transforms the vector from one frame to another.
-PLAYRHO_CONSTEXPR inline Vec2 Transform(const Vec2 v, const Mat22& A) noexcept
+/// @brief Multiplies an M-element vector by an M-by-N matrix.
+/// @param v Vector that's interpretted as a matrix with 1 row and M-columns.
+/// @param m An M-row by N-column *transformation matrix* to multiply the vector by.
+/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+template <std::size_t M, typename T1, std::size_t N, typename T2>
+PLAYRHO_CONSTEXPR inline auto Transform(const Vector<T1, M> v, const Matrix<T2, M, N>& m) noexcept
+{
+    return m * v;
+}
+
+/// @brief Multiplies a vector by a matrix.
+PLAYRHO_CONSTEXPR inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 {
     return Vec2{
-        Get<0>(Get<0>(A)) * Get<0>(v) + Get<0>(Get<1>(A)) * Get<1>(v),
-        Get<1>(Get<0>(A)) * Get<0>(v) + Get<1>(Get<1>(A)) * Get<1>(v)
+        Get<0>(Get<0>(A)) * v[0] + Get<0>(Get<1>(A)) * v[1],
+        Get<1>(Get<0>(A)) * v[0] + Get<1>(Get<1>(A)) * v[1]
     };
 }
-
-#ifdef USE_BOOST_UNITS
-PLAYRHO_CONSTEXPR inline auto Transform(const LinearVelocity2 v, const Mass22& A) noexcept
-{
-    return Momentum2{
-        Get<0>(Get<0>(A)) * Get<0>(v) + Get<0>(Get<1>(A)) * Get<1>(v),
-        Get<1>(Get<0>(A)) * Get<0>(v) + Get<1>(Get<1>(A)) * Get<1>(v)
-    };
-}
-
-PLAYRHO_CONSTEXPR inline auto Transform(const Momentum2 v, const InvMass22 A) noexcept
-{
-    return LinearVelocity2{
-        Get<0>(Get<0>(A)) * Get<0>(v) + Get<0>(Get<1>(A)) * Get<1>(v),
-        Get<1>(Get<0>(A)) * Get<0>(v) + Get<1>(Get<1>(A)) * Get<1>(v)
-    };
-}
-#endif
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).
@@ -598,33 +591,12 @@ PLAYRHO_CONSTEXPR inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noe
     return Vec2{Dot(v, GetX(A)), Dot(v, GetY(A))};
 }
 
-/// @brief Computes A * B.
-PLAYRHO_CONSTEXPR inline Mat22 Mul(const Mat22& A, const Mat22& B) noexcept
-{
-    return Mat22{Transform(GetX(B), A), Transform(GetY(B), A)};
-}
-
 /// @brief Computes A^T * B.
 PLAYRHO_CONSTEXPR inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 {
     const auto c1 = Vec2{Dot(GetX(A), GetX(B)), Dot(GetY(A), GetX(B))};
     const auto c2 = Vec2{Dot(GetX(A), GetY(B)), Dot(GetY(A), GetY(B))};
     return Mat22{c1, c2};
-}
-
-/// @brief Multiplies a matrix by a vector.
-PLAYRHO_CONSTEXPR inline Vec3 Transform(const Vec3& v, const Mat33& A) noexcept
-{
-    return (GetX(v) * GetX(A)) + (GetY(v) * GetY(A)) + (GetZ(v) * GetZ(A));
-}
-
-/// @brief Multiplies a matrix by a vector.
-PLAYRHO_CONSTEXPR inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
-{
-    return Vec2{
-        GetX(GetX(A)) * v[0] + GetX(GetY(A)) * v[1],
-        GetY(GetX(A)) * v[0] + GetY(GetY(A)) * v[1]
-    };
 }
 
 /// @brief Gets the absolute value of the given value.

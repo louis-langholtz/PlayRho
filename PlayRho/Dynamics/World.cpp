@@ -56,8 +56,6 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/DynamicMemory.hpp>
@@ -2698,35 +2696,6 @@ void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
     for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
         SetLinearAcceleration(GetRef(b), acceleration);
     });
-}
-
-Body* CreateRectangularEnclosingBody(World& world, Length2 dimensions, const ShapeConf& baseConf,
-                                     Length thickness)
-{
-    const auto body = world.CreateBody();
-    
-    auto conf = ChainShapeConf{};
-    conf.restitution = baseConf.restitution;
-    conf.friction = baseConf.friction;
-    conf.density = baseConf.density;
-    conf.vertexRadius = thickness;
-    
-    const auto halfWidth = GetX(dimensions) / Real{2};
-    const auto halfHeight = GetY(dimensions) / Real{2};
-    const auto btmLeft  = Length2(-halfWidth, -halfHeight);
-    const auto btmRight = Length2(+halfWidth, -halfHeight);
-    const auto topLeft  = Length2(-halfWidth, +halfHeight);
-    const auto topRight = Length2(+halfWidth, +halfHeight);
-    
-    conf.Add(btmRight);
-    conf.Add(topRight);
-    conf.Add(topLeft);
-    conf.Add(btmLeft);
-    conf.Add(conf.GetVertex(0));
-    
-    body->CreateFixture(Shape{conf});
-    
-    return body;
 }
 
 Body* FindClosestBody(const World& world, Length2 location) noexcept

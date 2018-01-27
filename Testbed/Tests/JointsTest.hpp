@@ -131,8 +131,9 @@ private:
 
     Body* SetupContainer(Length2 center)
     {
-        const auto b = CreateRectangularEnclosingBody(m_world, Length2{ColumnSize, RowSize},
-                                                      ShapeConf{}, DefaultLinearSlop * Real{2});
+        const auto conf = GetChainShapeConf(Length2{ColumnSize, RowSize});
+        const auto b = m_world.CreateBody();
+        b->CreateFixture(Shape{conf});
         SetLocation(*b, center);
         return b;
     }

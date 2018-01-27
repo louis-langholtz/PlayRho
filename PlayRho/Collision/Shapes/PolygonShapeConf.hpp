@@ -95,9 +95,13 @@ public:
     ///   may lead to poor stacking behavior.
     PolygonShapeConf& Set(const VertexSet& points) noexcept;
     
-    /// @brief Transforms the set vertices.
+    /// @brief Transforms the vertices by the given transformation.
     PolygonShapeConf& Transform(Transformation xfm) noexcept;
     
+    /// @brief Transforms the vertices by the given transformation matrix.
+    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    PolygonShapeConf& Transform(const Mat22& m) noexcept;
+
     /// @brief Equality operator.
     friend bool operator== (const PolygonShapeConf& lhs, const PolygonShapeConf& rhs) noexcept
     {
@@ -233,6 +237,14 @@ inline MassData GetMassData(const PolygonShapeConf& arg) noexcept
 /// @warning Behavior is undefined if called for a shape with less than 2 vertices.
 /// @relatedalso PolygonShapeConf
 Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index);
+
+/// @brief Transforms the given polygon configuration's vertices by the given
+///   transformation matrix.
+/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+inline void Transform(PolygonShapeConf& arg, const Mat22& m) noexcept
+{
+    arg.Transform(m);
+}
 
 /// @brief Validates the convexity of the given collection of vertices.
 /// @note This is a time consuming operation.

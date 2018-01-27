@@ -71,6 +71,73 @@ TEST(MultiShapeConf, DefaultConstruction)
     EXPECT_THROW(GetVertexRadius(foo, 0), InvalidArgument);
 }
 
+TEST(MultiShapeConf, TransformFF)
+{
+    {
+        auto foo = MultiShapeConf{};
+        auto copy = foo;
+        Transform(foo, Mat22{});
+        EXPECT_EQ(foo, copy);
+    }
+    {
+        auto foo = MultiShapeConf{};
+        auto copy = foo;
+        Transform(foo, GetIdentity<Mat22>());
+        EXPECT_EQ(foo, copy);
+    }
+    {
+        auto foo = MultiShapeConf{};
+        auto copy = foo;
+        auto vs = VertexSet{};
+        auto dp0 = DistanceProxy{};
+        auto dp1 = DistanceProxy{};
+
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        vs.clear();
+        vs.add(v1);
+        vs.add(v2);
+        foo.AddConvexHull(vs);
+        ASSERT_EQ(foo.children.size(), std::size_t(1));
+
+        copy = foo;
+        Transform(foo, GetIdentity<Mat22>());
+        EXPECT_EQ(foo, copy);
+
+        const auto v3 = Length2{-1_m, -2_m};
+        const auto v4 = Length2{-3_m, -4_m};
+        vs.clear();
+        vs.add(v3);
+        vs.add(v4);
+        foo.AddConvexHull(vs);
+        ASSERT_EQ(foo.children.size(), std::size_t(2));
+        
+        dp0 = foo.children[0].GetDistanceProxy();
+        ASSERT_EQ(dp0.GetVertexCount(), VertexCounter(2));
+        EXPECT_EQ(dp0.GetVertex(0), v2);
+        EXPECT_EQ(dp0.GetVertex(1), v1);
+
+        dp1 = foo.children[1].GetDistanceProxy();
+        ASSERT_EQ(dp1.GetVertexCount(), VertexCounter(2));
+        EXPECT_EQ(dp1.GetVertex(0), v3);
+        EXPECT_EQ(dp1.GetVertex(1), v4);
+
+        copy = foo;
+        Transform(foo, GetIdentity<Mat22>() * 2);
+        ASSERT_NE(foo, copy);
+        
+        dp0 = foo.children[0].GetDistanceProxy();
+        ASSERT_EQ(dp0.GetVertexCount(), VertexCounter(2));
+        EXPECT_EQ(dp0.GetVertex(0), v2 * 2);
+        EXPECT_EQ(dp0.GetVertex(1), v1 * 2);
+        
+        dp1 = foo.children[1].GetDistanceProxy();
+        ASSERT_EQ(dp1.GetVertexCount(), VertexCounter(2));
+        EXPECT_EQ(dp1.GetVertex(0), v3 * 2);
+        EXPECT_EQ(dp1.GetVertex(1), v4 * 2);
+    }
+}
+
 TEST(MultiShapeConf, GetInvalidChildThrows)
 {
     const auto foo = MultiShapeConf{};

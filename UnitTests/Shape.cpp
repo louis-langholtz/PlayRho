@@ -94,11 +94,12 @@ TEST(Shape, DefaultConstruction)
     EXPECT_EQ(GetRestitution(s), Real(0));
     EXPECT_EQ(GetDensity(s), 0_kgpm2);
     EXPECT_THROW(GetVertexRadius(s, 0), InvalidArgument);
-    EXPECT_EQ(GetChildCount(s), 0);
+    EXPECT_EQ(GetChildCount(s), ChildCounter(0));
     EXPECT_THROW(GetChild(s, 0), InvalidArgument);
     EXPECT_TRUE(s == s);
-    const auto t = Shape{};
+    auto t = Shape{};
     EXPECT_TRUE(s == t);
+    EXPECT_NO_THROW(Transform(t, Mat22{}));
 }
 
 TEST(Shape, types)
@@ -262,6 +263,11 @@ NonNegative<AreaDensity> GetDensity(const X&) noexcept
 Finite<Real> GetRestitution(const X&) noexcept
 {
     return Real{0};
+}
+
+void Transform(X&, const Mat22&) noexcept
+{
+    // Intentionally empty.
 }
 
 NonNegative<Real> GetFriction(const X&) noexcept

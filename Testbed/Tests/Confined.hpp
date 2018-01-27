@@ -94,8 +94,9 @@ public:
     
     Body* CreateEnclosure(Length vertexRadius, Length wallLength)
     {
-        const auto body = CreateSquareEnclosingBody(m_world, wallLength, ShapeConf{
-            }.UseRestitution(Finite<Real>(0)), vertexRadius);
+        const auto body = m_world.CreateBody();
+        body->CreateFixture(Shape{GetChainShapeConf(wallLength)
+            .UseRestitution(Finite<Real>(0)).UseVertexRadius(vertexRadius)});
         SetLocation(*body, Length2{0_m, 20_m});
         return body;
     }

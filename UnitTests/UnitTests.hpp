@@ -51,44 +51,19 @@ struct MultiShapeConf;
 //   that uses the Shape class in order to avoid U.B. from O.D.R. violations.
 
 template <>
-inline bool Visit(const d2::DiskShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedDisk);
-    return true;
-}
+bool Visit(const d2::DiskShapeConf&, void* userData);
 
 template <>
-inline bool Visit(const d2::EdgeShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedEdge);
-    return true;
-}
+bool Visit(const d2::EdgeShapeConf&, void* userData);
 
 template <>
-inline bool Visit(const d2::PolygonShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedPolygon);
-    return true;
-}
+bool Visit(const d2::PolygonShapeConf&, void* userData);
 
 template <>
-inline bool Visit(const d2::ChainShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedChain);
-    return true;
-}
+bool Visit(const d2::ChainShapeConf&, void* userData);
 
 template <>
-inline bool Visit(const d2::MultiShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedMulti);
-    return true;
-}
+bool Visit(const d2::MultiShapeConf&, void* userData);
 
 } // namespace playrho
 

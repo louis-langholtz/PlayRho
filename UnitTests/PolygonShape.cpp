@@ -430,6 +430,44 @@ TEST(PolygonShapeConf, CanSetOnePoint)
     EXPECT_EQ(GetVertexRadius(shape), vertexRadius);
 }
 
+TEST(PolygonShapeConf, TransformFF)
+{
+    {
+        auto foo = PolygonShapeConf{};
+        auto copy = foo;
+        Transform(foo, Mat22{});
+        EXPECT_EQ(foo, copy);
+    }
+    {
+        auto foo = PolygonShapeConf{};
+        auto copy = foo;
+        Transform(foo, GetIdentity<Mat22>());
+        EXPECT_EQ(foo, copy);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        const auto vertices = std::vector<Length2>{v1, v2};
+        auto foo = PolygonShapeConf{Span<const Length2>{vertices.data(), vertices.size()}};
+        auto copy = foo;
+        Transform(foo, GetIdentity<Mat22>());
+        EXPECT_EQ(foo, copy);
+    }
+    {
+        const auto v1 = Length2{1_m, 2_m};
+        const auto v2 = Length2{3_m, 4_m};
+        const auto vertices = std::vector<Length2>{v1, v2};
+        auto foo = PolygonShapeConf{Span<const Length2>{vertices.data(), vertices.size()}};
+        ASSERT_EQ(foo.GetVertexCount(), VertexCounter(2));
+        ASSERT_EQ(foo.GetVertex(0), v2);
+        ASSERT_EQ(foo.GetVertex(1), v1);
+        auto copy = foo;
+        Transform(foo, GetIdentity<Mat22>() * 2);
+        EXPECT_EQ(foo.GetVertex(0), v2 * 2);
+        EXPECT_EQ(foo.GetVertex(1), v1 * 2);
+    }
+}
+
 TEST(PolygonShapeConf, Equality)
 {
     EXPECT_TRUE(PolygonShapeConf() == PolygonShapeConf());

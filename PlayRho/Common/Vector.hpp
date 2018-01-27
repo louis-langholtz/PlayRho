@@ -48,7 +48,6 @@ template <typename T, std::size_t N>
 struct Vector
 {
     static_assert(N > 0, "Number of elements must be greater than 0");
-    static_assert(IsArithmetic<T>::value, "Type must be arithmetic");
 
     /// @brief Value type.
     using value_type = T;
@@ -213,12 +212,20 @@ struct Vector
     value_type elements[N];
 };
 
+/// @brief Trait class for checking if type is a Vector type.
+template <typename>
+struct IsVector: std::false_type {};
+
+/// @brief Trait class specialization for checking if type is a Vector type.
+template <typename T, std::size_t N>
+struct IsVector<Vector<T, N>>: std::true_type {};
+
 /// @brief Equality operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline bool operator== (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         if (lhs[i] != rhs[i])
         {
@@ -239,7 +246,9 @@ PLAYRHO_CONSTEXPR inline bool operator!= (const Vector<T, N>& lhs, const Vector<
 /// @brief Unary plus operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline auto operator+ (Vector<T, N> v) noexcept
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<std::is_same<T, decltype(+T{})>::value, Vector<T, N>>::type
+operator+ (Vector<T, N> v) noexcept
 {
     return v;
 }
@@ -247,9 +256,11 @@ PLAYRHO_CONSTEXPR inline auto operator+ (Vector<T, N> v) noexcept
 /// @brief Unary negation operator.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline auto operator- (Vector<T, N> v) noexcept
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<std::is_same<T, decltype(-T{})>::value, Vector<T, N>>::type
+operator- (Vector<T, N> v) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         v[i] = -v[i];
     }
@@ -259,9 +270,11 @@ PLAYRHO_CONSTEXPR inline auto operator- (Vector<T, N> v) noexcept
 /// @brief Increments the left hand side value by the right hand side value.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline auto& operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>&>::type
+operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         lhs[i] += rhs[i];
     }
@@ -271,9 +284,11 @@ PLAYRHO_CONSTEXPR inline auto& operator+= (Vector<T, N>& lhs, const Vector<T, N>
 /// @brief Decrements the left hand side value by the right hand side value.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline auto& operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>&>::type
+operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         lhs[i] -= rhs[i];
     }
@@ -283,7 +298,9 @@ PLAYRHO_CONSTEXPR inline auto& operator-= (Vector<T, N>& lhs, const Vector<T, N>
 /// @brief Adds two vectors component-wise.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline auto operator+ (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>>::type
+operator+ (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 {
     return lhs += rhs;
 }
@@ -291,17 +308,21 @@ PLAYRHO_CONSTEXPR inline auto operator+ (Vector<T, N> lhs, const Vector<T, N> rh
 /// @brief Subtracts two vectors component-wise.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline auto operator- (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>>::type
+operator- (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 {
     return lhs -= rhs;
 }
 
 /// @brief Multiplication assignment operator.
 /// @relatedalso Vector
-template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline auto& operator*= (Vector<T, N>& lhs, const Real rhs) noexcept
+template <typename T1, typename T2, std::size_t N>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<std::is_same<T1, decltype(T1{} * T2{})>::value, Vector<T1, N>&>::type
+operator*= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         lhs[i] *= rhs;
     }
@@ -310,36 +331,147 @@ PLAYRHO_CONSTEXPR inline auto& operator*= (Vector<T, N>& lhs, const Real rhs) no
 
 /// @brief Division assignment operator.
 /// @relatedalso Vector
-template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline auto& operator/= (Vector<T, N>& lhs, const Real rhs) noexcept
+template <typename T1, typename T2, std::size_t N>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<std::is_same<T1, decltype(T1{} / T2{})>::value, Vector<T1, N>&>::type
+operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         lhs[i] /= rhs;
     }
     return lhs;
 }
 
-/// @brief Multiplication operator.
+/// @brief Calculates the matrix product of the two given vector of vectors (matrices).
+/// @details Multiplies an A-by-B vector of vectors by a B-by-C vector of vectors returning
+///   an A-by-C vector of vectors.
+/// @note From Wikipedia:
+///   > Multiplication of two matrices is defined if and only if the number of columns
+///   > of the left matrix is the same as the number of rows of the right matrix.
+/// @note Matrix multiplication is not commutative.
+/// @note Algorithmically speaking, this implementation is called the "naive" algorithm.
+///   For small matrices, like 3-by-3 or smaller matrices, its complexity shouldn't be an issue.
+///   The matrix dimensions are compile time constants anyway which can help compilers
+///   automatically identify loop unrolling and hardware level parallelism opportunities.
+/// @param lhs Left-hand-side matrix.
+/// @param rhs Right-hand-side matrix.
+/// @return A-by-C matrix product of the left-hand-side matrix and the right-hand-side matrix.
+/// @sa https://en.wikipedia.org/wiki/Matrix_multiplication
+/// @sa https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm
+/// @sa https://en.wikipedia.org/wiki/Commutative_property
 /// @relatedalso Vector
-template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
-PLAYRHO_CONSTEXPR inline auto operator* (const T1 s, const Vector<T2, N>& a) noexcept
+template <typename T1, typename T2, std::size_t A, std::size_t B, std::size_t C,
+    typename OT = decltype(T1{} * T2{})>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<IsMultipliable<T1, T2>::value, Vector<Vector<OT, C>, A>>::type
+operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& rhs) noexcept
 {
-    auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    //using OT = decltype(T1{} * T2{});
+    auto result = Vector<Vector<OT, C>, A>{};
+    for (auto a = static_cast<std::size_t>(0); a < A; ++a)
     {
-        result[i] = a[i] * s;
+        for (auto c = static_cast<std::size_t>(0); c < C; ++c)
+        {
+            // So for 2x3 lhs matrix * 3*2 rhs matrix... result is 2x2 matrix:
+            // result[0][0] = lhs[0][0] * rhs[0][0] + lhs[0][1] * rhs[1][0] + lhs[0][2] * rhs[2][0]
+            // result[0][1] = lhs[0][0] * rhs[0][1] + lhs[0][1] * rhs[1][1] + lhs[0][2] * rhs[2][1]
+            // result[1][0] = lhs[1][0] * rhs[0][0] + lhs[1][1] * rhs[1][0] + lhs[1][2] * rhs[2][0]
+            // result[1][1] = lhs[1][0] * rhs[0][1] + lhs[1][1] * rhs[1][1] + lhs[1][2] * rhs[2][1]
+            // This is also: result[a][c] = row(lhs, a) * col(rhs, c)
+            auto element = OT{};
+            for (auto b = static_cast<std::size_t>(0); b < B; ++b)
+            {
+                element += lhs[a][b] * rhs[b][c];
+            }
+            result[a][c] = element;
+        }
     }
     return result;
 }
 
-/// @brief Multiplication operator.
-/// @relatedalso Vector
-template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
-PLAYRHO_CONSTEXPR inline auto operator* (const Vector<T1, N>& a, const T2 s) noexcept
+/// @brief Multiplies an A-element vector by a A-by-B vector of vectors.
+/// @note This algorithm favors column major ordering of the vector of vectors.
+/// @note This treats the left-hand-side argument as though it's a 1-by-A vector of vectors.
+/// @param lhs Left-hand-side vector treated as if it were of type:
+///   <code>Vector<Vector<T1, A>, 1></code>.
+/// @param rhs Right-hand-side vector of vectors.
+/// @return B-element vector product.
+template <typename T1, typename T2, std::size_t A, std::size_t B,
+    typename OT = decltype(T1{} * T2{})>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, B>>::type
+operator* (const Vector<T1, A>& lhs, const Vector<Vector<T2, B>, A>& rhs) noexcept
 {
+    auto result = Vector<OT, B>{};
+    for (auto b = static_cast<std::size_t>(0); b < B; ++b)
+    {
+        auto element = OT{};
+        for (auto a = static_cast<std::size_t>(0); a < A; ++a)
+        {
+            element += lhs[a] * rhs[a][b];
+        }
+        result[b] = element;
+    }
+    return result;
+}
+
+/// @brief Multiplies a B-by-A vector of vectors by an A-element vector.
+/// @note This algorithm favors row major ordering of the vector of vectors.
+/// @note This treats the right-hand-side argument as though it's an A-by-1 vector of vectors.
+/// @param lhs Left-hand-side vector of vectors.
+/// @param rhs Right-hand-side vector treated as if it were of type:
+///   <code>Vector<Vector<T2, 1>, A></code>.
+/// @return B-element vector product.
+template <typename T1, typename T2, std::size_t A, std::size_t B,
+    typename OT = decltype(T1{} * T2{})>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, B>>::type
+operator* (const Vector<Vector<T1, A>, B>& lhs, const Vector<T2, A>& rhs) noexcept
+{
+    auto result = Vector<OT, B>{};
+    for (auto b = static_cast<std::size_t>(0); b < B; ++b)
+    {
+        auto element = OT{};
+        for (auto a = static_cast<std::size_t>(0); a < A; ++a)
+        {
+            element += lhs[b][a] * rhs[a];
+        }
+        result[b] = element;
+    }
+    return result;
+}
+
+/// @brief Multiplication operator for non-vector times vector.
+/// @relatedalso Vector
+/// @note Explicitly disabled for Vector * Vector to prevent this function from existing
+///   in that case and prevent errors like "use of overloaded operator '*' is ambiguous".
+template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, N>>::type
+operator* (const T1 s, Vector<T2, N> a) noexcept
+{
+    // Can't base this off of *= since result type in this case can be different
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    {
+        result[i] = s * a[i];
+    }
+    return result;
+}
+
+/// @brief Multiplication operator for vector times non-vector.
+/// @relatedalso Vector
+/// @note Explicitly disabled for Vector * Vector to prevent this function from existing
+///   in that case and prevent errors like "use of overloaded operator '*' is ambiguous".
+template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>::type
+operator* (Vector<T1, N> a, const T2 s) noexcept
+{
+    // Can't base this off of *= since result type in this case can be different
+    auto result = Vector<OT, N>{};
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         result[i] = a[i] * s;
     }
@@ -349,38 +481,15 @@ PLAYRHO_CONSTEXPR inline auto operator* (const Vector<T1, N>& a, const T2 s) noe
 /// @brief Division operator.
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
-PLAYRHO_CONSTEXPR inline auto operator/ (const Vector<T1, N>& a, const T2 s) noexcept
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<IsDivisable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>::type
+operator/ (Vector<T1, N> a, const T2 s) noexcept
 {
+    // Can't base this off of /= since result type in this case can be different
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
         result[i] = a[i] / s;
-    }
-    return result;
-}
-
-/// @brief Multiplication operator.
-/// @relatedalso Vector
-template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
-PLAYRHO_CONSTEXPR inline auto operator* (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
-{
-    auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
-    {
-        result[i] = lhs[i] * rhs[i];
-    }
-    return result;
-}
-
-/// @brief Division operator.
-/// @relatedalso Vector
-template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
-PLAYRHO_CONSTEXPR inline auto operator/ (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
-{
-    auto result = Vector<OT, N>{};
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
-    {
-        result[i] = lhs[i] / rhs[i];
     }
     return result;
 }
@@ -427,7 +536,7 @@ PLAYRHO_CONSTEXPR inline bool operator>= (const Vector<T, N>& lhs, const Vector<
 
 /// @brief Gets the I'th element of the given collection.
 /// @relatedalso Vector
-template <size_t I, size_t N, typename T>
+template <std::size_t I, std::size_t N, typename T>
 PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
 {
     static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
@@ -435,7 +544,7 @@ PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
 }
 
 /// @brief Gets the I'th element of the given collection.
-template <size_t I, size_t N, typename T>
+template <std::size_t I, std::size_t N, typename T>
 PLAYRHO_CONSTEXPR inline auto Get(const Vector<T, N>& v) noexcept
 {
     static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
@@ -448,9 +557,9 @@ template <typename T, std::size_t N>
 ::std::ostream& operator<< (::std::ostream& os, const Vector<T, N>& value)
 {
     os << "{";
-    for (auto i = static_cast<size_t>(0); i < N; ++i)
+    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
     {
-        if (i > static_cast<size_t>(0))
+        if (i > static_cast<std::size_t>(0))
         {
             os << ',';
         }
@@ -463,20 +572,20 @@ template <typename T, std::size_t N>
 } // namespace playrho
 
 namespace std {
-
-/// @brief Tuple size info for playrho::Vector
-template<class T, std::size_t N>
-class tuple_size< playrho::Vector<T, N> >: public std::integral_constant<size_t, N> {};
-
-/// @brief Tuple element type info for playrho::Vector
-template<std::size_t I, class T, size_t N>
-class tuple_element<I, playrho::Vector<T, N>>
-{
-public:
-    /// @brief Type alias revealing the actual element type of the given Vector.
-    using type = T;
-};
-
+    
+    /// @brief Tuple size info for playrho::Vector
+    template<class T, std::size_t N>
+    class tuple_size< playrho::Vector<T, N> >: public std::integral_constant<std::size_t, N> {};
+    
+    /// @brief Tuple element type info for playrho::Vector
+    template<std::size_t I, class T, std::size_t N>
+    class tuple_element<I, playrho::Vector<T, N>>
+    {
+    public:
+        /// @brief Type alias revealing the actual element type of the given Vector.
+        using type = T;
+    };
+    
 } // namespace std
 
 #endif // PLAYRHO_COMMON_VECTOR_HPP
