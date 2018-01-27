@@ -1260,6 +1260,24 @@ inline Angle GetAngle(const Body& body) noexcept
     return body.GetSweep().pos1.angular;
 }
 
+/// @brief Gets the body's transformation.
+inline Transformation GetTransformation(const Body& body) noexcept
+{
+    return body.GetTransformation();
+}
+
+/// @brief Sets the body's transformation.
+inline void SetTransformation(Body& body, const Transformation& xfm) noexcept
+{
+    body.SetTransform(xfm.p, GetAngle(xfm.q));
+}
+
+/// @brief Gets the body's position.
+inline Position GetPosition(const Body& body) noexcept
+{
+    return Position{body.GetLocation(), body.GetAngle()};
+}
+
 /// @brief Sets the body's location.
 /// @details This instantly adjusts the body to be at the new location.
 /// @warning Manipulating a body's location this way can cause non-physical behavior!

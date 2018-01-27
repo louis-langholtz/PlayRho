@@ -30,6 +30,20 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+TEST(BodyConf, UsePosition)
+{
+    const auto p = Position{Length2{3_m, -4_m}, 22_deg};
+    EXPECT_EQ(BodyConf{}.Use(p).location, p.linear);
+    EXPECT_EQ(BodyConf{}.Use(p).angle, p.angular);
+}
+
+TEST(BodyConf, UseVelocity)
+{
+    const auto v = Velocity{LinearVelocity2{3_mps, -4_mps}, 22_rad / 1_s};
+    EXPECT_EQ(BodyConf{}.Use(v).linearVelocity, v.linear);
+    EXPECT_EQ(BodyConf{}.Use(v).angularVelocity, v.angular);
+}
+
 TEST(Body, ContactsByteSize)
 {
 #if defined(__APPLE__)
@@ -846,3 +860,25 @@ TEST(Body, GetCentripetalForce)
     EXPECT_NEAR(static_cast<double>(Real(GetX(force)/Newton)), 8.1230141222476959, 0.01);
     EXPECT_NEAR(static_cast<double>(Real(GetY(force)/Newton)), 9.0255714952945709, 0.01);
 }
+
+TEST(Body, GetPositionFF)
+{
+    const auto position = Position{Length2{-33_m, +4_m}, 10_deg};
+    auto world = World{};
+    auto body = world.CreateBody();
+    EXPECT_NE(GetPosition(*body), position);
+    SetLocation(*body, position.linear);
+    SetAngle(*body, position.angular);
+    EXPECT_EQ(GetPosition(*body), position);
+}
+
+TEST(Body, GetSetTransformationFF)
+{
+    const auto transformation = Transformation{Length2{-33_m, +4_m}, UnitVec::GetTopRight()};
+    auto world = World{};
+    auto body = world.CreateBody();
+    EXPECT_NE(GetTransformation(*body), transformation);
+    SetTransformation(*body, transformation);
+    EXPECT_EQ(GetTransformation(*body), transformation);
+}
+
