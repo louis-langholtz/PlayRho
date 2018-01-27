@@ -805,3 +805,71 @@ TEST(Math, Clamp)
     EXPECT_TRUE(std::isnan(Clamp(NaN, -1.0, NaN)));
     EXPECT_TRUE(std::isnan(Clamp(NaN, NaN, NaN)));
 }
+
+TEST(Math, GetReflectionMatrix)
+{
+    {
+        // reflection against y axis
+        const auto m = GetReflectionMatrix(UnitVec::GetRight());
+        EXPECT_EQ(m[0][0], Real(-1));
+        EXPECT_EQ(m[0][1], Real(0));
+        EXPECT_EQ(m[1][0], Real(0));
+        EXPECT_EQ(m[1][1], Real(+1));
+        const auto vp = m * Vec2{+2, +3};
+        EXPECT_EQ(Get<0>(vp), -2);
+        EXPECT_EQ(Get<1>(vp), +3);
+    }
+    {
+        // reflection against y axis
+        const auto m = GetReflectionMatrix(UnitVec::GetLeft());
+        EXPECT_EQ(m[0][0], Real(-1));
+        EXPECT_EQ(m[0][1], Real(0));
+        EXPECT_EQ(m[1][0], Real(0));
+        EXPECT_EQ(m[1][1], Real(+1));
+        const auto vp = m * Vec2{+2, +3};
+        EXPECT_EQ(Get<0>(vp), -2);
+        EXPECT_EQ(Get<1>(vp), +3);
+    }
+    {
+        // reflection against x axis
+        const auto m = GetReflectionMatrix(UnitVec::GetTop());
+        EXPECT_EQ(m[0][0], Real(+1));
+        EXPECT_EQ(m[0][1], Real(0));
+        EXPECT_EQ(m[1][0], Real(0));
+        EXPECT_EQ(m[1][1], Real(-1));
+        const auto vp = m * Vec2{+2, +3};
+        EXPECT_EQ(Get<0>(vp), +2);
+        EXPECT_EQ(Get<1>(vp), -3);
+    }
+    {
+        // reflection against x axis
+        const auto m = GetReflectionMatrix(UnitVec::GetBottom());
+        EXPECT_EQ(m[0][0], Real(+1));
+        EXPECT_EQ(m[0][1], Real(0));
+        EXPECT_EQ(m[1][0], Real(0));
+        EXPECT_EQ(m[1][1], Real(-1));
+        const auto vp = m * Vec2{+2, +3};
+        EXPECT_EQ(Get<0>(vp), +2);
+        EXPECT_EQ(Get<1>(vp), -3);
+    }
+    {
+        const auto m = GetReflectionMatrix(UnitVec::GetTopRight());
+        EXPECT_NEAR(static_cast<double>(m[0][0]),  0.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(m[0][1]), -1.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(m[1][0]), -1.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(m[1][1]),  0.0, 0.000001);
+        const auto vp = m * Vec2{+2, +3};
+        EXPECT_NEAR(static_cast<double>(Get<0>(vp)), -3.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(Get<1>(vp)), -2.0, 0.000001);
+    }
+    {
+        const auto m = GetReflectionMatrix(UnitVec::GetBottomRight());
+        EXPECT_NEAR(static_cast<double>(m[0][0]),  0.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(m[0][1]), +1.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(m[1][0]), +1.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(m[1][1]),  0.0, 0.000001);
+        const auto vp = m * Vec2{+2, +3};
+        EXPECT_NEAR(static_cast<double>(Get<0>(vp)), +3.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(Get<1>(vp)), +2.0, 0.000001);
+    }
+}

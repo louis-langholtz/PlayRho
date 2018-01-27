@@ -86,6 +86,7 @@ public:
     /// @details This is the unit vector in the positive X and Y quadrant where X == Y.
     static PLAYRHO_CONSTEXPR inline UnitVec GetTopRight() noexcept
     {
+        // Note that 1/sqrt(2) == sqrt(2)/(sqrt(2)*sqrt(2)) == sqrt(2)/2
         return UnitVec{+SquareRootTwo/Real(2), +SquareRootTwo/Real(2)};
     }
     
@@ -94,6 +95,7 @@ public:
     ///   where |X| == |Y|.
     static PLAYRHO_CONSTEXPR inline UnitVec GetBottomRight() noexcept
     {
+        // Note that 1/sqrt(2) == sqrt(2)/(sqrt(2)*sqrt(2)) == sqrt(2)/2
         return UnitVec{+SquareRootTwo/Real(2), -SquareRootTwo/Real(2)};
     }
     
