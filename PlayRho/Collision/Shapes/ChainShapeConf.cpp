@@ -90,7 +90,7 @@ void ChainShapeConf::ResetNormals()
 ChainShapeConf& ChainShapeConf::Transform(const Mat22& m) noexcept
 {
     std::for_each(std::begin(m_vertices), std::end(m_vertices), [=](Length2& v){
-        v = playrho::Transform(v, m);
+        v = m * v;
     });
     ResetNormals();
     return *this;

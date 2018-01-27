@@ -83,7 +83,7 @@ ConvexHull& ConvexHull::Transform(const Mat22& m) noexcept
     // clang++ recommends the following loop variable 'v' be of reference type (instead of value).
     for (const auto& v: vertices)
     {
-        newPoints.add(playrho::Transform(v, m));
+        newPoints.add(m * v);
     }
     *this = Get(newPoints, vertexRadius);
     return *this;

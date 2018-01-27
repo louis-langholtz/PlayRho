@@ -63,7 +63,7 @@ TEST(EdgeShapeConf, TransformFF)
     {
         auto foo = EdgeShapeConf{};
         auto tmp = foo;
-        Transform(foo, Mat22{Vec2{1, 0}, Vec2{0, 1}});
+        Transform(foo, GetIdentity<Mat22>());
         EXPECT_EQ(foo, tmp);
     }
     {
@@ -71,7 +71,7 @@ TEST(EdgeShapeConf, TransformFF)
         const auto v2 = Length2{3_m, 4_m};
         auto foo = EdgeShapeConf{v1, v2};
         auto tmp = foo;
-        Transform(foo, Mat22{Vec2{1, 0}, Vec2{0, 1}});
+        Transform(foo, GetIdentity<Mat22>());
         EXPECT_EQ(foo, tmp);
     }
     {
@@ -79,7 +79,7 @@ TEST(EdgeShapeConf, TransformFF)
         const auto v2 = Length2{3_m, 4_m};
         auto foo = EdgeShapeConf{v1, v2};
         auto tmp = foo;
-        Transform(foo, Mat22{Vec2{2, 0}, Vec2{0, 2}});
+        Transform(foo, GetIdentity<Mat22>() * 2);
         EXPECT_NE(foo, tmp);
         EXPECT_EQ(foo.GetVertexA(), v1 * 2);
         EXPECT_EQ(foo.GetVertexB(), v2 * 2);

@@ -72,7 +72,7 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
     /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
     PLAYRHO_CONSTEXPR inline DiskShapeConf& Transform(const Mat22& m) noexcept
     {
-        location = playrho::Transform(location, m);
+        location = m * location;
         return *this;
     }
     

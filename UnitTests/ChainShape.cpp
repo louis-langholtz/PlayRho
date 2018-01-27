@@ -133,7 +133,7 @@ TEST(ChainShapeConf, TransformFF)
     {
         auto foo = ChainShapeConf{};
         auto tmp = foo;
-        Transform(foo, Mat22{Vec2{1, 0}, Vec2{0, 1}});
+        Transform(foo, GetIdentity<Mat22>());
         EXPECT_EQ(foo, tmp);
     }
     {
@@ -143,7 +143,7 @@ TEST(ChainShapeConf, TransformFF)
         foo.Add(v1);
         foo.Add(v2);
         auto tmp = foo;
-        Transform(foo, Mat22{Vec2{2, 0}, Vec2{0, 2}});
+        Transform(foo, GetIdentity<Mat22>() * 2);
         EXPECT_NE(foo, tmp);
         ASSERT_EQ(foo.GetVertexCount(), ChildCounter(2));
         EXPECT_EQ(foo.GetVertex(0), v1 * 2);

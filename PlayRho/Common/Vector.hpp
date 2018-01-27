@@ -343,7 +343,9 @@ operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
     return lhs;
 }
 
-/// @brief Multiplies an A-by-B vector of vectors by a B-by-C vector of vectors.
+/// @brief Calculates the matrix product of the two given vector of vectors (matrices).
+/// @details Multiplies an A-by-B vector of vectors by a B-by-C vector of vectors returning
+///   an A-by-C vector of vectors.
 /// @note From Wikipedia:
 ///   > Multiplication of two matrices is defined if and only if the number of columns
 ///   > of the left matrix is the same as the number of rows of the right matrix.
@@ -359,7 +361,8 @@ operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 /// @sa https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm
 /// @sa https://en.wikipedia.org/wiki/Commutative_property
 /// @relatedalso Vector
-template <typename T1, typename T2, std::size_t A, std::size_t B, std::size_t C, typename OT = decltype(T1{} * T2{})>
+template <typename T1, typename T2, std::size_t A, std::size_t B, std::size_t C,
+    typename OT = decltype(T1{} * T2{})>
 PLAYRHO_CONSTEXPR inline
 typename std::enable_if<IsMultipliable<T1, T2>::value, Vector<Vector<OT, C>, A>>::type
 operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& rhs) noexcept
@@ -375,6 +378,7 @@ operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& 
             // result[0][1] = lhs[0][0] * rhs[0][1] + lhs[0][1] * rhs[1][1] + lhs[0][2] * rhs[2][1]
             // result[1][0] = lhs[1][0] * rhs[0][0] + lhs[1][1] * rhs[1][0] + lhs[1][2] * rhs[2][0]
             // result[1][1] = lhs[1][0] * rhs[0][1] + lhs[1][1] * rhs[1][1] + lhs[1][2] * rhs[2][1]
+            // This is also: result[a][c] = row(lhs, a) * col(rhs, c)
             auto element = OT{};
             for (auto b = static_cast<std::size_t>(0); b < B; ++b)
             {
@@ -386,10 +390,59 @@ operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& 
     return result;
 }
 
-// Have to make sure a lhs Vector<T1, N> is not multipliable by a rhs vector unless
-// rhs is Vector<Vector<T2, M>, N> where IsMultipliable<T1, T2>::value.
+/// @brief Multiplies an A-element vector by a A-by-B vector of vectors.
+/// @note This algorithm favors column major ordering of the vector of vectors.
+/// @note This treats the left-hand-side argument as though it's a 1-by-A vector of vectors.
+/// @param lhs Left-hand-side vector treated as if it were of type:
+///   <code>Vector<Vector<T1, A>, 1></code>.
+/// @param rhs Right-hand-side vector of vectors.
+/// @return B-element vector product.
+template <typename T1, typename T2, std::size_t A, std::size_t B,
+    typename OT = decltype(T1{} * T2{})>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, B>>::type
+operator* (const Vector<T1, A>& lhs, const Vector<Vector<T2, B>, A>& rhs) noexcept
+{
+    auto result = Vector<OT, B>{};
+    for (auto b = static_cast<std::size_t>(0); b < B; ++b)
+    {
+        auto element = OT{};
+        for (auto a = static_cast<std::size_t>(0); a < A; ++a)
+        {
+            element += lhs[a] * rhs[a][b];
+        }
+        result[b] = element;
+    }
+    return result;
+}
 
-/// @brief Multiplication operator for non vector times vector.
+/// @brief Multiplies a B-by-A vector of vectors by an A-element vector.
+/// @note This algorithm favors row major ordering of the vector of vectors.
+/// @note This treats the right-hand-side argument as though it's an A-by-1 vector of vectors.
+/// @param lhs Left-hand-side vector of vectors.
+/// @param rhs Right-hand-side vector treated as if it were of type:
+///   <code>Vector<Vector<T2, 1>, A></code>.
+/// @return B-element vector product.
+template <typename T1, typename T2, std::size_t A, std::size_t B,
+    typename OT = decltype(T1{} * T2{})>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, B>>::type
+operator* (const Vector<Vector<T1, A>, B>& lhs, const Vector<T2, A>& rhs) noexcept
+{
+    auto result = Vector<OT, B>{};
+    for (auto b = static_cast<std::size_t>(0); b < B; ++b)
+    {
+        auto element = OT{};
+        for (auto a = static_cast<std::size_t>(0); a < A; ++a)
+        {
+            element += lhs[b][a] * rhs[a];
+        }
+        result[b] = element;
+    }
+    return result;
+}
+
+/// @brief Multiplication operator for non-vector times vector.
 /// @relatedalso Vector
 /// @note Explicitly disabled for Vector * Vector to prevent this function from existing
 ///   in that case and prevent errors like "use of overloaded operator '*' is ambiguous".
@@ -407,7 +460,7 @@ operator* (const T1 s, Vector<T2, N> a) noexcept
     return result;
 }
 
-/// @brief Multiplication operator for vector times non vector.
+/// @brief Multiplication operator for vector times non-vector.
 /// @relatedalso Vector
 /// @note Explicitly disabled for Vector * Vector to prevent this function from existing
 ///   in that case and prevent errors like "use of overloaded operator '*' is ambiguous".
@@ -429,7 +482,7 @@ operator* (Vector<T1, N> a, const T2 s) noexcept
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<IsDivisable<T1, T2>::value, Vector<OT, N>>::type
+typename std::enable_if<IsDivisable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>::type
 operator/ (Vector<T1, N> a, const T2 s) noexcept
 {
     // Can't base this off of /= since result type in this case can be different
@@ -440,34 +493,6 @@ operator/ (Vector<T1, N> a, const T2 s) noexcept
     }
     return result;
 }
-
-#if 0
-/// @brief Multiplication operator.
-/// @relatedalso Vector
-template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
-PLAYRHO_CONSTEXPR inline auto operator* (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
-{
-    auto result = Vector<OT, N>{};
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
-    {
-        result[i] = lhs[i] * rhs[i];
-    }
-    return result;
-}
-
-/// @brief Division operator.
-/// @relatedalso Vector
-template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
-PLAYRHO_CONSTEXPR inline auto operator/ (const Vector<T1, N>& lhs, const Vector<T2, N>& rhs) noexcept
-{
-    auto result = Vector<OT, N>{};
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
-    {
-        result[i] = lhs[i] / rhs[i];
-    }
-    return result;
-}
-#endif
 
 /// @brief Lexicographical less-than operator.
 /// @relatedalso Vector

@@ -42,8 +42,8 @@ EdgeShapeConf& EdgeShapeConf::Set(Length2 vA, Length2 vB) noexcept
 
 EdgeShapeConf& EdgeShapeConf::Transform(const Mat22& m) noexcept
 {
-    const auto newA = playrho::Transform(GetVertexA(), m);
-    const auto newB = playrho::Transform(GetVertexB(), m);
+    const auto newA = m * GetVertexA();
+    const auto newB = m * GetVertexB();
     return Set(newA, newB);
 }
 

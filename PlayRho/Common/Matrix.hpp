@@ -71,6 +71,66 @@ PLAYRHO_CONSTEXPR inline Mat22 GetInvalid() noexcept
     return Mat22{GetInvalid<Vec2>(), GetInvalid<Vec2>()};
 }
 
+/// @brief Trait class for checking if type is a matrix type.
+template <typename>
+struct IsMatrix: std::false_type {};
+
+/// @brief Trait class specialization for checking if type is a matrix type.
+template <typename T, std::size_t M, std::size_t N>
+struct IsMatrix<Vector<Vector<T, N>, M>>: std::true_type {};
+
+/// @brief Trait class for checking if type is a square matrix type.
+template <typename>
+struct IsSquareMatrix: std::false_type {};
+
+/// @brief Trait class specialization for checking if type is a square matrix type.
+template <typename T, std::size_t M>
+struct IsSquareMatrix<Vector<Vector<T, M>, M>>: std::true_type {};
+
+/// @brief Gets the identity matrix of the template type and size.
+template <typename T, std::size_t N>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<!IsVector<T>::value, Matrix<T, N, N>>::type GetIdentityMatrix()
+{
+    auto result = Matrix<Real, N, N>{};
+    for (auto i = std::size_t{0}; i < N; ++i)
+    {
+        result[i][i] = T(1);
+    }
+    return result;
+}
+
+/// @brief Gets the identity matrix of the template type and size as given by the argument.
+template <typename T>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<IsSquareMatrix<T>::value, T>::type GetIdentity()
+{
+    return GetIdentityMatrix<typename T::value_type::value_type, std::tuple_size<T>::value>();
+}
+
+/// @brief Gets the specified row of the given matrix as a row matrix.
+template <typename T, std::size_t N>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<!IsVector<T>::value, Vector<Vector<T, N>, 1>>::type
+GetRowMatrix(Vector<T, N> arg)
+{
+    return Vector<Vector<T, N>, 1>{arg};
+}
+
+/// @brief Gets the specified column of the given matrix as a column matrix.
+template <typename T, std::size_t N>
+PLAYRHO_CONSTEXPR inline
+typename std::enable_if<!IsVector<T>::value, Vector<Vector<T, 1>, N>>::type
+GetColumnMatrix(Vector<T, N> arg)
+{
+    auto result = Vector<Vector<T, 1>, N>{};
+    for (auto i = std::size_t{0}; i < N; ++i)
+    {
+        result[i][0] = arg[i];
+    }
+    return result;
+}
+
 /// @brief Matrix addition operator for two same-type, same-sized matrices.
 /// @sa https://en.wikipedia.org/wiki/Matrix_addition
 template <typename T, std::size_t M, std::size_t N>

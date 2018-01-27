@@ -566,34 +566,21 @@ PLAYRHO_CONSTEXPR inline auto GetFwdPerpendicular(const T vector) noexcept
 }
 
 /// @brief Multiplies an M-element vector by an M-by-N matrix.
-/// @note The matrix is a *transformation matrix*.
-/// @param v Vector.
-/// @param m Matrix to multiply the vector by.
+/// @param v Vector that's interpretted as a matrix with 1 row and M-columns.
+/// @param m An M-row by N-column *transformation matrix* to multiply the vector by.
 /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
 template <std::size_t M, typename T1, std::size_t N, typename T2>
 PLAYRHO_CONSTEXPR inline auto Transform(const Vector<T1, M> v, const Matrix<T2, M, N>& m) noexcept
 {
-    using OT = decltype(T1{} * T2{});
-    auto result = Vector<OT, N>{};
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
-    {
-        // So for a 2-element vector v multiplied by a 2-by-2-matrix m...
-        // result[0] = v[0] * m[0][0] + v[1] * m[0][1]
-        // result[1] = v[0] * m[1][0] + v[1] * m[1][1]
-        for (auto j = static_cast<std::size_t>(0); j < M; ++j)
-        {
-            result[i] += v[j] * m[j][i];
-        }
-    }
-    return result;
+    return m * v;
 }
 
 /// @brief Multiplies a vector by a matrix.
 PLAYRHO_CONSTEXPR inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 {
     return Vec2{
-        GetX(GetX(A)) * v[0] + GetX(GetY(A)) * v[1],
-        GetY(GetX(A)) * v[0] + GetY(GetY(A)) * v[1]
+        Get<0>(Get<0>(A)) * v[0] + Get<0>(Get<1>(A)) * v[1],
+        Get<1>(Get<0>(A)) * v[0] + Get<1>(Get<1>(A)) * v[1]
     };
 }
 
@@ -602,12 +589,6 @@ PLAYRHO_CONSTEXPR inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 PLAYRHO_CONSTEXPR inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
 {
     return Vec2{Dot(v, GetX(A)), Dot(v, GetY(A))};
-}
-
-/// @brief Computes A * B.
-PLAYRHO_CONSTEXPR inline Mat22 Mul(const Mat22& A, const Mat22& B) noexcept
-{
-    return Mat22{Transform(GetX(B), A), Transform(GetY(B), A)};
 }
 
 /// @brief Computes A^T * B.

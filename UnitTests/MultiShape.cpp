@@ -82,7 +82,7 @@ TEST(MultiShapeConf, TransformFF)
     {
         auto foo = MultiShapeConf{};
         auto copy = foo;
-        Transform(foo, Mat22{Vec2{1, 0}, Vec2{0, 1}});
+        Transform(foo, GetIdentity<Mat22>());
         EXPECT_EQ(foo, copy);
     }
     {
@@ -101,7 +101,7 @@ TEST(MultiShapeConf, TransformFF)
         ASSERT_EQ(foo.children.size(), std::size_t(1));
 
         copy = foo;
-        Transform(foo, Mat22{Vec2{1, 0}, Vec2{0, 1}});
+        Transform(foo, GetIdentity<Mat22>());
         EXPECT_EQ(foo, copy);
 
         const auto v3 = Length2{-1_m, -2_m};
@@ -123,7 +123,7 @@ TEST(MultiShapeConf, TransformFF)
         EXPECT_EQ(dp1.GetVertex(1), v4);
 
         copy = foo;
-        Transform(foo, Mat22{Vec2{2, 0}, Vec2{0, 2}});
+        Transform(foo, GetIdentity<Mat22>() * 2);
         ASSERT_NE(foo, copy);
         
         dp0 = foo.children[0].GetDistanceProxy();
