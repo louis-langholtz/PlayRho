@@ -22,6 +22,7 @@
 #include <PlayRho/Common/UnitVec.hpp>
 #include <PlayRho/Common/Math.hpp>
 #include <iostream>
+#include <utility>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -165,6 +166,15 @@ TEST(UnitVec, Get)
     EXPECT_EQ(UnitVec::Get(-std::numeric_limits<Real>::min(), Real(0)).first, UnitVec::GetLeft());
     EXPECT_EQ(UnitVec::Get(Real(0), +std::numeric_limits<Real>::min()).first, UnitVec::GetTop());
     EXPECT_EQ(UnitVec::Get(Real(0), -std::numeric_limits<Real>::min()).first, UnitVec::GetBottom());
+    
+    {
+        const auto foo = std::get<0>(UnitVec::Get(Real(1), Real(1)));
+        const auto boo = UnitVec::GetTopRight();
+        EXPECT_NEAR(static_cast<double>(GetX(foo)), 0.70710676908493042, 0.000001);
+        EXPECT_NEAR(static_cast<double>(GetY(foo)), 0.70710676908493042, 0.000001);
+        EXPECT_NEAR(static_cast<double>(GetX(foo)), static_cast<double>(GetX(boo)), 0.000001);
+        EXPECT_NEAR(static_cast<double>(GetY(foo)), static_cast<double>(GetY(boo)), 0.000001);
+    }
 }
 
 TEST(UnitVec, Absolute)

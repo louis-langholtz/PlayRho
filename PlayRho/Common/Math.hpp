@@ -957,6 +957,22 @@ inline bool IsUnderActive(Velocity velocity,
     return (angVelSquared <= Square(angSleepTol)) && (linVelSquared <= Square(linSleepTol));
 }
 
+/// @brief Gets the reflection matrix for the given unit vector that defines the normal of
+///   the line through the origin that points should be reflected against.
+/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+PLAYRHO_CONSTEXPR inline auto GetReflectionMatrix(UnitVec axis)
+{
+    auto result = Matrix<Real, 2, 2>{};
+    for (auto i = std::size_t{0}; i < 2; ++i)
+    {
+        for (auto j = std::size_t{0}; j < 2; ++j)
+        {
+            result[i][j] = ((i == j)? Real(1): Real(0)) - axis[i] * axis[j] * 2;
+        }
+    }
+    return result;
+}
+
 } // namespace d2
 } // namespace playrho
 
