@@ -164,4 +164,41 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)
     return (secondMomentOfAreaX + secondMomentOfAreaY) / Real{12};
 }
 
+namespace d2 {
+
+LinearVelocity2 GetContactRelVelocity(const Velocity velA, const Length2 relA,
+                                      const Velocity velB, const Length2 relB) noexcept
+{
+#if 0 // Using std::fma appears to be slower!
+    const auto revPerpRelB = GetRevPerpendicular(relB);
+    const auto xRevPerpRelB = StripUnit(revPerpRelB.x);
+    const auto yRevPerpRelB = StripUnit(revPerpRelB.y);
+    const auto angVelB = StripUnit(velB.angular);
+    const auto xLinVelB = StripUnit(velB.linear.x);
+    const auto yLinVelB = StripUnit(velB.linear.y);
+    const auto xFmaB = std::fma(xRevPerpRelB, angVelB, xLinVelB);
+    const auto yFmaB = std::fma(yRevPerpRelB, angVelB, yLinVelB);
+    
+    const auto revPerpRelA = GetRevPerpendicular(relA);
+    const auto xRevPerpRelA = StripUnit(revPerpRelA.x);
+    const auto yRevPerpRelA = StripUnit(revPerpRelA.y);
+    const auto angVelA = StripUnit(velA.angular);
+    const auto xLinVelA = StripUnit(velA.linear.x);
+    const auto yLinVelA = StripUnit(velA.linear.y);
+    const auto xFmaA = std::fma(xRevPerpRelA, angVelA, xLinVelA);
+    const auto yFmaA = std::fma(yRevPerpRelA, angVelA, yLinVelA);
+    
+    const auto deltaFmaX = xFmaB - xFmaA;
+    const auto deltaFmaY = yFmaB - yFmaA;
+    
+    return Vec2{deltaFmaX, deltaFmaY} * MeterPerSecond;
+#else
+    const auto velBrot = GetRevPerpendicular(relB) * (velB.angular / Radian);
+    const auto velArot = GetRevPerpendicular(relA) * (velA.angular / Radian);
+    return (velB.linear + velBrot) - (velA.linear + velArot);
+#endif
+}
+
+} // namespace d2
+
 } // namespace playrho

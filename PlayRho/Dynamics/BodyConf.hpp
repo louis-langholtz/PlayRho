@@ -63,6 +63,12 @@ struct BodyConf
     /// @brief Use the given angular velocity.
     PLAYRHO_CONSTEXPR inline BodyConf& UseAngularVelocity(AngularVelocity v) noexcept;
     
+    /// @brief Use the given position for the linear and angular positions.
+    PLAYRHO_CONSTEXPR inline BodyConf& Use(Position v) noexcept;
+
+    /// @brief Use the given velocity for the linear and angular velocities.
+    PLAYRHO_CONSTEXPR inline BodyConf& Use(Velocity v) noexcept;
+    
     /// @brief Use the given linear acceleration.
     PLAYRHO_CONSTEXPR inline BodyConf& UseLinearAcceleration(LinearAcceleration2 v) noexcept;
     
@@ -175,6 +181,20 @@ PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseLocation(Length2 l) noexcept
 PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseAngle(Angle a) noexcept
 {
     angle = a;
+    return *this;
+}
+
+PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::Use(Position v) noexcept
+{
+    location = v.linear;
+    angle = v.angular;
+    return *this;
+}
+
+PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::Use(Velocity v) noexcept
+{
+    linearVelocity = v.linear;
+    angularVelocity = v.angular;
     return *this;
 }
 
