@@ -874,15 +874,14 @@ TEST(Body, GetPositionFF)
 
 TEST(Body, GetSetTransformationFF)
 {
-    const auto transformation = Transformation{Length2{-33_m, +4_m}, UnitVec::GetTopRight()};
+    const auto xfm0 = Transformation{Length2{-33_m, +4_m}, UnitVec::GetTopRight()};
     auto world = World{};
     auto body = world.CreateBody();
-    EXPECT_NE(GetTransformation(*body), transformation);
-    SetTransformation(*body, transformation);
-    EXPECT_EQ(GetTransformation(*body).p, transformation.p);
-    EXPECT_NEAR(static_cast<double>(GetX(GetTransformation(*body).q)),
-                static_cast<double>(GetX(transformation.q)), 0.0001);
-    EXPECT_NEAR(static_cast<double>(GetY(GetTransformation(*body).q)),
-                static_cast<double>(GetY(transformation.q)), 0.0001);
+    EXPECT_NE(GetTransformation(*body), xfm0);
+    SetTransformation(*body, xfm0);
+    const auto xfm1 = GetTransformation(*body);
+    EXPECT_EQ(xfm1.p, xfm0.p);
+    EXPECT_NEAR(static_cast<double>(GetX(xfm1.q)), static_cast<double>(GetX(xfm0.q)), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(xfm1.q)), static_cast<double>(GetY(xfm0.q)), 0.0001);
 }
 
