@@ -1093,11 +1093,11 @@ RegStepStats World::SolveReg(const StepConf& conf)
     return stats;
 }
 
-World::IslandSolverResults World::SolveRegIslandViaGS(const StepConf& conf, Island island)
+IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
 {
     assert(!island.m_bodies.empty() || !island.m_contacts.empty() || !island.m_joints.empty());
     
-    auto results = IslandSolverResults{};
+    auto results = IslandStats{};
     results.positionIterations = conf.regPositionIterations;
     const auto h = conf.GetTime(); ///< Time step.
 
@@ -1412,7 +1412,7 @@ ToiStepStats World::SolveToi(const StepConf& conf)
     return stats;
 }
 
-World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contact)
+IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
 {
     // Note:
     //   This method is what used to be b2World::SolveToi(const b2TimeStep& step).
@@ -1479,7 +1479,7 @@ World::IslandSolverResults World::SolveToi(const StepConf& conf, Contact& contac
             contact.UnsetEnabled();
             BodyAtty::Restore(*bA, backupA);
             BodyAtty::Restore(*bB, backupB);
-            auto results = IslandSolverResults{};
+            auto results = IslandStats{};
             results.contactsUpdated += contactsUpdated;
             results.contactsSkipped += contactsSkipped;
             return results;
@@ -1564,9 +1564,9 @@ void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
     BodyAtty::SetTransformation(body, GetTransformation(GetPosition1(body), body.GetLocalCenter()));
 }
 
-World::IslandSolverResults World::SolveToiViaGS(const StepConf& conf, Island& island)
+IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
 {
-    auto results = IslandSolverResults{};
+    auto results = IslandStats{};
     
     /*
      * Presumably the regular phase resolution has already taken care of updating the
@@ -2708,4 +2708,16 @@ Body* FindClosestBody(const World& world, Length2 location) noexcept
 }
 
 } // namespace d2
+
+RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept
+{
+    lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
+    lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);
+    lhs.islandsSolved += rhs.solved;
+    lhs.sumPosIters += rhs.positionIterations;
+    lhs.sumVelIters += rhs.velocityIterations;
+    lhs.bodiesSlept += rhs.bodiesSlept;
+    return lhs;
+}
+
 } // namespace playrho

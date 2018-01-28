@@ -37,6 +37,7 @@
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/ContactAtty.hpp>
 #include <PlayRho/Dynamics/JointAtty.hpp>
+#include <PlayRho/Dynamics/IslandStats.hpp>
 
 #include <vector>
 #include <map>
@@ -97,10 +98,6 @@ struct ShapeConf;
 class World
 {
 public:
-    
-    /// @brief Proxy size type.
-    using proxy_size_type = std::remove_const<decltype(MaxContacts)>::type;
-    
     /// @brief Bodies container type.
     using Bodies = std::vector<Body*>;
 
@@ -352,22 +349,6 @@ private:
         e_stepComplete  = 0x0040,
     };
 
-    /// @brief Island solver results.
-    struct IslandSolverResults
-    {
-        Length minSeparation = std::numeric_limits<Length>::infinity(); ///< Minimum separation.
-        Momentum maxIncImpulse = 0; ///< Maximum incremental impulse.
-        BodyCounter bodiesSlept = 0; ///< Bodies slept.
-        ContactCounter contactsUpdated = 0; ///< Contacts updated.
-        ContactCounter contactsSkipped = 0; ///< Contacts skipped.
-        bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
-        TimestepIters positionIterations = 0; ///< Position iterations actually performed.
-        TimestepIters velocityIterations = 0; ///< Velocity iterations actually performed.
-    };
-    
-    /// @brief Updates the given regular step statistics.
-    static RegStepStats& Update(RegStepStats& lhs, const IslandSolverResults& rhs) noexcept;
-
     /// @brief Copies bodies.
     void CopyBodies(std::map<const Body*, Body*>& bodyMap,
                     std::map<const Fixture*, Fixture*>& fixtureMap,
@@ -413,7 +394,7 @@ private:
     ///
     /// @return Island solver results.
     ///
-    IslandSolverResults SolveRegIslandViaGS(const StepConf& conf, Island island);
+    IslandStats SolveRegIslandViaGS(const StepConf& conf, Island island);
     
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.
@@ -460,7 +441,7 @@ private:
     /// @note Precondition 2: there is not a lower TOI in the time step for which collisions have
     ///   not already been processed.
     ///
-    IslandSolverResults SolveToi(const StepConf& conf, Contact& contact);
+    IslandStats SolveToi(const StepConf& conf, Contact& contact);
     
     /// @brief Solves the time of impact for bodies 0 and 1 of the given island.
     ///
@@ -482,7 +463,7 @@ private:
     ///
     /// @return Island solver results.
     ///
-    IslandSolverResults SolveToiViaGS(const StepConf& conf, Island& island);
+    IslandStats SolveToiViaGS(const StepConf& conf, Island& island);
 
     /// @brief Updates the given body.
     /// @details Updates the given body's velocity, sweep position 1, and its transformation.
@@ -931,17 +912,6 @@ inline void World::RegisterForProcessing(ProxyId pid) noexcept
     m_proxies.push_back(pid);
 }
 
-inline RegStepStats& World::Update(RegStepStats& lhs, const World::IslandSolverResults& rhs) noexcept
-{
-    lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
-    lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);
-    lhs.islandsSolved += rhs.solved;
-    lhs.sumPosIters += rhs.positionIterations;
-    lhs.sumVelIters += rhs.velocityIterations;
-    lhs.bodiesSlept += rhs.bodiesSlept;
-    return lhs;
-}
-
 // Free functions.
 
 /// @brief Gets the body count in the given world.
@@ -1060,12 +1030,16 @@ inline void ClearForces(World& world) noexcept
         LinearAcceleration2{0_mps2, 0_mps2}, 0 * RadianPerSquareSecond
     });
 }
-    
+
 /// @brief Finds body in given world that's closest to the given location.
 /// @relatedalso World
 Body* FindClosestBody(const World& world, Length2 location) noexcept;
 
 } // namespace d2
+
+/// @brief Updates the given regular step statistics.
+RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept;
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_WORLD_HPP

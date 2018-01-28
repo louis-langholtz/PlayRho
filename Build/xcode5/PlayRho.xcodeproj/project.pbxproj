@@ -186,6 +186,7 @@
 		479B63C31ED9CAC300D49BC7 /* BoundedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */; };
 		47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AB01B91D6FA40C0084D721 /* Dump.cpp */; };
 		47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */; };
+		47B490D7201E6C3000AB07A0 /* IslandStats.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B490D5201E6C3000AB07A0 /* IslandStats.hpp */; };
 		47B58F551F570E2C00354C34 /* DynamicMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47B58F531F570E2C00354C34 /* DynamicMemory.cpp */; };
 		47B58F561F570E2C00354C34 /* DynamicMemory.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B58F541F570E2C00354C34 /* DynamicMemory.hpp */; };
 		47B58F591F57218400354C34 /* Version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47B58F571F57218400354C34 /* Version.cpp */; };
@@ -574,6 +575,7 @@
 		479B63C21ED9CAC300D49BC7 /* BoundedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoundedValue.cpp; sourceTree = "<group>"; };
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
+		47B490D5201E6C3000AB07A0 /* IslandStats.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IslandStats.hpp; sourceTree = "<group>"; };
 		47B58F531F570E2C00354C34 /* DynamicMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicMemory.cpp; sourceTree = "<group>"; };
 		47B58F541F570E2C00354C34 /* DynamicMemory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DynamicMemory.hpp; sourceTree = "<group>"; };
 		47B58F571F57218400354C34 /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
@@ -1051,6 +1053,7 @@
 				4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */,
 				80BB8953141C3E5900F1753A /* Island.cpp */,
 				80BB8954141C3E5900F1753A /* Island.hpp */,
+				47B490D5201E6C3000AB07A0 /* IslandStats.hpp */,
 				80BB896D141C3E5900F1753A /* Joints */,
 				470F94C31EC4D78300AA3C82 /* JointAtty.hpp */,
 				471E7EAF1F34E34000DFF626 /* MovementConf.cpp */,
@@ -1413,6 +1416,7 @@
 				470F94C01EC4D63400AA3C82 /* ContactAtty.hpp in Headers */,
 				80BB89DB141C3E5900F1753A /* RopeJoint.hpp in Headers */,
 				80BB89DD141C3E5900F1753A /* WeldJoint.hpp in Headers */,
+				47B490D7201E6C3000AB07A0 /* IslandStats.hpp in Headers */,
 				80BB89DF141C3E5900F1753A /* WheelJoint.hpp in Headers */,
 				4787D6DB1F2ECFFB008C115E /* RevoluteJointConf.hpp in Headers */,
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.hpp in Headers */,
@@ -1976,7 +1980,7 @@
 				LD_GENERATE_MAP_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = YES;
-                OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx;
 				USE_HEADERMAP = NO;
 			};
@@ -2047,9 +2051,9 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_GENERATE_MAP_FILE = YES;
-                LLVM_LTO = NO;
+				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-                OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				SDKROOT = macosx;
 				USE_HEADERMAP = NO;
 			};
