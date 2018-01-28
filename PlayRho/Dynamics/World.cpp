@@ -1859,15 +1859,6 @@ StepStats World::Step(const StepConf& conf)
     return stepStats;
 }
 
-void World::QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const
-{
-    Query(m_tree, aabb, [&](DynamicTree::Size treeId) {
-        const auto leafData = m_tree.GetLeafData(treeId);
-        return callback(leafData.fixture, leafData.childIndex)?
-            DynamicTreeOpcode::Continue: DynamicTreeOpcode::End;
-    });
-}
-
 void World::ShiftOrigin(Length2 newOrigin)
 {
     if (IsLocked())
@@ -1875,7 +1866,8 @@ void World::ShiftOrigin(Length2 newOrigin)
         throw WrongState("World::ShiftOrigin: world is locked");
     }
 
-    for (auto&& body: GetBodies())
+    const auto bodies = GetBodies();
+    for (auto&& body: bodies)
     {
         auto& b = GetRef(body);
 
@@ -2637,7 +2629,8 @@ ContactCounter GetTouchingCount(const World& world) noexcept
 size_t GetFixtureCount(const World& world) noexcept
 {
     auto sum = size_t{0};
-    for_each(cbegin(world.GetBodies()), cend(world.GetBodies()),
+    const auto bodies = world.GetBodies();
+    for_each(cbegin(bodies), cend(bodies),
              [&](const World::Bodies::value_type &body) {
         sum += GetFixtureCount(GetRef(body));
     });
@@ -2647,7 +2640,8 @@ size_t GetFixtureCount(const World& world) noexcept
 size_t GetShapeCount(const World& world) noexcept
 {
     auto shapes = std::set<const void*>();
-    for_each(cbegin(world.GetBodies()), cend(world.GetBodies()), [&](const World::Bodies::value_type &b) {
+    const auto bodies = world.GetBodies();
+    for_each(cbegin(bodies), cend(bodies), [&](const World::Bodies::value_type &b) {
         const auto fixtures = GetRef(b).GetFixtures();
         for_each(cbegin(fixtures), cend(fixtures), [&](const Body::Fixtures::value_type& f) {
             shapes.insert(GetData(GetRef(f).GetShape()));
@@ -2668,7 +2662,8 @@ BodyCounter Awaken(World& world) noexcept
 {
     // Can't use count_if since body gets modified.
     auto awoken = BodyCounter{0};
-    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
+    const auto bodies = world.GetBodies();
+    for_each(begin(bodies), end(bodies), [&](World::Bodies::value_type &b) {
         if (playrho::d2::Awaken(GetRef(b)))
         {
             ++awoken;
@@ -2677,23 +2672,18 @@ BodyCounter Awaken(World& world) noexcept
     return awoken;
 }
 
-void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept
-{
-    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
-        SetAcceleration(GetRef(b), fn(GetRef(b)));
-    });
-}
-
 void SetAccelerations(World& world, Acceleration acceleration) noexcept
 {
-    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
+    const auto bodies = world.GetBodies();
+    for_each(begin(bodies), end(bodies), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), acceleration);
     });
 }
 
 void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
 {
-    for_each(begin(world.GetBodies()), end(world.GetBodies()), [&](World::Bodies::value_type &b) {
+    const auto bodies = world.GetBodies();
+    for_each(begin(bodies), end(bodies), [&](World::Bodies::value_type &b) {
         SetLinearAcceleration(GetRef(b), acceleration);
     });
 }

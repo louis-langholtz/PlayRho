@@ -98,7 +98,7 @@ TEST(DynamicTree, ZeroCapacityConstructionThrows)
 
 TEST(DynamicTree, InitializingConstruction)
 {
-    PLAYRHO_CONSTEXPR const auto initCapacity = DynamicTree::GetDefaultInitialNodeCapacity() * 2;
+    constexpr const auto initCapacity = DynamicTree::GetDefaultInitialNodeCapacity() * 2;
     DynamicTree foo{initCapacity};
     EXPECT_EQ(foo.GetNodeCapacity(), initCapacity);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));

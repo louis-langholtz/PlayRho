@@ -502,7 +502,7 @@ void Test::MouseDown(const Length2& p)
     auto fixtures = FixtureSet{};
 
     // Query the world for overlapping shapes.
-    m_world.QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
+    Query(m_world.GetTree(), aabb, [&](Fixture* f, const ChildCounter) {
         if (TestPoint(*f, p))
         {
             fixtures.insert(f);

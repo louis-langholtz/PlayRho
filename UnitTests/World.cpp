@@ -177,7 +177,7 @@ TEST(World, Init)
     
     {
         auto calls = 0;
-        world.QueryAABB(AABB{}, [&](Fixture*, ChildCounter) {
+        Query(world.GetTree(), AABB{}, [&](Fixture*, ChildCounter) {
             ++calls;
             return true;
         });
@@ -534,7 +534,7 @@ TEST(World, RegisterFixtureForProxies)
     EXPECT_TRUE(world.RegisterForProxies(fixture));
 }
 
-TEST(World, QueryAABB)
+TEST(World, Query)
 {
     auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
@@ -564,7 +564,7 @@ TEST(World, QueryAABB)
     {
         auto foundOurs = 0;
         auto foundOthers = 0;
-        world.QueryAABB(AABB{v1, v2}, [&](Fixture* f, ChildCounter i) {
+        Query(world.GetTree(), AABB{v1, v2}, [&](Fixture* f, ChildCounter i) {
             if (f == fixture && i == 0)
             {
                 ++foundOurs;
@@ -2215,7 +2215,7 @@ TEST(World, TilesComesToRest)
     auto conf = PolygonShapeConf{}.UseVertexRadius(VertexRadius);
     const auto m_world = std::make_unique<World>(WorldConf{}.UseMinVertexRadius(VertexRadius));
     
-    PLAYRHO_CONSTEXPR const auto e_count = 36;
+    constexpr const auto e_count = 36;
     
     {
         const auto a = Real{0.5f};
@@ -2838,7 +2838,7 @@ TEST(World, TargetJointWontCauseTunnelling)
         ASSERT_NE(ball_fixture, nullptr);
     }
 
-    PLAYRHO_CONSTEXPR const unsigned numBodies = 1;
+    constexpr const unsigned numBodies = 1;
     Length2 last_opos[numBodies];
     Body *bodies[numBodies];
     for (auto i = decltype(numBodies){0}; i < numBodies; ++i)

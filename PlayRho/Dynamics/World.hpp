@@ -212,15 +212,6 @@ public:
     ///
     StepStats Step(const StepConf& conf);
 
-    /// @brief Query AABB for fixtures callback function type.
-    /// @note Returning true will continue the query. Returning false will terminate the query.
-    using QueryFixtureCallback = std::function<bool(Fixture* fixture, ChildCounter child)>;
-
-    /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
-    /// @param aabb the query box.
-    /// @param callback User implemented callback function.
-    void QueryAABB(const AABB& aabb, QueryFixtureCallback callback) const;
-
     /// @brief Gets the world body range for this world.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
@@ -1038,8 +1029,18 @@ BodyCounter GetAwakeCount(const World& world) noexcept;
 BodyCounter Awaken(World& world) noexcept;
 
 /// @brief Sets the accelerations of all the world's bodies.
+/// @param world World instance to set the acceleration of all contained bodies for.
+/// @param fn Function or functor with a signature like:
+///   <code>Acceleration (*fn)(const Body& body)</code>.
 /// @relatedalso World
-void SetAccelerations(World& world, std::function<Acceleration(const Body& b)> fn) noexcept;
+template <class F>
+void SetAccelerations(World& world, F fn) noexcept
+{
+    const auto bodies = world.GetBodies();
+    std::for_each(std::begin(bodies), std::end(bodies), [&](World::Bodies::value_type &b) {
+        SetAcceleration(GetRef(b), fn(GetRef(b)));
+    });
+}
 
 /// @brief Sets the accelerations of all the world's bodies to the given value.
 /// @relatedalso World

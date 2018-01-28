@@ -30,7 +30,7 @@ struct Color
 {
     Color() = default;
     
-    PLAYRHO_CONSTEXPR inline Color(float ri, float gi, float bi, float ai = 1):
+    constexpr inline Color(float ri, float gi, float bi, float ai = 1):
         r(playrho::Clamp(ri, 0.0f, 1.0f)),
         g(playrho::Clamp(gi, 0.0f, 1.0f)),
         b(playrho::Clamp(bi, 0.0f, 1.0f)),
@@ -39,7 +39,7 @@ struct Color
         // Intentionally empty.
     }
 
-    PLAYRHO_CONSTEXPR inline Color(Color copy, float new_a):
+    constexpr inline Color(Color copy, float new_a):
         Color{copy.r, copy.g, copy.b, new_a}
     {
         // Intentionally empty.

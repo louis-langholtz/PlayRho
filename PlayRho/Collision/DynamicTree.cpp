@@ -762,5 +762,14 @@ void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& c
     }
 }
 
+void Query(const DynamicTree& tree, const AABB& aabb, QueryFixtureCallback callback)
+{
+    Query(tree, aabb, [&](DynamicTree::Size treeId) {
+        const auto leafData = tree.GetLeafData(treeId);
+        return callback(leafData.fixture, leafData.childIndex)?
+        DynamicTreeOpcode::Continue: DynamicTreeOpcode::End;
+    });
+}
+
 } // namespace d2
 } // namespace playrho
