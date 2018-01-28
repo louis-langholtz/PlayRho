@@ -879,6 +879,10 @@ TEST(Body, GetSetTransformationFF)
     auto body = world.CreateBody();
     EXPECT_NE(GetTransformation(*body), transformation);
     SetTransformation(*body, transformation);
-    EXPECT_EQ(GetTransformation(*body), transformation);
+    EXPECT_EQ(GetTransformation(*body).p, transformation.p);
+    EXPECT_NEAR(static_cast<double>(GetX(GetTransformation(*body).q)),
+                static_cast<double>(GetX(transformation.q)), 0.0001);
+    EXPECT_NEAR(static_cast<double>(GetY(GetTransformation(*body).q)),
+                static_cast<double>(GetY(transformation.q)), 0.0001);
 }
 

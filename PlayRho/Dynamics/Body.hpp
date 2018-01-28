@@ -1267,6 +1267,8 @@ inline Transformation GetTransformation(const Body& body) noexcept
 }
 
 /// @brief Sets the body's transformation.
+/// @note This operation isn't exact. I.e. don't expect that <code>GetTransformation</code>
+///   will return exactly the transformation that had been set.
 inline void SetTransformation(Body& body, const Transformation& xfm) noexcept
 {
     body.SetTransform(xfm.p, GetAngle(xfm.q));
