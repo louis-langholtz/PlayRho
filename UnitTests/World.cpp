@@ -51,6 +51,23 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+class UnitTestDestructionListener: public playrho::d2::DestructionListener
+{
+    void SayGoodbye(const Joint& joint) override
+    {
+        joints.push_back(&joint);
+    }
+    
+    void SayGoodbye(const Fixture& fixture) override
+    {
+        fixtures.push_back(&fixture);
+    }
+    
+public:
+    std::vector<const Joint*> joints;
+    std::vector<const Fixture*> fixtures;
+};
+
 TEST(World, ByteSize)
 {
     switch (sizeof(Real))
@@ -202,6 +219,38 @@ TEST(World, InvalidArgumentInit)
     ASSERT_GT(max, min);
     const auto def = WorldConf{}.UseMinVertexRadius(max).UseMaxVertexRadius(min);
     EXPECT_THROW(World{def}, InvalidArgument);
+}
+
+TEST(World, Clear)
+{
+    auto world = World{};
+    ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
+    ASSERT_EQ(world.GetJoints().size(), std::size_t(0));
+    
+    auto listener = UnitTestDestructionListener{};
+    world.SetDestructionListener(&listener);
+    
+    const auto b0 = world.CreateBody();
+    const auto f0 = b0->CreateFixture(Shape{DiskShapeConf{}});
+    const auto b1 = world.CreateBody();
+    const auto f1 = b1->CreateFixture(Shape{DiskShapeConf{}});
+    const auto j0 = world.CreateJoint(DistanceJointConf{b0, b1});
+    ASSERT_NE(j0, nullptr);
+    
+    ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
+    ASSERT_EQ(world.GetJoints().size(), std::size_t(1));
+    
+    world.Clear();
+
+    EXPECT_EQ(world.GetBodies().size(), std::size_t(0));
+    EXPECT_EQ(world.GetJoints().size(), std::size_t(0));
+    
+    ASSERT_EQ(listener.fixtures.size(), std::size_t(2));
+    EXPECT_EQ(listener.fixtures.at(0), f0);
+    EXPECT_EQ(listener.fixtures.at(1), f1);
+    
+    ASSERT_EQ(listener.joints.size(), std::size_t(1));
+    EXPECT_EQ(listener.joints.at(0), j0);
 }
 
 TEST(World, SetSubStepping)
@@ -380,6 +429,9 @@ TEST(World, CreateDestroyJoinedBodies)
     auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetJointCount(world), JointCounter(0));
+    
+    auto listener = UnitTestDestructionListener{};
+    world.SetDestructionListener(&listener);
 
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
@@ -394,8 +446,8 @@ TEST(World, CreateDestroyJoinedBodies)
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
 
-    body->CreateFixture(Shape{DiskShapeConf{1_m}});
-    body2->CreateFixture(Shape{DiskShapeConf{1_m}});
+    const auto f0 = body->CreateFixture(Shape{DiskShapeConf{1_m}});
+    const auto f1 = body2->CreateFixture(Shape{DiskShapeConf{1_m}});
 
     EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
     
@@ -421,6 +473,13 @@ TEST(World, CreateDestroyJoinedBodies)
     EXPECT_NE(bodies0.begin(), bodies0.end());
     world.Destroy(body2);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    
+    ASSERT_EQ(listener.fixtures.size(), std::size_t(2));
+    EXPECT_EQ(listener.fixtures.at(0), f0);
+    EXPECT_EQ(listener.fixtures.at(1), f1);
+
+    ASSERT_EQ(listener.joints.size(), std::size_t(1));
+    EXPECT_EQ(listener.joints.at(0), joint);
 }
 
 TEST(World, CreateDestroyContactingBodies)
@@ -823,6 +882,36 @@ TEST(World, SetAccelerationsFunctionalFF)
     SetAccelerations(world, [](const Body& b){ return GetAcceleration(b) * 2; });
     EXPECT_EQ(GetAcceleration(*b1), a1 * 2);
     EXPECT_EQ(GetAcceleration(*b2), a2 * 2);
+}
+
+TEST(World, SetLinearAccelerationsFF)
+{
+    World world;
+    const auto a1 = Acceleration{
+        LinearAcceleration2{1_mps2, 2_mps2}, 2.1f * RadianPerSquareSecond
+    };
+    const auto a2 = a1 * 2;
+    ASSERT_EQ(a1.linear * 2, a2.linear);
+    ASSERT_EQ(a1.angular * 2, a2.angular);
+    
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(b1, nullptr);
+    ASSERT_TRUE(b1->IsAccelerable());
+    SetAcceleration(*b1, a1);
+    ASSERT_EQ(GetAcceleration(*b1), a1);
+    
+    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(b2, nullptr);
+    ASSERT_TRUE(b2->IsAccelerable());
+    SetAcceleration(*b2, a2);
+    ASSERT_EQ(GetAcceleration(*b2), a2);
+
+    ASSERT_EQ(GetAcceleration(*b1), a1);
+    ASSERT_EQ(GetAcceleration(*b2), a2);
+
+    SetAccelerations(world, a1.linear * 2);
+    EXPECT_EQ(GetAcceleration(*b1), (Acceleration{a1.linear * 2, a1.angular}));
+    EXPECT_EQ(GetAcceleration(*b2), (Acceleration{a1.linear * 2, a2.angular}));
 }
 
 TEST(World, FindClosestBodyFF)
@@ -1283,8 +1372,19 @@ public:
         contacting = true;
         touching = contact.IsTouching();
         
-        body_a[0] = contact.GetFixtureA()->GetBody()->GetLocation();
-        body_b[0] = contact.GetFixtureB()->GetBody()->GetLocation();
+        const auto fA = contact.GetFixtureA();
+        const auto fB = contact.GetFixtureB();
+        const auto bA = fA->GetBody();
+        const auto bB = fB->GetBody();
+        const auto w = bA->GetWorld();
+        body_a[0] = bA->GetLocation();
+        body_b[0] = bB->GetLocation();
+        
+        EXPECT_THROW(w->CreateBody(), WrongState);
+        EXPECT_THROW(w->Destroy(bA), WrongState);
+        EXPECT_THROW(w->CreateJoint(DistanceJointConf{bA, bB}), WrongState);
+        EXPECT_THROW(w->Step(stepConf), WrongState);
+        EXPECT_THROW(w->ShiftOrigin(Length2{}), WrongState);
     }
     
     void EndContact(Contact& contact) override
@@ -1325,6 +1425,7 @@ public:
     PreSolver presolver;
     PostSolver postsolver;
     Ender ender;
+    const StepConf stepConf{};
 };
 
 TEST(World, NoCorrectionsWithNoVelOrPosIterations)

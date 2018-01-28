@@ -481,6 +481,10 @@ void World::Clear() noexcept
     m_bodiesForProxies.clear();
 
     for_each(cbegin(m_joints), cend(m_joints), [&](const Joint *j) {
+        if (m_destructionListener)
+        {
+            m_destructionListener->SayGoodbye(*j);
+        }
         JointAtty::Destroy(j);
     });
     for_each(begin(m_bodies), end(m_bodies), [&](Bodies::value_type& body) {
