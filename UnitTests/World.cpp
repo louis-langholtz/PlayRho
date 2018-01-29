@@ -1385,10 +1385,18 @@ public:
         body_b[0] = bB->GetLocation();
         
         EXPECT_THROW(w->CreateBody(), WrongState);
+        const auto typeA = bA->GetType();
+        if (typeA != BodyType::Kinematic)
+        {
+            EXPECT_NO_THROW(bA->SetType(typeA));
+            EXPECT_THROW(bA->SetType(BodyType::Kinematic), WrongState);
+        }
         EXPECT_THROW(w->Destroy(bA), WrongState);
         EXPECT_THROW(w->CreateJoint(DistanceJointConf{bA, bB}), WrongState);
         EXPECT_THROW(w->Step(stepConf), WrongState);
         EXPECT_THROW(w->ShiftOrigin(Length2{}), WrongState);
+        EXPECT_THROW(bA->CreateFixture(Shape{DiskShapeConf{}}), WrongState);
+        EXPECT_THROW(bA->DestroyFixture(fA), WrongState);
     }
     
     void EndContact(Contact& contact) override
@@ -3046,6 +3054,7 @@ TEST(World, TargetJointWontCauseTunnelling)
                     ASSERT_LE(newPointCount, 2);
                     break;
             }
+            ASSERT_THROW(world.Destroy(target_joint), WrongState);
         },
         [&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved)
         {
@@ -3242,6 +3251,12 @@ TEST(World, TargetJointWontCauseTunnelling)
     std::cout << " range=(" << min_x << "," << min_y << ")-(" << max_x << "," << max_y << ")";
     std::cout << std::endl;
 #endif
+
+    const auto target0 = target_joint->GetTarget();
+    const auto shift = Length2{2_m, 2_m};
+    world.ShiftOrigin(shift);
+    const auto target1 = target_joint->GetTarget();
+    EXPECT_EQ(target0 - shift, target1);
 }
 
 #if 0

@@ -732,7 +732,7 @@ Body* World::CreateBody(const BodyConf& def)
     return &b;
 }
 
-bool World::Remove(const Body& b)
+void World::Remove(const Body& b)
 {
     const auto it = find_if(cbegin(m_bodies), cend(m_bodies), [&](const Bodies::value_type& body) {
         return GetPtr(body) == &b;
@@ -741,9 +741,7 @@ bool World::Remove(const Body& b)
     {
         delete GetPtr(*it);
         m_bodies.erase(it);
-        return true;
     }
-    return false;
 }
 
 void World::Destroy(Body* body)
@@ -762,7 +760,7 @@ void World::Destroy(Body* body)
         {
             m_destructionListener->SayGoodbye(joint);
         }
-        InternalDestroy(&joint);
+        InternalDestroy(joint);
     });
     
     // Destroy the attached contacts.
@@ -823,58 +821,49 @@ bool World::Add(Joint* j)
     return true;
 }
 
-bool World::Remove(Joint& j)
+void World::Remove(const Joint& j)
 {
     const auto endIter = cend(m_joints);
     const auto iter = find(cbegin(m_joints), endIter, &j);
-    if (iter != endIter)
-    {
-        m_joints.erase(iter);
-        return true;
-    }
-    return false;
+    assert(iter != endIter);
+    m_joints.erase(iter);
 }
 
 void World::Destroy(Joint* joint)
 {
-    if (joint != nullptr)
+    if (joint)
     {
         if (IsLocked())
         {
             throw WrongState("World::Destroy: world is locked");
         }
-        InternalDestroy(joint);
+        InternalDestroy(*joint);
     }
 }
     
-void World::InternalDestroy(Joint* joint)
+void World::InternalDestroy(Joint& joint)
 {
-    assert(joint != nullptr);
-
-    if (!Remove(*joint))
-    {
-        return;
-    }
+    Remove(joint);
     
     // Disconnect from island graph.
-    const auto bodyA = joint->GetBodyA();
-    const auto bodyB = joint->GetBodyB();
+    const auto bodyA = joint.GetBodyA();
+    const auto bodyB = joint.GetBodyB();
 
     // Wake up connected bodies.
-    if (bodyA != nullptr)
+    if (bodyA)
     {
         bodyA->SetAwake();
-        BodyAtty::Erase(*bodyA, joint);
+        BodyAtty::Erase(*bodyA, &joint);
     }
-    if (bodyB != nullptr)
+    if (bodyB)
     {
         bodyB->SetAwake();
-        BodyAtty::Erase(*bodyB, joint);
+        BodyAtty::Erase(*bodyB, &joint);
     }
 
-    const auto collideConnected = joint->GetCollideConnected();
+    const auto collideConnected = joint.GetCollideConnected();
 
-    JointAtty::Destroy(joint);
+    JointAtty::Destroy(&joint);
 
     // If the joint prevented collisions, then flag any contacts for filtering.
     if ((!collideConnected) && (bodyA != nullptr) && (bodyB != nullptr))

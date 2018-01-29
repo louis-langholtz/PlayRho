@@ -365,7 +365,7 @@ private:
     
     /// @brief Internal destroy.
     /// @warning Behavior is undefined if passed a null pointer for the joint.
-    void InternalDestroy(Joint* joint);
+    void InternalDestroy(Joint& joint);
 
     /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
@@ -510,10 +510,10 @@ private:
     bool Add(Joint* j);
 
     /// @brief Removes the given body from this world.
-    bool Remove(const Body& b);
+    void Remove(const Body& b);
  
     /// @brief Removes the given joint from this world.
-    bool Remove(Joint& j);
+    void Remove(const Joint& j);
 
     /// @brief Whether or not "step" is complete.
     /// @details The "step" is completed when there are no more TOI events for the current time step.

@@ -277,7 +277,7 @@ TEST(Body, SetVelocityDoesNothingToStatic)
 
 TEST(Body, CreateFixture)
 {
-    World world;
+    auto world = World{};
     const auto body = world.CreateBody();
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(0));
 
@@ -285,6 +285,12 @@ TEST(Body, CreateFixture)
     EXPECT_NE(body->CreateFixture(valid_shape, FixtureConf{}), nullptr);
 
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
+    
+    const auto minRadius = world.GetMinVertexRadius();
+    EXPECT_THROW(body->CreateFixture(Shape{DiskShapeConf{minRadius / 2}}), InvalidArgument);
+    
+    const auto maxRadius = world.GetMaxVertexRadius();
+    EXPECT_THROW(body->CreateFixture(Shape{DiskShapeConf{maxRadius + maxRadius / 10}}), InvalidArgument);
 }
 
 TEST(Body, DestroyFixture)
