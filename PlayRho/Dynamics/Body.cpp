@@ -125,7 +125,7 @@ bool Body::DestroyFixture(Fixture* fixture, bool resetMassData)
     {
         return false;
     }
-    return WorldAtty::DestroyFixture(*m_world, fixture, resetMassData);
+    return WorldAtty::DestroyFixture(*m_world, *fixture, resetMassData);
 }
 
 void Body::DestroyFixtures()
@@ -306,7 +306,7 @@ void Body::SetTransform(Length2 location, Angle angle)
 
     m_sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
     
-    WorldAtty::RegisterForProxies(*GetWorld(), this);
+    WorldAtty::RegisterForProxies(*GetWorld(), *this);
 }
 
 void Body::SetEnabled(bool flag)
@@ -332,7 +332,7 @@ void Body::SetEnabled(bool flag)
 
     // Register for proxies so contacts created or destroyed the next time step.
     std::for_each(begin(m_fixtures), end(m_fixtures), [&](Fixtures::value_type &f) {
-        WorldAtty::RegisterForProxies(*m_world, GetPtr(f));
+        WorldAtty::RegisterForProxies(*m_world, GetRef(f));
     });
 }
 

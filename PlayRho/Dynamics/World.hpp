@@ -271,13 +271,12 @@ private:
     void SetType(Body& body, playrho::BodyType type);
 
     /// @brief Register for proxies for the given fixture.
-    bool RegisterForProxies(Fixture* fixture);
+    void RegisterForProxies(Fixture& fixture);
     
     /// @brief Register for proxies for the given body.
-    bool RegisterForProxies(Body* body);
+    void RegisterForProxies(Body& body);
 
     /// @brief Creates a fixture with the given parameters.
-    /// @throws InvalidArgument if called for a body that doesn't belong to this world.
     /// @throws InvalidArgument if called without a shape.
     /// @throws InvalidArgument if called for a shape with a vertex radius less than the
     ///    minimum vertex radius.
@@ -305,13 +304,13 @@ private:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
+    bool DestroyFixture(Fixture& fixture, bool resetMassData = true);
     
     /// @brief Touches each proxy of the given fixture.
-    /// @note Fixture must belong to a body that belongs to this world or this method will
-    ///   return false.
+    /// @warning Behavior is undefined if called with a fixture for a body which doesn't
+    ///   belong to this world.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    bool TouchProxies(Fixture& fixture) noexcept;
+    void TouchProxies(Fixture& fixture) noexcept;
     
     /// @brief Sets new fixtures flag.
     void SetNewFixtures() noexcept;

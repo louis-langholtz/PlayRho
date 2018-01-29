@@ -45,9 +45,9 @@ private:
     /// @note Fixture must belong to a body that belongs to this world or this method will
     ///   return false.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    static bool TouchProxies(World& world, Fixture& fixture) noexcept
+    static void TouchProxies(World& world, Fixture& fixture) noexcept
     {
-        return world.TouchProxies(fixture);
+        world.TouchProxies(fixture);
     }
 
     /// @brief Sets the type of the given body.
@@ -90,21 +90,21 @@ private:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    static bool DestroyFixture(World& world, Fixture* fixture, bool resetMassData)
+    static bool DestroyFixture(World& world, Fixture& fixture, bool resetMassData)
     {
         return world.DestroyFixture(fixture, resetMassData);
     }
     
     /// @brief Register for proxies for the given body.
-    static bool RegisterForProxies(World& world, Body* body)
+    static void RegisterForProxies(World& world, Body& body)
     {
-        return world.RegisterForProxies(body);
+        world.RegisterForProxies(body);
     }
     
     /// @brief Register for proxies for the given fixture.
-    static bool RegisterForProxies(World& world, Fixture* fixture)
+    static void RegisterForProxies(World& world, Fixture& fixture)
     {
-        return world.RegisterForProxies(fixture);
+        world.RegisterForProxies(fixture);
     }
     
     friend class Body;
