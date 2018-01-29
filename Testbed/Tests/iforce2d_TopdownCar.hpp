@@ -173,7 +173,7 @@ public:
         
         //angular velocity
         const auto rotInertia = GetRotInertia(*m_body);
-        PLAYRHO_CONSTEXPR const auto Tenth = Real{1} / Real{10};
+        const auto Tenth = Real{1} / Real{10};
         ApplyAngularImpulse(*m_body, m_currentTraction * Tenth * rotInertia * -GetAngularVelocity(*m_body));
         
         //forward linear velocity
@@ -354,7 +354,7 @@ public:
 
 class MyDestructionListener :  public DestructionListener
 {
-    void SayGoodbye(Fixture& fixture) override
+    void SayGoodbye(const Fixture& fixture) override
     {
         const auto fud = static_cast<FixtureUserData*>(fixture.GetUserData());
         if ( fud )
@@ -362,7 +362,7 @@ class MyDestructionListener :  public DestructionListener
     }
     
     //(unused but must implement all pure virtual functions)
-    void SayGoodbye(Joint&) override {}
+    void SayGoodbye(const Joint&) override {}
 };
 
 

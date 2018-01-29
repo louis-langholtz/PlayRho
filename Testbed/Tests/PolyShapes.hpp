@@ -30,7 +30,7 @@
 
 namespace testbed {
 
-/// This callback is called by World::QueryAABB. We find all the fixtures
+/// This callback is called by the Query free function. We find all the fixtures
 /// that overlap an AABB. Of those, we use TestOverlap to determine which fixtures
 /// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
 class ShapeDrawer
@@ -205,11 +205,11 @@ public:
         ShapeDrawer shapeDrawer;
         shapeDrawer.debugDraw = &drawer;
 
-        PLAYRHO_CONSTEXPR const int e_maxCount = 4;
+        constexpr const int e_maxCount = 4;
         int count = 0;
         const auto circleChild = GetChild(circleConf, 0);
         const auto aabb = ComputeAABB(circleChild, transform);
-        m_world.QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
+        Query(m_world.GetTree(), aabb, [&](Fixture* f, const ChildCounter) {
             if (count < e_maxCount)
             {
                 const auto xfm = GetTransformation(*f);

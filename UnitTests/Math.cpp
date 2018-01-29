@@ -642,7 +642,7 @@ struct Coords {
 #if 0
 TEST(Math, LengthFasterThanHypot)
 {
-    PLAYRHO_CONSTEXPR inline auto iterations = unsigned(5000000);
+    constexpr inline auto iterations = unsigned(5000000);
     
     std::chrono::duration<double> elapsed_secs_length;
     std::chrono::duration<double> elapsed_secs_hypot;

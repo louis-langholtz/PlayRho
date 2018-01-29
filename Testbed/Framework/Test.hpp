@@ -182,14 +182,13 @@ public:
     void MouseUp(const Length2& p);
     
     // Let derived tests know that a joint was destroyed.
-    virtual void JointDestroyed(Joint* joint) { NOT_USED(joint); }
+    virtual void JointDestroyed(const Joint* joint) { NOT_USED(joint); }
 
     // Callbacks for derived classes.
-    virtual void BeginContact(Contact&) override { }
-    virtual void EndContact(Contact&) override { }
-    virtual void PreSolve(Contact& contact, const Manifold& oldManifold) override;
-    virtual void PostSolve(Contact&, const ContactImpulsesList&,
-                           ContactListener::iteration_type) override { }
+    void BeginContact(Contact&) override { }
+    void EndContact(Contact&) override { }
+    void PreSolve(Contact& contact, const Manifold& oldManifold) override;
+    void PostSolve(Contact&, const ContactImpulsesList&, ContactListener::iteration_type) override { }
 
     static bool Contains(const FixtureSet& fixtures, const Fixture* f) noexcept;
     
@@ -278,8 +277,8 @@ protected:
     class DestructionListenerImpl : public DestructionListener
     {
     public:
-        void SayGoodbye(Fixture& fixture) { NOT_USED(fixture); }
-        void SayGoodbye(Joint& joint);
+        void SayGoodbye(const Fixture& fixture) { NOT_USED(fixture); }
+        void SayGoodbye(const Joint& joint);
         
         Test* test;
     };

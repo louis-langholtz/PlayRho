@@ -42,11 +42,11 @@ public:
 
     /// Called when any joint is about to be destroyed due
     /// to the destruction of one of its attached bodies.
-    virtual void SayGoodbye(Joint& joint) = 0;
+    virtual void SayGoodbye(const Joint& joint) = 0;
 
     /// Called when any fixture is about to be destroyed due
     /// to the destruction of its parent body.
-    virtual void SayGoodbye(Fixture& fixture) = 0;
+    virtual void SayGoodbye(const Fixture& fixture) = 0;
 };
 
 /// @brief A pure-virtual interface for "listeners" for contacts.

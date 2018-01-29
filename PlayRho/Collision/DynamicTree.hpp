@@ -851,6 +851,16 @@ using DynamicTreeSizeCB = std::function<DynamicTreeOpcode(DynamicTree::Size)>;
 void Query(const DynamicTree& tree, const AABB& aabb,
            const DynamicTreeSizeCB& callback);
 
+/// @brief Query AABB for fixtures callback function type.
+/// @note Returning true will continue the query. Returning false will terminate the query.
+using QueryFixtureCallback = std::function<bool(Fixture* fixture, ChildCounter child)>;
+
+/// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
+/// @param tree Dynamic tree to do the query over.
+/// @param aabb The query box.
+/// @param callback User implemented callback function.
+void Query(const DynamicTree& tree, const AABB& aabb, QueryFixtureCallback callback);
+
 } // namespace d2
 } // namespace playrho
 

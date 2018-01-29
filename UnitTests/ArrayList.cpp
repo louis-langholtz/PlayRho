@@ -26,7 +26,7 @@ using namespace playrho;
 TEST(ArrayList, DefaultConstruction)
 {
     {
-        PLAYRHO_CONSTEXPR const unsigned max_size = 4;
+        constexpr const unsigned max_size = 4;
         ArrayList<int, max_size> list;
         EXPECT_EQ(list.size(), decltype(list.size()){0});
         EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
@@ -38,9 +38,9 @@ TEST(ArrayList, DefaultConstruction)
 TEST(ArrayList, ArrayConstruction)
 {
     {
-        PLAYRHO_CONSTEXPR const auto array_size = 2;
+        constexpr const auto array_size = 2;
         int array[array_size];
-        PLAYRHO_CONSTEXPR const unsigned max_size = 4;
+        constexpr const unsigned max_size = 4;
         ArrayList<int, max_size> list(array);
         EXPECT_EQ(list.size(), decltype(list.size()){array_size});
         EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
@@ -48,9 +48,9 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(std::distance(list.begin(), list.end()), array_size);
     }
     {
-        PLAYRHO_CONSTEXPR const auto array_size = 6;
+        constexpr const auto array_size = 6;
         float array[array_size];
-        PLAYRHO_CONSTEXPR const unsigned max_size = 6;
+        constexpr const unsigned max_size = 6;
         ArrayList<float, max_size> list(array);
         EXPECT_EQ(list.size(), decltype(list.size()){array_size});
         EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
@@ -58,13 +58,13 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(std::distance(list.begin(), list.end()), array_size);
     }
     {
-        PLAYRHO_CONSTEXPR const auto maxsize = std::size_t{10};
+        constexpr const auto maxsize = std::size_t{10};
         ArrayList<int, maxsize> list = { 1, 2, 3 };
         EXPECT_EQ(list.size(), decltype(list.size()){3});
         EXPECT_EQ(list.max_size(), maxsize);
     }
     {
-        PLAYRHO_CONSTEXPR const auto maxsize = std::size_t{10};
+        constexpr const auto maxsize = std::size_t{10};
         PLAYRHO_CONSTEXPR const auto list = std::array<int, maxsize>{{5, 4, 3}};
         EXPECT_EQ(list.size(), decltype(list.size()){maxsize});
         EXPECT_EQ(list.max_size(), maxsize);
@@ -73,7 +73,7 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(list[2], 3);
     }
     {
-        PLAYRHO_CONSTEXPR const auto maxsize = std::size_t{10};
+        constexpr const auto maxsize = std::size_t{10};
         
         // Note: list cannot be PLAYRHO_CONSTEXPR const.
         const auto list = ArrayList<int, maxsize>{1, 2, 3};
@@ -96,7 +96,7 @@ TEST(ArrayList, ArrayConstruction)
 TEST(ArrayList, add)
 {
     {
-        PLAYRHO_CONSTEXPR const unsigned max_size = 4;
+        constexpr const unsigned max_size = 4;
         ArrayList<int, max_size> list;
         ASSERT_EQ(list.size(), decltype(list.size()){0});
         ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});
@@ -126,7 +126,7 @@ TEST(ArrayList, add)
 TEST(ArrayList, clear)
 {
     {
-        PLAYRHO_CONSTEXPR const unsigned max_size = 4;
+        constexpr const unsigned max_size = 4;
         ArrayList<int, max_size> list;
         ASSERT_EQ(list.size(), decltype(list.size()){0});
         ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});

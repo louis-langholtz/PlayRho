@@ -28,7 +28,7 @@ class Bridge : public Test
 {
 public:
 
-    static PLAYRHO_CONSTEXPR const auto Count = 30;
+    static constexpr const auto Count = 30;
 
     Bridge()
     {        

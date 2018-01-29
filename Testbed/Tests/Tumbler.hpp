@@ -27,7 +27,7 @@ namespace testbed {
 class Tumbler : public Test
 {
 public:
-    static PLAYRHO_CONSTEXPR const auto Count = 800;
+    static constexpr const auto Count = 800;
     
     Tumbler()
     {

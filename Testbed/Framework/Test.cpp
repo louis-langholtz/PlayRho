@@ -381,7 +381,7 @@ bool Test::Contains(const FixtureSet& fixtures, const Fixture* f) noexcept
     return fixtures.find(const_cast<Fixture*>(f)) != fixtures.end();
 }
 
-void Test::DestructionListenerImpl::SayGoodbye(Joint& joint)
+void Test::DestructionListenerImpl::SayGoodbye(const Joint& joint)
 {
     if (test->m_targetJoint == &joint)
     {
@@ -502,7 +502,7 @@ void Test::MouseDown(const Length2& p)
     auto fixtures = FixtureSet{};
 
     // Query the world for overlapping shapes.
-    m_world.QueryAABB(aabb, [&](Fixture* f, const ChildCounter) {
+    Query(m_world.GetTree(), aabb, [&](Fixture* f, const ChildCounter) {
         if (TestPoint(*f, p))
         {
             fixtures.insert(f);
