@@ -519,6 +519,7 @@ TEST(World, CreateDestroyContactingBodies)
     EXPECT_EQ(GetFixtureCount(world), std::size_t(0));
 }
 
+#if 0
 TEST(World, CreateAndDestroyFixture)
 {
     auto world = World{};
@@ -550,6 +551,7 @@ TEST(World, CreateAndDestroyFixture)
     
     EXPECT_THROW(world.CreateFixture(*bodyC, Shape{DiskShapeConf(1_m)}), InvalidArgument);
 }
+#endif
 
 TEST(World, SynchronizeProxies)
 {
@@ -558,12 +560,13 @@ TEST(World, SynchronizeProxies)
     
     EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
     const auto bodyA = world.CreateBody();
-    world.CreateFixture(*bodyA, Shape{DiskShapeConf(1_m)});
+    bodyA->CreateFixture(Shape{DiskShapeConf(1_m)});
     EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
     SetLocation(*bodyA, Length2{10_m, -4_m});
     EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(1));
 }
 
+#if 0
 TEST(World, SetTypeOfBody)
 {
     auto world = World{};
@@ -592,6 +595,7 @@ TEST(World, RegisterFixtureForProxies)
     const auto fixture = body->CreateFixture(Shape{DiskShapeConf(1_m)});
     EXPECT_TRUE(world.RegisterForProxies(fixture));
 }
+#endif
 
 TEST(World, Query)
 {
@@ -1381,10 +1385,18 @@ public:
         body_b[0] = bB->GetLocation();
         
         EXPECT_THROW(w->CreateBody(), WrongState);
+        const auto typeA = bA->GetType();
+        if (typeA != BodyType::Kinematic)
+        {
+            EXPECT_NO_THROW(bA->SetType(typeA));
+            EXPECT_THROW(bA->SetType(BodyType::Kinematic), WrongState);
+        }
         EXPECT_THROW(w->Destroy(bA), WrongState);
         EXPECT_THROW(w->CreateJoint(DistanceJointConf{bA, bB}), WrongState);
         EXPECT_THROW(w->Step(stepConf), WrongState);
         EXPECT_THROW(w->ShiftOrigin(Length2{}), WrongState);
+        EXPECT_THROW(bA->CreateFixture(Shape{DiskShapeConf{}}), WrongState);
+        EXPECT_THROW(bA->DestroyFixture(fA), WrongState);
     }
     
     void EndContact(Contact& contact) override
@@ -3042,6 +3054,7 @@ TEST(World, TargetJointWontCauseTunnelling)
                     ASSERT_LE(newPointCount, 2);
                     break;
             }
+            ASSERT_THROW(world.Destroy(target_joint), WrongState);
         },
         [&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved)
         {
@@ -3238,6 +3251,12 @@ TEST(World, TargetJointWontCauseTunnelling)
     std::cout << " range=(" << min_x << "," << min_y << ")-(" << max_x << "," << max_y << ")";
     std::cout << std::endl;
 #endif
+
+    const auto target0 = target_joint->GetTarget();
+    const auto shift = Length2{2_m, 2_m};
+    world.ShiftOrigin(shift);
+    const auto target1 = target_joint->GetTarget();
+    EXPECT_EQ(target0 - shift, target1);
 }
 
 #if 0

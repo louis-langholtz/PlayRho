@@ -262,19 +262,21 @@ public:
     /// @brief Gets the inverse delta time.
     Frequency GetInvDeltaTime() const noexcept;
     
+private:
+    friend class WorldAtty;
+
     /// @brief Sets the type of the given body.
     /// @note This may alter the body's mass and velocity.
     /// @throws WrongState if this method is called while the world is locked.
     void SetType(Body& body, playrho::BodyType type);
 
     /// @brief Register for proxies for the given fixture.
-    bool RegisterForProxies(Fixture* fixture);
+    void RegisterForProxies(Fixture& fixture);
     
     /// @brief Register for proxies for the given body.
-    bool RegisterForProxies(Body* body);
+    void RegisterForProxies(Body& body);
 
     /// @brief Creates a fixture with the given parameters.
-    /// @throws InvalidArgument if called for a body that doesn't belong to this world.
     /// @throws InvalidArgument if called without a shape.
     /// @throws InvalidArgument if called for a shape with a vertex radius less than the
     ///    minimum vertex radius.
@@ -302,18 +304,16 @@ public:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
+    bool DestroyFixture(Fixture& fixture, bool resetMassData = true);
     
     /// @brief Touches each proxy of the given fixture.
-    /// @note Fixture must belong to a body that belongs to this world or this method will
-    ///   return false.
+    /// @warning Behavior is undefined if called with a fixture for a body which doesn't
+    ///   belong to this world.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    bool TouchProxies(Fixture& fixture) noexcept;
+    void TouchProxies(Fixture& fixture) noexcept;
     
     /// @brief Sets new fixtures flag.
     void SetNewFixtures() noexcept;
-
-private:
 
     /// @brief Flags type data type.
     using FlagsType = std::uint32_t;
@@ -365,7 +365,7 @@ private:
     
     /// @brief Internal destroy.
     /// @warning Behavior is undefined if passed a null pointer for the joint.
-    void InternalDestroy(Joint* joint);
+    void InternalDestroy(Joint& joint);
 
     /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
@@ -510,10 +510,10 @@ private:
     bool Add(Joint* j);
 
     /// @brief Removes the given body from this world.
-    bool Remove(const Body& b);
+    void Remove(const Body& b);
  
     /// @brief Removes the given joint from this world.
-    bool Remove(Joint& j);
+    void Remove(const Joint& j);
 
     /// @brief Whether or not "step" is complete.
     /// @details The "step" is completed when there are no more TOI events for the current time step.
