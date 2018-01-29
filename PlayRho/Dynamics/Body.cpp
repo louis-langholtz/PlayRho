@@ -26,6 +26,7 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Common/WrongState.hpp>
+#include <PlayRho/Dynamics/WorldAtty.hpp>
 
 #include <iterator>
 #include <type_traits>
@@ -109,13 +110,13 @@ Body::~Body()
 
 void Body::SetType(playrho::BodyType type)
 {
-    m_world->SetType(*this, type);
+    WorldAtty::SetType(*m_world, *this, type);
 }
 
 Fixture* Body::CreateFixture(const Shape& shape, const FixtureConf& def,
                              bool resetMassData)
 {
-    return m_world->CreateFixture(*this, shape, def, resetMassData);
+    return WorldAtty::CreateFixture(*m_world, *this, shape, def, resetMassData);
 }
 
 bool Body::DestroyFixture(Fixture* fixture, bool resetMassData)
@@ -124,7 +125,7 @@ bool Body::DestroyFixture(Fixture* fixture, bool resetMassData)
     {
         return false;
     }
-    return m_world->DestroyFixture(fixture, resetMassData);
+    return WorldAtty::DestroyFixture(*m_world, fixture, resetMassData);
 }
 
 void Body::DestroyFixtures()
@@ -305,7 +306,7 @@ void Body::SetTransform(Length2 location, Angle angle)
 
     m_sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
     
-    GetWorld()->RegisterForProxies(this);
+    WorldAtty::RegisterForProxies(*GetWorld(), this);
 }
 
 void Body::SetEnabled(bool flag)
@@ -331,7 +332,7 @@ void Body::SetEnabled(bool flag)
 
     // Register for proxies so contacts created or destroyed the next time step.
     std::for_each(begin(m_fixtures), end(m_fixtures), [&](Fixtures::value_type &f) {
-        m_world->RegisterForProxies(GetPtr(f));
+        WorldAtty::RegisterForProxies(*m_world, GetPtr(f));
     });
 }
 

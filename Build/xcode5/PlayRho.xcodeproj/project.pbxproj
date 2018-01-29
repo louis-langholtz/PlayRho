@@ -187,6 +187,7 @@
 		47AB01BA1D6FA40C0084D721 /* Dump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AB01B91D6FA40C0084D721 /* Dump.cpp */; };
 		47AFC3051DAEBC120023E9D1 /* PositionSolverManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */; };
 		47B490D7201E6C3000AB07A0 /* IslandStats.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B490D5201E6C3000AB07A0 /* IslandStats.hpp */; };
+		47B490DB201EB54500AB07A0 /* WorldAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B490D9201EB54500AB07A0 /* WorldAtty.hpp */; };
 		47B58F551F570E2C00354C34 /* DynamicMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47B58F531F570E2C00354C34 /* DynamicMemory.cpp */; };
 		47B58F561F570E2C00354C34 /* DynamicMemory.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47B58F541F570E2C00354C34 /* DynamicMemory.hpp */; };
 		47B58F591F57218400354C34 /* Version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47B58F571F57218400354C34 /* Version.cpp */; };
@@ -576,6 +577,7 @@
 		47AB01B91D6FA40C0084D721 /* Dump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dump.cpp; sourceTree = "<group>"; };
 		47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PositionSolverManifold.cpp; sourceTree = "<group>"; };
 		47B490D5201E6C3000AB07A0 /* IslandStats.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IslandStats.hpp; sourceTree = "<group>"; };
+		47B490D9201EB54500AB07A0 /* WorldAtty.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = WorldAtty.hpp; sourceTree = "<group>"; };
 		47B58F531F570E2C00354C34 /* DynamicMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicMemory.cpp; sourceTree = "<group>"; };
 		47B58F541F570E2C00354C34 /* DynamicMemory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DynamicMemory.hpp; sourceTree = "<group>"; };
 		47B58F571F57218400354C34 /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
@@ -1063,6 +1065,7 @@
 				478E67CA1E777A43009B9AD5 /* StepStats.hpp */,
 				80BB8956141C3E5900F1753A /* World.cpp */,
 				80BB8957141C3E5900F1753A /* World.hpp */,
+				47B490D9201EB54500AB07A0 /* WorldAtty.hpp */,
 				47440F0A1EDA365400AB3F51 /* WorldConf.hpp */,
 				80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */,
 				80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */,
@@ -1331,6 +1334,7 @@
 				4734B2211DC1340500F15E29 /* Span.hpp in Headers */,
 				80BB8998141C3E5900F1753A /* DiskShapeConf.hpp in Headers */,
 				472724301E315E1A00C64921 /* Fixed.hpp in Headers */,
+				47B490DB201EB54500AB07A0 /* WorldAtty.hpp in Headers */,
 				47C85D211F0DA14500F70C56 /* Templates.hpp in Headers */,
 				80BB899A141C3E5900F1753A /* EdgeShapeConf.hpp in Headers */,
 				470F94CC1EC4D95D00AA3C82 /* BodyAtty.hpp in Headers */,

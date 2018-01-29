@@ -262,6 +262,9 @@ public:
     /// @brief Gets the inverse delta time.
     Frequency GetInvDeltaTime() const noexcept;
     
+private:
+    friend class WorldAtty;
+
     /// @brief Sets the type of the given body.
     /// @note This may alter the body's mass and velocity.
     /// @throws WrongState if this method is called while the world is locked.
@@ -312,8 +315,6 @@ public:
     
     /// @brief Sets new fixtures flag.
     void SetNewFixtures() noexcept;
-
-private:
 
     /// @brief Flags type data type.
     using FlagsType = std::uint32_t;

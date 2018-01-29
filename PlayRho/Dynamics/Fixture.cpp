@@ -24,6 +24,7 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/WorldAtty.hpp>
 
 #include <algorithm>
 
@@ -83,7 +84,7 @@ void Fixture::Refilter()
         }
     });
     
-    world->TouchProxies(*this);
+    WorldAtty::TouchProxies(*world, *this);
 }
 
 void Fixture::SetSensor(bool sensor) noexcept
