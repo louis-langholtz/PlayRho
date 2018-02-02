@@ -72,7 +72,7 @@ public:
     void EnableMotor(bool flag);
     
     /// @brief Gets the computed motor mass.
-    /// @note This is zero unless motor is enabled and either body has any rotational intertia.
+    /// @note This is zero unless motor is enabled and either body has any rotational inertia.
     RotInertia GetMotorMass() const noexcept { return m_motorMass; }
 
     /// Set the angular motor speed.

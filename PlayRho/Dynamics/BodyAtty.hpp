@@ -263,19 +263,19 @@ private:
         }
     }
     
-    /// @brief Whether the given body is in the is islanded state.
+    /// @brief Whether the given body is in the is-in-island state.
     static bool IsIslanded(const Body& b) noexcept
     {
         return b.IsIslanded();
     }
     
-    /// @brief Sets the given body to the is islanded state.
+    /// @brief Sets the given body to the is-in-island state.
     static void SetIslanded(Body& b) noexcept
     {
         b.SetIslandedFlag();
     }
     
-    /// @brief Unsets the given body's is islanded state.
+    /// @brief Unsets the given body's is-in-island state.
     static void UnsetIslanded(Body& b) noexcept
     {
         b.UnsetIslandedFlag();

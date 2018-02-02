@@ -802,8 +802,10 @@ namespace playrho {
 
     /// @brief 64-bit fixed precision type.
     ///
-    /// @note Minimum value (with 24 fraction bits) is approximately 5.9604644775390625e-08.
-    /// @note Maximum value (with 24 fraction bits) is approximately 549755813888.
+    /// @note Minimum value (with 24 fraction bits) is approximately
+    ///   <code>5.9604644775390625e-08</code>.
+    /// @note Maximum value (with 24 fraction bits) is approximately
+    ///   <code>549755813888</code>.
     ///
     using Fixed64 = Fixed<std::int64_t,24>;
     

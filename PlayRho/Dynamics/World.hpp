@@ -421,7 +421,7 @@ private:
     /// @brief Adds joints to the island.
     void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
     
-    /// @brief Removes <em>unspeedables</em> from the is <em>islanded</em> state.
+    /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
     Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
 
     /// @brief Solves the step using successive time of impact (TOI) events.

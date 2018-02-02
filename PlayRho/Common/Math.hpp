@@ -566,7 +566,7 @@ PLAYRHO_CONSTEXPR inline auto GetFwdPerpendicular(const T vector) noexcept
 }
 
 /// @brief Multiplies an M-element vector by an M-by-N matrix.
-/// @param v Vector that's interpretted as a matrix with 1 row and M-columns.
+/// @param v Vector that's interpreted as a matrix with 1 row and M-columns.
 /// @param m An M-row by N-column *transformation matrix* to multiply the vector by.
 /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
 template <std::size_t M, typename T1, std::size_t N, typename T2>

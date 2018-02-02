@@ -36,7 +36,7 @@ class FrictionJoint;
 class RopeJoint;
 class MotorJoint;
 
-/// @brief Vistor interface for Joint instances.
+/// @brief Visitor interface for Joint instances.
 ///
 /// @details Interface to inherit from for objects wishing to "visit" joints.
 ///   This uses the visitor design pattern.
@@ -47,70 +47,70 @@ class JointVisitor
 public:
     virtual ~JointVisitor() = default;
     
-    /// @brief Visits a RevoluteJoint.
+    /// @brief Visits a revolute joint (<code>RevoluteJoint</code>).
     virtual void Visit(const RevoluteJoint& joint) = 0;
     
-    /// @brief Visits a RevoluteJoint.
+    /// @brief Visits a revolute joint (<code>RevoluteJoint</code>).
     virtual void Visit(RevoluteJoint& joint) = 0;
     
-    /// @brief Visits a PrismaticJoint.
+    /// @brief Visits a prismatic joint (<code>PrismaticJoint</code>).
     virtual void Visit(const PrismaticJoint& joint) = 0;
     
-    /// @brief Visits a PrismaticJoint.
+    /// @brief Visits a prismatic joint (<code>PrismaticJoint</code>).
     virtual void Visit(PrismaticJoint& joint) = 0;
     
-    /// @brief Visits a DistanceJoint.
+    /// @brief Visits a distance joint (<code>DistanceJoint</code>).
     virtual void Visit(const DistanceJoint& joint) = 0;
     
-    /// @brief Visits a DistanceJoint.
+    /// @brief Visits a distance joint (<code>DistanceJoint</code>).
     virtual void Visit(DistanceJoint& joint) = 0;
     
-    /// @brief Visits a PulleyJoint.
+    /// @brief Visits a pulley joint (<code>PulleyJoint</code>).
     virtual void Visit(const PulleyJoint& joint) = 0;
     
-    /// @brief Visits a PulleyJoint.
+    /// @brief Visits a pulley joint (<code>PulleyJoint</code>).
     virtual void Visit(PulleyJoint& joint) = 0;
 
-    /// @brief Visits a TargetJoint.
+    /// @brief Visits a target joint (<code>TargetJoint</code>).
     virtual void Visit(const TargetJoint& joint) = 0;
 
-    /// @brief Visits a TargetJoint.
+    /// @brief Visits a target joint (<code>TargetJoint</code>).
     virtual void Visit(TargetJoint& joint) = 0;
 
-    /// @brief Visits a GearJoint.
+    /// @brief Visits a gear joint (<code>GearJoint</code>).
     virtual void Visit(const GearJoint& joint) = 0;
 
-    /// @brief Visits a GearJoint.
+    /// @brief Visits a gear joint (<code>GearJoint</code>).
     virtual void Visit(GearJoint& joint) = 0;
 
-    /// @brief Visits a WheelJoint.
+    /// @brief Visits a wheel joint (<code>WheelJoint</code>).
     virtual void Visit(const WheelJoint& joint) = 0;
 
-    /// @brief Visits a WheelJoint.
+    /// @brief Visits a wheel joint (<code>WheelJoint</code>).
     virtual void Visit(WheelJoint& joint) = 0;
     
-    /// @brief Visits a WeldJoint.
+    /// @brief Visits a weld joint (<code>WeldJoint</code>).
     virtual void Visit(const WeldJoint& joint) = 0;
     
-    /// @brief Visits a WeldJoint.
+    /// @brief Visits a weld joint (<code>WeldJoint</code>).
     virtual void Visit(WeldJoint& joint) = 0;
     
-    /// @brief Visits a FrictionJoint.
+    /// @brief Visits a friction joint (<code>FrictionJoint</code>).
     virtual void Visit(const FrictionJoint& joint) = 0;
     
-    /// @brief Visits a FrictionJoint.
+    /// @brief Visits a friction joint (<code>FrictionJoint</code>).
     virtual void Visit(FrictionJoint& joint) = 0;
     
-    /// @brief Visits a RopeJoint.
+    /// @brief Visits a rope joint (<code>RopeJoint</code>).
     virtual void Visit(const RopeJoint& joint) = 0;
     
-    /// @brief Visits a RopeJoint.
+    /// @brief Visits a rope joint (<code>RopeJoint</code>).
     virtual void Visit(RopeJoint& joint) = 0;
 
-    /// @brief Visits a MotorJoint.
+    /// @brief Visits a motor joint (<code>MotorJoint</code>).
     virtual void Visit(const MotorJoint& joint) = 0;
 
-    /// @brief Visits a MotorJoint.
+    /// @brief Visits a motor joint (<code>MotorJoint</code>).
     virtual void Visit(MotorJoint& joint) = 0;
     
 protected:

@@ -75,19 +75,19 @@ private:
         return j.SolvePositionConstraints(bodies, conf);
     }
     
-    /// @brief Whether the given joint is in the is-islanded state.
+    /// @brief Whether the given joint is in the is-in-island state.
     static bool IsIslanded(const Joint& j) noexcept
     {
         return j.IsIslanded();
     }
     
-    /// @brief Sets the given joint to being in the is-islanded state.
+    /// @brief Sets the given joint to being in the is-in-island state.
     static void SetIslanded(Joint& j) noexcept
     {
         j.SetIslanded();
     }
     
-    /// @brief Unsets the given joint from being in the is-islanded state.
+    /// @brief Unsets the given joint from being in the is-in-island state.
     static void UnsetIslanded(Joint& j) noexcept
     {
         j.UnsetIslanded();

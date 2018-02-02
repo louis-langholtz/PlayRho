@@ -170,8 +170,8 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     // Shift to center of mass then to original body origin.
     const auto massCenterOffset = GetMagnitudeSquared(massDataCenter);
     const auto centerOffset = GetMagnitudeSquared(center);
-    const auto intertialLever = massCenterOffset - centerOffset;
-    const auto massDataI = RotInertia{((AreaDensity{density} * I) + (mass * intertialLever)) / SquareRadian};
+    const auto inertialLever = massCenterOffset - centerOffset;
+    const auto massDataI = RotInertia{((AreaDensity{density} * I) + (mass * inertialLever)) / SquareRadian};
     
     return MassData{massDataCenter, mass, massDataI};
 }

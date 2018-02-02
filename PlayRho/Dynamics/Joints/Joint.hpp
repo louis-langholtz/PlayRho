@@ -196,13 +196,13 @@ private:
     virtual bool SolvePositionConstraints(BodyConstraintsMap& bodies,
                                           const ConstraintSolverConf& conf) const = 0;
 
-    /// @brief Whether this joint is in the is-islanded state.
+    /// @brief Whether this joint is in the is-in-island state.
     bool IsIslanded() const noexcept;
     
-    /// @brief Sets this joint to be in the is-islanded state.
+    /// @brief Sets this joint to be in the is-in-island state.
     void SetIslanded() noexcept;
     
-    /// @brief Unsets this joint from being in the is-islanded state.
+    /// @brief Unsets this joint from being in the is-in-island state.
     void UnsetIslanded() noexcept;
 
     Body* const m_bodyA; ///< Body A.

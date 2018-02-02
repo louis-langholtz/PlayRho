@@ -136,7 +136,7 @@ namespace d2 {
         return *this;
     }
     
-    /// @brief Gets the BodyConstraint based on the given parameters.
+    /// @brief Gets the <code>BodyConstraint</code> based on the given parameters.
     inline BodyConstraint GetBodyConstraint(const Body& body, Time time,
                                             MovementConf conf) noexcept
     {

@@ -98,7 +98,7 @@ namespace std {
 // This might already be defined by the standard library header, but
 // define it here explicitly in case it's not.
 
-/// @brief Make unsigned specialization for the __int128_t type.
+/// @brief Make unsigned specialization for the <code>__int128_t</code> type.
 template <> struct make_unsigned<PLAYRHO_INT128> {
     using type = PLAYRHO_UINT128; ///< Wider type.
 };

@@ -49,7 +49,7 @@ class Body;
 /// such as collision filters, etc.
 ///
 /// @warning you cannot reuse fixtures.
-/// @note Fixtures should be created using the Body::CreateFixture method.
+/// @note Fixtures should be created using the <code>Body::CreateFixture</code> method.
 /// @note This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
@@ -66,14 +66,14 @@ public:
     ///
     /// @warning Behavior is undefined if shape is <code>nullptr</code>.
     ///
-    /// @note This is not meant to be called by normal user code. Use the Body::CreateFixture
-    ///    method instead.
+    /// @note This is not meant to be called by normal user code. Use the
+    ///   <code>Body::CreateFixture</code> method instead.
     ///
     /// @param body Body the new fixture is to be associated with.
     /// @param def Initial fixture settings.
     ///    Friction must be greater-than-or-equal-to zero.
-    ///    AreaDensity must be greater-than-or-equal-to zero.
-    /// @param shape Sharable shape to associate fixture with. Must be non-null.
+    ///    <code>AreaDensity</code> must be greater-than-or-equal-to zero.
+    /// @param shape Shareable shape to associate fixture with. Must be non-null.
     ///
     Fixture(NonNull<Body*> body, const FixtureConf& def, const Shape& shape):
         m_body{body},
@@ -114,13 +114,13 @@ public:
     /// @brief Sets the contact filtering data.
     /// @note This won't update contacts until the next time step when either parent body
     ///    is speedable and awake.
-    /// @note This automatically calls Refilter.
+    /// @note This automatically calls <code>Refilter</code>.
     void SetFilterData(Filter filter);
 
     /// @brief Gets the contact filtering data.
     Filter GetFilterData() const noexcept;
 
-    /// @brief Refilter the fixture.
+    /// @brief Re-filter the fixture.
     /// @note Call this if you want to establish collision that was previously disabled by
     ///   <code>ShouldCollide(const Fixture&, const Fixture&)</code>.
     /// @sa bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
@@ -302,7 +302,7 @@ bool TestPoint(const Fixture& f, Length2 p) noexcept;
 
 /// @brief Sets the associated body's sleep status to awake.
 /// @note This is a convenience function that simply looks up the fixture's body and
-///   calls that body' SetAwake method.
+///   calls that body' <code>SetAwake</code> method.
 /// @param f Fixture whose body should be awoken.
 /// @relatedalso Fixture
 void SetAwake(const Fixture& f) noexcept;

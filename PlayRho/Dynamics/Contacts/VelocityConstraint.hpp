@@ -57,7 +57,7 @@ public:
         bool blockSolve = true; ///< Whether to block solve.
     };
     
-    /// @brief Gets the default configuration for a VelocityConstraint.
+    /// @brief Gets the default configuration for a <code>VelocityConstraint</code>.
     static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept
     {
         return Conf{};
@@ -92,7 +92,7 @@ public:
     UnitVec GetTangent() const noexcept { return GetFwdPerpendicular(m_normal); }
     
     /// Gets the count of points added to this object.
-    /// @return Value between 0 and MaxManifoldPoints
+    /// @return Value between 0 and <code>MaxManifoldPoints</code>.
     /// @sa MaxManifoldPoints.
     /// @sa AddPoint.
     size_type GetPointCount() const noexcept { return m_pointCount; }
@@ -213,9 +213,11 @@ public:
         LinearVelocity velocityBias = 0_mps;
     };
     
-    /// Accesses the point identified by the given index.
-    /// @warning Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
-    /// @param index Index of the point to return. This should be a value less than returned by GetPointCount().
+    /// @brief Accesses the point identified by the given index.
+    /// @warning Behavior is undefined if given index is not less than
+    ///   <code>MaxManifoldPoints</code>.
+    /// @param index Index of the point to return. This should be a value less than returned
+    ///   by <code>GetPointCount</code>.
     /// @return velocity constraint point for the given index. This point's data will be invalid
     ///   unless previously added and set.
     /// @sa GetPointCount.
@@ -228,9 +230,10 @@ public:
 private:
     
     /// Adds the given point to this contact velocity constraint object.
-    /// @details Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already
-    ///   been added, call GetPointCount().
-    /// @warning Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points.
+    /// @details Adds up to <code>MaxManifoldPoints</code> points. To find out how many points
+    ///   have already been added, call <code>GetPointCount</code>.
+    /// @warning Behavior is undefined if an attempt is made to add more than
+    ///   <code>MaxManifoldPoints</code> points.
     /// @sa GetPointCount().
     void AddPoint(Momentum normalImpulse, Momentum tangentImpulse,
                   Length2 relA, Length2 relB, Conf conf);
@@ -243,8 +246,10 @@ private:
                    Length2 relA, Length2 relB, Conf conf) const noexcept;
     
     /// Accesses the point identified by the given index.
-    /// @warning Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>.
-    /// @param index Index of the point to return. This should be a value less than returned by GetPointCount().
+    /// @warning Behavior is undefined if given index is not less than
+    ///   <code>MaxManifoldPoints</code>.
+    /// @param index Index of the point to return. This should be a value less than returned
+    ///   by <code>GetPointCount</code>.
     /// @return velocity constraint point for the given index. This point's data will be invalid
     ///   unless previously added and set.
     /// @sa GetPointCount.

@@ -886,7 +886,7 @@ void World::AddToIsland(Island& island, Body& seed,
     
     // Perform a depth first search (DFS) on the constraint graph.
 
-    // Create a stack for bodies to be islanded that aren't already islanded.
+    // Create a stack for bodies to be is-in-island that aren't already in the island.
     auto stack = BodyStack{};
     stack.reserve(remNumBodies);
 
@@ -1757,8 +1757,8 @@ World::ProcessContactsForTOI(Island& island, Body& body, Real toi,
         else
         {
             /*
-             * If other is islanded but not in current island, then something's gone wrong.
-             * Other needs to be in current island but was already islanded.
+             * If other is-in-island but not in current island, then something's gone wrong.
+             * Other needs to be in current island but was already in the island.
              * A previous contact island didn't grow to include all the bodies it needed or
              * perhaps the current contact is-touching while another one wasn't and the
              * inconsistency is throwing things off.
@@ -1768,7 +1768,7 @@ World::ProcessContactsForTOI(Island& island, Body& body, Real toi,
 #endif
     };
 
-    // Note: the original contact (for body of which this method was called) already islanded.
+    // Note: the original contact (for body of which this method was called) already is-in-island.
     const auto bodyImpenetrable = body.IsImpenetrable();
     for (auto&& ci: body.GetContacts())
     {

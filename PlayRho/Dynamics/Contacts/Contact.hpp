@@ -160,7 +160,7 @@ public:
 
     /// @brief Sets the friction value for this contact.
     /// @details Override the default friction mixture.
-    /// @note You can call this in ContactListener::PreSolve.
+    /// @note You can call this in <code>ContactListener::PreSolve</code>.
     /// @note This value persists until set or reset.
     /// @warning Behavior is undefined if given a negative friction value.
     /// @param friction Co-efficient of friction value of zero or greater.
@@ -174,7 +174,7 @@ public:
 
     /// @brief Sets the restitution.
     /// @details This override the default restitution mixture.
-    /// @note You can call this in ContactListener::PreSolve.
+    /// @note You can call this in <code>ContactListener::PreSolve</code>.
     /// @note The value persists until you set or reset.
     void SetRestitution(Real restitution) noexcept;
 
@@ -255,8 +255,8 @@ private:
     /// @note Touching related state depends on the following data:
     ///   - The fixtures' sensor states.
     ///   - The fixtures bodies' transformations.
-    ///   - The "maxCirclesRatio" per-step configuration state *OR* the "maxDistanceIters"
-    ///     per-step configuration state.
+    ///   - The <code>maxCirclesRatio</code> per-step configuration state *OR* the
+    ///     <code>maxDistanceIters</code> per-step configuration state.
     ///
     /// @param conf Per-step configuration information.
     /// @param listener Listener that if non-null is called with status information.
@@ -294,13 +294,13 @@ private:
     /// @warning Do not modify the manifold unless you understand the internals of the engine.
     Manifold& GetMutableManifold() noexcept;
     
-    /// @brief Whether this contact is in the is islanded state.
+    /// @brief Whether this contact is in the is-in-island state.
     bool IsIslanded() const noexcept;
     
-    /// @brief Sets this contact to the is islanded state.
+    /// @brief Sets this contact to the is-in-island state.
     void SetIslanded() noexcept;
     
-    /// @brief Unsets the is islanded state.
+    /// @brief Unsets the is-in-island state.
     void UnsetIslanded() noexcept;
 
     // Member variables...
@@ -327,7 +327,7 @@ private:
     
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
-    /// @note Only valid if m_flags & e_toiFlag
+    /// @note Only valid if <code>m_flags & e_toiFlag</code>.
     Real m_toi;
     
     substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
