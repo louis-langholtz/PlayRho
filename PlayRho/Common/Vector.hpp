@@ -225,7 +225,7 @@ struct IsVector<Vector<T, N>>: std::true_type {};
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline bool operator== (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
 {
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
         if (lhs[i] != rhs[i])
         {
@@ -260,7 +260,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T, decltype(-T{})>::value, Vector<T, N>>::type
 operator- (Vector<T, N> v) noexcept
 {
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
         v[i] = -v[i];
     }
@@ -274,7 +274,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>&>::type
 operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
         lhs[i] += rhs[i];
     }
@@ -288,7 +288,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>&>::type
 operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
         lhs[i] -= rhs[i];
     }
@@ -322,7 +322,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T1, decltype(T1{} * T2{})>::value, Vector<T1, N>&>::type
 operator*= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
         lhs[i] *= rhs;
     }
@@ -336,7 +336,7 @@ PLAYRHO_CONSTEXPR inline
 typename std::enable_if<std::is_same<T1, decltype(T1{} / T2{})>::value, Vector<T1, N>&>::type
 operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
         lhs[i] /= rhs;
     }
@@ -369,9 +369,9 @@ operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& 
 {
     //using OT = decltype(T1{} * T2{});
     auto result = Vector<Vector<OT, C>, A>{};
-    for (auto a = static_cast<std::size_t>(0); a < A; ++a)
+    for (auto a = decltype(A){0}; a < A; ++a)
     {
-        for (auto c = static_cast<std::size_t>(0); c < C; ++c)
+        for (auto c = decltype(C){0}; c < C; ++c)
         {
             // So for 2x3 lhs matrix * 3*2 rhs matrix... result is 2x2 matrix:
             // result[0][0] = lhs[0][0] * rhs[0][0] + lhs[0][1] * rhs[1][0] + lhs[0][2] * rhs[2][0]
@@ -380,7 +380,7 @@ operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& 
             // result[1][1] = lhs[1][0] * rhs[0][1] + lhs[1][1] * rhs[1][1] + lhs[1][2] * rhs[2][1]
             // This is also: result[a][c] = row(lhs, a) * col(rhs, c)
             auto element = OT{};
-            for (auto b = static_cast<std::size_t>(0); b < B; ++b)
+            for (auto b = decltype(B){0}; b < B; ++b)
             {
                 element += lhs[a][b] * rhs[b][c];
             }
@@ -404,10 +404,10 @@ typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, V
 operator* (const Vector<T1, A>& lhs, const Vector<Vector<T2, B>, A>& rhs) noexcept
 {
     auto result = Vector<OT, B>{};
-    for (auto b = static_cast<std::size_t>(0); b < B; ++b)
+    for (auto b = decltype(B){0}; b < B; ++b)
     {
         auto element = OT{};
-        for (auto a = static_cast<std::size_t>(0); a < A; ++a)
+        for (auto a = decltype(A){0}; a < A; ++a)
         {
             element += lhs[a] * rhs[a][b];
         }
@@ -430,10 +430,10 @@ typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, V
 operator* (const Vector<Vector<T1, A>, B>& lhs, const Vector<T2, A>& rhs) noexcept
 {
     auto result = Vector<OT, B>{};
-    for (auto b = static_cast<std::size_t>(0); b < B; ++b)
+    for (auto b = decltype(B){0}; b < B; ++b)
     {
         auto element = OT{};
-        for (auto a = static_cast<std::size_t>(0); a < A; ++a)
+        for (auto a = decltype(A){0}; a < A; ++a)
         {
             element += lhs[b][a] * rhs[a];
         }
@@ -453,7 +453,7 @@ operator* (const T1 s, Vector<T2, N> a) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
         result[i] = s * a[i];
     }
@@ -471,7 +471,7 @@ operator* (Vector<T1, N> a, const T2 s) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
         result[i] = a[i] * s;
     }
@@ -487,7 +487,7 @@ operator/ (Vector<T1, N> a, const T2 s) noexcept
 {
     // Can't base this off of /= since result type in this case can be different
     auto result = Vector<OT, N>{};
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
         result[i] = a[i] / s;
     }
@@ -557,9 +557,9 @@ template <typename T, std::size_t N>
 ::std::ostream& operator<< (::std::ostream& os, const Vector<T, N>& value)
 {
     os << "{";
-    for (auto i = static_cast<std::size_t>(0); i < N; ++i)
+    for (auto i = decltype(N){0}; i < N; ++i)
     {
-        if (i > static_cast<std::size_t>(0))
+        if (i > decltype(N){0})
         {
             os << ',';
         }

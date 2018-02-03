@@ -139,20 +139,17 @@ Island::Island(Bodies::size_type bodyCapacity,
 
 std::size_t Count(const Island& island, const Body* entry)
 {
-    return static_cast<std::size_t>(count(cbegin(island.m_bodies), cend(island.m_bodies),
-                                          entry));
+    return MakeUnsigned(count(cbegin(island.m_bodies), cend(island.m_bodies), entry));
 }
 
 std::size_t Count(const Island& island, const Contact* entry)
 {
-    return static_cast<std::size_t>(count(cbegin(island.m_contacts), cend(island.m_contacts),
-                                          entry));
+    return MakeUnsigned(count(cbegin(island.m_contacts), cend(island.m_contacts), entry));
 }
 
 std::size_t Count(const Island& island, const Joint* entry)
 {
-    return static_cast<std::size_t>(count(cbegin(island.m_joints), cend(island.m_joints),
-                                          entry));
+    return MakeUnsigned(count(cbegin(island.m_joints), cend(island.m_joints), entry));
 }
 
 } // namespace d2

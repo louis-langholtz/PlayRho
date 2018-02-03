@@ -42,7 +42,7 @@ namespace playrho {
 ///
 inline Real MixFriction(Real friction1, Real friction2)
 {
-    assert(friction1 >= Real(0) && friction2 >= Real(0));
+    assert(friction1 >= 0 && friction2 >= 0);
     return sqrt(friction1 * friction2);
 }
 

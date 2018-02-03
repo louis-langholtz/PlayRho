@@ -1346,7 +1346,7 @@ ToiStepStats World::SolveToi(const StepConf& conf)
 
         stats.maxSimulContacts = std::max(stats.maxSimulContacts,
                                           static_cast<decltype(stats.maxSimulContacts)>(ncount));
-        stats.contactsFound += static_cast<ContactCounter>(ncount);
+        stats.contactsFound += ncount;
         auto islandsFound = 0u;
         if (!IsIslanded(contact))
         {
@@ -1567,7 +1567,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
      * the body constraint doesn't need to pass an elapsed time (and doesn't need to
      * update the velocity from what it already is).
      */
-    auto bodyConstraints = GetBodyConstraints(island.m_bodies, Time(0), GetMovementConf(conf));
+    auto bodyConstraints = GetBodyConstraints(island.m_bodies, Time{0}, GetMovementConf(conf));
     auto bodyConstraintsMap = GetBodyConstraintsMap(island.m_bodies, bodyConstraints);
 
     // Initialize the body state.
@@ -1979,9 +1979,9 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     atomic<uint32_t> updated;
     atomic<uint32_t> skipped;
 #else
-    auto ignored = uint32_t(0);
-    auto updated = uint32_t(0);
-    auto skipped = uint32_t(0);
+    auto ignored = uint32_t{0};
+    auto updated = uint32_t{0};
+    auto skipped = uint32_t{0};
 #endif
 
     const auto updateConf = Contact::GetUpdateConf(conf);

@@ -76,7 +76,7 @@ Joint* Joint::Create(const JointConf& def)
 
 Joint::FlagsType Joint::GetFlags(const JointConf& def) noexcept
 {
-    auto flags = Joint::FlagsType(0);
+    auto flags = Joint::FlagsType{0};
     if (def.collideConnected)
     {
         flags |= e_collideConnectedFlag;

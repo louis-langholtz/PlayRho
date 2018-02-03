@@ -204,7 +204,7 @@ TEST(World, Init)
         const auto p1 = Length2{0_m, 0_m};
         const auto p2 = Length2{100_m, 0_m};
         auto calls = 0;
-        RayCast(world.GetTree(), RayCastInput{p1, p2, 1}, [&](Fixture*, ChildCounter, Length2, UnitVec) {
+        RayCast(world.GetTree(), RayCastInput{p1, p2, UnitInterval<Real>{1}}, [&](Fixture*, ChildCounter, Length2, UnitVec) {
             ++calls;
             return RayCastOpcode::ResetRay;
         });
@@ -688,7 +688,7 @@ TEST(World, RayCast)
 
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
                     [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
@@ -711,7 +711,7 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
                     [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
@@ -734,7 +734,7 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
                                     [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
@@ -757,7 +757,7 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
                                     [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
@@ -780,7 +780,7 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
                                     [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
@@ -803,7 +803,7 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, 1},
+        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
           [&](Fixture* f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {

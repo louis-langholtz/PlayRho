@@ -193,8 +193,7 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
             // u = ((q - p) x r) / (r x s)
             const auto u = Cross(q_sub_p, ray) / ray_cross_edge;
 
-            if ((t >= Real(0)) && (t <= Real(1)) &&
-                (u >= Real(0)) && (u <= Real(1)))
+            if ((t >= 0) && (t <= 1) && (u >= 0) && (u <= 1))
             {
                 // The two lines meet at the point p + t r = q + u s
                 if (minT > t)

@@ -59,7 +59,7 @@ namespace playrho {
         static PLAYRHO_CONSTEXPR const bool has_one = false;
         
         /// @brief Gets the "one" value.
-        static PLAYRHO_CONSTEXPR inline T one() noexcept { return T(0); }
+        static PLAYRHO_CONSTEXPR inline T one() noexcept { return T{0}; }
     };
 
     template<class T, class = void>
@@ -67,7 +67,7 @@ namespace playrho {
     
     /// @brief Template specialization for valid/acceptable "arithmetic" types.
     template<class T>
-    struct HasOne<T, VoidT<decltype(T(1)) > >: std::true_type {};
+    struct HasOne<T, VoidT<decltype(T{1}) > >: std::true_type {};
 
     /// @brief Specialization of the value check helper.
     template <typename T>
@@ -77,7 +77,7 @@ namespace playrho {
         static PLAYRHO_CONSTEXPR const bool has_one = true;
 
         /// @brief Gets the "one" value.
-        static PLAYRHO_CONSTEXPR inline T one() noexcept { return T(1); }
+        static PLAYRHO_CONSTEXPR inline T one() noexcept { return T{1}; }
     };
 
     /// @brief Checks if the given value is above negative infinity.
@@ -135,13 +135,13 @@ namespace playrho {
                 case LoValueCheck::Any:
                     return;
                 case LoValueCheck::AboveZero:
-                    if (!(value > value_type(0)))
+                    if (!(value > value_type{0}))
                     {
                         throw exception_type{"BoundedValue: value not > 0"};
                     }
                     return;
                 case LoValueCheck::ZeroOrMore:
-                    if (!(value >= value_type(0)))
+                    if (!(value >= value_type{0}))
                     {
                         throw exception_type{"BoundedValue: value not >= 0"};
                     }
@@ -166,13 +166,13 @@ namespace playrho {
                 case HiValueCheck::Any:
                     return;
                 case HiValueCheck::BelowZero:
-                    if (!(value < value_type(0)))
+                    if (!(value < value_type{0}))
                     {
                         throw exception_type{"BoundedValue: value not < 0"};
                     }
                     return;
                 case HiValueCheck::ZeroOrLess:
-                    if (!(value <= value_type(0)))
+                    if (!(value <= value_type{0}))
                     {
                         throw exception_type{"BoundedValue: value not <= 0"};
                     }

@@ -116,7 +116,7 @@ ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
 MassData ChainShapeConf::GetMassData() const noexcept
 {
     const auto density = this->density;
-    if (density > AreaDensity(0))
+    if (density > 0_kgpm2)
     {
         const auto vertexCount = GetVertexCount();
         if (vertexCount > 1)
@@ -124,7 +124,7 @@ MassData ChainShapeConf::GetMassData() const noexcept
             // XXX: This overcounts for the overlapping circle shape.
             auto mass = 0_kg;
             auto I = RotInertia{0};
-            auto area = Area(0);
+            auto area = 0_m2;
             auto center = Length2{};
             auto vprev = GetVertex(0);
             const auto circle_area = Square(vertexRadius) * Pi;

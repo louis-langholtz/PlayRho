@@ -52,7 +52,7 @@ public:
     /// @brief Configuration data for velocity constraints.
     struct Conf
     {
-        Real dtRatio = Real(1); ///< Delta time ratio.
+        Real dtRatio = 1; ///< Delta time ratio.
         LinearVelocity velocityThreshold = DefaultVelocityThreshold; ///< Velocity threshold.
         bool blockSolve = true; ///< Whether to block solve.
     };

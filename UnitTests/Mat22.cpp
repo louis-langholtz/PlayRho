@@ -52,7 +52,7 @@ TEST(Mat22, Invert)
     const auto inverted = Invert(foo);
     const auto cp = Cross(v1, v2);
     ASSERT_EQ(cp, Real(-2));
-    const auto det = (cp != 0)? Real(1)/cp : Real(0);
+    const auto det = (cp != 0)? Real{1} / cp : Real{0};
     
     EXPECT_EQ(Get<0>(Get<0>(inverted)), det * Get<1>(Get<1>(foo)));
     EXPECT_EQ(Get<1>(Get<0>(inverted)), -det * Get<1>(Get<0>(foo)));

@@ -509,23 +509,40 @@ TEST(Math, GetContactRelVelocity)
 
 TEST(Math, NextPowerOfTwo)
 {
-    EXPECT_EQ(NextPowerOfTwo(0u), 1u);
-    EXPECT_EQ(NextPowerOfTwo(1u), 2u);
-    EXPECT_EQ(NextPowerOfTwo(2u), 4u);
-    EXPECT_EQ(NextPowerOfTwo(3u), 4u);
-    EXPECT_EQ(NextPowerOfTwo(4u), 8u);
-    EXPECT_EQ(NextPowerOfTwo(5u), 8u);
-    EXPECT_EQ(NextPowerOfTwo(6u), 8u);
-    EXPECT_EQ(NextPowerOfTwo(7u), 8u);
-    EXPECT_EQ(NextPowerOfTwo(8u), 16u);
-    EXPECT_EQ(NextPowerOfTwo(9u), 16u);
-    EXPECT_EQ(NextPowerOfTwo(10u), 16u);
-    EXPECT_EQ(NextPowerOfTwo(11u), 16u);
-    EXPECT_EQ(NextPowerOfTwo(12u), 16u);
-    EXPECT_EQ(NextPowerOfTwo(13u), 16u);
-    EXPECT_EQ(NextPowerOfTwo(14u), 16u);
-    EXPECT_EQ(NextPowerOfTwo(15u), 16u);
-    EXPECT_EQ(NextPowerOfTwo(16u), 32u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{0u}), 1u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{1u}), 2u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{2u}), 4u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{3u}), 4u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{4u}), 8u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{5u}), 8u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{6u}), 8u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{7u}), 8u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{8u}), 16u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{9u}), 16u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{10u}), 16u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{11u}), 16u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{12u}), 16u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{13u}), 16u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{14u}), 16u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{15u}), 16u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{16u}), 32u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{31u}), 32u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{32u}), 64u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{63u}), 64u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{64u}), 128u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{127u}), 128u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{128u}), 256u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{255u}), 256u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{256u}), 512u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{511u}), 512u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{512u}), 1024u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{1023u}), 1024u);
+    EXPECT_EQ(NextPowerOfTwo(std::uint32_t{1024u}), 2048u);
+    for (auto i = std::uint32_t{0}; i < 32u; ++i)
+    {
+        const auto val = (std::uint32_t{1u} << i);
+        EXPECT_EQ(NextPowerOfTwo(val - 1u), val);
+    }
 
     PLAYRHO_CONSTEXPR const auto max = std::numeric_limits<std::uint32_t>::max() / 512;
     for (auto i = decltype(max){0}; i < max; ++i)
