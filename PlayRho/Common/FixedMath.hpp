@@ -242,11 +242,11 @@ constexpr inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
     // 1 - 2^2/2 = -1
     // 1 - 2^2/2 + 2^4/24 = -0.3333
     // 1 - 2^2/2 + 2^4/24 - 2^6/720 = -0.422
-    auto res = Fixed<BT, FB>(1);
+    auto res = Fixed<BT, FB>{1};
     auto sgn = -1;
     constexpr const auto last = 2 * N;
     auto ft = 1;
-    auto pt = Fixed<BT, FB>(1);
+    auto pt = Fixed<BT, FB>{1};
     for (auto i = 2; i <= last; i += 2)
     {
         ft *= (i - 1) * i;
@@ -338,9 +338,9 @@ template <typename BT, unsigned int FB>
 inline auto sqrt(Fixed<BT, FB> arg)
 {
     constexpr auto MaxError = Fixed<BT, FB>::GetMin() * 2;
-    auto lower = Fixed<BT, FB>(0);
-    auto upper = Fixed<BT, FB>(arg);
-    auto temp = Fixed<BT, FB>(0);
+    auto lower = Fixed<BT, FB>{0};
+    auto upper = Fixed<BT, FB>{arg};
+    auto temp = Fixed<BT, FB>{0};
     while (abs(arg - (temp * temp)) > MaxError)
     {
         const auto mid = (lower + upper) / 2;

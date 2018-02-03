@@ -147,7 +147,7 @@ public:
     
     /// @brief Creates a fixture and attaches it to this body.
     ///
-    /// @param shape Sharable shape definition.
+    /// @param shape Shareable shape definition.
     ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
     ///   the body's world.
     /// @param def Initial fixture settings.
@@ -180,7 +180,8 @@ public:
     /// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
     ///
     /// @warning This function is locked during callbacks.
-    /// @note Make sure to explicitly call ResetMassData after fixtures have been destroyed.
+    /// @note Make sure to explicitly call <code>ResetMassData</code> after fixtures have
+    ///   been destroyed.
     /// @sa ResetMassData.
     ///
     /// @param fixture the fixture to be removed.
@@ -337,9 +338,10 @@ public:
     /// @details Sets this body to awake and resets its under-active time if it's a "speedable"
     ///   body. This method has no effect otherwise.
     ///
-    /// @post If this body is a "speedable" body, then this body's IsAwake method returns true.
-    /// @post If this body is a "speedable" body, then this body's GetUnderActiveTime method
-    ///   returns zero.
+    /// @post If this body is a "speedable" body, then this body's <code>IsAwake</code> method
+    ///   returns true.
+    /// @post If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code>
+    ///   method returns zero.
     ///
     void SetAwake() noexcept;
 
@@ -349,9 +351,10 @@ public:
     /// asleep, resets this body's under active time, and resets this body's velocity (linear
     /// and angular).
     ///
-    /// @post This body's IsAwake method returns false.
-    /// @post This body's GetUnderActiveTime method returns zero.
-    /// @post This body's GetVelocity method returns zero linear and zero angular speed.
+    /// @post This body's <code>IsAwake</code> method returns false.
+    /// @post This body's <code>GetUnderActiveTime</code> method returns zero.
+    /// @post This body's <code>GetVelocity</code> method returns zero linear and zero angular
+    ///   speed.
     ///
     void UnsetAwake() noexcept;
 
@@ -439,13 +442,13 @@ private:
 
     friend class BodyAtty;
 
-    /// @brief Whether this body is in is-islanded state.
+    /// @brief Whether this body is in is-in-island state.
     bool IsIslanded() const noexcept;
 
-    /// @brief Sets this body to the is-islanded state.
+    /// @brief Sets this body to the is-in-island state.
     void SetIslandedFlag() noexcept;
     
-    /// @brief Unsets this body to the is-islanded state.
+    /// @brief Unsets this body to the is-in-island state.
     void UnsetIslandedFlag() noexcept;
     
     /// @brief Sets the body's awake flag.

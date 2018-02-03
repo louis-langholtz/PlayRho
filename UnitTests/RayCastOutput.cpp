@@ -183,7 +183,7 @@ TEST(RayCastOutput, RayCastShapeFF)
     const auto output = RayCast(Shape{DiskShapeConf{1_m}}, ChildCounter{0}, input, xfm);
     EXPECT_TRUE(output.has_value());
     EXPECT_EQ(output->normal, d2::UnitVec::GetRight());
-    EXPECT_NEAR(static_cast<double>(output->fraction), 0.75, 0.01);
+    EXPECT_NEAR(static_cast<double>(Real{output->fraction}), 0.75, 0.01);
 }
 
 TEST(RayCastHit, ByteSize)

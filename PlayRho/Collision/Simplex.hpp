@@ -170,7 +170,7 @@ namespace d2 {
         assert(simplexEdges.size() == normalizedWeights.size());
 #ifndef NDEBUG
         const auto sum = std::accumulate(std::begin(normalizedWeights), std::end(normalizedWeights),
-                                         Real(0));
+                                         Real{0});
         assert(AlmostEqual(Real{1}, sum));
 #endif
     }

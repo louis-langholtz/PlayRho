@@ -886,7 +886,7 @@ void World::AddToIsland(Island& island, Body& seed,
     
     // Perform a depth first search (DFS) on the constraint graph.
 
-    // Create a stack for bodies to be islanded that aren't already islanded.
+    // Create a stack for bodies to be is-in-island that aren't already in the island.
     auto stack = BodyStack{};
     stack.reserve(remNumBodies);
 
@@ -1346,7 +1346,7 @@ ToiStepStats World::SolveToi(const StepConf& conf)
 
         stats.maxSimulContacts = std::max(stats.maxSimulContacts,
                                           static_cast<decltype(stats.maxSimulContacts)>(ncount));
-        stats.contactsFound += static_cast<ContactCounter>(ncount);
+        stats.contactsFound += ncount;
         auto islandsFound = 0u;
         if (!IsIslanded(contact))
         {
@@ -1567,7 +1567,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
      * the body constraint doesn't need to pass an elapsed time (and doesn't need to
      * update the velocity from what it already is).
      */
-    auto bodyConstraints = GetBodyConstraints(island.m_bodies, Time(0), GetMovementConf(conf));
+    auto bodyConstraints = GetBodyConstraints(island.m_bodies, Time{0}, GetMovementConf(conf));
     auto bodyConstraintsMap = GetBodyConstraintsMap(island.m_bodies, bodyConstraints);
 
     // Initialize the body state.
@@ -1757,8 +1757,8 @@ World::ProcessContactsForTOI(Island& island, Body& body, Real toi,
         else
         {
             /*
-             * If other is islanded but not in current island, then something's gone wrong.
-             * Other needs to be in current island but was already islanded.
+             * If other is-in-island but not in current island, then something's gone wrong.
+             * Other needs to be in current island but was already in the island.
              * A previous contact island didn't grow to include all the bodies it needed or
              * perhaps the current contact is-touching while another one wasn't and the
              * inconsistency is throwing things off.
@@ -1768,7 +1768,7 @@ World::ProcessContactsForTOI(Island& island, Body& body, Real toi,
 #endif
     };
 
-    // Note: the original contact (for body of which this method was called) already islanded.
+    // Note: the original contact (for body of which this method was called) already is-in-island.
     const auto bodyImpenetrable = body.IsImpenetrable();
     for (auto&& ci: body.GetContacts())
     {
@@ -1979,9 +1979,9 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     atomic<uint32_t> updated;
     atomic<uint32_t> skipped;
 #else
-    auto ignored = uint32_t(0);
-    auto updated = uint32_t(0);
-    auto skipped = uint32_t(0);
+    auto ignored = uint32_t{0};
+    auto updated = uint32_t{0};
+    auto skipped = uint32_t{0};
 #endif
 
     const auto updateConf = Contact::GetUpdateConf(conf);

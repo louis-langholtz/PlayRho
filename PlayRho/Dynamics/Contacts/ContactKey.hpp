@@ -22,7 +22,7 @@
 #define PLAYRHO_DYNAMICS_CONTACTS_CONTACTKEY_HPP
 
 /// @file
-/// Declaration of the ContactKey class.
+/// Declaration of the <code>ContactKey</code> class.
 
 #include <PlayRho/Common/Settings.hpp>
 #include <utility>
@@ -117,7 +117,7 @@ class Contact;
 /// @brief Keyed contact pointer.
 using KeyedContactPtr = std::pair<ContactKey, Contact*>;
 
-/// @brief Gets the ContactKey for the given parameters.
+/// @brief Gets the <code>ContactKey</code> for the given parameters.
 ContactKey GetContactKey(const Fixture& fixtureA, ChildCounter childIndexA,
                          const Fixture& fixtureB, ChildCounter childIndexB) noexcept;
 
@@ -135,7 +135,7 @@ inline Contact* GetContactPtr(KeyedContactPtr value)
 
 namespace std
 {
-    /// @brief Hash function object specialization for ContactKey.
+    /// @brief Hash function object specialization for <code>ContactKey</code>.
     template <>
     struct hash<playrho::ContactKey>
     {

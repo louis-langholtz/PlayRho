@@ -31,7 +31,7 @@ namespace d2 {
 
 /// @brief Functional joint visitor class.
 /// @note This class is intended to provide an alternate interface for visiting joints
-///   via the use of lamdas instead of having to subclass <code>JointVisitor</code>.
+///   via the use of lambdas instead of having to subclass <code>JointVisitor</code>.
 class FunctionalJointVisitor: public JointVisitor
 {
 public:

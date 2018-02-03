@@ -34,7 +34,7 @@ MassData GetMassData(const MultiShapeConf& arg) noexcept
     auto mass = 0_kg;
     const auto origin = Length2{};
     auto weightedCenter = origin * Kilogram;
-    auto I = RotInertia(0);
+    auto I = RotInertia{0};
     const auto density = arg.density;
 
     std::for_each(std::begin(arg.children), std::end(arg.children),

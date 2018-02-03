@@ -40,7 +40,8 @@ class Body;
 /// @details A body configuration holds all the data needed to construct a rigid body.
 ///   You can safely re-use body configurations.
 ///
-/// @note This is a value class meant for passing in to the World::CreateBody method.
+/// @note This is a value class meant for passing in to the <code>World::CreateBody</code>
+///   method.
 ///
 /// @sa World.
 ///
@@ -140,7 +141,8 @@ struct BodyConf
     NonNegative<Frequency> angularDamping = NonNegative<Frequency>{0};
     
     /// Under-active time.
-    /// @details Set this to the value retrieved from Body::GetUnderActiveTime() or leave it as 0.
+    /// @details Set this to the value retrieved from <code>Body::GetUnderActiveTime</code>
+    ///   or leave it as 0.
     Time underActiveTime = 0_s;
     
     /// Set this flag to false if this body should never fall asleep. Note that
@@ -284,7 +286,7 @@ PLAYRHO_CONSTEXPR inline BodyConf GetDefaultBodyConf() noexcept
 }
 
 /// @brief Gets the body definition for the given body.
-/// @param body Body to get the BodyConf for.
+/// @param body Body to get the <code>BodyConf</code> for.
 /// @relatedalso Body
 BodyConf GetBodyConf(const Body& body) noexcept;
 

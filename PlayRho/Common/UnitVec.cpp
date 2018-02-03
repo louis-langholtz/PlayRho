@@ -42,7 +42,7 @@ UnitVec::PolarCoord UnitVec::Get(const Real x, const Real y, const UnitVec fallb
     }
     
     // Give up and return the fallback value.
-    return std::make_pair(fallback, Real(0));
+    return std::make_pair(fallback, Real{0});
 }
 
 UnitVec UnitVec::Get(const Angle angle) noexcept

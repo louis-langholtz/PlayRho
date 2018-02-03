@@ -42,11 +42,11 @@ using Vec2 = Vector2<Real>;
 /// @note Often used as a 2-dimensional distance or location vector.
 using Length2 = Vector2<Length>;
 
-/// @brief 2-element vector of LinearVelocity quantities.
+/// @brief 2-element vector of linear velocity (<code>LinearVelocity</code>) quantities.
 /// @note Often used as a 2-dimensional speed vector.
 using LinearVelocity2 = Vector2<LinearVelocity>;
 
-/// @brief 2-element vector of LinearAcceleration quantities.
+/// @brief 2-element vector of linear acceleration (<code>LinearAcceleration</code>) quantities.
 /// @note Often used as a 2-dimensional linear acceleration vector.
 using LinearAcceleration2 = Vector2<LinearAcceleration>;
 
@@ -57,7 +57,7 @@ using Force2 = Vector2<Force>;
 /// @brief 2-element vector of Mass quantities.
 using Mass2 = Vector2<Mass>;
 
-/// @brief 2-element vector of InvMass quantities.
+/// @brief 2-element vector of inverse mass (<code>InvMass</code>) quantities.
 using InvMass2 = Vector2<InvMass>;
 
 /// @brief 2-element vector of Momentum quantities.

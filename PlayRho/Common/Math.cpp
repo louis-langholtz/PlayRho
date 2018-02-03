@@ -81,12 +81,12 @@ std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle sta
     if (slices > 0)
     {
         const auto integralTurns = static_cast<long int>(turns);
-        const auto wholeNum = (turns == Real(integralTurns * Real(1)));
-        const auto deltaAngle = (Pi * 2_rad * turns) / Real(slices);
+        const auto wholeNum = (turns == static_cast<Real>(integralTurns));
+        const auto deltaAngle = (Pi * 2_rad * turns) / static_cast<Real>(slices);
         auto i = decltype(slices){0};
         while (i < slices)
         {
-            const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
+            const auto angleInRadians = Real{(start + (static_cast<Real>(i) * deltaAngle)) / Radian};
             const auto x = radius * cos(angleInRadians);
             const auto y = radius * sin(angleInRadians);
             vertices.emplace_back(x, y);
@@ -99,7 +99,7 @@ std::vector<Length2> GetCircleVertices(Length radius, unsigned slices, Angle sta
         }
         else
         {
-            const auto angleInRadians = Real{(start + (Real(i) * deltaAngle)) / Radian};
+            const auto angleInRadians = Real{(start + (static_cast<Real>(i) * deltaAngle)) / Radian};
             const auto x = radius * cos(angleInRadians);
             const auto y = radius * sin(angleInRadians);
             vertices.emplace_back(x, y);
@@ -142,8 +142,8 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)
     // See:
     // https://en.wikipedia.org/wiki/Second_moment_of_area#Any_polygon
     // https://en.wikipedia.org/wiki/Second_moment_of_area#Perpendicular_axis_theorem
-    auto sum_x = SquareMeter * SquareMeter * Real(0);
-    auto sum_y = SquareMeter * SquareMeter * Real(0);
+    auto sum_x = SquareMeter * SquareMeter * 0;
+    auto sum_y = SquareMeter * SquareMeter * 0;
     const auto count = vertices.size();
     for (auto i = decltype(count){0}; i < count; ++i)
     {

@@ -95,19 +95,19 @@ private:
         c.Update(conf, listener);
     }
     
-    /// @brief Whether the given contact is in the is islanded state.
+    /// @brief Whether the given contact is in the is-in-island state.
     static bool IsIslanded(const Contact& c) noexcept
     {
         return c.IsIslanded();
     }
     
-    /// @brief Sets the given contact's is islanded state.
+    /// @brief Sets the given contact's is-in-island state.
     static void SetIslanded(Contact& c) noexcept
     {
         c.SetIslanded();
     }
     
-    /// @brief Unsets the given contact's is islanded state.
+    /// @brief Unsets the given contact's is-in-island state.
     static void UnsetIslanded(Contact& c) noexcept
     {
         c.UnsetIslanded();

@@ -39,7 +39,7 @@ class JointKey
 {
 public:
     
-    /// @brief Gets the JointKey for the given bodies.
+    /// @brief Gets the <code>JointKey</code> for the given bodies.
     static PLAYRHO_CONSTEXPR inline JointKey Get(const Body* bodyA, const Body* bodyB) noexcept
     {
         return (bodyA < bodyB)? JointKey{bodyA, bodyB}: JointKey{bodyB, bodyA};
@@ -74,7 +74,7 @@ private:
     const Body* m_body2;
 };
 
-/// @brief Gets the JointKey for the given joint.
+/// @brief Gets the <code>JointKey</code> for the given joint.
 JointKey GetJointKey(const Joint& joint) noexcept;
 
 /// @brief Compares the given joint keys.

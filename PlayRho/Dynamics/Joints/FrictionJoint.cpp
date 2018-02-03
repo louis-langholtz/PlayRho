@@ -164,7 +164,7 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         m_angularImpulse = Clamp(m_angularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
         const auto incAngularImpulse = m_angularImpulse - oldAngularImpulse;
 
-        if (incAngularImpulse != AngularMomentum(0))
+        if (incAngularImpulse != AngularMomentum{0})
         {
             solved = false;
         }

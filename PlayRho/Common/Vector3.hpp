@@ -32,7 +32,7 @@ namespace playrho {
 template <typename T>
 using Vector3 = Vector<T, 3>;
 
-/// A 3D column vector with 3 elements.
+/// A 3-dimensional column vector with 3 elements.
 /// @note This data structure is 3 times the size of <code>Real</code> -
 ///   i.e. 12-bytes (with 4-byte Real).
 using Vec3 = Vector3<Real>;
@@ -40,10 +40,10 @@ using Vec3 = Vector3<Real>;
 /// @brief 3-element vector of Mass quantities.
 using Mass3 = Vector3<Mass>;
 
-/// @brief 3-element vector of InvMass quantities.
+/// @brief 3-element vector of inverse mass (<code>InvMass</code>) quantities.
 using InvMass3 = Vector3<InvMass>;
 
-/// @brief Gets an invalid value for the Vec3 type.
+/// @brief Gets an invalid value for the 3-element vector of real (<code>Vec3</code>) type.
 template <>
 PLAYRHO_CONSTEXPR inline Vec3 GetInvalid() noexcept
 {

@@ -86,8 +86,8 @@ PLAYRHO_CONSTEXPR inline WorldConf& WorldConf::UseInitialTreeSize(ContactCounter
 /// Gets the default definitions value.
 /// @note This method exists as a work-around for providing the World constructor a default
 ///   value without otherwise getting a compiler error such as:
-///     "cannot use defaulted constructor of 'Conf' within 'World' outside of member functions
-///      because 'gravity' has an initializer"
+///     "cannot use defaulted constructor of '<code>Conf</code>' within '<code>World</code>'
+///     outside of member functions because 'gravity' has an initializer"
 /// @relatedalso WorldConf
 PLAYRHO_CONSTEXPR inline WorldConf GetDefaultWorldConf() noexcept
 {

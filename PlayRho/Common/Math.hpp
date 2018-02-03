@@ -102,6 +102,16 @@ PLAYRHO_CONSTEXPR inline auto GetZ(const T& value)
     return Get<2>(value);
 }
 
+/// @brief Makes the given value into an unsigned value.
+/// @note If the given value is negative, this will result in an unsigned value which is the
+///   two's complement modulo-wrapped value.
+template <typename T>
+PLAYRHO_CONSTEXPR inline std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
+MakeUnsigned(const T& arg) noexcept
+{
+    return static_cast<std::make_unsigned_t<T>>(arg);
+}
+
 /// @brief Strips the unit from the given value.
 template <typename T, LoValueCheck lo, HiValueCheck hi>
 PLAYRHO_CONSTEXPR inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
@@ -566,7 +576,7 @@ PLAYRHO_CONSTEXPR inline auto GetFwdPerpendicular(const T vector) noexcept
 }
 
 /// @brief Multiplies an M-element vector by an M-by-N matrix.
-/// @param v Vector that's interpretted as a matrix with 1 row and M-columns.
+/// @param v Vector that's interpreted as a matrix with 1 row and M-columns.
 /// @param m An M-row by N-column *transformation matrix* to multiply the vector by.
 /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
 template <std::size_t M, typename T1, std::size_t N, typename T2>
@@ -931,12 +941,15 @@ inline bool IsUnderActive(Velocity velocity,
 /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
 PLAYRHO_CONSTEXPR inline auto GetReflectionMatrix(UnitVec axis)
 {
-    auto result = Matrix<Real, 2, 2>{};
-    for (auto i = std::size_t{0}; i < 2; ++i)
+    constexpr auto TupleSize = std::tuple_size<decltype(axis)>::value;
+    constexpr auto NumRows = TupleSize;
+    constexpr auto NumCols = TupleSize;
+    auto result = Matrix<Real, NumRows, NumCols>{};
+    for (auto row = decltype(NumRows){0}; row < NumRows; ++row)
     {
-        for (auto j = std::size_t{0}; j < 2; ++j)
+        for (auto col = decltype(NumCols){0}; col < NumCols; ++col)
         {
-            result[i][j] = ((i == j)? Real(1): Real(0)) - axis[i] * axis[j] * 2;
+            result[row][col] = ((row == col)? Real{1}: Real{0}) - axis[row] * axis[col] * 2;
         }
     }
     return result;

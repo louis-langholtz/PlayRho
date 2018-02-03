@@ -35,7 +35,7 @@ namespace playrho {
 /// @note N is the number of columns of the matrix.
 /// @sa https://en.wikipedia.org/wiki/Matrix_(mathematics)
 template <typename T, std::size_t M, std::size_t N>
-    using Matrix = Vector<Vector<T, N>, M>;
+using Matrix = Vector<Vector<T, N>, M>;
 
 /// @brief 2 by 2 matrix.
 template <typename T>
@@ -95,7 +95,7 @@ typename std::enable_if<!IsVector<T>::value, Matrix<T, N, N>>::type GetIdentityM
     auto result = Matrix<Real, N, N>{};
     for (auto i = std::size_t{0}; i < N; ++i)
     {
-        result[i][i] = T(1);
+        result[i][i] = T{1};
     }
     return result;
 }
@@ -138,9 +138,9 @@ PLAYRHO_CONSTEXPR inline
 auto operator+ (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept
 {
     auto result = Matrix<T, M, N>{};
-    for (auto m = static_cast<std::size_t>(0); m < M; ++m)
+    for (auto m = decltype(M){0}; m < M; ++m)
     {
-        for (auto n = static_cast<std::size_t>(0); n < N; ++n)
+        for (auto n = decltype(N){0}; n < N; ++n)
         {
             result[m][n] = lhs[m][n] + rhs[m][n];
         }
@@ -155,9 +155,9 @@ PLAYRHO_CONSTEXPR inline
 auto operator- (const Matrix<T, M, N>& lhs, const Matrix<T, M, N>& rhs) noexcept
 {
     auto result = Matrix<T, M, N>{};
-    for (auto m = static_cast<std::size_t>(0); m < M; ++m)
+    for (auto m = decltype(M){0}; m < M; ++m)
     {
-        for (auto n = static_cast<std::size_t>(0); n < N; ++n)
+        for (auto n = decltype(N){0}; n < N; ++n)
         {
             result[m][n] = lhs[m][n] - rhs[m][n];
         }
