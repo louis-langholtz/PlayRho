@@ -82,22 +82,38 @@ namespace playrho {
 
     /// @brief Checks if the given value is above negative infinity.
     template <typename T>
-    PLAYRHO_CONSTEXPR inline void CheckIfAboveNegInf(typename std::enable_if<!std::is_pointer<T>::value, T>::type
-                                      value)
+    PLAYRHO_CONSTEXPR inline std::enable_if_t<std::numeric_limits<T>::has_infinity, void>
+    CheckIfAboveNegInf(T value)
     {
-        if (std::numeric_limits<T>::has_infinity)
+        if (!(value > -std::numeric_limits<T>::infinity()))
         {
-            if (!(value > -std::numeric_limits<T>::infinity()))
-            {
-                throw InvalidArgument{"BoundedValue: value not > -inf"};;
-            }
+            throw InvalidArgument{"BoundedValue: value not > -inf"};;
         }
     }
     
     /// @brief Checks if the given value is above negative infinity.
     template <typename T>
-    PLAYRHO_CONSTEXPR inline void CheckIfAboveNegInf(typename std::enable_if<std::is_pointer<T>::value, T>::type
-                                      /*value*/)
+    PLAYRHO_CONSTEXPR inline std::enable_if_t<!std::numeric_limits<T>::has_infinity, void>
+    CheckIfAboveNegInf(T /*value*/)
+    {
+        // Intentionally empty.
+    }
+
+    /// @brief Checks that the given value is below positive infinity.
+    template <typename T>
+    PLAYRHO_CONSTEXPR inline std::enable_if_t<std::numeric_limits<T>::has_infinity, void>
+    CheckIfBelowPosInf(T value)
+    {
+        if (!(value < +std::numeric_limits<T>::infinity()))
+        {
+            throw InvalidArgument{"BoundedValue: value not < +inf"};;
+        }
+    }
+
+    /// @brief Checks that the given value is below positive infinity.
+    template <typename T>
+    PLAYRHO_CONSTEXPR inline std::enable_if_t<!std::numeric_limits<T>::has_infinity, void>
+    CheckIfBelowPosInf(T /*value*/)
     {
         // Intentionally empty.
     }
@@ -188,13 +204,7 @@ namespace playrho {
                     }
                     return;
                 case HiValueCheck::BelowPosInf:
-                    if (std::numeric_limits<value_type>::has_infinity)
-                    {
-                        if (!(value < +std::numeric_limits<value_type>::infinity()))
-                        {
-                            throw exception_type{"BoundedValue: value not < +inf"};;
-                        }
-                    }
+                    CheckIfBelowPosInf(value);
                     return;
             }
         }
@@ -554,7 +564,7 @@ namespace playrho {
     template <typename T, LoValueCheck lo, HiValueCheck hi>
     ::std::ostream& operator<<(::std::ostream& os, const BoundedValue<T, lo, hi>& value)
     {
-        return os << T(value);
+        return os << T{value};
     }
 
 } // namespace playrho

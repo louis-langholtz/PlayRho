@@ -26,6 +26,24 @@
 
 using namespace playrho;
 
+TEST(BoundedValue, CheckIfAboveNegInf)
+{
+    EXPECT_NO_THROW(CheckIfAboveNegInf(nullptr));
+    EXPECT_NO_THROW(CheckIfAboveNegInf(reinterpret_cast<int*>(0x1)));
+    EXPECT_NO_THROW(CheckIfAboveNegInf(0));
+    EXPECT_NO_THROW(CheckIfAboveNegInf(std::numeric_limits<float>::infinity()));
+    EXPECT_THROW(CheckIfAboveNegInf(-std::numeric_limits<float>::infinity()), InvalidArgument);
+}
+
+TEST(BoundedValue, CheckIfBelowPosInf)
+{
+    EXPECT_NO_THROW(CheckIfBelowPosInf(nullptr));
+    EXPECT_NO_THROW(CheckIfBelowPosInf(reinterpret_cast<int*>(0x1)));
+    EXPECT_NO_THROW(CheckIfBelowPosInf(0));
+    EXPECT_NO_THROW(CheckIfBelowPosInf(-std::numeric_limits<float>::infinity()));
+    EXPECT_THROW(CheckIfBelowPosInf(std::numeric_limits<float>::infinity()), InvalidArgument);
+}
+
 TEST(BoundedValue, NonNegativeFloatTraits)
 {
     using type = NonNegative<float>;
@@ -68,6 +86,12 @@ TEST(BoundedValue, NegativeFloat)
                  Negative<float>::exception_type);
     EXPECT_THROW(Negative<float>{std::numeric_limits<float>::quiet_NaN()},
                  Negative<float>::exception_type);
+    
+    {
+        auto os = std::ostringstream{};
+        os << Negative<float>(-1.0f);
+        EXPECT_STREQ(os.str().c_str(), "-1");
+    }
 }
 
 TEST(BoundedValue, NonNegativeFloat)
@@ -110,6 +134,12 @@ TEST(BoundedValue, NonNegativeInt)
     
     EXPECT_THROW(NonNegative<int>{-1}, NonNegative<int>::exception_type);
     EXPECT_THROW(NonNegative<int>{-2}, NonNegative<int>::exception_type);
+    
+    {
+        auto os = std::ostringstream{};
+        os << NonNegative<int>(2);
+        EXPECT_STREQ(os.str().c_str(), "2");
+    }
 }
 
 TEST(BoundedValue, PositiveFloat)
@@ -126,6 +156,12 @@ TEST(BoundedValue, PositiveFloat)
                  Positive<float>::exception_type);
     EXPECT_THROW(Positive<float>{std::numeric_limits<float>::quiet_NaN()},
                  Positive<float>::exception_type);
+    
+    {
+        auto os = std::ostringstream{};
+        os << Positive<float>(1.0f);
+        EXPECT_STREQ(os.str().c_str(), "1");
+    }
 }
 
 TEST(BoundedValue, NonPositiveFloat)
