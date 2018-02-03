@@ -102,6 +102,9 @@ PLAYRHO_CONSTEXPR inline auto GetZ(const T& value)
     return Get<2>(value);
 }
 
+/// @brief Makes the given value into an unsigned value.
+/// @note If the given value is negative, this will result in an unsigned value which is the
+///   two's complement modulo-wrapped value.
 template <typename T>
 PLAYRHO_CONSTEXPR inline std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
 MakeUnsigned(const T& arg) noexcept
