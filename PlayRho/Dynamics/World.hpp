@@ -74,12 +74,17 @@ struct ShapeConf;
 ///   instances are typically destroyed using a method whose name begins with the prefix
 ///   of <code>Destroy</code>.
 ///
-/// @sa World::CreateBody
-/// @sa World::CreateJoint
-/// @sa World::Destroy
-/// @sa Body::CreateFixture
-/// @sa Body::DestroyFixture
-/// @sa Body::DestroyFixtures
+/// @note For example, the following could be used to create a dynamic body having a one meter
+///   radius disk shape:
+/// @code{.cpp}
+/// auto world = World{};
+/// const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+/// const auto fixture = body->CreateFixture(Shape{DiskShapeConf{1_m}});
+/// @endcode
+///
+/// @sa World, World::CreateBody, World::CreateJoint, World::Destroy
+/// @sa Body::CreateFixture, Body::DestroyFixture, Body::DestroyFixtures
+/// @sa BodyType, Shape, DiskShapeConf
 
 /// @brief Definition of an independent and simulatable "world".
 ///
@@ -92,8 +97,15 @@ struct ShapeConf;
 ///   and Contact instances.
 /// @note This data structure is 232-bytes large (with 4-byte Real on at least one 64-bit
 ///   platform).
+/// @note For example, the following could be used to create a dynamic body having a one meter
+///   radius disk shape:
+/// @code{.cpp}
+/// auto world = World{};
+/// const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+/// const auto fixture = body->CreateFixture(Shape{DiskShapeConf{1_m}});
+/// @endcode
 ///
-/// @sa Body, Joint, Contact
+/// @sa Body, Joint, Contact, PhysicalEntities
 ///
 class World
 {

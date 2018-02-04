@@ -107,7 +107,7 @@ private:
     Length2 m_rB; ///< Relative B.
     Length2 m_linearError = Length2{}; ///< Linear error.
     Angle m_angularError = 0_deg; ///< Angular error.
-    Mass22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
+    Mass22 m_linearMass; ///< 2-by-2 linear mass matrix in kilograms.
     RotInertia m_angularMass; ///< Angular mass.
 };
 

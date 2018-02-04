@@ -43,7 +43,7 @@ namespace playrho {
 ///   Vector instances arithmetic types as well.
 /// @note This type is trivially default constructible - i.e. default construction
 ///   performs no actions (no initialization).
-/// @sa IsArithmetic
+/// @sa IsArithmetic, VectorTraitsGroup
 template <typename T, std::size_t N>
 struct Vector
 {
@@ -89,8 +89,8 @@ struct Vector
     
     /// @brief Initializing constructor.
     template<typename... Tail>
-    PLAYRHO_CONSTEXPR inline explicit Vector(typename std::enable_if<sizeof...(Tail)+1 == N, T>::type
-                     head, Tail... tail) noexcept: elements{head, T(tail)...}
+    PLAYRHO_CONSTEXPR inline explicit Vector(std::enable_if_t<sizeof...(Tail)+1 == N, T> head,
+                                             Tail... tail) noexcept: elements{head, T(tail)...}
     {
         // Intentionally empty.
     }
@@ -212,13 +212,33 @@ struct Vector
     value_type elements[N];
 };
 
-/// @brief Trait class for checking if type is a Vector type.
+/// @defgroup VectorTraitsGroup Vector Traits
+/// @brief Collection of trait classes for Vector.
+/// @{
+
+/// @brief Trait class for checking if type is a <code>Vector</code> type.
+/// @note This implements the default case where any arbitrary type *is not* a
+///   <code>Vector</code>.
+/// @note For example the following is false:
+/// @code{.cpp}
+/// IsVector<int>::value || IsVector<float>::value
+/// @endcode
+/// @sa Vector
 template <typename>
 struct IsVector: std::false_type {};
 
-/// @brief Trait class specialization for checking if type is a Vector type.
+/// @brief Trait class specialization for checking if type is a <code>Vector</code> type..
+/// @note This implements the specialized case where the given type *is indeed* a
+///   <code>Vector</code>.
+/// @note For example the following is true:
+/// @code{.cpp}
+/// IsVector<Vector<int, 2>::value && IsVector<Vector<Vector<float, 1>, 1>>::value
+/// @endcode
+/// @sa Vector
 template <typename T, std::size_t N>
 struct IsVector<Vector<T, N>>: std::true_type {};
+
+/// @}
 
 /// @brief Equality operator.
 /// @relatedalso Vector
@@ -247,7 +267,7 @@ PLAYRHO_CONSTEXPR inline bool operator!= (const Vector<T, N>& lhs, const Vector<
 /// @relatedalso Vector
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<std::is_same<T, decltype(+T{})>::value, Vector<T, N>>::type
+std::enable_if_t<std::is_same<T, decltype(+T{})>::value, Vector<T, N>>
 operator+ (Vector<T, N> v) noexcept
 {
     return v;
@@ -257,7 +277,7 @@ operator+ (Vector<T, N> v) noexcept
 /// @relatedalso Vector
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<std::is_same<T, decltype(-T{})>::value, Vector<T, N>>::type
+std::enable_if_t<std::is_same<T, decltype(-T{})>::value, Vector<T, N>>
 operator- (Vector<T, N> v) noexcept
 {
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -271,7 +291,7 @@ operator- (Vector<T, N> v) noexcept
 /// @relatedalso Vector
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>&>::type
+std::enable_if_t<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>&>
 operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -285,7 +305,7 @@ operator+= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 /// @relatedalso Vector
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>&>::type
+std::enable_if_t<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>&>
 operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 {
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -299,7 +319,7 @@ operator-= (Vector<T, N>& lhs, const Vector<T, N> rhs) noexcept
 /// @relatedalso Vector
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>>::type
+std::enable_if_t<std::is_same<T, decltype(T{} + T{})>::value, Vector<T, N>>
 operator+ (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 {
     return lhs += rhs;
@@ -309,7 +329,7 @@ operator+ (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 /// @relatedalso Vector
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>>::type
+std::enable_if_t<std::is_same<T, decltype(T{} - T{})>::value, Vector<T, N>>
 operator- (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 {
     return lhs -= rhs;
@@ -319,7 +339,7 @@ operator- (Vector<T, N> lhs, const Vector<T, N> rhs) noexcept
 /// @relatedalso Vector
 template <typename T1, typename T2, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<std::is_same<T1, decltype(T1{} * T2{})>::value, Vector<T1, N>&>::type
+std::enable_if_t<std::is_same<T1, decltype(T1{} * T2{})>::value, Vector<T1, N>&>
 operator*= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -333,7 +353,7 @@ operator*= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 /// @relatedalso Vector
 template <typename T1, typename T2, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<std::is_same<T1, decltype(T1{} / T2{})>::value, Vector<T1, N>&>::type
+std::enable_if_t<std::is_same<T1, decltype(T1{} / T2{})>::value, Vector<T1, N>&>
 operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 {
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -364,7 +384,7 @@ operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 template <typename T1, typename T2, std::size_t A, std::size_t B, std::size_t C,
     typename OT = decltype(T1{} * T2{})>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<IsMultipliable<T1, T2>::value, Vector<Vector<OT, C>, A>>::type
+std::enable_if_t<IsMultipliable<T1, T2>::value, Vector<Vector<OT, C>, A>>
 operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& rhs) noexcept
 {
     //using OT = decltype(T1{} * T2{});
@@ -400,7 +420,7 @@ operator* (const Vector<Vector<T1, B>, A>& lhs, const Vector<Vector<T2, C>, B>& 
 template <typename T1, typename T2, std::size_t A, std::size_t B,
     typename OT = decltype(T1{} * T2{})>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, B>>::type
+std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, B>>
 operator* (const Vector<T1, A>& lhs, const Vector<Vector<T2, B>, A>& rhs) noexcept
 {
     auto result = Vector<OT, B>{};
@@ -426,7 +446,7 @@ operator* (const Vector<T1, A>& lhs, const Vector<Vector<T2, B>, A>& rhs) noexce
 template <typename T1, typename T2, std::size_t A, std::size_t B,
     typename OT = decltype(T1{} * T2{})>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, B>>::type
+std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, B>>
 operator* (const Vector<Vector<T1, A>, B>& lhs, const Vector<T2, A>& rhs) noexcept
 {
     auto result = Vector<OT, B>{};
@@ -448,7 +468,7 @@ operator* (const Vector<Vector<T1, A>, B>& lhs, const Vector<T2, A>& rhs) noexce
 ///   in that case and prevent errors like "use of overloaded operator '*' is ambiguous".
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, N>>::type
+std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T1>::value, Vector<OT, N>>
 operator* (const T1 s, Vector<T2, N> a) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
@@ -466,7 +486,7 @@ operator* (const T1 s, Vector<T2, N> a) noexcept
 ///   in that case and prevent errors like "use of overloaded operator '*' is ambiguous".
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} * T2{})>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>::type
+std::enable_if_t<IsMultipliable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>
 operator* (Vector<T1, N> a, const T2 s) noexcept
 {
     // Can't base this off of *= since result type in this case can be different
@@ -482,7 +502,7 @@ operator* (Vector<T1, N> a, const T2 s) noexcept
 /// @relatedalso Vector
 template <std::size_t N, typename T1, typename T2, typename OT = decltype(T1{} / T2{})>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<IsDivisable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>::type
+std::enable_if_t<IsDivisable<T1, T2>::value && !IsVector<T2>::value, Vector<OT, N>>
 operator/ (Vector<T1, N> a, const T2 s) noexcept
 {
     // Can't base this off of /= since result type in this case can be different
@@ -534,7 +554,7 @@ PLAYRHO_CONSTEXPR inline bool operator>= (const Vector<T, N>& lhs, const Vector<
     return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) > *std::get<1>(diff));
 }
 
-/// @brief Gets the I'th element of the given collection.
+/// @brief Gets the specified element of the given collection.
 /// @relatedalso Vector
 template <std::size_t I, std::size_t N, typename T>
 PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
@@ -543,7 +563,7 @@ PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
     return v[I];
 }
 
-/// @brief Gets the I'th element of the given collection.
+/// @brief Gets the specified element of the given collection.
 template <std::size_t I, std::size_t N, typename T>
 PLAYRHO_CONSTEXPR inline auto Get(const Vector<T, N>& v) noexcept
 {
@@ -573,11 +593,11 @@ template <typename T, std::size_t N>
 
 namespace std {
     
-    /// @brief Tuple size info for playrho::Vector
+    /// @brief Tuple size info for <code>playrho::Vector</code>
     template<class T, std::size_t N>
     class tuple_size< playrho::Vector<T, N> >: public std::integral_constant<std::size_t, N> {};
     
-    /// @brief Tuple element type info for playrho::Vector
+    /// @brief Tuple element type info for <code>playrho::Vector</code>
     template<std::size_t I, class T, std::size_t N>
     class tuple_element<I, playrho::Vector<T, N>>
     {

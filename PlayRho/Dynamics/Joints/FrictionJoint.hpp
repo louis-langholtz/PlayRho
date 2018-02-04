@@ -90,7 +90,7 @@ private:
     // Solver temp
     Length2 m_rA; ///< Relative A.
     Length2 m_rB; ///< Relative B.
-    Mass22 m_linearMass; ///< 2x2 linear mass matrix in kilograms.
+    Mass22 m_linearMass; ///< 2-by-2 linear mass matrix in kilograms.
     RotInertia m_angularMass; ///< Angular mass.
 };
 

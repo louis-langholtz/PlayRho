@@ -72,8 +72,8 @@ struct AABB
     /// const auto aabb = AABB<2>{LengthInterval{1_m, 4_m}, LengthInterval{-3_m, 3_m}};
     /// @endcode
     template<typename... Tail>
-    PLAYRHO_CONSTEXPR inline AABB(typename std::enable_if<sizeof...(Tail)+1 == N,
-                                  LengthInterval>::type head, Tail... tail) noexcept:
+    PLAYRHO_CONSTEXPR inline AABB(std::enable_if_t<sizeof...(Tail)+1 == N, LengthInterval> head,
+                                  Tail... tail) noexcept:
         ranges{head, LengthInterval(tail)...}
     {
         // Intentionally empty.

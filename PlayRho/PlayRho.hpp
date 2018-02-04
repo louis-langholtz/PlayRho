@@ -25,23 +25,39 @@
 /**
 @mainpage PlayRho API Documentation
 
-@section intro_sec Getting Started
+@section intro_sec Overview
 
-For source code, please see: https://github.com/louis-langholtz/PlayRho .
+Hello and welcome to PlayRho's API documentation!
 
-For issues, visit: https://github.com/louis-langholtz/PlayRho/issues .
+PlayRho is an interactive, real-time oriented, C++14 based, physics engine and library
+ currently best suited for 2-dimensional games. To view its source code, please
+ see: https://github.com/louis-langholtz/PlayRho . For issues,
+ visit: https://github.com/louis-langholtz/PlayRho/issues .
+ For mathemtical insight into how a physics engine works, see:
+ <a href="http://box2d.org/files/GDC2009/GDC2009_Catto_Erin_Solver.ppt">Erin Catto's
+ 2009 Modeling and Solving Constraints slides</a>.
 
-For coding, simply begin by including the <code>PlayRho/PlayRho.hpp</code> file and
- make an instance of the
- <a href="classplayrho_1_1World.html"><code>playrho::d2::World</code></a> class.
-For a more elaborate starting point, see the
- <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a> example application.
+@section coding_sec Getting Started
 
-For mathemtical insight, see:
-<a href="http://box2d.org/files/GDC2009/GDC2009_Catto_Erin_Solver.ppt">Erin Catto's
-2009 Modeling and Solving Constraints slides</a>.
+For coding, begin simply by including the <code>PlayRho/PlayRho.hpp</code> header file
+ and making an instance of the
+ <a href="classplayrho_1_1d2_1_1World.html"><code>playrho::d2::World</code></a> class.
+ Here's what this might look like:
+ @code
+ #include <PlayRho/PlayRho.hpp>
+ 
+ int main()
+ {
+     auto world = playrho::d2::World{};
+     const auto body = world.CreateBody();
+     // do more things with the world instance and body pointer
+     return 0; // world and associated resources go away automatically
+ }
+ @endcode
+For a more elaborate example, see
+ <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a>.
 
-@sa PhysicalEntities
+ @sa playrho::d2::World, PhysicalEntities
 */
 
 // These include files constitute the main PlayRho API

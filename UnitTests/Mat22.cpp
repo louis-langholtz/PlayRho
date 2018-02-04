@@ -41,6 +41,20 @@ TEST(Mat22, Init)
     EXPECT_EQ(v2, Get<1>(foo));
 }
 
+TEST(Mat22, IsMatrix)
+{
+    ASSERT_FALSE(IsMatrix<int>::value);
+    ASSERT_TRUE((IsMatrix<Matrix<int, 2, 3>>::value));
+    EXPECT_TRUE(IsMatrix<Mat22>::value);
+}
+
+TEST(Mat22, IsSquareMatrix)
+{
+    ASSERT_FALSE(IsSquareMatrix<int>::value);
+    ASSERT_FALSE((IsSquareMatrix<Matrix<int, 3, 2>>::value));
+    EXPECT_TRUE(IsSquareMatrix<Mat22>::value);
+}
+
 TEST(Mat22, Invert)
 {
     const auto v1 = Vec2{1, 2};

@@ -62,7 +62,7 @@ public:
     /// The local anchor point relative to body B's origin.
     Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
-    /// The local joint axis relative to bodyA.
+    /// The local joint axis relative to body-A.
     UnitVec GetLocalAxisA() const { return m_localXAxisA; }
 
     /// Is the joint motor enabled?

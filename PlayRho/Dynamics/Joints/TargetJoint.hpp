@@ -34,9 +34,6 @@ namespace d2 {
 ///   specified world point. This a soft constraint with a maximum
 ///   force. This allows the constraint to stretch and without
 ///   applying huge forces.
-/// @note This joint is not documented in the manual because it was
-///   developed to be used in the testbed. If you want to learn how to
-///   use the target joint, look at the testbed.
 /// @note This structure is 120-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
@@ -54,14 +51,11 @@ public:
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
-
     Length2 GetAnchorA() const override;
-
     Length2 GetAnchorB() const override;
-
     Momentum2 GetLinearReaction() const override;
-
     AngularMomentum GetAngularReaction() const override;
+    bool ShiftOrigin(const Length2 newOrigin) override;
 
     /// @brief Gets the local anchor B.
     Length2 GetLocalAnchorB() const noexcept;
@@ -90,9 +84,6 @@ public:
     /// @brief Gets the damping ratio.
     NonNegative<Real> GetDampingRatio() const noexcept;
 
-    /// Implement Joint::ShiftOrigin
-    bool ShiftOrigin(const Length2 newOrigin) override;
-
 private:
     void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                  const ConstraintSolverConf& conf) override;
@@ -114,7 +105,7 @@ private:
 
     // Solver variables. These are only valid after InitVelocityConstraints called.
     Length2 m_rB; ///< Relative B.
-    Mass22 m_mass; ///< 2x2 mass matrix in kilograms.
+    Mass22 m_mass; ///< 2-by-2 mass matrix in kilograms.
     LinearVelocity2 m_C; ///< Velocity constant.
 };
 

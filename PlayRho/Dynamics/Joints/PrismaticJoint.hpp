@@ -32,7 +32,7 @@ namespace d2 {
 /// @brief Prismatic Joint.
 ///
 /// @details This joint provides one degree of freedom: translation along an axis fixed
-///   in bodyA. Relative rotation is prevented.
+///   in body-A. Relative rotation is prevented.
 ///
 /// @note You can use a joint limit to restrict the range of motion and a joint motor
 ///   to drive the motion or to model joint friction.
@@ -65,7 +65,7 @@ public:
     /// @brief Gets the local anchor point relative to body B's origin.
     Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
-    /// @brief Gets local joint axis relative to bodyA.
+    /// @brief Gets local joint axis relative to body-A.
     UnitVec GetLocalAxisA() const { return m_localXAxisA; }
 
     /// @brief Gets the reference angle.
@@ -138,10 +138,10 @@ private:
     // Solver temp
     UnitVec m_axis = UnitVec::GetZero(); ///< Axis.
     UnitVec m_perp = UnitVec::GetZero(); ///< Perpendicular.
-    Length m_s1; ///< Location S1.
-    Length m_s2; ///< Location S2.
-    Length m_a1; ///< Location A1.
-    Length m_a2; ///< Location A2.
+    Length m_s1; ///< Location S-1.
+    Length m_s2; ///< Location S-2.
+    Length m_a1; ///< Location A-1.
+    Length m_a2; ///< Location A-2.
     Mat33 m_K; ///< K matrix.
     Mass m_motorMass = 0_kg; ///< Motor mass.
 };

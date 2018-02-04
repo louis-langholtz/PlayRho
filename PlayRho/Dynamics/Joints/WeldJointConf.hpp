@@ -65,7 +65,7 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
     
-    /// The bodyB angle minus bodyA angle in the reference state (radians).
+    /// The body-B angle minus body-A angle in the reference state (radians).
     Angle referenceAngle = 0_deg;
     
     /// @brief Mass-spring-damper frequency.

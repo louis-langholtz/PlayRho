@@ -71,7 +71,7 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
     
-    /// The local translation axis in bodyA.
+    /// The local translation axis in body-A.
     UnitVec localAxisA = UnitVec::GetRight();
     
     /// Enable/disable the joint motor.
