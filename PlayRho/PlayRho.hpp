@@ -31,9 +31,9 @@ For source code, please see: https://github.com/louis-langholtz/PlayRho .
 
 For issues, visit: https://github.com/louis-langholtz/PlayRho/issues .
 
-For coding, simply begin by including the <code>PlayRho/PlayRho.hpp</code> file and
- make an instance of the
- <a href="classplayrho_1_1World.html"><code>playrho::d2::World</code></a> class.
+For coding, begin simply by including the <code>PlayRho/PlayRho.hpp</code> header file
+ and make an instance of the
+ <a href="classplayrho_1_1d2_1_1World.html"><code>playrho::d2::World</code></a> class.
 For a more elaborate starting point, see the
  <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a> example application.
 

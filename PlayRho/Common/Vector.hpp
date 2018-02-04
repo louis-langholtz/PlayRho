@@ -43,7 +43,7 @@ namespace playrho {
 ///   Vector instances arithmetic types as well.
 /// @note This type is trivially default constructible - i.e. default construction
 ///   performs no actions (no initialization).
-/// @sa IsArithmetic
+/// @sa IsArithmetic, VectorTraitsGroup
 template <typename T, std::size_t N>
 struct Vector
 {
@@ -212,13 +212,33 @@ struct Vector
     value_type elements[N];
 };
 
-/// @brief Trait class for checking if type is a Vector type.
+/// @defgroup VectorTraitsGroup Vector Traits
+/// @brief Collection of trait classes for Vector.
+/// @{
+
+/// @brief Trait class for checking if type is a <code>Vector</code> type.
+/// @note This implements the default case where any arbitrary type *is not* a
+///   <code>Vector</code>.
+/// @note For example the following is false:
+/// @code{.cpp}
+/// IsVector<int>::value || IsVector<float>::value
+/// @endcode
+/// @sa Vector
 template <typename>
 struct IsVector: std::false_type {};
 
-/// @brief Trait class specialization for checking if type is a Vector type.
+/// @brief Trait class specialization for checking if type is a <code>Vector</code> type..
+/// @note This implements the specialized case where the given type *is indeed* a
+///   <code>Vector</code>.
+/// @note For example the following is true:
+/// @code{.cpp}
+/// IsVector<Vector<int, 2>::value && IsVector<Vector<Vector<float, 1>, 1>>::value
+/// @endcode
+/// @sa Vector
 template <typename T, std::size_t N>
 struct IsVector<Vector<T, N>>: std::true_type {};
+
+/// @}
 
 /// @brief Equality operator.
 /// @relatedalso Vector
