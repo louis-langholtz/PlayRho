@@ -99,7 +99,7 @@ struct IsSquareMatrix<Vector<Vector<T, M>, M>>: std::true_type {};
 /// @sa Matrix, IsMatrix, IsSquareMatrix
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<!IsVector<T>::value, Matrix<T, N, N>>::type GetIdentityMatrix()
+std::enable_if_t<!IsVector<T>::value, Matrix<T, N, N>> GetIdentityMatrix()
 {
     auto result = Matrix<Real, N, N>{};
     for (auto i = std::size_t{0}; i < N; ++i)
@@ -121,8 +121,7 @@ PLAYRHO_CONSTEXPR inline std::enable_if_t<IsSquareMatrix<T>::value, T> GetIdenti
 /// @brief Gets the specified row of the given matrix as a row matrix.
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<!IsVector<T>::value, Vector<Vector<T, N>, 1>>::type
-GetRowMatrix(Vector<T, N> arg)
+std::enable_if_t<!IsVector<T>::value, Vector<Vector<T, N>, 1>> GetRowMatrix(Vector<T, N> arg)
 {
     return Vector<Vector<T, N>, 1>{arg};
 }
@@ -130,8 +129,7 @@ GetRowMatrix(Vector<T, N> arg)
 /// @brief Gets the specified column of the given matrix as a column matrix.
 template <typename T, std::size_t N>
 PLAYRHO_CONSTEXPR inline
-typename std::enable_if<!IsVector<T>::value, Vector<Vector<T, 1>, N>>::type
-GetColumnMatrix(Vector<T, N> arg)
+std::enable_if_t<!IsVector<T>::value, Vector<Vector<T, 1>, N>> GetColumnMatrix(Vector<T, N> arg)
 {
     auto result = Vector<Vector<T, 1>, N>{};
     for (auto i = std::size_t{0}; i < N; ++i)

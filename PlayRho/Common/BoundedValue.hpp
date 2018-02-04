@@ -71,7 +71,7 @@ namespace playrho {
 
     /// @brief Specialization of the value check helper.
     template <typename T>
-    struct ValueCheckHelper<T, typename std::enable_if<HasOne<T>::value>::type>
+    struct ValueCheckHelper<T, std::enable_if_t<HasOne<T>::value>>
     {
         /// @brief Has one.
         static PLAYRHO_CONSTEXPR const bool has_one = true;
@@ -269,14 +269,14 @@ namespace playrho {
 
         /// @brief Member of pointer operator.
         template <typename U = T>
-        PLAYRHO_CONSTEXPR inline typename std::enable_if<std::is_pointer<U>::value, U>::type operator-> () const
+        PLAYRHO_CONSTEXPR inline std::enable_if_t<std::is_pointer<U>::value, U> operator-> () const
         {
             return m_value;
         }
 
         /// @brief Indirection operator.
         template <typename U = T>
-        PLAYRHO_CONSTEXPR inline typename std::enable_if<std::is_pointer<U>::value, remove_pointer_type>::type&
+        PLAYRHO_CONSTEXPR inline std::enable_if_t<std::is_pointer<U>::value, remove_pointer_type>&
         operator* () const
         {
             return *m_value;
@@ -523,9 +523,8 @@ namespace playrho {
     
     /// @brief Non negative bounded value type.
     template <typename T>
-    using NonNegative = typename std::enable_if<!std::is_pointer<T>::value,
-        BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::Any>
-    >::type;
+    using NonNegative = std::enable_if_t<!std::is_pointer<T>::value,
+        BoundedValue<T, LoValueCheck::ZeroOrMore, HiValueCheck::Any>>;
 
     /// @brief Non positive bounded value type.
     template <typename T>
@@ -545,14 +544,14 @@ namespace playrho {
     
     /// @brief Non zero bounded value type.
     template <typename T>
-    using NonZero = typename std::enable_if<!std::is_pointer<T>::value,
-        BoundedValue<T, LoValueCheck::NonZero, HiValueCheck::Any>>::type;
+    using NonZero = std::enable_if_t<!std::is_pointer<T>::value,
+        BoundedValue<T, LoValueCheck::NonZero, HiValueCheck::Any>>;
 
     /// @brief Non-null pointer type.
     /// @note Clang will error with "no type named 'type'" if used to bound a non-pointer.
     template <typename T>
-    using NonNull = typename std::enable_if<std::is_pointer<T>::value,
-        BoundedValue<T, LoValueCheck::NonZero, HiValueCheck::Any>>::type;
+    using NonNull = std::enable_if_t<std::is_pointer<T>::value,
+        BoundedValue<T, LoValueCheck::NonZero, HiValueCheck::Any>>;
     
     /// @brief Unit interval bounded value type.
     template <typename T>

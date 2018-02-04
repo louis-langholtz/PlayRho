@@ -203,8 +203,7 @@ inline auto Average(Span<const T> span)
 
 /// @brief Computes the rounded value of the given value.
 template <typename T>
-inline typename std::enable_if<IsArithmetic<T>::value, T>::type
-RoundOff(T value, unsigned precision = 100000)
+inline std::enable_if_t<IsArithmetic<T>::value, T> RoundOff(T value, unsigned precision = 100000)
 {
     const auto factor = static_cast<T>(precision);
     return round(value * factor) / factor;
@@ -235,16 +234,16 @@ inline d2::UnitVec Abs(d2::UnitVec a)
 /// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 template <typename T>
-PLAYRHO_CONSTEXPR inline typename std::enable_if<std::is_arithmetic<T>::value, bool>::type
-AlmostZero(T value)
+PLAYRHO_CONSTEXPR inline
+std::enable_if_t<std::is_arithmetic<T>::value, bool> AlmostZero(T value)
 {
     return Abs(value) < std::numeric_limits<T>::min();
 }
 
 /// @brief Determines whether the given two values are "almost equal".
 template <typename T>
-PLAYRHO_CONSTEXPR inline typename std::enable_if<std::is_floating_point<T>::value, bool>::type
-AlmostEqual(T x, T y, int ulp = 2)
+PLAYRHO_CONSTEXPR inline
+std::enable_if_t<std::is_floating_point<T>::value, bool> AlmostEqual(T x, T y, int ulp = 2)
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
     //   "the machine epsilon has to be scaled to the magnitude of the values used
