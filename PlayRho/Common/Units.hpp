@@ -96,7 +96,7 @@ namespace playrho
     
     /// @brief Time quantity.
     /// @details This is the type alias for the time base quantity.
-    /// @note This quantity's dimension is: time (T).
+    /// @note This quantity's dimension is: time (<code>T</code>).
     /// @note The SI unit of time is the second.
     /// @sa Second.
     /// @sa https://en.wikipedia.org/wiki/Time_in_physics
@@ -105,7 +105,7 @@ namespace playrho
     /// @brief Frequency quantity.
     /// @details This is the type alias for the frequency quantity. It's a derived quantity
     ///   that's the inverse of time.
-    /// @note This quantity's dimension is: inverse time (T^-1).
+    /// @note This quantity's dimension is: inverse time (<code>T^-1</code>).
     /// @note The SI unit of frequency is the hertz.
     /// @sa Time.
     /// @sa Hertz.
@@ -114,7 +114,7 @@ namespace playrho
     
     /// @brief Length quantity.
     /// @details This is the type alias for the length base quantity.
-    /// @note This quantity's dimension is: length (L).
+    /// @note This quantity's dimension is: length (<code>L</code>).
     /// @note The SI unit of length is the meter.
     /// @sa Meter.
     /// @sa https://en.wikipedia.org/wiki/Length
@@ -122,7 +122,7 @@ namespace playrho
     
     /// @brief Linear velocity quantity.
     /// @details This is the type alias for the linear velocity derived quantity.
-    /// @note This quantity's dimensions are: length over time (L T^-1).
+    /// @note This quantity's dimensions are: length over time (<code>L T^-1</code>).
     /// @note The SI unit of linear velocity is meters per second.
     /// @sa Length.
     /// @sa Time.
@@ -132,7 +132,7 @@ namespace playrho
     
     /// @brief Linear acceleration quantity.
     /// @details This is the type alias for the linear acceleration derived quantity.
-    /// @note This quantity's dimensions are: length over time squared (L T^-2).
+    /// @note This quantity's dimensions are: length over time squared (<code>L T^-2</code>).
     /// @note The SI unit of linear acceleration is meters per second squared.
     /// @sa Length.
     /// @sa Time.
@@ -143,7 +143,7 @@ namespace playrho
     
     /// @brief Mass quantity.
     /// @details This is the type alias for the mass base quantity.
-    /// @note This quantity's dimension is: mass (M).
+    /// @note This quantity's dimension is: mass (<code>M</code>).
     /// @note The SI unit of mass is the kilogram.
     /// @sa Kilogram.
     /// @sa https://en.wikipedia.org/wiki/Mass
@@ -152,13 +152,13 @@ namespace playrho
     /// @brief Inverse mass quantity.
     /// @details This is the type alias for the inverse mass quantity. It's a derived quantity
     ///   that's the inverse of mass.
-    /// @note This quantity's dimension is: inverse mass (M^-1).
+    /// @note This quantity's dimension is: inverse mass (<code>M^-1</code>).
     /// @sa Mass.
     using InvMass = PLAYRHO_QUANTITY(boost::units::si::inverse_mass);
     
     /// @brief Area quantity.
     /// @details This is the type alias for the area quantity. It's a derived quantity.
-    /// @note This quantity's dimension is: length squared (L^2).
+    /// @note This quantity's dimension is: length squared (<code>L^2</code>).
     /// @note The SI unit of area is the square-meter.
     /// @sa Length.
     /// @sa SquareMeter.
@@ -167,7 +167,7 @@ namespace playrho
     
     /// @brief Area (surface) density quantity.
     /// @details This is the type alias for the area density quantity. It's a derived quantity.
-    /// @note This quantity's dimensions are: mass per area (M L^-2).
+    /// @note This quantity's dimensions are: mass per area (<code>M L^-2</code>).
     /// @note The SI derived unit of area density is kilogram per meter-squared.
     /// @sa Mass.
     /// @sa Area.
@@ -177,7 +177,7 @@ namespace playrho
     
     /// @brief Angle quantity.
     /// @details This is the type alias for the plane angle base quantity.
-    /// @note This quantity's dimension is: plane angle (QP).
+    /// @note This quantity's dimension is: plane angle (<code>QP</code>).
     /// @sa Radian.
     /// @sa Degree.
     using Angle = PLAYRHO_QUANTITY(boost::units::si::plane_angle);
@@ -185,7 +185,7 @@ namespace playrho
     /// @brief Angular velocity quantity.
     /// @details This is the type alias for the plane angular velocity quantity. It's a
     ///   derived quantity.
-    /// @note This quantity's dimensions are: plane angle per time (QP T^-1).
+    /// @note This quantity's dimensions are: plane angle per time (<code>QP T^-1</code>).
     /// @note The SI derived unit of angular velocity is the radian per second.
     /// @sa Angle.
     /// @sa Time.
@@ -196,7 +196,7 @@ namespace playrho
     /// @brief Angular acceleration quantity.
     /// @details This is the type alias for the angular acceleration quantity. It's a
     ///   derived quantity.
-    /// @note This quantity's dimensions are: plane angle per time squared (QP T^-2).
+    /// @note This quantity's dimensions are: plane angle per time squared (<code>QP T^-2</code>).
     /// @note The SI derived unit of angular acceleration is the radian per second-squared.
     /// @sa Angle.
     /// @sa Time.
@@ -207,7 +207,7 @@ namespace playrho
 
     /// @brief Force quantity.
     /// @details This is the type alias for the force quantity. It's a derived quantity.
-    /// @note This quantity's dimensions are: length mass per time squared (L M T^-2).
+    /// @note This quantity's dimensions are: length mass per time squared (<code>L M T^-2</code>).
     /// @note The SI derived unit of force is the newton.
     /// @sa Length.
     /// @sa Mass.
@@ -220,7 +220,7 @@ namespace playrho
     /// @details This is the type alias for the torque quantity. It's a derived quantity
     ///   that's a rotational force.
     /// @note This quantity's dimensions are: length-squared mass per time-squared per
-    ///   angle (L^2 M T^-2 QP^-1).
+    ///   angle (<code>L^2 M T^-2 QP^-1</code>).
     /// @note The SI derived unit of torque is the newton meter.
     /// @sa Length.
     /// @sa Mass.
@@ -233,7 +233,7 @@ namespace playrho
     /// @brief Second moment of area quantity.
     /// @details This is the type alias for the second moment of area quantity. It's a
     ///   derived quantity.
-    /// @note This quantity's dimensions are: length-squared-squared (L^4).
+    /// @note This quantity's dimensions are: length-squared-squared (<code>L^4</code>).
     /// @sa Length.
     /// @sa https://en.wikipedia.org/wiki/Second_moment_of_area
     using SecondMomentOfArea = PLAYRHO_QUANTITY(boost::units::si::second_moment_of_area);
@@ -241,7 +241,8 @@ namespace playrho
     /// @brief Rotational inertia quantity.
     /// @details This is the type alias for the rotational inertia quantity. It's a
     ///   derived quantity that's also called the moment of inertia or angular mass.
-    /// @note This quantity's dimensions are: length-squared mass per angle-squared (L^2 M QP^-2).
+    /// @note This quantity's dimensions are: length-squared mass per angle-squared
+    ///   (<code>L^2 M QP^-2</code>).
     /// @note The SI derived unit of rotational inertia is the kilogram per meter-squared.
     /// @sa Length.
     /// @sa Mass.
@@ -254,7 +255,7 @@ namespace playrho
     /// @details This is the type alias for the inverse rotational inertia quantity. It's
     ///   a derived quantity.
     /// @note This quantity's dimensions are: angle-squared per length-squared per mass
-    ///    (L^-2 M^-1 QP^2).
+    ///    (<code>L^-2 M^-1 QP^2</code>).
     /// @sa Length.
     /// @sa Mass.
     /// @sa Angle.
@@ -263,7 +264,7 @@ namespace playrho
     
     /// @brief Momentum quantity.
     /// @details This is the type alias for the momentum quantity. It's a derived quantity.
-    /// @note This quantity's dimensions are: length mass per time (L M T^-1).
+    /// @note This quantity's dimensions are: length mass per time (<code>L M T^-1</code>).
     /// @note The SI derived unit of momentum is the kilogram meter per second.
     /// @note If <code>p</code> is momentum, <code>m</code> is mass, and <code>v</code> is
     ///   velocity, then <code>p = m * v</code>.
@@ -278,7 +279,7 @@ namespace playrho
     /// @details This is the type alias for the angular momentum quantity. It's a derived
     ///   quantity.
     /// @note This quantity's dimensions are: length-squared mass per time per angle
-    ///    (L^2 M T^-1 QP^-1).
+    ///    (<code>L^2 M T^-1 QP^-1</code>).
     /// @note The SI derived unit of angular momentum is the kilogram meter-squared per second.
     /// @sa Length.
     /// @sa Mass.
@@ -785,11 +786,13 @@ namespace playrho
     ///   the Earth due to the Earth's gravity.
     /// @note This constant is only appropriate for use for objects of low mass and close
     ///   distance relative to the Earth.
+    /// @sa https://en.wikipedia.org/wiki/Gravity_of_Earth
     PLAYRHO_CONSTEXPR const auto EarthlyLinearAcceleration = Real{-9.8f} * MeterPerSquareSecond;
     
     /// @brief Big "G".
     /// @details Gravitational constant used in calculating the attractive force on a mass
     ///   to another mass at a given distance due to gravity.
+    /// @sa https://en.wikipedia.org/wiki/Gravitational_constant
     PLAYRHO_CONSTEXPR const auto BigG = Real{6.67408e-11f} * CubicMeter / (Kilogram * SquareSecond);
     
     /// @}

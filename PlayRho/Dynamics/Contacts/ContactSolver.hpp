@@ -175,8 +175,8 @@ namespace GaussSeidel {
 /// @note Linear velocity is only changed if the inverse mass of either body is non-zero.
 /// @note Angular velocity is only changed if the inverse rotational inertia of either
 ///   body is non-zero.
-/// @note Inlining this function may yield a 10% speed boost in the World.TilesComesToRest
-///   unit test.
+/// @note Inlining this function may yield a 10% speed boost in the
+///   <code>World.TilesComesToRest</code> unit test.
 ///
 /// @pre The velocity constraint must have a valid normal, a valid tangent,
 ///   valid point relative positions, and valid velocity biases.

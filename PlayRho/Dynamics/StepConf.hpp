@@ -55,7 +55,7 @@ public:
     Time GetTime() const noexcept { return time; }
 
     /// @brief Gets the inverse delta-t value.
-    /// @return 1/dt or 0 if dt is 0.
+    /// @return <code>1/dt</code> or 0 if <code>dt</code> is 0.
     /// @sa GetTime().
     Frequency GetInvTime() const noexcept { return invTime; }
     
@@ -308,7 +308,7 @@ public:
     /// @note Used in the TOI phase of step processing.
     bool doToi = true;
 
-    /// @brief Do blocksolve algorithm.
+    /// @brief Do the block-solve algorithm.
     bool doBlocksolve = true;
 
 private:

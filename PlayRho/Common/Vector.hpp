@@ -534,7 +534,7 @@ PLAYRHO_CONSTEXPR inline bool operator>= (const Vector<T, N>& lhs, const Vector<
     return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) > *std::get<1>(diff));
 }
 
-/// @brief Gets the I'th element of the given collection.
+/// @brief Gets the specified element of the given collection.
 /// @relatedalso Vector
 template <std::size_t I, std::size_t N, typename T>
 PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
@@ -543,7 +543,7 @@ PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
     return v[I];
 }
 
-/// @brief Gets the I'th element of the given collection.
+/// @brief Gets the specified element of the given collection.
 template <std::size_t I, std::size_t N, typename T>
 PLAYRHO_CONSTEXPR inline auto Get(const Vector<T, N>& v) noexcept
 {
@@ -573,11 +573,11 @@ template <typename T, std::size_t N>
 
 namespace std {
     
-    /// @brief Tuple size info for playrho::Vector
+    /// @brief Tuple size info for <code>playrho::Vector</code>
     template<class T, std::size_t N>
     class tuple_size< playrho::Vector<T, N> >: public std::integral_constant<std::size_t, N> {};
     
-    /// @brief Tuple element type info for playrho::Vector
+    /// @brief Tuple element type info for <code>playrho::Vector</code>
     template<std::size_t I, class T, std::size_t N>
     class tuple_element<I, playrho::Vector<T, N>>
     {

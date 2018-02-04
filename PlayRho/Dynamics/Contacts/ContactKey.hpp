@@ -121,7 +121,7 @@ using KeyedContactPtr = std::pair<ContactKey, Contact*>;
 ContactKey GetContactKey(const Fixture& fixtureA, ChildCounter childIndexA,
                          const Fixture& fixtureB, ChildCounter childIndexB) noexcept;
 
-/// @brief Gets the ContactKey for the given contact.
+/// @brief Gets the <code>ContactKey</code> for the given contact.
 ContactKey GetContactKey(const Contact& contact) noexcept;
 
 /// @brief Gets the contact pointer for the given value.

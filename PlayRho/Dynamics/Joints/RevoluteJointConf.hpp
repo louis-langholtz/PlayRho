@@ -72,7 +72,7 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
     Length2 localAnchorB = Length2{};
     
     /// @brief Reference angle.
-    /// @details This is the bodyB angle minus bodyA angle in the reference state (radians).
+    /// @details This is the body-B angle minus body-A angle in the reference state (radians).
     Angle referenceAngle = 0_deg;
     
     /// @brief Flag to enable joint limits.

@@ -313,7 +313,7 @@ public:
     bool IsSpeedable() const noexcept;
 
     /// @brief Is "accelerable".
-    /// @details Indicates whether this body is accelerable, ie. whether it is effected by
+    /// @details Indicates whether this body is accelerable, i.e. whether it is effected by
     ///   forces. Only Dynamic bodies are accelerable.
     /// @return true if the body is accelerable, false otherwise.
     bool IsAccelerable() const noexcept;
@@ -423,7 +423,7 @@ public:
     
     /// @brief Gets the container of all contacts attached to this body.
     /// @warning This collection changes during the time step and you may
-    ///   miss some collisions if you don't use ContactListener.
+    ///   miss some collisions if you don't use <code>ContactListener</code>.
     SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
 
     /// @brief Gets the user data pointer that was provided in the body definition.

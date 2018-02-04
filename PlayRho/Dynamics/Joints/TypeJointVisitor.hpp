@@ -28,7 +28,7 @@
 namespace playrho {
 namespace d2 {
 
-/// @brief Typing JointVisitor.
+/// @brief Typing <code>JointVisitor</code>.
 /// @details Records the type of joint that gets visited.
 class TypeJointVisitor: public JointVisitor
 {

@@ -200,12 +200,12 @@ public:
         
         /// Normal mass.
         /// @note 0 or greater.
-        /// @note Dependent on rA and rB.
+        /// @note Dependent on <code>relA</code> and <code>relB</code>.
         Mass normalMass = 0_kg;
         
         /// Tangent mass.
         /// @note 0 or greater.
-        /// @note Dependent on rA and rB.
+        /// @note Dependent on <code>relA</code> and <code>relB</code>.
         Mass tangentMass = 0_kg;
         
         /// Velocity bias.
@@ -229,7 +229,7 @@ public:
     
 private:
     
-    /// Adds the given point to this contact velocity constraint object.
+    /// @brief Adds the given point to this contact velocity constraint object.
     /// @details Adds up to <code>MaxManifoldPoints</code> points. To find out how many points
     ///   have already been added, call <code>GetPointCount</code>.
     /// @warning Behavior is undefined if an attempt is made to add more than

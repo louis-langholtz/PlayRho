@@ -58,10 +58,10 @@ struct MotorJointConf : public JointBuilder<MotorJointConf>
     /// @brief Uses the given correction factor.
     MotorJointConf& UseCorrectionFactor(Real v) noexcept;
     
-    /// @brief Position of bodyB minus the position of bodyA, in body A's frame.
+    /// @brief Position of body-B minus the position of body-A, in body-A's frame.
     Length2 linearOffset = Length2{};
     
-    /// @brief Angle of bodyB minus angle of bodyA.
+    /// @brief Angle of body-B minus angle of body-A.
     Angle angularOffset = 0_deg;
     
     /// @brief Maximum motor force.

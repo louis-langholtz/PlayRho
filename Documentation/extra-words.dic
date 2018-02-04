@@ -24,6 +24,8 @@ gravitationally
 growable
 incrementing
 initializer
+inlining
+intra
 invariants
 iterable
 Maclaurin
@@ -70,6 +72,7 @@ unallocated
 unary
 underflows
 unflag
+unflags
 unregister
 unregisters
 unsets

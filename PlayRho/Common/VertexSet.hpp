@@ -102,7 +102,7 @@ public:
 
 private:
     std::vector<Length2> m_elements; ///< Elements.
-    const Area m_minSepSquared; ///< Minimum length squared. sizeof(Vec2)/2 or 4-bytes.
+    const Area m_minSepSquared; ///< Minimum length squared. <code>sizeof(Vec2)/2</code> or 4-bytes.
 };
 
 } // namespace d2

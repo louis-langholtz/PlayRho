@@ -33,11 +33,11 @@ namespace d2 {
 ///
 /// @details A gear joint is used to connect two joints together. Either joint can be
 ///   a revolute or prismatic joint. You specify a gear ratio to bind the motions together:
-///      coordinate1 + ratio * coordinate2 = constant
+///      <code>coordinate1 + ratio * coordinate2 = constant</code>.
 ///   The ratio can be negative or positive. If one joint is a revolute joint and the other
 ///   joint is a prismatic joint, then the ratio will have units of length or units of 1/length.
 ///
-/// @warning You have to manually destroy the gear joint if joint1 or joint2 is destroyed.
+/// @warning You have to manually destroy the gear joint if joint-1 or joint-2 is destroyed.
 ///
 /// @ingroup JointsGroup
 ///
@@ -120,12 +120,12 @@ private:
     Momentum m_impulse = 0_Ns; ///< Impulse.
 
     // Solver temp
-    Vec2 m_JvAC = Vec2{}; ///< AC Jv data.
-    Vec2 m_JvBD; ///< BD Jv data.
-    Length m_JwA = 0_m; ///< A Jw data.
-    Length m_JwB; ///< B Jw data.
-    Length m_JwC; ///< C Jw data.
-    Length m_JwD; ///< D Jw data.
+    Vec2 m_JvAC = Vec2{}; ///< <code>AC Jv</code> data.
+    Vec2 m_JvBD; ///< <code>BD Jv</code> data.
+    Length m_JwA = 0_m; ///< A <code>Jw</code> data.
+    Length m_JwB; ///< B <code>Jw</code> data.
+    Length m_JwC; ///< C <code>Jw</code> data.
+    Length m_JwD; ///< D <code>Jw</code> data.
     Real m_mass; ///< Either linear mass or angular mass.
 };
 

@@ -94,16 +94,16 @@ public:
     /// @brief Gets the second body attached to this joint.
     Body* GetBodyB() const noexcept;
 
-    /// Get the anchor point on bodyA in world coordinates.
+    /// Get the anchor point on body-A in world coordinates.
     virtual Length2 GetAnchorA() const = 0;
 
-    /// Get the anchor point on bodyB in world coordinates.
+    /// Get the anchor point on body-B in world coordinates.
     virtual Length2 GetAnchorB() const = 0;
 
-    /// Get the linear reaction on bodyB at the joint anchor.
+    /// Get the linear reaction on body-B at the joint anchor.
     virtual Momentum2 GetLinearReaction() const = 0;
 
-    /// Get the angular reaction on bodyB.
+    /// Get the angular reaction on body-B.
     virtual AngularMomentum GetAngularReaction() const = 0;
     
     /// @brief Accepts a visitor.

@@ -31,7 +31,7 @@ namespace d2 {
 /// @brief Pulley joint.
 ///
 /// @details The pulley joint is connected to two bodies and two fixed ground points.
-///   The pulley supports a ratio such that: length1 + ratio * length2 <= constant.
+///   The pulley supports a ratio such that: <code>length1 + ratio * length2 <= constant</code>.
 ///
 /// @note The force transmitted is scaled by the ratio.
 ///
@@ -71,10 +71,10 @@ public:
     /// Get the second ground anchor.
     Length2 GetGroundAnchorB() const noexcept;
 
-    /// Get the current length of the segment attached to bodyA.
+    /// Get the current length of the segment attached to body-A.
     Length GetLengthA() const noexcept;
 
-    /// Get the current length of the segment attached to bodyB.
+    /// Get the current length of the segment attached to body-B.
     Length GetLengthB() const noexcept;
 
     /// Get the pulley ratio.
@@ -144,11 +144,11 @@ inline Real PulleyJoint::GetRatio() const noexcept
     return m_ratio;
 }
 
-/// @brief Get the current length of the segment attached to bodyA.
+/// @brief Get the current length of the segment attached to body-A.
 /// @relatedalso PulleyJoint
 Length GetCurrentLengthA(const PulleyJoint& joint);
 
-/// @brief Get the current length of the segment attached to bodyB.
+/// @brief Get the current length of the segment attached to body-B.
 /// @relatedalso PulleyJoint
 Length GetCurrentLengthB(const PulleyJoint& joint);
 

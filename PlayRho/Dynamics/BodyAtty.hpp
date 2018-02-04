@@ -161,22 +161,23 @@ private:
         return b.Insert(key, value);
     }
     
-    /// @brief Sets the position0 value of the given body to the given position.
+    /// @brief Sets the "position 0" value of the given body to the given position.
     static void SetPosition0(Body& b, const Position value) noexcept
     {
         assert(b.IsSpeedable() || b.m_sweep.pos0 == value);
         b.m_sweep.pos0 = value;
     }
     
-    /// Sets the body sweep's position 1 value.
-    /// @note This sets what Body::GetWorldCenter returns.
+    /// @brief Sets the body sweep's "position 1" value.
+    /// @note This sets what <code>Body::GetWorldCenter</code> returns.
+    /// @sa Body::GetWorldCenter
     static void SetPosition1(Body& b, const Position value) noexcept
     {
         assert(b.IsSpeedable() || b.m_sweep.pos1 == value);
         b.m_sweep.pos1 = value;
     }
     
-    /// @brief Resets the given body's alpha0 value.
+    /// @brief Resets the given body's "alpha-0" value.
     static void ResetAlpha0(Body& b)
     {
         b.m_sweep.ResetAlpha0();
@@ -190,20 +191,23 @@ private:
     }
     
     /// Sets the body's transformation.
-    /// @note This sets what Body::GetLocation returns.
+    /// @note This sets what <code>Body::GetLocation</code> returns.
+    /// @sa Body::GetLocation
     static void SetTransformation(Body& b, const Transformation value) noexcept
     {
         b.SetTransformation(value);
     }
     
     /// Sets the body's velocity.
-    /// @note This sets what Body::GetVelocity returns.
+    /// @note This sets what <code>Body::GetVelocity</code> returns.
+    /// @sa Body::GetVelocity
     static void SetVelocity(Body& b, Velocity value) noexcept
     {
         b.m_velocity = value;
     }
     
-    /// @brief Calls the given body sweep's Advance0 method to advance to the given value.
+    /// @brief Calls the given body sweep's <code>Advance0</code> method to advance to
+    ///    the given value.
     static void Advance0(Body& b, Real value) noexcept
     {
         // Note: Static bodies must **never** have different sweep position values.

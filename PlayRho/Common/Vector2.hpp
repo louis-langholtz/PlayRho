@@ -64,13 +64,13 @@ using InvMass2 = Vector2<InvMass>;
 /// @note Often used as a 2-dimensional momentum vector.
 using Momentum2 = Vector2<Momentum>;
 
-/// @brief Gets the given value as a Vec2.
+/// @brief Gets the given value as a 2-element vector of reals (<code>Vec2</code>).
 PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const Vector2<Real> value)
 {
     return value;
 }
 
-/// @brief Gets an invalid value for the Vec2 type.
+/// @brief Gets an invalid value for the <code>Vec2</code> type.
 template <>
 PLAYRHO_CONSTEXPR inline Vec2 GetInvalid() noexcept
 {
