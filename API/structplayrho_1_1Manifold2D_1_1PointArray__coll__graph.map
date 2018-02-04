@@ -1,6 +1,0 @@
-<map id="playrho::Manifold2D::PointArray" name="playrho::Manifold2D::PointArray">
-<area shape="rect" id="node2" href="$structplayrho_1_1Manifold2D_1_1Point.html" title="Data for a point of collision in a Manifold. " alt="" coords="180,292,320,331"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="5,192,179,217"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="102,92,259,117"/>
-<area shape="rect" id="node8" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature. " alt="" coords="320,192,484,217"/>
-</map>

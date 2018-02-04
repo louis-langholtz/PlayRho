@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('structplayrho_1_1d2_1_1JointBuilder.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
@@ -80,61 +106,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for playrho::d2::JointBuilder&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1d2_1_1JointBuilder__inherit__graph.png" border="0" usemap="#playrho_1_1d2_1_1JointBuilder_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1d2_1_1JointBuilder_3_01T_01_4_inherit__map" id="playrho_1_1d2_1_1JointBuilder_3_01T_01_4_inherit__map">
-<area shape="rect" id="node3" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; FrictionJointConf \&gt;" alt="" coords="587,5,751,44"/>
-<area shape="rect" id="node5" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; DistanceJointConf \&gt;" alt="" coords="587,68,751,107"/>
-<area shape="rect" id="node7" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; GearJointConf \&gt;" alt="" coords="587,131,751,169"/>
-<area shape="rect" id="node9" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; PulleyJointConf \&gt;" alt="" coords="587,193,751,232"/>
-<area shape="rect" id="node11" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; PrismaticJointConf \&gt;" alt="" coords="587,256,751,295"/>
-<area shape="rect" id="node13" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; WeldJointConf \&gt;" alt="" coords="587,319,751,357"/>
-<area shape="rect" id="node15" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; RevoluteJointConf \&gt;" alt="" coords="587,381,751,420"/>
-<area shape="rect" id="node17" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; RopeJointConf \&gt;" alt="" coords="587,444,751,483"/>
-<area shape="rect" id="node19" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; WheelJointConf \&gt;" alt="" coords="587,507,751,545"/>
-<area shape="rect" id="node21" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; MotorJointConf \&gt;" alt="" coords="587,569,751,608"/>
-<area shape="rect" id="node23" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; TargetJointConf \&gt;" alt="" coords="587,632,751,671"/>
-<area shape="rect" id="node2" href="structplayrho_1_1d2_1_1JointConf.html" title="Abstract base Joint definition class. " alt="" coords="5,325,156,351"/>
-<area shape="rect" id="node4" href="structplayrho_1_1d2_1_1FrictionJointConf.html" title="Friction joint definition. " alt="" coords="806,12,1001,37"/>
-<area shape="rect" id="node6" href="structplayrho_1_1d2_1_1DistanceJointConf.html" title="Distance joint definition. " alt="" coords="802,75,1005,100"/>
-<area shape="rect" id="node8" href="structplayrho_1_1d2_1_1GearJointConf.html" title="Gear joint definition. " alt="" coords="813,137,994,163"/>
-<area shape="rect" id="node10" href="structplayrho_1_1d2_1_1PulleyJointConf.html" title="Pulley joint definition. " alt="" coords="810,200,997,225"/>
-<area shape="rect" id="node12" href="structplayrho_1_1d2_1_1PrismaticJointConf.html" title="Prismatic joint definition. " alt="" coords="800,263,1006,288"/>
-<area shape="rect" id="node14" href="structplayrho_1_1d2_1_1WeldJointConf.html" title="Weld joint definition. " alt="" coords="813,325,994,351"/>
-<area shape="rect" id="node16" href="structplayrho_1_1d2_1_1RevoluteJointConf.html" title="Revolute joint definition. " alt="" coords="801,388,1005,413"/>
-<area shape="rect" id="node18" href="structplayrho_1_1d2_1_1RopeJointConf.html" title="Rope joint definition. " alt="" coords="812,451,995,476"/>
-<area shape="rect" id="node20" href="structplayrho_1_1d2_1_1WheelJointConf.html" title="Wheel joint definition. " alt="" coords="809,513,998,539"/>
-<area shape="rect" id="node22" href="structplayrho_1_1d2_1_1MotorJointConf.html" title="Motor joint definition. " alt="" coords="811,576,996,601"/>
-<area shape="rect" id="node24" href="structplayrho_1_1d2_1_1TargetJointConf.html" title="Target joint definition. " alt="" coords="809,639,997,664"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1JointBuilder__inherit__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::JointBuilder&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1d2_1_1JointBuilder__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1JointBuilder_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1JointBuilder_3_01T_01_4_coll__map" id="playrho_1_1d2_1_1JointBuilder_3_01T_01_4_coll__map">
-<area shape="rect" id="node2" href="structplayrho_1_1d2_1_1JointConf.html" title="Abstract base Joint definition class. " alt="" coords="2249,882,2401,907"/>
-<area shape="rect" id="node5" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1970,906,2095,931"/>
-<area shape="rect" id="node8" href="structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="1248,173,1389,198"/>
-<area shape="rect" id="node9" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="866,522,1082,547"/>
-<area shape="rect" id="node11" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="500,990,657,1015"/>
-<area shape="rect" id="node38" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="887,1018,1061,1043"/>
-<area shape="rect" id="node41" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="852,1205,1096,1230"/>
-<area shape="rect" id="node18" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="499,598,658,637"/>
-<area shape="rect" id="node14" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1624,533,1754,558"/>
-<area shape="rect" id="node16" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="895,585,1054,623"/>
-<area shape="rect" id="node19" href="classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="1238,643,1400,682"/>
-<area shape="rect" id="node20" href="classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="1232,755,1406,781"/>
-<area shape="rect" id="node21" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="887,786,1061,825"/>
-<area shape="rect" id="node22" href="structplayrho_1_1detail_1_1AABB.html" title="playrho::detail::AABB\&lt; 2 \&gt;" alt="" coords="489,938,667,963"/>
-<area shape="rect" id="node24" href="structplayrho_1_1detail_1_1AABB.html" title="N&#45;dimensional Axis Aligned Bounding Box. " alt="" coords="204,931,384,957"/>
-<area shape="rect" id="node26" href="unionplayrho_1_1d2_1_1DynamicTree_1_1VariantData.html" title="Variant data. " alt="" coords="492,875,665,914"/>
-<area shape="rect" id="node32" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="1225,370,1413,395"/>
-<area shape="rect" id="node37" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1597,955,1781,981"/>
-<area shape="rect" id="node47" href="classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="1621,1005,1757,1030"/>
-<area shape="rect" id="node48" href="structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure. " alt="" coords="1248,1141,1390,1166"/>
-<area shape="rect" id="node39" href="classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="1248,906,1389,931"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1JointBuilder__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -216,11 +194,15 @@ struct playrho::d2::JointBuilder&lt; T &gt;</h3>
 <li>JointConf.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1JointBuilder.html">JointBuilder</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

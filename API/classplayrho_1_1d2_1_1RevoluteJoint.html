@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1RevoluteJoint.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html">RevoluteJoint</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -82,37 +108,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for playrho::d2::RevoluteJoint:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1RevoluteJoint__inherit__graph.png" border="0" usemap="#playrho_1_1d2_1_1RevoluteJoint_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1d2_1_1RevoluteJoint_inherit__map" id="playrho_1_1d2_1_1RevoluteJoint_inherit__map">
-<area shape="rect" id="node2" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. " alt="" coords="32,5,155,31"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1RevoluteJoint__inherit__graph.svg" width="187" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::RevoluteJoint:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1RevoluteJoint__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1RevoluteJoint_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1RevoluteJoint_coll__map" id="playrho_1_1d2_1_1RevoluteJoint_coll__map">
-<area shape="rect" id="node2" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. " alt="" coords="1884,897,2007,922"/>
-<area shape="rect" id="node4" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1640,871,1765,897"/>
-<area shape="rect" id="node7" href="structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="1289,1206,1429,1231"/>
-<area shape="rect" id="node8" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="866,1185,1083,1210"/>
-<area shape="rect" id="node10" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="151,811,308,837"/>
-<area shape="rect" id="node32" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="529,811,703,837"/>
-<area shape="rect" id="node35" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="494,1266,738,1291"/>
-<area shape="rect" id="node46" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Real \&gt;" alt="" coords="894,167,1055,193"/>
-<area shape="rect" id="node17" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="150,374,309,413"/>
-<area shape="rect" id="node13" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1294,585,1424,610"/>
-<area shape="rect" id="node15" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="536,309,695,347"/>
-<area shape="rect" id="node18" href="classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="893,391,1056,430"/>
-<area shape="rect" id="node19" href="classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="888,701,1061,726"/>
-<area shape="rect" id="node20" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="529,673,703,711"/>
-<area shape="rect" id="node26" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="880,293,1069,318"/>
-<area shape="rect" id="node31" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1267,1055,1451,1081"/>
-<area shape="rect" id="node41" href="classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="1291,697,1427,722"/>
-<area shape="rect" id="node42" href="structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure. " alt="" coords="903,849,1046,874"/>
-<area shape="rect" id="node33" href="classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="904,1083,1045,1109"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1RevoluteJoint__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -128,11 +130,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a56c4ba3fa6a15ec9fb98bfe843ed8875"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2da2b33e7287e4097214f0402552ab53"><td class="memItemLeft" align="right" valign="top"><a id="a2da2b33e7287e4097214f0402552ab53"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a2da2b33e7287e4097214f0402552ab53">GetAnchorA</a> () const override</td></tr>
-<tr class="memdesc:a2da2b33e7287e4097214f0402552ab53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on bodyA in world coordinates. <br /></td></tr>
+<tr class="memdesc:a2da2b33e7287e4097214f0402552ab53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on body-A in world coordinates. <br /></td></tr>
 <tr class="separator:a2da2b33e7287e4097214f0402552ab53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3f00d3c82792a10cf3e1122e6bb4ca1"><td class="memItemLeft" align="right" valign="top"><a id="ac3f00d3c82792a10cf3e1122e6bb4ca1"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#ac3f00d3c82792a10cf3e1122e6bb4ca1">GetAnchorB</a> () const override</td></tr>
-<tr class="memdesc:ac3f00d3c82792a10cf3e1122e6bb4ca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on bodyB in world coordinates. <br /></td></tr>
+<tr class="memdesc:ac3f00d3c82792a10cf3e1122e6bb4ca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on body-B in world coordinates. <br /></td></tr>
 <tr class="separator:ac3f00d3c82792a10cf3e1122e6bb4ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ba6fbdc104e0420e88d88f0a05f9075"><td class="memItemLeft" align="right" valign="top"><a id="a1ba6fbdc104e0420e88d88f0a05f9075"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a1ba6fbdc104e0420e88d88f0a05f9075">GetLocalAnchorA</a> () const noexcept</td></tr>
@@ -251,13 +253,11 @@ Private Attributes</h2></td></tr>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a0f322924344af44e6a74b97fb6efb9b5">m_localAnchorB</a></td></tr>
 <tr class="memdesc:a0f322924344af44e6a74b97fb6efb9b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local anchor B. <br /></td></tr>
 <tr class="separator:a0f322924344af44e6a74b97fb6efb9b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3adb45b9326fb4fef2d455aac2f6f829"><td class="memItemLeft" align="right" valign="top"><a id="a3adb45b9326fb4fef2d455aac2f6f829"></a>
-<a class="el" href="namespaceplayrho.html#a63f6dcdf3763052ea25099973c7c00ad">Vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a3adb45b9326fb4fef2d455aac2f6f829">m_impulse</a> = <a class="el" href="namespaceplayrho.html#a63f6dcdf3763052ea25099973c7c00ad">Vec3</a>{}</td></tr>
-<tr class="memdesc:a3adb45b9326fb4fef2d455aac2f6f829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Impulse. Modified by: InitVelocityConstraints, SolveVelocityConstraints. <br /></td></tr>
+<tr class="memitem:a3adb45b9326fb4fef2d455aac2f6f829"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a63f6dcdf3763052ea25099973c7c00ad">Vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a3adb45b9326fb4fef2d455aac2f6f829">m_impulse</a> = <a class="el" href="namespaceplayrho.html#a63f6dcdf3763052ea25099973c7c00ad">Vec3</a>{}</td></tr>
+<tr class="memdesc:a3adb45b9326fb4fef2d455aac2f6f829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Impulse.  <a href="#a3adb45b9326fb4fef2d455aac2f6f829">More...</a><br /></td></tr>
 <tr class="separator:a3adb45b9326fb4fef2d455aac2f6f829"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a252cfc151c57c9a939cb1130674a152b"><td class="memItemLeft" align="right" valign="top"><a id="a252cfc151c57c9a939cb1130674a152b"></a>
-<a class="el" href="group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a252cfc151c57c9a939cb1130674a152b">m_motorImpulse</a> = 0</td></tr>
-<tr class="memdesc:a252cfc151c57c9a939cb1130674a152b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor impulse. Modified by: InitVelocityConstraints, SolveVelocityConstraints. <br /></td></tr>
+<tr class="memitem:a252cfc151c57c9a939cb1130674a152b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a252cfc151c57c9a939cb1130674a152b">m_motorImpulse</a> = 0</td></tr>
+<tr class="memdesc:a252cfc151c57c9a939cb1130674a152b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor impulse.  <a href="#a252cfc151c57c9a939cb1130674a152b">More...</a><br /></td></tr>
 <tr class="separator:a252cfc151c57c9a939cb1130674a152b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51789a94b0e8294737164e6e87ea3223"><td class="memItemLeft" align="right" valign="top"><a id="a51789a94b0e8294737164e6e87ea3223"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a51789a94b0e8294737164e6e87ea3223">m_enableMotor</a></td></tr>
@@ -717,17 +717,76 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a3adb45b9326fb4fef2d455aac2f6f829"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3adb45b9326fb4fef2d455aac2f6f829">&#9670;&nbsp;</a></span>m_impulse</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a63f6dcdf3763052ea25099973c7c00ad">Vec3</a> playrho::d2::RevoluteJoint::m_impulse = <a class="el" href="namespaceplayrho.html#a63f6dcdf3763052ea25099973c7c00ad">Vec3</a>{}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Impulse. </p>
+<dl class="section note"><dt>Note</dt><dd>Modified by: <code>InitVelocityConstraints</code>, <code>SolveVelocityConstraints</code>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a4bf19603cf8ee0db7c31f39a88bf257f">EnableLimit()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a6f2f29ba34867ee46b41f8200a969b95">GetAngularReaction()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a7eed04dd372560c8512984b26d6e4b38">GetLinearReaction()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a85fe70b215988443bcc382125859eddf">InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5a793779ba6e5acca4d2b3a6a3bbd205">SetLimits()</a>, and <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5ad8861664969be025290f21dd46f980">SolveVelocityConstraints()</a>.</p>
+
+</div>
+</div>
+<a id="a252cfc151c57c9a939cb1130674a152b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a252cfc151c57c9a939cb1130674a152b">&#9670;&nbsp;</a></span>m_motorImpulse</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a> playrho::d2::RevoluteJoint::m_motorImpulse = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Motor impulse. </p>
+<dl class="section note"><dt>Note</dt><dd>Modified by: <code>InitVelocityConstraints</code>, <code>SolveVelocityConstraints</code>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#ae7120ff6f2121cc53d579a66507b2e7d">GetMotorImpulse()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a85fe70b215988443bcc382125859eddf">InitVelocityConstraints()</a>, and <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5ad8861664969be025290f21dd46f980">SolveVelocityConstraints()</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>RevoluteJoint.hpp</li>
 <li>RevoluteJoint.cpp</li>
 <li>RevoluteJointConf.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html">RevoluteJoint</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

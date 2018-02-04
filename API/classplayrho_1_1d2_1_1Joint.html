@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1Joint.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
@@ -88,50 +114,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for playrho::d2::Joint:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1Joint__inherit__graph.png" border="0" usemap="#playrho_1_1d2_1_1Joint_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1d2_1_1Joint_inherit__map" id="playrho_1_1d2_1_1Joint_inherit__map">
-<area shape="rect" id="node2" href="classplayrho_1_1d2_1_1DistanceJoint.html" title="Distance Joint. " alt="" coords="178,5,352,31"/>
-<area shape="rect" id="node3" href="classplayrho_1_1d2_1_1FrictionJoint.html" title="Friction joint. " alt="" coords="182,55,348,80"/>
-<area shape="rect" id="node4" href="classplayrho_1_1d2_1_1GearJoint.html" title="Gear joint. " alt="" coords="189,104,341,129"/>
-<area shape="rect" id="node5" href="classplayrho_1_1d2_1_1MotorJoint.html" title="Motor joint. " alt="" coords="187,153,344,179"/>
-<area shape="rect" id="node6" href="classplayrho_1_1d2_1_1PrismaticJoint.html" title="Prismatic Joint. " alt="" coords="176,203,354,228"/>
-<area shape="rect" id="node7" href="classplayrho_1_1d2_1_1PulleyJoint.html" title="Pulley joint. " alt="" coords="185,252,345,277"/>
-<area shape="rect" id="node8" href="classplayrho_1_1d2_1_1RevoluteJoint.html" title="Revolute Joint. " alt="" coords="177,301,353,327"/>
-<area shape="rect" id="node9" href="classplayrho_1_1d2_1_1RopeJoint.html" title="Rope joint. " alt="" coords="188,351,342,376"/>
-<area shape="rect" id="node10" href="classplayrho_1_1d2_1_1TargetJoint.html" title="Target Joint. " alt="" coords="185,400,345,425"/>
-<area shape="rect" id="node11" href="classplayrho_1_1d2_1_1WeldJoint.html" title="Weld joint. " alt="" coords="189,449,342,475"/>
-<area shape="rect" id="node12" href="classplayrho_1_1d2_1_1WheelJoint.html" title="Wheel joint. " alt="" coords="185,499,345,524"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1Joint__inherit__graph.svg" width="359" height="530"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::Joint:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1Joint__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1Joint_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1Joint_coll__map" id="playrho_1_1d2_1_1Joint_coll__map">
-<area shape="rect" id="node3" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1559,610,1684,635"/>
-<area shape="rect" id="node26" href="structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html" title="Leaf data of a tree node. " alt="" coords="1795,630,1969,669"/>
-<area shape="rect" id="node6" href="structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="844,689,985,714"/>
-<area shape="rect" id="node7" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="508,483,724,509"/>
-<area shape="rect" id="node9" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="151,245,308,270"/>
-<area shape="rect" id="node38" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="529,222,703,247"/>
-<area shape="rect" id="node41" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="494,411,738,437"/>
-<area shape="rect" id="node16" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="150,98,309,137"/>
-<area shape="rect" id="node12" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="3040,362,3169,387"/>
-<area shape="rect" id="node14" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="536,71,695,110"/>
-<area shape="rect" id="node17" href="classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="2682,250,2844,289"/>
-<area shape="rect" id="node18" href="classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="2676,362,2850,387"/>
-<area shape="rect" id="node19" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="2389,382,2562,421"/>
-<area shape="rect" id="node20" href="structplayrho_1_1detail_1_1AABB.html" title="playrho::detail::AABB\&lt; 2 \&gt;" alt="" coords="2101,479,2279,505"/>
-<area shape="rect" id="node22" href="structplayrho_1_1detail_1_1AABB.html" title="N&#45;dimensional Axis Aligned Bounding Box. " alt="" coords="1792,469,1972,494"/>
-<area shape="rect" id="node25" href="structplayrho_1_1d2_1_1DynamicTree_1_1BranchData.html" title="Branch data of a tree node. " alt="" coords="1795,406,1969,445"/>
-<area shape="rect" id="node24" href="unionplayrho_1_1d2_1_1DynamicTree_1_1VariantData.html" title="Variant data. " alt="" coords="2103,417,2277,455"/>
-<area shape="rect" id="node32" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="2669,510,2857,535"/>
-<area shape="rect" id="node37" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1174,793,1358,818"/>
-<area shape="rect" id="node47" href="classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="1199,345,1334,370"/>
-<area shape="rect" id="node48" href="structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure. " alt="" coords="843,171,986,197"/>
-<area shape="rect" id="node39" href="classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="844,406,985,431"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1Joint__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -155,19 +144,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adc64a8edfe09b0d30e0450521458234f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2502bb62eb385ea45209e359689ec879"><td class="memItemLeft" align="right" valign="top"><a id="a2502bb62eb385ea45209e359689ec879"></a>
 virtual <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2502bb62eb385ea45209e359689ec879">GetAnchorA</a> () const =0</td></tr>
-<tr class="memdesc:a2502bb62eb385ea45209e359689ec879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on bodyA in world coordinates. <br /></td></tr>
+<tr class="memdesc:a2502bb62eb385ea45209e359689ec879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on body-A in world coordinates. <br /></td></tr>
 <tr class="separator:a2502bb62eb385ea45209e359689ec879"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae35387bb3f7432abf71e18022c7c1920"><td class="memItemLeft" align="right" valign="top"><a id="ae35387bb3f7432abf71e18022c7c1920"></a>
 virtual <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#ae35387bb3f7432abf71e18022c7c1920">GetAnchorB</a> () const =0</td></tr>
-<tr class="memdesc:ae35387bb3f7432abf71e18022c7c1920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on bodyB in world coordinates. <br /></td></tr>
+<tr class="memdesc:ae35387bb3f7432abf71e18022c7c1920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on body-B in world coordinates. <br /></td></tr>
 <tr class="separator:ae35387bb3f7432abf71e18022c7c1920"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abea83ebdb28d6b0ba9d0aba3862e8da6"><td class="memItemLeft" align="right" valign="top"><a id="abea83ebdb28d6b0ba9d0aba3862e8da6"></a>
 virtual <a class="el" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#abea83ebdb28d6b0ba9d0aba3862e8da6">GetLinearReaction</a> () const =0</td></tr>
-<tr class="memdesc:abea83ebdb28d6b0ba9d0aba3862e8da6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the linear reaction on bodyB at the joint anchor. <br /></td></tr>
+<tr class="memdesc:abea83ebdb28d6b0ba9d0aba3862e8da6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the linear reaction on body-B at the joint anchor. <br /></td></tr>
 <tr class="separator:abea83ebdb28d6b0ba9d0aba3862e8da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafaeabda4bd5630f755788ce3d9ac2c2"><td class="memItemLeft" align="right" valign="top"><a id="aafaeabda4bd5630f755788ce3d9ac2c2"></a>
 virtual <a class="el" href="group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#aafaeabda4bd5630f755788ce3d9ac2c2">GetAngularReaction</a> () const =0</td></tr>
-<tr class="memdesc:aafaeabda4bd5630f755788ce3d9ac2c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the angular reaction on bodyB. <br /></td></tr>
+<tr class="memdesc:aafaeabda4bd5630f755788ce3d9ac2c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the angular reaction on body-B. <br /></td></tr>
 <tr class="separator:aafaeabda4bd5630f755788ce3d9ac2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2761ee851db87e899cd982f483f176e1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2761ee851db87e899cd982f483f176e1">Accept</a> (<a class="el" href="classplayrho_1_1d2_1_1JointVisitor.html">JointVisitor</a> &amp;visitor) const =0</td></tr>
 <tr class="memdesc:a2761ee851db87e899cd982f483f176e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts a visitor.  <a href="#a2761ee851db87e899cd982f483f176e1">More...</a><br /></td></tr>
@@ -334,7 +323,7 @@ Related Functions</h2></td></tr>
 <dd>
 <a href="https://en.wikipedia.org/wiki/Visitor_pattern">https://en.wikipedia.org/wiki/Visitor_pattern</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a6d005704794cb758659631fda3560d59">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#ae8bc6fc1c6ce6e056a991e01600bf5f0">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a7a87a4b1a00f6115b7f67cec7c26feeb">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a65329727cf29c7c8fbc11d0de1056604">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a4f0efc0adc41d1b73bb21e3ebfea3f4e">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a746b17509335f1258fb4d66bb8f9bddf">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#ab5afe2028addabdcabf9dda630bb280b">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#aa1fc52d9674348878e86e7a65d05fd33">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#ab31490b3e850ee5d2d927109125e2054">playrho::d2::FrictionJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a5e5f7eacd83fc98edf5795b3b033cc3f">playrho::d2::MotorJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a27f65832f34ad6540a99c6f6e2c033bb">playrho::d2::WeldJoint</a>.</p>
+<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a6d005704794cb758659631fda3560d59">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#ae8bc6fc1c6ce6e056a991e01600bf5f0">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a65329727cf29c7c8fbc11d0de1056604">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a4f0efc0adc41d1b73bb21e3ebfea3f4e">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a7a87a4b1a00f6115b7f67cec7c26feeb">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a746b17509335f1258fb4d66bb8f9bddf">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#ab5afe2028addabdcabf9dda630bb280b">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#aa1fc52d9674348878e86e7a65d05fd33">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#ab31490b3e850ee5d2d927109125e2054">playrho::d2::FrictionJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a5e5f7eacd83fc98edf5795b3b033cc3f">playrho::d2::MotorJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a27f65832f34ad6540a99c6f6e2c033bb">playrho::d2::WeldJoint</a>.</p>
 
 </div>
 </div>
@@ -367,7 +356,7 @@ Related Functions</h2></td></tr>
 <dd>
 <a href="https://en.wikipedia.org/wiki/Visitor_pattern">https://en.wikipedia.org/wiki/Visitor_pattern</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#ab1ad0d0bd95a789a62cc8d6c5d16fc69">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a56c4ba3fa6a15ec9fb98bfe843ed8875">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a5d9daba8b82dfb77a89b06264d94adbf">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a645758f93c794403b0349b05efef4723">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ab19bafe6dc31c794c7fb121489098959">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a854fe83b8a16d3fa6dc5b4636914a2e6">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a30570447201b457ed159cd334d4f31c4">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a095501ab5400771713911a6957d0e948">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#aab137d34a5e5c289efbcc69b3731b69c">playrho::d2::FrictionJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#ac9c1657c687ec26391df98d294121c92">playrho::d2::MotorJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#ae5f750ed2fc6badd477cf5ec63473d8e">playrho::d2::WeldJoint</a>.</p>
+<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#ab1ad0d0bd95a789a62cc8d6c5d16fc69">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a56c4ba3fa6a15ec9fb98bfe843ed8875">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a645758f93c794403b0349b05efef4723">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ab19bafe6dc31c794c7fb121489098959">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a5d9daba8b82dfb77a89b06264d94adbf">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a854fe83b8a16d3fa6dc5b4636914a2e6">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a30570447201b457ed159cd334d4f31c4">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a095501ab5400771713911a6957d0e948">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#aab137d34a5e5c289efbcc69b3731b69c">playrho::d2::FrictionJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#ac9c1657c687ec26391df98d294121c92">playrho::d2::MotorJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#ae5f750ed2fc6badd477cf5ec63473d8e">playrho::d2::WeldJoint</a>.</p>
 
 </div>
 </div>
@@ -510,7 +499,7 @@ Related Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This MUST be called prior to calling <code>SolveVelocityConstraints</code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Joint.html#aa2cde5ae721d4a908b6e98f0d5326c05" title="Solves velocity constraint. ">SolveVelocityConstraints</a>. </dd></dl>
 
-<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a85fe70b215988443bcc382125859eddf">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a3f89d4b9336013d6811edf6eb9a97db3">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#ad3179df28daa98bc76a5c69798350610">playrho::d2::MotorJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a0249d37ddb65d29566ffa4282d23a06f">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#aebf04fb0bc42328991979e15d1a783d3">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a27dd018dd83b485d71e4bc9d1eab6d49">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a9ae1f191149083ad1430b2a4e6214ca2">playrho::d2::FrictionJoint</a>.</p>
+<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a85fe70b215988443bcc382125859eddf">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a3f89d4b9336013d6811edf6eb9a97db3">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#ad3179df28daa98bc76a5c69798350610">playrho::d2::MotorJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a0249d37ddb65d29566ffa4282d23a06f">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#aebf04fb0bc42328991979e15d1a783d3">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a27dd018dd83b485d71e4bc9d1eab6d49">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a9ae1f191149083ad1430b2a4e6214ca2">playrho::d2::FrictionJoint</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1JointAtty.html#ad0ed02435eca5cf5878a70b0d8218e97">playrho::d2::JointAtty::InitVelocityConstraints()</a>.</p>
 
@@ -543,7 +532,7 @@ Related Functions</h2></td></tr>
 <p>Shifts the origin for any points stored in world coordinates. </p>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if shift done, <code>false</code> otherwise. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a7cae06e0cfc128ccf773368c894c8956">playrho::d2::TargetJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#ac15ec949b15596d474294762adb2423e">playrho::d2::PulleyJoint</a>.</p>
+<p>Reimplemented in <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#ac15ec949b15596d474294762adb2423e">playrho::d2::PulleyJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a7cae06e0cfc128ccf773368c894c8956">playrho::d2::TargetJoint</a>.</p>
 
 </div>
 </div>
@@ -584,7 +573,7 @@ Related Functions</h2></td></tr>
 <p>Solves the position constraint. </p>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if the position errors are within tolerance. </dd></dl>
 
-<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a0839d077d25f0a15dd1373a574794e4a">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae281320a9ca08953d9fe4845667b3119">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a6587eea364eba49b8793c591d4ab9040">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a13fe53aefd8dddb99425f06d5ca82681">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a9286a1ca404043773b53b6f9120d1502">playrho::d2::MotorJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a4ba5e2353f4895748b05f7bde1bbfbc5">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#ab65e65d0f13a0f43b14a1cdc84ecd3d0">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a76c092dfa1062b6be8b166ffa56624b9">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a7e7888e4f4c752b057ad5b4fb7334f29">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#ad7c2e273d61bbc7203979a14665bc8fd">playrho::d2::WeldJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#af5119b842ff7d38f8f0bb9ba81154b71">playrho::d2::FrictionJoint</a>.</p>
+<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a0839d077d25f0a15dd1373a574794e4a">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae281320a9ca08953d9fe4845667b3119">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a6587eea364eba49b8793c591d4ab9040">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a9286a1ca404043773b53b6f9120d1502">playrho::d2::MotorJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a4ba5e2353f4895748b05f7bde1bbfbc5">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a13fe53aefd8dddb99425f06d5ca82681">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#ab65e65d0f13a0f43b14a1cdc84ecd3d0">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a76c092dfa1062b6be8b166ffa56624b9">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a7e7888e4f4c752b057ad5b4fb7334f29">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#ad7c2e273d61bbc7203979a14665bc8fd">playrho::d2::WeldJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#af5119b842ff7d38f8f0bb9ba81154b71">playrho::d2::FrictionJoint</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1JointAtty.html#a2bf2566b0e5aa77b7bd1a7551f3fef5d">playrho::d2::JointAtty::SolvePositionConstraints()</a>.</p>
 
@@ -629,7 +618,7 @@ Related Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Joint.html#afab46260b1e1173bb4ab5eaf2890d2f2" title="Initializes velocity constraint data based on the given solver data. ">InitVelocityConstraints</a>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if velocity is "solved", <code>false</code> otherwise. </dd></dl>
 
-<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5ad8861664969be025290f21dd46f980">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae794341c3fa711bdddde651a9947bf32">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a74de04edb5d15c6bfd7319fcbb138c4a">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a63c767a86e1ece9f5a5e2d3f2ae38e23">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a4d8b3f0887429d3cbc6d13ad651d6ebe">playrho::d2::MotorJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a54f5f608ed1c492bbaba04e0c0d1013b">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a10b343daa7df8529e0c8423d222b0bb3">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#aacaae2132dfd2e59fe3e84a8a537c003">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#aa0aba612a752ad886c7fd2aebd912a5d">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a675dd4c26ad99f4ceba6c231ace3b5b2">playrho::d2::WeldJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a128e4cfa3de3a1249bc8b7233f573729">playrho::d2::FrictionJoint</a>.</p>
+<p>Implemented in <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5ad8861664969be025290f21dd46f980">playrho::d2::RevoluteJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae794341c3fa711bdddde651a9947bf32">playrho::d2::PrismaticJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a74de04edb5d15c6bfd7319fcbb138c4a">playrho::d2::WheelJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a4d8b3f0887429d3cbc6d13ad651d6ebe">playrho::d2::MotorJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a54f5f608ed1c492bbaba04e0c0d1013b">playrho::d2::GearJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a63c767a86e1ece9f5a5e2d3f2ae38e23">playrho::d2::TargetJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#a10b343daa7df8529e0c8423d222b0bb3">playrho::d2::PulleyJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#aacaae2132dfd2e59fe3e84a8a537c003">playrho::d2::DistanceJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#aa0aba612a752ad886c7fd2aebd912a5d">playrho::d2::RopeJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a675dd4c26ad99f4ceba6c231ace3b5b2">playrho::d2::WeldJoint</a>, and <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a128e4cfa3de3a1249bc8b7233f573729">playrho::d2::FrictionJoint</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1JointAtty.html#a1033a99ccb99efd59267fd45bdc9eb4b">playrho::d2::JointAtty::SolveVelocityConstraints()</a>.</p>
 
@@ -754,11 +743,15 @@ Related Functions</h2></td></tr>
 <li>JointType.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

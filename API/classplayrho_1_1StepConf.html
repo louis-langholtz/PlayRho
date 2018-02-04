@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('classplayrho_1_1StepConf.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="classplayrho_1_1StepConf.html">StepConf</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
@@ -84,13 +110,8 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for playrho::StepConf:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1StepConf__coll__graph.png" border="0" usemap="#playrho_1_1StepConf_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1StepConf_coll__map" id="playrho_1_1StepConf_coll__map">
-<area shape="rect" id="node5" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="446,313,605,351"/>
-<area shape="rect" id="node7" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="146,343,305,382"/>
-<area shape="rect" id="node13" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Angle \&gt;" alt="" coords="446,375,605,414"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1StepConf__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -150,7 +171,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a2b76a2f94caee657304bbe29cf2091ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1StepConf.html#a2b76a2f94caee657304bbe29cf2091ec">targetDepth</a> = <a class="el" href="namespaceplayrho.html#a3d420c3642290da261ff169a973b070f">DefaultLinearSlop</a> * <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{3}</td></tr>
 <tr class="memdesc:a2b76a2f94caee657304bbe29cf2091ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Target depth.  <a href="#a2b76a2f94caee657304bbe29cf2091ec">More...</a><br /></td></tr>
 <tr class="separator:a2b76a2f94caee657304bbe29cf2091ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74a6805a0aa494299d5dc1ef6f7666db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1StepConf.html#a74a6805a0aa494299d5dc1ef6f7666db">tolerance</a> = <a class="el" href="namespaceplayrho.html#a3d420c3642290da261ff169a973b070f">DefaultLinearSlop</a> / <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{4}</td></tr>
+<tr class="memitem:a74a6805a0aa494299d5dc1ef6f7666db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1StepConf.html#a74a6805a0aa494299d5dc1ef6f7666db">tolerance</a> = <a class="el" href="namespaceplayrho.html#a3d420c3642290da261ff169a973b070f">DefaultLinearSlop</a> / <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{4}</td></tr>
 <tr class="memdesc:a74a6805a0aa494299d5dc1ef6f7666db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tolerance.  <a href="#a74a6805a0aa494299d5dc1ef6f7666db">More...</a><br /></td></tr>
 <tr class="separator:a74a6805a0aa494299d5dc1ef6f7666db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1df1b4fee721cf88f35fc08879027033"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga6e944c18ed210626b5829b8ad2813fde">LinearVelocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1StepConf.html#a1df1b4fee721cf88f35fc08879027033">velocityThreshold</a> = <a class="el" href="namespaceplayrho.html#ae97ff0dfa01d57e663d59d7574bb6fad">DefaultVelocityThreshold</a></td></tr>
@@ -216,7 +237,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a281a00a1aea4cd4a3390b16b4d49e881"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a628dca6d25124bf34e9c3c830b691c4d"><td class="memItemLeft" align="right" valign="top"><a id="a628dca6d25124bf34e9c3c830b691c4d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1StepConf.html#a628dca6d25124bf34e9c3c830b691c4d">doBlocksolve</a> = true</td></tr>
-<tr class="memdesc:a628dca6d25124bf34e9c3c830b691c4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do blocksolve algorithm. <br /></td></tr>
+<tr class="memdesc:a628dca6d25124bf34e9c3c830b691c4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do the block-solve algorithm. <br /></td></tr>
 <tr class="separator:a628dca6d25124bf34e9c3c830b691c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -299,7 +320,7 @@ This data structure is 108-bytes large (with 4-byte Real on at least one 64-bit 
 </div><div class="memdoc">
 
 <p>Gets the inverse delta-t value. </p>
-<dl class="section return"><dt>Returns</dt><dd>1/dt or 0 if dt is 0. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>1/dt</code> or 0 if <code>dt</code> is 0. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1StepConf.html#ac41f404b6345d1cd8b9ea21eb485bea8" title="Gets the delta time (time amount for this time step). ">GetTime()</a>. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#aa0aba612a752ad886c7fd2aebd912a5d">playrho::d2::RopeJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a4d8b3f0887429d3cbc6d13ad651d6ebe">playrho::d2::MotorJoint::SolveVelocityConstraints()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#af65a576b04537b18bcddf5636b0d3386">playrho::d2::World::Step()</a>.</p>
@@ -333,7 +354,7 @@ This data structure is 108-bytes large (with 4-byte Real on at least one 64-bit 
 <dl class="section see"><dt>See also</dt><dd>SetTime(Real). </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Time step amount in seconds. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae47a8f358ef4192f3f47c66b718a5c69">playrho::d2::World::SolveRegIslandViaGS()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8e9168734757608bf4b24b35662eb905">playrho::d2::World::SolveToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8c7c99fe7d61f94c5af23040c8403f71">playrho::d2::World::SolveToiViaGS()</a>, <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a128e4cfa3de3a1249bc8b7233f573729">playrho::d2::FrictionJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a4d8b3f0887429d3cbc6d13ad651d6ebe">playrho::d2::MotorJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a63c767a86e1ece9f5a5e2d3f2ae38e23">playrho::d2::TargetJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a74de04edb5d15c6bfd7319fcbb138c4a">playrho::d2::WheelJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae794341c3fa711bdddde651a9947bf32">playrho::d2::PrismaticJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5ad8861664969be025290f21dd46f980">playrho::d2::RevoluteJoint::SolveVelocityConstraints()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#af65a576b04537b18bcddf5636b0d3386">playrho::d2::World::Step()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae47a8f358ef4192f3f47c66b718a5c69">playrho::d2::World::SolveRegIslandViaGS()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8e9168734757608bf4b24b35662eb905">playrho::d2::World::SolveToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8c7c99fe7d61f94c5af23040c8403f71">playrho::d2::World::SolveToiViaGS()</a>, <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a128e4cfa3de3a1249bc8b7233f573729">playrho::d2::FrictionJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a63c767a86e1ece9f5a5e2d3f2ae38e23">playrho::d2::TargetJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a4d8b3f0887429d3cbc6d13ad651d6ebe">playrho::d2::MotorJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a74de04edb5d15c6bfd7319fcbb138c4a">playrho::d2::WheelJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae794341c3fa711bdddde651a9947bf32">playrho::d2::PrismaticJoint::SolveVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5ad8861664969be025290f21dd46f980">playrho::d2::RevoluteJoint::SolveVelocityConstraints()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#af65a576b04537b18bcddf5636b0d3386">playrho::d2::World::Step()</a>.</p>
 
 </div>
 </div>
@@ -596,7 +617,7 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 <p>Do warm start. </p>
 <p>Whether or not to perform warm starting (in the regular phase). </p><dl class="section note"><dt>Note</dt><dd>Used in the regular phase of step processing. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a9ae1f191149083ad1430b2a4e6214ca2">playrho::d2::FrictionJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a27dd018dd83b485d71e4bc9d1eab6d49">playrho::d2::RopeJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#aebf04fb0bc42328991979e15d1a783d3">playrho::d2::PulleyJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#ad3179df28daa98bc76a5c69798350610">playrho::d2::MotorJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a3f89d4b9336013d6811edf6eb9a97db3">playrho::d2::PrismaticJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a85fe70b215988443bcc382125859eddf">playrho::d2::RevoluteJoint::InitVelocityConstraints()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ae47a8f358ef4192f3f47c66b718a5c69">playrho::d2::World::SolveRegIslandViaGS()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a9ae1f191149083ad1430b2a4e6214ca2">playrho::d2::FrictionJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a27dd018dd83b485d71e4bc9d1eab6d49">playrho::d2::RopeJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#aebf04fb0bc42328991979e15d1a783d3">playrho::d2::PulleyJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#ad3179df28daa98bc76a5c69798350610">playrho::d2::MotorJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a3f89d4b9336013d6811edf6eb9a97db3">playrho::d2::PrismaticJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a85fe70b215988443bcc382125859eddf">playrho::d2::RevoluteJoint::InitVelocityConstraints()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ae47a8f358ef4192f3f47c66b718a5c69">playrho::d2::World::SolveRegIslandViaGS()</a>.</p>
 
 </div>
 </div>
@@ -615,7 +636,7 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 <p>Delta time ratio. </p>
 <p>This is the delta-time multiplied by the inverse delta time from the previous world step. The value of 1 indicates that the time step has not varied. </p><dl class="section note"><dt>Note</dt><dd>Used in the regular phase processing of the step. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a9ae1f191149083ad1430b2a4e6214ca2">playrho::d2::FrictionJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a27dd018dd83b485d71e4bc9d1eab6d49">playrho::d2::RopeJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#aebf04fb0bc42328991979e15d1a783d3">playrho::d2::PulleyJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#ad3179df28daa98bc76a5c69798350610">playrho::d2::MotorJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a3f89d4b9336013d6811edf6eb9a97db3">playrho::d2::PrismaticJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a85fe70b215988443bcc382125859eddf">playrho::d2::RevoluteJoint::InitVelocityConstraints()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a035ee60a3274619546a2cee7b982b894">playrho::d2::Step()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a9ae1f191149083ad1430b2a4e6214ca2">playrho::d2::FrictionJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a27dd018dd83b485d71e4bc9d1eab6d49">playrho::d2::RopeJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#aebf04fb0bc42328991979e15d1a783d3">playrho::d2::PulleyJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#ad3179df28daa98bc76a5c69798350610">playrho::d2::MotorJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a3f89d4b9336013d6811edf6eb9a97db3">playrho::d2::PrismaticJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a85fe70b215988443bcc382125859eddf">playrho::d2::RevoluteJoint::InitVelocityConstraints()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a035ee60a3274619546a2cee7b982b894">playrho::d2::Step()</a>.</p>
 
 </div>
 </div>
@@ -1086,7 +1107,7 @@ Must be greater than 0 for any TOI-phase positional resolution to get done. </dd
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&gt; playrho::StepConf::tolerance = <a class="el" href="namespaceplayrho.html#a3d420c3642290da261ff169a973b070f">DefaultLinearSlop</a> / <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{4}</td>
+          <td class="memname"><a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&gt; playrho::StepConf::tolerance = <a class="el" href="namespaceplayrho.html#a3d420c3642290da261ff169a973b070f">DefaultLinearSlop</a> / <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{4}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1124,11 +1145,15 @@ Used in the TOI phase of step processing. </dd></dl>
 <li>MovementConf.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="classplayrho_1_1StepConf.html">StepConf</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

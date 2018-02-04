@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('structplayrho_1_1Vector.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="structplayrho_1_1Vector.html">Vector</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
@@ -82,23 +108,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for playrho::Vector&lt; T, N &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1Vector__inherit__graph.png" border="0" usemap="#playrho_1_1Vector_3_01T_00_01N_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1Vector_3_01T_00_01N_01_4_inherit__map" id="playrho_1_1Vector_3_01T_00_01N_01_4_inherit__map">
-<area shape="rect" id="node2" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="347,5,591,31"/>
-<area shape="rect" id="node3" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Momentum \&gt;" alt="" coords="369,55,569,80"/>
-<area shape="rect" id="node4" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Mass \&gt;" alt="" coords="386,104,552,129"/>
-<area shape="rect" id="node5" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="382,153,556,179"/>
-<area shape="rect" id="node6" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="361,203,577,228"/>
-<area shape="rect" id="node7" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length, N \&gt;" alt="" coords="373,252,565,277"/>
-<area shape="rect" id="node8" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; InvMass \&gt;" alt="" coords="378,301,560,327"/>
-<area shape="rect" id="node9" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Real \&gt;" alt="" coords="389,351,549,376"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1Vector__inherit__graph.svg" width="596" height="382"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::Vector&lt; T, N &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1Vector__coll__graph.png" border="0" usemap="#playrho_1_1Vector_3_01T_00_01N_01_4_coll__map" alt="Collaboration graph"/></div>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1Vector__coll__graph.svg" width="168" height="123"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -152,11 +168,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af096f6eedbff15a928dae2735ee22558"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#af096f6eedbff15a928dae2735ee22558">Vector</a> ()=default</td></tr>
 <tr class="memdesc:af096f6eedbff15a928dae2735ee22558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#af096f6eedbff15a928dae2735ee22558">More...</a><br /></td></tr>
 <tr class="separator:af096f6eedbff15a928dae2735ee22558"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae299d72ac72c01f189f9cc9b8fff1a04"><td class="memTemplParams" colspan="2"><a id="ae299d72ac72c01f189f9cc9b8fff1a04"></a>
+<tr class="memitem:a3fd6843ad90c021faca44a59ab4ff648"><td class="memTemplParams" colspan="2"><a id="a3fd6843ad90c021faca44a59ab4ff648"></a>
 template&lt;typename... Tail&gt; </td></tr>
-<tr class="memitem:ae299d72ac72c01f189f9cc9b8fff1a04"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#ae299d72ac72c01f189f9cc9b8fff1a04">Vector</a> (typename std::enable_if&lt; sizeof...(Tail)+1==N, T &gt;::type head, Tail... tail) noexcept</td></tr>
-<tr class="memdesc:ae299d72ac72c01f189f9cc9b8fff1a04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
-<tr class="separator:ae299d72ac72c01f189f9cc9b8fff1a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd6843ad90c021faca44a59ab4ff648"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a3fd6843ad90c021faca44a59ab4ff648">Vector</a> (std::enable_if_t&lt; sizeof...(Tail)+1==N, T &gt; head, Tail... tail) noexcept</td></tr>
+<tr class="memdesc:a3fd6843ad90c021faca44a59ab4ff648"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
+<tr class="separator:a3fd6843ad90c021faca44a59ab4ff648"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a077739bf41f4a64ac51877ff143e2725"><td class="memItemLeft" align="right" valign="top"><a id="a077739bf41f4a64ac51877ff143e2725"></a>
 PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1Vector.html#a0bb82780552c224e3736ed516d1c0dfc">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a077739bf41f4a64ac51877ff143e2725">max_size</a> () const noexcept</td></tr>
 <tr class="memdesc:a077739bf41f4a64ac51877ff143e2725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the max size. <br /></td></tr>
@@ -255,54 +271,54 @@ Related Functions</h2></td></tr>
 <tr class="memitem:afb0b5a548efed2357cfdfa38c746f00f"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#afb0b5a548efed2357cfdfa38c746f00f">operator!=</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:afb0b5a548efed2357cfdfa38c746f00f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator.  <a href="#afb0b5a548efed2357cfdfa38c746f00f">More...</a><br /></td></tr>
 <tr class="separator:afb0b5a548efed2357cfdfa38c746f00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2210d6079e10d5f9c52e102b7aede64"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
-<tr class="memitem:af2210d6079e10d5f9c52e102b7aede64"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#af2210d6079e10d5f9c52e102b7aede64">operator+</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; v) noexcept</td></tr>
-<tr class="memdesc:af2210d6079e10d5f9c52e102b7aede64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary plus operator.  <a href="#af2210d6079e10d5f9c52e102b7aede64">More...</a><br /></td></tr>
-<tr class="separator:af2210d6079e10d5f9c52e102b7aede64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f568934b75de6c95111b429efd697e5"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
-<tr class="memitem:a6f568934b75de6c95111b429efd697e5"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(-T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a6f568934b75de6c95111b429efd697e5">operator-</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; v) noexcept</td></tr>
-<tr class="memdesc:a6f568934b75de6c95111b429efd697e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary negation operator.  <a href="#a6f568934b75de6c95111b429efd697e5">More...</a><br /></td></tr>
-<tr class="separator:a6f568934b75de6c95111b429efd697e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5a895510fc67bdd501bef29a7aa7b04"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
-<tr class="memitem:ac5a895510fc67bdd501bef29a7aa7b04"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(T{}+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;&gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#ac5a895510fc67bdd501bef29a7aa7b04">operator+=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:ac5a895510fc67bdd501bef29a7aa7b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments the left hand side value by the right hand side value.  <a href="#ac5a895510fc67bdd501bef29a7aa7b04">More...</a><br /></td></tr>
-<tr class="separator:ac5a895510fc67bdd501bef29a7aa7b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af07c7170173311112ff21e9367335793"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
-<tr class="memitem:af07c7170173311112ff21e9367335793"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(T{} - T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;&gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#af07c7170173311112ff21e9367335793">operator-=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:af07c7170173311112ff21e9367335793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrements the left hand side value by the right hand side value.  <a href="#af07c7170173311112ff21e9367335793">More...</a><br /></td></tr>
-<tr class="separator:af07c7170173311112ff21e9367335793"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35c3b49702f1fb2a50b24d5aab1ab396"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
-<tr class="memitem:a35c3b49702f1fb2a50b24d5aab1ab396"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(T{}+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a35c3b49702f1fb2a50b24d5aab1ab396">operator+</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:a35c3b49702f1fb2a50b24d5aab1ab396"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds two vectors component-wise.  <a href="#a35c3b49702f1fb2a50b24d5aab1ab396">More...</a><br /></td></tr>
-<tr class="separator:a35c3b49702f1fb2a50b24d5aab1ab396"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad99ee0fcf5f16b149690fbf61d0f022a"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
-<tr class="memitem:ad99ee0fcf5f16b149690fbf61d0f022a"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(T{} - T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#ad99ee0fcf5f16b149690fbf61d0f022a">operator-</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
-<tr class="memdesc:ad99ee0fcf5f16b149690fbf61d0f022a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtracts two vectors component-wise.  <a href="#ad99ee0fcf5f16b149690fbf61d0f022a">More...</a><br /></td></tr>
-<tr class="separator:ad99ee0fcf5f16b149690fbf61d0f022a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0275e7a88bcf4b3c16e1b76c751c2b98"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
-<tr class="memitem:a0275e7a88bcf4b3c16e1b76c751c2b98"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T1, decltype(T1{} *T2{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;&gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a0275e7a88bcf4b3c16e1b76c751c2b98">operator*=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td></tr>
-<tr class="memdesc:a0275e7a88bcf4b3c16e1b76c751c2b98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication assignment operator.  <a href="#a0275e7a88bcf4b3c16e1b76c751c2b98">More...</a><br /></td></tr>
-<tr class="separator:a0275e7a88bcf4b3c16e1b76c751c2b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75172b7bc712dcd19d9c8c5a619c3570"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
-<tr class="memitem:a75172b7bc712dcd19d9c8c5a619c3570"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T1, decltype(T1{}/T2{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;&gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a75172b7bc712dcd19d9c8c5a619c3570">operator/=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td></tr>
-<tr class="memdesc:a75172b7bc712dcd19d9c8c5a619c3570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division assignment operator.  <a href="#a75172b7bc712dcd19d9c8c5a619c3570">More...</a><br /></td></tr>
-<tr class="separator:a75172b7bc712dcd19d9c8c5a619c3570"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b1945e7e49618172bf7f4cc1e10b3da"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 , std::size_t A, std::size_t B, std::size_t C, typename OT  = decltype(T1{} * T2{})&gt; </td></tr>
-<tr class="memitem:a0b1945e7e49618172bf7f4cc1e10b3da"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, C &gt;, A &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a0b1945e7e49618172bf7f4cc1e10b3da">operator*</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, B &gt;, A &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T2, C &gt;, B &gt; &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:a0b1945e7e49618172bf7f4cc1e10b3da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the matrix product of the two given vector of vectors (matrices).  <a href="#a0b1945e7e49618172bf7f4cc1e10b3da">More...</a><br /></td></tr>
-<tr class="separator:a0b1945e7e49618172bf7f4cc1e10b3da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b5823e1e0170ff049c831ab35d844d8"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T1{} * T2{})&gt; </td></tr>
-<tr class="memitem:a0b5823e1e0170ff049c831ab35d844d8"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T1 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a0b5823e1e0170ff049c831ab35d844d8">operator*</a> (const T1 s, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T2, N &gt; a) noexcept</td></tr>
-<tr class="memdesc:a0b5823e1e0170ff049c831ab35d844d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator for non-vector times vector.  <a href="#a0b5823e1e0170ff049c831ab35d844d8">More...</a><br /></td></tr>
-<tr class="separator:a0b5823e1e0170ff049c831ab35d844d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a680b5d30b4b6dae988e84ffccbda4b2c"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T1{} * T2{})&gt; </td></tr>
-<tr class="memitem:a680b5d30b4b6dae988e84ffccbda4b2c"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a680b5d30b4b6dae988e84ffccbda4b2c">operator*</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; a, const T2 s) noexcept</td></tr>
-<tr class="memdesc:a680b5d30b4b6dae988e84ffccbda4b2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator for vector times non-vector.  <a href="#a680b5d30b4b6dae988e84ffccbda4b2c">More...</a><br /></td></tr>
-<tr class="separator:a680b5d30b4b6dae988e84ffccbda4b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73867f00563c611be2bb88e9b4b4d932"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T1{} / T2{})&gt; </td></tr>
-<tr class="memitem:a73867f00563c611be2bb88e9b4b4d932"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if&lt; <a class="el" href="structplayrho_1_1IsDivisable.html">IsDivisable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a73867f00563c611be2bb88e9b4b4d932">operator/</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; a, const T2 s) noexcept</td></tr>
-<tr class="memdesc:a73867f00563c611be2bb88e9b4b4d932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division operator.  <a href="#a73867f00563c611be2bb88e9b4b4d932">More...</a><br /></td></tr>
-<tr class="separator:a73867f00563c611be2bb88e9b4b4d932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32698762d0d37c394a55cdd167cd4948"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
+<tr class="memitem:a32698762d0d37c394a55cdd167cd4948"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a32698762d0d37c394a55cdd167cd4948">operator+</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; v) noexcept</td></tr>
+<tr class="memdesc:a32698762d0d37c394a55cdd167cd4948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary plus operator.  <a href="#a32698762d0d37c394a55cdd167cd4948">More...</a><br /></td></tr>
+<tr class="separator:a32698762d0d37c394a55cdd167cd4948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b14eb31c39cb09ab1e073c98b575de4"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
+<tr class="memitem:a4b14eb31c39cb09ab1e073c98b575de4"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(-T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a4b14eb31c39cb09ab1e073c98b575de4">operator-</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; v) noexcept</td></tr>
+<tr class="memdesc:a4b14eb31c39cb09ab1e073c98b575de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unary negation operator.  <a href="#a4b14eb31c39cb09ab1e073c98b575de4">More...</a><br /></td></tr>
+<tr class="separator:a4b14eb31c39cb09ab1e073c98b575de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ac37e361c264eb820a4fcd0957b6659"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
+<tr class="memitem:a9ac37e361c264eb820a4fcd0957b6659"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(T{}+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a9ac37e361c264eb820a4fcd0957b6659">operator+=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
+<tr class="memdesc:a9ac37e361c264eb820a4fcd0957b6659"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments the left hand side value by the right hand side value.  <a href="#a9ac37e361c264eb820a4fcd0957b6659">More...</a><br /></td></tr>
+<tr class="separator:a9ac37e361c264eb820a4fcd0957b6659"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17db72d9d3cf57a3dcde299003091925"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
+<tr class="memitem:a17db72d9d3cf57a3dcde299003091925"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(T{} - T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a17db72d9d3cf57a3dcde299003091925">operator-=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
+<tr class="memdesc:a17db72d9d3cf57a3dcde299003091925"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrements the left hand side value by the right hand side value.  <a href="#a17db72d9d3cf57a3dcde299003091925">More...</a><br /></td></tr>
+<tr class="separator:a17db72d9d3cf57a3dcde299003091925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26f12e932cc3ae8a52a46acb6a759018"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
+<tr class="memitem:a26f12e932cc3ae8a52a46acb6a759018"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(T{}+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a26f12e932cc3ae8a52a46acb6a759018">operator+</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
+<tr class="memdesc:a26f12e932cc3ae8a52a46acb6a759018"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds two vectors component-wise.  <a href="#a26f12e932cc3ae8a52a46acb6a759018">More...</a><br /></td></tr>
+<tr class="separator:a26f12e932cc3ae8a52a46acb6a759018"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4498290f800bb77a09ca6e181f4d200"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
+<tr class="memitem:ae4498290f800bb77a09ca6e181f4d200"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(T{} - T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#ae4498290f800bb77a09ca6e181f4d200">operator-</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; rhs) noexcept</td></tr>
+<tr class="memdesc:ae4498290f800bb77a09ca6e181f4d200"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtracts two vectors component-wise.  <a href="#ae4498290f800bb77a09ca6e181f4d200">More...</a><br /></td></tr>
+<tr class="separator:ae4498290f800bb77a09ca6e181f4d200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3867e38d81818a352ab8e6f527a5dafa"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
+<tr class="memitem:a3867e38d81818a352ab8e6f527a5dafa"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T1, decltype(T1{} *T2{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a3867e38d81818a352ab8e6f527a5dafa">operator*=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td></tr>
+<tr class="memdesc:a3867e38d81818a352ab8e6f527a5dafa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication assignment operator.  <a href="#a3867e38d81818a352ab8e6f527a5dafa">More...</a><br /></td></tr>
+<tr class="separator:a3867e38d81818a352ab8e6f527a5dafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ef497cc5b8197cec1fb5bf7fcdb546"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 , std::size_t N&gt; </td></tr>
+<tr class="memitem:a33ef497cc5b8197cec1fb5bf7fcdb546"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T1, decltype(T1{}/T2{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a33ef497cc5b8197cec1fb5bf7fcdb546">operator/=</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td></tr>
+<tr class="memdesc:a33ef497cc5b8197cec1fb5bf7fcdb546"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division assignment operator.  <a href="#a33ef497cc5b8197cec1fb5bf7fcdb546">More...</a><br /></td></tr>
+<tr class="separator:a33ef497cc5b8197cec1fb5bf7fcdb546"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a916ffd1ead44fed6c0296cd1eb152de8"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename T2 , std::size_t A, std::size_t B, std::size_t C, typename OT  = decltype(T1{} * T2{})&gt; </td></tr>
+<tr class="memitem:a916ffd1ead44fed6c0296cd1eb152de8"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, C &gt;, A &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a916ffd1ead44fed6c0296cd1eb152de8">operator*</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, B &gt;, A &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T2, C &gt;, B &gt; &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a916ffd1ead44fed6c0296cd1eb152de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the matrix product of the two given vector of vectors (matrices).  <a href="#a916ffd1ead44fed6c0296cd1eb152de8">More...</a><br /></td></tr>
+<tr class="separator:a916ffd1ead44fed6c0296cd1eb152de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49704e8fc8a2eb2e95e3a429ad638f50"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T1{} * T2{})&gt; </td></tr>
+<tr class="memitem:a49704e8fc8a2eb2e95e3a429ad638f50"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T1 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a49704e8fc8a2eb2e95e3a429ad638f50">operator*</a> (const T1 s, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T2, N &gt; a) noexcept</td></tr>
+<tr class="memdesc:a49704e8fc8a2eb2e95e3a429ad638f50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator for non-vector times vector.  <a href="#a49704e8fc8a2eb2e95e3a429ad638f50">More...</a><br /></td></tr>
+<tr class="separator:a49704e8fc8a2eb2e95e3a429ad638f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a329a09aded9f2ef0d9f599153feebc63"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T1{} * T2{})&gt; </td></tr>
+<tr class="memitem:a329a09aded9f2ef0d9f599153feebc63"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a329a09aded9f2ef0d9f599153feebc63">operator*</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; a, const T2 s) noexcept</td></tr>
+<tr class="memdesc:a329a09aded9f2ef0d9f599153feebc63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplication operator for vector times non-vector.  <a href="#a329a09aded9f2ef0d9f599153feebc63">More...</a><br /></td></tr>
+<tr class="separator:a329a09aded9f2ef0d9f599153feebc63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7adc6d6a43f882bafb2b88a4e7091e57"><td class="memTemplParams" colspan="2">template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T1{} / T2{})&gt; </td></tr>
+<tr class="memitem:a7adc6d6a43f882bafb2b88a4e7091e57"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR std::enable_if_t&lt; <a class="el" href="structplayrho_1_1IsDivisable.html">IsDivisable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a7adc6d6a43f882bafb2b88a4e7091e57">operator/</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; a, const T2 s) noexcept</td></tr>
+<tr class="memdesc:a7adc6d6a43f882bafb2b88a4e7091e57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Division operator.  <a href="#a7adc6d6a43f882bafb2b88a4e7091e57">More...</a><br /></td></tr>
+<tr class="separator:a7adc6d6a43f882bafb2b88a4e7091e57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53f714963917f6a632001a9bb3a3d1d6"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:a53f714963917f6a632001a9bb3a3d1d6"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#a53f714963917f6a632001a9bb3a3d1d6">operator&lt;</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;lhs, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;rhs) noexcept</td></tr>
 <tr class="memdesc:a53f714963917f6a632001a9bb3a3d1d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lexicographical less-than operator.  <a href="#a53f714963917f6a632001a9bb3a3d1d6">More...</a><br /></td></tr>
@@ -321,7 +337,7 @@ Related Functions</h2></td></tr>
 <tr class="separator:a69f0a3cf79016d76c6949999433a8fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7d0f1bd8dfe3701e5380723c3277d68"><td class="memTemplParams" colspan="2">template&lt;std::size_t I, std::size_t N, typename T &gt; </td></tr>
 <tr class="memitem:ac7d0f1bd8dfe3701e5380723c3277d68"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#ac7d0f1bd8dfe3701e5380723c3277d68">Get</a> (<a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;v) noexcept</td></tr>
-<tr class="memdesc:ac7d0f1bd8dfe3701e5380723c3277d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the I'th element of the given collection.  <a href="#ac7d0f1bd8dfe3701e5380723c3277d68">More...</a><br /></td></tr>
+<tr class="memdesc:ac7d0f1bd8dfe3701e5380723c3277d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the specified element of the given collection.  <a href="#ac7d0f1bd8dfe3701e5380723c3277d68">More...</a><br /></td></tr>
 <tr class="separator:ac7d0f1bd8dfe3701e5380723c3277d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af157a36bb1282e34b967881c199d15fa"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t N&gt; </td></tr>
 <tr class="memitem:af157a36bb1282e34b967881c199d15fa"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1Vector.html#af157a36bb1282e34b967881c199d15fa">operator&lt;&lt;</a> (::std::ostream &amp;os, const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;value)</td></tr>
@@ -334,7 +350,7 @@ struct playrho::Vector&lt; T, N &gt;</h3>
 
 <p><a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">Vector</a>. </p>
 <p>This is a <code>PLAYRHO_CONSTEXPR inline</code> and constructor enhanced <code>std::array</code>-like template class for types supporting the +, -, *, / arithmetic operators ("arithmetic types" as defined by the <code><a class="el" href="structplayrho_1_1IsArithmetic.html" title="Template for determining if the given type is an &quot;arithmetic&quot; type. ">IsArithmetic</a></code> type trait) that itself comes with non-member arithmetic operator support making <a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">Vector</a> instances arithmetic types as well. </p><dl class="section note"><dt>Note</dt><dd>This type is trivially default constructible - i.e. default construction performs no actions (no initialization). </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1IsArithmetic.html" title="Template for determining if the given type is an &quot;arithmetic&quot; type. ">IsArithmetic</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1IsArithmetic.html" title="Template for determining if the given type is an &quot;arithmetic&quot; type. ">IsArithmetic</a>, <a class="el" href="group__VectorTraitsGroup.html" title="Collection of trait classes for Vector. ">Vector Traits</a> </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a4">HelloWorld.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af096f6eedbff15a928dae2735ee22558"></a>
@@ -563,7 +579,7 @@ template&lt;std::size_t I, std::size_t N, typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the I'th element of the given collection. </p>
+<p>Gets the specified element of the given collection. </p>
 
 </div>
 </div>
@@ -607,8 +623,8 @@ template&lt;typename T , std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="a0b1945e7e49618172bf7f4cc1e10b3da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b1945e7e49618172bf7f4cc1e10b3da">&#9670;&nbsp;</a></span>operator*() <span class="overload">[1/3]</span></h2>
+<a id="a916ffd1ead44fed6c0296cd1eb152de8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a916ffd1ead44fed6c0296cd1eb152de8">&#9670;&nbsp;</a></span>operator*() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -619,7 +635,7 @@ template&lt;typename T1 , typename T2 , std::size_t A, std::size_t B, std::size_
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, C &gt;, A &gt; &gt;::type operator* </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, C &gt;, A &gt; &gt; operator* </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, B &gt;, A &gt; &amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
@@ -668,8 +684,8 @@ Algorithmically speaking, this implementation is called the "naive" algorithm. F
 
 </div>
 </div>
-<a id="a0b5823e1e0170ff049c831ab35d844d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b5823e1e0170ff049c831ab35d844d8">&#9670;&nbsp;</a></span>operator*() <span class="overload">[2/3]</span></h2>
+<a id="a49704e8fc8a2eb2e95e3a429ad638f50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49704e8fc8a2eb2e95e3a429ad638f50">&#9670;&nbsp;</a></span>operator*() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -680,7 +696,7 @@ template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T1 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;::type operator* </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T1 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt; operator* </td>
           <td>(</td>
           <td class="paramtype">const T1&#160;</td>
           <td class="paramname"><em>s</em>, </td>
@@ -709,8 +725,8 @@ template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T
 
 </div>
 </div>
-<a id="a680b5d30b4b6dae988e84ffccbda4b2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a680b5d30b4b6dae988e84ffccbda4b2c">&#9670;&nbsp;</a></span>operator*() <span class="overload">[3/3]</span></h2>
+<a id="a329a09aded9f2ef0d9f599153feebc63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a329a09aded9f2ef0d9f599153feebc63">&#9670;&nbsp;</a></span>operator*() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -721,7 +737,7 @@ template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;::type operator* </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; <a class="el" href="structplayrho_1_1IsMultipliable.html">IsMultipliable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt; operator* </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt;&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -750,8 +766,8 @@ template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T
 
 </div>
 </div>
-<a id="a0275e7a88bcf4b3c16e1b76c751c2b98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0275e7a88bcf4b3c16e1b76c751c2b98">&#9670;&nbsp;</a></span>operator*=()</h2>
+<a id="a3867e38d81818a352ab8e6f527a5dafa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3867e38d81818a352ab8e6f527a5dafa">&#9670;&nbsp;</a></span>operator*=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -762,7 +778,7 @@ template&lt;typename T1 , typename T2 , std::size_t N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T1, decltype(T1{} *T2{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp; &gt;::type operator*= </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T1, decltype(T1{} *T2{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp; &gt; operator*= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
@@ -790,8 +806,8 @@ template&lt;typename T1 , typename T2 , std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="af2210d6079e10d5f9c52e102b7aede64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2210d6079e10d5f9c52e102b7aede64">&#9670;&nbsp;</a></span>operator+() <span class="overload">[1/2]</span></h2>
+<a id="a32698762d0d37c394a55cdd167cd4948"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32698762d0d37c394a55cdd167cd4948">&#9670;&nbsp;</a></span>operator+() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -802,7 +818,7 @@ template&lt;typename T , std::size_t N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;::type operator+ </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt; operator+ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
@@ -820,8 +836,8 @@ template&lt;typename T , std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="a35c3b49702f1fb2a50b24d5aab1ab396"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35c3b49702f1fb2a50b24d5aab1ab396">&#9670;&nbsp;</a></span>operator+() <span class="overload">[2/2]</span></h2>
+<a id="a26f12e932cc3ae8a52a46acb6a759018"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26f12e932cc3ae8a52a46acb6a759018">&#9670;&nbsp;</a></span>operator+() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -832,7 +848,7 @@ template&lt;typename T , std::size_t N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(T{}+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;::type operator+ </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(T{}+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt; operator+ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
@@ -860,8 +876,8 @@ template&lt;typename T , std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="ac5a895510fc67bdd501bef29a7aa7b04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5a895510fc67bdd501bef29a7aa7b04">&#9670;&nbsp;</a></span>operator+=()</h2>
+<a id="a9ac37e361c264eb820a4fcd0957b6659"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ac37e361c264eb820a4fcd0957b6659">&#9670;&nbsp;</a></span>operator+=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -872,7 +888,7 @@ template&lt;typename T , std::size_t N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(T{}+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp; &gt;::type operator+= </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(T{}+T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp; &gt; operator+= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
@@ -900,8 +916,8 @@ template&lt;typename T , std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="a6f568934b75de6c95111b429efd697e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f568934b75de6c95111b429efd697e5">&#9670;&nbsp;</a></span>operator-() <span class="overload">[1/2]</span></h2>
+<a id="a4b14eb31c39cb09ab1e073c98b575de4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b14eb31c39cb09ab1e073c98b575de4">&#9670;&nbsp;</a></span>operator-() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -912,7 +928,7 @@ template&lt;typename T , std::size_t N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(-T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;::type operator- </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(-T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt; operator- </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
@@ -930,8 +946,8 @@ template&lt;typename T , std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="ad99ee0fcf5f16b149690fbf61d0f022a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad99ee0fcf5f16b149690fbf61d0f022a">&#9670;&nbsp;</a></span>operator-() <span class="overload">[2/2]</span></h2>
+<a id="ae4498290f800bb77a09ca6e181f4d200"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4498290f800bb77a09ca6e181f4d200">&#9670;&nbsp;</a></span>operator-() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -942,7 +958,7 @@ template&lt;typename T , std::size_t N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(T{} - T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt;::type operator- </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(T{} - T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &gt; operator- </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
@@ -970,8 +986,8 @@ template&lt;typename T , std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="af07c7170173311112ff21e9367335793"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af07c7170173311112ff21e9367335793">&#9670;&nbsp;</a></span>operator-=()</h2>
+<a id="a17db72d9d3cf57a3dcde299003091925"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17db72d9d3cf57a3dcde299003091925">&#9670;&nbsp;</a></span>operator-=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -982,7 +998,7 @@ template&lt;typename T , std::size_t N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T, decltype(T{} - T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp; &gt;::type operator-= </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T, decltype(T{} - T{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp; &gt; operator-= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T, N &gt; &amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
@@ -1010,8 +1026,8 @@ template&lt;typename T , std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="a73867f00563c611be2bb88e9b4b4d932"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73867f00563c611be2bb88e9b4b4d932">&#9670;&nbsp;</a></span>operator/()</h2>
+<a id="a7adc6d6a43f882bafb2b88a4e7091e57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7adc6d6a43f882bafb2b88a4e7091e57">&#9670;&nbsp;</a></span>operator/()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1022,7 +1038,7 @@ template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; <a class="el" href="structplayrho_1_1IsDivisable.html">IsDivisable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt;::type operator/ </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; <a class="el" href="structplayrho_1_1IsDivisable.html">IsDivisable</a>&lt; T1, T2 &gt;::value &amp;&amp;!<a class="el" href="structplayrho_1_1IsVector.html">IsVector</a>&lt; T2 &gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; OT, N &gt; &gt; operator/ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt;&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -1050,8 +1066,8 @@ template&lt;std::size_t N, typename T1 , typename T2 , typename OT  = decltype(T
 
 </div>
 </div>
-<a id="a75172b7bc712dcd19d9c8c5a619c3570"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75172b7bc712dcd19d9c8c5a619c3570">&#9670;&nbsp;</a></span>operator/=()</h2>
+<a id="a33ef497cc5b8197cec1fb5bf7fcdb546"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33ef497cc5b8197cec1fb5bf7fcdb546">&#9670;&nbsp;</a></span>operator/=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1062,7 +1078,7 @@ template&lt;typename T1 , typename T2 , std::size_t N&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if&lt; std::is_same&lt; T1, decltype(T1{}/T2{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp; &gt;::type operator/= </td>
+          <td class="memname">PLAYRHO_CONSTEXPR std::enable_if_t&lt; std::is_same&lt; T1, decltype(T1{}/T2{})&gt;::value, <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp; &gt; operator/= </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, N &gt; &amp;&#160;</td>
           <td class="paramname"><em>lhs</em>, </td>
@@ -1358,11 +1374,15 @@ Data is not initialized on default construction. This is intentional to avoid an
 <li>Vector.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="structplayrho_1_1Vector.html">Vector</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

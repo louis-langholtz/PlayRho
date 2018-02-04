@@ -212,6 +212,7 @@ var searchData=
   ['matrix',['Matrix',['../namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a',1,'playrho']]],
   ['matrix22',['Matrix22',['../namespaceplayrho.html#a26aabbb6723402cb9e12cf32e17beebc',1,'playrho']]],
   ['matrix33',['Matrix33',['../namespaceplayrho.html#a92e228aada1d7ca23d9f6c2c9ce3b415',1,'playrho']]],
+  ['matrix_20traits',['Matrix Traits',['../group__MatrixTraitsGroup.html',1,'']]],
   ['max',['max',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a7271a3fa3e4cb5e779e7b9c4030ee13c',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
   ['max_5fdigits10',['max_digits10',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#ac4a7370b8692df848a2de515f49b1ccd',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
   ['max_5fdist_5fiters',['max_dist_iters',['../structplayrho_1_1TOIOutput_1_1Statistics.html#a9e8238c810e61f665478d60375e3d307',1,'playrho::TOIOutput::Statistics']]],

@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1BodyAtty.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1BodyAtty.html">BodyAtty</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
@@ -134,14 +160,14 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:a8ce62090774b39126ea1f55090175cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81d102aace659e79ecdd35cc5ea17c8f"><td class="memItemLeft" align="right" valign="top"><a id="a81d102aace659e79ecdd35cc5ea17c8f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1BodyAtty.html#a81d102aace659e79ecdd35cc5ea17c8f">SetPosition0</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b, const <a class="el" href="structplayrho_1_1d2_1_1Position.html">Position</a> value) noexcept</td></tr>
-<tr class="memdesc:a81d102aace659e79ecdd35cc5ea17c8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position0 value of the given body to the given position. <br /></td></tr>
+<tr class="memdesc:a81d102aace659e79ecdd35cc5ea17c8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the "position 0" value of the given body to the given position. <br /></td></tr>
 <tr class="separator:a81d102aace659e79ecdd35cc5ea17c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a900ff05cb46c6d19aa29e2e04ed6c7e1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1BodyAtty.html#a900ff05cb46c6d19aa29e2e04ed6c7e1">SetPosition1</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b, const <a class="el" href="structplayrho_1_1d2_1_1Position.html">Position</a> value) noexcept</td></tr>
-<tr class="memdesc:a900ff05cb46c6d19aa29e2e04ed6c7e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the body sweep's position 1 value.  <a href="#a900ff05cb46c6d19aa29e2e04ed6c7e1">More...</a><br /></td></tr>
+<tr class="memdesc:a900ff05cb46c6d19aa29e2e04ed6c7e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the body sweep's "position 1" value.  <a href="#a900ff05cb46c6d19aa29e2e04ed6c7e1">More...</a><br /></td></tr>
 <tr class="separator:a900ff05cb46c6d19aa29e2e04ed6c7e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5118df58f03fd88c1c90e8f297f92f93"><td class="memItemLeft" align="right" valign="top"><a id="a5118df58f03fd88c1c90e8f297f92f93"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1BodyAtty.html#a5118df58f03fd88c1c90e8f297f92f93">ResetAlpha0</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b)</td></tr>
-<tr class="memdesc:a5118df58f03fd88c1c90e8f297f92f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the given body's alpha0 value. <br /></td></tr>
+<tr class="memdesc:a5118df58f03fd88c1c90e8f297f92f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the given body's "alpha-0" value. <br /></td></tr>
 <tr class="separator:a5118df58f03fd88c1c90e8f297f92f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8780d7721916a4ae7e2deb77edf500f9"><td class="memItemLeft" align="right" valign="top"><a id="a8780d7721916a4ae7e2deb77edf500f9"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1BodyAtty.html#a8780d7721916a4ae7e2deb77edf500f9">SetSweep</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b, const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a> value) noexcept</td></tr>
@@ -155,7 +181,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:a871accd613ada5b9c965be2210c5effb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a783bd567a085546a0b7d63b9dd3c5524"><td class="memItemLeft" align="right" valign="top"><a id="a783bd567a085546a0b7d63b9dd3c5524"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1BodyAtty.html#a783bd567a085546a0b7d63b9dd3c5524">Advance0</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> value) noexcept</td></tr>
-<tr class="memdesc:a783bd567a085546a0b7d63b9dd3c5524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the given body sweep's Advance0 method to advance to the given value. <br /></td></tr>
+<tr class="memdesc:a783bd567a085546a0b7d63b9dd3c5524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the given body sweep's <code>Advance0</code> method to advance to the given value. <br /></td></tr>
 <tr class="separator:a783bd567a085546a0b7d63b9dd3c5524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1bc3d049dc238ffbf421136649553c6"><td class="memItemLeft" align="right" valign="top"><a id="ad1bc3d049dc238ffbf421136649553c6"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1BodyAtty.html#ad1bc3d049dc238ffbf421136649553c6">Advance</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> toi) noexcept</td></tr>
@@ -231,8 +257,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>World</b></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Sets the body sweep's position 1 value. </p>
-<dl class="section note"><dt>Note</dt><dd>This sets what <a class="el" href="classplayrho_1_1d2_1_1Body.html#a58fff0c0e51774a2fecec8a6f2bb9e9d" title="Get the world position of the center of mass. ">Body::GetWorldCenter</a> returns. </dd></dl>
+<p>Sets the body sweep's "position 1" value. </p>
+<dl class="section note"><dt>Note</dt><dd>This sets what <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a58fff0c0e51774a2fecec8a6f2bb9e9d" title="Get the world position of the center of mass. ">Body::GetWorldCenter</a></code> returns. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a58fff0c0e51774a2fecec8a6f2bb9e9d" title="Get the world position of the center of mass. ">Body::GetWorldCenter</a> </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a35b79e2bb6204b41236efa1ecb251c14">playrho::d2::World::UpdateBody()</a>.</p>
 
@@ -273,7 +300,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>World</b></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the body's transformation. </p>
-<dl class="section note"><dt>Note</dt><dd>This sets what <a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d" title="Gets the world body origin location. ">Body::GetLocation</a> returns. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This sets what <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d" title="Gets the world body origin location. ">Body::GetLocation</a></code> returns. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d" title="Gets the world body origin location. ">Body::GetLocation</a> </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1BodyAtty.html#a76344feaf663b29d56c92bac39cd9a9b">Restore()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a810c702555c946c686e4062c7966008c">playrho::d2::World::ShiftOrigin()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a35b79e2bb6204b41236efa1ecb251c14">playrho::d2::World::UpdateBody()</a>.</p>
 
@@ -314,7 +342,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>World</b></td></tr>
 </div><div class="memdoc">
 
 <p>Sets the body's velocity. </p>
-<dl class="section note"><dt>Note</dt><dd>This sets what <a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity. ">Body::GetVelocity</a> returns. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This sets what <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity. ">Body::GetVelocity</a></code> returns. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428" title="Gets the velocity. ">Body::GetVelocity</a> </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a35b79e2bb6204b41236efa1ecb251c14">playrho::d2::World::UpdateBody()</a>.</p>
 
@@ -324,11 +353,15 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>World</b></td></tr>
 <li>BodyAtty.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1BodyAtty.html">BodyAtty</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

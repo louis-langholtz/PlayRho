@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('structplayrho_1_1d2_1_1GearJointConf.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html">GearJointConf</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
@@ -81,41 +107,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for playrho::d2::GearJointConf:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1d2_1_1GearJointConf__inherit__graph.png" border="0" usemap="#playrho_1_1d2_1_1GearJointConf_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1d2_1_1GearJointConf_inherit__map" id="playrho_1_1d2_1_1GearJointConf_inherit__map">
-<area shape="rect" id="node2" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; GearJointConf \&gt;" alt="" coords="13,167,178,205"/>
-<area shape="rect" id="node3" href="structplayrho_1_1d2_1_1JointConf.html" title="Abstract base Joint definition class. " alt="" coords="15,5,166,31"/>
-<area shape="rect" id="node4" href="structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="111,80,307,105"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1GearJointConf__inherit__graph.svg" width="312" height="286"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::GearJointConf:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1d2_1_1GearJointConf__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1GearJointConf_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1GearJointConf_coll__map" id="playrho_1_1d2_1_1GearJointConf_coll__map">
-<area shape="rect" id="node2" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; GearJointConf \&gt;" alt="" coords="2466,334,2630,373"/>
-<area shape="rect" id="node3" href="structplayrho_1_1d2_1_1JointConf.html" title="Abstract base Joint definition class. " alt="" coords="1910,391,2061,417"/>
-<area shape="rect" id="node49" href="structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="2110,391,2305,417"/>
-<area shape="rect" id="node6" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1631,391,1756,417"/>
-<area shape="rect" id="node9" href="structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="909,90,1050,115"/>
-<area shape="rect" id="node10" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="526,142,743,167"/>
-<area shape="rect" id="node12" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="160,451,317,477"/>
-<area shape="rect" id="node36" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="547,417,722,442"/>
-<area shape="rect" id="node39" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="513,850,756,875"/>
-<area shape="rect" id="node19" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="159,575,318,614"/>
-<area shape="rect" id="node15" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1285,813,1414,838"/>
-<area shape="rect" id="node17" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="555,586,714,625"/>
-<area shape="rect" id="node20" href="classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="898,938,1060,977"/>
-<area shape="rect" id="node21" href="classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="892,1050,1066,1075"/>
-<area shape="rect" id="node22" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="548,967,721,1006"/>
-<area shape="rect" id="node23" href="structplayrho_1_1detail_1_1AABB.html" title="playrho::detail::AABB\&lt; 2 \&gt;" alt="" coords="150,974,328,999"/>
-<area shape="rect" id="node30" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="885,763,1073,789"/>
-<area shape="rect" id="node35" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1257,415,1441,441"/>
-<area shape="rect" id="node45" href="classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="1282,465,1417,490"/>
-<area shape="rect" id="node46" href="structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure. " alt="" coords="908,465,1050,490"/>
-<area shape="rect" id="node37" href="classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="909,230,1050,255"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1GearJointConf__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -136,7 +134,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1cc3b9db37c7008c1bb9f9b6989b880"><td class="memItemLeft" align="right" valign="top"><a id="ad1cc3b9db37c7008c1bb9f9b6989b880"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#ad1cc3b9db37c7008c1bb9f9b6989b880">GearJointConf</a> (<a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *&gt; j1, <a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *&gt; j2) noexcept</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#ad1cc3b9db37c7008c1bb9f9b6989b880">GearJointConf</a> (<a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *&gt; j1, <a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *&gt; j2) noexcept</td></tr>
 <tr class="memdesc:ad1cc3b9db37c7008c1bb9f9b6989b880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
 <tr class="separator:ad1cc3b9db37c7008c1bb9f9b6989b880"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09c3c90bae01e1734bc137b98ccd8c5d"><td class="memItemLeft" align="right" valign="top"><a id="a09c3c90bae01e1734bc137b98ccd8c5d"></a>
@@ -177,11 +175,11 @@ PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a95763e18f5977abdec1f86120665c654"><td class="memItemLeft" align="right" valign="top"><a id="a95763e18f5977abdec1f86120665c654"></a>
-<a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a95763e18f5977abdec1f86120665c654">joint1</a></td></tr>
+<a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a95763e18f5977abdec1f86120665c654">joint1</a></td></tr>
 <tr class="memdesc:a95763e18f5977abdec1f86120665c654"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first revolute/prismatic joint attached to the gear joint. <br /></td></tr>
 <tr class="separator:a95763e18f5977abdec1f86120665c654"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9cc0bf0ad79154bc6f6c68b95d080ab"><td class="memItemLeft" align="right" valign="top"><a id="ac9cc0bf0ad79154bc6f6c68b95d080ab"></a>
-<a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#ac9cc0bf0ad79154bc6f6c68b95d080ab">joint2</a></td></tr>
+<a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#ac9cc0bf0ad79154bc6f6c68b95d080ab">joint2</a></td></tr>
 <tr class="memdesc:ac9cc0bf0ad79154bc6f6c68b95d080ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">The second revolute/prismatic joint attached to the gear joint. <br /></td></tr>
 <tr class="separator:ac9cc0bf0ad79154bc6f6c68b95d080ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a738bfaf044a89d5ceaeefaad4930deeb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html#a738bfaf044a89d5ceaeefaad4930deeb">ratio</a> = <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{1}</td></tr>
@@ -240,11 +238,15 @@ Additional Inherited Members</h2></td></tr>
 <li>GearJointConf.cpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1GearJointConf.html">GearJointConf</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

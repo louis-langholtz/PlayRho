@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,16 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
-<script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
-</script>
-<div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('hierarchy.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -136,7 +166,7 @@ This inheritance list is sorted roughly, but not completely, alphabetically:</di
 <tr id="row_46_4_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsMatrix.html" target="_self">playrho::IsMatrix&lt; typename &gt;</a></td><td class="desc">Trait class for checking if type is a matrix type </td></tr>
 <tr id="row_46_5_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsMultipliable.html" target="_self">playrho::IsMultipliable&lt; T1, T2, class &gt;</a></td><td class="desc"></td></tr>
 <tr id="row_46_6_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsSquareMatrix.html" target="_self">playrho::IsSquareMatrix&lt; typename &gt;</a></td><td class="desc">Trait class for checking if type is a square matrix type </td></tr>
-<tr id="row_46_7_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsVector.html" target="_self">playrho::IsVector&lt; typename &gt;</a></td><td class="desc">Trait class for checking if type is a <a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">Vector</a> type </td></tr>
+<tr id="row_46_7_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsVector.html" target="_self">playrho::IsVector&lt; typename &gt;</a></td><td class="desc">Trait class for checking if type is a <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">Vector</a></code> type </td></tr>
 <tr id="row_47_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1Filter.html" target="_self">playrho::Filter</a></td><td class="desc">A holder for contact filtering data </td></tr>
 <tr id="row_48_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1Fixed.html" target="_self">playrho::Fixed&lt; BASE_TYPE, FRACTION_BITS &gt;</a></td><td class="desc">Template class for fixed-point numbers </td></tr>
 <tr id="row_49_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1d2_1_1Fixture.html" target="_self">playrho::d2::Fixture</a></td><td class="desc">An association between a body and a shape </td></tr>
@@ -153,7 +183,7 @@ This inheritance list is sorted roughly, but not completely, alphabetically:</di
 <tr id="row_59_"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_59_" class="arrow" onclick="toggleFolder('59_')">&#9658;</span><span class="icona"><span class="icon">C</span></span><b>integral_constant</b></td><td class="desc"></td></tr>
 <tr id="row_59_0_" class="even" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classstd_1_1tuple__size_3_01playrho_1_1ArrayList_3_01T_00_01N_00_01SIZE__TYPE_01_4_01_4.html" target="_self">std::tuple_size&lt; playrho::ArrayList&lt; T, N, SIZE_TYPE &gt; &gt;</a></td><td class="desc">Tuple size specialization for <code>ArrayList</code> classes </td></tr>
 <tr id="row_59_1_" class="even" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classstd_1_1tuple__size_3_01playrho_1_1d2_1_1UnitVec_01_4.html" target="_self">std::tuple_size&lt; playrho::d2::UnitVec &gt;</a></td><td class="desc">Tuple size info for <code><a class="el" href="classplayrho_1_1d2_1_1UnitVec.html" title="2-D unit vector. ">playrho::d2::UnitVec</a></code> </td></tr>
-<tr id="row_59_2_" class="even" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classstd_1_1tuple__size_3_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4.html" target="_self">std::tuple_size&lt; playrho::Vector&lt; T, N &gt; &gt;</a></td><td class="desc">Tuple size info for <a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">playrho::Vector</a> </td></tr>
+<tr id="row_59_2_" class="even" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classstd_1_1tuple__size_3_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4.html" target="_self">std::tuple_size&lt; playrho::Vector&lt; T, N &gt; &gt;</a></td><td class="desc">Tuple size info for <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">playrho::Vector</a></code> </td></tr>
 <tr id="row_60_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1Interval.html" target="_self">playrho::Interval&lt; T &gt;</a></td><td class="desc"><a class="el" href="classplayrho_1_1Interval.html" title="Interval template type. ">Interval</a> template type </td></tr>
 <tr id="row_61_"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_61_" class="arrow" onclick="toggleFolder('61_')">&#9658;</span><span class="icona"><span class="icon">C</span></span><b>invalid_argument</b></td><td class="desc"></td></tr>
 <tr id="row_61_0_" class="even" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1InvalidArgument.html" target="_self">playrho::InvalidArgument</a></td><td class="desc">Invalid argument logic error </td></tr>
@@ -200,7 +230,7 @@ This inheritance list is sorted roughly, but not completely, alphabetically:</di
 <tr id="row_68_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_68_" class="arrow" onclick="toggleFolder('68_')">&#9658;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1d2_1_1JointVisitor.html" target="_self">playrho::d2::JointVisitor</a></td><td class="desc">Visitor interface for <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a> instances </td></tr>
 <tr id="row_68_0_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1d2_1_1ConstJointVisitor.html" target="_self">playrho::d2::ConstJointVisitor</a></td><td class="desc">Constant joint visitor interface class </td></tr>
 <tr id="row_68_1_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1d2_1_1FunctionalJointVisitor.html" target="_self">playrho::d2::FunctionalJointVisitor</a></td><td class="desc">Functional joint visitor class </td></tr>
-<tr id="row_68_2_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1d2_1_1TypeJointVisitor.html" target="_self">playrho::d2::TypeJointVisitor</a></td><td class="desc">Typing <a class="el" href="classplayrho_1_1d2_1_1JointVisitor.html" title="Visitor interface for Joint instances. ">JointVisitor</a> </td></tr>
+<tr id="row_68_2_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1d2_1_1TypeJointVisitor.html" target="_self">playrho::d2::TypeJointVisitor</a></td><td class="desc">Typing <code><a class="el" href="classplayrho_1_1d2_1_1JointVisitor.html" title="Visitor interface for Joint instances. ">JointVisitor</a></code> </td></tr>
 <tr id="row_69_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html" target="_self">playrho::d2::DynamicTree::LeafData</a></td><td class="desc">Leaf data of a tree node </td></tr>
 <tr id="row_70_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_70_" class="arrow" onclick="toggleFolder('70_')">&#9658;</span><span class="icona"><span class="icon">C</span></span><b>length_error</b></td><td class="desc"></td></tr>
 <tr id="row_70_0_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1LengthError.html" target="_self">playrho::LengthError</a></td><td class="desc">Length based logic error </td></tr>
@@ -257,16 +287,16 @@ This inheritance list is sorted roughly, but not completely, alphabetically:</di
 <tr id="row_114_4_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsMatrix_3_01Vector_3_01Vector_3_01T_00_01N_01_4_00_01M_01_4_01_4.html" target="_self">playrho::IsMatrix&lt; Vector&lt; Vector&lt; T, N &gt;, M &gt; &gt;</a></td><td class="desc">Trait class specialization for checking if type is a matrix type </td></tr>
 <tr id="row_114_5_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsMultipliable_3_01T1_00_01T2_00_01VoidT_3_01decltype_07T1_02_03_01_5T2_02_03_08_4_01_4.html" target="_self">playrho::IsMultipliable&lt; T1, T2, VoidT&lt; decltype(T1{} *T2{})&gt; &gt;</a></td><td class="desc"></td></tr>
 <tr id="row_114_6_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsSquareMatrix_3_01Vector_3_01Vector_3_01T_00_01M_01_4_00_01M_01_4_01_4.html" target="_self">playrho::IsSquareMatrix&lt; Vector&lt; Vector&lt; T, M &gt;, M &gt; &gt;</a></td><td class="desc">Trait class specialization for checking if type is a square matrix type </td></tr>
-<tr id="row_114_7_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html" target="_self">playrho::IsVector&lt; Vector&lt; T, N &gt; &gt;</a></td><td class="desc">Trait class specialization for checking if type is a <a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">Vector</a> type </td></tr>
+<tr id="row_114_7_" style="display:none;"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html" target="_self">playrho::IsVector&lt; Vector&lt; T, N &gt; &gt;</a></td><td class="desc">Trait class specialization for checking if type is a <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">Vector</a></code> type. </td></tr>
 <tr id="row_115_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classstd_1_1tuple__element_3_01I_00_01playrho_1_1d2_1_1UnitVec_01_4.html" target="_self">std::tuple_element&lt; I, playrho::d2::UnitVec &gt;</a></td><td class="desc">Tuple element type info for <code><a class="el" href="classplayrho_1_1d2_1_1UnitVec.html" title="2-D unit vector. ">playrho::d2::UnitVec</a></code> </td></tr>
-<tr id="row_116_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classstd_1_1tuple__element_3_01I_00_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4.html" target="_self">std::tuple_element&lt; I, playrho::Vector&lt; T, N &gt; &gt;</a></td><td class="desc">Tuple element type info for <a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">playrho::Vector</a> </td></tr>
+<tr id="row_116_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classstd_1_1tuple__element_3_01I_00_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4.html" target="_self">std::tuple_element&lt; I, playrho::Vector&lt; T, N &gt; &gt;</a></td><td class="desc">Tuple element type info for <code><a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">playrho::Vector</a></code> </td></tr>
 <tr id="row_117_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classplayrho_1_1d2_1_1UnitVec.html" target="_self">playrho::d2::UnitVec</a></td><td class="desc">2-D unit vector </td></tr>
 <tr id="row_118_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1d2_1_1DynamicTree_1_1UnusedData.html" target="_self">playrho::d2::DynamicTree::UnusedData</a></td><td class="desc">Unused data of a tree node </td></tr>
 <tr id="row_119_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1d2_1_1Contact_1_1UpdateConf.html" target="_self">playrho::d2::Contact::UpdateConf</a></td><td class="desc">Update configuration </td></tr>
 <tr id="row_120_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1d2_1_1World_1_1UpdateContactsData.html" target="_self">playrho::d2::World::UpdateContactsData</a></td><td class="desc">Update contacts data </td></tr>
 <tr id="row_121_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1d2_1_1World_1_1UpdateContactsStats.html" target="_self">playrho::d2::World::UpdateContactsStats</a></td><td class="desc">Update contacts statistics </td></tr>
 <tr id="row_122_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1ValueCheckHelper.html" target="_self">playrho::ValueCheckHelper&lt; T, Enable &gt;</a></td><td class="desc">Value check helper </td></tr>
-<tr id="row_123_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1ValueCheckHelper_3_01T_00_01typename_01std_1_1enable__if_3_01HasOne_3_01T_01_4_1_1value_01_4_1_1type_01_4.html" target="_self">playrho::ValueCheckHelper&lt; T, typename std::enable_if&lt; HasOne&lt; T &gt;::value &gt;::type &gt;</a></td><td class="desc">Specialization of the value check helper </td></tr>
+<tr id="row_123_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1ValueCheckHelper_3_01T_00_01std_1_1enable__if__t_3_01HasOne_3_01T_01_4_1_1value_01_4_01_4.html" target="_self">playrho::ValueCheckHelper&lt; T, std::enable_if_t&lt; HasOne&lt; T &gt;::value &gt; &gt;</a></td><td class="desc">Specialization of the value check helper </td></tr>
 <tr id="row_124_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="unionplayrho_1_1d2_1_1DynamicTree_1_1VariantData.html" target="_self">playrho::d2::DynamicTree::VariantData</a></td><td class="desc">Variant data </td></tr>
 <tr id="row_125_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1Vector.html" target="_self">playrho::Vector&lt; T, N &gt;</a></td><td class="desc"><a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">Vector</a> </td></tr>
 <tr id="row_126_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structplayrho_1_1Vector.html" target="_self">playrho::Vector&lt; InvMass &gt;</a></td><td class="desc"></td></tr>
@@ -302,11 +332,14 @@ This inheritance list is sorted roughly, but not completely, alphabetically:</di
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:35 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:31 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

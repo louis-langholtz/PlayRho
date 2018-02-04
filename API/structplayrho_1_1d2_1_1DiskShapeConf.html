@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('structplayrho_1_1d2_1_1DiskShapeConf.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html">DiskShapeConf</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -81,32 +107,18 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for playrho::d2::DiskShapeConf:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1d2_1_1DiskShapeConf__inherit__graph.png" border="0" usemap="#playrho_1_1d2_1_1DiskShapeConf_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1d2_1_1DiskShapeConf_inherit__map" id="playrho_1_1d2_1_1DiskShapeConf_inherit__map">
-<area shape="rect" id="node2" href="structplayrho_1_1d2_1_1ShapeBuilder.html" title="playrho::d2::ShapeBuilder\l\&lt; DiskShapeConf \&gt;" alt="" coords="19,180,194,219"/>
-<area shape="rect" id="node3" href="structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes. " alt="" coords="5,5,197,31"/>
-<area shape="rect" id="node4" href="structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure. " alt="" coords="123,80,298,119"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1DiskShapeConf__inherit__graph.svg" width="303" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::DiskShapeConf:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1d2_1_1DiskShapeConf__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1DiskShapeConf_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1DiskShapeConf_coll__map" id="playrho_1_1d2_1_1DiskShapeConf_coll__map">
-<area shape="rect" id="node2" href="structplayrho_1_1d2_1_1ShapeBuilder.html" title="playrho::d2::ShapeBuilder\l\&lt; DiskShapeConf \&gt;" alt="" coords="1310,105,1485,144"/>
-<area shape="rect" id="node3" href="structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes. " alt="" coords="727,55,919,80"/>
-<area shape="rect" id="node10" href="structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure. " alt="" coords="968,105,1143,144"/>
-<area shape="rect" id="node6" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="441,104,600,143"/>
-<area shape="rect" id="node8" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="150,104,309,143"/>
-<area shape="rect" id="node13" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="151,167,308,192"/>
-<area shape="rect" id="node11" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="434,169,608,195"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1DiskShapeConf__coll__graph.svg" width="100%" height="488"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a401254a27b1362c5ba250d1814401237"><td class="memItemLeft" align="right" valign="top"><a id="a401254a27b1362c5ba250d1814401237"></a>
-PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a401254a27b1362c5ba250d1814401237">DiskShapeConf</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; r)</td></tr>
+PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a401254a27b1362c5ba250d1814401237">DiskShapeConf</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; r)</td></tr>
 <tr class="memdesc:a401254a27b1362c5ba250d1814401237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
 <tr class="separator:a401254a27b1362c5ba250d1814401237"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8ca58fd6284d31c659912993144f2b7"><td class="memItemLeft" align="right" valign="top"><a id="ab8ca58fd6284d31c659912993144f2b7"></a>
@@ -114,14 +126,14 @@ PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html"
 <tr class="memdesc:ab8ca58fd6284d31c659912993144f2b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the given value as the location. <br /></td></tr>
 <tr class="separator:ab8ca58fd6284d31c659912993144f2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cffdde99a7ec3fe7ad3ab2b634b741b"><td class="memItemLeft" align="right" valign="top"><a id="a9cffdde99a7ec3fe7ad3ab2b634b741b"></a>
-PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html">DiskShapeConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a9cffdde99a7ec3fe7ad3ab2b634b741b">UseRadius</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; r) noexcept</td></tr>
+PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html">DiskShapeConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a9cffdde99a7ec3fe7ad3ab2b634b741b">UseRadius</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt; r) noexcept</td></tr>
 <tr class="memdesc:a9cffdde99a7ec3fe7ad3ab2b634b741b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the given value as the radius. <br /></td></tr>
 <tr class="separator:a9cffdde99a7ec3fe7ad3ab2b634b741b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8659ce291088799ddf81064ac00071e"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html">DiskShapeConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#ab8659ce291088799ddf81064ac00071e">Transform</a> (const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;m) noexcept</td></tr>
 <tr class="memdesc:ab8659ce291088799ddf81064ac00071e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the location by the given transformation matrix.  <a href="#ab8659ce291088799ddf81064ac00071e">More...</a><br /></td></tr>
 <tr class="separator:ab8659ce291088799ddf81064ac00071e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a876cfe2252080d2f09e777d2f5ef2c48"><td class="memItemLeft" align="right" valign="top"><a id="a876cfe2252080d2f09e777d2f5ef2c48"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a876cfe2252080d2f09e777d2f5ef2c48">GetRadius</a> () const noexcept</td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a876cfe2252080d2f09e777d2f5ef2c48">GetRadius</a> () const noexcept</td></tr>
 <tr class="memdesc:a876cfe2252080d2f09e777d2f5ef2c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the radius property. <br /></td></tr>
 <tr class="separator:a876cfe2252080d2f09e777d2f5ef2c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80722e9c17a546a9d2cecd9545654a04"><td class="memItemLeft" align="right" valign="top"><a id="a80722e9c17a546a9d2cecd9545654a04"></a>
@@ -138,7 +150,7 @@ PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <tr class="memdesc:a322c417f87059108bd473b48a9a7b9f7 inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
 <tr class="separator:a322c417f87059108bd473b48a9a7b9f7 inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a973f6781e63cb44363bf2a720f811855 inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="memItemLeft" align="right" valign="top"><a id="a973f6781e63cb44363bf2a720f811855"></a>
-PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html">DiskShapeConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1ShapeBuilder.html#a973f6781e63cb44363bf2a720f811855">UseFriction</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; value) noexcept</td></tr>
+PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html">DiskShapeConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1ShapeBuilder.html#a973f6781e63cb44363bf2a720f811855">UseFriction</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt; value) noexcept</td></tr>
 <tr class="memdesc:a973f6781e63cb44363bf2a720f811855 inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the given friction. <br /></td></tr>
 <tr class="separator:a973f6781e63cb44363bf2a720f811855 inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf9c2136c7a5242413b58757df80bf6c inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="memItemLeft" align="right" valign="top"><a id="acf9c2136c7a5242413b58757df80bf6c"></a>
@@ -146,20 +158,20 @@ PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html"
 <tr class="memdesc:acf9c2136c7a5242413b58757df80bf6c inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the given restitution. <br /></td></tr>
 <tr class="separator:acf9c2136c7a5242413b58757df80bf6c inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a36e113cd3a962dae60b3e3ab855c70 inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="memItemLeft" align="right" valign="top"><a id="a5a36e113cd3a962dae60b3e3ab855c70"></a>
-PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html">DiskShapeConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1ShapeBuilder.html#a5a36e113cd3a962dae60b3e3ab855c70">UseDensity</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt; value) noexcept</td></tr>
+PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html">DiskShapeConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1ShapeBuilder.html#a5a36e113cd3a962dae60b3e3ab855c70">UseDensity</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt; value) noexcept</td></tr>
 <tr class="memdesc:a5a36e113cd3a962dae60b3e3ab855c70 inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses the given density. <br /></td></tr>
 <tr class="separator:a5a36e113cd3a962dae60b3e3ab855c70 inherit pub_methods_structplayrho_1_1d2_1_1ShapeBuilder"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a7b449596383835ec7e2d4868a5e262ed"><td class="memItemLeft" align="right" valign="top"><a id="a7b449596383835ec7e2d4868a5e262ed"></a>
-static PLAYRHO_CONSTEXPR <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a7b449596383835ec7e2d4868a5e262ed">GetDefaultRadius</a> () noexcept</td></tr>
+static PLAYRHO_CONSTEXPR <a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a7b449596383835ec7e2d4868a5e262ed">GetDefaultRadius</a> () noexcept</td></tr>
 <tr class="memdesc:a7b449596383835ec7e2d4868a5e262ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default radius. <br /></td></tr>
 <tr class="separator:a7b449596383835ec7e2d4868a5e262ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2f1de4aa7db27a666fdd7f2f85130f7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a2f1de4aa7db27a666fdd7f2f85130f7f">vertexRadius</a> = <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a7b449596383835ec7e2d4868a5e262ed">GetDefaultRadius</a>()</td></tr>
+<tr class="memitem:a2f1de4aa7db27a666fdd7f2f85130f7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a2f1de4aa7db27a666fdd7f2f85130f7f">vertexRadius</a> = <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a7b449596383835ec7e2d4868a5e262ed">GetDefaultRadius</a>()</td></tr>
 <tr class="memdesc:a2f1de4aa7db27a666fdd7f2f85130f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex radius.  <a href="#a2f1de4aa7db27a666fdd7f2f85130f7f">More...</a><br /></td></tr>
 <tr class="separator:a2f1de4aa7db27a666fdd7f2f85130f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adaafd1c41a01e0708a9a18b125133ac7"><td class="memItemLeft" align="right" valign="top"><a id="adaafd1c41a01e0708a9a18b125133ac7"></a>
@@ -167,13 +179,13 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:adaafd1c41a01e0708a9a18b125133ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location for the disk shape to be centered at. <br /></td></tr>
 <tr class="separator:adaafd1c41a01e0708a9a18b125133ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structplayrho_1_1d2_1_1BaseShapeConf.html">playrho::d2::BaseShapeConf</a></td></tr>
-<tr class="memitem:a42d4e4d6a9e35758935d3dda2c1272e0 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BaseShapeConf.html#a42d4e4d6a9e35758935d3dda2c1272e0">friction</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&gt;{<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{2} / <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{10}}</td></tr>
+<tr class="memitem:a42d4e4d6a9e35758935d3dda2c1272e0 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BaseShapeConf.html#a42d4e4d6a9e35758935d3dda2c1272e0">friction</a> = <a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt;<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&gt;{<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{2} / <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>{10}}</td></tr>
 <tr class="memdesc:a42d4e4d6a9e35758935d3dda2c1272e0 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Friction coefficient.  <a href="structplayrho_1_1d2_1_1BaseShapeConf.html#a42d4e4d6a9e35758935d3dda2c1272e0">More...</a><br /></td></tr>
 <tr class="separator:a42d4e4d6a9e35758935d3dda2c1272e0 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8ee84f3f378c7b60df0a413b14955a1 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#ga9cf75a03c4b0afaaba95d65ec8ce54b4">Finite</a>&lt; <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BaseShapeConf.html#ac8ee84f3f378c7b60df0a413b14955a1">restitution</a> = <a class="el" href="group__BoundedAliases.html#ga9cf75a03c4b0afaaba95d65ec8ce54b4">Finite</a>&lt;<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&gt;{0}</td></tr>
 <tr class="memdesc:ac8ee84f3f378c7b60df0a413b14955a1 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restitution (elasticity) of the associated shape.  <a href="structplayrho_1_1d2_1_1BaseShapeConf.html#ac8ee84f3f378c7b60df0a413b14955a1">More...</a><br /></td></tr>
 <tr class="separator:ac8ee84f3f378c7b60df0a413b14955a1 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe78bd0fbe69b87761bc6aa967cf4656 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BaseShapeConf.html#abe78bd0fbe69b87761bc6aa967cf4656">density</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a>&gt;{0_kgpm2}</td></tr>
+<tr class="memitem:abe78bd0fbe69b87761bc6aa967cf4656 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BaseShapeConf.html#abe78bd0fbe69b87761bc6aa967cf4656">density</a> = <a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a>&gt;{0_kgpm2}</td></tr>
 <tr class="memdesc:abe78bd0fbe69b87761bc6aa967cf4656 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Area density of the associated shape.  <a href="structplayrho_1_1d2_1_1BaseShapeConf.html#abe78bd0fbe69b87761bc6aa967cf4656">More...</a><br /></td></tr>
 <tr class="separator:abe78bd0fbe69b87761bc6aa967cf4656 inherit pub_attribs_structplayrho_1_1d2_1_1BaseShapeConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -220,7 +232,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&gt; playrho::d2::DiskShapeConf::vertexRadius = <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a7b449596383835ec7e2d4868a5e262ed">GetDefaultRadius</a>()</td>
+          <td class="memname"><a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&gt; playrho::d2::DiskShapeConf::vertexRadius = <a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html#a7b449596383835ec7e2d4868a5e262ed">GetDefaultRadius</a>()</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -237,11 +249,15 @@ Public Attributes</h2></td></tr>
 <li>DiskShapeConf.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1DiskShapeConf.html">DiskShapeConf</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

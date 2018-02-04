@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,16 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
-<script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
-</script>
-<div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('namespacemembers_g.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -145,7 +175,7 @@ $(function() {
 : <a class="el" href="namespaceplayrho_1_1d2.html#a09c16d449aa487690b1297e368b68063">playrho::d2</a>
 </li>
 <li>GetColumnMatrix()
-: <a class="el" href="namespaceplayrho.html#a09d6e5198e81bc97d68519bbe39ea5cb">playrho</a>
+: <a class="el" href="namespaceplayrho.html#a5fdbbbb834c3389a6efef355718e98b8">playrho</a>
 </li>
 <li>GetContactCount()
 : <a class="el" href="namespaceplayrho_1_1d2.html#ac7b6c00fbd4fc40a4957bd082c9437b4">playrho::d2</a>
@@ -267,10 +297,10 @@ $(function() {
 : <a class="el" href="namespaceplayrho_1_1d2.html#a72265a3c2d4511e74df6ab4d13112f6d">playrho::d2</a>
 </li>
 <li>GetIdentity()
-: <a class="el" href="namespaceplayrho.html#a207e9927e983640bf0a71c25e816d046">playrho</a>
+: <a class="el" href="namespaceplayrho.html#a43c7cbea13790b72a4bb3aa4af99091c">playrho</a>
 </li>
 <li>GetIdentityMatrix()
-: <a class="el" href="namespaceplayrho.html#a82e95ec455772fa3d9c9f08576399c22">playrho</a>
+: <a class="el" href="namespaceplayrho.html#a4a4f43ebaadcd88f829efb082cebec9d">playrho</a>
 </li>
 <li>GetIndexPairs()
 : <a class="el" href="namespaceplayrho_1_1d2.html#a70613779e152f647af4f80dce352d83c">playrho::d2</a>
@@ -474,7 +504,7 @@ $(function() {
 : <a class="el" href="namespaceplayrho_1_1d2.html#a4c4c855f042444d0122919f8c1559ccb">playrho::d2</a>
 </li>
 <li>GetRowMatrix()
-: <a class="el" href="namespaceplayrho.html#a73a7e420b5f06d5779c2b82014986032">playrho</a>
+: <a class="el" href="namespaceplayrho.html#a63a1715447f7dce79bb09f4bf50745d4">playrho</a>
 </li>
 <li>GetScaledDelta()
 : <a class="el" href="namespaceplayrho_1_1d2.html#a9695b1513472b0c245d4f98b97090efd">playrho::d2</a>
@@ -626,11 +656,14 @@ $(function() {
 </li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:35 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:31 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,16 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
-<script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
-</script>
-<div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('index.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -65,18 +95,22 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="intro_sec"></a>
+Overview</h1>
+<p>Hello and welcome to PlayRho's API documentation!</p>
+<p>PlayRho is an interactive, real-time oriented, C++14 based, physics engine and library currently best suited for 2-dimensional games. To view its source code, please see: <a href="https://github.com/louis-langholtz/PlayRho">https://github.com/louis-langholtz/PlayRho</a> . For issues, visit: <a href="https://github.com/louis-langholtz/PlayRho/issues">https://github.com/louis-langholtz/PlayRho/issues</a> . For mathemtical insight into how a physics engine works, see: <a href="http://box2d.org/files/GDC2009/GDC2009_Catto_Erin_Solver.ppt">Erin Catto's 2009 Modeling and Solving Constraints slides</a>.</p>
+<h1><a class="anchor" id="coding_sec"></a>
 Getting Started</h1>
-<p>For source code, please see: <a href="https://github.com/louis-langholtz/PlayRho">https://github.com/louis-langholtz/PlayRho</a> .</p>
-<p>For issues, visit: <a href="https://github.com/louis-langholtz/PlayRho/issues">https://github.com/louis-langholtz/PlayRho/issues</a> .</p>
-<p>For coding, simply begin by including the <code>PlayRho/PlayRho.hpp</code> file and make an instance of the <a href="classplayrho_1_1World.html"><code>playrho::d2::World</code></a> class. For a more elaborate starting point, see the <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a> example application.</p>
-<p>For mathemtical insight, see: <a href="http://box2d.org/files/GDC2009/GDC2009_Catto_Erin_Solver.ppt">Erin Catto's 2009 Modeling and Solving Constraints slides</a>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
+<p>For coding, begin simply by including the <code>PlayRho/PlayRho.hpp</code> header file and making an instance of the <a href="classplayrho_1_1d2_1_1World.html"><code>playrho::d2::World</code></a> class. Here's what this might look like: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;PlayRho/PlayRho.hpp&gt;</span></div><div class="line"></div><div class="line"><span class="keywordtype">int</span> main()</div><div class="line">{</div><div class="line">    <span class="keyword">auto</span> world = <a class="code" href="classplayrho_1_1d2_1_1World.html">playrho::d2::World</a>{};</div><div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = world.<a class="code" href="classplayrho_1_1d2_1_1World.html#a66716e8c9020509c9891d9223a58be93">CreateBody</a>();</div><div class="line">    <span class="comment">// do more things with the world instance and body pointer</span></div><div class="line">    <span class="keywordflow">return</span> 0; <span class="comment">// world and associated resources go away automatically</span></div><div class="line">}</div></div><!-- fragment --><p> For a more elaborate example, see <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">playrho::d2::World</a>, <a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
 </div></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:35 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:31 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

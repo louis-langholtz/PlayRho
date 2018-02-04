@@ -72,5 +72,5 @@ var searchData=
   ['round',['round',['../group__FixedMath.html#ga1e3ca7fb2626886c5920bbc5f570a525',1,'playrho']]],
   ['round_5ferror',['round_error',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#ab4b9459b936e660cf90bcebda36ac716',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
   ['round_5fstyle',['round_style',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a94985df9f74bc11c9a36a1abc091beb3',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
-  ['roundoff',['RoundOff',['../group__Math.html#ga0f39e4121c50c3a947a4926673751b0b',1,'playrho::RoundOff(T value, unsigned precision=100000)'],['../group__Math.html#ga812ea5eaf66fb9d1bffa799886b2eee3',1,'playrho::RoundOff(Vec2 value, std::uint32_t precision=100000)']]]
+  ['roundoff',['RoundOff',['../group__Math.html#gab8f24574b8a0ca458ec2fe9d691364ff',1,'playrho::RoundOff(T value, unsigned precision=100000)'],['../group__Math.html#ga812ea5eaf66fb9d1bffa799886b2eee3',1,'playrho::RoundOff(Vec2 value, std::uint32_t precision=100000)']]]
 ];

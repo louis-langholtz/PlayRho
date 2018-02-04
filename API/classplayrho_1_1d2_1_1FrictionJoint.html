@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1FrictionJoint.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html">FrictionJoint</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -82,37 +108,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for playrho::d2::FrictionJoint:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1FrictionJoint__inherit__graph.png" border="0" usemap="#playrho_1_1d2_1_1FrictionJoint_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1d2_1_1FrictionJoint_inherit__map" id="playrho_1_1d2_1_1FrictionJoint_inherit__map">
-<area shape="rect" id="node2" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. " alt="" coords="27,5,150,31"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1FrictionJoint__inherit__graph.svg" width="178" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::FrictionJoint:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1FrictionJoint__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1FrictionJoint_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1FrictionJoint_coll__map" id="playrho_1_1d2_1_1FrictionJoint_coll__map">
-<area shape="rect" id="node2" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. " alt="" coords="1865,1282,1988,1307"/>
-<area shape="rect" id="node4" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1612,947,1737,973"/>
-<area shape="rect" id="node7" href="structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="890,1355,1031,1381"/>
-<area shape="rect" id="node8" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="508,1179,724,1205"/>
-<area shape="rect" id="node10" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="151,1159,308,1185"/>
-<area shape="rect" id="node31" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="529,993,703,1018"/>
-<area shape="rect" id="node34" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="494,625,738,650"/>
-<area shape="rect" id="node43" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Mass \&gt;" alt="" coords="533,1431,698,1457"/>
-<area shape="rect" id="node47" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Momentum \&gt;" alt="" coords="516,1482,716,1507"/>
-<area shape="rect" id="node17" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="150,690,309,729"/>
-<area shape="rect" id="node13" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1266,441,1395,466"/>
-<area shape="rect" id="node15" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="536,682,695,721"/>
-<area shape="rect" id="node18" href="classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="879,337,1042,375"/>
-<area shape="rect" id="node19" href="classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="874,647,1047,673"/>
-<area shape="rect" id="node25" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="866,238,1054,263"/>
-<area shape="rect" id="node30" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1239,802,1423,827"/>
-<area shape="rect" id="node40" href="classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="1263,950,1398,975"/>
-<area shape="rect" id="node41" href="structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure. " alt="" coords="889,1037,1032,1062"/>
-<area shape="rect" id="node32" href="classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="890,802,1031,827"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1FrictionJoint__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -128,19 +130,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aab137d34a5e5c289efbcc69b3731b69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78da6b50706cb8a8c01965ff3f36f06d"><td class="memItemLeft" align="right" valign="top"><a id="a78da6b50706cb8a8c01965ff3f36f06d"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a78da6b50706cb8a8c01965ff3f36f06d">GetAnchorA</a> () const override</td></tr>
-<tr class="memdesc:a78da6b50706cb8a8c01965ff3f36f06d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on bodyA in world coordinates. <br /></td></tr>
+<tr class="memdesc:a78da6b50706cb8a8c01965ff3f36f06d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on body-A in world coordinates. <br /></td></tr>
 <tr class="separator:a78da6b50706cb8a8c01965ff3f36f06d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af67fbf77ac04f8d4ec0005b02c92bd2d"><td class="memItemLeft" align="right" valign="top"><a id="af67fbf77ac04f8d4ec0005b02c92bd2d"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#af67fbf77ac04f8d4ec0005b02c92bd2d">GetAnchorB</a> () const override</td></tr>
-<tr class="memdesc:af67fbf77ac04f8d4ec0005b02c92bd2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on bodyB in world coordinates. <br /></td></tr>
+<tr class="memdesc:af67fbf77ac04f8d4ec0005b02c92bd2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on body-B in world coordinates. <br /></td></tr>
 <tr class="separator:af67fbf77ac04f8d4ec0005b02c92bd2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7acd36c6e5aff16e1e9fd47740a407f"><td class="memItemLeft" align="right" valign="top"><a id="ac7acd36c6e5aff16e1e9fd47740a407f"></a>
 <a class="el" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#ac7acd36c6e5aff16e1e9fd47740a407f">GetLinearReaction</a> () const override</td></tr>
-<tr class="memdesc:ac7acd36c6e5aff16e1e9fd47740a407f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the linear reaction on bodyB at the joint anchor. <br /></td></tr>
+<tr class="memdesc:ac7acd36c6e5aff16e1e9fd47740a407f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the linear reaction on body-B at the joint anchor. <br /></td></tr>
 <tr class="separator:ac7acd36c6e5aff16e1e9fd47740a407f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f3c0f8f9f803c38e8c1868f0ea1aa49"><td class="memItemLeft" align="right" valign="top"><a id="a6f3c0f8f9f803c38e8c1868f0ea1aa49"></a>
 <a class="el" href="group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a6f3c0f8f9f803c38e8c1868f0ea1aa49">GetAngularReaction</a> () const override</td></tr>
-<tr class="memdesc:a6f3c0f8f9f803c38e8c1868f0ea1aa49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the angular reaction on bodyB. <br /></td></tr>
+<tr class="memdesc:a6f3c0f8f9f803c38e8c1868f0ea1aa49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the angular reaction on body-B. <br /></td></tr>
 <tr class="separator:a6f3c0f8f9f803c38e8c1868f0ea1aa49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab82370041f00e01f935e3a41a5339937"><td class="memItemLeft" align="right" valign="top"><a id="ab82370041f00e01f935e3a41a5339937"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#ab82370041f00e01f935e3a41a5339937">GetLocalAnchorA</a> () const</td></tr>
@@ -151,19 +153,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a445f96724c6cd9e455ad65f00095da89"><td class="mdescLeft">&#160;</td><td class="mdescRight">The local anchor point relative to body B's origin. <br /></td></tr>
 <tr class="separator:a445f96724c6cd9e455ad65f00095da89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae98628abc7eedf766e42eb95b62aba4c"><td class="memItemLeft" align="right" valign="top"><a id="ae98628abc7eedf766e42eb95b62aba4c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#ae98628abc7eedf766e42eb95b62aba4c">SetMaxForce</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gabdbf955ed1cafec5062f074511ee4829">Force</a> &gt; force)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#ae98628abc7eedf766e42eb95b62aba4c">SetMaxForce</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gabdbf955ed1cafec5062f074511ee4829">Force</a> &gt; force)</td></tr>
 <tr class="memdesc:ae98628abc7eedf766e42eb95b62aba4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximum friction force in N. <br /></td></tr>
 <tr class="separator:ae98628abc7eedf766e42eb95b62aba4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec81f1b5f5acc058fcc5686f46f973a6"><td class="memItemLeft" align="right" valign="top"><a id="aec81f1b5f5acc058fcc5686f46f973a6"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gabdbf955ed1cafec5062f074511ee4829">Force</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#aec81f1b5f5acc058fcc5686f46f973a6">GetMaxForce</a> () const</td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gabdbf955ed1cafec5062f074511ee4829">Force</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#aec81f1b5f5acc058fcc5686f46f973a6">GetMaxForce</a> () const</td></tr>
 <tr class="memdesc:aec81f1b5f5acc058fcc5686f46f973a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the maximum friction force in N. <br /></td></tr>
 <tr class="separator:aec81f1b5f5acc058fcc5686f46f973a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88c331621fdec45a9676ca32184d1114"><td class="memItemLeft" align="right" valign="top"><a id="a88c331621fdec45a9676ca32184d1114"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a88c331621fdec45a9676ca32184d1114">SetMaxTorque</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a> &gt; torque)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a88c331621fdec45a9676ca32184d1114">SetMaxTorque</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a> &gt; torque)</td></tr>
 <tr class="memdesc:a88c331621fdec45a9676ca32184d1114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximum friction torque in N*m. <br /></td></tr>
 <tr class="separator:a88c331621fdec45a9676ca32184d1114"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb506911b6740a2c892f81adf2bd3dc4"><td class="memItemLeft" align="right" valign="top"><a id="adb506911b6740a2c892f81adf2bd3dc4"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#adb506911b6740a2c892f81adf2bd3dc4">GetMaxTorque</a> () const</td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#adb506911b6740a2c892f81adf2bd3dc4">GetMaxTorque</a> () const</td></tr>
 <tr class="memdesc:adb506911b6740a2c892f81adf2bd3dc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the maximum friction torque in N*m. <br /></td></tr>
 <tr class="separator:adb506911b6740a2c892f81adf2bd3dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classplayrho_1_1d2_1_1Joint"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classplayrho_1_1d2_1_1Joint')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classplayrho_1_1d2_1_1Joint.html">playrho::d2::Joint</a></td></tr>
@@ -213,11 +215,11 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a15b0c876d8b0cc5f708809708edf34b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local anchor B. <br /></td></tr>
 <tr class="separator:a15b0c876d8b0cc5f708809708edf34b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cf68eaea051d7ae8c203aac862e0acf"><td class="memItemLeft" align="right" valign="top"><a id="a7cf68eaea051d7ae8c203aac862e0acf"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gabdbf955ed1cafec5062f074511ee4829">Force</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a7cf68eaea051d7ae8c203aac862e0acf">m_maxForce</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gabdbf955ed1cafec5062f074511ee4829">Force</a>&gt;{0}</td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gabdbf955ed1cafec5062f074511ee4829">Force</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a7cf68eaea051d7ae8c203aac862e0acf">m_maxForce</a> = <a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gabdbf955ed1cafec5062f074511ee4829">Force</a>&gt;{0}</td></tr>
 <tr class="memdesc:a7cf68eaea051d7ae8c203aac862e0acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max force. <br /></td></tr>
 <tr class="separator:a7cf68eaea051d7ae8c203aac862e0acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a955348ca0b5d89c0321686485a268854"><td class="memItemLeft" align="right" valign="top"><a id="a955348ca0b5d89c0321686485a268854"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a955348ca0b5d89c0321686485a268854">m_maxTorque</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a>&gt;{0}</td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a955348ca0b5d89c0321686485a268854">m_maxTorque</a> = <a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gaa13e620479b6e4a34fae5a90bcaf9355">Torque</a>&gt;{0}</td></tr>
 <tr class="memdesc:a955348ca0b5d89c0321686485a268854"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max torque. <br /></td></tr>
 <tr class="separator:a955348ca0b5d89c0321686485a268854"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d26e0db1081de7c083a98d9db1315aa"><td class="memItemLeft" align="right" valign="top"><a id="a0d26e0db1081de7c083a98d9db1315aa"></a>
@@ -238,7 +240,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a2da126523d650b64585da71dca130ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1e30ae5fef62ef07960724ee87b464b"><td class="memItemLeft" align="right" valign="top"><a id="af1e30ae5fef62ef07960724ee87b464b"></a>
 <a class="el" href="namespaceplayrho.html#a358c8036b278316ab41b3f35b56342a1">Mass22</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#af1e30ae5fef62ef07960724ee87b464b">m_linearMass</a></td></tr>
-<tr class="memdesc:af1e30ae5fef62ef07960724ee87b464b"><td class="mdescLeft">&#160;</td><td class="mdescRight">2x2 linear mass matrix in kilograms. <br /></td></tr>
+<tr class="memdesc:af1e30ae5fef62ef07960724ee87b464b"><td class="mdescLeft">&#160;</td><td class="mdescRight">2-by-2 linear mass matrix in kilograms. <br /></td></tr>
 <tr class="separator:af1e30ae5fef62ef07960724ee87b464b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4efd1dc1f63157133c7807ccebd69474"><td class="memItemLeft" align="right" valign="top"><a id="a4efd1dc1f63157133c7807ccebd69474"></a>
 <a class="el" href="group__PhysicalQuantities.html#ga67bbb3e4938321efec8d939636bf988e">RotInertia</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a4efd1dc1f63157133c7807ccebd69474">m_angularMass</a></td></tr>
@@ -524,11 +526,15 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <li>FrictionJointConf.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html">FrictionJoint</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

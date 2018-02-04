@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1World.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
@@ -87,31 +113,8 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for playrho::d2::World:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1World__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1World_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1World_coll__map" id="playrho_1_1d2_1_1World_coll__map">
-<area shape="rect" id="node30" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1255,935,1380,961"/>
-<area shape="rect" id="node3" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="448,1177,607,1215"/>
-<area shape="rect" id="node5" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="146,1209,305,1247"/>
-<area shape="rect" id="node7" href="classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="447,1239,609,1278"/>
-<area shape="rect" id="node8" href="classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="2354,833,2528,858"/>
-<area shape="rect" id="node9" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="2074,123,2248,162"/>
-<area shape="rect" id="node10" href="structplayrho_1_1detail_1_1AABB.html" title="playrho::detail::AABB\&lt; 2 \&gt;" alt="" coords="1786,43,1964,69"/>
-<area shape="rect" id="node12" href="structplayrho_1_1detail_1_1AABB.html" title="N&#45;dimensional Axis Aligned Bounding Box. " alt="" coords="1478,47,1658,73"/>
-<area shape="rect" id="node15" href="structplayrho_1_1d2_1_1DynamicTree_1_1BranchData.html" title="Branch data of a tree node. " alt="" coords="1481,151,1654,190"/>
-<area shape="rect" id="node14" href="unionplayrho_1_1d2_1_1DynamicTree_1_1VariantData.html" title="Variant data. " alt="" coords="1788,155,1962,194"/>
-<area shape="rect" id="node16" href="structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html" title="Leaf data of a tree node. " alt="" coords="1481,347,1654,386"/>
-<area shape="rect" id="node17" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. " alt="" coords="1250,393,1385,418"/>
-<area shape="rect" id="node20" href="structplayrho_1_1Filter.html" title="A holder for contact filtering data. " alt="" coords="889,389,991,414"/>
-<area shape="rect" id="node23" href="classplayrho_1_1d2_1_1Shape.html" title="Shape. " alt="" coords="873,339,1006,365"/>
-<area shape="rect" id="node26" href="unionplayrho_1_1d2_1_1Fixture_1_1FixtureProxies.html" title="Fixture proxies union. " alt="" coords="872,501,1008,539"/>
-<area shape="rect" id="node33" href="structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="869,1245,1010,1270"/>
-<area shape="rect" id="node34" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="848,613,1032,638"/>
-<area shape="rect" id="node37" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="818,774,1062,799"/>
-<area shape="rect" id="node42" href="classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="872,725,1008,750"/>
-<area shape="rect" id="node44" href="structplayrho_1_1d2_1_1DynamicTree_1_1UnusedData.html" title="Unused data of a tree node. " alt="" coords="1481,214,1654,253"/>
-<area shape="rect" id="node48" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="434,1549,622,1574"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1World__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -615,8 +618,10 @@ Related Functions</h2></td></tr>
 <p>The world class manages physics entities, dynamic simulation, and queries. In a physical sense, perhaps this is more like a universe in that entities in a world have no interaction with entities in other worlds. In any case, there's precedence, from a physics-engine standpoint, for this being called a world.</p>
 <dl class="section note"><dt>Note</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> instances are composed of &mdash; i.e. contain and own &mdash; <a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a>, <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a>, and <a class="el" href="classplayrho_1_1d2_1_1Contact.html" title="A potential contact between the children of two Fixture objects. ">Contact</a> instances. </dd>
 <dd>
-This data structure is 232-bytes large (with 4-byte Real on at least one 64-bit platform).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a>, <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a>, <a class="el" href="classplayrho_1_1d2_1_1Contact.html" title="A potential contact between the children of two Fixture objects. ">Contact</a> </dd></dl>
+This data structure is 232-bytes large (with 4-byte Real on at least one 64-bit platform). </dd>
+<dd>
+For example, the following could be used to create a dynamic body having a one meter radius disk shape: <div class="fragment"><div class="line"><span class="keyword">auto</span> world = <a class="code" href="classplayrho_1_1d2_1_1World.html#aa89b7fd6debfc04e3f41018deab88d29">World</a>{};</div><div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> body = world.CreateBody(BodyConf{}.UseType(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a971fd8cc345d8bd9f92e9f7d88fdf20c">BodyType::Dynamic</a>));</div><div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> fixture = body-&gt;CreateFixture(Shape{DiskShapeConf{1_m}});</div></div><!-- fragment --></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a>, <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a>, <a class="el" href="classplayrho_1_1d2_1_1Contact.html" title="A potential contact between the children of two Fixture objects. ">Contact</a>, <a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a0">HelloWorld.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a1c202157108da487144660264d9395d1"></a>
@@ -2834,11 +2839,15 @@ Dynamic bodies are moved based on their previous velocities, gravity, applied fo
 <li>World.cpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:31 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

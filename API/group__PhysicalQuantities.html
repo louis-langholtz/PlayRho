@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,16 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
-<script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
-</script>
-<div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('group__PhysicalQuantities.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -149,7 +179,7 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Angle quantity. </p>
-<p>This is the type alias for the plane angle base quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: plane angle (QP). </dd></dl>
+<p>This is the type alias for the plane angle base quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: plane angle (<code>QP</code>). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalUnits.html#ga5503e9d7955fa22a9d01e39f14108354" title="Radian unit of angle. ">Radian</a>. </dd>
 <dd>
 <a class="el" href="group__PhysicalUnits.html#gac6669d827e3af130893c46f8b68c3256" title="Degree unit of angle quantity. ">Degree</a>. </dd></dl>
@@ -169,7 +199,7 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Angular acceleration quantity. </p>
-<p>This is the type alias for the angular acceleration quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: plane angle per time squared (QP T^-2). </dd>
+<p>This is the type alias for the angular acceleration quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: plane angle per time squared (<code>QP T^-2</code>). </dd>
 <dd>
 The SI derived unit of angular acceleration is the radian per second-squared. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#gab999341c050df340ff56a65816a63da9" title="Angle quantity. ">Angle</a>. </dd>
@@ -197,7 +227,7 @@ The SI derived unit of angular acceleration is the radian per second-squared. </
 </div><div class="memdoc">
 
 <p>Angular momentum quantity. </p>
-<p>This is the type alias for the angular momentum quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length-squared mass per time per angle (L^2 M T^-1 QP^-1). </dd>
+<p>This is the type alias for the angular momentum quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length-squared mass per time per angle (<code>L^2 M T^-1 QP^-1</code>). </dd>
 <dd>
 The SI derived unit of angular momentum is the kilogram meter-squared per second. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014" title="Length quantity. ">Length</a>. </dd>
@@ -227,7 +257,7 @@ The SI derived unit of angular momentum is the kilogram meter-squared per second
 </div><div class="memdoc">
 
 <p>Angular velocity quantity. </p>
-<p>This is the type alias for the plane angular velocity quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: plane angle per time (QP T^-1). </dd>
+<p>This is the type alias for the plane angular velocity quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: plane angle per time (<code>QP T^-1</code>). </dd>
 <dd>
 The SI derived unit of angular velocity is the radian per second. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#gab999341c050df340ff56a65816a63da9" title="Angle quantity. ">Angle</a>. </dd>
@@ -253,7 +283,7 @@ The SI derived unit of angular velocity is the radian per second. </dd></dl>
 </div><div class="memdoc">
 
 <p>Area quantity. </p>
-<p>This is the type alias for the area quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: length squared (L^2). </dd>
+<p>This is the type alias for the area quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: length squared (<code>L^2</code>). </dd>
 <dd>
 The SI unit of area is the square-meter. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014" title="Length quantity. ">Length</a>. </dd>
@@ -277,7 +307,7 @@ The SI unit of area is the square-meter. </dd></dl>
 </div><div class="memdoc">
 
 <p>Area (surface) density quantity. </p>
-<p>This is the type alias for the area density quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: mass per area (M L^-2). </dd>
+<p>This is the type alias for the area density quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: mass per area (<code>M L^-2</code>). </dd>
 <dd>
 The SI derived unit of area density is kilogram per meter-squared. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga5edfc295416b7690b4f949223b551bc1" title="Mass quantity. ">Mass</a>. </dd>
@@ -303,7 +333,7 @@ The SI derived unit of area density is kilogram per meter-squared. </dd></dl>
 </div><div class="memdoc">
 
 <p>Force quantity. </p>
-<p>This is the type alias for the force quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length mass per time squared (L M T^-2). </dd>
+<p>This is the type alias for the force quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length mass per time squared (<code>L M T^-2</code>). </dd>
 <dd>
 The SI derived unit of force is the newton. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014" title="Length quantity. ">Length</a>. </dd>
@@ -331,7 +361,7 @@ The SI derived unit of force is the newton. </dd></dl>
 </div><div class="memdoc">
 
 <p>Frequency quantity. </p>
-<p>This is the type alias for the frequency quantity. It's a derived quantity that's the inverse of time. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: inverse time (T^-1). </dd>
+<p>This is the type alias for the frequency quantity. It's a derived quantity that's the inverse of time. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: inverse time (<code>T^-1</code>). </dd>
 <dd>
 The SI unit of frequency is the hertz. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga250898c9929b0e6eaf56a1967c568888" title="Time quantity. ">Time</a>. </dd>
@@ -355,7 +385,7 @@ The SI unit of frequency is the hertz. </dd></dl>
 </div><div class="memdoc">
 
 <p>Inverse mass quantity. </p>
-<p>This is the type alias for the inverse mass quantity. It's a derived quantity that's the inverse of mass. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: inverse mass (M^-1). </dd></dl>
+<p>This is the type alias for the inverse mass quantity. It's a derived quantity that's the inverse of mass. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: inverse mass (<code>M^-1</code>). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga5edfc295416b7690b4f949223b551bc1" title="Mass quantity. ">Mass</a>. </dd></dl>
 
 </div>
@@ -373,7 +403,7 @@ The SI unit of frequency is the hertz. </dd></dl>
 </div><div class="memdoc">
 
 <p>Inverse rotational inertia quantity. </p>
-<p>This is the type alias for the inverse rotational inertia quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: angle-squared per length-squared per mass (L^-2 M^-1 QP^2). </dd></dl>
+<p>This is the type alias for the inverse rotational inertia quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: angle-squared per length-squared per mass (<code>L^-2 M^-1 QP^2</code>). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014" title="Length quantity. ">Length</a>. </dd>
 <dd>
 <a class="el" href="group__PhysicalQuantities.html#ga5edfc295416b7690b4f949223b551bc1" title="Mass quantity. ">Mass</a>. </dd>
@@ -397,7 +427,7 @@ The SI unit of frequency is the hertz. </dd></dl>
 </div><div class="memdoc">
 
 <p>Length quantity. </p>
-<p>This is the type alias for the length base quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: length (L). </dd>
+<p>This is the type alias for the length base quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: length (<code>L</code>). </dd>
 <dd>
 The SI unit of length is the meter. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalUnits.html#ga2f0ff7b721060132468649c9afb07c37" title="Meter unit of Length. ">Meter</a>. </dd>
@@ -419,7 +449,7 @@ The SI unit of length is the meter. </dd></dl>
 </div><div class="memdoc">
 
 <p>Linear acceleration quantity. </p>
-<p>This is the type alias for the linear acceleration derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length over time squared (L T^-2). </dd>
+<p>This is the type alias for the linear acceleration derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length over time squared (<code>L T^-2</code>). </dd>
 <dd>
 The SI unit of linear acceleration is meters per second squared. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014" title="Length quantity. ">Length</a>. </dd>
@@ -447,7 +477,7 @@ The SI unit of linear acceleration is meters per second squared. </dd></dl>
 </div><div class="memdoc">
 
 <p>Linear velocity quantity. </p>
-<p>This is the type alias for the linear velocity derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length over time (L T^-1). </dd>
+<p>This is the type alias for the linear velocity derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length over time (<code>L T^-1</code>). </dd>
 <dd>
 The SI unit of linear velocity is meters per second. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014" title="Length quantity. ">Length</a>. </dd>
@@ -473,7 +503,7 @@ The SI unit of linear velocity is meters per second. </dd></dl>
 </div><div class="memdoc">
 
 <p>Mass quantity. </p>
-<p>This is the type alias for the mass base quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: mass (M). </dd>
+<p>This is the type alias for the mass base quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: mass (<code>M</code>). </dd>
 <dd>
 The SI unit of mass is the kilogram. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalUnits.html#ga46997d28d69677820f127d640f529ccc" title="Kilogram unit of mass. ">Kilogram</a>. </dd>
@@ -495,7 +525,7 @@ The SI unit of mass is the kilogram. </dd></dl>
 </div><div class="memdoc">
 
 <p>Momentum quantity. </p>
-<p>This is the type alias for the momentum quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length mass per time (L M T^-1). </dd>
+<p>This is the type alias for the momentum quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length mass per time (<code>L M T^-1</code>). </dd>
 <dd>
 The SI derived unit of momentum is the kilogram meter per second. </dd>
 <dd>
@@ -525,7 +555,7 @@ If <code>p</code> is momentum, <code>m</code> is mass, and <code>v</code> is vel
 </div><div class="memdoc">
 
 <p>Rotational inertia quantity. </p>
-<p>This is the type alias for the rotational inertia quantity. It's a derived quantity that's also called the moment of inertia or angular mass. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length-squared mass per angle-squared (L^2 M QP^-2). </dd>
+<p>This is the type alias for the rotational inertia quantity. It's a derived quantity that's also called the moment of inertia or angular mass. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length-squared mass per angle-squared (<code>L^2 M QP^-2</code>). </dd>
 <dd>
 The SI derived unit of rotational inertia is the kilogram per meter-squared. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014" title="Length quantity. ">Length</a>. </dd>
@@ -553,7 +583,7 @@ The SI derived unit of rotational inertia is the kilogram per meter-squared. </d
 </div><div class="memdoc">
 
 <p>Second moment of area quantity. </p>
-<p>This is the type alias for the second moment of area quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length-squared-squared (L^4). </dd></dl>
+<p>This is the type alias for the second moment of area quantity. It's a derived quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length-squared-squared (<code>L^4</code>). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014" title="Length quantity. ">Length</a>. </dd>
 <dd>
 <a href="https://en.wikipedia.org/wiki/Second_moment_of_area">https://en.wikipedia.org/wiki/Second_moment_of_area</a> </dd></dl>
@@ -573,7 +603,7 @@ The SI derived unit of rotational inertia is the kilogram per meter-squared. </d
 </div><div class="memdoc">
 
 <p>Time quantity. </p>
-<p>This is the type alias for the time base quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: time (T). </dd>
+<p>This is the type alias for the time base quantity. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimension is: time (<code>T</code>). </dd>
 <dd>
 The SI unit of time is the second. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalUnits.html#ga52ac917bbbd4ffab2322fb6f4f8d27c3" title="Second unit of time. ">Second</a>. </dd>
@@ -595,7 +625,7 @@ The SI unit of time is the second. </dd></dl>
 </div><div class="memdoc">
 
 <p>Torque quantity. </p>
-<p>This is the type alias for the torque quantity. It's a derived quantity that's a rotational force. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length-squared mass per time-squared per angle (L^2 M T^-2 QP^-1). </dd>
+<p>This is the type alias for the torque quantity. It's a derived quantity that's a rotational force. </p><dl class="section note"><dt>Note</dt><dd>This quantity's dimensions are: length-squared mass per time-squared per angle (<code>L^2 M T^-2 QP^-1</code>). </dd>
 <dd>
 The SI derived unit of torque is the newton meter. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014" title="Length quantity. ">Length</a>. </dd>
@@ -613,11 +643,14 @@ The SI derived unit of torque is the newton meter. </dd></dl>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:29 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

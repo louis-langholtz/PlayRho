@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('structplayrho_1_1Vector.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="structplayrho_1_1Vector.html">Vector</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">playrho::Vector&lt; T, N &gt; Member List</div>  </div>
@@ -94,18 +120,18 @@ $(function() {
   <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a541212ea3d3edf87f5f1ced1a9d3fb84">iterator</a> typedef</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a077739bf41f4a64ac51877ff143e2725">max_size</a>() const noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#afb0b5a548efed2357cfdfa38c746f00f">operator!=</a>(const Vector&lt; T, N &gt; &amp;lhs, const Vector&lt; T, N &gt; &amp;rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a0b1945e7e49618172bf7f4cc1e10b3da">operator*</a>(const Vector&lt; Vector&lt; T1, B &gt;, A &gt; &amp;lhs, const Vector&lt; Vector&lt; T2, C &gt;, B &gt; &amp;rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a0b5823e1e0170ff049c831ab35d844d8">operator*</a>(const T1 s, Vector&lt; T2, N &gt; a) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a680b5d30b4b6dae988e84ffccbda4b2c">operator*</a>(Vector&lt; T1, N &gt; a, const T2 s) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a0275e7a88bcf4b3c16e1b76c751c2b98">operator*=</a>(Vector&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#af2210d6079e10d5f9c52e102b7aede64">operator+</a>(Vector&lt; T, N &gt; v) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a35c3b49702f1fb2a50b24d5aab1ab396">operator+</a>(Vector&lt; T, N &gt; lhs, const Vector&lt; T, N &gt; rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#ac5a895510fc67bdd501bef29a7aa7b04">operator+=</a>(Vector&lt; T, N &gt; &amp;lhs, const Vector&lt; T, N &gt; rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a6f568934b75de6c95111b429efd697e5">operator-</a>(Vector&lt; T, N &gt; v) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#ad99ee0fcf5f16b149690fbf61d0f022a">operator-</a>(Vector&lt; T, N &gt; lhs, const Vector&lt; T, N &gt; rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#af07c7170173311112ff21e9367335793">operator-=</a>(Vector&lt; T, N &gt; &amp;lhs, const Vector&lt; T, N &gt; rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a73867f00563c611be2bb88e9b4b4d932">operator/</a>(Vector&lt; T1, N &gt; a, const T2 s) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a75172b7bc712dcd19d9c8c5a619c3570">operator/=</a>(Vector&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a916ffd1ead44fed6c0296cd1eb152de8">operator*</a>(const Vector&lt; Vector&lt; T1, B &gt;, A &gt; &amp;lhs, const Vector&lt; Vector&lt; T2, C &gt;, B &gt; &amp;rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a49704e8fc8a2eb2e95e3a429ad638f50">operator*</a>(const T1 s, Vector&lt; T2, N &gt; a) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a329a09aded9f2ef0d9f599153feebc63">operator*</a>(Vector&lt; T1, N &gt; a, const T2 s) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a3867e38d81818a352ab8e6f527a5dafa">operator*=</a>(Vector&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a32698762d0d37c394a55cdd167cd4948">operator+</a>(Vector&lt; T, N &gt; v) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a26f12e932cc3ae8a52a46acb6a759018">operator+</a>(Vector&lt; T, N &gt; lhs, const Vector&lt; T, N &gt; rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a9ac37e361c264eb820a4fcd0957b6659">operator+=</a>(Vector&lt; T, N &gt; &amp;lhs, const Vector&lt; T, N &gt; rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a4b14eb31c39cb09ab1e073c98b575de4">operator-</a>(Vector&lt; T, N &gt; v) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#ae4498290f800bb77a09ca6e181f4d200">operator-</a>(Vector&lt; T, N &gt; lhs, const Vector&lt; T, N &gt; rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a17db72d9d3cf57a3dcde299003091925">operator-=</a>(Vector&lt; T, N &gt; &amp;lhs, const Vector&lt; T, N &gt; rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a7adc6d6a43f882bafb2b88a4e7091e57">operator/</a>(Vector&lt; T1, N &gt; a, const T2 s) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a33ef497cc5b8197cec1fb5bf7fcdb546">operator/=</a>(Vector&lt; T1, N &gt; &amp;lhs, const T2 rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
   <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a53f714963917f6a632001a9bb3a3d1d6">operator&lt;</a>(const Vector&lt; T, N &gt; &amp;lhs, const Vector&lt; T, N &gt; &amp;rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#af157a36bb1282e34b967881c199d15fa">operator&lt;&lt;</a>(::std::ostream &amp;os, const Vector&lt; T, N &gt; &amp;value)</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
   <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a8920673b547533b8ea9ae73a337cd426">operator&lt;=</a>(const Vector&lt; T, N &gt; &amp;lhs, const Vector&lt; T, N &gt; &amp;rhs) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
@@ -125,13 +151,16 @@ $(function() {
   <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a0bb82780552c224e3736ed516d1c0dfc">size_type</a> typedef</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a92ca95984a7bf625e8705b97245a7a8f">value_type</a> typedef</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#af096f6eedbff15a928dae2735ee22558">Vector</a>()=default</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#ae299d72ac72c01f189f9cc9b8fff1a04">Vector</a>(typename std::enable_if&lt; sizeof...(Tail)+1==N, T &gt;::type head, Tail... tail) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structplayrho_1_1Vector.html#a3fd6843ad90c021faca44a59ab4ff648">Vector</a>(std::enable_if_t&lt; sizeof...(Tail)+1==N, T &gt; head, Tail... tail) noexcept</td><td class="entry"><a class="el" href="structplayrho_1_1Vector.html">playrho::Vector&lt; T, N &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
 </table></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

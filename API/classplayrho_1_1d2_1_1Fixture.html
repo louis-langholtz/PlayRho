@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1Fixture.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
@@ -84,13 +110,8 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for playrho::d2::Fixture:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1Fixture__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1Fixture_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1Fixture_coll__map" id="playrho_1_1d2_1_1Fixture_coll__map">
-<area shape="rect" id="node4" href="structplayrho_1_1Filter.html" title="A holder for contact filtering data. " alt="" coords="363,117,465,143"/>
-<area shape="rect" id="node7" href="classplayrho_1_1d2_1_1Shape.html" title="Shape. " alt="" coords="348,167,481,192"/>
-<area shape="rect" id="node10" href="unionplayrho_1_1d2_1_1Fixture_1_1FixtureProxies.html" title="Fixture proxies union. " alt="" coords="347,265,482,304"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1Fixture__coll__graph.svg" width="100%" height="569"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -100,7 +121,7 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1dbdd3a1f7e5d77af8e1a22331b8aca0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a1dbdd3a1f7e5d77af8e1a22331b8aca0">Fixture</a> (<a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt; body, const <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html">FixtureConf</a> &amp;def, const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> &amp;shape)</td></tr>
+<tr class="memitem:a1dbdd3a1f7e5d77af8e1a22331b8aca0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a1dbdd3a1f7e5d77af8e1a22331b8aca0">Fixture</a> (<a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt; body, const <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html">FixtureConf</a> &amp;def, const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> &amp;shape)</td></tr>
 <tr class="memdesc:a1dbdd3a1f7e5d77af8e1a22331b8aca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="#a1dbdd3a1f7e5d77af8e1a22331b8aca0">More...</a><br /></td></tr>
 <tr class="separator:a1dbdd3a1f7e5d77af8e1a22331b8aca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b870319139e265c76663bc66d5a5641"><td class="memItemLeft" align="right" valign="top"><a id="a0b870319139e265c76663bc66d5a5641"></a>
@@ -110,7 +131,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a91746a8c76be248579f46d681e6185a0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a91746a8c76be248579f46d681e6185a0">~Fixture</a> ()</td></tr>
 <tr class="memdesc:a91746a8c76be248579f46d681e6185a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a91746a8c76be248579f46d681e6185a0">More...</a><br /></td></tr>
 <tr class="separator:a91746a8c76be248579f46d681e6185a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06b4d3e9a3520768bc336da56083f566"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a06b4d3e9a3520768bc336da56083f566">GetBody</a> () const noexcept</td></tr>
+<tr class="memitem:a06b4d3e9a3520768bc336da56083f566"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a06b4d3e9a3520768bc336da56083f566">GetBody</a> () const noexcept</td></tr>
 <tr class="memdesc:a06b4d3e9a3520768bc336da56083f566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the parent body of this fixture.  <a href="#a06b4d3e9a3520768bc336da56083f566">More...</a><br /></td></tr>
 <tr class="separator:a06b4d3e9a3520768bc336da56083f566"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43e88ab8b58819aceb0b24b0c1cf98fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a43e88ab8b58819aceb0b24b0c1cf98fc">GetShape</a> () const noexcept</td></tr>
@@ -175,7 +196,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a9c41c71d91a37c4b07e36d2415139b9e"><td class="memItemLeft" align="right" valign="top"><a id="a9c41c71d91a37c4b07e36d2415139b9e"></a>
-<a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> * &gt; const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a9c41c71d91a37c4b07e36d2415139b9e">m_body</a></td></tr>
+<a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> * &gt; const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a9c41c71d91a37c4b07e36d2415139b9e">m_body</a></td></tr>
 <tr class="memdesc:a9c41c71d91a37c4b07e36d2415139b9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parent body. Set on construction. 8-bytes. <br /></td></tr>
 <tr class="separator:a9c41c71d91a37c4b07e36d2415139b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab39d066d96e9fcf78aa5988d9f012fbd"><td class="memItemLeft" align="right" valign="top"><a id="ab39d066d96e9fcf78aa5988d9f012fbd"></a>
@@ -254,7 +275,7 @@ This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit arc
         <tr>
           <td class="memname">playrho::d2::Fixture::Fixture </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt;&#160;</td>
           <td class="paramname"><em>body</em>, </td>
         </tr>
         <tr>
@@ -336,7 +357,7 @@ This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit arc
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> * &gt; playrho::d2::Fixture::GetBody </td>
+          <td class="memname"><a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> * &gt; playrho::d2::Fixture::GetBody </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -890,11 +911,15 @@ Either null or pointer to a heap-memory private copy of the assigned shape. </dd
 <li>FixtureConf.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

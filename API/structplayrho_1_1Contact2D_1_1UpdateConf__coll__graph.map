@@ -1,5 +1,0 @@
-<map id="playrho::Contact2D::UpdateConf" name="playrho::Contact2D::UpdateConf">
-<area shape="rect" id="node2" href="$structplayrho_1_1Manifold2D_1_1Conf.html" title="Configuration data for manifold calculation. " alt="" coords="50,132,190,171"/>
-<area shape="rect" id="node7" href="$structplayrho_1_1Simplex2D_1_1Cache.html" title="Simplex cache. " alt="" coords="215,132,352,171"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1DistanceConf.html" title="Distance Configuration. " alt="" coords="207,232,359,257"/>
-</map>

@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('structplayrho_1_1d2_1_1WheelJointConf.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html">WheelJointConf</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
@@ -81,41 +107,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for playrho::d2::WheelJointConf:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1d2_1_1WheelJointConf__inherit__graph.png" border="0" usemap="#playrho_1_1d2_1_1WheelJointConf_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1d2_1_1WheelJointConf_inherit__map" id="playrho_1_1d2_1_1WheelJointConf_inherit__map">
-<area shape="rect" id="node2" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; WheelJointConf \&gt;" alt="" coords="18,167,182,205"/>
-<area shape="rect" id="node3" href="structplayrho_1_1d2_1_1JointConf.html" title="Abstract base Joint definition class. " alt="" coords="19,5,170,31"/>
-<area shape="rect" id="node4" href="structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="116,80,311,105"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1WheelJointConf__inherit__graph.svg" width="316" height="286"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::WheelJointConf:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1d2_1_1WheelJointConf__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1WheelJointConf_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1WheelJointConf_coll__map" id="playrho_1_1d2_1_1WheelJointConf_coll__map">
-<area shape="rect" id="node2" href="structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; WheelJointConf \&gt;" alt="" coords="2502,611,2667,650"/>
-<area shape="rect" id="node3" href="structplayrho_1_1d2_1_1JointConf.html" title="Abstract base Joint definition class. " alt="" coords="1938,567,2089,593"/>
-<area shape="rect" id="node49" href="structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="2138,567,2333,593"/>
-<area shape="rect" id="node6" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1659,553,1784,578"/>
-<area shape="rect" id="node9" href="structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="1307,1299,1448,1325"/>
-<area shape="rect" id="node10" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="885,1287,1101,1313"/>
-<area shape="rect" id="node12" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="160,1241,317,1266"/>
-<area shape="rect" id="node36" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="547,494,722,519"/>
-<area shape="rect" id="node39" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="513,1405,756,1430"/>
-<area shape="rect" id="node19" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="159,797,318,835"/>
-<area shape="rect" id="node15" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1313,874,1442,899"/>
-<area shape="rect" id="node17" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="555,661,714,699"/>
-<area shape="rect" id="node20" href="classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="912,827,1074,866"/>
-<area shape="rect" id="node21" href="classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="907,1087,1080,1113"/>
-<area shape="rect" id="node22" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="548,1178,721,1217"/>
-<area shape="rect" id="node23" href="structplayrho_1_1detail_1_1AABB.html" title="playrho::detail::AABB\&lt; 2 \&gt;" alt="" coords="150,1185,328,1210"/>
-<area shape="rect" id="node30" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="899,729,1087,754"/>
-<area shape="rect" id="node35" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1286,453,1470,478"/>
-<area shape="rect" id="node45" href="classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="1310,502,1445,527"/>
-<area shape="rect" id="node46" href="structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure. " alt="" coords="922,441,1064,466"/>
-<area shape="rect" id="node37" href="classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="923,73,1064,98"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1WheelJointConf__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -136,7 +134,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a735e4dc90926ef58ae72aceb269986ec"><td class="memItemLeft" align="right" valign="top"><a id="a735e4dc90926ef58ae72aceb269986ec"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a735e4dc90926ef58ae72aceb269986ec">WheelJointConf</a> (<a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt; <a class="el" href="structplayrho_1_1d2_1_1JointConf.html#ab0491a1c54557c72697f7f5b5efe00e0">bodyA</a>, <a class="el" href="group__BoundedAliases.html#gae1b72b9e9419b6294fce23a82d2d1508">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt; <a class="el" href="structplayrho_1_1d2_1_1JointConf.html#afa2f841c8d2b694ddfe7278576fd352a">bodyB</a>, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> anchor, const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> axis) noexcept</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a735e4dc90926ef58ae72aceb269986ec">WheelJointConf</a> (<a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt; <a class="el" href="structplayrho_1_1d2_1_1JointConf.html#ab0491a1c54557c72697f7f5b5efe00e0">bodyA</a>, <a class="el" href="group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32">NonNull</a>&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt; <a class="el" href="structplayrho_1_1d2_1_1JointConf.html#afa2f841c8d2b694ddfe7278576fd352a">bodyB</a>, const <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> anchor, const <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a> axis) noexcept</td></tr>
 <tr class="memdesc:a735e4dc90926ef58ae72aceb269986ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the bodies, anchors, axis, and reference angle using the world anchor and world axis. <br /></td></tr>
 <tr class="separator:a735e4dc90926ef58ae72aceb269986ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63aaf504500f8876b4bccc88a6c0573a"><td class="memItemLeft" align="right" valign="top"><a id="a63aaf504500f8876b4bccc88a6c0573a"></a>
@@ -202,7 +200,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8bcbb0908f80409feaa1ee94834f0204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae33b769077d6dfe40ab792cae5b4cec3"><td class="memItemLeft" align="right" valign="top"><a id="ae33b769077d6dfe40ab792cae5b4cec3"></a>
 <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html">UnitVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#ae33b769077d6dfe40ab792cae5b4cec3">localAxisA</a> = <a class="el" href="classplayrho_1_1d2_1_1UnitVec.html#aacc21d096d69c8b5dde10d7a8f9f66b0">UnitVec::GetRight</a>()</td></tr>
-<tr class="memdesc:ae33b769077d6dfe40ab792cae5b4cec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The local translation axis in bodyA. <br /></td></tr>
+<tr class="memdesc:ae33b769077d6dfe40ab792cae5b4cec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The local translation axis in body-A. <br /></td></tr>
 <tr class="separator:ae33b769077d6dfe40ab792cae5b4cec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c928a9b40a91ca1b6f9a65ee7981f70"><td class="memItemLeft" align="right" valign="top"><a id="a5c928a9b40a91ca1b6f9a65ee7981f70"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html#a5c928a9b40a91ca1b6f9a65ee7981f70">enableMotor</a> = false</td></tr>
@@ -259,11 +257,15 @@ Additional Inherited Members</h2></td></tr>
 <li>WheelJointConf.cpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1WheelJointConf.html">WheelJointConf</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:31 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

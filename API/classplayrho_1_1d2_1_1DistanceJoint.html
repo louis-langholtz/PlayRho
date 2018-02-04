@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1DistanceJoint.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html">DistanceJoint</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -83,37 +109,13 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for playrho::d2::DistanceJoint:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1DistanceJoint__inherit__graph.png" border="0" usemap="#playrho_1_1d2_1_1DistanceJoint_inherit__map" alt="Inheritance graph"/></div>
-<map name="playrho_1_1d2_1_1DistanceJoint_inherit__map" id="playrho_1_1d2_1_1DistanceJoint_inherit__map">
-<area shape="rect" id="node2" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. " alt="" coords="31,5,154,31"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1DistanceJoint__inherit__graph.svg" width="186" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for playrho::d2::DistanceJoint:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1DistanceJoint__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1DistanceJoint_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1DistanceJoint_coll__map" id="playrho_1_1d2_1_1DistanceJoint_coll__map">
-<area shape="rect" id="node2" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. " alt="" coords="1891,333,2013,358"/>
-<area shape="rect" id="node4" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1631,595,1756,621"/>
-<area shape="rect" id="node7" href="structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="909,689,1050,714"/>
-<area shape="rect" id="node8" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="526,689,743,714"/>
-<area shape="rect" id="node10" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="160,709,317,734"/>
-<area shape="rect" id="node34" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="547,562,722,587"/>
-<area shape="rect" id="node37" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="513,946,756,971"/>
-<area shape="rect" id="node17" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="159,1334,318,1373"/>
-<area shape="rect" id="node13" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1285,1061,1414,1086"/>
-<area shape="rect" id="node15" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="555,1334,714,1373"/>
-<area shape="rect" id="node18" href="classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="898,894,1060,933"/>
-<area shape="rect" id="node19" href="classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="892,1354,1066,1379"/>
-<area shape="rect" id="node20" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="548,1271,721,1310"/>
-<area shape="rect" id="node21" href="structplayrho_1_1detail_1_1AABB.html" title="playrho::detail::AABB\&lt; 2 \&gt;" alt="" coords="150,1227,328,1253"/>
-<area shape="rect" id="node28" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="885,1203,1073,1229"/>
-<area shape="rect" id="node33" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1257,163,1441,189"/>
-<area shape="rect" id="node43" href="classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="1282,583,1417,609"/>
-<area shape="rect" id="node44" href="structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure. " alt="" coords="908,610,1050,635"/>
-<area shape="rect" id="node35" href="classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="909,57,1050,82"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1DistanceJoint__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -129,19 +131,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a30570447201b457ed159cd334d4f31c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afff9cb259c27434d5454ebbf03c3abcf"><td class="memItemLeft" align="right" valign="top"><a id="afff9cb259c27434d5454ebbf03c3abcf"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#afff9cb259c27434d5454ebbf03c3abcf">GetAnchorA</a> () const override</td></tr>
-<tr class="memdesc:afff9cb259c27434d5454ebbf03c3abcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on bodyA in world coordinates. <br /></td></tr>
+<tr class="memdesc:afff9cb259c27434d5454ebbf03c3abcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on body-A in world coordinates. <br /></td></tr>
 <tr class="separator:afff9cb259c27434d5454ebbf03c3abcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08de4f3c77f8ea43a188ffab46c94305"><td class="memItemLeft" align="right" valign="top"><a id="a08de4f3c77f8ea43a188ffab46c94305"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a08de4f3c77f8ea43a188ffab46c94305">GetAnchorB</a> () const override</td></tr>
-<tr class="memdesc:a08de4f3c77f8ea43a188ffab46c94305"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on bodyB in world coordinates. <br /></td></tr>
+<tr class="memdesc:a08de4f3c77f8ea43a188ffab46c94305"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the anchor point on body-B in world coordinates. <br /></td></tr>
 <tr class="separator:a08de4f3c77f8ea43a188ffab46c94305"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae59166d2a1e8043433fe9eae76319706"><td class="memItemLeft" align="right" valign="top"><a id="ae59166d2a1e8043433fe9eae76319706"></a>
 <a class="el" href="namespaceplayrho.html#a1fa6ffb2e67c2e2f620eed088412b146">Momentum2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#ae59166d2a1e8043433fe9eae76319706">GetLinearReaction</a> () const override</td></tr>
-<tr class="memdesc:ae59166d2a1e8043433fe9eae76319706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the linear reaction on bodyB at the joint anchor. <br /></td></tr>
+<tr class="memdesc:ae59166d2a1e8043433fe9eae76319706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the linear reaction on body-B at the joint anchor. <br /></td></tr>
 <tr class="separator:ae59166d2a1e8043433fe9eae76319706"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ab2e73ed7ee2c8463e7f0ee212dbc70"><td class="memItemLeft" align="right" valign="top"><a id="a5ab2e73ed7ee2c8463e7f0ee212dbc70"></a>
 <a class="el" href="group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43">AngularMomentum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a5ab2e73ed7ee2c8463e7f0ee212dbc70">GetAngularReaction</a> () const override</td></tr>
-<tr class="memdesc:a5ab2e73ed7ee2c8463e7f0ee212dbc70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the angular reaction on bodyB. <br /></td></tr>
+<tr class="memdesc:a5ab2e73ed7ee2c8463e7f0ee212dbc70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the angular reaction on body-B. <br /></td></tr>
 <tr class="separator:a5ab2e73ed7ee2c8463e7f0ee212dbc70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0d11543041b486b10a8bb93e7801b55"><td class="memItemLeft" align="right" valign="top"><a id="ab0d11543041b486b10a8bb93e7801b55"></a>
 <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#ab0d11543041b486b10a8bb93e7801b55">GetLocalAnchorA</a> () const noexcept</td></tr>
@@ -159,11 +161,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:abd2396d5744e5272091cdfcd73c5ed7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the length. <br /></td></tr>
 <tr class="separator:abd2396d5744e5272091cdfcd73c5ed7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45259cf15cf95bb559bee4b9d8aa127d"><td class="memItemLeft" align="right" valign="top"><a id="a45259cf15cf95bb559bee4b9d8aa127d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a45259cf15cf95bb559bee4b9d8aa127d">SetFrequency</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; frequency) noexcept</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a45259cf15cf95bb559bee4b9d8aa127d">SetFrequency</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; frequency) noexcept</td></tr>
 <tr class="memdesc:a45259cf15cf95bb559bee4b9d8aa127d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets frequency. <br /></td></tr>
 <tr class="separator:a45259cf15cf95bb559bee4b9d8aa127d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ac238defbfad1179ce5941c0ee74fa3"><td class="memItemLeft" align="right" valign="top"><a id="a7ac238defbfad1179ce5941c0ee74fa3"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a7ac238defbfad1179ce5941c0ee74fa3">GetFrequency</a> () const noexcept</td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a7ac238defbfad1179ce5941c0ee74fa3">GetFrequency</a> () const noexcept</td></tr>
 <tr class="memdesc:a7ac238defbfad1179ce5941c0ee74fa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the frequency. <br /></td></tr>
 <tr class="separator:a7ac238defbfad1179ce5941c0ee74fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96e6da6e0bb45e8553a9ed6d2365d309"><td class="memItemLeft" align="right" valign="top"><a id="a96e6da6e0bb45e8553a9ed6d2365d309"></a>
@@ -237,7 +239,7 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a6cf3de4b07f37886b30be2f822e84ad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length. <br /></td></tr>
 <tr class="separator:a6cf3de4b07f37886b30be2f822e84ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bc93a9b33c9a8b37803c39a4c74515c"><td class="memItemLeft" align="right" valign="top"><a id="a7bc93a9b33c9a8b37803c39a4c74515c"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a7bc93a9b33c9a8b37803c39a4c74515c">m_frequency</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&gt;{0}</td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a7bc93a9b33c9a8b37803c39a4c74515c">m_frequency</a> = <a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&gt;{0}</td></tr>
 <tr class="memdesc:a7bc93a9b33c9a8b37803c39a4c74515c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frequency. <br /></td></tr>
 <tr class="separator:a7bc93a9b33c9a8b37803c39a4c74515c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17a9b38363c80b2b42d09a237d9f2809"><td class="memItemLeft" align="right" valign="top"><a id="a17a9b38363c80b2b42d09a237d9f2809"></a>
@@ -579,11 +581,15 @@ Additional Inherited Members</h2></td></tr>
 <li>DistanceJointConf.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html">DistanceJoint</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

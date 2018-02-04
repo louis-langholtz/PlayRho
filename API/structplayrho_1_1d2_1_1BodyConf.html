@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('structplayrho_1_1d2_1_1BodyConf.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -81,14 +107,8 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for playrho::d2::BodyConf:</div>
 <div class="dyncontent">
-<div class="center"><img src="structplayrho_1_1d2_1_1BodyConf__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1BodyConf_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1BodyConf_coll__map" id="playrho_1_1d2_1_1BodyConf_coll__map">
-<area shape="rect" id="node4" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="526,123,701,149"/>
-<area shape="rect" id="node6" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="150,170,307,195"/>
-<area shape="rect" id="node8" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="505,173,722,198"/>
-<area shape="rect" id="node11" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="492,271,735,297"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structplayrho_1_1d2_1_1BodyConf__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -129,11 +149,11 @@ PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">Body
 <tr class="memdesc:a654254b6ede1545437457f8f51b864de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the given angular acceleration. <br /></td></tr>
 <tr class="separator:a654254b6ede1545437457f8f51b864de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4aa22a34543a08aafbd0f2793dc24d0c"><td class="memItemLeft" align="right" valign="top"><a id="a4aa22a34543a08aafbd0f2793dc24d0c"></a>
-PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#a4aa22a34543a08aafbd0f2793dc24d0c">UseLinearDamping</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; v) noexcept</td></tr>
+PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#a4aa22a34543a08aafbd0f2793dc24d0c">UseLinearDamping</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; v) noexcept</td></tr>
 <tr class="memdesc:a4aa22a34543a08aafbd0f2793dc24d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the given linear damping. <br /></td></tr>
 <tr class="separator:a4aa22a34543a08aafbd0f2793dc24d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfcd23b831709f5a7355636f1174b479"><td class="memItemLeft" align="right" valign="top"><a id="adfcd23b831709f5a7355636f1174b479"></a>
-PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#adfcd23b831709f5a7355636f1174b479">UseAngularDamping</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; v) noexcept</td></tr>
+PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#adfcd23b831709f5a7355636f1174b479">UseAngularDamping</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; v) noexcept</td></tr>
 <tr class="memdesc:adfcd23b831709f5a7355636f1174b479"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the given angular damping. <br /></td></tr>
 <tr class="separator:adfcd23b831709f5a7355636f1174b479"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42dd97402c30665cd430970422b9744c"><td class="memItemLeft" align="right" valign="top"><a id="a42dd97402c30665cd430970422b9744c"></a>
@@ -193,11 +213,11 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a79881dcf474db656032f5834391c1e32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial angular acceleration of the body.  <a href="#a79881dcf474db656032f5834391c1e32">More...</a><br /></td></tr>
 <tr class="separator:a79881dcf474db656032f5834391c1e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a403ac9e5010e1cf2cd831c6e14b26c10"><td class="memItemLeft" align="right" valign="top"><a id="a403ac9e5010e1cf2cd831c6e14b26c10"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#a403ac9e5010e1cf2cd831c6e14b26c10">linearDamping</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&gt;{0}</td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#a403ac9e5010e1cf2cd831c6e14b26c10">linearDamping</a> = <a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&gt;{0}</td></tr>
 <tr class="memdesc:a403ac9e5010e1cf2cd831c6e14b26c10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear damping is use to reduce the linear velocity. The damping parameter can be larger than 1 but the damping effect becomes sensitive to the time step when the damping parameter is large. <br /></td></tr>
 <tr class="separator:a403ac9e5010e1cf2cd831c6e14b26c10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd247e252ae4e8a5ece40382e0b0be49"><td class="memItemLeft" align="right" valign="top"><a id="acd247e252ae4e8a5ece40382e0b0be49"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#acd247e252ae4e8a5ece40382e0b0be49">angularDamping</a> = <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&gt;{0}</td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#acd247e252ae4e8a5ece40382e0b0be49">angularDamping</a> = <a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&gt;{0}</td></tr>
 <tr class="memdesc:acd247e252ae4e8a5ece40382e0b0be49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Angular damping is use to reduce the angular velocity. The damping parameter can be larger than 1 but the damping effect becomes sensitive to the time step when the damping parameter is large. <br /></td></tr>
 <tr class="separator:acd247e252ae4e8a5ece40382e0b0be49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9559f3076e32dc79e9455d07c666b3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#af9559f3076e32dc79e9455d07c666b3c">underActiveTime</a> = 0_s</td></tr>
@@ -361,11 +381,15 @@ Related Functions</h2></td></tr>
 <li>BodyConf.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>

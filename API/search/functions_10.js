@@ -35,5 +35,5 @@ var searchData=
   ['rotateaboutworldpoint',['RotateAboutWorldPoint',['../classplayrho_1_1d2_1_1Body.html#af35644c450c12c8dcbd6cf1a0aa7b75c',1,'playrho::d2::Body::RotateAboutWorldPoint()'],['../namespaceplayrho_1_1d2.html#af35644c450c12c8dcbd6cf1a0aa7b75c',1,'playrho::d2::RotateAboutWorldPoint()']]],
   ['round',['round',['../group__FixedMath.html#ga1e3ca7fb2626886c5920bbc5f570a525',1,'playrho']]],
   ['round_5ferror',['round_error',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#ab4b9459b936e660cf90bcebda36ac716',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
-  ['roundoff',['RoundOff',['../group__Math.html#ga0f39e4121c50c3a947a4926673751b0b',1,'playrho::RoundOff(T value, unsigned precision=100000)'],['../group__Math.html#ga812ea5eaf66fb9d1bffa799886b2eee3',1,'playrho::RoundOff(Vec2 value, std::uint32_t precision=100000)']]]
+  ['roundoff',['RoundOff',['../group__Math.html#gab8f24574b8a0ca458ec2fe9d691364ff',1,'playrho::RoundOff(T value, unsigned precision=100000)'],['../group__Math.html#ga812ea5eaf66fb9d1bffa799886b2eee3',1,'playrho::RoundOff(Vec2 value, std::uint32_t precision=100000)']]]
 ];

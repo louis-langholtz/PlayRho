@@ -9,9 +9,19 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -26,6 +36,21 @@
    </div>
    <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
   </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -35,15 +60,21 @@
 <script type="text/javascript">
 var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-$(function() {
-  initMenu('',true,false,'search.php','Search');
-  $(document).ready(function() { init_search(); });
-});
+$(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1Body.html','');});
 </script>
-<div id="main-nav"></div>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +89,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
@@ -86,33 +112,8 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for playrho::d2::Body:</div>
 <div class="dyncontent">
-<div class="center"><img src="classplayrho_1_1d2_1_1Body__coll__graph.png" border="0" usemap="#playrho_1_1d2_1_1Body_coll__map" alt="Collaboration graph"/></div>
-<map name="playrho_1_1d2_1_1Body_coll__map" id="playrho_1_1d2_1_1Body_coll__map">
-<area shape="rect" id="node24" href="structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html" title="Leaf data of a tree node. " alt="" coords="1790,485,1964,523"/>
-<area shape="rect" id="node4" href="structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="844,213,985,238"/>
-<area shape="rect" id="node5" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="508,213,724,238"/>
-<area shape="rect" id="node7" href="structplayrho_1_1Vector.html" title="Vector. " alt="" coords="151,323,308,349"/>
-<area shape="rect" id="node39" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="529,345,703,370"/>
-<area shape="rect" id="node42" href="structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="494,562,738,587"/>
-<area shape="rect" id="node14" href="classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="150,101,309,139"/>
-<area shape="rect" id="node10" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="3035,359,3164,385"/>
-<area shape="rect" id="node12" href="classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="536,101,695,139"/>
-<area shape="rect" id="node15" href="classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="2677,246,2839,285"/>
-<area shape="rect" id="node16" href="classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="2671,558,2845,583"/>
-<area shape="rect" id="node17" href="classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html" title="A node in the dynamic tree. " alt="" coords="2384,547,2557,586"/>
-<area shape="rect" id="node18" href="structplayrho_1_1detail_1_1AABB.html" title="playrho::detail::AABB\&lt; 2 \&gt;" alt="" coords="2096,309,2274,334"/>
-<area shape="rect" id="node20" href="structplayrho_1_1detail_1_1AABB.html" title="N&#45;dimensional Axis Aligned Bounding Box. " alt="" coords="1787,309,1967,334"/>
-<area shape="rect" id="node23" href="structplayrho_1_1d2_1_1DynamicTree_1_1BranchData.html" title="Branch data of a tree node. " alt="" coords="1790,662,1964,701"/>
-<area shape="rect" id="node22" href="unionplayrho_1_1d2_1_1DynamicTree_1_1VariantData.html" title="Variant data. " alt="" coords="2098,599,2271,638"/>
-<area shape="rect" id="node25" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. " alt="" coords="1559,565,1695,590"/>
-<area shape="rect" id="node27" href="structplayrho_1_1d2_1_1DynamicTree_1_1UnusedData.html" title="Unused data of a tree node. " alt="" coords="1790,599,1964,638"/>
-<area shape="rect" id="node33" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="2664,509,2852,534"/>
-<area shape="rect" id="node38" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="1174,455,1358,481"/>
-<area shape="rect" id="node47" href="classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="1199,406,1334,431"/>
-<area shape="rect" id="node48" href="structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure. " alt="" coords="843,297,986,322"/>
-<area shape="rect" id="node40" href="classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="844,531,985,557"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classplayrho_1_1d2_1_1Body__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -225,7 +226,7 @@ const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a> &amp;&#160
 <tr class="memdesc:afeda1da50f9699c8ee07732c1f554699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the linear damping of the body. <br /></td></tr>
 <tr class="separator:afeda1da50f9699c8ee07732c1f554699"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd5523b855b544fe285d0fa5a23c3398"><td class="memItemLeft" align="right" valign="top"><a id="acd5523b855b544fe285d0fa5a23c3398"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#acd5523b855b544fe285d0fa5a23c3398">SetLinearDamping</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; linearDamping) noexcept</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#acd5523b855b544fe285d0fa5a23c3398">SetLinearDamping</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; linearDamping) noexcept</td></tr>
 <tr class="memdesc:acd5523b855b544fe285d0fa5a23c3398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the linear damping of the body. <br /></td></tr>
 <tr class="separator:acd5523b855b544fe285d0fa5a23c3398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad47c053e25acad158bf8651815069de0"><td class="memItemLeft" align="right" valign="top"><a id="ad47c053e25acad158bf8651815069de0"></a>
@@ -233,7 +234,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:ad47c053e25acad158bf8651815069de0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the angular damping of the body. <br /></td></tr>
 <tr class="separator:ad47c053e25acad158bf8651815069de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85169a6266e1ecfa2e25ecc12175218a"><td class="memItemLeft" align="right" valign="top"><a id="a85169a6266e1ecfa2e25ecc12175218a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a85169a6266e1ecfa2e25ecc12175218a">SetAngularDamping</a> (<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; angularDamping) noexcept</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a85169a6266e1ecfa2e25ecc12175218a">SetAngularDamping</a> (<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; angularDamping) noexcept</td></tr>
 <tr class="memdesc:a85169a6266e1ecfa2e25ecc12175218a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the angular damping of the body. <br /></td></tr>
 <tr class="separator:a85169a6266e1ecfa2e25ecc12175218a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70dbc9501cd28a6e486d1de1852b582c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a70dbc9501cd28a6e486d1de1852b582c">SetType</a> (<a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7">BodyType</a> type)</td></tr>
@@ -468,11 +469,11 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="memdesc:ae712d47531aa25674220f30e34598473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverse rotational inertia about the center of mass.  <a href="#ae712d47531aa25674220f30e34598473">More...</a><br /></td></tr>
 <tr class="separator:ae712d47531aa25674220f30e34598473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af05dd93b13c1c67ca53b46566b8971ec"><td class="memItemLeft" align="right" valign="top"><a id="af05dd93b13c1c67ca53b46566b8971ec"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#af05dd93b13c1c67ca53b46566b8971ec">m_linearDamping</a></td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#af05dd93b13c1c67ca53b46566b8971ec">m_linearDamping</a></td></tr>
 <tr class="memdesc:af05dd93b13c1c67ca53b46566b8971ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear damping. 4-bytes. <br /></td></tr>
 <tr class="separator:af05dd93b13c1c67ca53b46566b8971ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a865bbb9dfb965cff6a9e22367fa0aee2"><td class="memItemLeft" align="right" valign="top"><a id="a865bbb9dfb965cff6a9e22367fa0aee2"></a>
-<a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a865bbb9dfb965cff6a9e22367fa0aee2">m_angularDamping</a></td></tr>
+<a class="el" href="group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a865bbb9dfb965cff6a9e22367fa0aee2">m_angularDamping</a></td></tr>
 <tr class="memdesc:a865bbb9dfb965cff6a9e22367fa0aee2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Angular damping. 4-bytes. <br /></td></tr>
 <tr class="separator:a865bbb9dfb965cff6a9e22367fa0aee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a891b2b92f7a2954df55714c9c3fbc56d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a891b2b92f7a2954df55714c9c3fbc56d">m_underActiveTime</a> = 0</td></tr>
@@ -957,7 +958,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 </div><div class="memdoc">
 
 <p>Gets the container of all contacts attached to this body. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This collection changes during the time step and you may miss some collisions if you don't use <a class="el" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure-virtual interface for &quot;listeners&quot; for contacts. ">ContactListener</a>. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This collection changes during the time step and you may miss some collisions if you don't use <code><a class="el" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure-virtual interface for &quot;listeners&quot; for contacts. ">ContactListener</a></code>. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a57d9ad0a6f135cf0f78e206fb67af168">playrho::d2::World::AddContactsToIsland()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab61e61ee05835899a0a47c7a236b9202">playrho::d2::World::ProcessContactsForTOI()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#acbc6df84c16b5508e075b1ea1d1e7b30">playrho::d2::World::ResetContactsForSolveTOI()</a>.</p>
 
@@ -1141,7 +1142,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 </div><div class="memdoc">
 
 <p>Is "accelerable". </p>
-<p>Indicates whether this body is accelerable, ie. whether it is effected by forces. Only Dynamic bodies are accelerable. </p><dl class="section return"><dt>Returns</dt><dd>true if the body is accelerable, false otherwise. </dd></dl>
+<p>Indicates whether this body is accelerable, i.e. whether it is effected by forces. Only Dynamic bodies are accelerable. </p><dl class="section return"><dt>Returns</dt><dd>true if the body is accelerable, false otherwise. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ab61e61ee05835899a0a47c7a236b9202">playrho::d2::World::ProcessContactsForTOI()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ab2dc6bfa388127a5ad2717ff13e4f0f1">ResetMassData()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a918589968b14732682edf289ad74a030">SetMassData()</a>.</p>
 
@@ -3687,11 +3688,15 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 <li>BodyConf.hpp</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.14
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>
+    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
 </body>
 </html>
