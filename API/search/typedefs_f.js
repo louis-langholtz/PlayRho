@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['queryfixturecallback',['QueryFixtureCallback',['../classplayrho_1_1d2_1_1World.html#af665ae72296cdb76e20d900d9fecfe3d',1,'playrho::d2::World']]]
+  ['queryfixturecallback',['QueryFixtureCallback',['../namespaceplayrho_1_1d2.html#a460d74691acde93bae75b80d51cbde68',1,'playrho::d2']]]
 ];

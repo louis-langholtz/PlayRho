@@ -187,25 +187,22 @@ template&lt;class IN_TYPE &gt; </td></tr>
 <tr class="memitem:ga00b2d4eb2cee9e0e14f8e9eea46df5e5"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#ga00b2d4eb2cee9e0e14f8e9eea46df5e5">playrho::GetFwdPerpendicular</a> (const T vector) noexcept</td></tr>
 <tr class="memdesc:ga00b2d4eb2cee9e0e14f8e9eea46df5e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.  <a href="group__Math.html#ga00b2d4eb2cee9e0e14f8e9eea46df5e5">More...</a><br /></td></tr>
 <tr class="separator:ga00b2d4eb2cee9e0e14f8e9eea46df5e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3091ee681aaca888a02c33ea36a09eb6"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga3091ee681aaca888a02c33ea36a09eb6">playrho::Transform</a> (const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> v, const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;A) noexcept</td></tr>
-<tr class="memdesc:ga3091ee681aaca888a02c33ea36a09eb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply a matrix times a vector. If a rotation matrix is provided, then this transforms the vector from one frame to another.  <a href="group__Math.html#ga3091ee681aaca888a02c33ea36a09eb6">More...</a><br /></td></tr>
-<tr class="separator:ga3091ee681aaca888a02c33ea36a09eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaab12e9930e01cf5596b23e2e63d83f2a"><td class="memTemplParams" colspan="2">template&lt;std::size_t M, typename T1 , std::size_t N, typename T2 &gt; </td></tr>
+<tr class="memitem:gaab12e9930e01cf5596b23e2e63d83f2a"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__Math.html#gaab12e9930e01cf5596b23e2e63d83f2a">playrho::Transform</a> (const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, M &gt; v, const <a class="el" href="namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a">Matrix</a>&lt; T2, M, N &gt; &amp;m) noexcept</td></tr>
+<tr class="memdesc:gaab12e9930e01cf5596b23e2e63d83f2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies an M-element vector by an M-by-N matrix.  <a href="group__Math.html#gaab12e9930e01cf5596b23e2e63d83f2a">More...</a><br /></td></tr>
+<tr class="separator:gaab12e9930e01cf5596b23e2e63d83f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac24b2130cf7cb682b1f9d2ce2f701f29"><td class="memItemLeft" align="right" valign="top"><a id="gac24b2130cf7cb682b1f9d2ce2f701f29"></a>
+PLAYRHO_CONSTEXPR <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#gac24b2130cf7cb682b1f9d2ce2f701f29">playrho::Transform</a> (const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> v, const <a class="el" href="namespaceplayrho.html#aabd44d74c5bc530c9b6676c6a61e6b31">Mat33</a> &amp;A) noexcept</td></tr>
+<tr class="memdesc:gac24b2130cf7cb682b1f9d2ce2f701f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies a vector by a matrix. <br /></td></tr>
+<tr class="separator:gac24b2130cf7cb682b1f9d2ce2f701f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga05c5113af7bc4a93fb0df5e812a5bf7d"><td class="memItemLeft" align="right" valign="top"><a id="ga05c5113af7bc4a93fb0df5e812a5bf7d"></a>
 PLAYRHO_CONSTEXPR <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga05c5113af7bc4a93fb0df5e812a5bf7d">playrho::InverseTransform</a> (const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> v, const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;A) noexcept</td></tr>
 <tr class="memdesc:ga05c5113af7bc4a93fb0df5e812a5bf7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply a matrix transpose times a vector. If a rotation matrix is provided, then this transforms the vector from one frame to another (inverse transform). <br /></td></tr>
 <tr class="separator:ga05c5113af7bc4a93fb0df5e812a5bf7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa7d84a34559702d878c483e4ce3a113d"><td class="memItemLeft" align="right" valign="top"><a id="gaa7d84a34559702d878c483e4ce3a113d"></a>
-PLAYRHO_CONSTEXPR <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#gaa7d84a34559702d878c483e4ce3a113d">playrho::Mul</a> (const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;A, const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;B) noexcept</td></tr>
-<tr class="memdesc:gaa7d84a34559702d878c483e4ce3a113d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes A * B. <br /></td></tr>
-<tr class="separator:gaa7d84a34559702d878c483e4ce3a113d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga827e59c08791e02964cd63d4382a4549"><td class="memItemLeft" align="right" valign="top"><a id="ga827e59c08791e02964cd63d4382a4549"></a>
 PLAYRHO_CONSTEXPR <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga827e59c08791e02964cd63d4382a4549">playrho::MulT</a> (const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;A, const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;B) noexcept</td></tr>
 <tr class="memdesc:ga827e59c08791e02964cd63d4382a4549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes A^T * B. <br /></td></tr>
 <tr class="separator:ga827e59c08791e02964cd63d4382a4549"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5d0b31d06f085556286a22c65edc16ac"><td class="memItemLeft" align="right" valign="top"><a id="ga5d0b31d06f085556286a22c65edc16ac"></a>
-PLAYRHO_CONSTEXPR <a class="el" href="namespaceplayrho.html#a63f6dcdf3763052ea25099973c7c00ad">Vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#ga5d0b31d06f085556286a22c65edc16ac">playrho::Transform</a> (const <a class="el" href="namespaceplayrho.html#a63f6dcdf3763052ea25099973c7c00ad">Vec3</a> &amp;v, const <a class="el" href="namespaceplayrho.html#aabd44d74c5bc530c9b6676c6a61e6b31">Mat33</a> &amp;A) noexcept</td></tr>
-<tr class="memdesc:ga5d0b31d06f085556286a22c65edc16ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies a matrix by a vector. <br /></td></tr>
-<tr class="separator:ga5d0b31d06f085556286a22c65edc16ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa726d0bc106afc7a490573f3d008f6bc"><td class="memItemLeft" align="right" valign="top"><a id="gaa726d0bc106afc7a490573f3d008f6bc"></a>
 <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Math.html#gaa726d0bc106afc7a490573f3d008f6bc">playrho::Abs</a> (const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;A)</td></tr>
 <tr class="memdesc:gaa726d0bc106afc7a490573f3d008f6bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the absolute value of the given value. <br /></td></tr>
@@ -721,7 +718,7 @@ template&lt;class T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A clockwise 90-degree rotation of the given vector. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Math.html#ga7db75e579c251d11bbb7da89184bcbc5" title="Gets a vector counter-clockwise (reverse-clockwise) perpendicular to the given vector. ">GetRevPerpendicular</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1ConvexHull.html#a1a611f8b7c829d14bff1e26b23d1a342">playrho::d2::ConvexHull::Get()</a>, <a class="el" href="classplayrho_1_1d2_1_1EdgeShapeConf.html#a3c285199c324b6de0de6ed0ee4c675f9">playrho::d2::EdgeShapeConf::Set()</a>, and <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#ab8b2c8db9fce1f6ffeb54999ad470533">playrho::d2::PolygonShapeConf::Set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1ConvexHull.html#a678ba0811f2975d1cdba6bfca49005eb">playrho::d2::ConvexHull::Get()</a>.</p>
 
 </div>
 </div>
@@ -1332,26 +1329,28 @@ Solves only the upper 2-by-2 matrix equation. </dd></dl>
 
 </div>
 </div>
-<a id="ga3091ee681aaca888a02c33ea36a09eb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3091ee681aaca888a02c33ea36a09eb6">&#9670;&nbsp;</a></span>Transform()</h2>
+<a id="gaab12e9930e01cf5596b23e2e63d83f2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaab12e9930e01cf5596b23e2e63d83f2a">&#9670;&nbsp;</a></span>Transform()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t M, typename T1 , std::size_t N, typename T2 &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PLAYRHO_CONSTEXPR <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a> playrho::Transform </td>
+          <td class="memname">PLAYRHO_CONSTEXPR auto playrho::Transform </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#ad93c0cd83df090aba6593ffac4b628ec">Vec2</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1Vector.html">Vector</a>&lt; T1, M &gt;&#160;</td>
           <td class="paramname"><em>v</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;&#160;</td>
-          <td class="paramname"><em>A</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#acbf97bd8e3f0f2ce4588735388f4089a">Matrix</a>&lt; T2, M, N &gt; &amp;&#160;</td>
+          <td class="paramname"><em>m</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1366,17 +1365,22 @@ Solves only the upper 2-by-2 matrix equation. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Multiply a matrix times a vector. If a rotation matrix is provided, then this transforms the vector from one frame to another. </p>
-<p>Multiplies a matrix by a vector. </p>
-
-<p class="reference">Referenced by <a class="el" href="group__Math.html#gaa7d84a34559702d878c483e4ce3a113d">playrho::Mul()</a>, and <a class="el" href="classplayrho_1_1d2_1_1PolygonShapeConf.html#a0418323b917825bf3c806d021326a8b6">playrho::d2::PolygonShapeConf::SetAsBox()</a>.</p>
+<p>Multiplies an M-element vector by an M-by-N matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td><a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">Vector</a> that's interpreted as a matrix with 1 row and M-columns. </td></tr>
+    <tr><td class="paramname">m</td><td>An M-row by N-column <em>transformation matrix</em> to multiply the vector by. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Transformation_matrix">https://en.wikipedia.org/wiki/Transformation_matrix</a> </dd></dl>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 18 2018 15:36:44 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 3 2018 17:22:33 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

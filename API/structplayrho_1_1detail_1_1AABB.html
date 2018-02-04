@@ -105,10 +105,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae56bf74c7c6ada3910f843198f9a1f36"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1AABB.html#ae56bf74c7c6ada3910f843198f9a1f36">AABB</a> ()=default</td></tr>
 <tr class="memdesc:ae56bf74c7c6ada3910f843198f9a1f36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ae56bf74c7c6ada3910f843198f9a1f36">More...</a><br /></td></tr>
 <tr class="separator:ae56bf74c7c6ada3910f843198f9a1f36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00f62e1feb8345647c4ba5f1adaaf979"><td class="memTemplParams" colspan="2"><a id="a00f62e1feb8345647c4ba5f1adaaf979"></a>
-template&lt;typename... Tail&gt; </td></tr>
+<tr class="memitem:a00f62e1feb8345647c4ba5f1adaaf979"><td class="memTemplParams" colspan="2">template&lt;typename... Tail&gt; </td></tr>
 <tr class="memitem:a00f62e1feb8345647c4ba5f1adaaf979"><td class="memTemplItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1AABB.html#a00f62e1feb8345647c4ba5f1adaaf979">AABB</a> (typename std::enable_if&lt; sizeof...(Tail)+1==N, LengthInterval &gt;::type head, Tail... tail) noexcept</td></tr>
-<tr class="memdesc:a00f62e1feb8345647c4ba5f1adaaf979"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing copy constructor. <br /></td></tr>
+<tr class="memdesc:a00f62e1feb8345647c4ba5f1adaaf979"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="#a00f62e1feb8345647c4ba5f1adaaf979">More...</a><br /></td></tr>
 <tr class="separator:a00f62e1feb8345647c4ba5f1adaaf979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43f240a6a59927021b81e8ac5fecdfc0"><td class="memItemLeft" align="right" valign="top">PLAYRHO_CONSTEXPR&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1detail_1_1AABB.html#a43f240a6a59927021b81e8ac5fecdfc0">AABB</a> (const <a class="el" href="structplayrho_1_1detail_1_1AABB.html#a426297e1ee24415f28a18264c827a590">Location</a> p) noexcept</td></tr>
 <tr class="memdesc:a43f240a6a59927021b81e8ac5fecdfc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor for a single point.  <a href="#a43f240a6a59927021b81e8ac5fecdfc0">More...</a><br /></td></tr>
@@ -232,7 +231,7 @@ Non-defaulted methods of this class are marked <code>noexcept</code> and expect 
 <a href="http://en.cppreference.com/w/cpp/concept">http://en.cppreference.com/w/cpp/concept</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae56bf74c7c6ada3910f843198f9a1f36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae56bf74c7c6ada3910f843198f9a1f36">&#9670;&nbsp;</a></span>AABB() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae56bf74c7c6ada3910f843198f9a1f36">&#9670;&nbsp;</a></span>AABB() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,8 +260,51 @@ template&lt;std::size_t N&gt; </div>
 
 </div>
 </div>
+<a id="a00f62e1feb8345647c4ba5f1adaaf979"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00f62e1feb8345647c4ba5f1adaaf979">&#9670;&nbsp;</a></span>AABB() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N&gt; </div>
+<div class="memtemplate">
+template&lt;typename... Tail&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1detail_1_1AABB.html">playrho::detail::AABB</a>&lt; N &gt;::<a class="el" href="structplayrho_1_1detail_1_1AABB.html">AABB</a> </td>
+          <td>(</td>
+          <td class="paramtype">typename std::enable_if&lt; sizeof...(Tail)+1==N, LengthInterval &gt;::type&#160;</td>
+          <td class="paramname"><em>head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Tail...&#160;</td>
+          <td class="paramname"><em>tail</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initializing constructor. </p>
+<p>Initializing constructor supporting construction by the same number of elements as this <a class="el" href="structplayrho_1_1detail_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> template type is defined for. </p><dl class="section note"><dt>Note</dt><dd>For example this enables a 2-dimensional <a class="el" href="structplayrho_1_1detail_1_1AABB.html" title="N-dimensional Axis Aligned Bounding Box. ">AABB</a> to be constructed as: <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> aabb = AABB&lt;2&gt;{LengthInterval{1_m, 4_m}, LengthInterval{-3_m, 3_m}};</div></div><!-- fragment --> </dd></dl>
+
+</div>
+</div>
 <a id="a43f240a6a59927021b81e8ac5fecdfc0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43f240a6a59927021b81e8ac5fecdfc0">&#9670;&nbsp;</a></span>AABB() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a43f240a6a59927021b81e8ac5fecdfc0">&#9670;&nbsp;</a></span>AABB() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -301,7 +343,7 @@ template&lt;std::size_t N&gt; </div>
 </div>
 </div>
 <a id="abb445c2c71af0d9e228ee4097ffaf293"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb445c2c71af0d9e228ee4097ffaf293">&#9670;&nbsp;</a></span>AABB() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abb445c2c71af0d9e228ee4097ffaf293">&#9670;&nbsp;</a></span>AABB() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1178,7 +1220,7 @@ template&lt;std::size_t N&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 3 2018 17:22:35 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classplayrho_1_1d2_1_1JointVisitor.html" title="Vistor interface for Joint instances. " alt="" coords="5,61,165,87"/>
+<area shape="rect" id="node1" href="$classplayrho_1_1d2_1_1JointVisitor.html" title="Visitor interface for Joint instances. " alt="" coords="5,61,165,87"/>
 <area shape="rect" id="node2" href="$classplayrho_1_1d2_1_1ConstJointVisitor.html" title="Constant joint visitor interface class. " alt="" coords="213,5,408,31"/>
 <area shape="rect" id="node3" href="$classplayrho_1_1d2_1_1FunctionalJointVisitor.html" title="Functional joint visitor class. " alt="" coords="218,55,402,93"/>
 <area shape="rect" id="node4" href="$classplayrho_1_1d2_1_1TypeJointVisitor.html" title="Typing JointVisitor. " alt="" coords="216,117,405,143"/>

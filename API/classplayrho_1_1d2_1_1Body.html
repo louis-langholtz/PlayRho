@@ -354,15 +354,15 @@ static PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="b
 Private Member Functions</h2></td></tr>
 <tr class="memitem:aa02ba3bfb281b55cd96c6e444846afa0"><td class="memItemLeft" align="right" valign="top"><a id="aa02ba3bfb281b55cd96c6e444846afa0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa02ba3bfb281b55cd96c6e444846afa0">IsIslanded</a> () const noexcept</td></tr>
-<tr class="memdesc:aa02ba3bfb281b55cd96c6e444846afa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this body is in is-islanded state. <br /></td></tr>
+<tr class="memdesc:aa02ba3bfb281b55cd96c6e444846afa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this body is in is-in-island state. <br /></td></tr>
 <tr class="separator:aa02ba3bfb281b55cd96c6e444846afa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73e7a9b5139b5f7814481711672a22d0"><td class="memItemLeft" align="right" valign="top"><a id="a73e7a9b5139b5f7814481711672a22d0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a73e7a9b5139b5f7814481711672a22d0">SetIslandedFlag</a> () noexcept</td></tr>
-<tr class="memdesc:a73e7a9b5139b5f7814481711672a22d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this body to the is-islanded state. <br /></td></tr>
+<tr class="memdesc:a73e7a9b5139b5f7814481711672a22d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this body to the is-in-island state. <br /></td></tr>
 <tr class="separator:a73e7a9b5139b5f7814481711672a22d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa610be58c722b7f336605e1f3353fc01"><td class="memItemLeft" align="right" valign="top"><a id="aa610be58c722b7f336605e1f3353fc01"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa610be58c722b7f336605e1f3353fc01">UnsetIslandedFlag</a> () noexcept</td></tr>
-<tr class="memdesc:aa610be58c722b7f336605e1f3353fc01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets this body to the is-islanded state. <br /></td></tr>
+<tr class="memdesc:aa610be58c722b7f336605e1f3353fc01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets this body to the is-in-island state. <br /></td></tr>
 <tr class="separator:aa610be58c722b7f336605e1f3353fc01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae06b70496e35fc753fab2733824f76eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae06b70496e35fc753fab2733824f76eb">SetAwakeFlag</a> () noexcept</td></tr>
 <tr class="memdesc:ae06b70496e35fc753fab2733824f76eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the body's awake flag.  <a href="#ae06b70496e35fc753fab2733824f76eb">More...</a><br /></td></tr>
@@ -817,7 +817,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>Creates a fixture and attaches it to this body. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">shape</td><td>Sharable shape definition. Its vertex radius must be less than the minimum or more than the maximum allowed by the body's world. </td></tr>
+    <tr><td class="paramname">shape</td><td>Shareable shape definition. Its vertex radius must be less than the minimum or more than the maximum allowed by the body's world. </td></tr>
     <tr><td class="paramname">def</td><td>Initial fixture settings. Friction and density must be &gt;= 0. Restitution must be &gt; -infinity and &lt; infinity. </td></tr>
     <tr><td class="paramname">resetMassData</td><td>Whether or not to reset the mass data of the body.</td></tr>
   </table>
@@ -868,7 +868,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>Destroys a fixture. </p>
 <p>This removes the fixture from the broad-phase and destroys all contacts associated with this fixture. All fixtures attached to a body are implicitly destroyed when the body is destroyed.</p>
 <dl class="section warning"><dt>Warning</dt><dd>This function is locked during callbacks. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Make sure to explicitly call ResetMassData after fixtures have been destroyed. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Make sure to explicitly call <code>ResetMassData</code> after fixtures have been destroyed. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab2dc6bfa388127a5ad2717ff13e4f0f1" title="Resets the mass data properties. ">ResetMassData</a>.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1334,11 +1334,11 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 
 <p>Awakens this body. </p>
 <p>Sets this body to awake and resets its under-active time if it's a "speedable" body. This method has no effect otherwise.</p>
-<dl class="section post"><dt>Postcondition</dt><dd>If this body is a "speedable" body, then this body's IsAwake method returns true. </dd>
+<dl class="section post"><dt>Postcondition</dt><dd>If this body is a "speedable" body, then this body's <code>IsAwake</code> method returns true. </dd>
 <dd>
-If this body is a "speedable" body, then this body's GetUnderActiveTime method returns zero. </dd></dl>
+If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code> method returns zero. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a4bf19603cf8ee0db7c31f39a88bf257f">playrho::d2::RevoluteJoint::EnableLimit()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#abde683572e3eda2348f4ff679762ca42">playrho::d2::PrismaticJoint::EnableLimit()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#ae8a1fe215575dcf2aea2e030b7ce7459">playrho::d2::WheelJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a22bffa82444c5774305f04a1b6680534">playrho::d2::RevoluteJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae1750099293f09972ab2e17dacbc7d9e">playrho::d2::PrismaticJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a03aabdbda79ea6e5b3ddf974182ee084">playrho::d2::World::InternalDestroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a36ed928caf272fba676090574e399625">playrho::d2::MotorJoint::SetAngularOffset()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5a793779ba6e5acca4d2b3a6a3bbd205">playrho::d2::RevoluteJoint::SetLimits()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a97f75f0d723d2c0aab1af3dff8630ec7">playrho::d2::PrismaticJoint::SetLimits()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a33891065d9f8841008c171b6a9fcae94">playrho::d2::MotorJoint::SetLinearOffset()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a46e122cbefc4b6727dcb153093074587">playrho::d2::PrismaticJoint::SetMaxMotorForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#ad4908ad73af8a45298db094b9f7e7cf9">playrho::d2::WheelJoint::SetMaxMotorTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a100b092b8f1031913690c1597df3fb2c">playrho::d2::RevoluteJoint::SetMaxMotorTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a3810687352d9fe1fd3a8f34a7b7a8412">playrho::d2::WheelJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a0c93a7e67ab83d76770c32229e814fe1">playrho::d2::RevoluteJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a44a3ec993aef96c10e05816b121186fa">playrho::d2::PrismaticJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#adccc0a4d534ff19819851e22011da795">playrho::d2::TargetJoint::SetTarget()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ac18971aed32f82e4f712bc7e663be747">playrho::d2::World::SetType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a4bf19603cf8ee0db7c31f39a88bf257f">playrho::d2::RevoluteJoint::EnableLimit()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#abde683572e3eda2348f4ff679762ca42">playrho::d2::PrismaticJoint::EnableLimit()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#ae8a1fe215575dcf2aea2e030b7ce7459">playrho::d2::WheelJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a22bffa82444c5774305f04a1b6680534">playrho::d2::RevoluteJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae1750099293f09972ab2e17dacbc7d9e">playrho::d2::PrismaticJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac4a6353f425360ee1a5cbb4c4302b65d">playrho::d2::World::InternalDestroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a36ed928caf272fba676090574e399625">playrho::d2::MotorJoint::SetAngularOffset()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5a793779ba6e5acca4d2b3a6a3bbd205">playrho::d2::RevoluteJoint::SetLimits()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a97f75f0d723d2c0aab1af3dff8630ec7">playrho::d2::PrismaticJoint::SetLimits()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a33891065d9f8841008c171b6a9fcae94">playrho::d2::MotorJoint::SetLinearOffset()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a46e122cbefc4b6727dcb153093074587">playrho::d2::PrismaticJoint::SetMaxMotorForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#ad4908ad73af8a45298db094b9f7e7cf9">playrho::d2::WheelJoint::SetMaxMotorTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a100b092b8f1031913690c1597df3fb2c">playrho::d2::RevoluteJoint::SetMaxMotorTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a3810687352d9fe1fd3a8f34a7b7a8412">playrho::d2::WheelJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a0c93a7e67ab83d76770c32229e814fe1">playrho::d2::RevoluteJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a44a3ec993aef96c10e05816b121186fa">playrho::d2::PrismaticJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#adccc0a4d534ff19819851e22011da795">playrho::d2::TargetJoint::SetTarget()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ac18971aed32f82e4f712bc7e663be747">playrho::d2::World::SetType()</a>.</p>
 
 </div>
 </div>
@@ -1663,11 +1663,11 @@ A non-zero velocity will awaken this body. </dd></dl>
 
 <p>Sets this body to asleep if sleeping is allowed. </p>
 <p>If this body is allowed to sleep, this: sets the sleep state of the body to asleep, resets this body's under active time, and resets this body's velocity (linear and angular).</p>
-<dl class="section post"><dt>Postcondition</dt><dd>This body's IsAwake method returns false. </dd>
+<dl class="section post"><dt>Postcondition</dt><dd>This body's <code>IsAwake</code> method returns false. </dd>
 <dd>
-This body's GetUnderActiveTime method returns zero. </dd>
+This body's <code>GetUnderActiveTime</code> method returns zero. </dd>
 <dd>
-This body's GetVelocity method returns zero linear and zero angular speed. </dd></dl>
+This body's <code>GetVelocity</code> method returns zero linear and zero angular speed. </dd></dl>
 
 </div>
 </div>
@@ -2203,7 +2203,7 @@ Non-zero forces wakes up the body. </dd></dl>
 <p>Gets the body definition for the given body. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> to get the <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html" title="Body configuration. ">BodyConf</a> for. </td></tr>
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> to get the <code><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html" title="Body configuration. ">BodyConf</a></code> for. </td></tr>
   </table>
   </dd>
 </dl>
@@ -3689,7 +3689,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

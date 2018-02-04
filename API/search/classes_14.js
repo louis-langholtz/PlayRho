@@ -18,6 +18,7 @@ var searchData=
   ['wider_3c_20std_3a_3auint8_5ft_20_3e',['Wider&lt; std::uint8_t &gt;',['../structplayrho_1_1Wider_3_01std_1_1uint8__t_01_4.html',1,'playrho']]],
   ['wider_3c_20toi_5fiter_5ftype_20_3e',['Wider&lt; toi_iter_type &gt;',['../structplayrho_1_1Wider.html',1,'playrho']]],
   ['world',['World',['../classplayrho_1_1d2_1_1World.html',1,'playrho::d2']]],
+  ['worldatty',['WorldAtty',['../classplayrho_1_1d2_1_1WorldAtty.html',1,'playrho::d2']]],
   ['worldconf',['WorldConf',['../structplayrho_1_1d2_1_1WorldConf.html',1,'playrho::d2']]],
   ['worldmanifold',['WorldManifold',['../classplayrho_1_1d2_1_1WorldManifold.html',1,'playrho::d2']]],
   ['wrongstate',['WrongState',['../classplayrho_1_1WrongState.html',1,'playrho']]]

@@ -131,7 +131,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a832c01f7fb650fe78ca8091eae9ec7d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the contact filtering data. <br /></td></tr>
 <tr class="separator:a832c01f7fb650fe78ca8091eae9ec7d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a585e0019655a53829279eceabca4fdd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a585e0019655a53829279eceabca4fdd6">Refilter</a> ()</td></tr>
-<tr class="memdesc:a585e0019655a53829279eceabca4fdd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refilter the fixture.  <a href="#a585e0019655a53829279eceabca4fdd6">More...</a><br /></td></tr>
+<tr class="memdesc:a585e0019655a53829279eceabca4fdd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-filter the fixture.  <a href="#a585e0019655a53829279eceabca4fdd6">More...</a><br /></td></tr>
 <tr class="separator:a585e0019655a53829279eceabca4fdd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe3a29507e852de40f1e1e58cabefbe3"><td class="memItemLeft" align="right" valign="top"><a id="abe3a29507e852de40f1e1e58cabefbe3"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#abe3a29507e852de40f1e1e58cabefbe3">GetUserData</a> () const noexcept</td></tr>
@@ -237,7 +237,7 @@ Related Functions</h2></td></tr>
 <div class="textblock"><p>An association between a body and a shape. </p>
 <p>A fixture is used to attach a shape to a body for collision detection. A fixture inherits its transform from its parent. Fixtures hold additional non-geometric data such as collision filters, etc.</p>
 <dl class="section warning"><dt>Warning</dt><dd>you cannot reuse fixtures. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Fixtures should be created using the <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a" title="Creates a fixture and attaches it to this body. ">Body::CreateFixture</a> method. </dd>
+<dl class="section note"><dt>Note</dt><dd>Fixtures should be created using the <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a" title="Creates a fixture and attaches it to this body. ">Body::CreateFixture</a></code> method. </dd>
 <dd>
 This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit architecture/build).</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a>, <a class="el" href="classplayrho_1_1d2_1_1Shape.html" title="Shape. ">Shape</a> </dd></dl>
@@ -284,12 +284,12 @@ This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit arc
 
 <p>Initializing constructor. </p>
 <dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if shape is <code>nullptr</code>.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This is not meant to be called by normal user code. Use the <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a" title="Creates a fixture and attaches it to this body. ">Body::CreateFixture</a> method instead.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is not meant to be called by normal user code. Use the <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a" title="Creates a fixture and attaches it to this body. ">Body::CreateFixture</a></code> method instead.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> the new fixture is to be associated with. </td></tr>
-    <tr><td class="paramname">def</td><td>Initial fixture settings. Friction must be greater-than-or-equal-to zero. AreaDensity must be greater-than-or-equal-to zero. </td></tr>
-    <tr><td class="paramname">shape</td><td>Sharable shape to associate fixture with. Must be non-null. </td></tr>
+    <tr><td class="paramname">def</td><td>Initial fixture settings. Friction must be greater-than-or-equal-to zero. <code>AreaDensity</code> must be greater-than-or-equal-to zero. </td></tr>
+    <tr><td class="paramname">shape</td><td>Shareable shape to associate fixture with. Must be non-null. </td></tr>
   </table>
   </dd>
 </dl>
@@ -352,7 +352,7 @@ This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit arc
 <p>Gets the parent body of this fixture. </p>
 <dl class="section return"><dt>Returns</dt><dd>Non-null pointer to the parent body. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a68f3d6b8ed4709b6b99bd8e096a9960e">playrho::d2::CalcToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a59c023fdafd285a822ab524dc608da23">playrho::d2::World::CreateAndDestroyProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c1dd07c339f21e11244a8d47ac42f0">playrho::d2::World::CreateProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a5a947481a969b326325f6182d7e514ba">playrho::d2::Body::DestroyFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aeca3cb1d43b9f3aedf97b5a91adb5a8f">playrho::d2::World::DestroyFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a0e6afe3f7c9b8d748c32c79b6177c387">playrho::d2::World::InternalDestroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab61e61ee05835899a0a47c7a236b9202">playrho::d2::World::ProcessContactsForTOI()</a>, <a class="el" href="group__RayCastGroup.html#ga9616b36d2baba2023d1a5fcf10a5126a">playrho::d2::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a585e0019655a53829279eceabca4fdd6">Refilter()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#af1363ebdc61a599ae898d352f67106a3">playrho::d2::World::RegisterForProxies()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a22dffd905bdf83b0dd24a6c33a52fd84">playrho::d2::World::SolveToi()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a68f3d6b8ed4709b6b99bd8e096a9960e">playrho::d2::CalcToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a59c023fdafd285a822ab524dc608da23">playrho::d2::World::CreateAndDestroyProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ad4c1dd07c339f21e11244a8d47ac42f0">playrho::d2::World::CreateProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a5a947481a969b326325f6182d7e514ba">playrho::d2::Body::DestroyFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#af144d97e1396b8a21b273792a843e186">playrho::d2::World::DestroyFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a0e6afe3f7c9b8d748c32c79b6177c387">playrho::d2::World::InternalDestroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab61e61ee05835899a0a47c7a236b9202">playrho::d2::World::ProcessContactsForTOI()</a>, <a class="el" href="group__RayCastGroup.html#ga9616b36d2baba2023d1a5fcf10a5126a">playrho::d2::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a585e0019655a53829279eceabca4fdd6">Refilter()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#af26a312fc60d4c9fab75dfbfb320ad00">playrho::d2::World::RegisterForProxies()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a8e9168734757608bf4b24b35662eb905">playrho::d2::World::SolveToi()</a>.</p>
 
 </div>
 </div>
@@ -551,7 +551,7 @@ This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit arc
       </table>
 </div><div class="memdoc">
 
-<p>Refilter the fixture. </p>
+<p>Re-filter the fixture. </p>
 <dl class="section note"><dt>Note</dt><dd>Call this if you want to establish collision that was previously disabled by <code><a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a83e0703de7a5f33d9a17c36f1aa43615" title="Whether contact calculations should be performed between the two fixtures. ">ShouldCollide(const Fixture&amp;, const Fixture&amp;)</a></code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>bool <a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a83e0703de7a5f33d9a17c36f1aa43615" title="Whether contact calculations should be performed between the two fixtures. ">ShouldCollide(const Fixture&amp; fixtureA, const Fixture&amp; fixtureB)</a> noexcept </dd></dl>
 
@@ -586,7 +586,7 @@ This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit arc
 <p>Sets the contact filtering data. </p>
 <dl class="section note"><dt>Note</dt><dd>This won't update contacts until the next time step when either parent body is speedable and awake. </dd>
 <dd>
-This automatically calls Refilter. </dd></dl>
+This automatically calls <code>Refilter</code>. </dd></dl>
 
 </div>
 </div>
@@ -772,7 +772,7 @@ This automatically calls Refilter. </dd></dl>
 </div><div class="memdoc">
 
 <p>Sets the associated body's sleep status to awake. </p>
-<dl class="section note"><dt>Note</dt><dd>This is a convenience function that simply looks up the fixture's body and calls that body' SetAwake method. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is a convenience function that simply looks up the fixture's body and calls that body' <code>SetAwake</code> method. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">f</td><td><a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a> whose body should be awoken. </td></tr>
@@ -892,7 +892,7 @@ Either null or pointer to a heap-memory private copy of the assigned shape. </dd
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

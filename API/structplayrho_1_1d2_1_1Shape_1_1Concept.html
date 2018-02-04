@@ -86,6 +86,9 @@ Inheritance diagram for playrho::d2::Shape::Concept:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:adc2db77c430b1e5946cc8ab7b6be1a95"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html">Concept</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#adc2db77c430b1e5946cc8ab7b6be1a95">Clone</a> () const =0</td></tr>
+<tr class="memdesc:adc2db77c430b1e5946cc8ab7b6be1a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clones this concept and returns a pointer to a mutable copy.  <a href="#adc2db77c430b1e5946cc8ab7b6be1a95">More...</a><br /></td></tr>
+<tr class="separator:adc2db77c430b1e5946cc8ab7b6be1a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a660fac4e9cf65aa5d96295c54f42713d"><td class="memItemLeft" align="right" valign="top"><a id="a660fac4e9cf65aa5d96295c54f42713d"></a>
 virtual <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a660fac4e9cf65aa5d96295c54f42713d">GetChildCount_</a> () const noexcept=0</td></tr>
 <tr class="memdesc:a660fac4e9cf65aa5d96295c54f42713d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the "child" count. <br /></td></tr>
@@ -98,10 +101,9 @@ virtual <a class="el" href="classplayrho_1_1d2_1_1DistanceProxy.html">DistancePr
 virtual <a class="el" href="namespaceplayrho_1_1d2.html#a412a6773b79a31e621b01c04c3d2645e">MassData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#aef0072a16d03b429a284d3b091620418">GetMassData_</a> () const noexcept=0</td></tr>
 <tr class="memdesc:aef0072a16d03b429a284d3b091620418"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the mass data. <br /></td></tr>
 <tr class="separator:aef0072a16d03b429a284d3b091620418"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae97ea614b674576e61f0c222e77b2f15"><td class="memItemLeft" align="right" valign="top"><a id="ae97ea614b674576e61f0c222e77b2f15"></a>
-virtual <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#ae97ea614b674576e61f0c222e77b2f15">GetVertexRadius_</a> () const noexcept=0</td></tr>
-<tr class="memdesc:ae97ea614b674576e61f0c222e77b2f15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex radius. <br /></td></tr>
-<tr class="separator:ae97ea614b674576e61f0c222e77b2f15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae23636213c928592f75cbc2aecee8555"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#ae23636213c928592f75cbc2aecee8555">GetVertexRadius_</a> (<a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> idx) const =0</td></tr>
+<tr class="memdesc:ae23636213c928592f75cbc2aecee8555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the vertex radius.  <a href="#ae23636213c928592f75cbc2aecee8555">More...</a><br /></td></tr>
+<tr class="separator:ae23636213c928592f75cbc2aecee8555"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dd78709eee0f2ce7b4da9aa4541ae1d"><td class="memItemLeft" align="right" valign="top"><a id="a2dd78709eee0f2ce7b4da9aa4541ae1d"></a>
 virtual <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#ga534c92a63631b49d1e80119a68af8a4a">AreaDensity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a2dd78709eee0f2ce7b4da9aa4541ae1d">GetDensity_</a> () const noexcept=0</td></tr>
 <tr class="memdesc:a2dd78709eee0f2ce7b4da9aa4541ae1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the density. <br /></td></tr>
@@ -114,6 +116,9 @@ virtual <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167
 virtual <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a235ce655f2541326811ea782625d1240">GetRestitution_</a> () const noexcept=0</td></tr>
 <tr class="memdesc:a235ce655f2541326811ea782625d1240"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the restitution. <br /></td></tr>
 <tr class="separator:a235ce655f2541326811ea782625d1240"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275db197d814199c5e2341fed9401c9e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a275db197d814199c5e2341fed9401c9e">Transform_</a> (const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;m)=0</td></tr>
+<tr class="memdesc:a275db197d814199c5e2341fed9401c9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms all of the shape's vertices by the given transformation matrix.  <a href="#a275db197d814199c5e2341fed9401c9e">More...</a><br /></td></tr>
+<tr class="separator:a275db197d814199c5e2341fed9401c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a05c07d8e987a542d3247f7199fac78"><td class="memItemLeft" align="right" valign="top"><a id="a9a05c07d8e987a542d3247f7199fac78"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html#a9a05c07d8e987a542d3247f7199fac78">Visit_</a> (void *userData) const =0</td></tr>
 <tr class="memdesc:a9a05c07d8e987a542d3247f7199fac78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the shape. <br /></td></tr>
@@ -145,6 +150,42 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div class="textblock"><p>Internal shape configuration concept. </p>
 <dl class="section note"><dt>Note</dt><dd>Provides an interface for runtime polymorphism for shape configuration. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="adc2db77c430b1e5946cc8ab7b6be1a95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc2db77c430b1e5946cc8ab7b6be1a95">&#9670;&nbsp;</a></span>Clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::unique_ptr&lt;<a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Concept.html">Concept</a>&gt; playrho::d2::Shape::Concept::Clone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clones this concept and returns a pointer to a mutable copy. </p>
+<dl class="section note"><dt>Note</dt><dd>This may throw <code>std::bad_alloc</code> or any exception that's thrown by the constructor for the model's underlying data type. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if there's a failure allocating storage. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#aa1682065af401bde88baa2de1dc16b8f">playrho::d2::Shape::Model&lt; T &gt;</a>.</p>
+
+</div>
+</div>
 <a id="ad8ec5399d78c30c72a6e6e68afbbff15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad8ec5399d78c30c72a6e6e68afbbff15">&#9670;&nbsp;</a></span>GetUseTypeInfo_()</h2>
 
@@ -175,13 +216,80 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 </div>
 </div>
+<a id="ae23636213c928592f75cbc2aecee8555"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae23636213c928592f75cbc2aecee8555">&#9670;&nbsp;</a></span>GetVertexRadius_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="group__BoundedAliases.html#gafc08c4f8490a39cbd018110ec9e5aa33">NonNegative</a>&lt;<a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&gt; playrho::d2::Shape::Concept::GetVertexRadius_ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a>&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the vertex radius. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">idx</td><td>Child index to get vertex radius for. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a005f9550517d42ae20fa72b90e69f200">playrho::d2::Shape::Model&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a275db197d814199c5e2341fed9401c9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a275db197d814199c5e2341fed9401c9e">&#9670;&nbsp;</a></span>Transform_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void playrho::d2::Shape::Concept::Transform_ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceplayrho.html#a02c09bb6556e3168c0085871358d2f71">Mat22</a> &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Transforms all of the shape's vertices by the given transformation matrix. </p>
+<dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Transformation_matrix">https://en.wikipedia.org/wiki/Transformation_matrix</a> </dd></dl>
+
+<p>Implemented in <a class="el" href="structplayrho_1_1d2_1_1Shape_1_1Model.html#a1c9c6a6d9dcb8d314f36cdd6e7216d59">playrho::d2::Shape::Model&lt; T &gt;</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>Shape.hpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

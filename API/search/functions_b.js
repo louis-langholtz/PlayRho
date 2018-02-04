@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['makeunsigned',['MakeUnsigned',['../namespaceplayrho.html#ab84205bd8956258eea02a5cb0d829042',1,'playrho']]],
   ['manifold',['Manifold',['../classplayrho_1_1d2_1_1Manifold.html#a27050de13d19927176e1ab48f8218ecd',1,'playrho::d2::Manifold::Manifold()=default'],['../classplayrho_1_1d2_1_1Manifold.html#a5cea02945f6e8c263c39c1679a96b7f4',1,'playrho::d2::Manifold::Manifold(const Manifold &amp;copy)=default'],['../classplayrho_1_1d2_1_1Manifold.html#a050567f9c5d12b60fa477b5582be60e4',1,'playrho::d2::Manifold::Manifold(Type t, UnitVec ln, Length2 lp, size_type n, const PointArray &amp;mpa) noexcept']]],
   ['max',['max',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a7271a3fa3e4cb5e779e7b9c4030ee13c',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
   ['max_5fsize',['max_size',['../classplayrho_1_1AllocatedArray.html#a47b89d9d164f7a220926f56a09807863',1,'playrho::AllocatedArray::max_size()'],['../classplayrho_1_1d2_1_1UnitVec.html#a10b7fd5b497c4514d5a3e808fcbe1edb',1,'playrho::d2::UnitVec::max_size()'],['../structplayrho_1_1Vector.html#a077739bf41f4a64ac51877ff143e2725',1,'playrho::Vector::max_size()']]],
@@ -12,6 +13,6 @@ var searchData=
   ['motorjoint',['MotorJoint',['../classplayrho_1_1d2_1_1MotorJoint.html#a9e77295e32a8fa58a7eeb73b87db29cd',1,'playrho::d2::MotorJoint']]],
   ['motorjointconf',['MotorJointConf',['../structplayrho_1_1d2_1_1MotorJointConf.html#a319ab0f428d0a145ba77d9baa62e67a8',1,'playrho::d2::MotorJointConf']]],
   ['move',['Move',['../classplayrho_1_1Interval.html#ae48f4d96fb67a3bf0542fca2d867326b',1,'playrho::Interval::Move()'],['../namespaceplayrho_1_1detail.html#a7f944a0ead01e7370509f9231bfb9fa2',1,'playrho::detail::Move()']]],
-  ['mul',['Mul',['../group__Math.html#gaa7d84a34559702d878c483e4ce3a113d',1,'playrho::Mul()'],['../namespaceplayrho_1_1d2.html#a1ed2b21beb0ea976884212d8e1560305',1,'playrho::d2::Mul()']]],
+  ['mul',['Mul',['../namespaceplayrho_1_1d2.html#a1ed2b21beb0ea976884212d8e1560305',1,'playrho::d2']]],
   ['mult',['MulT',['../group__Math.html#ga827e59c08791e02964cd63d4382a4549',1,'playrho::MulT()'],['../namespaceplayrho_1_1d2.html#a31ba599a09a590cdde545cb29b6ecf1a',1,'playrho::d2::MulT()']]]
 ];

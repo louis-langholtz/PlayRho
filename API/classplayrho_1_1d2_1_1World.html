@@ -72,6 +72,7 @@ $(function() {
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1d2_1_1World-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -120,9 +121,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1World_1_1DestroyContactsStats.html">DestroyContactsStats</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy contacts statistics.  <a href="structplayrho_1_1d2_1_1World_1_1DestroyContactsStats.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html">IslandSolverResults</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1d2_1_1Island.html" title="Definition of a self-contained constraint &quot;island&quot;. ">Island</a> solver results.  <a href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1World_1_1ProcessContactsOutput.html">ProcessContactsOutput</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process contacts output.  <a href="structplayrho_1_1d2_1_1World_1_1ProcessContactsOutput.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,10 +133,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a66ad5554b1e82a18b45601b30722e51d"><td class="memItemLeft" align="right" valign="top"><a id="a66ad5554b1e82a18b45601b30722e51d"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a66ad5554b1e82a18b45601b30722e51d">proxy_size_type</a> = std::remove_const&lt; decltype(<a class="el" href="namespaceplayrho.html#a033fed46214035a6a09bc21400d1c61c">MaxContacts</a>)&gt;::type</td></tr>
-<tr class="memdesc:a66ad5554b1e82a18b45601b30722e51d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Proxy size type. <br /></td></tr>
-<tr class="separator:a66ad5554b1e82a18b45601b30722e51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa870e22432755fa01d0c36ee44b6188f"><td class="memItemLeft" align="right" valign="top"><a id="aa870e22432755fa01d0c36ee44b6188f"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aa870e22432755fa01d0c36ee44b6188f">Bodies</a> = std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> * &gt;</td></tr>
 <tr class="memdesc:aa870e22432755fa01d0c36ee44b6188f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bodies container type. <br /></td></tr>
@@ -150,9 +144,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="memitem:a3f6e4c9c69426cb0c0573eab7a27c6d6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a3f6e4c9c69426cb0c0573eab7a27c6d6">Joints</a> = std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> * &gt;</td></tr>
 <tr class="memdesc:a3f6e4c9c69426cb0c0573eab7a27c6d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joints container type.  <a href="#a3f6e4c9c69426cb0c0573eab7a27c6d6">More...</a><br /></td></tr>
 <tr class="separator:a3f6e4c9c69426cb0c0573eab7a27c6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af665ae72296cdb76e20d900d9fecfe3d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#af665ae72296cdb76e20d900d9fecfe3d">QueryFixtureCallback</a> = std::function&lt; bool(<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *fixture, <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> child)&gt;</td></tr>
-<tr class="memdesc:af665ae72296cdb76e20d900d9fecfe3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query AABB for fixtures callback function type.  <a href="#af665ae72296cdb76e20d900d9fecfe3d">More...</a><br /></td></tr>
-<tr class="separator:af665ae72296cdb76e20d900d9fecfe3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -197,9 +188,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af65a576b04537b18bcddf5636b0d3386"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1StepStats.html">StepStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#af65a576b04537b18bcddf5636b0d3386">Step</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf)</td></tr>
 <tr class="memdesc:af65a576b04537b18bcddf5636b0d3386"><td class="mdescLeft">&#160;</td><td class="mdescRight">Steps the world simulation according to the given configuration.  <a href="#af65a576b04537b18bcddf5636b0d3386">More...</a><br /></td></tr>
 <tr class="separator:af65a576b04537b18bcddf5636b0d3386"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf250ba1ddbae731a85c389021c6013d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aaf250ba1ddbae731a85c389021c6013d">QueryAABB</a> (const <a class="el" href="namespaceplayrho_1_1d2.html#a03a4588e961b6a369745c9c5b68b9868">AABB</a> &amp;aabb, <a class="el" href="classplayrho_1_1d2_1_1World.html#af665ae72296cdb76e20d900d9fecfe3d">QueryFixtureCallback</a> callback) const</td></tr>
-<tr class="memdesc:aaf250ba1ddbae731a85c389021c6013d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the world for all fixtures that potentially overlap the provided AABB.  <a href="#aaf250ba1ddbae731a85c389021c6013d">More...</a><br /></td></tr>
-<tr class="separator:aaf250ba1ddbae731a85c389021c6013d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62acc11c3f6bbeb290493651551687db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; Bodies::iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a62acc11c3f6bbeb290493651551687db">GetBodies</a> () noexcept</td></tr>
 <tr class="memdesc:a62acc11c3f6bbeb290493651551687db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the world body range for this world.  <a href="#a62acc11c3f6bbeb290493651551687db">More...</a><br /></td></tr>
 <tr class="separator:a62acc11c3f6bbeb290493651551687db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,30 +233,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ae9a06df8bd96d7d7ade817dffff67351">GetInvDeltaTime</a> () const noexcept</td></tr>
 <tr class="memdesc:ae9a06df8bd96d7d7ade817dffff67351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse delta time. <br /></td></tr>
 <tr class="separator:ae9a06df8bd96d7d7ade817dffff67351"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac18971aed32f82e4f712bc7e663be747"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ac18971aed32f82e4f712bc7e663be747">SetType</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7">playrho::BodyType</a> type)</td></tr>
-<tr class="memdesc:ac18971aed32f82e4f712bc7e663be747"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of the given body.  <a href="#ac18971aed32f82e4f712bc7e663be747">More...</a><br /></td></tr>
-<tr class="separator:ac18971aed32f82e4f712bc7e663be747"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1363ebdc61a599ae898d352f67106a3"><td class="memItemLeft" align="right" valign="top"><a id="af1363ebdc61a599ae898d352f67106a3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#af1363ebdc61a599ae898d352f67106a3">RegisterForProxies</a> (<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *fixture)</td></tr>
-<tr class="memdesc:af1363ebdc61a599ae898d352f67106a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register for proxies for the given fixture. <br /></td></tr>
-<tr class="separator:af1363ebdc61a599ae898d352f67106a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfcc1e3bd448f179aa2d015df28ba062"><td class="memItemLeft" align="right" valign="top"><a id="adfcc1e3bd448f179aa2d015df28ba062"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#adfcc1e3bd448f179aa2d015df28ba062">RegisterForProxies</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *body)</td></tr>
-<tr class="memdesc:adfcc1e3bd448f179aa2d015df28ba062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register for proxies for the given body. <br /></td></tr>
-<tr class="separator:adfcc1e3bd448f179aa2d015df28ba062"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac650be379a8f0b6b51a008caca23d744"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ac650be379a8f0b6b51a008caca23d744">CreateFixture</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> &amp;shape, const <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html">FixtureConf</a> &amp;def=<a class="el" href="namespaceplayrho_1_1d2.html#a717b9c7d89e14f4f0e7f893075b3a8a7">GetDefaultFixtureConf</a>(), bool resetMassData=true)</td></tr>
-<tr class="memdesc:ac650be379a8f0b6b51a008caca23d744"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a fixture with the given parameters.  <a href="#ac650be379a8f0b6b51a008caca23d744">More...</a><br /></td></tr>
-<tr class="separator:ac650be379a8f0b6b51a008caca23d744"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeca3cb1d43b9f3aedf97b5a91adb5a8f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aeca3cb1d43b9f3aedf97b5a91adb5a8f">DestroyFixture</a> (<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *fixture, bool resetMassData=true)</td></tr>
-<tr class="memdesc:aeca3cb1d43b9f3aedf97b5a91adb5a8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a fixture.  <a href="#aeca3cb1d43b9f3aedf97b5a91adb5a8f">More...</a><br /></td></tr>
-<tr class="separator:aeca3cb1d43b9f3aedf97b5a91adb5a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92ce5fab31f9b370ab4e35727656b50d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a92ce5fab31f9b370ab4e35727656b50d">TouchProxies</a> (<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixture) noexcept</td></tr>
-<tr class="memdesc:a92ce5fab31f9b370ab4e35727656b50d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Touches each proxy of the given fixture.  <a href="#a92ce5fab31f9b370ab4e35727656b50d">More...</a><br /></td></tr>
-<tr class="separator:a92ce5fab31f9b370ab4e35727656b50d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9ea3ff29af7f252a7bae76074e67647"><td class="memItemLeft" align="right" valign="top"><a id="af9ea3ff29af7f252a7bae76074e67647"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#af9ea3ff29af7f252a7bae76074e67647">SetNewFixtures</a> () noexcept</td></tr>
-<tr class="memdesc:af9ea3ff29af7f252a7bae76074e67647"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets new fixtures flag. <br /></td></tr>
-<tr class="separator:af9ea3ff29af7f252a7bae76074e67647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-types"></a>
 Private Types</h2></td></tr>
@@ -309,6 +273,30 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:ac18971aed32f82e4f712bc7e663be747"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ac18971aed32f82e4f712bc7e663be747">SetType</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7">playrho::BodyType</a> type)</td></tr>
+<tr class="memdesc:ac18971aed32f82e4f712bc7e663be747"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of the given body.  <a href="#ac18971aed32f82e4f712bc7e663be747">More...</a><br /></td></tr>
+<tr class="separator:ac18971aed32f82e4f712bc7e663be747"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af26a312fc60d4c9fab75dfbfb320ad00"><td class="memItemLeft" align="right" valign="top"><a id="af26a312fc60d4c9fab75dfbfb320ad00"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#af26a312fc60d4c9fab75dfbfb320ad00">RegisterForProxies</a> (<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixture)</td></tr>
+<tr class="memdesc:af26a312fc60d4c9fab75dfbfb320ad00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register for proxies for the given fixture. <br /></td></tr>
+<tr class="separator:af26a312fc60d4c9fab75dfbfb320ad00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7149fe09074e6196f170e2806ddc150"><td class="memItemLeft" align="right" valign="top"><a id="aa7149fe09074e6196f170e2806ddc150"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aa7149fe09074e6196f170e2806ddc150">RegisterForProxies</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body)</td></tr>
+<tr class="memdesc:aa7149fe09074e6196f170e2806ddc150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register for proxies for the given body. <br /></td></tr>
+<tr class="separator:aa7149fe09074e6196f170e2806ddc150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac650be379a8f0b6b51a008caca23d744"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ac650be379a8f0b6b51a008caca23d744">CreateFixture</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> &amp;shape, const <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html">FixtureConf</a> &amp;def=<a class="el" href="namespaceplayrho_1_1d2.html#a717b9c7d89e14f4f0e7f893075b3a8a7">GetDefaultFixtureConf</a>(), bool resetMassData=true)</td></tr>
+<tr class="memdesc:ac650be379a8f0b6b51a008caca23d744"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a fixture with the given parameters.  <a href="#ac650be379a8f0b6b51a008caca23d744">More...</a><br /></td></tr>
+<tr class="separator:ac650be379a8f0b6b51a008caca23d744"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af144d97e1396b8a21b273792a843e186"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#af144d97e1396b8a21b273792a843e186">DestroyFixture</a> (<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixture, bool resetMassData=true)</td></tr>
+<tr class="memdesc:af144d97e1396b8a21b273792a843e186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a fixture.  <a href="#af144d97e1396b8a21b273792a843e186">More...</a><br /></td></tr>
+<tr class="separator:af144d97e1396b8a21b273792a843e186"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea26123d8778d9c3052739bf735641b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aea26123d8778d9c3052739bf735641b9">TouchProxies</a> (<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixture) noexcept</td></tr>
+<tr class="memdesc:aea26123d8778d9c3052739bf735641b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Touches each proxy of the given fixture.  <a href="#aea26123d8778d9c3052739bf735641b9">More...</a><br /></td></tr>
+<tr class="separator:aea26123d8778d9c3052739bf735641b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9ea3ff29af7f252a7bae76074e67647"><td class="memItemLeft" align="right" valign="top"><a id="af9ea3ff29af7f252a7bae76074e67647"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#af9ea3ff29af7f252a7bae76074e67647">SetNewFixtures</a> () noexcept</td></tr>
+<tr class="memdesc:af9ea3ff29af7f252a7bae76074e67647"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets new fixtures flag. <br /></td></tr>
+<tr class="separator:af9ea3ff29af7f252a7bae76074e67647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a373ed7a84fc431db24ffc2b22ee5c727"><td class="memItemLeft" align="right" valign="top"><a id="a373ed7a84fc431db24ffc2b22ee5c727"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a373ed7a84fc431db24ffc2b22ee5c727">CopyBodies</a> (std::map&lt; const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *, <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt; &amp;bodyMap, std::map&lt; const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&gt; &amp;fixtureMap, <a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; World::Bodies::const_iterator &gt; range)</td></tr>
 <tr class="memdesc:a373ed7a84fc431db24ffc2b22ee5c727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies bodies. <br /></td></tr>
@@ -321,15 +309,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ab82f491619070b591ed32dbb41be6119">CopyContacts</a> (const std::map&lt; const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *, <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt; &amp;bodyMap, const std::map&lt; const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&gt; &amp;fixtureMap, <a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; World::Contacts::const_iterator &gt; range)</td></tr>
 <tr class="memdesc:ab82f491619070b591ed32dbb41be6119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies contacts. <br /></td></tr>
 <tr class="separator:ab82f491619070b591ed32dbb41be6119"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03aabdbda79ea6e5b3ddf974182ee084"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a03aabdbda79ea6e5b3ddf974182ee084">InternalDestroy</a> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *joint)</td></tr>
-<tr class="memdesc:a03aabdbda79ea6e5b3ddf974182ee084"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal destroy.  <a href="#a03aabdbda79ea6e5b3ddf974182ee084">More...</a><br /></td></tr>
-<tr class="separator:a03aabdbda79ea6e5b3ddf974182ee084"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4a6353f425360ee1a5cbb4c4302b65d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ac4a6353f425360ee1a5cbb4c4302b65d">InternalDestroy</a> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;joint)</td></tr>
+<tr class="memdesc:ac4a6353f425360ee1a5cbb4c4302b65d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal destroy.  <a href="#ac4a6353f425360ee1a5cbb4c4302b65d">More...</a><br /></td></tr>
+<tr class="separator:ac4a6353f425360ee1a5cbb4c4302b65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa68bf90ada6ff2122660c0f7f4e11fee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1RegStepStats.html">RegStepStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aa68bf90ada6ff2122660c0f7f4e11fee">SolveReg</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf)</td></tr>
 <tr class="memdesc:aa68bf90ada6ff2122660c0f7f4e11fee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the step.  <a href="#aa68bf90ada6ff2122660c0f7f4e11fee">More...</a><br /></td></tr>
 <tr class="separator:aa68bf90ada6ff2122660c0f7f4e11fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17b09396aa905f5eb1646deb8c2a1c69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html">IslandSolverResults</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a17b09396aa905f5eb1646deb8c2a1c69">SolveRegIslandViaGS</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf, <a class="el" href="structplayrho_1_1d2_1_1Island.html">Island</a> island)</td></tr>
-<tr class="memdesc:a17b09396aa905f5eb1646deb8c2a1c69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the given island (regularly).  <a href="#a17b09396aa905f5eb1646deb8c2a1c69">More...</a><br /></td></tr>
-<tr class="separator:a17b09396aa905f5eb1646deb8c2a1c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae47a8f358ef4192f3f47c66b718a5c69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1IslandStats.html">IslandStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ae47a8f358ef4192f3f47c66b718a5c69">SolveRegIslandViaGS</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf, <a class="el" href="structplayrho_1_1d2_1_1Island.html">Island</a> island)</td></tr>
+<tr class="memdesc:ae47a8f358ef4192f3f47c66b718a5c69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the given island (regularly).  <a href="#ae47a8f358ef4192f3f47c66b718a5c69">More...</a><br /></td></tr>
+<tr class="separator:ae47a8f358ef4192f3f47c66b718a5c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4be6a47513f324105d91a85c1628837"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ad4be6a47513f324105d91a85c1628837">AddToIsland</a> (<a class="el" href="structplayrho_1_1d2_1_1Island.html">Island</a> &amp;island, <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;seed, Bodies::size_type &amp;remNumBodies, Contacts::size_type &amp;remNumContacts, Joints::size_type &amp;remNumJoints)</td></tr>
 <tr class="memdesc:ad4be6a47513f324105d91a85c1628837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds to the island based off of a given "seed" body.  <a href="#ad4be6a47513f324105d91a85c1628837">More...</a><br /></td></tr>
 <tr class="separator:ad4be6a47513f324105d91a85c1628837"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -347,17 +335,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a579b084c9245694f4b635cd57c52cee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4efac7045b2b2f1e6e5b43fc170d9f18"><td class="memItemLeft" align="right" valign="top"><a id="a4efac7045b2b2f1e6e5b43fc170d9f18"></a>
 Bodies::size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a4efac7045b2b2f1e6e5b43fc170d9f18">RemoveUnspeedablesFromIslanded</a> (const std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&gt; &amp;bodies)</td></tr>
-<tr class="memdesc:a4efac7045b2b2f1e6e5b43fc170d9f18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes <em>unspeedables</em> from the is <em>islanded</em> state. <br /></td></tr>
+<tr class="memdesc:a4efac7045b2b2f1e6e5b43fc170d9f18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes <em>unspeedables</em> from the is <em>is-in-island</em> state. <br /></td></tr>
 <tr class="separator:a4efac7045b2b2f1e6e5b43fc170d9f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73acd89d6d35f26b8fccc7d0c0b7dc05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1ToiStepStats.html">ToiStepStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a73acd89d6d35f26b8fccc7d0c0b7dc05">SolveToi</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf)</td></tr>
 <tr class="memdesc:a73acd89d6d35f26b8fccc7d0c0b7dc05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the step using successive time of impact (TOI) events.  <a href="#a73acd89d6d35f26b8fccc7d0c0b7dc05">More...</a><br /></td></tr>
 <tr class="separator:a73acd89d6d35f26b8fccc7d0c0b7dc05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22dffd905bdf83b0dd24a6c33a52fd84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html">IslandSolverResults</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a22dffd905bdf83b0dd24a6c33a52fd84">SolveToi</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf, <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp;contact)</td></tr>
-<tr class="memdesc:a22dffd905bdf83b0dd24a6c33a52fd84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves collisions for the given time of impact.  <a href="#a22dffd905bdf83b0dd24a6c33a52fd84">More...</a><br /></td></tr>
-<tr class="separator:a22dffd905bdf83b0dd24a6c33a52fd84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b1ffdca1bb5ad996efc696baecf3084"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html">IslandSolverResults</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a2b1ffdca1bb5ad996efc696baecf3084">SolveToiViaGS</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf, <a class="el" href="structplayrho_1_1d2_1_1Island.html">Island</a> &amp;island)</td></tr>
-<tr class="memdesc:a2b1ffdca1bb5ad996efc696baecf3084"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the time of impact for bodies 0 and 1 of the given island.  <a href="#a2b1ffdca1bb5ad996efc696baecf3084">More...</a><br /></td></tr>
-<tr class="separator:a2b1ffdca1bb5ad996efc696baecf3084"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e9168734757608bf4b24b35662eb905"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1IslandStats.html">IslandStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a8e9168734757608bf4b24b35662eb905">SolveToi</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf, <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp;contact)</td></tr>
+<tr class="memdesc:a8e9168734757608bf4b24b35662eb905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves collisions for the given time of impact.  <a href="#a8e9168734757608bf4b24b35662eb905">More...</a><br /></td></tr>
+<tr class="separator:a8e9168734757608bf4b24b35662eb905"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c7c99fe7d61f94c5af23040c8403f71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1IslandStats.html">IslandStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a8c7c99fe7d61f94c5af23040c8403f71">SolveToiViaGS</a> (const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;conf, <a class="el" href="structplayrho_1_1d2_1_1Island.html">Island</a> &amp;island)</td></tr>
+<tr class="memdesc:a8c7c99fe7d61f94c5af23040c8403f71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the time of impact for bodies 0 and 1 of the given island.  <a href="#a8c7c99fe7d61f94c5af23040c8403f71">More...</a><br /></td></tr>
+<tr class="separator:a8c7c99fe7d61f94c5af23040c8403f71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab730b6e19cd42f39393c97aef0f924e4"><td class="memItemLeft" align="right" valign="top"><a id="ab730b6e19cd42f39393c97aef0f924e4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ab730b6e19cd42f39393c97aef0f924e4">ResetBodiesForSolveTOI</a> ()</td></tr>
 <tr class="memdesc:ab730b6e19cd42f39393c97aef0f924e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset bodies for solve TOI. <br /></td></tr>
@@ -376,14 +364,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae0f68027794a5ace8b63ebc6c1fee442"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ae0f68027794a5ace8b63ebc6c1fee442">Add</a> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *j)</td></tr>
 <tr class="memdesc:ae0f68027794a5ace8b63ebc6c1fee442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the given joint to this world.  <a href="#ae0f68027794a5ace8b63ebc6c1fee442">More...</a><br /></td></tr>
 <tr class="separator:ae0f68027794a5ace8b63ebc6c1fee442"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a995bb0f7e1212958954c0822dc239b71"><td class="memItemLeft" align="right" valign="top"><a id="a995bb0f7e1212958954c0822dc239b71"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a995bb0f7e1212958954c0822dc239b71">Remove</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b)</td></tr>
-<tr class="memdesc:a995bb0f7e1212958954c0822dc239b71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the given body from this world. <br /></td></tr>
-<tr class="separator:a995bb0f7e1212958954c0822dc239b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8849ab686907058b64c49a54dbac51ad"><td class="memItemLeft" align="right" valign="top"><a id="a8849ab686907058b64c49a54dbac51ad"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a8849ab686907058b64c49a54dbac51ad">Remove</a> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;j)</td></tr>
-<tr class="memdesc:a8849ab686907058b64c49a54dbac51ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the given joint from this world. <br /></td></tr>
-<tr class="separator:a8849ab686907058b64c49a54dbac51ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b8b27ea149f170257fc01082e0f6985"><td class="memItemLeft" align="right" valign="top"><a id="a7b8b27ea149f170257fc01082e0f6985"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a7b8b27ea149f170257fc01082e0f6985">Remove</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b)</td></tr>
+<tr class="memdesc:a7b8b27ea149f170257fc01082e0f6985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the given body from this world. <br /></td></tr>
+<tr class="separator:a7b8b27ea149f170257fc01082e0f6985"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a454e89c06e166872cd8c45dc308dbce8"><td class="memItemLeft" align="right" valign="top"><a id="a454e89c06e166872cd8c45dc308dbce8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a454e89c06e166872cd8c45dc308dbce8">Remove</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;j)</td></tr>
+<tr class="memdesc:a454e89c06e166872cd8c45dc308dbce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the given joint from this world. <br /></td></tr>
+<tr class="separator:a454e89c06e166872cd8c45dc308dbce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae11b95986545392904cfa45cdef13478"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ae11b95986545392904cfa45cdef13478">IsStepComplete</a> () const noexcept</td></tr>
 <tr class="memdesc:ae11b95986545392904cfa45cdef13478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not "step" is complete.  <a href="#ae11b95986545392904cfa45cdef13478">More...</a><br /></td></tr>
 <tr class="separator:ae11b95986545392904cfa45cdef13478"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -508,10 +496,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
-<tr class="memitem:aaf68047fd0932a495be433bd569c879f"><td class="memItemLeft" align="right" valign="top"><a id="aaf68047fd0932a495be433bd569c879f"></a>
-static <a class="el" href="structplayrho_1_1RegStepStats.html">RegStepStats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aaf68047fd0932a495be433bd569c879f">Update</a> (<a class="el" href="structplayrho_1_1RegStepStats.html">RegStepStats</a> &amp;lhs, const <a class="el" href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html">IslandSolverResults</a> &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:aaf68047fd0932a495be433bd569c879f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the given regular step statistics. <br /></td></tr>
-<tr class="separator:aaf68047fd0932a495be433bd569c879f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35b79e2bb6204b41236efa1ecb251c14"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a35b79e2bb6204b41236efa1ecb251c14">UpdateBody</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, const <a class="el" href="structplayrho_1_1d2_1_1Position.html">Position</a> &amp;pos, const <a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a> &amp;vel)</td></tr>
 <tr class="memdesc:a35b79e2bb6204b41236efa1ecb251c14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the given body.  <a href="#a35b79e2bb6204b41236efa1ecb251c14">More...</a><br /></td></tr>
 <tr class="separator:a35b79e2bb6204b41236efa1ecb251c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -572,6 +556,12 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a41bbf97dd06b6ff0e8906fda3b617a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum vertex radius.  <a href="#a41bbf97dd06b6ff0e8906fda3b617a68">More...</a><br /></td></tr>
 <tr class="separator:a41bbf97dd06b6ff0e8906fda3b617a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ade270704e975314f3f8ca88abfad14ed"><td class="memItemLeft" align="right" valign="top"><a id="ade270704e975314f3f8ca88abfad14ed"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>WorldAtty</b></td></tr>
+<tr class="separator:ade270704e975314f3f8ca88abfad14ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
@@ -603,9 +593,10 @@ Related Functions</h2></td></tr>
 <tr class="memitem:a1539463268cf6db572823eb1a195dc70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a4106d8a0e998a2485196534514527a5a">BodyCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a1539463268cf6db572823eb1a195dc70">Awaken</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world) noexcept</td></tr>
 <tr class="memdesc:a1539463268cf6db572823eb1a195dc70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awakens all of the bodies in the given world.  <a href="#a1539463268cf6db572823eb1a195dc70">More...</a><br /></td></tr>
 <tr class="separator:a1539463268cf6db572823eb1a195dc70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03eb909a335304c4d9df24496819fde3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a03eb909a335304c4d9df24496819fde3">SetAccelerations</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, std::function&lt; <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html">Acceleration</a>(const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b)&gt; fn) noexcept</td></tr>
-<tr class="memdesc:a03eb909a335304c4d9df24496819fde3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the accelerations of all the world's bodies.  <a href="#a03eb909a335304c4d9df24496819fde3">More...</a><br /></td></tr>
-<tr class="separator:a03eb909a335304c4d9df24496819fde3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c6e8e38d0d92d2c59fb4235bda2c2b3"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
+<tr class="memitem:a5c6e8e38d0d92d2c59fb4235bda2c2b3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a5c6e8e38d0d92d2c59fb4235bda2c2b3">SetAccelerations</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, F fn) noexcept</td></tr>
+<tr class="memdesc:a5c6e8e38d0d92d2c59fb4235bda2c2b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the accelerations of all the world's bodies.  <a href="#a5c6e8e38d0d92d2c59fb4235bda2c2b3">More...</a><br /></td></tr>
+<tr class="separator:a5c6e8e38d0d92d2c59fb4235bda2c2b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad85bb4dfbf060d7d28668e4bc2d73a10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#ad85bb4dfbf060d7d28668e4bc2d73a10">SetAccelerations</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html">Acceleration</a> acceleration) noexcept</td></tr>
 <tr class="memdesc:ad85bb4dfbf060d7d28668e4bc2d73a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the accelerations of all the world's bodies to the given value.  <a href="#ad85bb4dfbf060d7d28668e4bc2d73a10">More...</a><br /></td></tr>
 <tr class="separator:ad85bb4dfbf060d7d28668e4bc2d73a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -615,12 +606,6 @@ Related Functions</h2></td></tr>
 <tr class="memitem:aa8a757a3ee66fa157cbf1ffafdf556d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#aa8a757a3ee66fa157cbf1ffafdf556d4">ClearForces</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world) noexcept</td></tr>
 <tr class="memdesc:aa8a757a3ee66fa157cbf1ffafdf556d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears forces.  <a href="#aa8a757a3ee66fa157cbf1ffafdf556d4">More...</a><br /></td></tr>
 <tr class="separator:aa8a757a3ee66fa157cbf1ffafdf556d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67b94949dd350900128b6308085958c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a67b94949dd350900128b6308085958c0">CreateRectangularEnclosingBody</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> dimensions, const <a class="el" href="structplayrho_1_1d2_1_1ShapeConf.html">ShapeConf</a> &amp;baseConf)</td></tr>
-<tr class="memdesc:a67b94949dd350900128b6308085958c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a rectangular enclosure.  <a href="#a67b94949dd350900128b6308085958c0">More...</a><br /></td></tr>
-<tr class="separator:a67b94949dd350900128b6308085958c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66892eec7b372e838bb705a3afa4474e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#a66892eec7b372e838bb705a3afa4474e">CreateSquareEnclosingBody</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a> size, const <a class="el" href="structplayrho_1_1d2_1_1ShapeConf.html">ShapeConf</a> &amp;baseConf)</td></tr>
-<tr class="memdesc:a66892eec7b372e838bb705a3afa4474e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a square enclosure.  <a href="#a66892eec7b372e838bb705a3afa4474e">More...</a><br /></td></tr>
-<tr class="separator:a66892eec7b372e838bb705a3afa4474e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd5009f0701e56be66936edcd9308111"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1World.html#afd5009f0701e56be66936edcd9308111">FindClosestBody</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> location) noexcept</td></tr>
 <tr class="memdesc:afd5009f0701e56be66936edcd9308111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds body in given world that's closest to the given location.  <a href="#afd5009f0701e56be66936edcd9308111">More...</a><br /></td></tr>
 <tr class="separator:afd5009f0701e56be66936edcd9308111"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -673,23 +658,6 @@ This data structure is 232-bytes large (with 4-byte Real on at least one 64-bit 
 
 <p>Joints container type. </p>
 <dl class="section note"><dt>Note</dt><dd>Cannot be container of <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a> instances since joints are polymorphic types. </dd></dl>
-
-</div>
-</div>
-<a id="af665ae72296cdb76e20d900d9fecfe3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af665ae72296cdb76e20d900d9fecfe3d">&#9670;&nbsp;</a></span>QueryFixtureCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classplayrho_1_1d2_1_1World.html#af665ae72296cdb76e20d900d9fecfe3d">playrho::d2::World::QueryFixtureCallback</a> =  std::function&lt;bool(<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a>* fixture, <a class="el" href="namespaceplayrho.html#aed352724e203ca09595faf0dc6a76e5c">ChildCounter</a> child)&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Query AABB for fixtures callback function type. </p>
-<dl class="section note"><dt>Note</dt><dd>Returning true will continue the query. Returning false will terminate the query. </dd></dl>
 
 </div>
 </div>
@@ -951,7 +919,7 @@ Joints are listed the island in the order that bodies provide those joints. </dd
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="HelloWorld_8cpp-example.html#a1">HelloWorld.cpp</a>.</dd>
 </dl>
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a373ed7a84fc431db24ffc2b22ee5c727">CopyBodies()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a67b94949dd350900128b6308085958c0">playrho::d2::CreateRectangularEnclosingBody()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a373ed7a84fc431db24ffc2b22ee5c727">CopyBodies()</a>.</p>
 
 </div>
 </div>
@@ -960,6 +928,9 @@ Joints are listed the island in the order that bodies provide those joints. </dd
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> * playrho::d2::World::CreateFixture </td>
@@ -991,12 +962,16 @@ Joints are listed the island in the order that bodies provide those joints. </dd
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Creates a fixture with the given parameters. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if called for a body that doesn't belong to this world. </td></tr>
     <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if called without a shape. </td></tr>
     <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if called for a shape with a vertex radius less than the minimum vertex radius. </td></tr>
     <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if called for a shape with a vertex radius greater than the maximum vertex radius. </td></tr>
@@ -1005,7 +980,7 @@ Joints are listed the island in the order that bodies provide those joints. </dd
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a">playrho::d2::Body::CreateFixture()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldAtty.html#a50bed42628d05699e063a12b67448e0f">playrho::d2::WorldAtty::CreateFixture()</a>.</p>
 
 </div>
 </div>
@@ -1114,7 +1089,7 @@ Behavior is undefined if the passed body was not created by this world. </dd></d
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a59c023fdafd285a822ab524dc608da23">CreateAndDestroyProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aeca3cb1d43b9f3aedf97b5a91adb5a8f">DestroyFixture()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ac18971aed32f82e4f712bc7e663be747">SetType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a59c023fdafd285a822ab524dc608da23">CreateAndDestroyProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#af144d97e1396b8a21b273792a843e186">DestroyFixture()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ac18971aed32f82e4f712bc7e663be747">SetType()</a>.</p>
 
 </div>
 </div>
@@ -1230,16 +1205,19 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 
 </div>
 </div>
-<a id="aeca3cb1d43b9f3aedf97b5a91adb5a8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeca3cb1d43b9f3aedf97b5a91adb5a8f">&#9670;&nbsp;</a></span>DestroyFixture()</h2>
+<a id="af144d97e1396b8a21b273792a843e186"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af144d97e1396b8a21b273792a843e186">&#9670;&nbsp;</a></span>DestroyFixture()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool playrho::d2::World::DestroyFixture </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;&#160;</td>
           <td class="paramname"><em>fixture</em>, </td>
         </tr>
         <tr>
@@ -1254,6 +1232,11 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Destroys a fixture. </p>
@@ -1275,7 +1258,7 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a5a947481a969b326325f6182d7e514ba">playrho::d2::Body::DestroyFixture()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldAtty.html#a769b07208dd5ac2f3b3a0b6ba47c44ce">playrho::d2::WorldAtty::DestroyFixture()</a>.</p>
 
 </div>
 </div>
@@ -1306,7 +1289,7 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 <p>Destroys the given fixture's proxies. </p>
 <dl class="section note"><dt>Note</dt><dd>This resets the proxy count to 0. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ac86bef01f4d3d477fd57d62107a0a5c1">Clear()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a59c023fdafd285a822ab524dc608da23">CreateAndDestroyProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8fce75bd4075681b56a758ccb9d950ba">Destroy()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#aeca3cb1d43b9f3aedf97b5a91adb5a8f">DestroyFixture()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ac86bef01f4d3d477fd57d62107a0a5c1">Clear()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a59c023fdafd285a822ab524dc608da23">CreateAndDestroyProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8fce75bd4075681b56a758ccb9d950ba">Destroy()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#af144d97e1396b8a21b273792a843e186">DestroyFixture()</a>.</p>
 
 </div>
 </div>
@@ -1366,7 +1349,7 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 <p>Gets the world body range for this world. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> range that can be iterated over using its begin and end methods or using ranged-based for-loops. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a3e54c1c3ec6046814745a707a6ab5c20">playrho::d2::Dump()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#afd5009f0701e56be66936edcd9308111">playrho::d2::FindClosestBody()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a4b2d37998661b12ac6ef32c46b59d81e">operator=()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a03eb909a335304c4d9df24496819fde3">playrho::d2::SetAccelerations()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a810c702555c946c686e4062c7966008c">ShiftOrigin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a3e54c1c3ec6046814745a707a6ab5c20">playrho::d2::Dump()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a4b2d37998661b12ac6ef32c46b59d81e">operator=()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a810c702555c946c686e4062c7966008c">ShiftOrigin()</a>.</p>
 
 </div>
 </div>
@@ -1517,8 +1500,8 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 
 </div>
 </div>
-<a id="a03aabdbda79ea6e5b3ddf974182ee084"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03aabdbda79ea6e5b3ddf974182ee084">&#9670;&nbsp;</a></span>InternalDestroy()</h2>
+<a id="ac4a6353f425360ee1a5cbb4c4302b65d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4a6353f425360ee1a5cbb4c4302b65d">&#9670;&nbsp;</a></span>InternalDestroy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1529,7 +1512,7 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
         <tr>
           <td class="memname">void playrho::d2::World::InternalDestroy </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;&#160;</td>
           <td class="paramname"><em>joint</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1673,44 +1656,7 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 </li>
 </ol>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a22dffd905bdf83b0dd24a6c33a52fd84">SolveToi()</a>.</p>
-
-</div>
-</div>
-<a id="aaf250ba1ddbae731a85c389021c6013d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf250ba1ddbae731a85c389021c6013d">&#9670;&nbsp;</a></span>QueryAABB()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void playrho::d2::World::QueryAABB </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceplayrho_1_1d2.html#a03a4588e961b6a369745c9c5b68b9868">AABB</a> &amp;&#160;</td>
-          <td class="paramname"><em>aabb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html#af665ae72296cdb76e20d900d9fecfe3d">QueryFixtureCallback</a>&#160;</td>
-          <td class="paramname"><em>callback</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Queries the world for all fixtures that potentially overlap the provided AABB. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">aabb</td><td>the query box. </td></tr>
-    <tr><td class="paramname">callback</td><td>User implemented callback function. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a8e9168734757608bf4b24b35662eb905">SolveToi()</a>.</p>
 
 </div>
 </div>
@@ -1748,6 +1694,9 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void playrho::d2::World::SetType </td>
@@ -1767,6 +1716,11 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets the type of the given body. </p>
@@ -1778,7 +1732,7 @@ Behavior is undefined if the passed joint was not created by this world. </dd></
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a70dbc9501cd28a6e486d1de1852b582c">playrho::d2::Body::SetType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldAtty.html#a1a02b986318e8cab9518414895e03791">playrho::d2::WorldAtty::SetType()</a>.</p>
 
 </div>
 </div>
@@ -1851,8 +1805,8 @@ The body shift formula is: <code>position -= newOrigin</code>. </dd></dl>
 
 </div>
 </div>
-<a id="a17b09396aa905f5eb1646deb8c2a1c69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17b09396aa905f5eb1646deb8c2a1c69">&#9670;&nbsp;</a></span>SolveRegIslandViaGS()</h2>
+<a id="ae47a8f358ef4192f3f47c66b718a5c69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae47a8f358ef4192f3f47c66b718a5c69">&#9670;&nbsp;</a></span>SolveRegIslandViaGS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1861,7 +1815,7 @@ The body shift formula is: <code>position -= newOrigin</code>. </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html">World::IslandSolverResults</a> playrho::d2::World::SolveRegIslandViaGS </td>
+          <td class="memname"><a class="el" href="structplayrho_1_1IslandStats.html">IslandStats</a> playrho::d2::World::SolveRegIslandViaGS </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;&#160;</td>
           <td class="paramname"><em>conf</em>, </td>
@@ -1945,8 +1899,8 @@ The body shift formula is: <code>position -= newOrigin</code>. </dd></dl>
 
 </div>
 </div>
-<a id="a22dffd905bdf83b0dd24a6c33a52fd84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22dffd905bdf83b0dd24a6c33a52fd84">&#9670;&nbsp;</a></span>SolveToi() <span class="overload">[2/2]</span></h2>
+<a id="a8e9168734757608bf4b24b35662eb905"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e9168734757608bf4b24b35662eb905">&#9670;&nbsp;</a></span>SolveToi() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1955,7 +1909,7 @@ The body shift formula is: <code>position -= newOrigin</code>. </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html">World::IslandSolverResults</a> playrho::d2::World::SolveToi </td>
+          <td class="memname"><a class="el" href="structplayrho_1_1IslandStats.html">IslandStats</a> playrho::d2::World::SolveToi </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;&#160;</td>
           <td class="paramname"><em>conf</em>, </td>
@@ -1993,8 +1947,8 @@ Precondition 2: there is not a lower TOI in the time step for which collisions h
 
 </div>
 </div>
-<a id="a2b1ffdca1bb5ad996efc696baecf3084"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b1ffdca1bb5ad996efc696baecf3084">&#9670;&nbsp;</a></span>SolveToiViaGS()</h2>
+<a id="a8c7c99fe7d61f94c5af23040c8403f71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c7c99fe7d61f94c5af23040c8403f71">&#9670;&nbsp;</a></span>SolveToiViaGS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2003,7 +1957,7 @@ Precondition 2: there is not a lower TOI in the time step for which collisions h
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html">World::IslandSolverResults</a> playrho::d2::World::SolveToiViaGS </td>
+          <td class="memname"><a class="el" href="structplayrho_1_1IslandStats.html">IslandStats</a> playrho::d2::World::SolveToiViaGS </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;&#160;</td>
           <td class="paramname"><em>conf</em>, </td>
@@ -2048,7 +2002,7 @@ Precondition 2: there is not a lower TOI in the time step for which collisions h
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structplayrho_1_1d2_1_1Island.html" title="Definition of a self-contained constraint &quot;island&quot;. ">Island</a> solver results. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a22dffd905bdf83b0dd24a6c33a52fd84">SolveToi()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a8e9168734757608bf4b24b35662eb905">SolveToi()</a>.</p>
 
 </div>
 </div>
@@ -2217,8 +2171,8 @@ Dynamic bodies are moved based on their previous velocities, gravity, applied fo
 
 </div>
 </div>
-<a id="a92ce5fab31f9b370ab4e35727656b50d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92ce5fab31f9b370ab4e35727656b50d">&#9670;&nbsp;</a></span>TouchProxies()</h2>
+<a id="aea26123d8778d9c3052739bf735641b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea26123d8778d9c3052739bf735641b9">&#9670;&nbsp;</a></span>TouchProxies()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2227,7 +2181,7 @@ Dynamic bodies are moved based on their previous velocities, gravity, applied fo
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool playrho::d2::World::TouchProxies </td>
+          <td class="memname">void playrho::d2::World::TouchProxies </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;&#160;</td>
           <td class="paramname"><em>fixture</em></td><td>)</td>
@@ -2236,15 +2190,14 @@ Dynamic bodies are moved based on their previous velocities, gravity, applied fo
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Touches each proxy of the given fixture. </p>
-<dl class="section note"><dt>Note</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a> must belong to a body that belongs to this world or this method will return false. </dd>
-<dd>
-This sets things up so that pairs may be created for potentially new contacts. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if called with a fixture for a body which doesn't belong to this world. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This sets things up so that pairs may be created for potentially new contacts. </dd></dl>
 
 </div>
 </div>
@@ -2298,7 +2251,7 @@ This sets things up so that pairs may be created for potentially new contacts. <
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a17b09396aa905f5eb1646deb8c2a1c69">SolveRegIslandViaGS()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a2b1ffdca1bb5ad996efc696baecf3084">SolveToiViaGS()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ae47a8f358ef4192f3f47c66b718a5c69">SolveRegIslandViaGS()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a8c7c99fe7d61f94c5af23040c8403f71">SolveToiViaGS()</a>.</p>
 
 </div>
 </div>
@@ -2359,96 +2312,6 @@ This sets things up so that pairs may be created for potentially new contacts. <
 
 <p>Clears forces. </p>
 <p>Manually clear the force buffer on all bodies. </p>
-
-</div>
-</div>
-<a id="a67b94949dd350900128b6308085958c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67b94949dd350900128b6308085958c0">&#9670;&nbsp;</a></span>CreateRectangularEnclosingBody()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> * CreateRectangularEnclosingBody </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
-          <td class="paramname"><em>world</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td>
-          <td class="paramname"><em>dimensions</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structplayrho_1_1d2_1_1ShapeConf.html">ShapeConf</a> &amp;&#160;</td>
-          <td class="paramname"><em>baseConf</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a rectangular enclosure. </p>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a66892eec7b372e838bb705a3afa4474e">playrho::d2::CreateSquareEnclosingBody()</a>.</p>
-
-</div>
-</div>
-<a id="a66892eec7b372e838bb705a3afa4474e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66892eec7b372e838bb705a3afa4474e">&#9670;&nbsp;</a></span>CreateSquareEnclosingBody()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> * CreateSquareEnclosingBody </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
-          <td class="paramname"><em>world</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__PhysicalQuantities.html#ga7361ef2e10e7853a05b64aa433651014">Length</a>&#160;</td>
-          <td class="paramname"><em>size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structplayrho_1_1d2_1_1ShapeConf.html">ShapeConf</a> &amp;&#160;</td>
-          <td class="paramname"><em>baseConf</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a square enclosure. </p>
 
 </div>
 </div>
@@ -2690,11 +2553,13 @@ This sets things up so that pairs may be created for potentially new contacts. <
 
 </div>
 </div>
-<a id="a03eb909a335304c4d9df24496819fde3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03eb909a335304c4d9df24496819fde3">&#9670;&nbsp;</a></span>SetAccelerations() <span class="overload">[1/3]</span></h2>
+<a id="a5c6e8e38d0d92d2c59fb4235bda2c2b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c6e8e38d0d92d2c59fb4235bda2c2b3">&#9670;&nbsp;</a></span>SetAccelerations() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class F &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2708,7 +2573,7 @@ This sets things up so that pairs may be created for potentially new contacts. <
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::function&lt; <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html">Acceleration</a>(const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;b)&gt;&#160;</td>
+          <td class="paramtype">F&#160;</td>
           <td class="paramname"><em>fn</em>&#160;</td>
         </tr>
         <tr>
@@ -2725,6 +2590,13 @@ This sets things up so that pairs may be created for potentially new contacts. <
 </div><div class="memdoc">
 
 <p>Sets the accelerations of all the world's bodies. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> instance to set the acceleration of all contained bodies for. </td></tr>
+    <tr><td class="paramname">fn</td><td>Function or functor with a signature like: <code><a class="el" href="structplayrho_1_1d2_1_1Acceleration.html" title="2-D acceleration related data structure. ">Acceleration</a> (*fn)(const <a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a>&amp; body)</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#aa8a757a3ee66fa157cbf1ffafdf556d4">playrho::d2::ClearForces()</a>.</p>
 
@@ -2898,7 +2770,7 @@ Dynamic bodies are moved based on their previous velocities, gravity, applied fo
 <p>Container of contacts. </p>
 <dl class="section note"><dt>Note</dt><dd>In the <em>add pair</em> stress-test, 401 bodies can have some 31000 contacts during a given time step. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aee4f65962fab8e1368212784b979767c">Add()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac86bef01f4d3d477fd57d62107a0a5c1">Clear()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab82f491619070b591ed32dbb41be6119">CopyContacts()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#afe341a5f7827f9fe3b1a26bf97006a0d">Destroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a599c3903feb0a48673d9dc38758ae2bb">GetContacts()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aadde93a8b8053cb2b9c5e8e2214ca5fb">GetSoonestContact()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aeefab18e528ef37c8868b7f2b83f7f54">ResetContactsForSolveTOI()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa68bf90ada6ff2122660c0f7f4e11fee">SolveReg()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a22dffd905bdf83b0dd24a6c33a52fd84">SolveToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#af65a576b04537b18bcddf5636b0d3386">Step()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a8b8c701403d49b4d75dc7ae6b953f40d">UpdateContactTOIs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aee4f65962fab8e1368212784b979767c">Add()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac86bef01f4d3d477fd57d62107a0a5c1">Clear()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab82f491619070b591ed32dbb41be6119">CopyContacts()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#afe341a5f7827f9fe3b1a26bf97006a0d">Destroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a599c3903feb0a48673d9dc38758ae2bb">GetContacts()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aadde93a8b8053cb2b9c5e8e2214ca5fb">GetSoonestContact()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aeefab18e528ef37c8868b7f2b83f7f54">ResetContactsForSolveTOI()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa68bf90ada6ff2122660c0f7f4e11fee">SolveReg()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a8e9168734757608bf4b24b35662eb905">SolveToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#af65a576b04537b18bcddf5636b0d3386">Step()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a8b8c701403d49b4d75dc7ae6b953f40d">UpdateContactTOIs()</a>.</p>
 
 </div>
 </div>
@@ -2964,7 +2836,7 @@ Dynamic bodies are moved based on their previous velocities, gravity, applied fo
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

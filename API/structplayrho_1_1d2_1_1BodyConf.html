@@ -112,6 +112,14 @@ PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">Body
 PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#aab6507e3c5f16b71bc1274dc71d30563">UseAngularVelocity</a> (<a class="el" href="group__PhysicalQuantities.html#gac33f92018f7e8821550296aece465028">AngularVelocity</a> v) noexcept</td></tr>
 <tr class="memdesc:aab6507e3c5f16b71bc1274dc71d30563"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the given angular velocity. <br /></td></tr>
 <tr class="separator:aab6507e3c5f16b71bc1274dc71d30563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4e35c42308e0b1b9eb5ffb102f8e088"><td class="memItemLeft" align="right" valign="top"><a id="ae4e35c42308e0b1b9eb5ffb102f8e088"></a>
+PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#ae4e35c42308e0b1b9eb5ffb102f8e088">Use</a> (<a class="el" href="structplayrho_1_1d2_1_1Position.html">Position</a> v) noexcept</td></tr>
+<tr class="memdesc:ae4e35c42308e0b1b9eb5ffb102f8e088"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the given position for the linear and angular positions. <br /></td></tr>
+<tr class="separator:ae4e35c42308e0b1b9eb5ffb102f8e088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab991dc534e6000609dc1198164e26427"><td class="memItemLeft" align="right" valign="top"><a id="ab991dc534e6000609dc1198164e26427"></a>
+PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#ab991dc534e6000609dc1198164e26427">Use</a> (<a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a> v) noexcept</td></tr>
+<tr class="memdesc:ab991dc534e6000609dc1198164e26427"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the given velocity for the linear and angular velocities. <br /></td></tr>
+<tr class="separator:ab991dc534e6000609dc1198164e26427"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab74e3b01c0f344b7eea842e391567c46"><td class="memItemLeft" align="right" valign="top"><a id="ab74e3b01c0f344b7eea842e391567c46"></a>
 PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#ab74e3b01c0f344b7eea842e391567c46">UseLinearAcceleration</a> (<a class="el" href="namespaceplayrho.html#a5822921028100052d4c6dfb43c7f6c4b">LinearAcceleration2</a> v) noexcept</td></tr>
 <tr class="memdesc:ab74e3b01c0f344b7eea842e391567c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the given linear acceleration. <br /></td></tr>
@@ -230,7 +238,7 @@ Related Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> configuration. </p>
 <p>A body configuration holds all the data needed to construct a rigid body. You can safely re-use body configurations.</p>
-<dl class="section note"><dt>Note</dt><dd>This is a value class meant for passing in to the <a class="el" href="classplayrho_1_1d2_1_1World.html#a66716e8c9020509c9891d9223a58be93" title="Creates a rigid body given a definition. ">World::CreateBody</a> method.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is a value class meant for passing in to the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#a66716e8c9020509c9891d9223a58be93" title="Creates a rigid body given a definition. ">World::CreateBody</a></code> method.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a>. </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a2">HelloWorld.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Friends And Related Function Documentation</h2>
@@ -345,7 +353,7 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Under-active time. </p>
-<p>Set this to the value retrieved from <a class="el" href="classplayrho_1_1d2_1_1Body.html#abc897bc2cda122d02fccdb3c5c11049d" title="Gets this body&#39;s under-active time value. ">Body::GetUnderActiveTime()</a> or leave it as 0. </p>
+<p>Set this to the value retrieved from <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#abc897bc2cda122d02fccdb3c5c11049d" title="Gets this body&#39;s under-active time value. ">Body::GetUnderActiveTime</a></code> or leave it as 0. </p>
 
 </div>
 </div>
@@ -355,7 +363,7 @@ Related Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

@@ -5,7 +5,7 @@ var searchData=
   ['chunk',['Chunk',['../structplayrho_1_1BlockAllocator_1_1Chunk.html',1,'playrho::BlockAllocator']]],
   ['clipvertex',['ClipVertex',['../structplayrho_1_1d2_1_1ClipVertex.html',1,'playrho::d2']]],
   ['concept',['Concept',['../structplayrho_1_1d2_1_1Shape_1_1Concept.html',1,'playrho::d2::Shape']]],
-  ['conf',['Conf',['../structplayrho_1_1StackAllocator_1_1Conf.html',1,'playrho::StackAllocator::Conf'],['../structplayrho_1_1d2_1_1Manifold_1_1Conf.html',1,'playrho::d2::Manifold::Conf'],['../structplayrho_1_1d2_1_1VelocityConstraint_1_1Conf.html',1,'playrho::d2::VelocityConstraint::Conf']]],
+  ['conf',['Conf',['../structplayrho_1_1d2_1_1VelocityConstraint_1_1Conf.html',1,'playrho::d2::VelocityConstraint::Conf'],['../structplayrho_1_1StackAllocator_1_1Conf.html',1,'playrho::StackAllocator::Conf'],['../structplayrho_1_1d2_1_1Manifold_1_1Conf.html',1,'playrho::d2::Manifold::Conf']]],
   ['constjointvisitor',['ConstJointVisitor',['../classplayrho_1_1d2_1_1ConstJointVisitor.html',1,'playrho::d2']]],
   ['constraintsolverconf',['ConstraintSolverConf',['../structplayrho_1_1ConstraintSolverConf.html',1,'playrho']]],
   ['contact',['Contact',['../classplayrho_1_1d2_1_1Contact.html',1,'playrho::d2']]],

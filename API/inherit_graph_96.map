@@ -1,5 +1,10 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$structplayrho_1_1HasOne_3_01T_00_01VoidT_3_01decltype_07T_071_08_08_01_4_01_4.html" title="Template specialization for valid/acceptable &quot;arithmetic&quot; types. " alt="" coords="131,5,308,44"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1HasOne_3_01T_00_01VoidT_3_01decltype_07T_021_03_08_01_4_01_4.html" title="Template specialization for valid/acceptable &quot;arithmetic&quot; types. " alt="" coords="131,5,308,44"/>
 <area shape="rect" id="node3" href="$structplayrho_1_1HasType_3_01T_00_01std_1_1tuple_3_01T_00_01Ts_8_8_8_01_4_01_4.html" title="Has&#45;type trait true class. " alt="" coords="144,68,295,107"/>
 <area shape="rect" id="node4" href="$structplayrho_1_1IsArithmetic_3_01T_00_01VoidT_3_01decltype_07T_02_03_09T_02_03_08_00_01decltype0b2e449314e00fef5ceeea648917bc10.html" title="Template specialization for valid/acceptable &quot;arithmetic&quot; types. " alt="" coords="130,131,309,209"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1IsDivisable_3_01T1_00_01T2_00_01VoidT_3_01decltype_07T1_02_03_2T2_02_03_08_4_01_4.html" title="playrho::IsDivisable\l\&lt; T1, T2, VoidT\&lt; decltype\l(T1\{\}/T2\{\})\&gt; \&gt;" alt="" coords="133,233,306,285"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1IsMatrix_3_01Vector_3_01Vector_3_01T_00_01N_01_4_00_01M_01_4_01_4.html" title="Trait class specialization for checking if type is a matrix type. " alt="" coords="153,309,286,361"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1IsMultipliable_3_01T1_00_01T2_00_01VoidT_3_01decltype_07T1_02_03_01_5T2_02_03_08_4_01_4.html" title="playrho::IsMultipliable\l\&lt; T1, T2, VoidT\&lt; decltype\l(T1\{\} *T2\{\})\&gt; \&gt;" alt="" coords="133,385,306,437"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1IsSquareMatrix_3_01Vector_3_01Vector_3_01T_00_01M_01_4_00_01M_01_4_01_4.html" title="Trait class specialization for checking if type is a square matrix type. " alt="" coords="138,461,301,513"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html" title="Trait class specialization for checking if type is a Vector type. " alt="" coords="155,537,284,576"/>
 </map>

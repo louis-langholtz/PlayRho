@@ -205,7 +205,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a63f030de16f96f6f969b17d4d0d665c4"><td class="memItemLeft" align="right" valign="top"><a id="a63f030de16f96f6f969b17d4d0d665c4"></a>
 static PLAYRHO_CONSTEXPR <a class="el" href="structplayrho_1_1d2_1_1VelocityConstraint_1_1Conf.html">Conf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a63f030de16f96f6f969b17d4d0d665c4">GetDefaultConf</a> () noexcept</td></tr>
-<tr class="memdesc:a63f030de16f96f6f969b17d4d0d665c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default configuration for a <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html" title="Contact velocity constraint. ">VelocityConstraint</a>. <br /></td></tr>
+<tr class="memdesc:a63f030de16f96f6f969b17d4d0d665c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default configuration for a <code><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html" title="Contact velocity constraint. ">VelocityConstraint</a></code>. <br /></td></tr>
 <tr class="separator:a63f030de16f96f6f969b17d4d0d665c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -359,7 +359,7 @@ The velocity biases cannot be changed independent of: the normal, and the point 
 </div><div class="memdoc">
 
 <p>Adds the given point to this contact velocity constraint object. </p>
-<p>Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already been added, call <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a8328fb8755ee63d4fc286122bb9a7a5c" title="Gets the count of points added to this object. ">GetPointCount()</a>. </p><dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if an attempt is made to add more than MaxManifoldPoints points. </dd></dl>
+<p>Adds up to <code>MaxManifoldPoints</code> points. To find out how many points have already been added, call <code>GetPointCount</code>. </p><dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if an attempt is made to add more than <code>MaxManifoldPoints</code> points. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a8328fb8755ee63d4fc286122bb9a7a5c" title="Gets the count of points added to this object. ">GetPointCount()</a>. </dd></dl>
 
 </div>
@@ -547,7 +547,7 @@ The <code>AddPoint</code> method sets this value. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">index</td><td>Index of the point to return. This should be a value less than returned by <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a8328fb8755ee63d4fc286122bb9a7a5c" title="Gets the count of points added to this object. ">GetPointCount()</a>. </td></tr>
+    <tr><td class="paramname">index</td><td>Index of the point to return. This should be a value less than returned by <code>GetPointCount</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -582,7 +582,7 @@ The <code>AddPoint</code> method sets this value. </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the count of points added to this object. </p>
-<dl class="section return"><dt>Returns</dt><dd>Value between 0 and MaxManifoldPoints </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Value between 0 and <code>MaxManifoldPoints</code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a56978175f768dd093094931064fed774" title="Maximum manifold points. This is the maximum number of contact points between two convex shapes...">MaxManifoldPoints</a>. </dd>
 <dd>
 <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a149f6f811476b024dca1245f57c5aa75" title="Adds the given point to this contact velocity constraint object. ">AddPoint</a>. </dd></dl>
@@ -781,7 +781,7 @@ The <code>AddPoint</code> method sets this value. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if given index is not less than <code>MaxManifoldPoints</code>. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">index</td><td>Index of the point to return. This should be a value less than returned by <a class="el" href="classplayrho_1_1d2_1_1VelocityConstraint.html#a8328fb8755ee63d4fc286122bb9a7a5c" title="Gets the count of points added to this object. ">GetPointCount()</a>. </td></tr>
+    <tr><td class="paramname">index</td><td>Index of the point to return. This should be a value less than returned by <code>GetPointCount</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -862,7 +862,7 @@ This field is 12-bytes (on at least one 64-bit platform). </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 18 2018 15:36:45 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 3 2018 17:22:34 for PlayRho by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.14
 </small></address>

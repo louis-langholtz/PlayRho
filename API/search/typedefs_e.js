@@ -7,7 +7,6 @@ var searchData=
   ['positionconstraints',['PositionConstraints',['../namespaceplayrho_1_1d2.html#a5b277cfe94a59545766adb762e7c10d9',1,'playrho::d2']]],
   ['positive',['Positive',['../group__BoundedAliases.html#gae492ff78381a7dc66d271d0ee3b1189d',1,'playrho']]],
   ['proc',['Proc',['../classplayrho_1_1d2_1_1FunctionalJointVisitor.html#ae9652b7fe379738f5e98c04efe59445e',1,'playrho::d2::FunctionalJointVisitor']]],
-  ['proxy_5fsize_5ftype',['proxy_size_type',['../classplayrho_1_1d2_1_1World.html#a66ad5554b1e82a18b45601b30722e51d',1,'playrho::d2::World']]],
   ['proxyid',['ProxyId',['../classplayrho_1_1d2_1_1World.html#a3f69347829d69cceda1f0eb1de74f759',1,'playrho::d2::World']]],
   ['proxyqueue',['ProxyQueue',['../classplayrho_1_1d2_1_1World.html#aa6e8e6abb69f99eab701da708cda7886',1,'playrho::d2::World']]]
 ];

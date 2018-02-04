@@ -9,7 +9,7 @@ var searchData=
   ['simultaneous',['simultaneous',['../structplayrho_1_1d2_1_1World_1_1ContactToiData.html#a42642eafffed1cff1f68d7d016a4dbe1',1,'playrho::d2::World::ContactToiData']]],
   ['size',['size',['../structplayrho_1_1StackAllocator_1_1AllocationRecord.html#ab3a33d7f77cb7a86961e605f9e2e86c1',1,'playrho::StackAllocator::AllocationRecord']]],
   ['skipped',['skipped',['../structplayrho_1_1PreStepStats.html#a4ac67155c97fe89e223375eb442ebfba',1,'playrho::PreStepStats::skipped()'],['../structplayrho_1_1d2_1_1World_1_1UpdateContactsStats.html#a48c50505e4a36b02acbbd89ce803d514',1,'playrho::d2::World::UpdateContactsStats::skipped()']]],
-  ['solved',['solved',['../structplayrho_1_1d2_1_1World_1_1IslandSolverResults.html#ab202f65dc2a4353cf50d5e3a2127dbf7',1,'playrho::d2::World::IslandSolverResults']]],
+  ['solved',['solved',['../structplayrho_1_1IslandStats.html#a5b80c2efc3ebf289982130730d514259',1,'playrho::IslandStats']]],
   ['squaremeter',['SquareMeter',['../group__PhysicalUnits.html#ga8df6e111fd792c1a81dd8c7ff5a06148',1,'playrho']]],
   ['squareradian',['SquareRadian',['../group__PhysicalUnits.html#gadba3c017800d0389a495a5ef783dac35',1,'playrho']]],
   ['squareroottwo',['SquareRootTwo',['../namespaceplayrho.html#a4398b65ad858db7f77516a968f8443ce',1,'playrho']]],

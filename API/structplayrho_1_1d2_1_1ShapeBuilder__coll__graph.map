@@ -1,5 +1,5 @@
 <map id="playrho::d2::ShapeBuilder&lt; ConcreteConf &gt;" name="playrho::d2::ShapeBuilder&lt; ConcreteConf &gt;">
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes. " alt="" coords="730,80,922,105"/>
-<area shape="rect" id="node6" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="424,153,583,192"/>
-<area shape="rect" id="node8" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="146,181,305,220"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes. " alt="" coords="178,292,370,317"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="395,192,554,231"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="470,92,629,131"/>
 </map>
