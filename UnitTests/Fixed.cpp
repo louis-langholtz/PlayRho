@@ -541,9 +541,37 @@ TEST(Fixed32, regpow)
 
 TEST(Fixed32, sqrt)
 {
+    const auto tolerance = static_cast<double>(Fixed32::GetMin());
+
+    EXPECT_TRUE(isnan(sqrt(Fixed32{-1})));
+    EXPECT_TRUE(isnan(sqrt(Fixed32::GetNaN())));
+    EXPECT_EQ(sqrt(Fixed32{0}), Fixed32{0});
+    EXPECT_EQ(sqrt(Fixed32::GetInfinity()), Fixed32::GetInfinity());
+    EXPECT_EQ(sqrt(Fixed32{1}), Fixed32{1});
+    EXPECT_NEAR(static_cast<double>(sqrt(Fixed32{0.25})), 0.5, 0.0);
+    EXPECT_NEAR(static_cast<double>(sqrt(Fixed32{0.0625})), 0.25, tolerance);
+
     for (auto i = 0; i < 10000; ++i)
     {
         EXPECT_NEAR(static_cast<double>(sqrt(Fixed32(i))), sqrt(double(i)), 0.01);
+    }
+
+    for (auto v = 1.0; v > 0.0; v /= 1.1)
+    {
+        const auto fixedv = Fixed32{v};
+        if (fixedv == Fixed32{0})
+        {
+            break;
+        }
+        EXPECT_LE(Abs(Square(sqrt(fixedv)) - fixedv), Fixed32::GetMin());
+        EXPECT_NEAR(static_cast<double>(sqrt(fixedv)), sqrt(static_cast<double>(fixedv)), tolerance * 5);
+    }
+    const auto maxV = static_cast<double>(std::numeric_limits<Fixed32>::max());
+    for (auto v = 1.0; v < maxV; v *= 1.1)
+    {
+        const auto fixedv = Fixed32{v};
+        EXPECT_NEAR(static_cast<double>(sqrt(fixedv)), sqrt(v), tolerance);
+        //EXPECT_LE(Abs(Square(sqrt(fixedv)) - fixedv), Fixed32::GetMin() * 5);
     }
 }
 

@@ -294,6 +294,37 @@ constexpr inline Fixed<BT, FB> atan(Fixed<BT, FB> arg)
     return res;
 }
 
+/// @brief Computes the square root of a non-negative value.
+/// @sa https://en.wikipedia.org/wiki/Methods_of_computing_square_roots
+template <typename BT, unsigned int FB>
+constexpr inline auto ComputeSqrt(Fixed<BT, FB> arg)
+{
+    auto temp = Fixed<BT, FB>{1};
+    auto tempSquared = Square(temp);
+    const auto greaterThanOne = arg > 1;
+    auto lower = greaterThanOne? Fixed<BT, FB>{1}: arg;
+    auto upper = greaterThanOne? arg: Fixed<BT, FB>{1};
+    while (arg != tempSquared)
+    {
+        const auto mid = (lower + upper) / 2;
+        if (temp == mid)
+        {
+            break;
+        }
+        temp = mid;
+        tempSquared = Square(temp);
+        if (tempSquared > arg)
+        {
+            upper = temp;
+        }
+        else if (tempSquared < arg)
+        {
+            lower = temp;
+        }
+    }
+    return temp;
+}
+
 } // namespace detail
 
 /// @brief Truncates the given value.
@@ -333,32 +364,25 @@ inline Fixed<BT, FB> fmod(Fixed<BT, FB> dividend, Fixed<BT, FB> divisor) noexcep
 
 /// @brief Square root's the given value.
 /// @note This implementation isn't meant to be fast, only correct enough.
+/// @note The IEEE standard (presumably IEC 60559), requires <code>std::sqrt</code> to be exact
+///   to within half of a ULP for floating-point types (float, double). That sets a precedence
+///   that puts a high expectation on this implementation for fixed-point types.
+/// @note "Domain error" occurs if arg is less than zero.
+/// @return Mathematical square root value of the given value or the <code>NaN</code> value.
 /// @sa http://en.cppreference.com/w/cpp/numeric/math/sqrt
 template <typename BT, unsigned int FB>
 inline auto sqrt(Fixed<BT, FB> arg)
 {
-    constexpr auto MaxError = Fixed<BT, FB>::GetMin() * 2;
-    auto lower = Fixed<BT, FB>{0};
-    auto upper = Fixed<BT, FB>{arg};
-    auto temp = Fixed<BT, FB>{0};
-    while (abs(arg - (temp * temp)) > MaxError)
+    if ((arg == Fixed<BT, FB>{1}) || (arg == Fixed<BT, FB>{0}))
     {
-        const auto mid = (lower + upper) / 2;
-        if (temp == mid)
-        {
-            break;
-        }
-        temp = mid;
-        if (temp * temp >= arg)
-        {
-            upper = temp;
-        }
-        else
-        {
-            lower = temp;
-        }
+        return arg;
     }
-    return temp;
+    if (arg > Fixed<BT, FB>{0})
+    {
+        return detail::ComputeSqrt(arg);
+    }
+    // else arg < 0 or NaN...
+    return Fixed<BT, FB>::GetNaN();
 }
 
 /// @brief Gets whether the given value is normal - i.e. not 0 nor infinite.
