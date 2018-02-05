@@ -52,7 +52,7 @@ TEST(DistanceJoint, ByteSize)
 
 TEST(DistanceJointConf, DefaultConstruction)
 {
-    DistanceJointConf def;
+    auto def = DistanceJointConf{};
 
     EXPECT_EQ(def.type, JointType::Distance);
     EXPECT_EQ(def.bodyA, nullptr);
@@ -122,7 +122,7 @@ TEST(DistanceJoint, ShiftOrigin)
 
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
-    World world{};
+    auto world = World{};
     
     const auto shape = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     
@@ -136,7 +136,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     ASSERT_EQ(body2->GetLocation(), location2);
     ASSERT_NE(body2->CreateFixture(shape), nullptr);
     
-    DistanceJointConf jointdef;
+    auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;
     jointdef.bodyB = body2;
     jointdef.collideConnected = false;
@@ -150,7 +150,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     auto oldDistance = GetMagnitude(body1->GetLocation() - body2->GetLocation());
     
     auto distanceMet = 0u;
-    StepConf stepConf;
+    auto stepConf = StepConf{};
     for (auto i = 0u; !distanceMet || i < distanceMet + 100; ++i)
     {
         world.Step(stepConf);
@@ -189,7 +189,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     ASSERT_EQ(body2->GetLocation(), location2);
     ASSERT_NE(body2->CreateFixture(shape), nullptr);
     
-    DistanceJointConf jointdef;
+    auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;
     jointdef.bodyB = body2;
     jointdef.collideConnected = false;
@@ -235,7 +235,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 
 TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
 {
-    World world;
+    auto world = World{};
     
     const auto bA = world.CreateBody();
     ASSERT_NE(bA, nullptr);

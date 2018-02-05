@@ -11,6 +11,7 @@ centi
 centroid
 chainable
 collinear
+configurability
 constructible
 CRTP
 deallocator

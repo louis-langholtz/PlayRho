@@ -37,7 +37,10 @@ namespace d2 {
 
 /// @brief Body attorney.
 ///
-/// @details This class uses the "attorney-client" idiom to control the granularity of
+/// @details This is the "body attorney" which provides limited privileged access to the
+///   Body class for the World class.
+///
+/// @note This class uses the "attorney-client" idiom to control the granularity of
 ///   friend-based access to the Body class. This is meant to help preserve and enforce
 ///   the invariants of the Body class.
 ///
@@ -46,38 +49,48 @@ namespace d2 {
 class BodyAtty
 {
 private:
-    
-    /// @brief Creates a fixture.
-    static Fixture* CreateFixture(Body& b, Shape shape, const FixtureConf& def)
+
+    /// @brief Creates a body.
+    static Body* CreateBody(World* world, const BodyConf& bd)
     {
-        const auto fixture = new Fixture{&b, def, std::move(shape)};
-        b.m_fixtures.push_back(fixture);
-        return fixture;
+        return new Body(world, bd);
     }
     
-    /// @brief Destroys the given fixture.
-    static bool DestroyFixture(Body& b, Fixture* value)
+    /// @brief Deletes a body.
+    static void Delete(Body* b)
     {
-        const auto endIter = end(b.m_fixtures);
-        const auto it = std::find_if(begin(b.m_fixtures), endIter, [&](Body::Fixtures::value_type& f) {
-            return GetPtr(f) == value;
+        delete b;
+    }
+    
+    /// @brief Adds the given fixture to the given body.
+    static void AddFixture(Body& b, Fixture *fixture)
+    {
+        b.m_fixtures.push_back(fixture);
+    }
+
+    /// @brief Removes the given fixture from the given body.
+    static bool RemoveFixture(Body& b, Fixture* fixture)
+    {
+        const auto begIter = std::begin(b.m_fixtures);
+        const auto endIter = std::end(b.m_fixtures);
+        const auto it = std::find_if(begIter, endIter, [fixture](Body::Fixtures::value_type& f) {
+            return GetPtr(f) == fixture;
         });
         if (it != endIter)
         {
-            delete GetPtr(*it);
             b.m_fixtures.erase(it);
             return true;
         }
         return false;
     }
-
+    
     /// @brief Clears the fixtures of the given body.
     static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
     {
-        std::for_each(std::begin(b.m_fixtures), std::end(b.m_fixtures), [&](Body::Fixtures::value_type& f) {
-            const auto fixture = GetPtr(f);
-            callback(*fixture);
-            delete fixture;
+        const auto begIter = std::begin(b.m_fixtures);
+        const auto endIter = std::end(b.m_fixtures);
+        std::for_each(begIter, endIter, [&](Body::Fixtures::value_type& f) {
+            callback(GetRef(f));
         });
         b.m_fixtures.clear();
     }
@@ -178,7 +191,7 @@ private:
     }
     
     /// @brief Resets the given body's "alpha-0" value.
-    static void ResetAlpha0(Body& b)
+    static void ResetAlpha0(Body& b) noexcept
     {
         b.m_sweep.ResetAlpha0();
     }

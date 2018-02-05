@@ -109,8 +109,9 @@ TEST(WeldJoint, Construction)
 
 TEST(WeldJoint, GetWeldJointConf)
 {
-    auto bodyA = Body{nullptr, BodyConf{}};
-    auto bodyB = Body{nullptr, BodyConf{}};
+    auto world = World{};
+    auto& bodyA = *world.CreateBody();
+    auto& bodyB = *world.CreateBody();
     const auto anchor = Length2(2_m, 1_m);
     WeldJointConf def{&bodyA, &bodyB, anchor};
     WeldJoint joint{def};

@@ -354,15 +354,17 @@ public:
 
 class MyDestructionListener :  public DestructionListener
 {
-    void SayGoodbye(const Fixture& fixture) override
+    void SayGoodbye(const Fixture& fixture) noexcept override
     {
         const auto fud = static_cast<FixtureUserData*>(fixture.GetUserData());
         if ( fud )
             delete fud;
     }
     
-    //(unused but must implement all pure virtual functions)
-    void SayGoodbye(const Joint&) override {}
+    void SayGoodbye(const Joint&) noexcept override
+    {
+        // Intentionally empty.
+    }
 };
 
 

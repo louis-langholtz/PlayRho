@@ -26,7 +26,7 @@
 
 namespace playrho {
 
-/// @defgroup FixedMath Mathematical Functions For Fixed Types
+/// @defgroup FixedMath Math Functions For Fixed Types
 /// @brief Common Mathematical Functions For Fixed Types.
 /// @sa Fixed
 /// @sa http://en.cppreference.com/w/cpp/numeric/math

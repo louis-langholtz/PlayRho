@@ -83,7 +83,7 @@ struct ShapeConf;
 /// @endcode
 ///
 /// @sa World, World::CreateBody, World::CreateJoint, World::Destroy
-/// @sa Body::CreateFixture, Body::DestroyFixture, Body::DestroyFixtures
+/// @sa Body::CreateFixture, Body::Destroy, Body::DestroyFixtures
 /// @sa BodyType, Shape, DiskShapeConf
 
 /// @brief Definition of an independent and simulatable "world".
@@ -93,11 +93,15 @@ struct ShapeConf;
 ///   world have no interaction with entities in other worlds. In any case, there's
 ///   precedence, from a physics-engine standpoint, for this being called a world.
 ///
+/// @note World instances do not themselves have any force or acceleration properties.
+///  They simply utilize the acceleration property of the bodies they manage. This is
+///  different than some other engines (like <code>Box2D</code> which provides a world
+///  gravity property).
 /// @note World instances are composed of &mdash; i.e. contain and own &mdash; Body, Joint,
 ///   and Contact instances.
 /// @note This data structure is 232-bytes large (with 4-byte Real on at least one 64-bit
 ///   platform).
-/// @note For example, the following could be used to create a dynamic body having a one meter
+/// @attention For example, the following could be used to create a dynamic body having a one meter
 ///   radius disk shape:
 /// @code{.cpp}
 /// auto world = World{};
@@ -121,34 +125,43 @@ public:
     using Joints = std::vector<Joint*>;
     
     /// @brief Constructs a world object.
+    /// @param def A customized world configuration or its default value.
+    /// @note A lot more configurability can be had via the <code>StepConf</code>
+    ///   data that's given to the world's <code>Step</code> method.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
+    /// @sa Step
     explicit World(const WorldConf& def = GetDefaultWorldConf());
 
     /// @brief Copy constructor.
     World(const World& other);
 
     /// @brief Assignment operator.
+    /// @warning This method should not be called while the world is locked!
+    /// @throws WrongState if this method is called while the world is locked.
     World& operator= (const World& other);
 
     /// @brief Destructor.
-    /// @details
-    /// All physics entities are destroyed and all dynamically allocated memory is released.
-    ~World();
+    /// @details All physics entities are destroyed and all dynamically allocated memory
+    ///    is released.
+    ~World() noexcept;
 
     /// @brief Clears this world.
-    void Clear() noexcept;
+    /// @throws WrongState if this method is called while the world is locked.
+    void Clear();
 
-    /// Register a destruction listener. The listener is owned by you and must
-    /// remain in scope.
+    /// @brief Register a destruction listener.
+    /// @note The listener is owned by you and must remain in scope.
     void SetDestructionListener(DestructionListener* listener) noexcept;
 
-    /// Register a contact event listener. The listener is owned by you and must
-    /// remain in scope.
+    /// @brief Register a contact event listener.
+    /// @note The listener is owned by you and must remain in scope.
     void SetContactListener(ContactListener* listener) noexcept;
 
-    /// @brief Creates a rigid body given a definition.
-    /// @note No reference to the definition is retained.
-    /// @warning This function is locked during callbacks.
+    /// @brief Creates a rigid body with the given configuration.
+    /// @note No references to the configuration are retained. Its value is copied.
+    /// @warning This function should not be used while the world is locked &mdash; as it is
+    ///   during callbacks. If it is, it will throw an exception or abort your program.
+    /// @param def A customized body configuration or its default value.
     /// @return Pointer to newly created body.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
@@ -165,9 +178,8 @@ public:
     /// @sa PhysicalEntities
     void Destroy(Body* body);
 
-    /// @brief Creates a joint to constrain bodies together.
-    /// @details No reference to the definition is retained. This may cause the
-    ///   connected bodies to cease colliding.
+    /// @brief Creates a joint to constrain one or more bodies.
+    /// @note No references to the configuration are retained. Its value is copied.
     /// @warning This function is locked during callbacks.
     /// @return Pointer to newly created joint.
     /// @throws WrongState if this method is called while the world is locked.
@@ -316,7 +328,7 @@ private:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    bool DestroyFixture(Fixture& fixture, bool resetMassData = true);
+    bool Destroy(Fixture& fixture, bool resetMassData = true);
     
     /// @brief Touches each proxy of the given fixture.
     /// @warning Behavior is undefined if called with a fixture for a body which doesn't
@@ -375,9 +387,12 @@ private:
                       const std::map<const Fixture*, Fixture*>& fixtureMap,
                       SizedRange<World::Contacts::const_iterator> range);
     
+    /// @brief Clears this world without checking the world's state.
+    void InternalClear() noexcept;
+
     /// @brief Internal destroy.
     /// @warning Behavior is undefined if passed a null pointer for the joint.
-    void InternalDestroy(Joint& joint);
+    void InternalDestroy(Joint& joint) noexcept;
 
     /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
@@ -485,13 +500,13 @@ private:
     static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
 
     /// @brief Reset bodies for solve TOI.
-    void ResetBodiesForSolveTOI();
+    void ResetBodiesForSolveTOI() noexcept;
 
     /// @brief Reset contacts for solve TOI.
-    void ResetContactsForSolveTOI();
+    void ResetContactsForSolveTOI() noexcept;
     
     /// @brief Reset contacts for solve TOI.
-    void ResetContactsForSolveTOI(Body& body);
+    void ResetContactsForSolveTOI(Body& body) noexcept;
 
     /// @brief Process contacts output.
     struct ProcessContactsOutput
@@ -522,10 +537,10 @@ private:
     bool Add(Joint* j);
 
     /// @brief Removes the given body from this world.
-    void Remove(const Body& b);
+    void Remove(const Body& b) noexcept;
  
     /// @brief Removes the given joint from this world.
-    void Remove(const Joint& j);
+    void Remove(const Joint& j) noexcept;
 
     /// @brief Whether or not "step" is complete.
     /// @details The "step" is completed when there are no more TOI events for the current time step.
@@ -660,7 +675,7 @@ private:
 
     /// @brief Destroys the given fixture's proxies.
     /// @note This resets the proxy count to 0.
-    void DestroyProxies(Fixture& fixture);
+    void DestroyProxies(Fixture& fixture) noexcept;
 
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
@@ -761,8 +776,12 @@ private:
 };
 
 /// @example HelloWorld.cpp
-///   This is an example of how to use the World class.
-///
+/// This is the source file for the <code>HelloWorld</code> application that demonstrates
+/// use of the playrho::d2::World class and more.
+
+/// @example World.cpp
+/// This is the <code>googletest</code> based unit testing file for the
+/// <code>playrho::d2::World</code> class.
 
 inline SizedRange<World::Bodies::iterator> World::GetBodies() noexcept
 {

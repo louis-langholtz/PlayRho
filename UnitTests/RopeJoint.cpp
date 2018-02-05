@@ -112,8 +112,9 @@ TEST(RopeJoint, Construction)
 
 TEST(RopeJoint, GetRopeJointConf)
 {
-    auto bodyA = Body{nullptr, BodyConf{}};
-    auto bodyB = Body{nullptr, BodyConf{}};
+    auto world = World{};
+    auto& bodyA = *world.CreateBody();
+    auto& bodyB = *world.CreateBody();
     RopeJointConf def{&bodyA, &bodyB};
     const auto localAnchorA = Length2{-2_m, 0_m};
     const auto localAnchorB = Length2{+2_m, 0_m};

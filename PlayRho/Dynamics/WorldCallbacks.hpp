@@ -40,13 +40,17 @@ class DestructionListener
 public:
     virtual ~DestructionListener() noexcept = default;
 
-    /// Called when any joint is about to be destroyed due
-    /// to the destruction of one of its attached bodies.
-    virtual void SayGoodbye(const Joint& joint) = 0;
+    /// @brief Called just before destroying a joint.
+    /// @details Called when any joint is about to be destroyed due
+    ///    to the destruction of one of its attached bodies.
+    /// @note Implementations of this method should not throw any exceptions.
+    virtual void SayGoodbye(const Joint& joint) noexcept = 0;
 
-    /// Called when any fixture is about to be destroyed due
-    /// to the destruction of its parent body.
-    virtual void SayGoodbye(const Fixture& fixture) = 0;
+    /// @brief Called just before destroying a fixture.
+    /// @details Called when any fixture is about to be destroyed due
+    ///    to the destruction of its parent body.
+    /// @note Implementations of this method should not throw any exceptions.
+    virtual void SayGoodbye(const Fixture& fixture) noexcept = 0;
 };
 
 /// @brief A pure-virtual interface for "listeners" for contacts.

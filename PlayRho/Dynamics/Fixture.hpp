@@ -50,6 +50,7 @@ class Body;
 ///
 /// @warning you cannot reuse fixtures.
 /// @note Fixtures should be created using the <code>Body::CreateFixture</code> method.
+/// @note Destroy these using the <code>Body::Destroy(Fixture*, bool)</code> method.
 /// @note This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
@@ -60,42 +61,6 @@ class Body;
 class Fixture
 {
 public:
-    Fixture() = delete; // explicitly deleted
-    
-    /// @brief Initializing constructor.
-    ///
-    /// @warning Behavior is undefined if shape is <code>nullptr</code>.
-    ///
-    /// @note This is not meant to be called by normal user code. Use the
-    ///   <code>Body::CreateFixture</code> method instead.
-    ///
-    /// @param body Body the new fixture is to be associated with.
-    /// @param def Initial fixture settings.
-    ///    Friction must be greater-than-or-equal-to zero.
-    ///    <code>AreaDensity</code> must be greater-than-or-equal-to zero.
-    /// @param shape Shareable shape to associate fixture with. Must be non-null.
-    ///
-    Fixture(NonNull<Body*> body, const FixtureConf& def, const Shape& shape):
-        m_body{body},
-        m_userData{def.userData},
-        m_shape{shape},
-        m_filter{def.filter},
-        m_isSensor{def.isSensor}
-    {
-        // Intentionally empty.
-    }
-    
-    /// @brief Copy constructor.
-    Fixture(const Fixture& other);
-    
-    /// @brief Destructor.
-    /// @pre Proxy count is zero.
-    /// @warning Behavior is undefined if proxy count is greater than zero.
-    ~Fixture()
-    {
-        // Intentionally empty.
-    }
-
     /// @brief Gets the parent body of this fixture.
     /// @return Non-null pointer to the parent body.
     NonNull<Body*> GetBody() const noexcept;
@@ -161,6 +126,40 @@ public:
 private:
 
     friend class FixtureAtty;
+    
+    Fixture() = delete; // explicitly deleted
+    
+    /// @brief Copy constructor (explicitly deleted).
+    Fixture(const Fixture& other) = delete;
+    
+    /// @brief Initializing constructor.
+    ///
+    /// @note This is not meant to be called by normal user code. Use the
+    ///   <code>Body::CreateFixture</code> method instead.
+    ///
+    /// @param body Body the new fixture is to be associated with.
+    /// @param def Initial fixture settings.
+    ///    Friction must be greater-than-or-equal-to zero.
+    ///    <code>AreaDensity</code> must be greater-than-or-equal-to zero.
+    /// @param shape Shareable shape to associate fixture with. Must be non-null.
+    ///
+    Fixture(NonNull<Body*> body, const FixtureConf& def, const Shape& shape):
+        m_body{body},
+        m_userData{def.userData},
+        m_shape{shape},
+        m_filter{def.filter},
+        m_isSensor{def.isSensor}
+    {
+        // Intentionally empty.
+    }
+    
+    /// @brief Destructor.
+    /// @pre Proxy count is zero.
+    /// @warning Behavior is undefined if proxy count is greater than zero.
+    ~Fixture()
+    {
+        // Intentionally empty.
+    }
     
     /// @brief Fixture proxies union.
     union FixtureProxies {

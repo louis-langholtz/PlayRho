@@ -303,8 +303,12 @@ public:
     /// @note Used in the regular phase of step processing.
     bool doWarmStart = true;
     
-    /// @brief Do TOI.
-    /// @details Whether or not to perform continuous collision detection.
+    /// @brief Do time of impact (TOI) calculations.
+    /// @details Whether or not to perform any time of impact (TOI) calculations used for doing
+    ///   continuous collision detection. Without this, steps can potentially be computed
+    ///   faster but with increased chance of bodies passing unobstructed through other bodies
+    ///   (a process called "tunneling") even when they're not supposed to be able to go through
+    ///   them.
     /// @note Used in the TOI phase of step processing.
     bool doToi = true;
 

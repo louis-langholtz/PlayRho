@@ -114,6 +114,7 @@ TEST(Fixture, SetAwakeFreeFunction)
     EXPECT_TRUE(body->IsAwake());
 }
 
+#if 0
 TEST(Fixture, CopyConstructor)
 {
     const auto density = 2_kgpm2;
@@ -132,7 +133,7 @@ TEST(Fixture, CopyConstructor)
             DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density)
         };
 
-        World world;
+        auto world = World{};
         const auto body = world.CreateBody();
         const auto fixture = body->CreateFixture(shape, def);
         
@@ -171,7 +172,7 @@ TEST(Fixture, CopyConstructor)
             ChainShapeConf{}.Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
         };
         
-        World world;
+        auto world = World{};
         const auto body = world.CreateBody();
         const auto fixture = body->CreateFixture(shape, def);
         
@@ -233,3 +234,4 @@ TEST(Fixture, CopyConstructor)
         }
     }
 }
+#endif

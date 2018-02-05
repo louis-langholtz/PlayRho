@@ -34,33 +34,6 @@ namespace d2 {
 using std::cbegin;
 using std::cend;
 
-Fixture::Fixture(const Fixture& other):
-    m_body{other.m_body},
-    m_userData{other.m_userData},
-    m_shape{other.m_shape},
-    m_proxyCount{other.m_proxyCount},
-    m_filter{other.m_filter},
-    m_isSensor{other.m_isSensor}
-{
-    switch (other.m_proxyCount)
-    {
-        case 2:
-            m_proxies.asArray[1] = other.m_proxies.asArray[1];
-            // [[fallthrough]]
-        case 1:
-            m_proxies.asArray[0] = other.m_proxies.asArray[0];
-            // [[fallthrough]]
-        case 0:
-            break;
-        default:
-            m_proxies.asBuffer = std::make_unique<FixtureProxy[]>(other.m_proxyCount);
-            std::copy(other.m_proxies.asBuffer.get(),
-                      other.m_proxies.asBuffer.get() + other.m_proxyCount,
-                      m_proxies.asBuffer.get());
-            break;
-    }
-}
-
 FixtureProxy Fixture::GetProxy(ChildCounter index) const noexcept
 {
     assert(index < GetProxyCount());

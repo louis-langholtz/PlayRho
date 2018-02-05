@@ -76,6 +76,7 @@ class ContactListener;
 /// @note This data structure is 104-bytes large (on at least one 64-bit platform).
 ///
 /// @ingroup PhysicalEntities
+/// @ingroup ConstraintsGroup
 ///
 class Contact
 {
@@ -93,7 +94,7 @@ public:
     
     /// @brief Gets the update configuration from the given step configuration data.
     static UpdateConf GetUpdateConf(const StepConf& conf) noexcept;
-
+    
     /// @brief Initializing constructor.
     ///
     /// @param fA Non-null pointer to fixture A that must have a shape
@@ -107,8 +108,6 @@ public:
     /// @warning Behavior is undefined if <code>fA</code> is null.
     /// @warning Behavior is undefined if <code>fB</code> is null.
     /// @warning Behavior is undefined if <code>fA == fB</code>.
-    /// @warning Behavior is undefined if <code>fA</code> has no associated shape.
-    /// @warning Behavior is undefined if <code>fB</code> has no associated shape.
     /// @warning Behavior is undefined if both fixture's have the same body.
     ///
     Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB);
@@ -118,10 +117,10 @@ public:
     
     /// @brief Copy constructor.
     Contact(const Contact& copy) = default;
-    
+
     /// @brief Gets the contact manifold.
     const Manifold& GetManifold() const noexcept;
-
+    
     /// @brief Is this contact touching?
     /// @details
     /// Touching is defined as either:
@@ -334,6 +333,10 @@ private:
     
     FlagsType m_flags = e_enabledFlag|e_dirtyFlag; ///< Flags.
 };
+
+/// @example Contact.cpp
+/// This is the <code>googletest</code> based unit testing file for the
+///   <code>playrho::d2::Contact</code> class.
 
 inline const Manifold& Contact::GetManifold() const noexcept
 {

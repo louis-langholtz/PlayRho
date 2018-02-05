@@ -119,7 +119,7 @@ PLAYRHO_CONSTEXPR inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
     return StripUnit(v.get());
 }
 
-/// @defgroup Math Additional Mathematical Functions
+/// @defgroup Math Additional Math Functions
 /// @brief Additional functions for common mathematical operations.
 /// @details These are non-member non-friend functions for mathematical operations
 ///   especially those with mixed input and output types.

@@ -31,7 +31,10 @@ namespace d2 {
 
 /// @brief Joint attorney.
 ///
-/// @details This class uses the "attorney-client" idiom to control the granularity of
+/// @details This is the "joint attorney" which provides limited privileged access to the
+///   Joint class for the World class.
+///
+/// @note This class uses the "attorney-client" idiom to control the granularity of
 ///   friend-based access to the Joint class. This is meant to help preserve and enforce
 ///   the invariants of the Joint class.
 ///
@@ -48,7 +51,7 @@ private:
     }
     
     /// @brief Destroys the given joint.
-    static void Destroy(const Joint* j)
+    static void Destroy(const Joint* j) noexcept
     {
         Joint::Destroy(j);
     }

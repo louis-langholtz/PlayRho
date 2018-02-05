@@ -67,7 +67,7 @@ public:
             const auto selectedFixture = selectedFixtures.size() == 1? *(selectedFixtures.begin()): nullptr;
             const auto wasSelected = selectedFixture == m_top;
             const auto body = m_top->GetBody();
-            body->DestroyFixture(m_top);
+            body->Destroy(m_top);
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 5_m;
             conf.density = newDensity;

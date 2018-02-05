@@ -97,7 +97,7 @@ public:
         const auto body1 = m_piece1->GetBody();
         const auto center = body1->GetWorldCenter();
 
-        body1->DestroyFixture(m_piece2);
+        body1->Destroy(m_piece2);
         m_piece2 = nullptr;
 
         BodyConf bd;

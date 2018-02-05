@@ -129,7 +129,7 @@ public:
 
     /// @brief Destroys a leaf node.
     /// @warning Behavior is undefined if the given index is not valid.
-    void DestroyLeaf(Size index);
+    void DestroyLeaf(Size index) noexcept;
 
     /// @brief Updates a leaf node with a new AABB value.
     /// @warning Behavior is undefined if the given index is not valid.
@@ -268,11 +268,11 @@ private:
     /// @warning Behavior is undefined if the given index is not valid.
     /// @post The specified leaf index is not referenced by any other nodes.
     /// @post The identified node has its other value set to the invalid size.
-    void RemoveLeaf(Size leaf);
+    void RemoveLeaf(Size leaf) noexcept;
     
     /// @brief Rebalances the tree from the given index.
     /// @warning Behavior is undefined if the given index is not valid.
-    void Rebalance(Size index);
+    void Rebalance(Size index) noexcept;
     
     /// @brief Gets the parent node index of the node identified by the given index.
     Size GetParent(Size index) const noexcept;
