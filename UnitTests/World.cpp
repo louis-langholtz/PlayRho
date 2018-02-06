@@ -1392,6 +1392,7 @@ public:
             EXPECT_THROW(bA->SetType(BodyType::Kinematic), WrongState);
         }
         EXPECT_THROW(w->Destroy(bA), WrongState);
+        EXPECT_THROW(w->Clear(), WrongState);
         EXPECT_THROW(w->CreateJoint(DistanceJointConf{bA, bB}), WrongState);
         EXPECT_THROW(w->Step(stepConf), WrongState);
         EXPECT_THROW(w->ShiftOrigin(Length2{}), WrongState);
