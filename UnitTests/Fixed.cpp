@@ -547,6 +547,7 @@ TEST(Fixed32, sqrt)
     EXPECT_TRUE(isnan(sqrt(Fixed32::GetNaN())));
     EXPECT_EQ(sqrt(Fixed32{0}), Fixed32{0});
     EXPECT_EQ(sqrt(Fixed32::GetInfinity()), Fixed32::GetInfinity());
+    EXPECT_EQ(sqrt(Fixed32::GetMin()), Fixed32::GetMin());
     EXPECT_EQ(sqrt(Fixed32{1}), Fixed32{1});
     EXPECT_NEAR(static_cast<double>(sqrt(Fixed32{0.25})), 0.5, 0.0);
     EXPECT_NEAR(static_cast<double>(sqrt(Fixed32{0.0625})), 0.25, tolerance);

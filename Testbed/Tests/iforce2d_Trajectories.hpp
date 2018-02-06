@@ -263,7 +263,7 @@ public:
             
             if (i > 0)
             {
-                d2::RayCast(m_world.GetTree(), RayCastInput{lastTP, trajectoryPosition, 1},
+                d2::RayCast(m_world.GetTree(), RayCastInput{lastTP, trajectoryPosition, Real{1}},
                                 [&](Fixture* f, ChildCounter, Length2 p, UnitVec) {
                     if (f->GetBody() == m_littleBox)
                     {
