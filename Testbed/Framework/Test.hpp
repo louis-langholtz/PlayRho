@@ -277,8 +277,8 @@ protected:
     class DestructionListenerImpl : public DestructionListener
     {
     public:
-        void SayGoodbye(const Fixture& fixture) { NOT_USED(fixture); }
-        void SayGoodbye(const Joint& joint);
+        void SayGoodbye(const Fixture& fixture) noexcept { NOT_USED(fixture); }
+        void SayGoodbye(const Joint& joint) noexcept;
         
         Test* test;
     };

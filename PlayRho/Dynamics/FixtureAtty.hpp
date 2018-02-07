@@ -34,7 +34,10 @@ namespace d2 {
 
 /// @brief Fixture attorney.
 ///
-/// @details This class uses the "attorney-client" idiom to control the granularity of
+/// @details This is the "fixture attorney" which provides limited privileged access to the
+///   Fixture class for the World class.
+///
+/// @note This class uses the "attorney-client" idiom to control the granularity of
 ///   friend-based access to the Fixture class. This is meant to help preserve and enforce
 ///   the invariants of the Fixture class.
 ///
@@ -58,16 +61,21 @@ private:
     }
     
     /// @brief Resets the proxies of the given fixture.
-    static void ResetProxies(Fixture& fixture)
+    static void ResetProxies(Fixture& fixture) noexcept
     {
         fixture.ResetProxies();
     }
     
     /// @brief Creates a new fixture for the given body and with the given settings.
-    static auto Create(Body* body, const FixtureConf& def,
-                           const Shape& shape)
+    static Fixture* Create(Body& body, const FixtureConf& def, Shape shape)
     {
-        return new Fixture{body, def, shape};
+        return new Fixture{&body, def, shape};
+    }
+    
+    /// @brief Deletes a fixture.
+    static void Delete(Fixture *fixture)
+    {
+        delete fixture;
     }
     
     friend class World;

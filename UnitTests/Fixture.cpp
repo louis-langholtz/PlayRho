@@ -114,10 +114,10 @@ TEST(Fixture, SetAwakeFreeFunction)
     EXPECT_TRUE(body->IsAwake());
 }
 
-TEST(Fixture, CopyConstructor)
+TEST(Fixture, Proxies)
 {
     const auto density = 2_kgpm2;
-    int variable;
+    auto variable = 0;
     const auto userData = &variable;
     const auto friction = Real(0.5);
     const auto restitution = Real(0.4);
@@ -132,7 +132,7 @@ TEST(Fixture, CopyConstructor)
             DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density)
         };
 
-        World world;
+        auto world = World{};
         const auto body = world.CreateBody();
         const auto fixture = body->CreateFixture(shape, def);
         
@@ -147,23 +147,8 @@ TEST(Fixture, CopyConstructor)
 
         const auto stepConf = StepConf{};
         world.Step(stepConf);
-        ASSERT_EQ(fixture->GetProxyCount(), ChildCounter{1});
-        ASSERT_EQ(fixture->GetProxy(0), FixtureProxy{0});
-
-        Fixture copy{*fixture};
-        
-        EXPECT_EQ(copy.GetBody(), body);
-        EXPECT_EQ(copy.GetShape(), shape);
-        EXPECT_EQ(copy.GetDensity(), density);
-        EXPECT_EQ(copy.GetFriction(), friction);
-        EXPECT_EQ(copy.GetUserData(), userData);
-        EXPECT_EQ(copy.GetRestitution(), restitution);
-        EXPECT_EQ(copy.IsSensor(), isSensor);
-        EXPECT_EQ(copy.GetProxyCount(), fixture->GetProxyCount());
-        if (copy.GetProxyCount() == fixture->GetProxyCount())
-        {
-            EXPECT_EQ(copy.GetProxy(0), fixture->GetProxy(0));
-        }
+        EXPECT_EQ(fixture->GetProxyCount(), ChildCounter{1});
+        EXPECT_EQ(fixture->GetProxy(0), FixtureProxy{0});
     }
     
     {
@@ -171,7 +156,7 @@ TEST(Fixture, CopyConstructor)
             ChainShapeConf{}.Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
         };
         
-        World world;
+        auto world = World{};
         const auto body = world.CreateBody();
         const auto fixture = body->CreateFixture(shape, def);
         
@@ -182,20 +167,9 @@ TEST(Fixture, CopyConstructor)
         
         const auto stepConf = StepConf{};
         world.Step(stepConf);
-        ASSERT_EQ(fixture->GetProxyCount(), ChildCounter{2});
-        ASSERT_EQ(fixture->GetProxy(0), FixtureProxy{0});
-        ASSERT_EQ(fixture->GetProxy(1), FixtureProxy{1});
-        
-        Fixture copy{*fixture};
-        
-        EXPECT_EQ(copy.GetBody(), body);
-        EXPECT_EQ(copy.GetShape(), shape);
-        EXPECT_EQ(copy.IsSensor(), isSensor);
-        EXPECT_EQ(copy.GetProxyCount(), fixture->GetProxyCount());
-        if (copy.GetProxyCount() == fixture->GetProxyCount())
-        {
-            EXPECT_EQ(copy.GetProxy(0), fixture->GetProxy(0));
-        }
+        EXPECT_EQ(fixture->GetProxyCount(), ChildCounter{2});
+        EXPECT_EQ(fixture->GetProxy(0), FixtureProxy{0});
+        EXPECT_EQ(fixture->GetProxy(1), FixtureProxy{1});
     }
     
     {
@@ -204,7 +178,7 @@ TEST(Fixture, CopyConstructor)
             .Add(Length2{0_m, +2_m}).Add(Length2{2_m, 2_m})
         };
 
-        World world;
+        auto world = World{};
         const auto body = world.CreateBody();
         const auto fixture = body->CreateFixture(shape, def);
         
@@ -215,21 +189,10 @@ TEST(Fixture, CopyConstructor)
         
         const auto stepConf = StepConf{};
         world.Step(stepConf);
-        ASSERT_EQ(fixture->GetProxyCount(), ChildCounter{4});
-        ASSERT_EQ(fixture->GetProxy(0), FixtureProxy{0});
-        ASSERT_EQ(fixture->GetProxy(1), FixtureProxy{1});
-        ASSERT_EQ(fixture->GetProxy(2), FixtureProxy{3});
-        ASSERT_EQ(fixture->GetProxy(3), FixtureProxy{5});
-
-        Fixture copy{*fixture};
-        
-        EXPECT_EQ(copy.GetBody(), body);
-        EXPECT_EQ(copy.GetShape(), shape);
-        EXPECT_EQ(copy.IsSensor(), isSensor);
-        EXPECT_EQ(copy.GetProxyCount(), fixture->GetProxyCount());
-        if (copy.GetProxyCount() == fixture->GetProxyCount())
-        {
-            EXPECT_EQ(copy.GetProxy(0), fixture->GetProxy(0));
-        }
+        EXPECT_EQ(fixture->GetProxyCount(), ChildCounter{4});
+        EXPECT_EQ(fixture->GetProxy(0), FixtureProxy{0});
+        EXPECT_EQ(fixture->GetProxy(1), FixtureProxy{1});
+        EXPECT_EQ(fixture->GetProxy(2), FixtureProxy{3});
+        EXPECT_EQ(fixture->GetProxy(3), FixtureProxy{5});
     }
 }

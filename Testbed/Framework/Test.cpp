@@ -381,7 +381,7 @@ bool Test::Contains(const FixtureSet& fixtures, const Fixture* f) noexcept
     return fixtures.find(const_cast<Fixture*>(f)) != fixtures.end();
 }
 
-void Test::DestructionListenerImpl::SayGoodbye(const Joint& joint)
+void Test::DestructionListenerImpl::SayGoodbye(const Joint& joint) noexcept
 {
     if (test->m_targetJoint == &joint)
     {

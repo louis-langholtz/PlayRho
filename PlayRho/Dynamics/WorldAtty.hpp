@@ -31,7 +31,10 @@ namespace d2 {
     
 /// @brief World attorney.
 ///
-/// @details This class uses the "attorney-client" idiom to control the granularity of
+/// @details This is the "world attorney" which provides limited privileged access to the
+///   World class for the Body and Fixture classes.
+///
+/// @note This class uses the "attorney-client" idiom to control the granularity of
 ///   friend-based access to the World class. This is meant to help preserve and enforce
 ///   the invariants of the World class.
 ///
@@ -90,9 +93,9 @@ private:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    static bool DestroyFixture(World& world, Fixture& fixture, bool resetMassData)
+    static bool Destroy(World& world, Fixture& fixture, bool resetMassData)
     {
-        return world.DestroyFixture(fixture, resetMassData);
+        return world.Destroy(fixture, resetMassData);
     }
     
     /// @brief Register for proxies for the given body.

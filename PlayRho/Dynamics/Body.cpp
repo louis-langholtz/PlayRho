@@ -101,7 +101,7 @@ Body::Body(World* world, const BodyConf& bd):
     SetUnderActiveTime(bd.underActiveTime);
 }
 
-Body::~Body()
+Body::~Body() noexcept
 {
     assert(m_joints.empty());
     assert(m_contacts.empty());
@@ -119,13 +119,13 @@ Fixture* Body::CreateFixture(const Shape& shape, const FixtureConf& def,
     return WorldAtty::CreateFixture(*m_world, *this, shape, def, resetMassData);
 }
 
-bool Body::DestroyFixture(Fixture* fixture, bool resetMassData)
+bool Body::Destroy(Fixture* fixture, bool resetMassData)
 {
     if (fixture->GetBody() != this)
     {
         return false;
     }
-    return WorldAtty::DestroyFixture(*m_world, *fixture, resetMassData);
+    return WorldAtty::Destroy(*m_world, *fixture, resetMassData);
 }
 
 void Body::DestroyFixtures()
@@ -133,7 +133,7 @@ void Body::DestroyFixtures()
     while (!m_fixtures.empty())
     {
         const auto fixture = GetPtr(m_fixtures.front());
-        DestroyFixture(fixture, false);
+        Destroy(fixture, false);
     }
     ResetMassData();
 }

@@ -113,7 +113,8 @@ TEST(GearJoint, IsOkay)
 
 TEST(GearJoint, Construction)
 {
-    auto body = Body{nullptr, BodyConf{}};
+    auto world = World{};
+    auto& body = *world.CreateBody();
     auto rdef = RevoluteJointConf{&body, &body, Length2{}};
     auto revJoint1 = RevoluteJoint{rdef};
     auto revJoint2 = RevoluteJoint{rdef};
@@ -141,7 +142,8 @@ TEST(GearJoint, Construction)
 
 TEST(GearJoint, ShiftOrigin)
 {
-    auto body = Body{nullptr, BodyConf{}};
+    auto world = World{};
+    auto& body = *world.CreateBody();
     auto rdef = RevoluteJointConf{&body, &body, Length2{}};
     auto revJoint1 = RevoluteJoint{rdef};
     auto revJoint2 = RevoluteJoint{rdef};
@@ -153,7 +155,8 @@ TEST(GearJoint, ShiftOrigin)
 
 TEST(GearJoint, SetRatio)
 {
-    Body body{nullptr, BodyConf{}};
+    auto world = World{};
+    auto& body = *world.CreateBody();
     RevoluteJointConf rdef{&body, &body, Length2{}};
     RevoluteJoint revJoint1{rdef};
     RevoluteJoint revJoint2{rdef};
@@ -166,7 +169,8 @@ TEST(GearJoint, SetRatio)
 
 TEST(GearJoint, GetGearJointConf)
 {
-    Body body{nullptr, BodyConf{}};
+    auto world = World{};
+    auto& body = *world.CreateBody();
     RevoluteJointConf rdef{&body, &body, Length2{}};
     RevoluteJoint revJoint1{rdef};
     RevoluteJoint revJoint2{rdef};

@@ -61,7 +61,7 @@ public:
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Destroy a shape.", [&](KeyActionMods) {
             if (m_fixture2)
             {
-                m_body->DestroyFixture(m_fixture2);
+                m_body->Destroy(m_fixture2);
                 m_fixture2 = nullptr;
                 m_body->SetAwake();
             }

@@ -90,7 +90,7 @@ Joint::Joint(const JointConf& def):
     // Intentionally empty.
 }
 
-void Joint::Destroy(const Joint* joint)
+void Joint::Destroy(const Joint* joint) noexcept
 {
     delete joint;
 }

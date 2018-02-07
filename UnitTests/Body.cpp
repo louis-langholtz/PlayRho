@@ -2,17 +2,19 @@
  * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -24,7 +26,6 @@
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-
 #include <chrono>
 
 using namespace playrho;
@@ -178,7 +179,7 @@ TEST(Body, Traits)
     EXPECT_FALSE(std::is_nothrow_constructible<Body>::value);
     EXPECT_FALSE(std::is_trivially_constructible<Body>::value);
     
-    EXPECT_TRUE(std::is_copy_constructible<Body>::value);
+    EXPECT_FALSE(std::is_copy_constructible<Body>::value);
     EXPECT_FALSE(std::is_nothrow_copy_constructible<Body>::value);
     EXPECT_FALSE(std::is_trivially_copy_constructible<Body>::value);
     
@@ -186,8 +187,8 @@ TEST(Body, Traits)
     EXPECT_FALSE(std::is_nothrow_copy_assignable<Body>::value);
     EXPECT_FALSE(std::is_trivially_copy_assignable<Body>::value);
     
-    EXPECT_TRUE(std::is_destructible<Body>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<Body>::value);
+    EXPECT_FALSE(std::is_destructible<Body>::value);
+    EXPECT_FALSE(std::is_nothrow_destructible<Body>::value);
     EXPECT_FALSE(std::is_trivially_destructible<Body>::value);
 }
 
@@ -202,9 +203,9 @@ TEST(Body, GetFlagsStatic)
 
 TEST(Body, WorldCreated)
 {
-    World world;
+    auto world = World{};
     
-    auto body = world.CreateBody();
+    const auto body = world.CreateBody();
     ASSERT_NE(body, nullptr);
 
     EXPECT_EQ(body->GetWorld(), &world);
@@ -218,7 +219,7 @@ TEST(Body, WorldCreated)
 
     EXPECT_TRUE(body->GetFixtures().empty());
     {
-        int i = 0;
+        auto i = 0;
         for (auto&& fixture: body->GetFixtures())
         {
             EXPECT_EQ(GetRef(fixture).GetBody(), body);
@@ -229,7 +230,7 @@ TEST(Body, WorldCreated)
 
     EXPECT_TRUE(body->GetJoints().empty());
     {
-        int i = 0;
+        auto i = 0;
         for (auto&& joint: body->GetJoints())
         {
             NOT_USED(joint);
@@ -240,7 +241,7 @@ TEST(Body, WorldCreated)
     
     EXPECT_TRUE(body->GetContacts().empty());
     {
-        int i = 0;
+        auto i = 0;
         for (auto&& ce: body->GetContacts())
         {
             NOT_USED(ce);
@@ -257,9 +258,9 @@ TEST(Body, SetVelocityDoesNothingToStatic)
         AngularVelocity{Real(0) * RadianPerSecond}
     };
 
-    World world;
+    auto world = World{};
 
-    auto body = world.CreateBody();
+    const auto body = world.CreateBody();
     ASSERT_NE(body, nullptr);
     ASSERT_FALSE(body->IsAwake());
     ASSERT_FALSE(body->IsSpeedable());
@@ -293,9 +294,9 @@ TEST(Body, CreateFixture)
     EXPECT_THROW(body->CreateFixture(Shape{DiskShapeConf{maxRadius + maxRadius / 10}}), InvalidArgument);
 }
 
-TEST(Body, DestroyFixture)
+TEST(Body, Destroy)
 {
-    World world;
+    auto world = World{};
     const auto bodyA = world.CreateBody();
     const auto bodyB = world.CreateBody();
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
@@ -305,16 +306,16 @@ TEST(Body, DestroyFixture)
     ASSERT_NE(fixtureA, nullptr);
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
 
-    EXPECT_FALSE(bodyB->DestroyFixture(fixtureA));
+    EXPECT_FALSE(bodyB->Destroy(fixtureA));
     EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
-    EXPECT_TRUE(bodyA->DestroyFixture(fixtureA));
+    EXPECT_TRUE(bodyA->Destroy(fixtureA));
     EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
 }
 
 TEST(Body, SetEnabled)
 {
     auto stepConf = StepConf{};
-    World world;
+    auto world = World{};
     const auto body = world.CreateBody();
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
@@ -347,7 +348,7 @@ TEST(Body, SetEnabled)
 
 TEST(Body, SetFixedRotation)
 {
-    World world;
+    auto world = World{};
     const auto body = world.CreateBody();
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
@@ -366,7 +367,7 @@ TEST(Body, SetFixedRotation)
 
 TEST(Body, CreateAndDestroyFixture)
 {
-    World world;
+    auto world = World{};
 
     auto body = world.CreateBody();
     ASSERT_NE(body, nullptr);
@@ -386,7 +387,7 @@ TEST(Body, CreateAndDestroyFixture)
         EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
         EXPECT_FALSE(body->GetFixtures().empty());
         {
-            int i = 0;
+            auto i = 0;
             for (auto&& f: body->GetFixtures())
             {
                 EXPECT_EQ(GetPtr(f), fixture);
@@ -398,7 +399,7 @@ TEST(Body, CreateAndDestroyFixture)
         body->ResetMassData();
         EXPECT_FALSE(body->IsMassDataDirty());
 
-        body->DestroyFixture(fixture, false);
+        body->Destroy(fixture, false);
         EXPECT_TRUE(body->GetFixtures().empty());
         EXPECT_TRUE(body->IsMassDataDirty());
         
@@ -416,7 +417,7 @@ TEST(Body, CreateAndDestroyFixture)
         EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
         EXPECT_FALSE(body->GetFixtures().empty());
         {
-            int i = 0;
+            auto i = 0;
             for (auto&& f: body->GetFixtures())
             {
                 EXPECT_EQ(GetPtr(f), fixture);
@@ -437,7 +438,7 @@ TEST(Body, CreateAndDestroyFixture)
 
 TEST(Body, SetType)
 {
-    BodyConf bd;
+    auto bd = BodyConf{};
     bd.type = BodyType::Dynamic;
     auto world = World{};
     const auto body = world.CreateBody(bd);
@@ -521,9 +522,9 @@ TEST(Body, SetMassData)
 
 TEST(Body, SetTransform)
 {
-    BodyConf bd;
+    auto bd = BodyConf{};
     bd.type = BodyType::Dynamic;
-    World world;
+    auto world = World{};
     const auto body = world.CreateBody(bd);
     const auto xfm1 = Transformation{Length2{}, UnitVec::GetRight()};
     ASSERT_EQ(body->GetTransformation(), xfm1);
@@ -668,7 +669,7 @@ TEST(Body, SetAcceleration)
 
 TEST(Body, CreateLotsOfFixtures)
 {
-    BodyConf bd;
+    auto bd = BodyConf{};
     bd.type = BodyType::Dynamic;
     auto conf = DiskShapeConf{};
     conf.vertexRadius = 2.871_m;
@@ -680,7 +681,7 @@ TEST(Body, CreateLotsOfFixtures)
     
     start = std::chrono::system_clock::now();
     {
-        World world;
+        auto world = World{};
 
         auto body = world.CreateBody(bd);
         ASSERT_NE(body, nullptr);
@@ -709,7 +710,7 @@ TEST(Body, CreateLotsOfFixtures)
 
     start = std::chrono::system_clock::now();
     {
-        World world;
+        auto world = World{};
         
         auto body = world.CreateBody(bd);
         ASSERT_NE(body, nullptr);
@@ -723,7 +724,7 @@ TEST(Body, CreateLotsOfFixtures)
         
         EXPECT_FALSE(body->GetFixtures().empty());
         {
-            int i = decltype(num){0};
+            auto i = decltype(num){0};
             for (auto&& f: body->GetFixtures())
             {
                 NOT_USED(f);
@@ -740,7 +741,7 @@ TEST(Body, CreateLotsOfFixtures)
 
 TEST(Body, GetWorldIndex)
 {
-    World world;
+    auto world = World{};
     ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
     const auto body0 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(1));
@@ -756,9 +757,9 @@ TEST(Body, GetWorldIndex)
 
 TEST(Body, ApplyLinearAccelDoesNothingToStatic)
 {
-    World world;
+    auto world = World{};
     
-    auto body = world.CreateBody();
+    const auto body = world.CreateBody();
     ASSERT_NE(body, nullptr);
     ASSERT_FALSE(body->IsAwake());
     ASSERT_FALSE(body->IsSpeedable());
@@ -777,7 +778,7 @@ TEST(Body, ApplyLinearAccelDoesNothingToStatic)
 
 TEST(Body, GetAccelerationFF)
 {
-    World world;
+    auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
     
@@ -789,7 +790,7 @@ TEST(Body, GetAccelerationFF)
 
 TEST(Body, SetAccelerationFF)
 {
-    World world;
+    auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
     

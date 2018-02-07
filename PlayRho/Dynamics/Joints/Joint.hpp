@@ -43,6 +43,7 @@ struct JointConf;
 
 /// @defgroup JointsGroup Joint Classes
 /// @brief The user creatable classes that specify constraints on one or more Body instances.
+/// @ingroup ConstraintsGroup
 
 /// @brief A body constraint pointer alias.
 using BodyConstraintPtr = BodyConstraint*;
@@ -62,8 +63,8 @@ using BodyConstraintsMap =
 
 /// @brief Base joint class.
 ///
-/// @details Joints are used to constraint two bodies together in various fashions.
-///   Some joints also feature limits and motors.
+/// @details Joints are constraints that are used to constrain one or more bodies in various
+///   fashions. Some joints also feature limits and motors.
 ///
 /// @ingroup JointsGroup
 /// @ingroup PhysicalEntities
@@ -75,18 +76,28 @@ class Joint
 public:
     
     /// @brief Limit state.
+    /// @note Only used by joints that implement some notion of a limited range.
     enum LimitState
     {
+        /// @brief Inactive limit.
         e_inactiveLimit,
+
+        /// @brief At-lower limit.
         e_atLowerLimit,
+        
+        /// @brief At-upper limit.
         e_atUpperLimit,
+        
+        /// @brief Equal limit.
+        /// @details Equal limit is used to indicate that a joint's upper and lower limits
+        ///   are approximately the same.
         e_equalLimits
     };
 
     /// @brief Is the given definition okay.
     static bool IsOkay(const JointConf& def) noexcept;
 
-    virtual ~Joint() = default;
+    virtual ~Joint() noexcept = default;
 
     /// @brief Gets the first body attached to this joint.
     Body* GetBodyA() const noexcept;
@@ -175,7 +186,7 @@ private:
 
     /// @brief Destroys the given joint.
     /// @note This calls the joint's destructor.
-    static void Destroy(const Joint* joint);
+    static void Destroy(const Joint* joint) noexcept;
 
     /// @brief Initializes velocity constraint data based on the given solver data.
     /// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.

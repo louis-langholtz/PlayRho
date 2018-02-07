@@ -53,12 +53,12 @@ using namespace playrho::d2;
 
 class UnitTestDestructionListener: public playrho::d2::DestructionListener
 {
-    void SayGoodbye(const Joint& joint) override
+    void SayGoodbye(const Joint& joint) noexcept override
     {
         joints.push_back(&joint);
     }
     
-    void SayGoodbye(const Fixture& fixture) override
+    void SayGoodbye(const Fixture& fixture) noexcept override
     {
         fixtures.push_back(&fixture);
     }
@@ -538,16 +538,16 @@ TEST(World, CreateAndDestroyFixture)
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
     EXPECT_FALSE(other.TouchProxies(*fixtureA));
     
-    EXPECT_TRUE(world.DestroyFixture(fixtureA));
+    EXPECT_TRUE(world.Destroy(fixtureA));
     EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
     
-    EXPECT_FALSE(world.DestroyFixture(nullptr));
+    EXPECT_FALSE(world.Destroy(static_cast<Fixture*>(nullptr)));
     
     const auto bodyC = other.CreateBody();
     ASSERT_NE(bodyC, nullptr);
     const auto fixtureC = other.CreateFixture(*bodyC, Shape{DiskShapeConf(1_m)});
     ASSERT_NE(fixtureC, nullptr);
-    EXPECT_FALSE(world.DestroyFixture(fixtureC));
+    EXPECT_FALSE(world.Destroy(fixtureC));
     
     EXPECT_THROW(world.CreateFixture(*bodyC, Shape{DiskShapeConf(1_m)}), InvalidArgument);
 }
@@ -1392,11 +1392,12 @@ public:
             EXPECT_THROW(bA->SetType(BodyType::Kinematic), WrongState);
         }
         EXPECT_THROW(w->Destroy(bA), WrongState);
+        EXPECT_THROW(w->Clear(), WrongState);
         EXPECT_THROW(w->CreateJoint(DistanceJointConf{bA, bB}), WrongState);
         EXPECT_THROW(w->Step(stepConf), WrongState);
         EXPECT_THROW(w->ShiftOrigin(Length2{}), WrongState);
         EXPECT_THROW(bA->CreateFixture(Shape{DiskShapeConf{}}), WrongState);
-        EXPECT_THROW(bA->DestroyFixture(fA), WrongState);
+        EXPECT_THROW(bA->Destroy(fA), WrongState);
     }
     
     void EndContact(Contact& contact) override

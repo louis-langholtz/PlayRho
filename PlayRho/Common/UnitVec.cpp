@@ -31,6 +31,7 @@ UnitVec::PolarCoord UnitVec::Get(const Real x, const Real y, const UnitVec fallb
     if (isnormal(magnitudeSquared))
     {
         const auto magnitude = sqrt(magnitudeSquared);
+        assert(isnormal(magnitude));
         return std::make_pair(UnitVec{x / magnitude, y / magnitude}, magnitude);
     }
     

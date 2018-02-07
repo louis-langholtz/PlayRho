@@ -31,7 +31,10 @@ namespace d2 {
 
 /// @brief Contact attorney.
 ///
-/// @details This class uses the "attorney-client" idiom to control the granularity of
+/// @details This is the "contact attorney" which provides limited privileged access to the
+///   Contact class for the World class.
+///
+/// @note This class uses the "attorney-client" idiom to control the granularity of
 ///   friend-based access to the Contact class. This is meant to help preserve and enforce
 ///   the invariants of the Contact class.
 ///

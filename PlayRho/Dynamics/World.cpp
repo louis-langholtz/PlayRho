@@ -397,7 +397,7 @@ namespace {
         return state == TOIOutput::e_touching;
     }
     
-    void FlagContactsForFiltering(const Body& bodyA, const Body& bodyB)
+    void FlagContactsForFiltering(const Body& bodyA, const Body& bodyB) noexcept
     {
         for (auto& ci: bodyB.GetContacts())
         {
@@ -468,12 +468,21 @@ World& World::operator= (const World& other)
     return *this;
 }
     
-World::~World()
+World::~World() noexcept
 {
-    Clear();
+    InternalClear();
 }
 
-void World::Clear() noexcept
+void World::Clear()
+{
+    if (IsLocked())
+    {
+        throw WrongState("World::Clear: world is locked");
+    }
+    InternalClear();
+}
+
+void World::InternalClear() noexcept
 {
     m_proxyKeys.clear();
     m_proxies.clear();
@@ -501,7 +510,7 @@ void World::Clear() noexcept
     });
 
     for_each(cbegin(m_bodies), cend(m_bodies), [&](const Bodies::value_type& b) {
-        delete GetPtr(b);
+        BodyAtty::Delete(GetPtr(b));
     });
     for_each(cbegin(m_contacts), cend(m_contacts), [&](const Contacts::value_type& c){
         delete GetPtr(std::get<Contact*>(c));
@@ -524,7 +533,8 @@ void World::CopyBodies(std::map<const Body*, Body*>& bodyMap,
             const auto& otherFixture = GetRef(of);
             const auto shape = otherFixture.GetShape();
             const auto fixtureConf = GetFixtureConf(otherFixture);
-            const auto newFixture = BodyAtty::CreateFixture(*newBody, shape, fixtureConf);
+            const auto newFixture = FixtureAtty::Create(*newBody, fixtureConf, shape);
+            BodyAtty::AddFixture(*newBody, newFixture);
             fixtureMap[&otherFixture] = newFixture;
             const auto childCount = otherFixture.GetProxyCount();
             auto proxies = std::make_unique<FixtureProxy[]>(childCount);
@@ -717,7 +727,7 @@ Body* World::CreateBody(const BodyConf& def)
         throw LengthError("World::CreateBody: operation would exceed MaxBodies");
     }
     
-    auto& b = *(new Body(this, def));
+    auto& b = *BodyAtty::CreateBody(this, def);
 
     // Add to world bodies collection.
     //
@@ -732,14 +742,14 @@ Body* World::CreateBody(const BodyConf& def)
     return &b;
 }
 
-void World::Remove(const Body& b)
+void World::Remove(const Body& b) noexcept
 {
     const auto it = find_if(cbegin(m_bodies), cend(m_bodies), [&](const Bodies::value_type& body) {
         return GetPtr(body) == &b;
     });
     if (it != m_bodies.end())
     {
-        delete GetPtr(*it);
+        BodyAtty::Delete(GetPtr(*it));
         m_bodies.erase(it);
     }
 }
@@ -776,6 +786,7 @@ void World::Destroy(Body* body)
             m_destructionListener->SayGoodbye(fixture);
         }
         DestroyProxies(fixture);
+        FixtureAtty::Delete(&fixture);
     });
     
     Remove(*body);
@@ -821,7 +832,7 @@ bool World::Add(Joint* j)
     return true;
 }
 
-void World::Remove(const Joint& j)
+void World::Remove(const Joint& j) noexcept
 {
     const auto endIter = cend(m_joints);
     const auto iter = find(cbegin(m_joints), endIter, &j);
@@ -841,7 +852,7 @@ void World::Destroy(Joint* joint)
     }
 }
     
-void World::InternalDestroy(Joint& joint)
+void World::InternalDestroy(Joint& joint) noexcept
 {
     Remove(joint);
     
@@ -1199,7 +1210,7 @@ IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
     return results;
 }
 
-void World::ResetBodiesForSolveTOI()
+void World::ResetBodiesForSolveTOI() noexcept
 {
     for_each(begin(m_bodies), end(m_bodies), [&](Bodies::value_type& body) {
         auto& b = GetRef(body);
@@ -1208,7 +1219,7 @@ void World::ResetBodiesForSolveTOI()
     });
 }
 
-void World::ResetContactsForSolveTOI()
+void World::ResetContactsForSolveTOI() noexcept
 {
     for_each(begin(m_contacts), end(m_contacts), [&](Contacts::value_type &c) {
         auto& contact = GetRef(std::get<Contact*>(c));
@@ -1265,9 +1276,6 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
         // Compute the TOI for this contact (one or both bodies are active and impenetrable).
         // Computes the time of impact in interval [0, 1]
         const auto output = CalcToi(c, toiConf);
-        assert((output.state == TOIOutput::State::e_touching)
-            || (output.state == TOIOutput::State::e_separated)
-            || (output.state == TOIOutput::State::e_overlapped));
         
         // Use Min function to handle floating point imprecision which possibly otherwise
         // could provide a TOI that's greater than 1.
@@ -1682,7 +1690,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
     return results;
 }
     
-void World::ResetContactsForSolveTOI(Body& body)
+void World::ResetContactsForSolveTOI(Body& body) noexcept
 {
     // Invalidate all contact TOIs on this displaced body.
     const auto contacts = body.GetContacts();
@@ -2373,7 +2381,9 @@ Fixture* World::CreateFixture(Body& body, const Shape& shape,
         throw WrongState("World::CreateFixture: world is locked");
     }
     
-    const auto fixture = BodyAtty::CreateFixture(body, shape, def);
+    //const auto fixture = BodyAtty::CreateFixture(body, shape, def);
+    const auto fixture = FixtureAtty::Create(body, def, shape);
+    BodyAtty::AddFixture(body, fixture);
 
     if (body.IsEnabled())
     {
@@ -2397,14 +2407,14 @@ Fixture* World::CreateFixture(Body& body, const Shape& shape,
     return fixture;
 }
 
-bool World::DestroyFixture(Fixture& fixture, bool resetMassData)
+bool World::Destroy(Fixture& fixture, bool resetMassData)
 {
     auto& body = *fixture.GetBody();
     assert(body.GetWorld() == this);
 
     if (IsLocked())
     {
-        throw WrongState("World::DestroyFixture: world is locked");
+        throw WrongState("World::Destroy: world is locked");
     }
     
 #if 0
@@ -2432,12 +2442,12 @@ bool World::DestroyFixture(Fixture& fixture, bool resetMassData)
     
     DestroyProxies(fixture);
 
-    const auto found = BodyAtty::DestroyFixture(body, &fixture);
-    if (!found)
+    if (!BodyAtty::RemoveFixture(body, &fixture))
     {
         // Fixture probably destroyed already.
         return false;
     }
+    FixtureAtty::Delete(&fixture);
     
     BodyAtty::SetMassDataDirty(body);
     if (resetMassData)
@@ -2475,7 +2485,7 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
     FixtureAtty::SetProxies(fixture, std::move(proxies), childCount);
 }
 
-void World::DestroyProxies(Fixture& fixture)
+void World::DestroyProxies(Fixture& fixture) noexcept
 {
     const auto proxies = FixtureAtty::GetProxies(fixture);
     const auto childCount = proxies.size();

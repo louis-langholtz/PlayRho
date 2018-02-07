@@ -234,7 +234,7 @@ DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, const LeafData& leaf
     return index;
 }
 
-void DynamicTree::DestroyLeaf(Size index)
+void DynamicTree::DestroyLeaf(Size index) noexcept
 {
     assert(index != GetInvalidSize());
     assert(index < m_nodeCapacity);
@@ -356,7 +356,7 @@ void DynamicTree::InsertLeaf(Size index)
     Rebalance(newParent);
 }
 
-void DynamicTree::RemoveLeaf(Size leaf)
+void DynamicTree::RemoveLeaf(Size leaf) noexcept
 {
     assert(leaf != GetInvalidSize());
     assert(leaf < m_nodeCapacity);
@@ -397,7 +397,7 @@ void DynamicTree::RemoveLeaf(Size leaf)
     FreeNode(parent);
 }
 
-void DynamicTree::Rebalance(Size index)
+void DynamicTree::Rebalance(Size index) noexcept
 {
     for (; index != GetInvalidSize(); index = GetParent(index))
     {

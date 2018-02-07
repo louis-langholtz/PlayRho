@@ -60,7 +60,8 @@ struct BodyConf;
 /// @invariant Only "accelerable" bodies can have non-zero accelerations.
 /// @invariant Only "accelerable" bodies can have non-zero "under-active" times.
 ///
-/// @note Create these using the World::Create method.
+/// @note Create these using the <code>World::CreateBody</code> method.
+/// @note Destroy these using the <code>World::Destroy(Body*)</code> method.
 /// @note From a memory management perspective, bodies own Fixture instances.
 /// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
 ///   192-bytes large.
@@ -136,15 +137,6 @@ public:
     /// @brief Gets the flags for the given value.
     static FlagsType GetFlags(const BodyConf& bd) noexcept;
     
-    Body() = delete;
-
-    /// @brief Initializing constructor for unit testing purposes.
-    /// @note This is not meant to be called directly by users of the library API. Call
-    ///   a world instance's <code>CreateBody</code> method instead.
-    Body(World* world, const BodyConf& bd);
-
-    ~Body();
-    
     /// @brief Creates a fixture and attaches it to this body.
     ///
     /// @param shape Shareable shape definition.
@@ -161,7 +153,6 @@ public:
     /// @return Pointer to the created fixture.
     ///
     /// @throws WrongState if called while the world is "locked".
-    /// @throws InvalidArgument if called without a shape.
     /// @throws InvalidArgument if called for a shape with a vertex radius less than the
     ///    minimum vertex radius.
     /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
@@ -189,7 +180,7 @@ public:
     ///
     /// @sa PhysicalEntities
     ///
-    bool DestroyFixture(Fixture* fixture, bool resetMassData = true);
+    bool Destroy(Fixture* fixture, bool resetMassData = true);
     
     /// @brief Destroy fixtures.
     /// @sa PhysicalEntities
@@ -441,7 +432,18 @@ public:
 private:
 
     friend class BodyAtty;
+    
+    Body() = delete;
+    
+    Body(const Body& other) = delete;
 
+    /// @brief Initializing constructor.
+    /// @note This is not meant to be called directly by users of the library API. Call
+    ///   a world instance's <code>CreateBody</code> method instead.
+    Body(World* world, const BodyConf& bd);
+    
+    ~Body() noexcept;
+    
     /// @brief Whether this body is in is-in-island state.
     bool IsIslanded() const noexcept;
 
@@ -554,6 +556,10 @@ private:
     /// @note 4-bytes.
     Time m_underActiveTime = 0;
 };
+
+/// @example Body.cpp
+/// This is the <code>googletest</code> based unit testing file for the
+///   <code>playrho::d2::Body</code> class.
 
 inline Body::FlagsType Body::GetFlags(BodyType type) noexcept
 {

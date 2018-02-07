@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
 
@@ -166,11 +167,12 @@ TEST(WorldManifold, GetWorldManifoldForCirclesFullyOverlappingManifold)
 TEST(WorldManifold, GetForContact)
 {
     const auto shape = Shape{DiskShapeConf{}};
-    auto bA = Body{nullptr, BodyConf{}};
-    auto bB = Body{nullptr, BodyConf{}};
-    auto fA = Fixture{&bA, FixtureConf{}, shape};
-    auto fB = Fixture{&bB, FixtureConf{}, shape};
-    const auto c = Contact{&fA, 0u, &fB, 0u};
+    auto world = World{};
+    const auto bA = world.CreateBody();
+    const auto bB = world.CreateBody();
+    const auto fA = bA->CreateFixture(shape);
+    const auto fB = bB->CreateFixture(shape);
+    const auto c = Contact{fA, 0u, fB, 0u};
 
     const auto wm = GetWorldManifold(c);
     

@@ -71,6 +71,14 @@ For a more elaborate example, see
 ///    These classes are all sub-classed from sub-classes of the C++ Standard Library
 ///    std::exception class.
 
+/// @defgroup ConstraintsGroup Library Defined Constraints
+/// @brief Constraints defined and used by the PlayRho library.
+/// @details Constraints remove degrees of freedom from bodies.
+///   A 2D body has 3 degrees of freedom: two translation coordinates and one rotation
+///   coordinate. If we take a body and pin it to the wall (like a pendulum) we have
+///   constrained the body to the wall. At this point the body can only rotate about the
+///   pin, so the constraint has removed 2 degrees of freedom.
+
 /// @namespace std
 /// Name space for specializations of the standard library.
 

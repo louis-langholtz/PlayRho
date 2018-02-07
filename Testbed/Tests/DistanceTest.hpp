@@ -127,7 +127,7 @@ public:
                 fixtures.erase(fixtures.begin());
                 fixtures.insert(newf);
                 SetSelectedFixtures(fixtures);
-                body->DestroyFixture(fixture);
+                body->Destroy(fixture);
             }
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "decrease vertex radius of selected shape", [&](KeyActionMods) {
@@ -151,7 +151,7 @@ public:
                         fixtures.erase(fixtures.begin());
                         fixtures.insert(newf);
                         SetSelectedFixtures(fixtures);
-                        body->DestroyFixture(fixture);
+                        body->Destroy(fixture);
                     }
                 }
             }
