@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -2189,7 +2189,8 @@ Non-zero forces wakes up the body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Awakens the body if it's asleep. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a23">Body.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a1539463268cf6db572823eb1a195dc70">Awaken()</a>.</p>
 
 </div>
@@ -2775,7 +2776,8 @@ Non-zero forces wakes up the body. </dd></dl>
 <p>Gets the ratio of the sum of the perimeters of nodes to the root perimeter. </p>
 <dl class="section note"><dt>Note</dt><dd>Zero is returned if no proxies exist at the time of the call. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Value of zero or more. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a19">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a1b38c605da457526f62c63035cb0affe"></a>
@@ -3025,7 +3027,7 @@ On the first call, the Simplex::Cache.count should be set to zero. <div class="i
 <p>Gets the AABB for the given ray cast input data. </p>
 <p>&lt;2&gt; </p>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a153aeeb44400486c3a14c9e61fe7b197">playrho::d2::DynamicTree::FindLowestCostNode()</a>, <a class="el" href="group__RayCastGroup.html#gadf0ec62e1852e3bc9b017eae4a5616b4">RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a0afeba7bde445afe5764984301192e85">playrho::d2::DynamicTree::SetChildren()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a5902f7c0f1abb829cff7f2bca808d708">playrho::d2::DynamicTree::ValidateMetrics()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a153aeeb44400486c3a14c9e61fe7b197">playrho::d2::DynamicTree::FindLowestCostNode()</a>, <a class="el" href="group__RayCastGroup.html#gadf0ec62e1852e3bc9b017eae4a5616b4">RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a682aa54d251ca91d3479f3e88c419c87">playrho::d2::DynamicTree::Rebalance()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a0afeba7bde445afe5764984301192e85">playrho::d2::DynamicTree::SetChildren()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a5902f7c0f1abb829cff7f2bca808d708">playrho::d2::DynamicTree::ValidateMetrics()</a>.</p>
 
 </div>
 </div>
@@ -3384,7 +3386,8 @@ On the first call, the Simplex::Cache.count should be set to zero. <div class="i
 
 <p>Gets the body count in the given world. </p>
 <dl class="section return"><dt>Returns</dt><dd>0 or higher. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a10">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a6970aff5f3ad80147b55f36902039b4e"></a>
@@ -3632,7 +3635,8 @@ On the first call, the Simplex::Cache.count should be set to zero. <div class="i
 <p>Gets the count of contacts in the given world. </p>
 <dl class="section note"><dt>Note</dt><dd>Not all contacts are for shapes that are actually touching. Some contacts are for shapes which merely have overlapping AABBs. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>0 or higher. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a17">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a0ec0d91d72476f3b381c5a3aee92ec21"></a>
@@ -3868,7 +3872,8 @@ Generally speaking, try to avoid using this method unless there's no other way t
 <p>Gets the default definitions value. </p>
 <dl class="section note"><dt>Note</dt><dd>This method exists as a work-around for providing the <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> constructor a default value without otherwise getting a compiler error such as: "cannot use defaulted constructor of '&lt;code&gt;Conf&lt;/code&gt;' within '&lt;code&gt;World&lt;/code&gt;'
     outside of member functions because 'gravity' has an initializer" </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a5">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a1e3ed738b9082f9bfd3358a19d9aa97d"></a>
@@ -4083,7 +4088,8 @@ Generally speaking, try to avoid using this method unless there's no other way t
 </div><div class="memdoc">
 
 <p>Gets the fixture count of the given body. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a28">Body.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ad07495876f7627e4c0b347fd08ce5346">GetFixtureCount()</a>.</p>
 
 </div>
@@ -4170,7 +4176,8 @@ Generally speaking, try to avoid using this method unless there's no other way t
 
 <p>Gets the coefficient of friction. </p>
 <dl class="section return"><dt>Returns</dt><dd>Value of 0 or higher. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Contact_8cpp-example.html#a12">Contact.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Fixture.html#a6b86143c49818f6bea1ade0887145a29">playrho::d2::Fixture::GetFriction()</a>.</p>
 
 </div>
@@ -4299,8 +4306,9 @@ Generally speaking, try to avoid using this method unless there's no other way t
 
 <p>Gets the height of the binary tree. </p>
 <dl class="section return"><dt>Returns</dt><dd>Height of the tree (as stored in the root node) or 0 if the root node is not valid. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a54b77e65898900f247356199f843de81">playrho::d2::DynamicTree::ComputeHeight()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a153aeeb44400486c3a14c9e61fe7b197">playrho::d2::DynamicTree::FindLowestCostNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a185b1ce2a5a7c97925d21709e7fb5a16">playrho::d2::DynamicTree::FreeNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a06675690daf54a10b18f1da1a8a7326b">playrho::d2::DynamicTree::GetAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ab905d71ffa6b1e5b6d2a684ca3758a1f">playrho::d2::DynamicTree::GetBranchData()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a1d7d6f018ceb85521b61db6801d246d0">playrho::d2::DynamicTree::GetChild1()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#abd12c8b361b109410043ea8429b58ad5">playrho::d2::DynamicTree::GetChild2()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a53d2bd646d7fcd1d5ebbef75c73a5020">playrho::d2::DynamicTree::GetLeafData()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a2327f515d3fb08420fce3f4bf6e8f57b">playrho::d2::DynamicTree::GetParent()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#aa25df75dd77601b2bf766726064821a6">playrho::d2::DynamicTree::SetAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a7d18c17c747e79b13eb9e1a242e333e5">playrho::d2::DynamicTree::SetChild1()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a486043b535dfecdf0b7a8648a7f6c2f0">playrho::d2::DynamicTree::SetChild2()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a0afeba7bde445afe5764984301192e85">playrho::d2::DynamicTree::SetChildren()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a949f9eff32aa5fb52cd587921a4a4dcc">playrho::d2::DynamicTree::SetLeafData()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad7be63a4d5b4ec56104e505ba44c8c41">playrho::d2::DynamicTree::SetParent()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a566a0c66a726f0c4e517606599c088fd">playrho::d2::DynamicTree::Validate()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a5902f7c0f1abb829cff7f2bca808d708">playrho::d2::DynamicTree::ValidateMetrics()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a1ecf33ad367d1ddfacfa0b6fa16e54a9">playrho::d2::DynamicTree::ValidateStructure()</a>.</p>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a18">World.cpp</a>.</dd>
+</dl>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a54b77e65898900f247356199f843de81">playrho::d2::DynamicTree::ComputeHeight()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a797247f9d1710de7c5883fe08f1c868a">playrho::d2::DynamicTree::DestroyLeaf()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a153aeeb44400486c3a14c9e61fe7b197">playrho::d2::DynamicTree::FindLowestCostNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a185b1ce2a5a7c97925d21709e7fb5a16">playrho::d2::DynamicTree::FreeNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a06675690daf54a10b18f1da1a8a7326b">playrho::d2::DynamicTree::GetAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ab905d71ffa6b1e5b6d2a684ca3758a1f">playrho::d2::DynamicTree::GetBranchData()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a1d7d6f018ceb85521b61db6801d246d0">playrho::d2::DynamicTree::GetChild1()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#abd12c8b361b109410043ea8429b58ad5">playrho::d2::DynamicTree::GetChild2()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a53d2bd646d7fcd1d5ebbef75c73a5020">playrho::d2::DynamicTree::GetLeafData()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a2327f515d3fb08420fce3f4bf6e8f57b">playrho::d2::DynamicTree::GetParent()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a682aa54d251ca91d3479f3e88c419c87">playrho::d2::DynamicTree::Rebalance()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#aa25df75dd77601b2bf766726064821a6">playrho::d2::DynamicTree::SetAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a7d18c17c747e79b13eb9e1a242e333e5">playrho::d2::DynamicTree::SetChild1()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a486043b535dfecdf0b7a8648a7f6c2f0">playrho::d2::DynamicTree::SetChild2()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a0afeba7bde445afe5764984301192e85">playrho::d2::DynamicTree::SetChildren()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a949f9eff32aa5fb52cd587921a4a4dcc">playrho::d2::DynamicTree::SetLeafData()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad7be63a4d5b4ec56104e505ba44c8c41">playrho::d2::DynamicTree::SetParent()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a566a0c66a726f0c4e517606599c088fd">playrho::d2::DynamicTree::Validate()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a5902f7c0f1abb829cff7f2bca808d708">playrho::d2::DynamicTree::ValidateMetrics()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a1ecf33ad367d1ddfacfa0b6fa16e54a9">playrho::d2::DynamicTree::ValidateStructure()</a>.</p>
 
 </div>
 </div>
@@ -4350,7 +4358,8 @@ Generally speaking, try to avoid using this method unless there's no other way t
 
 <p>Gets the count of joints in the given world. </p>
 <dl class="section return"><dt>Returns</dt><dd>0 or higher. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a15">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a9c4508d7e8e6bef6a676b0bc63200273"></a>
@@ -6246,7 +6255,8 @@ This only works for two disjoint convex sets.</dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the type of the given joint. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a68">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ab2bb179bdc12683c99a6bfd7b095c328">Dump()</a>, and <a class="el" href="classplayrho_1_1d2_1_1GearJoint.html#a84251b8789aab10544d4935905163ff8">playrho::d2::GearJoint::IsOkay()</a>.</p>
 
 </div>
@@ -7204,7 +7214,7 @@ template&lt;class T &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>This has constant complexity. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if this is a leaf node, <code>false</code> otherwise. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a153aeeb44400486c3a14c9e61fe7b197">playrho::d2::DynamicTree::FindLowestCostNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a53d2bd646d7fcd1d5ebbef75c73a5020">playrho::d2::DynamicTree::GetLeafData()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a949f9eff32aa5fb52cd587921a4a4dcc">playrho::d2::DynamicTree::SetLeafData()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a1ecf33ad367d1ddfacfa0b6fa16e54a9">playrho::d2::DynamicTree::ValidateStructure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a797247f9d1710de7c5883fe08f1c868a">playrho::d2::DynamicTree::DestroyLeaf()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a153aeeb44400486c3a14c9e61fe7b197">playrho::d2::DynamicTree::FindLowestCostNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a53d2bd646d7fcd1d5ebbef75c73a5020">playrho::d2::DynamicTree::GetLeafData()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a949f9eff32aa5fb52cd587921a4a4dcc">playrho::d2::DynamicTree::SetLeafData()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a1ecf33ad367d1ddfacfa0b6fa16e54a9">playrho::d2::DynamicTree::ValidateStructure()</a>.</p>
 
 </div>
 </div>
@@ -7236,7 +7246,7 @@ template&lt;class T &gt; </div>
 <p>Whether this node is free (or allocated).</p>
 <p>Determines whether the given dynamic tree node is an unused node.</p>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a185b1ce2a5a7c97925d21709e7fb5a16">playrho::d2::DynamicTree::FreeNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a06675690daf54a10b18f1da1a8a7326b">playrho::d2::DynamicTree::GetAABB()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a6d6d5df41347623cf1a1a969986ce093">GetAABB()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a46ae39294a9b35c7c9a3f3f44fccb451">GetNext()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a2327f515d3fb08420fce3f4bf6e8f57b">playrho::d2::DynamicTree::GetParent()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#aa25df75dd77601b2bf766726064821a6">playrho::d2::DynamicTree::SetAABB()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad7be63a4d5b4ec56104e505ba44c8c41">playrho::d2::DynamicTree::SetParent()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a185b1ce2a5a7c97925d21709e7fb5a16">playrho::d2::DynamicTree::FreeNode()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a06675690daf54a10b18f1da1a8a7326b">playrho::d2::DynamicTree::GetAABB()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a6d6d5df41347623cf1a1a969986ce093">GetAABB()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a46ae39294a9b35c7c9a3f3f44fccb451">GetNext()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a2327f515d3fb08420fce3f4bf6e8f57b">playrho::d2::DynamicTree::GetParent()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a682aa54d251ca91d3479f3e88c419c87">playrho::d2::DynamicTree::Rebalance()</a>, <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#aa25df75dd77601b2bf766726064821a6">playrho::d2::DynamicTree::SetAABB()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#ad7be63a4d5b4ec56104e505ba44c8c41">playrho::d2::DynamicTree::SetParent()</a>.</p>
 
 </div>
 </div>
@@ -9006,7 +9016,8 @@ template&lt;class T &gt; </div>
 
 <p>Query the given dynamic tree and find nodes overlapping the given AABB. </p>
 <dl class="section note"><dt>Note</dt><dd>The callback instance is called for each leaf node that overlaps the supplied AABB. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a25">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#af713d6d2d2830e84866352e4ddb5357b">playrho::d2::World::FindNewContacts()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a387361206b47016fdadec182c37852a1">Query()</a>.</p>
 
 </div>
@@ -9072,7 +9083,8 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 
 <p>Resets the friction mixture to the default value. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Contact_8cpp-example.html#a11">Contact.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="ae7c83e82f89844199f5c06c5cda3749d"></a>
@@ -9100,7 +9112,8 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 
 <p>Reset the restitution to the default value. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Contact_8cpp-example.html#a14">Contact.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="afcdb159b4b79e5a03bedfc1a0727cf0b"></a>
@@ -9630,36 +9643,8 @@ template&lt;class F &gt; </div>
 
 </div>
 </div>
-<a id="ab9bed9fa175445dc6ef21428cb2ee4af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9bed9fa175445dc6ef21428cb2ee4af">&#9670;&nbsp;</a></span>SetAwake() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SetAwake </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;&#160;</td>
-          <td class="paramname"><em>j</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Wakes up the joined bodies. </p>
-
-</div>
-</div>
 <a id="a881653bbb1f1064662695770738c3dfc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a881653bbb1f1064662695770738c3dfc">&#9670;&nbsp;</a></span>SetAwake() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a881653bbb1f1064662695770738c3dfc">&#9670;&nbsp;</a></span>SetAwake() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9693,6 +9678,34 @@ template&lt;class F &gt; </div>
 
 </div>
 </div>
+<a id="ab9bed9fa175445dc6ef21428cb2ee4af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9bed9fa175445dc6ef21428cb2ee4af">&#9670;&nbsp;</a></span>SetAwake() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetAwake </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;&#160;</td>
+          <td class="paramname"><em>j</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wakes up the joined bodies. </p>
+
+</div>
+</div>
 <a id="a9b5dc1f3ca395793a68fcc5b87fb34e9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b5dc1f3ca395793a68fcc5b87fb34e9">&#9670;&nbsp;</a></span>SetAwake() <span class="overload">[3/3]</span></h2>
 
@@ -9718,7 +9731,8 @@ template&lt;class F &gt; </div>
 </div><div class="memdoc">
 
 <p>Sets awake the fixtures of the given contact. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Contact_8cpp-example.html#a10">Contact.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a8a2c515bee211ab828b8d36ba80dc149"></a>
@@ -9933,6 +9947,8 @@ template&lt;class F &gt; </div>
 
 <p>Sets the parent index of the given node. </p>
 <dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined if the given node is not a "branch" node. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a682aa54d251ca91d3479f3e88c419c87">playrho::d2::DynamicTree::Rebalance()</a>, and <a class="el" href="classplayrho_1_1d2_1_1DynamicTree.html#a2315e9040b5d6096f463bb973e4edde5">playrho::d2::DynamicTree::RemoveLeaf()</a>.</p>
 
 </div>
 </div>
@@ -10691,7 +10707,7 @@ For a 2-D linear position of the origin (0, 0), the result is simply the transla
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:40 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

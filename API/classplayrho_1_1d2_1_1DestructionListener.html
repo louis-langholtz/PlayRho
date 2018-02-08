@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -105,18 +105,78 @@ $(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1DestructionListe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa695e266e2cf18199fc1d3d898de5842"><td class="memItemLeft" align="right" valign="top"><a id="aa695e266e2cf18199fc1d3d898de5842"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DestructionListener.html#aa695e266e2cf18199fc1d3d898de5842">SayGoodbye</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;joint)=0</td></tr>
-<tr class="memdesc:aa695e266e2cf18199fc1d3d898de5842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when any joint is about to be destroyed due to the destruction of one of its attached bodies. <br /></td></tr>
-<tr class="separator:aa695e266e2cf18199fc1d3d898de5842"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a127dc989d4810d46e81d15c44ef91d14"><td class="memItemLeft" align="right" valign="top"><a id="a127dc989d4810d46e81d15c44ef91d14"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DestructionListener.html#a127dc989d4810d46e81d15c44ef91d14">SayGoodbye</a> (const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixture)=0</td></tr>
-<tr class="memdesc:a127dc989d4810d46e81d15c44ef91d14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when any fixture is about to be destroyed due to the destruction of its parent body. <br /></td></tr>
-<tr class="separator:a127dc989d4810d46e81d15c44ef91d14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dde5e15ee693ceb3b95231344001d0b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DestructionListener.html#a1dde5e15ee693ceb3b95231344001d0b">SayGoodbye</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;joint) noexcept=0</td></tr>
+<tr class="memdesc:a1dde5e15ee693ceb3b95231344001d0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called just before destroying a joint.  <a href="#a1dde5e15ee693ceb3b95231344001d0b">More...</a><br /></td></tr>
+<tr class="separator:a1dde5e15ee693ceb3b95231344001d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48a2d0e1e736ca7a8b97c02b87e9b2b8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1DestructionListener.html#a48a2d0e1e736ca7a8b97c02b87e9b2b8">SayGoodbye</a> (const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixture) noexcept=0</td></tr>
+<tr class="memdesc:a48a2d0e1e736ca7a8b97c02b87e9b2b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called just before destroying a fixture.  <a href="#a48a2d0e1e736ca7a8b97c02b87e9b2b8">More...</a><br /></td></tr>
+<tr class="separator:a48a2d0e1e736ca7a8b97c02b87e9b2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so that you may nullify references to these joints and shapes. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#_a0">World.cpp</a>.</dd>
+</dl></div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1dde5e15ee693ceb3b95231344001d0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dde5e15ee693ceb3b95231344001d0b">&#9670;&nbsp;</a></span>SayGoodbye() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void playrho::d2::DestructionListener::SayGoodbye </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;&#160;</td>
+          <td class="paramname"><em>joint</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called just before destroying a joint. </p>
+<p>Called when any joint is about to be destroyed due to the destruction of one of its attached bodies. </p><dl class="section note"><dt>Note</dt><dd>Implementations of this method should not throw any exceptions. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a8fce75bd4075681b56a758ccb9d950ba">playrho::d2::World::Destroy()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a1a4d0cc4ef652f6629dc78aa37aeedbf">playrho::d2::World::InternalClear()</a>.</p>
+
+</div>
+</div>
+<a id="a48a2d0e1e736ca7a8b97c02b87e9b2b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48a2d0e1e736ca7a8b97c02b87e9b2b8">&#9670;&nbsp;</a></span>SayGoodbye() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void playrho::d2::DestructionListener::SayGoodbye </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;&#160;</td>
+          <td class="paramname"><em>fixture</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called just before destroying a fixture. </p>
+<p>Called when any fixture is about to be destroyed due to the destruction of its parent body. </p><dl class="section note"><dt>Note</dt><dd>Implementations of this method should not throw any exceptions. </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>WorldCallbacks.hpp</li>
 </ul>
 </div><!-- contents -->
@@ -125,7 +185,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1DestructionListener.html">DestructionListener</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:40 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

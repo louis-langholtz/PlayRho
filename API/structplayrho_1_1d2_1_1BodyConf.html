@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -258,9 +258,9 @@ Related Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> configuration. </p>
 <p>A body configuration holds all the data needed to construct a rigid body. You can safely re-use body configurations.</p>
-<dl class="section note"><dt>Note</dt><dd>This is a value class meant for passing in to the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#a66716e8c9020509c9891d9223a58be93" title="Creates a rigid body given a definition. ">World::CreateBody</a></code> method.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is a value class meant for passing in to the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#a66716e8c9020509c9891d9223a58be93" title="Creates a rigid body with the given configuration. ">World::CreateBody</a></code> method.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a>. </dd></dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a2">HelloWorld.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#_a0">Body.cpp</a>, <a class="el" href="Contact_8cpp-example.html#_a4">Contact.cpp</a>, <a class="el" href="HelloWorld_8cpp-example.html#_a2">HelloWorld.cpp</a>, and <a class="el" href="World_8cpp-example.html#_a54">World.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a id="a7a778e88e326f8711cefea4333cef640"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a778e88e326f8711cefea4333cef640">&#9670;&nbsp;</a></span>GetDefaultBodyConf()</h2>
@@ -321,7 +321,8 @@ Related Functions</h2></td></tr>
 
 <p>Is this a fast moving body that should be prevented from tunneling through other moving bodies? Note that all bodies are prevented from tunneling through kinematic and static bodies. This setting is only considered on dynamic bodies. </p>
 <dl class="section note"><dt>Note</dt><dd>Use this flag sparingly since it increases processing time. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a158">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="aca2c87d68e5476d3c1443a5360fac747"></a>
@@ -338,7 +339,8 @@ Related Functions</h2></td></tr>
 
 <p>Initial linear acceleration of the body. </p>
 <dl class="section note"><dt>Note</dt><dd>Usually this should be 0. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a114">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a3f1a14b4e932c2e1fa3d78d8b069ec23"></a>
@@ -355,7 +357,8 @@ Related Functions</h2></td></tr>
 
 <p>Type of the body: static, kinematic, or dynamic. </p>
 <dl class="section note"><dt>Note</dt><dd>If a dynamic body would have zero mass, the mass is set to one. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a37">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a106">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a0e940544a56fe840424f880106fcd842">playrho::d2::GetBodyConf()</a>.</p>
 
 </div>
@@ -386,7 +389,7 @@ Related Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:40 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

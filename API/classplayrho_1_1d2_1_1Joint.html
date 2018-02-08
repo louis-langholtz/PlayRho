@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1Joint.html','');
 <a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1d2_1_1Joint-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">playrho::d2::Joint Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__JointsGroup.html">Joint Classes</a> &#124; <a class="el" href="group__PhysicalEntities.html">Physical Entity Classes</a></div></div>  </div>
+<div class="title">playrho::d2::Joint Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__ConstraintsGroup.html">Library Defined Constraints</a> &raquo; <a class="el" href="group__JointsGroup.html">Joint Classes</a> &#124; <a class="el" href="group__PhysicalEntities.html">Physical Entity Classes</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -124,11 +124,11 @@ Collaboration diagram for playrho::d2::Joint:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a2cf1732ac5dc8ac9a946238c19683bc9"><td class="memItemLeft" align="right" valign="top"><a id="a2cf1732ac5dc8ac9a946238c19683bc9"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9">LimitState</a> { <b>e_inactiveLimit</b>, 
-<b>e_atLowerLimit</b>, 
-<b>e_atUpperLimit</b>, 
-<b>e_equalLimits</b>
- }<tr class="memdesc:a2cf1732ac5dc8ac9a946238c19683bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Limit state. <br /></td></tr>
+<tr class="memitem:a2cf1732ac5dc8ac9a946238c19683bc9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9">LimitState</a> { <a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9a710018e38be8dd1681bcd30b155f3052">e_inactiveLimit</a>, 
+<a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9ab6e143bf09cf16d0fae6e40b3c1419e9">e_atLowerLimit</a>, 
+<a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9a09f4db7c39db5e6bdc2e8c4a02336c9e">e_atUpperLimit</a>, 
+<a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9a481aab4efe14a536d3314e7617dc2b56">e_equalLimits</a>
+ }<tr class="memdesc:a2cf1732ac5dc8ac9a946238c19683bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Limit state.  <a href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a2cf1732ac5dc8ac9a946238c19683bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -243,9 +243,9 @@ template&lt;class OUT_TYPE , class IN_TYPE &gt; </td></tr>
 <tr class="memitem:aaa03161bf5fcd584a61266949b3db6e4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#aaa03161bf5fcd584a61266949b3db6e4">Create</a> (const <a class="el" href="structplayrho_1_1d2_1_1JointConf.html">JointConf</a> &amp;def)</td></tr>
 <tr class="memdesc:aaa03161bf5fcd584a61266949b3db6e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new joint based on the given definition.  <a href="#aaa03161bf5fcd584a61266949b3db6e4">More...</a><br /></td></tr>
 <tr class="separator:aaa03161bf5fcd584a61266949b3db6e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dddc18863d3c2e0dbe1daa32fac91a1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a3dddc18863d3c2e0dbe1daa32fac91a1">Destroy</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *joint)</td></tr>
-<tr class="memdesc:a3dddc18863d3c2e0dbe1daa32fac91a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys the given joint.  <a href="#a3dddc18863d3c2e0dbe1daa32fac91a1">More...</a><br /></td></tr>
-<tr class="separator:a3dddc18863d3c2e0dbe1daa32fac91a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2032814de79f25a940264d769784be2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#ac2032814de79f25a940264d769784be2">Destroy</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *joint) noexcept</td></tr>
+<tr class="memdesc:ac2032814de79f25a940264d769784be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys the given joint.  <a href="#ac2032814de79f25a940264d769784be2">More...</a><br /></td></tr>
+<tr class="separator:ac2032814de79f25a940264d769784be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -291,9 +291,39 @@ Related Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base joint class. </p>
-<p>Joints are used to constraint two bodies together in various fashions. Some joints also feature limits and motors.</p>
+<p>Joints are constraints that are used to constrain one or more bodies in various fashions. Some joints also feature limits and motors.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#_a1">World.cpp</a>.</dd>
+</dl></div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a2cf1732ac5dc8ac9a946238c19683bc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cf1732ac5dc8ac9a946238c19683bc9">&#9670;&nbsp;</a></span>LimitState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9">playrho::d2::Joint::LimitState</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Limit state. </p>
+<dl class="section note"><dt>Note</dt><dd>Only used by joints that implement some notion of a limited range. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2cf1732ac5dc8ac9a946238c19683bc9a710018e38be8dd1681bcd30b155f3052"></a>e_inactiveLimit&#160;</td><td class="fielddoc"><p>Inactive limit. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2cf1732ac5dc8ac9a946238c19683bc9ab6e143bf09cf16d0fae6e40b3c1419e9"></a>e_atLowerLimit&#160;</td><td class="fielddoc"><p>At-lower limit. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2cf1732ac5dc8ac9a946238c19683bc9a09f4db7c39db5e6bdc2e8c4a02336c9e"></a>e_atUpperLimit&#160;</td><td class="fielddoc"><p>At-upper limit. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2cf1732ac5dc8ac9a946238c19683bc9a481aab4efe14a536d3314e7617dc2b56"></a>e_equalLimits&#160;</td><td class="fielddoc"><p>Equal limit. </p>
+<p>Equal limit is used to indicate that a joint's upper and lower limits are approximately the same. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2761ee851db87e899cd982f483f176e1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2761ee851db87e899cd982f483f176e1">&#9670;&nbsp;</a></span>Accept() <span class="overload">[1/2]</span></h2>
 
@@ -394,8 +424,8 @@ Related Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a3dddc18863d3c2e0dbe1daa32fac91a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3dddc18863d3c2e0dbe1daa32fac91a1">&#9670;&nbsp;</a></span>Destroy()</h2>
+<a id="ac2032814de79f25a940264d769784be2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2032814de79f25a940264d769784be2">&#9670;&nbsp;</a></span>Destroy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -413,7 +443,7 @@ Related Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -421,7 +451,7 @@ Related Functions</h2></td></tr>
 <p>Destroys the given joint. </p>
 <dl class="section note"><dt>Note</dt><dd>This calls the joint's destructor. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1JointAtty.html#afb78adc9941a8b874531d8d3e223f4dc">playrho::d2::JointAtty::Destroy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1JointAtty.html#a69507c566ace3b5d6bef3f3d808993c2">playrho::d2::JointAtty::Destroy()</a>.</p>
 
 </div>
 </div>
@@ -451,7 +481,7 @@ Related Functions</h2></td></tr>
 <p>Gets collide connected. </p>
 <dl class="section note"><dt>Note</dt><dd>Modifying the collide connect flag won't work correctly because the flag is only checked when fixture AABBs begin to overlap. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a20b11754781d03cb9a8a122b96c2eb54">playrho::d2::Dump()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ac4a6353f425360ee1a5cbb4c4302b65d">playrho::d2::World::InternalDestroy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a20b11754781d03cb9a8a122b96c2eb54">playrho::d2::Dump()</a>.</p>
 
 </div>
 </div>
@@ -650,7 +680,8 @@ Related Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the type of the given joint. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a110">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a06956449699a714a65070ea4f4e497c7"></a>
@@ -748,7 +779,7 @@ Related Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:41 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -124,8 +124,53 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Collection of functions testing for a point's containment within various objects. </p>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gab8a45f5746faae097776c2dcd5d8c9d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab8a45f5746faae097776c2dcd5d8c9d4">&#9670;&nbsp;</a></span>TestPoint() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TestPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tests a point for containment in a fixture. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td><a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a> to use for test. </td></tr>
+    <tr><td class="paramname">p</td><td>Point in world coordinates. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="gafcfbf811dc989043838f0a4c7c64b59b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafcfbf811dc989043838f0a4c7c64b59b">&#9670;&nbsp;</a></span>TestPoint() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gafcfbf811dc989043838f0a4c7c64b59b">&#9670;&nbsp;</a></span>TestPoint() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,51 +212,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if the given point is contained by the given shape, <code>false</code> otherwise. </dd></dl>
-
-</div>
-</div>
-<a id="gab8a45f5746faae097776c2dcd5d8c9d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab8a45f5746faae097776c2dcd5d8c9d4">&#9670;&nbsp;</a></span>TestPoint() <span class="overload">[2/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TestPoint </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td>
-          <td class="paramname"><em>p</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tests a point for containment in a fixture. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">f</td><td><a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a> to use for test. </td></tr>
-    <tr><td class="paramname">p</td><td>Point in world coordinates. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -405,7 +405,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:29 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:39 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

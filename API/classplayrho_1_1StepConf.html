@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -233,7 +233,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a15442afc3e0dc7b585a950938440f3eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do warm start.  <a href="#a15442afc3e0dc7b585a950938440f3eb">More...</a><br /></td></tr>
 <tr class="separator:a15442afc3e0dc7b585a950938440f3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a281a00a1aea4cd4a3390b16b4d49e881"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1StepConf.html#a281a00a1aea4cd4a3390b16b4d49e881">doToi</a> = true</td></tr>
-<tr class="memdesc:a281a00a1aea4cd4a3390b16b4d49e881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do TOI.  <a href="#a281a00a1aea4cd4a3390b16b4d49e881">More...</a><br /></td></tr>
+<tr class="memdesc:a281a00a1aea4cd4a3390b16b4d49e881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do time of impact (TOI) calculations.  <a href="#a281a00a1aea4cd4a3390b16b4d49e881">More...</a><br /></td></tr>
 <tr class="separator:a281a00a1aea4cd4a3390b16b4d49e881"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a628dca6d25124bf34e9c3c830b691c4d"><td class="memItemLeft" align="right" valign="top"><a id="a628dca6d25124bf34e9c3c830b691c4d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1StepConf.html#a628dca6d25124bf34e9c3c830b691c4d">doBlocksolve</a> = true</td></tr>
@@ -276,7 +276,7 @@ Related Functions</h2></td></tr>
 <dd>
 This data structure is 108-bytes large (with 4-byte Real on at least one 64-bit platform). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>World::Step. </dd></dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a13">HelloWorld.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#_a34">Body.cpp</a>, <a class="el" href="HelloWorld_8cpp-example.html#_a13">HelloWorld.cpp</a>, and <a class="el" href="World_8cpp-example.html#_a6">World.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a8e5a2fa02589f5bdd860ce232242cdc5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8e5a2fa02589f5bdd860ce232242cdc5">&#9670;&nbsp;</a></span>iteration_type</h2>
@@ -396,7 +396,8 @@ The delta time value is the inverse of the given value or zero if the value is z
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a47">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a2144d7186ffeb6eb540716f99f9bfe7a"></a>
@@ -437,7 +438,8 @@ The inverse delta time value is the inverse of the given value or zero if the va
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a85">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a035ee60a3274619546a2cee7b982b894">playrho::d2::Step()</a>.</p>
 
 </div>
@@ -542,7 +544,8 @@ The inverse delta time value is the inverse of the given value or zero if the va
 
 <p>AABB extension. </p>
 <p>This is the extension that will be applied to Axis Aligned Bounding Box objects used in broad phase collision detection. This fattens AABBs in the dynamic tree. This allows proxies to move by a small amount without triggering a tree adjustment. </p><dl class="section note"><dt>Note</dt><dd>Should be greater than 0. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a153">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a59c023fdafd285a822ab524dc608da23">playrho::d2::World::CreateAndDestroyProxies()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa68bf90ada6ff2122660c0f7f4e11fee">playrho::d2::World::SolveReg()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a73acd89d6d35f26b8fccc7d0c0b7dc05">playrho::d2::World::SolveToi()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ac0a6a67d7408e563ed84ee28ac836401">playrho::d2::World::SynchronizeProxies()</a>.</p>
 
 </div>
@@ -595,8 +598,8 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Do TOI. </p>
-<p>Whether or not to perform continuous collision detection. </p><dl class="section note"><dt>Note</dt><dd>Used in the TOI phase of step processing. </dd></dl>
+<p>Do time of impact (TOI) calculations. </p>
+<p>Whether or not to perform any time of impact (TOI) calculations used for doing continuous collision detection. Without this, steps can potentially be computed faster but with increased chance of bodies passing unobstructed through other bodies (a process called "tunneling") even when they're not supposed to be able to go through them. </p><dl class="section note"><dt>Note</dt><dd>Used in the TOI phase of step processing. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#af65a576b04537b18bcddf5636b0d3386">playrho::d2::World::Step()</a>.</p>
 
@@ -635,7 +638,8 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 
 <p>Delta time ratio. </p>
 <p>This is the delta-time multiplied by the inverse delta time from the previous world step. The value of 1 indicates that the time step has not varied. </p><dl class="section note"><dt>Note</dt><dd>Used in the regular phase processing of the step. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a122">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1FrictionJoint.html#a9ae1f191149083ad1430b2a4e6214ca2">playrho::d2::FrictionJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a265ce4480c483f05e12d3096d1ccdcd4">playrho::d2::WeldJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a27dd018dd83b485d71e4bc9d1eab6d49">playrho::d2::RopeJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html#a311249c1d60b80f288317962bf733d4d">playrho::d2::DistanceJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PulleyJoint.html#aebf04fb0bc42328991979e15d1a783d3">playrho::d2::PulleyJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#a3b8c6773c43164c5c1c109d774d4515b">playrho::d2::TargetJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#ad3179df28daa98bc76a5c69798350610">playrho::d2::MotorJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#add8afb78454f0c0684932b1acd52bc05">playrho::d2::WheelJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a3f89d4b9336013d6811edf6eb9a97db3">playrho::d2::PrismaticJoint::InitVelocityConstraints()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a85fe70b215988443bcc382125859eddf">playrho::d2::RevoluteJoint::InitVelocityConstraints()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a035ee60a3274619546a2cee7b982b894">playrho::d2::Step()</a>.</p>
 
 </div>
@@ -700,7 +704,8 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 <p>Linear slop for position resolution. </p><dl class="section note"><dt>Note</dt><dd>Must be greater than 0. </dd>
 <dd>
 Used in both the regular and TOI phases of step processing. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a136">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#af65a576b04537b18bcddf5636b0d3386">playrho::d2::World::Step()</a>.</p>
 
 </div>
@@ -719,7 +724,8 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 
 <p>Maximum angular correction. </p>
 <dl class="section note"><dt>Note</dt><dd>Used in both the regular and TOI phases of step processing. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a152">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a46c9f8cd3881c7f65056c485110230ab"></a>
@@ -774,7 +780,8 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 This value should be greater than the linear slop value. </dd>
 <dd>
 Used in both the regular and TOI phases of step processing. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a147">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a0ab48d76f772682e5d2d2d937eacdde4"></a>
@@ -816,7 +823,8 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 
 <p>Maximum sub steps. </p>
 <p>This is the maximum number of sub-steps per contact in continuous physics simulation. In other words, this is the maximum number of times in a world step that a contact will have continuous collision resolution done for it. </p><dl class="section note"><dt>Note</dt><dd>Used in the TOI phase of step processing. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a156">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a8b8c701403d49b4d75dc7ae6b953f40d">playrho::d2::World::UpdateContactTOIs()</a>.</p>
 
 </div>
@@ -874,7 +882,8 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 This limit is meant to prevent numerical problems. Adjusting this value isn't advised. </dd>
 <dd>
 Used in both the regular and TOI phases of step processing. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a154">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a07971deda1d7a35d41eb9019721d13ae"></a>
@@ -913,7 +922,8 @@ Used in the regular phase processing of the step. </dd></dl>
 <p>Regular minimum separation. </p>
 <p>This is the minimum amount of separation there must be between regular-phase interacting bodies for intra-step position resolution to be considered successful and end before all of the regular position iterations have been done. </p><dl class="section note"><dt>Note</dt><dd>Used in the regular phase of step processing. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1StepConf.html#a03001af44bdce6e20979ccc98db4506b" title="Regular position iterations. ">regPositionIterations</a>. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a148">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ae47a8f358ef4192f3f47c66b718a5c69">playrho::d2::World::SolveRegIslandViaGS()</a>.</p>
 
 </div>
@@ -933,7 +943,8 @@ Used in the regular phase processing of the step. </dd></dl>
 <p>Regular position iterations. </p>
 <p>This is the maximum number of iterations of position resolution that will be done before leaving any remaining unsatisfied positions for the next step. In this context, positions are satisfied when the minimum separation is greater than or equal to the regular minimum separation amount. </p><dl class="section note"><dt>Note</dt><dd>Used in the regular phase of step processing. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1StepConf.html#a7b18d37a3c6cd9b55ea0d17cbda2ec11" title="Regular minimum separation. ">regMinSeparation</a>. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a135">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ae47a8f358ef4192f3f47c66b718a5c69">playrho::d2::World::SolveRegIslandViaGS()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a035ee60a3274619546a2cee7b982b894">playrho::d2::Step()</a>.</p>
 
 </div>
@@ -992,7 +1003,8 @@ Used in the regular phase of step processing. </dd></dl>
 <p>Target depth of overlap for calculating the TOI for CCD eligible bodies. </p><dl class="section note"><dt>Note</dt><dd>Recommend value that's less than twice the world's minimum vertex radius. </dd>
 <dd>
 Used in the TOI phase of step processing. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a150">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="af4f32224d25ce8943cddedca3bde2e13"></a>
@@ -1037,7 +1049,8 @@ Used in the TOI phase of step processing. </dd></dl>
 <p>Time of impact minimum separation. </p>
 <p>This is the minimum amount of separation there must be between TOI-phase interacting bodies for intra-step position resolution to be considered successful and end before all of the TOI position iterations have been done. </p><dl class="section note"><dt>Note</dt><dd>Used in the TOI phase of step processing. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1StepConf.html#a86822faef8e85cdf0ec7e48a7a6b4721" title="TOI position iterations. ">toiPositionIterations</a>. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a149">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a8c7c99fe7d61f94c5af23040c8403f71">playrho::d2::World::SolveToiViaGS()</a>.</p>
 
 </div>
@@ -1120,7 +1133,8 @@ Must not be subnormal. </dd>
 Must be less than the target depth. </dd>
 <dd>
 Used in the TOI phase of step processing. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a151">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a1df1b4fee721cf88f35fc08879027033"></a>
@@ -1137,7 +1151,8 @@ Used in the TOI phase of step processing. </dd></dl>
 
 <p>Velocity threshold. </p>
 <p>A velocity threshold for elastic collisions. Any collision with a relative linear velocity below this threshold will be treated as inelastic. </p><dl class="section note"><dt>Note</dt><dd>Used in both the regular and TOI phases of step processing. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a155">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -1150,7 +1165,7 @@ Used in the TOI phase of step processing. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="classplayrho_1_1StepConf.html">StepConf</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:40 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

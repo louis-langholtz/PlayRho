@@ -2,8 +2,8 @@ var classplayrho_1_1d2_1_1Fixture =
 [
     [ "FixtureProxies", "unionplayrho_1_1d2_1_1Fixture_1_1FixtureProxies.html", "unionplayrho_1_1d2_1_1Fixture_1_1FixtureProxies" ],
     [ "Fixture", "classplayrho_1_1d2_1_1Fixture.html#a86b6eea9d91aee18aecde569be397447", null ],
+    [ "Fixture", "classplayrho_1_1d2_1_1Fixture.html#adebcf47afd37463183df52007b3a6a6d", null ],
     [ "Fixture", "classplayrho_1_1d2_1_1Fixture.html#a1dbdd3a1f7e5d77af8e1a22331b8aca0", null ],
-    [ "Fixture", "classplayrho_1_1d2_1_1Fixture.html#a0b870319139e265c76663bc66d5a5641", null ],
     [ "~Fixture", "classplayrho_1_1d2_1_1Fixture.html#a91746a8c76be248579f46d681e6185a0", null ],
     [ "GetBody", "classplayrho_1_1d2_1_1Fixture.html#a06b4d3e9a3520768bc336da56083f566", null ],
     [ "GetDensity", "classplayrho_1_1d2_1_1Fixture.html#a794787df25f18190349ff42287b1a8ac", null ],

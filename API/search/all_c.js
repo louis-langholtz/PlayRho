@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['mathematical_20functions_20for_20fixed_20types',['Mathematical Functions For Fixed Types',['../group__FixedMath.html',1,'']]],
+  ['math_20functions_20for_20fixed_20types',['Math Functions For Fixed Types',['../group__FixedMath.html',1,'']]],
   ['m_5fa1',['m_a1',['../classplayrho_1_1d2_1_1PrismaticJoint.html#ac0cd6acd4ad3900cadbfe0fec06f4f86',1,'playrho::d2::PrismaticJoint']]],
   ['m_5fa2',['m_a2',['../classplayrho_1_1d2_1_1PrismaticJoint.html#a18f4cfe0c5046df9b24d127802fc7cd6',1,'playrho::d2::PrismaticJoint']]],
   ['m_5faabb',['m_aabb',['../classplayrho_1_1d2_1_1DynamicTree_1_1TreeNode.html#ae62f55f9a9d321c0ce733281db0c57a8',1,'playrho::d2::DynamicTree::TreeNode']]],
@@ -200,7 +200,7 @@ var searchData=
   ['m_5fxf',['m_xf',['../classplayrho_1_1d2_1_1Body.html#a2c701dabeb187c6ef4f6e8c5bec02d11',1,'playrho::d2::Body']]],
   ['major',['major',['../structplayrho_1_1Version.html#a5e92cad7b20b19f8efc5ea4801bb6f53',1,'playrho::Version']]],
   ['makeunsigned',['MakeUnsigned',['../namespaceplayrho.html#ab84205bd8956258eea02a5cb0d829042',1,'playrho']]],
-  ['manifold',['Manifold',['../classplayrho_1_1d2_1_1Manifold.html',1,'playrho::d2::Manifold'],['../classplayrho_1_1d2_1_1Manifold.html#a27050de13d19927176e1ab48f8218ecd',1,'playrho::d2::Manifold::Manifold()=default'],['../classplayrho_1_1d2_1_1Manifold.html#a5cea02945f6e8c263c39c1679a96b7f4',1,'playrho::d2::Manifold::Manifold(const Manifold &amp;copy)=default'],['../classplayrho_1_1d2_1_1Manifold.html#a050567f9c5d12b60fa477b5582be60e4',1,'playrho::d2::Manifold::Manifold(Type t, UnitVec ln, Length2 lp, size_type n, const PointArray &amp;mpa) noexcept'],['../structplayrho_1_1d2_1_1Contact_1_1UpdateConf.html#ad77ca5661b69ec642c9adb9a945b2a56',1,'playrho::d2::Contact::UpdateConf::manifold()'],['../classplayrho_1_1d2_1_1PositionConstraint.html#a5c075475304d221d85d788b1ed2044e5',1,'playrho::d2::PositionConstraint::manifold()']]],
+  ['manifold',['Manifold',['../classplayrho_1_1d2_1_1Manifold.html',1,'playrho::d2::Manifold'],['../structplayrho_1_1d2_1_1Contact_1_1UpdateConf.html#ad77ca5661b69ec642c9adb9a945b2a56',1,'playrho::d2::Contact::UpdateConf::manifold()'],['../classplayrho_1_1d2_1_1PositionConstraint.html#a5c075475304d221d85d788b1ed2044e5',1,'playrho::d2::PositionConstraint::manifold()'],['../classplayrho_1_1d2_1_1Manifold.html#a27050de13d19927176e1ab48f8218ecd',1,'playrho::d2::Manifold::Manifold()=default'],['../classplayrho_1_1d2_1_1Manifold.html#a5cea02945f6e8c263c39c1679a96b7f4',1,'playrho::d2::Manifold::Manifold(const Manifold &amp;copy)=default'],['../classplayrho_1_1d2_1_1Manifold.html#a050567f9c5d12b60fa477b5582be60e4',1,'playrho::d2::Manifold::Manifold(Type t, UnitVec ln, Length2 lp, size_type n, const PointArray &amp;mpa) noexcept']]],
   ['maskbits',['maskBits',['../structplayrho_1_1Filter.html#a9a186cc516b67d2165419e515e5be3c0',1,'playrho::Filter']]],
   ['mass',['mass',['../structplayrho_1_1detail_1_1MassData.html#ad30925834c09f1179332797ce4ce4f47',1,'playrho::detail::MassData::mass()'],['../group__PhysicalQuantities.html#ga5edfc295416b7690b4f949223b551bc1',1,'playrho::Mass()']]],
   ['mass2',['Mass2',['../namespaceplayrho.html#acfba2b26f22dcc026361ed5a0ccf3966',1,'playrho']]],

@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -109,10 +109,10 @@ Static Private Member Functions</h2></td></tr>
 <tr class="memitem:aaf1f3a9ad7ea07c955a379aaf56b9439"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1JointAtty.html#aaf1f3a9ad7ea07c955a379aaf56b9439">Create</a> (const <a class="el" href="structplayrho_1_1d2_1_1JointConf.html">JointConf</a> &amp;def)</td></tr>
 <tr class="memdesc:aaf1f3a9ad7ea07c955a379aaf56b9439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new joint based on the given definition.  <a href="#aaf1f3a9ad7ea07c955a379aaf56b9439">More...</a><br /></td></tr>
 <tr class="separator:aaf1f3a9ad7ea07c955a379aaf56b9439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb78adc9941a8b874531d8d3e223f4dc"><td class="memItemLeft" align="right" valign="top"><a id="afb78adc9941a8b874531d8d3e223f4dc"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1JointAtty.html#afb78adc9941a8b874531d8d3e223f4dc">Destroy</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *j)</td></tr>
-<tr class="memdesc:afb78adc9941a8b874531d8d3e223f4dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys the given joint. <br /></td></tr>
-<tr class="separator:afb78adc9941a8b874531d8d3e223f4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69507c566ace3b5d6bef3f3d808993c2"><td class="memItemLeft" align="right" valign="top"><a id="a69507c566ace3b5d6bef3f3d808993c2"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1JointAtty.html#a69507c566ace3b5d6bef3f3d808993c2">Destroy</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *j) noexcept</td></tr>
+<tr class="memdesc:a69507c566ace3b5d6bef3f3d808993c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys the given joint. <br /></td></tr>
+<tr class="separator:a69507c566ace3b5d6bef3f3d808993c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0ed02435eca5cf5878a70b0d8218e97"><td class="memItemLeft" align="right" valign="top"><a id="ad0ed02435eca5cf5878a70b0d8218e97"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1JointAtty.html#ad0ed02435eca5cf5878a70b0d8218e97">InitVelocityConstraints</a> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;j, <a class="el" href="namespaceplayrho_1_1d2.html#a1b9d3ad35dbb5bc7c6be00a55c88e220">BodyConstraintsMap</a> &amp;bodies, const <a class="el" href="classplayrho_1_1StepConf.html">StepConf</a> &amp;step, const <a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a> &amp;conf)</td></tr>
 <tr class="memdesc:ad0ed02435eca5cf5878a70b0d8218e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the velocity constraints for the given joint with the given data. <br /></td></tr>
@@ -146,7 +146,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>World</b></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a> attorney. </p>
-<p>This class uses the "attorney-client" idiom to control the granularity of friend-based access to the <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a> class. This is meant to help preserve and enforce the invariants of the <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a> class.</p>
+<p>This is the "joint attorney" which provides limited privileged access to the <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a> class for the <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> class.</p>
+<dl class="section note"><dt>Note</dt><dd>This class uses the "attorney-client" idiom to control the granularity of friend-based access to the <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a> class. This is meant to help preserve and enforce the invariants of the <a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Base joint class. ">Joint</a> class.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client">https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aaf1f3a9ad7ea07c955a379aaf56b9439"></a>
@@ -194,7 +195,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>World</b></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1JointAtty.html">JointAtty</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:41 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

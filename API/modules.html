@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -95,12 +95,12 @@ $(document).ready(function(){initNavTree('modules.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock">Here is a list of all modules:</div><div class="directory">
-<table class="directory">
+<div class="levels">[detail level <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span>]</div><table class="directory">
 <tr id="row_0_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__RayCastGroup.html" target="_self">Ray Casting Functions</a></td><td class="desc">Collection of functions that do ray casting </td></tr>
 <tr id="row_1_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__PartsGroup.html" target="_self">Shape Classes</a></td><td class="desc">Classes for configuring shapes with material properties </td></tr>
 <tr id="row_2_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__BoundedAliases.html" target="_self">Bounded Value Types</a></td><td class="desc">Types for bounding values </td></tr>
-<tr id="row_3_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__FixedMath.html" target="_self">Mathematical Functions For Fixed Types</a></td><td class="desc">Common Mathematical Functions For <a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers. ">Fixed</a> Types </td></tr>
-<tr id="row_4_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__Math.html" target="_self">Additional Mathematical Functions</a></td><td class="desc">Additional functions for common mathematical operations </td></tr>
+<tr id="row_3_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__FixedMath.html" target="_self">Math Functions For Fixed Types</a></td><td class="desc">Common Mathematical Functions For <a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers. ">Fixed</a> Types </td></tr>
+<tr id="row_4_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__Math.html" target="_self">Additional Math Functions</a></td><td class="desc">Additional functions for common mathematical operations </td></tr>
 <tr id="row_5_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__MatrixTraitsGroup.html" target="_self">Matrix Traits</a></td><td class="desc">Collection of trait classes for matrices </td></tr>
 <tr id="row_6_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__DecimalUnitPrefices.html" target="_self">Decimal Unit Prefices</a></td><td class="desc">Decimal unit prefices in the metric system for denoting a multiple, or a fraction of, a unit </td></tr>
 <tr id="row_7_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__PhysicalQuantities.html" target="_self">Physical Quantity Types</a></td><td class="desc">Types for physical quantities </td></tr>
@@ -108,10 +108,11 @@ $(document).ready(function(){initNavTree('modules.html','');});
 <tr id="row_9_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__Unitsymbols.html" target="_self">Literals For Unit Symbols</a></td><td class="desc">User defined literals for more conveniently setting the value of physical quantities </td></tr>
 <tr id="row_10_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__UnitConstants.html" target="_self">Physical Constants</a></td><td class="desc">Definitions of universal and Earthly physical constants </td></tr>
 <tr id="row_11_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__VectorTraitsGroup.html" target="_self">Vector Traits</a></td><td class="desc">Collection of trait classes for <a class="el" href="structplayrho_1_1Vector.html" title="Vector. ">Vector</a> </td></tr>
-<tr id="row_12_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__JointsGroup.html" target="_self">Joint Classes</a></td><td class="desc">The user creatable classes that specify constraints on one or more <a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> instances </td></tr>
-<tr id="row_13_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__PhysicalEntities.html" target="_self">Physical Entity Classes</a></td><td class="desc">Classes representing physical entities typically created/destroyed via factory methods </td></tr>
-<tr id="row_14_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__TestPointGroup.html" target="_self">Point Containment Test Functions</a></td><td class="desc">Collection of functions testing for a point's containment within various objects </td></tr>
-<tr id="row_15_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__ExceptionsGroup.html" target="_self">Library Defined Exceptions</a></td><td class="desc">Exceptions defined and used by the PlayRho library </td></tr>
+<tr id="row_12_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__PhysicalEntities.html" target="_self">Physical Entity Classes</a></td><td class="desc">Classes representing physical entities typically created/destroyed via factory methods </td></tr>
+<tr id="row_13_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__TestPointGroup.html" target="_self">Point Containment Test Functions</a></td><td class="desc">Collection of functions testing for a point's containment within various objects </td></tr>
+<tr id="row_14_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><a class="el" href="group__ExceptionsGroup.html" target="_self">Library Defined Exceptions</a></td><td class="desc">Exceptions defined and used by the PlayRho library </td></tr>
+<tr id="row_15_"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_15_" class="arrow" onclick="toggleFolder('15_')">&#9660;</span><a class="el" href="group__ConstraintsGroup.html" target="_self">Library Defined Constraints</a></td><td class="desc">Constraints defined and used by the PlayRho library </td></tr>
+<tr id="row_15_0_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a class="el" href="group__JointsGroup.html" target="_self">Joint Classes</a></td><td class="desc">The user creatable classes that specify constraints on one or more <a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> instances </td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
@@ -119,7 +120,7 @@ $(document).ready(function(){initNavTree('modules.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:31 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:41 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

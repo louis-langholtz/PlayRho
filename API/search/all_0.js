@@ -12,6 +12,7 @@ var searchData=
   ['addconvexhull',['AddConvexHull',['../structplayrho_1_1d2_1_1MultiShapeConf.html#a8129502b37cd4a1e82fc7f82fb3e3c5e',1,'playrho::d2::MultiShapeConf']]],
   ['added',['added',['../structplayrho_1_1PreStepStats.html#a9342f0dc6ecefd1d1519804f013cd164',1,'playrho::PreStepStats']]],
   ['addentry',['AddEntry',['../classplayrho_1_1d2_1_1ContactImpulsesList.html#a10582ed9bfbe1061650b20acbaa3787f',1,'playrho::d2::ContactImpulsesList']]],
+  ['addfixture',['AddFixture',['../classplayrho_1_1d2_1_1BodyAtty.html#a3808fc21b5968eaa243cf906f2bc2982',1,'playrho::d2::BodyAtty']]],
   ['addjointstoisland',['AddJointsToIsland',['../classplayrho_1_1d2_1_1World.html#a579b084c9245694f4b635cd57c52cee2',1,'playrho::d2::World']]],
   ['addpoint',['AddPoint',['../classplayrho_1_1d2_1_1Manifold.html#a1399ecf9d6951ca8b72dd34dc66d1e75',1,'playrho::d2::Manifold::AddPoint(const Point &amp;mp) noexcept'],['../classplayrho_1_1d2_1_1Manifold.html#ae52dee2b3919b2ef87c65d281ec12ccc',1,'playrho::d2::Manifold::AddPoint(CfType type, CfIndex index, Length2 point) noexcept'],['../classplayrho_1_1d2_1_1VelocityConstraint.html#a149f6f811476b024dca1245f57c5aa75',1,'playrho::d2::VelocityConstraint::AddPoint()']]],
   ['addstate',['AddState',['../namespaceplayrho.html#a06f67e158a928ef59e4263facac8fb0ba494a3e62657370358107e2edf3fca5a0',1,'playrho']]],
@@ -65,5 +66,5 @@ var searchData=
   ['average',['Average',['../group__Math.html#ga7b2db834a9d392a7e63660f5dca67c73',1,'playrho']]],
   ['awake',['awake',['../structplayrho_1_1d2_1_1BodyConf.html#a860f348c00843664f24f9bf42d0ee31c',1,'playrho::d2::BodyConf']]],
   ['awaken',['Awaken',['../classplayrho_1_1d2_1_1Body.html#a4834708af29bcc9ae39ebfc2b9f580f6',1,'playrho::d2::Body::Awaken()'],['../classplayrho_1_1d2_1_1World.html#a1539463268cf6db572823eb1a195dc70',1,'playrho::d2::World::Awaken()'],['../namespaceplayrho_1_1d2.html#a4834708af29bcc9ae39ebfc2b9f580f6',1,'playrho::d2::Awaken(Body &amp;body) noexcept'],['../namespaceplayrho_1_1d2.html#a1539463268cf6db572823eb1a195dc70',1,'playrho::d2::Awaken(World &amp;world) noexcept']]],
-  ['additional_20mathematical_20functions',['Additional Mathematical Functions',['../group__Math.html',1,'']]]
+  ['additional_20math_20functions',['Additional Math Functions',['../group__Math.html',1,'']]]
 ];

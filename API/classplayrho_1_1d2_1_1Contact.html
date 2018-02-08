@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1Contact.html',''
 <a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1d2_1_1Contact-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">playrho::d2::Contact Class Reference<div class="ingroups"><a class="el" href="group__PhysicalEntities.html">Physical Entity Classes</a></div></div>  </div>
+<div class="title">playrho::d2::Contact Class Reference<div class="ingroups"><a class="el" href="group__PhysicalEntities.html">Physical Entity Classes</a> &#124; <a class="el" href="group__ConstraintsGroup.html">Library Defined Constraints</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -403,7 +403,8 @@ Related Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>These are created by <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> instances. Users have no need to instantiate these themselves. </dd>
 <dd>
 This data structure is 104-bytes large (on at least one 64-bit platform). </dd></dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Contact_8cpp-example.html#_a0">Contact.cpp</a>, and <a class="el" href="World_8cpp-example.html#_a125">World.cpp</a>.</dd>
+</dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2913ae6bc5f28a798bbf9a53419ad863"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2913ae6bc5f28a798bbf9a53419ad863">&#9670;&nbsp;</a></span>Contact()</h2>
 
@@ -458,10 +459,6 @@ This data structure is 104-bytes large (on at least one 64-bit platform). </dd><
 Behavior is undefined if <code>fB</code> is null. </dd>
 <dd>
 Behavior is undefined if <code>fA == fB</code>. </dd>
-<dd>
-Behavior is undefined if <code>fA</code> has no associated shape. </dd>
-<dd>
-Behavior is undefined if <code>fB</code> has no associated shape. </dd>
 <dd>
 Behavior is undefined if both fixture's have the same body. </dd></dl>
 
@@ -583,7 +580,8 @@ Behavior is undefined if both fixture's have the same body. </dd></dl>
 
 <p>Gets whether a TOI is set. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if this object has a TOI set for it, false otherwise. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a173">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Contact.html#ae1a23d2f5c34d9eff2afa6f435c90311">GetToi()</a>.</p>
 
 </div>
@@ -617,7 +615,8 @@ Behavior is undefined if both fixture's have the same body. </dd></dl>
 <li>This contact has sensors and the two shapes of this contact are found to be overlapping. <dl class="section return"><dt>Returns</dt><dd>true if this contact is said to be touching, false otherwise. </dd></dl>
 </li>
 </ol>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a126">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a0e6afe3f7c9b8d748c32c79b6177c387">playrho::d2::World::InternalDestroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab61e61ee05835899a0a47c7a236b9202">playrho::d2::World::ProcessContactsForTOI()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a8e9168734757608bf4b24b35662eb905">playrho::d2::World::SolveToi()</a>.</p>
 
 </div>
@@ -1497,7 +1496,7 @@ Only valid if <code>m_flags &amp; e_toiFlag</code>. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:40 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

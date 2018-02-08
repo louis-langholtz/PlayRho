@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -155,15 +155,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a397b6f4f50e2c3c869074f9ccbc38b36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a397b6f4f50e2c3c869074f9ccbc38b36">Body</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> *world, const <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;bd)</td></tr>
-<tr class="memdesc:a397b6f4f50e2c3c869074f9ccbc38b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor for unit testing purposes.  <a href="#a397b6f4f50e2c3c869074f9ccbc38b36">More...</a><br /></td></tr>
-<tr class="separator:a397b6f4f50e2c3c869074f9ccbc38b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae09b2950d8313278578e73dd39c1bd1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a">CreateFixture</a> (const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> &amp;shape, const <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html">FixtureConf</a> &amp;def=<a class="el" href="namespaceplayrho_1_1d2.html#a717b9c7d89e14f4f0e7f893075b3a8a7">GetDefaultFixtureConf</a>(), bool resetMassData=true)</td></tr>
 <tr class="memdesc:ae09b2950d8313278578e73dd39c1bd1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a fixture and attaches it to this body.  <a href="#ae09b2950d8313278578e73dd39c1bd1a">More...</a><br /></td></tr>
 <tr class="separator:ae09b2950d8313278578e73dd39c1bd1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a947481a969b326325f6182d7e514ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a5a947481a969b326325f6182d7e514ba">DestroyFixture</a> (<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *fixture, bool resetMassData=true)</td></tr>
-<tr class="memdesc:a5a947481a969b326325f6182d7e514ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a fixture.  <a href="#a5a947481a969b326325f6182d7e514ba">More...</a><br /></td></tr>
-<tr class="separator:a5a947481a969b326325f6182d7e514ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6a3ced246122751867900d956fd558e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa6a3ced246122751867900d956fd558e">Destroy</a> (<a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *fixture, bool resetMassData=true)</td></tr>
+<tr class="memdesc:aa6a3ced246122751867900d956fd558e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a fixture.  <a href="#aa6a3ced246122751867900d956fd558e">More...</a><br /></td></tr>
+<tr class="separator:aa6a3ced246122751867900d956fd558e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78eac4137e56d2f5aa95c73746c4b7aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a78eac4137e56d2f5aa95c73746c4b7aa">DestroyFixtures</a> ()</td></tr>
 <tr class="memdesc:a78eac4137e56d2f5aa95c73746c4b7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy fixtures.  <a href="#a78eac4137e56d2f5aa95c73746c4b7aa">More...</a><br /></td></tr>
 <tr class="separator:a78eac4137e56d2f5aa95c73746c4b7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -353,6 +350,12 @@ static PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:a04827704084c5d09f2c001e636d607de"><td class="memItemLeft" align="right" valign="top"><a id="a04827704084c5d09f2c001e636d607de"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Body</b> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;other)=delete</td></tr>
+<tr class="separator:a04827704084c5d09f2c001e636d607de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a397b6f4f50e2c3c869074f9ccbc38b36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a397b6f4f50e2c3c869074f9ccbc38b36">Body</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> *world, const <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;bd)</td></tr>
+<tr class="memdesc:a397b6f4f50e2c3c869074f9ccbc38b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="#a397b6f4f50e2c3c869074f9ccbc38b36">More...</a><br /></td></tr>
+<tr class="separator:a397b6f4f50e2c3c869074f9ccbc38b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa02ba3bfb281b55cd96c6e444846afa0"><td class="memItemLeft" align="right" valign="top"><a id="aa02ba3bfb281b55cd96c6e444846afa0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa02ba3bfb281b55cd96c6e444846afa0">IsIslanded</a> () const noexcept</td></tr>
 <tr class="memdesc:aa02ba3bfb281b55cd96c6e444846afa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this body is in is-in-island state. <br /></td></tr>
@@ -644,13 +647,16 @@ Only "speedable" bodies can have non-zero velocities. </dd>
 Only "accelerable" bodies can have non-zero accelerations. </dd>
 <dd>
 Only "accelerable" bodies can have non-zero "under-active" times.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Create these using the World::Create method. </dd>
+<dl class="section note"><dt>Note</dt><dd>Create these using the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#a66716e8c9020509c9891d9223a58be93" title="Creates a rigid body with the given configuration. ">World::CreateBody</a></code> method. </dd>
+<dd>
+Destroy these using the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#a8fce75bd4075681b56a758ccb9d950ba" title="Destroys the given body. ">World::Destroy(Body*)</a></code> method. </dd>
 <dd>
 From a memory management perspective, bodies own <a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a> instances. </dd>
 <dd>
 On a 64-bit architecture with 4-byte Real, this data structure is at least 192-bytes large.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a>, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a> </dd></dl>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#_a9">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#_a96">World.cpp</a>.</dd>
+</dl></div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a14412adef525843359094736776c0cc1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14412adef525843359094736776c0cc1">&#9670;&nbsp;</a></span>FlagsType</h2>
 
@@ -715,6 +721,9 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">playrho::d2::Body::Body </td>
@@ -734,9 +743,14 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Initializing constructor for unit testing purposes. </p>
+<p>Initializing constructor. </p>
 <dl class="section note"><dt>Note</dt><dd>This is not meant to be called directly by users of the library API. Call a world instance's <code>CreateBody</code> method instead. </dd></dl>
 
 </div>
@@ -830,24 +844,24 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classplayrho_1_1WrongState.html" title="Wrong state logic error. ">WrongState</a></td><td>if called while the world is "locked". </td></tr>
-    <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if called without a shape. </td></tr>
     <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if called for a shape with a vertex radius less than the minimum vertex radius. </td></tr>
     <tr><td class="paramname"><a class="el" href="classplayrho_1_1InvalidArgument.html" title="Invalid argument logic error. ">InvalidArgument</a></td><td>if called for a shape with a vertex radius greater than the maximum vertex radius.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Contact_8cpp-example.html#a7">Contact.cpp</a>, and <a class="el" href="World_8cpp-example.html#a40">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
-<a id="a5a947481a969b326325f6182d7e514ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a947481a969b326325f6182d7e514ba">&#9670;&nbsp;</a></span>DestroyFixture()</h2>
+<a id="aa6a3ced246122751867900d956fd558e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6a3ced246122751867900d956fd558e">&#9670;&nbsp;</a></span>Destroy()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool playrho::d2::Body::DestroyFixture </td>
+          <td class="memname">bool playrho::d2::Body::Destroy </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&#160;</td>
           <td class="paramname"><em>fixture</em>, </td>
@@ -960,7 +974,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>Gets the container of all contacts attached to this body. </p>
 <dl class="section warning"><dt>Warning</dt><dd>This collection changes during the time step and you may miss some collisions if you don't use <code><a class="el" href="classplayrho_1_1d2_1_1ContactListener.html" title="A pure-virtual interface for &quot;listeners&quot; for contacts. ">ContactListener</a></code>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a57d9ad0a6f135cf0f78e206fb67af168">playrho::d2::World::AddContactsToIsland()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ab61e61ee05835899a0a47c7a236b9202">playrho::d2::World::ProcessContactsForTOI()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#acbc6df84c16b5508e075b1ea1d1e7b30">playrho::d2::World::ResetContactsForSolveTOI()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a57d9ad0a6f135cf0f78e206fb67af168">playrho::d2::World::AddContactsToIsland()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ab61e61ee05835899a0a47c7a236b9202">playrho::d2::World::ProcessContactsForTOI()</a>.</p>
 
 </div>
 </div>
@@ -1054,7 +1068,8 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a6831cb0077f88907a3c4c28ae398515d" title="Gets the body transform for the body&#39;s origin. ">GetTransformation</a>. </dd></dl>
 </li>
 </ol>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a60">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a164">World.cpp</a>.</dd>
+</dl>
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a9104d2fcf4ea96cf6ff16ea44983b483">playrho::d2::MotorJoint::GetAnchorA()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a25f13a3e1079383a0e97919aa6cb7bbe">playrho::d2::MotorJoint::GetAnchorB()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a6970aff5f3ad80147b55f36902039b4e">playrho::d2::GetCentripetalForce()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#ab2dc6bfa388127a5ad2717ff13e4f0f1">ResetMassData()</a>.</p>
 
 </div>
@@ -1307,7 +1322,8 @@ A non-zero acceleration will also awaken the body. </dd></dl>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a53">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a794c4c1b8c24aedb959c5031a5ecde69"></a>
@@ -1339,7 +1355,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 <dd>
 If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code> method returns zero. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a4bf19603cf8ee0db7c31f39a88bf257f">playrho::d2::RevoluteJoint::EnableLimit()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#abde683572e3eda2348f4ff679762ca42">playrho::d2::PrismaticJoint::EnableLimit()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#ae8a1fe215575dcf2aea2e030b7ce7459">playrho::d2::WheelJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a22bffa82444c5774305f04a1b6680534">playrho::d2::RevoluteJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae1750099293f09972ab2e17dacbc7d9e">playrho::d2::PrismaticJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ac4a6353f425360ee1a5cbb4c4302b65d">playrho::d2::World::InternalDestroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a36ed928caf272fba676090574e399625">playrho::d2::MotorJoint::SetAngularOffset()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5a793779ba6e5acca4d2b3a6a3bbd205">playrho::d2::RevoluteJoint::SetLimits()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a97f75f0d723d2c0aab1af3dff8630ec7">playrho::d2::PrismaticJoint::SetLimits()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a33891065d9f8841008c171b6a9fcae94">playrho::d2::MotorJoint::SetLinearOffset()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a46e122cbefc4b6727dcb153093074587">playrho::d2::PrismaticJoint::SetMaxMotorForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#ad4908ad73af8a45298db094b9f7e7cf9">playrho::d2::WheelJoint::SetMaxMotorTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a100b092b8f1031913690c1597df3fb2c">playrho::d2::RevoluteJoint::SetMaxMotorTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a3810687352d9fe1fd3a8f34a7b7a8412">playrho::d2::WheelJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a0c93a7e67ab83d76770c32229e814fe1">playrho::d2::RevoluteJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a44a3ec993aef96c10e05816b121186fa">playrho::d2::PrismaticJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#adccc0a4d534ff19819851e22011da795">playrho::d2::TargetJoint::SetTarget()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ac18971aed32f82e4f712bc7e663be747">playrho::d2::World::SetType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a4bf19603cf8ee0db7c31f39a88bf257f">playrho::d2::RevoluteJoint::EnableLimit()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#abde683572e3eda2348f4ff679762ca42">playrho::d2::PrismaticJoint::EnableLimit()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#ae8a1fe215575dcf2aea2e030b7ce7459">playrho::d2::WheelJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a22bffa82444c5774305f04a1b6680534">playrho::d2::RevoluteJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#ae1750099293f09972ab2e17dacbc7d9e">playrho::d2::PrismaticJoint::EnableMotor()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a36ed928caf272fba676090574e399625">playrho::d2::MotorJoint::SetAngularOffset()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a5a793779ba6e5acca4d2b3a6a3bbd205">playrho::d2::RevoluteJoint::SetLimits()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a97f75f0d723d2c0aab1af3dff8630ec7">playrho::d2::PrismaticJoint::SetLimits()</a>, <a class="el" href="classplayrho_1_1d2_1_1MotorJoint.html#a33891065d9f8841008c171b6a9fcae94">playrho::d2::MotorJoint::SetLinearOffset()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a46e122cbefc4b6727dcb153093074587">playrho::d2::PrismaticJoint::SetMaxMotorForce()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#ad4908ad73af8a45298db094b9f7e7cf9">playrho::d2::WheelJoint::SetMaxMotorTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a100b092b8f1031913690c1597df3fb2c">playrho::d2::RevoluteJoint::SetMaxMotorTorque()</a>, <a class="el" href="classplayrho_1_1d2_1_1WheelJoint.html#a3810687352d9fe1fd3a8f34a7b7a8412">playrho::d2::WheelJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1RevoluteJoint.html#a0c93a7e67ab83d76770c32229e814fe1">playrho::d2::RevoluteJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a44a3ec993aef96c10e05816b121186fa">playrho::d2::PrismaticJoint::SetMotorSpeed()</a>, <a class="el" href="classplayrho_1_1d2_1_1TargetJoint.html#adccc0a4d534ff19819851e22011da795">playrho::d2::TargetJoint::SetTarget()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ac18971aed32f82e4f712bc7e663be747">playrho::d2::World::SetType()</a>.</p>
 
 </div>
 </div>
@@ -1573,7 +1589,8 @@ This function has no effect if the body isn't dynamic. </dd></dl>
 
 <p>Sets the type of this body. </p>
 <dl class="section note"><dt>Note</dt><dd>This may alter the mass and velocity. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a38">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a0a6f3e57e6a9b132f30f3d3f85ca5802"></a>
@@ -1669,7 +1686,8 @@ A non-zero velocity will awaken this body. </dd></dl>
 This body's <code>GetUnderActiveTime</code> method returns zero. </dd>
 <dd>
 This body's <code>GetVelocity</code> method returns zero linear and zero angular speed. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a50">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
@@ -1816,7 +1834,8 @@ Non-zero forces wakes up the body. </dd></dl>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a89">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a7e2df131b907494df3b33f2ca8751529"></a>
@@ -1854,7 +1873,8 @@ Non-zero forces wakes up the body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Applies the given linear acceleration to the given body. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a52">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a07f50b8133debf454d50f491d196dc24"></a>
@@ -1987,7 +2007,8 @@ Non-zero forces wakes up the body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Awakens the body if it's asleep. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="World_8cpp-example.html#a101">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a532a2a6530a34432d28f6089193b2260"></a>
@@ -2016,7 +2037,8 @@ Non-zero forces wakes up the body. </dd></dl>
 
 <p>Calculates the gravitationally associated acceleration for the given body within its world. </p>
 <dl class="section return"><dt>Returns</dt><dd>Zero acceleration if given body is has no mass, else the acceleration of the body due to the gravitational attraction to the other bodies. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a56">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a4c86a617058eada4a474b501f0844b76"></a>
@@ -2110,7 +2132,8 @@ Non-zero forces wakes up the body. </dd></dl>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a54">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a94">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a93f21ae0c92245d912cb91a99e756946"></a>
@@ -2139,7 +2162,8 @@ Non-zero forces wakes up the body. </dd></dl>
 
 <p>Gets the body's angle. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a>'s angle relative to its <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a>. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a46">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a120">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a306635dbd11f92ad1020a386fce7b7c2"></a>
@@ -2246,7 +2270,8 @@ Non-zero forces wakes up the body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the centripetal force necessary to put the body into an orbit having the given radius. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a64">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a2b995406bae81c78866c12b59432a931"></a>
@@ -2274,7 +2299,8 @@ Non-zero forces wakes up the body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the fixture count of the given body. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a33">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a73">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a82eaa61b6bddf682fe315f09830e2bfc"></a>
@@ -2337,7 +2363,8 @@ Non-zero forces wakes up the body. </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the linear velocity of the center of mass. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a66">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a115">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a47196aab3f4386da954b565a6a0fce7c"></a>
@@ -2587,7 +2614,8 @@ Non-zero forces wakes up the body. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#afc2d114f23cc621756f6e9363bc74f2a" title="Get the angle. ">GetAngle</a>. </dd></dl>
 </li>
 </ol>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a36">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a163">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a3c355eb58981b97e5901fa7d04052507"></a>
@@ -2617,7 +2645,8 @@ Non-zero forces wakes up the body. </dd></dl>
 <p>Gets the total mass of the body. </p>
 <dl class="section return"><dt>Returns</dt><dd>Value of zero or more representing the body's mass (in kg). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a479319dda79903324ef520ae21c7ca56" title="Gets the inverse total mass of the body. ">GetInvMass</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a918589968b14732682edf289ad74a030" title="Set the mass properties to override the mass properties of the fixtures. ">SetMassData</a> </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a43">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a137">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="adcf7fe1ea0d3ef041d4f7847ef5871e4"></a>
@@ -2709,7 +2738,8 @@ Non-zero forces wakes up the body. </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the rotational inertia. </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a44">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a18e2ece8e057b22c240cf681aca400b5"></a>
@@ -2818,7 +2848,8 @@ Non-zero forces wakes up the body. </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the world index for the given body. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a51">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="abdbcfc8a43696b1e7136db073fbe09ad"></a>
@@ -3003,7 +3034,8 @@ This is a convenience function that translates the local point into world coordi
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a63">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="af35644c450c12c8dcbd6cf1a0aa7b75c"></a>
@@ -3056,7 +3088,8 @@ This is a convenience function that translates the local point into world coordi
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a61">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a438e172db303ae0ab53263bc6af419ad"></a>
@@ -3104,7 +3137,8 @@ A non-zero acceleration will also awaken the body. </dd></dl>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a47">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a93">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a200799e930f62a238b7e82bf59d18cdb"></a>
@@ -3151,7 +3185,8 @@ A non-zero acceleration will also awaken the body. </dd></dl>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a51f40a6566392899980a0ba431e1aa89" title="Sets the position of the body&#39;s origin and rotation. ">Body::SetTransform</a> </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a70">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a9897119656ab5cb35c4babd0a4f9b3a5"></a>
@@ -3361,7 +3396,8 @@ A non-zero acceleration will also awaken the body. </dd></dl>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a65">Body.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a18d4f68807190fdf745e1b7a6eeeeefc"></a>
@@ -3408,7 +3444,8 @@ A non-zero acceleration will also awaken the body. </dd></dl>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a51f40a6566392899980a0ba431e1aa89" title="Sets the position of the body&#39;s origin and rotation. ">Body::SetTransform</a> </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="Body_8cpp-example.html#a69">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a77">World.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a0c8061050b56df681bde8a6bf28aefa2"></a>
@@ -3693,7 +3730,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:40 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

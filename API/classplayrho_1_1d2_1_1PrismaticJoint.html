@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1PrismaticJoint.h
 <a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1d2_1_1PrismaticJoint-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">playrho::d2::PrismaticJoint Class Reference<div class="ingroups"><a class="el" href="group__JointsGroup.html">Joint Classes</a></div></div>  </div>
+<div class="title">playrho::d2::PrismaticJoint Class Reference<div class="ingroups"><a class="el" href="group__ConstraintsGroup.html">Library Defined Constraints</a> &raquo; <a class="el" href="group__JointsGroup.html">Joint Classes</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -302,7 +302,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a92c57622ec3c5fa0d8271f2ac56892ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable motor. <code>true</code> if motor is enabled. <br /></td></tr>
 <tr class="separator:a92c57622ec3c5fa0d8271f2ac56892ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a139d19f212d125e85b0242d6694480bd"><td class="memItemLeft" align="right" valign="top"><a id="a139d19f212d125e85b0242d6694480bd"></a>
-<a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9">LimitState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a139d19f212d125e85b0242d6694480bd">m_limitState</a> = e_inactiveLimit</td></tr>
+<a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9">LimitState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html#a139d19f212d125e85b0242d6694480bd">m_limitState</a> = <a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9a710018e38be8dd1681bcd30b155f3052">e_inactiveLimit</a></td></tr>
 <tr class="memdesc:a139d19f212d125e85b0242d6694480bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Limit state. <br /></td></tr>
 <tr class="separator:a139d19f212d125e85b0242d6694480bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4a837dc491efdeec1e7641419d37b9e"><td class="memItemLeft" align="right" valign="top"><a id="aa4a837dc491efdeec1e7641419d37b9e"></a>
@@ -371,11 +371,11 @@ Related Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classplayrho_1_1d2_1_1Joint"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classplayrho_1_1d2_1_1Joint')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classplayrho_1_1d2_1_1Joint.html">playrho::d2::Joint</a></td></tr>
-<tr class="memitem:a2cf1732ac5dc8ac9a946238c19683bc9 inherit pub_types_classplayrho_1_1d2_1_1Joint"><td class="memItemLeft" align="right" valign="top"><a id="a2cf1732ac5dc8ac9a946238c19683bc9"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9">LimitState</a> { <b>e_inactiveLimit</b>, 
-<b>e_atLowerLimit</b>, 
-<b>e_atUpperLimit</b>, 
-<b>e_equalLimits</b>
- }<tr class="memdesc:a2cf1732ac5dc8ac9a946238c19683bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Limit state. <br /></td></tr>
+<tr class="memitem:a2cf1732ac5dc8ac9a946238c19683bc9 inherit pub_types_classplayrho_1_1d2_1_1Joint"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9">LimitState</a> { <a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9a710018e38be8dd1681bcd30b155f3052">e_inactiveLimit</a>, 
+<a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9ab6e143bf09cf16d0fae6e40b3c1419e9">e_atLowerLimit</a>, 
+<a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9a09f4db7c39db5e6bdc2e8c4a02336c9e">e_atUpperLimit</a>, 
+<a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9a481aab4efe14a536d3314e7617dc2b56">e_equalLimits</a>
+ }<tr class="memdesc:a2cf1732ac5dc8ac9a946238c19683bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Limit state.  <a href="classplayrho_1_1d2_1_1Joint.html#a2cf1732ac5dc8ac9a946238c19683bc9">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a2cf1732ac5dc8ac9a946238c19683bc9 inherit pub_types_classplayrho_1_1d2_1_1Joint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classplayrho_1_1d2_1_1Joint"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classplayrho_1_1d2_1_1Joint')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classplayrho_1_1d2_1_1Joint.html">playrho::d2::Joint</a></td></tr>
@@ -758,7 +758,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1PrismaticJoint.html">PrismaticJoint</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:30 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:41 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

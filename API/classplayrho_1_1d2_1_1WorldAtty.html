@@ -34,7 +34,7 @@
    <div id="projectname">PlayRho
    &#160;<span id="projectnumber">0.9.0</span>
    </div>
-   <div id="projectbrief">A Real-Time-Oriented 2-D Physics Engine and Library</div>
+   <div id="projectbrief">An Interactive Real-Time-Oriented C++14-based Physics Engine &amp; Library</div>
   </td>
    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -115,9 +115,9 @@ Static Private Member Functions</h2></td></tr>
 <tr class="memitem:a50bed42628d05699e063a12b67448e0f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldAtty.html#a50bed42628d05699e063a12b67448e0f">CreateFixture</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> &amp;shape, const <a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html">FixtureConf</a> &amp;def, bool resetMassData)</td></tr>
 <tr class="memdesc:a50bed42628d05699e063a12b67448e0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a fixture with the given parameters.  <a href="#a50bed42628d05699e063a12b67448e0f">More...</a><br /></td></tr>
 <tr class="separator:a50bed42628d05699e063a12b67448e0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a769b07208dd5ac2f3b3a0b6ba47c44ce"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldAtty.html#a769b07208dd5ac2f3b3a0b6ba47c44ce">DestroyFixture</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixture, bool resetMassData)</td></tr>
-<tr class="memdesc:a769b07208dd5ac2f3b3a0b6ba47c44ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a fixture.  <a href="#a769b07208dd5ac2f3b3a0b6ba47c44ce">More...</a><br /></td></tr>
-<tr class="separator:a769b07208dd5ac2f3b3a0b6ba47c44ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae02cdb8cde493580ff96d8621eebddcd"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldAtty.html#ae02cdb8cde493580ff96d8621eebddcd">Destroy</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html">Fixture</a> &amp;fixture, bool resetMassData)</td></tr>
+<tr class="memdesc:ae02cdb8cde493580ff96d8621eebddcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a fixture.  <a href="#ae02cdb8cde493580ff96d8621eebddcd">More...</a><br /></td></tr>
+<tr class="separator:ae02cdb8cde493580ff96d8621eebddcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1552c1e0e0a70b2156462121b5e9e9d9"><td class="memItemLeft" align="right" valign="top"><a id="a1552c1e0e0a70b2156462121b5e9e9d9"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WorldAtty.html#a1552c1e0e0a70b2156462121b5e9e9d9">RegisterForProxies</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body)</td></tr>
 <tr class="memdesc:a1552c1e0e0a70b2156462121b5e9e9d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register for proxies for the given body. <br /></td></tr>
@@ -138,7 +138,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Fixture</b></td></tr
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> attorney. </p>
-<p>This class uses the "attorney-client" idiom to control the granularity of friend-based access to the <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> class. This is meant to help preserve and enforce the invariants of the <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> class.</p>
+<p>This is the "world attorney" which provides limited privileged access to the <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> class for the <a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. ">Body</a> and <a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. ">Fixture</a> classes.</p>
+<dl class="section note"><dt>Note</dt><dd>This class uses the "attorney-client" idiom to control the granularity of friend-based access to the <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> class. This is meant to help preserve and enforce the invariants of the <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. ">World</a> class.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client">https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a50bed42628d05699e063a12b67448e0f"></a>
@@ -209,8 +210,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Fixture</b></td></tr
 
 </div>
 </div>
-<a id="a769b07208dd5ac2f3b3a0b6ba47c44ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a769b07208dd5ac2f3b3a0b6ba47c44ce">&#9670;&nbsp;</a></span>DestroyFixture()</h2>
+<a id="ae02cdb8cde493580ff96d8621eebddcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae02cdb8cde493580ff96d8621eebddcd">&#9670;&nbsp;</a></span>Destroy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -219,7 +220,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Fixture</b></td></tr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool playrho::d2::WorldAtty::DestroyFixture </td>
+          <td class="memname">static bool playrho::d2::WorldAtty::Destroy </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
           <td class="paramname"><em>world</em>, </td>
@@ -269,7 +270,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Fixture</b></td></tr
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a5a947481a969b326325f6182d7e514ba">playrho::d2::Body::DestroyFixture()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#aa6a3ced246122751867900d956fd558e">playrho::d2::Body::Destroy()</a>.</p>
 
 </div>
 </div>
@@ -378,7 +379,7 @@ This sets things up so that pairs may be created for potentially new contacts. <
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1WorldAtty.html">WorldAtty</a></li>
-    <li class="footer">Generated on Sun Feb 4 2018 11:20:31 for PlayRho by
+    <li class="footer">Generated on Wed Feb 7 2018 17:35:41 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>
