@@ -133,9 +133,17 @@ public:
     explicit World(const WorldConf& def = GetDefaultWorldConf());
 
     /// @brief Copy constructor.
+    /// @details Copy constructs this world with a deep copy of the given world.
+    /// @post The state of this world is like that of the given world except this world now
+    ///   has deep copies of the given world with pointers having the new addresses of the
+    ///   new memory required for those copies.
     World(const World& other);
 
     /// @brief Assignment operator.
+    /// @details Copy assigns this world with a deep copy of the given world.
+    /// @post The state of this world is like that of the given world except this world now
+    ///   has deep copies of the given world with pointers having the new addresses of the
+    ///   new memory required for those copies.
     /// @warning This method should not be called while the world is locked!
     /// @throws WrongState if this method is called while the world is locked.
     World& operator= (const World& other);
@@ -146,6 +154,8 @@ public:
     ~World() noexcept;
 
     /// @brief Clears this world.
+    /// @post The contents of this world have all been destroyed and this world's internal
+    ///   state reset as though it had just been constructed.
     /// @throws WrongState if this method is called while the world is locked.
     void Clear();
 
@@ -158,42 +168,62 @@ public:
     void SetContactListener(ContactListener* listener) noexcept;
 
     /// @brief Creates a rigid body with the given configuration.
-    /// @note No references to the configuration are retained. Its value is copied.
     /// @warning This function should not be used while the world is locked &mdash; as it is
     ///   during callbacks. If it is, it will throw an exception or abort your program.
+    /// @note No references to the configuration are retained. Its value is copied.
+    /// @post The created body will be present in the range returned from the
+    ///   <code>GetBodies()</code> method.
     /// @param def A customized body configuration or its default value.
-    /// @return Pointer to newly created body.
+    /// @return Pointer to newly created body which can later be destroyed by calling the
+    ///   <code>Destroy(Body*)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
+    /// @sa Destroy(Body*), GetBodies
     /// @sa PhysicalEntities
     Body* CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
-    /// @brief Destroys the given body.
-    /// @note This function is locked during callbacks.
-    /// @warning This automatically deletes all associated shapes and joints.
-    /// @warning This function is locked during callbacks.
-    /// @warning Behavior is undefined if given a null body.
-    /// @warning Behavior is undefined if the passed body was not created by this world.
-    /// @throws WrongState if this method is called while the world is locked.
-    /// @sa PhysicalEntities
-    void Destroy(Body* body);
-
     /// @brief Creates a joint to constrain one or more bodies.
-    /// @note No references to the configuration are retained. Its value is copied.
     /// @warning This function is locked during callbacks.
-    /// @return Pointer to newly created joint.
+    /// @note No references to the configuration are retained. Its value is copied.
+    /// @post The created joint will be present in the range returned from the
+    ///   <code>GetJoints()</code> method.
+    /// @return Pointer to newly created joint which can later be destroyed by calling the
+    ///   <code>Destroy(Joint*)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @throws InvalidArgument if the given definition is not allowed.
     /// @sa PhysicalEntities
+    /// @sa Destroy(Joint*), GetJoints
     Joint* CreateJoint(const JointConf& def);
 
+    /// @brief Destroys the given body.
+    /// @details Destroys a given body that had previously been created by a call to this
+    ///   world's <code>CreateBody(const BodyConf&)</code> method.
+    /// @warning This automatically deletes all associated shapes and joints.
+    /// @warning This function is locked during callbacks.
+    /// @warning Behavior is undefined if given a null body.
+    /// @warning Behavior is undefined if the passed body was not created by this world.
+    /// @note This function is locked during callbacks.
+    /// @post The destroyed body will no longer be present in the range returned from the
+    ///   <code>GetBodies()</code> method.
+    /// @param body Body to destroy that had been created by this world.
+    /// @throws WrongState if this method is called while the world is locked.
+    /// @sa CreateBody(const BodyConf&)
+    /// @sa GetBodies
+    /// @sa PhysicalEntities
+    void Destroy(Body* body);
+
     /// @brief Destroys a joint.
-    /// @details This may cause the connected bodies to begin colliding.
+    /// @details Destroys a given joint that had previously been created by a call to this
+    ///   world's <code>CreateJoint(const JointConf&)</code> method.
     /// @warning This function is locked during callbacks.
     /// @warning Behavior is undefined if the passed joint was not created by this world.
-    /// @param joint Joint, created by this world, to destroy.
+    /// @note This may cause the connected bodies to begin colliding.
+    /// @post The destroyed joint will no longer be present in the range returned from the
+    ///   <code>GetJoints()</code> method.
+    /// @param joint Joint to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
+    /// @sa CreateJoint(const JointConf&), GetJoints
     /// @sa PhysicalEntities
     void Destroy(Joint* joint);
 
@@ -234,21 +264,37 @@ public:
     StepStats Step(const StepConf& conf);
 
     /// @brief Gets the world body range for this world.
+    /// @details Gets a range enumerating the bodies currently existing within this world.
+    ///   These are the bodies that had been created from previous calls to the
+    ///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
+    /// @sa CreateBody(const BodyConf&)
     SizedRange<Bodies::iterator> GetBodies() noexcept;
 
     /// @brief Gets the world body range for this constant world.
+    /// @details Gets a range enumerating the bodies currently existing within this world.
+    ///   These are the bodies that had been created from previous calls to the
+    ///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
+    /// @sa CreateBody(const BodyConf&)
     SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
 
     /// @brief Gets the world joint range.
+    /// @details Gets a range enumerating the joints currently existing within this world.
+    ///   These are the joints that had been created from previous calls to the
+    ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
+    /// @sa CreateJoint(const JointConf&)
     SizedRange<Joints::const_iterator> GetJoints() const noexcept;
 
     /// @brief Gets the world joint range.
+    /// @details Gets a range enumerating the joints currently existing within this world.
+    ///   These are the joints that had been created from previous calls to the
+    ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
+    /// @sa CreateJoint(const JointConf&)
     SizedRange<Joints::iterator> GetJoints() noexcept;
 
     /// @brief Gets the world contact range.
@@ -273,6 +319,8 @@ public:
     /// @brief Shifts the world origin.
     /// @note Useful for large worlds.
     /// @note The body shift formula is: <code>position -= newOrigin</code>.
+    /// @post The "origin" of this world's bodies, joints, and the board-phase dynamic tree
+    ///   have been translated per the shift amount and direction.
     /// @param newOrigin the new origin with respect to the old origin
     /// @throws WrongState if this method is called while the world is locked.
     void ShiftOrigin(Length2 newOrigin);
@@ -284,6 +332,9 @@ public:
     Length GetMaxVertexRadius() const noexcept;
 
     /// @brief Gets the inverse delta time.
+    /// @details Gets the inverse delta time that was set on construction or assignment, and
+    ///   updated on every call to the <code>Step()</code> method having a non-zero delta-time.
+    /// @sa Step
     Frequency GetInvDeltaTime() const noexcept;
     
 private:
@@ -312,22 +363,16 @@ private:
                            bool resetMassData = true);
 
     /// @brief Destroys a fixture.
-    ///
     /// @details This removes the fixture from the broad-phase and destroys all contacts
     ///   associated with this fixture.
     ///   All fixtures attached to a body are implicitly destroyed when the body is destroyed.
-    ///
     /// @warning This function is locked during callbacks.
-    /// @note Make sure to explicitly call <code>ResetMassData</code> after fixtures have been
-    ///   destroyed.
-    ///
+    /// @note Make sure to explicitly call <code>Body::ResetMassData</code> after fixtures have
+    ///   been destroyed.
     /// @param fixture the fixture to be removed.
     /// @param resetMassData Whether or not to reset the mass data of the associated body.
-    ///
-    /// @sa ResetMassData.
-    ///
+    /// @sa Body::ResetMassData
     /// @throws WrongState if this method is called while the world is locked.
-    ///
     bool Destroy(Fixture& fixture, bool resetMassData = true);
     
     /// @brief Touches each proxy of the given fixture.

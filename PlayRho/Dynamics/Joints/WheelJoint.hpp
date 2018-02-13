@@ -45,6 +45,9 @@ class WheelJoint : public Joint
 public:
     
     /// @brief Initializing constructor.
+    /// @attention To create or use the joint within a world instance, call that world
+    ///   instance's create joint method instead of calling this constructor directly.
+    /// @sa World::CreateJoint
     WheelJoint(const WheelJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;
