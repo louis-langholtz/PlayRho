@@ -162,7 +162,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa6a3ced246122751867900d956fd558e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a fixture.  <a href="#aa6a3ced246122751867900d956fd558e">More...</a><br /></td></tr>
 <tr class="separator:aa6a3ced246122751867900d956fd558e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78eac4137e56d2f5aa95c73746c4b7aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a78eac4137e56d2f5aa95c73746c4b7aa">DestroyFixtures</a> ()</td></tr>
-<tr class="memdesc:a78eac4137e56d2f5aa95c73746c4b7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy fixtures.  <a href="#a78eac4137e56d2f5aa95c73746c4b7aa">More...</a><br /></td></tr>
+<tr class="memdesc:a78eac4137e56d2f5aa95c73746c4b7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys fixtures.  <a href="#a78eac4137e56d2f5aa95c73746c4b7aa">More...</a><br /></td></tr>
 <tr class="separator:a78eac4137e56d2f5aa95c73746c4b7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51f40a6566392899980a0ba431e1aa89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a51f40a6566392899980a0ba431e1aa89">SetTransform</a> (<a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> location, <a class="el" href="group__PhysicalQuantities.html#gab999341c050df340ff56a65816a63da9">Angle</a> angle)</td></tr>
 <tr class="memdesc:a51f40a6566392899980a0ba431e1aa89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position of the body's origin and rotation.  <a href="#a51f40a6566392899980a0ba431e1aa89">More...</a><br /></td></tr>
@@ -830,6 +830,10 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 </div><div class="memdoc">
 
 <p>Creates a fixture and attaches it to this body. </p>
+<p>Creates a fixture for attaching a shape and other characteristics to this body. Fixtures automatically go away when this body is destroyed. Fixtures can also be manually removed and destroyed using the <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa6a3ced246122751867900d956fd558e" title="Destroys a fixture. ">Destroy(Fixture*, bool)</a></code>, or <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a78eac4137e56d2f5aa95c73746c4b7aa" title="Destroys fixtures. ">DestroyFixtures()</a></code> methods.</p>
+<dl class="section note"><dt>Note</dt><dd>This function should not be called if the world is locked. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This function is locked during callbacks.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>After creating a new fixture, it will show up in the fixture enumeration returned by the <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#aebc54be141585da51872cef5fc46e270" title="Gets the range of all fixtures attached to this body. ">GetFixtures()</a></code> methods.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">shape</td><td>Shareable shape definition. Its vertex radius must be less than the minimum or more than the maximum allowed by the body's world. </td></tr>
@@ -838,8 +842,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This function should not be called if the world is locked. </dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>This function is locked during callbacks.</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the created fixture.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
@@ -849,7 +851,9 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa6a3ced246122751867900d956fd558e" title="Destroys a fixture. ">Destroy</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae059618bbfd4b357f27fe4ac386481bf" title="Gets the range of all constant fixtures attached to this body. ">GetFixtures</a> </dd>
+<dd>
+<a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="Contact_8cpp-example.html#a7">Contact.cpp</a>, and <a class="el" href="World_8cpp-example.html#a40">World.cpp</a>.</dd>
 </dl>
 </div>
@@ -881,10 +885,10 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 </div><div class="memdoc">
 
 <p>Destroys a fixture. </p>
-<p>This removes the fixture from the broad-phase and destroys all contacts associated with this fixture. All fixtures attached to a body are implicitly destroyed when the body is destroyed.</p>
+<p>Destroys a fixture previously created by the <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a" title="Creates a fixture and attaches it to this body. ">CreateFixture(const Shape&amp;, const FixtureConf&amp;, bool)</a></code> method. This removes the fixture from the broad-phase and destroys all contacts associated with this fixture. All fixtures attached to a body are implicitly destroyed when the body is destroyed.</p>
 <dl class="section warning"><dt>Warning</dt><dd>This function is locked during callbacks. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Make sure to explicitly call <code>ResetMassData</code> after fixtures have been destroyed. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab2dc6bfa388127a5ad2717ff13e4f0f1" title="Resets the mass data properties. ">ResetMassData</a>.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Make sure to explicitly call <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab2dc6bfa388127a5ad2717ff13e4f0f1" title="Resets the mass data properties. ">ResetMassData()</a></code> after fixtures have been destroyed if resetting the mass data is not requested via the reset mass data parameter.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>After destroying a fixture, it will no longer show up in the fixture enumeration returned by the <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#aebc54be141585da51872cef5fc46e270" title="Gets the range of all fixtures attached to this body. ">GetFixtures()</a></code> methods.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fixture</td><td>the fixture to be removed. </td></tr>
@@ -892,7 +896,9 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a" title="Creates a fixture and attaches it to this body. ">CreateFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae059618bbfd4b357f27fe4ac386481bf" title="Gets the range of all constant fixtures attached to this body. ">GetFixtures</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ab2dc6bfa388127a5ad2717ff13e4f0f1" title="Resets the mass data properties. ">ResetMassData</a>. </dd>
+<dd>
+<a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a78eac4137e56d2f5aa95c73746c4b7aa">DestroyFixtures()</a>.</p>
 
@@ -913,8 +919,12 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
       </table>
 </div><div class="memdoc">
 
-<p>Destroy fixtures. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
+<p>Destroys fixtures. </p>
+<p>Destroys all of the fixtures previously created for this body by the <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a" title="Creates a fixture and attaches it to this body. ">CreateFixture(const Shape&amp;, const FixtureConf&amp;, bool)</a></code> method. </p><dl class="section note"><dt>Note</dt><dd>This unconditionally calls the <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab2dc6bfa388127a5ad2717ff13e4f0f1" title="Resets the mass data properties. ">ResetMassData()</a></code> method. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>After this call, no fixtures will show up in the fixture enumeration returned by the <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#aebc54be141585da51872cef5fc46e270" title="Gets the range of all fixtures attached to this body. ">GetFixtures()</a></code> methods. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae09b2950d8313278578e73dd39c1bd1a" title="Creates a fixture and attaches it to this body. ">CreateFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae059618bbfd4b357f27fe4ac386481bf" title="Gets the range of all constant fixtures attached to this body. ">GetFixtures</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ab2dc6bfa388127a5ad2717ff13e4f0f1" title="Resets the mass data properties. ">ResetMassData</a>. </dd>
+<dd>
+<a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods. ">Physical Entity Classes</a> </dd></dl>
 
 </div>
 </div>
@@ -3730,7 +3740,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>
-    <li class="footer">Generated on Wed Feb 7 2018 17:35:40 for PlayRho by
+    <li class="footer">Generated on Mon Feb 12 2018 22:45:16 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

@@ -118,9 +118,8 @@ Collaboration diagram for playrho::d2::WeldJoint:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a115372c85e776c85cfc4046ab43bda1c"><td class="memItemLeft" align="right" valign="top"><a id="a115372c85e776c85cfc4046ab43bda1c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a115372c85e776c85cfc4046ab43bda1c">WeldJoint</a> (const <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html">WeldJointConf</a> &amp;def)</td></tr>
-<tr class="memdesc:a115372c85e776c85cfc4046ab43bda1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
+<tr class="memitem:a115372c85e776c85cfc4046ab43bda1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a115372c85e776c85cfc4046ab43bda1c">WeldJoint</a> (const <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html">WeldJointConf</a> &amp;def)</td></tr>
+<tr class="memdesc:a115372c85e776c85cfc4046ab43bda1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="#a115372c85e776c85cfc4046ab43bda1c">More...</a><br /></td></tr>
 <tr class="separator:a115372c85e776c85cfc4046ab43bda1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27f65832f34ad6540a99c6f6e2c033bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html#a27f65832f34ad6540a99c6f6e2c033bb">Accept</a> (<a class="el" href="classplayrho_1_1d2_1_1JointVisitor.html">JointVisitor</a> &amp;visitor) const override</td></tr>
 <tr class="memdesc:a27f65832f34ad6540a99c6f6e2c033bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts a visitor.  <a href="#a27f65832f34ad6540a99c6f6e2c033bb">More...</a><br /></td></tr>
@@ -300,7 +299,30 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Weld joint. </p>
 <p>A weld joint essentially glues two bodies together. A weld joint may distort somewhat because the island constraint solver is approximate. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a115372c85e776c85cfc4046ab43bda1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a115372c85e776c85cfc4046ab43bda1c">&#9670;&nbsp;</a></span>WeldJoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">playrho::d2::WeldJoint::WeldJoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1d2_1_1WeldJointConf.html">WeldJointConf</a> &amp;&#160;</td>
+          <td class="paramname"><em>def</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializing constructor. </p>
+<dl class="section attention"><dt>Attention</dt><dd>To create or use the joint within a world instance, call that world instance's create joint method instead of calling this constructor directly. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#a8b2dbd2e42ecedf2d877875c62a9a2a4" title="Creates a joint to constrain one or more bodies. ">World::CreateJoint</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a27f65832f34ad6540a99c6f6e2c033bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a27f65832f34ad6540a99c6f6e2c033bb">&#9670;&nbsp;</a></span>Accept() <span class="overload">[1/2]</span></h2>
 
@@ -539,7 +561,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1WeldJoint.html">WeldJoint</a></li>
-    <li class="footer">Generated on Wed Feb 7 2018 17:35:41 for PlayRho by
+    <li class="footer">Generated on Mon Feb 12 2018 22:45:17 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

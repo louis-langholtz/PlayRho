@@ -188,6 +188,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Common Mathematical Functions For <a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers. ">Fixed</a> Types. </p>
+<dl class="section note"><dt>Note</dt><dd>These functions directly compute their respective results. They don't convert their inputs to a floating point type to use the standard math functions and then convert those results back to the fixed point type. This has pros and cons. Some pros are that: this won't suffer from the "non-determinism" inherent with different hardware platforms potentially having different floating point or math library implementations; this implementation won't suffer any overhead of converting between the underlying type and a floating point type. On the con side however: this implementation is unlikely to be anywhere near as tested as standard C++ math library functions likely are; this implementation is unlikely to have anywhere near as much performance tuning as standard library functions have had. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers. ">Fixed</a> </dd>
 <dd>
 <a href="http://en.cppreference.com/w/cpp/numeric/math">http://en.cppreference.com/w/cpp/numeric/math</a> </dd></dl>
@@ -838,7 +839,7 @@ template&lt;typename BT , unsigned int FB&gt; </div>
 <dd>
 The IEEE standard (presumably IEC 60559), requires <code>std::sqrt</code> to be exact to within half of a ULP for floating-point types (float, double). That sets a precedence that puts a high expectation on this implementation for fixed-point types. </dd>
 <dd>
-"Domain error" occurs if arg is less than zero. </dd></dl>
+"Domain error" occurs if <code>arg</code> is less than zero. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Mathematical square root value of the given value or the <code>NaN</code> value. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="http://en.cppreference.com/w/cpp/numeric/math/sqrt">http://en.cppreference.com/w/cpp/numeric/math/sqrt</a> </dd></dl>
 
@@ -884,7 +885,7 @@ template&lt;typename BT , unsigned int FB&gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Feb 7 2018 17:35:39 for PlayRho by
+    <li class="footer">Generated on Mon Feb 12 2018 22:45:15 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

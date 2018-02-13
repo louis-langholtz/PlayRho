@@ -118,9 +118,8 @@ Collaboration diagram for playrho::d2::RopeJoint:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9412a4cfdc4bab52dee0fd9da87fce94"><td class="memItemLeft" align="right" valign="top"><a id="a9412a4cfdc4bab52dee0fd9da87fce94"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a9412a4cfdc4bab52dee0fd9da87fce94">RopeJoint</a> (const <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html">RopeJointConf</a> &amp;data)</td></tr>
-<tr class="memdesc:a9412a4cfdc4bab52dee0fd9da87fce94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor. <br /></td></tr>
+<tr class="memitem:a9412a4cfdc4bab52dee0fd9da87fce94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a9412a4cfdc4bab52dee0fd9da87fce94">RopeJoint</a> (const <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html">RopeJointConf</a> &amp;data)</td></tr>
+<tr class="memdesc:a9412a4cfdc4bab52dee0fd9da87fce94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializing constructor.  <a href="#a9412a4cfdc4bab52dee0fd9da87fce94">More...</a><br /></td></tr>
 <tr class="separator:a9412a4cfdc4bab52dee0fd9da87fce94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a746b17509335f1258fb4d66bb8f9bddf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html#a746b17509335f1258fb4d66bb8f9bddf">Accept</a> (<a class="el" href="classplayrho_1_1d2_1_1JointVisitor.html">JointVisitor</a> &amp;visitor) const override</td></tr>
 <tr class="memdesc:a746b17509335f1258fb4d66bb8f9bddf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts a visitor.  <a href="#a746b17509335f1258fb4d66bb8f9bddf">More...</a><br /></td></tr>
@@ -289,7 +288,30 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <div class="textblock"><p>Rope joint. </p>
 <p>A rope joint enforces a maximum distance between two points on two bodies. It has no other effect.</p>
 <dl class="section warning"><dt>Warning</dt><dd>If you attempt to change the maximum length during the simulation you will get some non-physical behavior. A model that would allow you to dynamically modify the length would have some sponginess, so it was decided not to implement it that way. See <code><a class="el" href="classplayrho_1_1d2_1_1DistanceJoint.html" title="Distance Joint. ">DistanceJoint</a></code> if you want to dynamically control length. </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a9412a4cfdc4bab52dee0fd9da87fce94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9412a4cfdc4bab52dee0fd9da87fce94">&#9670;&nbsp;</a></span>RopeJoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">playrho::d2::RopeJoint::RopeJoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1d2_1_1RopeJointConf.html">RopeJointConf</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializing constructor. </p>
+<dl class="section attention"><dt>Attention</dt><dd>To create or use the joint within a world instance, call that world instance's create joint method instead of calling this constructor directly. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#a8b2dbd2e42ecedf2d877875c62a9a2a4" title="Creates a joint to constrain one or more bodies. ">World::CreateJoint</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a746b17509335f1258fb4d66bb8f9bddf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a746b17509335f1258fb4d66bb8f9bddf">&#9670;&nbsp;</a></span>Accept() <span class="overload">[1/2]</span></h2>
 
@@ -528,7 +550,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1RopeJoint.html">RopeJoint</a></li>
-    <li class="footer">Generated on Wed Feb 7 2018 17:35:41 for PlayRho by
+    <li class="footer">Generated on Mon Feb 12 2018 22:45:17 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>

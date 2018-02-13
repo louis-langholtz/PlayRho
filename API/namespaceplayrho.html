@@ -2238,10 +2238,14 @@ PLAYRHO_CONSTEXPR const auto&#160;</td><td class="memItemRight" valign="bottom">
 </div><div class="memdoc">
 
 <p>32-bit fixed precision type. </p>
+<p>This is a 32-bit fixed precision type with a Q number-format of <code>Q23.9</code>.</p>
 <dl class="section warning"><dt>Warning</dt><dd>The available numeric fidelity of any 32-bit fixed point type is very limited. Using a 32-bit fixed point type for Real should only be considered for simulations where it's been found to work and where the dynamics won't be changing between runs.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Maximum value (with 9 fraction bits) is approximately 4194303.99609375. </dd>
 <dd>
-Minimum value (with 9 fraction bits) is approximately 0.001953125. </dd></dl>
+Minimum value (with 9 fraction bits) is approximately 0.001953125.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1Fixed.html" title="Template class for fixed-point numbers. ">Fixed</a>, <a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87" title="Real-number type. ">Real</a> </dd>
+<dd>
+<a href="https://en.wikipedia.org/wiki/Q_(number_format)">https://en.wikipedia.org/wiki/Q_(number_format)</a> </dd></dl>
 
 </div>
 </div>
@@ -5916,7 +5920,7 @@ Any narrowing is intentional.</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li>
-    <li class="footer">Generated on Wed Feb 7 2018 17:35:40 for PlayRho by
+    <li class="footer">Generated on Mon Feb 12 2018 22:45:15 for PlayRho by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
   </ul>
