@@ -115,9 +115,13 @@ TEST(MotorJoint, ByteSize)
 
 TEST(MotorJoint, Construction)
 {
-    auto def = MotorJointConf{};
-    auto joint = MotorJoint{def};
-    
+    auto world = World{};
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+
+    auto def = MotorJointConf{b0, b1};
+    auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
+
     EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
@@ -139,16 +143,24 @@ TEST(MotorJoint, Construction)
 
 TEST(MotorJoint, ShiftOrigin)
 {
-    auto def = MotorJointConf{};
-    auto joint = MotorJoint{def};
+    auto world = World{};
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+
+    auto def = MotorJointConf{b0, b1};
+    auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
 }
 
 TEST(MotorJoint, SetCorrectionFactor)
 {
-    MotorJointConf def;
-    MotorJoint joint{def};
+    auto world = World{};
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto def = MotorJointConf{b0, b1};
+    auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
     
     ASSERT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
     ASSERT_EQ(Real(0.3), def.correctionFactor);
@@ -159,8 +171,12 @@ TEST(MotorJoint, SetCorrectionFactor)
 
 TEST(MotorJoint, GetMotorJointConf)
 {
-    MotorJointConf def;
-    MotorJoint joint{def};
+    auto world = World{};
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+    
+    auto def = MotorJointConf{b0, b1};
+    auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
     
     ASSERT_EQ(GetType(joint), def.type);
     ASSERT_EQ(joint.GetBodyA(), def.bodyA);
@@ -176,8 +192,8 @@ TEST(MotorJoint, GetMotorJointConf)
     
     const auto cdef = GetMotorJointConf(joint);
     EXPECT_EQ(cdef.type, JointType::Motor);
-    EXPECT_EQ(cdef.bodyA, nullptr);
-    EXPECT_EQ(cdef.bodyB, nullptr);
+    EXPECT_EQ(cdef.bodyA, b0);
+    EXPECT_EQ(cdef.bodyB, b1);
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
     

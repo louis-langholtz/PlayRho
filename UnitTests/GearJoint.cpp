@@ -114,13 +114,17 @@ TEST(GearJoint, IsOkay)
 TEST(GearJoint, Construction)
 {
     auto world = World{};
-    auto& body = *world.CreateBody();
-    auto rdef = RevoluteJointConf{&body, &body, Length2{}};
-    auto revJoint1 = RevoluteJoint{rdef};
-    auto revJoint2 = RevoluteJoint{rdef};
+    auto& body0 = *world.CreateBody();
+    auto& body1 = *world.CreateBody();
+    auto& body2 = *world.CreateBody();
+    auto& body3 = *world.CreateBody();
+    auto rdef0 = RevoluteJointConf{&body0, &body1, Length2{}};
+    auto rdef1 = RevoluteJointConf{&body2, &body3, Length2{}};
+    auto revJoint1 = RevoluteJoint{rdef0};
+    auto revJoint2 = RevoluteJoint{rdef1};
     auto def = GearJointConf{&revJoint1, &revJoint2};
-    auto joint = GearJoint{def};
-    
+    auto& joint = *static_cast<GearJoint*>(world.CreateJoint(def));
+
     EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.joint1->GetBodyB());
     EXPECT_EQ(joint.GetBodyB(), def.joint2->GetBodyB());
@@ -143,12 +147,16 @@ TEST(GearJoint, Construction)
 TEST(GearJoint, ShiftOrigin)
 {
     auto world = World{};
-    auto& body = *world.CreateBody();
-    auto rdef = RevoluteJointConf{&body, &body, Length2{}};
-    auto revJoint1 = RevoluteJoint{rdef};
-    auto revJoint2 = RevoluteJoint{rdef};
+    auto& body0 = *world.CreateBody();
+    auto& body1 = *world.CreateBody();
+    auto& body2 = *world.CreateBody();
+    auto& body3 = *world.CreateBody();
+    auto rdef1 = RevoluteJointConf{&body0, &body1, Length2{}};
+    auto rdef2 = RevoluteJointConf{&body2, &body3, Length2{}};
+    auto revJoint1 = RevoluteJoint{rdef1};
+    auto revJoint2 = RevoluteJoint{rdef2};
     auto def = GearJointConf{&revJoint1, &revJoint2};
-    auto joint = GearJoint{def};
+    auto& joint = *static_cast<GearJoint*>(world.CreateJoint(def));
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
 }
@@ -156,12 +164,16 @@ TEST(GearJoint, ShiftOrigin)
 TEST(GearJoint, SetRatio)
 {
     auto world = World{};
-    auto& body = *world.CreateBody();
-    RevoluteJointConf rdef{&body, &body, Length2{}};
-    RevoluteJoint revJoint1{rdef};
-    RevoluteJoint revJoint2{rdef};
+    auto& body0 = *world.CreateBody();
+    auto& body1 = *world.CreateBody();
+    auto& body2 = *world.CreateBody();
+    auto& body3 = *world.CreateBody();
+    auto rdef1 = RevoluteJointConf{&body0, &body1, Length2{}};
+    auto rdef2 = RevoluteJointConf{&body2, &body3, Length2{}};
+    RevoluteJoint revJoint1{rdef1};
+    RevoluteJoint revJoint2{rdef2};
     auto def = GearJointConf{&revJoint1, &revJoint2};
-    auto joint = GearJoint{def};
+    auto& joint = *static_cast<GearJoint*>(world.CreateJoint(def));
     ASSERT_EQ(joint.GetRatio(), Real(1));
     joint.SetRatio(Real(2));
     EXPECT_EQ(joint.GetRatio(), Real(2));
@@ -170,13 +182,17 @@ TEST(GearJoint, SetRatio)
 TEST(GearJoint, GetGearJointConf)
 {
     auto world = World{};
-    auto& body = *world.CreateBody();
-    RevoluteJointConf rdef{&body, &body, Length2{}};
-    RevoluteJoint revJoint1{rdef};
-    RevoluteJoint revJoint2{rdef};
+    auto& body0 = *world.CreateBody();
+    auto& body1 = *world.CreateBody();
+    auto& body2 = *world.CreateBody();
+    auto& body3 = *world.CreateBody();
+    auto rdef1 = RevoluteJointConf{&body0, &body1, Length2{}};
+    auto rdef2 = RevoluteJointConf{&body2, &body3, Length2{}};
+    RevoluteJoint revJoint1{rdef1};
+    RevoluteJoint revJoint2{rdef2};
     GearJointConf def{&revJoint1, &revJoint2};
-    GearJoint joint{def};
-    
+    auto& joint = *static_cast<GearJoint*>(world.CreateJoint(def));
+
     ASSERT_EQ(GetType(joint), def.type);
     ASSERT_EQ(joint.GetBodyA(), def.joint1->GetBodyB());
     ASSERT_EQ(joint.GetBodyB(), def.joint2->GetBodyB());
