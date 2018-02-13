@@ -28,6 +28,16 @@ namespace playrho {
 
 /// @defgroup FixedMath Math Functions For Fixed Types
 /// @brief Common Mathematical Functions For Fixed Types.
+/// @note These functions directly compute their respective results. They don't convert
+///   their inputs to a floating point type to use the standard math functions and then
+///   convert those results back to the fixed point type. This has pros and cons. Some
+///   pros are that: this won't suffer from the "non-determinism" inherent with different
+///   hardware platforms potentially having different floating point or math library
+///   implementations; this implementation won't suffer any overhead of converting between
+///   the underlying type and a floating point type. On the con side however: this
+///   implementation is unlikely to be anywhere near as tested as standard C++ math library
+///   functions likely are; this implementation is unlikely to have anywhere near as much
+///   performance tuning as standard library functions have had.
 /// @sa Fixed
 /// @sa http://en.cppreference.com/w/cpp/numeric/math
 /// @{
@@ -367,7 +377,7 @@ inline Fixed<BT, FB> fmod(Fixed<BT, FB> dividend, Fixed<BT, FB> divisor) noexcep
 /// @note The IEEE standard (presumably IEC 60559), requires <code>std::sqrt</code> to be exact
 ///   to within half of a ULP for floating-point types (float, double). That sets a precedence
 ///   that puts a high expectation on this implementation for fixed-point types.
-/// @note "Domain error" occurs if arg is less than zero.
+/// @note "Domain error" occurs if <code>arg</code> is less than zero.
 /// @return Mathematical square root value of the given value or the <code>NaN</code> value.
 /// @sa http://en.cppreference.com/w/cpp/numeric/math/sqrt
 template <typename BT, unsigned int FB>

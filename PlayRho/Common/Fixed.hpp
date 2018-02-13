@@ -693,6 +693,8 @@ namespace playrho {
     }
 
     /// @brief 32-bit fixed precision type.
+    /// @details This is a 32-bit fixed precision type with a Q number-format of
+    ///   <code>Q23.9</code>.
     ///
     /// @warning The available numeric fidelity of any 32-bit fixed point type is very limited.
     ///   Using a 32-bit fixed point type for Real should only be considered for simulations
@@ -700,6 +702,9 @@ namespace playrho {
     ///
     /// @note Maximum value (with 9 fraction bits) is approximately 4194303.99609375.
     /// @note Minimum value (with 9 fraction bits) is approximately 0.001953125.
+    ///
+    /// @sa Fixed, Real
+    /// @sa https://en.wikipedia.org/wiki/Q_(number_format)
     ///
     using Fixed32 = Fixed<std::int32_t,9>;
 
@@ -801,11 +806,16 @@ namespace playrho {
     // Fixed64 free functions.
 
     /// @brief 64-bit fixed precision type.
+    /// @details This is a 64-bit fixed precision type with a Q number-format of
+    ///   <code>Q40.24</code>.
     ///
     /// @note Minimum value (with 24 fraction bits) is approximately
     ///   <code>5.9604644775390625e-08</code>.
     /// @note Maximum value (with 24 fraction bits) is approximately
     ///   <code>549755813888</code>.
+    ///
+    /// @sa Fixed, Real
+    /// @sa https://en.wikipedia.org/wiki/Q_(number_format)
     ///
     using Fixed64 = Fixed<std::int64_t,24>;
     
