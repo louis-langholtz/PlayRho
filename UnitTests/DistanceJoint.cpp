@@ -90,8 +90,12 @@ TEST(DistanceJointConf, UseDampingRatio)
 
 TEST(DistanceJoint, Construction)
 {
-    auto def = DistanceJointConf{};
-    auto joint = DistanceJoint{def};
+    auto world = World{};
+    const auto body0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+
+    auto def = DistanceJointConf{body0, body1};
+    auto& joint = *static_cast<DistanceJoint*>(world.CreateJoint(def));
     
     EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
@@ -114,8 +118,11 @@ TEST(DistanceJoint, Construction)
 
 TEST(DistanceJoint, ShiftOrigin)
 {
-    auto def = DistanceJointConf{};
-    auto joint = DistanceJoint{def};
+    auto world = World{};
+    const auto body0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    auto def = DistanceJointConf{body0, body1};
+    auto& joint = *static_cast<DistanceJoint*>(world.CreateJoint(def));
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
 }
@@ -253,7 +260,7 @@ TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
     
-    const auto joint = DistanceJoint{def};
+    auto& joint = *static_cast<DistanceJoint*>(world.CreateJoint(def));
     const auto got = GetDistanceJointConf(joint);
     
     EXPECT_EQ(def.bodyA, got.bodyA);

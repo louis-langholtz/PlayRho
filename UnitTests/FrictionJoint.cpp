@@ -80,13 +80,13 @@ TEST(FrictionJointConf, InitializingConstructor)
 
 TEST(FrictionJoint, Construction)
 {
-    World world;
+    auto world = World{};
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
 
     auto def = FrictionJointConf{b0, b1, Length2{}};
-    FrictionJoint joint{def};
-    
+    auto& joint = *static_cast<FrictionJoint*>(world.CreateJoint(def));
+
     EXPECT_EQ(GetType(joint), def.type);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
@@ -109,9 +109,13 @@ TEST(FrictionJoint, Construction)
 
 TEST(FrictionJoint, GetFrictionJointConf)
 {
-    FrictionJointConf def;
-    FrictionJoint joint{def};
-    
+    auto world = World{};
+    const auto b0 = world.CreateBody();
+    const auto b1 = world.CreateBody();
+
+    auto def = FrictionJointConf{b0, b1, Length2{}};
+    auto& joint = *static_cast<FrictionJoint*>(world.CreateJoint(def));
+
     ASSERT_EQ(GetType(joint), def.type);
     ASSERT_EQ(joint.GetBodyA(), def.bodyA);
     ASSERT_EQ(joint.GetBodyB(), def.bodyB);
@@ -125,8 +129,8 @@ TEST(FrictionJoint, GetFrictionJointConf)
     
     const auto cdef = GetFrictionJointConf(joint);
     EXPECT_EQ(cdef.type, JointType::Friction);
-    EXPECT_EQ(cdef.bodyA, nullptr);
-    EXPECT_EQ(cdef.bodyB, nullptr);
+    EXPECT_EQ(cdef.bodyA, b0);
+    EXPECT_EQ(cdef.bodyB, b1);
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
     

@@ -23,6 +23,7 @@ giga
 gigameter
 gravitationally
 growable
+IEC
 incrementing
 initializer
 inlining
@@ -69,6 +70,7 @@ templated
 TOI
 TOIs
 translational
+ULP
 unallocated
 unary
 underflows

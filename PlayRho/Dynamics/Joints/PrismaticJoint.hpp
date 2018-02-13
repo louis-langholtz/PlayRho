@@ -47,7 +47,10 @@ class PrismaticJoint : public Joint
 {
 public:
     
-    /// @brief Copy constructor.
+    /// @brief Initializing constructor.
+    /// @attention To create or use the joint within a world instance, call that world
+    ///   instance's create joint method instead of calling this constructor directly.
+    /// @sa World::CreateJoint
     PrismaticJoint(const PrismaticJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;

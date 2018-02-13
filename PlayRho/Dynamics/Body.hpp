@@ -138,6 +138,16 @@ public:
     static FlagsType GetFlags(const BodyConf& bd) noexcept;
     
     /// @brief Creates a fixture and attaches it to this body.
+    /// @details Creates a fixture for attaching a shape and other characteristics to this
+    ///   body. Fixtures automatically go away when this body is destroyed. Fixtures can
+    ///   also be manually removed and destroyed using the
+    ///   <code>Destroy(Fixture*, bool)</code>, or <code>DestroyFixtures()</code> methods.
+    ///
+    /// @note This function should not be called if the world is locked.
+    /// @warning This function is locked during callbacks.
+    ///
+    /// @post After creating a new fixture, it will show up in the fixture enumeration
+    ///   returned by the <code>GetFixtures()</code> methods.
     ///
     /// @param shape Shareable shape definition.
     ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
@@ -147,9 +157,6 @@ public:
     ///   Restitution must be > -infinity and < infinity.
     /// @param resetMassData Whether or not to reset the mass data of the body.
     ///
-    /// @note This function should not be called if the world is locked.
-    /// @warning This function is locked during callbacks.
-    ///
     /// @return Pointer to the created fixture.
     ///
     /// @throws WrongState if called while the world is "locked".
@@ -158,6 +165,7 @@ public:
     /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
     ///    maximum vertex radius.
     ///
+    /// @sa Destroy, GetFixtures
     /// @sa PhysicalEntities
     ///
     Fixture* CreateFixture(const Shape& shape,
@@ -166,23 +174,35 @@ public:
 
     /// @brief Destroys a fixture.
     ///
-    /// @details This removes the fixture from the broad-phase and
-    /// destroys all contacts associated with this fixture.
-    /// All fixtures attached to a body are implicitly destroyed when the body is destroyed.
+    /// @details Destroys a fixture previously created by the
+    ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code>
+    ///   method. This removes the fixture from the broad-phase and destroys all contacts
+    ///   associated with this fixture. All fixtures attached to a body are implicitly
+    ///   destroyed when the body is destroyed.
     ///
     /// @warning This function is locked during callbacks.
-    /// @note Make sure to explicitly call <code>ResetMassData</code> after fixtures have
-    ///   been destroyed.
-    /// @sa ResetMassData.
+    /// @note Make sure to explicitly call <code>ResetMassData()</code> after fixtures have
+    ///   been destroyed if resetting the mass data is not requested via the reset mass data
+    ///   parameter.
+    ///
+    /// @post After destroying a fixture, it will no longer show up in the fixture enumeration
+    ///   returned by the <code>GetFixtures()</code> methods.
     ///
     /// @param fixture the fixture to be removed.
     /// @param resetMassData Whether or not to reset the mass data.
     ///
+    /// @sa CreateFixture, GetFixtures, ResetMassData.
     /// @sa PhysicalEntities
     ///
     bool Destroy(Fixture* fixture, bool resetMassData = true);
     
-    /// @brief Destroy fixtures.
+    /// @brief Destroys fixtures.
+    /// @details Destroys all of the fixtures previously created for this body by the
+    ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code> method.
+    /// @note This unconditionally calls the <code>ResetMassData()</code> method.
+    /// @post After this call, no fixtures will show up in the fixture enumeration
+    ///   returned by the <code>GetFixtures()</code> methods.
+    /// @sa CreateFixture, GetFixtures, ResetMassData.
     /// @sa PhysicalEntities
     void DestroyFixtures();
     
