@@ -363,8 +363,8 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
 
     if ((velA != oldVelA) || (velB != oldVelB))
     {
-	    bodyConstraintA->SetVelocity(velA);
-    	bodyConstraintB->SetVelocity(velB);
+        bodyConstraintA->SetVelocity(velA);
+        bodyConstraintB->SetVelocity(velB);
         return false;
     }
     return true;

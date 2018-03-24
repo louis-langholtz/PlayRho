@@ -22,6 +22,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/ContactFeature.hpp>
+#include <PlayRho/Collision/IndexPair.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -480,25 +481,6 @@ PLAYRHO_CONSTEXPR inline Manifold::Conf GetDefaultManifoldConf() noexcept
     return Manifold::Conf{};
 }
 
-/// @brief Determines whether the two given manifold points are equal.
-/// @relatedalso Manifold::Point
-bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
-
-/// @brief Determines whether the two given manifold points are not equal.
-/// @relatedalso Manifold::Point
-bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
-
-/// @brief Manifold equality operator.
-/// @note In-so-far as manifold points are concerned, order doesn't matter;
-///    only whether the two manifolds have the same point set.
-/// @relatedalso Manifold
-bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept;
-
-/// @brief Manifold inequality operator.
-/// @details Determines whether the two given manifolds are not equal.
-/// @relatedalso Manifold
-bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
-
 PLAYRHO_CONSTEXPR inline Manifold::Manifold(Type t, UnitVec ln, Length2 lp, size_type n,
                                           const PointArray& mpa) noexcept:
     m_type{t}, m_pointCount{n}, m_localNormal{ln}, m_localPoint{lp}, m_points{mpa}
@@ -546,6 +528,53 @@ inline void Manifold::AddPoint(CfType type, CfIndex index, Length2 point) noexce
             break;
     }
 }
+
+// Free functions...
+
+/// @brief Determines whether the two given manifold points are equal.
+/// @relatedalso Manifold::Point
+bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
+
+/// @brief Determines whether the two given manifold points are not equal.
+/// @relatedalso Manifold::Point
+bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
+
+/// @brief Manifold equality operator.
+/// @note In-so-far as manifold points are concerned, order doesn't matter;
+///    only whether the two manifolds have the same point set.
+/// @relatedalso Manifold
+bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept;
+
+/// @brief Manifold inequality operator.
+/// @details Determines whether the two given manifolds are not equal.
+/// @relatedalso Manifold
+bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
+
+/// @brief Gets a face-to-face based manifold.
+/// @param shape0 Shape 0. This should be shape A for face-A type manifold or shape B for face-B
+///   type manifold.
+/// @param xf0 Transform 1. This should be transform A for face-A type manifold or transform B
+///   for face-B type manifold.
+/// @param idx0 Index 0. This should be the index of the vertex and normal of shape0 that had
+///   the maximal separation distance from any vertex in shape1.
+/// @param indices1 Index 1. This is the first and possibly second index of the vertex of shape1
+///   that had the maximal separation distance from the edge of shape0 identified by idx0.
+Manifold GetManifold(bool flipped,
+                     const DistanceProxy& shape0, const Transformation& xf0,
+                     const VertexCounter idx0,
+                     const DistanceProxy& shape1, const Transformation& xf1,
+                     const VertexCounter2 indices1,
+                     const Manifold::Conf conf);
+
+/// @brief Computes manifolds for face-to-point collision.
+Manifold GetManifold(bool flipped, Length totalRadius,
+                     const DistanceProxy& shape, const Transformation& sxf,
+                     Length2 point, const Transformation& xfm);
+
+/// @brief Gets a point-to-point based manifold.
+Manifold GetManifold(Length2 locationA, const Transformation& xfA,
+                     Length2 locationB, const Transformation& xfB,
+                     Length totalRadius) noexcept;
 
 /// @brief Calculates the relevant collision manifold.
 ///

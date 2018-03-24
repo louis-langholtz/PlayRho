@@ -93,18 +93,14 @@ ClipList GetClipPoints(Length2 shape0_abs_v0, Length2 shape0_abs_v1, VertexCount
     return ClipSegmentToLine(points, +shape0_abs_e0_dir, shape0_dp_v1_e0, shape0_e.second);
 }
 
-/// @param shape0 Shape 0. This should be shape A for face-A type manifold or shape B for face-B type manifold.
-/// @param xf0 Transform 1. This should be transform A for face-A type manifold or transform B for face-B type manifold.
-/// @param idx0 Index 0. This should be the index of the vertex and normal of shape0 that had the maximal
-///    separation distance from any vertex in shape1.
-/// @param indices1 Index 1. This is the first and possibly second index of the vertex of shape1
-///   that had the maximal separation distance from the edge of shape0 identified by idx0.
-Manifold GetFaceManifold(bool flipped,
-                         const DistanceProxy& shape0, const Transformation& xf0,
-                         const VertexCounter idx0,
-                         const DistanceProxy& shape1, const Transformation& xf1,
-                         const VertexCounter2 indices1,
-                         const Manifold::Conf conf)
+} // anonymous namespace
+
+Manifold GetManifold(bool flipped,
+                     const DistanceProxy& shape0, const Transformation& xf0,
+                     const VertexCounter idx0,
+                     const DistanceProxy& shape1, const Transformation& xf1,
+                     const VertexCounter2 indices1,
+                     const Manifold::Conf conf)
 {
     assert(shape0.GetVertexCount() > 1 && shape1.GetVertexCount() > 1);
     
@@ -273,10 +269,9 @@ Manifold GetFaceManifold(bool flipped,
     return Manifold{};
 }
 
-/// @brief Computes manifolds for face-to-point collision.
-Manifold GetFacePointManifold(bool flipped, Length totalRadius,
-                              const DistanceProxy& shape, const Transformation& sxf,
-                              Length2 point, const Transformation& xfm)
+Manifold GetManifold(bool flipped, Length totalRadius,
+                     const DistanceProxy& shape, const Transformation& sxf,
+                     Length2 point, const Transformation& xfm)
 {
     // Computes the center of the circle in the frame of the polygon.
     const auto cLocal = InverseTransform(Transform(point, xfm), sxf); ///< Center of circle in frame of polygon.
@@ -371,9 +366,9 @@ Manifold GetFacePointManifold(bool flipped, Length totalRadius,
                                  ContactFeature::e_vertex, 0, point);
 }
 
-Manifold GetPointPointManifold(Length2 locationA, const Transformation& xfA,
-                               Length2 locationB, const Transformation& xfB,
-                               Length totalRadius) noexcept
+Manifold GetManifold(Length2 locationA, const Transformation& xfA,
+                     Length2 locationB, const Transformation& xfB,
+                     Length totalRadius) noexcept
 {
     const auto pA = Transform(locationA, xfA);
     const auto pB = Transform(locationB, xfB);
@@ -382,8 +377,6 @@ Manifold GetPointPointManifold(Length2 locationA, const Transformation& xfA,
     const auto totSq = Square(totalRadius);
     return (lenSq > totSq)? Manifold{}: Manifold::GetForCircles(locationA, 0, locationB, 0);
 }
-
-} // anonymous namespace
 
 /*
  * Definition of public CollideShapes functions.
@@ -409,11 +402,11 @@ Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
     switch (((countA == 1)? OneVertA: ZeroOneVert) | ((countB == 1)? OneVertB: ZeroOneVert))
     {
         case OneVertA|OneVertB:
-            return GetPointPointManifold(shapeA.GetVertex(0), xfA, shapeB.GetVertex(0), xfB, totalRadius);
+            return GetManifold(shapeA.GetVertex(0), xfA, shapeB.GetVertex(0), xfB, totalRadius);
         case OneVertA:
-            return GetFacePointManifold(true, totalRadius, shapeB, xfB, shapeA.GetVertex(0), xfA);
+            return GetManifold(true, totalRadius, shapeB, xfB, shapeA.GetVertex(0), xfA);
         case OneVertB:
-            return GetFacePointManifold(false, totalRadius, shapeA, xfA, shapeB.GetVertex(0), xfB);
+            return GetManifold(false, totalRadius, shapeA, xfA, shapeB.GetVertex(0), xfB);
     }
     
     const auto do4x4 = (countA == 4) && (countB == 4);
@@ -436,11 +429,11 @@ Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
     
     const auto k_tol = PLAYRHO_MAGIC(conf.linearSlop / 10);
     return (edgeSepB.distance > (edgeSepA.distance + k_tol))?
-        GetFaceManifold(true,
+        GetManifold(true,
                         shapeB, xfB, edgeSepB.firstShape,
                         shapeA, xfA, edgeSepB.secondShape,
                         conf):
-        GetFaceManifold(false,
+        GetManifold(false,
                         shapeA, xfA, edgeSepA.firstShape,
                         shapeB, xfB, edgeSepA.secondShape,
                         conf);
@@ -541,20 +534,20 @@ Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
     
     PLAYRHO_CONSTEXPR const auto k_tol = PLAYRHO_MAGIC(DefaultLinearSlop / Real{10});
     return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
-    GetFaceManifold(Manifold::e_faceB,
-                    shapeB, xfB, edgeSepB.index1,
-                    shapeA, xfA, edgeSepB.index2,
-                    conf):
-    GetFaceManifold(Manifold::e_faceA,
-                    shapeA, xfA, edgeSepA.index1,
-                    shapeB, xfB, edgeSepA.index2,
-                    conf);
+    GetManifold(Manifold::e_faceB,
+                shapeB, xfB, edgeSepB.index1,
+                shapeA, xfA, edgeSepB.index2,
+                conf):
+    GetManifold(Manifold::e_faceA,
+                shapeA, xfA, edgeSepA.index1,
+                shapeB, xfB, edgeSepA.index2,
+                conf);
 }
 #endif
 
 #ifdef DEFINE_GET_MANIFOLD
 Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
-                              const DistanceProxy& proxyB, const Transformation& transformB)
+                     const DistanceProxy& proxyB, const Transformation& transformB)
 {
     const auto distanceInfo = Distance(proxyA, transformA, proxyB, transformB);
     const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
@@ -899,7 +892,7 @@ bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept
 
 #if 0
 Length2 GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
-                                ContactFeature::Index index)
+                      ContactFeature::Index index)
 {
     switch (type)
     {
