@@ -145,7 +145,7 @@ namespace d2 {
             body.GetInvRotInertia(),
             body.GetLocalCenter(),
             GetPosition1(body),
-            GetVelocity(body, time, conf)
+            Cap(GetVelocity(body, time), time, conf)
         };
     }
 

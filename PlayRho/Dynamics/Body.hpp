@@ -459,7 +459,7 @@ private:
 
     /// @brief Initializing constructor.
     /// @note This is not meant to be called directly by users of the library API. Call
-    ///   a world instance's <code>CreateBody</code> method instead.
+    ///   a world instance's <code>World::CreateBody</code> method instead.
     Body(World* world, const BodyConf& bd);
     
     ~Body() noexcept;
@@ -1227,14 +1227,21 @@ inline Torque GetTorque(const Body& body) noexcept
     return body.GetAngularAcceleration() * GetRotInertia(body);
 }
 
+/// @brief Caps velocity.
+/// @details Enforces maximums on the given velocity.
+/// @param velocity Velocity to cap. Behavior is undefined if this value is invalid.
+/// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
+/// @param conf Movement configuration. This defines caps on linear and angular speeds.
+/// @relatedalso Velocity
+Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept;
+
 /// @brief Gets the velocity of the body after the given time accounting for the body's
 ///   acceleration and capped by the given configuration.
 /// @warning Behavior is undefined if the given elapsed time is an invalid value (like NaN).
 /// @param body Body to get the velocity for.
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
-/// @param conf Movement configuration. This defines caps on linear and angular speeds.
 /// @relatedalso Body
-Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept;
+Velocity GetVelocity(const Body& body, Time h) noexcept;
 
 /// @brief Gets the world index for the given body.
 /// @relatedalso Body

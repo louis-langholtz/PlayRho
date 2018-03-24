@@ -62,6 +62,7 @@
 #include <PlayRho/Common/FlagGuard.hpp>
 #include <PlayRho/Common/WrongState.hpp>
 
+#include <algorithm>
 #include <new>
 #include <functional>
 #include <type_traits>
@@ -69,7 +70,6 @@
 #include <set>
 #include <vector>
 #include <unordered_map>
-#include <algorithm>
 
 #ifdef DO_PAR_UNSEQ
 #include <atomic>
@@ -87,8 +87,9 @@ using std::begin;
 using std::end;
 using std::cbegin;
 using std::cend;
-using std::transform;
+using std::remove;
 using std::sort;
+using std::transform;
 using std::unique;
 
 namespace playrho {
@@ -744,6 +745,7 @@ Body* World::CreateBody(const BodyConf& def)
 
 void World::Remove(const Body& b) noexcept
 {
+    UnregisterForProxies(b);
     const auto it = find_if(cbegin(m_bodies), cend(m_bodies), [&](const Bodies::value_type& body) {
         return GetPtr(body) == &b;
     });
@@ -785,6 +787,7 @@ void World::Destroy(Body* body)
         {
             m_destructionListener->SayGoodbye(fixture);
         }
+        UnregisterForProxies(fixture);
         DestroyProxies(fixture);
         FixtureAtty::Delete(&fixture);
     });
@@ -2256,10 +2259,24 @@ void World::RegisterForProxies(Fixture& fixture)
     m_fixturesForProxies.push_back(&fixture);
 }
 
+void World::UnregisterForProxies(const Fixture& fixture)
+{
+    assert(fixture.GetBody()->GetWorld() == this);
+    const auto first = remove(begin(m_fixturesForProxies), end(m_fixturesForProxies), &fixture);
+    m_fixturesForProxies.erase(first, end(m_fixturesForProxies));
+}
+
 void World::RegisterForProxies(Body& body)
 {
     assert(body.GetWorld() == this);
     m_bodiesForProxies.push_back(&body);
+}
+
+void World::UnregisterForProxies(const Body& body)
+{
+    assert(body.GetWorld() == this);
+    const auto first = remove(begin(m_bodiesForProxies), end(m_bodiesForProxies), &body);
+    m_bodiesForProxies.erase(first, end(m_bodiesForProxies));
 }
 
 void World::CreateAndDestroyProxies(const StepConf& conf)
@@ -2287,6 +2304,7 @@ void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
     {
         if (!enabled)
         {
+            UnregisterForProxies(fixture);
             DestroyProxies(fixture);
 
             // Destroy any contacts associated with the fixture.
@@ -2362,17 +2380,21 @@ Fixture* World::CreateFixture(Body& body, const Shape& shape,
 {
     assert(body.GetWorld() == this);
 
-    const auto childCount = GetChildCount(shape);
-    for (auto i = ChildCounter{0}; i < childCount; ++i)
     {
-        const auto vr = GetVertexRadius(shape, i);
-        if (!(vr >= GetMinVertexRadius()))
+        const auto childCount = GetChildCount(shape);
+        const auto minVertexRadius = GetMinVertexRadius();
+        const auto maxVertexRadius = GetMaxVertexRadius();
+        for (auto i = ChildCounter{0}; i < childCount; ++i)
         {
-            throw InvalidArgument("World::CreateFixture: vertex radius < min");
-        }
-        if (!(vr <= GetMaxVertexRadius()))
-        {
-            throw InvalidArgument("World::CreateFixture: vertex radius > max");
+            const auto vr = GetVertexRadius(shape, i);
+            if (!(vr >= minVertexRadius))
+            {
+                throw InvalidArgument("World::CreateFixture: vertex radius < min");
+            }
+            if (!(vr <= maxVertexRadius))
+            {
+                throw InvalidArgument("World::CreateFixture: vertex radius > max");
+            }
         }
     }
     
@@ -2391,7 +2413,7 @@ Fixture* World::CreateFixture(Body& body, const Shape& shape,
     }
     
     // Adjust mass properties if needed.
-    if (fixture->GetDensity() > AreaDensity{0})
+    if (fixture->GetDensity() > 0_kgpm2)
     {
         BodyAtty::SetMassDataDirty(body);
         if (resetMassData)
@@ -2440,6 +2462,7 @@ bool World::Destroy(Fixture& fixture, bool resetMassData)
         return false;
     });
     
+    UnregisterForProxies(fixture);
     DestroyProxies(fixture);
 
     if (!BodyAtty::RemoveFixture(body, &fixture))
