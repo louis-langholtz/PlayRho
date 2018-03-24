@@ -75,6 +75,193 @@ TEST(DynamicTree, Traits)
     EXPECT_FALSE(std::is_trivially_destructible<DynamicTree>::value);
 }
 
+// Test class for testing move semantics.
+//
+// "Move constructors typically 'steal' the resources held by the argument...
+//  and leave the argument in some valid but otherwise indeterminate state."
+//
+// For details on move constructors, see:
+//   http://en.cppreference.com/w/cpp/language/move_constructor
+//
+class Foo {
+public:
+    static unsigned instantiated;
+    bool defaultConstructed{false};
+    bool moveConstructed{false};
+    bool constMoveConstructed{false};
+    bool copyConstructed{false};
+    bool released{false};
+    unsigned srcInstanceId{0};
+    unsigned copyAssigned{0};
+    unsigned moveAssigned{0};
+
+    Foo() noexcept: defaultConstructed{true}, srcInstanceId{instantiated}
+    {
+        ++instantiated;
+    };
+    
+    Foo(const Foo& other) noexcept: copyConstructed{true}, srcInstanceId{other.srcInstanceId}
+    {
+        ++instantiated;
+    };
+    
+    // Move constructor
+    Foo(Foo&& other) noexcept: moveConstructed{true}, srcInstanceId{std::move(other.srcInstanceId)}
+    {
+        ++instantiated;
+        other.released = true;
+    };
+    
+    // Move constructor
+    Foo(const Foo&& other) noexcept:
+        constMoveConstructed{true}, srcInstanceId{std::move(other.srcInstanceId)}
+    {
+        ++instantiated;
+        // can't update other since const-qualified: other.released = true;
+    };
+
+    Foo& operator= (const Foo& other) noexcept
+    {
+        srcInstanceId = other.srcInstanceId;
+        ++copyAssigned;
+        released = false;
+        return *this;
+    }
+    
+    Foo& operator= (Foo&& other) noexcept
+    {
+        // See: http://en.cppreference.com/w/cpp/language/move_assignment
+        // other is left in "some valid but otherwise indeterminate state".
+        srcInstanceId = other.srcInstanceId;
+        ++moveAssigned;
+        released = false;
+        other.released = true;
+        return *this;
+    }
+};
+
+unsigned Foo::instantiated = 0;
+
+TEST(DynamicTree, Basis)
+{
+    // foo should be default constructed since constructed from value initialization
+    const auto foo = Foo{};
+    EXPECT_TRUE(foo.defaultConstructed);
+    EXPECT_FALSE(foo.constMoveConstructed);
+    EXPECT_FALSE(foo.moveConstructed);
+    EXPECT_FALSE(foo.copyConstructed);
+    EXPECT_FALSE(foo.released);
+    EXPECT_EQ(foo.srcInstanceId, 0u);
+    EXPECT_EQ(foo.copyAssigned, 0u);
+    EXPECT_EQ(foo.moveAssigned, 0u);
+    EXPECT_EQ(Foo::instantiated, 1u);
+    
+    // boo should be copy constructed since constructed by assignment.
+    auto boo = foo;
+    EXPECT_TRUE(boo.copyConstructed);
+    EXPECT_FALSE(boo.constMoveConstructed);
+    EXPECT_FALSE(boo.moveConstructed);
+    EXPECT_FALSE(boo.defaultConstructed);
+    EXPECT_FALSE(boo.released);
+    EXPECT_EQ(boo.srcInstanceId, 0u);
+    EXPECT_EQ(boo.copyAssigned, 0u);
+    EXPECT_EQ(boo.moveAssigned, 0u);
+    EXPECT_FALSE(foo.released);
+    EXPECT_EQ(Foo::instantiated, 2u);
+    
+    // moo should be copy constructed since constructed from a const value
+    const auto moo = foo;
+    EXPECT_TRUE(moo.copyConstructed);
+    EXPECT_FALSE(moo.constMoveConstructed);
+    EXPECT_FALSE(moo.moveConstructed);
+    EXPECT_FALSE(moo.defaultConstructed);
+    EXPECT_FALSE(moo.released);
+    EXPECT_EQ(moo.srcInstanceId, 0u);
+    EXPECT_EQ(moo.copyAssigned, 0u);
+    EXPECT_EQ(moo.moveAssigned, 0u);
+    EXPECT_FALSE(foo.released);
+    EXPECT_EQ(Foo::instantiated, 3u);
+
+    // roo should be const move constructed since constructed from a moved const value
+    const auto roo = std::move(foo);
+    EXPECT_TRUE(roo.constMoveConstructed);
+    EXPECT_FALSE(roo.copyConstructed);
+    EXPECT_FALSE(roo.moveConstructed);
+    EXPECT_FALSE(roo.defaultConstructed);
+    EXPECT_FALSE(roo.released);
+    EXPECT_EQ(roo.srcInstanceId, 0u);
+    EXPECT_EQ(roo.copyAssigned, 0u);
+    EXPECT_EQ(roo.moveAssigned, 0u);
+    EXPECT_FALSE(foo.released);
+    EXPECT_EQ(Foo::instantiated, 4u);
+
+    // yoo should be move constructed since constructed from a non-const value
+    auto yoo = std::move(boo);
+    EXPECT_TRUE(yoo.moveConstructed);
+    EXPECT_FALSE(yoo.constMoveConstructed);
+    EXPECT_FALSE(yoo.copyConstructed);
+    EXPECT_FALSE(yoo.defaultConstructed);
+    EXPECT_FALSE(yoo.released);
+    EXPECT_EQ(yoo.srcInstanceId, 0u);
+    EXPECT_EQ(yoo.copyAssigned, 0u);
+    EXPECT_EQ(yoo.moveAssigned, 0u);
+    EXPECT_TRUE(boo.released);
+    EXPECT_EQ(Foo::instantiated, 5u);
+    
+    // loo should be copy constructed since constructed by assignment.
+    const auto loo = boo;
+    EXPECT_TRUE(loo.copyConstructed);
+    EXPECT_FALSE(loo.moveConstructed);
+    EXPECT_FALSE(loo.constMoveConstructed);
+    EXPECT_FALSE(loo.defaultConstructed);
+    EXPECT_FALSE(loo.released);
+    EXPECT_EQ(loo.srcInstanceId, 0u);
+    EXPECT_EQ(loo.copyAssigned, 0u);
+    EXPECT_EQ(loo.moveAssigned, 0u);
+    EXPECT_TRUE(boo.released);
+    EXPECT_EQ(Foo::instantiated, 6u);
+    
+    const auto koo = Foo{};
+    
+    // yoo should remain move constructed and become copy assigned since assigned from koo
+    yoo = koo;
+    EXPECT_TRUE(yoo.moveConstructed);
+    EXPECT_FALSE(yoo.constMoveConstructed);
+    EXPECT_FALSE(yoo.copyConstructed);
+    EXPECT_FALSE(yoo.defaultConstructed);
+    EXPECT_FALSE(yoo.released);
+    EXPECT_EQ(yoo.srcInstanceId, 6u);
+    EXPECT_EQ(yoo.copyAssigned, 1u);
+    EXPECT_EQ(yoo.moveAssigned, 0u);
+    EXPECT_FALSE(koo.released);
+    EXPECT_EQ(Foo::instantiated, 7u);
+    
+    boo = loo;
+    EXPECT_TRUE(boo.copyConstructed);
+    EXPECT_FALSE(boo.moveConstructed);
+    EXPECT_FALSE(boo.constMoveConstructed);
+    EXPECT_FALSE(boo.defaultConstructed);
+    EXPECT_FALSE(boo.released);
+    EXPECT_EQ(boo.srcInstanceId, 0u);
+    EXPECT_EQ(boo.copyAssigned, 1u);
+    EXPECT_EQ(boo.moveAssigned, 0u);
+    EXPECT_FALSE(loo.released);
+    EXPECT_EQ(Foo::instantiated, 7u);
+
+    // yoo should remain move constructed and become additionally move assigned since assigned from boo
+    yoo = std::move(boo);
+    EXPECT_TRUE(yoo.moveConstructed);
+    EXPECT_FALSE(yoo.constMoveConstructed);
+    EXPECT_FALSE(yoo.copyConstructed);
+    EXPECT_FALSE(yoo.defaultConstructed);
+    EXPECT_FALSE(yoo.released);
+    EXPECT_EQ(yoo.srcInstanceId, 0u);
+    EXPECT_EQ(yoo.copyAssigned, 1u);
+    EXPECT_EQ(yoo.moveAssigned, 1u);
+    EXPECT_TRUE(boo.released);
+    EXPECT_EQ(Foo::instantiated, 7u);
+}
+
 TEST(DynamicTree, DefaultConstruction)
 {
     DynamicTree foo;
