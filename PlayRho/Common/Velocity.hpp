@@ -152,7 +152,7 @@ using VelocityPair = std::pair<Velocity, Velocity>;
     
 /// @brief Calculates the "warm start" velocity deltas for the given velocity constraint.
 VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc);
-    
+
 } // namespace d2
 
 /// @brief Determines if the given value is valid.
