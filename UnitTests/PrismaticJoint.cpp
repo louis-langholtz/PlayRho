@@ -294,4 +294,8 @@ TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
     EXPECT_EQ(joint->GetLowerLimit(), -2_m);
     EXPECT_EQ(joint->GetUpperLimit(), 0_m);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_atUpperLimit);
+    
+    joint->EnableMotor(true);
+    Step(world, 1_s);
+    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
 }

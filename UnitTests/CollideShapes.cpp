@@ -106,6 +106,35 @@ TEST(CollideShapes, CircleCircleOrientedVertically)
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
 }
 
+TEST(CollideShapes, CircleWithinSquareA)
+{
+    const auto shapeConf = PolygonShapeConf{}.SetAsBox(2_m, 2_m);
+    const auto xfm = Transformation{};
+
+    const auto manifold = GetManifold(false, 1_m, GetChild(shapeConf, 0), xfm, Length2{}, xfm);
+    EXPECT_EQ(manifold.GetType(), Manifold::e_faceA);
+    EXPECT_EQ(manifold.GetPointCount(), 1u);
+    EXPECT_EQ(manifold.GetLocalPoint(), Length2(2_m, 0_m));
+    EXPECT_NEAR(double(manifold.GetLocalNormal().GetX()), 1.0, 0.000);
+    EXPECT_NEAR(double(manifold.GetLocalNormal().GetY()), 0.0, 0.000);
+}
+
+TEST(CollideShapes, CircleWithinSquareB)
+{
+    const auto shapeConf = PolygonShapeConf{}.SetAsBox(2_m, 2_m);
+    const auto xfm = Transformation{};
+    const auto manifold = GetManifold(true, 1_m, GetChild(shapeConf, 0), xfm, Length2{}, xfm);
+    EXPECT_EQ(manifold.GetType(), Manifold::e_faceB);
+    EXPECT_EQ(manifold.GetPointCount(), 1u);
+    EXPECT_EQ(manifold.GetLocalPoint(), Length2(2_m, 0_m));
+    EXPECT_NEAR(double(manifold.GetLocalNormal().GetX()), 1.0, 0.000);
+    EXPECT_NEAR(double(manifold.GetLocalNormal().GetY()), 0.0, 0.000);
+
+    const auto diskConf = DiskShapeConf{1_m};
+    const auto manifold2 = CollideShapes(GetChild(diskConf, 0), xfm, GetChild(shapeConf, 0), xfm);
+    EXPECT_EQ(manifold, manifold2);
+}
+
 TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 {
     const auto circleRadius = 1_m;

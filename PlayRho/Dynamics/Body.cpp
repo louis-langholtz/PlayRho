@@ -458,7 +458,7 @@ BodyCounter GetWorldIndex(const Body* body) noexcept
     return BodyCounter(-1);
 }
 
-Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
+Velocity GetVelocity(const Body& body, Time h) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();
@@ -466,7 +466,7 @@ Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
     {
         // Integrate velocities.
         velocity.linear += h * body.GetLinearAcceleration();
-        velocity.angular += AngularVelocity{h * body.GetAngularAcceleration()};
+        velocity.angular += h * body.GetAngularAcceleration();
 
         // Apply damping.
         // Ordinary differential equation: dv/dt + c * v = 0
@@ -479,8 +479,11 @@ Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
         velocity.angular /= Real{1 + h * body.GetAngularDamping()};
     }
 
-    // Enforce maximums...
+    return velocity;
+}
 
+Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
+{
     const auto translation = h * velocity.linear;
     const auto lsquared = GetMagnitudeSquared(translation);
     if (lsquared > Square(conf.maxTranslation))
@@ -497,7 +500,7 @@ Velocity GetVelocity(const Body& body, Time h, MovementConf conf) noexcept
         const auto ratio = conf.maxRotation / absRotation;
         velocity.angular *= ratio;
     }
-
+    
     return velocity;
 }
 

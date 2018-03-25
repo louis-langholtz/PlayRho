@@ -39,6 +39,7 @@
 #include <PlayRho/Dynamics/JointAtty.hpp>
 #include <PlayRho/Dynamics/IslandStats.hpp>
 
+#include <iterator>
 #include <vector>
 #include <map>
 #include <unordered_set>
@@ -124,6 +125,9 @@ public:
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
     using Joints = std::vector<Joint*>;
     
+    /// @brief Fixtures container type.
+    using Fixtures = std::vector<Fixture*>;
+    
     /// @brief Constructs a world object.
     /// @param def A customized world configuration or its default value.
     /// @note A lot more configurability can be had via the <code>StepConf</code>
@@ -206,10 +210,11 @@ public:
     /// @note This function is locked during callbacks.
     /// @post The destroyed body will no longer be present in the range returned from the
     ///   <code>GetBodies()</code> method.
+    /// @post None of the body's fixtures will be present in the fixtures-for-proxies
+    ///   collection.
     /// @param body Body to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @sa CreateBody(const BodyConf&)
-    /// @sa GetBodies
+    /// @sa CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies
     /// @sa PhysicalEntities
     void Destroy(Body* body);
 
@@ -254,12 +259,16 @@ public:
     /// @post Dynamic bodies are moved based on their previous velocities, gravity, applied
     ///   forces, applied impulses, masses, damping, and the restitution and friction values
     ///   of their fixtures when they experience collisions.
+    /// @post The bodies for proxies queue will be empty.
+    /// @post The fixtures for proxies queue will be empty.
     ///
     /// @param conf Configuration for the simulation step.
     ///
     /// @return Statistics for the step.
     ///
     /// @throws WrongState if this method is called while the world is locked.
+    ///
+    /// @sa GetBodiesForProxies, GetFixturesForProxies
     ///
     StepStats Step(const StepConf& conf);
 
@@ -280,6 +289,18 @@ public:
     ///   or using ranged-based for-loops.
     /// @sa CreateBody(const BodyConf&)
     SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
+
+    /// @brief Gets the bodies-for-proxies range for this world.
+    /// @details Provides insight on what bodies have been queued for proxy processing
+    ///   during the next call to the world step method.
+    /// @sa Step
+    SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
+
+    /// @brief Gets the fixtures-for-proxies range for this world.
+    /// @details Provides insight on what fixtures have been queued for proxy processing
+    ///   during the next call to the world step method.
+    /// @sa Step
+    SizedRange<Fixtures::const_iterator> GetFixturesForProxies() const noexcept;
 
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
@@ -345,11 +366,21 @@ private:
     /// @throws WrongState if this method is called while the world is locked.
     void SetType(Body& body, playrho::BodyType type);
 
-    /// @brief Register for proxies for the given fixture.
+    /// @brief Registers the given fixture for proxy processing.
+    /// @post The given fixture will be found in the fixtures-for-proxies range.
     void RegisterForProxies(Fixture& fixture);
     
-    /// @brief Register for proxies for the given body.
+    /// @brief Unregisters for proxy processing the given fixture.
+    /// @post The given fixture won't be found in the fixtures-for-proxies range.
+    void UnregisterForProxies(const Fixture& fixture);
+
+    /// @brief Registers the given body for proxy processing.
+    /// @post The given body will be found in the bodies-for-proxies range.
     void RegisterForProxies(Body& body);
+
+    /// @brief Unregisters the given body from proxy processing.
+    /// @post The given body won't be found in the bodies-for-proxies range.
+    void UnregisterForProxies(const Body& body);
 
     /// @brief Creates a fixture with the given parameters.
     /// @throws InvalidArgument if called without a shape.
@@ -395,12 +426,6 @@ private:
     
     /// @brief Proxy queue type alias.
     using ProxyQueue = std::vector<ProxyId>;
-    
-    /// @brief Fixture queue type alias.
-    using FixtureQueue = std::vector<Fixture*>;
-    
-    /// @brief Body queue type alias.
-    using BodyQueue = std::vector<Body*>;
     
     /// @brief Flag enumeration.
     enum Flag: FlagsType
@@ -782,8 +807,8 @@ private:
     
     ContactKeyQueue m_proxyKeys; ///< Proxy keys.
     ProxyQueue m_proxies; ///< Proxies queue.
-    FixtureQueue m_fixturesForProxies; ///< Fixtures for proxies queue.
-    BodyQueue m_bodiesForProxies; ///< Bodies for proxies queue.
+    Fixtures m_fixturesForProxies; ///< Fixtures for proxies queue.
+    Bodies m_bodiesForProxies; ///< Bodies for proxies queue.
     
     Bodies m_bodies; ///< Body collection.
 
@@ -836,6 +861,24 @@ inline SizedRange<World::Bodies::iterator> World::GetBodies() noexcept
 inline SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
 {
     return {m_bodies.begin(), m_bodies.end(), m_bodies.size()};
+}
+
+inline SizedRange<World::Bodies::const_iterator> World::GetBodiesForProxies() const noexcept
+{
+    return {
+        std::cbegin(m_bodiesForProxies),
+        std::cend(m_bodiesForProxies),
+        m_bodiesForProxies.size()
+    };
+}
+
+inline SizedRange<World::Fixtures::const_iterator> World::GetFixturesForProxies() const noexcept
+{
+    return {
+        std::cbegin(m_fixturesForProxies),
+        std::cend(m_fixturesForProxies),
+        m_fixturesForProxies.size()
+    };
 }
 
 inline SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept

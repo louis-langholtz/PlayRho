@@ -315,7 +315,11 @@ TEST(Body, Destroy)
 TEST(Body, SetEnabled)
 {
     auto stepConf = StepConf{};
+    
     auto world = World{};
+    ASSERT_EQ(world.GetFixturesForProxies().size(), 0u);
+    ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
+
     const auto body = world.CreateBody();
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
@@ -323,27 +327,41 @@ TEST(Body, SetEnabled)
     ASSERT_NE(fixture, nullptr);
     ASSERT_TRUE(body->IsEnabled());
     ASSERT_EQ(fixture->GetProxyCount(), 0u);
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     world.Step(stepConf);
     EXPECT_EQ(fixture->GetProxyCount(), 1u);
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     // Test that set enabled to flag already set is not a toggle
     body->SetEnabled(true);
     EXPECT_TRUE(body->IsEnabled());
     EXPECT_EQ(fixture->GetProxyCount(), 1u);
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     body->SetEnabled(false);
     EXPECT_FALSE(body->IsEnabled());
     EXPECT_EQ(fixture->GetProxyCount(), 1u);
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     world.Step(stepConf);
     EXPECT_EQ(fixture->GetProxyCount(), 0u);
-    
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
+
     body->SetEnabled(true);
     EXPECT_TRUE(body->IsEnabled());
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     world.Step(stepConf);
     EXPECT_EQ(fixture->GetProxyCount(), 1u);
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 }
 
 TEST(Body, SetFixedRotation)
@@ -399,10 +417,15 @@ TEST(Body, CreateAndDestroyFixture)
         body->ResetMassData();
         EXPECT_FALSE(body->IsMassDataDirty());
 
+        ASSERT_EQ(world.GetFixturesForProxies().size(), std::size_t{1});
+        EXPECT_EQ(*world.GetFixturesForProxies().begin(), fixture);
+
         body->Destroy(fixture, false);
         EXPECT_TRUE(body->GetFixtures().empty());
         EXPECT_TRUE(body->IsMassDataDirty());
-        
+
+        EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
+
         body->ResetMassData();
         EXPECT_FALSE(body->IsMassDataDirty());
         
@@ -441,14 +464,22 @@ TEST(Body, SetType)
     auto bd = BodyConf{};
     bd.type = BodyType::Dynamic;
     auto world = World{};
+    
     const auto body = world.CreateBody(bd);
+    ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
     ASSERT_EQ(body->GetType(), BodyType::Dynamic);
+
     body->SetType(BodyType::Static);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
     EXPECT_EQ(body->GetType(), BodyType::Static);
+    
     body->SetType(BodyType::Kinematic);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
     EXPECT_EQ(body->GetType(), BodyType::Kinematic);
+    
     body->SetType(BodyType::Dynamic);
     EXPECT_EQ(body->GetType(), BodyType::Dynamic);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
 }
 
 TEST(Body, StaticIsExpected)
@@ -525,9 +556,13 @@ TEST(Body, SetTransform)
     auto bd = BodyConf{};
     bd.type = BodyType::Dynamic;
     auto world = World{};
+    ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
+    
     const auto body = world.CreateBody(bd);
     const auto xfm1 = Transformation{Length2{}, UnitVec::GetRight()};
     ASSERT_EQ(body->GetTransformation(), xfm1);
+    ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
+
     const auto xfm2 = Transformation{Vec2(10, -12) * 1_m, UnitVec::GetLeft()};
     body->SetTransform(xfm2.p, GetAngle(xfm2.q));
     EXPECT_EQ(body->GetTransformation().p, xfm2.p);
@@ -537,6 +572,10 @@ TEST(Body, SetTransform)
     EXPECT_NEAR(static_cast<double>(GetY(body->GetTransformation().q)),
                 static_cast<double>(GetY(xfm2.q)),
                 0.001);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
+    
+    world.Destroy(body);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 }
 
 TEST(Body, SetAcceleration)

@@ -408,20 +408,107 @@ TEST(World, CreateDestroyEmptyStaticBody)
     EXPECT_FALSE(body->IsSpeedable());
     EXPECT_FALSE(body->IsAccelerable());
     EXPECT_TRUE(body->IsImpenetrable());
-    
+    EXPECT_EQ(body->GetFixtures().size(), std::size_t{0});
+
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
-    const auto& bodies1 = world.GetBodies();
+    const auto bodies1 = world.GetBodies();
     EXPECT_FALSE(bodies1.empty());
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto& first = GetRef(*bodies1.begin());
     EXPECT_EQ(body, &first);
     
+    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
+    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
+    
     world.Destroy(body);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     const auto& bodies2 = world.GetBodies();
     EXPECT_TRUE(bodies2.empty());
     EXPECT_EQ(bodies2.size(), BodyCounter(0));
+
+    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
+    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
+}
+
+TEST(World, CreateDestroyEmptyDynamicBody)
+{
+    auto world = World{};
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(body, nullptr);
+    
+    EXPECT_EQ(body->GetType(), BodyType::Dynamic);
+    EXPECT_TRUE(body->IsSpeedable());
+    EXPECT_TRUE(body->IsAccelerable());
+    EXPECT_FALSE(body->IsImpenetrable());
+    EXPECT_EQ(body->GetFixtures().size(), std::size_t{0});
+
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    const auto bodies1 = world.GetBodies();
+    EXPECT_FALSE(bodies1.empty());
+    EXPECT_EQ(bodies1.size(), BodyCounter(1));
+    EXPECT_NE(bodies1.begin(), bodies1.end());
+    const auto& first = GetRef(*bodies1.begin());
+    EXPECT_EQ(body, &first);
+    
+    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
+    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
+    
+    world.Destroy(body);
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    const auto& bodies2 = world.GetBodies();
+    EXPECT_TRUE(bodies2.empty());
+    EXPECT_EQ(bodies2.size(), BodyCounter(0));
+    
+    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
+    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
+}
+
+TEST(World, CreateDestroyDynamicBodyAndFixture)
+{
+    // Created this test after receiving issue #306:
+    //   Rapid create/destroy between step() causes SEGFAULT
+    
+    auto world = World{};
+    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(body, nullptr);
+    
+    EXPECT_EQ(body->GetType(), BodyType::Dynamic);
+    EXPECT_TRUE(body->IsSpeedable());
+    EXPECT_TRUE(body->IsAccelerable());
+    EXPECT_FALSE(body->IsImpenetrable());
+    EXPECT_EQ(body->GetFixtures().size(), std::size_t{0});
+
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    const auto bodies1 = world.GetBodies();
+    EXPECT_FALSE(bodies1.empty());
+    EXPECT_EQ(bodies1.size(), BodyCounter(1));
+    EXPECT_NE(bodies1.begin(), bodies1.end());
+    const auto& first = GetRef(*bodies1.begin());
+    EXPECT_EQ(body, &first);
+    
+    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
+    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
+    
+    const auto fixture = body->CreateFixture(Shape{DiskShapeConf{1_m}});
+    ASSERT_NE(fixture, nullptr);
+    
+    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
+    EXPECT_EQ(body->GetFixtures().size(), std::size_t{1});
+    ASSERT_EQ(world.GetFixturesForProxies().size(), std::size_t{1});
+    EXPECT_EQ(*world.GetFixturesForProxies().begin(), fixture);
+
+    world.Destroy(body); // should clear fixtures for proxies!
+    
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    const auto& bodies2 = world.GetBodies();
+    EXPECT_TRUE(bodies2.empty());
+    EXPECT_EQ(bodies2.size(), BodyCounter(0));
+    
+    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
+    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
 }
 
 TEST(World, CreateDestroyJoinedBodies)
