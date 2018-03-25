@@ -210,6 +210,7 @@ TEST(Manifold, EqualsFreeFunction)
     const auto cf1 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 2};
     const auto cf2 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1};
     const auto normalImpulse1 = 1_Ns;
+    const auto normalImpulse2 = 2_Ns;
     const auto tangentImpulse1 = 2_Ns;
     const auto mp0 = Manifold::Point{localPoint1, cf1, normalImpulse1, tangentImpulse1};
     const auto mp1 = Manifold::Point{localPoint1, cf2, normalImpulse1, tangentImpulse1};
@@ -218,6 +219,7 @@ TEST(Manifold, EqualsFreeFunction)
     const auto faceA001 = Manifold::GetForFaceA(ln0, lp0, mp1);
     const auto faceA0010 = Manifold::GetForFaceA(ln0, lp0, mp1, mp0);
     const auto faceA0011 = Manifold::GetForFaceA(ln0, lp0, mp1, mp1);
+    const auto faceA0000 = Manifold::GetForFaceA(ln0, lp0, mp0, mp1);
     EXPECT_TRUE(Manifold{} == Manifold{});
     EXPECT_TRUE(foo == foo);
     EXPECT_TRUE(boo == boo);
@@ -231,13 +233,18 @@ TEST(Manifold, EqualsFreeFunction)
     EXPECT_FALSE(faceA000 == foo);
     EXPECT_FALSE(faceA000 == faceA001);
     EXPECT_TRUE(faceA0001 == faceA0010);
+    EXPECT_FALSE(faceA0001 == faceA0011);
     EXPECT_FALSE(faceA001 == faceA0001);
     EXPECT_FALSE(faceA0010 == faceA0011);
-    
+    EXPECT_FALSE(faceA0011 == faceA0000);
+
     const auto circle01 = Manifold::GetForCircles(lp0, 0, lp1, 1);
     const auto circle10 = Manifold::GetForCircles(lp1, 1, lp0, 0);
     EXPECT_TRUE(circle01 == circle01);
     EXPECT_FALSE(circle01 == circle10);
+    
+    const auto faceB10 = Manifold::GetForFaceB(ln1, lp0);
+    EXPECT_FALSE(foo == faceB10);
     
     const auto faceB0010 = Manifold::GetForFaceB(ln0, lp0, mp1, mp0);
     const auto faceB0011 = Manifold::GetForFaceB(ln0, lp0, mp1, mp1);

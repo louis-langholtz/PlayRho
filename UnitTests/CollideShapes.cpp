@@ -2,17 +2,19 @@
  * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -135,6 +137,29 @@ TEST(CollideShapes, CircleWithinSquareB)
     EXPECT_EQ(manifold, manifold2);
 }
 
+TEST(CollideShapes, CircleTrianglePointBelow)
+{
+    const auto circleRadius = 0.5_m;
+    const auto circle = DiskShapeConf{}.UseRadius(circleRadius);
+    const auto triangleTopPt = Vec2{0, +1} * Meter;
+    const auto triangleLeftPt = Vec2{-1, -1} * Meter;
+    const auto triangleRightPt = Vec2{+1, -1} * Meter;
+    const auto triangle = PolygonShapeConf{}.Set({triangleLeftPt, triangleRightPt, triangleTopPt});
+    const auto triangleXfm = Transformation{
+        Length2{},
+        UnitVec::GetRight()
+    };
+    const auto circleXfm = Transformation{
+        triangleTopPt + UnitVec::GetTop() * 1_m,
+        UnitVec::GetRight()
+    };
+    
+    const auto manifold = CollideShapes(GetChild(triangle, 0), triangleXfm, GetChild(circle, 0), circleXfm);
+    
+    EXPECT_EQ(manifold.GetType(), Manifold::e_unset);
+    EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(0));
+}
+
 TEST(CollideShapes, CircleTouchingTrianglePointBelow)
 {
     const auto circleRadius = 1_m;
@@ -152,7 +177,8 @@ TEST(CollideShapes, CircleTouchingTrianglePointBelow)
         UnitVec::GetRight()
     };
     
-    const auto manifold = CollideShapes(GetChild(triangle, 0), triangleXfm, GetChild(circle, 0), circleXfm);
+    const auto manifold = CollideShapes(GetChild(triangle, 0), triangleXfm,
+                                        GetChild(circle, 0), circleXfm);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
     EXPECT_EQ(manifold.GetLocalPoint(), triangleTopPt);
@@ -163,6 +189,32 @@ TEST(CollideShapes, CircleTouchingTrianglePointBelow)
     EXPECT_EQ(triangle.GetVertex(manifold.GetPoint(0).contactFeature.indexA), triangleTopPt);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
+}
+
+TEST(CollideShapes, TriangleTouchingCirclePointBelow)
+{
+    const auto circleRadius = 1_m;
+    const auto circle = DiskShapeConf{}.UseRadius(circleRadius);
+    const auto triangleTopPt = Vec2{0, +1} * Meter;
+    const auto triangleLeftPt = Vec2{-1, -1} * Meter;
+    const auto triangleRightPt = Vec2{+1, -1} * Meter;
+    const auto triangle = PolygonShapeConf{}.Set({triangleLeftPt, triangleRightPt, triangleTopPt});
+    const auto triangleXfm = Transformation{Length2{}, UnitVec::GetRight()};
+    const auto circlePt = triangleTopPt + UnitVec::GetTop() * circleRadius;
+    const auto circleXfm = Transformation{circlePt, UnitVec::GetRight()};
+    
+    const auto manifold = CollideShapes(GetChild(circle, 0), circleXfm,
+                                        GetChild(triangle, 0), triangleXfm);
+    
+    EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+    EXPECT_EQ(manifold.GetLocalPoint(), Length2(0_m, 0_m));
+    EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+    ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
+    EXPECT_EQ(manifold.GetPoint(0).localPoint, Length2(0_m, 1_m));
+    EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
+    EXPECT_EQ(triangle.GetVertex(manifold.GetPoint(0).contactFeature.indexA), triangleRightPt);
+    EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
+    EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 1);
 }
 
 TEST(CollideShapes, CircleTouchingTrianglePointLeft)
@@ -195,6 +247,26 @@ TEST(CollideShapes, CircleTouchingTrianglePointLeft)
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
 }
 
+TEST(CollideShapes, CircleTrianglePointRight)
+{
+    const auto circleRadius = 0.5_m;
+    const auto circle = DiskShapeConf(circleRadius);
+    const auto triangleTopPt = Vec2{0, +1} * Meter;
+    const auto triangleLeftPt = Vec2{-1, -1} * Meter;
+    const auto triangleRightPt = Vec2{+1, -1} * Meter;
+    const auto triangle = PolygonShapeConf({triangleLeftPt, triangleRightPt, triangleTopPt});
+    const auto circleXfm = Transformation{
+        triangleRightPt + UnitVec::Get(-45_deg) * 1_m,
+        UnitVec::GetRight()
+    };
+    const auto triangleXfm = Transformation{Length2{}, UnitVec::GetRight()};
+    
+    const auto manifold = CollideShapes(GetChild(triangle, 0), triangleXfm, GetChild(circle, 0), circleXfm);
+    
+    EXPECT_EQ(manifold.GetType(), Manifold::e_unset);
+    EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(0));
+}
+
 TEST(CollideShapes, CircleTouchingTrianglePointRight)
 {
     const auto circleRadius = 1_m;
@@ -216,6 +288,34 @@ TEST(CollideShapes, CircleTouchingTrianglePointRight)
     EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
     ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
     EXPECT_EQ(manifold.GetPoint(0).localPoint, (Length2{}));
+    EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
+    EXPECT_EQ(triangle.GetVertex(manifold.GetPoint(0).contactFeature.indexA), triangleRightPt);
+    EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);
+    EXPECT_EQ(manifold.GetPoint(0).contactFeature.indexB, 0);
+}
+
+TEST(CollideShapes, TriangleTouchingCirclePointRight)
+{
+    const auto circleRadius = 1_m;
+    const auto circle = DiskShapeConf(circleRadius);
+    const auto triangleTopPt = Vec2{0, +1} * Meter;
+    const auto triangleLeftPt = Vec2{-1, -1} * Meter;
+    const auto triangleRightPt = Vec2{+1, -1} * Meter;
+    const auto triangle = PolygonShapeConf({triangleLeftPt, triangleRightPt, triangleTopPt});
+    const auto circleXfm = Transformation{
+        triangleRightPt + UnitVec::Get(-45_deg) * circleRadius,
+        UnitVec::GetRight()
+    };
+    const auto triangleXfm = Transformation{Length2{}, UnitVec::GetRight()};
+    
+    const auto manifold = CollideShapes(GetChild(circle, 0), circleXfm,
+                                        GetChild(triangle, 0), triangleXfm);
+    
+    EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+    EXPECT_EQ(manifold.GetLocalPoint(), Length2());
+    EXPECT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+    ASSERT_GT(manifold.GetPointCount(), Manifold::size_type(0));
+    EXPECT_EQ(manifold.GetPoint(0).localPoint, triangleRightPt);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeA, ContactFeature::e_vertex);
     EXPECT_EQ(triangle.GetVertex(manifold.GetPoint(0).contactFeature.indexA), triangleRightPt);
     EXPECT_EQ(manifold.GetPoint(0).contactFeature.typeB, ContactFeature::e_vertex);

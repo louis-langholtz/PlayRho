@@ -111,15 +111,15 @@ TEST(GearJoint, IsOkay)
     EXPECT_FALSE(GearJoint::IsOkay(GearJointConf{rj1, rj1}));
 }
 
-TEST(GearJoint, Construction)
+TEST(GearJoint, Creation)
 {
     auto world = World{};
-    auto& body0 = *world.CreateBody();
-    auto& body1 = *world.CreateBody();
-    auto& body2 = *world.CreateBody();
-    auto& body3 = *world.CreateBody();
-    auto rdef0 = RevoluteJointConf{&body0, &body1, Length2{}};
-    auto rdef1 = RevoluteJointConf{&body2, &body3, Length2{}};
+    const auto body0 = world.CreateBody();
+    const auto body1 = world.CreateBody();
+    const auto body2 = world.CreateBody();
+    const auto body3 = world.CreateBody();
+    auto rdef0 = RevoluteJointConf{body0, body1, Length2{}};
+    auto rdef1 = RevoluteJointConf{body2, body3, Length2{}};
     auto revJoint1 = RevoluteJoint{rdef0};
     auto revJoint2 = RevoluteJoint{rdef1};
     auto def = GearJointConf{&revJoint1, &revJoint2};
@@ -142,6 +142,9 @@ TEST(GearJoint, Construction)
     TypeJointVisitor visitor;
     joint.Accept(visitor);
     EXPECT_EQ(visitor.GetType().value(), JointType::Gear);
+    
+    const auto djoint = world.CreateJoint(DistanceJointConf{body0, body1});
+    EXPECT_THROW(world.CreateJoint(GearJointConf{djoint, &revJoint2}), InvalidArgument);
 }
 
 TEST(GearJoint, ShiftOrigin)
