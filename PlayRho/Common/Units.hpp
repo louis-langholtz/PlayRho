@@ -124,8 +124,7 @@ namespace playrho
     /// @details This is the type alias for the linear velocity derived quantity.
     /// @note This quantity's dimensions are: length over time (<code>L T^-1</code>).
     /// @note The SI unit of linear velocity is meters per second.
-    /// @sa Length.
-    /// @sa Time.
+    /// @sa Length, Time.
     /// @sa MeterPerSecond.
     /// @sa https://en.wikipedia.org/wiki/Speed
     using LinearVelocity = PLAYRHO_QUANTITY(boost::units::si::velocity);
@@ -134,9 +133,7 @@ namespace playrho
     /// @details This is the type alias for the linear acceleration derived quantity.
     /// @note This quantity's dimensions are: length over time squared (<code>L T^-2</code>).
     /// @note The SI unit of linear acceleration is meters per second squared.
-    /// @sa Length.
-    /// @sa Time.
-    /// @sa LinearVelocity.
+    /// @sa Length, Time, LinearVelocity.
     /// @sa MeterPerSquareSecond.
     /// @sa https://en.wikipedia.org/wiki/Acceleration
     using LinearAcceleration = PLAYRHO_QUANTITY(boost::units::si::acceleration);
@@ -169,8 +166,7 @@ namespace playrho
     /// @details This is the type alias for the area density quantity. It's a derived quantity.
     /// @note This quantity's dimensions are: mass per area (<code>M L^-2</code>).
     /// @note The SI derived unit of area density is kilogram per meter-squared.
-    /// @sa Mass.
-    /// @sa Area.
+    /// @sa Mass, Area.
     /// @sa KilogramPerSquareMeter.
     /// @sa https://en.wikipedia.org/wiki/Area_density
     using AreaDensity = PLAYRHO_QUANTITY(boost::units::si::surface_density);
@@ -178,8 +174,7 @@ namespace playrho
     /// @brief Angle quantity.
     /// @details This is the type alias for the plane angle base quantity.
     /// @note This quantity's dimension is: plane angle (<code>QP</code>).
-    /// @sa Radian.
-    /// @sa Degree.
+    /// @sa Radian, Degree.
     using Angle = PLAYRHO_QUANTITY(boost::units::si::plane_angle);
     
     /// @brief Angular velocity quantity.
@@ -187,8 +182,7 @@ namespace playrho
     ///   derived quantity.
     /// @note This quantity's dimensions are: plane angle per time (<code>QP T^-1</code>).
     /// @note The SI derived unit of angular velocity is the radian per second.
-    /// @sa Angle.
-    /// @sa Time.
+    /// @sa Angle, Time.
     /// @sa RadianPerSecond.
     /// @sa https://en.wikipedia.org/wiki/Angular_velocity
     using AngularVelocity = PLAYRHO_QUANTITY(boost::units::si::angular_velocity);
@@ -198,9 +192,7 @@ namespace playrho
     ///   derived quantity.
     /// @note This quantity's dimensions are: plane angle per time squared (<code>QP T^-2</code>).
     /// @note The SI derived unit of angular acceleration is the radian per second-squared.
-    /// @sa Angle.
-    /// @sa Time.
-    /// @sa AngularVelocity.
+    /// @sa Angle, Time, AngularVelocity.
     /// @sa RadianPerSquareSecond.
     /// @sa https://en.wikipedia.org/wiki/Angular_acceleration
     using AngularAcceleration = PLAYRHO_QUANTITY(boost::units::si::angular_acceleration);
@@ -209,9 +201,7 @@ namespace playrho
     /// @details This is the type alias for the force quantity. It's a derived quantity.
     /// @note This quantity's dimensions are: length mass per time squared (<code>L M T^-2</code>).
     /// @note The SI derived unit of force is the newton.
-    /// @sa Length.
-    /// @sa Mass.
-    /// @sa Time.
+    /// @sa Length, Mass, Time.
     /// @sa Newton.
     /// @sa https://en.wikipedia.org/wiki/Force
     using Force = PLAYRHO_QUANTITY(boost::units::si::force);
@@ -222,10 +212,7 @@ namespace playrho
     /// @note This quantity's dimensions are: length-squared mass per time-squared per
     ///   angle (<code>L^2 M T^-2 QP^-1</code>).
     /// @note The SI derived unit of torque is the newton meter.
-    /// @sa Length.
-    /// @sa Mass.
-    /// @sa Time.
-    /// @sa Angle.
+    /// @sa Length, Mass, Time, Angle.
     /// @sa NewtonMeter.
     /// @sa https://en.wikipedia.org/wiki/Torque
     using Torque = PLAYRHO_QUANTITY(boost::units::si::torque);
@@ -244,10 +231,7 @@ namespace playrho
     /// @note This quantity's dimensions are: length-squared mass per angle-squared
     ///   (<code>L^2 M QP^-2</code>).
     /// @note The SI derived unit of rotational inertia is the kilogram per meter-squared.
-    /// @sa Length.
-    /// @sa Mass.
-    /// @sa Angle.
-    /// @sa InvRotInertia.
+    /// @sa Length, Mass, Angle, InvRotInertia.
     /// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
     using RotInertia = PLAYRHO_QUANTITY(boost::units::si::moment_of_inertia);
     
@@ -256,10 +240,7 @@ namespace playrho
     ///   a derived quantity.
     /// @note This quantity's dimensions are: angle-squared per length-squared per mass
     ///    (<code>L^-2 M^-1 QP^2</code>).
-    /// @sa Length.
-    /// @sa Mass.
-    /// @sa Angle.
-    /// @sa RotInertia.
+    /// @sa Length, Mass, Angle, RotInertia.
     using InvRotInertia = PLAYRHO_QUANTITY(boost::units::si::inverse_moment_of_inertia);
     
     /// @brief Momentum quantity.
@@ -268,9 +249,7 @@ namespace playrho
     /// @note The SI derived unit of momentum is the kilogram meter per second.
     /// @note If <code>p</code> is momentum, <code>m</code> is mass, and <code>v</code> is
     ///   velocity, then <code>p = m * v</code>.
-    /// @sa Length.
-    /// @sa Mass.
-    /// @sa Time.
+    /// @sa Length, Mass, Time.
     /// @sa NewtonSecond.
     /// @sa https://en.wikipedia.org/wiki/Momentum
     using Momentum = PLAYRHO_QUANTITY(boost::units::si::momentum);
@@ -281,11 +260,8 @@ namespace playrho
     /// @note This quantity's dimensions are: length-squared mass per time per angle
     ///    (<code>L^2 M T^-1 QP^-1</code>).
     /// @note The SI derived unit of angular momentum is the kilogram meter-squared per second.
-    /// @sa Length.
-    /// @sa Mass.
-    /// @sa Time.
-    /// @sa Angle.
-    /// @sa Momentum.
+    /// @sa Length, Mass, Time, Angle, Momentum.
+    /// @sa NewtonMeterSecond.
     /// @sa https://en.wikipedia.org/wiki/Angular_momentum
     using AngularMomentum = PLAYRHO_QUANTITY(boost::units::si::angular_momentum);
     
@@ -300,7 +276,9 @@ namespace playrho
     /// @{
 
     /// @brief Second unit of time.
+    /// @note This is the SI base unit of time.
     /// @sa Time.
+    /// @sa https://en.wikipedia.org/wiki/Second
     PLAYRHO_CONSTEXPR const auto Second = PLAYRHO_UNIT(Time, boost::units::si::second);
 
     /// @brief Square second unit.
@@ -315,7 +293,9 @@ namespace playrho
 
     /// @brief Meter unit of Length.
     /// @details A unit of the length quantity.
+    /// @note This is the SI base unit of length.
     /// @sa Length.
+    /// @sa https://en.wikipedia.org/wiki/Metre
     PLAYRHO_CONSTEXPR const auto Meter = PLAYRHO_UNIT(Length, boost::units::si::meter);
 
     /// @brief Meter per second unit of linear velocity.
@@ -329,7 +309,9 @@ namespace playrho
         boost::units::si::meter_per_second_squared);
 
     /// @brief Kilogram unit of mass.
+    /// @note This is the SI base unit of mass.
     /// @sa Mass.
+    /// @sa https://en.wikipedia.org/wiki/Kilogram
     PLAYRHO_CONSTEXPR const auto Kilogram = PLAYRHO_UNIT(Mass, boost::units::si::kilogram);
 
     /// @brief Square meter unit of area.
@@ -361,19 +343,23 @@ namespace playrho
 
     /// @brief Radian per second unit of angular velocity.
     /// @sa AngularVelocity.
+    /// @sa Radian, Second.
     PLAYRHO_CONSTEXPR const auto RadianPerSecond = PLAYRHO_UNIT(AngularVelocity,
         boost::units::si::radian_per_second);
     
     /// @brief Degree per second unit of angular velocity.
     /// @sa AngularVelocity.
+    /// @sa Degree, Second.
     PLAYRHO_CONSTEXPR const auto DegreePerSecond = AngularVelocity{RadianPerSecond * Degree / Radian};
 
     /// @brief Radian per square second unit of angular acceleration.
     /// @sa AngularAcceleration.
+    /// @sa Radian, Second.
     PLAYRHO_CONSTEXPR const auto RadianPerSquareSecond = Radian / (Second * Second);
 
     /// @brief Degree per square second unit of angular acceleration.
     /// @sa AngularAcceleration.
+    /// @sa Degree, Second.
     PLAYRHO_CONSTEXPR const auto DegreePerSquareSecond = Degree / (Second * Second);
 
     /// @brief Newton unit of force.
@@ -382,18 +368,22 @@ namespace playrho
 
     /// @brief Newton meter unit of torque.
     /// @sa Torque.
+    /// @sa Newton, Meter.
     PLAYRHO_CONSTEXPR const auto NewtonMeter = PLAYRHO_UNIT(Torque, boost::units::si::newton_meter);
 
     /// @brief Newton second unit of momentum.
     /// @sa Momentum.
+    /// @sa Newton, Second.
     PLAYRHO_CONSTEXPR const auto NewtonSecond = Newton * Second;
     
     /// @brief Newton meter second unit of angular momentum.
     /// @sa AngularMomentum.
+    /// @sa Newton, Meter, Second.
     PLAYRHO_CONSTEXPR const auto NewtonMeterSecond = NewtonMeter * Second;
     
     /// @brief Revolutions per minute units of angular velocity.
-    /// @sa AngularVelocity
+    /// @sa AngularVelocity, Time
+    /// @sa Minute.
     PLAYRHO_CONSTEXPR const auto RevolutionsPerMinute = 2 * Pi * Radian / (Real{60} * Second);
     
     /// @}

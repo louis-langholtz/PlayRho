@@ -30,7 +30,7 @@ namespace d2 {
 class DistanceProxy;
 struct Transformation;
 
-/// @brief A collision description for the collision two convex shapes.
+/// @brief A collision response oriented description of the intersection of two convex shapes.
 ///
 /// @details
 /// This describes zero, one, or two points of contact for which impulses should be applied to
