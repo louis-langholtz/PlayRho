@@ -551,14 +551,20 @@ bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept;
 bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
 
 /// @brief Gets a face-to-face based manifold.
+/// @param flipped Whether to flip the resulting manifold (between face-A and face-B).
 /// @param shape0 Shape 0. This should be shape A for face-A type manifold or shape B for face-B
 ///   type manifold.
-/// @param xf0 Transform 1. This should be transform A for face-A type manifold or transform B
+/// @param xf0 Transform 0. This should be transform A for face-A type manifold or transform B
 ///   for face-B type manifold.
 /// @param idx0 Index 0. This should be the index of the vertex and normal of shape0 that had
 ///   the maximal separation distance from any vertex in shape1.
+/// @param shape1 Shape 1. This should be shape B for face-A type manifold or shape A for face-B
+///   type manifold.
+/// @param xf1 Transform 1. This should be transform B for face-A type manifold or transform A
+///   for face-B type manifold.
 /// @param indices1 Index 1. This is the first and possibly second index of the vertex of shape1
 ///   that had the maximal separation distance from the edge of shape0 identified by idx0.
+/// @param conf Manifold configuration data.
 Manifold GetManifold(bool flipped,
                      const DistanceProxy& shape0, const Transformation& xf0,
                      const VertexCounter idx0,
