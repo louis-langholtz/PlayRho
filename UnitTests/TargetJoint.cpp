@@ -69,6 +69,20 @@ TEST(TargetJoint, ByteSize)
     }
 }
 
+TEST(TargetJoint, IsOkay)
+{
+    auto def = TargetJointConf{};
+
+    ASSERT_FALSE(Joint::IsOkay(def));
+    def.bodyA = reinterpret_cast<Body*>(0x1);
+    def.bodyB = reinterpret_cast<Body*>(0x2);
+    ASSERT_TRUE(Joint::IsOkay(def));
+
+    EXPECT_TRUE(TargetJoint::IsOkay(def));
+    def.target = GetInvalid<decltype(def.target)>();
+    EXPECT_FALSE(TargetJoint::IsOkay(def));
+}
+
 TEST(TargetJoint, DefaultInitialized)
 {
     const auto def = TargetJointConf{};
@@ -114,6 +128,28 @@ TEST(TargetJoint, GetLocalAnchorB)
     
     const auto joint = TargetJoint{def};
     EXPECT_EQ(joint.GetLocalAnchorB(), def.target);
+}
+
+TEST(TargetJoint, GetAnchorB)
+{
+    auto world = World{};
+    const auto bA = world.CreateBody();
+    const auto bB = world.CreateBody();
+    ASSERT_NE(bA, nullptr);
+    ASSERT_NE(bB, nullptr);
+    
+    auto def = TargetJointConf{};
+    def.bodyA = bA;
+    def.bodyB = bB;
+    def.userData = reinterpret_cast<void*>(71);
+    def.target = Length2(-1.4_m, -2_m);
+    def.maxForce = 3_N;
+    def.frequency = 67_Hz;
+    def.dampingRatio = Real(0.8);
+    
+    const auto joint = TargetJoint{def};
+    ASSERT_EQ(joint.GetLocalAnchorB(), def.target);
+    EXPECT_EQ(joint.GetAnchorB(), def.target);
 }
 
 TEST(TargetJoint, ShiftOrigin)
