@@ -32,7 +32,7 @@ class DistanceProxy;
 struct Transformation;
     
 /// Separation finder.
-class SeparationFinder
+class SeparationScenario
 {
 public:
     
@@ -55,7 +55,7 @@ public:
     /// @param proxyB Proxy B.
     /// @param xfB Transformation B.
     ///
-    static SeparationFinder Get(IndexPair3 indices,
+    static SeparationScenario Get(IndexPair3 indices,
                                 const DistanceProxy& proxyA, const Transformation& xfA,
                                 const DistanceProxy& proxyB, const Transformation& xfB);
     
@@ -89,7 +89,7 @@ public:
 private:
     
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR inline SeparationFinder(const DistanceProxy& dpA, const DistanceProxy& dpB,
+    PLAYRHO_CONSTEXPR inline SeparationScenario(const DistanceProxy& dpA, const DistanceProxy& dpB,
                                      const UnitVec axis, const Length2 lp, const Type type):
         m_proxyA{dpA}, m_proxyB{dpB}, m_axis{axis}, m_localPoint{lp}, m_type{type}
     {
@@ -131,17 +131,17 @@ private:
     const Type m_type; ///< The type of this instance.
 };
 
-PLAYRHO_CONSTEXPR inline SeparationFinder::Type SeparationFinder::GetType() const noexcept
+PLAYRHO_CONSTEXPR inline SeparationScenario::Type SeparationScenario::GetType() const noexcept
 {
     return m_type;
 }
 
-PLAYRHO_CONSTEXPR inline UnitVec SeparationFinder::GetAxis() const noexcept
+PLAYRHO_CONSTEXPR inline UnitVec SeparationScenario::GetAxis() const noexcept
 {
     return m_axis;
 }
 
-PLAYRHO_CONSTEXPR inline Length2 SeparationFinder::GetLocalPoint() const noexcept
+PLAYRHO_CONSTEXPR inline Length2 SeparationScenario::GetLocalPoint() const noexcept
 {
     return m_localPoint;
 }

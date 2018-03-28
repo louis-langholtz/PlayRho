@@ -20,7 +20,7 @@
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Collision/SeparationFinder.hpp>
+#include <PlayRho/Collision/SeparationScenario.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <algorithm>
 
@@ -146,7 +146,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         // From here on, the real distance squared at time timeLo is > than maxTargetSquared
 
         // Initialize the separating axis.
-        const auto fcn = SeparationFinder::Get(distanceConf.cache.indices,
+        const auto fcn = SeparationScenario::Get(distanceConf.cache.indices,
                                                proxyA, timeLoXfA, proxyB, timeLoXfB);
 
         // Compute the TOI on the separating axis. We do this by successively

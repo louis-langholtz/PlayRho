@@ -19,13 +19,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/SeparationFinder.hpp>
+#include <PlayRho/Collision/SeparationScenario.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 
 namespace playrho {
 namespace d2 {
 
-SeparationFinder SeparationFinder::Get(IndexPair3 indices,
+SeparationScenario SeparationScenario::Get(IndexPair3 indices,
                                        const DistanceProxy& proxyA, const Transformation& xfA,
                                        const DistanceProxy& proxyB, const Transformation& xfB)
 {
@@ -54,7 +54,7 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
             const auto localPointA = proxyA.GetVertex(std::get<0>(ip0));
             const auto pointA = Transform(localPointA, xfA);
             const auto deltaPoint = pointA - pointB;
-            return SeparationFinder{
+            return SeparationScenario{
                 proxyA, proxyB,
                 (Dot(deltaPoint, normal) < 0_m)? -axis: axis,
                 localPoint, type
@@ -76,7 +76,7 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
             const auto localPointB = proxyB.GetVertex(std::get<1>(ip0));
             const auto pointB = Transform(localPointB, xfB);
             const auto deltaPoint = pointB - pointA;
-            return SeparationFinder{
+            return SeparationScenario{
                 proxyA, proxyB,
                 (Dot(deltaPoint, normal) < 0_m)? -axis: axis,
                 localPoint, type
@@ -93,10 +93,10 @@ SeparationFinder SeparationFinder::Get(IndexPair3 indices,
     const auto pointA = Transform(localPointA, xfA);
     const auto pointB = Transform(localPointB, xfB);
     const auto axis = GetUnitVector(pointB - pointA, UnitVec::GetZero());
-    return SeparationFinder{proxyA, proxyB, axis, GetInvalid<Length2>(), type};
+    return SeparationScenario{proxyA, proxyB, axis, GetInvalid<Length2>(), type};
 }
 
-LengthIndexPair SeparationFinder::FindMinSeparation(const Transformation& xfA,
+LengthIndexPair SeparationScenario::FindMinSeparation(const Transformation& xfA,
                                                     const Transformation& xfB) const
 {
     switch (m_type)
@@ -109,7 +109,7 @@ LengthIndexPair SeparationFinder::FindMinSeparation(const Transformation& xfA,
     return FindMinSeparationForPoints(xfA, xfB);
 }
 
-Length SeparationFinder::Evaluate(const Transformation& xfA, const Transformation& xfB,
+Length SeparationScenario::Evaluate(const Transformation& xfA, const Transformation& xfB,
                                   IndexPair indexPair) const
 {
     switch (m_type)
@@ -123,7 +123,7 @@ Length SeparationFinder::Evaluate(const Transformation& xfA, const Transformatio
 }
 
 LengthIndexPair
-SeparationFinder::FindMinSeparationForPoints(const Transformation& xfA,
+SeparationScenario::FindMinSeparationForPoints(const Transformation& xfA,
                                              const Transformation& xfB) const
 {
     const auto dirA = InverseRotate(+m_axis, xfA.q);
@@ -137,7 +137,7 @@ SeparationFinder::FindMinSeparationForPoints(const Transformation& xfA,
 }
 
 LengthIndexPair
-SeparationFinder::FindMinSeparationForFaceA(const Transformation& xfA,
+SeparationScenario::FindMinSeparationForFaceA(const Transformation& xfA,
                                             const Transformation& xfB) const
 {
     const auto normal = Rotate(m_axis, xfA.q);
@@ -151,7 +151,7 @@ SeparationFinder::FindMinSeparationForFaceA(const Transformation& xfA,
 }
 
 LengthIndexPair
-SeparationFinder::FindMinSeparationForFaceB(const Transformation& xfA,
+SeparationScenario::FindMinSeparationForFaceB(const Transformation& xfA,
                                             const Transformation& xfB) const
 {
     const auto normal = Rotate(m_axis, xfB.q);
@@ -164,7 +164,7 @@ SeparationFinder::FindMinSeparationForFaceB(const Transformation& xfA,
     return LengthIndexPair{Dot(delta, normal), IndexPair{indexA, indexB}};
 }
 
-Length SeparationFinder::EvaluateForPoints(const Transformation& xfA, const Transformation& xfB,
+Length SeparationScenario::EvaluateForPoints(const Transformation& xfA, const Transformation& xfB,
                                            IndexPair indexPair) const
 {
     const auto pointA = Transform(m_proxyA.GetVertex(std::get<0>(indexPair)), xfA);
@@ -173,7 +173,7 @@ Length SeparationFinder::EvaluateForPoints(const Transformation& xfA, const Tran
     return Dot(delta, m_axis);
 }
 
-Length SeparationFinder::EvaluateForFaceA(const Transformation& xfA, const Transformation& xfB,
+Length SeparationScenario::EvaluateForFaceA(const Transformation& xfA, const Transformation& xfB,
                                           IndexPair indexPair) const
 {
     const auto normal = Rotate(m_axis, xfA.q);
@@ -183,7 +183,7 @@ Length SeparationFinder::EvaluateForFaceA(const Transformation& xfA, const Trans
     return Dot(delta, normal);
 }
 
-Length SeparationFinder::EvaluateForFaceB(const Transformation& xfA, const Transformation& xfB,
+Length SeparationScenario::EvaluateForFaceB(const Transformation& xfA, const Transformation& xfB,
                                           IndexPair indexPair) const
 {
     const auto normal = Rotate(m_axis, xfB.q);
