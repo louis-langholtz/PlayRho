@@ -26,6 +26,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -155,6 +156,16 @@ TEST(FrictionJoint, WithDynamicCircles)
     jd.bodyB = b2;
     world.CreateJoint(jd);
     Step(world, 1_s);
+    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / 1_m}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / 1_m}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / 1_m}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / 1_m}), 0.0, 0.01);
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
+    
+    auto stepConf = StepConf{};
+    stepConf.doWarmStart = false;
+    world.Step(stepConf);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / 1_m}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / 1_m}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / 1_m}), +1.0, 0.01);

@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -322,7 +324,7 @@ Manifold GetManifold(bool flipped, Length totalRadius,
     // Compute barycentric coordinates.
     
     const auto cLocalV1 = cLocal - v1;
-    if (Dot(cLocalV1, v2 - v1) <= Area{0})
+    if (Dot(cLocalV1, v2 - v1) <= 0_m2)
     {
         // Circle's center right of v1 (in direction of v1 to v2).
         if (GetMagnitudeSquared(cLocalV1) > Square(totalRadius))
@@ -337,7 +339,7 @@ Manifold GetManifold(bool flipped, Length totalRadius,
     }
     
     const auto ClocalV2 = cLocal - v2;
-    if (Dot(ClocalV2, v1 - v2) <= Area{0})
+    if (Dot(ClocalV2, v1 - v2) <= 0_m2)
     {
         // Circle's center left of v2 (in direction of v2 to v1).
         if (GetMagnitudeSquared(ClocalV2) > Square(totalRadius))
