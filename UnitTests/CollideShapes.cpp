@@ -1561,6 +1561,49 @@ TEST(CollideShapes, R0EdgeCollinearAndTouchingR0Edge)
         EXPECT_NEAR(static_cast<double>(StripUnit(GetY(manifold.GetLocalNormal()))), -1.0, 0.001);
     }
     EXPECT_EQ(manifold.GetLocalPoint(), Vec2(1, 0) * Meter);
+    ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+    EXPECT_EQ(manifold.GetContactFeature(0), GetFaceVertexContactFeature(1, 0));
+}
+
+TEST(CollideShapes, R0EdgeCollinearAndTouchingR0Edge2)
+{
+    const auto p1 = Vec2(-1, 0) * Meter;
+    const auto p2 = Vec2(+1, 0) * Meter;
+    const auto xfm1 = Transformation{Vec2{+1, 0} * Meter, UnitVec::GetRight()};
+    const auto xfm2 = Transformation{Vec2{+3, 0} * Meter, UnitVec::GetRight()};
+    const auto edge_shape = EdgeShapeConf(EdgeShapeConf{}.UseVertexRadius(0.1_m).Set(p1, p2));
+    
+    auto conf = Manifold::Conf{};
+    conf.maxCirclesRatio = 10000;
+    const auto manifold = CollideShapes(GetChild(edge_shape, 0), xfm1,
+                                        GetChild(edge_shape, 0), xfm2,
+                                        conf);
+    
+    EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+    EXPECT_EQ(manifold.GetLocalPoint(), Vec2(1, 0) * Meter);
+    ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+    EXPECT_EQ(manifold.GetContactFeature(0), GetVertexVertexContactFeature(1, 0));
+}
+
+TEST(CollideShapes, R0EdgeCollinearAndTouchingR0Edge3)
+{
+    const auto p1 = Vec2(-1, 0) * Meter;
+    const auto p2 = Vec2(+1, 0) * Meter;
+    const auto xfm1 = Transformation{Vec2{+1, 0} * Meter, UnitVec::GetRight()};
+    const auto xfm2 = Transformation{Vec2{+3, 0} * Meter, UnitVec::GetRight()};
+    const auto edge_shape1 = EdgeShapeConf(EdgeShapeConf{}.UseVertexRadius(0.1_m).Set(p1, p2));
+    const auto edge_shape2 = EdgeShapeConf(EdgeShapeConf{}.UseVertexRadius(0.1_m).Set(p2, p1));
+
+    auto conf = Manifold::Conf{};
+    conf.maxCirclesRatio = 10000;
+    const auto manifold = CollideShapes(GetChild(edge_shape1, 0), xfm1,
+                                        GetChild(edge_shape2, 0), xfm2,
+                                        conf);
+    
+    EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
+    EXPECT_EQ(manifold.GetLocalPoint(), Vec2(1, 0) * Meter);
+    ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
+    EXPECT_EQ(manifold.GetContactFeature(0), GetVertexVertexContactFeature(1, 1));
 }
 
 TEST(CollideShapes, R1EdgeCollinearAndTouchingR1Edge)
@@ -1575,6 +1618,7 @@ TEST(CollideShapes, R1EdgeCollinearAndTouchingR1Edge)
     ASSERT_NE(manifold.GetType(), Manifold::e_unset);
     EXPECT_EQ(manifold.GetType(), Manifold::e_circles);
     EXPECT_EQ(manifold.GetLocalPoint(), p2);
+    ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(1));
 }
 
 TEST(CollideShapes, R0EdgeCollinearAndSeparateFromR0Edge)
@@ -1587,6 +1631,7 @@ TEST(CollideShapes, R0EdgeCollinearAndSeparateFromR0Edge)
     const auto manifold = CollideShapes(GetChild(edge_shape, 0), xfm1, GetChild(edge_shape, 0), xfm2);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_unset);
+    ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(0));
 }
 
 TEST(CollideShapes, R0EdgeParallelAndSeparateFromR0Edge)
@@ -1599,6 +1644,7 @@ TEST(CollideShapes, R0EdgeParallelAndSeparateFromR0Edge)
     const auto manifold = CollideShapes(GetChild(edge_shape, 0), xfm1, GetChild(edge_shape, 0), xfm2);
     
     EXPECT_EQ(manifold.GetType(), Manifold::e_unset);
+    ASSERT_EQ(manifold.GetPointCount(), Manifold::size_type(0));
 }
 
 TEST(CollideShapes, R0EdgePerpendicularCrossingFromR0Edge)
