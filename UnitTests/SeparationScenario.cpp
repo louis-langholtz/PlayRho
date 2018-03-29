@@ -2,17 +2,19 @@
  * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -27,13 +29,13 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(SeparationFinder, ByteSize)
+TEST(SeparationScenario, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(SeparationFinder), std::size_t(28));
+            EXPECT_EQ(sizeof(SeparationScenario), std::size_t(28));
 #else
             EXPECT_EQ(sizeof(SeparationScenario), std::size_t(40));
 #endif
@@ -44,7 +46,7 @@ TEST(SeparationFinder, ByteSize)
     }
 }
 
-TEST(SeparationFinder, BehavesAsExpected)
+TEST(SeparationScenario, BehavesAsExpected)
 {
     const auto shape = PolygonShapeConf{0.5_m, 0.5_m};
     const auto distproxy = GetChild(shape, 0);
@@ -67,11 +69,11 @@ TEST(SeparationFinder, BehavesAsExpected)
     DistanceConf conf;
     auto distanceInfo = Distance(distproxy, xfA, distproxy, xfB, conf);
     conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
-    const auto fcn = SeparationScenario::Get(conf.cache.indices, distproxy, xfA, distproxy, xfB);
-    EXPECT_EQ(fcn.GetType(), SeparationScenario::e_faceA);
-    EXPECT_NEAR(static_cast<double>(GetX(GetVec2(fcn.GetAxis()))), 1.0, 0.000001);
-    EXPECT_NEAR(static_cast<double>(GetY(GetVec2(fcn.GetAxis()))), 0.0, 0.000001);
-    EXPECT_EQ(fcn.GetLocalPoint(), Length2(0.5_m, 0_m));
+    const auto fcn = GetSeparationScenario(conf.cache.indices, distproxy, xfA, distproxy, xfB);
+    EXPECT_EQ(fcn.m_type, SeparationScenario::e_faceA);
+    EXPECT_NEAR(static_cast<double>(GetX(GetVec2(fcn.m_axis))), 1.0, 0.000001);
+    EXPECT_NEAR(static_cast<double>(GetY(GetVec2(fcn.m_axis))), 0.0, 0.000001);
+    EXPECT_EQ(fcn.m_localPoint, Length2(0.5_m, 0_m));
 
     auto last_min_sep = MaxFloat * Meter;
     for (auto i = 0u; i < 500; ++i)
@@ -80,7 +82,7 @@ TEST(SeparationFinder, BehavesAsExpected)
         const auto witnessPoints = GetWitnessPoints(distanceInfo.simplex);
         const auto distance = GetMagnitude(std::get<0>(witnessPoints) - std::get<1>(witnessPoints));
 
-        const auto minSeparation = fcn.FindMinSeparation(xfA, xfB);
+        const auto minSeparation = FindMinSeparation(fcn, xfA, xfB);
 
         EXPECT_EQ(minSeparation.indices, (IndexPair{InvalidVertex, 2}));
         EXPECT_LT(minSeparation.distance, last_s);
@@ -100,7 +102,7 @@ TEST(SeparationFinder, BehavesAsExpected)
         }
         last_min_sep = minSeparation.distance;
         
-        const auto s = fcn.Evaluate(xfA, xfB, minSeparation.indices);
+        const auto s = Evaluate(fcn, xfA, xfB, minSeparation.indices);
         EXPECT_EQ(s, minSeparation.distance);
         if (s >= 0_m)
         {

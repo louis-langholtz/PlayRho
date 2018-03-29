@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -146,7 +148,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         // From here on, the real distance squared at time timeLo is > than maxTargetSquared
 
         // Initialize the separating axis.
-        const auto fcn = SeparationScenario::Get(distanceConf.cache.indices,
+        const auto fcn = GetSeparationScenario(distanceConf.cache.indices,
                                                proxyA, timeLoXfA, proxyB, timeLoXfB);
 
         // Compute the TOI on the separating axis. We do this by successively
@@ -159,7 +161,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         for (; pbIter < MaxShapeVertices; ++pbIter)
         {
             // Find the deepest point at timeHi. Store the witness point indices.
-            const auto timeHiMinSep = fcn.FindMinSeparation(timeHiXfA, timeHiXfB);
+            const auto timeHiMinSep = FindMinSeparation(fcn, timeHiXfA, timeHiXfB);
 
             // Is the final configuration separated?
             if (timeHiMinSep.distance > maxTarget)
@@ -205,7 +207,8 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             // From here on timeHiMinSep.distance is < minTarget; i.e. at timeHi, shapes too close.
 
             // Compute the initial separation of the witness points.
-            const auto timeLoEvalDistance = fcn.Evaluate(timeLoXfA, timeLoXfB, timeHiMinSep.indices);
+            const auto timeLoEvalDistance = Evaluate(fcn, timeLoXfA, timeLoXfB,
+                                                     timeHiMinSep.indices);
 
             // Check for initial overlap. This might happen if the root finder
             // runs out of iterations.
@@ -271,7 +274,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
 
                 const auto txfA = GetTransformation(sweepA, t);
                 const auto txfB = GetTransformation(sweepB, t);
-                const auto s = fcn.Evaluate(txfA, txfB, timeHiMinSep.indices);
+                const auto s = Evaluate(fcn, txfA, txfB, timeHiMinSep.indices);
 
                 if (Abs(s - target) <= conf.tolerance) // Root finding succeeded!
                 {
