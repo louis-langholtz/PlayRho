@@ -160,7 +160,7 @@ GetSeparationScenario(IndexPair3 indices,
             break;
     }
 
-    assert(type == e_points);
+    assert(type == SeparationScenario::e_points);
     const auto ip0 = indices[0];
     const auto localPointA = proxyA.GetVertex(std::get<0>(ip0));
     const auto localPointB = proxyB.GetVertex(std::get<1>(ip0));
@@ -171,8 +171,7 @@ GetSeparationScenario(IndexPair3 indices,
 }
 
 LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
-                                  const Transformation& xfA,
-                                  const Transformation& xfB)
+                                  const Transformation& xfA, const Transformation& xfB)
 {
     switch (scenario.type)
     {
@@ -180,7 +179,7 @@ LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
         case SeparationScenario::e_faceB: return FindMinSeparationForFaceB(scenario, xfA, xfB);
         case SeparationScenario::e_points: break;
     }
-    assert(m_type == e_points);
+    assert(scenario.type == SeparationScenario::e_points);
     return FindMinSeparationForPoints(scenario, xfA, xfB);
 }
 
@@ -194,7 +193,7 @@ Length Evaluate(const SeparationScenario& scenario,
         case SeparationScenario::e_faceB: return EvaluateForFaceB(scenario, xfA, xfB, indexPair);
         case SeparationScenario::e_points: break;
     }
-    assert(m_type == e_points);
+    assert(scenario.type == SeparationScenario::e_points);
     return EvaluateForPoints(scenario, xfA, xfB, indexPair);
 }
 
