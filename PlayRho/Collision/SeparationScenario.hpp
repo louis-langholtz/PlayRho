@@ -31,7 +31,7 @@ namespace d2 {
 class DistanceProxy;
 struct Transformation;
     
-/// Separation finder.
+/// Separation scenario.
 struct SeparationScenario
 {
     /// Separation finder type.
@@ -42,15 +42,15 @@ struct SeparationScenario
         e_faceB,
     };
     
-    const DistanceProxy& m_proxyA; ///< Distance proxy A.
-    const DistanceProxy& m_proxyB; ///< Distance proxy B.
-    const UnitVec m_axis; ///< Axis. @details Directional vector of the axis of separation.
+    const DistanceProxy& proxyA; ///< Distance proxy A.
+    const DistanceProxy& proxyB; ///< Distance proxy B.
+    const UnitVec axis; ///< Axis. @details Directional vector of the axis of separation.
 
     /// @brief Local point.
     /// @note Only used if type is <code>e_faceA</code> or <code>e_faceB</code>.
-    const Length2 m_localPoint;
+    const Length2 localPoint;
     
-    const Type m_type; ///< The type of this instance.
+    const Type type; ///< The type of this scenario.
 };
 
 // Free functions...

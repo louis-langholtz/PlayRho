@@ -70,10 +70,10 @@ TEST(SeparationScenario, BehavesAsExpected)
     auto distanceInfo = Distance(distproxy, xfA, distproxy, xfB, conf);
     conf.cache = Simplex::GetCache(distanceInfo.simplex.GetEdges());
     const auto fcn = GetSeparationScenario(conf.cache.indices, distproxy, xfA, distproxy, xfB);
-    EXPECT_EQ(fcn.m_type, SeparationScenario::e_faceA);
-    EXPECT_NEAR(static_cast<double>(GetX(GetVec2(fcn.m_axis))), 1.0, 0.000001);
-    EXPECT_NEAR(static_cast<double>(GetY(GetVec2(fcn.m_axis))), 0.0, 0.000001);
-    EXPECT_EQ(fcn.m_localPoint, Length2(0.5_m, 0_m));
+    EXPECT_EQ(fcn.type, SeparationScenario::e_faceA);
+    EXPECT_NEAR(static_cast<double>(GetX(GetVec2(fcn.axis))), 1.0, 0.000001);
+    EXPECT_NEAR(static_cast<double>(GetY(GetVec2(fcn.axis))), 0.0, 0.000001);
+    EXPECT_EQ(fcn.localPoint, Length2(0.5_m, 0_m));
 
     auto last_min_sep = MaxFloat * Meter;
     for (auto i = 0u; i < 500; ++i)

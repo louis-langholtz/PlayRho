@@ -30,26 +30,26 @@ LengthIndexPair
 FindMinSeparationForPoints(const SeparationScenario& scenario,
                            const Transformation& xfA, const Transformation& xfB)
 {
-    const auto dirA = InverseRotate(+scenario.m_axis, xfA.q);
-    const auto dirB = InverseRotate(-scenario.m_axis, xfB.q);
-    const auto indexA = GetSupportIndex(scenario.m_proxyA, dirA);
-    const auto indexB = GetSupportIndex(scenario.m_proxyB, dirB);
-    const auto pointA = Transform(scenario.m_proxyA.GetVertex(indexA), xfA);
-    const auto pointB = Transform(scenario.m_proxyB.GetVertex(indexB), xfB);
+    const auto dirA = InverseRotate(+scenario.axis, xfA.q);
+    const auto dirB = InverseRotate(-scenario.axis, xfB.q);
+    const auto indexA = GetSupportIndex(scenario.proxyA, dirA);
+    const auto indexB = GetSupportIndex(scenario.proxyB, dirB);
+    const auto pointA = Transform(scenario.proxyA.GetVertex(indexA), xfA);
+    const auto pointB = Transform(scenario.proxyB.GetVertex(indexB), xfB);
     const auto delta = pointB - pointA;
-    return LengthIndexPair{Dot(delta, scenario.m_axis), IndexPair{indexA, indexB}};
+    return LengthIndexPair{Dot(delta, scenario.axis), IndexPair{indexA, indexB}};
 }
 
 LengthIndexPair
 FindMinSeparationForFaceA(const SeparationScenario& scenario,
                           const Transformation& xfA, const Transformation& xfB)
 {
-    const auto normal = Rotate(scenario.m_axis, xfA.q);
+    const auto normal = Rotate(scenario.axis, xfA.q);
     const auto indexA = InvalidVertex;
-    const auto pointA = Transform(scenario.m_localPoint, xfA);
+    const auto pointA = Transform(scenario.localPoint, xfA);
     const auto dir = InverseRotate(-normal, xfB.q);
-    const auto indexB = GetSupportIndex(scenario.m_proxyB, dir);
-    const auto pointB = Transform(scenario.m_proxyB.GetVertex(indexB), xfB);
+    const auto indexB = GetSupportIndex(scenario.proxyB, dir);
+    const auto pointB = Transform(scenario.proxyB.GetVertex(indexB), xfB);
     const auto delta = pointB - pointA;
     return LengthIndexPair{Dot(delta, normal), IndexPair{indexA, indexB}};
 }
@@ -58,12 +58,12 @@ LengthIndexPair
 FindMinSeparationForFaceB(const SeparationScenario& scenario,
                           const Transformation& xfA, const Transformation& xfB)
 {
-    const auto normal = Rotate(scenario.m_axis, xfB.q);
+    const auto normal = Rotate(scenario.axis, xfB.q);
     const auto dir = InverseRotate(-normal, xfA.q);
-    const auto indexA = GetSupportIndex(scenario.m_proxyA, dir);
-    const auto pointA = Transform(scenario.m_proxyA.GetVertex(indexA), xfA);
+    const auto indexA = GetSupportIndex(scenario.proxyA, dir);
+    const auto pointA = Transform(scenario.proxyA.GetVertex(indexA), xfA);
     const auto indexB = InvalidVertex;
-    const auto pointB = Transform(scenario.m_localPoint, xfB);
+    const auto pointB = Transform(scenario.localPoint, xfB);
     const auto delta = pointA - pointB;
     return LengthIndexPair{Dot(delta, normal), IndexPair{indexA, indexB}};
 }
@@ -72,19 +72,19 @@ Length EvaluateForPoints(const SeparationScenario& scenario,
                          const Transformation& xfA, const Transformation& xfB,
                          IndexPair indexPair)
 {
-    const auto pointA = Transform(scenario.m_proxyA.GetVertex(std::get<0>(indexPair)), xfA);
-    const auto pointB = Transform(scenario.m_proxyB.GetVertex(std::get<1>(indexPair)), xfB);
+    const auto pointA = Transform(scenario.proxyA.GetVertex(std::get<0>(indexPair)), xfA);
+    const auto pointB = Transform(scenario.proxyB.GetVertex(std::get<1>(indexPair)), xfB);
     const auto delta = pointB - pointA;
-    return Dot(delta, scenario.m_axis);
+    return Dot(delta, scenario.axis);
 }
 
 Length EvaluateForFaceA(const SeparationScenario& scenario,
                         const Transformation& xfA, const Transformation& xfB,
                         IndexPair indexPair)
 {
-    const auto normal = Rotate(scenario.m_axis, xfA.q);
-    const auto pointA = Transform(scenario.m_localPoint, xfA);
-    const auto pointB = Transform(scenario.m_proxyB.GetVertex(std::get<1>(indexPair)), xfB);
+    const auto normal = Rotate(scenario.axis, xfA.q);
+    const auto pointA = Transform(scenario.localPoint, xfA);
+    const auto pointB = Transform(scenario.proxyB.GetVertex(std::get<1>(indexPair)), xfB);
     const auto delta = pointB - pointA;
     return Dot(delta, normal);
 }
@@ -93,9 +93,9 @@ Length EvaluateForFaceB(const SeparationScenario& scenario,
                         const Transformation& xfA, const Transformation& xfB,
                         IndexPair indexPair)
 {
-    const auto normal = Rotate(scenario.m_axis, xfB.q);
-    const auto pointB = Transform(scenario.m_localPoint, xfB);
-    const auto pointA = Transform(scenario.m_proxyA.GetVertex(std::get<0>(indexPair)), xfA);
+    const auto normal = Rotate(scenario.axis, xfB.q);
+    const auto pointB = Transform(scenario.localPoint, xfB);
+    const auto pointA = Transform(scenario.proxyA.GetVertex(std::get<0>(indexPair)), xfA);
     const auto delta = pointA - pointB;
     return Dot(delta, normal);
 }
@@ -174,7 +174,7 @@ LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
                                   const Transformation& xfA,
                                   const Transformation& xfB)
 {
-    switch (scenario.m_type)
+    switch (scenario.type)
     {
         case SeparationScenario::e_faceA: return FindMinSeparationForFaceA(scenario, xfA, xfB);
         case SeparationScenario::e_faceB: return FindMinSeparationForFaceB(scenario, xfA, xfB);
@@ -188,7 +188,7 @@ Length Evaluate(const SeparationScenario& scenario,
                 const Transformation& xfA, const Transformation& xfB,
                 IndexPair indexPair)
 {
-    switch (scenario.m_type)
+    switch (scenario.type)
     {
         case SeparationScenario::e_faceA: return EvaluateForFaceA(scenario, xfA, xfB, indexPair);
         case SeparationScenario::e_faceB: return EvaluateForFaceB(scenario, xfA, xfB, indexPair);
