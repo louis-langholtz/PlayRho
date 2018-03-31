@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
@@ -268,7 +269,11 @@ TEST(WheelJoint, WithDynamicCircles)
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = WheelJointConf{b1, b2, anchor, UnitVec::GetRight()};
     const auto joint = static_cast<WheelJoint*>(world.CreateJoint(jd));
-    Step(world, 1_s);
+    ASSERT_NE(joint, nullptr);
+    auto stepConf = StepConf{};
+    
+    stepConf.doWarmStart = true;
+    world.Step(stepConf);
     EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
@@ -279,7 +284,7 @@ TEST(WheelJoint, WithDynamicCircles)
     EXPECT_EQ(joint->GetMotorMass(), RotInertia(0));
     
     joint->SetSpringFrequency(0_Hz);
-    Step(world, 1_s);
+    world.Step(stepConf);
     EXPECT_FALSE(joint->IsMotorEnabled());
     EXPECT_EQ(joint->GetSpringFrequency(), 0_Hz);
     EXPECT_EQ(joint->GetLinearReaction(), Momentum2{});
@@ -287,7 +292,19 @@ TEST(WheelJoint, WithDynamicCircles)
 
     joint->EnableMotor(true);
     EXPECT_TRUE(joint->IsMotorEnabled());
-    Step(world, 1_s);
+    world.Step(stepConf);
+    EXPECT_NEAR(static_cast<double>(StripUnit(joint->GetMotorMass())),
+                125.66370391845703, 0.1);
+    
+    stepConf.doWarmStart = false;
+    world.Step(stepConf);
+    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
+    EXPECT_EQ(GetAngularVelocity(*joint), 0 * RadianPerSecond);
     EXPECT_NEAR(static_cast<double>(StripUnit(joint->GetMotorMass())),
                 125.66370391845703, 0.1);
 }

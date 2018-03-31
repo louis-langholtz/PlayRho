@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
@@ -155,8 +156,21 @@ TEST(RopeJoint, WithDynamicCircles)
     b1->CreateFixture(circle);
     b2->CreateFixture(circle);
     const auto jd = RopeJointConf{b1, b2};
-    world.CreateJoint(jd);
-    Step(world, 1_s);
+    ASSERT_NE(world.CreateJoint(jd), nullptr);
+
+    auto stepConf = StepConf{};
+
+    stepConf.doWarmStart = true;
+    world.Step(stepConf);
+    EXPECT_GT(GetX(b1->GetLocation()), -1_m);
+    EXPECT_EQ(GetY(b1->GetLocation()), 0_m);
+    EXPECT_LT(GetX(b2->GetLocation()), +1_m);
+    EXPECT_EQ(GetY(b2->GetLocation()), 0_m);
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
+    
+    stepConf.doWarmStart = false;
+    world.Step(stepConf);
     EXPECT_GT(GetX(b1->GetLocation()), -1_m);
     EXPECT_EQ(GetY(b1->GetLocation()), 0_m);
     EXPECT_LT(GetX(b2->GetLocation()), +1_m);

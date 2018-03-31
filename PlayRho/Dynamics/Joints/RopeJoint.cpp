@@ -38,10 +38,10 @@ namespace d2 {
 //   = invMassA + invIA * cross(rA, u)^2 + invMassB + invIB * cross(rB, u)^2
 
 RopeJoint::RopeJoint(const RopeJointConf& def):
-    Joint(def),
-    m_localAnchorA(def.localAnchorA),
-    m_localAnchorB(def.localAnchorB),
-    m_maxLength(def.maxLength)
+    Joint{def},
+    m_localAnchorA{def.localAnchorA},
+    m_localAnchorB{def.localAnchorB},
+    m_maxLength{def.maxLength}
 {
 }
 
