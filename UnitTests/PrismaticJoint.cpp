@@ -297,5 +297,5 @@ TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
     
     joint->EnableMotor(true);
     Step(world, 1_s);
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
+    EXPECT_EQ(joint->GetMotorImpulse(), Momentum(0));
 }
