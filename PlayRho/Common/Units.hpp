@@ -788,9 +788,44 @@ namespace playrho
     /// @}
 
 #if defined(USE_BOOST_UNITS)
-    
+    using std::hypot;
+    using std::sqrt;
     using boost::units::isfinite;
     using boost::units::isnormal;
+    using boost::units::cos;
+    using boost::units::sin;
+    
+    // Don't use boost's hypot since it does type promotion which is problematic.
+    // using boost::units::hypot;
+    
+    /// @brief Gets the hypotenuse.
+    /// @note Don't use boost's hypot since it does type promotion which is problematic.
+    /// @sa http://en.cppreference.com/w/cpp/numeric/math/hypot
+    /// @sa https://en.wikipedia.org/wiki/Hypotenuse
+    template<class Unit>
+    inline auto
+    hypot(const boost::units::quantity<Unit,Real>& x, const boost::units::quantity<Unit,Real>& y)
+    {
+        return boost::units::quantity<Unit,Real>::from_value(hypot(x.value(), y.value()));
+    }
+    
+    /// @brief Square roots the given value.
+    /// @note Don't use boost's sqrt implementation as it promotes the quantity's given
+    ///   underlying floating-point type which seems contrary in this case to the
+    ///   specification of <code>std::sqrt</code>.
+    /// @sa http://en.cppreference.com/w/cpp/numeric/math/sqrt
+    template<class Unit>
+    inline auto
+    sqrt(const boost::units::quantity<Unit,Real>& q)
+    {
+        using quantity_type = typename boost::units::root_typeof_helper<
+            boost::units::quantity<Unit,Real>,
+            boost::units::static_rational<2>
+            >::type;
+        using unit_type = typename quantity_type::unit_type;
+        
+        return boost::units::quantity<unit_type, Real>::from_value(sqrt(q.value()));
+    }
     
     /// @brief Almost zero.
     template <class Y>
@@ -800,8 +835,8 @@ namespace playrho
     }
 
     /// @brief Strips the units off of the given value.
-    template<typename Y>
-    PLAYRHO_CONSTEXPR inline auto StripUnit(const boost::units::quantity<Y, Real> source)
+    template<class Unit,class Y>
+    PLAYRHO_CONSTEXPR inline auto StripUnit(const boost::units::quantity<Unit, Y> source)
     {
         return source.value();
     }

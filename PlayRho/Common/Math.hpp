@@ -155,26 +155,6 @@ PLAYRHO_CONSTEXPR inline bool IsOdd(T val) noexcept
 template<class TYPE>
 PLAYRHO_CONSTEXPR inline auto Square(TYPE t) noexcept { return t * t; }
 
-#ifdef USE_BOOST_UNITS
-/// @brief Square roots the given area.
-inline auto sqrt(Area t)
-{
-    return sqrt(StripUnit(t)) * Meter;
-}
-
-/// @brief Computes the cosine of the argument.
-inline Real cos(Angle a)
-{
-    return cos(Real{a / Radian});
-}
-
-/// @brief Computes the sine of the argument.
-inline Real sin(Angle a)
-{
-    return sin(Real{a / Radian});
-}
-#endif
-
 /// @brief Computes the arc-tangent of the given y and x values.
 /// @return Normalized angle - an angle between -Pi and Pi inclusively.
 /// @sa http://en.cppreference.com/w/cpp/numeric/math/atan2

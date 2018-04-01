@@ -100,9 +100,9 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto deltaLocation = Length2{(posB.linear + m_rB) - (posA.linear + m_rA)};
 
     // Handle singularity.
-    const auto uvresult = UnitVec::Get(deltaLocation[0]/Meter, deltaLocation[1]/Meter);
+    const auto uvresult = UnitVec::Get(deltaLocation[0], deltaLocation[1]);
     m_u = std::get<UnitVec>(uvresult);
-    const auto length = std::get<Real>(uvresult) * 1_m;
+    const auto length = std::get<Length>(uvresult);
 
     const auto crAu = Length{Cross(m_rA, m_u)} / Radian;
     const auto crBu = Length{Cross(m_rB, m_u)} / Radian;
@@ -226,9 +226,9 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto rB = Length2{Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB)};
     const auto relLoc = Length2{(posB.linear + rB) - (posA.linear + rA)};
 
-    const auto uvresult = UnitVec::Get(relLoc[0]/Meter, relLoc[1]/Meter);
+    const auto uvresult = UnitVec::Get(relLoc[0], relLoc[1]);
     const auto u = std::get<UnitVec>(uvresult);
-    const auto length = std::get<Real>(uvresult) * 1_m;
+    const auto length = std::get<Length>(uvresult);
     const auto deltaLength = length - m_length;
     const auto C = Clamp(deltaLength, -conf.maxLinearCorrection, conf.maxLinearCorrection);
 
