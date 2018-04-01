@@ -324,11 +324,21 @@ public:
     /// @return World contacts sized-range.
     SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
     
+    /// @brief Whether or not "step" is complete.
+    /// @details The "step" is completed when there are no more TOI events for the current time step.
+    /// @return <code>true</code> unless sub-stepping is enabled and the step method returned
+    ///   without finishing all of its sub-steps.
+    /// @sa <code>SetStepComplete</code>.
+    bool IsStepComplete() const noexcept;
+    
     /// @brief Gets whether or not sub-stepping is enabled.
     bool GetSubStepping() const noexcept;
 
     /// @brief Enables/disables single stepped continuous physics.
     /// @note This is for testing.
+    /// @post The <code>GetSubStepping</code> method will return the value this method was
+    ///   called with.
+    /// @sa <code>IsStepComplete</code>, <code>GetSubStepping</code>.
     void SetSubStepping(bool flag) noexcept;
 
     /// @brief Gets access to the broad-phase dynamic tree information.
@@ -611,11 +621,6 @@ private:
  
     /// @brief Removes the given joint from this world.
     void Remove(const Joint& j) noexcept;
-
-    /// @brief Whether or not "step" is complete.
-    /// @details The "step" is completed when there are no more TOI events for the current time step.
-    /// @sa <code>SetStepComplete</code>.
-    bool IsStepComplete() const noexcept;
 
     /// @brief Sets the step complete state.
     void SetStepComplete(bool value) noexcept;

@@ -258,16 +258,63 @@ TEST(World, SetSubStepping)
     World world;
     
     ASSERT_FALSE(world.GetSubStepping());
+
     world.SetSubStepping(true);
-    EXPECT_TRUE(world.GetSubStepping());
-    
-    auto stepConf = StepConf{};
-    stepConf.SetInvTime(100_Hz);
-    world.Step(stepConf);
     EXPECT_TRUE(world.GetSubStepping());
 
     world.SetSubStepping(false);
     EXPECT_FALSE(world.GetSubStepping());
+
+    world.SetSubStepping(true);
+    EXPECT_TRUE(world.GetSubStepping());
+
+    auto stepConf = StepConf{};
+    stepConf.SetInvTime(100_Hz);
+    world.Step(stepConf);
+    EXPECT_TRUE(world.GetSubStepping());
+}
+
+TEST(World, IsStepComplete)
+{
+    auto world{World{}};
+    
+    ASSERT_FALSE(world.GetSubStepping());
+    EXPECT_TRUE(world.IsStepComplete());
+
+    world.SetSubStepping(true);
+    EXPECT_TRUE(world.GetSubStepping());
+    EXPECT_TRUE(world.IsStepComplete());
+
+    auto stepConf = StepConf{};
+    stepConf.SetInvTime(100_Hz);
+    world.Step(stepConf);
+    EXPECT_TRUE(world.GetSubStepping());
+    EXPECT_TRUE(world.IsStepComplete());
+    
+    const auto b0 = world.CreateBody(BodyConf{}
+                                     .UseType(BodyType::Dynamic)
+                                     .UseLocation(Length2{-2_m, 2_m})
+                                     .UseLinearAcceleration(EarthlyGravity));
+    b0->CreateFixture(Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)});
+    
+    const auto b1 = world.CreateBody(BodyConf{}
+                                     .UseType(BodyType::Dynamic)
+                                     .UseLocation(Length2{+2_m, 2_m})
+                                     .UseLinearAcceleration(EarthlyGravity));
+    b1->CreateFixture(Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)});
+
+    const auto stabody = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
+    stabody->CreateFixture(Shape{EdgeShapeConf{Length2{-10_m, 0_m}, Length2{+10_m, 0_m}}});
+    
+    while (world.IsStepComplete())
+    {
+        world.Step(stepConf);
+    }
+    EXPECT_FALSE(world.IsStepComplete());
+    world.Step(stepConf);
+    EXPECT_FALSE(world.IsStepComplete());
+    world.Step(stepConf);
+    EXPECT_TRUE(world.IsStepComplete());
 }
 
 TEST(World, CopyConstruction)
@@ -2408,7 +2455,7 @@ TEST(World, CollidingDynamicBodies)
     EXPECT_EQ(GetY(GetLinearVelocity(*body_b)), 0_mps);
 }
 
-TEST(World, TilesComesToRest)
+TEST(World_Longer, TilesComesToRest)
 {
     PLAYRHO_CONSTEXPR const auto LinearSlop = Meter / 1000;
     PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * 2 * 1_rad) / 180;
@@ -2952,7 +2999,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     }
 }
 
-TEST(World, TargetJointWontCauseTunnelling)
+TEST(World_Longer, TargetJointWontCauseTunnelling)
 {
     World world{};
     
