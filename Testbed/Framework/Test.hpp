@@ -75,12 +75,14 @@ struct Settings
     /// @brief Angular slop.
     /// @note Explicily coded to default to the same value as used in Erin's Box2D 2.3.2
     float angularSlop = static_cast<float>(Real{
-        DefaultAngularSlop / Radian});
+        DefaultAngularSlop / Degree}); // in degrees
     
     float regMinSeparation = static_cast<float>(Real{
         DefaultLinearSlop / Meter}) * -3.0f;
     float toiMinSeparation = static_cast<float>(Real{
         DefaultLinearSlop / Meter}) * -1.5f;
+    
+    float aabbExtension = static_cast<float>(DefaultAabbExtension / Meter); // in meters
 
     float cameraZoom = 1.0f;
 
@@ -91,6 +93,7 @@ struct Settings
     int toiVelocityIterations = 8;
     int toiPositionIterations = 20;
     int maxSubSteps = DefaultMaxSubSteps;
+    int maxToiRootIters = DefaultMaxToiRootIters;
     bool drawShapes = true;
     bool drawSkins = false;
     bool drawLabels = false;

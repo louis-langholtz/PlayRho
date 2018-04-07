@@ -1139,17 +1139,19 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     stepConf.toiPositionIterations = static_cast<StepConf::iteration_type>(settings.toiPositionIterations);
 
     stepConf.maxSubSteps = static_cast<StepConf::iteration_type>(settings.maxSubSteps);
+    stepConf.maxToiRootIters = static_cast<StepConf::iteration_type>(settings.maxToiRootIters);
 
     stepConf.minStillTimeToSleep = static_cast<Real>(settings.minStillTimeToSleep) * Second;
     stepConf.maxTranslation = static_cast<Real>(settings.maxTranslation) * Meter;
     stepConf.maxRotation = Real{settings.maxRotation} * Degree;
 
     stepConf.linearSlop = Real{settings.linearSlop} * Meter;
-    stepConf.angularSlop = Real{settings.angularSlop} * Radian;
+    stepConf.angularSlop = Real{settings.angularSlop} * Degree;
     stepConf.regMinSeparation = Real{settings.regMinSeparation} * Meter;
     stepConf.toiMinSeparation = Real{settings.toiMinSeparation} * Meter;
     stepConf.targetDepth = 3 * settings.linearSlop * Meter;
     stepConf.tolerance = (settings.linearSlop / 4) * Meter;
+    stepConf.aabbExtension = settings.aabbExtension * Meter;
 
     stepConf.maxLinearCorrection = Real{settings.maxLinearCorrection} * Meter;
     stepConf.maxAngularCorrection = Real{settings.maxAngularCorrection} * Degree;
