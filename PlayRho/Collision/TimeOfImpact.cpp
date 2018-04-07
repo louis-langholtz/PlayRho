@@ -210,18 +210,16 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             const auto timeLoEvalDistance = Evaluate(fcn, timeLoXfA, timeLoXfB,
                                                      timeHiMinSep.indices);
 
-            // Check for initial overlap. This might happen if the root finder
-            // runs out of iterations.
+            // Check for initial overlap. Might happen if root finder runs out of iterations.
             //assert(s1 >= minTarget);
-            if (timeLoEvalDistance < minTarget)
-            {
-                stats.sum_finder_iters += pbIter;
-                return TOIOutput{timeLo, stats, TOIOutput::e_belowMinTarget};
-            }
-
             // Check for touching
             if (timeLoEvalDistance <= maxTarget)
             {
+                if (timeLoEvalDistance < minTarget)
+                {
+                    stats.sum_finder_iters += pbIter;
+                    return TOIOutput{timeLo, stats, TOIOutput::e_belowMinTarget};
+                }
                 // Victory! timeLo should hold the TOI (could be 0.0).
                 stats.sum_finder_iters += pbIter;
                 return TOIOutput{timeLo, stats, TOIOutput::e_touching};

@@ -796,6 +796,8 @@ static void BasicStepOptionsUI()
 
 static void AdvancedStepOptionsUI()
 {
+    const auto defaultLinearSlop = static_cast<float>(Real{DefaultLinearSlop / Meter});
+
     if (neededSettings & (0x1u << Test::NeedDeltaTime))
     {
         ImGui::SliderFloat("Sim Time", &testSettings.dt,
@@ -806,10 +808,9 @@ static void AdvancedStepOptionsUI()
         ImGui::SliderFloat("Sim Time", &settings.dt,
                            settings.minDt, settings.maxDt, "%.2e s");
     }
+    const auto dt = (neededSettings & (0x1u << Test::NeedDeltaTime))? testSettings.dt: settings.dt;
     if (ImGui::IsItemHovered())
     {
-        const auto dt = (neededSettings & (0x1u << Test::NeedDeltaTime))?
-        testSettings.dt: settings.dt;
         std::ostringstream os;
         os << "Simulating " << dt << " seconds every step.";
         os << " This is inversely tied to the frequency.";
@@ -818,46 +819,53 @@ static void AdvancedStepOptionsUI()
     
     if (neededSettings & (0x1u << Test::NeedMaxTranslation))
     {
-        ImGui::LabelText("Max Translation", "%.2e", testSettings.maxTranslation);
+        ImGui::LabelText("Max Translation", "%.2e m", testSettings.maxTranslation);
     }
     else
     {
-        ImGui::SliderFloat("Max Translation", &settings.maxTranslation, 0.0f, 12.0f);
+        ImGui::SliderFloat("Max Translation", &settings.maxTranslation, 0.0f, 12.0f, "%.1f m");
     }
     if (ImGui::IsItemHovered())
     {
         const auto maxTranslation = (neededSettings & (0x1u << Test::NeedMaxTranslation))?
             testSettings.maxTranslation: settings.maxTranslation;
-        const auto dt = (neededSettings & (0x1u << Test::NeedDeltaTime))?
-        testSettings.dt: settings.dt;
         const auto maxLinearVelocity = maxTranslation / dt;
         std::ostringstream os;
-        os << "Max translation is the maximum distance of travel allowed per step.";
-        os << " At its current setting and the current simulation time,";
-        os << " this establishes a max linear velocity of " << maxLinearVelocity << " m/s.";
+        os << "Max translation is the maximum distance of travel allowed per step." \
+            " At its current setting and the current simulation time," \
+            " this establishes a max linear velocity of ";
+        os << maxLinearVelocity << " m/s.";
         ImGui::ShowTooltip(os.str(), 400);
     }
     
     ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 180.0f, "%.1f deg");
+    if (ImGui::IsItemHovered())
+    {
+        std::ostringstream os;
+        const auto maxRotationalVelocity = settings.maxRotation / dt;
+        os << "Max. rotation in degrees allowed per step." \
+            " At its current setting and the current simulation time," \
+            " this establishes a max rotational velocity of ";
+        os << maxRotationalVelocity << " deg/s.";
+        ImGui::ShowTooltip(os.str(), 400);
+    }
     
-    const auto defaultLinearSlop = static_cast<float>(StripUnit(DefaultLinearSlop));
-
     if (neededSettings & (0x1u << Test::NeedLinearSlopField))
     {
-        ImGui::LabelText("Linear Slop", "%f m", testSettings.linearSlop);
+        ImGui::LabelText("Linear Slop", "%.2e m", testSettings.linearSlop);
     }
     else
     {
         ImGui::SliderFloat("Linear Slop", &settings.linearSlop,
-                           defaultLinearSlop / 10, defaultLinearSlop);
+                           defaultLinearSlop / 5, defaultLinearSlop, "%.2e m");
     }
     
-    ImGui::SliderFloat("Angular Slop", &settings.angularSlop,
-                       static_cast<float>(Pi * 2 / 1800.0),
-                       static_cast<float>(Pi * 2 / 18.0));
-    ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f);
-    ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f);
+    ImGui::SliderFloat("Angular Slop", &settings.angularSlop, 1.0f, 20.0f, "%.1f deg");
+    ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f, "%.2f m");
+    ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, "%.1f deg");
     
+    ImGui::SliderFloat("AABB Exten.", &settings.aabbExtension, 0.0f, defaultLinearSlop * 1000, "%.1e m");
+
     if (ImGui::CollapsingHeader("Reg Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
@@ -892,7 +900,17 @@ static void AdvancedStepOptionsUI()
             ImGui::SetTooltip("This is the %% of overlap that will"
                               " be resolved per position iteration.");
         }
-        ImGui::SliderInt("Max Sub Steps", &settings.maxSubSteps, 0, 100);
+        ImGui::SliderInt("Max Sub Steps", &settings.maxSubSteps, 0, 200);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Max # of of sub steps that should be tried in resolving"
+                              " collisions at a particular time of impact.");
+        }
+        ImGui::SliderInt("Max Root Iters", &settings.maxToiRootIters, 0, 200);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Max # of iterations root finder should try before giving up.");
+        }
         ImGui::Checkbox("Sub-Step", &settings.enableSubStepping);
     }
 }

@@ -253,6 +253,46 @@ TEST(TimeOfImpact, CollideCirclesHorizontally)
     }
 }
 
+TEST(TimeOfImpact, CollideEdgeCircleTouchingly)
+{
+    const auto limits = ToiConf{}
+        .UseTimeMax(1)
+        .UseTargetDepth(0.0149999997_m)
+        .UseTolerance(0_m)
+        .UseMaxRootIters(30u)
+        .UseMaxToiIters(20u)
+        .UseMaxDistIters(20u);
+    
+    const Length2 edgeVertices[] = {Length2{-40_m, 0_m}, Length2{+40_m, 0_m}};
+    const UnitVec edgeNormals[] = {UnitVec::GetLeft(), UnitVec::GetRight()};
+    const auto proxyA = DistanceProxy{0.00999999977_m, 2, edgeVertices, edgeNormals};
+    const auto sweepA = Sweep{Position{Length2{0_m, 0_m}, 0_deg}, Position{Length2{0_m, 0_m}, 0_deg}};
+
+    const auto pB = Length2{};
+    const auto proxyB = DistanceProxy{0.5_m, 1, &pB, nullptr};
+    const auto sweepB = Sweep{
+        Position{Length2{-0.490861088_m,  0.49556452_m}, 1.0125972_rad},
+        Position{Length2{-0.486600876_m, 0.494585991_m}, 1.00495279_rad}
+    };
+    
+    // Compute the time of impact information now...
+    const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
+    
+    EXPECT_EQ(output.state, TOIOutput::e_touching);
+    if (std::is_same<Real, float>::value)
+    {
+        EXPECT_NEAR(static_cast<double>(output.time), 0.576901972, 0.000000001);
+    }
+    else if (std::is_same<Real, double>::value)
+    {
+        EXPECT_NEAR(static_cast<double>(output.time), 0.57690669361866653, 0.000000001);
+    }
+    EXPECT_EQ(output.stats.toi_iters, 2u);
+    EXPECT_EQ(output.stats.sum_root_iters, 2u);
+    EXPECT_EQ(output.stats.sum_finder_iters, 1u);
+    EXPECT_EQ(output.stats.sum_dist_iters, 3u);
+}
+
 TEST(TimeOfImpact, CollideCirclesVertically)
 {
     const auto slop = Real{0.001f};

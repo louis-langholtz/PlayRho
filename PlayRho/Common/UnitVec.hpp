@@ -25,11 +25,20 @@
 /// Declarations of the UnitVec class and free functions associated with it.
 
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
 #include <iostream>
 #include <utility>
+#include <type_traits>
 
 namespace playrho {
+
+// Explicitly import needed functions into this namespace to avoid including the math
+//  header which itself expects UnitVec to already be defined.
+using std::isnormal;
+using std::sqrt;
+using std::hypot;
+
 namespace d2 {
 
 /// @brief 2-D unit vector.
@@ -106,11 +115,33 @@ public:
     /// @details This is a direction and magnitude pair defined by the unit vector class.
     /// @note A magnitude of 0 indicates that no conclusive direction could be determined.
     ///   The magnitude will otherwise be a normal value.
-    using PolarCoord = std::pair<UnitVec, Real>;
+    template <typename T>
+    using PolarCoord = std::enable_if_t<IsArithmetic<T>::value, std::pair<UnitVec, T>>;
 
     /// @brief Gets the unit vector & magnitude from the given parameters.
-    static PolarCoord Get(const Real x, const Real y,
-                          const UnitVec fallback = GetDefaultFallback()) noexcept;
+    template <typename T>
+    static PolarCoord<T> Get(const T x, const T y,
+                             const UnitVec fallback = GetDefaultFallback()) noexcept
+    {
+        // Try the faster way first...
+        const auto magnitudeSquared = x * x + y * y;
+        if (isnormal(magnitudeSquared))
+        {
+            const auto magnitude = sqrt(magnitudeSquared);
+            assert(isnormal(magnitude));
+            return {UnitVec{value_type{x / magnitude}, value_type{y / magnitude}}, magnitude};
+        }
+        
+        // Failed the faster way, try the more accurate and robust way...
+        const auto magnitude = hypot(x, y);
+        if (isnormal(magnitude))
+        {
+            return std::make_pair(UnitVec{x / magnitude, y / magnitude}, magnitude);
+        }
+        
+        // Give up and return the fallback value.
+        return std::make_pair(fallback, T{0});
+    }
 
     /// @brief Gets the given angled unit vector.
     ///
@@ -264,6 +295,8 @@ private:
 
     value_type m_elems[2] = { value_type{0}, value_type{0} }; ///< Element values.
 };
+
+// Free functions...
 
 /// @brief Gets the "X-axis".
 PLAYRHO_CONSTEXPR inline UnitVec GetXAxis(UnitVec rot) noexcept { return rot; }

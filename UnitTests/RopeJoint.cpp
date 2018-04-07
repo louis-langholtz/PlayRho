@@ -177,5 +177,15 @@ TEST(RopeJoint, WithDynamicCircles)
     EXPECT_EQ(GetY(b2->GetLocation()), 0_m);
     EXPECT_EQ(b1->GetAngle(), 0_deg);
     EXPECT_EQ(b2->GetAngle(), 0_deg);
+    
+    stepConf.doWarmStart = true;
+    stepConf.linearSlop = 10_m;
+    world.Step(stepConf);
+    EXPECT_GT(GetX(b1->GetLocation()), -1_m);
+    EXPECT_EQ(GetY(b1->GetLocation()), 0_m);
+    EXPECT_LT(GetX(b2->GetLocation()), +1_m);
+    EXPECT_EQ(GetY(b2->GetLocation()), 0_m);
+    EXPECT_EQ(b1->GetAngle(), 0_deg);
+    EXPECT_EQ(b2->GetAngle(), 0_deg);
 }
 
