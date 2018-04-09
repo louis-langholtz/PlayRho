@@ -789,9 +789,25 @@ static void BasicStepOptionsUI()
         ImGui::SliderInt("Frequency", &frequency, 5, 120, "%.0f hz");
         settings.dt = 1.0f / frequency;
     }
+    const auto dt = (neededSettings & (0x1u << Test::NeedDeltaTime))? testSettings.dt: settings.dt;
+    if (ImGui::IsItemHovered())
+    {
+        std::ostringstream os;
+        os << "Simulating " << dt << " seconds every step.";
+        ImGui::ShowTooltip(os.str(), 400);
+    }
     
     ImGui::SliderInt("Vel. Iter.", &settings.regVelocityIterations, 0, 100);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("Maximum number of velocity iterations per step.");
+    }
+    
     ImGui::SliderInt("Pos. Iter.", &settings.regPositionIterations, 0, 100);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("Maximum number of position iterations per step.");
+    }
 }
 
 static void AdvancedStepOptionsUI()
@@ -850,7 +866,8 @@ static void AdvancedStepOptionsUI()
         ImGui::ShowTooltip(os.str(), 400);
     }
     
-    if (neededSettings & (0x1u << Test::NeedLinearSlopField))
+    const auto neededLinearSlop = !!(neededSettings & (0x1u << Test::NeedLinearSlopField));
+    if (neededLinearSlop)
     {
         ImGui::LabelText("Linear Slop", "%.2e m", testSettings.linearSlop);
     }
@@ -859,17 +876,56 @@ static void AdvancedStepOptionsUI()
         ImGui::SliderFloat("Linear Slop", &settings.linearSlop,
                            defaultLinearSlop / 5, defaultLinearSlop, "%.2e m");
     }
+    const auto linearSlop = neededLinearSlop? testSettings.linearSlop: settings.linearSlop;
+    const auto targetDepth = 3 * linearSlop;
+    if (ImGui::IsItemHovered())
+    {
+        std::ostringstream os;
+        os << "A general basis of \"slop\" to allow for in various length-related calculations.";
+        os << " Usually this should be below the visual threshold of scaling used in visualizing the simulation.";
+        os << " Results in a TOI-phase target depth of ";
+        os << std::scientific << std::setprecision(2) << targetDepth << " m.";
+        ImGui::ShowTooltip(os.str(), 400);
+    }
     
     ImGui::SliderFloat("Angular Slop", &settings.angularSlop, 1.0f, 20.0f, "%.1f deg");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("A general basis of \"slop\" to allow for in various angle-related calculations.");
+    }
+    
     ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f, "%.2f m");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("Maximum linear correction. Should be greater than the linear slop value.");
+    }
+    
     ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, "%.1f deg");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("Maximum angular correction.");
+    }
     
     ImGui::SliderFloat("AABB Exten.", &settings.aabbExtension, 0.0f, defaultLinearSlop * 1000, "%.1e m");
-
-    if (ImGui::CollapsingHeader("Reg Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("Linear amount to additively extend all AABBs by.");
+    }
+    
+    if (ImGui::CollapsingHeader("Reg-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Maximum number of regular-phase velocity iterations per step.");
+        }
+
         ImGui::SliderInt("Pos Iters", &settings.regPositionIterations, 0, 100);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Maximum number of regular-phase position iterations per step.");
+        }
+        
         ImGui::SliderFloat("Min Sep", &settings.regMinSeparation,
                            -5 * defaultLinearSlop, -0 * defaultLinearSlop);
         ImGui::SliderInt("Resol Rate", &settings.regPosResRate, 0, 100, "%.0f %%");
@@ -887,11 +943,29 @@ static void AdvancedStepOptionsUI()
         }
         ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
     }
-    if (ImGui::CollapsingHeader("TOI Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
+    if (ImGui::CollapsingHeader("TOI-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::Checkbox("Perform Continuous", &settings.enableContinuous);
+
         ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Maximum number of TOI-phase velocity iterations per step.");
+        }
+
         ImGui::SliderInt("Pos Iters", &settings.toiPositionIterations, 0, 100);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Maximum number of TOI-phase position iterations per step.");
+        }
+        
+        settings.tolerance = std::min(settings.tolerance, targetDepth);
+        ImGui::SliderFloat("Tolerance", &settings.tolerance, 0.0f, targetDepth, "%.2e m");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("+/- Tolerance from target depth.");
+        }
+
         ImGui::SliderFloat("Min Sep", &settings.toiMinSeparation,
                            -5 * defaultLinearSlop, -0 * defaultLinearSlop);
         ImGui::SliderInt("Resol Rate", &settings.toiPosResRate, 0, 100, "%.0f %%");

@@ -209,6 +209,24 @@ namespace playrho {
     /// @brief Void type templated alias.
     template<class... Ts> using VoidT = typename Voidify<Ts...>::type;
     
+    /// @brief Template for determining if the given type is an equality comparable type.
+    /// @note This isn't exactly the same as the "EqualityComparable" concept.
+    /// @see http://en.cppreference.com/w/cpp/concept/EqualityComparable
+    template<class T1, class T2, class = void>
+    struct IsEqualityComparable: std::false_type {};
+    
+    /// @brief Template specialization for equality comparable types.
+    template<class T1, class T2>
+    struct IsEqualityComparable<T1, T2, VoidT<decltype(T1{} == T2{})> >: std::true_type {};
+    
+    /// @brief Template for determining if the given type is an inequality comparable type.
+    template<class T1, class T2, class = void>
+    struct IsInequalityComparable: std::false_type {};
+    
+    /// @brief Template specialization for inequality comparable types.
+    template<class T1, class T2>
+    struct IsInequalityComparable<T1, T2, VoidT<decltype(T1{} != T2{})> >: std::true_type {};
+
     template<class T1, class T2, class = void>
     struct IsMultipliable: std::false_type {};
     

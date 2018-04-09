@@ -1003,7 +1003,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         const auto leafCount = m_world.GetTree().GetLeafCount();
         const auto nodeCount = m_world.GetTree().GetNodeCount();
         const auto height = GetHeight(m_world.GetTree());
-        const auto balance = m_world.GetTree().GetMaxBalance();
+        const auto balance = GetMaxBalance(m_world.GetTree());
         const auto quality = ComputePerimeterRatio(m_world.GetTree());
         const auto capacity = m_world.GetTree().GetNodeCapacity();
 
@@ -1150,7 +1150,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     stepConf.regMinSeparation = Real{settings.regMinSeparation} * Meter;
     stepConf.toiMinSeparation = Real{settings.toiMinSeparation} * Meter;
     stepConf.targetDepth = 3 * settings.linearSlop * Meter;
-    stepConf.tolerance = (settings.linearSlop / 4) * Meter;
+    stepConf.tolerance = settings.tolerance * Meter;
     stepConf.aabbExtension = settings.aabbExtension * Meter;
 
     stepConf.maxLinearCorrection = Real{settings.maxLinearCorrection} * Meter;

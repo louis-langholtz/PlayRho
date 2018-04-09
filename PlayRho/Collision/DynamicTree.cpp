@@ -3,109 +3,419 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Common/GrowableStack.hpp>
+#include <PlayRho/Common/DynamicMemory.hpp>
 
 #include <cstring>
 #include <algorithm>
+#include <numeric>
+#include <utility>
 
 namespace playrho {
 namespace d2 {
 
+namespace {
+
+inline DynamicTree::TreeNode
+MakeNode(DynamicTree::Size c1, const AABB& aabb1, DynamicTree::Height h1,
+         DynamicTree::Size c2, const AABB& aabb2, DynamicTree::Height h2,
+         DynamicTree::Size parent) noexcept
+{
+    using std::max;
+    return DynamicTree::TreeNode{
+        DynamicTree::BranchData{c1, c2}, GetEnclosingAABB(aabb1, aabb2), 1 + max(h1, h2), parent
+    };
+}
+
+std::pair<DynamicTree::Size, DynamicTree::Size>
+MakeMoveStay(const DynamicTree::TreeNode& nodeA, DynamicTree::Size indexA,
+             const DynamicTree::TreeNode& nodeB, DynamicTree::Size indexB,
+             const AABB& toBox) noexcept
+{
+    if (nodeA.GetHeight() < nodeB.GetHeight())
+    {
+        return std::make_pair(indexA, indexB);
+    }
+    if (nodeB.GetHeight() < nodeA.GetHeight())
+    {
+        return std::make_pair(indexB, indexA);
+    }
+    const auto perimA = GetPerimeter(GetEnclosingAABB(toBox, nodeA.GetAABB()));
+    const auto perimB = GetPerimeter(GetEnclosingAABB(toBox, nodeB.GetAABB()));
+    if (perimA < perimB)
+    {
+        return std::make_pair(indexA, indexB);
+    }
+    if (perimB < perimA)
+    {
+        return std::make_pair(indexB, indexA);
+    }
+    return std::make_pair(indexA, indexB);
+}
+
+DynamicTree::Size RebalanceAt(DynamicTree::TreeNode nodes[], DynamicTree::Size i) noexcept
+{
+    //assert(index < GetNodeCapacity());
+    assert(DynamicTree::IsBranch(nodes[i].GetHeight()));
+    
+    //          o
+    //          |
+    //          i
+    //         / \
+    //      *-c1  c2-*
+    //     /   |  |   \
+    // c1c1 c1c2  c2c1 c2c2
+    const auto oldNodeI = nodes[i];
+    const auto o = oldNodeI.GetOther();
+    const auto c1 = oldNodeI.AsBranch().child1;
+    const auto c2 = oldNodeI.AsBranch().child2;
+    auto c1Node = nodes[c1];
+    auto c2Node = nodes[c2];
+    const auto c1Height = c1Node.GetHeight();
+    const auto c2Height = c2Node.GetHeight();
+    
+    if (c2Height > (c1Height + 1))
+    {
+        // child 2 heavier than child 1, child 2 must be branch, rotate it up.
+        const auto c2c1 = c2Node.AsBranch().child1;
+        const auto c2c2 = c2Node.AsBranch().child2;
+        const auto c2c1Node = nodes[c2c1];
+        const auto c2c2Node = nodes[c2c2];
+
+        // From:
+        //          *i*
+        //         /   \
+        //        c1   c2*
+        //            /   \
+        //         c2c1   c2c2
+        //    where c2c1 or c2c2 is also a branch node
+        //
+        // To:
+        //           c2*
+        //          /   \
+        //       *i*     c2cY
+        //      /   \
+        //    c1    c2cX
+        //
+        // Rotate left and pick the taller of c2c1 or c2c2 or the better fitting to move to the new i node.
+        const auto ms = MakeMoveStay(c2c1Node, c2c1, c2c2Node, c2c2, c1Node.GetAABB());
+        const auto newNodeI = MakeNode(c1, c1Node.GetAABB(), c1Height,
+                                       ms.first, nodes[ms.first].GetAABB(), nodes[ms.first].GetHeight(),
+                                       c2);
+        c2Node = MakeNode(i, newNodeI.GetAABB(), newNodeI.GetHeight(),
+                          ms.second, nodes[ms.second].GetAABB(), nodes[ms.second].GetHeight(),
+                          o);
+        nodes[ms.first].SetOther(i);
+        nodes[i] = newNodeI;
+        nodes[c2] = c2Node;
+        if (o != DynamicTree::GetInvalidSize())
+        {
+            const auto oNode = nodes[o];
+            const auto oNodeBD = oNode.AsBranch();
+            assert(oNodeBD.child1 == i || oNodeBD.child2 == i);
+            nodes[o] = (oNodeBD.child1 == i)?
+                MakeNode(c2, c2Node.GetAABB(), c2Node.GetHeight(),
+                         oNodeBD.child2, nodes[oNodeBD.child2].GetAABB(), nodes[oNodeBD.child2].GetHeight(),
+                         oNode.GetOther()):
+                MakeNode(oNodeBD.child1, nodes[oNodeBD.child1].GetAABB(), nodes[oNodeBD.child1].GetHeight(),
+                         c2, c2Node.GetAABB(), c2Node.GetHeight(),
+                         oNode.GetOther());
+        }
+        return c2;
+    }
+    
+    if (c1Height > (c2Height + 1))
+    {
+        // child1 must be a branch, rotate it up.
+        const auto c1c1 = c1Node.AsBranch().child1;
+        const auto c1c2 = c1Node.AsBranch().child2;
+        const auto c1c1Node = nodes[c1c1];
+        const auto c1c2Node = nodes[c1c2];
+        
+        // From:
+        //          *i*
+        //         /   \
+        //       *c1   c2*
+        //      /   \
+        //   c1c1   c1c2
+        //    where c1c1 or c1c2 is also a branch node
+        //
+        // To:
+        //           c1*
+        //          /   \
+        //       c1cX    *i*
+        //              /   \
+        //           c1cY    c2
+        //
+        // Rotate right and pick the taller of c1c1 or c1c2 or the better fitting to move to the new i node.
+        const auto ms = MakeMoveStay(c1c1Node, c1c1, c1c2Node, c1c2, c2Node.GetAABB());
+        const auto newNodeI = MakeNode(ms.first, nodes[ms.first].GetAABB(), nodes[ms.first].GetHeight(),
+                                       c2, c2Node.GetAABB(), c2Height,
+                                       c1);
+        c1Node = MakeNode(ms.second, nodes[ms.second].GetAABB(), nodes[ms.second].GetHeight(),
+                          i, newNodeI.GetAABB(), newNodeI.GetHeight(),
+                          o);
+        nodes[ms.first].SetOther(i);
+        nodes[i] = newNodeI;
+        nodes[c1] = c1Node;
+        if (o != DynamicTree::GetInvalidSize())
+        {
+            const auto oNode = nodes[o];
+            const auto oNodeBD = oNode.AsBranch();
+            assert(oNodeBD.child1 == i || oNodeBD.child2 == i);
+            nodes[o] = (oNodeBD.child1 == i)?
+                MakeNode(c1, c1Node.GetAABB(), c1Node.GetHeight(),
+                         oNodeBD.child2, nodes[oNodeBD.child2].GetAABB(), nodes[oNodeBD.child2].GetHeight(),
+                         oNode.GetOther()):
+                MakeNode(oNodeBD.child1, nodes[oNodeBD.child1].GetAABB(), nodes[oNodeBD.child1].GetHeight(),
+                         c1, c1Node.GetAABB(), c1Node.GetHeight(),
+                         oNode.GetOther());
+        }
+        return c1;
+    }
+    
+    nodes[i] = MakeNode(c1, c1Node.GetAABB(), c1Node.GetHeight(), c2, c2Node.GetAABB(), c2Height, o);
+    return i;
+}
+
+/// @brief Updates upward from location in tree.
+/// @note In addition to updating the heights & AABBs of branch nodes, this also rebalances
+///  the tree.
+DynamicTree::Size UpdateUpwardFrom(DynamicTree::TreeNode nodes[], DynamicTree::Size start) noexcept
+{
+    assert(DynamicTree::IsBranch(nodes[start].GetHeight()));
+    auto rootIndex = DynamicTree::GetInvalidSize();
+    for (auto index = start; index != DynamicTree::GetInvalidSize(); index = nodes[index].GetOther())
+    {
+        assert(DynamicTree::IsBranch(nodes[index].GetHeight()));
+        assert(nodes[nodes[index].AsBranch().child1].GetOther() == index);
+        assert(nodes[nodes[index].AsBranch().child2].GetOther() == index);
+        if (nodes[index].GetHeight() >= 2)
+        {
+            index = RebalanceAt(nodes, index);
+        }
+        rootIndex = index;
+    }
+    return rootIndex;
+}
+
+/// @brief Finds the lowest cost node to associate the given AABB with
+///   starting from the given index.
+/// @details Finds the index of the "lowest cost" node using a surface area heuristic
+///   (S.A.H.) for two dimensions.
+/// @warning Behavior is undefined if the given index is invalid or for an unused node.
+DynamicTree::Size FindLowestCostNode(const DynamicTree::TreeNode nodes[],
+                                     AABB leafAABB, DynamicTree::Size index) noexcept
+{
+    assert(IsValid(leafAABB));
+    assert(index != DynamicTree::GetInvalidSize());
+    assert(!playrho::d2::IsUnused(nodes[index]));
+    
+    // Cost function to calculate cost of descending into specified child
+    const auto costFunc = [leafAABB](const DynamicTree::TreeNode& childNode, Length inheritCost) {
+        const auto childAabb = playrho::d2::GetAABB(childNode);
+        const auto isLeaf = playrho::d2::IsLeaf(childNode);
+        const auto leafCost = GetPerimeter(GetEnclosingAABB(leafAABB, childAabb)) + inheritCost;
+        return isLeaf? leafCost: (leafCost - GetPerimeter(childAabb));
+    };
+    
+    while (playrho::d2::IsBranch(nodes[index]))
+    {
+        const auto& node = nodes[index];
+        const auto branch = node.AsBranch();
+        const auto child1 = branch.child1;
+        const auto child2 = branch.child2;
+        assert(nodes[child1].GetOther() == index);
+        assert(nodes[child2].GetOther() == index);
+        const auto aabb = node.GetAABB();
+        const auto perimeter = GetPerimeter(aabb);
+        const auto combinedPerimeter = GetPerimeter(GetEnclosingAABB(aabb, leafAABB));
+        
+        assert(combinedPerimeter >= perimeter);
+        assert(child1 != DynamicTree::GetInvalidSize());
+        assert(child2 != DynamicTree::GetInvalidSize());
+        
+        // Cost of creating a new parent for this node and the new leaf
+        const auto cost = combinedPerimeter * 2;
+        
+        // Minimum cost of pushing the leaf further down the tree
+        const auto inheritanceCost = (combinedPerimeter - perimeter) * 2;
+        
+        const auto cost1 = costFunc(nodes[child1], inheritanceCost);
+        const auto cost2 = costFunc(nodes[child2], inheritanceCost);
+        
+        if ((cost < cost1) && (cost < cost2))
+        {
+            // Cheaper to create a new parent for this node and the new leaf
+            break;
+        }
+        
+        // Descend into child with least cost.
+        index = (cost1 < cost2)? child1: child2;
+    }
+    return index;
+}
+
+std::pair<DynamicTree::Size, DynamicTree::Size>
+RemoveParent(DynamicTree::TreeNode nodes[], DynamicTree::Size index) noexcept
+{
+    const auto parent = nodes[index].GetOther();
+    const auto grandParent = nodes[parent].GetOther();
+    const auto parentBD = nodes[parent].AsBranch();
+    const auto sibling = (parentBD.child1 == index)? parentBD.child2: parentBD.child1;
+    
+    nodes[index].SetOther(DynamicTree::GetInvalidSize());
+    nodes[sibling].SetOther(grandParent);
+    if (grandParent != DynamicTree::GetInvalidSize())
+    {
+        const auto newBD = ReplaceChild(nodes[grandParent].AsBranch(), parent, sibling);
+        const auto newAabb = GetEnclosingAABB(nodes[newBD.child1].GetAABB(), nodes[newBD.child2].GetAABB());
+        const auto newHeight = 1 + std::max(nodes[newBD.child1].GetHeight(), nodes[newBD.child2].GetHeight());
+        nodes[grandParent].Assign(newBD, newAabb, newHeight);
+        nodes[parent].SetOther(DynamicTree::GetInvalidSize());
+        return std::make_pair(UpdateUpwardFrom(nodes, grandParent), parent);
+    }
+    return std::make_pair(sibling, parent);
+}
+
+DynamicTree::Size InsertParent(DynamicTree::TreeNode nodes[],
+                               DynamicTree::Size newParent,
+                               const AABB& aabb,
+                               DynamicTree::Size index,
+                               DynamicTree::Size rootIndex) noexcept
+{
+    const auto sibling = FindLowestCostNode(nodes, aabb, rootIndex);
+    const auto oldParent = nodes[sibling].GetOther();
+    
+    // std::max of leaf height and sibling height + 1 = sibling height + 1
+    nodes[newParent] = DynamicTree::TreeNode{DynamicTree::BranchData{sibling, index},
+        GetEnclosingAABB(aabb, nodes[sibling].GetAABB()), 1 + nodes[sibling].GetHeight(), oldParent};
+    nodes[sibling].SetOther(newParent);
+    nodes[index].SetOther(newParent);
+    if (oldParent != DynamicTree::GetInvalidSize())
+    {
+        const auto newBD = ReplaceChild(nodes[oldParent].AsBranch(), sibling, newParent);
+        const auto newAabb = GetEnclosingAABB(nodes[newBD.child1].GetAABB(), nodes[newBD.child2].GetAABB());
+        const auto newHeight = 1 + std::max(nodes[newBD.child1].GetHeight(), nodes[newBD.child2].GetHeight());
+        nodes[oldParent].Assign(newBD, newAabb, newHeight);
+        assert(nodes[nodes[oldParent].AsBranch().child1].GetOther() == oldParent);
+        assert(nodes[nodes[oldParent].AsBranch().child2].GetOther() == oldParent);
+        return UpdateUpwardFrom(nodes, oldParent);
+    }
+    return newParent;
+}
+
+DynamicTree::Size UpdateNonRoot(DynamicTree::TreeNode nodes[],
+                                DynamicTree::Size index, const AABB& aabb) noexcept
+{
+    assert(nodes[index].GetOther() != DynamicTree::GetInvalidSize());
+    
+    const auto parent = nodes[index].GetOther();
+    const auto grandParent = nodes[parent].GetOther();
+    const auto parentBD = nodes[parent].AsBranch();
+    assert(parentBD.child1 == index || parentBD.child2 == index);
+    const auto sibling = (parentBD.child1 == index)? parentBD.child2: parentBD.child1;
+
+    nodes[sibling].SetOther(grandParent);
+    nodes[index].SetAABB(aabb);
+    auto rootIndex = DynamicTree::GetInvalidSize();
+    if (grandParent != DynamicTree::GetInvalidSize())
+    {
+        assert(nodes[grandParent].AsBranch().child1 == parent || nodes[grandParent].AsBranch().child2 == parent);
+        const auto newBD = ReplaceChild(nodes[grandParent].AsBranch(), parent, sibling);
+        const auto newAabb = GetEnclosingAABB(nodes[newBD.child1].GetAABB(), nodes[newBD.child2].GetAABB());
+        const auto newHeight = 1 + std::max(nodes[newBD.child1].GetHeight(), nodes[newBD.child2].GetHeight());
+        nodes[grandParent].Assign(newBD, newAabb, newHeight);
+        nodes[parent].SetOther(DynamicTree::GetInvalidSize());
+        assert(nodes[nodes[grandParent].AsBranch().child1].GetOther() == grandParent);
+        assert(nodes[nodes[grandParent].AsBranch().child2].GetOther() == grandParent);
+        rootIndex = UpdateUpwardFrom(nodes, grandParent);
+    }
+    else // grandParent == GetInvalidSize()
+    {
+        rootIndex = sibling;
+    }
+    
+    const auto cheapest = FindLowestCostNode(nodes, aabb, rootIndex);
+    const auto cheapestParent = nodes[cheapest].GetOther();
+    
+    // std::max of leaf height and cheapest height + 1 = cheapest height + 1
+    nodes[parent] = DynamicTree::TreeNode{
+        DynamicTree::BranchData{cheapest, index},
+        GetEnclosingAABB(aabb, nodes[cheapest].GetAABB()),
+        1 + nodes[cheapest].GetHeight(), cheapestParent
+    };
+    if (cheapestParent != DynamicTree::GetInvalidSize())
+    {
+        const auto newBD = ReplaceChild(nodes[cheapestParent].AsBranch(), cheapest, parent);
+        const auto newAabb = GetEnclosingAABB(nodes[newBD.child1].GetAABB(), nodes[newBD.child2].GetAABB());
+        const auto newHeight = 1 + std::max(nodes[newBD.child1].GetHeight(), nodes[newBD.child2].GetHeight());
+        nodes[cheapestParent].Assign(newBD, newAabb, newHeight);
+    }
+    nodes[cheapest].SetOther(parent);
+    return UpdateUpwardFrom(nodes, parent);
+}
+
+} // anonymous namespace
+
+DynamicTree::DynamicTree() noexcept = default;
+
 DynamicTree::DynamicTree(Size nodeCapacity):
-    m_nodes{Alloc<TreeNode>(nodeCapacity)},
+    m_nodes{nodeCapacity? Alloc<TreeNode>(nodeCapacity): nullptr},
+    m_freeIndex{nodeCapacity? 0: GetInvalidSize()},
     m_nodeCapacity{nodeCapacity}
 {
-    if (nodeCapacity == Size{0})
+    if (nodeCapacity)
     {
-        throw InvalidArgument("DynamicTree: node capacity must be > 0");
+        // Build a linked list for the free list.
+        const auto endCapacity = nodeCapacity - Size{1};
+        for (auto i = decltype(nodeCapacity){0}; i < endCapacity; ++i)
+        {
+            new (&m_nodes[i]) TreeNode{i + 1};
+        }
+        new (&m_nodes[endCapacity]) TreeNode{};
     }
-
-    // Build a linked list for the free list.
-    const auto endCapacity = nodeCapacity - Size{1};
-    for (auto i = decltype(nodeCapacity){0}; i < endCapacity; ++i)
-    {
-        new (m_nodes + i) TreeNode{i + 1};
-    }
-    new (m_nodes + endCapacity) TreeNode{};
 }
 
 DynamicTree::DynamicTree(const DynamicTree& other):
     m_nodes{Alloc<TreeNode>(other.m_nodeCapacity)},
-    m_root{other.m_root},
+    m_rootIndex{other.m_rootIndex},
+    m_freeIndex{other.m_freeIndex},
     m_nodeCount{other.m_nodeCount},
     m_nodeCapacity{other.m_nodeCapacity},
-    m_leafCount{other.m_leafCount},
-    m_freeListIndex{other.m_freeListIndex}
+    m_leafCount{other.m_leafCount}
 {
-    std::copy(other.m_nodes, other.m_nodes + other.m_nodeCapacity, m_nodes);
+    std::copy(&other.m_nodes[0], &other.m_nodes[other.m_nodeCapacity], &m_nodes[0]);
 }
 
 DynamicTree::DynamicTree(DynamicTree&& other) noexcept:
-    m_nodes{other.m_nodes},
-    m_root{other.m_root},
-    m_nodeCount{other.m_nodeCount},
-    m_nodeCapacity{other.m_nodeCapacity},
-    m_leafCount{other.m_leafCount},
-    m_freeListIndex{other.m_freeListIndex}
+    DynamicTree{}
 {
-    other.m_nodes = nullptr;
-    other.m_root = GetInvalidSize();
-    other.m_nodeCount = 0u;
-    other.m_nodeCapacity = 0u;
-    other.m_leafCount = 0u;
-    other.m_freeListIndex = 0u;
+    swap(*this, other);
 }
 
-DynamicTree& DynamicTree::operator=(const DynamicTree& other)
+DynamicTree& DynamicTree::operator= (DynamicTree other) noexcept
 {
-    if (&other != this)
-    {
-        Free(m_nodes);
-        
-        m_nodes = Alloc<TreeNode>(other.m_nodeCapacity);
-        m_root = other.m_root;
-        m_nodeCount = other.m_nodeCount;
-        m_nodeCapacity = other.m_nodeCapacity;
-        m_leafCount = other.m_leafCount;
-        m_freeListIndex = other.m_freeListIndex;
-        std::copy(other.m_nodes, other.m_nodes + other.m_nodeCapacity, m_nodes);
-    }
-    return *this;
-}
-
-DynamicTree& DynamicTree::operator=(DynamicTree&& other) noexcept
-{
-    if (&other != this)
-    {
-        m_nodes = other.m_nodes;
-        m_root = other.m_root;
-        m_nodeCount = other.m_nodeCount;
-        m_nodeCapacity = other.m_nodeCapacity;
-        m_leafCount = other.m_leafCount;
-        m_freeListIndex = other.m_freeListIndex;
-
-        other.m_nodes = nullptr;
-        other.m_root = GetInvalidSize();
-        other.m_nodeCount = 0u;
-        other.m_nodeCapacity = 0u;
-        other.m_leafCount = 0u;
-        other.m_freeListIndex = 0u;
-    }
+    // Leverages the "copy-and-swap" idiom.
+    // For details, see https://stackoverflow.com/a/3279550/7410358
+    swap(*this, other);
     return *this;
 }
 
@@ -113,31 +423,6 @@ DynamicTree::~DynamicTree() noexcept
 {
     // This frees the entire tree in one shot.
     Free(m_nodes);
-}
-
-void DynamicTree::SwapChild(Size index, Size oldChild, Size newChild) noexcept
-{
-    if (index == GetInvalidSize())
-    {
-        m_root = newChild;
-    }
-    else if (GetChild1(index) == oldChild)
-    {
-        SetChild1(index, newChild);
-    }
-    else
-    {
-        assert(GetChild2(index) == oldChild);
-        SetChild2(index, newChild);
-    }
-}
-
-void DynamicTree::SetChildren(Size index, Size child1, Size child2) noexcept
-{
-    SetChild1(index, child1);
-    SetChild2(index, child2);
-    SetAABB(index, GetEnclosingAABB(GetAABB(child1), GetAABB(child2)));
-    SetHeight(index, 1 + std::max(GetHeight(child1), GetHeight(child2)));
 }
 
 void DynamicTree::SetNodeCapacity(Size value) noexcept
@@ -156,39 +441,39 @@ void DynamicTree::SetNodeCapacity(Size value) noexcept
         new (m_nodes + i) TreeNode{i + 1};
     }
     new (m_nodes + endCapacity) TreeNode{};
-    m_freeListIndex = m_nodeCount;
+    m_freeIndex = m_nodeCount;
 }
 
-DynamicTree::Size DynamicTree::AllocateNode(const LeafData& node, AABB aabb) noexcept
+DynamicTree::Size DynamicTree::AllocateNode(const LeafData& data, AABB aabb) noexcept
 {
     const auto index = AllocateNode();
-    m_nodes[index] = TreeNode{node, aabb};
+    m_nodes[index] = TreeNode{data, aabb};
     return index;
 }
 
-DynamicTree::Size DynamicTree::AllocateNode(const BranchData& node, AABB aabb,
+DynamicTree::Size DynamicTree::AllocateNode(const BranchData& data, AABB aabb,
                                             Height height, Size parent) noexcept
 {
     assert(height > 0);
     const auto index = AllocateNode();
-    m_nodes[index] = TreeNode{node, aabb, height, parent};
+    m_nodes[index] = TreeNode{data, aabb, height, parent};
     return index;
 }
 
 DynamicTree::Size DynamicTree::AllocateNode() noexcept
 {
     // Expand the node pool as needed.
-    if (m_freeListIndex == GetInvalidSize())
+    if (m_freeIndex == GetInvalidSize())
     {
         assert(m_nodeCount == m_nodeCapacity);
         
         // The free list is empty. Rebuild a bigger pool.
-        SetNodeCapacity(m_nodeCapacity * 2);
+        SetNodeCapacity(m_nodeCapacity? m_nodeCapacity * 2: GetDefaultInitialNodeCapacity());
     }
     
     // Peel a node off the free list.
-    const auto index = m_freeListIndex;
-    m_freeListIndex = m_nodes[index].GetOther();
+    const auto index = m_freeIndex;
+    m_freeIndex = m_nodes[index].GetOther();
     ++m_nodeCount;
     return index;
 }
@@ -196,13 +481,14 @@ DynamicTree::Size DynamicTree::AllocateNode() noexcept
 void DynamicTree::FreeNode(Size index) noexcept
 {
     assert(index != GetInvalidSize());
-    assert(index < m_nodeCapacity);
-    assert(m_nodeCount > 0); // index is not ncessarily less than m_nodeCount.
+    assert(index < GetNodeCapacity());
+    assert(index != GetFreeIndex());
+    assert(m_nodeCount > 0); // index is not necessarily less than m_nodeCount.
     assert(!IsUnused(m_nodes[index].GetHeight()));
-    //assert(GetParent(index) == GetInvalidSize());
-    assert(index != m_freeListIndex);
-    m_nodes[index] = TreeNode{m_freeListIndex};
-    m_freeListIndex = index;
+    assert(m_nodes[index].GetOther() == GetInvalidSize());
+
+    m_nodes[index] = TreeNode{m_freeIndex};
+    m_freeIndex = index;
     --m_nodeCount;
 }
 
@@ -215,7 +501,8 @@ DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept
         }
         if (IsBranch(node.GetHeight()))
         {
-            if (node.AsBranch().child1 == index || node.AsBranch().child2 == index)
+            const auto bd = node.AsBranch();
+            if (bd.child1 == index || bd.child2 == index)
             {
                 return true;
             }
@@ -225,12 +512,20 @@ DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept
     return (it != m_nodes + m_nodeCapacity)? static_cast<Size>(it - m_nodes): GetInvalidSize();
 }
 
-DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, const LeafData& leafData)
+DynamicTree::Size DynamicTree::CreateLeaf(const AABB& aabb, const LeafData& data)
 {
     assert(IsValid(aabb));
-    const auto index = AllocateNode(leafData, aabb);
-    InsertLeaf(index);
-    m_leafCount++;
+    const auto index = AllocateNode(data, aabb);
+    if (m_rootIndex != GetInvalidSize())
+    {
+        const auto newParent = AllocateNode(); // Note: may change m_nodes!
+        m_rootIndex = InsertParent(m_nodes, newParent, aabb, index, m_rootIndex);
+    }
+    else
+    {
+        m_rootIndex = index;
+    }
+    ++m_leafCount;
     return index;
 }
 
@@ -241,8 +536,24 @@ void DynamicTree::DestroyLeaf(Size index) noexcept
     assert(IsLeaf(m_nodes[index].GetHeight()));
     assert(m_leafCount > 0);
 
-    m_leafCount--;
-    RemoveLeaf(index);
+    --m_leafCount;
+
+    if (m_rootIndex != index)
+    {
+        const auto result = RemoveParent(m_nodes, index);
+        m_rootIndex = std::get<0>(result);
+        const auto parent = std::get<1>(result);
+#ifndef NDEBUG
+        const auto found = FindReference(parent);
+        assert(found == GetInvalidSize());
+#endif
+        FreeNode(parent);
+    }
+    else
+    {
+        assert(m_nodes[index].GetOther() == GetInvalidSize());
+        m_rootIndex = GetInvalidSize();
+    }
 
 #ifndef NDEBUG
     const auto found = FindReference(index);
@@ -257,394 +568,15 @@ void DynamicTree::UpdateLeaf(Size index, const AABB& aabb)
     assert(index < m_nodeCapacity);
     assert(IsLeaf(m_nodes[index].GetHeight()));
 
-    RemoveLeaf(index);
-    m_nodes[index].SetAABB(aabb);
-    InsertLeaf(index);
-}
-
-DynamicTree::Size DynamicTree::FindLowestCostNode(AABB leafAABB) const noexcept
-{
-    assert(m_root != GetInvalidSize());
-    assert(IsValid(leafAABB));
-
-    auto index = m_root;
-    while (IsBranch(m_nodes[index].GetHeight()))
+    if (m_rootIndex != index)
     {
-        const auto child1 = m_nodes[index].AsBranch().child1;
-        const auto child2 = m_nodes[index].AsBranch().child2;
-        const auto aabb = m_nodes[index].GetAABB();
-        
-        const auto perimeter = GetPerimeter(aabb);
-        const auto combinedPerimeter = GetPerimeter(GetEnclosingAABB(aabb, leafAABB));
-        
-        assert(combinedPerimeter >= perimeter);
-        
-        // Cost of creating a new parent for this node and the new leaf
-        const auto cost = combinedPerimeter * Real{2};
-        
-        // Minimum cost of pushing the leaf further down the tree
-        const auto inheritanceCost = (combinedPerimeter - perimeter) * Real{2};
-        
-        assert(child1 != GetInvalidSize());
-        assert(child1 < m_nodeCapacity);
-        
-        // Cost function to calculate cost of descending into specified child
-        auto costFunc = [&](Size child) {
-            const auto childAabb = playrho::d2::GetAABB(m_nodes[child]);
-            const auto leafCost = GetPerimeter(GetEnclosingAABB(leafAABB, childAabb))
-                + inheritanceCost;
-            return (IsLeaf(m_nodes[child].GetHeight()))? leafCost: leafCost - GetPerimeter(childAabb);
-        };
-
-        const auto cost1 = costFunc(child1);
-        const auto cost2 = costFunc(child2);
-        
-        if ((cost < cost1) && (cost < cost2))
-        {
-            // Cheaper to create a new parent for this node and the new leaf
-            break;
-        }
-        
-        // Descend into child with least cost.
-        index = (cost1 < cost2)? child1: child2;
-    }
-    return index;
-}
-
-void DynamicTree::InsertLeaf(Size index)
-{
-    assert(index != GetInvalidSize());
-    assert(index < m_nodeCapacity);
-    assert(!IsUnused(m_nodes[index].GetHeight()));
-    assert(IsLeaf(m_nodes[index].GetHeight()));
-
-    if (m_root == GetInvalidSize())
-    {
-        m_root = index;
-        SetParent(index, GetInvalidSize());
-        return;
-    }
-
-    const auto leafAABB = m_nodes[index].GetAABB();
-    
-    // Find the best sibling for this node
-    const auto sibling = FindLowestCostNode(leafAABB);
-
-    // Create a new parent.
-    const auto oldParent = GetParent(sibling);
-
-    // Warning: the following may change value of m_nodes!
-    // std::max of leaf height and sibling height + 1 = sibling height + 1
-    const auto newParent = AllocateNode(BranchData{sibling, index},
-                                        GetEnclosingAABB(leafAABB, GetAABB(sibling)),
-                                        1 + GetHeight(sibling),
-                                        oldParent);
-    if (oldParent != GetInvalidSize())
-    {
-        // The sibling was not the root.
-        SwapChild(oldParent, sibling, newParent);
+        m_rootIndex = UpdateNonRoot(m_nodes, index, aabb);
     }
     else
     {
-        // The sibling was the root.
-        m_root = newParent;
+        assert(m_nodes[index].GetOther() == GetInvalidSize());
+        m_nodes[index].SetAABB(aabb);
     }
-    SetParent(sibling, newParent);
-    SetParent(index, newParent);
-
-    // Walk back up the tree fixing heights and AABBs
-    Rebalance(newParent);
-}
-
-void DynamicTree::RemoveLeaf(Size leaf) noexcept
-{
-    assert(leaf != GetInvalidSize());
-    assert(leaf < m_nodeCapacity);
-    
-    if (leaf == m_root)
-    {
-        assert(GetParent(leaf) == GetInvalidSize());
-        m_root = GetInvalidSize();
-        return;
-    }
-
-    const auto parent = GetParent(leaf);
-    const auto grandParent = GetParent(parent);
-    const auto sibling = (GetChild1(parent) == leaf)? GetChild2(parent): GetChild1(parent);
-
-    if (grandParent != GetInvalidSize())
-    {
-        // Destroy parent and connect sibling to grandParent.
-        SwapChild(grandParent, parent, sibling);
-        SetParent(sibling, grandParent);
-        SetParent(parent, GetInvalidSize());
-
-        // Adjust ancestor bounds.
-        Rebalance(grandParent);
-        SetParent(leaf, GetInvalidSize());
-    }
-    else
-    {
-        // grandParent == GetInvalidSize()
-        SetParent(sibling, GetInvalidSize());
-        m_root = sibling;
-        SetParent(leaf, GetInvalidSize());
-    }
-#ifndef NDEBUG
-    const auto found = FindReference(parent);
-    assert(found == GetInvalidSize());
-#endif
-    FreeNode(parent);
-}
-
-void DynamicTree::Rebalance(Size index) noexcept
-{
-    for (; index != GetInvalidSize(); index = GetParent(index))
-    {
-        assert(index != GetInvalidSize());
-        assert(index < m_nodeCapacity);
-        assert(!IsUnused(m_nodes[index].GetHeight()));
-        
-        do
-        {
-            if (GetHeight(index) < 2)
-            {
-                break;
-            }
-            
-            //          o
-            //          |
-            //          i
-            //         / \
-            //      *-c1  c2-*
-            //     /   |  |   \
-            // c1c1 c1c2  c2c1 c2c2
-            
-            const auto parent = GetParent(index); // o
-            const auto child1 = GetChild1(index); // c1
-            const auto child2 = GetChild2(index); // c2
-            
-            if (GetHeight(child2) > (GetHeight(child1) + 1))
-            {
-                // child2 must be a branch, rotate it up.
-                // change index's parent and child 2
-                // Swap index and child2
-                const auto child2child1 = GetChild1(child2);
-                const auto child2child2 = GetChild2(child2);
-                
-                // index's old parent should point to child2
-                SwapChild(parent, index, child2);
-                
-                // Rotate
-                if (GetHeight(child2child1) > GetHeight(child2child2))
-                {
-                    SetParent(child2child2, index);
-                    SetParent(index, child2);
-                    SetChildren(index, child1, child2child2);
-                    SetParent(child2, parent);
-                    SetChildren(child2, index, child2child1);
-                }
-                else
-                {
-                    SetParent(child2child1, index);
-                    SetParent(index, child2);
-                    SetChildren(index, child1, child2child1);
-                    SetParent(child2, parent);
-                    SetChildren(child2, index, child2child2);
-                }
-                index = child2;
-                break;
-            }
-            
-            if (GetHeight(child1) > (GetHeight(child2) + 1))
-            {
-                // child1 must be a branch, rotate it up.
-                // change index's parent and child 1
-                // Swap index and child1
-                const auto child1child1 = GetChild1(child1);
-                const auto child1child2 = GetChild2(child1);
-                
-                // index's old parent should point to child1
-                SwapChild(parent, index, child1);
-                
-                // Rotate
-                if (GetHeight(child1child1) > GetHeight(child1child2))
-                {
-                    SetParent(child1child2, index);
-                    SetParent(index, child1);
-                    SetChildren(index, child1child2, child2);
-                    SetParent(child1, parent);
-                    SetChildren(child1, index, child1child1);
-                }
-                else
-                {
-                    SetParent(child1child1, index);
-                    SetParent(index, child1);
-                    SetChildren(index, child1child1, child2);
-                    SetParent(child1, parent);
-                    SetChildren(child1, index, child1child2);
-                }
-                index = child1;
-                break;
-            }
-        }
-        while (false);
-        
-        const auto child1 = GetChild1(index);
-        const auto child2 = GetChild2(index);
-        SetHeight(index, 1 + std::max(GetHeight(child1), GetHeight(child2)));
-        SetAABB(index, GetEnclosingAABB(GetAABB(child1), GetAABB(child2)));
-    }
-}
-
-Length DynamicTree::ComputeTotalPerimeter() const noexcept
-{
-    auto totalPerimeter = 0_m;
-    if (m_root != GetInvalidSize())
-    {
-        for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
-        {
-            if (!IsUnused(m_nodes[i].GetHeight()))
-            {
-                totalPerimeter += GetPerimeter(m_nodes[i].GetAABB());
-            }
-        }
-    }
-    return totalPerimeter;
-}
-
-DynamicTree::Height DynamicTree::ComputeHeight(Size index) const noexcept
-{
-    assert(index < m_nodeCapacity);
-    if (IsBranch(m_nodes[index].GetHeight()))
-    {
-        const auto height1 = ComputeHeight(m_nodes[index].AsBranch().child1);
-        const auto height2 = ComputeHeight(m_nodes[index].AsBranch().child2);
-        return 1 + std::max(height1, height2);
-    }
-    return 0;
-}
-
-bool DynamicTree::ValidateStructure(Size index) const noexcept
-{
-    if (index == GetInvalidSize())
-    {
-        return true;
-    }
-    if (index == m_root)
-    {
-        assert(GetParent(index) == GetInvalidSize());
-    }
-    if (index >= m_nodeCapacity)
-    {
-        return false;
-    }
-    if (IsLeaf(m_nodes[index].GetHeight()))
-    {
-        return true;
-    }
-#ifndef NDEBUG
-    const auto child1 = m_nodes[index].AsBranch().child1;
-    const auto child2 = m_nodes[index].AsBranch().child2;
-#endif
-    assert(child1 < m_nodeCapacity);
-    assert(child2 < m_nodeCapacity);
-    assert(m_nodes[child1].GetOther() == index);
-    assert(m_nodes[child2].GetOther() == index);
-    assert(ValidateStructure(child1));
-    assert(ValidateStructure(child2));
-    return true;
-}
-
-bool DynamicTree::ValidateMetrics(Size index) const noexcept
-{
-    if (index == GetInvalidSize())
-    {
-        return true;
-    }
-
-    if (index >= m_nodeCapacity)
-    {
-        return false;
-    }
-
-    if (!IsBranch(m_nodes[index].GetHeight()))
-    {
-        return true;
-    }
-    
-#ifndef NDEBUG
-    const auto child1 = m_nodes[index].AsBranch().child1;
-    const auto child2 = m_nodes[index].AsBranch().child2;
-#endif
-    assert(child1 < m_nodeCapacity);
-    assert(child2 < m_nodeCapacity);
-#ifndef NDEBUG
-    const auto childNode1 = m_nodes + child1;
-    const auto childNode2 = m_nodes + child2;
-#endif
-    {
-#ifndef NDEBUG
-        const auto height1 = childNode1->GetHeight();
-        const auto height2 = childNode2->GetHeight();
-        const auto height = 1 + std::max(height1, height2);
-#endif
-        assert(m_nodes[index].GetHeight() == height);
-    }
-    {
-#ifndef NDEBUG
-        const auto aabb = GetEnclosingAABB(childNode1->GetAABB(), childNode2->GetAABB());
-#endif
-        assert(aabb == m_nodes[index].GetAABB());
-    }
-    assert(ValidateMetrics(child1));
-    assert(ValidateMetrics(child2));
-    return true;
-}
-
-bool DynamicTree::Validate() const
-{
-    assert(ValidateStructure(m_root));
-    assert(ValidateMetrics(m_root));
-
-    auto freeCount = Size{0};
-    auto freeIndex = m_freeListIndex;
-    while (freeIndex != GetInvalidSize())
-    {
-        assert(freeIndex < GetNodeCapacity());
-        freeIndex = (m_nodes + freeIndex)->GetOther();
-        ++freeCount;
-    }
-    assert((m_root == GetInvalidSize()) || (playrho::d2::GetHeight(*this) == playrho::d2::ComputeHeight(*this)));
-    assert((GetNodeCount() + freeCount) == GetNodeCapacity());
-    return true;
-}
-
-DynamicTree::Height DynamicTree::GetMaxBalance() const noexcept
-{
-    auto maxBalance = Height{0};
-    for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
-    {
-        if (!IsBranch(m_nodes[i].GetHeight()))
-        {
-            continue;
-        }
-
-        const auto child1 = m_nodes[i].AsBranch().child1;
-        assert(child1 != GetInvalidSize());
-        assert(child1 < m_nodeCapacity);
-        const auto child2 = m_nodes[i].AsBranch().child2;
-        assert(child2 != GetInvalidSize());
-        assert(child2 < m_nodeCapacity);
-        const auto height1 = (m_nodes + child1)->GetHeight();
-        const auto height2 = (m_nodes + child2)->GetHeight();
-        assert(height1 != GetInvalidHeight());
-        assert(height2 != GetInvalidHeight());
-        const auto balance = (height2 >= height1)? height2 - height1: height1 - height2;
-        maxBalance = std::max(maxBalance, balance);
-    }
-
-    return maxBalance;
 }
 
 void DynamicTree::RebuildBottomUp()
@@ -664,6 +596,7 @@ void DynamicTree::RebuildBottomUp()
         }
         else if (IsBranch(height))
         {
+            m_nodes[i].SetOther(GetInvalidSize());
             FreeNode(i);
         }
     }
@@ -711,10 +644,8 @@ void DynamicTree::RebuildBottomUp()
         --count;
     }
 
-    m_root = nodes[0];
+    m_rootIndex = nodes[0];
     Free(nodes);
-
-    Validate();
 }
 
 void DynamicTree::ShiftOrigin(Length2 newOrigin)
@@ -722,11 +653,25 @@ void DynamicTree::ShiftOrigin(Length2 newOrigin)
     // Build array of leaves. Free the rest.
     for (auto i = decltype(m_nodeCapacity){0}; i < m_nodeCapacity; ++i)
     {
-        m_nodes[i].SetAABB(GetMovedAABB(m_nodes[i].GetAABB(), -newOrigin));
+        if (!IsUnused(m_nodes[i].GetHeight()))
+        {
+            m_nodes[i].SetAABB(GetMovedAABB(m_nodes[i].GetAABB(), -newOrigin));
+        }
     }
 }
 
 // Free functions...
+
+void swap(DynamicTree& lhs, DynamicTree& rhs) noexcept
+{
+    using std::swap;
+    swap(lhs.m_nodes, rhs.m_nodes);
+    swap(lhs.m_rootIndex, rhs.m_rootIndex);
+    swap(lhs.m_freeIndex, rhs.m_freeIndex);
+    swap(lhs.m_nodeCount, rhs.m_nodeCount);
+    swap(lhs.m_nodeCapacity, rhs.m_nodeCapacity);
+    swap(lhs.m_leafCount, rhs.m_leafCount);
+}
 
 void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& callback)
 {
@@ -769,6 +714,203 @@ void Query(const DynamicTree& tree, const AABB& aabb, QueryFixtureCallback callb
         return callback(leafData.fixture, leafData.childIndex)?
         DynamicTreeOpcode::Continue: DynamicTreeOpcode::End;
     });
+}
+
+Length ComputeTotalPerimeter(const DynamicTree& tree) noexcept
+{
+    auto total = 0_m;
+    const auto nodeCapacity = tree.GetNodeCapacity();
+    for (auto i = decltype(nodeCapacity){0}; i < nodeCapacity; ++i)
+    {
+        if (!DynamicTree::IsUnused(tree.GetHeight(i)))
+        {
+            total += GetPerimeter(tree.GetAABB(i));
+        }
+    }
+    return total;
+}
+
+Real ComputePerimeterRatio(const DynamicTree& tree) noexcept
+{
+    const auto root = tree.GetRootIndex();
+    if (root != DynamicTree::GetInvalidSize())
+    {
+        const auto rootPerimeter = GetPerimeter(tree.GetAABB(root));
+        const auto total = ComputeTotalPerimeter(tree);
+        return total / rootPerimeter;
+    }
+    return 0;
+}
+
+DynamicTree::Height ComputeHeight(const DynamicTree& tree, DynamicTree::Size index) noexcept
+{
+    assert(index < tree.GetNodeCapacity());
+    if (DynamicTree::IsBranch(tree.GetHeight(index)))
+    {
+        const auto bd = tree.GetBranchData(index);
+        const auto height1 = ComputeHeight(tree, bd.child1);
+        const auto height2 = ComputeHeight(tree, bd.child2);
+        return 1 + std::max(height1, height2);
+    }
+    return 0;
+}
+
+DynamicTree::Height GetMaxBalance(const DynamicTree& tree) noexcept
+{
+    auto maxBalance = DynamicTree::Height{0};
+    const auto nodeCapacity = tree.GetNodeCapacity();
+    for (auto i = decltype(nodeCapacity){0}; i < nodeCapacity; ++i)
+    {
+        if (DynamicTree::IsBranch(tree.GetHeight(i)))
+        {
+            const auto bd = tree.GetBranchData(i);
+            const auto height1 = tree.GetHeight(bd.child1);
+            const auto height2 = tree.GetHeight(bd.child2);
+            const auto balance = (height2 >= height1)? height2 - height1: height1 - height2;
+            maxBalance = std::max(maxBalance, balance);
+        }
+    }
+    return maxBalance;
+}
+
+bool ValidateStructure(const DynamicTree& tree, DynamicTree::Size index) noexcept
+{
+    if (index == DynamicTree::GetInvalidSize())
+    {
+        return true;
+    }
+    if (index == tree.GetRootIndex())
+    {
+        if (tree.GetOther(index) != DynamicTree::GetInvalidSize())
+        {
+            return false;
+        }
+    }
+    const auto nodeCapacity = tree.GetNodeCapacity();
+    if (index >= nodeCapacity)
+    {
+        return false;
+    }
+    
+    const auto height = tree.GetHeight(index);
+    
+    if (DynamicTree::IsLeaf(height))
+    {
+        return true;
+    }
+    
+    if (DynamicTree::IsUnused(height))
+    {
+        return ValidateStructure(tree, tree.GetOther(index));
+    }
+    
+    const auto bd = tree.GetBranchData(index);
+    const auto child1 = bd.child1;
+    const auto child2 = bd.child2;
+    if ((child1 >= nodeCapacity) || (child2 >= nodeCapacity))
+    {
+        return false;
+    }
+    if ((tree.GetOther(child1) != index) || (tree.GetOther(child2) != index))
+    {
+        return false;
+    }
+    if (!ValidateStructure(tree, child1) || !ValidateStructure(tree, child2))
+    {
+        return false;
+    }
+    return true;
+}
+
+bool ValidateMetrics(const DynamicTree& tree, DynamicTree::Size index) noexcept
+{
+    if (index == DynamicTree::GetInvalidSize())
+    {
+        return true;
+    }
+    
+    const auto nodeCapacity = tree.GetNodeCapacity();
+    if (index >= nodeCapacity)
+    {
+        return false;
+    }
+    
+    const auto height = tree.GetHeight(index);
+    if (!DynamicTree::IsBranch(height))
+    {
+        return true;
+    }
+    
+    const auto bd = tree.GetBranchData(index);
+    const auto child1 = bd.child1;
+    const auto child2 = bd.child2;
+    
+    if ((child1 >= nodeCapacity) || (child2 >= nodeCapacity))
+    {
+        return false;
+    }
+    {
+        const auto height1 = tree.GetHeight(child1);
+        const auto height2 = tree.GetHeight(child2);
+        const auto heightCalc = 1 + std::max(height1, height2);
+        if (height != heightCalc)
+        {
+            return false;
+        }
+    }
+    {
+        const auto aabb = GetEnclosingAABB(tree.GetAABB(child1), tree.GetAABB(child2));
+        if (aabb != tree.GetAABB(index))
+        {
+            return false;
+        }
+    }
+    if (!ValidateMetrics(tree, child1) || !ValidateMetrics(tree, child2))
+    {
+        return false;
+    }
+    return true;
+}
+
+bool Validate(const DynamicTree& tree)
+{
+    if (!ValidateStructure(tree, tree.GetRootIndex()))
+    {
+        return false;
+    }
+    if (!ValidateMetrics(tree, tree.GetRootIndex()))
+    {
+        return false;
+    }
+    
+    const auto nodeCapacity = tree.GetNodeCapacity();
+
+    auto freeCount = DynamicTree::Size{0};
+    auto freeIndex = tree.GetFreeIndex();
+    while (freeIndex != DynamicTree::GetInvalidSize())
+    {
+        if (freeIndex >= nodeCapacity)
+        {
+            return false;
+        }
+        freeIndex = tree.GetOther(freeIndex);
+        ++freeCount;
+    }
+
+    if (tree.GetRootIndex() != DynamicTree::GetInvalidSize())
+    {
+        if (playrho::d2::GetHeight(tree) != playrho::d2::ComputeHeight(tree))
+        {
+            return false;
+        }
+    }
+    
+    if (tree.GetNodeCount() + freeCount != tree.GetNodeCapacity())
+    {
+        return false;
+    }
+    
+    return true;
 }
 
 } // namespace d2

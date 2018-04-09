@@ -330,7 +330,7 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
         EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
         EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
-        EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
+        EXPECT_EQ(GetMaxBalance(world.GetTree()), GetMaxBalance(copy.GetTree()));
     }
     
     const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)};
@@ -385,7 +385,7 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
         EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
         EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
-        EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
+        EXPECT_EQ(GetMaxBalance(world.GetTree()), GetMaxBalance(copy.GetTree()));
     }
 }
 
@@ -403,7 +403,7 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
         EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
         EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
-        EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
+        EXPECT_EQ(GetMaxBalance(world.GetTree()), GetMaxBalance(copy.GetTree()));
     }
     
     const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)};
@@ -440,7 +440,7 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(world.GetContacts().size(), copy.GetContacts().size());
         EXPECT_EQ(GetHeight(world.GetTree()), GetHeight(copy.GetTree()));
         EXPECT_EQ(world.GetTree().GetLeafCount(), copy.GetTree().GetLeafCount());
-        EXPECT_EQ(world.GetTree().GetMaxBalance(), copy.GetTree().GetMaxBalance());
+        EXPECT_EQ(GetMaxBalance(world.GetTree()), GetMaxBalance(copy.GetTree()));
     }
 }
 

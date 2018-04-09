@@ -788,8 +788,6 @@ namespace playrho
     /// @}
 
 #if defined(USE_BOOST_UNITS)
-    using std::hypot;
-    using std::sqrt;
     using boost::units::isfinite;
     using boost::units::isnormal;
     using boost::units::cos;
@@ -806,6 +804,7 @@ namespace playrho
     inline auto
     hypot(const boost::units::quantity<Unit,Real>& x, const boost::units::quantity<Unit,Real>& y)
     {
+        using std::hypot;
         return boost::units::quantity<Unit,Real>::from_value(hypot(x.value(), y.value()));
     }
     
@@ -818,6 +817,7 @@ namespace playrho
     inline auto
     sqrt(const boost::units::quantity<Unit,Real>& q)
     {
+        using std::sqrt;
         using quantity_type = typename boost::units::root_typeof_helper<
             boost::units::quantity<Unit,Real>,
             boost::units::static_rational<2>
