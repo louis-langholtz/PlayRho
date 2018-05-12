@@ -755,9 +755,9 @@ DynamicTree::Height ComputeHeight(const DynamicTree& tree, DynamicTree::Size ind
     return 0;
 }
 
-DynamicTree::Height GetMaxBalance(const DynamicTree& tree) noexcept
+DynamicTree::Height GetMaxImbalance(const DynamicTree& tree) noexcept
 {
-    auto maxBalance = DynamicTree::Height{0};
+    auto maxImbalance = DynamicTree::Height{0};
     const auto nodeCapacity = tree.GetNodeCapacity();
     for (auto i = decltype(nodeCapacity){0}; i < nodeCapacity; ++i)
     {
@@ -766,11 +766,11 @@ DynamicTree::Height GetMaxBalance(const DynamicTree& tree) noexcept
             const auto bd = tree.GetBranchData(i);
             const auto height1 = tree.GetHeight(bd.child1);
             const auto height2 = tree.GetHeight(bd.child2);
-            const auto balance = (height2 >= height1)? height2 - height1: height1 - height2;
-            maxBalance = std::max(maxBalance, balance);
+            const auto imbalance = (height2 >= height1)? height2 - height1: height1 - height2;
+            maxImbalance = std::max(maxImbalance, imbalance);
         }
     }
-    return maxBalance;
+    return maxImbalance;
 }
 
 bool ValidateStructure(const DynamicTree& tree, DynamicTree::Size index) noexcept

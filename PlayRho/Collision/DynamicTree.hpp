@@ -723,10 +723,10 @@ bool ValidateMetrics(const DynamicTree& tree, DynamicTree::Size index) noexcept;
 /// @return <code>true</code> if valid, <code>false</code> otherwise.
 bool Validate(const DynamicTree& tree);
 
-/// @brief Gets the maximum balance.
-/// @details This gets the maximum balance of nodes in the given tree.
-/// @note The balance is the difference in height of the two children of a node.
-DynamicTree::Height GetMaxBalance(const DynamicTree& tree) noexcept;
+/// @brief Gets the maximum imbalance.
+/// @details This gets the maximum imbalance of nodes in the given tree.
+/// @note The imbalance is the difference in height of the two children of a node.
+DynamicTree::Height GetMaxImbalance(const DynamicTree& tree) noexcept;
 
 /// @brief Opcodes for dynamic tree callbacks.
 enum class DynamicTreeOpcode

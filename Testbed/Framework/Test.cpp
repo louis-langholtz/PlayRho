@@ -1011,7 +1011,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         const auto leafCount = m_world.GetTree().GetLeafCount();
         const auto nodeCount = m_world.GetTree().GetNodeCount();
         const auto height = GetHeight(m_world.GetTree());
-        const auto imbalance = GetMaxBalance(m_world.GetTree());
+        const auto imbalance = GetMaxImbalance(m_world.GetTree());
         const auto quality = ComputePerimeterRatio(m_world.GetTree());
         const auto capacity = m_world.GetTree().GetNodeCapacity();
 
