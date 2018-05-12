@@ -74,9 +74,18 @@ TEST(DynamicTree, Traits)
     EXPECT_TRUE(std::is_copy_constructible<DynamicTree>::value);
     EXPECT_FALSE(std::is_nothrow_copy_constructible<DynamicTree>::value);
     EXPECT_FALSE(std::is_trivially_copy_constructible<DynamicTree>::value);
-    
+
+    EXPECT_TRUE((std::is_assignable<DynamicTree, DynamicTree>::value));
+    EXPECT_TRUE((std::is_nothrow_assignable<DynamicTree, DynamicTree>::value));
+    EXPECT_FALSE((std::is_trivially_assignable<DynamicTree, DynamicTree>::value));
+
     EXPECT_TRUE(std::is_copy_assignable<DynamicTree>::value);
+#if __GNUC__ || __clang__
     EXPECT_FALSE(std::is_nothrow_copy_assignable<DynamicTree>::value);
+#endif
+#if _MSC_VER
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree>::value);
+#endif
     EXPECT_FALSE(std::is_trivially_copy_assignable<DynamicTree>::value);
     
     EXPECT_TRUE(std::is_destructible<DynamicTree>::value);
