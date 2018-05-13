@@ -210,7 +210,6 @@ TEST(Manifold, EqualsFreeFunction)
     const auto cf1 = ContactFeature{ContactFeature::e_vertex, 1, ContactFeature::e_vertex, 2};
     const auto cf2 = ContactFeature{ContactFeature::e_vertex, 0, ContactFeature::e_vertex, 1};
     const auto normalImpulse1 = 1_Ns;
-    const auto normalImpulse2 = 2_Ns;
     const auto tangentImpulse1 = 2_Ns;
     const auto mp0 = Manifold::Point{localPoint1, cf1, normalImpulse1, tangentImpulse1};
     const auto mp1 = Manifold::Point{localPoint1, cf2, normalImpulse1, tangentImpulse1};
