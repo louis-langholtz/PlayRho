@@ -405,7 +405,8 @@ TEST(DynamicTree, DefaultConstruction)
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(0));
     EXPECT_EQ(GetMaxImbalance(foo), DynamicTree::Height(0));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(0));
-    EXPECT_TRUE(Validate(foo));
+    EXPECT_TRUE(ValidateStructure(foo, foo.GetRootIndex()));
+    EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
     EXPECT_EQ(foo.FindReference(DynamicTree::GetInvalidSize()), DynamicTree::GetInvalidSize());
     EXPECT_EQ(foo.FindReference(DynamicTree::Size(0)), DynamicTree::GetInvalidSize());
 }
@@ -424,7 +425,8 @@ TEST(DynamicTree, InitializingConstruction)
     DynamicTree foo{initCapacity};
     EXPECT_EQ(foo.GetNodeCapacity(), initCapacity);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
-    EXPECT_TRUE(Validate(foo));
+    EXPECT_TRUE(ValidateStructure(foo, foo.GetRootIndex()));
+    EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
     EXPECT_EQ(foo.FindReference(DynamicTree::GetInvalidSize()),
               foo.GetNodeCapacity() - 1u);
 }
@@ -537,7 +539,8 @@ TEST(DynamicTree, FourIdenticalProxies)
     ASSERT_FALSE(ValidateStructure(foo, foo.GetNodeCapacity() + 1));
     ASSERT_FALSE(ValidateMetrics(foo, foo.GetNodeCapacity() + 1));
     ASSERT_TRUE(ValidateMetrics(foo, DynamicTree::GetInvalidSize()));
-    ASSERT_TRUE(Validate(foo));
+    ASSERT_TRUE(ValidateStructure(foo, foo.GetRootIndex()));
+    ASSERT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
     ASSERT_EQ(size(foo), 0u);
 
     const auto aabb = AABB{
@@ -630,11 +633,13 @@ TEST(DynamicTree, FourIdenticalProxies)
 
     EXPECT_FALSE(ValidateStructure(foo, foo.GetNodeCapacity() + 1));
     EXPECT_FALSE(ValidateMetrics(foo, foo.GetNodeCapacity() + 1));
-    EXPECT_TRUE(Validate(foo));
+    EXPECT_TRUE(ValidateStructure(foo, foo.GetRootIndex()));
+    EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
     
     foo.RebuildBottomUp();
     
-    EXPECT_TRUE(Validate(foo));
+    EXPECT_TRUE(ValidateStructure(foo, foo.GetRootIndex()));
+    EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(7));
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     EXPECT_EQ(GetHeight(foo), DynamicTree::Height(3));
@@ -930,7 +935,8 @@ TEST(DynamicTree, UpdateLeaf)
             EXPECT_TRUE(foo.GetBranchData(foo.GetOther(leaf)).child1 == leaf || foo.GetBranchData(foo.GetOther(leaf)).child2 == leaf);
         });
     });
-    EXPECT_TRUE(Validate(foo));
+    EXPECT_TRUE(ValidateStructure(foo, foo.GetRootIndex()));
+    EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
 
     std::for_each(begin(leafs), end(leafs), [&foo,&leafs](const auto leaf) {
         const auto aabb{foo.GetAABB(leaf)};
@@ -940,8 +946,9 @@ TEST(DynamicTree, UpdateLeaf)
             EXPECT_TRUE(foo.GetBranchData(foo.GetOther(leaf)).child1 == leaf || foo.GetBranchData(foo.GetOther(leaf)).child2 == leaf);
         });
     });
-    EXPECT_TRUE(Validate(foo));
-    
+    EXPECT_TRUE(ValidateStructure(foo, foo.GetRootIndex()));
+    EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
+
     std::for_each(begin(leafs), end(leafs), [&foo,&leafs](const auto leaf) {
         const auto aabb{foo.GetAABB(leaf)};
         foo.UpdateLeaf(leaf, GetFattenedAABB(aabb, Length{0.5_m}));
@@ -950,7 +957,8 @@ TEST(DynamicTree, UpdateLeaf)
             EXPECT_TRUE(foo.GetBranchData(foo.GetOther(leaf)).child1 == leaf || foo.GetBranchData(foo.GetOther(leaf)).child2 == leaf);
         });
     });
-    EXPECT_TRUE(Validate(foo));
+    EXPECT_TRUE(ValidateStructure(foo, foo.GetRootIndex()));
+    EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
 
     std::for_each(begin(leafs), end(leafs), [&foo,&leafs](const auto leaf) {
         foo.UpdateLeaf(leaf, AABB{Length2{}, Length2{}});
@@ -959,7 +967,8 @@ TEST(DynamicTree, UpdateLeaf)
             EXPECT_TRUE(foo.GetBranchData(foo.GetOther(leaf)).child1 == leaf || foo.GetBranchData(foo.GetOther(leaf)).child2 == leaf);
         });
     });
-    EXPECT_TRUE(Validate(foo));
+    EXPECT_TRUE(ValidateStructure(foo, foo.GetRootIndex()));
+    EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
 }
 
 TEST(DynamicTree, QueryFF)

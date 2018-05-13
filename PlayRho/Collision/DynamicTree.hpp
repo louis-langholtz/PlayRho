@@ -728,11 +728,6 @@ bool ValidateStructure(const DynamicTree& tree, DynamicTree::Size index) noexcep
 /// @return <code>true</code> if valid, <code>false</code> otherwise.
 bool ValidateMetrics(const DynamicTree& tree, DynamicTree::Size index) noexcept;
 
-/// @brief Validates the given tree.
-/// @note Meant for testing.
-/// @return <code>true</code> if valid, <code>false</code> otherwise.
-bool Validate(const DynamicTree& tree);
-
 /// @brief Gets the maximum imbalance.
 /// @details This gets the maximum imbalance of nodes in the given tree.
 /// @note The imbalance is the difference in height of the two children of a node.

@@ -842,29 +842,5 @@ bool ValidateMetrics(const DynamicTree& tree, DynamicTree::Size index) noexcept
     return ValidateMetrics(tree, child1) && ValidateMetrics(tree, child2);
 }
 
-bool Validate(const DynamicTree& tree)
-{
-    if (!ValidateStructure(tree, tree.GetRootIndex()) || !ValidateMetrics(tree, tree.GetRootIndex()))
-    {
-        return false;
-    }
-    
-    const auto nodeCapacity = tree.GetNodeCapacity();
-
-    auto freeCount = DynamicTree::Size{0};
-    auto freeIndex = tree.GetFreeIndex();
-    while (freeIndex != DynamicTree::GetInvalidSize())
-    {
-        assert(freeIndex < nodeCapacity);
-        freeIndex = tree.GetOther(freeIndex);
-        ++freeCount;
-    }
-
-    assert((tree.GetRootIndex() == DynamicTree::GetInvalidSize()) ||
-           (playrho::d2::GetHeight(tree) == playrho::d2::ComputeHeight(tree)));
-    
-    return (tree.GetNodeCount() + freeCount) == tree.GetNodeCapacity();
-}
-
 } // namespace d2
 } // namespace playrho
