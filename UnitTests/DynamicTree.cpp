@@ -533,10 +533,12 @@ TEST(DynamicTree, FourIdenticalProxies)
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
     ASSERT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
     ASSERT_TRUE(ValidateStructure(foo, DynamicTree::GetInvalidSize()));
+    ASSERT_TRUE(ValidateStructure(foo, foo.GetFreeIndex()));
     ASSERT_FALSE(ValidateStructure(foo, foo.GetNodeCapacity() + 1));
     ASSERT_FALSE(ValidateMetrics(foo, foo.GetNodeCapacity() + 1));
     ASSERT_TRUE(ValidateMetrics(foo, DynamicTree::GetInvalidSize()));
     ASSERT_TRUE(Validate(foo));
+    ASSERT_EQ(size(foo), 0u);
 
     const auto aabb = AABB{
         Length2{3_m, 1_m},
@@ -552,6 +554,7 @@ TEST(DynamicTree, FourIdenticalProxies)
         ASSERT_EQ(foo.GetRootIndex(), pid);
         EXPECT_TRUE(ValidateStructure(foo, pid));
         EXPECT_TRUE(ValidateMetrics(foo, pid));
+        EXPECT_TRUE(ValidateStructure(foo, foo.GetFreeIndex()));
     }
 
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
@@ -560,6 +563,7 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(GetMaxImbalance(foo), DynamicTree::Height(0));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(1));
     EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(0));
+    EXPECT_EQ(size(foo), 1u);
 
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
@@ -568,6 +572,7 @@ TEST(DynamicTree, FourIdenticalProxies)
         EXPECT_EQ(foo.GetLeafData(pid), leafData);
         EXPECT_TRUE(ValidateStructure(foo, pid));
         EXPECT_TRUE(ValidateMetrics(foo, pid));
+        EXPECT_TRUE(ValidateStructure(foo, foo.GetFreeIndex()));
     }
 
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(3));
@@ -576,7 +581,9 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(GetMaxImbalance(foo), DynamicTree::Height(0));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(3));
     EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(1));
-    
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(2));
+    EXPECT_EQ(size(foo), 2u);
+
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
         EXPECT_EQ(pid, DynamicTree::Size(3));
@@ -584,6 +591,7 @@ TEST(DynamicTree, FourIdenticalProxies)
         EXPECT_EQ(foo.GetLeafData(pid), leafData);
         EXPECT_TRUE(ValidateStructure(foo, pid));
         EXPECT_TRUE(ValidateMetrics(foo, pid));
+        EXPECT_TRUE(ValidateStructure(foo, foo.GetFreeIndex()));
     }
     
     EXPECT_TRUE(DynamicTree::IsBranch(foo.GetHeight(DynamicTree::Size(4))));
@@ -593,7 +601,9 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(GetMaxImbalance(foo), DynamicTree::Height(1));
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(5));
     EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(2));
-    
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(3));
+    EXPECT_EQ(size(foo), 3u);
+
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
         EXPECT_EQ(pid, DynamicTree::Size(5));
@@ -601,12 +611,15 @@ TEST(DynamicTree, FourIdenticalProxies)
         EXPECT_EQ(foo.GetLeafData(pid), leafData);
         EXPECT_TRUE(ValidateStructure(foo, pid));
         EXPECT_TRUE(ValidateMetrics(foo, pid));
+        EXPECT_TRUE(ValidateStructure(foo, foo.GetFreeIndex()));
     }
     
     EXPECT_TRUE(DynamicTree::IsLeaf(foo.GetHeight(DynamicTree::Size(5))));
     EXPECT_TRUE(DynamicTree::IsBranch(foo.GetHeight(DynamicTree::Size(6))));
     EXPECT_EQ(foo.FindReference(DynamicTree::Size(5)), DynamicTree::Size(6));
     EXPECT_EQ(foo.FindReference(DynamicTree::Size(6)), DynamicTree::Size(3));
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(4));
+    EXPECT_EQ(size(foo), 4u);
 
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(7));
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
@@ -615,6 +628,8 @@ TEST(DynamicTree, FourIdenticalProxies)
     EXPECT_EQ(ComputePerimeterRatio(foo), Real(7));
     EXPECT_EQ(ComputeHeight(foo), DynamicTree::Height(2));
 
+    EXPECT_FALSE(ValidateStructure(foo, foo.GetNodeCapacity() + 1));
+    EXPECT_FALSE(ValidateMetrics(foo, foo.GetNodeCapacity() + 1));
     EXPECT_TRUE(Validate(foo));
     
     foo.RebuildBottomUp();

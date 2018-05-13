@@ -779,13 +779,10 @@ bool ValidateStructure(const DynamicTree& tree, DynamicTree::Size index) noexcep
     {
         return true;
     }
-    if (index == tree.GetRootIndex())
-    {
-        if (tree.GetOther(index) != DynamicTree::GetInvalidSize())
-        {
-            return false;
-        }
-    }
+    
+    // DynamicTree enforces this invariant, so can't setup instance in this state to runtime test.
+    assert((index != tree.GetRootIndex()) || (tree.GetOther(index) == DynamicTree::GetInvalidSize()));
+
     const auto nodeCapacity = tree.GetNodeCapacity();
     if (index >= nodeCapacity)
     {
@@ -799,27 +796,18 @@ bool ValidateStructure(const DynamicTree& tree, DynamicTree::Size index) noexcep
         return true;
     }
     
-    if (DynamicTree::IsUnused(height))
+    if (DynamicTree::IsBranch(height))
     {
-        return ValidateStructure(tree, tree.GetOther(index));
+        const auto bd = tree.GetBranchData(index);
+        const auto child1 = bd.child1;
+        const auto child2 = bd.child2;
+        assert(tree.GetOther(child1) == index);
+        assert(tree.GetOther(child2) == index);
+        return ValidateStructure(tree, child1) && ValidateStructure(tree, child2);
     }
     
-    const auto bd = tree.GetBranchData(index);
-    const auto child1 = bd.child1;
-    const auto child2 = bd.child2;
-    if ((child1 >= nodeCapacity) || (child2 >= nodeCapacity))
-    {
-        return false;
-    }
-    if ((tree.GetOther(child1) != index) || (tree.GetOther(child2) != index))
-    {
-        return false;
-    }
-    if (!ValidateStructure(tree, child1) || !ValidateStructure(tree, child2))
-    {
-        return false;
-    }
-    return true;
+    assert(DynamicTree::IsUnused(height));
+    return ValidateStructure(tree, tree.GetOther(index));
 }
 
 bool ValidateMetrics(const DynamicTree& tree, DynamicTree::Size index) noexcept
@@ -845,40 +833,18 @@ bool ValidateMetrics(const DynamicTree& tree, DynamicTree::Size index) noexcept
     const auto child1 = bd.child1;
     const auto child2 = bd.child2;
     
-    if ((child1 >= nodeCapacity) || (child2 >= nodeCapacity))
-    {
-        return false;
-    }
-    {
-        const auto height1 = tree.GetHeight(child1);
-        const auto height2 = tree.GetHeight(child2);
-        const auto heightCalc = 1 + std::max(height1, height2);
-        if (height != heightCalc)
-        {
-            return false;
-        }
-    }
-    {
-        const auto aabb = GetEnclosingAABB(tree.GetAABB(child1), tree.GetAABB(child2));
-        if (aabb != tree.GetAABB(index))
-        {
-            return false;
-        }
-    }
-    if (!ValidateMetrics(tree, child1) || !ValidateMetrics(tree, child2))
-    {
-        return false;
-    }
-    return true;
+    // DynamicTree doesn't provide way to set up the following states so only assertable...
+    assert(tree.GetOther(child1) == index);
+    assert(tree.GetOther(child2) == index);
+    assert(height == (1 + std::max(tree.GetHeight(child1), tree.GetHeight(child2))));
+    assert(tree.GetAABB(index) == GetEnclosingAABB(tree.GetAABB(child1), tree.GetAABB(child2)));
+
+    return ValidateMetrics(tree, child1) && ValidateMetrics(tree, child2);
 }
 
 bool Validate(const DynamicTree& tree)
 {
-    if (!ValidateStructure(tree, tree.GetRootIndex()))
-    {
-        return false;
-    }
-    if (!ValidateMetrics(tree, tree.GetRootIndex()))
+    if (!ValidateStructure(tree, tree.GetRootIndex()) || !ValidateMetrics(tree, tree.GetRootIndex()))
     {
         return false;
     }
@@ -889,28 +855,15 @@ bool Validate(const DynamicTree& tree)
     auto freeIndex = tree.GetFreeIndex();
     while (freeIndex != DynamicTree::GetInvalidSize())
     {
-        if (freeIndex >= nodeCapacity)
-        {
-            return false;
-        }
+        assert(freeIndex < nodeCapacity);
         freeIndex = tree.GetOther(freeIndex);
         ++freeCount;
     }
 
-    if (tree.GetRootIndex() != DynamicTree::GetInvalidSize())
-    {
-        if (playrho::d2::GetHeight(tree) != playrho::d2::ComputeHeight(tree))
-        {
-            return false;
-        }
-    }
+    assert((tree.GetRootIndex() == DynamicTree::GetInvalidSize()) ||
+           (playrho::d2::GetHeight(tree) == playrho::d2::ComputeHeight(tree)));
     
-    if (tree.GetNodeCount() + freeCount != tree.GetNodeCapacity())
-    {
-        return false;
-    }
-    
-    return true;
+    return (tree.GetNodeCount() + freeCount) == tree.GetNodeCapacity();
 }
 
 } // namespace d2

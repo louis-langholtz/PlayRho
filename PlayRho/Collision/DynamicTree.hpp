@@ -50,6 +50,9 @@ class Body;
 ///   have the invalid size value indicating that they are the oldest freed node.
 /// @invariant Allocated nodes' "other" nodes are valid "parent" nodes, or they
 ///   have the invalid size value indicating that they are parentless.
+/// @invariant The root node's index is either the index to the node at the root of the tree
+///   or it's the invalid size value indicating that this tree is empty.
+/// @invariant The root node's "other" index will be the invalid size value.
 /// @invariant Allocated nodes can only be "branch" or "leaf" nodes.
 /// @invariant Branch nodes always have two valid "child" nodes.
 /// @invariant Branch nodes always have a "height" of 1 plus the maximum height of its children.
@@ -191,7 +194,10 @@ public:
     /// @warning Behavior is undefined if the given index in not a valid branch node.
     BranchData GetBranchData(Size index) const noexcept;
 
-    /// @brief Gets the root index.
+    /// @brief Gets the index of the "root" node if this tree has one.
+    /// @note If the tree has a root node, then the "other" property of this node will be
+    ///   the invalid size.
+    /// @return <code>GetInvalidSize()</code> if this tree is "empty", else index to "root" node.
     Size GetRootIndex() const noexcept;
 
     /// @brief Gets the free index.
@@ -536,6 +542,8 @@ PLAYRHO_CONSTEXPR inline DynamicTree::Size DynamicTree::GetDefaultInitialNodeCap
 
 inline DynamicTree::Size DynamicTree::GetRootIndex() const noexcept
 {
+    assert((m_rootIndex == GetInvalidSize() && (m_leafCount == 0)) ||
+           ((m_rootIndex < m_nodeCapacity) && (m_leafCount > 0) && (GetOther(m_rootIndex) == GetInvalidSize())));
     return m_rootIndex;
 }
 
@@ -556,6 +564,8 @@ inline DynamicTree::Size DynamicTree::GetNodeCount() const noexcept
 
 inline DynamicTree::Size DynamicTree::GetLeafCount() const noexcept
 {
+    assert(((m_leafCount == 0) && (m_rootIndex == GetInvalidSize())) ||
+           ((m_leafCount > 0) && (m_rootIndex != GetInvalidSize()) && (GetOther(m_rootIndex) == GetInvalidSize())));
     return m_leafCount;
 }
 
@@ -752,6 +762,16 @@ using QueryFixtureCallback = std::function<bool(Fixture* fixture, ChildCounter c
 /// @param aabb The query box.
 /// @param callback User implemented callback function.
 void Query(const DynamicTree& tree, const AABB& aabb, QueryFixtureCallback callback);
+
+/// @brief Gets the "size" of the given tree.
+/// @note Size in this context is defined as the leaf count.
+/// @note This provides ancillary support for the container concept's size method.
+/// @see DynamicTree::GetLeafCount()
+/// @see http://en.cppreference.com/w/cpp/concept/Container
+inline std::size_t size(const DynamicTree& tree) noexcept
+{
+    return tree.GetLeafCount();
+}
 
 } // namespace d2
 } // namespace playrho
