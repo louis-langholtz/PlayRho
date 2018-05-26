@@ -161,7 +161,7 @@ private:
     /// @brief Inserts the given joint into the given body's joint list.
     static bool Insert(Body* b, Joint* value)
     {
-        if (b != nullptr)
+        if (b)
         {
             return Insert(*b, value);
         }

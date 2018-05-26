@@ -199,7 +199,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
     if (!oldTouching && newTouching)
     {
         SetTouching();
-        if (listener != nullptr)
+        if (listener)
         {
             listener->BeginContact(*this);
         }
@@ -207,7 +207,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
     else if (oldTouching && !newTouching)
     {
         UnsetTouching();
-        if (listener != nullptr)
+        if (listener)
         {
             listener->EndContact(*this);
         }
@@ -215,7 +215,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
 
     if (!sensor && newTouching)
     {
-        if (listener != nullptr)
+        if (listener)
         {
             listener->PreSolve(*this, oldManifold);
         }

@@ -442,7 +442,7 @@ bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept
 
 BodyCounter GetWorldIndex(const Body* body) noexcept
 {
-    if (body != nullptr)
+    if (body)
     {
         const auto world = body->GetWorld();
         const auto bodies = world->GetBodies();
