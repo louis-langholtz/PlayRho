@@ -570,7 +570,7 @@ void World::CopyContacts(const std::map<const Body*, Body*>& bodyMap,
         const auto newBodyB = bodyMap.at(otherFixtureB->GetBody());
         const auto newContact = new Contact{newFixtureA, childIndexA, newFixtureB, childIndexB};
         assert(newContact);
-        if (newContact != nullptr)
+        if (newContact)
         {
             const auto key = std::get<ContactKey>(contact);
             m_contacts.push_back(KeyedContactPtr{key, newContact});
@@ -816,7 +816,7 @@ Joint* World::CreateJoint(const JointConf& def)
     const auto bodyB = j->GetBodyB();
 
     // If the joint prevents collisions, then flag any contacts for filtering.
-    if ((!def.collideConnected) && (bodyA != nullptr) && (bodyB != nullptr))
+    if ((!def.collideConnected) && bodyA && bodyB)
     {
         FlagContactsForFiltering(*bodyA, *bodyB);
     }
@@ -880,7 +880,7 @@ void World::InternalDestroy(Joint& joint) noexcept
     JointAtty::Destroy(&joint);
 
     // If the joint prevented collisions, then flag any contacts for filtering.
-    if ((!collideConnected) && (bodyA != nullptr) && (bodyB != nullptr))
+    if ((!collideConnected) && bodyA && bodyB)
     {
         FlagContactsForFiltering(*bodyA, *bodyB);
     }
@@ -920,7 +920,7 @@ void World::AddToIsland(Island& island, BodyStack& stack,
         const auto b = stack.back();
         stack.pop_back();
         
-        assert(b != nullptr);
+        assert(b);
         assert(b->IsEnabled());
         island.m_bodies.push_back(b);
         assert(remNumBodies > 0);
@@ -987,12 +987,12 @@ void World::AddJointsToIsland(Island& island, BodyStack& stack, const Body* b)
         // Use data of ji before dereferencing its pointers.
         const auto other = std::get<Body*>(ji);
         const auto joint = std::get<Joint*>(ji);
-        assert(other == nullptr || other->IsEnabled() || !other->IsAwake());
-        if (!IsIslanded(joint) && ((other == nullptr) || other->IsEnabled()))
+        assert(!other || other->IsEnabled() || !other->IsAwake());
+        if (!IsIslanded(joint) && (!other || other->IsEnabled()))
         {
             island.m_joints.push_back(joint);
             SetIslanded(joint);
-            if ((other != nullptr) && !IsIslanded(other))
+            if (other && !IsIslanded(other))
             {
                 // Only now dereference ji's pointers.
                 const auto bodyA = joint->GetBodyA();
@@ -1197,7 +1197,7 @@ IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
     
     // XXX: Should contacts needing updating be updated now??
 
-    if (m_contactListener != nullptr)
+    if (m_contactListener)
     {
         Report(*m_contactListener, island.m_contacts, velConstraints,
                results.solved? results.positionIterations - 1: StepConf::InvalidIteration);
@@ -1685,7 +1685,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
         UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });
 
-    if (m_contactListener != nullptr)
+    if (m_contactListener)
     {
         Report(*m_contactListener, island.m_contacts, velConstraints, results.positionIterations);
     }
@@ -1894,7 +1894,7 @@ void World::ShiftOrigin(Length2 newOrigin)
 
 void World::InternalDestroy(Contact* contact, Body* from)
 {
-    if ((m_contactListener != nullptr) && contact->IsTouching())
+    if (m_contactListener && contact->IsTouching())
     {
         // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching, so call it now
         m_contactListener->EndContact(*contact);

@@ -104,12 +104,22 @@ TEST(DynamicTreeNode, Traits)
     EXPECT_FALSE(std::is_trivially_constructible<DynamicTree::TreeNode>::value);
     
     EXPECT_TRUE(std::is_copy_constructible<DynamicTree::TreeNode>::value);
+#ifdef USE_BOOST_UNITS
+    EXPECT_FALSE(std::is_nothrow_copy_constructible<DynamicTree::TreeNode>::value);
+    EXPECT_FALSE(std::is_trivially_copy_constructible<DynamicTree::TreeNode>::value);
+#else
     EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::TreeNode>::value);
     EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTree::TreeNode>::value);
+#endif
     
     EXPECT_TRUE(std::is_copy_assignable<DynamicTree::TreeNode>::value);
+#ifdef USE_BOOST_UNITS
+    EXPECT_FALSE(std::is_nothrow_copy_assignable<DynamicTree::TreeNode>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable<DynamicTree::TreeNode>::value);
+#else
     EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::TreeNode>::value);
     EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTree::TreeNode>::value);
+#endif
     
     EXPECT_TRUE(std::is_destructible<DynamicTree::TreeNode>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::TreeNode>::value);
@@ -784,7 +794,7 @@ TEST(DynamicTree, CreateLeaf)
     ASSERT_NE(foo.GetOther(l1), DynamicTree::GetInvalidSize());
     EXPECT_TRUE(foo.GetBranchData(foo.GetOther(l1)).child1 == l1 || foo.GetBranchData(foo.GetOther(l1)).child2 == l1);
 
-    const auto l5 = foo.CreateLeaf(AABB{Length2{2_m, 4_m}, Length2{-1, 2_m}}, leafData);
+    const auto l5 = foo.CreateLeaf(AABB{Length2{2_m, 4_m}, Length2{-1_m, 2_m}}, leafData);
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(5));
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(9));
     EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(16));
@@ -816,7 +826,7 @@ TEST(DynamicTree, UpdateLeaf)
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 2
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 3
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 4
-    leafs.push_back(foo.CreateLeaf(AABB{Length2{2_m, 4_m}, Length2{-1, 2_m}}, leafData)); // 5
+    leafs.push_back(foo.CreateLeaf(AABB{Length2{2_m, 4_m}, Length2{-1_m, 2_m}}, leafData)); // 5
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(5));
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(9));
     ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(16));
@@ -862,7 +872,7 @@ TEST(DynamicTree, UpdateLeaf)
         EXPECT_TRUE(foo.GetBranchData(foo.GetOther(leaf)).child1 == leaf || foo.GetBranchData(foo.GetOther(leaf)).child2 == leaf);
     });
 
-    leafs.push_back(foo.CreateLeaf(AABB{Length2{-2_m, -4_m}, Length2{1, -2_m}}, leafData)); // 6
+    leafs.push_back(foo.CreateLeaf(AABB{Length2{-2_m, -4_m}, Length2{1_m, -2_m}}, leafData)); // 6
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(6));
     std::for_each(begin(leafs), end(leafs), [&foo](const auto leaf) {
         ASSERT_NE(foo.GetOther(leaf), DynamicTree::GetInvalidSize());

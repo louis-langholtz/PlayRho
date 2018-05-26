@@ -67,7 +67,7 @@ void Fixture::SetSensor(bool sensor) noexcept
         // sensor state is changing...
         m_isSensor = sensor;
         const auto body = GetBody();
-        if (body != nullptr)
+        if (body)
         {
             body->SetAwake();
 
@@ -92,7 +92,7 @@ void SetAwake(const Fixture& f) noexcept
 
 Transformation GetTransformation(const Fixture& f) noexcept
 {
-    assert(static_cast<Body*>(f.GetBody()) != nullptr);
+    assert(static_cast<Body*>(f.GetBody()));
 
     /*
      * If fixtures have transformations (in addition to the body transformation),

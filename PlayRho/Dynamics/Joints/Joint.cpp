@@ -106,18 +106,18 @@ bool IsEnabled(const Joint& j) noexcept
 {
     const auto bA = j.GetBodyA();
     const auto bB = j.GetBodyB();
-    return ((bA == nullptr) || bA->IsEnabled()) && ((bB == nullptr) || bB->IsEnabled());
+    return (!bA || bA->IsEnabled()) && (!bB || bB->IsEnabled());
 }
 
 void SetAwake(Joint& j) noexcept
 {
     const auto bA = j.GetBodyA();
     const auto bB = j.GetBodyB();
-    if (bA != nullptr)
+    if (bA)
     {
         bA->SetAwake();
     }
-    if (bB != nullptr)
+    if (bB)
     {
         bB->SetAwake();
     }
@@ -125,13 +125,13 @@ void SetAwake(Joint& j) noexcept
 
 JointCounter GetWorldIndex(const Joint* joint)
 {
-    if (joint != nullptr)
+    if (joint)
     {
         const auto bA = joint->GetBodyA();
         const auto bB = joint->GetBodyB();
-        const auto world = (bA != nullptr)? bA->GetWorld():
-            (bB != nullptr)? bB->GetWorld(): static_cast<const World*>(nullptr);
-        if (world != nullptr)
+        const auto world = bA? bA->GetWorld():
+            bB? bB->GetWorld(): static_cast<const World*>(nullptr);
+        if (world)
         {
             auto i = JointCounter{0};
             const auto joints = world->GetJoints();

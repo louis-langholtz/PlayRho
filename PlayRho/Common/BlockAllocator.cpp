@@ -136,7 +136,7 @@ void* BlockAllocator::Allocate(size_type n)
     assert((0 <= index) && (index < GetSize(m_freeLists)));
     {
         const auto block = m_freeLists[index];
-        if (block != nullptr)
+        if (block)
         {
             m_freeLists[index] = block->next;
             return block;

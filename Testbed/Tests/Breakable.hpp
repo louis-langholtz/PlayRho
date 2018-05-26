@@ -1,21 +1,23 @@
 /*
-* Original work Copyright (c) 2008-2009 Erin Catto http://www.box2d.org
-* Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
-*
-* This software is provided 'as-is', without any express or implied
-* warranty.  In no event will the authors be held liable for any damages
-* arising from the use of this software.
-* Permission is granted to anyone to use this software for any purpose,
-* including commercial applications, and to alter it and redistribute it
-* freely, subject to the following restrictions:
-* 1. The origin of this software must not be misrepresented; you must not
-* claim that you wrote the original software. If you use this software
-* in a product, an acknowledgment in the product documentation would be
-* appreciated but is not required.
-* 2. Altered source versions must be plainly marked as such, and must not be
-* misrepresented as being the original software.
-* 3. This notice may not be removed or altered from any source distribution.
-*/
+ * Original work Copyright (c) 2008-2009 Erin Catto http://www.box2d.org
+ * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
 
 #ifndef PLAYRHO_BREAKABLE_TEST_HPP
 #define PLAYRHO_BREAKABLE_TEST_HPP
@@ -36,25 +38,25 @@ public:
 
     static PolygonShapeConf GetShapeConf1() noexcept
     {
-        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Vec2(-0.5f, 0.0f) * 1_m, 0_rad);
+        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Length2{-0.5_m, 0_m}, 0_rad);
     }
     
     static PolygonShapeConf GetShapeConf2() noexcept
     {
-        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Vec2(+0.5f, 0.0f) * 1_m, 0_rad);
+        return PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m, Length2{+0.5_m, 0_m}, 0_rad);
     }
     
     Breakable(): m_shape1{GetShapeConf1()}, m_shape2{GetShapeConf2()}
     {
         // Ground body
-        m_world.CreateBody()->CreateFixture(Shape(EdgeShapeConf{}.Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
+        m_world.CreateBody()->CreateFixture(Shape{GetGroundEdgeConf()});
 
         // Breakable dynamic body
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = m_gravity;
-            bd.location = Vec2(0.0f, 40.0f) * 1_m;
+            bd.location = Length2{0_m, 40_m};
             bd.angle = Pi * 0.25_rad;
             m_body1 = m_world.CreateBody(bd);
             m_piece1 = m_body1->CreateFixture(m_shape1);

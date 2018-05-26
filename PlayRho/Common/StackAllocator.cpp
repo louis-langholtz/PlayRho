@@ -89,7 +89,7 @@ void* StackAllocator::Allocate(size_type size) noexcept
 
 void StackAllocator::Free(void* p) noexcept
 {
-    if (p != nullptr)
+    if (p)
     {
         assert(m_entryCount > 0);
         const auto entry = m_entries + m_entryCount - 1;
