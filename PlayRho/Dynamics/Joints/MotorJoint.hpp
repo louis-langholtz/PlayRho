@@ -84,6 +84,10 @@ public:
     /// @brief Sets the position correction factor in the range [0,1].
     void SetCorrectionFactor(Real factor);
     
+    /// @brief Gets the linear error.
+    /// @note This is calculated by the <code>InitVelocityConstraints</code> method.
+    Length2 GetLinearError() const noexcept;
+
     /// @brief Gets the angular error.
     /// @note This is calculated by the <code>InitVelocityConstraints</code> method.
     Angle GetAngularError() const noexcept;
@@ -97,19 +101,19 @@ private:
                                   const ConstraintSolverConf& conf) const override;
 
     // Solver shared
-    Length2 m_linearOffset; ///< Linear offset.
-    Angle m_angularOffset; ///< Angular offset.
-    Momentum2 m_linearImpulse = Momentum2{}; ///< Linear impulse.
-    AngularMomentum m_angularImpulse = AngularMomentum{0}; ///< Angular impulse.
+    Length2 m_linearOffset{}; ///< Linear offset.
+    Angle m_angularOffset{}; ///< Angular offset.
+    Momentum2 m_linearImpulse{}; ///< Linear impulse.
+    AngularMomentum m_angularImpulse{}; ///< Angular impulse.
     NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
     NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0}; ///< Max torque.
-    Real m_correctionFactor; ///< Correction factor.
+    Real m_correctionFactor{}; ///< Correction factor.
 
     // Solver temp
     Length2 m_rA; ///< Relative A.
     Length2 m_rB; ///< Relative B.
-    Length2 m_linearError = Length2{}; ///< Linear error.
-    Angle m_angularError = 0_deg; ///< Angular error.
+    Length2 m_linearError{}; ///< Linear error.
+    Angle m_angularError{0_deg}; ///< Angular error.
     Mass22 m_linearMass; ///< 2-by-2 linear mass matrix in kilograms.
     RotInertia m_angularMass; ///< Angular mass.
 };
@@ -157,6 +161,11 @@ inline AngularMomentum MotorJoint::GetAngularReaction() const
 inline Real MotorJoint::GetCorrectionFactor() const noexcept
 {
     return m_correctionFactor;
+}
+
+inline Length2 MotorJoint::GetLinearError() const noexcept
+{
+    return m_linearError;
 }
 
 inline Angle MotorJoint::GetAngularError() const noexcept

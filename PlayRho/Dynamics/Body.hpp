@@ -949,8 +949,9 @@ inline Position GetPosition1(const Body& body) noexcept
     return body.GetSweep().pos1;
 }
 
-/// @brief Gets the total mass of the body.
-/// @return Value of zero or more representing the body's mass (in kg).
+/// @brief Gets the mass of the body.
+/// @note This may be the total calculated mass or it may be the set mass of the body.
+/// @return Value of zero or more representing the body's mass.
 /// @sa GetInvMass, SetMassData
 /// @relatedalso Body
 inline Mass GetMass(const Body& body) noexcept

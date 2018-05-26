@@ -409,6 +409,7 @@
 		471E7EAC1F34CA4D00DFF626 /* MovementConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MovementConf.hpp; sourceTree = "<group>"; };
 		471E7EAF1F34E34000DFF626 /* MovementConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MovementConf.cpp; sourceTree = "<group>"; };
 		47250DA01FEAD20C00FDDE1C /* StepStats.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StepStats.cpp; sourceTree = "<group>"; };
+		47268C7D20B1AD1F00FEA2DB /* MotorJoint2.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MotorJoint2.hpp; sourceTree = "<group>"; };
 		4726DD0C1D3014990012A882 /* IndexPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexPair.hpp; sourceTree = "<group>"; };
 		4726DD1C1D305E5D0012A882 /* ContactFeature.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactFeature.hpp; sourceTree = "<group>"; };
 		4726DD261D3180980012A882 /* NewtonsCradle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NewtonsCradle.hpp; sourceTree = "<group>"; };
@@ -1240,6 +1241,7 @@
 				4751EE281CEDD78F00D459CB /* Mobile.hpp */,
 				4751EE2D1CEDD7A300D459CB /* MobileBalanced.hpp */,
 				4751EE2C1CEDD7A300D459CB /* MotorJoint.hpp */,
+				47268C7D20B1AD1F00FEA2DB /* MotorJoint2.hpp */,
 				4726DD261D3180980012A882 /* NewtonsCradle.hpp */,
 				80BB8A54141C3E8600F1753A /* OneSidedPlatform.hpp */,
 				474527391E8877DD002E28FB /* Orbiter.hpp */,

@@ -230,7 +230,8 @@ namespace playrho
     ///   derived quantity that's also called the moment of inertia or angular mass.
     /// @note This quantity's dimensions are: length-squared mass per angle-squared
     ///   (<code>L^2 M QP^-2</code>).
-    /// @note The SI derived unit of rotational inertia is the kilogram per meter-squared.
+    /// @note The SI derived unit of rotational inertia is the kilogram meter-squared
+    ///   (<code>kg * m^2</code>).
     /// @sa Length, Mass, Angle, InvRotInertia.
     /// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
     using RotInertia = PLAYRHO_QUANTITY(boost::units::si::moment_of_inertia);

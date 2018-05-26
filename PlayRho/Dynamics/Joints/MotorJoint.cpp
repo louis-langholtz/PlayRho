@@ -34,6 +34,9 @@ namespace d2 {
 // J = [-I -r1_skew I r2_skew ]
 // Identity used:
 // w k % (rx i + ry j) = w * (-ry i + rx j)
+//
+// r1 = offset - c1
+// r2 = -c2
 
 // Angle constraint
 // Cdot = w2 - w1
@@ -76,11 +79,10 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto qB = UnitVec::Get(posB.angular);
 
     // Compute the effective mass matrix.
-    m_rA = Rotate(-bodyConstraintA->GetLocalCenter(), qA);
+    m_rA = Rotate(m_linearOffset - bodyConstraintA->GetLocalCenter(), qA);
     m_rB = Rotate(-bodyConstraintB->GetLocalCenter(), qB);
 
     // J = [-I -r1_skew I r2_skew]
-    //     [ 0       -1 0       1]
     // r_skew = [-ry; rx]
 
     // Matlab
@@ -108,19 +110,16 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
             invRotInertiaA * Square(GetX(m_rA)) / SquareRadian +
             invRotInertiaB * Square(GetX(m_rB)) / SquareRadian
         };
-        InvMass22 K;
-        GetX(GetX(K)) = exx;
-        GetY(GetX(K)) = exy;
-        GetX(GetY(K)) = exy;
-        GetY(GetY(K)) = eyy;
-        m_linearMass = Invert(K);
+        // Upper 2 by 2 of K above for point to point
+        const auto k22 = InvMass22{Vector<InvMass, 2>{exx, exy}, Vector<InvMass, 2>{exy, eyy}};
+        m_linearMass = Invert(k22);
     }
     
     const auto invRotInertia = invRotInertiaA + invRotInertiaB;
     m_angularMass = (invRotInertia > InvRotInertia{0})? RotInertia{Real{1} / invRotInertia}: RotInertia{0};
     
-    m_linearError = posB.linear + m_rB - posA.linear - m_rA - Rotate(m_linearOffset, qA);
-    m_angularError = posB.angular - posA.angular - m_angularOffset;
+    m_linearError = (posB.linear + m_rB) - (posA.linear + m_rA);
+    m_angularError = (posB.angular - posA.angular) - m_angularOffset;
 
     if (step.doWarmStart)
     {
@@ -171,8 +170,9 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
         const auto oldAngularImpulse = m_angularImpulse;
         const auto maxAngularImpulse = h * m_maxTorque;
-        m_angularImpulse = Clamp(m_angularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
-        const auto incAngularImpulse = m_angularImpulse - oldAngularImpulse;
+        const auto newAngularImpulse = Clamp(oldAngularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
+        m_angularImpulse = newAngularImpulse;
+        const auto incAngularImpulse = newAngularImpulse - oldAngularImpulse;
 
         if (incAngularImpulse != AngularMomentum{0})
         {
@@ -185,8 +185,7 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     // Solve linear friction
     {
         const auto vb = LinearVelocity2{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
-        const auto va = LinearVelocity2{velA.linear - (GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
-
+        const auto va = LinearVelocity2{velA.linear + (GetRevPerpendicular(m_rA) * (velA.angular / Radian))};
         const auto Cdot = LinearVelocity2{(vb - va) + inv_h * m_correctionFactor * m_linearError};
 
         const auto impulse = -Transform(Cdot, m_linearMass);

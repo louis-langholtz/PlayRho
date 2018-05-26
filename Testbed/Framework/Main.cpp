@@ -779,14 +779,14 @@ static void BasicStepOptionsUI()
         auto frequency = 1.0f / testSettings.dt;
         const auto max = 1.0f / testSettings.minDt;
         const auto min = 1.0f / testSettings.maxDt;
-        ImGui::SliderFloat("Frequency", &frequency, min, max, "%.2e hz");
+        ImGui::SliderFloat("Frequency", &frequency, min, max, "%.2e Hz");
         frequency = Clamp(frequency, min, max);
         testSettings.dt = 1.0f / frequency;
     }
     else
     {
         auto frequency = static_cast<int>(std::nearbyint(1.0f / settings.dt));
-        ImGui::SliderInt("Frequency", &frequency, 5, 120, "%.0f hz");
+        ImGui::SliderInt("Frequency", &frequency, 5, 120, "%.0f Hz");
         settings.dt = 1.0f / frequency;
     }
     const auto dt = (neededSettings & (0x1u << Test::NeedDeltaTime))? testSettings.dt: settings.dt;
@@ -854,7 +854,7 @@ static void AdvancedStepOptionsUI()
         ImGui::ShowTooltip(os.str(), 400);
     }
     
-    ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 180.0f, "%.1f deg");
+    ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 180.0f, "%.1f °");
     if (ImGui::IsItemHovered())
     {
         std::ostringstream os;
@@ -862,7 +862,7 @@ static void AdvancedStepOptionsUI()
         os << "Max. rotation in degrees allowed per step." \
             " At its current setting and the current simulation time," \
             " this establishes a max rotational velocity of ";
-        os << maxRotationalVelocity << " deg/s.";
+        os << maxRotationalVelocity << " °/s.";
         ImGui::ShowTooltip(os.str(), 400);
     }
     
@@ -888,7 +888,7 @@ static void AdvancedStepOptionsUI()
         ImGui::ShowTooltip(os.str(), 400);
     }
     
-    ImGui::SliderFloat("Angular Slop", &settings.angularSlop, 1.0f, 20.0f, "%.1f deg");
+    ImGui::SliderFloat("Angular Slop", &settings.angularSlop, 1.0f, 20.0f, "%.1f °");
     if (ImGui::IsItemHovered())
     {
         ImGui::SetTooltip("A general basis of \"slop\" to allow for in various angle-related calculations.");
@@ -900,7 +900,7 @@ static void AdvancedStepOptionsUI()
         ImGui::SetTooltip("Maximum linear correction. Should be greater than the linear slop value.");
     }
     
-    ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, "%.1f deg");
+    ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, "%.1f °");
     if (ImGui::IsItemHovered())
     {
         ImGui::SetTooltip("Maximum angular correction.");
@@ -1076,6 +1076,12 @@ static bool MenuUI()
     ImGui::Spacing();
 
     ImGui::Checkbox("Pause", &settings.pause);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("\"Pauses\" the simulation by overriding the simulation time per step"
+                          " with a value of zero until un-paused. This can also be toggled by"
+                          " pressing the 'P' key.");
+    }
     
     ImVec2 button_sz = ImVec2(-1, 0);
     if (ImGui::Button("Single Step", button_sz))
@@ -1157,7 +1163,7 @@ static void EntityUI(Body& b)
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("Linear acceleration in meters/second/second.", 400);
+            ImGui::ShowTooltip("Linear acceleration in meters/second².", 400);
         }
         auto val = static_cast<float>(Real{acceleration.angular / DegreePerSquareSecond});
         if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
@@ -1166,7 +1172,7 @@ static void EntityUI(Body& b)
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("Angular acceleration in degrees/second/second.", 400);
+            ImGui::ShowTooltip("Angular acceleration in degrees/second².", 400);
         }
     }
     {
@@ -1231,7 +1237,19 @@ static void EntityUI(Body& b)
         }
     }
     
-    ImGui::LabelText("Total mass", "%.2e kg", static_cast<double>(Real{GetMass(b) / Kilogram}));
+    ImGui::LabelText("Mass", "%.2e kg", static_cast<double>(Real{GetMass(b) / Kilogram}));
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::ShowTooltip("Mass of the body.", 400);
+    }
+    
+    ImGui::LabelText("Rot. Inertia", "%.2e kg·m²",
+                     static_cast<double>(Real{GetRotInertia(b) / (1_kg * 1_m2 / Square(1_rad))}));
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::ShowTooltip("Rotational inertia of the body. This may be the calculated value"
+                           " or a set value.", 400);
+    }
 }
 
 static void EntityUI(const Shape& shape)
@@ -1244,7 +1262,7 @@ static void EntityUI(const Shape& shape)
     const auto restitution = GetRestitution(shape);
     const auto childCount = GetChildCount(shape);
 
-    ImGui::LabelText("Density (kg/m^2)", "%.2e",
+    ImGui::LabelText("Density (kg/m²)", "%.2e",
                      static_cast<double>(Real{density * SquareMeter / Kilogram}));
     ImGui::LabelText("Friction", "%f", static_cast<double>(friction));
     ImGui::LabelText("Restitution", "%f", static_cast<double>(restitution));
@@ -1461,10 +1479,10 @@ static void EntityUI(Body& b, const FixtureSet& selectedFixtures)
 
 static void EntityUI(RevoluteJoint& j)
 {
-    ImGui::LabelText("Ref. Angle (deg)", "%.1e",
+    ImGui::LabelText("Ref. Angle (°)", "%.1e",
                      static_cast<double>(Real{j.GetReferenceAngle() / Degree}));
     ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
-    ImGui::LabelText("Motor Impulse (N*m*s)", "%.1e",
+    ImGui::LabelText("Motor Impulse (N·m·s)", "%.1e",
                      static_cast<double>(Real{j.GetMotorImpulse() / NewtonMeterSecond}));
     {
         auto v = j.IsLimitEnabled();
@@ -1475,14 +1493,14 @@ static void EntityUI(RevoluteJoint& j)
     }
     {
         auto v = static_cast<float>(Real{j.GetLowerLimit() / Degree});
-        if (ImGui::InputFloat("Lower Limit (deg)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Lower Limit (°)", &v, 0, 0, 2))
         {
             j.SetLimits(v * Degree, j.GetUpperLimit());
         }
     }
     {
         auto v = static_cast<float>(Real{j.GetUpperLimit() / Degree});
-        if (ImGui::InputFloat("Upper Limit (deg)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Upper Limit (°)", &v, 0, 0, 2))
         {
             j.SetLimits(j.GetLowerLimit(), v * Degree);
         }
@@ -1496,14 +1514,14 @@ static void EntityUI(RevoluteJoint& j)
     }
     {
         auto v = static_cast<float>(Real{j.GetMotorSpeed() / DegreePerSecond});
-        if (ImGui::InputFloat("Motor Speed (deg/sec)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Motor Speed (°/sec)", &v, 0, 0, 2))
         {
             j.SetMotorSpeed(v * DegreePerSecond);
         }
     }
     {
         auto v = static_cast<float>(Real{j.GetMaxMotorTorque() / NewtonMeter});
-        if (ImGui::InputFloat("Max Mot. Torq. (N*m)", &v))
+        if (ImGui::InputFloat("Max Mot. Torq. (N·m)", &v))
         {
             j.SetMaxMotorTorque(v * NewtonMeter);
         }
@@ -1529,9 +1547,9 @@ static void EntityUI(RevoluteJoint& j)
 static void EntityUI(PrismaticJoint& j)
 {
     ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
-    ImGui::LabelText("Motor Impulse (N*s)", "%.1e",
+    ImGui::LabelText("Motor Impulse (N·s)", "%.1e",
                      static_cast<double>(Real{j.GetMotorImpulse() / NewtonSecond}));
-    ImGui::LabelText("Ref. Angle (deg)", "%.1e",
+    ImGui::LabelText("Ref. Angle (°)", "%.1e",
                      static_cast<double>(Real{j.GetReferenceAngle() / Degree}));
     {
         auto v = j.IsLimitEnabled();
@@ -1563,7 +1581,7 @@ static void EntityUI(PrismaticJoint& j)
     }
     {
         auto v = static_cast<float>(Real{j.GetMotorSpeed() / DegreePerSecond});
-        if (ImGui::InputFloat("Motor Speed (deg/sec)", &v))
+        if (ImGui::InputFloat("Motor Speed (°/sec)", &v))
         {
             j.SetMotorSpeed(v * DegreePerSecond);
         }
@@ -1743,14 +1761,14 @@ static void EntityUI(WheelJoint& j)
     }
     {
         auto v = static_cast<float>(Real{j.GetMotorSpeed() / DegreePerSecond});
-        if (ImGui::InputFloat("Motor Speed (deg/sec)", &v))
+        if (ImGui::InputFloat("Motor Speed (°/sec)", &v))
         {
             j.SetMotorSpeed(v * DegreePerSecond);
         }
     }
     {
         auto v = static_cast<float>(Real{j.GetMaxMotorTorque() / NewtonMeter});
-        if (ImGui::InputFloat("Max Mot. Torq. (N*m)", &v))
+        if (ImGui::InputFloat("Max Mot. Torq. (N·m)", &v))
         {
             j.SetMaxMotorTorque(v * NewtonMeter);
         }
@@ -1789,7 +1807,7 @@ static void EntityUI(WheelJoint& j)
 
 static void EntityUI(WeldJoint& j)
 {
-    ImGui::LabelText("Ref. Angle (deg)", "%.1e",
+    ImGui::LabelText("Ref. Angle (°)", "%.1e",
                      static_cast<double>(Real{j.GetReferenceAngle() / Degree}));
     {
         auto v = static_cast<float>(Real{j.GetFrequency() / Hertz});
@@ -1834,7 +1852,7 @@ static void EntityUI(FrictionJoint& j)
     }
     {
         auto v = static_cast<float>(Real{j.GetMaxTorque() / NewtonMeter});
-        if (ImGui::InputFloat("Max Torq. (N*m)", &v))
+        if (ImGui::InputFloat("Max Torq. (N·m)", &v))
         {
             j.SetMaxTorque(v * NewtonMeter);
         }
@@ -1887,8 +1905,17 @@ static void EntityUI(RopeJoint& j)
 
 static void EntityUI(MotorJoint& j)
 {
-    ImGui::LabelText("Ang. Error (deg)", "%.2e",
+    {
+        const auto linearError = j.GetLinearError();
+        ImGui::LabelText("Lin. Error X (m)", "%.2e",
+                         static_cast<double>(Real{GetX(linearError) / Meter}));
+        ImGui::LabelText("Lin. Error Y (m)", "%.2e",
+                         static_cast<double>(Real{GetY(linearError) / Meter}));
+    }
+
+    ImGui::LabelText("Ang. Error (°)", "%.2e",
                      static_cast<double>(Real{j.GetAngularError() / Degree}));
+
     {
         const auto linOff = j.GetLinearOffset();
         auto x = static_cast<float>(Real{GetX(linOff) / Meter});
@@ -1904,11 +1931,12 @@ static void EntityUI(MotorJoint& j)
     }
     {
         auto v = static_cast<float>(Real{j.GetAngularOffset() / Degree});
-        if (ImGui::InputFloat("Ang. Offset (deg)", &v, 0, 0, 2))
+        if (ImGui::InputFloat("Ang. Offset (°)", &v, 0, 0, 2))
         {
             j.SetAngularOffset(v * Degree);
         }
     }
+
     {
         auto v = static_cast<float>(Real{j.GetMaxForce() / Newton});
         if (ImGui::InputFloat("Max Force (N)", &v))
@@ -1918,11 +1946,12 @@ static void EntityUI(MotorJoint& j)
     }
     {
         auto v = static_cast<float>(Real{j.GetMaxTorque() / NewtonMeter});
-        if (ImGui::InputFloat("Max Torq. (N*m)", &v))
+        if (ImGui::InputFloat("Max Torq. (N·m)", &v))
         {
             j.SetMaxTorque(v * NewtonMeter);
         }
     }
+
     {
         auto v = static_cast<float>(j.GetCorrectionFactor());
         if (ImGui::InputFloat("Correction Factor", &v))
@@ -1930,6 +1959,7 @@ static void EntityUI(MotorJoint& j)
             j.SetCorrectionFactor(static_cast<Real>(v));
         }
     }
+
     {
         const auto b = j.GetBodyA();
         if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
@@ -1993,12 +2023,12 @@ static void EntityUI(Joint& e)
     ImGui::LabelText("Collide Connected", "%s", e.GetCollideConnected()? "true": "false");
     {
         const auto linReact = e.GetLinearReaction();
-        ImGui::LabelText("Lin. Reaction X (N*s)", "%.2e",
+        ImGui::LabelText("Lin. Reaction X (N·s)", "%.2e",
                          static_cast<double>(Real{GetX(linReact) / NewtonSecond}));
-        ImGui::LabelText("Lin. Reaction Y (N*s)", "%.2e",
+        ImGui::LabelText("Lin. Reaction Y (N·s)", "%.2e",
                          static_cast<double>(Real{GetY(linReact) / NewtonSecond}));
     }
-    ImGui::LabelText("Ang. Reaction (N*m*s)", "%.2e",
+    ImGui::LabelText("Ang. Reaction (N·m·s)", "%.2e",
                      static_cast<double>(Real{e.GetAngularReaction() / NewtonMeterSecond}));
     auto visitor = JointVisitorUI{};
     e.Accept(visitor);
@@ -2289,7 +2319,7 @@ int main()
     
     const auto mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title,
                                              nullptr, nullptr);
-    if (mainWindow == nullptr)
+    if (!mainWindow)
     {
         std::fprintf(stderr, "Failed to open GLFW main window.\n");
         glfwTerminate();
