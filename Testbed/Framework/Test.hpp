@@ -3,17 +3,19 @@
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
@@ -214,8 +216,7 @@ protected:
     
     EdgeShapeConf GetGroundEdgeConf() const noexcept
     {
-        return EdgeShapeConf{}.Set(Vec2(-40, 0) * Meter,
-                                            Vec2( 40, 0) * Meter);
+        return EdgeShapeConf{Length2{-40_m, 0_m}, Length2{40_m, 0_m}};
     }
 
     struct Conf
@@ -223,7 +224,7 @@ protected:
         /// @brief World definition/configuration data.
         /// @note Explicitly uses -10 for gravity here to behave more like
         ///   Erin Catto's Box Testbed (which uses -10 for Earthly gravity).
-        WorldConf worldConf = WorldConf{}.UseMinVertexRadius(0.0002f * Meter);
+        WorldConf worldConf = WorldConf{}.UseMinVertexRadius(0.0002_m);
 
         Settings settings;
         
@@ -337,7 +338,7 @@ protected:
     std::string m_status;
     TextLinePos m_textLine = TextLinePos{30};
     AreaDensity m_bombDensity = 20_kgpm2;
-    Length m_bombRadius = 0.3f * Meter;
+    Length m_bombRadius = 0.3_m;
     LinearAcceleration2 m_gravity = Gravity;
 
 private:
