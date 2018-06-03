@@ -514,46 +514,6 @@ operator/ (Vector<T1, N> a, const T2 s) noexcept
     return result;
 }
 
-/// @brief Lexicographical less-than operator.
-/// @relatedalso Vector
-template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline bool operator< (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
-{
-    return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
-                                        std::less<T>{});
-}
-
-/// @brief Lexicographical less-than or equal-to operator.
-/// @relatedalso Vector
-template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline bool operator<= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
-{
-    const auto lhsEnd = std::cend(lhs);
-    const auto rhsEnd = std::cend(rhs);
-    const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs), rhsEnd);
-    return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) < *std::get<1>(diff));
-}
-
-/// @brief Lexicographical greater-than operator.
-/// @relatedalso Vector
-template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline bool operator> (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
-{
-    return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
-                                        std::greater<T>{});
-}
-
-/// @brief Lexicographical greater-than or equal-to operator.
-/// @relatedalso Vector
-template <typename T, std::size_t N>
-PLAYRHO_CONSTEXPR inline bool operator>= (const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept
-{
-    const auto lhsEnd = std::cend(lhs);
-    const auto rhsEnd = std::cend(rhs);
-    const auto diff = std::mismatch(std::cbegin(lhs), lhsEnd, std::cbegin(rhs), rhsEnd);
-    return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) > *std::get<1>(diff));
-}
-
 /// @brief Gets the specified element of the given collection.
 /// @relatedalso Vector
 template <std::size_t I, std::size_t N, typename T>

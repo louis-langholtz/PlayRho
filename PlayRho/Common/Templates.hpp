@@ -23,6 +23,9 @@
 
 #include <PlayRho/Defines.hpp>
 
+#include <algorithm>
+#include <functional>
+#include <iterator>
 #include <limits>
 #include <typeinfo>
 #include <type_traits>
@@ -331,6 +334,94 @@ namespace playrho {
     template <class T, std::size_t N>
     PLAYRHO_CONSTEXPR inline std::size_t GetSize(T (&)[N]) { return N; }
     
+    /// @brief Function object for performing lexicographical less-than
+    ///   comparisons of containers.
+    /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
+    /// @sa http://en.cppreference.com/w/cpp/utility/functional/less
+    template <typename T>
+    struct LexicographicalLess
+    {
+        /// @brief Checks whether the first argument is lexicographically less-than the
+        ///   second argument.
+        constexpr bool operator()(const T& lhs, const T& rhs) const
+        {
+            using std::begin;
+            using std::end;
+            using std::lexicographical_compare;
+            using std::less;
+            using ElementType = decltype(*begin(lhs));
+            return lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
+                                           less<ElementType>{});
+        }
+    };
+    
+    /// @brief Function object for performing lexicographical greater-than
+    ///   comparisons of containers.
+    /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
+    /// @sa http://en.cppreference.com/w/cpp/utility/functional/greater
+    template <typename T>
+    struct LexicographicalGreater
+    {
+        /// @brief Checks whether the first argument is lexicographically greater-than the
+        ///   second argument.
+        constexpr bool operator()(const T& lhs, const T& rhs) const
+        {
+            using std::begin;
+            using std::end;
+            using std::lexicographical_compare;
+            using std::greater;
+            using ElementType = decltype(*begin(lhs));
+            return lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
+                                           greater<ElementType>{});
+        }
+    };
+
+    /// @brief Function object for performing lexicographical less-than or equal-to
+    ///   comparisons of containers.
+    /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
+    /// @sa http://en.cppreference.com/w/cpp/utility/functional/less_equal
+    template <typename T>
+    struct LexicographicalLessEqual
+    {
+        /// @brief Checks whether the first argument is lexicographically less-than or
+        ///   equal-to the second argument.
+        constexpr bool operator()(const T& lhs, const T& rhs) const
+        {
+            using std::begin;
+            using std::end;
+            using std::mismatch;
+            using std::less;
+            using std::get;
+            using ElementType = decltype(*begin(lhs));
+            const auto lhsEnd = end(lhs);
+            const auto diff = mismatch(begin(lhs), lhsEnd, begin(rhs), end(rhs));
+            return (get<0>(diff) == lhsEnd) || less<ElementType>{}(*get<0>(diff), *get<1>(diff));
+        }
+    };
+
+    /// @brief Function object for performing lexicographical greater-than or equal-to
+    ///   comparisons of containers.
+    /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
+    /// @sa http://en.cppreference.com/w/cpp/utility/functional/greater_equal
+    template <typename T>
+    struct LexicographicalGreaterEqual
+    {
+        /// @brief Checks whether the first argument is lexicographically greater-than or
+        ///   equal-to the second argument.
+        constexpr bool operator()(const T& lhs, const T& rhs) const
+        {
+            using std::begin;
+            using std::end;
+            using std::mismatch;
+            using std::greater;
+            using std::get;
+            using ElementType = decltype(*begin(lhs));
+            const auto lhsEnd = end(lhs);
+            const auto diff = mismatch(begin(lhs), lhsEnd, begin(rhs), end(rhs));
+            return (get<0>(diff) == lhsEnd) || greater<ElementType>{}(*get<0>(diff), *get<1>(diff));
+        }
+    };
+
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_TEMPLATES_HPP
