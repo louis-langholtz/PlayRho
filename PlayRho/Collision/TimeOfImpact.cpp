@@ -274,7 +274,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                 const auto txfB = GetTransformation(sweepB, t);
                 const auto s = Evaluate(fcn, txfA, txfB, timeHiMinSep.indices);
 
-                if (Abs(s - target) <= conf.tolerance) // Root finding succeeded!
+                if (abs(s - target) <= conf.tolerance) // Root finding succeeded!
                 {
                     assert(t != timeHi);
                     timeHi = t; // timeHi holds a tentative value for timeLo

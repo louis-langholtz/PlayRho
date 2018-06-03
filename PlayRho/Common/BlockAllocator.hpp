@@ -50,7 +50,7 @@ namespace playrho {
         /// @brief Max block size (before using external allocator).
         static PLAYRHO_CONSTEXPR size_type GetMaxBlockSize() noexcept
         {
-            return AllocatorBlockSizes[GetSize(AllocatorBlockSizes) - 1];
+            return AllocatorBlockSizes[size(AllocatorBlockSizes) - 1];
         }
         
         /// @brief Chunk array increment.
@@ -108,7 +108,7 @@ namespace playrho {
         size_type m_chunkCount = 0; ///< Chunk count.
         size_type m_chunkSpace = GetChunkArrayIncrement(); ///< Chunk space.
         Chunk* m_chunks; ///< Chunks array.
-        Block* m_freeLists[GetSize(AllocatorBlockSizes)]; ///< Free lists.
+        Block* m_freeLists[size(AllocatorBlockSizes)]; ///< Free lists.
     };
     
     /// @brief Deletes the given pointer by calling the pointed-to object's destructor and

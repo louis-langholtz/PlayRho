@@ -67,7 +67,7 @@ namespace playrho {
     
     /// @brief Template specialization for valid/acceptable "arithmetic" types.
     template<class T>
-    struct HasOne<T, VoidT<decltype(T{1}) > >: std::true_type {};
+    struct HasOne<T, detail::VoidT<decltype(T{1}) > >: std::true_type {};
 
     /// @brief Specialization of the value check helper.
     template <typename T>
@@ -215,7 +215,15 @@ namespace playrho {
             DoLoCheck(value);
             DoHiCheck(value);
         }
-        
+
+        /// @brief Initializing constructor for implicitly convertible types.
+        template <typename U>
+        PLAYRHO_CONSTEXPR inline BoundedValue(U value): m_value{value_type(value)}
+        {
+            DoLoCheck(value_type(value));
+            DoHiCheck(value_type(value));
+        }
+
         /// @brief Copy constructor.
         PLAYRHO_CONSTEXPR inline BoundedValue(const this_type& value) = default;
 
@@ -240,6 +248,18 @@ namespace playrho {
         /// @brief Assignment operator.
         PLAYRHO_CONSTEXPR inline BoundedValue& operator= (const T& value)
         {
+            DoLoCheck(value);
+            DoHiCheck(value);
+            m_value = value;
+            return *this;
+        }
+
+        /// @brief Assignment operator for implicitly convertible types.
+        template <typename U>
+        PLAYRHO_CONSTEXPR inline std::enable_if_t<std::is_convertible<U, T>::value, BoundedValue&>
+        operator= (const U& tmpVal)
+        {
+            const auto value = T(tmpVal);
             DoLoCheck(value);
             DoHiCheck(value);
             m_value = value;

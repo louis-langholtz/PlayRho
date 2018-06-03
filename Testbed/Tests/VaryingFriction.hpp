@@ -50,7 +50,7 @@ public:
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(-15.0f + 4.0f * i, 28.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            shape.UseFriction(Real(friction[i]));
+            shape.UseFriction(friction[i]);
             body->CreateFixture(Shape(shape));
         }
     }

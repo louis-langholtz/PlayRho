@@ -53,7 +53,7 @@ public:
         }
 
         auto conf = PolygonShapeConf{};
-        conf.UseFriction(Real(0.3f));
+        conf.UseFriction(0.3);
         conf.UseDensity(20_kgpm2);
         conf.Set({
             Vec2(-0.5f, 0.0f) * 1_m,
@@ -168,7 +168,7 @@ public:
     {
         const auto L = Real(25);
         const auto point1 = Vec2(0.0f, 10.0f) * 1_m;
-        const auto d = Vec2(L * cos(m_angle), -L * Abs(sin(m_angle))) * 1_m;
+        const auto d = Vec2(L * cos(m_angle), -L * abs(sin(m_angle))) * 1_m;
         const auto point2 = point1 + d;
 
         auto fixture = static_cast<Fixture*>(nullptr);
@@ -208,7 +208,7 @@ public:
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
     };
-    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3f)).UseDensity(20_kgpm2)};
+    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(0.3).UseDensity(20_kgpm2)};
 
     Real m_angle;
 };

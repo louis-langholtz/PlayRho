@@ -27,6 +27,8 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
+
+#include <cstdlib>
 #include <iostream>
 #include <utility>
 #include <type_traits>
@@ -38,6 +40,7 @@ namespace playrho {
 using std::isnormal;
 using std::sqrt;
 using std::hypot;
+using std::abs;
 
 namespace d2 {
 
@@ -282,7 +285,7 @@ public:
     /// @brief Gets the absolute value.
     PLAYRHO_CONSTEXPR inline UnitVec Absolute() const noexcept
     {
-        return UnitVec{Abs(GetX()), Abs(GetY())};
+        return UnitVec{abs(GetX()), abs(GetY())};
     }
 
 private:

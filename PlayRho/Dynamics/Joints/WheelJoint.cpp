@@ -308,7 +308,7 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);
 
-    return Abs(C) <= conf.linearSlop;
+    return abs(C) <= conf.linearSlop;
 }
 
 Length2 WheelJoint::GetAnchorA() const

@@ -231,12 +231,12 @@ RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
 bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCastCB& callback)
 {
     const auto v = GetRevPerpendicular(GetUnitVector(input.p2 - input.p1, UnitVec::GetZero()));
-    const auto abs_v = Abs(v);
+    const auto abs_v = abs(v);
     auto segmentAABB = d2::GetAABB(input);
     
     GrowableStack<ContactCounter, 256> stack;
     stack.push(tree.GetRootIndex());
-    while (!stack.empty())
+    while (!empty(stack))
     {
         const auto index = stack.top();
         stack.pop();
@@ -255,7 +255,7 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
         // |dot(v, p1 - ctr)| > dot(|v|, extents)
         const auto center = GetCenter(aabb);
         const auto extents = GetExtents(aabb);
-        const auto separation = Abs(Dot(v, input.p1 - center)) - Dot(abs_v, extents);
+        const auto separation = abs(Dot(v, input.p1 - center)) - Dot(abs_v, extents);
         if (separation > 0_m)
         {
             continue;

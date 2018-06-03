@@ -938,7 +938,7 @@ static void AlmostEqual1(benchmark::State& state)
         {
             const auto x = val.first;
             const auto y = val.second;
-            benchmark::DoNotOptimize((playrho::Abs(x - y) < (std::numeric_limits<float>::epsilon() * playrho::Abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
+            benchmark::DoNotOptimize((playrho::abs(x - y) < (std::numeric_limits<float>::epsilon() * playrho::abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
         }
     }
 }

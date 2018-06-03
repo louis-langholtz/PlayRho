@@ -678,7 +678,7 @@ void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& c
     GrowableStack<DynamicTree::Size, 256> stack;
     stack.push(tree.GetRootIndex());
     
-    while (!stack.empty())
+    while (!empty(stack))
     {
         const auto index = stack.top();
         stack.pop();

@@ -97,7 +97,7 @@ Momentum BlockSolveUpdate(VelocityConstraint& vc, const Momentum2 newImpulses)
     vc.GetBodyA()->SetVelocity(vc.GetBodyA()->GetVelocity() + std::get<0>(delta_v));
     vc.GetBodyB()->SetVelocity(vc.GetBodyB()->GetVelocity() + std::get<1>(delta_v));
     SetNormalImpulses(vc, newImpulses);
-    return std::max(Abs(newImpulses[0]), Abs(newImpulses[1]));
+    return std::max(abs(newImpulses[0]), abs(newImpulses[1]));
 }
 
 Optional<Momentum> BlockSolveNormalCase1(VelocityConstraint& vc,
@@ -132,8 +132,8 @@ Optional<Momentum> BlockSolveNormalCase1(VelocityConstraint& vc,
         const auto vn0 = Dot(dv0, vc.GetNormal());
         const auto vn1 = Dot(dv1, vc.GetNormal());
 
-        assert(Abs(vn0 - vcp0.velocityBias) < k_errorTol);
-        assert(Abs(vn1 - vcp1.velocityBias) < k_errorTol);
+        assert(abs(vn0 - vcp0.velocityBias) < k_errorTol);
+        assert(abs(vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
         return Optional<Momentum>{max};
     }
@@ -168,7 +168,7 @@ Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVel
         // Compute normal velocity
         const auto vn1 = Dot(dv1, vc.GetNormal());
 
-        assert(Abs(vn1 - vcp1.velocityBias) < k_errorTol);
+        assert(abs(vn1 - vcp1.velocityBias) < k_errorTol);
 #endif
         return Optional<Momentum>{max};
     }
@@ -203,7 +203,7 @@ Optional<Momentum> BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVel
         // Compute normal velocity
         const auto vn2 = Dot(dv2, vc.GetNormal());
 
-        assert(Abs(vn2 - vcp2.velocityBias) < k_errorTol);
+        assert(abs(vn2 - vcp2.velocityBias) < k_errorTol);
 #endif
         return Optional<Momentum>{max};
     }
@@ -355,7 +355,7 @@ inline Momentum SeqSolveNormalConstraint(VelocityConstraint& vc)
         const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
         newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
         newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
-        maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
+        maxIncImpulse = std::max(maxIncImpulse, abs(incImpulse));
 
         // Note: using newImpulse, instead of oldImpulse + incImpulse, results in
         //   iteration count increases for the World.TilesComesToRest unit test.
@@ -415,7 +415,7 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto LB = AngularMomentum{Cross(vcp.relB, P) / Radian};
         newVelA -= Velocity{invMassA * P, invRotInertiaA * LA};
         newVelB += Velocity{invMassB * P, invRotInertiaB * LB};
-        maxIncImpulse = std::max(maxIncImpulse, Abs(incImpulse));
+        maxIncImpulse = std::max(maxIncImpulse, abs(incImpulse));
         
         // Note: using newImpulse, instead of oldImpulse + incImpulse, results in
         //   iteration count increases for the World.TilesComesToRest unit test.

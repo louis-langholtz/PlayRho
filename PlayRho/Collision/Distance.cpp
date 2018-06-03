@@ -85,8 +85,8 @@ PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept
     auto pointA = Length2{};
     auto pointB = Length2{};
 
-    const auto size = simplex.GetSize();
-    for (auto i = decltype(size){0}; i < size; ++i)
+    const auto numEdges = size(simplex);
+    for (auto i = decltype(numEdges){0}; i < numEdges; ++i)
     {
         const auto e = simplex.GetSimplexEdge(i);
         const auto c = simplex.GetCoefficient(i);
@@ -132,7 +132,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
         }
     }
 
-    if (IsEmpty(simplexEdges))
+    if (empty(simplexEdges))
     {
         simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, 0, proxyB, transformB, 0));
         savedIndices = IndexPair3{{IndexPair{0, 0}, InvalidIndexPair, InvalidIndexPair}};

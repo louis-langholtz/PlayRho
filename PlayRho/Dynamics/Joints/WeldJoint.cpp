@@ -322,7 +322,7 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
         const auto C2 = Angle{posB.angular - posA.angular - m_referenceAngle};
 
         positionError = GetMagnitude(C1);
-        angularError = Abs(C2);
+        angularError = abs(C2);
 
         const auto C = Vec3{StripUnit(GetX(C1)), StripUnit(GetY(C1)), StripUnit(C2)};
     

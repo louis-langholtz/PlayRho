@@ -156,7 +156,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     if (m_enableLimit && !fixedRotation)
     {
         const auto jointAngle = aB - aA - GetReferenceAngle();
-        if (Abs(m_upperAngle - m_lowerAngle) < (conf.angularSlop * 2))
+        if (abs(m_upperAngle - m_lowerAngle) < (conf.angularSlop * 2))
         {
             m_limitState = e_equalLimits;
         }
@@ -392,7 +392,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
                 // Prevent large angular corrections
                 const auto C = Clamp(angle - m_lowerAngle, -conf.maxAngularCorrection, conf.maxAngularCorrection);
                 limitImpulse = -m_motorMass * C;
-                angularError = Abs(C);
+                angularError = abs(C);
                 break;
             }
         }

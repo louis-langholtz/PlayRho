@@ -270,7 +270,7 @@ private:
             Vec2(-1.5f, 0.2f) * 1_m
         });
         const auto circle = Shape{
-            DiskShapeConf{}.UseDensity(1_kgpm2).UseFriction(Real(0.9f)).UseRadius(0.4_m)};
+            DiskShapeConf{}.UseDensity(1_kgpm2).UseFriction(0.9).UseRadius(0.4_m)};
         
         const auto carLocation = center - Vec2(3.3f, 1.0f) * 1_m;
         const auto car = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(carLocation));
@@ -428,7 +428,7 @@ private:
     const Length RectHHeight = 0.25_m;
     const Length RectHWidth = 2_m;
     Shape m_diskShape{DiskConf{}.UseRadius(1_m).UseDensity(1_kgpm2)};
-    Shape m_smallDiskShape{DiskConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseRestitution(Real(0))};
+    Shape m_smallDiskShape{DiskConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseRestitution(0)};
     Shape m_squareShape{PolyConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 0.5_m)};
     Shape m_rectShape{PolyConf{}.UseDensity(1_kgpm2).SetAsBox(RectHWidth, RectHHeight)};
     const Length2 offset = Length2{+2_m, 0_m};

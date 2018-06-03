@@ -38,6 +38,35 @@ TEST(Vector, IsVector)
     EXPECT_FALSE(IsVector<std::nullptr_t>::value);
 }
 
+TEST(Vector, IsIterable)
+{
+    ASSERT_FALSE((IsIterable<int>::value));
+    EXPECT_TRUE((IsIterable<Vector<int, 0>>::value));
+    EXPECT_TRUE((IsIterable<Vector<int, 1>>::value));
+    EXPECT_TRUE((IsIterable<Vector<int, 2>>::value));
+}
+
+TEST(Vector, empty)
+{
+    EXPECT_TRUE(empty(Vector<int, 0>{}));
+    EXPECT_FALSE(empty(Vector<int, 1>{}));
+    EXPECT_FALSE(empty(Vector<int, 2>{}));
+}
+
+TEST(Vector, size)
+{
+    EXPECT_EQ(size(Vector<int, 0>{}), 0u);
+    EXPECT_EQ(size(Vector<int, 1>{}), 1u);
+    EXPECT_EQ(size(Vector<int, 2>{}), 2u);
+}
+
+TEST(Vector, max_size)
+{
+    EXPECT_EQ(max_size(Vector<int, 0>{}), 0u);
+    EXPECT_EQ(max_size(Vector<int, 1>{}), 1u);
+    EXPECT_EQ(max_size(Vector<int, 2>{}), 2u);
+}
+
 TEST(Vector, Equality)
 {
     Vector<int, 10> a;

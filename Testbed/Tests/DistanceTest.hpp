@@ -59,7 +59,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() - Vec2{Real(0.1), 0} * 1_m, body->GetAngle());
+                body->SetTransform(body->GetLocation() - Vec2(0.1, 0) * 1_m, body->GetAngle());
                 body->SetAwake();
             }
         });
@@ -69,7 +69,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() + Vec2{Real(0.1), 0} * 1_m, body->GetAngle());
+                body->SetTransform(body->GetLocation() + Vec2(0.1, 0) * 1_m, body->GetAngle());
                 body->SetAwake();
             }
         });
@@ -79,7 +79,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() + Vec2{0, Real(0.1)} * 1_m, body->GetAngle());
+                body->SetTransform(body->GetLocation() + Vec2(0, 0.1) * 1_m, body->GetAngle());
                 body->SetAwake();
             }
         });
@@ -89,7 +89,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() - Vec2{0, Real(0.1)} * 1_m, body->GetAngle());
+                body->SetTransform(body->GetLocation() - Vec2(0, 0.1) * 1_m, body->GetAngle());
                 body->SetAwake();
             }
         });
@@ -356,8 +356,8 @@ public:
         os << unsigned{output.iterations} << ".\n\n";
         
         {
-            const auto size = output.simplex.GetSize();
-            os << "Simplex info: size=" << unsigned{size} << ", wpt-a={";
+            const auto numEdges = size(output.simplex);
+            os << "Simplex info: size=" << unsigned{numEdges} << ", wpt-a={";
             os << static_cast<double>(Real{GetX(std::get<0>(witnessPoints)) / 1_m});
             os << ",";
             os << static_cast<double>(Real{GetY(std::get<0>(witnessPoints)) / 1_m});
@@ -366,7 +366,7 @@ public:
             os << ",";
             os << static_cast<double>(Real{GetY(std::get<1>(witnessPoints)) / 1_m});
             os << "}:\n";
-            for (auto i = decltype(size){0}; i < size; ++i)
+            for (auto i = decltype(numEdges){0}; i < numEdges; ++i)
             {
                 const auto& edge = output.simplex.GetSimplexEdge(i);
                 const auto coef = output.simplex.GetCoefficient(i);
@@ -452,8 +452,8 @@ public:
 
         if (m_drawSimplexInfo)
         {
-            const auto size = output.simplex.GetSize();
-            for (auto i = decltype(size){0}; i < size; ++i)
+            const auto numEdges = size(output.simplex);
+            for (auto i = decltype(numEdges){0}; i < numEdges; ++i)
             {
                 const auto& edge = output.simplex.GetSimplexEdge(i);
                 drawer.DrawSegment(edge.GetPointA(), edge.GetPointB(), simplexSegmentColor);

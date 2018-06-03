@@ -832,7 +832,7 @@ namespace playrho
     template <class Y>
     inline auto AlmostZero(const boost::units::quantity<Y, Real> v)
     {
-        return Abs(v) < std::numeric_limits<boost::units::quantity<Y, Real>>::min();
+        return abs(v) < std::numeric_limits<boost::units::quantity<Y, Real>>::min();
     }
 
     /// @brief Strips the units off of the given value.

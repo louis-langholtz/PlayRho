@@ -240,7 +240,7 @@ public:
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
     };
-    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3f))};
+    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(0.3)};
 };
 
 } // namespace testbed

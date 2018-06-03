@@ -49,7 +49,7 @@ public:
     {
         // Ground body
         m_world.CreateBody()->CreateFixture(Shape(EdgeShapeConf{}
-            .UseFriction(NonNegative<Real>(0.3f)).Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
+            .UseFriction(0.3).Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
         
         // Small triangle
         Length2 vertices[3];
@@ -107,7 +107,7 @@ public:
         // Small box
         polygon.SetAsBox(1_m, 0.5_m);
         polygon.UseDensity(1_kgpm2);
-        polygon.UseRestitution(Real(0.1f));
+        polygon.UseRestitution(0.1);
 
         auto boxShapeConf = FixtureConf{};
         boxShapeConf.filter.groupIndex = k_smallGroup;

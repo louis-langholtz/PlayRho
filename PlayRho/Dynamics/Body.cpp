@@ -103,9 +103,9 @@ Body::Body(World* world, const BodyConf& bd):
 
 Body::~Body() noexcept
 {
-    assert(m_joints.empty());
-    assert(m_contacts.empty());
-    assert(m_fixtures.empty());
+    assert(empty(m_joints));
+    assert(empty(m_contacts));
+    assert(empty(m_fixtures));
 }
 
 void Body::SetType(playrho::BodyType type)
@@ -130,7 +130,7 @@ bool Body::Destroy(Fixture* fixture, bool resetMassData)
 
 void Body::DestroyFixtures()
 {
-    while (!m_fixtures.empty())
+    while (!empty(m_fixtures))
     {
         const auto fixture = GetPtr(m_fixtures.front());
         Destroy(fixture, false);
@@ -493,7 +493,7 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
         velocity.linear *= ratio;
     }
     
-    const auto absRotation = Abs(h * velocity.angular);
+    const auto absRotation = abs(h * velocity.angular);
     if (absRotation > conf.maxRotation)
     {
         // Scale back angular velocity so max rotation not exceeded.

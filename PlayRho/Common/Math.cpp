@@ -114,7 +114,7 @@ NonNegative<Area> GetAreaOfCircle(Length radius)
 }
 
 NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
-{
+{  
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
     auto sum = 0_m2;
@@ -129,7 +129,7 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
     
     // Note that using the absolute value isn't necessary for vertices in counter-clockwise
     // ordering; only needed for clockwise ordering.
-    return Abs(sum) / Real{2};
+    return abs(sum) / Real{2};
 }
 
 SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)

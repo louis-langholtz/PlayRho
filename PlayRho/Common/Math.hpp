@@ -57,6 +57,7 @@ using std::sin;
 using std::atan2;
 using std::sqrt;
 using std::pow;
+using std::abs;
 
 // Other templates.
 
@@ -195,18 +196,23 @@ inline Vec2 RoundOff(Vec2 value, std::uint32_t precision = 100000)
     return Vec2{RoundOff(value[0], precision), RoundOff(value[1], precision)};
 }
 
-/// @brief Gets the absolute value of the given value.
-template <>
-inline Vec2 Abs(Vec2 a)
+/// @brief Absolute value function for vectors.
+/// @relatedalso Vector
+template <typename T, std::size_t N>
+PLAYRHO_CONSTEXPR inline Vector<T, N> abs(const Vector<T, N>& v) noexcept
 {
-    return Vec2{Abs(a[0]), Abs(a[1])};
+    auto result = Vector<T, N>{};
+    for (auto i = decltype(N){0}; i < N; ++i)
+    {
+        result[i] = abs(v[i]);
+    }
+    return result;
 }
 
 /// @brief Gets the absolute value of the given value.
-template <>
-inline d2::UnitVec Abs(d2::UnitVec a)
+inline d2::UnitVec abs(const d2::UnitVec& v) noexcept
 {
-    return a.Absolute();
+    return v.Absolute();
 }
 
 /// @brief Gets whether a given value is almost zero.
@@ -217,7 +223,7 @@ template <typename T>
 PLAYRHO_CONSTEXPR inline
 std::enable_if_t<std::is_arithmetic<T>::value, bool> AlmostZero(T value)
 {
-    return Abs(value) < std::numeric_limits<T>::min();
+    return abs(value) < std::numeric_limits<T>::min();
 }
 
 /// @brief Determines whether the given two values are "almost equal".
@@ -231,7 +237,7 @@ std::enable_if_t<std::is_floating_point<T>::value, bool> AlmostEqual(T x, T y, i
     //    unless the result is subnormal".
     // Where "subnormal" means almost zero.
     //
-    return (Abs(x - y) < (std::numeric_limits<T>::epsilon() * Abs(x + y) * ulp)) || AlmostZero(x - y);
+    return (abs(x - y) < (std::numeric_limits<T>::epsilon() * abs(x + y) * ulp)) || AlmostZero(x - y);
 }
 
 /// @brief Modulo operation using <code>std::fmod</code>.
@@ -297,7 +303,8 @@ inline Angle GetAngle(const Vector2<T> value)
 /// @note For performance, use this instead of <code>GetMagnitude(T value)</code> (if possible).
 /// @return Non-negative value from 0 to infinity, or NaN.
 template <typename T>
-PLAYRHO_CONSTEXPR inline auto GetMagnitudeSquared(T value) noexcept
+PLAYRHO_CONSTEXPR inline
+auto GetMagnitudeSquared(T value) noexcept
 {
     using VT = typename T::value_type;
     using OT = decltype(VT{} * VT{});
@@ -589,9 +596,9 @@ PLAYRHO_CONSTEXPR inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 }
 
 /// @brief Gets the absolute value of the given value.
-inline Mat22 Abs(const Mat22& A)
+inline Mat22 abs(const Mat22& A)
 {
-    return Mat22{Abs(GetX(A)), Abs(GetY(A))};
+    return Mat22{abs(GetX(A)), abs(GetY(A))};
 }
 
 /// @brief Clamps the given value within the given range (inclusive).

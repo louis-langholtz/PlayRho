@@ -173,7 +173,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
             EXPECT_GE(newDistance, oldDistance);
         }
         
-        if (!distanceMet && (Abs(newDistance - jointdef.length) < 0.01_m))
+        if (!distanceMet && (abs(newDistance - jointdef.length) < 0.01_m))
         {
             distanceMet = i;
         }

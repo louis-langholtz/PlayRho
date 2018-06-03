@@ -96,7 +96,7 @@ public:
     {
         const auto body = m_world.CreateBody();
         body->CreateFixture(Shape{GetChainShapeConf(wallLength)
-            .UseRestitution(Finite<Real>(0)).UseVertexRadius(vertexRadius)});
+            .UseRestitution(0).UseVertexRadius(vertexRadius)});
         SetLocation(*body, Length2{0_m, 20_m});
         return body;
     }
@@ -133,7 +133,7 @@ public:
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
         m_world.CreateBody(bd)->CreateFixture(Shape{
-            PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Finite<Real>(0)).SetAsBox(side_length/2, side_length/2)
+            PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(0).SetAsBox(side_length/2, side_length/2)
         });
     }
 

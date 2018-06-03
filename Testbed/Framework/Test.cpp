@@ -109,7 +109,7 @@ void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, Transformatio
     drawer.DrawCircle(center, radius, color);
 
     // Draw a line fixed in the circle to animate rotation.
-    const auto axis = Rotate(Vec2{Real{1}, Real{0}}, xf.q);
+    const auto axis = Rotate(Vec2{1, 0}, xf.q);
     drawer.DrawSegment(center, center + radius * axis, color);
 }
 
@@ -521,7 +521,7 @@ void Test::MouseDown(const Length2& p)
             auto md = TargetJointConf{};
             md.bodyB = body;
             md.target = p;
-            md.maxForce = Real(10000.0f) * GetMass(*body) * MeterPerSquareSecond;
+            md.maxForce = Real(10000) * GetMass(*body) * MeterPerSquareSecond;
             m_targetJoint = static_cast<TargetJoint*>(m_world.CreateJoint(md));
             body->SetAwake();
         }
@@ -1309,7 +1309,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     const auto selectedFixtures = GetSelectedFixtures();
     const auto selectedFound = DrawWorld(drawer, m_world, settings, selectedFixtures);
-    if (!selectedFixtures.empty() && !selectedFound)
+    if (!empty(selectedFixtures) && !selectedFound)
     {
         ClearSelectedFixtures();
     }

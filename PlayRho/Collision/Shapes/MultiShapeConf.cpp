@@ -54,7 +54,7 @@ MassData GetMassData(const MultiShapeConf& arg) noexcept
 ConvexHull ConvexHull::Get(const VertexSet& pointSet, NonNegative<Length> vertexRadius)
 {
     auto vertices = GetConvexHullAsVector(pointSet);
-    assert(!vertices.empty() && vertices.size() < std::numeric_limits<VertexCounter>::max());
+    assert(!empty(vertices) && vertices.size() < std::numeric_limits<VertexCounter>::max());
     
     const auto count = static_cast<VertexCounter>(vertices.size());
     

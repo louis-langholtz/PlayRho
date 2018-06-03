@@ -199,7 +199,7 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto mass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: 0_kg;
 
     const auto C = Length{m_constant - lengthA - (m_ratio * lengthB)};
-    const auto linearError = Abs(C);
+    const auto linearError = abs(C);
 
     const auto impulse = -mass * C;
 

@@ -914,7 +914,7 @@ void World::AddToIsland(Island& island, BodyStack& stack,
                  Contacts::size_type& remNumContacts,
                  Joints::size_type& remNumJoints)
 {
-    while (!stack.empty())
+    while (!empty(stack))
     {
         // Grab the next body off the stack and add it to the island.
         const auto b = stack.back();
@@ -1102,7 +1102,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
 {
-    assert(!island.m_bodies.empty() || !island.m_contacts.empty() || !island.m_joints.empty());
+    assert(!empty(island.m_bodies) || !empty(island.m_contacts) || !empty(island.m_joints));
     
     auto results = IslandStats{};
     results.positionIterations = conf.regPositionIterations;

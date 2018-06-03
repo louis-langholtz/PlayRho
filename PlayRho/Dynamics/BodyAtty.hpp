@@ -251,7 +251,7 @@ private:
     static void ClearJoints(Body& b, std::function<void(Joint&)> callback)
     {
         auto joints = std::move(b.m_joints);
-        assert(b.m_joints.empty());
+        assert(empty(b.m_joints));
         std::for_each(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr j) {
             callback(*(std::get<Joint*>(j)));
         });
