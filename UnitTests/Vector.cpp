@@ -90,108 +90,108 @@ TEST(Vector, Inequality)
     EXPECT_FALSE(a != b);
 }
 
-TEST(Vector, LessThan)
+TEST(Vector, LexicographicalLess)
 {
     Vector<int, 10> a;
     Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
-    EXPECT_FALSE(a < b);
+    EXPECT_FALSE((LexicographicalLess<Vector<int, 10>>{}(a, b)));
     
     std::fill(b.begin(), b.end(), 2);
-    EXPECT_TRUE(a < b);
+    EXPECT_TRUE((LexicographicalLess<Vector<int, 10>>{}(a, b)));
     
     std::fill(a.begin(), a.end(), 2);
-    EXPECT_FALSE(a < b);
+    EXPECT_FALSE((LexicographicalLess<Vector<int, 10>>{}(a, b)));
     
     for (auto& e: b)
     {
         const auto old = e;
         e = 10;
-        EXPECT_TRUE(a < b);
+        EXPECT_TRUE((LexicographicalLess<Vector<int, 10>>{}(a, b)));
         e = old;
     }
     
-    EXPECT_FALSE(a < b);
+    EXPECT_FALSE((LexicographicalLess<Vector<int, 10>>{}(a, b)));
 }
 
-TEST(Vector, GreaterThan)
+TEST(Vector, LexicographicalGreaterThan)
 {
     Vector<int, 10> a;
     Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
-    EXPECT_FALSE(a > b);
+    EXPECT_FALSE((LexicographicalGreater<Vector<int, 10>>{}(a, b)));
     
     std::fill(b.begin(), b.end(), 2);
-    EXPECT_FALSE(a > b);
+    EXPECT_FALSE((LexicographicalGreater<Vector<int, 10>>{}(a, b)));
     
     std::fill(a.begin(), a.end(), 2);
-    EXPECT_FALSE(a > b);
+    EXPECT_FALSE((LexicographicalGreater<Vector<int, 10>>{}(a, b)));
     
     for (auto& e: b)
     {
         const auto old = e;
         e = 10;
-        EXPECT_TRUE(b > a);
+        EXPECT_TRUE((LexicographicalGreater<Vector<int, 10>>{}(b, a)));
         e = old;
     }
     
-    EXPECT_FALSE(b > a);
+    EXPECT_FALSE((LexicographicalGreater<Vector<int, 10>>{}(b, a)));
 }
 
-TEST(Vector, LessThanOrEqualTo)
+TEST(Vector, LexicographicalLessThanOrEqualTo)
 {
     Vector<int, 10> a;
     Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
-    EXPECT_TRUE(a <= b);
+    EXPECT_TRUE((LexicographicalLessEqual<Vector<int, 10>>{}(a, b)));
     
     std::fill(b.begin(), b.end(), 2);
-    EXPECT_TRUE(a <= b);
+    EXPECT_TRUE((LexicographicalLessEqual<Vector<int, 10>>{}(a, b)));
     
     std::fill(a.begin(), a.end(), 2);
-    EXPECT_TRUE(a <= b);
+    EXPECT_TRUE((LexicographicalLessEqual<Vector<int, 10>>{}(a, b)));
     
     for (auto& e: b)
     {
         const auto old = e;
         e = 10;
-        EXPECT_TRUE(a <= b);
+        EXPECT_TRUE((LexicographicalLessEqual<Vector<int, 10>>{}(a, b)));
         e = old;
     }
     
-    EXPECT_TRUE(a <= b);
+    EXPECT_TRUE((LexicographicalLessEqual<Vector<int, 10>>{}(a, b)));
 }
 
-TEST(Vector, GreaterThanOrEqualTo)
+TEST(Vector, LexicographicalGreaterThanOrEqualTo)
 {
     Vector<int, 10> a;
     Vector<int, 10> b;
     
     std::fill(a.begin(), a.end(), 1);
     std::fill(b.begin(), b.end(), 1);
-    EXPECT_TRUE(a >= b);
+    EXPECT_TRUE((LexicographicalGreaterEqual<Vector<int, 10>>{}(a, b)));
     
     std::fill(b.begin(), b.end(), 2);
-    EXPECT_FALSE(a >= b);
+    EXPECT_FALSE((LexicographicalGreaterEqual<Vector<int, 10>>{}(a, b)));
     
     std::fill(a.begin(), a.end(), 2);
-    EXPECT_TRUE(a >= b);
+    EXPECT_TRUE((LexicographicalGreaterEqual<Vector<int, 10>>{}(a, b)));
     
     for (auto& e: b)
     {
         const auto old = e;
         e = 10;
-        EXPECT_TRUE(b >= a);
+        EXPECT_TRUE((LexicographicalGreaterEqual<Vector<int, 10>>{}(b, a)));
         e = old;
     }
     
-    EXPECT_TRUE(b >= a);
+    EXPECT_TRUE((LexicographicalGreaterEqual<Vector<int, 10>>{}(b, a)));
 }
 
 TEST(Vector, ReverseIterateWith_crbeginend)

@@ -354,8 +354,23 @@ TEST(ChainShapeConf, Inequality)
 TEST(ChainShapeConf, GetSquareChainShapeConf)
 {
     const auto conf = GetChainShapeConf(2_m);
-    auto vertices = std::set<Length2>();
     const auto childCount = GetChildCount(conf);
+    EXPECT_EQ(childCount, decltype(childCount){4});
+    for (auto i = ChildCounter{0}; i < childCount; ++i)
+    {
+        const auto childI = GetChild(conf, i);
+        EXPECT_EQ(childI.GetVertexCount(), decltype(childI.GetVertexCount()){2});
+        for (auto j = ChildCounter{0}; j < childCount; ++j)
+        {
+            const auto childJ = GetChild(conf, j);
+            if (i != j)
+            {
+                EXPECT_NE(childI, childJ);
+            }
+        }
+    }
+
+    auto vertices = std::set<Length2, LexicographicalLess<Length2>>();
     for (auto i = ChildCounter{0}; i < childCount; ++i)
     {
         const auto child = GetChild(conf, i);
