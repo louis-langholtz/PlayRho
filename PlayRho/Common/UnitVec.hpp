@@ -357,9 +357,9 @@ PLAYRHO_CONSTEXPR inline UnitVec InverseRotate(const UnitVec vector, const UnitV
 
 /// @brief Gets the specified element of the given collection.
 template <std::size_t I>
-PLAYRHO_CONSTEXPR inline UnitVec::value_type Get(UnitVec v) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec::value_type get(UnitVec v) noexcept
 {
-    static_assert(I < 2, "Index out of bounds in playrho::Get<> (playrho::UnitVec)");
+    static_assert(I < 2, "Index out of bounds in playrho::get<> (playrho::UnitVec)");
     switch (I)
     {
         case 0: return v.GetX();
@@ -369,14 +369,14 @@ PLAYRHO_CONSTEXPR inline UnitVec::value_type Get(UnitVec v) noexcept
 
 /// @brief Gets element 0 of the given collection.
 template <>
-PLAYRHO_CONSTEXPR inline UnitVec::value_type Get<0>(UnitVec v) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec::value_type get<0>(UnitVec v) noexcept
 {
     return v.GetX();
 }
 
 /// @brief Gets element 1 of the given collection.
 template <>
-PLAYRHO_CONSTEXPR inline UnitVec::value_type Get<1>(UnitVec v) noexcept
+PLAYRHO_CONSTEXPR inline UnitVec::value_type get<1>(UnitVec v) noexcept
 {
     return v.GetY();
 }
@@ -384,7 +384,7 @@ PLAYRHO_CONSTEXPR inline UnitVec::value_type Get<1>(UnitVec v) noexcept
 /// @brief Output stream operator.
 inline ::std::ostream& operator<<(::std::ostream& os, const UnitVec& value)
 {
-    return os << "UnitVec(" << Get<0>(value) << "," << Get<1>(value) << ")";
+    return os << "UnitVec(" << get<0>(value) << "," << get<1>(value) << ")";
 }
 
 } // namespace d2

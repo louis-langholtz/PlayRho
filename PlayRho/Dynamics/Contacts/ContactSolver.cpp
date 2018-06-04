@@ -149,11 +149,11 @@ Optional<Momentum> BlockSolveNormalCase2(VelocityConstraint& vc, const LinearVel
     // vn2 = a21 * x1 + a22 * 0 + b2'
     //
     const auto newImpulses = Momentum2{
-        -GetNormalMassAtPoint(vc, 0) * Get<0>(b_prime), 0_Ns
+        -GetNormalMassAtPoint(vc, 0) * get<0>(b_prime), 0_Ns
     };
     const auto K = vc.GetK();
-    const auto vn2 = Get<1>(Get<0>(K)) * Get<0>(newImpulses) + Get<1>(b_prime);
-    if ((Get<0>(newImpulses) >= 0_Ns) && (vn2 >= 0_mps))
+    const auto vn2 = get<1>(get<0>(K)) * get<0>(newImpulses) + get<1>(b_prime);
+    if ((get<0>(newImpulses) >= 0_Ns) && (vn2 >= 0_mps))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
@@ -184,11 +184,11 @@ Optional<Momentum> BlockSolveNormalCase3(VelocityConstraint& vc, const LinearVel
     //   0 = a21 * 0 + a22 * x2 + b2'
     //
     const auto newImpulses = Momentum2{
-        0_Ns, -GetNormalMassAtPoint(vc, 1) * Get<1>(b_prime)
+        0_Ns, -GetNormalMassAtPoint(vc, 1) * get<1>(b_prime)
     };
     const auto K = vc.GetK();
-    const auto vn1 = Get<0>(Get<1>(K)) * Get<1>(newImpulses) + Get<0>(b_prime);
-    if ((Get<1>(newImpulses) >= 0_Ns) && (vn1 >= 0_mps))
+    const auto vn1 = get<0>(get<1>(K)) * get<1>(newImpulses) + get<0>(b_prime);
+    if ((get<1>(newImpulses) >= 0_Ns) && (vn1 >= 0_mps))
     {
         const auto max = BlockSolveUpdate(vc, newImpulses);
 
@@ -217,8 +217,8 @@ Optional<Momentum> BlockSolveNormalCase4(VelocityConstraint& vc, const LinearVel
     //
     // vn1 = b1
     // vn2 = b2;
-    const auto vn1 = Get<0>(b_prime);
-    const auto vn2 = Get<1>(b_prime);
+    const auto vn1 = get<0>(b_prime);
+    const auto vn2 = get<1>(b_prime);
     if ((vn1 >= 0_mps) && (vn2 >= 0_mps))
     {
         return Optional<Momentum>{BlockSolveUpdate(vc, Momentum2{0_Ns, 0_Ns})};

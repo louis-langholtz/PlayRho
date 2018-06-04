@@ -301,16 +301,16 @@ inline void VelocityConstraint::RemovePoint() noexcept
 inline InvMass22 VelocityConstraint::GetK() const noexcept
 {
     return InvMass22{
-        InvMass2{Get<0>(m_K), Get<2>(m_K)},
-        InvMass2{Get<2>(m_K), Get<1>(m_K)}
+        InvMass2{get<0>(m_K), get<2>(m_K)},
+        InvMass2{get<2>(m_K), get<1>(m_K)}
     };
 }
 
 inline Mass22 VelocityConstraint::GetNormalMass() const noexcept
 {
     return Mass22{
-        Mass2{Get<0>(m_normalMass), Get<2>(m_normalMass)},
-        Mass2{Get<2>(m_normalMass), Get<1>(m_normalMass)}
+        Mass2{get<0>(m_normalMass), get<2>(m_normalMass)},
+        Mass2{get<2>(m_normalMass), get<1>(m_normalMass)}
     };
 }
 

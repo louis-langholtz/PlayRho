@@ -65,42 +65,42 @@ using std::abs;
 template <typename T>
 PLAYRHO_CONSTEXPR inline auto& GetX(T& value)
 {
-    return Get<0>(value);
+    return get<0>(value);
 }
 
 /// @brief Gets the "Y" element of the given value - i.e. the second element.
 template <typename T>
 PLAYRHO_CONSTEXPR inline auto& GetY(T& value)
 {
-    return Get<1>(value);
+    return get<1>(value);
 }
 
 /// @brief Gets the "Z" element of the given value - i.e. the third element.
 template <typename T>
 PLAYRHO_CONSTEXPR inline auto& GetZ(T& value)
 {
-    return Get<2>(value);
+    return get<2>(value);
 }
 
 /// @brief Gets the "X" element of the given value - i.e. the first element.
 template <typename T>
 PLAYRHO_CONSTEXPR inline auto GetX(const T& value)
 {
-    return Get<0>(value);
+    return get<0>(value);
 }
 
 /// @brief Gets the "Y" element of the given value - i.e. the second element.
 template <typename T>
 PLAYRHO_CONSTEXPR inline auto GetY(const T& value)
 {
-    return Get<1>(value);
+    return get<1>(value);
 }
 
 /// @brief Gets the "Z" element of the given value - i.e. the third element.
 template <typename T>
 PLAYRHO_CONSTEXPR inline auto GetZ(const T& value)
 {
-    return Get<2>(value);
+    return get<2>(value);
 }
 
 /// @brief Makes the given value into an unsigned value.
@@ -399,10 +399,10 @@ template <class T1, class T2, std::enable_if_t<
     std::tuple_size<T1>::value == 2 && std::tuple_size<T2>::value == 2, int> = 0>
 PLAYRHO_CONSTEXPR inline auto Cross(T1 a, T2 b) noexcept
 {
-    assert(isfinite(StripUnit(Get<0>(a))));
-    assert(isfinite(StripUnit(Get<1>(a))));
-    assert(isfinite(StripUnit(Get<0>(b))));
-    assert(isfinite(StripUnit(Get<1>(b))));
+    assert(isfinite(StripUnit(get<0>(a))));
+    assert(isfinite(StripUnit(get<1>(a))));
+    assert(isfinite(StripUnit(get<0>(b))));
+    assert(isfinite(StripUnit(get<1>(b))));
 
     // Both vectors of same direction...
     // If a = Vec2{1, 2} and b = Vec2{1, 2} then: a x b = 1 * 2 - 2 * 1 = 0.
@@ -414,8 +414,8 @@ PLAYRHO_CONSTEXPR inline auto Cross(T1 a, T2 b) noexcept
     //
     // Vectors between 0 and 180 degrees of each other excluding 90 degrees...
     // If a = Vec2{1, 2} and b = Vec2{-1, 2} then: a x b = 1 * 2 - 2 * (-1) = 2 + 2 = 4.
-    const auto minuend = Get<0>(a) * Get<1>(b);
-    const auto subtrahend = Get<1>(a) * Get<0>(b);
+    const auto minuend = get<0>(a) * get<1>(b);
+    const auto subtrahend = get<1>(a) * get<0>(b);
     assert(isfinite(StripUnit(minuend)));
     assert(isfinite(StripUnit(subtrahend)));
     return minuend - subtrahend;
@@ -431,14 +431,14 @@ template <class T1, class T2, std::enable_if_t<
     std::tuple_size<T1>::value == 3 && std::tuple_size<T2>::value == 3, int> = 0>
 PLAYRHO_CONSTEXPR inline auto Cross(T1 a, T2 b) noexcept
 {
-    assert(isfinite(Get<0>(a)));
-    assert(isfinite(Get<1>(a)));
-    assert(isfinite(Get<2>(a)));
-    assert(isfinite(Get<0>(b)));
-    assert(isfinite(Get<1>(b)));
-    assert(isfinite(Get<2>(b)));
+    assert(isfinite(get<0>(a)));
+    assert(isfinite(get<1>(a)));
+    assert(isfinite(get<2>(a)));
+    assert(isfinite(get<0>(b)));
+    assert(isfinite(get<1>(b)));
+    assert(isfinite(get<2>(b)));
 
-    using OT = decltype(Get<0>(a) * Get<0>(b));
+    using OT = decltype(get<0>(a) * get<0>(b));
     return Vector<OT, 3>{
         GetY(a) * GetZ(b) - GetZ(a) * GetY(b),
         GetZ(a) * GetX(b) - GetX(a) * GetZ(b),
@@ -451,12 +451,12 @@ PLAYRHO_CONSTEXPR inline auto Cross(T1 a, T2 b) noexcept
 template <typename T, typename U>
 PLAYRHO_CONSTEXPR inline auto Solve(const Matrix22<U> mat, const Vector2<T> b) noexcept
 {
-    const auto cp = Cross(Get<0>(mat), Get<1>(mat));
+    const auto cp = Cross(get<0>(mat), get<1>(mat));
     using OutType = decltype((U{} * T{}) / cp);
     return (!AlmostZero(StripUnit(cp)))?
         Vector2<OutType>{
-            (Get<1>(mat)[1] * b[0] - Get<1>(mat)[0] * b[1]) / cp,
-            (Get<0>(mat)[0] * b[1] - Get<0>(mat)[1] * b[0]) / cp
+            (get<1>(mat)[1] * b[0] - get<1>(mat)[0] * b[1]) / cp,
+            (get<0>(mat)[0] * b[1] - get<0>(mat)[1] * b[0]) / cp
         }: Vector2<OutType>{};
 }
 
@@ -464,12 +464,12 @@ PLAYRHO_CONSTEXPR inline auto Solve(const Matrix22<U> mat, const Vector2<T> b) n
 template <class IN_TYPE>
 PLAYRHO_CONSTEXPR inline auto Invert(const Matrix22<IN_TYPE> value) noexcept
 {
-    const auto cp = Cross(Get<0>(value), Get<1>(value));
-    using OutType = decltype(Get<0>(value)[0] / cp);
+    const auto cp = Cross(get<0>(value), get<1>(value));
+    using OutType = decltype(get<0>(value)[0] / cp);
     return (!AlmostZero(StripUnit(cp)))?
         Matrix22<OutType>{
-            Vector2<OutType>{ Get<1>(Get<1>(value)) / cp, -Get<1>(Get<0>(value)) / cp},
-            Vector2<OutType>{-Get<0>(Get<1>(value)) / cp,  Get<0>(Get<0>(value)) / cp}
+            Vector2<OutType>{ get<1>(get<1>(value)) / cp, -get<1>(get<0>(value)) / cp},
+            Vector2<OutType>{-get<0>(get<1>(value)) / cp,  get<0>(get<0>(value)) / cp}
         }:
         Matrix22<OutType>{};
 }
@@ -575,8 +575,8 @@ PLAYRHO_CONSTEXPR inline auto Transform(const Vector<T1, M> v, const Matrix<T2, 
 PLAYRHO_CONSTEXPR inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 {
     return Vec2{
-        Get<0>(Get<0>(A)) * v[0] + Get<0>(Get<1>(A)) * v[1],
-        Get<1>(Get<0>(A)) * v[0] + Get<1>(Get<1>(A)) * v[1]
+        get<0>(get<0>(A)) * v[0] + get<0>(get<1>(A)) * v[1],
+        get<1>(get<0>(A)) * v[0] + get<1>(get<1>(A)) * v[1]
     };
 }
 
@@ -706,7 +706,7 @@ namespace d2 {
 /// @brief Gets a <code>Vec2</code> representation of the given value.
 PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const UnitVec value)
 {
-    return Vec2{Get<0>(value), Get<1>(value)};
+    return Vec2{get<0>(value), get<1>(value)};
 }
 
 /// @brief Gets the angle of the given unit vector.

@@ -54,7 +54,7 @@ PLAYRHO_CONSTEXPR inline Vec3 GetInvalid() noexcept
 template <>
 PLAYRHO_CONSTEXPR inline bool IsValid(const Vec3& value) noexcept
 {
-    return IsValid(Get<0>(value)) && IsValid(Get<1>(value)) && IsValid(Get<2>(value));
+    return IsValid(get<0>(value)) && IsValid(get<1>(value)) && IsValid(get<2>(value));
 }
 
 } // namespace playrho

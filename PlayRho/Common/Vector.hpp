@@ -516,17 +516,17 @@ operator/ (Vector<T1, N> a, const T2 s) noexcept
 /// @brief Gets the specified element of the given collection.
 /// @relatedalso Vector
 template <std::size_t I, std::size_t N, typename T>
-PLAYRHO_CONSTEXPR inline auto& Get(Vector<T, N>& v) noexcept
+PLAYRHO_CONSTEXPR inline auto& get(Vector<T, N>& v) noexcept
 {
-    static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
+    static_assert(I < N, "Index out of bounds in playrho::get<> (playrho::Vector)");
     return v[I];
 }
 
 /// @brief Gets the specified element of the given collection.
 template <std::size_t I, std::size_t N, typename T>
-PLAYRHO_CONSTEXPR inline auto Get(const Vector<T, N>& v) noexcept
+PLAYRHO_CONSTEXPR inline auto get(const Vector<T, N>& v) noexcept
 {
-    static_assert(I < N, "Index out of bounds in playrho::Get<> (playrho::Vector)");
+    static_assert(I < N, "Index out of bounds in playrho::get<> (playrho::Vector)");
     return v[I];
 }
 

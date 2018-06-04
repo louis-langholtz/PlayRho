@@ -197,7 +197,7 @@ using Mat33 = Matrix33<Real>;
 template <>
 PLAYRHO_CONSTEXPR inline bool IsValid(const Mat22& value) noexcept
 {
-    return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
+    return IsValid(get<0>(value)) && IsValid(get<1>(value));
 }
 
 /// @brief Gets an invalid value for a <code>Mat22</code>.
