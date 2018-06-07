@@ -57,6 +57,11 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -EHsc")
 endif()
 
+# Make sure Microsoft Visual C++ (MSVC) uses the standards-conforming compiler behavior.
+if(MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive-")
+endif()
+
 # The PlayRho library.
 add_subdirectory(PlayRho)
 
