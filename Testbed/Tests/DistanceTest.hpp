@@ -59,7 +59,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() - Vec2(0.1, 0) * 1_m, body->GetAngle());
+                body->SetTransform(body->GetLocation() - Length2(0.1_m, 0_m), body->GetAngle());
                 body->SetAwake();
             }
         });
@@ -69,7 +69,7 @@ public:
             const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
             if (body)
             {
-                body->SetTransform(body->GetLocation() + Vec2(0.1, 0) * 1_m, body->GetAngle());
+                body->SetTransform(body->GetLocation() + Length2(0.1_m, 0_m), body->GetAngle());
                 body->SetAwake();
             }
         });

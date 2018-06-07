@@ -69,7 +69,7 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     /// to move the candidate body. Usually you will express
     /// as some multiple of the weight (multiplier * mass * gravity).
     /// @note This may not be negative.
-    NonNegative<Force> maxForce = NonNegative<Force>{0};
+    NonNegative<Force> maxForce = NonNegative<Force>{0_N};
     
     /// Frequency.
     /// @details The has to do with the response speed.

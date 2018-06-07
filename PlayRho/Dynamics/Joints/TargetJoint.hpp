@@ -99,9 +99,9 @@ private:
 
     Length2 m_targetA; ///< Target location (A).
     Length2 m_localAnchorB; ///< Local anchor B.
-    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0}; ///< Frequency.
+    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0_Hz}; ///< Frequency.
     NonNegative<Real> m_dampingRatio = NonNegative<Real>{0}; ///< Damping ratio.
-    NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
+    NonNegative<Force> m_maxForce = NonNegative<Force>{0_N}; ///< Max force.
     InvMass m_gamma = InvMass{0}; ///< Gamma.
 
     Momentum2 m_impulse = Momentum2{}; ///< Impulse.

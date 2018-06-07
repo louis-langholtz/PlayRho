@@ -84,8 +84,8 @@ struct Settings
     float toiMinSeparation = static_cast<float>(Real{
         DefaultLinearSlop / Meter}) * -1.5f;
     
-    float aabbExtension = static_cast<float>(DefaultAabbExtension / Meter); // in meters
-    float tolerance = static_cast<float>(DefaultLinearSlop / Real{4} / Meter); // in meters
+    float aabbExtension = static_cast<float>(Real{DefaultAabbExtension / Meter}); // in meters
+    float tolerance = static_cast<float>(Real{DefaultLinearSlop / Real{4} / Meter}); // in meters
 
     float cameraZoom = 1.0f;
 

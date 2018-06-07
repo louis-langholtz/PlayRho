@@ -93,7 +93,7 @@ private:
     Length2 m_localAnchorA; ///< Local anchor A.
     Length2 m_localAnchorB; ///< Local anchor B.
     Length m_length; ///< Length.
-    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0}; ///< Frequency.
+    NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0_Hz}; ///< Frequency.
     Real m_dampingRatio; ///< Damping ratio.
 
     // Solver shared

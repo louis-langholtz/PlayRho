@@ -1472,7 +1472,7 @@ TEST(CollideShapes, EdgeFooTriangle)
 TEST(CollideShapes, EdgePolygonFaceB1)
 {
     auto conf = EdgeShapeConf{};
-    conf.vertexRadius = 0;
+    conf.vertexRadius = 0_m;
     const auto edge_shape = EdgeShapeConf(Vec2(6, 8) * Meter, Vec2(7, 8) * Meter, conf);
     const auto edge_xfm = Transformation{Length2{}, GetUnitVector(Vec2(Real(0.707106769), Real(0.707106769)))};
     const auto poly_shape = PolygonShapeConf({

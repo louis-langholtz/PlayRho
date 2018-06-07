@@ -83,8 +83,8 @@ private:
 
     Length2 m_localAnchorA; ///< Local anchor A.
     Length2 m_localAnchorB; ///< Local anchor B.
-    NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
-    NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0}; ///< Max torque.
+    NonNegative<Force> m_maxForce = NonNegative<Force>{0_N}; ///< Max force.
+    NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0_Nm}; ///< Max torque.
 
     // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
     Momentum2 m_linearImpulse = Momentum2{}; ///< Linear impulse.

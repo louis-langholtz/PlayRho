@@ -128,17 +128,17 @@ struct BodyConf
     
     /// Initial angular acceleration of the body.
     /// @note Usually this should be 0.
-    AngularAcceleration angularAcceleration = AngularAcceleration{0};
+    AngularAcceleration angularAcceleration = AngularAcceleration{0 * RadianPerSquareSecond};
     
     /// Linear damping is use to reduce the linear velocity. The damping parameter
     /// can be larger than 1 but the damping effect becomes sensitive to the
     /// time step when the damping parameter is large.
-    NonNegative<Frequency> linearDamping = NonNegative<Frequency>{0};
+    NonNegative<Frequency> linearDamping = NonNegative<Frequency>{0_Hz};
     
     /// Angular damping is use to reduce the angular velocity. The damping parameter
     /// can be larger than 1 but the damping effect becomes sensitive to the
     /// time step when the damping parameter is large.
-    NonNegative<Frequency> angularDamping = NonNegative<Frequency>{0};
+    NonNegative<Frequency> angularDamping = NonNegative<Frequency>{0_Hz};
     
     /// Under-active time.
     /// @details Set this to the value retrieved from <code>Body::GetUnderActiveTime</code>

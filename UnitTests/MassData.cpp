@@ -226,7 +226,7 @@ TEST(MassData, GetForZeroVertexRadiusRectangle)
 {
     const auto density = 2.1_kgpm2;
     auto conf = PolygonShapeConf{};
-    conf.vertexRadius = 0;
+    conf.vertexRadius = 0_m;
     conf.density = density;
     conf.SetAsBox(4_m, 1_m);
     auto shape = conf;

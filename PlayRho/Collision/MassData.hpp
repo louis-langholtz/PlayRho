@@ -40,12 +40,12 @@ struct MassData
     Vector<Length, N> center = Vector<Length, N>{};
     
     /// @brief Mass of the shape in kilograms.
-    NonNegative<Mass> mass = NonNegative<Mass>{0};
+    NonNegative<Mass> mass = NonNegative<Mass>{0_kg};
     
     /// @brief Rotational inertia, a.k.a. moment of inertia.
     /// @details This is the rotational inertia of the shape about the local origin.
     /// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
-    NonNegative<RotInertia> I = NonNegative<RotInertia>{0};
+    NonNegative<RotInertia> I = NonNegative<RotInertia>{0 * 1_m2 * 1_kg / SquareRadian};
 };
 
 // Free functions...

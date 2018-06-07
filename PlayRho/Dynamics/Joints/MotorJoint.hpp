@@ -105,8 +105,8 @@ private:
     Angle m_angularOffset{}; ///< Angular offset.
     Momentum2 m_linearImpulse{}; ///< Linear impulse.
     AngularMomentum m_angularImpulse{}; ///< Angular impulse.
-    NonNegative<Force> m_maxForce = NonNegative<Force>{0}; ///< Max force.
-    NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0}; ///< Max torque.
+    NonNegative<Force> m_maxForce = NonNegative<Force>{0_N}; ///< Max force.
+    NonNegative<Torque> m_maxTorque = NonNegative<Torque>{0_Nm}; ///< Max torque.
     Real m_correctionFactor{}; ///< Correction factor.
 
     // Solver temp
