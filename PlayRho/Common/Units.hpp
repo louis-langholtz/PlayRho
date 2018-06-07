@@ -183,7 +183,7 @@ namespace playrho
     /// @note This quantity's dimensions are: plane angle per time (<code>QP T^-1</code>).
     /// @note The SI derived unit of angular velocity is the radian per second.
     /// @sa Angle, Time.
-    /// @sa RadianPerSecond.
+    /// @sa RadianPerSecond, DegreePerSecond.
     /// @sa https://en.wikipedia.org/wiki/Angular_velocity
     using AngularVelocity = PLAYRHO_QUANTITY(boost::units::si::angular_velocity);
     
@@ -193,7 +193,7 @@ namespace playrho
     /// @note This quantity's dimensions are: plane angle per time squared (<code>QP T^-2</code>).
     /// @note The SI derived unit of angular acceleration is the radian per second-squared.
     /// @sa Angle, Time, AngularVelocity.
-    /// @sa RadianPerSquareSecond.
+    /// @sa RadianPerSquareSecond, DegreePerSquareSecond.
     /// @sa https://en.wikipedia.org/wiki/Angular_acceleration
     using AngularAcceleration = PLAYRHO_QUANTITY(boost::units::si::angular_acceleration);
 
