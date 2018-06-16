@@ -48,7 +48,7 @@ cache:
 # For graphviz.portable info, see: https://chocolatey.org/packages/graphviz.portable
 # Unfortunately, as of December 2, 2017, "the install of graphviz.portable was not successful".
 install:
-  - if "%platform%" equ "noarch" choco install doxygen.portable
+  - if "%platform%" equ "noarch" choco install doxygen
   - if "%platform%" equ "noarch" choco install graphviz
   - if "%platform%" neq "noarch" cmake --version
   - if "%platform%" neq "noarch" git submodule update --init --recursive
