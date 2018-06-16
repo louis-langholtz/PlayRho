@@ -303,7 +303,7 @@ PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(size(arg) == max_
     
     /// @brief Determines whether the given type is an iterable type.
     template<class T>
-    using IsIterable = detail::IsIterableImpl<T>;
+    using IsIterable = typename detail::IsIterableImpl<T>;
 
     /// @brief Has-type trait template class.
     /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
