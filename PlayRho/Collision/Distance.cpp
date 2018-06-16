@@ -110,6 +110,8 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
                         const DistanceProxy& proxyB, const Transformation& transformB,
                         DistanceConf conf)
 {
+    using playrho::IsFull;
+    
     assert(proxyA.GetVertexCount() > 0);
     assert(IsValid(transformA.p));
     assert(proxyB.GetVertexCount() > 0);
@@ -122,7 +124,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 
     // Compute the new simplex metric, if it is substantially different than
     // old metric then flush the simplex.
-    if (simplexEdges.size() > 1)
+    if (size(simplexEdges) > 1)
     {
         const auto metric1 = conf.cache.metric;
         const auto metric2 = Simplex::CalcMetric(simplexEdges);

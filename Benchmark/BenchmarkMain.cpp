@@ -1829,7 +1829,7 @@ static void random_malloc_free_100(benchmark::State& state)
     auto pointers = std::array<void*, 100>();
     for (auto _: state)
     {
-        auto ptr = std::begin(pointers);
+        auto ptr = begin(pointers);
         for (auto size: sizes)
         {
             benchmark::DoNotOptimize(*ptr = std::malloc(size));

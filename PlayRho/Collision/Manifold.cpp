@@ -134,7 +134,7 @@ Manifold GetManifold(bool flipped,
         const auto clipPoints = GetClipPoints(shape0_abs_v0, shape0_abs_v1, std::make_pair(idx0, idx0Next),
                                               shape0_abs_e0_dir,
                                               shape1_abs_v0, shape1_abs_v1, shape1_e);
-        if (clipPoints.size() == 2)
+        if (size(clipPoints) == 2)
         {
             const auto abs_normal = GetFwdPerpendicular(shape0_abs_e0_dir);
             const auto rel_midpoint = (shape0_rel_v0 + shape0_rel_v1) / 2;

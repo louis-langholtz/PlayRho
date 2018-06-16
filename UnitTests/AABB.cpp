@@ -206,13 +206,13 @@ TEST(AABB, Swappable)
     auto a = AABB{};
     auto b = AABB{};
     ASSERT_EQ(a, b);
-    std::swap(a, b);
+    swap(a, b);
     EXPECT_EQ(a, b);
     const auto aBefore = a;
     Include(a, Length2{2_m, 3_m});
     const auto aAfter = a;
     ASSERT_NE(a, b);
-    std::swap(a, b);
+    swap(a, b);
     EXPECT_EQ(a, aBefore);
     EXPECT_EQ(b, aAfter);
 }

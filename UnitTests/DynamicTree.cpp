@@ -27,9 +27,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-using std::begin;
-using std::end;
-
 TEST(DynamicTree, ByteSize)
 {
 #if defined(_WIN64)

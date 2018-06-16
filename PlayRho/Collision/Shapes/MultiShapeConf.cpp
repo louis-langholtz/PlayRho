@@ -37,7 +37,7 @@ MassData GetMassData(const MultiShapeConf& arg) noexcept
     auto I = RotInertia{0};
     const auto density = arg.density;
 
-    std::for_each(std::begin(arg.children), std::end(arg.children),
+    std::for_each(begin(arg.children), end(arg.children),
                   [&](const ConvexHull& ch) {
         const auto dp = ch.GetDistanceProxy();
         const auto md = playrho::d2::GetMassData(ch.GetVertexRadius(), density,
@@ -54,9 +54,9 @@ MassData GetMassData(const MultiShapeConf& arg) noexcept
 ConvexHull ConvexHull::Get(const VertexSet& pointSet, NonNegative<Length> vertexRadius)
 {
     auto vertices = GetConvexHullAsVector(pointSet);
-    assert(!empty(vertices) && vertices.size() < std::numeric_limits<VertexCounter>::max());
+    assert(!empty(vertices) && size(vertices) < std::numeric_limits<VertexCounter>::max());
     
-    const auto count = static_cast<VertexCounter>(vertices.size());
+    const auto count = static_cast<VertexCounter>(size(vertices));
     
     auto normals = std::vector<UnitVec>();
     if (count > 1)
@@ -98,7 +98,7 @@ MultiShapeConf& MultiShapeConf::AddConvexHull(const VertexSet& pointSet,
 
 MultiShapeConf& MultiShapeConf::Transform(const Mat22& m) noexcept
 {
-    std::for_each(std::begin(children), std::end(children), [=](ConvexHull& child){
+    std::for_each(begin(children), end(children), [=](ConvexHull& child){
         child.Transform(m);
     });
     return *this;

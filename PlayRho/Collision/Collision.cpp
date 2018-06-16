@@ -70,7 +70,7 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec& normal, Length of
 {
     ClipList vOut;
 
-    if (vIn.size() == 2) // must have two points (for a segment)
+    if (size(vIn) == 2) // must have two points (for a segment)
     {
         // Use Sutherland-Hodgman clipping:
         //   (https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm ).
@@ -94,7 +94,7 @@ ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec& normal, Length of
         }
 
         // If we didn't already find two points & the points are on different sides of the plane...
-        if (vOut.size() < 2 && signbit(StripUnit(distance0)) != signbit(StripUnit(distance1)))
+        if (size(vOut) < 2 && signbit(StripUnit(distance0)) != signbit(StripUnit(distance1)))
         {
             // Neither distance0 nor distance1 is 0 and either one or the other is negative (but not both).
             // Find intersection point of edge and plane

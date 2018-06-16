@@ -177,8 +177,8 @@ inline auto Average(Span<const T> span)
     assert(zero * Real{2} == zero);
     
     // For C++17, switch from using std::accumulate to using std::reduce.
-    const auto sum = std::accumulate(std::cbegin(span), std::cend(span), zero);
-    const auto count = std::max(span.size(), std::size_t{1});
+    const auto sum = std::accumulate(cbegin(span), cend(span), zero);
+    const auto count = std::max(size(span), std::size_t{1});
     return sum / static_cast<Real>(count);
 }
 
@@ -357,8 +357,8 @@ PLAYRHO_CONSTEXPR inline auto Dot(const T1 a, const T2 b) noexcept
     using VT2 = typename T2::value_type;
     using OT = decltype(VT1{} * VT2{});
     auto result = OT{};
-    const auto size = a.size();
-    for (auto i = decltype(size){0}; i < size; ++i)
+    const auto numElements = size(a);
+    for (auto i = decltype(numElements){0}; i < numElements; ++i)
     {
         result += a[i] * b[i];
     }

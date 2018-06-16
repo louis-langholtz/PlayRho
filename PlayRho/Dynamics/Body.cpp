@@ -35,9 +35,6 @@
 namespace playrho {
 namespace d2 {
 
-using std::begin;
-using std::end;
-
 Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
 {
     // @invariant Only bodies that allow sleeping, can be put to sleep.
@@ -507,7 +504,7 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
 std::size_t GetFixtureCount(const Body& body) noexcept
 {
     const auto& fixtures = body.GetFixtures();
-    return fixtures.size();
+    return size(fixtures);
 }
 
 void RotateAboutWorldPoint(Body& body, Angle amount, Length2 worldPoint)
@@ -553,7 +550,7 @@ Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
         auto sumForce = Force2{};
         const auto world = body.GetWorld();
         const auto bodies = world->GetBodies();
-        for (auto jt = std::begin(bodies); jt != std::end(bodies); jt = std::next(jt))
+        for (auto jt = begin(bodies); jt != end(bodies); jt = std::next(jt))
         {
             const auto& b2 = *(*jt);
             if (&b2 == &body)

@@ -34,11 +34,16 @@
 
 namespace playrho {
 
-namespace detail {
-
+// Bring standard customization points into the namespace...
 using std::begin;
 using std::end;
-using std::get;
+using std::cbegin;
+using std::cend;
+using std::size;
+using std::empty;
+using std::swap;
+
+namespace detail {
 
 /// @brief Voiding template class.
 template<class...> struct Voidify {
@@ -49,9 +54,11 @@ template<class...> struct Voidify {
 /// @brief Void type templated alias.
 template<class... Ts> using VoidT = typename Voidify<Ts...>::type;
 
+/// @brief Low-level implementation of the is-iterable default value trait.
 template<class T, class = void>
 struct IsIterableImpl: std::false_type {};
 
+/// @brief Low-level implementation of the is-iterable true value trait.
 template<class T>
 struct IsIterableImpl<T, VoidT<
     decltype(begin(std::declval<T>())),
@@ -61,6 +68,20 @@ struct IsIterableImpl<T, VoidT<
     >>:
     std::true_type
 {};
+
+/// @brief Gets the maximum size of the given container.
+template <class T>
+PLAYRHO_CONSTEXPR inline auto max_size(const T& arg) -> decltype(arg.max_size())
+{
+    return arg.max_size();
+}
+
+/// @brief Checks whether the given container is full.
+template <class T>
+PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
+{
+    return size(arg) == max_size(arg);
+}
 
 } // namespace detail
     
@@ -279,7 +300,7 @@ struct IsIterableImpl<T, VoidT<
     /// @brief Determines whether the given type is an iterable type.
     template<class T>
     using IsIterable = detail::IsIterableImpl<T>;
-    
+
     /// @brief Has-type trait template class.
     /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
     ///   to the question of: "How do I find out if a tuple contains a type?".
@@ -317,44 +338,14 @@ struct IsIterableImpl<T, VoidT<
     template <typename T, typename Tuple>
     using TupleContainsType = typename HasType<T, Tuple>::type;
     
-    /// @brief Checks whether the given container is empty.
-    /// @note This is from <code>std::empty</code> for C++17.
-    /// @sa http://en.cppreference.com/w/cpp/iterator/empty
-    template <class T>
-    PLAYRHO_CONSTEXPR inline auto empty(const T& arg) -> decltype(arg.empty())
-    {
-        return arg.empty();
-    }
-
-    /// @brief Gets the current size of the given container.
-    /// @note This is from <code>std::size</code> for C++17.
-    /// @sa http://en.cppreference.com/w/cpp/iterator/size
-    template <class T>
-    PLAYRHO_CONSTEXPR inline auto size(const T& arg) -> decltype(arg.size())
-    {
-        return arg.size();
-    }
+    /// @brief Alias for pulling the <code>max_size</code> constomization point into the
+    ///   playrho namesapce.
+    using detail::max_size;
     
-    /// @brief Gets the compile-time size of a C-style array.
-    /// @note This is from <code>std::size</code> for C++17.
-    /// @sa http://en.cppreference.com/w/cpp/iterator/size
-    template <class T, std::size_t N>
-    PLAYRHO_CONSTEXPR inline std::size_t size(T (&)[N]) { return N; }
+    /// @brief Alias for pulling the <code>IsFull</code> constomization point into the
+    ///   playrho namesapce.
+    using detail::IsFull;
 
-    /// @brief Gets the maximum size of the given container.
-    template <class T>
-    PLAYRHO_CONSTEXPR inline auto max_size(const T& arg) -> decltype(arg.max_size())
-    {
-        return arg.max_size();
-    }
-
-    /// @brief Checks whether the given container is full.
-    template <class T>
-    PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
-    {
-        return size(arg) == max_size(arg);
-    }
-    
     /// @brief Function object for performing lexicographical less-than
     ///   comparisons of containers.
     /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
@@ -366,13 +357,10 @@ struct IsIterableImpl<T, VoidT<
         ///   second argument.
         constexpr bool operator()(const T& lhs, const T& rhs) const
         {
-            using std::begin;
-            using std::end;
-            using std::lexicographical_compare;
             using std::less;
             using ElementType = decltype(*begin(lhs));
-            return lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
-                                           less<ElementType>{});
+            return std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
+                                                less<ElementType>{});
         }
     };
     
@@ -387,13 +375,10 @@ struct IsIterableImpl<T, VoidT<
         ///   second argument.
         constexpr bool operator()(const T& lhs, const T& rhs) const
         {
-            using std::begin;
-            using std::end;
-            using std::lexicographical_compare;
             using std::greater;
             using ElementType = decltype(*begin(lhs));
-            return lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
-                                           greater<ElementType>{});
+            return std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
+                                                greater<ElementType>{});
         }
     };
 
@@ -408,8 +393,6 @@ struct IsIterableImpl<T, VoidT<
         ///   equal-to the second argument.
         constexpr bool operator()(const T& lhs, const T& rhs) const
         {
-            using std::begin;
-            using std::end;
             using std::mismatch;
             using std::less;
             using std::get;
@@ -431,8 +414,6 @@ struct IsIterableImpl<T, VoidT<
         ///   equal-to the second argument.
         constexpr bool operator()(const T& lhs, const T& rhs) const
         {
-            using std::begin;
-            using std::end;
             using std::mismatch;
             using std::greater;
             using std::get;

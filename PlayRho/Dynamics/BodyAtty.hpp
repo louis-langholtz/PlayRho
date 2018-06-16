@@ -71,8 +71,8 @@ private:
     /// @brief Removes the given fixture from the given body.
     static bool RemoveFixture(Body& b, Fixture* fixture)
     {
-        const auto begIter = std::begin(b.m_fixtures);
-        const auto endIter = std::end(b.m_fixtures);
+        const auto begIter = begin(b.m_fixtures);
+        const auto endIter = end(b.m_fixtures);
         const auto it = std::find_if(begIter, endIter, [fixture](Body::Fixtures::value_type& f) {
             return GetPtr(f) == fixture;
         });
@@ -87,8 +87,8 @@ private:
     /// @brief Clears the fixtures of the given body.
     static void ClearFixtures(Body& b, std::function<void(Fixture&)> callback)
     {
-        const auto begIter = std::begin(b.m_fixtures);
-        const auto endIter = std::end(b.m_fixtures);
+        const auto begIter = begin(b.m_fixtures);
+        const auto endIter = end(b.m_fixtures);
         std::for_each(begIter, endIter, [&](Body::Fixtures::value_type& f) {
             callback(GetRef(f));
         });

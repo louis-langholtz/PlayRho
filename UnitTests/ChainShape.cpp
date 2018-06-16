@@ -263,7 +263,7 @@ TEST(ChainShapeConf, FourVertex)
     auto conf = ChainShapeConf{};
     conf.density = density;
     conf.vertexRadius = vertexRadius;
-    conf.Set(std::vector<Length2>(std::begin(locations), std::end(locations)));
+    conf.Set(std::vector<Length2>(begin(locations), end(locations)));
     auto foo = ChainShapeConf{conf};
     EXPECT_EQ(GetChildCount(foo), ChildCounter{4});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{5});

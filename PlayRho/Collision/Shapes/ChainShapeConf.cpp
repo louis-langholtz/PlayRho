@@ -31,7 +31,7 @@ namespace {
 #if 0
     inline bool IsEachVertexFarEnoughApart(Span<const Length2> vertices)
     {
-        for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
+        for (auto i = decltype(size(vertices)){1}; i < size(vertices); ++i)
         {
             const auto delta = vertices[i-1] - vertices[i];
             
@@ -50,7 +50,7 @@ ChainShapeConf::ChainShapeConf() = default;
 
 ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
 {
-    const auto count = vertices.size();
+    const auto count = size(vertices);
     if (count > MaxChildCount)
     {
         throw InvalidArgument("too many vertices");
@@ -64,7 +64,7 @@ ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
 void ChainShapeConf::ResetNormals()
 {
     m_normals.clear();
-    if (m_vertices.size() > std::size_t{1})
+    if (size(m_vertices) > std::size_t{1})
     {
         auto vprev = Length2{};
         auto first = true;
@@ -89,7 +89,7 @@ void ChainShapeConf::ResetNormals()
 
 ChainShapeConf& ChainShapeConf::Transform(const Mat22& m) noexcept
 {
-    std::for_each(std::begin(m_vertices), std::end(m_vertices), [=](Length2& v){
+    std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v){
         v = m * v;
     });
     ResetNormals();
@@ -98,7 +98,7 @@ ChainShapeConf& ChainShapeConf::Transform(const Mat22& m) noexcept
 
 ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
 {
-    if (m_vertices.size() > 0)
+    if (size(m_vertices) > 0)
     {
         auto vprev = m_vertices.back();
         m_vertices.emplace_back(vertex);

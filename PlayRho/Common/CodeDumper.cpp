@@ -64,7 +64,7 @@ namespace {
 void Dump(const World& world)
 {
     const auto& bodies = world.GetBodies();
-    log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", bodies.size());
+    log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", size(bodies));
     auto i = std::size_t{0};
     for (auto&& body: bodies)
     {
@@ -74,7 +74,7 @@ void Dump(const World& world)
     }
     
     const auto& joints = world.GetJoints();
-    log("Joint** joints = (Joint**)Alloc(%d * sizeof(Joint*));\n", joints.size());
+    log("Joint** joints = (Joint**)Alloc(%d * sizeof(Joint*));\n", size(joints));
     i = 0;
     for (auto&& j: joints)
     {
