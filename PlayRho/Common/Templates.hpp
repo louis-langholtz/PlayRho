@@ -273,15 +273,19 @@ PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(size(arg) == max_
     template<class T1, class T2>
     struct IsInequalityComparable<T1, T2, detail::VoidT<decltype(T1{} != T2{})> >: std::true_type {};
 
+    /// @brief Template for determining if the given types are multipliable.
     template<class T1, class T2, class = void>
     struct IsMultipliable: std::false_type {};
     
+    /// @brief Template specializing for multipliable types.
     template<class T1, class T2>
     struct IsMultipliable<T1, T2, detail::VoidT<decltype(T1{} * T2{})> >: std::true_type {};
     
+    /// @brief Template for determining if the given types are divisable.
     template<class T1, class T2, class = void>
     struct IsDivisable: std::false_type {};
     
+    /// @brief Template specializing for divisable types.
     template<class T1, class T2>
     struct IsDivisable<T1, T2, detail::VoidT<decltype(T1{} / T2{})> >: std::true_type {};
 
