@@ -48,6 +48,7 @@ cache:
 # For graphviz.portable info, see: https://chocolatey.org/packages/graphviz.portable
 # Unfortunately, as of December 2, 2017, "the install of graphviz.portable was not successful".
 # Note that as of June 16, 2018, trying to plainly install doxygen.install doesn't work.
+# Note that as of June 16, 2018, trying to install doxygen.install -y gets v1.8.13.20171205
 # Note that as of June 16, 2018, doxygen.portable works but doesn't handle all the settings in Doxyfile.
 install:
   - if "%platform%" equ "noarch" choco install doxygen.install -y
@@ -78,7 +79,6 @@ build_script:
   - if "%platform%" neq "noarch" cmake --build . --config "%configuration%"
   - if "%platform%" equ "noarch" cd %APPVEYOR_BUILD_FOLDER%\Documentation
   - if "%platform%" equ "noarch" set PATH=c:\Program Files\doxygen;%PATH%
-  - if "%platform%" equ "noarch" ls c:\Program Files\doxygen
   - if "%platform%" equ "noarch" set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
   - if "%platform%" equ "noarch" doxygen Doxyfile
   - cd ..
