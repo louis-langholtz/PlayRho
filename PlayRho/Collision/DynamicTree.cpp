@@ -22,6 +22,8 @@
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Common/GrowableStack.hpp>
 #include <PlayRho/Common/DynamicMemory.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Templates.hpp>
 
 #include <cstring>
 #include <algorithm>
@@ -38,9 +40,8 @@ MakeNode(DynamicTree::Size c1, const AABB& aabb1, DynamicTree::Height h1,
          DynamicTree::Size c2, const AABB& aabb2, DynamicTree::Height h2,
          DynamicTree::Size parent) noexcept
 {
-    using std::max;
     return DynamicTree::TreeNode{
-        DynamicTree::BranchData{c1, c2}, GetEnclosingAABB(aabb1, aabb2), 1 + max(h1, h2), parent
+        DynamicTree::BranchData{c1, c2}, GetEnclosingAABB(aabb1, aabb2), 1 + std::max(h1, h2), parent
     };
 }
 
@@ -664,7 +665,7 @@ void DynamicTree::ShiftOrigin(Length2 newOrigin)
 
 void swap(DynamicTree& lhs, DynamicTree& rhs) noexcept
 {
-    using std::swap;
+    using playrho::swap;
     swap(lhs.m_nodes, rhs.m_nodes);
     swap(lhs.m_rootIndex, rhs.m_rootIndex);
     swap(lhs.m_freeIndex, rhs.m_freeIndex);
@@ -674,11 +675,11 @@ void swap(DynamicTree& lhs, DynamicTree& rhs) noexcept
 }
 
 void Query(const DynamicTree& tree, const AABB& aabb, const DynamicTreeSizeCB& callback)
-{
+{    
     GrowableStack<DynamicTree::Size, 256> stack;
     stack.push(tree.GetRootIndex());
     
-    while (!stack.empty())
+    while (!empty(stack))
     {
         const auto index = stack.top();
         stack.pop();

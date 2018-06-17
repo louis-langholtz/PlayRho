@@ -42,7 +42,7 @@ public:
 
         {
             const auto shape = Shape{
-                PolygonShapeConf{}.UseDensity(20_kgpm2).UseFriction(Real(0.05f)).SetAsBox(0.1_m, 1_m)
+                PolygonShapeConf{}.UseDensity(20_kgpm2).UseFriction(0.05).SetAsBox(0.1_m, 1_m)
             };
             for (auto i = 0; i < 10; ++i)
             {

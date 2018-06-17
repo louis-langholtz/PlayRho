@@ -66,7 +66,7 @@ PLAYRHO_CONSTEXPR inline std::size_t GetNumValidIndices(IndexPair3 pairs) noexce
 }
 
 /// @brief Checks whether the given collection of index pairs is empty.
-PLAYRHO_CONSTEXPR inline bool IsEmpty(IndexPair3 pairs) noexcept
+PLAYRHO_CONSTEXPR inline bool empty(IndexPair3 pairs) noexcept
 {
     return GetNumValidIndices(pairs) == 0;
 }
@@ -74,14 +74,14 @@ PLAYRHO_CONSTEXPR inline bool IsEmpty(IndexPair3 pairs) noexcept
 /// @brief Gets the dynamic size of the given collection of index pairs.
 /// @note This just calls <code>GetNumValidIndices</code>.
 /// @sa GetNumValidIndices
-PLAYRHO_CONSTEXPR inline auto GetSize(IndexPair3 pairs) -> decltype(GetNumValidIndices(pairs))
+PLAYRHO_CONSTEXPR inline auto size(IndexPair3 pairs) -> decltype(GetNumValidIndices(pairs))
 {
     return GetNumValidIndices(pairs);
 }
 
 /// @brief Gets the maximum size of the given container of index pairs.
 /// @return Always returns 3.
-PLAYRHO_CONSTEXPR inline auto GetMaxSize(IndexPair3 pairs) -> decltype(pairs.max_size())
+PLAYRHO_CONSTEXPR inline auto max_size(IndexPair3 pairs) -> decltype(pairs.max_size())
 {
     return pairs.max_size();
 }

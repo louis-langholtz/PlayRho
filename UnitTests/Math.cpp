@@ -787,10 +787,10 @@ TEST(Math, InvertZeroIsZero)
 {
     const auto mat = Mat22{};
     const auto out = Invert(mat);
-    EXPECT_EQ(Get<0>(Get<0>(out)), Get<0>(Get<0>(mat)));
-    EXPECT_EQ(Get<0>(Get<1>(out)), Get<0>(Get<1>(mat)));
-    EXPECT_EQ(Get<1>(Get<0>(out)), Get<1>(Get<0>(mat)));
-    EXPECT_EQ(Get<1>(Get<1>(out)), Get<1>(Get<1>(mat)));
+    EXPECT_EQ(get<0>(get<0>(out)), get<0>(get<0>(mat)));
+    EXPECT_EQ(get<0>(get<1>(out)), get<0>(get<1>(mat)));
+    EXPECT_EQ(get<1>(get<0>(out)), get<1>(get<0>(mat)));
+    EXPECT_EQ(get<1>(get<1>(out)), get<1>(get<1>(mat)));
 }
 
 TEST(Math, InvertOneIsZero)
@@ -800,10 +800,10 @@ TEST(Math, InvertOneIsZero)
 #pragma warning( disable: 4723 )
     const auto mat = Mat22{Vec2{Real(1), Real(1)}, Vec2{Real(1), Real(1)}};
     const auto out = Invert(mat);
-    EXPECT_EQ(Get<0>(Get<0>(out)), Real(0));
-    EXPECT_EQ(Get<0>(Get<1>(out)), Real(0));
-    EXPECT_EQ(Get<1>(Get<0>(out)), Real(0));
-    EXPECT_EQ(Get<1>(Get<1>(out)), Real(0));
+    EXPECT_EQ(get<0>(get<0>(out)), Real(0));
+    EXPECT_EQ(get<0>(get<1>(out)), Real(0));
+    EXPECT_EQ(get<1>(get<0>(out)), Real(0));
+    EXPECT_EQ(get<1>(get<1>(out)), Real(0));
 #pragma warning( pop )
 }
 
@@ -833,8 +833,8 @@ TEST(Math, GetReflectionMatrix)
         EXPECT_EQ(m[1][0], Real(0));
         EXPECT_EQ(m[1][1], Real(+1));
         const auto vp = m * Vec2{+2, +3};
-        EXPECT_EQ(Get<0>(vp), -2);
-        EXPECT_EQ(Get<1>(vp), +3);
+        EXPECT_EQ(get<0>(vp), -2);
+        EXPECT_EQ(get<1>(vp), +3);
     }
     {
         // reflection against y axis
@@ -844,8 +844,8 @@ TEST(Math, GetReflectionMatrix)
         EXPECT_EQ(m[1][0], Real(0));
         EXPECT_EQ(m[1][1], Real(+1));
         const auto vp = m * Vec2{+2, +3};
-        EXPECT_EQ(Get<0>(vp), -2);
-        EXPECT_EQ(Get<1>(vp), +3);
+        EXPECT_EQ(get<0>(vp), -2);
+        EXPECT_EQ(get<1>(vp), +3);
     }
     {
         // reflection against x axis
@@ -855,8 +855,8 @@ TEST(Math, GetReflectionMatrix)
         EXPECT_EQ(m[1][0], Real(0));
         EXPECT_EQ(m[1][1], Real(-1));
         const auto vp = m * Vec2{+2, +3};
-        EXPECT_EQ(Get<0>(vp), +2);
-        EXPECT_EQ(Get<1>(vp), -3);
+        EXPECT_EQ(get<0>(vp), +2);
+        EXPECT_EQ(get<1>(vp), -3);
     }
     {
         // reflection against x axis
@@ -866,8 +866,8 @@ TEST(Math, GetReflectionMatrix)
         EXPECT_EQ(m[1][0], Real(0));
         EXPECT_EQ(m[1][1], Real(-1));
         const auto vp = m * Vec2{+2, +3};
-        EXPECT_EQ(Get<0>(vp), +2);
-        EXPECT_EQ(Get<1>(vp), -3);
+        EXPECT_EQ(get<0>(vp), +2);
+        EXPECT_EQ(get<1>(vp), -3);
     }
     {
         const auto m = GetReflectionMatrix(UnitVec::GetTopRight());
@@ -876,8 +876,8 @@ TEST(Math, GetReflectionMatrix)
         EXPECT_NEAR(static_cast<double>(m[1][0]), -1.0, 0.000001);
         EXPECT_NEAR(static_cast<double>(m[1][1]),  0.0, 0.000001);
         const auto vp = m * Vec2{+2, +3};
-        EXPECT_NEAR(static_cast<double>(Get<0>(vp)), -3.0, 0.000001);
-        EXPECT_NEAR(static_cast<double>(Get<1>(vp)), -2.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(get<0>(vp)), -3.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(get<1>(vp)), -2.0, 0.000001);
     }
     {
         const auto m = GetReflectionMatrix(UnitVec::GetBottomRight());
@@ -886,7 +886,7 @@ TEST(Math, GetReflectionMatrix)
         EXPECT_NEAR(static_cast<double>(m[1][0]), +1.0, 0.000001);
         EXPECT_NEAR(static_cast<double>(m[1][1]),  0.0, 0.000001);
         const auto vp = m * Vec2{+2, +3};
-        EXPECT_NEAR(static_cast<double>(Get<0>(vp)), +3.0, 0.000001);
-        EXPECT_NEAR(static_cast<double>(Get<1>(vp)), +2.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(get<0>(vp)), +3.0, 0.000001);
+        EXPECT_NEAR(static_cast<double>(get<1>(vp)), +2.0, 0.000001);
     }
 }

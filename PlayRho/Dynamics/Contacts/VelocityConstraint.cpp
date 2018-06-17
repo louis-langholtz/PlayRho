@@ -95,7 +95,7 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
         const auto worldPoint = worldManifold.GetPoint(j);
         const auto relA = worldPoint - bA.GetPosition().linear;
         const auto relB = worldPoint - bB.GetPosition().linear;
-        AddPoint(Get<0>(ci), Get<1>(ci), relA, relB, conf);
+        AddPoint(get<0>(ci), get<1>(ci), relA, relB, conf);
     }
     
     if (conf.blockSolve && (pointCount == 2))
@@ -103,9 +103,9 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
         const auto k = ComputeK(*this);
         
         // Ensure a reasonable condition number.
-        const auto k00_squared = Square(Get<0>(k));
-        const auto k00_times_k11 = Get<0>(k) * Get<1>(k);
-        const auto k01_squared = Square(Get<2>(k));
+        const auto k00_squared = Square(get<0>(k));
+        const auto k00_times_k11 = get<0>(k) * get<1>(k);
+        const auto k01_squared = Square(get<2>(k));
         const auto k_diff = k00_times_k11 - k01_squared;
         PLAYRHO_CONSTEXPR const auto maxCondNum = PLAYRHO_MAGIC(Real(1000.0f));
         if (k00_squared < maxCondNum * k_diff)
@@ -113,8 +113,8 @@ VelocityConstraint::VelocityConstraint(Real friction, Real restitution,
             // K is safe to invert.
             // Prepare the block solver.
             m_K = k;
-            const auto normalMass = Invert(InvMass22{InvMass2{Get<0>(k), Get<2>(k)}, InvMass2{Get<2>(k), Get<1>(k)}});
-            m_normalMass = Mass3{Get<0>(Get<0>(normalMass)), Get<1>(Get<1>(normalMass)), Get<1>(Get<0>(normalMass))};
+            const auto normalMass = Invert(InvMass22{InvMass2{get<0>(k), get<2>(k)}, InvMass2{get<2>(k), get<1>(k)}});
+            m_normalMass = Mass3{get<0>(get<0>(normalMass)), get<1>(get<1>(normalMass)), get<1>(get<0>(normalMass))};
         }
         else
         {

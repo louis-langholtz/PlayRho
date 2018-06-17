@@ -59,10 +59,10 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
     Length2 localAnchorB = Length2{};
     
     /// @brief Maximum friction force.
-    NonNegative<Force> maxForce = NonNegative<Force>{0};
+    NonNegative<Force> maxForce = NonNegative<Force>{0_N};
     
     /// @brief Maximum friction torque.
-    NonNegative<Torque> maxTorque = NonNegative<Torque>{0};
+    NonNegative<Torque> maxTorque = NonNegative<Torque>{0_Nm};
 };
 
 PLAYRHO_CONSTEXPR inline FrictionJointConf& FrictionJointConf::UseMaxForce(NonNegative<Force> v) noexcept

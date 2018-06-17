@@ -47,8 +47,11 @@ cache:
 #
 # For graphviz.portable info, see: https://chocolatey.org/packages/graphviz.portable
 # Unfortunately, as of December 2, 2017, "the install of graphviz.portable was not successful".
+# Note that as of June 16, 2018, trying to plainly install doxygen.install doesn't work.
+# Note that as of June 16, 2018, trying to install doxygen.install -y gets v1.8.13.20171205
+# Note that as of June 16, 2018, doxygen.portable works but doesn't handle all the settings in Doxyfile.
 install:
-  - if "%platform%" equ "noarch" choco install doxygen.portable
+  - if "%platform%" equ "noarch" choco install doxygen.install -y
   - if "%platform%" equ "noarch" choco install graphviz
   - if "%platform%" neq "noarch" cmake --version
   - if "%platform%" neq "noarch" git submodule update --init --recursive
@@ -75,6 +78,7 @@ build_script:
   - if "%configuration%" equ "Release" cmake -G"%generator%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%triplet% -DPLAYRHO_BUILD_HELLOWORLD=ON -DPLAYRHO_BUILD_UNIT_TESTS=ON -DPLAYRHO_BUILD_TESTBED=ON -DPLAYRHO_BUILD_BENCHMARK=ON -DCMAKE_CXX_FLAGS=/D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING ..
   - if "%platform%" neq "noarch" cmake --build . --config "%configuration%"
   - if "%platform%" equ "noarch" cd %APPVEYOR_BUILD_FOLDER%\Documentation
+  - if "%platform%" equ "noarch" set PATH=c:\Program Files\doxygen\bin;%PATH%
   - if "%platform%" equ "noarch" set PATH=c:\Program Files (x86)\graphviz2.38\bin;%PATH%
   - if "%platform%" equ "noarch" doxygen Doxyfile
   - cd ..

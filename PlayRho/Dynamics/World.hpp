@@ -871,8 +871,8 @@ inline SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexce
 inline SizedRange<World::Bodies::const_iterator> World::GetBodiesForProxies() const noexcept
 {
     return {
-        std::cbegin(m_bodiesForProxies),
-        std::cend(m_bodiesForProxies),
+        cbegin(m_bodiesForProxies),
+        cend(m_bodiesForProxies),
         m_bodiesForProxies.size()
     };
 }
@@ -880,8 +880,8 @@ inline SizedRange<World::Bodies::const_iterator> World::GetBodiesForProxies() co
 inline SizedRange<World::Fixtures::const_iterator> World::GetFixturesForProxies() const noexcept
 {
     return {
-        std::cbegin(m_fixturesForProxies),
-        std::cend(m_fixturesForProxies),
+        cbegin(m_fixturesForProxies),
+        cend(m_fixturesForProxies),
         m_fixturesForProxies.size()
     };
 }
@@ -1131,7 +1131,7 @@ template <class F>
 void SetAccelerations(World& world, F fn) noexcept
 {
     const auto bodies = world.GetBodies();
-    std::for_each(std::begin(bodies), std::end(bodies), [&](World::Bodies::value_type &b) {
+    std::for_each(begin(bodies), end(bodies), [&](World::Bodies::value_type &b) {
         SetAcceleration(GetRef(b), fn(GetRef(b)));
     });
 }

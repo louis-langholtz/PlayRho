@@ -31,9 +31,6 @@
 namespace playrho {
 namespace d2 {
 
-using std::cbegin;
-using std::cend;
-
 FixtureProxy Fixture::GetProxy(ChildCounter index) const noexcept
 {
     assert(index < GetProxyCount());

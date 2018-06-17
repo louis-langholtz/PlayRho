@@ -103,7 +103,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
         const auto tolerance = OVERLAP_TOLERANCE;
         const auto manifold = CollideShapes(childA, xfA, childB, xfB, conf.manifold);
         assert(newTouching == (manifold.GetPointCount() > 0) ||
-               Abs(overlapping) < tolerance);
+               abs(overlapping) < tolerance);
 #endif
 #endif
         
@@ -124,7 +124,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
         const auto tolerance = OVERLAP_TOLERANCE;
         const auto overlapping = TestOverlap(childA, xfA, childB, xfB, conf.distance);
         assert(newTouching == (overlapping >= Area{0}) ||
-               Abs(overlapping) < tolerance);
+               abs(overlapping) < tolerance);
 #endif
 #endif
         // Match old contact ids to new contact ids and copy the stored impulses to warm

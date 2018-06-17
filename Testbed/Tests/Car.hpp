@@ -66,7 +66,7 @@ public:
             auto x = Real{20.0f};
             auto y1 = Real{0.0f};
             const auto dx = decltype(x){5.0f};
-            auto conf = EdgeShapeConf{}.UseDensity(0_kgpm2).UseFriction(Real(0.6f));
+            auto conf = EdgeShapeConf{}.UseDensity(0_kgpm2).UseFriction(0.6);
             ground->CreateFixture(Shape{conf.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)});
             for (const auto y2: hs)
             {
@@ -113,7 +113,7 @@ public:
         {
             const auto N = 20;
             const auto shape = Shape{
-                PolygonShapeConf{}.UseDensity(1_kgpm2).UseFriction(Real(0.6f)).SetAsBox(1_m, 0.125_m)
+                PolygonShapeConf{}.UseDensity(1_kgpm2).UseFriction(0.6).SetAsBox(1_m, 0.125_m)
             };
             auto prevBody = ground;
             for (auto i = 0; i < N; ++i)
@@ -168,7 +168,7 @@ public:
         m_car->CreateFixture(Shape{carShapeConf});
         
         const auto wheelShape = Shape{
-            DiskShapeConf{}.UseRadius(0.4_m).UseDensity(1_kgpm2).UseFriction(Real(0.9f))
+            DiskShapeConf{}.UseRadius(0.4_m).UseDensity(1_kgpm2).UseFriction(0.9)
         };
         {
             // setup back wheel

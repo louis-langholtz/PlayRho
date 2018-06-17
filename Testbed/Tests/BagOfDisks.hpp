@@ -53,7 +53,7 @@ public:
             SetAngularVelocity(*m_ground, angularVelocity - 0.1_rad / Second);
         });
 
-        auto boundaryConf = ChainShapeConf{}.UseFriction(Real(100));
+        auto boundaryConf = ChainShapeConf{}.UseFriction(100);
         boundaryConf.UseVertexRadius(0.04_m);
         boundaryConf.Add(Vec2(-12, +20) * 1_m);
         boundaryConf.Add(Vec2(-12,  +0) * 1_m);
@@ -102,7 +102,7 @@ public:
         m_world.CreateJoint(RevoluteJointConf{prevBody, firstBody, vertices[0] + vertexOffset});
 
         const auto diskRadius = 0.15_m;
-        const auto diskShape = Shape(DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(Real(0)));
+        const auto diskShape = Shape(DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(0));
         auto angleIncrement = 90_deg;
         auto angle = 0_deg;
         const auto alpha = diskRadius;

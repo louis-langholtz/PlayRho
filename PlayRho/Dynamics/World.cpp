@@ -83,10 +83,6 @@
 #define PLAYRHO_MAGIC(x) (x)
 
 using std::for_each;
-using std::begin;
-using std::end;
-using std::cbegin;
-using std::cend;
 using std::remove;
 using std::sort;
 using std::transform;
@@ -94,6 +90,8 @@ using std::unique;
 
 namespace playrho {
 namespace d2 {
+
+using playrho::size;
 
 /// @brief Body pointer alias.
 using BodyPtr = Body*;
@@ -125,7 +123,7 @@ namespace {
     
     /// Reports the given constraints to the listener.
     /// @details
-    /// This calls the listener's PostSolve method for all contacts.size() elements of
+    /// This calls the listener's PostSolve method for all size(contacts) elements of
     /// the given array of constraints.
     /// @param listener Listener to call.
     /// @param constraints Array of m_contactCount contact velocity constraint elements.
@@ -134,8 +132,8 @@ namespace {
                        const VelocityConstraints& constraints,
                        StepConf::iteration_type solved)
     {
-        const auto size = contacts.size();
-        for (auto i = decltype(size){0}; i < size; ++i)
+        const auto numContacts = size(contacts);
+        for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
         {
             listener.PostSolve(*contacts[i], GetContactImpulses(constraints[i]), solved);
         }
@@ -177,10 +175,10 @@ namespace {
                                              BodyConstraints &bodyConstraints)
     {
         auto map = BodyConstraintsMap{};
-        map.reserve(bodies.size());
+        map.reserve(size(bodies));
         for_each(cbegin(bodies), cend(bodies), [&](const BodyPtr& body) {
             const auto i = static_cast<size_t>(&body - bodies.data());
-            assert(i < bodies.size());
+            assert(i < size(bodies));
 #ifdef USE_VECTOR_MAP
             map.push_back(BodyConstraintPair{body, &bodyConstraints[i]});
 #else
@@ -198,7 +196,7 @@ namespace {
     BodyConstraints GetBodyConstraints(const Island::Bodies& bodies, Time h, MovementConf conf)
     {
         auto constraints = BodyConstraints{};
-        constraints.reserve(bodies.size());
+        constraints.reserve(size(bodies));
         transform(cbegin(bodies), cend(bodies), back_inserter(constraints), [&](const BodyPtr &b) {
             return GetBodyConstraint(*b, h, conf);
         });
@@ -209,7 +207,7 @@ namespace {
                                                BodyConstraintsMap& bodies)
     {
         auto constraints = PositionConstraints{};
-        constraints.reserve(contacts.size());
+        constraints.reserve(size(contacts));
         transform(cbegin(contacts), cend(contacts), back_inserter(constraints), [&](const Contact *contact) {
             const auto& manifold = static_cast<const Contact*>(contact)->GetManifold();
             
@@ -249,7 +247,7 @@ namespace {
                                                const VelocityConstraint::Conf conf)
     {
         auto velConstraints = VelocityConstraints{};
-        velConstraints.reserve(contacts.size());
+        velConstraints.reserve(size(contacts));
         transform(cbegin(contacts), cend(contacts), back_inserter(velConstraints), [&](const ContactPtr& contact) {
             const auto& manifold = contact->GetManifold();
             const auto fixtureA = contact->GetFixtureA();
@@ -723,7 +721,7 @@ Body* World::CreateBody(const BodyConf& def)
         throw WrongState("World::CreateBody: world is locked");
     }
 
-    if (m_bodies.size() >= MaxBodies)
+    if (size(m_bodies) >= MaxBodies)
     {
         throw LengthError("World::CreateBody: operation would exceed MaxBodies");
     }
@@ -802,7 +800,7 @@ Joint* World::CreateJoint(const JointConf& def)
         throw WrongState("World::CreateJoint: world is locked");
     }
     
-    if (m_joints.size() >= MaxJoints)
+    if (size(m_joints) >= MaxJoints)
     {
         throw LengthError("World::CreateJoint: operation would exceed MaxJoints");
     }
@@ -914,7 +912,7 @@ void World::AddToIsland(Island& island, BodyStack& stack,
                  Contacts::size_type& remNumContacts,
                  Joints::size_type& remNumJoints)
 {
-    while (!stack.empty())
+    while (!empty(stack))
     {
         // Grab the next body off the stack and add it to the island.
         const auto b = stack.back();
@@ -936,21 +934,21 @@ void World::AddToIsland(Island& island, BodyStack& stack,
         // Make sure the body is awake (without resetting sleep timer).
         BodyAtty::SetAwakeFlag(*b);
 
-        const auto oldNumContacts = island.m_contacts.size();
+        const auto oldNumContacts = size(island.m_contacts);
         // Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
         AddContactsToIsland(island, stack, b);
         
-        const auto newNumContacts = island.m_contacts.size();
+        const auto newNumContacts = size(island.m_contacts);
         assert(newNumContacts >= oldNumContacts);
         const auto netNumContacts = newNumContacts - oldNumContacts;
         assert(remNumContacts >= netNumContacts);
         remNumContacts -= netNumContacts;
         
-        const auto numJoints = island.m_joints.size();
+        const auto numJoints = size(island.m_joints);
         // Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
         AddJointsToIsland(island, stack, b);
 
-        remNumJoints -= island.m_joints.size() - numJoints;
+        remNumJoints -= size(island.m_joints) - numJoints;
     }
 }
 
@@ -1026,9 +1024,9 @@ RegStepStats World::SolveReg(const StepConf& conf)
     assert(stats.islandsFound == 0);
     assert(stats.islandsSolved == 0);
 
-    auto remNumBodies = m_bodies.size(); ///< Remaining number of bodies.
-    auto remNumContacts = m_contacts.size(); ///< Remaining number of contacts.
-    auto remNumJoints = m_joints.size(); ///< Remaining number of joints.
+    auto remNumBodies = size(m_bodies); ///< Remaining number of bodies.
+    auto remNumContacts = size(m_contacts); ///< Remaining number of contacts.
+    auto remNumJoints = size(m_joints); ///< Remaining number of joints.
 
     // Clear all the island flags.
     // This builds the logical set of bodies, contacts, and joints eligible for resolution.
@@ -1102,7 +1100,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
 
 IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
 {
-    assert(!island.m_bodies.empty() || !island.m_contacts.empty() || !island.m_joints.empty());
+    assert(!empty(island.m_bodies) || !empty(island.m_contacts) || !empty(island.m_joints));
     
     auto results = IslandStats{};
     results.positionIterations = conf.regPositionIterations;
@@ -1189,7 +1187,7 @@ IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
     
     for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
         const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
-        assert(i < bodyConstraints.size());
+        assert(i < size(bodyConstraints));
         // Could normalize position here to avoid unbounded angles but angular
         // normalization isn't handled correctly by joints that constrain rotation.
         UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
@@ -1515,7 +1513,7 @@ IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
     }
 
     // Build the island
-    Island island(m_bodies.size(), m_contacts.size(), 0);
+    Island island(size(m_bodies), size(m_contacts), 0);
 
      // These asserts get triggered sometimes if contacts within TOI are iterated over.
     assert(!IsIslanded(bA));
@@ -1646,7 +1644,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
 #else
     for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
         const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
-        assert(i < bodyConstraints.size());
+        assert(i < size(bodyConstraints));
         BodyAtty::SetPosition0(*island.m_bodies[i], bc.GetPosition());
     });
 #endif
@@ -1681,7 +1679,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
     
     for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
         const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
-        assert(i < bodyConstraints.size());
+        assert(i < size(bodyConstraints));
         UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });
 
@@ -1944,7 +1942,7 @@ void World::Destroy(Contact* contact, Body* from)
 
 World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 {
-    const auto beforeSize = contacts.size();
+    const auto beforeSize = size(contacts);
     contacts.erase(std::remove_if(begin(contacts), end(contacts), [&](Contacts::value_type& c)
     {
         const auto key = std::get<ContactKey>(c);
@@ -1975,7 +1973,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 
         return false;
     }), end(contacts));
-    const auto afterSize = contacts.size();
+    const auto afterSize = size(contacts);
 
     auto stats = DestroyContactsStats{};
     stats.ignored = static_cast<ContactCounter>(afterSize);
@@ -1999,9 +1997,9 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     
 #if defined(DO_THREADED)
     std::vector<Contact*> contactsNeedingUpdate;
-    contactsNeedingUpdate.reserve(contacts.size());
+    contactsNeedingUpdate.reserve(size(contacts));
     std::vector<std::future<void>> futures;
-    futures.reserve(contacts.size());
+    futures.reserve(size(contacts));
 #endif
 
     // Update awake contacts.
@@ -2058,7 +2056,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     });
     
 #if defined(DO_THREADED)
-    auto numJobs = contactsNeedingUpdate.size();
+    auto numJobs = size(contactsNeedingUpdate);
     const auto jobsPerCore = numJobs / 4;
     for (auto i = decltype(numJobs){0}; numJobs > 0 && i < 3; ++i)
     {
@@ -2131,12 +2129,12 @@ ContactCounter World::FindNewContacts()
     sort(begin(m_proxyKeys), end(m_proxyKeys));
     m_proxyKeys.erase(unique(begin(m_proxyKeys), end(m_proxyKeys)), end(m_proxyKeys));
 
-    const auto numContactsBefore = m_contacts.size();
+    const auto numContactsBefore = size(m_contacts);
     for_each(cbegin(m_proxyKeys), cend(m_proxyKeys), [&](ContactKey key)
     {
         Add(key);
     });
-    const auto numContactsAfter = m_contacts.size();
+    const auto numContactsAfter = size(m_contacts);
     return static_cast<ContactCounter>(numContactsAfter - numContactsBefore);
 }
 
@@ -2203,7 +2201,7 @@ bool World::Add(ContactKey key)
     // NOTE: Time trial testing found the following rough ordering of data structures, to be
     // fastest to slowest: vector, list, unorderered_set, unordered_map,
     //     set, map.
-    const auto searchBody = (bodyA->GetContacts().size() < bodyB->GetContacts().size())?
+    const auto searchBody = (size(bodyA->GetContacts()) < size(bodyB->GetContacts()))?
         bodyA: bodyB;
     
     const auto contacts = searchBody->GetContacts();
@@ -2215,8 +2213,8 @@ bool World::Add(ContactKey key)
         return false;
     }
     
-    assert(m_contacts.size() < MaxContacts);
-    if (m_contacts.size() >= MaxContacts)
+    assert(size(m_contacts) < MaxContacts);
+    if (size(m_contacts) >= MaxContacts)
     {
         // New contact was needed, but denied due to MaxContacts count being reached.
         return false;
@@ -2511,7 +2509,7 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
 void World::DestroyProxies(Fixture& fixture) noexcept
 {
     const auto proxies = FixtureAtty::GetProxies(fixture);
-    const auto childCount = proxies.size();
+    const auto childCount = size(proxies);
     if (childCount > 0)
     {
         // Destroy proxies in reverse order from what they were created in.
@@ -2634,7 +2632,7 @@ size_t GetShapeCount(const World& world) noexcept
             shapes.insert(GetData(GetRef(f).GetShape()));
         });
     });
-    return shapes.size();
+    return size(shapes);
 }
 
 BodyCounter GetAwakeCount(const World& world) noexcept

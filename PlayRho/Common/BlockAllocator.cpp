@@ -25,7 +25,7 @@
 
 namespace playrho {
 
-static_assert(GetSize(AllocatorBlockSizes) == 14,
+static_assert(size(AllocatorBlockSizes) == 14,
               "Invalid number of elements of AllocatorBlockSizes");
 static_assert(BlockAllocator::GetMaxBlockSize() == 640,
               "Invalid maximum block size of AllocatorBlockSizes");
@@ -83,7 +83,7 @@ static PLAYRHO_CONSTEXPR const std::uint8_t s_blockSizeLookup[BlockAllocator::Ge
 /// @brief Gets the block size index for the given data block size.
 static inline std::uint8_t GetBlockSizeIndex(std::size_t n)
 {
-    assert(n < GetSize(s_blockSizeLookup));
+    assert(n < size(s_blockSizeLookup));
     return s_blockSizeLookup[n];
 }
 
@@ -105,7 +105,7 @@ struct BlockAllocator::Block
 BlockAllocator::BlockAllocator():
     m_chunks(Alloc<Chunk>(m_chunkSpace))
 {
-    static_assert(GetSize(AllocatorBlockSizes) < std::numeric_limits<std::uint8_t>::max(),
+    static_assert(size(AllocatorBlockSizes) < std::numeric_limits<std::uint8_t>::max(),
                   "AllocatorBlockSizes too big");
     std::memset(m_chunks, 0, m_chunkSpace * sizeof(Chunk));
     std::memset(m_freeLists, 0, sizeof(m_freeLists));
@@ -133,7 +133,7 @@ void* BlockAllocator::Allocate(size_type n)
     }
 
     const auto index = GetBlockSizeIndex(n);
-    assert((0 <= index) && (index < GetSize(m_freeLists)));
+    assert((0 <= index) && (index < size(m_freeLists)));
     {
         const auto block = m_freeLists[index];
         if (block)
@@ -184,10 +184,10 @@ void BlockAllocator::Free(void* p, size_type n)
     else if (n > 0)
     {
         const auto index = GetBlockSizeIndex(n);
-        assert((0 <= index) && (index < GetSize(m_freeLists)));
+        assert((0 <= index) && (index < size(m_freeLists)));
 #ifdef _DEBUG
         // Verify the memory address and size is valid.
-        assert((0 <= index) && (index < GetSize(AllocatorBlockSizes)));
+        assert((0 <= index) && (index < size(AllocatorBlockSizes)));
         const auto blockSize = AllocatorBlockSizes[index];
         bool found = false;
         for (auto i = decltype(m_chunkCount){0}; i < m_chunkCount; ++i)

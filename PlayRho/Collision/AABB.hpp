@@ -138,8 +138,8 @@ PLAYRHO_CONSTEXPR inline bool operator!= (const AABB<N>& lhs, const AABB<N>& rhs
 template <std::size_t N>
 inline bool operator< (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
-    return std::lexicographical_compare(std::cbegin(lhs.ranges), std::cend(lhs.ranges),
-                                        std::cbegin(rhs.ranges), std::cend(rhs.ranges),
+    return std::lexicographical_compare(cbegin(lhs.ranges), cend(lhs.ranges),
+                                        cbegin(rhs.ranges), cend(rhs.ranges),
                                         std::less<LengthInterval>{});
 }
 
@@ -148,10 +148,10 @@ inline bool operator< (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 template <std::size_t N>
 inline bool operator<= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
-    const auto lhsEnd = std::cend(lhs.ranges);
-    const auto rhsEnd = std::cend(rhs.ranges);
-    const auto diff = std::mismatch(std::cbegin(lhs.ranges), lhsEnd,
-                                    std::cbegin(rhs.ranges), rhsEnd);
+    const auto lhsEnd = cend(lhs.ranges);
+    const auto rhsEnd = cend(rhs.ranges);
+    const auto diff = std::mismatch(cbegin(lhs.ranges), lhsEnd,
+                                    cbegin(rhs.ranges), rhsEnd);
     return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) < *std::get<1>(diff));
 }
 
@@ -160,8 +160,8 @@ inline bool operator<= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 template <std::size_t N>
 inline bool operator> (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
-    return std::lexicographical_compare(std::cbegin(lhs.ranges), std::cend(lhs.ranges),
-                                        std::cbegin(rhs.ranges), std::cend(rhs.ranges),
+    return std::lexicographical_compare(cbegin(lhs.ranges), cend(lhs.ranges),
+                                        cbegin(rhs.ranges), cend(rhs.ranges),
                                         std::greater<LengthInterval>{});
 }
 
@@ -170,10 +170,10 @@ inline bool operator> (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 template <std::size_t N>
 inline bool operator>= (const AABB<N>& lhs, const AABB<N>& rhs) noexcept
 {
-    const auto lhsEnd = std::cend(lhs.ranges);
-    const auto rhsEnd = std::cend(rhs.ranges);
-    const auto diff = std::mismatch(std::cbegin(lhs.ranges), lhsEnd,
-                                    std::cbegin(rhs.ranges), rhsEnd);
+    const auto lhsEnd = cend(lhs.ranges);
+    const auto rhsEnd = cend(rhs.ranges);
+    const auto diff = std::mismatch(cbegin(lhs.ranges), lhsEnd,
+                                    cbegin(rhs.ranges), rhsEnd);
     return (std::get<0>(diff) == lhsEnd) || (*std::get<0>(diff) > *std::get<1>(diff));
 }
 

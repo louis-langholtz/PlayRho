@@ -673,7 +673,7 @@ namespace playrho {
     template <typename BT, unsigned int FB>
     PLAYRHO_CONSTEXPR inline bool AlmostEqual(Fixed<BT, FB> x, Fixed<BT, FB> y, int ulp = 2)
     {
-        return Abs(x - y) <= Fixed<BT, FB>{0, static_cast<std::uint32_t>(ulp)};
+        return abs(x - y) <= Fixed<BT, FB>{0, static_cast<std::uint32_t>(ulp)};
     }
     
 #ifdef CONFLICT_WITH_GETINVALID

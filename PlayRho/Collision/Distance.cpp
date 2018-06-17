@@ -85,8 +85,8 @@ PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept
     auto pointA = Length2{};
     auto pointB = Length2{};
 
-    const auto size = simplex.GetSize();
-    for (auto i = decltype(size){0}; i < size; ++i)
+    const auto numEdges = size(simplex);
+    for (auto i = decltype(numEdges){0}; i < numEdges; ++i)
     {
         const auto e = simplex.GetSimplexEdge(i);
         const auto c = simplex.GetCoefficient(i);
@@ -110,6 +110,8 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
                         const DistanceProxy& proxyB, const Transformation& transformB,
                         DistanceConf conf)
 {
+    using playrho::IsFull;
+    
     assert(proxyA.GetVertexCount() > 0);
     assert(IsValid(transformA.p));
     assert(proxyB.GetVertexCount() > 0);
@@ -122,7 +124,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 
     // Compute the new simplex metric, if it is substantially different than
     // old metric then flush the simplex.
-    if (simplexEdges.size() > 1)
+    if (size(simplexEdges) > 1)
     {
         const auto metric1 = conf.cache.metric;
         const auto metric2 = Simplex::CalcMetric(simplexEdges);
@@ -132,7 +134,7 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
         }
     }
 
-    if (IsEmpty(simplexEdges))
+    if (empty(simplexEdges))
     {
         simplexEdges.push_back(GetSimplexEdge(proxyA, transformA, 0, proxyB, transformB, 0));
         savedIndices = IndexPair3{{IndexPair{0, 0}, InvalidIndexPair, InvalidIndexPair}};

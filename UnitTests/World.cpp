@@ -3499,7 +3499,7 @@ static void smaller_still_conserves_momentum(bool bullet, Real multiplier, Real 
             const auto relative_velocity = GetLinearVelocity(*body_1) - GetLinearVelocity(*body_2);
             if (relative_velocity.x >= 0)
             {
-                EXPECT_NEAR(double(relative_velocity.x), double(Abs(body_def.linearVelocity.x) * +2), 0.0001);
+                EXPECT_NEAR(double(relative_velocity.x), double(abs(body_def.linearVelocity.x) * +2), 0.0001);
                 break;
             }
             if (failed)
@@ -3525,7 +3525,7 @@ static void smaller_still_conserves_momentum(bool bullet, Real multiplier, Real 
                 ASSERT_FALSE(failed);
             }
             
-            EXPECT_TRUE(AlmostEqual(relative_velocity.x, Abs(body_def.linearVelocity.x) * -2));
+            EXPECT_TRUE(AlmostEqual(relative_velocity.x, abs(body_def.linearVelocity.x) * -2));
             Step(world, time_inc);
             ++numSteps;
         }

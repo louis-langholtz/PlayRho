@@ -186,7 +186,7 @@ void PrismaticJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     if (m_enableLimit)
     {
         const auto jointTranslation = Length{Dot(m_axis, d)};
-        if (Abs(m_upperTranslation - m_lowerTranslation) < (conf.linearSlop * Real{2}))
+        if (abs(m_upperTranslation - m_lowerTranslation) < (conf.linearSlop * Real{2}))
         {
             m_limitState = e_equalLimits;
         }
@@ -414,19 +414,19 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
         (posB.angular - posA.angular - m_referenceAngle) / Radian
     };
 
-    auto linearError = Length{Abs(GetX(C1)) * Meter};
-    const auto angularError = Angle{Abs(GetY(C1)) * Radian};
+    auto linearError = Length{abs(GetX(C1)) * Meter};
+    const auto angularError = Angle{abs(GetY(C1)) * Radian};
 
     auto active = false;
     auto C2 = Real{0};
     if (m_enableLimit)
     {
         const auto translation = Length{Dot(axis, d)};
-        if (Abs(m_upperTranslation - m_lowerTranslation) < (Real{2} * conf.linearSlop))
+        if (abs(m_upperTranslation - m_lowerTranslation) < (Real{2} * conf.linearSlop))
         {
             // Prevent large angular corrections
             C2 = StripUnit(Clamp(translation, -conf.maxLinearCorrection, conf.maxLinearCorrection));
-            linearError = std::max(linearError, Abs(translation));
+            linearError = std::max(linearError, abs(translation));
             active = true;
         }
         else if (translation <= m_lowerTranslation)

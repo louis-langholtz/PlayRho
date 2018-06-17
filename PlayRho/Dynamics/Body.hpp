@@ -785,27 +785,27 @@ inline bool Body::IsSleepingAllowed() const noexcept
 
 inline SizedRange<Body::Fixtures::const_iterator> Body::GetFixtures() const noexcept
 {
-    return {m_fixtures.begin(), m_fixtures.end(), m_fixtures.size()};
+    return {begin(m_fixtures), end(m_fixtures), size(m_fixtures)};
 }
 
 inline SizedRange<Body::Fixtures::iterator> Body::GetFixtures() noexcept
 {
-    return {m_fixtures.begin(), m_fixtures.end(), m_fixtures.size()};
+    return {begin(m_fixtures), end(m_fixtures), size(m_fixtures)};
 }
 
 inline SizedRange<Body::Joints::const_iterator> Body::GetJoints() const noexcept
 {
-    return {m_joints.begin(), m_joints.end(), m_joints.size()};
+    return {begin(m_joints), end(m_joints), size(m_joints)};
 }
 
 inline SizedRange<Body::Joints::iterator> Body::GetJoints() noexcept
 {
-    return {m_joints.begin(), m_joints.end(), m_joints.size()};
+    return {begin(m_joints), end(m_joints), size(m_joints)};
 }
 
 inline SizedRange<Body::Contacts::const_iterator> Body::GetContacts() const noexcept
 {
-    return {std::begin(m_contacts), std::end(m_contacts), m_contacts.size()};
+    return {begin(m_contacts), end(m_contacts), size(m_contacts)};
 }
 
 inline void Body::SetUserData(void* data) noexcept

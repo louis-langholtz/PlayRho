@@ -125,8 +125,6 @@ namespace playrho {
 namespace d2 {
 
 using std::count;
-using std::cbegin;
-using std::cend;
 
 Island::Island(Bodies::size_type bodyCapacity,
                Contacts::size_type contactCapacity,

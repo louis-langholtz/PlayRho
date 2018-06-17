@@ -5,8 +5,8 @@
 # Minimally require CMake version 3.1...
 cmake_minimum_required(VERSION 3.1)
 
-# Require C++14...
-set(CMAKE_CXX_STANDARD 14)
+# Require C++17...
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Defaults the CMAKE_BUILD_TYPE to Release
@@ -55,6 +55,11 @@ set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 # Perhaps this should be a build option for all platforms?
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -EHsc")
+endif()
+
+# Make sure Microsoft Visual C++ (MSVC) uses the standards-conforming compiler behavior.
+if(MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive-")
 endif()
 
 # The PlayRho library.

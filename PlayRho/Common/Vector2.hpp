@@ -81,7 +81,7 @@ PLAYRHO_CONSTEXPR inline Vec2 GetInvalid() noexcept
 template <typename TYPE>
 PLAYRHO_CONSTEXPR inline bool IsValid(const Vector2<TYPE>& value) noexcept
 {
-    return IsValid(Get<0>(value)) && IsValid(Get<1>(value));
+    return IsValid(get<0>(value)) && IsValid(get<1>(value));
 }
 
 #ifdef USE_BOOST_UNITS
@@ -116,32 +116,32 @@ PLAYRHO_CONSTEXPR inline Momentum2 GetInvalid() noexcept
 PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const Length2 value)
 {
     return Vec2{
-        Get<0>(value) / Meter,
-        Get<1>(value) / Meter
+        get<0>(value) / Meter,
+        get<1>(value) / Meter
     };
 }
 
 PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const LinearVelocity2 value)
 {
     return Vec2{
-        Get<0>(value) / MeterPerSecond,
-        Get<1>(value) / MeterPerSecond
+        get<0>(value) / MeterPerSecond,
+        get<1>(value) / MeterPerSecond
     };
 }
 
 PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const Momentum2 value)
 {
     return Vec2{
-        Get<0>(value) / (Kilogram * MeterPerSecond),
-        Get<1>(value) / (Kilogram * MeterPerSecond)
+        get<0>(value) / (Kilogram * MeterPerSecond),
+        get<1>(value) / (Kilogram * MeterPerSecond)
     };
 }
 
 PLAYRHO_CONSTEXPR inline Vec2 GetVec2(const Force2 value)
 {
     return Vec2{
-        Get<0>(value) / Newton,
-        Get<1>(value) / Newton
+        get<0>(value) / Newton,
+        get<1>(value) / Newton
     };
 }
 #endif

@@ -52,7 +52,7 @@ public:
             ground = m_world.CreateBody(BodyConf{}.UseLocation(Length2(0_m, 20_m)));
 
             auto conf = EdgeShapeConf{};
-            conf.density = 0;
+            conf.density = 0_kgpm2;
             conf.restitution = k_restitution;
 
             // Left vertical

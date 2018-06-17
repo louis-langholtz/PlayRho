@@ -107,7 +107,7 @@ GetSeparationScenario(IndexPair3 indices,
                       const DistanceProxy& proxyA, const Transformation& xfA,
                       const DistanceProxy& proxyB, const Transformation& xfB)
 {
-    assert(!IsEmpty(indices));
+    assert(!empty(indices));
     assert(proxyA.GetVertexCount() > 0);
     assert(proxyB.GetVertexCount() > 0);
     

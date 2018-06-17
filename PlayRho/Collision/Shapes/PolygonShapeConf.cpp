@@ -68,7 +68,7 @@ PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy) noexcept
 /// @brief Uses the given vertices.
 PolygonShapeConf& PolygonShapeConf::UseVertices(const std::vector<Length2>& verts) noexcept
 {
-    return Set(Span<const Length2>(verts.data(), verts.size()));
+    return Set(Span<const Length2>(verts.data(), size(verts)));
 }
     
 PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy,
@@ -115,9 +115,9 @@ PolygonShapeConf& PolygonShapeConf::Set(Span<const Length2> points) noexcept
 PolygonShapeConf& PolygonShapeConf::Set(const VertexSet& points) noexcept
 {
     m_vertices = GetConvexHullAsVector(points);
-    assert(m_vertices.size() < std::numeric_limits<VertexCounter>::max());
+    assert(size(m_vertices) < std::numeric_limits<VertexCounter>::max());
     
-    const auto count = static_cast<VertexCounter>(m_vertices.size());
+    const auto count = static_cast<VertexCounter>(size(m_vertices));
 
     m_normals.clear();
     if (count > 1)
@@ -165,7 +165,7 @@ Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index)
 
 bool Validate(Span<const Length2> verts)
 {
-    const auto count = verts.size();
+    const auto count = size(verts);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
         const auto i1 = i;

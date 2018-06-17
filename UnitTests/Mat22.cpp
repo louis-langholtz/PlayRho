@@ -37,8 +37,8 @@ TEST(Mat22, Init)
     const auto v1 = Vec2{1, 1};
     const auto v2 = Vec2{2, 2};
     const auto foo = Mat22{v1, v2};
-    EXPECT_EQ(v1, Get<0>(foo));
-    EXPECT_EQ(v2, Get<1>(foo));
+    EXPECT_EQ(v1, get<0>(foo));
+    EXPECT_EQ(v2, get<1>(foo));
 }
 
 TEST(Mat22, IsMatrix)
@@ -60,23 +60,23 @@ TEST(Mat22, Invert)
     const auto v1 = Vec2{1, 2};
     const auto v2 = Vec2{3, 4};
     const auto foo = Mat22{v1, v2};
-    ASSERT_EQ(Get<0>(foo), v1);
-    ASSERT_EQ(Get<1>(foo), v2);
+    ASSERT_EQ(get<0>(foo), v1);
+    ASSERT_EQ(get<1>(foo), v2);
 
     const auto inverted = Invert(foo);
     const auto cp = Cross(v1, v2);
     ASSERT_EQ(cp, Real(-2));
     const auto det = (cp != 0)? Real{1} / cp : Real{0};
     
-    EXPECT_EQ(Get<0>(Get<0>(inverted)), det * Get<1>(Get<1>(foo)));
-    EXPECT_EQ(Get<1>(Get<0>(inverted)), -det * Get<1>(Get<0>(foo)));
-    EXPECT_EQ(Get<0>(Get<1>(inverted)), -det * Get<0>(Get<1>(foo)));
-    EXPECT_EQ(Get<1>(Get<1>(inverted)), det * Get<0>(Get<0>(foo)));
+    EXPECT_EQ(get<0>(get<0>(inverted)), det * get<1>(get<1>(foo)));
+    EXPECT_EQ(get<1>(get<0>(inverted)), -det * get<1>(get<0>(foo)));
+    EXPECT_EQ(get<0>(get<1>(inverted)), -det * get<0>(get<1>(foo)));
+    EXPECT_EQ(get<1>(get<1>(inverted)), det * get<0>(get<0>(foo)));
     
-    EXPECT_EQ(Get<0>(Get<0>(inverted)), Real(-2));
-    EXPECT_EQ(Get<1>(Get<0>(inverted)), Real(1));
-    EXPECT_EQ(Get<0>(Get<1>(inverted)), Real(1.5));
-    EXPECT_EQ(Get<1>(Get<1>(inverted)), Real(-0.5));
+    EXPECT_EQ(get<0>(get<0>(inverted)), Real(-2));
+    EXPECT_EQ(get<1>(get<0>(inverted)), Real(1));
+    EXPECT_EQ(get<0>(get<1>(inverted)), Real(1.5));
+    EXPECT_EQ(get<1>(get<1>(inverted)), Real(-0.5));
 }
 
 TEST(Mat22, InvertInvertedIsOriginal)
@@ -86,10 +86,10 @@ TEST(Mat22, InvertInvertedIsOriginal)
     const auto foo = Mat22{v1, v2};
     const auto inverted = Invert(foo);
     const auto inverted2 = Invert(inverted);
-    EXPECT_EQ(Get<0>(Get<0>(foo)), Get<0>(Get<0>(inverted2)));
-    EXPECT_EQ(Get<1>(Get<0>(foo)), Get<1>(Get<0>(inverted2)));
-    EXPECT_EQ(Get<0>(Get<1>(foo)), Get<0>(Get<1>(inverted2)));
-    EXPECT_EQ(Get<1>(Get<1>(foo)), Get<1>(Get<1>(inverted2)));
+    EXPECT_EQ(get<0>(get<0>(foo)), get<0>(get<0>(inverted2)));
+    EXPECT_EQ(get<1>(get<0>(foo)), get<1>(get<0>(inverted2)));
+    EXPECT_EQ(get<0>(get<1>(foo)), get<0>(get<1>(inverted2)));
+    EXPECT_EQ(get<1>(get<1>(foo)), get<1>(get<1>(inverted2)));
 }
 
 TEST(Mat22, Addition)

@@ -54,7 +54,7 @@ public:
         m_groundBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         
         //small ledges for target practice
-        polygonShape.UseFriction(Real(0.95f));
+        polygonShape.UseFriction(0.95);
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(3, 35) * 1_m, 0_rad);
         m_groundBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(13, 30) * 1_m, 0_rad);
@@ -84,7 +84,7 @@ public:
         myBodyConf.location = Vec2(-15, 5) * 1_m;
         m_launcherBody = m_world.CreateBody(myBodyConf);
         m_launcherBody->CreateFixture(Shape{DiskShapeConf{}.UseRadius(2_m)
-            .UseFriction(Real(0.95f)).UseDensity(1_kgpm2)}, myFixtureConf);
+            .UseFriction(0.95).UseDensity(1_kgpm2)}, myFixtureConf);
         
         //pin the circle in place
         RevoluteJointConf revoluteJointConf;
@@ -107,7 +107,7 @@ public:
         //ball for computer 'player' to fire
         m_littleBox2 = m_world.CreateBody(myBodyConf);
         m_littleBox2->CreateFixture(Shape{DiskShapeConf{}.UseRadius(BallSize * 1_m)
-            .UseFriction(Real(0.95f)).UseDensity(1_kgpm2)}, myFixtureConf);
+            .UseFriction(0.95).UseDensity(1_kgpm2)}, myFixtureConf);
         
         m_firing = false;
         m_littleBox->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});

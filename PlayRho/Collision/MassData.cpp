@@ -88,7 +88,7 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Len
 
 MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
                      Span<const Length2> vertices)
-{
+{    
     // See: https://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
     
     // Polygon mass, centroid, and inertia.
@@ -115,7 +115,7 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     //
     // The rest of the derivation is handled by computer algebra.
     
-    const auto count = vertices.size();
+    const auto count = size(vertices);
     switch (count)
     {
         case 0:

@@ -150,7 +150,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     jointdef.localAnchorA = Length2{};
     jointdef.localAnchorB = Length2{};
     jointdef.length = 5_m;
-    jointdef.frequency = 0;
+    jointdef.frequency = 0_Hz;
     jointdef.dampingRatio = 0;
     EXPECT_NE(world.CreateJoint(jointdef), nullptr);
     
@@ -173,7 +173,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
             EXPECT_GE(newDistance, oldDistance);
         }
         
-        if (!distanceMet && (Abs(newDistance - jointdef.length) < 0.01_m))
+        if (!distanceMet && (abs(newDistance - jointdef.length) < 0.01_m))
         {
             distanceMet = i;
         }

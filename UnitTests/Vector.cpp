@@ -38,6 +38,35 @@ TEST(Vector, IsVector)
     EXPECT_FALSE(IsVector<std::nullptr_t>::value);
 }
 
+TEST(Vector, IsIterable)
+{
+    ASSERT_FALSE((IsIterable<int>::value));
+    EXPECT_TRUE((IsIterable<Vector<int, 0>>::value));
+    EXPECT_TRUE((IsIterable<Vector<int, 1>>::value));
+    EXPECT_TRUE((IsIterable<Vector<int, 2>>::value));
+}
+
+TEST(Vector, empty)
+{
+    EXPECT_TRUE(empty(Vector<int, 0>{}));
+    EXPECT_FALSE(empty(Vector<int, 1>{}));
+    EXPECT_FALSE(empty(Vector<int, 2>{}));
+}
+
+TEST(Vector, size)
+{
+    EXPECT_EQ(size(Vector<int, 0>{}), 0u);
+    EXPECT_EQ(size(Vector<int, 1>{}), 1u);
+    EXPECT_EQ(size(Vector<int, 2>{}), 2u);
+}
+
+TEST(Vector, max_size)
+{
+    EXPECT_EQ(max_size(Vector<int, 0>{}), 0u);
+    EXPECT_EQ(max_size(Vector<int, 1>{}), 1u);
+    EXPECT_EQ(max_size(Vector<int, 2>{}), 2u);
+}
+
 TEST(Vector, Equality)
 {
     Vector<int, 10> a;
@@ -233,9 +262,9 @@ TEST(Vector, ScalarTimesVector)
     const auto s = 2_m;
     const auto v = Vector<Length, 3>{1_m, 2_m, 3_m};
     const auto r = s * v;
-    EXPECT_EQ(Get<0>(r), 2_m2);
-    EXPECT_EQ(Get<1>(r), 4_m2);
-    EXPECT_EQ(Get<2>(r), 6_m2);
+    EXPECT_EQ(get<0>(r), 2_m2);
+    EXPECT_EQ(get<1>(r), 4_m2);
+    EXPECT_EQ(get<2>(r), 6_m2);
 }
 
 TEST(Vector, VectorTimesScalar)
@@ -243,7 +272,7 @@ TEST(Vector, VectorTimesScalar)
     const auto v = Vector<Length, 3>{1_m, 2_m, 3_m};
     const auto s = 10_m;
     const auto r = v * s;
-    EXPECT_EQ(Get<0>(r), 10_m2);
-    EXPECT_EQ(Get<1>(r), 20_m2);
-    EXPECT_EQ(Get<2>(r), 30_m2);
+    EXPECT_EQ(get<0>(r), 10_m2);
+    EXPECT_EQ(get<1>(r), 20_m2);
+    EXPECT_EQ(get<2>(r), 30_m2);
 }

@@ -25,7 +25,7 @@ namespace d2 {
 IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept
 {
     auto list = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
-    switch (collection.size())
+    switch (size(collection))
     {
         case 3: list[2] = collection[2].GetIndexPair(); // fall through
         case 2: list[1] = collection[1].GetIndexPair(); // fall through
@@ -36,7 +36,7 @@ IndexPair3 GetIndexPairs(const SimplexEdges& collection) noexcept
 
 Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
 {
-    switch (simplexEdges.size())
+    switch (size(simplexEdges))
     {
         case 1:
         {
@@ -53,7 +53,7 @@ Length2 CalcSearchDirection(const SimplexEdges& simplexEdges) noexcept
         default:
             break;
     }
-    assert(simplexEdges.size() < 4);
+    assert(size(simplexEdges) < 4);
     return Length2{0_m, 0_m};
 }
 

@@ -35,17 +35,17 @@ bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
     // No need to compare normals since they should be invariant to the vertices.
     const auto lhr = lhs.GetVertices();
     const auto rhr = rhs.GetVertices();
-    return std::equal(std::cbegin(lhr), std::cend(lhr), std::cbegin(rhr), std::cend(rhr));
+    return std::equal(cbegin(lhr), cend(lhr), cbegin(rhr), cend(rhr));
 }
 
 std::size_t FindLowestRightMostVertex(Span<const Length2> vertices)
 {
-    const auto size = vertices.size();
-    if (size > 0)
+    const auto numVertices = size(vertices);
+    if (numVertices > 0)
     {
-        auto i0 = decltype(size){0};
+        auto i0 = decltype(numVertices){0};
         auto max_x = GetX(vertices[0]);
-        for (auto i = decltype(vertices.size()){1}; i < vertices.size(); ++i)
+        for (auto i = decltype(numVertices){1}; i < numVertices; ++i)
         {
             const auto x = GetX(vertices[i]);
             if ((max_x < x) || ((max_x == x) && (GetY(vertices[i]) < GetY(vertices[i0]))))
@@ -69,16 +69,16 @@ std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices)
     const auto index0 = FindLowestRightMostVertex(vertices);
     if (index0 != GetInvalid<std::size_t>())
     {
-        const auto size = vertices.size();
-        auto hull = std::vector<decltype(vertices.size())>();
+        const auto numVertices = size(vertices);
+        auto hull = std::vector<decltype(size(vertices))>();
         
         auto ih = index0;
         for (;;)
         {
             hull.push_back(ih);
             
-            auto ie = decltype(size){0};
-            for (auto j = decltype(size){1}; j < size; ++j)
+            auto ie = decltype(numVertices){0};
+            for (auto j = decltype(numVertices){1}; j < numVertices; ++j)
             {
                 if (ie == ih)
                 {
@@ -102,7 +102,7 @@ std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices)
             }
         }
         
-        const auto count = hull.size();
+        const auto count = size(hull);
         for (auto i = decltype(count){0}; i < count; ++i)
         {
             result.emplace_back(vertices[hull[i]]);

@@ -64,7 +64,7 @@ namespace {
 void Dump(const World& world)
 {
     const auto& bodies = world.GetBodies();
-    log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", bodies.size());
+    log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", size(bodies));
     auto i = std::size_t{0};
     for (auto&& body: bodies)
     {
@@ -74,7 +74,7 @@ void Dump(const World& world)
     }
     
     const auto& joints = world.GetJoints();
-    log("Joint** joints = (Joint**)Alloc(%d * sizeof(Joint*));\n", joints.size());
+    log("Joint** joints = (Joint**)Alloc(%d * sizeof(Joint*));\n", size(joints));
     i = 0;
     for (auto&& j: joints)
     {
@@ -96,12 +96,12 @@ void Dump(const Body& body, std::size_t bodyIndex)
     log("  BodyConf bd;\n");
     log("  bd.type = BodyType(%d);\n", body.GetType());
     log("  bd.position = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real(Get<0>(body.GetLocation()) / Meter)),
-        static_cast<double>(Real(Get<1>(body.GetLocation()) / Meter)));
+        static_cast<double>(Real(get<0>(body.GetLocation()) / Meter)),
+        static_cast<double>(Real(get<1>(body.GetLocation()) / Meter)));
     log("  bd.angle = %.15lef;\n", static_cast<double>(Real{body.GetAngle() / Radian}));
     log("  bd.linearVelocity = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(body.GetVelocity().linear) / MeterPerSecond}),
-        static_cast<double>(Real{Get<1>(body.GetVelocity().linear) / MeterPerSecond}));
+        static_cast<double>(Real{get<0>(body.GetVelocity().linear) / MeterPerSecond}),
+        static_cast<double>(Real{get<1>(body.GetVelocity().linear) / MeterPerSecond}));
     log("  bd.angularVelocity = %.15lef;\n",
         static_cast<double>(Real{body.GetVelocity().angular / RadianPerSecond}));
     log("  bd.linearDamping = %.15lef;\n",
@@ -200,11 +200,11 @@ void Dump(const DistanceJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.length = %.15lef;\n",
         static_cast<double>(Real{joint.GetLength() / Meter}));
     log("  jd.frequency = %.15lef;\n",
@@ -220,11 +220,11 @@ void Dump(const FrictionJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.maxForce = %.15lef;\n",
         static_cast<double>(Real{joint.GetMaxForce() / Newton}));
     log("  jd.maxTorque = %.15lef;\n",
@@ -251,8 +251,8 @@ void Dump(const MotorJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.linearOffset = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLinearOffset()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLinearOffset()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLinearOffset()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLinearOffset()) / Meter}));
     log("  jd.angularOffset = %.15lef;\n",
         static_cast<double>(Real{joint.GetAngularOffset() / Radian}));
     log("  jd.maxForce = %.15lef;\n",
@@ -270,8 +270,8 @@ void Dump(const TargetJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.frequency = %.15lef;\n",
         static_cast<double>(Real{joint.GetFrequency() / Hertz}));
     log("  jd.dampingRatio = %.15lef;\n", static_cast<double>(Real{joint.GetDampingRatio()}));
@@ -287,11 +287,11 @@ void Dump(const PrismaticJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n",
         GetX(joint.GetLocalAxisA()), GetY(joint.GetLocalAxisA()));
     log("  jd.referenceAngle = %.15lef;\n",
@@ -316,17 +316,17 @@ void Dump(const PulleyJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.groundAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetGroundAnchorA()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetGroundAnchorA()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetGroundAnchorA()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetGroundAnchorA()) / Meter}));
     log("  jd.groundAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetGroundAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetGroundAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetGroundAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetGroundAnchorB()) / Meter}));
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.lengthA = %.15lef;\n",
         static_cast<double>(Real{joint.GetLengthA() / Meter}));
     log("  jd.lengthB = %.15lef;\n",
@@ -342,11 +342,11 @@ void Dump(const RevoluteJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.referenceAngle = %.15lef;\n",
         static_cast<double>(Real{joint.GetReferenceAngle() / Radian}));
     log("  jd.enableLimit = bool(%d);\n", joint.IsLimitEnabled());
@@ -369,11 +369,11 @@ void Dump(const RopeJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.maxLength = %.15lef;\n",
         static_cast<double>(Real{joint.GetMaxLength() / Meter}));
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
@@ -386,11 +386,11 @@ void Dump(const WeldJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.referenceAngle = %.15lef;\n",
         static_cast<double>(Real{joint.GetReferenceAngle() / Radian}));
     log("  jd.frequency = %.15lef;\n",
@@ -406,11 +406,11 @@ void Dump(const WheelJoint& joint, std::size_t index)
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorA()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorA()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorA()) / Meter}));
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
-        static_cast<double>(Real{Get<0>(joint.GetLocalAnchorB()) / Meter}),
-        static_cast<double>(Real{Get<1>(joint.GetLocalAnchorB()) / Meter}));
+        static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
+        static_cast<double>(Real{get<1>(joint.GetLocalAnchorB()) / Meter}));
     log("  jd.localAxisA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(GetX(joint.GetLocalAxisA())),
         static_cast<double>(GetY(joint.GetLocalAxisA())));

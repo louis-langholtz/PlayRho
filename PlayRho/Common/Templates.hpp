@@ -30,9 +30,61 @@
 #include <typeinfo>
 #include <type_traits>
 #include <tuple>
+#include <utility>
 
 namespace playrho {
 
+// Bring standard customization points into the namespace...
+using std::begin;
+using std::end;
+using std::cbegin;
+using std::cend;
+using std::size;
+using std::empty;
+using std::swap;
+
+namespace detail {
+
+/// @brief Voiding template class.
+template<class...> struct Voidify {
+    /// @brief Type alias.
+    using type = void;
+};
+
+/// @brief Void type templated alias.
+template<class... Ts> using VoidT = typename Voidify<Ts...>::type;
+
+/// @brief Low-level implementation of the is-iterable default value trait.
+template<class T, class = void>
+struct IsIterableImpl: std::false_type {};
+
+/// @brief Low-level implementation of the is-iterable true value trait.
+template<class T>
+struct IsIterableImpl<T, VoidT<
+    decltype(begin(std::declval<T>())),
+    decltype(end(std::declval<T>())),
+    decltype(++std::declval<decltype(begin(std::declval<T&>()))&>()),
+    decltype(*begin(std::declval<T>()))
+    >>:
+    std::true_type
+{};
+
+/// @brief Gets the maximum size of the given container.
+template <class T>
+PLAYRHO_CONSTEXPR inline auto max_size(const T& arg) -> decltype(arg.max_size())
+{
+    return arg.max_size();
+}
+
+/// @brief Checks whether the given container is full.
+template <class T>
+PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
+{
+    return size(arg) == max_size(arg);
+}
+
+} // namespace detail
+    
     /// @brief "Not used" annotator.
     template<class... T> void NOT_USED(T&&...){}
 
@@ -202,15 +254,6 @@ namespace playrho {
     {
         return "long double";
     }
-
-    /// @brief Voiding template class.
-    template<class...> struct Voidify {
-        /// @brief Type alias.
-        using type = void;
-    };
-
-    /// @brief Void type templated alias.
-    template<class... Ts> using VoidT = typename Voidify<Ts...>::type;
     
     /// @brief Template for determining if the given type is an equality comparable type.
     /// @note This isn't exactly the same as the "EqualityComparable" concept.
@@ -220,7 +263,7 @@ namespace playrho {
     
     /// @brief Template specialization for equality comparable types.
     template<class T1, class T2>
-    struct IsEqualityComparable<T1, T2, VoidT<decltype(T1{} == T2{})> >: std::true_type {};
+    struct IsEqualityComparable<T1, T2, detail::VoidT<decltype(T1{} == T2{})> >: std::true_type {};
     
     /// @brief Template for determining if the given type is an inequality comparable type.
     template<class T1, class T2, class = void>
@@ -228,19 +271,23 @@ namespace playrho {
     
     /// @brief Template specialization for inequality comparable types.
     template<class T1, class T2>
-    struct IsInequalityComparable<T1, T2, VoidT<decltype(T1{} != T2{})> >: std::true_type {};
+    struct IsInequalityComparable<T1, T2, detail::VoidT<decltype(T1{} != T2{})> >: std::true_type {};
 
+    /// @brief Template for determining if the given types are multipliable.
     template<class T1, class T2, class = void>
     struct IsMultipliable: std::false_type {};
     
+    /// @brief Template specializing for multipliable types.
     template<class T1, class T2>
-    struct IsMultipliable<T1, T2, VoidT<decltype(T1{} * T2{})> >: std::true_type {};
+    struct IsMultipliable<T1, T2, detail::VoidT<decltype(T1{} * T2{})> >: std::true_type {};
     
+    /// @brief Template for determining if the given types are divisable.
     template<class T1, class T2, class = void>
     struct IsDivisable: std::false_type {};
     
+    /// @brief Template specializing for divisable types.
     template<class T1, class T2>
-    struct IsDivisable<T1, T2, VoidT<decltype(T1{} / T2{})> >: std::true_type {};
+    struct IsDivisable<T1, T2, detail::VoidT<decltype(T1{} / T2{})> >: std::true_type {};
 
     /// @brief Template for determining if the given type is an "arithmetic" type.
     /// @note In the context of this library, "arithmetic" types are all types which
@@ -250,10 +297,14 @@ namespace playrho {
     
     /// @brief Template specialization for valid/acceptable "arithmetic" types.
     template<class T>
-    struct IsArithmetic<T, VoidT<
+    struct IsArithmetic<T, detail::VoidT<
         decltype(T{} + T{}), decltype(T{} - T{}), decltype(T{} * T{}), decltype(T{} / T{})
     > >: std::true_type {};
     
+    /// @brief Determines whether the given type is an iterable type.
+    template<class T>
+    using IsIterable = typename detail::IsIterableImpl<T>;
+
     /// @brief Has-type trait template class.
     /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
     ///   to the question of: "How do I find out if a tuple contains a type?".
@@ -291,49 +342,14 @@ namespace playrho {
     template <typename T, typename Tuple>
     using TupleContainsType = typename HasType<T, Tuple>::type;
     
-    /// @brief Computes the absolute value of the given value.
-    template <typename T>
-    PLAYRHO_CONSTEXPR inline T Abs(T a)
-    {
-        return (a >= T{0}) ? a : -a;
-    }
-
-    /// @brief Checks whether the given container is empty.
-    /// @note This is from <code>std::empty</code> for C++17.
-    /// @sa http://en.cppreference.com/w/cpp/iterator/empty
-    template <class T>
-    PLAYRHO_CONSTEXPR inline auto IsEmpty(const T& arg) -> decltype(arg.empty())
-    {
-        return arg.empty();
-    }
-
-    /// @brief Gets the current size of the given container.
-    /// @note This is from <code>std::size</code> for C++17.
-    /// @sa http://en.cppreference.com/w/cpp/iterator/size
-    template <class T>
-    PLAYRHO_CONSTEXPR inline auto GetSize(const T& arg) -> decltype(arg.size())
-    {
-        return arg.size();
-    }
+    /// @brief Alias for pulling the <code>max_size</code> constomization point into the
+    ///   playrho namesapce.
+    using detail::max_size;
     
-    /// @brief Gets the maximum size of the given container.
-    template <class T>
-    PLAYRHO_CONSTEXPR inline auto GetMaxSize(const T& arg) -> decltype(arg.max_size())
-    {
-        return arg.max_size();
-    }
+    /// @brief Alias for pulling the <code>IsFull</code> constomization point into the
+    ///   playrho namesapce.
+    using detail::IsFull;
 
-    /// @brief Checks whether the given container is full.
-    template <class T>
-    PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(GetSize(arg) == arg.max_size())
-    {
-        return GetSize(arg) == GetMaxSize(arg);
-    }
-
-    /// @brief Gets the compile-time size of a C-style array.
-    template <class T, std::size_t N>
-    PLAYRHO_CONSTEXPR inline std::size_t GetSize(T (&)[N]) { return N; }
-    
     /// @brief Function object for performing lexicographical less-than
     ///   comparisons of containers.
     /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
@@ -345,13 +361,10 @@ namespace playrho {
         ///   second argument.
         constexpr bool operator()(const T& lhs, const T& rhs) const
         {
-            using std::begin;
-            using std::end;
-            using std::lexicographical_compare;
             using std::less;
             using ElementType = decltype(*begin(lhs));
-            return lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
-                                           less<ElementType>{});
+            return std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
+                                                less<ElementType>{});
         }
     };
     
@@ -366,13 +379,10 @@ namespace playrho {
         ///   second argument.
         constexpr bool operator()(const T& lhs, const T& rhs) const
         {
-            using std::begin;
-            using std::end;
-            using std::lexicographical_compare;
             using std::greater;
             using ElementType = decltype(*begin(lhs));
-            return lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
-                                           greater<ElementType>{});
+            return std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs),
+                                                greater<ElementType>{});
         }
     };
 
@@ -387,8 +397,6 @@ namespace playrho {
         ///   equal-to the second argument.
         constexpr bool operator()(const T& lhs, const T& rhs) const
         {
-            using std::begin;
-            using std::end;
             using std::mismatch;
             using std::less;
             using std::get;
@@ -410,8 +418,6 @@ namespace playrho {
         ///   equal-to the second argument.
         constexpr bool operator()(const T& lhs, const T& rhs) const
         {
-            using std::begin;
-            using std::end;
             using std::mismatch;
             using std::greater;
             using std::get;

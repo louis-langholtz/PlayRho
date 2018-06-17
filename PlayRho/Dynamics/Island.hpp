@@ -73,14 +73,14 @@ struct Island
 /// @relatedalso Island
 inline bool IsFullOfBodies(const Island& island)
 {
-    return island.m_bodies.size() == island.m_bodies.max_size();
+    return IsFull(island.m_bodies);
 }
 
 /// @brief Determines whether the given island is full of contacts.
 /// @relatedalso Island
 inline bool IsFullOfContacts(const Island& island)
 {
-    return island.m_contacts.size() == island.m_contacts.max_size();
+    return IsFull(island.m_contacts);
 }
 
 /// @brief Counts the number of occurrences of the given entry in the given island.

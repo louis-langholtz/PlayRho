@@ -48,7 +48,7 @@ public:
 
         const auto hdim = Real{0.1f}; // 0.5f is less stable than 1.0f for boxes not at origin (x of 0)
         const auto shape = Shape{
-            PolygonShapeConf{}.UseDensity(1_kgpm2).UseFriction(Real(0.3f)).SetAsBox(hdim * 1_m, hdim * 1_m)
+            PolygonShapeConf{}.UseDensity(1_kgpm2).UseFriction(0.3).SetAsBox(hdim * 1_m, hdim * 1_m)
         };
         for (auto j = 0; j < e_columnCount; ++j)
         {
@@ -91,7 +91,7 @@ public:
     }
 
     Body* m_bullet;
-    Shape m_bulletshape = Shape{DiskShapeConf{}.UseRadius(0.25_m).UseDensity(20_kgpm2).UseRestitution(Real(0.05f))};
+    Shape m_bulletshape = Shape{DiskShapeConf{}.UseRadius(0.25_m).UseDensity(20_kgpm2).UseRestitution(0.05)};
 };
     
 } // namespace testbed

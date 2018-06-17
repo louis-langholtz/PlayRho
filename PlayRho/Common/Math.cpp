@@ -43,7 +43,7 @@ Angle GetDelta(Angle a1, Angle a2) noexcept
 
 Length2 ComputeCentroid(const Span<const Length2>& vertices)
 {
-    assert(vertices.size() >= 3);
+    assert(size(vertices) >= 3);
     
     auto c = Length2{} * Area{0};
     auto area = Area{0};
@@ -52,12 +52,12 @@ Length2 ComputeCentroid(const Span<const Length2>& vertices)
     // It's location doesn't change the result (except for rounding error).
     const auto pRef = Average(vertices);
 
-    for (auto i = decltype(vertices.size()){0}; i < vertices.size(); ++i)
+    for (auto i = decltype(size(vertices)){0}; i < size(vertices); ++i)
     {
         // Triangle vertices.
         const auto p1 = pRef;
         const auto p2 = vertices[i];
-        const auto p3 = vertices[GetModuloNext(i, vertices.size())];
+        const auto p3 = vertices[GetModuloNext(i, size(vertices))];
         
         const auto e1 = p2 - p1;
         const auto e2 = p3 - p1;
@@ -118,7 +118,7 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
     // Uses the "Shoelace formula".
     // See: https://en.wikipedia.org/wiki/Shoelace_formula
     auto sum = 0_m2;
-    const auto count = vertices.size();
+    const auto count = size(vertices);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
         const auto last_v = vertices[GetModuloPrev(i, count)];
@@ -129,12 +129,12 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
     
     // Note that using the absolute value isn't necessary for vertices in counter-clockwise
     // ordering; only needed for clockwise ordering.
-    return Abs(sum) / Real{2};
+    return abs(sum) / Real{2};
 }
 
 SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)
 {
-    assert(vertices.size() > 2);
+    assert(size(vertices) > 2);
     
     // Use formulas Ix and Iy for second moment of area of any simple polygon and apply
     // the perpendicular axis theorem on these to get the desired answer.
@@ -144,7 +144,7 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)
     // https://en.wikipedia.org/wiki/Second_moment_of_area#Perpendicular_axis_theorem
     auto sum_x = SquareMeter * SquareMeter * 0;
     auto sum_y = SquareMeter * SquareMeter * 0;
-    const auto count = vertices.size();
+    const auto count = size(vertices);
     for (auto i = decltype(count){0}; i < count; ++i)
     {
         const auto this_v = vertices[i];

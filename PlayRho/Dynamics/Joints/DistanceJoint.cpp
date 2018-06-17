@@ -241,7 +241,7 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     bodyConstraintA->SetPosition(posA);
     bodyConstraintB->SetPosition(posB);
 
-    return Abs(C) < conf.linearSlop;
+    return abs(C) < conf.linearSlop;
 }
 
 Length2 DistanceJoint::GetAnchorA() const

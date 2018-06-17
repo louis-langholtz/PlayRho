@@ -51,7 +51,7 @@ public:
         m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
         auto conf = PolygonShapeConf{};
-        conf.UseFriction(Real(0.3f));
+        conf.UseFriction(0.3);
         conf.Set({
             Vec2(-0.5f, 0.0f) * 1_m,
             Vec2(0.5f, 0.0f) * 1_m,
@@ -376,8 +376,8 @@ public:
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
     };
-    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3f))};
-    Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.UseFriction(Real(0.3f))};
+    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(0.3)};
+    Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.UseFriction(0.3)};
     Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;
 };

@@ -938,7 +938,7 @@ static void AlmostEqual1(benchmark::State& state)
         {
             const auto x = val.first;
             const auto y = val.second;
-            benchmark::DoNotOptimize((playrho::Abs(x - y) < (std::numeric_limits<float>::epsilon() * playrho::Abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
+            benchmark::DoNotOptimize((playrho::abs(x - y) < (std::numeric_limits<float>::epsilon() * playrho::abs(x + y) * ulp)) || playrho::AlmostZero(x - y));
         }
     }
 }
@@ -1829,7 +1829,7 @@ static void random_malloc_free_100(benchmark::State& state)
     auto pointers = std::array<void*, 100>();
     for (auto _: state)
     {
-        auto ptr = std::begin(pointers);
+        auto ptr = begin(pointers);
         for (auto size: sizes)
         {
             benchmark::DoNotOptimize(*ptr = std::malloc(size));

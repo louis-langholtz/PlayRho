@@ -84,8 +84,8 @@ struct Settings
     float toiMinSeparation = static_cast<float>(Real{
         DefaultLinearSlop / Meter}) * -1.5f;
     
-    float aabbExtension = static_cast<float>(DefaultAabbExtension / Meter); // in meters
-    float tolerance = static_cast<float>(DefaultLinearSlop / Real{4} / Meter); // in meters
+    float aabbExtension = static_cast<float>(Real{DefaultAabbExtension / Meter}); // in meters
+    float tolerance = static_cast<float>(Real{DefaultLinearSlop / Real{4} / Meter}); // in meters
 
     float cameraZoom = 1.0f;
 
@@ -179,8 +179,8 @@ public:
     
     SizedRange<HandledKeys::const_iterator> GetHandledKeys() const
     {
-        return SizedRange<HandledKeys::const_iterator>(std::cbegin(m_handledKeys),
-                                                       std::cend(m_handledKeys),
+        return SizedRange<HandledKeys::const_iterator>(cbegin(m_handledKeys),
+                                                       cend(m_handledKeys),
                                                        m_handledKeys.size());
     }
 
@@ -307,9 +307,9 @@ protected:
 
     SizedRange<ContactPoints::const_iterator> GetPoints() const noexcept
     {
-        return SizedRange<ContactPoints::const_iterator>(std::cbegin(m_points),
-                                                         std::cend(m_points),
-                                                         m_points.size());
+        return SizedRange<ContactPoints::const_iterator>(cbegin(m_points),
+                                                         cend(m_points),
+                                                         size(m_points));
     }
 
     const Body* GetBomb() const noexcept { return m_bomb; }
@@ -432,8 +432,8 @@ Real RandomFloat(Real lo, Real hi);
 template <class Container, class T>
 inline bool IsWithin(const Container& container, const T& element) noexcept
 {
-    const auto first = std::cbegin(container);
-    const auto last = std::cend(container);
+    const auto first = cbegin(container);
+    const auto last = cend(container);
     const auto it = std::find(first, last, element);
     return it != last;
 }
@@ -446,7 +446,7 @@ inline void ForAll(World& world, const std::function<void(RevoluteJoint& e)>& ac
 {
     auto visitor = FunctionalJointVisitor{}.Use(action);
     const auto range = world.GetJoints();
-    std::for_each(std::begin(range), std::end(range), [&](Joint* j) {
+    std::for_each(begin(range), end(range), [&](Joint* j) {
         j->Accept(visitor);
     });
 }

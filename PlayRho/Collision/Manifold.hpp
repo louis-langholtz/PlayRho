@@ -353,8 +353,8 @@ public:
     void SetContactImpulses(size_type index, Momentum2 value) noexcept
     {
         assert(index < m_pointCount);
-        m_points[index].normalImpulse = Get<0>(value);
-        m_points[index].tangentImpulse = Get<1>(value);
+        m_points[index].normalImpulse = get<0>(value);
+        m_points[index].tangentImpulse = get<1>(value);
     }
 
     /// @brief Gets the point identified by the given index.

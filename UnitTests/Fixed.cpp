@@ -565,7 +565,7 @@ TEST(Fixed32, sqrt)
         {
             break;
         }
-        EXPECT_LE(Abs(Square(sqrt(fixedv)) - fixedv), Fixed32::GetMin());
+        EXPECT_LE(abs(Square(sqrt(fixedv)) - fixedv), Fixed32::GetMin());
         EXPECT_NEAR(static_cast<double>(sqrt(fixedv)), sqrt(static_cast<double>(fixedv)), tolerance * 5);
     }
     const auto maxV = static_cast<double>(std::numeric_limits<Fixed32>::max());
@@ -573,7 +573,7 @@ TEST(Fixed32, sqrt)
     {
         const auto fixedv = Fixed32{v};
         EXPECT_NEAR(static_cast<double>(sqrt(fixedv)), sqrt(v), tolerance);
-        //EXPECT_LE(Abs(Square(sqrt(fixedv)) - fixedv), Fixed32::GetMin() * 5);
+        //EXPECT_LE(abs(Square(sqrt(fixedv)) - fixedv), Fixed32::GetMin() * 5);
     }
 }
 

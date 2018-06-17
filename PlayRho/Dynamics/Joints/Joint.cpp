@@ -135,10 +135,10 @@ JointCounter GetWorldIndex(const Joint* joint)
         {
             auto i = JointCounter{0};
             const auto joints = world->GetJoints();
-            const auto it = std::find_if(std::cbegin(joints), std::cend(joints), [&](const Joint *j) {
+            const auto it = std::find_if(cbegin(joints), cend(joints), [&](const Joint *j) {
                 return (j == joint) || ((void) ++i, false);
             });
-            if (it != std::end(joints))
+            if (it != end(joints))
             {
                 return i;
             }
@@ -150,8 +150,8 @@ JointCounter GetWorldIndex(const Joint* joint)
 #ifdef PLAYRHO_PROVIDE_VECTOR_AT
 BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key)
 {
-    auto last = std::end(container);
-    auto first = std::begin(container);
+    auto last = end(container);
+    auto first = begin(container);
     first = std::lower_bound(first, last, key, [](const BodyConstraintPair &a, const Body* b){
         return std::get<const Body*>(a) < b;
     });

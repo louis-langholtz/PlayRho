@@ -135,7 +135,7 @@ namespace d2 {
         PLAYRHO_CONSTEXPR inline Real GetCoefficient(size_type index) const noexcept;
 
         /// @brief Gets the size in number of simplex edges that this instance is made up of.
-        PLAYRHO_CONSTEXPR inline size_type GetSize() const noexcept;
+        PLAYRHO_CONSTEXPR inline size_type size() const noexcept;
 
     private:
         
@@ -169,7 +169,7 @@ namespace d2 {
     {
         assert(simplexEdges.size() == normalizedWeights.size());
 #ifndef NDEBUG
-        const auto sum = std::accumulate(std::begin(normalizedWeights), std::end(normalizedWeights),
+        const auto sum = std::accumulate(begin(normalizedWeights), end(normalizedWeights),
                                          Real{0});
         assert(AlmostEqual(Real{1}, sum));
 #endif
@@ -192,7 +192,7 @@ namespace d2 {
     
     /// @brief Gets the size in number of valid edges of this Simplex.
     /// @return Value between 0 and <code>MaxEdges</code> (inclusive).
-    PLAYRHO_CONSTEXPR inline Simplex::size_type Simplex::GetSize() const noexcept
+    PLAYRHO_CONSTEXPR inline Simplex::size_type Simplex::size() const noexcept
     {
         return m_simplexEdges.size();
     }
@@ -206,7 +206,7 @@ namespace d2 {
     /// Gets the "closest point".
     PLAYRHO_CONSTEXPR inline Length2 GetClosestPoint(const Simplex& simplex)
     {
-        switch (simplex.GetSize())
+        switch (simplex.size())
         {
             case 1: return GetScaledDelta(simplex, 0);
             case 2: return GetScaledDelta(simplex, 0) + GetScaledDelta(simplex, 1);

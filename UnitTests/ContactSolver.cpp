@@ -320,7 +320,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     {
         // confirm object a moves more in x direction than in y direction.
         const auto mov_a = solution.pos_a - old_pA;    
-        EXPECT_LT(Abs(GetX(mov_a.linear)), Abs(GetY(mov_a.linear)));
+        EXPECT_LT(abs(GetX(mov_a.linear)), abs(GetY(mov_a.linear)));
     }
     
     // object b just moves up only
@@ -331,7 +331,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
     {
         // confirm object a moves more in x direction than in y direction.
         const auto mov_b = solution.pos_b - old_pB;
-        EXPECT_LT(Abs(GetX(mov_b.linear)), Abs(GetY(mov_b.linear)));
+        EXPECT_LT(abs(GetX(mov_b.linear)), abs(GetY(mov_b.linear)));
     }
 }
 
@@ -387,7 +387,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     {
         // confirm object a moves more in x direction than in y direction.
         const auto mov_a = solution.pos_a - old_pA;    
-        EXPECT_LT(Abs(GetX(mov_a.linear)), Abs(GetY(mov_a.linear)));
+        EXPECT_LT(abs(GetX(mov_a.linear)), abs(GetY(mov_a.linear)));
     }
     
     // square B just moves down only
@@ -398,7 +398,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
     {
         // confirm object a moves more in x direction than in y direction.
         const auto mov_b = solution.pos_b - old_pB;
-        EXPECT_LT(Abs(GetX(mov_b.linear)), Abs(GetY(mov_b.linear)));
+        EXPECT_LT(abs(GetX(mov_b.linear)), abs(GetY(mov_b.linear)));
     }
 }
 
