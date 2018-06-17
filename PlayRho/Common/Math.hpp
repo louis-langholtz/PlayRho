@@ -601,17 +601,6 @@ inline Mat22 abs(const Mat22& A)
     return Mat22{abs(GetX(A)), abs(GetY(A))};
 }
 
-/// @brief Clamps the given value within the given range (inclusive).
-/// @param value Value to clamp.
-/// @param low Lowest value to return or NaN to keep the low-end unbounded.
-/// @param high Highest value to return or NaN to keep the high-end unbounded.
-template <typename T>
-PLAYRHO_CONSTEXPR inline T Clamp(T value, T low, T high) noexcept
-{
-    const auto tmp = (value > high)? high: value; // isnan(high)? a: Min(a, high);
-    return (tmp < low)? low: tmp; // isnan(low)? b: Max(b, low);
-}
-
 /// @brief Gets the next largest power of 2
 /// @details
 /// Given a binary integer value x, the next largest power of 2 can be computed by a S.W.A.R.

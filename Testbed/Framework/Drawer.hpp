@@ -21,6 +21,7 @@
 #define PLAYRHO_DRAWER_HPP
 
 #include <PlayRho/Common/Math.hpp>
+#include <algorithm>
 
 namespace testbed {
 
@@ -31,10 +32,10 @@ struct Color
     Color() = default;
     
     constexpr inline Color(float ri, float gi, float bi, float ai = 1):
-        r(playrho::Clamp(ri, 0.0f, 1.0f)),
-        g(playrho::Clamp(gi, 0.0f, 1.0f)),
-        b(playrho::Clamp(bi, 0.0f, 1.0f)),
-        a(playrho::Clamp(ai, 0.0f, 1.0f))
+        r(std::clamp(ri, 0.0f, 1.0f)),
+        g(std::clamp(gi, 0.0f, 1.0f)),
+        b(std::clamp(bi, 0.0f, 1.0f)),
+        a(std::clamp(ai, 0.0f, 1.0f))
     {
         // Intentionally empty.
     }

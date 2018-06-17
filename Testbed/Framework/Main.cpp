@@ -41,6 +41,7 @@
 #include "DroidSansTtfData.h"
 #endif
 
+#include <algorithm>
 #include <sstream>
 #include <iostream>
 #include <iomanip>
@@ -780,7 +781,7 @@ static void BasicStepOptionsUI()
         const auto max = 1.0f / testSettings.minDt;
         const auto min = 1.0f / testSettings.maxDt;
         ImGui::SliderFloat("Frequency", &frequency, min, max, "%.2e Hz");
-        frequency = Clamp(frequency, min, max);
+        frequency = std::clamp(frequency, min, max);
         testSettings.dt = 1.0f / frequency;
     }
     else

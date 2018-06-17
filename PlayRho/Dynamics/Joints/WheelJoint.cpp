@@ -233,7 +233,7 @@ bool WheelJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
         const auto oldImpulse = m_motorImpulse;
         const auto maxImpulse = AngularMomentum{step.GetTime() * m_maxMotorTorque};
-        m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
+        m_motorImpulse = std::clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
         impulse = m_motorImpulse - oldImpulse;
 
         velA.angular -= AngularVelocity{invRotInertiaA * impulse};

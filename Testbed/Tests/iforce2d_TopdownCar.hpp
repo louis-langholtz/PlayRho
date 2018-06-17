@@ -341,7 +341,7 @@ public:
         }
         const auto angleNow = GetJointAngle(*flJoint);
         const auto desiredAngleToTurn = desiredAngle - angleNow;
-        const auto angleToTurn = Clamp(desiredAngleToTurn, -turnPerTimeStep, turnPerTimeStep);
+        const auto angleToTurn = std::clamp(desiredAngleToTurn, -turnPerTimeStep, turnPerTimeStep);
         if (angleToTurn != 0_deg)
         {
             const auto newAngle = angleNow + angleToTurn;

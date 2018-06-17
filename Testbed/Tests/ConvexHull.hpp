@@ -60,8 +60,8 @@ public:
             // Clamp onto a square to help create collinearities.
             // This will stress the convex hull algorithm.
             const auto v = Vec2{
-                Clamp(x, GetX(lowerBound), GetX(upperBound)),
-                Clamp(y, GetY(lowerBound), GetY(upperBound))
+                std::clamp(x, GetX(lowerBound), GetX(upperBound)),
+                std::clamp(y, GetY(lowerBound), GetY(upperBound))
             } * 1_m;
             m_points.emplace_back(v);
         }

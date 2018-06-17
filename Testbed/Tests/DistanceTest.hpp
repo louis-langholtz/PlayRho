@@ -187,7 +187,7 @@ public:
     static const Fixture* GetFixture(Body* body)
     {
         const auto& fixtures = body->GetFixtures();
-        return (begin(fixtures) != end(fixtures))? GetPtr(*begin(fixtures)): nullptr;
+        return !empty(fixtures)? GetPtr(*begin(fixtures)): nullptr;
     }
 
     void DestroyFixtures()

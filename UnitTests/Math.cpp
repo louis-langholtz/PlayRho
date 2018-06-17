@@ -807,20 +807,20 @@ TEST(Math, InvertOneIsZero)
 #pragma warning( pop )
 }
 
-TEST(Math, Clamp)
+TEST(Math, clamp)
 {
-    // Check lo and hi work as documented on Clamp...
+    // Check lo and hi work as documented on clamp...
     const auto NaN = std::numeric_limits<double>::quiet_NaN();
-    EXPECT_EQ(Clamp(-1.0,  0.0, +1.0), 0.0);
-    EXPECT_EQ(Clamp(+1.0, -1.0,  0.0), 0.0);
-    EXPECT_EQ(Clamp(0.0, NaN, NaN), 0.0);
-    EXPECT_EQ(Clamp(0.0, -1.0, NaN), 0.0);
-    EXPECT_EQ(Clamp(0.0, NaN, +1.0), 0.0);
-    EXPECT_EQ(Clamp(0.0, -1.0, +1.0), 0.0);
-    EXPECT_TRUE(std::isnan(Clamp(NaN, -1.0, +1.0)));
-    EXPECT_TRUE(std::isnan(Clamp(NaN, NaN, +1.0)));
-    EXPECT_TRUE(std::isnan(Clamp(NaN, -1.0, NaN)));
-    EXPECT_TRUE(std::isnan(Clamp(NaN, NaN, NaN)));
+    EXPECT_EQ(std::clamp(-1.0,  0.0, +1.0), 0.0);
+    EXPECT_EQ(std::clamp(+1.0, -1.0,  0.0), 0.0);
+    EXPECT_EQ(std::clamp(0.0, NaN, NaN), 0.0);
+    EXPECT_EQ(std::clamp(0.0, -1.0, NaN), 0.0);
+    EXPECT_EQ(std::clamp(0.0, NaN, +1.0), 0.0);
+    EXPECT_EQ(std::clamp(0.0, -1.0, +1.0), 0.0);
+    EXPECT_TRUE(std::isnan(std::clamp(NaN, -1.0, +1.0)));
+    EXPECT_TRUE(std::isnan(std::clamp(NaN, NaN, +1.0)));
+    EXPECT_TRUE(std::isnan(std::clamp(NaN, -1.0, NaN)));
+    EXPECT_TRUE(std::isnan(std::clamp(NaN, NaN, NaN)));
 }
 
 TEST(Math, GetReflectionMatrix)

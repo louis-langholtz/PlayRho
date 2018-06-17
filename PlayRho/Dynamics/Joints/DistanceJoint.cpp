@@ -26,6 +26,8 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
+#include <algorithm>
+
 namespace playrho {
 namespace d2 {
 
@@ -230,7 +232,7 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     const auto u = std::get<UnitVec>(uvresult);
     const auto length = std::get<Length>(uvresult);
     const auto deltaLength = length - m_length;
-    const auto C = Clamp(deltaLength, -conf.maxLinearCorrection, conf.maxLinearCorrection);
+    const auto C = std::clamp(deltaLength, -conf.maxLinearCorrection, conf.maxLinearCorrection);
 
     const auto impulse = -m_mass * C;
     const auto P = impulse * u;
