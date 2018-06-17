@@ -1,8 +1,8 @@
 # Changes
 
-Here's a run-down of some of the changes between
-[PlayRho](https://github.com/louis-langholtz/PlayRho) and Box2D 2.3.2, categorized
-as Application Programming Interface (API) changes and non-API (other) changes.
+Here's a run-down of some of the changes in going from Box2D 2.3.2 to
+[PlayRho](https://github.com/louis-langholtz/PlayRho), categorized
+as API (Application Programming Interface) changes and non-API (other) changes.
 
 ## API Changes
 

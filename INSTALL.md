@@ -14,7 +14,7 @@ Additionally, PlayRho provides some demo/test applications which may provide ext
 
 1. Make sure you have the tools that will be needed.
   - **CMake**: If you don't already have CMake installed on your system, it can be obtained from https://cmake.org/.
-  - **A C++14 compiler suite**: That could be Microsoft's Visual C++, GNU's GCC, or LLVM's Clang. On Microsoft Windows platforms, you can get a complete C++14 compiler suite by getting Microsoft's Visual Studio 2017 from https://www.visualstudio.com/downloads/.
+  - **A C++17 compiler suite**: That could be Microsoft's Visual C++, GNU's GCC, or LLVM's Clang. On Microsoft Windows platforms, you can get a complete C++17 compiler suite by getting Microsoft's Visual Studio 2017 from https://www.visualstudio.com/downloads/.
   - **git**: Needed only if you want to do development work. If you don't already have Git installed but you want to install it, you can get it from: https://git-scm.com/downloads.
 2. Decide where you want to put the source code.
 3. Download the PlayRho source code to your chosen location.
