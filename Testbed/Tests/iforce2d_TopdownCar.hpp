@@ -126,14 +126,14 @@ public:
     
     void updateTraction()
     {
-        if ( m_groundAreas.empty() )
+        if ( empty(m_groundAreas) )
             m_currentTraction = 1;
         else
         {
             //find area with highest traction
             m_currentTraction = 0;
-            auto it = m_groundAreas.begin();
-            while (it != m_groundAreas.end())
+            auto it = begin(m_groundAreas);
+            while (it != end(m_groundAreas))
             {
                 const auto ga = *it;
                 if ( ga->frictionModifier > m_currentTraction )
@@ -314,17 +314,17 @@ public:
     
     ~TDCar()
     {
-        for (auto i = decltype(m_tires.size()){0}; i < m_tires.size(); i++)
+        for (auto i = decltype(size(m_tires)){0}; i < size(m_tires); i++)
             delete m_tires[i];
     }
     
     void update(ControlStateType controlState)
     {
-        for (auto i = decltype(m_tires.size()){0}; i < m_tires.size(); i++)
+        for (auto i = decltype(size(m_tires)){0}; i < size(m_tires); i++)
         {
             m_tires[i]->updateFriction();
         }
-        for (auto i = decltype(m_tires.size()){0}; i < m_tires.size(); i++)
+        for (auto i = decltype(size(m_tires)){0}; i < size(m_tires); i++)
         {
             m_tires[i]->updateDrive(controlState);
         }

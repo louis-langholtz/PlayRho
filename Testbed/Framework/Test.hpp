@@ -181,7 +181,7 @@ public:
     {
         return SizedRange<HandledKeys::const_iterator>(cbegin(m_handledKeys),
                                                        cend(m_handledKeys),
-                                                       m_handledKeys.size());
+                                                       size(m_handledKeys));
     }
 
     void MouseDown(const Length2& p);
@@ -322,7 +322,7 @@ protected:
     
     KeyHandlerID RegisterKeyHandler(const std::string& info, KeyHandler handler)
     {
-        const auto index = m_keyHandlers.size();
+        const auto index = size(m_keyHandlers);
         m_keyHandlers.push_back(std::make_pair(info, handler));
         return index;
     }

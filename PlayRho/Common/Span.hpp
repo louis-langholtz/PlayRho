@@ -115,10 +115,13 @@ namespace playrho {
         }
 
         /// @brief Gets the size of this span.
-        size_type size() const noexcept { return m_size; }
+        PLAYRHO_CONSTEXPR size_type size() const noexcept { return m_size; }
         
         /// @brief Direct access to data.
         pointer data() const noexcept { return m_array; }
+        
+        /// @brief Checks whether this span is empty.
+        PLAYRHO_CONSTEXPR bool empty() const noexcept { return m_size == 0; }
 
     private:
         pointer m_array = nullptr; ///< Pointer to array of data.

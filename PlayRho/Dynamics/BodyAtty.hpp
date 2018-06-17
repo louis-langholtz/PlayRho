@@ -260,17 +260,17 @@ private:
     /// @brief Erases the given body's contacts.
     static void EraseContacts(Body& b, const std::function<bool(Contact&)>& callback)
     {
-        auto end = b.m_contacts.end();
-        auto iter = b.m_contacts.begin();
+        auto last = end(b.m_contacts);
+        auto iter = begin(b.m_contacts);
         auto index = Body::Contacts::difference_type{0};
-        while (iter != end)
+        while (iter != last)
         {
             const auto contact = GetContactPtr(*iter);
             if (callback(*contact))
             {
                 b.m_contacts.erase(iter);
-                iter = b.m_contacts.begin() + index;
-                end = b.m_contacts.end();
+                iter = begin(b.m_contacts) + index;
+                last = end(b.m_contacts);
             }
             else
             {

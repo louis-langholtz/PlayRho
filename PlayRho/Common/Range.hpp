@@ -43,19 +43,19 @@ namespace playrho {
         }
 
         /// @brief Gets the "begin" index value.
-        iterator_type begin() const noexcept
+        PLAYRHO_CONSTEXPR iterator_type begin() const noexcept
         {
             return m_begin;
         }
 
         /// @brief Gets the "end" index value.
-        iterator_type end() const noexcept
+        PLAYRHO_CONSTEXPR iterator_type end() const noexcept
         {
             return m_end;
         }
 
         /// @brief Whether this range is empty.
-        bool empty() const noexcept
+        PLAYRHO_CONSTEXPR bool empty() const noexcept
         {
             return m_begin == m_end;
         }
@@ -83,7 +83,7 @@ namespace playrho {
         }
 
         /// @brief Gets the size of this range.
-        size_type size() const noexcept
+        PLAYRHO_CONSTEXPR size_type size() const noexcept
         {
             return m_size;
         }

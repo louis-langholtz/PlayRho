@@ -157,15 +157,15 @@ class TestSuite
 public:
     TestSuite(Span<const TestEntry> testEntries, int index = 0):
     	m_testEntries(testEntries),
-    	m_testIndex(index < static_cast<int>(testEntries.size())? index: 0)
+    	m_testIndex(index < static_cast<int>(size(testEntries))? index: 0)
     {
-        assert(testEntries.size() > 0);
+        assert(!empty(testEntries));
         m_test = testEntries[static_cast<unsigned>(m_testIndex)].createFcn();
     }
     
     int GetTestCount() const
     {
-        return static_cast<int>(m_testEntries.size());
+        return static_cast<int>(size(m_testEntries));
     }
     
     Test* GetTest() const
@@ -264,7 +264,7 @@ static void CreateUI(GLFWwindow* window)
     };
 
     const auto cwd = GetCwd();
-    if (cwd.empty())
+    if (empty(cwd))
     {
         std::perror("GetCwd");
     }
@@ -680,9 +680,9 @@ static void AboutTestUI()
 
     ImGui::LabelText("Test Name", "%s", name);
     
-    if (!test->GetSeeAlso().empty())
+    if (!empty(test->GetSeeAlso()))
     {
-        const auto length = test->GetSeeAlso().size();
+        const auto length = size(test->GetSeeAlso());
         char buffer[512];
         std::strncpy(buffer, test->GetSeeAlso().c_str(), length);
         buffer[length] = '\0';
@@ -690,7 +690,7 @@ static void AboutTestUI()
                          ImGuiInputTextFlags_ReadOnly|ImGuiInputTextFlags_AutoSelectAll);
     }
     
-    if (!test->GetDescription().empty())
+    if (!empty(test->GetDescription()))
     {
         if (ImGui::CollapsingHeader("Description", ImGuiTreeNodeFlags_DefaultOpen))
         {
@@ -699,7 +699,7 @@ static void AboutTestUI()
     }
     
     const auto handledKeys = test->GetHandledKeys();
-    if (!handledKeys.empty())
+    if (!empty(handledKeys))
     {
         if (ImGui::CollapsingHeader("Key Controls", ImGuiTreeNodeFlags_DefaultOpen))
         {
@@ -740,7 +740,7 @@ static void AboutTestUI()
         }
     }
     
-    if (!test->GetStatus().empty())
+    if (!empty(test->GetStatus()))
     {
         if (ImGui::CollapsingHeader("Status Info", ImGuiTreeNodeFlags_DefaultOpen))
         {
@@ -748,7 +748,7 @@ static void AboutTestUI()
         }
     }
     
-    if (!test->GetCredits().empty())
+    if (!empty(test->GetCredits()))
     {
         if (ImGui::CollapsingHeader("Credits"))
         {
@@ -1367,7 +1367,7 @@ static void EntityUI(Fixture& fixture)
 #if 0
     {
         const auto proxies = fixture.GetProxies();
-        if (ImGui::TreeNodeEx("Proxies", 0, "Proxies (%u)", proxies.size()))
+        if (ImGui::TreeNodeEx("Proxies", 0, "Proxies (%u)", size(proxies)))
         {
             CollectionUI(proxies);
             ImGui::TreePop();
@@ -1451,7 +1451,7 @@ static void EntityUI(Body& b, const FixtureSet& selectedFixtures)
     EntityUI(b);
     {
         const auto fixtures = b.GetFixtures();
-        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", fixtures.size()))
+        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", size(fixtures)))
         {
             CollectionUI(fixtures, selectedFixtures);
             ImGui::TreePop();
@@ -1460,7 +1460,7 @@ static void EntityUI(Body& b, const FixtureSet& selectedFixtures)
     {
         const auto joints = b.GetJoints();
         if (ImGui::TreeNodeEx("Joints", 0,
-                              "Joints (%lu)", joints.size()))
+                              "Joints (%lu)", size(joints)))
         {
             CollectionUI(joints);
             ImGui::TreePop();
@@ -1469,7 +1469,7 @@ static void EntityUI(Body& b, const FixtureSet& selectedFixtures)
     {
         const auto contacts = b.GetContacts();
         if (ImGui::TreeNodeEx("Contacts", 0,
-                              "Contacts (%lu)", contacts.size()))
+                              "Contacts (%lu)", size(contacts)))
         {
             CollectionUI(contacts);
             ImGui::TreePop();
@@ -2172,7 +2172,7 @@ static void ModelEntitiesUI()
     const auto test = g_testSuite->GetTest();
     const auto selectedFixtures = test->GetSelectedFixtures();
     const auto selectedBodies = test->GetSelectedBodies();
-    const auto selBodies = !selectedFixtures.empty();
+    const auto selBodies = !empty(selectedFixtures);
     const auto selJoints = false;
     const auto selContacts = false;
 
@@ -2180,7 +2180,7 @@ static void ModelEntitiesUI()
     {
         const auto bodies = test->m_world.GetBodies();
         if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
-                              "Bodies (%lu)", bodies.size()))
+                              "Bodies (%lu)", size(bodies)))
         {
             CollectionUI(bodies, selectedBodies, selectedFixtures);
             ImGui::TreePop();
@@ -2189,7 +2189,7 @@ static void ModelEntitiesUI()
     {
         const auto joints = test->m_world.GetJoints();
         if (ImGui::TreeNodeEx("Joints", selJoints? ImGuiTreeNodeFlags_DefaultOpen: 0,
-                              "Joints (%lu)", joints.size()))
+                              "Joints (%lu)", size(joints)))
         {
             CollectionUI(joints);
             ImGui::TreePop();
@@ -2198,7 +2198,7 @@ static void ModelEntitiesUI()
     {
         const auto contacts = test->m_world.GetContacts();
         if (ImGui::TreeNodeEx("Contacts", selContacts? ImGuiTreeNodeFlags_DefaultOpen: 0,
-                              "Contacts (%lu)", contacts.size()))
+                              "Contacts (%lu)", size(contacts)))
         {
             CollectionUI(contacts);
             ImGui::TreePop();

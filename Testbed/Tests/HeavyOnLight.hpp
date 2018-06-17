@@ -64,7 +64,7 @@ public:
         if (newDensity != oldDensity)
         {
             auto selectedFixtures = GetSelectedFixtures();
-            const auto selectedFixture = selectedFixtures.size() == 1? *(selectedFixtures.begin()): nullptr;
+            const auto selectedFixture = size(selectedFixtures) == 1? *(begin(selectedFixtures)): nullptr;
             const auto wasSelected = selectedFixture == m_top;
             const auto body = m_top->GetBody();
             body->Destroy(m_top);
@@ -74,7 +74,7 @@ public:
             m_top = body->CreateFixture(Shape(conf));
             if (wasSelected)
             {
-                selectedFixtures.erase(selectedFixtures.begin());
+                selectedFixtures.erase(begin(selectedFixtures));
                 selectedFixtures.insert(m_top);
                 SetSelectedFixtures(selectedFixtures);
             }

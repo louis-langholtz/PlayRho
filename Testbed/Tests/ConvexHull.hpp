@@ -69,11 +69,11 @@ public:
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        const auto shape = PolygonShapeConf{}.Set(Span<const Length2>{&m_points[0], m_points.size()});
+        const auto shape = PolygonShapeConf{}.Set(Span<const Length2>{data(m_points), size(m_points)});
 
-        drawer.DrawPolygon(shape.GetVertices().begin(), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
+        drawer.DrawPolygon(begin(shape.GetVertices()), shape.GetVertexCount(), Color(0.9f, 0.9f, 0.9f));
 
-        for (auto i = std::size_t{0}; i < m_points.size(); ++i)
+        for (auto i = std::size_t{0}; i < size(m_points); ++i)
         {
             drawer.DrawPoint(m_points[i], 3.0f, Color(0.3f, 0.9f, 0.3f));
             drawer.DrawString(m_points[i] + Vec2(0.05f, 0.05f) * 1_m, Drawer::Left, "%d", i);

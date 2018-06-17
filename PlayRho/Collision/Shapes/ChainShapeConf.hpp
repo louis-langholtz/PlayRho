@@ -89,7 +89,7 @@ public:
     /// @brief Gets the vertex count.
     ChildCounter GetVertexCount() const noexcept
     {
-        return static_cast<ChildCounter>(m_vertices.size());
+        return static_cast<ChildCounter>(size(m_vertices));
     }
     
     /// @brief Gets a vertex by index.

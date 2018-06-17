@@ -253,10 +253,10 @@ inline void Fixture::SetProxies(std::unique_ptr<FixtureProxy[]> value, std::size
     {
         case 2:
             m_proxies.asArray[1] = value[1];
-            // [[fallthrough]]
+            [[fallthrough]];
         case 1:
             m_proxies.asArray[0] = value[0];
-            // [[fallthrough]]
+            [[fallthrough]];
         case 0:
             break;
         default:

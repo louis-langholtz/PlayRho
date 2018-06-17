@@ -860,45 +860,37 @@ private:
 
 inline SizedRange<World::Bodies::iterator> World::GetBodies() noexcept
 {
-    return {m_bodies.begin(), m_bodies.end(), m_bodies.size()};
+    return {begin(m_bodies), end(m_bodies), size(m_bodies)};
 }
 
 inline SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
 {
-    return {m_bodies.begin(), m_bodies.end(), m_bodies.size()};
+    return {begin(m_bodies), end(m_bodies), size(m_bodies)};
 }
 
 inline SizedRange<World::Bodies::const_iterator> World::GetBodiesForProxies() const noexcept
 {
-    return {
-        cbegin(m_bodiesForProxies),
-        cend(m_bodiesForProxies),
-        m_bodiesForProxies.size()
-    };
+    return {cbegin(m_bodiesForProxies), cend(m_bodiesForProxies), size(m_bodiesForProxies)};
 }
 
 inline SizedRange<World::Fixtures::const_iterator> World::GetFixturesForProxies() const noexcept
 {
-    return {
-        cbegin(m_fixturesForProxies),
-        cend(m_fixturesForProxies),
-        m_fixturesForProxies.size()
-    };
+    return {cbegin(m_fixturesForProxies), cend(m_fixturesForProxies), size(m_fixturesForProxies)};
 }
 
 inline SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
 {
-    return {m_joints.begin(), m_joints.end(), m_joints.size()};
+    return {begin(m_joints), end(m_joints), size(m_joints)};
 }
 
 inline SizedRange<World::Joints::iterator> World::GetJoints() noexcept
 {
-    return {m_joints.begin(), m_joints.end(), m_joints.size()};
+    return {begin(m_joints), end(m_joints), size(m_joints)};
 }
 
 inline SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
 {
-    return {m_contacts.begin(), m_contacts.end(), m_contacts.size()};
+    return {begin(m_contacts), end(m_contacts), size(m_contacts)};
 }
 
 inline bool World::IsLocked() const noexcept
@@ -1043,7 +1035,7 @@ inline void World::RegisterForProcessing(ProxyId pid) noexcept
 /// @relatedalso World
 inline BodyCounter GetBodyCount(const World& world) noexcept
 {
-    return static_cast<BodyCounter>(world.GetBodies().size());
+    return static_cast<BodyCounter>(size(world.GetBodies()));
 }
 
 /// Gets the count of joints in the given world.
@@ -1051,7 +1043,7 @@ inline BodyCounter GetBodyCount(const World& world) noexcept
 /// @relatedalso World
 inline JointCounter GetJointCount(const World& world) noexcept
 {
-    return static_cast<JointCounter>(world.GetJoints().size());
+    return static_cast<JointCounter>(size(world.GetJoints()));
 }
 
 /// @brief Gets the count of contacts in the given world.
@@ -1061,7 +1053,7 @@ inline JointCounter GetJointCount(const World& world) noexcept
 /// @relatedalso World
 inline ContactCounter GetContactCount(const World& world) noexcept
 {
-    return static_cast<ContactCounter>(world.GetContacts().size());
+    return static_cast<ContactCounter>(size(world.GetContacts()));
 }
 
 /// @brief Gets the touching count for the given world.

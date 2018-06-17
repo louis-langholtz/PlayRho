@@ -73,13 +73,21 @@ public:
     }
 
     /// @brief Gets the current size of this set.
-    std::size_t size() const noexcept { return m_elements.size(); }
+    std::size_t size() const noexcept
+    {
+        using ::playrho::size;
+        return size(m_elements);
+    }
     
     /// @brief Gets the "begin" iterator value.
-    const_pointer begin() const { return m_elements.data(); }
+    const_pointer begin() const { return data(m_elements); }
     
     /// @brief Gets the "end" iterator value.
-    const_pointer end() const { return m_elements.data() + m_elements.size(); }
+    const_pointer end() const
+    {
+        using ::playrho::size;
+        return data(m_elements) + size(m_elements);
+    }
 
     /// Finds contained point whose delta with the given point has a squared length less
     /// than or equal to this set's minimum length squared value.

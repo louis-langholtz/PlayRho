@@ -41,6 +41,7 @@ using std::cbegin;
 using std::cend;
 using std::size;
 using std::empty;
+using std::data;
 using std::swap;
 
 namespace detail {
