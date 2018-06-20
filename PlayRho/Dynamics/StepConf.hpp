@@ -69,7 +69,7 @@ public:
     PLAYRHO_CONSTEXPR inline StepConf& SetTime(Time value) noexcept
     {
         time = value;
-        invTime = (value != Time{0})? Real{1} / value: 0_Hz;
+        invTime = (value != 0_s)? Real{1} / value: 0_Hz;
         return *this;
     }
 
@@ -83,7 +83,7 @@ public:
     PLAYRHO_CONSTEXPR inline StepConf& SetInvTime(Frequency value) noexcept
     {
         invTime = value;
-        time = (value != 0_Hz)? Time{Real{1} / value}: Time{0};
+        time = (value != 0_Hz)? Time{Real{1} / value}: 0_s;
         return *this;
     }
     

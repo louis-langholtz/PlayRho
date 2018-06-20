@@ -20,6 +20,7 @@
 #define PLAYRHO_COMMON_SPAN_HPP
 
 #include <PlayRho/Defines.hpp>
+#include <PlayRho/Common/Templates.hpp>
 
 #include <cstddef>
 #include <cassert>
@@ -63,31 +64,18 @@ namespace playrho {
         }
         
         /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline Span(pointer first, pointer last) noexcept:
-            m_array{first}, m_size{static_cast<size_type>(std::distance(first, last))}
-        {
-            assert(first <= last);
-        }
-        
-        /// @brief Initializing constructor.
         template <std::size_t SIZE>
         PLAYRHO_CONSTEXPR inline Span(data_type (&array)[SIZE]) noexcept: m_array{&array[0]}, m_size{SIZE} {}
         
         /// @brief Initializing constructor.
         template <typename U, typename = std::enable_if_t< !std::is_array<U>::value > >
-        PLAYRHO_CONSTEXPR inline Span(U& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
+        PLAYRHO_CONSTEXPR inline Span(U& value) noexcept:
+        m_array{detail::Data(value)}, m_size{detail::Size(value)} {}
         
-        /// @brief Initializing constructor.
-        template <typename U, typename = std::enable_if_t< !std::is_array<U>::value > >
-        PLAYRHO_CONSTEXPR inline Span(const U& value) noexcept: m_array{value.begin()}, m_size{value.size()} {}
-
-        /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline Span(std::vector<T>& value) noexcept: m_array{value.data()}, m_size{value.size()} {}
-
         /// @brief Initializing constructor.
         PLAYRHO_CONSTEXPR inline Span(std::initializer_list<T> list) noexcept:
             m_array{list.begin()}, m_size{list.size()} {}
-        
+
         /// @brief Gets the "begin" iterator value.
         pointer begin() const noexcept { return m_array; }
 

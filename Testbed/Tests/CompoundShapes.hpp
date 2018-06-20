@@ -80,7 +80,7 @@ public:
             xf1.p = GetVec2(GetXAxis(xf1.q)) * 1_m;
 
             auto triangleConf1 = PolygonShapeConf{};
-            triangleConf1.Set(Span<const Length2>{
+            triangleConf1.Set({
                 Transform(Vec2(-1.0f, 0.0f) * 1_m, xf1),
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf1),
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf1)
@@ -93,7 +93,7 @@ public:
             xf2.p = -GetVec2(GetXAxis(xf2.q)) * 1_m;
 
             auto trianglConf2 = PolygonShapeConf{};
-            trianglConf2.Set(Span<const Length2>{
+            trianglConf2.Set({
                 Transform(Vec2(-1.0f, 0.0f) * 1_m, xf2),
                 Transform(Vec2(1.0f, 0.0f) * 1_m, xf2),
                 Transform(Vec2(0.0f, 0.5f) * 1_m, xf2)

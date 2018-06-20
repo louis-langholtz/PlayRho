@@ -44,6 +44,9 @@ TEST(Vec2, max_size) {
 
 TEST(Vec2, Traits)
 {
+    EXPECT_TRUE((IsAddable<Vec2>::value));
+    EXPECT_TRUE((IsAddable<Vec2,Vec2>::value));
+
     EXPECT_TRUE(std::is_default_constructible<Vec2>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<Vec2>::value);
     EXPECT_TRUE(std::is_trivially_default_constructible<Vec2>::value);

@@ -138,8 +138,7 @@ TEST(DistanceProxy, ThreeVertices)
 TEST(DistanceProxy, FindLowestRightMostVertex)
 {
     const auto vertices = std::vector<Length2>();
-    const auto span = Span<const Length2>(data(vertices), std::size_t{0});
-    const auto result = FindLowestRightMostVertex(span);
+    const auto result = FindLowestRightMostVertex(vertices);
     EXPECT_EQ(result, static_cast<std::size_t>(-1));
 }
 

@@ -49,7 +49,7 @@ public:
     explicit VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()):
         m_minSepSquared{minSepSquared}
     {
-        assert(minSepSquared >= Area{0});
+        assert(minSepSquared >= 0_m2);
     }
 
     /// @brief Gets the min separation squared.
@@ -75,19 +75,17 @@ public:
     /// @brief Gets the current size of this set.
     std::size_t size() const noexcept
     {
-        using ::playrho::size;
-        return size(m_elements);
+        return detail::Size(m_elements);
     }
+    
+    /// @brief Gets the pointer to the data buffer.
+    const_pointer data() const { return detail::Data(m_elements); }
     
     /// @brief Gets the "begin" iterator value.
-    const_pointer begin() const { return data(m_elements); }
+    const_pointer begin() const { return data(); }
     
     /// @brief Gets the "end" iterator value.
-    const_pointer end() const
-    {
-        using ::playrho::size;
-        return data(m_elements) + size(m_elements);
-    }
+    const_pointer end() const { return data() + size(); }
 
     /// Finds contained point whose delta with the given point has a squared length less
     /// than or equal to this set's minimum length squared value.

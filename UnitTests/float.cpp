@@ -371,3 +371,11 @@ TEST(float, GetTypeName)
     const auto name = playrho::GetTypeName<float>();
     EXPECT_STREQ(name, "float");
 }
+
+TEST(float, traits)
+{
+    EXPECT_TRUE((playrho::IsAddable<float>::value));
+    EXPECT_TRUE((playrho::IsAddable<float,float>::value));
+    EXPECT_TRUE((playrho::IsAddable<float,double>::value));
+    EXPECT_TRUE((playrho::IsAddable<float,int>::value));
+}

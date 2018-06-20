@@ -85,7 +85,7 @@ public:
             auto conf = PolygonShapeConf{};
 
             conf.density = 4_kgpm2;
-            const auto poly1 = PolygonShapeConf(Span<const Length2>(vertices, 3), conf);
+            const auto poly1 = PolygonShapeConf(vertices, conf);
 
             Transformation xf2;
             xf2.q = UnitVec::Get(-0.3524_rad * Pi);
@@ -96,7 +96,7 @@ public:
             vertices[2] = Transform(Length2{0_m, 0.5_m}, xf2);
 
             conf.density = 2_kgpm2;
-            const auto poly2 = PolygonShapeConf(Span<const Length2>(vertices, 3), conf);
+            const auto poly2 = PolygonShapeConf(vertices, conf);
 
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;

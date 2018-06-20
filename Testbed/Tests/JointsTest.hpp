@@ -275,7 +275,7 @@ private:
         const auto carLocation = center - Vec2(3.3f, 1.0f) * 1_m;
         const auto car = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(carLocation));
         car->CreateFixture(Shape{
-            PolygonShapeConf{}.UseDensity(1_kgpm2).Set(Span<const Length2>(data(carVerts), size(carVerts)))
+            PolygonShapeConf{}.UseDensity(1_kgpm2).Set(carVerts)
         });
         
         const auto backWheel  = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(carLocation + Vec2(-1.0f, -0.65f) * 1_m));

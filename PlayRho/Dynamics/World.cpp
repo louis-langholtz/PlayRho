@@ -1576,7 +1576,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
      * the body constraint doesn't need to pass an elapsed time (and doesn't need to
      * update the velocity from what it already is).
      */
-    auto bodyConstraints = GetBodyConstraints(island.m_bodies, Time{0}, GetMovementConf(conf));
+    auto bodyConstraints = GetBodyConstraints(island.m_bodies, 0_s, GetMovementConf(conf));
     auto bodyConstraintsMap = GetBodyConstraintsMap(island.m_bodies, bodyConstraints);
 
     // Initialize the body state.

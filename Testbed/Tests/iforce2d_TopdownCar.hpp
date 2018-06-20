@@ -253,7 +253,7 @@ public:
         vertices[6] = Vec2(-3.0f,  +2.5f) * 1_m;
         vertices[7] = Vec2(-1.5f,  +0.0f) * 1_m;
         auto polygonShape = PolygonShapeConf{};
-        polygonShape.Set(Span<const Length2>(vertices, 8));
+        polygonShape.Set(vertices);
         polygonShape.UseDensity(0.1_kgpm2);
         m_body->CreateFixture(Shape(polygonShape));
         

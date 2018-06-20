@@ -40,8 +40,7 @@ bool operator== (const DistanceProxy& lhs, const DistanceProxy& rhs) noexcept
 
 std::size_t FindLowestRightMostVertex(Span<const Length2> vertices)
 {
-    const auto numVertices = size(vertices);
-    if (numVertices > 0)
+    if (const auto numVertices = size(vertices); numVertices > 0)
     {
         auto i0 = decltype(numVertices){0};
         auto max_x = GetX(vertices[0]);
@@ -89,7 +88,7 @@ std::vector<Length2> GetConvexHullAsVector(Span<const Length2> vertices)
                 const auto r = vertices[ie] - vertices[ih];
                 const auto v = vertices[j] - vertices[ih];
                 const auto c = Cross(r, v);
-                if ((c < Area{0}) || ((c == Area{0}) && (GetMagnitudeSquared(v) > GetMagnitudeSquared(r))))
+                if ((c < 0_m2) || ((c == 0_m2) && (GetMagnitudeSquared(v) > GetMagnitudeSquared(r))))
                 {
                     ie = j;
                 }
@@ -117,16 +116,18 @@ bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept
     const auto count = proxy.GetVertexCount();
     const auto vr = proxy.GetVertexRadius();
 
-    if (count == 0)
+    switch (count)
     {
-        return false;
-    }
-
-    if (count == 1)
-    {
-        const auto v0 = proxy.GetVertex(0);
-        const auto delta = point - v0;
-        return GetMagnitudeSquared(delta) <= Square(vr);
+        case 0:
+            return false;
+        case 1:
+        {
+            const auto v0 = proxy.GetVertex(0);
+            const auto delta = point - v0;
+            return GetMagnitudeSquared(delta) <= Square(vr);
+        }
+        default:
+            break;
     }
     
     auto maxDot = -MaxFloat * Meter;
@@ -151,16 +152,12 @@ bool TestPoint(const DistanceProxy& proxy, Length2 point) noexcept
     const auto v0 = proxy.GetVertex(maxIdx);
     const auto v1 = proxy.GetVertex(GetModuloNext(maxIdx, count));
     const auto edge = v1 - v0;
-    const auto delta0 = v0 - point;
-    const auto d0 = Dot(edge, delta0);
-    if (d0 >= Area{0})
+    if (const auto delta0 = v0 - point; Dot(edge, delta0) >= 0_m2)
     {
         // point is nearest v0 and not within edge
         return GetMagnitudeSquared(delta0) <= Square(vr);
     }
-    const auto delta1 = point - v1;
-    const auto d1 = Dot(edge, delta1);
-    if (d1 >= Area{0})
+    if (const auto delta1 = point - v1; Dot(edge, delta1) >= 0_m2)
     {
         // point is nearest v1 and not within edge
         return GetMagnitudeSquared(delta1) <= Square(vr);

@@ -90,7 +90,7 @@ TEST(Angle, limits)
 
 TEST(Angle, GetNormalized)
 {
-    EXPECT_EQ(GetNormalized(Angle(0)) / Degree, Real(0));
+    EXPECT_EQ(GetNormalized(0_deg) / Degree, Real(0));
     EXPECT_NEAR(double(Real(GetNormalized(    0.0_deg) / Degree)),    0.0, 0.01);
     EXPECT_NEAR(double(Real(GetNormalized(   21.3_deg) / Degree)),   21.3, 0.01);
     EXPECT_NEAR(double(Real(GetNormalized(   90.0_deg) / Degree)),   90.0, 0.01);

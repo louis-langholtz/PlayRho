@@ -173,14 +173,14 @@ public:
         conf.vertexRadius = radius;
         auto polygonA = conf;
         //polygonA.SetAsBox(8.0f, 6.0f);
-        polygonA.Set(Span<const Length2>{Vec2{-8, -6} * 1_m, Vec2{8, -6} * 1_m, Vec2{0, 6} * 1_m});
+        polygonA.Set({Vec2{-8, -6} * 1_m, Vec2{8, -6} * 1_m, Vec2{0, 6} * 1_m});
         m_bodyA->CreateFixture(Shape(polygonA));
         
         conf.vertexRadius = radius * Real{2};
         auto polygonB = conf;
         // polygonB.SetAsBox(7.2_m, 0.8_m);
-        polygonB.Set(Span<const Length2>{Vec2{-7.2f, 0} * 1_m, Vec2{+7.2f, 0} * 1_m});
-        //polygonB.Set(Span<const Vec2>{Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
+        polygonB.Set({Vec2{-7.2f, 0} * 1_m, Vec2{+7.2f, 0} * 1_m});
+        //polygonB.Set({Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
         m_bodyB->CreateFixture(Shape(polygonB));
     }
 

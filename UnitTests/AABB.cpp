@@ -51,6 +51,9 @@ TEST(AABB, DefaultConstruction)
 
 TEST(AABB, Traits)
 {
+    EXPECT_FALSE(IsIterable<AABB>::value);
+    EXPECT_FALSE(IsAddable<AABB>::value);
+
     EXPECT_TRUE(std::is_default_constructible<AABB>::value);
     //EXPECT_TRUE(std::is_nothrow_default_constructible<AABB>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<AABB>::value);

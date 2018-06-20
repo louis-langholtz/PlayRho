@@ -48,7 +48,7 @@ public:
         vertices[2] = Vec2(0.0f, 2.0f) * 1_m;
 
         auto polygon = PolygonShapeConf{};
-        polygon.Set(Span<const Length2>{vertices, 3});
+        polygon.Set(vertices);
         polygon.UseDensity(1_kgpm2);
 
         BodyConf triangleBodyConf;
@@ -62,7 +62,7 @@ public:
         vertices[0] *= 2.0f;
         vertices[1] *= 2.0f;
         vertices[2] *= 2.0f;
-        polygon.Set(Span<const Length2>{vertices, 3});
+        polygon.Set(vertices);
 
         triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 

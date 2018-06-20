@@ -31,6 +31,13 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+TEST(WeldJoint, Traits)
+{
+    EXPECT_FALSE((IsIterable<WeldJoint>::value));
+    EXPECT_FALSE((IsAddable<WeldJoint>::value));
+    EXPECT_FALSE((IsAddable<WeldJoint,WeldJoint>::value));
+}
+
 TEST(WeldJointConf, ByteSize)
 {
     switch (sizeof(Real))

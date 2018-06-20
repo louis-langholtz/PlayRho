@@ -406,7 +406,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
     }
 
     // Solve point-to-point constraint.
-    auto positionError = Area{0};
+    auto positionError = 0_m2;
     {
         const auto qA = UnitVec::Get(posA.angular);
         const auto qB = UnitVec::Get(posB.angular);

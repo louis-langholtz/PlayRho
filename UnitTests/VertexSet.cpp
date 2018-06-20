@@ -22,6 +22,13 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+TEST(VertexSet, Traits)
+{
+    EXPECT_TRUE((IsIterable<VertexSet>::value));
+    EXPECT_FALSE((IsAddable<VertexSet>::value));
+    EXPECT_FALSE((IsAddable<VertexSet,VertexSet>::value));
+}
+
 TEST(VertexSet, ByteSize)
 {
     switch (sizeof(Real))

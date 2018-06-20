@@ -755,7 +755,7 @@ TEST(World, Query)
     ASSERT_NE(fixture, nullptr);
     
     auto stepConf = StepConf{};
-    stepConf.SetTime(Time(0));
+    stepConf.SetTime(0_s);
     world.Step(stepConf);
 
     {
@@ -813,7 +813,7 @@ TEST(World, RayCast)
     ASSERT_NE(fixture, nullptr);
     
     auto stepConf = StepConf{};
-    stepConf.SetTime(Time(0));
+    stepConf.SetTime(0_s);
     world.Step(stepConf);
     
     {

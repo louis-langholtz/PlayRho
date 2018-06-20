@@ -45,8 +45,8 @@ Length2 ComputeCentroid(const Span<const Length2>& vertices)
 {
     assert(size(vertices) >= 3);
     
-    auto c = Length2{} * Area{0};
-    auto area = Area{0};
+    auto c = Length2{} * 0_m2;
+    auto area = 0_m2;
     
     // <code>pRef</code> is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
@@ -71,7 +71,7 @@ Length2 ComputeCentroid(const Span<const Length2>& vertices)
     }
     
     // Centroid
-    assert((area > Area{0}) && !AlmostZero(area / SquareMeter));
+    assert((area > 0_m2) && !AlmostZero(area / SquareMeter));
     return c / area;
 }
 

@@ -70,12 +70,12 @@ public:
         verts[0] = Length2(  0_m, -2*w);
         verts[1] = Length2(  w,    0_m);
         verts[2] = Length2(  0_m,   -w);
-        polygonShape.Set(Span<const Length2>(verts, 3));
+        polygonShape.Set(verts);
         m_targetBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         verts[0] = Length2(  0_m, -2*w);
         verts[2] = Length2(  0_m,   -w);
         verts[1] = Length2( -w,    0_m);
-        polygonShape.Set(Span<const Length2>(verts, 3));
+        polygonShape.Set(verts);
         m_targetBody->CreateFixture(Shape(polygonShape), myFixtureConf);
         
         //create dynamic circle body
