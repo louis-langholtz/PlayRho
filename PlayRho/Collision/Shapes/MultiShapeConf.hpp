@@ -45,8 +45,8 @@ public:
     DistanceProxy GetDistanceProxy() const
     {
         return DistanceProxy{
-            vertexRadius, static_cast<VertexCounter>(vertices.size()),
-            vertices.data(), normals.data()
+            vertexRadius, static_cast<VertexCounter>(size(vertices)),
+            data(vertices), data(normals)
         };
     }
     
@@ -161,7 +161,7 @@ inline bool operator!= (const MultiShapeConf& lhs, const MultiShapeConf& rhs) no
 /// @brief Gets the "child" count for the given shape configuration.
 inline ChildCounter GetChildCount(const MultiShapeConf& arg) noexcept
 {
-    return static_cast<ChildCounter>(arg.children.size());
+    return static_cast<ChildCounter>(size(arg.children));
 }
 
 /// @brief Gets the "child" shape for the given shape configuration.

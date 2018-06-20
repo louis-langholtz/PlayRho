@@ -58,7 +58,7 @@ public:
         vertices[2] = Vec2(0.0f, 2.0f) * 1_m;
         auto polygon = PolygonShapeConf{};
         polygon.UseDensity(1_kgpm2);
-        polygon.Set(Span<const Length2>{vertices, 3});
+        polygon.Set(vertices);
 
         auto triangleShapeConf = FixtureConf{};
         triangleShapeConf.filter.groupIndex = k_smallGroup;
@@ -76,7 +76,7 @@ public:
         vertices[0] *= 2.0f;
         vertices[1] *= 2.0f;
         vertices[2] *= 2.0f;
-        polygon.Set(Span<const Length2>{vertices, 3});
+        polygon.Set(vertices);
         triangleShapeConf.filter.groupIndex = k_largeGroup;
         triangleBodyConf.location = Vec2(-5.0f, 6.0f) * 1_m;
         triangleBodyConf.fixedRotation = true; // look at me!

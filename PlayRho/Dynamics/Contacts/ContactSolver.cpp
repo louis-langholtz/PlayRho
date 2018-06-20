@@ -403,7 +403,7 @@ inline Momentum SolveTangentConstraint(VelocityConstraint& vc)
         const auto lambda = vcp.tangentMass * directionalVel;
         const auto maxImpulse = friction * vcp.normalImpulse;
         const auto oldImpulse = vcp.tangentImpulse;
-        const auto newImpulse = Clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
+        const auto newImpulse = std::clamp(oldImpulse + lambda, -maxImpulse, maxImpulse);
 #if 0
         // Note: using AlmostEqual here results in increased iteration counts and is slower.
         const auto incImpulse = AlmostEqual(newImpulse, oldImpulse)? 0_Ns: newImpulse - oldImpulse;
@@ -541,8 +541,8 @@ d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
         assert(K >= InvMass{0});
         
         // Prevent large corrections & don't push separation above -conf.linearSlop.
-        const auto C = -Clamp(conf.resolutionRate * (separation + conf.linearSlop),
-                              -conf.maxLinearCorrection, 0_m);
+        const auto C = -std::clamp(conf.resolutionRate * (separation + conf.linearSlop),
+                                   -conf.maxLinearCorrection, 0_m);
         
         // Compute response factors...
         const auto P = Length2{psm.m_normal * C} / K; // L M

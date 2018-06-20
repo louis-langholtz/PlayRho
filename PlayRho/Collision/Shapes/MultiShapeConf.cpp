@@ -41,7 +41,7 @@ MassData GetMassData(const MultiShapeConf& arg) noexcept
                   [&](const ConvexHull& ch) {
         const auto dp = ch.GetDistanceProxy();
         const auto md = playrho::d2::GetMassData(ch.GetVertexRadius(), density,
-            Span<const Length2>(dp.GetVertices().begin(), dp.GetVertexCount()));
+            Span<const Length2>(begin(dp.GetVertices()), dp.GetVertexCount()));
         mass += Mass{md.mass};
         weightedCenter += md.center * Mass{md.mass};
         I += RotInertia{md.I};

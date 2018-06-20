@@ -96,7 +96,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
     if (sensor)
     {
         const auto overlapping = TestOverlap(childA, xfA, childB, xfB, conf.distance);
-        newTouching = (overlapping >= Area{0});
+        newTouching = (overlapping >= 0_m2);
 
 #ifdef OVERLAP_TOLERANCE
 #ifndef NDEBUG
@@ -123,7 +123,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
 #ifndef NDEBUG
         const auto tolerance = OVERLAP_TOLERANCE;
         const auto overlapping = TestOverlap(childA, xfA, childB, xfB, conf.distance);
-        assert(newTouching == (overlapping >= Area{0}) ||
+        assert(newTouching == (overlapping >= 0_m2) ||
                abs(overlapping) < tolerance);
 #endif
 #endif

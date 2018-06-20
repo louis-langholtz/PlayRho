@@ -98,7 +98,7 @@ ChainShapeConf& ChainShapeConf::Transform(const Mat22& m) noexcept
 
 ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
 {
-    if (size(m_vertices) > 0)
+    if (!empty(m_vertices))
     {
         auto vprev = m_vertices.back();
         m_vertices.emplace_back(vertex);

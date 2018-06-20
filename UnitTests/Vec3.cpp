@@ -38,6 +38,9 @@ TEST(Vec3, ByteSizeIs_12_24_or_48)
 
 TEST(Vec3, Traits)
 {
+    EXPECT_TRUE((IsAddable<Vec3>::value));
+    EXPECT_TRUE((IsAddable<Vec3,Vec3>::value));
+
     EXPECT_TRUE(std::is_default_constructible<Vec3>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<Vec3>::value);
     EXPECT_TRUE(std::is_trivially_default_constructible<Vec3>::value);

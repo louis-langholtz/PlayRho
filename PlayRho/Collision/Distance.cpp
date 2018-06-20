@@ -57,15 +57,14 @@ inline SimplexEdges GetSimplexEdges(const IndexPair3 indexPairs,
         case 3:
             simplexEdges[2] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[2]),
                                              proxyB, xfB, std::get<1>(indexPairs[2]));
-            // [[fallthrough]]
+            [[fallthrough]];
         case 2:
             simplexEdges[1] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[1]),
                                              proxyB, xfB, std::get<1>(indexPairs[1]));
-            // [[fallthrough]]
+            [[fallthrough]];
         case 1:
             simplexEdges[0] = GetSimplexEdge(proxyA, xfA, std::get<0>(indexPairs[0]),
                                              proxyB, xfB, std::get<1>(indexPairs[0]));
-            // [[fallthrough]]
     }
     simplexEdges.size(static_cast<size_type>(count));
     return simplexEdges;

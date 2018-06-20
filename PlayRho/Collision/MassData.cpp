@@ -129,7 +129,7 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     }
     
     auto center = Length2{};
-    auto area = Area{0};
+    auto area = 0_m2;
     auto I = SecondMomentOfArea{0};
     
     // s is the reference point for forming triangles.
@@ -162,7 +162,7 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     const auto mass = Mass{AreaDensity{density} * area};
     
     // Center of mass
-    assert((area > Area{0}) && !AlmostZero(StripUnit(area)));
+    assert((area > 0_m2) && !AlmostZero(StripUnit(area)));
     center /= StripUnit(area);
     const auto massDataCenter = center + s;
     

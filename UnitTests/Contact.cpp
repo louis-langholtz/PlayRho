@@ -41,19 +41,15 @@ TEST(Contact, ByteSize)
     }
 }
 
-TEST(Contact, IsNotDefaultConstructible)
+TEST(Contact, Traits)
 {
     EXPECT_FALSE(std::is_default_constructible<Contact>::value);
-}
-
-TEST(Contact, IsCopyConstructible)
-{
     EXPECT_TRUE(std::is_copy_constructible<Contact>::value);
-}
+    EXPECT_FALSE(std::is_copy_assignable<Contact>::value);
 
-TEST(Contact, IsNotCopyAssignable)
-{
-    EXPECT_FALSE(std::is_copy_assignable<Contact>::value);    
+    EXPECT_FALSE(IsAddable<Contact>::value);
+    EXPECT_FALSE((IsAddable<Contact, Contact>::value));
+    EXPECT_FALSE(IsIterable<Contact>::value);
 }
 
 TEST(Contact, Enabled)

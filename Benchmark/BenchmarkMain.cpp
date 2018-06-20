@@ -686,7 +686,7 @@ public:
     }
     
 private:
-    playrho::OptionalValue<T> m_element;
+    playrho::Optional<T> m_element;
     std::mutex m_mutex;
     std::condition_variable m_cond;
 };

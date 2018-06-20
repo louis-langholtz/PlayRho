@@ -18,6 +18,8 @@
 
 #include "UnitTests.hpp"
 #include <PlayRho/Common/Math.hpp>
+
+#include <array>
 #include <type_traits>
 #include <chrono>
 #include <cmath>
@@ -127,7 +129,7 @@ TEST(Math, Span)
 {
     {
         const auto vector = Vector<int, 3>{1, 2, 4};
-        const Span<const int> foo = Span<const int>(vector.data(), vector.size());
+        const Span<const int> foo = Span<const int>(vector);
         EXPECT_EQ(foo.size(), std::size_t(3));
         EXPECT_EQ(foo[0], 1);
         EXPECT_EQ(foo[1], 2);
@@ -160,45 +162,46 @@ TEST(Math, Span)
         float array[15];
         EXPECT_EQ(Span<float>(array).size(), std::size_t(15));
         EXPECT_EQ(Span<float>(array, 2).size(), std::size_t(2));        
-        EXPECT_EQ(Span<float>(array, array + 4).size(), std::size_t(4));
-        EXPECT_EQ(Span<float>(array + 1, array + 3).size(), std::size_t(2));
     }
 }
 
 TEST(Math, Average)
 {
-    EXPECT_EQ(Average<int>({}), 0);
-    EXPECT_EQ(Average<float>({}), float(0));
+    EXPECT_EQ(Average(std::initializer_list<int>{}), 0);
+    EXPECT_EQ(Average(std::initializer_list<float>{}), float(0));
 
-    EXPECT_EQ(Average<int>({0}), 0);
-    EXPECT_EQ(Average<int>({4}), 4);
-    EXPECT_EQ(Average<int>({-3}), -3);
-    EXPECT_EQ(Average<float>({float(-3)}), float(-3));
+    EXPECT_EQ(Average(std::initializer_list<int>{0}), 0);
+    EXPECT_EQ(Average(std::initializer_list<int>{4}), 4);
+    EXPECT_EQ(Average(std::initializer_list<int>{-3}), -3);
+    EXPECT_EQ(Average(std::initializer_list<float>{float(-3)}), float(-3));
 
-    EXPECT_EQ(Average<int>({0, 0}), 0);
-    EXPECT_EQ(Average<int>({2, 2}), 2);
-    EXPECT_EQ(Average<int>({2, 4}), 3);
-    EXPECT_EQ(Average<float>({float(2), float(3)}), float(2.5));
+    EXPECT_EQ(Average(std::initializer_list<int>{0, 0}), 0);
+    EXPECT_EQ(Average(std::initializer_list<int>{2, 2}), 2);
+    EXPECT_EQ(Average(std::initializer_list<int>{2, 4}), 3);
+    EXPECT_EQ(Average(std::initializer_list<float>{float(2), float(3)}), float(2.5));
 
-    EXPECT_EQ(Average<int>({2, 4, 6}), 4);
-    EXPECT_EQ(Average<int>({2, 4, 12}), 6);
-    EXPECT_EQ(Average<double>({2.0, 4.0, 6.0}), 4.0);
-    EXPECT_EQ(Average<double>({2.0, 4.0, 12.0}), 6.0);
+    EXPECT_EQ(Average(std::initializer_list<int>{2, 4, 6}), 4);
+    EXPECT_EQ(Average(std::initializer_list<int>{2, 4, 12}), 6);
+    EXPECT_EQ(Average(std::initializer_list<double>{2.0, 4.0, 6.0}), 4.0);
+    EXPECT_EQ(Average(std::initializer_list<double>{2.0, 4.0, 12.0}), 6.0);
+    
+    EXPECT_EQ(Average(std::array<double, 3>{{2.0, 4.0, 12.0}}), 6.0);
+    EXPECT_EQ(Average(std::vector<double>{2.0, 4.0, 12.0}), 6.0);
 }
 
 TEST(Math, AverageVec2)
 {
-    EXPECT_EQ(Average<Vec2>({}), Vec2(0, 0));
+    EXPECT_EQ(Average(std::initializer_list<Vec2>{}), Vec2(0, 0));
     
     {
         const auto val = Vec2{Real(3.9), Real(-0.1)};
-        EXPECT_EQ(Average<Vec2>({val}), val);
+        EXPECT_EQ(Average(std::initializer_list<Vec2>{val}), val);
     }
     
     {
         const auto val1 = Vec2{Real(2.2), Real(-1.1)};
         const auto val2 = Vec2{Real(4.4), Real(-1.3)};
-        const auto average = Average<Vec2>({val1, val2});
+        const auto average = Average(std::initializer_list<Vec2>{val1, val2});
         const auto expected = Vec2(Real(3.3), Real(-1.2));
         EXPECT_NEAR(double(GetX(average)), double(GetX(expected)), 0.0001);
         EXPECT_NEAR(double(GetY(average)), double(GetY(expected)), 0.0001);
@@ -370,7 +373,7 @@ TEST(Math, ComputeCentroidCenteredR1)
     EXPECT_EQ(GetX(center), GetX(real_center) * Meter);
     EXPECT_EQ(GetY(center), GetY(real_center) * Meter);
     
-    const auto average = Average<Length2>(vertices);
+    const auto average = Average(vertices);
     EXPECT_EQ(average, center);
 }
 
@@ -390,7 +393,7 @@ TEST(Math, ComputeCentroidCentered0R1000)
     EXPECT_EQ(GetX(center), GetX(real_center) * Meter);
     EXPECT_EQ(GetY(center), GetY(real_center) * Meter);
     
-    const auto average = Average<Length2>(vertices);
+    const auto average = Average(vertices);
     EXPECT_EQ(average, center);
 }
 
@@ -409,7 +412,7 @@ TEST(Math, ComputeCentroidUpRight1000R1)
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.01);
     EXPECT_NEAR(double(Real{GetY(center) / Meter}), double(GetY(real_center)), 0.01);
     
-    const auto average = Average<Length2>(vertices);
+    const auto average = Average(vertices);
     EXPECT_NEAR(double(Real{GetX(average) / Meter}), double(Real{GetX(center) / Meter}), 0.01);
     EXPECT_NEAR(double(Real{GetY(average) / Meter}), double(Real{GetY(center) / Meter}), 0.01);
 }
@@ -429,7 +432,7 @@ TEST(Math, ComputeCentroidUpRight1000R100)
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.01);
     EXPECT_NEAR(double(Real{GetY(center) / Meter}), double(GetY(real_center)), 0.01);
     
-    const auto average = Average<Length2>(vertices);
+    const auto average = Average(vertices);
     EXPECT_NEAR(double(Real{GetX(average) / Meter}), double(Real{GetX(center) / Meter}), 0.01);
     EXPECT_NEAR(double(Real{GetY(average) / Meter}), double(Real{GetY(center) / Meter}), 0.01);
 }
@@ -449,7 +452,7 @@ TEST(Math, ComputeCentroidUpRight10000R01)
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.1);
     EXPECT_NEAR(double(Real{GetY(center) / Meter}), double(GetY(real_center)), 0.1);
     
-    const auto average = Average<Length2>(vertices);
+    const auto average = Average(vertices);
     EXPECT_NEAR(double(Real{GetX(average) / Meter}), double(Real{GetX(center) / Meter}), 0.1);
     EXPECT_NEAR(double(Real{GetY(average) / Meter}), double(Real{GetY(center) / Meter}), 0.1);
 }
@@ -469,7 +472,7 @@ TEST(Math, ComputeCentroidDownLeft1000R1)
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.01);
     EXPECT_NEAR(double(Real{GetY(center) / Meter}), double(GetY(real_center)), 0.01);
     
-    const auto average = Average<Length2>(vertices);
+    const auto average = Average(vertices);
     EXPECT_NEAR(double(Real{GetX(average) / Meter}), double(Real{GetX(center) / Meter}), 0.01);
     EXPECT_NEAR(double(Real{GetY(average) / Meter}), double(Real{GetY(center) / Meter}), 0.01);
 }
@@ -491,7 +494,7 @@ TEST(Math, ComputeCentroidOfHexagonalVertices)
     EXPECT_NEAR(double(Real{GetX(center) / Meter}), double(GetX(real_center)), 0.01);
     EXPECT_NEAR(double(Real{GetY(center) / Meter}), double(GetY(real_center)), 0.01);
     
-    const auto average = Average<Length2>(vertices);
+    const auto average = Average(vertices);
     EXPECT_NEAR(double(Real{GetX(average) / Meter}), double(Real{GetX(center) / Meter}), 0.01);
     EXPECT_NEAR(double(Real{GetY(average) / Meter}), double(Real{GetY(center) / Meter}), 0.01);
 }
@@ -807,20 +810,20 @@ TEST(Math, InvertOneIsZero)
 #pragma warning( pop )
 }
 
-TEST(Math, Clamp)
+TEST(Math, clamp)
 {
-    // Check lo and hi work as documented on Clamp...
+    // Check lo and hi work as documented on clamp...
     const auto NaN = std::numeric_limits<double>::quiet_NaN();
-    EXPECT_EQ(Clamp(-1.0,  0.0, +1.0), 0.0);
-    EXPECT_EQ(Clamp(+1.0, -1.0,  0.0), 0.0);
-    EXPECT_EQ(Clamp(0.0, NaN, NaN), 0.0);
-    EXPECT_EQ(Clamp(0.0, -1.0, NaN), 0.0);
-    EXPECT_EQ(Clamp(0.0, NaN, +1.0), 0.0);
-    EXPECT_EQ(Clamp(0.0, -1.0, +1.0), 0.0);
-    EXPECT_TRUE(std::isnan(Clamp(NaN, -1.0, +1.0)));
-    EXPECT_TRUE(std::isnan(Clamp(NaN, NaN, +1.0)));
-    EXPECT_TRUE(std::isnan(Clamp(NaN, -1.0, NaN)));
-    EXPECT_TRUE(std::isnan(Clamp(NaN, NaN, NaN)));
+    EXPECT_EQ(std::clamp(-1.0,  0.0, +1.0), 0.0);
+    EXPECT_EQ(std::clamp(+1.0, -1.0,  0.0), 0.0);
+    EXPECT_EQ(std::clamp(0.0, NaN, NaN), 0.0);
+    EXPECT_EQ(std::clamp(0.0, -1.0, NaN), 0.0);
+    EXPECT_EQ(std::clamp(0.0, NaN, +1.0), 0.0);
+    EXPECT_EQ(std::clamp(0.0, -1.0, +1.0), 0.0);
+    EXPECT_TRUE(std::isnan(std::clamp(NaN, -1.0, +1.0)));
+    EXPECT_TRUE(std::isnan(std::clamp(NaN, NaN, +1.0)));
+    EXPECT_TRUE(std::isnan(std::clamp(NaN, -1.0, NaN)));
+    EXPECT_TRUE(std::isnan(std::clamp(NaN, NaN, NaN)));
 }
 
 TEST(Math, GetReflectionMatrix)

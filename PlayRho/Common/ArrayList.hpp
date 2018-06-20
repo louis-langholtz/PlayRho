@@ -61,8 +61,8 @@ namespace playrho
 
         template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
         PLAYRHO_CONSTEXPR inline explicit ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
-            m_size{copy.size()},
-            m_elements{copy.data()}
+            m_size{size(copy)},
+            m_elements{data(copy)}
         {
             // Intentionally empty
         }
@@ -71,8 +71,8 @@ namespace playrho
         template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
         ArrayList& operator= (const ArrayList<VALUE_TYPE, COPY_MAXSIZE, COPY_SIZE_TYPE>& copy)
         {
-            m_size = static_cast<SIZE_TYPE>(copy.size());
-            m_elements = copy.data();
+            m_size = static_cast<SIZE_TYPE>(size(copy));
+            m_elements = data(copy);
             return *this;
         }
 

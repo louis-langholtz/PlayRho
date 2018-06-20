@@ -25,6 +25,8 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
+#include <algorithm>
+
 namespace playrho {
 namespace d2 {
 
@@ -279,7 +281,7 @@ bool PrismaticJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const 
         auto impulse = Momentum{m_motorMass * (m_motorSpeed * Meter / Radian - Cdot)};
         const auto oldImpulse = m_motorImpulse;
         const auto maxImpulse = step.GetTime() * m_maxMotorForce;
-        m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
+        m_motorImpulse = std::clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
         impulse = m_motorImpulse - oldImpulse;
 
         const auto P = Momentum2{impulse * m_axis};
@@ -425,21 +427,21 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
         if (abs(m_upperTranslation - m_lowerTranslation) < (Real{2} * conf.linearSlop))
         {
             // Prevent large angular corrections
-            C2 = StripUnit(Clamp(translation, -conf.maxLinearCorrection, conf.maxLinearCorrection));
+            C2 = StripUnit(std::clamp(translation, -conf.maxLinearCorrection, conf.maxLinearCorrection));
             linearError = std::max(linearError, abs(translation));
             active = true;
         }
         else if (translation <= m_lowerTranslation)
         {
             // Prevent large linear corrections and allow some slop.
-            C2 = StripUnit(Clamp(translation - m_lowerTranslation + conf.linearSlop, -conf.maxLinearCorrection, 0_m));
+            C2 = StripUnit(std::clamp(translation - m_lowerTranslation + conf.linearSlop, -conf.maxLinearCorrection, 0_m));
             linearError = std::max(linearError, m_lowerTranslation - translation);
             active = true;
         }
         else if (translation >= m_upperTranslation)
         {
             // Prevent large linear corrections and allow some slop.
-            C2 = StripUnit(Clamp(translation - m_upperTranslation - conf.linearSlop, 0_m, conf.maxLinearCorrection));
+            C2 = StripUnit(std::clamp(translation - m_upperTranslation - conf.linearSlop, 0_m, conf.maxLinearCorrection));
             linearError = std::max(linearError, translation - m_upperTranslation);
             active = true;
         }

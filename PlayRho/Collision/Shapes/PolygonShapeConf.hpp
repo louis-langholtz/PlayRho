@@ -122,7 +122,7 @@ public:
     /// @see MaxShapeVertices
     VertexCounter GetVertexCount() const noexcept
     {
-        return static_cast<VertexCounter>(m_vertices.size());
+        return static_cast<VertexCounter>(size(m_vertices));
     }
     
     /// Gets a vertex by index.
@@ -211,7 +211,7 @@ inline DistanceProxy GetChild(const PolygonShapeConf& arg, ChildCounter index)
         throw InvalidArgument("only index of 0 is supported");
     }
     return DistanceProxy{arg.vertexRadius, arg.GetVertexCount(),
-        arg.GetVertices().data(), arg.GetNormals().data()};
+        data(arg.GetVertices()), data(arg.GetNormals())};
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.

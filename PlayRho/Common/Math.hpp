@@ -166,10 +166,12 @@ inline auto Atan2(T y, T x)
 }
 
 /// @brief Computes the average of the given values.
-template <typename T>
-inline auto Average(Span<const T> span)
+template <typename T, typename = std::enable_if_t<
+    IsIterable<T>::value && IsAddable<decltype(*begin(std::declval<T>()))>::value
+    > >
+inline auto Average(const T& span)
 {
-    using value_type = typename std::remove_cv<T>::type;
+    using value_type = decltype(*begin(std::declval<T>()));
 
     // Relies on C++11 zero initialization to zero initialize value_type.
     // See: http://en.cppreference.com/w/cpp/language/zero_initialization
@@ -177,7 +179,7 @@ inline auto Average(Span<const T> span)
     assert(zero * Real{2} == zero);
     
     // For C++17, switch from using std::accumulate to using std::reduce.
-    const auto sum = std::accumulate(cbegin(span), cend(span), zero);
+    const auto sum = std::accumulate(begin(span), end(span), zero);
     const auto count = std::max(size(span), std::size_t{1});
     return sum / static_cast<Real>(count);
 }
@@ -599,17 +601,6 @@ PLAYRHO_CONSTEXPR inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 inline Mat22 abs(const Mat22& A)
 {
     return Mat22{abs(GetX(A)), abs(GetY(A))};
-}
-
-/// @brief Clamps the given value within the given range (inclusive).
-/// @param value Value to clamp.
-/// @param low Lowest value to return or NaN to keep the low-end unbounded.
-/// @param high Highest value to return or NaN to keep the high-end unbounded.
-template <typename T>
-PLAYRHO_CONSTEXPR inline T Clamp(T value, T low, T high) noexcept
-{
-    const auto tmp = (value > high)? high: value; // isnan(high)? a: Min(a, high);
-    return (tmp < low)? low: tmp; // isnan(low)? b: Max(b, low);
 }
 
 /// @brief Gets the next largest power of 2

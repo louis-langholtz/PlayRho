@@ -91,7 +91,7 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     bool enableMotor = false;
     
     /// The maximum motor force.
-    Force maxMotorForce = Force{0};
+    Force maxMotorForce = 0_N;
     
     /// The desired angular motor speed.
     AngularVelocity motorSpeed = 0_rpm;

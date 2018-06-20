@@ -170,7 +170,8 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
         const auto oldAngularImpulse = m_angularImpulse;
         const auto maxAngularImpulse = h * m_maxTorque;
-        const auto newAngularImpulse = Clamp(oldAngularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
+        const auto newAngularImpulse = std::clamp(oldAngularImpulse + angularImpulse,
+                                                  -maxAngularImpulse, maxAngularImpulse);
         m_angularImpulse = newAngularImpulse;
         const auto incAngularImpulse = newAngularImpulse - oldAngularImpulse;
 

@@ -133,7 +133,7 @@ TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)
             const auto start = std::chrono::high_resolution_clock::now();
             for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
             {
-                if (TestOverlap(child, xfm, child, xfm) >= Area{0})
+                if (TestOverlap(child, xfm, child, xfm) >= 0_m2)
                 {
                     ++count;
                 }
@@ -180,7 +180,7 @@ TEST(Shape, TestOverlapFasterThanCollideShapesForPolygons)
             const auto start = std::chrono::high_resolution_clock::now();
             for (auto i = decltype(maxloops){0}; i < maxloops; ++i)
             {
-                if (TestOverlap(child, xfm, child, xfm) >= Area{0})
+                if (TestOverlap(child, xfm, child, xfm) >= 0_m2)
                 {
                     ++count;
                 }

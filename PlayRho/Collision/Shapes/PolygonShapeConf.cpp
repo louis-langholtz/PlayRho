@@ -68,7 +68,7 @@ PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy) noexcept
 /// @brief Uses the given vertices.
 PolygonShapeConf& PolygonShapeConf::UseVertices(const std::vector<Length2>& verts) noexcept
 {
-    return Set(Span<const Length2>(verts.data(), size(verts)));
+    return Set(Span<const Length2>(data(verts), size(verts)));
 }
     
 PolygonShapeConf& PolygonShapeConf::SetAsBox(Length hx, Length hy,

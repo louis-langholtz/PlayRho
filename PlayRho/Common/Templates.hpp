@@ -41,6 +41,7 @@ using std::cbegin;
 using std::cend;
 using std::size;
 using std::empty;
+using std::data;
 using std::swap;
 
 namespace detail {
@@ -81,6 +82,24 @@ template <class T>
 PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
 {
     return size(arg) == max_size(arg);
+}
+
+/// @brief Internal helper template function to avoid confusion for use within classes
+///   that define their own <code>data()</code> method.
+template <typename T>
+static auto Data(T& v)
+{
+    using ::playrho::data;
+    return data(v);
+}
+
+/// @brief Internal helper template function to avoid confusion for use within classes
+///   that define their own <code>size()</code> method.
+template <typename T>
+static auto Size(T& v)
+{
+    using ::playrho::size;
+    return size(v);
 }
 
 } // namespace detail
@@ -272,6 +291,14 @@ PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(size(arg) == max_
     /// @brief Template specialization for inequality comparable types.
     template<class T1, class T2>
     struct IsInequalityComparable<T1, T2, detail::VoidT<decltype(T1{} != T2{})> >: std::true_type {};
+
+    /// @brief Template for determining if the given types are addable.
+    template<class T1, class T2 = T1, class = void>
+    struct IsAddable: std::false_type {};
+    
+    /// @brief Template specializing for addable types.
+    template<class T1, class T2>
+    struct IsAddable<T1, T2, detail::VoidT<decltype(T1{} + T2{})> >: std::true_type {};
 
     /// @brief Template for determining if the given types are multipliable.
     template<class T1, class T2, class = void>

@@ -46,6 +46,8 @@ TEST(MassData, DefaultConstruct)
 
 TEST(MassData, Traits)
 {
+    EXPECT_FALSE(IsIterable<MassData>::value);
+
     EXPECT_TRUE(std::is_default_constructible<MassData>::value);
     // EXPECT_FALSE(std::is_nothrow_default_constructible<MassData>::value); // clang-3.7 and 4.0
     // EXPECT_TRUE(std::is_nothrow_default_constructible<MassData>::value); // gcc 6.3
@@ -168,7 +170,7 @@ TEST(MassData, GetAreaOfPolygon)
 
 TEST(MassData, GetMassDataFreeFunctionForNoVertices)
 {
-    const auto vertexRadius = Length{1_m};
+    const auto vertexRadius = 1_m;
     const auto density = NonNegative<AreaDensity>(1_kgpm2);
     const auto vertices = Span<const Length2>{
         static_cast<const Length2*>(nullptr), Span<const Length2>::size_type{0}

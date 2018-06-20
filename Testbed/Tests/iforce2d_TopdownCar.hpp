@@ -126,14 +126,14 @@ public:
     
     void updateTraction()
     {
-        if ( m_groundAreas.empty() )
+        if ( empty(m_groundAreas) )
             m_currentTraction = 1;
         else
         {
             //find area with highest traction
             m_currentTraction = 0;
-            auto it = m_groundAreas.begin();
-            while (it != m_groundAreas.end())
+            auto it = begin(m_groundAreas);
+            while (it != end(m_groundAreas))
             {
                 const auto ga = *it;
                 if ( ga->frictionModifier > m_currentTraction )
@@ -253,7 +253,7 @@ public:
         vertices[6] = Vec2(-3.0f,  +2.5f) * 1_m;
         vertices[7] = Vec2(-1.5f,  +0.0f) * 1_m;
         auto polygonShape = PolygonShapeConf{};
-        polygonShape.Set(Span<const Length2>(vertices, 8));
+        polygonShape.Set(vertices);
         polygonShape.UseDensity(0.1_kgpm2);
         m_body->CreateFixture(Shape(polygonShape));
         
@@ -314,17 +314,17 @@ public:
     
     ~TDCar()
     {
-        for (auto i = decltype(m_tires.size()){0}; i < m_tires.size(); i++)
+        for (auto i = decltype(size(m_tires)){0}; i < size(m_tires); i++)
             delete m_tires[i];
     }
     
     void update(ControlStateType controlState)
     {
-        for (auto i = decltype(m_tires.size()){0}; i < m_tires.size(); i++)
+        for (auto i = decltype(size(m_tires)){0}; i < size(m_tires); i++)
         {
             m_tires[i]->updateFriction();
         }
-        for (auto i = decltype(m_tires.size()){0}; i < m_tires.size(); i++)
+        for (auto i = decltype(size(m_tires)){0}; i < size(m_tires); i++)
         {
             m_tires[i]->updateDrive(controlState);
         }
@@ -341,7 +341,7 @@ public:
         }
         const auto angleNow = GetJointAngle(*flJoint);
         const auto desiredAngleToTurn = desiredAngle - angleNow;
-        const auto angleToTurn = Clamp(desiredAngleToTurn, -turnPerTimeStep, turnPerTimeStep);
+        const auto angleToTurn = std::clamp(desiredAngleToTurn, -turnPerTimeStep, turnPerTimeStep);
         if (angleToTurn != 0_deg)
         {
             const auto newAngle = angleNow + angleToTurn;

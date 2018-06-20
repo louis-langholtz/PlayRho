@@ -171,25 +171,31 @@ TEST(Body, ByteSize)
 
 TEST(Body, Traits)
 {
-    EXPECT_FALSE(std::is_default_constructible<Body>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<Body>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<Body>::value);
+    using Type = Body;
     
-    EXPECT_FALSE(std::is_constructible<Body>::value);
-    EXPECT_FALSE(std::is_nothrow_constructible<Body>::value);
-    EXPECT_FALSE(std::is_trivially_constructible<Body>::value);
+    EXPECT_FALSE(IsIterable<Type>::value);
+    EXPECT_FALSE(IsAddable<Type>::value);
+    EXPECT_FALSE((IsAddable<Type, Type>::value));
+
+    EXPECT_FALSE(std::is_default_constructible<Type>::value);
+    EXPECT_FALSE(std::is_nothrow_default_constructible<Type>::value);
+    EXPECT_FALSE(std::is_trivially_default_constructible<Type>::value);
     
-    EXPECT_FALSE(std::is_copy_constructible<Body>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<Body>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<Body>::value);
+    EXPECT_FALSE(std::is_constructible<Type>::value);
+    EXPECT_FALSE(std::is_nothrow_constructible<Type>::value);
+    EXPECT_FALSE(std::is_trivially_constructible<Type>::value);
     
-    EXPECT_FALSE(std::is_copy_assignable<Body>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<Body>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<Body>::value);
+    EXPECT_FALSE(std::is_copy_constructible<Type>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_constructible<Type>::value);
+    EXPECT_FALSE(std::is_trivially_copy_constructible<Type>::value);
     
-    EXPECT_FALSE(std::is_destructible<Body>::value);
-    EXPECT_FALSE(std::is_nothrow_destructible<Body>::value);
-    EXPECT_FALSE(std::is_trivially_destructible<Body>::value);
+    EXPECT_FALSE(std::is_copy_assignable<Type>::value);
+    EXPECT_FALSE(std::is_nothrow_copy_assignable<Type>::value);
+    EXPECT_FALSE(std::is_trivially_copy_assignable<Type>::value);
+    
+    EXPECT_FALSE(std::is_destructible<Type>::value);
+    EXPECT_FALSE(std::is_nothrow_destructible<Type>::value);
+    EXPECT_FALSE(std::is_trivially_destructible<Type>::value);
 }
 
 TEST(Body, GetFlagsStatic)

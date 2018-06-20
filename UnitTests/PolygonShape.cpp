@@ -412,7 +412,7 @@ TEST(PolygonShapeConf, CanSetTwoPoints)
                 +0.0, 1.0/100000.0);
     EXPECT_NEAR(static_cast<double>(GetY(GetVec2(shape.GetNormal(1)))),
                 -1.0, 1.0/100000.0);
-    EXPECT_EQ(shape.GetCentroid(), Average(Span<const Length2>(points.data(), points.size())));
+    EXPECT_EQ(shape.GetCentroid(), Average(points));
     EXPECT_EQ(GetVertexRadius(shape), vertexRadius);
 
     EXPECT_TRUE(Validate(shape.GetVertices()));
@@ -448,7 +448,7 @@ TEST(PolygonShapeConf, TransformFF)
         const auto v1 = Length2{1_m, 2_m};
         const auto v2 = Length2{3_m, 4_m};
         const auto vertices = std::vector<Length2>{v1, v2};
-        auto foo = PolygonShapeConf{Span<const Length2>{vertices.data(), vertices.size()}};
+        auto foo = PolygonShapeConf{vertices};
         auto copy = foo;
         Transform(foo, GetIdentity<Mat22>());
         EXPECT_EQ(foo, copy);
@@ -457,7 +457,7 @@ TEST(PolygonShapeConf, TransformFF)
         const auto v1 = Length2{1_m, 2_m};
         const auto v2 = Length2{3_m, 4_m};
         const auto vertices = std::vector<Length2>{v1, v2};
-        auto foo = PolygonShapeConf{Span<const Length2>{vertices.data(), vertices.size()}};
+        auto foo = PolygonShapeConf{vertices};
         ASSERT_EQ(foo.GetVertexCount(), VertexCounter(2));
         ASSERT_EQ(foo.GetVertex(0), v2);
         ASSERT_EQ(foo.GetVertex(1), v1);
@@ -511,13 +511,13 @@ TEST(PolygonShapeConf, Inequality)
 TEST(PolygonShapeConf, ValidateFF)
 {
     auto vertices = std::vector<Length2>{};
-    EXPECT_TRUE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
+    EXPECT_TRUE(Validate(vertices));
     vertices.push_back(Length2{0_m, 0_m});
-    EXPECT_TRUE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
+    EXPECT_TRUE(Validate(vertices));
     vertices.push_back(Length2{1_m, 1_m});
-    EXPECT_TRUE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
+    EXPECT_TRUE(Validate(vertices));
     vertices.push_back(Length2{-1_m, 1_m});
-    EXPECT_TRUE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
+    EXPECT_TRUE(Validate(vertices));
     vertices.push_back(Length2{+2_m, 1_m});
-    EXPECT_FALSE(Validate(Span<const Length2>(vertices.data(), vertices.size())));
+    EXPECT_FALSE(Validate(vertices));
 }

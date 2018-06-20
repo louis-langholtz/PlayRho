@@ -26,6 +26,8 @@
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
+#include <algorithm>
+
 namespace playrho {
 namespace d2 {
 
@@ -238,7 +240,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
         const auto impulse = AngularMomentum{-m_motorMass * (velB.angular - velA.angular - m_motorSpeed)};
         const auto oldImpulse = m_motorImpulse;
         const auto maxImpulse = step.GetTime() * m_maxMotorTorque;
-        m_motorImpulse = Clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
+        m_motorImpulse = std::clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
         const auto incImpulse = m_motorImpulse - oldImpulse;
 
         velA.angular -= invRotInertiaA * incImpulse;
@@ -372,7 +374,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
                 angularError = -C;
                 
                 // Prevent large angular corrections and allow some slop.
-                C = Clamp(C + conf.angularSlop, -conf.maxAngularCorrection, 0_rad);
+                C = std::clamp(C + conf.angularSlop, -conf.maxAngularCorrection, 0_rad);
                 limitImpulse = -m_motorMass * C;
                 break;
             }
@@ -382,7 +384,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
                 angularError = C;
                 
                 // Prevent large angular corrections and allow some slop.
-                C = Clamp(C - conf.angularSlop, 0_rad, conf.maxAngularCorrection);
+                C = std::clamp(C - conf.angularSlop, 0_rad, conf.maxAngularCorrection);
                 limitImpulse = -m_motorMass * C;
                 break;
             }
@@ -390,7 +392,8 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
             {
                 assert(m_limitState == e_equalLimits);
                 // Prevent large angular corrections
-                const auto C = Clamp(angle - m_lowerAngle, -conf.maxAngularCorrection, conf.maxAngularCorrection);
+                const auto C = std::clamp(angle - m_lowerAngle,
+                                          -conf.maxAngularCorrection, conf.maxAngularCorrection);
                 limitImpulse = -m_motorMass * C;
                 angularError = abs(C);
                 break;
@@ -403,7 +406,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
     }
 
     // Solve point-to-point constraint.
-    auto positionError = Area{0};
+    auto positionError = 0_m2;
     {
         const auto qA = UnitVec::Get(posA.angular);
         const auto qB = UnitVec::Get(posB.angular);

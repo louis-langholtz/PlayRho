@@ -25,6 +25,8 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
+#include <algorithm>
+
 namespace playrho {
 namespace d2 {
 
@@ -161,7 +163,8 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
 
         const auto oldAngularImpulse = m_angularImpulse;
         const auto maxAngularImpulse = h * m_maxTorque;
-        m_angularImpulse = Clamp(m_angularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
+        m_angularImpulse = std::clamp(m_angularImpulse + angularImpulse,
+                                      -maxAngularImpulse, maxAngularImpulse);
         const auto incAngularImpulse = m_angularImpulse - oldAngularImpulse;
 
         if (incAngularImpulse != AngularMomentum{0})

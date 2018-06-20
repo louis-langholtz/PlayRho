@@ -177,7 +177,7 @@ namespace {
         auto map = BodyConstraintsMap{};
         map.reserve(size(bodies));
         for_each(cbegin(bodies), cend(bodies), [&](const BodyPtr& body) {
-            const auto i = static_cast<size_t>(&body - bodies.data());
+            const auto i = static_cast<size_t>(&body - data(bodies));
             assert(i < size(bodies));
 #ifdef USE_VECTOR_MAP
             map.push_back(BodyConstraintPair{body, &bodyConstraints[i]});
@@ -747,7 +747,7 @@ void World::Remove(const Body& b) noexcept
     const auto it = find_if(cbegin(m_bodies), cend(m_bodies), [&](const Bodies::value_type& body) {
         return GetPtr(body) == &b;
     });
-    if (it != m_bodies.end())
+    if (it != end(m_bodies))
     {
         BodyAtty::Delete(GetPtr(*it));
         m_bodies.erase(it);
@@ -1180,13 +1180,13 @@ IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
     
     // Update normal and tangent impulses of contacts' manifold points
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
-        const auto i = static_cast<VelocityConstraints::size_type>(&vc - velConstraints.data());
+        const auto i = static_cast<VelocityConstraints::size_type>(&vc - data(velConstraints));
         auto& manifold = ContactAtty::GetMutableManifold(*island.m_contacts[i]);
         AssignImpulses(manifold, vc);
     });
     
     for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
-        const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
+        const auto i = static_cast<size_t>(&bc - data(bodyConstraints));
         assert(i < size(bodyConstraints));
         // Could normalize position here to avoid unbounded angles but angular
         // normalization isn't handled correctly by joints that constrain rotation.
@@ -1576,7 +1576,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
      * the body constraint doesn't need to pass an elapsed time (and doesn't need to
      * update the velocity from what it already is).
      */
-    auto bodyConstraints = GetBodyConstraints(island.m_bodies, Time{0}, GetMovementConf(conf));
+    auto bodyConstraints = GetBodyConstraints(island.m_bodies, 0_s, GetMovementConf(conf));
     auto bodyConstraintsMap = GetBodyConstraintsMap(island.m_bodies, bodyConstraints);
 
     // Initialize the body state.
@@ -1643,7 +1643,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
     }
 #else
     for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
-        const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
+        const auto i = static_cast<size_t>(&bc - data(bodyConstraints));
         assert(i < size(bodyConstraints));
         BodyAtty::SetPosition0(*island.m_bodies[i], bc.GetPosition());
     });
@@ -1678,7 +1678,7 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
     IntegratePositions(bodyConstraints, conf.GetTime());
     
     for_each(cbegin(bodyConstraints), cend(bodyConstraints), [&](const BodyConstraint& bc) {
-        const auto i = static_cast<size_t>(&bc - bodyConstraints.data());
+        const auto i = static_cast<size_t>(&bc - data(bodyConstraints));
         assert(i < size(bodyConstraints));
         UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });

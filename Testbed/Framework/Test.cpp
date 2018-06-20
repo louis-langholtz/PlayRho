@@ -380,7 +380,7 @@ const LinearAcceleration2 Test::Gravity = LinearAcceleration2{
 
 bool Test::Contains(const FixtureSet& fixtures, const Fixture* f) noexcept
 {
-    return fixtures.find(const_cast<Fixture*>(f)) != fixtures.end();
+    return fixtures.find(const_cast<Fixture*>(f)) != end(fixtures);
 }
 
 void Test::DestructionListenerImpl::SayGoodbye(const Joint& joint) noexcept
@@ -418,10 +418,10 @@ void Test::ResetWorld(const World &saved)
 {
     ClearSelectedFixtures();
 
-    auto bombIndex = static_cast<decltype(m_world.GetBodies().size())>(-1);
+    auto bombIndex = static_cast<decltype(size(m_world.GetBodies()))>(-1);
 
     {
-        auto i = decltype(m_world.GetBodies().size()){0};
+        auto i = decltype(size(m_world.GetBodies())){0};
         for (auto&& b: m_world.GetBodies())
         {
             const auto body = GetPtr(b);
@@ -436,7 +436,7 @@ void Test::ResetWorld(const World &saved)
     m_world = saved;
 
     {
-        auto i = decltype(m_world.GetBodies().size()){0};
+        auto i = decltype(size(m_world.GetBodies())){0};
         for (auto&& b: m_world.GetBodies())
         {
             const auto body = GetPtr(b);
@@ -513,9 +513,9 @@ void Test::MouseDown(const Length2& p)
     });
 
     SetSelectedFixtures(fixtures);
-    if (fixtures.size() == 1)
+    if (size(fixtures) == 1)
     {
-        const auto body = (*(fixtures.begin()))->GetBody();
+        const auto body = (*(begin(fixtures)))->GetBody();
         if (body->GetType() == BodyType::Dynamic)
         {
             auto md = TargetJointConf{};
@@ -637,7 +637,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
     const auto shapeCount = GetShapeCount(m_world);
     const auto touchingCount = GetTouchingCount(m_world);
  
-    if (m_numTouchingPerStep.size() >= m_maxHistory)
+    if (size(m_numTouchingPerStep) >= m_maxHistory)
     {
         m_numTouchingPerStep.pop_front();
     }
@@ -1129,9 +1129,9 @@ struct DequeValuesGetter
     static float Func(void* data, int idx)
     {
         const std::deque<T>& deque = *static_cast<std::deque<T>*>(data);
-        const auto size = deque.size();
-        return (idx >= 0 && static_cast<decltype(size)>(idx) < size)?
-            static_cast<float>(deque[static_cast<decltype(size)>(idx)]): 0.0f;
+        const auto numElements = size(deque);
+        return (idx >= 0 && static_cast<decltype(numElements)>(idx) < numElements)?
+            static_cast<float>(deque[static_cast<decltype(numElements)>(idx)]): 0.0f;
     }
 };
 
@@ -1252,7 +1252,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     m_numContacts = GetContactCount(m_world);
     m_maxContacts = std::max(m_maxContacts, m_numContacts);
     
-    if (m_numContactsPerStep.size() >= m_maxHistory)
+    if (size(m_numContactsPerStep) >= m_maxHistory)
     {
         m_numContactsPerStep.pop_front();
     }
@@ -1275,13 +1275,13 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
         
         std::sprintf(buffer, "Max of %u", m_maxTouching);
         ImGui::PlotHistogram("# Touching", DequeValuesGetter<std::size_t>::Func,
-                             &m_numTouchingPerStep, static_cast<int>(m_numTouchingPerStep.size()),
+                             &m_numTouchingPerStep, static_cast<int>(size(m_numTouchingPerStep)),
                              0, buffer, 0.0f, static_cast<float>(m_maxContacts),
                              ImVec2(600, 100));
 
         std::sprintf(buffer, "Max of %u", m_maxContacts);
         ImGui::PlotHistogram("# Contacts", DequeValuesGetter<std::size_t>::Func,
-                             &m_numContactsPerStep, static_cast<int>(m_numContactsPerStep.size()),
+                             &m_numContactsPerStep, static_cast<int>(size(m_numContactsPerStep)),
                              0, buffer, 0.0f, static_cast<float>(m_maxContacts),
                              ImVec2(600, 100));
     }

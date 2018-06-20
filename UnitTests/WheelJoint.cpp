@@ -68,6 +68,13 @@ TEST(WheelJointConf, DefaultConstruction)
     EXPECT_EQ(def.dampingRatio, Real(0.7f));
 }
 
+TEST(WheelJoint, Traits)
+{
+    EXPECT_FALSE((IsIterable<WheelJoint>::value));
+    EXPECT_FALSE((IsAddable<WheelJoint>::value));
+    EXPECT_FALSE((IsAddable<WheelJoint,WheelJoint>::value));
+}
+
 TEST(WheelJoint, ByteSize)
 {
     switch (sizeof(Real))

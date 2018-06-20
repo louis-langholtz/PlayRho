@@ -77,6 +77,10 @@ TEST(Joint, ByteSize)
 
 TEST(Joint, Traits)
 {
+    EXPECT_FALSE(IsIterable<Joint>::value);
+    EXPECT_FALSE((IsAddable<Joint>::value));
+    EXPECT_FALSE((IsAddable<Joint,Joint>::value));
+
     EXPECT_FALSE(std::is_default_constructible<Joint>::value);
     EXPECT_FALSE(std::is_nothrow_default_constructible<Joint>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<Joint>::value);

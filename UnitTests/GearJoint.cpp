@@ -53,6 +53,8 @@ TEST(GearJointConf, ByteSize)
 
 TEST(GearJointConf, Traits)
 {
+    EXPECT_FALSE(IsIterable<GearJointConf>::value);
+
     EXPECT_FALSE(std::is_default_constructible<GearJointConf>::value);
     EXPECT_FALSE(std::is_nothrow_default_constructible<GearJointConf>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<GearJointConf>::value);

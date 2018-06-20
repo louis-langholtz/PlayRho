@@ -36,3 +36,10 @@ TEST(double, GetTypeName)
     EXPECT_STREQ(name, "double");
 }
 
+TEST(double, traits)
+{
+    EXPECT_TRUE((playrho::IsAddable<double>::value));
+    EXPECT_TRUE((playrho::IsAddable<double,double>::value));
+    EXPECT_TRUE((playrho::IsAddable<double,float>::value));
+    EXPECT_TRUE((playrho::IsAddable<double,int>::value));
+}

@@ -23,6 +23,12 @@
 
 using namespace playrho;
 
+TEST(ArrayList, traits)
+{
+    EXPECT_TRUE((IsIterable<ArrayList<int, 4u>>::value));
+    EXPECT_FALSE((IsAddable<ArrayList<int, 4u>>::value));
+}
+
 TEST(ArrayList, DefaultConstruction)
 {
     {

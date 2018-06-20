@@ -56,6 +56,10 @@ TEST(DynamicTree, TreeNodeByteSize)
 
 TEST(DynamicTree, Traits)
 {
+    EXPECT_FALSE(IsAddable<DynamicTree>::value);
+    EXPECT_FALSE((IsAddable<DynamicTree, DynamicTree>::value));
+    EXPECT_FALSE((IsIterable<DynamicTree>::value));
+    
     EXPECT_TRUE(std::is_default_constructible<DynamicTree>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<DynamicTree>::value);
@@ -958,7 +962,7 @@ TEST(DynamicTree, UpdateLeaf)
 
     std::for_each(begin(leafs), end(leafs), [&foo,&leafs](const auto leaf) {
         const auto aabb{foo.GetAABB(leaf)};
-        foo.UpdateLeaf(leaf, GetFattenedAABB(aabb, Length{0.5_m}));
+        foo.UpdateLeaf(leaf, GetFattenedAABB(aabb, 0.5_m));
         std::for_each(begin(leafs), end(leafs), [&foo](const auto leaf) {
             ASSERT_NE(foo.GetOther(leaf), DynamicTree::GetInvalidSize());
             EXPECT_TRUE(foo.GetBranchData(foo.GetOther(leaf)).child1 == leaf || foo.GetBranchData(foo.GetOther(leaf)).child2 == leaf);
