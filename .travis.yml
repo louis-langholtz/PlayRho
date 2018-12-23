@@ -35,8 +35,6 @@ osx_image: xcode8
 xcode_project: Build/xcode5/PlayRho.xcodeproj
 xcode_scheme: UnitTest
 
-sudo: false
-
 # https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz
 
 # Specify which "apt" packages to install/update.
