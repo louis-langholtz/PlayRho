@@ -30,10 +30,10 @@ branches:
 # Specify which OS X image to use.
 # "xcode8" is supposed to provide a macosx10.11 SK preinstalled.
 # For details see: https://docs.travis-ci.com/user/osx-ci-environment/
-osx_image: xcode8
+#osx_image: xcode8
 
-xcode_project: Build/xcode5/PlayRho.xcodeproj
-xcode_scheme: UnitTest
+#xcode_project: Build/xcode5/PlayRho.xcodeproj
+#xcode_scheme: UnitTest
 
 # https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz
 
