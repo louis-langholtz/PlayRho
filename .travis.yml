@@ -115,16 +115,13 @@ install:
     mkdir /tmp/glew && pushd /tmp/glew && curl --location --remote-name $GLEW_URL && md5sum *.zip && echo "Expect MD5 hash of 54c913d0c00726fb028d089ad1664ede" && unzip -q *.zip && rm *.zip && cd * && make && make DESTDIR=/tmp install && popd
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-5.0" ]]
-    then
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-5.0" ]]; then
       (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld )
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-8" ]]
-    then
+  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-8" ]]; then
       (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DPLAYRHO_ENABLE_COVERAGE=ON $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:Math.LengthFasterThanHypot )
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]
-    then
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       (cd PlayRho && xcodebuild -project Build/xcode5/PlayRho.xcodeproj -list)
     fi
 
