@@ -143,6 +143,9 @@ after_success:
       # coveralls-lcov $BUILD_ROOT/coverage.info
       echo BUILD_ROOT=$BUILD_ROOT SOURCE_ROOT=$SOURCE_ROOT
       ls -laF $BUILD_ROOT
+      ls -laF UnitTests
+      ls -laF PlayRho
+      ls -laF $BUILD_ROOT/UnitTests
       #coveralls --verbose --gcov /usr/bin/gcov-8 --build-root $BUILD_ROOT --exclude UnitTests --exclude /usr/include --gcov-options '\-lp'
       #coveralls --gcov /usr/bin/gcov-8 --build-root $BUILD_ROOT --include PlayRho --gcov-options '\-lp'
       #coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho --gcov-options '\-lp'
