@@ -145,5 +145,6 @@ after_success:
       ls -laF $BUILD_ROOT
       #coveralls --verbose --gcov /usr/bin/gcov-8 --build-root $BUILD_ROOT --exclude UnitTests --exclude /usr/include --gcov-options '\-lp'
       #coveralls --gcov /usr/bin/gcov-8 --build-root $BUILD_ROOT --include PlayRho --gcov-options '\-lp'
-      coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho --gcov-options '\-lp'
+      #coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho --gcov-options '\-lp'
+      coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho
     fi
