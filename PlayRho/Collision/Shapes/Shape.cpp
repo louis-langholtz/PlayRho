@@ -23,6 +23,9 @@
 
 namespace playrho {
 namespace d2 {
+
+int Shape::m_shapeTypeIndex = 0;
+
 namespace {
 
 struct DefaultShapeConf
