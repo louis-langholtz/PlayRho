@@ -68,7 +68,10 @@ addons:
       - lcov
       - ggcov
 
+# Seems new way is to call: pip install --user cpp-coveralls
+# That works for installing cpp-coveralls, but haven't figured out how to get cpp-coveralls to work.
 before_install:
+  - gem install coveralls-lcov
   - pip install --user cpp-coveralls
 
 # Install stage. Setup dependencies that can't be setup as addon packages.
@@ -130,23 +133,30 @@ script:
 after_success:
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-8" ]]; then
+      # .gcda and .gcno files where .o files at.
+      # Example: /home/travis/build/louis-langholtz/PlayRho-Build/PlayRho/CMakeFiles/PlayRho.dir/Collision/MassData.cpp.gcda
+      # BUILD_ROOT=/home/travis/build/louis-langholtz/PlayRho-Build
+      # SOURCE_ROOT=/home/travis/build/louis-langholtz/PlayRho
       export PATH=/tmp/usr/bin:$PATH
       pwd && ls -laF . /usr/bin/gcov*
-      #cd $BUILD_ROOT && pwd
-      #lcov --gcov-tool /usr/bin/gcov-8 --directory PlayRho --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
-      #echo "Lcov exited with status $?"
-      #ls -laF coverage.info
-      #lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/UnitTests/*' -o coverage.info
-      #lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '/usr/include/*' -o coverage.info
-      #ls -laF coverage.info
-      #cd $SOURCE_ROOT && pwd
-      # coveralls-lcov $BUILD_ROOT/coverage.info
-      echo BUILD_ROOT=$BUILD_ROOT SOURCE_ROOT=$SOURCE_ROOT
-      ls -laFR $BUILD_ROOT
-      ls -laF UnitTests
-      ls -laF PlayRho
+      # Old way...
+      cd $BUILD_ROOT && pwd
+      lcov --gcov-tool /usr/bin/gcov-8 --directory PlayRho --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
+      echo "Lcov exited with status $?"
+      ls -laF coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/UnitTests/*' -o coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '/usr/include/*' -o coverage.info
+      ls -laF coverage.info
+      cd $SOURCE_ROOT && pwd
+      coveralls-lcov $BUILD_ROOT/coverage.info
+      # New way (not working yet)...
+      #echo BUILD_ROOT=$BUILD_ROOT SOURCE_ROOT=$SOURCE_ROOT
+      #ls -laFR $BUILD_ROOT
+      #ls -laF UnitTests
+      #ls -laF PlayRho
+      # Attempts... latest is lowest here
       #coveralls --verbose --gcov /usr/bin/gcov-8 --build-root $BUILD_ROOT --exclude UnitTests --exclude /usr/include --gcov-options '\-lp'
       #coveralls --gcov /usr/bin/gcov-8 --build-root $BUILD_ROOT --include PlayRho --gcov-options '\-lp'
       #coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho --gcov-options '\-lp'
-      coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho
+      #coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho
     fi
