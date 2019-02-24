@@ -47,9 +47,13 @@ file(GLOB PLAYRHO_General_HDRS
 )
 include_directories( ../ )
 
-if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	message(STATUS "lib: Adding definitions for coverage analysis.")
-	add_definitions(-fprofile-arcs -ftest-coverage)
+if(${PLAYRHO_ENABLE_COVERAGE})
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        # Use -ftest-coverage to generate .gcno notes files.
+        # Use -fprofile-arcs to generate .gcda count data files when resulting objects are run.
+        message(STATUS "lib: Adding definitions for coverage analysis.")
+        add_definitions(-fprofile-arcs -ftest-coverage)
+    endif()
 endif()
 
 if(PLAYRHO_BUILD_SHARED)

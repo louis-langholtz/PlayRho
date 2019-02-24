@@ -100,8 +100,13 @@ else()
 endif()
 
 # link with coverage library
-if(${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    target_link_libraries(Testbed -fprofile-arcs -ftest-coverage)
+if(${PLAYRHO_ENABLE_COVERAGE})
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        # Use -ftest-coverage to generate .gcno notes files.
+        # Use -fprofile-arcs to generate .gcda count data files when resulting objects are run.
+        target_link_libraries(Testbed -fprofile-arcs -ftest-coverage)
+    endif()
 endif()
+
 
 file(COPY Data DESTINATION ..)
