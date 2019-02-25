@@ -173,6 +173,8 @@ after_success:
       #coveralls --verbose --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --build-root $BUILD_ROOT --include PlayRho --exclude UnitTests --gcov-options '\-lp'
       # The following recognizes coverage but then fails seemingly doing a git status not within the git toplevel directory. It also fails to exclude /usr/include files.
       #coveralls --gcov /usr/bin/gcov-8 --root $BUILD_ROOT --include PlayRho --exclude UnitTests --gcov-options '\-lp'
-      cd $BUILD_ROOT
-      coveralls --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
+      # Following two lines don't result in any coverage being recognized
+      #cd $BUILD_ROOT
+      #coveralls --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
+      coveralls --gcov /usr/bin/gcov-8 --root $BUILD_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
     fi
