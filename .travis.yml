@@ -177,5 +177,6 @@ after_success:
       #cd $BUILD_ROOT
       #coveralls --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
       #coveralls --gcov /usr/bin/gcov-8 --root $BUILD_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
-      coveralls --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --include ../PlayRho-Build/PlayRho --exclude ../PlayRho-Build/UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
+      cd ..
+      coveralls --verbose --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --build-root $BUILD_ROOT --include PlayRho --exclude UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
     fi
