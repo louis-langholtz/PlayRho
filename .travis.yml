@@ -176,5 +176,6 @@ after_success:
       # Following two lines don't result in any coverage being recognized
       #cd $BUILD_ROOT
       #coveralls --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
-      coveralls --gcov /usr/bin/gcov-8 --root $BUILD_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
+      #coveralls --gcov /usr/bin/gcov-8 --root $BUILD_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
+      coveralls --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --include ../PlayRho-Build/PlayRho --exclude ../PlayRho-Build/UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
     fi
