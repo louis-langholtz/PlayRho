@@ -177,8 +177,9 @@ after_success:
       #cd $BUILD_ROOT
       #coveralls --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
       #coveralls --gcov /usr/bin/gcov-8 --root $BUILD_ROOT --include PlayRho --exclude UnitTests --exclude-pattern "/usr/.*" --gcov-options '\-lp'
-      cd ..
       # The following succeeds in traversing the source files but doesn't see any of the data files
+      #cd ..
       #coveralls --verbose --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --build-root $BUILD_ROOT --include PlayRho --exclude UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
-      coveralls --verbose --gcov /usr/bin/gcov-8 --root $BUILD_ROOT --include PlayRho --exclude UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
+      cd $BUILD_ROOT
+      coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho --exclude UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
     fi
