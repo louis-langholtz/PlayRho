@@ -184,5 +184,7 @@ after_success:
       #coveralls --verbose --gcov /usr/bin/gcov-8 --root $SOURCE_ROOT --build-root $BUILD_ROOT --include PlayRho --exclude UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
       #cd $BUILD_ROOT
       #coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho --exclude UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
-      coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho --exclude UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
+      # The following based on running cmake in source directory results in EXIT_SUCCESS but coveralls.io doesn't seem to see any of the code coverage
+      #coveralls --verbose --gcov /usr/bin/gcov-8 --include PlayRho --exclude UnitTests --exclude-pattern '/usr/.*' --gcov-options '\-lp'
+      coveralls --gcov /usr/bin/gcov-8 --include PlayRho --gcov-options '\-lp'
     fi
