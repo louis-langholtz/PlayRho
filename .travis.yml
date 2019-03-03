@@ -127,7 +127,7 @@ script:
       # Have CMake build with unit test code coverage enabled...
       # (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DPLAYRHO_ENABLE_COVERAGE=ON $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:Math.LengthFasterThanHypot )
       pwd
-      cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DPLAYRHO_ENABLE_COVERAGE=ON $PLAYRHO_BUILD_OPTIONS . && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:Math.LengthFasterThanHypot )
+      cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DPLAYRHO_ENABLE_COVERAGE=ON $PLAYRHO_BUILD_OPTIONS . && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:Math.LengthFasterThanHypot
     fi
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
