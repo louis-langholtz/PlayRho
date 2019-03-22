@@ -137,4 +137,5 @@ after_success:
       ls -laF coverage.info
       cd $SOURCE_ROOT && pwd
       coveralls-lcov --verbose $BUILD_ROOT/coverage.info
+      bash <(curl -s https://codecov.io/bash) -f $BUILD_ROOT/coverage.info || echo "Codecov did not collect coverage reports"
     fi
