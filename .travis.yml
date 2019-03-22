@@ -148,6 +148,7 @@ after_success:
       # SOURCE_ROOT=/home/travis/build/louis-langholtz/PlayRho
       export PATH=/tmp/usr/bin:$PATH
       pwd && ls -laF . /usr/bin/gcov*
+
       # Old way uses lcov - lcov is the LTV GCOV extension. gcov is 8.1.0.
       # lcov uses geninfo. geninfo warns for files:
       #   "cannot find an entry for #home#travis#build#louis-langholtz#PlayRho#PlayRho#Dynamics#StepConf.cpp.gcov in .gcno file, skipping file!"
