@@ -72,7 +72,7 @@ addons:
 
 before_install:
   - gem install coveralls-lcov
-
+  - pip install cpp-coveralls
 # Install stage. Setup dependencies that can't be setup as addon packages.
 #
 # I'd prefer that GLFW and GLEW get installed as packages but I didn't find
@@ -138,4 +138,7 @@ after_success:
       lcov --list coverage.info
       cd $SOURCE_ROOT && pwd
       coveralls-lcov --verbose $BUILD_ROOT/coverage.info
+
+      cd $BUILD_ROOT && pwd
+      cpp-coveralls -l $BUILD_ROOT/coverage.info --gcov /usr/bin/gcov-8 --gcov-options '\-lp'
     fi
