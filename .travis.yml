@@ -129,6 +129,7 @@ after_success:
       export PATH=/tmp/usr/bin:$PATH
       pwd && ls -laF . /usr/bin/gcov*
       cd $BUILD_ROOT && pwd
+      find ~/ -name "*gcno" -or -name "*gcda"
       lcov --gcov-tool /usr/bin/gcov-8 --directory PlayRho --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
       echo "Lcov exited with status $?"
       ls -laF coverage.info
