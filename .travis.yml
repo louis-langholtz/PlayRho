@@ -135,7 +135,7 @@ after_success:
       lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/UnitTests/*' -o coverage.info
       lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '/usr/include/*' -o coverage.info
       ls -laF coverage.info
-      lcov --list coverage_out.info
+      lcov --list coverage.info
       cd $SOURCE_ROOT && pwd
       coveralls-lcov --verbose $BUILD_ROOT/coverage.info
     fi
