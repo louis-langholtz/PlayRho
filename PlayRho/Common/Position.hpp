@@ -145,12 +145,23 @@ PLAYRHO_CONSTEXPR inline Position GetPosition(const Position pos0, const Positio
     //   If pos0 == pos1 then return value should always be equal to pos0 too.
     //   But if Real is float, pos0 * (1 - beta) + pos1 * beta can fail this requirement.
     //   Meanwhile, pos0 + (pos1 - pos0) * beta always works.
-    
+
     // pos0 * (1 - beta) + pos1 * beta
     // pos0 - pos0 * beta + pos1 * beta
     // pos0 + (pos1 * beta - pos0 * beta)
     // pos0 + (pos1 - pos0) * beta
-    return pos0 + (pos1 - pos0) * beta;
+
+    //return pos0 + (pos1 - pos0) * beta;
+
+    // Note: we have to be doubleplus careful, because we can't just linear interpolate
+    //   angles in radians without normalizing them. Let's try using a classic normalizer
+    //   with the same formula as above.
+    PLAYRHO_CONSTEXPR const auto twoPi = Pi+Pi;
+    const auto da = pos1.angular - pos0.angular;
+    return {
+	pos0.linear + (pos1.linear - pos0.linear) * beta,
+	pos0.angular + (da - twoPi * std::floor((da + Pi) / twoPi)) * beta
+    };
 }
 
 } // namespace d2
