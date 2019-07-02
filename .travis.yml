@@ -89,10 +89,10 @@ install:
     if [ "$CXX" = "g++" ]
     then
       export CXX="g++-8" CC="gcc-8"
-      wget http://downloads.sourceforge.net/ltp/lcov-1.13.tar.gz
-      tar xf lcov-1.13.tar.gz
+      wget https://github.com/linux-test-project/lcov/releases/download/v1.14/lcov-1.14.tar.gz
+      tar xf lcov-1.14.tar.gz
       mkdir -p /tmp/usr
-      make -C lcov-1.13/ PREFIX=/tmp/usr install
+      make -C lcov-1.14/ PREFIX=/tmp/usr install
     fi
   - if [ "$CXX" = "clang++" ]; then export CXX="clang++-5.0" CC="clang-5.0"; fi
   - |
@@ -129,6 +129,8 @@ after_success:
       echo "BUILD_ROOT: "$BUILD_ROOT
       echo "SOURCE_ROOT: "$SOURCE_ROOT
       export PATH=/tmp/usr/bin:$PATH
+      which lcov
+      lcov --version
       pwd && ls -laF . /usr/bin/gcov*
       cd $BUILD_ROOT && pwd
       find ~/ -name "*gcno" -or -name "*gcda"
