@@ -41,9 +41,13 @@ file(GLOB UnitTest_SRCS *.cpp)
 add_executable(UnitTests ${UnitTest_SRCS})
 
 # enable code coverage generation (only with GCC for now)
-if(${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  message(STATUS "UnitTests: Adding definitions for coverage analysis.")
-  add_definitions(-fprofile-arcs -ftest-coverage)
+if(${PLAYRHO_ENABLE_COVERAGE})
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        # Use -ftest-coverage to generate .gcno notes files.
+        # Use -fprofile-arcs to generate .gcda count data files when resulting objects are run.
+        message(STATUS "UnitTests: Adding definitions for coverage analysis.")
+        add_definitions(-fprofile-arcs -ftest-coverage)
+    endif()
 endif()
 
 # Link a target to given libraries.
@@ -51,8 +55,12 @@ endif()
 target_link_libraries(UnitTests PlayRho gtest)
 
 # link with coverage library
-if(${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  target_link_libraries(UnitTests -fprofile-arcs -ftest-coverage)
+if(${PLAYRHO_ENABLE_COVERAGE})
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        # Use -ftest-coverage to generate .gcno notes files.
+        # Use -fprofile-arcs to generate .gcda count data files when resulting objects are run.
+        target_link_libraries(UnitTests -fprofile-arcs -ftest-coverage)
+    endif()
 endif()
 
 # Adds UnitTests to be run when like "make test" is executed.
