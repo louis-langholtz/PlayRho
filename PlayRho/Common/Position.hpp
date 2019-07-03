@@ -125,6 +125,15 @@ bool IsValid(const d2::Position& value) noexcept
 
 namespace d2 {
 
+
+namespace {
+template<typename T>
+constexpr auto cfloor(T x) -> decltype(std::floor(x))
+{
+    return (int(x) == x) ? int(x) : (x >= 0.0) ? int(x) : int(x) - 1;
+}
+}
+
 /// Gets the position between two positions at a given unit interval.
 /// @param pos0 Position at unit interval value of 0.
 /// @param pos1 Position at unit interval value of 1.
@@ -134,7 +143,7 @@ namespace d2 {
 ///   position 1 if <code>beta == 1</code>, or at the given unit interval value
 ///   between position 0 and position 1.
 /// @relatedalso Position
-/*PLAYRHO_CONSTEXPR*/ inline Position GetPosition(const Position pos0, const Position pos1,
+PLAYRHO_CONSTEXPR inline Position GetPosition(const Position pos0, const Position pos1,
                                               const Real beta) noexcept
 {
     assert(IsValid(pos0));
@@ -158,10 +167,10 @@ namespace d2 {
     //   with the same formula as above.
     const auto twoPi = Pi+Pi;
     const auto da = pos1.angular - pos0.angular;
-    const auto na = pos0.angular + (da - twoPi * std::floor((da + Pi) / twoPi)) * beta;
+    const auto na = pos0.angular + (da - twoPi * cfloor((da + Pi) / twoPi)) * beta;
     return {
 	pos0.linear + (pos1.linear - pos0.linear) * beta,
-        na - twoPi * std::floor((na + Pi) / twoPi)
+        na - twoPi * cfloor((na + Pi) / twoPi)
     };
 }
 
