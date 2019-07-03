@@ -561,6 +561,15 @@ Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
             const auto delta = GetLocation(b2) - loc1;
             const auto dir = GetUnitVector(delta);
             const auto rr = GetMagnitudeSquared(delta);
+
+            // Uses Newton's law of universal gravitation: F = G * m1 * m2 / rr.
+            // See: https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation
+            // Note that BigG is typically very small numerically compared to either mass
+            // or the square of the radius between the masses. That's important to recognize
+            // in order to avoid operational underflows or overflows especially when
+            // playrho::Real has less exponential range like when it's defined to be float
+            // instead of double. The operational ordering is deliberately established here
+            // to help with this.
             const auto orderedMass = std::minmax(m1, m2);
             const auto f = (BigG * std::get<0>(orderedMass)) * (std::get<1>(orderedMass) / rr);
             sumForce += f * dir;
