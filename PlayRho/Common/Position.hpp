@@ -156,7 +156,7 @@ PLAYRHO_CONSTEXPR inline Position GetPosition(const Position pos0, const Positio
     // Note: we have to be doubleplus careful, because we can't just linear interpolate
     //   angles in radians without normalizing them. Let's try using a classic normalizer
     //   with the same formula as above.
-    PLAYRHO_CONSTEXPR const auto twoPi = Pi+Pi;
+    const auto twoPi = Pi+Pi;
     const auto da = pos1.angular - pos0.angular;
     return {
 	pos0.linear + (pos1.linear - pos0.linear) * beta,
