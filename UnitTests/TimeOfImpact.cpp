@@ -560,7 +560,7 @@ TEST(TimeOfImpact, RodCircleMissAt360)
     {
         EXPECT_EQ(output.state, TOIOutput::e_separated);
         EXPECT_NEAR(static_cast<double>(output.time), 1.0, 0.001);
-        EXPECT_EQ(output.stats.toi_iters, 4);
+        EXPECT_EQ(output.stats.toi_iters, 3);
     }
 }
 
@@ -602,7 +602,7 @@ TEST(TimeOfImpact, RodCircleHitAt180)
     else
     {
         EXPECT_EQ(output.state, TOIOutput::e_touching);
-        EXPECT_NEAR(double(output.time), 0.4884203672409058, 0.0001);
+        EXPECT_NEAR(double(output.time), 0.4864552915096283, 0.0001);
         EXPECT_EQ(output.stats.toi_iters, 3);
     }
 }
@@ -814,7 +814,7 @@ TEST(TimeOfImpact, ForNonCollidingShapesFails)
             EXPECT_EQ(output.stats.toi_iters, 1);
             EXPECT_EQ(output.stats.max_dist_iters, 4);
             //EXPECT_TRUE(output.stats.max_root_iters == 23 || output.stats.max_root_iters == 14);
-            EXPECT_EQ(output.stats.max_root_iters, 23);
+            EXPECT_EQ(output.stats.max_root_iters, 27);
         }
     }
     else if (std::is_same<Real, Fixed<std::int32_t,9>>::value)

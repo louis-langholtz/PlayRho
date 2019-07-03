@@ -158,9 +158,10 @@ PLAYRHO_CONSTEXPR inline Position GetPosition(const Position pos0, const Positio
     //   with the same formula as above.
     const auto twoPi = Pi+Pi;
     const auto da = pos1.angular - pos0.angular;
+    const auto na = pos0.angular + (da - twoPi * std::floor((da + Pi) / twoPi)) * beta;
     return {
 	pos0.linear + (pos1.linear - pos0.linear) * beta,
-	pos0.angular + (da - twoPi * std::floor((da + Pi) / twoPi)) * beta
+        na - twoPi * std::floor((na + Pi) / twoPi)
     };
 }
 
