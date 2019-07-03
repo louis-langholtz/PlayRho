@@ -134,7 +134,7 @@ namespace d2 {
 ///   position 1 if <code>beta == 1</code>, or at the given unit interval value
 ///   between position 0 and position 1.
 /// @relatedalso Position
-PLAYRHO_CONSTEXPR inline Position GetPosition(const Position pos0, const Position pos1,
+/*PLAYRHO_CONSTEXPR*/ inline Position GetPosition(const Position pos0, const Position pos1,
                                               const Real beta) noexcept
 {
     assert(IsValid(pos0));
