@@ -159,5 +159,5 @@ after_success:
       ls -laF coverage.info
       lcov --list coverage.info
       cd $SOURCE_ROOT && pwd
-      coveralls-lcov --verbose $BUILD_ROOT/coverage.info
+      coveralls-lcov --verbose $SOURCE_ROOT/coverage.info
     fi
