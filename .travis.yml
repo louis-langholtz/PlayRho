@@ -23,19 +23,17 @@ env:
 
 # Specify explicitly which branches to build or not build
 # For details see: https://docs.travis-ci.com/user/customizing-the-build/#Building-Specific-Branches
-branches:
-  only:
-    - master
+#branches:
+#  only:
+#    - master
 
 # Specify which OS X image to use.
 # "xcode8" is supposed to provide a macosx10.11 SK preinstalled.
 # For details see: https://docs.travis-ci.com/user/osx-ci-environment/
-osx_image: xcode8
+#osx_image: xcode8
 
-xcode_project: Build/xcode5/PlayRho.xcodeproj
-xcode_scheme: UnitTest
-
-sudo: false
+#xcode_project: Build/xcode5/PlayRho.xcodeproj
+#xcode_scheme: UnitTest
 
 # https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz
 
@@ -70,8 +68,11 @@ addons:
       - lcov
       - ggcov
 
+# Seems new way is to call: pip install --user cpp-coveralls
+# That works for installing cpp-coveralls, but haven't figured out how to get cpp-coveralls to work.
 before_install:
   - gem install coveralls-lcov
+  - pip install --user cpp-coveralls
 
 # Install stage. Setup dependencies that can't be setup as addon packages.
 #
@@ -89,10 +90,10 @@ install:
     if [ "$CXX" = "g++" ]
     then
       export CXX="g++-8" CC="gcc-8"
-      wget http://downloads.sourceforge.net/ltp/lcov-1.13.tar.gz
-      tar xf lcov-1.13.tar.gz
+      wget https://github.com/linux-test-project/lcov/releases/download/v1.14/lcov-1.14.tar.gz
+      tar xf lcov-1.14.tar.gz
       mkdir -p /tmp/usr
-      make -C lcov-1.13/ PREFIX=/tmp/usr install
+      make -C lcov-1.14/ PREFIX=/tmp/usr install
     fi
   - if [ "$CXX" = "clang++" ]; then export CXX="clang++-5.0" CC="clang-5.0"; fi
   - |
@@ -117,24 +118,45 @@ install:
     mkdir /tmp/glew && pushd /tmp/glew && curl --location --remote-name $GLEW_URL && md5sum *.zip && echo "Expect MD5 hash of 54c913d0c00726fb028d089ad1664ede" && unzip -q *.zip && rm *.zip && cd * && make && make DESTDIR=/tmp install && popd
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-5.0" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld ); fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-8" ]]; then (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DPLAYRHO_ENABLE_COVERAGE=ON $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:Math.LengthFasterThanHypot ); fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (cd PlayRho && xcodebuild -project Build/xcode5/PlayRho.xcodeproj -list); fi
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-5.0" ]]; then
+      (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld )
+    fi
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-8" ]]; then
+      # Have CMake build with unit test code coverage enabled...
+      # (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DPLAYRHO_ENABLE_COVERAGE=ON $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:Math.LengthFasterThanHypot )
+      pwd
+      cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib -DPLAYRHO_ENABLE_COVERAGE=ON $PLAYRHO_BUILD_OPTIONS . && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld:Math.LengthFasterThanHypot
+    fi
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      (cd PlayRho && xcodebuild -project Build/xcode5/PlayRho.xcodeproj -list)
+    fi
 
 # Notes:
 #   .gcno files are binary files.
 after_success:
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "g++-8" ]]; then
+
+      echo "BUILD_ROOT: "$BUILD_ROOT
+      echo "SOURCE_ROOT: "$SOURCE_ROOT
       export PATH=/tmp/usr/bin:$PATH
+      which lcov
+      lcov --version
       pwd && ls -laF . /usr/bin/gcov*
+
       cd $BUILD_ROOT && pwd
-      lcov --gcov-tool /usr/bin/gcov-8 --directory PlayRho --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
+      find ~/ -name "*gcno" -or -name "*gcda"
+      # lcov --gcov-tool /usr/bin/gcov-8 --directory PlayRho --directory UnitTests --base-directory $SOURCE_ROOT --capture --output-file coverage.info
+      lcov --gcov-tool /usr/bin/gcov-8 --compat-libtool --directory PlayRho --directory UnitTests --base-directory ../PlayRho/ --capture --output-file coverage.info --quiet
       echo "Lcov exited with status $?"
       ls -laF coverage.info
       lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '*/UnitTests/*' -o coverage.info
       lcov --gcov-tool /usr/bin/gcov-8 --remove coverage.info '/usr/include/*' -o coverage.info
       ls -laF coverage.info
+      lcov --list coverage.info
       cd $SOURCE_ROOT && pwd
-      coveralls-lcov $BUILD_ROOT/coverage.info
+      coveralls-lcov --verbose $BUILD_ROOT/coverage.info
     fi

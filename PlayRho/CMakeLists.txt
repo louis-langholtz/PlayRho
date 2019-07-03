@@ -47,9 +47,10 @@ file(GLOB PLAYRHO_General_HDRS
 )
 include_directories( ../ )
 
+
 if (${PLAYRHO_ENABLE_COVERAGE} AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	message(STATUS "lib: Adding definitions for coverage analysis.")
-	add_definitions(-fprofile-arcs -ftest-coverage)
+	add_definitions(--coverage)
 endif()
 
 if(PLAYRHO_BUILD_SHARED)
