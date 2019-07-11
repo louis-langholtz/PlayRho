@@ -79,7 +79,6 @@ TEST(Transformation, Mul)
     const Transformation xfm{translation1, rotation1};
 
     const auto xfm2 = Mul(xfm, xfm);
-    const Vec2 translation2{4, 8};
     const auto rotation2 = UnitVec::Get(1_rad * Pi);
 
     const auto Ap = xfm.p;
