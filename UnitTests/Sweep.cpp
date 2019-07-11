@@ -56,6 +56,13 @@ TEST(Sweep, GetPosition) {
     EXPECT_EQ(pos1, GetPosition(sweep.pos0, sweep.pos1, 1));
 }
 
+TEST(Sweep, GetPositionAngleEdgeCase) {
+    const auto pos0 = Position{Length2{-0.4_m, +2.34_m}, 3.13_rad};
+    const auto pos1 = Position{Length2{+0.4_m, -2.34_m}, -3.13_rad};
+    Sweep sweep{pos0, pos1, Length2{}, Real(0.6)};
+    EXPECT_NEAR(3.1358_rad, GetPosition(sweep.pos0, sweep.pos1, 0.25).angular,0.0001);
+}
+
 TEST(Sweep, Advance) {
     const auto pos0 = Position{Length2{-0.4_m, +2.34_m}, 3.14_rad};
     const auto pos1 = Position{Length2{+0.4_m, -2.34_m}, -3.14_rad};
@@ -71,7 +78,7 @@ TEST(Sweep, Advance) {
     sweep.Advance0(Real{1}/Real{2});
     EXPECT_EQ(Real{1}/Real{2}, sweep.GetAlpha0());
     EXPECT_EQ(pos1, sweep.pos1);
-    EXPECT_EQ((Position{Length2{}, 0_deg}), sweep.pos0);
+    EXPECT_EQ((Position{Length2{}, -Pi}), sweep.pos0);
 
     sweep.Advance0(0);
     EXPECT_EQ(Real{0}, sweep.GetAlpha0());

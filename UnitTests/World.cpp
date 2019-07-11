@@ -2708,6 +2708,13 @@ TEST(World_Longer, TilesComesToRest)
     {
         case  4:
         {
+            // From commit 90d73101c1b105aa0ad00828336da0f3c2b97e5e onward:
+            //EXPECT_EQ(numSteps,         1766ul);
+            //EXPECT_EQ(sumRegPosIters,  36412ul);
+            //EXPECT_EQ(sumRegVelIters,  46675ul);
+            //EXPECT_EQ(sumToiPosIters,  43910ul);
+            //EXPECT_EQ(sumToiVelIters, 113049ul);
+
             // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             EXPECT_EQ(numSteps,         1768ul);
             EXPECT_EQ(sumRegPosIters,  36419ul);

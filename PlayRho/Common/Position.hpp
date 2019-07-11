@@ -125,6 +125,15 @@ bool IsValid(const d2::Position& value) noexcept
 
 namespace d2 {
 
+
+namespace {
+template<typename T>
+constexpr auto cfloor(T x) -> decltype(std::floor(x))
+{
+    return (int(x) == x) ? int(x) : (x >= 0.0) ? int(x) : int(x) - 1;
+}
+}
+
 /// Gets the position between two positions at a given unit interval.
 /// @param pos0 Position at unit interval value of 0.
 /// @param pos1 Position at unit interval value of 1.
@@ -145,12 +154,24 @@ PLAYRHO_CONSTEXPR inline Position GetPosition(const Position pos0, const Positio
     //   If pos0 == pos1 then return value should always be equal to pos0 too.
     //   But if Real is float, pos0 * (1 - beta) + pos1 * beta can fail this requirement.
     //   Meanwhile, pos0 + (pos1 - pos0) * beta always works.
-    
+
     // pos0 * (1 - beta) + pos1 * beta
     // pos0 - pos0 * beta + pos1 * beta
     // pos0 + (pos1 * beta - pos0 * beta)
     // pos0 + (pos1 - pos0) * beta
-    return pos0 + (pos1 - pos0) * beta;
+
+    //return pos0 + (pos1 - pos0) * beta;
+
+    // Note: we have to be doubleplus careful, because we can't just linear interpolate
+    //   angles in radians without normalizing them. Let's try using a classic normalizer
+    //   with the same formula as above.
+    const auto twoPi = Pi+Pi;
+    const auto da = pos1.angular - pos0.angular;
+    const auto na = pos0.angular + (da - twoPi * cfloor((da + Pi) / twoPi)) * beta;
+    return {
+	pos0.linear + (pos1.linear - pos0.linear) * beta,
+        na - twoPi * cfloor((na + Pi) / twoPi)
+    };
 }
 
 } // namespace d2
