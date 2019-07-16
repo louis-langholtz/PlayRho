@@ -1826,6 +1826,14 @@ StepStats World::Step(const StepConf& conf)
             stepStats.pre.destroyed = destroyStats.erased;
         }
 
+        if (IsProxyDirty())
+        {
+        	UnsetProxyDirty();
+        	m_proxies.erase(std::remove_if(m_proxies.begin(), m_proxies.end(), [](ProxyId pid) {
+        		return pid == DynamicTree::GetInvalidSize();
+			}), m_proxies.end());
+		}
+
         if (HasNewFixtures())
         {
             UnsetNewFixtures();
@@ -2521,6 +2529,7 @@ void World::DestroyProxies(Fixture& fixture) noexcept
         }
     }
     FixtureAtty::ResetProxies(fixture);
+    SetProxyDirty();
 }
 
 void World::TouchProxies(Fixture& fixture) noexcept
