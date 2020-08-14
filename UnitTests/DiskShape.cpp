@@ -174,15 +174,16 @@ TEST(DiskShapeConf, ComputeAABB)
 {
     const auto radius = 2.4_m;
     const auto position = Length2{2_m, 1_m};
-    auto conf = DiskShapeConf{};
-    conf.vertexRadius = radius;
-    conf.location = position;
-    Shape foo{conf};
-    const auto aabb = ComputeAABB(foo, Transform_identity);
+    const auto conf = DiskShapeConf{}.UseRadius(radius).UseLocation(position);
+    const auto shape = Shape{conf};
+    ASSERT_EQ(GetChildCount(shape), static_cast<decltype(GetChildCount(shape))>(1));
+    const auto aabb = ComputeAABB(shape, Transform_identity);
     EXPECT_EQ(GetX(GetLowerBound(aabb)), GetX(position) - radius);
     EXPECT_EQ(GetY(GetLowerBound(aabb)), GetY(position) - radius);
     EXPECT_EQ(GetX(GetUpperBound(aabb)), GetX(position) + radius);
     EXPECT_EQ(GetY(GetUpperBound(aabb)), GetY(position) + radius);
+    EXPECT_NEAR(static_cast<double>(Real{GetX(GetExtents(aabb))/1_m}), static_cast<double>(Real{radius/1_m}), 1.0/1000000);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(GetExtents(aabb))/1_m}), static_cast<double>(Real{radius/1_m}), 1.0/1000000);
     EXPECT_TRUE(AlmostEqual(StripUnit(GetX(GetExtents(aabb))), StripUnit(radius)));
     EXPECT_TRUE(AlmostEqual(StripUnit(GetY(GetExtents(aabb))), StripUnit(radius)));
     EXPECT_EQ(GetX(GetCenter(aabb)), GetX(position));
