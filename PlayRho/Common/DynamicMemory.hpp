@@ -23,7 +23,9 @@
 #define PLAYRHO_COMMON_DYNAMICMEMORY_HPP
 
 #include <PlayRho/Defines.hpp>
+
 #include <cstddef>
+#include <type_traits>
 
 namespace playrho
 {
@@ -35,7 +37,7 @@ namespace playrho
     
     /// @brief Allocates memory.
     template <typename T>
-    T* Alloc(std::size_t size)
+    std::enable_if_t<!std::is_same_v<T, void>, T*> Alloc(std::size_t size)
     {
         return static_cast<T*>(Alloc(size * sizeof(T)));
     }
