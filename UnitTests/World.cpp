@@ -2718,12 +2718,19 @@ TEST(World_Longer, TilesComesToRest)
     {
         case  4:
         {
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
-            EXPECT_EQ(numSteps,         1768ul);
-            EXPECT_EQ(sumRegPosIters,  36419ul);
-            EXPECT_EQ(sumRegVelIters,  46684ul);
-            EXPECT_EQ(sumToiPosIters,  43814ul);
-            EXPECT_EQ(sumToiVelIters, 113452ul);
+            // From commits after 507a7c15c
+            EXPECT_EQ(numSteps,         1803ul);
+            EXPECT_EQ(sumRegPosIters,  36527ul);
+            EXPECT_EQ(sumRegVelIters,  46981ul);
+            EXPECT_EQ(sumToiPosIters,  43676ul);
+            EXPECT_EQ(sumToiVelIters, 112502ul);
+
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 to 507a7c15c
+            //EXPECT_EQ(numSteps,         1768ul);
+            //EXPECT_EQ(sumRegPosIters,  36419ul);
+            //EXPECT_EQ(sumRegVelIters,  46684ul);
+            //EXPECT_EQ(sumToiPosIters,  43814ul);
+            //EXPECT_EQ(sumToiVelIters, 113452ul);
 
             // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             //EXPECT_EQ(numSteps,         1799ul);
@@ -2757,12 +2764,19 @@ TEST(World_Longer, TilesComesToRest)
         }
         case  8:
         {
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
+            // From commits after 507a7c15c:
             EXPECT_EQ(numSteps,         1828ul);
             EXPECT_EQ(sumRegPosIters,  36540ul);
             EXPECT_EQ(sumRegVelIters,  47173ul);
             EXPECT_EQ(sumToiPosIters,  44005ul);
-            EXPECT_EQ(sumToiVelIters, 114462ul);
+            EXPECT_EQ(sumToiVelIters, 114252ul);
+
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 to 507a7c15c:
+            //EXPECT_EQ(numSteps,         1828ul);
+            //EXPECT_EQ(sumRegPosIters,  36540ul);
+            //EXPECT_EQ(sumRegVelIters,  47173ul);
+            //EXPECT_EQ(sumToiPosIters,  44005ul);
+            //EXPECT_EQ(sumToiVelIters, 114462ul);
 
             // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             //EXPECT_EQ(numSteps,         1828ul);
