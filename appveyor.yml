@@ -26,12 +26,16 @@ environment:
       configuration: none
     - platform: x64
       configuration: Debug
+      additional_flags: "/permissive- /std:c++17"
     - platform: x64
       configuration: Release
+      additional_flags: "/permissive- /std:c++17"
     - platform: Win32
       configuration: Debug
+      additional_flags: "/permissive- /std:c++17"
     - platform: Win32
       configuration: Release
+      additional_flags: "/permissive- /std:c++17"
 
 cache:
   - C:\tools\vcpkg\installed\ -> appveyor.yml # preserve any vcpkg installed stuff
