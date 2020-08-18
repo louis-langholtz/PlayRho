@@ -2601,11 +2601,18 @@ TEST(World_Longer, TilesComesToRest)
         case  4:
         {
 #ifndef __FAST_MATH__
-            EXPECT_EQ(numSteps, 1796ul);
-            EXPECT_EQ(sumRegPosIters, 36503ul);
-            EXPECT_EQ(sumRegVelIters, 46923ul);
-            EXPECT_EQ(sumToiPosIters, 43913ul);
-            EXPECT_EQ(sumToiVelIters, 113000ul);
+            EXPECT_EQ(numSteps, 1800ul);
+            EXPECT_EQ(sumRegPosIters, 36518ul);
+            EXPECT_EQ(sumRegVelIters, 46965ul);
+            EXPECT_EQ(sumToiPosIters, 44006ul);
+            EXPECT_EQ(sumToiVelIters, 113850ul);
+
+            // From commit 507a7c15c
+            //EXPECT_EQ(numSteps, 1796ul);
+            //EXPECT_EQ(sumRegPosIters, 36503ul);
+            //EXPECT_EQ(sumRegVelIters, 46923ul);
+            //EXPECT_EQ(sumToiPosIters, 43913ul);
+            //EXPECT_EQ(sumToiVelIters, 113000ul);
 
             // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             //EXPECT_EQ(numSteps, 1912ul);
@@ -2664,7 +2671,10 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumRegPosIters,  36540ul);
             EXPECT_EQ(sumRegVelIters,  47173ul);
             EXPECT_EQ(sumToiPosIters,  44005ul);
-            EXPECT_EQ(sumToiVelIters, 114427ul);
+            EXPECT_EQ(sumToiVelIters, 114231ul);
+
+            // From commit 507a7c15c
+            //EXPECT_EQ(sumToiVelIters, 114427ul);
 
             // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             //EXPECT_EQ(numSteps,         1828ul);
@@ -2708,12 +2718,19 @@ TEST(World_Longer, TilesComesToRest)
     {
         case  4:
         {
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
-            EXPECT_EQ(numSteps,         1768ul);
-            EXPECT_EQ(sumRegPosIters,  36419ul);
-            EXPECT_EQ(sumRegVelIters,  46684ul);
-            EXPECT_EQ(sumToiPosIters,  43814ul);
-            EXPECT_EQ(sumToiVelIters, 113452ul);
+            // From commits after 507a7c15c
+            EXPECT_EQ(numSteps,         1803ul);
+            EXPECT_EQ(sumRegPosIters,  36527ul);
+            EXPECT_EQ(sumRegVelIters,  46981ul);
+            EXPECT_EQ(sumToiPosIters,  43676ul);
+            EXPECT_EQ(sumToiVelIters, 112502ul);
+
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 to 507a7c15c
+            //EXPECT_EQ(numSteps,         1768ul);
+            //EXPECT_EQ(sumRegPosIters,  36419ul);
+            //EXPECT_EQ(sumRegVelIters,  46684ul);
+            //EXPECT_EQ(sumToiPosIters,  43814ul);
+            //EXPECT_EQ(sumToiVelIters, 113452ul);
 
             // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             //EXPECT_EQ(numSteps,         1799ul);
@@ -2747,12 +2764,19 @@ TEST(World_Longer, TilesComesToRest)
         }
         case  8:
         {
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
+            // From commits after 507a7c15c:
             EXPECT_EQ(numSteps,         1828ul);
             EXPECT_EQ(sumRegPosIters,  36540ul);
             EXPECT_EQ(sumRegVelIters,  47173ul);
             EXPECT_EQ(sumToiPosIters,  44005ul);
-            EXPECT_EQ(sumToiVelIters, 114462ul);
+            EXPECT_EQ(sumToiVelIters, 114252ul);
+
+            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 to 507a7c15c:
+            //EXPECT_EQ(numSteps,         1828ul);
+            //EXPECT_EQ(sumRegPosIters,  36540ul);
+            //EXPECT_EQ(sumRegVelIters,  47173ul);
+            //EXPECT_EQ(sumToiPosIters,  44005ul);
+            //EXPECT_EQ(sumToiVelIters, 114462ul);
 
             // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
             //EXPECT_EQ(numSteps,         1828ul);
@@ -2793,17 +2817,17 @@ TEST(World_Longer, TilesComesToRest)
     //EXPECT_EQ(sumToiPosIters, 44415ul);
     //EXPECT_EQ(sumToiVelIters, 146800ul);
 #elif defined(_WIN64) // This is likely wrong as the results are more likely arch dependent
-    EXPECT_EQ(numSteps, 1800ul);
-    EXPECT_EQ(sumRegPosIters, 36516ul);
-    EXPECT_EQ(sumRegVelIters, 46948ul);
-    EXPECT_EQ(sumToiPosIters, 43970ul);
-    EXPECT_EQ(sumToiVelIters, 112904ul);
+    EXPECT_EQ(numSteps, 1794ul);
+    EXPECT_EQ(sumRegPosIters, 36498ul);
+    EXPECT_EQ(sumRegVelIters, 46900ul);
+    EXPECT_EQ(sumToiPosIters, 44074ul);
+    EXPECT_EQ(sumToiVelIters, 114404ul);
 #elif defined(_WIN32)
-    EXPECT_EQ(numSteps, 1793ul);
-    EXPECT_EQ(sumRegPosIters, 36495ul);
-    EXPECT_EQ(sumRegVelIters, 46884ul);
-    EXPECT_EQ(sumToiPosIters, 43982ul);
-    EXPECT_EQ(sumToiVelIters, 112969ul);
+    EXPECT_EQ(numSteps, 1803ul);
+    EXPECT_EQ(sumRegPosIters, 36528ul);
+    EXPECT_EQ(sumRegVelIters, 46981ul);
+    EXPECT_EQ(sumToiPosIters, 43684ul);
+    EXPECT_EQ(sumToiVelIters, 112778ul);
 #else
     // These will likely fail and need to be tweaked for the particular hardware...
     EXPECT_EQ(numSteps, 1814ul);

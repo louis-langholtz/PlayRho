@@ -536,9 +536,9 @@ Force2 GetCentripetalForce(const Body& body, Length2 axis)
     const auto location = body.GetLocation();
     const auto mass = GetMass(body);
     const auto delta = axis - location;
-    const auto radius = GetMagnitude(delta);
-    const auto dir = delta / radius;
-    return Force2{dir * mass * Square(magnitudeOfVelocity) / radius};
+    const auto invRadius = Real{1} / GetMagnitude(delta);
+    const auto dir = delta * invRadius;
+    return Force2{dir * mass * Square(magnitudeOfVelocity) * invRadius};
 }
 
 Acceleration CalcGravitationalAcceleration(const Body& body) noexcept

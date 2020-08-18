@@ -224,10 +224,22 @@ TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
     
     const auto massData = GetMassData(foo);
     EXPECT_NE(massData, defaultMassData);
-    EXPECT_EQ(massData.center, center);
+    EXPECT_NEAR(static_cast<double>(Real{GetX(massData.center)/1_m}),
+                static_cast<double>(Real{GetX(center)/1_m}),
+                1.0/1000000);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(massData.center)/1_m}),
+                static_cast<double>(Real{GetY(center)/1_m}),
+                1.0/1000000);
     
     const auto diskMassData = playrho::d2::GetMassData(0.7_m, conf.density, center);
-    EXPECT_EQ(massData, diskMassData);
+    EXPECT_NEAR(static_cast<double>(Real{GetX(massData.center)/1_m}),
+                static_cast<double>(Real{GetX(diskMassData.center)/1_m}),
+                1.0/1000000);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(massData.center)/1_m}),
+                static_cast<double>(Real{GetY(diskMassData.center)/1_m}),
+                1.0/1000000);
+    EXPECT_EQ(massData.mass, diskMassData.mass);
+    EXPECT_EQ(massData.I, diskMassData.I);
 }
 
 TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
@@ -260,12 +272,23 @@ TEST(MultiShapeConf, AddConvexHullWithTwoPointsSameAsEdge)
     
     const auto massData = GetMassData(foo);
     EXPECT_NE(massData, defaultMassData);
-    EXPECT_EQ(massData.center, (p0 + p1) / Real(2));
-    
-    const auto edgeMassData = playrho::d2::GetMassData(0.7_m, conf.density, p0, p1);
-    EXPECT_EQ(massData.center, edgeMassData.center);
-    /// @note Units of L^-2 M^-1 QP^2.
+    const auto expectedCenter = (p0 + p1) / Real(2);
+    EXPECT_NEAR(static_cast<double>(Real{GetX(massData.center)/1_m}),
+                static_cast<double>(Real{GetX(expectedCenter)/1_m}),
+                1.0/1000000);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(massData.center)/1_m}),
+                static_cast<double>(Real{GetY(expectedCenter)/1_m}),
+                1.0/1000000);
 
+    const auto edgeMassData = playrho::d2::GetMassData(0.7_m, conf.density, p0, p1);
+    EXPECT_NEAR(static_cast<double>(Real{GetX(massData.center)/1_m}),
+                static_cast<double>(Real{GetX(edgeMassData.center)/1_m}),
+                1.0/1000000);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(massData.center)/1_m}),
+                static_cast<double>(Real{GetY(edgeMassData.center)/1_m}),
+                1.0/1000000);
+
+    /// @note Units of L^-2 M^-1 QP^2.
     EXPECT_NEAR(static_cast<double>(Real{massData.I / (SquareMeter*1_kg/SquareRadian)}),
                 static_cast<double>(Real{edgeMassData.I / (SquareMeter*1_kg/SquareRadian)}),
                 228.4113/1000000.0);
@@ -319,7 +342,13 @@ TEST(MultiShapeConf, AddTwoConvexHullWithOnePoint)
 
     const auto massData = GetMassData(foo);
     EXPECT_NE(massData, defaultMassData);
-    EXPECT_EQ(massData.center, (p0 + p1) / Real(2));
+    const auto expectedCenter = (p0 + p1) / Real(2);
+    EXPECT_NEAR(static_cast<double>(Real{GetX(massData.center)/1_m}),
+                static_cast<double>(Real{GetX(expectedCenter)/1_m}),
+                1.0/1000000);
+    EXPECT_NEAR(static_cast<double>(Real{GetY(massData.center)/1_m}),
+                static_cast<double>(Real{GetY(expectedCenter)/1_m}),
+                1.0/1000000);
     
     const auto massDataP0 = playrho::d2::GetMassData(0.7_m, conf.density, p0);
     const auto massDataP1 = playrho::d2::GetMassData(0.7_m, conf.density, p1);

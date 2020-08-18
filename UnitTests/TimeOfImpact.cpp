@@ -278,13 +278,14 @@ TEST(TimeOfImpact, CollideEdgeCircleTouchingly)
     // Compute the time of impact information now...
     const auto output = GetToiViaSat(proxyA, sweepA, proxyB, sweepB, limits);
     
-    EXPECT_EQ(output.state, TOIOutput::e_touching);
     if (std::is_same<Real, float>::value)
     {
+        EXPECT_EQ(output.state, TOIOutput::e_touching);
         EXPECT_NEAR(static_cast<double>(output.time), 0.576901972, 0.000000001);
     }
     else if (std::is_same<Real, double>::value)
     {
+        EXPECT_EQ(output.state, TOIOutput::e_touching);
         EXPECT_NEAR(static_cast<double>(output.time), 0.57690669361866653, 0.000000001);
     }
     EXPECT_EQ(output.stats.toi_iters, 2u);

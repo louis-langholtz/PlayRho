@@ -152,6 +152,17 @@ TEST(UnitVec, GetForInvalid)
     }
 }
 
+TEST(UnitVec, Assumptions)
+{
+    const auto maxReal = std::numeric_limits<Real>::max();
+    const auto maxRealSquared = maxReal * maxReal;
+    EXPECT_FALSE(isnormal(maxRealSquared));
+    const auto hypotMaxReal = hypot(maxReal, Real{0});
+    EXPECT_TRUE(isnormal(hypotMaxReal));
+    EXPECT_EQ(maxReal, hypotMaxReal);
+    EXPECT_EQ(maxReal / hypotMaxReal, Real{1});
+}
+
 TEST(UnitVec, Get)
 {
     EXPECT_EQ(UnitVec::Get(Real(+1), Real(0)).first, UnitVec::GetRight());

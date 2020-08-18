@@ -236,7 +236,8 @@ PLAYRHO_CONSTEXPR inline Vector<Length, N> GetDimensions(const AABB<N>& aabb) no
 template <std::size_t N>
 PLAYRHO_CONSTEXPR inline Vector<Length, N> GetExtents(const AABB<N>& aabb) noexcept
 {
-    return GetDimensions(aabb) / 2;
+    PLAYRHO_CONSTEXPR const auto RealInverseOfTwo = Real{1} / Real{2};
+    return GetDimensions(aabb) * RealInverseOfTwo;
 }
 
 /// @brief Checks whether the first AABB fully contains the second AABB.
