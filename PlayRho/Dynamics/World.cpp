@@ -363,7 +363,7 @@ namespace {
         return (sleepable && underactive)? b.GetUnderActiveTime() + conf.GetTime(): 0_s;
     }
 
-    inline Time UpdateUnderActiveTimes(Island::Bodies& bodies, const StepConf& conf)
+    inline Time UpdateUnderActiveTimes(const Island::Bodies& bodies, const StepConf& conf)
     {
         auto minUnderActiveTime = std::numeric_limits<Time>::infinity();
         for_each(cbegin(bodies), cend(bodies), [&](Body *b)
@@ -378,7 +378,7 @@ namespace {
         return minUnderActiveTime;
     }
     
-    inline BodyCounter Sleepem(Island::Bodies& bodies)
+    inline BodyCounter Sleepem(const Island::Bodies& bodies)
     {
         auto unawoken = BodyCounter{0};
         for_each(cbegin(bodies), cend(bodies), [&](Body *b)
