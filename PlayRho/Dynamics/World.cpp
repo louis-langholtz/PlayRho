@@ -1021,9 +1021,6 @@ World::Bodies::size_type World::RemoveUnspeedablesFromIslanded(const std::vector
 RegStepStats World::SolveReg(const StepConf& conf)
 {
     auto stats = RegStepStats{};
-    assert(stats.islandsFound == 0);
-    assert(stats.islandsSolved == 0);
-
     auto remNumBodies = size(m_bodies); ///< Remaining number of bodies.
     auto remNumContacts = size(m_contacts); ///< Remaining number of contacts.
     auto remNumJoints = size(m_joints); ///< Remaining number of joints.
