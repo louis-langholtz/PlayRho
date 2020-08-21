@@ -227,6 +227,7 @@
 		47E36F541FE8534500C10B79 /* FixedMath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47E36F521FE8534500C10B79 /* FixedMath.hpp */; };
 		47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */; };
 		47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */; };
+		47ED555124F05F26005A3586 /* DynamicMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47ED555024F05F26005A3586 /* DynamicMemory.cpp */; };
 		47F932A61D11C283006A193C /* AllocatedArray.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47F932A41D11C283006A193C /* AllocatedArray.hpp */; };
 		47FFD0F91DABDC63000D6D0E /* Mat22.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FFD0F81DABDC63000D6D0E /* Mat22.cpp */; };
 		47FFD0FB1DAC3EFC000D6D0E /* VelocityConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */; };
@@ -619,6 +620,7 @@
 		47E36F521FE8534500C10B79 /* FixedMath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FixedMath.hpp; sourceTree = "<group>"; };
 		47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldManifold.cpp; sourceTree = "<group>"; };
 		47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VelocityConstraint.cpp; sourceTree = "<group>"; };
+		47ED555024F05F26005A3586 /* DynamicMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicMemory.cpp; sourceTree = "<group>"; };
 		47F932A41D11C283006A193C /* AllocatedArray.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AllocatedArray.hpp; sourceTree = "<group>"; };
 		47FFD0F81DABDC63000D6D0E /* Mat22.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mat22.cpp; sourceTree = "<group>"; };
 		47FFD0FA1DAC3EFC000D6D0E /* VelocityConstraint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VelocityConstraint.cpp; sourceTree = "<group>"; };
@@ -822,6 +824,7 @@
 				47928F381E66586400EE6E9E /* DistanceJoint.cpp */,
 				474BC3F91D41278800447DCD /* DistanceProxy.cpp */,
 				47AB01B91D6FA40C0084D721 /* Dump.cpp */,
+				47ED555024F05F26005A3586 /* DynamicMemory.cpp */,
 				4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */,
 				47928F5C200ABCAE00A5DD5B /* double.cpp */,
 				47D61F771F1FE3B700E702BD /* EdgeShape.cpp */,
@@ -1598,6 +1601,7 @@
 				470F9B521EF8E2C5007EF7B6 /* RayCastOutput.cpp in Sources */,
 				472724251E310C7600C64921 /* float.cpp in Sources */,
 				474BC4321D413DC200447DCD /* IndexPair.cpp in Sources */,
+				47ED555124F05F26005A3586 /* DynamicMemory.cpp in Sources */,
 				47928F371E66539000EE6E9E /* FrictionJoint.cpp in Sources */,
 				474BC4331D413DC200447DCD /* main.cpp in Sources */,
 				47928F351E5FE19C00EE6E9E /* BodyConstraint.cpp in Sources */,
