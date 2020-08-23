@@ -785,7 +785,7 @@ void World::Destroy(Body* body)
         {
             m_destructionListener->SayGoodbye(fixture);
         }
-        UnregisterForProxies(fixture);
+        EraseAll(m_fixturesForProxies, &fixture);
         DestroyProxies(fixture);
         FixtureAtty::Delete(&fixture);
     });
@@ -2091,16 +2091,6 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
     };
 }
 
-void World::UnregisterForProcessing(ProxyId pid) noexcept
-{
-    const auto itEnd = end(m_proxies);
-    auto it = find(/*execution::par_unseq,*/ begin(m_proxies), itEnd, pid);
-    if (it != itEnd)
-    {
-        *it = DynamicTree::GetInvalidSize();
-    }
-}
-
 ContactCounter World::FindNewContacts()
 {
     m_proxyKeys.clear();
@@ -2256,13 +2246,6 @@ void World::RegisterForProxies(Fixture& fixture)
     m_fixturesForProxies.push_back(&fixture);
 }
 
-void World::UnregisterForProxies(const Fixture& fixture)
-{
-    assert(fixture.GetBody()->GetWorld() == this);
-    const auto first = remove(begin(m_fixturesForProxies), end(m_fixturesForProxies), &fixture);
-    m_fixturesForProxies.erase(first, end(m_fixturesForProxies));
-}
-
 void World::RegisterForProxies(Body& body)
 {
     assert(body.GetWorld() == this);
@@ -2300,7 +2283,7 @@ void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
     {
         if (!enabled)
         {
-            UnregisterForProxies(fixture);
+            EraseAll(m_fixturesForProxies, &fixture);
             DestroyProxies(fixture);
 
             // Destroy any contacts associated with the fixture.
@@ -2458,7 +2441,7 @@ bool World::Destroy(Fixture& fixture, bool resetMassData)
         return false;
     });
     
-    UnregisterForProxies(fixture);
+    EraseAll(m_fixturesForProxies, &fixture);
     DestroyProxies(fixture);
 
     if (!BodyAtty::RemoveFixture(body, &fixture))
@@ -2497,7 +2480,7 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
         const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
         const auto treeId = m_tree.CreateLeaf(fattenedAABB, DynamicTree::LeafData{
             body, &fixture, childIndex});
-        RegisterForProcessing(treeId);
+        m_proxies.push_back(treeId);
         proxies[childIndex] = FixtureProxy{treeId};
     }
 
@@ -2514,7 +2497,7 @@ void World::DestroyProxies(Fixture& fixture) noexcept
         for (auto i = childCount - 1; i < childCount; --i)
         {
             const auto treeId = proxies[i].treeId;
-            UnregisterForProcessing(treeId);
+            EraseFirst(m_proxies, treeId);
             m_tree.DestroyLeaf(treeId);
         }
     }
@@ -2532,7 +2515,7 @@ void World::InternalTouchProxies(Fixture& fixture) noexcept
     const auto proxyCount = fixture.GetProxyCount();
     for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
     {
-        RegisterForProcessing(fixture.GetProxy(i).treeId);
+        m_proxies.push_back(fixture.GetProxy(i).treeId);
     }
 }
 
@@ -2574,7 +2557,7 @@ ContactCounter World::Synchronize(Fixture& fixture,
             const auto newAabb = GetDisplacedAABB(GetFattenedAABB(aabb, extension),
                                                   displacement);
             m_tree.UpdateLeaf(treeId, newAabb);
-            RegisterForProcessing(treeId);
+            m_proxies.push_back(treeId);
             ++updatedCount;
         }
         ++childIndex;

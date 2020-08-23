@@ -379,10 +379,6 @@ private:
     /// @brief Registers the given fixture for proxy processing.
     /// @post The given fixture will be found in the fixtures-for-proxies range.
     void RegisterForProxies(Fixture& fixture);
-    
-    /// @brief Unregisters for proxy processing the given fixture.
-    /// @post The given fixture won't be found in the fixtures-for-proxies range.
-    void UnregisterForProxies(const Fixture& fixture);
 
     /// @brief Registers the given body for proxy processing.
     /// @post The given body will be found in the bodies-for-proxies range.
@@ -734,12 +730,6 @@ private:
     ///   else <code>false</code>.
     /// @sa bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     bool Add(ContactKey key);
-    
-    /// @brief Registers the given dynamic tree ID for processing.
-    void RegisterForProcessing(ProxyId pid) noexcept;
-
-    /// @brief Unregisters the given dynamic tree ID from processing.
-    void UnregisterForProcessing(ProxyId pid) noexcept;
 
     /// @brief Destroys the given contact.
     void InternalDestroy(Contact* contact, Body* from = nullptr);
@@ -1020,12 +1010,6 @@ inline void World::UnsetIslanded(Contact* contact) noexcept
 inline void World::UnsetIslanded(Joint* joint) noexcept
 {
     JointAtty::UnsetIslanded(*joint);
-}
-
-inline void World::RegisterForProcessing(ProxyId pid) noexcept
-{
-    assert(pid != DynamicTree::GetInvalidSize());
-    m_proxies.push_back(pid);
 }
 
 // Free functions.
