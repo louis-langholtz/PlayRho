@@ -1814,6 +1814,8 @@ StepStats World::Step(const StepConf& conf)
         FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
         CreateAndDestroyProxies(conf);
+        m_fixturesForProxies.clear();
+
         stepStats.pre.proxiesMoved = SynchronizeProxies(conf);
         // pre.proxiesMoved is usually zero but sometimes isn't.
 
@@ -2279,7 +2281,6 @@ void World::CreateAndDestroyProxies(const StepConf& conf)
     for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](Fixture *f) {
         CreateAndDestroyProxies(*f, conf);
     });
-    m_fixturesForProxies.clear();
 }
 
 void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
