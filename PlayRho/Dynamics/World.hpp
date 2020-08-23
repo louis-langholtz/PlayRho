@@ -711,9 +711,11 @@ private:
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
     ///   and decrements the contact manager's contact count.
+    /// @param contacts Contacts from which to destroy the contact from.
+    /// @param contactListener Contact listener or <code>nullptr</code>. Invoked if non-null.
     /// @param contact Contact to destroy.
     /// @param from From body.
-    void Destroy(Contact* contact, Body* from);
+    static void Destroy(Contacts& contacts, ContactListener* contactListener, Contact* contact, Body* from);
     
     /// @brief Adds a contact for the proxies identified by the key if appropriate.
     /// @details Adds a new contact object to represent a contact between proxy A and proxy B
@@ -729,18 +731,18 @@ private:
     /// @return <code>true</code> if a new contact was indeed added (and created),
     ///   else <code>false</code>.
     /// @sa bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept
-    bool Add(ContactKey key);
+    static bool Add(Contacts& contacts, const DynamicTree& tree, ContactKey key);
 
     /// @brief Destroys the given contact.
-    void InternalDestroy(Contact* contact, Body* from = nullptr);
+    static void InternalDestroy(ContactListener* contactListener, Contact* contact, Body* from = nullptr);
 
     /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.
-    void CreateProxies(Fixture& fixture, Length aabbExtension);
+    static void CreateProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture, Length aabbExtension);
 
     /// @brief Destroys the given fixture's proxies.
     /// @note This resets the proxy count to 0.
-    void DestroyProxies(Fixture& fixture) noexcept;
+    static void DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture) noexcept;
 
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.

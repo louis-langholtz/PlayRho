@@ -504,7 +504,7 @@ void World::InternalClear() noexcept
             {
                 m_destructionListener->SayGoodbye(fixture);
             }
-            DestroyProxies(fixture);
+            DestroyProxies(m_proxies, m_tree, fixture);
         });
     });
 
@@ -775,7 +775,7 @@ void World::Destroy(Body* body)
     
     // Destroy the attached contacts.
     BodyAtty::EraseContacts(*body, [&](Contact& contact) {
-        Destroy(&contact, body);
+        Destroy(m_contacts, m_contactListener, &contact, body);
         return true;
     });
     
@@ -786,7 +786,7 @@ void World::Destroy(Body* body)
             m_destructionListener->SayGoodbye(fixture);
         }
         EraseAll(m_fixturesForProxies, &fixture);
-        DestroyProxies(fixture);
+        DestroyProxies(m_proxies, m_tree, fixture);
         FixtureAtty::Delete(&fixture);
     });
     
@@ -1889,12 +1889,12 @@ void World::ShiftOrigin(Length2 newOrigin)
     m_tree.ShiftOrigin(newOrigin);
 }
 
-void World::InternalDestroy(Contact* contact, Body* from)
+void World::InternalDestroy(ContactListener* contactListener, Contact* contact, Body* from)
 {
-    if (m_contactListener && contact->IsTouching())
+    if (contactListener && contact->IsTouching())
     {
         // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching, so call it now
-        m_contactListener->EndContact(*contact);
+        contactListener->EndContact(*contact);
     }
     
     const auto fixtureA = contact->GetFixtureA();
@@ -1923,19 +1923,19 @@ void World::InternalDestroy(Contact* contact, Body* from)
     delete contact;
 }
 
-void World::Destroy(Contact* contact, Body* from)
+void World::Destroy(Contacts& contacts, ContactListener* contactListener, Contact* contact, Body* from)
 {
     assert(contact);
 
-    InternalDestroy(contact, from);
+    InternalDestroy(contactListener, contact, from);
     
-    const auto it = find_if(cbegin(m_contacts), cend(m_contacts),
+    const auto it = find_if(cbegin(contacts), cend(contacts),
                             [&](const Contacts::value_type& c) {
         return GetPtr(std::get<Contact*>(c)) == contact;
     });
-    if (it != cend(m_contacts))
+    if (it != cend(contacts))
     {
-        m_contacts.erase(it);
+        contacts.erase(it);
     }
 }
 
@@ -1950,7 +1950,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
         if (!TestOverlap(m_tree, key.GetMin(), key.GetMax()))
         {
             // Destroy contacts that cease to overlap in the broad-phase.
-            InternalDestroy(&contact);
+            InternalDestroy(m_contactListener, &contact);
             return true;
         }
         
@@ -1964,7 +1964,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 
             if (!ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(*fixtureA, *fixtureB))
             {
-                InternalDestroy(&contact);
+                InternalDestroy(m_contactListener, &contact);
                 return true;
             }
             ContactAtty::UnflagForFiltering(contact);
@@ -2121,16 +2121,16 @@ ContactCounter World::FindNewContacts()
     const auto numContactsBefore = size(m_contacts);
     for_each(cbegin(m_proxyKeys), cend(m_proxyKeys), [&](ContactKey key)
     {
-        Add(key);
+        Add(m_contacts, m_tree, key);
     });
     const auto numContactsAfter = size(m_contacts);
     return static_cast<ContactCounter>(numContactsAfter - numContactsBefore);
 }
 
-bool World::Add(ContactKey key)
+bool World::Add(Contacts& contacts, const DynamicTree& tree, ContactKey key)
 {
-    const auto minKeyLeafData = m_tree.GetLeafData(key.GetMin());
-    const auto maxKeyLeafData = m_tree.GetLeafData(key.GetMax());
+    const auto minKeyLeafData = tree.GetLeafData(key.GetMin());
+    const auto maxKeyLeafData = tree.GetLeafData(key.GetMax());
 
     const auto fixtureA = minKeyLeafData.fixture;
     const auto indexA = minKeyLeafData.childIndex;
@@ -2193,17 +2193,16 @@ bool World::Add(ContactKey key)
     const auto searchBody = (size(bodyA->GetContacts()) < size(bodyB->GetContacts()))?
         bodyA: bodyB;
     
-    const auto contacts = searchBody->GetContacts();
-    const auto it = find_if(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
+    const auto bodyContacts = searchBody->GetContacts();
+    const auto it = find_if(cbegin(bodyContacts), cend(bodyContacts), [&](KeyedContactPtr ci) {
         return std::get<ContactKey>(ci) == key;
     });
-    if (it != cend(contacts))
+    if (it != cend(bodyContacts))
     {
         return false;
     }
     
-    assert(size(m_contacts) < MaxContacts);
-    if (size(m_contacts) >= MaxContacts)
+    if (size(contacts) >= MaxContacts)
     {
         // New contact was needed, but denied due to MaxContacts count being reached.
         return false;
@@ -2218,7 +2217,7 @@ bool World::Add(ContactKey key)
     // Original strategy added to the front. Since processing done front to back, front
     // adding means container more a LIFO container, while back adding means more a FIFO.
     //
-    m_contacts.push_back(KeyedContactPtr{key, contact});
+    contacts.push_back(KeyedContactPtr{key, contact});
 
     BodyAtty::Insert(*bodyA, key, contact);
     BodyAtty::Insert(*bodyB, key, contact);
@@ -2276,7 +2275,7 @@ void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
     {
         if (enabled)
         {
-            CreateProxies(fixture, conf.aabbExtension);
+            CreateProxies(m_proxies, m_tree, fixture, conf.aabbExtension);
         }
     }
     else
@@ -2284,7 +2283,7 @@ void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
         if (!enabled)
         {
             EraseAll(m_fixturesForProxies, &fixture);
-            DestroyProxies(fixture);
+            DestroyProxies(m_proxies, m_tree, fixture);
 
             // Destroy any contacts associated with the fixture.
             BodyAtty::EraseContacts(*body, [&](Contact& contact) {
@@ -2292,7 +2291,7 @@ void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
                 const auto fixtureB = contact.GetFixtureB();
                 if ((fixtureA == &fixture) || (fixtureB == &fixture))
                 {
-                    Destroy(&contact, body);
+                    Destroy(m_contacts, m_contactListener, &contact, body);
                     return true;
                 }
                 return false;
@@ -2331,7 +2330,7 @@ void World::SetType(Body& body, playrho::BodyType type)
     
     // Destroy the attached contacts.
     BodyAtty::EraseContacts(body, [&](Contact& contact) {
-        Destroy(&contact, &body);
+        Destroy(m_contacts, m_contactListener, &contact, &body);
         return true;
     });
 
@@ -2435,14 +2434,14 @@ bool World::Destroy(Fixture& fixture, bool resetMassData)
         const auto fixtureB = contact.GetFixtureB();
         if ((fixtureA == &fixture) || (fixtureB == &fixture))
         {
-            Destroy(&contact, &body);
+            Destroy(m_contacts, m_contactListener, &contact, &body);
             return true;
         }
         return false;
     });
     
     EraseAll(m_fixturesForProxies, &fixture);
-    DestroyProxies(fixture);
+    DestroyProxies(m_proxies, m_tree, fixture);
 
     if (!BodyAtty::RemoveFixture(body, &fixture))
     {
@@ -2460,7 +2459,7 @@ bool World::Destroy(Fixture& fixture, bool resetMassData)
     return true;
 }
 
-void World::CreateProxies(Fixture& fixture, Length aabbExtension)
+void World::CreateProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture, Length aabbExtension)
 {
     assert(fixture.GetProxyCount() == 0);
     
@@ -2470,7 +2469,7 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
     
     // Reserve proxy space and create proxies in the broad-phase.
     const auto childCount = GetChildCount(shape);
-    auto proxies = std::make_unique<FixtureProxy[]>(childCount);
+    auto fixtureProxies = std::make_unique<FixtureProxy[]>(childCount);
     for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
     {
         const auto dp = GetChild(shape, childIndex);
@@ -2478,27 +2477,27 @@ void World::CreateProxies(Fixture& fixture, Length aabbExtension)
 
         // Note: treeId from CreateLeaf can be higher than the number of fixture proxies.
         const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
-        const auto treeId = m_tree.CreateLeaf(fattenedAABB, DynamicTree::LeafData{
+        const auto treeId = tree.CreateLeaf(fattenedAABB, DynamicTree::LeafData{
             body, &fixture, childIndex});
-        m_proxies.push_back(treeId);
-        proxies[childIndex] = FixtureProxy{treeId};
+        proxies.push_back(treeId);
+        fixtureProxies[childIndex] = FixtureProxy{treeId};
     }
 
-    FixtureAtty::SetProxies(fixture, std::move(proxies), childCount);
+    FixtureAtty::SetProxies(fixture, std::move(fixtureProxies), childCount);
 }
 
-void World::DestroyProxies(Fixture& fixture) noexcept
+void World::DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture) noexcept
 {
-    const auto proxies = FixtureAtty::GetProxies(fixture);
-    const auto childCount = size(proxies);
+    const auto fixtureProxies = FixtureAtty::GetProxies(fixture);
+    const auto childCount = size(fixtureProxies);
     if (childCount > 0)
     {
         // Destroy proxies in reverse order from what they were created in.
         for (auto i = childCount - 1; i < childCount; --i)
         {
-            const auto treeId = proxies[i].treeId;
-            EraseFirst(m_proxies, treeId);
-            m_tree.DestroyLeaf(treeId);
+            const auto treeId = fixtureProxies[i].treeId;
+            EraseFirst(proxies, treeId);
+            tree.DestroyLeaf(treeId);
         }
     }
     FixtureAtty::ResetProxies(fixture);
