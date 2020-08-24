@@ -318,6 +318,24 @@ TEST(Body, Destroy)
     EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
 }
 
+
+TEST(Body, SetEnabledCausesIsEnabled)
+{
+    auto world = World{};
+    const auto body = world.CreateBody();
+    ASSERT_TRUE(body->IsEnabled());
+    auto value = true;
+    for (auto i = 0; i < 4; ++i) {
+        // Set and check twice to ensure same behavior if state already same.
+        // Inlined to help match state with line number of any reports.
+        EXPECT_NO_THROW(body->SetEnabled(value));
+        EXPECT_EQ(body->IsEnabled(), value);
+        EXPECT_NO_THROW(body->SetEnabled(value));
+        EXPECT_EQ(body->IsEnabled(), value);
+        value = !value;
+    }
+}
+
 TEST(Body, SetEnabled)
 {
     auto stepConf = StepConf{};
@@ -326,46 +344,58 @@ TEST(Body, SetEnabled)
     ASSERT_EQ(world.GetFixturesForProxies().size(), 0u);
     ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    const auto body = world.CreateBody();
+    const auto body0 = world.CreateBody();
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
-    const auto fixture = body->CreateFixture(valid_shape, FixtureConf{});
-    ASSERT_NE(fixture, nullptr);
-    ASSERT_TRUE(body->IsEnabled());
-    ASSERT_EQ(fixture->GetProxyCount(), 0u);
+    const auto fixture0 = body0->CreateFixture(valid_shape, FixtureConf{});
+    ASSERT_NE(fixture0, nullptr);
+    ASSERT_TRUE(body0->IsEnabled());
+    ASSERT_EQ(fixture0->GetProxyCount(), 0u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     world.Step(stepConf);
-    EXPECT_EQ(fixture->GetProxyCount(), 1u);
+    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     // Test that set enabled to flag already set is not a toggle
-    body->SetEnabled(true);
-    EXPECT_TRUE(body->IsEnabled());
-    EXPECT_EQ(fixture->GetProxyCount(), 1u);
+    body0->SetEnabled(true);
+    EXPECT_TRUE(body0->IsEnabled());
+    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    body->SetEnabled(false);
-    EXPECT_FALSE(body->IsEnabled());
-    EXPECT_EQ(fixture->GetProxyCount(), 1u);
+    body0->SetEnabled(false);
+    EXPECT_FALSE(body0->IsEnabled());
+    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
+
+    body0->SetEnabled(true);
+    EXPECT_TRUE(body0->IsEnabled());
+    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 2u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
+
+    body0->SetEnabled(false);
+    EXPECT_FALSE(body0->IsEnabled());
+    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 3u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
+
+    world.Step(stepConf);
+    EXPECT_EQ(fixture0->GetProxyCount(), 0u);
+    EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
+
+    body0->SetEnabled(true);
+    EXPECT_TRUE(body0->IsEnabled());
     EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     world.Step(stepConf);
-    EXPECT_EQ(fixture->GetProxyCount(), 0u);
-    EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
-    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
-
-    body->SetEnabled(true);
-    EXPECT_TRUE(body->IsEnabled());
-    EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
-    EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
-
-    world.Step(stepConf);
-    EXPECT_EQ(fixture->GetProxyCount(), 1u);
+    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 }
