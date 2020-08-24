@@ -83,9 +83,9 @@ struct ShapeConf;
 /// const auto fixture = body->CreateFixture(Shape{DiskShapeConf{1_m}});
 /// @endcode
 ///
-/// @sa World, World::CreateBody, World::CreateJoint, World::Destroy
-/// @sa Body::CreateFixture, Body::Destroy, Body::DestroyFixtures
-/// @sa BodyType, Shape, DiskShapeConf
+/// @sa World, World::CreateBody, World::CreateJoint, World::Destroy.
+/// @sa Body::CreateFixture, Body::Destroy, Body::DestroyFixtures.
+/// @sa BodyType, Shape, DiskShapeConf.
 
 /// @brief Definition of an independent and simulatable "world".
 ///
@@ -110,7 +110,7 @@ struct ShapeConf;
 /// const auto fixture = body->CreateFixture(Shape{DiskShapeConf{1_m}});
 /// @endcode
 ///
-/// @sa Body, Joint, Contact, PhysicalEntities
+/// @sa Body, Joint, Contact, PhysicalEntities.
 ///
 class World
 {
@@ -127,13 +127,13 @@ public:
     
     /// @brief Fixtures container type.
     using Fixtures = std::vector<Fixture*>;
-    
+
     /// @brief Constructs a world object.
     /// @param def A customized world configuration or its default value.
     /// @note A lot more configurability can be had via the <code>StepConf</code>
     ///   data that's given to the world's <code>Step</code> method.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
-    /// @sa Step
+    /// @sa Step.
     explicit World(const WorldConf& def = GetDefaultWorldConf());
 
     /// @brief Copy constructor.
@@ -182,8 +182,8 @@ public:
     ///   <code>Destroy(Body*)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
-    /// @sa Destroy(Body*), GetBodies
-    /// @sa PhysicalEntities
+    /// @sa Destroy(Body*), GetBodies.
+    /// @sa PhysicalEntities.
     Body* CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
     /// @brief Creates a joint to constrain one or more bodies.
@@ -196,8 +196,8 @@ public:
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @throws InvalidArgument if the given definition is not allowed.
-    /// @sa PhysicalEntities
-    /// @sa Destroy(Joint*), GetJoints
+    /// @sa PhysicalEntities.
+    /// @sa Destroy(Joint*), GetJoints.
     Joint* CreateJoint(const JointConf& def);
 
     /// @brief Destroys the given body.
@@ -214,8 +214,8 @@ public:
     ///   collection.
     /// @param body Body to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @sa CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies
-    /// @sa PhysicalEntities
+    /// @sa CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies.
+    /// @sa PhysicalEntities.
     void Destroy(Body* body);
 
     /// @brief Destroys a joint.
@@ -228,8 +228,8 @@ public:
     ///   <code>GetJoints()</code> method.
     /// @param joint Joint to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @sa CreateJoint(const JointConf&), GetJoints
-    /// @sa PhysicalEntities
+    /// @sa CreateJoint(const JointConf&), GetJoints.
+    /// @sa PhysicalEntities.
     void Destroy(Joint* joint);
 
     /// @brief Steps the world simulation according to the given configuration.
@@ -268,7 +268,7 @@ public:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    /// @sa GetBodiesForProxies, GetFixturesForProxies
+    /// @sa GetBodiesForProxies, GetFixturesForProxies.
     ///
     StepStats Step(const StepConf& conf);
 
@@ -278,7 +278,7 @@ public:
     ///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
-    /// @sa CreateBody(const BodyConf&)
+    /// @sa CreateBody(const BodyConf&).
     SizedRange<Bodies::iterator> GetBodies() noexcept;
 
     /// @brief Gets the world body range for this constant world.
@@ -287,19 +287,19 @@ public:
     ///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
-    /// @sa CreateBody(const BodyConf&)
+    /// @sa CreateBody(const BodyConf&).
     SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
 
     /// @brief Gets the bodies-for-proxies range for this world.
     /// @details Provides insight on what bodies have been queued for proxy processing
     ///   during the next call to the world step method.
-    /// @sa Step
+    /// @sa Step.
     SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
 
     /// @brief Gets the fixtures-for-proxies range for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing
     ///   during the next call to the world step method.
-    /// @sa Step
+    /// @sa Step.
     SizedRange<Fixtures::const_iterator> GetFixturesForProxies() const noexcept;
 
     /// @brief Gets the world joint range.
@@ -307,7 +307,7 @@ public:
     ///   These are the joints that had been created from previous calls to the
     ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
-    /// @sa CreateJoint(const JointConf&)
+    /// @sa CreateJoint(const JointConf&).
     SizedRange<Joints::const_iterator> GetJoints() const noexcept;
 
     /// @brief Gets the world joint range.
@@ -315,7 +315,7 @@ public:
     ///   These are the joints that had been created from previous calls to the
     ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
-    /// @sa CreateJoint(const JointConf&)
+    /// @sa CreateJoint(const JointConf&).
     SizedRange<Joints::iterator> GetJoints() noexcept;
 
     /// @brief Gets the world contact range.
@@ -328,17 +328,18 @@ public:
     /// @details The "step" is completed when there are no more TOI events for the current time step.
     /// @return <code>true</code> unless sub-stepping is enabled and the step method returned
     ///   without finishing all of its sub-steps.
-    /// @sa <code>SetStepComplete</code>.
+    /// @sa GetSubStepping, SetSubStepping.
     bool IsStepComplete() const noexcept;
     
     /// @brief Gets whether or not sub-stepping is enabled.
+    /// @sa SetSubStepping, IsStepComplete.
     bool GetSubStepping() const noexcept;
 
     /// @brief Enables/disables single stepped continuous physics.
-    /// @note This is for testing.
-    /// @post The <code>GetSubStepping</code> method will return the value this method was
+    /// @note This is not normally used. Enabling sub-stepping is meant for testing.
+    /// @post The <code>GetSubStepping()</code> method will return the value this method was
     ///   called with.
-    /// @sa <code>IsStepComplete</code>, <code>GetSubStepping</code>.
+    /// @sa IsStepComplete, GetSubStepping.
     void SetSubStepping(bool flag) noexcept;
 
     /// @brief Gets access to the broad-phase dynamic tree information.
@@ -365,9 +366,9 @@ public:
     /// @brief Gets the inverse delta time.
     /// @details Gets the inverse delta time that was set on construction or assignment, and
     ///   updated on every call to the <code>Step()</code> method having a non-zero delta-time.
-    /// @sa Step
+    /// @sa Step.
     Frequency GetInvDeltaTime() const noexcept;
-    
+
 private:
     friend class WorldAtty;
 
@@ -376,7 +377,7 @@ private:
     /// @throws WrongState if this method is called while the world is locked.
     void SetType(Body& body, playrho::BodyType type);
 
-    /// @brief Registers the given fixture for proxy processing.
+    /// @brief Registers the given fixture for adding to proxy processing.
     /// @post The given fixture will be found in the fixtures-for-proxies range.
     void RegisterForProxies(Fixture& fixture);
 
@@ -408,7 +409,7 @@ private:
     ///   been destroyed.
     /// @param fixture the fixture to be removed.
     /// @param resetMassData Whether or not to reset the mass data of the associated body.
-    /// @sa Body::ResetMassData
+    /// @sa Body::ResetMassData.
     /// @throws WrongState if this method is called while the world is locked.
     bool Destroy(Fixture& fixture, bool resetMassData = true);
     
@@ -619,6 +620,8 @@ private:
     void Remove(const Joint& j) noexcept;
 
     /// @brief Sets the step complete state.
+    /// @post <code>IsStepComplete()</code> will return the value set.
+    /// @sa IsStepComplete.
     void SetStepComplete(bool value) noexcept;
 
     /// @brief Sets the allow sleeping state.
@@ -730,7 +733,7 @@ private:
     /// @param key ID's of dynamic tree entries identifying the fixture proxies involved.
     /// @return <code>true</code> if a new contact was indeed added (and created),
     ///   else <code>false</code>.
-    /// @sa bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept
+    /// @sa bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept.
     static bool Add(Contacts& contacts, const DynamicTree& tree, ContactKey key);
 
     /// @brief Destroys the given contact.
