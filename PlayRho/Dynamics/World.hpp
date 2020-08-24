@@ -764,9 +764,6 @@ private:
     
     /// @brief Creates and destroys proxies.
     void CreateAndDestroyProxies(const StepConf& conf);
-
-    /// @brief Creates and destroys proxies for the given fixture.
-    void CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf);
     
     /// @brief Synchronizes proxies of the bodies for proxies.
     PreStepStats::counter_type SynchronizeProxies(const StepConf& conf);

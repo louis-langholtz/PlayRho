@@ -2261,43 +2261,39 @@ void World::UnregisterForProxies(const Body& body)
 void World::CreateAndDestroyProxies(const StepConf& conf)
 {
     for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](Fixture *f) {
-        CreateAndDestroyProxies(*f, conf);
+        auto& fixture = *f;
+        const auto body = fixture.GetBody();
+        const auto enabled = body->IsEnabled();
+
+        const auto proxyCount = fixture.GetProxyCount();
+        if (proxyCount == 0)
+        {
+            if (enabled)
+            {
+                CreateProxies(m_proxies, m_tree, fixture, conf.aabbExtension);
+            }
+        }
+        else
+        {
+            if (!enabled)
+            {
+                EraseAll(m_fixturesForProxies, &fixture);
+                DestroyProxies(m_proxies, m_tree, fixture);
+
+                // Destroy any contacts associated with the fixture.
+                BodyAtty::EraseContacts(*body, [&](Contact& contact) {
+                    const auto fixtureA = contact.GetFixtureA();
+                    const auto fixtureB = contact.GetFixtureB();
+                    if ((fixtureA == &fixture) || (fixtureB == &fixture))
+                    {
+                        Destroy(m_contacts, m_contactListener, &contact, body);
+                        return true;
+                    }
+                    return false;
+                });
+            }
+        }
     });
-}
-
-void World::CreateAndDestroyProxies(Fixture& fixture, const StepConf& conf)
-{
-    const auto body = fixture.GetBody();
-    const auto enabled = body->IsEnabled();
-
-    const auto proxyCount = fixture.GetProxyCount();
-    if (proxyCount == 0)
-    {
-        if (enabled)
-        {
-            CreateProxies(m_proxies, m_tree, fixture, conf.aabbExtension);
-        }
-    }
-    else
-    {
-        if (!enabled)
-        {
-            EraseAll(m_fixturesForProxies, &fixture);
-            DestroyProxies(m_proxies, m_tree, fixture);
-
-            // Destroy any contacts associated with the fixture.
-            BodyAtty::EraseContacts(*body, [&](Contact& contact) {
-                const auto fixtureA = contact.GetFixtureA();
-                const auto fixtureB = contact.GetFixtureB();
-                if ((fixtureA == &fixture) || (fixtureB == &fixture))
-                {
-                    Destroy(m_contacts, m_contactListener, &contact, body);
-                    return true;
-                }
-                return false;
-            });
-        }
-    }
 }
 
 PreStepStats::counter_type World::SynchronizeProxies(const StepConf& conf)
