@@ -499,13 +499,14 @@ void World::InternalClear() noexcept
         auto& b = GetRef(body);
         BodyAtty::ClearContacts(b);
         BodyAtty::ClearJoints(b);
-        BodyAtty::ClearFixtures(b, [&](Fixture& fixture) {
+        BodyAtty::ForallFixtures(b, [&](Fixture& fixture) {
             if (m_destructionListener)
             {
                 m_destructionListener->SayGoodbye(fixture);
             }
             DestroyProxies(m_proxies, m_tree, fixture);
         });
+        BodyAtty::ClearFixtures(b);
     });
 
     for_each(cbegin(m_bodies), cend(m_bodies), [&](const Bodies::value_type& b) {
@@ -780,7 +781,7 @@ void World::Destroy(Body* body)
     });
     
     // Delete the attached fixtures. This destroys broad-phase proxies.
-    BodyAtty::ClearFixtures(*body, [&](Fixture& fixture) {
+    BodyAtty::ForallFixtures(*body, [&](Fixture& fixture) {
         if (m_destructionListener)
         {
             m_destructionListener->SayGoodbye(fixture);
@@ -789,6 +790,7 @@ void World::Destroy(Body* body)
         DestroyProxies(m_proxies, m_tree, fixture);
         FixtureAtty::Delete(&fixture);
     });
+    BodyAtty::ClearFixtures(*body);
     
     Remove(*body);
 }
