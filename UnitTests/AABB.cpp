@@ -19,17 +19,23 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Collision/AABB.hpp>
+
+#include <PlayRho/Common/Vector2.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <type_traits>
+
 #include <algorithm>
-#include <utility>
+#include <iterator>
+#include <limits> // for std::numeric_limits
 #include <string>
+#include <type_traits> // for std::is_default_constructible etc.
+#include <utility>
 
 using namespace playrho;
 using namespace playrho::d2;

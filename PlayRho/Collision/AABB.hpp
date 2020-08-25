@@ -25,12 +25,13 @@
 /// @file
 /// Declaration of the AABB class and free functions that return instances of it.
 
-#include <PlayRho/Common/Intervals.hpp>
-#include <PlayRho/Common/Vector2.hpp>
+#include <PlayRho/Common/Intervals.hpp> // for LengthInterval, IsIntersecting
+#include <PlayRho/Common/Vector.hpp>
+#include <PlayRho/Common/Settings.hpp> // for ChildCounter, etc.
 #include <PlayRho/Common/Templates.hpp>
-#include <array>
-#include <algorithm>
-#include <functional>
+
+#include <algorithm> // for std::mismatch, lexicographical_compare, etc
+#include <utility> // for std::get
 
 namespace playrho {
 

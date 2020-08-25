@@ -27,6 +27,7 @@
 
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Vector2.hpp>
 
 #include <functional>
 #include <type_traits>
