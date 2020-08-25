@@ -2263,6 +2263,7 @@ void World::UnregisterForProxies(const Body& body)
 void World::CreateAndDestroyProxies(const StepConf& conf)
 {
     for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](Fixture *f) {
+        assert(f);
         auto& fixture = *f;
         const auto body = fixture.GetBody();
         const auto enabled = body->IsEnabled();
