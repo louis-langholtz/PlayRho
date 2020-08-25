@@ -92,7 +92,7 @@ build_script:
 test_script:
   - if "%platform%" neq "noarch" cd %APPVEYOR_BUILD_FOLDER%\Build
   - if "%configuration%" equ "Release" ctest --output-on-failure
-  - if "%configuration%" equ "Debug" ctest --output-on-failure
+  - if "%configuration%" equ "Debug" ctest --stop-on-failure --verbose
   - if "%platform%" neq "noarch" cd ..
 
 #build:
