@@ -63,7 +63,7 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Len
     const auto h = r * Real{2};
     const auto rect_mass = density * b * h;
     const auto totalMass = circle_mass + rect_mass;
-    const auto center = (v0 + v1) / 2;
+    const auto center = (v0 + v1) / Real{2};
 
     /// Use the fixture's areal mass density times the shape's second moment of area to derive I.
     /// @sa https://en.wikipedia.org/wiki/Second_moment_of_area

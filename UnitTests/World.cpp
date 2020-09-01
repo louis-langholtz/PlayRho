@@ -276,19 +276,19 @@ TEST(World, SetSubStepping)
 
 TEST(World, IsStepComplete)
 {
-    auto world{World{}};
+    auto world = World{};
     
     ASSERT_FALSE(world.GetSubStepping());
     EXPECT_TRUE(world.IsStepComplete());
 
     world.SetSubStepping(true);
-    EXPECT_TRUE(world.GetSubStepping());
+    ASSERT_TRUE(world.GetSubStepping());
     EXPECT_TRUE(world.IsStepComplete());
 
     auto stepConf = StepConf{};
     stepConf.SetInvTime(100_Hz);
     world.Step(stepConf);
-    EXPECT_TRUE(world.GetSubStepping());
+    ASSERT_TRUE(world.GetSubStepping());
     EXPECT_TRUE(world.IsStepComplete());
     
     const auto b0 = world.CreateBody(BodyConf{}
@@ -621,6 +621,10 @@ TEST(World, CreateDestroyContactingBodies)
     auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetJointCount(world), JointCounter(0));
+    ASSERT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
+    ASSERT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
+    ASSERT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
+
     auto contacts = world.GetContacts();
     ASSERT_TRUE(contacts.empty());
     ASSERT_EQ(contacts.size(), ContactCounter(0));
@@ -629,24 +633,89 @@ TEST(World, CreateDestroyContactingBodies)
     const auto l2 = Length2{};
 
     const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
-    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
-    
+    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
+    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
+    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
+
     EXPECT_NE(body1->CreateFixture(Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), nullptr);
     EXPECT_NE(body2->CreateFixture(Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), nullptr);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
+    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(2));
     EXPECT_EQ(GetFixtureCount(world), std::size_t(2));
-    
-    auto stepConf = StepConf{};
-    world.Step(stepConf);
+    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
+
+    const auto stepConf = StepConf{};
+
+    const auto stats0 = world.Step(stepConf);
+
+    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
+    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
+    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(3));
+
+    EXPECT_EQ(stats0.pre.proxiesMoved, static_cast<decltype(stats0.pre.proxiesMoved)>(0));
+    EXPECT_EQ(stats0.pre.destroyed, static_cast<decltype(stats0.pre.destroyed)>(0));
+    EXPECT_EQ(stats0.pre.added, static_cast<decltype(stats0.pre.added)>(1));
+    EXPECT_EQ(stats0.pre.ignored, static_cast<decltype(stats0.pre.ignored)>(0));
+    EXPECT_EQ(stats0.pre.updated, static_cast<decltype(stats0.pre.updated)>(1));
+    EXPECT_EQ(stats0.pre.skipped, static_cast<decltype(stats0.pre.skipped)>(0));
+
+    EXPECT_EQ(stats0.reg.minSeparation, -2.0_m);
+    EXPECT_EQ(stats0.reg.maxIncImpulse, 0.0_Ns);
+    EXPECT_EQ(stats0.reg.islandsFound, static_cast<decltype(stats0.reg.islandsFound)>(1));
+    EXPECT_EQ(stats0.reg.islandsSolved, static_cast<decltype(stats0.reg.islandsSolved)>(0));
+    EXPECT_EQ(stats0.reg.contactsAdded, static_cast<decltype(stats0.reg.contactsAdded)>(0));
+    EXPECT_EQ(stats0.reg.bodiesSlept, static_cast<decltype(stats0.reg.bodiesSlept)>(0));
+    EXPECT_EQ(stats0.reg.proxiesMoved, static_cast<decltype(stats0.reg.proxiesMoved)>(0));
+    EXPECT_EQ(stats0.reg.sumPosIters, static_cast<decltype(stats0.reg.sumPosIters)>(3));
+    EXPECT_EQ(stats0.reg.sumVelIters, static_cast<decltype(stats0.reg.sumVelIters)>(1));
+
+    EXPECT_EQ(stats0.toi.minSeparation, std::numeric_limits<Length>::infinity());
+    EXPECT_EQ(stats0.toi.maxIncImpulse, 0.0_Ns);
+    EXPECT_EQ(stats0.toi.islandsFound, static_cast<decltype(stats0.toi.islandsFound)>(0));
+    EXPECT_EQ(stats0.toi.islandsSolved, static_cast<decltype(stats0.toi.islandsSolved)>(0));
+    EXPECT_EQ(stats0.toi.contactsFound, static_cast<decltype(stats0.toi.contactsFound)>(0));
+    EXPECT_EQ(stats0.toi.contactsAtMaxSubSteps, static_cast<decltype(stats0.toi.contactsAtMaxSubSteps)>(0));
+    EXPECT_EQ(stats0.toi.contactsUpdatedToi, static_cast<decltype(stats0.toi.contactsUpdatedToi)>(0));
+    EXPECT_EQ(stats0.toi.contactsUpdatedTouching, static_cast<decltype(stats0.toi.contactsUpdatedTouching)>(0));
+    EXPECT_EQ(stats0.toi.contactsSkippedTouching, static_cast<decltype(stats0.toi.contactsSkippedTouching)>(0));
+    EXPECT_EQ(stats0.toi.contactsAdded, static_cast<decltype(stats0.toi.contactsAdded)>(0));
+    EXPECT_EQ(stats0.toi.proxiesMoved, static_cast<decltype(stats0.toi.proxiesMoved)>(0));
+    EXPECT_EQ(stats0.toi.sumPosIters, static_cast<decltype(stats0.toi.sumPosIters)>(0));
+    EXPECT_EQ(stats0.toi.sumVelIters, static_cast<decltype(stats0.toi.sumVelIters)>(0));
+    EXPECT_EQ(stats0.toi.maxSimulContacts, static_cast<decltype(stats0.toi.maxSimulContacts)>(0));
+    EXPECT_EQ(stats0.toi.maxDistIters, static_cast<decltype(stats0.toi.maxDistIters)>(0));
+    EXPECT_EQ(stats0.toi.maxToiIters, static_cast<decltype(stats0.toi.maxToiIters)>(0));
+    EXPECT_EQ(stats0.toi.maxRootIters, static_cast<decltype(stats0.toi.maxRootIters)>(0));
+
     contacts = world.GetContacts();
     EXPECT_FALSE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(1));
+    if (contacts.size() == 1u) {
+        EXPECT_EQ(contacts.begin()->first.GetMin(), static_cast<decltype(contacts.begin()->first.GetMin())>(0));
+        EXPECT_EQ(contacts.begin()->first.GetMax(), static_cast<decltype(contacts.begin()->first.GetMax())>(1));
+        EXPECT_EQ(contacts.begin()->second->GetFixtureA(), *body1->GetFixtures().begin());
+        EXPECT_EQ(contacts.begin()->second->GetFixtureB(), *body2->GetFixtures().begin());
+    }
 
     world.Destroy(body1);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
+    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
+    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(1));
+
+    world.Step(stepConf);
+    EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
+    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
+    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(1));
+    contacts = world.GetContacts();
+    EXPECT_TRUE(contacts.empty());
+    EXPECT_EQ(contacts.size(), ContactCounter(0));
+
     world.Destroy(body2);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
     contacts = world.GetContacts();
     EXPECT_TRUE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(0));
@@ -1732,7 +1801,7 @@ TEST(World, HeavyOnLight)
         lowerBody->CreateFixture(Shape(smallerDiskConf));
         upperBody->CreateFixture(Shape(biggerDiskConf));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
-        
+
         auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
         auto numSteps = 0ul;
         while (GetAwakeCount(world) > 0)
@@ -1760,7 +1829,7 @@ TEST(World, HeavyOnLight)
         lowerBody->CreateFixture(Shape(smallerDiskConf));
         upperBody->CreateFixture(Shape(biggerDiskConf));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
-        
+
         auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
         auto numSteps = 0ul;
         while (GetAwakeCount(world) > 0)
@@ -1789,7 +1858,7 @@ TEST(World, HeavyOnLight)
         lowerBody->CreateFixture(Shape(smallerDiskConf));
         upperBody->CreateFixture(Shape(biggerDiskConf));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
-        
+
         auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
         auto numSteps = 0ul;
         while (GetAwakeCount(world) > 0)
@@ -1824,7 +1893,7 @@ TEST(World, HeavyOnLight)
         lowerBody->CreateFixture(Shape(smallerDiskConf));
         upperBody->CreateFixture(Shape(biggerDiskConf));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
-        
+
         auto upperBodysLowestPoint = GetY(upperBody->GetLocation());
         auto numSteps = 0ul;
         EXPECT_EQ(GetAwakeCount(world), 2);
@@ -1863,7 +1932,7 @@ TEST(World, HeavyOnLight)
         lowerBody->CreateFixture(Shape(smallerDiskConf), FixtureConf{}.UseIsSensor(true));
         upperBody->CreateFixture(Shape(biggerDiskConf), FixtureConf{}.UseIsSensor(true));
         ASSERT_LT(GetMass(*lowerBody), GetMass(*upperBody));
-        
+
         EXPECT_EQ(GetAwakeCount(world), BodyCounter(2));
         world.Step(smallerStepConf);
         EXPECT_EQ(GetTouchingCount(world), ContactCounter(2));
@@ -2461,13 +2530,13 @@ TEST(World_Longer, TilesComesToRest)
     PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * 2 * 1_rad) / 180;
     PLAYRHO_CONSTEXPR const auto VertexRadius = LinearSlop * 2;
     auto conf = PolygonShapeConf{}.UseVertexRadius(VertexRadius);
-    const auto m_world = std::make_unique<World>(WorldConf{}.UseMinVertexRadius(VertexRadius));
+    const auto world = std::make_unique<World>(WorldConf{}.UseMinVertexRadius(VertexRadius));
     
     constexpr const auto e_count = 36;
     
     {
         const auto a = Real{0.5f};
-        const auto ground = m_world->CreateBody(BodyConf{}.UseLocation(Length2{0, -a * Meter}));
+        const auto ground = world->CreateBody(BodyConf{}.UseLocation(Length2{0, -a * Meter}));
         
         const auto N = 200;
         const auto M = 10;
@@ -2503,7 +2572,7 @@ TEST(World_Longer, TilesComesToRest)
             
             for (auto j = i; j < e_count; ++j)
             {
-                const auto body = m_world->CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(y).UseLinearAcceleration(EarthlyGravity));
+                const auto body = world->CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(y).UseLinearAcceleration(EarthlyGravity));
                 body->CreateFixture(shape);
                 y += deltaY;
             }
@@ -2532,9 +2601,9 @@ TEST(World_Longer, TilesComesToRest)
     auto sumToiPosIters = 0ul;
     auto sumToiVelIters = 0ul;
     //const auto start_time = std::chrono::high_resolution_clock::now();
-    while (GetAwakeCount(*m_world) > 0)
+    while (GetAwakeCount(*world) > 0)
     {
-        const auto stats = m_world->Step(step);
+        const auto stats = world->Step(step);
         sumRegPosIters += stats.reg.sumPosIters;
         sumRegVelIters += stats.reg.sumVelIters;
         sumToiPosIters += stats.toi.sumPosIters;
@@ -2560,10 +2629,10 @@ TEST(World_Longer, TilesComesToRest)
     //   2.51661s with Real=double and NDEBUG defined.
     
     // seeing e_count=36 times around:
-    //   4.85618s with Real=float and NDEBUG defined.
-    //   5.32973s with Real=double and NDEBUG defined.
+    //   4.163s with Real=float and NDEBUG defined.
+    //   5.374s with Real=double and NDEBUG defined.
     
-    EXPECT_EQ(GetAwakeCount(*m_world), 0u);
+    EXPECT_EQ(GetAwakeCount(*world), 0u);
 
     // The final stats seem dependent on the host the test is run on.
     // Presume that this is most closely associated with the actual CPU/FPU.
@@ -2606,63 +2675,13 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumRegVelIters, 46965ul);
             EXPECT_EQ(sumToiPosIters, 44006ul);
             EXPECT_EQ(sumToiVelIters, 113850ul);
-
-            // From commit 507a7c15c
-            //EXPECT_EQ(numSteps, 1796ul);
-            //EXPECT_EQ(sumRegPosIters, 36503ul);
-            //EXPECT_EQ(sumRegVelIters, 46923ul);
-            //EXPECT_EQ(sumToiPosIters, 43913ul);
-            //EXPECT_EQ(sumToiVelIters, 113000ul);
-
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
-            //EXPECT_EQ(numSteps, 1912ul);
-            //EXPECT_EQ(sumRegPosIters, 36657ul);
-            //EXPECT_EQ(sumRegVelIters, 47843ul);
-            //EXPECT_EQ(sumToiPosIters, 43931ul);
-            //EXPECT_EQ(sumToiVelIters, 113034ul);
-
-            // From commit ee74290c17422ccbd6a73f07d6fd9abe960da84a onward:
-            //EXPECT_EQ(numSteps, 1802ul);
-            //EXPECT_EQ(sumRegPosIters, 36524ul);
-            //EXPECT_EQ(sumRegVelIters, 46981ul);
-            //EXPECT_EQ(sumToiPosIters, 44084ul);
-            //EXPECT_EQ(sumToiVelIters, 114366ul);
 #else
-            // From commit ee74290c17422ccbd6a73f07d6fd9abe960da84a onward:
             EXPECT_EQ(numSteps, 1003ul);
             EXPECT_EQ(sumRegPosIters, 52909ul);
             EXPECT_EQ(sumRegVelIters, 103896ul);
             EXPECT_EQ(sumToiPosIters, 20616ul);
             EXPECT_EQ(sumToiVelIters, 30175ul);
 #endif
-            
-            // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
-            //EXPECT_EQ(numSteps, 1801ul);
-            //EXPECT_EQ(sumRegPosIters, 36523ul);
-            //EXPECT_EQ(sumRegVelIters, 46973ul);
-            //EXPECT_EQ(sumToiPosIters, 44044ul);
-            //EXPECT_EQ(sumToiVelIters, 114344ul);
-
-            // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
-            //EXPECT_EQ(numSteps, 1856ul);
-            //EXPECT_EQ(sumRegPosIters, 36720ul);
-            //EXPECT_EQ(sumRegVelIters, 47656ul);
-            //EXPECT_EQ(sumToiPosIters, 44263ul);
-            //EXPECT_EQ(sumToiVelIters, 112833ul);
-            
-            // From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
-            //EXPECT_EQ(numSteps, 1856ul);
-            //EXPECT_EQ(sumRegPosIters, 36720ul);
-            //EXPECT_EQ(sumRegVelIters, 264376ul);
-            //EXPECT_EQ(sumToiPosIters, 44263ul);
-            //EXPECT_EQ(sumToiVelIters, 145488ul);
-            
-            // Pre commit d361c51d6aca13079e9d44b701715e62cec18a63
-            //EXPECT_EQ(numSteps, 1814ul);
-            //EXPECT_EQ(sumRegPosIters, 36600ul);
-            //EXPECT_EQ(sumRegVelIters, 264096ul);
-            //EXPECT_EQ(sumToiPosIters, 45022ul);
-            //EXPECT_EQ(sumToiVelIters, 148560ul);
             break;
         }
         case  8:
@@ -2672,36 +2691,6 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumRegVelIters,  47173ul);
             EXPECT_EQ(sumToiPosIters,  44005ul);
             EXPECT_EQ(sumToiVelIters, 114231ul);
-
-            // From commit 507a7c15c
-            //EXPECT_EQ(sumToiVelIters, 114427ul);
-
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
-            //EXPECT_EQ(numSteps,         1828ul);
-            //EXPECT_EQ(sumRegPosIters,  36540ul);
-            //EXPECT_EQ(sumRegVelIters,  47173ul);
-            //EXPECT_EQ(sumToiPosIters,  44005ul);
-            //EXPECT_EQ(sumToiVelIters, 114490ul);
-            
-            // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
-            //EXPECT_EQ(numSteps,         1807ul);
-            //EXPECT_EQ(sumRegPosIters,  36584ul);
-            //EXPECT_EQ(sumRegVelIters,  47380ul);
-            //EXPECT_EQ(sumToiPosIters,  44552ul);
-            //EXPECT_EQ(sumToiVelIters, 115392ul);
-
-            // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
-            //EXPECT_EQ(numSteps, 1808ul);
-            //EXPECT_EQ(sumRegPosIters, 36684ul);
-            //EXPECT_EQ(sumRegVelIters, 48087ul);
-            //EXPECT_EQ(sumToiPosIters, 45116ul);
-            //EXPECT_EQ(sumToiVelIters, 118984ul);
-
-            //EXPECT_EQ(numSteps, 1808ul);
-            //EXPECT_EQ(sumRegPosIters, 36684ul);
-            //EXPECT_EQ(sumRegVelIters, 264856ul);
-            //EXPECT_EQ(sumToiPosIters, 45116ul);
-            //EXPECT_EQ(sumToiVelIters, 149392ul);
             break;
         }
         case 16:
@@ -2724,98 +2713,18 @@ TEST(World_Longer, TilesComesToRest)
             EXPECT_EQ(sumRegVelIters,  46981ul);
             EXPECT_EQ(sumToiPosIters,  43676ul);
             EXPECT_EQ(sumToiVelIters, 112502ul);
-
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 to 507a7c15c
-            //EXPECT_EQ(numSteps,         1768ul);
-            //EXPECT_EQ(sumRegPosIters,  36419ul);
-            //EXPECT_EQ(sumRegVelIters,  46684ul);
-            //EXPECT_EQ(sumToiPosIters,  43814ul);
-            //EXPECT_EQ(sumToiVelIters, 113452ul);
-
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
-            //EXPECT_EQ(numSteps,         1799ul);
-            //EXPECT_EQ(sumRegPosIters,  36515ul);
-            //EXPECT_EQ(sumRegVelIters,  46964ul);
-            //EXPECT_EQ(sumToiPosIters,  43999ul);
-            //EXPECT_EQ(sumToiVelIters, 113153ul);
-            
-            // From commit ee74290c17422ccbd6a73f07d6fd9abe960da84a onward:
-            //EXPECT_EQ(numSteps,         1803ul);
-            //EXPECT_EQ(sumRegPosIters,  36673ul);
-            //EXPECT_EQ(sumRegVelIters,  48148ul);
-            //EXPECT_EQ(sumToiPosIters,  43959ul);
-            //EXPECT_EQ(sumToiVelIters, 113189ul);
-
-            // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
-            //EXPECT_EQ(numSteps,         1803ul);
-            //EXPECT_EQ(sumRegPosIters,  36528ul);
-            //EXPECT_EQ(sumRegVelIters,  46988ul);
-            //EXPECT_EQ(sumToiPosIters,  44178ul);
-            //EXPECT_EQ(sumToiVelIters, 114936ul);
-
-            // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
-            //EXPECT_EQ(numSteps, 1855ul);
-            //EXPECT_EQ(sumRegPosIters, 36737ul);
-            //EXPECT_EQ(sumRegVelIters, 47759ul);
-            //EXPECT_EQ(sumToiPosIters, 44698ul);
-            //EXPECT_EQ(sumToiVelIters, 114840ul);
-
             break;
         }
         case  8:
         {
-            // From commits after 507a7c15c:
             EXPECT_EQ(numSteps,         1828ul);
             EXPECT_EQ(sumRegPosIters,  36540ul);
             EXPECT_EQ(sumRegVelIters,  47173ul);
             EXPECT_EQ(sumToiPosIters,  44005ul);
             EXPECT_EQ(sumToiVelIters, 114252ul);
-
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 to 507a7c15c:
-            //EXPECT_EQ(numSteps,         1828ul);
-            //EXPECT_EQ(sumRegPosIters,  36540ul);
-            //EXPECT_EQ(sumRegVelIters,  47173ul);
-            //EXPECT_EQ(sumToiPosIters,  44005ul);
-            //EXPECT_EQ(sumToiVelIters, 114462ul);
-
-            // From commit 0b049bd28d1bbb01d1750ec1fc9498105f13d192 onward:
-            //EXPECT_EQ(numSteps,         1828ul);
-            //EXPECT_EQ(sumRegPosIters,  36540ul);
-            //EXPECT_EQ(sumRegVelIters,  47173ul);
-            //EXPECT_EQ(sumToiPosIters,  44005ul);
-            //EXPECT_EQ(sumToiVelIters, 114259ul);
-            
-            // From commit 6b16f3722d5daac80ebaefd1dfda424939498dd4 onward:
-            //EXPECT_EQ(numSteps,         1807ul);
-            //EXPECT_EQ(sumRegPosIters,  36584ul);
-            //EXPECT_EQ(sumRegVelIters,  47380ul);
-            //EXPECT_EQ(sumToiPosIters,  44552ul);
-            //EXPECT_EQ(sumToiVelIters, 115406ul);
-            
-            // From commit 04f9188c47961cafe76c55eb6b766a608593ee08 onward.
-            //EXPECT_EQ(numSteps, 1808ul);
-            //EXPECT_EQ(sumRegPosIters, 36684ul);
-            //EXPECT_EQ(sumRegVelIters, 48087ul);
-            //EXPECT_EQ(sumToiPosIters, 45116ul);
-            //EXPECT_EQ(sumToiVelIters, 118830ul);
-
             break;
         }
     }
-
-    // From commit d361c51d6aca13079e9d44b701715e62cec18a63 onward.
-    //EXPECT_EQ(numSteps, 1855ul);
-    //EXPECT_EQ(sumRegPosIters, 36737ul);
-    //EXPECT_EQ(sumRegVelIters, 264528ul);
-    //EXPECT_EQ(sumToiPosIters, 44698ul);
-    //EXPECT_EQ(sumToiVelIters, 147544ul);
-    
-    // Pre commit d361c51d6aca13079e9d44b701715e62cec18a63
-    //EXPECT_EQ(numSteps, 1822ul);
-    //EXPECT_EQ(sumRegPosIters, 36616ul);
-    //EXPECT_EQ(sumRegVelIters, 264096ul);
-    //EXPECT_EQ(sumToiPosIters, 44415ul);
-    //EXPECT_EQ(sumToiVelIters, 146800ul);
 #elif defined(_WIN64) // This is likely wrong as the results are more likely arch dependent
     EXPECT_EQ(numSteps, 1794ul);
     EXPECT_EQ(sumRegPosIters, 36498ul);

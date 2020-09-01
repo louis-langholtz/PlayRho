@@ -17,7 +17,6 @@
  */
 
 #include "UnitTests.hpp"
-#include <PlayRho/Common/StackAllocator.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
 #include <type_traits>
 

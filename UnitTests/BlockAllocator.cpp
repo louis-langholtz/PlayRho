@@ -106,6 +106,14 @@ TEST(BlockAllocator, AllocateReturnsNullForZero)
     EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
 }
 
+TEST(BlockAllocator, AllocateArrayReturnsNullForZero)
+{
+    BlockAllocator foo;
+    ASSERT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
+    EXPECT_EQ(foo.AllocateArray<int>(0), nullptr);
+    EXPECT_EQ(foo.GetChunkCount(), BlockAllocator::size_type{0});
+}
+
 TEST(BlockAllocator, AllocateNonNullForOverMaxBlockSize)
 {
     BlockAllocator foo;

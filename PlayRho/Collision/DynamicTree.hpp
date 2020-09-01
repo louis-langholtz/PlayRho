@@ -27,6 +27,7 @@
 
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Vector2.hpp>
 
 #include <functional>
 #include <type_traits>
@@ -146,11 +147,19 @@ public:
     
     /// @brief Creates a new leaf node.
     /// @details Creates a leaf node for a tight fitting AABB and the given data.
+    /// @warning Behavior is undefined unless the number of nodes already allocated (as reported by
+    ///   <code>GetNodeCount()</code>) is less than <code>std::numeric_limits<Size>::max()</code>.
     /// @note The indices of leaf nodes that have been destroyed get reused for new nodes.
     /// @post If the root index had been the <code>GetInvalidSize()</code>, then it will
     ///   be set to the index returned from this method.
-    /// @post The leaf count will be incremented by one.
-    /// @return The index of the created leaf node.
+    /// @post The leaf count (as reported by <code>GetLeafCount()</code>) will be incremented by one.
+    /// @post The node count (as reported by <code>GetNodeCount()</code>) will be incremented by one
+    ///   or two (if the root index had not been <code>GetInvalidSize()</code>).
+    /// @return The index of the created leaf node. This will be a value not equal to
+    ///   <code>GetInvalidSize()</code>.
+    /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
+    ///   thrown, this function has no effect.
+    /// @see GetLeafCount(), GetNodeCount()
     Size CreateLeaf(const AABB& aabb, const LeafData& data);
 
     /// @brief Destroys a leaf node.
@@ -206,6 +215,7 @@ public:
     /// @brief Builds an optimal tree.
     /// @note This operation is very expensive.
     /// @note Meant for testing.
+    /// @throws std::bad_alloc If unable to allocate necessary memory.
     void RebuildBottomUp();
 
     /// @brief Shifts the world origin.
@@ -239,22 +249,42 @@ public:
 private:
     
     /// @brief Sets the node capacity to the given value.
-    void SetNodeCapacity(Size value) noexcept;
+    /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
+    ///   thrown, this function has no effect.
+    void SetNodeCapacity(Size value);
 
     /// @brief Allocates a node.
     /// @details This allocates a node from the free list that can be used as either a leaf
     ///   node or a branch node.
-    Size AllocateNode() noexcept;
+    /// @warning Behavior is undefined unless the number of nodes allocated (as reported by
+    ///   <code>GetNodeCount()</code>) is less than <code>std::numeric_limits<Size>::max()</code>.
+    /// @return Value not equal to <code>GetInvalidSize()</code>.
+    /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
+    ///   thrown, this function has no effect.
+    /// @see GetNodeCount()
+    Size AllocateNode();
 
     /// @brief Allocates a leaf node.
     /// @details This allocates a node from the free list as a leaf node.
-    Size AllocateNode(const LeafData& data, AABB aabb) noexcept;
+    /// @warning Behavior is undefined unless the number of nodes allocated (as reported by
+    ///   <code>GetNodeCount()</code>) is less than <code>std::numeric_limits<Size>::max()</code>.
+    /// @return Value not equal to <code>GetInvalidSize()</code>.
+    /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
+    ///   thrown, this function has no effect.
+    /// @see GetNodeCount()
+    Size AllocateNode(const LeafData& data, AABB aabb);
 
     /// @brief Allocates a branch node.
     /// @details This allocates a node from the free list as a branch node.
+    /// @warning Behavior is undefined unless the number of nodes allocated (as reported by
+    ///   <code>GetNodeCount()</code>) is less than <code>std::numeric_limits<Size>::max()</code>.
     /// @post The free list no longer references the returned index.
+    /// @return Value not equal to <code>GetInvalidSize()</code>.
+    /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
+    ///   thrown, this function has no effect.
+    /// @see GetNodeCount()
     Size AllocateNode(const BranchData& data, AABB aabb, Height height,
-                      Size parent = GetInvalidSize()) noexcept;
+                      Size parent = GetInvalidSize());
  
     /// @brief Frees the specified node.
     ///

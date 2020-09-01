@@ -107,3 +107,16 @@ TEST(StepStats, Traits)
     EXPECT_TRUE(std::is_nothrow_destructible<StepStats>::value);
     EXPECT_TRUE(std::is_trivially_destructible<StepStats>::value);
 }
+
+TEST(RegStepStats, DefaultConstructor)
+{
+    RegStepStats object;
+    EXPECT_EQ(object.minSeparation, std::numeric_limits<Length>::infinity());
+    EXPECT_EQ(object.islandsFound, static_cast<decltype(object.islandsFound)>(0));
+    EXPECT_EQ(object.islandsSolved, static_cast<decltype(object.islandsSolved)>(0));
+    EXPECT_EQ(object.contactsAdded, static_cast<decltype(object.contactsAdded)>(0));
+    EXPECT_EQ(object.bodiesSlept, static_cast<decltype(object.bodiesSlept)>(0));
+    EXPECT_EQ(object.proxiesMoved, static_cast<decltype(object.proxiesMoved)>(0));
+    EXPECT_EQ(object.sumPosIters, static_cast<decltype(object.sumPosIters)>(0));
+    EXPECT_EQ(object.sumVelIters, static_cast<decltype(object.sumVelIters)>(0));
+}
