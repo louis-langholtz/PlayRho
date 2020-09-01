@@ -106,6 +106,7 @@ namespace
     Length2 mouseWorld = Length2{};
     
     const auto menuWidth = 200;
+    const auto tooltipWrapWidth = 400.0f;
     auto menuX = 0;
     auto menuHeight = 0;
     auto refreshRate = 0;
@@ -123,12 +124,12 @@ public:
         assert(selection < size);
     }
     
-    int Get() const
+    int Get() const noexcept
     {
         return m_selection;
     }
     
-    void Set(int selection)
+    void Set(int selection) noexcept
     {
         assert(selection < m_size);
         if (selection < m_size)
@@ -137,13 +138,13 @@ public:
         }
     }
     
-    void Increment()
+    void Increment() noexcept
     {
         const auto next = m_selection + 1;
         m_selection = (next < m_size)? next: 0;
     }
     
-    void Decrement()
+    void Decrement() noexcept
     {
         m_selection = (m_selection > 0)? m_selection - 1: m_size - 1;
     }
@@ -685,9 +686,9 @@ static void AboutTestUI()
     {
         const auto length = size(test->GetSeeAlso());
         char buffer[512];
-        std::strncpy(buffer, test->GetSeeAlso().c_str(), length);
+        std::strncpy(buffer, test->GetSeeAlso().c_str(), std::min(length, sizeof(buffer)));
         buffer[length] = '\0';
-        ImGui::InputText("See Also", buffer, 512,
+        ImGui::InputText("See Also", buffer, sizeof(buffer),
                          ImGuiInputTextFlags_ReadOnly|ImGuiInputTextFlags_AutoSelectAll);
     }
     
@@ -795,7 +796,7 @@ static void BasicStepOptionsUI()
     {
         std::ostringstream os;
         os << "Simulating " << dt << " seconds every step.";
-        ImGui::ShowTooltip(os.str(), 400);
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
     
     ImGui::SliderInt("Vel. Iter.", &settings.regVelocityIterations, 0, 100);
@@ -831,7 +832,7 @@ static void AdvancedStepOptionsUI()
         std::ostringstream os;
         os << "Simulating " << dt << " seconds every step.";
         os << " This is inversely tied to the frequency.";
-        ImGui::ShowTooltip(os.str(), 400);
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
     
     if (neededSettings & (0x1u << Test::NeedMaxTranslation))
@@ -852,7 +853,7 @@ static void AdvancedStepOptionsUI()
             " At its current setting and the current simulation time," \
             " this establishes a max linear velocity of ";
         os << maxLinearVelocity << " m/s.";
-        ImGui::ShowTooltip(os.str(), 400);
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
     
     ImGui::SliderFloat("Max Rotation", &settings.maxRotation, 0.0f, 180.0f, "%.1f °");
@@ -864,7 +865,7 @@ static void AdvancedStepOptionsUI()
             " At its current setting and the current simulation time," \
             " this establishes a max rotational velocity of ";
         os << maxRotationalVelocity << " °/s.";
-        ImGui::ShowTooltip(os.str(), 400);
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
     
     const auto neededLinearSlop = !!(neededSettings & (0x1u << Test::NeedLinearSlopField));
@@ -886,19 +887,21 @@ static void AdvancedStepOptionsUI()
         os << " Usually this should be below the visual threshold of scaling used in visualizing the simulation.";
         os << " Results in a TOI-phase target depth of ";
         os << std::scientific << std::setprecision(2) << targetDepth << " m.";
-        ImGui::ShowTooltip(os.str(), 400);
+        ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
     }
     
     ImGui::SliderFloat("Angular Slop", &settings.angularSlop, 1.0f, 20.0f, "%.1f °");
     if (ImGui::IsItemHovered())
     {
-        ImGui::SetTooltip("A general basis of \"slop\" to allow for in various angle-related calculations.");
+        ImGui::ShowTooltip("A general basis of \"slop\" to allow for in various angle-related calculations.",
+                           tooltipWrapWidth);
     }
     
     ImGui::SliderFloat("Max Lin Correct", &settings.maxLinearCorrection, 0.0f, 1.0f, "%.2f m");
     if (ImGui::IsItemHovered())
     {
-        ImGui::SetTooltip("Maximum linear correction. Should be greater than the linear slop value.");
+        ImGui::ShowTooltip("Maximum linear correction. Should be greater than the linear slop value.",
+                           tooltipWrapWidth);
     }
     
     ImGui::SliderFloat("Max Ang Correct", &settings.maxAngularCorrection, 0.0f, 90.0f, "%.1f °");
@@ -932,15 +935,16 @@ static void AdvancedStepOptionsUI()
         ImGui::SliderInt("Resol Rate", &settings.regPosResRate, 0, 100, "%.0f %%");
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("This is the %% of overlap that will"
-                              " be resolved per position iteration.");
+            ImGui::ShowTooltip("This is the %% of overlap that will"
+                               " be resolved per position iteration.", tooltipWrapWidth);
         }
         ImGui::Checkbox("Allow Sleeping", &settings.enableSleep);
         ImGui::InputFloat("Still To Sleep", &settings.minStillTimeToSleep);
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("The min. time in seconds (in simulated time) that a body"
-                              " must be still for before it will be put to sleep.");
+            ImGui::ShowTooltip("The min. time in seconds (in simulated time) that a body"
+                               " must be still for before it will be put to sleep.",
+                               tooltipWrapWidth);
         }
         ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
     }
@@ -951,20 +955,22 @@ static void AdvancedStepOptionsUI()
         ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("Maximum number of TOI-phase velocity iterations per step.");
+            ImGui::ShowTooltip("Maximum number of TOI-phase velocity iterations per step.",
+                               tooltipWrapWidth);
         }
 
         ImGui::SliderInt("Pos Iters", &settings.toiPositionIterations, 0, 100);
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("Maximum number of TOI-phase position iterations per step.");
+            ImGui::ShowTooltip("Maximum number of TOI-phase position iterations per step.",
+                               tooltipWrapWidth);
         }
         
         settings.tolerance = std::min(settings.tolerance, targetDepth);
         ImGui::SliderFloat("Tolerance", &settings.tolerance, 0.0f, targetDepth, "%.2e m");
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("+/- Tolerance from target depth.");
+            ImGui::ShowTooltip("+/- Tolerance from target depth.", tooltipWrapWidth);
         }
 
         ImGui::SliderFloat("Min Sep", &settings.toiMinSeparation,
@@ -972,19 +978,20 @@ static void AdvancedStepOptionsUI()
         ImGui::SliderInt("Resol Rate", &settings.toiPosResRate, 0, 100, "%.0f %%");
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("This is the %% of overlap that will"
-                              " be resolved per position iteration.");
+            ImGui::ShowTooltip("This is the %% of overlap that will"
+                               " be resolved per position iteration.", tooltipWrapWidth);
         }
         ImGui::SliderInt("Max Sub Steps", &settings.maxSubSteps, 0, 200);
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("Max # of of sub steps that should be tried in resolving"
-                              " collisions at a particular time of impact.");
+            ImGui::ShowTooltip("Max # of of sub steps that should be tried in resolving"
+                               " collisions at a particular time of impact.", tooltipWrapWidth);
         }
         ImGui::SliderInt("Max Root Iters", &settings.maxToiRootIters, 0, 200);
         if (ImGui::IsItemHovered())
         {
-            ImGui::SetTooltip("Max # of iterations root finder should try before giving up.");
+            ImGui::ShowTooltip("Max # of iterations root finder should try before giving up.",
+                               tooltipWrapWidth);
         }
         ImGui::Checkbox("Sub-Step", &settings.enableSubStepping);
     }
@@ -1003,7 +1010,18 @@ static void OutputOptionsUI()
     {
         ImGui::Checkbox("Skins", &settings.drawSkins);
     }
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::ShowTooltip("Whether or not to show the shape \"skins\" - skins are buffer zones"
+                           " around shapes used in collision processing.",
+                           tooltipWrapWidth);
+    }
     ImGui::Checkbox("AABBs", &settings.drawAABBs);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::ShowTooltip("Whether or not to show the Axis Aligned Bounding Boxes (AABB).",
+                           tooltipWrapWidth);
+    }
     if (neededSettings & (0x1u << Test::NeedDrawLabelsField))
     {
         auto value = testSettings.drawLabels;
@@ -1022,7 +1040,8 @@ static void OutputOptionsUI()
 
 static bool MenuUI()
 {
-    bool shouldQuit = false;
+    auto shouldQuit = false;
+    const auto button_sz = ImVec2(-1, 0);
 
     ImGui::PushAllowKeyboardFocus(false); // Disable TAB
     
@@ -1034,7 +1053,35 @@ static bool MenuUI()
     {
         g_selection->Set(current_item);
     }
-    
+
+    ImGui::Columns(2, "TestButtons", false);
+    {
+        if (ImGui::Button("Previous", button_sz))
+        {
+            g_selection->Decrement();
+        }
+        if (ImGui::IsItemHovered())
+        {
+            // See also support for GLFW_KEY_LEFT_BRACKET
+            ImGui::ShowTooltip("Switches to previous test. This can also be invoked by pressing the left bracket key (i.e. '[').",
+                               tooltipWrapWidth);
+        }
+    }
+    ImGui::NextColumn();
+    {
+        if (ImGui::Button("Next", button_sz))
+        {
+            g_selection->Increment();
+        }
+        if (ImGui::IsItemHovered())
+        {
+            // See also support for GLFW_KEY_RIGHT_BRACKET
+            ImGui::ShowTooltip("Switches to next test. This can also be invoked by pressing the right bracket key (i.e. ']').",
+                               tooltipWrapWidth);
+        }
+    }
+    ImGui::Columns(1);
+
     ImGui::Spacing();
     ImGui::Separator();
     ImGui::Spacing();
@@ -1048,7 +1095,7 @@ static bool MenuUI()
             std::ostringstream os;
             os << "These are basic per-\"step\" options. ";
             os << "One step of the simulation is performed for every display refresh.";
-            ImGui::ShowTooltip(os.str(), 400);
+            ImGui::ShowTooltip(os.str(), tooltipWrapWidth);
         }
         BasicStepOptionsUI();
     }
@@ -1079,12 +1126,11 @@ static bool MenuUI()
     ImGui::Checkbox("Pause", &settings.pause);
     if (ImGui::IsItemHovered())
     {
-        ImGui::SetTooltip("\"Pauses\" the simulation by overriding the simulation time per step"
+        ImGui::ShowTooltip("\"Pauses\" the simulation by overriding the simulation time per step"
                           " with a value of zero until un-paused. This can also be toggled by"
-                          " pressing the 'P' key.");
+                          " pressing the 'P' key.", tooltipWrapWidth);
     }
     
-    ImVec2 button_sz = ImVec2(-1, 0);
     if (ImGui::Button("Single Step", button_sz))
     {
         settings.singleStep = !settings.singleStep;
@@ -1092,6 +1138,11 @@ static bool MenuUI()
     if (ImGui::Button("Restart", button_sz))
     {
         g_testSuite->RestartTest();
+    }
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::ShowTooltip("Restarts the current test. This can also be invoked by pressing the 'R' key.",
+                           tooltipWrapWidth);
     }
     if (ImGui::Button("Quit", button_sz))
     {
@@ -1117,7 +1168,7 @@ static void EntityUI(Body& b)
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("Linear position in meters.", 400);
+            ImGui::ShowTooltip("Linear position in meters.", tooltipWrapWidth);
         }
         const auto angle = b.GetAngle();
         auto val = static_cast<float>(Real{angle / Degree});
@@ -1127,7 +1178,7 @@ static void EntityUI(Body& b)
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("Angular position in degrees.", 400);
+            ImGui::ShowTooltip("Angular position in degrees.", tooltipWrapWidth);
         }
     }
     {
@@ -1141,7 +1192,7 @@ static void EntityUI(Body& b)
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("Linear velocity in meters/second.", 400);
+            ImGui::ShowTooltip("Linear velocity in meters/second.", tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{velocity.angular / DegreePerSecond});
         if (ImGui::InputFloat("Ang. Vel.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
@@ -1150,7 +1201,7 @@ static void EntityUI(Body& b)
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("Angular velocity in degrees/second.", 400);
+            ImGui::ShowTooltip("Angular velocity in degrees/second.", tooltipWrapWidth);
         }
     }
     {
@@ -1164,7 +1215,7 @@ static void EntityUI(Body& b)
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("Linear acceleration in meters/second².", 400);
+            ImGui::ShowTooltip("Linear acceleration in meters/second².", tooltipWrapWidth);
         }
         auto val = static_cast<float>(Real{acceleration.angular / DegreePerSquareSecond});
         if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
@@ -1173,7 +1224,7 @@ static void EntityUI(Body& b)
         }
         if (ImGui::IsItemHovered())
         {
-            ImGui::ShowTooltip("Angular acceleration in degrees/second².", 400);
+            ImGui::ShowTooltip("Angular acceleration in degrees/second².", tooltipWrapWidth);
         }
     }
     {
@@ -1227,7 +1278,8 @@ static void EntityUI(Body& b)
     }
     if (ImGui::IsItemHovered())
     {
-        ImGui::ShowTooltip("Body type selection: either Static, Kinematic, or Dynamic.", 400);
+        ImGui::ShowTooltip("Body type selection: either Static, Kinematic, or Dynamic.",
+                           tooltipWrapWidth);
     }
     
     {
@@ -1241,7 +1293,7 @@ static void EntityUI(Body& b)
     ImGui::LabelText("Mass", "%.2e kg", static_cast<double>(Real{GetMass(b) / Kilogram}));
     if (ImGui::IsItemHovered())
     {
-        ImGui::ShowTooltip("Mass of the body.", 400);
+        ImGui::ShowTooltip("Mass of the body.", tooltipWrapWidth);
     }
     
     ImGui::LabelText("Rot. Inertia", "%.2e kg·m²",
@@ -1249,7 +1301,7 @@ static void EntityUI(Body& b)
     if (ImGui::IsItemHovered())
     {
         ImGui::ShowTooltip("Rotational inertia of the body. This may be the calculated value"
-                           " or a set value.", 400);
+                           " or a set value.", tooltipWrapWidth);
     }
 }
 
@@ -1291,10 +1343,10 @@ static void EntityUI(Fixture& fixture)
     ImGui::Spacing();
 
     {
-        using uint = unsigned int;
+        using CheckboxFlagType = unsigned int;
         const auto oldFilterData = fixture.GetFilterData();
-        auto cateBits = uint{oldFilterData.categoryBits};
-        auto maskBits = uint{oldFilterData.maskBits};
+        auto cateBits = CheckboxFlagType{oldFilterData.categoryBits};
+        auto maskBits = CheckboxFlagType{oldFilterData.maskBits};
         
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0,0));
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(-2.5f,-2.5f));
