@@ -2280,7 +2280,6 @@ void World::CreateAndDestroyProxies(const StepConf& conf)
         {
             if (!enabled)
             {
-                EraseAll(m_fixturesForProxies, &fixture);
                 DestroyProxies(m_proxies, m_tree, fixture);
 
                 // Destroy any contacts associated with the fixture.
