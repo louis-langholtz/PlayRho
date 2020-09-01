@@ -1042,7 +1042,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
     });
 
 #if defined(DO_THREADED)
-    std::vector<std::future<World::IslandSolverResults>> futures;
+    std::vector<std::future<IslandStats>> futures;
     futures.reserve(remNumBodies);
 #endif
     // Build and simulate all awake islands.
