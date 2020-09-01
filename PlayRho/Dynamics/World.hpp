@@ -749,7 +749,7 @@ private:
 
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    void InternalTouchProxies(Fixture& fixture) noexcept;
+    static void InternalTouchProxies(ProxyQueue& proxies, Fixture& fixture) noexcept;
     
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the given

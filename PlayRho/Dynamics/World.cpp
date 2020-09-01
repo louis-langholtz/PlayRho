@@ -2346,7 +2346,7 @@ void World::SetType(Body& body, playrho::BodyType type)
         body.SetAwake();
         const auto fixtures = body.GetFixtures();
         for_each(begin(fixtures), end(fixtures), [&](Body::Fixtures::value_type& f) {
-            InternalTouchProxies(GetRef(f));
+            InternalTouchProxies(m_proxies, GetRef(f));
         });
     }
 }
@@ -2504,15 +2504,13 @@ void World::DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixt
 void World::TouchProxies(Fixture& fixture) noexcept
 {
     assert(fixture.GetBody()->GetWorld() == this);
-    InternalTouchProxies(fixture);
+    InternalTouchProxies(m_proxies, fixture);
 }
 
-void World::InternalTouchProxies(Fixture& fixture) noexcept
+void World::InternalTouchProxies(ProxyQueue& proxies, Fixture& fixture) noexcept
 {
-    const auto proxyCount = fixture.GetProxyCount();
-    for (auto i = decltype(proxyCount){0}; i < proxyCount; ++i)
-    {
-        m_proxies.push_back(fixture.GetProxy(i).treeId);
+    for (const auto& proxy: fixture.GetProxies()) {
+        proxies.push_back(proxy.treeId);
     }
 }
 
