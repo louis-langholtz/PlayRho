@@ -771,33 +771,6 @@ private:
     /// @brief Synchronizes proxies of the bodies for proxies.
     PreStepStats::counter_type SynchronizeProxies(const StepConf& conf);
 
-    /// @brief Whether the given body is in an island.
-    bool IsIslanded(const Body* body) const noexcept;
-
-    /// @brief Whether the given contact is in an island.
-    bool IsIslanded(const Contact* contact) const noexcept;
-
-    /// @brief Whether the given joint is in an island.
-    bool IsIslanded(const Joint* joint) const noexcept;
-
-    /// @brief Sets the given body to the in an island state.
-    void SetIslanded(Body* body) noexcept;
-
-    /// @brief Sets the given contact to the in an island state.
-    void SetIslanded(Contact* contact) noexcept;
-
-    /// @brief Sets the given joint to the in an island state.
-    void SetIslanded(Joint* joint) noexcept;
-
-    /// @brief Unsets the given body's in island state.
-    void UnsetIslanded(Body* body) noexcept;
-
-    /// @brief Unsets the given contact's in island state.
-    void UnsetIslanded(Contact* contact) noexcept;
-    
-    /// @brief Unsets the given joint's in island state.
-    void UnsetIslanded(Joint* joint) noexcept;
-
     /******** Member variables. ********/
     
     DynamicTree m_tree; ///< Dynamic tree.
@@ -967,51 +940,6 @@ inline void World::SetDestructionListener(DestructionListener* listener) noexcep
 inline void World::SetContactListener(ContactListener* listener) noexcept
 {
     m_contactListener = listener;
-}
-
-inline bool World::IsIslanded(const Body* body) const noexcept
-{
-    return BodyAtty::IsIslanded(*body);
-}
-
-inline bool World::IsIslanded(const Contact* contact) const noexcept
-{
-    return ContactAtty::IsIslanded(*contact);
-}
-
-inline bool World::IsIslanded(const Joint* joint) const noexcept
-{
-    return JointAtty::IsIslanded(*joint);
-}
-
-inline void World::SetIslanded(Body* body) noexcept
-{
-    BodyAtty::SetIslanded(*body);
-}
-
-inline void World::SetIslanded(Contact* contact) noexcept
-{
-    ContactAtty::SetIslanded(*contact);
-}
-
-inline void World::SetIslanded(Joint* joint) noexcept
-{
-    JointAtty::SetIslanded(*joint);
-}
-
-inline void World::UnsetIslanded(Body* body) noexcept
-{
-    BodyAtty::UnsetIslanded(*body);
-}
-
-inline void World::UnsetIslanded(Contact* contact) noexcept
-{
-    ContactAtty::UnsetIslanded(*contact);
-}
-
-inline void World::UnsetIslanded(Joint* joint) noexcept
-{
-    JointAtty::UnsetIslanded(*joint);
 }
 
 // Free functions.
