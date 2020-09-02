@@ -71,27 +71,27 @@ struct ShapeBuilder: BaseShapeConf
     // Note: don't use 'using ShapeConf::ShapeConf' here as it doesn't work in this context!
     
     /// @brief Default constructor.
-    constexpr inline ShapeBuilder() = default;
+    constexpr ShapeBuilder() = default;
 
     /// @brief Initializing constructor.
-    constexpr inline explicit ShapeBuilder(const BaseShapeConf& value) noexcept:
+    constexpr explicit ShapeBuilder(const BaseShapeConf& value) noexcept:
         BaseShapeConf{value}
     {
         // Intentionally empty.
     }
     
     /// @brief Uses the given friction.
-    constexpr inline ConcreteConf& UseFriction(NonNegative<Real> value) noexcept;
+    constexpr ConcreteConf& UseFriction(NonNegative<Real> value) noexcept;
     
     /// @brief Uses the given restitution.
-    constexpr inline ConcreteConf& UseRestitution(Finite<Real> value) noexcept;
+    constexpr ConcreteConf& UseRestitution(Finite<Real> value) noexcept;
     
     /// @brief Uses the given density.
-    constexpr inline ConcreteConf& UseDensity(NonNegative<AreaDensity> value) noexcept;
+    constexpr ConcreteConf& UseDensity(NonNegative<AreaDensity> value) noexcept;
 };
 
 template <typename ConcreteConf>
-constexpr inline ConcreteConf&
+constexpr ConcreteConf&
 ShapeBuilder<ConcreteConf>::UseFriction(NonNegative<Real> value) noexcept
 {
     friction = value;
@@ -99,7 +99,7 @@ ShapeBuilder<ConcreteConf>::UseFriction(NonNegative<Real> value) noexcept
 }
 
 template <typename ConcreteConf>
-constexpr inline ConcreteConf&
+constexpr ConcreteConf&
 ShapeBuilder<ConcreteConf>::UseRestitution(Finite<Real> value) noexcept
 {
     restitution = value;
@@ -107,7 +107,7 @@ ShapeBuilder<ConcreteConf>::UseRestitution(Finite<Real> value) noexcept
 }
 
 template <typename ConcreteConf>
-constexpr inline ConcreteConf&
+constexpr ConcreteConf&
 ShapeBuilder<ConcreteConf>::UseDensity(NonNegative<AreaDensity> value) noexcept
 {
     density = value;
@@ -123,19 +123,19 @@ struct ShapeConf: public ShapeBuilder<ShapeConf>
 // Free functions...
 
 /// @brief Gets the density of the given shape configuration.
-constexpr inline NonNegative<AreaDensity> GetDensity(const BaseShapeConf& arg) noexcept
+constexpr NonNegative<AreaDensity> GetDensity(const BaseShapeConf& arg) noexcept
 {
     return arg.density;
 }
 
 /// @brief Gets the restitution of the given shape configuration.
-constexpr inline Finite<Real> GetRestitution(const BaseShapeConf& arg) noexcept
+constexpr Finite<Real> GetRestitution(const BaseShapeConf& arg) noexcept
 {
     return arg.restitution;
 }
 
 /// @brief Gets the friction of the given shape configuration.
-constexpr inline NonNegative<Real> GetFriction(const BaseShapeConf& arg) noexcept
+constexpr NonNegative<Real> GetFriction(const BaseShapeConf& arg) noexcept
 {
     return arg.friction;
 }

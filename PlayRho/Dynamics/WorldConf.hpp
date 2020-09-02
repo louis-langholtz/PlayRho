@@ -34,13 +34,13 @@ namespace d2 {
 struct WorldConf
 {
     /// @brief Uses the given min vertex radius value.
-    constexpr inline WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
+    constexpr WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
     
     /// @brief Uses the given max vertex radius value.
-    constexpr inline WorldConf& UseMaxVertexRadius(Positive<Length> value) noexcept;
+    constexpr WorldConf& UseMaxVertexRadius(Positive<Length> value) noexcept;
     
     /// @brief Uses the given value as the initial dynamic tree size.
-    constexpr inline WorldConf& UseInitialTreeSize(ContactCounter value) noexcept;
+    constexpr WorldConf& UseInitialTreeSize(ContactCounter value) noexcept;
     
     /// @brief Minimum vertex radius.
     /// @details This is the minimum vertex radius that this world establishes which bodies
@@ -65,19 +65,19 @@ struct WorldConf
     ContactCounter initialTreeSize = 4096;
 };
 
-constexpr inline WorldConf& WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept
+constexpr WorldConf& WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept
 {
     minVertexRadius = value;
     return *this;
 }
 
-constexpr inline WorldConf& WorldConf::UseMaxVertexRadius(Positive<Length> value) noexcept
+constexpr WorldConf& WorldConf::UseMaxVertexRadius(Positive<Length> value) noexcept
 {
     maxVertexRadius = value;
     return *this;
 }
 
-constexpr inline WorldConf& WorldConf::UseInitialTreeSize(ContactCounter value) noexcept
+constexpr WorldConf& WorldConf::UseInitialTreeSize(ContactCounter value) noexcept
 {
     initialTreeSize = value;
     return *this;
@@ -89,7 +89,7 @@ constexpr inline WorldConf& WorldConf::UseInitialTreeSize(ContactCounter value) 
 ///     "cannot use defaulted constructor of '<code>Conf</code>' within '<code>World</code>'
 ///     outside of member functions because 'gravity' has an initializer"
 /// @relatedalso WorldConf
-constexpr inline WorldConf GetDefaultWorldConf() noexcept
+constexpr WorldConf GetDefaultWorldConf() noexcept
 {
     return WorldConf{};
 }

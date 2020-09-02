@@ -43,7 +43,7 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     /// @brief Super type.
     using super = JointBuilder<WeldJointConf>;
     
-    constexpr inline WeldJointConf() noexcept: super{JointType::Weld} {}
+    constexpr WeldJointConf() noexcept: super{JointType::Weld} {}
     
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, and reference angle using a world
@@ -54,10 +54,10 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     WeldJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
     
     /// @brief Uses the given frequency value.
-    constexpr inline WeldJointConf& UseFrequency(Frequency v) noexcept;
+    constexpr WeldJointConf& UseFrequency(Frequency v) noexcept;
     
     /// @brief Uses the given damping ratio.
-    constexpr inline WeldJointConf& UseDampingRatio(Real v) noexcept;
+    constexpr WeldJointConf& UseDampingRatio(Real v) noexcept;
     
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
@@ -78,13 +78,13 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     Real dampingRatio = 0;
 };
 
-constexpr inline WeldJointConf& WeldJointConf::UseFrequency(Frequency v) noexcept
+constexpr WeldJointConf& WeldJointConf::UseFrequency(Frequency v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-constexpr inline WeldJointConf& WeldJointConf::UseDampingRatio(Real v) noexcept
+constexpr WeldJointConf& WeldJointConf::UseDampingRatio(Real v) noexcept
 {
     dampingRatio = v;
     return *this;

@@ -58,22 +58,22 @@ namespace playrho {
         Span(const Span& copy) = default;
         
         /// @brief Initializing constructor.
-        constexpr inline Span(pointer array, size_type size) noexcept:
+        constexpr Span(pointer array, size_type size) noexcept:
             m_array{array}, m_size{size}
         {
         }
         
         /// @brief Initializing constructor.
         template <std::size_t SIZE>
-        constexpr inline Span(data_type (&array)[SIZE]) noexcept: m_array{&array[0]}, m_size{SIZE} {}
+        constexpr Span(data_type (&array)[SIZE]) noexcept: m_array{&array[0]}, m_size{SIZE} {}
         
         /// @brief Initializing constructor.
         template <typename U, typename = std::enable_if_t< !std::is_array<U>::value > >
-        constexpr inline Span(U& value) noexcept:
+        constexpr Span(U& value) noexcept:
         m_array{detail::Data(value)}, m_size{detail::Size(value)} {}
         
         /// @brief Initializing constructor.
-        constexpr inline Span(std::initializer_list<T> list) noexcept:
+        constexpr Span(std::initializer_list<T> list) noexcept:
             m_array{list.begin()}, m_size{list.size()} {}
 
         /// @brief Gets the "begin" iterator value.

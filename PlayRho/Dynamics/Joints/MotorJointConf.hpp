@@ -38,7 +38,7 @@ struct MotorJointConf : public JointBuilder<MotorJointConf>
     /// @brief Super type.
     using super = JointBuilder<MotorJointConf>;
     
-    constexpr inline MotorJointConf() noexcept: super{JointType::Motor} {}
+    constexpr MotorJointConf() noexcept: super{JointType::Motor} {}
     
     /// @brief Initialize the bodies and offsets using the current transforms.
     MotorJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB) noexcept;

@@ -39,25 +39,25 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     /// @brief Super type.
     using super = JointBuilder<TargetJointConf>;
     
-    constexpr inline TargetJointConf() noexcept: super{JointType::Target} {}
+    constexpr TargetJointConf() noexcept: super{JointType::Target} {}
 
     /// @brief Initializing constructor.
-    constexpr inline TargetJointConf(NonNull<Body*> b) noexcept: super{super{JointType::Target}.UseBodyB(b)}
+    constexpr TargetJointConf(NonNull<Body*> b) noexcept: super{super{JointType::Target}.UseBodyB(b)}
     {
         // Intentionally empty.
     }
     
     /// @brief Use value for target.
-    constexpr inline TargetJointConf& UseTarget(Length2 v) noexcept;
+    constexpr TargetJointConf& UseTarget(Length2 v) noexcept;
 
     /// @brief Use value for max force.
-    constexpr inline TargetJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
+    constexpr TargetJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
 
     /// @brief Use value for frequency.
-    constexpr inline TargetJointConf& UseFrequency(NonNegative<Frequency> v) noexcept;
+    constexpr TargetJointConf& UseFrequency(NonNegative<Frequency> v) noexcept;
 
     /// @brief Use value for damping ratio.
-    constexpr inline TargetJointConf& UseDampingRatio(NonNegative<Real> v) noexcept;
+    constexpr TargetJointConf& UseDampingRatio(NonNegative<Real> v) noexcept;
 
     /// The initial world target point. This is assumed
     /// to coincide with the body anchor initially.
@@ -80,25 +80,25 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 };
 
-constexpr inline TargetJointConf& TargetJointConf::UseTarget(Length2 v) noexcept
+constexpr TargetJointConf& TargetJointConf::UseTarget(Length2 v) noexcept
 {
     target = v;
     return *this;
 }
 
-constexpr inline TargetJointConf& TargetJointConf::UseMaxForce(NonNegative<Force> v) noexcept
+constexpr TargetJointConf& TargetJointConf::UseMaxForce(NonNegative<Force> v) noexcept
 {
     maxForce = v;
     return *this;
 }
 
-constexpr inline TargetJointConf& TargetJointConf::UseFrequency(NonNegative<Frequency> v) noexcept
+constexpr TargetJointConf& TargetJointConf::UseFrequency(NonNegative<Frequency> v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-constexpr inline TargetJointConf& TargetJointConf::UseDampingRatio(NonNegative<Real> v) noexcept
+constexpr TargetJointConf& TargetJointConf::UseDampingRatio(NonNegative<Real> v) noexcept
 {
     dampingRatio = v;
     return *this;

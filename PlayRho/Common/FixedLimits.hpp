@@ -34,13 +34,13 @@ namespace std {
         static constexpr const bool is_specialized = true; ///< Type is specialized.
         
         /// @brief Gets the min value available for the type.
-        static constexpr inline playrho::Fixed<BT,FB> min() noexcept { return playrho::Fixed<BT,FB>::GetMin(); }
+        static constexpr playrho::Fixed<BT,FB> min() noexcept { return playrho::Fixed<BT,FB>::GetMin(); }
         
         /// @brief Gets the max value available for the type.
-        static constexpr inline playrho::Fixed<BT,FB> max() noexcept    { return playrho::Fixed<BT,FB>::GetMax(); }
+        static constexpr playrho::Fixed<BT,FB> max() noexcept    { return playrho::Fixed<BT,FB>::GetMax(); }
         
         /// @brief Gets the lowest value available for the type.
-        static constexpr inline playrho::Fixed<BT,FB> lowest() noexcept { return playrho::Fixed<BT,FB>::GetLowest(); }
+        static constexpr playrho::Fixed<BT,FB> lowest() noexcept { return playrho::Fixed<BT,FB>::GetLowest(); }
         
         /// @brief Number of radix digits that can be represented.
         static constexpr const int digits = playrho::Fixed<BT,FB>::WholeBits - 1;
@@ -57,10 +57,10 @@ namespace std {
         static constexpr const int radix = 0; ///< Radix used by the type.
         
         /// @brief Gets the epsilon value for the type.
-        static constexpr inline playrho::Fixed32 epsilon() noexcept { return playrho::Fixed<BT,FB>{0}; } // TODO(lou)
+        static constexpr playrho::Fixed32 epsilon() noexcept { return playrho::Fixed<BT,FB>{0}; } // TODO(lou)
         
         /// @brief Gets the round error value for the type.
-        static constexpr inline playrho::Fixed32 round_error() noexcept { return playrho::Fixed<BT,FB>{0}; } // TODO(lou)
+        static constexpr playrho::Fixed32 round_error() noexcept { return playrho::Fixed<BT,FB>{0}; } // TODO(lou)
         
         /// @brief One more than smallest negative power of the radix that's a valid
         ///    normalized floating-point value.
@@ -83,16 +83,16 @@ namespace std {
         static constexpr const bool has_denorm_loss = false; ///< Has <code>denorm</code> loss amount.
         
         /// @brief Gets the infinite value for the type.
-        static constexpr inline playrho::Fixed<BT,FB> infinity() noexcept { return playrho::Fixed<BT,FB>::GetInfinity(); }
+        static constexpr playrho::Fixed<BT,FB> infinity() noexcept { return playrho::Fixed<BT,FB>::GetInfinity(); }
         
         /// @brief Gets the quiet NaN value for the type.
-        static constexpr inline playrho::Fixed<BT,FB> quiet_NaN() noexcept { return playrho::Fixed<BT,FB>::GetNaN(); }
+        static constexpr playrho::Fixed<BT,FB> quiet_NaN() noexcept { return playrho::Fixed<BT,FB>::GetNaN(); }
         
         /// @brief Gets the signaling NaN value for the type.
-        static constexpr inline playrho::Fixed<BT,FB> signaling_NaN() noexcept { return playrho::Fixed<BT,FB>{0}; }
+        static constexpr playrho::Fixed<BT,FB> signaling_NaN() noexcept { return playrho::Fixed<BT,FB>{0}; }
         
         /// @brief Gets the <code>denorm</code> value for the type.
-        static constexpr inline playrho::Fixed<BT,FB> denorm_min() noexcept { return playrho::Fixed<BT,FB>{0}; }
+        static constexpr playrho::Fixed<BT,FB> denorm_min() noexcept { return playrho::Fixed<BT,FB>{0}; }
         
         static constexpr const bool is_iec559 = false; ///< @brief Not an IEEE 754 floating-point type.
         static constexpr const bool is_bounded = true; ///< Type bounded: has limited precision.

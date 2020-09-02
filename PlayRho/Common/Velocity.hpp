@@ -40,21 +40,21 @@ struct Velocity
 
 /// @brief Equality operator.
 /// @relatedalso Velocity
-constexpr inline bool operator==(const Velocity& lhs, const Velocity& rhs)
+constexpr bool operator==(const Velocity& lhs, const Velocity& rhs)
 {
     return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
 }
 
 /// @brief Inequality operator.
 /// @relatedalso Velocity
-constexpr inline bool operator!=(const Velocity& lhs, const Velocity& rhs)
+constexpr bool operator!=(const Velocity& lhs, const Velocity& rhs)
 {
     return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
 }
 
 /// @brief Multiplication assignment operator.
 /// @relatedalso Velocity
-constexpr inline Velocity& operator*= (Velocity& lhs, const Real rhs)
+constexpr Velocity& operator*= (Velocity& lhs, const Real rhs)
 {
     lhs.linear *= rhs;
     lhs.angular *= rhs;
@@ -63,7 +63,7 @@ constexpr inline Velocity& operator*= (Velocity& lhs, const Real rhs)
 
 /// @brief Division assignment operator.
 /// @relatedalso Velocity
-constexpr inline Velocity& operator/= (Velocity& lhs, const Real rhs)
+constexpr Velocity& operator/= (Velocity& lhs, const Real rhs)
 {
     lhs.linear /= rhs;
     lhs.angular /= rhs;
@@ -72,7 +72,7 @@ constexpr inline Velocity& operator/= (Velocity& lhs, const Real rhs)
 
 /// @brief Addition assignment operator.
 /// @relatedalso Velocity
-constexpr inline Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
+constexpr Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
 {
     lhs.linear += rhs.linear;
     lhs.angular += rhs.angular;
@@ -81,14 +81,14 @@ constexpr inline Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
 
 /// @brief Addition operator.
 /// @relatedalso Velocity
-constexpr inline Velocity operator+ (const Velocity& lhs, const Velocity& rhs)
+constexpr Velocity operator+ (const Velocity& lhs, const Velocity& rhs)
 {
     return Velocity{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
 }
 
 /// @brief Subtraction assignment operator.
 /// @relatedalso Velocity
-constexpr inline Velocity& operator-= (Velocity& lhs, const Velocity& rhs)
+constexpr Velocity& operator-= (Velocity& lhs, const Velocity& rhs)
 {
     lhs.linear -= rhs.linear;
     lhs.angular -= rhs.angular;
@@ -97,42 +97,42 @@ constexpr inline Velocity& operator-= (Velocity& lhs, const Velocity& rhs)
 
 /// @brief Subtraction operator.
 /// @relatedalso Velocity
-constexpr inline Velocity operator- (const Velocity& lhs, const Velocity& rhs)
+constexpr Velocity operator- (const Velocity& lhs, const Velocity& rhs)
 {
     return Velocity{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
 }
 
 /// @brief Negation operator.
 /// @relatedalso Velocity
-constexpr inline Velocity operator- (const Velocity& value)
+constexpr Velocity operator- (const Velocity& value)
 {
     return Velocity{-value.linear, -value.angular};
 }
 
 /// @brief Positive operator.
 /// @relatedalso Velocity
-constexpr inline Velocity operator+ (const Velocity& value)
+constexpr Velocity operator+ (const Velocity& value)
 {
     return value;
 }
 
 /// @brief Multiplication operator.
 /// @relatedalso Velocity
-constexpr inline Velocity operator* (const Velocity& lhs, const Real rhs)
+constexpr Velocity operator* (const Velocity& lhs, const Real rhs)
 {
     return Velocity{lhs.linear * rhs, lhs.angular * rhs};
 }
 
 /// @brief Multiplication operator.
 /// @relatedalso Velocity
-constexpr inline Velocity operator* (const Real lhs, const Velocity& rhs)
+constexpr Velocity operator* (const Real lhs, const Velocity& rhs)
 {
     return Velocity{rhs.linear * lhs, rhs.angular * lhs};
 }
 
 /// @brief Division operator.
 /// @relatedalso Velocity
-constexpr inline Velocity operator/ (const Velocity& lhs, const Real rhs)
+constexpr Velocity operator/ (const Velocity& lhs, const Real rhs)
 {
     const auto inverseRhs = Real{1} / rhs;
     return Velocity{lhs.linear * inverseRhs, lhs.angular * inverseRhs};
@@ -149,7 +149,7 @@ VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc);
 /// @brief Determines if the given value is valid.
 /// @relatedalso d2::Velocity
 template <>
-constexpr inline bool IsValid(const d2::Velocity& value) noexcept
+constexpr bool IsValid(const d2::Velocity& value) noexcept
 {
     return IsValid(value.linear) && IsValid(value.angular);
 }

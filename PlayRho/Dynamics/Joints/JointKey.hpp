@@ -40,7 +40,7 @@ class JointKey
 public:
     
     /// @brief Gets the <code>JointKey</code> for the given bodies.
-    static constexpr inline JointKey Get(const Body* bodyA, const Body* bodyB) noexcept
+    static constexpr JointKey Get(const Body* bodyA, const Body* bodyB) noexcept
     {
         return (bodyA < bodyB)? JointKey{bodyA, bodyB}: JointKey{bodyB, bodyA};
     }
@@ -59,7 +59,7 @@ public:
 
 private:
     /// @brief Initializing constructor.
-    constexpr inline JointKey(const Body* body1, const Body* body2):
+    constexpr JointKey(const Body* body1, const Body* body2):
         m_body1(body1), m_body2(body2)
     {
         // Intentionally empty.
@@ -78,7 +78,7 @@ private:
 JointKey GetJointKey(const Joint& joint) noexcept;
 
 /// @brief Compares the given joint keys.
-constexpr inline int Compare(const JointKey& lhs, const JointKey& rhs) noexcept
+constexpr int Compare(const JointKey& lhs, const JointKey& rhs) noexcept
 {
     if (lhs.GetBody1() < rhs.GetBody1())
     {
@@ -101,7 +101,7 @@ constexpr inline int Compare(const JointKey& lhs, const JointKey& rhs) noexcept
 
 /// @brief Determines whether the given key is for the given body.
 /// @relatedalso JointKey
-constexpr inline bool IsFor(const JointKey key, const Body* body) noexcept
+constexpr bool IsFor(const JointKey key, const Body* body) noexcept
 {
     return body == key.GetBody1() || body == key.GetBody2();
 }
@@ -122,7 +122,7 @@ namespace std
     struct less<playrho::d2::JointKey>
     {
         /// @brief Function object operator.
-        constexpr inline
+        constexpr
         bool operator()(const playrho::d2::JointKey& lhs, const playrho::d2::JointKey& rhs) const
         {
             return playrho::d2::Compare(lhs, rhs) < 0;
@@ -135,7 +135,7 @@ namespace std
     {
         
         /// @brief Function object operator.
-        constexpr inline
+        constexpr
         bool operator()( const playrho::d2::JointKey& lhs, const playrho::d2::JointKey& rhs ) const
         {
             return playrho::d2::Compare(lhs, rhs) == 0;

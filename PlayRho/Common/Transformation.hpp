@@ -51,14 +51,14 @@ constexpr const auto Transform_identity = Transformation{
 
 /// @brief Equality operator.
 /// @relatedalso Transformation
-constexpr inline bool operator== (Transformation lhs, Transformation rhs) noexcept
+constexpr bool operator== (Transformation lhs, Transformation rhs) noexcept
 {
     return (lhs.p == rhs.p) && (lhs.q == rhs.q);
 }
 
 /// @brief Inequality operator.
 /// @relatedalso Transformation
-constexpr inline bool operator!= (Transformation lhs, Transformation rhs) noexcept
+constexpr bool operator!= (Transformation lhs, Transformation rhs) noexcept
 {
     return (lhs.p != rhs.p) || (lhs.q != rhs.q);
 }
@@ -68,7 +68,7 @@ constexpr inline bool operator!= (Transformation lhs, Transformation rhs) noexce
 /// @brief Determines if the given value is valid.
 /// @relatedalso d2::Transformation
 template <>
-constexpr inline bool IsValid(const d2::Transformation& value) noexcept
+constexpr bool IsValid(const d2::Transformation& value) noexcept
 {
     return IsValid(value.p) && IsValid(value.q);
 }

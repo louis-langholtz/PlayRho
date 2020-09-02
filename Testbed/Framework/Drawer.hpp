@@ -31,7 +31,7 @@ struct Color
 {
     Color() = default;
     
-    constexpr inline Color(float ri, float gi, float bi, float ai = 1):
+    constexpr Color(float ri, float gi, float bi, float ai = 1):
         r(std::clamp(ri, 0.0f, 1.0f)),
         g(std::clamp(gi, 0.0f, 1.0f)),
         b(std::clamp(bi, 0.0f, 1.0f)),
@@ -40,7 +40,7 @@ struct Color
         // Intentionally empty.
     }
 
-    constexpr inline Color(Color copy, float new_a):
+    constexpr Color(Color copy, float new_a):
         Color{copy.r, copy.g, copy.b, new_a}
     {
         // Intentionally empty.

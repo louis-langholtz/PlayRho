@@ -41,7 +41,7 @@ namespace d2 {
 struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
 {
     /// @brief Gets the default radius.
-    static constexpr inline NonNegative<Length> GetDefaultRadius() noexcept
+    static constexpr NonNegative<Length> GetDefaultRadius() noexcept
     {
         return NonNegative<Length>{DefaultLinearSlop * 2};
     }
@@ -49,20 +49,20 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
     constexpr DiskShapeConf() = default;
 
     /// @brief Initializing constructor.
-    constexpr inline DiskShapeConf(NonNegative<Length> r): vertexRadius{r}
+    constexpr DiskShapeConf(NonNegative<Length> r): vertexRadius{r}
     {
         // Intentionally empty.
     }
 
     /// @brief Uses the given value as the location.
-    constexpr inline DiskShapeConf& UseLocation(Length2 value) noexcept
+    constexpr DiskShapeConf& UseLocation(Length2 value) noexcept
     {
         location = value;
         return *this;
     }
     
     /// @brief Uses the given value as the radius.
-    constexpr inline DiskShapeConf& UseRadius(NonNegative<Length> r) noexcept
+    constexpr DiskShapeConf& UseRadius(NonNegative<Length> r) noexcept
     {
         vertexRadius = r;
         return *this;
@@ -70,7 +70,7 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
     
     /// @brief Transforms the location by the given transformation matrix.
     /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
-    constexpr inline DiskShapeConf& Transform(const Mat22& m) noexcept
+    constexpr DiskShapeConf& Transform(const Mat22& m) noexcept
     {
         location = m * location;
         return *this;
@@ -122,7 +122,7 @@ inline bool operator!= (const DiskShapeConf& lhs, const DiskShapeConf& rhs) noex
 }
 
 /// @brief Gets the "child" count of the given disk shape configuration.
-constexpr inline ChildCounter GetChildCount(const DiskShapeConf&) noexcept
+constexpr ChildCounter GetChildCount(const DiskShapeConf&) noexcept
 {
     return 1;
 }
@@ -138,13 +138,13 @@ inline DistanceProxy GetChild(const DiskShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-constexpr inline NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg) noexcept
+constexpr NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg) noexcept
 {
     return arg.vertexRadius;
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-constexpr inline NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg,
+constexpr NonNegative<Length> GetVertexRadius(const DiskShapeConf& arg,
                                                              ChildCounter) noexcept
 {
     return GetVertexRadius(arg);

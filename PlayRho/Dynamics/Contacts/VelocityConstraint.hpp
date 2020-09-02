@@ -58,7 +58,7 @@ public:
     };
     
     /// @brief Gets the default configuration for a <code>VelocityConstraint</code>.
-    static constexpr inline Conf GetDefaultConf() noexcept
+    static constexpr Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }

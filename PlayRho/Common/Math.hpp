@@ -63,42 +63,42 @@ using std::abs;
 
 /// @brief Gets the "X" element of the given value - i.e. the first element.
 template <typename T>
-constexpr inline auto& GetX(T& value)
+constexpr auto& GetX(T& value)
 {
     return get<0>(value);
 }
 
 /// @brief Gets the "Y" element of the given value - i.e. the second element.
 template <typename T>
-constexpr inline auto& GetY(T& value)
+constexpr auto& GetY(T& value)
 {
     return get<1>(value);
 }
 
 /// @brief Gets the "Z" element of the given value - i.e. the third element.
 template <typename T>
-constexpr inline auto& GetZ(T& value)
+constexpr auto& GetZ(T& value)
 {
     return get<2>(value);
 }
 
 /// @brief Gets the "X" element of the given value - i.e. the first element.
 template <typename T>
-constexpr inline auto GetX(const T& value)
+constexpr auto GetX(const T& value)
 {
     return get<0>(value);
 }
 
 /// @brief Gets the "Y" element of the given value - i.e. the second element.
 template <typename T>
-constexpr inline auto GetY(const T& value)
+constexpr auto GetY(const T& value)
 {
     return get<1>(value);
 }
 
 /// @brief Gets the "Z" element of the given value - i.e. the third element.
 template <typename T>
-constexpr inline auto GetZ(const T& value)
+constexpr auto GetZ(const T& value)
 {
     return get<2>(value);
 }
@@ -107,7 +107,7 @@ constexpr inline auto GetZ(const T& value)
 /// @note If the given value is negative, this will result in an unsigned value which is the
 ///   two's complement modulo-wrapped value.
 template <typename T>
-constexpr inline std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
+constexpr std::enable_if_t<std::is_signed<T>::value, std::make_unsigned_t<T>>
 MakeUnsigned(const T& arg) noexcept
 {
     return static_cast<std::make_unsigned_t<T>>(arg);
@@ -115,7 +115,7 @@ MakeUnsigned(const T& arg) noexcept
 
 /// @brief Strips the unit from the given value.
 template <typename T, LoValueCheck lo, HiValueCheck hi>
-constexpr inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
+constexpr auto StripUnit(const BoundedValue<T, lo, hi>& v)
 {
     return StripUnit(v.get());
 }
@@ -129,7 +129,7 @@ constexpr inline auto StripUnit(const BoundedValue<T, lo, hi>& v)
 /// @brief Secant method.
 /// @sa https://en.wikipedia.org/wiki/Secant_method
 template <typename T, typename U>
-constexpr inline U Secant(T target, U a1, T s1, U a2, T s2) noexcept
+constexpr U Secant(T target, U a1, T s1, U a2, T s2) noexcept
 {
     static_assert(IsArithmetic<T>::value && IsArithmetic<U>::value, "Arithmetic types required.");
     return (a1 + (target - s1) * (a2 - a1) / (s2 - s1));
@@ -138,7 +138,7 @@ constexpr inline U Secant(T target, U a1, T s1, U a2, T s2) noexcept
 /// @brief Bisection method.
 /// @sa https://en.wikipedia.org/wiki/Bisection_method
 template <typename T>
-constexpr inline T Bisect(T a1, T a2) noexcept
+constexpr T Bisect(T a1, T a2) noexcept
 {
     return (a1 + a2) / 2;
 }
@@ -146,7 +146,7 @@ constexpr inline T Bisect(T a1, T a2) noexcept
 /// @brief Is-odd.
 /// @details Determines whether the given integral value is odd (as opposed to being even).
 template <typename T>
-constexpr inline bool IsOdd(T val) noexcept
+constexpr bool IsOdd(T val) noexcept
 {
     static_assert(std::is_integral<T>::value, "Integral type required.");
     return val % 2;
@@ -154,7 +154,7 @@ constexpr inline bool IsOdd(T val) noexcept
 
 /// @brief Squares the given value.
 template<class TYPE>
-constexpr inline auto Square(TYPE t) noexcept { return t * t; }
+constexpr auto Square(TYPE t) noexcept { return t * t; }
 
 /// @brief Computes the arc-tangent of the given y and x values.
 /// @return Normalized angle - an angle between -Pi and Pi inclusively.
@@ -201,7 +201,7 @@ inline Vec2 RoundOff(Vec2 value, std::uint32_t precision = 100000)
 /// @brief Absolute value function for vectors.
 /// @relatedalso Vector
 template <typename T, std::size_t N>
-constexpr inline Vector<T, N> abs(const Vector<T, N>& v) noexcept
+constexpr Vector<T, N> abs(const Vector<T, N>& v) noexcept
 {
     auto result = Vector<T, N>{};
     for (auto i = decltype(N){0}; i < N; ++i)
@@ -222,7 +222,7 @@ inline d2::UnitVec abs(const d2::UnitVec& v) noexcept
 /// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
 template <typename T>
-constexpr inline
+constexpr
 std::enable_if_t<std::is_arithmetic<T>::value, bool> AlmostZero(T value)
 {
     return abs(value) < std::numeric_limits<T>::min();
@@ -230,7 +230,7 @@ std::enable_if_t<std::is_arithmetic<T>::value, bool> AlmostZero(T value)
 
 /// @brief Determines whether the given two values are "almost equal".
 template <typename T>
-constexpr inline
+constexpr
 std::enable_if_t<std::is_floating_point<T>::value, bool> AlmostEqual(T x, T y, int ulp = 2)
 {
     // From http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon :
@@ -305,7 +305,7 @@ inline Angle GetAngle(const Vector2<T> value)
 /// @note For performance, use this instead of <code>GetMagnitude(T value)</code> (if possible).
 /// @return Non-negative value from 0 to infinity, or NaN.
 template <typename T>
-constexpr inline
+constexpr
 auto GetMagnitudeSquared(T value) noexcept
 {
     using VT = typename T::value_type;
@@ -351,7 +351,7 @@ inline auto GetMagnitude(T value)
 /// @return Dot product of the vectors (0 means the two vectors are perpendicular).
 ///
 template <typename T1, typename T2>
-constexpr inline auto Dot(const T1 a, const T2 b) noexcept
+constexpr auto Dot(const T1 a, const T2 b) noexcept
 {
     static_assert(std::tuple_size<T1>::value == std::tuple_size<T2>::value,
                   "Dot only for same tuple-like sized types");
@@ -396,7 +396,7 @@ constexpr inline auto Dot(const T1 a, const T2 b) noexcept
 ///
 template <class T1, class T2, std::enable_if_t<
     std::tuple_size<T1>::value == 2 && std::tuple_size<T2>::value == 2, int> = 0>
-constexpr inline auto Cross(T1 a, T2 b) noexcept
+constexpr auto Cross(T1 a, T2 b) noexcept
 {
     assert(isfinite(StripUnit(get<0>(a))));
     assert(isfinite(StripUnit(get<1>(a))));
@@ -428,7 +428,7 @@ constexpr inline auto Cross(T1 a, T2 b) noexcept
 /// @return Cross product of the two values.
 template <class T1, class T2, std::enable_if_t<
     std::tuple_size<T1>::value == 3 && std::tuple_size<T2>::value == 3, int> = 0>
-constexpr inline auto Cross(T1 a, T2 b) noexcept
+constexpr auto Cross(T1 a, T2 b) noexcept
 {
     assert(isfinite(get<0>(a)));
     assert(isfinite(get<1>(a)));
@@ -448,7 +448,7 @@ constexpr inline auto Cross(T1 a, T2 b) noexcept
 /// @brief Solves A * x = b, where b is a column vector.
 /// @note This is more efficient than computing the inverse in one-shot cases.
 template <typename T, typename U>
-constexpr inline auto Solve(const Matrix22<U> mat, const Vector2<T> b) noexcept
+constexpr auto Solve(const Matrix22<U> mat, const Vector2<T> b) noexcept
 {
     const auto cp = Cross(get<0>(mat), get<1>(mat));
     const auto inverseCp = Real{1} / cp;
@@ -462,7 +462,7 @@ constexpr inline auto Solve(const Matrix22<U> mat, const Vector2<T> b) noexcept
 
 /// @brief Inverts the given value.
 template <class IN_TYPE>
-constexpr inline auto Invert(const Matrix22<IN_TYPE> value) noexcept
+constexpr auto Invert(const Matrix22<IN_TYPE> value) noexcept
 {
     const auto cp = Cross(get<0>(value), get<1>(value));
     using OutType = decltype(get<0>(value)[0] / cp);
@@ -477,7 +477,7 @@ constexpr inline auto Invert(const Matrix22<IN_TYPE> value) noexcept
 
 /// @brief Solves A * x = b, where b is a column vector.
 /// @note This is more efficient than computing the inverse in one-shot cases.
-constexpr inline Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
+constexpr Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
 {
     const auto dp = Dot(GetX(mat), Cross(GetY(mat), GetZ(mat)));
     const auto det = (dp != 0)? Real{1} / dp: dp;
@@ -491,7 +491,7 @@ constexpr inline Vec3 Solve33(const Mat33& mat, const Vec3 b) noexcept
 /// @note This is more efficient than computing the inverse in one-shot cases.
 /// @note Solves only the upper 2-by-2 matrix equation.
 template <typename T>
-constexpr inline T Solve22(const Mat33& mat, const T b) noexcept
+constexpr T Solve22(const Mat33& mat, const T b) noexcept
 {
     const auto cp = GetX(GetX(mat)) * GetY(GetY(mat)) - GetX(GetY(mat)) * GetY(GetX(mat));
     const auto det = (cp != 0)? Real{1} / cp: cp;
@@ -502,7 +502,7 @@ constexpr inline T Solve22(const Mat33& mat, const T b) noexcept
 
 /// @brief Gets the inverse of the given matrix as a 2-by-2.
 /// @return Zero matrix if singular.
-constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
+constexpr Mat33 GetInverse22(const Mat33& value) noexcept
 {
     const auto a = GetX(GetX(value)), b = GetX(GetY(value)), c = GetY(GetX(value)), d = GetY(GetY(value));
     auto det = (a * d) - (b * c);
@@ -515,7 +515,7 @@ constexpr inline Mat33 GetInverse22(const Mat33& value) noexcept
     
 /// @brief Gets the symmetric inverse of this matrix as a 3-by-3.
 /// @return Zero matrix if singular.
-constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
+constexpr Mat33 GetSymInverse33(const Mat33& value) noexcept
 {
     auto det = Dot(GetX(value), Cross(GetY(value), GetZ(value)));
     if (det != Real{0})
@@ -544,7 +544,7 @@ constexpr inline Mat33 GetSymInverse33(const Mat33& value) noexcept
 /// @return A counter-clockwise 90-degree rotation of the given vector.
 /// @sa GetFwdPerpendicular.
 template <class T>
-constexpr inline auto GetRevPerpendicular(const T vector) noexcept
+constexpr auto GetRevPerpendicular(const T vector) noexcept
 {
     // See http://mathworld.wolfram.com/PerpendicularVector.html
     return T{-GetY(vector), GetX(vector)};
@@ -556,7 +556,7 @@ constexpr inline auto GetRevPerpendicular(const T vector) noexcept
 /// @return A clockwise 90-degree rotation of the given vector.
 /// @sa GetRevPerpendicular.
 template <class T>
-constexpr inline auto GetFwdPerpendicular(const T vector) noexcept
+constexpr auto GetFwdPerpendicular(const T vector) noexcept
 {
     // See http://mathworld.wolfram.com/PerpendicularVector.html
     return T{GetY(vector), -GetX(vector)};
@@ -567,13 +567,13 @@ constexpr inline auto GetFwdPerpendicular(const T vector) noexcept
 /// @param m An M-row by N-column *transformation matrix* to multiply the vector by.
 /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
 template <std::size_t M, typename T1, std::size_t N, typename T2>
-constexpr inline auto Transform(const Vector<T1, M> v, const Matrix<T2, M, N>& m) noexcept
+constexpr auto Transform(const Vector<T1, M> v, const Matrix<T2, M, N>& m) noexcept
 {
     return m * v;
 }
 
 /// @brief Multiplies a vector by a matrix.
-constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
+constexpr Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 {
     return Vec2{
         get<0>(get<0>(A)) * v[0] + get<0>(get<1>(A)) * v[1],
@@ -583,13 +583,13 @@ constexpr inline Vec2 Transform(const Vec2 v, const Mat33& A) noexcept
 
 /// Multiply a matrix transpose times a vector. If a rotation matrix is provided,
 /// then this transforms the vector from one frame to another (inverse transform).
-constexpr inline Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
+constexpr Vec2 InverseTransform(const Vec2 v, const Mat22& A) noexcept
 {
     return Vec2{Dot(v, GetX(A)), Dot(v, GetY(A))};
 }
 
 /// @brief Computes A^T * B.
-constexpr inline Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
+constexpr Mat22 MulT(const Mat22& A, const Mat22& B) noexcept
 {
     const auto c1 = Vec2{Dot(GetX(A), GetX(B)), Dot(GetY(A), GetX(B))};
     const auto c2 = Vec2{Dot(GetX(A), GetY(B)), Dot(GetY(A), GetY(B))};
@@ -640,7 +640,7 @@ Length2 ComputeCentroid(const Span<const Length2>& vertices);
 
 /// @brief Gets the modulo next value.
 template <typename T>
-constexpr inline T GetModuloNext(T value, T count) noexcept
+constexpr T GetModuloNext(T value, T count) noexcept
 {
     assert(value < count);
     return (value + 1) % count;
@@ -648,7 +648,7 @@ constexpr inline T GetModuloNext(T value, T count) noexcept
 
 /// @brief Gets the modulo previous value.
 template <typename T>
-constexpr inline T GetModuloPrev(T value, T count) noexcept
+constexpr T GetModuloPrev(T value, T count) noexcept
 {
     assert(value < count);
     return (value? value: count) - 1;
@@ -663,7 +663,7 @@ Angle GetDelta(Angle a1, Angle a2) noexcept;
 
 /// Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
 /// @return Angular rotation in the counter clockwise direction to go from angle 1 to angle 2.
-constexpr inline Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
+constexpr Angle GetRevRotationalAngle(Angle a1, Angle a2) noexcept
 {
     return (a1 > a2)? 360_deg - (a1 - a2): a2 - a1;
 }
@@ -694,7 +694,7 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices);
 namespace d2 {
 
 /// @brief Gets a <code>Vec2</code> representation of the given value.
-constexpr inline Vec2 GetVec2(const UnitVec value)
+constexpr Vec2 GetVec2(const UnitVec value)
 {
     return Vec2{get<0>(value), get<1>(value)};
 }
@@ -707,34 +707,34 @@ inline Angle GetAngle(const UnitVec value)
 
 /// @brief Multiplication operator.
 template <class T, LoValueCheck lo, HiValueCheck hi>
-constexpr inline Vector2<T> operator* (BoundedValue<T, lo, hi> s, UnitVec u) noexcept
+constexpr Vector2<T> operator* (BoundedValue<T, lo, hi> s, UnitVec u) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
 }
 
 /// @brief Multiplication operator.
 template <class T>
-constexpr inline Vector2<T> operator* (const T s, const UnitVec u) noexcept
+constexpr Vector2<T> operator* (const T s, const UnitVec u) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
 
 /// @brief Multiplication operator.
 template <class T, LoValueCheck lo, HiValueCheck hi>
-constexpr inline Vector2<T> operator* (UnitVec u, BoundedValue<T, lo, hi> s) noexcept
+constexpr Vector2<T> operator* (UnitVec u, BoundedValue<T, lo, hi> s) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
 }
 
 /// @brief Multiplication operator.
 template <class T>
-constexpr inline Vector2<T> operator* (const UnitVec u, const T s) noexcept
+constexpr Vector2<T> operator* (const UnitVec u, const T s) noexcept
 {
     return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
 
 /// @brief Division operator.
-constexpr inline Vec2 operator/ (const UnitVec u, const UnitVec::value_type s) noexcept
+constexpr Vec2 operator/ (const UnitVec u, const UnitVec::value_type s) noexcept
 {
     const auto inverseS = Real{1} / s;
     return Vec2{GetX(u) * inverseS, GetY(u) * inverseS};
@@ -746,7 +746,7 @@ constexpr inline Vec2 operator/ (const UnitVec u, const UnitVec::value_type s) n
 /// @param angle Expresses the angle to forward rotate the given vector by.
 /// @sa InverseRotate.
 template <class T>
-constexpr inline auto Rotate(const Vector2<T> vector, const UnitVec& angle) noexcept
+constexpr auto Rotate(const Vector2<T> vector, const UnitVec& angle) noexcept
 {
     const auto newX = (GetX(angle) * GetX(vector)) - (GetY(angle) * GetY(vector));
     const auto newY = (GetY(angle) * GetX(vector)) + (GetX(angle) * GetY(vector));
@@ -761,7 +761,7 @@ constexpr inline auto Rotate(const Vector2<T> vector, const UnitVec& angle) noex
 /// @param angle Expresses the angle to reverse rotate the given vector by.
 /// @sa Rotate.
 template <class T>
-constexpr inline auto InverseRotate(const Vector2<T> vector, const UnitVec& angle) noexcept
+constexpr auto InverseRotate(const Vector2<T> vector, const UnitVec& angle) noexcept
 {
     const auto newX = (GetX(angle) * GetX(vector)) + (GetY(angle) * GetY(vector));
     const auto newY = (GetX(angle) * GetY(vector)) - (GetY(angle) * GetX(vector));
@@ -813,7 +813,7 @@ inline Sweep GetNormalized(Sweep sweep) noexcept
 /// @param v 2-D position to transform (to rotate and then translate).
 /// @param xfm Transformation (a translation and rotation) to apply to the given vector.
 /// @return Rotated and translated vector.
-constexpr inline Length2 Transform(const Length2 v, const Transformation xfm) noexcept
+constexpr Length2 Transform(const Length2 v, const Transformation xfm) noexcept
 {
     return Rotate(v, xfm.q) + xfm.p;
 }
@@ -828,7 +828,7 @@ constexpr inline Length2 Transform(const Length2 v, const Transformation xfm) no
 /// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
 /// @param xfm Transformation (a translation and rotation) to inversely apply to the given vector.
 /// @return Inverse transformed vector.
-constexpr inline Length2 InverseTransform(const Length2 v, const Transformation xfm) noexcept
+constexpr Length2 InverseTransform(const Length2 v, const Transformation xfm) noexcept
 {
     return InverseRotate(v - xfm.p, xfm.q);
 }
@@ -836,7 +836,7 @@ constexpr inline Length2 InverseTransform(const Length2 v, const Transformation 
 /// @brief Multiplies a given transformation by another given transformation.
 /// @note <code>v2 = A.q.Rot(B.q.Rot(v1) + B.p) + A.p
 ///                = (A.q * B.q).Rot(v1) + A.q.Rot(B.p) + A.p</code>
-constexpr inline Transformation Mul(const Transformation& A, const Transformation& B) noexcept
+constexpr Transformation Mul(const Transformation& A, const Transformation& B) noexcept
 {
     return Transformation{A.p + Rotate(B.p, A.q), A.q.Rotate(B.q)};
 }
@@ -844,14 +844,14 @@ constexpr inline Transformation Mul(const Transformation& A, const Transformatio
 /// @brief Inverse multiplies a given transformation by another given transformation.
 /// @note <code>v2 = A.q' * (B.q * v1 + B.p - A.p)
 ///                = A.q' * B.q * v1 + A.q' * (B.p - A.p)</code>
-constexpr inline Transformation MulT(const Transformation& A, const Transformation& B) noexcept
+constexpr Transformation MulT(const Transformation& A, const Transformation& B) noexcept
 {
     const auto dp = B.p - A.p;
     return Transformation{InverseRotate(dp, A.q), B.q.Rotate(A.q.FlipY())};
 }
 
 /// @brief Gets the transformation for the given values.
-constexpr inline Transformation GetTransformation(const Length2 ctr, const UnitVec rot,
+constexpr Transformation GetTransformation(const Length2 ctr, const UnitVec rot,
                                                             const Length2 localCtr) noexcept
 {
     assert(IsValid(rot));
@@ -915,7 +915,7 @@ inline bool IsUnderActive(Velocity velocity,
 /// @brief Gets the reflection matrix for the given unit vector that defines the normal of
 ///   the line through the origin that points should be reflected against.
 /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
-constexpr inline auto GetReflectionMatrix(UnitVec axis)
+constexpr auto GetReflectionMatrix(UnitVec axis)
 {
     constexpr auto TupleSize = std::tuple_size<decltype(axis)>::value;
     constexpr auto NumRows = TupleSize;

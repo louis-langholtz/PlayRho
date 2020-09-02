@@ -41,7 +41,7 @@ struct JointConf
     JointConf() = delete; // deleted to prevent direct instantiation.
     
     /// @brief Initializing constructor.
-    constexpr inline explicit JointConf(JointType t) noexcept : type{t}
+    constexpr explicit JointConf(JointType t) noexcept : type{t}
     {
         // Intentionally empty.
     }
@@ -82,34 +82,34 @@ struct JointBuilder : JointConf
     using reference = value_type&;
     
     /// @brief Initializing constructor.
-    constexpr inline explicit JointBuilder(JointType t) noexcept : JointConf{t}
+    constexpr explicit JointBuilder(JointType t) noexcept : JointConf{t}
     {
         // Intentionally empty.
     }
     
     /// @brief Use value for body A setting.
-    constexpr inline reference UseBodyA(Body* b) noexcept
+    constexpr reference UseBodyA(Body* b) noexcept
     {
         bodyA = b;
         return static_cast<reference>(*this);
     }
     
     /// @brief Use value for body B setting.
-    constexpr inline reference UseBodyB(Body* b) noexcept
+    constexpr reference UseBodyB(Body* b) noexcept
     {
         bodyB = b;
         return static_cast<reference>(*this);
     }
     
     /// @brief Use value for collide connected setting.
-    constexpr inline reference UseCollideConnected(bool v) noexcept
+    constexpr reference UseCollideConnected(bool v) noexcept
     {
         collideConnected = v;
         return static_cast<reference>(*this);
     }
     
     /// @brief Use value for user data setting.
-    constexpr inline reference UseUserData(void* v) noexcept
+    constexpr reference UseUserData(void* v) noexcept
     {
         userData = v;
         return static_cast<reference>(*this);

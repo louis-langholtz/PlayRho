@@ -36,26 +36,26 @@ namespace playrho {
 class ContactKey
 {
 public:
-    constexpr inline ContactKey() noexcept
+    constexpr ContactKey() noexcept
     {
         // Intentionally empty
     }
     
     /// @brief Initializing constructor.
-    constexpr inline ContactKey(ContactCounter fp1, ContactCounter fp2) noexcept:
+    constexpr ContactKey(ContactCounter fp1, ContactCounter fp2) noexcept:
         m_ids{std::minmax(fp1, fp2)}
     {
         // Intentionally empty
     }
 
     /// @brief Gets the minimum index value.
-    constexpr inline ContactCounter GetMin() const noexcept
+    constexpr ContactCounter GetMin() const noexcept
     {
         return std::get<0>(m_ids);
     }
     
     /// @brief Gets the maximum index value.
-    constexpr inline ContactCounter GetMax() const noexcept
+    constexpr ContactCounter GetMax() const noexcept
     {
         return std::get<1>(m_ids);
     }
@@ -70,40 +70,40 @@ private:
 };
 
 /// @brief Equality operator.
-constexpr inline bool operator== (const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator== (const ContactKey lhs, const ContactKey rhs) noexcept
 {
     return lhs.GetMin() == rhs.GetMin() && lhs.GetMax() == rhs.GetMax();
 }
 
 /// @brief Inequality operator.
-constexpr inline bool operator!= (const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator!= (const ContactKey lhs, const ContactKey rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
 /// @brief Less-than operator.
-constexpr inline bool operator< (const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator< (const ContactKey lhs, const ContactKey rhs) noexcept
 {
     return (lhs.GetMin() < rhs.GetMin())
         || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() < rhs.GetMax()));
 }
 
 /// @brief Less-than or equal-to operator.
-constexpr inline bool operator<= (const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator<= (const ContactKey lhs, const ContactKey rhs) noexcept
 {
     return (lhs.GetMin() < rhs.GetMin())
     || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() <= rhs.GetMax()));
 }
 
 /// @brief Greater-than operator.
-constexpr inline bool operator> (const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator> (const ContactKey lhs, const ContactKey rhs) noexcept
 {
     return (lhs.GetMin() > rhs.GetMin())
         || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() > rhs.GetMax()));
 }
 
 /// @brief Greater-than or equal-to operator.
-constexpr inline bool operator>= (const ContactKey lhs, const ContactKey rhs) noexcept
+constexpr bool operator>= (const ContactKey lhs, const ContactKey rhs) noexcept
 {
     return (lhs.GetMin() > rhs.GetMin())
     || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() >= rhs.GetMax()));
@@ -146,7 +146,7 @@ namespace std
         using result_type = std::size_t;
 
         /// @brief Function object operator.
-        constexpr inline std::size_t operator()(const playrho::ContactKey& key) const
+        constexpr std::size_t operator()(const playrho::ContactKey& key) const
         {
             // Use simple and fast Knuth multiplicative hash...
             const auto a = std::size_t{key.GetMin()} * 2654435761u;

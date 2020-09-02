@@ -42,13 +42,13 @@ public:
     using CountType = std::size_t;
 
     /// @brief Gets the initial capacity.
-    static constexpr inline CountType GetInitialCapacity() noexcept
+    static constexpr CountType GetInitialCapacity() noexcept
     {
         return CountType(N);
     }
     
     /// @brief Gets the buffer growth rate.
-    static constexpr inline CountType GetBufferGrowthRate() noexcept
+    static constexpr CountType GetBufferGrowthRate() noexcept
     {
         return CountType{2};
     }
@@ -108,19 +108,19 @@ public:
     }
 
     /// @brief Gets the current size in numbers of elements.
-    constexpr inline CountType size() const noexcept
+    constexpr CountType size() const noexcept
     {
         return m_count;
     }
     
     /// @brief Gets the capacity in number of elements.
-    constexpr inline CountType capacity() const noexcept
+    constexpr CountType capacity() const noexcept
     {
         return m_capacity;
     }
 
     /// @brief Whether this stack is empty.
-    constexpr inline bool empty() const noexcept
+    constexpr bool empty() const noexcept
     {
         return m_count == 0;
     }

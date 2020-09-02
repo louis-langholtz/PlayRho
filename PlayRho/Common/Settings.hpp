@@ -47,14 +47,14 @@ template <typename T>
 struct Defaults
 {
     /// @brief Gets the linear slop.
-    static constexpr inline auto GetLinearSlop() noexcept
+    static constexpr auto GetLinearSlop() noexcept
     {
         // Return the value used by Box2D 2.3.2 b2_linearSlop define....
         return 0.005_m;
     }
     
     /// @brief Gets the max vertex radius.
-    static constexpr inline auto GetMaxVertexRadius() noexcept
+    static constexpr auto GetMaxVertexRadius() noexcept
     {
         // DefaultLinearSlop * Real{2 * 1024 * 1024};
         // linearSlop * 2550000
@@ -67,7 +67,7 @@ template <unsigned int FRACTION_BITS>
 struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
 {
     /// @brief Gets the linear slop.
-    static constexpr inline auto GetLinearSlop() noexcept
+    static constexpr auto GetLinearSlop() noexcept
     {
         // Needs to be big enough that the step tolerance doesn't go to zero.
         // ex: FRACTION_BITS==10, then divisor==256
@@ -75,7 +75,7 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
     }
     
     /// @brief Gets the max vertex radius.
-    static constexpr inline auto GetMaxVertexRadius() noexcept
+    static constexpr auto GetMaxVertexRadius() noexcept
     {
         // linearSlop * 2550000
         return Length{Real(1u << (28 - FRACTION_BITS)) * 1_m};

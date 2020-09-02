@@ -75,7 +75,7 @@ public:
     WorldManifold() = default;
     
     /// @brief Initializing constructor.
-    constexpr inline explicit WorldManifold(UnitVec normal) noexcept:
+    constexpr explicit WorldManifold(UnitVec normal) noexcept:
         m_normal{normal}
     {
         assert(IsValid(normal));
@@ -83,7 +83,7 @@ public:
     }
     
     /// @brief Initializing constructor.
-    constexpr inline explicit WorldManifold(UnitVec normal, PointData ps0) noexcept:
+    constexpr explicit WorldManifold(UnitVec normal, PointData ps0) noexcept:
         m_normal{normal},
         m_points{ps0.location, GetInvalid<Length2>()},
         m_impulses{ps0.impulse, Momentum2{}},
@@ -94,7 +94,7 @@ public:
     }
     
     /// @brief Initializing constructor.
-    constexpr inline explicit WorldManifold(UnitVec normal, PointData ps0, PointData ps1) noexcept:
+    constexpr explicit WorldManifold(UnitVec normal, PointData ps0, PointData ps1) noexcept:
         m_normal{normal},
         m_points{ps0.location, ps1.location},
         m_impulses{ps0.impulse, ps1.impulse},

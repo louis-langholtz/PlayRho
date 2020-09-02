@@ -48,22 +48,22 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
     /// @brief Super type.
     using super = JointBuilder<RevoluteJointConf>;
     
-    constexpr inline RevoluteJointConf() noexcept: super{JointType::Revolute} {}
+    constexpr RevoluteJointConf() noexcept: super{JointType::Revolute} {}
     
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
     RevoluteJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
     
     /// @brief Uses the given enable limit state value.
-    constexpr inline RevoluteJointConf& UseEnableLimit(bool v) noexcept;
+    constexpr RevoluteJointConf& UseEnableLimit(bool v) noexcept;
     
     /// @brief Uses the given lower angle value.
-    constexpr inline RevoluteJointConf& UseLowerAngle(Angle v) noexcept;
+    constexpr RevoluteJointConf& UseLowerAngle(Angle v) noexcept;
     
     /// @brief Uses the given upper angle value.
-    constexpr inline RevoluteJointConf& UseUpperAngle(Angle v) noexcept;
+    constexpr RevoluteJointConf& UseUpperAngle(Angle v) noexcept;
     
     /// @brief Uses the given enable motor state value.
-    constexpr inline RevoluteJointConf& UseEnableMotor(bool v) noexcept;
+    constexpr RevoluteJointConf& UseEnableMotor(bool v) noexcept;
 
     /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
@@ -94,25 +94,25 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
     Torque maxMotorTorque = 0;
 };
 
-constexpr inline RevoluteJointConf& RevoluteJointConf::UseEnableLimit(bool v) noexcept
+constexpr RevoluteJointConf& RevoluteJointConf::UseEnableLimit(bool v) noexcept
 {
     enableLimit = v;
     return *this;
 }
 
-constexpr inline RevoluteJointConf& RevoluteJointConf::UseLowerAngle(Angle v) noexcept
+constexpr RevoluteJointConf& RevoluteJointConf::UseLowerAngle(Angle v) noexcept
 {
     lowerAngle = v;
     return *this;
 }
 
-constexpr inline RevoluteJointConf& RevoluteJointConf::UseUpperAngle(Angle v) noexcept
+constexpr RevoluteJointConf& RevoluteJointConf::UseUpperAngle(Angle v) noexcept
 {
     upperAngle = v;
     return *this;
 }
 
-constexpr inline RevoluteJointConf& RevoluteJointConf::UseEnableMotor(bool v) noexcept
+constexpr RevoluteJointConf& RevoluteJointConf::UseEnableMotor(bool v) noexcept
 {
     enableMotor = v;
     return *this;

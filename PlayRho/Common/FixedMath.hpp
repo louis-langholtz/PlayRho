@@ -45,7 +45,7 @@ namespace playrho {
 /// @brief Computes the absolute value.
 /// @sa http://en.cppreference.com/w/cpp/numeric/math/fabs
 template <typename BT, unsigned int FB, int N = 5>
-constexpr inline Fixed<BT, FB> abs(Fixed<BT, FB> arg)
+constexpr Fixed<BT, FB> abs(Fixed<BT, FB> arg)
 {
     return arg >= 0? arg: -arg;
 }
@@ -113,7 +113,7 @@ template <typename BT, unsigned int FB>
 constexpr const auto FixedPi = Fixed<BT, FB>{3.14159265358979323846264338327950288};
 
 /// @brief Computes the factorial.
-constexpr inline auto factorial(std::int64_t n)
+constexpr auto factorial(std::int64_t n)
 {
     // n! = n·(n – 1)·(n – 2) · · · 3·2·1
     auto res = n;
@@ -131,7 +131,7 @@ constexpr inline auto factorial(std::int64_t n)
 /// @sa https://en.wikipedia.org/wiki/Exponentiation
 /// @sa https://en.wikipedia.org/wiki/Exponential_function
 template <typename BT, unsigned int FB, int N = 6>
-constexpr inline Fixed<BT, FB> exp(Fixed<BT, FB> arg)
+constexpr Fixed<BT, FB> exp(Fixed<BT, FB> arg)
 {
     const auto doReciprocal = (arg < 0);
     if (doReciprocal)
@@ -215,7 +215,7 @@ Fixed<BT, FB> log(Fixed<BT, FB> arg)
 /// @brief Computes the sine of the given argument via Maclaurin series approximation.
 /// @sa https://en.wikipedia.org/wiki/Taylor_series
 template <typename BT, unsigned int FB, int N = 5>
-constexpr inline Fixed<BT, FB> sin(Fixed<BT, FB> arg)
+constexpr Fixed<BT, FB> sin(Fixed<BT, FB> arg)
 {
     // Maclaurin series approximation...
     // sin x = sum((-1^n)*(x^(2n+1))/(2n+1)!)
@@ -244,7 +244,7 @@ constexpr inline Fixed<BT, FB> sin(Fixed<BT, FB> arg)
 /// @brief Computes the cosine of the given argument via Maclaurin series approximation.
 /// @sa https://en.wikipedia.org/wiki/Taylor_series
 template <typename BT, unsigned int FB, int N = 5>
-constexpr inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
+constexpr Fixed<BT, FB> cos(Fixed<BT, FB> arg)
 {
     // Maclaurin series approximation...
     // cos x = sum((-1^n)*(x^(2n))/(2n)!)
@@ -272,7 +272,7 @@ constexpr inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
 /// @sa http://en.cppreference.com/w/cpp/numeric/math/atan
 /// @sa https://en.wikipedia.org/wiki/Taylor_series
 template <typename BT, unsigned int FB, int N = 5>
-constexpr inline Fixed<BT, FB> atan(Fixed<BT, FB> arg)
+constexpr Fixed<BT, FB> atan(Fixed<BT, FB> arg)
 {
     // Note: if (x > 0) then arctan(x) ==  Pi/2 - arctan(1/x)
     //       if (x < 0) then arctan(x) == -Pi/2 - arctan(1/x).
@@ -307,7 +307,7 @@ constexpr inline Fixed<BT, FB> atan(Fixed<BT, FB> arg)
 /// @brief Computes the square root of a non-negative value.
 /// @sa https://en.wikipedia.org/wiki/Methods_of_computing_square_roots
 template <typename BT, unsigned int FB>
-constexpr inline auto ComputeSqrt(Fixed<BT, FB> arg)
+constexpr auto ComputeSqrt(Fixed<BT, FB> arg)
 {
     auto temp = Fixed<BT, FB>{1};
     auto tempSquared = Square(temp);
@@ -340,7 +340,7 @@ constexpr inline auto ComputeSqrt(Fixed<BT, FB> arg)
 /// @brief Truncates the given value.
 /// @sa http://en.cppreference.com/w/c/numeric/math/trunc
 template <typename BT, unsigned int FB>
-constexpr inline Fixed<BT, FB> trunc(Fixed<BT, FB> arg)
+constexpr Fixed<BT, FB> trunc(Fixed<BT, FB> arg)
 {
     return static_cast<Fixed<BT, FB>>(static_cast<long long>(arg));
 }
@@ -563,7 +563,7 @@ inline bool signbit(Fixed<BT, FB> value) noexcept
 /// @brief Gets whether the given value is not-a-number.
 /// @sa http://en.cppreference.com/w/cpp/numeric/math/isnan
 template <typename BT, unsigned int FB>
-constexpr inline bool isnan(Fixed<BT, FB> value) noexcept
+constexpr bool isnan(Fixed<BT, FB> value) noexcept
 {
     return value.Compare(0) == Fixed<BT, FB>::CmpResult::Incomparable;
 }

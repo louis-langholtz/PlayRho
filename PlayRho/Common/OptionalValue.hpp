@@ -39,13 +39,13 @@ namespace playrho {
         /// @brief Value type.
         using value_type = T;
         
-        constexpr inline OptionalValue() = default;
+        constexpr OptionalValue() = default;
         
         /// @brief Copy constructor.
-        constexpr inline OptionalValue(const OptionalValue& other) = default;
+        constexpr OptionalValue(const OptionalValue& other) = default;
 
         /// @brief Move constructor.
-        constexpr inline OptionalValue(OptionalValue&& other) noexcept:
+        constexpr OptionalValue(OptionalValue&& other) noexcept:
             m_value{std::move(other.m_value)}, m_set{other.m_set}
         {
             // Intentionally empty.
@@ -54,7 +54,7 @@ namespace playrho {
         }
 
         /// @brief Initializing constructor.
-        constexpr inline explicit OptionalValue(T v);
+        constexpr explicit OptionalValue(T v);
 
         ~OptionalValue() = default;
 
@@ -62,19 +62,19 @@ namespace playrho {
         constexpr const T& operator* () const;
 
         /// @brief Indirection operator.
-        constexpr inline T& operator* ();
+        constexpr T& operator* ();
         
         /// @brief Member of pointer operator.
         constexpr const T* operator-> () const;
         
         /// @brief Member of pointer operator.
-        constexpr inline T* operator-> ();
+        constexpr T* operator-> ();
 
         /// @brief Boolean operator.
-        constexpr inline explicit operator bool() const noexcept;
+        constexpr explicit operator bool() const noexcept;
 
         /// @brief Whether this optional value has a value.
-        constexpr inline bool has_value() const noexcept;
+        constexpr bool has_value() const noexcept;
         
         /// @brief Assignment operator.
         OptionalValue& operator= (const OptionalValue& other) = default;
@@ -93,13 +93,13 @@ namespace playrho {
         OptionalValue& operator= (T v);
 
         /// @brief Accesses the value.
-        constexpr inline T& value();
+        constexpr T& value();
 
         /// @brief Accesses the value.
         constexpr const T& value() const;
         
         /// @brief Gets the value or provides the alternate given value instead.
-        constexpr inline T value_or(const T& alt) const;
+        constexpr T value_or(const T& alt) const;
         
         /// @brief Resets the optional value back to its default constructed state.
         void reset() noexcept
@@ -114,16 +114,16 @@ namespace playrho {
     };
     
     template<typename T>
-    constexpr inline OptionalValue<T>::OptionalValue(T v): m_value{v}, m_set{true} {}
+    constexpr OptionalValue<T>::OptionalValue(T v): m_value{v}, m_set{true} {}
     
     template<typename T>
-    constexpr inline bool OptionalValue<T>::has_value() const noexcept
+    constexpr bool OptionalValue<T>::has_value() const noexcept
     {
         return m_set;
     }
     
     template<typename T>
-    constexpr inline OptionalValue<T>::operator bool() const noexcept
+    constexpr OptionalValue<T>::operator bool() const noexcept
     {
         return m_set;
     }
@@ -144,7 +144,7 @@ namespace playrho {
     }
     
     template<typename T>
-    constexpr inline T* OptionalValue<T>::operator->()
+    constexpr T* OptionalValue<T>::operator->()
     {
         assert(m_set);
         return &m_value;
@@ -158,14 +158,14 @@ namespace playrho {
     }
     
     template<typename T>
-    constexpr inline T& OptionalValue<T>::operator*()
+    constexpr T& OptionalValue<T>::operator*()
     {
         assert(m_set);
         return m_value;
     }
 
     template<typename T>
-    constexpr inline T& OptionalValue<T>::value()
+    constexpr T& OptionalValue<T>::value()
     {
         return m_value;
     }
@@ -177,7 +177,7 @@ namespace playrho {
     }
 
     template<typename T>
-    constexpr inline T OptionalValue<T>::value_or(const T& alt) const
+    constexpr T OptionalValue<T>::value_or(const T& alt) const
     {
         return m_set? m_value: alt;
     }

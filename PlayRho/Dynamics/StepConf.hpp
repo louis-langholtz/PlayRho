@@ -66,7 +66,7 @@ public:
     /// @sa GetTime().
     /// @sa GetInvTime().
     /// @param value Elapsed time amount.
-    constexpr inline StepConf& SetTime(Time value) noexcept
+    constexpr StepConf& SetTime(Time value) noexcept
     {
         time = value;
         invTime = (value != 0_s)? Real{1} / value: 0_Hz;
@@ -80,7 +80,7 @@ public:
     /// @sa GetTime().
     /// @sa GetInvTime().
     /// @param value Inverse time amount.
-    constexpr inline StepConf& SetInvTime(Frequency value) noexcept
+    constexpr StepConf& SetInvTime(Frequency value) noexcept
     {
         invTime = value;
         time = (value != 0_Hz)? Time{Real{1} / value}: 0_s;

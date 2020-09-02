@@ -662,7 +662,7 @@ struct Coords {
 #if 0
 TEST(Math, LengthFasterThanHypot)
 {
-    constexpr inline auto iterations = unsigned(5000000);
+    constexpr auto iterations = unsigned(5000000);
     
     std::chrono::duration<double> elapsed_secs_length;
     std::chrono::duration<double> elapsed_secs_hypot;

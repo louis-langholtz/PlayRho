@@ -50,7 +50,7 @@ class ChainShapeConf: public ShapeBuilder<ChainShapeConf>
 {
 public:
     /// @brief Gets the default vertex radius.
-    static constexpr inline NonNegative<Length> GetDefaultVertexRadius() noexcept
+    static constexpr NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
         return NonNegative<Length>{DefaultLinearSlop * Real{2}};
     }

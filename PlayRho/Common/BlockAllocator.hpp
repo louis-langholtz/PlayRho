@@ -133,7 +133,7 @@ namespace playrho {
         BlockDeallocator() = default;
 
         /// @brief Initializing constructor.
-        constexpr inline BlockDeallocator(BlockAllocator* a, size_type n) noexcept:
+        constexpr BlockDeallocator(BlockAllocator* a, size_type n) noexcept:
             allocator{a}, nelem{n}
         {
             // Intentionally empty.
