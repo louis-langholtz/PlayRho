@@ -826,12 +826,11 @@ PLAYRHO_CONSTEXPR inline Length2 Transform(const Length2 v, const Transformation
 /// transformation again) will result in the original vector being returned.
 /// @sa <code>Transform</code>.
 /// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
-/// @param T Transformation (a translation and rotation) to inversely apply to the given vector.
+/// @param xfm Transformation (a translation and rotation) to inversely apply to the given vector.
 /// @return Inverse transformed vector.
-PLAYRHO_CONSTEXPR inline Length2 InverseTransform(const Length2 v, const Transformation T) noexcept
+PLAYRHO_CONSTEXPR inline Length2 InverseTransform(const Length2 v, const Transformation xfm) noexcept
 {
-    const auto v2 = v - T.p;
-    return InverseRotate(v2, T.q);
+    return InverseRotate(v - xfm.p, xfm.q);
 }
 
 /// @brief Multiplies a given transformation by another given transformation.
