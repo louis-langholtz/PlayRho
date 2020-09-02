@@ -1087,7 +1087,7 @@ RegStepStats World::SolveReg(const StepConf& conf)
         {
             // Update fixtures (for broad-phase).
             stats.proxiesMoved += Synchronize(body, GetTransform0(body.GetSweep()), body.GetTransformation(),
-                        conf.displaceMultiplier, conf.aabbExtension);
+                                              conf.displaceMultiplier, conf.aabbExtension);
         }
     }
 
@@ -1210,18 +1210,18 @@ IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
     return results;
 }
 
-void World::ResetBodiesForSolveTOI() noexcept
+void World::ResetBodiesForSolveTOI(Bodies& bodies) noexcept
 {
-    for_each(begin(m_bodies), end(m_bodies), [&](Bodies::value_type& body) {
+    for_each(begin(bodies), end(bodies), [&](Bodies::value_type& body) {
         auto& b = GetRef(body);
         BodyAtty::UnsetIslanded(b);
         BodyAtty::ResetAlpha0(b);
     });
 }
 
-void World::ResetContactsForSolveTOI() noexcept
+void World::ResetContactsForSolveTOI(Contacts& contacts) noexcept
 {
-    for_each(begin(m_contacts), end(m_contacts), [&](Contacts::value_type &c) {
+    for_each(begin(contacts), end(contacts), [&](Contacts::value_type &c) {
         auto& contact = GetRef(std::get<Contact*>(c));
         ContactAtty::UnsetIslanded(contact);
         ContactAtty::UnsetToi(contact);
@@ -1229,13 +1229,13 @@ void World::ResetContactsForSolveTOI() noexcept
     });
 }
 
-World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
+World::UpdateContactsData World::UpdateContactTOIs(Contacts& contacts, const StepConf& conf)
 {
     auto results = UpdateContactsData{};
 
     const auto toiConf = GetToiConf(conf);
     
-    for (auto&& contact: m_contacts)
+    for (auto&& contact: contacts)
     {
         auto& c = GetRef(std::get<Contact*>(contact));
         if (c.HasValidToi())
@@ -1293,12 +1293,12 @@ World::UpdateContactsData World::UpdateContactTOIs(const StepConf& conf)
     return results;
 }
     
-World::ContactToiData World::GetSoonestContact() const noexcept
+World::ContactToiData World::GetSoonestContact(const Contacts& contacts) noexcept
 {
     auto minToi = nextafter(Real{1}, Real{0});
     auto found = static_cast<Contact*>(nullptr);
     auto count = ContactCounter{0};
-    for (auto&& contact: m_contacts)
+    for (const auto& contact: contacts)
     {
         const auto c = GetPtr(std::get<Contact*>(contact));
         if (c->HasValidToi())
@@ -1326,8 +1326,8 @@ ToiStepStats World::SolveToi(const StepConf& conf)
 
     if (IsStepComplete())
     {
-        ResetBodiesForSolveTOI();
-        ResetContactsForSolveTOI();
+        ResetBodiesForSolveTOI(m_bodies);
+        ResetContactsForSolveTOI(m_contacts);
     }
 
     const auto subStepping = GetSubStepping();
@@ -1335,14 +1335,14 @@ ToiStepStats World::SolveToi(const StepConf& conf)
     // Find TOI events and solve them.
     for (;;)
     {
-        const auto updateData = UpdateContactTOIs(conf);
+        const auto updateData = UpdateContactTOIs(m_contacts, conf);
         stats.contactsAtMaxSubSteps += updateData.numAtMaxSubSteps;
         stats.contactsUpdatedToi += updateData.numUpdatedTOI;
         stats.maxDistIters = std::max(stats.maxDistIters, updateData.maxDistIters);
         stats.maxRootIters = std::max(stats.maxRootIters, updateData.maxRootIters);
         stats.maxToiIters = std::max(stats.maxToiIters, updateData.maxToiIters);
         
-        const auto next = GetSoonestContact();
+        const auto next = GetSoonestContact(m_contacts);
         const auto contact = next.contact;
         const auto ncount = next.simultaneous;
         if (!contact)
@@ -1530,13 +1530,13 @@ IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
     // bodies sweeps and transforms to the minimum contact's TOI.
     if (bA->IsAccelerable())
     {
-        const auto procOut = ProcessContactsForTOI(island, *bA, toi, conf);
+        const auto procOut = ProcessContactsForTOI(island, *bA, toi, conf, m_contactListener);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
     if (bB->IsAccelerable())
     {
-        const auto procOut = ProcessContactsForTOI(island, *bB, toi, conf);
+        const auto procOut = ProcessContactsForTOI(island, *bB, toi, conf, m_contactListener);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
@@ -1703,7 +1703,7 @@ void World::ResetContactsForSolveTOI(Body& body) noexcept
 
 World::ProcessContactsOutput
 World::ProcessContactsForTOI(Island& island, Body& body, Real toi,
-                             const StepConf& conf)
+                             const StepConf& conf, ContactListener* contactListener)
 {
     assert(IsIslanded(&body));
     assert(body.IsAccelerable());
@@ -1729,7 +1729,7 @@ World::ProcessContactsForTOI(Island& island, Body& body, Real toi,
             contact->SetEnabled();
             if (contact->NeedsUpdating())
             {
-                ContactAtty::Update(*contact, updateConf, m_contactListener);
+                ContactAtty::Update(*contact, updateConf, contactListener);
                 ++results.contactsUpdated;
             }
             else
@@ -1757,7 +1757,7 @@ World::ProcessContactsForTOI(Island& island, Body& body, Real toi,
 #if 0
             if (other->IsAccelerable())
             {
-                contactsUpdated += ProcessContactsForTOI(island, *other, toi);
+                contactsUpdated += ProcessContactsForTOI(island, *other, toi, m_contactListener);
             }
 #endif
         }
@@ -1815,7 +1815,7 @@ StepStats World::Step(const StepConf& conf)
     {
         FlagGuard<decltype(m_flags)> flagGaurd(m_flags, e_locked);
 
-        CreateAndDestroyProxies(conf);
+        CreateAndDestroyProxies(conf.aabbExtension);
         m_fixturesForProxies.clear();
 
         stepStats.pre.proxiesMoved = SynchronizeProxies(conf);
@@ -2260,7 +2260,7 @@ void World::UnregisterForProxies(const Body& body)
     m_bodiesForProxies.erase(first, end(m_bodiesForProxies));
 }
 
-void World::CreateAndDestroyProxies(const StepConf& conf)
+void World::CreateAndDestroyProxies(Length extension)
 {
     for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](Fixture *f) {
         assert(f);
@@ -2273,7 +2273,7 @@ void World::CreateAndDestroyProxies(const StepConf& conf)
         {
             if (enabled)
             {
-                CreateProxies(m_proxies, m_tree, fixture, conf.aabbExtension);
+                CreateProxies(m_proxies, m_tree, fixture, extension);
             }
         }
         else
@@ -2514,8 +2514,8 @@ void World::InternalTouchProxies(ProxyQueue& proxies, Fixture& fixture) noexcept
     }
 }
 
-ContactCounter World::Synchronize(Body& body,
-                                  Transformation xfm1, Transformation xfm2,
+ContactCounter World::Synchronize(const Body& body,
+                                  const Transformation& xfm1, const Transformation& xfm2,
                                   Real multiplier, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
@@ -2524,14 +2524,14 @@ ContactCounter World::Synchronize(Body& body,
     auto updatedCount = ContactCounter{0};
     const auto displacement = multiplier * (xfm2.p - xfm1.p);
     const auto fixtures = body.GetFixtures();
-    for_each(begin(fixtures), end(fixtures), [&](Body::Fixtures::value_type& f) {
+    for_each(cbegin(fixtures), cend(fixtures), [&](const Body::Fixtures::value_type& f) {
         updatedCount += Synchronize(GetRef(f), xfm1, xfm2, displacement, extension);
     });
     return updatedCount;
 }
 
-ContactCounter World::Synchronize(Fixture& fixture,
-                                  Transformation xfm1, Transformation xfm2,
+ContactCounter World::Synchronize(const Fixture& fixture,
+                                  const Transformation& xfm1, const Transformation& xfm2,
                                   Length2 displacement, Length extension)
 {
     assert(::playrho::IsValid(xfm1));

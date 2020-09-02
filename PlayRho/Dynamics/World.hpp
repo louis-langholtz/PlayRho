@@ -577,13 +577,13 @@ private:
     static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
 
     /// @brief Reset bodies for solve TOI.
-    void ResetBodiesForSolveTOI() noexcept;
+    static void ResetBodiesForSolveTOI(Bodies& bodies) noexcept;
 
     /// @brief Reset contacts for solve TOI.
-    void ResetContactsForSolveTOI() noexcept;
+    static void ResetContactsForSolveTOI(Contacts& contacts) noexcept;
     
     /// @brief Reset contacts for solve TOI.
-    void ResetContactsForSolveTOI(Body& body) noexcept;
+    static void ResetContactsForSolveTOI(Body& body) noexcept;
 
     /// @brief Process contacts output.
     struct ProcessContactsOutput
@@ -606,8 +606,8 @@ private:
     /// @param[in,out] body A dynamic/accelerable body.
     /// @param[in] toi Time of impact (TOI). Value between 0 and 1.
     /// @param[in] conf Step configuration data.
-    ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
-                                                const StepConf& conf);
+    static ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
+                                                       const StepConf& conf, ContactListener* contactListener);
 
     /// @brief Adds the given joint to this world.
     /// @note This also adds the joint to the bodies of the joint.
@@ -680,13 +680,13 @@ private:
     };
     
     /// @brief Updates the contact times of impact.
-    UpdateContactsData UpdateContactTOIs(const StepConf& conf);
+    static UpdateContactsData UpdateContactTOIs(Contacts& contacts, const StepConf& conf);
 
     /// @brief Gets the soonest contact.
     /// @details This finds the contact with the lowest (soonest) time of impact.
     /// @return Contact with the least time of impact and its time of impact, or null contact.
     ///  A non-null contact will be enabled, not have sensors, be active, and impenetrable.
-    ContactToiData GetSoonestContact() const noexcept;
+    static ContactToiData GetSoonestContact(const Contacts& contacts) noexcept;
 
     /// @brief Determines whether this world has new fixtures.
     bool HasNewFixtures() const noexcept;
@@ -754,19 +754,19 @@ private:
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   body's fixtures.
-    ContactCounter Synchronize(Body& body,
-                               Transformation xfm1, Transformation xfm2,
+    ContactCounter Synchronize(const Body& body,
+                               const Transformation& xfm1, const Transformation& xfm2,
                                Real multiplier, Length extension);
 
     /// @brief Synchronizes the given fixture.
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   fixture shape's children.
-    ContactCounter Synchronize(Fixture& fixture,
-                               Transformation xfm1, Transformation xfm2,
+    ContactCounter Synchronize(const Fixture& fixture,
+                               const Transformation& xfm1, const Transformation& xfm2,
                                Length2 displacement, Length extension);
     
     /// @brief Creates and destroys proxies.
-    void CreateAndDestroyProxies(const StepConf& conf);
+    void CreateAndDestroyProxies(Length extension);
     
     /// @brief Synchronizes proxies of the bodies for proxies.
     PreStepStats::counter_type SynchronizeProxies(const StepConf& conf);
