@@ -111,7 +111,7 @@ private:
 struct MultiShapeConf: public ShapeBuilder<MultiShapeConf>
 {
     /// @brief Gets the default vertex radius for the <code>MultiShapeConf</code>.
-    static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
+    static constexpr inline NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
         return NonNegative<Length>{DefaultLinearSlop * 2};
     }

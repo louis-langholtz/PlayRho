@@ -51,7 +51,7 @@ public:
     /// @brief Gets the "lowest" value supported by the <code>value_type</code>.
     /// @return Negative infinity if supported by the value type, limits::lowest()
     ///   otherwise.
-    static PLAYRHO_CONSTEXPR value_type GetLowest() noexcept
+    static constexpr value_type GetLowest() noexcept
     {
         return (limits::has_infinity)? -limits::infinity(): limits::lowest();
     }
@@ -59,7 +59,7 @@ public:
     /// @brief Gets the "highest" value supported by the <code>value_type</code>.
     /// @return Positive infinity if supported by the value type, limits::max()
     ///   otherwise.
-    static PLAYRHO_CONSTEXPR value_type GetHighest() noexcept
+    static constexpr value_type GetHighest() noexcept
     {
         return (limits::has_infinity)? limits::infinity(): limits::max();
     }
@@ -68,36 +68,36 @@ public:
     /// @details Constructs an "unset" interval.
     /// @post <code>GetMin()</code> returns the value of <code>GetHighest()</code>.
     /// @post <code>GetMax()</code> returns the value of <code>GetLowest()</code>.
-    PLAYRHO_CONSTEXPR Interval() = default;
+    constexpr Interval() = default;
     
     /// @brief Copy constructor.
     /// @post <code>GetMin()</code> returns the value of <code>other.GetMin()</code>.
     /// @post <code>GetMax()</code> returns the value of <code>other.GetMax()</code>.
-    PLAYRHO_CONSTEXPR Interval(const Interval& other) = default;
+    constexpr Interval(const Interval& other) = default;
 
     /// @brief Move constructor.
     /// @post <code>GetMin()</code> returns the value of <code>other.GetMin()</code>.
     /// @post <code>GetMax()</code> returns the value of <code>other.GetMax()</code>.
-    PLAYRHO_CONSTEXPR Interval(Interval&& other) = default;
+    constexpr Interval(Interval&& other) = default;
     
     /// @brief Initializing constructor.
     /// @post <code>GetMin()</code> returns the value of <code>v</code>.
     /// @post <code>GetMax()</code> returns the value of <code>v</code>.
-    PLAYRHO_CONSTEXPR explicit Interval(const value_type& v) noexcept:
+    constexpr explicit Interval(const value_type& v) noexcept:
         Interval(pair_type{v, v})
     {
         // Intentionally empty.
     }
     
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR Interval(const value_type& a, const value_type& b) noexcept:
+    constexpr Interval(const value_type& a, const value_type& b) noexcept:
         Interval(std::minmax(a, b))
     {
         // Intentionally empty.
     }
     
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR Interval(const std::initializer_list<T> ilist) noexcept:
+    constexpr Interval(const std::initializer_list<T> ilist) noexcept:
         Interval(std::minmax(ilist))
     {
         // Intentionally empty.
@@ -118,7 +118,7 @@ public:
     /// @brief Moves the interval by the given amount.
     /// @warning Behavior is undefined if incrementing the min or max value by
     ///   the given amount overflows the finite range of the <code>value_type</code>,
-    PLAYRHO_CONSTEXPR Interval& Move(const value_type& v) noexcept
+    constexpr Interval& Move(const value_type& v) noexcept
     {
         m_min += v;
         m_max += v;
@@ -126,13 +126,13 @@ public:
     }
 
     /// @brief Gets the minimum value of this range.
-    PLAYRHO_CONSTEXPR value_type GetMin() const noexcept
+    constexpr value_type GetMin() const noexcept
     {
         return m_min;
     }
 
     /// @brief Gets the maximum value of this range.
-    PLAYRHO_CONSTEXPR value_type GetMax() const noexcept
+    constexpr value_type GetMax() const noexcept
     {
         return m_max;
     }
@@ -142,7 +142,7 @@ public:
     ///   will be the given value.
     /// @param v Value to "include" into this value.
     /// @post This value's "min" is the minimum of the given value and this value's "min".
-    PLAYRHO_CONSTEXPR Interval& Include(const value_type& v) noexcept
+    constexpr Interval& Include(const value_type& v) noexcept
     {
         m_min = std::min(v, GetMin());
         m_max = std::max(v, GetMax());
@@ -155,7 +155,7 @@ public:
     /// @param v Value to "include" into this value.
     /// @post This value's "min" is the minimum of the given value's "min" and
     ///   this value's "min".
-    PLAYRHO_CONSTEXPR Interval& Include(const Interval& v) noexcept
+    constexpr Interval& Include(const Interval& v) noexcept
     {
         m_min = std::min(v.GetMin(), GetMin());
         m_max = std::max(v.GetMax(), GetMax());
@@ -163,7 +163,7 @@ public:
     }
     
     /// @brief Intersects this interval with the given interval.
-    PLAYRHO_CONSTEXPR Interval& Intersect(const Interval& v) noexcept
+    constexpr Interval& Intersect(const Interval& v) noexcept
     {
         const auto min = std::max(v.GetMin(), GetMin());
         const auto max = std::min(v.GetMax(), GetMax());
@@ -178,7 +178,7 @@ public:
     /// @param v Amount to expand this interval by.
     /// @warning Behavior is undefined if expanding the range by
     ///   the given amount overflows the range of the <code>value_type</code>,
-    PLAYRHO_CONSTEXPR Interval& Expand(const value_type& v) noexcept
+    constexpr Interval& Expand(const value_type& v) noexcept
     {
         if (v < value_type{})
         {
@@ -198,7 +198,7 @@ public:
     /// @param v Amount to expand both ends of this interval by.
     /// @warning Behavior is undefined if expanding the range by
     ///   the given amount overflows the range of the <code>value_type</code>,
-    PLAYRHO_CONSTEXPR Interval& ExpandEqually(const NonNegative<value_type>& v) noexcept
+    constexpr Interval& ExpandEqually(const NonNegative<value_type>& v) noexcept
     {
         const auto amount = value_type{v};
         m_min -= amount;
@@ -213,7 +213,7 @@ private:
     using pair_type = std::pair<value_type, value_type>;
     
     /// @brief Internal pair type accepting constructor.
-    PLAYRHO_CONSTEXPR explicit Interval(pair_type pair) noexcept:
+    constexpr explicit Interval(pair_type pair) noexcept:
         m_min{std::get<0>(pair)}, m_max{std::get<1>(pair)}
     {
         // Intentionally empty.
@@ -229,7 +229,7 @@ private:
 ///   max and min values overflows the range of the <code>Interval::value_type</code>.
 /// @return Non-negative value unless the given interval is "unset" or invalid.
 template <typename T>
-PLAYRHO_CONSTEXPR T GetSize(const Interval<T>& v) noexcept
+constexpr T GetSize(const Interval<T>& v) noexcept
 {
     return v.GetMax() - v.GetMin();
 }
@@ -239,7 +239,7 @@ PLAYRHO_CONSTEXPR T GetSize(const Interval<T>& v) noexcept
 ///   max and min values overflows the range of the <code>Interval::value_type</code>.
 /// @relatedalso Interval
 template <typename T>
-PLAYRHO_CONSTEXPR T GetCenter(const Interval<T>& v) noexcept
+constexpr T GetCenter(const Interval<T>& v) noexcept
 {
     // Rounding may cause issues...
     return (v.GetMin() + v.GetMax()) / 2;
@@ -248,7 +248,7 @@ PLAYRHO_CONSTEXPR T GetCenter(const Interval<T>& v) noexcept
 /// @brief Checks whether two value ranges have any intersection/overlap at all.
 /// @relatedalso Interval
 template <typename T>
-PLAYRHO_CONSTEXPR bool IsIntersecting(const Interval<T>& a, const Interval<T>& b) noexcept
+constexpr bool IsIntersecting(const Interval<T>& a, const Interval<T>& b) noexcept
 {
     const auto maxOfMins = std::max(a.GetMin(), b.GetMin());
     const auto minOfMaxs = std::min(a.GetMax(), b.GetMax());
@@ -258,28 +258,28 @@ PLAYRHO_CONSTEXPR bool IsIntersecting(const Interval<T>& a, const Interval<T>& b
 /// @brief Gets the intersecting interval of two given ranges.
 /// @relatedalso Interval
 template <typename T>
-PLAYRHO_CONSTEXPR Interval<T> GetIntersection(Interval<T> a, const Interval<T>& b) noexcept
+constexpr Interval<T> GetIntersection(Interval<T> a, const Interval<T>& b) noexcept
 {
     return a.Intersect(b);
 }
 
 /// @brief Determines whether the first range is entirely before the second range.
 template <typename T>
-PLAYRHO_CONSTEXPR bool IsEntirelyBefore(const Interval<T>& a, const Interval<T>& b)
+constexpr bool IsEntirelyBefore(const Interval<T>& a, const Interval<T>& b)
 {
     return a.GetMax() < b.GetMin();
 }
 
 /// @brief Determines whether the first range is entirely after the second range.
 template <typename T>
-PLAYRHO_CONSTEXPR bool IsEntirelyAfter(const Interval<T>& a, const Interval<T>& b)
+constexpr bool IsEntirelyAfter(const Interval<T>& a, const Interval<T>& b)
 {
     return a.GetMin() > b.GetMax();
 }
 
 /// @brief Determines whether the first range entirely encloses the second.
 template <typename T>
-PLAYRHO_CONSTEXPR bool IsEntirelyEnclosing(const Interval<T>& a, const Interval<T>& b)
+constexpr bool IsEntirelyEnclosing(const Interval<T>& a, const Interval<T>& b)
 {
     return a.GetMin() <= b.GetMin() && a.GetMax() >= b.GetMax();
 }
@@ -289,7 +289,7 @@ PLAYRHO_CONSTEXPR bool IsEntirelyEnclosing(const Interval<T>& a, const Interval<
 /// @relatedalso Interval
 /// @sa http://en.cppreference.com/w/cpp/concept/EqualityComparable
 template <typename T>
-PLAYRHO_CONSTEXPR bool operator== (const Interval<T>& a, const Interval<T>& b) noexcept
+constexpr bool operator== (const Interval<T>& a, const Interval<T>& b) noexcept
 {
     return (a.GetMin() == b.GetMin()) && (a.GetMax() == b.GetMax());
 }
@@ -299,7 +299,7 @@ PLAYRHO_CONSTEXPR bool operator== (const Interval<T>& a, const Interval<T>& b) n
 /// @relatedalso Interval
 /// @sa http://en.cppreference.com/w/cpp/concept/EqualityComparable
 template <typename T>
-PLAYRHO_CONSTEXPR bool operator!= (const Interval<T>& a, const Interval<T>& b) noexcept
+constexpr bool operator!= (const Interval<T>& a, const Interval<T>& b) noexcept
 {
     return !(a == b);
 }
@@ -315,7 +315,7 @@ PLAYRHO_CONSTEXPR bool operator!= (const Interval<T>& a, const Interval<T>& b) n
 /// @sa https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
 /// @sa http://en.cppreference.com/w/cpp/concept/LessThanComparable
 template <typename T>
-PLAYRHO_CONSTEXPR bool operator< (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
+constexpr bool operator< (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
 {
     return (lhs.GetMin() < rhs.GetMin()) ||
         (lhs.GetMin() == rhs.GetMin() && lhs.GetMax() < rhs.GetMax());
@@ -327,7 +327,7 @@ PLAYRHO_CONSTEXPR bool operator< (const Interval<T>& lhs, const Interval<T>& rhs
 /// @relatedalso Interval
 /// @sa https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
 template <typename T>
-PLAYRHO_CONSTEXPR bool operator<= (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
+constexpr bool operator<= (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
 {
     return (lhs.GetMin() < rhs.GetMin()) ||
         (lhs.GetMin() == rhs.GetMin() && lhs.GetMax() <= rhs.GetMax());
@@ -339,7 +339,7 @@ PLAYRHO_CONSTEXPR bool operator<= (const Interval<T>& lhs, const Interval<T>& rh
 /// @relatedalso Interval
 /// @sa https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
 template <typename T>
-PLAYRHO_CONSTEXPR bool operator> (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
+constexpr bool operator> (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
 {
     return (lhs.GetMin() > rhs.GetMin()) ||
         (lhs.GetMin() == rhs.GetMin() && lhs.GetMax() > rhs.GetMax());
@@ -351,7 +351,7 @@ PLAYRHO_CONSTEXPR bool operator> (const Interval<T>& lhs, const Interval<T>& rhs
 /// @relatedalso Interval
 /// @sa https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
 template <typename T>
-PLAYRHO_CONSTEXPR bool operator>= (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
+constexpr bool operator>= (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
 {
     return (lhs.GetMin() > rhs.GetMin()) ||
         (lhs.GetMin() == rhs.GetMin() && lhs.GetMax() >= rhs.GetMax());

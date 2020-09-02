@@ -39,7 +39,7 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
     /// @brief Super type.
     using super = JointBuilder<FrictionJointConf>;
     
-    PLAYRHO_CONSTEXPR inline FrictionJointConf() noexcept: super{JointType::Friction} {}
+    constexpr inline FrictionJointConf() noexcept: super{JointType::Friction} {}
     
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, axis, and reference angle using the world
@@ -47,10 +47,10 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
     FrictionJointConf(Body* bodyA, Body* bodyB, const Length2 anchor) noexcept;
     
     /// @brief Uses the given maximum force value.
-    PLAYRHO_CONSTEXPR inline FrictionJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
+    constexpr inline FrictionJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
     
     /// @brief Uses the given maximum torque value.
-    PLAYRHO_CONSTEXPR inline FrictionJointConf& UseMaxTorque(NonNegative<Torque> v) noexcept;
+    constexpr inline FrictionJointConf& UseMaxTorque(NonNegative<Torque> v) noexcept;
     
     /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
@@ -65,13 +65,13 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
     NonNegative<Torque> maxTorque = NonNegative<Torque>{0_Nm};
 };
 
-PLAYRHO_CONSTEXPR inline FrictionJointConf& FrictionJointConf::UseMaxForce(NonNegative<Force> v) noexcept
+constexpr inline FrictionJointConf& FrictionJointConf::UseMaxForce(NonNegative<Force> v) noexcept
 {
     maxForce = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline FrictionJointConf& FrictionJointConf::UseMaxTorque(NonNegative<Torque> v) noexcept
+constexpr inline FrictionJointConf& FrictionJointConf::UseMaxTorque(NonNegative<Torque> v) noexcept
 {
     maxTorque = v;
     return *this;

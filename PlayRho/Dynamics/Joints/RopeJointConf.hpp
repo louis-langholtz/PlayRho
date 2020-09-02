@@ -40,17 +40,17 @@ struct RopeJointConf : public JointBuilder<RopeJointConf>
     /// @brief Super type.
     using super = JointBuilder<RopeJointConf>;
     
-    PLAYRHO_CONSTEXPR inline RopeJointConf() noexcept: super{JointType::Rope} {}
+    constexpr inline RopeJointConf() noexcept: super{JointType::Rope} {}
     
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR inline RopeJointConf(Body* bodyA, Body* bodyB) noexcept:
+    constexpr inline RopeJointConf(Body* bodyA, Body* bodyB) noexcept:
         super{super{JointType::Rope}.UseBodyA(bodyA).UseBodyB(bodyB)}
     {
         // Intentionally empty.
     }
     
     /// @brief Uses the given max length value.
-    PLAYRHO_CONSTEXPR inline RopeJointConf& UseMaxLength(Length v) noexcept;
+    constexpr inline RopeJointConf& UseMaxLength(Length v) noexcept;
     
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{-1_m, 0_m};
@@ -62,7 +62,7 @@ struct RopeJointConf : public JointBuilder<RopeJointConf>
     Length maxLength = 0_m;
 };
 
-PLAYRHO_CONSTEXPR inline RopeJointConf& RopeJointConf::UseMaxLength(Length v) noexcept
+constexpr inline RopeJointConf& RopeJointConf::UseMaxLength(Length v) noexcept
 {
     maxLength = v;
     return *this;

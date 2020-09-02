@@ -563,7 +563,7 @@ inline bool signbit(Fixed<BT, FB> value) noexcept
 /// @brief Gets whether the given value is not-a-number.
 /// @sa http://en.cppreference.com/w/cpp/numeric/math/isnan
 template <typename BT, unsigned int FB>
-PLAYRHO_CONSTEXPR inline bool isnan(Fixed<BT, FB> value) noexcept
+constexpr inline bool isnan(Fixed<BT, FB> value) noexcept
 {
     return value.Compare(0) == Fixed<BT, FB>::CmpResult::Incomparable;
 }

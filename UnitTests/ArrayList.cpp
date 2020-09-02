@@ -71,7 +71,7 @@ TEST(ArrayList, ArrayConstruction)
     }
     {
         constexpr const auto maxsize = std::size_t{10};
-        PLAYRHO_CONSTEXPR const auto list = std::array<int, maxsize>{{5, 4, 3}};
+        constexpr const auto list = std::array<int, maxsize>{{5, 4, 3}};
         EXPECT_EQ(list.size(), decltype(list.size()){maxsize});
         EXPECT_EQ(list.max_size(), maxsize);
         EXPECT_EQ(list[0], 5);
@@ -81,7 +81,7 @@ TEST(ArrayList, ArrayConstruction)
     {
         constexpr const auto maxsize = std::size_t{10};
         
-        // Note: list cannot be PLAYRHO_CONSTEXPR const.
+        // Note: list cannot be constexpr const.
         const auto list = ArrayList<int, maxsize>{1, 2, 3};
 
         EXPECT_EQ(list.size(), decltype(list.size()){3});
@@ -91,7 +91,7 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(list[2], 3);
     }
     {
-        PLAYRHO_CONSTEXPR const auto list = Vector<int, 3>{1, 2, 3};
+        constexpr const auto list = Vector<int, 3>{1, 2, 3};
         EXPECT_EQ(list.size(), decltype(list.size()){3});
         EXPECT_EQ(list[0], 1);
         EXPECT_EQ(list[1], 2);

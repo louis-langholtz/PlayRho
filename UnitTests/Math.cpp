@@ -547,7 +547,7 @@ TEST(Math, NextPowerOfTwo)
         EXPECT_EQ(NextPowerOfTwo(val - 1u), val);
     }
 
-    PLAYRHO_CONSTEXPR const auto max = std::numeric_limits<std::uint32_t>::max() / 512;
+    constexpr const auto max = std::numeric_limits<std::uint32_t>::max() / 512;
     for (auto i = decltype(max){0}; i < max; ++i)
     {
         const auto next = std::pow(2, std::ceil(std::log(i + 1)/std::log(2)));

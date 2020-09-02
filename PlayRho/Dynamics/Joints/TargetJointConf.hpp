@@ -39,25 +39,25 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     /// @brief Super type.
     using super = JointBuilder<TargetJointConf>;
     
-    PLAYRHO_CONSTEXPR inline TargetJointConf() noexcept: super{JointType::Target} {}
+    constexpr inline TargetJointConf() noexcept: super{JointType::Target} {}
 
     /// @brief Initializing constructor.
-    PLAYRHO_CONSTEXPR inline TargetJointConf(NonNull<Body*> b) noexcept: super{super{JointType::Target}.UseBodyB(b)}
+    constexpr inline TargetJointConf(NonNull<Body*> b) noexcept: super{super{JointType::Target}.UseBodyB(b)}
     {
         // Intentionally empty.
     }
     
     /// @brief Use value for target.
-    PLAYRHO_CONSTEXPR inline TargetJointConf& UseTarget(Length2 v) noexcept;
+    constexpr inline TargetJointConf& UseTarget(Length2 v) noexcept;
 
     /// @brief Use value for max force.
-    PLAYRHO_CONSTEXPR inline TargetJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
+    constexpr inline TargetJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
 
     /// @brief Use value for frequency.
-    PLAYRHO_CONSTEXPR inline TargetJointConf& UseFrequency(NonNegative<Frequency> v) noexcept;
+    constexpr inline TargetJointConf& UseFrequency(NonNegative<Frequency> v) noexcept;
 
     /// @brief Use value for damping ratio.
-    PLAYRHO_CONSTEXPR inline TargetJointConf& UseDampingRatio(NonNegative<Real> v) noexcept;
+    constexpr inline TargetJointConf& UseDampingRatio(NonNegative<Real> v) noexcept;
 
     /// The initial world target point. This is assumed
     /// to coincide with the body anchor initially.
@@ -80,25 +80,25 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 };
 
-PLAYRHO_CONSTEXPR inline TargetJointConf& TargetJointConf::UseTarget(Length2 v) noexcept
+constexpr inline TargetJointConf& TargetJointConf::UseTarget(Length2 v) noexcept
 {
     target = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline TargetJointConf& TargetJointConf::UseMaxForce(NonNegative<Force> v) noexcept
+constexpr inline TargetJointConf& TargetJointConf::UseMaxForce(NonNegative<Force> v) noexcept
 {
     maxForce = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline TargetJointConf& TargetJointConf::UseFrequency(NonNegative<Frequency> v) noexcept
+constexpr inline TargetJointConf& TargetJointConf::UseFrequency(NonNegative<Frequency> v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline TargetJointConf& TargetJointConf::UseDampingRatio(NonNegative<Real> v) noexcept
+constexpr inline TargetJointConf& TargetJointConf::UseDampingRatio(NonNegative<Real> v) noexcept
 {
     dampingRatio = v;
     return *this;

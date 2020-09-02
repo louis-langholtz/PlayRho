@@ -58,7 +58,7 @@ public:
     };
     
     /// @brief Gets the default configuration for a <code>VelocityConstraint</code>.
-    static PLAYRHO_CONSTEXPR inline Conf GetDefaultConf() noexcept
+    static constexpr inline Conf GetDefaultConf() noexcept
     {
         return Conf{};
     }

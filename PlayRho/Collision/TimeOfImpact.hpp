@@ -60,22 +60,22 @@ struct ToiConf
     using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
     /// @brief Uses the given time max value.
-    PLAYRHO_CONSTEXPR inline ToiConf& UseTimeMax(Real value) noexcept;
+    constexpr inline ToiConf& UseTimeMax(Real value) noexcept;
 
     /// @brief Uses the given target depth value.
-    PLAYRHO_CONSTEXPR inline ToiConf& UseTargetDepth(Length value) noexcept;
+    constexpr inline ToiConf& UseTargetDepth(Length value) noexcept;
     
     /// @brief Uses the given tolerance value.
-    PLAYRHO_CONSTEXPR inline ToiConf& UseTolerance(NonNegative<Length> value) noexcept;
+    constexpr inline ToiConf& UseTolerance(NonNegative<Length> value) noexcept;
     
     /// @brief Uses the given max root iterations value.
-    PLAYRHO_CONSTEXPR inline ToiConf& UseMaxRootIters(root_iter_type value) noexcept;
+    constexpr inline ToiConf& UseMaxRootIters(root_iter_type value) noexcept;
     
     /// @brief Uses the given max TOI iterations value.
-    PLAYRHO_CONSTEXPR inline ToiConf& UseMaxToiIters(toi_iter_type value) noexcept;
+    constexpr inline ToiConf& UseMaxToiIters(toi_iter_type value) noexcept;
     
     /// @brief Uses the given max distance iterations value.
-    PLAYRHO_CONSTEXPR inline ToiConf& UseMaxDistIters(dist_iter_type value) noexcept;
+    constexpr inline ToiConf& UseMaxDistIters(dist_iter_type value) noexcept;
 
     /// @brief T-Max.
     Real tMax = 1;
@@ -106,37 +106,37 @@ struct ToiConf
     dist_iter_type maxDistIters = DefaultMaxDistanceIters; ///< Max distance iterations.
 };
 
-PLAYRHO_CONSTEXPR inline ToiConf& ToiConf::UseTimeMax(Real value) noexcept
+constexpr inline ToiConf& ToiConf::UseTimeMax(Real value) noexcept
 {
     tMax = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline ToiConf& ToiConf::UseTargetDepth(Length value) noexcept
+constexpr inline ToiConf& ToiConf::UseTargetDepth(Length value) noexcept
 {
     targetDepth = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline ToiConf& ToiConf::UseTolerance(NonNegative<Length> value) noexcept
+constexpr inline ToiConf& ToiConf::UseTolerance(NonNegative<Length> value) noexcept
 {
     tolerance = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline ToiConf& ToiConf::UseMaxRootIters(root_iter_type value) noexcept
+constexpr inline ToiConf& ToiConf::UseMaxRootIters(root_iter_type value) noexcept
 {
     maxRootIters = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline ToiConf& ToiConf::UseMaxToiIters(toi_iter_type value) noexcept
+constexpr inline ToiConf& ToiConf::UseMaxToiIters(toi_iter_type value) noexcept
 {
     maxToiIters = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline ToiConf& ToiConf::UseMaxDistIters(dist_iter_type value) noexcept
+constexpr inline ToiConf& ToiConf::UseMaxDistIters(dist_iter_type value) noexcept
 {
     maxDistIters = value;
     return *this;
@@ -144,7 +144,7 @@ PLAYRHO_CONSTEXPR inline ToiConf& ToiConf::UseMaxDistIters(dist_iter_type value)
 
 /// @brief Gets the default time of impact configuration.
 /// @relatedalso ToiConf
-PLAYRHO_CONSTEXPR inline auto GetDefaultToiConf()
+constexpr inline auto GetDefaultToiConf()
 {
     return ToiConf{};
 }

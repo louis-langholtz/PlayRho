@@ -1740,9 +1740,9 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
 TEST(World, HeavyOnLight)
 {
-    PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
-    PLAYRHO_CONSTEXPR const auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
-    PLAYRHO_CONSTEXPR const auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
+    constexpr const auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
+    constexpr const auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
+    constexpr const auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
 
     const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity);
     const auto upperBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
@@ -2526,9 +2526,9 @@ TEST(World, CollidingDynamicBodies)
 
 TEST(World_Longer, TilesComesToRest)
 {
-    PLAYRHO_CONSTEXPR const auto LinearSlop = Meter / 1000;
-    PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * 2 * 1_rad) / 180;
-    PLAYRHO_CONSTEXPR const auto VertexRadius = LinearSlop * 2;
+    constexpr const auto LinearSlop = Meter / 1000;
+    constexpr const auto AngularSlop = (Pi * 2 * 1_rad) / 180;
+    constexpr const auto VertexRadius = LinearSlop * 2;
     auto conf = PolygonShapeConf{}.UseVertexRadius(VertexRadius);
     const auto world = std::make_unique<World>(WorldConf{}.UseMinVertexRadius(VertexRadius));
     
@@ -2752,9 +2752,9 @@ TEST(World_Longer, TilesComesToRest)
 
 TEST(World, SpeedingBulletBallWontTunnel)
 {
-    PLAYRHO_CONSTEXPR const auto LinearSlop = playrho::Meter / playrho::Real(1000);
-    PLAYRHO_CONSTEXPR const auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
-    PLAYRHO_CONSTEXPR const auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
+    constexpr const auto LinearSlop = playrho::Meter / playrho::Real(1000);
+    constexpr const auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
+    constexpr const auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
     
     World world{WorldConf{}.UseMinVertexRadius(VertexRadius)};
 

@@ -53,7 +53,7 @@ struct MassData
 /// @brief Equality operator for mass data.
 /// @relatedalso MassData
 template <std::size_t N>
-PLAYRHO_CONSTEXPR inline bool operator== (MassData<N> lhs, MassData<N> rhs)
+constexpr inline bool operator== (MassData<N> lhs, MassData<N> rhs)
 {
     return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
 }
@@ -61,7 +61,7 @@ PLAYRHO_CONSTEXPR inline bool operator== (MassData<N> lhs, MassData<N> rhs)
 /// @brief Inequality operator for mass data.
 /// @relatedalso MassData
 template <std::size_t N>
-PLAYRHO_CONSTEXPR inline bool operator!= (MassData<N> lhs, MassData<N> rhs)
+constexpr inline bool operator!= (MassData<N> lhs, MassData<N> rhs)
 {
     return !(lhs == rhs);
 }
