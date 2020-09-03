@@ -290,8 +290,8 @@ namespace playrho
 template <typename T>
 struct ValueCheckHelper<T, Fixed32>
 {
-    static PLAYRHO_CONSTEXPR inline bool has_one = true;
-    static PLAYRHO_CONSTEXPR inline T one() noexcept { return T(1); }
+    static constexpr bool has_one = true;
+    static constexpr T one() noexcept { return T(1); }
 };
 }
 

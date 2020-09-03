@@ -54,7 +54,7 @@ static constexpr const LookupTable BlockSizeLookup;
 #endif
 
 /// @brief Block size lookup array.
-static PLAYRHO_CONSTEXPR const std::uint8_t s_blockSizeLookup[BlockAllocator::GetMaxBlockSize() + 1] =
+static constexpr const std::uint8_t s_blockSizeLookup[BlockAllocator::GetMaxBlockSize() + 1] =
 {
     0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1-16

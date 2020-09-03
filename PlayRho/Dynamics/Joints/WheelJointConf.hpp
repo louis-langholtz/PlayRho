@@ -43,7 +43,7 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     /// @brief Super type.
     using super = JointBuilder<WheelJointConf>;
     
-    PLAYRHO_CONSTEXPR inline WheelJointConf() noexcept: super{JointType::Wheel} {}
+    constexpr WheelJointConf() noexcept: super{JointType::Wheel} {}
     
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
@@ -51,19 +51,19 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
                   const UnitVec axis) noexcept;
     
     /// @brief Uses the given enable motor state value.
-    PLAYRHO_CONSTEXPR inline WheelJointConf& UseEnableMotor(bool v) noexcept;
+    constexpr WheelJointConf& UseEnableMotor(bool v) noexcept;
     
     /// @brief Uses the given max motor toque value.
-    PLAYRHO_CONSTEXPR inline WheelJointConf& UseMaxMotorTorque(Torque v) noexcept;
+    constexpr WheelJointConf& UseMaxMotorTorque(Torque v) noexcept;
     
     /// @brief Uses the given motor speed value.
-    PLAYRHO_CONSTEXPR inline WheelJointConf& UseMotorSpeed(AngularVelocity v) noexcept;
+    constexpr WheelJointConf& UseMotorSpeed(AngularVelocity v) noexcept;
     
     /// @brief Uses the given frequency value.
-    PLAYRHO_CONSTEXPR inline WheelJointConf& UseFrequency(Frequency v) noexcept;
+    constexpr WheelJointConf& UseFrequency(Frequency v) noexcept;
     
     /// @brief Uses the given damping ratio value.
-    PLAYRHO_CONSTEXPR inline WheelJointConf& UseDampingRatio(Real v) noexcept;
+    constexpr WheelJointConf& UseDampingRatio(Real v) noexcept;
     
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
@@ -90,31 +90,31 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     Real dampingRatio = 0.7f;
 };
 
-PLAYRHO_CONSTEXPR inline WheelJointConf& WheelJointConf::UseEnableMotor(bool v) noexcept
+constexpr WheelJointConf& WheelJointConf::UseEnableMotor(bool v) noexcept
 {
     enableMotor = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline WheelJointConf& WheelJointConf::UseMaxMotorTorque(Torque v) noexcept
+constexpr WheelJointConf& WheelJointConf::UseMaxMotorTorque(Torque v) noexcept
 {
     maxMotorTorque = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline WheelJointConf& WheelJointConf::UseMotorSpeed(AngularVelocity v) noexcept
+constexpr WheelJointConf& WheelJointConf::UseMotorSpeed(AngularVelocity v) noexcept
 {
     motorSpeed = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline WheelJointConf& WheelJointConf::UseFrequency(Frequency v) noexcept
+constexpr WheelJointConf& WheelJointConf::UseFrequency(Frequency v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline WheelJointConf& WheelJointConf::UseDampingRatio(Real v) noexcept
+constexpr WheelJointConf& WheelJointConf::UseDampingRatio(Real v) noexcept
 {
     dampingRatio = v;
     return *this;

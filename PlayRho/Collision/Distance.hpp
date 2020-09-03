@@ -40,7 +40,7 @@ class DistanceProxy;
 PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept;
 
 /// @brief Gets the delta to go from the first element to the second.
-PLAYRHO_CONSTEXPR inline Length2 GetDelta(PairLength2 arg) noexcept
+constexpr Length2 GetDelta(PairLength2 arg) noexcept
 {
     return std::get<1>(arg) - std::get<0>(arg);
 }

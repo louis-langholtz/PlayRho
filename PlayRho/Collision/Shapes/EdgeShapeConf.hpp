@@ -42,7 +42,7 @@ class EdgeShapeConf: public ShapeBuilder<EdgeShapeConf>
 {
 public:
     /// @brief Gets the default vertex radius.
-    static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
+    static constexpr NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
         return NonNegative<Length>{DefaultLinearSlop * Real{2}};
     }
@@ -128,7 +128,7 @@ inline bool operator!= (const EdgeShapeConf& lhs, const EdgeShapeConf& rhs) noex
 
 /// @brief Gets the "child" count for the given shape configuration.
 /// @return 1.
-PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const EdgeShapeConf&) noexcept
+constexpr ChildCounter GetChildCount(const EdgeShapeConf&) noexcept
 {
     return 1;
 }

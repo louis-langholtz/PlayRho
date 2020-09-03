@@ -41,13 +41,13 @@ struct FixtureConf
 {
     
     /// @brief Uses the given user data.
-    PLAYRHO_CONSTEXPR inline FixtureConf& UseUserData(void* value) noexcept;
+    constexpr FixtureConf& UseUserData(void* value) noexcept;
 
     /// @brief Uses the given sensor state value.
-    PLAYRHO_CONSTEXPR inline FixtureConf& UseIsSensor(bool value) noexcept;
+    constexpr FixtureConf& UseIsSensor(bool value) noexcept;
     
     /// @brief Uses the given filter value.
-    PLAYRHO_CONSTEXPR inline FixtureConf& UseFilter(Filter value) noexcept;
+    constexpr FixtureConf& UseFilter(Filter value) noexcept;
     
     /// Use this to store application specific fixture data.
     void* userData = nullptr;
@@ -60,19 +60,19 @@ struct FixtureConf
     Filter filter;
 };
 
-PLAYRHO_CONSTEXPR inline FixtureConf& FixtureConf::UseUserData(void* value) noexcept
+constexpr FixtureConf& FixtureConf::UseUserData(void* value) noexcept
 {
     userData = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline FixtureConf& FixtureConf::UseIsSensor(bool value) noexcept
+constexpr FixtureConf& FixtureConf::UseIsSensor(bool value) noexcept
 {
     isSensor = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline FixtureConf& FixtureConf::UseFilter(Filter value) noexcept
+constexpr FixtureConf& FixtureConf::UseFilter(Filter value) noexcept
 {
     filter = value;
     return *this;
@@ -80,7 +80,7 @@ PLAYRHO_CONSTEXPR inline FixtureConf& FixtureConf::UseFilter(Filter value) noexc
 
 /// @brief Gets the default fixture definition.
 /// @relatedalso FixtureConf
-PLAYRHO_CONSTEXPR inline FixtureConf GetDefaultFixtureConf() noexcept
+constexpr FixtureConf GetDefaultFixtureConf() noexcept
 {
     return FixtureConf{};
 }

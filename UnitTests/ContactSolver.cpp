@@ -27,7 +27,7 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-static PLAYRHO_CONSTEXPR const auto Baumgarte = Real{2} / Real{10};
+static constexpr const auto Baumgarte = Real{2} / Real{10};
 
 TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
 {

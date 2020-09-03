@@ -44,7 +44,7 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
     /// @brief Super type.
     using super = JointBuilder<DistanceJointConf>;
     
-    PLAYRHO_CONSTEXPR inline DistanceJointConf() noexcept: super{JointType::Distance} {}
+    constexpr DistanceJointConf() noexcept: super{JointType::Distance} {}
     
     /// @brief Copy constructor.
     DistanceJointConf(const DistanceJointConf& copy) = default;
@@ -56,13 +56,13 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
                      Length2 anchorB = Length2{}) noexcept;
     
     /// @brief Uses the given length.
-    PLAYRHO_CONSTEXPR inline DistanceJointConf& UseLength(Length v) noexcept;
+    constexpr DistanceJointConf& UseLength(Length v) noexcept;
     
     /// @brief Uses the given frequency.
-    PLAYRHO_CONSTEXPR inline DistanceJointConf& UseFrequency(NonNegative<Frequency> v) noexcept;
+    constexpr DistanceJointConf& UseFrequency(NonNegative<Frequency> v) noexcept;
     
     /// @brief Uses the given damping ratio.
-    PLAYRHO_CONSTEXPR inline DistanceJointConf& UseDampingRatio(Real v) noexcept;
+    constexpr DistanceJointConf& UseDampingRatio(Real v) noexcept;
     
     /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
@@ -82,19 +82,19 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
     Real dampingRatio = 0;
 };
 
-PLAYRHO_CONSTEXPR inline DistanceJointConf& DistanceJointConf::UseLength(Length v) noexcept
+constexpr DistanceJointConf& DistanceJointConf::UseLength(Length v) noexcept
 {
     length = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline DistanceJointConf& DistanceJointConf::UseFrequency(NonNegative<Frequency> v) noexcept
+constexpr DistanceJointConf& DistanceJointConf::UseFrequency(NonNegative<Frequency> v) noexcept
 {
     frequency = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline DistanceJointConf& DistanceJointConf::UseDampingRatio(Real v) noexcept
+constexpr DistanceJointConf& DistanceJointConf::UseDampingRatio(Real v) noexcept
 {
     dampingRatio = v;
     return *this;

@@ -45,20 +45,20 @@ struct Transformation
 };
 
 /// @brief Identity transformation value.
-PLAYRHO_CONSTEXPR const auto Transform_identity = Transformation{
+constexpr const auto Transform_identity = Transformation{
     Length2{0_m, 0_m}, UnitVec::GetRight()
 };
 
 /// @brief Equality operator.
 /// @relatedalso Transformation
-PLAYRHO_CONSTEXPR inline bool operator== (Transformation lhs, Transformation rhs) noexcept
+constexpr bool operator== (Transformation lhs, Transformation rhs) noexcept
 {
     return (lhs.p == rhs.p) && (lhs.q == rhs.q);
 }
 
 /// @brief Inequality operator.
 /// @relatedalso Transformation
-PLAYRHO_CONSTEXPR inline bool operator!= (Transformation lhs, Transformation rhs) noexcept
+constexpr bool operator!= (Transformation lhs, Transformation rhs) noexcept
 {
     return (lhs.p != rhs.p) || (lhs.q != rhs.q);
 }
@@ -68,7 +68,7 @@ PLAYRHO_CONSTEXPR inline bool operator!= (Transformation lhs, Transformation rhs
 /// @brief Determines if the given value is valid.
 /// @relatedalso d2::Transformation
 template <>
-PLAYRHO_CONSTEXPR inline bool IsValid(const d2::Transformation& value) noexcept
+constexpr bool IsValid(const d2::Transformation& value) noexcept
 {
     return IsValid(value.p) && IsValid(value.q);
 }

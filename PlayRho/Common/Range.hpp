@@ -36,26 +36,26 @@ namespace playrho {
         using iterator_type = IT;
 
         /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline Range(iterator_type iter_begin, iterator_type iter_end) noexcept:
+        constexpr Range(iterator_type iter_begin, iterator_type iter_end) noexcept:
         	m_begin{iter_begin}, m_end{iter_end}
         {
             // Intentionally empty.
         }
 
         /// @brief Gets the "begin" index value.
-        PLAYRHO_CONSTEXPR iterator_type begin() const noexcept
+        constexpr iterator_type begin() const noexcept
         {
             return m_begin;
         }
 
         /// @brief Gets the "end" index value.
-        PLAYRHO_CONSTEXPR iterator_type end() const noexcept
+        constexpr iterator_type end() const noexcept
         {
             return m_end;
         }
 
         /// @brief Whether this range is empty.
-        PLAYRHO_CONSTEXPR bool empty() const noexcept
+        constexpr bool empty() const noexcept
         {
             return m_begin == m_end;
         }
@@ -74,7 +74,7 @@ namespace playrho {
         using size_type = std::size_t;
 
         /// @brief Initializing constructor.
-        PLAYRHO_CONSTEXPR inline SizedRange(typename Range<IT>::iterator_type iter_begin,
+        constexpr SizedRange(typename Range<IT>::iterator_type iter_begin,
                              typename Range<IT>::iterator_type iter_end,
                              size_type size) noexcept:
         	Range<IT>{iter_begin, iter_end}, m_size{size}
@@ -83,7 +83,7 @@ namespace playrho {
         }
 
         /// @brief Gets the size of this range.
-        PLAYRHO_CONSTEXPR size_type size() const noexcept
+        constexpr size_type size() const noexcept
         {
             return m_size;
         }

@@ -145,18 +145,18 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
         
         const auto D = Cross(e1, e2);
         
-        PLAYRHO_CONSTEXPR const auto RealReciprocalOfTwo = Real{1} / Real{2}; // .5
+        constexpr const auto RealReciprocalOfTwo = Real{1} / Real{2}; // .5
         const auto triangleArea = D * RealReciprocalOfTwo;
         area += triangleArea;
         
         // Area weighted centroid
-        PLAYRHO_CONSTEXPR const auto RealReciprocalOfThree = Real{1} / Real{3}; // .3333333...
+        constexpr const auto RealReciprocalOfThree = Real{1} / Real{3}; // .3333333...
         center += StripUnit(triangleArea) * (e1 + e2) * RealReciprocalOfThree;
         
         const auto intx2 = Square(GetX(e1)) + GetX(e2) * GetX(e1) + Square(GetX(e2));
         const auto inty2 = Square(GetY(e1)) + GetY(e2) * GetY(e1) + Square(GetY(e2));
         
-        PLAYRHO_CONSTEXPR const auto RealReciprocalOfTwelve = Real{1} / Real{3 * 4}; // .083333..
+        constexpr const auto RealReciprocalOfTwelve = Real{1} / Real{3 * 4}; // .083333..
         const auto triangleI = D * (intx2 + inty2) * RealReciprocalOfTwelve;
         I += triangleI;
     }

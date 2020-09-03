@@ -534,7 +534,7 @@ Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
         }
     }
     
-    PLAYRHO_CONSTEXPR const auto k_tol = PLAYRHO_MAGIC(DefaultLinearSlop / Real{10});
+    constexpr const auto k_tol = PLAYRHO_MAGIC(DefaultLinearSlop / Real{10});
     return (edgeSepB.separation > (edgeSepA.separation + k_tol))?
     GetManifold(Manifold::e_faceB,
                 shapeB, xfB, edgeSepB.index1,

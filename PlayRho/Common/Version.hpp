@@ -61,13 +61,13 @@ namespace playrho {
     };
     
     /// @brief Equality operator.
-    PLAYRHO_CONSTEXPR inline bool operator== (Version lhs, Version rhs)
+    constexpr bool operator== (Version lhs, Version rhs)
     {
         return lhs.major == rhs.major && lhs.minor == rhs.minor && lhs.revision == rhs.revision;
     }
     
     /// @brief Inequality operator.
-    PLAYRHO_CONSTEXPR inline bool operator!= (Version lhs, Version rhs)
+    constexpr bool operator!= (Version lhs, Version rhs)
     {
         return !(lhs == rhs);
     }

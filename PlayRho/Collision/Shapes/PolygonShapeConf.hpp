@@ -42,7 +42,7 @@ class PolygonShapeConf: public ShapeBuilder<PolygonShapeConf>
 {
 public:
     /// @brief Gets the default vertex radius for the <code>PolygonShapeConf</code>.
-    static PLAYRHO_CONSTEXPR inline NonNegative<Length> GetDefaultVertexRadius() noexcept
+    static constexpr NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
         return NonNegative<Length>{DefaultLinearSlop * 2};
     }
@@ -198,7 +198,7 @@ inline PolygonShapeConf& PolygonShapeConf::UseVertexRadius(NonNegative<Length> v
 
 /// @brief Gets the "child" count for the given shape configuration.
 /// @return 1.
-PLAYRHO_CONSTEXPR inline ChildCounter GetChildCount(const PolygonShapeConf&) noexcept
+constexpr ChildCounter GetChildCount(const PolygonShapeConf&) noexcept
 {
     return 1;
 }

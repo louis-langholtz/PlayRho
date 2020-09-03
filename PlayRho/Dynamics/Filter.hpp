@@ -63,7 +63,7 @@ namespace playrho {
     
     /// @brief Equality operator.
     /// @relatedalso Filter
-    PLAYRHO_CONSTEXPR inline bool operator== (const Filter lhs, const Filter rhs) noexcept
+    constexpr bool operator== (const Filter lhs, const Filter rhs) noexcept
     {
         return lhs.categoryBits == rhs.categoryBits
             && lhs.maskBits == rhs.maskBits
@@ -72,7 +72,7 @@ namespace playrho {
 
     /// @brief Inequality operator.
     /// @relatedalso Filter
-    PLAYRHO_CONSTEXPR inline bool operator!= (const Filter lhs, const Filter rhs) noexcept
+    constexpr bool operator!= (const Filter lhs, const Filter rhs) noexcept
     {
         return !(lhs == rhs);
     }

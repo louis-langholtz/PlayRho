@@ -43,7 +43,7 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     /// @brief Super type.
     using super = JointBuilder<PrismaticJointConf>;
     
-    PLAYRHO_CONSTEXPR inline PrismaticJointConf() noexcept: super{JointType::Prismatic} {}
+    constexpr PrismaticJointConf() noexcept: super{JointType::Prismatic} {}
     
     /// @brief Copy constructor.
     PrismaticJointConf(const PrismaticJointConf& copy) = default;

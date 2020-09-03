@@ -577,13 +577,13 @@ private:
     static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
 
     /// @brief Reset bodies for solve TOI.
-    void ResetBodiesForSolveTOI() noexcept;
+    static void ResetBodiesForSolveTOI(Bodies& bodies) noexcept;
 
     /// @brief Reset contacts for solve TOI.
-    void ResetContactsForSolveTOI() noexcept;
+    static void ResetContactsForSolveTOI(Contacts& contacts) noexcept;
     
     /// @brief Reset contacts for solve TOI.
-    void ResetContactsForSolveTOI(Body& body) noexcept;
+    static void ResetContactsForSolveTOI(Body& body) noexcept;
 
     /// @brief Process contacts output.
     struct ProcessContactsOutput
@@ -606,8 +606,8 @@ private:
     /// @param[in,out] body A dynamic/accelerable body.
     /// @param[in] toi Time of impact (TOI). Value between 0 and 1.
     /// @param[in] conf Step configuration data.
-    ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
-                                                const StepConf& conf);
+    static ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
+                                                       const StepConf& conf, ContactListener* contactListener);
 
     /// @brief Adds the given joint to this world.
     /// @note This also adds the joint to the bodies of the joint.
@@ -680,13 +680,13 @@ private:
     };
     
     /// @brief Updates the contact times of impact.
-    UpdateContactsData UpdateContactTOIs(const StepConf& conf);
+    static UpdateContactsData UpdateContactTOIs(Contacts& contacts, const StepConf& conf);
 
     /// @brief Gets the soonest contact.
     /// @details This finds the contact with the lowest (soonest) time of impact.
     /// @return Contact with the least time of impact and its time of impact, or null contact.
     ///  A non-null contact will be enabled, not have sensors, be active, and impenetrable.
-    ContactToiData GetSoonestContact() const noexcept;
+    static ContactToiData GetSoonestContact(const Contacts& contacts) noexcept;
 
     /// @brief Determines whether this world has new fixtures.
     bool HasNewFixtures() const noexcept;
@@ -749,54 +749,27 @@ private:
 
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    void InternalTouchProxies(Fixture& fixture) noexcept;
+    static void InternalTouchProxies(ProxyQueue& proxies, Fixture& fixture) noexcept;
     
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   body's fixtures.
-    ContactCounter Synchronize(Body& body,
-                               Transformation xfm1, Transformation xfm2,
+    ContactCounter Synchronize(const Body& body,
+                               const Transformation& xfm1, const Transformation& xfm2,
                                Real multiplier, Length extension);
 
     /// @brief Synchronizes the given fixture.
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   fixture shape's children.
-    ContactCounter Synchronize(Fixture& fixture,
-                               Transformation xfm1, Transformation xfm2,
+    ContactCounter Synchronize(const Fixture& fixture,
+                               const Transformation& xfm1, const Transformation& xfm2,
                                Length2 displacement, Length extension);
     
     /// @brief Creates and destroys proxies.
-    void CreateAndDestroyProxies(const StepConf& conf);
+    void CreateAndDestroyProxies(Length extension);
     
     /// @brief Synchronizes proxies of the bodies for proxies.
     PreStepStats::counter_type SynchronizeProxies(const StepConf& conf);
-
-    /// @brief Whether the given body is in an island.
-    bool IsIslanded(const Body* body) const noexcept;
-
-    /// @brief Whether the given contact is in an island.
-    bool IsIslanded(const Contact* contact) const noexcept;
-
-    /// @brief Whether the given joint is in an island.
-    bool IsIslanded(const Joint* joint) const noexcept;
-
-    /// @brief Sets the given body to the in an island state.
-    void SetIslanded(Body* body) noexcept;
-
-    /// @brief Sets the given contact to the in an island state.
-    void SetIslanded(Contact* contact) noexcept;
-
-    /// @brief Sets the given joint to the in an island state.
-    void SetIslanded(Joint* joint) noexcept;
-
-    /// @brief Unsets the given body's in island state.
-    void UnsetIslanded(Body* body) noexcept;
-
-    /// @brief Unsets the given contact's in island state.
-    void UnsetIslanded(Contact* contact) noexcept;
-    
-    /// @brief Unsets the given joint's in island state.
-    void UnsetIslanded(Joint* joint) noexcept;
 
     /******** Member variables. ********/
     
@@ -967,51 +940,6 @@ inline void World::SetDestructionListener(DestructionListener* listener) noexcep
 inline void World::SetContactListener(ContactListener* listener) noexcept
 {
     m_contactListener = listener;
-}
-
-inline bool World::IsIslanded(const Body* body) const noexcept
-{
-    return BodyAtty::IsIslanded(*body);
-}
-
-inline bool World::IsIslanded(const Contact* contact) const noexcept
-{
-    return ContactAtty::IsIslanded(*contact);
-}
-
-inline bool World::IsIslanded(const Joint* joint) const noexcept
-{
-    return JointAtty::IsIslanded(*joint);
-}
-
-inline void World::SetIslanded(Body* body) noexcept
-{
-    BodyAtty::SetIslanded(*body);
-}
-
-inline void World::SetIslanded(Contact* contact) noexcept
-{
-    ContactAtty::SetIslanded(*contact);
-}
-
-inline void World::SetIslanded(Joint* joint) noexcept
-{
-    JointAtty::SetIslanded(*joint);
-}
-
-inline void World::UnsetIslanded(Body* body) noexcept
-{
-    BodyAtty::UnsetIslanded(*body);
-}
-
-inline void World::UnsetIslanded(Contact* contact) noexcept
-{
-    ContactAtty::UnsetIslanded(*contact);
-}
-
-inline void World::UnsetIslanded(Joint* joint) noexcept
-{
-    JointAtty::UnsetIslanded(*joint);
 }
 
 // Free functions.

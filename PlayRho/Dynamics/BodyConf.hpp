@@ -50,58 +50,58 @@ struct BodyConf
     // Builder-styled methods...
 
     /// @brief Use the given type.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseType(BodyType t) noexcept;
+    constexpr BodyConf& UseType(BodyType t) noexcept;
 
     /// @brief Use the given location.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseLocation(Length2 l) noexcept;
+    constexpr BodyConf& UseLocation(Length2 l) noexcept;
     
     /// @brief Use the given angle.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseAngle(Angle a) noexcept;
+    constexpr BodyConf& UseAngle(Angle a) noexcept;
     
     /// @brief Use the given linear velocity.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseLinearVelocity(LinearVelocity2 v) noexcept;
+    constexpr BodyConf& UseLinearVelocity(LinearVelocity2 v) noexcept;
     
     /// @brief Use the given angular velocity.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseAngularVelocity(AngularVelocity v) noexcept;
+    constexpr BodyConf& UseAngularVelocity(AngularVelocity v) noexcept;
     
     /// @brief Use the given position for the linear and angular positions.
-    PLAYRHO_CONSTEXPR inline BodyConf& Use(Position v) noexcept;
+    constexpr BodyConf& Use(Position v) noexcept;
 
     /// @brief Use the given velocity for the linear and angular velocities.
-    PLAYRHO_CONSTEXPR inline BodyConf& Use(Velocity v) noexcept;
+    constexpr BodyConf& Use(Velocity v) noexcept;
     
     /// @brief Use the given linear acceleration.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseLinearAcceleration(LinearAcceleration2 v) noexcept;
+    constexpr BodyConf& UseLinearAcceleration(LinearAcceleration2 v) noexcept;
     
     /// @brief Use the given angular acceleration.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseAngularAcceleration(AngularAcceleration v) noexcept;
+    constexpr BodyConf& UseAngularAcceleration(AngularAcceleration v) noexcept;
     
     /// @brief Use the given linear damping.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseLinearDamping(NonNegative<Frequency> v) noexcept;
+    constexpr BodyConf& UseLinearDamping(NonNegative<Frequency> v) noexcept;
     
     /// @brief Use the given angular damping.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseAngularDamping(NonNegative<Frequency> v) noexcept;
+    constexpr BodyConf& UseAngularDamping(NonNegative<Frequency> v) noexcept;
     
     /// @brief Use the given under active time.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseUnderActiveTime(Time v) noexcept;
+    constexpr BodyConf& UseUnderActiveTime(Time v) noexcept;
     
     /// @brief Use the given allow sleep value.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseAllowSleep(bool value) noexcept;
+    constexpr BodyConf& UseAllowSleep(bool value) noexcept;
     
     /// @brief Use the given awake value.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseAwake(bool value) noexcept;
+    constexpr BodyConf& UseAwake(bool value) noexcept;
     
     /// @brief Use the given fixed rotation state.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseFixedRotation(bool value) noexcept;
+    constexpr BodyConf& UseFixedRotation(bool value) noexcept;
     
     /// @brief Use the given bullet state.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseBullet(bool value) noexcept;
+    constexpr BodyConf& UseBullet(bool value) noexcept;
     
     /// @brief Use the given enabled state.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseEnabled(bool value) noexcept;
+    constexpr BodyConf& UseEnabled(bool value) noexcept;
     
     /// @brief Use the given user data.
-    PLAYRHO_CONSTEXPR inline BodyConf& UseUserData(void* value) noexcept;
+    constexpr BodyConf& UseUserData(void* value) noexcept;
     
     // Public member variables...
     
@@ -168,111 +168,111 @@ struct BodyConf
     void* userData = nullptr;
 };
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseType(BodyType t) noexcept
+constexpr BodyConf& BodyConf::UseType(BodyType t) noexcept
 {
     type = t;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseLocation(Length2 l) noexcept
+constexpr BodyConf& BodyConf::UseLocation(Length2 l) noexcept
 {
     location = l;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseAngle(Angle a) noexcept
+constexpr BodyConf& BodyConf::UseAngle(Angle a) noexcept
 {
     angle = a;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::Use(Position v) noexcept
+constexpr BodyConf& BodyConf::Use(Position v) noexcept
 {
     location = v.linear;
     angle = v.angular;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::Use(Velocity v) noexcept
+constexpr BodyConf& BodyConf::Use(Velocity v) noexcept
 {
     linearVelocity = v.linear;
     angularVelocity = v.angular;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseLinearVelocity(LinearVelocity2 v) noexcept
+constexpr BodyConf& BodyConf::UseLinearVelocity(LinearVelocity2 v) noexcept
 {
     linearVelocity = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseLinearAcceleration(LinearAcceleration2 v) noexcept
+constexpr BodyConf& BodyConf::UseLinearAcceleration(LinearAcceleration2 v) noexcept
 {
     linearAcceleration = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseAngularVelocity(AngularVelocity v) noexcept
+constexpr BodyConf& BodyConf::UseAngularVelocity(AngularVelocity v) noexcept
 {
     angularVelocity = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseAngularAcceleration(AngularAcceleration v) noexcept
+constexpr BodyConf& BodyConf::UseAngularAcceleration(AngularAcceleration v) noexcept
 {
     angularAcceleration = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseLinearDamping(NonNegative<Frequency> v) noexcept
+constexpr BodyConf& BodyConf::UseLinearDamping(NonNegative<Frequency> v) noexcept
 {
     linearDamping = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseAngularDamping(NonNegative<Frequency> v) noexcept
+constexpr BodyConf& BodyConf::UseAngularDamping(NonNegative<Frequency> v) noexcept
 {
     angularDamping = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseUnderActiveTime(Time v) noexcept
+constexpr BodyConf& BodyConf::UseUnderActiveTime(Time v) noexcept
 {
     underActiveTime = v;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseAllowSleep(bool value) noexcept
+constexpr BodyConf& BodyConf::UseAllowSleep(bool value) noexcept
 {
     allowSleep = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseAwake(bool value) noexcept
+constexpr BodyConf& BodyConf::UseAwake(bool value) noexcept
 {
     awake = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseFixedRotation(bool value) noexcept
+constexpr BodyConf& BodyConf::UseFixedRotation(bool value) noexcept
 {
     fixedRotation = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseBullet(bool value) noexcept
+constexpr BodyConf& BodyConf::UseBullet(bool value) noexcept
 {
     bullet = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseEnabled(bool value) noexcept
+constexpr BodyConf& BodyConf::UseEnabled(bool value) noexcept
 {
     enabled = value;
     return *this;
 }
 
-PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseUserData(void* value) noexcept
+constexpr BodyConf& BodyConf::UseUserData(void* value) noexcept
 {
     userData = value;
     return *this;
@@ -280,7 +280,7 @@ PLAYRHO_CONSTEXPR inline BodyConf& BodyConf::UseUserData(void* value) noexcept
 
 /// @brief Gets the default body definition.
 /// @relatedalso BodyConf
-PLAYRHO_CONSTEXPR inline BodyConf GetDefaultBodyConf() noexcept
+constexpr BodyConf GetDefaultBodyConf() noexcept
 {
     return BodyConf{};
 }

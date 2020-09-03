@@ -72,14 +72,14 @@ struct IsIterableImpl<T, VoidT<
 
 /// @brief Gets the maximum size of the given container.
 template <class T>
-PLAYRHO_CONSTEXPR inline auto max_size(const T& arg) -> decltype(arg.max_size())
+constexpr auto max_size(const T& arg) -> decltype(arg.max_size())
 {
     return arg.max_size();
 }
 
 /// @brief Checks whether the given container is full.
 template <class T>
-PLAYRHO_CONSTEXPR inline auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
+constexpr auto IsFull(const T& arg) -> decltype(size(arg) == max_size(arg))
 {
     return size(arg) == max_size(arg);
 }
@@ -109,16 +109,16 @@ static auto Size(T& v)
 
     /// @brief Gets an invalid value for the type.
     template <typename T>
-    PLAYRHO_CONSTEXPR inline T GetInvalid() noexcept
+    constexpr T GetInvalid() noexcept
     {
         static_assert(sizeof(T) == 0, "No available specialization");
     }
 
     /// @brief Determines if the given value is valid.
     template <typename T>
-    PLAYRHO_CONSTEXPR inline bool IsValid(const T& value) noexcept
+    constexpr bool IsValid(const T& value) noexcept
     {
-        // Note: This is not necessarily a no-op!! But it is a "PLAYRHO_CONSTEXPR inline".
+        // Note: This is not necessarily a no-op!! But it is a "constexpr".
         //
         // From http://en.cppreference.com/w/cpp/numeric/math/isnan:
         //   "Another way to test if a floating-point value is NaN is
@@ -135,28 +135,28 @@ static auto Size(T& v)
     
     /// @brief Gets an invalid value for the float type.
     template <>
-    PLAYRHO_CONSTEXPR inline float GetInvalid() noexcept
+    constexpr float GetInvalid() noexcept
     {
         return std::numeric_limits<float>::signaling_NaN();
     }
     
     /// @brief Gets an invalid value for the double type.
     template <>
-    PLAYRHO_CONSTEXPR inline double GetInvalid() noexcept
+    constexpr double GetInvalid() noexcept
     {
         return std::numeric_limits<double>::signaling_NaN();
     }
     
     /// @brief Gets an invalid value for the long double type.
     template <>
-    PLAYRHO_CONSTEXPR inline long double GetInvalid() noexcept
+    constexpr long double GetInvalid() noexcept
     {
         return std::numeric_limits<long double>::signaling_NaN();
     }
     
     /// @brief Gets an invalid value for the std::size_t type.
     template <>
-    PLAYRHO_CONSTEXPR inline std::size_t GetInvalid() noexcept
+    constexpr std::size_t GetInvalid() noexcept
     {
         return static_cast<std::size_t>(-1);
     }
@@ -165,7 +165,7 @@ static auto Size(T& v)
     
     /// @brief Determines if the given value is valid.
     template <>
-    PLAYRHO_CONSTEXPR inline bool IsValid(const std::size_t& value) noexcept
+    constexpr bool IsValid(const std::size_t& value) noexcept
     {
         return value != GetInvalid<std::size_t>();
     }
@@ -174,56 +174,56 @@ static auto Size(T& v)
     
     /// @brief Gets a pointer for the given variable.
     template <class T>
-    PLAYRHO_CONSTEXPR const T* GetPtr(const T* value) noexcept
+    constexpr const T* GetPtr(const T* value) noexcept
     {
         return value;
     }
     
     /// @brief Gets a pointer for the given variable.
     template <class T>
-    PLAYRHO_CONSTEXPR inline T* GetPtr(T* value) noexcept
+    constexpr T* GetPtr(T* value) noexcept
     {
         return value;
     }
     
     /// @brief Gets a pointer for the given variable.
     template <class T>
-    PLAYRHO_CONSTEXPR const T* GetPtr(const T& value) noexcept
+    constexpr const T* GetPtr(const T& value) noexcept
     {
         return &value;
     }
     
     /// @brief Gets a pointer for the given variable.
     template <class T>
-    PLAYRHO_CONSTEXPR inline T* GetPtr(T& value) noexcept
+    constexpr T* GetPtr(T& value) noexcept
     {
         return &value;
     }
 
     /// @brief Gets a reference for the given variable.
     template <class T>
-    PLAYRHO_CONSTEXPR const T& GetRef(const T* value) noexcept
+    constexpr const T& GetRef(const T* value) noexcept
     {
         return *value;
     }
     
     /// @brief Gets a reference for the given variable.
     template <class T>
-    PLAYRHO_CONSTEXPR inline T& GetRef(T* value) noexcept
+    constexpr T& GetRef(T* value) noexcept
     {
         return *value;
     }
     
     /// @brief Gets a reference for the given variable.
     template <class T>
-    PLAYRHO_CONSTEXPR const T& GetRef(const T& value) noexcept
+    constexpr const T& GetRef(const T& value) noexcept
     {
         return value;
     }
     
     /// @brief Gets a reference for the given variable.
     template <class T>
-    PLAYRHO_CONSTEXPR inline T& GetRef(T& value) noexcept
+    constexpr T& GetRef(T& value) noexcept
     {
         return value;
     }

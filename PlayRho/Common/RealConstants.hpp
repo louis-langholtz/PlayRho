@@ -51,13 +51,13 @@ namespace playrho {
 ///
 /// @sa https://en.wikipedia.org/wiki/Pi
 ///
-PLAYRHO_CONSTEXPR const auto Pi = Real(3.14159265358979323846264338327950288);
+constexpr const auto Pi = Real(3.14159265358979323846264338327950288);
 
 /// @brief Square root of two.
 ///
 /// @sa https://en.wikipedia.org/wiki/Square_root_of_2
 ///
-PLAYRHO_CONSTEXPR const auto SquareRootTwo =
+constexpr const auto SquareRootTwo =
     Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
 
 /// @defgroup DecimalUnitPrefices Decimal Unit Prefices
@@ -70,35 +70,35 @@ PLAYRHO_CONSTEXPR const auto SquareRootTwo =
 
 /// @brief Centi- (1 x 10^-2).
 /// @sa https://en.wikipedia.org/wiki/Centi-
-PLAYRHO_CONSTEXPR const auto Centi = Real(1e-2);
+constexpr const auto Centi = Real(1e-2);
 
 /// @brief Deci- (1 x 10^-1).
 /// @sa https://en.wikipedia.org/wiki/Deci-
-PLAYRHO_CONSTEXPR const auto Deci = Real(1e-1);
+constexpr const auto Deci = Real(1e-1);
 
 /// @brief Kilo- (1 x 10^3).
 /// @sa https://en.wikipedia.org/wiki/Kilo-
-PLAYRHO_CONSTEXPR const auto Kilo = Real(1e3);
+constexpr const auto Kilo = Real(1e3);
 
 /// @brief Mega- (1 x 10^6).
 /// @sa https://en.wikipedia.org/wiki/Mega-
-PLAYRHO_CONSTEXPR const auto Mega = Real(1e6);
+constexpr const auto Mega = Real(1e6);
 
 /// @brief Giga- (1 x 10^9).
 /// @sa https://en.wikipedia.org/wiki/Giga-
-PLAYRHO_CONSTEXPR const auto Giga = Real(1e9);
+constexpr const auto Giga = Real(1e9);
 
 /// @brief Tera- (1 x 10^12).
 /// @sa https://en.wikipedia.org/wiki/Tera-
-PLAYRHO_CONSTEXPR const auto Tera = Real(1e12);
+constexpr const auto Tera = Real(1e12);
 
 /// @brief Peta- (1 x 10^15).
 /// @sa https://en.wikipedia.org/wiki/Peta-
-PLAYRHO_CONSTEXPR const auto Peta = Real(1e15);
+constexpr const auto Peta = Real(1e15);
 
 /// @brief Yotta- (1 x 10^24).
 /// @sa https://en.wikipedia.org/wiki/Yotta-
-PLAYRHO_CONSTEXPR const auto Yotta = Real(1e24);
+constexpr const auto Yotta = Real(1e24);
 
 /// @}
 
