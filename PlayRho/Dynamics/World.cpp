@@ -891,7 +891,7 @@ void World::AddToIsland(Island& island, Body& seed,
                   Contacts::size_type& remNumContacts,
                   Joints::size_type& remNumJoints)
 {
-    assert(!IsIslanded(&seed));
+    assert(!BodyAtty::IsIslanded(seed));
     assert(seed.IsSpeedable());
     assert(seed.IsAwake());
     assert(seed.IsEnabled());
@@ -1433,7 +1433,7 @@ IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
     assert(!HasSensor(contact));
     assert(IsActive(contact));
     assert(IsImpenetrable(contact));
-    assert(!IsIslanded(&contact));
+    assert(!ContactAtty::IsIslanded(contact));
     
     const auto toi = contact.GetToi();
     const auto bA = contact.GetFixtureA()->GetBody();
@@ -1515,8 +1515,8 @@ IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
     Island island(size(m_bodies), size(m_contacts), 0);
 
      // These asserts get triggered sometimes if contacts within TOI are iterated over.
-    assert(!IsIslanded(bA));
-    assert(!IsIslanded(bB));
+    assert(!BodyAtty::IsIslanded(*bA));
+    assert(!BodyAtty::IsIslanded(*bB));
     
     island.m_bodies.push_back(bA);
     BodyAtty::SetIslanded(*bA);
@@ -1705,7 +1705,7 @@ World::ProcessContactsOutput
 World::ProcessContactsForTOI(Island& island, Body& body, Real toi,
                              const StepConf& conf, ContactListener* contactListener)
 {
-    assert(IsIslanded(&body));
+    assert(BodyAtty::IsIslanded(body));
     assert(body.IsAccelerable());
     assert(toi >= 0 && toi <= 1);
 
