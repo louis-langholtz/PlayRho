@@ -132,7 +132,7 @@ template <typename T, typename U>
 constexpr U Secant(T target, U a1, T s1, U a2, T s2) noexcept
 {
     static_assert(IsArithmetic<T>::value && IsArithmetic<U>::value, "Arithmetic types required.");
-    return (a1 + (target - s1) * (a2 - a1) / (s2 - s1));
+    return a1 + (target - s1) * (a2 - a1) / (s2 - s1);
 }
 
 /// @brief Bisection method.
