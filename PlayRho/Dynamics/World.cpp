@@ -830,8 +830,14 @@ bool World::Add(Joint* j)
     m_joints.push_back(j);
     const auto bodyA = j->GetBodyA();
     const auto bodyB = j->GetBodyB();
-    BodyAtty::Insert(bodyA, j);
-    BodyAtty::Insert(bodyB, j);
+    if (bodyA)
+    {
+        BodyAtty::Insert(*bodyA, j);
+    }
+    if (bodyB)
+    {
+        BodyAtty::Insert(*bodyB, j);
+    }
     return true;
 }
 
