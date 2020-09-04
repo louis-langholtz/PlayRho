@@ -44,6 +44,7 @@
 #include <map>
 #include <unordered_set>
 #include <memory>
+#include <stack>
 #include <stdexcept>
 #include <functional>
 
@@ -467,10 +468,6 @@ private:
     /// @brief Clears this world without checking the world's state.
     void InternalClear() noexcept;
 
-    /// @brief Internal destroy.
-    /// @warning Behavior is undefined if passed a null pointer for the joint.
-    void InternalDestroy(Joint& joint) noexcept;
-
     /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
     /// @note This may miss collisions involving fast moving bodies and allow them to tunnel
@@ -498,35 +495,34 @@ private:
     ///
     /// @return Island solver results.
     ///
-    IslandStats SolveRegIslandViaGS(const StepConf& conf, Island island);
+    static IslandStats SolveRegIslandViaGS(const StepConf& conf, Island island,
+                                           ContactListener* contactListener);
     
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.
     /// @post Joints are listed the island in the order that bodies provide those joints.
-    void AddToIsland(Island& island, Body& seed,
-                     Bodies::size_type& remNumBodies,
-                     Contacts::size_type& remNumContacts,
-                     Joints::size_type& remNumJoints);
+    static void AddToIsland(Island& island, Body& seed,
+                            Bodies::size_type& remNumBodies,
+                            Contacts::size_type& remNumContacts,
+                            Joints::size_type& remNumJoints);
 
     /// @brief Body stack.
-    /// @note Using a std::stack<Body*, std::vector<Body*>> would be nice except it doesn't
-    ///   support the reserve method.
-    using BodyStack = std::vector<Body*>;
+    using BodyStack = std::stack<Body*, std::vector<Body*>>;
 
     /// @brief Adds to the island.
-    void AddToIsland(Island& island, BodyStack& stack,
-                     Bodies::size_type& remNumBodies,
-                     Contacts::size_type& remNumContacts,
-                     Joints::size_type& remNumJoints);
+    static void AddToIsland(Island& island, BodyStack& stack,
+                            Bodies::size_type& remNumBodies,
+                            Contacts::size_type& remNumContacts,
+                            Joints::size_type& remNumJoints);
     
     /// @brief Adds contacts to the island.
-    void AddContactsToIsland(Island& island, BodyStack& stack, const Body* b);
+    static void AddContactsToIsland(Island& island, BodyStack& stack, const Body* b);
 
     /// @brief Adds joints to the island.
-    void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
+    static void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
     
     /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
-    Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
+    static Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
 
     /// @brief Solves the step using successive time of impact (TOI) events.
     /// @details Used for continuous physics.
@@ -545,7 +541,10 @@ private:
     /// @note Precondition 2: there is not a lower TOI in the time step for which collisions have
     ///   not already been processed.
     ///
-    IslandStats SolveToi(const StepConf& conf, Contact& contact);
+    static IslandStats SolveToi(const StepConf& conf, Contact& contact,
+                                Bodies::size_type numBodies,
+                                Contacts::size_type numContacts,
+                                ContactListener* contactListener);
     
     /// @brief Solves the time of impact for bodies 0 and 1 of the given island.
     ///
@@ -567,7 +566,7 @@ private:
     ///
     /// @return Island solver results.
     ///
-    IslandStats SolveToiViaGS(const StepConf& conf, Island& island);
+    static IslandStats SolveToiViaGS(const StepConf& conf, Island& island, ContactListener* contactListener);
 
     /// @brief Updates the given body.
     /// @details Updates the given body's velocity, sweep position 1, and its transformation.
@@ -611,13 +610,13 @@ private:
 
     /// @brief Adds the given joint to this world.
     /// @note This also adds the joint to the bodies of the joint.
-    bool Add(Joint* j);
+    bool Add(Joint* j, bool flagForFiltering = false);
 
     /// @brief Removes the given body from this world.
     void Remove(const Body& b) noexcept;
  
     /// @brief Removes the given joint from this world.
-    void Remove(const Joint& j) noexcept;
+    bool Remove(const Joint& j) noexcept;
 
     /// @brief Sets the step complete state.
     /// @post <code>IsStepComplete()</code> will return the value set.
@@ -706,10 +705,12 @@ private:
     /// have active bodies (either or both) get their Update methods called with the current
     /// contact listener as its argument.
     /// Essentially this really just purges contacts that are no longer relevant.
-    DestroyContactsStats DestroyContacts(Contacts& contacts);
+    static DestroyContactsStats DestroyContacts(Contacts& contacts, const DynamicTree& tree,
+                                                ContactListener* contactListener);
     
     /// @brief Update contacts.
-    UpdateContactsStats UpdateContacts(Contacts& contacts, const StepConf& conf);
+    static UpdateContactsStats UpdateContacts(Contacts& contacts, const StepConf& conf,
+                                              ContactListener* contactListener);
     
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
@@ -737,7 +738,7 @@ private:
     static bool Add(Contacts& contacts, const DynamicTree& tree, ContactKey key);
 
     /// @brief Destroys the given contact.
-    static void InternalDestroy(ContactListener* contactListener, Contact* contact, Body* from = nullptr);
+    static void InternalDestroy(Contact* contact, ContactListener* contactListener, Body* from = nullptr);
 
     /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.

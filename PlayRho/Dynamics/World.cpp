@@ -401,10 +401,8 @@ namespace {
         for (auto& ci: bodyB.GetContacts())
         {
             const auto contact = GetContactPtr(ci);
-            const auto fA = contact->GetFixtureA();
-            const auto fB = contact->GetFixtureB();
-            const auto bA = fA->GetBody();
-            const auto bB = fB->GetBody();
+            const auto bA = contact->GetFixtureA()->GetBody();
+            const auto bB = contact->GetFixtureB()->GetBody();
             const auto other = (bA != &bodyB)? bA: bB;
             if (other == &bodyA)
             {
@@ -771,7 +769,8 @@ void World::Destroy(Body* body)
         {
             m_destructionListener->SayGoodbye(joint);
         }
-        InternalDestroy(joint);
+        Remove(joint);
+        JointAtty::Destroy(&joint);
     });
     
     // Destroy the attached contacts.
@@ -809,22 +808,11 @@ Joint* World::CreateJoint(const JointConf& def)
     
     // Note: creating a joint doesn't wake the bodies.
     const auto j = JointAtty::Create(def);
-
-    Add(j);
- 
-    const auto bodyA = j->GetBodyA();
-    const auto bodyB = j->GetBodyB();
-
-    // If the joint prevents collisions, then flag any contacts for filtering.
-    if ((!def.collideConnected) && bodyA && bodyB)
-    {
-        FlagContactsForFiltering(*bodyA, *bodyB);
-    }
-    
+    Add(j, !def.collideConnected);
     return j;
 }
 
-bool World::Add(Joint* j)
+bool World::Add(Joint* j, bool flagForFiltering)
 {
     assert(j);
     m_joints.push_back(j);
@@ -838,36 +826,32 @@ bool World::Add(Joint* j)
     {
         BodyAtty::Insert(*bodyB, j);
     }
+    if (flagForFiltering && bodyA && bodyB)
+    {
+        FlagContactsForFiltering(*bodyA, *bodyB);
+    }
     return true;
 }
 
-void World::Remove(const Joint& j) noexcept
+bool World::Remove(const Joint& joint) noexcept
 {
     const auto endIter = cend(m_joints);
-    const auto iter = find(cbegin(m_joints), endIter, &j);
-    assert(iter != endIter);
-    m_joints.erase(iter);
-}
-
-void World::Destroy(Joint* joint)
-{
-    if (joint)
+    const auto iter = find(cbegin(m_joints), endIter, &joint);
+    if (iter == endIter)
     {
-        if (IsLocked())
-        {
-            throw WrongState("World::Destroy: world is locked");
-        }
-        InternalDestroy(*joint);
+        return false;
     }
-}
-    
-void World::InternalDestroy(Joint& joint) noexcept
-{
-    Remove(joint);
-    
+
     // Disconnect from island graph.
     const auto bodyA = joint.GetBodyA();
     const auto bodyB = joint.GetBodyB();
+
+    const auto collideConnected = joint.GetCollideConnected();
+    // If the joint prevented collisions, then flag any contacts for filtering.
+    if ((!collideConnected) && bodyA && bodyB)
+    {
+        FlagContactsForFiltering(*bodyA, *bodyB);
+    }
 
     // Wake up connected bodies.
     if (bodyA)
@@ -881,21 +865,29 @@ void World::InternalDestroy(Joint& joint) noexcept
         BodyAtty::Erase(*bodyB, &joint);
     }
 
-    const auto collideConnected = joint.GetCollideConnected();
+    m_joints.erase(iter);
+    return true;
+}
 
-    JointAtty::Destroy(&joint);
-
-    // If the joint prevented collisions, then flag any contacts for filtering.
-    if ((!collideConnected) && bodyA && bodyB)
+void World::Destroy(Joint* joint)
+{
+    if (joint)
     {
-        FlagContactsForFiltering(*bodyA, *bodyB);
+        if (IsLocked())
+        {
+            throw WrongState("World::Destroy: world is locked");
+        }
+        if (Remove(*joint))
+        {
+            JointAtty::Destroy(joint);
+        }
     }
 }
 
 void World::AddToIsland(Island& island, Body& seed,
-                  Bodies::size_type& remNumBodies,
-                  Contacts::size_type& remNumContacts,
-                  Joints::size_type& remNumJoints)
+                        Bodies::size_type& remNumBodies,
+                        Contacts::size_type& remNumContacts,
+                        Joints::size_type& remNumJoints)
 {
     assert(!BodyAtty::IsIslanded(seed));
     assert(seed.IsSpeedable());
@@ -907,23 +899,24 @@ void World::AddToIsland(Island& island, Body& seed,
     // Perform a depth first search (DFS) on the constraint graph.
 
     // Create a stack for bodies to be is-in-island that aren't already in the island.
-    auto stack = BodyStack{};
-    stack.reserve(remNumBodies);
-    stack.push_back(&seed);
+    auto bodies = Bodies{};
+    bodies.reserve(remNumBodies);
+    bodies.push_back(&seed);
+    auto stack = BodyStack{std::move(bodies)};
     BodyAtty::SetIslanded(seed);
     AddToIsland(island, stack, remNumBodies, remNumContacts, remNumJoints);
 }
 
 void World::AddToIsland(Island& island, BodyStack& stack,
-                 Bodies::size_type& remNumBodies,
-                 Contacts::size_type& remNumContacts,
-                 Joints::size_type& remNumJoints)
+                        Bodies::size_type& remNumBodies,
+                        Contacts::size_type& remNumContacts,
+                        Joints::size_type& remNumJoints)
 {
     while (!empty(stack))
     {
         // Grab the next body off the stack and add it to the island.
-        const auto b = stack.back();
-        stack.pop_back();
+        const auto b = stack.top();
+        stack.pop();
         
         assert(b);
         assert(b->IsEnabled());
@@ -944,7 +937,7 @@ void World::AddToIsland(Island& island, BodyStack& stack,
         const auto oldNumContacts = size(island.m_contacts);
         // Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
         AddContactsToIsland(island, stack, b);
-        
+
         const auto newNumContacts = size(island.m_contacts);
         assert(newNumContacts >= oldNumContacts);
         const auto netNumContacts = newNumContacts - oldNumContacts;
@@ -977,7 +970,7 @@ void World::AddContactsToIsland(Island& island, BodyStack& stack, const Body* b)
                 ContactAtty::SetIslanded(*contact);
                 if (!BodyAtty::IsIslanded(*other))
                 {
-                    stack.push_back(other);
+                    stack.push(other);
                     BodyAtty::SetIslanded(*other);
                 }
             }
@@ -1005,7 +998,7 @@ void World::AddJointsToIsland(Island& island, BodyStack& stack, const Body* b)
                 const auto bodyB = joint->GetBodyB();
                 const auto rwOther = bodyA != b? bodyA: bodyB;
                 assert(rwOther == other);
-                stack.push_back(rwOther);
+                stack.push(rwOther);
                 BodyAtty::SetIslanded(*rwOther);
             }
         }
@@ -1069,9 +1062,9 @@ RegStepStats World::SolveReg(const StepConf& conf)
 #if defined(DO_THREADED)
             // Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
             futures.push_back(std::async(std::launch::async, &World::SolveRegIslandViaGS,
-                                         this, conf, island));
+                                         conf, island, m_contactListener));
 #else
-            const auto solverResults = SolveRegIslandViaGS(conf, island);
+            const auto solverResults = SolveRegIslandViaGS(conf, island, m_contactListener);
             Update(stats, solverResults);
 #endif
         }
@@ -1103,7 +1096,8 @@ RegStepStats World::SolveReg(const StepConf& conf)
     return stats;
 }
 
-IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
+IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island,
+                                       ContactListener* contactListener)
 {
     assert(!empty(island.m_bodies) || !empty(island.m_contacts) || !empty(island.m_joints));
     
@@ -1200,9 +1194,9 @@ IslandStats World::SolveRegIslandViaGS(const StepConf& conf, Island island)
     
     // XXX: Should contacts needing updating be updated now??
 
-    if (m_contactListener)
+    if (contactListener)
     {
-        Report(*m_contactListener, island.m_contacts, velConstraints,
+        Report(*contactListener, island.m_contacts, velConstraints,
                results.solved? results.positionIterations - 1: StepConf::InvalidIteration);
     }
     
@@ -1372,8 +1366,8 @@ ToiStepStats World::SolveToi(const StepConf& conf)
             assert(!HasSensor(*contact));
             assert(IsActive(*contact));
             assert(IsImpenetrable(*contact));
-            
-            const auto solverResults = SolveToi(conf, *contact);
+
+            const auto solverResults = SolveToi(conf, *contact, size(m_bodies), size(m_contacts), m_contactListener);
             stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
             stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
             stats.islandsSolved += solverResults.solved;
@@ -1419,7 +1413,9 @@ ToiStepStats World::SolveToi(const StepConf& conf)
     return stats;
 }
 
-IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
+IslandStats World::SolveToi(const StepConf& conf, Contact& contact,
+                            Bodies::size_type numBodies, Contacts::size_type numContacts,
+                            ContactListener* contactListener)
 {
     // Note:
     //   This method is what used to be b2World::SolveToi(const b2TimeStep& step).
@@ -1461,7 +1457,7 @@ IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
         contact.SetEnabled();
         if (contact.NeedsUpdating())
         {
-            ContactAtty::Update(contact, Contact::GetUpdateConf(conf), m_contactListener);
+            ContactAtty::Update(contact, Contact::GetUpdateConf(conf), contactListener);
             ++contactsUpdated;
         }
         else
@@ -1518,7 +1514,7 @@ IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
     }
 
     // Build the island
-    Island island(size(m_bodies), size(m_contacts), 0);
+    Island island(numBodies, numContacts, 0);
 
      // These asserts get triggered sometimes if contacts within TOI are iterated over.
     assert(!BodyAtty::IsIslanded(*bA));
@@ -1536,13 +1532,13 @@ IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
     // bodies sweeps and transforms to the minimum contact's TOI.
     if (bA->IsAccelerable())
     {
-        const auto procOut = ProcessContactsForTOI(island, *bA, toi, conf, m_contactListener);
+        const auto procOut = ProcessContactsForTOI(island, *bA, toi, conf, contactListener);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
     if (bB->IsAccelerable())
     {
-        const auto procOut = ProcessContactsForTOI(island, *bB, toi, conf, m_contactListener);
+        const auto procOut = ProcessContactsForTOI(island, *bB, toi, conf, contactListener);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
@@ -1556,7 +1552,7 @@ IslandStats World::SolveToi(const StepConf& conf, Contact& contact)
     //     SolveToi(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
     //
     auto subConf = StepConf{conf};
-    auto results = SolveToiViaGS(subConf.SetTime((1 - toi) * conf.GetTime()), island);
+    auto results = SolveToiViaGS(subConf.SetTime((1 - toi) * conf.GetTime()), island, contactListener);
     results.contactsUpdated += contactsUpdated;
     results.contactsSkipped += contactsSkipped;
     return results;
@@ -1571,7 +1567,7 @@ void World::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
     BodyAtty::SetTransformation(body, GetTransformation(GetPosition1(body), body.GetLocalCenter()));
 }
 
-IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
+IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island, ContactListener* contactListener)
 {
     auto results = IslandStats{};
     
@@ -1688,9 +1684,9 @@ IslandStats World::SolveToiViaGS(const StepConf& conf, Island& island)
         UpdateBody(*island.m_bodies[i], bc.GetPosition(), bc.GetVelocity());
     });
 
-    if (m_contactListener)
+    if (contactListener)
     {
-        Report(*m_contactListener, island.m_contacts, velConstraints, results.positionIterations);
+        Report(*contactListener, island.m_contacts, velConstraints, results.positionIterations);
     }
     
     return results;
@@ -1829,7 +1825,7 @@ StepStats World::Step(const StepConf& conf)
 
         {
             // Note: this may update bodies (in addition to the contacts container).
-            const auto destroyStats = DestroyContacts(m_contacts);
+            const auto destroyStats = DestroyContacts(m_contacts, m_tree, m_contactListener);
             stepStats.pre.destroyed = destroyStats.erased;
         }
 
@@ -1847,7 +1843,7 @@ StepStats World::Step(const StepConf& conf)
             m_inv_dt0 = conf.GetInvTime();
 
             // Could potentially run UpdateContacts multithreaded over split lists...
-            const auto updateStats = UpdateContacts(m_contacts, conf);
+            const auto updateStats = UpdateContacts(m_contacts, conf, m_contactListener);
             stepStats.pre.ignored = updateStats.ignored;
             stepStats.pre.updated = updateStats.updated;
             stepStats.pre.skipped = updateStats.skipped;
@@ -1897,8 +1893,10 @@ void World::ShiftOrigin(Length2 newOrigin)
     m_tree.ShiftOrigin(newOrigin);
 }
 
-void World::InternalDestroy(ContactListener* contactListener, Contact* contact, Body* from)
+void World::InternalDestroy(Contact* contact, ContactListener* contactListener, Body* from)
 {
+    assert(contact);
+
     if (contactListener && contact->IsTouching())
     {
         // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching, so call it now
@@ -1934,9 +1932,6 @@ void World::InternalDestroy(ContactListener* contactListener, Contact* contact, 
 void World::Destroy(Contacts& contacts, ContactListener* contactListener, Contact* contact, Body* from)
 {
     assert(contact);
-
-    InternalDestroy(contactListener, contact, from);
-    
     const auto it = find_if(cbegin(contacts), cend(contacts),
                             [&](const Contacts::value_type& c) {
         return GetPtr(std::get<Contact*>(c)) == contact;
@@ -1945,9 +1940,11 @@ void World::Destroy(Contacts& contacts, ContactListener* contactListener, Contac
     {
         contacts.erase(it);
     }
+    InternalDestroy(contact, contactListener, from);
 }
 
-World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
+World::DestroyContactsStats World::DestroyContacts(Contacts& contacts, const DynamicTree& tree,
+                                                   ContactListener* contactListener)
 {
     const auto beforeSize = size(contacts);
     contacts.erase(std::remove_if(begin(contacts), end(contacts), [&](Contacts::value_type& c)
@@ -1955,10 +1952,10 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
         const auto key = std::get<ContactKey>(c);
         auto& contact = GetRef(std::get<Contact*>(c));
         
-        if (!TestOverlap(m_tree, key.GetMin(), key.GetMax()))
+        if (!TestOverlap(tree, key.GetMin(), key.GetMax()))
         {
             // Destroy contacts that cease to overlap in the broad-phase.
-            InternalDestroy(m_contactListener, &contact);
+            InternalDestroy(&contact, contactListener);
             return true;
         }
         
@@ -1972,7 +1969,7 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
 
             if (!ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(*fixtureA, *fixtureB))
             {
-                InternalDestroy(m_contactListener, &contact);
+                InternalDestroy(&contact, contactListener);
                 return true;
             }
             ContactAtty::UnflagForFiltering(contact);
@@ -1988,7 +1985,8 @@ World::DestroyContactsStats World::DestroyContacts(Contacts& contacts)
     return stats;
 }
 
-World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepConf& conf)
+World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepConf& conf,
+                                                 ContactListener* contactListener)
 {
 #ifdef DO_PAR_UNSEQ
     atomic<uint32_t> ignored;
@@ -2051,7 +2049,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
             //futures.push_back(async(&ContactAtty::Update, *contact, conf, m_contactListener)));
             //futures.push_back(async(launch::async, [=]{ ContactAtty::Update(*contact, conf, m_contactListener); }));
 #else
-            ContactAtty::Update(contact, updateConf, m_contactListener);
+            ContactAtty::Update(contact, updateConf, contactListener);
 #endif
         	++updated;
         }
@@ -2071,7 +2069,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
             const auto offset = jobsPerCore * i;
             for (auto j = decltype(jobsPerCore){0}; j < jobsPerCore; ++j)
             {
-	            ContactAtty::Update(*contactsNeedingUpdate[offset + j], updateConf, m_contactListener);
+	            ContactAtty::Update(*contactsNeedingUpdate[offset + j], updateConf, contactListener);
             }
         }));
         numJobs -= jobsPerCore;
@@ -2082,7 +2080,7 @@ World::UpdateContactsStats World::UpdateContacts(Contacts& contacts, const StepC
             const auto offset = jobsPerCore * 3;
             for (auto j = decltype(numJobs){0}; j < numJobs; ++j)
             {
-                ContactAtty::Update(*contactsNeedingUpdate[offset + j], updateConf, m_contactListener);
+                ContactAtty::Update(*contactsNeedingUpdate[offset + j], updateConf, contactListener);
             }
         }));
     }
