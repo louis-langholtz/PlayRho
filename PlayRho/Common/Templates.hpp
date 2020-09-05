@@ -486,6 +486,43 @@ static auto Size(T& v)
         return count;
     }
 
+    /// @brief Has-functor trait template fallback class.
+    /// @note This is based off the answer by "jrok" on the <em>StackOverflow</em> website
+    ///   to the question of: "Check if a class has a member function of a given signature".
+    /// @see https://stackoverflow.com/a/16824239/7410358
+    template <typename, typename T>
+    struct HasFunctor {
+        static_assert(std::integral_constant<T, false>::value,
+                      "Second template parameter needs to be of function type.");
+    };
+
+    /// @brief Has-functor trait template class.
+    /// @note This is based off the answer by "jrok" on the <em>StackOverflow</em> website
+    ///   to the question of: "Check if a class has a member function of a given signature".
+    /// @see https://stackoverflow.com/a/16824239/7410358
+    template <typename Type, typename Return, typename... Args>
+    struct HasFunctor<Type, Return(Args...)> {
+    private:
+        template<typename T>
+        static constexpr auto check(T*)
+        -> typename std::is_same<decltype(std::declval<T>()(std::declval<Args>()...)),Return>::type;
+        template<typename>
+        static constexpr std::false_type check(...);
+        using type = decltype(check<Type>(0));
+    public:
+        static constexpr auto value = type::value;
+    };
+
+    /// @brief Has nullary functor type alias.
+    /// @see HasUnaryFunctor.
+    template <typename Type, typename Return>
+    using HasNullaryFunctor = HasFunctor<Type,Return()>;
+
+    /// @brief Has unary functor type alias.
+    /// @see HasNullaryFunctor.
+    template <typename Type, typename Return, typename Arg>
+    using HasUnaryFunctor = HasFunctor<Type,Return(Arg)>;
+
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_TEMPLATES_HPP
