@@ -32,7 +32,7 @@
 
 using namespace playrho;
 
-TEST(BoundedValue, NonNegativeFloatTraits)
+TEST(CheckedValue, NonNegativeFloatTraits)
 {
     using type = NonNegative<float>;
     
@@ -60,7 +60,7 @@ TEST(BoundedValue, NonNegativeFloatTraits)
     EXPECT_TRUE((std::is_convertible<type::value_type, type>::value));
 }
 
-TEST(BoundedValue, NegativeFloat)
+TEST(CheckedValue, NegativeFloat)
 {
     EXPECT_EQ(float{Negative<float>(-1.0f)}, -1.0f);
     EXPECT_EQ(float(Negative<float>(-1.0f)), float(Negative<float>(-1.0f)));
@@ -82,7 +82,7 @@ TEST(BoundedValue, NegativeFloat)
     }
 }
 
-TEST(BoundedValue, NonNegativeFloat)
+TEST(CheckedValue, NonNegativeFloat)
 {
     EXPECT_EQ(float{NonNegative<float>(1.0f)}, 1.0f);
     EXPECT_EQ(float(NonNegative<float>(1.0f)), float(NonNegative<float>(1.0f)));
@@ -98,7 +98,7 @@ TEST(BoundedValue, NonNegativeFloat)
                  NonNegative<float>::exception_type);
 }
 
-TEST(BoundedValue, NonNegativeDouble)
+TEST(CheckedValue, NonNegativeDouble)
 {
     EXPECT_EQ(double{NonNegative<double>(1.0f)}, 1.0f);
     EXPECT_EQ(double(NonNegative<double>(1.0f)), double(NonNegative<double>(1.0f)));
@@ -114,7 +114,7 @@ TEST(BoundedValue, NonNegativeDouble)
                  NonNegative<double>::exception_type);
 }
 
-TEST(BoundedValue, NonNegativeInt)
+TEST(CheckedValue, NonNegativeInt)
 {
     EXPECT_EQ(int{NonNegative<int>(1)}, 1);
     EXPECT_EQ(int(NonNegative<int>(1)), int(NonNegative<int>(1)));
@@ -130,7 +130,7 @@ TEST(BoundedValue, NonNegativeInt)
     }
 }
 
-TEST(BoundedValue, PositiveFloat)
+TEST(CheckedValue, PositiveFloat)
 {
     EXPECT_EQ(float(Positive<float>(+1.0f)), +1.0f);
     EXPECT_EQ(float(Positive<float>(+1.0f)), float(Positive<float>(+1.0f)));
@@ -152,7 +152,7 @@ TEST(BoundedValue, PositiveFloat)
     }
 }
 
-TEST(BoundedValue, NonPositiveFloat)
+TEST(CheckedValue, NonPositiveFloat)
 {
     EXPECT_EQ(float(NonPositive<float>(-1.0f)), -1.0f);
     EXPECT_EQ(float(NonPositive<float>(-1.0f)), float(NonPositive<float>(-1.0f)));
@@ -168,7 +168,7 @@ TEST(BoundedValue, NonPositiveFloat)
                  NonPositive<float>::exception_type);
 }
 
-TEST(BoundedValue, NonPositiveDouble)
+TEST(CheckedValue, NonPositiveDouble)
 {
     EXPECT_EQ(double(NonPositive<double>(-1.0f)), -1.0f);
     EXPECT_EQ(double(NonPositive<double>(-1.0f)), double(NonPositive<double>(-1.0f)));
@@ -184,7 +184,7 @@ TEST(BoundedValue, NonPositiveDouble)
                  NonPositive<double>::exception_type);
 }
 
-TEST(BoundedValue, NonPositiveInt)
+TEST(CheckedValue, NonPositiveInt)
 {
     EXPECT_EQ(int(NonPositive<int>(-1)), -1);
     EXPECT_EQ(int(NonPositive<int>(-1)), int(NonPositive<int>(-1)));
@@ -194,7 +194,7 @@ TEST(BoundedValue, NonPositiveInt)
     EXPECT_THROW(NonPositive<int>{2}, NonPositive<int>::exception_type);
 }
 
-TEST(BoundedValue, FiniteDouble)
+TEST(CheckedValue, FiniteDouble)
 {
     EXPECT_EQ(double(Finite<double>(0)), 0.0);
     EXPECT_EQ(double(Finite<double>(-1.0)), -1.0);
@@ -206,7 +206,7 @@ TEST(BoundedValue, FiniteDouble)
                  Finite<double>::exception_type);
 }
 
-TEST(BoundedValue, FloatUnitInterval)
+TEST(CheckedValue, FloatUnitInterval)
 {
     EXPECT_NO_THROW(UnitInterval<float>(0.0f));
     EXPECT_NO_THROW(UnitInterval<float>(0.01f));
@@ -228,7 +228,7 @@ TEST(BoundedValue, FloatUnitInterval)
                  UnitInterval<float>::exception_type);
 }
 
-TEST(BoundedValue, IntUnitInterval)
+TEST(CheckedValue, IntUnitInterval)
 {
     EXPECT_EQ(int(UnitInterval<int>(0)), 0);
     EXPECT_EQ(int(UnitInterval<int>(1)), 1);
@@ -242,13 +242,13 @@ namespace playrho
 class Body;
 }
 
-TEST(BoundedValue, NonZero)
+TEST(CheckedValue, NonZero)
 {
     EXPECT_THROW(NonZero<int>(0), NonZero<int>::exception_type);
     EXPECT_NO_THROW(NonZero<int>(1));
 }
 
-TEST(BoundedValue, NonNull)
+TEST(CheckedValue, NonNull)
 {
     EXPECT_THROW(NonNull<Body*>(nullptr), NonNull<Body*>::exception_type);
     EXPECT_NO_THROW(NonNull<Body*>(reinterpret_cast<Body*>(1)));
@@ -289,7 +289,7 @@ struct ValueCheckHelper<T, Fixed32>
 };
 }
 
-TEST(BoundedValue, FixedUnitInterval)
+TEST(CheckedValue, FixedUnitInterval)
 {
     using fixed = Fixed32;
     const auto zero = fixed{0};
