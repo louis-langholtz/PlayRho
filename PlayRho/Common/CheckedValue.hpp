@@ -44,8 +44,6 @@ struct CheckExceptionType<T, detail::VoidT<typename T::exception_type>> {
 } // namespace detail
 
 /// @brief Checked value.
-/// @note Prefer to use this type instead of <code>BoundedValue</code>.
-/// @see BoundedValue.
 template <typename ValueType, typename CheckerType>
 class CheckedValue: public detail::CheckExceptionType<CheckerType>
 {
