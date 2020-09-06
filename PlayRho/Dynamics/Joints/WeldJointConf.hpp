@@ -23,7 +23,7 @@
 #define PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonZero.hpp> // for NonNull
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {

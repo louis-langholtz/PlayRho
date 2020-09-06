@@ -69,7 +69,7 @@ TEST(GearJointConf, Traits)
     
     EXPECT_TRUE(std::is_copy_assignable<GearJointConf>::value);
     EXPECT_TRUE(std::is_nothrow_copy_assignable<GearJointConf>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<GearJointConf>::value);
+    EXPECT_TRUE(std::is_trivially_copy_assignable<GearJointConf>::value);
     
     EXPECT_TRUE(std::is_destructible<GearJointConf>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<GearJointConf>::value);
@@ -78,7 +78,7 @@ TEST(GearJointConf, Traits)
 
 TEST(GearJointConf, ConstructionRequiresNonNullJoints)
 {
-    EXPECT_THROW(GearJointConf(nullptr, nullptr), InvalidArgument);
+    EXPECT_THROW(GearJointConf(nullptr, nullptr), NonNull<Joint*>::exception_type);
 }
 
 TEST(GearJoint, ByteSize)

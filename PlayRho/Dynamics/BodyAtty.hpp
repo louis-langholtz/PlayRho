@@ -161,16 +161,6 @@ private:
         return b.Insert(value);
     }
 
-    /// @brief Inserts the given joint into the given body's joint list.
-    static bool Insert(Body* b, Joint* value)
-    {
-        if (b)
-        {
-            return Insert(*b, value);
-        }
-        return false;
-    }
-
     /// @brief Inserts the given contact key and contact into the given body's contacts list.
     static bool Insert(Body& b, ContactKey key, Contact* value)
     {

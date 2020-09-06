@@ -27,7 +27,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Span.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonZero.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>

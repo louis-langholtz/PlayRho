@@ -23,7 +23,7 @@
 #define PLAYRHO_COLLISION_SHAPES_SHAPECONF_HPP
 
 #include <PlayRho/Common/Units.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/Finite.hpp>
 #include <PlayRho/Common/Settings.hpp>
 
 namespace playrho {

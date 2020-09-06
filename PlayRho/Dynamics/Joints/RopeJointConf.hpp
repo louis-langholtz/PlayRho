@@ -23,7 +23,6 @@
 #define PLAYRHO_DYNAMICS_JOINTS_ROPEJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {

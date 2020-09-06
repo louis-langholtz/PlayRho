@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		470463EE250305C900614373 /* CheckedValue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470463ED250305C900614373 /* CheckedValue.hpp */; };
 		470F94A81EC4C79B00AA3C82 /* BodyConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */; };
 		470F94AE1EC4CAE600AA3C82 /* FixtureConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94AB1EC4CAE600AA3C82 /* FixtureConf.hpp */; };
 		470F94B41EC4CB6C00AA3C82 /* Filter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94B11EC4CB6C00AA3C82 /* Filter.hpp */; };
@@ -134,6 +135,13 @@
 		475CE1691F253C9C00456470 /* libPlayRho.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80FF01D2141C3D980059E59D /* libPlayRho.a */; };
 		476162C81E245C9D002C7FB0 /* CodeDumper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476162C61E245C9D002C7FB0 /* CodeDumper.cpp */; };
 		476162C91E245C9D002C7FB0 /* CodeDumper.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 476162C71E245C9D002C7FB0 /* CodeDumper.hpp */; };
+		4764085125042BD10090F711 /* NonNegative.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085025042BD00090F711 /* NonNegative.hpp */; };
+		4764085325045B3C0090F711 /* UnitInterval.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085225045B3C0090F711 /* UnitInterval.hpp */; };
+		47640855250475860090F711 /* NonZero.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640854250475860090F711 /* NonZero.hpp */; };
+		4764085725047C090090F711 /* Finite.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085625047C090090F711 /* Finite.hpp */; };
+		4764085925047FA10090F711 /* NonPositive.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085825047FA10090F711 /* NonPositive.hpp */; };
+		4764085B250482300090F711 /* Positive.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085A2504822F0090F711 /* Positive.hpp */; };
+		4764085D250484830090F711 /* Negative.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085C250484820090F711 /* Negative.hpp */; };
 		4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
 		4768D3F81E3E895A00574143 /* PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */; };
 		4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2.hpp */; };
@@ -380,6 +388,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		470463ED250305C900614373 /* CheckedValue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CheckedValue.hpp; sourceTree = "<group>"; };
 		470D533C1E82364F00E96896 /* SpinningCircle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpinningCircle.hpp; sourceTree = "<group>"; };
 		470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyConf.hpp; sourceTree = "<group>"; };
 		470F94AB1EC4CAE600AA3C82 /* FixtureConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureConf.hpp; sourceTree = "<group>"; };
@@ -520,6 +529,13 @@
 		475CE1621F253B2F00456470 /* Benchmark */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Benchmark; sourceTree = BUILT_PRODUCTS_DIR; };
 		476162C61E245C9D002C7FB0 /* CodeDumper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeDumper.cpp; sourceTree = "<group>"; };
 		476162C71E245C9D002C7FB0 /* CodeDumper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CodeDumper.hpp; sourceTree = "<group>"; };
+		4764085025042BD00090F711 /* NonNegative.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NonNegative.hpp; sourceTree = "<group>"; };
+		4764085225045B3C0090F711 /* UnitInterval.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = UnitInterval.hpp; sourceTree = "<group>"; };
+		47640854250475860090F711 /* NonZero.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NonZero.hpp; sourceTree = "<group>"; };
+		4764085625047C090090F711 /* Finite.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Finite.hpp; sourceTree = "<group>"; };
+		4764085825047FA10090F711 /* NonPositive.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NonPositive.hpp; sourceTree = "<group>"; };
+		4764085A2504822F0090F711 /* Positive.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Positive.hpp; sourceTree = "<group>"; };
+		4764085C250484820090F711 /* Negative.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Negative.hpp; sourceTree = "<group>"; };
 		4768D3F21E3A7ACA00574143 /* Wider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Wider.hpp; sourceTree = "<group>"; };
 		4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
 		4768D3FA1E414A0100574143 /* Vector2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2.hpp; sourceTree = "<group>"; };
@@ -993,6 +1009,8 @@
 				479B63BD1ED8B64300D49BC7 /* BoundedValue.hpp */,
 				476162C61E245C9D002C7FB0 /* CodeDumper.cpp */,
 				476162C71E245C9D002C7FB0 /* CodeDumper.hpp */,
+				470463ED250305C900614373 /* CheckedValue.hpp */,
+				4764085625047C090090F711 /* Finite.hpp */,
 				47B58F531F570E2C00354C34 /* DynamicMemory.cpp */,
 				47B58F541F570E2C00354C34 /* DynamicMemory.hpp */,
 				4727242D1E315E1A00C64921 /* Fixed.hpp */,
@@ -1007,8 +1025,13 @@
 				471E7EA81F32668E00DFF626 /* Matrix.hpp */,
 				80BB8944141C3E5900F1753A /* Math.cpp */,
 				80BB8945141C3E5900F1753A /* Math.hpp */,
+				4764085C250484820090F711 /* Negative.hpp */,
+				4764085025042BD00090F711 /* NonNegative.hpp */,
+				4764085825047FA10090F711 /* NonPositive.hpp */,
+				47640854250475860090F711 /* NonZero.hpp */,
 				473273231F476C1D00E22AE2 /* OptionalValue.hpp */,
 				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
+				4764085A2504822F0090F711 /* Positive.hpp */,
 				470F94E01ECBB3A100AA3C82 /* Range.hpp */,
 				47B58F651F64D2B500354C34 /* Real.hpp */,
 				47B58F671F64D2D200354C34 /* Real.hpp.in */,
@@ -1020,6 +1043,7 @@
 				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
+				4764085225045B3C0090F711 /* UnitInterval.hpp */,
 				47C85D181F0D9D8D00F70C56 /* Units.hpp */,
 				476E8ABD1FC8CD9F00705BB5 /* UnitVec.cpp */,
 				4731DE551DEC908600E7F931 /* UnitVec.hpp */,
@@ -1316,7 +1340,9 @@
 				4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				476E8AC71FCFA0D400705BB5 /* FunctionalJointVisitor.hpp in Headers */,
 				80BB8987141C3E5900F1753A /* PlayRho.hpp in Headers */,
+				4764085325045B3C0090F711 /* UnitInterval.hpp in Headers */,
 				47D28D9D1F6F28C70094C032 /* WrongState.hpp in Headers */,
+				4764085B250482300090F711 /* Positive.hpp in Headers */,
 				47363E8720027FE2005912B1 /* ContactImpulsesList.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec.hpp in Headers */,
 				474AFBFA1EB1B2CB002AA6C8 /* MultiShapeConf.hpp in Headers */,
@@ -1324,6 +1350,7 @@
 				4787D6EB1F2FA0CA008C115E /* LengthError.hpp in Headers */,
 				80BB8990141C3E5900F1753A /* Distance.hpp in Headers */,
 				47CB34401D6F3A8500828126 /* MassData.hpp in Headers */,
+				47640855250475860090F711 /* NonZero.hpp in Headers */,
 				4731DE231DDF83A600E7F931 /* RayCastOutput.hpp in Headers */,
 				4734B2271DC29F7C00F15E29 /* SimplexEdge.hpp in Headers */,
 				4787D6BB1F2E946E008C115E /* PrismaticJointConf.hpp in Headers */,
@@ -1366,8 +1393,10 @@
 				470F9B301EDF5165007EF7B6 /* Velocity.hpp in Headers */,
 				473273251F476C1D00E22AE2 /* OptionalValue.hpp in Headers */,
 				80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */,
+				4764085D250484830090F711 /* Negative.hpp in Headers */,
 				80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */,
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
+				4764085725047C090090F711 /* Finite.hpp in Headers */,
 				80BB89B0141C3E5900F1753A /* Fixture.hpp in Headers */,
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
 				47C96C551FA67D1F00A6C587 /* Acceleration.hpp in Headers */,
@@ -1378,6 +1407,7 @@
 				470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */,
 				4787D6E31F2ED461008C115E /* WeldJointConf.hpp in Headers */,
 				471E7EAA1F32668E00DFF626 /* Matrix.hpp in Headers */,
+				4764085925047FA10090F711 /* NonPositive.hpp in Headers */,
 				80BB89B3141C3E5900F1753A /* StepConf.hpp in Headers */,
 				4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */,
 				470F94A81EC4C79B00AA3C82 /* BodyConf.hpp in Headers */,
@@ -1396,6 +1426,7 @@
 				4751EE2B1CEDD79900D459CB /* ConveyorBelt.hpp in Headers */,
 				4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */,
 				477DB2AD1D1C4BE800846ED6 /* PositionSolverManifold.hpp in Headers */,
+				470463EE250305C900614373 /* CheckedValue.hpp in Headers */,
 				470F94DB1EC8C37500AA3C82 /* JointKey.hpp in Headers */,
 				4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */,
 				478E67C71E760AB7009B9AD5 /* BodyType.hpp in Headers */,
@@ -1421,6 +1452,7 @@
 				80BB89D5141C3E5900F1753A /* PrismaticJoint.hpp in Headers */,
 				80BB89D7141C3E5900F1753A /* PulleyJoint.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
+				4764085125042BD10090F711 /* NonNegative.hpp in Headers */,
 				80BB89D9141C3E5900F1753A /* RevoluteJoint.hpp in Headers */,
 				470F94C01EC4D63400AA3C82 /* ContactAtty.hpp in Headers */,
 				80BB89DB141C3E5900F1753A /* RopeJoint.hpp in Headers */,

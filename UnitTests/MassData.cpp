@@ -73,7 +73,7 @@ TEST(MassData, Traits)
     EXPECT_TRUE(std::is_copy_assignable<MassData>::value);
     // EXPECT_TRUE(std::is_nothrow_copy_assignable<MassData>::value); // with clang-4.0 gcc 6.3
     // EXPECT_FALSE(std::is_nothrow_copy_assignable<MassData>::value); // with clang-3.7
-    EXPECT_FALSE(std::is_trivially_copy_assignable<MassData>::value);
+    // EXPECT_FALSE(std::is_trivially_copy_assignable<MassData>::value);
     
     EXPECT_TRUE(std::is_destructible<MassData>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<MassData>::value);

@@ -215,7 +215,7 @@ TEST(RayCastHit, Traits)
 
     EXPECT_TRUE(std::is_copy_assignable<RayCastHit>::value);
     EXPECT_TRUE(std::is_nothrow_copy_assignable<RayCastHit>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<RayCastHit>::value);
+    EXPECT_TRUE(std::is_trivially_copy_assignable<RayCastHit>::value);
 
     EXPECT_TRUE(std::is_destructible<RayCastHit>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<RayCastHit>::value);

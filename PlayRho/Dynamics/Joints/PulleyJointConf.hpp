@@ -23,7 +23,7 @@
 #define PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonZero.hpp> // for NonNull
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
@@ -45,8 +45,8 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
     
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
     PulleyJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB,
-                   const Length2 groundAnchorA, const Length2 groundAnchorB,
-                   const Length2 anchorA, const Length2 anchorB);
+                    Length2 groundAnchorA, Length2 groundAnchorB,
+                    Length2 anchorA, Length2 anchorB);
     
     /// @brief Uses the given ratio value.
     PulleyJointConf& UseRatio(Real v) noexcept;
