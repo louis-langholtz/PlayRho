@@ -26,7 +26,7 @@
 /// Declaration of the <code>MassData</code> structure and associated free functions.
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonNegative.hpp>
 
 namespace playrho {
 namespace detail {

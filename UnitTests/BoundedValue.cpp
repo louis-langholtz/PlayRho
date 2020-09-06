@@ -19,37 +19,25 @@
  */
 
 #include "UnitTests.hpp"
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonNegative.hpp>
+#include <PlayRho/Common/NonPositive.hpp>
+#include <PlayRho/Common/NonZero.hpp>
+#include <PlayRho/Common/UnitInterval.hpp>
+#include <PlayRho/Common/Finite.hpp>
+#include <PlayRho/Common/Positive.hpp>
+#include <PlayRho/Common/Negative.hpp>
 #include <limits>
 #include <cmath>
 #include <type_traits>
 
 using namespace playrho;
 
-TEST(BoundedValue, CheckIfAboveNegInf)
-{
-    EXPECT_NO_THROW(CheckIfAboveNegInf(nullptr));
-    EXPECT_NO_THROW(CheckIfAboveNegInf(reinterpret_cast<int*>(0x1)));
-    EXPECT_NO_THROW(CheckIfAboveNegInf(0));
-    EXPECT_NO_THROW(CheckIfAboveNegInf(std::numeric_limits<float>::infinity()));
-    EXPECT_THROW(CheckIfAboveNegInf(-std::numeric_limits<float>::infinity()), InvalidArgument);
-}
-
-TEST(BoundedValue, CheckIfBelowPosInf)
-{
-    EXPECT_NO_THROW(CheckIfBelowPosInf(nullptr));
-    EXPECT_NO_THROW(CheckIfBelowPosInf(reinterpret_cast<int*>(0x1)));
-    EXPECT_NO_THROW(CheckIfBelowPosInf(0));
-    EXPECT_NO_THROW(CheckIfBelowPosInf(-std::numeric_limits<float>::infinity()));
-    EXPECT_THROW(CheckIfBelowPosInf(std::numeric_limits<float>::infinity()), InvalidArgument);
-}
-
 TEST(BoundedValue, NonNegativeFloatTraits)
 {
     using type = NonNegative<float>;
     
-    EXPECT_FALSE(std::is_default_constructible<type>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<type>::value);
+    EXPECT_TRUE(std::is_default_constructible<type>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<type>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<type>::value);
     
     EXPECT_TRUE((std::is_constructible<type, type::value_type>::value));
@@ -62,7 +50,7 @@ TEST(BoundedValue, NonNegativeFloatTraits)
     
     EXPECT_TRUE(std::is_copy_assignable<type>::value);
     EXPECT_TRUE(std::is_nothrow_copy_assignable<type>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<type>::value);
+    EXPECT_TRUE(std::is_trivially_copy_assignable<type>::value);
     
     EXPECT_TRUE(std::is_destructible<type>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<type>::value);
@@ -220,6 +208,12 @@ TEST(BoundedValue, FiniteDouble)
 
 TEST(BoundedValue, FloatUnitInterval)
 {
+    EXPECT_NO_THROW(UnitInterval<float>(0.0f));
+    EXPECT_NO_THROW(UnitInterval<float>(0.01f));
+    EXPECT_NO_THROW(UnitInterval<float>(0.5f));
+    EXPECT_NO_THROW(UnitInterval<float>(0.9999f));
+    EXPECT_NO_THROW(UnitInterval<float>(1.0f));
+
     EXPECT_EQ(float(UnitInterval<float>(0.0f)), 0.0f);
     EXPECT_EQ(float(UnitInterval<float>(0.01f)), 0.01f);
     EXPECT_EQ(float(UnitInterval<float>(0.5f)), 0.5f);

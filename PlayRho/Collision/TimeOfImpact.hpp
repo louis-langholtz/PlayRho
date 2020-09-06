@@ -24,7 +24,7 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Wider.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonNegative.hpp>
 
 namespace playrho {
 

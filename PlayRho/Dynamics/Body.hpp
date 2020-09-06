@@ -27,7 +27,6 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Range.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
 #include <PlayRho/Dynamics/BodyType.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>

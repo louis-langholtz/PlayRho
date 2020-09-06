@@ -121,8 +121,9 @@ namespace playrho {
     /// @brief Bounded value.
     /// @note While this works well enough for use in the PlayRho library, I'm not keen on
     ///   its current implementation.
+    /// @deprecated Use CheckedValue instead.
     template <typename T, LoValueCheck lo, HiValueCheck hi>
-    class BoundedValue
+    class [[deprecated("Use CheckedValue instead.")]] BoundedValue
     {
     public:
         /// @brief Value type.

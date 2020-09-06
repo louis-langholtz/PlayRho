@@ -24,7 +24,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonNegative.hpp>
 
 namespace playrho {
 namespace d2 {

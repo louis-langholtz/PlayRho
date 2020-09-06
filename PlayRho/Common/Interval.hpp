@@ -21,7 +21,7 @@
 #ifndef PLAYRHO_COMMON_INTERVAL_HPP
 #define PLAYRHO_COMMON_INTERVAL_HPP
 
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonNegative.hpp>
 #include <algorithm>
 #include <limits>
 #include <iostream>

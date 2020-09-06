@@ -26,14 +26,17 @@
 /// Declarations of the World class and associated free functions.
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Positive.hpp>
 #include <PlayRho/Common/Range.hpp>
+
+#include <PlayRho/Collision/DynamicTree.hpp>
+
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/BodyAtty.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/WorldCallbacks.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
-#include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/ContactAtty.hpp>
 #include <PlayRho/Dynamics/JointAtty.hpp>

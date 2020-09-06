@@ -24,7 +24,6 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
 
 namespace playrho {
 namespace d2 {

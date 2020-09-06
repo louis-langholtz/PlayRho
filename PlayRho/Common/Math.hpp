@@ -23,7 +23,7 @@
 #define PLAYRHO_COMMON_MATH_HPP
 
 #include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Common/UnitVec.hpp>
 #include <PlayRho/Common/Vector2.hpp>
@@ -114,8 +114,9 @@ MakeUnsigned(const T& arg) noexcept
 }
 
 /// @brief Strips the unit from the given value.
-template <typename T, LoValueCheck lo, HiValueCheck hi>
-constexpr auto StripUnit(const BoundedValue<T, lo, hi>& v)
+template <typename T>
+constexpr auto StripUnit(const T& v)
+-> decltype(StripUnit(v.get()))
 {
     return StripUnit(v.get());
 }
@@ -706,10 +707,10 @@ inline Angle GetAngle(const UnitVec value)
 }
 
 /// @brief Multiplication operator.
-template <class T, LoValueCheck lo, HiValueCheck hi>
-constexpr Vector2<T> operator* (BoundedValue<T, lo, hi> s, UnitVec u) noexcept
+template <class T, typename U>
+constexpr Vector2<T> operator* (CheckedValue<T, U> s, UnitVec u) noexcept
 {
-    return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
+    return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
 
 /// @brief Multiplication operator.
@@ -720,10 +721,10 @@ constexpr Vector2<T> operator* (const T s, const UnitVec u) noexcept
 }
 
 /// @brief Multiplication operator.
-template <class T, LoValueCheck lo, HiValueCheck hi>
-constexpr Vector2<T> operator* (UnitVec u, BoundedValue<T, lo, hi> s) noexcept
+template <class T, typename U>
+constexpr Vector2<T> operator* (UnitVec u, CheckedValue<T, U> s) noexcept
 {
-    return Vector2<T>{u.GetX() * s, u.GetY() * T{s}};
+    return Vector2<T>{u.GetX() * s, u.GetY() * s};
 }
 
 /// @brief Multiplication operator.

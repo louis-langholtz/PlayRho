@@ -25,7 +25,7 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Common/BoundedValue.hpp>
+#include <PlayRho/Common/NonNegative.hpp>
 #include <memory>
 #include <functional>
 #include <utility>
