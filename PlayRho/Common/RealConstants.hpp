@@ -23,7 +23,7 @@
  * @brief Definitions file for constant expressions of type Real.
  * @details This file defines physically dimensionless or unitless constant expression
  *   quantities of the Real type.
- * @sa https://en.wikipedia.org/wiki/Dimensionless_quantity
+ * @see https://en.wikipedia.org/wiki/Dimensionless_quantity
  */
 
 #ifndef PLAYRHO_COMMON_REALCONSTANTS_HPP
@@ -49,13 +49,13 @@ namespace playrho {
 ///   enclosing name space.
 /// @note Any narrowing is intentional.
 ///
-/// @sa https://en.wikipedia.org/wiki/Pi
+/// @see https://en.wikipedia.org/wiki/Pi
 ///
 constexpr const auto Pi = Real(3.14159265358979323846264338327950288);
 
 /// @brief Square root of two.
 ///
-/// @sa https://en.wikipedia.org/wiki/Square_root_of_2
+/// @see https://en.wikipedia.org/wiki/Square_root_of_2
 ///
 constexpr const auto SquareRootTwo =
     Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
@@ -65,39 +65,39 @@ constexpr const auto SquareRootTwo =
 ///   a fraction of, a unit.
 /// @note <code>std::ratio</code> doesn't necessarily support larger sizes like Yotta
 ///    or bigger so floating-point literal notation is used instead.
-/// @sa https://en.wikipedia.org/wiki/Metric_prefix
+/// @see https://en.wikipedia.org/wiki/Metric_prefix
 /// @{
 
 /// @brief Centi- (1 x 10^-2).
-/// @sa https://en.wikipedia.org/wiki/Centi-
+/// @see https://en.wikipedia.org/wiki/Centi-
 constexpr const auto Centi = Real(1e-2);
 
 /// @brief Deci- (1 x 10^-1).
-/// @sa https://en.wikipedia.org/wiki/Deci-
+/// @see https://en.wikipedia.org/wiki/Deci-
 constexpr const auto Deci = Real(1e-1);
 
 /// @brief Kilo- (1 x 10^3).
-/// @sa https://en.wikipedia.org/wiki/Kilo-
+/// @see https://en.wikipedia.org/wiki/Kilo-
 constexpr const auto Kilo = Real(1e3);
 
 /// @brief Mega- (1 x 10^6).
-/// @sa https://en.wikipedia.org/wiki/Mega-
+/// @see https://en.wikipedia.org/wiki/Mega-
 constexpr const auto Mega = Real(1e6);
 
 /// @brief Giga- (1 x 10^9).
-/// @sa https://en.wikipedia.org/wiki/Giga-
+/// @see https://en.wikipedia.org/wiki/Giga-
 constexpr const auto Giga = Real(1e9);
 
 /// @brief Tera- (1 x 10^12).
-/// @sa https://en.wikipedia.org/wiki/Tera-
+/// @see https://en.wikipedia.org/wiki/Tera-
 constexpr const auto Tera = Real(1e12);
 
 /// @brief Peta- (1 x 10^15).
-/// @sa https://en.wikipedia.org/wiki/Peta-
+/// @see https://en.wikipedia.org/wiki/Peta-
 constexpr const auto Peta = Real(1e15);
 
 /// @brief Yotta- (1 x 10^24).
-/// @sa https://en.wikipedia.org/wiki/Yotta-
+/// @see https://en.wikipedia.org/wiki/Yotta-
 constexpr const auto Yotta = Real(1e24);
 
 /// @}

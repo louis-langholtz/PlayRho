@@ -380,7 +380,7 @@ DynamicTree::Size UpdateNonRoot(DynamicTree::TreeNode nodes[],
 DynamicTree::DynamicTree() noexcept = default;
 
 DynamicTree::DynamicTree(Size nodeCapacity):
-    m_nodes{nodeCapacity? Alloc<TreeNode>(nodeCapacity): nullptr},
+    m_nodes{nodeCapacity? AllocArray<TreeNode>(nodeCapacity): nullptr},
     m_freeIndex{nodeCapacity? 0: GetInvalidSize()},
     m_nodeCapacity{nodeCapacity}
 {
@@ -397,7 +397,7 @@ DynamicTree::DynamicTree(Size nodeCapacity):
 }
 
 DynamicTree::DynamicTree(const DynamicTree& other):
-    m_nodes{Alloc<TreeNode>(other.m_nodeCapacity)},
+    m_nodes{AllocArray<TreeNode>(other.m_nodeCapacity)},
     m_rootIndex{other.m_rootIndex},
     m_freeIndex{other.m_freeIndex},
     m_nodeCount{other.m_nodeCount},
@@ -434,7 +434,7 @@ void DynamicTree::SetNodeCapacity(Size value)
     // The free list is empty. Rebuild a bigger pool.
     // Call Realloc first in case it throws so this code doesn't have to restore any state
     // and so this function will have no effect.
-    m_nodes = Realloc<TreeNode>(m_nodes, value);
+    m_nodes = ReallocArray<TreeNode>(m_nodes, value);
     m_nodeCapacity = value;
 
     // Build a linked list for the free list. The parent
@@ -585,7 +585,7 @@ void DynamicTree::UpdateLeaf(Size index, const AABB& aabb)
 
 void DynamicTree::RebuildBottomUp()
 {
-    const auto nodes = Alloc<Size>(m_nodeCount);
+    const auto nodes = AllocArray<Size>(m_nodeCount);
     auto count = Size{0};
 
     // Build array of leaves. Free the rest.

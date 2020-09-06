@@ -32,8 +32,8 @@ namespace playrho {
     /// @brief Version numbering scheme.
     /// @details Version class for numbering the PlayRho library releases. Follows
     ///   Semantic Versioning 2.0.0.
-    /// @sa http://en.wikipedia.org/wiki/Software_versioning
-    /// @sa http://semver.org
+    /// @see https://en.wikipedia.org/wiki/Software_versioning
+    /// @see https://semver.org
     struct Version
     {
         /// @brief Revision number type.

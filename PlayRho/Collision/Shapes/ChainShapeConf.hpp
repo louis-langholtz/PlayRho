@@ -66,7 +66,7 @@ public:
     
     /// @brief Transforms all the vertices by the given transformation matrix.
     /// @note This updates the normals too.
-    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    /// @see https://en.wikipedia.org/wiki/Transformation_matrix
     ChainShapeConf& Transform(const Mat22& m) noexcept;
 
     /// @brief Gets the "child" shape count.
@@ -195,7 +195,7 @@ inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg, ChildCount
 
 /// @brief Transforms the given chain shape configuration's vertices by the given
 ///   transformation matrix.
-/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+/// @see https://en.wikipedia.org/wiki/Transformation_matrix
 inline void Transform(ChainShapeConf& arg, const Mat22& m) noexcept
 {
     arg.Transform(m);

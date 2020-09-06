@@ -44,7 +44,7 @@ struct MassData
     
     /// @brief Rotational inertia, a.k.a. moment of inertia.
     /// @details This is the rotational inertia of the shape about the local origin.
-    /// @sa https://en.wikipedia.org/wiki/Moment_of_inertia
+    /// @see https://en.wikipedia.org/wiki/Moment_of_inertia
     NonNegative<RotInertia> I = NonNegative<RotInertia>{0 * 1_m2 * 1_kg / SquareRadian};
 };
 

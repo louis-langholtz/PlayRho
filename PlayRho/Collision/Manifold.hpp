@@ -57,9 +57,9 @@ struct Transformation;
 ///
 /// @image html manifolds.png
 ///
-/// @sa Contact, PositionConstraint, VelocityConstraint
-/// @sa https://en.wikipedia.org/wiki/Convex_set
-/// @sa http://box2d.org/files/GDC2007/GDC2007_Catto_Erin_Physics2.ppt
+/// @see Contact, PositionConstraint, VelocityConstraint
+/// @see https://en.wikipedia.org/wiki/Convex_set
+/// @see http://box2d.org/files/GDC2007/GDC2007_Catto_Erin_Physics2.ppt
 ///
 class alignas(64) Manifold
 {
@@ -139,7 +139,7 @@ public:
         /// @brief Contact feature.
         /// @details Uniquely identifies a contact point between two shapes - A and B.
         /// @note This field is 4-bytes.
-        /// @sa GetPointStates.
+        /// @see GetPointStates.
         ContactFeature contactFeature;
         
         /// @brief Normal impulse.
@@ -325,9 +325,9 @@ public:
     ///
     /// @return Value between 0 and <code>MaxManifoldPoints</code>.
     ///
-    /// @sa MaxManifoldPoints.
-    /// @sa AddPoint().
-    /// @sa GetPoint().
+    /// @see MaxManifoldPoints.
+    /// @see AddPoint().
+    /// @see GetPoint().
     ///
     constexpr size_type GetPointCount() const noexcept { return m_pointCount; }
     
@@ -451,7 +451,7 @@ private:
     /// @note Invalid for the unset manifold type.
     Length2 m_localPoint = GetInvalid<Length2>();
     
-    PointArray m_points; ///< Points of contact (at least 40-bytes). @sa pointCount.
+    PointArray m_points; ///< Points of contact (at least 40-bytes). @see pointCount.
 };
 
 /// @brief Configuration data for manifold calculation.

@@ -580,7 +580,7 @@ static void ThreadCreateAndDestroy(benchmark::State& state)
 /// @details A pretty conventional concurrent queue implementation using a regular queue
 ///   structure made thread safe with a mutex and a condition variable.
 /// @note Behavior is undefined if destroyed in one thread while being accessed in another.
-/// @sa https://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queue-using-condition-variables.html
+/// @see https://www.justsoftwaresolutions.co.uk/threading/implementing-a-thread-safe-queue-using-condition-variables.html
 template <typename T>
 class ConcurrentQueue
 {
@@ -693,7 +693,7 @@ private:
 
 /// @brief Atomic element.
 /// @note Supports single reader, single writer.
-/// @sa http://en.cppreference.com/w/cpp/atomic/atomic_flag
+/// @see https://en.cppreference.com/w/cpp/atomic/atomic_flag
 template <typename T>
 class AtomicSingleElementQueue
 {
@@ -745,7 +745,7 @@ private:
 
 /// @brief Atomic queue.
 /// @note Supports multiple readers, single writer.
-/// @sa http://en.cppreference.com/w/cpp/atomic/atomic_flag
+/// @see https://en.cppreference.com/w/cpp/atomic/atomic_flag
 template <typename T>
 class AtomicQueue
 {

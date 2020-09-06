@@ -65,8 +65,8 @@ class Body;
 /// @note Nodes are pooled and relocatable, so we use node indices rather than pointers.
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
-/// @sa http://www.randygaul.net/2013/08/06/dynamic-aabb-tree/
-/// @sa http://www.cs.utah.edu/~thiago/papers/rotations.pdf ("Fast, Effective
+/// @see http://www.randygaul.net/2013/08/06/dynamic-aabb-tree/
+/// @see http://www.cs.utah.edu/~thiago/papers/rotations.pdf ("Fast, Effective
 ///    BVH Updates for Animated Scenes")
 ///
 class DynamicTree
@@ -242,8 +242,8 @@ public:
     Size FindReference(Size index) const noexcept;
 
     /// @brief Customized swap function for <code>DynamicTree</code> objects.
-    /// @note This satisfies the <code>Swappable</code> concept.
-    /// @see http://en.cppreference.com/w/cpp/concept/Swappable
+    /// @note This satisfies the <code>Swappable</code> named requirement.
+    /// @see https://en.cppreference.com/w/cpp/named_req/Swappable
     friend void swap(DynamicTree& lhs, DynamicTree& rhs) noexcept;
     
 private:
@@ -790,9 +790,9 @@ void Query(const DynamicTree& tree, const AABB& aabb, QueryFixtureCallback callb
 
 /// @brief Gets the "size" of the given tree.
 /// @note Size in this context is defined as the leaf count.
-/// @note This provides ancillary support for the container concept's size method.
+/// @note This provides ancillary support for the container named requirement's size method.
 /// @see DynamicTree::GetLeafCount()
-/// @see http://en.cppreference.com/w/cpp/concept/Container
+/// @see https://en.cppreference.com/w/cpp/named_req/Container
 inline std::size_t size(const DynamicTree& tree) noexcept
 {
     return tree.GetLeafCount();

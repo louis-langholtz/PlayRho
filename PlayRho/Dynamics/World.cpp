@@ -241,7 +241,7 @@ namespace {
     /// @post Velocity constraints will have their "normal" field set to the world manifold
     ///   normal for them.
     /// @post Velocity constraints will have their constraint points set.
-    /// @sa SolveVelocityConstraints.
+    /// @see SolveVelocityConstraints.
     VelocityConstraints GetVelocityConstraints(const Island::Contacts& contacts,
                                                BodyConstraintsMap& bodies,
                                                const VelocityConstraint::Conf conf)

@@ -150,7 +150,7 @@ namespace d2 {
     
     /// @brief Earthly gravity in 2-dimensions.
     /// @details Linear acceleration in 2-dimensions of an earthly object due to Earth's mass.
-    /// @sa EarthlyLinearAcceleration
+    /// @see EarthlyLinearAcceleration
     constexpr const auto EarthlyGravity = LinearAcceleration2{
         0_mps2, EarthlyLinearAcceleration};
 

@@ -44,7 +44,7 @@ namespace d2 {
 ///   friend-based access to the Body class. This is meant to help preserve and enforce
 ///   the invariants of the Body class.
 ///
-/// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
+/// @see https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
 ///
 class BodyAtty
 {
@@ -176,7 +176,7 @@ private:
     
     /// @brief Sets the body sweep's "position 1" value.
     /// @note This sets what <code>Body::GetWorldCenter</code> returns.
-    /// @sa Body::GetWorldCenter
+    /// @see Body::GetWorldCenter
     static void SetPosition1(Body& b, const Position value) noexcept
     {
         assert(b.IsSpeedable() || b.m_sweep.pos1 == value);
@@ -198,7 +198,7 @@ private:
     
     /// Sets the body's transformation.
     /// @note This sets what <code>Body::GetLocation</code> returns.
-    /// @sa Body::GetLocation
+    /// @see Body::GetLocation
     static void SetTransformation(Body& b, const Transformation value) noexcept
     {
         b.SetTransformation(value);
@@ -206,7 +206,7 @@ private:
     
     /// Sets the body's velocity.
     /// @note This sets what <code>Body::GetVelocity</code> returns.
-    /// @sa Body::GetVelocity
+    /// @see Body::GetVelocity
     static void SetVelocity(Body& b, Velocity value) noexcept
     {
         b.m_velocity = value;

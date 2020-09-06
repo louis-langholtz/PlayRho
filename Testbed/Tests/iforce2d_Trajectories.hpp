@@ -26,7 +26,7 @@ namespace testbed {
 
 /// @brief iforce2d's Trajectories demo.
 /// @details This is a port of iforce2d's Trajectories demo to the PlayRho Testbed.
-/// @sa http://www.iforce2d.net/b2dtut/projected-trajectory
+/// @see http://www.iforce2d.net/b2dtut/projected-trajectory
 class iforce2d_Trajectories : public Test
 {
 public:

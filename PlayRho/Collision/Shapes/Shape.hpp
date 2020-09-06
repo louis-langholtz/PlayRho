@@ -51,7 +51,7 @@ ChildCounter GetChildCount(const Shape& shape) noexcept;
 ///   than the number of child primitives of the shape.
 /// @note The shape must remain in scope while the proxy is in use.
 /// @throws InvalidArgument if the given index is out of range.
-/// @sa GetChildCount
+/// @see GetChildCount
 DistanceProxy GetChild(const Shape& shape, ChildCounter index);
 
 /// @brief Gets the mass properties of this shape using its dimensions and density.
@@ -86,21 +86,21 @@ NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept;
 ///
 /// @note This must be a non-negative value.
 ///
-/// @sa UseVertexRadius
+/// @see UseVertexRadius
 ///
 /// @throws InvalidArgument if the child index is not less than the child count.
 ///
 NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx);
 
 /// @brief Transforms all of the given shape's vertices by the given transformation matrix.
-/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+/// @see https://en.wikipedia.org/wiki/Transformation_matrix
 /// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
 ///   by the constructor for the model's underlying data type.
 /// @throws std::bad_alloc if there's a failure allocating storage.
 void Transform(Shape& shape, const Mat22& m);
 
 /// @brief Visits the given shape with the potentially non-null user data pointer.
-/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+/// @see https://en.wikipedia.org/wiki/Visitor_pattern
 bool Visit(const Shape& shape, void* userData);
 
 /// @brief Gets a pointer to the underlying data.
@@ -120,7 +120,7 @@ using TypeInfoVisitor = std::function<void(const std::type_info& ti, const void*
 /// @brief Accepts a visitor.
 /// @details This is the "accept" method definition of a "visitor design pattern"
 ///   for doing shape configuration specific types of processing for a constant shape.
-/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+/// @see https://en.wikipedia.org/wiki/Visitor_pattern
 void Accept(const Shape& shape, const TypeInfoVisitor& visitor);
 
 /// @brief Equality operator for shape to shape comparisons.
@@ -156,8 +156,8 @@ bool operator!= (const Shape& lhs, const Shape& rhs) noexcept;
 ///
 /// @ingroup PartsGroup
 ///
-/// @sa Fixture
-/// @sa https://youtu.be/QGcVXgEVMJg
+/// @see Fixture
+/// @see https://youtu.be/QGcVXgEVMJg
 ///
 class Shape
 {
@@ -170,13 +170,13 @@ public:
     /// @param arg Configuration value to construct a shape instance for.
     /// @note Only usable with types of values that have all of the support functions required
     ///   by this class. The compiler emits errors if the given type doesn't.
-    /// @sa GetChildCount
-    /// @sa GetChild
-    /// @sa GetMassData
-    /// @sa GetVertexRadius
-    /// @sa GetDensity
-    /// @sa GetFriction
-    /// @sa GetRestitution
+    /// @see GetChildCount
+    /// @see GetChild
+    /// @see GetMassData
+    /// @see GetVertexRadius
+    /// @see GetDensity
+    /// @see GetFriction
+    /// @see GetRestitution
     /// @throws std::bad_alloc if there's a failure allocating storage.
     template <typename T>
     explicit Shape(T arg): m_self{std::make_shared<Model<T>>(std::move(arg))}
@@ -306,7 +306,7 @@ private:
         virtual Real GetRestitution_() const noexcept = 0;
         
         /// @brief Transforms all of the shape's vertices by the given transformation matrix.
-        /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+        /// @see https://en.wikipedia.org/wiki/Transformation_matrix
         virtual void Transform_(const Mat22& m) = 0;
         
         /// @brief Draws the shape.
@@ -438,7 +438,7 @@ bool TestPoint(const Shape& shape, Length2 point) noexcept;
 /// @brief Visits the given shape with the potentially non-null user data pointer.
 /// @note This is a specialization of the <code>Visit</code> function template for the
 ///   <code>d2::Shape</code> class.
-/// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+/// @see https://en.wikipedia.org/wiki/Visitor_pattern
 template <>
 inline bool Visit<d2::Shape>(const d2::Shape& shape, void* userData)
 {

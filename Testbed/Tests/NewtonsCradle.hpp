@@ -28,8 +28,8 @@ namespace testbed {
     /// Newton's Cradle test.
     /// @details
     /// Demonstrates the problems that are endemic to the handling multiple collisions.
-    /// @sa http://www.myphysicslab.com/Collision-methods.html
-    /// @sa https://en.wikipedia.org/wiki/Newton%27s_cradle
+    /// @see http://www.myphysicslab.com/Collision-methods.html
+    /// @see https://en.wikipedia.org/wiki/Newton%27s_cradle
     class NewtonsCradle : public Test
     {
     public:

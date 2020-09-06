@@ -38,7 +38,7 @@ namespace d2 {
 ///   friend-based access to the World class. This is meant to help preserve and enforce
 ///   the invariants of the World class.
 ///
-/// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
+/// @see https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
 ///
 class WorldAtty
 {
@@ -89,7 +89,7 @@ private:
     /// @param fixture the fixture to be removed.
     /// @param resetMassData Whether or not to reset the mass data of the associated body.
     ///
-    /// @sa ResetMassData.
+    /// @see ResetMassData.
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///

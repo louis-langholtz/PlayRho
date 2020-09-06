@@ -33,11 +33,16 @@ namespace playrho {
 
 namespace detail {
 
+/// @brief Check exception type for non-supplying checkers.
+/// @details Helper type for checker type having no <code>exception_type</code> alias.
 template <typename T, typename=void>
 struct CheckExceptionType{};
 
+/// @brief Check exception type for <code>exception_type</code> supplying checkers.
+/// @details Helper type for adding alias to a checker type's <code>exception_type</code> alias.
 template <typename T>
 struct CheckExceptionType<T, detail::VoidT<typename T::exception_type>> {
+    /// @brief Exception type possibly thrown by the given checker.
     using exception_type = typename T::exception_type;
 };
 
@@ -79,7 +84,7 @@ public:
     }
 
     /// @brief Gets the underlying value.
-    /// @todo Mark this function "explicit".
+    /// @todo Consider marking this function "explicit".
     constexpr operator value_type () const noexcept
     {
         return m_value;
@@ -106,7 +111,10 @@ private:
 
 // Common operations.
 
-/// @brief Constrained value stream output operator.
+/// @brief Constrained value stream output operator for value types which support it.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @relatedalso CheckedValue
 template <typename ValueType, typename CheckerType>
 auto operator<<(::std::ostream& os, const CheckedValue<ValueType, CheckerType>& value) ->
     decltype(os << ValueType{value})
@@ -114,7 +122,12 @@ auto operator<<(::std::ostream& os, const CheckedValue<ValueType, CheckerType>& 
     return os << ValueType{value};
 }
 
-/// @brief Constrained value equality operator.
+/// @brief Constrained value equality operator or value types which support it.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator== (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                            const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -123,25 +136,36 @@ constexpr auto operator== (const CheckedValue<LhsValueType, LhsCheckerType>& lhs
     return LhsValueType{lhs} == RhsValueType{rhs};
 }
 
-/// @brief Constrained value greater-than or equal-to operator.
+/// @brief Constrained value equality operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
 template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator== (const CheckedValue<ValueType, CheckerType>& lhs,
+constexpr auto operator== (const CheckedValue<ValueType,CheckerType>& lhs,
                            const Other& rhs)
 -> decltype(ValueType{lhs} == rhs)
 {
     return ValueType{lhs} == rhs;
 }
 
-/// @brief Constrained value greater-than or equal-to operator.
+/// @brief Constrained value equality operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
 template <typename ValueType, typename CheckerType, typename Other>
 constexpr auto operator== (const Other& lhs,
-                           const CheckedValue<ValueType, CheckerType>& rhs)
+                           const CheckedValue<ValueType,CheckerType>& rhs)
 -> decltype(lhs == ValueType{rhs})
 {
     return lhs == ValueType{rhs};
 }
 
 /// @brief Constrained value inequality operator.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator!= (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                            const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -150,7 +174,7 @@ constexpr auto operator!= (const CheckedValue<LhsValueType, LhsCheckerType>& lhs
     return LhsValueType{lhs} != RhsValueType{rhs};
 }
 
-/// @brief Constrained value greater-than or equal-to operator.
+/// @brief Constrained value inequality operator.
 template <typename ValueType, typename CheckerType, typename Other>
 constexpr auto operator!= (const CheckedValue<ValueType, CheckerType>& lhs,
                            const Other& rhs)
@@ -159,7 +183,7 @@ constexpr auto operator!= (const CheckedValue<ValueType, CheckerType>& lhs,
     return ValueType{lhs} != rhs;
 }
 
-/// @brief Constrained value greater-than or equal-to operator.
+/// @brief Constrained value inequality operator.
 template <typename ValueType, typename CheckerType, typename Other>
 constexpr auto operator!= (const Other& lhs,
                            const CheckedValue<ValueType, CheckerType>& rhs)
@@ -169,6 +193,11 @@ constexpr auto operator!= (const Other& lhs,
 }
 
 /// @brief Constrained value less-than or equal-to operator.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator<= (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                            const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -196,6 +225,11 @@ constexpr auto operator<= (const Other& lhs,
 }
 
 /// @brief Constrained value greater-than or equal-to operator.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator>= (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                            const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -223,6 +257,11 @@ constexpr auto operator>= (const Other& lhs,
 }
 
 /// @brief Constrained value less-than operator.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator< (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -250,6 +289,11 @@ constexpr auto operator< (const Other& lhs,
 }
 
 /// @brief Constrained value greater-than operator.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator> (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -258,7 +302,7 @@ constexpr auto operator> (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
     return LhsValueType{lhs} > RhsValueType{rhs};
 }
 
-/// @brief Constrained value greater-than or equal-to operator.
+/// @brief Constrained value greater-than operator.
 template <typename ValueType, typename CheckerType, typename Other>
 constexpr auto operator> (const CheckedValue<ValueType, CheckerType>& lhs,
                           const Other& rhs)
@@ -267,7 +311,7 @@ constexpr auto operator> (const CheckedValue<ValueType, CheckerType>& lhs,
     return ValueType{lhs} > rhs;
 }
 
-/// @brief Constrained value greater-than or equal-to operator.
+/// @brief Constrained value greater-than ooperator.
 template <typename ValueType, typename CheckerType, typename Other>
 constexpr auto operator> (const Other& lhs,
                           const CheckedValue<ValueType, CheckerType>& rhs)
@@ -277,6 +321,11 @@ constexpr auto operator> (const Other& lhs,
 }
 
 /// @brief Constrained value multiplication operator.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator* (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -308,6 +357,11 @@ operator* (const Other& lhs, const CheckedValue<ValueType, CheckerType>& rhs)
 }
 
 /// @brief Constrained value division operator.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator/ (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -335,6 +389,11 @@ constexpr auto operator/ (const Other& lhs,
 }
 
 /// @brief Constrained value addition operator.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator+ (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -362,6 +421,11 @@ constexpr auto operator+ (const Other& lhs,
 }
 
 /// @brief Constrained value subtraction operator.
+/// @tparam LhsValueType Type of the value used by the left hand side checked value.
+/// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
+/// @tparam RhsValueType Type of the value used by the right hand side checked value.
+/// @tparam RhsCheckerType Type of the checker used by the right hand side checked value.
+/// @relatedalso CheckedValue
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator- (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
@@ -388,16 +452,12 @@ constexpr auto operator- (const Other& lhs,
     return lhs - ValueType{rhs};
 }
 
-/// @defgroup CheckedValue Constrained Value Types
+/// @defgroup CheckedValues Constrained Value Types
 /// @brief Types for constrained values.
 /// @details Type aliases for constrained values via on-construction checks that
-///   throw the <code>InvalidArgument</code> exception if an attempt is made
-///   to construct the constrained value type with a value not allowed by the specific
-///   alias.
-/// @sa CheckedValue, InvalidArgument
-/// @{
-
-/// @}
+///   may throw an exception if an attempt is made to construct the constrained value
+///   type with a value not allowed by the specific alias.
+/// @see CheckedValue
 
 } // namespace playrho
 

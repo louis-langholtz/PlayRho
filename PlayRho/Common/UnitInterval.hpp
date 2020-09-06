@@ -25,15 +25,20 @@
 
 namespace playrho {
 
+/// @brief Unit-interval constrained value checker.
 template <typename T>
 struct UnitIntervalChecker {
+    /// @brief Exception type possibly thrown by this checker.
     using exception_type = std::invalid_argument;
 
+    /// @brief Valid value supplying functor.
     constexpr auto operator()() noexcept -> decltype(static_cast<T>(0))
     {
         return static_cast<T>(0);
     }
 
+    /// @brief Value checking functor.
+    /// @throws exception_type if given value is not valid.
     constexpr auto operator()(const T& v) -> decltype((v >= static_cast<T>(0) && v <= static_cast<T>(1)), T{v})
     {
         if (!(v >= static_cast<T>(0))) {
@@ -46,6 +51,7 @@ struct UnitIntervalChecker {
     }
 };
 
+/// @ingroup CheckedValues
 /// @brief Unit interval constrained value type.
 template <typename T>
 using UnitInterval = CheckedValue<T, UnitIntervalChecker<T>>;

@@ -26,7 +26,7 @@
 namespace testbed {
 
 /// @brief Solar system demo.
-/// @sa https://en.wikipedia.org/wiki/Solar_System
+/// @see https://en.wikipedia.org/wiki/Solar_System
 
 struct SolarSystemObject
 {

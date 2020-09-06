@@ -43,7 +43,7 @@ namespace playrho {
 ///   Vector instances arithmetic types as well.
 /// @note This type is trivially default constructible - i.e. default construction
 ///   performs no actions (no initialization).
-/// @sa IsArithmetic, VectorTraitsGroup
+/// @see IsArithmetic, VectorTraitsGroup
 template <typename T, std::size_t N>
 struct Vector
 {
@@ -222,7 +222,7 @@ struct Vector
 /// @code{.cpp}
 /// IsVector<int>::value || IsVector<float>::value
 /// @endcode
-/// @sa Vector
+/// @see Vector
 template <typename>
 struct IsVector: std::false_type {};
 
@@ -233,7 +233,7 @@ struct IsVector: std::false_type {};
 /// @code{.cpp}
 /// IsVector<Vector<int, 2>::value && IsVector<Vector<Vector<float, 1>, 1>>::value
 /// @endcode
-/// @sa Vector
+/// @see Vector
 template <typename T, std::size_t N>
 struct IsVector<Vector<T, N>>: std::true_type {};
 
@@ -377,9 +377,9 @@ operator/= (Vector<T1, N>& lhs, const T2 rhs) noexcept
 /// @param lhs Left-hand-side matrix.
 /// @param rhs Right-hand-side matrix.
 /// @return A-by-C matrix product of the left-hand-side matrix and the right-hand-side matrix.
-/// @sa https://en.wikipedia.org/wiki/Matrix_multiplication
-/// @sa https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm
-/// @sa https://en.wikipedia.org/wiki/Commutative_property
+/// @see https://en.wikipedia.org/wiki/Matrix_multiplication
+/// @see https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm
+/// @see https://en.wikipedia.org/wiki/Commutative_property
 /// @relatedalso Vector
 template <typename T1, typename T2, std::size_t A, std::size_t B, std::size_t C,
     typename OT = decltype(T1{} * T2{})>

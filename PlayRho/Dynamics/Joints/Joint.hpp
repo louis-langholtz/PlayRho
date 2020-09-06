@@ -69,7 +69,7 @@ using BodyConstraintsMap =
 /// @ingroup JointsGroup
 /// @ingroup PhysicalEntities
 ///
-/// @sa World
+/// @see World
 ///
 class Joint
 {
@@ -120,15 +120,15 @@ public:
     /// @brief Accepts a visitor.
     /// @details This is the Accept method definition of a "visitor design pattern" for
     ///   for doing joint subclass specific types of processing for a constant joint.
-    /// @sa JointVisitor
-    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+    /// @see JointVisitor
+    /// @see https://en.wikipedia.org/wiki/Visitor_pattern
     virtual void Accept(JointVisitor& visitor) const = 0;
     
     /// @brief Accepts a visitor.
     /// @details This is the Accept method definition of a "visitor design pattern" for
     ///   for doing joint subclass specific types of processing.
-    /// @sa JointVisitor
-    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+    /// @see JointVisitor
+    /// @see https://en.wikipedia.org/wiki/Visitor_pattern
     virtual void Accept(JointVisitor& visitor) = 0;
 
     /// Get the user data pointer.
@@ -190,14 +190,14 @@ private:
 
     /// @brief Initializes velocity constraint data based on the given solver data.
     /// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
-    /// @sa SolveVelocityConstraints.
+    /// @see SolveVelocityConstraints.
     virtual void InitVelocityConstraints(BodyConstraintsMap& bodies,
                                          const playrho::StepConf& step,
                                          const ConstraintSolverConf& conf) = 0;
 
     /// @brief Solves velocity constraint.
     /// @pre <code>InitVelocityConstraints</code> has been called.
-    /// @sa InitVelocityConstraints.
+    /// @see InitVelocityConstraints.
     /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
     virtual bool SolveVelocityConstraints(BodyConstraintsMap& bodies,
                                           const playrho::StepConf& step) = 0;

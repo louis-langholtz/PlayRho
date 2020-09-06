@@ -45,8 +45,8 @@ class StepConf;
 /// @note Min target distance needs to be significantly less than the max target distance and
 ///   significantly more than 0.
 ///
-/// @sa SolvePositionConstraints
-/// @sa SolveTOIPositionConstraints
+/// @see SolvePositionConstraints
+/// @see SolveTOIPositionConstraints
 ///
 struct ToiConf
 {
@@ -275,7 +275,7 @@ class DistanceProxy;
 /// non-tunneling collision.
 /// If you change the time interval, you should call this function again.
 ///
-/// @sa https://en.wikipedia.org/wiki/Hyperplane_separation_theorem
+/// @see https://en.wikipedia.org/wiki/Hyperplane_separation_theorem
 /// @pre The given sweeps are both at the same alpha-0.
 /// @warning Behavior is undefined if sweeps are not at the same alpha-0.
 /// @warning Behavior is undefined if the configuration's <code>tMax</code> is not

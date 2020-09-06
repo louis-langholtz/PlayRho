@@ -56,7 +56,7 @@ class Body;
 ///
 /// @ingroup PhysicalEntities
 ///
-/// @sa Body, Shape
+/// @see Body, Shape
 ///
 class Fixture
 {
@@ -88,7 +88,7 @@ public:
     /// @brief Re-filter the fixture.
     /// @note Call this if you want to establish collision that was previously disabled by
     ///   <code>ShouldCollide(const Fixture&, const Fixture&)</code>.
-    /// @sa bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
+    /// @see bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
     void Refilter();
 
     /// Get the user data that was assigned in the fixture definition. Use this to

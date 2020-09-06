@@ -35,7 +35,7 @@ class Fixture;
 /// @brief Fixture definition.
 ///
 /// @details A fixture definition is used to create a fixture.
-/// @sa Body::CreateFixture.
+/// @see Body::CreateFixture.
 ///
 struct FixtureConf
 {

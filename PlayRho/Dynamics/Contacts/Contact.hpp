@@ -168,7 +168,7 @@ public:
     /// @brief Gets the coefficient of friction.
     /// @details Gets the combined friction of the two fixtures associated with this contact.
     /// @return Value of 0 or higher.
-    /// @sa MixFriction.
+    /// @see MixFriction.
     Real GetFriction() const noexcept;
 
     /// @brief Sets the restitution.
@@ -195,7 +195,7 @@ public:
 
     /// @brief Gets the time of impact (TOI) as a fraction.
     /// @note This is only valid if a TOI has been set.
-    /// @sa void SetToi(Real toi).
+    /// @see void SetToi(Real toi).
     /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
     ///   means no actual impact in current time slot), otherwise undefined.
     Real GetToi() const;
@@ -260,15 +260,15 @@ private:
     /// @param conf Per-step configuration information.
     /// @param listener Listener that if non-null is called with status information.
     ///
-    /// @sa GetManifold, IsTouching
+    /// @see GetManifold, IsTouching
     ///
     void Update(const UpdateConf& conf, ContactListener* listener = nullptr);
 
     /// @brief Sets the time of impact (TOI).
     /// @details After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
     /// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
-    /// @sa Real GetToi() const.
-    /// @sa HasValidToi.
+    /// @see Real GetToi() const.
+    /// @see HasValidToi.
     /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact in the current time slot.
     void SetToi(Real toi) noexcept;
 
@@ -282,7 +282,7 @@ private:
     /// @note This should only be called if either:
     ///   1. The contact's manifold has more than 0 contact points, or
     ///   2. The contact has sensors and the two shapes of this contact are found to be overlapping.
-    /// @sa IsTouching().
+    /// @see IsTouching().
     void SetTouching() noexcept;
 
     /// @brief Unsets the touching flag state.
@@ -304,7 +304,7 @@ private:
 
     // Member variables...
 
-    Manifold mutable m_manifold; ///< Manifold of the contact. 64-bytes. @sa Update.
+    Manifold mutable m_manifold; ///< Manifold of the contact. 64-bytes. @see Update.
 
     // Need to be able to identify two different fixtures, the child shape per fixture,
     // and the two different bodies that each fixture is associated with. This could be
@@ -319,8 +319,8 @@ private:
     ChildCounter const m_indexB; ///< Index B.
     
     // initialized on construction (construction-time depedent)
-    Real m_friction; ///< Mix of frictions of the associated fixtures. @sa MixFriction.
-    Real m_restitution; ///< Mix of restitutions of the associated fixtures. @sa MixRestitution.
+    Real m_friction; ///< Mix of frictions of the associated fixtures. @see MixFriction.
+    Real m_restitution; ///< Mix of restitutions of the associated fixtures. @see MixRestitution.
 
     LinearVelocity m_tangentSpeed = 0; ///< Tangent speed.
     

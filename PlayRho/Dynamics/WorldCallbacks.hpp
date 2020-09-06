@@ -91,7 +91,7 @@ public:
     /// @param contact Contact that's about to be destroyed or whose "touching" property has become
     ///   false.
     ///
-    /// @sa Contact::IsTouching().
+    /// @see Contact::IsTouching().
     ///
     virtual void EndContact(Contact& contact) = 0;
     

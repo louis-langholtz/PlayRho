@@ -44,15 +44,15 @@ template <std::size_t N> struct RayCastInput;
 /// @details This is a concrete value class template for an N-dimensional axis aligned
 ///   bounding box (AABB) which is a type of bounding volume.
 ///
-/// @note This class satisfies at least the following concepts: all the basic concepts,
-///   <code>EqualityComparable</code>, and <code>Swappable</code>.
+/// @note This class satisfies at least the following named requirement: all the basic named
+///   requirements, <code>EqualityComparable</code>, and <code>Swappable</code>.
 /// @note This class is composed of &mdash; as in contains and owns &mdash; N
 ///   <code>LengthInterval</code> variables.
 /// @note Non-defaulted methods of this class are marked <code>noexcept</code> and expect
 ///   that the Length type doesn't throw.
 ///
-/// @sa https://en.wikipedia.org/wiki/Bounding_volume
-/// @sa http://en.cppreference.com/w/cpp/concept
+/// @see https://en.wikipedia.org/wiki/Bounding_volume
+/// @see https://en.cppreference.com/w/cpp/named_req
 ///
 template <std::size_t N>
 struct AABB
@@ -419,7 +419,7 @@ using AABB = detail::AABB<2>;
 /// @warning Behavior is undefined for an invalid AABB.
 /// @return Twice the sum of the width and height.
 /// @relatedalso playrho::detail::AABB
-/// @sa https://en.wikipedia.org/wiki/Perimeter
+/// @see https://en.wikipedia.org/wiki/Perimeter
 constexpr Length GetPerimeter(const AABB& aabb) noexcept
 {
     return (GetSize(aabb.ranges[0]) + GetSize(aabb.ranges[1])) * 2;

@@ -25,10 +25,14 @@
 
 namespace playrho {
 
+/// @brief Non-zero constrained value checker.
 template <typename T>
 struct NonZeroChecker {
+    /// @brief Exception type possibly thrown by this checker.
     using exception_type = std::invalid_argument;
 
+    /// @brief Value checking functor.
+    /// @throws exception_type if given value is not valid.
     constexpr auto operator()(const T& v) -> decltype(!(v != static_cast<T>(0)), T{v})
     {
         if (!(v != static_cast<T>(0))) {
@@ -38,14 +42,18 @@ struct NonZeroChecker {
     }
 };
 
+/// @ingroup CheckedValues
 /// @brief Non-zero constrained value type.
 template <typename T>
 using NonZero = std::enable_if_t<!std::is_pointer<T>::value, CheckedValue<T, NonZeroChecker<T>>>;
+
 static_assert(!std::is_default_constructible<NonZero<int>>::value);
 
+/// @ingroup CheckedValues
 /// @brief Non-null constrained value type.
 template <typename T>
 using NonNull = std::enable_if_t<std::is_pointer<T>::value, CheckedValue<T, NonZeroChecker<T>>>;
+
 static_assert(!std::is_default_constructible<NonNull<int*>>::value);
 
 } // namespace playrho

@@ -38,7 +38,7 @@ namespace playrho {
 /// @note Be sure to confirm that the delta time (the time-per-step i.e. <code>dt</code>) is
 ///   correct for your use.
 /// @note This data structure is 108-bytes large (with 4-byte Real on at least one 64-bit platform).
-/// @sa World::Step.
+/// @see World::Step.
 class StepConf
 {
 public:
@@ -51,21 +51,21 @@ public:
     static constexpr const auto InvalidIteration = static_cast<iteration_type>(-1);
 
     /// @brief Gets the delta time (time amount for this time step).
-    /// @sa SetTime(Real).
+    /// @see SetTime(Real).
     /// @return Time step amount in seconds.
     Time GetTime() const noexcept { return time; }
 
     /// @brief Gets the inverse delta-t value.
     /// @return <code>1/dt</code> or 0 if <code>dt</code> is 0.
-    /// @sa GetTime().
+    /// @see GetTime().
     Frequency GetInvTime() const noexcept { return invTime; }
     
     /// @brief Sets the delta time and inverse time from the given value and its inverse respectively.
     /// @note Used in both the regular and TOI phases of step processing.
     /// @post Getting the delta time will return this value.
     /// @post The inverse delta time value is the inverse of the given value or zero if the value is zero.
-    /// @sa GetTime().
-    /// @sa GetInvTime().
+    /// @see GetTime().
+    /// @see GetInvTime().
     /// @param value Elapsed time amount.
     constexpr StepConf& SetTime(Time value) noexcept
     {
@@ -78,8 +78,8 @@ public:
     /// @note Used in both the regular and TOI phases of step processing.
     /// @post Getting the inverse delta time will return this value.
     /// @post The delta time value is the inverse of the given value or zero if the value is zero.
-    /// @sa GetTime().
-    /// @sa GetInvTime().
+    /// @see GetTime().
+    /// @see GetInvTime().
     /// @param value Inverse time amount.
     constexpr StepConf& SetInvTime(Frequency value) noexcept
     {
@@ -126,7 +126,7 @@ public:
     /// bodies for intra-step position resolution to be considered successful and end before all
     /// of the regular position iterations have been done.
     /// @note Used in the regular phase of step processing.
-    /// @sa regPositionIterations.
+    /// @see regPositionIterations.
     Length regMinSeparation = -DefaultLinearSlop * Real{3};
     
     /// @brief Regular-phase min momentum.
@@ -147,7 +147,7 @@ public:
     /// bodies for intra-step position resolution to be considered successful and end before all
     /// of the TOI position iterations have been done.
     /// @note Used in the TOI phase of step processing.
-    /// @sa toiPositionIterations.
+    /// @see toiPositionIterations.
     Length toiMinSeparation = -DefaultLinearSlop * Real(1.5f);
 
     /// @brief TOI-phase min momentum.
@@ -260,7 +260,7 @@ public:
     /// In this context, positions are satisfied when the minimum separation is greater than
     /// or equal to the regular minimum separation amount.
     /// @note Used in the regular phase of step processing.
-    /// @sa regMinSeparation.
+    /// @see regMinSeparation.
     iteration_type regPositionIterations = 3;
 
     /// @brief TOI velocity iterations.
@@ -276,7 +276,7 @@ public:
     /// In this context, positions are satisfied when the minimum separation is greater than
     /// or equal to the TOI minimum separation amount.
     /// @note Used in the TOI phase of step processing.
-    /// @sa toiMinSeparation.
+    /// @see toiMinSeparation.
     iteration_type toiPositionIterations = 20;
     
     /// @brief Max TOI root finder iterations.

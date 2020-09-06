@@ -38,7 +38,7 @@ namespace d2 {
 ///   friend-based access to the Joint class. This is meant to help preserve and enforce
 ///   the invariants of the Joint class.
 ///
-/// @sa https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
+/// @see https://en.wikibooks.org/wiki/More_C++_Idioms/Friendship_and_the_Attorney-Client
 ///
 class JointAtty
 {
