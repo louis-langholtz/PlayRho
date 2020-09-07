@@ -53,8 +53,8 @@ namespace d2 {
     /// @invariant Vertex's for the same index must have the same point locations.
     /// @invariant There may not be more than one entry for the same index pair.
     ///
-    /// @sa https://en.wikipedia.org/wiki/Simplex
-    /// @sa https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
+    /// @see https://en.wikipedia.org/wiki/Simplex
+    /// @see https://en.wikipedia.org/wiki/Gilbert%2DJohnson%2DKeerthi_distance_algorithm
     ///
     class Simplex
     {

@@ -25,10 +25,14 @@
 
 namespace playrho {
 
+/// @brief Negative constrained value checker.
 template <typename T>
 struct NegativeChecker {
+    /// @brief Exception type possibly thrown by this checker.
     using exception_type = std::invalid_argument;
 
+    /// @brief Value checking functor.
+    /// @throws exception_type if given value is not valid.
     constexpr auto operator()(const T& v) -> decltype(!(v < static_cast<T>(0)), T{v})
     {
         if (!(v < static_cast<T>(0))) {
@@ -38,9 +42,11 @@ struct NegativeChecker {
     }
 };
 
+/// @ingroup CheckedValues
 /// @brief Negative constrained value type.
 template <typename T>
 using Negative = CheckedValue<T, NegativeChecker<T>>;
+
 static_assert(!std::is_default_constructible<Negative<int>>::value);
 
 } // namespace playrho

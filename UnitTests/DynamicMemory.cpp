@@ -45,15 +45,15 @@ TEST(DynamicMemory, AllocArray)
     using ElementType = int;
 
     auto ptr = static_cast<ElementType*>(nullptr);
-    EXPECT_NO_THROW(ptr = Alloc<ElementType>(0));
+    EXPECT_NO_THROW(ptr = AllocArray<ElementType>(0));
     EXPECT_EQ(ptr, nullptr);
-    EXPECT_NO_THROW(ptr = Alloc<ElementType>(1));
+    EXPECT_NO_THROW(ptr = AllocArray<ElementType>(1));
     EXPECT_NE(ptr, nullptr);
     ASSERT_NO_THROW(Free(ptr));
 
     // Presumably no system can allocate max size.
     ptr = nullptr;
-    EXPECT_THROW(ptr = Alloc<ElementType>(std::numeric_limits<std::size_t>::max()), std::bad_alloc);
+    EXPECT_THROW(ptr = AllocArray<ElementType>(std::numeric_limits<std::size_t>::max()), std::bad_alloc);
     EXPECT_EQ(ptr, nullptr);
     ASSERT_NO_THROW(Free(ptr));
 }
@@ -83,23 +83,23 @@ TEST(DynamicMemory, ReallocArray)
     using ElementType = int;
 
     auto ptr = static_cast<ElementType *>(nullptr);
-    EXPECT_NO_THROW(ptr = Realloc<ElementType>(nullptr, 0));
+    EXPECT_NO_THROW(ptr = ReallocArray<ElementType>(nullptr, 0));
     EXPECT_EQ(ptr, nullptr);
-    EXPECT_NO_THROW(ptr = Realloc<ElementType>(nullptr, 1));
+    EXPECT_NO_THROW(ptr = ReallocArray<ElementType>(nullptr, 1));
     EXPECT_NE(ptr, nullptr);
-    EXPECT_NO_THROW(ptr = Realloc<ElementType>(ptr, 1));
+    EXPECT_NO_THROW(ptr = ReallocArray<ElementType>(ptr, 1));
     EXPECT_NE(ptr, nullptr);
-    EXPECT_NO_THROW(ptr = Realloc<ElementType>(ptr, 0));
+    EXPECT_NO_THROW(ptr = ReallocArray<ElementType>(ptr, 0));
     EXPECT_EQ(ptr, nullptr);
     ASSERT_NO_THROW(Free(ptr));
 
     ptr = nullptr;
-    EXPECT_THROW(ptr = Realloc<ElementType>(ptr, std::numeric_limits<std::size_t>::max()), std::bad_array_new_length);
+    EXPECT_THROW(ptr = ReallocArray<ElementType>(ptr, std::numeric_limits<std::size_t>::max()), std::bad_array_new_length);
     EXPECT_EQ(ptr, nullptr);
 
     // Presumably no system can allocate max size.
     ptr = nullptr;
-    EXPECT_THROW(ptr = Realloc<ElementType>(ptr, std::numeric_limits<std::size_t>::max()/sizeof(ElementType)), std::bad_alloc);
+    EXPECT_THROW(ptr = ReallocArray<ElementType>(ptr, std::numeric_limits<std::size_t>::max()/sizeof(ElementType)), std::bad_alloc);
     EXPECT_EQ(ptr, nullptr);
     ASSERT_NO_THROW(Free(ptr));
 }

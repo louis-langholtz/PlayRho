@@ -65,7 +65,7 @@ public:
     EdgeShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
     
     /// @brief Transforms both vertices by the given transformation matrix.
-    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    /// @see https://en.wikipedia.org/wiki/Transformation_matrix
     EdgeShapeConf& Transform(const Mat22& m) noexcept;
 
     /// @brief Gets vertex A.
@@ -163,7 +163,7 @@ inline MassData GetMassData(const EdgeShapeConf& arg) noexcept
 }
 
 /// @brief Transforms the given shape configuration's vertices by the given transformation matrix.
-/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+/// @see https://en.wikipedia.org/wiki/Transformation_matrix
 inline void Transform(EdgeShapeConf& arg, const Mat22& m) noexcept
 {
     arg.Transform(m);

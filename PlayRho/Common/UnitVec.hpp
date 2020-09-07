@@ -260,7 +260,7 @@ public:
     /// @brief Gets a vector counter-clockwise (reverse-clockwise) perpendicular to this vector.
     /// @details This returns the unit vector (-y, x).
     /// @return A counter-clockwise 90-degree rotation of this vector.
-    /// @sa GetFwdPerpendicular.
+    /// @see GetFwdPerpendicular.
     constexpr UnitVec GetRevPerpendicular() const noexcept
     {
         // See http://mathworld.wolfram.com/PerpendicularVector.html
@@ -270,7 +270,7 @@ public:
     /// @brief Gets a vector clockwise (forward-clockwise) perpendicular to this vector.
     /// @details This returns the unit vector (y, -x).
     /// @return A clockwise 90-degree rotation of this vector.
-    /// @sa GetRevPerpendicular.
+    /// @see GetRevPerpendicular.
     constexpr UnitVec GetFwdPerpendicular() const noexcept
     {
         // See http://mathworld.wolfram.com/PerpendicularVector.html
@@ -326,7 +326,7 @@ constexpr bool operator!=(const UnitVec a, const UnitVec b) noexcept
 /// @details This takes a vector of form (x, y) and returns the vector (-y, x).
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
-/// @sa GetFwdPerpendicular.
+/// @see GetFwdPerpendicular.
 constexpr UnitVec GetRevPerpendicular(const UnitVec vector) noexcept
 {
     return vector.GetRevPerpendicular();
@@ -336,7 +336,7 @@ constexpr UnitVec GetRevPerpendicular(const UnitVec vector) noexcept
 /// @details This takes a vector of form (x, y) and returns the vector (y, -x).
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
-/// @sa GetRevPerpendicular.
+/// @see GetRevPerpendicular.
 constexpr UnitVec GetFwdPerpendicular(const UnitVec vector) noexcept
 {
     return vector.GetFwdPerpendicular();

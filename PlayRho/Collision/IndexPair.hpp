@@ -73,7 +73,7 @@ constexpr bool empty(IndexPair3 pairs) noexcept
 
 /// @brief Gets the dynamic size of the given collection of index pairs.
 /// @note This just calls <code>GetNumValidIndices</code>.
-/// @sa GetNumValidIndices
+/// @see GetNumValidIndices
 constexpr auto size(IndexPair3 pairs) -> decltype(GetNumValidIndices(pairs))
 {
     return GetNumValidIndices(pairs);

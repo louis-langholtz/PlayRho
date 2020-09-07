@@ -34,7 +34,7 @@ namespace d2 {
 ///   two-dimensional solid round shape. This used to be called the circle shape but
 ///   that's now used for hollow round shapes.
 ///
-/// @sa https://en.wikipedia.org/wiki/Disk_(mathematics)
+/// @see https://en.wikipedia.org/wiki/Disk_(mathematics)
 ///
 /// @ingroup PartsGroup
 ///
@@ -69,7 +69,7 @@ struct DiskShapeConf: ShapeBuilder<DiskShapeConf>
     }
     
     /// @brief Transforms the location by the given transformation matrix.
-    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    /// @see https://en.wikipedia.org/wiki/Transformation_matrix
     constexpr DiskShapeConf& Transform(const Mat22& m) noexcept
     {
         location = m * location;
@@ -158,7 +158,7 @@ inline MassData GetMassData(const DiskShapeConf& arg) noexcept
 
 /// @brief Transforms the given shape configuration's vertices by the given
 ///   transformation matrix.
-/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+/// @see https://en.wikipedia.org/wiki/Transformation_matrix
 inline void Transform(DiskShapeConf& arg, const Mat22& m) noexcept
 {
     arg.Transform(m);

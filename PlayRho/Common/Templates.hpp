@@ -234,7 +234,7 @@ static auto Size(T& v)
     ///   return <code>true</code>.
     /// @note First parameter is the object to visit.
     /// @note Second parameter is user data or the <code>nullptr</code>.
-    /// @sa https://en.wikipedia.org/wiki/Visitor_pattern
+    /// @see https://en.wikipedia.org/wiki/Visitor_pattern
     template <typename T>
     bool Visit(const T& /*object*/, void* /*userData*/)
     {
@@ -275,8 +275,8 @@ static auto Size(T& v)
     }
     
     /// @brief Template for determining if the given type is an equality comparable type.
-    /// @note This isn't exactly the same as the "EqualityComparable" concept.
-    /// @see http://en.cppreference.com/w/cpp/concept/EqualityComparable
+    /// @note This isn't exactly the same as the "EqualityComparable" named requirement.
+    /// @see https://en.cppreference.com/w/cpp/named_req/EqualityComparable
     template<class T1, class T2, class = void>
     struct IsEqualityComparable: std::false_type {};
     
@@ -335,28 +335,28 @@ static auto Size(T& v)
     /// @brief Has-type trait template class.
     /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
     ///   to the question of: "How do I find out if a tuple contains a type?".
-    /// @sa https://stackoverflow.com/a/25958302/7410358
+    /// @see https://stackoverflow.com/a/25958302/7410358
     template <typename T, typename Tuple>
     struct HasType;
     
     /// @brief Has-type trait template class specialized for <code>std::tuple</code> classes.
     /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
     ///   to the question of: "How do I find out if a tuple contains a type?".
-    /// @sa https://stackoverflow.com/a/25958302/7410358
+    /// @see https://stackoverflow.com/a/25958302/7410358
     template <typename T>
     struct HasType<T, std::tuple<>> : std::false_type {};
     
     /// @brief Has-type trait true class.
     /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
     ///   to the question of: "How do I find out if a tuple contains a type?".
-    /// @sa https://stackoverflow.com/a/25958302/7410358
+    /// @see https://stackoverflow.com/a/25958302/7410358
     template <typename T, typename... Ts>
     struct HasType<T, std::tuple<T, Ts...>> : std::true_type {};
     
     /// @brief Has-type trait template super class.
     /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
     ///   to the question of: "How do I find out if a tuple contains a type?".
-    /// @sa https://stackoverflow.com/a/25958302/7410358
+    /// @see https://stackoverflow.com/a/25958302/7410358
     template <typename T, typename U, typename... Ts>
     struct HasType<T, std::tuple<U, Ts...>> : HasType<T, std::tuple<Ts...>> {};
 
@@ -365,7 +365,7 @@ static auto Size(T& v)
     ///   <code>std::false_type</code>.
     /// @note This is from Piotr Skotnicki's answer on the <em>StackOverflow</em> website
     ///   to the question of: "How do I find out if a tuple contains a type?".
-    /// @sa https://stackoverflow.com/a/25958302/7410358
+    /// @see https://stackoverflow.com/a/25958302/7410358
     template <typename T, typename Tuple>
     using TupleContainsType = typename HasType<T, Tuple>::type;
     
@@ -379,8 +379,8 @@ static auto Size(T& v)
 
     /// @brief Function object for performing lexicographical less-than
     ///   comparisons of containers.
-    /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-    /// @sa http://en.cppreference.com/w/cpp/utility/functional/less
+    /// @see https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
+    /// @see https://en.cppreference.com/w/cpp/utility/functional/less
     template <typename T>
     struct LexicographicalLess
     {
@@ -397,8 +397,8 @@ static auto Size(T& v)
     
     /// @brief Function object for performing lexicographical greater-than
     ///   comparisons of containers.
-    /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-    /// @sa http://en.cppreference.com/w/cpp/utility/functional/greater
+    /// @see https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
+    /// @see https://en.cppreference.com/w/cpp/utility/functional/greater
     template <typename T>
     struct LexicographicalGreater
     {
@@ -415,8 +415,8 @@ static auto Size(T& v)
 
     /// @brief Function object for performing lexicographical less-than or equal-to
     ///   comparisons of containers.
-    /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-    /// @sa http://en.cppreference.com/w/cpp/utility/functional/less_equal
+    /// @see https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
+    /// @see https://en.cppreference.com/w/cpp/utility/functional/less_equal
     template <typename T>
     struct LexicographicalLessEqual
     {
@@ -436,8 +436,8 @@ static auto Size(T& v)
 
     /// @brief Function object for performing lexicographical greater-than or equal-to
     ///   comparisons of containers.
-    /// @sa http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-    /// @sa http://en.cppreference.com/w/cpp/utility/functional/greater_equal
+    /// @see https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
+    /// @see https://en.cppreference.com/w/cpp/utility/functional/greater_equal
     template <typename T>
     struct LexicographicalGreaterEqual
     {
@@ -503,13 +503,20 @@ static auto Size(T& v)
     template <typename Type, typename Return, typename... Args>
     struct HasFunctor<Type, Return(Args...)> {
     private:
+        /// @brief Declaration of check function for supporting types given to template.
         template<typename T>
         static constexpr auto check(T*)
         -> typename std::is_same<decltype(std::declval<T>()(std::declval<Args>()...)),Return>::type;
+
+        /// @brief Declaration of check function for non-supporting types given to template.
         template<typename>
         static constexpr std::false_type check(...);
+
+        /// @brief Type alias for given template parameters.
         using type = decltype(check<Type>(0));
+
     public:
+        /// Whether or not the given type has the specified functor.
         static constexpr auto value = type::value;
     };
 

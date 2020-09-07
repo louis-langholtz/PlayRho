@@ -112,9 +112,9 @@ namespace playrho {
     /// @note Efficient transfer of this data is predicated on compiler support for
     ///   "named-return-value-optimization" (N.R.V.O.) - a form of "copy elision".
     ///
-    /// @sa d2::World::Step.
-    /// @sa https://en.wikipedia.org/wiki/Return_value_optimization
-    /// @sa http://en.cppreference.com/w/cpp/language/copy_elision
+    /// @see d2::World::Step.
+    /// @see https://en.wikipedia.org/wiki/Return_value_optimization
+    /// @see https://en.cppreference.com/w/cpp/language/copy_elision
     ///
     struct StepStats
     {

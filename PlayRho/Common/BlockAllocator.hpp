@@ -35,7 +35,7 @@ namespace playrho {
     /// This is a small object allocator used for allocating small
     ///   objects that persist for more than one time step.
     /// @note This data structure is 136-bytes large (on at least one 64-bit platform).
-    /// @sa http://www.codeproject.com/useritems/Small_Block_Allocator.asp
+    /// @see http://www.codeproject.com/useritems/Small_Block_Allocator.asp
     ///
     class BlockAllocator
     {
@@ -80,7 +80,7 @@ namespace playrho {
         /// @return Non-null pointer if asked to make non-zero sized allocation,
         ///   <code>nullptr</code> otherwise.
         /// @throws std::bad_alloc If unable to allocate non-zero size of memory.
-        /// @sa Alloc.
+        /// @see Alloc.
         void* Allocate(size_type n);
 
         /// @brief Allocates an array.

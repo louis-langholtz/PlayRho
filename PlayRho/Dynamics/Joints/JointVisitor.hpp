@@ -40,7 +40,7 @@ class MotorJoint;
 ///
 /// @details Interface to inherit from for objects wishing to "visit" joints.
 ///   This uses the visitor design pattern.
-/// @sa https://en.wikipedia.org/wiki/Visitor_pattern .
+/// @see https://en.wikipedia.org/wiki/Visitor_pattern .
 ///
 class JointVisitor
 {

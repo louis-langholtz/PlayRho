@@ -128,7 +128,7 @@ constexpr auto StripUnit(const T& v)
 /// @{
 
 /// @brief Secant method.
-/// @sa https://en.wikipedia.org/wiki/Secant_method
+/// @see https://en.wikipedia.org/wiki/Secant_method
 template <typename T, typename U>
 constexpr U Secant(T target, U a1, T s1, U a2, T s2) noexcept
 {
@@ -137,7 +137,7 @@ constexpr U Secant(T target, U a1, T s1, U a2, T s2) noexcept
 }
 
 /// @brief Bisection method.
-/// @sa https://en.wikipedia.org/wiki/Bisection_method
+/// @see https://en.wikipedia.org/wiki/Bisection_method
 template <typename T>
 constexpr T Bisect(T a1, T a2) noexcept
 {
@@ -159,7 +159,7 @@ constexpr auto Square(TYPE t) noexcept { return t * t; }
 
 /// @brief Computes the arc-tangent of the given y and x values.
 /// @return Normalized angle - an angle between -Pi and Pi inclusively.
-/// @sa http://en.cppreference.com/w/cpp/numeric/math/atan2
+/// @see https://en.cppreference.com/w/cpp/numeric/math/atan2
 template<typename T>
 inline auto Atan2(T y, T x)
 {
@@ -245,7 +245,7 @@ std::enable_if_t<std::is_floating_point<T>::value, bool> AlmostEqual(T x, T y, i
 
 /// @brief Modulo operation using <code>std::fmod</code>.
 /// @note Modulo via <code>std::fmod</code> appears slower than via <code>std::trunc</code>.
-/// @sa ModuloViaTrunc
+/// @see ModuloViaTrunc
 template <typename T>
 inline auto ModuloViaFmod(T dividend, T divisor) noexcept
 {
@@ -255,7 +255,7 @@ inline auto ModuloViaFmod(T dividend, T divisor) noexcept
 
 /// @brief Modulo operation using <code>std::trunc</code>.
 /// @note Modulo via <code>std::fmod</code> appears slower than via <code>std::trunc</code>.
-/// @sa ModuloViaFmod
+/// @see ModuloViaFmod
 template <typename T>
 inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
 {
@@ -267,7 +267,7 @@ inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
 
 /// @brief Gets the "normalized" value of the given angle.
 /// @return Angle between -Pi and Pi radians inclusively where 0 represents the positive X-axis.
-/// @sa Atan2
+/// @see Atan2
 inline Angle GetNormalized(Angle value) noexcept
 {
     constexpr const auto oneRotationInRadians = Real{2 * Pi};
@@ -344,7 +344,7 @@ inline auto GetMagnitude(T value)
 ///   except benchmark tests suggest this implementation is faster at least for
 ///   <code>Vec2</code> like instances.
 ///
-/// @sa https://en.wikipedia.org/wiki/Dot_product
+/// @see https://en.wikipedia.org/wiki/Dot_product
 ///
 /// @param a Vector A.
 /// @param b Vector B.
@@ -391,7 +391,7 @@ constexpr auto Dot(const T1 a, const T2 b) noexcept
 /// @note The absolute value of the result is the area of the parallelogram formed by
 ///   the vectors A and B.
 ///
-/// @sa https://en.wikipedia.org/wiki/Cross_product
+/// @see https://en.wikipedia.org/wiki/Cross_product
 ///
 /// @return Cross product of the two values.
 ///
@@ -423,7 +423,7 @@ constexpr auto Cross(T1 a, T2 b) noexcept
 
 /// @brief Cross-products the given two values.
 /// @note This operation is anti-commutative. I.e. Cross(a, b) == -Cross(b, a).
-/// @sa https://en.wikipedia.org/wiki/Cross_product
+/// @see https://en.wikipedia.org/wiki/Cross_product
 /// @param a Value A of a 3-element type.
 /// @param b Value B of a 3-element type.
 /// @return Cross product of the two values.
@@ -543,7 +543,7 @@ constexpr Mat33 GetSymInverse33(const Mat33& value) noexcept
 /// @details This takes a vector of form (x, y) and returns the vector (-y, x).
 /// @param vector Vector to return a counter-clockwise perpendicular equivalent for.
 /// @return A counter-clockwise 90-degree rotation of the given vector.
-/// @sa GetFwdPerpendicular.
+/// @see GetFwdPerpendicular.
 template <class T>
 constexpr auto GetRevPerpendicular(const T vector) noexcept
 {
@@ -555,7 +555,7 @@ constexpr auto GetRevPerpendicular(const T vector) noexcept
 /// @details This takes a vector of form (x, y) and returns the vector (y, -x).
 /// @param vector Vector to return a clockwise perpendicular equivalent for.
 /// @return A clockwise 90-degree rotation of the given vector.
-/// @sa GetRevPerpendicular.
+/// @see GetRevPerpendicular.
 template <class T>
 constexpr auto GetFwdPerpendicular(const T vector) noexcept
 {
@@ -566,7 +566,7 @@ constexpr auto GetFwdPerpendicular(const T vector) noexcept
 /// @brief Multiplies an M-element vector by an M-by-N matrix.
 /// @param v Vector that's interpreted as a matrix with 1 row and M-columns.
 /// @param m An M-row by N-column *transformation matrix* to multiply the vector by.
-/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+/// @see https://en.wikipedia.org/wiki/Transformation_matrix
 template <std::size_t M, typename T1, std::size_t N, typename T2>
 constexpr auto Transform(const Vector<T1, M> v, const Matrix<T2, M, N>& m) noexcept
 {
@@ -659,7 +659,7 @@ constexpr T GetModuloPrev(T value, T count) noexcept
 /// @details This gets the angle to rotate angle 1 by in order to get to angle 2 with the
 ///   least amount of rotation.
 /// @return Angle between -Pi and Pi radians inclusively.
-/// @sa GetNormalized
+/// @see GetNormalized
 Angle GetDelta(Angle a1, Angle a2) noexcept;
 
 /// Gets the reverse (counter) clockwise rotational angle to go from angle 1 to angle 2.
@@ -745,7 +745,7 @@ constexpr Vec2 operator/ (const UnitVec u, const UnitVec::value_type s) noexcept
 /// @details This rotates a vector by the angle expressed by the angle parameter.
 /// @param vector Vector to forward rotate.
 /// @param angle Expresses the angle to forward rotate the given vector by.
-/// @sa InverseRotate.
+/// @see InverseRotate.
 template <class T>
 constexpr auto Rotate(const Vector2<T> vector, const UnitVec& angle) noexcept
 {
@@ -760,7 +760,7 @@ constexpr auto Rotate(const Vector2<T> vector, const UnitVec& angle) noexcept
 ///   expressed by the angle parameter.
 /// @param vector Vector to reverse rotate.
 /// @param angle Expresses the angle to reverse rotate the given vector by.
-/// @sa Rotate.
+/// @see Rotate.
 template <class T>
 constexpr auto InverseRotate(const Vector2<T> vector, const UnitVec& angle) noexcept
 {
@@ -774,7 +774,7 @@ constexpr auto InverseRotate(const Vector2<T> vector, const UnitVec& angle) noex
 /// @param fallback Fallback unit vector value to use in case a unit vector can't effectively be
 ///   calculated from the given value.
 /// @return value divided by its length if length not almost zero otherwise invalid value.
-/// @sa AlmostEqual.
+/// @see AlmostEqual.
 template <class T>
 inline UnitVec GetUnitVector(Vector2<T> value, UnitVec fallback = UnitVec::GetDefaultFallback())
 {
@@ -810,7 +810,7 @@ inline Sweep GetNormalized(Sweep sweep) noexcept
 /// @note Passing the output of this function to <code>InverseTransform</code> (with the same
 /// transformation again) will result in the original vector being returned.
 /// @note For a 2-D linear position of the origin (0, 0), the result is simply the translation.
-/// @sa <code>InverseTransform</code>.
+/// @see <code>InverseTransform</code>.
 /// @param v 2-D position to transform (to rotate and then translate).
 /// @param xfm Transformation (a translation and rotation) to apply to the given vector.
 /// @return Rotated and translated vector.
@@ -825,7 +825,7 @@ constexpr Length2 Transform(const Length2 v, const Transformation xfm) noexcept
 /// defined by the given transformation.
 /// @note Passing the output of this function to <code>Transform</code> (with the same
 /// transformation again) will result in the original vector being returned.
-/// @sa <code>Transform</code>.
+/// @see <code>Transform</code>.
 /// @param v 2-D vector to inverse transform (inverse translate and inverse rotate).
 /// @param xfm Transformation (a translation and rotation) to inversely apply to the given vector.
 /// @return Inverse transformed vector.
@@ -880,7 +880,7 @@ inline Transformation GetTransformation(const Sweep& sweep, const Real beta) noe
 
 /// @brief Gets the transform at "time" zero.
 /// @note This is like calling <code>GetTransformation(sweep, 0)</code>, except more efficiently.
-/// @sa GetTransformation(const Sweep& sweep, Real beta).
+/// @see GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time zero.
 inline Transformation GetTransform0(const Sweep& sweep) noexcept
@@ -890,7 +890,7 @@ inline Transformation GetTransform0(const Sweep& sweep) noexcept
 
 /// @brief Gets the transform at "time" one.
 /// @note This is like calling <code>GetTransformation(sweep, 1.0)</code>, except more efficiently.
-/// @sa GetTransformation(const Sweep& sweep, Real beta).
+/// @see GetTransformation(const Sweep& sweep, Real beta).
 /// @param sweep Sweep data to get the transform from.
 /// @return Transformation of the given sweep at time one.
 inline Transformation GetTransform1(const Sweep& sweep) noexcept
@@ -915,7 +915,7 @@ inline bool IsUnderActive(Velocity velocity,
 
 /// @brief Gets the reflection matrix for the given unit vector that defines the normal of
 ///   the line through the origin that points should be reflected against.
-/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+/// @see https://en.wikipedia.org/wiki/Transformation_matrix
 constexpr auto GetReflectionMatrix(UnitVec axis)
 {
     constexpr auto TupleSize = std::tuple_size<decltype(axis)>::value;

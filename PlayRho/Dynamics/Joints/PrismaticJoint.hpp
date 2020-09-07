@@ -40,7 +40,7 @@ namespace d2 {
 ///
 /// @image html prismaticJoint.gif
 ///
-/// @sa https://en.wikipedia.org/wiki/Prismatic_joint
+/// @see https://en.wikipedia.org/wiki/Prismatic_joint
 ///
 class PrismaticJoint : public Joint
 {
@@ -49,7 +49,7 @@ public:
     /// @brief Initializing constructor.
     /// @attention To create or use the joint within a world instance, call that world
     ///   instance's create joint method instead of calling this constructor directly.
-    /// @sa World::CreateJoint
+    /// @see World::CreateJoint
     PrismaticJoint(const PrismaticJointConf& def);
     
     void Accept(JointVisitor& visitor) const override;

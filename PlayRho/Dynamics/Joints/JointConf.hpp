@@ -70,7 +70,7 @@ struct JointConf
 /// @note This is a templated nested value class for initializing joints that
 ///   uses the Curiously Recurring Template Pattern (CRTP) to provide method chaining
 ///   via static polymorphism.
-/// @sa https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
+/// @see https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern
 template <class T>
 struct JointBuilder : JointConf
 {

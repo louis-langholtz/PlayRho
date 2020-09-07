@@ -57,7 +57,7 @@ For coding, begin simply by including the <code>PlayRho/PlayRho.hpp</code> heade
 For a more elaborate example, see
  <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a>.
 
- @sa playrho::d2::World, PhysicalEntities
+ @see playrho::d2::World, PhysicalEntities
 */
 
 // These include files constitute the main PlayRho API

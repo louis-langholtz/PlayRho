@@ -34,7 +34,7 @@ class Contact;
 ///
 /// @note This data structure is 48-bytes large (on at least one 64-bit platform).
 ///
-/// @sa GetWorldManifold
+/// @see GetWorldManifold
 ///
 class WorldManifold
 {

@@ -43,7 +43,7 @@ class Body;
 /// @note This is a value class meant for passing in to the <code>World::CreateBody</code>
 ///   method.
 ///
-/// @sa World.
+/// @see World.
 ///
 struct BodyConf
 {

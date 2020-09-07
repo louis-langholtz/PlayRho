@@ -87,9 +87,9 @@ struct ShapeConf;
 /// const auto fixture = body->CreateFixture(Shape{DiskShapeConf{1_m}});
 /// @endcode
 ///
-/// @sa World, World::CreateBody, World::CreateJoint, World::Destroy.
-/// @sa Body::CreateFixture, Body::Destroy, Body::DestroyFixtures.
-/// @sa BodyType, Shape, DiskShapeConf.
+/// @see World, World::CreateBody, World::CreateJoint, World::Destroy.
+/// @see Body::CreateFixture, Body::Destroy, Body::DestroyFixtures.
+/// @see BodyType, Shape, DiskShapeConf.
 
 /// @brief Definition of an independent and simulatable "world".
 ///
@@ -114,7 +114,7 @@ struct ShapeConf;
 /// const auto fixture = body->CreateFixture(Shape{DiskShapeConf{1_m}});
 /// @endcode
 ///
-/// @sa Body, Joint, Contact, PhysicalEntities.
+/// @see Body, Joint, Contact, PhysicalEntities.
 ///
 class World
 {
@@ -137,7 +137,7 @@ public:
     /// @note A lot more configurability can be had via the <code>StepConf</code>
     ///   data that's given to the world's <code>Step</code> method.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
-    /// @sa Step.
+    /// @see Step.
     explicit World(const WorldConf& def = GetDefaultWorldConf());
 
     /// @brief Copy constructor.
@@ -186,8 +186,8 @@ public:
     ///   <code>Destroy(Body*)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
-    /// @sa Destroy(Body*), GetBodies.
-    /// @sa PhysicalEntities.
+    /// @see Destroy(Body*), GetBodies.
+    /// @see PhysicalEntities.
     Body* CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
     /// @brief Creates a joint to constrain one or more bodies.
@@ -200,8 +200,8 @@ public:
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @throws InvalidArgument if the given definition is not allowed.
-    /// @sa PhysicalEntities.
-    /// @sa Destroy(Joint*), GetJoints.
+    /// @see PhysicalEntities.
+    /// @see Destroy(Joint*), GetJoints.
     Joint* CreateJoint(const JointConf& def);
 
     /// @brief Destroys the given body.
@@ -218,8 +218,8 @@ public:
     ///   collection.
     /// @param body Body to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @sa CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies.
-    /// @sa PhysicalEntities.
+    /// @see CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies.
+    /// @see PhysicalEntities.
     void Destroy(Body* body);
 
     /// @brief Destroys a joint.
@@ -232,8 +232,8 @@ public:
     ///   <code>GetJoints()</code> method.
     /// @param joint Joint to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @sa CreateJoint(const JointConf&), GetJoints.
-    /// @sa PhysicalEntities.
+    /// @see CreateJoint(const JointConf&), GetJoints.
+    /// @see PhysicalEntities.
     void Destroy(Joint* joint);
 
     /// @brief Steps the world simulation according to the given configuration.
@@ -272,7 +272,7 @@ public:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    /// @sa GetBodiesForProxies, GetFixturesForProxies.
+    /// @see GetBodiesForProxies, GetFixturesForProxies.
     ///
     StepStats Step(const StepConf& conf);
 
@@ -282,7 +282,7 @@ public:
     ///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
-    /// @sa CreateBody(const BodyConf&).
+    /// @see CreateBody(const BodyConf&).
     SizedRange<Bodies::iterator> GetBodies() noexcept;
 
     /// @brief Gets the world body range for this constant world.
@@ -291,19 +291,19 @@ public:
     ///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
-    /// @sa CreateBody(const BodyConf&).
+    /// @see CreateBody(const BodyConf&).
     SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
 
     /// @brief Gets the bodies-for-proxies range for this world.
     /// @details Provides insight on what bodies have been queued for proxy processing
     ///   during the next call to the world step method.
-    /// @sa Step.
+    /// @see Step.
     SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
 
     /// @brief Gets the fixtures-for-proxies range for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing
     ///   during the next call to the world step method.
-    /// @sa Step.
+    /// @see Step.
     SizedRange<Fixtures::const_iterator> GetFixturesForProxies() const noexcept;
 
     /// @brief Gets the world joint range.
@@ -311,7 +311,7 @@ public:
     ///   These are the joints that had been created from previous calls to the
     ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
-    /// @sa CreateJoint(const JointConf&).
+    /// @see CreateJoint(const JointConf&).
     SizedRange<Joints::const_iterator> GetJoints() const noexcept;
 
     /// @brief Gets the world joint range.
@@ -319,7 +319,7 @@ public:
     ///   These are the joints that had been created from previous calls to the
     ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
-    /// @sa CreateJoint(const JointConf&).
+    /// @see CreateJoint(const JointConf&).
     SizedRange<Joints::iterator> GetJoints() noexcept;
 
     /// @brief Gets the world contact range.
@@ -332,18 +332,18 @@ public:
     /// @details The "step" is completed when there are no more TOI events for the current time step.
     /// @return <code>true</code> unless sub-stepping is enabled and the step method returned
     ///   without finishing all of its sub-steps.
-    /// @sa GetSubStepping, SetSubStepping.
+    /// @see GetSubStepping, SetSubStepping.
     bool IsStepComplete() const noexcept;
     
     /// @brief Gets whether or not sub-stepping is enabled.
-    /// @sa SetSubStepping, IsStepComplete.
+    /// @see SetSubStepping, IsStepComplete.
     bool GetSubStepping() const noexcept;
 
     /// @brief Enables/disables single stepped continuous physics.
     /// @note This is not normally used. Enabling sub-stepping is meant for testing.
     /// @post The <code>GetSubStepping()</code> method will return the value this method was
     ///   called with.
-    /// @sa IsStepComplete, GetSubStepping.
+    /// @see IsStepComplete, GetSubStepping.
     void SetSubStepping(bool flag) noexcept;
 
     /// @brief Gets access to the broad-phase dynamic tree information.
@@ -370,7 +370,7 @@ public:
     /// @brief Gets the inverse delta time.
     /// @details Gets the inverse delta time that was set on construction or assignment, and
     ///   updated on every call to the <code>Step()</code> method having a non-zero delta-time.
-    /// @sa Step.
+    /// @see Step.
     Frequency GetInvDeltaTime() const noexcept;
 
 private:
@@ -413,7 +413,7 @@ private:
     ///   been destroyed.
     /// @param fixture the fixture to be removed.
     /// @param resetMassData Whether or not to reset the mass data of the associated body.
-    /// @sa Body::ResetMassData.
+    /// @see Body::ResetMassData.
     /// @throws WrongState if this method is called while the world is locked.
     bool Destroy(Fixture& fixture, bool resetMassData = true);
     
@@ -450,7 +450,7 @@ private:
         /// Sub-stepping.
         e_substepping   = 0x0020,
         
-        /// Step complete. @details Used for sub-stepping. @sa e_substepping.
+        /// Step complete. @details Used for sub-stepping. @see e_substepping.
         e_stepComplete  = 0x0040,
     };
 
@@ -492,6 +492,7 @@ private:
     /// @param conf Time step configuration information.
     /// @param island Island of bodies, contacts, and joints to solve for. Must contain at least
     ///   one body, contact, or joint.
+    /// @param contactListener Contact listener function or <code>nullptr</code>.
     ///
     /// @warning Behavior is undefined if the given island doesn't have at least one body,
     ///   contact, or joint.
@@ -538,6 +539,9 @@ private:
     ///
     /// @param conf Time step configuration to solve for.
     /// @param contact Contact.
+    /// @param numBodies Number of bodies to use as an island capacity hint.
+    /// @param numContacts Number of contacts to use as an island capacity hint.
+    /// @param contactListener Contact listener function or <code>nullptr</code>.
     ///
     /// @note Precondition 1: there is no contact having a lower TOI in this time step that has
     ///   not already been solved for.
@@ -566,6 +570,7 @@ private:
     ///
     /// @param conf Time step configuration information.
     /// @param island Island to do time of impact solving for.
+    /// @param contactListener Contact listener function or <code>nullptr</code>.
     ///
     /// @return Island solver results.
     ///
@@ -608,6 +613,7 @@ private:
     /// @param[in,out] body A dynamic/accelerable body.
     /// @param[in] toi Time of impact (TOI). Value between 0 and 1.
     /// @param[in] conf Step configuration data.
+    /// @param[in] contactListener Contact listener function or <code>nullptr</code>.
     static ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
                                                        const StepConf& conf, ContactListener* contactListener);
 
@@ -623,7 +629,7 @@ private:
 
     /// @brief Sets the step complete state.
     /// @post <code>IsStepComplete()</code> will return the value set.
-    /// @sa IsStepComplete.
+    /// @see IsStepComplete.
     void SetStepComplete(bool value) noexcept;
 
     /// @brief Sets the allow sleeping state.
@@ -734,10 +740,12 @@ private:
     ///   5. There exists a contact-create function for the pair of shapes of the proxies.
     /// @post The size of the <code>m_contacts</code> collection is one greater-than it was
     ///   before this method is called if it returns <code>true</code>.
+    /// @param contacts Container to possibly add a new contact to.
+    /// @param tree Dynamic tree to use.
     /// @param key ID's of dynamic tree entries identifying the fixture proxies involved.
     /// @return <code>true</code> if a new contact was indeed added (and created),
     ///   else <code>false</code>.
-    /// @sa bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept.
+    /// @see bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept.
     static bool Add(Contacts& contacts, const DynamicTree& tree, ContactKey key);
 
     /// @brief Destroys the given contact.
@@ -802,7 +810,7 @@ private:
     /// Inverse delta-t from previous step.
     /// @details Used to compute time step ratio to support a variable time step.
     /// @note 4-bytes large.
-    /// @sa Step.
+    /// @see Step.
     Frequency m_inv_dt0 = 0;
 
     /// @brief Minimum vertex radius.
@@ -1028,7 +1036,7 @@ BodyCounter GetAwakeCount(const World& world) noexcept;
 /// @brief Awakens all of the bodies in the given world.
 /// @details Calls all of the world's bodies' <code>SetAwake</code> method.
 /// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
-/// @sa Body::SetAwake.
+/// @see Body::SetAwake.
 /// @relatedalso World
 BodyCounter Awaken(World& world) noexcept;
 

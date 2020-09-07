@@ -35,10 +35,10 @@ namespace playrho {
     /// @brief Template class for fixed-point numbers.
     ///
     /// @details This is a fixed point type template for a given base type using a given number
-    ///   of fraction bits that satisfies the <code>LiteralType</code> concept.
+    ///   of fraction bits that satisfies the <code>LiteralType</code> named requirement.
     ///
-    /// @sa https://en.wikipedia.org/wiki/Fixed-point_arithmetic
-    /// @sa http://en.cppreference.com/w/cpp/concept/LiteralType
+    /// @see https://en.wikipedia.org/wiki/Fixed-point_arithmetic
+    /// @see https://en.cppreference.com/w/cpp/named_req/LiteralType
     ///
     template <typename BASE_TYPE, unsigned int FRACTION_BITS>
     class Fixed
@@ -703,8 +703,8 @@ namespace playrho {
     /// @note Maximum value (with 9 fraction bits) is approximately 4194303.99609375.
     /// @note Minimum value (with 9 fraction bits) is approximately 0.001953125.
     ///
-    /// @sa Fixed, Real
-    /// @sa https://en.wikipedia.org/wiki/Q_(number_format)
+    /// @see Fixed, Real
+    /// @see https://en.wikipedia.org/wiki/Q_(number_format)
     ///
     using Fixed32 = Fixed<std::int32_t,9>;
 
@@ -814,8 +814,8 @@ namespace playrho {
     /// @note Maximum value (with 24 fraction bits) is approximately
     ///   <code>549755813888</code>.
     ///
-    /// @sa Fixed, Real
-    /// @sa https://en.wikipedia.org/wiki/Q_(number_format)
+    /// @see Fixed, Real
+    /// @see https://en.wikipedia.org/wiki/Q_(number_format)
     ///
     using Fixed64 = Fixed<std::int64_t,24>;
     

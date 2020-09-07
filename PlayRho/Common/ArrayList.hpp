@@ -145,7 +145,7 @@ namespace playrho
         /// Gets the size of this collection.
         /// @details This is the number of elements that have been added to this collection.
         /// @return Value between 0 and the maximum size for this collection.
-        /// @sa max_size().
+        /// @see max_size().
         constexpr size_type size() const noexcept { return m_size; }
         
         /// Gets the maximum size that this collection can be.

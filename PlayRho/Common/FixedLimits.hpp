@@ -26,7 +26,7 @@
 namespace std {
 
     /// @brief Template specialization of numeric limits for Fixed types.
-    /// @sa http://en.cppreference.com/w/cpp/types/numeric_limits
+    /// @see https://en.cppreference.com/w/cpp/types/numeric_limits
     template <typename BT, unsigned int FB>
     class numeric_limits<playrho::Fixed<BT,FB>>
     {

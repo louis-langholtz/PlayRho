@@ -34,7 +34,7 @@ namespace playrho {
 ///   <code>std::minmax(a, b)</code> or the special values of the "highest" and
 ///   "lowest" values supported by the type for this class respectively indicating
 ///   the "unset" value.
-/// @sa https://en.wikipedia.org/wiki/Interval_(mathematics)
+/// @see https://en.wikipedia.org/wiki/Interval_(mathematics)
 template <typename T>
 class Interval
 {
@@ -285,9 +285,9 @@ constexpr bool IsEntirelyEnclosing(const Interval<T>& a, const Interval<T>& b)
 }
 
 /// @brief Equality operator.
-/// @note Satisfies the <code>EqualityComparable</code> concept for Interval objects.
+/// @note Satisfies the <code>EqualityComparable</code> named requirement for Interval objects.
 /// @relatedalso Interval
-/// @sa http://en.cppreference.com/w/cpp/concept/EqualityComparable
+/// @see https://en.cppreference.com/w/cpp/named_req/EqualityComparable
 template <typename T>
 constexpr bool operator== (const Interval<T>& a, const Interval<T>& b) noexcept
 {
@@ -295,9 +295,9 @@ constexpr bool operator== (const Interval<T>& a, const Interval<T>& b) noexcept
 }
 
 /// @brief Inequality operator.
-/// @note Satisfies the <code>EqualityComparable</code> concept for Interval objects.
+/// @note Satisfies the <code>EqualityComparable</code> named requirement for Interval objects.
 /// @relatedalso Interval
-/// @sa http://en.cppreference.com/w/cpp/concept/EqualityComparable
+/// @see https://en.cppreference.com/w/cpp/named_req/EqualityComparable
 template <typename T>
 constexpr bool operator!= (const Interval<T>& a, const Interval<T>& b) noexcept
 {
@@ -307,13 +307,13 @@ constexpr bool operator!= (const Interval<T>& a, const Interval<T>& b) noexcept
 /// @brief Less-than operator.
 /// @note Provides a "strict weak ordering" relation.
 /// @note This is a lexicographical comparison.
-/// @note Obeys the <code>LessThanComparable</code> concept:
+/// @note Obeys the <code>LessThanComparable</code> named requirement:
 ///   <code>for all a, !(a < a); if (a < b) then !(b < a); if (a < b) and (b < c)
 ///   then (a < c); with equiv = !(a < b) && !(b < a), if equiv(a, b) and equiv(b, c),
 ///   then equiv(a, c).</code>
 /// @relatedalso Interval
-/// @sa https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
-/// @sa http://en.cppreference.com/w/cpp/concept/LessThanComparable
+/// @see https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
+/// @see https://en.cppreference.com/w/cpp/named_req/LessThanComparable
 template <typename T>
 constexpr bool operator< (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
 {
@@ -325,7 +325,7 @@ constexpr bool operator< (const Interval<T>& lhs, const Interval<T>& rhs) noexce
 /// @note Provides a "strict weak ordering" relation.
 /// @note This is a lexicographical comparison.
 /// @relatedalso Interval
-/// @sa https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
+/// @see https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
 template <typename T>
 constexpr bool operator<= (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
 {
@@ -337,7 +337,7 @@ constexpr bool operator<= (const Interval<T>& lhs, const Interval<T>& rhs) noexc
 /// @note Provides a "strict weak ordering" relation.
 /// @note This is a lexicographical comparison.
 /// @relatedalso Interval
-/// @sa https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
+/// @see https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
 template <typename T>
 constexpr bool operator> (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
 {
@@ -349,7 +349,7 @@ constexpr bool operator> (const Interval<T>& lhs, const Interval<T>& rhs) noexce
 /// @note Provides a "strict weak ordering" relation.
 /// @note This is a lexicographical comparison.
 /// @relatedalso Interval
-/// @sa https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
+/// @see https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
 template <typename T>
 constexpr bool operator>= (const Interval<T>& lhs, const Interval<T>& rhs) noexcept
 {

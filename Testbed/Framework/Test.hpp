@@ -158,8 +158,8 @@ public:
     ///   sub-classes a way to augment some of what this operation does.
     /// @note This uses Non-Virtual Interface idiom/pattern related to the
     ///   Template Method pattern.
-    /// @sa https://en.wikipedia.org/wiki/Non-virtual_interface_pattern
-    /// @sa https://en.wikipedia.org/wiki/Template_method_pattern
+    /// @see https://en.wikipedia.org/wiki/Non-virtual_interface_pattern
+    /// @see https://en.wikipedia.org/wiki/Template_method_pattern
     void Step(const Settings& settings, Drawer& drawer, UiState& ui);
     
     void ShiftMouseDown(const Length2& p);

@@ -38,7 +38,7 @@ namespace d2 {
 ///   friend-based access to the Contact class. This is meant to help preserve and enforce
 ///   the invariants of the Contact class.
 ///
-/// @sa https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Friendship_and_the_Attorney-Client
+/// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Friendship_and_the_Attorney-Client
 ///
 class ContactAtty
 {

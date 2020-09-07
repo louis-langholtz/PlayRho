@@ -67,7 +67,7 @@ struct BodyConf;
 ///
 /// @ingroup PhysicalEntities
 ///
-/// @sa World, Fixture
+/// @see World, Fixture
 ///
 class Body
 {
@@ -164,8 +164,8 @@ public:
     /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
     ///    maximum vertex radius.
     ///
-    /// @sa Destroy, GetFixtures
-    /// @sa PhysicalEntities
+    /// @see Destroy, GetFixtures
+    /// @see PhysicalEntities
     ///
     Fixture* CreateFixture(const Shape& shape,
                            const FixtureConf& def = GetDefaultFixtureConf(),
@@ -190,8 +190,8 @@ public:
     /// @param fixture the fixture to be removed.
     /// @param resetMassData Whether or not to reset the mass data.
     ///
-    /// @sa CreateFixture, GetFixtures, ResetMassData.
-    /// @sa PhysicalEntities
+    /// @see CreateFixture, GetFixtures, ResetMassData.
+    /// @see PhysicalEntities
     ///
     bool Destroy(Fixture* fixture, bool resetMassData = true);
     
@@ -201,8 +201,8 @@ public:
     /// @note This unconditionally calls the <code>ResetMassData()</code> method.
     /// @post After this call, no fixtures will show up in the fixture enumeration
     ///   returned by the <code>GetFixtures()</code> methods.
-    /// @sa CreateFixture, GetFixtures, ResetMassData.
-    /// @sa PhysicalEntities
+    /// @see CreateFixture, GetFixtures, ResetMassData.
+    /// @see PhysicalEntities
     void DestroyFixtures();
     
     /// @brief Sets the position of the body's origin and rotation.
@@ -216,7 +216,7 @@ public:
 
     /// @brief Gets the body transform for the body's origin.
     /// @return the world transform of the body's origin.
-    /// @sa GetLocation.
+    /// @see GetLocation.
     Transformation GetTransformation() const noexcept;
 
     /// @brief Gets the world body origin location.
@@ -229,7 +229,7 @@ public:
     ///   4. Damping of the body.
     ///   5. Restitution and friction values of the body's fixtures when they experience collisions.
     /// @return World location of the body's origin.
-    /// @sa GetTransformation.
+    /// @see GetTransformation.
     Length2 GetLocation() const noexcept;
 
     /// @brief Gets the body's sweep.
@@ -251,7 +251,7 @@ public:
     /// @brief Sets the body's velocity (linear and angular velocity).
     /// @note This method does nothing if this body is not speedable.
     /// @note A non-zero velocity will awaken this body.
-    /// @sa SetAwake, SetUnderActiveTime.
+    /// @see SetAwake, SetUnderActiveTime.
     void SetVelocity(const Velocity& velocity) noexcept;
 
     /// @brief Sets the linear and rotational accelerations on this body.
@@ -273,7 +273,7 @@ public:
     /// As such, it's likely faster to multiply values by this inverse value than to redivide
     /// them all the time by the mass.
     /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
-    /// @sa SetMassData.
+    /// @see SetMassData.
     InvMass GetInvMass() const noexcept;
 
     /// @brief Gets the inverse rotational inertia of the body.
@@ -295,7 +295,7 @@ public:
     /// @details This resets the mass data to the sum of the mass properties of the fixtures.
     /// @note This method must be called after calling <code>CreateFixture</code> to update the
     ///   body mass data properties unless <code>SetMassData</code> is used.
-    /// @sa SetMassData.
+    /// @see SetMassData.
     void ResetMassData();
 
     /// @brief Gets the linear damping of the body.
@@ -958,7 +958,7 @@ inline Position GetPosition1(const Body& body) noexcept
 /// @brief Gets the mass of the body.
 /// @note This may be the total calculated mass or it may be the set mass of the body.
 /// @return Value of zero or more representing the body's mass.
-/// @sa GetInvMass, SetMassData
+/// @see GetInvMass, SetMassData
 /// @relatedalso Body
 inline Mass GetMass(const Body& body) noexcept
 {
@@ -1288,7 +1288,7 @@ void RotateAboutLocalPoint(Body& body, Angle amount, Length2 localPoint);
 ///   4. Damping of the body.
 ///   5. Restitution and friction values of the body's fixtures when they experience collisions.
 /// @return World location of the body's origin.
-/// @sa GetAngle.
+/// @see GetAngle.
 /// @relatedalso Body
 inline Length2 GetLocation(const Body& body) noexcept
 {
@@ -1329,7 +1329,7 @@ inline Position GetPosition(const Body& body) noexcept
 /// @param body Body to move.
 /// @param value Valid world location of the body's local origin. Behavior is undefined
 ///   if value is invalid.
-/// @sa Body::SetTransform
+/// @see Body::SetTransform
 /// @relatedalso Body
 inline void SetLocation(Body& body, Length2 value) noexcept
 {
@@ -1342,7 +1342,7 @@ inline void SetLocation(Body& body, Length2 value) noexcept
 /// @param body Body to move.
 /// @param value Valid world angle of the body's local origin. Behavior is undefined
 ///   if value is invalid.
-/// @sa Body::SetTransform
+/// @see Body::SetTransform
 /// @relatedalso Body
 inline void SetAngle(Body& body, Angle value) noexcept
 {

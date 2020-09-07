@@ -99,7 +99,7 @@ public:
     PolygonShapeConf& Transform(Transformation xfm) noexcept;
     
     /// @brief Transforms the vertices by the given transformation matrix.
-    /// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+    /// @see https://en.wikipedia.org/wiki/Transformation_matrix
     PolygonShapeConf& Transform(const Mat22& m) noexcept;
 
     /// @brief Equality operator.
@@ -240,7 +240,7 @@ Length2 GetEdge(const PolygonShapeConf& shape, VertexCounter index);
 
 /// @brief Transforms the given polygon configuration's vertices by the given
 ///   transformation matrix.
-/// @sa https://en.wikipedia.org/wiki/Transformation_matrix
+/// @see https://en.wikipedia.org/wiki/Transformation_matrix
 inline void Transform(PolygonShapeConf& arg, const Mat22& m) noexcept
 {
     arg.Transform(m);

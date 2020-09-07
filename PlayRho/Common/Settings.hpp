@@ -167,7 +167,7 @@ constexpr const auto DefaultMaxTranslation = 2_m;
 /// @brief Default maximum rotation per world step.
 /// @warning This value should be less than Pi * Radian.
 /// @note This limit is meant to prevent numerical problems. Adjusting this value isn't advised.
-/// @sa StepConf::maxRotation.
+/// @see StepConf::maxRotation.
 constexpr const auto DefaultMaxRotation = Angle{Pi * 1_rad / Real(2)};
 
 /// @brief Default maximum time of impact iterations.

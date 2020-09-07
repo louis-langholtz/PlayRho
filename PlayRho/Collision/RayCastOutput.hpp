@@ -82,7 +82,7 @@ struct RayCastHit
 
 /// @brief Ray cast output.
 /// @details This is a type alias for an optional <code>RayCastHit</code> instance.
-/// @sa RayCast, Optional, RayCastHit
+/// @see RayCast, Optional, RayCastHit
 using RayCastOutput = Optional<RayCastHit>;
 
 /// @brief Ray cast callback function.

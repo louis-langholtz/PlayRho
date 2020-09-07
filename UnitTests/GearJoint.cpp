@@ -78,7 +78,7 @@ TEST(GearJointConf, Traits)
 
 TEST(GearJointConf, ConstructionRequiresNonNullJoints)
 {
-    EXPECT_THROW(GearJointConf(nullptr, nullptr), NonNull<Joint*>::exception_type);
+    EXPECT_THROW(GearJointConf(nullptr, nullptr), NonNull<Joint*>::checker_type::exception_type);
 }
 
 TEST(GearJoint, ByteSize)

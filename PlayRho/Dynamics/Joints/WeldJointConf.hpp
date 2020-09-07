@@ -37,7 +37,7 @@ class WeldJoint;
 /// @note You need to specify local anchor points where they are attached and the
 ///   relative body angle.
 /// @note The position of the anchor points is important for computing the reaction torque.
-/// @sa WeldJoint
+/// @see WeldJoint
 struct WeldJointConf : public JointBuilder<WeldJointConf>
 {
     /// @brief Super type.
