@@ -23,6 +23,8 @@
 
 #include <PlayRho/Common/CheckedValue.hpp>
 
+#include <cmath>
+
 namespace playrho {
 
 using std::isfinite;
@@ -55,6 +57,7 @@ struct FiniteChecker {
 /// @brief Finite constrained value type.
 template <typename T>
 using Finite = CheckedValue<T, FiniteChecker<T>>;
+
 static_assert(std::is_default_constructible<Finite<int>>::value);
 
 } // namespace playrho

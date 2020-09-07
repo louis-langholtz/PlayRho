@@ -26,12 +26,17 @@
 namespace playrho {
 
 /// @brief Unit-interval constrained value checker.
+/// @details Provides functors ensuring values are:
+///   greater-than or equal-to zero, and less-than or equal-to one.
+/// @note This is meant to be used as a checker with types like <code>CheckedValue</code>.
+/// @see CheckedValue.
 template <typename T>
 struct UnitIntervalChecker {
     /// @brief Exception type possibly thrown by this checker.
     using exception_type = std::invalid_argument;
 
     /// @brief Valid value supplying functor.
+    /// @return Zero casted to the checked type.
     constexpr auto operator()() noexcept -> decltype(static_cast<T>(0))
     {
         return static_cast<T>(0);
@@ -39,7 +44,8 @@ struct UnitIntervalChecker {
 
     /// @brief Value checking functor.
     /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype((v >= static_cast<T>(0) && v <= static_cast<T>(1)), T{v})
+    /// @return Value given if greater-than or equal-to zero and less-than or equal-to one.
+    constexpr auto operator()(const T& v) -> decltype((v >= static_cast<T>(0) && v <= static_cast<T>(1)), T(v))
     {
         if (!(v >= static_cast<T>(0))) {
             throw exception_type("value not greater than nor equal to zero");

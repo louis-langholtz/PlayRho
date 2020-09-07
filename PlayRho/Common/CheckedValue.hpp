@@ -23,34 +23,42 @@
 
 #include <PlayRho/Common/Templates.hpp>
 
-#include <cmath>
-#include <limits>
 #include <type_traits>
 #include <iostream>
-#include <utility>
+#include <utility> // for std::declval
 
 namespace playrho {
 
-namespace detail {
-
-/// @brief Check exception type for non-supplying checkers.
-/// @details Helper type for checker type having no <code>exception_type</code> alias.
-template <typename T, typename=void>
-struct CheckExceptionType{};
-
-/// @brief Check exception type for <code>exception_type</code> supplying checkers.
-/// @details Helper type for adding alias to a checker type's <code>exception_type</code> alias.
+/// @brief No-op value checker.
+/// @details Provides functors ensuring values are the value given.
+/// @tparam T Value type to check (or pass-through in this case).
+/// @note This is meant to be used as a checker with types like <code>CheckedValue</code>.
+/// @see CheckedValue.
 template <typename T>
-struct CheckExceptionType<T, detail::VoidT<typename T::exception_type>> {
-    /// @brief Exception type possibly thrown by the given checker.
-    using exception_type = typename T::exception_type;
+struct NoOpChecker
+{
+    /// @brief Valid value supplying functor.
+    /// @return Default initialized value of the type.
+    constexpr auto operator()() noexcept -> decltype(T())
+    {
+        return T();
+    }
+
+    /// @brief Value checking functor.
+    /// @param v Value to check or to just pass through in this case.
+    /// @throws exception_type if given value is not valid.
+    /// @return Value given if greater-than or equal-to zero and less-than or equal-to one.
+    constexpr auto operator()(T v) noexcept -> decltype(T(v))
+    {
+        return v;
+    }
 };
 
-} // namespace detail
-
 /// @brief Checked value.
-template <typename ValueType, typename CheckerType>
-class CheckedValue: public detail::CheckExceptionType<CheckerType>
+/// @tparam ValueType Type of the underlying value that will get checked.
+/// @tparam CheckerType Checker type to check or possibly transform values with.
+template <typename ValueType, typename CheckerType = NoOpChecker<ValueType>>
+class CheckedValue
 {
 public:
     static_assert(HasUnaryFunctor<CheckerType, ValueType, ValueType>::value,
@@ -72,6 +80,7 @@ public:
     }
 
     /// @brief Initializing constructor.
+    /// @todo Consider marking this function "explicit".
     constexpr CheckedValue(value_type value) noexcept(noexcept(checker_type{}(value))):
         m_value{CheckerType{}(value)}
     {
@@ -117,12 +126,12 @@ private:
 /// @relatedalso CheckedValue
 template <typename ValueType, typename CheckerType>
 auto operator<<(::std::ostream& os, const CheckedValue<ValueType, CheckerType>& value) ->
-    decltype(os << ValueType{value})
+    decltype(os << ValueType(value))
 {
-    return os << ValueType{value};
+    return os << ValueType(value);
 }
 
-/// @brief Constrained value equality operator or value types which support it.
+/// @brief Constrained value equality operator for value types which support it.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
@@ -131,36 +140,13 @@ auto operator<<(::std::ostream& os, const CheckedValue<ValueType, CheckerType>& 
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator== (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                            const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} == RhsValueType{rhs})
+    noexcept(noexcept(std::declval<LhsValueType>() == std::declval<RhsValueType>()))
+-> decltype(LhsValueType(lhs) == RhsValueType(rhs))
 {
-    return LhsValueType{lhs} == RhsValueType{rhs};
+    return LhsValueType(lhs) == RhsValueType(rhs);
 }
 
-/// @brief Constrained value equality operator.
-/// @tparam ValueType Type of the value used by the checked value.
-/// @tparam CheckerType Type of the checker used by the checked value.
-/// @tparam Other Type of the other value that this operation will operator with.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator== (const CheckedValue<ValueType,CheckerType>& lhs,
-                           const Other& rhs)
--> decltype(ValueType{lhs} == rhs)
-{
-    return ValueType{lhs} == rhs;
-}
-
-/// @brief Constrained value equality operator.
-/// @tparam ValueType Type of the value used by the checked value.
-/// @tparam CheckerType Type of the checker used by the checked value.
-/// @tparam Other Type of the other value that this operation will operator with.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator== (const Other& lhs,
-                           const CheckedValue<ValueType,CheckerType>& rhs)
--> decltype(lhs == ValueType{rhs})
-{
-    return lhs == ValueType{rhs};
-}
-
-/// @brief Constrained value inequality operator.
+/// @brief Constrained value inequality operator for value types which support it.
 /// @tparam LhsValueType Type of the value used by the left hand side checked value.
 /// @tparam LhsCheckerType Type of the checker used by the left hand side checked value.
 /// @tparam RhsValueType Type of the value used by the right hand side checked value.
@@ -169,27 +155,10 @@ constexpr auto operator== (const Other& lhs,
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator!= (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                            const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} != RhsValueType{rhs})
+    noexcept(noexcept(std::declval<LhsValueType>() != std::declval<RhsValueType>()))
+-> decltype(LhsValueType(lhs) != RhsValueType(rhs))
 {
-    return LhsValueType{lhs} != RhsValueType{rhs};
-}
-
-/// @brief Constrained value inequality operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator!= (const CheckedValue<ValueType, CheckerType>& lhs,
-                           const Other& rhs)
--> decltype(ValueType{lhs} != rhs)
-{
-    return ValueType{lhs} != rhs;
-}
-
-/// @brief Constrained value inequality operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator!= (const Other& lhs,
-                           const CheckedValue<ValueType, CheckerType>& rhs)
--> decltype(lhs != ValueType{rhs})
-{
-    return lhs != ValueType{rhs};
+    return LhsValueType(lhs) != RhsValueType(rhs);
 }
 
 /// @brief Constrained value less-than or equal-to operator.
@@ -201,27 +170,9 @@ constexpr auto operator!= (const Other& lhs,
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator<= (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                            const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} <= RhsValueType{rhs})
+-> decltype(LhsValueType(lhs) <= RhsValueType(rhs))
 {
-    return LhsValueType{lhs} <= RhsValueType{rhs};
-}
-
-/// @brief Constrained value greater-than or equal-to operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator<= (const CheckedValue<ValueType, CheckerType>& lhs,
-                           const Other& rhs)
--> decltype(ValueType{lhs} <= rhs)
-{
-    return ValueType{lhs} <= rhs;
-}
-
-/// @brief Constrained value greater-than or equal-to operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator<= (const Other& lhs,
-                           const CheckedValue<ValueType, CheckerType>& rhs)
--> decltype(lhs <= ValueType{rhs})
-{
-    return lhs <= ValueType{rhs};
+    return LhsValueType(lhs) <= RhsValueType(rhs);
 }
 
 /// @brief Constrained value greater-than or equal-to operator.
@@ -233,27 +184,9 @@ constexpr auto operator<= (const Other& lhs,
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator>= (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                            const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} >= RhsValueType{rhs})
+-> decltype(LhsValueType(lhs) >= RhsValueType(rhs))
 {
-    return LhsValueType{lhs} >= RhsValueType{rhs};
-}
-
-/// @brief Constrained value greater-than or equal-to operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator>= (const CheckedValue<ValueType, CheckerType>& lhs,
-                           const Other& rhs)
--> decltype(ValueType{lhs} >= rhs)
-{
-    return ValueType{lhs} >= rhs;
-}
-
-/// @brief Constrained value greater-than or equal-to operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator>= (const Other& lhs,
-                           const CheckedValue<ValueType, CheckerType>& rhs)
--> decltype(lhs >= ValueType{rhs})
-{
-    return lhs >= ValueType{rhs};
+    return LhsValueType(lhs) >= RhsValueType(rhs);
 }
 
 /// @brief Constrained value less-than operator.
@@ -265,27 +198,9 @@ constexpr auto operator>= (const Other& lhs,
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator< (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} < RhsValueType{rhs})
+-> decltype(LhsValueType(lhs) < RhsValueType(rhs))
 {
-    return LhsValueType{lhs} < RhsValueType{rhs};
-}
-
-/// @brief Constrained value greater-than or equal-to operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator< (const CheckedValue<ValueType, CheckerType>& lhs,
-                          const Other& rhs)
--> decltype(ValueType{lhs} < rhs)
-{
-    return ValueType{lhs} < rhs;
-}
-
-/// @brief Constrained value greater-than or equal-to operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator< (const Other& lhs,
-                          const CheckedValue<ValueType, CheckerType>& rhs)
--> decltype(lhs < ValueType{rhs})
-{
-    return lhs < ValueType{rhs};
+    return LhsValueType(lhs) < RhsValueType(rhs);
 }
 
 /// @brief Constrained value greater-than operator.
@@ -297,27 +212,9 @@ constexpr auto operator< (const Other& lhs,
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator> (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} > RhsValueType{rhs})
+-> decltype(LhsValueType(lhs) > RhsValueType(rhs))
 {
-    return LhsValueType{lhs} > RhsValueType{rhs};
-}
-
-/// @brief Constrained value greater-than operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator> (const CheckedValue<ValueType, CheckerType>& lhs,
-                          const Other& rhs)
--> decltype(ValueType{lhs} > rhs)
-{
-    return ValueType{lhs} > rhs;
-}
-
-/// @brief Constrained value greater-than ooperator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator> (const Other& lhs,
-                          const CheckedValue<ValueType, CheckerType>& rhs)
--> decltype(lhs > ValueType{rhs})
-{
-    return lhs > ValueType{rhs};
+    return LhsValueType(lhs) > RhsValueType(rhs);
 }
 
 /// @brief Constrained value multiplication operator.
@@ -329,31 +226,9 @@ constexpr auto operator> (const Other& lhs,
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator* (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} * RhsValueType{rhs})
+-> decltype(LhsValueType(lhs) * RhsValueType(rhs))
 {
-    return LhsValueType{lhs} * RhsValueType{rhs};
-}
-
-/// @brief Constrained value multiplication operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr std::enable_if_t<
-    !IsMultipliable<CheckedValue<ValueType, CheckerType>, Other>::value &&
-    IsMultipliable<ValueType, Other>::value,
-    decltype(ValueType{}*Other{})>
-operator* (const CheckedValue<ValueType, CheckerType>& lhs, const Other& rhs)
-{
-    return ValueType{lhs} * rhs;
-}
-
-/// @brief Constrained value multiplication operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr std::enable_if_t<
-    !IsMultipliable<Other, CheckedValue<ValueType, CheckerType>>::value &&
-    IsMultipliable<Other, ValueType>::value,
-    decltype(Other{}*ValueType{})>
-operator* (const Other& lhs, const CheckedValue<ValueType, CheckerType>& rhs)
-{
-    return lhs * ValueType{rhs};
+    return LhsValueType(lhs) * RhsValueType(rhs);
 }
 
 /// @brief Constrained value division operator.
@@ -365,27 +240,9 @@ operator* (const Other& lhs, const CheckedValue<ValueType, CheckerType>& rhs)
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator/ (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} / RhsValueType{rhs})
+-> decltype(LhsValueType(lhs) / RhsValueType(rhs))
 {
-    return LhsValueType{lhs} / RhsValueType{rhs};
-}
-
-/// @brief Constrained value division operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator/ (const CheckedValue<ValueType, CheckerType>& lhs,
-                          const Other& rhs)
--> decltype(ValueType{lhs} / rhs)
-{
-    return ValueType{lhs} / rhs;
-}
-
-/// @brief Constrained value division operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator/ (const Other& lhs,
-                          const CheckedValue<ValueType, CheckerType>& rhs)
--> decltype(lhs / ValueType{rhs})
-{
-    return lhs / ValueType{rhs};
+    return LhsValueType(lhs) / RhsValueType(rhs);
 }
 
 /// @brief Constrained value addition operator.
@@ -397,27 +254,9 @@ constexpr auto operator/ (const Other& lhs,
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator+ (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} + RhsValueType{rhs})
+-> decltype(LhsValueType(lhs) + RhsValueType(rhs))
 {
-    return LhsValueType{lhs} + RhsValueType{rhs};
-}
-
-/// @brief Constrained value addition operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator+ (const CheckedValue<ValueType, CheckerType>& lhs,
-                          const Other& rhs)
--> decltype(ValueType{lhs} + rhs)
-{
-    return ValueType{lhs} + rhs;
-}
-
-/// @brief Constrained value addition operator.
-template <typename ValueType, typename CheckerType, typename Other>
-constexpr auto operator+ (const Other& lhs,
-                          const CheckedValue<ValueType, CheckerType>& rhs)
--> decltype(lhs + ValueType{rhs})
-{
-    return lhs + ValueType{rhs};
+    return LhsValueType(lhs) + RhsValueType(rhs);
 }
 
 /// @brief Constrained value subtraction operator.
@@ -429,35 +268,283 @@ constexpr auto operator+ (const Other& lhs,
 template <typename LhsValueType, typename LhsCheckerType, typename RhsValueType, typename RhsCheckerType>
 constexpr auto operator- (const CheckedValue<LhsValueType, LhsCheckerType>& lhs,
                           const CheckedValue<RhsValueType, RhsCheckerType>& rhs)
--> decltype(LhsValueType{lhs} - RhsValueType{rhs})
+-> decltype(LhsValueType(lhs) - RhsValueType(rhs))
 {
-    return LhsValueType{lhs} - RhsValueType{rhs};
+    return LhsValueType(lhs) - RhsValueType(rhs);
+}
+
+/// @brief Constrained value equality operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator== (const CheckedValue<ValueType, CheckerType>& lhs,
+                           const Other& rhs)
+-> decltype(ValueType(lhs) == rhs)
+{
+    return ValueType(lhs) == rhs;
+}
+
+/// @brief Constrained value equality operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator== (const Other& lhs,
+                           const CheckedValue<ValueType, CheckerType>& rhs)
+-> decltype(lhs == ValueType(rhs))
+{
+    return lhs == ValueType(rhs);
+}
+
+/// @brief Constrained value inequality operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator!= (const CheckedValue<ValueType, CheckerType>& lhs,
+                           const Other& rhs)
+-> decltype(ValueType(lhs) != rhs)
+{
+    return ValueType(lhs) != rhs;
+}
+
+/// @brief Constrained value inequality operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator!= (const Other& lhs,
+                           const CheckedValue<ValueType, CheckerType>& rhs)
+-> decltype(lhs != ValueType(rhs))
+{
+    return lhs != ValueType(rhs);
+}
+
+/// @brief Constrained value less-than or equal-to operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator<= (const CheckedValue<ValueType, CheckerType>& lhs,
+                           const Other& rhs)
+-> decltype(ValueType(lhs) <= rhs)
+{
+    return ValueType(lhs) <= rhs;
+}
+
+/// @brief Constrained value less-than or equal-to operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator<= (const Other& lhs,
+                           const CheckedValue<ValueType, CheckerType>& rhs)
+-> decltype(lhs <= ValueType(rhs))
+{
+    return lhs <= ValueType(rhs);
+}
+
+/// @brief Constrained value greater-than or equal-to operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator>= (const CheckedValue<ValueType, CheckerType>& lhs,
+                           const Other& rhs)
+-> decltype(ValueType(lhs) >= rhs)
+{
+    return ValueType(lhs) >= rhs;
+}
+
+/// @brief Constrained value greater-than or equal-to operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator>= (const Other& lhs,
+                           const CheckedValue<ValueType, CheckerType>& rhs)
+-> decltype(lhs >= ValueType(rhs))
+{
+    return lhs >= ValueType(rhs);
+}
+
+
+/// @brief Constrained value less-than operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator< (const CheckedValue<ValueType, CheckerType>& lhs,
+                          const Other& rhs)
+-> decltype(ValueType(lhs) < rhs)
+{
+    return ValueType(lhs) < rhs;
+}
+
+/// @brief Constrained value less-than operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator< (const Other& lhs,
+                          const CheckedValue<ValueType, CheckerType>& rhs)
+-> decltype(lhs < ValueType(rhs))
+{
+    return lhs < ValueType(rhs);
+}
+
+/// @brief Constrained value greater-than operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator> (const CheckedValue<ValueType, CheckerType>& lhs,
+                          const Other& rhs)
+-> decltype(ValueType(lhs) > rhs)
+{
+    return ValueType(lhs) > rhs;
+}
+
+/// @brief Constrained value greater-than ooperator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator> (const Other& lhs,
+                          const CheckedValue<ValueType, CheckerType>& rhs)
+-> decltype(lhs > ValueType(rhs))
+{
+    return lhs > ValueType(rhs);
+}
+
+/// @brief Constrained value multiplication operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator* (const CheckedValue<ValueType, CheckerType>& lhs, const Other& rhs)
+-> std::enable_if_t<!IsMultipliable<CheckedValue<ValueType, CheckerType>, Other>::value, decltype(ValueType()*Other())>
+{
+    return ValueType(lhs) * rhs;
+}
+
+/// @brief Constrained value multiplication operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator* (const Other& lhs, const CheckedValue<ValueType, CheckerType>& rhs)
+-> std::enable_if_t<!IsMultipliable<Other, CheckedValue<ValueType, CheckerType>>::value, decltype(Other()*ValueType())>
+{
+    return lhs * ValueType(rhs);
+}
+
+/// @brief Constrained value division operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator/ (const CheckedValue<ValueType, CheckerType>& lhs,
+                          const Other& rhs)
+-> decltype(ValueType(lhs) / rhs)
+{
+    return ValueType(lhs) / rhs;
+}
+
+/// @brief Constrained value division operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator/ (const Other& lhs,
+                          const CheckedValue<ValueType, CheckerType>& rhs)
+-> decltype(lhs / ValueType(rhs))
+{
+    return lhs / ValueType(rhs);
+}
+
+/// @brief Constrained value addition operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator+ (const CheckedValue<ValueType, CheckerType>& lhs,
+                          const Other& rhs)
+-> decltype(ValueType(lhs) + rhs)
+{
+    return ValueType(lhs) + rhs;
+}
+
+/// @brief Constrained value addition operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
+template <typename ValueType, typename CheckerType, typename Other>
+constexpr auto operator+ (const Other& lhs,
+                          const CheckedValue<ValueType, CheckerType>& rhs)
+-> decltype(lhs + ValueType(rhs))
+{
+    return lhs + ValueType(rhs);
 }
 
 /// @brief Constrained value subtraction operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
 template <typename ValueType, typename CheckerType, typename Other>
 constexpr auto operator- (const CheckedValue<ValueType, CheckerType>& lhs,
                           const Other& rhs)
--> decltype(ValueType{lhs} - rhs)
+-> decltype(ValueType(lhs) - rhs)
 {
-    return ValueType{lhs} - rhs;
+    return ValueType(lhs) - rhs;
 }
 
 /// @brief Constrained value subtraction operator.
+/// @tparam ValueType Type of the value used by the checked value.
+/// @tparam CheckerType Type of the checker used by the checked value.
+/// @tparam Other Type of the other value that this operation will operator with.
+/// @relatedalso CheckedValue
 template <typename ValueType, typename CheckerType, typename Other>
 constexpr auto operator- (const Other& lhs,
                           const CheckedValue<ValueType, CheckerType>& rhs)
--> decltype(lhs - ValueType{rhs})
+-> decltype(lhs - ValueType(rhs))
 {
-    return lhs - ValueType{rhs};
+    return lhs - ValueType(rhs);
 }
 
-/// @defgroup CheckedValues Constrained Value Types
-/// @brief Types for constrained values.
-/// @details Type aliases for constrained values via on-construction checks that
-///   may throw an exception if an attempt is made to construct the constrained value
+/// @defgroup CheckedValues Checked Value Types
+/// @brief Types for checked values.
+/// @details Type aliases for checked values via on-construction checks that
+///   may throw an exception if an attempt is made to construct the checked value
 ///   type with a value not allowed by the specific alias.
 /// @see CheckedValue
+
+/// @ingroup CheckedValues
+/// @brief Default checked value type.
+/// @details A checked value type using the default checker type.
+/// @note This is basically a no-op for base line testing and demonstration purposes.
+template <typename T>
+using DefaultCheckedValue = CheckedValue<T>;
 
 } // namespace playrho
 
