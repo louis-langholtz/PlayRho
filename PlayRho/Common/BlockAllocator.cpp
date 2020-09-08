@@ -50,11 +50,11 @@ struct LookupTable
     
     std::uint8_t elements[BlockAllocator::GetMaxBlockSize() + 1];
 };
-static constexpr const LookupTable BlockSizeLookup;
+static constexpr LookupTable BlockSizeLookup;
 #endif
 
 /// @brief Block size lookup array.
-static constexpr const std::uint8_t s_blockSizeLookup[BlockAllocator::GetMaxBlockSize() + 1] =
+static constexpr std::uint8_t s_blockSizeLookup[BlockAllocator::GetMaxBlockSize() + 1] =
 {
     0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1-16

@@ -45,7 +45,7 @@ struct Transformation
 };
 
 /// @brief Identity transformation value.
-constexpr const auto Transform_identity = Transformation{
+constexpr auto Transform_identity = Transformation{
     Length2{0_m, 0_m}, UnitVec::GetRight()
 };
 

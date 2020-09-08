@@ -205,7 +205,7 @@ public:
         ShapeDrawer shapeDrawer;
         shapeDrawer.debugDraw = &drawer;
 
-        constexpr const int e_maxCount = 4;
+        constexpr auto e_maxCount = 4;
         int count = 0;
         const auto circleChild = GetChild(circleConf, 0);
         const auto aabb = ComputeAABB(circleChild, transform);

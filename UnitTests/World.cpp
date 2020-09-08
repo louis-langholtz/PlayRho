@@ -1740,9 +1740,9 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
 TEST(World, HeavyOnLight)
 {
-    constexpr const auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
-    constexpr const auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
-    constexpr const auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
+    constexpr auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
+    constexpr auto LargerLinearSlop = playrho::Meter / playrho::Real(200);
+    constexpr auto SmallerLinearSlop = playrho::Meter / playrho::Real(1000);
 
     const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity);
     const auto upperBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 6.0f) * Meter);
@@ -2526,13 +2526,13 @@ TEST(World, CollidingDynamicBodies)
 
 TEST(World_Longer, TilesComesToRest)
 {
-    constexpr const auto LinearSlop = Meter / 1000;
-    constexpr const auto AngularSlop = (Pi * 2 * 1_rad) / 180;
-    constexpr const auto VertexRadius = LinearSlop * 2;
+    constexpr auto LinearSlop = Meter / 1000;
+    constexpr auto AngularSlop = (Pi * 2 * 1_rad) / 180;
+    constexpr auto VertexRadius = LinearSlop * 2;
     auto conf = PolygonShapeConf{}.UseVertexRadius(VertexRadius);
     const auto world = std::make_unique<World>(WorldConf{}.UseMinVertexRadius(VertexRadius));
     
-    constexpr const auto e_count = 36;
+    constexpr auto e_count = 36;
     
     {
         const auto a = Real{0.5f};
@@ -2752,9 +2752,9 @@ TEST(World_Longer, TilesComesToRest)
 
 TEST(World, SpeedingBulletBallWontTunnel)
 {
-    constexpr const auto LinearSlop = playrho::Meter / playrho::Real(1000);
-    constexpr const auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
-    constexpr const auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
+    constexpr auto LinearSlop = playrho::Meter / playrho::Real(1000);
+    constexpr auto AngularSlop = (Pi * Real{2} * 1_rad) / Real{180};
+    constexpr auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
     
     World world{WorldConf{}.UseMinVertexRadius(VertexRadius)};
 
@@ -3019,7 +3019,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         ASSERT_NE(ball_fixture, nullptr);
     }
 
-    constexpr const unsigned numBodies = 1;
+    constexpr auto numBodies = 1u;
     Length2 last_opos[numBodies];
     Body *bodies[numBodies];
     for (auto i = decltype(numBodies){0}; i < numBodies; ++i)

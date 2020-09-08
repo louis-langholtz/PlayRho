@@ -51,13 +51,13 @@ namespace playrho {
 ///
 /// @see https://en.wikipedia.org/wiki/Pi
 ///
-constexpr const auto Pi = Real(3.14159265358979323846264338327950288);
+constexpr auto Pi = Real(3.14159265358979323846264338327950288);
 
 /// @brief Square root of two.
 ///
 /// @see https://en.wikipedia.org/wiki/Square_root_of_2
 ///
-constexpr const auto SquareRootTwo =
+constexpr auto SquareRootTwo =
     Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
 
 /// @defgroup DecimalUnitPrefices Decimal Unit Prefices
@@ -70,35 +70,35 @@ constexpr const auto SquareRootTwo =
 
 /// @brief Centi- (1 x 10^-2).
 /// @see https://en.wikipedia.org/wiki/Centi-
-constexpr const auto Centi = Real(1e-2);
+constexpr auto Centi = Real(1e-2);
 
 /// @brief Deci- (1 x 10^-1).
 /// @see https://en.wikipedia.org/wiki/Deci-
-constexpr const auto Deci = Real(1e-1);
+constexpr auto Deci = Real(1e-1);
 
 /// @brief Kilo- (1 x 10^3).
 /// @see https://en.wikipedia.org/wiki/Kilo-
-constexpr const auto Kilo = Real(1e3);
+constexpr auto Kilo = Real(1e3);
 
 /// @brief Mega- (1 x 10^6).
 /// @see https://en.wikipedia.org/wiki/Mega-
-constexpr const auto Mega = Real(1e6);
+constexpr auto Mega = Real(1e6);
 
 /// @brief Giga- (1 x 10^9).
 /// @see https://en.wikipedia.org/wiki/Giga-
-constexpr const auto Giga = Real(1e9);
+constexpr auto Giga = Real(1e9);
 
 /// @brief Tera- (1 x 10^12).
 /// @see https://en.wikipedia.org/wiki/Tera-
-constexpr const auto Tera = Real(1e12);
+constexpr auto Tera = Real(1e12);
 
 /// @brief Peta- (1 x 10^15).
 /// @see https://en.wikipedia.org/wiki/Peta-
-constexpr const auto Peta = Real(1e15);
+constexpr auto Peta = Real(1e15);
 
 /// @brief Yotta- (1 x 10^24).
 /// @see https://en.wikipedia.org/wiki/Yotta-
-constexpr const auto Yotta = Real(1e24);
+constexpr auto Yotta = Real(1e24);
 
 /// @}
 

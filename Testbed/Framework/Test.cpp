@@ -1349,7 +1349,7 @@ void Test::RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerI
     m_handledKeys.push_back(std::make_pair(KeyActionMods{key, action, mods}, id));
 }
 
-constexpr const auto RAND_LIMIT = 32767;
+constexpr auto RAND_LIMIT = 32767;
 
 Real RandomFloat()
 {

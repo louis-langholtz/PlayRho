@@ -28,7 +28,7 @@ class Bridge : public Test
 {
 public:
 
-    static constexpr const auto Count = 30;
+    static constexpr auto Count = 30;
 
     Bridge()
     {        

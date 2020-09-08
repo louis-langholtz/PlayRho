@@ -49,16 +49,16 @@ namespace playrho {
         using value_type = BASE_TYPE;
         
         /// @brief Total number of bits.
-        static constexpr const unsigned int TotalBits = sizeof(BASE_TYPE) * 8;
+        static constexpr auto TotalBits = static_cast<unsigned int>(sizeof(BASE_TYPE) * 8u);
 
         /// @brief Fraction bits.
-        static constexpr const unsigned int FractionBits = FRACTION_BITS;
+        static constexpr auto FractionBits = FRACTION_BITS;
         
         /// @brief Whole value bits.
-        static constexpr const unsigned int WholeBits = TotalBits - FractionBits;
+        static constexpr auto WholeBits = TotalBits - FractionBits;
 
         /// @brief Scale factor.
-        static constexpr const value_type ScaleFactor = static_cast<value_type>(1u << FractionBits);
+        static constexpr auto ScaleFactor = static_cast<value_type>(1u << FractionBits);
 
         /// @brief Compare result enumeration.
         enum class CmpResult

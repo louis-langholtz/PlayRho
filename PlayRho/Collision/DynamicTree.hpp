@@ -93,7 +93,7 @@ public:
     using Height = ContactCounter;
     
     /// @brief Invalid height constant value.
-    static constexpr const auto InvalidHeight = static_cast<Height>(-1);
+    static constexpr auto InvalidHeight = static_cast<Height>(-1);
 
     /// @brief Gets the invalid height value.
     static constexpr Height GetInvalidHeight() noexcept

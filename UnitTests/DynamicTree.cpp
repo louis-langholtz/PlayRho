@@ -432,7 +432,7 @@ TEST(DynamicTree, ZeroCapacityConstructionSameAsDefault)
 
 TEST(DynamicTree, InitializingConstruction)
 {
-    constexpr const auto initCapacity = DynamicTree::GetDefaultInitialNodeCapacity() * 2;
+    constexpr auto initCapacity = DynamicTree::GetDefaultInitialNodeCapacity() * 2;
     DynamicTree foo{initCapacity};
     EXPECT_EQ(foo.GetNodeCapacity(), initCapacity);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));

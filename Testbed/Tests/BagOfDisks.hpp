@@ -29,7 +29,7 @@ namespace testbed {
 class BagOfDisks: public Test
 {
 public:
-    static constexpr const auto Count = 180;
+    static constexpr auto Count = 180;
 
     static Test::Conf GetTestConf()
     {

@@ -237,7 +237,7 @@ constexpr Vector<Length, N> GetDimensions(const AABB<N>& aabb) noexcept
 template <std::size_t N>
 constexpr Vector<Length, N> GetExtents(const AABB<N>& aabb) noexcept
 {
-    constexpr const auto RealInverseOfTwo = Real{1} / Real{2};
+    constexpr auto RealInverseOfTwo = Real{1} / Real{2};
     return GetDimensions(aabb) * RealInverseOfTwo;
 }
 
