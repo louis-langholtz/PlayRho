@@ -78,7 +78,7 @@ private:
         delete fixture;
     }
     
-    friend class World;
+    friend class WorldImpl;
 };
 
 } // namespace d2

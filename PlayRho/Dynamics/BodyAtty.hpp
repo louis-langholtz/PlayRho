@@ -291,7 +291,7 @@ private:
         b.UnsetIslandedFlag();
     }
     
-    friend class World;
+    friend class WorldImpl;
 };
 
 } // namespace d2

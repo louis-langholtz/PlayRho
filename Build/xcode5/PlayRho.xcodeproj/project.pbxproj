@@ -142,6 +142,10 @@
 		4764085925047FA10090F711 /* NonPositive.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085825047FA10090F711 /* NonPositive.hpp */; };
 		4764085B250482300090F711 /* Positive.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085A2504822F0090F711 /* Positive.hpp */; };
 		4764085D250484830090F711 /* Negative.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085C250484820090F711 /* Negative.hpp */; };
+		4764085F2507FC000090F711 /* propagate_const.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085E2507FBFF0090F711 /* propagate_const.hpp */; };
+		47640862250807720090F711 /* WorldImpl.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640860250807720090F711 /* WorldImpl.hpp */; };
+		47640863250807720090F711 /* WorldImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47640861250807720090F711 /* WorldImpl.cpp */; };
+		476408652508339D0090F711 /* WorldAtty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476408642508339D0090F711 /* WorldAtty.cpp */; };
 		4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
 		4768D3F81E3E895A00574143 /* PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */; };
 		4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2.hpp */; };
@@ -535,6 +539,10 @@
 		4764085825047FA10090F711 /* NonPositive.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NonPositive.hpp; sourceTree = "<group>"; };
 		4764085A2504822F0090F711 /* Positive.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Positive.hpp; sourceTree = "<group>"; };
 		4764085C250484820090F711 /* Negative.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Negative.hpp; sourceTree = "<group>"; };
+		4764085E2507FBFF0090F711 /* propagate_const.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = propagate_const.hpp; sourceTree = "<group>"; };
+		47640860250807720090F711 /* WorldImpl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldImpl.hpp; sourceTree = "<group>"; };
+		47640861250807720090F711 /* WorldImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImpl.cpp; sourceTree = "<group>"; };
+		476408642508339D0090F711 /* WorldAtty.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldAtty.cpp; sourceTree = "<group>"; };
 		4768D3F21E3A7ACA00574143 /* Wider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Wider.hpp; sourceTree = "<group>"; };
 		4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
 		4768D3FA1E414A0100574143 /* Vector2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2.hpp; sourceTree = "<group>"; };
@@ -1029,6 +1037,7 @@
 				473273231F476C1D00E22AE2 /* OptionalValue.hpp */,
 				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
 				4764085A2504822F0090F711 /* Positive.hpp */,
+				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
 				470F94E01ECBB3A100AA3C82 /* Range.hpp */,
 				47B58F651F64D2B500354C34 /* Real.hpp */,
 				47B58F671F64D2D200354C34 /* Real.hpp.in */,
@@ -1090,10 +1099,13 @@
 				478E67CA1E777A43009B9AD5 /* StepStats.hpp */,
 				80BB8956141C3E5900F1753A /* World.cpp */,
 				80BB8957141C3E5900F1753A /* World.hpp */,
+				476408642508339D0090F711 /* WorldAtty.cpp */,
 				47B490D9201EB54500AB07A0 /* WorldAtty.hpp */,
 				47440F0A1EDA365400AB3F51 /* WorldConf.hpp */,
 				80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */,
 				80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */,
+				47640861250807720090F711 /* WorldImpl.cpp */,
+				47640860250807720090F711 /* WorldImpl.hpp */,
 			);
 			path = Dynamics;
 			sourceTree = "<group>";
@@ -1395,6 +1407,7 @@
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
 				4764085725047C090090F711 /* Finite.hpp in Headers */,
 				80BB89B0141C3E5900F1753A /* Fixture.hpp in Headers */,
+				47640862250807720090F711 /* WorldImpl.hpp in Headers */,
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
 				47C96C551FA67D1F00A6C587 /* Acceleration.hpp in Headers */,
 				47D61F741F1F148500E702BD /* SilkscreenTtfData.h in Headers */,
@@ -1402,6 +1415,7 @@
 				47327E801EA585790048FCD8 /* Defines.hpp in Headers */,
 				4787D6C71F2EA1DB008C115E /* FrictionJointConf.hpp in Headers */,
 				470F9B3D1EE63515007EF7B6 /* InvalidArgument.hpp in Headers */,
+				4764085F2507FC000090F711 /* propagate_const.hpp in Headers */,
 				4787D6E31F2ED461008C115E /* WeldJointConf.hpp in Headers */,
 				471E7EAA1F32668E00DFF626 /* Matrix.hpp in Headers */,
 				4764085925047FA10090F711 /* NonPositive.hpp in Headers */,
@@ -1731,6 +1745,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				476408652508339D0090F711 /* WorldAtty.cpp in Sources */,
 				4731DE2F1DDF9B6900E7F931 /* MassData.cpp in Sources */,
 				80BB898D141C3E5900F1753A /* Collision.cpp in Sources */,
 				4731DE611DEF7B5100E7F931 /* Simplex.cpp in Sources */,
@@ -1783,6 +1798,7 @@
 				4787D6E61F2ED62C008C115E /* WheelJointConf.cpp in Sources */,
 				80BB89CE141C3E5900F1753A /* GearJoint.cpp in Sources */,
 				4768D4001E54E7CC00574143 /* StepConf.cpp in Sources */,
+				47640863250807720090F711 /* WorldImpl.cpp in Sources */,
 				80BB89D0141C3E5900F1753A /* Joint.cpp in Sources */,
 				80BB89D2141C3E5900F1753A /* TargetJoint.cpp in Sources */,
 				470F9B061EDB8F62007EF7B6 /* Shape.cpp in Sources */,

@@ -24,11 +24,17 @@
 /// @file
 /// Declaration of the WorldAtty class.
 
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/BodyType.hpp>
 
 namespace playrho {
 namespace d2 {
-    
+
+class World;
+class Fixture;
+class Body;
+struct FixtureConf;
+class Shape;
+
 /// @brief World attorney.
 ///
 /// @details This is the "world attorney" which provides limited privileged access to the
@@ -48,18 +54,12 @@ private:
     /// @note Fixture must belong to a body that belongs to this world or this method will
     ///   return false.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    static void TouchProxies(World& world, Fixture& fixture) noexcept
-    {
-        world.TouchProxies(fixture);
-    }
+    static void TouchProxies(World& world, Fixture& fixture) noexcept;
 
     /// @brief Sets the type of the given body.
     /// @note This may alter the body's mass and velocity.
     /// @throws WrongState if this method is called while the world is locked.
-    static void SetType(World& world, Body& body, playrho::BodyType type)
-    {
-        world.SetType(body, type);
-    }
+    static void SetType(World& world, Body& body, playrho::BodyType type);
     
     /// @brief Creates a fixture with the given parameters.
     /// @throws InvalidArgument if called for a body that doesn't belong to this world.
@@ -70,10 +70,7 @@ private:
     ///    maximum vertex radius.
     /// @throws WrongState if this method is called while the world is locked.
     static Fixture* CreateFixture(World& world, Body& body, const Shape& shape,
-                                  const FixtureConf& def, bool resetMassData)
-    {
-        return world.CreateFixture(body, shape, def, resetMassData);
-    }
+                                  const FixtureConf& def, bool resetMassData);
     
     /// @brief Destroys a fixture.
     ///
@@ -93,22 +90,13 @@ private:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    static bool Destroy(World& world, Fixture& fixture, bool resetMassData)
-    {
-        return world.Destroy(fixture, resetMassData);
-    }
+    static bool Destroy(World& world, Fixture& fixture, bool resetMassData);
     
     /// @brief Register for proxies for the given body.
-    static void RegisterForProxies(World& world, Body& body)
-    {
-        world.RegisterForProxies(body);
-    }
+    static void RegisterForProxies(World& world, Body& body);
     
     /// @brief Register for proxies for the given fixture.
-    static void RegisterForProxies(World& world, Fixture& fixture)
-    {
-        world.RegisterForProxies(fixture);
-    }
+    static void RegisterForProxies(World& world, Fixture& fixture);
     
     friend class Body;
     friend class Fixture;

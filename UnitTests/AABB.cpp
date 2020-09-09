@@ -30,6 +30,8 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+
 #include <algorithm>
 #include <iterator>
 #include <limits> // for std::numeric_limits

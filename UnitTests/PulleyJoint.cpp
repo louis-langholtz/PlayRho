@@ -22,6 +22,7 @@
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

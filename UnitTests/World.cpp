@@ -70,35 +70,7 @@ public:
 
 TEST(World, ByteSize)
 {
-    switch (sizeof(Real))
-    {
-        case  4:
-        {
-            // Size is OS dependent.
-            // Seems linux containers are bigger in size...
-#ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(232));
-#endif
-#ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(232));
-#endif
-            break;
-        }
-        case  8:
-        {
-#ifdef __APPLE__
-            EXPECT_EQ(sizeof(World), std::size_t(248));
-#endif
-#ifdef __linux__
-            EXPECT_EQ(sizeof(World), std::size_t(248));
-#endif
-            break;
-        }
-        case 16:
-            EXPECT_EQ(sizeof(World), std::size_t(272));
-            break;
-        default: FAIL(); break;
-    }
+    EXPECT_EQ(sizeof(World), sizeof(void*));
 }
 
 TEST(World, Conf)

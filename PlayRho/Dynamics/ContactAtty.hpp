@@ -116,7 +116,7 @@ private:
         c.UnsetIslanded();
     }
     
-    friend class World;
+    friend class WorldImpl;
 };
 
 } // namespace d2
