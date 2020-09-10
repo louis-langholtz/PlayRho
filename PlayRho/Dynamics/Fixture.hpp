@@ -76,20 +76,8 @@ public:
     /// @return the true if the shape is a sensor.
     bool IsSensor() const noexcept;
 
-    /// @brief Sets the contact filtering data.
-    /// @note This won't update contacts until the next time step when either parent body
-    ///    is speedable and awake.
-    /// @note This automatically calls <code>Refilter</code>.
-    void SetFilterData(Filter filter);
-
     /// @brief Gets the contact filtering data.
     Filter GetFilterData() const noexcept;
-
-    /// @brief Re-filter the fixture.
-    /// @note Call this if you want to establish collision that was previously disabled by
-    ///   <code>ShouldCollide(const Fixture&, const Fixture&)</code>.
-    /// @see bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
-    void Refilter();
 
     /// Get the user data that was assigned in the fixture definition. Use this to
     /// store your application specific data.
@@ -232,12 +220,6 @@ inline NonNull<Body*> Fixture::GetBody() const noexcept
 inline ChildCounter Fixture::GetProxyCount() const noexcept
 {
     return m_proxyCount;
-}
-
-inline void Fixture::SetFilterData(Filter filter)
-{
-    m_filter = filter;
-    Refilter();
 }
 
 inline Span<const FixtureProxy> Fixture::GetProxies() const noexcept

@@ -86,6 +86,7 @@ public:
 class TDTire
 {
 private:
+    World* m_world;
     Body* m_body;
     std::set<GroundAreaFUD*> m_groundAreas;
     Force m_maxDriveForce = 0_N;
@@ -96,7 +97,7 @@ private:
     
 public:
     
-    TDTire(World* world, Shape tireShape)
+    TDTire(World* world, Shape tireShape): m_world{world}
     {
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
@@ -110,7 +111,7 @@ public:
     
     ~TDTire()
     {
-        m_body->GetWorld()->Destroy(m_body);
+        m_world->Destroy(m_body);
     }
     
     void setCharacteristics(LinearVelocity maxForwardSpeed, LinearVelocity maxBackwardSpeed, Force maxDriveForce, Momentum maxLateralImpulse)

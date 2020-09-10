@@ -313,37 +313,58 @@ public:
     /// @see Step.
     Frequency GetInvDeltaTime() const noexcept;
 
-private:
-    friend class WorldAtty;
+    /// @brief Re-filter the fixture.
+    /// @note Call this if you want to establish collision that was previously disabled by
+    ///   <code>ShouldCollide(const Fixture&, const Fixture&)</code>.
+    /// @see bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
+    void Refilter(Fixture& fixture);
+
+    /// @brief Sets the contact filtering data.
+    /// @note This won't update contacts until the next time step when either parent body
+    ///    is speedable and awake.
+    /// @note This automatically calls <code>Refilter</code>.
+    void SetFilterData(Fixture& fixture, Filter filter);
 
     /// @brief Sets the type of the given body.
     /// @note This may alter the body's mass and velocity.
     /// @throws WrongState if this method is called while the world is locked.
     void SetType(Body& body, playrho::BodyType type);
-    
-    /// @brief Registers the given fixture for adding to proxy processing.
-    /// @post The given fixture will be found in the fixtures-for-proxies range.
-    void RegisterForProxies(Fixture& fixture);
-    
-    /// @brief Registers the given body for proxy processing.
-    /// @post The given body will be found in the bodies-for-proxies range.
-    void RegisterForProxies(Body& body);
-    
-    /// @brief Unregisters the given body from proxy processing.
-    /// @post The given body won't be found in the bodies-for-proxies range.
-    void UnregisterForProxies(const Body& body);
-    
+
     /// @brief Creates a fixture with the given parameters.
-    /// @throws InvalidArgument if called without a shape.
+    /// @details Creates a fixture for attaching a shape and other characteristics to the
+    ///   given body. Fixtures automatically go away when the body is destroyed. Fixtures can
+    ///   also be manually removed and destroyed using the
+    ///   <code>Destroy(Fixture*, bool)</code>, or <code>DestroyFixtures()</code> methods.
+    ///
+    /// @note This function should not be called if the world is locked.
+    /// @warning This function is locked during callbacks.
+    ///
+    /// @post After creating a new fixture, it will show up in the fixture enumeration
+    ///   returned by the <code>GetFixtures()</code> methods.
+    ///
+    /// @param shape Shareable shape definition.
+    ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
+    ///   the body's world.
+    /// @param def Initial fixture settings.
+    ///   Friction and density must be >= 0.
+    ///   Restitution must be > -infinity and < infinity.
+    /// @param resetMassData Whether or not to reset the mass data of the body.
+    ///
+    /// @return Pointer to the created fixture.
+    ///
+    /// @throws WrongState if called while the world is "locked".
     /// @throws InvalidArgument if called for a shape with a vertex radius less than the
     ///    minimum vertex radius.
     /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
     ///    maximum vertex radius.
-    /// @throws WrongState if this method is called while the world is locked.
+    ///
+    /// @see Destroy, GetFixtures
+    /// @see PhysicalEntities
+    ///
     Fixture* CreateFixture(Body& body, const Shape& shape,
                            const FixtureConf& def = GetDefaultFixtureConf(),
                            bool resetMassData = true);
-    
+
     /// @brief Destroys a fixture.
     /// @details This removes the fixture from the broad-phase and destroys all contacts
     ///   associated with this fixture.
@@ -356,12 +377,73 @@ private:
     /// @see Body::ResetMassData.
     /// @throws WrongState if this method is called while the world is locked.
     bool Destroy(Fixture& fixture, bool resetMassData = true);
+
+    /// @brief Destroys fixtures of the given body.
+    /// @details Destroys all of the fixtures previously created for this body by the
+    ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code> method.
+    /// @note This unconditionally calls the <code>ResetMassData()</code> method.
+    /// @post After this call, no fixtures will show up in the fixture enumeration
+    ///   returned by the <code>GetFixtures()</code> methods.
+    /// @see CreateFixture, GetFixtures, ResetMassData.
+    /// @see PhysicalEntities
+    void DestroyFixtures(Body& body);
+
+    /// @brief Sets the enabled state of the body.
+    ///
+    /// @details A disabled body is not simulated and cannot be collided with or woken up.
+    ///   If you pass a flag of true, all fixtures will be added to the broad-phase.
+    ///   If you pass a flag of false, all fixtures will be removed from the broad-phase
+    ///   and all contacts will be destroyed. Fixtures and joints are otherwise unaffected.
+    ///
+    /// @note A disabled body is still owned by a World object and remains in the world's
+    ///   body container.
+    /// @note You may continue to create/destroy fixtures and joints on disabled bodies.
+    /// @note Fixtures on a disabled body are implicitly disabled and will not participate in
+    ///   collisions, ray-casts, or queries.
+    /// @note Joints connected to a disabled body are implicitly disabled.
+    ///
+    /// @throws WrongState If call would change body's state when world is locked.
+    ///
+    /// @post <code>IsEnabled()</code> returns the state given to this function.
+    ///
+    /// @see IsEnabled.
+    ///
+    void SetEnabled(Body& body, bool flag);
+
+    /// @brief Set the mass properties to override the mass properties of the fixtures.
+    /// @note This changes the center of mass position.
+    /// @note Creating or destroying fixtures can also alter the mass.
+    /// @note This function has no effect if the body isn't dynamic.
+    /// @param massData the mass properties.
+    void SetMassData(Body& body, const MassData& massData);
+
+    /// @brief Sets the position of the body's origin and rotation.
+    /// @details This instantly adjusts the body to be at the new position and new orientation.
+    /// @warning Manipulating a body's transform can cause non-physical behavior!
+    /// @note Contacts are updated on the next call to World::Step.
+    /// @param location Valid world location of the body's local origin. Behavior is undefined
+    ///   if value is invalid.
+    /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
+    void SetTransform(Body& body, Length2 location, Angle angle);
+
+private:
+    /// @brief Registers the given fixture for adding to proxy processing.
+    /// @post The given fixture will be found in the fixtures-for-proxies range.
+    void RegisterForProxies(Fixture& fixture);
     
+    /// @brief Registers the given body for proxy processing.
+    /// @post The given body will be found in the bodies-for-proxies range.
+    void RegisterForProxies(Body& body);
+    
+    /// @brief Unregisters the given body from proxy processing.
+    /// @post The given body won't be found in the bodies-for-proxies range.
+    void UnregisterForProxies(const Body& body);
+
     /// @brief Touches each proxy of the given fixture.
     /// @warning Behavior is undefined if called with a fixture for a body which doesn't
     ///   belong to this world.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    void TouchProxies(Fixture& fixture) noexcept;
+    void TouchProxies(const Fixture& fixture) noexcept;
     
     /// @brief Sets new fixtures flag.
     void SetNewFixtures() noexcept;
@@ -440,6 +522,7 @@ private:
     /// @return Island solver results.
     ///
     static IslandStats SolveRegIslandViaGS(const StepConf& conf, Island island,
+                                           World& world,
                                            ContactListener* contactListener);
     
     /// @brief Adds to the island based off of a given "seed" body.
@@ -488,7 +571,9 @@ private:
     /// @note Precondition 2: there is not a lower TOI in the time step for which collisions have
     ///   not already been processed.
     ///
-    static IslandStats SolveToi(const StepConf& conf, Contact& contact,
+    static IslandStats SolveToi(const StepConf& conf,
+                                World& world,
+                                Contact& contact,
                                 World::Bodies::size_type numBodies,
                                 World::Contacts::size_type numContacts,
                                 ContactListener* contactListener);
@@ -514,7 +599,8 @@ private:
     ///
     /// @return Island solver results.
     ///
-    static IslandStats SolveToiViaGS(const StepConf& conf, Island& island, ContactListener* contactListener);
+    static IslandStats SolveToiViaGS(const StepConf& conf, Island& island,
+                                     World& world, ContactListener* contactListener);
     
     /// @brief Updates the given body.
     /// @details Updates the given body's velocity, sweep position 1, and its transformation.
@@ -555,7 +641,7 @@ private:
     /// @param[in] conf Step configuration data.
     /// @param[in] contactListener Contact listener function or <code>nullptr</code>.
     static ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
-                                                       const StepConf& conf, ContactListener* contactListener);
+                                                       const StepConf& conf, World& world, ContactListener* contactListener);
     
     /// @brief Adds the given joint to this world.
     /// @note This also adds the joint to the bodies of the joint.
@@ -655,11 +741,11 @@ private:
     /// contact listener as its argument.
     /// Essentially this really just purges contacts that are no longer relevant.
     static DestroyContactsStats DestroyContacts(World::Contacts& contacts, const DynamicTree& tree,
-                                                ContactListener* contactListener);
+                                                World& world, ContactListener* contactListener);
     
     /// @brief Update contacts.
     static UpdateContactsStats UpdateContacts(World::Contacts& contacts, const StepConf& conf,
-                                              ContactListener* contactListener);
+                                              World& world, ContactListener* contactListener);
     
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
@@ -668,7 +754,7 @@ private:
     /// @param contactListener Contact listener or <code>nullptr</code>. Invoked if non-null.
     /// @param contact Contact to destroy.
     /// @param from From body.
-    static void Destroy(World::Contacts& contacts, ContactListener* contactListener, Contact* contact, Body* from);
+    static void Destroy(World::Contacts& contacts, World& world, ContactListener* contactListener, Contact* contact, Body* from);
     
     /// @brief Adds a contact for the proxies identified by the key if appropriate.
     /// @details Adds a new contact object to represent a contact between proxy A and proxy B
@@ -689,7 +775,7 @@ private:
     static bool Add(World::Contacts& contacts, const DynamicTree& tree, ContactKey key);
     
     /// @brief Destroys the given contact.
-    static void InternalDestroy(Contact* contact, ContactListener* contactListener, Body* from = nullptr);
+    static void InternalDestroy(Contact* contact, World& world, ContactListener* contactListener, Body* from = nullptr);
     
     /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.
@@ -701,7 +787,7 @@ private:
     
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    static void InternalTouchProxies(ProxyQueue& proxies, Fixture& fixture) noexcept;
+    static void InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture) noexcept;
     
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the given

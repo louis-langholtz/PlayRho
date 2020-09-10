@@ -61,7 +61,7 @@ TEST(Fixture, CreateMatchesConf)
 
     World world;
     const auto body = world.CreateBody();
-    const auto fixture = body->CreateFixture(shapeA, def);
+    const auto fixture = world.CreateFixture(*body, shapeA, def);
     
     EXPECT_EQ(fixture->GetBody(), body);
     EXPECT_EQ(fixture->GetShape(), shapeA);
@@ -80,7 +80,7 @@ TEST(Fixture, SetSensor)
     
     World world;
     const auto body = world.CreateBody(BodyConf{}.UseLocation(bodyCtrPos));
-    const auto fixture = body->CreateFixture(shapeA);
+    const auto fixture = world.CreateFixture(*body, shapeA);
     fixture->SetSensor(true);
     EXPECT_TRUE(fixture->IsSensor());
     fixture->SetSensor(true);
@@ -96,7 +96,7 @@ TEST(Fixture, TestPointFreeFunction)
 
     World world;
     const auto body = world.CreateBody(BodyConf{}.UseLocation(bodyCtrPos));
-    const auto fixture = body->CreateFixture(shapeA);
+    const auto fixture = world.CreateFixture(*body, shapeA);
     EXPECT_TRUE(TestPoint(*fixture, bodyCtrPos));
     EXPECT_FALSE(TestPoint(*fixture, Length2{}));
 }
@@ -109,7 +109,7 @@ TEST(Fixture, SetAwakeFreeFunction)
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     body->UnsetAwake();
     ASSERT_FALSE(body->IsAwake());
-    const auto fixture = body->CreateFixture(shapeA);
+    const auto fixture = world.CreateFixture(*body, shapeA);
     SetAwake(*fixture);
     EXPECT_TRUE(body->IsAwake());
 }
@@ -134,8 +134,8 @@ TEST(Fixture, Proxies)
 
         auto world = World{};
         const auto body = world.CreateBody();
-        const auto fixture = body->CreateFixture(shape, def);
-        
+        const auto fixture = world.CreateFixture(*body, shape, def);
+
         ASSERT_EQ(fixture->GetBody(), body);
         ASSERT_EQ(fixture->GetShape(), shape);
         ASSERT_EQ(fixture->GetDensity(), density);
@@ -158,8 +158,8 @@ TEST(Fixture, Proxies)
         
         auto world = World{};
         const auto body = world.CreateBody();
-        const auto fixture = body->CreateFixture(shape, def);
-        
+        const auto fixture = world.CreateFixture(*body, shape, def);
+
         ASSERT_EQ(fixture->GetBody(), body);
         ASSERT_EQ(fixture->GetShape(), shape);
         ASSERT_EQ(fixture->IsSensor(), isSensor);
@@ -180,8 +180,8 @@ TEST(Fixture, Proxies)
 
         auto world = World{};
         const auto body = world.CreateBody();
-        const auto fixture = body->CreateFixture(shape, def);
-        
+        const auto fixture = world.CreateFixture(*body, shape, def);
+
         ASSERT_EQ(fixture->GetBody(), body);
         ASSERT_EQ(fixture->GetShape(), shape);
         ASSERT_EQ(fixture->IsSensor(), isSensor);

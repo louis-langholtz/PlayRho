@@ -58,8 +58,8 @@ TEST(Contact, Enabled)
     auto world = World{};
     const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = bA->CreateFixture(Shape{shape});
-    const auto fB = bB->CreateFixture(Shape{shape});
+    const auto fA = world.CreateFixture(*bA, Shape{shape});
+    const auto fB = world.CreateFixture(*bB, Shape{shape});
     auto c = Contact{fA, 0u, fB, 0u};
     EXPECT_TRUE(c.IsEnabled());
     c.UnsetEnabled();
@@ -74,8 +74,8 @@ TEST(Contact, SetAwake)
     auto world = World{};
     const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = bA->CreateFixture(Shape{shape});
-    const auto fB = bB->CreateFixture(Shape{shape});
+    const auto fA = world.CreateFixture(*bA, Shape{shape});
+    const auto fB = world.CreateFixture(*bB, Shape{shape});
     const auto c = Contact{fA, 0u, fB, 0u};
     
     bA->UnsetAwake();
@@ -96,8 +96,8 @@ TEST(Contact, ResetFriction)
     auto world = World{};
     const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = bA->CreateFixture(Shape{shape});
-    const auto fB = bB->CreateFixture(Shape{shape});
+    const auto fA = world.CreateFixture(*bA, Shape{shape});
+    const auto fB = world.CreateFixture(*bB, Shape{shape});
     auto c = Contact{fA, 0u, fB, 0u};
 
     ASSERT_GT(GetFriction(shape), Real(0));
@@ -114,8 +114,8 @@ TEST(Contact, ResetRestitution)
     auto world = World{};
     const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = bA->CreateFixture(Shape{shape});
-    const auto fB = bB->CreateFixture(Shape{shape});
+    const auto fA = world.CreateFixture(*bA, Shape{shape});
+    const auto fB = world.CreateFixture(*bB, Shape{shape});
     auto c = Contact{fA, 0u, fB, 0u};
 
     ASSERT_EQ(GetRestitution(shape), Real(0));

@@ -40,6 +40,7 @@ struct Velocity;
 class BodyConstraint;
 class JointVisitor;
 struct JointConf;
+class World;
 
 /// @defgroup JointsGroup Joint Classes
 /// @brief The user creatable classes that specify constraints on one or more Body instances.
@@ -274,7 +275,7 @@ void SetAwake(Joint& j) noexcept;
 
 /// @brief Gets the world index of the given joint.
 /// @relatedalso Joint
-JointCounter GetWorldIndex(const Joint* joint);
+JointCounter GetWorldIndex(const World& world, const Joint* joint);
 
 #ifdef PLAYRHO_PROVIDE_VECTOR_AT
 /// @brief Provides referenced access to the identified element of the given container.

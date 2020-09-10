@@ -234,8 +234,8 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
     const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
-    b1->CreateFixture(circle);
-    b2->CreateFixture(circle);
+    world.CreateFixture(*b1, circle);
+    world.CreateFixture(*b2, circle);
     GearJointConf def{
         world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}}),
         world.CreateJoint(RevoluteJointConf{b4, b3, Length2{}})
@@ -265,8 +265,8 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
     const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
-    b1->CreateFixture(circle);
-    b2->CreateFixture(circle);
+    world.CreateFixture(*b1, circle);
+    world.CreateFixture(*b2, circle);
     GearJointConf def{
         world.CreateJoint(PrismaticJointConf{b1, b2, Length2{}, UnitVec::GetTop()}),
         world.CreateJoint(PrismaticJointConf{b4, b3, Length2{}, UnitVec::GetTop()})
@@ -296,8 +296,8 @@ TEST(GearJoint, GetAnchorAandB)
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
     const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
-    b1->CreateFixture(circle);
-    b2->CreateFixture(circle);
+    world.CreateFixture(*b1, circle);
+    world.CreateFixture(*b2, circle);
     GearJointConf def{
         world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}}),
         world.CreateJoint(RevoluteJointConf{b4, b3, Length2{}})

@@ -213,8 +213,8 @@ TEST(MotorJoint, WithDynamicCircles)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    b1->CreateFixture(circle);
-    b2->CreateFixture(circle);
+    world.CreateFixture(*b1, circle);
+    world.CreateFixture(*b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
     const auto jd = MotorJointConf{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
@@ -250,8 +250,8 @@ TEST(MotorJoint, SetLinearOffset)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    b1->CreateFixture(circle);
-    b2->CreateFixture(circle);
+    world.CreateFixture(*b1, circle);
+    world.CreateFixture(*b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
     const auto jd = MotorJointConf{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
@@ -274,8 +274,8 @@ TEST(MotorJoint, SetAngularOffset)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    b1->CreateFixture(circle);
-    b2->CreateFixture(circle);
+    world.CreateFixture(*b1, circle);
+    world.CreateFixture(*b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
     const auto jd = MotorJointConf{b1, b2};
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));

@@ -64,6 +64,7 @@ namespace d2 {
 class Body;
 class Fixture;
 class ContactListener;
+class World;
 
 /// @brief A potential contact between the children of two Fixture objects.
 ///
@@ -262,7 +263,7 @@ private:
     ///
     /// @see GetManifold, IsTouching
     ///
-    void Update(const UpdateConf& conf, ContactListener* listener = nullptr);
+    void Update(World& world, const UpdateConf& conf, ContactListener* listener = nullptr);
 
     /// @brief Sets the time of impact (TOI).
     /// @details After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.

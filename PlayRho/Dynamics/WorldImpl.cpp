@@ -127,7 +127,7 @@ namespace {
     /// the given array of constraints.
     /// @param listener Listener to call.
     /// @param constraints Array of m_contactCount contact velocity constraint elements.
-    inline void Report(ContactListener& listener,
+    inline void Report(World& world, ContactListener& listener,
                        Span<Contact*> contacts,
                        const VelocityConstraints& constraints,
                        StepConf::iteration_type solved)
@@ -135,7 +135,7 @@ namespace {
         const auto numContacts = size(contacts);
         for (auto i = decltype(numContacts){0}; i < numContacts; ++i)
         {
-            listener.PostSolve(*contacts[i], GetContactImpulses(constraints[i]), solved);
+            listener.PostSolve(world, *contacts[i], GetContactImpulses(constraints[i]), solved);
         }
     }
     
@@ -551,7 +551,7 @@ void WorldImpl::CopyBodies(std::map<const Body*, Body*>& bodyMap,
             }
             FixtureAtty::SetProxies(*newFixture, std::move(proxies), childCount);
         }
-        newBody->SetMassData(GetMassData(GetRef(otherBody)));
+        SetMassData(*newBody, GetMassData(GetRef(otherBody)));
         bodyMap[GetPtr(otherBody)] = newBody;
     }
 }
@@ -731,7 +731,7 @@ Body* WorldImpl::CreateBody(const BodyConf& def)
         throw LengthError("World::CreateBody: operation would exceed MaxBodies");
     }
     
-    auto& b = *BodyAtty::CreateBody(&m_world, def);
+    auto& b = *BodyAtty::CreateBody(def);
 
     // Add to world bodies collection.
     //
@@ -780,7 +780,7 @@ void WorldImpl::Destroy(Body* body)
     
     // Destroy the attached contacts.
     BodyAtty::EraseContacts(*body, [&](Contact& contact) {
-        Destroy(m_contacts, m_contactListener, &contact, body);
+        Destroy(m_contacts, m_world, m_contactListener, &contact, body);
         return true;
     });
     
@@ -1069,7 +1069,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
             futures.push_back(std::async(std::launch::async, &World::SolveRegIslandViaGS,
                                          conf, island, m_contactListener));
 #else
-            const auto solverResults = SolveRegIslandViaGS(conf, island, m_contactListener);
+            const auto solverResults = SolveRegIslandViaGS(conf, island, m_world, m_contactListener);
             Update(stats, solverResults);
 #endif
         }
@@ -1102,7 +1102,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
 }
 
 IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, Island island,
-                                             ContactListener* contactListener)
+                                           World& world, ContactListener* contactListener)
 {
     assert(!empty(island.m_bodies) || !empty(island.m_contacts) || !empty(island.m_joints));
     
@@ -1201,7 +1201,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, Island island,
 
     if (contactListener)
     {
-        Report(*contactListener, island.m_contacts, velConstraints,
+        Report(world, *contactListener, island.m_contacts, velConstraints,
                results.solved? results.positionIterations - 1: StepConf::InvalidIteration);
     }
     
@@ -1372,7 +1372,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
             assert(IsActive(*contact));
             assert(IsImpenetrable(*contact));
 
-            const auto solverResults = SolveToi(conf, *contact, size(m_bodies), size(m_contacts), m_contactListener);
+            const auto solverResults = SolveToi(conf, m_world, *contact, size(m_bodies), size(m_contacts), m_contactListener);
             stats.minSeparation = std::min(stats.minSeparation, solverResults.minSeparation);
             stats.maxIncImpulse = std::max(stats.maxIncImpulse, solverResults.maxIncImpulse);
             stats.islandsSolved += solverResults.solved;
@@ -1418,7 +1418,8 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
     return stats;
 }
 
-IslandStats WorldImpl::SolveToi(const StepConf& conf, Contact& contact,
+IslandStats WorldImpl::SolveToi(const StepConf& conf,
+                                World& world, Contact& contact,
                                 World::Bodies::size_type numBodies, World::Contacts::size_type numContacts,
                                 ContactListener* contactListener)
 {
@@ -1462,7 +1463,7 @@ IslandStats WorldImpl::SolveToi(const StepConf& conf, Contact& contact,
         contact.SetEnabled();
         if (contact.NeedsUpdating())
         {
-            ContactAtty::Update(contact, Contact::GetUpdateConf(conf), contactListener);
+            ContactAtty::Update(world, contact, Contact::GetUpdateConf(conf), contactListener);
             ++contactsUpdated;
         }
         else
@@ -1537,13 +1538,13 @@ IslandStats WorldImpl::SolveToi(const StepConf& conf, Contact& contact,
     // bodies sweeps and transforms to the minimum contact's TOI.
     if (bA->IsAccelerable())
     {
-        const auto procOut = ProcessContactsForTOI(island, *bA, toi, conf, contactListener);
+        const auto procOut = ProcessContactsForTOI(island, *bA, toi, conf, world, contactListener);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
     if (bB->IsAccelerable())
     {
-        const auto procOut = ProcessContactsForTOI(island, *bB, toi, conf, contactListener);
+        const auto procOut = ProcessContactsForTOI(island, *bB, toi, conf, world, contactListener);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
@@ -1557,7 +1558,7 @@ IslandStats WorldImpl::SolveToi(const StepConf& conf, Contact& contact,
     //     SolveToi(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
     //
     auto subConf = StepConf{conf};
-    auto results = SolveToiViaGS(subConf.SetTime((1 - toi) * conf.GetTime()), island, contactListener);
+    auto results = SolveToiViaGS(subConf.SetTime((1 - toi) * conf.GetTime()), island, world, contactListener);
     results.contactsUpdated += contactsUpdated;
     results.contactsSkipped += contactsSkipped;
     return results;
@@ -1572,7 +1573,8 @@ void WorldImpl::UpdateBody(Body& body, const Position& pos, const Velocity& vel)
     BodyAtty::SetTransformation(body, GetTransformation(GetPosition1(body), body.GetLocalCenter()));
 }
 
-IslandStats WorldImpl::SolveToiViaGS(const StepConf& conf, Island& island, ContactListener* contactListener)
+IslandStats WorldImpl::SolveToiViaGS(const StepConf& conf, Island& island,
+                                     World& world, ContactListener* contactListener)
 {
     auto results = IslandStats{};
     
@@ -1691,7 +1693,7 @@ IslandStats WorldImpl::SolveToiViaGS(const StepConf& conf, Island& island, Conta
 
     if (contactListener)
     {
-        Report(*contactListener, island.m_contacts, velConstraints, results.positionIterations);
+        Report(world, *contactListener, island.m_contacts, velConstraints, results.positionIterations);
     }
     
     return results;
@@ -1710,7 +1712,7 @@ void WorldImpl::ResetContactsForSolveTOI(Body& body) noexcept
 
 WorldImpl::ProcessContactsOutput
 WorldImpl::ProcessContactsForTOI(Island& island, Body& body, Real toi,
-                                   const StepConf& conf, ContactListener* contactListener)
+                                   const StepConf& conf, World& world, ContactListener* contactListener)
 {
     assert(BodyAtty::IsIslanded(body));
     assert(body.IsAccelerable());
@@ -1736,7 +1738,7 @@ WorldImpl::ProcessContactsForTOI(Island& island, Body& body, Real toi,
             contact->SetEnabled();
             if (contact->NeedsUpdating())
             {
-                ContactAtty::Update(*contact, updateConf, contactListener);
+                ContactAtty::Update(world, *contact, updateConf, contactListener);
                 ++results.contactsUpdated;
             }
             else
@@ -1830,7 +1832,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
 
         {
             // Note: this may update bodies (in addition to the contacts container).
-            const auto destroyStats = DestroyContacts(m_contacts, m_tree, m_contactListener);
+            const auto destroyStats = DestroyContacts(m_contacts, m_tree, m_world, m_contactListener);
             stepStats.pre.destroyed = destroyStats.erased;
         }
 
@@ -1848,7 +1850,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
             m_inv_dt0 = conf.GetInvTime();
 
             // Could potentially run UpdateContacts multithreaded over split lists...
-            const auto updateStats = UpdateContacts(m_contacts, conf, m_contactListener);
+            const auto updateStats = UpdateContacts(m_contacts, conf, m_world, m_contactListener);
             stepStats.pre.ignored = updateStats.ignored;
             stepStats.pre.updated = updateStats.updated;
             stepStats.pre.skipped = updateStats.skipped;
@@ -1898,14 +1900,14 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
     m_tree.ShiftOrigin(newOrigin);
 }
 
-void WorldImpl::InternalDestroy(Contact* contact, ContactListener* contactListener, Body* from)
+void WorldImpl::InternalDestroy(Contact* contact, World& world, ContactListener* contactListener, Body* from)
 {
     assert(contact);
 
     if (contactListener && contact->IsTouching())
     {
         // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching, so call it now
-        contactListener->EndContact(*contact);
+        contactListener->EndContact(world, *contact);
     }
     
     const auto fixtureA = contact->GetFixtureA();
@@ -1934,7 +1936,7 @@ void WorldImpl::InternalDestroy(Contact* contact, ContactListener* contactListen
     delete contact;
 }
 
-void WorldImpl::Destroy(World::Contacts& contacts, ContactListener* contactListener, Contact* contact, Body* from)
+void WorldImpl::Destroy(World::Contacts& contacts, World& world, ContactListener* contactListener, Contact* contact, Body* from)
 {
     assert(contact);
     const auto it = find_if(cbegin(contacts), cend(contacts),
@@ -1945,11 +1947,11 @@ void WorldImpl::Destroy(World::Contacts& contacts, ContactListener* contactListe
     {
         contacts.erase(it);
     }
-    InternalDestroy(contact, contactListener, from);
+    InternalDestroy(contact, world, contactListener, from);
 }
 
 WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(World::Contacts& contacts, const DynamicTree& tree,
-                                                           ContactListener* contactListener)
+                                                           World& world, ContactListener* contactListener)
 {
     const auto beforeSize = size(contacts);
     contacts.erase(std::remove_if(begin(contacts), end(contacts), [&](World::Contacts::value_type& c)
@@ -1960,7 +1962,7 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(World::Contacts& cont
         if (!TestOverlap(tree, key.GetMin(), key.GetMax()))
         {
             // Destroy contacts that cease to overlap in the broad-phase.
-            InternalDestroy(&contact, contactListener);
+            InternalDestroy(&contact, world, contactListener);
             return true;
         }
         
@@ -1974,7 +1976,7 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(World::Contacts& cont
 
             if (!ShouldCollide(*bodyB, *bodyA) || !ShouldCollide(*fixtureA, *fixtureB))
             {
-                InternalDestroy(&contact, contactListener);
+                InternalDestroy(&contact, world, contactListener);
                 return true;
             }
             ContactAtty::UnflagForFiltering(contact);
@@ -1991,7 +1993,7 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(World::Contacts& cont
 }
 
 WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(World::Contacts& contacts, const StepConf& conf,
-                                                         ContactListener* contactListener)
+                                                         World& world, ContactListener* contactListener)
 {
 #ifdef DO_PAR_UNSEQ
     atomic<uint32_t> ignored;
@@ -2054,7 +2056,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(World::Contacts& contac
             //futures.push_back(async(&ContactAtty::Update, *contact, conf, m_contactListener)));
             //futures.push_back(async(launch::async, [=]{ ContactAtty::Update(*contact, conf, m_contactListener); }));
 #else
-            ContactAtty::Update(contact, updateConf, contactListener);
+            ContactAtty::Update(world, contact, updateConf, contactListener);
 #endif
         	++updated;
         }
@@ -2294,7 +2296,7 @@ void WorldImpl::CreateAndDestroyProxies(Length extension)
                     const auto fixtureB = contact.GetFixtureB();
                     if ((fixtureA == &fixture) || (fixtureB == &fixture))
                     {
-                        Destroy(m_contacts, m_contactListener, &contact, body);
+                        Destroy(m_contacts, m_world, m_contactListener, &contact, body);
                         return true;
                     }
                     return false;
@@ -2333,7 +2335,7 @@ void WorldImpl::SetType(Body& body, playrho::BodyType type)
     
     // Destroy the attached contacts.
     BodyAtty::EraseContacts(body, [&](Contact& contact) {
-        Destroy(m_contacts, m_contactListener, &contact, &body);
+        Destroy(m_contacts, m_world, m_contactListener, &contact, &body);
         return true;
     });
 
@@ -2434,7 +2436,7 @@ bool WorldImpl::Destroy(Fixture& fixture, bool resetMassData)
         const auto fixtureB = contact.GetFixtureB();
         if ((fixtureA == &fixture) || (fixtureB == &fixture))
         {
-            Destroy(m_contacts, m_contactListener, &contact, &body);
+            Destroy(m_contacts, m_world, m_contactListener, &contact, &body);
             return true;
         }
         return false;
@@ -2457,6 +2459,16 @@ bool WorldImpl::Destroy(Fixture& fixture, bool resetMassData)
     }
     
     return true;
+}
+
+void WorldImpl::DestroyFixtures(Body& body)
+{
+    while (!empty(body.GetFixtures()))
+    {
+        const auto fixture = *body.GetFixtures().begin();
+        Destroy(*fixture, false);
+    }
+    body.ResetMassData();
 }
 
 void WorldImpl::CreateProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture, Length aabbExtension)
@@ -2503,12 +2515,12 @@ void WorldImpl::DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& 
     FixtureAtty::ResetProxies(fixture);
 }
 
-void WorldImpl::TouchProxies(Fixture& fixture) noexcept
+void WorldImpl::TouchProxies(const Fixture& fixture) noexcept
 {
     InternalTouchProxies(m_proxies, fixture);
 }
 
-void WorldImpl::InternalTouchProxies(ProxyQueue& proxies, Fixture& fixture) noexcept
+void WorldImpl::InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture) noexcept
 {
     for (const auto& proxy: fixture.GetProxies()) {
         proxies.push_back(proxy.treeId);
@@ -2559,6 +2571,118 @@ ContactCounter WorldImpl::Synchronize(const Fixture& fixture,
         ++childIndex;
     }
     return updatedCount;
+}
+
+void WorldImpl::Refilter(Fixture& fixture)
+{
+    const auto body = fixture.GetBody();
+
+    // Flag associated contacts for filtering.
+    const auto contacts = body->GetContacts();
+    std::for_each(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
+        const auto contact = GetContactPtr(ci);
+        const auto fixtureA = contact->GetFixtureA();
+        const auto fixtureB = contact->GetFixtureB();
+        if ((fixtureA == &fixture) || (fixtureB == &fixture))
+        {
+            contact->FlagForFiltering();
+        }
+    });
+
+    TouchProxies(fixture);
+}
+
+void WorldImpl::SetFilterData(Fixture& fixture, Filter filter)
+{
+    FixtureAtty::SetFilterData(fixture, filter);
+    Refilter(fixture);
+}
+
+void WorldImpl::SetEnabled(Body& body, bool flag)
+{
+    if (body.IsEnabled() == flag)
+    {
+        return;
+    }
+
+    if (IsLocked())
+    {
+        throw WrongState("Body::SetEnabled: world is locked");
+    }
+
+    if (flag)
+    {
+        BodyAtty::SetEnabledFlag(body);
+    }
+    else
+    {
+        BodyAtty::UnsetEnabledFlag(body);
+    }
+
+    // Register for proxies so contacts created or destroyed the next time step.
+    BodyAtty::ForallFixtures(body, [this](Fixture& fixture) {
+        RegisterForProxies(fixture);
+    });
+}
+
+void WorldImpl::SetMassData(Body& body, const MassData& massData)
+{
+    if (IsLocked())
+    {
+        throw WrongState("Body::SetMassData: world is locked");
+    }
+
+    if (!body.IsAccelerable())
+    {
+        return;
+    }
+
+    const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
+    BodyAtty::SetInvMass(body, Real{1} / mass);
+
+    if ((massData.I > RotInertia{0}) && (!body.IsFixedRotation()))
+    {
+        const auto lengthSquared = GetMagnitudeSquared(massData.center);
+        // L^2 M QP^-2
+        const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};
+        assert(I > RotInertia{0});
+        BodyAtty::SetInvRotI(body, Real{1} / I);
+    }
+    else
+    {
+        BodyAtty::SetInvRotI(body, 0);
+    }
+
+    // Move center of mass.
+    const auto oldCenter = body.GetWorldCenter();
+    BodyAtty::SetSweep(body, Sweep{
+        Position{Transform(massData.center, body.GetTransformation()), body.GetAngle()},
+        massData.center
+    });
+
+    // Update center of mass velocity.
+    const auto newCenter = body.GetWorldCenter();
+    const auto deltaCenter = newCenter - oldCenter;
+    auto newVelocity = body.GetVelocity();
+    newVelocity.linear += GetRevPerpendicular(deltaCenter) * (newVelocity.angular / Radian);
+    BodyAtty::SetVelocity(body, newVelocity);
+    BodyAtty::UnsetMassDataDirty(body);
+}
+
+void WorldImpl::SetTransform(Body& body, Length2 location, Angle angle)
+{
+    assert(IsValid(location));
+    assert(IsValid(angle));
+
+    if (IsLocked())
+    {
+        throw WrongState("Body::SetTransform: world is locked");
+    }
+
+    const auto xfm = Transformation{location, UnitVec::Get(angle)};
+    BodyAtty::SetTransformation(body, xfm);
+    BodyAtty::SetSweep(body, Sweep{Position{Transform(body.GetLocalCenter(), xfm), angle}, body.GetLocalCenter()});
+    m_bodiesForProxies.push_back(&body);
 }
 
 } // namespace d2

@@ -51,9 +51,9 @@ class BodyAtty
 private:
 
     /// @brief Creates a body.
-    static Body* CreateBody(World* world, const BodyConf& bd)
+    static Body* CreateBody(const BodyConf& bd)
     {
-        return new Body(world, bd);
+        return new Body(bd);
     }
     
     /// @brief Deletes a body.
@@ -290,7 +290,35 @@ private:
     {
         b.UnsetIslandedFlag();
     }
-    
+
+    /// @brief Sets the enabled flag.
+    static void SetEnabledFlag(Body& b) noexcept
+    {
+        b.SetEnabledFlag();
+    }
+
+    /// @brief Unsets the enabled flag.
+    static void UnsetEnabledFlag(Body& b) noexcept
+    {
+        b.UnsetEnabledFlag();
+    }
+
+    static void SetInvRotI(Body& b, InvRotInertia v) noexcept
+    {
+        b.m_invRotI = v;
+    }
+
+    static void SetInvMass(Body& b, InvMass v) noexcept
+    {
+        b.m_invMass = v;
+    }
+
+    /// @brief Unsets the body from being in the mass data dirty state.
+    static void UnsetMassDataDirty(Body& b) noexcept
+    {
+        b.UnsetMassDataDirty();
+    }
+
     friend class WorldImpl;
 };
 

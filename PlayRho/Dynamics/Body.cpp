@@ -26,7 +26,6 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Common/WrongState.hpp>
-#include <PlayRho/Dynamics/WorldAtty.hpp>
 
 #include <iterator>
 #include <type_traits>
@@ -77,11 +76,10 @@ Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
     return flags;
 }
 
-Body::Body(World* world, const BodyConf& bd):
+Body::Body(const BodyConf& bd):
     m_xf{bd.location, UnitVec::Get(bd.angle)},
     m_sweep{Position{bd.location, bd.angle}},
     m_flags{GetFlags(bd)},
-    m_world{world},
     m_userData{bd.userData},
     m_invMass{(bd.type == playrho::BodyType::Dynamic)? InvMass{Real{1} / Kilogram}: InvMass{0}},
     m_linearDamping{bd.linearDamping},
@@ -103,36 +101,6 @@ Body::~Body() noexcept
     assert(empty(m_joints));
     assert(empty(m_contacts));
     assert(empty(m_fixtures));
-}
-
-void Body::SetType(playrho::BodyType type)
-{
-    WorldAtty::SetType(*m_world, *this, type);
-}
-
-Fixture* Body::CreateFixture(const Shape& shape, const FixtureConf& def,
-                             bool resetMassData)
-{
-    return WorldAtty::CreateFixture(*m_world, *this, shape, def, resetMassData);
-}
-
-bool Body::Destroy(Fixture* fixture, bool resetMassData)
-{
-    if (fixture->GetBody() != this)
-    {
-        return false;
-    }
-    return WorldAtty::Destroy(*m_world, *fixture, resetMassData);
-}
-
-void Body::DestroyFixtures()
-{
-    while (!empty(m_fixtures))
-    {
-        const auto fixture = GetPtr(m_fixtures.front());
-        Destroy(fixture, false);
-    }
-    ResetMassData();
 }
 
 void Body::ResetMassData()
@@ -177,49 +145,6 @@ void Body::ResetMassData()
     const auto newCenter = GetWorldCenter();
 
     // Update center of mass velocity.
-    const auto deltaCenter = newCenter - oldCenter;
-    m_velocity.linear += GetRevPerpendicular(deltaCenter) * (m_velocity.angular / Radian);
-
-    UnsetMassDataDirty();
-}
-
-void Body::SetMassData(const MassData& massData)
-{
-    if (m_world->IsLocked())
-    {
-        throw WrongState("Body::SetMassData: world is locked");
-    }
-
-    if (!IsAccelerable())
-    {
-        return;
-    }
-
-    const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
-    m_invMass = Real{1} / mass;
-
-    if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
-    {
-        const auto lengthSquared = GetMagnitudeSquared(massData.center);
-        // L^2 M QP^-2
-        const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};
-        assert(I > RotInertia{0});
-        m_invRotI = Real{1} / I;
-    }
-    else
-    {
-        m_invRotI = 0;
-    }
-
-    // Move center of mass.
-    const auto oldCenter = GetWorldCenter();
-    m_sweep = Sweep{
-        Position{Transform(massData.center, GetTransformation()), GetAngle()},
-        massData.center
-    };
-
-    // Update center of mass velocity.
-    const auto newCenter = GetWorldCenter();
     const auto deltaCenter = newCenter - oldCenter;
     m_velocity.linear += GetRevPerpendicular(deltaCenter) * (m_velocity.angular / Radian);
 
@@ -286,51 +211,6 @@ void Body::SetTransformation(Transformation value) noexcept
             std::get<Contact*>(ci)->FlagForUpdating();
         });
     }
-}
-
-void Body::SetTransform(Length2 location, Angle angle)
-{
-    assert(IsValid(location));
-    assert(IsValid(angle));
-
-    if (GetWorld()->IsLocked())
-    {
-        throw WrongState("Body::SetTransform: world is locked");
-    }
-
-    const auto xfm = Transformation{location, UnitVec::Get(angle)};
-    SetTransformation(xfm);
-
-    m_sweep = Sweep{Position{Transform(GetLocalCenter(), xfm), angle}, GetLocalCenter()};
-    
-    WorldAtty::RegisterForProxies(*GetWorld(), *this);
-}
-
-void Body::SetEnabled(bool flag)
-{
-    if (IsEnabled() == flag)
-    {
-        return;
-    }
-
-    if (m_world->IsLocked())
-    {
-        throw WrongState("Body::SetEnabled: world is locked");
-    }
-
-    if (flag)
-    {
-        SetEnabledFlag();
-    }
-    else
-    {
-        UnsetEnabledFlag();
-    }
-
-    // Register for proxies so contacts created or destroyed the next time step.
-    std::for_each(begin(m_fixtures), end(m_fixtures), [&](Fixtures::value_type &f) {
-        WorldAtty::RegisterForProxies(*m_world, GetRef(f));
-    });
 }
 
 void Body::SetFixedRotation(bool flag)
@@ -437,24 +317,6 @@ bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept
     return it == end(joints);
 }
 
-BodyCounter GetWorldIndex(const Body* body) noexcept
-{
-    if (body)
-    {
-        const auto world = body->GetWorld();
-        const auto bodies = world->GetBodies();
-        auto i = BodyCounter{0};
-        const auto it = std::find_if(cbegin(bodies), cend(bodies), [&](const Body *b) {
-            return b == body || ((void) ++i, false);
-        });
-        if (it != end(bodies))
-        {
-            return i;
-        }
-    }
-    return BodyCounter(-1);
-}
-
 Velocity GetVelocity(const Body& body, Time h) noexcept
 {
     // Integrate velocity and apply damping.
@@ -507,24 +369,6 @@ std::size_t GetFixtureCount(const Body& body) noexcept
     return size(fixtures);
 }
 
-void RotateAboutWorldPoint(Body& body, Angle amount, Length2 worldPoint)
-{
-    const auto xfm = body.GetTransformation();
-    const auto p = xfm.p - worldPoint;
-    const auto c = cos(amount);
-    const auto s = sin(amount);
-    const auto x = GetX(p) * c - GetY(p) * s;
-    const auto y = GetX(p) * s + GetY(p) * c;
-    const auto pos = Length2{x, y} + worldPoint;
-    const auto angle = GetAngle(xfm.q) + amount;
-    body.SetTransform(pos, angle);
-}
-
-void RotateAboutLocalPoint(Body& body, Angle amount, Length2 localPoint)
-{
-    RotateAboutWorldPoint(body, amount, GetWorldPoint(body, localPoint));
-}
-
 Force2 GetCentripetalForce(const Body& body, Length2 axis)
 {
     // For background on centripetal force, see:
@@ -539,45 +383,6 @@ Force2 GetCentripetalForce(const Body& body, Length2 axis)
     const auto invRadius = Real{1} / GetMagnitude(delta);
     const auto dir = delta * invRadius;
     return Force2{dir * mass * Square(magnitudeOfVelocity) * invRadius};
-}
-
-Acceleration CalcGravitationalAcceleration(const Body& body) noexcept
-{
-    const auto m1 = GetMass(body);
-    if (m1 != 0_kg)
-    {
-        const auto loc1 = GetLocation(body);
-        auto sumForce = Force2{};
-        const auto world = body.GetWorld();
-        const auto bodies = world->GetBodies();
-        for (auto jt = begin(bodies); jt != end(bodies); jt = std::next(jt))
-        {
-            const auto& b2 = *(*jt);
-            if (&b2 == &body)
-            {
-                continue;
-            }
-            const auto m2 = GetMass(b2);
-            const auto delta = GetLocation(b2) - loc1;
-            const auto dir = GetUnitVector(delta);
-            const auto rr = GetMagnitudeSquared(delta);
-
-            // Uses Newton's law of universal gravitation: F = G * m1 * m2 / rr.
-            // See: https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation
-            // Note that BigG is typically very small numerically compared to either mass
-            // or the square of the radius between the masses. That's important to recognize
-            // in order to avoid operational underflows or overflows especially when
-            // playrho::Real has less exponential range like when it's defined to be float
-            // instead of double. The operational ordering is deliberately established here
-            // to help with this.
-            const auto orderedMass = std::minmax(m1, m2);
-            const auto f = (BigG * std::get<0>(orderedMass)) * (std::get<1>(orderedMass) / rr);
-            sumForce += f * dir;
-        }
-        // F = m a... i.e.  a = F / m.
-        return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
-    }
-    return Acceleration{};
 }
 
 } // namespace d2

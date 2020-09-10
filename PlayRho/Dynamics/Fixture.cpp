@@ -24,7 +24,6 @@
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/WorldAtty.hpp>
 
 #include <algorithm>
 
@@ -35,26 +34,6 @@ FixtureProxy Fixture::GetProxy(ChildCounter index) const noexcept
 {
     assert(index < GetProxyCount());
     return (GetProxyCount() <= 2)? m_proxies.asArray[index]: m_proxies.asBuffer[index];
-}
-
-void Fixture::Refilter()
-{
-    const auto body = GetBody();
-    const auto world = body->GetWorld();
-
-    // Flag associated contacts for filtering.
-    const auto contacts = body->GetContacts();
-    std::for_each(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
-        const auto contact = GetContactPtr(ci);
-        const auto fixtureA = contact->GetFixtureA();
-        const auto fixtureB = contact->GetFixtureB();
-        if ((fixtureA == this) || (fixtureB == this))
-        {
-            contact->FlagForFiltering();
-        }
-    });
-    
-    WorldAtty::TouchProxies(*world, *this);
 }
 
 void Fixture::SetSensor(bool sensor) noexcept

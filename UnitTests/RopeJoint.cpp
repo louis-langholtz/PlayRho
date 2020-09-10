@@ -153,8 +153,8 @@ TEST(RopeJoint, WithDynamicCircles)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    b1->CreateFixture(circle);
-    b2->CreateFixture(circle);
+    world.CreateFixture(*b1, circle);
+    world.CreateFixture(*b2, circle);
     const auto jd = RopeJointConf{b1, b2};
     ASSERT_NE(world.CreateJoint(jd), nullptr);
 

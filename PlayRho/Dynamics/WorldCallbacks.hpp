@@ -31,6 +31,7 @@ class Joint;
 class Contact;
 class Manifold;
 class ContactImpulsesList;
+class World;
 
 /// Joints and fixtures are destroyed when their associated
 /// body is destroyed. Implement this listener so that you
@@ -76,7 +77,7 @@ public:
     virtual ~ContactListener() = default;
 
     /// @brief Called when two fixtures begin to touch.
-    virtual void BeginContact(Contact& contact) = 0;
+    virtual void BeginContact(World& world, Contact& contact) = 0;
 
     /// @brief End contact callback.
     ///
@@ -93,7 +94,7 @@ public:
     ///
     /// @see Contact::IsTouching().
     ///
-    virtual void EndContact(Contact& contact) = 0;
+    virtual void EndContact(World& world, Contact& contact) = 0;
     
     /// @brief Pre-solve callback.
     ///
@@ -109,7 +110,7 @@ public:
     ///   <code>EndContact</code> callback. However, you may get a <code>BeginContact</code>
     ///   callback the next step.
     ///
-    virtual void PreSolve(Contact& contact, const Manifold& oldManifold) = 0;
+    virtual void PreSolve(World& world, Contact& contact, const Manifold& oldManifold) = 0;
 
     /// @brief Post-solve callback.
     ///
@@ -121,7 +122,7 @@ public:
     ///   in a separate data structure.
     /// @note This is only called for contacts that are touching, solid, and awake.
     ///
-    virtual void PostSolve(Contact& contact, const ContactImpulsesList& impulses,
+    virtual void PostSolve(World& world, Contact& contact, const ContactImpulsesList& impulses,
                            iteration_type solved) = 0;
 };
 

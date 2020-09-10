@@ -19,8 +19,11 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
+#include <PlayRho/Dynamics/World.hpp>
+
 #include <type_traits>
 
 using namespace playrho;
@@ -117,7 +120,8 @@ TEST(Joint, StaticIsOkay)
 
 TEST(Joint, GetWorldIndexFreeFunction)
 {
-    EXPECT_EQ(GetWorldIndex(static_cast<const Joint*>(nullptr)), JointCounter(-1));
+    World world;
+    EXPECT_EQ(GetWorldIndex(world, static_cast<const Joint*>(nullptr)), JointCounter(-1));
 }
 
 TEST(Joint, LimitStateToStringFF)

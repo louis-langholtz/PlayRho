@@ -43,7 +43,6 @@
 namespace playrho {
 namespace d2 {
 
-class World;
 struct FixtureConf;
 class Shape;
 struct BodyConf;
@@ -135,84 +134,6 @@ public:
 
     /// @brief Gets the flags for the given value.
     static FlagsType GetFlags(const BodyConf& bd) noexcept;
-    
-    /// @brief Creates a fixture and attaches it to this body.
-    /// @details Creates a fixture for attaching a shape and other characteristics to this
-    ///   body. Fixtures automatically go away when this body is destroyed. Fixtures can
-    ///   also be manually removed and destroyed using the
-    ///   <code>Destroy(Fixture*, bool)</code>, or <code>DestroyFixtures()</code> methods.
-    ///
-    /// @note This function should not be called if the world is locked.
-    /// @warning This function is locked during callbacks.
-    ///
-    /// @post After creating a new fixture, it will show up in the fixture enumeration
-    ///   returned by the <code>GetFixtures()</code> methods.
-    ///
-    /// @param shape Shareable shape definition.
-    ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
-    ///   the body's world.
-    /// @param def Initial fixture settings.
-    ///   Friction and density must be >= 0.
-    ///   Restitution must be > -infinity and < infinity.
-    /// @param resetMassData Whether or not to reset the mass data of the body.
-    ///
-    /// @return Pointer to the created fixture.
-    ///
-    /// @throws WrongState if called while the world is "locked".
-    /// @throws InvalidArgument if called for a shape with a vertex radius less than the
-    ///    minimum vertex radius.
-    /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
-    ///    maximum vertex radius.
-    ///
-    /// @see Destroy, GetFixtures
-    /// @see PhysicalEntities
-    ///
-    Fixture* CreateFixture(const Shape& shape,
-                           const FixtureConf& def = GetDefaultFixtureConf(),
-                           bool resetMassData = true);
-
-    /// @brief Destroys a fixture.
-    ///
-    /// @details Destroys a fixture previously created by the
-    ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code>
-    ///   method. This removes the fixture from the broad-phase and destroys all contacts
-    ///   associated with this fixture. All fixtures attached to a body are implicitly
-    ///   destroyed when the body is destroyed.
-    ///
-    /// @warning This function is locked during callbacks.
-    /// @note Make sure to explicitly call <code>ResetMassData()</code> after fixtures have
-    ///   been destroyed if resetting the mass data is not requested via the reset mass data
-    ///   parameter.
-    ///
-    /// @post After destroying a fixture, it will no longer show up in the fixture enumeration
-    ///   returned by the <code>GetFixtures()</code> methods.
-    ///
-    /// @param fixture the fixture to be removed.
-    /// @param resetMassData Whether or not to reset the mass data.
-    ///
-    /// @see CreateFixture, GetFixtures, ResetMassData.
-    /// @see PhysicalEntities
-    ///
-    bool Destroy(Fixture* fixture, bool resetMassData = true);
-    
-    /// @brief Destroys fixtures.
-    /// @details Destroys all of the fixtures previously created for this body by the
-    ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code> method.
-    /// @note This unconditionally calls the <code>ResetMassData()</code> method.
-    /// @post After this call, no fixtures will show up in the fixture enumeration
-    ///   returned by the <code>GetFixtures()</code> methods.
-    /// @see CreateFixture, GetFixtures, ResetMassData.
-    /// @see PhysicalEntities
-    void DestroyFixtures();
-    
-    /// @brief Sets the position of the body's origin and rotation.
-    /// @details This instantly adjusts the body to be at the new position and new orientation.
-    /// @warning Manipulating a body's transform can cause non-physical behavior!
-    /// @note Contacts are updated on the next call to World::Step.
-    /// @param location Valid world location of the body's local origin. Behavior is undefined
-    ///   if value is invalid.
-    /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
-    void SetTransform(Length2 location, Angle angle);
 
     /// @brief Gets the body transform for the body's origin.
     /// @return the world transform of the body's origin.
@@ -284,13 +205,6 @@ public:
     /// @return Inverse rotational inertia (in 1/kg-m^2).
     InvRotInertia GetInvRotInertia() const noexcept;
 
-    /// @brief Set the mass properties to override the mass properties of the fixtures.
-    /// @note This changes the center of mass position.
-    /// @note Creating or destroying fixtures can also alter the mass.
-    /// @note This function has no effect if the body isn't dynamic.
-    /// @param massData the mass properties.
-    void SetMassData(const MassData& massData);
-
     /// @brief Resets the mass data properties.
     /// @details This resets the mass data to the sum of the mass properties of the fixtures.
     /// @note This method must be called after calling <code>CreateFixture</code> to update the
@@ -309,10 +223,6 @@ public:
 
     /// @brief Sets the angular damping of the body.
     void SetAngularDamping(NonNegative<Frequency> angularDamping) noexcept;
-
-    /// @brief Sets the type of this body.
-    /// @note This may alter the mass and velocity.
-    void SetType(BodyType type);
 
     /// @brief Gets the type of this body.
     BodyType GetType() const noexcept;
@@ -393,28 +303,6 @@ public:
     ///   caller is certain that it should be.
     void ResetUnderActiveTime() noexcept;
 
-    /// @brief Sets the enabled state of the body.
-    ///
-    /// @details A disabled body is not simulated and cannot be collided with or woken up.
-    ///   If you pass a flag of true, all fixtures will be added to the broad-phase.
-    ///   If you pass a flag of false, all fixtures will be removed from the broad-phase
-    ///   and all contacts will be destroyed. Fixtures and joints are otherwise unaffected.
-    ///
-    /// @note A disabled body is still owned by a World object and remains in the world's
-    ///   body container.
-    /// @note You may continue to create/destroy fixtures and joints on disabled bodies.
-    /// @note Fixtures on a disabled body are implicitly disabled and will not participate in
-    ///   collisions, ray-casts, or queries.
-    /// @note Joints connected to a disabled body are implicitly disabled.
-    ///
-    /// @throws WrongState If call would change body's state when world is locked.
-    ///
-    /// @post <code>IsEnabled()</code> returns the state given to this function.
-    ///
-    /// @see IsEnabled.
-    ///
-    void SetEnabled(bool flag);
-
     /// @brief Gets the enabled/disabled state of the body.
     /// @see SetEnabled.
     bool IsEnabled() const noexcept;
@@ -449,9 +337,6 @@ public:
     /// @brief Sets the user data. Use this to store your application specific data.
     void SetUserData(void* data) noexcept;
 
-    /// @brief Gets the parent world of this body.
-    World* GetWorld() const noexcept;
-
     /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
     
@@ -466,7 +351,7 @@ private:
     /// @brief Initializing constructor.
     /// @note This is not meant to be called directly by users of the library API. Call
     ///   a world instance's <code>World::CreateBody</code> method instead.
-    Body(World* world, const BodyConf& bd);
+    Body(const BodyConf& bd);
     
     ~Body() noexcept;
     
@@ -551,7 +436,6 @@ private:
     /// @note 8-bytes.
     LinearAcceleration2 m_linearAcceleration = LinearAcceleration2{};
 
-    World* const m_world; ///< World to which this body belongs. 8-bytes.
     void* m_userData; ///< User data. 8-bytes.
     
     Fixtures m_fixtures; ///< Container of fixtures.
@@ -845,11 +729,6 @@ inline void Body::Advance(Real alpha) noexcept
     SetTransformation(GetTransform1(m_sweep));
 }
 
-inline World* Body::GetWorld() const noexcept
-{
-    return m_world;
-}
-
 inline void Body::SetMassDataDirty() noexcept
 {
     m_flags |= e_massDataDirtyFlag;
@@ -910,13 +789,6 @@ inline void SetAcceleration(Body& body, Acceleration value) noexcept
 {
     body.SetAcceleration(value.linear, value.angular);
 }
-
-/// @brief Calculates the gravitationally associated acceleration for the given body
-///   within its world.
-/// @relatedalso Body
-/// @return Zero acceleration if given body is has no mass, else the acceleration of
-///    the body due to the gravitational attraction to the other bodies.
-Acceleration CalcGravitationalAcceleration(const Body& body) noexcept;
     
 /// @brief Awakens the body if it's asleep.
 /// @relatedalso Body
@@ -1250,33 +1122,9 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept;
 /// @relatedalso Body
 Velocity GetVelocity(const Body& body, Time h) noexcept;
 
-/// @brief Gets the world index for the given body.
-/// @relatedalso Body
-BodyCounter GetWorldIndex(const Body* body) noexcept;
-
 /// @brief Gets the fixture count of the given body.
 /// @relatedalso Body
 std::size_t GetFixtureCount(const Body& body) noexcept;
-
-/// @brief Rotates a body a given amount around a point in world coordinates.
-/// @details This changes both the linear and angular positions of the body.
-/// @note Manipulating a body's position this way may cause non-physical behavior.
-/// @param body Body to rotate.
-/// @param amount Amount to rotate body by (in counter-clockwise direction).
-/// @param worldPoint Point in world coordinates.
-/// @relatedalso Body
-void RotateAboutWorldPoint(Body& body, Angle amount, Length2 worldPoint);
-
-/// @brief Rotates a body a given amount around a point in body local coordinates.
-/// @details This changes both the linear and angular positions of the body.
-/// @note Manipulating a body's position this way may cause non-physical behavior.
-/// @note This is a convenience function that translates the local point into world coordinates
-///   and then calls the <code>RotateAboutWorldPoint</code> function.
-/// @param body Body to rotate.
-/// @param amount Amount to rotate body by (in counter-clockwise direction).
-/// @param localPoint Point in local coordinates.
-/// @relatedalso Body
-void RotateAboutLocalPoint(Body& body, Angle amount, Length2 localPoint);
 
 /// @brief Gets the body's origin location.
 /// @details This is the location of the body's origin relative to its world.
@@ -1309,44 +1157,10 @@ inline Transformation GetTransformation(const Body& body) noexcept
     return body.GetTransformation();
 }
 
-/// @brief Sets the body's transformation.
-/// @note This operation isn't exact. I.e. don't expect that <code>GetTransformation</code>
-///   will return exactly the transformation that had been set.
-inline void SetTransformation(Body& body, const Transformation& xfm) noexcept
-{
-    body.SetTransform(xfm.p, GetAngle(xfm.q));
-}
-
 /// @brief Gets the body's position.
 inline Position GetPosition(const Body& body) noexcept
 {
     return Position{body.GetLocation(), body.GetAngle()};
-}
-
-/// @brief Sets the body's location.
-/// @details This instantly adjusts the body to be at the new location.
-/// @warning Manipulating a body's location this way can cause non-physical behavior!
-/// @param body Body to move.
-/// @param value Valid world location of the body's local origin. Behavior is undefined
-///   if value is invalid.
-/// @see Body::SetTransform
-/// @relatedalso Body
-inline void SetLocation(Body& body, Length2 value) noexcept
-{
-    body.SetTransform(value, GetAngle(body));
-}
-
-/// @brief Sets the body's angular orientation.
-/// @details This instantly adjusts the body to be at the new angular orientation.
-/// @warning Manipulating a body's angle this way can cause non-physical behavior!
-/// @param body Body to move.
-/// @param value Valid world angle of the body's local origin. Behavior is undefined
-///   if value is invalid.
-/// @see Body::SetTransform
-/// @relatedalso Body
-inline void SetAngle(Body& body, Angle value) noexcept
-{
-    body.SetTransform(GetLocation(body), value);
 }
 
 } // namespace d2

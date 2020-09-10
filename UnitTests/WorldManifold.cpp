@@ -170,8 +170,8 @@ TEST(WorldManifold, GetForContact)
     auto world = World{};
     const auto bA = world.CreateBody();
     const auto bB = world.CreateBody();
-    const auto fA = bA->CreateFixture(shape);
-    const auto fB = bB->CreateFixture(shape);
+    const auto fA = world.CreateFixture(*bA, shape);
+    const auto fB = world.CreateFixture(*bB, shape);
     const auto c = Contact{fA, 0u, fB, 0u};
 
     const auto wm = GetWorldManifold(c);

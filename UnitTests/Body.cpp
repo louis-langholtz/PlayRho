@@ -160,7 +160,7 @@ TEST(Body, ByteSize)
             EXPECT_EQ(sizeof(Body), std::size_t(144));
 #endif
 #else
-            EXPECT_EQ(sizeof(Body), std::size_t(192));
+            EXPECT_EQ(sizeof(Body), std::size_t(184));
 #endif
             break;
         case  8:
@@ -193,7 +193,7 @@ TEST(Body, Traits)
     EXPECT_FALSE(std::is_nothrow_copy_constructible<Type>::value);
     EXPECT_FALSE(std::is_trivially_copy_constructible<Type>::value);
     
-    EXPECT_FALSE(std::is_copy_assignable<Type>::value);
+    EXPECT_TRUE(std::is_copy_assignable<Type>::value);
     EXPECT_FALSE(std::is_nothrow_copy_assignable<Type>::value);
     EXPECT_FALSE(std::is_trivially_copy_assignable<Type>::value);
     
@@ -218,7 +218,6 @@ TEST(Body, WorldCreated)
     const auto body = world.CreateBody();
     ASSERT_NE(body, nullptr);
 
-    EXPECT_EQ(body->GetWorld(), &world);
     EXPECT_EQ(body->GetUserData(), nullptr);
     EXPECT_TRUE(body->IsEnabled());
     EXPECT_FALSE(body->IsAwake());
@@ -293,15 +292,15 @@ TEST(Body, CreateFixture)
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(0));
 
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
-    EXPECT_NE(body->CreateFixture(valid_shape, FixtureConf{}), nullptr);
+    EXPECT_NE(world.CreateFixture(*body, valid_shape, FixtureConf{}), nullptr);
 
     EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
     
     const auto minRadius = world.GetMinVertexRadius();
-    EXPECT_THROW(body->CreateFixture(Shape{DiskShapeConf{minRadius / 2}}), InvalidArgument);
+    EXPECT_THROW(world.CreateFixture(*body, Shape{DiskShapeConf{minRadius / 2}}), InvalidArgument);
     
     const auto maxRadius = world.GetMaxVertexRadius();
-    EXPECT_THROW(body->CreateFixture(Shape{DiskShapeConf{maxRadius + maxRadius / 10}}), InvalidArgument);
+    EXPECT_THROW(world.CreateFixture(*body, Shape{DiskShapeConf{maxRadius + maxRadius / 10}}), InvalidArgument);
 }
 
 TEST(Body, Destroy)
@@ -312,13 +311,11 @@ TEST(Body, Destroy)
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
     ASSERT_EQ(GetFixtureCount(*bodyB), std::size_t(0));
 
-    const auto fixtureA = bodyA->CreateFixture(Shape{DiskShapeConf(1_m)}, FixtureConf{});
+    const auto fixtureA = world.CreateFixture(*bodyA, Shape{DiskShapeConf(1_m)}, FixtureConf{});
     ASSERT_NE(fixtureA, nullptr);
     ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
 
-    EXPECT_FALSE(bodyB->Destroy(fixtureA));
-    EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
-    EXPECT_TRUE(bodyA->Destroy(fixtureA));
+    EXPECT_TRUE(world.Destroy(*fixtureA));
     EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
 }
 
@@ -332,9 +329,9 @@ TEST(Body, SetEnabledCausesIsEnabled)
     for (auto i = 0; i < 4; ++i) {
         // Set and check twice to ensure same behavior if state already same.
         // Inlined to help match state with line number of any reports.
-        EXPECT_NO_THROW(body->SetEnabled(value));
+        EXPECT_NO_THROW(world.SetEnabled(*body, value));
         EXPECT_EQ(body->IsEnabled(), value);
-        EXPECT_NO_THROW(body->SetEnabled(value));
+        EXPECT_NO_THROW(world.SetEnabled(*body, value));
         EXPECT_EQ(body->IsEnabled(), value);
         value = !value;
     }
@@ -352,8 +349,8 @@ TEST(Body, SetEnabled)
     const auto body1 = world.CreateBody();
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
-    const auto fixture0 = body0->CreateFixture(valid_shape, FixtureConf{});
-    const auto fixture1 = body1->CreateFixture(valid_shape, FixtureConf{});
+    const auto fixture0 = world.CreateFixture(*body0, valid_shape, FixtureConf{});
+    const auto fixture1 = world.CreateFixture(*body1, valid_shape, FixtureConf{});
     ASSERT_NE(fixture0, nullptr);
     ASSERT_NE(fixture1, nullptr);
 
@@ -368,33 +365,33 @@ TEST(Body, SetEnabled)
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     // Test that set enabled to flag already set is not a toggle
-    EXPECT_NO_THROW(body0->SetEnabled(true));
+    EXPECT_NO_THROW(world.SetEnabled(*body0, true));
     EXPECT_TRUE(body0->IsEnabled());
-    EXPECT_NO_THROW(body1->SetEnabled(false));
+    EXPECT_NO_THROW(world.SetEnabled(*body1, false));
     EXPECT_FALSE(body1->IsEnabled());
     EXPECT_EQ(fixture0->GetProxyCount(), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    EXPECT_NO_THROW(body0->SetEnabled(false));
+    EXPECT_NO_THROW(world.SetEnabled(*body0, false));
     EXPECT_FALSE(body0->IsEnabled());
-    EXPECT_NO_THROW(body1->SetEnabled(true));
+    EXPECT_NO_THROW(world.SetEnabled(*body1, true));
     EXPECT_TRUE(body1->IsEnabled());
     EXPECT_EQ(fixture0->GetProxyCount(), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 3u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    EXPECT_NO_THROW(body0->SetEnabled(true));
+    EXPECT_NO_THROW(world.SetEnabled(*body0, true));
     EXPECT_TRUE(body0->IsEnabled());
-    EXPECT_NO_THROW(body1->SetEnabled(false));
+    EXPECT_NO_THROW(world.SetEnabled(*body1, false));
     EXPECT_FALSE(body1->IsEnabled());
     EXPECT_EQ(fixture0->GetProxyCount(), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 5u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    EXPECT_NO_THROW(body0->SetEnabled(false));
+    EXPECT_NO_THROW(world.SetEnabled(*body0, false));
     EXPECT_FALSE(body0->IsEnabled());
-    EXPECT_NO_THROW(body1->SetEnabled(true));
+    EXPECT_NO_THROW(world.SetEnabled(*body1, true));
     EXPECT_TRUE(body1->IsEnabled());
     EXPECT_EQ(fixture0->GetProxyCount(), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 7u);
@@ -405,7 +402,7 @@ TEST(Body, SetEnabled)
     EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    EXPECT_NO_THROW(body0->SetEnabled(true));
+    EXPECT_NO_THROW(world.SetEnabled(*body0, true));
     EXPECT_TRUE(body0->IsEnabled());
     EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
@@ -422,7 +419,7 @@ TEST(Body, SetFixedRotation)
     const auto body = world.CreateBody();
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
-    ASSERT_NE(body->CreateFixture(valid_shape, FixtureConf{}), nullptr);
+    ASSERT_NE(world.CreateFixture(*body, valid_shape, FixtureConf{}), nullptr);
     ASSERT_FALSE(body->IsFixedRotation());
 
     // Test that set fixed rotation to flag already set is not a toggle
@@ -451,7 +448,7 @@ TEST(Body, CreateAndDestroyFixture)
     const auto shape = Shape(conf);
     
     {
-        auto fixture = body->CreateFixture(shape, FixtureConf{}, false);
+        auto fixture = world.CreateFixture(*body, shape, FixtureConf{}, false);
         const auto fshape = fixture->GetShape();
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
@@ -472,7 +469,7 @@ TEST(Body, CreateAndDestroyFixture)
         ASSERT_EQ(world.GetFixturesForProxies().size(), std::size_t{1});
         EXPECT_EQ(*world.GetFixturesForProxies().begin(), fixture);
 
-        body->Destroy(fixture, false);
+        EXPECT_TRUE(world.Destroy(*fixture, false));
         EXPECT_TRUE(body->GetFixtures().empty());
         EXPECT_TRUE(body->IsMassDataDirty());
 
@@ -481,12 +478,12 @@ TEST(Body, CreateAndDestroyFixture)
         body->ResetMassData();
         EXPECT_FALSE(body->IsMassDataDirty());
         
-        body->DestroyFixtures();
+        world.DestroyFixtures(*body);
         EXPECT_TRUE(body->GetFixtures().empty());
     }
     
     {
-        auto fixture = body->CreateFixture(shape, FixtureConf{}, false);
+        auto fixture = world.CreateFixture(*body, shape, FixtureConf{}, false);
         const auto fshape = fixture->GetShape();
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
@@ -505,7 +502,7 @@ TEST(Body, CreateAndDestroyFixture)
         EXPECT_FALSE(body->IsMassDataDirty());
         EXPECT_FALSE(body->GetFixtures().empty());
         
-        body->DestroyFixtures();
+        world.DestroyFixtures(*body);
         EXPECT_TRUE(body->GetFixtures().empty());
         EXPECT_FALSE(body->IsMassDataDirty());
     }
@@ -521,15 +518,15 @@ TEST(Body, SetType)
     ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
     ASSERT_EQ(body->GetType(), BodyType::Dynamic);
 
-    body->SetType(BodyType::Static);
+    world.SetType(*body, BodyType::Static);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
     EXPECT_EQ(body->GetType(), BodyType::Static);
     
-    body->SetType(BodyType::Kinematic);
+    world.SetType(*body, BodyType::Kinematic);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
     EXPECT_EQ(body->GetType(), BodyType::Kinematic);
     
-    body->SetType(BodyType::Dynamic);
+    world.SetType(*body, BodyType::Dynamic);
     EXPECT_EQ(body->GetType(), BodyType::Dynamic);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
 }
@@ -575,7 +572,7 @@ TEST(Body, SetMassData)
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
         EXPECT_EQ(GetMass(*body), 1_kg);
         EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
-        body->SetMassData(massData);
+        world.SetMassData(*body, massData);
         EXPECT_EQ(GetMass(*body), mass);
         EXPECT_EQ(GetRotInertia(*body), rotInertia);
     }
@@ -586,7 +583,7 @@ TEST(Body, SetMassData)
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseFixedRotation(true));
         EXPECT_EQ(GetMass(*body), 1_kg);
         EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
-        body->SetMassData(massData);
+        world.SetMassData(*body, massData);
         EXPECT_EQ(GetMass(*body), mass);
         EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
     }
@@ -597,7 +594,7 @@ TEST(Body, SetMassData)
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
         EXPECT_EQ(GetMass(*body), 0_kg);
         EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
-        body->SetMassData(massData);
+        world.SetMassData(*body, massData);
         EXPECT_EQ(GetMass(*body), 0_kg);
         EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
     }
@@ -616,7 +613,7 @@ TEST(Body, SetTransform)
     ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     const auto xfm2 = Transformation{Vec2(10, -12) * 1_m, UnitVec::GetLeft()};
-    body->SetTransform(xfm2.p, GetAngle(xfm2.q));
+    world.SetTransform(*body, xfm2.p, GetAngle(xfm2.q));
     EXPECT_EQ(body->GetTransformation().p, xfm2.p);
     EXPECT_NEAR(static_cast<double>(GetX(body->GetTransformation().q)),
                 static_cast<double>(GetX(xfm2.q)),
@@ -780,7 +777,7 @@ TEST(Body, CreateLotsOfFixtures)
         
         for (auto i = decltype(num){0}; i < num; ++i)
         {
-            auto fixture = body->CreateFixture(shape, FixtureConf{}, false);
+            auto fixture = world.CreateFixture(*body, shape, FixtureConf{}, false);
             ASSERT_NE(fixture, nullptr);
         }
         body->ResetMassData();
@@ -809,7 +806,7 @@ TEST(Body, CreateLotsOfFixtures)
         
         for (auto i = decltype(num){0}; i < num; ++i)
         {
-            auto fixture = body->CreateFixture(shape, FixtureConf{}, true);
+            auto fixture = world.CreateFixture(*body, shape, FixtureConf{}, true);
             ASSERT_NE(fixture, nullptr);
         }
         
@@ -836,14 +833,14 @@ TEST(Body, GetWorldIndex)
     ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
     const auto body0 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(1));
-    EXPECT_EQ(GetWorldIndex(body0), BodyCounter(0));
+    EXPECT_EQ(GetWorldIndex(world, body0), BodyCounter(0));
     const auto body1 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
-    EXPECT_EQ(GetWorldIndex(body1), BodyCounter(1));
+    EXPECT_EQ(GetWorldIndex(world, body1), BodyCounter(1));
     const auto body2 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(3));
-    EXPECT_EQ(GetWorldIndex(body2), BodyCounter(2));
-    EXPECT_EQ(GetWorldIndex(static_cast<const Body*>(nullptr)), BodyCounter(-1));
+    EXPECT_EQ(GetWorldIndex(world, body2), BodyCounter(2));
+    EXPECT_EQ(GetWorldIndex(world, static_cast<const Body*>(nullptr)), BodyCounter(-1));
 }
 
 TEST(Body, ApplyLinearAccelDoesNothingToStatic)
@@ -905,19 +902,19 @@ TEST(Body, CalcGravitationalAcceleration)
     const auto shape = Shape{DiskShapeConf{}.UseRadius(2_m).UseDensity(1e10_kgpm2)};
     
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
-    b1->CreateFixture(shape);
-    EXPECT_EQ(CalcGravitationalAcceleration(*b1), Acceleration{});
+    world.CreateFixture(*b1, shape);
+    EXPECT_EQ(CalcGravitationalAcceleration(world, *b1), Acceleration{});
     
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
-    b2->CreateFixture(shape);
-    const auto accel = CalcGravitationalAcceleration(*b1);
+    world.CreateFixture(*b2, shape);
+    const auto accel = CalcGravitationalAcceleration(world, *b1);
     EXPECT_NEAR(static_cast<double>(Real(GetX(accel.linear)/MeterPerSquareSecond)),
                 0.032761313021183014, 0.032761313021183014/100);
     EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
     EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
     
     const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseLocation(l3));
-    EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration{});
+    EXPECT_EQ(CalcGravitationalAcceleration(world, *b3), Acceleration{});
 }
 
 TEST(Body, RotateAboutWorldPointFF)
@@ -926,7 +923,7 @@ TEST(Body, RotateAboutWorldPointFF)
     const auto body = world.CreateBody();
     const auto locationA = body->GetLocation();
     ASSERT_EQ(locationA, Length2(0_m, 0_m));
-    RotateAboutWorldPoint(*body, 90_deg, Length2{2_m, 0_m});
+    RotateAboutWorldPoint(world, *body, 90_deg, Length2{2_m, 0_m});
     const auto locationB = body->GetLocation();
     EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.001);
     EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.001);
@@ -938,7 +935,7 @@ TEST(Body, RotateAboutLocalPointFF)
     const auto body = world.CreateBody();
     const auto locationA = body->GetLocation();
     ASSERT_EQ(locationA, Length2(0_m, 0_m));
-    RotateAboutLocalPoint(*body, 90_deg, Length2{2_m, 0_m});
+    RotateAboutLocalPoint(world, *body, 90_deg, Length2{2_m, 0_m});
     const auto locationB = body->GetLocation();
     EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.001);
     EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.001);
@@ -950,7 +947,7 @@ TEST(Body, GetCentripetalForce)
     auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
     const auto shape = Shape{DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)};
-    body->CreateFixture(shape);
+    world.CreateFixture(*body, shape);
     SetLinearVelocity(*body, LinearVelocity2{2_mps, 3_mps});
     EXPECT_EQ(GetLinearVelocity(*body), LinearVelocity2(2_mps, 3_mps));
     
@@ -965,8 +962,8 @@ TEST(Body, GetPositionFF)
     auto world = World{};
     auto body = world.CreateBody();
     EXPECT_NE(GetPosition(*body), position);
-    SetLocation(*body, position.linear);
-    SetAngle(*body, position.angular);
+    SetLocation(world, *body, position.linear);
+    SetAngle(world, *body, position.angular);
     EXPECT_EQ(GetPosition(*body), position);
 }
 
@@ -976,7 +973,7 @@ TEST(Body, GetSetTransformationFF)
     auto world = World{};
     auto body = world.CreateBody();
     EXPECT_NE(GetTransformation(*body), xfm0);
-    SetTransformation(*body, xfm0);
+    SetTransformation(world, *body, xfm0);
     const auto xfm1 = GetTransformation(*body);
     EXPECT_EQ(xfm1.p, xfm0.p);
     EXPECT_NEAR(static_cast<double>(GetX(xfm1.q)), static_cast<double>(GetX(xfm0.q)), 0.0001);

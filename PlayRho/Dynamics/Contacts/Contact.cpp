@@ -67,7 +67,7 @@ Contact::Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB):
     assert(fA->GetBody() != fB->GetBody());
 }
 
-void Contact::Update(const UpdateConf& conf, ContactListener* listener)
+void Contact::Update(World& world, const UpdateConf& conf, ContactListener* listener)
 {
     const auto oldManifold = m_manifold;
 
@@ -201,7 +201,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
         SetTouching();
         if (listener)
         {
-            listener->BeginContact(*this);
+            listener->BeginContact(world, *this);
         }
     }
     else if (oldTouching && !newTouching)
@@ -209,7 +209,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
         UnsetTouching();
         if (listener)
         {
-            listener->EndContact(*this);
+            listener->EndContact(world, *this);
         }
     }
 
@@ -217,7 +217,7 @@ void Contact::Update(const UpdateConf& conf, ContactListener* listener)
     {
         if (listener)
         {
-            listener->PreSolve(*this, oldManifold);
+            listener->PreSolve(world, *this, oldManifold);
         }
     }
 }

@@ -78,6 +78,15 @@ private:
         delete fixture;
     }
     
+    /// @brief Sets the contact filtering data.
+    /// @note This won't update contacts until the next time step when either parent body
+    ///    is speedable and awake.
+    /// @note This automatically calls <code>Refilter</code>.
+    static void SetFilterData(Fixture& fixture, Filter filter)
+    {
+        fixture.m_filter = filter;
+    }
+
     friend class WorldImpl;
 };
 

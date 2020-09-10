@@ -122,7 +122,6 @@ Body* World::CreateBody(const BodyConf& def)
 
 void World::Destroy(Body* body)
 {
-    assert(body->GetWorld() == this);
     m_impl->Destroy(body);
 }
 
@@ -231,6 +230,51 @@ void World::SetContactListener(ContactListener* listener) noexcept
     m_impl->SetContactListener(listener);
 }
 
+void World::Refilter(Fixture& fixture)
+{
+    m_impl->Refilter(fixture);
+}
+
+void World::SetFilterData(Fixture& fixture, const Filter& filter)
+{
+    m_impl->SetFilterData(fixture, filter);
+}
+
+void World::SetType(Body& body, BodyType type)
+{
+    m_impl->SetType(body, type);
+}
+
+Fixture* World::CreateFixture(Body& body, const Shape& shape, const FixtureConf& def, bool resetMassData)
+{
+    return m_impl->CreateFixture(body, shape, def, resetMassData);
+}
+
+bool World::Destroy(Fixture& fixture, bool resetMassData)
+{
+    return m_impl->Destroy(fixture, resetMassData);
+}
+
+void World::DestroyFixtures(Body& body)
+{
+    m_impl->DestroyFixtures(body);
+}
+
+void World::SetEnabled(Body& body, bool flag)
+{
+    m_impl->SetEnabled(body, flag);
+}
+
+void World::SetMassData(Body& body, const MassData& massData)
+{
+    m_impl->SetMassData(body, massData);
+}
+
+void World::SetTransform(Body& body, Length2 location, Angle angle)
+{
+    m_impl->SetTransform(body, location, angle);
+}
+
 // Free functions...
 
 StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
@@ -337,6 +381,89 @@ Body* FindClosestBody(const World& world, Length2 location) noexcept
         }
     }
     return found;
+}
+
+void SetLocation(World& world, Body& body, Length2 value) noexcept
+{
+    world.SetTransform(body, value, body.GetSweep().pos1.angular);
+}
+
+void SetAngle(World& world, Body& body, Angle value) noexcept
+{
+    world.SetTransform(body, GetLocation(body), value);
+}
+
+void RotateAboutWorldPoint(World& world, Body& body, Angle amount, Length2 worldPoint)
+{
+    const auto xfm = body.GetTransformation();
+    const auto p = xfm.p - worldPoint;
+    const auto c = cos(amount);
+    const auto s = sin(amount);
+    const auto x = GetX(p) * c - GetY(p) * s;
+    const auto y = GetX(p) * s + GetY(p) * c;
+    const auto pos = Length2{x, y} + worldPoint;
+    const auto angle = GetAngle(xfm.q) + amount;
+    world.SetTransform(body, pos, angle);
+}
+
+void RotateAboutLocalPoint(World& world, Body& body, Angle amount, Length2 localPoint)
+{
+    RotateAboutWorldPoint(world, body, amount, GetWorldPoint(body, localPoint));
+}
+
+Acceleration CalcGravitationalAcceleration(const World& world, const Body& body) noexcept
+{
+    const auto m1 = GetMass(body);
+    if (m1 != 0_kg)
+    {
+        const auto loc1 = GetLocation(body);
+        auto sumForce = Force2{};
+        const auto bodies = world.GetBodies();
+        for (auto jt = begin(bodies); jt != end(bodies); jt = std::next(jt))
+        {
+            const auto& b2 = *(*jt);
+            if (&b2 == &body)
+            {
+                continue;
+            }
+            const auto m2 = GetMass(b2);
+            const auto delta = GetLocation(b2) - loc1;
+            const auto dir = GetUnitVector(delta);
+            const auto rr = GetMagnitudeSquared(delta);
+
+            // Uses Newton's law of universal gravitation: F = G * m1 * m2 / rr.
+            // See: https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation
+            // Note that BigG is typically very small numerically compared to either mass
+            // or the square of the radius between the masses. That's important to recognize
+            // in order to avoid operational underflows or overflows especially when
+            // playrho::Real has less exponential range like when it's defined to be float
+            // instead of double. The operational ordering is deliberately established here
+            // to help with this.
+            const auto orderedMass = std::minmax(m1, m2);
+            const auto f = (BigG * std::get<0>(orderedMass)) * (std::get<1>(orderedMass) / rr);
+            sumForce += f * dir;
+        }
+        // F = m a... i.e.  a = F / m.
+        return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
+    }
+    return Acceleration{};
+}
+
+BodyCounter GetWorldIndex(const World& world, const Body* body) noexcept
+{
+    if (body)
+    {
+        const auto bodies = world.GetBodies();
+        auto i = BodyCounter{0};
+        const auto it = std::find_if(cbegin(bodies), cend(bodies), [&](const Body *b) {
+            return b == body || ((void) ++i, false);
+        });
+        if (it != end(bodies))
+        {
+            return i;
+        }
+    }
+    return BodyCounter(-1);
 }
 
 } // namespace d2

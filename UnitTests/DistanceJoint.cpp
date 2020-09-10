@@ -136,12 +136,12 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     const auto location1 = Length2{-1_m, 0_m};
     const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(body1->GetLocation(), location1);
-    ASSERT_NE(body1->CreateFixture(shape), nullptr);
+    ASSERT_NE(world.CreateFixture(*body1, shape), nullptr);
     
     const auto location2 = Length2{+1_m, 0_m};
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(body2->GetLocation(), location2);
-    ASSERT_NE(body2->CreateFixture(shape), nullptr);
+    ASSERT_NE(world.CreateFixture(*body2, shape), nullptr);
     
     auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;
@@ -189,12 +189,12 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     const auto location1 = Length2{-10_m, 10_m};
     const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(body1->GetLocation(), location1);
-    ASSERT_NE(body1->CreateFixture(shape), nullptr);
+    ASSERT_NE(world.CreateFixture(*body1, shape), nullptr);
     
     const auto location2 = Length2{+10_m, -10_m};
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(body2->GetLocation(), location2);
-    ASSERT_NE(body2->CreateFixture(shape), nullptr);
+    ASSERT_NE(world.CreateFixture(*body2, shape), nullptr);
     
     auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;

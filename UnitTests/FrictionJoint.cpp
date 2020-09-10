@@ -149,8 +149,8 @@ TEST(FrictionJoint, WithDynamicCircles)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    b1->CreateFixture(Shape{circle});
-    b2->CreateFixture(Shape{circle});
+    world.CreateFixture(*b1, Shape{circle});
+    world.CreateFixture(*b2, Shape{circle});
     auto jd = FrictionJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;

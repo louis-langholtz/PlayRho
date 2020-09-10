@@ -29,11 +29,13 @@
 #include <PlayRho/Common/Range.hpp> // for SizedRange
 #include <PlayRho/Common/propagate_const.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
+#include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/Dynamics/WorldCallbacks.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/Dynamics/FixtureConf.hpp>
 
 #include <iterator>
 #include <vector>
@@ -46,6 +48,7 @@ namespace playrho {
 
 class StepConf;
 struct IslandStats;
+struct Filter;
 
 namespace d2 {
 
@@ -364,9 +367,132 @@ public:
     /// @see Step.
     Frequency GetInvDeltaTime() const noexcept;
 
-private:
-    friend class WorldAtty;
+    /// @brief Re-filter the fixture.
+    /// @note Call this if you want to establish collision that was previously disabled by
+    ///   <code>ShouldCollide(const Fixture&, const Fixture&)</code>.
+    /// @see bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
+    void Refilter(Fixture& fixture);
 
+    /// @brief Sets the contact filtering data.
+    /// @note This won't update contacts until the next time step when either parent body
+    ///    is speedable and awake.
+    /// @note This automatically calls <code>Refilter</code>.
+    void SetFilterData(Fixture& fixture, const Filter& filter);
+
+    /// @brief Sets the type of the given body.
+    /// @note This may alter the body's mass and velocity.
+    /// @throws WrongState if this method is called while the world is locked.
+    void SetType(Body& body, BodyType type);
+
+    /// @brief Creates a fixture and attaches it to the given body.
+    /// @details Creates a fixture for attaching a shape and other characteristics to this
+    ///   body. Fixtures automatically go away when this body is destroyed. Fixtures can
+    ///   also be manually removed and destroyed using the
+    ///   <code>Destroy(Fixture*, bool)</code>, or <code>DestroyFixtures()</code> methods.
+    ///
+    /// @note This function should not be called if the world is locked.
+    /// @warning This function is locked during callbacks.
+    ///
+    /// @post After creating a new fixture, it will show up in the fixture enumeration
+    ///   returned by the <code>GetFixtures()</code> methods.
+    ///
+    /// @param shape Shareable shape definition.
+    ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
+    ///   the body's world.
+    /// @param def Initial fixture settings.
+    ///   Friction and density must be >= 0.
+    ///   Restitution must be > -infinity and < infinity.
+    /// @param resetMassData Whether or not to reset the mass data of the body.
+    ///
+    /// @return Pointer to the created fixture.
+    ///
+    /// @throws WrongState if called while the world is "locked".
+    /// @throws InvalidArgument if called for a shape with a vertex radius less than the
+    ///    minimum vertex radius.
+    /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
+    ///    maximum vertex radius.
+    ///
+    /// @see Destroy, GetFixtures
+    /// @see PhysicalEntities
+    ///
+    Fixture* CreateFixture(Body& body, const Shape& shape,
+                           const FixtureConf& def = GetDefaultFixtureConf(),
+                           bool resetMassData = true);
+
+    /// @brief Destroys a fixture.
+    ///
+    /// @details Destroys a fixture previously created by the
+    ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code>
+    ///   method. This removes the fixture from the broad-phase and destroys all contacts
+    ///   associated with this fixture. All fixtures attached to a body are implicitly
+    ///   destroyed when the body is destroyed.
+    ///
+    /// @warning This function is locked during callbacks.
+    /// @note Make sure to explicitly call <code>ResetMassData()</code> after fixtures have
+    ///   been destroyed if resetting the mass data is not requested via the reset mass data
+    ///   parameter.
+    /// @throws WrongState if this method is called while the world is locked.
+    ///
+    /// @post After destroying a fixture, it will no longer show up in the fixture enumeration
+    ///   returned by the <code>GetFixtures()</code> methods.
+    ///
+    /// @param fixture the fixture to be removed.
+    /// @param resetMassData Whether or not to reset the mass data of the associated body.
+    ///
+    /// @see CreateFixture, Body::GetFixtures, Body::ResetMassData.
+    /// @see PhysicalEntities
+    ///
+    bool Destroy(Fixture& fixture, bool resetMassData = true);
+
+    /// @brief Destroys fixtures of the given body.
+    /// @details Destroys all of the fixtures previously created for this body by the
+    ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code> method.
+    /// @note This unconditionally calls the <code>ResetMassData()</code> method.
+    /// @post After this call, no fixtures will show up in the fixture enumeration
+    ///   returned by the <code>GetFixtures()</code> methods.
+    /// @see CreateFixture, GetFixtures, ResetMassData.
+    /// @see PhysicalEntities
+    void DestroyFixtures(Body& body);
+
+    /// @brief Sets the enabled state of the body.
+    ///
+    /// @details A disabled body is not simulated and cannot be collided with or woken up.
+    ///   If you pass a flag of true, all fixtures will be added to the broad-phase.
+    ///   If you pass a flag of false, all fixtures will be removed from the broad-phase
+    ///   and all contacts will be destroyed. Fixtures and joints are otherwise unaffected.
+    ///
+    /// @note A disabled body is still owned by a World object and remains in the world's
+    ///   body container.
+    /// @note You may continue to create/destroy fixtures and joints on disabled bodies.
+    /// @note Fixtures on a disabled body are implicitly disabled and will not participate in
+    ///   collisions, ray-casts, or queries.
+    /// @note Joints connected to a disabled body are implicitly disabled.
+    ///
+    /// @throws WrongState If call would change body's state when world is locked.
+    ///
+    /// @post <code>IsEnabled()</code> returns the state given to this function.
+    ///
+    /// @see IsEnabled.
+    ///
+    void SetEnabled(Body& body, bool flag);
+
+    /// @brief Set the mass properties to override the mass properties of the fixtures.
+    /// @note This changes the center of mass position.
+    /// @note Creating or destroying fixtures can also alter the mass.
+    /// @note This function has no effect if the body isn't dynamic.
+    /// @param massData the mass properties.
+    void SetMassData(Body& body, const MassData& massData);
+
+    /// @brief Sets the position of the body's origin and rotation.
+    /// @details This instantly adjusts the body to be at the new position and new orientation.
+    /// @warning Manipulating a body's transform can cause non-physical behavior!
+    /// @note Contacts are updated on the next call to World::Step.
+    /// @param location Valid world location of the body's local origin. Behavior is undefined
+    ///   if value is invalid.
+    /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
+    void SetTransform(Body& body, Length2 location, Angle angle);
+
+private:
     propagate_const<std::unique_ptr<WorldImpl>> m_impl;
 };
 
@@ -500,6 +626,64 @@ inline void ClearForces(World& world) noexcept
 /// @brief Finds body in given world that's closest to the given location.
 /// @relatedalso World
 Body* FindClosestBody(const World& world, Length2 location) noexcept;
+
+/// @brief Sets the body's transformation.
+/// @note This operation isn't exact. I.e. don't expect that <code>GetTransformation</code>
+///   will return exactly the transformation that had been set.
+inline void SetTransformation(World& world, Body& body, const Transformation& xfm) noexcept
+{
+    world.SetTransform(body, xfm.p, GetAngle(xfm.q));
+}
+
+/// @brief Sets the body's location.
+/// @details This instantly adjusts the body to be at the new location.
+/// @warning Manipulating a body's location this way can cause non-physical behavior!
+/// @param body Body to move.
+/// @param value Valid world location of the body's local origin. Behavior is undefined
+///   if value is invalid.
+/// @see Body::SetTransform
+/// @relatedalso Body
+void SetLocation(World& world, Body& body, Length2 value) noexcept;
+
+/// @brief Sets the body's angular orientation.
+/// @details This instantly adjusts the body to be at the new angular orientation.
+/// @warning Manipulating a body's angle this way can cause non-physical behavior!
+/// @param body Body to move.
+/// @param value Valid world angle of the body's local origin. Behavior is undefined
+///   if value is invalid.
+/// @see Body::SetTransform
+/// @relatedalso Body
+void SetAngle(World& world, Body& body, Angle value) noexcept;
+
+/// @brief Rotates a body a given amount around a point in world coordinates.
+/// @details This changes both the linear and angular positions of the body.
+/// @note Manipulating a body's position this way may cause non-physical behavior.
+/// @param body Body to rotate.
+/// @param amount Amount to rotate body by (in counter-clockwise direction).
+/// @param worldPoint Point in world coordinates.
+/// @relatedalso Body
+void RotateAboutWorldPoint(World& world, Body& body, Angle amount, Length2 worldPoint);
+
+/// @brief Rotates a body a given amount around a point in body local coordinates.
+/// @details This changes both the linear and angular positions of the body.
+/// @note Manipulating a body's position this way may cause non-physical behavior.
+/// @note This is a convenience function that translates the local point into world coordinates
+///   and then calls the <code>RotateAboutWorldPoint</code> function.
+/// @param body Body to rotate.
+/// @param amount Amount to rotate body by (in counter-clockwise direction).
+/// @param localPoint Point in local coordinates.
+/// @relatedalso Body
+void RotateAboutLocalPoint(World& world, Body& body, Angle amount, Length2 localPoint);
+
+/// @brief Calculates the gravitationally associated acceleration for the given body within its world.
+/// @relatedalso Body
+/// @return Zero acceleration if given body is has no mass, else the acceleration of
+///    the body due to the gravitational attraction to the other bodies.
+Acceleration CalcGravitationalAcceleration(const World& world, const Body& body) noexcept;
+
+/// @brief Gets the world index for the given body.
+/// @relatedalso Body
+BodyCounter GetWorldIndex(const World& world, const Body* body) noexcept;
 
 } // namespace d2
 

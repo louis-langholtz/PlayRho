@@ -29,6 +29,8 @@
 namespace playrho {
 namespace d2 {
 
+class World;
+
 /// @brief Contact attorney.
 ///
 /// @details This is the "contact attorney" which provides limited privileged access to the
@@ -93,9 +95,9 @@ private:
     }
     
     /// @brief Calls the given contact's <code>Contact::Update</code> method.
-    static void Update(Contact& c, const Contact::UpdateConf& conf, ContactListener* listener)
+    static void Update(World& w, Contact& c, const Contact::UpdateConf& conf, ContactListener* listener)
     {
-        c.Update(conf, listener);
+        c.Update(w, conf, listener);
     }
     
     /// @brief Whether the given contact is in the is-in-island state.

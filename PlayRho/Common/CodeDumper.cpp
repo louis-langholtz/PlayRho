@@ -193,11 +193,11 @@ void Dump(const Fixture& fixture, std::size_t bodyIndex)
     log("    bodies[%d]->CreateFixture(fd);\n", bodyIndex);
 }
 
-void Dump(const DistanceJoint& joint, std::size_t index)
+void Dump(const DistanceJoint& joint, std::size_t index, const World& world)
 {
     log("  DistanceJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
@@ -213,11 +213,11 @@ void Dump(const DistanceJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const FrictionJoint& joint, std::size_t index)
+void Dump(const FrictionJoint& joint, std::size_t index, const World& world)
 {
     log("  FrictionJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
@@ -232,23 +232,23 @@ void Dump(const FrictionJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const GearJoint& joint, std::size_t index)
+void Dump(const GearJoint& joint, std::size_t index, const World& world)
 {
     log("  GearJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
-    log("  jd.joint1 = joints[%d];\n", GetWorldIndex(joint.GetJoint1()));
-    log("  jd.joint2 = joints[%d];\n", GetWorldIndex(joint.GetJoint2()));
+    log("  jd.joint1 = joints[%d];\n", GetWorldIndex(world, joint.GetJoint1()));
+    log("  jd.joint2 = joints[%d];\n", GetWorldIndex(world, joint.GetJoint2()));
     log("  jd.ratio = %.15lef;\n", joint.GetRatio());
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const MotorJoint& joint, std::size_t index)
+void Dump(const MotorJoint& joint, std::size_t index, const World& world)
 {
     log("  MotorJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.linearOffset = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetLinearOffset()) / Meter}),
@@ -263,11 +263,11 @@ void Dump(const MotorJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const TargetJoint& joint, std::size_t index)
+void Dump(const TargetJoint& joint, std::size_t index, const World& world)
 {
     log("  TargetJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorB = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetLocalAnchorB()) / Meter}),
@@ -280,11 +280,11 @@ void Dump(const TargetJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const PrismaticJoint& joint, std::size_t index)
+void Dump(const PrismaticJoint& joint, std::size_t index, const World& world)
 {
     log("  PrismaticJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
@@ -309,11 +309,11 @@ void Dump(const PrismaticJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const PulleyJoint& joint, std::size_t index)
+void Dump(const PulleyJoint& joint, std::size_t index, const World& world)
 {
     log("  PulleyJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.groundAnchorA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetGroundAnchorA()) / Meter}),
@@ -335,11 +335,11 @@ void Dump(const PulleyJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const RevoluteJoint& joint, std::size_t index)
+void Dump(const RevoluteJoint& joint, std::size_t index, const World& world)
 {
     log("  RevoluteJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
@@ -362,11 +362,11 @@ void Dump(const RevoluteJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const RopeJoint& joint, std::size_t index)
+void Dump(const RopeJoint& joint, std::size_t index, const World& world)
 {
     log("  RopeJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
@@ -379,11 +379,11 @@ void Dump(const RopeJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const WeldJoint& joint, std::size_t index)
+void Dump(const WeldJoint& joint, std::size_t index, const World& world)
 {
     log("  WeldJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),
@@ -399,11 +399,11 @@ void Dump(const WeldJoint& joint, std::size_t index)
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }
 
-void Dump(const WheelJoint& joint, std::size_t index)
+void Dump(const WheelJoint& joint, std::size_t index, const World& world)
 {
     log("  WheelJointConf jd;\n");
-    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(joint.GetBodyA()));
-    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(joint.GetBodyB()));
+    log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
+    log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
     log("  jd.collideConnected = bool(%d);\n", joint.GetCollideConnected());
     log("  jd.localAnchorA = Vec2(%.15lef, %.15lef);\n",
         static_cast<double>(Real{get<0>(joint.GetLocalAnchorA()) / Meter}),

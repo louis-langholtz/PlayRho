@@ -123,25 +123,18 @@ void SetAwake(Joint& j) noexcept
     }
 }
 
-JointCounter GetWorldIndex(const Joint* joint)
+JointCounter GetWorldIndex(const World& world, const Joint* joint)
 {
     if (joint)
     {
-        const auto bA = joint->GetBodyA();
-        const auto bB = joint->GetBodyB();
-        const auto world = bA? bA->GetWorld():
-            bB? bB->GetWorld(): static_cast<const World*>(nullptr);
-        if (world)
+        auto i = JointCounter{0};
+        const auto joints = world.GetJoints();
+        const auto it = std::find_if(cbegin(joints), cend(joints), [&](const Joint *j) {
+            return (j == joint) || ((void) ++i, false);
+        });
+        if (it != end(joints))
         {
-            auto i = JointCounter{0};
-            const auto joints = world->GetJoints();
-            const auto it = std::find_if(cbegin(joints), cend(joints), [&](const Joint *j) {
-                return (j == joint) || ((void) ++i, false);
-            });
-            if (it != end(joints))
-            {
-                return i;
-            }
+            return i;
         }
     }
     return JointCounter(-1);
