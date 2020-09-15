@@ -21,7 +21,7 @@
 
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
@@ -350,16 +350,6 @@ bool WeldJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     bodyConstraintB->SetPosition(posB);
 
     return (positionError <= conf.linearSlop) && (angularError <= conf.angularSlop);
-}
-
-Length2 WeldJoint::GetAnchorA() const
-{
-    return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
-}
-
-Length2 WeldJoint::GetAnchorB() const
-{
-    return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Momentum2 WeldJoint::GetLinearReaction() const

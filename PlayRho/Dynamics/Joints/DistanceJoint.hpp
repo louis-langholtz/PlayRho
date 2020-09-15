@@ -40,7 +40,6 @@ namespace d2 {
 class DistanceJoint : public Joint
 {
 public:
-    
     /// @brief Is the given definition okay.
     static bool IsOkay(const DistanceJointConf& data) noexcept;
 
@@ -52,16 +51,12 @@ public:
 
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
-    Length2 GetAnchorA() const override;
-    Length2 GetAnchorB() const override;
+
+    Length2 GetLocalAnchorA() const noexcept override { return m_localAnchorA; }
+    Length2 GetLocalAnchorB() const noexcept override { return m_localAnchorB; }
+
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
-
-    /// @brief Gets the local anchor point relative to body A's origin.
-    Length2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }
-
-    /// @brief Gets the local anchor point relative to body B's origin.
-    Length2 GetLocalAnchorB() const noexcept { return m_localAnchorB; }
 
     /// @brief Sets the natural length.
     /// @note Manipulating the length can lead to non-physical behavior when the frequency is zero.

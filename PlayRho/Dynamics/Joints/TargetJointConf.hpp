@@ -23,15 +23,12 @@
 #define PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonZero.hpp> // for NonNull
-#include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 namespace d2 {
 
 class TargetJoint;
-class Body;
 
 /// @brief Target joint definition.
 /// @details This requires a world target point, tuning parameters, and the time step.
@@ -39,17 +36,22 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<TargetJointConf>;
-    
+
     constexpr TargetJointConf() noexcept: super{JointType::Target} {}
 
     /// @brief Initializing constructor.
-    constexpr TargetJointConf(NonNull<Body*> b) noexcept: super{super{JointType::Target}.UseBodyB(b)}
+    constexpr TargetJointConf(BodyID a, BodyID b) noexcept:
+        super{super{JointType::Target}.UseBodyA(a).UseBodyB(b)}
     {
         // Intentionally empty.
     }
-    
-    /// @brief Use value for target.
-    constexpr TargetJointConf& UseTarget(Length2 v) noexcept;
+
+    /// @brief Use value for the "anchor" (in coordinates local to "body B").
+    /// @note Typically this would be the value of:
+    ///   <code>bodyB
+    ///     ? InverseTransform(target, bodyB->GetTransformation())
+    ///     : GetInvalid<Length2>()</code>.
+    constexpr TargetJointConf& UseAnchor(Length2 v) noexcept;
 
     /// @brief Use value for max force.
     constexpr TargetJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
@@ -60,10 +62,9 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     /// @brief Use value for damping ratio.
     constexpr TargetJointConf& UseDampingRatio(NonNegative<Real> v) noexcept;
 
-    /// The initial world target point. This is assumed
-    /// to coincide with the body anchor initially.
-    Length2 target = Length2{};
-    
+    /// Anchor point.
+    Length2 anchor = Length2{};
+
     /// Max force.
     /// @details
     /// The maximum constraint force that can be exerted
@@ -81,9 +82,9 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 };
 
-constexpr TargetJointConf& TargetJointConf::UseTarget(Length2 v) noexcept
+constexpr TargetJointConf& TargetJointConf::UseAnchor(Length2 v) noexcept
 {
-    target = v;
+    anchor = v;
     return *this;
 }
 

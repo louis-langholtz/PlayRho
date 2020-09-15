@@ -20,8 +20,10 @@
  */
 
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
+
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
@@ -215,16 +217,6 @@ bool PulleyJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     return linearError < conf.linearSlop;
 }
 
-Length2 PulleyJoint::GetAnchorA() const
-{
-    return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
-}
-
-Length2 PulleyJoint::GetAnchorB() const
-{
-    return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
-}
-
 Momentum2 PulleyJoint::GetLinearReaction() const
 {
     return m_impulse * m_uB;
@@ -235,23 +227,23 @@ AngularMomentum PulleyJoint::GetAngularReaction() const
     return AngularMomentum{0};
 }
 
-bool PulleyJoint::ShiftOrigin(const Length2 newOrigin)
+bool PulleyJoint::ShiftOrigin(Length2 newOrigin)
 {
     m_groundAnchorA -= newOrigin;
     m_groundAnchorB -= newOrigin;
     return true;
 }
 
-Length GetCurrentLengthA(const PulleyJoint& joint)
+Length GetCurrentLengthA(const World& world, const PulleyJoint& joint)
 {
-    return GetMagnitude(GetWorldPoint(*joint.GetBodyA(),
-                                   joint.GetLocalAnchorA()) - joint.GetGroundAnchorA());
+    return GetMagnitude(GetWorldPoint(world, joint.GetBodyA(),
+                                      joint.GetLocalAnchorA()) - joint.GetGroundAnchorA());
 }
 
-Length GetCurrentLengthB(const PulleyJoint& joint)
+Length GetCurrentLengthB(const World& world, const PulleyJoint& joint)
 {
-    return GetMagnitude(GetWorldPoint(*joint.GetBodyB(),
-                                   joint.GetLocalAnchorB()) - joint.GetGroundAnchorB());
+    return GetMagnitude(GetWorldPoint(world, joint.GetBodyB(),
+                                      joint.GetLocalAnchorB()) - joint.GetGroundAnchorB());
 }
 
 } // namespace d2

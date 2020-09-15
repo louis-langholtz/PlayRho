@@ -30,55 +30,11 @@
 namespace playrho {
 namespace d2 {
 
-FixtureProxy Fixture::GetProxy(ChildCounter index) const noexcept
-{
-    assert(index < GetProxyCount());
-    return (GetProxyCount() <= 2)? m_proxies.asArray[index]: m_proxies.asBuffer[index];
-}
-
-void Fixture::SetSensor(bool sensor) noexcept
-{
-    if (sensor != m_isSensor)
-    {
-        // sensor state is changing...
-        m_isSensor = sensor;
-        const auto body = GetBody();
-        if (body)
-        {
-            body->SetAwake();
-
-            const auto contacts = body->GetContacts();
-            std::for_each(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
-                const auto contact = GetContactPtr(ci);
-                contact->FlagForUpdating();
-            });
-        }
-    }
-}
-
-bool TestPoint(const Fixture& f, Length2 p) noexcept
-{
-    return TestPoint(f.GetShape(), InverseTransform(p, GetTransformation(f)));
-}
-
-void SetAwake(const Fixture& f) noexcept
-{
-    f.GetBody()->SetAwake();
-}
-
-Transformation GetTransformation(const Fixture& f) noexcept
-{
-    assert(static_cast<Body*>(f.GetBody()));
-
-    /*
-     * If fixtures have transformations (in addition to the body transformation),
-     * this could be implemented like:
-     *   return Mul(f.GetBody()->GetTransformation(), f.GetTransformation());
-     * Note that adding transformations to fixtures requires work to also be done
-     * to the manifold calculating code to handle that.
-     */
-    return f.GetBody()->GetTransformation();
-}
+static_assert(std::is_default_constructible<Fixture>::value, "Fixture must be default constructible!");
+static_assert(std::is_copy_constructible<Fixture>::value, "Fixture must be copy constructible!");
+static_assert(std::is_move_constructible<Fixture>::value, "Fixture must be move constructible!");
+static_assert(std::is_copy_assignable<Fixture>::value, "Fixture must be copy assignable!");
+static_assert(std::is_move_assignable<Fixture>::value, "Fixture must be move assignable!");
 
 } // namespace d2
 } // namespace playrho

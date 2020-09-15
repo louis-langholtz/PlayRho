@@ -45,13 +45,12 @@ class World;
 class ContactAtty
 {
 private:
-
     /// @brief Gets the mutable manifold.
     static Manifold& GetMutableManifold(Contact& c) noexcept
     {
         return c.GetMutableManifold();
     }
-    
+
     /// @brief Copies the flags from the given from contact to the given to contact.
     static void CopyFlags(Contact& to, const Contact& from) noexcept
     {
@@ -63,19 +62,19 @@ private:
     {
         c.SetToi(value);
     }
-    
+
     /// @brief Calls the contacts unset TOI method.
     static void UnsetToi(Contact& c) noexcept
     {
         c.UnsetToi();
     }
-    
+
     /// @brief Increments the given contact's TOI count.
     static void IncrementToiCount(Contact& c) noexcept
     {
         ++c.m_toiCount;
     }
-    
+
     /// @brief Calls the given contact's set TOI count method.
     static void SetToiCount(Contact& c, Contact::substep_type value) noexcept
     {
@@ -87,37 +86,49 @@ private:
     {
         c.SetToiCount(0);
     }
-    
+
     /// @brief Unflags the given contact's for filtering state.
     static void UnflagForFiltering(Contact& c) noexcept
     {
         c.UnflagForFiltering();
     }
-    
-    /// @brief Calls the given contact's <code>Contact::Update</code> method.
-    static void Update(World& w, Contact& c, const Contact::UpdateConf& conf, ContactListener* listener)
+
+    /// @brief Unflags the given contact's for filtering state.
+    static void UnflagForUpdating(Contact& c) noexcept
     {
-        c.Update(w, conf, listener);
+        c.UnflagForUpdating();
     }
-    
+
     /// @brief Whether the given contact is in the is-in-island state.
     static bool IsIslanded(const Contact& c) noexcept
     {
         return c.IsIslanded();
     }
-    
+
     /// @brief Sets the given contact's is-in-island state.
     static void SetIslanded(Contact& c) noexcept
     {
         c.SetIslanded();
     }
-    
+
     /// @brief Unsets the given contact's is-in-island state.
     static void UnsetIslanded(Contact& c) noexcept
     {
         c.UnsetIslanded();
     }
-    
+
+    /// @brief Sets the touching flag state.
+    static void SetTouching(Contact& c) noexcept
+    {
+        c.SetTouching();
+    }
+
+    /// @brief Unsets the touching flag state.
+    static void UnsetTouching(Contact& c) noexcept
+    {
+        c.UnsetTouching();
+    }
+
     friend class WorldImpl;
 };
 

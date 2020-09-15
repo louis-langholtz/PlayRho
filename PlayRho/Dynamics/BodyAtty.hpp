@@ -25,8 +25,8 @@
 /// Declaration of the BodyAtty class.
 
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/Joints/JointKey.hpp>
+
+#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 
 #include <algorithm>
@@ -49,33 +49,18 @@ namespace d2 {
 class BodyAtty
 {
 private:
-
-    /// @brief Creates a body.
-    static Body* CreateBody(const BodyConf& bd)
-    {
-        return new Body(bd);
-    }
-    
-    /// @brief Deletes a body.
-    static void Delete(Body* b)
-    {
-        delete b;
-    }
-    
     /// @brief Adds the given fixture to the given body.
-    static void AddFixture(Body& b, Fixture *fixture)
+    static void AddFixture(Body& b, FixtureID fixture)
     {
         b.m_fixtures.push_back(fixture);
     }
 
     /// @brief Removes the given fixture from the given body.
-    static bool RemoveFixture(Body& b, Fixture* fixture)
+    static bool RemoveFixture(Body& b, FixtureID fixture)
     {
         const auto begIter = begin(b.m_fixtures);
         const auto endIter = end(b.m_fixtures);
-        const auto it = std::find_if(begIter, endIter, [fixture](Body::Fixtures::value_type& f) {
-            return GetPtr(f) == fixture;
-        });
+        const auto it = std::find(begIter, endIter, fixture);
         if (it != endIter)
         {
             b.m_fixtures.erase(it);
@@ -85,10 +70,10 @@ private:
     }
     
     /// @brief Executes function for all the fixtures of the given body.
-    static void ForallFixtures(Body& b, std::function<void(Fixture&)> callback)
+    static void ForallFixtures(Body& b, std::function<void(FixtureID)> callback)
     {
         std::for_each(begin(b.m_fixtures), end(b.m_fixtures), [&](Body::Fixtures::value_type& f) {
-            callback(GetRef(f));
+            callback(f);
         });
     }
 
@@ -113,7 +98,8 @@ private:
             case BodyType::Static:
                 b.UnsetAwakeFlag();
                 b.m_underActiveTime = 0;
-                b.m_velocity = Velocity{LinearVelocity2{}, 0_rpm};
+                b.m_linearVelocity = LinearVelocity2{};
+                b.m_angularVelocity = 0_rpm;
                 b.m_sweep.pos0 = b.m_sweep.pos1;
                 break;
         }
@@ -132,13 +118,13 @@ private:
     }
     
     /// @brief Erases the given contact from the given body.
-    static bool Erase(Body& b, const Contact* value)
+    static bool Erase(Body& b, const ContactID value)
     {
         return b.Erase(value);
     }
     
     /// @brief Erases the given joint from the given body.
-    static bool Erase(Body& b, const Joint* value)
+    static bool Erase(Body& b, const JointID value)
     {
         return b.Erase(value);
     }
@@ -156,13 +142,13 @@ private:
     }
 
     /// @brief Inserts the given joint into the given body's joint list.
-    static bool Insert(Body& b, Joint* value)
+    static bool Insert(Body& b, JointID joint, BodyID other)
     {
-        return b.Insert(value);
+        return b.Insert(joint, other);
     }
 
     /// @brief Inserts the given contact key and contact into the given body's contacts list.
-    static bool Insert(Body& b, ContactKey key, Contact* value)
+    static bool Insert(Body& b, ContactKey key, ContactID value)
     {
         return b.Insert(key, value);
     }
@@ -201,7 +187,7 @@ private:
     /// @see Body::GetLocation
     static void SetTransformation(Body& b, const Transformation value) noexcept
     {
-        b.SetTransformation(value);
+        b.m_xf = value;
     }
     
     /// Sets the body's velocity.
@@ -209,7 +195,8 @@ private:
     /// @see Body::GetVelocity
     static void SetVelocity(Body& b, Velocity value) noexcept
     {
-        b.m_velocity = value;
+        b.m_linearVelocity = value.linear;
+        b.m_angularVelocity = value.angular;
     }
     
     /// @brief Calls the given body sweep's <code>Advance0</code> method to advance to
@@ -227,10 +214,21 @@ private:
         assert(b.IsSpeedable() || b.m_sweep.pos1 == b.m_sweep.pos0);
     }
     
-    /// @brief Calls the given body's Advance method to advance to the given TOI.
-    static void Advance(Body& b, Real toi) noexcept
+    /// Advances the body by a given time ratio.
+    /// @details This method:
+    ///    1. advances the body's sweep to the given time ratio;
+    ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
+    ///    3. updates the body's transform to the new sweep one settings.
+    /// @param alpha Valid new time factor in [0,1) to advance the sweep to.
+    static void Advance(Body& b, Real value) noexcept
     {
-        b.Advance(toi);
+        //assert(m_sweep.GetAlpha0() <= alpha);
+        assert(IsSpeedable(b) || b.m_sweep.pos1 == b.m_sweep.pos0);
+
+        // Advance to the new safe time. This doesn't sync the broad-phase.
+        b.m_sweep.Advance0(value);
+        b.m_sweep.pos1 = b.m_sweep.pos0;
+        b.m_xf = GetTransform1(b.m_sweep);
     }
     
     /// @brief Restores the given body's sweep to the given sweep value.
@@ -241,17 +239,17 @@ private:
     }
     
     /// @brief Clears the given body's joints list.
-    static void ClearJoints(Body& b, std::function<void(Joint&)> callback)
+    static void ClearJoints(Body& b, std::function<void(JointID)> callback)
     {
         auto joints = std::move(b.m_joints);
         assert(empty(b.m_joints));
         std::for_each(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr j) {
-            callback(*(std::get<Joint*>(j)));
+            callback(std::get<JointID>(j));
         });
     }
     
     /// @brief Erases the given body's contacts.
-    static void EraseContacts(Body& b, const std::function<bool(Contact&)>& callback)
+    static void EraseContacts(Body& b, const std::function<bool(ContactID)>& callback)
     {
         auto last = end(b.m_contacts);
         auto iter = begin(b.m_contacts);
@@ -259,7 +257,7 @@ private:
         while (iter != last)
         {
             const auto contact = GetContactPtr(*iter);
-            if (callback(*contact))
+            if (callback(contact))
             {
                 b.m_contacts.erase(iter);
                 iter = begin(b.m_contacts) + index;
@@ -317,6 +315,18 @@ private:
     static void UnsetMassDataDirty(Body& b) noexcept
     {
         b.UnsetMassDataDirty();
+    }
+
+    static void SetEnabled(Body& body, bool value) noexcept
+    {
+        if (value)
+        {
+            body.SetEnabledFlag();
+        }
+        else
+        {
+            body.UnsetEnabledFlag();
+        }
     }
 
     friend class WorldImpl;

@@ -28,21 +28,6 @@ namespace playrho {
 namespace d2 {
 
 namespace {
-#if 0
-inline bool IsEachVertexFarEnoughApart(Span<const Length2> vertices)
-{
-    for (auto i = decltype(size(vertices)){1}; i < size(vertices); ++i)
-    {
-        const auto delta = vertices[i-1] - vertices[i];
-        // XXX not quite right unit-wise but this works well enough.
-        if (GetMagnitudeSquared(delta) <= DefaultLinearSlop)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-#endif
 
 void ResetNormals(std::vector<UnitVec>& normals, const std::vector<Length2>& vertices)
 {

@@ -45,27 +45,20 @@ namespace d2 {
 class PrismaticJoint : public Joint
 {
 public:
-    
     /// @brief Initializing constructor.
     /// @attention To create or use the joint within a world instance, call that world
     ///   instance's create joint method instead of calling this constructor directly.
     /// @see World::CreateJoint
     PrismaticJoint(const PrismaticJointConf& def);
-    
+
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
 
-    Length2 GetAnchorA() const override;
-    Length2 GetAnchorB() const override;
+    Length2 GetLocalAnchorA() const noexcept override { return m_localAnchorA; }
+    Length2 GetLocalAnchorB() const noexcept override { return m_localAnchorB; }
 
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
-
-    /// @brief Gets the local anchor point relative to body A's origin.
-    Length2 GetLocalAnchorA() const { return m_localAnchorA; }
-
-    /// @brief Gets the local anchor point relative to body B's origin.
-    Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// @brief Gets local joint axis relative to body-A.
     UnitVec GetLocalAxisA() const { return m_localXAxisA; }
@@ -92,7 +85,8 @@ public:
     bool IsMotorEnabled() const noexcept;
 
     /// Enable/disable the joint motor.
-    void EnableMotor(bool flag) noexcept;
+    /// @return Whether state changed or not.
+    bool EnableMotor(bool flag) noexcept;
 
     /// @brief Sets the motor speed.
     void SetMotorSpeed(AngularVelocity speed) noexcept;
@@ -113,7 +107,7 @@ public:
     /// @note This will be <code>e_inactiveLimit</code> unless the joint limit has been
     ///   enabled.
     LimitState GetLimitState() const noexcept;
-    
+
 private:
     void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                  const ConstraintSolverConf& conf) override;
@@ -180,11 +174,11 @@ inline Joint::LimitState PrismaticJoint::GetLimitState() const noexcept
 
 /// @brief Get the current joint translation.
 /// @relatedalso PrismaticJoint
-Length GetJointTranslation(const PrismaticJoint& joint) noexcept;
+Length GetJointTranslation(const World& world, const PrismaticJoint& joint) noexcept;
 
 /// @brief Get the current joint translation speed.
 /// @relatedalso PrismaticJoint
-LinearVelocity GetLinearVelocity(const PrismaticJoint& joint) noexcept;
+LinearVelocity GetLinearVelocity(const World& world, const PrismaticJoint& joint) noexcept;
 
 /// @brief Gets the current motor force for the given joint, given the inverse time step.
 /// @relatedalso PrismaticJoint

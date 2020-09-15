@@ -21,16 +21,11 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/BodyAtty.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureAtty.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
-#include <PlayRho/Dynamics/JointAtty.hpp>
-#include <PlayRho/Dynamics/ContactAtty.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
@@ -72,17 +67,6 @@
 #include <vector>
 #include <unordered_map>
 
-#ifdef DO_PAR_UNSEQ
-#include <atomic>
-#endif
-
-//#define DO_THREADED
-#if defined(DO_THREADED)
-#include <future>
-#endif
-
-#define PLAYRHO_MAGIC(x) (x)
-
 using std::for_each;
 using std::remove;
 using std::sort;
@@ -94,11 +78,11 @@ namespace d2 {
 
 using playrho::size;
 
-World::World(const WorldConf& def): m_impl{std::make_unique<WorldImpl>(*this, def)}
+World::World(const WorldConf& def): m_impl{std::make_unique<WorldImpl>(def)}
 {
 }
 
-World::World(const World& other): m_impl{std::make_unique<WorldImpl>(*this, *other.m_impl)}
+World::World(const World& other): m_impl{std::make_unique<WorldImpl>(*other.m_impl)}
 {
 }
 
@@ -115,24 +99,54 @@ void World::Clear()
     m_impl->Clear();
 }
 
-Body* World::CreateBody(const BodyConf& def)
+void World::SetFixtureDestructionListener(const FixtureListener& listener) noexcept
+{
+    m_impl->SetFixtureDestructionListener(listener);
+}
+
+void World::SetJointDestructionListener(JointListener listener) noexcept
+{
+    m_impl->SetJointDestructionListener(listener);
+}
+
+void World::SetBeginContactListener(ContactListener listener) noexcept
+{
+    m_impl->SetBeginContactListener(listener);
+}
+
+void World::SetEndContactListener(ContactListener listener) noexcept
+{
+    m_impl->SetEndContactListener(listener);
+}
+
+void World::SetPreSolveContactListener(ManifoldContactListener listener) noexcept
+{
+    m_impl->SetPreSolveContactListener(listener);
+}
+
+void World::SetPostSolveContactListener(ImpulsesContactListener listener) noexcept
+{
+    m_impl->SetPostSolveContactListener(listener);
+}
+
+BodyID World::CreateBody(const BodyConf& def)
 {
     return m_impl->CreateBody(def);
 }
 
-void World::Destroy(Body* body)
+void World::Destroy(BodyID id)
 {
-    m_impl->Destroy(body);
+    m_impl->Destroy(id);
 }
 
-Joint* World::CreateJoint(const JointConf& def)
+JointID World::CreateJoint(const JointConf& def)
 {
     return m_impl->CreateJoint(def);
 }
 
-void World::Destroy(Joint* joint)
+void World::Destroy(JointID id)
 {
-    m_impl->Destroy(joint);
+    m_impl->Destroy(id);
 }
     
 StepStats World::Step(const StepConf& conf)
@@ -143,11 +157,6 @@ StepStats World::Step(const StepConf& conf)
 void World::ShiftOrigin(Length2 newOrigin)
 {
     m_impl->ShiftOrigin(newOrigin);
-}
-
-SizedRange<World::Bodies::iterator> World::GetBodies() noexcept
-{
-    return m_impl->GetBodies();
 }
 
 SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
@@ -170,9 +179,34 @@ SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
     return m_impl->GetJoints();
 }
 
-SizedRange<World::Joints::iterator> World::GetJoints() noexcept
+SizedRange<World::BodyJoints::const_iterator> World::GetJoints(BodyID id) const
 {
-    return m_impl->GetJoints();
+    return ::playrho::d2::GetJoints(*m_impl, id);
+}
+
+bool World::IsSpeedable(BodyID id) const
+{
+    return ::playrho::d2::IsSpeedable(*m_impl, id);
+}
+
+bool World::IsAccelerable(BodyID id) const
+{
+    return ::playrho::d2::IsAccelerable(*m_impl, id);
+}
+
+bool World::IsImpenetrable(BodyID id) const
+{
+    return ::playrho::d2::IsImpenetrable(*m_impl, id);
+}
+
+SizedRange<World::Contacts::const_iterator> World::GetContacts(BodyID id) const
+{
+    return ::playrho::d2::GetContacts(*m_impl, id);
+}
+
+void* World::GetUserData(BodyID id) const
+{
+    return ::playrho::d2::GetUserData(*m_impl, id);
 }
 
 SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
@@ -220,59 +254,335 @@ const DynamicTree& World::GetTree() const noexcept
     return m_impl->GetTree();
 }
 
-void World::SetDestructionListener(DestructionListener* listener) noexcept
+void World::Refilter(FixtureID id)
 {
-    m_impl->SetDestructionListener(listener);
+    m_impl->Refilter(id);
 }
 
-void World::SetContactListener(ContactListener* listener) noexcept
+void World::SetFilterData(FixtureID id, const Filter& filter)
 {
-    m_impl->SetContactListener(listener);
+    m_impl->SetFilterData(id, filter);
 }
 
-void World::Refilter(Fixture& fixture)
+void World::SetType(BodyID id, BodyType type)
 {
-    m_impl->Refilter(fixture);
+    m_impl->SetType(id, type);
 }
 
-void World::SetFilterData(Fixture& fixture, const Filter& filter)
-{
-    m_impl->SetFilterData(fixture, filter);
-}
-
-void World::SetType(Body& body, BodyType type)
-{
-    m_impl->SetType(body, type);
-}
-
-Fixture* World::CreateFixture(Body& body, const Shape& shape, const FixtureConf& def, bool resetMassData)
+FixtureID World::CreateFixture(BodyID body, const Shape& shape, const FixtureConf& def,
+                              bool resetMassData)
 {
     return m_impl->CreateFixture(body, shape, def, resetMassData);
 }
 
-bool World::Destroy(Fixture& fixture, bool resetMassData)
+bool World::Destroy(FixtureID id, bool resetMassData)
 {
-    return m_impl->Destroy(fixture, resetMassData);
+    return m_impl->Destroy(id, resetMassData);
 }
 
-void World::DestroyFixtures(Body& body)
+void World::DestroyFixtures(BodyID id)
 {
-    m_impl->DestroyFixtures(body);
+    m_impl->DestroyFixtures(id);
 }
 
-void World::SetEnabled(Body& body, bool flag)
+bool World::IsEnabled(BodyID id) const
 {
-    m_impl->SetEnabled(body, flag);
+    return ::playrho::d2::IsEnabled(*m_impl, id);
 }
 
-void World::SetMassData(Body& body, const MassData& massData)
+void World::SetEnabled(BodyID id, bool flag)
 {
-    m_impl->SetMassData(body, massData);
+    ::playrho::d2::SetEnabled(*m_impl, id, flag);
 }
 
-void World::SetTransform(Body& body, Length2 location, Angle angle)
+MassData World::ComputeMassData(BodyID id) const
 {
-    m_impl->SetTransform(body, location, angle);
+    return ::playrho::d2::ComputeMassData(*m_impl, id);
+}
+
+void World::SetMassData(BodyID id, const MassData& massData)
+{
+    ::playrho::d2::SetMassData(*m_impl, id, massData);
+}
+
+SizedRange<World::Fixtures::const_iterator> World::GetFixtures(BodyID id) const
+{
+    return ::playrho::d2::GetFixtures(*m_impl, id);
+}
+
+std::size_t World::GetShapeCount() const noexcept
+{
+    return m_impl->GetShapeCount();
+}
+
+std::size_t World::GetFixtureCount(BodyID id) const
+{
+    return m_impl->GetFixtureCount(id);
+}
+
+BodyConf World::GetBodyConf(BodyID id) const
+{
+    return ::playrho::d2::GetBodyConf(*m_impl, id);
+}
+
+BodyID World::GetBodyID(FixtureID id) const
+{
+    return ::playrho::d2::GetBodyID(*m_impl, id);
+}
+
+void* World::GetUserData(FixtureID id) const
+{
+    return ::playrho::d2::GetUserData(*m_impl, id);
+}
+
+Shape World::GetShape(FixtureID id) const
+{
+    return ::playrho::d2::GetShape(*m_impl, id);
+}
+
+void World::SetSensor(FixtureID id, bool value)
+{
+    ::playrho::d2::SetSensor(*m_impl, id, value);
+}
+
+bool World::IsSensor(FixtureID id) const
+{
+    return ::playrho::d2::IsSensor(*m_impl, id);
+}
+
+AreaDensity World::GetDensity(FixtureID id) const
+{
+    return ::playrho::d2::GetDensity(*m_impl, id);
+}
+
+const World::FixtureProxies& World::GetProxies(FixtureID id) const
+{
+    return ::playrho::d2::GetProxies(*m_impl, id);
+}
+
+Angle World::GetAngle(BodyID id) const
+{
+    return ::playrho::d2::GetAngle(*m_impl, id);
+}
+
+Transformation World::GetTransformation(BodyID id) const
+{
+    return ::playrho::d2::GetTransformation(*m_impl, id);
+}
+
+void World::SetTransformation(BodyID id, Transformation xfm)
+{
+    return ::playrho::d2::SetTransformation(*m_impl, id, xfm);
+}
+
+Length2 World::GetLocalCenter(BodyID id) const
+{
+    return ::playrho::d2::GetLocalCenter(*m_impl, id);
+}
+
+Length2 World::GetWorldCenter(BodyID id) const
+{
+    return ::playrho::d2::GetWorldCenter(*m_impl, id);
+}
+
+Velocity World::GetVelocity(BodyID id) const
+{
+    return ::playrho::d2::GetVelocity(*m_impl, id);
+}
+
+void World::SetVelocity(BodyID id, const Velocity& value)
+{
+    ::playrho::d2::SetVelocity(*m_impl, id, value);
+}
+
+void World::UnsetAwake(BodyID id)
+{
+    ::playrho::d2::UnsetAwake(*m_impl, id);
+}
+
+void World::SetAwake(BodyID id)
+{
+    ::playrho::d2::SetAwake(*m_impl, id);
+}
+
+void World::EnableMotor(JointID id, bool flag)
+{
+    return ::playrho::d2::EnableMotor(*m_impl, id, flag);
+}
+
+void World::SetAwake(JointID id)
+{
+    ::playrho::d2::SetAwake(*m_impl, id);
+}
+
+bool World::IsAwake(ContactID id) const
+{
+    return ::playrho::d2::IsAwake(*m_impl, id);
+}
+
+void World::SetAwake(ContactID id)
+{
+    ::playrho::d2::SetAwake(*m_impl, id);
+}
+
+bool World::IsMassDataDirty(BodyID id) const
+{
+    return ::playrho::d2::IsMassDataDirty(*m_impl, id);
+}
+
+bool World::IsFixedRotation(BodyID id) const
+{
+    return ::playrho::d2::IsFixedRotation(*m_impl, id);
+}
+
+void World::SetFixedRotation(BodyID id, bool value)
+{
+    ::playrho::d2::SetFixedRotation(*m_impl, id, value);
+}
+
+BodyType World::GetType(BodyID id) const
+{
+    return ::playrho::d2::GetType(*m_impl, id);
+}
+
+JointType World::GetType(JointID id) const
+{
+    return ::playrho::d2::GetType(*m_impl, id);
+}
+
+bool World::IsAwake(BodyID id) const
+{
+    return ::playrho::d2::IsAwake(*m_impl, id);
+}
+
+LinearAcceleration2 World::GetLinearAcceleration(BodyID id) const
+{
+    return ::playrho::d2::GetLinearAcceleration(*m_impl, id);
+}
+
+AngularAcceleration World::GetAngularAcceleration(BodyID id) const
+{
+    return ::playrho::d2::GetAngularAcceleration(*m_impl, id);
+}
+
+void World::SetAcceleration(BodyID id, LinearAcceleration2 linear, AngularAcceleration angular)
+{
+    ::playrho::d2::SetAcceleration(*m_impl, id, linear, angular);
+}
+
+InvMass World::GetInvMass(BodyID id) const
+{
+    return ::playrho::d2::GetInvMass(*m_impl, id);
+}
+
+InvRotInertia World::GetInvRotInertia(BodyID id) const
+{
+    return ::playrho::d2::GetInvRotInertia(*m_impl, id);
+}
+
+bool World::GetCollideConnected(JointID id) const
+{
+    return ::playrho::d2::GetCollideConnected(*m_impl, id);
+}
+
+void* World::GetUserData(JointID id) const
+{
+    return ::playrho::d2::GetUserData(*m_impl, id);
+}
+
+BodyID World::GetBodyA(JointID id) const
+{
+    return ::playrho::d2::GetBodyA(*m_impl, id);
+}
+
+BodyID World::GetBodyB(JointID id) const
+{
+    return ::playrho::d2::GetBodyB(*m_impl, id);
+}
+
+Length2 World::GetLocalAnchorA(JointID id) const
+{
+    return ::playrho::d2::GetLocalAnchorA(*m_impl, id);
+}
+
+Length2 World::GetLocalAnchorB(JointID id) const
+{
+    return ::playrho::d2::GetLocalAnchorB(*m_impl, id);
+}
+
+Momentum2 World::GetLinearReaction(JointID id) const
+{
+    return ::playrho::d2::GetLinearReaction(*m_impl, id);
+}
+
+AngularMomentum World::GetAngularReaction(JointID id) const
+{
+    return ::playrho::d2::GetAngularReaction(*m_impl, id);
+}
+
+Angle World::GetReferenceAngle(JointID id) const
+{
+    return ::playrho::d2::GetReferenceAngle(*m_impl, id);
+}
+
+UnitVec World::GetLocalAxisA(JointID id) const
+{
+    return ::playrho::d2::GetLocalAxisA(*m_impl, id);
+}
+
+bool World::IsTouching(ContactID id) const
+{
+    return ::playrho::d2::IsTouching(*m_impl, id);
+}
+
+bool World::NeedsFiltering(ContactID id) const
+{
+    return ::playrho::d2::NeedsFiltering(*m_impl, id);
+}
+
+FixtureID World::GetFixtureA(ContactID id) const
+{
+    return ::playrho::d2::GetFixtureA(*m_impl, id);
+}
+
+FixtureID World::GetFixtureB(ContactID id) const
+{
+    return ::playrho::d2::GetFixtureB(*m_impl, id);
+}
+
+Real World::GetDefaultFriction(ContactID id) const
+{
+    return ::playrho::d2::GetDefaultFriction(*m_impl, id);
+}
+
+Real World::GetDefaultRestitution(ContactID id) const
+{
+    return ::playrho::d2::GetDefaultRestitution(*m_impl, id);
+}
+
+Real World::GetFriction(ContactID id) const
+{
+    return ::playrho::d2::GetFriction(*m_impl, id);
+}
+
+Real World::GetRestitution(ContactID id) const
+{
+    return ::playrho::d2::GetRestitution(*m_impl, id);
+}
+
+void World::SetFriction(ContactID id, Real value)
+{
+    ::playrho::d2::SetFriction(*m_impl, id, value);
+}
+
+void World::SetRestitution(ContactID id, Real value)
+{
+    ::playrho::d2::SetRestitution(*m_impl, id, value);
+}
+
+const Manifold& World::GetManifold(ContactID id) const
+{
+    return ::playrho::d2::GetManifold(*m_impl, id);
 }
 
 // Free functions...
@@ -297,8 +607,8 @@ ContactCounter GetTouchingCount(const World& world) noexcept
 {
     const auto contacts = world.GetContacts();
     return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
-                                                [&](const World::Contacts::value_type &c) {
-        return GetRef(std::get<Contact*>(c)).IsTouching();
+                                                [&](const auto &c) {
+        return world.IsTouching(std::get<ContactID>(c));
     }));
 }
 
@@ -306,32 +616,23 @@ size_t GetFixtureCount(const World& world) noexcept
 {
     auto sum = size_t{0};
     const auto bodies = world.GetBodies();
-    for_each(cbegin(bodies), cend(bodies),
-             [&](const World::Bodies::value_type &body) {
-        sum += GetFixtureCount(GetRef(body));
+    for_each(begin(bodies), end(bodies), [&world,&sum](const auto &b) {
+        sum += GetFixtureCount(world, b);
     });
     return sum;
 }
 
 size_t GetShapeCount(const World& world) noexcept
 {
-    auto shapes = std::set<const void*>();
-    const auto bodies = world.GetBodies();
-    for_each(cbegin(bodies), cend(bodies), [&](const World::Bodies::value_type &b) {
-        const auto fixtures = GetRef(b).GetFixtures();
-        for_each(cbegin(fixtures), cend(fixtures), [&](const Body::Fixtures::value_type& f) {
-            shapes.insert(GetData(GetRef(f).GetShape()));
-        });
-    });
-    return size(shapes);
+    return world.GetShapeCount();
 }
 
 BodyCounter GetAwakeCount(const World& world) noexcept
 {
     const auto bodies = world.GetBodies();
     return static_cast<BodyCounter>(count_if(cbegin(bodies), cend(bodies),
-                                             [&](const World::Bodies::value_type &b) {
-                                                 return GetRef(b).IsAwake(); }));
+                                             [&](const auto &b) {
+                                                 return IsAwake(world, b); }));
 }
     
 BodyCounter Awaken(World& world) noexcept
@@ -339,8 +640,8 @@ BodyCounter Awaken(World& world) noexcept
     // Can't use count_if since body gets modified.
     auto awoken = BodyCounter{0};
     const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&](World::Bodies::value_type &b) {
-        if (playrho::d2::Awaken(GetRef(b)))
+    for_each(begin(bodies), end(bodies), [&world,&awoken](const auto &b) {
+        if (::playrho::d2::Awaken(world, b))
         {
             ++awoken;
         }
@@ -351,51 +652,50 @@ BodyCounter Awaken(World& world) noexcept
 void SetAccelerations(World& world, Acceleration acceleration) noexcept
 {
     const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&](World::Bodies::value_type &b) {
-        SetAcceleration(GetRef(b), acceleration);
+    for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
+        SetAcceleration(world, b, acceleration);
     });
 }
 
 void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
 {
     const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&](World::Bodies::value_type &b) {
-        SetLinearAcceleration(GetRef(b), acceleration);
+    for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
+        SetAcceleration(world, b, acceleration);
     });
 }
 
-Body* FindClosestBody(const World& world, Length2 location) noexcept
+BodyID FindClosestBody(const World& world, Length2 location) noexcept
 {
     const auto bodies = world.GetBodies();
-    auto found = static_cast<decltype(bodies)::iterator_type::value_type>(nullptr);
+    auto found = InvalidBodyID;
     auto minLengthSquared = std::numeric_limits<Area>::infinity();
-    for (const auto& b: bodies)
+    for (const auto& body: bodies)
     {
-        auto& body = GetRef(b);
-        const auto bodyLoc = body.GetLocation();
+        const auto bodyLoc = GetLocation(world, body);
         const auto lengthSquared = GetMagnitudeSquared(bodyLoc - location);
         if (minLengthSquared > lengthSquared)
         {
             minLengthSquared = lengthSquared;
-            found = &body;
+            found = body;
         }
     }
     return found;
 }
 
-void SetLocation(World& world, Body& body, Length2 value) noexcept
+void SetLocation(World& world, BodyID body, Length2 value)
 {
-    world.SetTransform(body, value, body.GetSweep().pos1.angular);
+    SetTransform(world, body, value, GetAngle(world, body));
 }
 
-void SetAngle(World& world, Body& body, Angle value) noexcept
+void SetAngle(World& world, BodyID body, Angle value)
 {
-    world.SetTransform(body, GetLocation(body), value);
+    SetTransform(world, body, GetLocation(world, body), value);
 }
 
-void RotateAboutWorldPoint(World& world, Body& body, Angle amount, Length2 worldPoint)
+void RotateAboutWorldPoint(World& world, BodyID body, Angle amount, Length2 worldPoint)
 {
-    const auto xfm = body.GetTransformation();
+    const auto xfm = GetTransformation(world, body);
     const auto p = xfm.p - worldPoint;
     const auto c = cos(amount);
     const auto s = sin(amount);
@@ -403,31 +703,29 @@ void RotateAboutWorldPoint(World& world, Body& body, Angle amount, Length2 world
     const auto y = GetX(p) * s + GetY(p) * c;
     const auto pos = Length2{x, y} + worldPoint;
     const auto angle = GetAngle(xfm.q) + amount;
-    world.SetTransform(body, pos, angle);
+    SetTransform(world, body, pos, angle);
 }
 
-void RotateAboutLocalPoint(World& world, Body& body, Angle amount, Length2 localPoint)
+void RotateAboutLocalPoint(World& world, BodyID body, Angle amount, Length2 localPoint)
 {
-    RotateAboutWorldPoint(world, body, amount, GetWorldPoint(body, localPoint));
+    RotateAboutWorldPoint(world, body, amount, GetWorldPoint(world, body, localPoint));
 }
 
-Acceleration CalcGravitationalAcceleration(const World& world, const Body& body) noexcept
+Acceleration CalcGravitationalAcceleration(const World& world, BodyID body)
 {
-    const auto m1 = GetMass(body);
+    const auto m1 = GetMass(world, body);
     if (m1 != 0_kg)
     {
-        const auto loc1 = GetLocation(body);
         auto sumForce = Force2{};
-        const auto bodies = world.GetBodies();
-        for (auto jt = begin(bodies); jt != end(bodies); jt = std::next(jt))
+        const auto loc1 = GetLocation(world, body);
+        for (const auto& b2: world.GetBodies())
         {
-            const auto& b2 = *(*jt);
-            if (&b2 == &body)
+            if (b2 == body)
             {
                 continue;
             }
-            const auto m2 = GetMass(b2);
-            const auto delta = GetLocation(b2) - loc1;
+            const auto m2 = GetMass(world, b2);
+            const auto delta = GetLocation(world, b2) - loc1;
             const auto dir = GetUnitVector(delta);
             const auto rr = GetMagnitudeSquared(delta);
 
@@ -449,21 +747,73 @@ Acceleration CalcGravitationalAcceleration(const World& world, const Body& body)
     return Acceleration{};
 }
 
-BodyCounter GetWorldIndex(const World& world, const Body* body) noexcept
+BodyCounter GetWorldIndex(const World& world, BodyID id) noexcept
 {
-    if (body)
+    const auto elems = world.GetBodies();
+    const auto it = std::find(cbegin(elems), cend(elems), id);
+    if (it != cend(elems))
     {
-        const auto bodies = world.GetBodies();
-        auto i = BodyCounter{0};
-        const auto it = std::find_if(cbegin(bodies), cend(bodies), [&](const Body *b) {
-            return b == body || ((void) ++i, false);
-        });
-        if (it != end(bodies))
-        {
-            return i;
-        }
+        return static_cast<BodyCounter>(std::distance(cbegin(elems), it));
     }
     return BodyCounter(-1);
+}
+
+ChildCounter GetProxyCount(const World& world, FixtureID id)
+{
+    return static_cast<ChildCounter>(size(GetProxies(world, id)));
+}
+
+const FixtureProxy& GetProxy(const World& world, FixtureID id, ChildCounter child)
+{
+    return GetProxies(world, id).at(child);
+}
+
+JointCounter GetWorldIndex(const World& world, JointID id) noexcept
+{
+    const auto elems = world.GetJoints();
+    const auto it = std::find(cbegin(elems), cend(elems), id);
+    if (it != cend(elems))
+    {
+        return static_cast<JointCounter>(std::distance(cbegin(elems), it));
+    }
+    return JointCounter(-1);
+}
+
+bool ShouldCollide(const World& world, BodyID lhs, BodyID rhs)
+{
+    // At least one body should be accelerable/dynamic.
+    if (!IsAccelerable(GetType(world, lhs)) && !IsAccelerable(GetType(world, rhs)))
+    {
+        return false;
+    }
+
+    // Does a joint prevent collision?
+    const auto joints = GetJoints(world, lhs);
+    const auto it = std::find_if(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr ji) {
+        return (std::get<0>(ji) == rhs) && !world.GetCollideConnected(std::get<JointID>(ji));
+    });
+    return it == end(joints);
+}
+
+bool TestPoint(const World& world, FixtureID id, Length2 p)
+{
+    return TestPoint(GetShape(world, id), InverseTransform(p, GetTransformation(world, id)));
+}
+
+Force2 GetCentripetalForce(const World& world, BodyID id, Length2 axis)
+{
+    // For background on centripetal force, see:
+    //   https://en.wikipedia.org/wiki/Centripetal_force
+
+    // Force is M L T^-2.
+    const auto velocity = GetLinearVelocity(world, id);
+    const auto magnitudeOfVelocity = GetMagnitude(GetVec2(velocity)) * MeterPerSecond;
+    const auto location = GetLocation(world, id);
+    const auto mass = GetMass(world, id);
+    const auto delta = axis - location;
+    const auto invRadius = Real{1} / GetMagnitude(delta);
+    const auto dir = delta * invRadius;
+    return Force2{dir * mass * Square(magnitudeOfVelocity) * invRadius};
 }
 
 } // namespace d2

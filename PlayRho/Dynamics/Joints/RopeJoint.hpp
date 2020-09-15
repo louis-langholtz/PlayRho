@@ -44,27 +44,20 @@ namespace d2 {
 class RopeJoint : public Joint
 {
 public:
-    
     /// @brief Initializing constructor.
     /// @attention To create or use the joint within a world instance, call that world
     ///   instance's create joint method instead of calling this constructor directly.
     /// @see World::CreateJoint
     RopeJoint(const RopeJointConf& data);
-    
+
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
 
-    Length2 GetAnchorA() const override;
-    Length2 GetAnchorB() const override;
+    Length2 GetLocalAnchorA() const noexcept override { return m_localAnchorA; }
+    Length2 GetLocalAnchorB() const noexcept override { return m_localAnchorB; }
 
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
-
-    /// The local anchor point relative to body A's origin.
-    Length2 GetLocalAnchorA() const { return m_localAnchorA; }
-
-    /// The local anchor point relative to body B's origin.
-    Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// @brief Sets the maximum length of the rope.
     void SetMaxLength(Length length) { m_maxLength = length; }
@@ -76,7 +69,6 @@ public:
     LimitState GetLimitState() const;
 
 private:
-
     void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                  const ConstraintSolverConf& conf) override;
     bool SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step) override;

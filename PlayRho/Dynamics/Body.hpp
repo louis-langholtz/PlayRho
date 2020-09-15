@@ -28,9 +28,12 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Range.hpp>
 #include <PlayRho/Dynamics/BodyType.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
-#include <PlayRho/Dynamics/Joints/JointKey.hpp>
+#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
+#include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 
@@ -45,7 +48,6 @@ namespace d2 {
 
 struct FixtureConf;
 class Shape;
-struct BodyConf;
 
 /// @brief Physical entity that exists within a World.
 ///
@@ -71,12 +73,11 @@ struct BodyConf;
 class Body
 {
 public:
-    
     /// @brief Container type for fixtures.
-    using Fixtures = std::vector<Fixture*>;
+    using Fixtures = std::vector<FixtureID>;
 
     /// @brief Keyed joint pointer.
-    using KeyedJointPtr = std::pair<Body*, Joint*>;
+    using KeyedJointPtr = std::pair<BodyID, JointID>;
 
     /// @brief Container type for joints.
     using Joints = std::vector<KeyedJointPtr>;
@@ -115,6 +116,9 @@ public:
         /// @brief Enabled flag.
         e_enabledFlag = FlagsType(0x0020),
         
+        /// @brief Allocated flag.
+        e_allocatedFlag = FlagsType(0x0040),
+
         /// @brief Velocity flag.
         /// @details Set this to enable changes in position due to velocity.
         /// Bodies with this set are "speedable" - either kinematic or dynamic bodies.
@@ -134,6 +138,9 @@ public:
 
     /// @brief Gets the flags for the given value.
     static FlagsType GetFlags(const BodyConf& bd) noexcept;
+
+    /// @brief Initializing constructor.
+    explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
 
     /// @brief Gets the body transform for the body's origin.
     /// @return the world transform of the body's origin.
@@ -204,13 +211,6 @@ public:
     /// them all the time by the rotational inertia.
     /// @return Inverse rotational inertia (in 1/kg-m^2).
     InvRotInertia GetInvRotInertia() const noexcept;
-
-    /// @brief Resets the mass data properties.
-    /// @details This resets the mass data to the sum of the mass properties of the fixtures.
-    /// @note This method must be called after calling <code>CreateFixture</code> to update the
-    ///   body mass data properties unless <code>SetMassData</code> is used.
-    /// @see SetMassData.
-    void ResetMassData();
 
     /// @brief Gets the linear damping of the body.
     Frequency GetLinearDamping() const noexcept;
@@ -341,19 +341,7 @@ public:
     bool IsMassDataDirty() const noexcept;
     
 private:
-
     friend class BodyAtty;
-    
-    Body() = delete;
-    
-    Body(const Body& other) = delete;
-
-    /// @brief Initializing constructor.
-    /// @note This is not meant to be called directly by users of the library API. Call
-    ///   a world instance's <code>World::CreateBody</code> method instead.
-    Body(const BodyConf& bd);
-    
-    ~Body() noexcept;
     
     /// @brief Whether this body is in is-in-island state.
     bool IsIslanded() const noexcept;
@@ -373,14 +361,6 @@ private:
     /// @brief Unsets the body's awake flag.
     void UnsetAwakeFlag() noexcept;
 
-    /// Advances the body by a given time ratio.
-    /// @details This method:
-    ///    1. advances the body's sweep to the given time ratio;
-    ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
-    ///    3. updates the body's transform to the new sweep one settings.
-    /// @param alpha Valid new time factor in [0,1) to advance the sweep to.
-    void Advance(Real alpha) noexcept;
-
     /// @brief Sets this body to have the mass data dirty state.
     void SetMassDataDirty() noexcept;
     
@@ -394,16 +374,16 @@ private:
     void UnsetEnabledFlag() noexcept;
 
     /// @brief Inserts the given key and contact.
-    bool Insert(ContactKey key, Contact* contact);
+    bool Insert(ContactKey key, ContactID contact);
     
     /// @brief Inserts the given joint into this body's joints list.
-    bool Insert(Joint* joint);
+    bool Insert(JointID joint, BodyID other);
 
     /// @brief Erases the given contact from this body's contacts list.
-    bool Erase(const Contact* contact);
+    bool Erase(ContactID contact);
     
     /// @brief Erases the given joint from this body's joints list.
-    bool Erase(const Joint* joint);
+    bool Erase(JointID joint);
 
     /// @brief Clears this body's contacts list.
     void ClearContacts();
@@ -411,36 +391,37 @@ private:
     /// @brief Clears this body's joints list.
     void ClearJoints();
 
-    /// @brief Sets the transformation for this body.
-    /// @details If value is different than the current transformation, then this
-    ///   method updates the current transformation and flags each associated contact
-    ///   for updating.
-    /// @warning Behavior is undefined if value is invalid.
-    void SetTransformation(Transformation value) noexcept;
-
     //
     // Member variables. Try to keep total size small.
     //
 
+    // These three aren't "essential parts". They don't contribute to this instance's "value".
+    mutable Fixtures m_fixtures; ///< Cache of associated fixtures (owned by world).
+    mutable Contacts m_contacts; ///< Cache of associated contacts (owned by world).
+    mutable Joints m_joints; ///< Cache of associated joints (owned by world).
+
+    void* m_userData = nullptr; ///< User data. 8-bytes.
+
     /// Transformation for body origin.
-    /// @details
-    /// This is essentially the cached result of <code>GetTransform1(m_sweep)</code>. 16-bytes.
+    /// @note Also availble from <code>GetTransform1(m_sweep)</code>.
+    /// @note 16-bytes.
     Transformation m_xf;
 
     Sweep m_sweep; ///< Sweep motion for CCD. 36-bytes.
 
-    Velocity m_velocity; ///< Velocity (linear and angular). 12-bytes.
     FlagsType m_flags = 0; ///< Flags. 2-bytes.
+
+    /// @brief Linear velocity.
+    /// @note 8-bytes.
+    LinearVelocity2 m_linearVelocity = LinearVelocity2{};
 
     /// @brief Linear acceleration.
     /// @note 8-bytes.
     LinearAcceleration2 m_linearAcceleration = LinearAcceleration2{};
 
-    void* m_userData; ///< User data. 8-bytes.
-    
-    Fixtures m_fixtures; ///< Container of fixtures.
-    Contacts m_contacts; ///< Container of contacts (owned by world).
-    Joints m_joints; ///< Container of joints (owned by world).
+    /// @brief Angular velocity.
+    /// @note 4-bytes.
+    AngularVelocity m_angularVelocity = AngularVelocity{};
 
     /// @brief Angular acceleration.
     /// @note 4-bytes.
@@ -511,6 +492,9 @@ inline const Sweep& Body::GetSweep() const noexcept
 
 inline Angle Body::GetAngle() const noexcept
 {
+    // Angle could also come from the body's transformation but that requires converting
+    // from its unit vector to an angle while that angle is already cached in position 1 of
+    // the sweep.
     return GetSweep().pos1.angular;
 }
 
@@ -526,7 +510,7 @@ inline Length2 Body::GetLocalCenter() const noexcept
 
 inline Velocity Body::GetVelocity() const noexcept
 {
-    return m_velocity;
+    return Velocity{m_linearVelocity, m_angularVelocity};
 }
 
 inline InvMass Body::GetInvMass() const noexcept
@@ -607,7 +591,8 @@ inline void Body::UnsetAwake() noexcept
     {
         UnsetAwakeFlag();
         m_underActiveTime = 0;
-        m_velocity = Velocity{LinearVelocity2{}, 0_rpm};
+        m_linearVelocity = LinearVelocity2{};
+        m_angularVelocity = 0_rpm;
     }
 }
 
@@ -718,17 +703,6 @@ inline AngularAcceleration Body::GetAngularAcceleration() const noexcept
     return m_angularAcceleration;
 }
 
-inline void Body::Advance(Real alpha) noexcept
-{
-    //assert(m_sweep.GetAlpha0() <= alpha);
-    assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
-
-    // Advance to the new safe time. This doesn't sync the broad-phase.
-    m_sweep.Advance0(alpha);
-    m_sweep.pos1 = m_sweep.pos0;
-    SetTransformation(GetTransform1(m_sweep));
-}
-
 inline void Body::SetMassDataDirty() noexcept
 {
     m_flags |= e_massDataDirtyFlag;
@@ -814,12 +788,6 @@ inline bool Unawaken(Body& body) noexcept
     return false;
 }
 
-/// @brief Should collide.
-/// @details Determines whether a body should possibly be able to collide with the other body.
-/// @relatedalso Body
-/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
-bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept;
-
 /// @brief Gets the "position 1" Position information for the given body.
 /// @relatedalso Body
 inline Position GetPosition1(const Body& body) noexcept
@@ -838,25 +806,29 @@ inline Mass GetMass(const Body& body) noexcept
     return (invMass != InvMass{0})? Mass{Real{1} / invMass}: 0_kg;
 }
 
+/// @brief Sets the linear and rotational accelerations on this body.
+/// @note This has no effect on non-accelerable bodies.
+/// @note A non-zero acceleration will also awaken the body.
+/// @param body Body to set the acceleration of.
+/// @param linear Linear acceleration.
+/// @param angular Angular acceleration.
+inline void SetAcceleration(Body& body, LinearAcceleration2 linear, AngularAcceleration angular) noexcept
+{
+    body.SetAcceleration(linear, angular);
+}
+
 /// @brief Sets the given linear acceleration of the given body.
 /// @relatedalso Body
-inline void SetLinearAcceleration(Body& body, LinearAcceleration2 value) noexcept
+inline void SetAcceleration(Body& body, LinearAcceleration2 value) noexcept
 {
     body.SetAcceleration(value, body.GetAngularAcceleration());
 }
 
 /// @brief Sets the given angular acceleration of the given body.
 /// @relatedalso Body
-inline void SetAngularAcceleration(Body& body, AngularAcceleration value) noexcept
+inline void SetAcceleration(Body& body, AngularAcceleration value) noexcept
 {
     body.SetAcceleration(body.GetLinearAcceleration(), value);
-}
-
-/// @brief Applies the given linear acceleration to the given body.
-/// @relatedalso Body
-inline void ApplyLinearAcceleration(Body& body, LinearAcceleration2 amount)
-{
-    SetLinearAcceleration(body, body.GetLinearAcceleration() + amount);
 }
 
 /// @brief Sets the given amount of force at the given point to the given body.
@@ -890,18 +862,6 @@ inline void ApplyForce(Body& body, Force2 force, Length2 point) noexcept
     const auto angAccel = AngularAcceleration{cp * invRotI};
     body.SetAcceleration(body.GetLinearAcceleration() + linAccel,
                          body.GetAngularAcceleration() + angAccel);
-}
-
-/// @brief Apply a force to the center of mass.
-/// @note Non-zero forces wakes up the body.
-/// @param body Body to apply the force to.
-/// @param force World force vector.
-/// @relatedalso Body
-inline void ApplyForceToCenter(Body& body, Force2 force) noexcept
-{
-    const auto linAccel = body.GetLinearAcceleration() + force * body.GetInvMass();
-    const auto angAccel = body.GetAngularAcceleration();
-    body.SetAcceleration(linAccel, angAccel);
 }
 
 /// @brief Sets the given amount of torque to the given body.
@@ -960,11 +920,6 @@ inline void ApplyAngularImpulse(Body& body, AngularMomentum impulse) noexcept
     body.SetVelocity(velocity);
 }
 
-/// @brief Gets the centripetal force necessary to put the body into an orbit having
-///    the given radius.
-/// @relatedalso Body
-Force2 GetCentripetalForce(const Body& body, Length2 axis);
-
 /// @brief Gets the rotational inertia of the body.
 /// @param body Body to get the rotational inertia for.
 /// @return the rotational inertia.
@@ -1003,20 +958,20 @@ inline AngularVelocity GetAngularVelocity(const Body& body) noexcept
 
 /// @brief Sets the linear velocity of the center of mass.
 /// @param body Body to set the linear velocity of.
-/// @param v the new linear velocity of the center of mass.
+/// @param value the new linear velocity of the center of mass.
 /// @relatedalso Body
-inline void SetLinearVelocity(Body& body, const LinearVelocity2 v) noexcept
+inline void SetVelocity(Body& body, LinearVelocity2 value) noexcept
 {
-    body.SetVelocity(Velocity{v, GetAngularVelocity(body)});
+    body.SetVelocity(Velocity{value, GetAngularVelocity(body)});
 }
 
 /// @brief Sets the angular velocity.
 /// @param body Body to set the angular velocity of.
-/// @param omega the new angular velocity.
+/// @param value the new angular velocity.
 /// @relatedalso Body
-inline void SetAngularVelocity(Body& body, AngularVelocity omega) noexcept
+inline void SetVelocity(Body& body, AngularVelocity value) noexcept
 {
-    body.SetVelocity(Velocity{GetLinearVelocity(body), omega});
+    body.SetVelocity(Velocity{GetLinearVelocity(body), value});
 }
 
 /// @brief Gets the world coordinates of a point given in coordinates relative to the body's origin.
@@ -1162,6 +1117,8 @@ inline Position GetPosition(const Body& body) noexcept
 {
     return Position{body.GetLocation(), body.GetAngle()};
 }
+
+Transformation GetTransformation(const BodyConf& conf);
 
 } // namespace d2
 } // namespace playrho

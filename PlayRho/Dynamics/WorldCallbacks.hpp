@@ -21,14 +21,15 @@
 #define PLAYRHO_DYNAMICS_WORLDCALLBACKS_HPP
 
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
+#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+
 #include <algorithm>
 
 namespace playrho {
 namespace d2 {
 
-class Fixture;
-class Joint;
-class Contact;
 class Manifold;
 class ContactImpulsesList;
 class World;
@@ -45,13 +46,13 @@ public:
     /// @details Called when any joint is about to be destroyed due
     ///    to the destruction of one of its attached bodies.
     /// @note Implementations of this method should not throw any exceptions.
-    virtual void SayGoodbye(const Joint& joint) noexcept = 0;
+    virtual void SayGoodbye(JointID joint) noexcept = 0;
 
     /// @brief Called just before destroying a fixture.
     /// @details Called when any fixture is about to be destroyed due
     ///    to the destruction of its parent body.
     /// @note Implementations of this method should not throw any exceptions.
-    virtual void SayGoodbye(const Fixture& fixture) noexcept = 0;
+    virtual void SayGoodbye(FixtureID fixture) noexcept = 0;
 };
 
 /// @brief A pure-virtual interface for "listeners" for contacts.
@@ -77,7 +78,7 @@ public:
     virtual ~ContactListener() = default;
 
     /// @brief Called when two fixtures begin to touch.
-    virtual void BeginContact(World& world, Contact& contact) = 0;
+    virtual void BeginContact(World& world, ContactID contact) = 0;
 
     /// @brief End contact callback.
     ///
@@ -94,7 +95,7 @@ public:
     ///
     /// @see Contact::IsTouching().
     ///
-    virtual void EndContact(World& world, Contact& contact) = 0;
+    virtual void EndContact(World& world, ContactID contact) = 0;
     
     /// @brief Pre-solve callback.
     ///
@@ -110,7 +111,7 @@ public:
     ///   <code>EndContact</code> callback. However, you may get a <code>BeginContact</code>
     ///   callback the next step.
     ///
-    virtual void PreSolve(World& world, Contact& contact, const Manifold& oldManifold) = 0;
+    virtual void PreSolve(World& world, ContactID contact, const Manifold& oldManifold) = 0;
 
     /// @brief Post-solve callback.
     ///
@@ -122,7 +123,7 @@ public:
     ///   in a separate data structure.
     /// @note This is only called for contacts that are touching, solid, and awake.
     ///
-    virtual void PostSolve(World& world, Contact& contact, const ContactImpulsesList& impulses,
+    virtual void PostSolve(World& world, ContactID contact, const ContactImpulsesList& impulses,
                            iteration_type solved) = 0;
 };
 

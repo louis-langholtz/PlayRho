@@ -20,15 +20,16 @@
 #ifndef PLAYRHO_DYNAMICS_ISLAND_HPP
 #define PLAYRHO_DYNAMICS_ISLAND_HPP
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Templates.hpp> // IsFull
+
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+
 #include <vector>
 
 namespace playrho {
 namespace d2 {
-
-class Body;
-class Contact;
-class Joint;
 
 /// @brief Definition of a self-contained constraint "island".
 /// @details A container of bodies contacts and joints relevant to handling world dynamics.
@@ -37,13 +38,13 @@ class Joint;
 struct Island
 {   
     /// @brief Body container type.
-    using Bodies = std::vector<Body*>;
+    using Bodies = std::vector<BodyID>;
 
     /// @brief Contact container type.
-    using Contacts = std::vector<Contact*>;
+    using Contacts = std::vector<ContactID>;
     
     /// @brief Joint container type.
-    using Joints = std::vector<Joint*>;
+    using Joints = std::vector<JointID>;
     
     /// @brief Initializing constructor.
     Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity,
@@ -70,15 +71,15 @@ inline bool IsFullOfContacts(const Island& island)
 
 /// @brief Counts the number of occurrences of the given entry in the given island.
 /// @relatedalso Island
-std::size_t Count(const Island& island, const Body* entry);
+std::size_t Count(const Island& island, BodyID entry);
 
 /// @brief Counts the number of occurrences of the given entry in the given island.
 /// @relatedalso Island
-std::size_t Count(const Island& island, const Contact* entry);
+std::size_t Count(const Island& island, ContactID entry);
 
 /// @brief Counts the number of occurrences of the given entry in the given island.
 /// @relatedalso Island
-std::size_t Count(const Island& island, const Joint* entry);
+std::size_t Count(const Island& island, JointID entry);
 
 } // namespace d2
 } // namespace playrho

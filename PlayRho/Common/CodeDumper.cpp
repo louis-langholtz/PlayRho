@@ -63,6 +63,7 @@ namespace {
 
 void Dump(const World& world)
 {
+#if 0
     const auto& bodies = world.GetBodies();
     log("Body** bodies = (Body**)Alloc(%d * sizeof(Body*));\n", size(bodies));
     auto i = std::size_t{0};
@@ -88,10 +89,12 @@ void Dump(const World& world)
     log("Free(bodies);\n");
     log("joints = nullptr;\n");
     log("bodies = nullptr;\n");
+#endif
 }
 
 void Dump(const Body& body, std::size_t bodyIndex)
 {
+#if 0
     log("{\n");
     log("  BodyConf bd;\n");
     log("  bd.type = BodyType(%d);\n", body.GetType());
@@ -122,6 +125,7 @@ void Dump(const Body& body, std::size_t bodyIndex)
         log("  }\n");
     }
     log("}\n");
+#endif
 }
 
 void Dump(const Joint& joint, std::size_t index)
@@ -234,6 +238,7 @@ void Dump(const FrictionJoint& joint, std::size_t index, const World& world)
 
 void Dump(const GearJoint& joint, std::size_t index, const World& world)
 {
+#if 0
     log("  GearJointConf jd;\n");
     log("  jd.bodyA = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyA()));
     log("  jd.bodyB = bodies[%d];\n", GetWorldIndex(world, joint.GetBodyB()));
@@ -242,6 +247,7 @@ void Dump(const GearJoint& joint, std::size_t index, const World& world)
     log("  jd.joint2 = joints[%d];\n", GetWorldIndex(world, joint.GetJoint2()));
     log("  jd.ratio = %.15lef;\n", joint.GetRatio());
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
+#endif
 }
 
 void Dump(const MotorJoint& joint, std::size_t index, const World& world)

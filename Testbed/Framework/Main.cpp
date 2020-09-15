@@ -1212,7 +1212,7 @@ static void EntityUI(Body& b)
         vals[1] = static_cast<float>(Real{GetY(acceleration.linear) / MeterPerSquareSecond});
         if (ImGui::InputFloat2("Lin. Acc.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            SetLinearAcceleration(b, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
+            SetAcceleration(b, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
         }
         if (ImGui::IsItemHovered())
         {
@@ -1221,7 +1221,7 @@ static void EntityUI(Body& b)
         auto val = static_cast<float>(Real{acceleration.angular / DegreePerSquareSecond});
         if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            SetAngularAcceleration(b, val * DegreePerSquareSecond);
+            SetAcceleration(b, val * DegreePerSquareSecond);
         }
         if (ImGui::IsItemHovered())
         {

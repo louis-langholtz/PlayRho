@@ -23,14 +23,16 @@
 #define PLAYRHO_DYNAMICS_JOINTS_GEARJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonZero.hpp> // for NonNull
+
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Dynamics/Joints/JointID.hpp>
 
 namespace playrho {
 namespace d2 {
 
 class Joint;
 class GearJoint;
+class World;
 
 /// @brief Gear joint definition.
 /// @details This definition requires two existing
@@ -39,22 +41,36 @@ struct GearJointConf : public JointBuilder<GearJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<GearJointConf>;
-    
+
     /// @brief Initializing constructor.
-    GearJointConf(NonNull<Joint*> j1, NonNull<Joint*> j2) noexcept;
-    
+    GearJointConf(BodyID bA, BodyID bB, BodyID bC, BodyID bD) noexcept;
+
     /// @brief Uses the given ratio value.
     GearJointConf& UseRatio(Real v) noexcept;
+
+    BodyID bodyC = InvalidBodyID;
+    BodyID bodyD = InvalidBodyID;
+
+    JointType type1 = JointType::Unknown;
+    JointType type2 = JointType::Unknown;
+
+    // Used when not Revolute...
+    Length2 localAnchorA{}; ///< Local anchor A.
+    Length2 localAnchorB{}; ///< Local anchor B.
+    Length2 localAnchorC{}; ///< Local anchor C.
+    Length2 localAnchorD{}; ///< Local anchor D.
     
-    /// The first revolute/prismatic joint attached to the gear joint.
-    NonNull<Joint*> joint1;
-    
-    /// The second revolute/prismatic joint attached to the gear joint.
-    NonNull<Joint*> joint2;
-    
+    UnitVec localAxis1; ///< Local axis 1. Used when type1 is not Revolute.
+    UnitVec localAxis2; ///< Local axis 2. Used when type2 is not Revolute.
+
+    Angle referenceAngle1; ///< Reference angle of joint 1. Used when type1 is Revolute.
+    Angle referenceAngle2; ///< Reference angle of joint 2. Used when type2 is Revolute.
+
     /// The gear ratio.
     /// @see GearJoint for explanation.
     Real ratio = Real{1};
+
+    Real constant = Real{0};
 };
 
 inline GearJointConf& GearJointConf::UseRatio(Real v) noexcept
@@ -66,6 +82,8 @@ inline GearJointConf& GearJointConf::UseRatio(Real v) noexcept
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso GearJoint
 GearJointConf GetGearJointConf(const GearJoint& joint) noexcept;
+
+GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Real ratio = Real{1});
 
 } // namespace d2
 } // namespace playrho

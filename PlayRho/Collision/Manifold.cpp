@@ -20,6 +20,7 @@
  */
 
 #include <PlayRho/Collision/Manifold.hpp>
+
 #include <PlayRho/Collision/Simplex.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>

@@ -20,7 +20,9 @@
  */
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
+#include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
@@ -36,6 +38,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Defines.hpp>
+#include <PlayRho/Common/OptionalValue.hpp>
 
 #include <algorithm>
 
@@ -85,7 +88,7 @@ Joint::FlagsType Joint::GetFlags(const JointConf& def) noexcept
 }
 
 Joint::Joint(const JointConf& def):
-    m_bodyA{def.bodyA}, m_bodyB{def.bodyB}, m_userData{def.userData}, m_flags{GetFlags(def)}
+    m_userData{def.userData}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB}, m_flags{GetFlags(def)}
 {
     // Intentionally empty.
 }
@@ -101,44 +104,6 @@ bool Joint::IsOkay(const JointConf& def) noexcept
 }
 
 // Free functions...
-
-bool IsEnabled(const Joint& j) noexcept
-{
-    const auto bA = j.GetBodyA();
-    const auto bB = j.GetBodyB();
-    return (!bA || bA->IsEnabled()) && (!bB || bB->IsEnabled());
-}
-
-void SetAwake(Joint& j) noexcept
-{
-    const auto bA = j.GetBodyA();
-    const auto bB = j.GetBodyB();
-    if (bA)
-    {
-        bA->SetAwake();
-    }
-    if (bB)
-    {
-        bB->SetAwake();
-    }
-}
-
-JointCounter GetWorldIndex(const World& world, const Joint* joint)
-{
-    if (joint)
-    {
-        auto i = JointCounter{0};
-        const auto joints = world.GetJoints();
-        const auto it = std::find_if(cbegin(joints), cend(joints), [&](const Joint *j) {
-            return (j == joint) || ((void) ++i, false);
-        });
-        if (it != end(joints))
-        {
-            return i;
-        }
-    }
-    return JointCounter(-1);
-}
 
 #ifdef PLAYRHO_PROVIDE_VECTOR_AT
 BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key)
@@ -156,8 +121,8 @@ BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* ke
 }
 #endif
 
-BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
-                      const Body* key)
+BodyConstraintPtr& At(std::unordered_map<BodyID, BodyConstraint*>& container,
+                      BodyID key)
 {
     return container.at(key);
 }
@@ -173,6 +138,45 @@ const char* ToString(Joint::LimitState val) noexcept
     }
     assert(val == Joint::e_inactiveLimit);
     return "inactive";
+}
+
+Angle GetReferenceAngle(const Joint& object)
+{
+    Optional<Angle> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
+        result = j.GetReferenceAngle();
+    };
+    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
+        result = j.GetReferenceAngle();
+    };
+    visitor.get<const WeldJoint&>() = [&result](const WeldJoint& j) {
+        result = j.GetReferenceAngle();
+    };
+    object.Accept(visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("joint type doesn't provide a reference angle");
+    }
+    return *result;
+}
+
+UnitVec GetLocalAxisA(const Joint& object)
+{
+    Optional<UnitVec> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const WheelJoint&>() = [&result](const WheelJoint& j) {
+        result = j.GetLocalAxisA();
+    };
+    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
+        result = j.GetLocalAxisA();
+    };
+    object.Accept(visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("joint type doesn't provide a local axis A");
+    }
+    return *result;
 }
 
 } // namespace d2

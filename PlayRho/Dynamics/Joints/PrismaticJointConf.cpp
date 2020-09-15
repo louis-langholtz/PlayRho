@@ -20,19 +20,19 @@
  */
 
 #include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
 
-PrismaticJointConf::PrismaticJointConf(NonNull<Body*> bA, NonNull<Body*> bB, const Length2 anchor,
-                                     const UnitVec axis) noexcept:
+PrismaticJointConf::PrismaticJointConf(BodyID bA, BodyID bB,
+                                       Length2 laA, Length2 laB,
+                                       UnitVec axisA, Angle angle) noexcept:
     super{super{JointType::Prismatic}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{GetLocalPoint(*bA, anchor)},
-    localAnchorB{GetLocalPoint(*bB, anchor)},
-    localAxisA{GetLocalVector(*bA, axis)},
-    referenceAngle{bB->GetAngle() - bA->GetAngle()}
+    localAnchorA{laA}, localAnchorB{laB},
+    localAxisA{axisA}, referenceAngle{angle}
 {
     // Intentionally empty.
 }
@@ -40,9 +40,7 @@ PrismaticJointConf::PrismaticJointConf(NonNull<Body*> bA, NonNull<Body*> bB, con
 PrismaticJointConf GetPrismaticJointConf(const PrismaticJoint& joint) noexcept
 {
     auto def = PrismaticJointConf{};
-    
     Set(def, joint);
-    
     def.localAnchorA = joint.GetLocalAnchorA();
     def.localAnchorB = joint.GetLocalAnchorB();
     def.localAxisA = joint.GetLocalAxisA();
@@ -53,8 +51,20 @@ PrismaticJointConf GetPrismaticJointConf(const PrismaticJoint& joint) noexcept
     def.enableMotor = joint.IsMotorEnabled();
     def.motorSpeed = joint.GetMotorSpeed();
     def.maxMotorForce = joint.GetMaxMotorForce();
-    
     return def;
+}
+
+PrismaticJointConf GetPrismaticJointConf(const World& world,
+                                         BodyID bA, BodyID bB,
+                                         const Length2 anchor,
+                                         const UnitVec axis)
+{
+    return PrismaticJointConf{
+        bA, bB,
+        GetLocalPoint(world, bA, anchor), GetLocalPoint(world, bB, anchor),
+        GetLocalVector(world, bA, axis),
+        GetAngle(world, bB) - GetAngle(world, bA)
+    };
 }
 
 } // namespace d2

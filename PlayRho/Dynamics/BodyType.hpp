@@ -39,19 +39,33 @@ enum class BodyType
     
     /// Kinematic body type.
     /// @details
-    /// Kinematic bodies have no mass and have no forces applied to them, but can move at set velocities.
-    /// They are impenetrable.
+    /// Kinematic bodies: have no mass, cannot have forces applied to them,
+    /// can move at set velocities (they are "speedable"), and are impenetrable.
     /// @note Physics applied: velocity.
     Kinematic,
     
     /// Dynamic body type.
     /// @details
-    /// Dynamic bodies are fully simulated bodies.
+    /// Dynamic bodies are fully simulated bodies - they are "speedable" and "accelerable".
     /// Dynamic bodies always have a positive non-zero mass.
     /// They may be penetrable.
     /// @note Physics applied: velocity, acceleration.
     Dynamic
 };
+
+/// @brief Is "speedable".
+/// @relatedalso BodyType
+inline bool IsSpeedable(BodyType type)
+{
+    return type != BodyType::Static;
+}
+
+/// @brief Is "accelerable".
+/// @relatedalso BodyType
+inline bool IsAccelerable(BodyType type)
+{
+    return type == BodyType::Dynamic;
+}
 
 } // namespace playrho
 

@@ -29,6 +29,9 @@
 #include <PlayRho/Common/OptionalValue.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
 
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
+
 namespace playrho {
 namespace detail {
 
@@ -63,9 +66,9 @@ enum class RayCastOpcode
 namespace d2 {
 
 class Shape;
-class Fixture;
 class DistanceProxy;
 class DynamicTree;
+class World;
 
 /// @brief Ray-cast hit data.
 /// @details The ray hits at <code>p1 + fraction * (p2 - p1)</code>, where
@@ -87,12 +90,17 @@ using RayCastOutput = Optional<RayCastHit>;
 
 /// @brief Ray cast callback function.
 /// @note Return 0 to terminate ray casting, or > 0 to update the segment bounding box.
-using DynamicTreeRayCastCB = std::function<Real(Fixture* fixture, ChildCounter child,
+using DynamicTreeRayCastCB = std::function<Real(BodyID body,
+                                                FixtureID fixture,
+                                                ChildCounter child,
                                                 const RayCastInput& input)>;
 
 /// @brief Ray cast callback function signature.
-using FixtureRayCastCB = std::function<RayCastOpcode(Fixture* fixture, ChildCounter child,
-                                                     Length2 point, UnitVec normal)>;
+using FixtureRayCastCB = std::function<RayCastOpcode(BodyID body,
+                                                     FixtureID fixture,
+                                                     ChildCounter child,
+                                                     Length2 point,
+                                                     UnitVec normal)>;
 
 /// @defgroup RayCastGroup Ray Casting Functions
 /// @brief Collection of functions that do ray casting.
@@ -146,7 +154,8 @@ RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
 /// @return <code>true</code> if terminated at the callback's request,
 ///   <code>false</code> otherwise.
 ///
-bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCastCB& callback);
+bool RayCast(const DynamicTree& tree, RayCastInput input,
+             const DynamicTreeRayCastCB& callback);
 
 /// @brief Ray-cast the dynamic tree for all fixtures in the path of the ray.
 ///
@@ -159,7 +168,8 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
 ///
 /// @return <code>true</code> if terminated by callback, <code>false</code> otherwise.
 ///
-bool RayCast(const DynamicTree& tree, const RayCastInput& input, FixtureRayCastCB callback);
+bool RayCast(const DynamicTree& tree, const RayCastInput& input,
+             const World& world, FixtureRayCastCB callback);
 
 /// @}
 

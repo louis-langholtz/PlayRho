@@ -148,7 +148,7 @@ TEST(Island, IsReturnableByValue)
         EXPECT_EQ(island.m_joints.capacity(), decltype(island.m_joints.max_size()){10});
     }
 }
-
+#if 0
 TEST(Island, Count)
 {
     const auto island = Island(4, 4, 4);
@@ -156,3 +156,4 @@ TEST(Island, Count)
     EXPECT_EQ(Count(island, static_cast<Contact*>(nullptr)), std::size_t(0));
     EXPECT_EQ(Count(island, static_cast<Joint*>(nullptr)), std::size_t(0));
 }
+#endif

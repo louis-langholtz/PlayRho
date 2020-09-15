@@ -20,25 +20,99 @@
  */
 
 #include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
+
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
 
-GearJointConf::GearJointConf(NonNull<Joint*> j1, NonNull<Joint*> j2) noexcept:
-    super{super{JointType::Gear}.UseBodyA(j1->GetBodyB()).UseBodyB(j2->GetBodyB())},
-    joint1{j1}, joint2{j2}
+GearJointConf::GearJointConf(BodyID bA, BodyID bB, BodyID bC, BodyID bD) noexcept:
+    super{super{JointType::Gear}.UseBodyA(bA).UseBodyB(bB)},
+    bodyC(bC), bodyD(bD)
 {
     // Intentionally empty.
 }
 
 GearJointConf GetGearJointConf(const GearJoint& joint) noexcept
 {
-    auto def = GearJointConf{joint.GetJoint1(), joint.GetJoint2()};
-    
+    auto def = GearJointConf{joint.GetBodyA(), joint.GetBodyB(), joint.GetBodyC(), joint.GetBodyD()};
     Set(def, joint);
+    def.localAnchorA = joint.GetLocalAnchorA();
+    def.localAnchorB = joint.GetLocalAnchorB();
+    def.localAnchorC = joint.GetLocalAnchorC();
+    def.localAnchorD = joint.GetLocalAnchorD();
+    def.localAxis1 = joint.GetLocalAxis1();
+    def.localAxis2 = joint.GetLocalAxis2();
+    def.referenceAngle1 = joint.GetReferenceAngle1();
+    def.referenceAngle2 = joint.GetReferenceAngle2();
     def.ratio = joint.GetRatio();
-    
+    def.constant = joint.GetConstant();
+    return def;
+}
+
+GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Real ratio)
+{
+    auto def = GearJointConf{
+        GetBodyB(world, id1), GetBodyB(world, id2),
+        GetBodyA(world, id1), GetBodyA(world, id2)
+    };
+
+    auto coordinateA = Real{0};
+    def.type1 = GetType(world, id1);
+    switch (def.type1)
+    {
+        case JointType::Revolute:
+        {
+            def.referenceAngle1 = GetReferenceAngle(world, id1);
+            coordinateA = (GetAngle(world, def.bodyA) - GetAngle(world, def.bodyC) - def.referenceAngle1) / Radian;
+            break;
+        }
+        case JointType::Prismatic:
+        {
+            const auto xfA = GetTransformation(world, def.bodyA);
+            const auto xfC = GetTransformation(world, def.bodyC);
+            def.localAnchorC = GetLocalAnchorA(world, id1);
+            def.localAnchorA = GetLocalAnchorB(world, id1);
+            def.localAxis1 = GetLocalAxisA(world, id1);
+            const auto pC = def.localAnchorC;
+            const auto pA = InverseRotate(Rotate(def.localAnchorA, xfA.q) + (xfA.p - xfC.p), xfC.q);
+            coordinateA = Dot(pA - pC, def.localAxis1) / Meter;
+            break;
+        }
+        default:
+            break;
+    }
+
+    auto coordinateB = Real{0};
+    def.type2 = GetType(world, id2);
+    switch (def.type2)
+    {
+        case JointType::Revolute:
+        {
+            def.referenceAngle2 = GetReferenceAngle(world, id2);
+            coordinateA = (GetAngle(world, def.bodyB) - GetAngle(world, def.bodyD) - def.referenceAngle1) / Radian;
+            break;
+        }
+        case JointType::Prismatic:
+        {
+            const auto xfB = GetTransformation(world, def.bodyB);
+            const auto xfD = GetTransformation(world, def.bodyD);
+            def.localAnchorD = GetLocalAnchorA(world, id2);
+            def.localAnchorB = GetLocalAnchorB(world, id2);
+            def.localAxis2 = GetLocalAxisA(world, id2);
+            const auto pD = def.localAnchorD;
+            const auto pB = InverseRotate(Rotate(def.localAnchorB, xfB.q) + (xfB.p - xfD.p), xfD.q);
+            coordinateB = Dot(pB - pD, def.localAxis2) / Meter;
+            break;
+        }
+        default:
+            break;
+    }
+
+    def.ratio = ratio;
+    def.constant = coordinateA + def.ratio * coordinateB;
+
     return def;
 }
 

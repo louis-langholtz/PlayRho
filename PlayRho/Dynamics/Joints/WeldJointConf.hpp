@@ -23,13 +23,13 @@
 #define PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonZero.hpp> // for NonNull
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 namespace d2 {
 
 class WeldJoint;
+class World;
 
 /// @brief Weld joint definition.
 /// @note A weld joint essentially glues two bodies together. A weld joint may
@@ -42,37 +42,39 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<WeldJointConf>;
-    
+
     constexpr WeldJointConf() noexcept: super{JointType::Weld} {}
-    
+
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, and reference angle using a world
     ///   anchor point.
     /// @param bodyA Body A.
+    /// @param laA Local anchor A location in world coordinates.
     /// @param bodyB Body B.
-    /// @param anchor Anchor location in world coordinates.
-    WeldJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
-    
+    /// @param laB Local anchor B location in world coordinates.
+    WeldJointConf(BodyID bodyA, BodyID bodyB,
+                  Length2 laA = Length2{}, Length2 laB = Length2{}, Angle ra = 0_deg) noexcept;
+
     /// @brief Uses the given frequency value.
     constexpr WeldJointConf& UseFrequency(Frequency v) noexcept;
-    
+
     /// @brief Uses the given damping ratio.
     constexpr WeldJointConf& UseDampingRatio(Real v) noexcept;
-    
+
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
-    
+
     /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
-    
+
     /// The body-B angle minus body-A angle in the reference state (radians).
     Angle referenceAngle = 0_deg;
-    
+
     /// @brief Mass-spring-damper frequency.
     /// @note Rotation only.
     /// @note Disable softness with a value of 0.
     Frequency frequency = 0_Hz;
-    
+
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.
     Real dampingRatio = 0;
@@ -93,6 +95,8 @@ constexpr WeldJointConf& WeldJointConf::UseDampingRatio(Real v) noexcept
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso WeldJoint
 WeldJointConf GetWeldJointConf(const WeldJoint& joint) noexcept;
+
+WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB, const Length2 anchor);
 
 } // namespace d2
 } // namespace playrho

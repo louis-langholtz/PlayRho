@@ -18,15 +18,28 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#ifndef PLAYRHO_DYNAMICS_CONTACTS_KEYEDCONTACTID_HPP
+#define PLAYRHO_DYNAMICS_CONTACTS_KEYEDCONTACTID_HPP
+
+/// @file
+/// Declaration of the <code>KeyedContactPtr</code> alias.
+
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 
 namespace playrho {
 namespace d2 {
 
+/// @brief Keyed contact pointer.
+using KeyedContactPtr = std::pair<ContactKey, ContactID>;
+
+/// @brief Gets the contact ID for the given value.
+inline ContactID GetContactPtr(KeyedContactPtr value)
+{
+    return std::get<1>(value);
+}
+
 } // namespace d2
 } // namespace playrho
+
+#endif // PLAYRHO_DYNAMICS_CONTACTS_KEYEDCONTACTID_HPP

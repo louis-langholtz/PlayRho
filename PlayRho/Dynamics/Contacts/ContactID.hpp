@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,15 +18,19 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
+#define PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
+
+#include <PlayRho/Common/StrongType.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 namespace playrho {
-namespace d2 {
 
-} // namespace d2
+/// @brief Body identifier.
+using ContactID = strongtype::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
+
+constexpr auto InvalidContactID = static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
+
 } // namespace playrho
+
+#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP

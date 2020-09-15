@@ -47,27 +47,22 @@ namespace d2 {
 class PulleyJoint : public Joint
 {
 public:
-    
     /// @brief Initializing constructor.
     /// @attention To create or use the joint within a world instance, call that world
     ///   instance's create joint method instead of calling this constructor directly.
     /// @see World::CreateJoint
     PulleyJoint(const PulleyJointConf& data);
-    
+
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
-    Length2 GetAnchorA() const override;
-    Length2 GetAnchorB() const override;
+
+    Length2 GetLocalAnchorA() const noexcept override;
+    Length2 GetLocalAnchorB() const noexcept override;
+
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
-    bool ShiftOrigin(const Length2 newOrigin) override;
+    bool ShiftOrigin(Length2 newOrigin) override;
 
-    /// @brief Gets the local anchor A.
-    Length2 GetLocalAnchorA() const noexcept;
-
-    /// @brief Gets the local anchor B.
-    Length2 GetLocalAnchorB() const noexcept;
-    
     /// Get the first ground anchor.
     Length2 GetGroundAnchorA() const noexcept;
 
@@ -84,7 +79,6 @@ public:
     Real GetRatio() const noexcept;
 
 private:
-
     void InitVelocityConstraints(BodyConstraintsMap& bodies,
                                  const StepConf& step,
                                  const ConstraintSolverConf&) override;
@@ -100,7 +94,7 @@ private:
     Length m_lengthB; ///< Length B.
     Real m_ratio; ///< Ratio.
     Length m_constant; ///< Constant.
-    
+
     // Solver shared (between calls to InitVelocityConstraints).
     Momentum m_impulse = 0_Ns; ///< Impulse.
 
@@ -149,11 +143,11 @@ inline Real PulleyJoint::GetRatio() const noexcept
 
 /// @brief Get the current length of the segment attached to body-A.
 /// @relatedalso PulleyJoint
-Length GetCurrentLengthA(const PulleyJoint& joint);
+Length GetCurrentLengthA(const World& world, const PulleyJoint& joint);
 
 /// @brief Get the current length of the segment attached to body-B.
 /// @relatedalso PulleyJoint
-Length GetCurrentLengthB(const PulleyJoint& joint);
+Length GetCurrentLengthB(const World& world, const PulleyJoint& joint);
 
 } // namespace d2
 } // namespace playrho

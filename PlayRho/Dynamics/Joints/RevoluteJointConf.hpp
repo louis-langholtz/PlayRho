@@ -23,13 +23,14 @@
 #define PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonZero.hpp> // for NonNull
+
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 namespace d2 {
 
 class RevoluteJoint;
+class World;
 
 /// @brief Revolute joint definition.
 /// @details This requires defining an
@@ -47,49 +48,51 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<RevoluteJointConf>;
-    
+
     constexpr RevoluteJointConf() noexcept: super{JointType::Revolute} {}
-    
+
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
-    RevoluteJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor) noexcept;
-    
+    RevoluteJointConf(BodyID bA, BodyID bB,
+                      Length2 laA = Length2{}, Length2 laB = Length2{},
+                      Angle ra = 0_deg) noexcept;
+
     /// @brief Uses the given enable limit state value.
     constexpr RevoluteJointConf& UseEnableLimit(bool v) noexcept;
-    
+
     /// @brief Uses the given lower angle value.
     constexpr RevoluteJointConf& UseLowerAngle(Angle v) noexcept;
-    
+
     /// @brief Uses the given upper angle value.
     constexpr RevoluteJointConf& UseUpperAngle(Angle v) noexcept;
-    
+
     /// @brief Uses the given enable motor state value.
     constexpr RevoluteJointConf& UseEnableMotor(bool v) noexcept;
 
     /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
-    
+
     /// @brief Local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
-    
+
     /// @brief Reference angle.
     /// @details This is the body-B angle minus body-A angle in the reference state (radians).
     Angle referenceAngle = 0_deg;
-    
+
     /// @brief Flag to enable joint limits.
     bool enableLimit = false;
-    
+
     /// @brief Lower angle for the joint limit.
     Angle lowerAngle = 0_deg;
-    
+
     /// @brief Upper angle for the joint limit.
     Angle upperAngle = 0_deg;
-    
+
     /// @brief Flag to enable the joint motor.
     bool enableMotor = false;
-    
+
     /// @brief Desired motor speed.
     AngularVelocity motorSpeed = 0_rpm;
-    
+
     /// @brief Maximum motor torque used to achieve the desired motor speed.
     Torque maxMotorTorque = 0;
 };
@@ -121,6 +124,8 @@ constexpr RevoluteJointConf& RevoluteJointConf::UseEnableMotor(bool v) noexcept
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso RevoluteJoint
 RevoluteJointConf GetRevoluteJointConf(const RevoluteJoint& joint) noexcept;
+
+RevoluteJointConf GetRevoluteJointConf(const World& world, BodyID bodyA, BodyID bodyB, Length2 anchor);
 
 } // namespace d2
 } // namespace playrho

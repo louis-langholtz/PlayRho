@@ -23,13 +23,13 @@
 #define PLAYRHO_DYNAMICS_JOINTS_WHEELJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonZero.hpp> // for NonNull
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 namespace d2 {
 
 class WheelJoint;
+class World;
 
 /// @brief Wheel joint definition.
 /// @details This requires defining a line of
@@ -47,8 +47,9 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
-    WheelJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor,
-                  const UnitVec axis) noexcept;
+    WheelJointConf(BodyID bA, BodyID bB,
+                   Length2 laA = Length2{}, Length2 laB = Length2{},
+                   UnitVec axis = UnitVec::GetRight()) noexcept;
     
     /// @brief Uses the given enable motor state value.
     constexpr WheelJointConf& UseEnableMotor(bool v) noexcept;
@@ -123,6 +124,9 @@ constexpr WheelJointConf& WheelJointConf::UseDampingRatio(Real v) noexcept
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso WheelJoint
 WheelJointConf GetWheelJointConf(const WheelJoint& joint) noexcept;
+
+WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB,
+                                 Length2 anchor, UnitVec axis = UnitVec::GetRight());
 
 } // namespace d2
 } // namespace playrho

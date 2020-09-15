@@ -23,13 +23,14 @@
 #define PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonZero.hpp> // for NonNull
+
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 namespace d2 {
 
 class PrismaticJoint;
+class World;
 
 /// @brief Prismatic joint definition.
 /// @details This requires defining a line of
@@ -42,57 +43,58 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<PrismaticJointConf>;
-    
+
     constexpr PrismaticJointConf() noexcept: super{JointType::Prismatic} {}
-    
+
     /// @brief Copy constructor.
     PrismaticJointConf(const PrismaticJointConf& copy) = default;
-    
+
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, axis, and reference angle using the world
     ///   anchor and unit world axis.
-    PrismaticJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB, const Length2 anchor,
-                      const UnitVec axis) noexcept;
-    
+    PrismaticJointConf(BodyID bA, BodyID bB,
+                       Length2 laA = Length2{}, Length2 laB = Length2{},
+                       UnitVec axisA = UnitVec::GetRight(), Angle angle = 0_deg) noexcept;
+
     /// @brief Uses the given enable limit state value.
     PrismaticJointConf& UseEnableLimit(bool v) noexcept;
-    
+
     /// @brief Uses the given lower translation value.
     PrismaticJointConf& UseLowerTranslation(Length v) noexcept;
-    
+
     /// @brief Uses the given upper translation value.
     PrismaticJointConf& UseUpperTranslation(Length v) noexcept;
-    
+
     /// @brief Uses the given enable motor state value.
     PrismaticJointConf& UseEnableMotor(bool v) noexcept;
-    
+
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
-    
+
     /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
-    
+
     /// The local translation unit axis in body A.
     UnitVec localAxisA = UnitVec::GetRight();
-    
+
     /// The constrained angle between the bodies: body B's angle minus body A's angle.
     Angle referenceAngle = 0_deg;
-    
+
     /// Enable/disable the joint limit.
     bool enableLimit = false;
-    
+
     /// The lower translation limit.
     Length lowerTranslation = 0_m;
-    
+
     /// The upper translation limit.
     Length upperTranslation = 0_m;
-    
+
     /// Enable/disable the joint motor.
     bool enableMotor = false;
-    
+
     /// The maximum motor force.
     Force maxMotorForce = 0_N;
-    
+
     /// The desired angular motor speed.
     AngularVelocity motorSpeed = 0_rpm;
 };
@@ -124,6 +126,11 @@ inline PrismaticJointConf& PrismaticJointConf::UseEnableMotor(bool v) noexcept
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso PrismaticJoint
 PrismaticJointConf GetPrismaticJointConf(const PrismaticJoint& joint) noexcept;
+
+PrismaticJointConf GetPrismaticJointConf(const World& world,
+                                         BodyID bA, BodyID bB,
+                                         const Length2 anchor,
+                                         const UnitVec axis);
 
 } // namespace d2
 } // namespace playrho

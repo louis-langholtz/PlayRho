@@ -23,13 +23,14 @@
 #define PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonZero.hpp> // for NonNull
+
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 namespace d2 {
 
 class PulleyJoint;
+class World;
 
 /// @brief Pulley joint definition.
 /// @details This requires two ground anchors, two dynamic body anchor points, and a pulley ratio.
@@ -37,38 +38,39 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<PulleyJointConf>;
-    
+
     PulleyJointConf() noexcept: super{JointType::Pulley}
     {
         collideConnected = true;
     }
-    
+
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-    PulleyJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB,
-                    Length2 groundAnchorA, Length2 groundAnchorB,
-                    Length2 anchorA, Length2 anchorB);
-    
+    PulleyJointConf(BodyID bodyA, BodyID bodyB,
+                    Length2 groundAnchorA = Length2{-1_m, +1_m}, Length2 groundAnchorB = Length2{+1_m, +1_m},
+                    Length2 anchorA = Length2{-1_m, 0_m}, Length2 anchorB = Length2{+1_m, 0_m},
+                    Length lA = 0_m, Length lB = 0_m);
+
     /// @brief Uses the given ratio value.
     PulleyJointConf& UseRatio(Real v) noexcept;
-    
+
     /// The first ground anchor in world coordinates. This point never moves.
     Length2 groundAnchorA = Length2{-1_m, +1_m};
-    
+
     /// The second ground anchor in world coordinates. This point never moves.
     Length2 groundAnchorB = Length2{+1_m, +1_m};
-    
+
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{-1_m, 0_m};
-    
+
     /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{+1_m, 0_m};
-    
+
     /// The a reference length for the segment attached to body-A.
     Length lengthA = 0_m;
-    
+
     /// The a reference length for the segment attached to body-B.
     Length lengthB = 0_m;
-    
+
     /// The pulley ratio, used to simulate a block-and-tackle.
     Real ratio = 1;
 };
@@ -82,6 +84,11 @@ inline PulleyJointConf& PulleyJointConf::UseRatio(Real v) noexcept
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso PulleyJoint
 PulleyJointConf GetPulleyJointConf(const PulleyJoint& joint) noexcept;
+
+PulleyJointConf GetPulleyJointConf(const World& world,
+                                   BodyID bA, BodyID bB,
+                                   Length2 groundA, Length2 groundB,
+                                   Length2 anchorA, Length2 anchorB);
 
 } // namespace d2
 } // namespace playrho

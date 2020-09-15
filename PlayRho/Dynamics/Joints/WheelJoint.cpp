@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -311,31 +312,19 @@ bool WheelJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Cons
     return abs(C) <= conf.linearSlop;
 }
 
-Length2 WheelJoint::GetAnchorA() const
-{
-    return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
-}
-
-Length2 WheelJoint::GetAnchorB() const
-{
-    return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
-}
-
 Momentum2 WheelJoint::GetLinearReaction() const
 {
     return m_impulse * m_ay + m_springImpulse * m_ax;
 }
 
-void WheelJoint::EnableMotor(bool flag)
+bool WheelJoint::EnableMotor(bool flag)
 {
     if (m_enableMotor != flag)
     {
 	    m_enableMotor = flag;
-
-        // XXX Should these be called regardless of whether the state changed?
-    	GetBodyA()->SetAwake();
-    	GetBodyB()->SetAwake();
+        return true;
     }
+    return false;
 }
 
 void WheelJoint::SetMotorSpeed(AngularVelocity speed)
@@ -343,10 +332,11 @@ void WheelJoint::SetMotorSpeed(AngularVelocity speed)
     if (m_motorSpeed != speed)
     {
 	    m_motorSpeed = speed;
-
+#if 0
         // XXX Should these be called regardless of whether the state changed?
     	GetBodyA()->SetAwake();
     	GetBodyB()->SetAwake();
+#endif
     }
 }
 
@@ -355,25 +345,25 @@ void WheelJoint::SetMaxMotorTorque(Torque torque)
     if (m_maxMotorTorque != torque)
     {
 	    m_maxMotorTorque = torque;
-
+#if 0
         // XXX Should these be called regardless of whether the state changed?
     	GetBodyA()->SetAwake();
     	GetBodyB()->SetAwake();
+#endif
     }
 }
 
-Length GetJointTranslation(const WheelJoint& joint) noexcept
+Length GetJointTranslation(const World& world, const WheelJoint& joint) noexcept
 {
-    const auto pA = GetWorldPoint(*joint.GetBodyA(), joint.GetLocalAnchorA());
-    const auto pB = GetWorldPoint(*joint.GetBodyB(), joint.GetLocalAnchorB());
-    const auto d = pB - pA;
-    const auto axis = GetWorldVector(*joint.GetBodyA(), joint.GetLocalAxisA());
-    return Length{Dot(d, axis)};
+    const auto pA = GetWorldPoint(world, joint.GetBodyA(), joint.GetLocalAnchorA());
+    const auto pB = GetWorldPoint(world, joint.GetBodyB(), joint.GetLocalAnchorB());
+    const auto uv = GetWorldVector(world, joint.GetBodyA(), joint.GetLocalAxisA());
+    return Dot(pB - pA, uv);
 }
 
-AngularVelocity GetAngularVelocity(const WheelJoint& joint) noexcept
+AngularVelocity GetAngularVelocity(const World& world, const WheelJoint& joint) noexcept
 {
-    return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
+    return GetVelocity(world, joint.GetBodyB()).angular - GetVelocity(world, joint.GetBodyA()).angular;
 }
 
 } // namespace d2

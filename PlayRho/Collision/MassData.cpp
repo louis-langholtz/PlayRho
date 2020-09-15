@@ -18,13 +18,13 @@
  */
 
 #include <PlayRho/Collision/MassData.hpp>
+
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -177,36 +177,6 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     const auto massDataI = RotInertia{((AreaDensity{density} * I) + (mass * inertialLever)) / SquareRadian};
     
     return MassData{massDataCenter, mass, massDataI};
-}
-
-MassData GetMassData(const Fixture& f)
-{
-    return GetMassData(f.GetShape());
-}
-
-MassData ComputeMassData(const Body& body) noexcept
-{
-    auto mass = 0_kg;
-    auto I = RotInertia{0};
-    auto center = Length2{};
-    for (auto&& f: body.GetFixtures())
-    {
-        const auto& fixture = GetRef(f);
-        if (fixture.GetDensity() > 0_kgpm2)
-        {
-            const auto massData = GetMassData(fixture);
-            mass += Mass{massData.mass};
-            center += Real{Mass{massData.mass} / Kilogram} * massData.center;
-            I += RotInertia{massData.I};
-        }
-    }
-    return MassData{center, mass, I};
-}
-
-MassData GetMassData(const Body& body) noexcept
-{
-    const auto I = GetLocalRotInertia(body);
-    return MassData{body.GetLocalCenter(), GetMass(body), I};
 }
 
 } // namespace d2

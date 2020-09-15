@@ -135,17 +135,17 @@ Island::Island(Bodies::size_type bodyCapacity,
     m_joints.reserve(jointCapacity);
 }
 
-std::size_t Count(const Island& island, const Body* entry)
+std::size_t Count(const Island& island, BodyID entry)
 {
     return MakeUnsigned(count(cbegin(island.m_bodies), cend(island.m_bodies), entry));
 }
 
-std::size_t Count(const Island& island, const Contact* entry)
+std::size_t Count(const Island& island, ContactID entry)
 {
     return MakeUnsigned(count(cbegin(island.m_contacts), cend(island.m_contacts), entry));
 }
 
-std::size_t Count(const Island& island, const Joint* entry)
+std::size_t Count(const Island& island, JointID entry)
 {
     return MakeUnsigned(count(cbegin(island.m_joints), cend(island.m_joints), entry));
 }

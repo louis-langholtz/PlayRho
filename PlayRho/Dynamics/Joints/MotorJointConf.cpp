@@ -20,16 +20,16 @@
  */
 
 #include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
+
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
 
-MotorJointConf::MotorJointConf(NonNull<Body*> bA, NonNull<Body*> bB) noexcept:
+MotorJointConf::MotorJointConf(BodyID bA, BodyID bB, Length2 lo, Angle ao) noexcept:
     super{super{JointType::Motor}.UseBodyA(bA).UseBodyB(bB)},
-    linearOffset{GetLocalPoint(*bA, bB->GetLocation())},
-    angularOffset{bB->GetAngle() - bA->GetAngle()}
+    linearOffset{lo}, angularOffset{ao}
 {
     // Intentionally empty.
 }
@@ -37,16 +37,22 @@ MotorJointConf::MotorJointConf(NonNull<Body*> bA, NonNull<Body*> bB) noexcept:
 MotorJointConf GetMotorJointConf(const MotorJoint& joint) noexcept
 {
     auto def = MotorJointConf{};
-    
     Set(def, joint);
-    
     def.linearOffset = joint.GetLinearOffset();
     def.angularOffset = joint.GetAngularOffset();
     def.maxForce = joint.GetMaxForce();
     def.maxTorque = joint.GetMaxTorque();
     def.correctionFactor = joint.GetCorrectionFactor();
-    
     return def;
+}
+
+MotorJointConf GetMotorJointConf(const World& world, BodyID bA, BodyID bB)
+{
+    return MotorJointConf{
+        bA, bB,
+        GetLocalPoint(world, bA, GetLocation(world, bB)),
+        GetAngle(world, bB) - GetAngle(world, bA)
+    };
 }
 
 } // namespace d2

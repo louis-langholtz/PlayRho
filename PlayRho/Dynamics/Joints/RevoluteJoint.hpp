@@ -58,14 +58,8 @@ public:
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
 
-    Length2 GetAnchorA() const override;
-    Length2 GetAnchorB() const override;
-
-    /// The local anchor point relative to body A's origin.
-    Length2 GetLocalAnchorA() const noexcept { return m_localAnchorA; }
-
-    /// The local anchor point relative to body B's origin.
-    Length2 GetLocalAnchorB() const noexcept { return m_localAnchorB; }
+    Length2 GetLocalAnchorA() const noexcept override { return m_localAnchorA; }
+    Length2 GetLocalAnchorB() const noexcept override { return m_localAnchorB; }
 
     /// Get the reference angle.
     Angle GetReferenceAngle() const noexcept { return m_referenceAngle; }
@@ -89,7 +83,8 @@ public:
     bool IsMotorEnabled() const noexcept;
 
     /// Enable/disable the joint motor.
-    void EnableMotor(bool flag);
+    /// @return Whether state changed or not.
+    bool EnableMotor(bool flag);
 
     /// Set the angular motor speed.
     void SetMotorSpeed(AngularVelocity speed);
@@ -203,11 +198,11 @@ inline AngularMomentum RevoluteJoint::GetMotorImpulse() const noexcept
 
 /// @brief Gets the current joint angle.
 /// @relatedalso RevoluteJoint
-Angle GetJointAngle(const RevoluteJoint& joint);
+Angle GetJointAngle(const World& world, const RevoluteJoint& joint);
     
 /// @brief Gets the current joint angle speed.
 /// @relatedalso RevoluteJoint
-AngularVelocity GetAngularVelocity(const RevoluteJoint& joint);
+AngularVelocity GetAngularVelocity(const World& world, const RevoluteJoint& joint);
 
 /// @brief Gets the current motor torque for the given joint given the inverse time step.
 /// @relatedalso RevoluteJoint

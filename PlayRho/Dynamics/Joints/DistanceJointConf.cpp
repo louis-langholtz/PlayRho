@@ -1,6 +1,6 @@
 /*
  * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -20,18 +20,17 @@
  */
 
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
+
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
 
-DistanceJointConf::DistanceJointConf(NonNull<Body*> bA, NonNull<Body*> bB,
-                                   Length2 anchor1, Length2 anchor2) noexcept :
+DistanceJointConf::DistanceJointConf(BodyID bA, BodyID bB,
+                                     Length2 laA, Length2 laB, Length l) noexcept :
     super{super{JointType::Distance}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{GetLocalPoint(*bA, anchor1)},
-    localAnchorB{GetLocalPoint(*bB, anchor2)},
-    length{GetMagnitude(anchor2 - anchor1)}
+    localAnchorA{laA}, localAnchorB{laB}, length{l}
 {
     // Intentionally empty.
 }
@@ -39,16 +38,24 @@ DistanceJointConf::DistanceJointConf(NonNull<Body*> bA, NonNull<Body*> bB,
 DistanceJointConf GetDistanceJointConf(const DistanceJoint& joint) noexcept
 {
     auto def = DistanceJointConf{};
-    
     Set(def, joint);
-    
     def.localAnchorA = joint.GetLocalAnchorA();
     def.localAnchorB = joint.GetLocalAnchorB();
     def.length = joint.GetLength();
     def.frequency = joint.GetFrequency();
     def.dampingRatio = joint.GetDampingRatio();
-    
     return def;
+}
+
+DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID bodyB,
+                                       Length2 anchorA, Length2 anchorB)
+{
+    return DistanceJointConf{
+        bodyA, bodyB,
+        GetLocalPoint(world, bodyA, anchorA),
+        GetLocalPoint(world, bodyB, anchorB),
+        GetMagnitude(anchorB - anchorA)
+    };
 }
 
 } // namespace d2

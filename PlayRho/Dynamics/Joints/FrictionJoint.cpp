@@ -24,6 +24,7 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 #include <algorithm>
 
@@ -214,16 +215,6 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
 bool FrictionJoint::SolvePositionConstraints(BodyConstraintsMap&, const ConstraintSolverConf&) const
 {
     return true;
-}
-
-Length2 FrictionJoint::GetAnchorA() const
-{
-    return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
-}
-
-Length2 FrictionJoint::GetAnchorB() const
-{
-    return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Momentum2 FrictionJoint::GetLinearReaction() const

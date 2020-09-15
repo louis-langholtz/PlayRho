@@ -19,16 +19,17 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
+
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
 
-FrictionJointConf::FrictionJointConf(Body* bA, Body* bB, const Length2 anchor) noexcept:
+FrictionJointConf::FrictionJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB) noexcept:
     super{super{JointType::Friction}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{GetLocalPoint(*bA, anchor)},
-    localAnchorB{GetLocalPoint(*bB, anchor)}
+    localAnchorA{laA}, localAnchorB{laB}
 {
     // Intentionally empty.
 }
@@ -36,15 +37,20 @@ FrictionJointConf::FrictionJointConf(Body* bA, Body* bB, const Length2 anchor) n
 FrictionJointConf GetFrictionJointConf(const FrictionJoint& joint) noexcept
 {
     auto def = FrictionJointConf{};
-    
     Set(def, joint);
-    
     def.localAnchorA = joint.GetLocalAnchorA();
     def.localAnchorB = joint.GetLocalAnchorB();
     def.maxForce = joint.GetMaxForce();
     def.maxTorque = joint.GetMaxTorque();
-    
     return def;
+}
+
+FrictionJointConf GetFrictionJointConf(const World& world,
+                                       BodyID bodyA, BodyID bodyB, Length2 anchor)
+{
+    return FrictionJointConf{
+        bodyA, bodyB, GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor)
+    };
 }
 
 } // namespace d2

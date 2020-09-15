@@ -21,16 +21,14 @@
 
 #include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
 
-WeldJointConf::WeldJointConf(NonNull<Body*> bA, NonNull<Body*> bB, const Length2 anchor) noexcept:
+WeldJointConf::WeldJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB, Angle ra) noexcept:
     super{super{JointType::Weld}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{GetLocalPoint(*bA, anchor)},
-    localAnchorB{GetLocalPoint(*bB, anchor)},
-    referenceAngle{bB->GetAngle() - bA->GetAngle()}
+    localAnchorA{laA}, localAnchorB{laB}, referenceAngle{ra}
 {
     // Intentionally empty.
 }
@@ -38,16 +36,22 @@ WeldJointConf::WeldJointConf(NonNull<Body*> bA, NonNull<Body*> bB, const Length2
 WeldJointConf GetWeldJointConf(const WeldJoint& joint) noexcept
 {
     auto def = WeldJointConf{};
-    
     Set(def, joint);
-    
     def.localAnchorA = joint.GetLocalAnchorA();
     def.localAnchorB = joint.GetLocalAnchorB();
     def.referenceAngle = joint.GetReferenceAngle();
     def.frequency = joint.GetFrequency();
     def.dampingRatio = joint.GetDampingRatio();
-    
     return def;
+}
+
+WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB, const Length2 anchor)
+{
+    return WeldJointConf{
+        bodyA, bodyB,
+        GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor),
+        GetAngle(world, bodyB) - GetAngle(world, bodyA)
+    };
 }
 
 } // namespace d2

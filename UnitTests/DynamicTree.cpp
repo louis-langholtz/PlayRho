@@ -54,46 +54,6 @@ TEST(DynamicTree, TreeNodeByteSize)
     }
 }
 
-TEST(DynamicTree, Traits)
-{
-    EXPECT_FALSE(IsAddable<DynamicTree>::value);
-    EXPECT_FALSE((IsAddable<DynamicTree, DynamicTree>::value));
-    EXPECT_FALSE((IsIterable<DynamicTree>::value));
-    
-    EXPECT_TRUE(std::is_default_constructible<DynamicTree>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<DynamicTree>::value);
-
-    EXPECT_TRUE(std::is_constructible<DynamicTree>::value);
-    EXPECT_TRUE((std::is_nothrow_constructible<DynamicTree>::value));
-    EXPECT_FALSE(std::is_trivially_constructible<DynamicTree>::value);
-
-    EXPECT_TRUE((std::is_constructible<DynamicTree, DynamicTree::Size>::value));
-    EXPECT_FALSE((std::is_nothrow_constructible<DynamicTree, DynamicTree::Size>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<DynamicTree, DynamicTree::Size>::value));
-    
-    EXPECT_TRUE(std::is_copy_constructible<DynamicTree>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<DynamicTree>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<DynamicTree>::value);
-
-    EXPECT_TRUE((std::is_assignable<DynamicTree, DynamicTree>::value));
-    EXPECT_TRUE((std::is_nothrow_assignable<DynamicTree, DynamicTree>::value));
-    EXPECT_FALSE((std::is_trivially_assignable<DynamicTree, DynamicTree>::value));
-
-    EXPECT_TRUE(std::is_copy_assignable<DynamicTree>::value);
-#if __GNUC__ || __clang__
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<DynamicTree>::value);
-#endif
-#if _MSC_VER
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree>::value);
-#endif
-    EXPECT_FALSE(std::is_trivially_copy_assignable<DynamicTree>::value);
-    
-    EXPECT_TRUE(std::is_destructible<DynamicTree>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree>::value);
-    EXPECT_FALSE(std::is_trivially_destructible<DynamicTree>::value);
-}
-
 TEST(DynamicTreeNode, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<DynamicTree::TreeNode>::value);
@@ -171,29 +131,6 @@ TEST(DynamicTreeBranchData, Traits)
     EXPECT_TRUE(std::is_destructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_trivially_destructible<DynamicTree::BranchData>::value);
-}
-
-TEST(DynamicTreeLeafData, Traits)
-{
-    EXPECT_TRUE(std::is_default_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTree::LeafData>::value);
-
-    EXPECT_TRUE(std::is_nothrow_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_constructible<DynamicTree::LeafData>::value);
-
-    EXPECT_TRUE(std::is_copy_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTree::LeafData>::value);
-    
-    EXPECT_TRUE(std::is_copy_assignable<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTree::LeafData>::value);
-    
-    EXPECT_TRUE(std::is_destructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<DynamicTree::LeafData>::value);
 }
 
 TEST(DynamicTreeVariantData, Traits)
@@ -442,6 +379,7 @@ TEST(DynamicTree, InitializingConstruction)
               foo.GetNodeCapacity() - 1u);
 }
 
+#if 0
 TEST(DynamicTree, CopyConstruction)
 {
     DynamicTree orig;
@@ -1018,3 +956,4 @@ TEST(DynamicTree, QueryFF)
     });
     EXPECT_EQ(ncalls, 2);
 }
+#endif

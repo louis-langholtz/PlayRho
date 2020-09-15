@@ -23,6 +23,7 @@
 #define PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Dynamics/BodyID.hpp>
 
 #include <unordered_map>
 #include <vector>
@@ -50,16 +51,16 @@ class World;
 using BodyConstraintPtr = BodyConstraint*;
 
 /// @brief A body pointer and body constraint pointer pair alias.
-using BodyConstraintPair = std::pair<const Body*, BodyConstraintPtr>;
+using BodyConstraintPair = std::pair<BodyID, BodyConstraintPtr>;
 
 // #define USE_VECTOR_MAP
 
 /// @brief A body constraints map alias.
 using BodyConstraintsMap =
 #ifdef USE_VECTOR_MAP
-    std::vector<std::pair<const Body*, BodyConstraintPtr>>;
+    std::vector<std::pair<BodyID, BodyConstraintPtr>>;
 #else
-    std::unordered_map<const Body*, BodyConstraint*>;
+    std::unordered_map<BodyID, BodyConstraint*>;
 #endif
 
 /// @brief Base joint class.
@@ -101,16 +102,16 @@ public:
     virtual ~Joint() noexcept = default;
 
     /// @brief Gets the first body attached to this joint.
-    Body* GetBodyA() const noexcept;
+    BodyID GetBodyA() const noexcept;
 
     /// @brief Gets the second body attached to this joint.
-    Body* GetBodyB() const noexcept;
+    BodyID GetBodyB() const noexcept;
 
-    /// Get the anchor point on body-A in world coordinates.
-    virtual Length2 GetAnchorA() const = 0;
+    /// Get the anchor point on body-A in local coordinates.
+    virtual Length2 GetLocalAnchorA() const noexcept = 0;
 
-    /// Get the anchor point on body-B in world coordinates.
-    virtual Length2 GetAnchorB() const = 0;
+    /// Get the anchor point on body-B in local coordinates.
+    virtual Length2 GetLocalAnchorB() const noexcept = 0;
 
     /// Get the linear reaction on body-B at the joint anchor.
     virtual Momentum2 GetLinearReaction() const = 0;
@@ -145,7 +146,7 @@ public:
 
     /// @brief Shifts the origin for any points stored in world coordinates.
     /// @return <code>true</code> if shift done, <code>false</code> otherwise.
-    virtual bool ShiftOrigin(const Length2) { return false;  }
+    virtual bool ShiftOrigin(Length2) { return false;  }
 
 protected:
     
@@ -217,18 +218,18 @@ private:
     /// @brief Unsets this joint from being in the is-in-island state.
     void UnsetIslanded() noexcept;
 
-    Body* const m_bodyA; ///< Body A.
-    Body* const m_bodyB; ///< Body B.
     void* m_userData; ///< User data.
+    BodyID const m_bodyA; ///< Body A.
+    BodyID const m_bodyB; ///< Body B.
     FlagsType m_flags = 0u; ///< Flags. 1-byte.
 };
 
-inline Body* Joint::GetBodyA() const noexcept
+inline BodyID Joint::GetBodyA() const noexcept
 {
     return m_bodyA;
 }
 
-inline Body* Joint::GetBodyB() const noexcept
+inline BodyID Joint::GetBodyB() const noexcept
 {
     return m_bodyB;
 }
@@ -265,26 +266,14 @@ inline void Joint::UnsetIslanded() noexcept
 
 // Free functions...
 
-/// @brief Short-cut function to determine if both bodies are enabled.
-/// @relatedalso Joint
-bool IsEnabled(const Joint& j) noexcept;
-
-/// @brief Wakes up the joined bodies.
-/// @relatedalso Joint
-void SetAwake(Joint& j) noexcept;
-
-/// @brief Gets the world index of the given joint.
-/// @relatedalso Joint
-JointCounter GetWorldIndex(const World& world, const Joint* joint);
-
 #ifdef PLAYRHO_PROVIDE_VECTOR_AT
 /// @brief Provides referenced access to the identified element of the given container.
-BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key);
+BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, BodyID key);
 #endif
 
 /// @brief Provides referenced access to the identified element of the given container.
-BodyConstraintPtr& At(std::unordered_map<const Body*, BodyConstraint*>& container,
-                      const Body* key);
+BodyConstraintPtr& At(std::unordered_map<BodyID, BodyConstraint*>& container,
+                      BodyID key);
 
 /// @brief Provides a human readable C-style string uniquely identifying the given limit state.
 const char* ToString(Joint::LimitState val) noexcept;
@@ -297,6 +286,10 @@ inline void IncMotorSpeed(T& j, AngularVelocity delta)
 {
     j.SetMotorSpeed(j.GetMotorSpeed() + delta);
 }
+
+Angle GetReferenceAngle(const Joint& object);
+
+UnitVec GetLocalAxisA(const Joint& object);
 
 } // namespace d2
 } // namespace playrho

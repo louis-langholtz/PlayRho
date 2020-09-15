@@ -22,16 +22,16 @@
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
 
-RevoluteJointConf::RevoluteJointConf(NonNull<Body*> bA, NonNull<Body*> bB,
-                                   const Length2 anchor) noexcept:
+RevoluteJointConf::RevoluteJointConf(BodyID bA, BodyID bB,
+                                     Length2 laA, Length2 laB,
+                                     Angle ra) noexcept:
     super{super{JointType::Revolute}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{GetLocalPoint(*bA, anchor)},
-    localAnchorB{GetLocalPoint(*bB, anchor)},
-    referenceAngle{bB->GetAngle() - bA->GetAngle()}
+    localAnchorA{laA}, localAnchorB{laB}, referenceAngle{ra}
 {
     // Intentionally empty.
 }
@@ -53,6 +53,16 @@ RevoluteJointConf GetRevoluteJointConf(const RevoluteJoint& joint) noexcept
     def.maxMotorTorque = joint.GetMaxMotorTorque();
     
     return def;
+}
+
+RevoluteJointConf GetRevoluteJointConf(const World& world, BodyID bodyA, BodyID bodyB, Length2 anchor)
+{
+    return RevoluteJointConf{
+        bodyA, bodyB,
+        GetLocalPoint(world, bodyA, anchor),
+        GetLocalPoint(world, bodyB, anchor),
+        GetAngle(world, bodyB) - GetAngle(world, bodyA)
+    };
 }
 
 } // namespace d2

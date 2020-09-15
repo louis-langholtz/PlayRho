@@ -145,6 +145,13 @@
 		4764085F2507FC000090F711 /* propagate_const.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764085E2507FBFF0090F711 /* propagate_const.hpp */; };
 		47640862250807720090F711 /* WorldImpl.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640860250807720090F711 /* WorldImpl.hpp */; };
 		47640863250807720090F711 /* WorldImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47640861250807720090F711 /* WorldImpl.cpp */; };
+		47640867250C855D0090F711 /* StrongType.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640866250C855D0090F711 /* StrongType.hpp */; };
+		4764086B250C86640090F711 /* BodyID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640869250C86640090F711 /* BodyID.hpp */; };
+		4764086D250E9E2B0090F711 /* FixtureID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764086C250E9E2B0090F711 /* FixtureID.hpp */; };
+		4764086F250EA5DE0090F711 /* ArrayAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764086E250EA5DE0090F711 /* ArrayAllocator.hpp */; };
+		4764087125105DD90090F711 /* JointID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4764087025105DD90090F711 /* JointID.hpp */; };
+		47640873251198AA0090F711 /* ContactID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47640872251198AA0090F711 /* ContactID.hpp */; };
+		476408752511A5CC0090F711 /* KeyedContactID.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 476408742511A5CC0090F711 /* KeyedContactID.hpp */; };
 		4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
 		4768D3F81E3E895A00574143 /* PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */; };
 		4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2.hpp */; };
@@ -540,6 +547,13 @@
 		4764085E2507FBFF0090F711 /* propagate_const.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = propagate_const.hpp; sourceTree = "<group>"; };
 		47640860250807720090F711 /* WorldImpl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldImpl.hpp; sourceTree = "<group>"; };
 		47640861250807720090F711 /* WorldImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImpl.cpp; sourceTree = "<group>"; };
+		47640866250C855D0090F711 /* StrongType.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StrongType.hpp; sourceTree = "<group>"; };
+		47640869250C86640090F711 /* BodyID.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BodyID.hpp; sourceTree = "<group>"; };
+		4764086C250E9E2B0090F711 /* FixtureID.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureID.hpp; sourceTree = "<group>"; };
+		4764086E250EA5DE0090F711 /* ArrayAllocator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayAllocator.hpp; sourceTree = "<group>"; };
+		4764087025105DD90090F711 /* JointID.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointID.hpp; sourceTree = "<group>"; };
+		47640872251198AA0090F711 /* ContactID.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactID.hpp; sourceTree = "<group>"; };
+		476408742511A5CC0090F711 /* KeyedContactID.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = KeyedContactID.hpp; sourceTree = "<group>"; };
 		4768D3F21E3A7ACA00574143 /* Wider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Wider.hpp; sourceTree = "<group>"; };
 		4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
 		4768D3FA1E414A0100574143 /* Vector2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2.hpp; sourceTree = "<group>"; };
@@ -1005,6 +1019,7 @@
 			children = (
 				47C96C531FA67D1D00A6C587 /* Acceleration.hpp */,
 				47F932A41D11C283006A193C /* AllocatedArray.hpp */,
+				4764086E250EA5DE0090F711 /* ArrayAllocator.hpp */,
 				4734B2161DC00AFD00F15E29 /* ArrayList.hpp */,
 				80BB893F141C3E5900F1753A /* BlockAllocator.cpp */,
 				80BB8940141C3E5900F1753A /* BlockAllocator.hpp */,
@@ -1042,6 +1057,7 @@
 				4734B21E1DC1340500F15E29 /* Span.hpp */,
 				80BB8948141C3E5900F1753A /* StackAllocator.cpp */,
 				80BB8949141C3E5900F1753A /* StackAllocator.hpp */,
+				47640866250C855D0090F711 /* StrongType.hpp */,
 				470F9B1B1EDF2B8A007EF7B6 /* Sweep.hpp */,
 				47C85D1E1F0DA14500F70C56 /* Templates.hpp */,
 				470F9B151EDF2959007EF7B6 /* Transformation.hpp */,
@@ -1071,6 +1087,7 @@
 				470F94C91EC4D95D00AA3C82 /* BodyAtty.hpp */,
 				470F9B4B1EEF20B6007EF7B6 /* BodyConf.cpp */,
 				470F94A51EC4C79B00AA3C82 /* BodyConf.hpp */,
+				47640869250C86640090F711 /* BodyID.hpp */,
 				478E67C41E760AB7009B9AD5 /* BodyType.hpp */,
 				80BB895A141C3E5900F1753A /* Contacts */,
 				470F94BD1EC4D63400AA3C82 /* ContactAtty.hpp */,
@@ -1082,6 +1099,7 @@
 				470F94B71EC4D4F800AA3C82 /* FixtureAtty.hpp */,
 				470F9B4E1EF0C8B8007EF7B6 /* FixtureConf.cpp */,
 				470F94AB1EC4CAE600AA3C82 /* FixtureConf.hpp */,
+				4764086C250E9E2B0090F711 /* FixtureID.hpp */,
 				4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */,
 				80BB8953141C3E5900F1753A /* Island.cpp */,
 				80BB8954141C3E5900F1753A /* Island.hpp */,
@@ -1110,15 +1128,17 @@
 				474BAB2C1E5D00960058E08A /* BodyConstraint.hpp */,
 				80BB8961141C3E5900F1753A /* Contact.cpp */,
 				80BB8962141C3E5900F1753A /* Contact.hpp */,
+				47640872251198AA0090F711 /* ContactID.hpp */,
+				470F94D41EC649B300AA3C82 /* ContactKey.cpp */,
+				470F94CF1EC6376F00AA3C82 /* ContactKey.hpp */,
 				80BB8963141C3E5900F1753A /* ContactSolver.cpp */,
 				80BB8964141C3E5900F1753A /* ContactSolver.hpp */,
+				476408742511A5CC0090F711 /* KeyedContactID.hpp */,
 				478869071D78BE2B00AEC7F1 /* PositionConstraint.hpp */,
 				477DB2AA1D1C4BE800846ED6 /* PositionSolverManifold.cpp */,
 				477DB2AB1D1C4BE800846ED6 /* PositionSolverManifold.hpp */,
 				47E841711DB4018D00E5F311 /* VelocityConstraint.cpp */,
 				4788690D1D78BF7200AEC7F1 /* VelocityConstraint.hpp */,
-				470F94D41EC649B300AA3C82 /* ContactKey.cpp */,
-				470F94CF1EC6376F00AA3C82 /* ContactKey.hpp */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -1143,6 +1163,7 @@
 				80BB8975141C3E5900F1753A /* Joint.hpp */,
 				4787D6BC1F2E968E008C115E /* JointConf.cpp */,
 				4787D6BD1F2E968E008C115E /* JointConf.hpp */,
+				4764087025105DD90090F711 /* JointID.hpp */,
 				470F94D71EC8C37500AA3C82 /* JointKey.cpp */,
 				470F94D81EC8C37500AA3C82 /* JointKey.hpp */,
 				47D28D8C1F6E2C7C0094C032 /* JointType.cpp */,
@@ -1342,11 +1363,14 @@
 			files = (
 				4726DD1F1D305E5D0012A882 /* ContactFeature.hpp in Headers */,
 				476E8AC71FCFA0D400705BB5 /* FunctionalJointVisitor.hpp in Headers */,
+				4764086F250EA5DE0090F711 /* ArrayAllocator.hpp in Headers */,
 				80BB8987141C3E5900F1753A /* PlayRho.hpp in Headers */,
 				4764085325045B3C0090F711 /* UnitInterval.hpp in Headers */,
 				47D28D9D1F6F28C70094C032 /* WrongState.hpp in Headers */,
 				4764085B250482300090F711 /* Positive.hpp in Headers */,
+				47640873251198AA0090F711 /* ContactID.hpp in Headers */,
 				47363E8720027FE2005912B1 /* ContactImpulsesList.hpp in Headers */,
+				4764087125105DD90090F711 /* JointID.hpp in Headers */,
 				4731DE581DEC908600E7F931 /* UnitVec.hpp in Headers */,
 				474AFBFA1EB1B2CB002AA6C8 /* MultiShapeConf.hpp in Headers */,
 				47B58F641F64C19600354C34 /* RealConstants.hpp in Headers */,
@@ -1375,6 +1399,7 @@
 				80BB899C141C3E5900F1753A /* PolygonShapeConf.hpp in Headers */,
 				470F9B0C1EDE6340007EF7B6 /* Vector3.hpp in Headers */,
 				47D61F761F1F1F2500E702BD /* DroidSansTtfData.h in Headers */,
+				4764086B250C86640090F711 /* BodyID.hpp in Headers */,
 				4788690A1D78BE2B00AEC7F1 /* PositionConstraint.hpp in Headers */,
 				476162C91E245C9D002C7FB0 /* CodeDumper.hpp in Headers */,
 				4787D6D71F2ECD87008C115E /* PulleyJointConf.hpp in Headers */,
@@ -1394,6 +1419,7 @@
 				47E36F541FE8534500C10B79 /* FixedMath.hpp in Headers */,
 				470F9B301EDF5165007EF7B6 /* Velocity.hpp in Headers */,
 				473273251F476C1D00E22AE2 /* OptionalValue.hpp in Headers */,
+				4764086D250E9E2B0090F711 /* FixtureID.hpp in Headers */,
 				80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */,
 				4764085D250484830090F711 /* Negative.hpp in Headers */,
 				80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */,
@@ -1450,11 +1476,13 @@
 				80BB89D1141C3E5900F1753A /* Joint.hpp in Headers */,
 				80BB89D3141C3E5900F1753A /* TargetJoint.hpp in Headers */,
 				47B58F561F570E2C00354C34 /* DynamicMemory.hpp in Headers */,
+				476408752511A5CC0090F711 /* KeyedContactID.hpp in Headers */,
 				4787D6DF1F2ED2D6008C115E /* RopeJointConf.hpp in Headers */,
 				474FFC3C1F2CEE6C0037CCE0 /* Vector.hpp in Headers */,
 				80BB89D5141C3E5900F1753A /* PrismaticJoint.hpp in Headers */,
 				80BB89D7141C3E5900F1753A /* PulleyJoint.hpp in Headers */,
 				4731DE441DE2570900E7F931 /* Collision.hpp in Headers */,
+				47640867250C855D0090F711 /* StrongType.hpp in Headers */,
 				4764085125042BD10090F711 /* NonNegative.hpp in Headers */,
 				80BB89D9141C3E5900F1753A /* RevoluteJoint.hpp in Headers */,
 				470F94C01EC4D63400AA3C82 /* ContactAtty.hpp in Headers */,

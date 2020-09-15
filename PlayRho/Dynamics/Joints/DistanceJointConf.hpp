@@ -23,14 +23,13 @@
 #define PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonZero.hpp> // for NonNull
 #include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 namespace d2 {
 
-class Body;
+class World;
 class DistanceJoint;
 
 /// @brief Distance joint definition.
@@ -52,9 +51,8 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
     
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, and length using the world anchors.
-    DistanceJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB,
-                     Length2 anchorA = Length2{},
-                     Length2 anchorB = Length2{}) noexcept;
+    DistanceJointConf(BodyID bA, BodyID bB,
+                      Length2 laA = Length2{}, Length2 laB = Length2{}, Length l = 1_m) noexcept;
     
     /// @brief Uses the given length.
     constexpr DistanceJointConf& UseLength(Length v) noexcept;
@@ -104,6 +102,9 @@ constexpr DistanceJointConf& DistanceJointConf::UseDampingRatio(Real v) noexcept
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso DistanceJoint
 DistanceJointConf GetDistanceJointConf(const DistanceJoint& joint) noexcept;
+
+DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID bodyB,
+                                       Length2 anchorA = Length2{}, Length2 anchorB = Length2{});
 
 } // namespace d2
 } // namespace playrho

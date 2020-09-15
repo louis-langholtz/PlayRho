@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 #include <algorithm>
 
@@ -244,16 +245,6 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     bodyConstraintB->SetPosition(posB);
 
     return abs(C) < conf.linearSlop;
-}
-
-Length2 DistanceJoint::GetAnchorA() const
-{
-    return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
-}
-
-Length2 DistanceJoint::GetAnchorB() const
-{
-    return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Momentum2 DistanceJoint::GetLinearReaction() const

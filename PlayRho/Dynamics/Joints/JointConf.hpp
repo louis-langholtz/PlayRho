@@ -23,12 +23,13 @@
 #define PLAYRHO_DYNAMICS_JOINTS_JOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
+#include <PlayRho/Dynamics/BodyID.hpp>
+
 #include <cstdint>
 
 namespace playrho {
 namespace d2 {
 
-class Body;
 class Joint;
 
 /// @brief Abstract base Joint definition class.
@@ -50,10 +51,10 @@ struct JointConf
     JointType type = JointType::Unknown;
     
     /// @brief 1st attached body.
-    Body* bodyA = nullptr;
+    BodyID bodyA = InvalidBodyID;
     
     /// @brief 2nd attached body.
-    Body* bodyB = nullptr;
+    BodyID bodyB = InvalidBodyID;
     
     /// @brief Collide connected.
     /// @details Set this flag to true if the attached bodies should collide.
@@ -88,14 +89,14 @@ struct JointBuilder : JointConf
     }
     
     /// @brief Use value for body A setting.
-    constexpr reference UseBodyA(Body* b) noexcept
+    constexpr reference UseBodyA(BodyID b) noexcept
     {
         bodyA = b;
         return static_cast<reference>(*this);
     }
     
     /// @brief Use value for body B setting.
-    constexpr reference UseBodyB(Body* b) noexcept
+    constexpr reference UseBodyB(BodyID b) noexcept
     {
         bodyB = b;
         return static_cast<reference>(*this);

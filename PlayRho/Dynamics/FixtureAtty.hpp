@@ -47,35 +47,10 @@ class FixtureAtty
 {
 private:
     
-    /// @brief Gets the proxies of the given fixture.
-    static auto GetProxies(const Fixture& fixture)
-    {
-        return fixture.GetProxies();
-    }
-    
     /// @brief Sets the proxies of the given fixture.
-    static void SetProxies(Fixture& fixture, std::unique_ptr<FixtureProxy[]> value,
-                           std::size_t count)
+    static void SetProxies(Fixture& fixture, std::vector<FixtureProxy> value)
     {
-        fixture.SetProxies(std::move(value), count);
-    }
-    
-    /// @brief Resets the proxies of the given fixture.
-    static void ResetProxies(Fixture& fixture) noexcept
-    {
-        fixture.ResetProxies();
-    }
-    
-    /// @brief Creates a new fixture for the given body and with the given settings.
-    static Fixture* Create(Body& body, const FixtureConf& def, Shape shape)
-    {
-        return new Fixture{&body, def, shape};
-    }
-    
-    /// @brief Deletes a fixture.
-    static void Delete(Fixture *fixture)
-    {
-        delete fixture;
+        fixture.m_proxies = std::move(value);
     }
     
     /// @brief Sets the contact filtering data.

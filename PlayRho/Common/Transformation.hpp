@@ -32,6 +32,8 @@
 namespace playrho {
 namespace d2 {
 
+struct BodyConf;
+
 /// @brief Describes a geometric transformation.
 /// @details A transform contains translation and rotation. It is used to represent
 ///   the position and orientation of rigid frames.

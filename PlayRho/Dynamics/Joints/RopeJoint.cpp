@@ -22,6 +22,7 @@
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
@@ -204,16 +205,6 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     bodyConstraintB->SetPosition(posB);
 
     return (length - m_maxLength) < conf.linearSlop;
-}
-
-Length2 RopeJoint::GetAnchorA() const
-{
-    return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
-}
-
-Length2 RopeJoint::GetAnchorB() const
-{
-    return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
 }
 
 Momentum2 RopeJoint::GetLinearReaction() const

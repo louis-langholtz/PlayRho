@@ -27,14 +27,12 @@
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Positive.hpp>
+#include <PlayRho/Common/ArrayAllocator.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Dynamics/BodyAtty.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
-#include <PlayRho/Dynamics/WorldCallbacks.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
-#include <PlayRho/Dynamics/ContactAtty.hpp>
-#include <PlayRho/Dynamics/JointAtty.hpp>
 #include <PlayRho/Dynamics/IslandStats.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 
@@ -62,25 +60,29 @@ class Fixture;
 class Joint;
 struct Island;
 class Shape;
+class JointVisitor;
 
 /// @brief Definition of a "world" implementation.
 /// @see World.
 class WorldImpl {
 public:
+    /// @brief Contact update configuration.
+    struct ContactUpdateConf;
+
     /// @brief Constructs a world implementation for a world.
     /// @param def A customized world configuration or its default value.
     /// @note A lot more configurability can be had via the <code>StepConf</code>
     ///   data that's given to the world's <code>Step</code> method.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
     /// @see Step.
-    WorldImpl(World& world, const WorldConf& def);
+    explicit WorldImpl(const WorldConf& def);
 
     /// @brief Constructs a world implementation for a world that's copied from another.
     /// @details Copy constructs this world with a deep copy of the given world.
     /// @post The state of this world is like that of the given world except this world now
     ///   has deep copies of the given world with pointers having the new addresses of the
     ///   new memory required for those copies.
-    WorldImpl(World& world, const WorldImpl& other);
+    WorldImpl(const WorldImpl& other);
 
     /// @brief Copy function.
     /// @details Copy assigns this world with a deep copy of the given world.
@@ -91,7 +93,6 @@ public:
     /// @throws WrongState if this method is called while the world is locked.
     WorldImpl& copy(const WorldImpl& other);
 
-    WorldImpl(const WorldImpl& other) = delete;
     WorldImpl(WorldImpl&& other) = delete;
     WorldImpl& operator= (const WorldImpl& other) = delete;
     WorldImpl& operator= (WorldImpl&& other) = delete;
@@ -107,13 +108,23 @@ public:
     /// @throws WrongState if this method is called while the world is locked.
     void Clear();
 
-    /// @brief Register a destruction listener.
-    /// @note The listener is owned by you and must remain in scope.
-    void SetDestructionListener(DestructionListener* listener) noexcept;
+    /// @brief Register a destruction listener for fixtures.
+    void SetFixtureDestructionListener(World::FixtureListener listener) noexcept;
 
-    /// @brief Register a contact event listener.
-    /// @note The listener is owned by you and must remain in scope.
-    void SetContactListener(ContactListener* listener) noexcept;
+    /// @brief Register a destruction listener for joints.
+    void SetJointDestructionListener(World::JointListener listener) noexcept;
+
+    /// @brief Register a begin contact event listener.
+    void SetBeginContactListener(World::ContactListener listener) noexcept;
+
+    /// @brief Register an end contact event listener.
+    void SetEndContactListener(World::ContactListener listener) noexcept;
+
+    /// @brief Register a pre-solve contact event listener.
+    void SetPreSolveContactListener(World::ManifoldContactListener listener) noexcept;
+
+    /// @brief Register a post-solve contact event listener.
+    void SetPostSolveContactListener(World::ImpulsesContactListener listener) noexcept;
 
     /// @brief Creates a rigid body with the given configuration.
     /// @warning This function should not be used while the world is locked &mdash; as it is
@@ -126,9 +137,9 @@ public:
     ///   <code>Destroy(Body*)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
-    /// @see Destroy(Body*), GetBodies.
+    /// @see Destroy(BodyID), GetBodies.
     /// @see PhysicalEntities.
-    Body* CreateBody(const BodyConf& def = GetDefaultBodyConf());
+    BodyID CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
     /// @brief Creates a joint to constrain one or more bodies.
     /// @warning This function is locked during callbacks.
@@ -136,13 +147,13 @@ public:
     /// @post The created joint will be present in the range returned from the
     ///   <code>GetJoints()</code> method.
     /// @return Pointer to newly created joint which can later be destroyed by calling the
-    ///   <code>Destroy(Joint*)</code> method.
+    ///   <code>Destroy(JointID)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @throws InvalidArgument if the given definition is not allowed.
     /// @see PhysicalEntities.
-    /// @see Destroy(Joint*), GetJoints.
-    Joint* CreateJoint(const JointConf& def);
+    /// @see Destroy(JointID), GetJoints.
+    JointID CreateJoint(const JointConf& def);
 
     /// @brief Destroys the given body.
     /// @details Destroys a given body that had previously been created by a call to this
@@ -156,11 +167,11 @@ public:
     ///   <code>GetBodies()</code> method.
     /// @post None of the body's fixtures will be present in the fixtures-for-proxies
     ///   collection.
-    /// @param body Body to destroy that had been created by this world.
+    /// @param id Body to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
     /// @see CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies.
     /// @see PhysicalEntities.
-    void Destroy(Body* body);
+    void Destroy(BodyID id);
 
     /// @brief Destroys a joint.
     /// @details Destroys a given joint that had previously been created by a call to this
@@ -174,7 +185,7 @@ public:
     /// @throws WrongState if this method is called while the world is locked.
     /// @see CreateJoint(const JointConf&), GetJoints.
     /// @see PhysicalEntities.
-    void Destroy(Joint* joint);
+    void Destroy(JointID joint);
 
     /// @brief Steps the world simulation according to the given configuration.
     ///
@@ -316,19 +327,19 @@ public:
     /// @brief Re-filter the fixture.
     /// @note Call this if you want to establish collision that was previously disabled by
     ///   <code>ShouldCollide(const Fixture&, const Fixture&)</code>.
-    /// @see bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
-    void Refilter(Fixture& fixture);
+    /// @see bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB)
+    void Refilter(FixtureID id);
 
     /// @brief Sets the contact filtering data.
     /// @note This won't update contacts until the next time step when either parent body
     ///    is speedable and awake.
     /// @note This automatically calls <code>Refilter</code>.
-    void SetFilterData(Fixture& fixture, Filter filter);
+    void SetFilterData(FixtureID id, Filter filter);
 
     /// @brief Sets the type of the given body.
     /// @note This may alter the body's mass and velocity.
     /// @throws WrongState if this method is called while the world is locked.
-    void SetType(Body& body, playrho::BodyType type);
+    void SetType(BodyID id, playrho::BodyType type);
 
     /// @brief Creates a fixture with the given parameters.
     /// @details Creates a fixture for attaching a shape and other characteristics to the
@@ -361,9 +372,9 @@ public:
     /// @see Destroy, GetFixtures
     /// @see PhysicalEntities
     ///
-    Fixture* CreateFixture(Body& body, const Shape& shape,
-                           const FixtureConf& def = GetDefaultFixtureConf(),
-                           bool resetMassData = true);
+    FixtureID CreateFixture(BodyID body, const Shape& shape,
+                            const FixtureConf& def = GetDefaultFixtureConf(),
+                            bool resetMassData = true);
 
     /// @brief Destroys a fixture.
     /// @details This removes the fixture from the broad-phase and destroys all contacts
@@ -376,7 +387,7 @@ public:
     /// @param resetMassData Whether or not to reset the mass data of the associated body.
     /// @see Body::ResetMassData.
     /// @throws WrongState if this method is called while the world is locked.
-    bool Destroy(Fixture& fixture, bool resetMassData = true);
+    bool Destroy(FixtureID fixture, bool resetMassData = true);
 
     /// @brief Destroys fixtures of the given body.
     /// @details Destroys all of the fixtures previously created for this body by the
@@ -386,7 +397,7 @@ public:
     ///   returned by the <code>GetFixtures()</code> methods.
     /// @see CreateFixture, GetFixtures, ResetMassData.
     /// @see PhysicalEntities
-    void DestroyFixtures(Body& body);
+    void DestroyFixtures(BodyID id);
 
     /// @brief Sets the enabled state of the body.
     ///
@@ -408,36 +419,61 @@ public:
     ///
     /// @see IsEnabled.
     ///
-    void SetEnabled(Body& body, bool flag);
+    void SetEnabled(BodyID id, bool flag);
 
     /// @brief Set the mass properties to override the mass properties of the fixtures.
     /// @note This changes the center of mass position.
     /// @note Creating or destroying fixtures can also alter the mass.
     /// @note This function has no effect if the body isn't dynamic.
     /// @param massData the mass properties.
-    void SetMassData(Body& body, const MassData& massData);
+    void SetMassData(BodyID id, const MassData& massData);
 
-    /// @brief Sets the position of the body's origin and rotation.
-    /// @details This instantly adjusts the body to be at the new position and new orientation.
+    /// @brief Sets the transformation of the body.
+    /// @details This instantly adjusts the body to have the new transformation.
     /// @warning Manipulating a body's transform can cause non-physical behavior!
-    /// @note Contacts are updated on the next call to World::Step.
-    /// @param location Valid world location of the body's local origin. Behavior is undefined
-    ///   if value is invalid.
-    /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
-    void SetTransform(Body& body, Length2 location, Angle angle);
+    /// @warning Behavior is undefined if the value is invalid.
+    /// @note Associated contacts may be flagged for updating on the next call to World::Step.
+    /// @throws WrongState If call would change body's state when world is locked.
+    void SetTransformation(BodyID id, Transformation xfm);
+
+    std::size_t GetFixtureCount(BodyID id) const;
+
+    std::size_t GetShapeCount() const noexcept;
+
+    const Fixture& GetFixture(FixtureID id) const;
+    Fixture& GetFixture(FixtureID id);
+
+    /// @throws std::out_of_range if given an invalid id.
+    const Body& GetBody(BodyID id) const;
+
+    /// @throws std::out_of_range if given an invalid id.
+    Body& GetBody(BodyID id);
+
+    const Contact& GetContact(ContactID id) const;
+    Contact& GetContact(ContactID id);
+
+    const Joint& GetJoint(JointID id) const;
+
+    void Accept(JointID id, JointVisitor& visitor) const;
+
+    void Accept(JointID id, JointVisitor& visitor);
+
+    /// @brief Sets whether the fixture is a sensor or not.
+    /// @see IsSensor(FixtureID id).
+    void SetSensor(FixtureID id, bool value);
 
 private:
     /// @brief Registers the given fixture for adding to proxy processing.
     /// @post The given fixture will be found in the fixtures-for-proxies range.
-    void RegisterForProxies(Fixture& fixture);
+    void RegisterForProxies(FixtureID id);
     
     /// @brief Registers the given body for proxy processing.
     /// @post The given body will be found in the bodies-for-proxies range.
-    void RegisterForProxies(Body& body);
+    void RegisterForProxies(BodyID id);
     
     /// @brief Unregisters the given body from proxy processing.
     /// @post The given body won't be found in the bodies-for-proxies range.
-    void UnregisterForProxies(const Body& body);
+    void UnregisterForProxies(BodyID id);
 
     /// @brief Touches each proxy of the given fixture.
     /// @warning Behavior is undefined if called with a fixture for a body which doesn't
@@ -476,19 +512,9 @@ private:
         e_stepComplete  = 0x0040,
     };
     
-    /// @brief Copies bodies.
-    void CopyBodies(std::map<const Body*, Body*>& bodyMap,
-                    std::map<const Fixture*, Fixture*>& fixtureMap,
-                    SizedRange<World::Bodies::const_iterator> range);
-    
     /// @brief Copies joints.
     void CopyJoints(const std::map<const Body*, Body*>& bodyMap,
                     SizedRange<World::Joints::const_iterator> range);
-    
-    /// @brief Copies contacts.
-    void CopyContacts(const std::map<const Body*, Body*>& bodyMap,
-                      const std::map<const Fixture*, Fixture*>& fixtureMap,
-                      SizedRange<World::Contacts::const_iterator> range);
     
     /// @brief Clears this world without checking the world's state.
     void InternalClear() noexcept;
@@ -521,35 +547,38 @@ private:
     ///
     /// @return Island solver results.
     ///
-    static IslandStats SolveRegIslandViaGS(const StepConf& conf, Island island,
-                                           World& world,
-                                           ContactListener* contactListener);
+    static IslandStats SolveRegIslandViaGS(ArrayAllocator<Body>& bodyBuffer,
+                                           ArrayAllocator<Contact>& contacts,
+                                           const ArrayAllocator<Fixture>& fixtures,
+                                           const StepConf& conf, Island island,
+                                           const World::ImpulsesContactListener& contactListener);
     
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.
     /// @post Joints are listed the island in the order that bodies provide those joints.
-    static void AddToIsland(Island& island, Body& seed,
+    void AddToIsland(Island& island, BodyID seed,
                             World::Bodies::size_type& remNumBodies,
                             World::Contacts::size_type& remNumContacts,
                             World::Joints::size_type& remNumJoints);
     
     /// @brief Body stack.
-    using BodyStack = std::stack<Body*, std::vector<Body*>>;
+    using BodyStack = std::stack<BodyID, std::vector<BodyID>>;
     
     /// @brief Adds to the island.
-    static void AddToIsland(Island& island, BodyStack& stack,
-                            World::Bodies::size_type& remNumBodies,
-                            World::Contacts::size_type& remNumContacts,
-                            World::Joints::size_type& remNumJoints);
+    void AddToIsland(Island& island, BodyStack& stack,
+                     World::Bodies::size_type& remNumBodies,
+                     World::Contacts::size_type& remNumContacts,
+                     World::Joints::size_type& remNumJoints);
     
     /// @brief Adds contacts to the island.
-    static void AddContactsToIsland(Island& island, BodyStack& stack, const Body* b);
+    void AddContactsToIsland(Island& island, BodyStack& stack, const Body* b);
     
     /// @brief Adds joints to the island.
-    static void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
+    void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
     
     /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
-    static World::Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<Body*>& bodies);
+    static World::Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
+                                                                   ArrayAllocator<Body>& buffer);
     
     /// @brief Solves the step using successive time of impact (TOI) events.
     /// @details Used for continuous physics.
@@ -557,27 +586,19 @@ private:
     ///    may miss.
     /// @param conf Time step configuration to use.
     ToiStepStats SolveToi(const StepConf& conf);
-    
+
     /// @brief Solves collisions for the given time of impact.
     ///
+    /// @param contactID Identifier of contact to solve for.
     /// @param conf Time step configuration to solve for.
-    /// @param contact Contact.
-    /// @param numBodies Number of bodies to use as an island capacity hint.
-    /// @param numContacts Number of contacts to use as an island capacity hint.
-    /// @param contactListener Contact listener function or <code>nullptr</code>.
     ///
     /// @note Precondition 1: there is no contact having a lower TOI in this time step that has
     ///   not already been solved for.
     /// @note Precondition 2: there is not a lower TOI in the time step for which collisions have
     ///   not already been processed.
     ///
-    static IslandStats SolveToi(const StepConf& conf,
-                                World& world,
-                                Contact& contact,
-                                World::Bodies::size_type numBodies,
-                                World::Contacts::size_type numContacts,
-                                ContactListener* contactListener);
-    
+    IslandStats SolveToi(ContactID contactID, const StepConf& conf);
+
     /// @brief Solves the time of impact for bodies 0 and 1 of the given island.
     ///
     /// @details This:
@@ -595,28 +616,27 @@ private:
     ///
     /// @param conf Time step configuration information.
     /// @param island Island to do time of impact solving for.
-    /// @param contactListener Contact listener function or <code>nullptr</code>.
     ///
     /// @return Island solver results.
     ///
-    static IslandStats SolveToiViaGS(const StepConf& conf, Island& island,
-                                     World& world, ContactListener* contactListener);
+    IslandStats SolveToiViaGS(const Island& island, const StepConf& conf);
     
     /// @brief Updates the given body.
-    /// @details Updates the given body's velocity, sweep position 1, and its transformation.
+    /// @details Updates the given body's sweep position 1, and its transformation.
     /// @param body Body to update.
     /// @param pos New position to set the given body to.
-    /// @param vel New velocity to set the given body to.
-    static void UpdateBody(Body& body, const Position& pos, const Velocity& vel);
+    /// @return <code>true</code> if body's contacts should be flagged for updating,
+    ///   otherwise <code>false</code>.
+    static bool UpdateBody(Body& body, const Position& pos);
     
     /// @brief Reset bodies for solve TOI.
-    static void ResetBodiesForSolveTOI(World::Bodies& bodies) noexcept;
+    static void ResetBodiesForSolveTOI(World::Bodies& bodies, ArrayAllocator<Body>& buffer) noexcept;
     
     /// @brief Reset contacts for solve TOI.
-    static void ResetContactsForSolveTOI(World::Contacts& contacts) noexcept;
+    static void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const World::Contacts& contacts) noexcept;
     
     /// @brief Reset contacts for solve TOI.
-    static void ResetContactsForSolveTOI(Body& body) noexcept;
+    static void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const Body& body) noexcept;
     
     /// @brief Process contacts output.
     struct ProcessContactsOutput
@@ -624,7 +644,7 @@ private:
         ContactCounter contactsUpdated = 0; ///< Contacts updated.
         ContactCounter contactsSkipped = 0; ///< Contacts skipped.
     };
-    
+
     /// @brief Processes the contacts of a given body for TOI handling.
     /// @details This does the following:
     ///   1. Advances the appropriate associated other bodies to the given TOI (advancing
@@ -635,92 +655,94 @@ private:
     ///      (or resets the other bodies advancement).
     ///   4. Adds to the island, those other bodies that haven't already been added of the contacts that got added.
     /// @note Precondition: there should be no lower TOI for which contacts have not already been processed.
+    /// @param[in,out] id Identifier of the dynamic/accelerable body to process contacts for.
     /// @param[in,out] island Island. On return this may contain additional contacts or bodies.
-    /// @param[in,out] body A dynamic/accelerable body.
     /// @param[in] toi Time of impact (TOI). Value between 0 and 1.
     /// @param[in] conf Step configuration data.
-    /// @param[in] contactListener Contact listener function or <code>nullptr</code>.
-    static ProcessContactsOutput ProcessContactsForTOI(Island& island, Body& body, Real toi,
-                                                       const StepConf& conf, World& world, ContactListener* contactListener);
-    
+    ProcessContactsOutput ProcessContactsForTOI(BodyID id, Island& island, Real toi,
+                                                const StepConf& conf);
+
     /// @brief Adds the given joint to this world.
     /// @note This also adds the joint to the bodies of the joint.
-    bool Add(Joint* j, bool flagForFiltering = false);
-    
+    bool Add(JointID j, bool flagForFiltering = false);
+
     /// @brief Removes the given body from this world.
-    void Remove(const Body& b) noexcept;
-    
+    void Remove(BodyID id) noexcept;
+
     /// @brief Removes the given joint from this world.
-    bool Remove(const Joint& j) noexcept;
-    
+    bool Remove(JointID id) noexcept;
+
     /// @brief Sets the step complete state.
     /// @post <code>IsStepComplete()</code> will return the value set.
     /// @see IsStepComplete.
     void SetStepComplete(bool value) noexcept;
-    
+
     /// @brief Sets the allow sleeping state.
     void SetAllowSleeping() noexcept;
-    
+
     /// @brief Unsets the allow sleeping state.
     void UnsetAllowSleeping() noexcept;
-    
+
     /// @brief Update contacts statistics.
     struct UpdateContactsStats
     {
         /// @brief Number of contacts ignored (because both bodies were asleep).
         ContactCounter ignored = 0;
-        
+
         /// @brief Number of contacts updated.
         ContactCounter updated = 0;
-        
+
         /// @brief Number of contacts skipped because they weren't marked as needing updating.
         ContactCounter skipped = 0;
     };
-    
+
     /// @brief Destroy contacts statistics.
     struct DestroyContactsStats
     {
         ContactCounter ignored = 0; ///< Ignored.
         ContactCounter erased = 0; ///< Erased.
     };
-    
+
     /// @brief Contact TOI data.
     struct ContactToiData
     {
-        Contact* contact = nullptr; ///< Contact for which the time of impact is relevant.
+        ContactID contact = InvalidContactID; ///< Contact for which the time of impact is relevant.
         Real toi = std::numeric_limits<Real>::infinity(); ///< Time of impact (TOI) as a fractional value between 0 and 1.
         ContactCounter simultaneous = 0; ///< Count of simultaneous contacts at this TOI.
     };
-    
+
     /// @brief Update contacts data.
     struct UpdateContactsData
     {
         ContactCounter numAtMaxSubSteps = 0; ///< # at max sub-steps (lower the better).
         ContactCounter numUpdatedTOI = 0; ///< # updated TOIs (made valid).
         ContactCounter numValidTOI = 0; ///< # already valid TOIs.
-        
+
         /// @brief Distance iterations type alias.
         using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-        
+
         /// @brief TOI iterations type alias.
         using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
-        
+
         /// @brief Root iterations type alias.
         using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
-        
+
         dist_iter_type maxDistIters = 0; ///< Max distance iterations.
         toi_iter_type maxToiIters = 0; ///< Max TOI iterations.
         root_iter_type maxRootIters = 0; ///< Max root iterations.
     };
-    
+
     /// @brief Updates the contact times of impact.
-    static UpdateContactsData UpdateContactTOIs(World::Contacts& contacts, const StepConf& conf);
-    
+    static UpdateContactsData UpdateContactTOIs(ArrayAllocator<Contact>& contactBuffer,
+                                                ArrayAllocator<Body>& bodyBuffer,
+                                                const ArrayAllocator<Fixture>& fixtureBuffer,
+                                                const World::Contacts& contacts, const StepConf& conf);
+
     /// @brief Gets the soonest contact.
     /// @details This finds the contact with the lowest (soonest) time of impact.
     /// @return Contact with the least time of impact and its time of impact, or null contact.
     ///  A non-null contact will be enabled, not have sensors, be active, and impenetrable.
-    static ContactToiData GetSoonestContact(const World::Contacts& contacts) noexcept;
+    static ContactToiData GetSoonestContact(const World::Contacts& contacts, const ArrayAllocator<Contact>& buffer) noexcept;
     
     /// @brief Determines whether this world has new fixtures.
     bool HasNewFixtures() const noexcept;
@@ -740,21 +762,23 @@ private:
     /// have active bodies (either or both) get their Update methods called with the current
     /// contact listener as its argument.
     /// Essentially this really just purges contacts that are no longer relevant.
-    static DestroyContactsStats DestroyContacts(World::Contacts& contacts, const DynamicTree& tree,
-                                                World& world, ContactListener* contactListener);
+    static DestroyContactsStats DestroyContacts(World::Contacts& contacts,
+                                                ArrayAllocator<Contact>& contactBuffer,
+                                                ArrayAllocator<Body>& bodyBuffer,
+                                                const ArrayAllocator<Fixture>& fixtureBuffer,
+                                                const DynamicTree& tree,
+                                                World::ContactListener listener);
     
     /// @brief Update contacts.
-    static UpdateContactsStats UpdateContacts(World::Contacts& contacts, const StepConf& conf,
-                                              World& world, ContactListener* contactListener);
-    
+    UpdateContactsStats UpdateContacts(const StepConf& conf);
+
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
     ///   and decrements the contact manager's contact count.
     /// @param contacts Contacts from which to destroy the contact from.
-    /// @param contactListener Contact listener or <code>nullptr</code>. Invoked if non-null.
     /// @param contact Contact to destroy.
     /// @param from From body.
-    static void Destroy(World::Contacts& contacts, World& world, ContactListener* contactListener, Contact* contact, Body* from);
+    void Destroy(World::Contacts& contacts, World::ContactListener listener, ContactID contact, Body* from);
     
     /// @brief Adds a contact for the proxies identified by the key if appropriate.
     /// @details Adds a new contact object to represent a contact between proxy A and proxy B
@@ -766,29 +790,31 @@ private:
     ///   5. There exists a contact-create function for the pair of shapes of the proxies.
     /// @post The size of the <code>m_contacts</code> collection is one greater-than it was
     ///   before this method is called if it returns <code>true</code>.
-    /// @param contacts Container to possibly add a new contact to.
-    /// @param tree Dynamic tree to use.
     /// @param key ID's of dynamic tree entries identifying the fixture proxies involved.
     /// @return <code>true</code> if a new contact was indeed added (and created),
     ///   else <code>false</code>.
     /// @see bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept.
-    static bool Add(World::Contacts& contacts, const DynamicTree& tree, ContactKey key);
-    
+    bool Add(ContactKey key);
+
     /// @brief Destroys the given contact.
-    static void InternalDestroy(Contact* contact, World& world, ContactListener* contactListener, Body* from = nullptr);
-    
+    static void InternalDestroy(ContactID contact,
+                                ArrayAllocator<Body>& bodyBuffer,
+                                ArrayAllocator<Contact>& contactBuffer,
+                                World::ContactListener listener, Body* from = nullptr);
+
     /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.
-    static void CreateProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture, Length aabbExtension);
-    
+    static void CreateProxies(FixtureID id, Fixture& fixture, const Transformation& xfm,
+                              ProxyQueue& proxies, DynamicTree& tree, Length aabbExtension);
+
     /// @brief Destroys the given fixture's proxies.
     /// @note This resets the proxy count to 0.
     static void DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture) noexcept;
-    
+
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
     static void InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture) noexcept;
-    
+
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   body's fixtures.
@@ -802,37 +828,57 @@ private:
     ContactCounter Synchronize(const Fixture& fixture,
                                const Transformation& xfm1, const Transformation& xfm2,
                                Length2 displacement, Length extension);
-    
+
     /// @brief Creates and destroys proxies.
     void CreateAndDestroyProxies(Length extension);
-    
+
     /// @brief Synchronizes proxies of the bodies for proxies.
     PreStepStats::counter_type SynchronizeProxies(const StepConf& conf);
-    
+
+    /// @brief Updates the touching related state and notifies listener (if one given).
+    ///
+    /// @note Ideally this method is only called when a dependent change has occurred.
+    /// @note Touching related state depends on the following data:
+    ///   - The fixtures' sensor states.
+    ///   - The fixtures bodies' transformations.
+    ///   - The <code>maxCirclesRatio</code> per-step configuration state *OR* the
+    ///     <code>maxDistanceIters</code> per-step configuration state.
+    ///
+    /// @param conf Per-step configuration information.
+    ///
+    /// @see GetManifold, IsTouching
+    ///
+    void Update(ContactID id, const ContactUpdateConf& conf);
+
     /******** Member variables. ********/
-    
-    World& m_world; ///< For back-pointer support.
+
+    ArrayAllocator<Body> m_bodyBuffer;
+    ArrayAllocator<Fixture> m_fixtureBuffer;
+    ArrayAllocator<Contact> m_contactBuffer;
 
     DynamicTree m_tree; ///< Dynamic tree.
-    
+
     ContactKeyQueue m_proxyKeys; ///< Proxy keys.
     ProxyQueue m_proxies; ///< Proxies queue.
     World::Fixtures m_fixturesForProxies; ///< Fixtures for proxies queue.
     World::Bodies m_bodiesForProxies; ///< Bodies for proxies queue.
     
     World::Bodies m_bodies; ///< Body collection.
-    
+
     World::Joints m_joints; ///< Joint collection.
     
     /// @brief Container of contacts.
     /// @note In the <em>add pair</em> stress-test, 401 bodies can have some 31000 contacts
     ///   during a given time step.
     World::Contacts m_contacts;
-    
-    DestructionListener* m_destructionListener = nullptr; ///< Destruction listener. 8-bytes.
-    
-    ContactListener* m_contactListener = nullptr; ///< Contact listener. 8-bytes.
-    
+
+    World::FixtureListener m_fixtureDestructionListener;
+    World::JointListener m_jointDestructionListener;
+    World::ContactListener m_beginContactListener;
+    World::ContactListener m_endContactListener;
+    World::ManifoldContactListener m_preSolveContactListener;
+    World::ImpulsesContactListener m_postSolveContactListener;
+
     FlagsType m_flags = e_stepComplete; ///< Flags.
     
     /// Inverse delta-t from previous step.
@@ -972,18 +1018,404 @@ inline const DynamicTree& WorldImpl::GetTree() const noexcept
     return m_tree;
 }
 
-inline void WorldImpl::SetDestructionListener(DestructionListener* listener) noexcept
+inline void WorldImpl::SetFixtureDestructionListener(World::FixtureListener listener) noexcept
 {
-    m_destructionListener = listener;
+    m_fixtureDestructionListener = std::move(listener);
 }
 
-inline void WorldImpl::SetContactListener(ContactListener* listener) noexcept
+inline void WorldImpl::SetJointDestructionListener(World::JointListener listener) noexcept
 {
-    m_contactListener = listener;
+    m_jointDestructionListener = std::move(listener);
 }
+
+inline void WorldImpl::SetBeginContactListener(World::ContactListener listener) noexcept
+{
+    m_beginContactListener = std::move(listener);
+}
+
+inline void WorldImpl::SetEndContactListener(World::ContactListener listener) noexcept
+{
+    m_endContactListener = std::move(listener);
+}
+
+inline void WorldImpl::SetPreSolveContactListener(World::ManifoldContactListener listener) noexcept
+{
+    m_preSolveContactListener = std::move(listener);
+}
+
+inline void WorldImpl::SetPostSolveContactListener(World::ImpulsesContactListener listener) noexcept
+{
+    m_postSolveContactListener = std::move(listener);
+}
+
+inline const Fixture& WorldImpl::GetFixture(FixtureID id) const
+{
+    return m_fixtureBuffer.at(UnderlyingValue(id));
+}
+
+inline Fixture& WorldImpl::GetFixture(FixtureID id)
+{
+    return m_fixtureBuffer.at(UnderlyingValue(id));
+}
+
+inline const Body& WorldImpl::GetBody(BodyID id) const
+{
+    return m_bodyBuffer.at(UnderlyingValue(id));
+}
+
+inline Body& WorldImpl::GetBody(BodyID id)
+{
+    return m_bodyBuffer.at(UnderlyingValue(id));
+}
+
+inline const Joint& WorldImpl::GetJoint(JointID id) const
+{
+    if (id == InvalidJointID)
+    {
+        throw std::out_of_range("invalid JointID");
+    }
+    return *static_cast<Joint*>(UnderlyingValue(id));
+}
+
+inline const Contact& WorldImpl::GetContact(ContactID id) const
+{
+    return m_contactBuffer.at(UnderlyingValue(id));
+}
+
+inline Contact& WorldImpl::GetContact(ContactID id)
+{
+    return m_contactBuffer.at(UnderlyingValue(id));
+}
+
+// Free functions...
+
+BodyID GetBodyID(const WorldImpl& world, FixtureID id);
+
+/// @brief Gets the user data associated with the identified fixture.
+void* GetUserData(const WorldImpl& world, FixtureID id);
+
+Shape GetShape(const WorldImpl& world, FixtureID id);
+
+/// @brief Is the specified fixture a sensor (non-solid)?
+/// @return the true if the fixture is a sensor.
+bool IsSensor(const WorldImpl& world, FixtureID id);
+
+/// @brief Gets the density of this fixture.
+/// @return Non-negative density (in mass per area).
+AreaDensity GetDensity(const WorldImpl& world, FixtureID id);
+
+const World::FixtureProxies& GetProxies(const WorldImpl& world, FixtureID id);
+
+/// @brief Sets whether the specified fixture is a sensor or not.
+inline void SetSensor(WorldImpl& world, FixtureID id, bool value)
+{
+    world.SetSensor(id, value);
+}
+
+/// @brief Gets the body configuration for the identified body.
+/// @throws std::out_of_range If given an invalid body identifier.
+inline BodyConf GetBodyConf(const WorldImpl& world, BodyID id)
+{
+    return GetBodyConf(world.GetBody(id));
+}
+
+/// @brief Gets the type of the body.
+BodyType GetType(const WorldImpl& world, BodyID id);
+
+/// @brief Gets the type of the joint.
+JointType GetType(const WorldImpl& world, JointID id);
+
+/// @brief Gets the linear reaction on body-B at the joint anchor.
+Momentum2 GetLinearReaction(const WorldImpl& world, JointID id);
+
+/// @brief Get the angular reaction on body-B for the identified joint.
+AngularMomentum GetAngularReaction(const WorldImpl& world, JointID id);
+
+Angle GetAngle(const WorldImpl& world, BodyID id);
+
+Transformation GetTransformation(const WorldImpl& world, BodyID id);
+
+/// @brief Gets the transformation associated with the given fixture.
+inline Transformation GetTransformation(const WorldImpl& world, FixtureID id)
+{
+    return GetTransformation(world, GetBodyID(world, id));
+}
+
+inline void SetTransformation(WorldImpl& world, BodyID id, Transformation xfm)
+{
+    world.SetTransformation(id, xfm);
+}
+
+Velocity GetVelocity(const WorldImpl& world, BodyID id);
+
+/// @brief Sets the body's velocity (linear and angular velocity).
+/// @note This method does nothing if this body is not speedable.
+/// @note A non-zero velocity will awaken this body.
+/// @see SetAwake, SetUnderActiveTime.
+void SetVelocity(WorldImpl& world, BodyID id, const Velocity& value);
+
+/// Enable/disable the joint motor.
+void EnableMotor(WorldImpl& world, JointID joint, bool flag);
+
+/// @brief Sleeps the body.
+void UnsetAwake(WorldImpl& world, BodyID id);
+
+/// @brief Wakes up the body.
+void SetAwake(WorldImpl& world, BodyID id);
+
+/// @brief Wakes up the body of the fixture.
+/// @relatedalso WorldImpl
+void SetAwake(WorldImpl& world, FixtureID id);
+
+/// @brief Wakes up the joined bodies.
+/// @relatedalso WorldImpl
+void SetAwake(WorldImpl& world, JointID id);
+
+/// @brief Gets the awake status of the specified contact.
+/// @see SetAwake(WorldImpl& world, ContactID id)
+/// @relatedalso WorldImpl
+bool IsAwake(const WorldImpl& world, ContactID id);
+
+/// @brief Sets awake the bodies of the fixtures of the given contact.
+/// @see IsAwake(const WorldImpl& world, ContactID id)
+/// @relatedalso WorldImpl
+void SetAwake(WorldImpl& world, ContactID id);
+
+bool IsAwake(const WorldImpl& world, BodyID id);
+
+/// @brief Gets the local position of the center of mass of the specified body.
+Length2 GetLocalCenter(const WorldImpl& world, BodyID id);
+
+/// @brief Get the world position of the center of mass of the specified body.
+Length2 GetWorldCenter(const WorldImpl& world, BodyID id);
+
+/// @brief Gets this body's linear acceleration.
+LinearAcceleration2 GetLinearAcceleration(const WorldImpl& world, BodyID id);
+
+/// @brief Gets this body's angular acceleration.
+AngularAcceleration GetAngularAcceleration(const WorldImpl& world, BodyID id);
+
+void SetAcceleration(WorldImpl& world, BodyID id, LinearAcceleration2 linear, AngularAcceleration angular);
+void SetAcceleration(WorldImpl& world, BodyID id, Acceleration value);
+void SetAcceleration(WorldImpl& world, BodyID id, LinearAcceleration2 value);
+void SetAcceleration(WorldImpl& world, BodyID id, AngularAcceleration value);
+
+inline MassData GetMassData(const WorldImpl& world, FixtureID id)
+{
+    return GetMassData(GetShape(world, id));
+}
+
+/// @brief Sets the mass properties to override the mass properties of the fixtures.
+/// @note This changes the center of mass position.
+/// @note Creating or destroying fixtures can also alter the mass.
+/// @note This function has no effect if the body isn't dynamic.
+/// @param massData the mass properties.
+inline void SetMassData(WorldImpl& world, BodyID id, const MassData& massData)
+{
+    world.SetMassData(id, massData);
+}
+
+/// @brief Computes the body's mass data.
+/// @details This basically accumulates the mass data over all fixtures.
+/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
+///   mass to get the averaged center.
+/// @return accumulated mass data for all fixtures associated with the given body.
+/// @relatedalso WorldImpl
+MassData ComputeMassData(const WorldImpl& world, BodyID id);
+
+/// @brief Resets the mass data properties.
+/// @details This resets the mass data to the sum of the mass properties of the fixtures.
+/// @note This method must be called after calling <code>CreateFixture</code> to update the
+///   body mass data properties unless <code>SetMassData</code> is used.
+/// @see SetMassData.
+/// @relatedalso WorldImpl
+inline void ResetMassData(WorldImpl& world, BodyID id)
+{
+    SetMassData(world, id, ComputeMassData(world, id));
+}
+
+/// @brief Gets the inverse total mass of the body.
+/// @return Value of zero or more representing the body's inverse mass (in 1/kg).
+/// @see SetMassData.
+/// @relatedalso WorldImpl
+InvMass GetInvMass(const WorldImpl& world, BodyID id);
+
+/// @brief Gets the mass of the body.
+/// @note This may be the total calculated mass or it may be the set mass of the body.
+/// @return Value of zero or more representing the body's mass.
+/// @see GetInvMass, SetMassData
+/// @relatedalso WorldImpl
+inline Mass GetMass(const WorldImpl& world, BodyID id)
+{
+    const auto invMass = GetInvMass(world, id);
+    return (invMass != InvMass{0})? Mass{Real{1} / invMass}: 0_kg;
+}
+
+/// @brief Gets the inverse rotational inertia of the body.
+/// @return Inverse rotational inertia (in 1/kg-m^2).
+InvRotInertia GetInvRotInertia(const WorldImpl& world, BodyID id);
+
+/// @brief Gets the rotational inertia of the body.
+/// @param id Body to get the rotational inertia for.
+/// @return the rotational inertia.
+/// @relatedalso WorldImpl
+inline RotInertia GetRotInertia(const WorldImpl& world, BodyID id)
+{
+    return Real{1} / GetInvRotInertia(world, id);
+}
+
+/// @brief Gets the rotational inertia of the body about the local origin.
+/// @return the rotational inertia.
+/// @relatedalso WorldImpl
+inline RotInertia GetLocalRotInertia(const WorldImpl& world, BodyID id)
+{
+    return GetRotInertia(world, id)
+         + GetMass(world, id) * GetMagnitudeSquared(GetLocalCenter(world, id)) / SquareRadian;
+}
+
+/// @brief Should collide.
+/// @details Determines whether a body should possibly be able to collide with the other body.
+/// @relatedalso World
+/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
+bool ShouldCollide(const WorldImpl& world, BodyID lhs, BodyID rhs);
+
+/// @brief Gets the range of all joints attached to this body.
+SizedRange<World::BodyJoints::const_iterator> GetJoints(const WorldImpl& world, BodyID id);
+
+/// @brief Gets the range of all constant fixtures attached to the given body.
+SizedRange<World::Fixtures::const_iterator> GetFixtures(const WorldImpl& world, BodyID id);
+
+/// @brief Gets collide connected for the specified joint.
+/// @note Modifying the collide connect flag won't work correctly because
+///   the flag is only checked when fixture AABBs begin to overlap.
+bool GetCollideConnected(const WorldImpl& world, JointID id);
+
+/// @brief Is this contact touching?
+/// @details
+/// Touching is defined as either:
+///   1. This contact's manifold has more than 0 contact points, or
+///   2. This contact has sensors and the two shapes of this contact are found to be
+///      overlapping.
+/// @return true if this contact is said to be touching, false otherwise.
+bool IsTouching(const WorldImpl& world, ContactID id);
+
+/// @brief Whether or not the contact needs filtering.
+bool NeedsFiltering(const WorldImpl& world, ContactID id);
+
+/// @brief Gets fixture A of the given contact.
+FixtureID GetFixtureA(const WorldImpl& world, ContactID id);
+
+/// @brief Gets fixture B of the given contact.
+FixtureID GetFixtureB(const WorldImpl& world, ContactID id);
+
+Real GetDefaultFriction(const WorldImpl& world, ContactID id);
+Real GetDefaultRestitution(const WorldImpl& world, ContactID id);
+
+/// @brief Gets the friction used with the specified contact.
+/// @see SetFriction(ContactID id, Real value)
+Real GetFriction(const WorldImpl& world, ContactID id);
+
+/// @brief Gets the restitution used with the specified contact.
+/// @see SetRestitution(ContactID id, Real value)
+Real GetRestitution(const WorldImpl& world, ContactID id);
+
+/// @brief Sets the friction value for the specified contact.
+/// @details Overrides the default friction mixture.
+/// @note You can call this in "pre-solve" listeners.
+/// @note This value persists until set or reset.
+/// @warning Behavior is undefined if given a negative friction value.
+/// @param value Co-efficient of friction value of zero or greater.
+void SetFriction(WorldImpl& world, ContactID id, Real value);
+
+/// @brief Sets the restitution value for the specified contact.
+/// @details This override the default restitution mixture.
+/// @note You can call this in "pre-solve" listeners.
+/// @note The value persists until you set or reset.
+void SetRestitution(WorldImpl& world, ContactID id, Real value);
+
+/// @brief Gets the collision manifold for the identified contact.
+const Manifold& GetManifold(const WorldImpl& world, ContactID id);
+
+/// @brief Gets the enabled/disabled state of the body.
+/// @see SetEnabled.
+bool IsEnabled(const WorldImpl& world, BodyID id);
+
+/// @brief Sets the enabled state of the body.
+///
+/// @details A disabled body is not simulated and cannot be collided with or woken up.
+///   If you pass a flag of true, all fixtures will be added to the broad-phase.
+///   If you pass a flag of false, all fixtures will be removed from the broad-phase
+///   and all contacts will be destroyed. Fixtures and joints are otherwise unaffected.
+///
+/// @note A disabled body is still owned by a World object and remains in the world's
+///   body container.
+/// @note You may continue to create/destroy fixtures and joints on disabled bodies.
+/// @note Fixtures on a disabled body are implicitly disabled and will not participate in
+///   collisions, ray-casts, or queries.
+/// @note Joints connected to a disabled body are implicitly disabled.
+///
+/// @throws WrongState If call would change body's state when world is locked.
+///
+/// @post <code>IsEnabled()</code> returns the state given to this function.
+///
+/// @see IsEnabled.
+///
+inline void SetEnabled(WorldImpl& world, BodyID body, bool flag)
+{
+    world.SetEnabled(body, flag);
+}
+
+/// @brief Is identified body "speedable".
+/// @details Is the body able to have a non-zero speed associated with it.
+/// Kinematic and Dynamic bodies are speedable. Static bodies are not.
+bool IsSpeedable(const WorldImpl& world, BodyID id);
+
+/// @brief Is identified body "accelerable"?
+/// @details Indicates whether the body is accelerable, i.e. whether it is effected by
+///   forces. Only Dynamic bodies are accelerable.
+/// @return true if the body is accelerable, false otherwise.
+bool IsAccelerable(const WorldImpl& world, BodyID id);
+
+/// @brief Is the body treated like a bullet for continuous collision detection?
+bool IsImpenetrable(const WorldImpl& world, BodyID id);
+
+/// @brief Gets the container of all contacts attached to this body.
+/// @warning This collection changes during the time step and you may
+///   miss some collisions if you don't use <code>ContactListener</code>.
+SizedRange<World::Contacts::const_iterator> GetContacts(const WorldImpl& world, BodyID id);
+
+/// @brief Gets the user data associated with the identified body.
+void* GetUserData(const WorldImpl& world, BodyID id);
+
+/// @brief Gets whether the body's mass-data is dirty.
+bool IsMassDataDirty(const WorldImpl& world, BodyID id);
+
+/// @brief Gets whether the body has fixed rotation.
+/// @see SetFixedRotation(WorldImpl& world, BodyID id, bool value).
+bool IsFixedRotation(const WorldImpl& world, BodyID id);
+
+/// @brief Sets this body to have fixed rotation.
+/// @note This causes the mass to be reset.
+/// @see IsFixedRotation(const WorldImpl& world, BodyID id).
+void SetFixedRotation(WorldImpl& world, BodyID id, bool value);
+
+/// @brief Gets the user data associated with the identified joint.
+/// @relatedalso WorldImpl
+void* GetUserData(const WorldImpl& world, JointID id);
+
+BodyID GetBodyA(const WorldImpl& world, JointID id);
+
+BodyID GetBodyB(const WorldImpl& world, JointID id);
+
+Length2 GetLocalAnchorA(const WorldImpl& world, JointID id);
+
+Length2 GetLocalAnchorB(const WorldImpl& world, JointID id);
+
+Angle GetReferenceAngle(const WorldImpl& world, JointID id);
+
+UnitVec GetLocalAxisA(const WorldImpl& world, JointID id);
 
 } // namespace d2
-
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_WORLDIMPL_HPP

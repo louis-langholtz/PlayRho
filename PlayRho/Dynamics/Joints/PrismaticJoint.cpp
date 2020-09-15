@@ -20,8 +20,10 @@
  */
 
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
@@ -521,16 +523,6 @@ bool PrismaticJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const 
     return (linearError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
 
-Length2 PrismaticJoint::GetAnchorA() const
-{
-    return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
-}
-
-Length2 PrismaticJoint::GetAnchorB() const
-{
-    return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
-}
-
 Momentum2 PrismaticJoint::GetLinearReaction() const
 {
     const auto ulImpulse = GetX(m_impulse) * m_perp;
@@ -549,9 +541,10 @@ void PrismaticJoint::EnableLimit(bool flag) noexcept
     {
         m_enableLimit = flag;
         GetZ(m_impulse) = 0;
-
+#if 0
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
+#endif
     }
 }
 
@@ -563,22 +556,21 @@ void PrismaticJoint::SetLimits(Length lower, Length upper) noexcept
         m_lowerTranslation = lower;
         m_upperTranslation = upper;
         GetZ(m_impulse) = 0;
-        
+#if 0
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
+#endif
     }
 }
 
-void PrismaticJoint::EnableMotor(bool flag) noexcept
+bool PrismaticJoint::EnableMotor(bool flag) noexcept
 {
     if (m_enableMotor != flag)
     {
         m_enableMotor = flag;
-
-        // XXX Should these be called regardless of whether the state changed?
-        GetBodyA()->SetAwake();
-        GetBodyB()->SetAwake();
+        return true;
     }
+    return false;
 }
 
 void PrismaticJoint::SetMotorSpeed(AngularVelocity speed) noexcept
@@ -586,10 +578,11 @@ void PrismaticJoint::SetMotorSpeed(AngularVelocity speed) noexcept
     if (m_motorSpeed != speed)
     {
         m_motorSpeed = speed;
-
+#if 0
         // XXX Should these be called regardless of whether the state changed?
 	    GetBodyA()->SetAwake();
     	GetBodyB()->SetAwake();
+#endif
     }
 }
 
@@ -598,39 +591,40 @@ void PrismaticJoint::SetMaxMotorForce(Force force) noexcept
     if (m_maxMotorForce != force)
     {
         m_maxMotorForce = force;
-
+#if 0
         // XXX Should these be called regardless of whether the state changed?
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
+#endif
     }
 }
 
-Length GetJointTranslation(const PrismaticJoint& joint) noexcept
+Length GetJointTranslation(const World& world, const PrismaticJoint& joint) noexcept
 {
-    const auto pA = GetWorldPoint(*joint.GetBodyA(), joint.GetLocalAnchorA());
-    const auto pB = GetWorldPoint(*joint.GetBodyB(), joint.GetLocalAnchorB());
-    return Dot(pB - pA, GetWorldVector(*joint.GetBodyA(), joint.GetLocalAxisA()));
+    const auto pA = GetWorldPoint(world, joint.GetBodyA(), joint.GetLocalAnchorA());
+    const auto pB = GetWorldPoint(world, joint.GetBodyB(), joint.GetLocalAnchorB());
+    const auto uv = GetWorldVector(world, joint.GetBodyA(), joint.GetLocalAxisA());
+    return Dot(pB - pA, uv);
 }
 
-LinearVelocity GetLinearVelocity(const PrismaticJoint& joint) noexcept
+LinearVelocity GetLinearVelocity(const World& world, const PrismaticJoint& joint) noexcept
 {
     const auto bA = joint.GetBodyA();
     const auto bB = joint.GetBodyB();
-    
-    const auto rA = Rotate(joint.GetLocalAnchorA() - bA->GetLocalCenter(), bA->GetTransformation().q);
-    const auto rB = Rotate(joint.GetLocalAnchorB() - bB->GetLocalCenter(), bB->GetTransformation().q);
-    const auto p1 = bA->GetWorldCenter() + rA;
-    const auto p2 = bB->GetWorldCenter() + rB;
+    const auto rA = Rotate(joint.GetLocalAnchorA() - GetLocalCenter(world, bA),
+                           GetTransformation(world, bA).q);
+    const auto rB = Rotate(joint.GetLocalAnchorB() - GetLocalCenter(world, bB),
+                           GetTransformation(world, bB).q);
+    const auto p1 = GetWorldCenter(world, bA) + rA;
+    const auto p2 = GetWorldCenter(world, bB) + rB;
     const auto d = p2 - p1;
-    const auto axis = Rotate(joint.GetLocalAxisA(), bA->GetTransformation().q);
-    
-    const auto vA = bA->GetVelocity().linear;
-    const auto vB = bB->GetVelocity().linear;
-    const auto wA = bA->GetVelocity().angular;
-    const auto wB = bB->GetVelocity().angular;
-    
+    const auto axis = Rotate(joint.GetLocalAxisA(), GetTransformation(world, bA).q);
+    const auto vA = GetVelocity(world, bA).linear;
+    const auto vB = GetVelocity(world, bB).linear;
+    const auto wA = GetVelocity(world, bA).angular;
+    const auto wB = GetVelocity(world, bB).angular;
     const auto vel = (vB + (GetRevPerpendicular(rB) * (wB / Radian))) -
-    (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
+        (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
     return Dot(d, (GetRevPerpendicular(axis) * (wA / Radian))) + Dot(axis, vel);
 }
     

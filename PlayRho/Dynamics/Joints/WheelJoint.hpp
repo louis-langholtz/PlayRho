@@ -28,6 +28,8 @@
 namespace playrho {
 namespace d2 {
 
+class World;
+
 /// @brief Wheel joint.
 ///
 /// @details This joint provides two degrees of freedom: translation along an axis
@@ -53,17 +55,11 @@ public:
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
 
-    Length2 GetAnchorA() const override;
-    Length2 GetAnchorB() const override;
+    Length2 GetLocalAnchorA() const noexcept override { return m_localAnchorA; }
+    Length2 GetLocalAnchorB() const noexcept override { return m_localAnchorB; }
 
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
-
-    /// The local anchor point relative to body A's origin.
-    Length2 GetLocalAnchorA() const { return m_localAnchorA; }
-
-    /// The local anchor point relative to body B's origin.
-    Length2 GetLocalAnchorB() const  { return m_localAnchorB; }
 
     /// The local joint axis relative to body-A.
     UnitVec GetLocalAxisA() const { return m_localXAxisA; }
@@ -72,7 +68,8 @@ public:
     bool IsMotorEnabled() const noexcept { return m_enableMotor; }
 
     /// Enable/disable the joint motor.
-    void EnableMotor(bool flag);
+    /// @return Whether state changed or not.
+    bool EnableMotor(bool flag);
     
     /// @brief Gets the computed motor mass.
     /// @note This is zero unless motor is enabled and either body has any rotational inertia.
@@ -184,11 +181,11 @@ inline Real WheelJoint::GetSpringDampingRatio() const
 
 /// @brief Get the current joint translation.
 /// @relatedalso WheelJoint
-Length GetJointTranslation(const WheelJoint& joint) noexcept;
+Length GetJointTranslation(const World& world, const WheelJoint& joint) noexcept;
 
 /// @brief Get the current joint translation speed.
 /// @relatedalso WheelJoint
-AngularVelocity GetAngularVelocity(const WheelJoint& joint) noexcept;
+AngularVelocity GetAngularVelocity(const World& world, const WheelJoint& joint) noexcept;
 
 /// @brief Gets the current motor torque for the given joint for the given the inverse time step.
 inline Torque GetMotorTorque(const WheelJoint& joint, Frequency inv_dt) noexcept

@@ -23,10 +23,14 @@
 #define PLAYRHO_DYNAMICS_CONTACTS_CONTACT_HPP
 
 #include <PlayRho/Common/Math.hpp>
+
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
 
 namespace playrho {
 
@@ -57,14 +61,8 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 }
 
 struct ToiConf;
-class StepConf;
 
 namespace d2 {
-
-class Body;
-class Fixture;
-class ContactListener;
-class World;
 
 /// @brief A potential contact between the children of two Fixture objects.
 ///
@@ -72,30 +70,18 @@ class World;
 ///   AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 ///   that has no actual contact points.
 ///
-/// @note These are created by World instances. Users have no need to instantiate these
-///   themselves.
-/// @note This data structure is 104-bytes large (on at least one 64-bit platform).
-///
 /// @ingroup PhysicalEntities
 /// @ingroup ConstraintsGroup
 ///
 class Contact
 {
 public:
-    
     /// @brief Substep type.
     using substep_type = TimestepIters;
 
-    /// @brief Update configuration.
-    struct UpdateConf
-    {
-        DistanceConf distance; ///< Distance configuration data.
-        Manifold::Conf manifold; ///< Manifold configuration data.
-    };
-    
-    /// @brief Gets the update configuration from the given step configuration data.
-    static UpdateConf GetUpdateConf(const StepConf& conf) noexcept;
-    
+    /// @brief Default construction not allowed.
+    Contact() noexcept = default;
+
     /// @brief Initializing constructor.
     ///
     /// @param fA Non-null pointer to fixture A that must have a shape
@@ -111,17 +97,12 @@ public:
     /// @warning Behavior is undefined if <code>fA == fB</code>.
     /// @warning Behavior is undefined if both fixture's have the same body.
     ///
-    Contact(Fixture* fA, ChildCounter iA, Fixture* fB, ChildCounter iB);
-    
-    /// @brief Default construction not allowed.
-    Contact() = delete;
-    
-    /// @brief Copy constructor.
-    Contact(const Contact& copy) = default;
+    Contact(BodyID bA, FixtureID fA, ChildCounter iA,
+            BodyID bB, FixtureID fB, ChildCounter iB) noexcept;
 
     /// @brief Gets the contact manifold.
     const Manifold& GetManifold() const noexcept;
-    
+
     /// @brief Is this contact touching?
     /// @details
     /// Touching is defined as either:
@@ -146,21 +127,25 @@ public:
     /// @brief Has this contact been disabled?
     bool IsEnabled() const noexcept;
 
+    BodyID GetBodyA() const noexcept;
+
     /// @brief Gets fixture A in this contact.
-    Fixture* GetFixtureA() const noexcept;
+    FixtureID GetFixtureA() const noexcept;
 
     /// @brief Get the child primitive index for fixture A.
     ChildCounter GetChildIndexA() const noexcept;
 
+    BodyID GetBodyB() const noexcept;
+
     /// @brief Gets fixture B in this contact.
-    Fixture* GetFixtureB() const noexcept;
+    FixtureID GetFixtureB() const noexcept;
 
     /// @brief Get the child primitive index for fixture B.
     ChildCounter GetChildIndexB() const noexcept;
 
     /// @brief Sets the friction value for this contact.
     /// @details Override the default friction mixture.
-    /// @note You can call this in <code>ContactListener::PreSolve</code>.
+    /// @note You can call this in "pre-solve" listeners.
     /// @note This value persists until set or reset.
     /// @warning Behavior is undefined if given a negative friction value.
     /// @param friction Co-efficient of friction value of zero or greater.
@@ -174,7 +159,7 @@ public:
 
     /// @brief Sets the restitution.
     /// @details This override the default restitution mixture.
-    /// @note You can call this in <code>ContactListener::PreSolve</code>.
+    /// @note You can call this in "pre-solve" listeners.
     /// @note The value persists until you set or reset.
     void SetRestitution(Real restitution) noexcept;
 
@@ -213,12 +198,41 @@ public:
     /// @brief Whether or not the contact needs updating.
     bool NeedsUpdating() const noexcept;
 
-private:
+    /// @brief Whether or not this contact is a "sensor".
+    /// @note This should be true whenever fixture A or fixture B is a sensor.
+    bool IsSensor() const noexcept;
 
+    /// @brief Sets the sensor state of this contact.
+    /// @attention Call this if fixture A or fixture B is a sensor.
+    void SetIsSensor() noexcept;
+
+    void UnsetIsSensor() noexcept;
+
+    /// @brief Whether or not this contact is "impenetrable".
+    /// @note This should be true whenever body A or body B are impenetrable.
+    bool IsImpenetrable() const noexcept;
+
+    /// @brief Sets the impenetrability of this contact.
+    /// @attention Call this if body A or body B are impenetrable.
+    void SetImpenetrable() noexcept;
+
+    void UnsetImpenetrable() noexcept;
+
+    /// @brief Whether or not this contact is "active".
+    /// @note This should be true whenever body A or body B are "awake".
+    bool IsActive() const noexcept;
+
+    /// @brief Sets the active state of this contact.
+    /// @attention Call this if body A or body B are "awake".
+    void SetIsActive() noexcept;
+
+    void UnsetIsActive() noexcept;
+
+private:
     friend class ContactAtty;
 
     /// Flags type data type.
-    using FlagsType = std::uint8_t;
+    using FlagsType = std::uint16_t;
 
     /// @brief Flags stored in m_flags
     enum: FlagsType
@@ -239,7 +253,16 @@ private:
         e_toiFlag = 0x10,
         
         // This contacts needs its touching state updated.
-        e_dirtyFlag = 0x20
+        e_dirtyFlag = 0x20,
+
+        /// Indicates whether the contact is to be treated as a sensor or not.
+        e_sensorFlag = 0x40,
+
+        /// Indicates whether the contact is to be treated as active or not.
+        e_activeFlag = 0x80,
+
+        /// Indicates whether the contact is to be treated as between impenetrable bodies.
+        e_impenetrableFlag = 0x100,
     };
     
     /// @brief Flags this contact for filtering.
@@ -248,22 +271,6 @@ private:
 
     /// @brief Unflags this contact for updating.
     void UnflagForUpdating() noexcept;
-
-    /// @brief Updates the touching related state and notifies listener (if one given).
-    ///
-    /// @note Ideally this method is only called when a dependent change has occurred.
-    /// @note Touching related state depends on the following data:
-    ///   - The fixtures' sensor states.
-    ///   - The fixtures bodies' transformations.
-    ///   - The <code>maxCirclesRatio</code> per-step configuration state *OR* the
-    ///     <code>maxDistanceIters</code> per-step configuration state.
-    ///
-    /// @param conf Per-step configuration information.
-    /// @param listener Listener that if non-null is called with status information.
-    ///
-    /// @see GetManifold, IsTouching
-    ///
-    void Update(World& world, const UpdateConf& conf, ContactListener* listener = nullptr);
 
     /// @brief Sets the time of impact (TOI).
     /// @details After returning, this object will have a TOI that is set as indicated by <code>HasValidToi()</code>.
@@ -314,21 +321,25 @@ private:
     // info then minimally only those two indexes are needed. That may be sub-optimal
     // however depending the speed of cache and memory access.
 
-    Fixture* const m_fixtureA; ///< Fixture A. @details Non-null pointer to fixture A.
-    Fixture* const m_fixtureB; ///< Fixture B. @details Non-null pointer to fixture B.
-    ChildCounter const m_indexA; ///< Index A.
-    ChildCounter const m_indexB; ///< Index B.
+    BodyID m_bodyA = InvalidBodyID; ///< Body A. @warning Should only be body of fixture A.
+    BodyID m_bodyB = InvalidBodyID; ///< Body B. @warning Should only be body of fixture B.
+
+    FixtureID m_fixtureA = InvalidFixtureID; ///< Fixture A. @details Identifier of fixture A.
+    FixtureID m_fixtureB = InvalidFixtureID; ///< Fixture B. @details Identifier of fixture B.
+
+    ChildCounter m_indexA; ///< Index A.
+    ChildCounter m_indexB; ///< Index B.
     
     // initialized on construction (construction-time depedent)
-    Real m_friction; ///< Mix of frictions of the associated fixtures. @see MixFriction.
-    Real m_restitution; ///< Mix of restitutions of the associated fixtures. @see MixRestitution.
+    Real m_friction = 0; ///< Mix of frictions of the associated fixtures. @see MixFriction.
+    Real m_restitution = 0; ///< Mix of restitutions of the associated fixtures. @see MixRestitution.
 
     LinearVelocity m_tangentSpeed = 0; ///< Tangent speed.
     
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
     /// @note Only valid if <code>m_flags & e_toiFlag</code>.
-    Real m_toi;
+    Real m_toi = 0;
     
     substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
     
@@ -395,12 +406,22 @@ inline void Contact::UnsetTouching() noexcept
     m_flags &= ~e_touchingFlag;
 }
 
-inline Fixture* Contact::GetFixtureA() const noexcept
+inline BodyID Contact::GetBodyA() const noexcept
+{
+    return m_bodyA;
+}
+
+inline BodyID Contact::GetBodyB() const noexcept
+{
+    return m_bodyB;
+}
+
+inline FixtureID Contact::GetFixtureA() const noexcept
 {
     return m_fixtureA;
 }
 
-inline Fixture* Contact::GetFixtureB() const noexcept
+inline FixtureID Contact::GetFixtureB() const noexcept
 {
     return m_fixtureB;
 }
@@ -524,29 +545,73 @@ inline ChildCounter Contact::GetChildIndexB() const noexcept
     return m_indexB;
 }
 
+inline bool Contact::IsSensor() const noexcept
+{
+    return m_flags & e_sensorFlag;
+}
+
+inline void Contact::SetIsSensor() noexcept
+{
+    m_flags |= e_sensorFlag;
+}
+
+inline void Contact::UnsetIsSensor() noexcept
+{
+    m_flags &= ~e_sensorFlag;
+}
+
+inline bool Contact::IsImpenetrable() const noexcept
+{
+    return m_flags & e_impenetrableFlag;
+}
+
+inline void Contact::SetImpenetrable() noexcept
+{
+    m_flags |= e_impenetrableFlag;
+}
+
+inline void Contact::UnsetImpenetrable() noexcept
+{
+    m_flags &= ~e_impenetrableFlag;
+}
+
+inline bool Contact::IsActive() const noexcept
+{
+    return m_flags & e_activeFlag;
+}
+
+inline void Contact::SetIsActive() noexcept
+{
+    m_flags |= e_activeFlag;
+}
+
+inline void Contact::UnsetIsActive() noexcept
+{
+    m_flags &= ~e_activeFlag;
+}
+
 // Free functions...
 
-/// @brief Contact pointer type.
-using ContactPtr = Contact*;
+inline BodyID GetBodyA(const Contact& contact) noexcept
+{
+    return contact.GetBodyA();
+}
 
-/// @brief Gets the body A associated with the given contact.
-/// @relatedalso Contact
-Body* GetBodyA(const Contact& contact) noexcept;
-
-/// @brief Gets the body B associated with the given contact.
-/// @relatedalso Contact
-Body* GetBodyB(const Contact& contact) noexcept;
+inline BodyID GetBodyB(const Contact& contact) noexcept
+{
+    return contact.GetBodyB();
+}
 
 /// @brief Gets the fixture A associated with the given contact.
 /// @relatedalso Contact
-inline Fixture* GetFixtureA(const Contact& contact) noexcept
+inline FixtureID GetFixtureA(const Contact& contact) noexcept
 {
     return contact.GetFixtureA();
 }
 
 /// @brief Gets the fixture B associated with the given contact.
 /// @relatedalso Contact
-inline Fixture* GetFixtureB(const Contact& contact) noexcept
+inline FixtureID GetFixtureB(const Contact& contact) noexcept
 {
     return contact.GetFixtureB();
 }
@@ -565,33 +630,29 @@ inline ChildCounter GetChildIndexB(const Contact& contact) noexcept
     return contact.GetChildIndexB();
 }
 
-/// @brief Whether the given contact has a sensor.
-/// @relatedalso Contact
-bool HasSensor(const Contact& contact) noexcept;
-
 /// @brief Whether the given contact is "impenetrable".
 /// @relatedalso Contact
-bool IsImpenetrable(const Contact& contact) noexcept;
+inline bool IsImpenetrable(const Contact& contact) noexcept
+{
+    return contact.IsImpenetrable();
+}
 
 /// @brief Determines whether the given contact is "active".
 /// @relatedalso Contact
-bool IsActive(const Contact& contact) noexcept;
+inline bool IsActive(const Contact& contact) noexcept
+{
+    return contact.IsActive();
+}
 
-/// @brief Sets awake the fixtures of the given contact.
-/// @relatedalso Contact
-void SetAwake(const Contact& c) noexcept;
+inline bool IsEnabled(const Contact& contact) noexcept
+{
+    return contact.IsEnabled();
+}
 
-/// Resets the friction mixture to the default value.
-/// @relatedalso Contact
-void ResetFriction(Contact& contact);
-
-/// Reset the restitution to the default value.
-/// @relatedalso Contact
-void ResetRestitution(Contact& contact) noexcept;
-
-/// @brief Calculates the Time Of Impact for the given contact with the given configuration.
-/// @relatedalso Contact
-TOIOutput CalcToi(const Contact& contact, ToiConf conf);
+inline bool IsSensor(const Contact& contact) noexcept
+{
+    return contact.IsSensor();
+}
 
 } // namespace d2
 } // namespace playrho

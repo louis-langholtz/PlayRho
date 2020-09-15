@@ -21,17 +21,15 @@
 
 #include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
 
-WheelJointConf::WheelJointConf(NonNull<Body*> bA, NonNull<Body*> bB, const Length2 anchor,
-                             const UnitVec axis) noexcept:
+WheelJointConf::WheelJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB,
+                               UnitVec axis) noexcept:
     super{super{JointType::Wheel}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{GetLocalPoint(*bA, anchor)},
-    localAnchorB{GetLocalPoint(*bB, anchor)},
-    localAxisA{GetLocalVector(*bA, axis)}
+    localAnchorA{laA}, localAnchorB{laB}, localAxisA{axis}
 {
     // Intentionally empty.
 }
@@ -39,9 +37,7 @@ WheelJointConf::WheelJointConf(NonNull<Body*> bA, NonNull<Body*> bB, const Lengt
 WheelJointConf GetWheelJointConf(const WheelJoint& joint) noexcept
 {
     auto def = WheelJointConf{};
-    
     Set(def, joint);
-    
     def.localAnchorA = joint.GetLocalAnchorA();
     def.localAnchorB = joint.GetLocalAnchorB();
     def.localAxisA = joint.GetLocalAxisA();
@@ -50,8 +46,16 @@ WheelJointConf GetWheelJointConf(const WheelJoint& joint) noexcept
     def.motorSpeed = joint.GetMotorSpeed();
     def.frequency = joint.GetSpringFrequency();
     def.dampingRatio = joint.GetSpringDampingRatio();
-    
     return def;
+}
+
+WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB,
+                                 Length2 anchor, UnitVec axis)
+{
+    return WheelJointConf{
+        bodyA, bodyB,
+        GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor),
+        GetLocalVector(world, bodyA, axis)};
 }
 
 } // namespace d2

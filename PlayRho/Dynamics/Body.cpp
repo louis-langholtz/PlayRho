@@ -34,6 +34,19 @@
 namespace playrho {
 namespace d2 {
 
+static_assert(std::is_nothrow_default_constructible<Body>::value,
+              "Body must be nothrow default constructible!");
+static_assert(std::is_copy_constructible<Body>::value,
+              "Body must be copy constructible!");
+static_assert(std::is_nothrow_move_constructible<Body>::value,
+              "Body must be nothrow move constructible!");
+static_assert(std::is_copy_assignable<Body>::value,
+              "Body must be copy assignable!");
+static_assert(std::is_nothrow_move_assignable<Body>::value,
+              "Body must be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<Body>::value,
+              "Body must be nothrow destructible!");
+
 Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
 {
     // @invariant Only bodies that allow sleeping, can be put to sleep.
@@ -76,11 +89,11 @@ Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
     return flags;
 }
 
-Body::Body(const BodyConf& bd):
-    m_xf{bd.location, UnitVec::Get(bd.angle)},
+Body::Body(const BodyConf& bd) noexcept:
+    m_userData{bd.userData},
+    m_xf{::playrho::d2::GetTransformation(bd)},
     m_sweep{Position{bd.location, bd.angle}},
     m_flags{GetFlags(bd)},
-    m_userData{bd.userData},
     m_invMass{(bd.type == playrho::BodyType::Dynamic)? InvMass{Real{1} / Kilogram}: InvMass{0}},
     m_linearDamping{bd.linearDamping},
     m_angularDamping{bd.angularDamping}
@@ -96,61 +109,6 @@ Body::Body(const BodyConf& bd):
     SetUnderActiveTime(bd.underActiveTime);
 }
 
-Body::~Body() noexcept
-{
-    assert(empty(m_joints));
-    assert(empty(m_contacts));
-    assert(empty(m_fixtures));
-}
-
-void Body::ResetMassData()
-{
-    // Compute mass data from shapes. Each shape has its own density.
-
-    // Non-dynamic bodies (Static and kinematic ones) have zero mass.
-    if (!IsAccelerable())
-    {
-        m_invMass = 0;
-        m_invRotI = 0;
-        m_sweep = Sweep{Position{GetLocation(), GetAngle()}};
-        UnsetMassDataDirty();
-        return;
-    }
-
-    const auto massData = ComputeMassData(*this);
-
-    // Force all dynamic bodies to have a positive mass.
-    const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
-    m_invMass = Real{1} / mass;
-
-    // Compute center of mass.
-    const auto localCenter = massData.center * Real{m_invMass * Kilogram};
-
-    if ((massData.I > RotInertia{0}) && (!IsFixedRotation()))
-    {
-        // Center the inertia about the center of mass.
-        const auto lengthSquared = GetMagnitudeSquared(localCenter);
-        const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared / SquareRadian)};
-        //assert((massData.I - mass * lengthSquared) > 0);
-        m_invRotI = Real{1} / I;
-    }
-    else
-    {
-        m_invRotI = 0;
-    }
-
-    // Move center of mass.
-    const auto oldCenter = GetWorldCenter();
-    m_sweep = Sweep{Position{Transform(localCenter, GetTransformation()), GetAngle()}, localCenter};
-    const auto newCenter = GetWorldCenter();
-
-    // Update center of mass velocity.
-    const auto deltaCenter = newCenter - oldCenter;
-    m_velocity.linear += GetRevPerpendicular(deltaCenter) * (m_velocity.angular / Radian);
-
-    UnsetMassDataDirty();
-}
-
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
     if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm))
@@ -162,7 +120,8 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
         SetAwakeFlag();
         ResetUnderActiveTime();
     }
-    m_velocity = velocity;
+    m_linearVelocity = velocity.linear;
+    m_angularVelocity = velocity.angular;
 }
 
 void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angular) noexcept
@@ -201,26 +160,8 @@ void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angul
     m_angularAcceleration = angular;
 }
 
-void Body::SetTransformation(Transformation value) noexcept
-{
-    assert(IsValid(value));
-    if (m_xf != value)
-    {
-        m_xf = value;
-        std::for_each(cbegin(m_contacts), cend(m_contacts), [&](KeyedContactPtr ci) {
-            std::get<Contact*>(ci)->FlagForUpdating();
-        });
-    }
-}
-
 void Body::SetFixedRotation(bool flag)
 {
-    const auto status = IsFixedRotation();
-    if (status == flag)
-    {
-        return;
-    }
-
     if (flag)
     {
         m_flags |= e_fixedRotationFlag;
@@ -229,28 +170,21 @@ void Body::SetFixedRotation(bool flag)
     {
         m_flags &= ~e_fixedRotationFlag;
     }
-
-    m_velocity.angular = 0_rpm;
-
-    ResetMassData();
+    m_angularVelocity = 0_rpm;
 }
 
-bool Body::Insert(Joint* joint)
+bool Body::Insert(JointID joint, BodyID other)
 {
-    const auto bodyA = joint->GetBodyA();
-    const auto bodyB = joint->GetBodyB();
-    
-    const auto other = (this == bodyA)? bodyB: (this == bodyB)? bodyA: nullptr;
     m_joints.push_back(std::make_pair(other, joint));
     return true;
 }
 
-bool Body::Insert(ContactKey key, Contact* contact)
+bool Body::Insert(ContactKey key, ContactID contact)
 {
 #ifndef NDEBUG
     // Prevent the same contact from being added more than once...
-    const auto it = std::find_if(cbegin(m_contacts), cend(m_contacts), [&](KeyedContactPtr ci) {
-        return std::get<Contact*>(ci) == contact;
+    const auto it = std::find_if(cbegin(m_contacts), cend(m_contacts), [contact](KeyedContactPtr ci) {
+        return std::get<ContactID>(ci) == contact;
     });
     assert(it == end(m_contacts));
     if (it != end(m_contacts))
@@ -258,15 +192,14 @@ bool Body::Insert(ContactKey key, Contact* contact)
         return false;
     }
 #endif
-
     m_contacts.emplace_back(key, contact);
     return true;
 }
 
-bool Body::Erase(const Joint* joint)
+bool Body::Erase(JointID joint)
 {
-    const auto it = std::find_if(begin(m_joints), end(m_joints), [&](KeyedJointPtr ji) {
-        return std::get<Joint*>(ji) == joint;
+    const auto it = std::find_if(begin(m_joints), end(m_joints), [joint](KeyedJointPtr ji) {
+        return std::get<JointID>(ji) == joint;
     });
     if (it != end(m_joints))
     {
@@ -276,10 +209,10 @@ bool Body::Erase(const Joint* joint)
     return false;
 }
 
-bool Body::Erase(const Contact* contact)
+bool Body::Erase(ContactID contact)
 {
-    const auto it = std::find_if(begin(m_contacts), end(m_contacts), [&](KeyedContactPtr ci) {
-        return std::get<Contact*>(ci) == contact;
+    const auto it = std::find_if(begin(m_contacts), end(m_contacts), [contact](KeyedContactPtr ci) {
+        return std::get<ContactID>(ci) == contact;
     });
     if (it != end(m_contacts))
     {
@@ -300,22 +233,6 @@ void Body::ClearJoints()
 }
 
 // Free functions...
-
-bool ShouldCollide(const Body& lhs, const Body& rhs) noexcept
-{
-    // At least one body should be accelerable/dynamic.
-    if (!lhs.IsAccelerable() && !rhs.IsAccelerable())
-    {
-        return false;
-    }
-
-    // Does a joint prevent collision?
-    const auto joints = lhs.GetJoints();
-    const auto it = std::find_if(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr ji) {
-        return (std::get<0>(ji) == &rhs) && !(std::get<Joint*>(ji)->GetCollideConnected());
-    });
-    return it == end(joints);
-}
 
 Velocity GetVelocity(const Body& body, Time h) noexcept
 {
@@ -365,24 +282,12 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
 
 std::size_t GetFixtureCount(const Body& body) noexcept
 {
-    const auto& fixtures = body.GetFixtures();
-    return size(fixtures);
+    return size(body.GetFixtures());
 }
 
-Force2 GetCentripetalForce(const Body& body, Length2 axis)
+Transformation GetTransformation(const BodyConf& conf)
 {
-    // For background on centripetal force, see:
-    //   https://en.wikipedia.org/wiki/Centripetal_force
-
-    // Force is M L T^-2.
-    const auto velocity = GetLinearVelocity(body);
-    const auto magnitudeOfVelocity = GetMagnitude(GetVec2(velocity)) * MeterPerSecond;
-    const auto location = body.GetLocation();
-    const auto mass = GetMass(body);
-    const auto delta = axis - location;
-    const auto invRadius = Real{1} / GetMagnitude(delta);
-    const auto dir = delta * invRadius;
-    return Force2{dir * mass * Square(magnitudeOfVelocity) * invRadius};
+    return {conf.location, UnitVec::Get(conf.angle)};
 }
 
 } // namespace d2

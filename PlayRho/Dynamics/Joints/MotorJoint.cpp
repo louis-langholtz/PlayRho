@@ -20,8 +20,9 @@
  */
 
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
@@ -224,16 +225,6 @@ bool MotorJoint::SolvePositionConstraints(BodyConstraintsMap&, const ConstraintS
     return true;
 }
 
-Length2 MotorJoint::GetAnchorA() const
-{
-    return GetBodyA()->GetLocation();
-}
-
-Length2 MotorJoint::GetAnchorB() const
-{
-    return GetBodyB()->GetLocation();
-}
-
 void MotorJoint::SetCorrectionFactor(Real factor)
 {
     assert(IsValid(factor) && (0 <= factor) && (factor <= Real{1}));
@@ -245,8 +236,10 @@ void MotorJoint::SetLinearOffset(const Length2 linearOffset)
     if (m_linearOffset != linearOffset)
     {
         m_linearOffset = linearOffset;
+#if 0
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
+#endif
     }
 }
 
@@ -255,8 +248,10 @@ void MotorJoint::SetAngularOffset(Angle angularOffset)
     if (angularOffset != m_angularOffset)
     {
         m_angularOffset = angularOffset;
+#if 0
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
+#endif
     }
 }
 

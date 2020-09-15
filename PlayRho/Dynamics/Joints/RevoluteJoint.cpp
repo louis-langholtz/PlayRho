@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 #include <algorithm>
 
@@ -450,16 +451,6 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
     return (positionError <= Square(conf.linearSlop)) && (angularError <= conf.angularSlop);
 }
 
-Length2 RevoluteJoint::GetAnchorA() const
-{
-    return GetWorldPoint(*GetBodyA(), GetLocalAnchorA());
-}
-
-Length2 RevoluteJoint::GetAnchorB() const
-{
-    return GetWorldPoint(*GetBodyB(), GetLocalAnchorB());
-}
-
 Momentum2 RevoluteJoint::GetLinearReaction() const
 {
     return Momentum2{GetX(m_impulse) * NewtonSecond, GetY(m_impulse) * NewtonSecond};
@@ -471,20 +462,19 @@ AngularMomentum RevoluteJoint::GetAngularReaction() const
     return GetZ(m_impulse) * SquareMeter * Kilogram / (Second * Radian);
 }
 
-void RevoluteJoint::EnableMotor(bool flag)
+bool RevoluteJoint::EnableMotor(bool flag)
 {
     if (m_enableMotor != flag)
     {
     	m_enableMotor = flag;
-        
-        // XXX Should these be called regardless of whether the state changed?
-	    GetBodyA()->SetAwake();
-    	GetBodyB()->SetAwake();
+        return true;
     }
+    return false;
 }
 
 void RevoluteJoint::SetMotorSpeed(AngularVelocity speed)
 {
+#if 0
     if (m_motorSpeed != speed)
     {
 	    m_motorSpeed = speed;
@@ -493,10 +483,12 @@ void RevoluteJoint::SetMotorSpeed(AngularVelocity speed)
     	GetBodyA()->SetAwake();
     	GetBodyB()->SetAwake();
     }
+#endif
 }
 
 void RevoluteJoint::SetMaxMotorTorque(Torque torque)
 {
+#if 0
     if (m_maxMotorTorque != torque)
     {
 	    m_maxMotorTorque = torque;
@@ -505,10 +497,12 @@ void RevoluteJoint::SetMaxMotorTorque(Torque torque)
     	GetBodyA()->SetAwake();
     	GetBodyB()->SetAwake();
     }
+#endif
 }
 
 void RevoluteJoint::EnableLimit(bool flag)
 {
+#if 0
     if (flag != m_enableLimit)
     {
         m_enableLimit = flag;
@@ -517,12 +511,13 @@ void RevoluteJoint::EnableLimit(bool flag)
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
     }
+#endif
 }
 
 void RevoluteJoint::SetLimits(Angle lower, Angle upper)
 {
     assert(lower <= upper);
-    
+#if 0
     if ((lower != m_lowerAngle) || (upper != m_upperAngle))
     {
         GetZ(m_impulse) = 0;
@@ -532,16 +527,17 @@ void RevoluteJoint::SetLimits(Angle lower, Angle upper)
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
     }
+#endif
 }
 
-Angle GetJointAngle(const RevoluteJoint& joint)
+Angle GetJointAngle(const World& world, const RevoluteJoint& joint)
 {
-    return joint.GetBodyB()->GetAngle() - joint.GetBodyA()->GetAngle() - joint.GetReferenceAngle();
+    return GetAngle(world, joint.GetBodyB()) - GetAngle(world, joint.GetBodyA()) - joint.GetReferenceAngle();
 }
 
-AngularVelocity GetAngularVelocity(const RevoluteJoint& joint)
+AngularVelocity GetAngularVelocity(const World& world, const RevoluteJoint& joint)
 {
-    return joint.GetBodyB()->GetVelocity().angular - joint.GetBodyA()->GetVelocity().angular;
+    return GetVelocity(world, joint.GetBodyB()).angular - GetVelocity(world, joint.GetBodyA()).angular;
 }
 
 } // namespace d2

@@ -73,12 +73,19 @@ public:
     /// @brief Uses given procedure.
     /// @note Provide a builder pattern mutator method.
     template <class T>
-    FunctionalJointVisitor& Use(const Proc<T>& proc) noexcept
+    FunctionalJointVisitor& Use(Proc<T> proc) noexcept
     {
-        std::get<Proc<T>>(procs) = proc;
+        std::get<Proc<T>>(procs) = std::move(proc);
         return *this;
     }
     
+    /// @brief Convenience function to get the functor for the specified input argument.
+    template <class T>
+    auto& get() noexcept
+    {
+        return std::get<Proc<T>>(procs);
+    }
+
     // Overrides of all the base class's Visit methods...
     // Uses decltype to ensure the correctly typed invocation of the Handle method.
     void Visit(const RevoluteJoint& arg) override { Handle<decltype(arg)>(arg); }

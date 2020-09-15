@@ -26,6 +26,7 @@
 #include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <utility>
 
 namespace playrho {
@@ -274,7 +275,8 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
         {
             assert(DynamicTree::IsLeaf(tree.GetHeight(index)));
             const auto leafData = tree.GetLeafData(index);
-            const auto value = callback(leafData.fixture, leafData.childIndex, input);
+            const auto value = callback(leafData.body, leafData.fixture, leafData.childIndex,
+                                        input);
             if (value == 0)
             {
                 return true; // Callback has terminated the ray cast.
@@ -290,11 +292,13 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
     return false;
 }
 
-bool RayCast(const DynamicTree& tree, const RayCastInput& rci, FixtureRayCastCB callback)
+bool RayCast(const DynamicTree& tree, const RayCastInput& rci, const World& world,
+             FixtureRayCastCB callback)
 {
-    return RayCast(tree, rci, [callback](Fixture* fixture, ChildCounter index, const RayCastInput& input) {
-        const auto output = RayCast(GetChild(fixture->GetShape(), index), input,
-                                    fixture->GetBody()->GetTransformation());
+    return RayCast(tree, rci, [&world,&callback](BodyID body, FixtureID fixture, ChildCounter index,
+                                         const RayCastInput& input) {
+        const auto output = RayCast(GetChild(GetShape(world, fixture), index), input,
+                                    GetTransformation(world, body));
         if (output.has_value())
         {
             const auto fraction = output->fraction;
@@ -314,7 +318,7 @@ bool RayCast(const DynamicTree& tree, const RayCastInput& rci, FixtureRayCastCB 
             // The second way, does not have this problem.
             //
             const auto point = input.p1 + (input.p2 - input.p1) * fraction;
-            const auto opcode = callback(fixture, index, point, output->normal);
+            const auto opcode = callback(body, fixture, index, point, output->normal);
             switch (opcode)
             {
                 case RayCastOpcode::Terminate: return Real{0};

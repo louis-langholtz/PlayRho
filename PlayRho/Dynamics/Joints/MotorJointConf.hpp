@@ -23,15 +23,15 @@
 #define PLAYRHO_DYNAMICS_JOINTS_MOTORJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Common/NonZero.hpp> // for NonNull
+
 #include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 namespace d2 {
 
-class Body;
 class MotorJoint;
+class World;
 
 /// @brief Motor joint definition.
 struct MotorJointConf : public JointBuilder<MotorJointConf>
@@ -42,7 +42,8 @@ struct MotorJointConf : public JointBuilder<MotorJointConf>
     constexpr MotorJointConf() noexcept: super{JointType::Motor} {}
     
     /// @brief Initialize the bodies and offsets using the current transforms.
-    MotorJointConf(NonNull<Body*> bodyA, NonNull<Body*> bodyB) noexcept;
+    MotorJointConf(BodyID bA, BodyID bB,
+                   Length2 lo = Length2{}, Angle ao = 0_deg) noexcept;
     
     /// @brief Uses the given linear offset value.
     MotorJointConf& UseLinearOffset(Length2 v) noexcept;
@@ -108,6 +109,8 @@ inline MotorJointConf& MotorJointConf::UseCorrectionFactor(Real v) noexcept
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso MotorJoint
 MotorJointConf GetMotorJointConf(const MotorJoint& joint) noexcept;
+
+MotorJointConf GetMotorJointConf(const World& world, BodyID bA, BodyID bB);
 
 } // namespace d2
 } // namespace playrho

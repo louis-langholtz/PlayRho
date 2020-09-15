@@ -22,6 +22,7 @@
 #include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
@@ -43,19 +44,12 @@ bool TargetJoint::IsOkay(const TargetJointConf& def) noexcept
     {
         return false;
     }
-    if (!IsValid(def.target))
-    {
-        return false;
-    }
     return true;
 }
 
 TargetJoint::TargetJoint(const TargetJointConf& def):
     Joint{def},
-    m_targetA{def.target},
-    m_localAnchorB{def.bodyB?
-        InverseTransform(def.target, def.bodyB->GetTransformation()):
-        GetInvalid<decltype(m_localAnchorB)>()},
+    m_localAnchorB{def.anchor},
     m_frequency{def.frequency},
     m_dampingRatio{def.dampingRatio},
     m_maxForce{def.maxForce}
@@ -72,17 +66,6 @@ void TargetJoint::Accept(JointVisitor& visitor) const
 void TargetJoint::Accept(JointVisitor& visitor)
 {
     visitor.Visit(*this);
-}
-
-void TargetJoint::SetTarget(const Length2 target) noexcept
-{
-    assert(IsValid(target));
-    if (m_targetA != target)
-    {
-	    m_targetA = target;
-
-        GetBodyB()->SetAwake();
-    }
 }
 
 Mass22 TargetJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept
@@ -109,6 +92,7 @@ Mass22 TargetJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noe
 void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                          const ConstraintSolverConf&)
 {
+    auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto posB = bodyConstraintB->GetPosition();
@@ -116,7 +100,7 @@ void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
     const auto qB = UnitVec::Get(posB.angular);
 
-    const auto mass = GetMass(*GetBodyB());
+    const auto mass = Real{1} / bodyConstraintB->GetInvMass(); // GetMass(*GetBodyB());
 
     // Frequency
     const auto omega = Real{2} * Pi * m_frequency; // T^-1
@@ -143,7 +127,7 @@ void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
     m_mass = GetEffectiveMassMatrix(*bodyConstraintB);
 
-    m_C = LinearVelocity2{((posB.linear + m_rB) - m_targetA) * beta};
+    m_C = LinearVelocity2{((posB.linear + m_rB) - bodyConstraintA->GetPosition().linear) * beta};
     assert(IsValid(m_C));
 
     // Cheat with some damping
@@ -203,16 +187,6 @@ bool TargetJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Con
     return true;
 }
 
-Length2 TargetJoint::GetAnchorA() const
-{
-    return GetTarget();
-}
-
-Length2 TargetJoint::GetAnchorB() const
-{
-    return GetBodyB()? GetWorldPoint(*GetBodyB(), GetLocalAnchorB()): GetInvalid<Length2>();
-}
-
 Momentum2 TargetJoint::GetLinearReaction() const
 {
     return m_impulse;
@@ -223,9 +197,8 @@ AngularMomentum TargetJoint::GetAngularReaction() const
     return AngularMomentum{0};
 }
 
-bool TargetJoint::ShiftOrigin(const Length2 newOrigin)
+bool TargetJoint::ShiftOrigin(Length2)
 {
-    m_targetA -= newOrigin;
     return true;
 }
 

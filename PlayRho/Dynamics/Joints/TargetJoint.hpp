@@ -30,10 +30,9 @@ namespace d2 {
 
 /// @brief Target Joint.
 ///
-/// @details A target joint is used to make a point on a body track a
-///   specified world point. This a soft constraint with a maximum
-///   force. This allows the constraint to stretch and without
-///   applying huge forces.
+/// @details A target joint is used to make a point on a "B" body track an "A" body.
+///   This a soft constraint with a maximum force. This allows the constraint to stretch
+///   and without applying huge forces.
 /// @note This structure is 120-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
@@ -42,7 +41,6 @@ namespace d2 {
 class TargetJoint : public Joint
 {
 public:
-
     /// @brief Is the given definition okay.
     static bool IsOkay(const TargetJointConf& def) noexcept;
 
@@ -54,20 +52,11 @@ public:
     
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
-    Length2 GetAnchorA() const override;
-    Length2 GetAnchorB() const override;
+    Length2 GetLocalAnchorA() const noexcept override;
+    Length2 GetLocalAnchorB() const noexcept override;
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
-    bool ShiftOrigin(const Length2 newOrigin) override;
-
-    /// @brief Gets the local anchor B.
-    Length2 GetLocalAnchorB() const noexcept;
-
-    /// @brief Sets the target point.
-    void SetTarget(const Length2 target) noexcept;
-
-    /// @brief Gets the target point.
-    Length2 GetTarget() const noexcept;
+    bool ShiftOrigin(Length2 newOrigin) override;
 
     /// @brief Sets the maximum force.
     void SetMaxForce(NonNegative<Force> force) noexcept;
@@ -97,7 +86,6 @@ private:
     /// @brief Gets the effective mass matrix.
     Mass22 GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept;
 
-    Length2 m_targetA; ///< Target location (A).
     Length2 m_localAnchorB; ///< Local anchor B.
     NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0_Hz}; ///< Frequency.
     NonNegative<Real> m_dampingRatio = NonNegative<Real>{0}; ///< Damping ratio.
@@ -112,14 +100,14 @@ private:
     LinearVelocity2 m_C; ///< Velocity constant.
 };
 
+inline Length2 TargetJoint::GetLocalAnchorA() const noexcept
+{
+    return Length2{};
+}
+
 inline Length2 TargetJoint::GetLocalAnchorB() const noexcept
 {
     return m_localAnchorB;
-}
-
-inline Length2 TargetJoint::GetTarget() const noexcept
-{
-    return m_targetA;
 }
 
 inline void TargetJoint::SetMaxForce(NonNegative<Force> force) noexcept

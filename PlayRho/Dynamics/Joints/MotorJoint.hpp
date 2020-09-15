@@ -48,8 +48,8 @@ public:
     void Accept(JointVisitor& visitor) const override;
     void Accept(JointVisitor& visitor) override;
 
-    Length2 GetAnchorA() const override;
-    Length2 GetAnchorB() const override;
+    Length2 GetLocalAnchorA() const noexcept override { return Length2{}; }
+    Length2 GetLocalAnchorB() const noexcept override { return Length2{}; }
 
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;

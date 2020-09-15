@@ -23,44 +23,45 @@
 #define PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
+
 #include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
 namespace d2 {
 
-class Body;
+class World;
 class FrictionJoint;
 
 /// @brief Friction joint definition.
 struct FrictionJointConf : public JointBuilder<FrictionJointConf>
 {
-    
     /// @brief Super type.
     using super = JointBuilder<FrictionJointConf>;
-    
+
     constexpr FrictionJointConf() noexcept: super{JointType::Friction} {}
-    
+
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, axis, and reference angle using the world
     ///   anchor and world axis.
-    FrictionJointConf(Body* bodyA, Body* bodyB, const Length2 anchor) noexcept;
-    
+    FrictionJointConf(BodyID bodyA, BodyID bodyB,
+                      Length2 laA = Length2{}, Length2 laB = Length2{}) noexcept;
+
     /// @brief Uses the given maximum force value.
     constexpr FrictionJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
-    
+
     /// @brief Uses the given maximum torque value.
     constexpr FrictionJointConf& UseMaxTorque(NonNegative<Torque> v) noexcept;
-    
+
     /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
-    
+
     /// @brief Local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
-    
+
     /// @brief Maximum friction force.
     NonNegative<Force> maxForce = NonNegative<Force>{0_N};
-    
+
     /// @brief Maximum friction torque.
     NonNegative<Torque> maxTorque = NonNegative<Torque>{0_Nm};
 };
@@ -80,6 +81,9 @@ constexpr FrictionJointConf& FrictionJointConf::UseMaxTorque(NonNegative<Torque>
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso FrictionJoint
 FrictionJointConf GetFrictionJointConf(const FrictionJoint& joint) noexcept;
+
+FrictionJointConf GetFrictionJointConf(const World& world,
+                                       BodyID bodyA, BodyID bodyB, Length2 anchor);
 
 } // namespace d2
 } // namespace playrho

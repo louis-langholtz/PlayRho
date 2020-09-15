@@ -198,6 +198,12 @@ constexpr auto DefaultRegMinMomentum = Momentum{0_Ns / 100};
 /// @brief Default TOI-phase minimum momentum.
 constexpr auto DefaultToiMinMomentum = Momentum{0_Ns / 100};
 
+/// @brief Maximum number of fixtures in a world.
+/// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
+constexpr auto MaxFixtures = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
+                                                        std::uint16_t{1u});
+using FixtureCounter = std::remove_const<decltype(MaxFixtures)>::type;
+
 /// @brief Maximum number of bodies in a world.
 /// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
 constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -

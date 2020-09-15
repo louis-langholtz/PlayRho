@@ -20,22 +20,21 @@
  */
 
 #include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
+
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 
 namespace playrho {
 namespace d2 {
 
-PulleyJointConf::PulleyJointConf(NonNull<Body*> bA, NonNull<Body*> bB,
+PulleyJointConf::PulleyJointConf(BodyID bA, BodyID bB,
                                  Length2 groundA, Length2 groundB,
-                                 Length2 anchorA, Length2 anchorB):
+                                 Length2 anchorA, Length2 anchorB,
+                                 Length lA, Length lB):
     super{super{JointType::Pulley}.UseBodyA(bA).UseBodyB(bB).UseCollideConnected(true)},
-    groundAnchorA{groundA},
-    groundAnchorB{groundB},
-    localAnchorA{GetLocalPoint(*bA, anchorA)},
-    localAnchorB{GetLocalPoint(*bB, anchorB)},
-    lengthA{GetMagnitude(anchorA - groundA)},
-    lengthB{GetMagnitude(anchorB - groundB)}
+    groundAnchorA{groundA}, groundAnchorB{groundB},
+    localAnchorA{anchorA}, localAnchorB{anchorB},
+    lengthA{lA}, lengthB{lB}
 {
     // Intentionally empty.
 }
@@ -43,9 +42,7 @@ PulleyJointConf::PulleyJointConf(NonNull<Body*> bA, NonNull<Body*> bB,
 PulleyJointConf GetPulleyJointConf(const PulleyJoint& joint) noexcept
 {
     auto def = PulleyJointConf{};
-    
     Set(def, joint);
-    
     def.groundAnchorA = joint.GetGroundAnchorA();
     def.groundAnchorB = joint.GetGroundAnchorB();
     def.localAnchorA = joint.GetLocalAnchorA();
@@ -53,8 +50,19 @@ PulleyJointConf GetPulleyJointConf(const PulleyJoint& joint) noexcept
     def.lengthA = joint.GetLengthA();
     def.lengthB = joint.GetLengthB();
     def.ratio = joint.GetRatio();
-    
     return def;
+}
+
+PulleyJointConf GetPulleyJointConf(const World& world,
+                                   BodyID bA, BodyID bB,
+                                   Length2 groundA, Length2 groundB,
+                                   Length2 anchorA, Length2 anchorB)
+{
+    return PulleyJointConf{
+        bA, bB, groundA, groundB,
+        GetLocalPoint(world, bA, anchorA), GetLocalPoint(world, bB, anchorB),
+        GetMagnitude(anchorA - groundA), GetMagnitude(anchorB - groundB)
+    };
 }
 
 } // namespace d2

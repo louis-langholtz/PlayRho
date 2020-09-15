@@ -28,6 +28,8 @@
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2.hpp>
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
 
 #include <functional>
 #include <type_traits>
@@ -35,9 +37,6 @@
 
 namespace playrho {
 namespace d2 {
-
-class Fixture;
-class Body;
 
 /// @brief A dynamic AABB tree broad-phase.
 ///
@@ -342,7 +341,7 @@ struct DynamicTree::LeafData
     ///   however, even a 4-byte index which could identify 2^32 bodies, is still larger than
     ///   is usable. This suggests that space could be saved by using indexes into arrays of
     ///   bodies instead of direct pointers to memory.
-    Body* body;
+    BodyID body;
     
     /// @brief Pointer to associated Fixture.
     /// @note On 64-bit architectures, this is an 8-byte sized field. As an 8-byte field it
@@ -350,7 +349,7 @@ struct DynamicTree::LeafData
     ///   however, even a 4-byte index which could identify 2^32 fixtures, is still larger than
     ///   is usable. This suggests that space could be saved by using indexes into arrays of
     ///   fixtures instead of direct pointers to memory.
-    Fixture* fixture;
+    FixtureID fixture;
 
     /// @brief Child index of related Shape.
     ChildCounter childIndex;
@@ -359,7 +358,7 @@ struct DynamicTree::LeafData
 /// @brief Equality operator.
 /// @relatedalso DynamicTree::LeafData
 constexpr bool operator== (const DynamicTree::LeafData& lhs,
-                                          const DynamicTree::LeafData& rhs) noexcept
+                           const DynamicTree::LeafData& rhs) noexcept
 {
     return lhs.fixture == rhs.fixture && lhs.childIndex == rhs.childIndex;
 }
@@ -367,7 +366,7 @@ constexpr bool operator== (const DynamicTree::LeafData& lhs,
 /// @brief Inequality operator.
 /// @relatedalso DynamicTree::LeafData
 constexpr bool operator!= (const DynamicTree::LeafData& lhs,
-                                          const DynamicTree::LeafData& rhs) noexcept
+                           const DynamicTree::LeafData& rhs) noexcept
 {
     return !(lhs == rhs);
 }
@@ -386,7 +385,7 @@ union DynamicTree::VariantData
     BranchData branch;
     
     /// @brief Default constructor.
-    VariantData() noexcept = default;
+    VariantData() noexcept {}
     
     /// @brief Initializing constructor.
     constexpr VariantData(UnusedData value) noexcept: unused{value} {}
@@ -780,7 +779,7 @@ void Query(const DynamicTree& tree, const AABB& aabb,
 
 /// @brief Query AABB for fixtures callback function type.
 /// @note Returning true will continue the query. Returning false will terminate the query.
-using QueryFixtureCallback = std::function<bool(Fixture* fixture, ChildCounter child)>;
+using QueryFixtureCallback = std::function<bool(FixtureID fixture, ChildCounter child)>;
 
 /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
 /// @param tree Dynamic tree to do the query over.
