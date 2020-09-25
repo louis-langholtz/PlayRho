@@ -405,9 +405,14 @@ void World::SetAwake(BodyID id)
     ::playrho::d2::SetAwake(*m_impl, id);
 }
 
-void World::EnableMotor(JointID id, bool flag)
+bool World::IsMotorEnabled(JointID id) const
 {
-    return ::playrho::d2::EnableMotor(*m_impl, id, flag);
+    return ::playrho::d2::IsMotorEnabled(*m_impl, id);
+}
+
+void World::EnableMotor(JointID id, bool value)
+{
+    ::playrho::d2::EnableMotor(*m_impl, id, value);
 }
 
 void World::SetAwake(JointID id)
@@ -528,6 +533,31 @@ Angle World::GetReferenceAngle(JointID id) const
 UnitVec World::GetLocalAxisA(JointID id) const
 {
     return ::playrho::d2::GetLocalAxisA(*m_impl, id);
+}
+
+AngularVelocity World::GetMotorSpeed(JointID id) const
+{
+    return ::playrho::d2::GetMotorSpeed(*m_impl, id);
+}
+
+void World::SetMotorSpeed(JointID id, AngularVelocity value)
+{
+    ::playrho::d2::SetMotorSpeed(*m_impl, id, value);
+}
+
+Torque World::GetMaxMotorTorque(JointID id) const
+{
+    return ::playrho::d2::GetMaxMotorTorque(*m_impl, id);
+}
+
+void World::SetMaxMotorTorque(JointID id, Torque value)
+{
+    ::playrho::d2::SetMaxMotorTorque(*m_impl, id, value);
+}
+
+AngularMomentum World::GetAngularMotorImpulse(JointID id) const
+{
+    return ::playrho::d2::GetAngularMotorImpulse(*m_impl, id);
 }
 
 bool World::IsTouching(ContactID id) const

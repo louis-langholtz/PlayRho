@@ -329,15 +329,7 @@ bool WheelJoint::EnableMotor(bool flag)
 
 void WheelJoint::SetMotorSpeed(AngularVelocity speed)
 {
-    if (m_motorSpeed != speed)
-    {
-	    m_motorSpeed = speed;
-#if 0
-        // XXX Should these be called regardless of whether the state changed?
-    	GetBodyA()->SetAwake();
-    	GetBodyB()->SetAwake();
-#endif
-    }
+    m_motorSpeed = speed;
 }
 
 void WheelJoint::SetMaxMotorTorque(Torque torque)

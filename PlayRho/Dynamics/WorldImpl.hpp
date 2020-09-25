@@ -453,6 +453,7 @@ public:
     Contact& GetContact(ContactID id);
 
     const Joint& GetJoint(JointID id) const;
+    Joint& GetJoint(JointID id);
 
     void Accept(JointID id, JointVisitor& visitor) const;
 
@@ -1077,6 +1078,15 @@ inline const Joint& WorldImpl::GetJoint(JointID id) const
     return *static_cast<Joint*>(UnderlyingValue(id));
 }
 
+inline Joint& WorldImpl::GetJoint(JointID id)
+{
+    if (id == InvalidJointID)
+    {
+        throw std::out_of_range("invalid JointID");
+    }
+    return *static_cast<Joint*>(UnderlyingValue(id));
+}
+
 inline const Contact& WorldImpl::GetContact(ContactID id) const
 {
     return m_contactBuffer.at(UnderlyingValue(id));
@@ -1154,8 +1164,12 @@ Velocity GetVelocity(const WorldImpl& world, BodyID id);
 /// @see SetAwake, SetUnderActiveTime.
 void SetVelocity(WorldImpl& world, BodyID id, const Velocity& value);
 
+/// Is the joint motor enabled?
+/// @see EnableMotor(WorldImpl& world, JointID joint, bool value)
+bool IsMotorEnabled(const WorldImpl& world, JointID id);
+
 /// Enable/disable the joint motor.
-void EnableMotor(WorldImpl& world, JointID joint, bool flag);
+void EnableMotor(WorldImpl& world, JointID joint, bool value);
 
 /// @brief Sleeps the body.
 void UnsetAwake(WorldImpl& world, BodyID id);
@@ -1414,6 +1428,23 @@ Length2 GetLocalAnchorB(const WorldImpl& world, JointID id);
 Angle GetReferenceAngle(const WorldImpl& world, JointID id);
 
 UnitVec GetLocalAxisA(const WorldImpl& world, JointID id);
+
+/// @brief Gets the angular motor speed for joints which support this.
+/// @see SetMotorSpeed(JointID id, AngularVelocity value)
+AngularVelocity GetMotorSpeed(const WorldImpl& world, JointID id);
+
+/// @brief Sets the angular motor speed for joints which support this.
+/// @see GetMotorSpeed(const WorldImpl& world, JointID id) const
+void SetMotorSpeed(WorldImpl& world, JointID id, AngularVelocity value);
+
+/// @brief Gets the max motor torque.
+Torque GetMaxMotorTorque(const WorldImpl& world, JointID id);
+
+/// Sets the maximum motor torque.
+void SetMaxMotorTorque(WorldImpl& world, JointID id, Torque value);
+
+/// @brief Gets the angular motor impulse of the identified joint.
+AngularMomentum GetAngularMotorImpulse(const WorldImpl& world, JointID id);
 
 } // namespace d2
 } // namespace playrho

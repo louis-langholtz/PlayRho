@@ -103,7 +103,6 @@ TEST(ChainShapeConf, Visit)
 
 TEST(ChainShapeConf, Accept)
 {
-#if 0
     auto visited = false;
     auto shapeVisited = false;
     const auto foo = ChainShapeConf{};
@@ -119,7 +118,6 @@ TEST(ChainShapeConf, Accept)
     });
     EXPECT_TRUE(visited);
     EXPECT_TRUE(shapeVisited);
-#endif
 }
 
 TEST(ChainShapeConf, TransformFF)

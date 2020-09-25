@@ -599,6 +599,23 @@ public:
     Angle GetReferenceAngle(JointID id) const;
     UnitVec GetLocalAxisA(JointID id) const;
 
+    /// @brief Gets the angular motor speed for joints which support this.
+    /// @see SetMotorSpeed(JointID id, AngularVelocity value)
+    AngularVelocity GetMotorSpeed(JointID id) const;
+
+    /// @brief Sets the angular motor speed for joints which support this.
+    /// @see GetMotorSpeed(JointID id)
+    void SetMotorSpeed(JointID id, AngularVelocity value);
+
+    /// @brief Gets the max motor torque.
+    Torque GetMaxMotorTorque(JointID id) const;
+
+    /// Sets the maximum motor torque.
+    void SetMaxMotorTorque(JointID id, Torque value);
+
+    /// @brief Gets the angular motor impulse of the identified joint.
+    AngularMomentum GetAngularMotorImpulse(JointID id) const;
+
     /// @brief Gets the fixtures-for-proxies range for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing
     ///   during the next call to the world step method.
@@ -668,8 +685,13 @@ public:
 
     const FixtureProxies& GetProxies(FixtureID id) const;
 
+    /// Is the joint motor enabled?
+    /// @see EnableMotor(JointID id, bool value)
+    bool IsMotorEnabled(JointID id) const;
+
     /// Enable/disable the joint motor.
-    void EnableMotor(JointID id, bool flag);
+    /// @see IsMotorEnabled(JointID id).
+    void EnableMotor(JointID id, bool value);
 
     /// @brief Gets the awake status of the specified contact.
     /// @see SetAwake(ContactID id)
@@ -1219,11 +1241,18 @@ inline void SetEnabled(World& world, BodyID id, bool value)
     world.SetEnabled(id, value);
 }
 
+/// @copydoc World::IsMotorEnabled()
+/// @relatedalso World
+inline bool IsMotorEnabled(const World& world, JointID id)
+{
+    return world.IsMotorEnabled(id);
+}
+
 /// @copydoc World::EnableMotor()
 /// @relatedalso World
-inline void EnableMotor(World& world, JointID id, bool flag)
+inline void EnableMotor(World& world, JointID id, bool value)
 {
-    world.EnableMotor(id, flag);
+    world.EnableMotor(id, value);
 }
 
 /// @brief Gets the awake/asleep state of this body.
@@ -1579,6 +1608,37 @@ inline Angle GetReferenceAngle(const World& world, JointID id)
 inline UnitVec GetLocalAxisA(const World& world, JointID id)
 {
     return world.GetLocalAxisA(id);
+}
+
+/// @copydoc World::GetMotorSpeed
+/// @see SetMotorSpeed(World& world, JointID id, AngularVelocity value)
+inline AngularVelocity GetMotorSpeed(const World& world, JointID id)
+{
+    return world.GetMotorSpeed(id);
+}
+
+/// @copydoc World::SetMotorSpeed
+/// @see GetMotorSpeed(const World& world, JointID id)
+inline void SetMotorSpeed(World& world, JointID id, AngularVelocity value)
+{
+    world.SetMotorSpeed(id, value);
+}
+
+/// @brief Gets the max motor torque.
+inline Torque GetMaxMotorTorque(const World& world, JointID id)
+{
+    return world.GetMaxMotorTorque(id);
+}
+
+/// Set the maximum motor torque.
+inline void SetMaxMotorTorque(World& world, JointID id, Torque value)
+{
+    world.SetMaxMotorTorque(id, value);
+}
+
+inline AngularMomentum GetAngularMotorImpulse(const World& world, JointID id)
+{
+    return world.GetAngularMotorImpulse(id);
 }
 
 /// @brief Gets the enabled/disabled state of the joint.

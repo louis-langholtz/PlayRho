@@ -35,6 +35,7 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
+#include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
@@ -2979,6 +2980,8 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 
 // Free functions...
 
+// Fixture/FixtureID free functions...
+
 BodyID GetBodyID(const WorldImpl& world, FixtureID id)
 {
     return world.GetFixture(id).GetBody();
@@ -3009,24 +3012,16 @@ const World::FixtureProxies& GetProxies(const WorldImpl& world, FixtureID id)
     return world.GetFixture(id).GetProxies();
 }
 
+void SetAwake(WorldImpl& world, FixtureID id)
+{
+    SetAwake(world, world.GetFixture(id).GetBody());
+}
+
+// Body/BodyID free functions...
+
 BodyType GetType(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).GetType();
-}
-
-JointType GetType(const WorldImpl& world, JointID id)
-{
-    return ::playrho::d2::GetType(world.GetJoint(id));
-}
-
-Momentum2 GetLinearReaction(const WorldImpl& world, JointID id)
-{
-    return world.GetJoint(id).GetLinearReaction();
-}
-
-AngularMomentum GetAngularReaction(const WorldImpl& world, JointID id)
-{
-    return world.GetJoint(id).GetAngularReaction();
 }
 
 Angle GetAngle(const WorldImpl& world, BodyID id)
@@ -3049,73 +3044,6 @@ void SetVelocity(WorldImpl& world, BodyID id, const Velocity& value)
     world.GetBody(id).SetVelocity(value);
 }
 
-void EnableMotor(WorldImpl& world, JointID joint, bool flag)
-{
-    struct EnableMotorVisitor: JointVisitor {
-        WorldImpl& world;
-        JointID jointID;
-        bool flag;
-
-        EnableMotorVisitor(WorldImpl& w, JointID j, bool f): world{w}, jointID{j}, flag{f} {}
-
-        void Visit(const RevoluteJoint &) override {}
-
-        void Visit(RevoluteJoint &joint) override
-        {
-            if (joint.EnableMotor(flag)) SetAwake(world, jointID);
-        }
-
-        void Visit(const PrismaticJoint &) override {}
-
-        void Visit(PrismaticJoint &joint) override
-        {
-            if (joint.EnableMotor(flag)) SetAwake(world, jointID);
-        }
-
-        void Visit(const DistanceJoint &) override {}
-
-        void Visit(DistanceJoint &) override {}
-
-        void Visit(const PulleyJoint &) override {}
-
-        void Visit(PulleyJoint &) override {}
-
-        void Visit(const TargetJoint &) override {}
-
-        void Visit(TargetJoint &) override {}
-
-        void Visit(const GearJoint &) override {}
-
-        void Visit(GearJoint &) override {};
-
-        void Visit(const WheelJoint &) override {}
-
-        void Visit(WheelJoint &joint) override
-        {
-            if (joint.EnableMotor(flag)) SetAwake(world, jointID);
-        }
-
-        void Visit(const WeldJoint &) override {}
-
-        void Visit(WeldJoint &) override {};
-        
-        void Visit(const FrictionJoint &) override {}
-        
-        void Visit(FrictionJoint &) override {};
-
-        void Visit(const RopeJoint &) override {}
-
-        void Visit(RopeJoint &) override {}
-
-        void Visit(const MotorJoint &) override {}
-
-        void Visit(MotorJoint &) override {};
-    };
-
-    EnableMotorVisitor visitor{world, joint, flag};
-    world.Accept(joint, visitor);
-}
-
 void UnsetAwake(WorldImpl& world, BodyID id)
 {
     world.GetBody(id).UnsetAwake();
@@ -3124,79 +3052,6 @@ void UnsetAwake(WorldImpl& world, BodyID id)
 void SetAwake(WorldImpl& world, BodyID id)
 {
     world.GetBody(id).SetAwake();
-}
-
-void SetAwake(WorldImpl& world, FixtureID id)
-{
-    SetAwake(world, world.GetFixture(id).GetBody());
-}
-
-void SetAwake(WorldImpl& world, JointID id)
-{
-    const auto& joint = world.GetJoint(id);
-    const auto bA = joint.GetBodyA();
-    const auto bB = joint.GetBodyB();
-    if (bA != InvalidBodyID)
-    {
-        SetAwake(world, bA);
-    }
-    if (bB != InvalidBodyID)
-    {
-        SetAwake(world, bB);
-    }
-}
-
-bool IsAwake(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).IsActive();
-}
-
-void SetAwake(WorldImpl& world, ContactID id)
-{
-    const auto& contact = world.GetContact(id);
-    SetAwake(world, contact.GetBodyA());
-    SetAwake(world, contact.GetBodyB());
-}
-
-Real GetFriction(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetFriction();
-}
-
-Real GetRestitution(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetRestitution();
-}
-
-void SetFriction(WorldImpl& world, ContactID id, Real value)
-{
-    world.GetContact(id).SetFriction(value);
-}
-
-void SetRestitution(WorldImpl& world, ContactID id, Real value)
-{
-    world.GetContact(id).SetRestitution(value);
-}
-
-const Manifold& GetManifold(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetManifold();
-}
-
-Real GetDefaultFriction(const WorldImpl& world, ContactID id)
-{
-    const auto& contact = world.GetContact(id);
-    const auto& fixtureA = world.GetFixture(contact.GetFixtureA());
-    const auto& fixtureB = world.GetFixture(contact.GetFixtureB());
-    return GetDefaultFriction(fixtureA, fixtureB);
-}
-
-Real GetDefaultRestitution(const WorldImpl& world, ContactID id)
-{
-    const auto& contact = world.GetContact(id);
-    const auto& fixtureA = world.GetFixture(contact.GetFixtureA());
-    const auto& fixtureB = world.GetFixture(contact.GetFixtureB());
-    return GetDefaultRestitution(fixtureA, fixtureB);
 }
 
 bool IsAwake(const WorldImpl& world, BodyID id)
@@ -3332,11 +3187,65 @@ bool ShouldCollide(const WorldImpl& world, BodyID lhs, BodyID rhs)
     return ShouldCollide(world.GetBody(lhs), world.GetBody(rhs), rhs);
 }
 
-bool GetCollideConnected(const WorldImpl& world, JointID id)
+bool IsEnabled(const WorldImpl& world, BodyID id)
 {
-    return world.GetJoint(id).GetCollideConnected();
+    return world.GetBody(id).IsEnabled();
 }
 
+// Contact/ContactID free functions...
+
+bool IsAwake(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).IsActive();
+}
+
+void SetAwake(WorldImpl& world, ContactID id)
+{
+    const auto& contact = world.GetContact(id);
+    SetAwake(world, contact.GetBodyA());
+    SetAwake(world, contact.GetBodyB());
+}
+
+Real GetFriction(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetFriction();
+}
+
+Real GetRestitution(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetRestitution();
+}
+
+void SetFriction(WorldImpl& world, ContactID id, Real value)
+{
+    world.GetContact(id).SetFriction(value);
+}
+
+void SetRestitution(WorldImpl& world, ContactID id, Real value)
+{
+    world.GetContact(id).SetRestitution(value);
+}
+
+const Manifold& GetManifold(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetManifold();
+}
+
+Real GetDefaultFriction(const WorldImpl& world, ContactID id)
+{
+    const auto& contact = world.GetContact(id);
+    const auto& fixtureA = world.GetFixture(contact.GetFixtureA());
+    const auto& fixtureB = world.GetFixture(contact.GetFixtureB());
+    return GetDefaultFriction(fixtureA, fixtureB);
+}
+
+Real GetDefaultRestitution(const WorldImpl& world, ContactID id)
+{
+    const auto& contact = world.GetContact(id);
+    const auto& fixtureA = world.GetFixture(contact.GetFixtureA());
+    const auto& fixtureB = world.GetFixture(contact.GetFixtureB());
+    return GetDefaultRestitution(fixtureA, fixtureB);
+}
 bool IsTouching(const WorldImpl& world, ContactID id)
 {
     return world.GetContact(id).IsTouching();
@@ -3357,9 +3266,41 @@ FixtureID GetFixtureB(const WorldImpl& world, ContactID id)
     return world.GetContact(id).GetFixtureB();
 }
 
-bool IsEnabled(const WorldImpl& world, BodyID id)
+// Joint/JointID functions...
+
+JointType GetType(const WorldImpl& world, JointID id)
 {
-    return world.GetBody(id).IsEnabled();
+    return ::playrho::d2::GetType(world.GetJoint(id));
+}
+
+Momentum2 GetLinearReaction(const WorldImpl& world, JointID id)
+{
+    return world.GetJoint(id).GetLinearReaction();
+}
+
+AngularMomentum GetAngularReaction(const WorldImpl& world, JointID id)
+{
+    return world.GetJoint(id).GetAngularReaction();
+}
+
+void SetAwake(WorldImpl& world, JointID id)
+{
+    const auto& joint = world.GetJoint(id);
+    const auto bA = joint.GetBodyA();
+    const auto bB = joint.GetBodyB();
+    if (bA != InvalidBodyID)
+    {
+        SetAwake(world, bA);
+    }
+    if (bB != InvalidBodyID)
+    {
+        SetAwake(world, bB);
+    }
+}
+
+bool GetCollideConnected(const WorldImpl& world, JointID id)
+{
+    return world.GetJoint(id).GetCollideConnected();
 }
 
 void* GetUserData(const WorldImpl& world, JointID id)
@@ -3396,6 +3337,146 @@ UnitVec GetLocalAxisA(const WorldImpl& world, JointID id)
 {
     return GetLocalAxisA(world.GetJoint(id));
 }
+
+bool IsMotorEnabled(const WorldImpl& world, JointID id)
+{
+    Optional<bool> result;
+    const auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
+        result = j.IsMotorEnabled();
+    };
+    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
+        result = j.IsMotorEnabled();
+    };
+    visitor.get<const WheelJoint&>() = [&result](const WheelJoint& j) {
+        result = j.IsMotorEnabled();
+    };
+    joint.Accept(visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("IsMotorEnabled not supported by joint type!");
+    }
+    return *result;
+}
+
+void EnableMotor(WorldImpl& world, JointID id, bool value)
+{
+    auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<RevoluteJoint&>() = [&world,id,value](RevoluteJoint& j) {
+        if (j.EnableMotor(value)) SetAwake(world, id);
+    };
+    visitor.get<PrismaticJoint&>() = [&world,id,value](PrismaticJoint& j) {
+        if (j.EnableMotor(value)) SetAwake(world, id);
+    };
+    visitor.get<WheelJoint&>() = [&world,id,value](WheelJoint& j) {
+        if (j.EnableMotor(value)) SetAwake(world, id);
+    };
+    visitor.fallback = []() {
+        throw std::invalid_argument("EnableMotor not supported by joint type!");
+    };
+    joint.Accept(visitor);
+}
+
+AngularVelocity GetMotorSpeed(const WorldImpl& world, JointID id)
+{
+    Optional<AngularVelocity> result;
+    const auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
+        result = j.GetMotorSpeed();
+    };
+    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
+        result = j.GetMotorSpeed();
+    };
+    visitor.get<const WheelJoint&>() = [&result](const WheelJoint& j) {
+        result = j.GetMotorSpeed();
+    };
+    joint.Accept(visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetMotorSpeed not supported by joint type!");
+    }
+    return *result;
+}
+
+template <typename T>
+void SetMotorSpeed(WorldImpl& world, T& j, JointID id, AngularVelocity value)
+{
+    if (j.GetMotorSpeed() != value)
+    {
+        j.SetMotorSpeed(value);
+        SetAwake(world, id);
+    }
+}
+
+void SetMotorSpeed(WorldImpl& world, JointID id, AngularVelocity value)
+{
+    auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<RevoluteJoint&>() = [&world,id,value](RevoluteJoint& j) {
+        SetMotorSpeed(world, j, id, value);
+    };
+    visitor.get<PrismaticJoint&>() = [&world,id,value](PrismaticJoint& j) {
+        SetMotorSpeed(world, j, id, value);
+    };
+    visitor.get<WheelJoint&>() = [&world,id,value](WheelJoint& j) {
+        SetMotorSpeed(world, j, id, value);
+    };
+    visitor.fallback = []() {
+        throw std::invalid_argument("SetMotorSpeed not supported by joint type!");
+    };
+    joint.Accept(visitor);
+}
+
+Torque GetMaxMotorTorque(const WorldImpl& world, JointID id)
+{
+    Optional<Torque> result;
+    const auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
+        result = j.GetMaxMotorTorque();
+    };
+    joint.Accept(visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetMaxMotorTorque not supported by joint type!");
+    }
+    return *result;
+}
+
+void SetMaxMotorTorque(WorldImpl& world, JointID id, Torque value)
+{
+    auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<RevoluteJoint&>() = [&world,id,value](RevoluteJoint& j) {
+        if (j.GetMaxMotorTorque() != value)
+        {
+            j.SetMaxMotorTorque(value);
+            SetAwake(world, id);
+        }
+    };
+    visitor.fallback = []() {
+        throw std::invalid_argument("SetMaxMotorTorque not supported by joint type!");
+    };
+    joint.Accept(visitor);
+}
+
+AngularMomentum GetAngularMotorImpulse(const WorldImpl& world, JointID id)
+{
+    Optional<AngularMomentum> result;
+    const auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
+        result = j.GetMotorImpulse();
+    };
+    joint.Accept(visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetAngularMotorImpulse not supported by joint type!");
+    }
+    return *result;}
 
 } // namespace d2
 } // namespace playrho

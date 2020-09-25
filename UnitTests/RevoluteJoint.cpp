@@ -49,7 +49,6 @@ TEST(RevoluteJoint, ByteSize)
     }
 }
 
-#if 0
 TEST(RevoluteJoint, Construction)
 {
     World world;
@@ -86,8 +85,6 @@ TEST(RevoluteJoint, Construction)
 
     EXPECT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
-    EXPECT_EQ(joint.GetAnchorA(world), Length2(4_m, 5_m));
-    EXPECT_EQ(joint.GetAnchorB(world), Length2(6_m, 7_m));
     EXPECT_EQ(joint.GetLowerLimit(), jd.lowerAngle);
     EXPECT_EQ(joint.GetUpperLimit(), jd.upperAngle);
     EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
@@ -96,13 +93,18 @@ TEST(RevoluteJoint, Construction)
     EXPECT_EQ(joint.GetMaxMotorTorque(), jd.maxMotorTorque);
     EXPECT_EQ(joint.IsLimitEnabled(), jd.enableLimit);
     EXPECT_EQ(joint.GetMotorImpulse(), AngularMomentum{0});
-    
+
+    EXPECT_EQ(GetAngularVelocity(world, joint), 0 * RadianPerSecond);
+
+    const auto id = world.CreateJoint(jd);
+    EXPECT_EQ(GetAnchorA(world, id), Length2(4_m, 5_m));
+    EXPECT_EQ(GetAnchorB(world, id), Length2(6_m, 7_m));
+
     TypeJointVisitor visitor;
     joint.Accept(visitor);
     EXPECT_EQ(visitor.GetType().value(), JointType::Revolute);
     
     EXPECT_EQ(GetMotorTorque(joint, 1_Hz), 0 * NewtonMeter);
-    EXPECT_EQ(GetAngularVelocity(joint), 0 * RadianPerSecond);
 }
 
 TEST(RevoluteJoint, EnableMotor)
@@ -110,8 +112,8 @@ TEST(RevoluteJoint, EnableMotor)
     World world;
     const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
-    ASSERT_EQ(b0->GetVelocity(), Velocity{});
-    ASSERT_EQ(b1->GetVelocity(), Velocity{});
+    ASSERT_EQ(GetVelocity(world, b0), Velocity{});
+    ASSERT_EQ(GetVelocity(world, b1), Velocity{});
     
     auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
@@ -119,66 +121,88 @@ TEST(RevoluteJoint, EnableMotor)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
 
-    const auto joint = static_cast<RevoluteJoint*>(world.CreateJoint(jd));
-    ASSERT_NE(joint, nullptr);
-    ASSERT_FALSE(joint->IsLimitEnabled());
-    ASSERT_EQ(b0->GetVelocity(), Velocity{});
-    ASSERT_EQ(b1->GetVelocity(), Velocity{});
+    auto joint = RevoluteJoint{jd};
+    ASSERT_FALSE(joint.IsLimitEnabled());
+    EXPECT_EQ(joint.GetLimitState(), Joint::e_inactiveLimit);
+    EXPECT_FALSE(joint.IsMotorEnabled());
+    joint.EnableMotor(false);
+    EXPECT_FALSE(joint.IsMotorEnabled());
+    joint.EnableMotor(true);
+    EXPECT_TRUE(joint.IsMotorEnabled());
+}
 
-    EXPECT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
-
-    EXPECT_FALSE(joint->IsMotorEnabled());
-    joint->EnableMotor(false);
-    EXPECT_FALSE(joint->IsMotorEnabled());
-    joint->EnableMotor(true);
-    EXPECT_TRUE(joint->IsMotorEnabled());
+#if 0
+TEST(RevoluteJoint, EnableMotorInWorld)
+{
+    World world;
+    const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
+    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(EarthlyGravity));
+    ASSERT_EQ(GetVelocity(world, b0), Velocity{});
+    ASSERT_EQ(GetVelocity(world, b1), Velocity{});
     
+    auto jd = RevoluteJointConf{};
+    jd.bodyA = b0;
+    jd.bodyB = b1;
+    jd.localAnchorA = Length2(4_m, 5_m);
+    jd.localAnchorB = Length2(6_m, 7_m);
+
+    const auto id = world.CreateJoint(jd);
+    ASSERT_NE(id, InvalidJointID);
+    ASSERT_EQ(GetVelocity(world, b0), Velocity{});
+    ASSERT_EQ(GetVelocity(world, b1), Velocity{});
+    EXPECT_FALSE(IsMotorEnabled(world, id));
+    EnableMotor(world, id, false);
+    EXPECT_FALSE(IsMotorEnabled(world, id));
+    EnableMotor(world, id, true);
+    EXPECT_TRUE(IsMotorEnabled(world, id));
+
     const auto newValue = 5_Nm;
-    ASSERT_NE(joint->GetMaxMotorTorque(), newValue);
-    EXPECT_EQ(joint->GetMaxMotorTorque(), jd.maxMotorTorque);
-    joint->SetMaxMotorTorque(newValue);
-    EXPECT_EQ(joint->GetMaxMotorTorque(), newValue);
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
+    ASSERT_NE(GetMaxMotorTorque(world, id), newValue);
+    EXPECT_EQ(GetMaxMotorTorque(world, id), jd.maxMotorTorque);
+    SetMaxMotorTorque(world, id, newValue);
+    EXPECT_EQ(GetMaxMotorTorque(world, id), newValue);
+    EXPECT_EQ(GetAngularMotorImpulse(world, id), AngularMomentum(0));
     
     const auto shape = Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
-    world.CreateFixture(*b0, shape);
-    world.CreateFixture(*b1, shape);
-    ASSERT_NE(b0->GetInvRotInertia(), InvRotInertia(0));
-    ASSERT_NE(b1->GetInvRotInertia(), InvRotInertia(0));
+    world.CreateFixture(b0, shape);
+    world.CreateFixture(b1, shape);
+    ASSERT_NE(GetInvRotInertia(world, b0), InvRotInertia(0));
+    ASSERT_NE(GetInvRotInertia(world, b1), InvRotInertia(0));
     
     auto stepConf = StepConf{};
     world.Step(stepConf);
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
+    EXPECT_EQ(GetAngularMotorImpulse(world, id), AngularMomentum(0));
     stepConf.doWarmStart = false;
     world.Step(stepConf);
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
-    EXPECT_NE(b0->GetVelocity(), Velocity{});
-    EXPECT_NE(b1->GetVelocity(), Velocity{});
+    EXPECT_EQ(GetAngularMotorImpulse(world, id), AngularMomentum(0));
+    EXPECT_NE(GetVelocity(world, b0), Velocity{});
+    EXPECT_NE(GetVelocity(world, b1), Velocity{});
 
-    joint->EnableLimit(true);
-    ASSERT_TRUE(joint->IsLimitEnabled());
+    joint.EnableLimit(true);
+    ASSERT_TRUE(joint.IsLimitEnabled());
     
-    joint->SetLimits(-45_deg, -5_deg);
+    joint.SetLimits(-45_deg, -5_deg);
 
     stepConf.doWarmStart = true;
     world.Step(stepConf);
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
-    EXPECT_EQ(joint->GetAngularReaction(), AngularMomentum(0));
-    EXPECT_EQ(joint->GetLimitState(), Joint::e_atUpperLimit);
-    EXPECT_NE(b0->GetVelocity(), Velocity{});
-    EXPECT_NE(b1->GetVelocity(), Velocity{});
+    EXPECT_EQ(GetAngularMotorImpulse(world, id), AngularMomentum(0));
+    EXPECT_EQ(GetAngularReaction(world, id), AngularMomentum(0));
+    EXPECT_EQ(GetLimitState(world, id), Joint::e_atUpperLimit);
+    EXPECT_NE(GetVelocity(world, b0), Velocity{});
+    EXPECT_NE(GetVelocity(world, b1), Velocity{});
 
     joint->SetLimits(+55_deg, +95_deg);
     
     stepConf.doWarmStart = true;
     world.Step(stepConf);
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
-    EXPECT_EQ(joint->GetAngularReaction(), AngularMomentum(0));
-    EXPECT_EQ(joint->GetLimitState(), Joint::e_atLowerLimit);
+    EXPECT_EQ(GetAngularMotorImpulse(world, id), AngularMomentum(0));
+    EXPECT_EQ(GetAngularReaction(world, id), AngularMomentum(0));
+    EXPECT_EQ(GetLimitState(world, id), Joint::e_atLowerLimit);
     
-    EXPECT_NE(b0->GetVelocity(), Velocity{});
-    EXPECT_NE(b1->GetVelocity(), Velocity{});
+    EXPECT_NE(GetVelocity(world, b0), Velocity{});
+    EXPECT_NE(GetVelocity(world, b1), Velocity{});
 }
+#endif
 
 TEST(RevoluteJoint, MotorSpeed)
 {
@@ -200,41 +224,43 @@ TEST(RevoluteJoint, MotorSpeed)
     EXPECT_EQ(joint.GetMotorSpeed(), newValue);
 }
 
+#if 0
 TEST(RevoluteJoint, EnableLimit)
 {
     auto world = World{};
     const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    ASSERT_EQ(b0->GetInvRotInertia(), InvRotInertia(0));
-    ASSERT_EQ(b1->GetInvRotInertia(), InvRotInertia(0));
-    
+    ASSERT_EQ(GetInvRotInertia(world, b0), InvRotInertia(0));
+    ASSERT_EQ(GetInvRotInertia(world, b1), InvRotInertia(0));
+
     auto jd = RevoluteJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     jd.enableLimit = false;
-    
-    const auto joint = static_cast<RevoluteJoint*>(world.CreateJoint(jd));
-    ASSERT_NE(joint, nullptr);
-    ASSERT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
-    ASSERT_FALSE(joint->IsLimitEnabled());
 
-    joint->EnableLimit(false);
-    EXPECT_FALSE(joint->IsLimitEnabled());
-    joint->EnableLimit(true);
-    EXPECT_TRUE(joint->IsLimitEnabled());
-    
+    auto joint = RevoluteJoint{jd};
+    ASSERT_EQ(joint.GetLimitState(), Joint::e_inactiveLimit);
+    ASSERT_FALSE(joint.IsLimitEnabled());
+    joint.EnableLimit(false);
+    EXPECT_FALSE(joint.IsLimitEnabled());
+    joint.EnableLimit(true);
+    EXPECT_TRUE(joint.IsLimitEnabled());
+
+    const auto id = world.CreateJoint(jd);
+    ASSERT_NE(id, InvalidJointID);
+
     auto stepConf = StepConf{};
     world.Step(stepConf);
     EXPECT_TRUE(joint->IsLimitEnabled());
     EXPECT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit); // since b0 & b1 inv rot inertia 0
     
     const auto shape = Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
-    world.CreateFixture(*b0, shape);
-    world.CreateFixture(*b1, shape);
-    ASSERT_NE(b0->GetInvRotInertia(), InvRotInertia(0));
-    ASSERT_NE(b1->GetInvRotInertia(), InvRotInertia(0));
+    world.CreateFixture(b0, shape);
+    world.CreateFixture(b1, shape);
+    ASSERT_NE(GetInvRotInertia(world, b0), InvRotInertia(0));
+    ASSERT_NE(GetInvRotInertia(world, b1), InvRotInertia(0));
     
     world.Step(stepConf);
     EXPECT_TRUE(joint->IsLimitEnabled());
@@ -250,6 +276,7 @@ TEST(RevoluteJoint, EnableLimit)
     
     EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
 }
+#endif
 
 TEST(RevoluteJoint, SetLimits)
 {
@@ -273,6 +300,7 @@ TEST(RevoluteJoint, SetLimits)
     EXPECT_EQ(joint.GetLowerLimit(), lowerValue);
 }
 
+#if 0
 TEST(RevoluteJoint, MaxMotorTorque)
 {
     World world;
@@ -296,10 +324,10 @@ TEST(RevoluteJoint, MaxMotorTorque)
     EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
     
     const auto shape = Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
-    world.CreateFixture(*b0, shape);
-    world.CreateFixture(*b1, shape);
-    ASSERT_NE(b0->GetInvRotInertia(), InvRotInertia(0));
-    ASSERT_NE(b1->GetInvRotInertia(), InvRotInertia(0));
+    world.CreateFixture(b0, shape);
+    world.CreateFixture(b1, shape);
+    ASSERT_NE(GetInvRotInertia(world, b0), InvRotInertia(0));
+    ASSERT_NE(GetInvRotInertia(world, b1), InvRotInertia(0));
     
     auto stepConf = StepConf{};
     world.Step(stepConf);
@@ -308,6 +336,7 @@ TEST(RevoluteJoint, MaxMotorTorque)
     world.Step(stepConf);
     EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
 }
+#endif
 
 TEST(RevoluteJoint, MovesDynamicCircles)
 {
@@ -317,8 +346,8 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1).UseLinearAcceleration(EarthlyGravity));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2).UseLinearAcceleration(EarthlyGravity));
-    world.CreateFixture(*b1, circle);
-    world.CreateFixture(*b2, circle);
+    world.CreateFixture(b1, circle);
+    world.CreateFixture(b2, circle);
     auto jd = RevoluteJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;
@@ -328,15 +357,16 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     step.SetTime(1_s);
     step.maxTranslation = Meter * Real(4);
     world.Step(step);
-    
-    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), 0, 0.001);
-    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), -4, 0.001);
-    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), 0, 0.01);
-    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), -4, 0.01);
-    EXPECT_EQ(b1->GetAngle(), 0_deg);
-    EXPECT_EQ(b2->GetAngle(), 0_deg);
+
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), 0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), -4, 0.001);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), 0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), -4, 0.01);
+    EXPECT_EQ(GetAngle(world, b1), 0_deg);
+    EXPECT_EQ(GetAngle(world, b2), 0_deg);
 }
 
+#if 0
 TEST(RevoluteJoint, LimitEnabledDynamicCircles)
 {
     const auto circle = Shape{DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2)};
@@ -346,8 +376,8 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1).UseLinearAcceleration(EarthlyGravity));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2).UseLinearAcceleration(EarthlyGravity));
-    world.CreateFixture(*b1, circle);
-    world.CreateFixture(*b2, circle);
+    world.CreateFixture(b1, circle);
+    world.CreateFixture(b2, circle);
     auto jd = RevoluteJointConf{b1, b2, Length2{}};
     jd.enableLimit = true;
     ASSERT_EQ(jd.lowerAngle, 0_deg);
@@ -369,12 +399,12 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     EXPECT_EQ(GetJointAngle(*joint), 0_deg);
     EXPECT_EQ(joint->GetReferenceAngle(), 0_deg);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
-    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), -4, 0.001);
-    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), -4, 0.01);
-    EXPECT_EQ(b1->GetAngle(), 0_deg);
-    EXPECT_EQ(b2->GetAngle(), 0_deg);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), -4, 0.001);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), -4, 0.01);
+    EXPECT_EQ(GetAngle(world, b1), 0_deg);
+    EXPECT_EQ(GetAngle(world, b2), 0_deg);
     EXPECT_TRUE(IsEnabled(*joint));
     b1->UnsetAwake();
     b2->UnsetAwake();
@@ -406,6 +436,7 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     EXPECT_NEAR(static_cast<double>(Real(GetJointAngle(*joint)/1_rad)),
                 -0.082102291285991669, 0.082102291285991669/100);
 }
+#endif
 
 TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
 {
@@ -417,10 +448,10 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
 
     const auto shape1 = Shape{PolygonShapeConf{}.SetAsBox(1_m, 1_m)};
-    world.CreateFixture(*b1, shape1);
+    world.CreateFixture(b1, shape1);
 
     const auto shape2 = Shape{PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(1_kgpm2)};
-    world.CreateFixture(*b2, shape2);
+    world.CreateFixture(b2, shape2);
 
     auto jd = RevoluteJointConf{b1, b2, Length2{}};
     const auto joint = world.CreateJoint(jd);
@@ -431,12 +462,12 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     for (auto i = 0; i < 1000; ++i)
     {
         Step(world, 0.1_s);
-        EXPECT_EQ(b1->GetLocation(), p1);
-        EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}),
+        EXPECT_EQ(GetLocation(world, b1), p1);
+        EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}),
                     double(Real{GetX(p2) / Meter}), 0.0001);
-        EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}),
+        EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}),
                     double(Real{GetY(p2) / Meter}), 0.0001);
-        EXPECT_EQ(b2->GetAngle(), 0_deg);
+        EXPECT_EQ(GetAngle(world, b2), 0_deg);
     }
     
     world.Destroy(joint);
@@ -444,9 +475,8 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     for (auto i = 0; i < 10; ++i)
     {
         Step(world, 0.1_s);
-        EXPECT_EQ(b1->GetLocation(), p1);
-        EXPECT_NE(b2->GetLocation(), p2);
-        EXPECT_EQ(b2->GetAngle(), 0_deg);
+        EXPECT_EQ(GetLocation(world, b1), p1);
+        EXPECT_NE(GetLocation(world, b2), p2);
+        EXPECT_EQ(GetAngle(world, b2), 0_deg);
     }
 }
-#endif

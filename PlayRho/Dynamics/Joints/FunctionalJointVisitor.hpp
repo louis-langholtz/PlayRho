@@ -69,6 +69,7 @@ public:
     >;
 
     Tuple procs; ///< Procedures.
+    std::function<void()> fallback;
 
     /// @brief Uses given procedure.
     /// @note Provide a builder pattern mutator method.
@@ -121,6 +122,10 @@ private:
         if (proc)
         {
             proc(arg);
+        }
+        else if (fallback)
+        {
+            fallback();
         }
     }
 };

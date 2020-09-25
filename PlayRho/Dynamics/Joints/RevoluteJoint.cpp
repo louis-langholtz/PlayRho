@@ -474,60 +474,40 @@ bool RevoluteJoint::EnableMotor(bool flag)
 
 void RevoluteJoint::SetMotorSpeed(AngularVelocity speed)
 {
-#if 0
-    if (m_motorSpeed != speed)
-    {
-	    m_motorSpeed = speed;
-
-        // XXX Should these be called regardless of whether the state changed?
-    	GetBodyA()->SetAwake();
-    	GetBodyB()->SetAwake();
-    }
-#endif
+    m_motorSpeed = speed;
 }
 
 void RevoluteJoint::SetMaxMotorTorque(Torque torque)
 {
-#if 0
-    if (m_maxMotorTorque != torque)
-    {
-	    m_maxMotorTorque = torque;
-
-        // XXX Should these be called regardless of whether the state changed?
-    	GetBodyA()->SetAwake();
-    	GetBodyB()->SetAwake();
-    }
-#endif
+    m_maxMotorTorque = torque;
 }
 
 void RevoluteJoint::EnableLimit(bool flag)
 {
-#if 0
     if (flag != m_enableLimit)
     {
         m_enableLimit = flag;
         GetZ(m_impulse) = 0;
-
+#if 0
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
-    }
 #endif
+    }
 }
 
 void RevoluteJoint::SetLimits(Angle lower, Angle upper)
 {
     assert(lower <= upper);
-#if 0
     if ((lower != m_lowerAngle) || (upper != m_upperAngle))
     {
         GetZ(m_impulse) = 0;
         m_lowerAngle = lower;
         m_upperAngle = upper;
-
+#if 0
         GetBodyA()->SetAwake();
         GetBodyB()->SetAwake();
-    }
 #endif
+    }
 }
 
 Angle GetJointAngle(const World& world, const RevoluteJoint& joint)
