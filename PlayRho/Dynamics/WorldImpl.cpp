@@ -2954,7 +2954,7 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 
     if (!oldTouching && newTouching)
     {
-        ContactAtty::SetTouching(c);
+        c.SetTouching();
         if (m_beginContactListener)
         {
             m_beginContactListener(contactID);
@@ -2962,7 +2962,7 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
     }
     else if (oldTouching && !newTouching)
     {
-        ContactAtty::UnsetTouching(c);
+        c.UnsetTouching();
         if (m_endContactListener)
         {
             m_endContactListener(contactID);
@@ -3254,6 +3254,11 @@ bool IsTouching(const WorldImpl& world, ContactID id)
 bool NeedsFiltering(const WorldImpl& world, ContactID id)
 {
     return world.GetContact(id).NeedsFiltering();
+}
+
+bool NeedsUpdating(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).NeedsUpdating();
 }
 
 FixtureID GetFixtureA(const WorldImpl& world, ContactID id)

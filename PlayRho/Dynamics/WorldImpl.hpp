@@ -1316,6 +1316,9 @@ bool IsTouching(const WorldImpl& world, ContactID id);
 /// @brief Whether or not the contact needs filtering.
 bool NeedsFiltering(const WorldImpl& world, ContactID id);
 
+/// @brief Whether or not the contact needs updating.
+bool NeedsUpdating(const WorldImpl& world, ContactID id);
+
 /// @brief Gets fixture A of the given contact.
 FixtureID GetFixtureA(const WorldImpl& world, ContactID id);
 

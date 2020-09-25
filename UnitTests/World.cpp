@@ -1544,37 +1544,33 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
     }
 }
 
-#if 0
-class MyContactListener: public ContactListener
+struct MyContactListener
 {
-public:
-    using PreSolver = std::function<void(Contact&, const Manifold&)>;
-    using PostSolver = std::function<void(Contact&, const ContactImpulsesList&, ContactListener::iteration_type)>;
-    using Ender = std::function<void(Contact&)>;
+    using PreSolver = std::function<void(ContactID, const Manifold&)>;
+    using PostSolver = std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
+    using Ender = std::function<void(ContactID)>;
 
-    MyContactListener(PreSolver&& pre, PostSolver&& post, Ender&& end): presolver(pre), postsolver(post), ender(end) {}
+    MyContactListener(World& w, PreSolver&& pre, PostSolver&& post, Ender&& end):
+        world(w), presolver(pre), postsolver(post), ender(end) {}
 
-    virtual ~MyContactListener() {}
-
-    void BeginContact(World& world, Contact& contact) override
+    void BeginContact(ContactID contact)
     {
         ++begin_contacts;
         contacting = true;
-        touching = contact.IsTouching();
-        
-        const auto fA = contact.GetFixtureA();
-        const auto fB = contact.GetFixtureB();
-        const auto bA = fA->GetBody();
-        const auto bB = fB->GetBody();
-        body_a[0] = bA->GetLocation();
-        body_b[0] = bB->GetLocation();
+        touching = IsTouching(world, contact);
+        const auto fA = GetFixtureA(world, contact);
+        const auto fB = GetFixtureB(world, contact);
+        const auto bA = GetBodyID(world, fA);
+        const auto bB = GetBodyID(world, fB);
+        body_a[0] = GetLocation(world, bA);
+        body_b[0] = GetLocation(world, bB);
         
         EXPECT_THROW(world.CreateBody(), WrongState);
-        const auto typeA = bA->GetType();
+        const auto typeA = GetType(world, bA);
         if (typeA != BodyType::Kinematic)
         {
-            EXPECT_NO_THROW(world.SetType(*bA, typeA));
-            EXPECT_THROW(world.SetType(*bA, BodyType::Kinematic), WrongState);
+            EXPECT_NO_THROW(SetType(world, bA, typeA));
+            EXPECT_THROW(SetType(world, bA, BodyType::Kinematic), WrongState);
         }
         EXPECT_THROW(world.Destroy(bA), WrongState);
         EXPECT_THROW(world.Clear(), WrongState);
@@ -1584,34 +1580,33 @@ public:
         EXPECT_THROW(world.CreateFixture(bA, Shape{DiskShapeConf{}}), WrongState);
         EXPECT_THROW(world.Destroy(fA), WrongState);
     }
-    
-    void EndContact(World& world, Contact& contact) override
+
+    void EndContact(ContactID contact)
     {
         ++end_contacts;
         contacting = false;
-        touching = contact.IsTouching();
-
-        body_a[1] = contact.GetFixtureA()->GetBody()->GetLocation();
-        body_b[1] = contact.GetFixtureB()->GetBody()->GetLocation();
-        
+        touching = IsTouching(world, contact);
+        body_a[1] = GetLocation(world, GetBodyID(world, GetFixtureA(world, contact)));
+        body_b[1] = GetLocation(world, GetBodyID(world, GetFixtureB(world, contact)));
         if (ender)
         {
             ender(contact);
         }
     }
     
-    void PreSolve(World& world, Contact& contact, const Manifold& oldManifold) override
+    void PreSolve(ContactID id, const Manifold& oldManifold)
     {
         ++pre_solves;
-        presolver(contact, oldManifold);
+        presolver(id, oldManifold);
     }
     
-    void PostSolve(World& world, Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved) override
+    void PostSolve(ContactID id, const ContactImpulsesList& impulses, unsigned solved)
     {
         ++post_solves;
-        postsolver(contact, impulse, solved);
+        postsolver(id, impulses, solved);
     }
 
+    World& world;
     unsigned begin_contacts = 0;
     unsigned end_contacts = 0;
     unsigned pre_solves = 0;
@@ -1632,14 +1627,28 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
 
     auto presolved = unsigned{0};
     auto postsolved = unsigned{0};
+    World world{};
     MyContactListener listener{
-        [&](Contact&, const Manifold&) { ++presolved; },
-        [&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) { ++postsolved; },
-        [&](Contact&) {},
+        world,
+        [&](ContactID, const Manifold&) { ++presolved; },
+        [&](ContactID, const ContactImpulsesList&, unsigned) { ++postsolved; },
+        [&](ContactID) {},
     };
 
-    World world{};
-    world.SetContactListener(&listener);
+    world.SetBeginContactListener([&listener](ContactID id) {
+        listener.BeginContact(id);
+    });
+    world.SetEndContactListener([&listener](ContactID id) {
+        listener.EndContact(id);
+    });
+    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+        listener.PreSolve(id, manifold);
+    });
+    world.SetPostSolveContactListener([&listener](ContactID id,
+                                                  const ContactImpulsesList& impulses,
+                                                  unsigned count){
+        listener.PostSolve(id, impulses, count);
+    });
     
     ASSERT_EQ(listener.begin_contacts, unsigned(0));
     ASSERT_EQ(listener.end_contacts, unsigned(0));
@@ -1654,7 +1663,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
     const auto body_a = world.CreateBody(body_def);
     ASSERT_NE(body_a, InvalidBodyID);
-    EXPECT_EQ(body_a->GetType(), BodyType::Dynamic);
+    EXPECT_EQ(GetType(world, body_a), BodyType::Dynamic);
     EXPECT_TRUE(IsSpeedable(world, body_a));
     EXPECT_TRUE(IsAccelerable(world, body_a));
     const auto fixture1 = world.CreateFixture(body_a, shape);
@@ -1666,19 +1675,19 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     ASSERT_NE(body_b, InvalidBodyID);
     const auto fixture2 = world.CreateFixture(body_b, shape);
     ASSERT_NE(fixture2, InvalidFixtureID);
-    EXPECT_EQ(body_b->GetType(), BodyType::Dynamic);
+    EXPECT_EQ(GetType(world, body_b), BodyType::Dynamic);
     EXPECT_TRUE(IsSpeedable(world, body_b));
     EXPECT_TRUE(IsAccelerable(world, body_b));
 
-    EXPECT_EQ(GetX(GetLinearVelocity(*body_a)), +x * 1_mps);
-    EXPECT_EQ(GetY(GetLinearVelocity(*body_a)), 0_mps);
-    EXPECT_EQ(GetX(GetLinearVelocity(*body_b)), -x * 1_mps);
-    EXPECT_EQ(GetY(GetLinearVelocity(*body_b)), 0_mps);
+    EXPECT_EQ(GetX(GetLinearVelocity(world, body_a)), +x * 1_mps);
+    EXPECT_EQ(GetY(GetLinearVelocity(world, body_a)), 0_mps);
+    EXPECT_EQ(GetX(GetLinearVelocity(world, body_b)), -x * 1_mps);
+    EXPECT_EQ(GetY(GetLinearVelocity(world, body_b)), 0_mps);
 
     const auto time_inc = .01_s;
 
-    auto pos_a = body_a->GetLocation();
-    auto pos_b = body_b->GetLocation();
+    auto pos_a = GetLocation(world, body_a);
+    auto pos_b = GetLocation(world, body_b);
     ASSERT_LT(GetX(pos_a), GetX(pos_b));
 
     auto conf = StepConf{};
@@ -1695,20 +1704,20 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
         world.Step(conf);
         ++steps;
         
-        EXPECT_TRUE(AlmostEqual(Real{GetX(body_a->GetLocation()) / Meter},
+        EXPECT_TRUE(AlmostEqual(Real{GetX(GetLocation(world, body_a)) / Meter},
                                 Real{(GetX(pos_a) + x * time_inc * 1_mps) / Meter}));
-        EXPECT_EQ(GetY(body_a->GetLocation()), 0_m);
-        EXPECT_TRUE(AlmostEqual(Real{GetX(body_b->GetLocation()) / Meter},
+        EXPECT_EQ(GetY(GetLocation(world, body_a)), 0_m);
+        EXPECT_TRUE(AlmostEqual(Real{GetX(GetLocation(world, body_b)) / Meter},
                                 Real{(GetX(pos_b) - x * time_inc * 1_mps) / Meter}));
-        EXPECT_EQ(GetY(body_b->GetLocation()), 0_m);
+        EXPECT_EQ(GetY(GetLocation(world, body_b)), 0_m);
 
-        EXPECT_EQ(GetX(GetLinearVelocity(*body_a)), +x * 1_mps);
-        EXPECT_EQ(GetY(GetLinearVelocity(*body_a)), 0_mps);
-        EXPECT_EQ(GetX(GetLinearVelocity(*body_b)), -x * 1_mps);
-        EXPECT_EQ(GetY(GetLinearVelocity(*body_b)), 0_mps);
+        EXPECT_EQ(GetX(GetLinearVelocity(world, body_a)), +x * 1_mps);
+        EXPECT_EQ(GetY(GetLinearVelocity(world, body_a)), 0_mps);
+        EXPECT_EQ(GetX(GetLinearVelocity(world, body_b)), -x * 1_mps);
+        EXPECT_EQ(GetY(GetLinearVelocity(world, body_b)), 0_mps);
 
-        pos_a = body_a->GetLocation();
-        pos_b = body_b->GetLocation();
+        pos_a = GetLocation(world, body_a);
+        pos_b = GetLocation(world, body_b);
     }
     
     // d = v * t
@@ -1719,7 +1728,6 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     EXPECT_LE(steps, 201u);
     //EXPECT_EQ(int64_t(steps), static_cast<int64_t>(round(((x * 2) / x) / time_inc)));
 }
-#endif
 
 TEST(World, HeavyOnLight)
 {
@@ -2369,24 +2377,34 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     }
 }
 
-#if 0
-
 TEST(World, CollidingDynamicBodies)
 {
     const auto radius = 1_m;
     const auto x = Real(10); // other test parameters tuned to this value being 10
-
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
-    
-    MyContactListener listener{
-        [](Contact&, const Manifold&) {},
-        [](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
-        [&](Contact&) {},
-    };
 
     World world{};
-    world.SetContactListener(&listener);
+    MyContactListener listener{
+        world,
+        [&](ContactID, const Manifold&) {},
+        [&](ContactID, const ContactImpulsesList&, unsigned) {},
+        [&](ContactID) {},
+    };
+    world.SetBeginContactListener([&listener](ContactID id) {
+        listener.BeginContact(id);
+    });
+    world.SetEndContactListener([&listener](ContactID id) {
+        listener.EndContact(id);
+    });
+    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+        listener.PreSolve(id, manifold);
+    });
+    world.SetPostSolveContactListener([&listener](ContactID id,
+                                                  const ContactImpulsesList& impulses,
+                                                  unsigned count){
+        listener.PostSolve(id, impulses, count);
+    });
     
     const auto shape = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(radius));
 
@@ -2394,7 +2412,7 @@ TEST(World, CollidingDynamicBodies)
     body_def.linearVelocity = LinearVelocity2{+x * 1_mps, 0_mps};
     const auto body_a = world.CreateBody(body_def);
     ASSERT_NE(body_a, InvalidBodyID);
-    ASSERT_EQ(body_a->GetType(), BodyType::Dynamic);
+    ASSERT_EQ(GetType(world, body_a), BodyType::Dynamic);
     ASSERT_TRUE(IsSpeedable(world, body_a));
     ASSERT_TRUE(IsAccelerable(world, body_a));
     
@@ -2405,17 +2423,17 @@ TEST(World, CollidingDynamicBodies)
     body_def.linearVelocity = LinearVelocity2{-x * 1_mps, 0_mps};
     const auto body_b = world.CreateBody(body_def);
     ASSERT_NE(body_b, InvalidBodyID);
-    ASSERT_EQ(body_b->GetType(), BodyType::Dynamic);
+    ASSERT_EQ(GetType(world, body_b), BodyType::Dynamic);
     ASSERT_TRUE(IsSpeedable(world, body_b));
     ASSERT_TRUE(IsAccelerable(world, body_b));
 
     const auto fixture2 = world.CreateFixture(body_b, shape);
     ASSERT_NE(fixture2, InvalidFixtureID);
 
-    EXPECT_EQ(GetX(GetLinearVelocity(*body_a)), +x * 1_mps);
-    EXPECT_EQ(GetY(GetLinearVelocity(*body_a)), 0_mps);
-    EXPECT_EQ(GetX(GetLinearVelocity(*body_b)), -x * 1_mps);
-    EXPECT_EQ(GetY(GetLinearVelocity(*body_b)), 0_mps);
+    EXPECT_EQ(GetX(GetLinearVelocity(world, body_a)), +x * 1_mps);
+    EXPECT_EQ(GetY(GetLinearVelocity(world, body_a)), 0_mps);
+    EXPECT_EQ(GetX(GetLinearVelocity(world, body_b)), -x * 1_mps);
+    EXPECT_EQ(GetY(GetLinearVelocity(world, body_b)), 0_mps);
     
     const auto time_collision = Real(1.0099994); // only valid for x >= around 4.214
     const auto time_inc = Real(.01);
@@ -2432,45 +2450,45 @@ TEST(World, CollidingDynamicBodies)
     }
     
     // Call Refilter and SetSensor to add some unit test coverage of these Fixture methods.
-    EXPECT_FALSE(body_a->GetContacts().empty());
-    for (auto&& ci: body_a->GetContacts())
+    EXPECT_FALSE(GetContacts(world, body_a).empty());
+    for (const auto& ci: GetContacts(world, body_a))
     {
-        EXPECT_FALSE(ci.second->NeedsFiltering());
-        EXPECT_TRUE(ci.second->NeedsUpdating());
+        EXPECT_FALSE(NeedsFiltering(world, ci.second));
+        EXPECT_TRUE(NeedsUpdating(world, ci.second));
     }
-    world.Refilter(*fixture1);
-    EXPECT_FALSE(fixture1->IsSensor());
-    fixture1->SetSensor(true);
-    EXPECT_TRUE(fixture1->IsSensor());
-    fixture1->SetSensor(false);
-    EXPECT_FALSE(fixture1->IsSensor());
-    EXPECT_FALSE(body_a->GetContacts().empty());
-    for (auto&& ci: body_a->GetContacts())
+    world.Refilter(fixture1);
+    EXPECT_FALSE(IsSensor(world, fixture1));
+    SetSensor(world, fixture1, true);
+    EXPECT_TRUE(IsSensor(world, fixture1));
+    SetSensor(world, fixture1, false);
+    EXPECT_FALSE(IsSensor(world, fixture1));
+    EXPECT_FALSE(GetContacts(world, body_a).empty());
+    for (auto&& ci: GetContacts(world, body_a))
     {
-        EXPECT_TRUE(ci.second->NeedsFiltering());
-        EXPECT_TRUE(ci.second->NeedsUpdating());
+        EXPECT_TRUE(NeedsFiltering(world, ci.second));
+        EXPECT_TRUE(NeedsUpdating(world, ci.second));
     }
 
     const auto time_contacting = elapsed_time;
 
     EXPECT_TRUE(listener.touching);
     EXPECT_NEAR(double(time_contacting), double(time_collision), 0.02);
-    EXPECT_EQ(GetY(body_a->GetLocation()), 0_m);
-    EXPECT_EQ(GetY(body_b->GetLocation()), 0_m);
+    EXPECT_EQ(GetY(GetLocation(world, body_a)), 0_m);
+    EXPECT_EQ(GetY(GetLocation(world, body_b)), 0_m);
 
     const auto tolerance = x / 100;
     
     // x position for body1 depends on restitution but it should be around -1
-    EXPECT_GE(GetX(body_a->GetLocation()) / Meter, Real(-1) - tolerance);
-    EXPECT_LT(GetX(body_a->GetLocation()) / Meter, Real(-1) + tolerance);
+    EXPECT_GE(GetX(GetLocation(world, body_a)) / Meter, Real(-1) - tolerance);
+    EXPECT_LT(GetX(GetLocation(world, body_a)) / Meter, Real(-1) + tolerance);
 
     // x position for body2 depends on restitution but it should be around +1
-    EXPECT_LE(GetX(body_b->GetLocation()) / Meter, Real(+1) + tolerance);
-    EXPECT_GT(GetX(body_b->GetLocation()) / Meter, Real(+1) - tolerance);
+    EXPECT_LE(GetX(GetLocation(world, body_b)) / Meter, Real(+1) + tolerance);
+    EXPECT_GT(GetX(GetLocation(world, body_b)) / Meter, Real(+1) - tolerance);
     
     // and their deltas from -1 and +1 should be about equal.
-    EXPECT_TRUE(AlmostEqual(Real{(GetX(body_a->GetLocation()) + 1_m) / Meter},
-                            Real{(1_m - GetX(body_b->GetLocation())) / Meter}));
+    EXPECT_TRUE(AlmostEqual(Real{(GetX(GetLocation(world, body_a)) + 1_m) / Meter},
+                            Real{(1_m - GetX(GetLocation(world, body_b))) / Meter}));
 
     EXPECT_GE(GetX(listener.body_a[0]), -1_m);
     EXPECT_LE(GetX(listener.body_b[0]), +1_m);
@@ -2485,30 +2503,29 @@ TEST(World, CollidingDynamicBodies)
         }
     }
     EXPECT_FALSE(listener.touching);
-    
+
     EXPECT_TRUE(AlmostEqual(elapsed_time, time_contacting + time_inc));
-    
+
     // collision should be fully resolved now...
-    EXPECT_LT(GetX(body_a->GetLocation()), -1_m);
-    EXPECT_GT(GetX(body_b->GetLocation()), +1_m);
-    
+    EXPECT_LT(GetX(GetLocation(world, body_a)), -1_m);
+    EXPECT_GT(GetX(GetLocation(world, body_b)), +1_m);
+
     // and their deltas from -1 and +1 should be about equal.
-    EXPECT_TRUE(AlmostEqual(Real{(GetX(body_a->GetLocation()) + 1_m) / Meter},
-                            Real{(1_m - GetX(body_b->GetLocation())) / Meter}));
+    EXPECT_TRUE(AlmostEqual(Real{(GetX(GetLocation(world, body_a)) + 1_m) / Meter},
+                            Real{(1_m - GetX(GetLocation(world, body_b))) / Meter}));
 
     EXPECT_LT(GetX(listener.body_a[1]), -1_m);
     EXPECT_GT(GetX(listener.body_b[1]), +1_m);
-    
+
     // confirm conservation of momentum:
     // velocities should now be same magnitude but in opposite directions
-    EXPECT_NEAR(double(Real{GetX(GetLinearVelocity(*body_a)) / 1_mps}),
+    EXPECT_NEAR(double(Real{GetX(GetLinearVelocity(world, body_a)) / 1_mps}),
                 double(-x), 0.0001);
-    EXPECT_EQ(GetY(GetLinearVelocity(*body_a)), 0_mps);
-    EXPECT_NEAR(double(Real{GetX(GetLinearVelocity(*body_b)) / 1_mps}),
+    EXPECT_EQ(GetY(GetLinearVelocity(world, body_a)), 0_mps);
+    EXPECT_NEAR(double(Real{GetX(GetLinearVelocity(world, body_b)) / 1_mps}),
                 double(+x), 0.0001);
-    EXPECT_EQ(GetY(GetLinearVelocity(*body_b)), 0_mps);
+    EXPECT_EQ(GetY(GetLinearVelocity(world, body_b)), 0_mps);
 }
-#endif
 
 TEST(World_Longer, TilesComesToRest)
 {
@@ -3165,12 +3182,12 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 }
                 std::cout << std::endl;
 
-                std::cout << " bodyA=(" << GetX(body_a->GetLocation()) << "," << GetY(body_a->GetLocation()) << ")";
+                std::cout << " bodyA=(" << GetX(GetLocation(world, body_a)) << "," << GetY(GetLocation(world, body_a)) << ")";
                 if (body_a == ball_body) std::cout << " ball";
                 if (!IsSpeedable(world, body_a)) std::cout << " wall";
                 std::cout << " " << body_a;
                 std::cout << std::endl;
-                std::cout << " bodyB=(" << GetX(body_b->GetLocation()) << "," << GetY(body_b->GetLocation()) << ")";
+                std::cout << " bodyB=(" << GetX(GetLocation(world, body_b)) << "," << GetY(GetLocation(world, body_b)) << ")";
                 if (body_b == ball_body) std::cout << " ball";
                 if (!IsSpeedable(world, body_b)) std::cout << " wall";
                 std::cout << " " << body_b;
@@ -3215,8 +3232,8 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 std::cout << "Escaped at EndContact[" << &contact << "]:";
                 std::cout << " toiSteps=" << static_cast<unsigned>(contact.GetToiCount());
                 std::cout << " toiValid=" << contact.HasValidToi();
-                std::cout << " a[" << body_a << "]@(" << GetX(body_a->GetLocation()) << "," << GetY(body_a->GetLocation()) << ")";
-                std::cout << " b[" << body_b << "]@(" << GetX(body_b->GetLocation()) << "," << GetY(body_b->GetLocation()) << ")";
+                std::cout << " a[" << body_a << "]@(" << GetX(GetLocation(world, body_a)) << "," << GetY(GetLocation(world, body_a)) << ")";
+                std::cout << " b[" << body_b << "]@(" << GetX(GetLocation(world, body_b)) << "," << GetY(GetLocation(world, body_b)) << ")";
                 std::cout << std::endl;
                 //exit(1);
             }

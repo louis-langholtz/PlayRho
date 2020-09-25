@@ -117,18 +117,6 @@ private:
         c.UnsetIslanded();
     }
 
-    /// @brief Sets the touching flag state.
-    static void SetTouching(Contact& c) noexcept
-    {
-        c.SetTouching();
-    }
-
-    /// @brief Unsets the touching flag state.
-    static void UnsetTouching(Contact& c) noexcept
-    {
-        c.UnsetTouching();
-    }
-
     friend class WorldImpl;
 };
 

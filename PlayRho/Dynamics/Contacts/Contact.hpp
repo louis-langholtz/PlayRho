@@ -112,6 +112,16 @@ public:
     /// @return true if this contact is said to be touching, false otherwise.
     bool IsTouching() const noexcept;
 
+    /// @brief Sets the touching flag state.
+    /// @note This should only be called if either:
+    ///   1. The contact's manifold has more than 0 contact points, or
+    ///   2. The contact has sensors and the two shapes of this contact are found to be overlapping.
+    /// @see IsTouching().
+    void SetTouching() noexcept;
+
+    /// @brief Unsets the touching flag state.
+    void UnsetTouching() noexcept;
+
     /// @brief Enables or disables this contact.
     /// @note This can be used inside the pre-solve contact listener.
     ///   The contact is only disabled for the current time step (or sub-step in continuous
@@ -285,16 +295,6 @@ private:
 
     /// @brief Sets the TOI count to the given value.
     void SetToiCount(substep_type value) noexcept;
-
-    /// @brief Sets the touching flag state.
-    /// @note This should only be called if either:
-    ///   1. The contact's manifold has more than 0 contact points, or
-    ///   2. The contact has sensors and the two shapes of this contact are found to be overlapping.
-    /// @see IsTouching().
-    void SetTouching() noexcept;
-
-    /// @brief Unsets the touching flag state.
-    void UnsetTouching() noexcept;
 
     /// @brief Gets the writable manifold.
     /// @note This is intentionally not a public method.

@@ -713,6 +713,9 @@ public:
     /// @brief Whether or not the contact needs filtering.
     bool NeedsFiltering(ContactID id) const;
 
+    /// @brief Whether or not the contact needs updating.
+    bool NeedsUpdating(ContactID id) const;
+
     /// @brief Gets fixture A of the given contact.
     FixtureID GetFixtureA(ContactID id) const;
 
@@ -1278,19 +1281,6 @@ inline void UnsetAwake(World& world, BodyID id)
     world.UnsetAwake(id);
 }
 
-/// @copydoc World::IsAwake(ContactID)
-inline bool IsAwake(const World& world, ContactID id)
-{
-    return world.IsAwake(id);
-}
-
-/// @brief Sets awake the bodies of the fixtures of the given contact.
-/// @relatedalso World
-inline void SetAwake(World& world, ContactID id)
-{
-    world.SetAwake(id);
-}
-
 /// @brief Awakens the body if it's asleep.
 /// @relatedalso World
 inline bool Awaken(World& world, BodyID id)
@@ -1473,6 +1463,25 @@ inline void* GetUserData(const World& world, BodyID id)
     return world.GetUserData(id);
 }
 
+/// @copydoc World::IsTouching(ContactID)
+inline bool IsTouching(const World& world, ContactID id)
+{
+    return world.IsTouching(id);
+}
+
+/// @copydoc World::IsAwake(ContactID)
+inline bool IsAwake(const World& world, ContactID id)
+{
+    return world.IsAwake(id);
+}
+
+/// @brief Sets awake the bodies of the fixtures of the given contact.
+/// @relatedalso World
+inline void SetAwake(World& world, ContactID id)
+{
+    world.SetAwake(id);
+}
+
 /// @copydoc World::GetFixtureA
 /// @relatedalso World
 inline FixtureID GetFixtureA(const World& world, ContactID id)
@@ -1492,6 +1501,13 @@ inline FixtureID GetFixtureB(const World& world, ContactID id)
 inline bool NeedsFiltering(const World& world, ContactID id)
 {
     return world.NeedsFiltering(id);
+}
+
+/// @copydoc World::NeedsUpdating
+/// @relatedalso World
+inline bool NeedsUpdating(const World& world, ContactID id)
+{
+    return world.NeedsUpdating(id);
 }
 
 inline Real GetDefaultFriction(const World& world, ContactID id)

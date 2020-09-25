@@ -570,6 +570,11 @@ bool World::NeedsFiltering(ContactID id) const
     return ::playrho::d2::NeedsFiltering(*m_impl, id);
 }
 
+bool World::NeedsUpdating(ContactID id) const
+{
+    return ::playrho::d2::NeedsUpdating(*m_impl, id);
+}
+
 FixtureID World::GetFixtureA(ContactID id) const
 {
     return ::playrho::d2::GetFixtureA(*m_impl, id);
