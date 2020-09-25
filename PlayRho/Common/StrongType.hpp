@@ -23,6 +23,7 @@
 #define PLAYRHO_COMMON_STRONGTYPE_HPP
 
 #include <utility>
+#include <functional> // for std::hash
 
 namespace playrho {
 namespace strongtype {
