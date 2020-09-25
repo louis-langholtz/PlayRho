@@ -666,7 +666,7 @@ public:
     SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
 
     /// @brief Gets the identifier of the body associated with the specified fixture.
-    BodyID GetBodyID(FixtureID id) const;
+    BodyID GetBody(FixtureID id) const;
 
     /// @brief Gets the user data associated with the identified fixture.
     void* GetUserData(FixtureID id) const;
@@ -1085,9 +1085,9 @@ inline Length2 GetWorldPoint(const World& world, BodyID id, const Length2 localP
 }
 
 /// @relatedalso World
-inline BodyID GetBodyID(const World& world, FixtureID id)
+inline BodyID GetBody(const World& world, FixtureID id)
 {
-    return world.GetBodyID(id);
+    return world.GetBody(id);
 }
 
 /// @copydoc World::GetUserData(FixtureID)
@@ -1116,7 +1116,7 @@ inline Real GetRestitution(const World& world, FixtureID id)
 /// @relatedalso World
 inline Transformation GetTransformation(const World& world, FixtureID id)
 {
-    return GetTransformation(world, GetBodyID(world, id));
+    return GetTransformation(world, GetBody(world, id));
 }
 
 inline Shape GetShape(const World& world, FixtureID id)

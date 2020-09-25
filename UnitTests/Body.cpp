@@ -201,7 +201,7 @@ TEST(Body, WorldCreated)
         auto i = 0;
         for (auto&& fixture: GetFixtures(world, body))
         {
-            EXPECT_EQ(GetBodyID(world, fixture), body);
+            EXPECT_EQ(GetBody(world, fixture), body);
             ++i;
         }
         EXPECT_EQ(i, 0);

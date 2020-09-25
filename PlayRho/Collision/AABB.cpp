@@ -72,7 +72,7 @@ AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept
 
 AABB ComputeAABB(const World& world, FixtureID id)
 {
-    return ComputeAABB(GetShape(world, id), GetTransformation(world, GetBodyID(world, id)));
+    return ComputeAABB(GetShape(world, id), GetTransformation(world, GetBody(world, id)));
 }
 
 AABB ComputeAABB(const World& world, const Body& body)
@@ -90,8 +90,8 @@ AABB ComputeIntersectingAABB(const World& world,
                              FixtureID fA, ChildCounter iA,
                              FixtureID fB, ChildCounter iB) noexcept
 {
-    const auto xA = GetTransformation(GetBodyConf(world, GetBodyID(world, fA)));
-    const auto xB = GetTransformation(GetBodyConf(world, GetBodyID(world, fB)));
+    const auto xA = GetTransformation(GetBodyConf(world, GetBody(world, fA)));
+    const auto xB = GetTransformation(GetBodyConf(world, GetBody(world, fB)));
     const auto childA = GetChild(GetShape(world, fA), iA);
     const auto childB = GetChild(GetShape(world, fB), iB);
     const auto aabbA = ComputeAABB(childA, xA);

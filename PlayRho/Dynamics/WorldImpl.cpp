@@ -2982,7 +2982,7 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 
 // Fixture/FixtureID free functions...
 
-BodyID GetBodyID(const WorldImpl& world, FixtureID id)
+BodyID GetBody(const WorldImpl& world, FixtureID id)
 {
     return world.GetFixture(id).GetBody();
 }

@@ -1560,8 +1560,8 @@ struct MyContactListener
         touching = IsTouching(world, contact);
         const auto fA = GetFixtureA(world, contact);
         const auto fB = GetFixtureB(world, contact);
-        const auto bA = GetBodyID(world, fA);
-        const auto bB = GetBodyID(world, fB);
+        const auto bA = GetBody(world, fA);
+        const auto bB = GetBody(world, fB);
         body_a[0] = GetLocation(world, bA);
         body_b[0] = GetLocation(world, bB);
         
@@ -1586,8 +1586,8 @@ struct MyContactListener
         ++end_contacts;
         contacting = false;
         touching = IsTouching(world, contact);
-        body_a[1] = GetLocation(world, GetBodyID(world, GetFixtureA(world, contact)));
-        body_b[1] = GetLocation(world, GetBodyID(world, GetFixtureB(world, contact)));
+        body_a[1] = GetLocation(world, GetBody(world, GetFixtureA(world, contact)));
+        body_b[1] = GetLocation(world, GetBody(world, GetFixtureB(world, contact)));
         if (ender)
         {
             ender(contact);
@@ -2301,8 +2301,8 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
             const auto c = contact.second;
             const auto fa = GetFixtureA(world, c);
             const auto fb = GetFixtureB(world, c);
-            const auto body_a = GetBodyID(world, fa);
-            const auto body_b = GetBodyID(world, fb);
+            const auto body_a = GetBody(world, fa);
+            const auto body_b = GetBody(world, fb);
             EXPECT_EQ(body_a, body1);
             EXPECT_EQ(body_b, body2);
             const auto& manifold = GetManifold(world, c);

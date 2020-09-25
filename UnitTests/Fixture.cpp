@@ -64,7 +64,7 @@ TEST(Fixture, CreateMatchesConf)
     const auto body = world.CreateBody();
     const auto fixture = world.CreateFixture(body, shapeA, def);
 
-    EXPECT_EQ(GetBodyID(world, fixture), body);
+    EXPECT_EQ(GetBody(world, fixture), body);
     EXPECT_EQ(GetShape(world, fixture), shapeA);
     EXPECT_EQ(GetDensity(world, fixture), density);
     EXPECT_EQ(GetFriction(world, fixture), friction);
@@ -111,7 +111,7 @@ TEST(Fixture, SetAwakeFreeFunction)
     UnsetAwake(world, body);
     ASSERT_FALSE(IsAwake(world, body));
     const auto fixture = world.CreateFixture(body, shapeA);
-    SetAwake(world, GetBodyID(world, fixture));
+    SetAwake(world, GetBody(world, fixture));
     EXPECT_TRUE(IsAwake(world, body));
 }
 
@@ -137,7 +137,7 @@ TEST(Fixture, Proxies)
         const auto body = world.CreateBody();
         const auto fixture = world.CreateFixture(body, shape, def);
 
-        ASSERT_EQ(GetBodyID(world, fixture), body);
+        ASSERT_EQ(GetBody(world, fixture), body);
         ASSERT_EQ(GetShape(world, fixture), shape);
         ASSERT_EQ(GetDensity(world, fixture), density);
         ASSERT_EQ(GetFriction(world, fixture), friction);
@@ -161,7 +161,7 @@ TEST(Fixture, Proxies)
         const auto body = world.CreateBody();
         const auto fixture = world.CreateFixture(body, shape, def);
 
-        ASSERT_EQ(GetBodyID(world, fixture), body);
+        ASSERT_EQ(GetBody(world, fixture), body);
         ASSERT_EQ(GetShape(world, fixture), shape);
         ASSERT_EQ(IsSensor(world, fixture), isSensor);
         ASSERT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
@@ -183,7 +183,7 @@ TEST(Fixture, Proxies)
         const auto body = world.CreateBody();
         const auto fixture = world.CreateFixture(body, shape, def);
 
-        ASSERT_EQ(GetBodyID(world, fixture), body);
+        ASSERT_EQ(GetBody(world, fixture), body);
         ASSERT_EQ(GetShape(world, fixture), shape);
         ASSERT_EQ(IsSensor(world, fixture), isSensor);
         ASSERT_EQ(GetProxyCount(world, fixture), ChildCounter{0});

@@ -325,9 +325,9 @@ BodyConf World::GetBodyConf(BodyID id) const
     return ::playrho::d2::GetBodyConf(*m_impl, id);
 }
 
-BodyID World::GetBodyID(FixtureID id) const
+BodyID World::GetBody(FixtureID id) const
 {
-    return ::playrho::d2::GetBodyID(*m_impl, id);
+    return ::playrho::d2::GetBody(*m_impl, id);
 }
 
 void* World::GetUserData(FixtureID id) const

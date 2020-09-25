@@ -1099,7 +1099,7 @@ inline Contact& WorldImpl::GetContact(ContactID id)
 
 // Free functions...
 
-BodyID GetBodyID(const WorldImpl& world, FixtureID id);
+BodyID GetBody(const WorldImpl& world, FixtureID id);
 
 /// @brief Gets the user data associated with the identified fixture.
 void* GetUserData(const WorldImpl& world, FixtureID id);
@@ -1148,7 +1148,7 @@ Transformation GetTransformation(const WorldImpl& world, BodyID id);
 /// @brief Gets the transformation associated with the given fixture.
 inline Transformation GetTransformation(const WorldImpl& world, FixtureID id)
 {
-    return GetTransformation(world, GetBodyID(world, id));
+    return GetTransformation(world, GetBody(world, id));
 }
 
 inline void SetTransformation(WorldImpl& world, BodyID id, Transformation xfm)
