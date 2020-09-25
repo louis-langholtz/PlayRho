@@ -2753,7 +2753,6 @@ TEST(World_Longer, TilesComesToRest)
     // EXPECT_LT(elapsed_time.count(), 7.0);
 }
 
-#if 0
 TEST(World, SpeedingBulletBallWontTunnel)
 {
     constexpr auto LinearSlop = playrho::Meter / playrho::Real(1000);
@@ -2761,13 +2760,26 @@ TEST(World, SpeedingBulletBallWontTunnel)
     constexpr auto VertexRadius = playrho::Length{LinearSlop * playrho::Real(2)};
     
     World world{WorldConf{}.UseMinVertexRadius(VertexRadius)};
-
     MyContactListener listener{
-        [](Contact&, const Manifold&) {},
-        [](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
-        [&](Contact&) {},
+        world,
+        [&](ContactID, const Manifold&) {},
+        [&](ContactID, const ContactImpulsesList&, unsigned) {},
+        [&](ContactID) {},
     };
-    world.SetContactListener(&listener);
+    world.SetBeginContactListener([&listener](ContactID id) {
+        listener.BeginContact(id);
+    });
+    world.SetEndContactListener([&listener](ContactID id) {
+        listener.EndContact(id);
+    });
+    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+        listener.PreSolve(id, manifold);
+    });
+    world.SetPostSolveContactListener([&listener](ContactID id,
+                                                  const ContactImpulsesList& impulses,
+                                                  unsigned count){
+        listener.PostSolve(id, impulses, count);
+    });
 
     ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
@@ -2813,7 +2825,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     ASSERT_NE(ball_fixture, InvalidFixtureID);
 
     const auto velocity = LinearVelocity2{+1_mps, 0_mps};
-    ball_body->SetVelocity(Velocity{velocity, 0_deg / 1_s});
+    SetVelocity(world, ball_body, Velocity{velocity, 0_deg / 1_s});
 
     const auto time_inc = .01_s;
     auto step = StepConf{};
@@ -2836,7 +2848,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
     EXPECT_GT(GetX(GetLocation(world, ball_body)) / Meter, begin_x);
 
-    EXPECT_EQ(GetLinearVelocity(*ball_body), velocity);
+    EXPECT_EQ(GetLinearVelocity(world, ball_body), velocity);
     
     const auto max_travel = unsigned{10000};
 
@@ -2859,28 +2871,28 @@ TEST(World, SpeedingBulletBallWontTunnel)
             EXPECT_LT(GetX(GetLocation(world, ball_body)), right_edge_x - (ball_radius/Real{2}));
             EXPECT_GT(GetX(GetLocation(world, ball_body)), left_edge_x + (ball_radius/Real{2}));
 
-            if (GetX(ball_body->GetVelocity().linear) >= max_velocity)
+            if (GetX(GetVelocity(world, ball_body).linear) >= max_velocity)
             {
                 return;
             }
 
             if (listener.begin_contacts % 2 != 0) // direction switched
             {
-                EXPECT_LT(GetX(ball_body->GetVelocity().linear), 0_mps);
+                EXPECT_LT(GetX(GetVelocity(world, ball_body).linear), 0_mps);
                 break; // going left now
             }
             else if (listener.begin_contacts > last_contact_count)
             {
                 ++increments;
-                ball_body->SetVelocity(Velocity{
+                SetVelocity(world, ball_body, Velocity{
                     LinearVelocity2{
                         static_cast<Real>(increments) * GetX(velocity),
-                        GetY(ball_body->GetVelocity().linear)
-                    }, ball_body->GetVelocity().angular});
+                        GetY(GetVelocity(world, ball_body).linear)
+                    }, GetVelocity(world, ball_body).angular});
             }
             else
             {
-                EXPECT_TRUE(AlmostEqual(Real{GetX(ball_body->GetVelocity().linear) / 1_mps},
+                EXPECT_TRUE(AlmostEqual(Real{GetX(GetVelocity(world, ball_body).linear) / 1_mps},
                                         Real{static_cast<Real>(increments) * GetX(velocity) / 1_mps}));
             }
         }
@@ -2901,40 +2913,42 @@ TEST(World, SpeedingBulletBallWontTunnel)
             EXPECT_LT(GetX(GetLocation(world, ball_body)), right_edge_x - (ball_radius/Real{2}));
             EXPECT_GT(GetX(GetLocation(world, ball_body)), left_edge_x + (ball_radius/Real{2}));
 
-            if (GetX(ball_body->GetVelocity().linear) <= -max_velocity)
+            if (GetX(GetVelocity(world, ball_body).linear) <= -max_velocity)
             {
                 return;
             }
 
             if (listener.begin_contacts % 2 != 0) // direction switched
             {
-                EXPECT_GT(GetX(ball_body->GetVelocity().linear), 0_mps);
+                EXPECT_GT(GetX(GetVelocity(world, ball_body).linear), 0_mps);
                 break; // going right now
             }
             else if (listener.begin_contacts > last_contact_count)
             {
                 ++increments;
-                ball_body->SetVelocity(Velocity{
+                SetVelocity(world, ball_body, Velocity{
                     LinearVelocity2{
                         -static_cast<Real>(increments) * GetX(velocity),
-                        GetY(ball_body->GetVelocity().linear)
-                    }, ball_body->GetVelocity().angular});
+                        GetY(GetVelocity(world, ball_body).linear)
+                    }, GetVelocity(world, ball_body).angular});
             }
             else
             {
-                EXPECT_TRUE(AlmostEqual(Real{GetX(ball_body->GetVelocity().linear) / 1_mps},
+                EXPECT_TRUE(AlmostEqual(Real{GetX(GetVelocity(world, ball_body).linear) / 1_mps},
                                         Real{-static_cast<Real>(increments) * GetX(velocity) / 1_mps}));
             }
         }
         
         ++increments;
-        ball_body->SetVelocity(Velocity{
+        SetVelocity(world, ball_body, Velocity{
             LinearVelocity2{
                 static_cast<Real>(increments) * GetX(velocity),
-                GetY(ball_body->GetVelocity().linear)
-            }, ball_body->GetVelocity().angular});
+                GetY(GetVelocity(world, ball_body).linear)
+            }, GetVelocity(world, ball_body).angular});
     }
 }
+
+#if 0
 
 TEST(World_Longer, TargetJointWontCauseTunnelling)
 {
@@ -3272,7 +3286,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             max_y = std::max(Real{GetY(GetLocation(world, ball_body)) / Meter}, max_y);
             min_y = std::min(Real{GetY(GetLocation(world, ball_body)) / Meter}, min_y);
 
-            const auto linVel = ball_body->GetVelocity().linear;
+            const auto linVel = GetVelocity(world, ball_body).linear;
             max_velocity = std::max(GetMagnitude(GetVec2(linVel)), max_velocity);
 
             if (loops > 50)
@@ -3487,6 +3501,7 @@ TEST(World, SmallerBulletStillConservesMomemtum)
 // smaller_still_conserves_momentum(true, Real(0.999), Real(0.01));
 }
 #endif
+#endif
 
 class VerticalStackTest: public ::testing::TestWithParam<Real>
 {
@@ -3528,7 +3543,7 @@ protected:
     World world{};
     std::size_t loopsTillSleeping = 0;
     const std::size_t maxLoops = 10000;
-    std::vector<Body*> boxes{10};
+    std::vector<BodyID> boxes{10};
     Real original_x = 0;
     const Length hdim = 0.1_m;
 };
@@ -3542,7 +3557,7 @@ TEST_P(VerticalStackTest, BoxesAtOriginalX)
 {
     for (auto&& box: boxes)
     {
-        EXPECT_EQ(GetX(box->GetLocation()), original_x * Meter);
+        EXPECT_EQ(GetX(GetLocation(world, box)), original_x * Meter);
     }
 }
 
@@ -3551,8 +3566,8 @@ TEST_P(VerticalStackTest, EachBoxAboveLast)
     auto lasty = 0_m;
     for (auto&& box: boxes)
     {
-        EXPECT_GT(GetY(box->GetLocation()), lasty + hdim);
-        lasty = GetY(box->GetLocation());
+        EXPECT_GT(GetY(GetLocation(world, box)), lasty + hdim);
+        lasty = GetY(GetLocation(world, box));
     }
 }
 
@@ -3560,7 +3575,7 @@ TEST_P(VerticalStackTest, EachBodyLevel)
 {
     for (auto&& box: boxes)
     {
-        EXPECT_EQ(box->GetAngle(), 0_deg);
+        EXPECT_EQ(GetAngle(world, box), 0_deg);
     }
 }
 
@@ -3575,4 +3590,3 @@ static ::testing::internal::ParamGenerator<VerticalStackTest::ParamType> gtest_W
 static ::std::string gtest_WorldVerticalStackTest_EvalGenerateName_(const ::testing::TestParamInfo<VerticalStackTest::ParamType>& info);
 
 INSTANTIATE_TEST_CASE_P(World, VerticalStackTest, ::testing::Values(Real(0), Real(5)), test_suffix_generator);
-#endif
