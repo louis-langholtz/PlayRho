@@ -216,7 +216,11 @@ inline bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noex
 {
     return ShouldCollide(fixtureA.GetFilterData(), fixtureB.GetFilterData());
 }
-    
+
+Real GetDefaultFriction(const Fixture& fixtureA, const Fixture& fixtureB);
+
+Real GetDefaultRestitution(const Fixture& fixtureA, const Fixture& fixtureB);
+
 } // namespace d2
 } // namespace playrho
 

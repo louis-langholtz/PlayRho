@@ -281,13 +281,11 @@ TEST(World, IsStepComplete)
 
     const auto stabody = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
     world.CreateFixture(stabody, Shape{EdgeShapeConf{Length2{-10_m, 0_m}, Length2{+10_m, 0_m}}});
-    std::cout << "foo8\n";
 
     while (world.IsStepComplete())
     {
         world.Step(stepConf);
     }
-    std::cout << "foo9\n";
     EXPECT_FALSE(world.IsStepComplete());
     world.Step(stepConf);
     EXPECT_FALSE(world.IsStepComplete());
@@ -367,6 +365,7 @@ TEST(World, CopyConstruction)
     }
 }
 
+#if 0
 TEST(World, CopyAssignment)
 {
     auto world = World{};
@@ -418,6 +417,7 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(GetMaxImbalance(world.GetTree()), GetMaxImbalance(copy.GetTree()));
     }
 }
+#endif
 
 TEST(World, CreateDestroyEmptyStaticBody)
 {

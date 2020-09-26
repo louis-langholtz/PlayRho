@@ -26,6 +26,8 @@
 /// Declarations of free functions of WorldImpl for joints.
 
 #include <PlayRho/Common/Units.hpp>
+#include <PlayRho/Common/UnitVec.hpp>
+#include <PlayRho/Common/Vector2.hpp> // for Momentum2, Length2
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>

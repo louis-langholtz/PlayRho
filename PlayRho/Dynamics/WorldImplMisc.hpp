@@ -28,23 +28,24 @@
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Transformation.hpp>
 #include <PlayRho/Common/Vector2.hpp> // for Length2
+#include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
-#include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
-
 #include <functional> // for std::function
 #include <memory> // for std::unique_ptr
+#include <vector>
 
 namespace playrho {
+
+class StepConf;
+
 namespace d2 {
 
 class WorldImpl;
@@ -52,6 +53,7 @@ class Manifold;
 struct BodyConf;
 struct JointConf;
 class DynamicTree;
+struct WorldConf;
 
 std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldConf& def);
 

@@ -1082,54 +1082,6 @@ inline void WorldImpl::SetPostSolveContactListener(ImpulsesContactListener liste
     m_postSolveContactListener = std::move(listener);
 }
 
-inline const Fixture& WorldImpl::GetFixture(FixtureID id) const
-{
-    return m_fixtureBuffer.at(UnderlyingValue(id));
-}
-
-inline Fixture& WorldImpl::GetFixture(FixtureID id)
-{
-    return m_fixtureBuffer.at(UnderlyingValue(id));
-}
-
-inline const Body& WorldImpl::GetBody(BodyID id) const
-{
-    return m_bodyBuffer.at(UnderlyingValue(id));
-}
-
-inline Body& WorldImpl::GetBody(BodyID id)
-{
-    return m_bodyBuffer.at(UnderlyingValue(id));
-}
-
-inline const Joint& WorldImpl::GetJoint(JointID id) const
-{
-    if (id == InvalidJointID)
-    {
-        throw std::out_of_range("invalid JointID");
-    }
-    return *static_cast<Joint*>(UnderlyingValue(id));
-}
-
-inline Joint& WorldImpl::GetJoint(JointID id)
-{
-    if (id == InvalidJointID)
-    {
-        throw std::out_of_range("invalid JointID");
-    }
-    return *static_cast<Joint*>(UnderlyingValue(id));
-}
-
-inline const Contact& WorldImpl::GetContact(ContactID id) const
-{
-    return m_contactBuffer.at(UnderlyingValue(id));
-}
-
-inline Contact& WorldImpl::GetContact(ContactID id)
-{
-    return m_contactBuffer.at(UnderlyingValue(id));
-}
-
 } // namespace d2
 } // namespace playrho
 

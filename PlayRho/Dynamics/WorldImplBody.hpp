@@ -173,11 +173,13 @@ inline RotInertia GetLocalRotInertia(const WorldImpl& world, BodyID id)
          + GetMass(world, id) * GetMagnitudeSquared(GetLocalCenter(world, id)) / SquareRadian;
 }
 
+#if 0
 /// @brief Should collide.
 /// @details Determines whether a body should possibly be able to collide with the other body.
 /// @relatedalso World
 /// @return true if either body is dynamic and no joint prevents collision, false otherwise.
 bool ShouldCollide(const WorldImpl& world, BodyID lhs, BodyID rhs);
+#endif
 
 /// @brief Gets the range of all joints attached to this body.
 SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
