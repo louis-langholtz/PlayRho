@@ -12,7 +12,6 @@
 		470F94AE1EC4CAE600AA3C82 /* FixtureConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94AB1EC4CAE600AA3C82 /* FixtureConf.hpp */; };
 		470F94B41EC4CB6C00AA3C82 /* Filter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94B11EC4CB6C00AA3C82 /* Filter.hpp */; };
 		470F94C01EC4D63400AA3C82 /* ContactAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94BD1EC4D63400AA3C82 /* ContactAtty.hpp */; };
-		470F94C61EC4D78300AA3C82 /* JointAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94C31EC4D78300AA3C82 /* JointAtty.hpp */; };
 		470F94CC1EC4D95D00AA3C82 /* BodyAtty.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94C91EC4D95D00AA3C82 /* BodyAtty.hpp */; };
 		470F94D21EC6376F00AA3C82 /* ContactKey.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 470F94CF1EC6376F00AA3C82 /* ContactKey.hpp */; };
 		470F94D51EC649B300AA3C82 /* ContactKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 470F94D41EC649B300AA3C82 /* ContactKey.cpp */; };
@@ -412,7 +411,6 @@
 		470F94AB1EC4CAE600AA3C82 /* FixtureConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureConf.hpp; sourceTree = "<group>"; };
 		470F94B11EC4CB6C00AA3C82 /* Filter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Filter.hpp; sourceTree = "<group>"; };
 		470F94BD1EC4D63400AA3C82 /* ContactAtty.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactAtty.hpp; sourceTree = "<group>"; };
-		470F94C31EC4D78300AA3C82 /* JointAtty.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JointAtty.hpp; sourceTree = "<group>"; };
 		470F94C91EC4D95D00AA3C82 /* BodyAtty.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyAtty.hpp; sourceTree = "<group>"; };
 		470F94CF1EC6376F00AA3C82 /* ContactKey.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContactKey.hpp; sourceTree = "<group>"; };
 		470F94D41EC649B300AA3C82 /* ContactKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactKey.cpp; sourceTree = "<group>"; };
@@ -1124,7 +1122,6 @@
 				80BB8954141C3E5900F1753A /* Island.hpp */,
 				47B490D5201E6C3000AB07A0 /* IslandStats.hpp */,
 				80BB896D141C3E5900F1753A /* Joints */,
-				470F94C31EC4D78300AA3C82 /* JointAtty.hpp */,
 				471E7EAF1F34E34000DFF626 /* MovementConf.cpp */,
 				471E7EAC1F34CA4D00DFF626 /* MovementConf.hpp */,
 				4768D3FF1E54E7CB00574143 /* StepConf.cpp */,
@@ -1525,7 +1522,6 @@
 				4787D6DB1F2ECFFB008C115E /* RevoluteJointConf.hpp in Headers */,
 				4751EE2E1CEDD7A300D459CB /* MotorJoint.hpp in Headers */,
 				47D28D8B1F6DEABF0094C032 /* JointVisitor.hpp in Headers */,
-				470F94C61EC4D78300AA3C82 /* JointAtty.hpp in Headers */,
 				470F94D21EC6376F00AA3C82 /* ContactKey.hpp in Headers */,
 				47578BE11D8869110078CD40 /* WorldManifold.hpp in Headers */,
 				4764087C251EA80D0090F711 /* WorldImplContact.hpp in Headers */,
