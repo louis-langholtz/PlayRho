@@ -120,8 +120,7 @@ void Body::SetVelocity(const Velocity& velocity) noexcept
         SetAwakeFlag();
         ResetUnderActiveTime();
     }
-    m_linearVelocity = velocity.linear;
-    m_angularVelocity = velocity.angular;
+    JustSetVelocity(velocity);
 }
 
 void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angular) noexcept
@@ -220,6 +219,28 @@ bool Body::Erase(ContactID contact)
         return true;
     }
     return false;
+}
+
+void Body::Erase(const std::function<bool(ContactID)>& callback)
+{
+    auto last = end(m_contacts);
+    auto iter = begin(m_contacts);
+    auto index = Body::Contacts::difference_type{0};
+    while (iter != last)
+    {
+        const auto contact = GetContactPtr(*iter);
+        if (callback(contact))
+        {
+            m_contacts.erase(iter);
+            iter = begin(m_contacts) + index;
+            last = end(m_contacts);
+        }
+        else
+        {
+            iter = std::next(iter);
+            ++index;
+        }
+    }
 }
 
 void Body::ClearContacts()

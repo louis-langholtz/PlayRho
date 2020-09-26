@@ -42,6 +42,7 @@
 #include <cassert>
 #include <utility>
 #include <iterator>
+#include <functional> // for std::function
 
 namespace playrho {
 namespace d2 {
@@ -147,6 +148,14 @@ public:
     /// @see GetLocation.
     Transformation GetTransformation() const noexcept;
 
+    /// Sets the body's transformation.
+    /// @note This sets what <code>Body::GetLocation</code> returns.
+    /// @see Body::GetLocation
+    void SetTransformation(Transformation value) noexcept
+    {
+        m_xf = value;
+    }
+
     /// @brief Gets the world body origin location.
     /// @details This is the location of the body's origin relative to its world.
     /// The location of the body after stepping the world's physics simulations is dependent on
@@ -181,6 +190,15 @@ public:
     /// @note A non-zero velocity will awaken this body.
     /// @see SetAwake, SetUnderActiveTime.
     void SetVelocity(const Velocity& velocity) noexcept;
+
+    /// Sets the body's velocity.
+    /// @note This sets what <code>Body::GetVelocity</code> returns.
+    /// @see Body::GetVelocity
+    void JustSetVelocity(Velocity value) noexcept
+    {
+        m_linearVelocity = value.linear;
+        m_angularVelocity = value.angular;
+    }
 
     /// @brief Sets the linear and rotational accelerations on this body.
     /// @note This has no effect on non-accelerable bodies.
@@ -226,6 +244,8 @@ public:
 
     /// @brief Gets the type of this body.
     BodyType GetType() const noexcept;
+
+    void SetType(BodyType value) noexcept;
 
     /// @brief Is "speedable".
     /// @details Is this body able to have a non-zero speed associated with it.
@@ -317,15 +337,9 @@ public:
     /// @brief Gets the range of all constant fixtures attached to this body.
     SizedRange<Fixtures::const_iterator> GetFixtures() const noexcept;
 
-    /// @brief Gets the range of all fixtures attached to this body.
-    SizedRange<Fixtures::iterator> GetFixtures() noexcept;
-    
     /// @brief Gets the range of all joints attached to this body.
     SizedRange<Joints::const_iterator> GetJoints() const noexcept;
- 
-    /// @brief Gets the range of all joints attached to this body.
-    SizedRange<Joints::iterator> GetJoints() noexcept;
-    
+
     /// @brief Gets the container of all contacts attached to this body.
     /// @warning This collection changes during the time step and you may
     ///   miss some collisions if you don't use <code>ContactListener</code>.
@@ -339,19 +353,16 @@ public:
 
     /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
-    
-private:
-    friend class BodyAtty;
-    
+
     /// @brief Whether this body is in is-in-island state.
     bool IsIslanded() const noexcept;
 
     /// @brief Sets this body to the is-in-island state.
     void SetIslandedFlag() noexcept;
-    
+
     /// @brief Unsets this body to the is-in-island state.
     void UnsetIslandedFlag() noexcept;
-    
+
     /// @brief Sets the body's awake flag.
     /// @details This is done unconditionally.
     /// @note This should **not** be called unless the body is "speedable".
@@ -363,34 +374,142 @@ private:
 
     /// @brief Sets this body to have the mass data dirty state.
     void SetMassDataDirty() noexcept;
-    
+
     /// @brief Unsets the body from being in the mass data dirty state.
     void UnsetMassDataDirty() noexcept;
 
     /// @brief Sets the enabled flag.
     void SetEnabledFlag() noexcept;
-    
+
     /// @brief Unsets the enabled flag.
     void UnsetEnabledFlag() noexcept;
 
     /// @brief Inserts the given key and contact.
     bool Insert(ContactKey key, ContactID contact);
-    
+
     /// @brief Inserts the given joint into this body's joints list.
     bool Insert(JointID joint, BodyID other);
 
     /// @brief Erases the given contact from this body's contacts list.
     bool Erase(ContactID contact);
-    
+
+    /// @brief Erases the contacts that the given function returns true for.
+    void Erase(const std::function<bool(ContactID)>& callback);
+
     /// @brief Erases the given joint from this body's joints list.
     bool Erase(JointID joint);
 
     /// @brief Clears this body's contacts list.
     void ClearContacts();
-    
+
     /// @brief Clears this body's joints list.
     void ClearJoints();
 
+    /// @brief Clears the fixtures.
+    void ClearFixtures()
+    {
+        m_fixtures.clear();
+    }
+
+    void SetInvRotI(InvRotInertia v) noexcept
+    {
+        m_invRotI = v;
+    }
+
+    void SetInvMass(InvMass v) noexcept
+    {
+        m_invMass = v;
+    }
+
+    /// @brief Sets the "position 0" value of the body to the given position.
+    void SetPosition0(const Position value) noexcept
+    {
+        assert(IsSpeedable() || m_sweep.pos0 == value);
+        m_sweep.pos0 = value;
+    }
+
+    /// @brief Sets the body sweep's "position 1" value.
+    /// @note This sets what <code>Body::GetWorldCenter</code> returns.
+    /// @see Body::GetWorldCenter
+    void SetPosition1(const Position value) noexcept
+    {
+        assert(b.IsSpeedable() || m_sweep.pos1 == value);
+        m_sweep.pos1 = value;
+    }
+
+    /// @brief Resets the given body's "alpha-0" value.
+    void ResetAlpha0() noexcept
+    {
+        m_sweep.ResetAlpha0();
+    }
+
+    /// @brief Sets the sweep value of the given body.
+    void SetSweep(const Sweep value) noexcept
+    {
+        assert(IsSpeedable() || value.pos0 == value.pos1);
+        m_sweep = value;
+    }
+
+    /// @brief Restores the given body's sweep to the given sweep value.
+    void Restore(const Sweep& value) noexcept
+    {
+        SetSweep(value);
+        SetTransformation(GetTransform1(value));
+    }
+
+    /// @brief Calls the body sweep's <code>Advance0</code> method to advance to
+    ///    the given value.
+    void Advance0(Real value) noexcept
+    {
+        // Note: Static bodies must **never** have different sweep position values.
+
+        // Confirm bodies don't have different sweep positions to begin with...
+        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
+
+        m_sweep.Advance0(value);
+
+        // Confirm bodies don't have different sweep positions to end with...
+        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
+    }
+
+    /// Advances the body by a given time ratio.
+    /// @details This method:
+    ///    1. advances the body's sweep to the given time ratio;
+    ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
+    ///    3. updates the body's transform to the new sweep one settings.
+    /// @param value Valid new time factor in [0,1) to advance the sweep to.
+    void Advance(Real value) noexcept
+    {
+        //assert(m_sweep.GetAlpha0() <= alpha);
+        assert(IsSpeedable() || m_sweep.pos1 == m_sweep.pos0);
+
+        // Advance to the new safe time. This doesn't sync the broad-phase.
+        m_sweep.Advance0(value);
+        m_sweep.pos1 = m_sweep.pos0;
+        m_xf = GetTransform1(m_sweep);
+    }
+
+    /// @brief Adds the given fixture to the given body.
+    void AddFixture(FixtureID fixture)
+    {
+        m_fixtures.push_back(fixture);
+    }
+
+    /// @brief Removes the given fixture from the given body.
+    bool RemoveFixture(FixtureID fixture)
+    {
+        const auto begIter = begin(m_fixtures);
+        const auto endIter = end(m_fixtures);
+        const auto it = std::find(begIter, endIter, fixture);
+        if (it != endIter)
+        {
+            m_fixtures.erase(it);
+            return true;
+        }
+        return false;
+    }
+
+private:
     //
     // Member variables. Try to keep total size small.
     //
@@ -473,6 +592,26 @@ inline BodyType Body::GetType() const noexcept
         default: break; // handle case 0 this way so compiler doesn't warn of no default handling.
     }
     return BodyType::Static;
+}
+
+inline void Body::SetType(BodyType value) noexcept
+{
+    m_flags &= ~(e_impenetrableFlag|e_velocityFlag|e_accelerationFlag);
+    m_flags |= GetFlags(value);
+    switch (value)
+    {
+        case BodyType::Dynamic:
+            break;
+        case BodyType::Kinematic:
+            break;
+        case BodyType::Static:
+            UnsetAwakeFlag();
+            m_underActiveTime = 0;
+            m_linearVelocity = LinearVelocity2{};
+            m_angularVelocity = 0_rpm;
+            m_sweep.pos0 = m_sweep.pos1;
+            break;
+    }
 }
 
 inline Transformation Body::GetTransformation() const noexcept
@@ -663,17 +802,7 @@ inline SizedRange<Body::Fixtures::const_iterator> Body::GetFixtures() const noex
     return {begin(m_fixtures), end(m_fixtures), size(m_fixtures)};
 }
 
-inline SizedRange<Body::Fixtures::iterator> Body::GetFixtures() noexcept
-{
-    return {begin(m_fixtures), end(m_fixtures), size(m_fixtures)};
-}
-
 inline SizedRange<Body::Joints::const_iterator> Body::GetJoints() const noexcept
-{
-    return {begin(m_joints), end(m_joints), size(m_joints)};
-}
-
-inline SizedRange<Body::Joints::iterator> Body::GetJoints() noexcept
 {
     return {begin(m_joints), end(m_joints), size(m_joints)};
 }
