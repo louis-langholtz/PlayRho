@@ -34,7 +34,6 @@
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
-#include <PlayRho/Dynamics/ContactAtty.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
@@ -942,7 +941,7 @@ void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack, const Body
     for_each(cbegin(contacts), cend(contacts), [&](const KeyedContactPtr& ci) {
         const auto contactID = std::get<ContactID>(ci);
         auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
-        if (!ContactAtty::IsIslanded(contact) && contact.IsEnabled() && contact.IsTouching())
+        if (!contact.IsIslanded() && contact.IsEnabled() && contact.IsTouching())
         {
             const auto& fA = m_fixtureBuffer[UnderlyingValue(contact.GetFixtureA())];
             const auto& fB = m_fixtureBuffer[UnderlyingValue(contact.GetFixtureB())];
@@ -952,7 +951,7 @@ void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack, const Body
                 const auto bB = &m_bodyBuffer[UnderlyingValue(fB.GetBody())];
                 const auto other = (bA != b)? bA: bB;
                 island.m_contacts.push_back(contactID);
-                ContactAtty::SetIslanded(contact);
+                contact.SetIslanded();
                 if (!BodyAtty::IsIslanded(*other))
                 {
                     stack.push(static_cast<BodyID>(static_cast<BodyID::underlying_type>(m_bodyBuffer.GetIndex(other))));
@@ -1019,7 +1018,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
         BodyAtty::UnsetIslanded(m_bodyBuffer[UnderlyingValue(b)]);
     });
     for_each(begin(m_contacts), end(m_contacts), [this](const auto& c) {
-        ContactAtty::UnsetIslanded(m_contactBuffer[UnderlyingValue(std::get<ContactID>(c))]);
+        m_contactBuffer[UnderlyingValue(std::get<ContactID>(c))].UnsetIslanded();
     });
     for_each(begin(m_joints), end(m_joints), [](const auto& j) {
         static_cast<Joint*>(UnderlyingValue(j))->UnsetIslanded();
@@ -1176,7 +1175,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(ArrayAllocator<Body>& bodyBuffer,
     // Update normal and tangent impulses of contacts' manifold points
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
         const auto i = static_cast<VelocityConstraints::size_type>(&vc - data(velConstraints));
-        auto& manifold = ContactAtty::GetMutableManifold(contacts[UnderlyingValue(island.m_contacts[i])]);
+        auto& manifold = contacts[UnderlyingValue(island.m_contacts[i])].GetMutableManifold();
         AssignImpulses(manifold, vc);
     });
     
@@ -1225,9 +1224,9 @@ void WorldImpl::ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const 
 {
     for_each(begin(contacts), end(contacts), [&buffer](const auto& c) {
         auto& contact = buffer[UnderlyingValue(std::get<ContactID>(c))];
-        ContactAtty::UnsetIslanded(contact);
-        ContactAtty::UnsetToi(contact);
-        ContactAtty::ResetToiCount(contact);
+        contact.UnsetIslanded();
+        contact.UnsetToi();
+        contact.SetToiCount(0);
     });
 }
 
@@ -1296,7 +1295,7 @@ WorldImpl::UpdateContactsData WorldImpl::UpdateContactTOIs(ArrayAllocator<Contac
         const auto toi = IsValidForTime(output.state)?
             std::min(alpha0 + (1 - alpha0) * output.time, Real{1}): Real{1};
         assert(toi >= alpha0 && toi <= 1);
-        ContactAtty::SetToi(c, toi);
+        c.SetToi(toi);
         
         results.maxDistIters = std::max(results.maxDistIters, output.stats.max_dist_iters);
         results.maxToiIters = std::max(results.maxToiIters, output.stats.toi_iters);
@@ -1374,7 +1373,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
         stats.contactsFound += ncount;
         auto islandsFound = 0u;
         auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
-        if (!ContactAtty::IsIslanded(contact))
+        if (!contact.IsIslanded())
         {
             /*
              * Confirm that contact is as it's supposed to be according to contract of the
@@ -1453,7 +1452,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     assert(!HasSensor(m_fixtureBuffer, contact));
     assert(IsActive(contact));
     assert(IsImpenetrable(contact));
-    assert(!ContactAtty::IsIslanded(contact));
+    assert(!contact.IsIslanded());
     
     const auto toi = contact.GetToi();
     const auto bodyIdA = contact.GetBodyA();
@@ -1486,8 +1485,8 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         {
             ++contactsSkipped;
         }
-        ContactAtty::UnsetToi(contact);
-        ContactAtty::IncrementToiCount(contact);
+        contact.UnsetToi();
+        contact.IncrementToiCount();
 
         // Is contact disabled or separated?
         //
@@ -1547,7 +1546,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     island.m_bodies.push_back(bodyIdB);
     BodyAtty::SetIslanded(bB);
     island.m_contacts.push_back(contactID);
-    ContactAtty::SetIslanded(contact);
+    contact.SetIslanded();
 
     // Process the contacts of the two bodies, adding appropriate ones to the island,
     // adding appropriate other bodies of added contacts, and advancing those other
@@ -1732,8 +1731,8 @@ void WorldImpl::ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const 
     const auto contacts = body.GetContacts();
     for_each(cbegin(contacts), cend(contacts), [&buffer](const auto& ci) {
         auto& contact = buffer[UnderlyingValue(std::get<ContactID>(ci))];
-        ContactAtty::UnsetIslanded(contact);
-        ContactAtty::UnsetToi(contact);
+        contact.UnsetIslanded();
+        contact.UnsetToi();
     });
 }
 
@@ -1758,7 +1757,7 @@ WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const Step
     {
         const auto contactID = std::get<ContactID>(ci);
         auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
-        if (!ContactAtty::IsIslanded(contact))
+        if (!contact.IsIslanded())
         {
             if (!contact.IsSensor())
             {
@@ -1798,7 +1797,7 @@ WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const Step
                         }
                     }
                     island.m_contacts.push_back(contactID);
-                    ContactAtty::SetIslanded(contact);
+                    contact.SetIslanded();
                     if (!otherIslanded)
                     {
                         if (other.IsSpeedable())
@@ -2009,7 +2008,7 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts,
                 InternalDestroy(contactID, bodyBuffer, contactBuffer, listener);
                 return true;
             }
-            ContactAtty::UnflagForFiltering(contact);
+            contact.UnflagForFiltering();
         }
 
         return false;
@@ -2812,7 +2811,7 @@ void WorldImpl::Accept(JointID id, JointVisitor& visitor)
 void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 {
     auto& c = m_contactBuffer[UnderlyingValue(contactID)];
-    auto& manifold = ContactAtty::GetMutableManifold(c);
+    auto& manifold = c.GetMutableManifold();
     const auto oldManifold = manifold;
 
     // Note: do not assume the fixture AABBs are overlapping or are valid.
@@ -2938,7 +2937,7 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 #endif
     }
 
-    ContactAtty::UnflagForUpdating(c);
+    c.UnflagForUpdating();
 
     if (!oldTouching && newTouching)
     {

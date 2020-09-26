@@ -238,9 +238,6 @@ public:
 
     void UnsetIsActive() noexcept;
 
-private:
-    friend class ContactAtty;
-
     /// Flags type data type.
     using FlagsType = std::uint16_t;
 
@@ -310,8 +307,9 @@ private:
     /// @brief Unsets the is-in-island state.
     void UnsetIslanded() noexcept;
 
-    // Member variables...
+    void IncrementToiCount() noexcept;
 
+private:
     Manifold mutable m_manifold; ///< Manifold of the contact. 64-bytes. @see Update.
 
     // Need to be able to identify two different fixtures, the child shape per fixture,
@@ -588,6 +586,11 @@ inline void Contact::SetIsActive() noexcept
 inline void Contact::UnsetIsActive() noexcept
 {
     m_flags &= ~e_activeFlag;
+}
+
+inline void Contact::IncrementToiCount() noexcept
+{
+    ++m_toiCount;
 }
 
 // Free functions...
