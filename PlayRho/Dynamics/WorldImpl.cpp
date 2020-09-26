@@ -32,7 +32,6 @@
 #include <PlayRho/Dynamics/BodyAtty.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureAtty.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
 #include <PlayRho/Dynamics/JointAtty.hpp>
@@ -2570,7 +2569,7 @@ void WorldImpl::CreateProxies(FixtureID fixtureID, Fixture& fixture, const Trans
         fixtureProxies.push_back(FixtureProxy{treeId});
     }
 
-    FixtureAtty::SetProxies(fixture, fixtureProxies);
+    fixture.SetProxies(fixtureProxies);
 }
 
 void WorldImpl::DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture) noexcept
@@ -2587,7 +2586,7 @@ void WorldImpl::DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& 
             tree.DestroyLeaf(treeId);
         }
     }
-    FixtureAtty::SetProxies(fixture, std::vector<FixtureProxy>{});
+    fixture.SetProxies(std::vector<FixtureProxy>{});
 }
 
 void WorldImpl::TouchProxies(const Fixture& fixture) noexcept
@@ -2673,7 +2672,7 @@ void WorldImpl::Refilter(FixtureID id)
 
 void WorldImpl::SetFilterData(FixtureID id, Filter filter)
 {
-    FixtureAtty::SetFilterData(GetFixture(id), filter);
+    GetFixture(id).SetFilterData(filter);
     Refilter(id);
 }
 

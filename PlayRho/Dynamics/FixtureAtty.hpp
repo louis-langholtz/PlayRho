@@ -46,23 +46,6 @@ namespace d2 {
 class FixtureAtty
 {
 private:
-    
-    /// @brief Sets the proxies of the given fixture.
-    static void SetProxies(Fixture& fixture, std::vector<FixtureProxy> value)
-    {
-        fixture.m_proxies = std::move(value);
-    }
-    
-    /// @brief Sets the contact filtering data.
-    /// @note This won't update contacts until the next time step when either parent body
-    ///    is speedable and awake.
-    /// @note This automatically calls <code>Refilter</code>.
-    static void SetFilterData(Fixture& fixture, Filter filter)
-    {
-        fixture.m_filter = filter;
-    }
-
-    friend class WorldImpl;
 };
 
 } // namespace d2

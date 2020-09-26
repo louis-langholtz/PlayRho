@@ -107,6 +107,9 @@ public:
     /// @brief Gets the contact filtering data.
     Filter GetFilterData() const noexcept;
 
+    /// @brief Sets the contact filtering data.
+    void SetFilterData(Filter filter) noexcept;
+
     /// Get the user data that was assigned in the fixture definition. Use this to
     /// store your application specific data.
     void* GetUserData() const noexcept;
@@ -126,25 +129,25 @@ public:
     /// @brief Gets the coefficient of restitution.
     Real GetRestitution() const noexcept;
 
-    /// @brief Gets the proxies.
+    /// @brief Gets the proxies associated with this fixture.
     const Proxies& GetProxies() const noexcept;
 
-private:
-    friend class FixtureAtty;
+    /// @brief Sets the proxies associated with this fixture.
+    void SetProxies(Proxies value) noexcept;
 
+private:
     // Data ordered here for memory compaction.
 
     void* m_userData = nullptr; ///< User data. 8-bytes.
 
     /// Shape (of fixture).
     /// @note Set on construction.
-    /// @note Either null or pointer to a heap-memory private copy of the assigned shape.
     /// @note 16-bytes.
     Shape m_shape;
 
     Proxies m_proxies; ///< Cache of fixture proxies for the assigned shape. 16+ bytes.
 
-    BodyID m_body = InvalidBodyID; ///< Parent body.
+    BodyID m_body = InvalidBodyID; ///< Parent body. 2-bytes.
 
     Filter m_filter; ///< Filter object. 6-bytes.
 
@@ -166,6 +169,11 @@ inline Filter Fixture::GetFilterData() const noexcept
     return m_filter;
 }
 
+inline void Fixture::SetFilterData(Filter filter) noexcept
+{
+    m_filter = filter;
+}
+
 inline void* Fixture::GetUserData() const noexcept
 {
     return m_userData;
@@ -184,6 +192,11 @@ inline BodyID Fixture::GetBody() const noexcept
 inline const Fixture::Proxies& Fixture::GetProxies() const noexcept
 {
     return m_proxies;
+}
+
+inline void Fixture::SetProxies(Proxies value) noexcept
+{
+    m_proxies = std::move(value);
 }
 
 inline Real Fixture::GetFriction() const noexcept
