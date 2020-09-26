@@ -433,7 +433,7 @@ public:
     /// @see Body::GetWorldCenter
     void SetPosition1(const Position value) noexcept
     {
-        assert(b.IsSpeedable() || m_sweep.pos1 == value);
+        assert(IsSpeedable() || m_sweep.pos1 == value);
         m_sweep.pos1 = value;
     }
 

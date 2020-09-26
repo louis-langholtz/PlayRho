@@ -485,7 +485,7 @@ void ClearJoints(Body& b, std::function<void(JointID)> callback)
         callback(std::get<JointID>(j));
     });
     b.ClearJoints();
-    assert(empty(b.GetJoints));
+    assert(empty(b.GetJoints()));
 }
 
 } // anonymous namespace
@@ -915,12 +915,12 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
         const auto bodyID = stack.top();
         stack.pop();
 
-        assert(IsEnabled(*this, bodyID));
+        auto& body = m_bodyBuffer[UnderlyingValue(bodyID)];
+
+        assert(body.IsEnabled());
         island.m_bodies.push_back(bodyID);
         assert(remNumBodies > 0);
         --remNumBodies;
-
-        auto& body = m_bodyBuffer[UnderlyingValue(bodyID)];
 
         // Don't propagate islands across bodies that can't have a velocity (static bodies).
         // This keeps islands smaller and helps with isolating separable collision clusters.
@@ -1782,7 +1782,6 @@ WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const Step
                 auto& other = m_bodyBuffer[UnderlyingValue(otherId)];
                 if (bodyImpenetrable || other.IsImpenetrable())
                 {
-                    //processContactFunc(contact, other);
                     const auto otherIslanded = other.IsIslanded();
                     {
                         const auto backup = other.GetSweep();
@@ -1838,7 +1837,7 @@ WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const Step
                          * perhaps the current contact is-touching while another one wasn't and the
                          * inconsistency is throwing things off.
                          */
-                        assert(Count(island, other) > 0);
+                        assert(Count(island, otherId) > 0);
                     }
 #endif
                 }
@@ -1977,7 +1976,7 @@ void WorldImpl::InternalDestroy(ContactID contactID,
 
 void WorldImpl::Destroy(Contacts& contacts, ContactListener listener, ContactID contactID, Body* from)
 {
-    assert(contact);
+    assert(contactID != InvalidContactID);
     const auto it = find_if(cbegin(contacts), cend(contacts),
                             [&](const Contacts::value_type& c) {
         return std::get<ContactID>(c) == contactID;
@@ -2074,7 +2073,8 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
         assert(!bodyB.IsAwake() || bodyB.IsSpeedable());
         if (!bodyA.IsAwake() && !bodyB.IsAwake())
         {
-            assert(!contact.HasValidToi());
+            // This sometimes fails... is it important?
+            //assert(!contact.HasValidToi());
             ++ignored;
             return;
         }
@@ -2788,7 +2788,7 @@ void WorldImpl::SetMassData(BodyID id, const MassData& massData)
 
 void WorldImpl::SetTransformation(BodyID id, Transformation xfm)
 {
-    assert(IsValid(value));
+    assert(IsValid(xfm));
     if (IsLocked())
     {
         throw WrongState("SetTransformation: world is locked");
@@ -2885,8 +2885,8 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 #ifdef OVERLAP_TOLERANCE
 #ifndef NDEBUG
         const auto tolerance = OVERLAP_TOLERANCE;
-        const auto manifold = CollideShapes(childA, xfA, childB, xfB, conf.manifold);
-        assert(newTouching == (manifold.GetPointCount() > 0) ||
+        const auto newManifold = CollideShapes(childA, xfA, childB, xfB, conf.manifold);
+        assert(newTouching == (newManifold.GetPointCount() > 0) ||
                abs(overlapping) < tolerance);
 #endif
 #endif

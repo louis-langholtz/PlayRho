@@ -54,7 +54,6 @@ TargetJoint::TargetJoint(const TargetJointConf& def):
     m_dampingRatio{def.dampingRatio},
     m_maxForce{def.maxForce}
 {
-    assert(IsValid(def.target));
     assert(IsValid(def.dampingRatio));
 }
 
