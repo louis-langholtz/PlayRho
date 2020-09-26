@@ -147,14 +147,9 @@ public:
     /// @brief Shifts the origin for any points stored in world coordinates.
     /// @return <code>true</code> if shift done, <code>false</code> otherwise.
     virtual bool ShiftOrigin(Length2) { return false;  }
-
-protected:
     
     /// @brief Initializing constructor.
     explicit Joint(const JointConf& def);
-
-private:
-    friend class JointAtty;
 
     /// Flags type data type.
     using FlagsType = std::uint8_t;
@@ -218,6 +213,7 @@ private:
     /// @brief Unsets this joint from being in the is-in-island state.
     void UnsetIslanded() noexcept;
 
+private:
     void* m_userData; ///< User data.
     BodyID const m_bodyA; ///< Body A.
     BodyID const m_bodyB; ///< Body B.
