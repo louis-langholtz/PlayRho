@@ -1079,7 +1079,7 @@ Velocity GetVelocity(const Body& body, Time h) noexcept;
 
 /// @brief Gets the fixture count of the given body.
 /// @relatedalso Body
-std::size_t GetFixtureCount(const Body& body) noexcept;
+FixtureCounter GetFixtureCount(const Body& body) noexcept;
 
 /// @brief Gets the body's origin location.
 /// @details This is the location of the body's origin relative to its world.

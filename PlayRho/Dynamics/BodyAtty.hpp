@@ -219,7 +219,7 @@ private:
     ///    1. advances the body's sweep to the given time ratio;
     ///    2. updates the body's sweep positions (linear and angular) to the advanced ones; and
     ///    3. updates the body's transform to the new sweep one settings.
-    /// @param alpha Valid new time factor in [0,1) to advance the sweep to.
+    /// @param value Valid new time factor in [0,1) to advance the sweep to.
     static void Advance(Body& b, Real value) noexcept
     {
         //assert(m_sweep.GetAlpha0() <= alpha);

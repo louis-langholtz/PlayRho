@@ -23,18 +23,30 @@
 #define PLAYRHO_DYNAMICS_WORLDIMPL_HPP
 
 /// @file
-/// Declarations of the WorldImpl class and associated free functions.
+/// Declarations of the WorldImpl class.
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Range.hpp> // for SizedRange
 #include <PlayRho/Common/Positive.hpp>
 #include <PlayRho/Common/ArrayAllocator.hpp>
+
 #include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Collision/Manifold.hpp>
-#include <PlayRho/Dynamics/FixtureConf.hpp>
+#include <PlayRho/Collision/MassData.hpp>
+
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/Filter.hpp>
+#include <PlayRho/Dynamics/Island.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
+#include <PlayRho/Dynamics/FixtureConf.hpp> // for GetDefaultFixtureConf
+#include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
+#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
+#include <PlayRho/Dynamics/FixtureProxy.hpp>
+#include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/Dynamics/Joints/JointType.hpp>
 #include <PlayRho/Dynamics/IslandStats.hpp>
-#include <PlayRho/Dynamics/World.hpp>
 
 #include <iterator>
 #include <vector>
@@ -51,21 +63,44 @@ enum class BodyType;
 
 namespace d2 {
 
-struct BodyConf;
 struct JointConf;
-struct FixtureConf;
 class Body;
 class Contact;
 class Fixture;
 class Joint;
-struct Island;
 class Shape;
 class JointVisitor;
+class Manifold;
+class ContactImpulsesList;
 
 /// @brief Definition of a "world" implementation.
 /// @see World.
 class WorldImpl {
 public:
+    /// @brief Bodies container type.
+    using Bodies = std::vector<BodyID>;
+
+    /// @brief Contacts container type.
+    using Contacts = std::vector<KeyedContactPtr>;
+
+    /// @brief Joints container type.
+    /// @note Cannot be container of Joint instances since joints are polymorphic types.
+    using Joints = std::vector<JointID>;
+
+    /// @brief Body joints container type.
+    using BodyJoints = std::vector<std::pair<BodyID, JointID>>;
+
+    /// @brief Fixtures container type.
+    using Fixtures = std::vector<FixtureID>;
+
+    using FixtureProxies = std::vector<FixtureProxy>;
+
+    using FixtureListener = std::function<void(FixtureID)>;
+    using JointListener = std::function<void(JointID)>;
+    using ContactListener = std::function<void(ContactID)>;
+    using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
+    using ImpulsesContactListener = std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
+
     /// @brief Contact update configuration.
     struct ContactUpdateConf;
 
@@ -75,7 +110,7 @@ public:
     ///   data that's given to the world's <code>Step</code> method.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
     /// @see Step.
-    explicit WorldImpl(const WorldConf& def);
+    explicit WorldImpl(const WorldConf& def = GetDefaultWorldConf());
 
     /// @brief Constructs a world implementation for a world that's copied from another.
     /// @details Copy constructs this world with a deep copy of the given world.
@@ -83,6 +118,8 @@ public:
     ///   has deep copies of the given world with pointers having the new addresses of the
     ///   new memory required for those copies.
     WorldImpl(const WorldImpl& other);
+
+    WorldImpl& operator=(const WorldImpl& other) = default;
 
     /// @brief Copy function.
     /// @details Copy assigns this world with a deep copy of the given world.
@@ -92,10 +129,6 @@ public:
     /// @warning This method should not be called while the world is locked!
     /// @throws WrongState if this method is called while the world is locked.
     WorldImpl& copy(const WorldImpl& other);
-
-    WorldImpl(WorldImpl&& other) = delete;
-    WorldImpl& operator= (const WorldImpl& other) = delete;
-    WorldImpl& operator= (WorldImpl&& other) = delete;
 
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all dynamically allocated memory
@@ -109,22 +142,22 @@ public:
     void Clear();
 
     /// @brief Register a destruction listener for fixtures.
-    void SetFixtureDestructionListener(World::FixtureListener listener) noexcept;
+    void SetFixtureDestructionListener(FixtureListener listener) noexcept;
 
     /// @brief Register a destruction listener for joints.
-    void SetJointDestructionListener(World::JointListener listener) noexcept;
+    void SetJointDestructionListener(JointListener listener) noexcept;
 
     /// @brief Register a begin contact event listener.
-    void SetBeginContactListener(World::ContactListener listener) noexcept;
+    void SetBeginContactListener(ContactListener listener) noexcept;
 
     /// @brief Register an end contact event listener.
-    void SetEndContactListener(World::ContactListener listener) noexcept;
+    void SetEndContactListener(ContactListener listener) noexcept;
 
     /// @brief Register a pre-solve contact event listener.
-    void SetPreSolveContactListener(World::ManifoldContactListener listener) noexcept;
+    void SetPreSolveContactListener(ManifoldContactListener listener) noexcept;
 
     /// @brief Register a post-solve contact event listener.
-    void SetPostSolveContactListener(World::ImpulsesContactListener listener) noexcept;
+    void SetPostSolveContactListener(ImpulsesContactListener listener) noexcept;
 
     /// @brief Creates a rigid body with the given configuration.
     /// @warning This function should not be used while the world is locked &mdash; as it is
@@ -234,7 +267,7 @@ public:
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
     /// @see CreateBody(const BodyConf&).
-    SizedRange<World::Bodies::iterator> GetBodies() noexcept;
+    SizedRange<Bodies::iterator> GetBodies() noexcept;
 
     /// @brief Gets the world body range for this constant world.
     /// @details Gets a range enumerating the bodies currently existing within this world.
@@ -243,19 +276,19 @@ public:
     /// @return Body range that can be iterated over using its begin and end methods
     ///   or using ranged-based for-loops.
     /// @see CreateBody(const BodyConf&).
-    SizedRange<World::Bodies::const_iterator> GetBodies() const noexcept;
+    SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
 
     /// @brief Gets the bodies-for-proxies range for this world.
     /// @details Provides insight on what bodies have been queued for proxy processing
     ///   during the next call to the world step method.
     /// @see Step.
-    SizedRange<World::Bodies::const_iterator> GetBodiesForProxies() const noexcept;
+    SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
 
     /// @brief Gets the fixtures-for-proxies range for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing
     ///   during the next call to the world step method.
     /// @see Step.
-    SizedRange<World::Fixtures::const_iterator> GetFixturesForProxies() const noexcept;
+    SizedRange<Fixtures::const_iterator> GetFixturesForProxies() const noexcept;
 
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
@@ -263,7 +296,7 @@ public:
     ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
     /// @see CreateJoint(const JointConf&).
-    SizedRange<World::Joints::const_iterator> GetJoints() const noexcept;
+    SizedRange<Joints::const_iterator> GetJoints() const noexcept;
 
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
@@ -271,13 +304,13 @@ public:
     ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
     /// @see CreateJoint(const JointConf&).
-    SizedRange<World::Joints::iterator> GetJoints() noexcept;
+    SizedRange<Joints::iterator> GetJoints() noexcept;
 
     /// @brief Gets the world contact range.
     /// @warning contacts are created and destroyed in the middle of a time step.
     /// Use <code>ContactListener</code> to avoid missing contacts.
     /// @return World contacts sized-range.
-    SizedRange<World::Contacts::const_iterator> GetContacts() const noexcept;
+    SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
     
     /// @brief Whether or not "step" is complete.
     /// @details The "step" is completed when there are no more TOI events for the current time step.
@@ -432,11 +465,11 @@ public:
     /// @details This instantly adjusts the body to have the new transformation.
     /// @warning Manipulating a body's transform can cause non-physical behavior!
     /// @warning Behavior is undefined if the value is invalid.
-    /// @note Associated contacts may be flagged for updating on the next call to World::Step.
+    /// @note Associated contacts may be flagged for updating on the next call to WorldImpl::Step.
     /// @throws WrongState If call would change body's state when world is locked.
     void SetTransformation(BodyID id, Transformation xfm);
 
-    std::size_t GetFixtureCount(BodyID id) const;
+    FixtureCounter GetFixtureCount(BodyID id) const;
 
     std::size_t GetShapeCount() const noexcept;
 
@@ -515,7 +548,7 @@ private:
     
     /// @brief Copies joints.
     void CopyJoints(const std::map<const Body*, Body*>& bodyMap,
-                    SizedRange<World::Joints::const_iterator> range);
+                    SizedRange<Joints::const_iterator> range);
     
     /// @brief Clears this world without checking the world's state.
     void InternalClear() noexcept;
@@ -552,24 +585,24 @@ private:
                                            ArrayAllocator<Contact>& contacts,
                                            const ArrayAllocator<Fixture>& fixtures,
                                            const StepConf& conf, Island island,
-                                           const World::ImpulsesContactListener& contactListener);
+                                           const ImpulsesContactListener& contactListener);
     
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.
     /// @post Joints are listed the island in the order that bodies provide those joints.
     void AddToIsland(Island& island, BodyID seed,
-                            World::Bodies::size_type& remNumBodies,
-                            World::Contacts::size_type& remNumContacts,
-                            World::Joints::size_type& remNumJoints);
+                            Bodies::size_type& remNumBodies,
+                            Contacts::size_type& remNumContacts,
+                            Joints::size_type& remNumJoints);
     
     /// @brief Body stack.
     using BodyStack = std::stack<BodyID, std::vector<BodyID>>;
     
     /// @brief Adds to the island.
     void AddToIsland(Island& island, BodyStack& stack,
-                     World::Bodies::size_type& remNumBodies,
-                     World::Contacts::size_type& remNumContacts,
-                     World::Joints::size_type& remNumJoints);
+                     Bodies::size_type& remNumBodies,
+                     Contacts::size_type& remNumContacts,
+                     Joints::size_type& remNumJoints);
     
     /// @brief Adds contacts to the island.
     void AddContactsToIsland(Island& island, BodyStack& stack, const Body* b);
@@ -578,7 +611,7 @@ private:
     void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
     
     /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
-    static World::Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
+    static Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
                                                                    ArrayAllocator<Body>& buffer);
     
     /// @brief Solves the step using successive time of impact (TOI) events.
@@ -631,10 +664,10 @@ private:
     static bool UpdateBody(Body& body, const Position& pos);
     
     /// @brief Reset bodies for solve TOI.
-    static void ResetBodiesForSolveTOI(World::Bodies& bodies, ArrayAllocator<Body>& buffer) noexcept;
+    static void ResetBodiesForSolveTOI(Bodies& bodies, ArrayAllocator<Body>& buffer) noexcept;
     
     /// @brief Reset contacts for solve TOI.
-    static void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const World::Contacts& contacts) noexcept;
+    static void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const Contacts& contacts) noexcept;
     
     /// @brief Reset contacts for solve TOI.
     static void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const Body& body) noexcept;
@@ -737,13 +770,13 @@ private:
     static UpdateContactsData UpdateContactTOIs(ArrayAllocator<Contact>& contactBuffer,
                                                 ArrayAllocator<Body>& bodyBuffer,
                                                 const ArrayAllocator<Fixture>& fixtureBuffer,
-                                                const World::Contacts& contacts, const StepConf& conf);
+                                                const Contacts& contacts, const StepConf& conf);
 
     /// @brief Gets the soonest contact.
     /// @details This finds the contact with the lowest (soonest) time of impact.
     /// @return Contact with the least time of impact and its time of impact, or null contact.
     ///  A non-null contact will be enabled, not have sensors, be active, and impenetrable.
-    static ContactToiData GetSoonestContact(const World::Contacts& contacts, const ArrayAllocator<Contact>& buffer) noexcept;
+    static ContactToiData GetSoonestContact(const Contacts& contacts, const ArrayAllocator<Contact>& buffer) noexcept;
     
     /// @brief Determines whether this world has new fixtures.
     bool HasNewFixtures() const noexcept;
@@ -763,12 +796,12 @@ private:
     /// have active bodies (either or both) get their Update methods called with the current
     /// contact listener as its argument.
     /// Essentially this really just purges contacts that are no longer relevant.
-    static DestroyContactsStats DestroyContacts(World::Contacts& contacts,
+    static DestroyContactsStats DestroyContacts(Contacts& contacts,
                                                 ArrayAllocator<Contact>& contactBuffer,
                                                 ArrayAllocator<Body>& bodyBuffer,
                                                 const ArrayAllocator<Fixture>& fixtureBuffer,
                                                 const DynamicTree& tree,
-                                                World::ContactListener listener);
+                                                ContactListener listener);
     
     /// @brief Update contacts.
     UpdateContactsStats UpdateContacts(const StepConf& conf);
@@ -779,7 +812,7 @@ private:
     /// @param contacts Contacts from which to destroy the contact from.
     /// @param contact Contact to destroy.
     /// @param from From body.
-    void Destroy(World::Contacts& contacts, World::ContactListener listener, ContactID contact, Body* from);
+    void Destroy(Contacts& contacts, ContactListener listener, ContactID contact, Body* from);
     
     /// @brief Adds a contact for the proxies identified by the key if appropriate.
     /// @details Adds a new contact object to represent a contact between proxy A and proxy B
@@ -801,7 +834,7 @@ private:
     static void InternalDestroy(ContactID contact,
                                 ArrayAllocator<Body>& bodyBuffer,
                                 ArrayAllocator<Contact>& contactBuffer,
-                                World::ContactListener listener, Body* from = nullptr);
+                                ContactListener listener, Body* from = nullptr);
 
     /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.
@@ -861,24 +894,24 @@ private:
 
     ContactKeyQueue m_proxyKeys; ///< Proxy keys.
     ProxyQueue m_proxies; ///< Proxies queue.
-    World::Fixtures m_fixturesForProxies; ///< Fixtures for proxies queue.
-    World::Bodies m_bodiesForProxies; ///< Bodies for proxies queue.
+    Fixtures m_fixturesForProxies; ///< Fixtures for proxies queue.
+    Bodies m_bodiesForProxies; ///< Bodies for proxies queue.
     
-    World::Bodies m_bodies; ///< Body collection.
+    Bodies m_bodies; ///< Body collection.
 
-    World::Joints m_joints; ///< Joint collection.
+    Joints m_joints; ///< Joint collection.
     
     /// @brief Container of contacts.
     /// @note In the <em>add pair</em> stress-test, 401 bodies can have some 31000 contacts
     ///   during a given time step.
-    World::Contacts m_contacts;
+    Contacts m_contacts;
 
-    World::FixtureListener m_fixtureDestructionListener;
-    World::JointListener m_jointDestructionListener;
-    World::ContactListener m_beginContactListener;
-    World::ContactListener m_endContactListener;
-    World::ManifoldContactListener m_preSolveContactListener;
-    World::ImpulsesContactListener m_postSolveContactListener;
+    FixtureListener m_fixtureDestructionListener;
+    JointListener m_jointDestructionListener;
+    ContactListener m_beginContactListener;
+    ContactListener m_endContactListener;
+    ManifoldContactListener m_preSolveContactListener;
+    ImpulsesContactListener m_postSolveContactListener;
 
     FlagsType m_flags = e_stepComplete; ///< Flags.
     
@@ -910,37 +943,37 @@ private:
 /// This is the <code>googletest</code> based unit testing file for the
 /// <code>playrho::d2::World</code> class.
 
-inline SizedRange<World::Bodies::iterator> WorldImpl::GetBodies() noexcept
+inline SizedRange<WorldImpl::Bodies::iterator> WorldImpl::GetBodies() noexcept
 {
     return {begin(m_bodies), end(m_bodies), size(m_bodies)};
 }
 
-inline SizedRange<World::Bodies::const_iterator> WorldImpl::GetBodies() const noexcept
+inline SizedRange<WorldImpl::Bodies::const_iterator> WorldImpl::GetBodies() const noexcept
 {
     return {begin(m_bodies), end(m_bodies), size(m_bodies)};
 }
 
-inline SizedRange<World::Bodies::const_iterator> WorldImpl::GetBodiesForProxies() const noexcept
+inline SizedRange<WorldImpl::Bodies::const_iterator> WorldImpl::GetBodiesForProxies() const noexcept
 {
     return {cbegin(m_bodiesForProxies), cend(m_bodiesForProxies), size(m_bodiesForProxies)};
 }
 
-inline SizedRange<World::Fixtures::const_iterator> WorldImpl::GetFixturesForProxies() const noexcept
+inline SizedRange<WorldImpl::Fixtures::const_iterator> WorldImpl::GetFixturesForProxies() const noexcept
 {
     return {cbegin(m_fixturesForProxies), cend(m_fixturesForProxies), size(m_fixturesForProxies)};
 }
 
-inline SizedRange<World::Joints::const_iterator> WorldImpl::GetJoints() const noexcept
+inline SizedRange<WorldImpl::Joints::const_iterator> WorldImpl::GetJoints() const noexcept
 {
     return {begin(m_joints), end(m_joints), size(m_joints)};
 }
 
-inline SizedRange<World::Joints::iterator> WorldImpl::GetJoints() noexcept
+inline SizedRange<WorldImpl::Joints::iterator> WorldImpl::GetJoints() noexcept
 {
     return {begin(m_joints), end(m_joints), size(m_joints)};
 }
 
-inline SizedRange<World::Contacts::const_iterator> WorldImpl::GetContacts() const noexcept
+inline SizedRange<WorldImpl::Contacts::const_iterator> WorldImpl::GetContacts() const noexcept
 {
     return {begin(m_contacts), end(m_contacts), size(m_contacts)};
 }
@@ -1019,32 +1052,32 @@ inline const DynamicTree& WorldImpl::GetTree() const noexcept
     return m_tree;
 }
 
-inline void WorldImpl::SetFixtureDestructionListener(World::FixtureListener listener) noexcept
+inline void WorldImpl::SetFixtureDestructionListener(FixtureListener listener) noexcept
 {
     m_fixtureDestructionListener = std::move(listener);
 }
 
-inline void WorldImpl::SetJointDestructionListener(World::JointListener listener) noexcept
+inline void WorldImpl::SetJointDestructionListener(JointListener listener) noexcept
 {
     m_jointDestructionListener = std::move(listener);
 }
 
-inline void WorldImpl::SetBeginContactListener(World::ContactListener listener) noexcept
+inline void WorldImpl::SetBeginContactListener(ContactListener listener) noexcept
 {
     m_beginContactListener = std::move(listener);
 }
 
-inline void WorldImpl::SetEndContactListener(World::ContactListener listener) noexcept
+inline void WorldImpl::SetEndContactListener(ContactListener listener) noexcept
 {
     m_endContactListener = std::move(listener);
 }
 
-inline void WorldImpl::SetPreSolveContactListener(World::ManifoldContactListener listener) noexcept
+inline void WorldImpl::SetPreSolveContactListener(ManifoldContactListener listener) noexcept
 {
     m_preSolveContactListener = std::move(listener);
 }
 
-inline void WorldImpl::SetPostSolveContactListener(World::ImpulsesContactListener listener) noexcept
+inline void WorldImpl::SetPostSolveContactListener(ImpulsesContactListener listener) noexcept
 {
     m_postSolveContactListener = std::move(listener);
 }
@@ -1096,358 +1129,6 @@ inline Contact& WorldImpl::GetContact(ContactID id)
 {
     return m_contactBuffer.at(UnderlyingValue(id));
 }
-
-// Free functions...
-
-BodyID GetBody(const WorldImpl& world, FixtureID id);
-
-/// @brief Gets the user data associated with the identified fixture.
-void* GetUserData(const WorldImpl& world, FixtureID id);
-
-Shape GetShape(const WorldImpl& world, FixtureID id);
-
-/// @brief Is the specified fixture a sensor (non-solid)?
-/// @return the true if the fixture is a sensor.
-bool IsSensor(const WorldImpl& world, FixtureID id);
-
-/// @brief Gets the density of this fixture.
-/// @return Non-negative density (in mass per area).
-AreaDensity GetDensity(const WorldImpl& world, FixtureID id);
-
-const World::FixtureProxies& GetProxies(const WorldImpl& world, FixtureID id);
-
-/// @brief Sets whether the specified fixture is a sensor or not.
-inline void SetSensor(WorldImpl& world, FixtureID id, bool value)
-{
-    world.SetSensor(id, value);
-}
-
-/// @brief Gets the body configuration for the identified body.
-/// @throws std::out_of_range If given an invalid body identifier.
-inline BodyConf GetBodyConf(const WorldImpl& world, BodyID id)
-{
-    return GetBodyConf(world.GetBody(id));
-}
-
-/// @brief Gets the type of the body.
-BodyType GetType(const WorldImpl& world, BodyID id);
-
-/// @brief Gets the type of the joint.
-JointType GetType(const WorldImpl& world, JointID id);
-
-/// @brief Gets the linear reaction on body-B at the joint anchor.
-Momentum2 GetLinearReaction(const WorldImpl& world, JointID id);
-
-/// @brief Get the angular reaction on body-B for the identified joint.
-AngularMomentum GetAngularReaction(const WorldImpl& world, JointID id);
-
-Angle GetAngle(const WorldImpl& world, BodyID id);
-
-Transformation GetTransformation(const WorldImpl& world, BodyID id);
-
-/// @brief Gets the transformation associated with the given fixture.
-inline Transformation GetTransformation(const WorldImpl& world, FixtureID id)
-{
-    return GetTransformation(world, GetBody(world, id));
-}
-
-inline void SetTransformation(WorldImpl& world, BodyID id, Transformation xfm)
-{
-    world.SetTransformation(id, xfm);
-}
-
-Velocity GetVelocity(const WorldImpl& world, BodyID id);
-
-/// @brief Sets the body's velocity (linear and angular velocity).
-/// @note This method does nothing if this body is not speedable.
-/// @note A non-zero velocity will awaken this body.
-/// @see SetAwake, SetUnderActiveTime.
-void SetVelocity(WorldImpl& world, BodyID id, const Velocity& value);
-
-/// Is the joint motor enabled?
-/// @see EnableMotor(WorldImpl& world, JointID joint, bool value)
-bool IsMotorEnabled(const WorldImpl& world, JointID id);
-
-/// Enable/disable the joint motor.
-void EnableMotor(WorldImpl& world, JointID joint, bool value);
-
-/// @brief Sleeps the body.
-void UnsetAwake(WorldImpl& world, BodyID id);
-
-/// @brief Wakes up the body.
-void SetAwake(WorldImpl& world, BodyID id);
-
-/// @brief Wakes up the body of the fixture.
-/// @relatedalso WorldImpl
-void SetAwake(WorldImpl& world, FixtureID id);
-
-/// @brief Wakes up the joined bodies.
-/// @relatedalso WorldImpl
-void SetAwake(WorldImpl& world, JointID id);
-
-/// @brief Gets the awake status of the specified contact.
-/// @see SetAwake(WorldImpl& world, ContactID id)
-/// @relatedalso WorldImpl
-bool IsAwake(const WorldImpl& world, ContactID id);
-
-/// @brief Sets awake the bodies of the fixtures of the given contact.
-/// @see IsAwake(const WorldImpl& world, ContactID id)
-/// @relatedalso WorldImpl
-void SetAwake(WorldImpl& world, ContactID id);
-
-bool IsAwake(const WorldImpl& world, BodyID id);
-
-/// @brief Gets the local position of the center of mass of the specified body.
-Length2 GetLocalCenter(const WorldImpl& world, BodyID id);
-
-/// @brief Get the world position of the center of mass of the specified body.
-Length2 GetWorldCenter(const WorldImpl& world, BodyID id);
-
-/// @brief Gets this body's linear acceleration.
-LinearAcceleration2 GetLinearAcceleration(const WorldImpl& world, BodyID id);
-
-/// @brief Gets this body's angular acceleration.
-AngularAcceleration GetAngularAcceleration(const WorldImpl& world, BodyID id);
-
-void SetAcceleration(WorldImpl& world, BodyID id, LinearAcceleration2 linear, AngularAcceleration angular);
-void SetAcceleration(WorldImpl& world, BodyID id, Acceleration value);
-void SetAcceleration(WorldImpl& world, BodyID id, LinearAcceleration2 value);
-void SetAcceleration(WorldImpl& world, BodyID id, AngularAcceleration value);
-
-inline MassData GetMassData(const WorldImpl& world, FixtureID id)
-{
-    return GetMassData(GetShape(world, id));
-}
-
-/// @brief Sets the mass properties to override the mass properties of the fixtures.
-/// @note This changes the center of mass position.
-/// @note Creating or destroying fixtures can also alter the mass.
-/// @note This function has no effect if the body isn't dynamic.
-/// @param massData the mass properties.
-inline void SetMassData(WorldImpl& world, BodyID id, const MassData& massData)
-{
-    world.SetMassData(id, massData);
-}
-
-/// @brief Computes the body's mass data.
-/// @details This basically accumulates the mass data over all fixtures.
-/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
-///   mass to get the averaged center.
-/// @return accumulated mass data for all fixtures associated with the given body.
-/// @relatedalso WorldImpl
-MassData ComputeMassData(const WorldImpl& world, BodyID id);
-
-/// @brief Resets the mass data properties.
-/// @details This resets the mass data to the sum of the mass properties of the fixtures.
-/// @note This method must be called after calling <code>CreateFixture</code> to update the
-///   body mass data properties unless <code>SetMassData</code> is used.
-/// @see SetMassData.
-/// @relatedalso WorldImpl
-inline void ResetMassData(WorldImpl& world, BodyID id)
-{
-    SetMassData(world, id, ComputeMassData(world, id));
-}
-
-/// @brief Gets the inverse total mass of the body.
-/// @return Value of zero or more representing the body's inverse mass (in 1/kg).
-/// @see SetMassData.
-/// @relatedalso WorldImpl
-InvMass GetInvMass(const WorldImpl& world, BodyID id);
-
-/// @brief Gets the mass of the body.
-/// @note This may be the total calculated mass or it may be the set mass of the body.
-/// @return Value of zero or more representing the body's mass.
-/// @see GetInvMass, SetMassData
-/// @relatedalso WorldImpl
-inline Mass GetMass(const WorldImpl& world, BodyID id)
-{
-    const auto invMass = GetInvMass(world, id);
-    return (invMass != InvMass{0})? Mass{Real{1} / invMass}: 0_kg;
-}
-
-/// @brief Gets the inverse rotational inertia of the body.
-/// @return Inverse rotational inertia (in 1/kg-m^2).
-InvRotInertia GetInvRotInertia(const WorldImpl& world, BodyID id);
-
-/// @brief Gets the rotational inertia of the body.
-/// @param id Body to get the rotational inertia for.
-/// @return the rotational inertia.
-/// @relatedalso WorldImpl
-inline RotInertia GetRotInertia(const WorldImpl& world, BodyID id)
-{
-    return Real{1} / GetInvRotInertia(world, id);
-}
-
-/// @brief Gets the rotational inertia of the body about the local origin.
-/// @return the rotational inertia.
-/// @relatedalso WorldImpl
-inline RotInertia GetLocalRotInertia(const WorldImpl& world, BodyID id)
-{
-    return GetRotInertia(world, id)
-         + GetMass(world, id) * GetMagnitudeSquared(GetLocalCenter(world, id)) / SquareRadian;
-}
-
-/// @brief Should collide.
-/// @details Determines whether a body should possibly be able to collide with the other body.
-/// @relatedalso World
-/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
-bool ShouldCollide(const WorldImpl& world, BodyID lhs, BodyID rhs);
-
-/// @brief Gets the range of all joints attached to this body.
-SizedRange<World::BodyJoints::const_iterator> GetJoints(const WorldImpl& world, BodyID id);
-
-/// @brief Gets the range of all constant fixtures attached to the given body.
-SizedRange<World::Fixtures::const_iterator> GetFixtures(const WorldImpl& world, BodyID id);
-
-/// @brief Gets collide connected for the specified joint.
-/// @note Modifying the collide connect flag won't work correctly because
-///   the flag is only checked when fixture AABBs begin to overlap.
-bool GetCollideConnected(const WorldImpl& world, JointID id);
-
-/// @brief Is this contact touching?
-/// @details
-/// Touching is defined as either:
-///   1. This contact's manifold has more than 0 contact points, or
-///   2. This contact has sensors and the two shapes of this contact are found to be
-///      overlapping.
-/// @return true if this contact is said to be touching, false otherwise.
-bool IsTouching(const WorldImpl& world, ContactID id);
-
-/// @brief Whether or not the contact needs filtering.
-bool NeedsFiltering(const WorldImpl& world, ContactID id);
-
-/// @brief Whether or not the contact needs updating.
-bool NeedsUpdating(const WorldImpl& world, ContactID id);
-
-/// @brief Gets fixture A of the given contact.
-FixtureID GetFixtureA(const WorldImpl& world, ContactID id);
-
-/// @brief Gets fixture B of the given contact.
-FixtureID GetFixtureB(const WorldImpl& world, ContactID id);
-
-Real GetDefaultFriction(const WorldImpl& world, ContactID id);
-Real GetDefaultRestitution(const WorldImpl& world, ContactID id);
-
-/// @brief Gets the friction used with the specified contact.
-/// @see SetFriction(ContactID id, Real value)
-Real GetFriction(const WorldImpl& world, ContactID id);
-
-/// @brief Gets the restitution used with the specified contact.
-/// @see SetRestitution(ContactID id, Real value)
-Real GetRestitution(const WorldImpl& world, ContactID id);
-
-/// @brief Sets the friction value for the specified contact.
-/// @details Overrides the default friction mixture.
-/// @note You can call this in "pre-solve" listeners.
-/// @note This value persists until set or reset.
-/// @warning Behavior is undefined if given a negative friction value.
-/// @param value Co-efficient of friction value of zero or greater.
-void SetFriction(WorldImpl& world, ContactID id, Real value);
-
-/// @brief Sets the restitution value for the specified contact.
-/// @details This override the default restitution mixture.
-/// @note You can call this in "pre-solve" listeners.
-/// @note The value persists until you set or reset.
-void SetRestitution(WorldImpl& world, ContactID id, Real value);
-
-/// @brief Gets the collision manifold for the identified contact.
-const Manifold& GetManifold(const WorldImpl& world, ContactID id);
-
-/// @brief Gets the enabled/disabled state of the body.
-/// @see SetEnabled.
-bool IsEnabled(const WorldImpl& world, BodyID id);
-
-/// @brief Sets the enabled state of the body.
-///
-/// @details A disabled body is not simulated and cannot be collided with or woken up.
-///   If you pass a flag of true, all fixtures will be added to the broad-phase.
-///   If you pass a flag of false, all fixtures will be removed from the broad-phase
-///   and all contacts will be destroyed. Fixtures and joints are otherwise unaffected.
-///
-/// @note A disabled body is still owned by a World object and remains in the world's
-///   body container.
-/// @note You may continue to create/destroy fixtures and joints on disabled bodies.
-/// @note Fixtures on a disabled body are implicitly disabled and will not participate in
-///   collisions, ray-casts, or queries.
-/// @note Joints connected to a disabled body are implicitly disabled.
-///
-/// @throws WrongState If call would change body's state when world is locked.
-///
-/// @post <code>IsEnabled()</code> returns the state given to this function.
-///
-/// @see IsEnabled.
-///
-inline void SetEnabled(WorldImpl& world, BodyID body, bool flag)
-{
-    world.SetEnabled(body, flag);
-}
-
-/// @brief Is identified body "speedable".
-/// @details Is the body able to have a non-zero speed associated with it.
-/// Kinematic and Dynamic bodies are speedable. Static bodies are not.
-bool IsSpeedable(const WorldImpl& world, BodyID id);
-
-/// @brief Is identified body "accelerable"?
-/// @details Indicates whether the body is accelerable, i.e. whether it is effected by
-///   forces. Only Dynamic bodies are accelerable.
-/// @return true if the body is accelerable, false otherwise.
-bool IsAccelerable(const WorldImpl& world, BodyID id);
-
-/// @brief Is the body treated like a bullet for continuous collision detection?
-bool IsImpenetrable(const WorldImpl& world, BodyID id);
-
-/// @brief Gets the container of all contacts attached to this body.
-/// @warning This collection changes during the time step and you may
-///   miss some collisions if you don't use <code>ContactListener</code>.
-SizedRange<World::Contacts::const_iterator> GetContacts(const WorldImpl& world, BodyID id);
-
-/// @brief Gets the user data associated with the identified body.
-void* GetUserData(const WorldImpl& world, BodyID id);
-
-/// @brief Gets whether the body's mass-data is dirty.
-bool IsMassDataDirty(const WorldImpl& world, BodyID id);
-
-/// @brief Gets whether the body has fixed rotation.
-/// @see SetFixedRotation(WorldImpl& world, BodyID id, bool value).
-bool IsFixedRotation(const WorldImpl& world, BodyID id);
-
-/// @brief Sets this body to have fixed rotation.
-/// @note This causes the mass to be reset.
-/// @see IsFixedRotation(const WorldImpl& world, BodyID id).
-void SetFixedRotation(WorldImpl& world, BodyID id, bool value);
-
-/// @brief Gets the user data associated with the identified joint.
-/// @relatedalso WorldImpl
-void* GetUserData(const WorldImpl& world, JointID id);
-
-BodyID GetBodyA(const WorldImpl& world, JointID id);
-
-BodyID GetBodyB(const WorldImpl& world, JointID id);
-
-Length2 GetLocalAnchorA(const WorldImpl& world, JointID id);
-
-Length2 GetLocalAnchorB(const WorldImpl& world, JointID id);
-
-Angle GetReferenceAngle(const WorldImpl& world, JointID id);
-
-UnitVec GetLocalAxisA(const WorldImpl& world, JointID id);
-
-/// @brief Gets the angular motor speed for joints which support this.
-/// @see SetMotorSpeed(JointID id, AngularVelocity value)
-AngularVelocity GetMotorSpeed(const WorldImpl& world, JointID id);
-
-/// @brief Sets the angular motor speed for joints which support this.
-/// @see GetMotorSpeed(const WorldImpl& world, JointID id) const
-void SetMotorSpeed(WorldImpl& world, JointID id, AngularVelocity value);
-
-/// @brief Gets the max motor torque.
-Torque GetMaxMotorTorque(const WorldImpl& world, JointID id);
-
-/// Sets the maximum motor torque.
-void SetMaxMotorTorque(WorldImpl& world, JointID id, Torque value);
-
-/// @brief Gets the angular motor impulse of the identified joint.
-AngularMomentum GetAngularMotorImpulse(const WorldImpl& world, JointID id);
 
 } // namespace d2
 } // namespace playrho

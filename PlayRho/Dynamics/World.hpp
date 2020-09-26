@@ -52,7 +52,6 @@
 namespace playrho {
 
 class StepConf;
-struct IslandStats;
 struct Filter;
 struct FixtureProxy;
 
@@ -119,7 +118,7 @@ public:
 
     /// @brief Contacts container type.
     using Contacts = std::vector<KeyedContactPtr>;
-    
+
     /// @brief Joints container type.
     /// @note Cannot be container of Joint instances since joints are polymorphic types.
     using Joints = std::vector<JointID>;
@@ -433,7 +432,7 @@ public:
     /// @brief Gets the range of all constant fixtures attached to the given body.
     SizedRange<Fixtures::const_iterator> GetFixtures(BodyID id) const;
 
-    std::size_t GetFixtureCount(BodyID id) const;
+    FixtureCounter GetFixtureCount(BodyID id) const;
 
     /// @brief Get the angle.
     /// @return the current world rotation angle.
@@ -845,14 +844,14 @@ inline SizedRange<World::Fixtures::const_iterator> GetFixtures(const World& worl
 }
 
 /// @relatedalso World
-inline std::size_t GetFixtureCount(const World& world, BodyID id)
+inline FixtureCounter GetFixtureCount(const World& world, BodyID id)
 {
     return world.GetFixtureCount(id);
 }
 
 /// @brief Gets the count of fixtures in the given world.
 /// @relatedalso World
-std::size_t GetFixtureCount(const World& world) noexcept;
+FixtureCounter GetFixtureCount(const World& world) noexcept;
 
 /// @brief Gets the count of unique shapes in the given world.
 /// @relatedalso World
@@ -1707,10 +1706,6 @@ inline void ApplyForceToCenter(World& world, BodyID id, Force2 force) noexcept
 }
 
 } // namespace d2
-
-/// @brief Updates the given regular step statistics.
-RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept;
-
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_WORLD_HPP

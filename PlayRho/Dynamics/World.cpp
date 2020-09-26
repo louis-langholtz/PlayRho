@@ -20,7 +20,14 @@
  */
 
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldImpl.hpp>
+
+#include <PlayRho/Dynamics/WorldImpl.hpp> // for std::unique_ptr<WorldImpl> destruction
+#include <PlayRho/Dynamics/WorldImplBody.hpp>
+#include <PlayRho/Dynamics/WorldImplContact.hpp>
+#include <PlayRho/Dynamics/WorldImplFixture.hpp>
+#include <PlayRho/Dynamics/WorldImplJoint.hpp>
+#include <PlayRho/Dynamics/WorldImplMisc.hpp>
+
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
@@ -78,105 +85,110 @@ namespace d2 {
 
 using playrho::size;
 
-World::World(const WorldConf& def): m_impl{std::make_unique<WorldImpl>(def)}
+static_assert(std::is_default_constructible<World>::value, "World must be default constructible!");
+static_assert(std::is_copy_constructible<World>::value, "World must be copy constructible!");
+static_assert(std::is_copy_assignable<World>::value, "World must be copy assignable!");
+static_assert(std::is_nothrow_destructible<World>::value, "World must be nothrow destructible!");
+
+World::World(const WorldConf& def): m_impl{CreateWorldImpl(def)}
 {
 }
 
-World::World(const World& other): m_impl{std::make_unique<WorldImpl>(*other.m_impl)}
+World::World(const World& other): m_impl{CreateWorldImpl(*other.m_impl)}
 {
 }
 
 World& World::operator= (const World& other)
 {
-    m_impl->copy(*other.m_impl);
+    *m_impl = *other.m_impl;
     return *this;
 }
 
-World::~World() noexcept = default;
+World::~World() noexcept {};
 
 void World::Clear()
 {
-    m_impl->Clear();
+    ::playrho::d2::Clear(*m_impl);
 }
 
 void World::SetFixtureDestructionListener(const FixtureListener& listener) noexcept
 {
-    m_impl->SetFixtureDestructionListener(listener);
+    ::playrho::d2::SetFixtureDestructionListener(*m_impl, listener);
 }
 
 void World::SetJointDestructionListener(JointListener listener) noexcept
 {
-    m_impl->SetJointDestructionListener(listener);
+    ::playrho::d2::SetJointDestructionListener(*m_impl, listener);
 }
 
 void World::SetBeginContactListener(ContactListener listener) noexcept
 {
-    m_impl->SetBeginContactListener(listener);
+    ::playrho::d2::SetBeginContactListener(*m_impl, listener);
 }
 
 void World::SetEndContactListener(ContactListener listener) noexcept
 {
-    m_impl->SetEndContactListener(listener);
+    ::playrho::d2::SetEndContactListener(*m_impl, listener);
 }
 
 void World::SetPreSolveContactListener(ManifoldContactListener listener) noexcept
 {
-    m_impl->SetPreSolveContactListener(listener);
+    ::playrho::d2::SetPreSolveContactListener(*m_impl, listener);
 }
 
 void World::SetPostSolveContactListener(ImpulsesContactListener listener) noexcept
 {
-    m_impl->SetPostSolveContactListener(listener);
+    ::playrho::d2::SetPostSolveContactListener(*m_impl, listener);
 }
 
 BodyID World::CreateBody(const BodyConf& def)
 {
-    return m_impl->CreateBody(def);
+    return ::playrho::d2::CreateBody(*m_impl, def);
 }
 
 void World::Destroy(BodyID id)
 {
-    m_impl->Destroy(id);
+    ::playrho::d2::Destroy(*m_impl, id);
 }
 
 JointID World::CreateJoint(const JointConf& def)
 {
-    return m_impl->CreateJoint(def);
+    return ::playrho::d2::CreateJoint(*m_impl, def);
 }
 
 void World::Destroy(JointID id)
 {
-    m_impl->Destroy(id);
+    ::playrho::d2::Destroy(*m_impl, id);
 }
     
 StepStats World::Step(const StepConf& conf)
 {
-    return m_impl->Step(conf);
+    return ::playrho::d2::Step(*m_impl, conf);
 }
 
 void World::ShiftOrigin(Length2 newOrigin)
 {
-    m_impl->ShiftOrigin(newOrigin);
+    ::playrho::d2::ShiftOrigin(*m_impl, newOrigin);
 }
 
 SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
 {
-    return m_impl->GetBodies();
+    return ::playrho::d2::GetBodies(*m_impl);
 }
 
 SizedRange<World::Bodies::const_iterator> World::GetBodiesForProxies() const noexcept
 {
-    return m_impl->GetBodiesForProxies();
+    return ::playrho::d2::GetBodiesForProxies(*m_impl);
 }
 
 SizedRange<World::Fixtures::const_iterator> World::GetFixturesForProxies() const noexcept
 {
-    return m_impl->GetFixturesForProxies();
+    return ::playrho::d2::GetFixturesForProxies(*m_impl);
 }
 
 SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
 {
-    return m_impl->GetJoints();
+    return ::playrho::d2::GetJoints(*m_impl);
 }
 
 SizedRange<World::BodyJoints::const_iterator> World::GetJoints(BodyID id) const
@@ -211,78 +223,78 @@ void* World::GetUserData(BodyID id) const
 
 SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
 {
-    return m_impl->GetContacts();
+    return ::playrho::d2::GetContacts(*m_impl);
 }
 
 bool World::IsLocked() const noexcept
 {
-    return m_impl && m_impl->IsLocked();
+    return m_impl && ::playrho::d2::IsLocked(*m_impl);
 }
 
 bool World::IsStepComplete() const noexcept
 {
-    return m_impl->IsStepComplete();
+    return ::playrho::d2::IsStepComplete(*m_impl);
 }
 
 bool World::GetSubStepping() const noexcept
 {
-    return m_impl->GetSubStepping();
+    return ::playrho::d2::GetSubStepping(*m_impl);
 }
 
 void World::SetSubStepping(bool flag) noexcept
 {
-    m_impl->SetSubStepping(flag);
+    ::playrho::d2::SetSubStepping(*m_impl, flag);
 }
 
 Length World::GetMinVertexRadius() const noexcept
 {
-    return m_impl->GetMinVertexRadius();
+    return ::playrho::d2::GetMinVertexRadius(*m_impl);
 }
 
 Length World::GetMaxVertexRadius() const noexcept
 {
-    return m_impl->GetMaxVertexRadius();
+    return ::playrho::d2::GetMaxVertexRadius(*m_impl);
 }
 
 Frequency World::GetInvDeltaTime() const noexcept
 {
-    return m_impl->GetInvDeltaTime();
+    return ::playrho::d2::GetInvDeltaTime(*m_impl);
 }
 
 const DynamicTree& World::GetTree() const noexcept
 {
-    return m_impl->GetTree();
+    return ::playrho::d2::GetTree(*m_impl);
 }
 
 void World::Refilter(FixtureID id)
 {
-    m_impl->Refilter(id);
+    ::playrho::d2::Refilter(*m_impl, id);
 }
 
 void World::SetFilterData(FixtureID id, const Filter& filter)
 {
-    m_impl->SetFilterData(id, filter);
+    ::playrho::d2::SetFilterData(*m_impl, id, filter);
 }
 
 void World::SetType(BodyID id, BodyType type)
 {
-    m_impl->SetType(id, type);
+    ::playrho::d2::SetType(*m_impl, id, type);
 }
 
 FixtureID World::CreateFixture(BodyID body, const Shape& shape, const FixtureConf& def,
                               bool resetMassData)
 {
-    return m_impl->CreateFixture(body, shape, def, resetMassData);
+    return ::playrho::d2::CreateFixture(*m_impl, body, shape, def, resetMassData);
 }
 
 bool World::Destroy(FixtureID id, bool resetMassData)
 {
-    return m_impl->Destroy(id, resetMassData);
+    return ::playrho::d2::Destroy(*m_impl, id, resetMassData);
 }
 
 void World::DestroyFixtures(BodyID id)
 {
-    m_impl->DestroyFixtures(id);
+    ::playrho::d2::DestroyFixtures(*m_impl, id);
 }
 
 bool World::IsEnabled(BodyID id) const
@@ -312,12 +324,12 @@ SizedRange<World::Fixtures::const_iterator> World::GetFixtures(BodyID id) const
 
 std::size_t World::GetShapeCount() const noexcept
 {
-    return m_impl->GetShapeCount();
+    return ::playrho::d2::GetShapeCount(*m_impl);
 }
 
-std::size_t World::GetFixtureCount(BodyID id) const
+FixtureCounter World::GetFixtureCount(BodyID id) const
 {
-    return m_impl->GetFixtureCount(id);
+    return ::playrho::d2::GetFixtureCount(*m_impl, id);
 }
 
 BodyConf World::GetBodyConf(BodyID id) const
@@ -647,9 +659,9 @@ ContactCounter GetTouchingCount(const World& world) noexcept
     }));
 }
 
-size_t GetFixtureCount(const World& world) noexcept
+FixtureCounter GetFixtureCount(const World& world) noexcept
 {
-    auto sum = size_t{0};
+    auto sum = FixtureCounter{0};
     const auto bodies = world.GetBodies();
     for_each(begin(bodies), end(bodies), [&world,&sum](const auto &b) {
         sum += GetFixtureCount(world, b);
@@ -852,16 +864,4 @@ Force2 GetCentripetalForce(const World& world, BodyID id, Length2 axis)
 }
 
 } // namespace d2
-
-RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept
-{
-    lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
-    lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);
-    lhs.islandsSolved += rhs.solved;
-    lhs.sumPosIters += rhs.positionIterations;
-    lhs.sumVelIters += rhs.velocityIterations;
-    lhs.bodiesSlept += rhs.bodiesSlept;
-    return lhs;
-}
-
 } // namespace playrho

@@ -280,9 +280,9 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
     return velocity;
 }
 
-std::size_t GetFixtureCount(const Body& body) noexcept
+FixtureCounter GetFixtureCount(const Body& body) noexcept
 {
-    return size(body.GetFixtures());
+    return static_cast<FixtureCounter>(size(body.GetFixtures()));
 }
 
 Transformation GetTransformation(const BodyConf& conf)
