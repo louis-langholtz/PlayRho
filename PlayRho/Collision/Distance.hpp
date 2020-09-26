@@ -31,6 +31,7 @@ namespace playrho {
 using PairLength2 = std::pair<Length2, Length2>;
 
 struct ToiConf;
+class StepConf;
 
 namespace d2 {
 
@@ -57,7 +58,12 @@ struct DistanceConf
 };
 
 /// @brief Gets the distance configuration for the given time of impact configuration.
+/// @relatedalso DistanceConf
 DistanceConf GetDistanceConf(const ToiConf& conf) noexcept;
+
+/// @brief Gets the distance configuration for the given step configuration.
+/// @relatedalso DistanceConf
+DistanceConf GetDistanceConf(const StepConf& conf) noexcept;
 
 /// @brief Distance Output.
 struct DistanceOutput

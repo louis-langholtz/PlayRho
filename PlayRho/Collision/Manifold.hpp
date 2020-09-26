@@ -25,6 +25,9 @@
 #include <PlayRho/Collision/IndexPair.hpp>
 
 namespace playrho {
+
+class StepConf;
+
 namespace d2 {
 
 class DistanceProxy;
@@ -480,6 +483,10 @@ constexpr Manifold::Conf GetDefaultManifoldConf() noexcept
 {
     return Manifold::Conf{};
 }
+
+/// @brief Gets the manifold configuration for the given step configuration.
+/// @relatedalso Manifold::Conf
+Manifold::Conf GetManifoldConf(const StepConf& conf) noexcept;
 
 constexpr Manifold::Manifold(Type t, UnitVec ln, Length2 lp, size_type n,
                                           const PointArray& mpa) noexcept:

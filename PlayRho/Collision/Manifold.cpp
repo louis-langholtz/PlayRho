@@ -26,7 +26,10 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Collision.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
+
 #include <PlayRho/Defines.hpp>
+
+#include <PlayRho/Dynamics/StepConf.hpp>
 
 #include <array>
 #include <bitset>
@@ -97,6 +100,16 @@ ClipList GetClipPoints(Length2 shape0_abs_v0, Length2 shape0_abs_v1, VertexCount
 }
 
 } // anonymous namespace
+
+Manifold::Conf GetManifoldConf(const StepConf& conf) noexcept
+{
+    auto manifoldConf = Manifold::Conf{};
+    manifoldConf.linearSlop = conf.linearSlop;
+    manifoldConf.tolerance = conf.tolerance;
+    manifoldConf.targetDepth = conf.targetDepth;
+    manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
+    return manifoldConf;
+}
 
 Manifold GetManifold(bool flipped,
                      const DistanceProxy& shape0, const Transformation& xf0,

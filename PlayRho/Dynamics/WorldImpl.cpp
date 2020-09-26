@@ -95,22 +95,6 @@ using std::transform;
 using std::unique;
 
 namespace playrho {
-
-namespace {
-
-RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept
-{
-    lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
-    lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);
-    lhs.islandsSolved += rhs.solved;
-    lhs.sumPosIters += rhs.positionIterations;
-    lhs.sumVelIters += rhs.velocityIterations;
-    lhs.bodiesSlept += rhs.bodiesSlept;
-    return lhs;
-}
-
-} // namespace
-
 namespace d2 {
 
 static_assert(std::is_default_constructible<WorldImpl>::value,
@@ -456,23 +440,6 @@ namespace {
             }
         }
     }
-
-inline DistanceConf GetDistanceConf(const playrho::StepConf& conf)
-{
-    DistanceConf distanceConf;
-    distanceConf.maxIterations = conf.maxDistanceIters;
-    return distanceConf;
-}
-
-inline Manifold::Conf GetManifoldConf(const playrho::StepConf& conf)
-{
-    auto manifoldConf = Manifold::Conf{};
-    manifoldConf.linearSlop = conf.linearSlop;
-    manifoldConf.tolerance = conf.tolerance;
-    manifoldConf.targetDepth = conf.targetDepth;
-    manifoldConf.maxCirclesRatio = conf.maxCirclesRatio;
-    return manifoldConf;
-}
 
 /// @brief Gets the update configuration from the given step configuration data.
 WorldImpl::ContactUpdateConf GetUpdateConf(const StepConf& conf) noexcept

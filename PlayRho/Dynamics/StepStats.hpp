@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -122,6 +122,12 @@ struct StepStats
     RegStepStats reg; ///< Reg-phase step statistics.
     ToiStepStats toi; ///< TOI-phase step statistics.
 };
+
+struct IslandStats;
+
+/// @brief Updates regular-phase per-step statistics with island statistics.
+/// @relatedalso RegStepStats
+RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept;
 
 } // namespace playrho
 

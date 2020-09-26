@@ -162,6 +162,7 @@
 		47640887251F11630090F711 /* WorldImplJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47640883251F11620090F711 /* WorldImplJoint.cpp */; };
 		47640888251F11630090F711 /* WorldImplMisc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47640884251F11620090F711 /* WorldImplMisc.cpp */; };
 		47640889251F11630090F711 /* WorldImplContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47640885251F11630090F711 /* WorldImplContact.cpp */; };
+		4764088B251FA6360090F711 /* StepStats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4764088A251FA6360090F711 /* StepStats.cpp */; };
 		4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
 		4768D3F81E3E895A00574143 /* PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */; };
 		4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2.hpp */; };
@@ -574,6 +575,7 @@
 		47640883251F11620090F711 /* WorldImplJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImplJoint.cpp; sourceTree = "<group>"; };
 		47640884251F11620090F711 /* WorldImplMisc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImplMisc.cpp; sourceTree = "<group>"; };
 		47640885251F11630090F711 /* WorldImplContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldImplContact.cpp; sourceTree = "<group>"; };
+		4764088A251FA6360090F711 /* StepStats.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StepStats.cpp; sourceTree = "<group>"; };
 		4768D3F21E3A7ACA00574143 /* Wider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Wider.hpp; sourceTree = "<group>"; };
 		4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
 		4768D3FA1E414A0100574143 /* Vector2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2.hpp; sourceTree = "<group>"; };
@@ -1130,6 +1132,7 @@
 				471E7EAC1F34CA4D00DFF626 /* MovementConf.hpp */,
 				4768D3FF1E54E7CB00574143 /* StepConf.cpp */,
 				80BB8955141C3E5900F1753A /* StepConf.hpp */,
+				4764088A251FA6360090F711 /* StepStats.cpp */,
 				478E67CA1E777A43009B9AD5 /* StepStats.hpp */,
 				80BB8956141C3E5900F1753A /* World.cpp */,
 				80BB8957141C3E5900F1753A /* World.hpp */,
@@ -1823,6 +1826,7 @@
 				47640889251F11630090F711 /* WorldImplContact.cpp in Sources */,
 				80BB89A3141C3E5900F1753A /* Math.cpp in Sources */,
 				47B58F551F570E2C00354C34 /* DynamicMemory.cpp in Sources */,
+				4764088B251FA6360090F711 /* StepStats.cpp in Sources */,
 				470F94D91EC8C37500AA3C82 /* JointKey.cpp in Sources */,
 				476162C81E245C9D002C7FB0 /* CodeDumper.cpp in Sources */,
 				47363E8620027FE2005912B1 /* ContactImpulsesList.cpp in Sources */,
