@@ -70,6 +70,10 @@ bool GetCollideConnected(const WorldImpl& world, JointID id);
 /// @relatedalso WorldImpl
 void* GetUserData(const WorldImpl& world, JointID id);
 
+/// @brief Sets the user data associated with the identified joint.
+/// @relatedalso WorldImpl
+void SetUserData(WorldImpl& world, JointID id, void* value);
+
 BodyID GetBodyA(const WorldImpl& world, JointID id);
 
 BodyID GetBodyB(const WorldImpl& world, JointID id);

@@ -89,6 +89,11 @@ void* GetUserData(const WorldImpl& world, JointID id)
     return world.GetJoint(id).GetUserData();
 }
 
+void SetUserData(WorldImpl& world, JointID id, void* value)
+{
+    world.GetJoint(id).SetUserData(value);
+}
+
 BodyID GetBodyA(const WorldImpl& world, JointID id)
 {
     return world.GetJoint(id).GetBodyA();
