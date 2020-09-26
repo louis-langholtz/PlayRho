@@ -39,7 +39,7 @@ TEST(MotorJointConf, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(MotorJointConf), std::size_t(44));
 #else
-            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(64));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(40));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(88)); break;

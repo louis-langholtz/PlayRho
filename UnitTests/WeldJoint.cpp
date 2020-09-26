@@ -46,7 +46,7 @@ TEST(WeldJointConf, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(WeldJointConf), std::size_t(48));
 #else
-            EXPECT_EQ(sizeof(WeldJointConf), std::size_t(72));
+            EXPECT_EQ(sizeof(WeldJointConf), std::size_t(48));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(WeldJointConf), std::size_t(96)); break;
@@ -82,7 +82,7 @@ TEST(WeldJoint, ByteSize)
 #elif defined(_WIN32)
             EXPECT_EQ(sizeof(WeldJoint), std::size_t(120));
 #else
-            EXPECT_EQ(sizeof(WeldJoint), std::size_t(136));
+            EXPECT_EQ(sizeof(WeldJoint), std::size_t(128));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(WeldJoint), std::size_t(240)); break;

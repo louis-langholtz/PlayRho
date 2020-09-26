@@ -36,7 +36,7 @@ TEST(PrismaticJoint, ByteSize)
 #elif defined(_WIN32)
             EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(168));
 #else
-            EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(184));
+            EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(176));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(328)); break;

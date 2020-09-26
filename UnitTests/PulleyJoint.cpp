@@ -59,7 +59,7 @@ TEST(PulleyJoint, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(PulleyJoint), std::size_t(108));
 #else
-            EXPECT_EQ(sizeof(PulleyJoint), std::size_t(128));
+            EXPECT_EQ(sizeof(PulleyJoint), std::size_t(112));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(PulleyJoint), std::size_t(216)); break;

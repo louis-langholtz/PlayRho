@@ -41,7 +41,7 @@ TEST(DistanceJoint, ByteSize)
             EXPECT_EQ(sizeof(DistanceJoint), std::size_t(88));
 #endif
 #else
-            EXPECT_EQ(sizeof(DistanceJoint), std::size_t(104));
+            EXPECT_EQ(sizeof(DistanceJoint), std::size_t(96));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(DistanceJoint), std::size_t(176)); break;

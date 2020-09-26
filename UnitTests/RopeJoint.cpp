@@ -39,7 +39,7 @@ TEST(RopeJointConf, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(RopeJointConf), std::size_t(40));
 #else
-            EXPECT_EQ(sizeof(RopeJointConf), std::size_t(64));
+            EXPECT_EQ(sizeof(RopeJointConf), std::size_t(40));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(RopeJointConf), std::size_t(80)); break;
@@ -73,7 +73,7 @@ TEST(RopeJoint, ByteSize)
 #elif defined(_WIN32)
             EXPECT_EQ(sizeof(RopeJoint), std::size_t(80));
 #else
-            EXPECT_EQ(sizeof(RopeJoint), std::size_t(96));
+            EXPECT_EQ(sizeof(RopeJoint), std::size_t(88));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(RopeJoint), std::size_t(160)); break;
