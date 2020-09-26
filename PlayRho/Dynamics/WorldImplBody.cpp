@@ -146,20 +146,7 @@ void SetAcceleration(WorldImpl& world, BodyID id, AngularAcceleration value)
 
 MassData ComputeMassData(const WorldImpl& world, BodyID id)
 {
-    auto mass = 0_kg;
-    auto I = RotInertia{0};
-    auto center = Length2{};
-    for (const auto& f: GetFixtures(world, id))
-    {
-        if (GetDensity(world, f) > 0_kgpm2)
-        {
-            const auto massData = GetMassData(world, f);
-            mass += Mass{massData.mass};
-            center += Real{Mass{massData.mass} / Kilogram} * massData.center;
-            I += RotInertia{massData.I};
-        }
-    }
-    return MassData{center, mass, I};
+    return world.ComputeMassData(id);
 }
 
 void SetMassData(WorldImpl& world, BodyID id, const MassData& massData)

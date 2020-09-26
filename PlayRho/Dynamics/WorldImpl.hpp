@@ -454,6 +454,9 @@ public:
     ///
     void SetEnabled(BodyID id, bool flag);
 
+    /// @brief Computes the mass data of the identified body.
+    MassData ComputeMassData(BodyID id) const;
+
     /// @brief Set the mass properties to override the mass properties of the fixtures.
     /// @note This changes the center of mass position.
     /// @note Creating or destroying fixtures can also alter the mass.

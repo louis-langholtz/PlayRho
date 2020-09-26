@@ -21,12 +21,6 @@
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
 
-#include <PlayRho/Dynamics/WorldImplBody.hpp>
-#include <PlayRho/Dynamics/WorldImplContact.hpp>
-#include <PlayRho/Dynamics/WorldImplFixture.hpp>
-#include <PlayRho/Dynamics/WorldImplJoint.hpp>
-#include <PlayRho/Dynamics/WorldImplMisc.hpp>
-
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
@@ -2413,7 +2407,7 @@ void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
     }
 
     body.SetType(type);
-    ResetMassData(*this, bodyID);
+    SetMassData(bodyID, ComputeMassData(bodyID));
 
     // Destroy the attached contacts.
     body.Erase([&](ContactID contactID) {
@@ -2488,7 +2482,7 @@ FixtureID WorldImpl::CreateFixture(BodyID bodyID, const Shape& shape,
         body.SetMassDataDirty();
         if (resetMassData)
         {
-            ResetMassData(*this, bodyID);
+            SetMassData(bodyID, ComputeMassData(bodyID));
         }
     }
 
@@ -2547,7 +2541,7 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
     body.SetMassDataDirty();
     if (resetMassData)
     {
-        ResetMassData(*this, bodyID);
+        SetMassData(bodyID, ComputeMassData(bodyID));
     }
     return true;
 }
@@ -2560,7 +2554,7 @@ void WorldImpl::DestroyFixtures(BodyID id)
         const auto fixtureID = *body.GetFixtures().begin();
         Destroy(fixtureID, false);
     }
-    ResetMassData(*this, id);
+    SetMassData(id, ComputeMassData(id));
 }
 
 void WorldImpl::CreateProxies(FixtureID fixtureID, Fixture& fixture, const Transformation& xfm,
@@ -2721,6 +2715,26 @@ void WorldImpl::SetEnabled(BodyID id, bool flag)
     ForallFixtures(body, [this](const auto& fixtureID) {
         RegisterForProxies(fixtureID);
     });
+}
+
+MassData WorldImpl::ComputeMassData(BodyID id) const
+{
+    auto mass = 0_kg;
+    auto I = RotInertia{0};
+    auto center = Length2{};
+    const auto& body = GetBody(id);
+    for (const auto& f: body.GetFixtures())
+    {
+        const auto& fixture = m_fixtureBuffer[UnderlyingValue(f)];
+        if (fixture.GetDensity() > 0_kgpm2)
+        {
+            const auto massData = GetMassData(fixture.GetShape());
+            mass += Mass{massData.mass};
+            center += Real{Mass{massData.mass} / Kilogram} * massData.center;
+            I += RotInertia{massData.I};
+        }
+    }
+    return MassData{center, mass, I};
 }
 
 void WorldImpl::SetMassData(BodyID id, const MassData& massData)
