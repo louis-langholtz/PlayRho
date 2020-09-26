@@ -22,37 +22,10 @@
 #include <PlayRho/Dynamics/WorldImplContact.hpp>
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/Body.hpp> // for use of GetBody
 #include <PlayRho/Dynamics/Fixture.hpp> // for GetDefaultFriction, GetDefaultRestitution
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
-#include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
-#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
-#include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
-#include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
-
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-
-#include <PlayRho/Common/DynamicMemory.hpp>
-
-#include <algorithm>
-#include <new>
-#include <functional>
-#include <type_traits>
-#include <memory>
-#include <vector>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for use of GetContact
 
 namespace playrho {
 namespace d2 {

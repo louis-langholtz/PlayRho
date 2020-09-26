@@ -23,17 +23,7 @@
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
 #include <PlayRho/Dynamics/WorldImplBody.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-
-#include <PlayRho/Common/DynamicMemory.hpp>
-
-#include <algorithm>
-#include <new>
-#include <functional>
-#include <type_traits>
-#include <memory>
-#include <vector>
+#include <PlayRho/Dynamics/Fixture.hpp> // for use of GetFixture
 
 namespace playrho {
 namespace d2 {

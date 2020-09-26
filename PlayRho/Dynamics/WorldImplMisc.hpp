@@ -25,15 +25,13 @@
 /// @file
 /// Declarations of free functions of WorldImpl.
 
-#include <PlayRho/Common/Units.hpp>
-#include <PlayRho/Common/Transformation.hpp>
+#include <PlayRho/Common/Units.hpp> // for Length, Frequency, etc.
 #include <PlayRho/Common/Vector2.hpp> // for Length2
 #include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
-#include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
@@ -54,6 +52,7 @@ struct BodyConf;
 struct JointConf;
 class DynamicTree;
 struct WorldConf;
+class ContactImpulsesList;
 
 std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldConf& def);
 

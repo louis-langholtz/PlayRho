@@ -22,9 +22,7 @@
 #include <PlayRho/Dynamics/WorldImplJoint.hpp>
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/Body.hpp> // for use of GetBody(BodyID)
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
@@ -42,13 +40,6 @@
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
 
 #include <PlayRho/Common/OptionalValue.hpp> // for Optional
-
-#include <algorithm>
-#include <new>
-#include <functional>
-#include <type_traits>
-#include <memory>
-#include <vector>
 
 namespace playrho {
 namespace d2 {
