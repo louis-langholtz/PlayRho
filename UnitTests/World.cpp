@@ -762,25 +762,6 @@ TEST(World, SetTypeOfBody)
     EXPECT_EQ(GetType(world, body), BodyType::Static);
 }
 
-#if 0
-TEST(World, RegisterBodyForProxies)
-{
-    auto world = World{};
-    EXPECT_FALSE(world.RegisterForProxies(static_cast<Body*>(nullptr)));
-    const auto body = world.CreateBody();
-    EXPECT_TRUE(world.RegisterForProxies(body));
-}
-
-TEST(World, RegisterFixtureForProxies)
-{
-    auto world = World{};
-    EXPECT_FALSE(world.RegisterForProxies(static_cast<Fixture*>(nullptr)));
-    const auto body = world.CreateBody();
-    const auto fixture = body->CreateFixture(Shape{DiskShapeConf(1_m)});
-    EXPECT_TRUE(world.RegisterForProxies(fixture));
-}
-#endif
-
 TEST(World, Query)
 {
     auto world = World{};
@@ -2003,16 +1984,29 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
     }
 }
 
-#if 0
 TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
 {
     World world{};
     MyContactListener listener{
-        [&](Contact&, const Manifold&) {},
-        [&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
-        [&](Contact&) {},
+        world,
+        [&](ContactID, const Manifold&) {},
+        [&](ContactID, const ContactImpulsesList&, unsigned) {},
+        [&](ContactID) {},
     };
-    world.SetContactListener(&listener);
+    world.SetBeginContactListener([&listener](ContactID id) {
+        listener.BeginContact(id);
+    });
+    world.SetEndContactListener([&listener](ContactID id) {
+        listener.EndContact(id);
+    });
+    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+        listener.PreSolve(id, manifold);
+    });
+    world.SetPostSolveContactListener([&listener](ContactID id,
+                                                  const ContactImpulsesList& impulses,
+                                                  unsigned count){
+        listener.PostSolve(id, impulses, count);
+    });
 
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
@@ -2042,12 +2036,26 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
 {
     World world{};
     MyContactListener listener{
-        [&](Contact&, const Manifold&) {},
-        [&](Contact&, const ContactImpulsesList&, ContactListener::iteration_type) {},
-        [&](Contact&) {},
+        world,
+        [&](ContactID, const Manifold&) {},
+        [&](ContactID, const ContactImpulsesList&, unsigned) {},
+        [&](ContactID) {},
     };
-    world.SetContactListener(&listener);
-    
+    world.SetBeginContactListener([&listener](ContactID id) {
+        listener.BeginContact(id);
+    });
+    world.SetEndContactListener([&listener](ContactID id) {
+        listener.EndContact(id);
+    });
+    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+        listener.PreSolve(id, manifold);
+    });
+    world.SetPostSolveContactListener([&listener](ContactID id,
+                                                  const ContactImpulsesList& impulses,
+                                                  unsigned count){
+        listener.PostSolve(id, impulses, count);
+    });
+
     auto body_def = BodyConf{};
     body_def.type = BodyType::Dynamic;
     body_def.location = Length2{};
@@ -2076,7 +2084,6 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     EXPECT_NE(listener.pre_solves, 0u);
     EXPECT_NE(listener.post_solves, 0u);
 }
-#endif
 
 TEST(World, PartiallyOverlappedSameCirclesSeparate)
 {
