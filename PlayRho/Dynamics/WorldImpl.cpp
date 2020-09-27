@@ -489,6 +489,41 @@ void ClearJoints(Body& b, std::function<void(JointID)> callback)
     assert(empty(b.GetJoints()));
 }
 
+/// @brief Reset bodies for solve TOI.
+void ResetBodiesForSolveTOI(WorldImpl::Bodies& bodies, ArrayAllocator<Body>& buffer) noexcept
+{
+    for_each(begin(bodies), end(bodies), [&](const auto& body) {
+        auto& b = buffer[UnderlyingValue(body)];
+        b.UnsetIslandedFlag();
+        b.ResetAlpha0();
+    });
+}
+
+/// @brief Reset contacts for solve TOI.
+void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
+                              const Body& body) noexcept
+{
+    // Invalidate all contact TOIs on this displaced body.
+    const auto contacts = body.GetContacts();
+    for_each(cbegin(contacts), cend(contacts), [&buffer](const auto& ci) {
+        auto& contact = buffer[UnderlyingValue(std::get<ContactID>(ci))];
+        contact.UnsetIslanded();
+        contact.UnsetToi();
+    });
+}
+
+/// @brief Reset contacts for solve TOI.
+void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
+                              const WorldImpl::Contacts& contacts) noexcept
+{
+    for_each(begin(contacts), end(contacts), [&buffer](const auto& c) {
+        auto& contact = buffer[UnderlyingValue(std::get<ContactID>(c))];
+        contact.UnsetIslanded();
+        contact.UnsetToi();
+        contact.SetToiCount(0);
+    });
+}
+
 } // anonymous namespace
 
 WorldImpl::WorldImpl(const WorldConf& def):
@@ -736,7 +771,8 @@ BodyID WorldImpl::CreateBody(const BodyConf& def)
 
 void WorldImpl::Remove(BodyID id) noexcept
 {
-    UnregisterForProxies(id);
+    m_bodiesForProxies.erase(remove(begin(m_bodiesForProxies), end(m_bodiesForProxies), id),
+                             end(m_bodiesForProxies));
     const auto it = find(cbegin(m_bodies), cend(m_bodies), id);
     if (it != cend(m_bodies))
     {
@@ -1225,25 +1261,6 @@ IslandStats WorldImpl::SolveRegIslandViaGS(ArrayAllocator<Body>& bodyBuffer,
     }
 
     return results;
-}
-
-void WorldImpl::ResetBodiesForSolveTOI(Bodies& bodies, ArrayAllocator<Body>& buffer) noexcept
-{
-    for_each(begin(bodies), end(bodies), [&](const auto& body) {
-        auto& b = buffer[UnderlyingValue(body)];
-        b.UnsetIslandedFlag();
-        b.ResetAlpha0();
-    });
-}
-
-void WorldImpl::ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const Contacts& contacts) noexcept
-{
-    for_each(begin(contacts), end(contacts), [&buffer](const auto& c) {
-        auto& contact = buffer[UnderlyingValue(std::get<ContactID>(c))];
-        contact.UnsetIslanded();
-        contact.UnsetToi();
-        contact.SetToiCount(0);
-    });
 }
 
 WorldImpl::UpdateContactsData WorldImpl::UpdateContactTOIs(ArrayAllocator<Contact>& contactBuffer,
@@ -1739,17 +1756,6 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     }
 
     return results;
-}
-    
-void WorldImpl::ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const Body& body) noexcept
-{
-    // Invalidate all contact TOIs on this displaced body.
-    const auto contacts = body.GetContacts();
-    for_each(cbegin(contacts), cend(contacts), [&buffer](const auto& ci) {
-        auto& contact = buffer[UnderlyingValue(std::get<ContactID>(ci))];
-        contact.UnsetIslanded();
-        contact.UnsetToi();
-    });
 }
 
 WorldImpl::ProcessContactsOutput
@@ -2328,22 +2334,6 @@ void WorldImpl::SetSensor(FixtureID id, bool value)
     }
 }
 
-void WorldImpl::RegisterForProxies(FixtureID id)
-{
-    m_fixturesForProxies.push_back(id);
-}
-
-void WorldImpl::RegisterForProxies(BodyID id)
-{
-    m_bodiesForProxies.push_back(id);
-}
-
-void WorldImpl::UnregisterForProxies(BodyID id)
-{
-    const auto first = remove(begin(m_bodiesForProxies), end(m_bodiesForProxies), id);
-    m_bodiesForProxies.erase(first, end(m_bodiesForProxies));
-}
-
 void WorldImpl::CreateAndDestroyProxies(Length extension)
 {
     for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](const auto& fixtureID) {
@@ -2423,7 +2413,7 @@ void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
         const auto xfm2 = body.GetTransformation();
         assert(xfm1 == xfm2);
 #endif
-        RegisterForProxies(bodyID);
+        m_bodiesForProxies.push_back(bodyID);
     }
     else
     {
@@ -2474,7 +2464,7 @@ FixtureID WorldImpl::CreateFixture(BodyID bodyID, const Shape& shape,
 
     if (body.IsEnabled())
     {
-        RegisterForProxies(fixtureID);
+        m_fixturesForProxies.push_back(fixtureID);
     }
 
     // Adjust mass properties if needed.
@@ -2489,7 +2479,7 @@ FixtureID WorldImpl::CreateFixture(BodyID bodyID, const Shape& shape,
 
     // Let the world know we have a new fixture. This will cause new contacts
     // to be created at the beginning of the next time step.
-    SetNewFixtures();
+    m_flags |= e_newFixture;
 
     return fixtureID;
 }
@@ -2603,11 +2593,6 @@ void WorldImpl::DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& 
     fixture.SetProxies(std::vector<FixtureProxy>{});
 }
 
-void WorldImpl::TouchProxies(const Fixture& fixture) noexcept
-{
-    InternalTouchProxies(m_proxies, fixture);
-}
-
 void WorldImpl::InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture) noexcept
 {
     for (const auto& proxy: fixture.GetProxies()) {
@@ -2680,8 +2665,7 @@ void WorldImpl::Refilter(FixtureID id)
             contact.FlagForFiltering();
         }
     });
-
-    TouchProxies(fixture);
+    InternalTouchProxies(m_proxies, fixture);
 }
 
 void WorldImpl::SetFilterData(FixtureID id, Filter filter)
@@ -2714,7 +2698,7 @@ void WorldImpl::SetEnabled(BodyID id, bool flag)
 
     // Register for proxies so contacts created or destroyed the next time step.
     ForallFixtures(body, [this](const auto& fixtureID) {
-        RegisterForProxies(fixtureID);
+        m_fixturesForProxies.push_back(fixtureID);
     });
 }
 

@@ -500,27 +500,6 @@ public:
     void SetSensor(FixtureID id, bool value);
 
 private:
-    /// @brief Registers the given fixture for adding to proxy processing.
-    /// @post The given fixture will be found in the fixtures-for-proxies range.
-    void RegisterForProxies(FixtureID id);
-    
-    /// @brief Registers the given body for proxy processing.
-    /// @post The given body will be found in the bodies-for-proxies range.
-    void RegisterForProxies(BodyID id);
-    
-    /// @brief Unregisters the given body from proxy processing.
-    /// @post The given body won't be found in the bodies-for-proxies range.
-    void UnregisterForProxies(BodyID id);
-
-    /// @brief Touches each proxy of the given fixture.
-    /// @warning Behavior is undefined if called with a fixture for a body which doesn't
-    ///   belong to this world.
-    /// @note This sets things up so that pairs may be created for potentially new contacts.
-    void TouchProxies(const Fixture& fixture) noexcept;
-    
-    /// @brief Sets new fixtures flag.
-    void SetNewFixtures() noexcept;
-    
     /// @brief Flags type data type.
     using FlagsType = std::uint32_t;
     
@@ -615,7 +594,7 @@ private:
     
     /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
     static Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
-                                                                   ArrayAllocator<Body>& buffer);
+                                                            ArrayAllocator<Body>& buffer);
     
     /// @brief Solves the step using successive time of impact (TOI) events.
     /// @details Used for continuous physics.
@@ -657,7 +636,7 @@ private:
     /// @return Island solver results.
     ///
     IslandStats SolveToiViaGS(const Island& island, const StepConf& conf);
-    
+
     /// @brief Updates the given body.
     /// @details Updates the given body's sweep position 1, and its transformation.
     /// @param body Body to update.
@@ -665,16 +644,7 @@ private:
     /// @return <code>true</code> if body's contacts should be flagged for updating,
     ///   otherwise <code>false</code>.
     static bool UpdateBody(Body& body, const Position& pos);
-    
-    /// @brief Reset bodies for solve TOI.
-    static void ResetBodiesForSolveTOI(Bodies& bodies, ArrayAllocator<Body>& buffer) noexcept;
-    
-    /// @brief Reset contacts for solve TOI.
-    static void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const Contacts& contacts) noexcept;
-    
-    /// @brief Reset contacts for solve TOI.
-    static void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer, const Body& body) noexcept;
-    
+
     /// @brief Process contacts output.
     struct ProcessContactsOutput
     {
@@ -1023,11 +993,6 @@ inline void WorldImpl::SetSubStepping(bool flag) noexcept
 inline bool WorldImpl::HasNewFixtures() const noexcept
 {
     return (m_flags & e_newFixture) != 0u;
-}
-
-inline void WorldImpl::SetNewFixtures() noexcept
-{
-    m_flags |= e_newFixture;
 }
 
 inline void WorldImpl::UnsetNewFixtures() noexcept
