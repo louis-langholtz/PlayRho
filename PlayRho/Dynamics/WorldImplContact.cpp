@@ -98,6 +98,11 @@ bool NeedsUpdating(const WorldImpl& world, ContactID id)
     return world.GetContact(id).NeedsUpdating();
 }
 
+bool HasValidToi(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).HasValidToi();
+}
+
 FixtureID GetFixtureA(const WorldImpl& world, ContactID id)
 {
     return world.GetContact(id).GetFixtureA();
@@ -106,6 +111,21 @@ FixtureID GetFixtureA(const WorldImpl& world, ContactID id)
 FixtureID GetFixtureB(const WorldImpl& world, ContactID id)
 {
     return world.GetContact(id).GetFixtureB();
+}
+
+BodyID GetBodyA(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetBodyA();
+}
+
+BodyID GetBodyB(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetBodyB();
+}
+
+TimestepIters GetToiCount(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetToiCount();
 }
 
 } // namespace d2

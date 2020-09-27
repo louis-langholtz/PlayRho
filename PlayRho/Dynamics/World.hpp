@@ -711,11 +711,20 @@ public:
     /// @brief Whether or not the contact needs updating.
     bool NeedsUpdating(ContactID id) const;
 
+    /// @brief Whether or not the contact has a valid TOI.
+    bool HasValidToi(ContactID id) const;
+
     /// @brief Gets fixture A of the given contact.
     FixtureID GetFixtureA(ContactID id) const;
 
     /// @brief Gets fixture B of the given contact.
     FixtureID GetFixtureB(ContactID id) const;
+
+    BodyID GetBodyA(ContactID id) const;
+
+    BodyID GetBodyB(ContactID id) const;
+
+    TimestepIters GetToiCount(ContactID id) const;
 
     Real GetDefaultFriction(ContactID id) const;
 
@@ -1491,6 +1500,21 @@ inline FixtureID GetFixtureB(const World& world, ContactID id)
     return world.GetFixtureB(id);
 }
 
+inline BodyID GetBodyA(const World& world, ContactID id)
+{
+    return world.GetBodyA(id);
+}
+
+inline BodyID GetBodyB(const World& world, ContactID id)
+{
+    return world.GetBodyB(id);
+}
+
+inline TimestepIters GetToiCount(const World& world, ContactID id)
+{
+    return world.GetToiCount(id);
+}
+
 /// @copydoc World::NeedsFiltering
 /// @relatedalso World
 inline bool NeedsFiltering(const World& world, ContactID id)
@@ -1503,6 +1527,13 @@ inline bool NeedsFiltering(const World& world, ContactID id)
 inline bool NeedsUpdating(const World& world, ContactID id)
 {
     return world.NeedsUpdating(id);
+}
+
+/// @copydoc World::HasValidToi
+/// @relatedalso World
+inline bool HasValidToi(const World& world, ContactID id)
+{
+    return world.HasValidToi(id);
 }
 
 inline Real GetDefaultFriction(const World& world, ContactID id)

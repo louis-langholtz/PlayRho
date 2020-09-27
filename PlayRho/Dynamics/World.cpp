@@ -589,6 +589,11 @@ bool World::NeedsUpdating(ContactID id) const
     return ::playrho::d2::NeedsUpdating(*m_impl, id);
 }
 
+bool World::HasValidToi(ContactID id) const
+{
+    return ::playrho::d2::HasValidToi(*m_impl, id);
+}
+
 FixtureID World::GetFixtureA(ContactID id) const
 {
     return ::playrho::d2::GetFixtureA(*m_impl, id);
@@ -597,6 +602,21 @@ FixtureID World::GetFixtureA(ContactID id) const
 FixtureID World::GetFixtureB(ContactID id) const
 {
     return ::playrho::d2::GetFixtureB(*m_impl, id);
+}
+
+BodyID World::GetBodyA(ContactID id) const
+{
+    return ::playrho::d2::GetBodyA(*m_impl, id);
+}
+
+BodyID World::GetBodyB(ContactID id) const
+{
+    return ::playrho::d2::GetBodyB(*m_impl, id);
+}
+
+TimestepIters World::GetToiCount(ContactID id) const
+{
+    return ::playrho::d2::GetToiCount(*m_impl, id);
 }
 
 Real World::GetDefaultFriction(ContactID id) const

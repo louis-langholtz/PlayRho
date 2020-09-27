@@ -27,6 +27,7 @@
 
 #include <PlayRho/Common/Real.hpp>
 
+#include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 
@@ -61,11 +62,20 @@ bool NeedsFiltering(const WorldImpl& world, ContactID id);
 /// @brief Whether or not the contact needs updating.
 bool NeedsUpdating(const WorldImpl& world, ContactID id);
 
+/// @brief Whether or not the contact has a valid TOI.
+bool HasValidToi(const WorldImpl& world, ContactID id);
+
 /// @brief Gets fixture A of the given contact.
 FixtureID GetFixtureA(const WorldImpl& world, ContactID id);
 
 /// @brief Gets fixture B of the given contact.
 FixtureID GetFixtureB(const WorldImpl& world, ContactID id);
+
+BodyID GetBodyA(const WorldImpl& world, ContactID id);
+
+BodyID GetBodyB(const WorldImpl& world, ContactID id);
+
+TimestepIters GetToiCount(const WorldImpl& world, ContactID id);
 
 Real GetDefaultFriction(const WorldImpl& world, ContactID id);
 
