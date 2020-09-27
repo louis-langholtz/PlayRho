@@ -88,6 +88,8 @@ using playrho::size;
 static_assert(std::is_default_constructible<World>::value, "World must be default constructible!");
 static_assert(std::is_copy_constructible<World>::value, "World must be copy constructible!");
 static_assert(std::is_copy_assignable<World>::value, "World must be copy assignable!");
+static_assert(std::is_move_constructible<World>::value, "World must be move constructible!");
+static_assert(std::is_move_assignable<World>::value, "World must be move assignable!");
 static_assert(std::is_nothrow_destructible<World>::value, "World must be nothrow destructible!");
 
 World::World(const WorldConf& def): m_impl{CreateWorldImpl(def)}

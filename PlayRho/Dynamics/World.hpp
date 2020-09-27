@@ -152,8 +152,6 @@ public:
     ///   new memory required for those copies.
     World(const World& other);
 
-    World(World&& other) noexcept = delete;
-
     /// @brief Assignment operator.
     /// @details Copy assigns this world with a deep copy of the given world.
     /// @post The state of this world is like that of the given world except this world now
@@ -162,8 +160,6 @@ public:
     /// @warning This method should not be called while the world is locked!
     /// @throws WrongState if this method is called while the world is locked.
     World& operator= (const World& other);
-
-    World& operator= (World&& other) noexcept = delete;
 
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all dynamically allocated memory
