@@ -54,18 +54,18 @@ GearJointConf GetGearJointConf(const GearJoint& joint) noexcept
 GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Real ratio)
 {
     auto def = GearJointConf{
-        GetBodyB(world, id1), GetBodyB(world, id2),
-        GetBodyA(world, id1), GetBodyA(world, id2)
+        /*body-A*/ GetBodyB(world, id1), /*body-B*/ GetBodyB(world, id2),
+        /*body-C*/ GetBodyA(world, id1), /*body-D*/ GetBodyA(world, id2)
     };
 
-    auto coordinateA = Real{0};
+    auto scalar1 = Real{0};
     def.type1 = GetType(world, id1);
     switch (def.type1)
     {
         case JointType::Revolute:
         {
             def.referenceAngle1 = GetReferenceAngle(world, id1);
-            coordinateA = (GetAngle(world, def.bodyA) - GetAngle(world, def.bodyC) - def.referenceAngle1) / Radian;
+            scalar1 = (GetAngle(world, def.bodyA) - GetAngle(world, def.bodyC) - def.referenceAngle1) / Radian;
             break;
         }
         case JointType::Prismatic:
@@ -77,21 +77,21 @@ GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Rea
             def.localAxis1 = GetLocalAxisA(world, id1);
             const auto pC = def.localAnchorC;
             const auto pA = InverseRotate(Rotate(def.localAnchorA, xfA.q) + (xfA.p - xfC.p), xfC.q);
-            coordinateA = Dot(pA - pC, def.localAxis1) / Meter;
+            scalar1 = Dot(pA - pC, def.localAxis1) / Meter;
             break;
         }
         default:
             break;
     }
 
-    auto coordinateB = Real{0};
+    auto scalar2 = Real{0};
     def.type2 = GetType(world, id2);
     switch (def.type2)
     {
         case JointType::Revolute:
         {
             def.referenceAngle2 = GetReferenceAngle(world, id2);
-            coordinateA = (GetAngle(world, def.bodyB) - GetAngle(world, def.bodyD) - def.referenceAngle1) / Radian;
+            scalar1 = (GetAngle(world, def.bodyB) - GetAngle(world, def.bodyD) - def.referenceAngle1) / Radian;
             break;
         }
         case JointType::Prismatic:
@@ -103,7 +103,7 @@ GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Rea
             def.localAxis2 = GetLocalAxisA(world, id2);
             const auto pD = def.localAnchorD;
             const auto pB = InverseRotate(Rotate(def.localAnchorB, xfB.q) + (xfB.p - xfD.p), xfD.q);
-            coordinateB = Dot(pB - pD, def.localAxis2) / Meter;
+            scalar2 = Dot(pB - pD, def.localAxis2) / Meter;
             break;
         }
         default:
@@ -111,7 +111,7 @@ GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Rea
     }
 
     def.ratio = ratio;
-    def.constant = coordinateA + def.ratio * coordinateB;
+    def.constant = scalar1 + def.ratio * scalar2;
 
     return def;
 }
