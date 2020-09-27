@@ -37,7 +37,7 @@ TEST(Contact, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(Contact), std::size_t(128)); break;
+        case  4: EXPECT_EQ(sizeof(Contact), std::size_t(36)); break;
         case  8: EXPECT_EQ(sizeof(Contact), std::size_t(192)); break;
         case 16: EXPECT_EQ(sizeof(Contact), std::size_t(384)); break;
         default: FAIL(); break;

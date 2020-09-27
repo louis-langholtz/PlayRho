@@ -24,7 +24,6 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-#include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
@@ -99,9 +98,6 @@ public:
     ///
     Contact(BodyID bA, FixtureID fA, ChildCounter iA,
             BodyID bB, FixtureID fB, ChildCounter iB) noexcept;
-
-    /// @brief Gets the contact manifold.
-    const Manifold& GetManifold() const noexcept;
 
     /// @brief Is this contact touching?
     /// @details
@@ -292,11 +288,6 @@ public:
 
     /// @brief Sets the TOI count to the given value.
     void SetToiCount(substep_type value) noexcept;
-
-    /// @brief Gets the writable manifold.
-    /// @note This is intentionally not a public method.
-    /// @warning Do not modify the manifold unless you understand the internals of the engine.
-    Manifold& GetMutableManifold() noexcept;
     
     /// @brief Whether this contact is in the is-in-island state.
     bool IsIslanded() const noexcept;
@@ -310,8 +301,6 @@ public:
     void IncrementToiCount() noexcept;
 
 private:
-    Manifold mutable m_manifold; ///< Manifold of the contact. 64-bytes. @see Update.
-
     // Need to be able to identify two different fixtures, the child shape per fixture,
     // and the two different bodies that each fixture is associated with. This could be
     // done by storing whatever information is needed to lookup this information. For
@@ -348,18 +337,6 @@ private:
 /// This is the <code>googletest</code> based unit testing file for the
 ///   <code>playrho::d2::Contact</code> class.
 
-inline const Manifold& Contact::GetManifold() const noexcept
-{
-    // XXX: What to do if needs-updating?
-    //assert(!NeedsUpdating());
-    return m_manifold;
-}
-
-inline Manifold& Contact::GetMutableManifold() noexcept
-{
-    return m_manifold;
-}
-
 inline void Contact::SetEnabled(bool flag) noexcept
 {
     if (flag)
@@ -374,12 +351,12 @@ inline void Contact::SetEnabled(bool flag) noexcept
 
 inline void Contact::SetEnabled() noexcept
 {
-    m_flags |= Contact::e_enabledFlag;
+    m_flags |= e_enabledFlag;
 }
 
 inline void Contact::UnsetEnabled() noexcept
 {
-    m_flags &= ~Contact::e_enabledFlag;
+    m_flags &= ~e_enabledFlag;
 }
 
 inline bool Contact::IsEnabled() const noexcept
@@ -431,12 +408,12 @@ inline void Contact::FlagForFiltering() noexcept
 
 inline void Contact::UnflagForFiltering() noexcept
 {
-    m_flags &= ~Contact::e_filterFlag;
+    m_flags &= ~e_filterFlag;
 }
 
 inline bool Contact::NeedsFiltering() const noexcept
 {
-    return (m_flags & Contact::e_filterFlag) != 0;
+    return (m_flags & e_filterFlag) != 0;
 }
 
 inline void Contact::FlagForUpdating() noexcept
@@ -446,12 +423,12 @@ inline void Contact::FlagForUpdating() noexcept
 
 inline void Contact::UnflagForUpdating() noexcept
 {
-    m_flags &= ~Contact::e_dirtyFlag;
+    m_flags &= ~e_dirtyFlag;
 }
 
 inline bool Contact::NeedsUpdating() const noexcept
 {
-    return (m_flags & Contact::e_dirtyFlag) != 0;
+    return (m_flags & e_dirtyFlag) != 0;
 }
 
 inline void Contact::SetFriction(Real friction) noexcept

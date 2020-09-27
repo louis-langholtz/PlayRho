@@ -64,7 +64,7 @@ void SetRestitution(WorldImpl& world, ContactID id, Real value)
 
 const Manifold& GetManifold(const WorldImpl& world, ContactID id)
 {
-    return world.GetContact(id).GetManifold();
+    return world.GetManifold(id);
 }
 
 Real GetDefaultFriction(const WorldImpl& world, ContactID id)

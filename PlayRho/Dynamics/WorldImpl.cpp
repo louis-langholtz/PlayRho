@@ -221,6 +221,7 @@ BodyConstraints GetBodyConstraints(const Island::Bodies& bodies,
 
 PositionConstraints GetPositionConstraints(const ArrayAllocator<Fixture>& fixtureBuffer,
                                            const ArrayAllocator<Contact>& contactBuffer,
+                                           const ArrayAllocator<Manifold>& manifoldBuffer,
                                            const Island::Contacts& contacts,
                                            BodyConstraintsMap& bodies)
 {
@@ -229,7 +230,7 @@ PositionConstraints GetPositionConstraints(const ArrayAllocator<Fixture>& fixtur
     transform(cbegin(contacts), cend(contacts), back_inserter(constraints),
               [&](const auto& contactID) {
         const auto& contact = contactBuffer[UnderlyingValue(contactID)];
-        const auto& manifold = contact.GetManifold();
+        const auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
         const auto fixtureA = GetFixtureA(contact);
         const auto fixtureB = GetFixtureB(contact);
         const auto indexA = GetChildIndexA(contact);
@@ -258,6 +259,7 @@ PositionConstraints GetPositionConstraints(const ArrayAllocator<Fixture>& fixtur
 /// @see SolveVelocityConstraints.
 VelocityConstraints GetVelocityConstraints(const ArrayAllocator<Fixture>& fixtureBuffer,
                                            const ArrayAllocator<Contact>& contactBuffer,
+                                           const ArrayAllocator<Manifold>& manifoldBuffer,
                                            const Island::Contacts& contacts,
                                            BodyConstraintsMap& bodies,
                                            const VelocityConstraint::Conf conf)
@@ -267,7 +269,7 @@ VelocityConstraints GetVelocityConstraints(const ArrayAllocator<Fixture>& fixtur
     transform(cbegin(contacts), cend(contacts), back_inserter(velConstraints),
               [&](const auto& contactID) {
         const auto& contact = contactBuffer[UnderlyingValue(contactID)];
-        const auto& manifold = contact.GetManifold();
+        const auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
         const auto fixtureA = contact.GetFixtureA();
         const auto fixtureB = contact.GetFixtureB();
         const auto friction = contact.GetFriction();
@@ -622,6 +624,7 @@ void WorldImpl::InternalClear() noexcept
     });
     for_each(cbegin(m_contacts), cend(m_contacts), [&](const Contacts::value_type& c){
         m_contactBuffer.Free(UnderlyingValue(std::get<ContactID>(c)));
+        m_manifoldBuffer.Free(UnderlyingValue(std::get<ContactID>(c)));
     });
 
     m_bodies.clear();
@@ -1101,8 +1104,12 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
                                          m_bodyBuffer, m_contactBuffer, m_fixtureBuffer,
                                          conf, island, m_postSolveContactListener));
 #else
-            const auto solverResults = SolveRegIslandViaGS(m_bodyBuffer, m_contactBuffer, m_fixtureBuffer,
-                                                           conf, island, m_postSolveContactListener);
+            const auto solverResults = SolveRegIslandViaGS(m_bodyBuffer,
+                                                           m_contactBuffer,
+                                                           m_manifoldBuffer,
+                                                           m_fixtureBuffer,
+                                                           conf, island,
+                                                           m_postSolveContactListener);
             ::playrho::Update(stats, solverResults);
 #endif
         }
@@ -1136,6 +1143,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
 
 IslandStats WorldImpl::SolveRegIslandViaGS(ArrayAllocator<Body>& bodyBuffer,
                                            ArrayAllocator<Contact>& contacts,
+                                           ArrayAllocator<Manifold>& manifolds,
                                            const ArrayAllocator<Fixture>& fixtures,
                                            const StepConf& conf, Island island,
                                            const ImpulsesContactListener& contactListener)
@@ -1155,9 +1163,9 @@ IslandStats WorldImpl::SolveRegIslandViaGS(ArrayAllocator<Body>& bodyBuffer,
     // Copy bodies' pos1 and velocity data into local arrays.
     auto bodyConstraints = GetBodyConstraints(island.m_bodies, bodyBuffer, h, GetMovementConf(conf));
     auto bodyConstraintsMap = GetBodyConstraintsMap(island.m_bodies, bodyConstraints);
-    auto posConstraints = GetPositionConstraints(fixtures, contacts,
+    auto posConstraints = GetPositionConstraints(fixtures, contacts, manifolds,
                                                  island.m_contacts, bodyConstraintsMap);
-    auto velConstraints = GetVelocityConstraints(fixtures, contacts,
+    auto velConstraints = GetVelocityConstraints(fixtures, contacts, manifolds,
                                                  island.m_contacts, bodyConstraintsMap,
                                                  GetRegVelocityConstraintConf(conf));
     
@@ -1227,7 +1235,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(ArrayAllocator<Body>& bodyBuffer,
     // Update normal and tangent impulses of contacts' manifold points
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
         const auto i = static_cast<VelocityConstraints::size_type>(&vc - data(velConstraints));
-        auto& manifold = contacts[UnderlyingValue(island.m_contacts[i])].GetMutableManifold();
+        auto& manifold = manifolds[UnderlyingValue(island.m_contacts[i])];
         AssignImpulses(manifold, vc);
     });
     
@@ -1654,7 +1662,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     }
 #endif
 
-    auto posConstraints = GetPositionConstraints(m_fixtureBuffer, m_contactBuffer,
+    auto posConstraints = GetPositionConstraints(m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
                                                  island.m_contacts, bodyConstraintsMap);
 
     // Solve TOI-based position constraints.
@@ -1710,7 +1718,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     });
 #endif
 
-    auto velConstraints = GetVelocityConstraints(m_fixtureBuffer, m_contactBuffer,
+    auto velConstraints = GetVelocityConstraints(m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
                                                  island.m_contacts, bodyConstraintsMap,
                                                  GetToiVelocityConstraintConf(conf));
 
@@ -1877,8 +1885,12 @@ StepStats WorldImpl::Step(const StepConf& conf)
 
         {
             // Note: this may update bodies (in addition to the contacts container).
-            const auto destroyStats = DestroyContacts(m_contacts, m_contactBuffer, m_bodyBuffer,
-                                                      m_fixtureBuffer, m_tree, m_endContactListener);
+            const auto destroyStats = DestroyContacts(m_contacts,
+                                                      m_contactBuffer,
+                                                      m_manifoldBuffer,
+                                                      m_bodyBuffer,
+                                                      m_fixtureBuffer, m_tree,
+                                                      m_endContactListener);
             stepStats.pre.destroyed = destroyStats.erased;
         }
 
@@ -1950,6 +1962,7 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
 void WorldImpl::InternalDestroy(ContactID contactID,
                                 ArrayAllocator<Body>& bodyBuffer,
                                 ArrayAllocator<Contact>& contactBuffer,
+                                ArrayAllocator<Manifold>& manifoldBuffer,
                                 ContactListener listener, Body* from)
 {
     assert(contactID != InvalidContactID);
@@ -1971,7 +1984,8 @@ void WorldImpl::InternalDestroy(ContactID contactID,
     {
         bodyB->Erase(contactID);
     }
-    if ((contact.GetManifold().GetPointCount() > 0) && !contact.IsSensor())
+    auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
+    if ((manifold.GetPointCount() > 0) && !contact.IsSensor())
     {
         // Contact may have been keeping accelerable bodies of fixture A or B from moving.
         // Need to awaken those bodies now in case they are again movable.
@@ -1979,6 +1993,7 @@ void WorldImpl::InternalDestroy(ContactID contactID,
         bodyB->SetAwake();
     }
     contactBuffer.Free(UnderlyingValue(contactID));
+    manifoldBuffer.Free(UnderlyingValue(contactID));
 }
 
 void WorldImpl::Destroy(Contacts& contacts, ContactListener listener, ContactID contactID, Body* from)
@@ -1992,11 +2007,12 @@ void WorldImpl::Destroy(Contacts& contacts, ContactListener listener, ContactID 
     {
         contacts.erase(it);
     }
-    InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, listener, from);
+    InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, m_manifoldBuffer, listener, from);
 }
 
 WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts,
                                                            ArrayAllocator<Contact>& contactBuffer,
+                                                           ArrayAllocator<Manifold>& manifoldBuffer,
                                                            ArrayAllocator<Body>& bodyBuffer,
                                                            const ArrayAllocator<Fixture>& fixtureBuffer,
                                                            const DynamicTree& tree,
@@ -2011,7 +2027,7 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts,
         if (!TestOverlap(tree, key.GetMin(), key.GetMax()))
         {
             // Destroy contacts that cease to overlap in the broad-phase.
-            InternalDestroy(contactID, bodyBuffer, contactBuffer, listener);
+            InternalDestroy(contactID, bodyBuffer, contactBuffer, manifoldBuffer, listener);
             return true;
         }
         
@@ -2026,7 +2042,7 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts,
             const auto& fixtureB = fixtureBuffer[UnderlyingValue(contact.GetFixtureB())];
             if (!ShouldCollide(bodyB, bodyA, bodyIdA) || !ShouldCollide(fixtureA, fixtureB))
             {
-                InternalDestroy(contactID, bodyBuffer, contactBuffer, listener);
+                InternalDestroy(contactID, bodyBuffer, contactBuffer, manifoldBuffer, listener);
                 return true;
             }
             contact.UnflagForFiltering();
@@ -2267,7 +2283,7 @@ bool WorldImpl::Add(ContactKey key)
     {
         return false;
     }
-    
+
     if (size(m_contacts) >= MaxContacts)
     {
         // New contact was needed, but denied due to MaxContacts count being reached.
@@ -2276,6 +2292,7 @@ bool WorldImpl::Add(ContactKey key)
 
     const auto contactID = static_cast<ContactID>(static_cast<ContactID::underlying_type>(
         m_contactBuffer.Allocate(bodyIdA, fixtureIdA, indexA, bodyIdB, fixtureIdB, indexB)));
+    m_manifoldBuffer.Allocate();
     auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
     if (bodyA.IsImpenetrable() || bodyB.IsImpenetrable())
     {
@@ -2831,7 +2848,7 @@ void WorldImpl::Accept(JointID id, JointVisitor& visitor)
 void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 {
     auto& c = m_contactBuffer[UnderlyingValue(contactID)];
-    auto& manifold = c.GetMutableManifold();
+    auto& manifold = m_manifoldBuffer[UnderlyingValue(contactID)];
     const auto oldManifold = manifold;
 
     // Note: do not assume the fixture AABBs are overlapping or are valid.
@@ -3031,6 +3048,16 @@ const Contact& WorldImpl::GetContact(ContactID id) const
 Contact& WorldImpl::GetContact(ContactID id)
 {
     return m_contactBuffer.at(UnderlyingValue(id));
+}
+
+const Manifold& WorldImpl::GetManifold(ContactID id) const
+{
+    return m_manifoldBuffer.at(UnderlyingValue(id));
+}
+
+Manifold& WorldImpl::GetManifold(ContactID id)
+{
+    return m_manifoldBuffer.at(UnderlyingValue(id));
 }
 
 } // namespace d2

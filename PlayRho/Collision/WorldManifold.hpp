@@ -200,7 +200,8 @@ WorldManifold GetWorldManifold(const Manifold& manifold,
 ///
 /// @relatedalso Contact
 ///
-WorldManifold GetWorldManifold(const World& world, const Contact& contact);
+WorldManifold GetWorldManifold(const World& world,
+                               const Contact& contact, const Manifold& manifold);
 
 } // namespace d2
 } // namespace playrho

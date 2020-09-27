@@ -33,6 +33,7 @@
 #include <PlayRho/Collision/DynamicTree.hpp> // for GetTree
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>

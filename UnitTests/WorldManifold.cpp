@@ -173,7 +173,7 @@ TEST(WorldManifold, GetForContact)
     const auto fA = world.CreateFixture(bA, shape);
     const auto fB = world.CreateFixture(bB, shape);
     const auto c = Contact{bA, fA, 0u, bB, fB, 0u};
-    const auto wm = GetWorldManifold(world, c);
+    const auto wm = GetWorldManifold(world, c, Manifold{});
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
     EXPECT_FALSE(IsValid(wm.GetNormal()));
 }

@@ -488,6 +488,9 @@ public:
     const Contact& GetContact(ContactID id) const;
     Contact& GetContact(ContactID id);
 
+    const Manifold& GetManifold(ContactID id) const;
+    Manifold& GetManifold(ContactID id);
+
     const Joint& GetJoint(JointID id) const;
     Joint& GetJoint(JointID id);
 
@@ -565,6 +568,7 @@ private:
     ///
     static IslandStats SolveRegIslandViaGS(ArrayAllocator<Body>& bodyBuffer,
                                            ArrayAllocator<Contact>& contacts,
+                                           ArrayAllocator<Manifold>& manifolds,
                                            const ArrayAllocator<Fixture>& fixtures,
                                            const StepConf& conf, Island island,
                                            const ImpulsesContactListener& contactListener);
@@ -771,6 +775,7 @@ private:
     /// Essentially this really just purges contacts that are no longer relevant.
     static DestroyContactsStats DestroyContacts(Contacts& contacts,
                                                 ArrayAllocator<Contact>& contactBuffer,
+                                                ArrayAllocator<Manifold>& manifoldBuffer,
                                                 ArrayAllocator<Body>& bodyBuffer,
                                                 const ArrayAllocator<Fixture>& fixtureBuffer,
                                                 const DynamicTree& tree,
@@ -807,6 +812,7 @@ private:
     static void InternalDestroy(ContactID contact,
                                 ArrayAllocator<Body>& bodyBuffer,
                                 ArrayAllocator<Contact>& contactBuffer,
+                                ArrayAllocator<Manifold>& manifoldBuffer,
                                 ContactListener listener, Body* from = nullptr);
 
     /// @brief Creates proxies for every child of the given fixture's shape.
@@ -862,6 +868,7 @@ private:
     ArrayAllocator<Body> m_bodyBuffer;
     ArrayAllocator<Fixture> m_fixtureBuffer;
     ArrayAllocator<Contact> m_contactBuffer;
+    ArrayAllocator<Manifold> m_manifoldBuffer;
 
     DynamicTree m_tree; ///< Dynamic tree.
 
