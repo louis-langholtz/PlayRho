@@ -103,6 +103,9 @@ void SetMaxMotorTorque(WorldImpl& world, JointID id, Torque value);
 /// @brief Gets the angular motor impulse of the identified joint.
 AngularMomentum GetAngularMotorImpulse(const WorldImpl& world, JointID id);
 
+/// @brief Gets the frequency of the identified joint if it has this property.
+Frequency GetFrequency(const WorldImpl& world, JointID id);
+
 } // namespace d2
 } // namespace playrho
 

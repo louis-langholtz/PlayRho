@@ -574,6 +574,11 @@ AngularMomentum World::GetAngularMotorImpulse(JointID id) const
     return ::playrho::d2::GetAngularMotorImpulse(*m_impl, id);
 }
 
+Frequency World::GetFrequency(JointID id) const
+{
+    return ::playrho::d2::GetFrequency(*m_impl, id);
+}
+
 bool World::IsTouching(ContactID id) const
 {
     return ::playrho::d2::IsTouching(*m_impl, id);

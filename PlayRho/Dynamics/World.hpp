@@ -611,6 +611,9 @@ public:
     /// @brief Gets the angular motor impulse of the identified joint.
     AngularMomentum GetAngularMotorImpulse(JointID id) const;
 
+    /// @brief Gets the frequency of the identified joint if it has this property.
+    Frequency GetFrequency(JointID id) const;
+
     /// @brief Gets the fixtures-for-proxies range for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing
     ///   during the next call to the world step method.
@@ -1681,6 +1684,13 @@ inline void SetMaxMotorTorque(World& world, JointID id, Torque value)
 inline AngularMomentum GetAngularMotorImpulse(const World& world, JointID id)
 {
     return world.GetAngularMotorImpulse(id);
+}
+
+/// @copydoc World::GetFrequency
+/// @relatedalso World
+inline Frequency GetFrequency(const World& world, JointID id)
+{
+    return world.GetFrequency(id);
 }
 
 /// @brief Gets the enabled/disabled state of the joint.

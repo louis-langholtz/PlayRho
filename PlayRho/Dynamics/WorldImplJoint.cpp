@@ -265,5 +265,27 @@ AngularMomentum GetAngularMotorImpulse(const WorldImpl& world, JointID id)
     return *result;
 }
 
+Frequency GetFrequency(const WorldImpl& world, JointID id)
+{
+    Optional<Frequency> result;
+    const auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<const DistanceJoint&>() = [&result](const DistanceJoint& j) {
+        result = j.GetFrequency();
+    };
+    visitor.get<const TargetJoint&>() = [&result](const TargetJoint& j) {
+        result = j.GetFrequency();
+    };
+    visitor.get<const WeldJoint&>() = [&result](const WeldJoint& j) {
+        result = j.GetFrequency();
+    };
+    joint.Accept(visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetFrequency not supported by joint type!");
+    }
+    return *result;
+}
+
 } // namespace d2
 } // namespace playrho
