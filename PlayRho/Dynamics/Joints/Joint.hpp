@@ -99,6 +99,25 @@ public:
     /// @brief Is the given definition okay.
     static bool IsOkay(const JointConf& def) noexcept;
 
+    /// @brief Dynamically allocates and instantiates the out-type from the given data.
+    template <class OUT_TYPE, class IN_TYPE>
+    static OUT_TYPE* Create(IN_TYPE def)
+    {
+        if (OUT_TYPE::IsOkay(def))
+        {
+            return new OUT_TYPE(def);
+        }
+        throw InvalidArgument("definition not okay");
+    }
+
+    /// @brief Creates a new joint based on the given definition.
+    /// @throws InvalidArgument if given a joint definition with a type that's not recognized.
+    static Joint* Create(const JointConf& def);
+
+    /// @brief Destroys the given joint.
+    /// @note This calls the joint's destructor.
+    static void Destroy(const Joint* joint) noexcept;
+
     virtual ~Joint() noexcept = default;
 
     /// @brief Gets the first body attached to this joint.
@@ -154,37 +173,6 @@ public:
     /// Flags type data type.
     using FlagsType = std::uint8_t;
 
-    /// @brief Flags stored in m_flags
-    enum Flag: FlagsType
-    {
-        // Used when crawling contact graph when forming islands.
-        e_islandFlag = 0x01u,
-
-        e_collideConnectedFlag = 0x02u
-    };
-
-    /// @brief Gets the flags value for the given joint definition.
-    static FlagsType GetFlags(const JointConf& def) noexcept;
-
-    /// @brief Dynamically allocates and instantiates the out-type from the given data.
-    template <class OUT_TYPE, class IN_TYPE>
-    static OUT_TYPE* Create(IN_TYPE def)
-    {
-        if (OUT_TYPE::IsOkay(def))
-        {
-            return new OUT_TYPE(def);
-        }
-        throw InvalidArgument("definition not okay");
-    }
-    
-    /// @brief Creates a new joint based on the given definition.
-    /// @throws InvalidArgument if given a joint definition with a type that's not recognized.
-    static Joint* Create(const JointConf& def);
-
-    /// @brief Destroys the given joint.
-    /// @note This calls the joint's destructor.
-    static void Destroy(const Joint* joint) noexcept;
-
     /// @brief Initializes velocity constraint data based on the given solver data.
     /// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
     /// @see SolveVelocityConstraints.
@@ -214,6 +202,17 @@ public:
     void UnsetIslanded() noexcept;
 
 private:
+    /// @brief Flags stored in m_flags
+    enum Flag: FlagsType
+    {
+        // Used when crawling contact graph when forming islands.
+        e_islandFlag = 0x01u,
+        e_collideConnectedFlag = 0x02u
+    };
+
+    /// @brief Gets the flags value for the given joint definition.
+    static FlagsType GetFlags(const JointConf& def) noexcept;
+
     void* m_userData; ///< User data.
     BodyID const m_bodyA; ///< Body A.
     BodyID const m_bodyB; ///< Body B.
