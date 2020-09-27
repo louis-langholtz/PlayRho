@@ -40,6 +40,10 @@ namespace d2 {
 
 bool TargetJoint::IsOkay(const TargetJointConf& def) noexcept
 {
+    if (def.bodyA == InvalidBodyID || def.bodyB == InvalidBodyID)
+    {
+        return false;
+    }
     if (!Joint::IsOkay(def))
     {
         return false;
