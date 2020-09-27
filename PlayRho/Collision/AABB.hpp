@@ -29,6 +29,7 @@
 #include <PlayRho/Common/Vector.hpp>
 #include <PlayRho/Common/Settings.hpp> // for ChildCounter, etc.
 #include <PlayRho/Common/Templates.hpp>
+#include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 
 #include <algorithm> // for std::mismatch, lexicographical_compare, etc
@@ -458,6 +459,8 @@ AABB ComputeAABB(const World& world, FixtureID id);
 /// @brief Computes the AABB for the given body.
 /// @relatedalso Body
 AABB ComputeAABB(const World& world, const Body& body);
+
+AABB ComputeAABB(const World& world, BodyID id);
 
 /// @brief Computes the intersecting AABB for the given pair of fixtures and indexes.
 /// @details The intersecting AABB for the given pair of fixtures is the intersection

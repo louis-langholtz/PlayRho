@@ -86,6 +86,17 @@ AABB ComputeAABB(const World& world, const Body& body)
     return sum;
 }
 
+AABB ComputeAABB(const World& world, BodyID id)
+{
+    auto sum = AABB{};
+    const auto xf = GetTransformation(world, id);
+    for (const auto& f: GetFixtures(world, id))
+    {
+        Include(sum, ComputeAABB(GetShape(world, f), xf));
+    }
+    return sum;
+}
+
 AABB ComputeIntersectingAABB(const World& world,
                              FixtureID fA, ChildCounter iA,
                              FixtureID fB, ChildCounter iB) noexcept
