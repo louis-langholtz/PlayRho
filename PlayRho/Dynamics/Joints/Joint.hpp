@@ -118,6 +118,9 @@ public:
     /// @note This calls the joint's destructor.
     static void Destroy(const Joint* joint) noexcept;
 
+    /// @brief Initializing constructor.
+    explicit Joint(const JointConf& def);
+
     virtual ~Joint() noexcept = default;
 
     /// @brief Gets the first body attached to this joint.
@@ -166,12 +169,6 @@ public:
     /// @brief Shifts the origin for any points stored in world coordinates.
     /// @return <code>true</code> if shift done, <code>false</code> otherwise.
     virtual bool ShiftOrigin(Length2) { return false;  }
-    
-    /// @brief Initializing constructor.
-    explicit Joint(const JointConf& def);
-
-    /// Flags type data type.
-    using FlagsType = std::uint8_t;
 
     /// @brief Initializes velocity constraint data based on the given solver data.
     /// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
@@ -202,6 +199,9 @@ public:
     void UnsetIslanded() noexcept;
 
 private:
+    /// Flags type data type.
+    using FlagsType = std::uint8_t;
+
     /// @brief Flags stored in m_flags
     enum Flag: FlagsType
     {
