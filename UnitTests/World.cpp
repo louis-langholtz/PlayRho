@@ -2956,8 +2956,6 @@ TEST(World, SpeedingBulletBallWontTunnel)
     }
 }
 
-#if 0
-
 TEST(World_Longer, TargetJointWontCauseTunnelling)
 {
     World world{};
@@ -2990,7 +2988,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             const auto wall_fixture = world.CreateFixture(left_wall_body, Shape(edgeConf));
             ASSERT_NE(wall_fixture, InvalidFixtureID);
         }
-        Include(container_aabb, ComputeAABB(*left_wall_body));
+        Include(container_aabb, ComputeAABB(world, left_wall_body));
     }
     
     body_def.location = Length2{right_edge_x * Meter, 0_m};
@@ -3001,7 +2999,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             const auto wall_fixture = world.CreateFixture(right_wall_body, Shape(edgeConf));
             ASSERT_NE(wall_fixture, InvalidFixtureID);
         }
-        Include(container_aabb, ComputeAABB(*right_wall_body));
+        Include(container_aabb, ComputeAABB(world, right_wall_body));
     }
 
     // Setup horizontal bounderies
@@ -3015,7 +3013,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             const auto wall_fixture = world.CreateFixture(btm_wall_body, Shape(edgeConf));
             ASSERT_NE(wall_fixture, InvalidFixtureID);
         }
-        Include(container_aabb, ComputeAABB(*btm_wall_body));
+        Include(container_aabb, ComputeAABB(world, btm_wall_body));
     }
     
     body_def.location = Length2{0, top_edge_y * Meter};
@@ -3026,7 +3024,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             const auto wall_fixture = world.CreateFixture(top_wall_body, Shape(edgeConf));
             ASSERT_NE(wall_fixture, InvalidFixtureID);
         }
-        Include(container_aabb, ComputeAABB(*top_wall_body));
+        Include(container_aabb, ComputeAABB(world, top_wall_body));
     }
 
     body_def.type = BodyType::Dynamic;
@@ -3047,7 +3045,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
 
     constexpr auto numBodies = 1u;
     Length2 last_opos[numBodies];
-    Body *bodies[numBodies];
+    BodyID bodies[numBodies];
     for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
     {
         const auto angle = i * 2 * Pi / numBodies;
@@ -3056,33 +3054,33 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         body_def.location = Length2{x, y};
         bodies[i] = world.CreateBody(body_def);
         ASSERT_NE(bodies[i], InvalidBodyID);
-        ASSERT_EQ(GetX(bodies[i]->GetLocation()), x);
-        ASSERT_EQ(GetY(bodies[i]->GetLocation()), y);
-        last_opos[i] = bodies[i]->GetLocation();
+        ASSERT_EQ(GetX(GetLocation(world, bodies[i])), x);
+        ASSERT_EQ(GetY(GetLocation(world, bodies[i])), y);
+        last_opos[i] = GetLocation(world, bodies[i]);
         {
             const auto fixture = world.CreateFixture(bodies[i], object_shape);
             ASSERT_NE(fixture, InvalidFixtureID);
         }
     }
 
-    BodyConf bodyConf;
-    const auto spare_body = world.CreateBody(bodyConf);
+    const auto spare_body = [&](){
+        BodyConf bodyConf;
+        bodyConf.UseType(BodyType::Static);
+        bodyConf.UseEnabled(false);
+        bodyConf.UseLocation(Length2{-ball_radius / Real{2}, +ball_radius / Real{2}});
+        return world.CreateBody(bodyConf);
+    }();
 
     const auto target_joint = [&]() {
         TargetJointConf mjd;
         mjd.bodyA = spare_body;
         mjd.bodyB = ball_body;
-        const auto ball_body_pos = GetLocation(world, ball_body);
-        mjd.target = Length2{
-            GetX(ball_body_pos) - ball_radius / Real{2},
-            GetY(ball_body_pos) + ball_radius / Real{2}
-        };
-        mjd.maxForce = Real(1000) * GetMass(*ball_body) * MeterPerSquareSecond;
-        return static_cast<TargetJoint*>(world.CreateJoint(mjd));
+        mjd.maxForce = Real(1000) * GetMass(world, ball_body) * MeterPerSquareSecond;
+        return world.CreateJoint(mjd);
     }();
     ASSERT_NE(target_joint, InvalidJointID);
 
-    ball_body->SetAwake();
+    SetAwake(world, ball_body);
 
     auto max_x = Real(0);
     auto min_x = Real(0);
@@ -3104,11 +3102,11 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
     auto distance_speed = Real(0.003); // meters / timestep
     const auto distance_accel = Real(1.001);
 
-    MyContactListener listener{
-        [&](Contact& contact, const Manifold& old_manifold)
+    MyContactListener listener{world,
+        [&](ContactID contact, const Manifold& old_manifold)
         {
             // PreSolve...
-            const auto new_manifold = contact.GetManifold();
+            const auto new_manifold = GetManifold(world, contact);
             const auto pointStates = GetPointStates(old_manifold, new_manifold);
             const auto oldPointCount = old_manifold.GetPointCount();
             switch (oldPointCount)
@@ -3150,16 +3148,16 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             }
             ASSERT_THROW(world.Destroy(target_joint), WrongState);
         },
-        [&](Contact& contact, const ContactImpulsesList& impulse, ContactListener::iteration_type solved)
+        [&](ContactID contact, const ContactImpulsesList& impulse, unsigned solved)
         {
-            const auto fA = contact.GetFixtureA();
-            const auto fB = contact.GetFixtureB();
+            const auto fA = GetFixtureA(world, contact);
+            const auto fB = GetFixtureB(world, contact);
 
             ASSERT_NE(fA, InvalidFixtureID);
             ASSERT_NE(fB, InvalidFixtureID);
 
-            const auto body_a = fA->GetBody();
-            const auto body_b = fB->GetBody();
+            const auto body_a = GetBody(world, fA);
+            const auto body_b = GetBody(world, fB);
 
             ASSERT_NE(body_a, InvalidBodyID);
             ASSERT_NE(body_b, InvalidBodyID);
@@ -3177,7 +3175,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 
                 if (GetX(lt) <= 0_m || GetY(lt) <= 0_m || GetX(gt) <= 0_m || GetY(gt) <= 0_m)
                 {
-                    if (!TestOverlap(container_aabb, ComputeAABB(*body)))
+                    if (!TestOverlap(container_aabb, ComputeAABB(world, body)))
                     {
                         // Body out of bounds and no longer even overlapping container!
                         EXPECT_LT(GetX(GetLocation(world, body)), right_edge_x * Meter);
@@ -3191,7 +3189,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             if (fail_count > 0)
             {
                 std::cout << " angl=" << angle;
-                std::cout << " ctoi=" << 0 + contact.GetToiCount();
+                std::cout << " ctoi=" << 0 + GetToiCount(world, contact);
                 std::cout << " solv=" << 0 + solved;
                 std::cout << " targ=(" << distance * cos(angle) << "," << distance * sin(angle) << ")";
                 std::cout << " maxv=" << max_velocity;
@@ -3207,22 +3205,22 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                 std::cout << " bodyA=(" << GetX(GetLocation(world, body_a)) << "," << GetY(GetLocation(world, body_a)) << ")";
                 if (body_a == ball_body) std::cout << " ball";
                 if (!IsSpeedable(world, body_a)) std::cout << " wall";
-                std::cout << " " << body_a;
+                std::cout << " " << UnderlyingValue(body_a);
                 std::cout << std::endl;
                 std::cout << " bodyB=(" << GetX(GetLocation(world, body_b)) << "," << GetY(GetLocation(world, body_b)) << ")";
                 if (body_b == ball_body) std::cout << " ball";
                 if (!IsSpeedable(world, body_b)) std::cout << " wall";
-                std::cout << " " << body_b;
+                std::cout << " " << UnderlyingValue(body_b);
                 std::cout << std::endl;
 
                 //GTEST_FATAL_FAILURE_("");                
             }
         },
-        [&](Contact& contact) {
-            const auto fA = contact.GetFixtureA();
-            const auto fB = contact.GetFixtureB();
-            const auto body_a = fA->GetBody();
-            const auto body_b = fB->GetBody();
+        [&](ContactID contact) {
+            const auto fA = GetFixtureA(world, contact);
+            const auto fB = GetFixtureB(world, contact);
+            const auto body_a = GetBody(world, fA);
+            const auto body_b = GetBody(world, fB);
 
             auto escaped = false;
             for (auto&& body: {body_a, body_b})
@@ -3249,13 +3247,13 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                     escaped = true;                    
                 }
             }
-            if (escaped && !contact.IsTouching())
+            if (escaped && !IsTouching(world, contact))
             {
                 std::cout << "Escaped at EndContact[" << &contact << "]:";
-                std::cout << " toiSteps=" << static_cast<unsigned>(contact.GetToiCount());
-                std::cout << " toiValid=" << contact.HasValidToi();
-                std::cout << " a[" << body_a << "]@(" << GetX(GetLocation(world, body_a)) << "," << GetY(GetLocation(world, body_a)) << ")";
-                std::cout << " b[" << body_b << "]@(" << GetX(GetLocation(world, body_b)) << "," << GetY(GetLocation(world, body_b)) << ")";
+                std::cout << " toiSteps=" << static_cast<unsigned>(GetToiCount(world, contact));
+                std::cout << " toiValid=" << HasValidToi(world, contact);
+                std::cout << " a[" << UnderlyingValue(body_a) << "]@(" << GetX(GetLocation(world, body_a)) << "," << GetY(GetLocation(world, body_a)) << ")";
+                std::cout << " b[" << UnderlyingValue(body_b) << "]@(" << GetX(GetLocation(world, body_b)) << "," << GetY(GetLocation(world, body_b)) << ")";
                 std::cout << std::endl;
                 //exit(1);
             }
@@ -3263,14 +3261,28 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
     };
     ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
-    world.SetContactListener(&listener);
-    
+    world.SetBeginContactListener([&listener](ContactID id) {
+        listener.BeginContact(id);
+    });
+    world.SetEndContactListener([&listener](ContactID id) {
+        listener.EndContact(id);
+    });
+    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+        listener.PreSolve(id, manifold);
+    });
+    world.SetPostSolveContactListener([&listener](ContactID id,
+                                                  const ContactImpulsesList& impulses,
+                                                  unsigned count){
+        listener.PostSolve(id, impulses, count);
+    });
+
     for (auto outer = unsigned{0}; outer < 2000; ++outer)
     {
         auto last_pos = GetLocation(world, ball_body);
         for (auto loops = unsigned{0};; ++loops)
         {
-            target_joint->SetTarget(Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
+            SetLocation(world, spare_body, Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
+            //target_joint->SetTarget(Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
             angle += anglular_speed;
             distance += distance_speed;
 
@@ -3282,10 +3294,10 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             ASSERT_GT(GetY(GetLocation(world, ball_body)), btm_edge_y * Meter);
             for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
             {
-                ASSERT_LT(GetX(bodies[i]->GetLocation()), right_edge_x * Meter);
-                ASSERT_LT(GetY(bodies[i]->GetLocation()), top_edge_y * Meter);
-                ASSERT_GT(GetX(bodies[i]->GetLocation()), left_edge_x * Meter);
-                ASSERT_GT(GetY(bodies[i]->GetLocation()), btm_edge_y * Meter);
+                ASSERT_LT(GetX(GetLocation(world, bodies[i])), right_edge_x * Meter);
+                ASSERT_LT(GetY(GetLocation(world, bodies[i])), top_edge_y * Meter);
+                ASSERT_GT(GetX(GetLocation(world, bodies[i])), left_edge_x * Meter);
+                ASSERT_GT(GetY(GetLocation(world, bodies[i])), btm_edge_y * Meter);
             }
 
             max_x = std::max(Real{GetX(GetLocation(world, ball_body)) / Meter}, max_x);
@@ -3299,7 +3311,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
 
             if (loops > 50)
             {
-                if (GetX(target_joint->GetTarget()) < 0_m)
+                if (GetX(GetLocation(world, spare_body)) < 0_m)
                 {
                     if (GetX(GetLocation(world, ball_body)) >= GetX(last_pos))
                         break;                    
@@ -3309,7 +3321,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                     if (GetX(GetLocation(world, ball_body)) <= GetX(last_pos))
                         break;
                 }
-                if (GetY(target_joint->GetTarget()) < 0_m)
+                if (GetY(GetLocation(world, spare_body)) < 0_m)
                 {
                     if (GetY(GetLocation(world, ball_body)) >= GetY(last_pos))
                         break;
@@ -3332,8 +3344,8 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             for (auto i = decltype(numBodies){0}; i < numBodies; ++i)
             {
                 // a sanity check to ensure the other bodies are getting moved
-                EXPECT_NE(last_opos[i], bodies[i]->GetLocation());
-                last_opos[i] = bodies[i]->GetLocation();
+                EXPECT_NE(last_opos[i], GetLocation(world, bodies[i]));
+                last_opos[i] = GetLocation(world, bodies[i]);
             }
         }
 #endif
@@ -3346,10 +3358,10 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
     std::cout << std::endl;
 #endif
 
-    const auto target0 = target_joint->GetTarget();
+    const auto target0 = GetLocation(world, spare_body);
     const auto shift = Length2{2_m, 2_m};
     world.ShiftOrigin(shift);
-    const auto target1 = target_joint->GetTarget();
+    const auto target1 = GetLocation(world, spare_body);
     EXPECT_EQ(target0 - shift, target1);
 }
 
@@ -3508,7 +3520,6 @@ TEST(World, SmallerBulletStillConservesMomemtum)
     // goin to smaller time increment fails nearly same point.
 // smaller_still_conserves_momentum(true, Real(0.999), Real(0.01));
 }
-#endif
 #endif
 
 class VerticalStackTest: public ::testing::TestWithParam<Real>
