@@ -115,17 +115,15 @@ TEST(WeldJoint, Construction)
     EXPECT_EQ(visitor.GetType().value(), JointType::Weld);
 }
 
-#if 0
-
 TEST(WeldJoint, GetWeldJointConf)
 {
     auto world = World{};
-    auto bodyA = world.CreateBody();
-    auto bodyB = world.CreateBody();
+    const auto bodyA = world.CreateBody();
+    const auto bodyB = world.CreateBody();
     const auto anchor = Length2(2_m, 1_m);
-    WeldJointConf def{bodyA, bodyB, anchor};
+    const auto def = GetWeldJointConf(world, bodyA, bodyB, anchor);
     WeldJoint joint{def};
-    
+
     ASSERT_EQ(GetType(joint), def.type);
     ASSERT_EQ(joint.GetBodyA(), def.bodyA);
     ASSERT_EQ(joint.GetBodyB(), def.bodyB);
@@ -140,8 +138,8 @@ TEST(WeldJoint, GetWeldJointConf)
     
     const auto cdef = GetWeldJointConf(joint);
     EXPECT_EQ(cdef.type, JointType::Weld);
-    EXPECT_EQ(cdef.bodyA, &bodyA);
-    EXPECT_EQ(cdef.bodyB, &bodyB);
+    EXPECT_EQ(cdef.bodyA, bodyA);
+    EXPECT_EQ(cdef.bodyB, bodyB);
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
     
@@ -163,15 +161,15 @@ TEST(WeldJoint, WithDynamicCircles)
     world.CreateFixture(b1, circle);
     world.CreateFixture(b2, circle);
     const auto anchor = Length2(2_m, 1_m);
-    const auto jd = WeldJointConf{b1, b2, anchor};
+    const auto jd = GetWeldJointConf(world, b1, b2, anchor);
     world.CreateJoint(jd);
     Step(world, 1_s);
-    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), 0_deg);
-    EXPECT_EQ(b2->GetAngle(), 0_deg);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(GetAngle(world, b1), 0_deg);
+    EXPECT_EQ(GetAngle(world, b2), 0_deg);
 }
 
 TEST(WeldJoint, WithDynamicCircles2)
@@ -182,54 +180,53 @@ TEST(WeldJoint, WithDynamicCircles2)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(*b1, circle);
-    world.CreateFixture(*b2, circle);
+    world.CreateFixture(b1, circle);
+    world.CreateFixture(b2, circle);
     const auto anchor = Length2(2_m, 1_m);
-    const auto jd = WeldJointConf{b1, b2, anchor}.UseFrequency(10_Hz);
-    const auto joint = static_cast<WeldJoint*>(world.CreateJoint(jd));
+    const auto jd = GetWeldJointConf(world, b1, b2, anchor).UseFrequency(10_Hz);
+    const auto joint = world.CreateJoint(jd);
     ASSERT_NE(joint, InvalidJointID);
-    ASSERT_EQ(joint->GetFrequency(), 10_Hz);
+    ASSERT_EQ(GetFrequency(world, joint), 10_Hz);
     auto stepConf = StepConf{};
 
     stepConf.doWarmStart = true;
     world.Step(stepConf);
-    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), 0_deg);
-    EXPECT_EQ(b2->GetAngle(), 0_deg);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(GetAngle(world, b1), 0_deg);
+    EXPECT_EQ(GetAngle(world, b2), 0_deg);
 
     stepConf.doWarmStart = false;
     world.Step(stepConf);
-    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), 0_deg);
-    EXPECT_EQ(b2->GetAngle(), 0_deg);    
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(GetAngle(world, b1), 0_deg);
+    EXPECT_EQ(GetAngle(world, b2), 0_deg);
 }
 
 TEST(WeldJoint, GetAnchorAandB)
 {
     auto world = World{};
     
-    const auto loc0 = Length2{+1_m, -3_m};
-    const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
+    const auto loc1 = Length2{+1_m, -3_m};
+    const auto loc2 = Length2{-2_m, Real(+1.2f) * Meter};
     const auto anchor = Length2(2_m, 1_m);
 
-    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
     const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
-    
-    auto jd = WeldJointConf{b0, b1, anchor};
+    const auto b2 = world.CreateBody(BodyConf{}.UseLocation(loc2));
+
+    auto jd = GetWeldJointConf(world, b1, b2, anchor);
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    const auto joint = static_cast<WeldJoint*>(world.CreateJoint(jd));
+    const auto joint = world.CreateJoint(jd);
     ASSERT_NE(joint, InvalidJointID);
-    
-    ASSERT_EQ(joint->GetLocalAnchorA(), jd.localAnchorA);
-    ASSERT_EQ(joint->GetLocalAnchorB(), jd.localAnchorB);
-    EXPECT_EQ(joint->GetAnchorA(world), loc0 + jd.localAnchorA);
-    EXPECT_EQ(joint->GetAnchorB(world), loc1 + jd.localAnchorB);
+
+    ASSERT_EQ(GetLocalAnchorA(world, joint), jd.localAnchorA);
+    ASSERT_EQ(GetLocalAnchorB(world, joint), jd.localAnchorB);
+    EXPECT_EQ(GetAnchorA(world, joint), loc1 + jd.localAnchorA);
+    EXPECT_EQ(GetAnchorB(world, joint), loc2 + jd.localAnchorB);
 }
-#endif

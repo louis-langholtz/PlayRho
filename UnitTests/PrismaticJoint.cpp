@@ -231,9 +231,7 @@ TEST(PrismaticJoint, GetJointTranslation)
     jd.localAnchorB = Length2(+1_m, 5_m);
     
     auto joint = PrismaticJoint{jd};
-#if 0
-    EXPECT_EQ(GetJointTranslation(joint), Length(2_m));
-#endif
+    EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
 
 TEST(PrismaticJoint, GetLinearVelocity)
@@ -253,9 +251,7 @@ TEST(PrismaticJoint, GetLinearVelocity)
     jd.localAnchorB = Length2(+1_m, 5_m);
     
     auto joint = PrismaticJoint{jd};
-#if 0
-    EXPECT_EQ(GetLinearVelocity(joint), LinearVelocity(0));
-#endif
+    EXPECT_EQ(GetLinearVelocity(world, joint), LinearVelocity(0));
 }
 
 TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
