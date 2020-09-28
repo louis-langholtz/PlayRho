@@ -51,13 +51,13 @@ public:
         });
         RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Decrease Frequency.", [&](KeyActionMods) {
             m_hz = std::max(0_Hz, m_hz - 1_Hz);
-            m_backSpring->SetSpringFrequency(m_hz);
-            m_frontSpring->SetSpringFrequency(m_hz);
+            m_backSpring->SetFrequency(m_hz);
+            m_frontSpring->SetFrequency(m_hz);
         });
         RegisterForKey(GLFW_KEY_E, GLFW_PRESS, 0, "Increase Frequency.", [&](KeyActionMods) {
             m_hz += 1_Hz;
-            m_backSpring->SetSpringFrequency(m_hz);
-            m_frontSpring->SetSpringFrequency(m_hz);
+            m_backSpring->SetFrequency(m_hz);
+            m_frontSpring->SetFrequency(m_hz);
         });
         
         const auto ground = m_world.CreateBody();

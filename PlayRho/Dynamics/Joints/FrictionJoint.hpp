@@ -66,6 +66,9 @@ public:
     /// Get the maximum friction torque in N*m.
     NonNegative<Torque> GetMaxTorque() const;
 
+    /// @brief Gets the computed angular rotational inertia used by this joint.
+    RotInertia GetAngularMass() const noexcept { return m_angularMass; }
+
 private:
     void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                  const ConstraintSolverConf& conf) override;

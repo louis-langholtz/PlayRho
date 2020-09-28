@@ -160,11 +160,11 @@ void WheelJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     if (m_enableMotor)
     {
         const auto invRotInertia = invRotInertiaA + invRotInertiaB;
-        m_motorMass = (invRotInertia > InvRotInertia{0})? Real{1} / invRotInertia: RotInertia{0};
+        m_angularMass = (invRotInertia > InvRotInertia{0})? Real{1} / invRotInertia: RotInertia{0};
     }
     else
     {
-        m_motorMass = RotInertia{0};
+        m_angularMass = RotInertia{0};
         m_motorImpulse = 0;
     }
 
@@ -230,7 +230,7 @@ bool WheelJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     // Solve rotational motor constraint
     {
         const auto Cdot = (velB.angular - velA.angular - m_motorSpeed);
-        auto impulse = AngularMomentum{-m_motorMass * Cdot};
+        auto impulse = AngularMomentum{-m_angularMass * Cdot};
 
         const auto oldImpulse = m_motorImpulse;
         const auto maxImpulse = AngularMomentum{step.GetTime() * m_maxMotorTorque};

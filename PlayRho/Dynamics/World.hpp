@@ -608,11 +608,17 @@ public:
     /// Sets the maximum motor torque.
     void SetMaxMotorTorque(JointID id, Torque value);
 
-    /// @brief Gets the angular motor impulse of the identified joint.
+    /// @brief Gets the angular motor impulse of the identified joint if it has this property.
     AngularMomentum GetAngularMotorImpulse(JointID id) const;
+
+    /// @brief Gets the angular mass of the identified joint if it has this property.
+    RotInertia GetAngularMass(JointID id) const;
 
     /// @brief Gets the frequency of the identified joint if it has this property.
     Frequency GetFrequency(JointID id) const;
+
+    /// @brief Sets the frequency of the identified joint if it has this property.
+    void SetFrequency(JointID id, Frequency value);
 
     /// @brief Gets the fixtures-for-proxies range for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing
@@ -1681,9 +1687,18 @@ inline void SetMaxMotorTorque(World& world, JointID id, Torque value)
     world.SetMaxMotorTorque(id, value);
 }
 
+/// @copydoc World::GetAngularMotorImpulse
+/// @relatedalso World
 inline AngularMomentum GetAngularMotorImpulse(const World& world, JointID id)
 {
     return world.GetAngularMotorImpulse(id);
+}
+
+/// @copydoc World::GetAngularMass
+/// @relatedalso World
+inline RotInertia GetAngularMass(const World& world, JointID id)
+{
+    return world.GetAngularMass(id);
 }
 
 /// @copydoc World::GetFrequency
@@ -1691,6 +1706,21 @@ inline AngularMomentum GetAngularMotorImpulse(const World& world, JointID id)
 inline Frequency GetFrequency(const World& world, JointID id)
 {
     return world.GetFrequency(id);
+}
+
+/// @copydoc World::GetFrequency
+/// @relatedalso World
+inline void SetFrequency(World& world, JointID id, Frequency value)
+{
+    world.SetFrequency(id, value);
+}
+
+/// @brief Gets the angular velocity of the identified joint if it has this property.
+/// @relatedalso World
+inline AngularVelocity GetAngularVelocity(const World& world, JointID id)
+{
+    return GetVelocity(world, GetBodyB(world, id)).angular
+         - GetVelocity(world, GetBodyA(world, id)).angular;
 }
 
 /// @brief Gets the enabled/disabled state of the joint.

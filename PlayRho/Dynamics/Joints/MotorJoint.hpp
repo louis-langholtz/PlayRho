@@ -92,6 +92,9 @@ public:
     /// @note This is calculated by the <code>InitVelocityConstraints</code> method.
     Angle GetAngularError() const noexcept;
 
+    /// @brief Gets the computed angular rotational inertia used by this joint.
+    RotInertia GetAngularMass() const noexcept { return m_angularMass; }
+
 private:
 
     void InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,

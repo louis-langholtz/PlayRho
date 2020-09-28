@@ -1828,10 +1828,10 @@ static void EntityUI(WheelJoint& j)
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetSpringFrequency() / Hertz});
+        auto v = static_cast<float>(Real{j.GetFrequency() / Hertz});
         if (ImGui::InputFloat("Spring Freq. (Hz)", &v))
         {
-            j.SetSpringFrequency(v * Hertz);
+            j.SetFrequency(v * Hertz);
         }
     }
     {

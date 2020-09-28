@@ -71,9 +71,9 @@ public:
     /// @return Whether state changed or not.
     bool EnableMotor(bool flag);
     
-    /// @brief Gets the computed motor mass.
+    /// @brief Gets the computed angular rotational inertia used by this joint.
     /// @note This is zero unless motor is enabled and either body has any rotational inertia.
-    RotInertia GetMotorMass() const noexcept { return m_motorMass; }
+    RotInertia GetAngularMass() const noexcept { return m_angularMass; }
 
     /// Set the angular motor speed.
     void SetMotorSpeed(AngularVelocity speed);
@@ -89,10 +89,10 @@ public:
 
     /// @brief Sets the spring frequency.
     /// @note Setting the frequency to zero disables the spring.
-    void SetSpringFrequency(Frequency frequency);
+    void SetFrequency(Frequency frequency);
 
     /// @brief Gets the spring frequency.
-    Frequency GetSpringFrequency() const;
+    Frequency GetFrequency() const;
 
     /// @brief Sets the spring damping ratio
     void SetSpringDampingRatio(Real ratio);
@@ -135,7 +135,7 @@ private:
     Length m_sBy; ///< Solver B y location.
 
     Mass m_mass = 0_kg; ///< Mass.
-    RotInertia m_motorMass = RotInertia{0}; ///< Motor mass.
+    RotInertia m_angularMass = RotInertia{0}; ///< Motor mass.
     Mass m_springMass = 0_kg; ///< Spring mass.
 
     LinearVelocity m_bias = 0_mps; ///< Bias.
@@ -157,12 +157,12 @@ inline Torque WheelJoint::GetMaxMotorTorque() const
     return m_maxMotorTorque;
 }
 
-inline void WheelJoint::SetSpringFrequency(Frequency hz)
+inline void WheelJoint::SetFrequency(Frequency hz)
 {
     m_frequency = hz;
 }
 
-inline Frequency WheelJoint::GetSpringFrequency() const
+inline Frequency WheelJoint::GetFrequency() const
 {
     return m_frequency;
 }

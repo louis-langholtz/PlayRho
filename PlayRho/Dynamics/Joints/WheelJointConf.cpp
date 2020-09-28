@@ -44,7 +44,7 @@ WheelJointConf GetWheelJointConf(const WheelJoint& joint) noexcept
     def.enableMotor = joint.IsMotorEnabled();
     def.maxMotorTorque = joint.GetMaxMotorTorque();
     def.motorSpeed = joint.GetMotorSpeed();
-    def.frequency = joint.GetSpringFrequency();
+    def.frequency = joint.GetFrequency();
     def.dampingRatio = joint.GetSpringDampingRatio();
     return def;
 }

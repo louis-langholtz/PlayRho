@@ -426,7 +426,7 @@ void Dump(const WheelJoint& joint, std::size_t index, const World& world)
     log("  jd.maxMotorTorque = %.15lef;\n",
         static_cast<double>(Real{joint.GetMaxMotorTorque() / NewtonMeter}));
     log("  jd.frequency = %.15lef;\n",
-        static_cast<double>(Real{joint.GetSpringFrequency() / Hertz}));
+        static_cast<double>(Real{joint.GetFrequency() / Hertz}));
     log("  jd.dampingRatio = %.15lef;\n", joint.GetSpringDampingRatio());
     log("  joints[%d] = m_world->CreateJoint(jd);\n", index);
 }

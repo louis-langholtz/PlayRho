@@ -86,6 +86,10 @@ public:
     /// @return Whether state changed or not.
     bool EnableMotor(bool flag);
 
+    /// @brief Gets the computed angular rotational inertia used by this joint.
+    /// @note This is zero unless motor is enabled and either body has any rotational inertia.
+    RotInertia GetAngularMass() const noexcept { return m_angularMass; }
+
     /// Set the angular motor speed.
     void SetMotorSpeed(AngularVelocity speed);
 
@@ -106,7 +110,7 @@ public:
 
     /// @brief Gets the current motor impulse.
     AngularMomentum GetMotorImpulse() const noexcept;
-    
+
     /// @brief Gets the current limit state.
     /// @note This will be <code>e_inactiveLimit</code> unless the joint limit has been
     ///   enabled.
@@ -150,7 +154,7 @@ private:
     Length2 m_rA; ///< Rotated delta of body A's local center from local anchor A.
     Length2 m_rB; ///< Rotated delta of body B's local center from local anchor B.
     Mat33 m_mass; ///< Effective mass for point-to-point constraint.
-    RotInertia m_motorMass; ///< Effective mass for motor/limit angular constraint.
+    RotInertia m_angularMass; ///< Effective mass for motor/limit angular constraint.
     LimitState m_limitState = e_inactiveLimit; ///< Limit state.
 };
 

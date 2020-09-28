@@ -149,7 +149,7 @@ void RevoluteJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     const auto fixedRotation = (totInvI == InvRotInertia{0});
 
     m_mass = GetMat33(invMassA, m_rA, invRotInertiaA, invMassB, m_rB, invRotInertiaB);
-    m_motorMass = (totInvI > InvRotInertia{0})? RotInertia{Real{1} / totInvI}: RotInertia{0};
+    m_angularMass = (totInvI > InvRotInertia{0})? RotInertia{Real{1} / totInvI}: RotInertia{0};
 
     if (!m_enableMotor || fixedRotation)
     {
@@ -238,7 +238,7 @@ bool RevoluteJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     // Solve motor constraint.
     if (m_enableMotor && (m_limitState != e_equalLimits) && !fixedRotation)
     {
-        const auto impulse = AngularMomentum{-m_motorMass * (velB.angular - velA.angular - m_motorSpeed)};
+        const auto impulse = AngularMomentum{-m_angularMass * (velB.angular - velA.angular - m_motorSpeed)};
         const auto oldImpulse = m_motorImpulse;
         const auto maxImpulse = step.GetTime() * m_maxMotorTorque;
         m_motorImpulse = std::clamp(m_motorImpulse + impulse, -maxImpulse, maxImpulse);
@@ -376,7 +376,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
                 
                 // Prevent large angular corrections and allow some slop.
                 C = std::clamp(C + conf.angularSlop, -conf.maxAngularCorrection, 0_rad);
-                limitImpulse = -m_motorMass * C;
+                limitImpulse = -m_angularMass * C;
                 break;
             }
             case e_atUpperLimit:
@@ -386,7 +386,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
                 
                 // Prevent large angular corrections and allow some slop.
                 C = std::clamp(C - conf.angularSlop, 0_rad, conf.maxAngularCorrection);
-                limitImpulse = -m_motorMass * C;
+                limitImpulse = -m_angularMass * C;
                 break;
             }
             default:
@@ -395,7 +395,7 @@ bool RevoluteJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const C
                 // Prevent large angular corrections
                 const auto C = std::clamp(angle - m_lowerAngle,
                                           -conf.maxAngularCorrection, conf.maxAngularCorrection);
-                limitImpulse = -m_motorMass * C;
+                limitImpulse = -m_angularMass * C;
                 angularError = abs(C);
                 break;
             }

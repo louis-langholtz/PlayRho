@@ -265,6 +265,31 @@ AngularMomentum GetAngularMotorImpulse(const WorldImpl& world, JointID id)
     return *result;
 }
 
+RotInertia GetAngularMass(const WorldImpl& world, JointID id)
+{
+    Optional<RotInertia> result;
+    const auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<const FrictionJoint&>() = [&result](const FrictionJoint& j) {
+        result = j.GetAngularMass();
+    };
+    visitor.get<const MotorJoint&>() = [&result](const MotorJoint& j) {
+        result = j.GetAngularMass();
+    };
+    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
+        result = j.GetAngularMass();
+    };
+    visitor.get<const WheelJoint&>() = [&result](const WheelJoint& j) {
+        result = j.GetAngularMass();
+    };
+    joint.Accept(visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetAngularMotorImpulse not supported by joint type!");
+    }
+    return *result;
+}
+
 Frequency GetFrequency(const WorldImpl& world, JointID id)
 {
     Optional<Frequency> result;
@@ -279,12 +304,37 @@ Frequency GetFrequency(const WorldImpl& world, JointID id)
     visitor.get<const WeldJoint&>() = [&result](const WeldJoint& j) {
         result = j.GetFrequency();
     };
+    visitor.get<const WheelJoint&>() = [&result](const WheelJoint& j) {
+        result = j.GetFrequency();
+    };
     joint.Accept(visitor);
     if (!result.has_value())
     {
         throw std::invalid_argument("GetFrequency not supported by joint type!");
     }
     return *result;
+}
+
+void SetFrequency(WorldImpl& world, JointID id, Frequency value)
+{
+    auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<DistanceJoint&>() = [value](DistanceJoint& j) {
+        j.SetFrequency(value);
+    };
+    visitor.get<TargetJoint&>() = [value](TargetJoint& j) {
+        j.SetFrequency(value);
+    };
+    visitor.get<WeldJoint&>() = [value](WeldJoint& j) {
+        j.SetFrequency(value);
+    };
+    visitor.get<WheelJoint&>() = [value](WheelJoint& j) {
+        j.SetFrequency(value);
+    };
+    visitor.fallback = []() {
+        throw std::invalid_argument("SetFrequency not supported by joint type!");
+    };
+    joint.Accept(visitor);
 }
 
 } // namespace d2
