@@ -113,7 +113,7 @@ TEST(WheelJoint, Construction)
     EXPECT_EQ(joint.IsMotorEnabled(), def.enableMotor);
     EXPECT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
     EXPECT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
-    EXPECT_EQ(joint.GetSpringFrequency(), def.frequency);
+    EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
     
     TypeJointVisitor visitor;
@@ -226,6 +226,7 @@ TEST(WheelJoint, GetJointTranslation)
     auto joint = WheelJoint{jd};
     EXPECT_EQ(GetJointTranslation(joint), Length(2_m));
 }
+#endif
 
 TEST(WheelJoint, GetWheelJointConf)
 {
@@ -244,7 +245,7 @@ TEST(WheelJoint, GetWheelJointConf)
     ASSERT_EQ(joint.IsMotorEnabled(), def.enableMotor);
     ASSERT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
     ASSERT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
-    ASSERT_EQ(joint.GetSpringFrequency(), def.frequency);
+    ASSERT_EQ(joint.GetFrequency(), def.frequency);
     ASSERT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
     
     const auto cdef = GetWheelJointConf(joint);
@@ -288,34 +289,31 @@ TEST(WheelJoint, WithDynamicCircles)
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), 0.0, 0.01);
     EXPECT_EQ(GetAngle(world, b1), 0_deg);
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
-#if 0
-    EXPECT_EQ(GetAngularVelocity(*joint), 0 * RadianPerSecond);
-    EXPECT_EQ(joint->GetMotorMass(), RotInertia(0));
+    EXPECT_EQ(GetAngularVelocity(world, joint), 0 * RadianPerSecond);
+    EXPECT_EQ(GetAngularMass(world, joint), RotInertia(0));
     
-    joint->SetSpringFrequency(0_Hz);
+    SetFrequency(world, joint, 0_Hz);
     world.Step(stepConf);
-    EXPECT_FALSE(joint->IsMotorEnabled());
-    EXPECT_EQ(joint->GetSpringFrequency(), 0_Hz);
-    EXPECT_EQ(joint->GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint->GetMotorMass(), RotInertia(0));
+    EXPECT_FALSE(IsMotorEnabled(world, joint));
+    EXPECT_EQ(GetFrequency(world, joint), 0_Hz);
+    EXPECT_EQ(GetLinearReaction(world, joint), Momentum2{});
+    EXPECT_EQ(GetAngularMass(world, joint), RotInertia(0));
 
-    joint->EnableMotor(true);
-    EXPECT_TRUE(joint->IsMotorEnabled());
+    EnableMotor(world, joint, true);
+    EXPECT_TRUE(IsMotorEnabled(world, joint));
     world.Step(stepConf);
-    EXPECT_NEAR(static_cast<double>(StripUnit(joint->GetMotorMass())),
+    EXPECT_NEAR(static_cast<double>(StripUnit(GetAngularMass(world, joint))),
                 125.66370391845703, 0.1);
     
     stepConf.doWarmStart = false;
     world.Step(stepConf);
-    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), 0_deg);
-    EXPECT_EQ(b2->GetAngle(), 0_deg);
-    EXPECT_EQ(GetAngularVelocity(*joint), 0 * RadianPerSecond);
-    EXPECT_NEAR(static_cast<double>(StripUnit(joint->GetMotorMass())),
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(GetAngle(world, b1), 0_deg);
+    EXPECT_EQ(GetAngle(world, b2), 0_deg);
+    EXPECT_EQ(GetAngularVelocity(world, joint), 0 * RadianPerSecond);
+    EXPECT_NEAR(static_cast<double>(StripUnit(GetAngularMass(world, joint))),
                 125.66370391845703, 0.1);
-#endif
 }
-#endif
