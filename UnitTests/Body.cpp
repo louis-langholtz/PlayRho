@@ -176,15 +176,6 @@ TEST(Body, ByteSize)
     }
 }
 
-TEST(Body, GetFlagsStatic)
-{
-    EXPECT_TRUE(Body::GetFlags(BodyConf{}.UseFixedRotation(true)) & Body::e_fixedRotationFlag);
-    EXPECT_TRUE(Body::GetFlags(BodyConf{}
-                               .UseAwake(false)
-                               .UseAllowSleep(false)
-                               .UseType(BodyType::Dynamic)) & Body::e_awakeFlag);
-}
-
 TEST(Body, WorldCreated)
 {
     auto world = World{};
