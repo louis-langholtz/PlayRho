@@ -78,11 +78,14 @@ class DynamicTree;
 /// @code{.cpp}
 /// auto world = World{};
 /// const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-/// const auto fixture = body->CreateFixture(Shape{DiskShapeConf{1_m}});
+/// const auto fixture = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});
 /// @endcode
 ///
-/// @see World, World::CreateBody, World::CreateJoint, World::Destroy.
-/// @see Body::CreateFixture, Body::Destroy, Body::DestroyFixtures.
+/// @see World.
+/// @see BodyID, World::CreateBody, World::Destroy(BodyID), World::GetBodies().
+/// @see FixtureID, World::CreateFixture, World::Destroy(FixtureID).
+/// @see JointID, World::CreateJoint, World::Destroy(JointID), World::GetJoints().
+/// @see ContactID, World::GetContacts().
 /// @see BodyType, Shape, DiskShapeConf.
 
 /// @brief Definition of an independent and simulatable "world".
@@ -96,19 +99,28 @@ class DynamicTree;
 ///  They simply utilize the acceleration property of the bodies they manage. This is
 ///  different than some other engines (like <code>Box2D</code> which provides a world
 ///  gravity property).
-/// @note World instances are composed of &mdash; i.e. contain and own &mdash; Body, Joint,
-///   and Contact instances.
-/// @note This data structure is 232-bytes large (with 4-byte Real on at least one 64-bit
-///   platform).
+/// @note World instances are composed of &mdash; i.e. contain and own &mdash; body, contact,
+///   fixture, and joint entities. These are identified by <code>BodyID</code>,
+///   <code>ContactID</code>, <code>FixtureID</code>, and <code>JointID</code> values respectively.
+/// @note This class uses the pointer to implementation (PIMPL) technique and non-vitural
+///   interface (NVI) pattern to provide a complete layer of abstraction from the actual
+///   implementations used. This forms a "compilation firewall" &mdash or application
+///   binary interface (ABI) &mdash to help provide binary stability while facilitating
+///   experimentation and optimization.
+/// @note This data structure is 8-bytes large (on at least one 64-bit platform).
+///
 /// @attention For example, the following could be used to create a dynamic body having a one meter
 ///   radius disk shape:
 /// @code{.cpp}
 /// auto world = World{};
 /// const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-/// const auto fixture = body->CreateFixture(Shape{DiskShapeConf{1_m}});
+/// const auto fixture = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});
 /// @endcode
 ///
-/// @see Body, Joint, Contact, PhysicalEntities.
+/// @see BodyID, ContactID, FixtureID, JointID, PhysicalEntities.
+/// @see https://en.wikipedia.org/wiki/Non-virtual_interface_pattern
+/// @see https://en.wikipedia.org/wiki/Application_binary_interface
+/// @see https://en.cppreference.com/w/cpp/language/pimpl
 ///
 class World
 {
