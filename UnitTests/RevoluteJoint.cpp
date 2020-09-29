@@ -22,7 +22,9 @@
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>

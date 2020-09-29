@@ -18,11 +18,10 @@
  */
 
 #include <PlayRho/Collision/WorldManifold.hpp>
+
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
 
 namespace playrho {
 namespace d2 {

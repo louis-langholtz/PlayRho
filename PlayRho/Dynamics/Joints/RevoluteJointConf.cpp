@@ -20,9 +20,9 @@
  */
 
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
 namespace playrho {
 namespace d2 {

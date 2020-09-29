@@ -17,16 +17,17 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <PlayRho/Collision/RayCastOutput.hpp>
+
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/GrowableStack.hpp>
-#include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
+
 #include <utility>
 
 namespace playrho {

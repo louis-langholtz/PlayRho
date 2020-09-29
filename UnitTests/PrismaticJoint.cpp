@@ -17,10 +17,12 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+
 #include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;

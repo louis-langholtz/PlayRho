@@ -20,8 +20,9 @@
  */
 
 #include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
+
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
 namespace playrho {
 namespace d2 {

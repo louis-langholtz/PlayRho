@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
 
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
 namespace playrho {
 namespace d2 {

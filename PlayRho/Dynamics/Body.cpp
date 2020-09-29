@@ -20,6 +20,7 @@
  */
 
 #include <PlayRho/Dynamics/Body.hpp>
+
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/World.hpp>

@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 
 #include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
 namespace playrho {
 namespace d2 {

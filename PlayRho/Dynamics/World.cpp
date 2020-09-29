@@ -21,6 +21,10 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 
+#include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Collision/Manifold.hpp>
+
 #include <PlayRho/Dynamics/WorldImpl.hpp> // for std::unique_ptr<WorldImpl> destruction
 #include <PlayRho/Dynamics/WorldImplBody.hpp>
 #include <PlayRho/Dynamics/WorldImplContact.hpp>
@@ -32,58 +36,9 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
-#include <PlayRho/Dynamics/Island.hpp>
-#include <PlayRho/Dynamics/MovementConf.hpp>
-#include <PlayRho/Dynamics/ContactImpulsesList.hpp>
-
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
-#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
-#include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
-#include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
-
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
-#include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/PositionConstraint.hpp>
-
-#include <PlayRho/Collision/WorldManifold.hpp>
-#include <PlayRho/Collision/TimeOfImpact.hpp>
-#include <PlayRho/Collision/RayCastOutput.hpp>
-#include <PlayRho/Collision/DistanceProxy.hpp>
-
-#include <PlayRho/Common/LengthError.hpp>
-#include <PlayRho/Common/DynamicMemory.hpp>
-#include <PlayRho/Common/FlagGuard.hpp>
-#include <PlayRho/Common/WrongState.hpp>
-
-#include <algorithm>
-#include <new>
-#include <functional>
-#include <type_traits>
-#include <memory>
-#include <set>
-#include <vector>
-#include <unordered_map>
-
-using std::for_each;
-using std::remove;
-using std::sort;
-using std::transform;
-using std::unique;
 
 namespace playrho {
 namespace d2 {
-
-using playrho::size;
 
 static_assert(std::is_default_constructible<World>::value, "World must be default constructible!");
 static_assert(std::is_copy_constructible<World>::value, "World must be copy constructible!");
@@ -266,6 +221,11 @@ Frequency World::GetInvDeltaTime() const noexcept
 const DynamicTree& World::GetTree() const noexcept
 {
     return ::playrho::d2::GetTree(*m_impl);
+}
+
+Filter World::GetFilterData(FixtureID id) const
+{
+    return ::playrho::d2::GetFilterData(*m_impl, id);
 }
 
 void World::Refilter(FixtureID id)
@@ -667,237 +627,6 @@ void World::SetRestitution(ContactID id, Real value)
 const Manifold& World::GetManifold(ContactID id) const
 {
     return ::playrho::d2::GetManifold(*m_impl, id);
-}
-
-// Free functions...
-
-StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
-               TimestepIters positionIterations)
-{
-    StepConf conf;
-    conf.SetTime(delta);
-    conf.regVelocityIterations = velocityIterations;
-    conf.regPositionIterations = positionIterations;
-    conf.toiVelocityIterations = velocityIterations;
-    if (positionIterations == 0)
-    {
-        conf.toiPositionIterations = 0;
-    }
-    conf.dtRatio = delta * world.GetInvDeltaTime();
-    return world.Step(conf);
-}
-
-ContactCounter GetTouchingCount(const World& world) noexcept
-{
-    const auto contacts = world.GetContacts();
-    return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
-                                                [&](const auto &c) {
-        return world.IsTouching(std::get<ContactID>(c));
-    }));
-}
-
-FixtureCounter GetFixtureCount(const World& world) noexcept
-{
-    auto sum = FixtureCounter{0};
-    const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&world,&sum](const auto &b) {
-        sum += GetFixtureCount(world, b);
-    });
-    return sum;
-}
-
-size_t GetShapeCount(const World& world) noexcept
-{
-    return world.GetShapeCount();
-}
-
-BodyCounter GetAwakeCount(const World& world) noexcept
-{
-    const auto bodies = world.GetBodies();
-    return static_cast<BodyCounter>(count_if(cbegin(bodies), cend(bodies),
-                                             [&](const auto &b) {
-                                                 return IsAwake(world, b); }));
-}
-    
-BodyCounter Awaken(World& world) noexcept
-{
-    // Can't use count_if since body gets modified.
-    auto awoken = BodyCounter{0};
-    const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&world,&awoken](const auto &b) {
-        if (::playrho::d2::Awaken(world, b))
-        {
-            ++awoken;
-        }
-    });
-    return awoken;
-}
-
-void SetAccelerations(World& world, Acceleration acceleration) noexcept
-{
-    const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
-        SetAcceleration(world, b, acceleration);
-    });
-}
-
-void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
-{
-    const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
-        SetAcceleration(world, b, acceleration);
-    });
-}
-
-BodyID FindClosestBody(const World& world, Length2 location) noexcept
-{
-    const auto bodies = world.GetBodies();
-    auto found = InvalidBodyID;
-    auto minLengthSquared = std::numeric_limits<Area>::infinity();
-    for (const auto& body: bodies)
-    {
-        const auto bodyLoc = GetLocation(world, body);
-        const auto lengthSquared = GetMagnitudeSquared(bodyLoc - location);
-        if (minLengthSquared > lengthSquared)
-        {
-            minLengthSquared = lengthSquared;
-            found = body;
-        }
-    }
-    return found;
-}
-
-void SetLocation(World& world, BodyID body, Length2 value)
-{
-    SetTransform(world, body, value, GetAngle(world, body));
-}
-
-void SetAngle(World& world, BodyID body, Angle value)
-{
-    SetTransform(world, body, GetLocation(world, body), value);
-}
-
-void RotateAboutWorldPoint(World& world, BodyID body, Angle amount, Length2 worldPoint)
-{
-    const auto xfm = GetTransformation(world, body);
-    const auto p = xfm.p - worldPoint;
-    const auto c = cos(amount);
-    const auto s = sin(amount);
-    const auto x = GetX(p) * c - GetY(p) * s;
-    const auto y = GetX(p) * s + GetY(p) * c;
-    const auto pos = Length2{x, y} + worldPoint;
-    const auto angle = GetAngle(xfm.q) + amount;
-    SetTransform(world, body, pos, angle);
-}
-
-void RotateAboutLocalPoint(World& world, BodyID body, Angle amount, Length2 localPoint)
-{
-    RotateAboutWorldPoint(world, body, amount, GetWorldPoint(world, body, localPoint));
-}
-
-Acceleration CalcGravitationalAcceleration(const World& world, BodyID body)
-{
-    const auto m1 = GetMass(world, body);
-    if (m1 != 0_kg)
-    {
-        auto sumForce = Force2{};
-        const auto loc1 = GetLocation(world, body);
-        for (const auto& b2: world.GetBodies())
-        {
-            if (b2 == body)
-            {
-                continue;
-            }
-            const auto m2 = GetMass(world, b2);
-            const auto delta = GetLocation(world, b2) - loc1;
-            const auto dir = GetUnitVector(delta);
-            const auto rr = GetMagnitudeSquared(delta);
-
-            // Uses Newton's law of universal gravitation: F = G * m1 * m2 / rr.
-            // See: https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation
-            // Note that BigG is typically very small numerically compared to either mass
-            // or the square of the radius between the masses. That's important to recognize
-            // in order to avoid operational underflows or overflows especially when
-            // playrho::Real has less exponential range like when it's defined to be float
-            // instead of double. The operational ordering is deliberately established here
-            // to help with this.
-            const auto orderedMass = std::minmax(m1, m2);
-            const auto f = (BigG * std::get<0>(orderedMass)) * (std::get<1>(orderedMass) / rr);
-            sumForce += f * dir;
-        }
-        // F = m a... i.e.  a = F / m.
-        return Acceleration{sumForce / m1, 0 * RadianPerSquareSecond};
-    }
-    return Acceleration{};
-}
-
-BodyCounter GetWorldIndex(const World& world, BodyID id) noexcept
-{
-    const auto elems = world.GetBodies();
-    const auto it = std::find(cbegin(elems), cend(elems), id);
-    if (it != cend(elems))
-    {
-        return static_cast<BodyCounter>(std::distance(cbegin(elems), it));
-    }
-    return BodyCounter(-1);
-}
-
-ChildCounter GetProxyCount(const World& world, FixtureID id)
-{
-    return static_cast<ChildCounter>(size(GetProxies(world, id)));
-}
-
-const FixtureProxy& GetProxy(const World& world, FixtureID id, ChildCounter child)
-{
-    return GetProxies(world, id).at(child);
-}
-
-JointCounter GetWorldIndex(const World& world, JointID id) noexcept
-{
-    const auto elems = world.GetJoints();
-    const auto it = std::find(cbegin(elems), cend(elems), id);
-    if (it != cend(elems))
-    {
-        return static_cast<JointCounter>(std::distance(cbegin(elems), it));
-    }
-    return JointCounter(-1);
-}
-
-bool ShouldCollide(const World& world, BodyID lhs, BodyID rhs)
-{
-    // At least one body should be accelerable/dynamic.
-    if (!IsAccelerable(GetType(world, lhs)) && !IsAccelerable(GetType(world, rhs)))
-    {
-        return false;
-    }
-
-    // Does a joint prevent collision?
-    const auto joints = GetJoints(world, lhs);
-    const auto it = std::find_if(cbegin(joints), cend(joints), [&](Body::KeyedJointPtr ji) {
-        return (std::get<0>(ji) == rhs) && !world.GetCollideConnected(std::get<JointID>(ji));
-    });
-    return it == end(joints);
-}
-
-bool TestPoint(const World& world, FixtureID id, Length2 p)
-{
-    return TestPoint(GetShape(world, id), InverseTransform(p, GetTransformation(world, id)));
-}
-
-Force2 GetCentripetalForce(const World& world, BodyID id, Length2 axis)
-{
-    // For background on centripetal force, see:
-    //   https://en.wikipedia.org/wiki/Centripetal_force
-
-    // Force is M L T^-2.
-    const auto velocity = GetLinearVelocity(world, id);
-    const auto magnitudeOfVelocity = GetMagnitude(GetVec2(velocity)) * MeterPerSecond;
-    const auto location = GetLocation(world, id);
-    const auto mass = GetMass(world, id);
-    const auto delta = axis - location;
-    const auto invRadius = Real{1} / GetMagnitude(delta);
-    const auto dir = delta * invRadius;
-    return Force2{dir * mass * Square(magnitudeOfVelocity) * invRadius};
 }
 
 } // namespace d2

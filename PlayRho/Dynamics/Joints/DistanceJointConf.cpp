@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
 
 #include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
 namespace playrho {
 namespace d2 {

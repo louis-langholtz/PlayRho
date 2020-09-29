@@ -19,7 +19,9 @@
 
 #include <PlayRho/Common/CodeDumper.hpp>
 
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
+
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>

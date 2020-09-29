@@ -19,11 +19,15 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/Dynamics/WorldContact.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -34,19 +38,21 @@
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
-#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
-#include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
-#include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
-#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/WrongState.hpp>
+
+#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
+
 #include <chrono>
 #include <type_traits>
 

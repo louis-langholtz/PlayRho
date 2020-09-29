@@ -20,12 +20,12 @@
  */
 
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
+
 #include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
 #include <algorithm>
 

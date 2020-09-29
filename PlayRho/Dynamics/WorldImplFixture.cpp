@@ -83,6 +83,11 @@ MassData GetMassData(const WorldImpl& world, FixtureID id)
     return GetMassData(GetShape(world, id));
 }
 
+Filter GetFilterData(const WorldImpl& world, FixtureID id)
+{
+    return world.GetFixture(id).GetFilterData();
+}
+
 void Refilter(WorldImpl& world, FixtureID id)
 {
     world.Refilter(id);

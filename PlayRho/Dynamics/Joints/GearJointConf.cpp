@@ -22,7 +22,8 @@
 #include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
 
 #include <PlayRho/Dynamics/Joints/GearJoint.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
 
 namespace playrho {
 namespace d2 {

@@ -22,7 +22,7 @@
 #include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
 
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
-#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
 namespace playrho {
 namespace d2 {

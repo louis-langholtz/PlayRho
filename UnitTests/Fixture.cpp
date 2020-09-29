@@ -18,8 +18,9 @@
 
 #include "UnitTests.hpp"
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
