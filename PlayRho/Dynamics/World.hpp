@@ -23,7 +23,7 @@
 #define PLAYRHO_DYNAMICS_WORLD_HPP
 
 /// @file
-/// Declarations of the World class and associated free functions.
+/// Declarations of the World class.
 
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/Range.hpp> // for SizedRange

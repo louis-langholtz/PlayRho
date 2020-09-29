@@ -21,11 +21,6 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Collision/Manifold.hpp>
-
-#include <PlayRho/Dynamics/WorldImpl.hpp> // for std::unique_ptr<WorldImpl> destruction
 #include <PlayRho/Dynamics/WorldImplBody.hpp>
 #include <PlayRho/Dynamics/WorldImplContact.hpp>
 #include <PlayRho/Dynamics/WorldImplFixture.hpp>
@@ -34,8 +29,6 @@
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -47,21 +40,8 @@ static_assert(std::is_move_constructible<World>::value, "World must be move cons
 static_assert(std::is_move_assignable<World>::value, "World must be move assignable!");
 static_assert(std::is_nothrow_destructible<World>::value, "World must be nothrow destructible!");
 
-World::World(const WorldConf& def): m_impl{CreateWorldImpl(def)}
-{
-}
-
-World::World(const World& other): m_impl{CreateWorldImpl(*other.m_impl)}
-{
-}
-
-World& World::operator= (const World& other)
-{
-    *m_impl = *other.m_impl;
-    return *this;
-}
-
-World::~World() noexcept {};
+// Special member functions are off in their own .cpp file to avoid their
+// necessary includes being in this file!!
 
 void World::Clear()
 {

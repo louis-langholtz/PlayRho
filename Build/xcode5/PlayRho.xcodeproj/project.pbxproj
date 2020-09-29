@@ -169,6 +169,7 @@
 		4764089D25226E180090F711 /* WorldFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4764089925226E170090F711 /* WorldFixture.cpp */; };
 		4764089E25226E180090F711 /* WorldMisc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4764089A25226E170090F711 /* WorldMisc.cpp */; };
 		4764089F25226E180090F711 /* WorldContact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4764089B25226E170090F711 /* WorldContact.cpp */; };
+		476408A1252391730090F711 /* WorldSpecial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476408A0252391730090F711 /* WorldSpecial.cpp */; };
 		4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3F21E3A7ACA00574143 /* Wider.hpp */; };
 		4768D3F81E3E895A00574143 /* PrismaticJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */; };
 		4768D3FD1E414A0100574143 /* Vector2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4768D3FA1E414A0100574143 /* Vector2.hpp */; };
@@ -588,6 +589,7 @@
 		4764089925226E170090F711 /* WorldFixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldFixture.cpp; sourceTree = "<group>"; };
 		4764089A25226E170090F711 /* WorldMisc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldMisc.cpp; sourceTree = "<group>"; };
 		4764089B25226E170090F711 /* WorldContact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldContact.cpp; sourceTree = "<group>"; };
+		476408A0252391730090F711 /* WorldSpecial.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldSpecial.cpp; sourceTree = "<group>"; };
 		4768D3F21E3A7ACA00574143 /* Wider.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Wider.hpp; sourceTree = "<group>"; };
 		4768D3F71E3E895A00574143 /* PrismaticJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PrismaticJoint.cpp; sourceTree = "<group>"; };
 		4768D3FA1E414A0100574143 /* Vector2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector2.hpp; sourceTree = "<group>"; };
@@ -1169,6 +1171,7 @@
 				47640876251EA80B0090F711 /* WorldImplJoint.hpp */,
 				47640884251F11620090F711 /* WorldImplMisc.cpp */,
 				4764087E251EB90E0090F711 /* WorldImplMisc.hpp */,
+				476408A0252391730090F711 /* WorldSpecial.cpp */,
 			);
 			path = Dynamics;
 			sourceTree = "<group>";
@@ -1886,6 +1889,7 @@
 				47640881251F0F9B0090F711 /* WorldImplBody.cpp in Sources */,
 				80BB89D2141C3E5900F1753A /* TargetJoint.cpp in Sources */,
 				47640886251F11630090F711 /* WorldImplFixture.cpp in Sources */,
+				476408A1252391730090F711 /* WorldSpecial.cpp in Sources */,
 				470F9B061EDB8F62007EF7B6 /* Shape.cpp in Sources */,
 				4764089D25226E180090F711 /* WorldFixture.cpp in Sources */,
 				80BB89D4141C3E5900F1753A /* PrismaticJoint.cpp in Sources */,
