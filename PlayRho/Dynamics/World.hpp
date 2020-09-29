@@ -302,7 +302,7 @@ public:
     /// @details Provides insight on what bodies have been queued for proxy processing
     ///   during the next call to the world step method.
     /// @see Step.
-    SizedRange<World::Bodies::const_iterator> GetBodiesForProxies() const noexcept;
+    SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
 
     /// @brief Creates a rigid body with the given configuration.
     /// @warning This function should not be used while the world is locked &mdash; as it is
