@@ -455,7 +455,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     const auto shape2 = Shape{PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(1_kgpm2)};
     world.CreateFixture(b2, shape2);
 
-    auto jd = RevoluteJointConf{b1, b2, Length2{}};
+    auto jd = GetRevoluteJointConf(world, b1, b2, Length2{});
     const auto joint = world.CreateJoint(jd);
     
     SetAccelerations(world, Acceleration{
