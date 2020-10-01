@@ -69,7 +69,7 @@ int main()
         // Perform a single step of simulation. Keep the time step & iterations fixed.
         world.Step(stepConf);
 
-        const auto location = GetLocation(world, ball);
+        const auto location = world.GetTransformation(ball).p;
         const auto angle = world.GetAngle(ball);
 
         // Now print the location and angle of the body.
