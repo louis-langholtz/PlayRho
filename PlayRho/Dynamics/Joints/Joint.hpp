@@ -25,7 +25,6 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 
-#include <unordered_map>
 #include <vector>
 #include <utility>
 #include <stdexcept>
@@ -47,22 +46,6 @@ class World;
 /// @brief The user creatable classes that specify constraints on one or more Body instances.
 /// @ingroup ConstraintsGroup
 
-/// @brief A body constraint pointer alias.
-using BodyConstraintPtr = BodyConstraint*;
-
-/// @brief A body pointer and body constraint pointer pair alias.
-using BodyConstraintPair = std::pair<BodyID, BodyConstraintPtr>;
-
-// #define USE_VECTOR_MAP
-
-/// @brief A body constraints map alias.
-using BodyConstraintsMap =
-#ifdef USE_VECTOR_MAP
-    std::vector<std::pair<BodyID, BodyConstraintPtr>>;
-#else
-    std::unordered_map<BodyID, BodyConstraint*>;
-#endif
-
 /// @brief Base joint class.
 ///
 /// @details Joints are constraints that are used to constrain one or more bodies in various
@@ -76,6 +59,7 @@ using BodyConstraintsMap =
 class Joint
 {
 public:
+    using BodyConstraintsMap = std::vector<BodyConstraint>;
     
     /// @brief Limit state.
     /// @note Only used by joints that implement some notion of a limited range.
@@ -261,14 +245,8 @@ inline void Joint::UnsetIslanded() noexcept
 
 // Free functions...
 
-#ifdef PLAYRHO_PROVIDE_VECTOR_AT
 /// @brief Provides referenced access to the identified element of the given container.
-BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, BodyID key);
-#endif
-
-/// @brief Provides referenced access to the identified element of the given container.
-BodyConstraintPtr& At(std::unordered_map<BodyID, BodyConstraint*>& container,
-                      BodyID key);
+BodyConstraint& At(std::vector<BodyConstraint>& container, BodyID key);
 
 /// @brief Provides a human readable C-style string uniquely identifying the given limit state.
 const char* ToString(Joint::LimitState val) noexcept;

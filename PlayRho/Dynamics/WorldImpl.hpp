@@ -566,12 +566,7 @@ private:
     ///
     /// @return Island solver results.
     ///
-    static IslandStats SolveRegIslandViaGS(ArrayAllocator<Body>& bodyBuffer,
-                                           ArrayAllocator<Contact>& contacts,
-                                           ArrayAllocator<Manifold>& manifolds,
-                                           const ArrayAllocator<Fixture>& fixtures,
-                                           const StepConf& conf, Island island,
-                                           const ImpulsesContactListener& contactListener);
+    IslandStats SolveRegIslandViaGS(const StepConf& conf, Island island);
     
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.

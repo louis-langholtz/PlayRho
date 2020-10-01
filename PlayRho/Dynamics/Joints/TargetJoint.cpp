@@ -98,12 +98,12 @@ void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const Step
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
-    const auto posB = bodyConstraintB->GetPosition();
-    auto velB = bodyConstraintB->GetVelocity();
+    const auto posB = bodyConstraintB.GetPosition();
+    auto velB = bodyConstraintB.GetVelocity();
 
     const auto qB = UnitVec::Get(posB.angular);
 
-    const auto mass = Real{1} / bodyConstraintB->GetInvMass(); // GetMass(*GetBodyB());
+    const auto mass = Real{1} / bodyConstraintB.GetInvMass(); // GetMass(*GetBodyB());
 
     // Frequency
     const auto omega = Real{2} * Pi * m_frequency; // T^-1
@@ -126,11 +126,11 @@ void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const Step
     const auto beta = Frequency{h * k * m_gamma}; // T * M T^-2 * M^-1 is T^-1
 
     // Compute the effective mass matrix.
-    m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), qB);
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
 
-    m_mass = GetEffectiveMassMatrix(*bodyConstraintB);
+    m_mass = GetEffectiveMassMatrix(bodyConstraintB);
 
-    m_C = LinearVelocity2{((posB.linear + m_rB) - bodyConstraintA->GetPosition().linear) * beta};
+    m_C = LinearVelocity2{((posB.linear + m_rB) - bodyConstraintA.GetPosition().linear) * beta};
     assert(IsValid(m_C));
 
     // Cheat with some damping
@@ -141,21 +141,21 @@ void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const Step
         m_impulse *= step.dtRatio;
         const auto P = m_impulse;
         const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
-        velB += Velocity{bodyConstraintB->GetInvMass() * P, bodyConstraintB->GetInvRotInertia() * crossBP};
+        velB += Velocity{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * crossBP};
     }
     else
     {
         m_impulse = Momentum2{};
     }
 
-    bodyConstraintB->SetVelocity(velB);
+    bodyConstraintB.SetVelocity(velB);
 }
 
 bool TargetJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
 {
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
-    auto velB = bodyConstraintB->GetVelocity();
+    auto velB = bodyConstraintB.GetVelocity();
     assert(IsValid(velB));
 
     const auto Cdot = LinearVelocity2{velB.linear + (GetRevPerpendicular(m_rB) * (velB.angular / Radian))};
@@ -174,11 +174,11 @@ bool TargetJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Ste
     const auto angImpulseB = AngularMomentum{Cross(m_rB, incImpulse) / Radian};
 
     velB += Velocity{
-        bodyConstraintB->GetInvMass() * incImpulse,
-        bodyConstraintB->GetInvRotInertia() * angImpulseB
+        bodyConstraintB.GetInvMass() * incImpulse,
+        bodyConstraintB.GetInvRotInertia() * angImpulseB
     };
 
-    bodyConstraintB->SetVelocity(velB);
+    bodyConstraintB.SetVelocity(velB);
     
     return incImpulse == Momentum2{};
 }

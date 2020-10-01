@@ -70,18 +70,18 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
-    const auto posA = bodyConstraintA->GetPosition();
-    auto velA = bodyConstraintA->GetVelocity();
+    const auto posA = bodyConstraintA.GetPosition();
+    auto velA = bodyConstraintA.GetVelocity();
 
-    const auto posB = bodyConstraintB->GetPosition();
-    auto velB = bodyConstraintB->GetVelocity();
+    const auto posB = bodyConstraintB.GetPosition();
+    auto velB = bodyConstraintB.GetVelocity();
 
     const auto qA = UnitVec::Get(posA.angular);
     const auto qB = UnitVec::Get(posB.angular);
 
     // Compute the effective mass matrix.
-    m_rA = Rotate(m_linearOffset - bodyConstraintA->GetLocalCenter(), qA);
-    m_rB = Rotate(-bodyConstraintB->GetLocalCenter(), qB);
+    m_rA = Rotate(m_linearOffset - bodyConstraintA.GetLocalCenter(), qA);
+    m_rB = Rotate(-bodyConstraintB.GetLocalCenter(), qB);
 
     // J = [-I -r1_skew I r2_skew]
     // r_skew = [-ry; rx]
@@ -91,10 +91,10 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
     //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-    const auto invMassA = bodyConstraintA->GetInvMass();
-    const auto invMassB = bodyConstraintB->GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
-    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     {
         const auto exx = InvMass{
@@ -142,8 +142,8 @@ void MotorJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepC
         m_angularImpulse = AngularMomentum{0};
     }
 
-    bodyConstraintA->SetVelocity(velA);
-    bodyConstraintB->SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
 }
 
 bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
@@ -151,13 +151,13 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
-    auto velA = bodyConstraintA->GetVelocity();
-    auto velB = bodyConstraintB->GetVelocity();
+    auto velA = bodyConstraintA.GetVelocity();
+    auto velB = bodyConstraintB.GetVelocity();
 
-    const auto invMassA = bodyConstraintA->GetInvMass();
-    const auto invMassB = bodyConstraintB->GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
-    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     const auto h = step.GetTime();
     const auto inv_h = step.GetInvTime();
@@ -214,8 +214,8 @@ bool MotorJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const Step
         velB += Velocity{invMassB * incImpulse, invRotInertiaB * angImpulseB};
     }
 
-    bodyConstraintA->SetVelocity(velA);
-    bodyConstraintB->SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
     
     return solved;
 }

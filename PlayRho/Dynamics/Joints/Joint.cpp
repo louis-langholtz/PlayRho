@@ -34,10 +34,15 @@
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+
 #include <PlayRho/Defines.hpp>
+
 #include <PlayRho/Common/OptionalValue.hpp>
 
 #include <algorithm>
@@ -105,26 +110,9 @@ bool Joint::IsOkay(const JointConf& def) noexcept
 
 // Free functions...
 
-#ifdef PLAYRHO_PROVIDE_VECTOR_AT
-BodyConstraintPtr& At(std::vector<BodyConstraintPair>& container, const Body* key)
+BodyConstraint& At(std::vector<BodyConstraint>& container, BodyID key)
 {
-    auto last = end(container);
-    auto first = begin(container);
-    first = std::lower_bound(first, last, key, [](const BodyConstraintPair &a, const Body* b){
-        return std::get<const Body*>(a) < b;
-    });
-    if ((first == last) || (key != std::get<const Body*>(*first)))
-    {
-        throw std::out_of_range{"invalid key"};
-    }
-    return std::get<BodyConstraintPtr>(*first);
-}
-#endif
-
-BodyConstraintPtr& At(std::unordered_map<BodyID, BodyConstraint*>& container,
-                      BodyID key)
-{
-    return container.at(key);
+    return container.at(UnderlyingValue(key));
 }
 
 const char* ToString(Joint::LimitState val) noexcept

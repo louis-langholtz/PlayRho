@@ -68,14 +68,14 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
 {
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
-    const auto posA = bodyConstraintA->GetPosition();
-    auto velA = bodyConstraintA->GetVelocity();
-    const auto posB = bodyConstraintB->GetPosition();
-    auto velB = bodyConstraintB->GetVelocity();
+    const auto posA = bodyConstraintA.GetPosition();
+    auto velA = bodyConstraintA.GetVelocity();
+    const auto posB = bodyConstraintB.GetPosition();
+    auto velB = bodyConstraintB.GetVelocity();
 
     // Compute the effective mass matrix.
-    m_rA = Rotate(m_localAnchorA - bodyConstraintA->GetLocalCenter(), UnitVec::Get(posA.angular));
-    m_rB = Rotate(m_localAnchorB - bodyConstraintB->GetLocalCenter(), UnitVec::Get(posB.angular));
+    m_rA = Rotate(m_localAnchorA - bodyConstraintA.GetLocalCenter(), UnitVec::Get(posA.angular));
+    m_rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), UnitVec::Get(posB.angular));
 
     // J = [-I -r1_skew I r2_skew]
     //     [ 0       -1 0       1]
@@ -86,10 +86,10 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
     //     [  -r1y*iA*r1x-r2y*iB*r2x, mA+r1x^2*iA+mB+r2x^2*iB,           r1x*iA+r2x*iB]
     //     [          -r1y*iA-r2y*iB,           r1x*iA+r2x*iB,                   iA+iB]
 
-    const auto invMassA = bodyConstraintA->GetInvMass();
-    const auto invMassB = bodyConstraintB->GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
-    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     {
         const auto exx = InvMass{
@@ -137,8 +137,8 @@ void FrictionJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const St
         m_angularImpulse = AngularMomentum{0};
     }
 
-    bodyConstraintA->SetVelocity(velA);
-    bodyConstraintB->SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
 }
 
 bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step)
@@ -146,11 +146,11 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
-    auto velA = bodyConstraintA->GetVelocity();
-    const auto invRotInertiaA = bodyConstraintA->GetInvRotInertia();
+    auto velA = bodyConstraintA.GetVelocity();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
 
-    auto velB = bodyConstraintB->GetVelocity();
-    const auto invRotInertiaB = bodyConstraintB->GetInvRotInertia();
+    auto velB = bodyConstraintB.GetVelocity();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     const auto h = step.GetTime();
 
@@ -202,12 +202,12 @@ bool FrictionJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
             solved = false;
         }
 
-        velA -= Velocity{bodyConstraintA->GetInvMass() * incImpulse, invRotInertiaA * angImpulseA};
-        velB += Velocity{bodyConstraintB->GetInvMass() * incImpulse, invRotInertiaB * angImpulseB};
+        velA -= Velocity{bodyConstraintA.GetInvMass() * incImpulse, invRotInertiaA * angImpulseA};
+        velB += Velocity{bodyConstraintB.GetInvMass() * incImpulse, invRotInertiaB * angImpulseB};
     }
 
-    bodyConstraintA->SetVelocity(velA);
-    bodyConstraintB->SetVelocity(velB);
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
     
     return solved;
 }
