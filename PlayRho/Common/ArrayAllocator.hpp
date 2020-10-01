@@ -63,6 +63,20 @@ public:
         return index;
     }
 
+    size_type Allocate(const value_type& copy)
+    {
+        if (!m_free.empty())
+        {
+            const auto index = m_free.back();
+            m_data[index] = copy;
+            m_free.pop_back();
+            return index;
+        }
+        const auto index = m_data.size();
+        m_data.push_back(copy);
+        return index;
+    }
+
     void Free(size_type index)
     {
         if (index != static_cast<size_type>(-1))
@@ -105,6 +119,11 @@ public:
     size_type free() const noexcept
     {
         return m_free.size();
+    }
+
+    void reserve(size_type value)
+    {
+        m_data.reserve(value);
     }
 
 private:
