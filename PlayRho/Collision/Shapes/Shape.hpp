@@ -309,7 +309,7 @@ private:
         /// @see https://en.wikipedia.org/wiki/Transformation_matrix
         virtual void Transform_(const Mat22& m) = 0;
         
-        /// @brief Draws the shape.
+        /// @brief Visits the shape.
         virtual bool Visit_(void* userData) const = 0;
         
         /// @brief Equality checking method.
