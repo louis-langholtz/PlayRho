@@ -47,6 +47,10 @@ namespace d2 {
 class World;
 class Shape;
 
+/// @copydoc World::CreateBody
+/// @relatedalso World
+BodyID CreateBody(World& world, const BodyConf& def = GetDefaultBodyConf());
+
 /// @brief Gets the range of all constant fixtures attached to the given body.
 /// @relatedalso World
 SizedRange<std::vector<FixtureID>::const_iterator> GetFixtures(const World& world, BodyID id);

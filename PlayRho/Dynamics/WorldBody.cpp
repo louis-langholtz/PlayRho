@@ -39,6 +39,11 @@ namespace d2 {
 
 using playrho::size;
 
+BodyID CreateBody(World& world, const BodyConf& def)
+{
+    return world.CreateBody(def);
+}
+
 SizedRange<std::vector<FixtureID>::const_iterator>
 GetFixtures(const World& world, BodyID id)
 {
