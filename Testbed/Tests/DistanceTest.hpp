@@ -45,8 +45,8 @@ public:
             .UseType(BodyType::Dynamic)
             .UseLinearDamping(0.9_Hz)
         	.UseAngularDamping(0.9_Hz);
-        m_bodyA = m_world.CreateBody(def);
-        m_bodyB = m_world.CreateBody(def);
+        m_bodyA = CreateBody(m_world, def);
+        m_bodyB = CreateBody(m_world, def);
 
         SetTransform(m_world, m_bodyA, Vec2(-10.0f, 20.2f) * 1_m, 0_deg);
         SetTransform(m_world, m_bodyB, GetLocation(m_world, m_bodyA) +

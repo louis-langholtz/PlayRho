@@ -34,7 +34,7 @@ public:
         const auto a = Real{1.0f};
         const auto b = Real{2.0f};
 
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         {
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 2_m;
@@ -54,11 +54,11 @@ public:
 
             //bd.fixedRotation = true;
             bd.location = Vec2(-10.0f, y) * 1_m;
-            const auto body1 = m_world.CreateBody(bd);
+            const auto body1 = CreateBody(m_world, bd);
             CreateFixture(m_world, body1, shape);
 
             bd.location = Vec2(10.0f, y) * 1_m;
-            const auto body2 = m_world.CreateBody(bd);
+            const auto body2 = CreateBody(m_world, bd);
             CreateFixture(m_world, body2, shape);
 
             const auto anchor1 = Vec2(-10.0f, y + b) * 1_m;

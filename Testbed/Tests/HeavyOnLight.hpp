@@ -41,10 +41,10 @@ public:
         const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
         const auto biggerDiskConf = DiskShapeConf(diskConf).UseRadius(5_m);
 
-        CreateFixture(m_world, m_world.CreateBody(), Shape(groundConf));
+        CreateFixture(m_world, CreateBody(m_world), Shape(groundConf));
         
-        const auto lowerBody = m_world.CreateBody(lowerBodyConf);
-        const auto upperBody = m_world.CreateBody(upperBodyConf);
+        const auto lowerBody = CreateBody(m_world, lowerBodyConf);
+        const auto upperBody = CreateBody(m_world, upperBodyConf);
 
         CreateFixture(m_world, lowerBody, Shape(smallerDiskConf));
         m_top = CreateFixture(m_world, upperBody, Shape(biggerDiskConf));

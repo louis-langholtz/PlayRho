@@ -39,7 +39,7 @@ public:
         return conf;
     }
     
-    iforce2d_Trajectories(): Test(GetTestConf()), m_groundBody{m_world.CreateBody()}
+    iforce2d_Trajectories(): Test(GetTestConf()), m_groundBody{CreateBody(m_world)}
     {
         //add four walls to the ground body
         FixtureConf myFixtureConf;
@@ -64,7 +64,7 @@ public:
         BodyConf kinematicBody;
         kinematicBody.type = BodyType::Kinematic;
         kinematicBody.location = Length2{11_m, 22_m};
-        m_targetBody = m_world.CreateBody(kinematicBody);
+        m_targetBody = CreateBody(m_world, kinematicBody);
         const auto w = BallSize * 1_m;
         Length2 verts[3];
         verts[0] = Length2(  0_m, -2*w);
@@ -82,7 +82,7 @@ public:
         BodyConf myBodyConf;
         myBodyConf.type = BodyType::Dynamic;
         myBodyConf.location = Vec2(-15, 5) * 1_m;
-        m_launcherBody = m_world.CreateBody(myBodyConf);
+        m_launcherBody = CreateBody(m_world, myBodyConf);
         CreateFixture(m_world, m_launcherBody, Shape{DiskShapeConf{}.UseRadius(2_m)
             .UseFriction(Real(0.95)).UseDensity(1_kgpm2)}, myFixtureConf);
         
@@ -99,13 +99,13 @@ public:
         
         //create dynamic box body to fire
         myBodyConf.location = Length2(0_m, -5_m);//will be positioned later
-        m_littleBox = m_world.CreateBody(myBodyConf);
+        m_littleBox = CreateBody(m_world, myBodyConf);
         polygonShape.SetAsBox( 0.5_m, 0.5_m );
         polygonShape.UseDensity(1_kgpm2);
         CreateFixture(m_world, m_littleBox, Shape(polygonShape), myFixtureConf);
         
         //ball for computer 'player' to fire
-        m_littleBox2 = m_world.CreateBody(myBodyConf);
+        m_littleBox2 = CreateBody(m_world, myBodyConf);
         CreateFixture(m_world, m_littleBox2, Shape{DiskShapeConf{}.UseRadius(BallSize * 1_m)
             .UseFriction(Real(0.95)).UseDensity(1_kgpm2)}, myFixtureConf);
         

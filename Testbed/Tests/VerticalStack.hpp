@@ -39,7 +39,7 @@ public:
 
     VerticalStack()
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(20.0f, 0.0f) * 1_m, Vec2(20.0f, 20.0f) * 1_m}});
 
@@ -63,7 +63,7 @@ public:
                 //const auto x = i % 2 == 0 ? -0.01f : 0.01f;
                 //bd.position = Vec2(xs[j] + x, (hdim - hdim/20) + (hdim * 2 - hdim / 20) * i);
                 bd.location = Vec2(xs[j] + x, (i + 1) * hdim * 4) * 1_m;
-                CreateFixture(m_world, m_world.CreateBody(bd), shape);
+                CreateFixture(m_world, CreateBody(m_world, bd), shape);
             }
         }
 
@@ -83,7 +83,7 @@ public:
                 bd.bullet = true;
                 bd.location = Vec2(-31.0f, 5.0f) * 1_m;
                 
-                m_bullet = m_world.CreateBody(bd);
+                m_bullet = CreateBody(m_world, bd);
                 CreateFixture(m_world, m_bullet, m_bulletshape);
                 SetVelocity(m_world, m_bullet, Velocity{Vec2(400.0f, 0.0f) * 1_mps, 0_rpm});
             }

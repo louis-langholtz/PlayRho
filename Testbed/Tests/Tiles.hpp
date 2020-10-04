@@ -43,7 +43,7 @@ public:
             const auto a = Real{0.5f};
             BodyConf bd;
             GetY(bd.location) = -a * 1_m;
-            const auto ground = m_world.CreateBody(bd);
+            const auto ground = CreateBody(m_world, bd);
 
             const auto N = 200;
             const auto M = 10;
@@ -82,7 +82,7 @@ public:
                     bd.location = y * 1_m;
                     bd.linearAcceleration = m_gravity;
 
-                    const auto body = m_world.CreateBody(bd);
+                    const auto body = CreateBody(m_world, bd);
                     CreateFixture(m_world, body, shape);
                     ++m_fixtureCount;
                     y += deltaY;

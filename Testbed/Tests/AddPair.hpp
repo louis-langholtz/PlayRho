@@ -50,13 +50,13 @@ public:
             {
                 const auto location = Vec2(RandomFloat(minX, maxX), RandomFloat(minY, maxY)) * Meter;
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-                const auto body = m_world.CreateBody(BodyConf(bd).UseLocation(location));
+                const auto body = CreateBody(m_world, BodyConf(bd).UseLocation(location));
                 CreateFixture(m_world, body, shape);
             }
         }
         const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
             .UseLocation(Length2{-40_m, 5_m}).UseLinearVelocity(LinearVelocity2{150_mps, 0_mps});
-        const auto body = m_world.CreateBody(bd);
+        const auto body = CreateBody(m_world, bd);
         const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(1.5_m, 1.5_m);
         CreateFixture(m_world, body, Shape{conf});
     }

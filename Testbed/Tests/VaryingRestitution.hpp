@@ -32,7 +32,7 @@ public:
 
     VaryingRestitution()
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape(GetGroundEdgeConf()));
 
         Real restitution[7] = {0.0f, 0.1f, 0.3f, 0.5f, 0.75f, 0.9f, 1.0f};
@@ -43,7 +43,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(Real(-10 + 3 * i), 20) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             shape.UseRestitution(restitution[i]);
             CreateFixture(m_world, body, Shape(shape));
         }

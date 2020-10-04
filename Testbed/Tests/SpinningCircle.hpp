@@ -44,9 +44,9 @@ namespace testbed {
             bodyConf.bullet = true;
 
             bodyConf.location = Vec2{0, 26} * 1_m;
-            const auto body1 = m_world.CreateBody(bodyConf);
+            const auto body1 = CreateBody(m_world, bodyConf);
             bodyConf.location = Vec2{0, 14} * 1_m;
-            const auto body2 = m_world.CreateBody(bodyConf);
+            const auto body2 = CreateBody(m_world, bodyConf);
             
             auto shapeConf = DiskShapeConf{};
             shapeConf.density = 10_kgpm2;

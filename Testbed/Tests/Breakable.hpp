@@ -49,7 +49,7 @@ public:
     Breakable(): m_shape1{GetShapeConf1()}, m_shape2{GetShapeConf2()}
     {
         // Ground body
-        CreateFixture(m_world, m_world.CreateBody(), Shape{GetGroundEdgeConf()});
+        CreateFixture(m_world, CreateBody(m_world), Shape{GetGroundEdgeConf()});
 
         // Breakable dynamic body
         {
@@ -58,7 +58,7 @@ public:
             bd.linearAcceleration = m_gravity;
             bd.location = Length2{0_m, 40_m};
             bd.angle = Pi * 0.25_rad;
-            m_body1 = m_world.CreateBody(bd);
+            m_body1 = CreateBody(m_world, bd);
             m_piece1 = CreateFixture(m_world, m_body1, m_shape1);
             m_piece2 = CreateFixture(m_world, m_body1, m_shape2);
         }
@@ -107,7 +107,7 @@ public:
         bd.location = GetLocation(m_world, body1);
         bd.angle = GetAngle(m_world, body1);
 
-        const auto body2 = m_world.CreateBody(bd);
+        const auto body2 = CreateBody(m_world, bd);
         m_piece2 = CreateFixture(m_world, body2, m_shape2);
 
         // Compute consistent velocities for new bodies based on

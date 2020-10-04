@@ -30,25 +30,25 @@ public:
 
     VaryingFriction()
     {
-        CreateFixture(m_world, m_world.CreateBody(), Shape(GetGroundEdgeConf()));
+        CreateFixture(m_world, CreateBody(m_world), Shape(GetGroundEdgeConf()));
 
         const auto sliderPlank = Shape{PolygonShapeConf{}.SetAsBox(13_m, 0.25_m)};
         const auto sliderWall = Shape{PolygonShapeConf{}.SetAsBox(0.25_m, 1_m)};
 
         CreateFixture(m_world,
-                      m_world.CreateBody(BodyConf{}.UseLocation(Vec2(-4, 22) * 1_m).UseAngle(-0.25_rad)),
+                      CreateBody(m_world, BodyConf{}.UseLocation(Vec2(-4, 22) * 1_m).UseAngle(-0.25_rad)),
                       sliderPlank);
         CreateFixture(m_world,
-                      m_world.CreateBody(BodyConf{}.UseLocation(Vec2(10.5f, 19) * 1_m)),
+                      CreateBody(m_world, BodyConf{}.UseLocation(Vec2(10.5f, 19) * 1_m)),
                       sliderWall);
         CreateFixture(m_world,
-                      m_world.CreateBody(BodyConf{}.UseLocation(Vec2(4, 14) * 1_m).UseAngle(0.25_rad)),
+                      CreateBody(m_world, BodyConf{}.UseLocation(Vec2(4, 14) * 1_m).UseAngle(0.25_rad)),
                       sliderPlank);
         CreateFixture(m_world,
-                      m_world.CreateBody(BodyConf{}.UseLocation(Vec2(-10.5f, 11) * 1_m)),
+                      CreateBody(m_world, BodyConf{}.UseLocation(Vec2(-10.5f, 11) * 1_m)),
                       sliderWall);
         CreateFixture(m_world,
-                      m_world.CreateBody(BodyConf{}.UseLocation(Vec2(-4, 6) * 1_m).UseAngle(-0.25_rad)),
+                      CreateBody(m_world, BodyConf{}.UseLocation(Vec2(-4, 6) * 1_m).UseAngle(-0.25_rad)),
                       sliderPlank);
 
         auto shape = PolygonShapeConf{}.SetAsBox(0.5_m, 0.5_m).UseDensity(25_kgpm2);
@@ -59,7 +59,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(-15.0f + 4.0f * i, 28.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             shape.UseFriction(friction[i]);
             CreateFixture(m_world, body, Shape(shape));
         }

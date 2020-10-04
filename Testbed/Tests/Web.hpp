@@ -37,7 +37,7 @@ public:
     
     Web(): Test(GetTestConf())
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
@@ -48,19 +48,19 @@ public:
             bd.linearAcceleration = m_gravity;
 
             bd.location = Vec2(-5.0f, 5.0f) * 1_m;
-            m_bodies[0] = m_world.CreateBody(bd);
+            m_bodies[0] = CreateBody(m_world, bd);
             CreateFixture(m_world, m_bodies[0], shape);
 
             bd.location = Vec2(5.0f, 5.0f) * 1_m;
-            m_bodies[1] = m_world.CreateBody(bd);
+            m_bodies[1] = CreateBody(m_world, bd);
             CreateFixture(m_world, m_bodies[1], shape);
 
             bd.location = Vec2(5.0f, 15.0f) * 1_m;
-            m_bodies[2] = m_world.CreateBody(bd);
+            m_bodies[2] = CreateBody(m_world, bd);
             CreateFixture(m_world, m_bodies[2], shape);
 
             bd.location = Vec2(-5.0f, 15.0f) * 1_m;
-            m_bodies[3] = m_world.CreateBody(bd);
+            m_bodies[3] = CreateBody(m_world, bd);
             CreateFixture(m_world, m_bodies[3], shape);
 
             DistanceJointConf jd;

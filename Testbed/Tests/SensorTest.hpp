@@ -37,7 +37,7 @@ public:
     SensorTest()
     {
         {
-            const auto ground = m_world.CreateBody();
+            const auto ground = CreateBody(m_world);
             CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
 #if 0
@@ -66,7 +66,7 @@ public:
             bd.location = Vec2(-10.0f + 3.0f * i, 20.0f) * 1_m;
             bd.userData = m_touching + i;
             m_touching[i] = false;
-            m_bodies[i] = m_world.CreateBody(bd);
+            m_bodies[i] = CreateBody(m_world, bd);
             CreateFixture(m_world, m_bodies[i], shape);
         }
     }

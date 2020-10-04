@@ -32,7 +32,7 @@ public:
 
     Bridge()
     {        
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape(GetGroundEdgeConf()));
         {
             auto conf = PolygonShapeConf{};
@@ -43,7 +43,7 @@ public:
             auto prevBody = ground;
             for (auto i = 0; i < Count; ++i)
             {
-                const auto body = m_world.CreateBody(BodyConf{}
+                const auto body = CreateBody(m_world, BodyConf{}
                                                      .UseType(BodyType::Dynamic)
                                                      .UseLinearAcceleration(m_gravity)
                                                      .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
@@ -67,7 +67,7 @@ public:
         const auto polyshape = Shape(conf);
         for (auto i = 0; i < 2; ++i)
         {
-            const auto body = m_world.CreateBody(BodyConf{}
+            const auto body = CreateBody(m_world, BodyConf{}
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLinearAcceleration(m_gravity)
                                                  .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m));
@@ -77,7 +77,7 @@ public:
         const auto diskShape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(0.5_m)};
         for (auto i = 0; i < 3; ++i)
         {
-            const auto body = m_world.CreateBody(BodyConf{}
+            const auto body = CreateBody(m_world, BodyConf{}
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLinearAcceleration(m_gravity)
                                                  .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m));

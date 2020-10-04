@@ -30,7 +30,7 @@ class Prismatic : public Test
 public:
     Prismatic()
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
@@ -40,7 +40,7 @@ public:
             bd.location = Vec2(-10.0f, 10.0f) * 1_m;
             bd.angle = 0.5_rad * Pi;
             bd.allowSleep = false;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             CreateFixture(m_world, body, Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(2_m, 0.5_m)});
 
             // Bouncy limit

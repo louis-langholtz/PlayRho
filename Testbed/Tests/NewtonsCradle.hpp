@@ -103,7 +103,7 @@ namespace testbed {
                 BodyConf bd;
                 bd.type = BodyType::Static;
                 bd.location = Length2{0, frame_height};
-                const auto body = m_world.CreateBody(bd);
+                const auto body = CreateBody(m_world, bd);
                 
                 const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 2, frame_width / 24).UseDensity(20_kgpm2);
@@ -121,7 +121,7 @@ namespace testbed {
                 bd.bullet = m_bullet_mode;
                 bd.location = Length2{x, frame_height - (arm_length / 2)};
                 
-                m_swings[i] = m_world.CreateBody(bd);
+                m_swings[i] = CreateBody(m_world, bd);
                 CreateArm(m_swings[i], arm_length);
                 CreateBall(m_swings[i], Length2{0, -arm_length / 2}, ball_radius);
                 
@@ -157,7 +157,7 @@ namespace testbed {
                 BodyConf def;
                 def.type = BodyType::Static;
                 def.location = Length2{frame_width / 2 + frame_width / 24, frame_height - (arm_length / 2)};
-                const auto body = m_world.CreateBody(def);
+                const auto body = CreateBody(m_world, def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 24, arm_length / 2 + frame_width / 24).UseDensity(20_kgpm2);
                 CreateFixture(m_world, body, Shape(shape));
@@ -177,7 +177,7 @@ namespace testbed {
                     -(frame_width / Real{2} + frame_width / Real{24}),
                     frame_height - (arm_length / Real{2})
                 };
-                const auto body = m_world.CreateBody(def);
+                const auto body = CreateBody(m_world, def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24})).UseDensity(20_kgpm2);
                 CreateFixture(m_world, body, Shape(shape));

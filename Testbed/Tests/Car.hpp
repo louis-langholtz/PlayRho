@@ -60,7 +60,7 @@ public:
             SetFrequency(m_world, m_frontSpring, m_hz);
         });
         
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         {
             const auto hs = {0.25f, 1.0f, 4.0f, 0.0f, 0.0f, -1.0f, -2.0f, -2.0f, -1.25f, 0.0f};
             auto x = Real{20.0f};
@@ -96,7 +96,7 @@ public:
             auto bd = BodyConf{};
             bd.location = Vec2(140.0f, 1.0f) * 1_m;
             bd.type = BodyType::Dynamic;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             CreateFixture(m_world, body, Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)});
 
             auto jd = GetRevoluteJointConf(m_world, ground, body, GetLocation(m_world, body));
@@ -120,7 +120,7 @@ public:
             {
                 auto bd = BodyConf{}.UseType(BodyType::Dynamic);
                 bd.location = Vec2(161 + 2 * i, -0.125f) * 1_m;
-                const auto body = m_world.CreateBody(bd);
+                const auto body = CreateBody(m_world, bd);
                 CreateFixture(m_world, body, shape);
                 m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body,
                                                          Vec2(160 + 2 * i, -0.125f) * 1_m));
@@ -134,11 +134,11 @@ public:
         {
             const auto box = Shape{PolygonShapeConf{}.UseDensity(0.5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
             auto bd = BodyConf{}.UseType(BodyType::Dynamic);
-            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 0.5f) * 1_m)), box);
-            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 1.5f) * 1_m)), box);
-            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 2.5f) * 1_m)), box);
-            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 3.5f) * 1_m)), box);
-            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 4.5f) * 1_m)), box);
+            CreateFixture(m_world, CreateBody(m_world, bd.UseLocation(Vec2(230, 0.5f) * 1_m)), box);
+            CreateFixture(m_world, CreateBody(m_world, bd.UseLocation(Vec2(230, 1.5f) * 1_m)), box);
+            CreateFixture(m_world, CreateBody(m_world, bd.UseLocation(Vec2(230, 2.5f) * 1_m)), box);
+            CreateFixture(m_world, CreateBody(m_world, bd.UseLocation(Vec2(230, 3.5f) * 1_m)), box);
+            CreateFixture(m_world, CreateBody(m_world, bd.UseLocation(Vec2(230, 4.5f) * 1_m)), box);
         }
 
         CreateCar();
@@ -167,7 +167,7 @@ public:
         }).Transform(transmat);
 
         auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
-        m_car = m_world.CreateBody(bd.Use(carPosition).Use(carVelocity));
+        m_car = CreateBody(m_world, bd.Use(carPosition).Use(carVelocity));
         CreateFixture(m_world, m_car, Shape{carShapeConf});
         
         const auto wheelShape = Shape{
@@ -176,7 +176,7 @@ public:
         {
             // setup back wheel
             const auto location = carPosition.linear + Rotate(transmat * Length2{-1_m, -0.65_m}, UnitVec::Get(carPosition.angular));
-            const auto wheel = m_world.CreateBody(bd.UseLocation(location));
+            const auto wheel = CreateBody(m_world, bd.UseLocation(location));
             CreateFixture(m_world, wheel, wheelShape);
             auto jd = GetWheelJointConf(m_world, m_car, wheel, GetLocation(m_world, wheel),
                                         UnitVec::GetTop());
@@ -189,7 +189,7 @@ public:
         {
             // setup front wheel
             const auto location = carPosition.linear + Rotate(transmat * Length2{+1_m, -0.6_m}, UnitVec::Get(carPosition.angular));
-            const auto wheel = m_world.CreateBody(bd.UseLocation(location));
+            const auto wheel = CreateBody(m_world, bd.UseLocation(location));
             CreateFixture(m_world, wheel, wheelShape);
             auto jd = GetWheelJointConf(m_world, m_car, wheel, GetLocation(m_world, wheel),
                                         UnitVec::GetTop());

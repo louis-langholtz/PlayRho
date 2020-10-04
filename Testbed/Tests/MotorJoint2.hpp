@@ -66,8 +66,8 @@ public:
         const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
         const auto locations = m_reversedBody?
             std::make_pair(m_locationB, m_locationA): std::make_pair(m_locationA, m_locationB);
-        m_bodyA = m_world.CreateBody(BodyConf(bd).UseLocation(std::get<0>(locations)));
-        m_bodyB = m_world.CreateBody(BodyConf(bd).UseLocation(std::get<1>(locations)));
+        m_bodyA = CreateBody(m_world, BodyConf(bd).UseLocation(std::get<0>(locations)));
+        m_bodyB = CreateBody(m_world, BodyConf(bd).UseLocation(std::get<1>(locations)));
         CreateFixture(m_world, m_bodyA, m_diskShape);
         CreateFixture(m_world, m_bodyB, m_diskShape);
 
@@ -81,7 +81,7 @@ public:
     
     MotorJoint2(): Test(GetTestConf())
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{GetGroundEdgeConf()});
         
         Setup();

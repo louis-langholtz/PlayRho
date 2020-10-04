@@ -29,7 +29,7 @@ class BodyTypes : public Test
 public:
     BodyTypes()
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape(EdgeShapeConf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
 
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Dynamic", [&](KeyActionMods) {
@@ -46,7 +46,7 @@ public:
         // Define attachment
         {
             const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m).UseLinearAcceleration(m_gravity);
-            m_attachment = m_world.CreateBody(bd);
+            m_attachment = CreateBody(m_world, bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m);
             CreateFixture(m_world, m_attachment, Shape(conf));
         }
@@ -54,7 +54,7 @@ public:
         // Define platform
         {
             const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(-4, 5) * 1_m).UseLinearAcceleration(m_gravity);
-            m_platform = m_world.CreateBody(bd);
+            m_platform = CreateBody(m_world, bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6)).UseDensity(2_kgpm2)
                 .SetAsBox(0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
@@ -79,7 +79,7 @@ public:
         // Create a payload
         {
             const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 8) * 1_m).UseLinearAcceleration(m_gravity);
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6)).UseDensity(2_kgpm2).SetAsBox(0.75_m, 0.75_m);
             CreateFixture(m_world, body, Shape(conf));

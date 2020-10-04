@@ -31,13 +31,13 @@ class HeavyOnLightTwo : public Test
 public:
     HeavyOnLightTwo()
     {
-        CreateFixture(m_world, m_world.CreateBody(), Shape(GetGroundEdgeConf()));
+        CreateFixture(m_world, CreateBody(m_world), Shape(GetGroundEdgeConf()));
         // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
         CreateFixture(m_world,
-                      m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 2.5_m})),
+                      CreateBody(m_world, BodyConf(DynBD).UseLocation(Length2{0_m, 2.5_m})),
                       lilDisk);
         CreateFixture(m_world,
-                      m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 3.5_m})),
+                      CreateBody(m_world, BodyConf(DynBD).UseLocation(Length2{0_m, 3.5_m})),
                       lilDisk);
         RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
             ToggleHeavy();
@@ -54,7 +54,7 @@ public:
         else
         {
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-            m_heavy = m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 9_m}));
+            m_heavy = CreateBody(m_world, BodyConf(DynBD).UseLocation(Length2{0_m, 9_m}));
             CreateFixture(m_world, m_heavy, bigDisk);
         }
     }

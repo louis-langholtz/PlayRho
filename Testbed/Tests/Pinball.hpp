@@ -32,7 +32,7 @@ public:
     Pinball()
     {
         // Ground body
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         {
             auto conf = ChainShapeConf{};
             conf.Add(Vec2(0.0f, -2.0f) * 1_m);
@@ -55,10 +55,10 @@ public:
             bd.linearAcceleration = m_gravity;
 
             bd.location = p1;
-            const auto leftFlipper = m_world.CreateBody(bd);
+            const auto leftFlipper = CreateBody(m_world, bd);
 
             bd.location = p2;
-            const auto rightFlipper = m_world.CreateBody(bd);
+            const auto rightFlipper = CreateBody(m_world, bd);
 
             const auto box = Shape(PolygonShapeConf{}.SetAsBox(1.75_m, 0.1_m).UseDensity(1_kgpm2));
             CreateFixture(m_world, leftFlipper, box);
@@ -94,7 +94,7 @@ public:
             bd.linearAcceleration = m_gravity;
             bd.bullet = true;
 
-            m_ball = m_world.CreateBody(bd);
+            m_ball = CreateBody(m_world, bd);
 
             auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;

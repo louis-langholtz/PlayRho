@@ -49,7 +49,7 @@ public:
 
         BodyID ground;
         {
-            ground = m_world.CreateBody(BodyConf{}.UseLocation(Length2(0_m, 20_m)));
+            ground = CreateBody(m_world, BodyConf{}.UseLocation(Length2(0_m, 20_m)));
 
             auto conf = EdgeShapeConf{};
             conf.density = 0_kgpm2;
@@ -105,7 +105,7 @@ public:
             bd.location = Length2{0_m, 2_m};
             bd.angle = Pi * 1_rad;
             bd.allowSleep = false;
-            m_body = m_world.CreateBody(bd);
+            m_body = CreateBody(m_world, bd);
             CreateFixture(m_world, m_body, Shape(poly1));
             CreateFixture(m_world, m_body, Shape(poly2));
         }
@@ -121,7 +121,7 @@ public:
             for (auto i = 0; i < 10; ++i)
             {
                 const auto location = Length2{0_m, (5.0f + 1.54f * i) * 1_m};
-                const auto body = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic)
+                const auto body = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic)
                                                      .UseLocation(location));
                 CreateFixture(m_world, body, shape);
 

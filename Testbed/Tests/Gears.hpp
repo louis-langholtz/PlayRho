@@ -29,7 +29,7 @@ class Gears : public Test
 public:
     Gears()
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{
             Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
 
@@ -41,18 +41,18 @@ public:
             auto bd1 = BodyConf{};
             bd1.type = BodyType::Static;
             bd1.location = Vec2(10.0f, 9.0f) * 1_m;
-            const auto body1 = m_world.CreateBody(bd1);
+            const auto body1 = CreateBody(m_world, bd1);
 
             auto bd2 = BodyConf{};
             bd2.type = BodyType::Dynamic;
             bd2.location = Vec2(10.0f, 8.0f) * 1_m;
-            const auto body2 = m_world.CreateBody(bd2);
+            const auto body2 = CreateBody(m_world, bd2);
             CreateFixture(m_world, body2, box);
 
             auto bd3 = BodyConf{};
             bd3.type = BodyType::Dynamic;
             bd3.location = Vec2(10.0f, 6.0f) * 1_m;
-            const auto body3 = m_world.CreateBody(bd3);
+            const auto body3 = CreateBody(m_world, bd3);
             CreateFixture(m_world, body3, Shape{circle2});
 
             auto joint1 = m_world.CreateJoint(GetRevoluteJointConf(m_world, body2, body1, bd1.location));
@@ -67,7 +67,7 @@ public:
             auto bd1 = BodyConf{};
             bd1.type = BodyType::Dynamic;
             bd1.location = Vec2(-3.0f, 12.0f) * 1_m;
-            const auto body1 = m_world.CreateBody(bd1);
+            const auto body1 = CreateBody(m_world, bd1);
             CreateFixture(m_world, body1, Shape{circle1});
 
             auto jd1 = RevoluteJointConf{};
@@ -81,7 +81,7 @@ public:
             auto bd2 = BodyConf{};
             bd2.type = BodyType::Dynamic;
             bd2.location = Vec2(0.0f, 12.0f) * 1_m;
-            const auto body2 = m_world.CreateBody(bd2);
+            const auto body2 = CreateBody(m_world, bd2);
             CreateFixture(m_world, body2, Shape{circle2});
 
             auto jd2 = GetRevoluteJointConf(m_world, ground, body2, bd2.location);
@@ -90,7 +90,7 @@ public:
             auto bd3 = BodyConf{};
             bd3.type = BodyType::Dynamic;
             bd3.location = Vec2(2.5f, 12.0f) * 1_m;
-            const auto body3 = m_world.CreateBody(bd3);
+            const auto body3 = CreateBody(m_world, bd3);
             CreateFixture(m_world, body3, box);
 
             auto jd3 = GetPrismaticJointConf(m_world, ground, body3, bd3.location,

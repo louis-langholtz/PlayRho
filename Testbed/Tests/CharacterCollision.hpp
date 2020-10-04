@@ -40,7 +40,7 @@ public:
     CharacterCollision(): Test(GetTestConf())
     {
         // Ground body
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m}});
 
         {
@@ -101,7 +101,7 @@ public:
 
         // Chain shape
         {
-            const auto body = m_world.CreateBody(BodyConf{}.UseAngle(45_deg));
+            const auto body = CreateBody(m_world, BodyConf{}.UseAngle(45_deg));
             auto conf = ChainShapeConf{};
             conf.Add(Vec2(5.0f, 7.0f) * 1_m);
             conf.Add(Vec2(6.0f, 8.0f) * 1_m);
@@ -134,7 +134,7 @@ public:
 
         // Edge loop. Collision should be smooth.
         {
-            const auto body = m_world.CreateBody(BodyConf{}.UseLocation(Vec2(-10.0f, 4.0f) * 1_m));
+            const auto body = CreateBody(m_world, BodyConf{}.UseLocation(Vec2(-10.0f, 4.0f) * 1_m));
             auto conf = ChainShapeConf{};
             conf.Add(Length2{});
             conf.Add(Vec2(6.0f, 0.0f) * 1_m);
@@ -158,7 +158,7 @@ public:
             bd.allowSleep = false;
 
             bd.location = Vec2(-3.0f, 8.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             
             const auto square = Shape{
                 PolygonShapeConf{}.UseFriction(0).UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)
@@ -166,7 +166,7 @@ public:
             CreateFixture(m_world, body, square);
             
             bd.location = Vec2(19.0f, 7.0f) * 1_m;
-            const auto body2 = m_world.CreateBody(bd);
+            const auto body2 = CreateBody(m_world, bd);
             CreateFixture(m_world, body2, square);
         }
 
@@ -178,7 +178,7 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            CreateFixture(m_world, m_world.CreateBody(bd), Shape{
+            CreateFixture(m_world, CreateBody(m_world, bd), Shape{
                 PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.25_m, 0.25_m)
             });
         }
@@ -191,7 +191,7 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
 
             auto angle = Real{0.0f};
             const auto delta = Real{Pi / 3.0f};
@@ -214,7 +214,7 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             auto conf = DiskShapeConf{};
             conf.density = 20_kgpm2;
             conf.vertexRadius = 0.5_m;
@@ -228,7 +228,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.allowSleep = false;
 
-            m_character = m_world.CreateBody(bd);
+            m_character = CreateBody(m_world, bd);
 
             auto conf = DiskShapeConf{};
             conf.density = 20_kgpm2;

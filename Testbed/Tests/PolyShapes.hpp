@@ -85,7 +85,7 @@ public:
     PolyShapes()
     {
         // Ground body
-        CreateFixture(m_world, m_world.CreateBody(), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, CreateBody(m_world), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         auto conf = PolygonShapeConf{};
         conf.UseDensity(1_kgpm2);
@@ -168,7 +168,7 @@ public:
             bd.angularDamping = 0.02_Hz;
         }
 
-        m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
+        m_bodies[m_bodyIndex] = CreateBody(m_world, bd);
 
         if (index < 4)
         {

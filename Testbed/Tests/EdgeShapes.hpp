@@ -39,7 +39,7 @@ public:
     {
         // Ground body
         {
-            const auto ground = m_world.CreateBody();
+            const auto ground = CreateBody(m_world);
             auto x1 = -20.0f;
             auto y1 = 2.0f * std::cos(x1 / 10.0f * static_cast<float>(Pi));
             for (auto i = 0; i < 80; ++i)
@@ -137,7 +137,7 @@ public:
             bd.angularDamping = 0.02_Hz;
         }
 
-        m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
+        m_bodies[m_bodyIndex] = CreateBody(m_world, bd);
 
         if (index < 4)
         {

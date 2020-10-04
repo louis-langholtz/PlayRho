@@ -31,14 +31,14 @@ public:
     ConveyorBelt()
     {
         // Ground
-        CreateFixture(m_world, m_world.CreateBody(), Shape{
+        CreateFixture(m_world, CreateBody(m_world), Shape{
             EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Platform
         {
             BodyConf bd;
             bd.location = Vec2(-5.0f, 5.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
 
             auto conf = PolygonShapeConf{};
             conf.friction = 0.8f;
@@ -54,7 +54,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             CreateFixture(m_world, body, boxshape);
         }
     }

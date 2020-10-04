@@ -60,7 +60,7 @@ public:
             bd.fixedRotation = bool(0);
             bd.bullet = bool(0);
             bd.enabled = bool(32);
-            bodies[0] = m_world.CreateBody(bd);
+            bodies[0] = CreateBody(m_world, bd);
 
             {
                 auto shape = PolygonShapeConf{};
@@ -96,7 +96,7 @@ public:
             bd.fixedRotation = bool(0);
             bd.bullet = bool(0);
             bd.enabled = bool(32);
-            bodies[1] = m_world.CreateBody(bd);
+            bodies[1] = CreateBody(m_world, bd);
 
             {
                 auto shape = PolygonShapeConf{};
@@ -133,7 +133,7 @@ public:
             bd.fixedRotation = bool(0);
             bd.bullet = bool(0);
             bd.enabled = bool(32);
-            bodies[2] = m_world.CreateBody(bd);
+            bodies[2] = CreateBody(m_world, bd);
             {
                 auto shape = PolygonShapeConf{};
                 Length2 vs[4];

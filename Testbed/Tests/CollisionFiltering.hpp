@@ -48,7 +48,7 @@ public:
     CollisionFiltering()
     {
         // Ground body
-        CreateFixture(m_world, m_world.CreateBody(), Shape(EdgeShapeConf{}
+        CreateFixture(m_world, CreateBody(m_world), Shape(EdgeShapeConf{}
             .UseFriction(0.3).Set(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)));
         
         // Small triangle
@@ -69,7 +69,7 @@ public:
         triangleBodyConf.type = BodyType::Dynamic;
         triangleBodyConf.location = Vec2(-5.0f, 2.0f) * 1_m;
 
-        const auto body1 = m_world.CreateBody(triangleBodyConf);
+        const auto body1 = CreateBody(m_world, triangleBodyConf);
         CreateFixture(m_world, body1, Shape(polygon), triangleShapeConf);
 
         // Large triangle (recycle definitions)
@@ -81,14 +81,14 @@ public:
         triangleBodyConf.location = Vec2(-5.0f, 6.0f) * 1_m;
         triangleBodyConf.fixedRotation = true; // look at me!
 
-        const auto body2 = m_world.CreateBody(triangleBodyConf);
+        const auto body2 = CreateBody(m_world, triangleBodyConf);
         CreateFixture(m_world, body2, Shape(polygon), triangleShapeConf);
 
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-5.0f, 10.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             CreateFixture(m_world, body, Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(0.5_m, 1_m)});
 
             auto jd = PrismaticJointConf{};
@@ -118,7 +118,7 @@ public:
         boxBodyConf.type = BodyType::Dynamic;
         boxBodyConf.location = Vec2(0.0f, 2.0f) * 1_m;
 
-        const auto body3 = m_world.CreateBody(boxBodyConf);
+        const auto body3 = CreateBody(m_world, boxBodyConf);
         CreateFixture(m_world, body3, Shape(polygon), boxShapeConf);
 
         // Large box (recycle definitions)
@@ -126,7 +126,7 @@ public:
         boxShapeConf.filter.groupIndex = k_largeGroup;
         boxBodyConf.location = Vec2(0.0f, 6.0f) * 1_m;
 
-        const auto body4 = m_world.CreateBody(boxBodyConf);
+        const auto body4 = CreateBody(m_world, boxBodyConf);
         CreateFixture(m_world, body4, Shape(polygon), boxShapeConf);
 
         // Small circle
@@ -142,7 +142,7 @@ public:
         circleBodyConf.type = BodyType::Dynamic;
         circleBodyConf.location = Vec2(5.0f, 2.0f) * 1_m;
         
-        const auto body5 = m_world.CreateBody(circleBodyConf);
+        const auto body5 = CreateBody(m_world, circleBodyConf);
         circleConf.vertexRadius = 1_m;
         CreateFixture(m_world, body5, Shape(circleConf), circleShapeConf);
 
@@ -150,7 +150,7 @@ public:
         circleShapeConf.filter.groupIndex = k_largeGroup;
         circleBodyConf.location = Vec2(5.0f, 6.0f) * 1_m;
 
-        const auto body6 = m_world.CreateBody(circleBodyConf);
+        const auto body6 = CreateBody(m_world, circleBodyConf);
         circleConf.vertexRadius = circleConf.vertexRadius * 2;
         CreateFixture(m_world, body6, Shape(circleConf), circleShapeConf);
         

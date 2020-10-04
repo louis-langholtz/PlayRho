@@ -33,7 +33,7 @@ public:
         {
             BodyConf bd;
             bd.location = Length2{};
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             CreateFixture(m_world, body, Shape(EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
             CreateFixture(m_world, body, Shape{PolygonShapeConf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)});
         }
@@ -48,7 +48,7 @@ public:
             conf.UseDensity(1_kgpm2);
             conf.SetAsBox(2_m, 0.1_m);
 
-            m_body = m_world.CreateBody(bd);
+            m_body = CreateBody(m_world, bd);
             CreateFixture(m_world, m_body, Shape{conf});
 
             conf.UseDensity(100_kgpm2);
@@ -59,7 +59,7 @@ public:
             bd.location = Vec2(m_x, 10.0f) * 1_m;
             bd.bullet = true;
 
-            m_bullet = m_world.CreateBody(bd);
+            m_bullet = CreateBody(m_world, bd);
             CreateFixture(m_world, m_bullet, Shape{conf});
 
             SetVelocity(m_world, m_bullet, Velocity{Vec2{0.0f, -50.0f} * 1_mps, 0_rpm});

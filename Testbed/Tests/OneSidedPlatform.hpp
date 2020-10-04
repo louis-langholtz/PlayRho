@@ -38,13 +38,13 @@ public:
     OneSidedPlatform()
     {
         // Ground
-        CreateFixture(m_world, m_world.CreateBody(), Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, CreateBody(m_world), Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Platform
         {
             BodyConf bd;
             bd.location = Vec2(0.0f, 10.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             m_platform = CreateFixture(m_world, body, Shape{PolygonShapeConf{}.SetAsBox(3_m, 0.5_m)});
             m_bottom = Real(10.0f - 0.5f) * 1_m;
             m_top = Real(10.0f + 0.5f) * 1_m;
@@ -56,7 +56,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(0.0f, 12.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             auto conf = DiskShapeConf{};
             conf.vertexRadius = m_radius;
             conf.density = 20_kgpm2;

@@ -28,14 +28,14 @@ namespace testbed {
     public:
         HalfPipe()
         {
-            const auto pipeBody = m_world.CreateBody(BodyConf{}.UseLocation(Vec2(0, 20) * 1_m));
+            const auto pipeBody = CreateBody(m_world, BodyConf{}.UseLocation(Vec2(0, 20) * 1_m));
             {
                 auto conf = ChainShapeConf{};
                 conf.UseFriction(Real(1));
                 conf.Set(GetCircleVertices(20_m, 90, 180_deg, Real(0.5f)));
                 CreateFixture(m_world, pipeBody, Shape{conf});
             }
-            const auto ballBody = m_world.CreateBody(BodyConf{}
+            const auto ballBody = CreateBody(m_world, BodyConf{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(Vec2(-19, 28) * 1_m)
                                                      .UseLinearAcceleration(m_gravity));

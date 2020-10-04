@@ -31,7 +31,7 @@ public:
     EdgeTest()
     {
         {
-            const auto ground = m_world.CreateBody();
+            const auto ground = CreateBody(m_world);
 
             const auto v1 = Vec2(-10.0f, 0.0f) * 1_m;
             const auto v2 = Vec2(-7.0f, -2.0f) * 1_m;
@@ -61,7 +61,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-0.5f, 0.6f) * 1_m;
             bd.allowSleep = false;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
 
             auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;
@@ -74,7 +74,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(1.0f, 0.6f) * 1_m;
             bd.allowSleep = false;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
 
             auto shape = PolygonShapeConf{};
             shape.UseVertexRadius(1_m);

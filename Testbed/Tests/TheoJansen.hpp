@@ -68,8 +68,8 @@ public:
         bd1.angularDamping = 10_Hz;
         bd2.angularDamping = 10_Hz;
 
-        const auto body1 = m_world.CreateBody(bd1);
-        const auto body2 = m_world.CreateBody(bd2);
+        const auto body1 = CreateBody(m_world, bd1);
+        const auto body2 = CreateBody(m_world, bd2);
 
         CreateFixture(m_world, body1, Shape(poly1), fd1);
         CreateFixture(m_world, body2, Shape(poly2), fd2);
@@ -99,7 +99,7 @@ public:
         // Ground
         {
             BodyConf bd;
-            const auto ground = m_world.CreateBody(bd);
+            const auto ground = CreateBody(m_world, bd);
 
             auto conf = EdgeShapeConf{};
  
@@ -124,7 +124,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m;
 
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             CreateFixture(m_world, body, circle);
         }
 
@@ -135,7 +135,7 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
-            m_chassis = m_world.CreateBody(bd);
+            m_chassis = CreateBody(m_world, bd);
             CreateFixture(m_world, m_chassis,
                           Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2.5_m, 1_m)}, sd);
         }
@@ -146,7 +146,7 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
-            m_wheel = m_world.CreateBody(bd);
+            m_wheel = CreateBody(m_world, bd);
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 1.6_m;
             conf.density = 1_kgpm2;

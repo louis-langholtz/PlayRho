@@ -31,7 +31,7 @@ public:
     ContinuousTest()
     {
         {
-            const auto body = m_world.CreateBody();
+            const auto body = CreateBody(m_world);
             CreateFixture(m_world, body, Shape{EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}});
             CreateFixture(m_world, body, Shape{PolygonShapeConf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)});
         }
@@ -43,7 +43,7 @@ public:
             bd.linearAcceleration = m_gravity;
             //bd.angle = 0.1f;
 
-            m_body = m_world.CreateBody(bd);
+            m_body = CreateBody(m_world, bd);
             CreateFixture(m_world, m_body, Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2_m, 0.1_m)});
             m_angularVelocity = RandomFloat(-50.0f, 50.0f) * 1_rad / 1_s;
             //m_angularVelocity = 46.661274f;

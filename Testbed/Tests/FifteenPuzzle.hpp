@@ -45,7 +45,7 @@ namespace testbed {
             m_gravity = LinearAcceleration2{};
             auto conf = GetChainShapeConf(16_m + 2 * GetVertexRadius());
             conf.UseVertexRadius(GetVertexRadius());
-            const auto enclosure = m_world.CreateBody();
+            const auto enclosure = CreateBody(m_world);
             CreateFixture(m_world, enclosure, Shape{conf});
             SetLocation(m_world, enclosure, GetCenter());
             for (auto i = 0; i < 15; ++i)
@@ -83,7 +83,7 @@ namespace testbed {
             bd.bullet = true;
             bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
             bd.linearDamping = 20_Hz;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             CreateFixture(m_world, body, Shape{conf});
             
             return body;

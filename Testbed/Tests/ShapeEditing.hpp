@@ -30,13 +30,13 @@ public:
 
     ShapeEditing()
     {
-        CreateFixture(m_world, m_world.CreateBody(), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, CreateBody(m_world), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
         BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.linearAcceleration = m_gravity;
         bd.location = Vec2(0.0f, 10.0f) * 1_m;
-        m_body = m_world.CreateBody(bd);
+        m_body = CreateBody(m_world, bd);
 
         auto shape = PolygonShapeConf{};
         shape.SetAsBox(4_m, 4_m, Length2{}, 0_deg);

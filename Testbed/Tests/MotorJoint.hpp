@@ -43,11 +43,11 @@ public:
     
     MotorJointTest(): Test(GetTestConf())
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Define motorized body
-        const auto body = m_world.CreateBody(BodyConf{}
+        const auto body = CreateBody(m_world, BodyConf{}
                                              .UseType(BodyType::Dynamic)
                                              .UseLocation(Vec2(0.0f, 8.0f) * 1_m)
                                              .UseLinearAcceleration(m_gravity));

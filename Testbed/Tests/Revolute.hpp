@@ -29,7 +29,7 @@ class Revolute : public Test
 public:
     Revolute()
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
 
         {
@@ -37,7 +37,7 @@ public:
             bd.type = BodyType::Dynamic;
 
             bd.location = Vec2(-10.0f, 20.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 0.5_m;
             circleConf.density = 5_kgpm2;
@@ -68,7 +68,7 @@ public:
             FixtureConf fd;
             fd.filter.maskBits = 1;
 
-            m_ball = m_world.CreateBody(circle_bd);
+            m_ball = CreateBody(m_world, circle_bd);
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 3_m;
             circleConf.density = 5_kgpm2;
@@ -82,7 +82,7 @@ public:
             polygon_bd.location = Vec2(20.0f, 10.0f) * 1_m;
             polygon_bd.type = BodyType::Dynamic;
             polygon_bd.bullet = true;
-            const auto polygon_body = m_world.CreateBody(polygon_bd);
+            const auto polygon_body = CreateBody(m_world, polygon_bd);
             CreateFixture(m_world, polygon_body, Shape(polygon_shape));
 
             auto rjd = GetRevoluteJointConf(m_world, ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
@@ -100,7 +100,7 @@ public:
                 Vec2(17.19f, 36.36f) * 1_m
             }).UseDensity(1_kgpm2);
 
-            const auto body = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+            const auto body = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic));
             CreateFixture(m_world, body, Shape(polyShape));
         }
 

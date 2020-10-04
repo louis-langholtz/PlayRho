@@ -40,7 +40,7 @@ public:
     
     BagOfDisks(): Test(GetTestConf())
     {
-        m_ground = m_world.CreateBody(BodyConf{}.UseType(BodyType::Kinematic));
+        m_ground = CreateBody(m_world, BodyConf{}.UseType(BodyType::Kinematic));
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase counter-clockwise angular velocity",
                        [&](KeyActionMods) {
@@ -80,7 +80,7 @@ public:
             {
                 const auto midPoint = (vertex + *prevVertex) / 2;
                 const auto angle = GetAngle(vertex - *prevVertex);
-                const auto body = m_world.CreateBody(BodyConf{}
+                const auto body = CreateBody(m_world, BodyConf{}
                                                      .UseType(BodyType::Dynamic)
                                                      .UseBullet(true)
                                                      .UseLocation(midPoint + vertexOffset)
@@ -114,7 +114,7 @@ public:
             const auto radius = alpha + beta * angle;
             const auto unitVector = UnitVec::Get(angle);
             const auto location = radius * unitVector;
-            const auto body = m_world.CreateBody(BodyConf{}
+            const auto body = CreateBody(m_world, BodyConf{}
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLocation(location + vertexOffset)
                                                  .UseLinearAcceleration(m_gravity));

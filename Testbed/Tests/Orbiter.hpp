@@ -36,12 +36,12 @@ namespace testbed {
 
             bd.type = BodyType::Static;
             bd.location = m_center;
-            const auto ctrBody = m_world.CreateBody(bd);
+            const auto ctrBody = CreateBody(m_world, bd);
             CreateFixture(m_world, ctrBody, Shape{DiskShapeConf{}.UseRadius(3_m)});
 
             bd.type = BodyType::Dynamic;
             bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
-            m_orbiter = m_world.CreateBody(bd);
+            m_orbiter = CreateBody(m_world, bd);
             CreateFixture(m_world, m_orbiter,
                           Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2)});
             
@@ -60,7 +60,7 @@ namespace testbed {
             bd.type = BodyType::Dynamic;
             bd.location = m_center;
             bd.bullet = true;
-            const auto dysonSphere = m_world.CreateBody(bd);
+            const auto dysonSphere = CreateBody(m_world, bd);
             CreateFixture(m_world, dysonSphere, outerCicle);
         }
         

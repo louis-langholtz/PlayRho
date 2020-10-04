@@ -37,7 +37,7 @@ class RopeJointTest : public Test
 public:
     RopeJointTest()
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
@@ -72,7 +72,7 @@ public:
                     bd.angularDamping = 0.4_Hz;
                 }
 
-                const auto body = m_world.CreateBody(bd);
+                const auto body = CreateBody(m_world, bd);
 
                 CreateFixture(m_world, body, shape, fd);
 

@@ -34,7 +34,7 @@ public:
 
     Pyramid()
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         const auto a = 0.5_m;
@@ -52,7 +52,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.linearAcceleration = m_gravity;
                 bd.location = y * 1_m;
-                const auto body = m_world.CreateBody(bd);
+                const auto body = CreateBody(m_world, bd);
                 CreateFixture(m_world, body, shape);
                 y += deltaY;
             }

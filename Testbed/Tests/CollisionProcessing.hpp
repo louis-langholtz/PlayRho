@@ -34,7 +34,7 @@ public:
     {
         // Ground body
         {
-            const auto ground = m_world.CreateBody();
+            const auto ground = CreateBody(m_world);
             CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}});
         }
 
@@ -55,7 +55,7 @@ public:
         triangleBodyConf.type = BodyType::Dynamic;
         triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body1 = m_world.CreateBody(triangleBodyConf);
+        const auto body1 = CreateBody(m_world, triangleBodyConf);
         CreateFixture(m_world, body1, Shape(polygon));
 
         // Large triangle (recycle definitions)
@@ -66,7 +66,7 @@ public:
 
         triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body2 = m_world.CreateBody(triangleBodyConf);
+        const auto body2 = CreateBody(m_world, triangleBodyConf);
         CreateFixture(m_world, body2, Shape(polygon));
         
         // Small box
@@ -76,14 +76,14 @@ public:
         boxBodyConf.type = BodyType::Dynamic;
         boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body3 = m_world.CreateBody(boxBodyConf);
+        const auto body3 = CreateBody(m_world, boxBodyConf);
         CreateFixture(m_world, body3, Shape(polygon));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
         boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body4 = m_world.CreateBody(boxBodyConf);
+        const auto body4 = CreateBody(m_world, boxBodyConf);
         CreateFixture(m_world, body4, Shape(polygon));
 
         BodyConf circleBodyConf;
@@ -91,12 +91,12 @@ public:
 
         // Small circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
-        const auto body5 = m_world.CreateBody(circleBodyConf);
+        const auto body5 = CreateBody(m_world, circleBodyConf);
         CreateFixture(m_world, body5, Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
 
         // Large circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
-        const auto body6 = m_world.CreateBody(circleBodyConf);
+        const auto body6 = CreateBody(m_world, circleBodyConf);
         CreateFixture(m_world, body6, Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
         
         SetAccelerations(m_world, m_gravity);

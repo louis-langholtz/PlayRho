@@ -30,7 +30,7 @@ class CompoundShapes : public Test
 public:
     CompoundShapes()
     {
-        CreateFixture(m_world, m_world.CreateBody(),
+        CreateFixture(m_world, CreateBody(m_world),
                               Shape{EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
         
         {
@@ -48,7 +48,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x + 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
-                const auto body = m_world.CreateBody(bd);
+                const auto body = CreateBody(m_world, bd);
                 CreateFixture(m_world, body, circle1);
                 CreateFixture(m_world, body, circle2);
             }
@@ -69,7 +69,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x - 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
-                const auto body = m_world.CreateBody(bd);
+                const auto body = CreateBody(m_world, bd);
                 CreateFixture(m_world, body, polygon1);
                 CreateFixture(m_world, body, polygon2);
             }
@@ -109,7 +109,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x, 2.05f + 2.5f * i) * 1_m;
                 bd.angle = 0_rad;
-                const auto body = m_world.CreateBody(bd);
+                const auto body = CreateBody(m_world, bd);
                 CreateFixture(m_world, body, triangle1);
                 CreateFixture(m_world, body, triangle2);
             }
@@ -129,7 +129,7 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2( 0.0f, 2.0f ) * 1_m;
-            const auto body = m_world.CreateBody(bd);
+            const auto body = CreateBody(m_world, bd);
             CreateFixture(m_world, body, bottom);
             CreateFixture(m_world, body, left);
             CreateFixture(m_world, body, right);

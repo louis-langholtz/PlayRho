@@ -48,7 +48,7 @@ public:
             {
                 const auto location = startLoc + Length2{x * 1_m, y * 1_m};
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-                bodies[y * 20 + x] = m_world.CreateBody(BodyConf(bd).UseLocation(location));
+                bodies[y * 20 + x] = CreateBody(m_world, BodyConf(bd).UseLocation(location));
                 CreateFixture(m_world, bodies[y * 20 + x], m_shape);
                 if (x > 0)
                 {

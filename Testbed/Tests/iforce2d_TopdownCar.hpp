@@ -365,15 +365,16 @@ public:
     iforce2d_TopdownCar(): Test(GetTestConf())
     {
         m_gravity = LinearAcceleration2{};
-        m_world.SetFixtureDestructionListener([&](FixtureID id){
+        m_world.SetFixtureDestructionListener([this](FixtureID id){
             delete static_cast<FixtureUserData*>(GetUserData(m_world, id));
+            SetUserData(m_world, id, nullptr);
         });
 
         //set up ground areas
         {
             FixtureID groundAreaFixture;
             BodyConf bodyConf;
-            m_groundBody = m_world.CreateBody(bodyConf);
+            m_groundBody = CreateBody(m_world, bodyConf);
             
             auto polygonShape = PolygonShapeConf{};
             FixtureConf fixtureConf;

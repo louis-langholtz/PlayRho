@@ -86,7 +86,7 @@ public:
 
     BodyID CreateEnclosure(Length2 at)
     {
-        const auto b = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic)
+        const auto b = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic)
                                           .UseLocation(at).UseAllowSleep(false)
                                           .UseLinearAcceleration(m_gravity));
         auto shape = PolygonShapeConf{}.UseDensity(5_kgpm2);
@@ -104,7 +104,7 @@ public:
     JointID CreateRevoluteJoint(BodyID turn)
     {
         RevoluteJointConf jd;
-        jd.bodyA = m_world.CreateBody(BodyConf{}.UseLocation(GetLocation(m_world, turn)));
+        jd.bodyA = CreateBody(m_world, BodyConf{}.UseLocation(GetLocation(m_world, turn)));
         jd.bodyB = turn;
         jd.referenceAngle = 0_rad;
         jd.motorSpeed = 1.5_rpm; // same as Pi*0.05_rad/s = 0.025 rev/s
@@ -115,7 +115,7 @@ public:
     
     void CreateTumblee(Length2 at)
     {
-        const auto b = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
+        const auto b = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
                                           .UseLinearAcceleration(m_gravity)
                                           .UseUserData(reinterpret_cast<void*>(1)));
         CreateFixture(m_world, b, m_shape);

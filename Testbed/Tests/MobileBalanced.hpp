@@ -34,7 +34,7 @@ public:
 
     MobileBalanced()
     {
-        const auto ground = m_world.CreateBody(BodyConf{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
+        const auto ground = CreateBody(m_world, BodyConf{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
 
         const auto a = 0.5_m;
         const auto h = Length2{0_m, a};
@@ -59,7 +59,7 @@ public:
         bodyConf.type = BodyType::Dynamic;
         bodyConf.linearAcceleration = m_gravity;
         bodyConf.location = p;
-        const auto body = m_world.CreateBody(bodyConf);
+        const auto body = CreateBody(m_world, bodyConf);
 
         CreateFixture(m_world, body, shape);
 
