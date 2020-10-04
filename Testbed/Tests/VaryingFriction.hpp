@@ -61,7 +61,7 @@ public:
             bd.location = Vec2(-15.0f + 4.0f * i, 28.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
             shape.UseFriction(friction[i]);
-            m_world.CreateFixture(body, Shape(shape));
+            CreateFixture(m_world, body, Shape(shape));
         }
     }
 };

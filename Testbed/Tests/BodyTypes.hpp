@@ -30,7 +30,7 @@ public:
     BodyTypes()
     {
         const auto ground = m_world.CreateBody();
-        m_world.CreateFixture(ground, Shape(EdgeShapeConf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
+        CreateFixture(m_world, ground, Shape(EdgeShapeConf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
 
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Dynamic", [&](KeyActionMods) {
             m_world.SetType(m_platform, BodyType::Dynamic);
@@ -48,7 +48,7 @@ public:
             const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m).UseLinearAcceleration(m_gravity);
             m_attachment = m_world.CreateBody(bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m);
-            m_world.CreateFixture(m_attachment, Shape(conf));
+            CreateFixture(m_world, m_attachment, Shape(conf));
         }
 
         // Define platform
@@ -58,7 +58,7 @@ public:
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6)).UseDensity(2_kgpm2)
                 .SetAsBox(0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
-            m_world.CreateFixture(m_platform, Shape{conf});
+            CreateFixture(m_world, m_platform, Shape{conf});
 
             auto rjd = GetRevoluteJointConf(m_world, m_attachment, m_platform, Vec2(0, 5) * 1_m);
             rjd.maxMotorTorque = 50_Nm;
@@ -82,7 +82,7 @@ public:
             const auto body = m_world.CreateBody(bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6)).UseDensity(2_kgpm2).SetAsBox(0.75_m, 0.75_m);
-            m_world.CreateFixture(body, Shape(conf));
+            CreateFixture(m_world, body, Shape(conf));
         }
     }
 

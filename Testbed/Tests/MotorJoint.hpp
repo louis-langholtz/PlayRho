@@ -44,17 +44,17 @@ public:
     MotorJointTest(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
-        m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Define motorized body
         const auto body = m_world.CreateBody(BodyConf{}
                                              .UseType(BodyType::Dynamic)
                                              .UseLocation(Vec2(0.0f, 8.0f) * 1_m)
                                              .UseLinearAcceleration(m_gravity));
-        m_world.CreateFixture(body, Shape{
+        CreateFixture(m_world, body, Shape{
             PolygonShapeConf{}.SetAsBox(2_m, 0.5_m).UseFriction(Real(0.6)).UseDensity(2_kgpm2)
         });
-        auto mjd = MotorJointConf{ground, body};
+        auto mjd = GetMotorJointConf(m_world, ground, body);
         mjd.maxForce = 1000_N;
         mjd.maxTorque = 1000_Nm;
         m_joint = m_world.CreateJoint(mjd);

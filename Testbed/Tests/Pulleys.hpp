@@ -39,9 +39,9 @@ public:
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 2_m;
             conf.location = Vec2(-10.0f, y + b + L) * 1_m;
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
             conf.location = Vec2(+10.0f, y + b + L) * 1_m;
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
         }
 
         {
@@ -55,18 +55,18 @@ public:
             //bd.fixedRotation = true;
             bd.location = Vec2(-10.0f, y) * 1_m;
             const auto body1 = m_world.CreateBody(bd);
-            m_world.CreateFixture(body1, shape);
+            CreateFixture(m_world, body1, shape);
 
             bd.location = Vec2(10.0f, y) * 1_m;
             const auto body2 = m_world.CreateBody(bd);
-            m_world.CreateFixture(body2, shape);
+            CreateFixture(m_world, body2, shape);
 
             const auto anchor1 = Vec2(-10.0f, y + b) * 1_m;
             const auto anchor2 = Vec2(10.0f, y + b) * 1_m;
             const auto groundAnchor1 = Vec2(-10.0f, y + b + L) * 1_m;
             const auto groundAnchor2 = Vec2(10.0f, y + b + L) * 1_m;
-            const auto pulleyConf = PulleyJointConf{body1, body2,
-                groundAnchor1, groundAnchor2, anchor1, anchor2}.UseRatio(1.5f);
+            const auto pulleyConf = GetPulleyJointConf(m_world, body1, body2,
+                groundAnchor1, groundAnchor2, anchor1, anchor2).UseRatio(1.5f);
 
             m_joint1 = m_world.CreateJoint(pulleyConf);
         }

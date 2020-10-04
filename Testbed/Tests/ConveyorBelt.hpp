@@ -31,7 +31,7 @@ public:
     ConveyorBelt()
     {
         // Ground
-        m_world.CreateFixture(m_world.CreateBody(), Shape{
+        CreateFixture(m_world, m_world.CreateBody(), Shape{
             EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Platform
@@ -43,7 +43,7 @@ public:
             auto conf = PolygonShapeConf{};
             conf.friction = 0.8f;
             conf.SetAsBox(10_m, 0.5_m);
-            m_platform = m_world.CreateFixture(body, Shape{conf});
+            m_platform = CreateFixture(m_world, body, Shape{conf});
         }
 
         // Boxes
@@ -55,7 +55,7 @@ public:
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            m_world.CreateFixture(body, boxshape);
+            CreateFixture(m_world, body, boxshape);
         }
     }
 

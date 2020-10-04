@@ -30,7 +30,7 @@ public:
     Gears()
     {
         const auto ground = m_world.CreateBody();
-        m_world.CreateFixture(ground, Shape{EdgeShapeConf{
+        CreateFixture(m_world, ground, Shape{EdgeShapeConf{
             Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
 
         const auto circle1 = DiskShapeConf{}.UseRadius(1_m).UseDensity(5_kgpm2);
@@ -47,13 +47,13 @@ public:
             bd2.type = BodyType::Dynamic;
             bd2.location = Vec2(10.0f, 8.0f) * 1_m;
             const auto body2 = m_world.CreateBody(bd2);
-            m_world.CreateFixture(body2, box);
+            CreateFixture(m_world, body2, box);
 
             auto bd3 = BodyConf{};
             bd3.type = BodyType::Dynamic;
             bd3.location = Vec2(10.0f, 6.0f) * 1_m;
             const auto body3 = m_world.CreateBody(bd3);
-            m_world.CreateFixture(body3, Shape{circle2});
+            CreateFixture(m_world, body3, Shape{circle2});
 
             auto joint1 = m_world.CreateJoint(GetRevoluteJointConf(m_world, body2, body1, bd1.location));
             auto joint2 = m_world.CreateJoint(GetRevoluteJointConf(m_world, body2, body3, bd3.location));
@@ -68,7 +68,7 @@ public:
             bd1.type = BodyType::Dynamic;
             bd1.location = Vec2(-3.0f, 12.0f) * 1_m;
             const auto body1 = m_world.CreateBody(bd1);
-            m_world.CreateFixture(body1, Shape{circle1});
+            CreateFixture(m_world, body1, Shape{circle1});
 
             auto jd1 = RevoluteJointConf{};
             jd1.bodyA = ground;
@@ -82,7 +82,7 @@ public:
             bd2.type = BodyType::Dynamic;
             bd2.location = Vec2(0.0f, 12.0f) * 1_m;
             const auto body2 = m_world.CreateBody(bd2);
-            m_world.CreateFixture(body2, Shape{circle2});
+            CreateFixture(m_world, body2, Shape{circle2});
 
             auto jd2 = GetRevoluteJointConf(m_world, ground, body2, bd2.location);
             m_joint2 = m_world.CreateJoint(jd2);
@@ -91,7 +91,7 @@ public:
             bd3.type = BodyType::Dynamic;
             bd3.location = Vec2(2.5f, 12.0f) * 1_m;
             const auto body3 = m_world.CreateBody(bd3);
-            m_world.CreateFixture(body3, box);
+            CreateFixture(m_world, body3, box);
 
             auto jd3 = GetPrismaticJointConf(m_world, ground, body3, bd3.location,
                                              UnitVec::GetTop());

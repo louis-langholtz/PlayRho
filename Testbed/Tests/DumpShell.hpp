@@ -79,7 +79,7 @@ public:
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(0);
 
-                m_world.CreateFixture(bodies[0], Shape(shape), fd);
+                CreateFixture(m_world, bodies[0], Shape(shape), fd);
             }
         }
         {
@@ -116,7 +116,7 @@ public:
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(0);
-                m_world.CreateFixture(bodies[1], Shape(shape), fd);
+                CreateFixture(m_world, bodies[1], Shape(shape), fd);
             }
         }
         {
@@ -150,7 +150,7 @@ public:
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(-3);
-                m_world.CreateFixture(bodies[2], Shape(shape), fd);
+                CreateFixture(m_world, bodies[2], Shape(shape), fd);
             }
         }
 

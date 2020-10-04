@@ -33,7 +33,7 @@ public:
     Bridge()
     {        
         const auto ground = m_world.CreateBody();
-        m_world.CreateFixture(ground, Shape(GetGroundEdgeConf()));
+        CreateFixture(m_world, ground, Shape(GetGroundEdgeConf()));
         {
             auto conf = PolygonShapeConf{};
             conf.density = 20_kgpm2;
@@ -47,7 +47,7 @@ public:
                                                      .UseType(BodyType::Dynamic)
                                                      .UseLinearAcceleration(m_gravity)
                                                      .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
-                m_world.CreateFixture(body, shape);
+                CreateFixture(m_world, body, shape);
                 m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(-15.0f + i, 5.0f) * 1_m));
                 if (i == (Count >> 1))
                 {
@@ -71,7 +71,7 @@ public:
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLinearAcceleration(m_gravity)
                                                  .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m));
-            m_world.CreateFixture(body, polyshape);
+            CreateFixture(m_world, body, polyshape);
         }
 
         const auto diskShape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(0.5_m)};
@@ -81,7 +81,7 @@ public:
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLinearAcceleration(m_gravity)
                                                  .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m));
-            m_world.CreateFixture(body, diskShape);
+            CreateFixture(m_world, body, diskShape);
         }
     }
 

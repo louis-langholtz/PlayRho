@@ -628,7 +628,7 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
     conf.vertexRadius = m_bombRadius;
     conf.density = m_bombDensity;
     conf.restitution = 0.0f;
-    m_world.CreateFixture(m_bomb, Shape{conf});
+    CreateFixture(m_world, m_bomb, Shape{conf});
 }
 
 static void ShowHelpMarker(const char* desc)

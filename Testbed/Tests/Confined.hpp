@@ -87,7 +87,7 @@ public:
                     (2.0f * i + 1.0f) * (radius/ 1_m)
                 } * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                m_world.CreateFixture(body, shape);
+                CreateFixture(m_world, body, shape);
             }
         }
     }
@@ -95,7 +95,7 @@ public:
     BodyID CreateEnclosure(Length vertexRadius, Length wallLength)
     {
         const auto body = m_world.CreateBody();
-        m_world.CreateFixture(body, Shape{GetChainShapeConf(wallLength)
+        CreateFixture(m_world, body, Shape{GetChainShapeConf(wallLength)
             .UseRestitution(0).UseVertexRadius(vertexRadius)});
         SetLocation(m_world, body, Length2{0_m, 20_m});
         return body;
@@ -121,7 +121,7 @@ public:
         conf.density = 1_kgpm2;
         conf.restitution = 0.8f;
         conf.vertexRadius = radius;
-        m_world.CreateFixture(m_world.CreateBody(bd), Shape(conf));
+        CreateFixture(m_world, m_world.CreateBody(bd), Shape(conf));
     }
 
     void CreateBox()
@@ -132,7 +132,7 @@ public:
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
-        m_world.CreateFixture(m_world.CreateBody(bd), Shape{
+        CreateFixture(m_world, m_world.CreateBody(bd), Shape{
             PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(0).SetAsBox(side_length/2, side_length/2)
         });
     }

@@ -30,7 +30,7 @@ public:
     Revolute()
     {
         const auto ground = m_world.CreateBody();
-        m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
 
         {
             BodyConf bd;
@@ -41,7 +41,7 @@ public:
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 0.5_m;
             circleConf.density = 5_kgpm2;
-            m_world.CreateFixture(body, Shape(circleConf));
+            CreateFixture(m_world, body, Shape(circleConf));
 
             const auto w = 100.0f;
             SetVelocity(m_world, body, Velocity{
@@ -101,7 +101,7 @@ public:
             }).UseDensity(1_kgpm2);
 
             const auto body = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-            m_world.CreateFixture(body, Shape(polyShape));
+            CreateFixture(m_world, body, Shape(polyShape));
         }
 
         SetAccelerations(m_world, m_gravity);

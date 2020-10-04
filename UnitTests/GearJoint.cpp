@@ -268,8 +268,8 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
     world.CreateFixture(*b1, circle);
     world.CreateFixture(*b2, circle);
     GearJointConf def{
-        world.CreateJoint(PrismaticJointConf{b1, b2, Length2{}, UnitVec::GetTop()}),
-        world.CreateJoint(PrismaticJointConf{b4, b3, Length2{}, UnitVec::GetTop()})
+        world.CreateJoint(GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetTop())),
+        world.CreateJoint(GetPrismaticJointConf(world, b4, b3, Length2{}, UnitVec::GetTop()))
     };
     ASSERT_NE(def.joint1, nullptr);
     ASSERT_NE(def.joint2, nullptr);

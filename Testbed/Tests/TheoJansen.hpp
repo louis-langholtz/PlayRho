@@ -71,20 +71,20 @@ public:
         const auto body1 = m_world.CreateBody(bd1);
         const auto body2 = m_world.CreateBody(bd2);
 
-        m_world.CreateFixture(body1, Shape(poly1), fd1);
-        m_world.CreateFixture(body2, Shape(poly2), fd2);
+        CreateFixture(m_world, body1, Shape(poly1), fd1);
+        CreateFixture(m_world, body2, Shape(poly2), fd2);
 
         // Using a soft distance constraint can reduce some jitter.
         // It also makes the structure seem a bit more fluid by
         // acting like a suspension system.
 
-        m_world.CreateJoint(DistanceJointConf{body1, body2, p2 + m_offset, p5 + m_offset}
+        m_world.CreateJoint(GetDistanceJointConf(m_world, body1, body2, p2 + m_offset, p5 + m_offset)
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(DistanceJointConf{body1, body2, p3 + m_offset, p4 + m_offset}
+        m_world.CreateJoint(GetDistanceJointConf(m_world, body1, body2, p3 + m_offset, p4 + m_offset)
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(DistanceJointConf{body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset}
+        m_world.CreateJoint(GetDistanceJointConf(m_world, body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset)
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(DistanceJointConf{body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset}
+        m_world.CreateJoint(GetDistanceJointConf(m_world, body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset)
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
         m_world.CreateJoint(GetRevoluteJointConf(m_world, body2, m_chassis, p4 + m_offset));
     }
@@ -104,13 +104,13 @@ public:
             auto conf = EdgeShapeConf{};
  
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
 
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(-50.0f, 10.0f) * 1_m);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
 
             conf.Set(Vec2(50.0f, 0.0f) * 1_m, Vec2(50.0f, 10.0f) * 1_m);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
         }
 
         // Balls
@@ -125,7 +125,7 @@ public:
             bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m;
 
             const auto body = m_world.CreateBody(bd);
-            m_world.CreateFixture(body, circle);
+            CreateFixture(m_world, body, circle);
         }
 
         // Chassis

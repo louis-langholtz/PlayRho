@@ -45,7 +45,7 @@ public:
             BodyConf bd;
             bd.location = Vec2(0.0f, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            m_platform = m_world.CreateFixture(body, Shape{PolygonShapeConf{}.SetAsBox(3_m, 0.5_m)});
+            m_platform = CreateFixture(m_world, body, Shape{PolygonShapeConf{}.SetAsBox(3_m, 0.5_m)});
             m_bottom = Real(10.0f - 0.5f) * 1_m;
             m_top = Real(10.0f + 0.5f) * 1_m;
         }
@@ -60,7 +60,7 @@ public:
             auto conf = DiskShapeConf{};
             conf.vertexRadius = m_radius;
             conf.density = 20_kgpm2;
-            m_character = m_world.CreateFixture(body, Shape(conf));
+            m_character = CreateFixture(m_world, body, Shape(conf));
             SetVelocity(m_world, body, Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
         }
     }

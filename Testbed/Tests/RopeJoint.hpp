@@ -38,7 +38,7 @@ public:
     RopeJointTest()
     {
         const auto ground = m_world.CreateBody();
-        m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
             const auto rectangle = Shape{
@@ -74,7 +74,7 @@ public:
 
                 const auto body = m_world.CreateBody(bd);
 
-                m_world.CreateFixture(body, shape, fd);
+                CreateFixture(m_world, body, shape, fd);
 
                 m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(Real(i), y) * 1_m));
 

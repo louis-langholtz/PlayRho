@@ -333,13 +333,13 @@ TEST(World, CopyConstruction)
     const auto rj1 = world.CreateJoint(RevoluteJointConf{b1, b2});
     const auto rj2 = world.CreateJoint(RevoluteJointConf{b3, b4});
     world.CreateJoint(PrismaticJointConf{b1, b2});
-    world.CreateJoint(PulleyJointConf{b1, b2, Length2{}, Length2{},
-        Length2{}, Length2{}}.UseRatio(Real(1)));
+    world.CreateJoint(GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+        Length2{}, Length2{}).UseRatio(Real(1)));
     world.CreateJoint(DistanceJointConf{b4, b5});
-    world.CreateJoint(GetWeldJointConf(m_world, b4, b5));
+    world.CreateJoint(GetWeldJointConf(world, b4, b5));
     world.CreateJoint(FrictionJointConf{b4, b5});
     world.CreateJoint(RopeJointConf{b4, b5});
-    world.CreateJoint(MotorJointConf{b4, b5});
+    world.CreateJoint(GetMotorJointConf(world, b4, b5));
     world.CreateJoint(WheelJointConf{b4, b5});
     world.CreateJoint(TargetJointConf{b4});
     world.CreateJoint(GetGearJointConf(world, rj1, rj2));
@@ -396,8 +396,8 @@ TEST(World, CopyAssignment)
 
     world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}});
     world.CreateJoint(GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight()));
-    world.CreateJoint(PulleyJointConf{b1, b2, Length2{}, Length2{},
-        Length2{}, Length2{}}.UseRatio(Real(1)));
+    world.CreateJoint(GetPulleyJointConf(world, b1, b2, Length2{}, Length2{},
+        Length2{}, Length2{}).UseRatio(Real(1)));
 
     auto stepConf = StepConf{};
     world.Step(stepConf);
@@ -1286,7 +1286,8 @@ TEST(World, CreateAndDestroyJoint)
     
     const auto anchorA = Length2{+0.4_m, -1.2_m};
     const auto anchorB = Length2{-2.3_m, +0.7_m};
-    const auto joint = world.CreateJoint(DistanceJointConf{body1, body2, anchorA, anchorB});
+    const auto joint = world.CreateJoint(GetDistanceJointConf(world, body1, body2,
+                                                              anchorA, anchorB));
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_FALSE(world.GetJoints().empty());
     EXPECT_NE(world.GetJoints().begin(), world.GetJoints().end());

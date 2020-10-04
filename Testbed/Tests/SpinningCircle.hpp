@@ -62,11 +62,11 @@ namespace testbed {
             shapeConf.location = Vec2{0, -3} * 1_m;
             auto circleB = Shape(shapeConf);
             
-            m_world.CreateFixture(body1, circleA);
-            m_world.CreateFixture(body1, circleB);
+            CreateFixture(m_world, body1, circleA);
+            CreateFixture(m_world, body1, circleB);
             
-            m_world.CreateFixture(body2, circleA);
-            m_world.CreateFixture(body2, circleB);
+            CreateFixture(m_world, body2, circleA);
+            CreateFixture(m_world, body2, circleB);
         }
     };
     

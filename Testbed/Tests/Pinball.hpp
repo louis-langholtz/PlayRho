@@ -42,7 +42,7 @@ public:
             conf.Add(Vec2(-8.0f, 6.0f) * 1_m);
             conf.Add(conf.GetVertex(0)); // to loop back around completely.
             conf.UseDensity(0_kgpm2);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
         }
 
         // Flippers

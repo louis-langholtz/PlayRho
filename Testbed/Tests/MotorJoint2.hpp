@@ -72,7 +72,9 @@ public:
         CreateFixture(m_world, m_bodyB, m_diskShape);
 
         const auto jc = MotorJointConf{
-            m_reversedJoint? MotorJointConf{m_bodyB, m_bodyA}: MotorJointConf{m_bodyA, m_bodyB}
+            m_reversedJoint
+                ? GetMotorJointConf(m_world, m_bodyB, m_bodyA)
+                : GetMotorJointConf(m_world, m_bodyA, m_bodyB)
         }.UseMaxForce(1000_N).UseMaxTorque(1000_Nm);
         m_joint = m_world.CreateJoint(jc);
     }
@@ -80,7 +82,7 @@ public:
     MotorJoint2(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
-        m_world.CreateFixture(ground, Shape{GetGroundEdgeConf()});
+        CreateFixture(m_world, ground, Shape{GetGroundEdgeConf()});
         
         Setup();
         

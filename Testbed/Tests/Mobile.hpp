@@ -59,7 +59,7 @@ public:
         bodyConf.linearAcceleration = m_gravity;
         bodyConf.location = GetLocation(m_world, parent) + localAnchor - h;
         const auto body = m_world.CreateBody(bodyConf);
-        m_world.CreateFixture(body, shape);
+        CreateFixture(m_world, body, shape);
 
         if (depth == e_depth)
         {

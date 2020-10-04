@@ -49,7 +49,7 @@ public:
                 const auto location = startLoc + Length2{x * 1_m, y * 1_m};
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
                 bodies[y * 20 + x] = m_world.CreateBody(BodyConf(bd).UseLocation(location));
-                m_world.CreateFixture(bodies[y * 20 + x], m_shape);
+                CreateFixture(m_world, bodies[y * 20 + x], m_shape);
                 if (x > 0)
                 {
                     const auto jd = GetWeldJointConf(

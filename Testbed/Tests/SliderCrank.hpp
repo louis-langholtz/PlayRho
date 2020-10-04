@@ -31,7 +31,7 @@ public:
     SliderCrank()
     {
         const auto ground = m_world.CreateBody();
-        m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
             auto prevBody = ground;
@@ -42,7 +42,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 7.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                m_world.CreateFixture(body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m)});
+                CreateFixture(m_world, body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m)});
 
                 auto rjd = GetRevoluteJointConf(m_world, prevBody, body, Vec2(0.0f, 5.0f) * 1_m);
                 rjd.motorSpeed = Pi * 1_rad / 1_s;
@@ -59,7 +59,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(0.0f, 13.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                m_world.CreateFixture(body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 4_m)});
+                CreateFixture(m_world, body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 4_m)});
 
                 auto rjd = GetRevoluteJointConf(m_world, prevBody, body, Vec2(0.0f, 9.0f) * 1_m);
                 rjd.enableMotor = false;
@@ -75,7 +75,7 @@ public:
                 bd.fixedRotation = true;
                 bd.location = Vec2(0.0f, 17.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                m_world.CreateFixture(body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)});
+                CreateFixture(m_world, body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)});
                 m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(0.0f, 17.0f) * 1_m));
 
                 auto pjd = GetPrismaticJointConf(m_world, ground, body,

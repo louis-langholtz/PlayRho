@@ -84,7 +84,7 @@ namespace testbed {
             bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
             bd.linearDamping = 20_Hz;
             const auto body = m_world.CreateBody(bd);
-            m_world.CreateFixture(body, Shape{conf});
+            CreateFixture(m_world, body, Shape{conf});
             
             return body;
         }

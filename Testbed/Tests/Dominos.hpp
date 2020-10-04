@@ -31,13 +31,13 @@ public:
     Dominos()
     {
         const auto b1 = m_world.CreateBody();
-        m_world.CreateFixture(b1, Shape{EdgeShapeConf(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)});
+        CreateFixture(m_world, b1, Shape{EdgeShapeConf(Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m)});
 
         {
             BodyConf bd;
             bd.location = Vec2(-1.5f, 10.0f) * 1_m;
             const auto ground = m_world.CreateBody(bd);
-            m_world.CreateFixture(ground, Shape{PolygonShapeConf{6_m, 0.25_m}});
+            CreateFixture(m_world, ground, Shape{PolygonShapeConf{6_m, 0.25_m}});
         }
 
         {
@@ -49,7 +49,7 @@ public:
                 const auto body = m_world.CreateBody(BodyConf{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(Vec2(-6.0f + 1.0f * i, 11.25f) * 1_m));
-                m_world.CreateFixture(body, shape);
+                CreateFixture(m_world, body, shape);
             }
         }
 
@@ -60,11 +60,11 @@ public:
             BodyConf bd;
             bd.location = Vec2(1.2f, 6.0f) * 1_m;
             const auto ground = m_world.CreateBody(bd);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
         }
 
         const auto b2 = m_world.CreateBody(BodyConf{}.UseLocation(Vec2(-7.0f, 4.0f) * 1_m));
-        m_world.CreateFixture(b2, Shape{PolygonShapeConf{}.SetAsBox(0.25_m, 1.5_m)});
+        CreateFixture(m_world, b2, Shape{PolygonShapeConf{}.SetAsBox(0.25_m, 1.5_m)});
 
         BodyID b3;
         {
@@ -73,7 +73,7 @@ public:
             bd.location = Vec2(-0.9f, 1.0f) * 1_m;
             bd.angle = -0.15_rad;
             b3 = m_world.CreateBody(bd);
-            m_world.CreateFixture(b3, Shape{PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(6_m, 0.125_m)});
+            CreateFixture(m_world, b3, Shape{PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(6_m, 0.125_m)});
         }
 
         m_world.CreateJoint(GetRevoluteJointConf(m_world, b1, b3, Vec2(-2, 1) * 1_m).UseCollideConnected(true));
@@ -84,7 +84,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-10.0f, 15.0f) * 1_m;
             b4 = m_world.CreateBody(bd);
-            m_world.CreateFixture(b4, Shape{PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m)});
+            CreateFixture(m_world, b4, Shape{PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(0.25_m, 0.25_m)});
         }
 
         m_world.CreateJoint(GetRevoluteJointConf(m_world, b2, b4, Vec2(-7, 15) * 1_m).UseCollideConnected(true));
@@ -99,11 +99,11 @@ public:
             conf.density = 10_kgpm2;
             conf.friction = 0.1f;
             conf.SetAsBox(1_m, 0.1_m, Vec2(0.0f, -0.9f) * 1_m, 0_rad);
-            m_world.CreateFixture(b5, Shape{conf});
+            CreateFixture(m_world, b5, Shape{conf});
             conf.SetAsBox(0.1_m, 1_m, Vec2(-0.9f, 0.0f) * 1_m, 0_rad);
-            m_world.CreateFixture(b5, Shape{conf});
+            CreateFixture(m_world, b5, Shape{conf});
             conf.SetAsBox(0.1_m, 1_m, Vec2(0.9f, 0.0f) * 1_m, 0_rad);
-            m_world.CreateFixture(b5, Shape{conf});
+            CreateFixture(m_world, b5, Shape{conf});
         }
 
         m_world.CreateJoint(GetRevoluteJointConf(m_world, b1, b5, Vec2(6, 2) * 1_m).UseCollideConnected(true));
@@ -114,7 +114,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(6.5f, 4.1f) * 1_m;
             b6 = m_world.CreateBody(bd);
-            m_world.CreateFixture(b6, Shape{PolygonShapeConf(1_m, 0.1_m).UseDensity(30_kgpm2)});
+            CreateFixture(m_world, b6, Shape{PolygonShapeConf(1_m, 0.1_m).UseDensity(30_kgpm2)});
         }
 
         m_world.CreateJoint(GetRevoluteJointConf(m_world, b5, b6, Vec2(7.5f, 4.0f) * 1_m)
@@ -129,7 +129,7 @@ public:
             auto conf = PolygonShapeConf{};
             conf.density = 10_kgpm2;
             conf.SetAsBox(0.1_m, 1_m);
-            m_world.CreateFixture(b7, Shape{conf});
+            CreateFixture(m_world, b7, Shape{conf});
         }
 
         DistanceJointConf djd;
@@ -153,7 +153,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Length2{5.9_m + 2 * radius * static_cast<Real>(i), 2.4_m};
                 const auto body = m_world.CreateBody(bd);
-                m_world.CreateFixture(body, shape);
+                CreateFixture(m_world, body, shape);
             }
         }
         

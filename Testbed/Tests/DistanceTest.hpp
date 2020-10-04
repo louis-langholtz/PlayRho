@@ -124,7 +124,7 @@ public:
                 auto conf = PolygonShapeConf{};
                 conf.Set(polygon->GetVertices());
                 conf.UseVertexRadius(polygon->vertexRadius + RadiusIncrement);
-                const auto newf = m_world.CreateFixture(body, Shape{conf});
+                const auto newf = CreateFixture(m_world, body, Shape{conf});
                 fixtures.erase(begin(fixtures));
                 fixtures.insert(newf);
                 SetSelectedFixtures(fixtures);
@@ -146,7 +146,7 @@ public:
                     auto conf = PolygonShapeConf{};
                     conf.Set(polygon->GetVertices());
                     conf.UseVertexRadius(newVertexRadius);
-                    auto newf = m_world.CreateFixture(body, Shape{conf});
+                    auto newf = CreateFixture(m_world, body, Shape{conf});
                     if (newf != InvalidFixtureID)
                     {
                         fixtures.erase(begin(fixtures));
@@ -175,14 +175,14 @@ public:
         auto polygonA = conf;
         //polygonA.SetAsBox(8.0f, 6.0f);
         polygonA.Set({Vec2{-8, -6} * 1_m, Vec2{8, -6} * 1_m, Vec2{0, 6} * 1_m});
-        m_world.CreateFixture(m_bodyA, Shape(polygonA));
+        CreateFixture(m_world, m_bodyA, Shape(polygonA));
         
         conf.vertexRadius = radius * Real{2};
         auto polygonB = conf;
         // polygonB.SetAsBox(7.2_m, 0.8_m);
         polygonB.Set({Vec2{-7.2f, 0} * 1_m, Vec2{+7.2f, 0} * 1_m});
         //polygonB.Set({Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
-        m_world.CreateFixture(m_bodyB, Shape(polygonB));
+        CreateFixture(m_world, m_bodyB, Shape(polygonB));
     }
 
     static const FixtureID GetFixture(const World& world, BodyID body)

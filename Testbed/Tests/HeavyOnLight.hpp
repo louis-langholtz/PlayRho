@@ -72,7 +72,7 @@ public:
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 5_m;
             conf.density = newDensity;
-            m_top = m_world.CreateFixture(body, Shape(conf));
+            m_top = CreateFixture(m_world, body, Shape(conf));
             if (wasSelected)
             {
                 selectedFixtures.erase(begin(selectedFixtures));

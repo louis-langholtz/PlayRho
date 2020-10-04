@@ -43,17 +43,17 @@ public:
 
             auto conf = EdgeShapeConf{};
             conf.Set(v1, v2);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
             conf.Set(v2, v3);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
             conf.Set(v3, v4);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
             conf.Set(v4, v5);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
             conf.Set(v5, v6);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
             conf.Set(v6, v7);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
         }
 
         {
@@ -66,7 +66,7 @@ public:
             auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = 0.5_m;
-            m_world.CreateFixture(body, Shape(conf));
+            CreateFixture(m_world, body, Shape(conf));
         }
 
         {
@@ -80,7 +80,7 @@ public:
             shape.UseVertexRadius(1_m);
             shape.SetAsBox(0.5_m, 0.5_m);
             shape.UseDensity(1_kgpm2);
-            m_world.CreateFixture(body, Shape(shape));
+            CreateFixture(m_world, body, Shape(shape));
         }
         
         SetAccelerations(m_world, m_gravity);

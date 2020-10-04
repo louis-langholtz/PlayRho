@@ -38,21 +38,21 @@ public:
     {
         {
             const auto ground = m_world.CreateBody();
-            m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+            CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
 #if 0
             {
                 auto sd = FixtureConf{};
                 sd.SetAsBox(10_m, 2_m, Vec2(0.0f, 20.0f) * 1_m, 0.0f);
                 sd.isSensor = true;
-                m_sensor = m_world.CreateFixture(ground, sd);
+                m_sensor = CreateFixture(m_world, ground, sd);
             }
 #else
             {
                 auto conf = DiskShapeConf{};
                 conf.vertexRadius = 5_m;
                 conf.location = Vec2(0.0f, 10.0f) * 1_m;
-                m_sensor = m_world.CreateFixture(ground, Shape(conf), FixtureConf{}.UseIsSensor(true));
+                m_sensor = CreateFixture(m_world, ground, Shape(conf), FixtureConf{}.UseIsSensor(true));
             }
 #endif
         }

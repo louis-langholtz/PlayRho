@@ -173,7 +173,7 @@ private:
         CreateFixture(m_world, fb, m_diskShape);
         const auto mb = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(center + offset));
         CreateFixture(m_world, mb, m_squareShape);
-        auto jd = DistanceJointConf{fb, mb, center, center + offset}.UseLength(2_m);
+        auto jd = GetDistanceJointConf(m_world, fb, mb, center, center + offset).UseLength(2_m);
         m_distanceJoint = m_world.CreateJoint(jd);
         SetupContainer(center);
     }
@@ -198,12 +198,12 @@ private:
 
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
             const auto body1 = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(anchor1));
-            m_world.CreateFixture(body1, shape);
+            CreateFixture(m_world, body1, shape);
             const auto body2 = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(anchor2));
-            m_world.CreateFixture(body2, shape);
+            CreateFixture(m_world, body2, shape);
             
-            const auto pulleyConf = PulleyJointConf{body1, body2, ganchor1, ganchor2,
-                anchor1, anchor2}.UseRatio(1.3f);
+            const auto pulleyConf = GetPulleyJointConf(m_world, body1, body2, ganchor1, ganchor2,
+                anchor1, anchor2).UseRatio(1.3f);
             m_pulleyJoint = m_world.CreateJoint(pulleyConf);
         }
     }
@@ -217,7 +217,7 @@ private:
         const auto tr = sr + nr;
         const auto bd1 = BodyConf(DynamicBD).UseLocation(center - Length2{tr, 0_m});
         const auto body1 = m_world.CreateBody(bd1);
-        m_world.CreateFixture(body1, m_smallDiskShape);
+        CreateFixture(m_world, body1, m_smallDiskShape);
         
         auto jd1 = RevoluteJointConf{};
         jd1.bodyA = containerBody;
@@ -229,7 +229,7 @@ private:
         
         const auto bd2 = BodyConf(DynamicBD).UseLocation(center);
         const auto body2 = m_world.CreateBody(bd2);
-        m_world.CreateFixture(body2, m_diskShape);
+        CreateFixture(m_world, body2, m_diskShape);
         
         const auto jd2 = GetRevoluteJointConf(m_world, containerBody, body2, bd2.location);
         const auto joint2 = m_world.CreateJoint(jd2);
@@ -238,7 +238,7 @@ private:
             .UseLocation(center + Length2{nr + RectHHeight, RectHWidth})
             .UseAngle(Pi * 1_rad / 2);
         const auto body3 = m_world.CreateBody(bd3);
-        m_world.CreateFixture(body3, m_rectShape);
+        CreateFixture(m_world, body3, m_rectShape);
         
         auto jd3 = GetPrismaticJointConf(m_world, containerBody, body3, bd3.location,
                                          UnitVec::GetTop());
@@ -333,7 +333,7 @@ private:
         CreateFixture(m_world, fb, m_diskShape);
         const auto mb = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(center + offset));
         CreateFixture(m_world, mb, m_squareShape);
-        auto jd = FrictionJointConf{fb, mb, center}
+        auto jd = GetFrictionJointConf(m_world, fb, mb, center)
             .UseMaxForce(20_N).UseMaxTorque(12_Nm);
         m_frictionJoint = m_world.CreateJoint(jd);
         SetupContainer(center);
@@ -397,7 +397,7 @@ private:
         const auto movingBody = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(center));
         CreateFixture(m_world, movingBody, m_rectShape);
 
-        auto jd = MotorJointConf{containerBody, movingBody}
+        auto jd = GetMotorJointConf(m_world, containerBody, movingBody)
             .UseMaxForce(1000_N).UseMaxTorque(1000_Nm);
         m_motorJoint = m_world.CreateJoint(jd);
     }

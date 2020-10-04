@@ -59,7 +59,7 @@ public:
         boundaryConf.Add(Vec2(-12,  +0) * 1_m);
         boundaryConf.Add(Vec2(+12,  +0) * 1_m);
         boundaryConf.Add(Vec2(+12, +20) * 1_m);
-        m_world.CreateFixture(m_ground, Shape(boundaryConf));
+        CreateFixture(m_world, m_ground, Shape(boundaryConf));
         
         const auto vertices = GetCircleVertices(10_m, 90);
         const auto halfSegmentLength = GetMagnitude(vertices[1] - vertices[0]) / 2;
@@ -86,7 +86,7 @@ public:
                                                      .UseLocation(midPoint + vertexOffset)
                                                      .UseAngle(angle)
                                                      .UseLinearAcceleration(m_gravity));
-                m_world.CreateFixture(body, shape);
+                CreateFixture(m_world, body, shape);
                 if (prevBody != InvalidBodyID)
                 {
                     m_world.CreateJoint(GetRevoluteJointConf(m_world, body,
@@ -118,7 +118,7 @@ public:
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLocation(location + vertexOffset)
                                                  .UseLinearAcceleration(m_gravity));
-            m_world.CreateFixture(body, diskShape);
+            CreateFixture(m_world, body, diskShape);
             angle += angleIncrement;
             angleIncrement *= 0.999f;
         }

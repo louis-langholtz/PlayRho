@@ -120,7 +120,7 @@ TEST(MotorJoint, Construction)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
 
-    auto def = MotorJointConf{b0, b1};
+    auto def = GetMotorJointConf(world, b0, b1);
     auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
 
     EXPECT_EQ(GetType(joint), def.type);
@@ -148,7 +148,7 @@ TEST(MotorJoint, ShiftOrigin)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
 
-    auto def = MotorJointConf{b0, b1};
+    auto def = GetMotorJointConf(world, b0, b1);
     auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
@@ -160,7 +160,7 @@ TEST(MotorJoint, SetCorrectionFactor)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
     
-    auto def = MotorJointConf{b0, b1};
+    auto def = GetMotorJointConf(world, b0, b1);
     auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
     
     ASSERT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
@@ -176,7 +176,7 @@ TEST(MotorJoint, GetMotorJointConf)
     const auto b0 = world.CreateBody();
     const auto b1 = world.CreateBody();
     
-    auto def = MotorJointConf{b0, b1};
+    auto def = GetMotorJointConf(world, b0, b1);
     auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
     
     ASSERT_EQ(GetType(joint), def.type);
@@ -216,7 +216,7 @@ TEST(MotorJoint, WithDynamicCircles)
     world.CreateFixture(*b1, circle);
     world.CreateFixture(*b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
-    const auto jd = MotorJointConf{b1, b2};
+    const auto jd = GetMotorJointConf(world, b1, b2);
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, InvalidJointID);
     EXPECT_EQ(joint->GetAnchorA(world), p1);
@@ -253,7 +253,7 @@ TEST(MotorJoint, SetLinearOffset)
     world.CreateFixture(*b1, circle);
     world.CreateFixture(*b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
-    const auto jd = MotorJointConf{b1, b2};
+    const auto jd = GetMotorJointConf(world, b1, b2);
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, InvalidJointID);
     EXPECT_EQ(joint->GetAnchorA(world), p1);
@@ -277,7 +277,7 @@ TEST(MotorJoint, SetAngularOffset)
     world.CreateFixture(*b1, circle);
     world.CreateFixture(*b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
-    const auto jd = MotorJointConf{b1, b2};
+    const auto jd = GetMotorJointConf(world, b1, b2);
     const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, InvalidJointID);
     EXPECT_EQ(joint->GetAnchorA(world), p1);

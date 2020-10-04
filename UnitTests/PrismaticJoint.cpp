@@ -268,10 +268,10 @@ TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
     world.CreateFixture(b1, Shape{circle});
     world.CreateFixture(b2, Shape{circle});
     const auto anchor = Length2(2_m, 1_m);
+    const auto jd = GetPrismaticJointConf(world, b1, b2, anchor, UnitVec::GetRight()).UseEnableLimit(true);
+    const auto joint = world.CreateJoint(jd);
+    ASSERT_NE(joint, InvalidJointID);
 #if 0
-    const auto jd = PrismaticJointConf{b1, b2, anchor, UnitVec::GetRight()}.UseEnableLimit(true);
-    const auto joint = static_cast<PrismaticJoint*>(world.CreateJoint(jd));
-    ASSERT_NE(joint, nullptr);
     ASSERT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
     ASSERT_EQ(joint->GetLinearLowerLimit(), 0_m);
     ASSERT_EQ(joint->GetLinearUpperLimit(), 0_m);

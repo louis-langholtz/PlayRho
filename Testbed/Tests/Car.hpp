@@ -67,28 +67,28 @@ public:
             auto y1 = Real{0.0f};
             const auto dx = decltype(x){5.0f};
             auto conf = EdgeShapeConf{}.UseDensity(0_kgpm2).UseFriction(Real(0.6));
-            m_world.CreateFixture(ground, Shape{conf.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)});
+            CreateFixture(m_world, ground, Shape{conf.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)});
             for (const auto y2: hs)
             {
-                m_world.CreateFixture(ground, Shape{conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m)});
+                CreateFixture(m_world, ground, Shape{conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m)});
                 y1 = y2;
                 x += dx;
             }
             for (const auto y2: hs)
             {
-                m_world.CreateFixture(ground, Shape{conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m)});
+                CreateFixture(m_world, ground, Shape{conf.Set(Vec2(x, y1) * 1_m, Vec2(x + dx, y2) * 1_m)});
                 y1 = y2;
                 x += dx;
             }
-            m_world.CreateFixture(ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)});
+            CreateFixture(m_world, ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)});
             x += 80.0f;
-            m_world.CreateFixture(ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)});
+            CreateFixture(m_world, ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)});
             x += 40.0f;
-            m_world.CreateFixture(ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 10, 5) * 1_m)});
+            CreateFixture(m_world, ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 10, 5) * 1_m)});
             x += 20.0f;
-            m_world.CreateFixture(ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)});
+            CreateFixture(m_world, ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x + 40, 0) * 1_m)});
             x += 40.0f;
-            m_world.CreateFixture(ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x, 20) * 1_m)});
+            CreateFixture(m_world, ground, Shape{conf.Set(Vec2(x, 0) * 1_m, Vec2(x, 20) * 1_m)});
         }
 
         // Teeter
@@ -97,7 +97,7 @@ public:
             bd.location = Vec2(140.0f, 1.0f) * 1_m;
             bd.type = BodyType::Dynamic;
             const auto body = m_world.CreateBody(bd);
-            m_world.CreateFixture(body, Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)});
+            CreateFixture(m_world, body, Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(10_m, 0.25_m)});
 
             auto jd = GetRevoluteJointConf(m_world, ground, body, GetLocation(m_world, body));
             jd.lowerAngle = -8_deg;
@@ -121,7 +121,7 @@ public:
                 auto bd = BodyConf{}.UseType(BodyType::Dynamic);
                 bd.location = Vec2(161 + 2 * i, -0.125f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                m_world.CreateFixture(body, shape);
+                CreateFixture(m_world, body, shape);
                 m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body,
                                                          Vec2(160 + 2 * i, -0.125f) * 1_m));
                 prevBody = body;
@@ -134,11 +134,11 @@ public:
         {
             const auto box = Shape{PolygonShapeConf{}.UseDensity(0.5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
             auto bd = BodyConf{}.UseType(BodyType::Dynamic);
-            m_world.CreateFixture(m_world.CreateBody(bd.UseLocation(Vec2(230, 0.5f) * 1_m)), box);
-            m_world.CreateFixture(m_world.CreateBody(bd.UseLocation(Vec2(230, 1.5f) * 1_m)), box);
-            m_world.CreateFixture(m_world.CreateBody(bd.UseLocation(Vec2(230, 2.5f) * 1_m)), box);
-            m_world.CreateFixture(m_world.CreateBody(bd.UseLocation(Vec2(230, 3.5f) * 1_m)), box);
-            m_world.CreateFixture(m_world.CreateBody(bd.UseLocation(Vec2(230, 4.5f) * 1_m)), box);
+            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 0.5f) * 1_m)), box);
+            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 1.5f) * 1_m)), box);
+            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 2.5f) * 1_m)), box);
+            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 3.5f) * 1_m)), box);
+            CreateFixture(m_world, m_world.CreateBody(bd.UseLocation(Vec2(230, 4.5f) * 1_m)), box);
         }
 
         CreateCar();
@@ -168,7 +168,7 @@ public:
 
         auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
         m_car = m_world.CreateBody(bd.Use(carPosition).Use(carVelocity));
-        m_world.CreateFixture(m_car, Shape{carShapeConf});
+        CreateFixture(m_world, m_car, Shape{carShapeConf});
         
         const auto wheelShape = Shape{
             DiskShapeConf{}.UseRadius(0.4_m).UseDensity(1_kgpm2).UseFriction(Real(0.9))
@@ -177,7 +177,7 @@ public:
             // setup back wheel
             const auto location = carPosition.linear + Rotate(transmat * Length2{-1_m, -0.65_m}, UnitVec::Get(carPosition.angular));
             const auto wheel = m_world.CreateBody(bd.UseLocation(location));
-            m_world.CreateFixture(wheel, wheelShape);
+            CreateFixture(m_world, wheel, wheelShape);
             auto jd = GetWheelJointConf(m_world, m_car, wheel, GetLocation(m_world, wheel),
                                         UnitVec::GetTop());
             jd.maxMotorTorque = 20_Nm;
@@ -190,7 +190,7 @@ public:
             // setup front wheel
             const auto location = carPosition.linear + Rotate(transmat * Length2{+1_m, -0.6_m}, UnitVec::Get(carPosition.angular));
             const auto wheel = m_world.CreateBody(bd.UseLocation(location));
-            m_world.CreateFixture(wheel, wheelShape);
+            CreateFixture(m_world, wheel, wheelShape);
             auto jd = GetWheelJointConf(m_world, m_car, wheel, GetLocation(m_world, wheel),
                                         UnitVec::GetTop());
             jd.maxMotorTorque = 10_Nm;

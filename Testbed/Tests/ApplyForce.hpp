@@ -57,19 +57,19 @@ public:
 
             // Left vertical
             conf.Set(Length2{-20_m, -20_m}, Length2{-20_m, 20_m});
-            m_world.CreateFixture(ground, Shape{conf});
+            CreateFixture(m_world, ground, Shape{conf});
 
             // Right vertical
             conf.Set(Length2{20_m, -20_m}, Length2{20_m, 20_m});
-            m_world.CreateFixture(ground, Shape{conf});
+            CreateFixture(m_world, ground, Shape{conf});
 
             // Top horizontal
             conf.Set(Length2{-20_m, 20_m}, Length2{20_m, 20_m});
-            m_world.CreateFixture(ground, Shape{conf});
+            CreateFixture(m_world, ground, Shape{conf});
 
             // Bottom horizontal
             conf.Set(Length2{-20_m, -20_m}, Length2{20_m, -20_m});
-            m_world.CreateFixture(ground, Shape{conf});
+            CreateFixture(m_world, ground, Shape{conf});
         }
 
         {
@@ -106,8 +106,8 @@ public:
             bd.angle = Pi * 1_rad;
             bd.allowSleep = false;
             m_body = m_world.CreateBody(bd);
-            m_world.CreateFixture(m_body, Shape(poly1));
-            m_world.CreateFixture(m_body, Shape(poly2));
+            CreateFixture(m_world, m_body, Shape(poly1));
+            CreateFixture(m_world, m_body, Shape(poly2));
         }
 
         {
@@ -123,7 +123,7 @@ public:
                 const auto location = Length2{0_m, (5.0f + 1.54f * i) * 1_m};
                 const auto body = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic)
                                                      .UseLocation(location));
-                m_world.CreateFixture(body, shape);
+                CreateFixture(m_world, body, shape);
 
                 const auto I = GetLocalRotInertia(m_world, body); // RotInertia: M * L^2 QP^-2
                 const auto invMass = m_world.GetInvMass(body); // InvMass: M^-1

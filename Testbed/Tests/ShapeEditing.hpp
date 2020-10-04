@@ -41,7 +41,7 @@ public:
         auto shape = PolygonShapeConf{};
         shape.SetAsBox(4_m, 4_m, Length2{}, 0_deg);
         shape.UseDensity(10_kgpm2);
-        m_fixture1 = m_world.CreateFixture(m_body, Shape(shape));
+        m_fixture1 = CreateFixture(m_world, m_body, Shape(shape));
 
         m_fixture2 = InvalidFixtureID;
 
@@ -54,7 +54,7 @@ public:
                 conf.vertexRadius = 3_m;
                 conf.location = Vec2(0.5f, -4.0f) * 1_m;
                 conf.density = 10_kgpm2;
-                m_fixture2 = m_world.CreateFixture(m_body, Shape(conf));
+                m_fixture2 = CreateFixture(m_world, m_body, Shape(conf));
                 SetAwake(m_world, m_body);
             }
         });

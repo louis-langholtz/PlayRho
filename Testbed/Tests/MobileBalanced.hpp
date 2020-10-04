@@ -61,7 +61,7 @@ public:
         bodyConf.location = p;
         const auto body = m_world.CreateBody(bodyConf);
 
-        m_world.CreateFixture(body, shape);
+        CreateFixture(m_world, body, shape);
 
         if (depth == MaxDepth)
         {
@@ -71,7 +71,7 @@ public:
         auto shape2 = PolygonShapeConf{};
         shape2.UseDensity(density);
         shape2.SetAsBox(offset * 1_m, a / 4, Length2{0_m, -a}, 0_rad);
-        m_world.CreateFixture(body, Shape(shape2));
+        CreateFixture(m_world, body, Shape(shape2));
 
         const auto a1 = Length2{offset * 1_m, -a};
         const auto a2 = Length2{-offset * 1_m, -a};

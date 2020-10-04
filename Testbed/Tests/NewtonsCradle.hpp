@@ -107,7 +107,7 @@ namespace testbed {
                 
                 const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 2, frame_width / 24).UseDensity(20_kgpm2);
-                m_world.CreateFixture(body, Shape(shape));
+                CreateFixture(m_world, body, Shape(shape));
                 return body;
             }();
             
@@ -160,7 +160,7 @@ namespace testbed {
                 const auto body = m_world.CreateBody(def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 24, arm_length / 2 + frame_width / 24).UseDensity(20_kgpm2);
-                m_world.CreateFixture(body, Shape(shape));
+                CreateFixture(m_world, body, Shape(shape));
                 
                 m_right_side_wall = body;
             }
@@ -180,7 +180,7 @@ namespace testbed {
                 const auto body = m_world.CreateBody(def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24})).UseDensity(20_kgpm2);
-                m_world.CreateFixture(body, Shape(shape));
+                CreateFixture(m_world, body, Shape(shape));
                 
                 m_left_side_wall = body;
             }
@@ -212,13 +212,13 @@ namespace testbed {
             conf.density = 20_kgpm2;
             conf.restitution = 1;
             conf.friction = 0;
-            return m_world.CreateFixture(body, Shape(conf));
+            return CreateFixture(m_world, body, Shape(conf));
         }
 
         FixtureID CreateArm(BodyID body, Length length = 10_m)
         {
             const auto shape = PolygonShapeConf{}.SetAsBox(length / Real{2000}, length / Real{2}).UseDensity(20_kgpm2);
-            return m_world.CreateFixture(body, Shape(shape));
+            return CreateFixture(m_world, body, Shape(shape));
         }
 
         void ToggleRightSideWall()

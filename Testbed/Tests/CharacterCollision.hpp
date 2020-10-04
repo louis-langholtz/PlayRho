@@ -41,62 +41,62 @@ public:
     {
         // Ground body
         const auto ground = m_world.CreateBody();
-        m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m}});
+        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m}});
 
         {
             auto shape = PolygonShapeConf{};
 
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 0.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 1.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 2.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 3.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 4.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 5.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 6.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
 
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 0.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 1.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 2.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 3.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 4.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 5.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 6.545f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
         }
 
         // Collinear edges.
         {
             auto conf = EdgeShapeConf{};
             conf.Set(Vec2(-8.0f, 1.0f) * 1_m, Vec2(-6.0f, 1.0f) * 1_m);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
             conf.Set(Vec2(-6.0f, 1.0f) * 1_m, Vec2(-4.0f, 1.0f) * 1_m);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
             conf.Set(Vec2(-4.0f, 1.0f) * 1_m, Vec2(-2.0f, 1.0f) * 1_m);
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
         }
 
         // Collinear 2-gons.
         {
             auto conf = PolygonShapeConf{};
             conf.UseVertices({Vec2(-8.0f, 20.0f) * 1_m, Vec2(-6.0f, 20.0f) * 1_m});
-            m_world.CreateFixture(ground, Shape{conf});
+            CreateFixture(m_world, ground, Shape{conf});
             conf.UseVertices({Vec2(-6.0f, 20.0f) * 1_m, Vec2(-4.0f, 20.0f) * 1_m});
-            m_world.CreateFixture(ground, Shape{conf});
+            CreateFixture(m_world, ground, Shape{conf});
             conf.UseVertices({Vec2(-4.0f, 20.0f) * 1_m, Vec2(-2.0f, 20.0f) * 1_m});
-            m_world.CreateFixture(ground, Shape{conf});
+            CreateFixture(m_world, ground, Shape{conf});
         }
 
         // Chain shape
@@ -107,18 +107,18 @@ public:
             conf.Add(Vec2(6.0f, 8.0f) * 1_m);
             conf.Add(Vec2(7.0f, 8.0f) * 1_m);
             conf.Add(Vec2(8.0f, 7.0f) * 1_m);
-            m_world.CreateFixture(body, Shape(conf));
+            CreateFixture(m_world, body, Shape(conf));
         }
 
         // Square tiles.
         {
             auto shape = PolygonShapeConf{};
             shape.SetAsBox(1_m, 1_m, Vec2(4.0f, 3.0f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(1_m, 1_m, Vec2(6.0f, 3.0f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
             shape.SetAsBox(1_m, 1_m, Vec2(8.0f, 3.0f) * 1_m, 0_rad);
-            m_world.CreateFixture(ground, Shape(shape));
+            CreateFixture(m_world, ground, Shape(shape));
         }
 
         // Square made from an edge loop. Collision should be smooth.
@@ -129,7 +129,7 @@ public:
             conf.Add(Vec2(1.0f, 5.0f) * 1_m);
             conf.Add(Vec2(-1.0f, 5.0f) * 1_m);
             conf.Add(conf.GetVertex(0)); // to loop chain shape around
-            m_world.CreateFixture(ground, Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
         }
 
         // Edge loop. Collision should be smooth.
@@ -147,7 +147,7 @@ public:
             conf.Add(Vec2(-6.0f, 2.0f) * 1_m);
             conf.Add(Vec2(-6.0f, 0.0f) * 1_m);
             conf.Add(conf.GetVertex(0)); // to loop back completely.
-            m_world.CreateFixture(body, Shape(conf));
+            CreateFixture(m_world, body, Shape(conf));
         }
 
         // Square character 1
@@ -163,11 +163,11 @@ public:
             const auto square = Shape{
                 PolygonShapeConf{}.UseFriction(0).UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)
             };
-            m_world.CreateFixture(body, square);
+            CreateFixture(m_world, body, square);
             
             bd.location = Vec2(19.0f, 7.0f) * 1_m;
             const auto body2 = m_world.CreateBody(bd);
-            m_world.CreateFixture(body2, square);
+            CreateFixture(m_world, body2, square);
         }
 
         // Square character 2
@@ -178,7 +178,7 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            m_world.CreateFixture(m_world.CreateBody(bd), Shape{
+            CreateFixture(m_world, m_world.CreateBody(bd), Shape{
                 PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.25_m, 0.25_m)
             });
         }
@@ -203,7 +203,7 @@ public:
             }
 
             auto conf = PolygonShapeConf{}.UseDensity(20_kgpm2).UseVertices(vertices);
-            m_world.CreateFixture(body, Shape{conf});
+            CreateFixture(m_world, body, Shape{conf});
         }
 
         // Disk character
@@ -218,7 +218,7 @@ public:
             auto conf = DiskShapeConf{};
             conf.density = 20_kgpm2;
             conf.vertexRadius = 0.5_m;
-            m_world.CreateFixture(body, Shape(conf));
+            CreateFixture(m_world, body, Shape(conf));
         }
 
         // Disk character
@@ -234,7 +234,7 @@ public:
             conf.density = 20_kgpm2;
             conf.friction = 1.0f;
             conf.vertexRadius = 0.25_m;
-            m_world.CreateFixture(m_character, Shape(conf));
+            CreateFixture(m_world, m_character, Shape(conf));
         }
         
         SetAccelerations(m_world, m_gravity);
