@@ -54,7 +54,7 @@ public:
                 GetX(position) = -N * a;
                 for (auto i = 0; i < N; ++i)
                 {
-                    ground->CreateFixture(Shape{PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg)});
+                    m_world.CreateFixture(ground, Shape{PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg)});
                     ++m_fixtureCount;
                     GetX(position) += 2.0f * a;
                 }
@@ -83,7 +83,7 @@ public:
                     bd.linearAcceleration = m_gravity;
 
                     const auto body = m_world.CreateBody(bd);
-                    body->CreateFixture(shape);
+                    m_world.CreateFixture(body, shape);
                     ++m_fixtureCount;
                     y += deltaY;
                 }

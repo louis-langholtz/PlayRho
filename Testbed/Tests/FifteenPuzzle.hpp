@@ -46,8 +46,8 @@ namespace testbed {
             auto conf = GetChainShapeConf(16_m + 2 * GetVertexRadius());
             conf.UseVertexRadius(GetVertexRadius());
             const auto enclosure = m_world.CreateBody();
-            enclosure->CreateFixture(Shape{conf});
-            SetLocation(*enclosure, GetCenter());
+            CreateFixture(m_world, enclosure, Shape{conf});
+            SetLocation(m_world, enclosure, GetCenter());
             for (auto i = 0; i < 15; ++i)
             {
                 const auto row = 3 - i / 4;
@@ -66,7 +66,7 @@ namespace testbed {
             return Vec2{Real{0}, Real{20}} * 1_m;
         }
 
-        Body* CreateSquareTile(int col, int row)
+        BodyID CreateSquareTile(int col, int row)
         {
             const auto sideLength = 4_m;
             const auto skinWidth = GetVertexRadius();
@@ -84,7 +84,7 @@ namespace testbed {
             bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
             bd.linearDamping = 20_Hz;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(Shape{conf});
+            m_world.CreateFixture(body, Shape{conf});
             
             return body;
         }

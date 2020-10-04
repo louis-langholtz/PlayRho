@@ -44,13 +44,13 @@ public:
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase counter-clockwise angular velocity",
                        [&](KeyActionMods) {
-            const auto angularVelocity = GetAngularVelocity(*m_ground);
-            SetAngularVelocity(*m_ground, angularVelocity + 0.1_rad / Second);
+            const auto angularVelocity = GetAngularVelocity(m_world, m_ground);
+            SetVelocity(m_world, m_ground, angularVelocity + 0.1_rad / Second);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Increase clockwise angular velocity",
                        [&](KeyActionMods) {
-            const auto angularVelocity = GetAngularVelocity(*m_ground);
-            SetAngularVelocity(*m_ground, angularVelocity - 0.1_rad / Second);
+            const auto angularVelocity = GetAngularVelocity(m_world, m_ground);
+            SetVelocity(m_world, m_ground, angularVelocity - 0.1_rad / Second);
         });
 
         auto boundaryConf = ChainShapeConf{}.UseFriction(100);
@@ -59,7 +59,7 @@ public:
         boundaryConf.Add(Vec2(-12,  +0) * 1_m);
         boundaryConf.Add(Vec2(+12,  +0) * 1_m);
         boundaryConf.Add(Vec2(+12, +20) * 1_m);
-        m_ground->CreateFixture(Shape(boundaryConf));
+        m_world.CreateFixture(m_ground, Shape(boundaryConf));
         
         const auto vertices = GetCircleVertices(10_m, 90);
         const auto halfSegmentLength = GetMagnitude(vertices[1] - vertices[0]) / 2;
@@ -71,8 +71,8 @@ public:
         conf.Set(Length2{-halfSegmentLength, 0_m}, Length2{+halfSegmentLength, 0_m});
         const auto vertexOffset = Vec2(0, 14) * 1_m;
         const auto shape = Shape(conf);
-        auto prevBody = static_cast<Body*>(nullptr);
-        auto firstBody = static_cast<Body*>(nullptr);
+        auto prevBody = InvalidBodyID;
+        auto firstBody = InvalidBodyID;
         auto prevVertex = Optional<Length2>{};
         for (const auto& vertex: vertices)
         {
@@ -86,8 +86,8 @@ public:
                                                      .UseLocation(midPoint + vertexOffset)
                                                      .UseAngle(angle)
                                                      .UseLinearAcceleration(m_gravity));
-                body->CreateFixture(shape);
-                if (prevBody)
+                m_world.CreateFixture(body, shape);
+                if (prevBody != InvalidBodyID)
                 {
                     m_world.CreateJoint(RevoluteJointConf{body, prevBody, *prevVertex + vertexOffset});
                 }
@@ -116,14 +116,14 @@ public:
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLocation(location + vertexOffset)
                                                  .UseLinearAcceleration(m_gravity));
-            body->CreateFixture(diskShape);
+            m_world.CreateFixture(body, diskShape);
             angle += angleIncrement;
             angleIncrement *= 0.999f;
         }
     }
 
 private:
-    Body* m_ground;
+    BodyID m_ground;
 };
 
 }

@@ -559,7 +559,6 @@ private:
     /// @param conf Time step configuration information.
     /// @param island Island of bodies, contacts, and joints to solve for. Must contain at least
     ///   one body, contact, or joint.
-    /// @param contactListener Contact listener function or <code>nullptr</code>.
     ///
     /// @warning Behavior is undefined if the given island doesn't have at least one body,
     ///   contact, or joint.

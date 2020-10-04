@@ -31,10 +31,14 @@ class HeavyOnLightTwo : public Test
 public:
     HeavyOnLightTwo()
     {
-        m_world.CreateBody()->CreateFixture(Shape(GetGroundEdgeConf()));
+        CreateFixture(m_world, m_world.CreateBody(), Shape(GetGroundEdgeConf()));
         // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-        m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 2.5_m}))->CreateFixture(lilDisk);
-        m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 3.5_m}))->CreateFixture(lilDisk);
+        CreateFixture(m_world,
+                      m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 2.5_m})),
+                      lilDisk);
+        CreateFixture(m_world,
+                      m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 3.5_m})),
+                      lilDisk);
         RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
             ToggleHeavy();
         });
@@ -42,16 +46,16 @@ public:
     
     void ToggleHeavy()
     {
-        if (m_heavy)
+        if (m_heavy != InvalidBodyID)
         {
             m_world.Destroy(m_heavy);
-            m_heavy = nullptr;
+            m_heavy = InvalidBodyID;
         }
         else
         {
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
             m_heavy = m_world.CreateBody(BodyConf(DynBD).UseLocation(Length2{0_m, 9_m}));
-            m_heavy->CreateFixture(bigDisk);
+            CreateFixture(m_world, m_heavy, bigDisk);
         }
     }
     
@@ -59,7 +63,7 @@ public:
     const DiskShapeConf DiskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
     const Shape lilDisk = Shape{DiskShapeConf(DiskConf).UseRadius(0.5_m)};
     const Shape bigDisk = Shape{DiskShapeConf(DiskConf).UseRadius(5.0_m)};
-    Body* m_heavy = nullptr;
+    BodyID m_heavy = InvalidBodyID;
 };
 
 } // namespace testbed

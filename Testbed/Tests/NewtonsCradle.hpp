@@ -51,9 +51,9 @@ namespace testbed {
 
         NewtonsCradle(): Test(GetTestConf())
         {
-            for (auto&& body: m_swings)
+            for (auto& body: m_swings)
             {
-                body = nullptr;
+                body = InvalidBodyID;
             }
             CreateCradle();
             
@@ -95,7 +95,7 @@ namespace testbed {
         
         void CreateCradle()
         {
-            if (m_frame)
+            if (IsValid(m_frame))
             {
                 return;
             }
@@ -107,7 +107,7 @@ namespace testbed {
                 
                 const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 2, frame_width / 24).UseDensity(20_kgpm2);
-                body->CreateFixture(Shape(shape));
+                m_world.CreateFixture(body, Shape(shape));
                 return body;
             }();
             
@@ -131,17 +131,17 @@ namespace testbed {
 
         void DestroyCradle()
         {
-            if (m_frame)
+            if (IsValid(m_frame))
             {
                 m_world.Destroy(m_frame);
-                m_frame = nullptr;
+                m_frame = InvalidBodyID;
             }
-            for (auto&& body: m_swings)
+            for (auto& body: m_swings)
             {
-                if (body)
+                if (body != InvalidBodyID)
                 {
                     m_world.Destroy(body);
-                    body = nullptr;
+                    body = InvalidBodyID;
                 }
             }
             DestroyLeftSideWall();
@@ -150,7 +150,7 @@ namespace testbed {
 
         void CreateRightSideWall()
         {
-            if (!m_right_side_wall) {
+            if (!IsValid(m_right_side_wall)) {
                 const auto frame_width = static_cast<Real>(m_num_arms) * frame_width_per_arm;
 
                 BodyConf def;
@@ -159,7 +159,7 @@ namespace testbed {
                 const auto body = m_world.CreateBody(def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 24, arm_length / 2 + frame_width / 24).UseDensity(20_kgpm2);
-                body->CreateFixture(Shape(shape));
+                m_world.CreateFixture(body, Shape(shape));
                 
                 m_right_side_wall = body;
             }
@@ -167,7 +167,7 @@ namespace testbed {
         
         void CreateLeftSideWall()
         {
-            if (!m_left_side_wall) {
+            if (!IsValid(m_left_side_wall)) {
                 const auto frame_width = static_cast<Real>(m_num_arms) * frame_width_per_arm;
 
                 BodyConf def;
@@ -179,7 +179,7 @@ namespace testbed {
                 const auto body = m_world.CreateBody(def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24})).UseDensity(20_kgpm2);
-                body->CreateFixture(Shape(shape));
+                m_world.CreateFixture(body, Shape(shape));
                 
                 m_left_side_wall = body;
             }
@@ -187,23 +187,23 @@ namespace testbed {
 
         void DestroyRightSideWall()
         {
-            if (m_right_side_wall)
+            if (IsValid(m_right_side_wall))
             {
                 m_world.Destroy(m_right_side_wall);
-                m_right_side_wall = nullptr;
+                m_right_side_wall = InvalidBodyID;
             }
         }
 
         void DestroyLeftSideWall()
         {
-            if (m_left_side_wall)
+            if (IsValid(m_left_side_wall))
             {
                 m_world.Destroy(m_left_side_wall);
-                m_left_side_wall = nullptr;
+                m_left_side_wall = InvalidBodyID;
             }
         }
 
-        Fixture* CreateBall(Body* body, Length2 pos, Length radius)
+        FixtureID CreateBall(BodyID body, Length2 pos, Length radius)
         {
             auto conf = DiskShapeConf{};
             conf.vertexRadius = radius;
@@ -211,18 +211,18 @@ namespace testbed {
             conf.density = 20_kgpm2;
             conf.restitution = 1;
             conf.friction = 0;
-            return body->CreateFixture(Shape(conf));
+            return m_world.CreateFixture(body, Shape(conf));
         }
 
-        Fixture* CreateArm(Body* body, Length length = 10_m)
+        FixtureID CreateArm(BodyID body, Length length = 10_m)
         {
             const auto shape = PolygonShapeConf{}.SetAsBox(length / Real{2000}, length / Real{2}).UseDensity(20_kgpm2);
-            return body->CreateFixture(Shape(shape));
+            return m_world.CreateFixture(body, Shape(shape));
         }
 
         void ToggleRightSideWall()
         {
-            if (m_right_side_wall)
+            if (IsValid(m_right_side_wall))
                 DestroyRightSideWall();
             else
                 CreateRightSideWall();
@@ -230,7 +230,7 @@ namespace testbed {
 
         void ToggleLeftSideWall()
         {
-            if (m_left_side_wall)
+            if (IsValid(m_left_side_wall))
                 DestroyLeftSideWall();
             else
                 CreateLeftSideWall();
@@ -239,29 +239,28 @@ namespace testbed {
         void ToggleBulletMode()
         {
             m_bullet_mode = !m_bullet_mode;
-            for (auto&& body: m_world.GetBodies())
+            for (const auto& b: m_world.GetBodies())
             {
-                auto& b = GetRef(body);
-                if (b.GetType() == BodyType::Dynamic)
+                if (GetType(m_world, b) == BodyType::Dynamic)
                 {
-                    b.SetBullet(m_bullet_mode);
+                    SetImpenetrable(m_world, b, m_bullet_mode);
                 }
             }
         }
-        
+
         void PostStep(const Settings&, Drawer&) override
         {
             std::stringstream stream;
             stream << "Bullet mode currently " << (m_bullet_mode? "on": "off") << ".";
             m_status = stream.str();
         }
-    
+
         int m_num_arms = default_num_arms;
         bool m_bullet_mode = false;
-        Body *m_frame = nullptr;
-        Body *m_right_side_wall = nullptr;
-        Body *m_left_side_wall = nullptr;
-        Body *m_swings[5];
+        BodyID m_frame = InvalidBodyID;
+        BodyID m_right_side_wall = InvalidBodyID;
+        BodyID m_left_side_wall = InvalidBodyID;
+        BodyID m_swings[5];
     };
 
 } // namespace testbed

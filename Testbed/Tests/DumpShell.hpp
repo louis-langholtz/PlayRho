@@ -44,8 +44,8 @@ public:
 
         LinearAcceleration2 g(Real{0.000000000000000e+00f} * MeterPerSquareSecond, Real{-1.000000000000000e+01f} * MeterPerSquareSecond);
         m_gravity = g;
-        Body** bodies = (Body**)Alloc(3 * sizeof(Body*));
-        Joint** joints = (Joint**)Alloc(0 * sizeof(Joint*));
+        BodyID* bodies = (BodyID*)Alloc(3 * sizeof(BodyID));
+        JointID* joints = (JointID*)Alloc(0 * sizeof(JointID));
         {
             BodyConf bd;
             bd.type = BodyType(0);
@@ -79,7 +79,7 @@ public:
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(0);
 
-                bodies[0]->CreateFixture(Shape(shape), fd);
+                m_world.CreateFixture(bodies[0], Shape(shape), fd);
             }
         }
         {
@@ -116,7 +116,7 @@ public:
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(0);
-                bodies[1]->CreateFixture(Shape(shape), fd);
+                m_world.CreateFixture(bodies[1], Shape(shape), fd);
             }
         }
         {
@@ -134,7 +134,6 @@ public:
             bd.bullet = bool(0);
             bd.enabled = bool(32);
             bodies[2] = m_world.CreateBody(bd);
-
             {
                 auto shape = PolygonShapeConf{};
                 Length2 vs[4];
@@ -151,16 +150,15 @@ public:
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(-3);
-                bodies[2]->CreateFixture(Shape(shape), fd);
+                m_world.CreateFixture(bodies[2], Shape(shape), fd);
             }
         }
-        
+
         SetAccelerations(m_world, m_gravity);
         Free(joints);
         Free(bodies);
         joints = nullptr;
         bodies = nullptr;
-
     }
 };
 

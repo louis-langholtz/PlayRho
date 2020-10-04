@@ -49,11 +49,11 @@ public:
         m_world.CreateJoint(jointConf);
     }
 
-    Body* AddNode(const Body* parent, const Length2 localAnchor, const int depth,
+    BodyID AddNode(const BodyID parent, const Length2 localAnchor, const int depth,
                   const Real offset, const Length a, Shape shape)
     {
         const auto h = Length2{0_m, a};
-        const auto p = parent->GetLocation() + localAnchor - h;
+        const auto p = GetLocation(m_world, parent) + localAnchor - h;
 
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
@@ -61,7 +61,7 @@ public:
         bodyConf.location = p;
         const auto body = m_world.CreateBody(bodyConf);
 
-        body->CreateFixture(shape);
+        m_world.CreateFixture(body, shape);
 
         if (depth == MaxDepth)
         {
@@ -71,7 +71,7 @@ public:
         auto shape2 = PolygonShapeConf{};
         shape2.UseDensity(density);
         shape2.SetAsBox(offset * 1_m, a / 4, Length2{0_m, -a}, 0_rad);
-        body->CreateFixture(Shape(shape2));
+        m_world.CreateFixture(body, Shape(shape2));
 
         const auto a1 = Length2{offset * 1_m, -a};
         const auto a2 = Length2{-offset * 1_m, -a};

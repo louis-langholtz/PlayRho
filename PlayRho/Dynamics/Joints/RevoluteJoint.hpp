@@ -71,13 +71,13 @@ public:
     void EnableLimit(bool flag);
 
     /// Get the lower joint limit.
-    Angle GetLowerLimit() const noexcept;
+    Angle GetAngularLowerLimit() const noexcept;
 
     /// Get the upper joint limit.
-    Angle GetUpperLimit() const noexcept;
+    Angle GetAngularUpperLimit() const noexcept;
 
     /// Set the joint limits.
-    void SetLimits(Angle lower, Angle upper);
+    void SetAngularLimits(Angle lower, Angle upper);
 
     /// Is the joint motor enabled?
     bool IsMotorEnabled() const noexcept;
@@ -109,7 +109,7 @@ public:
     AngularMomentum GetAngularReaction() const override;
 
     /// @brief Gets the current motor impulse.
-    AngularMomentum GetMotorImpulse() const noexcept;
+    AngularMomentum GetAngularMotorImpulse() const noexcept;
 
     /// @brief Gets the current limit state.
     /// @note This will be <code>e_inactiveLimit</code> unless the joint limit has been
@@ -163,12 +163,12 @@ inline bool RevoluteJoint::IsLimitEnabled() const noexcept
     return m_enableLimit;
 }
 
-inline Angle RevoluteJoint::GetLowerLimit() const noexcept
+inline Angle RevoluteJoint::GetAngularLowerLimit() const noexcept
 {
     return m_lowerAngle;
 }
 
-inline Angle RevoluteJoint::GetUpperLimit() const noexcept
+inline Angle RevoluteJoint::GetAngularUpperLimit() const noexcept
 {
     return m_upperAngle;
 }
@@ -193,7 +193,7 @@ inline Joint::LimitState RevoluteJoint::GetLimitState() const noexcept
     return m_limitState;
 }
 
-inline AngularMomentum RevoluteJoint::GetMotorImpulse() const noexcept
+inline AngularMomentum RevoluteJoint::GetAngularMotorImpulse() const noexcept
 {
     return m_motorImpulse;
 }
@@ -202,18 +202,11 @@ inline AngularMomentum RevoluteJoint::GetMotorImpulse() const noexcept
 
 /// @brief Gets the current joint angle.
 /// @relatedalso RevoluteJoint
-Angle GetJointAngle(const World& world, const RevoluteJoint& joint);
+Angle GetAngle(const World& world, const RevoluteJoint& joint);
     
 /// @brief Gets the current joint angle speed.
 /// @relatedalso RevoluteJoint
 AngularVelocity GetAngularVelocity(const World& world, const RevoluteJoint& joint);
-
-/// @brief Gets the current motor torque for the given joint given the inverse time step.
-/// @relatedalso RevoluteJoint
-inline Torque GetMotorTorque(const RevoluteJoint& joint, Frequency inv_dt) noexcept
-{
-    return joint.GetMotorImpulse() * inv_dt;
-}
 
 } // namespace d2
 } // namespace playrho

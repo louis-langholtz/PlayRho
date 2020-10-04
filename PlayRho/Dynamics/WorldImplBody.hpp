@@ -51,61 +51,111 @@ class Shape; // for CreateFixture
 struct FixtureConf; // for CreateFixture
 
 /// @brief Destroys the identified body.
+/// @relatedalso WorldImpl
 void Destroy(WorldImpl& world, BodyID id);
 
 /// @brief Gets the body configuration for the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
+/// @relatedalso WorldImpl
 BodyConf GetBodyConf(const WorldImpl& world, BodyID id);
 
 /// @brief Gets the type of the body.
+/// @relatedalso WorldImpl
 BodyType GetType(const WorldImpl& world, BodyID id);
 
+/// @relatedalso WorldImpl
 void SetType(WorldImpl& world, BodyID id, BodyType value);
 
+/// @brief Is the body treated like a bullet for continuous collision detection?
+/// @relatedalso WorldImpl
+bool IsImpenetrable(const WorldImpl& world, BodyID id);
+
+/// @relatedalso WorldImpl
+void SetImpenetrable(WorldImpl& world, BodyID id);
+
+/// @relatedalso WorldImpl
+void UnsetImpenetrable(WorldImpl& world, BodyID id);
+
+/// @brief Gets whether or not the identified body is allowed to sleep.
+bool IsSleepingAllowed(const WorldImpl& world, BodyID id);
+
+/// @relatedalso WorldImpl
 FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
                         const FixtureConf& def, bool resetMassData = true);
 
+/// @relatedalso WorldImpl
 Angle GetAngle(const WorldImpl& world, BodyID id);
 
+/// @relatedalso WorldImpl
 Transformation GetTransformation(const WorldImpl& world, BodyID id);
 
+/// @relatedalso WorldImpl
 void SetTransformation(WorldImpl& world, BodyID id, Transformation xfm);
 
+/// @relatedalso WorldImpl
 Velocity GetVelocity(const WorldImpl& world, BodyID id);
 
 /// @brief Sets the body's velocity (linear and angular velocity).
 /// @note This method does nothing if this body is not speedable.
 /// @note A non-zero velocity will awaken this body.
 /// @see SetAwake, SetUnderActiveTime.
+/// @relatedalso WorldImpl
 void SetVelocity(WorldImpl& world, BodyID id, const Velocity& value);
 
 /// @brief Sleeps the body.
+/// @relatedalso WorldImpl
 void UnsetAwake(WorldImpl& world, BodyID id);
 
 /// @brief Wakes up the body.
+/// @relatedalso WorldImpl
 void SetAwake(WorldImpl& world, BodyID id);
 
+/// @relatedalso WorldImpl
 bool IsAwake(const WorldImpl& world, BodyID id);
 
+/// @brief Gets the linear damping of the body.
+/// @relatedalso WorldImpl
+Frequency GetLinearDamping(const WorldImpl& world, BodyID id);
+
+/// @brief Sets the linear damping of the body.
+/// @relatedalso WorldImpl
+void SetLinearDamping(WorldImpl& world, BodyID id, NonNegative<Frequency> value);
+
+/// @brief Gets the angular damping of the body.
+/// @relatedalso WorldImpl
+Frequency GetAngularDamping(const WorldImpl& world, BodyID id);
+
+/// @brief Sets the angular damping of the body.
+/// @relatedalso WorldImpl
+void SetAngularDamping(WorldImpl& world, BodyID id, NonNegative<Frequency> value);
+
 /// @brief Gets the local position of the center of mass of the specified body.
+/// @relatedalso WorldImpl
 Length2 GetLocalCenter(const WorldImpl& world, BodyID id);
 
 /// @brief Get the world position of the center of mass of the specified body.
+/// @relatedalso WorldImpl
 Length2 GetWorldCenter(const WorldImpl& world, BodyID id);
 
 /// @brief Gets this body's linear acceleration.
+/// @relatedalso WorldImpl
 LinearAcceleration2 GetLinearAcceleration(const WorldImpl& world, BodyID id);
 
 /// @brief Gets this body's angular acceleration.
+/// @relatedalso WorldImpl
 AngularAcceleration GetAngularAcceleration(const WorldImpl& world, BodyID id);
 
+/// @relatedalso WorldImpl
 void SetAcceleration(WorldImpl& world, BodyID id,
                      LinearAcceleration2 linear, AngularAcceleration angular);
 
+/// @relatedalso WorldImpl
 void SetAcceleration(WorldImpl& world, BodyID id, Acceleration value);
 
+/// @relatedalso WorldImpl
 void SetAcceleration(WorldImpl& world, BodyID id, LinearAcceleration2 value);
 
+/// @relatedalso WorldImpl
 void SetAcceleration(WorldImpl& world, BodyID id, AngularAcceleration value);
 
 /// @brief Sets the mass properties to override the mass properties of the fixtures.
@@ -113,6 +163,7 @@ void SetAcceleration(WorldImpl& world, BodyID id, AngularAcceleration value);
 /// @note Creating or destroying fixtures can also alter the mass.
 /// @note This function has no effect if the body isn't dynamic.
 /// @param massData the mass properties.
+/// @relatedalso WorldImpl
 void SetMassData(WorldImpl& world, BodyID id, const MassData& massData);
 
 /// @brief Computes the body's mass data.
@@ -153,6 +204,7 @@ inline Mass GetMass(const WorldImpl& world, BodyID id)
 
 /// @brief Gets the inverse rotational inertia of the body.
 /// @return Inverse rotational inertia (in 1/kg-m^2).
+/// @relatedalso WorldImpl
 InvRotInertia GetInvRotInertia(const WorldImpl& world, BodyID id);
 
 /// @brief Gets the rotational inertia of the body.
@@ -182,17 +234,21 @@ bool ShouldCollide(const WorldImpl& world, BodyID lhs, BodyID rhs);
 #endif
 
 /// @brief Gets the range of all joints attached to this body.
+/// @relatedalso WorldImpl
 SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
 GetJoints(const WorldImpl& world, BodyID id);
 
 /// @brief Gets the range of all constant fixtures attached to the given body.
+/// @relatedalso WorldImpl
 SizedRange<std::vector<FixtureID>::const_iterator>
 GetFixtures(const WorldImpl& world, BodyID id);
 
+/// @relatedalso WorldImpl
 void DestroyFixtures(WorldImpl& world, BodyID id);
 
 /// @brief Gets the enabled/disabled state of the body.
 /// @see SetEnabled.
+/// @relatedalso WorldImpl
 bool IsEnabled(const WorldImpl& world, BodyID id);
 
 /// @brief Sets the enabled state of the body.
@@ -214,22 +270,21 @@ bool IsEnabled(const WorldImpl& world, BodyID id);
 /// @post <code>IsEnabled()</code> returns the state given to this function.
 ///
 /// @see IsEnabled.
-///
+/// @relatedalso WorldImpl
 void SetEnabled(WorldImpl& world, BodyID body, bool flag);
 
 /// @brief Is identified body "speedable".
 /// @details Is the body able to have a non-zero speed associated with it.
 /// Kinematic and Dynamic bodies are speedable. Static bodies are not.
+/// @relatedalso WorldImpl
 bool IsSpeedable(const WorldImpl& world, BodyID id);
 
 /// @brief Is identified body "accelerable"?
 /// @details Indicates whether the body is accelerable, i.e. whether it is effected by
 ///   forces. Only Dynamic bodies are accelerable.
 /// @return true if the body is accelerable, false otherwise.
+/// @relatedalso WorldImpl
 bool IsAccelerable(const WorldImpl& world, BodyID id);
-
-/// @brief Is the body treated like a bullet for continuous collision detection?
-bool IsImpenetrable(const WorldImpl& world, BodyID id);
 
 /// @brief Gets the container of all contacts attached to this body.
 /// @warning This collection changes during the time step and you may
@@ -239,6 +294,8 @@ GetContacts(const WorldImpl& world, BodyID id);
 
 /// @brief Gets the user data associated with the identified body.
 void* GetUserData(const WorldImpl& world, BodyID id);
+
+void SetUserData(WorldImpl& world, BodyID id, void* value);
 
 /// @brief Gets whether the body's mass-data is dirty.
 bool IsMassDataDirty(const WorldImpl& world, BodyID id);

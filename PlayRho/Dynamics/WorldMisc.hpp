@@ -173,7 +173,7 @@ void SetAccelerations(World& world, F fn)
 {
     const auto bodies = GetBodies(world);
     std::for_each(begin(bodies), end(bodies), [&](const auto &b) {
-        SetAcceleration(world, b, fn(b));
+        SetAcceleration(world, b, fn(world, b));
     });
 }
 

@@ -495,22 +495,15 @@ void RevoluteJoint::EnableLimit(bool flag)
     }
 }
 
-void RevoluteJoint::SetLimits(Angle lower, Angle upper)
+void RevoluteJoint::SetAngularLimits(Angle lower, Angle upper)
 {
     assert(lower <= upper);
-    if ((lower != m_lowerAngle) || (upper != m_upperAngle))
-    {
-        GetZ(m_impulse) = 0;
-        m_lowerAngle = lower;
-        m_upperAngle = upper;
-#if 0
-        GetBodyA()->SetAwake();
-        GetBodyB()->SetAwake();
-#endif
-    }
+    GetZ(m_impulse) = 0;
+    m_lowerAngle = lower;
+    m_upperAngle = upper;
 }
 
-Angle GetJointAngle(const World& world, const RevoluteJoint& joint)
+Angle GetAngle(const World& world, const RevoluteJoint& joint)
 {
     return GetAngle(world, joint.GetBodyB()) - GetAngle(world, joint.GetBodyA()) - joint.GetReferenceAngle();
 }

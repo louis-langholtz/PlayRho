@@ -53,6 +53,8 @@ BodyID GetBody(const WorldImpl& world, FixtureID id);
 /// @relatedalso WorldImpl
 void* GetUserData(const WorldImpl& world, FixtureID id);
 
+void SetUserData(WorldImpl& world, FixtureID id, void* value);
+
 /// @relatedalso WorldImpl
 Shape GetShape(const WorldImpl& world, FixtureID id);
 

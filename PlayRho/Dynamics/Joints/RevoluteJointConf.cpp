@@ -46,8 +46,8 @@ RevoluteJointConf GetRevoluteJointConf(const RevoluteJoint& joint) noexcept
     def.localAnchorB = joint.GetLocalAnchorB();
     def.referenceAngle = joint.GetReferenceAngle();
     def.enableLimit = joint.IsLimitEnabled();
-    def.lowerAngle = joint.GetLowerLimit();
-    def.upperAngle = joint.GetUpperLimit();
+    def.lowerAngle = joint.GetAngularLowerLimit();
+    def.upperAngle = joint.GetAngularUpperLimit();
     def.enableMotor = joint.IsMotorEnabled();
     def.motorSpeed = joint.GetMotorSpeed();
     def.maxMotorTorque = joint.GetMaxMotorTorque();

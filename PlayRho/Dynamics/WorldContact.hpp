@@ -31,6 +31,8 @@
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 
+#include <PlayRho/Collision/WorldManifold.hpp>
+
 namespace playrho {
 namespace d2 {
 
@@ -47,6 +49,10 @@ bool IsAwake(const World& world, ContactID id);
 /// @relatedalso World
 void SetAwake(World& world, ContactID id);
 
+BodyID GetBodyA(const World& world, ContactID id);
+
+BodyID GetBodyB(const World& world, ContactID id);
+
 /// @copydoc World::GetFixtureA
 /// @relatedalso World
 FixtureID GetFixtureA(const World& world, ContactID id);
@@ -55,9 +61,11 @@ FixtureID GetFixtureA(const World& world, ContactID id);
 /// @relatedalso World
 FixtureID GetFixtureB(const World& world, ContactID id);
 
-BodyID GetBodyA(const World& world, ContactID id);
+/// @brief Get the child primitive index for fixture A.
+ChildCounter GetChildIndexA(const World& world, ContactID id);
 
-BodyID GetBodyB(const World& world, ContactID id);
+/// @brief Get the child primitive index for fixture B.
+ChildCounter GetChildIndexB(const World& world, ContactID id);
 
 TimestepIters GetToiCount(const World& world, ContactID id);
 
@@ -72,6 +80,8 @@ bool NeedsUpdating(const World& world, ContactID id);
 /// @copydoc World::HasValidToi
 /// @relatedalso World
 bool HasValidToi(const World& world, ContactID id);
+
+Real GetToi(const World& world, ContactID id);
 
 Real GetDefaultFriction(const World& world, ContactID id);
 
@@ -103,6 +113,8 @@ void SetRestitution(World& world, ContactID id, Real restitution);
 
 const Manifold& GetManifold(const World& world, ContactID id);
 
+WorldManifold GetWorldManifold(const World& world, ContactID id);
+
 /// Resets the friction mixture to the default value.
 /// @relatedalso World
 inline void ResetFriction(World& world, ContactID id)
@@ -116,6 +128,26 @@ inline void ResetRestitution(World& world, ContactID id)
 {
     SetRestitution(world, id, GetDefaultRestitution(world, id));
 }
+
+/// @copydoc World::GetTangentSpeed
+/// @relatedalso World
+LinearVelocity GetTangentSpeed(const World& world, ContactID id);
+
+/// @copydoc World::SetTangentSpeed
+/// @relatedalso World
+void SetTangentSpeed(World& world, ContactID id, LinearVelocity value);
+
+/// @relatedalso World
+bool IsEnabled(const World& world, ContactID id);
+
+/// @relatedalso World
+void SetEnabled(World& world, ContactID id);
+
+/// @relatedalso World
+void UnsetEnabled(World& world, ContactID id);
+
+/// @relatedalso World
+void SetEnabled(World& world, ContactID id, bool value);
 
 } // namespace d2
 } // namespace playrho

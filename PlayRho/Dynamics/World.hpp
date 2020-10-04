@@ -57,11 +57,12 @@ struct FixtureProxy;
 
 namespace d2 {
 
-struct JointConf;
 class WorldImpl;
 class Manifold;
 class ContactImpulsesList;
 class DynamicTree;
+struct JointConf;
+class JointVisitor;
 
 /// @defgroup PhysicalEntities Physical Entity Classes
 ///
@@ -188,7 +189,7 @@ public:
     void SetFixtureDestructionListener(const FixtureListener& listener) noexcept;
 
     /// @brief Register a destruction listener for joints.
-    void SetJointDestructionListener(JointListener listener) noexcept;
+    void SetJointDestructionListener(const JointListener& listener) noexcept;
 
     /// @brief Register a begin contact event listener.
     void SetBeginContactListener(ContactListener listener) noexcept;
@@ -499,6 +500,18 @@ public:
     /// @param angular Angular acceleration.
     void SetAcceleration(BodyID id, LinearAcceleration2 linear, AngularAcceleration angular);
 
+    /// @brief Gets the linear damping of the body.
+    Frequency GetLinearDamping(BodyID id) const;
+
+    /// @brief Sets the linear damping of the body.
+    void SetLinearDamping(BodyID id, NonNegative<Frequency> value);
+
+    /// @brief Gets the angular damping of the body.
+    Frequency GetAngularDamping(BodyID id) const;
+
+    /// @brief Sets the angular damping of the body.
+    void SetAngularDamping(BodyID id, NonNegative<Frequency> angularDamping);
+
     /// @brief Gets whether the body's mass-data is dirty.
     bool IsMassDataDirty(BodyID id) const;
 
@@ -534,6 +547,17 @@ public:
     /// @brief Is the body treated like a bullet for continuous collision detection?
     bool IsImpenetrable(BodyID id) const;
 
+    /// @brief Sets the bullet status of this body.
+    /// @details Sets that the body should be treated like a bullet for continuous
+    ///   collision detection.
+    void SetImpenetrable(BodyID id);
+
+    /// @brief Unsets the bullet status of this body.
+    void UnsetImpenetrable(BodyID id);
+
+    /// @brief Gets whether or not the identified body allowed to sleep.
+    bool IsSleepingAllowed(BodyID id) const;
+
     /// @brief Gets the container of all contacts attached to the body.
     /// @warning This collection changes during the time step and you may
     ///   miss some collisions if you don't use <code>ContactListener</code>.
@@ -541,6 +565,8 @@ public:
 
     /// @brief Gets the user data associated with the identified body.
     void* GetUserData(BodyID id) const;
+
+    void SetUserData(BodyID, void* value);
 
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
@@ -592,6 +618,8 @@ public:
     /// @relatedalso World
     void* GetUserData(JointID id) const;
 
+    void SetUserData(JointID, void* value);
+
     BodyID GetBodyA(JointID id) const;
     BodyID GetBodyB(JointID id) const;
     Length2 GetLocalAnchorA(JointID id) const;
@@ -631,6 +659,23 @@ public:
 
     /// @brief Sets the frequency of the identified joint if it has this property.
     void SetFrequency(JointID id, Frequency value);
+
+    /// @brief Gets the target point.
+    Length2 GetTarget(JointID id) const;
+
+    /// @brief Sets the target point.
+    void SetTarget(JointID id, Length2 value);
+
+    void Accept(JointID id, JointVisitor& visitor) const;
+
+    /// Gets the lower joint limit.
+    Angle GetAngularLowerLimit(JointID id) const;
+
+    /// Gets the upper joint limit.
+    Angle GetAngularUpperLimit(JointID id) const;
+
+    /// Sets the joint limits.
+    void SetAngularLimits(JointID id, Angle lower, Angle upper);
 
     /// @brief Gets the fixtures-for-proxies range for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing
@@ -689,6 +734,8 @@ public:
     /// @brief Gets the user data associated with the identified fixture.
     void* GetUserData(FixtureID id) const;
 
+    void SetUserData(FixtureID, void* value);
+
     Shape GetShape(FixtureID id) const;
 
     /// @brief Sets whether the fixture is a sensor or not.
@@ -719,6 +766,14 @@ public:
     /// @see IsAwake(ContactID id)
     void SetAwake(ContactID id);
 
+    /// @brief Gets the desired tangent speed.
+    /// @see SetTangentSpeed(ContactID id, LinearVelocity value).
+    LinearVelocity GetTangentSpeed(ContactID id) const;
+
+    /// @brief Sets the desired tangent speed for a conveyor belt behavior.
+    /// @see GetTangentSpeed(ContactID id) const.
+    void SetTangentSpeed(ContactID id, LinearVelocity value);
+
     /// @brief Is this contact touching?
     /// @details
     /// Touching is defined as either:
@@ -737,15 +792,27 @@ public:
     /// @brief Whether or not the contact has a valid TOI.
     bool HasValidToi(ContactID id) const;
 
+    /// @brief Gets the time of impact (TOI) as a fraction.
+    /// @note This is only valid if a TOI has been set.
+    /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
+    ///   means no actual impact in current time slot), otherwise undefined.
+    Real GetToi(ContactID id) const;
+
+    BodyID GetBodyA(ContactID id) const;
+
+    BodyID GetBodyB(ContactID id) const;
+
     /// @brief Gets fixture A of the given contact.
     FixtureID GetFixtureA(ContactID id) const;
 
     /// @brief Gets fixture B of the given contact.
     FixtureID GetFixtureB(ContactID id) const;
 
-    BodyID GetBodyA(ContactID id) const;
+    /// @brief Get the child primitive index for fixture A.
+    ChildCounter GetChildIndexA(ContactID id) const;
 
-    BodyID GetBodyB(ContactID id) const;
+    /// @brief Get the child primitive index for fixture B.
+    ChildCounter GetChildIndexB(ContactID id) const;
 
     TimestepIters GetToiCount(ContactID id) const;
 
@@ -777,6 +844,12 @@ public:
 
     /// @brief Gets the collision manifold for the identified contact.
     const Manifold& GetManifold(ContactID id) const;
+
+    bool IsEnabled(ContactID id) const;
+
+    void SetEnabled(ContactID id);
+
+    void UnsetEnabled(ContactID id);
 
 private:
     propagate_const<std::unique_ptr<WorldImpl>> m_impl;

@@ -208,7 +208,6 @@ TEST(WheelJoint, GetAnchorAandB)
     EXPECT_EQ(GetAnchorB(world, joint), loc1 + jd.localAnchorB);
 }
 
-#if 0
 TEST(WheelJoint, GetJointTranslation)
 {
     World world;
@@ -225,10 +224,9 @@ TEST(WheelJoint, GetJointTranslation)
     jd.localAnchorA = Length2(-1_m, 5_m);
     jd.localAnchorB = Length2(+1_m, 5_m);
     
-    auto joint = WheelJoint{jd};
-    EXPECT_EQ(GetJointTranslation(joint), Length(2_m));
+    auto joint = world.CreateJoint(jd);
+    EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
-#endif
 
 TEST(WheelJoint, GetWheelJointConf)
 {

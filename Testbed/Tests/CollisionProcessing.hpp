@@ -35,7 +35,7 @@ public:
         // Ground body
         {
             const auto ground = m_world.CreateBody();
-            ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}});
+            m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}});
         }
 
         auto xLo = -5.0f, xHi = 5.0f;
@@ -56,7 +56,7 @@ public:
         triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body1 = m_world.CreateBody(triangleBodyConf);
-        body1->CreateFixture(Shape(polygon));
+        m_world.CreateFixture(body1, Shape(polygon));
 
         // Large triangle (recycle definitions)
         vertices[0] *= 2.0f;
@@ -67,7 +67,7 @@ public:
         triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body2 = m_world.CreateBody(triangleBodyConf);
-        body2->CreateFixture(Shape(polygon));
+        m_world.CreateFixture(body2, Shape(polygon));
         
         // Small box
         polygon.SetAsBox(1_m, 0.5_m);
@@ -77,14 +77,14 @@ public:
         boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
         const auto body3 = m_world.CreateBody(boxBodyConf);
-        body3->CreateFixture(Shape(polygon));
+        m_world.CreateFixture(body3, Shape(polygon));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
         boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
-        
+
         const auto body4 = m_world.CreateBody(boxBodyConf);
-        body4->CreateFixture(Shape(polygon));
+        m_world.CreateFixture(body4, Shape(polygon));
 
         BodyConf circleBodyConf;
         circleBodyConf.type = BodyType::Dynamic;
@@ -92,12 +92,12 @@ public:
         // Small circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body5 = m_world.CreateBody(circleBodyConf);
-        body5->CreateFixture(Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
+        m_world.CreateFixture(body5, Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
 
         // Large circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
         const auto body6 = m_world.CreateBody(circleBodyConf);
-        body6->CreateFixture(Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
+        m_world.CreateFixture(body6, Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
         
         SetAccelerations(m_world, m_gravity);
     }
@@ -108,17 +108,17 @@ public:
         // points. We must buffer the bodies that should be destroyed
         // because they may belong to multiple contact points.
         const auto k_maxNuke = 6;
-        Body* nuke[k_maxNuke];
+        BodyID nuke[k_maxNuke];
         auto nukeCount = 0;
 
         // Traverse the contact results. Destroy bodies that
         // are touching heavier bodies.
         for (auto& point: GetPoints())
         {
-            const auto body1 = point.fixtureA->GetBody();
-            const auto body2 = point.fixtureB->GetBody();
-            const auto mass1 = GetMass(*body1);
-            const auto mass2 = GetMass(*body2);
+            const auto body1 = GetBody(m_world, point.fixtureA);
+            const auto body2 = GetBody(m_world, point.fixtureB);
+            const auto mass1 = GetMass(m_world, body1);
+            const auto mass2 = GetMass(m_world, body2);
 
             if (mass1 > 0_kg && mass2 > 0_kg)
             {

@@ -37,6 +37,9 @@
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+#include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
+
+#include <PlayRho/Common/OptionalValue.hpp> // for Optional
 
 #include <algorithm>
 #include <functional>
@@ -184,6 +187,184 @@ Length2 GetAnchorA(const World& world, JointID id)
 Length2 GetAnchorB(const World& world, JointID id)
 {
     return GetWorldPoint(world, GetBodyB(world, id), GetLocalAnchorB(world, id));
+}
+
+void Accept(const World& world, JointID id, JointVisitor& visitor)
+{
+    world.Accept(id, visitor);
+}
+
+Real GetRatio(const World& world, JointID id)
+{
+    Optional<Real> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const GearJoint&>() = [&result](const GearJoint& j) {
+        result = j.GetRatio();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetRatio not supported by joint type!");
+    }
+    return *result;
+}
+
+Length GetJointTranslation(const World& world, JointID id)
+{
+    const auto pA = GetWorldPoint(world, GetBodyA(world, id), GetLocalAnchorA(world, id));
+    const auto pB = GetWorldPoint(world, GetBodyB(world, id), GetLocalAnchorB(world, id));
+    const auto uv = GetWorldVector(world, GetBodyA(world, id), GetLocalAxisA(world, id));
+    return Dot(pB - pA, uv);
+}
+
+Angle GetAngle(const World& world, JointID id)
+{
+    return GetAngle(world, GetBodyB(world, id)) - GetAngle(world, GetBodyA(world, id)) - GetReferenceAngle(world, id);
+}
+
+bool IsLimitEnabled(const World& world, JointID id)
+{
+    Optional<bool> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
+        result = j.IsLimitEnabled();
+    };
+    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
+        result = j.IsLimitEnabled();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("IsLimitEnabled not supported by joint type!");
+    }
+    return *result;
+}
+
+void EnableLimit(World& world, JointID id, bool value)
+{
+    // TODO
+}
+
+Momentum GetLinearMotorImpulse(const World& world, JointID id)
+{
+    Optional<Momentum> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
+        result = j.GetLinearMotorImpulse();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetLinearMotorImpulse not supported by joint type!");
+    }
+    return *result;
+}
+
+Length2 GetLinearOffset(const World& world, JointID id)
+{
+    Optional<Length2> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const MotorJoint&>() = [&result](const MotorJoint& j) {
+        result = j.GetLinearOffset();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetLinearOffset not supported by joint type!");
+    }
+    return *result;
+}
+
+void SetLinearOffset(World& world, JointID id, Length2 value)
+{
+    // TODO
+}
+
+Angle GetAngularOffset(const World& world, JointID id)
+{
+    Optional<Angle> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const MotorJoint&>() = [&result](const MotorJoint& j) {
+        result = j.GetAngularOffset();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetAngularOffset not supported by joint type!");
+    }
+    return *result;
+}
+
+void SetAngularOffset(World& world, JointID id, Angle value)
+{
+    // TODO
+}
+
+Length2 GetGroundAnchorA(const World& world,  JointID id)
+{
+    Optional<Length2> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const PulleyJoint&>() = [&result](const PulleyJoint& j) {
+        result = j.GetGroundAnchorA();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetGroundAnchorA not supported by joint type!");
+    }
+    return *result;
+}
+
+Length2 GetGroundAnchorB(const World& world,  JointID id)
+{
+    Optional<Length2> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const PulleyJoint&>() = [&result](const PulleyJoint& j) {
+        result = j.GetGroundAnchorB();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetGroundAnchorB not supported by joint type!");
+    }
+    return *result;
+}
+
+Length GetCurrentLengthA(const World& world, JointID id)
+{
+    return GetMagnitude(GetWorldPoint(world, GetBodyA(world, id),
+                                      GetLocalAnchorA(world, id)) - GetGroundAnchorA(world, id));
+}
+
+Length GetCurrentLengthB(const World& world, JointID id)
+{
+    return GetMagnitude(GetWorldPoint(world, GetBodyB(world, id),
+                                      GetLocalAnchorB(world, id)) - GetGroundAnchorB(world, id));
+}
+
+Length2 GetTarget(const World& world, JointID id)
+{
+    return world.GetTarget(id);
+}
+
+void SetTarget(World& world, JointID id, Length2 value)
+{
+    world.SetTarget(id, value);
+}
+
+Angle GetAngularLowerLimit(const World& world, JointID id)
+{
+    return world.GetAngularLowerLimit(id);
+}
+
+Angle GetAngularUpperLimit(const World& world, JointID id)
+{
+    return world.GetAngularUpperLimit(id);
+}
+
+void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper)
+{
+    world.SetAngularLimits(id, lower, upper);
 }
 
 } // namespace d2

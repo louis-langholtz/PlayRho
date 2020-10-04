@@ -31,7 +31,7 @@ public:
     ConveyorBelt()
     {
         // Ground
-        m_world.CreateBody()->CreateFixture(Shape{
+        m_world.CreateFixture(m_world.CreateBody(), Shape{
             EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Platform
@@ -43,7 +43,7 @@ public:
             auto conf = PolygonShapeConf{};
             conf.friction = 0.8f;
             conf.SetAsBox(10_m, 0.5_m);
-            m_platform = body->CreateFixture(Shape{conf});
+            m_platform = m_world.CreateFixture(body, Shape{conf});
         }
 
         // Boxes
@@ -55,29 +55,27 @@ public:
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(boxshape);
+            m_world.CreateFixture(body, boxshape);
         }
     }
 
-    void PreSolve(Contact& contact, const Manifold& oldManifold) override
+    void PreSolve(ContactID contact, const Manifold& oldManifold) override
     {
         Test::PreSolve(contact, oldManifold);
 
-        Fixture* fixtureA = contact.GetFixtureA();
-        Fixture* fixtureB = contact.GetFixtureB();
-
+        const auto fixtureA = GetFixtureA(m_world, contact);
+        const auto fixtureB = GetFixtureB(m_world, contact);
         if (fixtureA == m_platform)
         {
-            contact.SetTangentSpeed(5_mps);
+            SetTangentSpeed(m_world, contact, 5_mps);
         }
-
         if (fixtureB == m_platform)
         {
-            contact.SetTangentSpeed(-5_mps);
+            SetTangentSpeed(m_world, contact, -5_mps);
         }
     }
 
-    Fixture* m_platform;
+    FixtureID m_platform;
 };
 
 } // namespace testbed

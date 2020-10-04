@@ -33,8 +33,7 @@ public:
     Bridge()
     {        
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape(GetGroundEdgeConf()));
-
+        m_world.CreateFixture(ground, Shape(GetGroundEdgeConf()));
         {
             auto conf = PolygonShapeConf{};
             conf.density = 20_kgpm2;
@@ -48,10 +47,8 @@ public:
                                                      .UseType(BodyType::Dynamic)
                                                      .UseLinearAcceleration(m_gravity)
                                                      .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
-                body->CreateFixture(shape);
-
+                m_world.CreateFixture(body, shape);
                 m_world.CreateJoint(RevoluteJointConf{prevBody, body, Vec2(-15.0f + i, 5.0f) * 1_m});
-
                 if (i == (Count >> 1))
                 {
                     m_middle = body;
@@ -74,7 +71,7 @@ public:
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLinearAcceleration(m_gravity)
                                                  .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m));
-            body->CreateFixture(polyshape);
+            m_world.CreateFixture(body, polyshape);
         }
 
         const auto diskShape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(0.5_m)};
@@ -84,11 +81,11 @@ public:
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLinearAcceleration(m_gravity)
                                                  .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m));
-            body->CreateFixture(diskShape);
+            m_world.CreateFixture(body, diskShape);
         }
     }
 
-    Body* m_middle;
+    BodyID m_middle;
 };
 
 } // namespace testbed

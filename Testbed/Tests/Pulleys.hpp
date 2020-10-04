@@ -39,9 +39,9 @@ public:
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 2_m;
             conf.location = Vec2(-10.0f, y + b + L) * 1_m;
-            ground->CreateFixture(Shape(conf));
+            m_world.CreateFixture(ground, Shape(conf));
             conf.location = Vec2(+10.0f, y + b + L) * 1_m;
-            ground->CreateFixture(Shape(conf));
+            m_world.CreateFixture(ground, Shape(conf));
         }
 
         {
@@ -55,11 +55,11 @@ public:
             //bd.fixedRotation = true;
             bd.location = Vec2(-10.0f, y) * 1_m;
             const auto body1 = m_world.CreateBody(bd);
-            body1->CreateFixture(shape);
+            m_world.CreateFixture(body1, shape);
 
             bd.location = Vec2(10.0f, y) * 1_m;
             const auto body2 = m_world.CreateBody(bd);
-            body2->CreateFixture(shape);
+            m_world.CreateFixture(body2, shape);
 
             const auto anchor1 = Vec2(-10.0f, y + b) * 1_m;
             const auto anchor2 = Vec2(10.0f, y + b) * 1_m;
@@ -68,15 +68,15 @@ public:
             const auto pulleyConf = PulleyJointConf{body1, body2,
                 groundAnchor1, groundAnchor2, anchor1, anchor2}.UseRatio(1.5f);
 
-            m_joint1 = static_cast<PulleyJoint*>(m_world.CreateJoint(pulleyConf));
+            m_joint1 = m_world.CreateJoint(pulleyConf);
         }
     }
 
     void PostStep(const Settings&, Drawer&) override
     {
-        const auto ratio = m_joint1->GetRatio();
-        const auto L = GetCurrentLengthA(*m_joint1) + ratio * GetCurrentLengthB(*m_joint1);
-
+        const auto ratio = GetRatio(m_world, m_joint1);
+        const auto L = GetCurrentLengthA(m_world, m_joint1) +
+            ratio * GetCurrentLengthB(m_world, m_joint1);
         std::stringstream stream;
         stream << "L1 + ";
         stream << static_cast<float>(ratio);
@@ -86,7 +86,7 @@ public:
         m_status = stream.str();
     }
 
-    PulleyJoint* m_joint1;
+    JointID m_joint1; // PulleyJoint
 };
 
 } // namespace testbed

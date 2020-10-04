@@ -24,6 +24,13 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+TEST(TargetJointConf, UseTarget)
+{
+    const auto value = Length2(19_m, -9_m);
+    EXPECT_NE(TargetJointConf{}.target, value);
+    EXPECT_EQ(TargetJointConf{}.UseTarget(value).target, value);
+}
+
 TEST(TargetJointConf, UseMaxForce)
 {
     const auto value = Force(19_N);
@@ -53,7 +60,7 @@ TEST(TargetJoint, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(TargetJoint), std::size_t(92));
 #else
-            EXPECT_EQ(sizeof(TargetJoint), std::size_t(88));
+            EXPECT_EQ(sizeof(TargetJoint), std::size_t(96));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(TargetJoint), std::size_t(184)); break;
@@ -73,6 +80,8 @@ TEST(TargetJoint, IsOkay)
 
     EXPECT_TRUE(TargetJoint::IsOkay(def));
     def.bodyA = InvalidBodyID;
+    EXPECT_TRUE(TargetJoint::IsOkay(def));
+    def.target = GetInvalid<decltype(def.target)>();
     EXPECT_FALSE(TargetJoint::IsOkay(def));
 }
 
@@ -153,9 +162,12 @@ TEST(TargetJoint, ShiftOrigin)
     auto def = TargetJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
+    def.target = Length2(-1.4_m, -2_m);
     auto joint = TargetJoint{def};
+    ASSERT_EQ(joint.GetTarget(), def.target);
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_TRUE(joint.ShiftOrigin(newOrigin));
+    EXPECT_EQ(joint.GetTarget(), def.target - newOrigin);
 }
 
 TEST(TargetJointConf, GetTargetJointDefFreeFunction)
@@ -171,17 +183,19 @@ TEST(TargetJointConf, GetTargetJointDefFreeFunction)
     def.bodyA = bA;
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
-    def.anchor = Length2(-1.4_m, -2_m);
+    def.target = Length2(-1.4_m, -2_m);
+    def.anchor = Length2(+2.0_m, -1_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
 
     const auto joint = TargetJoint{def};
     const auto got = GetTargetJointConf(joint);
-    
+
     EXPECT_EQ(def.bodyA, got.bodyA);
     EXPECT_EQ(def.bodyB, got.bodyB);
     EXPECT_EQ(def.userData, got.userData);
+    EXPECT_EQ(def.target, got.target);
     EXPECT_EQ(def.anchor, got.anchor);
     EXPECT_EQ(def.maxForce, got.maxForce);
     EXPECT_EQ(def.frequency, got.frequency);

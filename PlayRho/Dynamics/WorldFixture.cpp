@@ -27,6 +27,11 @@
 namespace playrho {
 namespace d2 {
 
+bool Destroy(World& world, FixtureID id, bool resetMassData)
+{
+    return world.Destroy(id, resetMassData);
+}
+
 Filter GetFilterData(const World& world, FixtureID id)
 {
     return world.GetFilterData(id);
@@ -50,6 +55,11 @@ BodyID GetBody(const World& world, FixtureID id)
 void* GetUserData(const World& world, FixtureID id)
 {
     return world.GetUserData(id);
+}
+
+void SetUserData(World& world, FixtureID id, void* value)
+{
+    return world.SetUserData(id, value);
 }
 
 Transformation GetTransformation(const World& world, FixtureID id)

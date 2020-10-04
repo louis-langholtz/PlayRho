@@ -31,6 +31,20 @@ using FixtureID = strongtype::IndexingNamedType<FixtureCounter, struct FixtureId
 
 constexpr auto InvalidFixtureID = static_cast<FixtureID>(static_cast<FixtureID::underlying_type>(-1));
 
+/// @brief Gets an invalid value for the FixtureID type.
+template <>
+constexpr FixtureID GetInvalid() noexcept
+{
+    return InvalidFixtureID;
+}
+
+/// @brief Determines if the given value is valid.
+template <>
+constexpr bool IsValid(const FixtureID& value) noexcept
+{
+    return value != GetInvalid<FixtureID>();
+}
+
 }
 
 #endif // PLAYRHO_DYNAMICS_FIXTUREID_HPP

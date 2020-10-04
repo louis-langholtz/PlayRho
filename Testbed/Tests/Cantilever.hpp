@@ -42,7 +42,7 @@ public:
         const auto ground = m_world.CreateBody();
 
         // Creates bottom ground
-        ground->CreateFixture(Shape(GetGroundEdgeConf()));
+        m_world.CreateFixture(ground, Shape(GetGroundEdgeConf()));
 
         // Creates left-end-fixed 8-part plank (below the top one)
         {
@@ -54,7 +54,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.5f + 1.0f * i, 5.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                m_world.CreateFixture(body, shape);
 
                 m_world.CreateJoint(WeldJointConf{
                     prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * 1_m
@@ -74,7 +74,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.0f + 2.0f * i, 15.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                m_world.CreateFixture(body, shape);
 
                 auto jd = WeldJointConf{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * 1_m};
                 jd.frequency = 5_Hz;
@@ -95,7 +95,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-4.5f + 1.0f * i, 5.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                m_world.CreateFixture(body, shape);
                 if (i > 0)
                 {
                     m_world.CreateJoint(WeldJointConf{
@@ -116,7 +116,7 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(5.5f + 1.0f * i, 10.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                m_world.CreateFixture(body, shape);
                 if (i > 0)
                 {
                     auto jd = WeldJointConf{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * 1_m};
@@ -138,7 +138,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(polyshape);
+            m_world.CreateFixture(body, polyshape);
         }
 
         // Creates circles
@@ -149,13 +149,13 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(circleshape);
+            m_world.CreateFixture(body, circleshape);
         }
         
         SetAccelerations(m_world, m_gravity);
     }
 
-    Body* m_middle;
+    BodyID m_middle;
 };
 
 } // namespace testbed

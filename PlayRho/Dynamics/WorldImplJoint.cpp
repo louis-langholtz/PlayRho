@@ -255,7 +255,7 @@ AngularMomentum GetAngularMotorImpulse(const WorldImpl& world, JointID id)
     const auto& joint = world.GetJoint(id);
     FunctionalJointVisitor visitor;
     visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
-        result = j.GetMotorImpulse();
+        result = j.GetAngularMotorImpulse();
     };
     joint.Accept(visitor);
     if (!result.has_value())
@@ -333,6 +333,91 @@ void SetFrequency(WorldImpl& world, JointID id, Frequency value)
     };
     visitor.fallback = []() {
         throw std::invalid_argument("SetFrequency not supported by joint type!");
+    };
+    joint.Accept(visitor);
+}
+
+void Accept(const WorldImpl& world, JointID id, JointVisitor& visitor)
+{
+    world.GetJoint(id).Accept(visitor);
+}
+
+Length2 GetTarget(const WorldImpl& world, JointID id)
+{
+    Optional<Length2> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const TargetJoint&>() = [&result](const TargetJoint& j) {
+        result = j.GetTarget();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetTarget not supported by joint type!");
+    }
+    return *result;
+}
+
+void SetTarget(WorldImpl& world, JointID id, Length2 value)
+{
+    auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<TargetJoint&>() = [value,&world](TargetJoint& j) {
+        if (j.GetTarget() != value)
+        {
+            j.SetTarget(value);
+            world.GetBody(j.GetBodyB()).SetAwake();
+        }
+    };
+    visitor.fallback = []() {
+        throw std::invalid_argument("SetTarget not supported by joint type!");
+    };
+    joint.Accept(visitor);
+}
+
+Angle GetAngularLowerLimit(const WorldImpl& world, JointID id)
+{
+    Optional<Angle> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
+        result = j.GetAngularLowerLimit();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetAngularLowerLimit not supported by joint type!");
+    }
+    return *result;
+}
+
+Angle GetAngularUpperLimit(const WorldImpl& world, JointID id)
+{
+    Optional<Angle> result;
+    FunctionalJointVisitor visitor;
+    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
+        result = j.GetAngularUpperLimit();
+    };
+    Accept(world, id, visitor);
+    if (!result.has_value())
+    {
+        throw std::invalid_argument("GetAngularUpperLimit not supported by joint type!");
+    }
+    return *result;
+}
+
+void SetAngularLimits(WorldImpl& world, JointID id, Angle lower, Angle upper)
+{
+    auto& joint = world.GetJoint(id);
+    FunctionalJointVisitor visitor;
+    visitor.get<RevoluteJoint&>() = [&world,lower,upper](RevoluteJoint& j) {
+        if (j.GetAngularLowerLimit() != lower || j.GetAngularUpperLimit() != upper)
+        {
+            j.SetAngularLimits(lower, upper);
+            world.GetBody(j.GetBodyA()).SetAwake();
+            world.GetBody(j.GetBodyB()).SetAwake();
+        }
+    };
+    visitor.fallback = []() {
+        throw std::invalid_argument("SetAngularLimits not supported by joint type!");
     };
     joint.Accept(visitor);
 }

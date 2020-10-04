@@ -306,9 +306,9 @@ void Dump(const PrismaticJoint& joint, std::size_t index, const World& world)
         static_cast<double>(Real{joint.GetReferenceAngle() / Radian}));
     log("  jd.enableLimit = bool(%d);\n", joint.IsLimitEnabled());
     log("  jd.lowerTranslation = %.15lef;\n",
-        static_cast<double>(Real{joint.GetLowerLimit() / Meter}));
+        static_cast<double>(Real{joint.GetLinearLowerLimit() / Meter}));
     log("  jd.upperTranslation = %.15lef;\n",
-        static_cast<double>(Real{joint.GetUpperLimit() / Meter}));
+        static_cast<double>(Real{joint.GetLinearUpperLimit() / Meter}));
     log("  jd.enableMotor = bool(%d);\n", joint.IsMotorEnabled());
     log("  jd.motorSpeed = %.15lef;\n",
         static_cast<double>(Real{joint.GetMotorSpeed() / RadianPerSecond}));
@@ -359,9 +359,9 @@ void Dump(const RevoluteJoint& joint, std::size_t index, const World& world)
         static_cast<double>(Real{joint.GetReferenceAngle() / Radian}));
     log("  jd.enableLimit = bool(%d);\n", joint.IsLimitEnabled());
     log("  jd.lowerAngle = %.15lef;\n",
-        static_cast<double>(Real{joint.GetLowerLimit() / Radian}));
+        static_cast<double>(Real{joint.GetAngularLowerLimit() / Radian}));
     log("  jd.upperAngle = %.15lef;\n",
-        static_cast<double>(Real{joint.GetUpperLimit() / Radian}));
+        static_cast<double>(Real{joint.GetAngularUpperLimit() / Radian}));
     log("  jd.enableMotor = bool(%d);\n", joint.IsMotorEnabled());
     log("  jd.motorSpeed = %.15lef;\n",
         static_cast<double>(Real{joint.GetMotorSpeed() / RadianPerSecond}));

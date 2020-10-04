@@ -53,7 +53,7 @@ void World::SetFixtureDestructionListener(const FixtureListener& listener) noexc
     ::playrho::d2::SetFixtureDestructionListener(*m_impl, listener);
 }
 
-void World::SetJointDestructionListener(JointListener listener) noexcept
+void World::SetJointDestructionListener(const JointListener& listener) noexcept
 {
     ::playrho::d2::SetJointDestructionListener(*m_impl, listener);
 }
@@ -148,6 +148,21 @@ bool World::IsImpenetrable(BodyID id) const
     return ::playrho::d2::IsImpenetrable(*m_impl, id);
 }
 
+void World::SetImpenetrable(BodyID id)
+{
+    ::playrho::d2::SetImpenetrable(*m_impl, id);
+}
+
+void World::UnsetImpenetrable(BodyID id)
+{
+    ::playrho::d2::UnsetImpenetrable(*m_impl, id);
+}
+
+bool World::IsSleepingAllowed(BodyID id) const
+{
+    return ::playrho::d2::IsSleepingAllowed(*m_impl, id);
+}
+
 SizedRange<World::Contacts::const_iterator> World::GetContacts(BodyID id) const
 {
     return ::playrho::d2::GetContacts(*m_impl, id);
@@ -156,6 +171,11 @@ SizedRange<World::Contacts::const_iterator> World::GetContacts(BodyID id) const
 void* World::GetUserData(BodyID id) const
 {
     return ::playrho::d2::GetUserData(*m_impl, id);
+}
+
+void World::SetUserData(BodyID id, void* value)
+{
+    return ::playrho::d2::SetUserData(*m_impl, id, value);
 }
 
 SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
@@ -259,6 +279,26 @@ void World::SetMassData(BodyID id, const MassData& massData)
     ::playrho::d2::SetMassData(*m_impl, id, massData);
 }
 
+Frequency World::GetLinearDamping(BodyID id) const
+{
+    return ::playrho::d2::GetLinearDamping(*m_impl, id);
+}
+
+void World::SetLinearDamping(BodyID id, NonNegative<Frequency> value)
+{
+    ::playrho::d2::SetLinearDamping(*m_impl, id, value);
+}
+
+Frequency World::GetAngularDamping(BodyID id) const
+{
+    return ::playrho::d2::GetAngularDamping(*m_impl, id);
+}
+
+void World::SetAngularDamping(BodyID id, NonNegative<Frequency> value)
+{
+    ::playrho::d2::SetAngularDamping(*m_impl, id, value);
+}
+
 SizedRange<World::Fixtures::const_iterator> World::GetFixtures(BodyID id) const
 {
     return ::playrho::d2::GetFixtures(*m_impl, id);
@@ -287,6 +327,11 @@ BodyID World::GetBody(FixtureID id) const
 void* World::GetUserData(FixtureID id) const
 {
     return ::playrho::d2::GetUserData(*m_impl, id);
+}
+
+void World::SetUserData(FixtureID id, void* value)
+{
+    return ::playrho::d2::SetUserData(*m_impl, id, value);
 }
 
 Shape World::GetShape(FixtureID id) const
@@ -384,6 +429,16 @@ void World::SetAwake(ContactID id)
     ::playrho::d2::SetAwake(*m_impl, id);
 }
 
+LinearVelocity World::GetTangentSpeed(ContactID id) const
+{
+    return ::playrho::d2::GetTangentSpeed(*m_impl, id);
+}
+
+void World::SetTangentSpeed(ContactID id, LinearVelocity value)
+{
+    ::playrho::d2::SetTangentSpeed(*m_impl, id, value);
+}
+
 bool World::IsMassDataDirty(BodyID id) const
 {
     return ::playrho::d2::IsMassDataDirty(*m_impl, id);
@@ -447,6 +502,11 @@ bool World::GetCollideConnected(JointID id) const
 void* World::GetUserData(JointID id) const
 {
     return ::playrho::d2::GetUserData(*m_impl, id);
+}
+
+void World::SetUserData(JointID id, void* value)
+{
+    return ::playrho::d2::SetUserData(*m_impl, id, value);
 }
 
 BodyID World::GetBodyA(JointID id) const
@@ -529,6 +589,21 @@ void World::SetFrequency(JointID id, Frequency value)
     ::playrho::d2::SetFrequency(*m_impl, id, value);
 }
 
+Length2 World::GetTarget(JointID id) const
+{
+    return ::playrho::d2::GetTarget(*m_impl, id);
+}
+
+void World::SetTarget(JointID id, Length2 value)
+{
+    ::playrho::d2::SetTarget(*m_impl, id, value);
+}
+
+void World::Accept(JointID id, JointVisitor& visitor) const
+{
+    ::playrho::d2::Accept(*m_impl, id, visitor);
+}
+
 bool World::IsTouching(ContactID id) const
 {
     return ::playrho::d2::IsTouching(*m_impl, id);
@@ -549,6 +624,11 @@ bool World::HasValidToi(ContactID id) const
     return ::playrho::d2::HasValidToi(*m_impl, id);
 }
 
+Real World::GetToi(ContactID id) const
+{
+    return ::playrho::d2::GetToi(*m_impl, id);
+}
+
 FixtureID World::GetFixtureA(ContactID id) const
 {
     return ::playrho::d2::GetFixtureA(*m_impl, id);
@@ -567,6 +647,16 @@ BodyID World::GetBodyA(ContactID id) const
 BodyID World::GetBodyB(ContactID id) const
 {
     return ::playrho::d2::GetBodyB(*m_impl, id);
+}
+
+ChildCounter World::GetChildIndexA(ContactID id) const
+{
+    return ::playrho::d2::GetChildIndexA(*m_impl, id);
+}
+
+ChildCounter World::GetChildIndexB(ContactID id) const
+{
+    return ::playrho::d2::GetChildIndexB(*m_impl, id);
 }
 
 TimestepIters World::GetToiCount(ContactID id) const
@@ -607,6 +697,36 @@ void World::SetRestitution(ContactID id, Real value)
 const Manifold& World::GetManifold(ContactID id) const
 {
     return ::playrho::d2::GetManifold(*m_impl, id);
+}
+
+bool World::IsEnabled(ContactID id) const
+{
+    return ::playrho::d2::IsEnabled(*m_impl, id);
+}
+
+void World::SetEnabled(ContactID id)
+{
+    ::playrho::d2::SetEnabled(*m_impl, id);
+}
+
+void World::UnsetEnabled(ContactID id)
+{
+    ::playrho::d2::UnsetEnabled(*m_impl, id);
+}
+
+Angle World::GetAngularLowerLimit(JointID id) const
+{
+    return ::playrho::d2::GetAngularLowerLimit(*m_impl, id);
+}
+
+Angle World::GetAngularUpperLimit(JointID id) const
+{
+    return ::playrho::d2::GetAngularUpperLimit(*m_impl, id);
+}
+
+void World::SetAngularLimits(JointID id, Angle lower, Angle upper)
+{
+    ::playrho::d2::SetAngularLimits(*m_impl, id, lower, upper);
 }
 
 } // namespace d2

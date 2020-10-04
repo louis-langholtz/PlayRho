@@ -46,6 +46,10 @@ namespace d2 {
 
 class World;
 
+/// @copydoc World::Destroy(FixtureID id, bool resetMassData)
+/// @relatedalso World
+bool Destroy(World& world, FixtureID id, bool resetMassData = true);
+
 /// @copydoc World::GetFilterData
 /// @relatedalso World
 Filter GetFilterData(const World& world, FixtureID id);
@@ -64,6 +68,8 @@ BodyID GetBody(const World& world, FixtureID id);
 /// @copydoc World::GetUserData(FixtureID)
 /// @relatedalso World
 void* GetUserData(const World& world, FixtureID id);
+
+void SetUserData(World& world, FixtureID id, void* value);
 
 /// @brief Gets the transformation associated with the given fixture.
 /// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.

@@ -141,14 +141,6 @@ inline Real PulleyJoint::GetRatio() const noexcept
     return m_ratio;
 }
 
-/// @brief Get the current length of the segment attached to body-A.
-/// @relatedalso PulleyJoint
-Length GetCurrentLengthA(const World& world, const PulleyJoint& joint);
-
-/// @brief Get the current length of the segment attached to body-B.
-/// @relatedalso PulleyJoint
-Length GetCurrentLengthB(const World& world, const PulleyJoint& joint);
-
 } // namespace d2
 } // namespace playrho
 

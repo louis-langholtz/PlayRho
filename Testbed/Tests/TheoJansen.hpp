@@ -71,8 +71,8 @@ public:
         const auto body1 = m_world.CreateBody(bd1);
         const auto body2 = m_world.CreateBody(bd2);
 
-        body1->CreateFixture(Shape(poly1), fd1);
-        body2->CreateFixture(Shape(poly2), fd2);
+        m_world.CreateFixture(body1, Shape(poly1), fd1);
+        m_world.CreateFixture(body2, Shape(poly2), fd2);
 
         // Using a soft distance constraint can reduce some jitter.
         // It also makes the structure seem a bit more fluid by
@@ -104,13 +104,13 @@ public:
             auto conf = EdgeShapeConf{};
  
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
-            ground->CreateFixture(Shape(conf));
+            m_world.CreateFixture(ground, Shape(conf));
 
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(-50.0f, 10.0f) * 1_m);
-            ground->CreateFixture(Shape(conf));
+            m_world.CreateFixture(ground, Shape(conf));
 
             conf.Set(Vec2(50.0f, 0.0f) * 1_m, Vec2(50.0f, 10.0f) * 1_m);
-            ground->CreateFixture(Shape(conf));
+            m_world.CreateFixture(ground, Shape(conf));
         }
 
         // Balls
@@ -125,7 +125,7 @@ public:
             bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m;
 
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(circle);
+            m_world.CreateFixture(body, circle);
         }
 
         // Chassis
@@ -136,7 +136,8 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
             m_chassis = m_world.CreateBody(bd);
-            m_chassis->CreateFixture(Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2.5_m, 1_m)}, sd);
+            CreateFixture(m_world, m_chassis,
+                          Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2.5_m, 1_m)}, sd);
         }
 
         {
@@ -149,7 +150,7 @@ public:
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 1.6_m;
             conf.density = 1_kgpm2;
-            m_wheel->CreateFixture(Shape(conf), sd);
+            CreateFixture(m_world, m_wheel, Shape(conf), sd);
         }
 
         {
@@ -158,7 +159,7 @@ public:
             jd.motorSpeed = m_motorSpeed;
             jd.maxMotorTorque = 400_Nm;
             jd.enableMotor = m_motorOn;
-            m_motorJoint = (RevoluteJoint*)m_world.CreateJoint(jd);
+            m_motorJoint = m_world.CreateJoint(jd);
         }
 
         const auto wheelAnchor = pivot + Vec2(0.0f, -0.8f) * 1_m;
@@ -166,34 +167,34 @@ public:
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
 
-        m_wheel->SetTransform(m_wheel->GetLocation(), 120_deg);
+        SetTransform(m_world, m_wheel, GetLocation(m_world, m_wheel), 120_deg);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
 
-        m_wheel->SetTransform(m_wheel->GetLocation(), -120_deg);
+        SetTransform(m_world, m_wheel, GetLocation(m_world, m_wheel), -120_deg);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
         
         SetAccelerations(m_world, m_gravity);
 
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Left", [&](KeyActionMods) {
-            m_motorJoint->SetMotorSpeed(-m_motorSpeed);
+            SetMotorSpeed(m_world, m_motorJoint, -m_motorSpeed);
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Brake", [&](KeyActionMods) {
-            m_motorJoint->SetMotorSpeed(0_rad / 1_s);
+            SetMotorSpeed(m_world, m_motorJoint, 0_rad / 1_s);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Right", [&](KeyActionMods) {
-            m_motorJoint->SetMotorSpeed(m_motorSpeed);
+            SetMotorSpeed(m_world, m_motorJoint, m_motorSpeed);
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Toggle Motor", [&](KeyActionMods) {
-            m_motorJoint->EnableMotor(!m_motorJoint->IsMotorEnabled());
+            EnableMotor(m_world, m_motorJoint, !IsMotorEnabled(m_world, m_motorJoint));
         });
     }
 
     Length2 m_offset;
-    Body* m_chassis;
-    Body* m_wheel;
-    RevoluteJoint* m_motorJoint;
+    BodyID m_chassis;
+    BodyID m_wheel;
+    JointID m_motorJoint; // RevoluteJoint
     bool m_motorOn;
     AngularVelocity m_motorSpeed;
 };

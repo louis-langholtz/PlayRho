@@ -87,14 +87,14 @@ TEST(RevoluteJoint, Construction)
 
     EXPECT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
-    EXPECT_EQ(joint.GetLowerLimit(), jd.lowerAngle);
-    EXPECT_EQ(joint.GetUpperLimit(), jd.upperAngle);
+    EXPECT_EQ(joint.GetAngularLowerLimit(), jd.lowerAngle);
+    EXPECT_EQ(joint.GetAngularUpperLimit(), jd.upperAngle);
     EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
     EXPECT_EQ(joint.GetReferenceAngle(), jd.referenceAngle);
     EXPECT_EQ(joint.IsMotorEnabled(), jd.enableMotor);
     EXPECT_EQ(joint.GetMaxMotorTorque(), jd.maxMotorTorque);
     EXPECT_EQ(joint.IsLimitEnabled(), jd.enableLimit);
-    EXPECT_EQ(joint.GetMotorImpulse(), AngularMomentum{0});
+    EXPECT_EQ(joint.GetAngularMotorImpulse(), AngularMomentum{0});
 
     EXPECT_EQ(GetAngularVelocity(world, joint), 0 * RadianPerSecond);
 
@@ -105,8 +105,8 @@ TEST(RevoluteJoint, Construction)
     TypeJointVisitor visitor;
     joint.Accept(visitor);
     EXPECT_EQ(visitor.GetType().value(), JointType::Revolute);
-    
-    EXPECT_EQ(GetMotorTorque(joint, 1_Hz), 0 * NewtonMeter);
+
+    EXPECT_EQ(GetMotorTorque(world, id, 1_Hz), 0 * NewtonMeter);
 }
 
 TEST(RevoluteJoint, EnableMotor)
@@ -183,7 +183,7 @@ TEST(RevoluteJoint, EnableMotorInWorld)
     joint.EnableLimit(true);
     ASSERT_TRUE(joint.IsLimitEnabled());
     
-    joint.SetLimits(-45_deg, -5_deg);
+    joint.SetAngularLimits(-45_deg, -5_deg);
 
     stepConf.doWarmStart = true;
     world.Step(stepConf);
@@ -193,7 +193,7 @@ TEST(RevoluteJoint, EnableMotorInWorld)
     EXPECT_NE(GetVelocity(world, b0), Velocity{});
     EXPECT_NE(GetVelocity(world, b1), Velocity{});
 
-    joint->SetLimits(+55_deg, +95_deg);
+    joint->SetAngularLimits(+55_deg, +95_deg);
     
     stepConf.doWarmStart = true;
     world.Step(stepConf);
@@ -268,7 +268,7 @@ TEST(RevoluteJoint, EnableLimit)
     EXPECT_TRUE(joint->IsLimitEnabled());
     EXPECT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
     
-    joint->SetLimits(-45_deg, +45_deg);
+    joint->SetAngularLimits(-45_deg, +45_deg);
     ASSERT_TRUE(joint->IsLimitEnabled());
     ASSERT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
     world.Step(stepConf);
@@ -276,11 +276,11 @@ TEST(RevoluteJoint, EnableLimit)
     EXPECT_TRUE(joint->IsLimitEnabled());
     EXPECT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
     
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
+    EXPECT_EQ(joint->GetAngularMotorImpulse(), AngularMomentum(0));
 }
 #endif
 
-TEST(RevoluteJoint, SetLimits)
+TEST(RevoluteJoint, SetAngularLimits)
 {
     World world;
     const auto b0 = world.CreateBody();
@@ -295,11 +295,11 @@ TEST(RevoluteJoint, SetLimits)
     const auto upperValue = +5_deg;
     const auto lowerValue = -8_deg;
     auto joint = RevoluteJoint{jd};
-    ASSERT_NE(joint.GetUpperLimit(), upperValue);
-    ASSERT_NE(joint.GetLowerLimit(), lowerValue);
-    joint.SetLimits(lowerValue, upperValue);
-    EXPECT_EQ(joint.GetUpperLimit(), upperValue);
-    EXPECT_EQ(joint.GetLowerLimit(), lowerValue);
+    ASSERT_NE(joint.GetAngularUpperLimit(), upperValue);
+    ASSERT_NE(joint.GetAngularLowerLimit(), lowerValue);
+    joint.SetAngularLimits(lowerValue, upperValue);
+    EXPECT_EQ(joint.GetAngularUpperLimit(), upperValue);
+    EXPECT_EQ(joint.GetAngularLowerLimit(), lowerValue);
 }
 
 #if 0
@@ -323,7 +323,7 @@ TEST(RevoluteJoint, MaxMotorTorque)
     EXPECT_EQ(joint->GetMaxMotorTorque(), jd.maxMotorTorque);
     joint->SetMaxMotorTorque(newValue);
     EXPECT_EQ(joint->GetMaxMotorTorque(), newValue);
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
+    EXPECT_EQ(joint->GetAngularMotorImpulse(), AngularMomentum(0));
     
     const auto shape = Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2));
     world.CreateFixture(b0, shape);
@@ -333,10 +333,10 @@ TEST(RevoluteJoint, MaxMotorTorque)
     
     auto stepConf = StepConf{};
     world.Step(stepConf);
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
+    EXPECT_EQ(joint->GetAngularMotorImpulse(), AngularMomentum(0));
     stepConf.doWarmStart = false;
     world.Step(stepConf);
-    EXPECT_EQ(joint->GetMotorImpulse(), AngularMomentum(0));
+    EXPECT_EQ(joint->GetAngularMotorImpulse(), AngularMomentum(0));
 }
 #endif
 
@@ -388,17 +388,17 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     const auto joint = static_cast<RevoluteJoint*>(world.CreateJoint(jd));
     ASSERT_NE(joint, nullptr);
     ASSERT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
-    ASSERT_EQ(joint->GetLowerLimit(), jd.lowerAngle);
-    ASSERT_EQ(joint->GetUpperLimit(), jd.upperAngle);
+    ASSERT_EQ(joint->GetAngularLowerLimit(), jd.lowerAngle);
+    ASSERT_EQ(joint->GetAngularUpperLimit(), jd.upperAngle);
     ASSERT_EQ(joint->GetReferenceAngle(), 0_deg);
-    ASSERT_EQ(GetJointAngle(*joint), 0_deg);
+    ASSERT_EQ(GetAngle(*joint), 0_deg);
     
     auto step = StepConf{};
     step.SetTime(1_s);
     step.maxTranslation = Meter * Real(4);
     world.Step(step);
 
-    EXPECT_EQ(GetJointAngle(*joint), 0_deg);
+    EXPECT_EQ(GetAngle(*joint), 0_deg);
     EXPECT_EQ(joint->GetReferenceAngle(), 0_deg);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
@@ -418,24 +418,24 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     
     EXPECT_EQ(GetWorldIndex(world, joint), std::size_t(0));
     
-    joint->SetLimits(45_deg, 90_deg);
-    EXPECT_EQ(joint->GetLowerLimit(), 45_deg);
-    EXPECT_EQ(joint->GetUpperLimit(), 90_deg);
+    joint->SetAngularLimits(45_deg, 90_deg);
+    EXPECT_EQ(joint->GetAngularLowerLimit(), 45_deg);
+    EXPECT_EQ(joint->GetAngularUpperLimit(), 90_deg);
 
     world.Step(step);
     EXPECT_EQ(joint->GetReferenceAngle(), 0_deg);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_atLowerLimit);
-    EXPECT_NEAR(static_cast<double>(Real(GetJointAngle(*joint)/1_rad)),
+    EXPECT_NEAR(static_cast<double>(Real(GetAngle(*joint)/1_rad)),
                 0.28610128164291382, 0.28610128164291382/100);
 
-    joint->SetLimits(-90_deg, -45_deg);
-    EXPECT_EQ(joint->GetLowerLimit(), -90_deg);
-    EXPECT_EQ(joint->GetUpperLimit(), -45_deg);
+    joint->SetAngularLimits(-90_deg, -45_deg);
+    EXPECT_EQ(joint->GetAngularLowerLimit(), -90_deg);
+    EXPECT_EQ(joint->GetAngularUpperLimit(), -45_deg);
     
     world.Step(step);
     EXPECT_EQ(joint->GetReferenceAngle(), 0_deg);
     EXPECT_EQ(joint->GetLimitState(), Joint::e_atUpperLimit);
-    EXPECT_NEAR(static_cast<double>(Real(GetJointAngle(*joint)/1_rad)),
+    EXPECT_NEAR(static_cast<double>(Real(GetAngle(*joint)/1_rad)),
                 -0.082102291285991669, 0.082102291285991669/100);
 }
 #endif

@@ -68,6 +68,12 @@ Acceleration GetAcceleration(const World& world, BodyID id)
     };
 }
 
+FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
+                        const FixtureConf& def, bool resetMassData)
+{
+    return world.CreateFixture(id, shape, def, resetMassData);
+}
+
 void SetAcceleration(World& world, BodyID id,
                      LinearAcceleration2 linear, AngularAcceleration angular)
 {
@@ -77,6 +83,11 @@ void SetAcceleration(World& world, BodyID id,
 void SetAcceleration(World& world, BodyID id, LinearAcceleration2 value)
 {
     world.SetAcceleration(id, value, world.GetAngularAcceleration(id));
+}
+
+void SetAcceleration(World& world, BodyID id, AngularAcceleration value)
+{
+    world.SetAcceleration(id, world.GetLinearAcceleration(id), value);
 }
 
 void SetAcceleration(World& world, BodyID id, Acceleration value)
@@ -204,6 +215,11 @@ void SetVelocity(World& world, BodyID id, const LinearVelocity2& value)
     world.SetVelocity(id, Velocity{value, GetVelocity(world, id).angular});
 }
 
+void SetVelocity(World& world, BodyID id, AngularVelocity value)
+{
+    world.SetVelocity(id, Velocity{GetVelocity(world, id).linear, value});
+}
+
 void DestroyFixtures(World& world, BodyID id)
 {
     world.DestroyFixtures(id);
@@ -300,6 +316,46 @@ bool IsImpenetrable(const World& world, BodyID id)
     return world.IsImpenetrable(id);
 }
 
+void SetImpenetrable(World& world, BodyID id)
+{
+    world.SetImpenetrable(id);
+}
+
+void UnsetImpenetrable(World& world, BodyID id)
+{
+    world.UnsetImpenetrable(id);
+}
+
+bool IsSleepingAllowed(const World& world, BodyID id)
+{
+    return world.IsSleepingAllowed(id);
+}
+
+void SetSleepingAllowed(World& world, BodyID, bool value)
+{
+    // TODO
+}
+
+Frequency GetLinearDamping(const World& world, BodyID id)
+{
+    return world.GetLinearDamping(id);
+}
+
+void SetLinearDamping(World& world, BodyID id, NonNegative<Frequency> value)
+{
+    world.SetLinearDamping(id, value);
+}
+
+Frequency GetAngularDamping(const World& world, BodyID id)
+{
+    return world.GetAngularDamping(id);
+}
+
+void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> value)
+{
+    world.SetAngularDamping(id, value);
+}
+
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>
 GetContacts(const World& world, BodyID id)
 {
@@ -309,6 +365,11 @@ GetContacts(const World& world, BodyID id)
 void* GetUserData(const World& world, BodyID id)
 {
     return world.GetUserData(id);
+}
+
+void SetUserData(World& world, BodyID id, void* value)
+{
+    world.SetUserData(id, value);
 }
 
 bool ShouldCollide(const World& world, BodyID lhs, BodyID rhs)
@@ -341,6 +402,46 @@ Force2 GetCentripetalForce(const World& world, BodyID id, Length2 axis)
     const auto invRadius = Real{1} / GetMagnitude(delta);
     const auto dir = delta * invRadius;
     return Force2{dir * mass * Square(magnitudeOfVelocity) * invRadius};
+}
+
+void ApplyForce(World& world, BodyID id, Force2 force, Length2 point)
+{
+    // Torque is L^2 M T^-2 QP^-1.
+    const auto linAccel = LinearAcceleration2{force * world.GetInvMass(id)};
+    const auto invRotI = world.GetInvRotInertia(id); // L^-2 M^-1 QP^2
+    const auto dp = Length2{point - world.GetWorldCenter(id)}; // L
+    const auto cp = Torque{Cross(dp, force) / Radian}; // L * M L T^-2 is L^2 M T^-2
+                                                       // L^2 M T^-2 QP^-1 * L^-2 M^-1 QP^2 = QP T^-2;
+    const auto angAccel = AngularAcceleration{cp * invRotI};
+    SetAcceleration(world, id,
+                    GetLinearAcceleration(world, id) + linAccel,
+                    GetAngularAcceleration(world, id) + angAccel);
+}
+
+void ApplyTorque(World& world, BodyID id, Torque torque)
+{
+    const auto linAccel = GetLinearAcceleration(world, id);
+    const auto invRotI = GetInvRotInertia(world, id);
+    const auto angAccel = GetAngularAcceleration(world, id) + torque * invRotI;
+    SetAcceleration(world, id, linAccel, angAccel);
+}
+
+void ApplyLinearImpulse(World& world, BodyID id, Momentum2 impulse, Length2 point)
+{
+    auto velocity = GetVelocity(world, id);
+    velocity.linear += GetInvMass(world, id) * impulse;
+    const auto invRotI = GetInvRotInertia(world, id);
+    const auto dp = point - GetWorldCenter(world, id);
+    velocity.angular += AngularVelocity{invRotI * Cross(dp, impulse) / Radian};
+    SetVelocity(world, id, velocity);
+}
+
+void ApplyAngularImpulse(World& world, BodyID id, AngularMomentum impulse)
+{
+    auto velocity = GetVelocity(world, id);
+    const auto invRotI = GetInvRotInertia(world, id);
+    velocity.angular += AngularVelocity{invRotI * impulse};
+    SetVelocity(world, id, velocity);
 }
 
 } // namespace d2

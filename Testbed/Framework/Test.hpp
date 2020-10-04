@@ -23,20 +23,37 @@
 #define PLAYRHO_TEST_HPP
 
 #include <PlayRho/PlayRho.hpp>
+
 #include <PlayRho/Common/Templates.hpp>
+#include <PlayRho/Common/Range.hpp>
+#include <PlayRho/Common/UnitVec.hpp>
+
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
+#include <PlayRho/Collision/DynamicTree.hpp>
+
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 #include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
-#include <PlayRho/Common/Range.hpp>
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
+#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldContact.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
+
 #include "Drawer.hpp"
 #include "UiState.hpp"
+
+#include <GLFW/glfw3.h>
+
 #include <chrono>
 #include <vector>
 #include <iterator>
 #include <functional>
-#include <GLFW/glfw3.h>
 #include <deque>
 #include <algorithm>
 #include <limits>
@@ -115,7 +132,7 @@ struct Settings
     bool singleStep = false;
 };
 
-class Test : public ContactListener
+class Test
 {
 public:
     using KeyHandlerID = std::size_t;
@@ -148,8 +165,8 @@ public:
     using KeyHandlers = std::vector<std::pair<std::string, KeyHandler>>;
     using HandledKeys = std::vector<std::pair<KeyActionMods, KeyHandlerID>>;
 
-    using FixtureSet = std::set<Fixture*>;
-    using BodySet = std::set<Body*>;
+    using FixtureSet = std::set<FixtureID>;
+    using BodySet = std::set<BodyID>;
 
     virtual ~Test();
 
@@ -188,15 +205,15 @@ public:
     void MouseUp(const Length2& p);
     
     // Let derived tests know that a joint was destroyed.
-    virtual void JointDestroyed(const Joint* joint) { NOT_USED(joint); }
+    virtual void JointDestroyed(JointID joint) { NOT_USED(joint); }
 
     // Callbacks for derived classes.
-    void BeginContact(Contact&) override { }
-    void EndContact(Contact&) override { }
-    void PreSolve(Contact& contact, const Manifold& oldManifold) override;
-    void PostSolve(Contact&, const ContactImpulsesList&, ContactListener::iteration_type) override { }
+    virtual void BeginContact(ContactID) { }
+    virtual void EndContact(ContactID) { }
+    virtual void PreSolve(ContactID contact, const Manifold& oldManifold);
+    virtual void PostSolve(ContactID, const ContactImpulsesList&, unsigned) { }
 
-    static bool Contains(const FixtureSet& fixtures, const Fixture* f) noexcept;
+    static bool Contains(const FixtureSet& fixtures, FixtureID f) noexcept;
     
     const std::string& GetDescription() const noexcept { return m_description; }
     NeededSettings GetNeededSettings() const noexcept { return m_neededSettings; }
@@ -244,8 +261,8 @@ protected:
 
     struct ContactPoint
     {
-        Fixture* fixtureA;
-        Fixture* fixtureB;
+        FixtureID fixtureA;
+        FixtureID fixtureB;
         UnitVec normal;
         Length2 position;
         PointState state;
@@ -279,11 +296,12 @@ protected:
     // This is called when a joint in the world is implicitly destroyed
     // because an attached body is destroyed. This gives us a chance to
     // nullify the target joint.
-    class DestructionListenerImpl : public DestructionListener
+    class DestructionListenerImpl
     {
     public:
-        void SayGoodbye(const Fixture& fixture) noexcept { NOT_USED(fixture); }
-        void SayGoodbye(const Joint& joint) noexcept;
+        virtual ~DestructionListenerImpl() = default;
+        virtual void SayGoodbye(const FixtureID fixture) noexcept { NOT_USED(fixture); }
+        virtual void SayGoodbye(const JointID joint) noexcept;
         
         Test* test;
     };
@@ -312,9 +330,9 @@ protected:
                                                          size(m_points));
     }
 
-    const Body* GetBomb() const noexcept { return m_bomb; }
+    BodyID GetBomb() const noexcept { return m_bomb; }
     
-    void SetBomb(Body* body) noexcept { m_bomb = body; }
+    void SetBomb(BodyID body) noexcept { m_bomb = body; }
     
     Length2 GetMouseWorld() const noexcept { return m_mouseWorld; }
 
@@ -358,8 +376,8 @@ private:
     AABB m_maxAABB;
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
-    Body* m_bomb = nullptr;
-    TargetJoint* m_targetJoint = nullptr;
+    BodyID m_bomb = InvalidBodyID;
+    JointID m_targetJoint = InvalidJointID;
     Length2 m_bombSpawnPoint;
     bool m_bombSpawning = false;
     Length2 m_mouseWorld = Length2{};
@@ -446,8 +464,8 @@ inline void ForAll(World& world, const std::function<void(RevoluteJoint& e)>& ac
 {
     auto visitor = FunctionalJointVisitor{}.Use(action);
     const auto range = world.GetJoints();
-    std::for_each(begin(range), end(range), [&](Joint* j) {
-        j->Accept(visitor);
+    std::for_each(begin(range), end(range), [&](const auto& j) {
+        Accept(world, j, visitor);
     });
 }
 

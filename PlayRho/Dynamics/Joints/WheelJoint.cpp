@@ -345,14 +345,6 @@ void WheelJoint::SetMaxMotorTorque(Torque torque)
     }
 }
 
-Length GetJointTranslation(const World& world, const WheelJoint& joint) noexcept
-{
-    const auto pA = GetWorldPoint(world, joint.GetBodyA(), joint.GetLocalAnchorA());
-    const auto pB = GetWorldPoint(world, joint.GetBodyB(), joint.GetLocalAnchorB());
-    const auto uv = GetWorldVector(world, joint.GetBodyA(), joint.GetLocalAxisA());
-    return Dot(pB - pA, uv);
-}
-
 AngularVelocity GetAngularVelocity(const World& world, const WheelJoint& joint) noexcept
 {
     return GetVelocity(world, joint.GetBodyB()).angular - GetVelocity(world, joint.GetBodyA()).angular;

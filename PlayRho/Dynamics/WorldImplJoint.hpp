@@ -37,6 +37,7 @@ namespace playrho {
 namespace d2 {
 
 class WorldImpl;
+class JointVisitor;
 
 /// @brief Destroys the identified joint.
 void Destroy(WorldImpl& world, JointID id);
@@ -70,20 +71,29 @@ bool GetCollideConnected(const WorldImpl& world, JointID id);
 /// @relatedalso WorldImpl
 void* GetUserData(const WorldImpl& world, JointID id);
 
+/// @relatedalso WorldImpl
+void SetUserData(WorldImpl& world, JointID id, void* value);
+
 /// @brief Sets the user data associated with the identified joint.
 /// @relatedalso WorldImpl
 void SetUserData(WorldImpl& world, JointID id, void* value);
 
+/// @relatedalso WorldImpl
 BodyID GetBodyA(const WorldImpl& world, JointID id);
 
+/// @relatedalso WorldImpl
 BodyID GetBodyB(const WorldImpl& world, JointID id);
 
+/// @relatedalso WorldImpl
 Length2 GetLocalAnchorA(const WorldImpl& world, JointID id);
 
+/// @relatedalso WorldImpl
 Length2 GetLocalAnchorB(const WorldImpl& world, JointID id);
 
+/// @relatedalso WorldImpl
 Angle GetReferenceAngle(const WorldImpl& world, JointID id);
 
+/// @relatedalso WorldImpl
 UnitVec GetLocalAxisA(const WorldImpl& world, JointID id);
 
 /// @brief Gets the angular motor speed for joints which support this.
@@ -111,6 +121,24 @@ Frequency GetFrequency(const WorldImpl& world, JointID id);
 
 /// @brief Sets the frequency of the identified joint if it has this property.
 void SetFrequency(WorldImpl& world, JointID id, Frequency value);
+
+/// @relatedalso WorldImpl
+void Accept(const WorldImpl& world, JointID id, JointVisitor& visitor);
+
+/// @relatedalso WorldImpl
+Length2 GetTarget(const WorldImpl& world, JointID id);
+
+/// @relatedalso WorldImpl
+void SetTarget(WorldImpl& world, JointID id, Length2 value);
+
+/// Get the lower joint limit.
+Angle GetAngularLowerLimit(const WorldImpl& world, JointID id);
+
+/// Get the upper joint limit.
+Angle GetAngularUpperLimit(const WorldImpl& world, JointID id);
+
+/// Set the joint limits.
+void SetAngularLimits(WorldImpl& world, JointID id, Angle lower, Angle upper);
 
 } // namespace d2
 } // namespace playrho

@@ -30,9 +30,10 @@ namespace d2 {
 
 /// @brief Target Joint.
 ///
-/// @details A target joint is used to make a point on a "B" body track an "A" body.
-///   This a soft constraint with a maximum force. This allows the constraint to stretch
-///   and without applying huge forces.
+/// @details A target joint is used to make a point on a body track a
+///   specified world point. This a soft constraint with a maximum
+///   force. This allows the constraint to stretch and without
+///   applying huge forces.
 /// @note This structure is 120-bytes large (using a 4-byte Real on at least one 64-bit
 ///   architecture/build).
 ///
@@ -56,6 +57,13 @@ public:
     Length2 GetLocalAnchorB() const noexcept override;
     Momentum2 GetLinearReaction() const override;
     AngularMomentum GetAngularReaction() const override;
+
+    /// @brief Gets the target point.
+    Length2 GetTarget() const noexcept;
+
+    /// @brief Sets the target point.
+    void SetTarget(const Length2 target) noexcept;
+
     bool ShiftOrigin(Length2 newOrigin) override;
 
     /// @brief Sets the maximum force.
@@ -86,6 +94,7 @@ private:
     /// @brief Gets the effective mass matrix.
     Mass22 GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept;
 
+    Length2 m_targetA; ///< Target location (A).
     Length2 m_localAnchorB; ///< Local anchor B.
     NonNegative<Frequency> m_frequency = NonNegative<Frequency>{0_Hz}; ///< Frequency.
     NonNegative<Real> m_dampingRatio = NonNegative<Real>{0}; ///< Damping ratio.
@@ -108,6 +117,11 @@ inline Length2 TargetJoint::GetLocalAnchorA() const noexcept
 inline Length2 TargetJoint::GetLocalAnchorB() const noexcept
 {
     return m_localAnchorB;
+}
+
+inline Length2 TargetJoint::GetTarget() const noexcept
+{
+    return m_targetA;
 }
 
 inline void TargetJoint::SetMaxForce(NonNegative<Force> force) noexcept

@@ -52,16 +52,15 @@ public:
             SetupTumblers(2);
         });
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Clear and re-emit shapes.", [&](KeyActionMods) {
-            std::vector<Body*> bodies;
-            for (auto&& body: m_world.GetBodies())
+            std::vector<BodyID> bodies;
+            for (const auto& b: m_world.GetBodies())
             {
-                auto& b = GetRef(body);
-                if (b.GetUserData() == reinterpret_cast<void*>(1))
+                if (GetUserData(m_world, b) == reinterpret_cast<void*>(1))
                 {
-                    bodies.push_back(&b);
+                    bodies.push_back(b);
                 }
             }
-            for (auto&& b: bodies)
+            for (const auto& b: bodies)
             {
                 m_world.Destroy(b);
             }
@@ -85,33 +84,33 @@ public:
         }
     }
 
-    Body* CreateEnclosure(Length2 at)
+    BodyID CreateEnclosure(Length2 at)
     {
         const auto b = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic)
                                           .UseLocation(at).UseAllowSleep(false)
                                           .UseLinearAcceleration(m_gravity));
         auto shape = PolygonShapeConf{}.UseDensity(5_kgpm2);
         shape.SetAsBox(0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
-        b->CreateFixture(Shape(shape));
+        CreateFixture(m_world, b, Shape(shape));
         shape.SetAsBox(0.5_m, 10_m, Vec2(-10,   0) * 1_m, 0_rad);
-        b->CreateFixture(Shape(shape));
+        CreateFixture(m_world, b, Shape(shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0,  10) * 1_m, 0_rad);
-        b->CreateFixture(Shape(shape));
+        CreateFixture(m_world, b, Shape(shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0, -10) * 1_m, 0_rad);
-        b->CreateFixture(Shape(shape));
+        CreateFixture(m_world, b, Shape(shape));
         return b;
     }
     
-    RevoluteJoint* CreateRevoluteJoint(Body* turn)
+    JointID CreateRevoluteJoint(BodyID turn)
     {
         RevoluteJointConf jd;
-        jd.bodyA = m_world.CreateBody(BodyConf{}.UseLocation(GetLocation(*turn)));
+        jd.bodyA = m_world.CreateBody(BodyConf{}.UseLocation(GetLocation(m_world, turn)));
         jd.bodyB = turn;
         jd.referenceAngle = 0_rad;
         jd.motorSpeed = 1.5_rpm; // same as Pi*0.05_rad/s = 0.025 rev/s
         jd.maxMotorTorque = 100000_Nm; // 1e8f;
         jd.enableMotor = true;
-        return static_cast<RevoluteJoint*>(m_world.CreateJoint(jd));
+        return m_world.CreateJoint(jd);
     }
     
     void CreateTumblee(Length2 at)
@@ -119,7 +118,7 @@ public:
         const auto b = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
                                           .UseLinearAcceleration(m_gravity)
                                           .UseUserData(reinterpret_cast<void*>(1)));
-        b->CreateFixture(m_shape);
+        CreateFixture(m_world, b, m_shape);
     }
 
     void PostStep(const Settings& settings, Drawer&) override
@@ -127,7 +126,7 @@ public:
         if ((!settings.pause || settings.singleStep) && (m_count < Count))
         {
             ForAll<RevoluteJoint>(m_world, [&](RevoluteJoint& j) {
-                CreateTumblee(GetLocation(*j.GetBodyB()));
+                CreateTumblee(GetLocation(m_world, j.GetBodyB()));
             });
             ++m_count;
             m_status = std::string("Count = ") + std::to_string(m_count);

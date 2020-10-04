@@ -75,19 +75,19 @@ using namespace playrho::d2;
 class TestSuite;
 class Selection;
 
-using BodiesRange = SizedRange<World::Bodies::iterator>;
-using JointsRange = SizedRange<World::Joints::iterator>;
-using BodyJointsRange = SizedRange<Body::Joints::iterator>;
+using BodiesRange = SizedRange<World::Bodies::const_iterator>;
+using JointsRange = SizedRange<World::Joints::const_iterator>;
+using BodyJointsRange = SizedRange<World::BodyJoints::const_iterator>;
 using ContactsRange = SizedRange<World::Contacts::const_iterator>;
-using FixturesRange = SizedRange<Body::Fixtures::iterator>;
+using FixturesRange = SizedRange<World::Fixtures::const_iterator>;
 using FixtureSet = Test::FixtureSet;
 using BodySet = Test::BodySet;
 
-static void EntityUI(Contact& contact);
-static void EntityUI(Joint& e);
-static void CollectionUI(const ContactsRange& contacts);
-static void CollectionUI(const JointsRange& joints);
-static void CollectionUI(const BodyJointsRange& joints);
+static void EntityUI(World& world, ContactID contact);
+static void EntityUI(World& world, JointID e);
+static void CollectionUI(World& world, const ContactsRange& contacts);
+static void CollectionUI(World& world, const JointsRange& joints);
+static void CollectionUI(World& world, const BodyJointsRange& joints);
 
 namespace
 {
@@ -1155,27 +1155,27 @@ static bool MenuUI()
     return shouldQuit;
 }
 
-static void EntityUI(Body& b)
+static void EntityUI(World& world, BodyID b)
 {
     ImGui::ItemWidthContext itemWidthCtx(100);
     {
-        const auto location = b.GetLocation();
+        const auto location = GetLocation(world, b);
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(location) / Meter});
         vals[1] = static_cast<float>(Real{GetY(location) / Meter});
         if (ImGui::InputFloat2("Lin. Pos.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            SetLocation(b, Length2{vals[0] * 1_m, vals[1] * 1_m});
+            SetLocation(world, b, Length2{vals[0] * 1_m, vals[1] * 1_m});
         }
         if (ImGui::IsItemHovered())
         {
             ImGui::ShowTooltip("Linear position in meters.", tooltipWrapWidth);
         }
-        const auto angle = b.GetAngle();
+        const auto angle = GetAngle(world, b);
         auto val = static_cast<float>(Real{angle / Degree});
         if (ImGui::InputFloat("Ang. Pos.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            SetAngle(b, val * Degree);
+            SetAngle(world, b, val * Degree);
         }
         if (ImGui::IsItemHovered())
         {
@@ -1183,13 +1183,13 @@ static void EntityUI(Body& b)
         }
     }
     {
-        const auto velocity = b.GetVelocity();
+        const auto velocity = GetVelocity(world, b);
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(velocity.linear) / MeterPerSecond});
         vals[1] = static_cast<float>(Real{GetY(velocity.linear) / MeterPerSecond});
         if (ImGui::InputFloat2("Lin. Vel.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            SetLinearVelocity(b, LinearVelocity2{vals[0] * 1_mps, vals[1] * 1_mps});
+            SetVelocity(world, b, LinearVelocity2{vals[0] * 1_mps, vals[1] * 1_mps});
         }
         if (ImGui::IsItemHovered())
         {
@@ -1198,7 +1198,7 @@ static void EntityUI(Body& b)
         auto val = static_cast<float>(Real{velocity.angular / DegreePerSecond});
         if (ImGui::InputFloat("Ang. Vel.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            SetAngularVelocity(b, val * DegreePerSecond);
+            SetVelocity(world, b, val * DegreePerSecond);
         }
         if (ImGui::IsItemHovered())
         {
@@ -1206,13 +1206,13 @@ static void EntityUI(Body& b)
         }
     }
     {
-        const auto acceleration = GetAcceleration(b);
+        const auto acceleration = GetAcceleration(world, b);
         float vals[2];
         vals[0] = static_cast<float>(Real{GetX(acceleration.linear) / MeterPerSquareSecond});
         vals[1] = static_cast<float>(Real{GetY(acceleration.linear) / MeterPerSquareSecond});
         if (ImGui::InputFloat2("Lin. Acc.", vals, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            SetAcceleration(b, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
+            SetAcceleration(world, b, LinearAcceleration2{vals[0] * 1_mps2, vals[1] * 1_mps2});
         }
         if (ImGui::IsItemHovered())
         {
@@ -1221,7 +1221,7 @@ static void EntityUI(Body& b)
         auto val = static_cast<float>(Real{acceleration.angular / DegreePerSquareSecond});
         if (ImGui::InputFloat("Ang. Acc.", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            SetAcceleration(b, val * DegreePerSquareSecond);
+            SetAcceleration(world, b, val * DegreePerSquareSecond);
         }
         if (ImGui::IsItemHovered())
         {
@@ -1229,53 +1229,55 @@ static void EntityUI(Body& b)
         }
     }
     {
-        auto v = b.IsImpenetrable();
+        auto v = IsImpenetrable(world, b);
         if (ImGui::Checkbox("Bullet", &v))
         {
-            b.SetBullet(v);
+            if (v)
+                SetImpenetrable(world, b);
+            else
+                UnsetImpenetrable(world, b);
         }
     }
     ImGui::SameLine();
     {
-        auto v = !b.IsFixedRotation();
+        auto v = !IsFixedRotation(world, b);
         if (ImGui::Checkbox("Rotatable", &v))
         {
-            b.SetFixedRotation(!v);
+            SetFixedRotation(world, b, !v);
         }
     }
-
     {
-        auto v = b.IsSleepingAllowed();
+        auto v = IsSleepingAllowed(world, b);
         if (ImGui::Checkbox("Sleepable", &v))
         {
-            b.SetSleepingAllowed(v);
+            SetSleepingAllowed(world, b, v);
         }
     }
     ImGui::SameLine();
     {
-        auto v = b.IsAwake();
+        auto v = IsAwake(world, b);
         if (ImGui::Checkbox("Awake", &v))
         {
             if (v)
             {
-                b.SetAwake();
+                SetAwake(world, b);
             }
             else
             {
-                b.UnsetAwake();
+                UnsetAwake(world, b);
             }
         }
     }
 
     {
         ImGui::GroupContext grpCtx;
-        auto v = static_cast<int>(b.GetType());
+        auto v = static_cast<int>(GetType(world, b));
         ImGui::RadioButton("Static", &v, 0);
         ImGui::SameLine();
         ImGui::RadioButton("Kinem.", &v, 1);
         ImGui::SameLine();
         ImGui::RadioButton("Dynam.", &v, 2);
-        b.SetType(ToBodyType(v));
+        SetType(world, b, ToBodyType(v));
     }
     if (ImGui::IsItemHovered())
     {
@@ -1284,21 +1286,21 @@ static void EntityUI(Body& b)
     }
     
     {
-        auto v = b.IsEnabled();
+        auto v = IsEnabled(world, b);
         if (ImGui::Checkbox("Enabled", &v))
         {
-            b.SetEnabled(v);
+            SetEnabled(world, b, v);
         }
     }
     
-    ImGui::LabelText("Mass", "%.2e kg", static_cast<double>(Real{GetMass(b) / Kilogram}));
+    ImGui::LabelText("Mass", "%.2e kg", static_cast<double>(Real{GetMass(world, b) / Kilogram}));
     if (ImGui::IsItemHovered())
     {
         ImGui::ShowTooltip("Mass of the body.", tooltipWrapWidth);
     }
     
     ImGui::LabelText("Rot. Inertia", "%.2e kg·m²",
-                     static_cast<double>(Real{GetRotInertia(b) / (1_kg * 1_m2 / Square(1_rad))}));
+                     static_cast<double>(Real{GetRotInertia(world, b) / (1_kg * 1_m2 / Square(1_rad))}));
     if (ImGui::IsItemHovered())
     {
         ImGui::ShowTooltip("Rotational inertia of the body. This may be the calculated value"
@@ -1324,18 +1326,18 @@ static void EntityUI(const Shape& shape)
     //ImGui::LabelText("Vertex Radius (m)", "%.2e", static_cast<double>(Real{vertexRadius / Meter}));
 }
 
-static void EntityUI(Fixture& fixture)
+static void EntityUI(World& world, FixtureID fixture)
 {
     //const auto body = fixture.GetBody();
     
     ImGui::Spacing();
 
     {
-        auto v = fixture.IsSensor();
+        auto v = IsSensor(world, fixture);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
         if (ImGui::Checkbox("Sensor", &v))
         {
-            fixture.SetSensor(v);
+            SetSensor(world, fixture, v);
         }
         ImGui::PopStyleVar();
     }
@@ -1345,7 +1347,7 @@ static void EntityUI(Fixture& fixture)
 
     {
         using CheckboxFlagType = unsigned int;
-        const auto oldFilterData = fixture.GetFilterData();
+        const auto oldFilterData = GetFilterData(world, fixture);
         auto cateBits = CheckboxFlagType{oldFilterData.categoryBits};
         auto maskBits = CheckboxFlagType{oldFilterData.maskBits};
         
@@ -1398,7 +1400,7 @@ static void EntityUI(Fixture& fixture)
         };
         if (newFilterData != oldFilterData)
         {
-            fixture.SetFilterData(newFilterData);
+            SetFilterData(world, fixture, newFilterData);
         }
     }
     
@@ -1407,11 +1409,11 @@ static void EntityUI(Fixture& fixture)
 
     if (ImGui::Button("Refilter"))
     {
-        fixture.Refilter();
+        Refilter(world, fixture);
     }
     
     {
-        const auto& shape = fixture.GetShape();
+        const auto& shape = GetShape(world, fixture);
         if (ImGui::TreeNodeEx(&shape, 0, "Shape/Part"))
         {
             EntityUI(shape);
@@ -1423,7 +1425,7 @@ static void EntityUI(Fixture& fixture)
         const auto proxies = fixture.GetProxies();
         if (ImGui::TreeNodeEx("Proxies", 0, "Proxies (%u)", size(proxies)))
         {
-            CollectionUI(proxies);
+            CollectionUI(world, proxies);
             ImGui::TreePop();
         }
     }
@@ -1485,126 +1487,126 @@ static void EntityUI(const Manifold& m)
     ImGui::TextWrappedUnformatted(stream.str());
 }
 
-static void CollectionUI(const FixturesRange& fixtures, const FixtureSet& selectedFixtures)
+static void CollectionUI(World& world,
+                         const FixturesRange& fixtures, const FixtureSet& selectedFixtures)
 {
     auto fnum = 0;
-    for (auto& f: fixtures)
+    for (const auto& f: fixtures)
     {
         const auto flags = IsWithin(selectedFixtures, f)? ImGuiTreeNodeFlags_DefaultOpen: 0;
-        if (ImGui::TreeNodeEx(f, flags, "Fixture %d", fnum))
+        if (ImGui::TreeNodeEx(&f, flags, "Fixture %d", fnum))
         {
-            EntityUI(*f);
+            EntityUI(world, f);
             ImGui::TreePop();
         }
         ++fnum;
     }
 }
 
-static void EntityUI(Body& b, const FixtureSet& selectedFixtures)
+static void EntityUI(World& world, BodyID b, const FixtureSet& selectedFixtures)
 {
-    EntityUI(b);
+    EntityUI(world, b);
     {
-        const auto fixtures = b.GetFixtures();
+        const auto fixtures = GetFixtures(world, b);
         if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", size(fixtures)))
         {
-            CollectionUI(fixtures, selectedFixtures);
+            CollectionUI(world, fixtures, selectedFixtures);
             ImGui::TreePop();
         }
     }
     {
-        const auto joints = b.GetJoints();
-        if (ImGui::TreeNodeEx("Joints", 0,
-                              "Joints (%lu)", size(joints)))
+        const auto joints = GetJoints(world, b);
+        if (ImGui::TreeNodeEx("Joints", 0, "Joints (%lu)", size(joints)))
         {
-            CollectionUI(joints);
+            CollectionUI(world, joints);
             ImGui::TreePop();
         }
     }
     {
-        const auto contacts = b.GetContacts();
-        if (ImGui::TreeNodeEx("Contacts", 0,
-                              "Contacts (%lu)", size(contacts)))
+        const auto contacts = GetContacts(world, b);
+        if (ImGui::TreeNodeEx("Contacts", 0, "Contacts (%lu)", size(contacts)))
         {
-            CollectionUI(contacts);
+            CollectionUI(world, contacts);
             ImGui::TreePop();
         }
     }
 }
 
-static void EntityUI(RevoluteJoint& j)
+#if 0
+static void RevoluteJointEntityUI(World& world, JointID j)
 {
     ImGui::LabelText("Ref. Angle (°)", "%.1e",
-                     static_cast<double>(Real{j.GetReferenceAngle() / Degree}));
-    ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
+                     static_cast<double>(Real{GetReferenceAngle(world, j) / Degree}));
+    ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(world, j)));
     ImGui::LabelText("Motor Impulse (N·m·s)", "%.1e",
-                     static_cast<double>(Real{j.GetMotorImpulse() / NewtonMeterSecond}));
+                     static_cast<double>(Real{GetAngularMotorImpulse(world, j) / NewtonMeterSecond}));
     {
-        auto v = j.IsLimitEnabled();
+        auto v = IsLimitEnabled(world, j);
         if (ImGui::Checkbox("Enable Limit", &v))
         {
-            j.EnableLimit(v);
+            EnableLimit(world, j, v);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetLowerLimit() / Degree});
+        auto v = static_cast<float>(Real{GetAngularLowerLimit(world, j) / Degree});
         if (ImGui::InputFloat("Lower Limit (°)", &v, 0, 0, 2))
         {
-            j.SetLimits(v * Degree, j.GetUpperLimit());
+            SetAngularLimits(world, j, v * Degree, GetAngularUpperLimit(world, j));
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetUpperLimit() / Degree});
+        auto v = static_cast<float>(Real{GetAngularUpperLimit(world, j) / Degree});
         if (ImGui::InputFloat("Upper Limit (°)", &v, 0, 0, 2))
         {
-            j.SetLimits(j.GetLowerLimit(), v * Degree);
+            SetAngularLimits(world, j, GetAngularLowerLimit(world, j), v * Degree);
         }
     }
     {
-        auto v = j.IsMotorEnabled();
+        auto v = IsMotorEnabled(world, j);
         if (ImGui::Checkbox("Enable Motor", &v))
         {
-            j.EnableMotor(v);
+            EnableMotor(world, j, v);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetMotorSpeed() / DegreePerSecond});
+        auto v = static_cast<float>(Real{GetMotorSpeed(world, j) / DegreePerSecond});
         if (ImGui::InputFloat("Motor Speed (°/sec)", &v, 0, 0, 2))
         {
-            j.SetMotorSpeed(v * DegreePerSecond);
+            SetMotorSpeed(world, j, v * DegreePerSecond);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetMaxMotorTorque() / NewtonMeter});
+        auto v = static_cast<float>(Real{GetMaxMotorTorque(world, j) / NewtonMeter});
         if (ImGui::InputFloat("Max Mot. Torq. (N·m)", &v))
         {
-            j.SetMaxMotorTorque(v * NewtonMeter);
+            SetMaxMotorTorque(world, j, v * NewtonMeter);
         }
     }
     {
-        const auto b = j.GetBodyA();
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        const auto b = GetBodyA(world, j);
+        if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
 }
 
-static void EntityUI(PrismaticJoint& j)
+static void PrismaticJointEntityUI(World& world, JointID j)
 {
     ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
     ImGui::LabelText("Motor Impulse (N·s)", "%.1e",
-                     static_cast<double>(Real{j.GetMotorImpulse() / NewtonSecond}));
+                     static_cast<double>(Real{j.GetLinearMotorImpulse() / NewtonSecond}));
     ImGui::LabelText("Ref. Angle (°)", "%.1e",
-                     static_cast<double>(Real{j.GetReferenceAngle() / Degree}));
+                     static_cast<double>(Real{GetReferenceAngle(world, j) / Degree}));
     {
         auto v = j.IsLimitEnabled();
         if (ImGui::Checkbox("Enable Limit", &v))
@@ -1613,17 +1615,17 @@ static void EntityUI(PrismaticJoint& j)
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetLowerLimit() / Meter});
+        auto v = static_cast<float>(Real{j.GetLinearLowerLimit() / Meter});
         if (ImGui::InputFloat("Lower Limit (m)", &v, 0, 0, 2))
         {
-            j.SetLimits(v * Meter, j.GetUpperLimit());
+            j.SetLinearLimits(v * Meter, j.GetLinearUpperLimit());
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetUpperLimit() / Meter});
+        auto v = static_cast<float>(Real{j.GetLinearUpperLimit() / Meter});
         if (ImGui::InputFloat("Upper Limit (m)", &v, 0, 0, 2))
         {
-            j.SetLimits(j.GetLowerLimit(), v * Meter);
+            j.SetLinearLimits(j.GetLinearLowerLimit(), v * Meter);
         }
     }
     {
@@ -1648,24 +1650,24 @@ static void EntityUI(PrismaticJoint& j)
         }
     }
     {
-        const auto b = j.GetBodyA();
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        const auto b = GetBodyA(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
         {
             EntityUI(*b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
 }
 
-static void EntityUI(DistanceJoint& j)
+static void DistanceJointEntityUI(World& world, JointID j)
 {
     // All settings implemented here...
     {
@@ -1676,10 +1678,10 @@ static void EntityUI(DistanceJoint& j)
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetFrequency() / Hertz});
+        auto v = static_cast<float>(Real{GetFrequency(world, j) / Hertz});
         if (ImGui::InputFloat("Frequency (Hz)", &v))
         {
-            j.SetFrequency(v * Hertz);
+            SetFrequency(world, j, v * Hertz);
         }
     }
     {
@@ -1690,34 +1692,34 @@ static void EntityUI(DistanceJoint& j)
         }
     }
     {
-        const auto b = j.GetBodyA();
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        const auto b = GetBodyA(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
 }
 
-static void EntityUI(PulleyJoint& j)
+static void PulleyJointEntityUI(World& world, JointID j)
 {
     ImGui::LabelText("Length A (m)", "%f", static_cast<double>(Real{j.GetLengthA()/Meter}));
     ImGui::LabelText("Length B (m)", "%f", static_cast<double>(Real{j.GetLengthB()/Meter}));
-    ImGui::LabelText("Ratio", "%f", static_cast<double>(j.GetRatio()));
+    ImGui::LabelText("Ratio", "%f", static_cast<double>(GetRatio(world, j)));
 }
 
-static void EntityUI(TargetJoint& j)
+static void TargetJointEntityUI(World& world, JointID j)
 {
     {
-        const auto target = j.GetTarget();
+        const auto target = GetTarget(world, j);
         auto x = static_cast<float>(Real{GetX(target) / Meter});
         auto y = static_cast<float>(Real{GetY(target) / Meter});
         if (ImGui::InputFloat("Target X (m)", &x))
@@ -1751,16 +1753,16 @@ static void EntityUI(TargetJoint& j)
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
 }
 
-static void EntityUI(GearJoint& j)
+static void GearJointEntityUI(World& world, JointID j)
 {
     ImGui::LabelText("Constant", "%.2e", static_cast<double>(j.GetConstant()));
     {
@@ -1787,27 +1789,27 @@ static void EntityUI(GearJoint& j)
         }
     }
     {
-        const auto b = j.GetBodyA();
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        const auto b = GetBodyA(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
 }
 
-static void EntityUI(WheelJoint& j)
+static void WheelJointEntityUI(World& world, JointID j)
 {
     {
-        auto v = j.IsMotorEnabled();
+        auto v = IsMotorEnabled(world, j);
         if (ImGui::Checkbox("Enable Motor", &v))
         {
             j.EnableMotor(v);
@@ -1842,24 +1844,24 @@ static void EntityUI(WheelJoint& j)
         }
     }
     {
-        const auto b = j.GetBodyA();
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        const auto b = GetBodyA(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
 }
 
-static void EntityUI(WeldJoint& j)
+static void WeldJointEntityUI(World& world, JointID j)
 {
     ImGui::LabelText("Ref. Angle (°)", "%.1e",
                      static_cast<double>(Real{j.GetReferenceAngle() / Degree}));
@@ -1878,16 +1880,16 @@ static void EntityUI(WeldJoint& j)
         }
     }
     {
-        const auto b = j.GetBodyA();
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        const auto b = GetBodyA(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
         {
             EntityUI(*b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(*b, FixtureSet{});
             ImGui::TreePop();
@@ -1895,7 +1897,7 @@ static void EntityUI(WeldJoint& j)
     }
 }
 
-static void EntityUI(FrictionJoint& j)
+static void FrictionJointEntityUI(World& world, JointID j)
 {
     {
         auto v = static_cast<float>(Real{j.GetMaxForce() / Newton});
@@ -1912,16 +1914,16 @@ static void EntityUI(FrictionJoint& j)
         }
     }
     {
-        const auto b = j.GetBodyA();
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        const auto b = GetBodyA(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
         {
             EntityUI(*b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(*b, FixtureSet{});
             ImGui::TreePop();
@@ -1929,7 +1931,7 @@ static void EntityUI(FrictionJoint& j)
     }
 }
 
-static void EntityUI(RopeJoint& j)
+static void RopeJointEntityUI(World& world, JointID j)
 {
     ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
     {
@@ -1940,16 +1942,16 @@ static void EntityUI(RopeJoint& j)
         }
     }
     {
-        const auto b = j.GetBodyA();
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        const auto b = GetBodyA(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
         {
             EntityUI(*b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(*b, FixtureSet{});
             ImGui::TreePop();
@@ -1957,7 +1959,7 @@ static void EntityUI(RopeJoint& j)
     }
 }
 
-static void EntityUI(MotorJoint& j)
+static void MotorJointEntityUI(World& world, JointID j)
 {
     {
         const auto linearError = j.GetLinearError();
@@ -2015,16 +2017,16 @@ static void EntityUI(MotorJoint& j)
     }
 
     {
-        const auto b = j.GetBodyA();
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(b->GetType())))
+        const auto b = GetBodyA(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
         {
             EntityUI(*b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = j.GetBodyB();
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(b->GetType())))
+        const auto b = GetBodyB(world, j);
+        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(*b, FixtureSet{});
             ImGui::TreePop();
@@ -2068,153 +2070,158 @@ public:
     void Visit(const MotorJoint&) override {}
     void Visit(MotorJoint& j) override { EntityUI(j); }
 };
+#endif
 
-static void EntityUI(Joint& e)
+static void EntityUI(World& world, JointID e)
 {
     ImGui::IdContext idCtx(&e);
     ImGui::ItemWidthContext itemWidthCtx(50);
 
-    ImGui::LabelText("Collide Connected", "%s", e.GetCollideConnected()? "true": "false");
+    ImGui::LabelText("Collide Connected", "%s", GetCollideConnected(world, e)? "true": "false");
     {
-        const auto linReact = e.GetLinearReaction();
+        const auto linReact = GetLinearReaction(world, e);
         ImGui::LabelText("Lin. Reaction X (N·s)", "%.2e",
                          static_cast<double>(Real{GetX(linReact) / NewtonSecond}));
         ImGui::LabelText("Lin. Reaction Y (N·s)", "%.2e",
                          static_cast<double>(Real{GetY(linReact) / NewtonSecond}));
     }
     ImGui::LabelText("Ang. Reaction (N·m·s)", "%.2e",
-                     static_cast<double>(Real{e.GetAngularReaction() / NewtonMeterSecond}));
+                     static_cast<double>(Real{GetAngularReaction(world, e) / NewtonMeterSecond}));
+#if 0
     auto visitor = JointVisitorUI{};
-    e.Accept(visitor);
+    Accept(world, e, visitor);
+#endif
 }
 
-static void EntityUI(Contact& c)
+static void EntityUI(World& world, ContactID c)
 {
     ImGui::ItemWidthContext itemWidthCtx(50);
+#if 0
     {
-        auto v = c.IsEnabled();
+        auto v = IsEnabled(world, c);
         if (ImGui::Checkbox("Enabled", &v))
         {
             if (v)
             {
-                c.SetEnabled();
+                SetEnabled(world, c);
             }
             else
             {
-                c.UnsetEnabled();
+                UnsetEnabled(world, c);
             }
         }
     }
+#endif
     {
-        auto val = static_cast<float>(c.GetRestitution());
+        auto val = static_cast<float>(GetRestitution(world, c));
         if (ImGui::InputFloat("Restitution", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            c.SetRestitution(val);
+            SetRestitution(world, c, val);
         }
     }
     {
-        auto val = static_cast<float>(c.GetFriction());
+        auto val = static_cast<float>(GetFriction(world, c));
         if (ImGui::InputFloat("Friction", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            c.SetFriction(val);
+            SetFriction(world, c, val);
         }
     }
     {
-        auto val = static_cast<float>(Real{c.GetTangentSpeed() / MeterPerSecond});
+        auto val = static_cast<float>(Real{GetTangentSpeed(world, c) / MeterPerSecond});
         if (ImGui::InputFloat("Belt Speed", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            c.SetTangentSpeed(val * MeterPerSecond);
+            SetTangentSpeed(world, c, val * MeterPerSecond);
         }
     }
-    if (c.HasValidToi())
+    if (HasValidToi(world, c))
     {
-        ImGui::LabelText("TOI", "%f", static_cast<double>(c.GetToi()));
+        ImGui::LabelText("TOI", "%f", static_cast<double>(GetToi(world, c)));
     }
-    ImGui::LabelText("TOI Count", "%d", c.GetToiCount());
+    ImGui::LabelText("TOI Count", "%d", GetToiCount(world, c));
 
-    if (c.IsTouching())
+    if (IsTouching(world, c))
     {
-        EntityUI(c.GetManifold());
+        EntityUI(GetManifold(world, c));
     }
     
     {
-        const auto f = c.GetFixtureA();
-        if (ImGui::TreeNodeEx(f, 0, "Fixture A"))
+        const auto f = GetFixtureA(world, c);
+        if (ImGui::TreeNode("Fixture A"))
         {
-            EntityUI(*f);
+            EntityUI(world, f);
             ImGui::TreePop();
         }
     }
     {
-        const auto f = c.GetFixtureB();
-        if (ImGui::TreeNodeEx(f, 0, "Fixture B"))
+        const auto f = GetFixtureB(world, c);
+        if (ImGui::TreeNode("Fixture B"))
         {
-            EntityUI(*f);
+            EntityUI(world, f);
             ImGui::TreePop();
         }
     }
 }
 
-static void CollectionUI(const BodiesRange& bodies,
+static void CollectionUI(World& world, const BodiesRange& bodies,
                      const BodySet& selectedBodies,
                      const FixtureSet& selectedFixtures)
 {
     auto i = 0;
-    for (auto e: bodies)
+    for (const auto& e: bodies)
     {
-        const auto typeName = ToString(e->GetType());
+        const auto typeName = ToString(GetType(world, e));
         const auto flags = IsWithin(selectedBodies, e)? ImGuiTreeNodeFlags_DefaultOpen: 0;
-        if (ImGui::TreeNodeEx(e, flags, "Body %d: %s", i, typeName))
+        if (ImGui::TreeNodeEx(&e, flags, "Body %d: %s", i, typeName))
         {
-            EntityUI(*e, selectedFixtures);
+            EntityUI(world, e, selectedFixtures);
             ImGui::TreePop();
         }
         ++i;
     }
 }
 
-static void CollectionUI(const JointsRange& joints)
+static void CollectionUI(World& world, const JointsRange& joints)
 {
     auto i = 0;
-    for (auto& e: joints)
+    for (const auto& e: joints)
     {
         const auto flags = 0;
-        if (ImGui::TreeNodeEx(e, flags, "Joint %d (%s)", i, ToString(GetType(*e))))
+        if (ImGui::TreeNodeEx(&e, flags, "Joint %d (%s)", i, ToString(GetType(world, e))))
         {
-            EntityUI(*e);
+            EntityUI(world, e);
             ImGui::TreePop();
         }
         ++i;
     }
 }
 
-static void CollectionUI(const BodyJointsRange& joints)
+static void CollectionUI(World& world, const BodyJointsRange& joints)
 {
     auto i = 0;
-    for (auto& e: joints)
+    for (const auto& e: joints)
     {
-        const auto j = std::get<1>(e);
+        const auto j = std::get<JointID>(e);
         const auto flags = 0;
-        if (ImGui::TreeNodeEx(j, flags, "Joint %d (%s)", i, ToString(GetType(*j))))
+        if (ImGui::TreeNodeEx(&e, flags, "Joint %d (%s)", i, ToString(GetType(world, j))))
         {
-            EntityUI(*j);
+            EntityUI(world, j);
             ImGui::TreePop();
         }
         ++i;
     }
 }
 
-static void CollectionUI(const ContactsRange& contacts)
+static void CollectionUI(World& world, const ContactsRange& contacts)
 {
     auto i = 0;
-    for (auto& ct: contacts)
+    for (const auto& ct: contacts)
     {
-        const auto e = std::get<1>(ct);
+        const auto e = std::get<ContactID>(ct);
         const auto flags = 0;
-        if (ImGui::TreeNodeEx(e, flags, "Contact %d%s",
-                              i, ((e->IsTouching())? " (touching)": "")))
+        if (ImGui::TreeNodeEx(&ct, flags, "Contact %d%s",
+                              i, (IsTouching(world, e)? " (touching)": "")))
         {
-            EntityUI(*e);
+            EntityUI(world, e);
             ImGui::TreePop();
         }
         ++i;
@@ -2236,7 +2243,7 @@ static void ModelEntitiesUI()
         if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Bodies (%lu)", size(bodies)))
         {
-            CollectionUI(bodies, selectedBodies, selectedFixtures);
+            CollectionUI(test->m_world, bodies, selectedBodies, selectedFixtures);
             ImGui::TreePop();
         }
     }
@@ -2245,7 +2252,7 @@ static void ModelEntitiesUI()
         if (ImGui::TreeNodeEx("Joints", selJoints? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Joints (%lu)", size(joints)))
         {
-            CollectionUI(joints);
+            CollectionUI(test->m_world, joints);
             ImGui::TreePop();
         }
     }
@@ -2254,7 +2261,7 @@ static void ModelEntitiesUI()
         if (ImGui::TreeNodeEx("Contacts", selContacts? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Contacts (%lu)", size(contacts)))
         {
-            CollectionUI(contacts);
+            CollectionUI(test->m_world, contacts);
             ImGui::TreePop();
         }
     }

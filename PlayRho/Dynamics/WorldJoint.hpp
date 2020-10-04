@@ -37,6 +37,7 @@ namespace d2 {
 
 class World;
 struct JointConf;
+class JointVisitor;
 
 /// @brief Gets the type of the joint.
 /// @relatedalso World
@@ -53,6 +54,12 @@ bool IsMotorEnabled(const World& world, JointID id);
 /// @copydoc World::EnableMotor()
 /// @relatedalso World
 void EnableMotor(World& world, JointID id, bool value);
+
+/// @relatedalso World
+bool IsLimitEnabled(const World& world, JointID id);
+
+/// @relatedalso World
+void EnableLimit(World& world, JointID id, bool value);
 
 /// @copydoc World::GetUserData(JointID)
 /// @relatedalso World
@@ -92,6 +99,9 @@ Torque GetMaxMotorTorque(const World& world, JointID id);
 /// Set the maximum motor torque.
 void SetMaxMotorTorque(World& world, JointID id, Torque value);
 
+/// @relatedalso World
+Momentum GetLinearMotorImpulse(const World& world, JointID id);
+
 /// @copydoc World::GetAngularMotorImpulse
 /// @relatedalso World
 AngularMomentum GetAngularMotorImpulse(const World& world, JointID id);
@@ -113,6 +123,7 @@ void SetFrequency(World& world, JointID id, Frequency value);
 AngularVelocity GetAngularVelocity(const World& world, JointID id);
 
 /// @brief Gets the enabled/disabled state of the joint.
+/// @relatedalso World
 bool IsEnabled(const World& world, JointID id);
 
 /// @brief Gets the world index of the given joint.
@@ -120,10 +131,84 @@ bool IsEnabled(const World& world, JointID id);
 JointCounter GetWorldIndex(const World& world, JointID id) noexcept;
 
 /// Get the anchor point on body-A in world coordinates.
+/// @relatedalso World
 Length2 GetAnchorA(const World& world, JointID id);
 
 /// Get the anchor point on body-B in world coordinates.
+/// @relatedalso World
 Length2 GetAnchorB(const World& world, JointID id);
+
+/// @relatedalso World
+void Accept(const World& world, JointID id, JointVisitor& visitor);
+
+/// @relatedalso World
+Real GetRatio(const World& world, JointID id);
+
+/// @brief Gets the current joint translation.
+/// @relatedalso World
+Length GetJointTranslation(const World& world, JointID id);
+
+/// @relatedalso World
+Angle GetAngle(const World& world, JointID id);
+
+/// @brief Gets the current motor force for the given joint, given the inverse time step.
+/// @relatedalso World
+inline Force GetMotorForce(const World& world, JointID id, Frequency inv_dt)
+{
+    return GetLinearMotorImpulse(world, id) * inv_dt;
+}
+
+/// @brief Gets the current motor torque for the given joint given the inverse time step.
+/// @relatedalso RevoluteJoint
+inline Torque GetMotorTorque(const World& world, JointID id, Frequency inv_dt)
+{
+    return GetAngularMotorImpulse(world, id) * inv_dt;
+}
+
+/// @brief Gets the target linear offset, in frame A.
+/// @relatedalso World
+Length2 GetLinearOffset(const World& world, JointID id);
+
+/// @brief Sets the target linear offset, in frame A.
+/// @relatedalso World
+void SetLinearOffset(World& world, JointID id, Length2 value);
+
+/// @brief Gets the target angular offset.
+/// @relatedalso World
+Angle GetAngularOffset(const World& world, JointID id);
+
+/// @brief Sets the target angular offset.
+/// @relatedalso World
+void SetAngularOffset(World& world, JointID id, Angle value);
+
+/// Get the first ground anchor.
+Length2 GetGroundAnchorA(const World& world, JointID id);
+
+/// Get the second ground anchor.
+Length2 GetGroundAnchorB(const World& world, JointID id);
+
+/// @brief Get the current length of the segment attached to body-A.
+/// @relatedalso World
+Length GetCurrentLengthA(const World& world, JointID id);
+
+/// @brief Get the current length of the segment attached to body-B.
+/// @relatedalso World
+Length GetCurrentLengthB(const World& world, JointID id);
+
+/// @brief Gets the target point.
+Length2 GetTarget(const World& world, JointID id);
+
+/// @brief Sets the target point.
+void SetTarget(World& world, JointID id, Length2 value);
+
+/// Get the lower joint limit.
+Angle GetAngularLowerLimit(const World& world, JointID id);
+
+/// Get the upper joint limit.
+Angle GetAngularUpperLimit(const World& world, JointID id);
+
+/// Set the joint limits.
+void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper);
 
 } // namespace d2
 } // namespace playrho

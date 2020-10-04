@@ -73,13 +73,13 @@ public:
     void EnableLimit(bool flag) noexcept;
 
     /// @brief Gets the lower joint limit.
-    Length GetLowerLimit() const noexcept;
+    Length GetLinearLowerLimit() const noexcept;
 
     /// @brief Gets the upper joint limit.
-    Length GetUpperLimit() const noexcept;
+    Length GetLinearUpperLimit() const noexcept;
 
     /// @brief Sets the joint limits.
-    void SetLimits(Length lower, Length upper) noexcept;
+    void SetLinearLimits(Length lower, Length upper) noexcept;
 
     /// Is the joint motor enabled?
     bool IsMotorEnabled() const noexcept;
@@ -101,7 +101,7 @@ public:
     Force GetMaxMotorForce() const noexcept { return m_maxMotorForce; }
 
     /// @brief Gets the current motor impulse.
-    Momentum GetMotorImpulse() const noexcept { return m_motorImpulse; }
+    Momentum GetLinearMotorImpulse() const noexcept { return m_motorImpulse; }
 
     /// @brief Gets the current limit state.
     /// @note This will be <code>e_inactiveLimit</code> unless the joint limit has been
@@ -142,12 +142,12 @@ private:
     Mass m_motorMass = 0_kg; ///< Motor mass.
 };
 
-inline Length PrismaticJoint::GetLowerLimit() const noexcept
+inline Length PrismaticJoint::GetLinearLowerLimit() const noexcept
 {
     return m_lowerTranslation;
 }
 
-inline Length PrismaticJoint::GetUpperLimit() const noexcept
+inline Length PrismaticJoint::GetLinearUpperLimit() const noexcept
 {
     return m_upperTranslation;
 }
@@ -172,20 +172,9 @@ inline Joint::LimitState PrismaticJoint::GetLimitState() const noexcept
     return m_limitState;
 }
 
-/// @brief Get the current joint translation.
-/// @relatedalso PrismaticJoint
-Length GetJointTranslation(const World& world, const PrismaticJoint& joint) noexcept;
-
 /// @brief Get the current joint translation speed.
 /// @relatedalso PrismaticJoint
 LinearVelocity GetLinearVelocity(const World& world, const PrismaticJoint& joint) noexcept;
-
-/// @brief Gets the current motor force for the given joint, given the inverse time step.
-/// @relatedalso PrismaticJoint
-inline Force GetMotorForce(const PrismaticJoint& joint, Frequency inv_dt) noexcept
-{
-    return joint.GetMotorImpulse() * inv_dt;
-}
 
 } // namespace d2
 } // namespace playrho

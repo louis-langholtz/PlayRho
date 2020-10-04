@@ -179,10 +179,6 @@ inline Real WheelJoint::GetSpringDampingRatio() const
 
 // Free functions on WheelJoint instances.
 
-/// @brief Get the current joint translation.
-/// @relatedalso WheelJoint
-Length GetJointTranslation(const World& world, const WheelJoint& joint) noexcept;
-
 /// @brief Get the current joint translation speed.
 /// @relatedalso WheelJoint
 AngularVelocity GetAngularVelocity(const World& world, const WheelJoint& joint) noexcept;

@@ -44,20 +44,20 @@ public:
     MotorJointTest(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
+        m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Define motorized body
         const auto body = m_world.CreateBody(BodyConf{}
                                              .UseType(BodyType::Dynamic)
                                              .UseLocation(Vec2(0.0f, 8.0f) * 1_m)
                                              .UseLinearAcceleration(m_gravity));
-        body->CreateFixture(Shape{
-            PolygonShapeConf{}.SetAsBox(2_m, 0.5_m).UseFriction(0.6).UseDensity(2_kgpm2)
+        m_world.CreateFixture(body, Shape{
+            PolygonShapeConf{}.SetAsBox(2_m, 0.5_m).UseFriction(Real(0.6)).UseDensity(2_kgpm2)
         });
         auto mjd = MotorJointConf{ground, body};
         mjd.maxForce = 1000_N;
         mjd.maxTorque = 1000_Nm;
-        m_joint = (MotorJoint*)m_world.CreateJoint(mjd);
+        m_joint = m_world.CreateJoint(mjd);
         
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Pause Motor", [&](KeyActionMods) {
             m_go = !m_go;
@@ -75,13 +75,13 @@ public:
 
         const auto linearOffset = Vec2{6 * sin(2 * m_time), 8 + 4 * sin(m_time)} * 1_m;
 
-        m_joint->SetLinearOffset(linearOffset);
-        m_joint->SetAngularOffset(4_rad * m_time);
+        SetLinearOffset(m_world, m_joint, linearOffset);
+        SetAngularOffset(m_world, m_joint, 4_rad * m_time);
 
         drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
     }
 
-    MotorJoint* m_joint;
+    JointID m_joint; // motor joint
     Real m_time = 0;
     bool m_go = true;
 };

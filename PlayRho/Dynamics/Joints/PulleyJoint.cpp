@@ -233,17 +233,5 @@ bool PulleyJoint::ShiftOrigin(Length2 newOrigin)
     return true;
 }
 
-Length GetCurrentLengthA(const World& world, const PulleyJoint& joint)
-{
-    return GetMagnitude(GetWorldPoint(world, joint.GetBodyA(),
-                                      joint.GetLocalAnchorA()) - joint.GetGroundAnchorA());
-}
-
-Length GetCurrentLengthB(const World& world, const PulleyJoint& joint)
-{
-    return GetMagnitude(GetWorldPoint(world, joint.GetBodyB(),
-                                      joint.GetLocalAnchorB()) - joint.GetGroundAnchorB());
-}
-
 } // namespace d2
 } // namespace playrho

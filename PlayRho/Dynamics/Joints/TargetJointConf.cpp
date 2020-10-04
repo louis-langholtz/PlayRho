@@ -29,6 +29,7 @@ TargetJointConf GetTargetJointConf(const TargetJoint& joint) noexcept
 {
     auto def = TargetJointConf{};
     Set(def, joint);
+    def.target = joint.GetTarget();
     def.anchor = joint.GetLocalAnchorB();
     def.maxForce = joint.GetMaxForce();
     def.frequency = joint.GetFrequency();

@@ -40,11 +40,14 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     constexpr TargetJointConf() noexcept: super{JointType::Target} {}
 
     /// @brief Initializing constructor.
-    constexpr TargetJointConf(BodyID a, BodyID b) noexcept:
-        super{super{JointType::Target}.UseBodyA(a).UseBodyB(b)}
+    constexpr TargetJointConf(BodyID b) noexcept:
+        super{super{JointType::Target}.UseBodyB(b)}
     {
         // Intentionally empty.
     }
+
+    /// @brief Use value for target.
+    constexpr TargetJointConf& UseTarget(Length2 v) noexcept;
 
     /// @brief Use value for the "anchor" (in coordinates local to "body B").
     /// @note Typically this would be the value of:
@@ -61,6 +64,10 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
 
     /// @brief Use value for damping ratio.
     constexpr TargetJointConf& UseDampingRatio(NonNegative<Real> v) noexcept;
+
+    /// The initial world target point. This is assumed
+    /// to coincide with the body anchor initially.
+    Length2 target = Length2{};
 
     /// Anchor point.
     Length2 anchor = Length2{};
@@ -81,6 +88,12 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 };
+
+constexpr TargetJointConf& TargetJointConf::UseTarget(Length2 v) noexcept
+{
+    target = v;
+    return *this;
+}
 
 constexpr TargetJointConf& TargetJointConf::UseAnchor(Length2 v) noexcept
 {

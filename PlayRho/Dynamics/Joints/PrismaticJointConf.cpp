@@ -46,8 +46,8 @@ PrismaticJointConf GetPrismaticJointConf(const PrismaticJoint& joint) noexcept
     def.localAxisA = joint.GetLocalAxisA();
     def.referenceAngle = joint.GetReferenceAngle();
     def.enableLimit = joint.IsLimitEnabled();
-    def.lowerTranslation = joint.GetLowerLimit();
-    def.upperTranslation = joint.GetUpperLimit();
+    def.lowerTranslation = joint.GetLinearLowerLimit();
+    def.upperTranslation = joint.GetLinearUpperLimit();
     def.enableMotor = joint.IsMotorEnabled();
     def.motorSpeed = joint.GetMotorSpeed();
     def.maxMotorForce = joint.GetMaxMotorForce();

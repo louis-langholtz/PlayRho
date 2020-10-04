@@ -46,14 +46,14 @@ public:
             {
                 const auto x2 = x1 + 0.5f;
                 const auto y2 = 2.0f * std::cos(x2 / 10.0f * static_cast<float>(Pi));
-                ground->CreateFixture(Shape{EdgeShapeConf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}});
+                m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}});
                 x1 = x2;
                 y1 = y2;
             }
         }
 
         auto conf = PolygonShapeConf{};
-        conf.UseFriction(0.3);
+        conf.UseFriction(Real(0.3));
         conf.UseDensity(20_kgpm2);
         conf.Set({
             Vec2(-0.5f, 0.0f) * 1_m,
@@ -117,10 +117,10 @@ public:
 
     void Create(int index)
     {
-        if (m_bodies[m_bodyIndex])
+        if (m_bodies[m_bodyIndex] != InvalidBodyID)
         {
             m_world.Destroy(m_bodies[m_bodyIndex]);
-            m_bodies[m_bodyIndex] = nullptr;
+            m_bodies[m_bodyIndex] = InvalidBodyID;
         }
 
         BodyConf bd;
@@ -141,11 +141,11 @@ public:
 
         if (index < 4)
         {
-            m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index]);
+            CreateFixture(m_world, m_bodies[m_bodyIndex], m_polygons[index]);
         }
         else
         {
-            m_bodies[m_bodyIndex]->CreateFixture(m_circle);
+            CreateFixture(m_world, m_bodies[m_bodyIndex], m_circle);
         }
 
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -155,10 +155,10 @@ public:
     {
         for (auto i = 0; i < e_maxBodies; ++i)
         {
-            if (m_bodies[i])
+            if (m_bodies[i] != InvalidBodyID)
             {
                 m_world.Destroy(m_bodies[i]);
-                m_bodies[i] = nullptr;
+                m_bodies[i] = InvalidBodyID;
                 return;
             }
         }
@@ -171,19 +171,19 @@ public:
         const auto d = Vec2(L * cos(m_angle), -L * abs(sin(m_angle))) * 1_m;
         const auto point2 = point1 + d;
 
-        auto fixture = static_cast<Fixture*>(nullptr);
+        auto fixture = GetInvalid<FixtureID>();
         Length2 point;
         UnitVec normal;
 
-        RayCast(m_world.GetTree(), RayCastInput{point1, point2, Real{1}},
-                        [&](Fixture* f, ChildCounter, Length2 p, UnitVec n) {
+        RayCast(m_world.GetTree(), RayCastInput{point1, point2, Real{1}}, m_world,
+                        [&](BodyID, FixtureID f, ChildCounter, Length2 p, UnitVec n) {
             fixture = f;
             point = p;
             normal = n;
             return RayCastOpcode::ClipRay;
         });
 
-        if (fixture)
+        if (IsValid(fixture))
         {
             drawer.DrawPoint(point, 5.0f, Color(0.4f, 0.9f, 0.4f));
             drawer.DrawSegment(point1, point, Color(0.8f, 0.8f, 0.8f));
@@ -203,12 +203,12 @@ public:
     }
 
     int m_bodyIndex;
-    Body* m_bodies[e_maxBodies];
+    BodyID m_bodies[e_maxBodies];
     Shape m_polygons[4] = {
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
     };
-    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(0.3).UseDensity(20_kgpm2)};
+    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3)).UseDensity(20_kgpm2)};
 
     Real m_angle;
 };

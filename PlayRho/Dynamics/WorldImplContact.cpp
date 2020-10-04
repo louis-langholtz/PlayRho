@@ -103,14 +103,9 @@ bool HasValidToi(const WorldImpl& world, ContactID id)
     return world.GetContact(id).HasValidToi();
 }
 
-FixtureID GetFixtureA(const WorldImpl& world, ContactID id)
+Real GetToi(const WorldImpl& world, ContactID id)
 {
-    return world.GetContact(id).GetFixtureA();
-}
-
-FixtureID GetFixtureB(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetFixtureB();
+    return world.GetContact(id).GetToi();
 }
 
 BodyID GetBodyA(const WorldImpl& world, ContactID id)
@@ -123,9 +118,54 @@ BodyID GetBodyB(const WorldImpl& world, ContactID id)
     return world.GetContact(id).GetBodyB();
 }
 
+FixtureID GetFixtureA(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetFixtureA();
+}
+
+FixtureID GetFixtureB(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetFixtureB();
+}
+
+ChildCounter GetChildIndexA(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetChildIndexA();
+}
+
+ChildCounter GetChildIndexB(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetChildIndexB();
+}
+
 TimestepIters GetToiCount(const WorldImpl& world, ContactID id)
 {
     return world.GetContact(id).GetToiCount();
+}
+
+LinearVelocity GetTangentSpeed(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).GetTangentSpeed();
+}
+
+void SetTangentSpeed(WorldImpl& world, ContactID id, LinearVelocity value)
+{
+    world.GetContact(id).SetTangentSpeed(value);
+}
+
+bool IsEnabled(const WorldImpl& world, ContactID id)
+{
+    return world.GetContact(id).IsEnabled();
+}
+
+void SetEnabled(WorldImpl& world, ContactID id)
+{
+    world.GetContact(id).SetEnabled();
+}
+
+void UnsetEnabled(WorldImpl& world, ContactID id)
+{
+    world.GetContact(id).UnsetEnabled();
 }
 
 } // namespace d2

@@ -31,6 +31,20 @@ using JointID = strongtype::IndexingNamedType<void*, struct JointIdentifier>;
 
 constexpr auto InvalidJointID = static_cast<JointID>(static_cast<JointID::underlying_type>(nullptr));
 
+/// @brief Gets an invalid value for the JointID type.
+template <>
+constexpr JointID GetInvalid() noexcept
+{
+    return InvalidJointID;
+}
+
+/// @brief Determines if the given value is valid.
+template <>
+constexpr bool IsValid(const JointID& value) noexcept
+{
+    return value != GetInvalid<JointID>();
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_JOINTID_HPP

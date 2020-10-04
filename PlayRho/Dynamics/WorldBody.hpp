@@ -32,9 +32,9 @@
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
+#include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
-#include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
 #include <iterator>
@@ -45,6 +45,7 @@ namespace playrho {
 namespace d2 {
 
 class World;
+class Shape;
 
 /// @brief Gets the range of all constant fixtures attached to the given body.
 /// @relatedalso World
@@ -52,6 +53,11 @@ SizedRange<std::vector<FixtureID>::const_iterator> GetFixtures(const World& worl
 
 /// @relatedalso World
 FixtureCounter GetFixtureCount(const World& world, BodyID id);
+
+/// @relatedalso World
+FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
+                        const FixtureConf& def = GetDefaultFixtureConf(),
+                        bool resetMassData = true);
 
 /// @copydoc World::GetLinearAcceleration
 /// @relatedalso World
@@ -71,6 +77,8 @@ void SetAcceleration(World& world, BodyID id,
                      LinearAcceleration2 linear, AngularAcceleration angular);
 
 void SetAcceleration(World& world, BodyID id, LinearAcceleration2 value);
+
+void SetAcceleration(World& world, BodyID id, AngularAcceleration value);
 
 /// @brief Sets the accelerations on the given body.
 /// @note This has no effect on non-accelerable bodies.
@@ -226,12 +234,24 @@ inline LinearVelocity2 GetLinearVelocity(const World& world, BodyID id)
     return GetVelocity(world, id).linear;
 }
 
+/// @brief Gets the angular velocity.
+/// @param world World in which body is identified for.
+/// @param id Body to get the angular velocity for.
+/// @return the angular velocity.
+/// @relatedalso World
+inline AngularVelocity GetAngularVelocity(const World& world, BodyID id)
+{
+    return GetVelocity(world, id).angular;
+}
+
 /// @copydoc World::SetVelocity
 /// @see GetVelocity(const World& world, BodyID id)
 /// @relatedalso World
 void SetVelocity(World& world, BodyID id, const Velocity& value);
 
 void SetVelocity(World& world, BodyID id, const LinearVelocity2& value);
+
+void SetVelocity(World& world, BodyID id, AngularVelocity value);
 
 /// @copydoc World::DestroyFixtures()
 /// @relatedalso World
@@ -382,8 +402,29 @@ bool IsSpeedable(const World& world, BodyID id);
 /// @return true if the body is accelerable, false otherwise.
 bool IsAccelerable(const World& world, BodyID id);
 
-/// @brief Is the body treated like a bullet for continuous collision detection?
+/// @copydoc World::IsImpenetrable
+/// @relatedalso World
 bool IsImpenetrable(const World& world, BodyID id);
+
+/// @relatedalso World
+void SetImpenetrable(World& world, BodyID id);
+
+/// @relatedalso World
+void UnsetImpenetrable(World& world, BodyID id);
+
+inline void SetImpenetrable(World& world, BodyID id, bool value)
+{
+    if (value)
+        SetImpenetrable(world, id);
+    else
+        UnsetImpenetrable(world, id);
+}
+
+/// @relatedalso World
+bool IsSleepingAllowed(const World& world, BodyID id);
+
+/// @relatedalso World
+void SetSleepingAllowed(World& world, BodyID, bool value);
 
 /// @brief Gets the container of all contacts attached to this body.
 /// @warning This collection changes during the time step and you may
@@ -394,6 +435,8 @@ GetContacts(const World& world, BodyID id);
 /// @brief Gets the user data associated with the identified body.
 /// @relatedalso World
 void* GetUserData(const World& world, BodyID id);
+
+void SetUserData(World& world, BodyID id, void* value);
 
 /// @brief Gets the centripetal force necessary to put the body into an orbit having
 ///    the given radius.
@@ -411,6 +454,77 @@ inline void ApplyForceToCenter(World& world, BodyID id, Force2 force)
     const auto angAccel = GetAngularAcceleration(world, id);
     SetAcceleration(world, id, linAccel, angAccel);
 }
+
+/// @brief Apply a force at a world point.
+/// @note If the force is not applied at the center of mass, it will generate a torque and
+///   affect the angular velocity.
+/// @note Non-zero forces wakes up the body.
+/// @param world World in which body exists.
+/// @param body Identity of body to apply the force to.
+/// @param force World force vector.
+/// @param point World position of the point of application.
+/// @relatedalso World
+void ApplyForce(World& world, BodyID id, Force2 force, Length2 point);
+
+/// @brief Applies a torque.
+/// @note This affects the angular velocity without affecting the linear velocity of the
+///   center of mass.
+/// @note Non-zero forces wakes up the body.
+/// @param body Body to apply the torque to.
+/// @param torque about the z-axis (out of the screen).
+/// @relatedalso World
+void ApplyTorque(World& world, BodyID id, Torque torque);
+
+/// @brief Applies an impulse at a point.
+/// @note This immediately modifies the velocity.
+/// @note This also modifies the angular velocity if the point of application
+///   is not at the center of mass.
+/// @note Non-zero impulses wakes up the body.
+/// @param id Body to apply the impulse to.
+/// @param impulse the world impulse vector.
+/// @param point the world position of the point of application.
+/// @relatedalso World
+void ApplyLinearImpulse(World& world, BodyID id, Momentum2 impulse, Length2 point);
+
+/// @brief Applies an angular impulse.
+/// @param body Body to apply the angular impulse to.
+/// @param impulse Angular impulse to be applied.
+/// @relatedalso World
+void ApplyAngularImpulse(World& world, BodyID id, AngularMomentum impulse);
+
+/// @brief Sets the given amount of force at the given point to the given body.
+/// @relatedalso World
+inline void SetForce(World& world, BodyID id, Force2 force, Length2 point) noexcept
+{
+    const auto linAccel = LinearAcceleration2{force * GetInvMass(world, id)};
+    const auto invRotI = GetInvRotInertia(world, id);
+    const auto dp = point - GetWorldCenter(world, id);
+    const auto cp = Torque{Cross(dp, force) / Radian};
+    const auto angAccel = AngularAcceleration{cp * invRotI};
+    SetAcceleration(world, id, linAccel, angAccel);
+}
+
+/// @brief Sets the given amount of torque to the given body.
+/// @relatedalso World
+inline void SetTorque(World& world, BodyID id, Torque torque) noexcept
+{
+    const auto linAccel = GetLinearAcceleration(world, id);
+    const auto invRotI = GetInvRotInertia(world, id);
+    const auto angAccel = torque * invRotI;
+    SetAcceleration(world, id, linAccel, angAccel);
+}
+
+/// @brief Gets the linear damping of the body.
+Frequency GetLinearDamping(const World& world, BodyID id);
+
+/// @brief Sets the linear damping of the body.
+void SetLinearDamping(World& world, BodyID id, NonNegative<Frequency> linearDamping);
+
+/// @brief Gets the angular damping of the body.
+Frequency GetAngularDamping(const World& world, BodyID id);
+
+/// @brief Sets the angular damping of the body.
+void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> angularDamping);
 
 } // namespace d2
 } // namespace playrho

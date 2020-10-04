@@ -49,7 +49,7 @@ public:
     Breakable(): m_shape1{GetShapeConf1()}, m_shape2{GetShapeConf2()}
     {
         // Ground body
-        m_world.CreateBody()->CreateFixture(Shape{GetGroundEdgeConf()});
+        m_world.CreateFixture(m_world.CreateBody(), Shape{GetGroundEdgeConf()});
 
         // Breakable dynamic body
         {
@@ -59,16 +59,15 @@ public:
             bd.location = Length2{0_m, 40_m};
             bd.angle = Pi * 0.25_rad;
             m_body1 = m_world.CreateBody(bd);
-            m_piece1 = m_body1->CreateFixture(m_shape1);
-            m_piece2 = m_body1->CreateFixture(m_shape2);
+            m_piece1 = m_world.CreateFixture(m_body1, m_shape1);
+            m_piece2 = m_world.CreateFixture(m_body1, m_shape2);
         }
 
         m_break = false;
         m_broke = false;
     }
 
-    void PostSolve(Contact&, const ContactImpulsesList& impulse,
-                   ContactListener::iteration_type) override
+    void PostSolve(ContactID, const ContactImpulsesList& impulse, unsigned) override
     {
         if (m_broke)
         {
@@ -96,31 +95,31 @@ public:
     void Break()
     {        
         // Create two bodies from one.
-        const auto body1 = m_piece1->GetBody();
-        const auto center = body1->GetWorldCenter();
+        const auto body1 = GetBody(m_world, m_piece1);
+        const auto center = GetWorldCenter(m_world, body1);
 
-        body1->Destroy(m_piece2);
-        m_piece2 = nullptr;
+        m_world.Destroy(m_piece2);
+        m_piece2 = InvalidFixtureID;
 
         BodyConf bd;
         bd.type = BodyType::Dynamic;
         bd.linearAcceleration = m_gravity;
-        bd.location = body1->GetLocation();
-        bd.angle = body1->GetAngle();
+        bd.location = GetLocation(m_world, body1);
+        bd.angle = GetAngle(m_world, body1);
 
         const auto body2 = m_world.CreateBody(bd);
-        m_piece2 = body2->CreateFixture(m_shape2);
+        m_piece2 = m_world.CreateFixture(body2, m_shape2);
 
         // Compute consistent velocities for new bodies based on
         // cached velocity.
-        const auto center1 = body1->GetWorldCenter();
-        const auto center2 = body2->GetWorldCenter();
+        const auto center1 = GetWorldCenter(m_world, body1);
+        const auto center2 = GetWorldCenter(m_world, body2);
         
         const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity / 1_rad;
         const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity / 1_rad;
 
-        body1->SetVelocity(Velocity{velocity1, m_angularVelocity});
-        body2->SetVelocity(Velocity{velocity2, m_angularVelocity});
+        SetVelocity(m_world, body1, Velocity{velocity1, m_angularVelocity});
+        SetVelocity(m_world, body2, Velocity{velocity2, m_angularVelocity});
     }
 
     void PreStep(const Settings&, Drawer&) override
@@ -135,19 +134,19 @@ public:
         // Cache velocities to improve movement on breakage.
         if (!m_broke)
         {
-            const auto velocity = m_body1->GetVelocity();
+            const auto velocity = GetVelocity(m_world, m_body1);
             m_velocity = velocity.linear;
             m_angularVelocity = velocity.angular;
         }
     }
 
-    Body* m_body1;
+    BodyID m_body1;
     LinearVelocity2 m_velocity;
     AngularVelocity m_angularVelocity;
     Shape m_shape1;
     Shape m_shape2;
-    Fixture* m_piece1;
-    Fixture* m_piece2;
+    FixtureID m_piece1;
+    FixtureID m_piece2;
 
     bool m_broke;
     bool m_break;

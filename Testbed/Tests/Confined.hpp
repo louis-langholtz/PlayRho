@@ -87,17 +87,17 @@ public:
                     (2.0f * i + 1.0f) * (radius/ 1_m)
                 } * 1_m;
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                m_world.CreateFixture(body, shape);
             }
         }
     }
     
-    Body* CreateEnclosure(Length vertexRadius, Length wallLength)
+    BodyID CreateEnclosure(Length vertexRadius, Length wallLength)
     {
         const auto body = m_world.CreateBody();
-        body->CreateFixture(Shape{GetChainShapeConf(wallLength)
+        m_world.CreateFixture(body, Shape{GetChainShapeConf(wallLength)
             .UseRestitution(0).UseVertexRadius(vertexRadius)});
-        SetLocation(*body, Length2{0_m, 20_m});
+        SetLocation(m_world, body, Length2{0_m, 20_m});
         return body;
     }
 
@@ -121,7 +121,7 @@ public:
         conf.density = 1_kgpm2;
         conf.restitution = 0.8f;
         conf.vertexRadius = radius;
-        m_world.CreateBody(bd)->CreateFixture(Shape(conf));
+        m_world.CreateFixture(m_world.CreateBody(bd), Shape(conf));
     }
 
     void CreateBox()
@@ -132,7 +132,7 @@ public:
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
-        m_world.CreateBody(bd)->CreateFixture(Shape{
+        m_world.CreateFixture(m_world.CreateBody(bd), Shape{
             PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(0).SetAsBox(side_length/2, side_length/2)
         });
     }
@@ -140,50 +140,49 @@ public:
     void ToggleBulletMode()
     {
         m_bullet_mode = !m_bullet_mode;
-        for (auto&& body: m_world.GetBodies())
+        for (const auto& b: m_world.GetBodies())
         {
-            auto& b = GetRef(body);
-            if (b.GetType() == BodyType::Dynamic)
+            if (GetType(m_world, b) == BodyType::Dynamic)
             {
-                b.SetBullet(m_bullet_mode);
+                if (m_bullet_mode)
+                    SetImpenetrable(m_world, b);
+                else
+                    UnsetImpenetrable(m_world, b);
             }
         }
     }
 
     void ImpartRandomImpulses()
     {
-        for (auto&& body: m_world.GetBodies())
+        for (const auto& b: m_world.GetBodies())
         {
-            auto& b = GetRef(body);
-            if (b.GetType() == BodyType::Dynamic)
+            if (GetType(m_world, b) == BodyType::Dynamic)
             {
-                const auto position = b.GetLocation();
+                const auto position = GetLocation(m_world, b);
                 const auto centerPos = Length2{
                     GetX(position), GetY(position) - (wall_length / Real{2})
                 };
                 const auto angle_from_center = GetAngle(centerPos);
                 const auto direction = angle_from_center + Pi * 1_rad;
                 const auto magnitude = sqrt(Square(StripUnit(wall_length)) * 2) *
-                	GetMass(b) * 20_mps;
+                	GetMass(m_world, b) * 20_mps;
                 const auto impulse = Momentum2{magnitude * UnitVec::Get(direction)};
-                ApplyLinearImpulse(b, impulse, b.GetWorldCenter());
+                ApplyLinearImpulse(m_world, b, impulse, GetWorldCenter(m_world, b));
             }
-        }        
+        }
     }
 
     void PreStep(const Settings&, Drawer&) override
     {
         auto sleeping = true;
-        for (auto&& body: m_world.GetBodies())
+        for (const auto& b: m_world.GetBodies())
         {
-            auto& b = GetRef(body);
-
-            if (b.GetType() != BodyType::Dynamic)
+            if (GetType(m_world, b) != BodyType::Dynamic)
             {
                 continue;
             }
 
-            if (b.IsAwake())
+            if (IsAwake(m_world, b))
             {
                 sleeping = false;
             }
@@ -204,7 +203,7 @@ public:
     
     bool m_bullet_mode = false;
     Length m_enclosureVertexRadius = vertexRadiusIncrement;
-    Body* m_enclosure = nullptr;
+    BodyID m_enclosure = InvalidBodyID;
 };
 
 } // namespace testbed

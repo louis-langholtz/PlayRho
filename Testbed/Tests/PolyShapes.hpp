@@ -21,6 +21,7 @@
 #define PLAYRHO_POLY_SHAPES_HPP
 
 #include "../Framework/Test.hpp"
+
 #include <vector>
 #include <cstring>
 #include <typeinfo>
@@ -84,7 +85,7 @@ public:
     PolyShapes()
     {
         // Ground body
-        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, m_world.CreateBody(), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         auto conf = PolygonShapeConf{};
         conf.UseDensity(1_kgpm2);
@@ -134,10 +135,10 @@ public:
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "(de)activate some bodies", [&](KeyActionMods) {
             for (auto i = 0; i < e_maxBodies; i += 2)
             {
-                if (m_bodies[i])
+                if (IsValid(m_bodies[i]))
                 {
-                    const auto enabled = m_bodies[i]->IsEnabled();
-                    m_bodies[i]->SetEnabled(!enabled);
+                    const auto enabled = IsEnabled(m_world, m_bodies[i]);
+                    SetEnabled(m_world, m_bodies[i], !enabled);
                 }
             }
         });
@@ -148,10 +149,10 @@ public:
 
     void Create(int index)
     {
-        if (m_bodies[m_bodyIndex])
+        if (IsValid(m_bodies[m_bodyIndex]))
         {
             m_world.Destroy(m_bodies[m_bodyIndex]);
-            m_bodies[m_bodyIndex] = nullptr;
+            m_bodies[m_bodyIndex] = InvalidBodyID;
         }
 
         BodyConf bd;
@@ -171,11 +172,11 @@ public:
 
         if (index < 4)
         {
-            m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index]);
+            CreateFixture(m_world, m_bodies[m_bodyIndex], m_polygons[index]);
         }
         else
         {
-            m_bodies[m_bodyIndex]->CreateFixture(m_circle);
+            CreateFixture(m_world, m_bodies[m_bodyIndex], m_circle);
         }
 
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -185,10 +186,10 @@ public:
     {
         for (auto i = 0; i < e_maxBodies; ++i)
         {
-            if (m_bodies[i])
+            if (IsValid(m_bodies[i]))
             {
                 m_world.Destroy(m_bodies[i]);
-                m_bodies[i] = nullptr;
+                m_bodies[i] = InvalidBodyID;
                 return;
             }
         }
@@ -209,11 +210,11 @@ public:
         int count = 0;
         const auto circleChild = GetChild(circleConf, 0);
         const auto aabb = ComputeAABB(circleChild, transform);
-        Query(m_world.GetTree(), aabb, [&](Fixture* f, const ChildCounter) {
+        Query(m_world.GetTree(), aabb, [&](FixtureID f, ChildCounter) {
             if (count < e_maxCount)
             {
-                const auto xfm = GetTransformation(*f);
-                const auto shape = f->GetShape();
+                const auto xfm = GetTransformation(m_world, f);
+                const auto shape = GetShape(m_world, f);
                 const auto overlap = TestOverlap(GetChild(shape, 0), xfm, circleChild, transform);
                 if (overlap >= 0_m2)
                 {
@@ -235,12 +236,13 @@ public:
     }
 
     int m_bodyIndex;
-    Body* m_bodies[e_maxBodies];
+    BodyID m_bodies[e_maxBodies];
     Shape m_polygons[4] = {
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
     };
-    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(0.3)};
+    Shape m_circle = Shape{DiskShapeConf{}
+        .UseRadius(0.5_m).UseDensity(1_kgpm2).UseFriction(Real(0.3))};
 };
 
 } // namespace testbed

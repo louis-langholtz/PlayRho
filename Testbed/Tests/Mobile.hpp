@@ -49,7 +49,7 @@ public:
         m_world.CreateJoint(jointConf);
     }
 
-    Body* AddNode(Body* parent, Length2 localAnchor, int depth, float offset, float a,
+    BodyID AddNode(BodyID parent, Length2 localAnchor, int depth, float offset, float a,
                   Shape shape)
     {
         const auto h = Vec2(0.0f, a) * 1_m;
@@ -57,9 +57,9 @@ public:
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
         bodyConf.linearAcceleration = m_gravity;
-        bodyConf.location = parent->GetLocation() + localAnchor - h;
+        bodyConf.location = GetLocation(m_world, parent) + localAnchor - h;
         const auto body = m_world.CreateBody(bodyConf);
-        body->CreateFixture(shape);
+        m_world.CreateFixture(body, shape);
 
         if (depth == e_depth)
         {

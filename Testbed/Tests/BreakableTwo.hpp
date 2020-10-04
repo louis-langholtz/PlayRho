@@ -39,7 +39,7 @@ public:
     {
         m_gravity = LinearAcceleration2{};
 
-        Body* bodies[20 * 20];
+        BodyID bodies[20 * 20];
         const auto startLoc = Length2{-10_m, 10_m};
         const auto bd = BodyConf{}.UseType(BodyType::Dynamic);
         for (auto y = 0; y < 20; ++y)
@@ -49,8 +49,7 @@ public:
                 const auto location = startLoc + Length2{x * 1_m, y * 1_m};
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
                 bodies[y * 20 + x] = m_world.CreateBody(BodyConf(bd).UseLocation(location));
-                bodies[y * 20 + x]->CreateFixture(m_shape);
-                
+                m_world.CreateFixture(bodies[y * 20 + x], m_shape);
                 if (x > 0)
                 {
                     const auto jd = WeldJointConf{
@@ -73,24 +72,23 @@ public:
         }
     }
 
-    void PostSolve(Contact& contact, const ContactImpulsesList& impulses,
-                   ContactListener::iteration_type) override
+    void PostSolve(ContactID contact, const ContactImpulsesList& impulses, unsigned) override
     {
-        if (!m_body)
+        if (m_body == InvalidBodyID)
         {
             // Should the body break?
             auto maxImpulse = GetMaxNormalImpulse(impulses);
             if (maxImpulse > 60_Ns)
             {
-                const auto fA = contact.GetFixtureA();
-                const auto fB = contact.GetFixtureB();
-                if (fA->GetShape() == m_shape)
+                const auto fA = GetFixtureA(m_world, contact);
+                const auto fB = GetFixtureB(m_world, contact);
+                if (GetShape(m_world, fA) == m_shape)
                 {
-                    m_body = fA->GetBody();
+                    m_body = GetBody(m_world, fA);
                 }
-                else if (fB->GetShape() == m_shape)
+                else if (GetShape(m_world, fB) == m_shape)
                 {
-                    m_body = fB->GetBody();
+                    m_body = GetBody(m_world, fB);
                 }
             }
         }
@@ -98,10 +96,10 @@ public:
     
     void PreStep(const Settings&, Drawer&) override
     {
-        if (m_body)
+        if (m_body != InvalidBodyID)
         {
             m_world.Destroy(m_body);
-            m_body = nullptr;
+            m_body = InvalidBodyID;
         }
     }
 
@@ -111,7 +109,7 @@ private:
         PolygonShapeConf{}.UseVertexRadius(vr).UseDensity(100_kgpm2)
         .SetAsBox(0.5_m - vr, 0.5_m - vr)
     };
-    Body* m_body = nullptr;
+    BodyID m_body = InvalidBodyID;
 };
 
 } // namespace testbed

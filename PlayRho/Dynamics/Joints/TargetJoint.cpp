@@ -40,11 +40,11 @@ namespace d2 {
 
 bool TargetJoint::IsOkay(const TargetJointConf& def) noexcept
 {
-    if (def.bodyA == InvalidBodyID || def.bodyB == InvalidBodyID)
+    if (!Joint::IsOkay(def))
     {
         return false;
     }
-    if (!Joint::IsOkay(def))
+    if (!IsValid(def.target))
     {
         return false;
     }
@@ -53,11 +53,13 @@ bool TargetJoint::IsOkay(const TargetJointConf& def) noexcept
 
 TargetJoint::TargetJoint(const TargetJointConf& def):
     Joint{def},
+    m_targetA{def.target},
     m_localAnchorB{def.anchor},
     m_frequency{def.frequency},
     m_dampingRatio{def.dampingRatio},
     m_maxForce{def.maxForce}
 {
+    assert(IsValid(def.target));
     assert(IsValid(def.dampingRatio));
 }
 
@@ -69,6 +71,12 @@ void TargetJoint::Accept(JointVisitor& visitor) const
 void TargetJoint::Accept(JointVisitor& visitor)
 {
     visitor.Visit(*this);
+}
+
+void TargetJoint::SetTarget(Length2 target) noexcept
+{
+    assert(IsValid(target));
+    m_targetA = target;
 }
 
 Mass22 TargetJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noexcept
@@ -95,7 +103,6 @@ Mass22 TargetJoint::GetEffectiveMassMatrix(const BodyConstraint& body) const noe
 void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const StepConf& step,
                                          const ConstraintSolverConf&)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
     const auto posB = bodyConstraintB.GetPosition();
@@ -103,7 +110,7 @@ void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
     const auto qB = UnitVec::Get(posB.angular);
 
-    const auto mass = Real{1} / bodyConstraintB.GetInvMass(); // GetMass(*GetBodyB());
+    const auto mass = Real{1} / bodyConstraintB.GetInvMass();
 
     // Frequency
     const auto omega = Real{2} * Pi * m_frequency; // T^-1
@@ -130,7 +137,7 @@ void TargetJoint::InitVelocityConstraints(BodyConstraintsMap& bodies, const Step
 
     m_mass = GetEffectiveMassMatrix(bodyConstraintB);
 
-    m_C = LinearVelocity2{((posB.linear + m_rB) - bodyConstraintA.GetPosition().linear) * beta};
+    m_C = LinearVelocity2{((posB.linear + m_rB) - m_targetA) * beta};
     assert(IsValid(m_C));
 
     // Cheat with some damping
@@ -200,8 +207,9 @@ AngularMomentum TargetJoint::GetAngularReaction() const
     return AngularMomentum{0};
 }
 
-bool TargetJoint::ShiftOrigin(Length2)
+bool TargetJoint::ShiftOrigin(Length2 newOrigin)
 {
+    m_targetA -= newOrigin;
     return true;
 }
 

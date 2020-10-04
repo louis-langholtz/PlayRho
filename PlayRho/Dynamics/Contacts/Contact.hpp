@@ -124,14 +124,14 @@ public:
     ///   collisions).
     [[deprecated]] void SetEnabled(bool flag) noexcept;
 
+    /// @brief Has this contact been disabled?
+    bool IsEnabled() const noexcept;
+
     /// @brief Enables this contact.
     void SetEnabled() noexcept;
 
     /// @brief Disables this contact.
     void UnsetEnabled() noexcept;
-
-    /// @brief Has this contact been disabled?
-    bool IsEnabled() const noexcept;
 
     BodyID GetBodyA() const noexcept;
 

@@ -207,13 +207,18 @@ public:
     /// @return true if the body is accelerable, false otherwise.
     bool IsAccelerable() const noexcept;
 
-    /// @brief Sets the bullet status of this body.
-    /// @details Sets whether or not this body should be treated like a bullet for continuous
-    ///   collision detection.
-    void SetBullet(bool flag) noexcept;
-
     /// @brief Is this body treated like a bullet for continuous collision detection?
     bool IsImpenetrable() const noexcept;
+
+    /// @brief Sets the impenetrable status of this body.
+    /// @details Sets whether or not this body should be treated like a bullet for continuous
+    ///   collision detection.
+    void SetImpenetrable() noexcept;
+
+    /// @brief Unsets the impenetrable status of this body.
+    /// @details Sets whether or not this body should be treated like a bullet for continuous
+    ///   collision detection.
+    void UnsetImpenetrable() noexcept;
 
     /// You can disable sleeping on this body. If you disable sleeping, the
     /// body will be woken.
@@ -682,21 +687,19 @@ inline void Body::SetAngularDamping(NonNegative<Frequency> angularDamping) noexc
     m_angularDamping = angularDamping;
 }
 
-inline void Body::SetBullet(bool flag) noexcept
-{
-    if (flag)
-    {
-        m_flags |= e_impenetrableFlag;
-    }
-    else
-    {
-        m_flags &= ~e_impenetrableFlag;
-    }
-}
-
 inline bool Body::IsImpenetrable() const noexcept
 {
     return (m_flags & e_impenetrableFlag) != 0;
+}
+
+inline void Body::SetImpenetrable() noexcept
+{
+    m_flags |= e_impenetrableFlag;
+}
+
+inline void Body::UnsetImpenetrable() noexcept
+{
+    m_flags &= ~e_impenetrableFlag;
 }
 
 inline void Body::SetAwakeFlag() noexcept
@@ -958,64 +961,6 @@ inline void SetAcceleration(Body& body, LinearAcceleration2 value) noexcept
 inline void SetAcceleration(Body& body, AngularAcceleration value) noexcept
 {
     body.SetAcceleration(body.GetLinearAcceleration(), value);
-}
-
-/// @brief Sets the given amount of force at the given point to the given body.
-/// @relatedalso Body
-inline void SetForce(Body& body, Force2 force, Length2 point) noexcept
-{
-    const auto linAccel = LinearAcceleration2{force * body.GetInvMass()};
-    const auto invRotI = body.GetInvRotInertia();
-    const auto dp = point - body.GetWorldCenter();
-    const auto cp = Torque{Cross(dp, force) / Radian};
-    const auto angAccel = AngularAcceleration{cp * invRotI};
-    body.SetAcceleration(linAccel, angAccel);
-}
-
-/// @brief Apply a force at a world point.
-/// @note If the force is not applied at the center of mass, it will generate a torque and
-///   affect the angular velocity.
-/// @note Non-zero forces wakes up the body.
-/// @param body Body to apply the force to.
-/// @param force World force vector.
-/// @param point World position of the point of application.
-/// @relatedalso Body
-inline void ApplyForce(Body& body, Force2 force, Length2 point) noexcept
-{
-    // Torque is L^2 M T^-2 QP^-1.
-    const auto linAccel = LinearAcceleration2{force * body.GetInvMass()};
-    const auto invRotI = body.GetInvRotInertia(); // L^-2 M^-1 QP^2
-    const auto dp = Length2{point - body.GetWorldCenter()}; // L
-    const auto cp = Torque{Cross(dp, force) / Radian}; // L * M L T^-2 is L^2 M T^-2
-    // L^2 M T^-2 QP^-1 * L^-2 M^-1 QP^2 = QP T^-2;
-    const auto angAccel = AngularAcceleration{cp * invRotI};
-    body.SetAcceleration(body.GetLinearAcceleration() + linAccel,
-                         body.GetAngularAcceleration() + angAccel);
-}
-
-/// @brief Sets the given amount of torque to the given body.
-/// @relatedalso Body
-inline void SetTorque(Body& body, Torque torque) noexcept
-{
-    const auto linAccel = body.GetLinearAcceleration();
-    const auto invRotI = body.GetInvRotInertia();
-    const auto angAccel = torque * invRotI;
-    body.SetAcceleration(linAccel, angAccel);
-}
-
-/// @brief Applies a torque.
-/// @note This affects the angular velocity without affecting the linear velocity of the
-///   center of mass.
-/// @note Non-zero forces wakes up the body.
-/// @param body Body to apply the torque to.
-/// @param torque about the z-axis (out of the screen).
-/// @relatedalso Body
-inline void ApplyTorque(Body& body, Torque torque) noexcept
-{
-    const auto linAccel = body.GetLinearAcceleration();
-    const auto invRotI = body.GetInvRotInertia();
-    const auto angAccel = body.GetAngularAcceleration() + torque * invRotI;
-    body.SetAcceleration(linAccel, angAccel);
 }
 
 /// @brief Applies an impulse at a point.

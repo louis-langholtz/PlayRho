@@ -548,7 +548,7 @@ void PrismaticJoint::EnableLimit(bool flag) noexcept
     }
 }
 
-void PrismaticJoint::SetLimits(Length lower, Length upper) noexcept
+void PrismaticJoint::SetLinearLimits(Length lower, Length upper) noexcept
 {
     assert(lower <= upper);
     if ((lower != m_lowerTranslation) || (upper != m_upperTranslation))
@@ -589,14 +589,6 @@ void PrismaticJoint::SetMaxMotorForce(Force force) noexcept
         GetBodyB()->SetAwake();
 #endif
     }
-}
-
-Length GetJointTranslation(const World& world, const PrismaticJoint& joint) noexcept
-{
-    const auto pA = GetWorldPoint(world, joint.GetBodyA(), joint.GetLocalAnchorA());
-    const auto pB = GetWorldPoint(world, joint.GetBodyB(), joint.GetLocalAnchorB());
-    const auto uv = GetWorldVector(world, joint.GetBodyA(), joint.GetLocalAxisA());
-    return Dot(pB - pA, uv);
 }
 
 LinearVelocity GetLinearVelocity(const World& world, const PrismaticJoint& joint) noexcept

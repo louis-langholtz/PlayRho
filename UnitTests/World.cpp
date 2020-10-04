@@ -329,7 +329,6 @@ TEST(World, CopyConstruction)
     world.CreateFixture(b4, shape);
     const auto b5 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     world.CreateFixture(b5, shape);
-    const auto trackedBody = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseEnabled(false));
 
     const auto rj1 = world.CreateJoint(RevoluteJointConf{b1, b2});
     const auto rj2 = world.CreateJoint(RevoluteJointConf{b3, b4});
@@ -342,7 +341,7 @@ TEST(World, CopyConstruction)
     world.CreateJoint(RopeJointConf{b4, b5});
     world.CreateJoint(MotorJointConf{b4, b5});
     world.CreateJoint(WheelJointConf{b4, b5});
-    world.CreateJoint(TargetJointConf{trackedBody, b4});
+    world.CreateJoint(TargetJointConf{b4});
     world.CreateJoint(GetGearJointConf(world, rj1, rj2));
 
     auto stepConf = StepConf{};
@@ -1055,7 +1054,7 @@ TEST(World, SetAccelerationsFunctionalFF)
     SetAcceleration(world, b2, a2);
     ASSERT_EQ(GetAcceleration(world, b2), a2);
 
-    SetAccelerations(world, [&world](const BodyID& b) {
+    SetAccelerations(world, [](const World& world, BodyID b) {
         return GetAcceleration(world, b) * 2;
     });
     EXPECT_EQ(GetAcceleration(world, b1), a1 * 2);
@@ -1791,7 +1790,7 @@ TEST(World, HeavyOnLight)
         }
         
         // The least num steps is 145
-        EXPECT_EQ(numSteps, 145ul);
+        EXPECT_EQ(numSteps, 145ul); // <-------------------------
         EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9475154876708984, 0.001);
     }
 
@@ -1851,7 +1850,7 @@ TEST(World, HeavyOnLight)
         // XXX Is this a bug or did the algorithm just work least well here?
         switch (sizeof(Real))
         {
-            case 4: EXPECT_EQ(numSteps, 736ul); break;
+            case 4: EXPECT_EQ(numSteps, 736ul); break; // <-------------------------
             case 8: EXPECT_EQ(numSteps, 736ul); break;
         }
 
@@ -3081,6 +3080,11 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         TargetJointConf mjd;
         mjd.bodyA = spare_body;
         mjd.bodyB = ball_body;
+        const auto ball_body_pos = GetLocation(world, ball_body);
+        mjd.target = Length2{
+            GetX(ball_body_pos) - ball_radius / Real{2},
+            GetY(ball_body_pos) + ball_radius / Real{2}
+        };
         mjd.maxForce = Real(1000) * GetMass(world, ball_body) * MeterPerSquareSecond;
         return world.CreateJoint(mjd);
     }();
@@ -3287,8 +3291,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         auto last_pos = GetLocation(world, ball_body);
         for (auto loops = unsigned{0};; ++loops)
         {
-            SetLocation(world, spare_body, Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
-            //target_joint->SetTarget(Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
+            SetTarget(world, target_joint, Length2{distance * cos(angle) * Meter, distance * sin(angle) * Meter});
             angle += anglular_speed;
             distance += distance_speed;
 
@@ -3317,7 +3320,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
 
             if (loops > 50)
             {
-                if (GetX(GetLocation(world, spare_body)) < 0_m)
+                if (GetX(GetTarget(world, target_joint)) < 0_m)
                 {
                     if (GetX(GetLocation(world, ball_body)) >= GetX(last_pos))
                         break;                    
@@ -3327,7 +3330,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
                     if (GetX(GetLocation(world, ball_body)) <= GetX(last_pos))
                         break;
                 }
-                if (GetY(GetLocation(world, spare_body)) < 0_m)
+                if (GetY(GetTarget(world, target_joint)) < 0_m)
                 {
                     if (GetY(GetLocation(world, ball_body)) >= GetY(last_pos))
                         break;
@@ -3364,10 +3367,10 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
     std::cout << std::endl;
 #endif
 
-    const auto target0 = GetLocation(world, spare_body);
+    const auto target0 = GetTarget(world, target_joint);
     const auto shift = Length2{2_m, 2_m};
     world.ShiftOrigin(shift);
-    const auto target1 = GetLocation(world, spare_body);
+    const auto target1 = GetTarget(world, target_joint);
     EXPECT_EQ(target0 - shift, target1);
 }
 

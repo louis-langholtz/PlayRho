@@ -64,6 +64,26 @@ void SetType(WorldImpl& world, BodyID id, BodyType value)
     world.SetType(id, value);
 }
 
+bool IsImpenetrable(const WorldImpl& world, BodyID id)
+{
+    return world.GetBody(id).IsImpenetrable();
+}
+
+void SetImpenetrable(WorldImpl& world, BodyID id)
+{
+    world.GetBody(id).SetImpenetrable();
+}
+
+void UnsetImpenetrable(WorldImpl& world, BodyID id)
+{
+    world.GetBody(id).UnsetImpenetrable();
+}
+
+bool IsSleepingAllowed(const WorldImpl& world, BodyID id)
+{
+    return world.GetBody(id).IsSleepingAllowed();
+}
+
 Angle GetAngle(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).GetAngle();
@@ -189,11 +209,6 @@ bool IsAccelerable(const WorldImpl& world, BodyID id)
     return world.GetBody(id).IsAccelerable();
 }
 
-bool IsImpenetrable(const WorldImpl& world, BodyID id)
-{
-    return world.GetBody(id).IsImpenetrable();
-}
-
 SizedRange<WorldImpl::Contacts::const_iterator> GetContacts(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).GetContacts();
@@ -202,6 +217,11 @@ SizedRange<WorldImpl::Contacts::const_iterator> GetContacts(const WorldImpl& wor
 void* GetUserData(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).GetUserData();
+}
+
+void SetUserData(WorldImpl& world, BodyID id, void* value)
+{
+    world.GetBody(id).SetUserData(value);
 }
 
 bool IsMassDataDirty(const WorldImpl& world, BodyID id)
@@ -250,6 +270,26 @@ FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
                         const FixtureConf& def, bool resetMassData)
 {
     return world.CreateFixture(id, shape, def, resetMassData);
+}
+
+Frequency GetLinearDamping(const WorldImpl& world, BodyID id)
+{
+    return world.GetBody(id).GetLinearDamping();
+}
+
+void SetLinearDamping(WorldImpl& world, BodyID id, NonNegative<Frequency> value)
+{
+    world.GetBody(id).SetLinearDamping(value);
+}
+
+Frequency GetAngularDamping(const WorldImpl& world, BodyID id)
+{
+    return world.GetBody(id).GetAngularDamping();
+}
+
+void SetAngularDamping(WorldImpl& world, BodyID id, NonNegative<Frequency> value)
+{
+    world.GetBody(id).SetAngularDamping(value);
 }
 
 } // namespace d2

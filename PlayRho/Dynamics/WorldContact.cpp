@@ -22,6 +22,10 @@
 #include <PlayRho/Dynamics/WorldContact.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
+
+#include <PlayRho/Collision/Manifold.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -39,6 +43,16 @@ bool IsAwake(const World& world, ContactID id)
 void SetAwake(World& world, ContactID id)
 {
     world.SetAwake(id);
+}
+
+ChildCounter GetChildIndexA(const World& world, ContactID id)
+{
+    return world.GetChildIndexA(id);
+}
+
+ChildCounter GetChildIndexB(const World& world, ContactID id)
+{
+    return world.GetChildIndexB(id);
 }
 
 FixtureID GetFixtureA(const World& world, ContactID id)
@@ -81,6 +95,11 @@ bool HasValidToi(const World& world, ContactID id)
     return world.HasValidToi(id);
 }
 
+Real GetToi(const World& world, ContactID id)
+{
+    return world.GetToi(id);
+}
+
 Real GetDefaultFriction(const World& world, ContactID id)
 {
     return world.GetDefaultFriction(id);
@@ -114,6 +133,57 @@ void SetRestitution(World& world, ContactID id, Real restitution)
 const Manifold& GetManifold(const World& world, ContactID id)
 {
     return world.GetManifold(id);
+}
+
+WorldManifold GetWorldManifold(const World& world, ContactID id)
+{
+    const auto bA = GetBodyA(world, id);
+    const auto fA = GetFixtureA(world, id);
+    const auto iA = GetChildIndexA(world, id);
+    const auto bB = GetBodyB(world, id);
+    const auto fB = GetFixtureB(world, id);
+    const auto iB = GetChildIndexB(world, id);
+    const auto manifold = GetManifold(world, id);
+    const auto xfA = GetTransformation(world, bA);
+    const auto radiusA = GetVertexRadius(GetShape(world, fA), iA);
+    const auto xfB = GetTransformation(world, bB);
+    const auto radiusB = GetVertexRadius(GetShape(world, fB), iB);
+    return GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
+}
+
+LinearVelocity GetTangentSpeed(const World& world, ContactID id)
+{
+    return world.GetTangentSpeed(id);
+}
+
+void SetTangentSpeed(World& world, ContactID id, LinearVelocity value)
+{
+    world.SetTangentSpeed(id, value);
+}
+
+bool IsEnabled(const World& world, ContactID id)
+{
+    return world.IsEnabled(id);
+}
+
+void SetEnabled(World& world, ContactID id)
+{
+    world.SetEnabled(id);
+}
+
+void UnsetEnabled(World& world, ContactID id)
+{
+    world.UnsetEnabled(id);
+}
+
+void SetEnabled(World& world, ContactID id, bool value)
+{
+    if (value) {
+        SetEnabled(world, id);
+    }
+    else {
+        UnsetEnabled(world, id);
+    }
 }
 
 } // namespace d2

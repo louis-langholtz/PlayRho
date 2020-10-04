@@ -30,7 +30,7 @@ public:
     Revolute()
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
+        m_world.CreateFixture(ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
 
         {
             BodyConf bd;
@@ -41,10 +41,10 @@ public:
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 0.5_m;
             circleConf.density = 5_kgpm2;
-            body->CreateFixture(Shape(circleConf));
+            m_world.CreateFixture(body, Shape(circleConf));
 
             const auto w = 100.0f;
-            body->SetVelocity(Velocity{
+            SetVelocity(m_world, body, Velocity{
                 Vec2(-8.0f * w, 0.0f) * 1_mps, w * 1_rad / 1_s
             });
             
@@ -57,7 +57,7 @@ public:
             rjd.enableLimit = true;
             rjd.collideConnected = true;
 
-            m_joint = (RevoluteJoint*)m_world.CreateJoint(rjd);
+            m_joint = m_world.CreateJoint(rjd);
         }
 
         {
@@ -72,7 +72,7 @@ public:
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 3_m;
             circleConf.density = 5_kgpm2;
-            m_ball->CreateFixture(Shape(circleConf), fd);
+            CreateFixture(m_world, m_ball, Shape(circleConf), fd);
 
             auto polygon_shape = PolygonShapeConf{};
             polygon_shape.SetAsBox(10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
@@ -83,7 +83,7 @@ public:
             polygon_bd.type = BodyType::Dynamic;
             polygon_bd.bullet = true;
             const auto polygon_body = m_world.CreateBody(polygon_bd);
-            polygon_body->CreateFixture(Shape(polygon_shape));
+            CreateFixture(m_world, polygon_body, Shape(polygon_shape));
 
             RevoluteJointConf rjd(ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
             rjd.lowerAngle = -0.25_rad * Pi;
@@ -99,23 +99,23 @@ public:
                 Vec2(17.52f, 36.69f) * 1_m,
                 Vec2(17.19f, 36.36f) * 1_m
             }).UseDensity(1_kgpm2);
-        
+
             const auto body = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-            body->CreateFixture(Shape(polyShape));
+            m_world.CreateFixture(body, Shape(polyShape));
         }
-        
+
         SetAccelerations(m_world, m_gravity);
 
         RegisterForKey(GLFW_KEY_L, GLFW_PRESS, 0, "Limits", [&](KeyActionMods) {
-            m_joint->EnableLimit(!m_joint->IsLimitEnabled());
+            EnableLimit(m_world, m_joint, !IsLimitEnabled(m_world, m_joint));
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Motor", [&](KeyActionMods) {
-            m_joint->EnableMotor(!m_joint->IsMotorEnabled());
+            EnableMotor(m_world, m_joint, !IsMotorEnabled(m_world, m_joint));
         });
     }
 
-    Body* m_ball;
-    RevoluteJoint* m_joint;
+    BodyID m_ball;
+    JointID m_joint; // RevoluteJoint
 };
 
 } // namespace testbed

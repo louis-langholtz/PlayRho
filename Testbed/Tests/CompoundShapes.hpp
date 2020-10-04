@@ -30,7 +30,8 @@ class CompoundShapes : public Test
 public:
     CompoundShapes()
     {
-        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
+        m_world.CreateFixture(m_world.CreateBody(),
+                              Shape{EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
         
         {
             auto conf = DiskShapeConf{};
@@ -48,8 +49,8 @@ public:
                 bd.location = Vec2(x + 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(circle1);
-                body->CreateFixture(circle2);
+                m_world.CreateFixture(body, circle1);
+                m_world.CreateFixture(body, circle2);
             }
         }
 
@@ -69,8 +70,8 @@ public:
                 bd.location = Vec2(x - 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(polygon1);
-                body->CreateFixture(polygon2);
+                m_world.CreateFixture(body, polygon1);
+                m_world.CreateFixture(body, polygon2);
             }
         }
 
@@ -109,8 +110,8 @@ public:
                 bd.location = Vec2(x, 2.05f + 2.5f * i) * 1_m;
                 bd.angle = 0_rad;
                 const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(triangle1);
-                body->CreateFixture(triangle2);
+                m_world.CreateFixture(body, triangle1);
+                m_world.CreateFixture(body, triangle2);
             }
         }
 
@@ -129,9 +130,9 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2( 0.0f, 2.0f ) * 1_m;
             const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(bottom);
-            body->CreateFixture(left);
-            body->CreateFixture(right);
+            m_world.CreateFixture(body, bottom);
+            m_world.CreateFixture(body, left);
+            m_world.CreateFixture(body, right);
         }
         
         SetAccelerations(m_world, m_gravity);

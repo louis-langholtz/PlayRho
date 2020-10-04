@@ -59,18 +59,18 @@ public:
 
     void Setup()
     {
-        if (m_joint) m_world.Destroy(m_joint);
-        if (m_bodyA) m_world.Destroy(m_bodyA);
-        if (m_bodyB) m_world.Destroy(m_bodyB);
+        if (IsValid(m_joint)) m_world.Destroy(m_joint);
+        if (IsValid(m_bodyA)) m_world.Destroy(m_bodyA);
+        if (IsValid(m_bodyB)) m_world.Destroy(m_bodyB);
 
         const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
         const auto locations = m_reversedBody?
             std::make_pair(m_locationB, m_locationA): std::make_pair(m_locationA, m_locationB);
         m_bodyA = m_world.CreateBody(BodyConf(bd).UseLocation(std::get<0>(locations)));
         m_bodyB = m_world.CreateBody(BodyConf(bd).UseLocation(std::get<1>(locations)));
-        m_bodyA->CreateFixture(m_diskShape);
-        m_bodyB->CreateFixture(m_diskShape);
-        
+        CreateFixture(m_world, m_bodyA, m_diskShape);
+        CreateFixture(m_world, m_bodyB, m_diskShape);
+
         const auto jc = MotorJointConf{
             m_reversedJoint? MotorJointConf{m_bodyB, m_bodyA}: MotorJointConf{m_bodyA, m_bodyB}
         }.UseMaxForce(1000_N).UseMaxTorque(1000_Nm);
@@ -80,7 +80,7 @@ public:
     MotorJoint2(): Test(GetTestConf())
     {
         const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{GetGroundEdgeConf()});
+        m_world.CreateFixture(ground, Shape{GetGroundEdgeConf()});
         
         Setup();
         
@@ -104,9 +104,9 @@ public:
     const Length2 m_locationB{4_m, 8_m};
     bool m_reversedBody{false};
     bool m_reversedJoint{false};
-    Body* m_bodyA{nullptr};
-    Body* m_bodyB{nullptr};
-    Joint* m_joint{nullptr};
+    BodyID m_bodyA = InvalidBodyID;
+    BodyID m_bodyB = InvalidBodyID;
+    JointID m_joint = InvalidJointID;
 };
 
 } // namespace testbed

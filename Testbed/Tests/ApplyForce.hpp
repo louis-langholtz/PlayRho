@@ -34,20 +34,20 @@ public:
         
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Apply Force", [&](KeyActionMods) {
             const auto lv = Length2{0_m, -200_m};
-            const auto f = Force2{GetWorldVector(*m_body, lv) * 1_kg / (1_s * 1_s)};
-            const auto p = GetWorldPoint(*m_body, Length2{0_m, 2_m});
-            playrho::d2::ApplyForce(*m_body, f, p);
+            const auto f = Force2{GetWorldVector(m_world, m_body, UnitVec::Get(GetX(lv), GetY(lv)).first) * 1_kg / (1_s * 1_s)};
+            const auto p = GetWorldPoint(m_world, m_body, Length2{0_m, 2_m});
+            playrho::d2::ApplyForce(m_world, m_body, f, p);
         });
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Apply Counter-Clockwise Torque", [&](KeyActionMods) {
-            ApplyTorque(*m_body, 50_Nm);
+            ApplyTorque(m_world, m_body, 50_Nm);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Apply Clockwise Torque", [&](KeyActionMods) {
-            ApplyTorque(*m_body, -50_Nm);
+            ApplyTorque(m_world, m_body, -50_Nm);
         });
 
         const auto k_restitution = Real(0.4);
 
-        Body* ground;
+        BodyID ground;
         {
             ground = m_world.CreateBody(BodyConf{}.UseLocation(Length2(0_m, 20_m)));
 
@@ -57,19 +57,19 @@ public:
 
             // Left vertical
             conf.Set(Length2{-20_m, -20_m}, Length2{-20_m, 20_m});
-            ground->CreateFixture(Shape{conf});
+            m_world.CreateFixture(ground, Shape{conf});
 
             // Right vertical
             conf.Set(Length2{20_m, -20_m}, Length2{20_m, 20_m});
-            ground->CreateFixture(Shape{conf});
+            m_world.CreateFixture(ground, Shape{conf});
 
             // Top horizontal
             conf.Set(Length2{-20_m, 20_m}, Length2{20_m, 20_m});
-            ground->CreateFixture(Shape{conf});
+            m_world.CreateFixture(ground, Shape{conf});
 
             // Bottom horizontal
             conf.Set(Length2{-20_m, -20_m}, Length2{20_m, -20_m});
-            ground->CreateFixture(Shape{conf});
+            m_world.CreateFixture(ground, Shape{conf});
         }
 
         {
@@ -106,8 +106,8 @@ public:
             bd.angle = Pi * 1_rad;
             bd.allowSleep = false;
             m_body = m_world.CreateBody(bd);
-            m_body->CreateFixture(Shape(poly1));
-            m_body->CreateFixture(Shape(poly2));
+            m_world.CreateFixture(m_body, Shape(poly1));
+            m_world.CreateFixture(m_body, Shape(poly2));
         }
 
         {
@@ -123,10 +123,10 @@ public:
                 const auto location = Length2{0_m, (5.0f + 1.54f * i) * 1_m};
                 const auto body = m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic)
                                                      .UseLocation(location));
-                body->CreateFixture(shape);
+                m_world.CreateFixture(body, shape);
 
-                const auto I = GetLocalRotInertia(*body); // RotInertia: M * L^2 QP^-2
-                const auto invMass = body->GetInvMass(); // InvMass: M^-1
+                const auto I = GetLocalRotInertia(m_world, body); // RotInertia: M * L^2 QP^-2
+                const auto invMass = m_world.GetInvMass(body); // InvMass: M^-1
                 const auto mass = (invMass != InvMass{0})? Mass{1 / invMass}: 0_kg;
 
                 // For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
@@ -146,7 +146,7 @@ public:
         }
     }
 
-    Body* m_body;
+    BodyID m_body;
 };
 
 } // namespace testbed
