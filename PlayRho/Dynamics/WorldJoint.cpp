@@ -201,6 +201,9 @@ Real GetRatio(const World& world, JointID id)
     visitor.get<const GearJoint&>() = [&result](const GearJoint& j) {
         result = j.GetRatio();
     };
+    visitor.get<const PulleyJoint&>() = [&result](const PulleyJoint& j) {
+        result = j.GetRatio();
+    };
     Accept(world, id, visitor);
     if (!result.has_value())
     {
