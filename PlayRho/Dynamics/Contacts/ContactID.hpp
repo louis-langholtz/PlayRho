@@ -31,6 +31,20 @@ using ContactID = strongtype::IndexingNamedType<ContactCounter, struct ContactId
 
 constexpr auto InvalidContactID = static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
 
+/// @brief Gets an invalid value for the FixtureID type.
+template <>
+constexpr ContactID GetInvalid() noexcept
+{
+    return InvalidContactID;
+}
+
+/// @brief Determines if the given value is valid.
+template <>
+constexpr bool IsValid(const ContactID& value) noexcept
+{
+    return value != GetInvalid<ContactID>();
+}
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
