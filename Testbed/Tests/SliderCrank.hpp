@@ -44,7 +44,7 @@ public:
                 const auto body = m_world.CreateBody(bd);
                 m_world.CreateFixture(body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m)});
 
-                RevoluteJointConf rjd{prevBody, body, Vec2(0.0f, 5.0f) * 1_m};
+                auto rjd = GetRevoluteJointConf(m_world, prevBody, body, Vec2(0.0f, 5.0f) * 1_m);
                 rjd.motorSpeed = Pi * 1_rad / 1_s;
                 rjd.maxMotorTorque = 10000_Nm;
                 rjd.enableMotor = true;
@@ -61,7 +61,7 @@ public:
                 const auto body = m_world.CreateBody(bd);
                 m_world.CreateFixture(body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 4_m)});
 
-                RevoluteJointConf rjd{prevBody, body, Vec2(0.0f, 9.0f) * 1_m};
+                auto rjd = GetRevoluteJointConf(m_world, prevBody, body, Vec2(0.0f, 9.0f) * 1_m);
                 rjd.enableMotor = false;
                 m_world.CreateJoint(rjd);
 
@@ -76,7 +76,7 @@ public:
                 bd.location = Vec2(0.0f, 17.0f) * 1_m;
                 const auto body = m_world.CreateBody(bd);
                 m_world.CreateFixture(body, Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)});
-                m_world.CreateJoint(RevoluteJointConf{prevBody, body, Vec2(0.0f, 17.0f) * 1_m});
+                m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(0.0f, 17.0f) * 1_m));
 
                 auto pjd = GetPrismaticJointConf(m_world, ground, body,
                                                  Vec2(0.0f, 17.0f) * 1_m, UnitVec::GetTop());

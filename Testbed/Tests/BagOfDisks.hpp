@@ -89,7 +89,8 @@ public:
                 m_world.CreateFixture(body, shape);
                 if (prevBody != InvalidBodyID)
                 {
-                    m_world.CreateJoint(RevoluteJointConf{body, prevBody, *prevVertex + vertexOffset});
+                    m_world.CreateJoint(GetRevoluteJointConf(m_world, body,
+                                                             prevBody, *prevVertex + vertexOffset));
                 }
                 else
                 {
@@ -99,7 +100,8 @@ public:
             }
             prevVertex = vertex;
         }
-        m_world.CreateJoint(RevoluteJointConf{prevBody, firstBody, vertices[0] + vertexOffset});
+        m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, firstBody,
+                                                 vertices[0] + vertexOffset));
 
         const auto diskRadius = 0.15_m;
         const auto diskShape = Shape(DiskShapeConf{}.UseRadius(diskRadius).UseDensity(10_kgpm2).UseFriction(0));

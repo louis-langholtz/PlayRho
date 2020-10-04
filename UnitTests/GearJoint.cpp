@@ -107,8 +107,8 @@ TEST(GearJoint, IsOkay)
     const auto b4 = world.CreateBody();
     const auto dj = world.CreateJoint(DistanceJointConf{b1, b2});
     EXPECT_FALSE(GearJoint::IsOkay(GearJointConf{dj, dj}));
-    const auto rj1 = world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}});
-    const auto rj2 = world.CreateJoint(RevoluteJointConf{b3, b4, Length2{}});
+    const auto rj1 = world.CreateJoint(GetRevoluteJointConf(m_world, b1, b2, Length2{}));
+    const auto rj2 = world.CreateJoint(GetRevoluteJointConf(m_world, b3, b4, Length2{}));
     EXPECT_TRUE(GearJoint::IsOkay(GearJointConf{rj1, rj2}));
     EXPECT_FALSE(GearJoint::IsOkay(GearJointConf{rj1, rj1}));
 }
@@ -120,8 +120,8 @@ TEST(GearJoint, Creation)
     const auto body1 = world.CreateBody();
     const auto body2 = world.CreateBody();
     const auto body3 = world.CreateBody();
-    auto rdef0 = RevoluteJointConf{body0, body1, Length2{}};
-    auto rdef1 = RevoluteJointConf{body2, body3, Length2{}};
+    auto rdef0 = GetRevoluteJointConf(m_world, body0, body1, Length2{});
+    auto rdef1 = GetRevoluteJointConf(m_world, body2, body3, Length2{});
     auto revJoint1 = RevoluteJoint{rdef0};
     auto revJoint2 = RevoluteJoint{rdef1};
     auto def = GearJointConf{&revJoint1, &revJoint2};
@@ -156,8 +156,8 @@ TEST(GearJoint, ShiftOrigin)
     auto& body1 = *world.CreateBody();
     auto& body2 = *world.CreateBody();
     auto& body3 = *world.CreateBody();
-    auto rdef1 = RevoluteJointConf{&body0, &body1, Length2{}};
-    auto rdef2 = RevoluteJointConf{&body2, &body3, Length2{}};
+    auto rdef1 = GetRevoluteJointConf(m_world, &body0, &body1, Length2{});
+    auto rdef2 = GetRevoluteJointConf(m_world, &body2, &body3, Length2{});
     auto revJoint1 = RevoluteJoint{rdef1};
     auto revJoint2 = RevoluteJoint{rdef2};
     auto def = GearJointConf{&revJoint1, &revJoint2};
@@ -173,8 +173,8 @@ TEST(GearJoint, SetRatio)
     auto& body1 = *world.CreateBody();
     auto& body2 = *world.CreateBody();
     auto& body3 = *world.CreateBody();
-    auto rdef1 = RevoluteJointConf{&body0, &body1, Length2{}};
-    auto rdef2 = RevoluteJointConf{&body2, &body3, Length2{}};
+    auto rdef1 = GetRevoluteJointConf(m_world, &body0, &body1, Length2{});
+    auto rdef2 = GetRevoluteJointConf(m_world, &body2, &body3, Length2{});
     RevoluteJoint revJoint1{rdef1};
     RevoluteJoint revJoint2{rdef2};
     auto def = GearJointConf{&revJoint1, &revJoint2};
@@ -191,8 +191,8 @@ TEST(GearJoint, GetGearJointConf)
     auto& body1 = *world.CreateBody();
     auto& body2 = *world.CreateBody();
     auto& body3 = *world.CreateBody();
-    auto rdef1 = RevoluteJointConf{&body0, &body1, Length2{}};
-    auto rdef2 = RevoluteJointConf{&body2, &body3, Length2{}};
+    auto rdef1 = GetRevoluteJointConf(m_world, &body0, &body1, Length2{});
+    auto rdef2 = GetRevoluteJointConf(m_world, &body2, &body3, Length2{});
     RevoluteJoint revJoint1{rdef1};
     RevoluteJoint revJoint2{rdef2};
     GearJointConf def{&revJoint1, &revJoint2};
@@ -237,8 +237,8 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
     world.CreateFixture(*b1, circle);
     world.CreateFixture(*b2, circle);
     GearJointConf def{
-        world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}}),
-        world.CreateJoint(RevoluteJointConf{b4, b3, Length2{}})
+        world.CreateJoint(GetRevoluteJointConf(m_world, b1, b2, Length2{})),
+        world.CreateJoint(GetRevoluteJointConf(m_world, b4, b3, Length2{}))
     };
     ASSERT_NE(def.joint1, nullptr);
     ASSERT_NE(def.joint2, nullptr);
@@ -299,8 +299,8 @@ TEST(GearJoint, GetAnchorAandB)
     world.CreateFixture(*b1, circle);
     world.CreateFixture(*b2, circle);
     GearJointConf def{
-        world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}}),
-        world.CreateJoint(RevoluteJointConf{b4, b3, Length2{}})
+        world.CreateJoint(GetRevoluteJointConf(m_world, b1, b2, Length2{})),
+        world.CreateJoint(GetRevoluteJointConf(m_world, b4, b3, Length2{}))
     };
     ASSERT_NE(def.joint1, nullptr);
     ASSERT_NE(def.joint2, nullptr);

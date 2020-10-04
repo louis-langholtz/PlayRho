@@ -44,7 +44,7 @@ public:
             conf.density = 2_kgpm2;
             conf.SetAsBox(4_m, 1_m);
             m_world.CreateFixture(body, Shape(conf));
-            m_world.CreateJoint(RevoluteJointConf{prevBody, body, Vec2(-12.0f, 20.0f) * 1_m});
+            m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(-12.0f, 20.0f) * 1_m));
             prevBody = body;
         }
         
@@ -59,7 +59,7 @@ public:
             conf.density = 2_kgpm2;
             conf.SetAsBox(8_m, 1_m);
             m_world.CreateFixture(body, Shape(conf));
-            m_world.CreateJoint(RevoluteJointConf{prevBody, body, Vec2(-4.0f, 20.0f) * 1_m});
+            m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(-4.0f, 20.0f) * 1_m));
             prevBody = body;
         }
         
@@ -73,7 +73,7 @@ public:
             const auto body = m_world.CreateBody(bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(3_m, 3_m);
             m_world.CreateFixture(body, Shape(conf));
-            m_world.CreateJoint(RevoluteJointConf{prevBody, body, Vec2(12.0f, 20.0f) * 1_m});
+            m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(12.0f, 20.0f) * 1_m));
             const PrismaticJointConf pjd = GetPrismaticJointConf(m_world, ground, body, Vec2(12.0f, 17.0f) * 1_m, UnitVec::GetRight());
             m_world.CreateJoint(pjd);
         }
