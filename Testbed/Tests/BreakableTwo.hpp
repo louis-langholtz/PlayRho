@@ -52,20 +52,22 @@ public:
                 m_world.CreateFixture(bodies[y * 20 + x], m_shape);
                 if (x > 0)
                 {
-                    const auto jd = WeldJointConf{
+                    const auto jd = GetWeldJointConf(
+                        m_world,
                         bodies[y * 20 + x - 1],
                         bodies[y * 20 + x],
                         location + Length2{-0.5_m, 0_m}
-                    };
+                    );
                     m_world.CreateJoint(jd);
                 }
                 if (y > 0)
                 {
-                    const auto jd = WeldJointConf{
+                    const auto jd = GetWeldJointConf(
+                        m_world,
                         bodies[(y - 1) * 20 + x],
                         bodies[(y + 0) * 20 + x],
                         location + Length2{0_m, -0.5_m}
-                    };
+                    );
                     m_world.CreateJoint(jd);
                 }
             }

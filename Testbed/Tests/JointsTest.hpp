@@ -317,12 +317,12 @@ private:
         const auto containerBody = SetupContainer(center);
         const auto fb = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(center - offs));
         CreateFixture(m_world, fb, m_rectShape);
-        const auto jd0 = WeldJointConf{containerBody, fb, center - 2 * offs}
+        const auto jd0 = GetWeldJointConf(m_world, containerBody, fb, center - 2 * offs)
             .UseFrequency(5_Hz).UseDampingRatio(0.7f);
         m_weldJoint0 = m_world.CreateJoint(jd0);
         const auto mb = m_world.CreateBody(BodyConf(DynamicBD).UseLocation(center + offs));
         CreateFixture(m_world, mb, m_rectShape);
-        const auto jd1 = WeldJointConf{fb, mb, center}
+        const auto jd1 = GetWeldJointConf(m_world, fb, mb, center)
             .UseFrequency(5_Hz).UseDampingRatio(0.7f);
         m_weldJoint1 = m_world.CreateJoint(jd1);
     }

@@ -336,7 +336,7 @@ TEST(World, CopyConstruction)
     world.CreateJoint(PulleyJointConf{b1, b2, Length2{}, Length2{},
         Length2{}, Length2{}}.UseRatio(Real(1)));
     world.CreateJoint(DistanceJointConf{b4, b5});
-    world.CreateJoint(WeldJointConf{b4, b5});
+    world.CreateJoint(GetWeldJointConf(m_world, b4, b5));
     world.CreateJoint(FrictionJointConf{b4, b5});
     world.CreateJoint(RopeJointConf{b4, b5});
     world.CreateJoint(MotorJointConf{b4, b5});

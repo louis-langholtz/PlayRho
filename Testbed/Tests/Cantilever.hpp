@@ -56,9 +56,9 @@ public:
                 const auto body = m_world.CreateBody(bd);
                 m_world.CreateFixture(body, shape);
 
-                m_world.CreateJoint(WeldJointConf{
+                m_world.CreateJoint(GetWeldJointConf(m_world,
                     prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * 1_m
-                });
+                ));
 
                 prevBody = body;
             }
@@ -76,7 +76,7 @@ public:
                 const auto body = m_world.CreateBody(bd);
                 m_world.CreateFixture(body, shape);
 
-                auto jd = WeldJointConf{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * 1_m};
+                auto jd = GetWeldJointConf(m_world, prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * 1_m);
                 jd.frequency = 5_Hz;
                 jd.dampingRatio = 0.7f;
                 m_world.CreateJoint(jd);
@@ -98,9 +98,9 @@ public:
                 m_world.CreateFixture(body, shape);
                 if (i > 0)
                 {
-                    m_world.CreateJoint(WeldJointConf{
+                    m_world.CreateJoint(GetWeldJointConf(m_world,
                         prevBody, body, Vec2(-5.0f + 1.0f * i, 5.0f) * 1_m
-                    });
+                    ));
                 }
                 prevBody = body;
             }
@@ -119,7 +119,7 @@ public:
                 m_world.CreateFixture(body, shape);
                 if (i > 0)
                 {
-                    auto jd = WeldJointConf{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * 1_m};
+                    auto jd = GetWeldJointConf(m_world, prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * 1_m);
                     jd.frequency = 8_Hz;
                     jd.dampingRatio = 0.7f;
                     m_world.CreateJoint(jd);
