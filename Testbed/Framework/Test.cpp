@@ -255,18 +255,21 @@ static bool Draw(Drawer& drawer, const World& world, BodyID body,
 
 static void Draw(Drawer& drawer, const World& world, JointID joint)
 {
-    const auto p1 = GetAnchorA(world, joint);
-    const auto p2 = GetAnchorB(world, joint);
-
     const Color color{0.5f, 0.8f, 0.8f};
 
     switch (GetType(world, joint))
     {
         case JointType::Distance:
+        {
+            const auto p1 = GetAnchorA(world, joint);
+            const auto p2 = GetAnchorB(world, joint);
             drawer.DrawSegment(p1, p2, color);
             break;
+        }
         case JointType::Pulley:
         {
+            const auto p1 = GetAnchorA(world, joint);
+            const auto p2 = GetAnchorB(world, joint);
             const auto s1 = GetGroundAnchorA(world, joint);
             const auto s2 = GetGroundAnchorB(world, joint);
             drawer.DrawSegment(s1, p1, color);
@@ -279,6 +282,8 @@ static void Draw(Drawer& drawer, const World& world, JointID joint)
             break;
         default:
         {
+            const auto p1 = GetAnchorA(world, joint);
+            const auto p2 = GetAnchorB(world, joint);
             const auto bodyA = GetBodyA(world, joint);
             const auto bodyB = GetBodyB(world, joint);
             const auto x1 = world.GetTransformation(bodyA).p;
