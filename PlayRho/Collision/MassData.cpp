@@ -165,8 +165,9 @@ MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
     const auto mass = Mass{AreaDensity{density} * area};
     
     // Center of mass
-    assert((area > 0_m2) && !AlmostZero(StripUnit(area)));
-    center /= StripUnit(area);
+    assert(area >= 0_m2);
+    center = ((area > 0_m2) && !AlmostZero(StripUnit(area)))
+        ? center / StripUnit(area): Length2{};
     const auto massDataCenter = center + s;
     
     // Inertia tensor relative to the local origin (point s).
