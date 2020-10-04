@@ -126,6 +126,12 @@ public:
         m_data.reserve(value);
     }
 
+    void clear() noexcept
+    {
+        m_data.clear();
+        m_free.clear();
+    }
+
 private:
     std::vector<value_type> m_data;
     std::vector<typename std::vector<value_type>::size_type> m_free;
