@@ -96,7 +96,8 @@ constexpr WeldJointConf& WeldJointConf::UseDampingRatio(Real v) noexcept
 /// @relatedalso WeldJoint
 WeldJointConf GetWeldJointConf(const WeldJoint& joint) noexcept;
 
-WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB, const Length2 anchor);
+WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB,
+                               const Length2 anchor = Length2{});
 
 } // namespace d2
 } // namespace playrho
