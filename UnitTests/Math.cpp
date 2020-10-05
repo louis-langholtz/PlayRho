@@ -208,6 +208,18 @@ TEST(Math, AverageVec2)
     }
 }
 
+TEST(Math, AverageLength2)
+{
+    EXPECT_EQ(Average(std::initializer_list<Length2>{}), Length2(0_m, 0_m));
+    EXPECT_EQ(Average(std::initializer_list<Length2>{{1_m, 2_m}}), Length2(1_m, 2_m));
+    EXPECT_EQ(Average(std::initializer_list<Length2>{{1_m, 2_m},{-1_m, 2_m}}), Length2(0_m, 2_m));
+    EXPECT_EQ(Average(std::initializer_list<Length2>{{1_m, 2_m},{1_m, -2_m}}), Length2(1_m, 0_m));
+    EXPECT_EQ(Average(std::initializer_list<Length2>{{1_m, 2_m},{-1_m, -2_m}}), Length2(0_m, 0_m));
+    EXPECT_EQ(Average(std::initializer_list<Length2>{
+                {3_m, 2_m},{-3_m, 2_m},{-3_m, -2_m},{3_m, -2_m}
+              }), Length2(0_m, 0_m));
+}
+
 TEST(Math, DotProductOfTwoVecTwoIsCommutative)
 {
     const auto a = Vec2{Real(-3.2), Real(1.9)};
