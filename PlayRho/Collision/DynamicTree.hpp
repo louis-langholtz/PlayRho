@@ -121,10 +121,12 @@ public:
     /// @brief Gets the default initial node capacity.
     static constexpr Size GetDefaultInitialNodeCapacity() noexcept;
     
-    /// @brief Default constructor.
+    /// @brief Non-throwing default constructor.
     DynamicTree() noexcept;
     
     /// @brief Size initializing constructor.
+    /// @param nodeCapacity Node capacity. If zero, this is the same as calling
+    ///   the default constructor except this isn't recognized as non-throwing.
     explicit DynamicTree(Size nodeCapacity);
 
     /// @brief Destroys the tree, freeing the node pool.
