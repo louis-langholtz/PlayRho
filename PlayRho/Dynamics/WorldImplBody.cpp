@@ -266,12 +266,6 @@ FixtureCounter GetFixtureCount(const WorldImpl& world, BodyID id)
     return world.GetFixtureCount(id);
 }
 
-FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData)
-{
-    return world.CreateFixture(id, shape, def, resetMassData);
-}
-
 Frequency GetLinearDamping(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).GetLinearDamping();

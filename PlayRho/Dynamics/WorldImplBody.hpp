@@ -47,8 +47,6 @@ namespace playrho {
 namespace d2 {
 
 class WorldImpl;
-class Shape; // for CreateFixture
-struct FixtureConf; // for CreateFixture
 
 /// @brief Destroys the identified body.
 /// @relatedalso WorldImpl
@@ -78,10 +76,6 @@ void UnsetImpenetrable(WorldImpl& world, BodyID id);
 
 /// @brief Gets whether or not the identified body is allowed to sleep.
 bool IsSleepingAllowed(const WorldImpl& world, BodyID id);
-
-/// @relatedalso WorldImpl
-FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData = true);
 
 /// @relatedalso WorldImpl
 Angle GetAngle(const WorldImpl& world, BodyID id);

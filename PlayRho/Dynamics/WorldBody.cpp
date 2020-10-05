@@ -73,12 +73,6 @@ Acceleration GetAcceleration(const World& world, BodyID id)
     };
 }
 
-FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData)
-{
-    return world.CreateFixture(id, shape, def, resetMassData);
-}
-
 void SetAcceleration(World& world, BodyID id,
                      LinearAcceleration2 linear, AngularAcceleration angular)
 {

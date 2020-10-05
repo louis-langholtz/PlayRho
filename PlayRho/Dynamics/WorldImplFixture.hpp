@@ -42,6 +42,11 @@ namespace playrho {
 namespace d2 {
 
 class WorldImpl;
+struct FixtureConf; // for CreateFixture
+
+/// @relatedalso WorldImpl
+FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
+                        const FixtureConf& def, bool resetMassData = true);
 
 /// @relatedalso WorldImpl
 bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData);

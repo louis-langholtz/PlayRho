@@ -46,6 +46,11 @@ namespace d2 {
 
 class World;
 
+/// @relatedalso World
+FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
+                        const FixtureConf& def = GetDefaultFixtureConf(),
+                        bool resetMassData = true);
+
 /// @copydoc World::Destroy(FixtureID id, bool resetMassData)
 /// @relatedalso World
 bool Destroy(World& world, FixtureID id, bool resetMassData = true);

@@ -58,11 +58,6 @@ SizedRange<std::vector<FixtureID>::const_iterator> GetFixtures(const World& worl
 /// @relatedalso World
 FixtureCounter GetFixtureCount(const World& world, BodyID id);
 
-/// @relatedalso World
-FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def = GetDefaultFixtureConf(),
-                        bool resetMassData = true);
-
 /// @copydoc World::GetLinearAcceleration
 /// @relatedalso World
 LinearAcceleration2 GetLinearAcceleration(const World& world, BodyID id);

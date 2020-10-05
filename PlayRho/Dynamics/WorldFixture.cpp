@@ -27,6 +27,12 @@
 namespace playrho {
 namespace d2 {
 
+FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
+                        const FixtureConf& def, bool resetMassData)
+{
+    return world.CreateFixture(id, shape, def, resetMassData);
+}
+
 bool Destroy(World& world, FixtureID id, bool resetMassData)
 {
     return world.Destroy(id, resetMassData);
