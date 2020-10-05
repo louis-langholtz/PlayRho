@@ -314,19 +314,17 @@ public:
     
     ~TDCar()
     {
-        for (auto i = decltype(size(m_tires)){0}; i < size(m_tires); i++)
-            delete m_tires[i];
+        for (const auto& tire: m_tires)
+            delete tire;
     }
     
     void update(ControlStateType controlState)
     {
-        for (auto i = decltype(size(m_tires)){0}; i < size(m_tires); i++)
-        {
-            m_tires[i]->updateFriction();
+        for (const auto& tire: m_tires) {
+            tire->updateFriction();
         }
-        for (auto i = decltype(size(m_tires)){0}; i < size(m_tires); i++)
-        {
-            m_tires[i]->updateDrive(controlState);
+        for (const auto& tire: m_tires) {
+            tire->updateDrive(controlState);
         }
         
         //control steering
@@ -366,8 +364,9 @@ public:
     {
         m_gravity = LinearAcceleration2{};
         m_world.SetFixtureDestructionListener([this](FixtureID id){
-            delete static_cast<FixtureUserData*>(GetUserData(m_world, id));
+            const auto fixtureUserData = static_cast<FixtureUserData*>(GetUserData(m_world, id));
             SetUserData(m_world, id, nullptr);
+            delete fixtureUserData;
         });
 
         //set up ground areas
