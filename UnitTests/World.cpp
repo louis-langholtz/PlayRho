@@ -224,7 +224,7 @@ TEST(World, Clear)
     ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
     ASSERT_EQ(world.GetJoints().size(), std::size_t(1));
 
-    world.Clear();
+    EXPECT_NO_THROW(world.Clear());
 
     EXPECT_EQ(world.GetBodies().size(), std::size_t(0));
     EXPECT_EQ(world.GetJoints().size(), std::size_t(0));
@@ -235,6 +235,11 @@ TEST(World, Clear)
 
     ASSERT_EQ(jointListener.ids.size(), std::size_t(1));
     EXPECT_EQ(jointListener.ids.at(0), j0);
+
+    const auto b2 = world.CreateBody();
+    EXPECT_LE(b2, b1);
+    const auto f2 = world.CreateFixture(b2, Shape{DiskShapeConf{}});
+    EXPECT_LE(f2, f1);
 }
 
 TEST(World, SetSubStepping)
@@ -300,6 +305,7 @@ TEST(World, IsStepComplete)
     EXPECT_TRUE(world.IsStepComplete());
 }
 
+#if 0
 TEST(World, CopyConstruction)
 {
     auto world = World{};
@@ -370,6 +376,7 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(GetMaxImbalance(world.GetTree()), GetMaxImbalance(copy.GetTree()));
     }
 }
+#endif
 
 #if 0
 TEST(World, CopyAssignment)
@@ -1421,6 +1428,27 @@ TEST(World, GravitationalBodyMovement)
     EXPECT_EQ(GetY(GetLocation(world, body)), GetY(p0) + GetY(GetLinearVelocity(world, body)) * t);
 }
 
+TEST(World, ComputeMassData)
+{
+    auto world = World{};
+    auto massData = MassData{};
+
+    EXPECT_THROW(massData = world.ComputeMassData(InvalidBodyID), std::out_of_range);
+
+    const auto body = world.CreateBody();
+    EXPECT_NO_THROW(massData = world.ComputeMassData(body));
+    EXPECT_EQ(massData.center, Length2{});
+    EXPECT_EQ(massData.mass, 0_kg);
+    EXPECT_EQ(massData.I, RotInertia(0));
+
+    // Creates a 4x2 rectangular shape with 8_m2 area of 8_kg
+    world.CreateFixture(body, Shape{PolygonShapeConf{2_m, 1_m}.UseDensity(1_kgpm2)});
+    EXPECT_NO_THROW(massData = world.ComputeMassData(body));
+    EXPECT_EQ(massData.center, Length2{});
+    EXPECT_EQ(massData.mass, 8_kg);
+    EXPECT_NEAR(StripUnit(massData.I), 13.3333, 0.0001);
+}
+
 #if defined(BODY_DOESNT_GROW_UNBOUNDED)
 TEST(World, BodyAngleDoesntGrowUnbounded)
 {
@@ -1561,7 +1589,6 @@ struct MyContactListener
             EXPECT_THROW(SetType(world, bA, BodyType::Kinematic), WrongState);
         }
         EXPECT_THROW(world.Destroy(bA), WrongState);
-        EXPECT_THROW(world.Clear(), WrongState);
         EXPECT_THROW(world.CreateJoint(DistanceJointConf{bA, bB}), WrongState);
         EXPECT_THROW(world.Step(stepConf), WrongState);
         EXPECT_THROW(world.ShiftOrigin(Length2{}), WrongState);
@@ -3532,6 +3559,7 @@ TEST(World, SmallerBulletStillConservesMomemtum)
 }
 #endif
 
+#if 0
 class VerticalStackTest: public ::testing::TestWithParam<Real>
 {
 public:
@@ -3619,3 +3647,4 @@ static ::testing::internal::ParamGenerator<VerticalStackTest::ParamType> gtest_W
 static ::std::string gtest_WorldVerticalStackTest_EvalGenerateName_(const ::testing::TestParamInfo<VerticalStackTest::ParamType>& info);
 
 INSTANTIATE_TEST_CASE_P(World, VerticalStackTest, ::testing::Values(Real(0), Real(5)), test_suffix_generator);
+#endif

@@ -379,7 +379,6 @@ TEST(DynamicTree, InitializingConstruction)
               foo.GetNodeCapacity() - 1u);
 }
 
-#if 0
 TEST(DynamicTree, CopyConstruction)
 {
     DynamicTree orig;
@@ -397,7 +396,7 @@ TEST(DynamicTree, CopyConstruction)
         Length2{0_m, 0_m},
         Length2(1_m, 1_m)
     };
-    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{nullptr, nullptr, 0u});
+    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u});
     {
         DynamicTree copy{orig};
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
@@ -428,7 +427,7 @@ TEST(DynamicTree, CopyAssignment)
         Length2{0_m, 0_m},
         Length2{1_m, 1_m}
     };
-    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{nullptr, nullptr, 0u});
+    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u});
     EXPECT_EQ(orig.FindReference(pid), DynamicTree::GetInvalidSize());
     {
         DynamicTree copy;
@@ -455,7 +454,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto userdata = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto userdata = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
     const auto pid = foo.CreateLeaf(aabb, userdata);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
@@ -496,7 +495,7 @@ TEST(DynamicTree, FourIdenticalProxies)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
@@ -606,8 +605,7 @@ TEST(DynamicTree, MoveConstruction)
         Length2{-5_m, -2_m}
     };
 
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
-
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
     const auto leaf0 = foo.CreateLeaf(aabb, leafData);
     const auto leaf1 = foo.CreateLeaf(aabb, leafData);
@@ -646,9 +644,8 @@ TEST(DynamicTree, MoveAssignment)
         Length2{-5_m, -2_m}
     };
     
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
-    
     const auto leaf0 = foo.CreateLeaf(aabb, leafData);
     const auto leaf1 = foo.CreateLeaf(aabb, leafData);
     const auto leaf2 = foo.CreateLeaf(aabb, leafData);
@@ -691,7 +688,7 @@ TEST(DynamicTree, CreateLeaf)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
     const auto l1 = foo.CreateLeaf(aabb, leafData);
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
@@ -759,7 +756,7 @@ TEST(DynamicTree, UpdateLeaf)
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
     
     const auto aabb = AABB{Length2{3_m, 1_m}, Length2{-5_m, -2_m}};
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
     
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 1
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 2
@@ -929,21 +926,21 @@ TEST(DynamicTree, QueryFF)
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
-    foo.CreateLeaf(AABB{}, DynamicTree::LeafData{nullptr, nullptr, 0});
+    foo.CreateLeaf(AABB{}, DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0});
     Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
     foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
-                   DynamicTree::LeafData{nullptr, nullptr, 0});
+                   DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0});
     Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
     foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
-                   DynamicTree::LeafData{nullptr, nullptr, 0});
+                   DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0});
     Query(foo, AABB{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
@@ -956,4 +953,3 @@ TEST(DynamicTree, QueryFF)
     });
     EXPECT_EQ(ncalls, 2);
 }
-#endif

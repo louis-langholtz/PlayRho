@@ -422,8 +422,6 @@ public:
 
     /// @brief Computes the body's mass data.
     /// @details This basically accumulates the mass data over all fixtures.
-    /// @note The center is the mass weighted sum of all fixture centers. Divide it by the
-    ///   mass to get the averaged center.
     /// @return accumulated mass data for all fixtures associated with the given body.
     MassData ComputeMassData(BodyID id) const;
 

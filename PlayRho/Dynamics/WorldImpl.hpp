@@ -138,8 +138,7 @@ public:
     /// @brief Clears this world.
     /// @post The contents of this world have all been destroyed and this world's internal
     ///   state reset as though it had just been constructed.
-    /// @throws WrongState if this method is called while the world is locked.
-    void Clear();
+    void Clear() noexcept;
 
     /// @brief Register a destruction listener for fixtures.
     void SetFixtureDestructionListener(FixtureListener listener) noexcept;
@@ -530,20 +529,17 @@ private:
         /// Step complete. @details Used for sub-stepping. @see e_substepping.
         e_stepComplete  = 0x0040,
     };
-    
+
     /// @brief Copies joints.
     void CopyJoints(const std::map<const Body*, Body*>& bodyMap,
                     SizedRange<Joints::const_iterator> range);
-    
-    /// @brief Clears this world without checking the world's state.
-    void InternalClear() noexcept;
-    
+
     /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
     /// @note This may miss collisions involving fast moving bodies and allow them to tunnel
     ///   through each other.
     RegStepStats SolveReg(const StepConf& conf);
-    
+
     /// @brief Solves the given island (regularly).
     ///
     /// @details This:
@@ -813,10 +809,6 @@ private:
     /// @note This sets the proxy count to the child count of the shape.
     static void CreateProxies(FixtureID id, Fixture& fixture, const Transformation& xfm,
                               ProxyQueue& proxies, DynamicTree& tree, Length aabbExtension);
-
-    /// @brief Destroys the given fixture's proxies.
-    /// @note This resets the proxy count to 0.
-    static void DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture) noexcept;
 
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.

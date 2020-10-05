@@ -39,7 +39,14 @@ World::World(const World& other): m_impl{CreateWorldImpl(*other.m_impl)}
 {
 }
 
-World::~World() noexcept = default;
+World::~World() noexcept
+{
+    if (m_impl) {
+        // Call implementation's clear while World still valid to give destruction
+        // listening callbacks chance to run while world data is still valid.
+        m_impl->Clear();
+    }
+}
 
 World& World::operator= (const World& other)
 {

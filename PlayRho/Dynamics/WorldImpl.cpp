@@ -453,21 +453,9 @@ bool ShouldCollide(const Body& lhs, const Body& rhs, BodyID rhsID)
 /// @brief Executes function for all the fixtures of the given body.
 void ForallFixtures(Body& b, std::function<void(FixtureID)> callback)
 {
-    const auto fixtures = b.GetFixtures();
-    std::for_each(begin(fixtures), end(fixtures), [&](const auto& f) {
+    for (const auto& f: b.GetFixtures()) {
         callback(f);
-    });
-}
-
-/// @brief Clears the given body's joints list.
-void ClearJoints(Body& b, std::function<void(JointID)> callback)
-{
-    const auto joints = b.GetJoints();
-    std::for_each(cbegin(joints), cend(joints), [&](const auto& j) {
-        callback(std::get<JointID>(j));
-    });
-    b.ClearJoints();
-    assert(empty(b.GetJoints()));
+    }
 }
 
 /// @brief Reset bodies for solve TOI.
@@ -503,6 +491,25 @@ void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
         contact.UnsetToi();
         contact.SetToiCount(0);
     });
+}
+
+/// @brief Destroys all of the given fixture's proxies.
+void DestroyProxies(Fixture& fixture,
+                    std::vector<DynamicTree::Size>& proxies, DynamicTree& tree) noexcept
+{
+    const auto fixtureProxies = fixture.GetProxies();
+    const auto childCount = size(fixtureProxies);
+    if (childCount > 0)
+    {
+        // Destroy proxies in reverse order from what they were created in.
+        for (auto i = childCount - 1; i < childCount; --i)
+        {
+            const auto treeId = fixtureProxies[i].treeId;
+            EraseFirst(proxies, treeId);
+            tree.DestroyLeaf(treeId);
+        }
+    }
+    fixture.SetProxies(std::vector<FixtureProxy>{});
 }
 
 } // anonymous namespace
@@ -558,57 +565,50 @@ WorldImpl& WorldImpl::copy(const WorldImpl& other)
 
 WorldImpl::~WorldImpl() noexcept
 {
-    InternalClear();
+    Clear();
 }
 
-void WorldImpl::Clear()
-{
-    if (IsLocked())
-    {
-        throw WrongState("Clear: world is locked");
-    }
-    InternalClear();
-}
-
-void WorldImpl::InternalClear() noexcept
+void WorldImpl::Clear() noexcept
 {
     m_proxyKeys.clear();
-    m_proxies.clear();
     m_fixturesForProxies.clear();
     m_bodiesForProxies.clear();
 
-    for_each(cbegin(m_joints), cend(m_joints), [&](const auto& j) {
-        if (m_jointDestructionListener)
-        {
-            m_jointDestructionListener(j);
+    const auto joints = m_joints;
+    m_joints.clear();
+    for_each(cbegin(joints), cend(joints), [this](const auto& id) {
+        if (m_jointDestructionListener) {
+            m_jointDestructionListener(id);
         }
-        Joint::Destroy(static_cast<Joint*>(UnderlyingValue(j)));
     });
-    for_each(begin(m_bodies), end(m_bodies), [&](const auto& body) {
+
+    const auto bodies = m_bodies;
+    m_bodies.clear();
+    for (const auto& body: bodies)
+    {
         auto& b = m_bodyBuffer[UnderlyingValue(body)];
         b.ClearContacts();
         b.ClearJoints();
-        ForallFixtures(b, [&](FixtureID id) {
-            if (m_fixtureDestructionListener)
-            {
-                m_fixtureDestructionListener(id);
+        for (const auto& f: b.GetFixtures()) {
+            if (m_fixtureDestructionListener) {
+                m_fixtureDestructionListener(f);
             }
-            DestroyProxies(m_proxies, m_tree, m_fixtureBuffer[UnderlyingValue(id)]);
-        });
+            DestroyProxies(m_fixtureBuffer[UnderlyingValue(f)], m_proxies, m_tree);
+        }
         b.ClearFixtures();
+    }
+    for_each(cbegin(joints), cend(joints), [](const auto& id) {
+        Joint::Destroy(static_cast<Joint*>(UnderlyingValue(id)));
     });
 
-    for_each(cbegin(m_bodies), cend(m_bodies), [&](const auto& body) {
-        m_bodyBuffer.Free(UnderlyingValue(body));
-    });
-    for_each(cbegin(m_contacts), cend(m_contacts), [&](const Contacts::value_type& c){
-        m_contactBuffer.Free(UnderlyingValue(std::get<ContactID>(c)));
-        m_manifoldBuffer.Free(UnderlyingValue(std::get<ContactID>(c)));
-    });
-
-    m_bodies.clear();
-    m_joints.clear();
+    assert(empty(m_proxies));
     m_contacts.clear();
+
+    m_tree = DynamicTree{}; // TODO: clear instead
+    m_manifoldBuffer.clear();
+    m_contactBuffer.clear();
+    m_fixtureBuffer.clear();
+    m_bodyBuffer.clear();
 }
 
 void WorldImpl::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
@@ -770,35 +770,37 @@ void WorldImpl::Destroy(BodyID id)
         throw WrongState("Destroy: world is locked");
     }
 
-    const auto body = &GetBody(id);
+    auto& body = GetBody(id);
 
     // Delete the attached joints.
-    ClearJoints(*body, [&](JointID jointID) {
-        if (m_jointDestructionListener)
-        {
+    auto joints = body.GetJoints();
+    while (!joints.empty()) {
+        const auto jointID = std::get<JointID>(*begin(joints));
+        if (m_jointDestructionListener) {
             m_jointDestructionListener(jointID);
         }
-        Remove(jointID);
+        Remove(jointID); // removes joint from body!
         Joint::Destroy(static_cast<Joint*>(UnderlyingValue(jointID)));
-    });
+        joints = body.GetJoints();
+    }
 
     // Destroy the attached contacts.
-    body->Erase([&](ContactID contactID) {
-        Destroy(m_contacts, m_endContactListener, contactID, body);
+    body.Erase([this,&body](ContactID contactID) {
+        Destroy(m_contacts, m_endContactListener, contactID, &body);
         return true;
     });
 
     // Delete the attached fixtures. This destroys broad-phase proxies.
-    ForallFixtures(*body, [&](FixtureID fixtureID) {
+    ForallFixtures(body, [this](FixtureID fixtureID) {
         if (m_fixtureDestructionListener)
         {
             m_fixtureDestructionListener(fixtureID);
         }
         EraseAll(m_fixturesForProxies, fixtureID);
-        DestroyProxies(m_proxies, m_tree, m_fixtureBuffer[UnderlyingValue(fixtureID)]);
+        DestroyProxies(m_fixtureBuffer[UnderlyingValue(fixtureID)], m_proxies, m_tree);
         m_fixtureBuffer.Free(UnderlyingValue(fixtureID));
     });
-    body->ClearFixtures();
+    body.ClearFixtures();
 
     Remove(id);
 }
@@ -2337,7 +2339,7 @@ void WorldImpl::CreateAndDestroyProxies(Length extension)
         {
             if (!enabled)
             {
-                DestroyProxies(m_proxies, m_tree, fixture);
+                DestroyProxies(fixture, m_proxies, m_tree);
 
                 // Destroy any contacts associated with the fixture.
                 body.Erase([&](ContactID contactID) {
@@ -2505,7 +2507,7 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
     });
 
     EraseAll(m_fixturesForProxies, id);
-    DestroyProxies(m_proxies, m_tree, fixture);
+    DestroyProxies(fixture, m_proxies, m_tree);
 
     if (!body.RemoveFixture(id))
     {
@@ -2559,23 +2561,6 @@ void WorldImpl::CreateProxies(FixtureID fixtureID, Fixture& fixture, const Trans
     }
 
     fixture.SetProxies(fixtureProxies);
-}
-
-void WorldImpl::DestroyProxies(ProxyQueue& proxies, DynamicTree& tree, Fixture& fixture) noexcept
-{
-    const auto fixtureProxies = fixture.GetProxies();
-    const auto childCount = size(fixtureProxies);
-    if (childCount > 0)
-    {
-        // Destroy proxies in reverse order from what they were created in.
-        for (auto i = childCount - 1; i < childCount; --i)
-        {
-            const auto treeId = fixtureProxies[i].treeId;
-            EraseFirst(proxies, treeId);
-            tree.DestroyLeaf(treeId);
-        }
-    }
-    fixture.SetProxies(std::vector<FixtureProxy>{});
 }
 
 void WorldImpl::InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture) noexcept
@@ -2691,7 +2676,7 @@ MassData WorldImpl::ComputeMassData(BodyID id) const
 {
     auto mass = 0_kg;
     auto I = RotInertia{0};
-    auto center = Length2{};
+    auto weightedCenter = Length2{};
     const auto& body = GetBody(id);
     for (const auto& f: body.GetFixtures())
     {
@@ -2700,10 +2685,11 @@ MassData WorldImpl::ComputeMassData(BodyID id) const
         {
             const auto massData = GetMassData(fixture.GetShape());
             mass += Mass{massData.mass};
-            center += Real{Mass{massData.mass} / Kilogram} * massData.center;
+            weightedCenter += Real{massData.mass / Kilogram} * massData.center;
             I += RotInertia{massData.I};
         }
     }
+    const auto center = (mass > 0_kg)? (weightedCenter / (Real{mass/1_kg})): Length2{};
     return MassData{center, mass, I};
 }
 
