@@ -61,7 +61,7 @@ TEST(MultiShapeConf, DefaultConstruction)
     const auto defaultMassData = MassData{};
     const auto defaultConf = MultiShapeConf{};
     
-    EXPECT_EQ(typeid(foo), typeid(MultiShapeConf));
+    EXPECT_EQ(GetTypeID(foo), GetTypeID<MultiShapeConf>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(GetMassData(foo), defaultMassData);
     EXPECT_EQ(GetDensity(foo), defaultConf.density);
@@ -173,9 +173,9 @@ TEST(MultiShapeConf, Accept)
     const auto foo = MultiShapeConf{};
     ASSERT_FALSE(visited);
     ASSERT_FALSE(shapeVisited);
-    Accept(Shape(foo), [&](const std::type_info &ti, const void *) {
+    Accept(Shape(foo), [&](const TypeID &ti, const void *) {
         visited = true;
-        if (ti == typeid(MultiShapeConf))
+        if (ti == GetTypeID<MultiShapeConf>())
         {
             shapeVisited = true;
         }

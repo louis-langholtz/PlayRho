@@ -38,13 +38,13 @@ class ShapeDrawer
 {
 public:
 
-    void operator() (const std::type_info& ti, const void* data)
+    void operator() (const TypeID& ti, const void* data)
     {
-        if (ti == typeid(DiskShapeConf))
+        if (ti == GetTypeID<DiskShapeConf>())
         {
             Visit(*static_cast<const DiskShapeConf*>(data));
         }
-        else if (ti == typeid(PolygonShapeConf))
+        else if (ti == GetTypeID<PolygonShapeConf>())
         {
             Visit(*static_cast<const PolygonShapeConf*>(data));
         }
@@ -220,7 +220,7 @@ public:
                 {
 #if 0
                     shapeDrawer.m_xf = xfm;
-                    Accept(shape, [&](const std::type_info& ti, const void* data) {
+                    Accept(shape, [&](const TypeID& ti, const void* data) {
                         shapeDrawer(ti, data);
                     });
 #endif

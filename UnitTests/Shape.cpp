@@ -104,15 +104,26 @@ TEST(Shape, DefaultConstruction)
 
 TEST(Shape, types)
 {
+    EXPECT_EQ(GetTypeID<DiskShapeConf>(), GetTypeID<DiskShapeConf>());
+
     const auto sc = DiskShapeConf{1_m};
+    EXPECT_EQ(GetTypeID(sc), GetTypeID<DiskShapeConf>());
+    EXPECT_EQ(GetTypeID<DiskShapeConf>(), GetTypeID(sc));
+    EXPECT_EQ(GetTypeID(sc), GetTypeID(sc));
+    EXPECT_NE(GetTypeID<DiskShapeConf>(), GetTypeID<EdgeShapeConf>());
+    EXPECT_NE(GetTypeID(DiskShapeConf{}), GetTypeID(EdgeShapeConf{}));
+    EXPECT_EQ(GetTypeID(DiskShapeConf{}), GetTypeID(DiskShapeConf{}));
+    EXPECT_EQ(GetTypeID(EdgeShapeConf{}), GetTypeID(EdgeShapeConf{}));
+
     const auto s1 = Shape{sc};
-    ASSERT_EQ(typeid(Shape), typeid(s1));
+    ASSERT_EQ(GetTypeID<Shape>(), GetTypeID(s1));
     const auto& st1 = GetUseTypeInfo(s1);
-    ASSERT_NE(st1, typeid(Shape));
-    EXPECT_EQ(st1, typeid(sc));
+    ASSERT_NE(st1, GetTypeID<Shape>());
+    EXPECT_EQ(st1, GetTypeID(sc));
+
     const auto s2 = Shape{s1}; // This should copy construct
     const auto& st2 = GetUseTypeInfo(s2);
-    EXPECT_EQ(st2, typeid(sc)); // Confirm s2 was a copy construction
+    EXPECT_EQ(st2, GetTypeID(sc)); // Confirm s2 was a copy construction
 }
 
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)

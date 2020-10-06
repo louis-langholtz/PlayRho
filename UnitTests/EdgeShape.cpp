@@ -111,9 +111,9 @@ TEST(EdgeShapeConf, Accept)
     const auto foo = EdgeShapeConf{};
     ASSERT_FALSE(visited);
     ASSERT_FALSE(shapeVisited);
-    Accept(Shape(foo), [&](const std::type_info& ti, const void*) {
+    Accept(Shape(foo), [&](const TypeID& ti, const void*) {
         visited = true;
-        if (ti == typeid(EdgeShapeConf))
+        if (ti == GetTypeID<EdgeShapeConf>())
         {
             shapeVisited = true;
         }

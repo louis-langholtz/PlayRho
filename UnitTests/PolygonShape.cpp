@@ -92,9 +92,9 @@ TEST(PolygonShapeConf, Accept)
     const auto foo = PolygonShapeConf{};
     ASSERT_FALSE(visited);
     ASSERT_FALSE(shapeVisited);
-    Accept(Shape(foo), [&](const std::type_info& ti, const void*) {
+    Accept(Shape(foo), [&](const TypeID& ti, const void*) {
         visited = true;
-        if (ti == typeid(PolygonShapeConf))
+        if (ti == GetTypeID<PolygonShapeConf>())
         {
             shapeVisited = true;
         }
@@ -169,7 +169,7 @@ TEST(PolygonShapeConf, Copy)
 
     const auto copy = shape;
     
-    EXPECT_EQ(typeid(copy), typeid(shape));
+    EXPECT_EQ(GetTypeID(copy), GetTypeID(shape));
     EXPECT_EQ(copy.GetCentroid(), (Length2{}));
     EXPECT_EQ(GetChildCount(copy), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(copy), PolygonShapeConf::GetDefaultVertexRadius());

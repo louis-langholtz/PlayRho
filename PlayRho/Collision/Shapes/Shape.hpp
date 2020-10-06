@@ -23,6 +23,8 @@
 #define PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/TypeID.hpp>
+
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Common/NonNegative.hpp>
@@ -110,12 +112,12 @@ bool Visit(const Shape& shape, void* userData);
 const void* GetData(const Shape& shape) noexcept;
 
 /// @brief Gets the type info of the use of the given shape.
-/// @note This is not the same as calling <code>typeid(Shape)</code>.
+/// @note This is not the same as calling <code>GetTypeID<Shape>()</code>.
 /// @return Type info of the underlying value's type.
-const std::type_info& GetUseTypeInfo(const Shape& shape);
+TypeID GetUseTypeInfo(const Shape& shape);
 
 /// @brief Visitor type alias for underlying shape configuration.
-using TypeInfoVisitor = std::function<void(const std::type_info& ti, const void* data)>;
+using TypeInfoVisitor = std::function<void(const TypeID& ti, const void* data)>;
 
 /// @brief Accepts a visitor.
 /// @details This is the "accept" method definition of a "visitor design pattern"
@@ -248,7 +250,7 @@ public:
         return shape.m_self->GetData_();
     }
     
-    friend const std::type_info& GetUseTypeInfo(const Shape& shape)
+    friend TypeID GetUseTypeInfo(const Shape& shape)
     {
         return shape.m_self->GetUseTypeInfo_();
     }
@@ -317,7 +319,7 @@ private:
         
         /// @brief Gets the use type information.
         /// @return Type info of the underlying value's type.
-        virtual const std::type_info& GetUseTypeInfo_() const = 0;
+        virtual TypeID GetUseTypeInfo_() const = 0;
         
         /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
@@ -403,12 +405,12 @@ private:
             return (GetUseTypeInfo_() == other.GetUseTypeInfo_()) &&
                 (data == *static_cast<const T*>(other.GetData_()));
         }
-        
-        const std::type_info& GetUseTypeInfo_() const override
+
+        TypeID GetUseTypeInfo_() const override
         {
-            return typeid(data_type);
+            return GetTypeID<data_type>();
         }
-        
+
         const void* GetData_() const noexcept override
         {
             // Note address of "data" not necessarily same as address of "this" since
@@ -416,7 +418,7 @@ private:
             return &data;
         }
 
-        T data; ///< Data.
+        data_type data; ///< Data.
     };
 
     std::shared_ptr<const Concept> m_self; ///< Self shared pointer.

@@ -60,7 +60,7 @@ TEST(ChainShapeConf, DefaultConstruction)
     const auto defaultMassData = MassData{};
     const auto defaultConf = ChainShapeConf{};
     
-    EXPECT_EQ(typeid(foo), typeid(ChainShapeConf));
+    EXPECT_EQ(GetTypeID(foo), GetTypeID<ChainShapeConf>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{0});
     EXPECT_EQ(foo.GetVertexCount(), ChildCounter{0});
     EXPECT_EQ(GetMassData(foo), defaultMassData);
@@ -109,9 +109,9 @@ TEST(ChainShapeConf, Accept)
     ASSERT_FALSE(visited);
     ASSERT_FALSE(shapeVisited);
     
-    Accept(Shape(foo), [&](const std::type_info& ti, const void*) {
+    Accept(Shape(foo), [&](const TypeID& ti, const void*) {
         visited = true;
-        if (ti == typeid(ChainShapeConf))
+        if (ti == GetTypeID<ChainShapeConf>())
         {
             shapeVisited = true;
         }
