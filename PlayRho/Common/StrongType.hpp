@@ -24,6 +24,7 @@
 
 #include <utility>
 #include <functional> // for std::hash
+#include <type_traits> // for std::is_nothrow_default_constructible
 
 namespace playrho {
 namespace strongtype {
