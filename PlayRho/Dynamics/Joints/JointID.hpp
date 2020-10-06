@@ -26,7 +26,7 @@
 
 namespace playrho {
 
-/// @brief Body identifier.
+/// @brief Joint identifier.
 using JointID = strongtype::IndexingNamedType<void*, struct JointIdentifier>;
 
 constexpr auto InvalidJointID = static_cast<JointID>(static_cast<JointID::underlying_type>(nullptr));

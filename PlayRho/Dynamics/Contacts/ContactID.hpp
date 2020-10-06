@@ -26,12 +26,12 @@
 
 namespace playrho {
 
-/// @brief Body identifier.
+/// @brief Contact identifier.
 using ContactID = strongtype::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
 
 constexpr auto InvalidContactID = static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
 
-/// @brief Gets an invalid value for the FixtureID type.
+/// @brief Gets an invalid value for the ContactID type.
 template <>
 constexpr ContactID GetInvalid() noexcept
 {

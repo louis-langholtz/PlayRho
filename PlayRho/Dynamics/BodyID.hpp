@@ -31,7 +31,7 @@ using BodyID = strongtype::IndexingNamedType<BodyCounter, struct BodyIdentifier>
 
 constexpr auto InvalidBodyID = static_cast<BodyID>(static_cast<BodyID::underlying_type>(-1));
 
-/// @brief Gets an invalid value for the FixtureID type.
+/// @brief Gets an invalid value for the BodyID type.
 template <>
 constexpr BodyID GetInvalid() noexcept
 {
