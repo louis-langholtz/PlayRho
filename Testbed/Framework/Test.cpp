@@ -423,6 +423,13 @@ Test::Test(Conf conf):
     m_world.SetEndContactListener([&](ContactID id){
         EndContact(id);
     });
+    m_world.SetPreSolveContactListener([this](ContactID id, const Manifold& manifold) {
+        PreSolve(id, manifold);
+    });
+    m_world.SetPostSolveContactListener([this](ContactID id, const ContactImpulsesList& impulses,
+                                               unsigned count){
+        PostSolve(id, impulses, count);
+    });
 }
 
 Test::~Test()
