@@ -194,6 +194,11 @@ void Accept(const World& world, JointID id, JointVisitor& visitor)
     world.Accept(id, visitor);
 }
 
+void Accept(World& world, JointID id, JointVisitor& visitor)
+{
+    world.Accept(id, visitor);
+}
+
 Real GetRatio(const World& world, JointID id)
 {
     Optional<Real> result;

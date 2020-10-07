@@ -330,9 +330,9 @@ bool IsSleepingAllowed(const World& world, BodyID id)
     return world.IsSleepingAllowed(id);
 }
 
-void SetSleepingAllowed(World& world, BodyID, bool value)
+void SetSleepingAllowed(World& world, BodyID id, bool value)
 {
-    // TODO
+    world.SetSleepingAllowed(id, value);
 }
 
 Frequency GetLinearDamping(const World& world, BodyID id)

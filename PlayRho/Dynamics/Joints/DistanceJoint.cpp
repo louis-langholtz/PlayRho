@@ -86,12 +86,11 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
 
     const auto invMassA = bodyConstraintA.GetInvMass();
     const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia(); // L^-2 M^-1 QP^2
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia(); // L^-2 M^-1 QP^2
-
     const auto posA = bodyConstraintA.GetPosition();
     auto velA = bodyConstraintA.GetVelocity();
 
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia(); // L^-2 M^-1 QP^2
     const auto posB = bodyConstraintB.GetPosition();
     auto velB = bodyConstraintB.GetVelocity();
 
@@ -102,18 +101,16 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     m_rB = Rotate(m_localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
     const auto deltaLocation = Length2{(posB.linear + m_rB) - (posA.linear + m_rA)};
 
-    // Handle singularity.
     const auto uvresult = UnitVec::Get(deltaLocation[0], deltaLocation[1]);
     m_u = std::get<UnitVec>(uvresult);
     const auto length = std::get<Length>(uvresult);
 
     const auto crAu = Length{Cross(m_rA, m_u)} / Radian;
     const auto crBu = Length{Cross(m_rB, m_u)} / Radian;
-    const auto invRotMassA = invRotInertiaA * Square(crAu);
-    const auto invRotMassB = invRotInertiaB * Square(crBu);
-    auto invMass = InvMass{invMassA + invRotMassA + invMassB + invRotMassB};
+    const auto invRotMassA = InvMass{invRotInertiaA * Square(crAu)};
+    const auto invRotMassB = InvMass{invRotInertiaB * Square(crBu)};
+    auto invMass = invMassA + invRotMassA + invMassB + invRotMassB;
 
-    // Compute the effective mass matrix.
     m_mass = (invMass != InvMass{0}) ? Real{1} / invMass: 0_kg;
 
     if (m_frequency > 0_Hz)
@@ -155,8 +152,8 @@ void DistanceJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         // Cross(Length2, P) is: M L^2 T^-1
         // inv rotational inertia is: L^-2 M^-1 QP^2
         // Product is: L^-2 M^-1 QP^2 M L^2 T^-1 = QP^2 T^-1
-        const auto LA = Cross(m_rA, P) / Radian;
-        const auto LB = Cross(m_rB, P) / Radian;
+        const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
+        const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
         velA -= Velocity{invMassA * P, invRotInertiaA * LA};
         velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
@@ -174,11 +171,6 @@ bool DistanceJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
-
     auto velA = bodyConstraintA.GetVelocity();
     auto velB = bodyConstraintB.GetVelocity();
 
@@ -193,8 +185,9 @@ bool DistanceJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const S
     const auto P = impulse * m_u;
     const auto LA = Cross(m_rA, P) / Radian;
     const auto LB = Cross(m_rB, P) / Radian;
-    velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-    velB += Velocity{invMassB * P, invRotInertiaB * LB};
+
+    velA -= Velocity{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
+    velB += Velocity{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
 
     bodyConstraintA.SetVelocity(velA);
     bodyConstraintB.SetVelocity(velB);
@@ -214,11 +207,6 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
     auto& bodyConstraintA = At(bodies, GetBodyA());
     auto& bodyConstraintB = At(bodies, GetBodyB());
 
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
-
     auto posA = bodyConstraintA.GetPosition();
     auto posB = bodyConstraintB.GetPosition();
 
@@ -237,9 +225,11 @@ bool DistanceJoint::SolvePositionConstraints(BodyConstraintsMap& bodies,
 
     const auto impulse = -m_mass * C;
     const auto P = impulse * u;
+    const auto LA = Cross(rA, P) / Radian;
+    const auto LB = Cross(rB, P) / Radian;
 
-    posA -= Position{invMassA * P, invRotInertiaA * Cross(rA, P) / Radian};
-    posB += Position{invMassB * P, invRotInertiaB * Cross(rB, P) / Radian};
+    posA -= Position{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
+    posB += Position{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
 
     bodyConstraintA.SetPosition(posA);
     bodyConstraintB.SetPosition(posB);

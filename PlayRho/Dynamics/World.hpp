@@ -554,7 +554,11 @@ public:
     void UnsetImpenetrable(BodyID id);
 
     /// @brief Gets whether or not the identified body allowed to sleep.
+    /// @see SetSleepingAllowed
     bool IsSleepingAllowed(BodyID id) const;
+
+    /// @see IsSleepingAllowed
+    void SetSleepingAllowed(BodyID id, bool value);
 
     /// @brief Gets the container of all contacts attached to the body.
     /// @warning This collection changes during the time step and you may
@@ -665,6 +669,8 @@ public:
     void SetTarget(JointID id, Length2 value);
 
     void Accept(JointID id, JointVisitor& visitor) const;
+
+    void Accept(JointID id, JointVisitor& visitor);
 
     /// Gets the lower joint limit.
     Angle GetAngularLowerLimit(JointID id) const;

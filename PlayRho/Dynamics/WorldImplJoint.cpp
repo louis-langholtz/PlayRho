@@ -342,6 +342,11 @@ void Accept(const WorldImpl& world, JointID id, JointVisitor& visitor)
     world.GetJoint(id).Accept(visitor);
 }
 
+void Accept(WorldImpl& world, JointID id, JointVisitor& visitor)
+{
+    world.GetJoint(id).Accept(visitor);
+}
+
 Length2 GetTarget(const WorldImpl& world, JointID id)
 {
     Optional<Length2> result;

@@ -126,6 +126,9 @@ void SetFrequency(WorldImpl& world, JointID id, Frequency value);
 void Accept(const WorldImpl& world, JointID id, JointVisitor& visitor);
 
 /// @relatedalso WorldImpl
+void Accept(WorldImpl& world, JointID id, JointVisitor& visitor);
+
+/// @relatedalso WorldImpl
 Length2 GetTarget(const WorldImpl& world, JointID id);
 
 /// @relatedalso WorldImpl

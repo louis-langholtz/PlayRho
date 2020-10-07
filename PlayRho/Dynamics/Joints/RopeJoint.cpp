@@ -102,10 +102,10 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
     }
 
     // Compute effective mass.
-    const auto crA = Cross(m_rA, m_u);
-    const auto crB = Cross(m_rB, m_u);
-    const auto invRotMassA = InvMass{invRotInertiaA * Square(crA) / SquareRadian};
-    const auto invRotMassB = InvMass{invRotInertiaB * Square(crB) / SquareRadian};
+    const auto crA = Length{Cross(m_rA, m_u)} / Radian;
+    const auto crB = Length{Cross(m_rB, m_u)} / Radian;
+    const auto invRotMassA = InvMass{invRotInertiaA * Square(crA)};
+    const auto invRotMassB = InvMass{invRotInertiaB * Square(crB)};
     const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
 
     m_mass = (invMass != InvMass{0}) ? Real{1} / invMass : 0_kg;
@@ -118,11 +118,11 @@ void RopeJoint::InitVelocityConstraints(BodyConstraintsMap& bodies,
         const auto P = m_impulse * m_u;
         
         // L * M * L T^-1 / QP is: L^2 M T^-1 QP^-1 which is: AngularMomentum.
-        const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
-        const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
-
-        velA -= Velocity{bodyConstraintA.GetInvMass() * P, invRotInertiaA * crossAP};
-        velB += Velocity{bodyConstraintB.GetInvMass() * P, invRotInertiaB * crossBP};
+        // L * M * L T^-1 is: L^2 M T^-1
+        const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
+        const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
     }
     else
     {
@@ -145,25 +145,24 @@ bool RopeJoint::SolveVelocityConstraints(BodyConstraintsMap& bodies, const StepC
     const auto vpA = velA.linear + GetRevPerpendicular(m_rA) * (velA.angular / Radian);
     const auto vpB = velB.linear + GetRevPerpendicular(m_rB) * (velB.angular / Radian);
     const auto C = m_length - m_maxLength;
-    const auto vpDelta = LinearVelocity2{vpB - vpA};
 
     // Predictive constraint.
-    const auto Cdot = LinearVelocity{Dot(m_u, vpDelta)}
+    const auto Cdot = LinearVelocity{Dot(m_u, vpB - vpA)}
                     + ((C < 0_m)? LinearVelocity{step.GetInvTime() * C}: 0_mps);
 
     auto impulse = -m_mass * Cdot;
     const auto oldImpulse = m_impulse;
     m_impulse = std::min(0_Ns, m_impulse + impulse);
     impulse = m_impulse - oldImpulse;
-
-    const auto P = impulse * m_u;
     
     // L * M * L T^-1 / QP is: L^2 M T^-1 QP^-1 which is: AngularMomentum.
-    const auto crossAP = AngularMomentum{Cross(m_rA, P) / Radian};
-    const auto crossBP = AngularMomentum{Cross(m_rB, P) / Radian}; // L * M * L T^-1 is: L^2 M T^-1
+    // L * M * L T^-1 is: L^2 M T^-1
+    const auto P = impulse * m_u;
+    const auto LA = AngularMomentum{Cross(m_rA, P) / Radian};
+    const auto LB = AngularMomentum{Cross(m_rB, P) / Radian};
 
-    velA -= Velocity{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * crossAP};
-    velB += Velocity{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * crossBP};
+    velA -= Velocity{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
+    velB += Velocity{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
 
     bodyConstraintA.SetVelocity(velA);
     bodyConstraintB.SetVelocity(velB);
@@ -193,13 +192,13 @@ bool RopeJoint::SolvePositionConstraints(BodyConstraintsMap& bodies, const Const
     const auto C = std::clamp(length - m_maxLength, 0_m, conf.maxLinearCorrection);
 
     const auto impulse = -m_mass * C;
-    const auto linImpulse = impulse * u;
-    
-    const auto angImpulseA = Cross(rA, linImpulse) / Radian;
-    const auto angImpulseB = Cross(rB, linImpulse) / Radian;
 
-    posA -= Position{bodyConstraintA.GetInvMass() * linImpulse, bodyConstraintA.GetInvRotInertia() * angImpulseA};
-    posB += Position{bodyConstraintB.GetInvMass() * linImpulse, bodyConstraintB.GetInvRotInertia() * angImpulseB};
+    const auto P = impulse * u;
+    const auto LA = Cross(rA, P) / Radian;
+    const auto LB = Cross(rB, P) / Radian;
+
+    posA -= Position{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
+    posB += Position{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
 
     bodyConstraintA.SetPosition(posA);
     bodyConstraintB.SetPosition(posB);

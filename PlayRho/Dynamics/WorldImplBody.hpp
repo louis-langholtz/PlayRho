@@ -75,7 +75,11 @@ void SetImpenetrable(WorldImpl& world, BodyID id);
 void UnsetImpenetrable(WorldImpl& world, BodyID id);
 
 /// @brief Gets whether or not the identified body is allowed to sleep.
+/// @relatedalso WorldImpl
 bool IsSleepingAllowed(const WorldImpl& world, BodyID id);
+
+/// @relatedalso WorldImpl
+void SetSleepingAllowed(WorldImpl& world, BodyID id, bool value);
 
 /// @relatedalso WorldImpl
 Angle GetAngle(const WorldImpl& world, BodyID id);

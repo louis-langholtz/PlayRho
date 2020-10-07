@@ -142,6 +142,9 @@ Length2 GetAnchorB(const World& world, JointID id);
 void Accept(const World& world, JointID id, JointVisitor& visitor);
 
 /// @relatedalso World
+void Accept(World& world, JointID id, JointVisitor& visitor);
+
+/// @relatedalso World
 Real GetRatio(const World& world, JointID id);
 
 /// @brief Gets the current joint translation.

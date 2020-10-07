@@ -163,6 +163,11 @@ bool World::IsSleepingAllowed(BodyID id) const
     return ::playrho::d2::IsSleepingAllowed(*m_impl, id);
 }
 
+void World::SetSleepingAllowed(BodyID id, bool value)
+{
+    ::playrho::d2::SetSleepingAllowed(*m_impl, id, value);
+}
+
 SizedRange<World::Contacts::const_iterator> World::GetContacts(BodyID id) const
 {
     return ::playrho::d2::GetContacts(*m_impl, id);
@@ -600,6 +605,11 @@ void World::SetTarget(JointID id, Length2 value)
 }
 
 void World::Accept(JointID id, JointVisitor& visitor) const
+{
+    ::playrho::d2::Accept(*m_impl, id, visitor);
+}
+
+void World::Accept(JointID id, JointVisitor& visitor)
 {
     ::playrho::d2::Accept(*m_impl, id, visitor);
 }

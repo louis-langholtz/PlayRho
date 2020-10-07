@@ -84,6 +84,11 @@ bool IsSleepingAllowed(const WorldImpl& world, BodyID id)
     return world.GetBody(id).IsSleepingAllowed();
 }
 
+void SetSleepingAllowed(WorldImpl& world, BodyID id, bool value)
+{
+    world.GetBody(id).SetSleepingAllowed(value);
+}
+
 Angle GetAngle(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).GetAngle();
