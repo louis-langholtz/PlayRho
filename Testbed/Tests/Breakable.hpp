@@ -62,9 +62,6 @@ public:
             m_piece1 = CreateFixture(m_world, m_body1, m_shape1);
             m_piece2 = CreateFixture(m_world, m_body1, m_shape2);
         }
-
-        m_break = false;
-        m_broke = false;
     }
 
     void PostSolve(ContactID, const ContactImpulsesList& impulse, unsigned) override
@@ -148,8 +145,8 @@ public:
     FixtureID m_piece1;
     FixtureID m_piece2;
 
-    bool m_broke;
-    bool m_break;
+    bool m_broke = false;
+    bool m_break = false;
 };
 
 } // namespace testbed
