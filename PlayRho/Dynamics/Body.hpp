@@ -220,12 +220,12 @@ public:
     ///   collision detection.
     void UnsetImpenetrable() noexcept;
 
+    /// @brief Gets whether or not this body allowed to sleep
+    bool IsSleepingAllowed() const noexcept;
+
     /// You can disable sleeping on this body. If you disable sleeping, the
     /// body will be woken.
     void SetSleepingAllowed(bool flag) noexcept;
-
-    /// @brief Gets whether or not this body allowed to sleep
-    bool IsSleepingAllowed() const noexcept;
 
     /// @brief Awakens this body.
     ///
@@ -781,6 +781,11 @@ inline bool Body::IsAccelerable() const noexcept
     return (m_flags & e_accelerationFlag) != 0;
 }
 
+inline bool Body::IsSleepingAllowed() const noexcept
+{
+    return (m_flags & e_autoSleepFlag) != 0;
+}
+
 inline void Body::SetSleepingAllowed(bool flag) noexcept
 {
     if (flag)
@@ -793,11 +798,6 @@ inline void Body::SetSleepingAllowed(bool flag) noexcept
         SetAwakeFlag();
         ResetUnderActiveTime();
     }
-}
-
-inline bool Body::IsSleepingAllowed() const noexcept
-{
-    return (m_flags & e_autoSleepFlag) != 0;
 }
 
 inline SizedRange<Body::Fixtures::const_iterator> Body::GetFixtures() const noexcept
