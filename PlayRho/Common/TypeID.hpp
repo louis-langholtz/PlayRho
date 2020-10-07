@@ -22,23 +22,59 @@
 #define PLAYRHO_COMMON_TYPEID_HPP
 
 #include <PlayRho/Common/StrongType.hpp>
+#include <PlayRho/Common/Templates.hpp> // for GetInvalid, IsValid
 
 namespace playrho {
-namespace detail {
 
+/// @brief Type information.
+/// @note Users may specialize this for their own types.
 template <typename T>
-struct Type
+struct TypeInfo
 {
-    /// Function providing a unique ID - its address - for the type T
-    /// without resorting to using C++ run-time type information (RTTI).
-    static void Id() {
+    /// @brief Gets the name of the templated type.
+    /// @note This is also a static member providing a unique ID, via its address, for
+    ///   the type T without resorting to using C++ run-time type information (RTTI).
+    static const char* name() noexcept {
+#ifdef USE_RTTI
+        // No gaurantee of what the following returns. Could be mangled!
+        // See http://en.cppreference.com/w/cpp/types/type_info/name
+        return typeid(T).name();
+#else // !USE_RTTI
+        return nullptr;
+#endif // USE_RTTI
     }
 };
 
-} // namespace detail
+#ifndef USE_RTTI
+
+template <>
+struct TypeInfo<float>
+{
+    static const char* name() noexcept {
+        return "float";
+    }
+};
+
+template <>
+struct TypeInfo<double>
+{
+    static const char* name() noexcept {
+        return "double";
+    }
+};
+
+template <>
+struct TypeInfo<long double>
+{
+    static const char* name() noexcept {
+        return "long double";
+    }
+};
+
+#endif // USE_RTTI
 
 /// @brief Type identifier.
-using TypeID = strongtype::IndexingNamedType<void*, struct TypeIdentifier>;
+using TypeID = strongtype::IndexingNamedType<const char *(*)() noexcept, struct TypeIdentifier>;
 
 constexpr auto InvalidTypeID =
     static_cast<TypeID>(static_cast<TypeID::underlying_type>(nullptr));
@@ -60,14 +96,28 @@ constexpr bool IsValid(const TypeID& value) noexcept
 template <typename T>
 TypeID GetTypeID()
 {
-    return TypeID{reinterpret_cast<void*>(&detail::Type<std::decay_t<T>>::Id)};
+    return TypeID{&TypeInfo<std::decay_t<T>>::name};
 }
 
 template <typename T>
 TypeID GetTypeID(T)
 {
-    return TypeID{reinterpret_cast<void*>(&detail::Type<std::decay_t<T>>::Id)};
+    return TypeID{&TypeInfo<std::decay_t<T>>::name};
 }
+
+inline const char* GetName(TypeID id) noexcept
+{
+    return (*UnderlyingValue(id))();
+}
+
+template <typename T>
+const char* GetTypeName() noexcept
+{
+    return TypeInfo<T>::name();
+}
+
+/// @brief Visitor type alias for visiting constant typed data.
+using ConstantTypeVisitor = std::function<void(const TypeID& ti, const void* data)>;
 
 } // namespace playrho
 

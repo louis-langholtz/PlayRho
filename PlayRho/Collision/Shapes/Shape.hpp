@@ -107,8 +107,6 @@ bool Visit(const Shape& shape, void* userData);
 
 /// @brief Gets a pointer to the underlying data.
 /// @note Provided for introspective purposes like visitation.
-/// @note Generally speaking, try to avoid using this method unless there's
-///   no other way to access the underlying data.
 const void* GetData(const Shape& shape) noexcept;
 
 /// @brief Gets the type info of the use of the given shape.
@@ -116,14 +114,11 @@ const void* GetData(const Shape& shape) noexcept;
 /// @return Type info of the underlying value's type.
 TypeID GetUseTypeInfo(const Shape& shape);
 
-/// @brief Visitor type alias for underlying shape configuration.
-using TypeInfoVisitor = std::function<void(const TypeID& ti, const void* data)>;
-
 /// @brief Accepts a visitor.
 /// @details This is the "accept" method definition of a "visitor design pattern"
 ///   for doing shape configuration specific types of processing for a constant shape.
 /// @see https://en.wikipedia.org/wiki/Visitor_pattern
-void Accept(const Shape& shape, const TypeInfoVisitor& visitor);
+void Accept(const Shape& shape, const ConstantTypeVisitor& visitor);
 
 /// @brief Equality operator for shape to shape comparisons.
 bool operator== (const Shape& lhs, const Shape& rhs) noexcept;
@@ -255,7 +250,7 @@ public:
         return shape.m_self->GetUseTypeInfo_();
     }
 
-    friend void Accept(const Shape& shape, const TypeInfoVisitor& visitor)
+    friend void Accept(const Shape& shape, const ConstantTypeVisitor& visitor)
     {
         const auto self = shape.m_self;
         visitor(self->GetUseTypeInfo_(), self->GetData_());

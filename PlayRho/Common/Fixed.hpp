@@ -23,6 +23,7 @@
 
 #include <PlayRho/Common/Wider.hpp>
 #include <PlayRho/Common/Templates.hpp>
+#include <PlayRho/Common/TypeID.hpp>
 
 #include <cstdint>
 #include <limits>
@@ -792,15 +793,17 @@ namespace playrho {
         return result == Fixed32::CmpResult::GreaterThan;
     }
     
-    /// @brief Gets the specialized name for the <code>Fixed32</code> type.
-    /// @details Provides an interface to a specialized function for getting C-style
-    ///   null-terminated array of characters that names the <code>Fixed32</code> type.
-    /// @return Non-null pointer to C-style string name of specified type.
     template <>
-    inline const char* GetTypeName<Fixed32>() noexcept
+    struct TypeInfo<Fixed32>
     {
-        return "Fixed32";
-    }
+        /// @brief Gets the specialized name for the <code>Fixed32</code> type.
+        /// @details Provides an interface to a specialized function for getting C-style
+        ///   null-terminated array of characters that names the <code>Fixed32</code> type.
+        /// @return Non-null pointer to C-style string name of specified type.
+        static const char* name() noexcept {
+            return "Fixed32";
+        }
+    };
 
 #ifdef PLAYRHO_INT128
     // Fixed64 free functions.
@@ -900,16 +903,18 @@ namespace playrho {
     template<> struct Wider<Fixed32> {
         using type = Fixed64; ///< Wider type.
     };
-    
-    /// @brief Gets the specialized name for the <code>Fixed64</code> type.
-    /// @details Provides an interface to a specialized function for getting C-style
-    ///   null-terminated array of characters that names the <code>Fixed64</code> type.
-    /// @return Non-null pointer to C-style string name of specified type.
+
     template <>
-    inline const char* GetTypeName<Fixed64>() noexcept
+    struct TypeInfo<Fixed64>
     {
-        return "Fixed64";
-    }
+        /// @brief Gets the specialized name for the <code>Fixed64</code> type.
+        /// @details Provides an interface to a specialized function for getting C-style
+        ///   null-terminated array of characters that names the <code>Fixed64</code> type.
+        /// @return Non-null pointer to C-style string name of specified type.
+        static const char* name() noexcept {
+            return "Fixed64";
+        }
+    };
 
 #endif /* PLAYRHO_INT128 */
 

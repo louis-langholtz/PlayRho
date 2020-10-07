@@ -241,39 +241,6 @@ bool Visit(const T& /*object*/, void* /*userData*/)
     return false;
 }
 
-/// @brief Gets the library defined name for the given type.
-/// @details Provides an interface to a function that can be specialized for getting
-///   a C-style null-terminated array of characters that names the type.
-/// @return Non-null pointer to C-style string name of specified type.
-template <typename T>
-inline const char* GetTypeName() noexcept
-{
-    // No gaurantee of what the following returns. Could be mangled!
-    // See http://en.cppreference.com/w/cpp/types/type_info/name
-    return typeid(T).name();
-}
-
-/// @brief Gets a human recognizable name for the float type.
-template <>
-inline const char* GetTypeName<float>() noexcept
-{
-    return "float";
-}
-
-/// @brief Gets a human recognizable name for the double type.
-template <>
-inline const char* GetTypeName<double>() noexcept
-{
-    return "double";
-}
-
-/// @brief Gets a human recognizable name for the long double type.
-template <>
-inline const char* GetTypeName<long double>() noexcept
-{
-    return "long double";
-}
-
 /// @brief Template for determining if the given type is an equality comparable type.
 /// @note This isn't exactly the same as the "EqualityComparable" named requirement.
 /// @see https://en.cppreference.com/w/cpp/named_req/EqualityComparable
