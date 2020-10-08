@@ -27,7 +27,7 @@
 #include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/Range.hpp>
 #include <PlayRho/Common/UnitVec.hpp>
-#include <PlayRho/Common/TypeID.hpp>
+#include <PlayRho/Common/TypeInfo.hpp>
 
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>

@@ -23,7 +23,7 @@
 #define PLAYRHO_COLLISION_SHAPES_SHAPE_HPP
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/TypeID.hpp>
+#include <PlayRho/Common/TypeInfo.hpp>
 
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>

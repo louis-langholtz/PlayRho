@@ -23,7 +23,7 @@
 
 #include <PlayRho/Common/Wider.hpp>
 #include <PlayRho/Common/Templates.hpp>
-#include <PlayRho/Common/TypeID.hpp>
+#include <PlayRho/Common/TypeInfo.hpp>
 
 #include <cstdint>
 #include <limits>

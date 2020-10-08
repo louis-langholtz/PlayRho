@@ -20,7 +20,7 @@
  */
 
 #include <PlayRho/Common/Version.hpp>
-#include <PlayRho/Common/TypeID.hpp> // for GetTypeName
+#include <PlayRho/Common/TypeInfo.hpp> // for GetTypeName
 #include <PlayRho/Common/Real.hpp>
 
 #include <cstdio>
