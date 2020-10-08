@@ -112,13 +112,7 @@ const void* GetData(const Shape& shape) noexcept;
 /// @brief Gets the type info of the use of the given shape.
 /// @note This is not the same as calling <code>GetTypeID<Shape>()</code>.
 /// @return Type info of the underlying value's type.
-TypeID GetUseTypeInfo(const Shape& shape);
-
-/// @brief Accepts a visitor.
-/// @details This is the "accept" method definition of a "visitor design pattern"
-///   for doing shape configuration specific types of processing for a constant shape.
-/// @see https://en.wikipedia.org/wiki/Visitor_pattern
-void Accept(const Shape& shape, const ConstantTypeVisitor& visitor);
+TypeID GetUseTypeInfo(const Shape& shape) noexcept;
 
 /// @brief Equality operator for shape to shape comparisons.
 bool operator== (const Shape& lhs, const Shape& rhs) noexcept;
@@ -245,15 +239,9 @@ public:
         return shape.m_self->GetData_();
     }
     
-    friend TypeID GetUseTypeInfo(const Shape& shape)
+    friend TypeID GetUseTypeInfo(const Shape& shape) noexcept
     {
         return shape.m_self->GetUseTypeInfo_();
-    }
-
-    friend void Accept(const Shape& shape, const ConstantTypeVisitor& visitor)
-    {
-        const auto self = shape.m_self;
-        visitor(self->GetUseTypeInfo_(), self->GetData_());
     }
     
     friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
@@ -314,7 +302,7 @@ private:
         
         /// @brief Gets the use type information.
         /// @return Type info of the underlying value's type.
-        virtual TypeID GetUseTypeInfo_() const = 0;
+        virtual TypeID GetUseTypeInfo_() const noexcept = 0;
         
         /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
@@ -401,7 +389,7 @@ private:
                 (data == *static_cast<const T*>(other.GetData_()));
         }
 
-        TypeID GetUseTypeInfo_() const override
+        TypeID GetUseTypeInfo_() const noexcept override
         {
             return GetTypeID<data_type>();
         }
@@ -429,6 +417,15 @@ private:
 /// @relatedalso Shape
 /// @ingroup TestPointGroup
 bool TestPoint(const Shape& shape, Length2 point) noexcept;
+
+/// @brief Accepts a visitor.
+/// @details This is the "accept" method definition of a "visitor design pattern"
+///   for doing shape configuration specific types of processing for a constant shape.
+/// @see https://en.wikipedia.org/wiki/Visitor_pattern
+inline void Accept(const Shape& shape, const ConstantTypeVisitor& visitor)
+{
+    visitor(GetUseTypeInfo(shape), GetData(shape));
+}
 
 } // namespace d2
 
