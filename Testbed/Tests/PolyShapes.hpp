@@ -218,12 +218,6 @@ public:
                 const auto overlap = TestOverlap(GetChild(shape, 0), xfm, circleChild, transform);
                 if (overlap >= 0_m2)
                 {
-#if 0
-                    shapeDrawer.m_xf = xfm;
-                    Accept(shape, [&](const TypeID& ti, const void* data) {
-                        shapeDrawer(ti, data);
-                    });
-#endif
                     ++count;
                 }
                 return true;
