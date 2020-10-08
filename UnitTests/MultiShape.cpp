@@ -166,7 +166,6 @@ TEST(MultiShapeConf, Visit)
 
 TEST(MultiShapeConf, Accept)
 {
-#if 0
     auto visited = false;
     auto shapeVisited = false;
     
@@ -182,7 +181,6 @@ TEST(MultiShapeConf, Accept)
     });
     EXPECT_TRUE(visited);
     EXPECT_TRUE(shapeVisited);
-#endif
 }
 
 #if 0

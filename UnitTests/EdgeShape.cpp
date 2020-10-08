@@ -105,7 +105,6 @@ TEST(EdgeShapeConf, Visit)
 
 TEST(EdgeShapeConf, Accept)
 {
-#if 0
     auto visited = false;
     auto shapeVisited = false;
     const auto foo = EdgeShapeConf{};
@@ -120,7 +119,6 @@ TEST(EdgeShapeConf, Accept)
     });
     EXPECT_TRUE(visited);
     EXPECT_TRUE(shapeVisited);
-#endif
 }
 
 #if 0

@@ -86,7 +86,6 @@ TEST(PolygonShapeConf, Visit)
 
 TEST(PolygonShapeConf, Accept)
 {
-#if 0
     auto visited = false;
     auto shapeVisited = false;
     const auto foo = PolygonShapeConf{};
@@ -101,7 +100,6 @@ TEST(PolygonShapeConf, Accept)
     });
     EXPECT_TRUE(visited);
     EXPECT_TRUE(shapeVisited);
-#endif
 }
 
 TEST(PolygonShapeConf, FindLowestRightMostVertex)

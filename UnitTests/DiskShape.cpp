@@ -121,7 +121,6 @@ TEST(DiskShapeConf, Visit)
     EXPECT_EQ(data.visitedMulti, 0);
 }
 
-#if 0
 TEST(DiskShapeConf, Accept)
 {
     auto visited = false;
@@ -139,7 +138,6 @@ TEST(DiskShapeConf, Accept)
     EXPECT_TRUE(visited);
     EXPECT_TRUE(diskVisited);
 }
-#endif
 
 #if 0
 TEST(DiskShapeConf, BaseVisitorForDiskShape)
