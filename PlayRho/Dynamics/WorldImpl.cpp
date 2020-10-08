@@ -1922,8 +1922,8 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
     }
 
     for_each(begin(m_joints), end(m_joints), [&](Joints::value_type& joint) {
-        const auto j = static_cast<Joint*>(UnderlyingValue(joint));
-        GetRef(j).ShiftOrigin(newOrigin);
+        auto& j = *static_cast<Joint*>(UnderlyingValue(joint));
+        j.ShiftOrigin(newOrigin);
     });
 
     m_tree.ShiftOrigin(newOrigin);
