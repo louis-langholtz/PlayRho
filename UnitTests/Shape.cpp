@@ -117,12 +117,12 @@ TEST(Shape, types)
 
     const auto s1 = Shape{sc};
     ASSERT_EQ(GetTypeID<Shape>(), GetTypeID(s1));
-    const auto& st1 = GetUseTypeInfo(s1);
+    const auto& st1 = GetType(s1);
     ASSERT_NE(st1, GetTypeID<Shape>());
     EXPECT_EQ(st1, GetTypeID(sc));
 
     const auto s2 = Shape{s1}; // This should copy construct
-    const auto& st2 = GetUseTypeInfo(s2);
+    const auto& st2 = GetType(s2);
     EXPECT_EQ(st2, GetTypeID(sc)); // Confirm s2 was a copy construction
 }
 

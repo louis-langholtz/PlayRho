@@ -112,7 +112,7 @@ const void* GetData(const Shape& shape) noexcept;
 /// @brief Gets the type info of the use of the given shape.
 /// @note This is not the same as calling <code>GetTypeID<Shape>()</code>.
 /// @return Type info of the underlying value's type.
-TypeID GetUseTypeInfo(const Shape& shape) noexcept;
+TypeID GetType(const Shape& shape) noexcept;
 
 /// @brief Equality operator for shape to shape comparisons.
 bool operator== (const Shape& lhs, const Shape& rhs) noexcept;
@@ -239,9 +239,9 @@ public:
         return shape.m_self->GetData_();
     }
     
-    friend TypeID GetUseTypeInfo(const Shape& shape) noexcept
+    friend TypeID GetType(const Shape& shape) noexcept
     {
-        return shape.m_self->GetUseTypeInfo_();
+        return shape.m_self->GetType_();
     }
     
     friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
@@ -302,7 +302,7 @@ private:
         
         /// @brief Gets the use type information.
         /// @return Type info of the underlying value's type.
-        virtual TypeID GetUseTypeInfo_() const noexcept = 0;
+        virtual TypeID GetType_() const noexcept = 0;
         
         /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
@@ -385,11 +385,11 @@ private:
         {
             // Would be preferable to do this without using any kind of RTTI system.
             // But how would that be done?
-            return (GetUseTypeInfo_() == other.GetUseTypeInfo_()) &&
+            return (GetType_() == other.GetType_()) &&
                 (data == *static_cast<const T*>(other.GetData_()));
         }
 
-        TypeID GetUseTypeInfo_() const noexcept override
+        TypeID GetType_() const noexcept override
         {
             return GetTypeID<data_type>();
         }
@@ -424,7 +424,7 @@ bool TestPoint(const Shape& shape, Length2 point) noexcept;
 /// @see https://en.wikipedia.org/wiki/Visitor_pattern
 inline void Accept(const Shape& shape, const ConstantTypeVisitor& visitor)
 {
-    visitor(GetUseTypeInfo(shape), GetData(shape));
+    visitor(GetType(shape), GetData(shape));
 }
 
 } // namespace d2
