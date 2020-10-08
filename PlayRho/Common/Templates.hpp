@@ -172,62 +172,6 @@ constexpr bool IsValid(const std::size_t& value) noexcept
 
 // Other templates.
 
-/// @brief Gets a pointer for the given variable.
-template <class T>
-constexpr const T* GetPtr(const T* value) noexcept
-{
-    return value;
-}
-
-/// @brief Gets a pointer for the given variable.
-template <class T>
-constexpr T* GetPtr(T* value) noexcept
-{
-    return value;
-}
-
-/// @brief Gets a pointer for the given variable.
-template <class T>
-constexpr const T* GetPtr(const T& value) noexcept
-{
-    return &value;
-}
-
-/// @brief Gets a pointer for the given variable.
-template <class T>
-constexpr T* GetPtr(T& value) noexcept
-{
-    return &value;
-}
-
-/// @brief Gets a reference for the given variable.
-template <class T>
-constexpr const T& GetRef(const T* value) noexcept
-{
-    return *value;
-}
-
-/// @brief Gets a reference for the given variable.
-template <class T>
-constexpr T& GetRef(T* value) noexcept
-{
-    return *value;
-}
-
-/// @brief Gets a reference for the given variable.
-template <class T>
-constexpr const T& GetRef(const T& value) noexcept
-{
-    return value;
-}
-
-/// @brief Gets a reference for the given variable.
-template <class T>
-constexpr T& GetRef(T& value) noexcept
-{
-    return value;
-}
-
 /// @brief Template function for visiting objects.
 /// @note Specialize this function to tie in application specific handling for types
 ///   which don't already have specialized handling. Specializations should always
