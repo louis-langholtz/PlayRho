@@ -101,23 +101,14 @@ TEST(ChainShapeConf, Visit)
     EXPECT_EQ(data.visitedMulti, 0);
 }
 
-TEST(ChainShapeConf, Accept)
+TEST(ChainShapeConf, TypeInfo)
 {
-    auto visited = false;
-    auto shapeVisited = false;
     const auto foo = ChainShapeConf{};
-    ASSERT_FALSE(visited);
-    ASSERT_FALSE(shapeVisited);
-    
-    Accept(Shape(foo), [&](const TypeID& ti, const void*) {
-        visited = true;
-        if (ti == GetTypeID<ChainShapeConf>())
-        {
-            shapeVisited = true;
-        }
-    });
-    EXPECT_TRUE(visited);
-    EXPECT_TRUE(shapeVisited);
+    const auto shape = Shape(foo);
+    EXPECT_EQ(GetType(shape), GetTypeID<ChainShapeConf>());
+    auto copy = ChainShapeConf{};
+    EXPECT_NO_THROW(copy = ShapeCast<ChainShapeConf>(shape));
+    EXPECT_THROW(ShapeCast<int>(shape), std::bad_cast);
 }
 
 TEST(ChainShapeConf, TransformFF)

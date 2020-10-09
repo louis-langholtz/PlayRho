@@ -51,7 +51,7 @@ TEST(Shape, ByteSize)
 TEST(Shape, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<Shape>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<Shape>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<Shape>::value);
     
     // Construction with any 1 supporting argument should succeed...
@@ -100,6 +100,32 @@ TEST(Shape, DefaultConstruction)
     auto t = Shape{};
     EXPECT_TRUE(s == t);
     EXPECT_NO_THROW(Transform(t, Mat22{}));
+    EXPECT_EQ(GetType(s), GetTypeID<void>());
+}
+
+TEST(Shape, Assignment)
+{
+    auto s = Shape{};
+    ASSERT_EQ(GetType(s), GetTypeID<void>());
+    ASSERT_EQ(GetChildCount(s), ChildCounter(0));
+    ASSERT_EQ(GetFriction(s), Real(0));
+    ASSERT_EQ(GetRestitution(s), Real(0));
+    ASSERT_EQ(GetDensity(s), 0_kgpm2);
+
+    const auto friction = Real(0.1);
+    const auto restitution = Real(0.2);
+    const auto density = 0.4_kgpm2;
+    s = DiskShapeConf{1_m}.UseFriction(friction).UseRestitution(restitution).UseDensity(density);
+    EXPECT_NE(GetType(s), GetTypeID<void>());
+    EXPECT_EQ(GetType(s), GetTypeID<DiskShapeConf>());
+    EXPECT_EQ(GetChildCount(s), ChildCounter(1));
+    EXPECT_EQ(GetFriction(s), friction);
+    EXPECT_EQ(GetRestitution(s), restitution);
+    EXPECT_EQ(GetDensity(s), density);
+
+    s = EdgeShapeConf();
+    EXPECT_NE(GetType(s), GetTypeID<void>());
+    EXPECT_EQ(GetType(s), GetTypeID<EdgeShapeConf>());
 }
 
 TEST(Shape, types)
@@ -117,6 +143,7 @@ TEST(Shape, types)
 
     const auto s1 = Shape{sc};
     ASSERT_EQ(GetTypeID<Shape>(), GetTypeID(s1));
+    EXPECT_EQ(GetType(s1), GetTypeID<DiskShapeConf>());
     const auto& st1 = GetType(s1);
     ASSERT_NE(st1, GetTypeID<Shape>());
     EXPECT_EQ(st1, GetTypeID(sc));

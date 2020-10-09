@@ -28,10 +28,12 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Common/NonNegative.hpp>
+#include <PlayRho/Common/InvalidArgument.hpp>
+
 #include <memory>
 #include <functional>
 #include <utility>
-#include <typeinfo>
+#include <stdexcept>
 
 namespace playrho {
 namespace d2 {
@@ -154,8 +156,7 @@ class Shape
 {
 public:
     /// @brief Default constructor.
-    /// @throws std::bad_alloc if there's a failure allocating storage.
-    Shape();
+    Shape() noexcept = default;
 
     /// @brief Initializing constructor.
     /// @param arg Configuration value to construct a shape instance for.
@@ -174,7 +175,7 @@ public:
     {
         // Intentionally empty.
     }
-    
+
     /// @brief Copy constructor.
     Shape(const Shape& other) = default;
     
@@ -187,66 +188,101 @@ public:
     /// @brief Move assignment operator.
     Shape& operator= (Shape&& other) = default;
 
+    template <typename T, typename Tp = std::decay_t<T>,
+        typename = std::enable_if_t<
+            !std::is_same<Tp, Shape>::value && std::is_copy_constructible<Tp>::value
+        >
+    >
+    Shape& operator= (T&& other)
+    {
+        Shape(std::forward<T>(other)).swap(*this);
+        return *this;
+    }
+
+    void swap(Shape& other) noexcept
+    {
+        std::swap(m_self, other.m_self);
+    }
+
+    template <typename T>
+    friend T ShapeCast(const Shape* shape) noexcept
+    {
+        if (!shape || !shape->m_self
+            || (GetType(*shape) != GetTypeID<std::remove_pointer_t<T>>())) {
+            return nullptr;
+        }
+        return static_cast<T>(shape->m_self->GetData_());
+    }
+
     friend ChildCounter GetChildCount(const Shape& shape) noexcept
     {
-        return shape.m_self->GetChildCount_();
+        return shape.m_self? shape.m_self->GetChildCount_(): static_cast<ChildCounter>(0);
     }
 
     friend DistanceProxy GetChild(const Shape& shape, ChildCounter index)
     {
+        if (!shape.m_self) {
+            throw InvalidArgument("index out of range");
+        }
         return shape.m_self->GetChild_(index);
     }
-    
+
     friend MassData GetMassData(const Shape& shape) noexcept
     {
-        return shape.m_self->GetMassData_();
+        return shape.m_self? shape.m_self->GetMassData_(): MassData{};
     }
-    
+
     friend NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx)
     {
+        if (!shape.m_self) {
+            throw InvalidArgument("index out of range");
+        }
         return shape.m_self->GetVertexRadius_(idx);
     }
-    
+
     friend Real GetFriction(const Shape& shape) noexcept
     {
-        return shape.m_self->GetFriction_();
+        return shape.m_self? shape.m_self->GetFriction_(): Real(0);
     }
-    
+
     friend Real GetRestitution(const Shape& shape) noexcept
     {
-        return shape.m_self->GetRestitution_();
+        return shape.m_self? shape.m_self->GetRestitution_(): Real(0);
     }
 
     friend NonNegative<AreaDensity> GetDensity(const Shape& shape) noexcept
     {
-        return shape.m_self->GetDensity_();
+        return shape.m_self? shape.m_self->GetDensity_(): NonNegative<AreaDensity>{0_kgpm2};
     }
-    
+
     friend void Transform(Shape& shape, const Mat22& m)
     {
-        auto copy = shape.m_self->Clone();
-        copy->Transform_(m);
-        shape.m_self = std::unique_ptr<const Shape::Concept>{std::move(copy)};
+        if (shape.m_self) {
+            auto copy = shape.m_self->Clone();
+            copy->Transform_(m);
+            shape.m_self = std::unique_ptr<const Shape::Concept>{std::move(copy)};
+        }
     }
-    
+
     friend bool Visit(const Shape& shape, void* userData)
     {
-        return shape.m_self->Visit_(userData);
+        return shape.m_self? shape.m_self->Visit_(userData): false;
     }
-    
+
     friend const void* GetData(const Shape& shape) noexcept
     {
-        return shape.m_self->GetData_();
+        return shape.m_self? shape.m_self->GetData_(): nullptr;
     }
-    
+
     friend TypeID GetType(const Shape& shape) noexcept
     {
-        return shape.m_self->GetType_();
+        return shape.m_self? shape.m_self->GetType_(): GetTypeID<void>();
     }
-    
+
     friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
     {
-        return lhs.m_self == rhs.m_self || *lhs.m_self == *rhs.m_self;
+        return (lhs.m_self == rhs.m_self) ||
+            ((lhs.m_self && rhs.m_self) && (*lhs.m_self == *rhs.m_self));
     }
 
     friend bool operator!= (const Shape& lhs, const Shape& rhs) noexcept
@@ -255,7 +291,6 @@ public:
     }
 
 private:
-
     /// @brief Internal shape configuration concept.
     /// @note Provides an interface for runtime polymorphism for shape configuration.
     struct Concept
@@ -418,13 +453,13 @@ private:
 /// @ingroup TestPointGroup
 bool TestPoint(const Shape& shape, Length2 point) noexcept;
 
-/// @brief Accepts a visitor.
-/// @details This is the "accept" method definition of a "visitor design pattern"
-///   for doing shape configuration specific types of processing for a constant shape.
-/// @see https://en.wikipedia.org/wiki/Visitor_pattern
-inline void Accept(const Shape& shape, const ConstantTypeVisitor& visitor)
+template <typename T>
+inline auto ShapeCast(const Shape& shape)
 {
-    visitor(GetType(shape), GetData(shape));
+    auto tmp = ShapeCast<std::add_pointer_t<std::add_const_t<T>>>(&shape);
+    if (tmp == nullptr)
+        throw std::bad_cast();
+    return *tmp;
 }
 
 } // namespace d2

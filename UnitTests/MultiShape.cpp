@@ -164,23 +164,14 @@ TEST(MultiShapeConf, Visit)
     EXPECT_EQ(data.visitedMulti, 1);
 }
 
-TEST(MultiShapeConf, Accept)
+TEST(MultiShapeConf, TypeInfo)
 {
-    auto visited = false;
-    auto shapeVisited = false;
-    
     const auto foo = MultiShapeConf{};
-    ASSERT_FALSE(visited);
-    ASSERT_FALSE(shapeVisited);
-    Accept(Shape(foo), [&](const TypeID &ti, const void *) {
-        visited = true;
-        if (ti == GetTypeID<MultiShapeConf>())
-        {
-            shapeVisited = true;
-        }
-    });
-    EXPECT_TRUE(visited);
-    EXPECT_TRUE(shapeVisited);
+    const auto shape = Shape(foo);
+    EXPECT_EQ(GetType(shape), GetTypeID<MultiShapeConf>());
+    auto copy = MultiShapeConf{};
+    EXPECT_NO_THROW(copy = ShapeCast<MultiShapeConf>(shape));
+    EXPECT_THROW(ShapeCast<int>(shape), std::bad_cast);
 }
 
 #if 0

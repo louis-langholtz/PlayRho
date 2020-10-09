@@ -121,22 +121,15 @@ TEST(DiskShapeConf, Visit)
     EXPECT_EQ(data.visitedMulti, 0);
 }
 
-TEST(DiskShapeConf, Accept)
+TEST(DiskShapeConf, TypeInfo)
 {
-    auto visited = false;
-    auto diskVisited = false;
-    Shape foo{DiskShapeConf{}};
-    ASSERT_FALSE(visited);
-    ASSERT_FALSE(diskVisited);
-    Accept(foo, [&](const TypeID &ti, const void *){
-        visited = true;
-        if (ti == GetTypeID<DiskShapeConf>())
-        {
-            diskVisited = true;
-        }
-    });
-    EXPECT_TRUE(visited);
-    EXPECT_TRUE(diskVisited);
+    const auto foo = DiskShapeConf{};
+    const auto shape = Shape(foo);
+    EXPECT_EQ(GetType(shape), GetTypeID<DiskShapeConf>());
+    auto copy = DiskShapeConf{};
+    EXPECT_NE(ShapeCast<const DiskShapeConf*>(&shape), nullptr);
+    EXPECT_NO_THROW(copy = ShapeCast<DiskShapeConf>(shape));
+    EXPECT_THROW(ShapeCast<int>(shape), std::bad_cast);
 }
 
 #if 0
