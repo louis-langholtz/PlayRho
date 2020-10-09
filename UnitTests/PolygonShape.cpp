@@ -90,8 +90,8 @@ TEST(PolygonShapeConf, TypeInfo)
     const auto shape = Shape(foo);
     EXPECT_EQ(GetType(shape), GetTypeID<PolygonShapeConf>());
     auto copy = PolygonShapeConf{};
-    EXPECT_NO_THROW(copy = ShapeCast<PolygonShapeConf>(shape));
-    EXPECT_THROW(ShapeCast<int>(shape), std::bad_cast);
+    EXPECT_NO_THROW(copy = TypeCast<PolygonShapeConf>(shape));
+    EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
 TEST(PolygonShapeConf, FindLowestRightMostVertex)

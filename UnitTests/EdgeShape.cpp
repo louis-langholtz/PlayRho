@@ -109,8 +109,8 @@ TEST(EdgeShapeConf, TypeInfo)
     const auto shape = Shape(foo);
     EXPECT_EQ(GetType(shape), GetTypeID<EdgeShapeConf>());
     auto copy = EdgeShapeConf{};
-    EXPECT_NO_THROW(copy = ShapeCast<EdgeShapeConf>(shape));
-    EXPECT_THROW(ShapeCast<int>(shape), std::bad_cast);
+    EXPECT_NO_THROW(copy = TypeCast<EdgeShapeConf>(shape));
+    EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
 #if 0

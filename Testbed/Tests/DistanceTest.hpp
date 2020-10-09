@@ -120,7 +120,7 @@ public:
             const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
             if (body != InvalidBodyID && fixture != InvalidFixtureID)
             {
-                const auto polygon = ShapeCast<PolygonShapeConf>(GetShape(m_world, fixture));
+                const auto polygon = TypeCast<PolygonShapeConf>(GetShape(m_world, fixture));
                 auto conf = PolygonShapeConf{};
                 conf.Set(polygon.GetVertices());
                 conf.UseVertexRadius(polygon.vertexRadius + RadiusIncrement);
@@ -142,7 +142,7 @@ public:
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= 0_m)
                 {
-                    const auto polygon = ShapeCast<PolygonShapeConf>(shape);
+                    const auto polygon = TypeCast<PolygonShapeConf>(shape);
                     auto conf = PolygonShapeConf{};
                     conf.Set(polygon.GetVertices());
                     conf.UseVertexRadius(newVertexRadius);

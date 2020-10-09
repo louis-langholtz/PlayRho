@@ -270,7 +270,7 @@ public:
     }
 
     template <typename T>
-    friend T ShapeCast(const Shape* shape) noexcept
+    friend T TypeCast(const Shape* shape) noexcept
     {
         if (!shape || !shape->m_self
             || (GetType(*shape) != GetTypeID<std::remove_pointer_t<T>>())) {
@@ -454,9 +454,9 @@ private:
 bool TestPoint(const Shape& shape, Length2 point) noexcept;
 
 template <typename T>
-inline auto ShapeCast(const Shape& shape)
+inline auto TypeCast(const Shape& shape)
 {
-    auto tmp = ShapeCast<std::add_pointer_t<std::add_const_t<T>>>(&shape);
+    auto tmp = TypeCast<std::add_pointer_t<std::add_const_t<T>>>(&shape);
     if (tmp == nullptr)
         throw std::bad_cast();
     return *tmp;

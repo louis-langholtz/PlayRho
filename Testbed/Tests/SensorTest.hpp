@@ -138,7 +138,7 @@ public:
 
             const auto body = m_bodies[i];
             const auto ground = GetBody(m_world, m_sensor);
-            const auto circle = ShapeCast<DiskShapeConf>(GetShape(m_world, m_sensor));
+            const auto circle = TypeCast<DiskShapeConf>(GetShape(m_world, m_sensor));
             const auto center = GetWorldPoint(m_world, ground, circle.GetLocation());
             const auto position = GetLocation(m_world, body);
             const auto d = center - position;

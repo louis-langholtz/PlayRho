@@ -170,8 +170,8 @@ TEST(MultiShapeConf, TypeInfo)
     const auto shape = Shape(foo);
     EXPECT_EQ(GetType(shape), GetTypeID<MultiShapeConf>());
     auto copy = MultiShapeConf{};
-    EXPECT_NO_THROW(copy = ShapeCast<MultiShapeConf>(shape));
-    EXPECT_THROW(ShapeCast<int>(shape), std::bad_cast);
+    EXPECT_NO_THROW(copy = TypeCast<MultiShapeConf>(shape));
+    EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
 #if 0

@@ -107,8 +107,8 @@ TEST(ChainShapeConf, TypeInfo)
     const auto shape = Shape(foo);
     EXPECT_EQ(GetType(shape), GetTypeID<ChainShapeConf>());
     auto copy = ChainShapeConf{};
-    EXPECT_NO_THROW(copy = ShapeCast<ChainShapeConf>(shape));
-    EXPECT_THROW(ShapeCast<int>(shape), std::bad_cast);
+    EXPECT_NO_THROW(copy = TypeCast<ChainShapeConf>(shape));
+    EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
 TEST(ChainShapeConf, TransformFF)
