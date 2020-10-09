@@ -414,7 +414,7 @@ TEST(Body, CreateAndDestroyFixture)
         auto fixture = world.CreateFixture(body, shape, FixtureConf{}, false);
         const auto fshape = GetShape(world, fixture);
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
-        EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
+        EXPECT_EQ(ShapeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
         EXPECT_FALSE(GetFixtures(world, body).empty());
         {
             auto i = 0;
@@ -448,7 +448,7 @@ TEST(Body, CreateAndDestroyFixture)
         auto fixture = world.CreateFixture(body, shape, FixtureConf{}, false);
         const auto fshape = GetShape(world, fixture);
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
-        EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
+        EXPECT_EQ(ShapeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
         EXPECT_FALSE(GetFixtures(world, body).empty());
         {
             auto i = 0;

@@ -120,10 +120,10 @@ public:
             const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
             if (body != InvalidBodyID && fixture != InvalidFixtureID)
             {
-                const auto polygon = static_cast<const PolygonShapeConf*>(GetData(GetShape(m_world, fixture)));
+                const auto polygon = ShapeCast<PolygonShapeConf>(GetShape(m_world, fixture));
                 auto conf = PolygonShapeConf{};
-                conf.Set(polygon->GetVertices());
-                conf.UseVertexRadius(polygon->vertexRadius + RadiusIncrement);
+                conf.Set(polygon.GetVertices());
+                conf.UseVertexRadius(polygon.vertexRadius + RadiusIncrement);
                 const auto newf = CreateFixture(m_world, body, Shape{conf});
                 fixtures.erase(begin(fixtures));
                 fixtures.insert(newf);
@@ -142,9 +142,9 @@ public:
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= 0_m)
                 {
-                    const auto polygon = static_cast<const PolygonShapeConf*>(GetData(shape));
+                    const auto polygon = ShapeCast<PolygonShapeConf>(shape);
                     auto conf = PolygonShapeConf{};
-                    conf.Set(polygon->GetVertices());
+                    conf.Set(polygon.GetVertices());
                     conf.UseVertexRadius(newVertexRadius);
                     auto newf = CreateFixture(m_world, body, Shape{conf});
                     if (newf != InvalidFixtureID)

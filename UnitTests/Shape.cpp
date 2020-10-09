@@ -33,19 +33,12 @@ using namespace playrho::d2;
 
 TEST(Shape, ByteSize)
 {
-    switch (sizeof(Real))
-    {
-        case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(Shape), std::size_t(8));
+    EXPECT_EQ(sizeof(Shape), std::size_t(8));
 #else
-            EXPECT_EQ(sizeof(Shape), std::size_t(16));
+    EXPECT_EQ(sizeof(Shape), std::size_t(16));
 #endif
-            break;
-        case  8: EXPECT_EQ(sizeof(Shape), std::size_t(16)); break;
-        case 16: EXPECT_EQ(sizeof(Shape), std::size_t(16)); break;
-        default: FAIL(); break;
-    }
+    EXPECT_EQ(sizeof(Shape), sizeof(std::shared_ptr<int>));
 }
 
 TEST(Shape, Traits)
