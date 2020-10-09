@@ -204,16 +204,6 @@ public:
         std::swap(m_self, other.m_self);
     }
 
-    template <typename T>
-    friend T ShapeCast(const Shape* shape) noexcept
-    {
-        if (!shape || !shape->m_self
-            || (GetType(*shape) != GetTypeID<std::remove_pointer_t<T>>())) {
-            return nullptr;
-        }
-        return static_cast<T>(shape->m_self->GetData_());
-    }
-
     friend ChildCounter GetChildCount(const Shape& shape) noexcept
     {
         return shape.m_self? shape.m_self->GetChildCount_(): static_cast<ChildCounter>(0);
@@ -277,6 +267,16 @@ public:
     friend TypeID GetType(const Shape& shape) noexcept
     {
         return shape.m_self? shape.m_self->GetType_(): GetTypeID<void>();
+    }
+
+    template <typename T>
+    friend T ShapeCast(const Shape* shape) noexcept
+    {
+        if (!shape || !shape->m_self
+            || (GetType(*shape) != GetTypeID<std::remove_pointer_t<T>>())) {
+            return nullptr;
+        }
+        return static_cast<T>(shape->m_self->GetData_());
     }
 
     friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
