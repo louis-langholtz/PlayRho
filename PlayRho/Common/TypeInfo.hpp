@@ -24,6 +24,10 @@
 #include <PlayRho/Common/StrongType.hpp>
 #include <PlayRho/Common/Templates.hpp> // for GetInvalid, IsValid
 
+#ifdef USE_RTTI
+#include <typeinfo>
+#endif // USE_RTTI
+
 namespace playrho {
 
 /// @brief Type information.
@@ -115,9 +119,6 @@ const char* GetTypeName() noexcept
 {
     return TypeInfo<T>::name();
 }
-
-/// @brief Visitor type alias for visiting constant typed data.
-using ConstantTypeVisitor = std::function<void(const TypeID& ti, const void* data)>;
 
 } // namespace playrho
 
