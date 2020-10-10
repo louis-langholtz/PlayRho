@@ -21,24 +21,17 @@
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-#include <PlayRho/Dynamics/Joints/JointConf.hpp>
-#include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
-#include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
-#include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
-#include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+#include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 
 #include <PlayRho/Defines.hpp>
@@ -50,63 +43,18 @@
 namespace playrho {
 namespace d2 {
 
-Joint* Joint::Create(const JointConf& def)
-{
-    switch (def.type)
-    {
-        case JointType::Distance:
-            return Create<DistanceJoint>(static_cast<const DistanceJointConf&>(def));
-        case JointType::Target:
-            return Create<TargetJoint>(static_cast<const TargetJointConf&>(def));
-        case JointType::Prismatic:
-            return Create<PrismaticJoint>(static_cast<const PrismaticJointConf&>(def));
-        case JointType::Revolute:
-            return Create<RevoluteJoint>(static_cast<const RevoluteJointConf&>(def));
-        case JointType::Pulley:
-            return Create<PulleyJoint>(static_cast<const PulleyJointConf&>(def));
-        case JointType::Gear:
-            return Create<GearJoint>(static_cast<const GearJointConf&>(def));
-        case JointType::Wheel:
-            return Create<WheelJoint>(static_cast<const WheelJointConf&>(def));
-        case JointType::Weld:
-            return Create<WeldJoint>(static_cast<const WeldJointConf&>(def));
-        case JointType::Friction:
-            return Create<FrictionJoint>(static_cast<const FrictionJointConf&>(def));
-        case JointType::Rope:
-            return Create<RopeJoint>(static_cast<const RopeJointConf&>(def));
-        case JointType::Motor:
-            return Create<MotorJoint>(static_cast<const MotorJointConf&>(def));
-        case JointType::Unknown:
-            break;
-    }
-    throw InvalidArgument("Joint::Create: Unknown joint type");
-}
-
-Joint::FlagsType Joint::GetFlags(const JointConf& def) noexcept
-{
-    auto flags = Joint::FlagsType{0};
-    if (def.collideConnected)
-    {
-        flags |= e_collideConnectedFlag;
-    }
-    return flags;
-}
-
-Joint::Joint(const JointConf& def):
-    m_userData{def.userData}, m_bodyA{def.bodyA}, m_bodyB{def.bodyB}, m_flags{GetFlags(def)}
-{
-    // Intentionally empty.
-}
-
-void Joint::Destroy(const Joint* joint) noexcept
-{
-    delete joint;
-}
-
-bool Joint::IsOkay(const JointConf& def) noexcept
-{
-    return def.bodyA != def.bodyB;
-}
+static_assert(std::is_nothrow_default_constructible<Joint>::value,
+              "Joint must be nothrow default constructible!");
+static_assert(std::is_copy_constructible<Joint>::value,
+              "Joint must be copy constructible!");
+static_assert(std::is_nothrow_move_constructible<Joint>::value,
+              "Joint must be nothrow move constructible!");
+static_assert(std::is_copy_assignable<Joint>::value,
+              "Joint must be copy assignable!");
+static_assert(std::is_nothrow_move_assignable<Joint>::value,
+              "Joint must be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<Joint>::value,
+              "Joint must be nothrow destructible!");
 
 // Free functions...
 
@@ -115,56 +63,355 @@ BodyConstraint& At(std::vector<BodyConstraint>& container, BodyID key)
     return container.at(UnderlyingValue(key));
 }
 
-const char* ToString(Joint::LimitState val) noexcept
-{
-    switch (val)
-    {
-        case Joint::e_atLowerLimit: return "at lower";
-        case Joint::e_atUpperLimit: return "at upper";
-        case Joint::e_equalLimits: return "equal";
-        case Joint::e_inactiveLimit: break;
-    }
-    assert(val == Joint::e_inactiveLimit);
-    return "inactive";
-}
-
 Angle GetReferenceAngle(const Joint& object)
 {
-    Optional<Angle> result;
-    FunctionalJointVisitor visitor;
-    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
-        result = j.GetReferenceAngle();
-    };
-    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
-        result = j.GetReferenceAngle();
-    };
-    visitor.get<const WeldJoint&>() = [&result](const WeldJoint& j) {
-        result = j.GetReferenceAngle();
-    };
-    object.Accept(visitor);
-    if (!result.has_value())
-    {
-        throw std::invalid_argument("joint type doesn't provide a reference angle");
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetReferenceAngle(TypeCast<RevoluteJointConf>(object));
     }
-    return *result;
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetReferenceAngle(TypeCast<PrismaticJointConf>(object));
+    }
+    if (type == GetTypeID<WeldJointConf>()) {
+        return GetReferenceAngle(TypeCast<WeldJointConf>(object));
+    }
+    throw std::invalid_argument("GetReferenceAngle not supported by joint type");
 }
 
-UnitVec GetLocalAxisA(const Joint& object)
+UnitVec GetLocalXAxisA(const Joint& object)
 {
-    Optional<UnitVec> result;
-    FunctionalJointVisitor visitor;
-    visitor.get<const WheelJoint&>() = [&result](const WheelJoint& j) {
-        result = j.GetLocalAxisA();
-    };
-    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
-        result = j.GetLocalAxisA();
-    };
-    object.Accept(visitor);
-    if (!result.has_value())
-    {
-        throw std::invalid_argument("joint type doesn't provide a local axis A");
+    const auto type = GetType(object);
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetLocalXAxisA(TypeCast<WheelJointConf>(object));
     }
-    return *result;
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetLocalXAxisA(TypeCast<PrismaticJointConf>(object));
+    }
+    throw std::invalid_argument("GetLocalXAxisA not supported by joint type");
+}
+
+UnitVec GetLocalYAxisA(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetLocalYAxisA(TypeCast<WheelJointConf>(object));
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetLocalYAxisA(TypeCast<PrismaticJointConf>(object));
+    }
+    throw std::invalid_argument("GetLocalYAxisA not supported by joint type");
+}
+
+AngularVelocity GetMotorSpeed(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetMotorSpeed(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetMotorSpeed(TypeCast<PrismaticJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetMotorSpeed(TypeCast<WheelJointConf>(object));
+    }
+    throw std::invalid_argument("GetMotorSpeed not supported by joint type");
+}
+
+void SetMotorSpeed(Joint& object, AngularVelocity value)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        object = TypeCast<RevoluteJointConf>(object).UseMotorSpeed(value);
+        return;
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        object = TypeCast<PrismaticJointConf>(object).UseMotorSpeed(value);
+        return;
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        object = TypeCast<WheelJointConf>(object).UseMotorSpeed(value);
+        return;
+    }
+    throw std::invalid_argument("SetMotorSpeed not supported by joint type!");
+}
+
+RotInertia GetAngularMass(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<FrictionJointConf>()) {
+        return GetAngularMass(TypeCast<FrictionJointConf>(object));
+    }
+    if (type == GetTypeID<MotorJointConf>()) {
+        return GetAngularMass(TypeCast<MotorJointConf>(object));
+    }
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetAngularMass(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetAngularMass(TypeCast<WheelJointConf>(object));
+    }
+    throw std::invalid_argument("GetAngularMass not supported by joint type");
+}
+
+Torque GetMaxMotorTorque(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetMaxMotorTorque(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetMaxMotorTorque(TypeCast<WheelJointConf>(object));
+    }
+    throw std::invalid_argument("GetMaxMotorTorque not supported by joint type");
+}
+
+void SetMaxMotorTorque(Joint& object, Torque value)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        object = TypeCast<RevoluteJointConf>(object).UseMaxMotorTorque(value);
+        return;
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        object = TypeCast<WheelJointConf>(object).UseMaxMotorTorque(value);
+        return;
+    }
+    throw std::invalid_argument("SetMaxMotorTorque not supported by joint type!");
+}
+
+Real GetRatio(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<GearJointConf>()) {
+        return GetRatio(TypeCast<GearJointConf>(object));
+    }
+    if (type == GetTypeID<PulleyJointConf>()) {
+        return GetRatio(TypeCast<PulleyJointConf>(object));
+    }
+    throw std::invalid_argument("GetRatio not supported by joint type!");
+}
+
+Frequency GetFrequency(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<DistanceJointConf>()) {
+        return GetFrequency(TypeCast<DistanceJointConf>(object));
+    }
+    if (type == GetTypeID<TargetJointConf>()) {
+        return GetFrequency(TypeCast<TargetJointConf>(object));
+    }
+    if (type == GetTypeID<WeldJointConf>()) {
+        return GetFrequency(TypeCast<WeldJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetFrequency(TypeCast<WheelJointConf>(object));
+    }
+    throw std::invalid_argument("GetFrequency not supported by joint type");
+}
+
+void SetFrequency(Joint& object, Frequency value)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<DistanceJointConf>()) {
+        object = TypeCast<DistanceJointConf>(object).UseFrequency(value);
+        return;
+    }
+    if (type == GetTypeID<TargetJointConf>()) {
+        object = TypeCast<TargetJointConf>(object).UseFrequency(value);
+        return;
+    }
+    if (type == GetTypeID<WeldJointConf>()) {
+        object = TypeCast<WeldJointConf>(object).UseFrequency(value);
+        return;
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        object = TypeCast<WheelJointConf>(object).UseFrequency(value);
+        return;
+    }
+    throw std::invalid_argument("SetFrequency not supported by joint type!");
+}
+
+AngularMomentum GetAngularMotorImpulse(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetAngularMotorImpulse(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetAngularReaction(TypeCast<WheelJointConf>(object));
+    }
+    throw std::invalid_argument("GetAngularMotorImpulse not supported by joint type");
+}
+
+Length2 GetTarget(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<TargetJointConf>()) {
+        return GetTarget(TypeCast<TargetJointConf>(object));
+    }
+    throw std::invalid_argument("GetTarget not supported by joint type");
+}
+
+void SetTarget(Joint& object, Length2 value)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<TargetJointConf>()) {
+        object = TypeCast<TargetJointConf>(object).UseTarget(value);
+        return;
+    }
+    throw std::invalid_argument("SetTarget not supported by joint type");
+}
+
+Angle GetAngularLowerLimit(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetAngularLowerLimit(TypeCast<RevoluteJointConf>(object));
+    }
+    throw std::invalid_argument("GetAngularLowerLimit not supported by joint type!");
+}
+
+Angle GetAngularUpperLimit(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetAngularUpperLimit(TypeCast<RevoluteJointConf>(object));
+    }
+    throw std::invalid_argument("GetAngularUpperLimit not supported by joint type!");
+}
+
+void SetAngularLimits(Joint& object, Angle lower, Angle upper)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        object = TypeCast<RevoluteJointConf>(object).UseLowerAngle(lower).UseUpperAngle(upper);
+        return;
+    }
+    throw std::invalid_argument("SetAngularLimits not supported by joint type!");
+}
+
+bool IsLimitEnabled(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return IsLimitEnabled(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return IsLimitEnabled(TypeCast<PrismaticJointConf>(object));
+    }
+    throw std::invalid_argument("IsLimitEnabled not supported by joint type!");
+}
+
+void EnableLimit(Joint& object, bool value)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        object = TypeCast<RevoluteJointConf>(object).UseEnableLimit(value);
+        return;
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        object = TypeCast<PrismaticJointConf>(object).UseEnableLimit(value);
+        return;
+    }
+    throw std::invalid_argument("EnableLimit not supported by joint type!");
+}
+
+bool IsMotorEnabled(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return IsMotorEnabled(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return IsMotorEnabled(TypeCast<PrismaticJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return IsMotorEnabled(TypeCast<WheelJointConf>(object));
+    }
+    throw std::invalid_argument("IsMotorEnabled not supported by joint type!");
+}
+
+void EnableMotor(Joint& object, bool value)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        object = TypeCast<RevoluteJointConf>(object).UseEnableMotor(value);
+        return;
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        object = TypeCast<PrismaticJointConf>(object).UseEnableMotor(value);
+        return;
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        object = TypeCast<WheelJointConf>(object).UseEnableMotor(value);
+        return;
+    }
+    throw std::invalid_argument("EnableMotor not supported by joint type!");
+}
+
+Length2 GetLinearOffset(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<MotorJointConf>()) {
+        return GetLinearOffset(TypeCast<MotorJointConf>(object));
+    }
+    throw std::invalid_argument("GetLinearOffset not supported by joint type!");
+}
+
+void SetLinearOffset(Joint& object, Length2 value)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<MotorJointConf>()) {
+        object = TypeCast<MotorJointConf>(object).UseLinearOffset(value);
+        return;
+    }
+    throw std::invalid_argument("SetLinearOffset not supported by joint type!");
+}
+
+Angle GetAngularOffset(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<MotorJointConf>()) {
+        return GetAngularOffset(TypeCast<MotorJointConf>(object));
+    }
+    throw std::invalid_argument("GetAngularOffset not supported by joint type!");
+}
+
+void SetAngularOffset(Joint& object, Angle value)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<MotorJointConf>()) {
+        object = TypeCast<MotorJointConf>(object).UseAngularOffset(value);
+        return;
+    }
+    throw std::invalid_argument("SetAngularOffset not supported by joint type!");
+}
+
+Length2 GetGroundAnchorA(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<PulleyJointConf>()) {
+        return GetGroundAnchorA(TypeCast<PulleyJointConf>(object));
+    }
+    throw std::invalid_argument("GetGroundAnchorA not supported by joint type!");
+}
+
+Length2 GetGroundAnchorB(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<PulleyJointConf>()) {
+        return GetGroundAnchorB(TypeCast<PulleyJointConf>(object));
+    }
+    throw std::invalid_argument("GetGroundAnchorB not supported by joint type!");
+}
+
+Momentum GetLinearMotorImpulse(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetLinearMotorImpulse(TypeCast<PrismaticJointConf>(object));
+    }
+    throw std::invalid_argument("GetLinearMotorImpulse not supported by joint type!");
 }
 
 } // namespace d2

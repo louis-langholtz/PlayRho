@@ -98,7 +98,7 @@ constexpr bool IsValid(const TypeID& value) noexcept
 }
 
 template <typename T>
-TypeID GetTypeID()
+constexpr TypeID GetTypeID()
 {
     return TypeID{&TypeInfo<std::decay_t<T>>::name};
 }

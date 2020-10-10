@@ -23,13 +23,18 @@
 #define PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
+
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+struct ConstraintSolverConf;
+class StepConf;
+
 namespace d2 {
 
-class WeldJoint;
 class World;
+class BodyConstraint;
 
 /// @brief Weld joint definition.
 /// @note A weld joint essentially glues two bodies together. A weld joint may
@@ -43,7 +48,7 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     /// @brief Super type.
     using super = JointBuilder<WeldJointConf>;
 
-    constexpr WeldJointConf() noexcept: super{JointType::Weld} {}
+    constexpr WeldJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, and reference angle using a world
@@ -56,10 +61,18 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
                   Length2 laA = Length2{}, Length2 laB = Length2{}, Angle ra = 0_deg) noexcept;
 
     /// @brief Uses the given frequency value.
-    constexpr WeldJointConf& UseFrequency(Frequency v) noexcept;
+    constexpr auto& UseFrequency(Frequency v) noexcept
+    {
+        frequency = v;
+        return *this;
+    }
 
     /// @brief Uses the given damping ratio.
-    constexpr WeldJointConf& UseDampingRatio(Real v) noexcept;
+    constexpr auto& UseDampingRatio(Real v) noexcept
+    {
+        dampingRatio = v;
+        return *this;
+    }
 
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
@@ -78,26 +91,66 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.
     Real dampingRatio = 0;
+
+    // Solver shared
+    Vec3 impulse = Vec3{}; ///< Impulse.
+
+    // Solver temp
+    InvRotInertia gamma = {}; ///< Gamma.
+    AngularVelocity bias = {}; ///< Bias.
+    Length2 rA = {}; ///< Relative A.
+    Length2 rB = {}; ///< Relative B.
+    Mat33 mass = {}; ///< Mass.
 };
 
-constexpr WeldJointConf& WeldJointConf::UseFrequency(Frequency v) noexcept
-{
-    frequency = v;
-    return *this;
-}
-
-constexpr WeldJointConf& WeldJointConf::UseDampingRatio(Real v) noexcept
-{
-    dampingRatio = v;
-    return *this;
-}
-
 /// @brief Gets the definition data for the given joint.
-/// @relatedalso WeldJoint
-WeldJointConf GetWeldJointConf(const WeldJoint& joint) noexcept;
+/// @relatedalso Joint
+WeldJointConf GetWeldJointConf(const Joint& joint);
 
+/// @relatedalso World
 WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB,
                                const Length2 anchor = Length2{});
+
+/// @relatedalso WeldJointConf
+constexpr Momentum2 GetLinearReaction(const WeldJointConf& object) noexcept
+{
+    return Momentum2{GetX(object.impulse) * NewtonSecond, GetY(object.impulse) * NewtonSecond};
+}
+
+/// @relatedalso WeldJointConf
+constexpr AngularMomentum GetAngularReaction(const WeldJointConf& object) noexcept
+{
+    // AngularMomentum is L^2 M T^-1 QP^-1
+    return AngularMomentum{GetZ(object.impulse) * SquareMeter * Kilogram / (Second * Radian)};
+}
+
+/// @relatedalso WeldJointConf
+constexpr auto ShiftOrigin(WeldJointConf&, Length2) noexcept
+{
+    return false;
+}
+
+/// @brief Initializes velocity constraint data based on the given solver data.
+/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @see SolveVelocity.
+/// @relatedalso WeldJointConf
+void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf& conf);
+
+/// @brief Solves velocity constraint.
+/// @pre <code>InitVelocity</code> has been called.
+/// @see InitVelocity.
+/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+/// @relatedalso WeldJointConf
+bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step);
+
+/// @brief Solves the position constraint.
+/// @return <code>true</code> if the position errors are within tolerance.
+/// @relatedalso WeldJointConf
+bool SolvePosition(const WeldJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf);
 
 } // namespace d2
 } // namespace playrho

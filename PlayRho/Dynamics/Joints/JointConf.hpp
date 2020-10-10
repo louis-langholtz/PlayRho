@@ -30,26 +30,16 @@
 namespace playrho {
 namespace d2 {
 
-class Joint;
-
-/// @brief Abstract base Joint definition class.
+/// @brief Abstract base joint definition class.
 /// @details Joint definitions are used to construct joints.
 /// @note This class is not meant to be directly instantiated; it is meant
 ///   to be inherited from.
 struct JointConf
 {
-    /// Deleted default constructor for abstract base class.
-    JointConf() = delete; // deleted to prevent direct instantiation.
-    
-    /// @brief Initializing constructor.
-    constexpr explicit JointConf(JointType t) noexcept : type{t}
-    {
-        // Intentionally empty.
-    }
-    
-    /// @brief Type of the joint is set automatically for concrete joint types.
-    JointType type = JointType::Unknown;
-    
+    /// @brief User data.
+    /// @details Use this to attach application specific data to your joints.
+    void* userData = nullptr;
+
     /// @brief 1st attached body.
     BodyID bodyA = InvalidBodyID;
     
@@ -59,11 +49,51 @@ struct JointConf
     /// @brief Collide connected.
     /// @details Set this flag to true if the attached bodies should collide.
     bool collideConnected = false;
-    
-    /// @brief User data.
-    /// @details Use this to attach application specific data to your joints.
-    void* userData = nullptr;
+
+    bool islanded = false;
 };
+
+constexpr void* GetUserData(const JointConf& object) noexcept
+{
+    return object.userData;
+}
+
+constexpr void SetUserData(JointConf& object, void* value) noexcept
+{
+    object.userData = value;
+}
+
+/// @brief Gets the first body attached to this joint.
+constexpr BodyID GetBodyA(const JointConf& object) noexcept
+{
+    return object.bodyA;
+}
+
+/// @brief Gets the second body attached to this joint.
+constexpr BodyID GetBodyB(const JointConf& object) noexcept
+{
+    return object.bodyB;
+}
+
+constexpr bool GetCollideConnected(const JointConf& object) noexcept
+{
+    return object.collideConnected;
+}
+
+constexpr bool IsIslanded(const JointConf& object) noexcept
+{
+    return object.islanded;
+}
+
+constexpr void SetIslanded(JointConf& object) noexcept
+{
+    object.islanded = true;
+}
+
+constexpr void UnsetIslanded(JointConf& object) noexcept
+{
+    object.islanded = false;
+}
 
 /// @brief Joint builder definition structure.
 /// @details This is a builder structure of chainable methods for building a shape
@@ -75,19 +105,19 @@ struct JointConf
 template <class T>
 struct JointBuilder : JointConf
 {
-    
     /// @brief Value type.
     using value_type = T;
 
     /// @brief Reference type.
     using reference = value_type&;
-    
-    /// @brief Initializing constructor.
-    constexpr explicit JointBuilder(JointType t) noexcept : JointConf{t}
+
+    /// @brief Use value for user data setting.
+    constexpr reference UseUserData(void* v) noexcept
     {
-        // Intentionally empty.
+        userData = v;
+        return static_cast<reference>(*this);
     }
-    
+
     /// @brief Use value for body A setting.
     constexpr reference UseBodyA(BodyID b) noexcept
     {
@@ -101,25 +131,172 @@ struct JointBuilder : JointConf
         bodyB = b;
         return static_cast<reference>(*this);
     }
-    
+
     /// @brief Use value for collide connected setting.
     constexpr reference UseCollideConnected(bool v) noexcept
     {
         collideConnected = v;
         return static_cast<reference>(*this);
     }
-    
+
     /// @brief Use value for user data setting.
-    constexpr reference UseUserData(void* v) noexcept
+    constexpr reference UseIslanded(bool v) noexcept
     {
-        userData = v;
+        islanded = v;
         return static_cast<reference>(*this);
     }
 };
 
+class Joint;
+
 /// @brief Sets the joint definition data for the given joint.
 /// @relatedalso JointConf
 void Set(JointConf& def, const Joint& joint) noexcept;
+
+template <typename T>
+constexpr auto IsLimitEnabled(const T& conf) noexcept -> decltype(std::declval<T>().enableLimit)
+{
+    return conf.enableLimit;
+}
+
+template <typename T>
+constexpr auto GetLength(const T& conf) noexcept -> decltype(std::declval<T>().length)
+{
+    return conf.length;
+}
+
+template <typename T>
+constexpr auto GetMaxForce(const T& conf) noexcept -> decltype(std::declval<T>().maxForce)
+{
+    return conf.maxForce;
+}
+
+template <typename T>
+constexpr auto GetMaxTorque(const T& conf) noexcept -> decltype(std::declval<T>().maxTorque)
+{
+    return conf.maxTorque;
+}
+
+template <typename T>
+constexpr auto GetRatio(const T& conf) noexcept -> decltype(std::declval<T>().ratio)
+{
+    return conf.ratio;
+}
+
+template <typename T>
+constexpr auto GetDampingRatio(const T& conf) noexcept -> decltype(std::declval<T>().dampingRatio)
+{
+    return conf.dampingRatio;
+}
+
+template <typename T>
+constexpr auto GetReferenceAngle(const T& conf) noexcept -> decltype(std::declval<T>().referenceAngle)
+{
+    return conf.referenceAngle;
+}
+
+template <typename T>
+constexpr auto GetLinearReaction(const T& conf) noexcept -> decltype(std::declval<T>().linearImpulse)
+{
+    return conf.linearImpulse;
+}
+
+template <typename T>
+constexpr auto GetLinearOffset(const T& conf) noexcept -> decltype(std::declval<T>().linearOffset)
+{
+    return conf.linearOffset;
+}
+
+template <typename T>
+constexpr auto GetGroundAnchorA(const T& conf) noexcept -> decltype(std::declval<T>().groundAnchorA)
+{
+    return conf.groundAnchorA;
+}
+
+template <typename T>
+constexpr auto GetGroundAnchorB(const T& conf) noexcept -> decltype(std::declval<T>().groundAnchorB)
+{
+    return conf.groundAnchorB;
+}
+
+template <typename T>
+constexpr auto GetLocalAnchorA(const T& conf) noexcept -> decltype(std::declval<T>().localAnchorA)
+{
+    return conf.localAnchorA;
+}
+
+template <typename T>
+constexpr auto GetLocalAnchorB(const T& conf) noexcept -> decltype(std::declval<T>().localAnchorB)
+{
+    return conf.localAnchorB;
+}
+
+template <typename T>
+constexpr auto GetLocalXAxisA(const T& conf) noexcept -> decltype(std::declval<T>().localXAxisA)
+{
+    return conf.localXAxisA;
+}
+
+template <typename T>
+constexpr auto GetLocalYAxisA(const T& conf) noexcept -> decltype(std::declval<T>().localYAxisA)
+{
+    return conf.localYAxisA;
+}
+
+template <typename T>
+constexpr auto GetFrequency(const T& conf) noexcept -> decltype(std::declval<T>().frequency)
+{
+    return conf.frequency;
+}
+
+template <typename T>
+constexpr auto IsMotorEnabled(const T& conf) noexcept -> decltype(std::declval<T>().enableMotor)
+{
+    return conf.enableMotor;
+}
+
+template <typename T>
+constexpr auto GetMotorSpeed(const T& conf) noexcept -> decltype(std::declval<T>().motorSpeed)
+{
+    return conf.motorSpeed;
+}
+
+template <typename T>
+constexpr auto GetLinearMotorImpulse(const T& conf) noexcept -> decltype(std::declval<T>().motorImpulse)
+{
+    return conf.motorImpulse;
+}
+
+template <typename T>
+constexpr auto GetMaxMotorTorque(const T& conf) noexcept -> decltype(std::declval<T>().maxMotorTorque)
+{
+    return conf.maxMotorTorque;
+}
+
+template <typename T>
+constexpr auto GetAngularOffset(const T& conf) noexcept -> decltype(std::declval<T>().angularOffset)
+{
+    return conf.angularOffset;
+}
+
+template <typename T>
+constexpr auto GetAngularReaction(const T& conf) noexcept -> decltype(std::declval<T>().angularImpulse)
+{
+    return conf.angularImpulse;
+}
+
+template <typename T>
+constexpr auto GetAngularMass(const T& conf) noexcept -> decltype(std::declval<T>().angularMass)
+{
+    return conf.angularMass;
+}
+
+template <typename T>
+constexpr auto GetAngularMotorImpulse(const T& conf) noexcept ->
+    decltype(std::declval<T>().angularMotorImpulse)
+{
+    return conf.angularMotorImpulse;
+}
 
 } // namespace d2
 } // namespace playrho

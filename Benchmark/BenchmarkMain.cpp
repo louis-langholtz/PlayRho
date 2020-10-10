@@ -61,7 +61,8 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
@@ -2326,7 +2327,7 @@ playrho::JointID Tumbler::CreateRevoluteJoint(playrho::d2::World& world,
 
     jd.maxMotorTorque = 100000 * playrho::NewtonMeter; // 1e8f;
     jd.enableMotor = true;
-    return world.CreateJoint(jd);
+    return world.CreateJoint(playrho::d2::Joint(jd));
 }
 
 void Tumbler::Step()

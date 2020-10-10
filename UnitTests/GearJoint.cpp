@@ -24,7 +24,6 @@
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -141,10 +140,6 @@ TEST(GearJoint, Creation)
     EXPECT_EQ(joint.GetJoint2(), def.joint2);
     EXPECT_EQ(joint.GetRatio(), def.ratio);
     
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Gear);
-    
     const auto djoint = world.CreateJoint(DistanceJointConf{body0, body1});
     EXPECT_THROW(world.CreateJoint(GearJointConf{djoint, &revJoint2}), InvalidArgument);
 }
@@ -211,7 +206,6 @@ TEST(GearJoint, GetGearJointConf)
     ASSERT_EQ(joint.GetRatio(), def.ratio);
     
     const auto cdef = GetGearJointConf(joint);
-    EXPECT_EQ(cdef.type, JointType::Gear);
     EXPECT_EQ(cdef.bodyA, def.joint1->GetBodyB());
     EXPECT_EQ(cdef.bodyB, def.joint2->GetBodyB());
     EXPECT_EQ(cdef.collideConnected, false);

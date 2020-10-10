@@ -37,7 +37,9 @@ namespace playrho {
 namespace d2 {
 
 class WorldImpl;
-class JointVisitor;
+class Joint;
+
+JointID CreateJoint(WorldImpl& world, const Joint& def);
 
 /// @brief Destroys the identified joint.
 void Destroy(WorldImpl& world, JointID id);
@@ -45,18 +47,19 @@ void Destroy(WorldImpl& world, JointID id);
 /// @brief Gets the type of the joint.
 JointType GetType(const WorldImpl& world, JointID id);
 
+const Joint& GetJoint(const WorldImpl& world, JointID id);
+
+void SetJoint(WorldImpl& world, JointID id, const Joint& def);
+
+/// @brief Gets the data of the joint.
+/// @note This is not the user data!
+const void* GetData(const WorldImpl& world, JointID id);
+
 /// @brief Gets the linear reaction on body-B at the joint anchor.
 Momentum2 GetLinearReaction(const WorldImpl& world, JointID id);
 
 /// @brief Get the angular reaction on body-B for the identified joint.
 AngularMomentum GetAngularReaction(const WorldImpl& world, JointID id);
-
-/// Is the joint motor enabled?
-/// @see EnableMotor(WorldImpl& world, JointID joint, bool value)
-bool IsMotorEnabled(const WorldImpl& world, JointID id);
-
-/// Enable/disable the joint motor.
-void EnableMotor(WorldImpl& world, JointID joint, bool value);
 
 /// @brief Wakes up the joined bodies.
 /// @relatedalso WorldImpl
@@ -92,56 +95,6 @@ Length2 GetLocalAnchorB(const WorldImpl& world, JointID id);
 
 /// @relatedalso WorldImpl
 Angle GetReferenceAngle(const WorldImpl& world, JointID id);
-
-/// @relatedalso WorldImpl
-UnitVec GetLocalAxisA(const WorldImpl& world, JointID id);
-
-/// @brief Gets the angular motor speed for joints which support this.
-/// @see SetMotorSpeed(JointID id, AngularVelocity value)
-AngularVelocity GetMotorSpeed(const WorldImpl& world, JointID id);
-
-/// @brief Sets the angular motor speed for joints which support this.
-/// @see GetMotorSpeed(const WorldImpl& world, JointID id) const
-void SetMotorSpeed(WorldImpl& world, JointID id, AngularVelocity value);
-
-/// @brief Gets the max motor torque.
-Torque GetMaxMotorTorque(const WorldImpl& world, JointID id);
-
-/// Sets the maximum motor torque.
-void SetMaxMotorTorque(WorldImpl& world, JointID id, Torque value);
-
-/// @brief Gets the angular motor impulse of the identified joint.
-AngularMomentum GetAngularMotorImpulse(const WorldImpl& world, JointID id);
-
-/// @brief Gets the angular mass of the identified joint if it has this property.
-RotInertia GetAngularMass(const WorldImpl& world, JointID id);
-
-/// @brief Gets the frequency of the identified joint if it has this property.
-Frequency GetFrequency(const WorldImpl& world, JointID id);
-
-/// @brief Sets the frequency of the identified joint if it has this property.
-void SetFrequency(WorldImpl& world, JointID id, Frequency value);
-
-/// @relatedalso WorldImpl
-void Accept(const WorldImpl& world, JointID id, JointVisitor& visitor);
-
-/// @relatedalso WorldImpl
-void Accept(WorldImpl& world, JointID id, JointVisitor& visitor);
-
-/// @relatedalso WorldImpl
-Length2 GetTarget(const WorldImpl& world, JointID id);
-
-/// @relatedalso WorldImpl
-void SetTarget(WorldImpl& world, JointID id, Length2 value);
-
-/// Get the lower joint limit.
-Angle GetAngularLowerLimit(const WorldImpl& world, JointID id);
-
-/// Get the upper joint limit.
-Angle GetAngularUpperLimit(const WorldImpl& world, JointID id);
-
-/// Set the joint limits.
-void SetAngularLimits(WorldImpl& world, JointID id, Angle lower, Angle upper);
 
 } // namespace d2
 } // namespace playrho

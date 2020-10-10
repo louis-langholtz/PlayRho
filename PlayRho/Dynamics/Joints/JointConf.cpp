@@ -27,10 +27,11 @@ namespace d2 {
 
 void Set(JointConf& def, const Joint& joint) noexcept
 {
-    def.bodyA = joint.GetBodyA();
-    def.bodyB = joint.GetBodyB();
-    def.userData = joint.GetUserData();
-    def.collideConnected = joint.GetCollideConnected();
+    def.userData = GetUserData(joint);
+    def.bodyA = GetBodyA(joint);
+    def.bodyB = GetBodyB(joint);
+    def.collideConnected = GetCollideConnected(joint);
+    def.islanded = IsIslanded(joint);
 }
 
 } // namespace d2

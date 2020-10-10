@@ -23,233 +23,423 @@
 #define PLAYRHO_DYNAMICS_JOINTS_JOINT_HPP
 
 #include <PlayRho/Common/Math.hpp>
+
+#include <PlayRho/Dynamics/Joints/JointType.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 
+#include <memory> // for std::unique_ptr
 #include <vector>
 #include <utility>
-#include <stdexcept>
+#include <stdexcept> // for std::bad_cast
 
 namespace playrho {
+
 class StepConf;
 struct ConstraintSolverConf;
 
 namespace d2 {
 
-class Body;
-struct Velocity;
+class Joint;
 class BodyConstraint;
-class JointVisitor;
-struct JointConf;
-class World;
+
+/// @brief Gets the identifier of the type of data this can be casted to.
+JointType GetType(const Joint& object) noexcept;
+
+/// @brief Gets the first body attached to this joint.
+BodyID GetBodyA(const Joint& object) noexcept;
+
+/// @brief Gets the second body attached to this joint.
+BodyID GetBodyB(const Joint& object) noexcept;
+
+/// Get the anchor point on body-A in local coordinates.
+Length2 GetLocalAnchorA(const Joint& object) noexcept;
+
+/// Get the anchor point on body-B in local coordinates.
+Length2 GetLocalAnchorB(const Joint& object) noexcept;
+
+/// Get the linear reaction on body-B at the joint anchor.
+Momentum2 GetLinearReaction(const Joint& object) noexcept;
+
+/// Get the angular reaction on body-B.
+AngularMomentum GetAngularReaction(const Joint& object) noexcept;
+
+/// @brief Gets collide connected.
+/// @note Modifying the collide connect flag won't work correctly because
+///   the flag is only checked when fixture AABBs begin to overlap.
+bool GetCollideConnected(const Joint& object) noexcept;
+
+/// @brief Shifts the origin for any points stored in world coordinates.
+/// @return <code>true</code> if shift done, <code>false</code> otherwise.
+bool ShiftOrigin(Joint& object, Length2 value) noexcept;
+
+/// @brief Whether this joint is in the is-in-island state.
+bool IsIslanded(const Joint& object) noexcept;
+
+/// @brief Sets this joint to be in the is-in-island state.
+void SetIslanded(Joint& object) noexcept;
+
+/// @brief Unsets this joint from being in the is-in-island state.
+void UnsetIslanded(Joint& object) noexcept;
+
+/// Gets the user data pointer.
+void* GetUserData(const Joint& object) noexcept;
+
+/// Sets the user data pointer.
+void SetUserData(Joint& object, void* data) noexcept;
+
+/// @brief Initializes velocity constraint data based on the given solver data.
+/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @see SolveVelocity.
+void InitVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf& conf);
+
+/// @brief Solves velocity constraint.
+/// @pre <code>InitVelocity</code> has been called.
+/// @see InitVelocity.
+/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+bool SolveVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step);
+
+/// @brief Solves the position constraint.
+/// @return <code>true</code> if the position errors are within tolerance.
+bool SolvePosition(const Joint& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf);
 
 /// @defgroup JointsGroup Joint Classes
-/// @brief The user creatable classes that specify constraints on one or more Body instances.
+/// @brief The user creatable classes that specify constraints on one or more body instances.
 /// @ingroup ConstraintsGroup
 
-/// @brief Base joint class.
-///
+/// @brief Joint class.
 /// @details Joints are constraints that are used to constrain one or more bodies in various
 ///   fashions. Some joints also feature limits and motors.
-///
 /// @ingroup JointsGroup
 /// @ingroup PhysicalEntities
-///
-/// @see World
-///
 class Joint
 {
 public:
     using BodyConstraintsMap = std::vector<BodyConstraint>;
-    
-    /// @brief Limit state.
-    /// @note Only used by joints that implement some notion of a limited range.
-    enum LimitState
-    {
-        /// @brief Inactive limit.
-        e_inactiveLimit,
 
-        /// @brief At-lower limit.
-        e_atLowerLimit,
-        
-        /// @brief At-upper limit.
-        e_atUpperLimit,
-        
-        /// @brief Equal limit.
-        /// @details Equal limit is used to indicate that a joint's upper and lower limits
-        ///   are approximately the same.
-        e_equalLimits
-    };
-
-    /// @brief Is the given definition okay.
-    static bool IsOkay(const JointConf& def) noexcept;
-
-    /// @brief Dynamically allocates and instantiates the out-type from the given data.
-    template <class OUT_TYPE, class IN_TYPE>
-    static OUT_TYPE* Create(IN_TYPE def)
-    {
-        if (OUT_TYPE::IsOkay(def))
-        {
-            return new OUT_TYPE(def);
-        }
-        throw InvalidArgument("definition not okay");
-    }
-
-    /// @brief Creates a new joint based on the given definition.
-    /// @throws InvalidArgument if given a joint definition with a type that's not recognized.
-    static Joint* Create(const JointConf& def);
-
-    /// @brief Destroys the given joint.
-    /// @note This calls the joint's destructor.
-    static void Destroy(const Joint* joint) noexcept;
+    Joint() noexcept = default;
 
     /// @brief Initializing constructor.
-    explicit Joint(const JointConf& def);
+    template <typename T>
+    explicit Joint(T arg): m_self{std::make_unique<Model<T>>(std::move(arg))}
+    {
+        // Intentionally empty.
+    }
 
-    virtual ~Joint() noexcept = default;
+    /// @brief Copy constructor.
+    Joint(const Joint& other): m_self{other.m_self? other.m_self->Clone_(): nullptr}
+    {
+        // Intentionally empty.
+    }
 
-    /// @brief Gets the first body attached to this joint.
-    BodyID GetBodyA() const noexcept;
+    /// @brief Move constructor.
+    Joint(Joint&& other) noexcept: m_self{std::move(other.m_self)}
+    {
+        // Intentionally empty.
+    }
 
-    /// @brief Gets the second body attached to this joint.
-    BodyID GetBodyB() const noexcept;
+    /// @brief Copy assignment.
+    Joint& operator= (const Joint& other)
+    {
+        m_self = other.m_self? other.m_self->Clone_(): nullptr;
+        return *this;
+    }
 
-    /// Get the anchor point on body-A in local coordinates.
-    virtual Length2 GetLocalAnchorA() const noexcept = 0;
+    /// @brief Move assignment.
+    Joint& operator= (Joint&& other) noexcept
+    {
+        m_self = std::move(other.m_self);
+        return *this;
+    }
 
-    /// Get the anchor point on body-B in local coordinates.
-    virtual Length2 GetLocalAnchorB() const noexcept = 0;
+    /// @brief Move assignment support for any valid underlying configuration.
+    template <typename T, typename Tp = std::decay_t<T>,
+        typename = std::enable_if_t<
+            !std::is_same<Tp, Joint>::value && std::is_copy_constructible<Tp>::value
+        >
+    >
+    Joint& operator= (T&& other) noexcept
+    {
+        Joint(std::forward<T>(other)).swap(*this);
+        return *this;
+    }
 
-    /// Get the linear reaction on body-B at the joint anchor.
-    virtual Momentum2 GetLinearReaction() const = 0;
+    void swap(Joint& other) noexcept
+    {
+        std::swap(m_self, other.m_self);
+    }
 
-    /// Get the angular reaction on body-B.
-    virtual AngularMomentum GetAngularReaction() const = 0;
-    
-    /// @brief Accepts a visitor.
-    /// @details This is the Accept method definition of a "visitor design pattern" for
-    ///   for doing joint subclass specific types of processing for a constant joint.
-    /// @see JointVisitor
-    /// @see https://en.wikipedia.org/wiki/Visitor_pattern
-    virtual void Accept(JointVisitor& visitor) const = 0;
-    
-    /// @brief Accepts a visitor.
-    /// @details This is the Accept method definition of a "visitor design pattern" for
-    ///   for doing joint subclass specific types of processing.
-    /// @see JointVisitor
-    /// @see https://en.wikipedia.org/wiki/Visitor_pattern
-    virtual void Accept(JointVisitor& visitor) = 0;
+    friend JointType GetType(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->GetType_(): GetTypeID<void>();
+    }
 
-    /// Get the user data pointer.
-    void* GetUserData() const noexcept;
+    template <typename T>
+    friend auto TypeCast(const Joint* value) noexcept
+    {
+        if (!value || (GetType(*value) != GetTypeID<std::remove_pointer_t<T>>())) {
+            return static_cast<T>(nullptr);
+        }
+        return static_cast<T>(value->m_self->GetData_());
+    }
 
-    /// Set the user data pointer.
-    void SetUserData(void* data) noexcept;
+    friend BodyID GetBodyA(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->GetBodyA_(): InvalidBodyID;
+    }
 
-    /// @brief Gets collide connected.
-    /// @note Modifying the collide connect flag won't work correctly because
-    ///   the flag is only checked when fixture AABBs begin to overlap.
-    bool GetCollideConnected() const noexcept;
+    friend BodyID GetBodyB(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->GetBodyB_(): InvalidBodyID;
+    }
 
-    /// @brief Shifts the origin for any points stored in world coordinates.
-    /// @return <code>true</code> if shift done, <code>false</code> otherwise.
-    virtual bool ShiftOrigin(Length2) { return false;  }
+    friend Length2 GetLocalAnchorA(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->GetLocalAnchorA_(): Length2{};
+    }
 
-    /// @brief Initializes velocity constraint data based on the given solver data.
-    /// @note This MUST be called prior to calling <code>SolveVelocityConstraints</code>.
-    /// @see SolveVelocityConstraints.
-    virtual void InitVelocityConstraints(BodyConstraintsMap& bodies,
-                                         const playrho::StepConf& step,
-                                         const ConstraintSolverConf& conf) = 0;
+    friend Length2 GetLocalAnchorB(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->GetLocalAnchorB_(): Length2{};
+    }
 
-    /// @brief Solves velocity constraint.
-    /// @pre <code>InitVelocityConstraints</code> has been called.
-    /// @see InitVelocityConstraints.
-    /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
-    virtual bool SolveVelocityConstraints(BodyConstraintsMap& bodies,
-                                          const playrho::StepConf& step) = 0;
+    friend Momentum2 GetLinearReaction(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->GetLinearReaction_(): Momentum2{};
+    }
 
-    /// @brief Solves the position constraint.
-    /// @return <code>true</code> if the position errors are within tolerance.
-    virtual bool SolvePositionConstraints(BodyConstraintsMap& bodies,
-                                          const ConstraintSolverConf& conf) const = 0;
+    friend AngularMomentum GetAngularReaction(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->GetAngularReaction_(): AngularMomentum{};
+    }
 
-    /// @brief Whether this joint is in the is-in-island state.
-    bool IsIslanded() const noexcept;
-    
-    /// @brief Sets this joint to be in the is-in-island state.
-    void SetIslanded() noexcept;
-    
-    /// @brief Unsets this joint from being in the is-in-island state.
-    void UnsetIslanded() noexcept;
+    friend void* GetUserData(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->GetUserData_(): nullptr;
+    }
+
+    friend void SetUserData(Joint& object, void* data) noexcept
+    {
+        if (object.m_self) object.m_self->SetUserData_(data);
+    }
+
+    friend bool GetCollideConnected(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->GetCollideConnected_(): false;
+    }
+
+    friend bool ShiftOrigin(Joint& object, Length2 value) noexcept
+    {
+        return object.m_self? object.m_self->ShiftOrigin_(value): false;
+    }
+
+    friend void InitVelocity(Joint& object, BodyConstraintsMap& bodies,
+                             const playrho::StepConf& step,
+                             const ConstraintSolverConf& conf)
+    {
+        if (object.m_self) object.m_self->InitVelocity_(bodies, step, conf);
+    }
+
+    friend bool SolveVelocity(Joint& object, BodyConstraintsMap& bodies,
+                              const playrho::StepConf& step)
+    {
+        return object.m_self? object.m_self->SolveVelocity_(bodies, step): false;
+    }
+
+    friend bool SolvePosition(const Joint& object, BodyConstraintsMap& bodies,
+                              const ConstraintSolverConf& conf)
+    {
+        return object.m_self? object.m_self->SolvePosition_(bodies, conf): false;
+    }
+
+    friend bool IsIslanded(const Joint& object) noexcept
+    {
+        return object.m_self? object.m_self->IsIslanded_(): false;
+    }
+
+    friend void SetIslanded(Joint& object) noexcept
+    {
+        if (object.m_self) object.m_self->SetIslanded_();
+    }
+
+    friend void UnsetIslanded(Joint& object) noexcept
+    {
+        if (object.m_self) object.m_self->UnsetIslanded_();
+    }
 
 private:
-    /// Flags type data type.
-    using FlagsType = std::uint8_t;
-
-    /// @brief Flags stored in m_flags
-    enum Flag: FlagsType
+    /// @brief Internal configuration concept.
+    /// @note Provides the interface for runtime value polymorphism.
+    struct Concept
     {
-        // Used when crawling contact graph when forming islands.
-        e_islandFlag = 0x01u,
-        e_collideConnectedFlag = 0x02u
+        virtual ~Concept() = default;
+
+        /// @brief Clones this concept and returns a pointer to a mutable copy.
+        /// @note This may throw <code>std::bad_alloc</code> or any exception that's thrown
+        ///   by the constructor for the model's underlying data type.
+        /// @throws std::bad_alloc if there's a failure allocating storage.
+        virtual std::unique_ptr<Concept> Clone_() const = 0;
+
+        /// @brief Gets the use type information.
+        /// @return Type info of the underlying value's type.
+        virtual TypeID GetType_() const noexcept = 0;
+
+        /// @brief Gets the data for the underlying configuration.
+        virtual const void* GetData_() const noexcept = 0;
+
+        virtual BodyID GetBodyA_() const noexcept = 0;
+        virtual BodyID GetBodyB_() const noexcept = 0;
+
+        virtual bool GetCollideConnected_() const noexcept = 0;
+
+        virtual bool ShiftOrigin_(Length2 value) noexcept = 0;
+
+        virtual bool IsIslanded_() const noexcept = 0;
+        virtual void SetIslanded_() noexcept = 0;
+        virtual void UnsetIslanded_() noexcept = 0;
+
+        virtual Length2 GetLocalAnchorA_() const noexcept = 0;
+        virtual Length2 GetLocalAnchorB_() const noexcept = 0;
+        virtual Momentum2 GetLinearReaction_() const noexcept = 0;
+        virtual AngularMomentum GetAngularReaction_() const noexcept = 0;
+
+        virtual void* GetUserData_() const noexcept = 0;
+        virtual void SetUserData_(void* value) noexcept = 0;
+
+        virtual void InitVelocity_(BodyConstraintsMap& bodies,
+                                   const playrho::StepConf& step,
+                                   const ConstraintSolverConf& conf) = 0;
+        virtual bool SolveVelocity_(BodyConstraintsMap& bodies,
+                                    const playrho::StepConf& step) = 0;
+        virtual bool SolvePosition_(BodyConstraintsMap& bodies,
+                                    const ConstraintSolverConf& conf) const = 0;
     };
 
-    /// @brief Gets the flags value for the given joint definition.
-    static FlagsType GetFlags(const JointConf& def) noexcept;
+    /// @brief Internal model configuration concept.
+    /// @note Provides the implementation for runtime value polymorphism.
+    template <typename T>
+    struct Model final: Concept
+    {
+        /// @brief Type alias for the type of the data held.
+        using data_type = T;
 
-    void* m_userData; ///< User data.
-    BodyID const m_bodyA; ///< Body A.
-    BodyID const m_bodyB; ///< Body B.
-    FlagsType m_flags = 0u; ///< Flags. 1-byte.
+        /// @brief Initializing constructor.
+        Model(T arg): data{std::move(arg)} {}
+
+        std::unique_ptr<Concept> Clone_() const override
+        {
+            return std::make_unique<Model>(data);
+        }
+
+        TypeID GetType_() const noexcept override
+        {
+            return GetTypeID<data_type>();
+        }
+
+        const void* GetData_() const noexcept override
+        {
+            // Note address of "data" not necessarily same as address of "this" since
+            // base class is virtual.
+            return &data;
+        }
+
+        BodyID GetBodyA_() const noexcept override
+        {
+            return GetBodyA(data);
+        }
+
+        BodyID GetBodyB_() const noexcept override
+        {
+            return GetBodyB(data);
+        }
+
+        bool GetCollideConnected_() const noexcept override
+        {
+            return GetCollideConnected(data);
+        }
+
+        bool ShiftOrigin_(Length2 value) noexcept override
+        {
+            return ShiftOrigin(data, value);
+        }
+
+        bool IsIslanded_() const noexcept override
+        {
+            return IsIslanded(data);
+        }
+
+        void SetIslanded_() noexcept override
+        {
+            SetIslanded(data);
+        }
+
+        void UnsetIslanded_() noexcept override
+        {
+            UnsetIslanded(data);
+        }
+
+        Length2 GetLocalAnchorA_() const noexcept override
+        {
+            return GetLocalAnchorA(data);
+        }
+
+        Length2 GetLocalAnchorB_() const noexcept override
+        {
+            return GetLocalAnchorB(data);
+        }
+
+        Momentum2 GetLinearReaction_() const noexcept override
+        {
+            return GetLinearReaction(data);
+        }
+
+        AngularMomentum GetAngularReaction_() const noexcept override
+        {
+            return GetAngularReaction(data);
+        }
+
+        void* GetUserData_() const noexcept override
+        {
+            return GetUserData(data);
+        }
+
+        void SetUserData_(void* value) noexcept override
+        {
+            SetUserData(data, value);
+        }
+
+        void InitVelocity_(BodyConstraintsMap& bodies,
+                                   const playrho::StepConf& step,
+                                   const ConstraintSolverConf& conf) override
+        {
+            InitVelocity(data, bodies, step, conf);
+        }
+
+        bool SolveVelocity_(BodyConstraintsMap& bodies,
+                                    const playrho::StepConf& step) override
+        {
+            return SolveVelocity(data, bodies, step);
+        }
+
+        bool SolvePosition_(BodyConstraintsMap& bodies,
+                                    const ConstraintSolverConf& conf) const override
+        {
+            return SolvePosition(data, bodies, conf);
+        }
+
+        data_type data; ///< Data.
+    };
+
+    std::unique_ptr<Concept> m_self; ///< Self pointer.
 };
-
-inline BodyID Joint::GetBodyA() const noexcept
-{
-    return m_bodyA;
-}
-
-inline BodyID Joint::GetBodyB() const noexcept
-{
-    return m_bodyB;
-}
-
-inline void* Joint::GetUserData() const noexcept
-{
-    return m_userData;
-}
-
-inline void Joint::SetUserData(void* data) noexcept
-{
-    m_userData = data;
-}
-
-inline bool Joint::GetCollideConnected() const noexcept
-{
-    return (m_flags & e_collideConnectedFlag) != 0u;
-}
-
-inline bool Joint::IsIslanded() const noexcept
-{
-    return (m_flags & e_islandFlag) != 0u;
-}
-
-inline void Joint::SetIslanded() noexcept
-{
-    m_flags |= e_islandFlag;
-}
-
-inline void Joint::UnsetIslanded() noexcept
-{
-    m_flags &= ~e_islandFlag;
-}
 
 // Free functions...
 
 /// @brief Provides referenced access to the identified element of the given container.
 BodyConstraint& At(std::vector<BodyConstraint>& container, BodyID key);
-
-/// @brief Provides a human readable C-style string uniquely identifying the given limit state.
-const char* ToString(Joint::LimitState val) noexcept;
 
 /// @brief Increment motor speed.
 /// @details Template function for incrementally changing the motor speed of a joint that has
@@ -260,9 +450,105 @@ inline void IncMotorSpeed(T& j, AngularVelocity delta)
     j.SetMotorSpeed(j.GetMotorSpeed() + delta);
 }
 
+/// @relatedalso Joint
+template <typename T>
+inline auto TypeCast(const Joint& value)
+{
+    auto tmp = TypeCast<std::add_pointer_t<std::add_const_t<T>>>(&value);
+    if (tmp == nullptr)
+        throw std::bad_cast();
+    return *tmp;
+}
+
+/// @relatedalso Joint
 Angle GetReferenceAngle(const Joint& object);
 
-UnitVec GetLocalAxisA(const Joint& object);
+/// @relatedalso Joint
+UnitVec GetLocalXAxisA(const Joint& object);
+
+/// @relatedalso Joint
+UnitVec GetLocalYAxisA(const Joint& object);
+
+/// @relatedalso Joint
+AngularVelocity GetMotorSpeed(const Joint& object);
+
+/// @relatedalso Joint
+void SetMotorSpeed(Joint& object, AngularVelocity value);
+
+/// @relatedalso Joint
+Torque GetMaxMotorTorque(const Joint& object);
+
+/// @relatedalso Joint
+void SetMaxMotorTorque(Joint& object, Torque value);
+
+/// @relatedalso Joint
+RotInertia GetAngularMass(const Joint& object);
+
+/// @relatedalso Joint
+Real GetRatio(const Joint& object);
+
+/// @brief Gets the frequency of the joint if it has this property.
+/// @relatedalso Joint
+Frequency GetFrequency(const Joint& object);
+
+/// @brief Sets the frequency of the joint if it has this property.
+/// @relatedalso Joint
+void SetFrequency(Joint& object, Frequency value);
+
+/// @brief Gets the angular motor impulse of the joint if it has this property.
+/// @relatedalso Joint
+AngularMomentum GetAngularMotorImpulse(const Joint& object);
+
+/// @relatedalso Joint
+Length2 GetTarget(const Joint& object);
+
+/// @relatedalso Joint
+void SetTarget(Joint& object, Length2 value);
+
+/// Get the lower joint limit.
+/// @relatedalso Joint
+Angle GetAngularLowerLimit(const Joint& object);
+
+/// Get the upper joint limit.
+/// @relatedalso Joint
+Angle GetAngularUpperLimit(const Joint& object);
+
+/// Set the joint limits.
+/// @relatedalso Joint
+void SetAngularLimits(Joint& object, Angle lower, Angle upper);
+
+/// @relatedalso Joint
+bool IsLimitEnabled(const Joint& object);
+
+/// @relatedalso Joint
+void EnableLimit(Joint& object, bool value);
+
+/// @relatedalso Joint
+bool IsMotorEnabled(const Joint& object);
+
+/// @relatedalso Joint
+void EnableMotor(Joint& object, bool value);
+
+/// @relatedalso Joint
+Length2 GetLinearOffset(const Joint& object);
+
+/// @relatedalso Joint
+void SetLinearOffset(Joint& object, Length2 value);
+
+/// @relatedalso Joint
+Angle GetAngularOffset(const Joint& object);
+
+/// @relatedalso Joint
+void SetAngularOffset(Joint& object, Angle value);
+
+/// @relatedalso Joint
+Length2 GetGroundAnchorA(const Joint& object);
+
+/// @relatedalso Joint
+Length2 GetGroundAnchorB(const Joint& object);
+
+/// @relatedalso Joint
+Momentum GetLinearMotorImpulse(const Joint& object);
 
 } // namespace d2
 } // namespace playrho

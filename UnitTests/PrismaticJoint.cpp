@@ -20,7 +20,6 @@
 
 #include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
 
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -90,10 +89,6 @@ TEST(PrismaticJoint, EnableLimit)
 
     const auto id = world.CreateJoint(jd);
     EXPECT_EQ(GetMotorForce(world, id, 1_Hz), 0 * Newton);
-
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Prismatic);
 }
 
 TEST(PrismaticJoint, ShiftOrigin)

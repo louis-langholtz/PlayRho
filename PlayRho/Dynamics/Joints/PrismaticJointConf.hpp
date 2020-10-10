@@ -27,10 +27,14 @@
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+struct ConstraintSolverConf;
+class StepConf;
+
 namespace d2 {
 
-class PrismaticJoint;
 class World;
+class BodyConstraint;
 
 /// @brief Prismatic joint definition.
 /// @details This requires defining a line of
@@ -44,7 +48,26 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     /// @brief Super type.
     using super = JointBuilder<PrismaticJointConf>;
 
-    constexpr PrismaticJointConf() noexcept: super{JointType::Prismatic} {}
+    /// @brief Limit state.
+    /// @note Only used by joints that implement some notion of a limited range.
+    enum LimitState
+    {
+        /// @brief Inactive limit.
+        e_inactiveLimit,
+
+        /// @brief At-lower limit.
+        e_atLowerLimit,
+
+        /// @brief At-upper limit.
+        e_atUpperLimit,
+
+        /// @brief Equal limit.
+        /// @details Equal limit is used to indicate that a joint's upper and lower limits
+        ///   are approximately the same.
+        e_equalLimits
+    };
+
+    constexpr PrismaticJointConf() noexcept = default;
 
     /// @brief Copy constructor.
     PrismaticJointConf(const PrismaticJointConf& copy) = default;
@@ -57,16 +80,39 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
                        UnitVec axisA = UnitVec::GetRight(), Angle angle = 0_deg) noexcept;
 
     /// @brief Uses the given enable limit state value.
-    PrismaticJointConf& UseEnableLimit(bool v) noexcept;
+    constexpr auto& UseEnableLimit(bool v) noexcept
+    {
+        enableLimit = v;
+        return *this;
+    }
 
     /// @brief Uses the given lower translation value.
-    PrismaticJointConf& UseLowerTranslation(Length v) noexcept;
+    constexpr auto& UseLowerTranslation(Length v) noexcept
+    {
+        lowerTranslation = v;
+        return *this;
+    }
 
     /// @brief Uses the given upper translation value.
-    PrismaticJointConf& UseUpperTranslation(Length v) noexcept;
+    constexpr auto& UseUpperTranslation(Length v) noexcept
+    {
+        upperTranslation = v;
+        return *this;
+    }
 
     /// @brief Uses the given enable motor state value.
-    PrismaticJointConf& UseEnableMotor(bool v) noexcept;
+    constexpr auto& UseEnableMotor(bool v) noexcept
+    {
+        enableMotor = v;
+        return *this;
+    }
+
+    /// @brief Uses the given motor speed value.
+    constexpr auto& UseMotorSpeed(AngularVelocity v) noexcept
+    {
+        motorSpeed = v;
+        return *this;
+    }
 
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
@@ -75,10 +121,16 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     Length2 localAnchorB = Length2{};
 
     /// The local translation unit axis in body A.
-    UnitVec localAxisA = UnitVec::GetRight();
+    UnitVec localXAxisA = UnitVec::GetRight();
+
+    UnitVec localYAxisA = GetRevPerpendicular(UnitVec::GetRight());
 
     /// The constrained angle between the bodies: body B's angle minus body A's angle.
     Angle referenceAngle = 0_deg;
+
+    Vec3 impulse = Vec3{}; ///< Impulse.
+
+    Momentum motorImpulse = 0; ///< Motor impulse.
 
     /// Enable/disable the joint limit.
     bool enableLimit = false;
@@ -97,40 +149,78 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
 
     /// The desired angular motor speed.
     AngularVelocity motorSpeed = 0_rpm;
+
+    LimitState limitState = e_inactiveLimit; ///< Limit state.
+
+    // Solver temp
+    UnitVec axis = UnitVec::GetZero(); ///< Axis.
+    UnitVec perp = UnitVec::GetZero(); ///< Perpendicular.
+    Length s1 = 0_m; ///< Location S-1.
+    Length s2 = 0_m; ///< Location S-2.
+    Length a1 = 0_m; ///< Location A-1.
+    Length a2 = 0_m; ///< Location A-2.
+    Mat33 K = {}; ///< K matrix.
+    Mass motorMass = 0_kg; ///< Motor mass.
 };
 
-inline PrismaticJointConf& PrismaticJointConf::UseEnableLimit(bool v) noexcept
-{
-    enableLimit = v;
-    return *this;
-}
-
-inline PrismaticJointConf& PrismaticJointConf::UseLowerTranslation(Length v) noexcept
-{
-    lowerTranslation = v;
-    return *this;
-}
-
-inline PrismaticJointConf& PrismaticJointConf::UseUpperTranslation(Length v) noexcept
-{
-    upperTranslation = v;
-    return *this;
-}
-
-inline PrismaticJointConf& PrismaticJointConf::UseEnableMotor(bool v) noexcept
-{
-    enableMotor = v;
-    return *this;
-}
+/// @brief Provides a human readable C-style string uniquely identifying the given limit state.
+const char* ToString(PrismaticJointConf::LimitState val) noexcept;
 
 /// @brief Gets the definition data for the given joint.
-/// @relatedalso PrismaticJoint
-PrismaticJointConf GetPrismaticJointConf(const PrismaticJoint& joint) noexcept;
+/// @relatedalso Joint
+PrismaticJointConf GetPrismaticJointConf(const Joint& joint);
 
+/// @relatedalso World
 PrismaticJointConf GetPrismaticJointConf(const World& world,
                                          BodyID bA, BodyID bB,
                                          const Length2 anchor,
                                          const UnitVec axis);
+
+/// @relatedalso PrismaticJointConf
+constexpr auto GetLinearLowerLimit(const PrismaticJointConf& conf) noexcept
+{
+    return conf.lowerTranslation;
+}
+
+/// @relatedalso PrismaticJointConf
+constexpr auto GetLinearUpperLimit(const PrismaticJointConf& conf) noexcept
+{
+    return conf.upperTranslation;
+}
+
+/// @relatedalso PrismaticJointConf
+constexpr auto ShiftOrigin(PrismaticJointConf&, Length2) noexcept
+{
+    return false;
+}
+
+/// @relatedalso PrismaticJointConf
+Momentum2 GetLinearReaction(const PrismaticJointConf& conf);
+
+/// @relatedalso PrismaticJointConf
+AngularMomentum GetAngularReaction(const PrismaticJointConf& conf);
+
+/// @brief Initializes velocity constraint data based on the given solver data.
+/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @see SolveVelocityConstraints.
+/// @relatedalso PrismaticJointConf
+void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf& conf);
+
+/// @brief Solves velocity constraint.
+/// @pre <code>InitVelocity</code> has been called.
+/// @see InitVelocity.
+/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+/// @relatedalso PrismaticJointConf
+bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step);
+
+/// @brief Solves the position constraint.
+/// @return <code>true</code> if the position errors are within tolerance.
+/// @relatedalso PrismaticJointConf
+bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf);
 
 } // namespace d2
 } // namespace playrho

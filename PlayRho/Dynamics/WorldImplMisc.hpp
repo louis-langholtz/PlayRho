@@ -78,8 +78,6 @@ void SetPostSolveContactListener(WorldImpl& world,
 
 BodyID CreateBody(WorldImpl& world, const BodyConf& def);
 
-JointID CreateJoint(WorldImpl& world, const JointConf& def);
-
 StepStats Step(WorldImpl& world, const StepConf& conf);
 
 void ShiftOrigin(WorldImpl& world, Length2 newOrigin);

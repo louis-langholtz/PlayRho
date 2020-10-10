@@ -25,26 +25,8 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
-#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
-#include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
-#include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
-#include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
-
-#include <PlayRho/Common/OptionalValue.hpp> // for Optional
 
 #include <algorithm>
-#include <functional>
-#include <memory>
-#include <vector>
 
 namespace playrho {
 namespace d2 {
@@ -54,19 +36,19 @@ JointType GetType(const World& world, JointID id)
     return world.GetType(id);
 }
 
+const Joint& GetJoint(const World& world, JointID id)
+{
+    return world.GetJoint(id);
+}
+
+void SetJoint(World& world, JointID id, const Joint& def)
+{
+    world.SetJoint(id, def);
+}
+
 bool GetCollideConnected(const World& world, JointID id)
 {
     return world.GetCollideConnected(id);
-}
-
-bool IsMotorEnabled(const World& world, JointID id)
-{
-    return world.IsMotorEnabled(id);
-}
-
-void EnableMotor(World& world, JointID id, bool value)
-{
-    world.EnableMotor(id, value);
 }
 
 void* GetUserData(const World& world, JointID id)
@@ -109,49 +91,60 @@ Angle GetReferenceAngle(const World& world, JointID id)
     return world.GetReferenceAngle(id);
 }
 
-UnitVec GetLocalAxisA(const World& world, JointID id)
+UnitVec GetLocalXAxisA(const World& world, JointID id)
 {
-    return world.GetLocalAxisA(id);
+    return GetLocalXAxisA(GetJoint(world, id));
+}
+
+UnitVec GetLocalYAxisA(const World& world, JointID id)
+{
+    return GetLocalYAxisA(GetJoint(world, id));
 }
 
 AngularVelocity GetMotorSpeed(const World& world, JointID id)
 {
-    return world.GetMotorSpeed(id);
+    return GetMotorSpeed(GetJoint(world, id));
 }
 
 void SetMotorSpeed(World& world, JointID id, AngularVelocity value)
 {
-    world.SetMotorSpeed(id, value);
-}
-
-Torque GetMaxMotorTorque(const World& world, JointID id)
-{
-    return world.GetMaxMotorTorque(id);
-}
-
-void SetMaxMotorTorque(World& world, JointID id, Torque value)
-{
-    world.SetMaxMotorTorque(id, value);
+    auto joint = GetJoint(world, id);
+    SetMotorSpeed(joint, value);
+    SetJoint(world, id, joint);
 }
 
 AngularMomentum GetAngularMotorImpulse(const World& world, JointID id)
 {
-    return world.GetAngularMotorImpulse(id);
+    return GetAngularMotorImpulse(GetJoint(world, id));
 }
 
 RotInertia GetAngularMass(const World& world, JointID id)
 {
-    return world.GetAngularMass(id);
+    return GetAngularMass(GetJoint(world, id));
+}
+
+Torque GetMaxMotorTorque(const World& world, JointID id)
+{
+    return GetMaxMotorTorque(GetJoint(world, id));
+}
+
+void SetMaxMotorTorque(World& world, JointID id, Torque value)
+{
+    auto joint = GetJoint(world, id);
+    SetMaxMotorTorque(joint, value);
+    SetJoint(world, id, joint);
 }
 
 Frequency GetFrequency(const World& world, JointID id)
 {
-    return world.GetFrequency(id);
+    return GetFrequency(GetJoint(world, id));
 }
 
 void SetFrequency(World& world, JointID id, Frequency value)
 {
-    world.SetFrequency(id, value);
+    auto joint = GetJoint(world, id);
+    SetFrequency(joint, value);
+    SetJoint(world, id, joint);
 }
 
 AngularVelocity GetAngularVelocity(const World& world, JointID id)
@@ -189,39 +182,16 @@ Length2 GetAnchorB(const World& world, JointID id)
     return GetWorldPoint(world, GetBodyB(world, id), GetLocalAnchorB(world, id));
 }
 
-void Accept(const World& world, JointID id, JointVisitor& visitor)
-{
-    world.Accept(id, visitor);
-}
-
-void Accept(World& world, JointID id, JointVisitor& visitor)
-{
-    world.Accept(id, visitor);
-}
-
 Real GetRatio(const World& world, JointID id)
 {
-    Optional<Real> result;
-    FunctionalJointVisitor visitor;
-    visitor.get<const GearJoint&>() = [&result](const GearJoint& j) {
-        result = j.GetRatio();
-    };
-    visitor.get<const PulleyJoint&>() = [&result](const PulleyJoint& j) {
-        result = j.GetRatio();
-    };
-    Accept(world, id, visitor);
-    if (!result.has_value())
-    {
-        throw std::invalid_argument("GetRatio not supported by joint type!");
-    }
-    return *result;
+    return GetRatio(GetJoint(world, id));
 }
 
 Length GetJointTranslation(const World& world, JointID id)
 {
     const auto pA = GetWorldPoint(world, GetBodyA(world, id), GetLocalAnchorA(world, id));
     const auto pB = GetWorldPoint(world, GetBodyB(world, id), GetLocalAnchorB(world, id));
-    const auto uv = GetWorldVector(world, GetBodyA(world, id), GetLocalAxisA(world, id));
+    const auto uv = GetWorldVector(world, GetBodyA(world, id), GetLocalXAxisA(world, id));
     return Dot(pB - pA, uv);
 }
 
@@ -232,110 +202,65 @@ Angle GetAngle(const World& world, JointID id)
 
 bool IsLimitEnabled(const World& world, JointID id)
 {
-    Optional<bool> result;
-    FunctionalJointVisitor visitor;
-    visitor.get<const RevoluteJoint&>() = [&result](const RevoluteJoint& j) {
-        result = j.IsLimitEnabled();
-    };
-    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
-        result = j.IsLimitEnabled();
-    };
-    Accept(world, id, visitor);
-    if (!result.has_value())
-    {
-        throw std::invalid_argument("IsLimitEnabled not supported by joint type!");
-    }
-    return *result;
+    return IsLimitEnabled(GetJoint(world, id));
 }
 
 void EnableLimit(World& world, JointID id, bool value)
 {
-    // TODO
+    auto joint = GetJoint(world, id);
+    EnableLimit(joint, value);
+    SetJoint(world, id, joint);
+}
+
+bool IsMotorEnabled(const World& world, JointID id)
+{
+    return IsMotorEnabled(GetJoint(world, id));
+}
+
+void EnableMotor(World& world, JointID id, bool value)
+{
+    auto joint = GetJoint(world, id);
+    EnableMotor(joint, value);
+    SetJoint(world, id, joint);
 }
 
 Momentum GetLinearMotorImpulse(const World& world, JointID id)
 {
-    Optional<Momentum> result;
-    FunctionalJointVisitor visitor;
-    visitor.get<const PrismaticJoint&>() = [&result](const PrismaticJoint& j) {
-        result = j.GetLinearMotorImpulse();
-    };
-    Accept(world, id, visitor);
-    if (!result.has_value())
-    {
-        throw std::invalid_argument("GetLinearMotorImpulse not supported by joint type!");
-    }
-    return *result;
+    return GetLinearMotorImpulse(GetJoint(world, id));
 }
 
 Length2 GetLinearOffset(const World& world, JointID id)
 {
-    Optional<Length2> result;
-    FunctionalJointVisitor visitor;
-    visitor.get<const MotorJoint&>() = [&result](const MotorJoint& j) {
-        result = j.GetLinearOffset();
-    };
-    Accept(world, id, visitor);
-    if (!result.has_value())
-    {
-        throw std::invalid_argument("GetLinearOffset not supported by joint type!");
-    }
-    return *result;
+    return GetLinearOffset(GetJoint(world, id));
 }
 
 void SetLinearOffset(World& world, JointID id, Length2 value)
 {
-    // TODO
+    auto joint = GetJoint(world, id);
+    SetLinearOffset(joint, value);
+    SetJoint(world, id, joint);
 }
 
 Angle GetAngularOffset(const World& world, JointID id)
 {
-    Optional<Angle> result;
-    FunctionalJointVisitor visitor;
-    visitor.get<const MotorJoint&>() = [&result](const MotorJoint& j) {
-        result = j.GetAngularOffset();
-    };
-    Accept(world, id, visitor);
-    if (!result.has_value())
-    {
-        throw std::invalid_argument("GetAngularOffset not supported by joint type!");
-    }
-    return *result;
+    return GetAngularOffset(GetJoint(world, id));
 }
 
 void SetAngularOffset(World& world, JointID id, Angle value)
 {
-    // TODO
+    auto joint = GetJoint(world, id);
+    SetAngularOffset(joint, value);
+    SetJoint(world, id, joint);
 }
 
 Length2 GetGroundAnchorA(const World& world,  JointID id)
 {
-    Optional<Length2> result;
-    FunctionalJointVisitor visitor;
-    visitor.get<const PulleyJoint&>() = [&result](const PulleyJoint& j) {
-        result = j.GetGroundAnchorA();
-    };
-    Accept(world, id, visitor);
-    if (!result.has_value())
-    {
-        throw std::invalid_argument("GetGroundAnchorA not supported by joint type!");
-    }
-    return *result;
+    return GetGroundAnchorA(GetJoint(world, id));
 }
 
 Length2 GetGroundAnchorB(const World& world,  JointID id)
 {
-    Optional<Length2> result;
-    FunctionalJointVisitor visitor;
-    visitor.get<const PulleyJoint&>() = [&result](const PulleyJoint& j) {
-        result = j.GetGroundAnchorB();
-    };
-    Accept(world, id, visitor);
-    if (!result.has_value())
-    {
-        throw std::invalid_argument("GetGroundAnchorB not supported by joint type!");
-    }
-    return *result;
+    return GetGroundAnchorB(GetJoint(world, id));
 }
 
 Length GetCurrentLengthA(const World& world, JointID id)
@@ -352,27 +277,31 @@ Length GetCurrentLengthB(const World& world, JointID id)
 
 Length2 GetTarget(const World& world, JointID id)
 {
-    return world.GetTarget(id);
+    return GetTarget(GetJoint(world, id));
 }
 
 void SetTarget(World& world, JointID id, Length2 value)
 {
-    world.SetTarget(id, value);
+    auto joint = GetJoint(world, id);
+    SetTarget(joint, value);
+    SetJoint(world, id, joint);
 }
 
 Angle GetAngularLowerLimit(const World& world, JointID id)
 {
-    return world.GetAngularLowerLimit(id);
+    return GetAngularLowerLimit(GetJoint(world, id));
 }
 
 Angle GetAngularUpperLimit(const World& world, JointID id)
 {
-    return world.GetAngularUpperLimit(id);
+    return GetAngularUpperLimit(GetJoint(world, id));
 }
 
 void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper)
 {
-    world.SetAngularLimits(id, lower, upper);
+    auto joint = GetJoint(world, id);
+    SetAngularLimits(joint, lower, upper);
+    SetJoint(world, id, joint);
 }
 
 } // namespace d2

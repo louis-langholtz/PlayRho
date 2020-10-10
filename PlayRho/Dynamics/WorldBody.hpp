@@ -459,7 +459,7 @@ inline void ApplyForceToCenter(World& world, BodyID id, Force2 force)
 ///   affect the angular velocity.
 /// @note Non-zero forces wakes up the body.
 /// @param world World in which body exists.
-/// @param body Identity of body to apply the force to.
+/// @param id Identity of body to apply the force to.
 /// @param force World force vector.
 /// @param point World position of the point of application.
 /// @relatedalso World
@@ -469,7 +469,7 @@ void ApplyForce(World& world, BodyID id, Force2 force, Length2 point);
 /// @note This affects the angular velocity without affecting the linear velocity of the
 ///   center of mass.
 /// @note Non-zero forces wakes up the body.
-/// @param body Body to apply the torque to.
+/// @param id Body to apply the torque to.
 /// @param torque about the z-axis (out of the screen).
 /// @relatedalso World
 void ApplyTorque(World& world, BodyID id, Torque torque);
@@ -486,7 +486,7 @@ void ApplyTorque(World& world, BodyID id, Torque torque);
 void ApplyLinearImpulse(World& world, BodyID id, Momentum2 impulse, Length2 point);
 
 /// @brief Applies an angular impulse.
-/// @param body Body to apply the angular impulse to.
+/// @param id Body to apply the angular impulse to.
 /// @param impulse Angular impulse to be applied.
 /// @relatedalso World
 void ApplyAngularImpulse(World& world, BodyID id, AngularMomentum impulse);

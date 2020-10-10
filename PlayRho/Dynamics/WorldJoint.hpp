@@ -28,7 +28,6 @@
 #include <PlayRho/Common/Math.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
 
@@ -36,22 +35,27 @@ namespace playrho {
 namespace d2 {
 
 class World;
+class Joint;
 struct JointConf;
-class JointVisitor;
 
 /// @brief Gets the type of the joint.
 /// @relatedalso World
 JointType GetType(const World& world, JointID id);
 
+const Joint& GetJoint(const World& world, JointID id);
+
+void SetJoint(World& world, JointID id, const Joint& def);
+
 /// @copydoc World::GetCollideConnected
 /// @relatedalso World
 bool GetCollideConnected(const World& world, JointID id);
 
-/// @copydoc World::IsMotorEnabled()
+/// Is the joint motor enabled?
+/// @see EnableMotor(World& world, JointID joint, bool value)
 /// @relatedalso World
 bool IsMotorEnabled(const World& world, JointID id);
 
-/// @copydoc World::EnableMotor()
+/// Enable/disable the joint motor.
 /// @relatedalso World
 void EnableMotor(World& world, JointID id, bool value);
 
@@ -83,7 +87,9 @@ AngularMomentum GetAngularReaction(const World& world, JointID id);
 
 Angle GetReferenceAngle(const World& world, JointID id);
 
-UnitVec GetLocalAxisA(const World& world, JointID id);
+UnitVec GetLocalXAxisA(const World& world, JointID id);
+
+UnitVec GetLocalYAxisA(const World& world, JointID id);
 
 /// @copydoc World::GetMotorSpeed
 /// @see SetMotorSpeed(World& world, JointID id, AngularVelocity value)
@@ -102,19 +108,19 @@ void SetMaxMotorTorque(World& world, JointID id, Torque value);
 /// @relatedalso World
 Momentum GetLinearMotorImpulse(const World& world, JointID id);
 
-/// @copydoc World::GetAngularMotorImpulse
+/// @brief Gets the angular motor impulse of the identified joint if it has this property.
 /// @relatedalso World
 AngularMomentum GetAngularMotorImpulse(const World& world, JointID id);
 
-/// @copydoc World::GetAngularMass
+/// @brief Gets the computed angular rotational inertia used by the joint.
 /// @relatedalso World
 RotInertia GetAngularMass(const World& world, JointID id);
 
-/// @copydoc World::GetFrequency
+/// @brief Gets the frequency of the identified joint if it has this property.
 /// @relatedalso World
 Frequency GetFrequency(const World& world, JointID id);
 
-/// @copydoc World::GetFrequency
+/// @brief Sets the frequency of the identified joint if it has this property.
 /// @relatedalso World
 void SetFrequency(World& world, JointID id, Frequency value);
 
@@ -137,12 +143,6 @@ Length2 GetAnchorA(const World& world, JointID id);
 /// Get the anchor point on body-B in world coordinates.
 /// @relatedalso World
 Length2 GetAnchorB(const World& world, JointID id);
-
-/// @relatedalso World
-void Accept(const World& world, JointID id, JointVisitor& visitor);
-
-/// @relatedalso World
-void Accept(World& world, JointID id, JointVisitor& visitor);
 
 /// @relatedalso World
 Real GetRatio(const World& world, JointID id);

@@ -23,7 +23,6 @@
 #include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
@@ -54,7 +53,6 @@ TEST(WheelJointConf, DefaultConstruction)
 {
     WheelJointConf def{};
     
-    EXPECT_EQ(def.type, JointType::Wheel);
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
@@ -111,16 +109,12 @@ TEST(WheelJoint, Construction)
 
     EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    EXPECT_EQ(joint.GetLocalAxisA(), def.localAxisA);
+    EXPECT_EQ(GetLocalXAxisA(joint), def.localXAxisA);
     EXPECT_EQ(joint.IsMotorEnabled(), def.enableMotor);
     EXPECT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
     EXPECT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
     EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
-    
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Wheel);
     
     EXPECT_EQ(GetMotorTorque(joint, 1_Hz), 0 * NewtonMeter);
 }
@@ -241,7 +235,7 @@ TEST(WheelJoint, GetWheelJointConf)
     
     ASSERT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
     ASSERT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    ASSERT_EQ(joint.GetLocalAxisA(), def.localAxisA);
+    ASSERT_EQ(GetLocalXAxisA(joint), def.localXAxisA);
     ASSERT_EQ(joint.IsMotorEnabled(), def.enableMotor);
     ASSERT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
     ASSERT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
@@ -249,7 +243,6 @@ TEST(WheelJoint, GetWheelJointConf)
     ASSERT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
     
     const auto cdef = GetWheelJointConf(joint);
-    EXPECT_EQ(cdef.type, JointType::Wheel);
     EXPECT_EQ(cdef.bodyA, InvalidBodyID);
     EXPECT_EQ(cdef.bodyB, InvalidBodyID);
     EXPECT_EQ(cdef.collideConnected, false);

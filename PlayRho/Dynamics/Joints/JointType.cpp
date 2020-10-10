@@ -19,21 +19,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
+#include <PlayRho/Dynamics/Joints/JointType.hpp>
 
 namespace playrho {
 namespace d2 {
 
-JointType GetType(const Joint& joint) noexcept
-{
-    auto visitor = TypeJointVisitor{};
-    joint.Accept(visitor);
-    return visitor.GetType().value_or(JointType::Unknown);
-}
-
 const char* ToString(JointType type) noexcept
 {
+    return GetName(type);
+#if 0
     switch (type)
     {
         case JointType::Revolute: return "Revolute";
@@ -51,6 +45,7 @@ const char* ToString(JointType type) noexcept
     }
     assert(type == JointType::Unknown);
     return "Unknown";
+#endif
 }
 
 } // namespace d2

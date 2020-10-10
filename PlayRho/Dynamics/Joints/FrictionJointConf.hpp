@@ -28,10 +28,14 @@
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+struct ConstraintSolverConf;
+class StepConf;
+
 namespace d2 {
 
 class World;
-class FrictionJoint;
+class BodyConstraint;
 
 /// @brief Friction joint definition.
 struct FrictionJointConf : public JointBuilder<FrictionJointConf>
@@ -39,7 +43,7 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
     /// @brief Super type.
     using super = JointBuilder<FrictionJointConf>;
 
-    constexpr FrictionJointConf() noexcept: super{JointType::Friction} {}
+    constexpr FrictionJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, axis, and reference angle using the world
@@ -48,10 +52,18 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
                       Length2 laA = Length2{}, Length2 laB = Length2{}) noexcept;
 
     /// @brief Uses the given maximum force value.
-    constexpr FrictionJointConf& UseMaxForce(NonNegative<Force> v) noexcept;
+    constexpr auto& UseMaxForce(NonNegative<Force> v) noexcept
+    {
+        maxForce = v;
+        return *this;
+    }
 
     /// @brief Uses the given maximum torque value.
-    constexpr FrictionJointConf& UseMaxTorque(NonNegative<Torque> v) noexcept;
+    constexpr auto& UseMaxTorque(NonNegative<Torque> v) noexcept
+    {
+        maxTorque = v;
+        return *this;
+    }
 
     /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
@@ -64,26 +76,65 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
 
     /// @brief Maximum friction torque.
     NonNegative<Torque> maxTorque = NonNegative<Torque>{0_Nm};
+
+    // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
+    Momentum2 linearImpulse = Momentum2{}; ///< Linear impulse.
+    AngularMomentum angularImpulse = AngularMomentum{0}; ///< Angular impulse.
+
+    // Solver temp
+    Length2 rA = {}; ///< Relative A.
+    Length2 rB = {}; ///< Relative B.
+    Mass22 linearMass = {}; ///< 2-by-2 linear mass matrix in kilograms.
+    RotInertia angularMass = {}; ///< Angular mass.
 };
 
-constexpr FrictionJointConf& FrictionJointConf::UseMaxForce(NonNegative<Force> v) noexcept
-{
-    maxForce = v;
-    return *this;
-}
-
-constexpr FrictionJointConf& FrictionJointConf::UseMaxTorque(NonNegative<Torque> v) noexcept
-{
-    maxTorque = v;
-    return *this;
-}
-
 /// @brief Gets the definition data for the given joint.
-/// @relatedalso FrictionJoint
-FrictionJointConf GetFrictionJointConf(const FrictionJoint& joint) noexcept;
+/// @relatedalso Joint
+FrictionJointConf GetFrictionJointConf(const Joint& joint) noexcept;
 
+/// @relatedalso World
 FrictionJointConf GetFrictionJointConf(const World& world,
                                        BodyID bodyA, BodyID bodyB, Length2 anchor);
+
+/// @relatedalso FrictionJointConf
+constexpr Momentum2 GetLinearReaction(const FrictionJointConf& object) noexcept
+{
+    return object.linearImpulse;
+}
+
+/// @relatedalso FrictionJointConf
+constexpr AngularMomentum GetAngularReaction(const FrictionJointConf& object) noexcept
+{
+    return object.angularImpulse;
+}
+
+/// @relatedalso FrictionJointConf
+constexpr bool ShiftOrigin(FrictionJointConf&, Length2) noexcept
+{
+    return false;
+}
+
+/// @brief Initializes velocity constraint data based on the given solver data.
+/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @see SolveVelocity.
+/// @relatedalso FrictionJointConf
+void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf& conf);
+
+/// @brief Solves velocity constraint.
+/// @pre <code>InitVelocity</code> has been called.
+/// @see InitVelocity.
+/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+/// @relatedalso FrictionJointConf
+bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step);
+
+/// @brief Solves the position constraint.
+/// @return <code>true</code> if the position errors are within tolerance.
+/// @relatedalso FrictionJointConf
+bool SolvePosition(const FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf);
 
 } // namespace d2
 } // namespace playrho

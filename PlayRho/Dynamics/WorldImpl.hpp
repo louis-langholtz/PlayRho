@@ -69,7 +69,6 @@ class Contact;
 class Fixture;
 class Joint;
 class Shape;
-class JointVisitor;
 class Manifold;
 class ContactImpulsesList;
 
@@ -112,23 +111,10 @@ public:
     /// @see Step.
     explicit WorldImpl(const WorldConf& def = GetDefaultWorldConf());
 
-    /// @brief Constructs a world implementation for a world that's copied from another.
-    /// @details Copy constructs this world with a deep copy of the given world.
-    /// @post The state of this world is like that of the given world except this world now
-    ///   has deep copies of the given world with pointers having the new addresses of the
-    ///   new memory required for those copies.
-    WorldImpl(const WorldImpl& other);
+    /// @brief Copy constructor.
+    WorldImpl(const WorldImpl& other) = default;
 
     WorldImpl& operator=(const WorldImpl& other) = default;
-
-    /// @brief Copy function.
-    /// @details Copy assigns this world with a deep copy of the given world.
-    /// @post The state of this world is like that of the given world except this world now
-    ///   has deep copies of the given world with pointers having the new addresses of the
-    ///   new memory required for those copies.
-    /// @warning This method should not be called while the world is locked!
-    /// @throws WrongState if this method is called while the world is locked.
-    WorldImpl& copy(const WorldImpl& other);
 
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all dynamically allocated memory
@@ -173,20 +159,6 @@ public:
     /// @see PhysicalEntities.
     BodyID CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
-    /// @brief Creates a joint to constrain one or more bodies.
-    /// @warning This function is locked during callbacks.
-    /// @note No references to the configuration are retained. Its value is copied.
-    /// @post The created joint will be present in the range returned from the
-    ///   <code>GetJoints()</code> method.
-    /// @return Pointer to newly created joint which can later be destroyed by calling the
-    ///   <code>Destroy(JointID)</code> method.
-    /// @throws WrongState if this method is called while the world is locked.
-    /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
-    /// @throws InvalidArgument if the given definition is not allowed.
-    /// @see PhysicalEntities.
-    /// @see Destroy(JointID), GetJoints.
-    JointID CreateJoint(const JointConf& def);
-
     /// @brief Destroys the given body.
     /// @details Destroys a given body that had previously been created by a call to this
     ///   world's <code>CreateBody(const BodyConf&)</code> method.
@@ -204,6 +176,20 @@ public:
     /// @see CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies.
     /// @see PhysicalEntities.
     void Destroy(BodyID id);
+
+    /// @brief Creates a joint to constrain one or more bodies.
+    /// @warning This function is locked during callbacks.
+    /// @note No references to the configuration are retained. Its value is copied.
+    /// @post The created joint will be present in the range returned from the
+    ///   <code>GetJoints()</code> method.
+    /// @return Pointer to newly created joint which can later be destroyed by calling the
+    ///   <code>Destroy(JointID)</code> method.
+    /// @throws WrongState if this method is called while the world is locked.
+    /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
+    /// @throws InvalidArgument if the given definition is not allowed.
+    /// @see PhysicalEntities.
+    /// @see Destroy(JointID), GetJoints.
+    JointID CreateJoint(const Joint& def);
 
     /// @brief Destroys a joint.
     /// @details Destroys a given joint that had previously been created by a call to this
@@ -493,9 +479,7 @@ public:
     const Joint& GetJoint(JointID id) const;
     Joint& GetJoint(JointID id);
 
-    void Accept(JointID id, JointVisitor& visitor) const;
-
-    void Accept(JointID id, JointVisitor& visitor);
+    void SetJoint(JointID id, const Joint& def);
 
     /// @brief Sets whether the fixture is a sensor or not.
     /// @see IsSensor(FixtureID id).
@@ -529,10 +513,6 @@ private:
         /// Step complete. @details Used for sub-stepping. @see e_substepping.
         e_stepComplete  = 0x0040,
     };
-
-    /// @brief Copies joints.
-    void CopyJoints(const std::map<const Body*, Body*>& bodyMap,
-                    SizedRange<Joints::const_iterator> range);
 
     /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
@@ -763,13 +743,7 @@ private:
     /// have active bodies (either or both) get their Update methods called with the current
     /// contact listener as its argument.
     /// Essentially this really just purges contacts that are no longer relevant.
-    static DestroyContactsStats DestroyContacts(Contacts& contacts,
-                                                ArrayAllocator<Contact>& contactBuffer,
-                                                ArrayAllocator<Manifold>& manifoldBuffer,
-                                                ArrayAllocator<Body>& bodyBuffer,
-                                                const ArrayAllocator<Fixture>& fixtureBuffer,
-                                                const DynamicTree& tree,
-                                                ContactListener listener);
+    DestroyContactsStats DestroyContacts(Contacts& contacts);
     
     /// @brief Update contacts.
     UpdateContactsStats UpdateContacts(const StepConf& conf);
@@ -853,6 +827,7 @@ private:
 
     ArrayAllocator<Body> m_bodyBuffer;
     ArrayAllocator<Fixture> m_fixtureBuffer;
+    ArrayAllocator<Joint> m_jointBuffer;
     ArrayAllocator<Contact> m_contactBuffer;
     ArrayAllocator<Manifold> m_manifoldBuffer;
 

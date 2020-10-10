@@ -27,10 +27,14 @@
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+struct ConstraintSolverConf;
+class StepConf;
+
 namespace d2 {
 
 class World;
-class DistanceJoint;
+class BodyConstraint;
 
 /// @brief Distance joint definition.
 /// @details This requires defining an anchor point on both bodies and the non-zero
@@ -40,29 +44,40 @@ class DistanceJoint;
 /// @warning Do not use a zero or short length.
 struct DistanceJointConf : public JointBuilder<DistanceJointConf>
 {
-    
     /// @brief Super type.
     using super = JointBuilder<DistanceJointConf>;
-    
-    constexpr DistanceJointConf() noexcept: super{JointType::Distance} {}
-    
+
+    constexpr DistanceJointConf() noexcept = default;
+
     /// @brief Copy constructor.
     DistanceJointConf(const DistanceJointConf& copy) = default;
-    
+
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, and length using the world anchors.
     DistanceJointConf(BodyID bA, BodyID bB,
                       Length2 laA = Length2{}, Length2 laB = Length2{}, Length l = 1_m) noexcept;
-    
+
     /// @brief Uses the given length.
-    constexpr DistanceJointConf& UseLength(Length v) noexcept;
-    
+    constexpr auto& UseLength(Length v) noexcept
+    {
+        length = v;
+        return *this;
+    }
+
     /// @brief Uses the given frequency.
-    constexpr DistanceJointConf& UseFrequency(NonNegative<Frequency> v) noexcept;
-    
+    constexpr auto& UseFrequency(NonNegative<Frequency> v) noexcept
+    {
+        frequency = v;
+        return *this;
+    }
+
     /// @brief Uses the given damping ratio.
-    constexpr DistanceJointConf& UseDampingRatio(Real v) noexcept;
-    
+    constexpr auto& UseDampingRatio(Real v) noexcept
+    {
+        dampingRatio = v;
+        return *this;
+    }
+
     /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
     
@@ -79,32 +94,66 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.
     Real dampingRatio = 0;
+
+    // Solver shared
+    Momentum impulse = 0_Ns; ///< Impulse.
+
+    // Solver temp
+    InvMass invGamma = {}; ///< Inverse gamma.
+    LinearVelocity bias = {}; ///< Bias.
+    Mass mass = 0_kg; ///< Mass.
+    UnitVec u; ///< "u" directional.
+    Length2 rA = {}; ///< Relative A position.
+    Length2 rB = {}; ///< Relative B position.
 };
 
-constexpr DistanceJointConf& DistanceJointConf::UseLength(Length v) noexcept
-{
-    length = v;
-    return *this;
-}
-
-constexpr DistanceJointConf& DistanceJointConf::UseFrequency(NonNegative<Frequency> v) noexcept
-{
-    frequency = v;
-    return *this;
-}
-
-constexpr DistanceJointConf& DistanceJointConf::UseDampingRatio(Real v) noexcept
-{
-    dampingRatio = v;
-    return *this;
-}
-
 /// @brief Gets the definition data for the given joint.
-/// @relatedalso DistanceJoint
-DistanceJointConf GetDistanceJointConf(const DistanceJoint& joint) noexcept;
+/// @relatedalso Joint
+DistanceJointConf GetDistanceJointConf(const Joint& joint) noexcept;
 
+/// @relatedalso World
 DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID bodyB,
                                        Length2 anchorA = Length2{}, Length2 anchorB = Length2{});
+
+/// @relatedalso DistanceJointConf
+constexpr Momentum2 GetLinearReaction(const DistanceJointConf& object) noexcept
+{
+    return object.impulse * object.u;
+}
+
+/// @relatedalso DistanceJointConf
+constexpr AngularMomentum GetAngularReaction(const DistanceJointConf&) noexcept
+{
+    return AngularMomentum{0};
+}
+
+/// @relatedalso DistanceJointConf
+constexpr bool ShiftOrigin(DistanceJointConf&, Length2) noexcept
+{
+    return false;
+}
+
+/// @brief Initializes velocity constraint data based on the given solver data.
+/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @see SolveVelocity.
+/// @relatedalso DistanceJointConf
+void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf& conf);
+
+/// @brief Solves velocity constraint.
+/// @pre <code>InitVelocity</code> has been called.
+/// @see InitVelocity.
+/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+/// @relatedalso DistanceJointConf
+bool SolveVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step);
+
+/// @brief Solves the position constraint.
+/// @return <code>true</code> if the position errors are within tolerance.
+/// @relatedalso DistanceJointConf
+bool SolvePosition(const DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf);
 
 } // namespace d2
 } // namespace playrho

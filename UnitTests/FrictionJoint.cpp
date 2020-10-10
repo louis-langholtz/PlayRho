@@ -22,7 +22,6 @@
 
 #include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
 
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
@@ -53,7 +52,6 @@ TEST(FrictionJointConf, DefaultConstruction)
 {
     FrictionJointConf def{};
 
-    EXPECT_EQ(def.type, JointType::Friction);
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
@@ -101,10 +99,6 @@ TEST(FrictionJoint, Construction)
     EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
     EXPECT_EQ(joint.GetMaxTorque(), def.maxTorque);
-    
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Friction);
 }
 
 TEST(FrictionJoint, GetFrictionJointConf)
@@ -128,7 +122,6 @@ TEST(FrictionJoint, GetFrictionJointConf)
     ASSERT_EQ(joint.GetMaxTorque(), def.maxTorque);
 
     const auto cdef = GetFrictionJointConf(joint);
-    EXPECT_EQ(cdef.type, JointType::Friction);
     EXPECT_EQ(cdef.bodyA, b0);
     EXPECT_EQ(cdef.bodyB, b1);
     EXPECT_EQ(cdef.collideConnected, false);

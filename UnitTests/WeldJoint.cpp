@@ -21,7 +21,6 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
@@ -61,7 +60,6 @@ TEST(WeldJointConf, DefaultConstruction)
 {
     WeldJointConf def{};
     
-    EXPECT_EQ(def.type, JointType::Weld);
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
@@ -111,10 +109,6 @@ TEST(WeldJoint, Construction)
     EXPECT_EQ(joint.GetReferenceAngle(), def.referenceAngle);
     EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
-    
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Weld);
 }
 
 TEST(WeldJoint, GetWeldJointConf)
@@ -139,7 +133,6 @@ TEST(WeldJoint, GetWeldJointConf)
     ASSERT_EQ(joint.GetDampingRatio(), def.dampingRatio);
     
     const auto cdef = GetWeldJointConf(joint);
-    EXPECT_EQ(cdef.type, JointType::Weld);
     EXPECT_EQ(cdef.bodyA, bodyA);
     EXPECT_EQ(cdef.bodyB, bodyB);
     EXPECT_EQ(cdef.collideConnected, false);

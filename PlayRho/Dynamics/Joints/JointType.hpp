@@ -22,35 +22,14 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP
 
-#include <PlayRho/Defines.hpp>
+#include <PlayRho/Common/TypeInfo.hpp> // for TypeID
 
 #include <cstdint>
 
 namespace playrho {
 namespace d2 {
 
-/// @brief Enumeration of joint types.
-enum class JointType : std::uint8_t
-{
-    Unknown,
-    Revolute,
-    Prismatic,
-    Distance,
-    Pulley,
-    Target,
-    Gear,
-    Wheel,
-    Weld,
-    Friction,
-    Rope,
-    Motor
-};
-
-class Joint;
-
-/// @brief Gets the type of the given joint.
-/// @relatedalso Joint
-JointType GetType(const Joint& joint) noexcept;
+using JointType = TypeID;
 
 /// @brief Provides a C-style (null-terminated) string name for given joint type.
 /// @return C-style English-language human-readable string uniquely identifying the joint type.

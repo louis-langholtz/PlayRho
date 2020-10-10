@@ -21,30 +21,26 @@
 
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
 
-#include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
 
 namespace playrho {
 namespace d2 {
 
 DistanceJointConf::DistanceJointConf(BodyID bA, BodyID bB,
                                      Length2 laA, Length2 laB, Length l) noexcept :
-    super{super{JointType::Distance}.UseBodyA(bA).UseBodyB(bB)},
+    super{super{}.UseBodyA(bA).UseBodyB(bB)},
     localAnchorA{laA}, localAnchorB{laB}, length{l}
 {
     // Intentionally empty.
 }
 
-DistanceJointConf GetDistanceJointConf(const DistanceJoint& joint) noexcept
+DistanceJointConf GetDistanceJointConf(const Joint& joint) noexcept
 {
-    auto def = DistanceJointConf{};
-    Set(def, joint);
-    def.localAnchorA = joint.GetLocalAnchorA();
-    def.localAnchorB = joint.GetLocalAnchorB();
-    def.length = joint.GetLength();
-    def.frequency = joint.GetFrequency();
-    def.dampingRatio = joint.GetDampingRatio();
-    return def;
+    return TypeCast<DistanceJointConf>(joint);
 }
 
 DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID bodyB,
@@ -56,6 +52,167 @@ DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID 
         GetLocalPoint(world, bodyB, anchorB),
         GetMagnitude(anchorB - anchorA)
     };
+}
+
+void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf&)
+{
+    auto& bodyConstraintA = At(bodies, GetBodyA(object));
+    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+
+    const auto invMassA = bodyConstraintA.GetInvMass();
+    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia(); // L^-2 M^-1 QP^2
+    const auto posA = bodyConstraintA.GetPosition();
+    auto velA = bodyConstraintA.GetVelocity();
+
+    const auto invMassB = bodyConstraintB.GetInvMass();
+    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia(); // L^-2 M^-1 QP^2
+    const auto posB = bodyConstraintB.GetPosition();
+    auto velB = bodyConstraintB.GetVelocity();
+
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
+
+    object.rA = Rotate(object.localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
+    object.rB = Rotate(object.localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
+    const auto deltaLocation = Length2{(posB.linear + object.rB) - (posA.linear + object.rA)};
+
+    const auto uvresult = UnitVec::Get(deltaLocation[0], deltaLocation[1]);
+    object.u = std::get<UnitVec>(uvresult);
+    const auto length = std::get<Length>(uvresult);
+
+    const auto crAu = Length{Cross(object.rA, object.u)} / Radian;
+    const auto crBu = Length{Cross(object.rB, object.u)} / Radian;
+    const auto invRotMassA = InvMass{invRotInertiaA * Square(crAu)};
+    const auto invRotMassB = InvMass{invRotInertiaB * Square(crBu)};
+    auto invMass = invMassA + invRotMassA + invMassB + invRotMassB;
+
+    object.mass = (invMass != InvMass{0}) ? Real{1} / invMass: 0_kg;
+
+    if (object.frequency > 0_Hz)
+    {
+        const auto C = length - object.length; // L
+
+        // Frequency
+        const auto omega = Real{2} * Pi * object.frequency;
+
+        // Damping coefficient
+        const auto d = Real{2} * object.mass * object.dampingRatio * omega; // M T^-1
+
+        // Spring stiffness
+        const auto k = object.mass * Square(omega); // M T^-2
+
+        // magic formulas
+        const auto h = step.GetTime();
+        const auto gamma = Mass{h * (d + h * k)}; // T (M T^-1 + T M T^-2) = M
+        object.invGamma = (gamma != 0_kg)? Real{1} / gamma: 0;
+        object.bias = C * h * k * object.invGamma; // L T M T^-2 M^-1 = L T^-1
+
+        invMass += object.invGamma;
+        object.mass = (invMass != InvMass{0}) ? Real{1} / invMass: 0;
+    }
+    else
+    {
+        object.invGamma = InvMass{0};
+        object.bias = 0_mps;
+    }
+
+    if (step.doWarmStart)
+    {
+        // Scale the impulse to support a variable time step.
+        object.impulse *= step.dtRatio;
+
+        const auto P = object.impulse * object.u;
+
+        // P is M L T^-2
+        // Cross(Length2, P) is: M L^2 T^-1
+        // inv rotational inertia is: L^-2 M^-1 QP^2
+        // Product is: L^-2 M^-1 QP^2 M L^2 T^-1 = QP^2 T^-1
+        const auto LA = AngularMomentum{Cross(object.rA, P) / Radian};
+        const auto LB = AngularMomentum{Cross(object.rB, P) / Radian};
+        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+        velB += Velocity{invMassB * P, invRotInertiaB * LB};
+    }
+    else
+    {
+        object.impulse = 0;
+    }
+
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
+}
+
+bool SolveVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step)
+{
+    auto& bodyConstraintA = At(bodies, GetBodyA(object));
+    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+
+    auto velA = bodyConstraintA.GetVelocity();
+    auto velB = bodyConstraintB.GetVelocity();
+
+    // Cdot = dot(u, v + cross(w, r))
+    const auto vpA = velA.linear + GetRevPerpendicular(object.rA) * (velA.angular / Radian);
+    const auto vpB = velB.linear + GetRevPerpendicular(object.rB) * (velB.angular / Radian);
+    const auto Cdot = LinearVelocity{Dot(object.u, vpB - vpA)};
+
+    const auto impulse = Momentum{-object.mass * (Cdot + object.bias + object.invGamma * object.impulse)};
+    object.impulse += impulse;
+
+    const auto P = impulse * object.u;
+    const auto LA = Cross(object.rA, P) / Radian;
+    const auto LB = Cross(object.rB, P) / Radian;
+
+    velA -= Velocity{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
+    velB += Velocity{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
+
+    bodyConstraintA.SetVelocity(velA);
+    bodyConstraintB.SetVelocity(velB);
+
+    return impulse == 0_Ns;
+}
+
+bool SolvePosition(const DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf)
+{
+    if (object.frequency > 0_Hz)
+    {
+        // There is no position correction for soft distance constraints.
+        return true;
+    }
+
+    auto& bodyConstraintA = At(bodies, GetBodyA(object));
+    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+
+    auto posA = bodyConstraintA.GetPosition();
+    auto posB = bodyConstraintB.GetPosition();
+
+    const auto qA = UnitVec::Get(posA.angular);
+    const auto qB = UnitVec::Get(posB.angular);
+
+    const auto rA = Length2{Rotate(object.localAnchorA - bodyConstraintA.GetLocalCenter(), qA)};
+    const auto rB = Length2{Rotate(object.localAnchorB - bodyConstraintB.GetLocalCenter(), qB)};
+    const auto relLoc = Length2{(posB.linear + rB) - (posA.linear + rA)};
+
+    const auto uvresult = UnitVec::Get(relLoc[0], relLoc[1]);
+    const auto u = std::get<UnitVec>(uvresult);
+    const auto length = std::get<Length>(uvresult);
+    const auto deltaLength = length - object.length;
+    const auto C = std::clamp(deltaLength, -conf.maxLinearCorrection, conf.maxLinearCorrection);
+
+    const auto impulse = -object.mass * C;
+    const auto P = impulse * u;
+    const auto LA = Cross(rA, P) / Radian;
+    const auto LB = Cross(rB, P) / Radian;
+
+    posA -= Position{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
+    posB += Position{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
+
+    bodyConstraintA.SetPosition(posA);
+    bodyConstraintB.SetPosition(posB);
+
+    return abs(C) < conf.linearSlop;
 }
 
 } // namespace d2

@@ -1300,7 +1300,7 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_NE(world.GetJoints().begin(), world.GetJoints().end());
     const auto first = *world.GetJoints().begin();
     EXPECT_EQ(joint, first);
-    EXPECT_EQ(GetType(world, joint), JointType::Distance);
+    EXPECT_EQ(GetType(world, joint), GetTypeID<DistanceJointConf>());
     EXPECT_EQ(GetBodyA(world, joint), body1);
     EXPECT_EQ(GetBodyB(world, joint), body2);
     EXPECT_EQ(GetLocalAnchorA(world, joint), anchorA);
@@ -1312,7 +1312,7 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_TRUE(world.GetJoints().empty());
     EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
     
-    EXPECT_THROW(world.CreateJoint(JointConf{JointType::Unknown}), InvalidArgument);
+    EXPECT_THROW(world.CreateJoint(JointConf{}), InvalidArgument);
 }
 
 TEST(World, MaxBodies)

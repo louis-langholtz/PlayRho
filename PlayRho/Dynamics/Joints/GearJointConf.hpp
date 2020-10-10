@@ -28,11 +28,15 @@
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
 namespace playrho {
+
+struct ConstraintSolverConf;
+class StepConf;
+
 namespace d2 {
 
 class Joint;
-class GearJoint;
 class World;
+class BodyConstraint;
 
 /// @brief Gear joint definition.
 /// @details This definition requires two existing
@@ -46,13 +50,17 @@ struct GearJointConf : public JointBuilder<GearJointConf>
     GearJointConf(BodyID bA, BodyID bB, BodyID bC, BodyID bD) noexcept;
 
     /// @brief Uses the given ratio value.
-    GearJointConf& UseRatio(Real v) noexcept;
+    constexpr auto& UseRatio(Real v) noexcept
+    {
+        ratio = v;
+        return *this;
+    }
 
     BodyID bodyC = InvalidBodyID;
     BodyID bodyD = InvalidBodyID;
 
-    JointType type1 = JointType::Unknown;
-    JointType type2 = JointType::Unknown;
+    JointType type1 = GetTypeID<void>();
+    JointType type2 = GetTypeID<void>();
 
     // Used when not Revolute...
     Length2 localAnchorA{}; ///< Local anchor A.
@@ -71,19 +79,65 @@ struct GearJointConf : public JointBuilder<GearJointConf>
     Real ratio = Real{1};
 
     Real constant = Real{0};
+
+    Momentum impulse = 0_Ns; ///< Impulse.
+
+    // Solver temp
+    Vec2 JvAC = Vec2{}; ///< <code>AC Jv</code> data.
+    Vec2 JvBD = {}; ///< <code>BD Jv</code> data.
+    Length JwA = 0_m; ///< A <code>Jw</code> data.
+    Length JwB = 0_m; ///< B <code>Jw</code> data.
+    Length JwC = 0_m; ///< C <code>Jw</code> data.
+    Length JwD = 0_m; ///< D <code>Jw</code> data.
+    Real mass = 0; ///< Either linear mass or angular mass.
 };
 
-inline GearJointConf& GearJointConf::UseRatio(Real v) noexcept
+/// @brief Gets the definition data for the given joint.
+/// @relatedalso Joint
+GearJointConf GetGearJointConf(const Joint& joint) noexcept;
+
+/// @relatedalso World
+GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Real ratio = Real{1});
+
+/// @relatedalso GearJointConf
+constexpr Momentum2 GetLinearReaction(const GearJointConf& object)
 {
-    ratio = v;
-    return *this;
+    return object.impulse * object.JvAC;
 }
 
-/// @brief Gets the definition data for the given joint.
-/// @relatedalso GearJoint
-GearJointConf GetGearJointConf(const GearJoint& joint) noexcept;
+/// @relatedalso GearJointConf
+constexpr AngularMomentum GetAngularReaction(const GearJointConf& object)
+{
+    return object.impulse * object.JwA / Radian;
+}
 
-GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Real ratio = Real{1});
+/// @relatedalso GearJointConf
+constexpr bool ShiftOrigin(GearJointConf&, Length2) noexcept
+{
+    return false;
+}
+
+/// @brief Initializes velocity constraint data based on the given solver data.
+/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @see SolveVelocity.
+/// @relatedalso GearJointConf
+void InitVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf& conf);
+
+/// @brief Solves velocity constraint.
+/// @pre <code>InitVelocity</code> has been called.
+/// @see InitVelocity.
+/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+/// @relatedalso GearJointConf
+bool SolveVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step);
+
+/// @brief Solves the position constraint.
+/// @return <code>true</code> if the position errors are within tolerance.
+/// @relatedalso GearJointConf
+bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf);
 
 } // namespace d2
 } // namespace playrho

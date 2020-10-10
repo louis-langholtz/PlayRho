@@ -23,12 +23,19 @@
 #define PLAYRHO_DYNAMICS_JOINTS_ROPEJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
+
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+struct ConstraintSolverConf;
+class StepConf;
+
 namespace d2 {
 
-class RopeJoint;
+class Joint;
+class World;
+class BodyConstraint;
 
 /// @brief Rope joint definition.
 /// @details This requires two body anchor points and a maximum lengths.
@@ -38,19 +45,42 @@ struct RopeJointConf : public JointBuilder<RopeJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<RopeJointConf>;
-    
-    constexpr RopeJointConf() noexcept: super{JointType::Rope} {}
+
+    /// @brief Limit state.
+    /// @note Only used by joints that implement some notion of a limited range.
+    enum LimitState
+    {
+        /// @brief Inactive limit.
+        e_inactiveLimit,
+
+        /// @brief At-lower limit.
+        e_atLowerLimit,
+
+        /// @brief At-upper limit.
+        e_atUpperLimit,
+
+        /// @brief Equal limit.
+        /// @details Equal limit is used to indicate that a joint's upper and lower limits
+        ///   are approximately the same.
+        e_equalLimits
+    };
+
+    constexpr RopeJointConf() noexcept = default;
     
     /// @brief Initializing constructor.
     constexpr RopeJointConf(BodyID bodyA, BodyID bodyB) noexcept:
-        super{super{JointType::Rope}.UseBodyA(bodyA).UseBodyB(bodyB)}
+        super{super{}.UseBodyA(bodyA).UseBodyB(bodyB)}
     {
         // Intentionally empty.
     }
     
     /// @brief Uses the given max length value.
-    constexpr RopeJointConf& UseMaxLength(Length v) noexcept;
-    
+    constexpr auto& UseMaxLength(Length v) noexcept
+    {
+        maxLength = v;
+        return *this;
+    }
+
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{-1_m, 0_m};
     
@@ -59,17 +89,61 @@ struct RopeJointConf : public JointBuilder<RopeJointConf>
     
     /// The maximum length of the rope.
     Length maxLength = 0_m;
+
+    Length length = 0; ///< Length.
+    Momentum impulse = 0_Ns; ///< Impulse.
+
+    // Solver temp
+    UnitVec u; ///< U direction.
+    Length2 rA = {}; ///< Relative A.
+    Length2 rB = {}; ///< Relative B.
+    Mass mass = 0_kg; ///< Mass.
+    LimitState state = e_inactiveLimit; ///< Limit state.
 };
 
-constexpr RopeJointConf& RopeJointConf::UseMaxLength(Length v) noexcept
+/// @brief Gets the definition data for the given joint.
+/// @relatedalso Joint
+RopeJointConf GetRopeJointConf(const Joint& joint) noexcept;
+
+/// @relatedalso RopeJointConf
+constexpr Momentum2 GetLinearReaction(const RopeJointConf& object) noexcept
 {
-    maxLength = v;
-    return *this;
+    return object.impulse * object.u;
 }
 
-/// @brief Gets the definition data for the given joint.
-/// @relatedalso RopeJoint
-RopeJointConf GetRopeJointConf(const RopeJoint& joint) noexcept;
+/// @relatedalso RopeJointConf
+constexpr AngularMomentum GetAngularReaction(const RopeJointConf&) noexcept
+{
+    return AngularMomentum{0};
+}
+
+/// @relatedalso RopeJointConf
+constexpr auto ShiftOrigin(RopeJointConf&, Length2) noexcept
+{
+    return false;
+}
+
+/// @brief Initializes velocity constraint data based on the given solver data.
+/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @see SolveVelocity.
+/// @relatedalso RopeJointConf
+void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf& conf);
+
+/// @brief Solves velocity constraint.
+/// @pre <code>InitVelocity</code> has been called.
+/// @see InitVelocity.
+/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+/// @relatedalso RopeJointConf
+bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step);
+
+/// @brief Solves the position constraint.
+/// @return <code>true</code> if the position errors are within tolerance.
+/// @relatedalso RopeJointConf
+bool SolvePosition(const RopeJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf);
 
 } // namespace d2
 } // namespace playrho

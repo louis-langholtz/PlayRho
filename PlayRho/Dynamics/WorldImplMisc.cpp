@@ -25,6 +25,11 @@
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
+#include <PlayRho/Dynamics/Body.hpp> // for WorldImpl not being incomplete
+#include <PlayRho/Dynamics/Fixture.hpp> // for WorldImpl not being incomplete
+#include <PlayRho/Dynamics/Joints/Joint.hpp> // for WorldImpl not being incomplete
+#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for WorldImpl not being incomplete
+#include <PlayRho/Collision/Manifold.hpp> // for WorldImpl not being incomplete
 
 namespace playrho {
 namespace d2 {
@@ -81,11 +86,6 @@ void SetPostSolveContactListener(WorldImpl& world,
 BodyID CreateBody(WorldImpl& world, const BodyConf& def)
 {
     return world.CreateBody(def);
-}
-
-JointID CreateJoint(WorldImpl& world, const JointConf& def)
-{
-    return world.CreateJoint(def);
 }
 
 StepStats Step(WorldImpl& world, const StepConf& conf)

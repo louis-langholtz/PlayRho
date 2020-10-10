@@ -19,8 +19,7 @@
  */
 
 #include "UnitTests.hpp"
-#include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
+#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
@@ -31,7 +30,6 @@ TEST(PulleyJointConf, DefaultConstruction)
 {
     PulleyJointConf def;
     
-    EXPECT_EQ(def.type, JointType::Pulley);
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, true);
@@ -88,10 +86,6 @@ TEST(PulleyJoint, Construction)
     EXPECT_EQ(joint.GetLengthA(), def.lengthA);
     EXPECT_EQ(joint.GetLengthB(), def.lengthB);
     EXPECT_EQ(joint.GetRatio(), def.ratio);
-    
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Pulley);
 }
 
 TEST(PulleyJoint, GetAnchorAandB)

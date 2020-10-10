@@ -26,7 +26,6 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -56,7 +55,6 @@ TEST(DistanceJointConf, DefaultConstruction)
 {
     auto def = DistanceJointConf{};
 
-    EXPECT_EQ(def.type, JointType::Distance);
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
@@ -108,14 +106,11 @@ TEST(DistanceJoint, Construction)
 
     EXPECT_EQ(GetLocalAnchorA(world, joint), def.localAnchorA);
     EXPECT_EQ(GetLocalAnchorB(world, joint), def.localAnchorB);
-#if 0
-    EXPECT_EQ(joint.GetLength(), def.length);
-    EXPECT_EQ(joint.GetFrequency(), def.frequency);
-    EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
 
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Distance);
+    EXPECT_EQ(GetFrequency(world, joint), def.frequency);
+#if 0
+    EXPECT_EQ(GetLength(world, joint), def.length);
+    EXPECT_EQ(GetDampingRatio(world, joint), def.dampingRatio);
 #endif
 }
 

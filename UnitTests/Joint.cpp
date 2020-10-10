@@ -122,7 +122,7 @@ TEST(Joint, StaticIsOkay)
 TEST(Joint, GetWorldIndexFreeFunction)
 {
     World world;
-    EXPECT_EQ(GetWorldIndex(world, static_cast<const Joint*>(nullptr)), JointCounter(-1));
+    EXPECT_EQ(GetWorldIndex(world, InvalidJointID), JointCounter(-1));
 }
 
 TEST(Joint, LimitStateToStringFF)

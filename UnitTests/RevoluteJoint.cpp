@@ -20,7 +20,6 @@
 
 #include "UnitTests.hpp"
 #include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
@@ -101,10 +100,6 @@ TEST(RevoluteJoint, Construction)
     const auto id = world.CreateJoint(jd);
     EXPECT_EQ(GetAnchorA(world, id), Length2(4_m, 5_m));
     EXPECT_EQ(GetAnchorB(world, id), Length2(6_m, 7_m));
-
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Revolute);
 
     EXPECT_EQ(GetMotorTorque(world, id, 1_Hz), 0 * NewtonMeter);
 }

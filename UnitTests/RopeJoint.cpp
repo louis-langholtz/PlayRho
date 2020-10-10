@@ -21,7 +21,6 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -52,7 +51,6 @@ TEST(RopeJointConf, DefaultConstruction)
 {
     RopeJointConf def{};
     
-    EXPECT_EQ(def.type, JointType::Rope);
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
@@ -106,10 +104,6 @@ TEST(RopeJoint, Construction)
     EXPECT_EQ(joint.GetAnchorB(world), Length2(+1_m, 0_m));
     EXPECT_EQ(joint.GetMaxLength(), def.maxLength);
     EXPECT_EQ(joint.GetLimitState(), Joint::e_inactiveLimit);
-    
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Rope);
 }
 
 TEST(RopeJoint, GetRopeJointConf)
@@ -135,7 +129,6 @@ TEST(RopeJoint, GetRopeJointConf)
     ASSERT_EQ(joint.GetMaxLength(), def.maxLength);
     
     const auto cdef = GetRopeJointConf(joint);
-    EXPECT_EQ(cdef.type, JointType::Rope);
     EXPECT_EQ(cdef.bodyA, &bodyA);
     EXPECT_EQ(cdef.bodyB, &bodyB);
     EXPECT_EQ(cdef.collideConnected, false);

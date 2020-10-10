@@ -18,7 +18,6 @@
 
 #include "UnitTests.hpp"
 #include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 
 using namespace playrho;
@@ -90,7 +89,6 @@ TEST(TargetJoint, DefaultInitialized)
     const auto def = TargetJointConf{};
     auto joint = TargetJoint{def};
 
-    EXPECT_EQ(GetType(joint), JointType::Target);
     EXPECT_EQ(joint.GetBodyA(), def.bodyA);
     EXPECT_EQ(joint.GetBodyB(), def.bodyB);
     EXPECT_EQ(joint.GetLocalAnchorB(), def.anchor);
@@ -103,11 +101,6 @@ TEST(TargetJoint, DefaultInitialized)
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
     EXPECT_EQ(joint.GetFrequency(), def.frequency);
     EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
-
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Target);
-    EXPECT_TRUE(visitor.GetWritable());
 }
 
 TEST(TargetJoint, GetLocalAnchorB)

@@ -88,7 +88,7 @@ void World::Destroy(BodyID id)
     ::playrho::d2::Destroy(*m_impl, id);
 }
 
-JointID World::CreateJoint(const JointConf& def)
+JointID World::CreateJoint(const Joint& def)
 {
     return ::playrho::d2::CreateJoint(*m_impl, def);
 }
@@ -409,16 +409,6 @@ void World::SetAwake(BodyID id)
     ::playrho::d2::SetAwake(*m_impl, id);
 }
 
-bool World::IsMotorEnabled(JointID id) const
-{
-    return ::playrho::d2::IsMotorEnabled(*m_impl, id);
-}
-
-void World::EnableMotor(JointID id, bool value)
-{
-    ::playrho::d2::EnableMotor(*m_impl, id, value);
-}
-
 void World::SetAwake(JointID id)
 {
     ::playrho::d2::SetAwake(*m_impl, id);
@@ -469,6 +459,11 @@ JointType World::GetType(JointID id) const
     return ::playrho::d2::GetType(*m_impl, id);
 }
 
+const void* World::GetData(JointID id) const
+{
+    return ::playrho::d2::GetData(*m_impl, id);
+}
+
 bool World::IsAwake(BodyID id) const
 {
     return ::playrho::d2::IsAwake(*m_impl, id);
@@ -497,6 +492,16 @@ InvMass World::GetInvMass(BodyID id) const
 InvRotInertia World::GetInvRotInertia(BodyID id) const
 {
     return ::playrho::d2::GetInvRotInertia(*m_impl, id);
+}
+
+const Joint& World::GetJoint(JointID id) const
+{
+    return ::playrho::d2::GetJoint(*m_impl, id);
+}
+
+void World::SetJoint(JointID id, const Joint& def)
+{
+    ::playrho::d2::SetJoint(*m_impl, id, def);
 }
 
 bool World::GetCollideConnected(JointID id) const
@@ -547,71 +552,6 @@ AngularMomentum World::GetAngularReaction(JointID id) const
 Angle World::GetReferenceAngle(JointID id) const
 {
     return ::playrho::d2::GetReferenceAngle(*m_impl, id);
-}
-
-UnitVec World::GetLocalAxisA(JointID id) const
-{
-    return ::playrho::d2::GetLocalAxisA(*m_impl, id);
-}
-
-AngularVelocity World::GetMotorSpeed(JointID id) const
-{
-    return ::playrho::d2::GetMotorSpeed(*m_impl, id);
-}
-
-void World::SetMotorSpeed(JointID id, AngularVelocity value)
-{
-    ::playrho::d2::SetMotorSpeed(*m_impl, id, value);
-}
-
-Torque World::GetMaxMotorTorque(JointID id) const
-{
-    return ::playrho::d2::GetMaxMotorTorque(*m_impl, id);
-}
-
-void World::SetMaxMotorTorque(JointID id, Torque value)
-{
-    ::playrho::d2::SetMaxMotorTorque(*m_impl, id, value);
-}
-
-AngularMomentum World::GetAngularMotorImpulse(JointID id) const
-{
-    return ::playrho::d2::GetAngularMotorImpulse(*m_impl, id);
-}
-
-RotInertia World::GetAngularMass(JointID id) const
-{
-    return ::playrho::d2::GetAngularMass(*m_impl, id);
-}
-
-Frequency World::GetFrequency(JointID id) const
-{
-    return ::playrho::d2::GetFrequency(*m_impl, id);
-}
-
-void World::SetFrequency(JointID id, Frequency value)
-{
-    ::playrho::d2::SetFrequency(*m_impl, id, value);
-}
-
-Length2 World::GetTarget(JointID id) const
-{
-    return ::playrho::d2::GetTarget(*m_impl, id);
-}
-
-void World::SetTarget(JointID id, Length2 value)
-{
-    ::playrho::d2::SetTarget(*m_impl, id, value);
-}
-
-void World::Accept(JointID id, JointVisitor& visitor) const
-{
-    ::playrho::d2::Accept(*m_impl, id, visitor);
-}
-
-void World::Accept(JointID id, JointVisitor& visitor)
-{
-    ::playrho::d2::Accept(*m_impl, id, visitor);
 }
 
 bool World::IsTouching(ContactID id) const
@@ -722,21 +662,6 @@ void World::SetEnabled(ContactID id)
 void World::UnsetEnabled(ContactID id)
 {
     ::playrho::d2::UnsetEnabled(*m_impl, id);
-}
-
-Angle World::GetAngularLowerLimit(JointID id) const
-{
-    return ::playrho::d2::GetAngularLowerLimit(*m_impl, id);
-}
-
-Angle World::GetAngularUpperLimit(JointID id) const
-{
-    return ::playrho::d2::GetAngularUpperLimit(*m_impl, id);
-}
-
-void World::SetAngularLimits(JointID id, Angle lower, Angle upper)
-{
-    ::playrho::d2::SetAngularLimits(*m_impl, id, lower, upper);
 }
 
 } // namespace d2

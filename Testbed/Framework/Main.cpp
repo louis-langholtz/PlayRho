@@ -20,7 +20,6 @@
  */
 
 #include <PlayRho/Common/Version.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 
 #if defined(__APPLE__)
 #define GL_SILENCE_DEPRECATION
@@ -1422,8 +1421,8 @@ static void EntityUI(World& world, FixtureID fixture)
     }
 #if 0
     {
-        const auto proxies = fixture.GetProxies();
-        if (ImGui::TreeNodeEx("Proxies", 0, "Proxies (%u)", size(proxies)))
+        const auto proxies = GetProxies(world, fixture);
+        if (ImGui::TreeNodeEx("Proxies", 0, "Proxies (%lu)", size(proxies)))
         {
             CollectionUI(world, proxies);
             ImGui::TreePop();
@@ -1532,7 +1531,6 @@ static void EntityUI(World& world, BodyID b, const FixtureSet& selectedFixtures)
     }
 }
 
-#if 0
 static void RevoluteJointEntityUI(World& world, JointID j)
 {
     ImGui::LabelText("Ref. Angle (°)", "%.1e",
@@ -2034,44 +2032,6 @@ static void MotorJointEntityUI(World& world, JointID j)
     }
 }
 
-class JointVisitorUI: public JointVisitor
-{
-public:
-    void Visit(const RevoluteJoint&) override {}
-    void Visit(RevoluteJoint& j) override { EntityUI(j); }
-    
-    void Visit(const PrismaticJoint&) override {}
-    void Visit(PrismaticJoint& j) override { EntityUI(j); }
-
-    void Visit(const DistanceJoint&) override {}
-    void Visit(DistanceJoint& j) override { EntityUI(j); }
-
-    void Visit(const PulleyJoint&) override {}
-    void Visit(PulleyJoint& j) override { EntityUI(j); }
-
-    void Visit(const TargetJoint&) override {}
-    void Visit(TargetJoint& j) override { EntityUI(j); }
-
-    void Visit(const GearJoint&) override {}
-    void Visit(GearJoint& j) override { EntityUI(j); }
-
-    void Visit(const WheelJoint&) override {}
-    void Visit(WheelJoint& j) override { EntityUI(j); }
-
-    void Visit(const WeldJoint&) override {}
-    void Visit(WeldJoint& j) override { EntityUI(j); }
-
-    void Visit(const FrictionJoint&) override {}
-    void Visit(FrictionJoint& j) override { EntityUI(j); }
-
-    void Visit(const RopeJoint&) override {}
-    void Visit(RopeJoint& j) override { EntityUI(j); }
-
-    void Visit(const MotorJoint&) override {}
-    void Visit(MotorJoint& j) override { EntityUI(j); }
-};
-#endif
-
 static void EntityUI(World& world, JointID e)
 {
     ImGui::IdContext idCtx(&e);
@@ -2087,16 +2047,19 @@ static void EntityUI(World& world, JointID e)
     }
     ImGui::LabelText("Ang. Reaction (N·m·s)", "%.2e",
                      static_cast<double>(Real{GetAngularReaction(world, e) / NewtonMeterSecond}));
-#if 0
-    auto visitor = JointVisitorUI{};
-    Accept(world, e, visitor);
-#endif
+    const auto type = world.GetType(e);
+    if (type == GetTypeID<RevoluteJoint>()) {
+        RevoluteJointEntityUI(world, e);
+    } else if (type == GetTypeID<>()) {
+        PrismaticJointEntityUI(world, e);
+    } else {
+        // TODO
+    }
 }
 
 static void EntityUI(World& world, ContactID c)
 {
     ImGui::ItemWidthContext itemWidthCtx(50);
-#if 0
     {
         auto v = IsEnabled(world, c);
         if (ImGui::Checkbox("Enabled", &v))
@@ -2111,7 +2074,6 @@ static void EntityUI(World& world, ContactID c)
             }
         }
     }
-#endif
     {
         auto val = static_cast<float>(GetRestitution(world, c));
         if (ImGui::InputFloat("Restitution", &val, 0, 0, -1, ImGuiInputTextFlags_EnterReturnsTrue))

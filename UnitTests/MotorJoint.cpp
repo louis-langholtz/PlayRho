@@ -21,7 +21,6 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TypeJointVisitor.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -52,7 +51,6 @@ TEST(MotorJointConf, DefaultConstruction)
 {
     MotorJointConf def{};
     
-    EXPECT_EQ(def.type, JointType::Motor);
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
@@ -82,7 +80,6 @@ TEST(MotorJointConf, BuilderConstruction)
         .UseLinearOffset(linearOffset).UseAngularOffset(angularOffset)
         .UseMaxForce(maxForce).UseMaxTorque(maxTorque).UseCorrectionFactor(correctionFactor);
     
-    EXPECT_EQ(def.type, JointType::Motor);
     EXPECT_EQ(def.bodyA, bodyA);
     EXPECT_EQ(def.bodyB, bodyB);
     EXPECT_EQ(def.collideConnected, collideConnected);
@@ -136,10 +133,6 @@ TEST(MotorJoint, Construction)
     EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
     EXPECT_EQ(joint.GetMaxTorque(), def.maxTorque);
     EXPECT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
-    
-    TypeJointVisitor visitor;
-    joint.Accept(visitor);
-    EXPECT_EQ(visitor.GetType().value(), JointType::Motor);
 }
 
 TEST(MotorJoint, ShiftOrigin)
@@ -192,7 +185,6 @@ TEST(MotorJoint, GetMotorJointConf)
     ASSERT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
     
     const auto cdef = GetMotorJointConf(joint);
-    EXPECT_EQ(cdef.type, JointType::Motor);
     EXPECT_EQ(cdef.bodyA, b0);
     EXPECT_EQ(cdef.bodyB, b1);
     EXPECT_EQ(cdef.collideConnected, false);

@@ -39,6 +39,7 @@
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
 
@@ -48,6 +49,7 @@
 #include <memory>
 #include <stdexcept>
 #include <functional>
+#include <type_traits> // for std::add_pointer_t, std::add_const_t
 
 namespace playrho {
 
@@ -62,7 +64,6 @@ class Manifold;
 class ContactImpulsesList;
 class DynamicTree;
 struct JointConf;
-class JointVisitor;
 
 /// @defgroup PhysicalEntities Physical Entity Classes
 ///
@@ -580,31 +581,32 @@ public:
 
     /// @brief Creates a joint to constrain one or more bodies.
     /// @warning This function is locked during callbacks.
-    /// @note No references to the configuration are retained. Its value is copied.
     /// @post The created joint will be present in the range returned from the
     ///   <code>GetJoints()</code> method.
-    /// @return Pointer to newly created joint which can later be destroyed by calling the
-    ///   <code>Destroy(Joint*)</code> method.
+    /// @return Identifier of newly created joint which can later be destroyed by calling the
+    ///   <code>Destroy(JointID)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
-    /// @throws InvalidArgument if the given definition is not allowed.
     /// @see PhysicalEntities.
-    /// @see Destroy(Joint*), GetJoints.
-    JointID CreateJoint(const JointConf& def);
+    /// @see Destroy(JointID), GetJoints.
+    JointID CreateJoint(const Joint& def);
 
     /// @brief Destroys a joint.
     /// @details Destroys a given joint that had previously been created by a call to this
-    ///   world's <code>CreateJoint(const JointConf&)</code> method.
+    ///   world's <code>CreateJoint(const Joint&)</code> method.
     /// @warning This function is locked during callbacks.
-    /// @warning Behavior is undefined if the passed joint was not created by this world.
     /// @note This may cause the connected bodies to begin colliding.
     /// @post The destroyed joint will no longer be present in the range returned from the
     ///   <code>GetJoints()</code> method.
     /// @param id Joint to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
-    /// @see CreateJoint(const JointConf&), GetJoints.
+    /// @see CreateJoint(const Joint&), GetJoints.
     /// @see PhysicalEntities.
     void Destroy(JointID id);
+
+    const Joint& GetJoint(JointID id) const;
+
+    void SetJoint(JointID id, const Joint& def);
 
     /// @brief Wakes up the joined bodies.
     void SetAwake(JointID id);
@@ -615,6 +617,15 @@ public:
     bool GetCollideConnected(JointID id) const;
 
     JointType GetType(JointID id) const;
+
+    template <typename T>
+    auto TypeCast(JointID id) noexcept
+    {
+        if (GetType(id) != GetTypeID<T>()) {
+            throw std::bad_cast{};
+        }
+        return *static_cast<std::add_pointer_t<std::add_const_t<T>>>(GetData(id));
+    }
 
     /// @brief Gets the user data associated with the identified joint.
     /// @relatedalso World
@@ -634,52 +645,6 @@ public:
     AngularMomentum GetAngularReaction(JointID id) const;
 
     Angle GetReferenceAngle(JointID id) const;
-    UnitVec GetLocalAxisA(JointID id) const;
-
-    /// @brief Gets the angular motor speed for joints which support this.
-    /// @see SetMotorSpeed(JointID id, AngularVelocity value)
-    AngularVelocity GetMotorSpeed(JointID id) const;
-
-    /// @brief Sets the angular motor speed for joints which support this.
-    /// @see GetMotorSpeed(JointID id)
-    void SetMotorSpeed(JointID id, AngularVelocity value);
-
-    /// @brief Gets the max motor torque.
-    Torque GetMaxMotorTorque(JointID id) const;
-
-    /// Sets the maximum motor torque.
-    void SetMaxMotorTorque(JointID id, Torque value);
-
-    /// @brief Gets the angular motor impulse of the identified joint if it has this property.
-    AngularMomentum GetAngularMotorImpulse(JointID id) const;
-
-    /// @brief Gets the angular mass of the identified joint if it has this property.
-    RotInertia GetAngularMass(JointID id) const;
-
-    /// @brief Gets the frequency of the identified joint if it has this property.
-    Frequency GetFrequency(JointID id) const;
-
-    /// @brief Sets the frequency of the identified joint if it has this property.
-    void SetFrequency(JointID id, Frequency value);
-
-    /// @brief Gets the target point.
-    Length2 GetTarget(JointID id) const;
-
-    /// @brief Sets the target point.
-    void SetTarget(JointID id, Length2 value);
-
-    void Accept(JointID id, JointVisitor& visitor) const;
-
-    void Accept(JointID id, JointVisitor& visitor);
-
-    /// Gets the lower joint limit.
-    Angle GetAngularLowerLimit(JointID id) const;
-
-    /// Gets the upper joint limit.
-    Angle GetAngularUpperLimit(JointID id) const;
-
-    /// Sets the joint limits.
-    void SetAngularLimits(JointID id, Angle lower, Angle upper);
 
     /// @brief Gets the fixtures-for-proxies range for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing
@@ -753,14 +718,6 @@ public:
     AreaDensity GetDensity(FixtureID id) const;
 
     const FixtureProxies& GetProxies(FixtureID id) const;
-
-    /// Is the joint motor enabled?
-    /// @see EnableMotor(JointID id, bool value)
-    bool IsMotorEnabled(JointID id) const;
-
-    /// Enable/disable the joint motor.
-    /// @see IsMotorEnabled(JointID id).
-    void EnableMotor(JointID id, bool value);
 
     /// @brief Gets the awake status of the specified contact.
     /// @see SetAwake(ContactID id)
@@ -856,6 +813,8 @@ public:
     void UnsetEnabled(ContactID id);
 
 private:
+    const void* GetData(JointID id) const;
+
     propagate_const<std::unique_ptr<WorldImpl>> m_impl;
 };
 

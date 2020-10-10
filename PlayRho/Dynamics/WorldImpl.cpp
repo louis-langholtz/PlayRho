@@ -31,19 +31,17 @@
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/JointVisitor.hpp>
-#include <PlayRho/Dynamics/Joints/FunctionalJointVisitor.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
-#include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJoint.hpp>
-#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
-#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
-#include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
-#include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
-#include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
-#include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
 
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
@@ -433,7 +431,8 @@ void FlagForUpdating(ArrayAllocator<Contact>& contactsBuffer,
     });
 }
 
-bool ShouldCollide(const Body& lhs, const Body& rhs, BodyID rhsID)
+bool ShouldCollide(const ArrayAllocator<Joint>& jointBuffer,
+                   const Body& lhs, const Body& rhs, BodyID rhsID)
 {
     // At least one body should be accelerable/dynamic.
     if (!lhs.IsAccelerable() && !rhs.IsAccelerable())
@@ -445,7 +444,7 @@ bool ShouldCollide(const Body& lhs, const Body& rhs, BodyID rhsID)
     const auto joints = lhs.GetJoints();
     const auto it = std::find_if(cbegin(joints), cend(joints), [&](const auto& ji) {
         return (std::get<BodyID>(ji) == rhsID) &&
-            !(static_cast<Joint*>(UnderlyingValue(std::get<JointID>(ji)))->GetCollideConnected());
+            !GetCollideConnected(jointBuffer[UnderlyingValue(std::get<JointID>(ji))]);
     });
     return it == end(joints);
 }
@@ -527,42 +526,6 @@ WorldImpl::WorldImpl(const WorldConf& def):
     m_proxies.reserve(1024);
 }
 
-WorldImpl::WorldImpl(const WorldImpl& other):
-    m_bodyBuffer{other.m_bodyBuffer},
-    m_fixtureBuffer{other.m_fixtureBuffer},
-    m_contactBuffer{other.m_contactBuffer},
-    m_tree{other.m_tree},
-    m_flags{other.m_flags},
-    m_inv_dt0{other.m_inv_dt0},
-    m_minVertexRadius{other.m_minVertexRadius},
-    m_maxVertexRadius{other.m_maxVertexRadius}
-{
-    auto bodyMap = std::map<const Body*, Body*>();
-    auto fixtureMap = std::map<const Fixture*, Fixture*>();
-    CopyJoints(bodyMap, other.GetJoints());
-}
-
-// WorldImpl::WorldImpl(WorldImpl&& other) = delete;
-
-WorldImpl& WorldImpl::copy(const WorldImpl& other)
-{
-    Clear();
-
-    m_flags = other.m_flags;
-    m_inv_dt0 = other.m_inv_dt0;
-    m_minVertexRadius = other.m_minVertexRadius;
-    m_maxVertexRadius = other.m_maxVertexRadius;
-    m_tree = other.m_tree;
-
-    auto bodyMap = std::map<const Body*, Body*>();
-    auto fixtureMap = std::map<const Fixture*, Fixture*>();
-    CopyJoints(bodyMap, other.GetJoints());
-
-    return *this;
-}
-
-// WorldImpl& WorldImpl::operator= (WorldImpl&& other) = delete;
-
 WorldImpl::~WorldImpl() noexcept
 {
     Clear();
@@ -597,9 +560,6 @@ void WorldImpl::Clear() noexcept
         }
         b.ClearFixtures();
     }
-    for_each(cbegin(joints), cend(joints), [](const auto& id) {
-        Joint::Destroy(static_cast<Joint*>(UnderlyingValue(id)));
-    });
 
     assert(empty(m_proxies));
     m_contacts.clear();
@@ -609,130 +569,7 @@ void WorldImpl::Clear() noexcept
     m_contactBuffer.clear();
     m_fixtureBuffer.clear();
     m_bodyBuffer.clear();
-}
-
-void WorldImpl::CopyJoints(const std::map<const Body*, Body*>& bodyMap,
-                           SizedRange<Joints::const_iterator> range)
-{
-#if 0
-    class JointCopier: public ConstJointVisitor
-    {
-    public:
-        
-        JointCopier(WorldImpl& w, std::map<const Body*, Body*> bodies):
-            world{w}, bodyMap{std::move(bodies)}
-        {
-            // Intentionally empty.
-        }
-
-        void Visit(const RevoluteJoint& oldJoint) override
-        {
-            auto def = GetRevoluteJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-        
-        void Visit(const PrismaticJoint& oldJoint) override
-        {
-            auto def = GetPrismaticJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-
-        void Visit(const DistanceJoint& oldJoint) override
-        {
-            auto def = GetDistanceJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-        
-        void Visit(const PulleyJoint& oldJoint) override
-        {
-            auto def = GetPulleyJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-        
-        void Visit(const TargetJoint& oldJoint) override
-        {
-            auto def = GetTargetJointConf(oldJoint);
-            def.bodyA = (def.bodyA)? bodyMap.at(def.bodyA): nullptr;
-            def.bodyB = (def.bodyB)? bodyMap.at(def.bodyB): nullptr;
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-        
-        void Visit(const GearJoint& oldJoint) override
-        {
-            auto def = GetGearJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            def.joint1 = jointMap.at(def.joint1);
-            def.joint2 = jointMap.at(def.joint2);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-
-        void Visit(const WheelJoint& oldJoint) override
-        {
-            auto def = GetWheelJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-
-        void Visit(const WeldJoint& oldJoint) override
-        {
-            auto def = GetWeldJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-
-        void Visit(const FrictionJoint& oldJoint) override
-        {
-            auto def = GetFrictionJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-
-        void Visit(const RopeJoint& oldJoint) override
-        {
-            auto def = GetRopeJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-
-        void Visit(const MotorJoint& oldJoint) override
-        {
-            auto def = GetMotorJointConf(oldJoint);
-            def.bodyA = bodyMap.at(def.bodyA);
-            def.bodyB = bodyMap.at(def.bodyB);
-            jointMap[&oldJoint] = Add(Joint::Create(def));
-        }
-        
-        Joint* Add(Joint* newJoint)
-        {
-            world.Add(newJoint);
-            return newJoint;
-        }
-
-        WorldImpl& world;
-        const std::map<const Body*, Body*> bodyMap;
-        std::map<const Joint*, Joint*> jointMap;
-    };
-
-    auto copier = JointCopier{*this, bodyMap};
-    auto jointMap = std::map<const Joint*, Joint*>();
-    for (const auto& otherJoint: range)
-    {
-        otherJoint->Accept(copier);
-    }
-#endif
+    m_jointBuffer.clear();
 }
 
 BodyID WorldImpl::CreateBody(const BodyConf& def)
@@ -780,7 +617,7 @@ void WorldImpl::Destroy(BodyID id)
             m_jointDestructionListener(jointID);
         }
         Remove(jointID); // removes joint from body!
-        Joint::Destroy(static_cast<Joint*>(UnderlyingValue(jointID)));
+        m_jointBuffer.Free(UnderlyingValue(id));
         joints = body.GetJoints();
     }
 
@@ -805,7 +642,19 @@ void WorldImpl::Destroy(BodyID id)
     Remove(id);
 }
 
-JointID WorldImpl::CreateJoint(const JointConf& def)
+void WorldImpl::SetJoint(JointID id, const Joint& def)
+{
+    if (IsLocked())
+    {
+        throw WrongState("CreateJoint: world is locked");
+    }
+    if (Remove(id)) {
+        m_jointBuffer[UnderlyingValue(id)] = def;
+        Add(id);
+    }
+}
+
+JointID WorldImpl::CreateJoint(const Joint& def)
 {
     if (IsLocked())
     {
@@ -816,20 +665,21 @@ JointID WorldImpl::CreateJoint(const JointConf& def)
     {
         throw LengthError("CreateJoint: operation would exceed MaxJoints");
     }
-    
+
+    const auto id = static_cast<JointID>(
+        static_cast<JointID::underlying_type>(m_jointBuffer.Allocate(def)));
+
     // Note: creating a joint doesn't wake the bodies.
-    const auto id = static_cast<JointID>(Joint::Create(def));
-    Add(id, !def.collideConnected);
+    Add(id, !GetCollideConnected(def));
     return id;
 }
 
 bool WorldImpl::Add(JointID id, bool flagForFiltering)
 {
     m_joints.push_back(id);
-
-    const auto joint = static_cast<Joint*>(UnderlyingValue(id));
-    const auto bodyA = joint->GetBodyA();
-    const auto bodyB = joint->GetBodyB();
+    const auto& joint = m_jointBuffer[UnderlyingValue(id)];
+    const auto bodyA = GetBodyA(joint);
+    const auto bodyB = GetBodyB(joint);
     if (bodyA != InvalidBodyID)
     {
         m_bodyBuffer[UnderlyingValue(bodyA)].Insert(id, bodyB);
@@ -842,7 +692,6 @@ bool WorldImpl::Add(JointID id, bool flagForFiltering)
     {
         FlagContactsForFiltering(m_contactBuffer, bodyA, m_bodyBuffer[UnderlyingValue(bodyB)].GetContacts(), bodyB);
     }
-
     return true;
 }
 
@@ -856,11 +705,11 @@ bool WorldImpl::Remove(JointID id) noexcept
     }
 
     // Disconnect from island graph.
-    const auto& joint = *static_cast<Joint*>(UnderlyingValue(id));
-    const auto bodyIdA = joint.GetBodyA();
-    const auto bodyIdB = joint.GetBodyB();
+    const auto& joint = m_jointBuffer[UnderlyingValue(id)];
+    const auto bodyIdA = GetBodyA(joint);
+    const auto bodyIdB = GetBodyB(joint);
 
-    const auto collideConnected = joint.GetCollideConnected();
+    const auto collideConnected = GetCollideConnected(joint);
     // If the joint prevented collisions, then flag any contacts for filtering.
     if ((!collideConnected) && (bodyIdA != InvalidBodyID) && (bodyIdB != InvalidBodyID))
     {
@@ -885,18 +734,13 @@ bool WorldImpl::Remove(JointID id) noexcept
     return true;
 }
 
-void WorldImpl::Destroy(JointID joint)
+void WorldImpl::Destroy(JointID id)
 {
-    if (joint != InvalidJointID)
-    {
-        if (IsLocked())
-        {
-            throw WrongState("Destroy: world is locked");
-        }
-        if (Remove(joint))
-        {
-            Joint::Destroy(static_cast<Joint*>(UnderlyingValue(joint)));
-        }
+    if (IsLocked()) {
+        throw WrongState("Destroy: world is locked");
+    }
+    if (Remove(id)) {
+        m_jointBuffer.Free(UnderlyingValue(id));
     }
 }
 
@@ -1007,12 +851,13 @@ void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack, const Body* 
         const auto jointID = std::get<JointID>(ji);
         const auto other = (otherID == InvalidBodyID)? static_cast<Body*>(nullptr): &m_bodyBuffer[UnderlyingValue(otherID)];
         assert(!other || other->IsEnabled() || !other->IsAwake());
-        const auto joint = static_cast<Joint*>((jointID == InvalidJointID)? nullptr: UnderlyingValue(jointID));
+        const auto joint = (jointID == InvalidJointID)
+            ? nullptr: &m_jointBuffer[UnderlyingValue(jointID)];
         assert(joint);
-        if (!joint->IsIslanded() && (!other || other->IsEnabled()))
+        if (joint && !IsIslanded(*joint) && (!other || other->IsEnabled()))
         {
             island.m_joints.push_back(jointID);
-            joint->SetIslanded();
+            SetIslanded(*joint);
             if (other && !other->IsIslanded())
             {
                 stack.push(otherID);
@@ -1056,8 +901,8 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     for_each(begin(m_contacts), end(m_contacts), [this](const auto& c) {
         m_contactBuffer[UnderlyingValue(std::get<ContactID>(c))].UnsetIslanded();
     });
-    for_each(begin(m_joints), end(m_joints), [](const auto& j) {
-        static_cast<Joint*>(UnderlyingValue(j))->UnsetIslanded();
+    for_each(begin(m_joints), end(m_joints), [this](const auto& j) {
+        UnsetIslanded(m_jointBuffer[UnderlyingValue(j)]);
     });
 
 #if defined(DO_THREADED)
@@ -1142,7 +987,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, Island island)
 #if 0
     auto constraints = std::vector<BodyConstraint*>{};
     for_each(cbegin(island.m_joints), cend(island.m_joints), [&](const auto& id) {
-        auto& joint = *static_cast<Joint*>(static_cast<JointID::underlying_type>(id));
+        auto& joint = m_jointBuffer[UnderlyingValue(id)];
         for (const auto& body : joint.GetBodies()) {
             constraints.push_back(bodyConstraintsMap[body]);
         }
@@ -1156,8 +1001,8 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, Island island)
     const auto psConf = GetRegConstraintSolverConf(conf);
 
     for_each(cbegin(island.m_joints), cend(island.m_joints), [&](const auto& id) {
-        auto& joint = *static_cast<Joint*>(static_cast<JointID::underlying_type>(id));
-        joint.InitVelocityConstraints(bodyConstraints, conf, psConf);
+        auto& joint = m_jointBuffer[UnderlyingValue(id)];
+        InitVelocity(joint, bodyConstraints, conf, psConf);
     });
     
     results.velocityIterations = conf.regVelocityIterations;
@@ -1165,8 +1010,8 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, Island island)
     {
         auto jointsOkay = true;
         for_each(cbegin(island.m_joints), cend(island.m_joints), [&](const auto& id) {
-            auto& joint = *static_cast<Joint*>(static_cast<JointID::underlying_type>(id));
-            jointsOkay &= joint.SolveVelocityConstraints(bodyConstraints, conf);
+            auto& joint = m_jointBuffer[UnderlyingValue(id)];
+            jointsOkay &= SolveVelocity(joint, bodyConstraints, conf);
         });
 
         // Note that the new incremental impulse can potentially be orders of magnitude
@@ -1198,8 +1043,8 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, Island island)
 
         auto jointsOkay = true;
         for_each(cbegin(island.m_joints), cend(island.m_joints), [&](const auto& id) {
-            auto& joint = *static_cast<Joint*>(static_cast<JointID::underlying_type>(id));
-            jointsOkay &= joint.SolvePositionConstraints(bodyConstraints, psConf);
+            auto& joint = m_jointBuffer[UnderlyingValue(id)];
+            jointsOkay &= SolvePosition(joint, bodyConstraints, psConf);
         });
 
         if (contactsOkay && jointsOkay)
@@ -1855,12 +1700,7 @@ StepStats WorldImpl::Step(const StepConf& conf)
 
         {
             // Note: this may update bodies (in addition to the contacts container).
-            const auto destroyStats = DestroyContacts(m_contacts,
-                                                      m_contactBuffer,
-                                                      m_manifoldBuffer,
-                                                      m_bodyBuffer,
-                                                      m_fixtureBuffer, m_tree,
-                                                      m_endContactListener);
+            const auto destroyStats = DestroyContacts(m_contacts);
             stepStats.pre.destroyed = destroyStats.erased;
         }
 
@@ -1921,9 +1761,9 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
         b.SetSweep(sweep);
     }
 
-    for_each(begin(m_joints), end(m_joints), [&](Joints::value_type& joint) {
-        auto& j = *static_cast<Joint*>(UnderlyingValue(joint));
-        j.ShiftOrigin(newOrigin);
+    for_each(begin(m_joints), end(m_joints), [&](const auto& joint) {
+        auto& j = m_jointBuffer[UnderlyingValue(joint)];
+        ::playrho::d2::ShiftOrigin(j, newOrigin);
     });
 
     m_tree.ShiftOrigin(newOrigin);
@@ -1980,39 +1820,36 @@ void WorldImpl::Destroy(Contacts& contacts, ContactListener listener, ContactID 
     InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, m_manifoldBuffer, listener, from);
 }
 
-WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts,
-                                                           ArrayAllocator<Contact>& contactBuffer,
-                                                           ArrayAllocator<Manifold>& manifoldBuffer,
-                                                           ArrayAllocator<Body>& bodyBuffer,
-                                                           const ArrayAllocator<Fixture>& fixtureBuffer,
-                                                           const DynamicTree& tree,
-                                                           ContactListener listener)
+WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts)
 {
     const auto beforeSize = size(contacts);
     contacts.erase(std::remove_if(begin(contacts), end(contacts), [&](const auto& c)
     {
         const auto key = std::get<ContactKey>(c);
         const auto contactID = std::get<ContactID>(c);
-        
-        if (!TestOverlap(tree, key.GetMin(), key.GetMax()))
+
+        if (!TestOverlap(m_tree, key.GetMin(), key.GetMax()))
         {
             // Destroy contacts that cease to overlap in the broad-phase.
-            InternalDestroy(contactID, bodyBuffer, contactBuffer, manifoldBuffer, listener);
+            InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, m_manifoldBuffer,
+                            m_endContactListener);
             return true;
         }
-        
+
         // Is this contact flagged for filtering?
-        auto& contact = contactBuffer[UnderlyingValue(contactID)];
+        auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
         if (contact.NeedsFiltering())
         {
             const auto bodyIdA = contact.GetBodyA();
-            const auto& bodyA = bodyBuffer[UnderlyingValue(bodyIdA)];
-            const auto& bodyB = bodyBuffer[UnderlyingValue(contact.GetBodyB())];
-            const auto& fixtureA = fixtureBuffer[UnderlyingValue(contact.GetFixtureA())];
-            const auto& fixtureB = fixtureBuffer[UnderlyingValue(contact.GetFixtureB())];
-            if (!ShouldCollide(bodyB, bodyA, bodyIdA) || !ShouldCollide(fixtureA, fixtureB))
+            const auto& bodyA = m_bodyBuffer[UnderlyingValue(bodyIdA)];
+            const auto& bodyB = m_bodyBuffer[UnderlyingValue(contact.GetBodyB())];
+            const auto& fixtureA = m_fixtureBuffer[UnderlyingValue(contact.GetFixtureA())];
+            const auto& fixtureB = m_fixtureBuffer[UnderlyingValue(contact.GetFixtureB())];
+            if (!ShouldCollide(m_jointBuffer, bodyB, bodyA, bodyIdA)
+                || !ShouldCollide(fixtureA, fixtureB))
             {
-                InternalDestroy(contactID, bodyBuffer, contactBuffer, manifoldBuffer, listener);
+                InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, m_manifoldBuffer,
+                                m_endContactListener);
                 return true;
             }
             contact.UnflagForFiltering();
@@ -2204,7 +2041,7 @@ bool WorldImpl::Add(ContactKey key)
     auto& fixtureB = m_fixtureBuffer[UnderlyingValue(fixtureIdB)];
 
     // Does a joint override collision? Is at least one body dynamic?
-    if (!ShouldCollide(bodyB, bodyA, bodyIdA) || !ShouldCollide(fixtureA, fixtureB))
+    if (!ShouldCollide(m_jointBuffer, bodyB, bodyA, bodyIdA) || !ShouldCollide(fixtureA, fixtureB))
     {
         return false;
     }
@@ -2779,26 +2616,6 @@ std::size_t WorldImpl::GetShapeCount() const noexcept
     return size(shapes);
 }
 
-void WorldImpl::Accept(JointID id, JointVisitor& visitor) const
-{
-    if (id == InvalidJointID)
-    {
-        throw std::out_of_range("invalid JointID");
-    }
-    const auto& joint = *static_cast<const Joint*>(UnderlyingValue(id));
-    joint.Accept(visitor);
-}
-
-void WorldImpl::Accept(JointID id, JointVisitor& visitor)
-{
-    if (id == InvalidJointID)
-    {
-        throw std::out_of_range("invalid JointID");
-    }
-    auto& joint = *static_cast<Joint*>(UnderlyingValue(id));
-    joint.Accept(visitor);
-}
-
 void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
 {
     auto& c = m_contactBuffer[UnderlyingValue(contactID)];
@@ -2978,20 +2795,12 @@ Body& WorldImpl::GetBody(BodyID id)
 
 const Joint& WorldImpl::GetJoint(JointID id) const
 {
-    if (id == InvalidJointID)
-    {
-        throw std::out_of_range("invalid JointID");
-    }
-    return *static_cast<Joint*>(UnderlyingValue(id));
+    return m_jointBuffer.at(UnderlyingValue(id));
 }
 
 Joint& WorldImpl::GetJoint(JointID id)
 {
-    if (id == InvalidJointID)
-    {
-        throw std::out_of_range("invalid JointID");
-    }
-    return *static_cast<Joint*>(UnderlyingValue(id));
+    return m_jointBuffer.at(UnderlyingValue(id));
 }
 
 const Contact& WorldImpl::GetContact(ContactID id) const

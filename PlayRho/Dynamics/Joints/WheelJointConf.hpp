@@ -23,13 +23,18 @@
 #define PLAYRHO_DYNAMICS_JOINTS_WHEELJOINTCONF_HPP
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
+
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+struct ConstraintSolverConf;
+class StepConf;
+
 namespace d2 {
 
-class WheelJoint;
 class World;
+class BodyConstraint;
 
 /// @brief Wheel joint definition.
 /// @details This requires defining a line of
@@ -43,90 +48,136 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     /// @brief Super type.
     using super = JointBuilder<WheelJointConf>;
     
-    constexpr WheelJointConf() noexcept: super{JointType::Wheel} {}
+    constexpr WheelJointConf() noexcept = default;
     
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
     WheelJointConf(BodyID bA, BodyID bB,
                    Length2 laA = Length2{}, Length2 laB = Length2{},
                    UnitVec axis = UnitVec::GetRight()) noexcept;
-    
+
     /// @brief Uses the given enable motor state value.
-    constexpr WheelJointConf& UseEnableMotor(bool v) noexcept;
-    
+    constexpr auto& UseEnableMotor(bool v) noexcept
+    {
+        enableMotor = v;
+        return *this;
+    }
+
     /// @brief Uses the given max motor toque value.
-    constexpr WheelJointConf& UseMaxMotorTorque(Torque v) noexcept;
-    
+    constexpr auto& UseMaxMotorTorque(Torque v) noexcept
+    {
+        maxMotorTorque = v;
+        return *this;
+    }
+
     /// @brief Uses the given motor speed value.
-    constexpr WheelJointConf& UseMotorSpeed(AngularVelocity v) noexcept;
-    
+    constexpr auto& UseMotorSpeed(AngularVelocity v) noexcept
+    {
+        motorSpeed = v;
+        return *this;
+    }
+
     /// @brief Uses the given frequency value.
-    constexpr WheelJointConf& UseFrequency(Frequency v) noexcept;
-    
+    constexpr auto& UseFrequency(Frequency v) noexcept
+    {
+        frequency = v;
+        return *this;
+    }
+
     /// @brief Uses the given damping ratio value.
-    constexpr WheelJointConf& UseDampingRatio(Real v) noexcept;
-    
+    constexpr auto& UseDampingRatio(Real v) noexcept
+    {
+        dampingRatio = v;
+        return *this;
+    }
+
     /// The local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
-    
+
     /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
-    
+
     /// The local translation axis in body-A.
-    UnitVec localAxisA = UnitVec::GetRight();
-    
+    UnitVec localXAxisA = UnitVec::GetRight();
+
+    UnitVec localYAxisA = GetRevPerpendicular(UnitVec::GetRight());
+
     /// Enable/disable the joint motor.
     bool enableMotor = false;
-    
+
     /// The maximum motor torque.
     Torque maxMotorTorque = Torque{0};
-    
+
     /// The desired angular motor speed.
     AngularVelocity motorSpeed = 0_rpm;
-    
+
     /// Suspension frequency, zero indicates no suspension
     Frequency frequency = 2_Hz;
-    
+
     /// Suspension damping ratio, one indicates critical damping
     Real dampingRatio = 0.7f;
+
+    Momentum impulse = 0; ///< Impulse.
+    AngularMomentum angularImpulse = 0; ///< Angular impulse.
+    Momentum springImpulse = 0; ///< Spring impulse.
+
+    UnitVec ax; ///< Solver A X directional.
+    UnitVec ay; ///< Solver A Y directional.
+
+    Length sAx = 0_m; ///< Solver A x location.
+    Length sBx = 0_m; ///< Solver B x location.
+    Length sAy = 0_m; ///< Solver A y location.
+    Length sBy = 0_m; ///< Solver B y location.
+
+    Mass mass = 0_kg; ///< Mass.
+    RotInertia angularMass = RotInertia{0}; ///< Motor mass.
+    Mass springMass = 0_kg; ///< Spring mass.
+
+    LinearVelocity bias = 0_mps; ///< Bias.
+    InvMass gamma = InvMass{0}; ///< Gamma.
 };
 
-constexpr WheelJointConf& WheelJointConf::UseEnableMotor(bool v) noexcept
-{
-    enableMotor = v;
-    return *this;
-}
-
-constexpr WheelJointConf& WheelJointConf::UseMaxMotorTorque(Torque v) noexcept
-{
-    maxMotorTorque = v;
-    return *this;
-}
-
-constexpr WheelJointConf& WheelJointConf::UseMotorSpeed(AngularVelocity v) noexcept
-{
-    motorSpeed = v;
-    return *this;
-}
-
-constexpr WheelJointConf& WheelJointConf::UseFrequency(Frequency v) noexcept
-{
-    frequency = v;
-    return *this;
-}
-
-constexpr WheelJointConf& WheelJointConf::UseDampingRatio(Real v) noexcept
-{
-    dampingRatio = v;
-    return *this;
-}
-
 /// @brief Gets the definition data for the given joint.
-/// @relatedalso WheelJoint
-WheelJointConf GetWheelJointConf(const WheelJoint& joint) noexcept;
+/// @relatedalso Joint
+WheelJointConf GetWheelJointConf(const Joint& joint);
 
+/// @relatedalso World
 WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB,
                                  Length2 anchor, UnitVec axis = UnitVec::GetRight());
+
+/// @relatedalso WheelJointConf
+constexpr Momentum2 GetLinearReaction(const WheelJointConf& object)
+{
+    return object.impulse * object.ay + object.springImpulse * object.ax;
+}
+
+/// @relatedalso WheelJointConf
+constexpr auto ShiftOrigin(WheelJointConf&, Length2)
+{
+    return false;
+}
+
+/// @brief Initializes velocity constraint data based on the given solver data.
+/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @see SolveVelocity.
+/// @relatedalso WheelJointConf
+void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf& conf);
+
+/// @brief Solves velocity constraint.
+/// @pre <code>InitVelocity</code> has been called.
+/// @see InitVelocity.
+/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+/// @relatedalso WheelJointConf
+bool SolveVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step);
+
+/// @brief Solves the position constraint.
+/// @return <code>true</code> if the position errors are within tolerance.
+/// @relatedalso WheelJointConf
+bool SolvePosition(const WheelJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf);
 
 } // namespace d2
 } // namespace playrho

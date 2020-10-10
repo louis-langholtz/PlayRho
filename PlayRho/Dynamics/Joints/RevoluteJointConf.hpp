@@ -27,10 +27,14 @@
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
+
+struct ConstraintSolverConf;
+class StepConf;
+
 namespace d2 {
 
-class RevoluteJoint;
 class World;
+class BodyConstraint;
 
 /// @brief Revolute joint definition.
 /// @details This requires defining an
@@ -49,7 +53,26 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
     /// @brief Super type.
     using super = JointBuilder<RevoluteJointConf>;
 
-    constexpr RevoluteJointConf() noexcept: super{JointType::Revolute} {}
+    /// @brief Limit state.
+    /// @note Only used by joints that implement some notion of a limited range.
+    enum LimitState
+    {
+        /// @brief Inactive limit.
+        e_inactiveLimit,
+
+        /// @brief At-lower limit.
+        e_atLowerLimit,
+
+        /// @brief At-upper limit.
+        e_atUpperLimit,
+
+        /// @brief Equal limit.
+        /// @details Equal limit is used to indicate that a joint's upper and lower limits
+        ///   are approximately the same.
+        e_equalLimits
+    };
+
+    constexpr RevoluteJointConf() noexcept = default;
 
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
     RevoluteJointConf(BodyID bA, BodyID bB,
@@ -57,22 +80,61 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
                       Angle ra = 0_deg) noexcept;
 
     /// @brief Uses the given enable limit state value.
-    constexpr RevoluteJointConf& UseEnableLimit(bool v) noexcept;
+    constexpr auto& UseEnableLimit(bool v) noexcept
+    {
+        enableLimit = v;
+        return *this;
+    }
 
     /// @brief Uses the given lower angle value.
-    constexpr RevoluteJointConf& UseLowerAngle(Angle v) noexcept;
+    constexpr auto& UseLowerAngle(Angle v) noexcept
+    {
+        lowerAngle = v;
+        return *this;
+    }
 
     /// @brief Uses the given upper angle value.
-    constexpr RevoluteJointConf& UseUpperAngle(Angle v) noexcept;
+    constexpr auto& UseUpperAngle(Angle v) noexcept
+    {
+        upperAngle = v;
+        return *this;
+    }
 
     /// @brief Uses the given enable motor state value.
-    constexpr RevoluteJointConf& UseEnableMotor(bool v) noexcept;
+    constexpr auto& UseEnableMotor(bool v) noexcept
+    {
+        enableMotor = v;
+        return *this;
+    }
+
+    /// @brief Uses the given motor speed value.
+    constexpr auto& UseMotorSpeed(AngularVelocity v) noexcept
+    {
+        motorSpeed = v;
+        return *this;
+    }
+
+    /// @brief Uses the given max motor torque value.
+    constexpr auto& UseMaxMotorTorque(Torque v) noexcept
+    {
+        maxMotorTorque = v;
+        return *this;
+    }
 
     /// @brief Local anchor point relative to body A's origin.
     Length2 localAnchorA = Length2{};
 
     /// @brief Local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
+
+    /// @brief Impulse.
+    /// @note Modified by: <code>InitVelocity</code>,
+    ///   <code>SolveVelocityConstraints</code>.
+    Vec3 impulse = Vec3{};
+
+    /// @brief Motor impulse.
+    /// @note Modified by: <code>InitVelocity</code>, <code>SolveVelocity</code>.
+    AngularMomentum angularMotorImpulse = {};
 
     /// @brief Reference angle.
     /// @details This is the body-B angle minus body-A angle in the reference state (radians).
@@ -95,37 +157,73 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
 
     /// @brief Maximum motor torque used to achieve the desired motor speed.
     Torque maxMotorTorque = 0;
+
+    Length2 rA = {}; ///< Rotated delta of body A's local center from local anchor A.
+    Length2 rB = {}; ///< Rotated delta of body B's local center from local anchor B.
+    Mat33 mass = {}; ///< Effective mass for point-to-point constraint.
+    RotInertia angularMass = {}; ///< Effective mass for motor/limit angular constraint.
+    LimitState limitState = e_inactiveLimit; ///< Limit state.
 };
 
-constexpr RevoluteJointConf& RevoluteJointConf::UseEnableLimit(bool v) noexcept
-{
-    enableLimit = v;
-    return *this;
-}
-
-constexpr RevoluteJointConf& RevoluteJointConf::UseLowerAngle(Angle v) noexcept
-{
-    lowerAngle = v;
-    return *this;
-}
-
-constexpr RevoluteJointConf& RevoluteJointConf::UseUpperAngle(Angle v) noexcept
-{
-    upperAngle = v;
-    return *this;
-}
-
-constexpr RevoluteJointConf& RevoluteJointConf::UseEnableMotor(bool v) noexcept
-{
-    enableMotor = v;
-    return *this;
-}
-
 /// @brief Gets the definition data for the given joint.
-/// @relatedalso RevoluteJoint
-RevoluteJointConf GetRevoluteJointConf(const RevoluteJoint& joint) noexcept;
+/// @relatedalso Joint
+RevoluteJointConf GetRevoluteJointConf(const Joint& joint);
 
+/// @relatedalso World
 RevoluteJointConf GetRevoluteJointConf(const World& world, BodyID bodyA, BodyID bodyB, Length2 anchor);
+
+/// @relatedalso RevoluteJointConf
+constexpr auto ShiftOrigin(RevoluteJointConf&, Length2) noexcept
+{
+    return false;
+}
+
+/// @relatedalso RevoluteJointConf
+constexpr Angle GetAngularLowerLimit(const RevoluteJointConf& conf) noexcept
+{
+    return conf.lowerAngle;
+}
+
+/// @relatedalso RevoluteJointConf
+constexpr Angle GetAngularUpperLimit(const RevoluteJointConf& conf) noexcept
+{
+    return conf.upperAngle;
+}
+
+/// @relatedalso RevoluteJointConf
+constexpr Momentum2 GetLinearReaction(const RevoluteJointConf& conf) noexcept
+{
+    return Momentum2{GetX(conf.impulse) * NewtonSecond, GetY(conf.impulse) * NewtonSecond};
+}
+
+/// @relatedalso RevoluteJointConf
+constexpr AngularMomentum GetAngularReaction(const RevoluteJointConf& conf) noexcept
+{
+    // AngularMomentum is L^2 M T^-1 QP^-1.
+    return GetZ(conf.impulse) * SquareMeter * Kilogram / (Second * Radian);
+}
+
+/// @brief Initializes velocity constraint data based on the given solver data.
+/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+/// @see SolveVelocityConstraints.
+/// @relatedalso RevoluteJointConf
+void InitVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodies,
+                  const StepConf& step,
+                  const ConstraintSolverConf& conf);
+
+/// @brief Solves velocity constraint.
+/// @pre <code>InitVelocity</code> has been called.
+/// @see InitVelocity.
+/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+/// @relatedalso RevoluteJointConf
+bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const StepConf& step);
+
+/// @brief Solves the position constraint.
+/// @return <code>true</code> if the position errors are within tolerance.
+/// @relatedalso RevoluteJointConf
+bool SolvePosition(const RevoluteJointConf& object, std::vector<BodyConstraint>& bodies,
+                   const ConstraintSolverConf& conf);
 
 } // namespace d2
 } // namespace playrho
