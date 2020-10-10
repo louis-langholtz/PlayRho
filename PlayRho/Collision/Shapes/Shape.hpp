@@ -291,8 +291,8 @@ public:
     }
 
 private:
-    /// @brief Internal shape configuration concept.
-    /// @note Provides an interface for runtime polymorphism for shape configuration.
+    /// @brief Internal configuration concept.
+    /// @note Provides the interface for runtime value polymorphism.
     struct Concept
     {
         virtual ~Concept() = default;
