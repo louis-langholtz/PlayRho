@@ -49,19 +49,19 @@ TEST(PulleyJointConf, UseRatio)
     EXPECT_EQ(PulleyJointConf{}.UseRatio(value).ratio, value);
 }
 
-TEST(PulleyJoint, ByteSize)
+TEST(PulleyJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(PulleyJoint), std::size_t(108));
+            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(108));
 #else
-            EXPECT_EQ(sizeof(PulleyJoint), std::size_t(112));
+            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(104));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(PulleyJoint), std::size_t(216)); break;
-        case 16: EXPECT_EQ(sizeof(PulleyJoint), std::size_t(400)); break;
+        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(216)); break;
+        case 16: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(400)); break;
         default: FAIL(); break;
     }
 }
@@ -69,23 +69,25 @@ TEST(PulleyJoint, ByteSize)
 TEST(PulleyJoint, Construction)
 {
     PulleyJointConf def;
-    PulleyJoint joint{def};
-    
-    EXPECT_EQ(GetType(joint), def.type);
-    EXPECT_EQ(joint.GetBodyA(), def.bodyA);
-    EXPECT_EQ(joint.GetBodyB(), def.bodyB);
-    EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+    Joint joint{def};
 
-    EXPECT_EQ(joint.GetGroundAnchorA(), def.groundAnchorA);
-    EXPECT_EQ(joint.GetGroundAnchorB(), def.groundAnchorB);
-    EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
-    EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    EXPECT_EQ(joint.GetLengthA(), def.lengthA);
-    EXPECT_EQ(joint.GetLengthB(), def.lengthB);
-    EXPECT_EQ(joint.GetRatio(), def.ratio);
+    EXPECT_EQ(GetType(joint), GetTypeID<PulleyJointConf>());
+    EXPECT_EQ(GetBodyA(joint), def.bodyA);
+    EXPECT_EQ(GetBodyB(joint), def.bodyB);
+    EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
+    EXPECT_EQ(GetUserData(joint), def.userData);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
+
+    EXPECT_EQ(GetGroundAnchorA(joint), def.groundAnchorA);
+    EXPECT_EQ(GetGroundAnchorB(joint), def.groundAnchorB);
+    EXPECT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
+    EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
+#if 0
+    EXPECT_EQ(GetLengthA(joint), def.lengthA);
+    EXPECT_EQ(GetLengthB(joint), def.lengthB);
+#endif
+    EXPECT_EQ(GetRatio(joint), def.ratio);
 }
 
 TEST(PulleyJoint, GetAnchorAandB)
@@ -104,9 +106,9 @@ TEST(PulleyJoint, GetAnchorAandB)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = PulleyJoint{jd};
-    ASSERT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
-    ASSERT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
+    auto joint = Joint{jd};
+    ASSERT_EQ(GetLocalAnchorA(joint), jd.localAnchorA);
+    ASSERT_EQ(GetLocalAnchorB(joint), jd.localAnchorB);
 #if 0
     EXPECT_EQ(joint.GetAnchorA(world), loc0 + jd.localAnchorA);
     EXPECT_EQ(joint.GetAnchorB(world), loc1 + jd.localAnchorB);
@@ -116,43 +118,43 @@ TEST(PulleyJoint, GetAnchorAandB)
 TEST(PulleyJoint, ShiftOrigin)
 {
     PulleyJointConf def;
-    PulleyJoint joint{def};
+    Joint joint{def};
     
-    ASSERT_EQ(joint.GetGroundAnchorA(), def.groundAnchorA);
-    ASSERT_EQ(joint.GetGroundAnchorB(), def.groundAnchorB);
+    ASSERT_EQ(GetGroundAnchorA(joint), def.groundAnchorA);
+    ASSERT_EQ(GetGroundAnchorB(joint), def.groundAnchorB);
     
     const auto newOrigin = Length2{1_m, 1_m};
 
-    EXPECT_TRUE(joint.ShiftOrigin(newOrigin));
-    EXPECT_EQ(joint.GetGroundAnchorA(), def.groundAnchorA - newOrigin);
-    EXPECT_EQ(joint.GetGroundAnchorB(), def.groundAnchorB - newOrigin);
+    EXPECT_TRUE(ShiftOrigin(joint, newOrigin));
+    EXPECT_EQ(GetGroundAnchorA(joint), def.groundAnchorA - newOrigin);
+    EXPECT_EQ(GetGroundAnchorB(joint), def.groundAnchorB - newOrigin);
 }
 
 TEST(PulleyJoint, GetCurrentLength)
 {
     auto world = World{};
-    
+
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
-    
+
     const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
     const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
-    
+
     auto jd = PulleyJointConf{};
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    
-    auto joint = PulleyJoint{jd};
-    ASSERT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
-    ASSERT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
-    ASSERT_EQ(joint.GetGroundAnchorA(), jd.groundAnchorA);
-    ASSERT_EQ(joint.GetGroundAnchorB(), jd.groundAnchorB);
-    
+
+    auto joint = Joint{jd};
+    ASSERT_EQ(GetLocalAnchorA(joint), jd.localAnchorA);
+    ASSERT_EQ(GetLocalAnchorB(joint), jd.localAnchorB);
+    ASSERT_EQ(GetGroundAnchorA(joint), jd.groundAnchorA);
+    ASSERT_EQ(GetGroundAnchorB(joint), jd.groundAnchorB);
+
 #if 0
-    const auto lenA = GetMagnitude(GetWorldPoint(*joint.GetBodyA(), jd.localAnchorA - jd.groundAnchorA));
-    const auto lenB = GetMagnitude(GetWorldPoint(*joint.GetBodyB(), jd.localAnchorB - jd.groundAnchorB));
+    const auto lenA = GetMagnitude(GetWorldPoint(*GetBodyA(joint), jd.localAnchorA - jd.groundAnchorA));
+    const auto lenB = GetMagnitude(GetWorldPoint(*GetBodyB(joint), jd.localAnchorB - jd.groundAnchorB));
     EXPECT_EQ(GetCurrentLengthA(joint), lenA);
     EXPECT_EQ(GetCurrentLengthB(joint), lenB);
 #endif

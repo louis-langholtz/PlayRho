@@ -25,6 +25,7 @@
 #include <PlayRho/Common/Math.hpp>
 
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
+#include <PlayRho/Dynamics/Joints/LimitState.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 
 #include <memory> // for std::unique_ptr
@@ -476,6 +477,18 @@ AngularVelocity GetMotorSpeed(const Joint& object);
 void SetMotorSpeed(Joint& object, AngularVelocity value);
 
 /// @relatedalso Joint
+Force GetMaxForce(const Joint& object);
+
+/// @relatedalso Joint
+Torque GetMaxTorque(const Joint& object);
+
+/// @relatedalso Joint
+Force GetMaxMotorForce(const Joint& object);
+
+/// @relatedalso Joint
+void SetMaxMotorForce(Joint& object, Force value);
+
+/// @relatedalso Joint
 Torque GetMaxMotorTorque(const Joint& object);
 
 /// @relatedalso Joint
@@ -486,6 +499,9 @@ RotInertia GetAngularMass(const Joint& object);
 
 /// @relatedalso Joint
 Real GetRatio(const Joint& object);
+
+/// @relatedalso Joint
+Real GetDampingRatio(const Joint& object);
 
 /// @brief Gets the frequency of the joint if it has this property.
 /// @relatedalso Joint
@@ -505,15 +521,27 @@ Length2 GetTarget(const Joint& object);
 /// @relatedalso Joint
 void SetTarget(Joint& object, Length2 value);
 
-/// Get the lower joint limit.
+/// Gets the lower linear joint limit.
+/// @relatedalso Joint
+Length GetLinearLowerLimit(const Joint& object);
+
+/// Gets the upper linear joint limit.
+/// @relatedalso Joint
+Length GetLinearUpperLimit(const Joint& object);
+
+/// Sets the joint limits.
+/// @relatedalso Joint
+void SetLinearLimits(Joint& object, Length lower, Length upper);
+
+/// Gets the lower joint limit.
 /// @relatedalso Joint
 Angle GetAngularLowerLimit(const Joint& object);
 
-/// Get the upper joint limit.
+/// Gets the upper joint limit.
 /// @relatedalso Joint
 Angle GetAngularUpperLimit(const Joint& object);
 
-/// Set the joint limits.
+/// Sets the joint limits.
 /// @relatedalso Joint
 void SetAngularLimits(Joint& object, Angle lower, Angle upper);
 
@@ -542,6 +570,9 @@ Angle GetAngularOffset(const Joint& object);
 void SetAngularOffset(Joint& object, Angle value);
 
 /// @relatedalso Joint
+LimitState GetLimitState(const Joint& object);
+
+/// @relatedalso Joint
 Length2 GetGroundAnchorA(const Joint& object);
 
 /// @relatedalso Joint
@@ -549,6 +580,13 @@ Length2 GetGroundAnchorB(const Joint& object);
 
 /// @relatedalso Joint
 Momentum GetLinearMotorImpulse(const Joint& object);
+
+/// @brief Gets the current motor torque for the given joint given the inverse time step.
+/// @relatedalso Joint
+inline Torque GetMotorTorque(const Joint& joint, Frequency inv_dt)
+{
+    return GetAngularMotorImpulse(joint) * inv_dt;
+}
 
 } // namespace d2
 } // namespace playrho

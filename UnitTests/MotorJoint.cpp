@@ -20,7 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/MotorJoint.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -38,7 +40,7 @@ TEST(MotorJointConf, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(MotorJointConf), std::size_t(44));
 #else
-            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(40));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(104));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(88)); break;
@@ -62,11 +64,11 @@ TEST(MotorJointConf, DefaultConstruction)
     EXPECT_EQ(def.maxTorque, 1_Nm);
     EXPECT_EQ(def.correctionFactor, Real(0.3));
 }
-#if 0
+
 TEST(MotorJointConf, BuilderConstruction)
 {
-    const auto bodyA = reinterpret_cast<Body*>(0x1);
-    const auto bodyB = reinterpret_cast<Body*>(0x2);
+    const auto bodyA = static_cast<BodyID>(0x1);
+    const auto bodyB = static_cast<BodyID>(0x2);
     const auto collideConnected = true;
     int tmp;
     const auto userData = &tmp;
@@ -92,25 +94,7 @@ TEST(MotorJointConf, BuilderConstruction)
     EXPECT_EQ(def.correctionFactor, correctionFactor);
 }
 
-TEST(MotorJoint, ByteSize)
-{
-    switch (sizeof(Real))
-    {
-        case  4:
-#if defined(_WIN64)
-            EXPECT_EQ(sizeof(MotorJoint), std::size_t(128));
-#elif defined(_WIN32)
-            EXPECT_EQ(sizeof(MotorJoint), std::size_t(104));
-#else
-            EXPECT_EQ(sizeof(MotorJoint), std::size_t(120));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(MotorJoint), std::size_t(208)); break;
-        case 16: EXPECT_EQ(sizeof(MotorJoint), std::size_t(384)); break;
-        default: FAIL(); break;
-    }
-}
-
+#if 0
 TEST(MotorJoint, Construction)
 {
     auto world = World{};
@@ -121,12 +105,12 @@ TEST(MotorJoint, Construction)
     auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
 
     EXPECT_EQ(GetType(joint), def.type);
-    EXPECT_EQ(joint.GetBodyA(), def.bodyA);
-    EXPECT_EQ(joint.GetBodyB(), def.bodyB);
-    EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+    EXPECT_EQ(GetBodyA(joint), def.bodyA);
+    EXPECT_EQ(GetBodyB(joint), def.bodyB);
+    EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
+    EXPECT_EQ(GetUserData(joint), def.userData);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
 
     EXPECT_EQ(joint.GetLinearOffset(), def.linearOffset);
     EXPECT_EQ(joint.GetAngularOffset(), def.angularOffset);
@@ -173,10 +157,10 @@ TEST(MotorJoint, GetMotorJointConf)
     auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
     
     ASSERT_EQ(GetType(joint), def.type);
-    ASSERT_EQ(joint.GetBodyA(), def.bodyA);
-    ASSERT_EQ(joint.GetBodyB(), def.bodyB);
-    ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    ASSERT_EQ(joint.GetUserData(), def.userData);
+    ASSERT_EQ(GetBodyA(joint), def.bodyA);
+    ASSERT_EQ(GetBodyB(joint), def.bodyB);
+    ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
+    ASSERT_EQ(GetUserData(joint), def.userData);
     
     ASSERT_EQ(joint.GetLinearOffset(), def.linearOffset);
     ASSERT_EQ(joint.GetAngularOffset(), def.angularOffset);

@@ -19,7 +19,10 @@
  */
 
 #include "UnitTests.hpp"
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
+
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
@@ -33,19 +36,13 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(RevoluteJoint, ByteSize)
+TEST(RevoluteJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(RevoluteJoint), std::size_t(140));
-#else
-            EXPECT_EQ(sizeof(RevoluteJoint), std::size_t(144));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(RevoluteJoint), std::size_t(280)); break;
-        case 16: EXPECT_EQ(sizeof(RevoluteJoint), std::size_t(528)); break;
+        case  4: EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(136)); break;
+        case  8: EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(280)); break;
+        case 16: EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(528)); break;
         default: FAIL(); break;
     }
 }
@@ -73,34 +70,32 @@ TEST(RevoluteJoint, Construction)
     jd.upperAngle = 40_deg;
     jd.referenceAngle = 45_deg;
     
-    auto joint = RevoluteJoint{jd};
+    auto joint = Joint{jd};
 
-    EXPECT_EQ(GetType(joint), jd.type);
-    EXPECT_EQ(joint.GetBodyA(), jd.bodyA);
-    EXPECT_EQ(joint.GetBodyB(), jd.bodyB);
-    EXPECT_EQ(joint.GetCollideConnected(), jd.collideConnected);
-    EXPECT_EQ(joint.GetUserData(), jd.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
-    EXPECT_EQ(joint.GetLimitState(), Joint::e_inactiveLimit);
+    EXPECT_EQ(GetType(joint), GetTypeID<RevoluteJointConf>());
+    EXPECT_EQ(GetBodyA(joint), jd.bodyA);
+    EXPECT_EQ(GetBodyB(joint), jd.bodyB);
+    EXPECT_EQ(GetCollideConnected(joint), jd.collideConnected);
+    EXPECT_EQ(GetUserData(joint), jd.userData);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
+    EXPECT_EQ(GetLimitState(joint), LimitState::e_inactiveLimit);
 
-    EXPECT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
-    EXPECT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
-    EXPECT_EQ(joint.GetAngularLowerLimit(), jd.lowerAngle);
-    EXPECT_EQ(joint.GetAngularUpperLimit(), jd.upperAngle);
-    EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
-    EXPECT_EQ(joint.GetReferenceAngle(), jd.referenceAngle);
-    EXPECT_EQ(joint.IsMotorEnabled(), jd.enableMotor);
-    EXPECT_EQ(joint.GetMaxMotorTorque(), jd.maxMotorTorque);
-    EXPECT_EQ(joint.IsLimitEnabled(), jd.enableLimit);
-    EXPECT_EQ(joint.GetAngularMotorImpulse(), AngularMomentum{0});
+    EXPECT_EQ(GetLocalAnchorA(joint), jd.localAnchorA);
+    EXPECT_EQ(GetLocalAnchorB(joint), jd.localAnchorB);
+    EXPECT_EQ(GetAngularLowerLimit(joint), jd.lowerAngle);
+    EXPECT_EQ(GetAngularUpperLimit(joint), jd.upperAngle);
+    EXPECT_EQ(GetMotorSpeed(joint), jd.motorSpeed);
+    EXPECT_EQ(GetReferenceAngle(joint), jd.referenceAngle);
+    EXPECT_EQ(IsMotorEnabled(joint), jd.enableMotor);
+    EXPECT_EQ(GetMaxMotorTorque(joint), jd.maxMotorTorque);
+    EXPECT_EQ(IsLimitEnabled(joint), jd.enableLimit);
+    EXPECT_EQ(GetAngularMotorImpulse(joint), AngularMomentum{0});
 
-    EXPECT_EQ(GetAngularVelocity(world, joint), 0 * RadianPerSecond);
-
-    const auto id = world.CreateJoint(jd);
+    const auto id = world.CreateJoint(joint);
+    EXPECT_EQ(GetAngularVelocity(world, id), 0 * RadianPerSecond);
     EXPECT_EQ(GetAnchorA(world, id), Length2(4_m, 5_m));
     EXPECT_EQ(GetAnchorB(world, id), Length2(6_m, 7_m));
-
     EXPECT_EQ(GetMotorTorque(world, id, 1_Hz), 0 * NewtonMeter);
 }
 
@@ -118,14 +113,14 @@ TEST(RevoluteJoint, EnableMotor)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
 
-    auto joint = RevoluteJoint{jd};
-    ASSERT_FALSE(joint.IsLimitEnabled());
-    EXPECT_EQ(joint.GetLimitState(), Joint::e_inactiveLimit);
-    EXPECT_FALSE(joint.IsMotorEnabled());
-    joint.EnableMotor(false);
-    EXPECT_FALSE(joint.IsMotorEnabled());
-    joint.EnableMotor(true);
-    EXPECT_TRUE(joint.IsMotorEnabled());
+    auto joint = Joint{jd};
+    ASSERT_FALSE(IsLimitEnabled(joint));
+    EXPECT_EQ(GetLimitState(joint), LimitState::e_inactiveLimit);
+    EXPECT_FALSE(IsMotorEnabled(joint));
+    EnableMotor(joint, false);
+    EXPECT_FALSE(IsMotorEnabled(joint));
+    EnableMotor(joint, true);
+    EXPECT_TRUE(IsMotorEnabled(joint));
 }
 
 #if 0
@@ -214,11 +209,11 @@ TEST(RevoluteJoint, MotorSpeed)
     jd.localAnchorB = Length2(6_m, 7_m);
     
     const auto newValue = Real(5) * RadianPerSecond;
-    auto joint = RevoluteJoint{jd};
-    ASSERT_NE(joint.GetMotorSpeed(), newValue);
-    EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
-    joint.SetMotorSpeed(newValue);
-    EXPECT_EQ(joint.GetMotorSpeed(), newValue);
+    auto joint = Joint{jd};
+    ASSERT_NE(GetMotorSpeed(joint), newValue);
+    EXPECT_EQ(GetMotorSpeed(joint), jd.motorSpeed);
+    SetMotorSpeed(joint, newValue);
+    EXPECT_EQ(GetMotorSpeed(joint), newValue);
 }
 
 #if 0
@@ -289,12 +284,12 @@ TEST(RevoluteJoint, SetAngularLimits)
     
     const auto upperValue = +5_deg;
     const auto lowerValue = -8_deg;
-    auto joint = RevoluteJoint{jd};
-    ASSERT_NE(joint.GetAngularUpperLimit(), upperValue);
-    ASSERT_NE(joint.GetAngularLowerLimit(), lowerValue);
-    joint.SetAngularLimits(lowerValue, upperValue);
-    EXPECT_EQ(joint.GetAngularUpperLimit(), upperValue);
-    EXPECT_EQ(joint.GetAngularLowerLimit(), lowerValue);
+    auto joint = Joint{jd};
+    ASSERT_NE(GetAngularUpperLimit(joint), upperValue);
+    ASSERT_NE(GetAngularLowerLimit(joint), lowerValue);
+    SetAngularLimits(joint, lowerValue, upperValue);
+    EXPECT_EQ(GetAngularUpperLimit(joint), upperValue);
+    EXPECT_EQ(GetAngularLowerLimit(joint), lowerValue);
 }
 
 #if 0
@@ -348,7 +343,7 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     auto jd = RevoluteJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;
-    world.CreateJoint(jd);
+    world.CreateJoint(Joint{jd});
 
     auto step = StepConf{};
     step.SetTime(1_s);
@@ -451,7 +446,7 @@ TEST(RevoluteJoint, DynamicJoinedToStaticStaysPut)
     world.CreateFixture(b2, shape2);
 
     auto jd = GetRevoluteJointConf(world, b1, b2, Length2{});
-    const auto joint = world.CreateJoint(jd);
+    const auto joint = world.CreateJoint(Joint{jd});
     
     SetAccelerations(world, Acceleration{
         LinearAcceleration2{0, -10 * MeterPerSquareSecond}, 0 * RadianPerSquareSecond

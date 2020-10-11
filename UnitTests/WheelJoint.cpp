@@ -20,7 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/WheelJoint.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
@@ -40,7 +41,7 @@ TEST(WheelJointConf, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(WheelJointConf), std::size_t(64));
 #else
-            EXPECT_EQ(sizeof(WheelJointConf), std::size_t(64));
+            EXPECT_EQ(sizeof(WheelJointConf), std::size_t(136));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(WheelJointConf), std::size_t(128)); break;
@@ -60,7 +61,8 @@ TEST(WheelJointConf, DefaultConstruction)
     
     EXPECT_EQ(def.localAnchorA, (Length2{}));
     EXPECT_EQ(def.localAnchorB, (Length2{}));
-    EXPECT_EQ(def.localAxisA, UnitVec::GetRight());
+    EXPECT_EQ(def.localXAxisA, UnitVec::GetRight());
+    EXPECT_EQ(def.localYAxisA, GetRevPerpendicular(UnitVec::GetRight()));
     EXPECT_FALSE(def.enableMotor);
     EXPECT_EQ(def.maxMotorTorque, Torque(0));
     EXPECT_EQ(def.motorSpeed, 0_rpm);
@@ -70,52 +72,32 @@ TEST(WheelJointConf, DefaultConstruction)
 
 TEST(WheelJoint, Traits)
 {
-    EXPECT_FALSE((IsIterable<WheelJoint>::value));
-    EXPECT_FALSE((IsAddable<WheelJoint>::value));
-    EXPECT_FALSE((IsAddable<WheelJoint,WheelJoint>::value));
-}
-
-TEST(WheelJoint, ByteSize)
-{
-    switch (sizeof(Real))
-    {
-        case  4:
-#if defined(_WIN64)
-            EXPECT_EQ(sizeof(WheelJoint), std::size_t(160));
-#elif defined(_WIN32)
-            EXPECT_EQ(sizeof(WheelJoint), std::size_t(136));
-#else
-            EXPECT_EQ(sizeof(WheelJoint), std::size_t(144));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(WheelJoint), std::size_t(272)); break;
-        case 16: EXPECT_EQ(sizeof(WheelJoint), std::size_t(512)); break;
-        default: FAIL(); break;
-    }
+    EXPECT_FALSE((IsIterable<WheelJointConf>::value));
+    EXPECT_FALSE((IsAddable<WheelJointConf>::value));
+    EXPECT_FALSE((IsAddable<WheelJointConf,WheelJointConf>::value));
 }
 
 TEST(WheelJoint, Construction)
 {
     WheelJointConf def;
-    WheelJoint joint{def};
-    
-    EXPECT_EQ(GetType(joint), def.type);
-    EXPECT_EQ(joint.GetBodyA(), def.bodyA);
-    EXPECT_EQ(joint.GetBodyB(), def.bodyB);
-    EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+    Joint joint{def};
 
-    EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
-    EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
+    EXPECT_EQ(GetType(joint), GetTypeID<WheelJointConf>());
+    EXPECT_EQ(GetBodyA(joint), def.bodyA);
+    EXPECT_EQ(GetBodyB(joint), def.bodyB);
+    EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
+    EXPECT_EQ(GetUserData(joint), def.userData);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
+
+    EXPECT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
+    EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
     EXPECT_EQ(GetLocalXAxisA(joint), def.localXAxisA);
-    EXPECT_EQ(joint.IsMotorEnabled(), def.enableMotor);
-    EXPECT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
-    EXPECT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
-    EXPECT_EQ(joint.GetFrequency(), def.frequency);
-    EXPECT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
-    
+    EXPECT_EQ(IsMotorEnabled(joint), def.enableMotor);
+    EXPECT_EQ(GetMaxMotorTorque(joint), def.maxMotorTorque);
+    EXPECT_EQ(GetMotorSpeed(joint), def.motorSpeed);
+    EXPECT_EQ(GetFrequency(joint), def.frequency);
+    EXPECT_EQ(GetDampingRatio(joint), def.dampingRatio);
     EXPECT_EQ(GetMotorTorque(joint, 1_Hz), 0 * NewtonMeter);
 }
 
@@ -131,12 +113,12 @@ TEST(WheelJoint, EnableMotor)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = WheelJoint{jd};
-    EXPECT_FALSE(joint.IsMotorEnabled());
-    joint.EnableMotor(false);
-    EXPECT_FALSE(joint.IsMotorEnabled());
-    joint.EnableMotor(true);
-    EXPECT_TRUE(joint.IsMotorEnabled());
+    auto joint = Joint{jd};
+    EXPECT_FALSE(IsMotorEnabled(joint));
+    EnableMotor(joint, false);
+    EXPECT_FALSE(IsMotorEnabled(joint));
+    EnableMotor(joint, true);
+    EXPECT_TRUE(IsMotorEnabled(joint));
 }
 
 TEST(WheelJoint, MotorSpeed)
@@ -152,11 +134,11 @@ TEST(WheelJoint, MotorSpeed)
     jd.localAnchorB = Length2(6_m, 7_m);
     
     const auto newValue = 5_rad / 1_s;
-    auto joint = WheelJoint{jd};
-    ASSERT_NE(joint.GetMotorSpeed(), newValue);
-    EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
-    joint.SetMotorSpeed(newValue);
-    EXPECT_EQ(joint.GetMotorSpeed(), newValue);
+    auto joint = Joint{jd};
+    ASSERT_NE(GetMotorSpeed(joint), newValue);
+    EXPECT_EQ(GetMotorSpeed(joint), jd.motorSpeed);
+    SetMotorSpeed(joint, newValue);
+    EXPECT_EQ(GetMotorSpeed(joint), newValue);
 }
 
 TEST(WheelJoint, MaxMotorTorque)
@@ -172,11 +154,11 @@ TEST(WheelJoint, MaxMotorTorque)
     jd.localAnchorB = Length2(6_m, 7_m);
     
     const auto newValue = 5_Nm;
-    auto joint = WheelJoint{jd};
-    ASSERT_NE(joint.GetMaxMotorTorque(), newValue);
-    EXPECT_EQ(joint.GetMaxMotorTorque(), jd.maxMotorTorque);
-    joint.SetMaxMotorTorque(newValue);
-    EXPECT_EQ(joint.GetMaxMotorTorque(), newValue);
+    auto joint = Joint{jd};
+    ASSERT_NE(GetMaxMotorTorque(joint), newValue);
+    EXPECT_EQ(GetMaxMotorTorque(joint), jd.maxMotorTorque);
+    SetMaxMotorTorque(joint, newValue);
+    EXPECT_EQ(GetMaxMotorTorque(joint), newValue);
 }
 
 TEST(WheelJoint, GetAnchorAandB)
@@ -195,7 +177,7 @@ TEST(WheelJoint, GetAnchorAandB)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = world.CreateJoint(jd);
+    auto joint = world.CreateJoint(Joint{jd});
     ASSERT_EQ(GetLocalAnchorA(world, joint), jd.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(world, joint), jd.localAnchorB);
     EXPECT_EQ(GetAnchorA(world, joint), loc0 + jd.localAnchorA);
@@ -218,39 +200,39 @@ TEST(WheelJoint, GetJointTranslation)
     jd.localAnchorA = Length2(-1_m, 5_m);
     jd.localAnchorB = Length2(+1_m, 5_m);
     
-    auto joint = world.CreateJoint(jd);
+    auto joint = world.CreateJoint(Joint{jd});
     EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
 
 TEST(WheelJoint, GetWheelJointConf)
 {
     WheelJointConf def;
-    WheelJoint joint{def};
-    
-    ASSERT_EQ(GetType(joint), def.type);
-    ASSERT_EQ(joint.GetBodyA(), def.bodyA);
-    ASSERT_EQ(joint.GetBodyB(), def.bodyB);
-    ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    ASSERT_EQ(joint.GetUserData(), def.userData);
-    
-    ASSERT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
-    ASSERT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
+    Joint joint{def};
+
+    ASSERT_EQ(GetType(joint), GetTypeID<WheelJointConf>());
+    ASSERT_EQ(GetBodyA(joint), def.bodyA);
+    ASSERT_EQ(GetBodyB(joint), def.bodyB);
+    ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
+    ASSERT_EQ(GetUserData(joint), def.userData);
+
+    ASSERT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
+    ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
     ASSERT_EQ(GetLocalXAxisA(joint), def.localXAxisA);
-    ASSERT_EQ(joint.IsMotorEnabled(), def.enableMotor);
-    ASSERT_EQ(joint.GetMaxMotorTorque(), def.maxMotorTorque);
-    ASSERT_EQ(joint.GetMotorSpeed(), def.motorSpeed);
-    ASSERT_EQ(joint.GetFrequency(), def.frequency);
-    ASSERT_EQ(joint.GetSpringDampingRatio(), def.dampingRatio);
-    
+    ASSERT_EQ(IsMotorEnabled(joint), def.enableMotor);
+    ASSERT_EQ(GetMaxMotorTorque(joint), def.maxMotorTorque);
+    ASSERT_EQ(GetMotorSpeed(joint), def.motorSpeed);
+    ASSERT_EQ(GetFrequency(joint), def.frequency);
+    ASSERT_EQ(GetDampingRatio(joint), def.dampingRatio);
+
     const auto cdef = GetWheelJointConf(joint);
     EXPECT_EQ(cdef.bodyA, InvalidBodyID);
     EXPECT_EQ(cdef.bodyB, InvalidBodyID);
     EXPECT_EQ(cdef.collideConnected, false);
     EXPECT_EQ(cdef.userData, nullptr);
-    
+
     EXPECT_EQ(cdef.localAnchorA, (Length2{}));
     EXPECT_EQ(cdef.localAnchorB, (Length2{}));
-    EXPECT_EQ(cdef.localAxisA, UnitVec::GetRight());
+    EXPECT_EQ(cdef.localXAxisA, UnitVec::GetRight());
     EXPECT_FALSE(cdef.enableMotor);
     EXPECT_EQ(cdef.maxMotorTorque, Torque(0));
     EXPECT_EQ(cdef.motorSpeed, 0_rpm);
@@ -270,7 +252,7 @@ TEST(WheelJoint, WithDynamicCircles)
     world.CreateFixture(b2, Shape{circle});
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetWheelJointConf(world, b1, b2, anchor);
-    const auto joint = world.CreateJoint(jd);
+    const auto joint = world.CreateJoint(Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
     auto stepConf = StepConf{};
     

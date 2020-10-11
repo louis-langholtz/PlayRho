@@ -20,10 +20,13 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/RopeJoint.hpp>
+#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
@@ -34,13 +37,7 @@ TEST(RopeJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(RopeJointConf), std::size_t(40));
-#else
-            EXPECT_EQ(sizeof(RopeJointConf), std::size_t(40));
-#endif
-            break;
+        case  4: EXPECT_EQ(sizeof(RopeJointConf), std::size_t(80)); break;
         case  8: EXPECT_EQ(sizeof(RopeJointConf), std::size_t(80)); break;
         case 16: EXPECT_EQ(sizeof(RopeJointConf), std::size_t(128)); break;
         default: FAIL(); break;
@@ -50,34 +47,15 @@ TEST(RopeJointConf, ByteSize)
 TEST(RopeJointConf, DefaultConstruction)
 {
     RopeJointConf def{};
-    
+
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
     EXPECT_EQ(def.userData, nullptr);
-    
+
     EXPECT_EQ(def.localAnchorA, Length2(-1_m, 0_m));
     EXPECT_EQ(def.localAnchorB, Length2(+1_m, 0_m));
     EXPECT_EQ(def.maxLength, 0_m);
-}
-
-TEST(RopeJoint, ByteSize)
-{
-    switch (sizeof(Real))
-    {
-        case  4:
-#if defined(_WIN64)
-            EXPECT_EQ(sizeof(RopeJoint), std::size_t(104));
-#elif defined(_WIN32)
-            EXPECT_EQ(sizeof(RopeJoint), std::size_t(80));
-#else
-            EXPECT_EQ(sizeof(RopeJoint), std::size_t(88));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(RopeJoint), std::size_t(160)); break;
-        case 16: EXPECT_EQ(sizeof(RopeJoint), std::size_t(288)); break;
-        default: FAIL(); break;
-    }
 }
 
 #if 0
@@ -88,22 +66,23 @@ TEST(RopeJoint, Construction)
     const auto b1 = world.CreateBody();
 
     auto def = RopeJointConf{b0, b1};
-    RopeJoint joint{def};
-    
-    EXPECT_EQ(GetType(joint), def.type);
-    EXPECT_EQ(joint.GetBodyA(), def.bodyA);
-    EXPECT_EQ(joint.GetBodyB(), def.bodyB);
-    EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+    Joint joint{def};
 
-    EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
-    EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    EXPECT_EQ(joint.GetAnchorA(world), Length2(-1_m, 0_m));
-    EXPECT_EQ(joint.GetAnchorB(world), Length2(+1_m, 0_m));
-    EXPECT_EQ(joint.GetMaxLength(), def.maxLength);
-    EXPECT_EQ(joint.GetLimitState(), Joint::e_inactiveLimit);
+    EXPECT_EQ(GetType(joint), GetTypeID<RopeJointConf>());
+    EXPECT_EQ(GetBodyA(joint), def.bodyA);
+    EXPECT_EQ(GetBodyB(joint), def.bodyB);
+    EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
+    EXPECT_EQ(GetUserData(joint), def.userData);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
+
+    const auto id = world.CreateJoint(joint);
+    EXPECT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
+    EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
+    EXPECT_EQ(GetAnchorA(world, id), Length2(-1_m, 0_m));
+    EXPECT_EQ(GetAnchorB(world, id), Length2(+1_m, 0_m));
+    EXPECT_EQ(GetMaxLength(joint), def.maxLength);
+    EXPECT_EQ(GetLimitState(joint), Joint::e_inactiveLimit);
 }
 
 TEST(RopeJoint, GetRopeJointConf)
@@ -119,13 +98,13 @@ TEST(RopeJoint, GetRopeJointConf)
     RopeJoint joint{def};
     
     ASSERT_EQ(GetType(joint), def.type);
-    ASSERT_EQ(joint.GetBodyA(), def.bodyA);
-    ASSERT_EQ(joint.GetBodyB(), def.bodyB);
-    ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    ASSERT_EQ(joint.GetUserData(), def.userData);
+    ASSERT_EQ(GetBodyA(joint), def.bodyA);
+    ASSERT_EQ(GetBodyB(joint), def.bodyB);
+    ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
+    ASSERT_EQ(GetUserData(joint), def.userData);
     
-    ASSERT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
-    ASSERT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
+    ASSERT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
+    ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
     ASSERT_EQ(joint.GetMaxLength(), def.maxLength);
     
     const auto cdef = GetRopeJointConf(joint);

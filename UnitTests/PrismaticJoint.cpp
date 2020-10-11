@@ -18,7 +18,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
@@ -27,21 +28,21 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(PrismaticJoint, ByteSize)
+TEST(PrismaticJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN64)
-            EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(192));
+            EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(192));
 #elif defined(_WIN32)
-            EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(168));
+            EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(168));
 #else
-            EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(176));
+            EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(168));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(328)); break;
-        case 16: EXPECT_EQ(sizeof(PrismaticJoint), std::size_t(624)); break;
+        case  8: EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(328)); break;
+        case 16: EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(624)); break;
         default: FAIL(); break;
     }
 }
@@ -58,13 +59,13 @@ TEST(PrismaticJoint, Construction)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = PrismaticJoint{jd};
-    EXPECT_EQ(joint.GetBodyA(), b0);
-    EXPECT_EQ(joint.GetBodyB(), b1);
-    EXPECT_EQ(joint.GetLocalAnchorA(), jd.localAnchorA);
-    EXPECT_EQ(joint.GetLocalAnchorB(), jd.localAnchorB);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+    auto joint = Joint{jd};
+    EXPECT_EQ(GetBodyA(joint), b0);
+    EXPECT_EQ(GetBodyB(joint), b1);
+    EXPECT_EQ(GetLocalAnchorA(joint), jd.localAnchorA);
+    EXPECT_EQ(GetLocalAnchorB(joint), jd.localAnchorB);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
 }
 
 TEST(PrismaticJoint, EnableLimit)
@@ -79,15 +80,15 @@ TEST(PrismaticJoint, EnableLimit)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = PrismaticJoint{jd};
-    EXPECT_FALSE(joint.IsLimitEnabled());
-    joint.EnableLimit(false);
-    EXPECT_FALSE(joint.IsLimitEnabled());
-    joint.EnableLimit(true);
-    EXPECT_TRUE(joint.IsLimitEnabled());
-    EXPECT_EQ(joint.GetLinearMotorImpulse(), 0_Ns);
+    auto joint = Joint{jd};
+    EXPECT_FALSE(IsLimitEnabled(joint));
+    EnableLimit(joint, false);
+    EXPECT_FALSE(IsLimitEnabled(joint));
+    EnableLimit(joint, true);
+    EXPECT_TRUE(IsLimitEnabled(joint));
+    EXPECT_EQ(GetLinearMotorImpulse(joint), 0_Ns);
 
-    const auto id = world.CreateJoint(jd);
+    const auto id = world.CreateJoint(joint);
     EXPECT_EQ(GetMotorForce(world, id, 1_Hz), 0 * Newton);
 }
 
@@ -103,10 +104,10 @@ TEST(PrismaticJoint, ShiftOrigin)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = PrismaticJoint{jd};
+    auto joint = Joint{jd};
 
     const auto newOrigin = Length2{1_m, 1_m};
-    EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
+    EXPECT_FALSE(ShiftOrigin(joint, newOrigin));
 }
 
 TEST(PrismaticJoint, EnableMotor)
@@ -121,12 +122,12 @@ TEST(PrismaticJoint, EnableMotor)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = PrismaticJoint{jd};
-    EXPECT_FALSE(joint.IsMotorEnabled());
-    joint.EnableMotor(false);
-    EXPECT_FALSE(joint.IsMotorEnabled());
-    joint.EnableMotor(true);
-    EXPECT_TRUE(joint.IsMotorEnabled());
+    auto joint = Joint{jd};
+    EXPECT_FALSE(IsMotorEnabled(joint));
+    EnableMotor(joint, false);
+    EXPECT_FALSE(IsMotorEnabled(joint));
+    EnableMotor(joint, true);
+    EXPECT_TRUE(IsMotorEnabled(joint));
 }
 
 TEST(PrismaticJoint, SetMaxMotorForce)
@@ -141,10 +142,10 @@ TEST(PrismaticJoint, SetMaxMotorForce)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = PrismaticJoint{jd};
-    ASSERT_EQ(joint.GetMaxMotorForce(), 0_N);
-    joint.SetMaxMotorForce(2_N);
-    EXPECT_EQ(joint.GetMaxMotorForce(), 2_N);
+    auto joint = Joint{jd};
+    ASSERT_EQ(GetMaxMotorForce(joint), 0_N);
+    SetMaxMotorForce(joint, 2_N);
+    EXPECT_EQ(GetMaxMotorForce(joint), 2_N);
 }
 
 TEST(PrismaticJoint, MotorSpeed)
@@ -160,11 +161,11 @@ TEST(PrismaticJoint, MotorSpeed)
     jd.localAnchorB = Length2(6_m, 7_m);
     
     const auto newValue = Real(5) * RadianPerSecond;
-    auto joint = PrismaticJoint{jd};
-    ASSERT_NE(joint.GetMotorSpeed(), newValue);
-    EXPECT_EQ(joint.GetMotorSpeed(), jd.motorSpeed);
-    joint.SetMotorSpeed(newValue);
-    EXPECT_EQ(joint.GetMotorSpeed(), newValue);
+    auto joint = Joint{jd};
+    ASSERT_NE(GetMotorSpeed(joint), newValue);
+    EXPECT_EQ(GetMotorSpeed(joint), jd.motorSpeed);
+    SetMotorSpeed(joint, newValue);
+    EXPECT_EQ(GetMotorSpeed(joint), newValue);
 }
 
 TEST(PrismaticJoint, SetLinearLimits)
@@ -181,12 +182,12 @@ TEST(PrismaticJoint, SetLinearLimits)
     
     const auto upperValue = +5_m;
     const auto lowerValue = -8_m;
-    auto joint = PrismaticJoint{jd};
-    ASSERT_NE(joint.GetLinearUpperLimit(), upperValue);
-    ASSERT_NE(joint.GetLinearLowerLimit(), lowerValue);
-    joint.SetLinearLimits(lowerValue, upperValue);
-    EXPECT_EQ(joint.GetLinearUpperLimit(), upperValue);
-    EXPECT_EQ(joint.GetLinearLowerLimit(), lowerValue);
+    auto joint = Joint{jd};
+    ASSERT_NE(GetLinearUpperLimit(joint), upperValue);
+    ASSERT_NE(GetLinearLowerLimit(joint), lowerValue);
+    SetLinearLimits(joint, lowerValue, upperValue);
+    EXPECT_EQ(GetLinearUpperLimit(joint), upperValue);
+    EXPECT_EQ(GetLinearLowerLimit(joint), lowerValue);
 }
 
 TEST(PrismaticJoint, GetAnchorAandB)
@@ -205,7 +206,7 @@ TEST(PrismaticJoint, GetAnchorAandB)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = world.CreateJoint(jd);
+    auto joint = world.CreateJoint(Joint{jd});
     ASSERT_EQ(GetLocalAnchorA(world, joint), jd.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(world, joint), jd.localAnchorB);
     EXPECT_EQ(GetAnchorA(world, joint), loc0 + jd.localAnchorA);
@@ -228,7 +229,7 @@ TEST(PrismaticJoint, GetJointTranslation)
     jd.localAnchorA = Length2(-1_m, 5_m);
     jd.localAnchorB = Length2(+1_m, 5_m);
     
-    auto joint = world.CreateJoint(jd);
+    auto joint = world.CreateJoint(Joint{jd});
     EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
 
@@ -248,8 +249,7 @@ TEST(PrismaticJoint, GetLinearVelocity)
     jd.localAnchorA = Length2(-1_m, 5_m);
     jd.localAnchorB = Length2(+1_m, 5_m);
     
-    auto joint = PrismaticJoint{jd};
-    EXPECT_EQ(GetLinearVelocity(world, joint), LinearVelocity(0));
+    EXPECT_EQ(GetLinearVelocity(world, jd), LinearVelocity(0));
 }
 
 TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
@@ -264,7 +264,7 @@ TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
     world.CreateFixture(b2, Shape{circle});
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetPrismaticJointConf(world, b1, b2, anchor, UnitVec::GetRight()).UseEnableLimit(true);
-    const auto joint = world.CreateJoint(jd);
+    const auto joint = world.CreateJoint(Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
 #if 0
     ASSERT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);

@@ -41,6 +41,7 @@
 #include <PlayRho/Common/LengthError.hpp>
 #include <PlayRho/Common/WrongState.hpp>
 
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
@@ -218,7 +219,7 @@ TEST(World, Clear)
     ASSERT_NE(f1, InvalidFixtureID);
     ASSERT_EQ(world.GetFixtures(b1).size(), std::size_t(1));;
 
-    const auto j0 = world.CreateJoint(DistanceJointConf{b0, b1});
+    const auto j0 = world.CreateJoint(Joint{DistanceJointConf{b0, b1}});
     ASSERT_NE(j0, InvalidJointID);
 
     ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
@@ -580,7 +581,7 @@ TEST(World, CreateDestroyJoinedBodies)
     const auto c0 = world.GetContacts().begin();
     EXPECT_FALSE(NeedsFiltering(world, c0->second));
 
-    const auto joint = world.CreateJoint(DistanceJointConf{body, body2});
+    const auto joint = world.CreateJoint(Joint{DistanceJointConf{body, body2}});
     ASSERT_NE(joint, InvalidJointID);
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_TRUE(NeedsFiltering(world, c0->second));
@@ -1293,8 +1294,8 @@ TEST(World, CreateAndDestroyJoint)
     
     const auto anchorA = Length2{+0.4_m, -1.2_m};
     const auto anchorB = Length2{-2.3_m, +0.7_m};
-    const auto joint = world.CreateJoint(GetDistanceJointConf(world, body1, body2,
-                                                              anchorA, anchorB));
+    const auto joint = world.CreateJoint(Joint{GetDistanceJointConf(world, body1, body2,
+                                                                    anchorA, anchorB)});
     EXPECT_EQ(GetJointCount(world), JointCounter(1));
     EXPECT_FALSE(world.GetJoints().empty());
     EXPECT_NE(world.GetJoints().begin(), world.GetJoints().end());
@@ -1311,8 +1312,6 @@ TEST(World, CreateAndDestroyJoint)
     EXPECT_EQ(GetJointCount(world), JointCounter(0));
     EXPECT_TRUE(world.GetJoints().empty());
     EXPECT_EQ(world.GetJoints().begin(), world.GetJoints().end());
-    
-    EXPECT_THROW(world.CreateJoint(JointConf{}), InvalidArgument);
 }
 
 TEST(World, MaxBodies)
@@ -1339,11 +1338,11 @@ TEST(World, MaxJoints)
     
     for (auto i = decltype(MaxJoints){0}; i < MaxJoints; ++i)
     {
-        const auto joint = world.CreateJoint(RopeJointConf{body1, body2});
+        const auto joint = world.CreateJoint(Joint{RopeJointConf{body1, body2}});
         ASSERT_NE(joint, InvalidJointID);
     }
     {
-        EXPECT_THROW(world.CreateJoint(RopeJointConf{body1, body2}), LengthError);
+        EXPECT_THROW(world.CreateJoint(Joint{RopeJointConf{body1, body2}}), LengthError);
     }
 }
 
@@ -1589,7 +1588,7 @@ struct MyContactListener
             EXPECT_THROW(SetType(world, bA, BodyType::Kinematic), WrongState);
         }
         EXPECT_THROW(world.Destroy(bA), WrongState);
-        EXPECT_THROW(world.CreateJoint(DistanceJointConf{bA, bB}), WrongState);
+        EXPECT_THROW(world.CreateJoint(Joint{DistanceJointConf{bA, bB}}), WrongState);
         EXPECT_THROW(world.Step(stepConf), WrongState);
         EXPECT_THROW(world.ShiftOrigin(Length2{}), WrongState);
         EXPECT_THROW(world.CreateFixture(bA, Shape{DiskShapeConf{}}), WrongState);
@@ -3114,7 +3113,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
             GetY(ball_body_pos) + ball_radius / Real{2}
         };
         mjd.maxForce = Real(1000) * GetMass(world, ball_body) * MeterPerSquareSecond;
-        return world.CreateJoint(mjd);
+        return world.CreateJoint(Joint{mjd});
     }();
     ASSERT_NE(target_joint, InvalidJointID);
 

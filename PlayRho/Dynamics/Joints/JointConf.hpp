@@ -208,6 +208,12 @@ constexpr auto GetLinearOffset(const T& conf) noexcept -> decltype(std::declval<
 }
 
 template <typename T>
+constexpr auto GetLimitState(const T& conf) noexcept -> decltype(std::declval<T>().limitState)
+{
+    return conf.limitState;
+}
+
+template <typename T>
 constexpr auto GetGroundAnchorA(const T& conf) noexcept -> decltype(std::declval<T>().groundAnchorA)
 {
     return conf.groundAnchorA;
@@ -265,6 +271,12 @@ template <typename T>
 constexpr auto GetLinearMotorImpulse(const T& conf) noexcept -> decltype(std::declval<T>().motorImpulse)
 {
     return conf.motorImpulse;
+}
+
+template <typename T>
+constexpr auto GetMaxMotorForce(const T& conf) noexcept -> decltype(std::declval<T>().maxMotorForce)
+{
+    return conf.maxMotorForce;
 }
 
 template <typename T>

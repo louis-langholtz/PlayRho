@@ -20,10 +20,12 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/GearJoint.hpp>
+#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJoint.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -37,15 +39,9 @@ TEST(GearJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(GearJointConf), std::size_t(32));
-#else
-            EXPECT_EQ(sizeof(GearJointConf), std::size_t(64));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(GearJointConf), std::size_t(64)); break;
-        case 16: EXPECT_EQ(sizeof(GearJointConf), std::size_t(80)); break;
+        case  4: EXPECT_EQ(sizeof(GearJointConf), std::size_t(144)); break;
+        case  8: EXPECT_EQ(sizeof(GearJointConf), std::size_t(144)); break;
+        case 16: EXPECT_EQ(sizeof(GearJointConf), std::size_t(144)); break;
         default: FAIL(); break;
     }
 }
@@ -127,15 +123,15 @@ TEST(GearJoint, Creation)
     auto& joint = *static_cast<GearJoint*>(world.CreateJoint(def));
 
     EXPECT_EQ(GetType(joint), def.type);
-    EXPECT_EQ(joint.GetBodyA(), def.joint1->GetBodyB());
-    EXPECT_EQ(joint.GetBodyB(), def.joint2->GetBodyB());
-    EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+    EXPECT_EQ(GetBodyA(joint), def.joint1->GetBodyB());
+    EXPECT_EQ(GetBodyB(joint), def.joint2->GetBodyB());
+    EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
+    EXPECT_EQ(GetUserData(joint), def.userData);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
     
-    EXPECT_EQ(joint.GetLocalAnchorA(), revJoint1.GetLocalAnchorB());
-    EXPECT_EQ(joint.GetLocalAnchorB(), revJoint2.GetLocalAnchorB());
+    EXPECT_EQ(GetLocalAnchorA(joint), revJoint1.GetLocalAnchorB());
+    EXPECT_EQ(GetLocalAnchorB(joint), revJoint2.GetLocalAnchorB());
     EXPECT_EQ(joint.GetJoint1(), def.joint1);
     EXPECT_EQ(joint.GetJoint2(), def.joint2);
     EXPECT_EQ(joint.GetRatio(), def.ratio);
@@ -194,13 +190,13 @@ TEST(GearJoint, GetGearJointConf)
     auto& joint = *static_cast<GearJoint*>(world.CreateJoint(def));
 
     ASSERT_EQ(GetType(joint), def.type);
-    ASSERT_EQ(joint.GetBodyA(), def.joint1->GetBodyB());
-    ASSERT_EQ(joint.GetBodyB(), def.joint2->GetBodyB());
-    ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    ASSERT_EQ(joint.GetUserData(), def.userData);
+    ASSERT_EQ(GetBodyA(joint), def.joint1->GetBodyB());
+    ASSERT_EQ(GetBodyB(joint), def.joint2->GetBodyB());
+    ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
+    ASSERT_EQ(GetUserData(joint), def.userData);
     
-    ASSERT_EQ(joint.GetLocalAnchorA(), revJoint1.GetLocalAnchorB());
-    ASSERT_EQ(joint.GetLocalAnchorB(), revJoint2.GetLocalAnchorB());
+    ASSERT_EQ(GetLocalAnchorA(joint), revJoint1.GetLocalAnchorB());
+    ASSERT_EQ(GetLocalAnchorB(joint), revJoint2.GetLocalAnchorB());
     ASSERT_EQ(joint.GetJoint1(), def.joint1);
     ASSERT_EQ(joint.GetJoint2(), def.joint2);
     ASSERT_EQ(joint.GetRatio(), def.ratio);

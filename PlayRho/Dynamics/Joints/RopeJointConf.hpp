@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Dynamics/Joints/LimitState.hpp>
 
 namespace playrho {
 
@@ -46,34 +47,15 @@ struct RopeJointConf : public JointBuilder<RopeJointConf>
     /// @brief Super type.
     using super = JointBuilder<RopeJointConf>;
 
-    /// @brief Limit state.
-    /// @note Only used by joints that implement some notion of a limited range.
-    enum LimitState
-    {
-        /// @brief Inactive limit.
-        e_inactiveLimit,
-
-        /// @brief At-lower limit.
-        e_atLowerLimit,
-
-        /// @brief At-upper limit.
-        e_atUpperLimit,
-
-        /// @brief Equal limit.
-        /// @details Equal limit is used to indicate that a joint's upper and lower limits
-        ///   are approximately the same.
-        e_equalLimits
-    };
-
     constexpr RopeJointConf() noexcept = default;
-    
+
     /// @brief Initializing constructor.
     constexpr RopeJointConf(BodyID bodyA, BodyID bodyB) noexcept:
         super{super{}.UseBodyA(bodyA).UseBodyB(bodyB)}
     {
         // Intentionally empty.
     }
-    
+
     /// @brief Uses the given max length value.
     constexpr auto& UseMaxLength(Length v) noexcept
     {
@@ -98,7 +80,7 @@ struct RopeJointConf : public JointBuilder<RopeJointConf>
     Length2 rA = {}; ///< Relative A.
     Length2 rB = {}; ///< Relative B.
     Mass mass = 0_kg; ///< Mass.
-    LimitState state = e_inactiveLimit; ///< Limit state.
+    LimitState limitState = LimitState::e_inactiveLimit; ///< Limit state.
 };
 
 /// @brief Gets the definition data for the given joint.
@@ -146,6 +128,15 @@ bool SolvePosition(const RopeJointConf& object, std::vector<BodyConstraint>& bod
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::RopeJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::RopeJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_ROPEJOINTCONF_HPP

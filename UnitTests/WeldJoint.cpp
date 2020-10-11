@@ -20,7 +20,9 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/WeldJoint.hpp>
+#include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
@@ -34,23 +36,17 @@ using namespace playrho::d2;
 
 TEST(WeldJoint, Traits)
 {
-    EXPECT_FALSE((IsIterable<WeldJoint>::value));
-    EXPECT_FALSE((IsAddable<WeldJoint>::value));
-    EXPECT_FALSE((IsAddable<WeldJoint,WeldJoint>::value));
+    EXPECT_FALSE((IsIterable<WeldJointConf>::value));
+    EXPECT_FALSE((IsAddable<WeldJointConf>::value));
+    EXPECT_FALSE((IsAddable<WeldJointConf,WeldJointConf>::value));
 }
 
 TEST(WeldJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(WeldJointConf), std::size_t(48));
-#else
-            EXPECT_EQ(sizeof(WeldJointConf), std::size_t(48));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(WeldJointConf), std::size_t(96)); break;
+        case  4: EXPECT_EQ(sizeof(WeldJointConf), std::size_t(120)); break;
+        case  8: EXPECT_EQ(sizeof(WeldJointConf), std::size_t(120)); break;
         case 16: EXPECT_EQ(sizeof(WeldJointConf), std::size_t(160)); break;
         default: FAIL(); break;
     }
@@ -72,43 +68,24 @@ TEST(WeldJointConf, DefaultConstruction)
     EXPECT_EQ(def.dampingRatio, Real(0));
 }
 
-TEST(WeldJoint, ByteSize)
-{
-    switch (sizeof(Real))
-    {
-        case  4:
-#if defined(_WIN64)
-            EXPECT_EQ(sizeof(WeldJoint), std::size_t(144));
-#elif defined(_WIN32)
-            EXPECT_EQ(sizeof(WeldJoint), std::size_t(120));
-#else
-            EXPECT_EQ(sizeof(WeldJoint), std::size_t(128));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(WeldJoint), std::size_t(240)); break;
-        case 16: EXPECT_EQ(sizeof(WeldJoint), std::size_t(448)); break;
-        default: FAIL(); break;
-    }
-}
-
 TEST(WeldJoint, Construction)
 {
     WeldJointConf def;
-    WeldJoint joint{def};
-    
-    EXPECT_EQ(GetType(joint), def.type);
-    EXPECT_EQ(joint.GetBodyA(), def.bodyA);
-    EXPECT_EQ(joint.GetBodyB(), def.bodyB);
-    EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+    Joint joint{def};
 
-    EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
-    EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    EXPECT_EQ(joint.GetReferenceAngle(), def.referenceAngle);
-    EXPECT_EQ(joint.GetFrequency(), def.frequency);
-    EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
+    EXPECT_EQ(GetType(joint), GetTypeID<WeldJointConf>());
+    EXPECT_EQ(GetBodyA(joint), def.bodyA);
+    EXPECT_EQ(GetBodyB(joint), def.bodyB);
+    EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
+    EXPECT_EQ(GetUserData(joint), def.userData);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
+
+    EXPECT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
+    EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
+    EXPECT_EQ(GetReferenceAngle(joint), def.referenceAngle);
+    EXPECT_EQ(GetFrequency(joint), def.frequency);
+    EXPECT_EQ(GetDampingRatio(joint), def.dampingRatio);
 }
 
 TEST(WeldJoint, GetWeldJointConf)
@@ -118,19 +95,19 @@ TEST(WeldJoint, GetWeldJointConf)
     const auto bodyB = world.CreateBody();
     const auto anchor = Length2(2_m, 1_m);
     const auto def = GetWeldJointConf(world, bodyA, bodyB, anchor);
-    WeldJoint joint{def};
+    Joint joint{def};
 
-    ASSERT_EQ(GetType(joint), def.type);
-    ASSERT_EQ(joint.GetBodyA(), def.bodyA);
-    ASSERT_EQ(joint.GetBodyB(), def.bodyB);
-    ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    ASSERT_EQ(joint.GetUserData(), def.userData);
+    ASSERT_EQ(GetType(joint), GetTypeID<WeldJointConf>());
+    ASSERT_EQ(GetBodyA(joint), def.bodyA);
+    ASSERT_EQ(GetBodyB(joint), def.bodyB);
+    ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
+    ASSERT_EQ(GetUserData(joint), def.userData);
     
-    ASSERT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
-    ASSERT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    ASSERT_EQ(joint.GetReferenceAngle(), def.referenceAngle);
-    ASSERT_EQ(joint.GetFrequency(), def.frequency);
-    ASSERT_EQ(joint.GetDampingRatio(), def.dampingRatio);
+    ASSERT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
+    ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
+    ASSERT_EQ(GetReferenceAngle(joint), def.referenceAngle);
+    ASSERT_EQ(GetFrequency(joint), def.frequency);
+    ASSERT_EQ(GetDampingRatio(joint), def.dampingRatio);
     
     const auto cdef = GetWeldJointConf(joint);
     EXPECT_EQ(cdef.bodyA, bodyA);
@@ -157,7 +134,7 @@ TEST(WeldJoint, WithDynamicCircles)
     world.CreateFixture(b2, circle);
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetWeldJointConf(world, b1, b2, anchor);
-    world.CreateJoint(jd);
+    world.CreateJoint(Joint{jd});
     Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
@@ -179,7 +156,7 @@ TEST(WeldJoint, WithDynamicCircles2)
     world.CreateFixture(b2, circle);
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetWeldJointConf(world, b1, b2, anchor).UseFrequency(10_Hz);
-    const auto joint = world.CreateJoint(jd);
+    const auto joint = world.CreateJoint(Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
     ASSERT_EQ(GetFrequency(world, joint), 10_Hz);
     auto stepConf = StepConf{};
@@ -206,7 +183,7 @@ TEST(WeldJoint, WithDynamicCircles2)
 TEST(WeldJoint, GetAnchorAandB)
 {
     auto world = World{};
-    
+
     const auto loc1 = Length2{+1_m, -3_m};
     const auto loc2 = Length2{-2_m, Real(+1.2f) * Meter};
     const auto anchor = Length2(2_m, 1_m);
@@ -217,7 +194,7 @@ TEST(WeldJoint, GetAnchorAandB)
     auto jd = GetWeldJointConf(world, b1, b2, anchor);
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    const auto joint = world.CreateJoint(jd);
+    const auto joint = world.CreateJoint(Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
 
     ASSERT_EQ(GetLocalAnchorA(world, joint), jd.localAnchorA);

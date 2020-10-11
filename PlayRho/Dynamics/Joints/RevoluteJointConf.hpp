@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Dynamics/Joints/LimitState.hpp>
 
 namespace playrho {
 
@@ -52,25 +53,6 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<RevoluteJointConf>;
-
-    /// @brief Limit state.
-    /// @note Only used by joints that implement some notion of a limited range.
-    enum LimitState
-    {
-        /// @brief Inactive limit.
-        e_inactiveLimit,
-
-        /// @brief At-lower limit.
-        e_atLowerLimit,
-
-        /// @brief At-upper limit.
-        e_atUpperLimit,
-
-        /// @brief Equal limit.
-        /// @details Equal limit is used to indicate that a joint's upper and lower limits
-        ///   are approximately the same.
-        e_equalLimits
-    };
 
     constexpr RevoluteJointConf() noexcept = default;
 
@@ -162,7 +144,7 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
     Length2 rB = {}; ///< Rotated delta of body B's local center from local anchor B.
     Mat33 mass = {}; ///< Effective mass for point-to-point constraint.
     RotInertia angularMass = {}; ///< Effective mass for motor/limit angular constraint.
-    LimitState limitState = e_inactiveLimit; ///< Limit state.
+    LimitState limitState = LimitState::e_inactiveLimit; ///< Limit state.
 };
 
 /// @brief Gets the definition data for the given joint.
@@ -226,6 +208,15 @@ bool SolvePosition(const RevoluteJointConf& object, std::vector<BodyConstraint>&
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::RevoluteJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::RevoluteJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_REVOLUTEJOINTCONF_HPP

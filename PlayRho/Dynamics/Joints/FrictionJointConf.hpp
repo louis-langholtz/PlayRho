@@ -137,6 +137,15 @@ bool SolvePosition(const FrictionJointConf& object, std::vector<BodyConstraint>&
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::FrictionJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::FrictionJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_FRICTIONJOINTCONF_HPP

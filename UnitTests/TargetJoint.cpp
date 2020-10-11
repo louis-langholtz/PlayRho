@@ -17,7 +17,10 @@
  */
 
 #include "UnitTests.hpp"
-#include <PlayRho/Dynamics/Joints/TargetJoint.hpp>
+
+#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+
 #include <PlayRho/Dynamics/World.hpp>
 
 using namespace playrho;
@@ -51,23 +54,18 @@ TEST(TargetJointConf, UseDampingRatio)
     EXPECT_EQ(TargetJointConf{}.UseDampingRatio(value).dampingRatio, value);
 }
 
-TEST(TargetJoint, ByteSize)
+TEST(TargetJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(TargetJoint), std::size_t(92));
-#else
-            EXPECT_EQ(sizeof(TargetJoint), std::size_t(96));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(TargetJoint), std::size_t(184)); break;
-        case 16: EXPECT_EQ(sizeof(TargetJoint), std::size_t(336)); break;
+        case  4: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(88)); break;
+        case  8: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(184)); break;
+        case 16: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(336)); break;
         default: FAIL(); break;
     }
 }
 
+#if 0
 TEST(TargetJoint, IsOkay)
 {
     auto def = TargetJointConf{};
@@ -83,24 +81,25 @@ TEST(TargetJoint, IsOkay)
     def.target = GetInvalid<decltype(def.target)>();
     EXPECT_FALSE(TargetJoint::IsOkay(def));
 }
+#endif
 
 TEST(TargetJoint, DefaultInitialized)
 {
     const auto def = TargetJointConf{};
-    auto joint = TargetJoint{def};
+    auto joint = Joint{def};
 
-    EXPECT_EQ(joint.GetBodyA(), def.bodyA);
-    EXPECT_EQ(joint.GetBodyB(), def.bodyB);
-    EXPECT_EQ(joint.GetLocalAnchorB(), def.anchor);
+    EXPECT_EQ(GetBodyA(joint), def.bodyA);
+    EXPECT_EQ(GetBodyB(joint), def.bodyB);
+    EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
     //EXPECT_FALSE(IsValid(joint.GetAnchorB()));
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
-    EXPECT_EQ(joint.GetUserData(), nullptr);
-    EXPECT_FALSE(joint.GetCollideConnected());
-    //EXPECT_FALSE(IsValid(joint.GetLocalAnchorB()));
-    EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
-    EXPECT_EQ(joint.GetFrequency(), def.frequency);
-    EXPECT_EQ(joint.GetDampingRatio(), def.dampingRatio);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
+    EXPECT_EQ(GetUserData(joint), nullptr);
+    EXPECT_FALSE(GetCollideConnected(joint));
+    //EXPECT_FALSE(IsValid(GetLocalAnchorB(joint)));
+    EXPECT_EQ(GetMaxForce(joint), def.maxForce);
+    EXPECT_EQ(GetFrequency(joint), def.frequency);
+    EXPECT_EQ(GetDampingRatio(joint), def.dampingRatio);
 }
 
 TEST(TargetJoint, GetLocalAnchorB)
@@ -115,13 +114,13 @@ TEST(TargetJoint, GetLocalAnchorB)
     def.bodyA = bA;
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
-    def.anchor = Length2(-1.4_m, -2_m);
+    def.localAnchorB = Length2(-1.4_m, -2_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
     
-    const auto joint = TargetJoint{def};
-    EXPECT_EQ(joint.GetLocalAnchorB(), def.anchor);
+    const auto joint = Joint{def};
+    EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
 }
 
 TEST(TargetJoint, GetAnchorB)
@@ -136,13 +135,13 @@ TEST(TargetJoint, GetAnchorB)
     def.bodyA = bA;
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
-    def.anchor = Length2(-1.4_m, -2_m);
+    def.localAnchorB = Length2(-1.4_m, -2_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
     
-    const auto joint = TargetJoint{def};
-    ASSERT_EQ(joint.GetLocalAnchorB(), def.anchor);
+    const auto joint = Joint{def};
+    ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
 }
 
 TEST(TargetJoint, ShiftOrigin)
@@ -156,11 +155,11 @@ TEST(TargetJoint, ShiftOrigin)
     def.bodyA = bA;
     def.bodyB = bB;
     def.target = Length2(-1.4_m, -2_m);
-    auto joint = TargetJoint{def};
-    ASSERT_EQ(joint.GetTarget(), def.target);
+    auto joint = Joint{def};
+    ASSERT_EQ(GetTarget(joint), def.target);
     const auto newOrigin = Length2{1_m, 1_m};
-    EXPECT_TRUE(joint.ShiftOrigin(newOrigin));
-    EXPECT_EQ(joint.GetTarget(), def.target - newOrigin);
+    EXPECT_TRUE(ShiftOrigin(joint, newOrigin));
+    EXPECT_EQ(GetTarget(joint), def.target - newOrigin);
 }
 
 TEST(TargetJointConf, GetTargetJointDefFreeFunction)
@@ -177,19 +176,19 @@ TEST(TargetJointConf, GetTargetJointDefFreeFunction)
     def.bodyB = bB;
     def.userData = reinterpret_cast<void*>(71);
     def.target = Length2(-1.4_m, -2_m);
-    def.anchor = Length2(+2.0_m, -1_m);
+    def.localAnchorB = Length2(+2.0_m, -1_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
 
-    const auto joint = TargetJoint{def};
+    const auto joint = Joint{def};
     const auto got = GetTargetJointConf(joint);
 
     EXPECT_EQ(def.bodyA, got.bodyA);
     EXPECT_EQ(def.bodyB, got.bodyB);
     EXPECT_EQ(def.userData, got.userData);
     EXPECT_EQ(def.target, got.target);
-    EXPECT_EQ(def.anchor, got.anchor);
+    EXPECT_EQ(def.localAnchorB, got.localAnchorB);
     EXPECT_EQ(def.maxForce, got.maxForce);
     EXPECT_EQ(def.frequency, got.frequency);
     EXPECT_EQ(def.dampingRatio, got.dampingRatio);

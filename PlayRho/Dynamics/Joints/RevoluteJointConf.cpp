@@ -160,33 +160,33 @@ void InitVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodies
         const auto jointAngle = aB - aA - GetReferenceAngle(object);
         if (abs(object.upperAngle - object.lowerAngle) < (conf.angularSlop * 2))
         {
-            object.limitState = RevoluteJointConf::e_equalLimits;
+            object.limitState = LimitState::e_equalLimits;
         }
         else if (jointAngle <= object.lowerAngle)
         {
-            if (object.limitState != RevoluteJointConf::e_atLowerLimit)
+            if (object.limitState != LimitState::e_atLowerLimit)
             {
-                object.limitState = RevoluteJointConf::e_atLowerLimit;
+                object.limitState = LimitState::e_atLowerLimit;
                 GetZ(object.impulse) = 0;
             }
         }
         else if (jointAngle >= object.upperAngle)
         {
-            if (object.limitState != RevoluteJointConf::e_atUpperLimit)
+            if (object.limitState != LimitState::e_atUpperLimit)
             {
-                object.limitState = RevoluteJointConf::e_atUpperLimit;
+                object.limitState = LimitState::e_atUpperLimit;
                 GetZ(object.impulse) = 0;
             }
         }
         else // jointAngle > object.lowerAngle && jointAngle < object.upperAngle
         {
-            object.limitState = RevoluteJointConf::e_inactiveLimit;
+            object.limitState = LimitState::e_inactiveLimit;
             GetZ(object.impulse) = 0;
         }
     }
     else
     {
-        object.limitState = RevoluteJointConf::e_inactiveLimit;
+        object.limitState = LimitState::e_inactiveLimit;
     }
 
     if (step.doWarmStart)
@@ -236,7 +236,7 @@ bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodie
     const auto fixedRotation = (invRotInertiaA + invRotInertiaB == InvRotInertia{0});
 
     // Solve motor constraint.
-    if (object.enableMotor && (object.limitState != RevoluteJointConf::e_equalLimits)
+    if (object.enableMotor && (object.limitState != LimitState::e_equalLimits)
         && !fixedRotation)
     {
         const auto impulse = AngularMomentum{-object.angularMass * (velB.angular - velA.angular - object.motorSpeed)};
@@ -255,7 +255,7 @@ bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodie
     const auto vDelta = vb - va;
 
     // Solve limit constraint.
-    if (object.enableLimit && (object.limitState != RevoluteJointConf::e_inactiveLimit)
+    if (object.enableLimit && (object.limitState != LimitState::e_inactiveLimit)
         && !fixedRotation)
     {
         const auto Cdot = Vec3{
@@ -281,7 +281,7 @@ bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodie
 
         switch (object.limitState)
         {
-            case RevoluteJointConf::e_atLowerLimit:
+            case LimitState::e_atLowerLimit:
             {
                 const auto newImpulse = GetZ(object.impulse) + GetZ(impulse);
                 if (newImpulse < 0)
@@ -294,7 +294,7 @@ bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodie
                 }
                 break;
             }
-            case RevoluteJointConf::e_atUpperLimit:
+            case LimitState::e_atUpperLimit:
             {
                 const auto newImpulse = GetZ(object.impulse) + GetZ(impulse);
                 if (newImpulse > 0)
@@ -364,7 +364,7 @@ bool SolvePosition(const RevoluteJointConf& object, std::vector<BodyConstraint>&
 
     // Solve angular limit constraint.
     auto angularError = 0_rad;
-    if (object.enableLimit && (object.limitState != RevoluteJointConf::e_inactiveLimit)
+    if (object.enableLimit && (object.limitState != LimitState::e_inactiveLimit)
         && !fixedRotation)
     {
         const auto angle = posB.angular - posA.angular - GetReferenceAngle(object);
@@ -374,7 +374,7 @@ bool SolvePosition(const RevoluteJointConf& object, std::vector<BodyConstraint>&
 
         switch (object.limitState)
         {
-            case RevoluteJointConf::e_atLowerLimit:
+            case LimitState::e_atLowerLimit:
             {
                 auto C = angle - object.lowerAngle;
                 angularError = -C;
@@ -384,7 +384,7 @@ bool SolvePosition(const RevoluteJointConf& object, std::vector<BodyConstraint>&
                 limitImpulse = -object.angularMass * C;
                 break;
             }
-            case RevoluteJointConf::e_atUpperLimit:
+            case LimitState::e_atUpperLimit:
             {
                 auto C = angle - object.upperAngle;
                 angularError = C;

@@ -180,6 +180,15 @@ bool SolvePosition(const WheelJointConf& object, std::vector<BodyConstraint>& bo
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::WheelJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::WheelJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_WHEELJOINTCONF_HPP

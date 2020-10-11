@@ -141,6 +141,15 @@ bool SolvePosition(const PulleyJointConf& object, std::vector<BodyConstraint>& b
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::PulleyJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::PulleyJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTCONF_HPP

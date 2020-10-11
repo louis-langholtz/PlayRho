@@ -72,7 +72,7 @@ void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
     object.length = std::get<Length>(uvresult);
 
     const auto C = object.length - object.maxLength;
-    object.state = (C > 0_m)? RopeJointConf::e_atUpperLimit: RopeJointConf::e_inactiveLimit;
+    object.limitState = (C > 0_m)? LimitState::e_atUpperLimit: LimitState::e_inactiveLimit;
 
     if (object.length > conf.linearSlop)
     {

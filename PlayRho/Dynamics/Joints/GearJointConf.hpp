@@ -140,6 +140,15 @@ bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bod
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::GearJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::GearJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_GEARJOINTCONF_HPP

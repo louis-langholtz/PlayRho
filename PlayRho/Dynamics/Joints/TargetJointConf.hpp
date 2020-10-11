@@ -187,6 +187,15 @@ bool SolvePosition(const TargetJointConf& object, std::vector<BodyConstraint>& b
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::TargetJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::TargetJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_MOUSEJOINTCONF_HPP

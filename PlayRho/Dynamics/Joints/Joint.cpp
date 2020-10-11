@@ -28,6 +28,7 @@
 #include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
@@ -153,6 +154,52 @@ RotInertia GetAngularMass(const Joint& object)
     throw std::invalid_argument("GetAngularMass not supported by joint type");
 }
 
+Force GetMaxForce(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<FrictionJointConf>()) {
+        return TypeCast<FrictionJointConf>(object).maxForce;
+    }
+    if (type == GetTypeID<MotorJointConf>()) {
+        return TypeCast<MotorJointConf>(object).maxForce;
+    }
+    if (type == GetTypeID<TargetJointConf>()) {
+        return TypeCast<TargetJointConf>(object).maxForce;
+    }
+    throw std::invalid_argument("GetMaxForce not supported by joint type");
+}
+
+Torque GetMaxTorque(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<FrictionJointConf>()) {
+        return GetMaxTorque(TypeCast<FrictionJointConf>(object));
+    }
+    if (type == GetTypeID<MotorJointConf>()) {
+        return GetMaxTorque(TypeCast<MotorJointConf>(object));
+    }
+    throw std::invalid_argument("GetMaxTorque not supported by joint type");
+}
+
+Force GetMaxMotorForce(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetMaxMotorForce(TypeCast<PrismaticJointConf>(object));
+    }
+    throw std::invalid_argument("GetMaxMotorForce not supported by joint type");
+}
+
+void SetMaxMotorForce(Joint& object, Force value)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        object = TypeCast<PrismaticJointConf>(object).UseMaxMotorForce(value);
+        return;
+    }
+    throw std::invalid_argument("SetMaxMotorForce not supported by joint type!");
+}
+
 Torque GetMaxMotorTorque(const Joint& object)
 {
     const auto type = GetType(object);
@@ -187,6 +234,24 @@ Real GetRatio(const Joint& object)
     }
     if (type == GetTypeID<PulleyJointConf>()) {
         return GetRatio(TypeCast<PulleyJointConf>(object));
+    }
+    throw std::invalid_argument("GetRatio not supported by joint type!");
+}
+
+Real GetDampingRatio(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<DistanceJointConf>()) {
+        return GetDampingRatio(TypeCast<DistanceJointConf>(object));
+    }
+    if (type == GetTypeID<TargetJointConf>()) {
+        return GetDampingRatio(TypeCast<TargetJointConf>(object));
+    }
+    if (type == GetTypeID<WeldJointConf>()) {
+        return GetDampingRatio(TypeCast<WeldJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetDampingRatio(TypeCast<WheelJointConf>(object));
     }
     throw std::invalid_argument("GetRatio not supported by joint type!");
 }
@@ -260,6 +325,34 @@ void SetTarget(Joint& object, Length2 value)
         return;
     }
     throw std::invalid_argument("SetTarget not supported by joint type");
+}
+
+Length GetLinearLowerLimit(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetLinearLowerLimit(TypeCast<PrismaticJointConf>(object));
+    }
+    throw std::invalid_argument("GetLinearLowerLimit not supported by joint type!");
+}
+
+Length GetLinearUpperLimit(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetLinearUpperLimit(TypeCast<PrismaticJointConf>(object));
+    }
+    throw std::invalid_argument("GetLinearUpperLimit not supported by joint type!");
+}
+
+void SetLinearLimits(Joint& object, Length lower, Length upper)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        object = TypeCast<PrismaticJointConf>(object).UseLowerLength(lower).UseUpperLength(upper);
+        return;
+    }
+    throw std::invalid_argument("SetLinearLimits not supported by joint type!");
 }
 
 Angle GetAngularLowerLimit(const Joint& object)
@@ -385,6 +478,21 @@ void SetAngularOffset(Joint& object, Angle value)
         return;
     }
     throw std::invalid_argument("SetAngularOffset not supported by joint type!");
+}
+
+LimitState GetLimitState(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetLimitState(TypeCast<PrismaticJointConf>(object));
+    }
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetLimitState(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<RopeJointConf>()) {
+        return GetLimitState(TypeCast<RopeJointConf>(object));
+    }
+    throw std::invalid_argument("GetLimitState not supported by joint type!");
 }
 
 Length2 GetGroundAnchorA(const Joint& object)

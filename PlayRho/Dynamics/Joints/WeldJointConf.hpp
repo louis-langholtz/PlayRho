@@ -153,6 +153,15 @@ bool SolvePosition(const WeldJointConf& object, std::vector<BodyConstraint>& bod
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::WeldJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::WeldJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_WELDJOINTCONF_HPP

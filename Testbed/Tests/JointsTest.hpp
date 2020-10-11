@@ -160,8 +160,8 @@ private:
         CreateFixture(m_world, mb, m_squareShape);
         auto jd = GetPrismaticJointConf(m_world, fb, mb, center, UnitVec::GetTopRight())
             .UseEnableLimit(true)
-            .UseLowerTranslation(-9_m)
-            .UseUpperTranslation(+0_m);
+            .UseLowerLength(-9_m)
+            .UseUpperLength(+0_m);
         m_prismaticJoint = m_world.CreateJoint(jd);
         SetupContainer(center);
     }

@@ -156,6 +156,15 @@ bool SolvePosition(const DistanceJointConf& object, std::vector<BodyConstraint>&
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::DistanceJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::DistanceJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_DISTANCEJOINTCONF_HPP

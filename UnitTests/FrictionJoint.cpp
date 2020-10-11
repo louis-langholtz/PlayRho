@@ -20,7 +20,8 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Joints/FrictionJoint.hpp>
+#include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
@@ -31,19 +32,19 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(FrictionJoint, ByteSize)
+TEST(FrictionJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(FrictionJoint), std::size_t(92));
+            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(92));
 #else
-            EXPECT_EQ(sizeof(FrictionJoint), std::size_t(96));
+            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(88));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(FrictionJoint), std::size_t(184)); break;
-        case 16: EXPECT_EQ(sizeof(FrictionJoint), std::size_t(336)); break;
+        case  8: EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(184)); break;
+        case 16: EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(336)); break;
         default: FAIL(); break;
     }
 }
@@ -85,20 +86,20 @@ TEST(FrictionJoint, Construction)
     const auto b1 = world.CreateBody();
 
     auto def = GetFrictionJointConf(world, b0, b1, Length2{});
-    const auto joint = FrictionJoint{def};
+    const auto joint = Joint{def};
 
-    EXPECT_EQ(GetType(joint), def.type);
-    EXPECT_EQ(joint.GetBodyA(), def.bodyA);
-    EXPECT_EQ(joint.GetBodyB(), def.bodyB);
-    EXPECT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    EXPECT_EQ(joint.GetUserData(), def.userData);
-    EXPECT_EQ(joint.GetLinearReaction(), Momentum2{});
-    EXPECT_EQ(joint.GetAngularReaction(), AngularMomentum{0});
+    EXPECT_EQ(GetType(joint), GetTypeID<FrictionJointConf>());
+    EXPECT_EQ(GetBodyA(joint), def.bodyA);
+    EXPECT_EQ(GetBodyB(joint), def.bodyB);
+    EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
+    EXPECT_EQ(GetUserData(joint), def.userData);
+    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
     
-    EXPECT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
-    EXPECT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
-    EXPECT_EQ(joint.GetMaxTorque(), def.maxTorque);
+    EXPECT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
+    EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
+    EXPECT_EQ(GetMaxForce(joint), def.maxForce);
+    EXPECT_EQ(GetMaxTorque(joint), def.maxTorque);
 }
 
 TEST(FrictionJoint, GetFrictionJointConf)
@@ -108,18 +109,18 @@ TEST(FrictionJoint, GetFrictionJointConf)
     const auto b1 = world.CreateBody();
 
     auto def = GetFrictionJointConf(world, b0, b1, Length2{});
-    const auto joint = FrictionJoint{def};
+    const auto joint = Joint{def};
 
-    ASSERT_EQ(GetType(joint), def.type);
-    ASSERT_EQ(joint.GetBodyA(), def.bodyA);
-    ASSERT_EQ(joint.GetBodyB(), def.bodyB);
-    ASSERT_EQ(joint.GetCollideConnected(), def.collideConnected);
-    ASSERT_EQ(joint.GetUserData(), def.userData);
+    ASSERT_EQ(GetType(joint), GetTypeID<FrictionJointConf>());
+    ASSERT_EQ(GetBodyA(joint), def.bodyA);
+    ASSERT_EQ(GetBodyB(joint), def.bodyB);
+    ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
+    ASSERT_EQ(GetUserData(joint), def.userData);
 
-    ASSERT_EQ(joint.GetLocalAnchorA(), def.localAnchorA);
-    ASSERT_EQ(joint.GetLocalAnchorB(), def.localAnchorB);
-    ASSERT_EQ(joint.GetMaxForce(), def.maxForce);
-    ASSERT_EQ(joint.GetMaxTorque(), def.maxTorque);
+    ASSERT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
+    ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
+    ASSERT_EQ(GetMaxForce(joint), def.maxForce);
+    ASSERT_EQ(GetMaxTorque(joint), def.maxTorque);
 
     const auto cdef = GetFrictionJointConf(joint);
     EXPECT_EQ(cdef.bodyA, b0);
@@ -146,7 +147,7 @@ TEST(FrictionJoint, WithDynamicCircles)
     auto jd = FrictionJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;
-    ASSERT_NE(world.CreateJoint(jd), InvalidJointID);
+    ASSERT_NE(world.CreateJoint(Joint{jd}), InvalidJointID);
     auto stepConf = StepConf{};
  
     stepConf.doWarmStart = true;
@@ -157,7 +158,7 @@ TEST(FrictionJoint, WithDynamicCircles)
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / 1_m}), 0.0, 0.01);
     EXPECT_EQ(GetAngle(world, b1), 0_deg);
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
-    
+
     stepConf.doWarmStart = false;
     world.Step(stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / 1_m}), -1.0, 0.001);

@@ -24,6 +24,7 @@
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 
+#include <PlayRho/Dynamics/Joints/LimitState.hpp>
 #include <PlayRho/Common/Math.hpp>
 
 namespace playrho {
@@ -48,25 +49,6 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     /// @brief Super type.
     using super = JointBuilder<PrismaticJointConf>;
 
-    /// @brief Limit state.
-    /// @note Only used by joints that implement some notion of a limited range.
-    enum LimitState
-    {
-        /// @brief Inactive limit.
-        e_inactiveLimit,
-
-        /// @brief At-lower limit.
-        e_atLowerLimit,
-
-        /// @brief At-upper limit.
-        e_atUpperLimit,
-
-        /// @brief Equal limit.
-        /// @details Equal limit is used to indicate that a joint's upper and lower limits
-        ///   are approximately the same.
-        e_equalLimits
-    };
-
     constexpr PrismaticJointConf() noexcept = default;
 
     /// @brief Copy constructor.
@@ -87,14 +69,14 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     }
 
     /// @brief Uses the given lower translation value.
-    constexpr auto& UseLowerTranslation(Length v) noexcept
+    constexpr auto& UseLowerLength(Length v) noexcept
     {
         lowerTranslation = v;
         return *this;
     }
 
     /// @brief Uses the given upper translation value.
-    constexpr auto& UseUpperTranslation(Length v) noexcept
+    constexpr auto& UseUpperLength(Length v) noexcept
     {
         upperTranslation = v;
         return *this;
@@ -111,6 +93,13 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     constexpr auto& UseMotorSpeed(AngularVelocity v) noexcept
     {
         motorSpeed = v;
+        return *this;
+    }
+
+    /// @brief Uses the given max motor force value.
+    constexpr auto& UseMaxMotorForce(Force v) noexcept
+    {
+        maxMotorForce = v;
         return *this;
     }
 
@@ -150,7 +139,7 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     /// The desired angular motor speed.
     AngularVelocity motorSpeed = 0_rpm;
 
-    LimitState limitState = e_inactiveLimit; ///< Limit state.
+    LimitState limitState = LimitState::e_inactiveLimit; ///< Limit state.
 
     // Solver temp
     UnitVec axis = UnitVec::GetZero(); ///< Axis.
@@ -163,9 +152,6 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     Mass motorMass = 0_kg; ///< Motor mass.
 };
 
-/// @brief Provides a human readable C-style string uniquely identifying the given limit state.
-const char* ToString(PrismaticJointConf::LimitState val) noexcept;
-
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
 PrismaticJointConf GetPrismaticJointConf(const Joint& joint);
@@ -175,6 +161,9 @@ PrismaticJointConf GetPrismaticJointConf(const World& world,
                                          BodyID bA, BodyID bB,
                                          const Length2 anchor,
                                          const UnitVec axis);
+
+/// @relatedalso World
+LinearVelocity GetLinearVelocity(const World& world, const PrismaticJointConf& joint) noexcept;
 
 /// @relatedalso PrismaticJointConf
 constexpr auto GetLinearLowerLimit(const PrismaticJointConf& conf) noexcept
@@ -223,6 +212,15 @@ bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::PrismaticJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::PrismaticJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_PRISMATICJOINTCONF_HPP

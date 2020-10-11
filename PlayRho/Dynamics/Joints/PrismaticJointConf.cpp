@@ -30,6 +30,73 @@
 namespace playrho {
 namespace d2 {
 
+// Linear constraint (point-to-line)
+// d = p2 - p1 = x2 + r2 - x1 - r1
+// C = dot(perp, d)
+// Cdot = dot(d, cross(w1, perp)) + dot(perp, v2 + cross(w2, r2) - v1 - cross(w1, r1))
+//      = -dot(perp, v1) - dot(cross(d + r1, perp), w1) + dot(perp, v2) + dot(cross(r2, perp), v2)
+// J = [-perp, -cross(d + r1, perp), perp, cross(r2,perp)]
+//
+// Angular constraint
+// C = a2 - a1 + a_initial
+// Cdot = w2 - w1
+// J = [0 0 -1 0 0 1]
+//
+// K = J * invM * JT
+//
+// J = [-a -s1 a s2]
+//     [0  -1  0  1]
+// a = perp
+// s1 = cross(d + r1, a) = cross(p2 - x1, a)
+// s2 = cross(r2, a) = cross(p2 - x2, a)
+
+
+// Motor/Limit linear constraint
+// C = dot(ax1, d)
+// Cdot = = -dot(ax1, v1) - dot(cross(d + r1, ax1), w1) + dot(ax1, v2) + dot(cross(r2, ax1), v2)
+// J = [-ax1 -cross(d+r1,ax1) ax1 cross(r2,ax1)]
+
+// Block Solver
+// We develop a block solver that includes the joint limit. This makes the limit stiff (inelastic) even
+// when the mass has poor distribution (leading to large torques about the joint anchor points).
+//
+// The Jacobian has 3 rows:
+// J = [-uT -s1 uT s2] // linear
+//     [0   -1   0  1] // angular
+//     [-vT -a1 vT a2] // limit
+//
+// u = perp
+// v = axis
+// s1 = cross(d + r1, u), s2 = cross(r2, u)
+// a1 = cross(d + r1, v), a2 = cross(r2, v)
+
+// M * (v2 - v1) = JT * df
+// J * v2 = bias
+//
+// v2 = v1 + invM * JT * df
+// J * (v1 + invM * JT * df) = bias
+// K * df = bias - J * v1 = -Cdot
+// K = J * invM * JT
+// Cdot = J * v1 - bias
+//
+// Now solve for f2.
+// df = f2 - f1
+// K * (f2 - f1) = -Cdot
+// f2 = invK * (-Cdot) + f1
+//
+// Clamp accumulated limit impulse.
+// lower: f2(3) = max(f2(3), 0)
+// upper: f2(3) = min(f2(3), 0)
+//
+// Solve for correct f2(1:2)
+// K(1:2, 1:2) * f2(1:2) = -Cdot(1:2) - K(1:2,3) * f2(3) + K(1:2,1:3) * f1
+//                       = -Cdot(1:2) - K(1:2,3) * f2(3) + K(1:2,1:2) * f1(1:2) + K(1:2,3) * f1(3)
+// K(1:2, 1:2) * f2(1:2) = -Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3)) + K(1:2,1:2) * f1(1:2)
+// f2(1:2) = invK(1:2,1:2) * (-Cdot(1:2) - K(1:2,3) * (f2(3) - f1(3))) + f1(1:2)
+//
+// Now compute impulse to be applied:
+// df = f2 - f1
+
 PrismaticJointConf::PrismaticJointConf(BodyID bA, BodyID bB,
                                        Length2 laA, Length2 laB,
                                        UnitVec axisA, Angle angle) noexcept:
@@ -57,19 +124,6 @@ PrismaticJointConf GetPrismaticJointConf(const World& world,
         GetLocalVector(world, bA, axis),
         GetAngle(world, bB) - GetAngle(world, bA)
     };
-}
-
-const char* ToString(PrismaticJointConf::LimitState val) noexcept
-{
-    switch (val)
-    {
-        case PrismaticJointConf::e_atLowerLimit: return "at lower";
-        case PrismaticJointConf::e_atUpperLimit: return "at upper";
-        case PrismaticJointConf::e_equalLimits: return "equal";
-        case PrismaticJointConf::e_inactiveLimit: break;
-    }
-    assert(val == PrismaticJointConf::e_inactiveLimit);
-    return "inactive";
 }
 
 Momentum2 GetLinearReaction(const PrismaticJointConf& conf)
@@ -150,33 +204,33 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
         const auto jointTranslation = Length{Dot(object.axis, d)};
         if (abs(object.upperTranslation - object.lowerTranslation) < (conf.linearSlop * Real{2}))
         {
-            object.limitState = PrismaticJointConf::e_equalLimits;
+            object.limitState = LimitState::e_equalLimits;
         }
         else if (jointTranslation <= object.lowerTranslation)
         {
-            if (object.limitState != PrismaticJointConf::e_atLowerLimit)
+            if (object.limitState != LimitState::e_atLowerLimit)
             {
-                object.limitState = PrismaticJointConf::e_atLowerLimit;
+                object.limitState = LimitState::e_atLowerLimit;
                 GetZ(object.impulse) = 0;
             }
         }
         else if (jointTranslation >= object.upperTranslation)
         {
-            if (object.limitState != PrismaticJointConf::e_atUpperLimit)
+            if (object.limitState != LimitState::e_atUpperLimit)
             {
-                object.limitState = PrismaticJointConf::e_atUpperLimit;
+                object.limitState = LimitState::e_atUpperLimit;
                 GetZ(object.impulse) = 0;
             }
         }
         else
         {
-            object.limitState = PrismaticJointConf::e_inactiveLimit;
+            object.limitState = LimitState::e_inactiveLimit;
             GetZ(object.impulse) = 0;
         }
     }
     else
     {
-        object.limitState = PrismaticJointConf::e_inactiveLimit;
+        object.limitState = LimitState::e_inactiveLimit;
         GetZ(object.impulse) = 0;
     }
 
@@ -235,7 +289,7 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
     const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     // Solve linear motor constraint.
-    if (object.enableMotor && object.limitState != PrismaticJointConf::e_equalLimits)
+    if (object.enableMotor && object.limitState != LimitState::e_equalLimits)
     {
         const auto vDot = LinearVelocity{Dot(object.axis, velB.linear - velA.linear)};
         const auto Cdot = vDot + (object.a2 * velB.angular - object.a1 * velA.angular) / Radian;
@@ -262,7 +316,7 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
         StripUnit(velB.angular - velA.angular)
     };
 
-    if (object.enableLimit && (object.limitState != PrismaticJointConf::e_inactiveLimit))
+    if (object.enableLimit && (object.limitState != LimitState::e_inactiveLimit))
     {
         // Solve prismatic and limit constraint in block form.
         const auto deltaDot = LinearVelocity{Dot(object.axis, velDelta)};
@@ -273,11 +327,11 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
         const auto f1 = object.impulse;
         object.impulse += Solve33(object.K, -Cdot);
 
-        if (object.limitState == PrismaticJointConf::e_atLowerLimit)
+        if (object.limitState == LimitState::e_atLowerLimit)
         {
             GetZ(object.impulse) = std::max(GetZ(object.impulse), Real{0});
         }
-        else if (object.limitState == PrismaticJointConf::e_atUpperLimit)
+        else if (object.limitState == LimitState::e_atUpperLimit)
         {
             GetZ(object.impulse) = std::min(GetZ(object.impulse), Real{0});
         }
@@ -333,6 +387,16 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
     return true;
 }
 
+// A velocity based solver computes reaction forces(impulses) using the velocity constraint solver.
+// Under this context, the position solver is not there to resolve forces. It is only there to cope
+// with integration error.
+//
+// Therefore, the pseudo impulses in the position solver do not have any physical meaning. Thus it
+// is okay if they suck.
+//
+// We could take the active state from the velocity solver. However, the joint might push past the
+// limit when the velocity solver indicates the limit is inactive.
+//
 bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf)
 {
@@ -471,6 +535,27 @@ bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>
     bodyConstraintB.SetPosition(posB);
 
     return (linearError <= conf.linearSlop) && (angularError <= conf.angularSlop);
+}
+
+LinearVelocity GetLinearVelocity(const World& world, const PrismaticJointConf& joint) noexcept
+{
+    const auto bA = GetBodyA(joint);
+    const auto bB = GetBodyB(joint);
+    const auto rA = Rotate(GetLocalAnchorA(joint) - GetLocalCenter(world, bA),
+                           GetTransformation(world, bA).q);
+    const auto rB = Rotate(GetLocalAnchorB(joint) - GetLocalCenter(world, bB),
+                           GetTransformation(world, bB).q);
+    const auto p1 = GetWorldCenter(world, bA) + rA;
+    const auto p2 = GetWorldCenter(world, bB) + rB;
+    const auto d = p2 - p1;
+    const auto axis = Rotate(GetLocalXAxisA(joint), GetTransformation(world, bA).q);
+    const auto vA = GetVelocity(world, bA).linear;
+    const auto vB = GetVelocity(world, bB).linear;
+    const auto wA = GetVelocity(world, bA).angular;
+    const auto wB = GetVelocity(world, bB).angular;
+    const auto vel = (vB + (GetRevPerpendicular(rB) * (wB / Radian))) -
+    (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
+    return Dot(d, (GetRevPerpendicular(axis) * (wA / Radian))) + Dot(axis, vel);
 }
 
 } // namespace d2

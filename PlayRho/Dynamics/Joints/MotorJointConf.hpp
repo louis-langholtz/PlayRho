@@ -159,6 +159,15 @@ bool SolvePosition(const MotorJointConf& object, std::vector<BodyConstraint>& bo
                    const ConstraintSolverConf& conf);
 
 } // namespace d2
+
+template <>
+struct TypeInfo<d2::MotorJointConf>
+{
+    static const char* name() noexcept {
+        return "d2::MotorJointConf";
+    }
+};
+
 } // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_JOINTS_MOTORJOINTCONF_HPP

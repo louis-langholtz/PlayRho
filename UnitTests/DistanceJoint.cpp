@@ -17,7 +17,10 @@
  */
 
 #include "UnitTests.hpp"
-#include <PlayRho/Dynamics/Joints/DistanceJoint.hpp>
+
+#include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
@@ -30,23 +33,23 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(DistanceJoint, ByteSize)
+TEST(DistanceJointConf, ByteSize)
 {
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32)
 #if defined(_WIN64)
-            EXPECT_EQ(sizeof(DistanceJoint), std::size_t(112));
+            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(112));
 #else
-            EXPECT_EQ(sizeof(DistanceJoint), std::size_t(88));
+            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(88));
 #endif
 #else
-            EXPECT_EQ(sizeof(DistanceJoint), std::size_t(96));
+            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(88));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(DistanceJoint), std::size_t(176)); break;
-        case 16: EXPECT_EQ(sizeof(DistanceJoint), std::size_t(320)); break;
+        case  8: EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(176)); break;
+        case 16: EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(320)); break;
         default: FAIL(); break;
     }
 }
@@ -94,9 +97,9 @@ TEST(DistanceJoint, Construction)
     const auto body0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     auto def = DistanceJointConf{body0, body1};
-    const auto joint = world.CreateJoint(def);
+    const auto joint = world.CreateJoint(Joint{def});
 
-    EXPECT_EQ(GetType(world, joint), def.type);
+    EXPECT_EQ(GetType(world, joint), GetTypeID<DistanceJointConf>());
     EXPECT_EQ(GetBodyA(world, joint), def.bodyA);
     EXPECT_EQ(GetBodyB(world, joint), def.bodyB);
     EXPECT_EQ(GetCollideConnected(world, joint), def.collideConnected);
@@ -152,7 +155,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     jointdef.length = 5_m;
     jointdef.frequency = 0_Hz;
     jointdef.dampingRatio = 0;
-    EXPECT_NE(world.CreateJoint(jointdef), InvalidJointID);
+    EXPECT_NE(world.CreateJoint(Joint{jointdef}), InvalidJointID);
     
     auto oldDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
     
@@ -205,7 +208,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     jointdef.length = 5_m;
     jointdef.frequency = 60_Hz;
     jointdef.dampingRatio = 0;
-    EXPECT_NE(world.CreateJoint(jointdef), InvalidJointID);
+    EXPECT_NE(world.CreateJoint(Joint{jointdef}), InvalidJointID);
     
     auto oldDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
     
