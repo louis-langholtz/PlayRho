@@ -616,8 +616,14 @@ void WorldImpl::Destroy(BodyID id)
         if (m_jointDestructionListener) {
             m_jointDestructionListener(jointID);
         }
-        Remove(jointID); // removes joint from body!
-        m_jointBuffer.Free(UnderlyingValue(id));
+        const auto endIter = cend(m_joints);
+        const auto iter = find(cbegin(m_joints), endIter, jointID);
+        if (iter != endIter)
+        {
+            Remove(jointID); // removes joint from body!
+            m_joints.erase(iter);
+            m_jointBuffer.Free(UnderlyingValue(id));
+        }
         joints = body.GetJoints();
     }
 
@@ -646,11 +652,15 @@ void WorldImpl::SetJoint(JointID id, const Joint& def)
 {
     if (IsLocked())
     {
-        throw WrongState("CreateJoint: world is locked");
+        throw WrongState("SetJoint: world is locked");
     }
-    if (Remove(id)) {
+    const auto endIter = cend(m_joints);
+    const auto iter = find(cbegin(m_joints), endIter, id);
+    if (iter != endIter)
+    {
+        Remove(id);
         m_jointBuffer[UnderlyingValue(id)] = def;
-        Add(id);
+        Add(id, !GetCollideConnected(def));
     }
 }
 
@@ -668,15 +678,14 @@ JointID WorldImpl::CreateJoint(const Joint& def)
 
     const auto id = static_cast<JointID>(
         static_cast<JointID::underlying_type>(m_jointBuffer.Allocate(def)));
-
+    m_joints.push_back(id);
     // Note: creating a joint doesn't wake the bodies.
     Add(id, !GetCollideConnected(def));
     return id;
 }
 
-bool WorldImpl::Add(JointID id, bool flagForFiltering)
+void WorldImpl::Add(JointID id, bool flagForFiltering)
 {
-    m_joints.push_back(id);
     const auto& joint = m_jointBuffer[UnderlyingValue(id)];
     const auto bodyA = GetBodyA(joint);
     const auto bodyB = GetBodyB(joint);
@@ -692,28 +701,21 @@ bool WorldImpl::Add(JointID id, bool flagForFiltering)
     {
         FlagContactsForFiltering(m_contactBuffer, bodyA, m_bodyBuffer[UnderlyingValue(bodyB)].GetContacts(), bodyB);
     }
-    return true;
 }
 
-bool WorldImpl::Remove(JointID id) noexcept
+void WorldImpl::Remove(JointID id) noexcept
 {
-    const auto endIter = cend(m_joints);
-    const auto iter = find(cbegin(m_joints), endIter, id);
-    if (iter == endIter)
-    {
-        return false;
-    }
-
     // Disconnect from island graph.
     const auto& joint = m_jointBuffer[UnderlyingValue(id)];
     const auto bodyIdA = GetBodyA(joint);
     const auto bodyIdB = GetBodyB(joint);
-
     const auto collideConnected = GetCollideConnected(joint);
+
     // If the joint prevented collisions, then flag any contacts for filtering.
     if ((!collideConnected) && (bodyIdA != InvalidBodyID) && (bodyIdB != InvalidBodyID))
     {
-        FlagContactsForFiltering(m_contactBuffer, bodyIdA, m_bodyBuffer[UnderlyingValue(bodyIdB)].GetContacts(), bodyIdB);
+        FlagContactsForFiltering(m_contactBuffer, bodyIdA,
+                                 m_bodyBuffer[UnderlyingValue(bodyIdB)].GetContacts(), bodyIdB);
     }
 
     // Wake up connected bodies.
@@ -729,9 +731,6 @@ bool WorldImpl::Remove(JointID id) noexcept
         bodyB.SetAwake();
         bodyB.Erase(id);
     }
-
-    m_joints.erase(iter);
-    return true;
 }
 
 void WorldImpl::Destroy(JointID id)
@@ -739,7 +738,11 @@ void WorldImpl::Destroy(JointID id)
     if (IsLocked()) {
         throw WrongState("Destroy: world is locked");
     }
-    if (Remove(id)) {
+    const auto endIter = cend(m_joints);
+    const auto iter = find(cbegin(m_joints), endIter, id);
+    if (iter != endIter) {
+        Remove(id);
+        m_joints.erase(iter);
         m_jointBuffer.Free(UnderlyingValue(id));
     }
 }

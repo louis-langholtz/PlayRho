@@ -643,15 +643,14 @@ private:
     ProcessContactsOutput ProcessContactsForTOI(BodyID id, Island& island, Real toi,
                                                 const StepConf& conf);
 
-    /// @brief Adds the given joint to this world.
-    /// @note This also adds the joint to the bodies of the joint.
-    bool Add(JointID j, bool flagForFiltering = false);
-
     /// @brief Removes the given body from this world.
     void Remove(BodyID id) noexcept;
 
-    /// @brief Removes the given joint from this world.
-    bool Remove(JointID id) noexcept;
+    /// @brief Updates associated bodies and contacts for specified joint's addition.
+    void Add(JointID j, bool flagForFiltering = false);
+
+    /// @brief Updates associated bodies and contacts for specified joint's removal.
+    void Remove(JointID id) noexcept;
 
     /// @brief Sets the step complete state.
     /// @post <code>IsStepComplete()</code> will return the value set.
