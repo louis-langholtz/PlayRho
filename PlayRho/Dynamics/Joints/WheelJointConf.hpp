@@ -78,7 +78,7 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     }
 
     /// @brief Uses the given frequency value.
-    constexpr auto& UseFrequency(Frequency v) noexcept
+    constexpr auto& UseFrequency(NonNegative<Frequency> v) noexcept
     {
         frequency = v;
         return *this;
@@ -112,7 +112,7 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     AngularVelocity motorSpeed = 0_rpm;
 
     /// Suspension frequency, zero indicates no suspension
-    Frequency frequency = 2_Hz;
+    NonNegative<Frequency> frequency = 2_Hz;
 
     /// Suspension damping ratio, one indicates critical damping
     Real dampingRatio = 0.7f;
@@ -178,6 +178,24 @@ bool SolveVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
 /// @relatedalso WheelJointConf
 bool SolvePosition(const WheelJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
+
+/// @relatedalso WheelJointConf
+constexpr void SetMaxMotorTorque(WheelJointConf& object, Torque value) noexcept
+{
+    object.UseMaxMotorTorque(value);
+}
+
+/// @relatedalso WheelJointConf
+constexpr void SetFrequency(WheelJointConf& object, NonNegative<Frequency> value) noexcept
+{
+    object.UseFrequency(value);
+}
+
+/// @relatedalso WheelJointConf
+constexpr void SetDampingRatio(WheelJointConf& object, Real value) noexcept
+{
+    object.UseDampingRatio(value);
+}
 
 } // namespace d2
 

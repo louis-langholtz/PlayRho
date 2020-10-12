@@ -33,13 +33,25 @@ public:
     {
         SetupTumblers(1);
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Speed up rotation.", [&](KeyActionMods) {
-            ForAll<RevoluteJoint>(m_world, [=](RevoluteJoint& j) { IncMotorSpeed(j, +MotorInc); });
+            for (const auto& id: GetJoints(m_world)) {
+                if (GetType(m_world, id) == GetTypeID<RevoluteJointConf>()) {
+                    SetMotorSpeed(m_world, id, GetMotorSpeed(m_world, id) + MotorInc);
+                }
+            }
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Slow down rotation.", [&](KeyActionMods) {
-            ForAll<RevoluteJoint>(m_world, [=](RevoluteJoint& j) { IncMotorSpeed(j, -MotorInc); });
+            for (const auto& id: GetJoints(m_world)) {
+                if (GetType(m_world, id) == GetTypeID<RevoluteJointConf>()) {
+                    SetMotorSpeed(m_world, id, GetMotorSpeed(m_world, id) - MotorInc);
+                }
+            }
         });
         RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0, "Stop rotation.", [&](KeyActionMods) {
-            ForAll<RevoluteJoint>(m_world, [=](RevoluteJoint& j) { j.SetMotorSpeed(0_rpm); });
+            for (const auto& id: GetJoints(m_world)) {
+                if (GetType(m_world, id) == GetTypeID<RevoluteJointConf>()) {
+                    SetMotorSpeed(m_world, id, 0_rpm);
+                }
+            }
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "for remaining emitted shapes to be disks.",
                        [&](KeyActionMods) { m_shape = m_disk; });
@@ -67,7 +79,7 @@ public:
             m_count = 0;
         });
     }
-    
+
     void SetupTumblers(unsigned int num)
     {
         m_world.Clear();
@@ -100,7 +112,7 @@ public:
         CreateFixture(m_world, b, Shape(shape));
         return b;
     }
-    
+
     JointID CreateRevoluteJoint(BodyID turn)
     {
         RevoluteJointConf jd;
@@ -112,7 +124,7 @@ public:
         jd.enableMotor = true;
         return m_world.CreateJoint(jd);
     }
-    
+
     void CreateTumblee(Length2 at)
     {
         const auto b = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
@@ -125,9 +137,11 @@ public:
     {
         if ((!settings.pause || settings.singleStep) && (m_count < Count))
         {
-            ForAll<RevoluteJoint>(m_world, [&](RevoluteJoint& j) {
-                CreateTumblee(GetLocation(m_world, j.GetBodyB()));
-            });
+            for (const auto& id: GetJoints(m_world)) {
+                if (GetType(m_world, id) == GetTypeID<RevoluteJointConf>()) {
+                    CreateTumblee(GetLocation(m_world, GetBodyB(m_world, id)));
+                }
+            }
             ++m_count;
             m_status = std::string("Count = ") + std::to_string(m_count);
         }

@@ -155,6 +155,30 @@ bool SolveVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodie
 bool SolvePosition(const DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @relatedalso DistanceJointConf
+constexpr void SetFrequency(DistanceJointConf& object, NonNegative<Frequency> value) noexcept
+{
+    object.UseFrequency(value);
+}
+
+/// @relatedalso DistanceJointConf
+constexpr void SetDampingRatio(DistanceJointConf& object, Real value) noexcept
+{
+    object.UseDampingRatio(value);
+}
+
+/// @relatedalso DistanceJointConf
+constexpr auto GetLength(const DistanceJointConf& object) noexcept
+{
+    return object.length;
+}
+
+/// @relatedalso DistanceJointConf
+constexpr auto SetLength(DistanceJointConf& object, Length value) noexcept
+{
+    object.UseLength(value);
+}
+
 } // namespace d2
 
 template <>

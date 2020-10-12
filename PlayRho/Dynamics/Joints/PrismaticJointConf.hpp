@@ -178,6 +178,12 @@ constexpr auto GetLinearUpperLimit(const PrismaticJointConf& conf) noexcept
 }
 
 /// @relatedalso PrismaticJointConf
+constexpr void SetLinearLimits(PrismaticJointConf& conf, Length lower, Length upper) noexcept
+{
+    conf.UseLowerLength(lower).UseUpperLength(upper);
+}
+
+/// @relatedalso PrismaticJointConf
 constexpr auto ShiftOrigin(PrismaticJointConf&, Length2) noexcept
 {
     return false;
@@ -210,6 +216,12 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
 /// @relatedalso PrismaticJointConf
 bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
+
+/// @relatedalso PrismaticJointConf
+constexpr void SetMaxMotorForce(PrismaticJointConf& object, Force value)
+{
+    object.UseMaxMotorForce(value);
+}
 
 } // namespace d2
 

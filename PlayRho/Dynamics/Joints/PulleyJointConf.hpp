@@ -140,6 +140,18 @@ bool SolveVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @relatedalso PulleyJointConf
+constexpr auto GetLengthA(const PulleyJointConf& object) noexcept
+{
+    return object.lengthA;
+}
+
+/// @relatedalso PulleyJointConf
+constexpr auto GetLengthB(const PulleyJointConf& object) noexcept
+{
+    return object.lengthB;
+}
+
 } // namespace d2
 
 template <>

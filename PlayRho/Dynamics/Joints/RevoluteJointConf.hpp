@@ -207,6 +207,16 @@ bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodie
 bool SolvePosition(const RevoluteJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+constexpr void SetAngularLimits(RevoluteJointConf& object, Angle lower, Angle upper) noexcept
+{
+    object.UseLowerAngle(lower).UseUpperAngle(upper);
+}
+
+constexpr void SetMaxMotorTorque(RevoluteJointConf& object, Torque value)
+{
+    object.UseMaxMotorTorque(value);
+}
+
 } // namespace d2
 
 template <>

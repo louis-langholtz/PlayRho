@@ -160,6 +160,13 @@ constexpr auto IsLimitEnabled(const T& conf) noexcept -> decltype(std::declval<T
 }
 
 template <typename T>
+constexpr auto EnableLimit(T& conf, bool v) noexcept ->
+    decltype(std::declval<T>().UseEnableLimit(bool{}))
+{
+    return conf.UseEnableLimit(v);
+}
+
+template <typename T>
 constexpr auto GetLength(const T& conf) noexcept -> decltype(std::declval<T>().length)
 {
     return conf.length;
@@ -262,9 +269,23 @@ constexpr auto IsMotorEnabled(const T& conf) noexcept -> decltype(std::declval<T
 }
 
 template <typename T>
+constexpr auto EnableMotor(T& conf, bool v) noexcept ->
+decltype(std::declval<T>().UseEnableMotor(bool{}))
+{
+    return conf.UseEnableMotor(v);
+}
+
+template <typename T>
 constexpr auto GetMotorSpeed(const T& conf) noexcept -> decltype(std::declval<T>().motorSpeed)
 {
     return conf.motorSpeed;
+}
+
+template <typename T>
+constexpr auto SetMotorSpeed(T& conf, AngularVelocity v) noexcept ->
+decltype(std::declval<T>().UseMotorSpeed(AngularVelocity{}))
+{
+    return conf.UseMotorSpeed(v);
 }
 
 template <typename T>

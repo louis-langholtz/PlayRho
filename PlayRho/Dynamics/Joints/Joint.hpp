@@ -125,7 +125,7 @@ public:
 
     /// @brief Initializing constructor.
     template <typename T>
-    explicit Joint(T arg): m_self{std::make_unique<Model<T>>(std::move(arg))}
+    Joint(T arg): m_self{std::make_unique<Model<T>>(std::move(arg))}
     {
         // Intentionally empty.
     }

@@ -139,6 +139,36 @@ bool SolveVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @relatedalso GearJointConf
+constexpr auto GetRatio(const GearJointConf& object) noexcept
+{
+    return object.ratio;
+}
+
+/// @relatedalso GearJointConf
+constexpr auto SetRatio(GearJointConf& object, Real value) noexcept
+{
+    object.UseRatio(value);
+}
+
+/// @relatedalso GearJointConf
+constexpr auto GetConstant(const GearJointConf& object) noexcept
+{
+    return object.constant;
+}
+
+/// @relatedalso GearJointConf
+constexpr auto GetType1(const GearJointConf& object) noexcept
+{
+    return object.type1;
+}
+
+/// @relatedalso GearJointConf
+constexpr auto GetType2(const GearJointConf& object) noexcept
+{
+    return object.type2;
+}
+
 } // namespace d2
 
 template <>

@@ -456,19 +456,6 @@ inline bool IsWithin(const Container& container, const T& element) noexcept
     return it != last;
 }
 
-template <class T>
-inline void ForAll(World& world, const std::function<void(T& e)>& action);
-
-template <>
-inline void ForAll(World& world, const std::function<void(RevoluteJoint& e)>& action)
-{
-    auto visitor = FunctionalJointVisitor{}.Use(action);
-    const auto range = world.GetJoints();
-    std::for_each(begin(range), end(range), [&](const auto& j) {
-        Accept(world, j, visitor);
-    });
-}
-
 void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, Transformation xf);
 void Draw(Drawer& drawer, const EdgeShapeConf& shape, Color color, bool skins, Transformation xf);
 void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins, Transformation xf);

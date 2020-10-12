@@ -61,7 +61,7 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
                   Length2 laA = Length2{}, Length2 laB = Length2{}, Angle ra = 0_deg) noexcept;
 
     /// @brief Uses the given frequency value.
-    constexpr auto& UseFrequency(Frequency v) noexcept
+    constexpr auto& UseFrequency(NonNegative<Frequency> v) noexcept
     {
         frequency = v;
         return *this;
@@ -86,7 +86,7 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     /// @brief Mass-spring-damper frequency.
     /// @note Rotation only.
     /// @note Disable softness with a value of 0.
-    Frequency frequency = 0_Hz;
+    NonNegative<Frequency> frequency = 0_Hz;
 
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.
@@ -151,6 +151,18 @@ bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
 /// @relatedalso WeldJointConf
 bool SolvePosition(const WeldJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
+
+/// @relatedalso WeldJointConf
+constexpr void SetFrequency(WeldJointConf& object, NonNegative<Frequency> value) noexcept
+{
+    object.UseFrequency(value);
+}
+
+/// @relatedalso WeldJointConf
+constexpr void SetDampingRatio(WeldJointConf& object, Real value) noexcept
+{
+    object.UseDampingRatio(value);
+}
 
 } // namespace d2
 

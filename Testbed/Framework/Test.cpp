@@ -253,45 +253,38 @@ static bool Draw(Drawer& drawer, const World& world, BodyID body,
     return found;
 }
 
-static void Draw(Drawer& drawer, const World& world, JointID joint)
+static void Draw(Drawer& drawer, const World& world, JointID id)
 {
     const Color color{0.5f, 0.8f, 0.8f};
-
-    switch (GetType(world, joint))
-    {
-        case JointType::Distance:
-        {
-            const auto p1 = GetAnchorA(world, joint);
-            const auto p2 = GetAnchorB(world, joint);
-            drawer.DrawSegment(p1, p2, color);
-            break;
-        }
-        case JointType::Pulley:
-        {
-            const auto p1 = GetAnchorA(world, joint);
-            const auto p2 = GetAnchorB(world, joint);
-            const auto s1 = GetGroundAnchorA(world, joint);
-            const auto s2 = GetGroundAnchorB(world, joint);
-            drawer.DrawSegment(s1, p1, color);
-            drawer.DrawSegment(s2, p2, color);
-            drawer.DrawSegment(s1, s2, color);
-            break;
-        }
-        case JointType::Target:
-            // don't draw this
-            break;
-        default:
-        {
-            const auto p1 = GetAnchorA(world, joint);
-            const auto p2 = GetAnchorB(world, joint);
-            const auto bodyA = GetBodyA(world, joint);
-            const auto bodyB = GetBodyB(world, joint);
-            const auto x1 = world.GetTransformation(bodyA).p;
-            const auto x2 = world.GetTransformation(bodyB).p;
-            drawer.DrawSegment(x1, p1, color);
-            drawer.DrawSegment(p1, p2, color);
-            drawer.DrawSegment(x2, p2, color);
-        }
+    const auto& joint = GetJoint(world, id);
+    const auto type = GetType(joint);
+    if (type == GetTypeID<DistanceJointConf>()) {
+        const auto p1 = GetAnchorA(world, id);
+        const auto p2 = GetAnchorB(world, id);
+        drawer.DrawSegment(p1, p2, color);
+    }
+    else if (type == GetTypeID<PulleyJointConf>()) {
+        const auto p1 = GetAnchorA(world, id);
+        const auto p2 = GetAnchorB(world, id);
+        const auto s1 = GetGroundAnchorA(world, id);
+        const auto s2 = GetGroundAnchorB(world, id);
+        drawer.DrawSegment(s1, p1, color);
+        drawer.DrawSegment(s2, p2, color);
+        drawer.DrawSegment(s1, s2, color);
+    }
+    else if (type == GetTypeID<TargetJointConf>()) {
+        // don't draw this
+    }
+    else {
+        const auto p1 = GetAnchorA(world, id);
+        const auto p2 = GetAnchorB(world, id);
+        const auto bodyA = GetBodyA(joint);
+        const auto bodyB = GetBodyB(joint);
+        const auto x1 = world.GetTransformation(bodyA).p;
+        const auto x2 = world.GetTransformation(bodyB).p;
+        drawer.DrawSegment(x1, p1, color);
+        drawer.DrawSegment(p1, p2, color);
+        drawer.DrawSegment(x2, p2, color);
     }
 }
 

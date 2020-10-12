@@ -136,6 +136,30 @@ bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodie
 bool SolvePosition(const FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @relatedalso FrictionJointConf
+constexpr auto GetMaxForce(const FrictionJointConf& object) noexcept
+{
+    return object.maxForce;
+}
+
+/// @relatedalso FrictionJointConf
+constexpr void SetMaxForce(FrictionJointConf& object, NonNegative<Force> value) noexcept
+{
+    object.UseMaxForce(value);
+}
+
+/// @relatedalso FrictionJointConf
+constexpr auto GetMaxTorque(const FrictionJointConf& object) noexcept
+{
+    return object.maxTorque;
+}
+
+/// @relatedalso FrictionJointConf
+constexpr auto SetMaxTorque(FrictionJointConf& object, NonNegative<Torque> value) noexcept
+{
+    object.UseMaxTorque(value);
+}
+
 } // namespace d2
 
 template <>

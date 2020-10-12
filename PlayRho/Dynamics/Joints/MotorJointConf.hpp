@@ -158,6 +158,78 @@ bool SolveVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const MotorJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @relatedalso MotorJointConf
+constexpr auto GetMaxForce(const MotorJointConf& object) noexcept
+{
+    return object.maxForce;
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto SetMaxForce(MotorJointConf& object, NonNegative<Force> value) noexcept
+{
+    object.UseMaxForce(value);
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto GetMaxTorque(const MotorJointConf& object) noexcept
+{
+    return object.maxTorque;
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto SetMaxTorque(MotorJointConf& object, NonNegative<Torque> value) noexcept
+{
+    object.UseMaxTorque(value);
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto GetLinearError(const MotorJointConf& object) noexcept
+{
+    return object.linearError;
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto GetAngularError(const MotorJointConf& object) noexcept
+{
+    return object.angularError;
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto GetLinearOffset(const MotorJointConf& object) noexcept
+{
+    return object.linearOffset;
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto SetLinearOffset(MotorJointConf& object, Length2 value) noexcept
+{
+    object.UseLinearOffset(value);
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto GetAngularOffset(const MotorJointConf& object) noexcept
+{
+    return object.angularOffset;
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto SetAngularOffset(MotorJointConf& object, Angle value) noexcept
+{
+    object.UseAngularOffset(value);
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto GetCorrectionFactor(const MotorJointConf& object) noexcept
+{
+    return object.correctionFactor;
+}
+
+/// @relatedalso MotorJointConf
+constexpr auto SetCorrectionFactor(MotorJointConf& object, Real value) noexcept
+{
+    object.UseCorrectionFactor(value);
+}
+
 } // namespace d2
 
 template <>

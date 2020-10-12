@@ -186,6 +186,36 @@ bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const TargetJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @relatedalso TargetJointConf
+constexpr void SetTarget(TargetJointConf& object, Length2 value) noexcept
+{
+    object.UseTarget(value);
+}
+
+/// @relatedalso TargetJointConf
+constexpr auto GetMaxForce(const TargetJointConf& object) noexcept
+{
+    return object.maxForce;
+}
+
+/// @relatedalso TargetJointConf
+constexpr auto SetMaxForce(TargetJointConf& object, NonNegative<Force> value) noexcept
+{
+    object.UseMaxForce(value);
+}
+
+/// @relatedalso TargetJointConf
+constexpr void SetFrequency(TargetJointConf& object, NonNegative<Frequency> value) noexcept
+{
+    object.UseFrequency(value);
+}
+
+/// @relatedalso TargetJointConf
+constexpr void SetDampingRatio(TargetJointConf& object, Real value) noexcept
+{
+    object.UseDampingRatio(value);
+}
+
 } // namespace d2
 
 template <>

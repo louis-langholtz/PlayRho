@@ -127,6 +127,18 @@ bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const RopeJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @relatedalso RopeJointConf
+constexpr auto GetMaxLength(const RopeJointConf& object) noexcept
+{
+    return object.maxLength;
+}
+
+/// @relatedalso RopeJointConf
+constexpr auto SetMaxLength(RopeJointConf& object, Length value) noexcept
+{
+    object.UseMaxLength(value);
+}
+
 } // namespace d2
 
 template <>

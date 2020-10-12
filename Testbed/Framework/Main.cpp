@@ -1531,57 +1531,57 @@ static void EntityUI(World& world, BodyID b, const FixtureSet& selectedFixtures)
     }
 }
 
-static void RevoluteJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, RevoluteJointConf& conf)
 {
     ImGui::LabelText("Ref. Angle (°)", "%.1e",
-                     static_cast<double>(Real{GetReferenceAngle(world, j) / Degree}));
-    ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(world, j)));
+                     static_cast<double>(Real{GetReferenceAngle(conf) / Degree}));
+    ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(conf)));
     ImGui::LabelText("Motor Impulse (N·m·s)", "%.1e",
-                     static_cast<double>(Real{GetAngularMotorImpulse(world, j) / NewtonMeterSecond}));
+                     static_cast<double>(Real{GetAngularMotorImpulse(conf) / NewtonMeterSecond}));
     {
-        auto v = IsLimitEnabled(world, j);
+        auto v = IsLimitEnabled(conf);
         if (ImGui::Checkbox("Enable Limit", &v))
         {
-            EnableLimit(world, j, v);
+            EnableLimit(conf, v);
         }
     }
     {
-        auto v = static_cast<float>(Real{GetAngularLowerLimit(world, j) / Degree});
+        auto v = static_cast<float>(Real{GetAngularLowerLimit(conf) / Degree});
         if (ImGui::InputFloat("Lower Limit (°)", &v, 0, 0, 2))
         {
-            SetAngularLimits(world, j, v * Degree, GetAngularUpperLimit(world, j));
+            SetAngularLimits(conf, v * Degree, GetAngularUpperLimit(conf));
         }
     }
     {
-        auto v = static_cast<float>(Real{GetAngularUpperLimit(world, j) / Degree});
+        auto v = static_cast<float>(Real{GetAngularUpperLimit(conf) / Degree});
         if (ImGui::InputFloat("Upper Limit (°)", &v, 0, 0, 2))
         {
-            SetAngularLimits(world, j, GetAngularLowerLimit(world, j), v * Degree);
+            SetAngularLimits(conf, GetAngularLowerLimit(conf), v * Degree);
         }
     }
     {
-        auto v = IsMotorEnabled(world, j);
+        auto v = IsMotorEnabled(conf);
         if (ImGui::Checkbox("Enable Motor", &v))
         {
-            EnableMotor(world, j, v);
+            EnableMotor(conf, v);
         }
     }
     {
-        auto v = static_cast<float>(Real{GetMotorSpeed(world, j) / DegreePerSecond});
+        auto v = static_cast<float>(Real{GetMotorSpeed(conf) / DegreePerSecond});
         if (ImGui::InputFloat("Motor Speed (°/sec)", &v, 0, 0, 2))
         {
-            SetMotorSpeed(world, j, v * DegreePerSecond);
+            SetMotorSpeed(conf, v * DegreePerSecond);
         }
     }
     {
-        auto v = static_cast<float>(Real{GetMaxMotorTorque(world, j) / NewtonMeter});
+        auto v = static_cast<float>(Real{GetMaxMotorTorque(conf) / NewtonMeter});
         if (ImGui::InputFloat("Max Mot. Torq. (N·m)", &v))
         {
-            SetMaxMotorTorque(world, j, v * NewtonMeter);
+            SetMaxMotorTorque(conf, v * NewtonMeter);
         }
     }
     {
-        const auto b = GetBodyA(world, j);
+        const auto b = GetBodyA(conf);
         if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
@@ -1589,7 +1589,7 @@ static void RevoluteJointEntityUI(World& world, JointID j)
         }
     }
     {
-        const auto b = GetBodyB(world, j);
+        const auto b = GetBodyB(conf);
         if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
@@ -1598,66 +1598,66 @@ static void RevoluteJointEntityUI(World& world, JointID j)
     }
 }
 
-static void PrismaticJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, PrismaticJointConf& conf)
 {
-    ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
+    ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(conf)));
     ImGui::LabelText("Motor Impulse (N·s)", "%.1e",
-                     static_cast<double>(Real{j.GetLinearMotorImpulse() / NewtonSecond}));
+                     static_cast<double>(Real{GetLinearMotorImpulse(conf) / NewtonSecond}));
     ImGui::LabelText("Ref. Angle (°)", "%.1e",
-                     static_cast<double>(Real{GetReferenceAngle(world, j) / Degree}));
+                     static_cast<double>(Real{GetReferenceAngle(conf) / Degree}));
     {
-        auto v = j.IsLimitEnabled();
+        auto v = IsLimitEnabled(conf);
         if (ImGui::Checkbox("Enable Limit", &v))
         {
-            j.EnableLimit(v);
+            EnableLimit(conf, v);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetLinearLowerLimit() / Meter});
+        auto v = static_cast<float>(Real{GetLinearLowerLimit(conf) / Meter});
         if (ImGui::InputFloat("Lower Limit (m)", &v, 0, 0, 2))
         {
-            j.SetLinearLimits(v * Meter, j.GetLinearUpperLimit());
+            SetLinearLimits(conf, v * Meter, GetLinearUpperLimit(conf));
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetLinearUpperLimit() / Meter});
+        auto v = static_cast<float>(Real{GetLinearUpperLimit(conf) / Meter});
         if (ImGui::InputFloat("Upper Limit (m)", &v, 0, 0, 2))
         {
-            j.SetLinearLimits(j.GetLinearLowerLimit(), v * Meter);
+            SetLinearLimits(conf, GetLinearLowerLimit(conf), v * Meter);
         }
     }
     {
-        auto v = j.IsMotorEnabled();
+        auto v = IsMotorEnabled(conf);
         if (ImGui::Checkbox("Enable Motor", &v))
         {
-            j.EnableMotor(v);
+            EnableMotor(conf, v);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetMotorSpeed() / DegreePerSecond});
+        auto v = static_cast<float>(Real{GetMotorSpeed(conf) / DegreePerSecond});
         if (ImGui::InputFloat("Motor Speed (°/sec)", &v))
         {
-            j.SetMotorSpeed(v * DegreePerSecond);
+            SetMotorSpeed(conf, v * DegreePerSecond);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetMaxMotorForce() / Newton});
+        auto v = static_cast<float>(Real{GetMaxMotorForce(conf) / Newton});
         if (ImGui::InputFloat("Max. Motor Force (N)", &v))
         {
-            j.SetMaxMotorForce(v * Newton);
+            SetMaxMotorForce(conf, v * Newton);
         }
     }
     {
-        const auto b = GetBodyA(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyA(conf);
+        if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = GetBodyB(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyB(conf);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
@@ -1665,41 +1665,41 @@ static void PrismaticJointEntityUI(World& world, JointID j)
     }
 }
 
-static void DistanceJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, DistanceJointConf& conf)
 {
     // All settings implemented here...
     {
-        auto v = static_cast<float>(Real{j.GetLength() / Meter});
+        auto v = static_cast<float>(Real{GetLength(conf) / Meter});
         if (ImGui::InputFloat("Length (m)", &v))
         {
-            j.SetLength(v * Meter);
+            SetLength(conf, v * Meter);
         }
     }
     {
-        auto v = static_cast<float>(Real{GetFrequency(world, j) / Hertz});
+        auto v = static_cast<float>(Real{GetFrequency(conf) / Hertz});
         if (ImGui::InputFloat("Frequency (Hz)", &v))
         {
-            SetFrequency(world, j, v * Hertz);
+            SetFrequency(conf, v * Hertz);
         }
     }
     {
-        auto v = static_cast<float>(j.GetDampingRatio());
+        auto v = static_cast<float>(GetDampingRatio(conf));
         if (ImGui::InputFloat("Damping Ratio", &v))
         {
-            j.SetDampingRatio(static_cast<Real>(v));
+            SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
     {
-        const auto b = GetBodyA(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyA(conf);
+        if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = GetBodyB(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyB(conf);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
@@ -1707,52 +1707,52 @@ static void DistanceJointEntityUI(World& world, JointID j)
     }
 }
 
-static void PulleyJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, PulleyJointConf& conf)
 {
-    ImGui::LabelText("Length A (m)", "%f", static_cast<double>(Real{j.GetLengthA()/Meter}));
-    ImGui::LabelText("Length B (m)", "%f", static_cast<double>(Real{j.GetLengthB()/Meter}));
-    ImGui::LabelText("Ratio", "%f", static_cast<double>(GetRatio(world, j)));
+    ImGui::LabelText("Length A (m)", "%f", static_cast<double>(Real{GetLengthA(conf)/Meter}));
+    ImGui::LabelText("Length B (m)", "%f", static_cast<double>(Real{GetLengthB(conf)/Meter}));
+    ImGui::LabelText("Ratio", "%f", static_cast<double>(GetRatio(conf)));
 }
 
-static void TargetJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, TargetJointConf& conf)
 {
     {
-        const auto target = GetTarget(world, j);
+        const auto target = GetTarget(conf);
         auto x = static_cast<float>(Real{GetX(target) / Meter});
         auto y = static_cast<float>(Real{GetY(target) / Meter});
         if (ImGui::InputFloat("Target X (m)", &x))
         {
-            j.SetTarget(Length2{x * Meter, y * Meter});
+            SetTarget(conf, Length2{x * Meter, y * Meter});
         }
         if (ImGui::InputFloat("Target Y (m)", &y))
         {
-            j.SetTarget(Length2{x * Meter, y * Meter});
+            SetTarget(conf, Length2{x * Meter, y * Meter});
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetMaxForce() / Newton});
+        auto v = static_cast<float>(Real{GetMaxForce(conf) / Newton});
         if (ImGui::InputFloat("Max Force (N)", &v))
         {
-            j.SetMaxForce(v * Newton);
+            SetMaxForce(conf, v * Newton);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetFrequency() / Hertz});
+        auto v = static_cast<float>(Real{GetFrequency(conf) / Hertz});
         if (ImGui::InputFloat("Frequency (Hz)", &v))
         {
-            j.SetFrequency(v * Hertz);
+            SetFrequency(conf, v * Hertz);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetDampingRatio()});
+        auto v = static_cast<float>(Real{GetDampingRatio(conf)});
         if (ImGui::InputFloat("Damping Ratio", &v))
         {
-            j.SetDampingRatio(static_cast<Real>(v));
+            SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
     {
-        const auto b = GetBodyB(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyB(conf);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
@@ -1760,43 +1760,29 @@ static void TargetJointEntityUI(World& world, JointID j)
     }
 }
 
-static void GearJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, GearJointConf& conf)
 {
-    ImGui::LabelText("Constant", "%.2e", static_cast<double>(j.GetConstant()));
+    ImGui::LabelText("Constant", "%.2e", static_cast<double>(GetConstant(conf)));
     {
-        auto v = static_cast<float>(j.GetRatio());
+        auto v = static_cast<float>(GetRatio(conf));
         if (ImGui::InputFloat("Ratio", &v))
         {
-            j.SetRatio(static_cast<Real>(v));
+            SetRatio(conf, static_cast<Real>(v));
         }
     }
+    ImGui::LabelText("Type 1", "%s", ToString(GetType1(conf)));
+    ImGui::LabelText("Type 2", "%s", ToString(GetType2(conf)));
     {
-        const auto j1 = j.GetJoint1();
-        if (ImGui::TreeNodeEx(j1, 0, "Joint 1 (%s)", ToString(GetType(*j1))))
-        {
-            EntityUI(*j1);
-            ImGui::TreePop();
-        }
-    }
-    {
-        const auto j2 = j.GetJoint2();
-        if (ImGui::TreeNodeEx(j2, 0, "Joint 2 (%s)", ToString(GetType(*j2))))
-        {
-            EntityUI(*j2);
-            ImGui::TreePop();
-        }
-    }
-    {
-        const auto b = GetBodyA(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyA(conf);
+        if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = GetBodyB(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyB(conf);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
@@ -1804,54 +1790,54 @@ static void GearJointEntityUI(World& world, JointID j)
     }
 }
 
-static void WheelJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, WheelJointConf& conf)
 {
     {
-        auto v = IsMotorEnabled(world, j);
+        auto v = IsMotorEnabled(conf);
         if (ImGui::Checkbox("Enable Motor", &v))
         {
-            j.EnableMotor(v);
+            EnableMotor(conf, v);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetMotorSpeed() / DegreePerSecond});
+        auto v = static_cast<float>(Real{GetMotorSpeed(conf) / DegreePerSecond});
         if (ImGui::InputFloat("Motor Speed (°/sec)", &v))
         {
-            j.SetMotorSpeed(v * DegreePerSecond);
+            SetMotorSpeed(conf, v * DegreePerSecond);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetMaxMotorTorque() / NewtonMeter});
+        auto v = static_cast<float>(Real{GetMaxMotorTorque(conf) / NewtonMeter});
         if (ImGui::InputFloat("Max Mot. Torq. (N·m)", &v))
         {
-            j.SetMaxMotorTorque(v * NewtonMeter);
+            SetMaxMotorTorque(conf, v * NewtonMeter);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetFrequency() / Hertz});
+        auto v = static_cast<float>(Real{GetFrequency(conf) / Hertz});
         if (ImGui::InputFloat("Spring Freq. (Hz)", &v))
         {
-            j.SetFrequency(v * Hertz);
+            SetFrequency(conf, v * Hertz);
         }
     }
     {
-        auto v = static_cast<float>(j.GetSpringDampingRatio());
+        auto v = static_cast<float>(GetDampingRatio(conf));
         if (ImGui::InputFloat("Spring Damp. Ratio", &v))
         {
-            j.SetSpringDampingRatio(static_cast<Real>(v));
+            SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
     {
-        const auto b = GetBodyA(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyA(conf);
+        if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = GetBodyB(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyB(conf);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
@@ -1859,174 +1845,169 @@ static void WheelJointEntityUI(World& world, JointID j)
     }
 }
 
-static void WeldJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, WeldJointConf& conf)
 {
     ImGui::LabelText("Ref. Angle (°)", "%.1e",
-                     static_cast<double>(Real{j.GetReferenceAngle() / Degree}));
+                     static_cast<double>(Real{GetReferenceAngle(conf) / Degree}));
     {
-        auto v = static_cast<float>(Real{j.GetFrequency() / Hertz});
+        auto v = static_cast<float>(Real{GetFrequency(conf) / Hertz});
         if (ImGui::InputFloat("Frequency (Hz)", &v))
         {
-            j.SetFrequency(v * Hertz);
+            SetFrequency(conf, v * Hertz);
         }
     }
     {
-        auto v = static_cast<float>(j.GetDampingRatio());
+        auto v = static_cast<float>(GetDampingRatio(conf));
         if (ImGui::InputFloat("Damping Ratio", &v))
         {
-            j.SetDampingRatio(static_cast<Real>(v));
+            SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
     {
-        const auto b = GetBodyA(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyA(conf);
+        if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = GetBodyB(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyB(conf);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
 }
 
-static void FrictionJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, FrictionJointConf& conf)
 {
     {
-        auto v = static_cast<float>(Real{j.GetMaxForce() / Newton});
+        auto v = static_cast<float>(Real{GetMaxForce(conf) / Newton});
         if (ImGui::InputFloat("Max Force (N)", &v))
         {
-            j.SetMaxForce(v * Newton);
+            SetMaxForce(conf, v * Newton);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetMaxTorque() / NewtonMeter});
+        auto v = static_cast<float>(Real{GetMaxTorque(conf) / NewtonMeter});
         if (ImGui::InputFloat("Max Torq. (N·m)", &v))
         {
-            j.SetMaxTorque(v * NewtonMeter);
+            SetMaxTorque(conf, v * NewtonMeter);
         }
     }
     {
-        const auto b = GetBodyA(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyA(conf);
+        if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = GetBodyB(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyB(conf);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
 }
 
-static void RopeJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, RopeJointConf& conf)
 {
-    ImGui::LabelText("Limit State", "%s", ToString(j.GetLimitState()));
+    ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(conf)));
     {
-        auto v = static_cast<float>(Real{j.GetMaxLength() / Meter});
+        auto v = static_cast<float>(Real{GetMaxLength(conf) / Meter});
         if (ImGui::InputFloat("Max. Length (m)", &v))
         {
-            j.SetMaxLength(v * Meter);
+            SetMaxLength(conf, v * Meter);
         }
     }
     {
-        const auto b = GetBodyA(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyA(conf);
+        if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = GetBodyB(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyB(conf);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
 }
 
-static void MotorJointEntityUI(World& world, JointID j)
+static void EntityUI(World& world, MotorJointConf& conf)
 {
     {
-        const auto linearError = j.GetLinearError();
+        const auto linearError = GetLinearError(conf);
         ImGui::LabelText("Lin. Error X (m)", "%.2e",
                          static_cast<double>(Real{GetX(linearError) / Meter}));
         ImGui::LabelText("Lin. Error Y (m)", "%.2e",
                          static_cast<double>(Real{GetY(linearError) / Meter}));
     }
-
     ImGui::LabelText("Ang. Error (°)", "%.2e",
-                     static_cast<double>(Real{j.GetAngularError() / Degree}));
-
+                     static_cast<double>(Real{GetAngularError(conf) / Degree}));
     {
-        const auto linOff = j.GetLinearOffset();
+        const auto linOff = GetLinearOffset(conf);
         auto x = static_cast<float>(Real{GetX(linOff) / Meter});
         auto y = static_cast<float>(Real{GetY(linOff) / Meter});
         if (ImGui::InputFloat("Lin. Offset X (m)", &x))
         {
-            j.SetLinearOffset(Length2{x * Meter, y * Meter});
+            SetLinearOffset(conf, Length2{x * Meter, y * Meter});
         }
         if (ImGui::InputFloat("Lin. Offset Y (m)", &y))
         {
-            j.SetLinearOffset(Length2{x * Meter, y * Meter});
+            SetLinearOffset(conf, Length2{x * Meter, y * Meter});
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetAngularOffset() / Degree});
+        auto v = static_cast<float>(Real{GetAngularOffset(conf) / Degree});
         if (ImGui::InputFloat("Ang. Offset (°)", &v, 0, 0, 2))
         {
-            j.SetAngularOffset(v * Degree);
+            SetAngularOffset(conf, v * Degree);
         }
     }
-
     {
-        auto v = static_cast<float>(Real{j.GetMaxForce() / Newton});
+        auto v = static_cast<float>(Real{GetMaxForce(conf) / Newton});
         if (ImGui::InputFloat("Max Force (N)", &v))
         {
-            j.SetMaxForce(v * Newton);
+            SetMaxForce(conf, v * Newton);
         }
     }
     {
-        auto v = static_cast<float>(Real{j.GetMaxTorque() / NewtonMeter});
+        auto v = static_cast<float>(Real{GetMaxTorque(conf) / NewtonMeter});
         if (ImGui::InputFloat("Max Torq. (N·m)", &v))
         {
-            j.SetMaxTorque(v * NewtonMeter);
+            SetMaxTorque(conf, v * NewtonMeter);
         }
     }
-
     {
-        auto v = static_cast<float>(j.GetCorrectionFactor());
+        auto v = static_cast<float>(GetCorrectionFactor(conf));
         if (ImGui::InputFloat("Correction Factor", &v))
         {
-            j.SetCorrectionFactor(static_cast<Real>(v));
+            SetCorrectionFactor(conf, static_cast<Real>(v));
         }
     }
-
     {
-        const auto b = GetBodyA(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body A: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyA(conf);
+        if (ImGui::TreeNode("Body A: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
     {
-        const auto b = GetBodyB(world, j);
-        if (ImGui::TreeNodeEx(b, 0, "Body B: %s", ToString(GetType(world, b))))
+        const auto b = GetBodyB(conf);
+        if (ImGui::TreeNode("Body B: %s", ToString(GetType(world, b))))
         {
-            EntityUI(*b, FixtureSet{});
+            EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
         }
     }
@@ -2037,7 +2018,8 @@ static void EntityUI(World& world, JointID e)
     ImGui::IdContext idCtx(&e);
     ImGui::ItemWidthContext itemWidthCtx(50);
 
-    ImGui::LabelText("Collide Connected", "%s", GetCollideConnected(world, e)? "true": "false");
+    const auto& joint = GetJoint(world, e);
+    ImGui::LabelText("Collide Connected", "%s", GetCollideConnected(joint)? "true": "false");
     {
         const auto linReact = GetLinearReaction(world, e);
         ImGui::LabelText("Lin. Reaction X (N·s)", "%.2e",
@@ -2046,14 +2028,62 @@ static void EntityUI(World& world, JointID e)
                          static_cast<double>(Real{GetY(linReact) / NewtonSecond}));
     }
     ImGui::LabelText("Ang. Reaction (N·m·s)", "%.2e",
-                     static_cast<double>(Real{GetAngularReaction(world, e) / NewtonMeterSecond}));
+                     static_cast<double>(Real{GetAngularReaction(joint) / NewtonMeterSecond}));
     const auto type = world.GetType(e);
-    if (type == GetTypeID<RevoluteJoint>()) {
-        RevoluteJointEntityUI(world, e);
-    } else if (type == GetTypeID<>()) {
-        PrismaticJointEntityUI(world, e);
-    } else {
-        // TODO
+    if (type == GetTypeID<DistanceJointConf>()) {
+        auto conf = TypeCast<DistanceJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
+    }
+    else if (type == GetTypeID<FrictionJointConf>()) {
+        auto conf = TypeCast<FrictionJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
+    }
+    else if (type == GetTypeID<GearJointConf>()) {
+        auto conf = TypeCast<GearJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
+    }
+    else if (type == GetTypeID<MotorJointConf>()) {
+        auto conf = TypeCast<MotorJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
+    }
+    else if (type == GetTypeID<PrismaticJointConf>()) {
+        auto conf = TypeCast<PrismaticJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
+    }
+    else if (type == GetTypeID<PulleyJointConf>()) {
+        auto conf = TypeCast<PulleyJointConf>(joint);
+        EntityUI(world, e);
+        SetJoint(world, e, conf);
+    }
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        auto conf = TypeCast<RevoluteJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
+    }
+    if (type == GetTypeID<RopeJointConf>()) {
+        auto conf = TypeCast<RopeJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
+    }
+    else if (type == GetTypeID<TargetJointConf>()) {
+        auto conf = TypeCast<TargetJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
+    }
+    else if (type == GetTypeID<WheelJointConf>()) {
+        auto conf = TypeCast<WheelJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
+    }
+    else if (type == GetTypeID<WeldJointConf>()) {
+        auto conf = TypeCast<WeldJointConf>(joint);
+        EntityUI(world, conf);
+        SetJoint(world, e, conf);
     }
 }
 
