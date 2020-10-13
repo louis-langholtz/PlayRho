@@ -325,7 +325,7 @@ static void CreateUI(GLFWwindow* window)
     //io.FontGlobalScale = 0.95f;
 }
 
-static constexpr char FmtBodyID[] = "0x%0.4x";
+static constexpr char FmtBodyID[] = "0x%.4x";
 
 static const char* ToString(BodyType type) noexcept
 {
@@ -1768,7 +1768,7 @@ static void EntityUI(World& world, GearJointConf& conf)
     }
     {
         const auto b = GetBodyB(conf);
-        if (ImGui::TreeNode("Body B", 0, "Body B: %s", ToString(GetType(world, b))))
+        if (ImGui::TreeNodeEx("Body B", 0, "Body B: %s", ToString(GetType(world, b))))
         {
             EntityUI(world, b, FixtureSet{});
             ImGui::TreePop();
@@ -2151,7 +2151,7 @@ static void CollectionUI(World& world, const BodiesRange& bodies,
         const auto typeName = ToString(GetType(world, e));
         const auto flags = IsWithin(selectedBodies, e)? ImGuiTreeNodeFlags_DefaultOpen: 0;
         if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(i), flags,
-                              "Body %d (Body-ID=0x%0.4x,Type=%s)", i, UnderlyingValue(e), typeName))
+                              "Body %d (Body-ID=0x%.4x,Type=%s)", i, UnderlyingValue(e), typeName))
         {
             EntityUI(world, e, selectedFixtures);
             ImGui::TreePop();
@@ -2191,7 +2191,7 @@ static void CollectionUI(const BodyJointsRange& joints)
         char buf[64];
         std::snprintf(buf, sizeof(buf), "Joint %d", i);
         if (bodyID != InvalidBodyID) {
-            ImGui::LabelText(buf, "ID=0x%0.4x, Other=0x%0.4x",
+            ImGui::LabelText(buf, "ID=0x%.4x, Other=0x%.4x",
                              UnderlyingValue(jointID), UnderlyingValue(bodyID));
             if (ImGui::IsItemHovered())
             {
@@ -2199,7 +2199,7 @@ static void CollectionUI(const BodyJointsRange& joints)
             }
         }
         else {
-            ImGui::LabelText(buf, "ID=0x%0.4x", UnderlyingValue(jointID));
+            ImGui::LabelText(buf, "ID=0x%.4x", UnderlyingValue(jointID));
             if (ImGui::IsItemHovered())
             {
                 ImGui::SetTooltip("World ID of joint.");
