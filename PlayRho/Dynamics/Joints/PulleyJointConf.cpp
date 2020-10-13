@@ -30,6 +30,18 @@
 namespace playrho {
 namespace d2 {
 
+// Pulley:
+// length1 = norm(p1 - s1)
+// length2 = norm(p2 - s2)
+// C0 = (length1 + ratio * length2)_initial
+// C = C0 - (length1 + ratio * length2)
+// u1 = (p1 - s1) / norm(p1 - s1)
+// u2 = (p2 - s2) / norm(p2 - s2)
+// Cdot = -dot(u1, v1 + cross(w1, r1)) - ratio * dot(u2, v2 + cross(w2, r2))
+// J = -[u1 cross(r1, u1) ratio * u2  ratio * cross(r2, u2)]
+// K = J * invM * JT
+//   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
+
 PulleyJointConf::PulleyJointConf(BodyID bA, BodyID bB,
                                  Length2 groundA, Length2 groundB,
                                  Length2 anchorA, Length2 anchorB,

@@ -111,6 +111,18 @@ RevoluteJointConf GetRevoluteJointConf(const World& world, BodyID bodyA, BodyID 
     };
 }
 
+Angle GetAngle(const World& world, const RevoluteJointConf& conf)
+{
+    return GetAngle(world, GetBodyB(conf)) - GetAngle(world, GetBodyA(conf))
+         - GetReferenceAngle(conf);
+}
+
+AngularVelocity GetAngularVelocity(const World& world, const RevoluteJointConf& conf)
+{
+    return GetVelocity(world, GetBodyB(conf)).angular
+         - GetVelocity(world, GetBodyA(conf)).angular;
+}
+
 void InitVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodies,
                   const StepConf& step,
                   const ConstraintSolverConf& conf)

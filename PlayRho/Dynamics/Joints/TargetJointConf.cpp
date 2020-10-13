@@ -155,11 +155,9 @@ bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
     return incImpulse == Momentum2{};
 }
 
-bool SolvePosition(const TargetJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf)
+bool SolvePosition(const TargetJointConf&, std::vector<BodyConstraint>&,
+                   const ConstraintSolverConf&)
 {
-    NOT_USED(bodies);
-    NOT_USED(conf);
     return true;
 }
 

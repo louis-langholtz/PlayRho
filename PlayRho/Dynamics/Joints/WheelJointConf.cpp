@@ -30,6 +30,22 @@
 namespace playrho {
 namespace d2 {
 
+// Linear constraint (point-to-line)
+// d = pB - pA = xB + rB - xA - rA
+// C = dot(ay, d)
+// Cdot = dot(d, cross(wA, ay)) + dot(ay, vB + cross(wB, rB) - vA - cross(wA, rA))
+//      = -dot(ay, vA) - dot(cross(d + rA, ay), wA) + dot(ay, vB) + dot(cross(rB, ay), vB)
+// J = [-ay, -cross(d + rA, ay), ay, cross(rB, ay)]
+
+// Spring linear constraint
+// C = dot(ax, d)
+// Cdot = = -dot(ax, vA) - dot(cross(d + rA, ax), wA) + dot(ax, vB) + dot(cross(rB, ax), vB)
+// J = [-ax -cross(d+rA, ax) ax cross(rB, ax)]
+
+// Motor rotational constraint
+// Cdot = wB - wA
+// J = [0 0 -1 0 0 1]
+
 WheelJointConf::WheelJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB,
                                UnitVec axis) noexcept:
     super{super{}.UseBodyA(bA).UseBodyB(bB)},
@@ -51,6 +67,12 @@ WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB,
         bodyA, bodyB,
         GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor),
         GetLocalVector(world, bodyA, axis)};
+}
+
+AngularVelocity GetAngularVelocity(const World& world, const WheelJointConf& conf)
+{
+    return GetVelocity(world, GetBodyB(conf)).angular
+         - GetVelocity(world, GetBodyA(conf)).angular;
 }
 
 void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,

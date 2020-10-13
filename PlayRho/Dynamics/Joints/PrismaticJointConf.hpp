@@ -38,17 +38,24 @@ class World;
 class BodyConstraint;
 
 /// @brief Prismatic joint definition.
-/// @details This requires defining a line of
-/// motion using an axis and an anchor point. The definition uses local
-/// anchor points and a local axis so that the initial configuration
-/// can violate the constraint slightly. The joint translation is zero
-/// when the local anchor points coincide in world space. Using local
-/// anchors and a local axis helps when saving and loading a game.
+/// @details This joint provides one degree of freedom: translation along an axis fixed in
+///   body-A. Relative rotation is prevented. This requires defining a line of motion using
+///   an axis and an anchor point. The definition uses local anchor points and a local axis
+///   so that the initial configuration can violate the constraint slightly. The joint
+///   translation is zero when the local anchor points coincide in world space. Using local
+///   anchors and a local axis helps when saving and loading a game.
+/// @note You can use a joint limit to restrict the range of motion and a joint motor
+///   to drive the motion or to model joint friction.
+/// @ingroup JointsGroup
+/// @image html prismaticJoint.gif
+/// @see https://en.wikipedia.org/wiki/Prismatic_joint
+/// @see Joint, World::CreateJoint
 struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<PrismaticJointConf>;
 
+    /// @brief Default constructor.
     constexpr PrismaticJointConf() noexcept = default;
 
     /// @brief Copy constructor.

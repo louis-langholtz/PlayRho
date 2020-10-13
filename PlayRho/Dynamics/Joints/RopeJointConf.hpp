@@ -39,14 +39,23 @@ class World;
 class BodyConstraint;
 
 /// @brief Rope joint definition.
-/// @details This requires two body anchor points and a maximum lengths.
+/// @details A rope joint enforces a maximum distance between two points on two bodies.
+///   It has no other effect. This requires two body anchor points and a maximum lengths.
 /// @note By default the connected objects will not collide.
+/// @warning If you attempt to change the maximum length during the simulation
+///   you will get some non-physical behavior. A model that would allow you to
+///   dynamically modify the length would have some sponginess, so it was decided
+///   not to implement it that way. See <code>DistanceJoint</code> if you want to dynamically
+///   control length.
+/// @ingroup JointsGroup
 /// @see collideConnected in JointConf.
+/// @see Joint, World::CreateJoint
 struct RopeJointConf : public JointBuilder<RopeJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<RopeJointConf>;
 
+    /// @brief Default constructor.
     constexpr RopeJointConf() noexcept = default;
 
     /// @brief Initializing constructor.

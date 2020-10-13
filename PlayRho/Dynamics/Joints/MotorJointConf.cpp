@@ -68,7 +68,7 @@ MotorJointConf GetMotorJointConf(const World& world, BodyID bA, BodyID bB)
 
 void InitVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
                   const StepConf& step,
-                  const ConstraintSolverConf& conf)
+                  const ConstraintSolverConf&)
 {
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));
@@ -225,8 +225,8 @@ bool SolveVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
     return solved;
 }
 
-bool SolvePosition(const MotorJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf)
+bool SolvePosition(const MotorJointConf&, std::vector<BodyConstraint>&,
+                   const ConstraintSolverConf&)
 {
     return true;
 }

@@ -38,6 +38,10 @@ class World;
 class BodyConstraint;
 
 /// @brief Motor joint definition.
+/// @details A motor joint is used to control the relative motion between two bodies. A
+///   typical usage is to control the movement of a dynamic body with respect to the ground.
+/// @see Joint, World::CreateJoint
+/// @ingroup JointsGroup
 struct MotorJointConf : public JointBuilder<MotorJointConf>
 {
     /// @brief Super type.

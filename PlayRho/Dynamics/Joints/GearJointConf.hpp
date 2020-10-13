@@ -39,8 +39,15 @@ class World;
 class BodyConstraint;
 
 /// @brief Gear joint definition.
-/// @details This definition requires two existing
-/// revolute or prismatic joints (any combination will work).
+/// @details A gear joint is used to connect two joints together. Either joint can be
+///   a revolute or prismatic joint. You specify a gear ratio to bind the motions together:
+///      <code>coordinate1 + ratio * coordinate2 = constant</code>.
+///   The ratio can be negative or positive. If one joint is a revolute joint and the other
+///   joint is a prismatic joint, then the ratio will have units of length or units of 1/length.
+/// @warning You have to manually destroy the gear joint if joint-1 or joint-2 is destroyed.
+/// @see Joint, World::CreateJoint
+/// @ingroup JointsGroup
+/// @image html gearJoint.gif
 struct GearJointConf : public JointBuilder<GearJointConf>
 {
     /// @brief Super type.

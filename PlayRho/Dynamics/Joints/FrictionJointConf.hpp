@@ -38,11 +38,16 @@ class World;
 class BodyConstraint;
 
 /// @brief Friction joint definition.
+/// @details This is used for top-down friction. It provides 2-D translational friction
+///   and angular friction.
+/// @see Joint, World::CreateJoint
+/// @ingroup JointsGroup
 struct FrictionJointConf : public JointBuilder<FrictionJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<FrictionJointConf>;
 
+    /// @brief Default constructor.
     constexpr FrictionJointConf() noexcept = default;
 
     /// @brief Initializing constructor.

@@ -38,12 +38,22 @@ class World;
 class BodyConstraint;
 
 /// @brief Pulley joint definition.
-/// @details This requires two ground anchors, two dynamic body anchor points, and a pulley ratio.
+/// @details The pulley joint is connected to two bodies and two fixed ground points.
+///   The pulley supports a ratio such that: <code>length1 + ratio * length2 <= constant</code>.
+/// @note The force transmitted is scaled by the ratio.
+/// @warning the pulley joint can get a bit squirrelly by itself. They often
+///   work better when combined with prismatic joints. You should also cover the
+///   the anchor points with static shapes to prevent one side from going to
+///   zero length.
+/// @ingroup JointsGroup
+/// @image html pulleyJoint.gif
+/// @see Joint, World::CreateJoint
 struct PulleyJointConf : public JointBuilder<PulleyJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<PulleyJointConf>;
 
+    /// @brief Default constructor.
     PulleyJointConf() noexcept: super{super{}.UseCollideConnected(true)} {}
 
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.

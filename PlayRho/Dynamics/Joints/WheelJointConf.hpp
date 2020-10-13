@@ -37,19 +37,25 @@ class World;
 class BodyConstraint;
 
 /// @brief Wheel joint definition.
-/// @details This requires defining a line of
-///   motion using an axis and an anchor point. The definition uses local
-///   anchor points and a local axis so that the initial configuration
-///   can violate the constraint slightly. The joint translation is zero
-///   when the local anchor points coincide in world space. Using local
-///   anchors and a local axis helps when saving and loading a game.
+/// @details This joint provides two degrees of freedom: translation along an axis fixed
+///   in body A and rotation in the plane. In other words, it is a point to line constraint
+///   with a rotational motor and a linear spring/damper. This requires defining a line of
+///   motion using an axis and an anchor point. The definition uses local anchor points and
+///   a local axis so that the initial configuration can violate the constraint slightly.
+///   The joint translation is zero when the local anchor points coincide in world space.
+///   Using local anchors and a local axis helps when saving and loading a game.
+/// @note This joint is designed for vehicle suspensions.
+/// @ingroup JointsGroup
+/// @image html WheelJoint.png
+/// @see Joint, World::CreateJoint
 struct WheelJointConf : public JointBuilder<WheelJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<WheelJointConf>;
-    
+
+    /// @brief Default constructor.
     constexpr WheelJointConf() noexcept = default;
-    
+
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
     WheelJointConf(BodyID bA, BodyID bB,
@@ -144,6 +150,9 @@ WheelJointConf GetWheelJointConf(const Joint& joint);
 /// @relatedalso World
 WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB,
                                  Length2 anchor, UnitVec axis = UnitVec::GetRight());
+
+/// @relatedalso World
+AngularVelocity GetAngularVelocity(const World& world, const WheelJointConf& conf);
 
 /// @relatedalso WheelJointConf
 constexpr Momentum2 GetLinearReaction(const WheelJointConf& object)

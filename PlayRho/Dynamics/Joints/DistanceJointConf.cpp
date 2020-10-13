@@ -30,6 +30,21 @@
 namespace playrho {
 namespace d2 {
 
+// 1-D constrained system
+// m (v2 - v1) = lambda
+// v2 + (beta/h) * x1 + gamma * lambda = 0, gamma has units of inverse mass.
+// x2 = x1 + h * v2
+
+// 1-D mass-damper-spring system
+// m (v2 - v1) + h * d * v2 + h * k *
+
+// C = norm(p2 - p1) - L
+// u = (p2 - p1) / norm(p2 - p1)
+// Cdot = dot(u, v2 + cross(w2, r2) - v1 - cross(w1, r1))
+// J = [-u -cross(r1, u) u cross(r2, u)]
+// K = J * invM * JT
+//   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
+
 DistanceJointConf::DistanceJointConf(BodyID bA, BodyID bB,
                                      Length2 laA, Length2 laB, Length l) noexcept :
     super{super{}.UseBodyA(bA).UseBodyB(bB)},
@@ -144,7 +159,7 @@ void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies
 }
 
 bool SolveVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step)
+                   const StepConf&)
 {
     auto& bodyConstraintA = At(bodies, GetBodyA(object));
     auto& bodyConstraintB = At(bodies, GetBodyB(object));

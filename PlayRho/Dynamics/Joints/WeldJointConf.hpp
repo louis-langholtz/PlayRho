@@ -42,12 +42,14 @@ class BodyConstraint;
 /// @note You need to specify local anchor points where they are attached and the
 ///   relative body angle.
 /// @note The position of the anchor points is important for computing the reaction torque.
-/// @see WeldJoint
+/// @ingroup JointsGroup
+/// @see Joint, World::CreateJoint
 struct WeldJointConf : public JointBuilder<WeldJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<WeldJointConf>;
 
+    /// @brief Default constructor.
     constexpr WeldJointConf() noexcept = default;
 
     /// @brief Initializing constructor.

@@ -38,22 +38,31 @@ class World;
 class BodyConstraint;
 
 /// @brief Revolute joint definition.
-/// @details This requires defining an
-/// anchor point where the bodies are joined. The definition
-/// uses local anchor points so that the initial configuration
-/// can violate the constraint slightly. You also need to
-/// specify the initial relative angle for joint limits. This
-/// helps when saving and loading a game.
+/// @details A revolute joint constrains two bodies to share a common point while they
+///   are free to rotate about the point. The relative rotation about the shared point
+///   is the joint angle. This requires defining an anchor point where the bodies are
+///   joined. The definition uses local anchor points so that the initial configuration
+///   can violate the constraint slightly. You also need to specify the initial relative
+///   angle for joint limits. This helps when saving and loading a game.
 /// @note The local anchor points are measured from the body's origin
 ///   rather than the center of mass because:
 ///    1. you might not know where the center of mass will be;
 ///    2. if you add/remove shapes from a body and recompute the mass,
 ///       the joints will be broken.
+/// @note You can limit the relative rotation with a joint limit that specifies a
+///   lower and upper angle. You can use a motor to drive the relative rotation about
+///   the shared point. A maximum motor torque is provided so that infinite forces are
+///   not generated.
+/// @ingroup JointsGroup
+/// @image html revoluteJoint.gif
+/// @see https://en.wikipedia.org/wiki/Revolute_joint
+/// @see Joint, World::CreateJoint
 struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<RevoluteJointConf>;
 
+    /// @brief Default constructor.
     constexpr RevoluteJointConf() noexcept = default;
 
     /// @brief Initialize the bodies, anchors, and reference angle using a world anchor point.
@@ -153,6 +162,12 @@ RevoluteJointConf GetRevoluteJointConf(const Joint& joint);
 
 /// @relatedalso World
 RevoluteJointConf GetRevoluteJointConf(const World& world, BodyID bodyA, BodyID bodyB, Length2 anchor);
+
+/// @relatedalso World
+Angle GetAngle(const World& world, const RevoluteJointConf& conf);
+
+/// @relatedalso World
+AngularVelocity GetAngularVelocity(const World& world, const RevoluteJointConf& conf);
 
 /// @relatedalso RevoluteJointConf
 constexpr auto ShiftOrigin(RevoluteJointConf&, Length2) noexcept

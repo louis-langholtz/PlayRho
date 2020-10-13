@@ -38,15 +38,19 @@ class BodyConstraint;
 
 /// @brief Distance joint definition.
 /// @details This requires defining an anchor point on both bodies and the non-zero
-/// length of the distance joint. The definition uses local anchor points so that
-/// the initial configuration can violate the constraint slightly. This helps when
-//  saving and loading a game.
+///   length of the distance joint. The definition uses local anchor points so that
+///   the initial configuration can violate the constraint slightly. This helps when
+///   saving and loading a game.
 /// @warning Do not use a zero or short length.
+/// @see Joint, World::CreateJoint
+/// @ingroup JointsGroup
+/// @image html distanceJoint.gif
 struct DistanceJointConf : public JointBuilder<DistanceJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<DistanceJointConf>;
 
+    /// @brief Default constructor.
     constexpr DistanceJointConf() noexcept = default;
 
     /// @brief Copy constructor.
@@ -58,6 +62,7 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
                       Length2 laA = Length2{}, Length2 laB = Length2{}, Length l = 1_m) noexcept;
 
     /// @brief Uses the given length.
+    /// @note Manipulating the length when the frequency is zero can lead to non-physical behavior.
     constexpr auto& UseLength(Length v) noexcept
     {
         length = v;

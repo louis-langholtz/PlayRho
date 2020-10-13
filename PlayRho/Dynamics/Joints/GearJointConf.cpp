@@ -33,6 +33,25 @@
 namespace playrho {
 namespace d2 {
 
+// Gear Joint:
+// C0 = (coordinate1 + ratio * coordinate2)_initial
+// C = (coordinate1 + ratio * coordinate2) - C0 = 0
+// J = [J1 ratio * J2]
+// K = J * invM * JT
+//   = J1 * invM1 * J1T + ratio * ratio * J2 * invM2 * J2T
+//
+// Revolute:
+// coordinate = rotation
+// Cdot = angularVelocity
+// J = [0 0 1]
+// K = J * invM * JT = invI
+//
+// Prismatic:
+// coordinate = dot(p - pg, ug)
+// Cdot = dot(v + cross(w, r), ug)
+// J = [ug cross(r, ug)]
+// K = J * invM * JT = invMass + invI * cross(r, ug)^2
+
 GearJointConf::GearJointConf(BodyID bA, BodyID bB, BodyID bC, BodyID bD) noexcept:
     super{super{}.UseBodyA(bA).UseBodyB(bB)},
     bodyC(bC), bodyD(bD)

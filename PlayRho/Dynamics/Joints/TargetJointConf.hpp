@@ -40,11 +40,13 @@ class BodyConstraint;
 ///   This a soft constraint with a maximum force. This allows the constraint to stretch and
 ///   without applying huge forces.
 /// @ingroup JointsGroup
+/// @see Joint, World::CreateJoint
 struct TargetJointConf : public JointBuilder<TargetJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<TargetJointConf>;
 
+    /// @brief Default constructor.
     constexpr TargetJointConf() noexcept = default;
 
     /// @brief Initializing constructor.
