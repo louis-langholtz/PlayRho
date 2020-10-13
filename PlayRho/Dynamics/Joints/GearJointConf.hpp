@@ -53,6 +53,9 @@ struct GearJointConf : public JointBuilder<GearJointConf>
     /// @brief Super type.
     using super = JointBuilder<GearJointConf>;
 
+    /// @brief Default constructor.
+    constexpr GearJointConf() = default;
+
     /// @brief Initializing constructor.
     GearJointConf(BodyID bA, BodyID bB, BodyID bC, BodyID bD) noexcept;
 
@@ -78,8 +81,8 @@ struct GearJointConf : public JointBuilder<GearJointConf>
     UnitVec localAxis1; ///< Local axis 1. Used when type1 is not Revolute.
     UnitVec localAxis2; ///< Local axis 2. Used when type2 is not Revolute.
 
-    Angle referenceAngle1; ///< Reference angle of joint 1. Used when type1 is Revolute.
-    Angle referenceAngle2; ///< Reference angle of joint 2. Used when type2 is Revolute.
+    Angle referenceAngle1 = 0_deg; ///< Reference angle of joint 1. Used when type1 is Revolute.
+    Angle referenceAngle2 = 0_deg; ///< Reference angle of joint 2. Used when type2 is Revolute.
 
     /// The gear ratio.
     /// @see GearJoint for explanation.
