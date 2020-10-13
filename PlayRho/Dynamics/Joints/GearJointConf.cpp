@@ -39,10 +39,10 @@ static_assert(std::is_copy_constructible<GearJointConf>::value,
               "GearJointConf should be copy constructible!");
 static_assert(std::is_copy_assignable<GearJointConf>::value,
               "GearJointConf should be copy assignable!");
-static_assert(std::is_nothrow_move_constructible<GearJointConf>::value,
-              "GearJointConf should be nothrow move constructible!");
-static_assert(std::is_nothrow_move_assignable<GearJointConf>::value,
-              "GearJointConf should be nothrow move assignable!");
+static_assert(std::is_move_constructible<GearJointConf>::value,
+              "GearJointConf should be move constructible!");
+static_assert(std::is_move_assignable<GearJointConf>::value,
+              "GearJointConf should be move assignable!");
 static_assert(std::is_nothrow_destructible<GearJointConf>::value,
               "GearJointConf should be nothrow destructible!");
 

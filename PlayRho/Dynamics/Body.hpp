@@ -562,8 +562,8 @@ private:
     /// @note 4-bytes.
     InvRotInertia m_invRotI = 0;
 
-    NonNegative<Frequency> m_linearDamping; ///< Linear damping. 4-bytes.
-    NonNegative<Frequency> m_angularDamping; ///< Angular damping. 4-bytes.
+    NonNegative<Frequency> m_linearDamping{}; ///< Linear damping. 4-bytes.
+    NonNegative<Frequency> m_angularDamping{}; ///< Angular damping. 4-bytes.
 
     /// Under-active time.
     /// @details A body under-active for enough time should have their awake flag unset.

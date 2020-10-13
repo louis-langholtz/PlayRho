@@ -36,10 +36,10 @@ static_assert(std::is_copy_constructible<TargetJointConf>::value,
               "TargetJointConf should be copy constructible!");
 static_assert(std::is_copy_assignable<TargetJointConf>::value,
               "TargetJointConf should be copy assignable!");
-static_assert(std::is_nothrow_move_constructible<TargetJointConf>::value,
-              "TargetJointConf should be nothrow move constructible!");
-static_assert(std::is_nothrow_move_assignable<TargetJointConf>::value,
-              "TargetJointConf should be nothrow move assignable!");
+static_assert(std::is_move_constructible<TargetJointConf>::value,
+              "TargetJointConf should be move constructible!");
+static_assert(std::is_move_assignable<TargetJointConf>::value,
+              "TargetJointConf should be move assignable!");
 static_assert(std::is_nothrow_destructible<TargetJointConf>::value,
               "TargetJointConf should be nothrow destructible!");
 

@@ -78,10 +78,10 @@ static_assert(std::is_copy_constructible<WeldJointConf>::value,
               "WeldJointConf should be copy constructible!");
 static_assert(std::is_copy_assignable<WeldJointConf>::value,
               "WeldJointConf should be copy assignable!");
-static_assert(std::is_nothrow_move_constructible<WeldJointConf>::value,
-              "WeldJointConf should be nothrow move constructible!");
-static_assert(std::is_nothrow_move_assignable<WeldJointConf>::value,
-              "WeldJointConf should be nothrow move assignable!");
+static_assert(std::is_move_constructible<WeldJointConf>::value,
+              "WeldJointConf should be move constructible!");
+static_assert(std::is_move_assignable<WeldJointConf>::value,
+              "WeldJointConf should be move assignable!");
 static_assert(std::is_nothrow_destructible<WeldJointConf>::value,
               "WeldJointConf should be nothrow destructible!");
 

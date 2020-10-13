@@ -36,10 +36,10 @@ static_assert(std::is_copy_constructible<MotorJointConf>::value,
               "MotorJointConf should be copy constructible!");
 static_assert(std::is_copy_assignable<MotorJointConf>::value,
               "MotorJointConf should be copy assignable!");
-static_assert(std::is_nothrow_move_constructible<MotorJointConf>::value,
-              "MotorJointConf should be nothrow move constructible!");
-static_assert(std::is_nothrow_move_assignable<MotorJointConf>::value,
-              "MotorJointConf should be nothrow move assignable!");
+static_assert(std::is_move_constructible<MotorJointConf>::value,
+              "MotorJointConf should be move constructible!");
+static_assert(std::is_move_assignable<MotorJointConf>::value,
+              "MotorJointConf should be move assignable!");
 static_assert(std::is_nothrow_destructible<MotorJointConf>::value,
               "MotorJointConf should be nothrow destructible!");
 

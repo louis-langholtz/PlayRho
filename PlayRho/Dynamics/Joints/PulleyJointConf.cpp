@@ -36,10 +36,10 @@ static_assert(std::is_copy_constructible<PulleyJointConf>::value,
               "PulleyJointConf should be copy constructible!");
 static_assert(std::is_copy_assignable<PulleyJointConf>::value,
               "PulleyJointConf should be copy assignable!");
-static_assert(std::is_nothrow_move_constructible<PulleyJointConf>::value,
-              "PulleyJointConf should be nothrow move constructible!");
-static_assert(std::is_nothrow_move_assignable<PulleyJointConf>::value,
-              "PulleyJointConf should be nothrow move assignable!");
+static_assert(std::is_move_constructible<PulleyJointConf>::value,
+              "PulleyJointConf should be move constructible!");
+static_assert(std::is_move_assignable<PulleyJointConf>::value,
+              "PulleyJointConf should be move assignable!");
 static_assert(std::is_nothrow_destructible<PulleyJointConf>::value,
               "PulleyJointConf should be nothrow destructible!");
 

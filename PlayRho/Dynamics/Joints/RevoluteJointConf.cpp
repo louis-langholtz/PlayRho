@@ -79,10 +79,10 @@ static_assert(std::is_copy_constructible<RevoluteJointConf>::value,
               "RevoluteJointConf should be copy constructible!");
 static_assert(std::is_copy_assignable<RevoluteJointConf>::value,
               "RevoluteJointConf should be copy assignable!");
-static_assert(std::is_nothrow_move_constructible<RevoluteJointConf>::value,
-              "RevoluteJointConf should be nothrow move constructible!");
-static_assert(std::is_nothrow_move_assignable<RevoluteJointConf>::value,
-              "RevoluteJointConf should be nothrow move assignable!");
+static_assert(std::is_move_constructible<RevoluteJointConf>::value,
+              "RevoluteJointConf should be move constructible!");
+static_assert(std::is_move_assignable<RevoluteJointConf>::value,
+              "RevoluteJointConf should be move assignable!");
 static_assert(std::is_nothrow_destructible<RevoluteJointConf>::value,
               "RevoluteJointConf should be nothrow destructible!");
 

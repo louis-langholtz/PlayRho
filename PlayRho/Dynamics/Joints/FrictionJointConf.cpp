@@ -36,10 +36,10 @@ static_assert(std::is_copy_constructible<FrictionJointConf>::value,
               "FrictionJointConf should be copy constructible!");
 static_assert(std::is_copy_assignable<FrictionJointConf>::value,
               "FrictionJointConf should be copy assignable!");
-static_assert(std::is_nothrow_move_constructible<FrictionJointConf>::value,
-              "FrictionJointConf should be nothrow move constructible!");
-static_assert(std::is_nothrow_move_assignable<FrictionJointConf>::value,
-              "FrictionJointConf should be nothrow move assignable!");
+static_assert(std::is_move_constructible<FrictionJointConf>::value,
+              "FrictionJointConf should be move constructible!");
+static_assert(std::is_move_assignable<FrictionJointConf>::value,
+              "FrictionJointConf should be move assignable!");
 static_assert(std::is_nothrow_destructible<FrictionJointConf>::value,
               "FrictionJointConf should be nothrow destructible!");
 

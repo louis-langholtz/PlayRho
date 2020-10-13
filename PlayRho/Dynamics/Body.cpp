@@ -35,16 +35,16 @@
 namespace playrho {
 namespace d2 {
 
-static_assert(std::is_nothrow_default_constructible<Body>::value,
-              "Body must be nothrow default constructible!");
+static_assert(std::is_default_constructible<Body>::value,
+              "Body must be default constructible!");
 static_assert(std::is_copy_constructible<Body>::value,
               "Body must be copy constructible!");
-static_assert(std::is_nothrow_move_constructible<Body>::value,
-              "Body must be nothrow move constructible!");
+static_assert(std::is_move_constructible<Body>::value,
+              "Body must be move constructible!");
 static_assert(std::is_copy_assignable<Body>::value,
               "Body must be copy assignable!");
-static_assert(std::is_nothrow_move_assignable<Body>::value,
-              "Body must be nothrow move assignable!");
+static_assert(std::is_move_assignable<Body>::value,
+              "Body must be move assignable!");
 static_assert(std::is_nothrow_destructible<Body>::value,
               "Body must be nothrow destructible!");
 
