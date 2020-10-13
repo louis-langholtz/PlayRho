@@ -1166,7 +1166,12 @@ static bool MenuUI()
     {
         shouldQuit = true;
     }
-    
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::ShowTooltip("Quits the application. This can also be invoked by pressing the 'ESC' key.",
+                           tooltipWrapWidth);
+    }
+
     ImGui::PopAllowKeyboardFocus();
     
     return shouldQuit;
