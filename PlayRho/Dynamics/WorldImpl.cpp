@@ -2543,8 +2543,8 @@ void WorldImpl::SetMassData(BodyID id, const MassData& massData)
     auto& body = GetBody(id);
     if (!body.IsAccelerable())
     {
-        body.SetInvMass(Real{0});
-        body.SetInvRotI(Real{0});
+        body.SetInvMass(InvMass{});
+        body.SetInvRotI(InvRotInertia{});
         body.SetSweep(Sweep{Position{body.GetLocation(), body.GetAngle()}});
         body.UnsetMassDataDirty();
         return;

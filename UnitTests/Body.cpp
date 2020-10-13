@@ -928,7 +928,7 @@ TEST(Body, GetPositionFF)
     SetAngle(world, body, position.angular);
     EXPECT_EQ(GetPosition(world, body).linear, position.linear);
     EXPECT_NEAR(static_cast<double>(Real(GetPosition(world, body).angular / Degree)),
-                static_cast<double>(Real(position.angular) / Degree),
+                static_cast<double>(Real(position.angular / Degree)),
                 0.0001);
 }
 
