@@ -51,7 +51,7 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
     using super = JointBuilder<DistanceJointConf>;
 
     /// @brief Default constructor.
-    constexpr DistanceJointConf() noexcept = default;
+    constexpr DistanceJointConf() = default;
 
     /// @brief Copy constructor.
     DistanceJointConf(const DistanceJointConf& copy) = default;
