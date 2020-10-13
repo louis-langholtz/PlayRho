@@ -56,7 +56,7 @@ struct RopeJointConf : public JointBuilder<RopeJointConf>
     using super = JointBuilder<RopeJointConf>;
 
     /// @brief Default constructor.
-    constexpr RopeJointConf() noexcept = default;
+    constexpr RopeJointConf() = default;
 
     /// @brief Initializing constructor.
     constexpr RopeJointConf(BodyID bodyA, BodyID bodyB) noexcept:

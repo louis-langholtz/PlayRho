@@ -94,7 +94,7 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
     
     /// @brief Mass-spring-damper frequency.
     /// @note 0 disables softness.
-    NonNegative<Frequency> frequency = NonNegative<Frequency>{0_Hz};
+    NonNegative<Frequency> frequency{};
     
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.

@@ -54,7 +54,7 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     using super = JointBuilder<WheelJointConf>;
 
     /// @brief Default constructor.
-    constexpr WheelJointConf() noexcept = default;
+    constexpr WheelJointConf() = default;
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.

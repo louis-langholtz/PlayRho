@@ -56,7 +56,7 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     using super = JointBuilder<PrismaticJointConf>;
 
     /// @brief Default constructor.
-    constexpr PrismaticJointConf() noexcept = default;
+    constexpr PrismaticJointConf() = default;
 
     /// @brief Copy constructor.
     PrismaticJointConf(const PrismaticJointConf& copy) = default;

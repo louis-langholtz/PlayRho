@@ -50,7 +50,7 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     using super = JointBuilder<WeldJointConf>;
 
     /// @brief Default constructor.
-    constexpr WeldJointConf() noexcept = default;
+    constexpr WeldJointConf() = default;
 
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, and reference angle using a world
@@ -88,7 +88,7 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     /// @brief Mass-spring-damper frequency.
     /// @note Rotation only.
     /// @note Disable softness with a value of 0.
-    NonNegative<Frequency> frequency = 0_Hz;
+    NonNegative<Frequency> frequency{}; // 0_Hz
 
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.
