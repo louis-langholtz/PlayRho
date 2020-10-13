@@ -133,7 +133,7 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
 TargetJointConf GetTargetJointConf(const Joint& joint);
 
 /// @relatedalso TargetJointConf
-constexpr auto GetLocalAnchorA(const TargetJointConf& conf) noexcept
+constexpr auto GetLocalAnchorA(const TargetJointConf&) noexcept
 {
     return Length2{};
 }

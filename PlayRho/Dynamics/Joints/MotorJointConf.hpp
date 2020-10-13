@@ -123,13 +123,13 @@ MotorJointConf GetMotorJointConf(const Joint& joint) noexcept;
 MotorJointConf GetMotorJointConf(const World& world, BodyID bA, BodyID bB);
 
 /// @relatedalso MotorJointConf
-constexpr auto GetLocalAnchorA(const MotorJointConf& conf) noexcept
+constexpr auto GetLocalAnchorA(const MotorJointConf&) noexcept
 {
     return Length2{};
 }
 
 /// @relatedalso MotorJointConf
-constexpr auto GetLocalAnchorB(const MotorJointConf& conf) noexcept
+constexpr auto GetLocalAnchorB(const MotorJointConf&) noexcept
 {
     return Length2{};
 }
