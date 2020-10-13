@@ -43,8 +43,8 @@ TEST(MotorJointConf, ByteSize)
             EXPECT_EQ(sizeof(MotorJointConf), std::size_t(104));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(88)); break;
-        case 16: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(144)); break;
+        case  8: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(184)); break;
+        case 16: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(352)); break;
         default: FAIL(); break;
     }
 }

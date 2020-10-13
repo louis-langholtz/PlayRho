@@ -48,8 +48,8 @@ TEST(DistanceJointConf, ByteSize)
             EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(88));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(176)); break;
-        case 16: EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(320)); break;
+        case  8: EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(152)); break;
+        case 16: EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(288)); break;
         default: FAIL(); break;
     }
 }

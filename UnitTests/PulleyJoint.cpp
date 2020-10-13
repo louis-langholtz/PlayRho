@@ -60,8 +60,8 @@ TEST(PulleyJointConf, ByteSize)
             EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(104));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(216)); break;
-        case 16: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(400)); break;
+        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(192)); break;
+        case 16: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(368)); break;
         default: FAIL(); break;
     }
 }

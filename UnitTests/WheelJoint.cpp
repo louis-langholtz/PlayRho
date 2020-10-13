@@ -44,8 +44,8 @@ TEST(WheelJointConf, ByteSize)
             EXPECT_EQ(sizeof(WheelJointConf), std::size_t(136));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(WheelJointConf), std::size_t(128)); break;
-        case 16: EXPECT_EQ(sizeof(WheelJointConf), std::size_t(224)); break;
+        case  8: EXPECT_EQ(sizeof(WheelJointConf), std::size_t(248)); break;
+        case 16: EXPECT_EQ(sizeof(WheelJointConf), std::size_t(480)); break;
         default: FAIL(); break;
     }
 }

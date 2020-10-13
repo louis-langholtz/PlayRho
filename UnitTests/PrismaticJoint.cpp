@@ -41,7 +41,7 @@ TEST(PrismaticJointConf, ByteSize)
             EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(168));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(328)); break;
+        case  8: EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(320)); break;
         case 16: EXPECT_EQ(sizeof(PrismaticJointConf), std::size_t(624)); break;
         default: FAIL(); break;
     }

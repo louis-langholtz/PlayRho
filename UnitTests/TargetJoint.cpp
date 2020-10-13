@@ -59,8 +59,8 @@ TEST(TargetJointConf, ByteSize)
     switch (sizeof(Real))
     {
         case  4: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(88)); break;
-        case  8: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(184)); break;
-        case 16: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(336)); break;
+        case  8: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(160)); break;
+        case 16: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(304)); break;
         default: FAIL(); break;
     }
 }
