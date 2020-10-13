@@ -25,6 +25,19 @@
 namespace playrho {
 namespace d2 {
 
+static_assert(std::is_default_constructible<JointConf>::value,
+              "JointConf should be default constructible!");
+static_assert(std::is_copy_constructible<JointConf>::value,
+              "JointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<JointConf>::value,
+              "JointConf should be copy assignable!");
+static_assert(std::is_nothrow_move_constructible<JointConf>::value,
+              "JointConf should be nothrow move constructible!");
+static_assert(std::is_nothrow_move_assignable<JointConf>::value,
+              "JointConf should be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<JointConf>::value,
+              "JointConf should be nothrow destructible!");
+
 void Set(JointConf& def, const Joint& joint) noexcept
 {
     def.userData = GetUserData(joint);

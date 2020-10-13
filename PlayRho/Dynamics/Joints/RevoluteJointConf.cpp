@@ -73,6 +73,19 @@ Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA,
 
 } // unnamed namespace
 
+static_assert(std::is_default_constructible<RevoluteJointConf>::value,
+              "RevoluteJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<RevoluteJointConf>::value,
+              "RevoluteJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<RevoluteJointConf>::value,
+              "RevoluteJointConf should be copy assignable!");
+static_assert(std::is_nothrow_move_constructible<RevoluteJointConf>::value,
+              "RevoluteJointConf should be nothrow move constructible!");
+static_assert(std::is_nothrow_move_assignable<RevoluteJointConf>::value,
+              "RevoluteJointConf should be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<RevoluteJointConf>::value,
+              "RevoluteJointConf should be nothrow destructible!");
+
 // Point-to-point constraint
 // C = p2 - p1
 // Cdot = v2 - v1
@@ -320,7 +333,7 @@ bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodie
                 break;
             }
             default:
-                assert(object.limitState == e_equalLimits);
+                assert(object.limitState == LimitState::e_equalLimits);
                 object.impulse += impulse;
                 break;
         }
@@ -408,7 +421,7 @@ bool SolvePosition(const RevoluteJointConf& object, std::vector<BodyConstraint>&
             }
             default:
             {
-                assert(object.limitState == e_equalLimits);
+                assert(object.limitState == LimitState::e_equalLimits);
                 // Prevent large angular corrections
                 const auto C = std::clamp(angle - object.lowerAngle,
                                           -conf.maxAngularCorrection, conf.maxAngularCorrection);

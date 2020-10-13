@@ -30,6 +30,19 @@
 namespace playrho {
 namespace d2 {
 
+static_assert(std::is_default_constructible<WheelJointConf>::value,
+              "WheelJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<WheelJointConf>::value,
+              "WheelJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<WheelJointConf>::value,
+              "WheelJointConf should be copy assignable!");
+static_assert(std::is_nothrow_move_constructible<WheelJointConf>::value,
+              "WheelJointConf should be nothrow move constructible!");
+static_assert(std::is_nothrow_move_assignable<WheelJointConf>::value,
+              "WheelJointConf should be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<WheelJointConf>::value,
+              "WheelJointConf should be nothrow destructible!");
+
 // Linear constraint (point-to-line)
 // d = pB - pA = xB + rB - xA - rA
 // C = dot(ay, d)

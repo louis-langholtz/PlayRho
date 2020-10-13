@@ -30,6 +30,19 @@
 namespace playrho {
 namespace d2 {
 
+static_assert(std::is_default_constructible<DistanceJointConf>::value,
+              "DistanceJointConf must be nothrow default constructible!");
+static_assert(std::is_copy_constructible<DistanceJointConf>::value,
+              "DistanceJointConf must be copy constructible!");
+static_assert(std::is_nothrow_move_constructible<DistanceJointConf>::value,
+              "DistanceJointConf must be nothrow move constructible!");
+static_assert(std::is_copy_assignable<DistanceJointConf>::value,
+              "DistanceJointConf must be copy assignable!");
+static_assert(std::is_nothrow_move_assignable<DistanceJointConf>::value,
+              "DistanceJointConf must be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<DistanceJointConf>::value,
+              "DistanceJointConf must be nothrow destructible!");
+
 // 1-D constrained system
 // m (v2 - v1) = lambda
 // v2 + (beta/h) * x1 + gamma * lambda = 0, gamma has units of inverse mass.

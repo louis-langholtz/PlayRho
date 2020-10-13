@@ -33,6 +33,19 @@
 namespace playrho {
 namespace d2 {
 
+static_assert(std::is_default_constructible<GearJointConf>::value,
+              "GearJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<GearJointConf>::value,
+              "GearJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<GearJointConf>::value,
+              "GearJointConf should be copy assignable!");
+static_assert(std::is_nothrow_move_constructible<GearJointConf>::value,
+              "GearJointConf should be nothrow move constructible!");
+static_assert(std::is_nothrow_move_assignable<GearJointConf>::value,
+              "GearJointConf should be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<GearJointConf>::value,
+              "GearJointConf should be nothrow destructible!");
+
 // Gear Joint:
 // C0 = (coordinate1 + ratio * coordinate2)_initial
 // C = (coordinate1 + ratio * coordinate2) - C0 = 0
@@ -91,7 +104,7 @@ GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Rea
     def.type2 = GetType(world, id2);
     if (def.type2 == GetTypeID<RevoluteJointConf>()) {
         def.referenceAngle2 = GetReferenceAngle(world, id2);
-        scalar1 = (GetAngle(world, def.bodyB) - GetAngle(world, def.bodyD) - def.referenceAngle1) / Radian;
+        scalar2 = (GetAngle(world, def.bodyB) - GetAngle(world, def.bodyD) - def.referenceAngle1) / Radian;
     } else if (def.type2 == GetTypeID<PrismaticJointConf>()) {
         const auto xfB = GetTransformation(world, def.bodyB);
         const auto xfD = GetTransformation(world, def.bodyD);

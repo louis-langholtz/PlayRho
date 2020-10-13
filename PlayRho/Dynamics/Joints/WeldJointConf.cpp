@@ -72,6 +72,19 @@ Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA,
 
 } // unnamed namespace
 
+static_assert(std::is_default_constructible<WeldJointConf>::value,
+              "WeldJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<WeldJointConf>::value,
+              "WeldJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<WeldJointConf>::value,
+              "WeldJointConf should be copy assignable!");
+static_assert(std::is_nothrow_move_constructible<WeldJointConf>::value,
+              "WeldJointConf should be nothrow move constructible!");
+static_assert(std::is_nothrow_move_assignable<WeldJointConf>::value,
+              "WeldJointConf should be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<WeldJointConf>::value,
+              "WeldJointConf should be nothrow destructible!");
+
 // Point-to-point constraint
 // C = p2 - p1
 // Cdot = v2 - v1

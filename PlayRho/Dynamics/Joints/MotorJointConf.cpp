@@ -30,6 +30,19 @@
 namespace playrho {
 namespace d2 {
 
+static_assert(std::is_default_constructible<MotorJointConf>::value,
+              "MotorJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<MotorJointConf>::value,
+              "MotorJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<MotorJointConf>::value,
+              "MotorJointConf should be copy assignable!");
+static_assert(std::is_nothrow_move_constructible<MotorJointConf>::value,
+              "MotorJointConf should be nothrow move constructible!");
+static_assert(std::is_nothrow_move_assignable<MotorJointConf>::value,
+              "MotorJointConf should be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<MotorJointConf>::value,
+              "MotorJointConf should be nothrow destructible!");
+
 // Point-to-point constraint
 // Cdot = v2 - v1
 //      = v2 + cross(w2, r2) - v1 - cross(w1, r1)

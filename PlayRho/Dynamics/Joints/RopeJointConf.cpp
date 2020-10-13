@@ -30,6 +30,19 @@
 namespace playrho {
 namespace d2 {
 
+static_assert(std::is_default_constructible<RopeJointConf>::value,
+              "RopeJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<RopeJointConf>::value,
+              "RopeJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<RopeJointConf>::value,
+              "RopeJointConf should be copy assignable!");
+static_assert(std::is_nothrow_move_constructible<RopeJointConf>::value,
+              "RopeJointConf should be nothrow move constructible!");
+static_assert(std::is_nothrow_move_assignable<RopeJointConf>::value,
+              "RopeJointConf should be nothrow move assignable!");
+static_assert(std::is_nothrow_destructible<RopeJointConf>::value,
+              "RopeJointConf should be nothrow destructible!");
+
 RopeJointConf GetRopeJointConf(const Joint& joint) noexcept
 {
     return TypeCast<RopeJointConf>(joint);
