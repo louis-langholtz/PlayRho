@@ -46,51 +46,10 @@ TEST(GearJointConf, ByteSize)
     }
 }
 
-TEST(GearJointConf, Traits)
-{
-    EXPECT_FALSE(IsIterable<GearJointConf>::value);
-
-    EXPECT_FALSE(std::is_default_constructible<GearJointConf>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<GearJointConf>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<GearJointConf>::value);
-    
-    EXPECT_FALSE(std::is_constructible<GearJointConf>::value);
-    EXPECT_FALSE(std::is_nothrow_constructible<GearJointConf>::value);
-    EXPECT_FALSE(std::is_trivially_constructible<GearJointConf>::value);
-    
-    EXPECT_TRUE(std::is_copy_constructible<GearJointConf>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_constructible<GearJointConf>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<GearJointConf>::value);
-    
-    EXPECT_TRUE(std::is_copy_assignable<GearJointConf>::value);
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<GearJointConf>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<GearJointConf>::value);
-    
-    EXPECT_TRUE(std::is_destructible<GearJointConf>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<GearJointConf>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<GearJointConf>::value);
-}
 #if 0
 TEST(GearJointConf, ConstructionRequiresNonNullJoints)
 {
     EXPECT_THROW(GearJointConf(nullptr, nullptr), NonNull<Joint*>::checker_type::exception_type);
-}
-
-TEST(GearJoint, ByteSize)
-{
-    switch (sizeof(Real))
-    {
-        case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(GearJoint), std::size_t(144));
-#else
-            EXPECT_EQ(sizeof(GearJoint), std::size_t(184));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(GearJoint), std::size_t(288)); break;
-        case 16: EXPECT_EQ(sizeof(GearJoint), std::size_t(496)); break;
-        default: FAIL(); break;
-    }
 }
 
 TEST(GearJoint, IsOkay)
