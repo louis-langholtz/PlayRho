@@ -404,16 +404,16 @@ Test::Test(Conf conf):
     m_numTouchingPerStep(m_maxHistory, 0u)
 {
     m_destructionListener.test = this;
-    m_world.SetFixtureDestructionListener([&](FixtureID id){
+    m_world.SetFixtureDestructionListener([this](FixtureID id){
         m_destructionListener.SayGoodbye(id);
     });
-    m_world.SetJointDestructionListener([&](JointID id){
+    m_world.SetJointDestructionListener([this](JointID id){
         m_destructionListener.SayGoodbye(id);
     });
-    m_world.SetBeginContactListener([&](ContactID id){
+    m_world.SetBeginContactListener([this](ContactID id){
         BeginContact(id);
     });
-    m_world.SetEndContactListener([&](ContactID id){
+    m_world.SetEndContactListener([this](ContactID id){
         EndContact(id);
     });
     m_world.SetPreSolveContactListener([this](ContactID id, const Manifold& manifold) {
