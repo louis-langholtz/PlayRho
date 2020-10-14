@@ -164,7 +164,6 @@ bool RayCast(const DynamicTree& tree, RayCastInput input,
 ///
 /// @param world The world instance to raycast in.
 /// @param input Ray cast input data.
-/// @param world The world instance everything else is relative to.
 /// @param callback A user implemented callback function.
 ///
 /// @return <code>true</code> if terminated by callback, <code>false</code> otherwise.
