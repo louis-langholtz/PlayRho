@@ -533,43 +533,32 @@ WorldImpl::~WorldImpl() noexcept
 
 void WorldImpl::Clear() noexcept
 {
-    m_proxyKeys.clear();
-    m_fixturesForProxies.clear();
-    m_bodiesForProxies.clear();
-
-    const auto joints = m_joints;
-    m_joints.clear();
-    for_each(cbegin(joints), cend(joints), [this](const auto& id) {
-        if (m_jointDestructionListener) {
+    if (m_jointDestructionListener) {
+        for_each(cbegin(m_joints), cend(m_joints), [this](const auto& id) {
             m_jointDestructionListener(id);
-        }
-    });
-
-    const auto bodies = m_bodies;
-    m_bodies.clear();
-    for (const auto& body: bodies)
-    {
-        auto& b = m_bodyBuffer[UnderlyingValue(body)];
-        b.ClearContacts();
-        b.ClearJoints();
-        for (const auto& f: b.GetFixtures()) {
-            if (m_fixtureDestructionListener) {
-                m_fixtureDestructionListener(f);
-            }
-            DestroyProxies(m_fixtureBuffer[UnderlyingValue(f)], m_proxies, m_tree);
-        }
-        b.ClearFixtures();
+        });
     }
-
-    assert(empty(m_proxies));
+    if (m_fixtureDestructionListener) {
+        for_each(cbegin(m_bodies), cend(m_bodies), [this](const auto& id) {
+            const auto& b = m_bodyBuffer[UnderlyingValue(id)];
+            for (const auto& fixture: b.GetFixtures()) {
+                m_fixtureDestructionListener(fixture);
+            }
+        });
+    }
     m_contacts.clear();
-
-    m_tree = DynamicTree{}; // TODO: clear instead
+    m_joints.clear();
+    m_bodies.clear();
+    m_bodiesForProxies.clear();
+    m_fixturesForProxies.clear();
+    m_proxies.clear();
+    m_proxyKeys.clear();
+    m_tree.Clear();
     m_manifoldBuffer.clear();
     m_contactBuffer.clear();
+    m_jointBuffer.clear();
     m_fixtureBuffer.clear();
     m_bodyBuffer.clear();
-    m_jointBuffer.clear();
 }
 
 BodyID WorldImpl::CreateBody(const BodyConf& def)
@@ -898,14 +887,14 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     // This builds the logical set of bodies, contacts, and joints eligible for resolution.
     // As bodies, contacts, or joints get added to resolution islands, they're essentially
     // removed from this eligible set.
-    for_each(begin(m_bodies), end(m_bodies), [&](const auto& id) {
-        m_bodyBuffer[UnderlyingValue(id)].UnsetIslandedFlag();
+    for_each(begin(m_bodies), end(m_bodies), [this](const auto& element) {
+        m_bodyBuffer[UnderlyingValue(element)].UnsetIslandedFlag();
     });
-    for_each(begin(m_contacts), end(m_contacts), [this](const auto& c) {
-        m_contactBuffer[UnderlyingValue(std::get<ContactID>(c))].UnsetIslanded();
+    for_each(begin(m_contacts), end(m_contacts), [this](const auto& element) {
+        m_contactBuffer[UnderlyingValue(std::get<ContactID>(element))].UnsetIslanded();
     });
-    for_each(begin(m_joints), end(m_joints), [this](const auto& j) {
-        UnsetIslanded(m_jointBuffer[UnderlyingValue(j)]);
+    for_each(begin(m_joints), end(m_joints), [this](const auto& element) {
+        UnsetIslanded(m_jointBuffer[UnderlyingValue(element)]);
     });
 
 #if defined(DO_THREADED)
@@ -913,7 +902,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     futures.reserve(remNumBodies);
 #endif
     // Build and simulate all awake islands.
-    for (auto&& b: m_bodies)
+    for (const auto& b: m_bodies)
     {
         auto& body = m_bodyBuffer[UnderlyingValue(b)];
         assert(!body.IsAwake() || body.IsSpeedable());
@@ -946,14 +935,15 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     }
 #endif
 
-    for (auto&& b: m_bodies)
+    for (const auto& b: m_bodies)
     {
         auto& body = m_bodyBuffer[UnderlyingValue(b)];
         // A non-static body that was in an island may have moved.
         if (body.IsIslanded() && body.IsSpeedable())
         {
             // Update fixtures (for broad-phase).
-            stats.proxiesMoved += Synchronize(body, GetTransform0(body.GetSweep()), body.GetTransformation(),
+            stats.proxiesMoved += Synchronize(body, GetTransform0(body.GetSweep()),
+                                              body.GetTransformation(),
                                               conf.displaceMultiplier, conf.aabbExtension);
         }
     }
@@ -1269,7 +1259,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
         stats.islandsFound += islandsFound;
 
         // Reset island flags and synchronize broad-phase proxies.
-        for (auto&& b: m_bodies)
+        for (const auto& b: m_bodies)
         {
             auto& body = m_bodyBuffer[UnderlyingValue(b)];
             if (body.IsIslanded())
@@ -2411,8 +2401,8 @@ void WorldImpl::InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture
 }
 
 ContactCounter WorldImpl::Synchronize(const Body& body,
-                                        const Transformation& xfm1, const Transformation& xfm2,
-                                        Real multiplier, Length extension)
+                                      const Transformation& xfm1, const Transformation& xfm2,
+                                      Real multiplier, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
     assert(::playrho::IsValid(xfm2));
