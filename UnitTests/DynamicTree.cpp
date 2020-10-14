@@ -917,6 +917,55 @@ TEST(DynamicTree, UpdateLeaf)
     EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
 }
 
+TEST(DynamicTree, Clear)
+{
+    DynamicTree foo{};
+    ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(0));
+    ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    ASSERT_EQ(foo.GetFreeIndex(), DynamicTree::GetInvalidSize());
+    ASSERT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+
+    EXPECT_NO_THROW(foo.Clear());
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::GetInvalidSize());
+    EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+
+    ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData{}));
+    ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+    ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
+    ASSERT_EQ(foo.GetFreeIndex(), DynamicTree::Size(1));
+    ASSERT_EQ(foo.GetRootIndex(), DynamicTree::Size(0));
+
+    EXPECT_NO_THROW(foo.Clear());
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+
+    const auto capacity = DynamicTree::GetDefaultInitialNodeCapacity();
+    auto numLeafs = foo.GetLeafCount();
+    while (foo.GetNodeCount() < capacity)
+    {
+        ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData{}));
+        ASSERT_GT(foo.GetLeafCount(), numLeafs);
+        ASSERT_GE(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+        numLeafs = foo.GetLeafCount();
+    }
+    ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity() * 2u);
+
+    EXPECT_NO_THROW(foo.Clear());
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity() * 2u);
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+}
+
 TEST(DynamicTree, QueryFF)
 {
     auto foo = DynamicTree{};

@@ -73,24 +73,24 @@ class DynamicTree
 public:
     /// @brief Size type.
     using Size = ContactCounter;
-    
+
     class TreeNode;
     struct UnusedData;
     struct BranchData;
     struct LeafData;
     union VariantData;
-    
+
     /// @brief Gets the invalid size value.
     static constexpr Size GetInvalidSize() noexcept
     {
         return static_cast<Size>(-1);
     }
-    
+
     /// @brief Type for heights.
     /// @note The maximum height of a tree can never exceed half of the max value of the
     ///   <code>Size</code> type due to the binary nature of this tree structure.
     using Height = ContactCounter;
-    
+
     /// @brief Invalid height constant value.
     static constexpr auto InvalidHeight = static_cast<Height>(-1);
 
@@ -99,19 +99,19 @@ public:
     {
         return InvalidHeight;
     }
-    
+
     /// @brief Gets whether the given height is the height for an "unused" node.
     static constexpr bool IsUnused(Height value) noexcept
     {
         return value == GetInvalidHeight();
     }
-    
+
     /// @brief Gets whether the given height is the height for a "leaf" node.
     static constexpr bool IsLeaf(Height value) noexcept
     {
         return value == 0;
     }
-    
+
     /// @brief Gets whether the given height is a height for a "branch" node.
     static constexpr bool IsBranch(Height value) noexcept
     {
@@ -120,10 +120,10 @@ public:
 
     /// @brief Gets the default initial node capacity.
     static constexpr Size GetDefaultInitialNodeCapacity() noexcept;
-    
+
     /// @brief Non-throwing default constructor.
     DynamicTree() noexcept;
-    
+
     /// @brief Size initializing constructor.
     /// @param nodeCapacity Node capacity. If zero, this is the same as calling
     ///   the default constructor except this isn't recognized as non-throwing.
@@ -134,7 +134,7 @@ public:
 
     /// @brief Copy constructor.
     DynamicTree(const DynamicTree& other);
-    
+
     /// @brief Move constructor.
     DynamicTree(DynamicTree&& other) noexcept;
 
@@ -145,7 +145,18 @@ public:
     /// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Copy-and-swap
     /// @see https://stackoverflow.com/a/3279550/7410358
     DynamicTree& operator= (DynamicTree other) noexcept;
-    
+
+    /// @brief Clears the dynamic tree.
+    /// @details Clears the leafs and branches from this tree. This does not deallocate any
+    ///    memory nor reduce this tree's capacity; this only reduces this tree's usage of that
+    ///    capacity.
+    /// @post <code>GetLeafCount()</code> will return 0.
+    /// @post <code>GetNodeCount()</code> will return 0.
+    /// @post <code>GetRootIndex()</code> will return <code>GetInvalidSize()</code>.
+    /// @post <code>GetFreeIndex()</code> will return 0 if this tree had any node capacity,
+    ///   else the value of <code>GetInvalidSize()</code>.
+    void Clear() noexcept;
+
     /// @brief Creates a new leaf node.
     /// @details Creates a leaf node for a tight fitting AABB and the given data.
     /// @warning Behavior is undefined unless the number of nodes already allocated (as reported by
@@ -191,7 +202,7 @@ public:
     /// @brief Gets the height value for the identified node.
     /// @warning Behavior is undefined if the given index is not valid.
     Height GetHeight(Size index) const noexcept;
-    
+
     /// @brief Gets the "other" index for the node at the given index.
     /// @note For unused nodes, this is the index to the "next" unused node.
     /// @note For used nodes (leaf or branch nodes), this is the index to the "parent" node.
@@ -199,7 +210,7 @@ public:
     /// @pre This tree has a node capacity greater than the given index.
     /// @return The invalid index value or a value less than the node capacity.
     Size GetOther(Size index) const noexcept;
-    
+
     /// @brief Gets the branch data for the identified node.
     /// @warning Behavior is undefined if the given index in not a valid branch node.
     BranchData GetBranchData(Size index) const noexcept;
@@ -231,11 +242,11 @@ public:
     /// @brief Gets the current count of allocated nodes.
     /// @return Count of existing proxies (count of nodes currently allocated).
     Size GetNodeCount() const noexcept;
-    
+
     /// @brief Gets the current leaf node count.
     /// @details Gets the current leaf node count.
     Size GetLeafCount() const noexcept;
-    
+
     /// @brief Finds first node which references the given index.
     /// @note Primarily intended for unit testing and/or debugging.
     /// @return Index of node referencing the given index, or the value of
@@ -246,7 +257,7 @@ public:
     /// @note This satisfies the <code>Swappable</code> named requirement.
     /// @see https://en.cppreference.com/w/cpp/named_req/Swappable
     friend void swap(DynamicTree& lhs, DynamicTree& rhs) noexcept;
-    
+
 private:
     
     /// @brief Sets the node capacity to the given value.
@@ -427,7 +438,7 @@ class DynamicTree::TreeNode
 {
 public:
     ~TreeNode() = default;
-    
+
     /// @brief Copy constructor.
     constexpr TreeNode(const TreeNode& other) = default;
 
@@ -448,7 +459,7 @@ public:
     {
         // Intentionally empty.
     }
-    
+
     /// @brief Initializing constructor.
     constexpr TreeNode(const BranchData& value, AABB aabb, Height height,
                        Size other = DynamicTree::GetInvalidSize()) noexcept:
@@ -458,10 +469,10 @@ public:
         assert(value.child1 != GetInvalidSize());
         assert(value.child2 != GetInvalidSize());
     }
-    
+
     /// @brief Copy assignment operator.
     TreeNode& operator= (const TreeNode& other) = default;
-    
+
     /// @brief Gets the node "height".
     constexpr Height GetHeight() const noexcept
     {

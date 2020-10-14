@@ -518,6 +518,28 @@ void DynamicTree::FreeNode(Size index) noexcept
     --m_nodeCount;
 }
 
+void DynamicTree::Clear() noexcept
+{
+    m_nodeCount = Size{0u};
+    m_leafCount = Size{0u};
+    m_rootIndex = GetInvalidSize();
+    if (m_nodeCapacity && m_nodes) {
+        m_freeIndex = Size{0u};
+        const auto endCapacity = m_nodeCapacity - 1;
+        for (auto i = Size{0u}; i < endCapacity; ++i)
+        {
+            m_nodes[i] = TreeNode{i + 1};
+        }
+        m_nodes[endCapacity] = TreeNode{};
+    }
+    else {
+        Free(m_nodes);
+        m_nodes = nullptr;
+        m_nodeCapacity = Size{0u};
+        m_freeIndex = GetInvalidSize();
+    }
+}
+
 DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept
 {
     const auto it = std::find_if(m_nodes, m_nodes + m_nodeCapacity, [&](TreeNode& node) {
