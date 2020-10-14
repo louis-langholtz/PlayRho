@@ -25,8 +25,8 @@
 #include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
@@ -62,6 +62,159 @@ static_assert(std::is_nothrow_destructible<Joint>::value,
 BodyConstraint& At(std::vector<BodyConstraint>& container, BodyID key)
 {
     return container.at(UnderlyingValue(key));
+}
+
+Length2 GetLocalAnchorA(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<DistanceJointConf>()) {
+        return GetLocalAnchorA(TypeCast<DistanceJointConf>(object));
+    }
+    if (type == GetTypeID<FrictionJointConf>()) {
+        return GetLocalAnchorA(TypeCast<FrictionJointConf>(object));
+    }
+    if (type == GetTypeID<GearJointConf>()) {
+        return GetLocalAnchorA(TypeCast<GearJointConf>(object));
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetLocalAnchorA(TypeCast<PrismaticJointConf>(object));
+    }
+    if (type == GetTypeID<PulleyJointConf>()) {
+        return GetLocalAnchorA(TypeCast<PulleyJointConf>(object));
+    }
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetLocalAnchorA(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<RopeJointConf>()) {
+        return GetLocalAnchorA(TypeCast<RopeJointConf>(object));
+    }
+    if (type == GetTypeID<WeldJointConf>()) {
+        return GetLocalAnchorA(TypeCast<WeldJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetLocalAnchorA(TypeCast<WheelJointConf>(object));
+    }
+    // TODO: consider if throwing invalid_argument more appropriate.
+    return Length2{};
+}
+
+Length2 GetLocalAnchorB(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<DistanceJointConf>()) {
+        return GetLocalAnchorB(TypeCast<DistanceJointConf>(object));
+    }
+    if (type == GetTypeID<FrictionJointConf>()) {
+        return GetLocalAnchorB(TypeCast<FrictionJointConf>(object));
+    }
+    if (type == GetTypeID<GearJointConf>()) {
+        return GetLocalAnchorB(TypeCast<GearJointConf>(object));
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetLocalAnchorB(TypeCast<PrismaticJointConf>(object));
+    }
+    if (type == GetTypeID<PulleyJointConf>()) {
+        return GetLocalAnchorB(TypeCast<PulleyJointConf>(object));
+    }
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetLocalAnchorB(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<RopeJointConf>()) {
+        return GetLocalAnchorB(TypeCast<RopeJointConf>(object));
+    }
+    if (type == GetTypeID<TargetJointConf>()) {
+        return GetLocalAnchorB(TypeCast<TargetJointConf>(object));
+    }
+    if (type == GetTypeID<WeldJointConf>()) {
+        return GetLocalAnchorB(TypeCast<WeldJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetLocalAnchorB(TypeCast<WheelJointConf>(object));
+    }
+    // TODO: consider if throwing invalid_argument more appropriate.
+    return Length2{};
+}
+
+Momentum2 GetLinearReaction(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<DistanceJointConf>()) {
+        return GetLinearReaction(TypeCast<DistanceJointConf>(object));
+    }
+    if (type == GetTypeID<FrictionJointConf>()) {
+        return GetLinearReaction(TypeCast<FrictionJointConf>(object));
+    }
+    if (type == GetTypeID<GearJointConf>()) {
+        return GetLinearReaction(TypeCast<GearJointConf>(object));
+    }
+    if (type == GetTypeID<MotorJointConf>()) {
+        return GetLinearReaction(TypeCast<MotorJointConf>(object));
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetLinearReaction(TypeCast<PrismaticJointConf>(object));
+    }
+    if (type == GetTypeID<PulleyJointConf>()) {
+        return GetLinearReaction(TypeCast<PulleyJointConf>(object));
+    }
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetLinearReaction(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<RopeJointConf>()) {
+        return GetLinearReaction(TypeCast<RopeJointConf>(object));
+    }
+    if (type == GetTypeID<TargetJointConf>()) {
+        return GetLinearReaction(TypeCast<TargetJointConf>(object));
+    }
+    if (type == GetTypeID<WeldJointConf>()) {
+        return GetLinearReaction(TypeCast<WeldJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetLinearReaction(TypeCast<WheelJointConf>(object));
+    }
+    // TODO: consider if throwing invalid_argument more appropriate.
+    // throw std::invalid_argument("GetLinearReaction not supported by joint type");
+    return {};
+}
+
+AngularMomentum GetAngularReaction(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<DistanceJointConf>()) {
+        return GetAngularReaction(TypeCast<DistanceJointConf>(object));
+    }
+    if (type == GetTypeID<FrictionJointConf>()) {
+        return GetAngularReaction(TypeCast<FrictionJointConf>(object));
+    }
+    if (type == GetTypeID<GearJointConf>()) {
+        return GetAngularReaction(TypeCast<GearJointConf>(object));
+    }
+    if (type == GetTypeID<MotorJointConf>()) {
+        return GetAngularReaction(TypeCast<MotorJointConf>(object));
+    }
+    if (type == GetTypeID<PrismaticJointConf>()) {
+        return GetAngularReaction(TypeCast<PrismaticJointConf>(object));
+    }
+    if (type == GetTypeID<PulleyJointConf>()) {
+        return GetAngularReaction(TypeCast<PulleyJointConf>(object));
+    }
+    if (type == GetTypeID<RevoluteJointConf>()) {
+        return GetAngularReaction(TypeCast<RevoluteJointConf>(object));
+    }
+    if (type == GetTypeID<RopeJointConf>()) {
+        return GetAngularReaction(TypeCast<RopeJointConf>(object));
+    }
+    if (type == GetTypeID<TargetJointConf>()) {
+        return GetAngularReaction(TypeCast<TargetJointConf>(object));
+    }
+    if (type == GetTypeID<WeldJointConf>()) {
+        return GetAngularReaction(TypeCast<WeldJointConf>(object));
+    }
+    if (type == GetTypeID<WheelJointConf>()) {
+        return GetAngularReaction(TypeCast<WheelJointConf>(object));
+    }
+    // TODO: consider if throwing invalid_argument more appropriate.
+    // throw std::invalid_argument("GetAngularReaction not supported by joint type");
+    return {};
 }
 
 Angle GetReferenceAngle(const Joint& object)

@@ -52,18 +52,6 @@ BodyID GetBodyA(const Joint& object) noexcept;
 /// @brief Gets the second body attached to this joint.
 BodyID GetBodyB(const Joint& object) noexcept;
 
-/// Get the anchor point on body-A in local coordinates.
-Length2 GetLocalAnchorA(const Joint& object) noexcept;
-
-/// Get the anchor point on body-B in local coordinates.
-Length2 GetLocalAnchorB(const Joint& object) noexcept;
-
-/// Get the linear reaction on body-B at the joint anchor.
-Momentum2 GetLinearReaction(const Joint& object) noexcept;
-
-/// Get the angular reaction on body-B.
-AngularMomentum GetAngularReaction(const Joint& object) noexcept;
-
 /// @brief Gets collide connected.
 /// @note Modifying the collide connect flag won't work correctly because
 ///   the flag is only checked when fixture AABBs begin to overlap.
@@ -197,26 +185,6 @@ public:
         return object.m_self? object.m_self->GetBodyB_(): InvalidBodyID;
     }
 
-    friend Length2 GetLocalAnchorA(const Joint& object) noexcept
-    {
-        return object.m_self? object.m_self->GetLocalAnchorA_(): Length2{};
-    }
-
-    friend Length2 GetLocalAnchorB(const Joint& object) noexcept
-    {
-        return object.m_self? object.m_self->GetLocalAnchorB_(): Length2{};
-    }
-
-    friend Momentum2 GetLinearReaction(const Joint& object) noexcept
-    {
-        return object.m_self? object.m_self->GetLinearReaction_(): Momentum2{};
-    }
-
-    friend AngularMomentum GetAngularReaction(const Joint& object) noexcept
-    {
-        return object.m_self? object.m_self->GetAngularReaction_(): AngularMomentum{};
-    }
-
     friend void* GetUserData(const Joint& object) noexcept
     {
         return object.m_self? object.m_self->GetUserData_(): nullptr;
@@ -302,11 +270,6 @@ private:
         virtual void SetIslanded_() noexcept = 0;
         virtual void UnsetIslanded_() noexcept = 0;
 
-        virtual Length2 GetLocalAnchorA_() const noexcept = 0;
-        virtual Length2 GetLocalAnchorB_() const noexcept = 0;
-        virtual Momentum2 GetLinearReaction_() const noexcept = 0;
-        virtual AngularMomentum GetAngularReaction_() const noexcept = 0;
-
         virtual void* GetUserData_() const noexcept = 0;
         virtual void SetUserData_(void* value) noexcept = 0;
 
@@ -382,26 +345,6 @@ private:
             UnsetIslanded(data);
         }
 
-        Length2 GetLocalAnchorA_() const noexcept override
-        {
-            return GetLocalAnchorA(data);
-        }
-
-        Length2 GetLocalAnchorB_() const noexcept override
-        {
-            return GetLocalAnchorB(data);
-        }
-
-        Momentum2 GetLinearReaction_() const noexcept override
-        {
-            return GetLinearReaction(data);
-        }
-
-        AngularMomentum GetAngularReaction_() const noexcept override
-        {
-            return GetAngularReaction(data);
-        }
-
         void* GetUserData_() const noexcept override
         {
             return GetUserData(data);
@@ -460,6 +403,18 @@ inline auto TypeCast(const Joint& value)
         throw std::bad_cast();
     return *tmp;
 }
+
+/// Get the anchor point on body-A in local coordinates.
+Length2 GetLocalAnchorA(const Joint& object);
+
+/// Get the anchor point on body-B in local coordinates.
+Length2 GetLocalAnchorB(const Joint& object);
+
+/// Get the linear reaction on body-B at the joint anchor.
+Momentum2 GetLinearReaction(const Joint& object);
+
+/// Get the angular reaction on body-B.
+AngularMomentum GetAngularReaction(const Joint& object);
 
 /// @relatedalso Joint
 Angle GetReferenceAngle(const Joint& object);
