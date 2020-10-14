@@ -188,6 +188,7 @@ public:
     /// @brief Move assignment operator.
     Shape& operator= (Shape&& other) = default;
 
+    /// @brief Move assignment operator.
     template <typename T, typename Tp = std::decay_t<T>,
         typename = std::enable_if_t<
             !std::is_same<Tp, Shape>::value && std::is_copy_constructible<Tp>::value
@@ -199,6 +200,7 @@ public:
         return *this;
     }
 
+    /// @brief Swap support.
     void swap(Shape& other) noexcept
     {
         std::swap(m_self, other.m_self);
@@ -453,6 +455,9 @@ private:
 /// @ingroup TestPointGroup
 bool TestPoint(const Shape& shape, Length2 point) noexcept;
 
+/// @brief Casts the specified instance into the template specified type.
+/// @throws std::bad_cast If the template specified type is not the type of data underlying
+///   the given instance.
 template <typename T>
 inline auto TypeCast(const Shape& shape)
 {

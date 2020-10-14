@@ -34,6 +34,7 @@ namespace playrho {
         /// @brief Iterator type.
         using iterator_type = IT;
 
+        /// @brief Value type alias.
         using value_type = decltype(*std::declval<iterator_type>());
 
         /// @brief Initializing constructor.

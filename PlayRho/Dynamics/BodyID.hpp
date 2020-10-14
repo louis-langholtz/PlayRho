@@ -29,6 +29,7 @@ namespace playrho {
 /// @brief Body identifier.
 using BodyID = strongtype::IndexingNamedType<BodyCounter, struct BodyIdentifier>;
 
+/// @brief Invalid body ID value.
 constexpr auto InvalidBodyID = static_cast<BodyID>(static_cast<BodyID::underlying_type>(-1));
 
 /// @brief Gets an invalid value for the BodyID type.

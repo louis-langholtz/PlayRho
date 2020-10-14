@@ -39,7 +39,7 @@ namespace d2 {
 class World;
 class Manifold;
 
-/// @copydoc World::IsTouching(ContactID)
+/// @copydoc World::IsTouching
 bool IsTouching(const World& world, ContactID id);
 
 /// @copydoc World::IsAwake(ContactID)

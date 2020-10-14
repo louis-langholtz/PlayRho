@@ -162,7 +162,7 @@ inline Force GetMotorForce(const World& world, JointID id, Frequency inv_dt)
 }
 
 /// @brief Gets the current motor torque for the given joint given the inverse time step.
-/// @relatedalso RevoluteJoint
+/// @relatedalso World
 inline Torque GetMotorTorque(const World& world, JointID id, Frequency inv_dt)
 {
     return GetAngularMotorImpulse(world, id) * inv_dt;

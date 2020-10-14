@@ -42,6 +42,7 @@ template <typename T, typename Tag>
 class NamedType
 {
 public:
+    /// @brief Underlying type alias.
     using underlying_type = T;
 
     /// @brief Default constructor.
@@ -173,11 +174,14 @@ struct GreaterThanEqualComparable
     }
 };
 
+/// @brief Support for hashing function.
 template <class NamedType>
 struct Hashable
 {
+    /// @brief Type alias for the underlying type of the template type.
     using type = UnderlyingType<NamedType>;
 
+    /// @brief Hashes the value given.
     friend ::std::size_t hash(const NamedType& v) noexcept
     {
         return ::std::hash<type>(UnderlyingValue(v));
@@ -214,6 +218,7 @@ namespace std {
 template <typename T, typename Tag>
 struct hash<::playrho::strongtype::IdentifyingNamedType<T, Tag>>
 {
+    /// @brief Hashing functor operator.
     ::std::size_t operator()(const ::playrho::strongtype::IdentifyingNamedType<T, Tag>& v) const noexcept
     {
         using type = ::playrho::strongtype::UnderlyingType<::playrho::strongtype::IdentifyingNamedType<T, Tag>>;
@@ -225,6 +230,7 @@ struct hash<::playrho::strongtype::IdentifyingNamedType<T, Tag>>
 template <typename T, typename Tag>
 struct hash<::playrho::strongtype::IndexingNamedType<T, Tag>>
 {
+    /// @brief Hashing functor operator.
     ::std::size_t operator()(const ::playrho::strongtype::IndexingNamedType<T, Tag>& v) const noexcept
     {
         using type = ::playrho::strongtype::UnderlyingType<::playrho::strongtype::IndexingNamedType<T, Tag>>;

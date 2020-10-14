@@ -230,8 +230,10 @@ inline bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noex
     return ShouldCollide(fixtureA.GetFilterData(), fixtureB.GetFilterData());
 }
 
+/// @brief Gets the default friction amount for the given fixtures.
 Real GetDefaultFriction(const Fixture& fixtureA, const Fixture& fixtureB);
 
+/// @brief Gets the default restitution amount for the given fixtures.
 Real GetDefaultRestitution(const Fixture& fixtureA, const Fixture& fixtureB);
 
 } // namespace d2

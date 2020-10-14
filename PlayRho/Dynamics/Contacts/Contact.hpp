@@ -572,11 +572,15 @@ inline void Contact::IncrementToiCount() noexcept
 
 // Free functions...
 
+/// @brief Gets the body A ID of the given contact.
+/// @relatedalso Contact
 inline BodyID GetBodyA(const Contact& contact) noexcept
 {
     return contact.GetBodyA();
 }
 
+/// @brief Gets the body B ID of the given contact.
+/// @relatedalso Contact
 inline BodyID GetBodyB(const Contact& contact) noexcept
 {
     return contact.GetBodyB();
@@ -624,11 +628,15 @@ inline bool IsActive(const Contact& contact) noexcept
     return contact.IsActive();
 }
 
+/// @brief Gets whether the given contact is enabled or not.
+/// @relatedalso Contact
 inline bool IsEnabled(const Contact& contact) noexcept
 {
     return contact.IsEnabled();
 }
 
+/// @brief Gets whether the given contact is for sensors or not.
+/// @relatedalso Contact
 inline bool IsSensor(const Contact& contact) noexcept
 {
     return contact.IsSensor();

@@ -23,11 +23,9 @@
 namespace playrho {
 
 /// @brief Body Type.
-///
 /// @note static: zero mass, zero velocity, may be manually moved
 /// @note kinematic: zero mass, non-zero velocity set by user, moved by solver
 /// @note dynamic: positive mass, non-zero velocity determined by forces, moved by solver
-///
 enum class BodyType
 {
     /// Static body type.

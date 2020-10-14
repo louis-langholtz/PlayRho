@@ -186,9 +186,11 @@ constexpr auto SetLength(DistanceJointConf& object, Length value) noexcept
 
 } // namespace d2
 
+/// @brief Type info specialization for <code>d2::DistanceJointConf</code>.
 template <>
 struct TypeInfo<d2::DistanceJointConf>
 {
+    /// @brief Provides a null-terminated string name for the type.
     static const char* name() noexcept {
         return "d2::DistanceJointConf";
     }

@@ -167,9 +167,11 @@ constexpr auto SetMaxTorque(FrictionJointConf& object, NonNegative<Torque> value
 
 } // namespace d2
 
+/// @brief Type info specialization for <code>d2::FrictionJointConf</code>.
 template <>
 struct TypeInfo<d2::FrictionJointConf>
 {
+    /// @brief Provides a null-terminated string name for the type.
     static const char* name() noexcept {
         return "d2::FrictionJointConf";
     }

@@ -683,6 +683,7 @@ public:
     /// @see bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
     void Refilter(FixtureID id);
 
+    /// @brief Gets the filter data for the identified fixture.
     Filter GetFilterData(FixtureID id) const;
 
     /// @brief Sets the contact filtering data.
@@ -703,7 +704,8 @@ public:
     /// @brief Gets the user data associated with the identified fixture.
     void* GetUserData(FixtureID id) const;
 
-    void SetUserData(FixtureID, void* value);
+    /// @brief Sets the user data associated with the identified fixture.
+    void SetUserData(FixtureID id, void* value);
 
     Shape GetShape(FixtureID id) const;
 

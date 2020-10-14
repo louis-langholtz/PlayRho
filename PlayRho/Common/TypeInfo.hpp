@@ -51,25 +51,31 @@ struct TypeInfo
 
 #ifndef USE_RTTI
 
+/// @brief Type info specialization for <code>float</code>.
 template <>
 struct TypeInfo<float>
 {
+    /// @brief Provides name of the type as a null-terminated string.
     static const char* name() noexcept {
         return "float";
     }
 };
 
+/// @brief Type info specialization for <code>double</code>.
 template <>
 struct TypeInfo<double>
 {
+    /// @brief Provides name of the type as a null-terminated string.
     static const char* name() noexcept {
         return "double";
     }
 };
 
+/// @brief Type info specialization for <code>long double</code>.
 template <>
 struct TypeInfo<long double>
 {
+    /// @brief Provides name of the type as a null-terminated string.
     static const char* name() noexcept {
         return "long double";
     }
@@ -80,6 +86,7 @@ struct TypeInfo<long double>
 /// @brief Type identifier.
 using TypeID = strongtype::IndexingNamedType<const char *(*)() noexcept, struct TypeIdentifier>;
 
+/// @brief Invalid type ID value.
 constexpr auto InvalidTypeID =
     static_cast<TypeID>(static_cast<TypeID::underlying_type>(nullptr));
 
@@ -97,23 +104,27 @@ constexpr bool IsValid(const TypeID& value) noexcept
     return value != GetInvalid<TypeID>();
 }
 
+/// @brief Gets the type ID for the template parameter type.
 template <typename T>
 constexpr TypeID GetTypeID()
 {
     return TypeID{&TypeInfo<std::decay_t<T>>::name};
 }
 
+/// @brief Gets the type ID for the function parameter type.
 template <typename T>
 TypeID GetTypeID(T)
 {
     return TypeID{&TypeInfo<std::decay_t<T>>::name};
 }
 
+/// @brief Gets the name associated with the given type ID.
 inline const char* GetName(TypeID id) noexcept
 {
     return (*UnderlyingValue(id))();
 }
 
+/// @brief Gets the name associated with the given template parameter type.
 template <typename T>
 const char* GetTypeName() noexcept
 {

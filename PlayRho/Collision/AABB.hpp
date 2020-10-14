@@ -454,12 +454,16 @@ AABB ComputeAABB(const DistanceProxy& proxy,
 /// @relatedalso Shape
 AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept;
 
+/// @brief Computes the AABB for the identified fixture within the given world.
+/// @relatedalso World
 AABB ComputeAABB(const World& world, FixtureID id);
 
 /// @brief Computes the AABB for the given body.
 /// @relatedalso World
 AABB ComputeAABB(const World& world, const Body& body);
 
+/// @brief Computes the AABB for the identified body within the given world.
+/// @relatedalso World
 AABB ComputeAABB(const World& world, BodyID id);
 
 /// @brief Computes the intersecting AABB for the given pair of fixtures and indexes.

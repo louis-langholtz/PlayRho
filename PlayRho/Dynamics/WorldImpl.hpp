@@ -100,7 +100,6 @@ public:
     using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
     using ImpulsesContactListener = std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
-    /// @brief Contact update configuration.
     struct ContactUpdateConf;
 
     /// @brief Constructs a world implementation for a world.
@@ -874,14 +873,6 @@ private:
     /// between shape vertex radiuses to possibly more limited visual ranges.
     Positive<Length> m_maxVertexRadius;
 };
-
-/// @example HelloWorld.cpp
-/// This is the source file for the <code>HelloWorld</code> application that demonstrates
-/// use of the playrho::d2::World class and more.
-
-/// @example World.cpp
-/// This is the <code>googletest</code> based unit testing file for the
-/// <code>playrho::d2::World</code> class.
 
 inline SizedRange<WorldImpl::Bodies::iterator> WorldImpl::GetBodies() noexcept
 {

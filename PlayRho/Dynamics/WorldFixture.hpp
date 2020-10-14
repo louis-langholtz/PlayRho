@@ -110,6 +110,7 @@ bool IsSensor(const World& world, FixtureID id);
 /// @return Non-negative density (in mass per area).
 AreaDensity GetDensity(const World& world, FixtureID id);
 
+/// @relatedalso World
 const std::vector<FixtureProxy>& GetProxies(const World& world, FixtureID id);
 
 /// @relatedalso World
@@ -121,12 +122,15 @@ inline ChildCounter GetProxyCount(const World& world, FixtureID id)
 /// @relatedalso World
 const FixtureProxy& GetProxy(const World& world, FixtureID id, ChildCounter child);
 
+/// @brief Gets the mass data for the identified fixture in the given world.
+/// @relatedalso World
 inline MassData GetMassData(const World& world, FixtureID id)
 {
     return GetMassData(GetShape(world, id));
 }
 
 /// @brief Tests a point for containment in a fixture.
+/// @param world The world that the given fixture ID exists within.
 /// @param id Fixture to use for test.
 /// @param p Point in world coordinates.
 /// @relatedalso World

@@ -113,6 +113,7 @@ using VelocityConstraints = std::vector<VelocityConstraint>;
 /// @brief Contact pointer type.
 using ContactPtr = Contact*;
 
+/// @brief Contact updating configuration.
 struct WorldImpl::ContactUpdateConf
 {
     DistanceConf distance; ///< Distance configuration data.

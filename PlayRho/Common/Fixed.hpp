@@ -793,6 +793,7 @@ constexpr bool operator > (Fixed32 lhs, Fixed32 rhs) noexcept
     return result == Fixed32::CmpResult::GreaterThan;
 }
 
+/// @brief Type info specialization for <code>Fixed32</code>.
 template <>
 struct TypeInfo<Fixed32>
 {
@@ -904,6 +905,7 @@ template<> struct Wider<Fixed32> {
     using type = Fixed64; ///< Wider type.
 };
 
+/// @brief Type info specialization for <code>Fixed64</code>.
 template <>
 struct TypeInfo<Fixed64>
 {

@@ -164,9 +164,11 @@ constexpr auto GetLengthB(const PulleyJointConf& object) noexcept
 
 } // namespace d2
 
+/// @brief Type info specialization for <code>d2::PulleyJointConf</code>.
 template <>
 struct TypeInfo<d2::PulleyJointConf>
 {
+    /// @brief Provides a null-terminated string name for the type.
     static const char* name() noexcept {
         return "d2::PulleyJointConf";
     }

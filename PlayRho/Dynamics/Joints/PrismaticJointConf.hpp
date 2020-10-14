@@ -232,9 +232,11 @@ constexpr void SetMaxMotorForce(PrismaticJointConf& object, Force value)
 
 } // namespace d2
 
+/// @brief Type info specialization for <code>d2::PrismaticJointConf</code>.
 template <>
 struct TypeInfo<d2::PrismaticJointConf>
 {
+    /// @brief Provides a null-terminated string name for the type.
     static const char* name() noexcept {
         return "d2::PrismaticJointConf";
     }

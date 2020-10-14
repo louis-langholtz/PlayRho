@@ -236,9 +236,11 @@ constexpr auto SetCorrectionFactor(MotorJointConf& object, Real value) noexcept
 
 } // namespace d2
 
+/// @brief Type info specialization for <code>d2::MotorJointConf</code>.
 template <>
 struct TypeInfo<d2::MotorJointConf>
 {
+    /// @brief Provides a null-terminated string name for the type.
     static const char* name() noexcept {
         return "d2::MotorJointConf";
     }

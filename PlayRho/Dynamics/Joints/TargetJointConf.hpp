@@ -220,9 +220,11 @@ constexpr void SetDampingRatio(TargetJointConf& object, Real value) noexcept
 
 } // namespace d2
 
+/// @brief Type info specialization for <code>d2::TargetJointConf</code>.
 template <>
 struct TypeInfo<d2::TargetJointConf>
 {
+    /// @brief Provides a null-terminated string name for the type.
     static const char* name() noexcept {
         return "d2::TargetJointConf";
     }
