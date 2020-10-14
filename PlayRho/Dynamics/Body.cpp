@@ -244,16 +244,6 @@ void Body::Erase(const std::function<bool(ContactID)>& callback)
     }
 }
 
-void Body::ClearContacts()
-{
-    m_contacts.clear();
-}
-
-void Body::ClearJoints()
-{
-    m_joints.clear();
-}
-
 // Free functions...
 
 Velocity GetVelocity(const Body& body, Time h) noexcept

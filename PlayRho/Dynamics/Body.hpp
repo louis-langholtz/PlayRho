@@ -354,13 +354,19 @@ public:
     bool Erase(JointID joint);
 
     /// @brief Clears this body's contacts list.
-    void ClearContacts();
+    void ClearContacts() noexcept
+    {
+        m_contacts.clear();
+    }
 
     /// @brief Clears this body's joints list.
-    void ClearJoints();
+    void ClearJoints() noexcept
+    {
+        m_joints.clear();
+    }
 
     /// @brief Clears the fixtures.
-    void ClearFixtures()
+    void ClearFixtures() noexcept
     {
         m_fixtures.clear();
     }
