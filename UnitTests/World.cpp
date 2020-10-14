@@ -198,13 +198,14 @@ TEST(World, InvalidArgumentInit)
 
 TEST(World, Clear)
 {
+    auto jointListener = PushBackListener<JointID>{};
+    auto fixtureListener = PushBackListener<FixtureID>{};
+
     auto world = World{};
     ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
     ASSERT_EQ(world.GetJoints().size(), std::size_t(0));
 
-    auto jointListener = PushBackListener<JointID>{};
     world.SetJointDestructionListener(std::ref(jointListener));
-    auto fixtureListener = PushBackListener<FixtureID>{};
     world.SetFixtureDestructionListener(std::ref(fixtureListener));
 
     const auto b0 = world.CreateBody();
@@ -549,13 +550,14 @@ TEST(World, CreateDestroyDynamicBodyAndFixture)
 
 TEST(World, CreateDestroyJoinedBodies)
 {
+    auto jointListener = PushBackListener<JointID>{};
+    auto fixtureListener = PushBackListener<FixtureID>{};
+
     auto world = World{};
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetJointCount(world), JointCounter(0));
 
-    auto jointListener = PushBackListener<JointID>{};
     world.SetJointDestructionListener(std::ref(jointListener));
-    auto fixtureListener = PushBackListener<FixtureID>{};
     world.SetFixtureDestructionListener(std::ref(fixtureListener));
 
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
