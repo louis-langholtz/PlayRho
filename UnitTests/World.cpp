@@ -178,7 +178,7 @@ TEST(World, Init)
         const auto p1 = Length2{0_m, 0_m};
         const auto p2 = Length2{100_m, 0_m};
         auto calls = 0;
-        RayCast(world.GetTree(), RayCastInput{p1, p2, UnitInterval<Real>{1}}, world,
+        RayCast(world, RayCastInput{p1, p2, UnitInterval<Real>{1}},
                 [&](BodyID, FixtureID, ChildCounter, Length2, UnitVec) {
             ++calls;
             return RayCastOpcode::ResetRay;
@@ -868,8 +868,8 @@ TEST(World, RayCast)
 
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
-                                    world, [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
+        const auto retval = RayCast(world, RayCastInput{p2, p3, UnitInterval<Real>{1}},
+                                    [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
                 ++foundOurs;
@@ -891,8 +891,8 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
-                                    world, [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
+        const auto retval = RayCast(world, RayCastInput{p2, p3, UnitInterval<Real>{1}},
+                                    [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
                 ++foundOurs;
@@ -914,8 +914,8 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
-                                    world, [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
+        const auto retval = RayCast(world, RayCastInput{p2, p3, UnitInterval<Real>{1}},
+                                    [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
                 ++foundOurs;
@@ -937,8 +937,8 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
-                                    world, [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
+        const auto retval = RayCast(world, RayCastInput{p2, p3, UnitInterval<Real>{1}},
+                                    [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
                 ++foundOurs;
@@ -960,8 +960,8 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
-                                    world, [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
+        const auto retval = RayCast(world, RayCastInput{p2, p3, UnitInterval<Real>{1}},
+                                    [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
                 ++foundOurs;
@@ -983,8 +983,8 @@ TEST(World, RayCast)
         
         auto foundOurs = 0;
         auto foundOthers = 0;
-        const auto retval = RayCast(world.GetTree(), RayCastInput{p2, p3, UnitInterval<Real>{1}},
-                                    world, [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
+        const auto retval = RayCast(world, RayCastInput{p2, p3, UnitInterval<Real>{1}},
+                                    [&](BodyID, FixtureID f, ChildCounter i, Length2, UnitVec) {
             if (f == fixture && i == 0)
             {
                 ++foundOurs;
@@ -1002,7 +1002,7 @@ TEST(World, RayCast)
     {
         auto found = 0;
         const auto rci = RayCastInput{Length2{-100_m, -101_m}, Length2{-120_m, -121_m}, Real{0.9f}};
-        const auto retval = RayCast(world.GetTree(), rci, world,
+        const auto retval = RayCast(world, rci,
                                     [&](BodyID, FixtureID, ChildCounter, Length2, UnitVec) {
             ++found;
             return RayCastOpcode::Terminate;

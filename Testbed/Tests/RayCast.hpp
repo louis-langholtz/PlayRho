@@ -206,8 +206,8 @@ public:
             Length2 point;
             UnitVec normal;
 
-            d2::RayCast(m_world.GetTree(), RayCastInput{point1, point2, Real{1}}, m_world,
-                    [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
+            d2::RayCast(m_world, RayCastInput{point1, point2, Real{1}},
+                        [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
                 const auto userData = GetUserData(m_world, b);
                 if (userData)
@@ -251,7 +251,7 @@ public:
 
             // This callback finds any hit. Polygon 0 is filtered. For this type of query we are
             // just checking for obstruction, so the actual fixture and hit point are irrelevant.
-            d2::RayCast(m_world.GetTree(), RayCastInput{point1, point2, Real{1}}, m_world,
+            d2::RayCast(m_world, RayCastInput{point1, point2, Real{1}},
                         [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
                 const auto userData = GetUserData(m_world, b);
@@ -294,7 +294,7 @@ public:
             // This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
             // The fixtures are not necessary reported in order, so we might not capture
             // the closest fixture.
-            d2::RayCast(m_world.GetTree(), RayCastInput{point1, point2, Real{1}}, m_world,
+            d2::RayCast(m_world, RayCastInput{point1, point2, Real{1}},
                         [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
                 const auto userData = GetUserData(m_world, b);

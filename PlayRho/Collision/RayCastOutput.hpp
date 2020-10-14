@@ -157,19 +157,19 @@ RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
 bool RayCast(const DynamicTree& tree, RayCastInput input,
              const DynamicTreeRayCastCB& callback);
 
-/// @brief Ray-cast the dynamic tree for all fixtures in the path of the ray.
+/// @brief Ray-cast the world for all fixtures in the path of the ray.
 ///
 /// @note The callback controls whether you get the closest point, any point, or n-points.
 /// @note The ray-cast ignores shapes that contain the starting point.
 ///
-/// @param tree Dynamic tree to ray cast.
+/// @param world The world instance to raycast in.
 /// @param input Ray cast input data.
 /// @param callback A user implemented callback function.
 ///
 /// @return <code>true</code> if terminated by callback, <code>false</code> otherwise.
 ///
-bool RayCast(const DynamicTree& tree, const RayCastInput& input,
-             const World& world, FixtureRayCastCB callback);
+/// @relatedalso World
+bool RayCast(const World& world, const RayCastInput& input, const FixtureRayCastCB& callback);
 
 /// @}
 

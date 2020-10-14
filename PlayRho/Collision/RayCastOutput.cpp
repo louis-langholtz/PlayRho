@@ -25,6 +25,7 @@
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 
@@ -293,12 +294,12 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
     return false;
 }
 
-bool RayCast(const DynamicTree& tree, const RayCastInput& rci, const World& world,
-             FixtureRayCastCB callback)
+bool RayCast(const World& world, const RayCastInput& input, const FixtureRayCastCB& callback)
 {
-    return RayCast(tree, rci, [&world,&callback](BodyID body, FixtureID fixture, ChildCounter index,
-                                         const RayCastInput& input) {
-        const auto output = RayCast(GetChild(GetShape(world, fixture), index), input,
+    return RayCast(world.GetTree(), input,
+                   [&world,&callback](BodyID body, FixtureID fixture, ChildCounter index,
+                                      const RayCastInput& rci) {
+        const auto output = RayCast(GetChild(GetShape(world, fixture), index), rci,
                                     GetTransformation(world, body));
         if (output.has_value())
         {
@@ -318,17 +319,17 @@ bool RayCast(const DynamicTree& tree, const RayCastInput& rci, const World& worl
             //
             // The second way, does not have this problem.
             //
-            const auto point = input.p1 + (input.p2 - input.p1) * fraction;
+            const auto point = rci.p1 + (rci.p2 - rci.p1) * fraction;
             const auto opcode = callback(body, fixture, index, point, output->normal);
             switch (opcode)
             {
                 case RayCastOpcode::Terminate: return Real{0};
                 case RayCastOpcode::IgnoreFixture: return Real{-1};
                 case RayCastOpcode::ClipRay: return Real{fraction};
-                case RayCastOpcode::ResetRay: return Real{input.maxFraction};
+                case RayCastOpcode::ResetRay: return Real{rci.maxFraction};
             }
         }
-        return Real{input.maxFraction};
+        return Real{rci.maxFraction};
     });
 }
 

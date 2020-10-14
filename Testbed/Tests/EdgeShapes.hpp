@@ -175,8 +175,8 @@ public:
         Length2 point;
         UnitVec normal;
 
-        RayCast(m_world.GetTree(), RayCastInput{point1, point2, Real{1}}, m_world,
-                        [&](BodyID, FixtureID f, ChildCounter, Length2 p, UnitVec n) {
+        RayCast(m_world, RayCastInput{point1, point2, Real{1}},
+                [&](BodyID, FixtureID f, ChildCounter, Length2 p, UnitVec n) {
             fixture = f;
             point = p;
             normal = n;

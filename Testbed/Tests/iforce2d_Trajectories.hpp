@@ -265,8 +265,8 @@ public:
             
             if (i > 0)
             {
-                d2::RayCast(m_world.GetTree(), RayCastInput{lastTP, trajectoryPosition, Real{1}},
-                            m_world, [&](BodyID b, FixtureID, ChildCounter, Length2 p, UnitVec) {
+                d2::RayCast(m_world, RayCastInput{lastTP, trajectoryPosition, Real{1}},
+                            [&](BodyID b, FixtureID, ChildCounter, Length2 p, UnitVec) {
                     if (b == m_littleBox)
                     {
                         return RayCastOpcode::IgnoreFixture;
