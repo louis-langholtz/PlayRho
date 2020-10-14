@@ -99,39 +99,31 @@ TEST(Island, ByteSize)
 #endif
 }
 
-TEST(Island, NotDefaultConstructible)
-{
-    EXPECT_FALSE(std::is_default_constructible<Island>::value);
-}
-
-TEST(Island, IsCopyConstructible)
-{
-    EXPECT_TRUE(std::is_copy_constructible<Island>::value);
-}
-
-TEST(Island, IsNothrowMoveConstructible)
-{
-    EXPECT_TRUE(std::is_nothrow_move_constructible<Island>::value);
-}
-
-TEST(Island, IsMoveAssignable)
-{
-    EXPECT_TRUE(std::is_move_assignable<Island>::value);
-}
-
-TEST(Island, CopyAssignable)
-{
-    EXPECT_TRUE(std::is_copy_assignable<Island>::value);
-}
-
-TEST(Island, IsNothrowDestructible)
-{
-    EXPECT_TRUE(std::is_nothrow_destructible<Island>::value);
-}
-
 static Island foo()
 {
-    return Island(10, 10, 10);
+    Island island;
+    Reserve(island, 10, 10, 10);
+    return island;
+}
+
+TEST(Island, DefaultConstructor)
+{
+    Island island;
+    EXPECT_EQ(island.m_bodies.size(), 0u);
+    EXPECT_EQ(island.m_contacts.size(), 0u);
+    EXPECT_EQ(island.m_joints.size(), 0u);
+}
+
+TEST(Island, Reserve)
+{
+    const auto bodyCapacity = 2u;
+    const auto contactCapacity = 3u;
+    const auto jointCapacity = 4u;
+    Island island;
+    Reserve(island, bodyCapacity, contactCapacity, jointCapacity);
+    EXPECT_EQ(island.m_bodies.capacity(), bodyCapacity);
+    EXPECT_EQ(island.m_contacts.capacity(), contactCapacity);
+    EXPECT_EQ(island.m_joints.capacity(), jointCapacity);
 }
 
 TEST(Island, IsReturnableByValue)
@@ -148,12 +140,12 @@ TEST(Island, IsReturnableByValue)
         EXPECT_EQ(island.m_joints.capacity(), decltype(island.m_joints.max_size()){10});
     }
 }
-#if 0
+
 TEST(Island, Count)
 {
-    const auto island = Island(4, 4, 4);
-    EXPECT_EQ(Count(island, static_cast<Body*>(nullptr)), std::size_t(0));
-    EXPECT_EQ(Count(island, static_cast<Contact*>(nullptr)), std::size_t(0));
-    EXPECT_EQ(Count(island, static_cast<Joint*>(nullptr)), std::size_t(0));
+    auto island = Island();
+    Reserve(island, 4, 4, 4);
+    EXPECT_EQ(Count(island, InvalidBodyID), std::size_t(0));
+    EXPECT_EQ(Count(island, InvalidContactID), std::size_t(0));
+    EXPECT_EQ(Count(island, InvalidJointID), std::size_t(0));
 }
-#endif

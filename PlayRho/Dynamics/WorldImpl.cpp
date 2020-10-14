@@ -515,7 +515,7 @@ void DestroyProxies(Fixture& fixture,
 } // anonymous namespace
 
 WorldImpl::WorldImpl(const WorldConf& def):
-    m_tree{def.initialTreeSize},
+    m_tree(def.initialTreeSize),
     m_minVertexRadius{def.minVertexRadius},
     m_maxVertexRadius{def.maxVertexRadius}
 {
@@ -738,9 +738,9 @@ void WorldImpl::Destroy(JointID id)
 }
 
 void WorldImpl::AddToIsland(Island& island, BodyID seedID,
-                            Bodies::size_type& remNumBodies,
-                            Contacts::size_type& remNumContacts,
-                            Joints::size_type& remNumJoints)
+                            BodyCounter& remNumBodies,
+                            ContactCounter& remNumContacts,
+                            JointCounter& remNumJoints)
 {
     auto& seed = m_bodyBuffer[UnderlyingValue(seedID)];
 
@@ -763,9 +763,9 @@ void WorldImpl::AddToIsland(Island& island, BodyID seedID,
 }
 
 void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
-                            Bodies::size_type& remNumBodies,
-                            Contacts::size_type& remNumContacts,
-                            Joints::size_type& remNumJoints)
+                            BodyCounter& remNumBodies,
+                            ContactCounter& remNumContacts,
+                            JointCounter& remNumJoints)
 {
     while (!empty(stack))
     {
@@ -880,9 +880,9 @@ WorldImpl::RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
 RegStepStats WorldImpl::SolveReg(const StepConf& conf)
 {
     auto stats = RegStepStats{};
-    auto remNumBodies = size(m_bodies); ///< Remaining number of bodies.
-    auto remNumContacts = size(m_contacts); ///< Remaining number of contacts.
-    auto remNumJoints = size(m_joints); ///< Remaining number of joints.
+    auto remNumBodies = static_cast<BodyCounter>(size(m_bodies)); // Remaining # of bodies.
+    auto remNumContacts = static_cast<ContactCounter>(size(m_contacts)); // Remaining # of contacts.
+    auto remNumJoints = static_cast<JointCounter>(size(m_joints)); // Remaining # of joints.
 
     // Clear all the island flags.
     // This builds the logical set of bodies, contacts, and joints eligible for resolution.
@@ -910,19 +910,17 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
         if (!body.IsIslanded() && body.IsAwake() && body.IsEnabled())
         {
             ++stats.islandsFound;
-
+            ::playrho::d2::Clear(m_island);
             // Size the island for the remaining un-evaluated bodies, contacts, and joints.
-            Island island(remNumBodies, remNumContacts, remNumJoints);
-
-            AddToIsland(island, b, remNumBodies, remNumContacts, remNumJoints);
-            remNumBodies += RemoveUnspeedablesFromIslanded(island.m_bodies, m_bodyBuffer);
-
+            Reserve(m_island, remNumBodies, remNumContacts, remNumJoints);
+            AddToIsland(m_island, b, remNumBodies, remNumContacts, remNumJoints);
+            remNumBodies += RemoveUnspeedablesFromIslanded(m_island.m_bodies, m_bodyBuffer);
 #if defined(DO_THREADED)
             // Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
             futures.push_back(std::async(std::launch::async, &WorldImpl::SolveRegIslandViaGS,
-                                         conf, island));
+                                         this, conf, m_island));
 #else
-            const auto solverResults = SolveRegIslandViaGS(conf, island);
+            const auto solverResults = SolveRegIslandViaGS(conf, m_island);
             ::playrho::Update(stats, solverResults);
 #endif
         }
@@ -932,7 +930,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     for (auto&& future: futures)
     {
         const auto solverResults = future.get();
-        Update(stats, solverResults);
+        ::playrho::Update(stats, solverResults);
     }
 #endif
 
@@ -955,7 +953,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     return stats;
 }
 
-IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, Island island)
+IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& island)
 {
     assert(!empty(island.m_bodies) || !empty(island.m_contacts) || !empty(island.m_joints));
     
@@ -1395,17 +1393,21 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     }
 
     // Build the island
-    Island island(used(m_bodyBuffer), used(m_contactBuffer), 0);
+    ::playrho::d2::Clear(m_island);
+    ::playrho::d2::Reserve(m_island,
+                           static_cast<BodyCounter>(used(m_bodyBuffer)),
+                           static_cast<ContactCounter>(used(m_contactBuffer)),
+                           static_cast<JointCounter>(0));
 
      // These asserts get triggered sometimes if contacts within TOI are iterated over.
     assert(!bA.IsIslanded());
     assert(!bB.IsIslanded());
 
-    island.m_bodies.push_back(bodyIdA);
+    m_island.m_bodies.push_back(bodyIdA);
     bA.SetIslandedFlag();
-    island.m_bodies.push_back(bodyIdB);
+    m_island.m_bodies.push_back(bodyIdB);
     bB.SetIslandedFlag();
-    island.m_contacts.push_back(contactID);
+    m_island.m_contacts.push_back(contactID);
     contact.SetIslanded();
 
     // Process the contacts of the two bodies, adding appropriate ones to the island,
@@ -1413,18 +1415,18 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     // bodies sweeps and transforms to the minimum contact's TOI.
     if (bA.IsAccelerable())
     {
-        const auto procOut = ProcessContactsForTOI(bodyIdA, island, toi, conf);
+        const auto procOut = ProcessContactsForTOI(bodyIdA, m_island, toi, conf);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
     if (bB.IsAccelerable())
     {
-        const auto procOut = ProcessContactsForTOI(bodyIdB, island, toi, conf);
+        const auto procOut = ProcessContactsForTOI(bodyIdB, m_island, toi, conf);
         contactsUpdated += procOut.contactsUpdated;
         contactsSkipped += procOut.contactsSkipped;
     }
 
-    RemoveUnspeedablesFromIslanded(island.m_bodies, m_bodyBuffer);
+    RemoveUnspeedablesFromIslanded(m_island.m_bodies, m_bodyBuffer);
 
     // Now solve for remainder of time step.
     //
@@ -1433,7 +1435,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     //     SolveToi(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
     //
     auto subConf = StepConf{conf};
-    auto results = SolveToiViaGS(island, subConf.SetTime((1 - toi) * conf.GetTime()));
+    auto results = SolveToiViaGS(m_island, subConf.SetTime((1 - toi) * conf.GetTime()));
     results.contactsUpdated += contactsUpdated;
     results.contactsSkipped += contactsSkipped;
     return results;
@@ -1874,7 +1876,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
     const auto updateConf = GetUpdateConf(conf);
     
 #if defined(DO_THREADED)
-    std::vector<Contact*> contactsNeedingUpdate;
+    std::vector<ContactID> contactsNeedingUpdate;
     contactsNeedingUpdate.reserve(size(m_contacts));
     std::vector<std::future<void>> futures;
     futures.reserve(size(m_contacts));
@@ -1919,7 +1921,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
         {
             // The following may call listener but is otherwise thread-safe.
 #if defined(DO_THREADED)
-            contactsNeedingUpdate.push_back(&contact);
+            contactsNeedingUpdate.push_back(contactID);
             //futures.push_back(async(&Update, this, *contact, conf)));
             //futures.push_back(async(launch::async, [=]{ Update(*contact, conf); }));
 #else
@@ -1943,7 +1945,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
             const auto offset = jobsPerCore * i;
             for (auto j = decltype(jobsPerCore){0}; j < jobsPerCore; ++j)
             {
-	            Update(*contactsNeedingUpdate[offset + j], updateConf);
+	            Update(contactsNeedingUpdate[offset + j], updateConf);
             }
         }));
         numJobs -= jobsPerCore;
@@ -1954,7 +1956,7 @@ WorldImpl::UpdateContactsStats WorldImpl::UpdateContacts(const StepConf& conf)
             const auto offset = jobsPerCore * 3;
             for (auto j = decltype(numJobs){0}; j < numJobs; ++j)
             {
-                Update(*contactsNeedingUpdate[offset + j], updateConf);
+                Update(contactsNeedingUpdate[offset + j], updateConf);
             }
         }));
     }

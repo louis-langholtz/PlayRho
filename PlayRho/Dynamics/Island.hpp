@@ -21,6 +21,7 @@
 #define PLAYRHO_DYNAMICS_ISLAND_HPP
 
 #include <PlayRho/Common/Templates.hpp> // IsFull
+#include <PlayRho/Common/Settings.hpp> // BodyCounter, ContactCounter, JointCounter
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
@@ -42,18 +43,22 @@ struct Island
 
     /// @brief Contact container type.
     using Contacts = std::vector<ContactID>;
-    
+
     /// @brief Joint container type.
     using Joints = std::vector<JointID>;
-    
-    /// @brief Initializing constructor.
-    Island(Bodies::size_type bodyCapacity, Contacts::size_type contactCapacity,
-           Joints::size_type jointCapacity);
 
     Bodies m_bodies; ///< Body container.
     Contacts m_contacts; ///< Contact container.
     Joints m_joints; ///< Joint container.
 };
+
+/// @brief Reserves space ahead of time.
+/// @relatedalso Island
+void Reserve(Island& island, BodyCounter bodies, ContactCounter contacts, JointCounter joints);
+
+/// @brief Clears the island containers.
+/// @relatedalso Island
+void Clear(Island& island) noexcept;
 
 /// @brief Determines whether the given island is full of bodies.
 /// @relatedalso Island

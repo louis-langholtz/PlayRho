@@ -540,24 +540,24 @@ private:
     ///
     /// @return Island solver results.
     ///
-    IslandStats SolveRegIslandViaGS(const StepConf& conf, Island island);
+    IslandStats SolveRegIslandViaGS(const StepConf& conf, const Island& island);
     
     /// @brief Adds to the island based off of a given "seed" body.
     /// @post Contacts are listed in the island in the order that bodies provide those contacts.
     /// @post Joints are listed the island in the order that bodies provide those joints.
     void AddToIsland(Island& island, BodyID seed,
-                            Bodies::size_type& remNumBodies,
-                            Contacts::size_type& remNumContacts,
-                            Joints::size_type& remNumJoints);
+                     BodyCounter& remNumBodies,
+                     ContactCounter& remNumContacts,
+                     JointCounter& remNumJoints);
     
     /// @brief Body stack.
     using BodyStack = std::stack<BodyID, std::vector<BodyID>>;
     
     /// @brief Adds to the island.
     void AddToIsland(Island& island, BodyStack& stack,
-                     Bodies::size_type& remNumBodies,
-                     Contacts::size_type& remNumContacts,
-                     Joints::size_type& remNumJoints);
+                     BodyCounter& remNumBodies,
+                     ContactCounter& remNumContacts,
+                     JointCounter& remNumJoints);
     
     /// @brief Adds contacts to the island.
     void AddContactsToIsland(Island& island, BodyStack& stack, const Body* b);
@@ -844,6 +844,8 @@ private:
     /// @note In the <em>add pair</em> stress-test, 401 bodies can have some 31000 contacts
     ///   during a given time step.
     Contacts m_contacts;
+
+    Island m_island; ///< Island buffer.
 
     FixtureListener m_fixtureDestructionListener;
     JointListener m_jointDestructionListener;
