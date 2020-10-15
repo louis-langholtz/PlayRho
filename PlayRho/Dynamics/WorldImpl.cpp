@@ -955,7 +955,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
 
 IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& island)
 {
-    assert(!empty(island.m_bodies) || !empty(island.m_contacts) || !empty(island.m_joints));
+    assert(!empty(island.bodies) || !empty(island.contacts) || !empty(island.joints));
     
     auto results = IslandStats{};
     results.positionIterations = conf.regPositionIterations;
