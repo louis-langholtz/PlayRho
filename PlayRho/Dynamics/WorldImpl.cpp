@@ -847,10 +847,11 @@ void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack, const Body* 
         const auto joint = (jointID == InvalidJointID)
             ? nullptr: &m_jointBuffer[UnderlyingValue(jointID)];
         assert(joint);
-        if (joint && !IsIslanded(*joint) && (!other || other->IsEnabled()))
+        if (joint && !m_islandedJoints[UnderlyingValue(jointID)]
+            && (!other || other->IsEnabled()))
         {
             island.joints.push_back(jointID);
-            SetIslanded(*joint);
+            m_islandedJoints[UnderlyingValue(jointID)] = true;
             if (other && !other->IsIslanded())
             {
                 stack.push(otherID);
@@ -894,9 +895,8 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     for_each(begin(m_contacts), end(m_contacts), [this](const auto& element) {
         m_contactBuffer[UnderlyingValue(std::get<ContactID>(element))].UnsetIslanded();
     });
-    for_each(begin(m_joints), end(m_joints), [this](const auto& element) {
-        UnsetIslanded(m_jointBuffer[UnderlyingValue(element)]);
-    });
+    m_islandedJoints.clear();
+    m_islandedJoints.resize(size(m_jointBuffer));
 
 #if defined(DO_THREADED)
     std::vector<std::future<IslandStats>> futures;

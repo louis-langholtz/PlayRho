@@ -36,7 +36,6 @@ TEST(JointBuilder, Construction)
     EXPECT_EQ(JointBuilder<JointConf>{}.bodyA, InvalidBodyID);
     EXPECT_EQ(JointBuilder<JointConf>{}.bodyB, InvalidBodyID);
     EXPECT_EQ(JointBuilder<JointConf>{}.collideConnected, false);
-    EXPECT_EQ(JointBuilder<JointConf>{}.islanded, false);
     EXPECT_EQ(JointBuilder<JointConf>{}.userData, nullptr);
 }
 
@@ -60,13 +59,6 @@ TEST(JointBuilder, UseCollideConnected)
     EXPECT_NE(JointBuilder<JointConf>{}.collideConnected, value);
     EXPECT_EQ(JointBuilder<JointConf>{}.UseCollideConnected(value).collideConnected,
               value);
-}
-
-TEST(JointBuilder, UseIslanded)
-{
-    const auto value = true;
-    EXPECT_NE(JointBuilder<JointConf>{}.islanded, value);
-    EXPECT_EQ(JointBuilder<JointConf>{}.UseIslanded(value).islanded, value);
 }
 
 TEST(JointBuilder, UseUserData)

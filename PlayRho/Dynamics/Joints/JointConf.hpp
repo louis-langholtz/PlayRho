@@ -49,8 +49,6 @@ struct JointConf
     /// @brief Collide connected.
     /// @details Set this flag to true if the attached bodies should collide.
     bool collideConnected = false;
-
-    bool islanded = false;
 };
 
 constexpr void* GetUserData(const JointConf& object) noexcept
@@ -78,21 +76,6 @@ constexpr BodyID GetBodyB(const JointConf& object) noexcept
 constexpr bool GetCollideConnected(const JointConf& object) noexcept
 {
     return object.collideConnected;
-}
-
-constexpr bool IsIslanded(const JointConf& object) noexcept
-{
-    return object.islanded;
-}
-
-constexpr void SetIslanded(JointConf& object) noexcept
-{
-    object.islanded = true;
-}
-
-constexpr void UnsetIslanded(JointConf& object) noexcept
-{
-    object.islanded = false;
 }
 
 /// @brief Joint builder definition structure.
@@ -136,13 +119,6 @@ struct JointBuilder : JointConf
     constexpr reference UseCollideConnected(bool v) noexcept
     {
         collideConnected = v;
-        return static_cast<reference>(*this);
-    }
-
-    /// @brief Use value for user data setting.
-    constexpr reference UseIslanded(bool v) noexcept
-    {
-        islanded = v;
         return static_cast<reference>(*this);
     }
 };

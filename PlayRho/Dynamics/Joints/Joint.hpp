@@ -61,15 +61,6 @@ bool GetCollideConnected(const Joint& object) noexcept;
 /// @return <code>true</code> if shift done, <code>false</code> otherwise.
 bool ShiftOrigin(Joint& object, Length2 value) noexcept;
 
-/// @brief Whether this joint is in the is-in-island state.
-bool IsIslanded(const Joint& object) noexcept;
-
-/// @brief Sets this joint to be in the is-in-island state.
-void SetIslanded(Joint& object) noexcept;
-
-/// @brief Unsets this joint from being in the is-in-island state.
-void UnsetIslanded(Joint& object) noexcept;
-
 /// Gets the user data pointer.
 void* GetUserData(const Joint& object) noexcept;
 
@@ -224,21 +215,6 @@ public:
         return object.m_self? object.m_self->SolvePosition_(bodies, conf): false;
     }
 
-    friend bool IsIslanded(const Joint& object) noexcept
-    {
-        return object.m_self? object.m_self->IsIslanded_(): false;
-    }
-
-    friend void SetIslanded(Joint& object) noexcept
-    {
-        if (object.m_self) object.m_self->SetIslanded_();
-    }
-
-    friend void UnsetIslanded(Joint& object) noexcept
-    {
-        if (object.m_self) object.m_self->UnsetIslanded_();
-    }
-
 private:
     /// @brief Internal configuration concept.
     /// @note Provides the interface for runtime value polymorphism.
@@ -270,15 +246,6 @@ private:
 
         /// @brief Call to notify joint of a shift in the world origin.
         virtual bool ShiftOrigin_(Length2 value) noexcept = 0;
-
-        /// @brief Gets whether this joint is "islanded".
-        virtual bool IsIslanded_() const noexcept = 0;
-
-        /// @brief Sets the "islanded" state.
-        virtual void SetIslanded_() noexcept = 0;
-
-        /// @brief Unsets the "islanded" state.
-        virtual void UnsetIslanded_() noexcept = 0;
 
         virtual void* GetUserData_() const noexcept = 0;
 
@@ -341,21 +308,6 @@ private:
         bool ShiftOrigin_(Length2 value) noexcept override
         {
             return ShiftOrigin(data, value);
-        }
-
-        bool IsIslanded_() const noexcept override
-        {
-            return IsIslanded(data);
-        }
-
-        void SetIslanded_() noexcept override
-        {
-            SetIslanded(data);
-        }
-
-        void UnsetIslanded_() noexcept override
-        {
-            UnsetIslanded(data);
         }
 
         void* GetUserData_() const noexcept override

@@ -848,6 +848,7 @@ private:
     Contacts m_contacts;
 
     Island m_island; ///< Island buffer.
+    std::vector<bool> m_islandedJoints;
 
     FixtureListener m_fixtureDestructionListener;
     JointListener m_jointDestructionListener;

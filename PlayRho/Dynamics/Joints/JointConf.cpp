@@ -44,7 +44,6 @@ void Set(JointConf& def, const Joint& joint) noexcept
     def.bodyA = GetBodyA(joint);
     def.bodyB = GetBodyB(joint);
     def.collideConnected = GetCollideConnected(joint);
-    def.islanded = IsIslanded(joint);
 }
 
 } // namespace d2
