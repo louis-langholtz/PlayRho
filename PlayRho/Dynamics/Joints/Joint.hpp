@@ -549,6 +549,9 @@ Length2 GetGroundAnchorB(const Joint& object);
 /// @relatedalso Joint
 Momentum GetLinearMotorImpulse(const Joint& object);
 
+/// @relatedalso Joint
+Length GetLength(const Joint& object);
+
 /// @brief Gets the current motor torque for the given joint given the inverse time step.
 /// @relatedalso Joint
 inline Torque GetMotorTorque(const Joint& joint, Frequency inv_dt)

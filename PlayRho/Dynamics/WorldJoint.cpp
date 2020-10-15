@@ -31,6 +31,16 @@
 namespace playrho {
 namespace d2 {
 
+JointID CreateJoint(World& world, const Joint& def)
+{
+    return world.CreateJoint(def);
+}
+
+void Destroy(World& world, JointID id)
+{
+    world.Destroy(id);
+}
+
 JointType GetType(const World& world, JointID id)
 {
     return world.GetType(id);
@@ -89,6 +99,11 @@ AngularMomentum GetAngularReaction(const World& world, JointID id)
 Angle GetReferenceAngle(const World& world, JointID id)
 {
     return world.GetReferenceAngle(id);
+}
+
+void SetAwake(World& world, JointID id)
+{
+    world.SetAwake(id);
 }
 
 UnitVec GetLocalXAxisA(const World& world, JointID id)
@@ -302,6 +317,29 @@ void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper)
     auto joint = GetJoint(world, id);
     SetAngularLimits(joint, lower, upper);
     SetJoint(world, id, joint);
+}
+
+bool ShiftOrigin(World& world, JointID id, Length2 value)
+{
+    auto joint = GetJoint(world, id);
+    const auto shifted = ShiftOrigin(joint, value);
+    SetJoint(world, id, joint);
+    return shifted;
+}
+
+Real GetDampingRatio(const World& world, JointID id)
+{
+    return GetDampingRatio(GetJoint(world, id));
+}
+
+Length GetLength(const World& world, JointID id)
+{
+    return GetLength(GetJoint(world, id));
+}
+
+LimitState GetLimitState(const World& world, JointID id)
+{
+    return GetLimitState(GetJoint(world, id));
 }
 
 } // namespace d2

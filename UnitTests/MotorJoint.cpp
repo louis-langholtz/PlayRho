@@ -23,9 +23,10 @@
 #include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
-#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
@@ -94,29 +95,30 @@ TEST(MotorJointConf, BuilderConstruction)
     EXPECT_EQ(def.correctionFactor, correctionFactor);
 }
 
-#if 0
 TEST(MotorJoint, Construction)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     auto def = GetMotorJointConf(world, b0, b1);
-    auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
+    const auto jointID = CreateJoint(world, def);
 
-    EXPECT_EQ(GetType(joint), def.type);
-    EXPECT_EQ(GetBodyA(joint), def.bodyA);
-    EXPECT_EQ(GetBodyB(joint), def.bodyB);
-    EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
-    EXPECT_EQ(GetUserData(joint), def.userData);
-    EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
-    EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
+    EXPECT_EQ(GetType(world, jointID), GetTypeID<MotorJointConf>());
+    EXPECT_EQ(GetBodyA(world, jointID), def.bodyA);
+    EXPECT_EQ(GetBodyB(world, jointID), def.bodyB);
+    EXPECT_EQ(GetCollideConnected(world, jointID), def.collideConnected);
+    EXPECT_EQ(GetUserData(world, jointID), def.userData);
+    EXPECT_EQ(GetLinearReaction(world, jointID), Momentum2{});
+    EXPECT_EQ(GetAngularReaction(world, jointID), AngularMomentum{0});
 
-    EXPECT_EQ(joint.GetLinearOffset(), def.linearOffset);
-    EXPECT_EQ(joint.GetAngularOffset(), def.angularOffset);
-    EXPECT_EQ(joint.GetMaxForce(), def.maxForce);
-    EXPECT_EQ(joint.GetMaxTorque(), def.maxTorque);
-    EXPECT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
+    EXPECT_EQ(GetLinearOffset(world, jointID), def.linearOffset);
+    EXPECT_EQ(GetAngularOffset(world, jointID), def.angularOffset);
+
+    const auto conf = TypeCast<MotorJointConf>(GetJoint(world, jointID));
+    EXPECT_EQ(GetMaxForce(conf), def.maxForce);
+    EXPECT_EQ(GetMaxTorque(conf), def.maxTorque);
+    EXPECT_EQ(GetCorrectionFactor(conf), def.correctionFactor);
 }
 
 TEST(MotorJoint, ShiftOrigin)
@@ -126,9 +128,9 @@ TEST(MotorJoint, ShiftOrigin)
     const auto b1 = world.CreateBody();
 
     auto def = GetMotorJointConf(world, b0, b1);
-    auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
+    const auto joint = CreateJoint(world, def);
     const auto newOrigin = Length2{1_m, 1_m};
-    EXPECT_FALSE(joint.ShiftOrigin(newOrigin));
+    EXPECT_FALSE(ShiftOrigin(world, joint, newOrigin));
 }
 
 TEST(MotorJoint, SetCorrectionFactor)
@@ -138,13 +140,18 @@ TEST(MotorJoint, SetCorrectionFactor)
     const auto b1 = world.CreateBody();
     
     auto def = GetMotorJointConf(world, b0, b1);
-    auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
-    
-    ASSERT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
+    const auto jointID = CreateJoint(world, def);
+    auto conf = TypeCast<MotorJointConf>(GetJoint(world, jointID));
+
+    ASSERT_EQ(GetCorrectionFactor(conf), def.correctionFactor);
     ASSERT_EQ(Real(0.3), def.correctionFactor);
     
-    joint.SetCorrectionFactor(Real(0.9));
-    EXPECT_EQ(joint.GetCorrectionFactor(), Real(0.9));
+    EXPECT_NO_THROW(SetCorrectionFactor(conf, Real(0.9)));
+    EXPECT_EQ(GetCorrectionFactor(conf), Real(0.9));
+
+    EXPECT_NO_THROW(SetJoint(world, jointID, conf));
+    auto conf2 = TypeCast<MotorJointConf>(GetJoint(world, jointID));
+    EXPECT_EQ(GetCorrectionFactor(conf2), Real(0.9));
 }
 
 TEST(MotorJoint, GetMotorJointConf)
@@ -154,21 +161,22 @@ TEST(MotorJoint, GetMotorJointConf)
     const auto b1 = world.CreateBody();
     
     auto def = GetMotorJointConf(world, b0, b1);
-    auto& joint = *static_cast<MotorJoint*>(world.CreateJoint(def));
+    const auto jointID = CreateJoint(world, def);
     
-    ASSERT_EQ(GetType(joint), def.type);
-    ASSERT_EQ(GetBodyA(joint), def.bodyA);
-    ASSERT_EQ(GetBodyB(joint), def.bodyB);
-    ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
-    ASSERT_EQ(GetUserData(joint), def.userData);
+    ASSERT_EQ(GetType(world, jointID), GetTypeID<MotorJointConf>());
+    ASSERT_EQ(GetBodyA(world, jointID), def.bodyA);
+    ASSERT_EQ(GetBodyB(world, jointID), def.bodyB);
+    ASSERT_EQ(GetCollideConnected(world, jointID), def.collideConnected);
+    ASSERT_EQ(GetUserData(world, jointID), def.userData);
     
-    ASSERT_EQ(joint.GetLinearOffset(), def.linearOffset);
-    ASSERT_EQ(joint.GetAngularOffset(), def.angularOffset);
-    ASSERT_EQ(joint.GetMaxForce(), def.maxForce);
-    ASSERT_EQ(joint.GetMaxTorque(), def.maxTorque);
-    ASSERT_EQ(joint.GetCorrectionFactor(), def.correctionFactor);
+    ASSERT_EQ(GetLinearOffset(world, jointID), def.linearOffset);
+    ASSERT_EQ(GetAngularOffset(world, jointID), def.angularOffset);
+    const auto conf = TypeCast<MotorJointConf>(GetJoint(world, jointID));
+    ASSERT_EQ(GetMaxForce(conf), def.maxForce);
+    ASSERT_EQ(GetMaxTorque(conf), def.maxTorque);
+    ASSERT_EQ(GetCorrectionFactor(conf), def.correctionFactor);
     
-    const auto cdef = GetMotorJointConf(joint);
+    const auto cdef = GetMotorJointConf(GetJoint(world, jointID));
     EXPECT_EQ(cdef.bodyA, b0);
     EXPECT_EQ(cdef.bodyB, b1);
     EXPECT_EQ(cdef.collideConnected, false);
@@ -189,33 +197,33 @@ TEST(MotorJoint, WithDynamicCircles)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(*b1, circle);
-    world.CreateFixture(*b2, circle);
+    world.CreateFixture(b1, circle);
+    world.CreateFixture(b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetMotorJointConf(world, b1, b2);
-    const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
+    const auto joint = CreateJoint(world, jd);
     ASSERT_NE(joint, InvalidJointID);
-    EXPECT_EQ(joint->GetAnchorA(world), p1);
-    EXPECT_EQ(joint->GetAnchorB(world), p2);
+    EXPECT_EQ(GetAnchorA(world, joint), p1);
+    EXPECT_EQ(GetAnchorB(world, joint), p2);
 
     auto stepConf = StepConf{};
     
     world.Step(stepConf);
-    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), 0_deg);
-    EXPECT_EQ(b2->GetAngle(), 0_deg);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(GetAngle(world, b1), 0_deg);
+    EXPECT_EQ(GetAngle(world, b2), 0_deg);
     
     stepConf.doWarmStart = false;
     world.Step(stepConf);
-    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), 0_deg);
-    EXPECT_EQ(b2->GetAngle(), 0_deg);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(GetAngle(world, b1), 0_deg);
+    EXPECT_EQ(GetAngle(world, b2), 0_deg);
 }
 
 TEST(MotorJoint, SetLinearOffset)
@@ -226,20 +234,20 @@ TEST(MotorJoint, SetLinearOffset)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(*b1, circle);
-    world.CreateFixture(*b2, circle);
+    world.CreateFixture(b1, circle);
+    world.CreateFixture(b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetMotorJointConf(world, b1, b2);
-    const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
+    const auto joint = CreateJoint(world, jd);
     ASSERT_NE(joint, InvalidJointID);
-    EXPECT_EQ(joint->GetAnchorA(world), p1);
-    EXPECT_EQ(joint->GetAnchorB(world), p2);
+    EXPECT_EQ(GetAnchorA(world, joint), p1);
+    EXPECT_EQ(GetAnchorB(world, joint), p2);
     
     const auto linearOffset = Length2{2_m, 1_m};
-    ASSERT_EQ(joint->GetLinearOffset(), jd.linearOffset);
+    ASSERT_EQ(GetLinearOffset(world, joint), jd.linearOffset);
     ASSERT_NE(jd.linearOffset, linearOffset);
-    joint->SetLinearOffset(linearOffset);
-    EXPECT_EQ(joint->GetLinearOffset(), linearOffset);
+    SetLinearOffset(world, joint, linearOffset);
+    EXPECT_EQ(GetLinearOffset(world, joint), linearOffset);
 }
 
 TEST(MotorJoint, SetAngularOffset)
@@ -250,17 +258,16 @@ TEST(MotorJoint, SetAngularOffset)
     const auto p2 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(*b1, circle);
-    world.CreateFixture(*b2, circle);
+    world.CreateFixture(b1, circle);
+    world.CreateFixture(b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetMotorJointConf(world, b1, b2);
-    const auto joint = static_cast<MotorJoint*>(world.CreateJoint(jd));
+    const auto joint = CreateJoint(world, jd);
     ASSERT_NE(joint, InvalidJointID);
-    EXPECT_EQ(joint->GetAnchorA(world), p1);
-    EXPECT_EQ(joint->GetAnchorB(world), p2);
+    EXPECT_EQ(GetAnchorA(world, joint), p1);
+    EXPECT_EQ(GetAnchorB(world, joint), p2);
 
-    ASSERT_EQ(joint->GetAngularOffset(), 0_deg);
-    joint->SetAngularOffset(45_deg);
-    EXPECT_EQ(joint->GetAngularOffset(), 45_deg);
+    ASSERT_EQ(GetAngularOffset(world, joint), 0_deg);
+    SetAngularOffset(world, joint, 45_deg);
+    EXPECT_EQ(GetAngularOffset(world, joint), 45_deg);
 }
-#endif

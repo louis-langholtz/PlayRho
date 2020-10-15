@@ -111,13 +111,10 @@ TEST(DistanceJoint, Construction)
     EXPECT_EQ(GetLocalAnchorB(world, joint), def.localAnchorB);
 
     EXPECT_EQ(GetFrequency(world, joint), def.frequency);
-#if 0
     EXPECT_EQ(GetLength(world, joint), def.length);
     EXPECT_EQ(GetDampingRatio(world, joint), def.dampingRatio);
-#endif
 }
 
-#if 0
 TEST(DistanceJoint, ShiftOrigin)
 {
     auto world = World{};
@@ -128,7 +125,6 @@ TEST(DistanceJoint, ShiftOrigin)
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_FALSE(ShiftOrigin(world, joint, newOrigin));
 }
-#endif
 
 TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
 {
@@ -243,7 +239,6 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
                 double(Real{jointdef.length / Meter}), 0.1);
 }
 
-#if 0
 TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
 {
     auto world = World{};
@@ -265,7 +260,7 @@ TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
     def.dampingRatio = Real(0.8);
     
     const auto joint = world.CreateJoint(def);
-    const auto got = GetDistanceJointConf(world, joint);
+    const auto got = GetDistanceJointConf(GetJoint(world, joint));
     
     EXPECT_EQ(def.bodyA, got.bodyA);
     EXPECT_EQ(def.bodyB, got.bodyB);
@@ -276,4 +271,3 @@ TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
     EXPECT_EQ(def.frequency, got.frequency);
     EXPECT_EQ(def.dampingRatio, got.dampingRatio);
 }
-#endif

@@ -21,7 +21,6 @@
 #include "UnitTests.hpp"
 #include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;

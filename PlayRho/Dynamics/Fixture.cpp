@@ -20,12 +20,10 @@
  */
 
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for MixFriction, MixRestitution
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
 
-#include <algorithm>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for MixFriction, MixRestitution
+
+#include <type_traits>
 
 namespace playrho {
 namespace d2 {

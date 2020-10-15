@@ -19,10 +19,12 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
 
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp> // for Step
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
 using namespace playrho;
@@ -266,36 +268,45 @@ TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
     const auto jd = GetPrismaticJointConf(world, b1, b2, anchor, UnitVec::GetRight()).UseEnableLimit(true);
     const auto joint = world.CreateJoint(Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
-#if 0
-    ASSERT_EQ(joint->GetLimitState(), Joint::e_inactiveLimit);
-    ASSERT_EQ(joint->GetLinearLowerLimit(), 0_m);
-    ASSERT_EQ(joint->GetLinearUpperLimit(), 0_m);
+    {
+        const auto conf = TypeCast<PrismaticJointConf>(GetJoint(world, joint));
+        ASSERT_EQ(GetLimitState(conf), LimitState::e_inactiveLimit);
+        ASSERT_EQ(GetLinearLowerLimit(conf), 0_m);
+        ASSERT_EQ(GetLinearUpperLimit(conf), 0_m);
+    }
 
     Step(world, 1_s);
-    EXPECT_NEAR(double(Real{GetX(b1->GetLocation()) / Meter}), -1.0, 0.001);
-    EXPECT_NEAR(double(Real{GetY(b1->GetLocation()) / Meter}), 0.0, 0.001);
-    EXPECT_NEAR(double(Real{GetX(b2->GetLocation()) / Meter}), +1.0, 0.01);
-    EXPECT_NEAR(double(Real{GetY(b2->GetLocation()) / Meter}), 0.0, 0.01);
-    EXPECT_EQ(b1->GetAngle(), 0_deg);
-    EXPECT_EQ(b2->GetAngle(), 0_deg);
-    EXPECT_EQ(joint->GetLinearLowerLimit(), 0_m);
-    EXPECT_EQ(joint->GetLinearUpperLimit(), 0_m);
-    EXPECT_EQ(joint->GetLimitState(), Joint::e_equalLimits);
-    
-    joint->SetLinearLimits(0_m, 2_m);
-    Step(world, 1_s);
-    EXPECT_EQ(joint->GetLinearLowerLimit(), 0_m);
-    EXPECT_EQ(joint->GetLinearUpperLimit(), 2_m);
-    EXPECT_EQ(joint->GetLimitState(), Joint::e_atLowerLimit);
-    
-    joint->SetLinearLimits(-2_m, 0_m);
-    Step(world, 1_s);
-    EXPECT_EQ(joint->GetLinearLowerLimit(), -2_m);
-    EXPECT_EQ(joint->GetLinearUpperLimit(), 0_m);
-    EXPECT_EQ(joint->GetLimitState(), Joint::e_atUpperLimit);
-    
-    joint->EnableMotor(true);
-    Step(world, 1_s);
-    EXPECT_EQ(joint->GetLinearMotorImpulse(), Momentum(0));
-#endif
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
+    EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
+    EXPECT_NEAR(double(Real{GetY(GetLocation(world, b2)) / Meter}), 0.0, 0.01);
+    EXPECT_EQ(GetAngle(world, b1), 0_deg);
+    EXPECT_EQ(GetAngle(world, b2), 0_deg);
+    {
+        auto conf = TypeCast<PrismaticJointConf>(GetJoint(world, joint));
+        EXPECT_EQ(GetLinearLowerLimit(conf), 0_m);
+        EXPECT_EQ(GetLinearUpperLimit(conf), 0_m);
+        EXPECT_EQ(GetLimitState(conf), LimitState::e_equalLimits);
+        EXPECT_NO_THROW(SetLinearLimits(conf, 0_m, 2_m));
+        EXPECT_NO_THROW(SetJoint(world, joint, conf));
+    }
+    EXPECT_NO_THROW(Step(world, 1_s));
+    {
+        auto conf = TypeCast<PrismaticJointConf>(GetJoint(world, joint));
+        EXPECT_EQ(GetLinearLowerLimit(conf), 0_m);
+        EXPECT_EQ(GetLinearUpperLimit(conf), 2_m);
+        EXPECT_EQ(GetLimitState(conf), LimitState::e_atLowerLimit);
+        EXPECT_NO_THROW(SetLinearLimits(conf, -2_m, 0_m));
+        EXPECT_NO_THROW(SetJoint(world, joint, conf));
+    }
+    EXPECT_NO_THROW(Step(world, 1_s));
+    {
+        auto conf = TypeCast<PrismaticJointConf>(GetJoint(world, joint));
+        EXPECT_EQ(GetLinearLowerLimit(conf), -2_m);
+        EXPECT_EQ(GetLinearUpperLimit(conf), 0_m);
+        EXPECT_EQ(GetLimitState(conf), LimitState::e_atUpperLimit);
+    }
+    EXPECT_NO_THROW(EnableMotor(world, joint, true));
+    EXPECT_NO_THROW(Step(world, 1_s));
+    EXPECT_EQ(GetLinearMotorImpulse(world, joint), Momentum(0));
 }

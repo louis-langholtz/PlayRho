@@ -675,5 +675,14 @@ Momentum GetLinearMotorImpulse(const Joint& object)
     throw std::invalid_argument("GetLinearMotorImpulse not supported by joint type!");
 }
 
+Length GetLength(const Joint& object)
+{
+    const auto type = GetType(object);
+    if (type == GetTypeID<DistanceJointConf>()) {
+        return GetLength(TypeCast<DistanceJointConf>(object));
+    }
+    throw std::invalid_argument("GetLength not supported by joint type!");
+}
+
 } // namespace d2
 } // namespace playrho

@@ -30,6 +30,7 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
+#include <PlayRho/Dynamics/Joints/LimitState.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -37,6 +38,14 @@ namespace d2 {
 class World;
 class Joint;
 struct JointConf;
+
+/// @copydoc World::CreateJoint
+/// @relatedalso World
+JointID CreateJoint(World& world, const Joint& def);
+
+/// @copydoc World::Destroy(JointID)
+/// @relatedalso World
+void Destroy(World& world, JointID id);
 
 /// @brief Gets the type of the joint.
 /// @relatedalso World
@@ -185,9 +194,11 @@ Angle GetAngularOffset(const World& world, JointID id);
 void SetAngularOffset(World& world, JointID id, Angle value);
 
 /// Get the first ground anchor.
+/// @relatedalso World
 Length2 GetGroundAnchorA(const World& world, JointID id);
 
 /// Get the second ground anchor.
+/// @relatedalso World
 Length2 GetGroundAnchorB(const World& world, JointID id);
 
 /// @brief Get the current length of the segment attached to body-A.
@@ -199,19 +210,48 @@ Length GetCurrentLengthA(const World& world, JointID id);
 Length GetCurrentLengthB(const World& world, JointID id);
 
 /// @brief Gets the target point.
+/// @relatedalso World
 Length2 GetTarget(const World& world, JointID id);
 
 /// @brief Sets the target point.
+/// @relatedalso World
 void SetTarget(World& world, JointID id, Length2 value);
 
 /// Get the lower joint limit.
+/// @relatedalso World
 Angle GetAngularLowerLimit(const World& world, JointID id);
 
 /// Get the upper joint limit.
+/// @relatedalso World
 Angle GetAngularUpperLimit(const World& world, JointID id);
 
 /// Set the joint limits.
+/// @relatedalso World
 void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper);
+
+/// @brief Shifts the origin of the identified joint.
+/// @note This only effects joints having points in world coordinates.
+/// @relatedalso World
+bool ShiftOrigin(World& world, JointID id, Length2 value);
+
+/// @brief Gets the damping ratio associated with the identified joint if it has one.
+/// @throws std::invalid_argument If the identified joint's type doesn't support this.
+/// @relatedalso World
+Real GetDampingRatio(const World& world, JointID id);
+
+/// @brief Gets the length associated with the identified joint if it has one.
+/// @throws std::invalid_argument If the identified joint's type doesn't support this.
+/// @relatedalso World
+Length GetLength(const World& world, JointID id);
+
+/// @brief Gets the joint's limit state if it has one.
+/// @throws std::invalid_argument If the identified joint's type doesn't support this.
+/// @relatedalso World
+LimitState GetLimitState(const World& world, JointID id);
+
+/// @copydoc World::SetAwake(JointID)
+/// @relatedalso World
+void SetAwake(World& world, JointID id);
 
 } // namespace d2
 } // namespace playrho

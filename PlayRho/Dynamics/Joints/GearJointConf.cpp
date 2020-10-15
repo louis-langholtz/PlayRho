@@ -99,6 +99,9 @@ GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Rea
         const auto pA = InverseRotate(Rotate(def.localAnchorA, xfA.q) + (xfA.p - xfC.p), xfC.q);
         scalar1 = Dot(pA - pC, def.localAxis1) / Meter;
     }
+    else {
+        throw InvalidArgument("GetGearJointConf not supported for joint 1 type");
+    }
 
     auto scalar2 = Real{0};
     def.type2 = GetType(world, id2);
@@ -114,6 +117,9 @@ GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Rea
         const auto pD = def.localAnchorD;
         const auto pB = InverseRotate(Rotate(def.localAnchorB, xfB.q) + (xfB.p - xfD.p), xfD.q);
         scalar2 = Dot(pB - pD, def.localAxis2) / Meter;
+    }
+    else {
+        throw InvalidArgument("GetGearJointConf not supported for joint 2 type");
     }
 
     def.ratio = ratio;
