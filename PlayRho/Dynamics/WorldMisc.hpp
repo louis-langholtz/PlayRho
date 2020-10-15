@@ -57,10 +57,16 @@ class Manifold;
 class ContactImpulsesList;
 class DynamicTree;
 
+/// @brief Gets the bodies of the specified world.
+/// @relatedalso World
 SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world);
 
+/// @brief Gets the joints of the specified world.
+/// @relatedalso World
 SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world);
 
+/// @brief Gets the contacts of the specified world.
+/// @relatedalso World
 SizedRange<std::vector<KeyedContactPtr>::const_iterator> GetContacts(const World& world);
 
 /// @brief Gets the body count in the given world.
@@ -96,7 +102,7 @@ inline ContactCounter GetContactCount(const World& world) noexcept
 /// @relatedalso World
 ContactCounter GetTouchingCount(const World& world) noexcept;
 
-/// @copydoc World::Step
+/// @brief Steps the given world the specified amount.
 /// @relatedalso World
 StepStats Step(World& world, const StepConf& conf = StepConf{});
 

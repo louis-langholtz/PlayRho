@@ -160,6 +160,8 @@ void SetAcceleration(WorldImpl& world, BodyID id, AngularAcceleration value);
 /// @note This changes the center of mass position.
 /// @note Creating or destroying fixtures can also alter the mass.
 /// @note This function has no effect if the body isn't dynamic.
+/// @param world The world of the identified body.
+/// @param id Identification of body.
 /// @param massData the mass properties.
 /// @relatedalso WorldImpl
 void SetMassData(WorldImpl& world, BodyID id, const MassData& massData);
@@ -206,6 +208,7 @@ inline Mass GetMass(const WorldImpl& world, BodyID id)
 InvRotInertia GetInvRotInertia(const WorldImpl& world, BodyID id);
 
 /// @brief Gets the rotational inertia of the body.
+/// @param world The world of the identified body.
 /// @param id Body to get the rotational inertia for.
 /// @return the rotational inertia.
 /// @relatedalso WorldImpl
@@ -287,24 +290,30 @@ bool IsAccelerable(const WorldImpl& world, BodyID id);
 /// @brief Gets the container of all contacts attached to this body.
 /// @warning This collection changes during the time step and you may
 ///   miss some collisions if you don't use <code>ContactListener</code>.
+/// @relatedalso WorldImpl
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>
 GetContacts(const WorldImpl& world, BodyID id);
 
 /// @brief Gets the user data associated with the identified body.
+/// @relatedalso WorldImpl
 void* GetUserData(const WorldImpl& world, BodyID id);
 
+/// @relatedalso WorldImpl
 void SetUserData(WorldImpl& world, BodyID id, void* value);
 
 /// @brief Gets whether the body's mass-data is dirty.
+/// @relatedalso WorldImpl
 bool IsMassDataDirty(const WorldImpl& world, BodyID id);
 
 /// @brief Gets whether the body has fixed rotation.
 /// @see SetFixedRotation(WorldImpl& world, BodyID id, bool value).
+/// @relatedalso WorldImpl
 bool IsFixedRotation(const WorldImpl& world, BodyID id);
 
 /// @brief Sets this body to have fixed rotation.
 /// @note This causes the mass to be reset.
 /// @see IsFixedRotation(const WorldImpl& world, BodyID id).
+/// @relatedalso WorldImpl
 void SetFixedRotation(WorldImpl& world, BodyID id, bool value);
 
 FixtureCounter GetFixtureCount(const WorldImpl& world, BodyID id);

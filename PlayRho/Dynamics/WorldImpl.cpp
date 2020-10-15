@@ -619,7 +619,7 @@ void WorldImpl::Destroy(BodyID id)
 
     // Destroy the attached contacts.
     body.Erase([this,&body](ContactID contactID) {
-        Destroy(m_contacts, m_endContactListener, contactID, &body);
+        Destroy(contactID, &body);
         return true;
     });
 
@@ -1802,18 +1802,19 @@ void WorldImpl::InternalDestroy(ContactID contactID,
     manifoldBuffer.Free(UnderlyingValue(contactID));
 }
 
-void WorldImpl::Destroy(Contacts& contacts, ContactListener listener, ContactID contactID, Body* from)
+void WorldImpl::Destroy(ContactID contactID, Body* from)
 {
     assert(contactID != InvalidContactID);
-    const auto it = find_if(cbegin(contacts), cend(contacts),
+    const auto it = find_if(cbegin(m_contacts), cend(m_contacts),
                             [&](const Contacts::value_type& c) {
         return std::get<ContactID>(c) == contactID;
     });
-    if (it != cend(contacts))
+    if (it != cend(m_contacts))
     {
-        contacts.erase(it);
+        m_contacts.erase(it);
     }
-    InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, m_manifoldBuffer, listener, from);
+    InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, m_manifoldBuffer,
+                    m_endContactListener, from);
 }
 
 WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts)
@@ -2181,7 +2182,7 @@ void WorldImpl::CreateAndDestroyProxies(Length extension)
                     const auto fixtureB = contact.GetFixtureB();
                     if ((fixtureA == fixtureID) || (fixtureB == fixtureID))
                     {
-                        Destroy(m_contacts, m_endContactListener, contactID, &body);
+                        Destroy(contactID, &body);
                         return true;
                     }
                     return false;
@@ -2222,7 +2223,7 @@ void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
 
     // Destroy the attached contacts.
     body.Erase([&](ContactID contactID) {
-        Destroy(m_contacts, m_endContactListener, contactID, &body);
+        Destroy(contactID, &body);
         return true;
     });
 
@@ -2333,7 +2334,7 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
         const auto fixtureB = contact.GetFixtureB();
         if ((fixtureA == id) || (fixtureB == id))
         {
-            Destroy(m_contacts, m_endContactListener, contactID, &body);
+            Destroy(contactID, &body);
             return true;
         }
         return false;

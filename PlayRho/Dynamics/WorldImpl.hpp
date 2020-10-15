@@ -370,6 +370,7 @@ public:
     /// @post After creating a new fixture, it will show up in the fixture enumeration
     ///   returned by the <code>GetFixtures()</code> methods.
     ///
+    /// @param body Body to associated new fixture with.
     /// @param shape Shareable shape definition.
     ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
     ///   the body's world.
@@ -445,6 +446,7 @@ public:
     /// @note This changes the center of mass position.
     /// @note Creating or destroying fixtures can also alter the mass.
     /// @note This function has no effect if the body isn't dynamic.
+    /// @param id Body to set mass data for.
     /// @param massData the mass properties.
     void SetMassData(BodyID id, const MassData& massData);
 
@@ -733,7 +735,7 @@ private:
     /// @details Finds and adds new valid contacts to the contacts container.
     /// @note The new contacts will all have overlapping AABBs.
     ContactCounter FindNewContacts();
-    
+
     /// @brief Processes the narrow phase collision for the contacts collection.
     /// @details
     /// This finds and destroys the contacts that need filtering and no longer should collide or
@@ -749,11 +751,10 @@ private:
     /// @brief Destroys the given contact and removes it from its container.
     /// @details This updates the contacts container, returns the memory to the allocator,
     ///   and decrements the contact manager's contact count.
-    /// @param contacts Contacts from which to destroy the contact from.
     /// @param contact Contact to destroy.
     /// @param from From body.
-    void Destroy(Contacts& contacts, ContactListener listener, ContactID contact, Body* from);
-    
+    void Destroy(ContactID contact, Body* from);
+
     /// @brief Adds a contact for the proxies identified by the key if appropriate.
     /// @details Adds a new contact object to represent a contact between proxy A and proxy B
     /// if all of the following are true:
@@ -815,6 +816,7 @@ private:
     ///   - The <code>maxCirclesRatio</code> per-step configuration state *OR* the
     ///     <code>maxDistanceIters</code> per-step configuration state.
     ///
+    /// @param id Identifies the contact to update.
     /// @param conf Per-step configuration information.
     ///
     /// @see GetManifold, IsTouching
