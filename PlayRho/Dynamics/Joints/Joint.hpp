@@ -259,25 +259,38 @@ private:
         /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
 
+        /// @brief Gets the ID of body-A.
         virtual BodyID GetBodyA_() const noexcept = 0;
+
+        /// @brief Gets the ID of body-B.
         virtual BodyID GetBodyB_() const noexcept = 0;
 
+        /// @brief Gets whether collision handling should be done for connected bodies.
         virtual bool GetCollideConnected_() const noexcept = 0;
 
+        /// @brief Call to notify joint of a shift in the world origin.
         virtual bool ShiftOrigin_(Length2 value) noexcept = 0;
 
+        /// @brief Gets whether this joint is "islanded".
         virtual bool IsIslanded_() const noexcept = 0;
+
+        /// @brief Sets the "islanded" state.
         virtual void SetIslanded_() noexcept = 0;
+
+        /// @brief Unsets the "islanded" state.
         virtual void UnsetIslanded_() noexcept = 0;
 
         virtual void* GetUserData_() const noexcept = 0;
+
         virtual void SetUserData_(void* value) noexcept = 0;
 
         virtual void InitVelocity_(BodyConstraintsMap& bodies,
                                    const playrho::StepConf& step,
                                    const ConstraintSolverConf& conf) = 0;
+
         virtual bool SolveVelocity_(BodyConstraintsMap& bodies,
                                     const playrho::StepConf& step) = 0;
+
         virtual bool SolvePosition_(BodyConstraintsMap& bodies,
                                     const ConstraintSolverConf& conf) const = 0;
     };
@@ -356,20 +369,20 @@ private:
         }
 
         void InitVelocity_(BodyConstraintsMap& bodies,
-                                   const playrho::StepConf& step,
-                                   const ConstraintSolverConf& conf) override
+                           const playrho::StepConf& step,
+                           const ConstraintSolverConf& conf) override
         {
             InitVelocity(data, bodies, step, conf);
         }
 
         bool SolveVelocity_(BodyConstraintsMap& bodies,
-                                    const playrho::StepConf& step) override
+                            const playrho::StepConf& step) override
         {
             return SolveVelocity(data, bodies, step);
         }
 
         bool SolvePosition_(BodyConstraintsMap& bodies,
-                                    const ConstraintSolverConf& conf) const override
+                            const ConstraintSolverConf& conf) const override
         {
             return SolvePosition(data, bodies, conf);
         }
