@@ -305,8 +305,6 @@
 		80BB89B3141C3E5900F1753A /* StepConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8955141C3E5900F1753A /* StepConf.hpp */; };
 		80BB89B4141C3E5900F1753A /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8956141C3E5900F1753A /* World.cpp */; };
 		80BB89B5141C3E5900F1753A /* World.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8957141C3E5900F1753A /* World.hpp */; };
-		80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */; };
-		80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */; };
 		80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8961141C3E5900F1753A /* Contact.cpp */; };
 		80BB89BF141C3E5900F1753A /* Contact.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8962141C3E5900F1753A /* Contact.hpp */; };
 		80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8963141C3E5900F1753A /* ContactSolver.cpp */; };
@@ -719,8 +717,6 @@
 		80BB8955141C3E5900F1753A /* StepConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StepConf.hpp; sourceTree = "<group>"; };
 		80BB8956141C3E5900F1753A /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		80BB8957141C3E5900F1753A /* World.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = World.hpp; sourceTree = "<group>"; };
-		80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldCallbacks.cpp; sourceTree = "<group>"; };
-		80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldCallbacks.hpp; sourceTree = "<group>"; };
 		80BB8961141C3E5900F1753A /* Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Contact.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB8962141C3E5900F1753A /* Contact.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 2; path = Contact.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		80BB8963141C3E5900F1753A /* ContactSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = ContactSolver.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -1114,8 +1110,6 @@
 				4764089A25226E170090F711 /* WorldMisc.cpp */,
 				4764088F2522698E0090F711 /* WorldMisc.hpp */,
 				47440F0A1EDA365400AB3F51 /* WorldConf.hpp */,
-				80BB8958141C3E5900F1753A /* WorldCallbacks.cpp */,
-				80BB8959141C3E5900F1753A /* WorldCallbacks.hpp */,
 				47640861250807720090F711 /* WorldImpl.cpp */,
 				47640860250807720090F711 /* WorldImpl.hpp */,
 				47640880251F0F9B0090F711 /* WorldImplBody.cpp */,
@@ -1437,7 +1431,6 @@
 				470F94A81EC4C79B00AA3C82 /* BodyConf.hpp in Headers */,
 				80BB89B5141C3E5900F1753A /* World.hpp in Headers */,
 				478869101D78BF7200AEC7F1 /* VelocityConstraint.hpp in Headers */,
-				80BB89B7141C3E5900F1753A /* WorldCallbacks.hpp in Headers */,
 				47B58F661F64D2B500354C34 /* Real.hpp in Headers */,
 				4768D3F51E3A7ACA00574143 /* Wider.hpp in Headers */,
 				4787D6E71F2ED62C008C115E /* WheelJointConf.hpp in Headers */,
@@ -1794,7 +1787,6 @@
 				4787D6BA1F2E946E008C115E /* PrismaticJointConf.cpp in Sources */,
 				4787D6CE1F2EC902008C115E /* MotorJointConf.cpp in Sources */,
 				4787D6CA1F2EA3A1008C115E /* GearJointConf.cpp in Sources */,
-				80BB89B6141C3E5900F1753A /* WorldCallbacks.cpp in Sources */,
 				80BB89BE141C3E5900F1753A /* Contact.cpp in Sources */,
 				80BB89C0141C3E5900F1753A /* ContactSolver.cpp in Sources */,
 				4787D6C21F2E9DC0008C115E /* DistanceJointConf.cpp in Sources */,
