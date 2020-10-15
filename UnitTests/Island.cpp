@@ -109,9 +109,9 @@ static Island foo()
 TEST(Island, DefaultConstructor)
 {
     Island island;
-    EXPECT_EQ(island.m_bodies.size(), 0u);
-    EXPECT_EQ(island.m_contacts.size(), 0u);
-    EXPECT_EQ(island.m_joints.size(), 0u);
+    EXPECT_EQ(island.bodies.size(), 0u);
+    EXPECT_EQ(island.contacts.size(), 0u);
+    EXPECT_EQ(island.joints.size(), 0u);
 }
 
 TEST(Island, Reserve)
@@ -121,9 +121,9 @@ TEST(Island, Reserve)
     const auto jointCapacity = 4u;
     Island island;
     Reserve(island, bodyCapacity, contactCapacity, jointCapacity);
-    EXPECT_EQ(island.m_bodies.capacity(), bodyCapacity);
-    EXPECT_EQ(island.m_contacts.capacity(), contactCapacity);
-    EXPECT_EQ(island.m_joints.capacity(), jointCapacity);
+    EXPECT_GE(island.bodies.capacity(), bodyCapacity);
+    EXPECT_GE(island.contacts.capacity(), contactCapacity);
+    EXPECT_GE(island.joints.capacity(), jointCapacity);
 }
 
 TEST(Island, IsReturnableByValue)
@@ -135,9 +135,9 @@ TEST(Island, IsReturnableByValue)
     {
         const auto island = foo();
         
-        EXPECT_EQ(island.m_bodies.capacity(), decltype(island.m_bodies.max_size()){10});
-        EXPECT_EQ(island.m_contacts.capacity(), decltype(island.m_contacts.max_size()){10});
-        EXPECT_EQ(island.m_joints.capacity(), decltype(island.m_joints.max_size()){10});
+        EXPECT_EQ(island.bodies.capacity(), decltype(island.bodies.max_size()){10});
+        EXPECT_EQ(island.contacts.capacity(), decltype(island.contacts.max_size()){10});
+        EXPECT_EQ(island.joints.capacity(), decltype(island.joints.max_size()){10});
     }
 }
 

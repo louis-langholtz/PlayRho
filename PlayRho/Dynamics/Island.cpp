@@ -141,31 +141,31 @@ static_assert(std::is_nothrow_destructible<Island>::value,
 
 void Reserve(Island& island, BodyCounter bodies, ContactCounter contacts, JointCounter joints)
 {
-    island.m_bodies.reserve(bodies);
-    island.m_contacts.reserve(contacts);
-    island.m_joints.reserve(joints);
+    island.bodies.reserve(bodies);
+    island.contacts.reserve(contacts);
+    island.joints.reserve(joints);
 }
 
 void Clear(Island& island) noexcept
 {
-    island.m_bodies.clear();
-    island.m_contacts.clear();
-    island.m_joints.clear();
+    island.bodies.clear();
+    island.contacts.clear();
+    island.joints.clear();
 }
 
 std::size_t Count(const Island& island, BodyID entry)
 {
-    return MakeUnsigned(count(cbegin(island.m_bodies), cend(island.m_bodies), entry));
+    return MakeUnsigned(count(cbegin(island.bodies), cend(island.bodies), entry));
 }
 
 std::size_t Count(const Island& island, ContactID entry)
 {
-    return MakeUnsigned(count(cbegin(island.m_contacts), cend(island.m_contacts), entry));
+    return MakeUnsigned(count(cbegin(island.contacts), cend(island.contacts), entry));
 }
 
 std::size_t Count(const Island& island, JointID entry)
 {
-    return MakeUnsigned(count(cbegin(island.m_joints), cend(island.m_joints), entry));
+    return MakeUnsigned(count(cbegin(island.joints), cend(island.joints), entry));
 }
 
 } // namespace d2

@@ -595,13 +595,13 @@ private:
     ///   2. Updates position 1 of the sweeps, the transforms, and the velocities of the other
     ///      bodies in this island.
     ///
-    /// @pre <code>island.m_bodies</code> contains at least two bodies, the first two of which
+    /// @pre <code>island.bodies</code> contains at least two bodies, the first two of which
     ///   are bodies 0 and 1.
-    /// @pre <code>island.m_bodies</code> contains appropriate other bodies of the contacts of
+    /// @pre <code>island.bodies</code> contains appropriate other bodies of the contacts of
     ///   the two bodies.
-    /// @pre <code>island.m_contacts</code> contains the contact that specified the two identified
+    /// @pre <code>island.contacts</code> contains the contact that specified the two identified
     ///   bodies.
-    /// @pre <code>island.m_contacts</code> contains appropriate other contacts of the two bodies.
+    /// @pre <code>island.contacts</code> contains appropriate other contacts of the two bodies.
     ///
     /// @param conf Time step configuration information.
     /// @param island Island to do time of impact solving for.
@@ -762,7 +762,7 @@ private:
     ///   3. The bodies of the proxies should collide (according to <code>ShouldCollide</code>).
     ///   4. The contact filter says the fixtures of the proxies should collide.
     ///   5. There exists a contact-create function for the pair of shapes of the proxies.
-    /// @post The size of the <code>m_contacts</code> collection is one greater-than it was
+    /// @post The size of the <code>contacts</code> collection is one greater-than it was
     ///   before this method is called if it returns <code>true</code>.
     /// @param key ID's of dynamic tree entries identifying the fixture proxies involved.
     /// @return <code>true</code> if a new contact was indeed added (and created),

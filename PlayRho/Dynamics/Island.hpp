@@ -47,9 +47,9 @@ struct Island
     /// @brief Joint container type.
     using Joints = std::vector<JointID>;
 
-    Bodies m_bodies; ///< Body container.
-    Contacts m_contacts; ///< Contact container.
-    Joints m_joints; ///< Joint container.
+    Bodies bodies; ///< Body container.
+    Contacts contacts; ///< Contact container.
+    Joints joints; ///< Joint container.
 };
 
 /// @brief Reserves space ahead of time.
@@ -64,14 +64,14 @@ void Clear(Island& island) noexcept;
 /// @relatedalso Island
 inline bool IsFullOfBodies(const Island& island)
 {
-    return IsFull(island.m_bodies);
+    return IsFull(island.bodies);
 }
 
 /// @brief Determines whether the given island is full of contacts.
 /// @relatedalso Island
 inline bool IsFullOfContacts(const Island& island)
 {
-    return IsFull(island.m_contacts);
+    return IsFull(island.contacts);
 }
 
 /// @brief Counts the number of occurrences of the given entry in the given island.

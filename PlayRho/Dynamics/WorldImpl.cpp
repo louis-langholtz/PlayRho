@@ -776,7 +776,7 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
         auto& body = m_bodyBuffer[UnderlyingValue(bodyID)];
 
         assert(body.IsEnabled());
-        island.m_bodies.push_back(bodyID);
+        island.bodies.push_back(bodyID);
         assert(remNumBodies > 0);
         --remNumBodies;
 
@@ -790,21 +790,21 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
         // Make sure the body is awake (without resetting sleep timer).
         body.SetAwakeFlag();
 
-        const auto oldNumContacts = size(island.m_contacts);
+        const auto oldNumContacts = size(island.contacts);
         // Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
         AddContactsToIsland(island, stack, &body);
 
-        const auto newNumContacts = size(island.m_contacts);
+        const auto newNumContacts = size(island.contacts);
         assert(newNumContacts >= oldNumContacts);
         const auto netNumContacts = newNumContacts - oldNumContacts;
         assert(remNumContacts >= netNumContacts);
         remNumContacts -= netNumContacts;
         
-        const auto numJoints = size(island.m_joints);
+        const auto numJoints = size(island.joints);
         // Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
         AddJointsToIsland(island, stack, &body);
 
-        remNumJoints -= size(island.m_joints) - numJoints;
+        remNumJoints -= size(island.joints) - numJoints;
     }
 }
 
@@ -823,7 +823,7 @@ void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack, const Body
                 const auto bA = &m_bodyBuffer[UnderlyingValue(fA.GetBody())];
                 const auto bB = &m_bodyBuffer[UnderlyingValue(fB.GetBody())];
                 const auto other = (bA != b)? bA: bB;
-                island.m_contacts.push_back(contactID);
+                island.contacts.push_back(contactID);
                 contact.SetIslanded();
                 if (!other->IsIslanded())
                 {
@@ -849,7 +849,7 @@ void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack, const Body* 
         assert(joint);
         if (joint && !IsIslanded(*joint) && (!other || other->IsEnabled()))
         {
-            island.m_joints.push_back(jointID);
+            island.joints.push_back(jointID);
             SetIslanded(*joint);
             if (other && !other->IsIslanded())
             {
@@ -914,7 +914,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
             // Size the island for the remaining un-evaluated bodies, contacts, and joints.
             Reserve(m_island, remNumBodies, remNumContacts, remNumJoints);
             AddToIsland(m_island, b, remNumBodies, remNumContacts, remNumJoints);
-            remNumBodies += RemoveUnspeedablesFromIslanded(m_island.m_bodies, m_bodyBuffer);
+            remNumBodies += RemoveUnspeedablesFromIslanded(m_island.bodies, m_bodyBuffer);
 #if defined(DO_THREADED)
             // Updates bodies' sweep.pos0 to current sweep.pos1 and bodies' sweep.pos1 to new positions
             futures.push_back(std::async(std::launch::async, &WorldImpl::SolveRegIslandViaGS,
@@ -962,17 +962,17 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     const auto h = conf.GetTime(); ///< Time step.
 
     // Update bodies' pos0 values.
-    for_each(cbegin(island.m_bodies), cend(island.m_bodies), [&](const auto& bodyID) {
+    for_each(cbegin(island.bodies), cend(island.bodies), [&](const auto& bodyID) {
         auto& body = m_bodyBuffer[UnderlyingValue(bodyID)];
         body.SetPosition0(GetPosition1(body)); // like Advance0(1) on the sweep.
     });
 
     // Copy bodies' pos1 and velocity data into local arrays.
-    auto bodyConstraints = GetBodyConstraints(island.m_bodies, m_bodyBuffer, h, GetMovementConf(conf));
-    auto posConstraints = GetPositionConstraints(island.m_contacts,
+    auto bodyConstraints = GetBodyConstraints(island.bodies, m_bodyBuffer, h, GetMovementConf(conf));
+    auto posConstraints = GetPositionConstraints(island.contacts,
                                                  m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
                                                  bodyConstraints);
-    auto velConstraints = GetVelocityConstraints(island.m_contacts,
+    auto velConstraints = GetVelocityConstraints(island.contacts,
                                                  m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
                                                  bodyConstraints,
                                                  GetRegVelocityConstraintConf(conf));
@@ -992,7 +992,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
 
     const auto psConf = GetRegConstraintSolverConf(conf);
 
-    for_each(cbegin(island.m_joints), cend(island.m_joints), [&](const auto& id) {
+    for_each(cbegin(island.joints), cend(island.joints), [&](const auto& id) {
         auto& joint = m_jointBuffer[UnderlyingValue(id)];
         InitVelocity(joint, bodyConstraints, conf, psConf);
     });
@@ -1001,7 +1001,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     for (auto i = decltype(conf.regVelocityIterations){0}; i < conf.regVelocityIterations; ++i)
     {
         auto jointsOkay = true;
-        for_each(cbegin(island.m_joints), cend(island.m_joints), [&](const auto& id) {
+        for_each(cbegin(island.joints), cend(island.joints), [&](const auto& id) {
             auto& joint = m_jointBuffer[UnderlyingValue(id)];
             jointsOkay &= SolveVelocity(joint, bodyConstraints, conf);
         });
@@ -1034,7 +1034,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         const auto contactsOkay = (minSeparation >= conf.regMinSeparation);
 
         auto jointsOkay = true;
-        for_each(cbegin(island.m_joints), cend(island.m_joints), [&](const auto& id) {
+        for_each(cbegin(island.joints), cend(island.joints), [&](const auto& id) {
             auto& joint = m_jointBuffer[UnderlyingValue(id)];
             jointsOkay &= SolvePosition(joint, bodyConstraints, psConf);
         });
@@ -1051,11 +1051,11 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     // Update normal and tangent impulses of contacts' manifold points
     for_each(cbegin(velConstraints), cend(velConstraints), [&](const VelocityConstraint& vc) {
         const auto i = static_cast<VelocityConstraints::size_type>(&vc - data(velConstraints));
-        auto& manifold = m_manifoldBuffer[UnderlyingValue(island.m_contacts[i])];
+        auto& manifold = m_manifoldBuffer[UnderlyingValue(island.contacts[i])];
         AssignImpulses(manifold, vc);
     });
 
-    for (const auto& id: island.m_bodies)
+    for (const auto& id: island.bodies)
     {
         const auto i = UnderlyingValue(id);
         const auto& bc = bodyConstraints[i];
@@ -1073,15 +1073,15 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
 
     if (m_postSolveContactListener)
     {
-        Report(m_postSolveContactListener, island.m_contacts, velConstraints,
+        Report(m_postSolveContactListener, island.contacts, velConstraints,
                results.solved? results.positionIterations - 1: StepConf::InvalidIteration);
     }
     
     results.bodiesSlept = BodyCounter{0};
-    const auto minUnderActiveTime = UpdateUnderActiveTimes(island.m_bodies, m_bodyBuffer, conf);
+    const auto minUnderActiveTime = UpdateUnderActiveTimes(island.bodies, m_bodyBuffer, conf);
     if ((minUnderActiveTime >= conf.minStillTimeToSleep) && results.solved)
     {
-        results.bodiesSlept = static_cast<decltype(results.bodiesSlept)>(Sleepem(island.m_bodies,
+        results.bodiesSlept = static_cast<decltype(results.bodiesSlept)>(Sleepem(island.bodies,
                                                                                  m_bodyBuffer));
     }
 
@@ -1403,11 +1403,11 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     assert(!bA.IsIslanded());
     assert(!bB.IsIslanded());
 
-    m_island.m_bodies.push_back(bodyIdA);
+    m_island.bodies.push_back(bodyIdA);
     bA.SetIslandedFlag();
-    m_island.m_bodies.push_back(bodyIdB);
+    m_island.bodies.push_back(bodyIdB);
     bB.SetIslandedFlag();
-    m_island.m_contacts.push_back(contactID);
+    m_island.contacts.push_back(contactID);
     contact.SetIslanded();
 
     // Process the contacts of the two bodies, adding appropriate ones to the island,
@@ -1426,7 +1426,7 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         contactsSkipped += procOut.contactsSkipped;
     }
 
-    RemoveUnspeedablesFromIslanded(m_island.m_bodies, m_bodyBuffer);
+    RemoveUnspeedablesFromIslanded(m_island.bodies, m_bodyBuffer);
 
     // Now solve for remainder of time step.
     //
@@ -1465,7 +1465,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
      * the body constraint doesn't need to pass an elapsed time (and doesn't need to
      * update the velocity from what it already is).
      */
-    auto bodyConstraints = GetBodyConstraints(island.m_bodies, m_bodyBuffer, 0_s,
+    auto bodyConstraints = GetBodyConstraints(island.bodies, m_bodyBuffer, 0_s,
                                               GetMovementConf(conf));
 
     // Initialize the body state.
@@ -1482,7 +1482,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     }
 #endif
 
-    auto posConstraints = GetPositionConstraints(island.m_contacts,
+    auto posConstraints = GetPositionConstraints(island.contacts,
                                                  m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
                                                  bodyConstraints);
 
@@ -1519,15 +1519,15 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 
     // Leap of faith to new safe state.
     // Not doing this results in slower simulations.
-    // Originally this update was only done to island.m_bodies 0 and 1.
+    // Originally this update was only done to island.bodies 0 and 1.
     // Unclear whether rest of bodies should also be updated. No difference noticed.
-    for (const auto& id: island.m_bodies)
+    for (const auto& id: island.bodies)
     {
         const auto& bc = bodyConstraints[UnderlyingValue(id)];
         m_bodyBuffer[UnderlyingValue(id)].SetPosition0(bc.GetPosition());
     }
 
-    auto velConstraints = GetVelocityConstraints(island.m_contacts,
+    auto velConstraints = GetVelocityConstraints(island.contacts,
                                                  m_fixtureBuffer, m_contactBuffer, m_manifoldBuffer,
                                                  bodyConstraints,
                                                  GetToiVelocityConstraintConf(conf));
@@ -1557,7 +1557,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 
     IntegratePositions(bodyConstraints, conf.GetTime());
 
-    for (const auto& id: island.m_bodies)
+    for (const auto& id: island.bodies)
     {
         const auto i = UnderlyingValue(id);
         auto& body = m_bodyBuffer[i];
@@ -1571,7 +1571,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 
     if (m_postSolveContactListener)
     {
-        Report(m_postSolveContactListener, island.m_contacts, velConstraints, results.positionIterations);
+        Report(m_postSolveContactListener, island.contacts, velConstraints, results.positionIterations);
     }
 
     return results;
@@ -1636,7 +1636,7 @@ WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const Step
                             continue;
                         }
                     }
-                    island.m_contacts.push_back(contactID);
+                    island.contacts.push_back(contactID);
                     contact.SetIslanded();
                     if (!otherIslanded)
                     {
@@ -1644,7 +1644,7 @@ WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const Step
                         {
                             other.SetAwakeFlag();
                         }
-                        island.m_bodies.push_back(otherId);
+                        island.bodies.push_back(otherId);
                         other.SetIslandedFlag();
 #if 0
                         if (other.IsAccelerable())
@@ -2044,7 +2044,7 @@ bool WorldImpl::Add(ContactKey key)
    
 #ifndef NO_RACING
     // Code herein may be racey in a multithreaded context...
-    // Would need a lock on bodyA, bodyB, and m_contacts.
+    // Would need a lock on bodyA, bodyB, and contacts.
     // A global lock on the world instance should work but then would it have so much
     // contention as to make multi-threaded handing of adding new connections senseless?
 
