@@ -483,9 +483,6 @@ private:
         /// @brief Enabled flag.
         e_enabledFlag = FlagsType(0x0020),
 
-        /// @brief Allocated flag.
-        e_allocatedFlag = FlagsType(0x0040),
-
         /// @brief Velocity flag.
         /// @details Set this to enable changes in position due to velocity.
         /// Bodies with this set are "speedable" - either kinematic or dynamic bodies.
