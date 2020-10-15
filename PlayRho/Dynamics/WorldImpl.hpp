@@ -562,14 +562,17 @@ private:
                      JointCounter& remNumJoints);
     
     /// @brief Adds contacts to the island.
-    void AddContactsToIsland(Island& island, BodyStack& stack, const Body* b);
-    
+    void AddContactsToIsland(Island& island, BodyStack& stack,
+                             SizedRange<Contacts::const_iterator> contacts,
+                             BodyID bodyID);
+
     /// @brief Adds joints to the island.
     void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
     
     /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
     static Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
-                                                            ArrayAllocator<Body>& buffer);
+                                                            const ArrayAllocator<Body>& buffer,
+                                                            std::vector<bool>& islanded);
     
     /// @brief Solves the step using successive time of impact (TOI) events.
     /// @details Used for continuous physics.
@@ -848,6 +851,8 @@ private:
     Contacts m_contacts;
 
     Island m_island; ///< Island buffer.
+    std::vector<bool> m_islandedBodies;
+    std::vector<bool> m_islandedContacts;
     std::vector<bool> m_islandedJoints;
 
     FixtureListener m_fixtureDestructionListener;

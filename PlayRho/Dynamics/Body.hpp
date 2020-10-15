@@ -86,9 +86,6 @@ public:
     /// @brief Container type for contacts.
     using Contacts = std::vector<KeyedContactPtr>;
 
-    /// @brief Invalid island index.
-    static constexpr auto InvalidIslandIndex = static_cast<BodyCounter>(-1);
-
     /// @brief Initializing constructor.
     explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
 
@@ -308,15 +305,6 @@ public:
     /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
 
-    /// @brief Whether this body is in is-in-island state.
-    bool IsIslanded() const noexcept;
-
-    /// @brief Sets this body to the is-in-island state.
-    void SetIslandedFlag() noexcept;
-
-    /// @brief Unsets this body to the is-in-island state.
-    void UnsetIslandedFlag() noexcept;
-
     /// @brief Sets the body's awake flag.
     /// @details This is done unconditionally.
     /// @note This should **not** be called unless the body is "speedable".
@@ -478,9 +466,6 @@ private:
     /// @note For internal use. Made public to facilitate unit testing.
     enum Flag: FlagsType
     {
-        /// @brief Island flag.
-        e_islandFlag = FlagsType(0x0001),
-
         /// @brief Awake flag.
         e_awakeFlag = FlagsType(0x0002),
 
@@ -864,21 +849,6 @@ inline void Body::SetEnabledFlag() noexcept
 inline void Body::UnsetEnabledFlag() noexcept
 {
     m_flags &= ~e_enabledFlag;
-}
-
-inline bool Body::IsIslanded() const noexcept
-{
-    return (m_flags & e_islandFlag) != 0;
-}
-
-inline void Body::SetIslandedFlag() noexcept
-{
-    m_flags |= e_islandFlag;
-}
-
-inline void Body::UnsetIslandedFlag() noexcept
-{
-    m_flags &= ~e_islandFlag;
 }
 
 // Free functions...

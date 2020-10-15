@@ -240,9 +240,6 @@ public:
     /// @brief Flags stored in m_flags
     enum: FlagsType
     {
-        // Used when crawling contact graph when forming islands.
-        e_islandFlag = 0x01,
-        
         // Set when the shapes are touching.
         e_touchingFlag = 0x02,
 
@@ -288,15 +285,6 @@ public:
 
     /// @brief Sets the TOI count to the given value.
     void SetToiCount(substep_type value) noexcept;
-    
-    /// @brief Whether this contact is in the is-in-island state.
-    bool IsIslanded() const noexcept;
-    
-    /// @brief Sets this contact to the is-in-island state.
-    void SetIslanded() noexcept;
-    
-    /// @brief Unsets the is-in-island state.
-    void UnsetIslanded() noexcept;
 
     void IncrementToiCount() noexcept;
 
@@ -493,21 +481,6 @@ inline void Contact::SetToiCount(substep_type value) noexcept
 inline Contact::substep_type Contact::GetToiCount() const noexcept
 {
     return m_toiCount;
-}
-
-inline bool Contact::IsIslanded() const noexcept
-{
-    return (m_flags & e_islandFlag) != 0;
-}
-
-inline void Contact::SetIslanded() noexcept
-{
-    m_flags |= e_islandFlag;
-}
-
-inline void Contact::UnsetIslanded() noexcept
-{
-    m_flags &= ~e_islandFlag;
 }
 
 inline ChildCounter Contact::GetChildIndexA() const noexcept
