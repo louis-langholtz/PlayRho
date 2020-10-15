@@ -608,6 +608,13 @@ inline bool IsEnabled(const Contact& contact) noexcept
     return contact.IsEnabled();
 }
 
+/// @brief Gets whether the given contact is touching or not.
+/// @relatedalso Contact
+inline bool IsTouching(const Contact& contact) noexcept
+{
+    return contact.IsTouching();
+}
+
 /// @brief Gets whether the given contact is for sensors or not.
 /// @relatedalso Contact
 inline bool IsSensor(const Contact& contact) noexcept

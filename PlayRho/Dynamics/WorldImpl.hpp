@@ -567,7 +567,8 @@ private:
                              BodyID bodyID);
 
     /// @brief Adds joints to the island.
-    void AddJointsToIsland(Island& island, BodyStack& stack, const Body* b);
+    void AddJointsToIsland(Island& island, BodyStack& stack,
+                           SizedRange<BodyJoints::const_iterator> joints);
     
     /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
     static Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,

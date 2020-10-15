@@ -818,7 +818,7 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
         
         const auto numJoints = size(island.joints);
         // Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
-        AddJointsToIsland(island, stack, &body);
+        AddJointsToIsland(island, stack, body.GetJoints());
 
         remNumJoints -= size(island.joints) - numJoints;
     }
@@ -831,49 +831,42 @@ void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
         const auto contactID = std::get<ContactID>(ci);
         if (!m_islandedContacts[UnderlyingValue(contactID)]) {
             auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
-            if (contact.IsEnabled() && contact.IsTouching())
+            if (IsEnabled(contact) && IsTouching(contact) && !IsSensor(contact))
             {
-                const auto& fA = m_fixtureBuffer[UnderlyingValue(contact.GetFixtureA())];
-                const auto& fB = m_fixtureBuffer[UnderlyingValue(contact.GetFixtureB())];
-                if (!fA.IsSensor() && !fB.IsSensor())
+                const auto bodyA = GetBodyA(contact);
+                const auto bodyB = GetBodyB(contact);
+                const auto other = (bodyID != bodyA)? bodyA: bodyB;
+                island.contacts.push_back(contactID);
+                m_islandedContacts[UnderlyingValue(contactID)] = true;
+                if (!m_islandedBodies[UnderlyingValue(other)])
                 {
-                    const auto bodyA = fA.GetBody();
-                    const auto bodyB = fB.GetBody();
-                    const auto other = (bodyID != bodyA)? bodyA: bodyB;
-                    island.contacts.push_back(contactID);
-                    m_islandedContacts[UnderlyingValue(contactID)] = true;
-                    if (!m_islandedBodies[UnderlyingValue(other)])
-                    {
-                        m_islandedBodies[UnderlyingValue(other)] = true;
-                        stack.push(other);
-                    }
+                    m_islandedBodies[UnderlyingValue(other)] = true;
+                    stack.push(other);
                 }
             }
         }
     });
 }
 
-void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack, const Body* b)
+void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack,
+                                  SizedRange<BodyJoints::const_iterator> joints)
 {
-    const auto joints = b->GetJoints();
     for_each(cbegin(joints), cend(joints), [&](const Body::KeyedJointPtr& ji) {
-        // Use data of ji before dereferencing its pointers.
-        const auto otherID = std::get<BodyID>(ji);
         const auto jointID = std::get<JointID>(ji);
-        const auto other = (otherID == InvalidBodyID)? static_cast<Body*>(nullptr): &m_bodyBuffer[UnderlyingValue(otherID)];
-        assert(!other || other->IsEnabled() || !other->IsAwake());
-        const auto joint = (jointID == InvalidJointID)
-            ? nullptr: &m_jointBuffer[UnderlyingValue(jointID)];
-        assert(joint);
-        if (joint && !m_islandedJoints[UnderlyingValue(jointID)]
-            && (!other || other->IsEnabled()))
-        {
-            island.joints.push_back(jointID);
-            m_islandedJoints[UnderlyingValue(jointID)] = true;
-            if (other && !m_islandedBodies[UnderlyingValue(otherID)])
+        assert(jointID != InvalidJointID);
+        if (!m_islandedJoints[UnderlyingValue(jointID)]) {
+            const auto otherID = std::get<BodyID>(ji);
+            const auto other = (otherID == InvalidBodyID)? static_cast<Body*>(nullptr): &m_bodyBuffer[UnderlyingValue(otherID)];
+            assert(!other || other->IsEnabled() || !other->IsAwake());
+            if (!other || other->IsEnabled())
             {
-                stack.push(otherID);
-                m_islandedBodies[UnderlyingValue(otherID)] = true;
+                m_islandedJoints[UnderlyingValue(jointID)] = true;
+                island.joints.push_back(jointID);
+                if ((otherID != InvalidBodyID) && !m_islandedBodies[UnderlyingValue(otherID)])
+                {
+                    m_islandedBodies[UnderlyingValue(otherID)] = true;
+                    stack.push(otherID);
+                }
             }
         }
     });
