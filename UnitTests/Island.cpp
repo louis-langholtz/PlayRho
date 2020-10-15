@@ -126,6 +126,29 @@ TEST(Island, Reserve)
     EXPECT_GE(island.joints.capacity(), jointCapacity);
 }
 
+TEST(Island, Clear)
+{
+    Island island;
+
+    island.bodies.push_back(InvalidBodyID);
+    ASSERT_EQ(island.bodies.size(), 1u);
+    ASSERT_GE(island.bodies.capacity(), 1u);
+    island.contacts.push_back(InvalidContactID);
+    ASSERT_EQ(island.contacts.size(), 1u);
+    ASSERT_GE(island.contacts.capacity(), 1u);
+    island.joints.push_back(InvalidJointID);
+    ASSERT_EQ(island.joints.size(), 1u);
+    ASSERT_GE(island.joints.capacity(), 1u);
+
+    EXPECT_NO_THROW(Clear(island));
+    EXPECT_EQ(island.bodies.size(), 0u);
+    EXPECT_GE(island.bodies.capacity(), 1u);
+    EXPECT_EQ(island.contacts.size(), 0u);
+    EXPECT_GE(island.contacts.capacity(), 1u);
+    EXPECT_EQ(island.joints.size(), 0u);
+    EXPECT_GE(island.joints.capacity(), 1u);
+}
+
 TEST(Island, IsReturnableByValue)
 {
     // This should be possible due to C++ copy elision (regardless of move construction or copy
