@@ -63,10 +63,6 @@
 #include <unistd.h>
 #endif
 
-#ifdef _MSC_VER
-#define snprintf _snprintf
-#endif
-
 using namespace testbed;
 using namespace playrho;
 using namespace playrho::d2;
