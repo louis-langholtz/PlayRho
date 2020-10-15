@@ -2,7 +2,7 @@
 
 Here's a run-down of some of the changes in going from Box2D 2.3.2 to
 [PlayRho](https://github.com/louis-langholtz/PlayRho), categorized
-as API (Application Programming Interface) changes and non-API (other) changes.
+as API (Application Programming Interface) changes, Testbed changes, and other changes.
 
 ## API Changes
 
@@ -31,9 +31,11 @@ as API (Application Programming Interface) changes and non-API (other) changes.
 - Shared shape ownership, with friction, density, and restitution moved into
   them (from Fixture class) for reduced memory usage.
 - Renamed circle shapes as "disk" shapes to distinguish them as solid and never hollow.
-- Added support for C++11's range-based loops and constant expressions.
-- Added compile-time support for zero-runtime strongly-typed physical units (using an
-  interface to [`constexpr`-enhanced boost units](https://github.com/louis-langholtz/units)).
+- Switched from reference-semantics to value-semantics. Pointers are gone from the interface. References to bodies, fixtures, joints, and contacts have been replaced with identifiers and function interfaces.
+- Converted public "virtual" interfaces to value-semantic polymorphic value types.
+- Added support for C++11 range-based loops and constant expressions.
+- Added compile-time support for "zero-runtime-overhead" strongly-typed physical units (using an
+  interface to [`constexpr` enhanced boost units](https://github.com/louis-langholtz/units)).
   For details on how to enable this, see
   [Documentation/PhysicalUnits.md](https://github.com/louis-langholtz/PlayRho/blob/master/Documentation/PhysicalUnits.md).
 - Added compile-time support for `double` and `long double` floating-point types (in addition to `float`), and 32-bit and 64-bit fixed-point types.
@@ -50,12 +52,18 @@ as API (Application Programming Interface) changes and non-API (other) changes.
 - Replaced world locked related asserts with throws of `World::LockedError`
   instances.
 - Removed the gravity concept from `World` instances in favor of increasing performance of steps by consolidating acceleration entirely within bodies.
-- Testbed enhancements: per-step configurability, per-step statistics, ability
-  to manipulate bodies while paused, additional paths to find font, a font-less
-  mode (instead of aborting), and more.
-- Testbed test additions: Half Pipe, iforce2d's Topdown Car, Orbiter, Newton's
-  Cradle, and Spinning Circles.
+- Added many per-step run-time configuration capabilities.
+- Increased per-step statistics.
 - Added online [API Documentation](http://louis-langholtz.github.io/PlayRho/API/index.html).
+
+## Testbed changes
+
+- Updated UI to provide full access to the per-step configurability, per-step statistics.
+- Added the ability to manipulate bodies while paused.
+- Added additional paths to find font and a font-less mode (instead of aborting).
+- Added more demonstrations/tests: Half Pipe, iforce2d's Topdown Car, Orbiter, Newton's
+  Cradle, Spinning Circles, and Solar System.
+- Numerous other changes.
 
 ## Other Changes
 
