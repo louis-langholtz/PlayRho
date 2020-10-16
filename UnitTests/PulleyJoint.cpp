@@ -22,9 +22,15 @@
 
 #include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+
+#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+
+#include <stdexcept>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -228,4 +234,12 @@ TEST(PulleyJoint, GetCurrentLength)
     const auto id = CreateJoint(world, joint);
     EXPECT_EQ(GetCurrentLengthA(world, id), lenA);
     EXPECT_EQ(GetCurrentLengthB(world, id), lenB);
+}
+
+TEST(PulleyJointConf, InitVelocity)
+{
+    auto jd = PulleyJointConf{};
+    std::vector<BodyConstraint> bodies;
+    EXPECT_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}),
+                 std::out_of_range);
 }
