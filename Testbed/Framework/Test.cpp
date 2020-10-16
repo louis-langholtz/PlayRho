@@ -580,7 +580,7 @@ void Test::MouseUp(const Length2& p)
 {
     if (m_targetJoint != InvalidJointID)
     {
-        m_world.Destroy(m_targetJoint);
+        Destroy(m_world, m_targetJoint);
         m_targetJoint = InvalidJointID;
     }
 
@@ -617,7 +617,7 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
 {
     if (m_bomb != InvalidBodyID)
     {
-        m_world.Destroy(m_bomb);
+        Destroy(m_world, m_bomb);
     }
 
     m_bomb = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)

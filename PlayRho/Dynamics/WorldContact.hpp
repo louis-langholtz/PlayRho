@@ -40,17 +40,25 @@ class World;
 class Manifold;
 
 /// @copydoc World::IsTouching
+/// @relatedalso World
 bool IsTouching(const World& world, ContactID id);
 
 /// @copydoc World::IsAwake(ContactID)
+/// @relatedalso World
 bool IsAwake(const World& world, ContactID id);
 
 /// @brief Sets awake the bodies of the fixtures of the given contact.
 /// @relatedalso World
 void SetAwake(World& world, ContactID id);
 
+/// @brief Gets the body-A of the identified contact if it has one.
+/// @return Identification of the body-A or <code>InvalidBodyID</code>.
+/// @relatedalso World
 BodyID GetBodyA(const World& world, ContactID id);
 
+/// @brief Gets the body-B of the identified contact if it has one.
+/// @return Identification of the body-B or <code>InvalidBodyID</code>.
+/// @relatedalso World
 BodyID GetBodyB(const World& world, ContactID id);
 
 /// @copydoc World::GetFixtureA
@@ -62,11 +70,14 @@ FixtureID GetFixtureA(const World& world, ContactID id);
 FixtureID GetFixtureB(const World& world, ContactID id);
 
 /// @brief Get the child primitive index for fixture A.
+/// @relatedalso World
 ChildCounter GetChildIndexA(const World& world, ContactID id);
 
 /// @brief Get the child primitive index for fixture B.
+/// @relatedalso World
 ChildCounter GetChildIndexB(const World& world, ContactID id);
 
+/// @relatedalso World
 TimestepIters GetToiCount(const World& world, ContactID id);
 
 /// @copydoc World::NeedsFiltering
@@ -81,18 +92,26 @@ bool NeedsUpdating(const World& world, ContactID id);
 /// @relatedalso World
 bool HasValidToi(const World& world, ContactID id);
 
+/// @brief Gets the time of impact associated with the identified contact.
+/// @relatedalso World
 Real GetToi(const World& world, ContactID id);
 
+/// @brief Gets the default friction amount for the identified contact.
+/// @relatedalso World
 Real GetDefaultFriction(const World& world, ContactID id);
 
+/// @brief Gets the default restitution amount for the identified contact.
+/// @relatedalso World
 Real GetDefaultRestitution(const World& world, ContactID id);
 
 /// @copydoc World::GetFriction(ContactID id)
 /// @see SetFriction(World& world, ContactID id, Real friction)
+/// @relatedalso World
 Real GetFriction(const World& world, ContactID id);
 
 /// @copydoc GetRestitution(ContactID id)
 /// @see SetRestitution(World& world, ContactID id, Real restitution)
+/// @relatedalso World
 Real GetRestitution(const World& world, ContactID id);
 
 /// @brief Sets the friction value for the specified contact.
@@ -111,8 +130,12 @@ void SetFriction(World& world, ContactID id, Real friction);
 /// @relatedalso World
 void SetRestitution(World& world, ContactID id, Real restitution);
 
+/// @brief Gets the manifold for the identified contact.
+/// @relatedalso World
 const Manifold& GetManifold(const World& world, ContactID id);
 
+/// @brief Gets the world manifold for the identified contact.
+/// @relatedalso World
 WorldManifold GetWorldManifold(const World& world, ContactID id);
 
 /// Resets the friction mixture to the default value.
@@ -137,17 +160,30 @@ LinearVelocity GetTangentSpeed(const World& world, ContactID id);
 /// @relatedalso World
 void SetTangentSpeed(World& world, ContactID id, LinearVelocity value);
 
+/// @brief Gets the enabled status of the identified contact.
 /// @relatedalso World
 bool IsEnabled(const World& world, ContactID id);
 
+/// @brief Sets the enabled status of the identified contact.
 /// @relatedalso World
 void SetEnabled(World& world, ContactID id);
 
+/// @brief Unsets the enabled status of the identified contact.
 /// @relatedalso World
 void UnsetEnabled(World& world, ContactID id);
 
+/// @brief Convenience function for setting/unsetting the enabled status of the identified
+///   contact based on the value parameter.
 /// @relatedalso World
-void SetEnabled(World& world, ContactID id, bool value);
+inline void SetEnabled(World& world, ContactID id, bool value)
+{
+    if (value) {
+        SetEnabled(world, id);
+    }
+    else {
+        UnsetEnabled(world, id);
+    }
+}
 
 } // namespace d2
 } // namespace playrho

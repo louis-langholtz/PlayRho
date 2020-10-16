@@ -44,6 +44,11 @@ BodyID CreateBody(World& world, const BodyConf& def)
     return world.CreateBody(def);
 }
 
+void Destroy(World& world, BodyID id)
+{
+    world.Destroy(id);
+}
+
 SizedRange<std::vector<FixtureID>::const_iterator>
 GetFixtures(const World& world, BodyID id)
 {

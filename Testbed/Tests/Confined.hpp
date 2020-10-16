@@ -55,12 +55,12 @@ public:
             ToggleBulletMode();
         });
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Thicken The Walls", [&](KeyActionMods) {
-            m_world.Destroy(m_enclosure);
+            Destroy(m_world, m_enclosure);
             m_enclosureVertexRadius += vertexRadiusIncrement;
             m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Thin The Walls", [&](KeyActionMods) {
-            m_world.Destroy(m_enclosure);
+            Destroy(m_world, m_enclosure);
             m_enclosureVertexRadius -= vertexRadiusIncrement;
             if (m_enclosureVertexRadius < 0_m)
             {

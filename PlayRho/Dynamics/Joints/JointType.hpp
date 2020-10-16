@@ -29,6 +29,9 @@
 namespace playrho {
 namespace d2 {
 
+/// @brief Joint type alias.
+/// @note It's unclear whether it'd be better for this to be its own strong type so for
+///   now it's an alias recognizing it as different without the compiler enforcing it.
 using JointType = TypeID;
 
 /// @brief Provides a C-style (null-terminated) string name for given joint type.

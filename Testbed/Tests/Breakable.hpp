@@ -95,7 +95,7 @@ public:
         const auto body1 = GetBody(m_world, m_piece1);
         const auto center = GetWorldCenter(m_world, body1);
 
-        m_world.Destroy(m_piece2);
+        Destroy(m_world, m_piece2);
         m_piece2 = InvalidFixtureID;
 
         BodyConf bd;

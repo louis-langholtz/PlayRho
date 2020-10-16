@@ -62,7 +62,7 @@ class Shape;
 /// @invariant Only "accelerable" bodies can have non-zero "under-active" times.
 ///
 /// @note Create these using the <code>World::CreateBody</code> method.
-/// @note Destroy these using the <code>World::Destroy(Body*)</code> method.
+/// @note Destroy these using the <code>World::Destroy(BodyID)</code> method.
 /// @note From a memory management perspective, bodies own Fixture instances.
 /// @note On a 64-bit architecture with 4-byte Real, this data structure is at least
 ///   192-bytes large.
@@ -91,12 +91,12 @@ public:
 
     /// @brief Gets the body transform for the body's origin.
     /// @return the world transform of the body's origin.
-    /// @see GetLocation.
+    /// @see GetLocation, Body::SetTransformation.
     Transformation GetTransformation() const noexcept;
 
     /// Sets the body's transformation.
     /// @note This sets what <code>Body::GetLocation</code> returns.
-    /// @see Body::GetLocation
+    /// @see Body::GetLocation, Body::GetTransformation
     void SetTransformation(Transformation value) noexcept
     {
         m_xf = value;
@@ -189,8 +189,11 @@ public:
     void SetAngularDamping(NonNegative<Frequency> angularDamping) noexcept;
 
     /// @brief Gets the type of this body.
+    /// @see SetType.
     BodyType GetType() const noexcept;
 
+    /// @brief Sets the type of this body.
+    /// @see GetType.
     void SetType(BodyType value) noexcept;
 
     /// @brief Is "speedable".
@@ -359,11 +362,13 @@ public:
         m_fixtures.clear();
     }
 
+    /// @brief Sets the inverse rotational inertia.
     void SetInvRotI(InvRotInertia v) noexcept
     {
         m_invRotI = v;
     }
 
+    /// @brief Sets the inverse mass.
     void SetInvMass(InvMass v) noexcept
     {
         m_invMass = v;
@@ -1154,17 +1159,21 @@ inline Angle GetAngle(const Body& body) noexcept
 }
 
 /// @brief Gets the body's transformation.
+/// @relatedalso Body
 inline Transformation GetTransformation(const Body& body) noexcept
 {
     return body.GetTransformation();
 }
 
 /// @brief Gets the body's position.
+/// @relatedalso Body
 inline Position GetPosition(const Body& body) noexcept
 {
     return Position{body.GetLocation(), body.GetAngle()};
 }
 
+/// @brief Gets the transformation associated with the given configuration.
+/// @relatedalso BodyConf
 Transformation GetTransformation(const BodyConf& conf);
 
 } // namespace d2

@@ -23,9 +23,10 @@
 namespace playrho {
 
 /// @brief Body Type.
-/// @note static: zero mass, zero velocity, may be manually moved
-/// @note kinematic: zero mass, non-zero velocity set by user, moved by solver
-/// @note dynamic: positive mass, non-zero velocity determined by forces, moved by solver
+/// @note static: zero mass, zero velocity, may be manually moved.
+/// @note kinematic: zero mass, non-zero velocity set by user, moved by solver.
+/// @note dynamic: positive mass, non-zero velocity determined by forces, moved by solver.
+/// @see IsSpeedable(BodyType), IsAccelerable(BodyType).
 enum class BodyType
 {
     /// Static body type.
@@ -52,14 +53,26 @@ enum class BodyType
 };
 
 /// @brief Is "speedable".
-/// @relatedalso BodyType
+/// @details Whether or not the given type value is for a body which can have a non-zero
+///   speed associated with it.
+/// @return <code>true</code> if the given type value represents a "speedable" type value,
+///   <code>false</code> otherwise.
+/// @note Would be nice if the Doxygen "relatedalso BodyType" command worked for this but
+///   seems that doesn't work for scoped enumeration.
+/// @see IsAccelerable(BodyType).
 inline bool IsSpeedable(BodyType type)
 {
     return type != BodyType::Static;
 }
 
 /// @brief Is "accelerable".
-/// @relatedalso BodyType
+/// @details Whether or not the given type value is for a body which can have a non-zero
+///   acceleration associated with it.
+/// @return <code>true</code> if the given type value represents an "accelerable" type value,
+///   <code>false</code> otherwise.
+/// @note Would be nice if the Doxygen "relatedalso BodyType" command worked for this but
+///   seems that doesn't work for scoped enumeration.
+/// @see IsSpeedable(BodyType).
 inline bool IsAccelerable(BodyType type)
 {
     return type == BodyType::Dynamic;

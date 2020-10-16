@@ -48,7 +48,7 @@ public:
     {
         if (m_heavy != InvalidBodyID)
         {
-            m_world.Destroy(m_heavy);
+            Destroy(m_world, m_heavy);
             m_heavy = InvalidBodyID;
         }
         else

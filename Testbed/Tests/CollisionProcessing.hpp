@@ -153,7 +153,7 @@ public:
 
             if (b != GetBomb())
             {
-                m_world.Destroy(b);
+                Destroy(m_world, b);
             }
         }
     }

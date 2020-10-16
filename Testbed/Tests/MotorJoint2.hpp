@@ -59,9 +59,9 @@ public:
 
     void Setup()
     {
-        if (IsValid(m_joint)) m_world.Destroy(m_joint);
-        if (IsValid(m_bodyA)) m_world.Destroy(m_bodyA);
-        if (IsValid(m_bodyB)) m_world.Destroy(m_bodyB);
+        if (IsValid(m_joint)) Destroy(m_world, m_joint);
+        if (IsValid(m_bodyA)) Destroy(m_world, m_bodyA);
+        if (IsValid(m_bodyB)) Destroy(m_world, m_bodyB);
 
         const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
         const auto locations = m_reversedBody?

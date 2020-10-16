@@ -152,9 +152,9 @@ public:
             : Position{Length2{0_m, 1_m}, 0_deg};
         const auto carVelocity = (m_car != InvalidBodyID)
             ? GetVelocity(m_world, m_car): Velocity{};
-        if (m_frontSpring != InvalidJointID) m_world.Destroy(GetBodyB(m_world, m_frontSpring));
-        if (m_backSpring != InvalidJointID) m_world.Destroy(GetBodyB(m_world, m_backSpring));
-        if (m_car != InvalidBodyID) m_world.Destroy(m_car);
+        if (m_frontSpring != InvalidJointID) Destroy(m_world, GetBodyB(m_world, m_frontSpring));
+        if (m_backSpring != InvalidJointID) Destroy(m_world, GetBodyB(m_world, m_backSpring));
+        if (m_car != InvalidBodyID) Destroy(m_world, m_car);
 
         const auto transmat = flip? GetReflectionMatrix(UnitVec::GetRight()): GetIdentity<Mat22>();
         const auto carShapeConf = PolygonShapeConf{}.UseDensity(1_kgpm2).UseVertices({
@@ -204,9 +204,9 @@ public:
     Length2 DestroyCar()
     {
         const auto location = GetLocation(m_world, m_car);
-        m_world.Destroy(GetBodyB(m_world, m_backSpring));
-        m_world.Destroy(GetBodyB(m_world, m_frontSpring));
-        m_world.Destroy(m_car);
+        Destroy(m_world, GetBodyB(m_world, m_backSpring));
+        Destroy(m_world, GetBodyB(m_world, m_frontSpring));
+        Destroy(m_world, m_car);
         return location;
     }
     

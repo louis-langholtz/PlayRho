@@ -100,7 +100,7 @@ public:
     {
         if (m_body != InvalidBodyID)
         {
-            m_world.Destroy(m_body);
+            Destroy(m_world, m_body);
             m_body = InvalidBodyID;
         }
     }

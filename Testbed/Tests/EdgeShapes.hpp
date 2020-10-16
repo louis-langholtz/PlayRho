@@ -111,7 +111,7 @@ public:
             Create(kam.key - GLFW_KEY_1);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "To Destroy Bodies", [&](KeyActionMods) {
-            Destroy();
+            DestroyBodies();
         });
     }
 
@@ -119,7 +119,7 @@ public:
     {
         if (m_bodies[m_bodyIndex] != InvalidBodyID)
         {
-            m_world.Destroy(m_bodies[m_bodyIndex]);
+            Destroy(m_world, m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = InvalidBodyID;
         }
 
@@ -151,13 +151,13 @@ public:
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
     }
 
-    void Destroy()
+    void DestroyBodies()
     {
         for (auto i = 0; i < e_maxBodies; ++i)
         {
             if (m_bodies[i] != InvalidBodyID)
             {
-                m_world.Destroy(m_bodies[i]);
+                Destroy(m_world, m_bodies[i]);
                 m_bodies[i] = InvalidBodyID;
                 return;
             }

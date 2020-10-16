@@ -111,8 +111,8 @@ struct JointConf;
 ///   experimentation and optimization.
 /// @note This data structure is 8-bytes large (on at least one 64-bit platform).
 ///
-/// @attention For example, the following could be used to create a dynamic body having a one meter
-///   radius disk shape:
+/// @attention For example, the following could be used to create a dynamic body having a one
+///   meter radius disk shape:
 /// @code{.cpp}
 /// auto world = World{};
 /// const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
@@ -313,11 +313,11 @@ public:
     /// @post The created body will be present in the range returned from the
     ///   <code>GetBodies()</code> method.
     /// @param def A customized body configuration or its default value.
-    /// @return Pointer to newly created body which can later be destroyed by calling the
-    ///   <code>Destroy(Body*)</code> method.
+    /// @return Identifier of the newly created body which can later be destroyed by calling
+    ///   the <code>Destroy(BodyID)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
-    /// @see Destroy(Body*), GetBodies.
+    /// @see Destroy(BodyID), GetBodies.
     /// @see PhysicalEntities.
     BodyID CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
@@ -367,7 +367,7 @@ public:
     ///   Restitution must be > -infinity and < infinity.
     /// @param resetMassData Whether or not to reset the mass data of the body.
     ///
-    /// @return Pointer to the created fixture.
+    /// @return Identifier for the created fixture.
     ///
     /// @throws WrongState if called while the world is "locked".
     /// @throws InvalidArgument if called for a shape with a vertex radius less than the
@@ -628,9 +628,9 @@ public:
     }
 
     /// @brief Gets the user data associated with the identified joint.
-    /// @relatedalso World
     void* GetUserData(JointID id) const;
 
+    /// @brief Sets the user data associated with the identified joint.
     void SetUserData(JointID, void* value);
 
     BodyID GetBodyA(JointID id) const;

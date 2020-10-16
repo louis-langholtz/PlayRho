@@ -220,6 +220,7 @@ private:
     /// @note Provides the interface for runtime value polymorphism.
     struct Concept
     {
+        /// @brief Explicitly declared virtual destructor.
         virtual ~Concept() = default;
 
         /// @brief Clones this concept and returns a pointer to a mutable copy.
@@ -247,17 +248,22 @@ private:
         /// @brief Call to notify joint of a shift in the world origin.
         virtual bool ShiftOrigin_(Length2 value) noexcept = 0;
 
+        /// @brief Gets the user data for this joint.
         virtual void* GetUserData_() const noexcept = 0;
 
+        /// @brief Sets the user data for this joint.
         virtual void SetUserData_(void* value) noexcept = 0;
 
+        /// @brief Initializes the velocities for this joint.
         virtual void InitVelocity_(BodyConstraintsMap& bodies,
                                    const playrho::StepConf& step,
                                    const ConstraintSolverConf& conf) = 0;
 
+        /// @brief Solves the velocities for this joint.
         virtual bool SolveVelocity_(BodyConstraintsMap& bodies,
                                     const playrho::StepConf& step) = 0;
 
+        /// @brief Solves the positions for this joint.
         virtual bool SolvePosition_(BodyConstraintsMap& bodies,
                                     const ConstraintSolverConf& conf) const = 0;
     };
@@ -273,16 +279,19 @@ private:
         /// @brief Initializing constructor.
         Model(T arg): data{std::move(arg)} {}
 
+        /// @copydoc Concept::Clone_
         std::unique_ptr<Concept> Clone_() const override
         {
             return std::make_unique<Model>(data);
         }
 
+        /// @copydoc Concept::GetType_
         TypeID GetType_() const noexcept override
         {
             return GetTypeID<data_type>();
         }
 
+        /// @copydoc Concept::GetData_
         const void* GetData_() const noexcept override
         {
             // Note address of "data" not necessarily same as address of "this" since
@@ -290,36 +299,43 @@ private:
             return &data;
         }
 
+        /// @copydoc Concept::GetBodyA_
         BodyID GetBodyA_() const noexcept override
         {
             return GetBodyA(data);
         }
 
+        /// @copydoc Concept::GetBodyB_
         BodyID GetBodyB_() const noexcept override
         {
             return GetBodyB(data);
         }
 
+        /// @copydoc Concept::GetCollideConnected_
         bool GetCollideConnected_() const noexcept override
         {
             return GetCollideConnected(data);
         }
 
+        /// @copydoc Concept::ShiftOrigin_
         bool ShiftOrigin_(Length2 value) noexcept override
         {
             return ShiftOrigin(data, value);
         }
 
+        /// @copydoc Concept::GetUserData_
         void* GetUserData_() const noexcept override
         {
             return GetUserData(data);
         }
 
+        /// @copydoc Concept::SetUserData_
         void SetUserData_(void* value) noexcept override
         {
             SetUserData(data, value);
         }
 
+        /// @copydoc Concept::InitVelocity_
         void InitVelocity_(BodyConstraintsMap& bodies,
                            const playrho::StepConf& step,
                            const ConstraintSolverConf& conf) override
@@ -327,12 +343,14 @@ private:
             InitVelocity(data, bodies, step, conf);
         }
 
+        /// @copydoc Concept::SolveVelocity_
         bool SolveVelocity_(BodyConstraintsMap& bodies,
                             const playrho::StepConf& step) override
         {
             return SolveVelocity(data, bodies, step);
         }
 
+        /// @copydoc Concept::SolvePosition_
         bool SolvePosition_(BodyConstraintsMap& bodies,
                             const ConstraintSolverConf& conf) const override
         {
@@ -350,15 +368,11 @@ private:
 /// @brief Provides referenced access to the identified element of the given container.
 BodyConstraint& At(std::vector<BodyConstraint>& container, BodyID key);
 
-/// @brief Increment motor speed.
-/// @details Template function for incrementally changing the motor speed of a joint that has
-///   the <code>SetMotorSpeed</code> and <code>GetMotorSpeed</code> methods.
-template <class T>
-inline void IncMotorSpeed(T& j, AngularVelocity delta)
-{
-    j.SetMotorSpeed(j.GetMotorSpeed() + delta);
-}
-
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   type and its associated <code>std::any_cast</code> function.
+/// @throws std::bad_cast If the given template parameter type isn't the type of this
+///   joint's configuration value.
 /// @relatedalso Joint
 template <typename T>
 inline auto TypeCast(const Joint& value)
@@ -370,141 +384,209 @@ inline auto TypeCast(const Joint& value)
 }
 
 /// Get the anchor point on body-A in local coordinates.
+/// @relatedalso Joint
 Length2 GetLocalAnchorA(const Joint& object);
 
 /// Get the anchor point on body-B in local coordinates.
+/// @relatedalso Joint
 Length2 GetLocalAnchorB(const Joint& object);
 
 /// Get the linear reaction on body-B at the joint anchor.
+/// @relatedalso Joint
 Momentum2 GetLinearReaction(const Joint& object);
 
 /// Get the angular reaction on body-B.
+/// @relatedalso Joint
 AngularMomentum GetAngularReaction(const Joint& object);
 
+/// @brief Gets the reference angle of the joint if it has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Angle GetReferenceAngle(const Joint& object);
 
+/// @brief Gets the given joint's local X axis A if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 UnitVec GetLocalXAxisA(const Joint& object);
 
+/// @brief Gets the given joint's local Y axis A if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 UnitVec GetLocalYAxisA(const Joint& object);
 
+/// @brief Gets the given joint's motor speed if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 AngularVelocity GetMotorSpeed(const Joint& object);
 
+/// @brief Sets the given joint's motor speed if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void SetMotorSpeed(Joint& object, AngularVelocity value);
 
+/// @brief Gets the given joint's max force if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Force GetMaxForce(const Joint& object);
 
+/// @brief Gets the given joint's max torque if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Torque GetMaxTorque(const Joint& object);
 
+/// @brief Gets the given joint's max motor force if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Force GetMaxMotorForce(const Joint& object);
 
+/// @brief Sets the given joint's max motor force if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void SetMaxMotorForce(Joint& object, Force value);
 
+/// @brief Gets the given joint's max motor torque if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Torque GetMaxMotorTorque(const Joint& object);
 
+/// @brief Sets the given joint's max motor torque if its type supports that.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void SetMaxMotorTorque(Joint& object, Torque value);
 
+/// @brief Gets the given joint's angular mass.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 RotInertia GetAngularMass(const Joint& object);
 
+/// @brief Gets the given joint's ratio property if it has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Real GetRatio(const Joint& object);
 
+/// @brief Gets the given joint's damping ratio property if it has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Real GetDampingRatio(const Joint& object);
 
 /// @brief Gets the frequency of the joint if it has this property.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Frequency GetFrequency(const Joint& object);
 
 /// @brief Sets the frequency of the joint if it has this property.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void SetFrequency(Joint& object, Frequency value);
 
 /// @brief Gets the angular motor impulse of the joint if it has this property.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 AngularMomentum GetAngularMotorImpulse(const Joint& object);
 
+/// @brief Gets the given joint's target property if it has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Length2 GetTarget(const Joint& object);
 
+/// @brief Sets the given joint's target property if it has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void SetTarget(Joint& object, Length2 value);
 
 /// Gets the lower linear joint limit.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Length GetLinearLowerLimit(const Joint& object);
 
 /// Gets the upper linear joint limit.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Length GetLinearUpperLimit(const Joint& object);
 
 /// Sets the joint limits.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void SetLinearLimits(Joint& object, Length lower, Length upper);
 
 /// Gets the lower joint limit.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Angle GetAngularLowerLimit(const Joint& object);
 
-/// Gets the upper joint limit.
+/// @brief Gets the upper joint limit.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Angle GetAngularUpperLimit(const Joint& object);
 
-/// Sets the joint limits.
+/// @brief Sets the joint limits.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void SetAngularLimits(Joint& object, Angle lower, Angle upper);
 
+/// @brief Gets the specified joint's limit property if it supports one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 bool IsLimitEnabled(const Joint& object);
 
+/// @brief Enables the specified joint's limit property if it supports one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void EnableLimit(Joint& object, bool value);
 
+/// @brief Gets the specified joint's motor property value if it supports one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 bool IsMotorEnabled(const Joint& object);
 
+/// @brief Enables the specified joint's motor property if it supports one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void EnableMotor(Joint& object, bool value);
 
+/// @brief Gets the linear offset property of the specified joint if its type has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Length2 GetLinearOffset(const Joint& object);
 
+/// @brief Sets the linear offset property of the specified joint if its type has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void SetLinearOffset(Joint& object, Length2 value);
 
+/// @brief Gets the angular offset property of the specified joint if its type has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Angle GetAngularOffset(const Joint& object);
 
+/// @brief Sets the angular offset property of the specified joint if its type has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 void SetAngularOffset(Joint& object, Angle value);
 
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 LimitState GetLimitState(const Joint& object);
 
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Length2 GetGroundAnchorA(const Joint& object);
 
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Length2 GetGroundAnchorB(const Joint& object);
 
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Momentum GetLinearMotorImpulse(const Joint& object);
 
+/// @brief Gets the length property of the specified joint if its type has one.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 Length GetLength(const Joint& object);
 
 /// @brief Gets the current motor torque for the given joint given the inverse time step.
+/// @throws std::invalid_argument If not supported for the given joint's type.
 /// @relatedalso Joint
 inline Torque GetMotorTorque(const Joint& joint, Frequency inv_dt)
 {

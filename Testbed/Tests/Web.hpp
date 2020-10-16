@@ -155,7 +155,7 @@ public:
             {
                 if (IsValid(m_bodies[i]))
                 {
-                    m_world.Destroy(m_bodies[i]);
+                    Destroy(m_world, m_bodies[i]);
                     m_bodies[i] = InvalidBodyID;
                     break;
                 }
@@ -166,7 +166,7 @@ public:
             {
                 if (IsValid(m_joints[i]))
                 {
-                    m_world.Destroy(m_joints[i]);
+                    Destroy(m_world, m_joints[i]);
                     m_joints[i] = InvalidJointID;
                     break;
                 }

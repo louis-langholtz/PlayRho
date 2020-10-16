@@ -104,7 +104,7 @@ public:
             Create(kam.key - GLFW_KEY_1);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Destroy Bodies", [&](KeyActionMods) {
-            Destroy();
+            DestroyBodies();
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Change mode of the raycast test", [&](KeyActionMods) {
             if (m_mode == Mode::e_closest)
@@ -126,7 +126,7 @@ public:
     {
         if (IsValid(m_bodies[m_bodyIndex]))
         {
-            m_world.Destroy(m_bodies[m_bodyIndex]);
+            Destroy(m_world, m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = InvalidBodyID;
         }
 
@@ -163,13 +163,13 @@ public:
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
     }
 
-    void Destroy()
+    void DestroyBodies()
     {
         for (auto i = 0; i < e_maxBodies; ++i)
         {
             if (IsValid(m_bodies[i]))
             {
-                m_world.Destroy(m_bodies[i]);
+                Destroy(m_world, m_bodies[i]);
                 m_bodies[i] = InvalidBodyID;
                 return;
             }

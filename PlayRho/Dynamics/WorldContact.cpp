@@ -176,15 +176,5 @@ void UnsetEnabled(World& world, ContactID id)
     world.UnsetEnabled(id);
 }
 
-void SetEnabled(World& world, ContactID id, bool value)
-{
-    if (value) {
-        SetEnabled(world, id);
-    }
-    else {
-        UnsetEnabled(world, id);
-    }
-}
-
 } // namespace d2
 } // namespace playrho

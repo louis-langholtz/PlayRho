@@ -185,10 +185,10 @@ public:
     /// @param aabb New axis aligned bounding box for the leaf node.
     void UpdateLeaf(Size index, const AABB& aabb);
 
-    /// @brief Gets the user data for the node identified by the given identifier.
+    /// @brief Gets the leaf data for the node identified by the given identifier.
     /// @warning Behavior is undefined if the given index is not valid.
-    /// @param index Identifier of node to get the user data for.
-    /// @return User data for the specified node.
+    /// @param index Identifier of node to get the leaf data for.
+    /// @return Leaf data for the specified node.
     LeafData GetLeafData(Size index) const noexcept;
 
     /// @brief Sets the leaf data for the element at the given index to the given value.
@@ -346,22 +346,12 @@ struct DynamicTree::LeafData
     // recognition of an overlap between two child shapes having different bodies making
     // the caching of the bodies a potential speed-up opportunity.
 
-    /// @brief Cached pointer to associated body.
+    /// @brief Identifier of the associated body.
     /// @note This field serves merely to potentially avoid the lookup of the body through
-    ///   the fixture. It may or may not be worth the extra 8-bytes or so required for it.
-    /// @note On 64-bit architectures, this is an 8-byte sized field. As an 8-byte field it
-    ///   conceptually identifies 2^64 separate bodies within a world. As a practical matter
-    ///   however, even a 4-byte index which could identify 2^32 bodies, is still larger than
-    ///   is usable. This suggests that space could be saved by using indexes into arrays of
-    ///   bodies instead of direct pointers to memory.
+    ///   the fixture.
     BodyID body;
     
-    /// @brief Pointer to associated Fixture.
-    /// @note On 64-bit architectures, this is an 8-byte sized field. As an 8-byte field it
-    ///   conceptually identifies 2^64 separate fixtures within a world. As a practical matter
-    ///   however, even a 4-byte index which could identify 2^32 fixtures, is still larger than
-    ///   is usable. This suggests that space could be saved by using indexes into arrays of
-    ///   fixtures instead of direct pointers to memory.
+    /// @brief Identifier of the associated Fixture.
     FixtureID fixture;
 
     /// @brief Child index of related Shape.
@@ -417,7 +407,6 @@ constexpr bool IsUnused(const DynamicTree::TreeNode& node) noexcept;
 
 /// @brief Is leaf.
 /// @details Determines whether the given dynamic tree node is a leaf node.
-///   Leaf nodes have a pointer to user data.
 /// @relatedalso DynamicTree::TreeNode
 constexpr bool IsLeaf(const DynamicTree::TreeNode& node) noexcept;
 

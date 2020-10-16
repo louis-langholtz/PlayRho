@@ -94,7 +94,7 @@ public:
         RegisterForKey(GLFW_KEY_J, GLFW_PRESS, 0, "Toggle the rope joint", [&](KeyActionMods) {
             if (IsValid(m_rope))
             {
-                m_world.Destroy(m_rope);
+                Destroy(m_world, m_rope);
                 m_rope = InvalidJointID;
             }
             else

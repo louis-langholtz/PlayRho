@@ -27,25 +27,6 @@ namespace d2 {
 const char* ToString(JointType type) noexcept
 {
     return GetName(type);
-#if 0
-    switch (type)
-    {
-        case JointType::Revolute: return "Revolute";
-        case JointType::Prismatic: return "Prismatic";
-        case JointType::Distance: return "Distance";
-        case JointType::Pulley: return "Pulley";
-        case JointType::Target: return "Target";
-        case JointType::Gear: return "Gear";
-        case JointType::Wheel: return "Wheel";
-        case JointType::Weld: return "Weld";
-        case JointType::Friction: return "Friction";
-        case JointType::Rope: return "Rope";
-        case JointType::Motor: return "Motor";
-        case JointType::Unknown: break;
-    }
-    assert(type == JointType::Unknown);
-    return "Unknown";
-#endif
 }
 
 } // namespace d2

@@ -150,8 +150,8 @@ public:
     /// @post The created body will be present in the range returned from the
     ///   <code>GetBodies()</code> method.
     /// @param def A customized body configuration or its default value.
-    /// @return Pointer to newly created body which can later be destroyed by calling the
-    ///   <code>Destroy(Body*)</code> method.
+    /// @return Identifier of the newly created body which can later be destroyed by calling
+    ///   the <code>Destroy(BodyID)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
     /// @see Destroy(BodyID), GetBodies.
@@ -181,8 +181,8 @@ public:
     /// @note No references to the configuration are retained. Its value is copied.
     /// @post The created joint will be present in the range returned from the
     ///   <code>GetJoints()</code> method.
-    /// @return Pointer to newly created joint which can later be destroyed by calling the
-    ///   <code>Destroy(JointID)</code> method.
+    /// @return Identifier for the newly created joint which can later be destroyed by calling
+    ///   the <code>Destroy(JointID)</code> method.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @throws InvalidArgument if the given definition is not allowed.
@@ -379,7 +379,7 @@ public:
     ///   Restitution must be > -infinity and < infinity.
     /// @param resetMassData Whether or not to reset the mass data of the body.
     ///
-    /// @return Pointer to the created fixture.
+    /// @return Identifier for the created fixture.
     ///
     /// @throws WrongState if called while the world is "locked".
     /// @throws InvalidArgument if called for a shape with a vertex radius less than the

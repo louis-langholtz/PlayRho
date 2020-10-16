@@ -108,6 +108,9 @@ static auto Size(T& v)
 template<class... T> void NOT_USED(T&&...){}
 
 /// @brief Gets an invalid value for the type.
+/// @tparam T Type to get an invalid value for.
+/// @note Specialize this function for the types which have an invalid value concept.
+/// @see IsValid.
 template <typename T>
 constexpr T GetInvalid() noexcept
 {
@@ -115,6 +118,7 @@ constexpr T GetInvalid() noexcept
 }
 
 /// @brief Determines if the given value is valid.
+/// @see GetInvalid.
 template <typename T>
 constexpr bool IsValid(const T& value) noexcept
 {

@@ -72,7 +72,7 @@ public:
         RegisterForKey(GLFW_KEY_COMMA, GLFW_PRESS, 0, "Launch a bullet.", [&](KeyActionMods) {
             if (IsValid(m_bullet))
             {
-                m_world.Destroy(m_bullet);
+                Destroy(m_world, m_bullet);
                 m_bullet = InvalidBodyID;
             }
             

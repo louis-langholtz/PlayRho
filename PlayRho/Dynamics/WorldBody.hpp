@@ -47,9 +47,27 @@ namespace d2 {
 class World;
 class Shape;
 
-/// @copydoc World::CreateBody
+/// @brief Creates a rigid body with the given configuration.
+/// @warning This function should not be used while the world is locked &mdash; as it is
+///   during callbacks. If it is, it will throw an exception or abort your program.
+/// @note No references to the configuration are retained. Its value is copied.
+/// @post The created body will be present in the range returned from the
+///   <code>GetBodies(const World&)</code> method.
+/// @param world The world within which to create the body.
+/// @param def A customized body configuration or its default value.
+/// @return Identifier of the newly created body which can later be destroyed by calling
+///   the <code>Destroy(World&, BodyID)</code> method.
+/// @throws WrongState if this method is called while the world is locked.
+/// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
+/// @see Destroy(BodyID), GetBodies(const World&).
+/// @see PhysicalEntities.
 /// @relatedalso World
 BodyID CreateBody(World& world, const BodyConf& def = GetDefaultBodyConf());
+
+/// @brief Destroys the identified body.
+/// @see CreateBody(World&, const BodyConf&).
+/// @relatedalso World
+void Destroy(World& world, BodyID id);
 
 /// @brief Gets the range of all constant fixtures attached to the given body.
 /// @relatedalso World
@@ -75,8 +93,12 @@ Acceleration GetAcceleration(const World& world, BodyID id);
 void SetAcceleration(World& world, BodyID id,
                      LinearAcceleration2 linear, AngularAcceleration angular);
 
+/// @copydoc World::SetAcceleration
+/// @relatedalso World
 void SetAcceleration(World& world, BodyID id, LinearAcceleration2 value);
 
+/// @copydoc World::SetAcceleration
+/// @relatedalso World
 void SetAcceleration(World& world, BodyID id, AngularAcceleration value);
 
 /// @brief Sets the accelerations on the given body.
@@ -89,6 +111,7 @@ void SetAcceleration(World& world, BodyID id, Acceleration value);
 
 /// @brief Sets the body's transformation.
 /// @see GetTransformation
+/// @relatedalso World
 void SetTransformation(World& world, BodyID id, Transformation xfm);
 
 /// @brief Sets the position of the body's origin and rotation.
@@ -98,6 +121,7 @@ void SetTransformation(World& world, BodyID id, Transformation xfm);
 /// @param location Valid world location of the body's local origin. Behavior is undefined
 ///   if value is invalid.
 /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
+/// @relatedalso World
 inline void SetTransform(World& world, BodyID id, Length2 location, Angle angle)
 {
     SetTransformation(world, id, Transformation{location, UnitVec::Get(angle)});
@@ -110,7 +134,7 @@ inline void SetTransform(World& world, BodyID id, Length2 location, Angle angle)
 /// @param value Valid world location of the body's local origin. Behavior is undefined
 ///   if value is invalid.
 /// @see Body::SetTransform
-/// @relatedalso Body
+/// @relatedalso World
 void SetLocation(World& world, BodyID id, Length2 value);
 
 /// @brief Sets the body's angular orientation.
@@ -120,7 +144,7 @@ void SetLocation(World& world, BodyID id, Length2 value);
 /// @param value Valid world angle of the body's local origin. Behavior is undefined
 ///   if value is invalid.
 /// @see Body::SetTransform
-/// @relatedalso Body
+/// @relatedalso World
 void SetAngle(World& world, BodyID id, Angle value);
 
 /// @brief Rotates a body a given amount around a point in world coordinates.
@@ -129,7 +153,7 @@ void SetAngle(World& world, BodyID id, Angle value);
 /// @param id Body to rotate.
 /// @param amount Amount to rotate body by (in counter-clockwise direction).
 /// @param worldPoint Point in world coordinates.
-/// @relatedalso Body
+/// @relatedalso World
 void RotateAboutWorldPoint(World& world, BodyID id, Angle amount, Length2 worldPoint);
 
 /// @brief Rotates a body a given amount around a point in body local coordinates.
@@ -140,21 +164,22 @@ void RotateAboutWorldPoint(World& world, BodyID id, Angle amount, Length2 worldP
 /// @param id Body to rotate.
 /// @param amount Amount to rotate body by (in counter-clockwise direction).
 /// @param localPoint Point in local coordinates.
-/// @relatedalso Body
+/// @relatedalso World
 void RotateAboutLocalPoint(World& world, BodyID id, Angle amount, Length2 localPoint);
 
 /// @brief Calculates the gravitationally associated acceleration for the given body within its world.
-/// @relatedalso Body
 /// @return Zero acceleration if given body is has no mass, else the acceleration of
 ///    the body due to the gravitational attraction to the other bodies.
+/// @relatedalso World
 Acceleration CalcGravitationalAcceleration(const World& world, BodyID id);
 
 /// @brief Gets the world index for the given body.
-/// @relatedalso Body
+/// @relatedalso World
 BodyCounter GetWorldIndex(const World& world, const BodyID id) noexcept;
 
 /// @brief Gets the body configuration for the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
+/// @relatedalso World
 BodyConf GetBodyConf(const World& world, BodyID id);
 
 /// @copydoc World::SetType
@@ -171,6 +196,7 @@ BodyType GetType(const World& world, BodyID id);
 /// @relatedalso World
 Transformation GetTransformation(const World& world, BodyID id);
 
+/// @brief Convenience function for getting just the location of the identified body.
 /// @relatedalso World
 inline Length2 GetLocation(const World& world, BodyID id)
 {
@@ -188,6 +214,7 @@ inline Length2 GetWorldPoint(const World& world, BodyID id, const Length2 localP
     return Transform(localPoint, GetTransformation(world, id));
 }
 
+/// @brief Convenience function for getting the local vector of the identified body.
 /// @relatedalso World
 inline UnitVec GetLocalVector(const World& world, BodyID body, const UnitVec uv)
 {
@@ -198,7 +225,7 @@ inline UnitVec GetLocalVector(const World& world, BodyID body, const UnitVec uv)
 /// @param body Body that the returned point should be relative to.
 /// @param worldPoint point in world coordinates.
 /// @return the corresponding local point relative to the body's origin.
-/// @relatedalso Body
+/// @relatedalso World
 inline Length2 GetLocalPoint(const World& world, BodyID body, const Length2 worldPoint)
 {
     return InverseTransform(worldPoint, GetTransformation(world, body));
@@ -208,11 +235,13 @@ inline Length2 GetLocalPoint(const World& world, BodyID body, const Length2 worl
 /// @relatedalso World
 Angle GetAngle(const World& world, BodyID id);
 
+/// @brief Convenience function for getting the position of the identified body.
 inline Position GetPosition(const World& world, BodyID id)
 {
     return Position{GetLocation(world, id), GetAngle(world, id)};
 }
 
+/// @brief Convenience function for getting a world vector of the identified body.
 /// @relatedalso World
 inline UnitVec GetWorldVector(const World& world, BodyID body, UnitVec localVector)
 {
@@ -248,8 +277,12 @@ inline AngularVelocity GetAngularVelocity(const World& world, BodyID id)
 /// @relatedalso World
 void SetVelocity(World& world, BodyID id, const Velocity& value);
 
+/// @brief Sets the velocity of the identified body.
+/// @relatedalso World
 void SetVelocity(World& world, BodyID id, const LinearVelocity2& value);
 
+/// @brief Sets the velocity of the identified body.
+/// @relatedalso World
 void SetVelocity(World& world, BodyID id, AngularVelocity value);
 
 /// @copydoc World::DestroyFixtures()
@@ -293,26 +326,32 @@ inline bool Awaken(World& world, BodyID id)
 }
 
 /// @brief Gets whether the body's mass-data is dirty.
+/// @relatedalso World
 bool IsMassDataDirty(const World& world, BodyID id);
 
 /// @brief Gets whether the body has fixed rotation.
 /// @see SetFixedRotation.
+/// @relatedalso World
 bool IsFixedRotation(const World& world, BodyID id);
 
 /// @brief Sets this body to have fixed rotation.
 /// @note This causes the mass to be reset.
+/// @relatedalso World
 void SetFixedRotation(World& world, BodyID id, bool value);
 
 /// @brief Get the world position of the center of mass of the specified body.
+/// @relatedalso World
 Length2 GetWorldCenter(const World& world, BodyID id);
 
 /// @brief Gets the inverse total mass of the body.
 /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
 /// @see SetMassData.
+/// @relatedalso World
 InvMass GetInvMass(const World& world, BodyID id);
 
 /// @brief Gets the inverse rotational inertia of the body.
 /// @return Inverse rotational inertia (in 1/kg-m^2).
+/// @relatedalso World
 InvRotInertia GetInvRotInertia(const World& world, BodyID id);
 
 /// @brief Gets the mass of the body.
@@ -336,6 +375,7 @@ inline RotInertia GetRotInertia(const World& world, BodyID id)
 }
 
 /// @brief Gets the local position of the center of mass of the specified body.
+/// @relatedalso World
 Length2 GetLocalCenter(const World& world, BodyID id);
 
 /// @brief Gets the rotational inertia of the body about the local origin.
@@ -368,6 +408,7 @@ MassData ComputeMassData(const World& world, BodyID id);
 /// @note Creating or destroying fixtures can also alter the mass.
 /// @note This function has no effect if the body isn't dynamic.
 /// @param massData the mass properties.
+/// @relatedalso World
 void SetMassData(World& world, BodyID id, const MassData& massData);
 
 /// @brief Resets the mass data properties.
@@ -375,6 +416,7 @@ void SetMassData(World& world, BodyID id, const MassData& massData);
 /// @note This method must be called after calling <code>CreateFixture</code> to update the
 ///   body mass data properties unless <code>SetMassData</code> is used.
 /// @see SetMassData.
+/// @relatedalso World
 inline void ResetMassData(World& world, BodyID id)
 {
     SetMassData(world, id, ComputeMassData(world, id));
@@ -382,35 +424,42 @@ inline void ResetMassData(World& world, BodyID id)
 
 /// @brief Should collide.
 /// @details Determines whether a body should possibly be able to collide with the other body.
-/// @relatedalso World
 /// @return true if either body is dynamic and no joint prevents collision, false otherwise.
+/// @relatedalso World
 bool ShouldCollide(const World& world, BodyID lhs, BodyID rhs);
 
 /// @brief Gets the range of all joints attached to this body.
+/// @relatedalso World
 SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
 GetJoints(const World& world, BodyID id);
 
 /// @brief Is identified body "speedable".
 /// @details Is the body able to have a non-zero speed associated with it.
-/// Kinematic and Dynamic bodies are speedable. Static bodies are not.
+///  Kinematic and Dynamic bodies are speedable. Static bodies are not.
+/// @relatedalso World
 bool IsSpeedable(const World& world, BodyID id);
 
 /// @brief Is identified body "accelerable"?
 /// @details Indicates whether the body is accelerable, i.e. whether it is effected by
 ///   forces. Only Dynamic bodies are accelerable.
 /// @return true if the body is accelerable, false otherwise.
+/// @relatedalso World
 bool IsAccelerable(const World& world, BodyID id);
 
 /// @copydoc World::IsImpenetrable
 /// @relatedalso World
 bool IsImpenetrable(const World& world, BodyID id);
 
+/// @brief Sets the impenetrable status of the identified body.
 /// @relatedalso World
 void SetImpenetrable(World& world, BodyID id);
 
+/// @brief Unsets the impenetrable status of the identified body.
 /// @relatedalso World
 void UnsetImpenetrable(World& world, BodyID id);
 
+/// @brief Convenience function that sets/unsets the impenetrable status of the identified body.
+/// @relatedalso World
 inline void SetImpenetrable(World& world, BodyID id, bool value)
 {
     if (value)
@@ -419,15 +468,18 @@ inline void SetImpenetrable(World& world, BodyID id, bool value)
         UnsetImpenetrable(world, id);
 }
 
+/// @brief Gets whether the identified body is allowed to sleep.
 /// @relatedalso World
 bool IsSleepingAllowed(const World& world, BodyID id);
 
+/// @brief Sets whether the identified body is allowed to sleep.
 /// @relatedalso World
 void SetSleepingAllowed(World& world, BodyID, bool value);
 
 /// @brief Gets the container of all contacts attached to this body.
 /// @warning This collection changes during the time step and you may
 ///   miss some collisions if you don't use <code>ContactListener</code>.
+/// @relatedalso World
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>
 GetContacts(const World& world, BodyID id);
 
@@ -435,6 +487,7 @@ GetContacts(const World& world, BodyID id);
 /// @relatedalso World
 void* GetUserData(const World& world, BodyID id);
 
+/// @brief Sets the user data of the identified body.
 void SetUserData(World& world, BodyID id, void* value);
 
 /// @brief Gets the centripetal force necessary to put the body into an orbit having
@@ -514,15 +567,19 @@ inline void SetTorque(World& world, BodyID id, Torque torque) noexcept
 }
 
 /// @brief Gets the linear damping of the body.
+/// @relatedalso World
 Frequency GetLinearDamping(const World& world, BodyID id);
 
 /// @brief Sets the linear damping of the body.
+/// @relatedalso World
 void SetLinearDamping(World& world, BodyID id, NonNegative<Frequency> linearDamping);
 
 /// @brief Gets the angular damping of the body.
+/// @relatedalso World
 Frequency GetAngularDamping(const World& world, BodyID id);
 
 /// @brief Sets the angular damping of the body.
+/// @relatedalso World
 void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> angularDamping);
 
 } // namespace d2

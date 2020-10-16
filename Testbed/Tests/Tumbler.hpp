@@ -74,7 +74,7 @@ public:
             }
             for (const auto& b: bodies)
             {
-                m_world.Destroy(b);
+                Destroy(m_world, b);
             }
             m_count = 0;
         });

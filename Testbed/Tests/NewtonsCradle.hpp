@@ -134,14 +134,14 @@ namespace testbed {
         {
             if (IsValid(m_frame))
             {
-                m_world.Destroy(m_frame);
+                Destroy(m_world, m_frame);
                 m_frame = InvalidBodyID;
             }
             for (auto& body: m_swings)
             {
                 if (body != InvalidBodyID)
                 {
-                    m_world.Destroy(body);
+                    Destroy(m_world, body);
                     body = InvalidBodyID;
                 }
             }
@@ -190,7 +190,7 @@ namespace testbed {
         {
             if (IsValid(m_right_side_wall))
             {
-                m_world.Destroy(m_right_side_wall);
+                Destroy(m_world, m_right_side_wall);
                 m_right_side_wall = InvalidBodyID;
             }
         }
@@ -199,7 +199,7 @@ namespace testbed {
         {
             if (IsValid(m_left_side_wall))
             {
-                m_world.Destroy(m_left_side_wall);
+                Destroy(m_world, m_left_side_wall);
                 m_left_side_wall = InvalidBodyID;
             }
         }

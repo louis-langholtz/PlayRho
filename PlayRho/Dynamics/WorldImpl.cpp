@@ -95,9 +95,6 @@ static_assert(std::is_nothrow_destructible<WorldImpl>::value,
 
 using playrho::size;
 
-/// @brief Body pointer alias.
-using BodyPtr = Body*;
-
 /// @brief A body pointer and body constraint pointer pair.
 using BodyConstraintsPair = std::pair<const Body* const, BodyConstraint*>;
 
@@ -109,9 +106,6 @@ using PositionConstraints = std::vector<PositionConstraint>;
 
 /// @brief Collection of velocity constraints.
 using VelocityConstraints = std::vector<VelocityConstraint>;
-
-/// @brief Contact pointer type.
-using ContactPtr = Contact*;
 
 /// @brief Contact updating configuration.
 struct WorldImpl::ContactUpdateConf
