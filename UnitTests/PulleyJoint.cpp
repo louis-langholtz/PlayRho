@@ -243,3 +243,17 @@ TEST(PulleyJointConf, InitVelocity)
     EXPECT_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}),
                  std::out_of_range);
 }
+
+TEST(PulleyJointConf, SolveVelocity)
+{
+    auto jd = PulleyJointConf{};
+    std::vector<BodyConstraint> bodies;
+    EXPECT_THROW(SolveVelocity(jd, bodies, StepConf{}), std::out_of_range);
+}
+
+TEST(PulleyJointConf, SolvePosition)
+{
+    auto jd = PulleyJointConf{};
+    std::vector<BodyConstraint> bodies;
+    EXPECT_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}), std::out_of_range);
+}
