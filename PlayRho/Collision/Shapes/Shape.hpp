@@ -272,13 +272,12 @@ public:
     }
 
     template <typename T>
-    friend auto TypeCast(const Shape* shape) noexcept
+    friend auto TypeCast(const Shape* value) noexcept
     {
-        if (!shape || !shape->m_self
-            || (GetType(*shape) != GetTypeID<std::remove_pointer_t<T>>())) {
+        if (!value || (GetType(*value) != GetTypeID<std::remove_pointer_t<T>>())) {
             return static_cast<T>(nullptr);
         }
-        return static_cast<T>(shape->m_self->GetData_());
+        return static_cast<T>(value->m_self->GetData_());
     }
 
     friend bool operator== (const Shape& lhs, const Shape& rhs) noexcept
