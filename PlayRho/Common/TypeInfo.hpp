@@ -84,7 +84,7 @@ struct TypeInfo<long double>
 #endif // USE_RTTI
 
 /// @brief Type identifier.
-using TypeID = strongtype::IndexingNamedType<const char *(*)() noexcept, struct TypeIdentifier>;
+using TypeID = strongtype::IndexingNamedType<const char *(*)(), struct TypeIdentifier>;
 
 static_assert(sizeof(TypeID) == sizeof(void*), "TypeID size not that of a pointer?!");
 
