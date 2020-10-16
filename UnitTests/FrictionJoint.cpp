@@ -39,6 +39,8 @@ TEST(FrictionJointConf, ByteSize)
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(92));
+#elif defined(_WIN64)
+            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(104));
 #else
             EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(88));
 #endif

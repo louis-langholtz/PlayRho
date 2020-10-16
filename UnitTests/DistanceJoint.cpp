@@ -40,7 +40,7 @@ TEST(DistanceJointConf, ByteSize)
         case  4:
 #if defined(_WIN32)
 #if defined(_WIN64)
-            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(112));
+            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(104));
 #else
             EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(88));
 #endif
@@ -89,6 +89,13 @@ TEST(DistanceJointConf, UseDampingRatio)
     const auto value = Real(0.4);
     EXPECT_NE(DistanceJointConf{}.dampingRatio, value);
     EXPECT_EQ(DistanceJointConf{}.UseDampingRatio(value).dampingRatio, value);
+}
+
+TEST(DistanceJoint, TypeCast)
+{
+    const auto joint = Joint{DistanceJointConf{}};
+    EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
+    EXPECT_NO_THROW(TypeCast<DistanceJointConf>(joint));
 }
 
 TEST(DistanceJoint, Construction)

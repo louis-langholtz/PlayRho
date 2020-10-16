@@ -235,34 +235,34 @@ public:
     void UnsetIsActive() noexcept;
 
     /// Flags type data type.
-    using FlagsType = std::uint16_t;
+    using FlagsType = std::uint8_t;
 
     /// @brief Flags stored in m_flags
     enum: FlagsType
     {
         // Set when the shapes are touching.
-        e_touchingFlag = 0x02,
+        e_touchingFlag = 0x01,
 
         // This contact can be disabled (by user)
-        e_enabledFlag = 0x04,
+        e_enabledFlag = 0x02,
 
         // This contact needs filtering because a fixture filter was changed.
-        e_filterFlag = 0x08,
+        e_filterFlag = 0x04,
 
         // This contact has a valid TOI in m_toi
-        e_toiFlag = 0x10,
+        e_toiFlag = 0x08,
         
         // This contacts needs its touching state updated.
-        e_dirtyFlag = 0x20,
+        e_dirtyFlag = 0x10,
 
         /// Indicates whether the contact is to be treated as a sensor or not.
-        e_sensorFlag = 0x40,
+        e_sensorFlag = 0x20,
 
         /// Indicates whether the contact is to be treated as active or not.
-        e_activeFlag = 0x80,
+        e_activeFlag = 0x40,
 
         /// Indicates whether the contact is to be treated as between impenetrable bodies.
-        e_impenetrableFlag = 0x100,
+        e_impenetrableFlag = 0x80,
     };
     
     /// @brief Flags this contact for filtering.
@@ -296,28 +296,53 @@ private:
     // info then minimally only those two indexes are needed. That may be sub-optimal
     // however depending the speed of cache and memory access.
 
-    BodyID m_bodyA = InvalidBodyID; ///< Body A. @warning Should only be body of fixture A.
-    BodyID m_bodyB = InvalidBodyID; ///< Body B. @warning Should only be body of fixture B.
+    /// Body A.
+    /// @note Field is 2-bytes.
+    /// @warning Should only be body of fixture A.
+    BodyID m_bodyA = InvalidBodyID;
 
-    FixtureID m_fixtureA = InvalidFixtureID; ///< Fixture A. @details Identifier of fixture A.
-    FixtureID m_fixtureB = InvalidFixtureID; ///< Fixture B. @details Identifier of fixture B.
+    /// Body B.
+    /// @note Field is 2-bytes.
+    /// @warning Should only be body of fixture B.
+    BodyID m_bodyB = InvalidBodyID;
 
-    ChildCounter m_indexA; ///< Index A.
-    ChildCounter m_indexB; ///< Index B.
-    
+    /// Identifier of fixture A.
+    /// @note Field is 2-bytes.
+    FixtureID m_fixtureA = InvalidFixtureID;
+
+    /// Identifier of fixture B.
+    /// @note Field is 2-bytes.
+    FixtureID m_fixtureB = InvalidFixtureID;
+
+    ChildCounter m_indexA; ///< Index A. 4-bytes.
+    ChildCounter m_indexB; ///< Index B. 4-bytes.
+
     // initialized on construction (construction-time depedent)
-    Real m_friction = 0; ///< Mix of frictions of the associated fixtures. @see MixFriction.
-    Real m_restitution = 0; ///< Mix of restitutions of the associated fixtures. @see MixRestitution.
 
-    LinearVelocity m_tangentSpeed = 0; ///< Tangent speed.
-    
+    /// Mix of frictions of associated fixtures.
+    /// @note Field is 4-bytes (with 4-byte Real).
+    /// @see MixFriction.
+    Real m_friction = 0;
+
+    /// Mix of restitutions of associated fixtures.
+    /// @note Field is 4-bytes (with 4-byte Real).
+    /// @see MixRestitution.
+    Real m_restitution = 0;
+
+    /// Tangent speed.
+    /// @note Field is 4-bytes (with 4-byte Real).
+   LinearVelocity m_tangentSpeed = 0;
+
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
     /// @note Only valid if <code>m_flags & e_toiFlag</code>.
     Real m_toi = 0;
-    
-    substep_type m_toiCount = 0; ///< Count of TOI calculations contact has gone through since last reset.
-    
+
+    // 32-bytes to here.
+
+    /// Count of TOI calculations contact has gone through since last reset.
+    substep_type m_toiCount = 0;
+
     FlagsType m_flags = e_enabledFlag|e_dirtyFlag; ///< Flags.
 };
 

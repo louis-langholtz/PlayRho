@@ -38,7 +38,9 @@ TEST(MotorJointConf, ByteSize)
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32) && !defined(_WIN64)
+#if defined(_WIN64)
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(120));
+#elif defined(_WIN32)
             EXPECT_EQ(sizeof(MotorJointConf), std::size_t(44));
 #else
             EXPECT_EQ(sizeof(MotorJointConf), std::size_t(104));

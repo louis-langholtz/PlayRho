@@ -29,6 +29,7 @@ using namespace playrho::d2;
 
 TEST(DynamicTree, ByteSize)
 {
+    EXPECT_EQ(alignof(DynamicTree), 8u);
 #if defined(_WIN64)
     EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
 #elif defined(_WIN32)
@@ -38,19 +39,32 @@ TEST(DynamicTree, ByteSize)
 #endif
 }
 
+TEST(DynamicTree, VariantDataByteSize)
+{
+    EXPECT_EQ(alignof(DynamicTree), 8u);
+    EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
+}
+
 TEST(DynamicTree, TreeNodeByteSize)
-{    
+{
     switch (sizeof(Real))
     {
         case  4:
+            EXPECT_EQ(alignof(DynamicTree::TreeNode), 4u);
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(36));
 #else
             EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(32));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(48)); break;
-        case 16: EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(96)); break;
+        case  8:
+            EXPECT_EQ(alignof(DynamicTree::TreeNode), 8u);
+            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(48));
+            break;
+        case 16:
+            EXPECT_EQ(alignof(DynamicTree::TreeNode), 16u);
+            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(80));
+            break;
     }
 }
 

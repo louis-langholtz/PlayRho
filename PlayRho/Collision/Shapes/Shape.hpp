@@ -272,11 +272,11 @@ public:
     }
 
     template <typename T>
-    friend T TypeCast(const Shape* shape) noexcept
+    friend auto TypeCast(const Shape* shape) noexcept
     {
         if (!shape || !shape->m_self
             || (GetType(*shape) != GetTypeID<std::remove_pointer_t<T>>())) {
-            return nullptr;
+            return static_cast<T>(nullptr);
         }
         return static_cast<T>(shape->m_self->GetData_());
     }

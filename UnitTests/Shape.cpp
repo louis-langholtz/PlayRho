@@ -121,6 +121,12 @@ TEST(Shape, Assignment)
     EXPECT_EQ(GetType(s), GetTypeID<EdgeShapeConf>());
 }
 
+TEST(Shape, TypeCast)
+{
+    const auto shape = Shape{};
+    EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
+}
+
 TEST(Shape, types)
 {
     EXPECT_EQ(GetTypeID<DiskShapeConf>(), GetTypeID<DiskShapeConf>());

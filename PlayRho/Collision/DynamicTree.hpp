@@ -444,7 +444,7 @@ public:
     /// @brief Initializing constructor.
     constexpr TreeNode(const LeafData& value, AABB aabb,
                                       Size other = DynamicTree::GetInvalidSize()) noexcept:
-        m_height{0}, m_other{other}, m_aabb{aabb}, m_variant{value}
+        m_aabb{aabb}, m_variant{value}, m_height{0}, m_other{other}
     {
         // Intentionally empty.
     }
@@ -452,7 +452,7 @@ public:
     /// @brief Initializing constructor.
     constexpr TreeNode(const BranchData& value, AABB aabb, Height height,
                        Size other = DynamicTree::GetInvalidSize()) noexcept:
-        m_height{height}, m_other{other}, m_aabb{aabb}, m_variant{value}
+        m_aabb{aabb}, m_variant{value}, m_height{height}, m_other{other}
     {
         assert(IsBranch(height));
         assert(value.child1 != GetInvalidSize());
@@ -546,6 +546,14 @@ public:
     }
 
 private:
+    /// @brief AABB.
+    /// @note This field is unused for free nodes, else it's the minimally enclosing AABB
+    ///   for the node.
+    AABB m_aabb;
+
+    /// @brief Variant data for the node.
+    VariantData m_variant{UnusedData{}};
+
     /// @brief Height.
     /// @details "Height" for tree balancing.
     /// @note 0 if leaf node, <code>DynamicTree::GetInvalidHeight()</code> if free (unallocated)
@@ -556,14 +564,6 @@ private:
     /// @note This is an index to the next node for a free node, else this is the index to the
     ///   parent node.
     Size m_other = DynamicTree::GetInvalidSize(); ///< Index of another node.
-    
-    /// @brief AABB.
-    /// @note This field is unused for free nodes, else it's the minimally enclosing AABB
-    ///   for the node.
-    AABB m_aabb;
-    
-    /// @brief Variant data for the node.
-    VariantData m_variant{UnusedData{}};
 };
 
 constexpr DynamicTree::Size DynamicTree::GetDefaultInitialNodeCapacity() noexcept

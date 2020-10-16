@@ -140,3 +140,9 @@ TEST(Joint, LimitStateToStringFF)
     names.insert(lowerLimitsString);
     EXPECT_EQ(names.size(), decltype(names.size()){4});
 }
+
+TEST(Joint, TypeCast)
+{
+    const auto joint = Joint{};
+    EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
+}
