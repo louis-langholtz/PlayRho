@@ -53,13 +53,20 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
     /// @brief Super type.
     using super = JointBuilder<PulleyJointConf>;
 
+    static constexpr Length2 DefaultGroundAnchorA = Length2{-1_m, +1_m};
+    static constexpr Length2 DefaultGroundAnchorB = Length2{+1_m, +1_m};
+    static constexpr Length2 DefaultLocalAnchorA = Length2{-1_m, 0_m};
+    static constexpr Length2 DefaultLocalAnchorB = Length2{+1_m, 0_m};
+
     /// @brief Default constructor.
     PulleyJointConf() noexcept: super{super{}.UseCollideConnected(true)} {}
 
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
     PulleyJointConf(BodyID bodyA, BodyID bodyB,
-                    Length2 groundAnchorA = Length2{-1_m, +1_m}, Length2 groundAnchorB = Length2{+1_m, +1_m},
-                    Length2 anchorA = Length2{-1_m, 0_m}, Length2 anchorB = Length2{+1_m, 0_m},
+                    Length2 groundAnchorA = DefaultGroundAnchorA,
+                    Length2 groundAnchorB = DefaultGroundAnchorB,
+                    Length2 anchorA = DefaultLocalAnchorA,
+                    Length2 anchorB = DefaultLocalAnchorB,
                     Length lA = 0_m, Length lB = 0_m);
 
     /// @brief Uses the given ratio value.
@@ -70,16 +77,16 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
     }
 
     /// The first ground anchor in world coordinates. This point never moves.
-    Length2 groundAnchorA = Length2{-1_m, +1_m};
+    Length2 groundAnchorA = DefaultGroundAnchorA;
 
     /// The second ground anchor in world coordinates. This point never moves.
-    Length2 groundAnchorB = Length2{+1_m, +1_m};
+    Length2 groundAnchorB = DefaultGroundAnchorB;
 
     /// The local anchor point relative to body A's origin.
-    Length2 localAnchorA = Length2{-1_m, 0_m};
+    Length2 localAnchorA = DefaultLocalAnchorA;
 
     /// The local anchor point relative to body B's origin.
-    Length2 localAnchorB = Length2{+1_m, 0_m};
+    Length2 localAnchorB = DefaultLocalAnchorB;
 
     /// The a reference length for the segment attached to body-A.
     Length lengthA = 0_m;

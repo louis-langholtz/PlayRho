@@ -19,8 +19,12 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
+
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -34,11 +38,77 @@ TEST(PulleyJointConf, DefaultConstruction)
     EXPECT_EQ(def.collideConnected, true);
     EXPECT_EQ(def.userData, nullptr);
     
-    EXPECT_EQ(def.localAnchorA, (Length2{-1_m, 0_m}));
-    EXPECT_EQ(def.localAnchorB, (Length2{+1_m, 0_m}));
+    EXPECT_EQ(def.groundAnchorA, PulleyJointConf::DefaultGroundAnchorA);
+    EXPECT_EQ(def.groundAnchorB, PulleyJointConf::DefaultGroundAnchorB);
+    EXPECT_EQ(def.localAnchorA, PulleyJointConf::DefaultLocalAnchorA);
+    EXPECT_EQ(def.localAnchorB, PulleyJointConf::DefaultLocalAnchorB);
     EXPECT_EQ(def.lengthA, 0_m);
     EXPECT_EQ(def.lengthB, 0_m);
     EXPECT_EQ(def.ratio, Real(1));
+}
+
+TEST(PulleyJointConf, InitializingConstructor)
+{
+    const auto bA = BodyID(2u);
+    const auto bB = BodyID(4u);
+    const auto gndA = Length2{-5_m, -4.2_m};
+    const auto gndB = Length2{+2.3_m, +3.1_m};
+    const auto locA = Length2{-1.1_m, +0.2_m};
+    const auto locB = Length2{-1.4_m, +2.9_m};
+    const auto lenA = 2.2_m;
+    const auto lenB = 0.24_m;
+    EXPECT_EQ(PulleyJointConf(bA, bB).bodyA, bA);
+    EXPECT_EQ(PulleyJointConf(bA, bB).bodyB, bB);
+    EXPECT_EQ(PulleyJointConf(bA, bB, gndA, gndB).groundAnchorA, gndA);
+    EXPECT_EQ(PulleyJointConf(bA, bB, gndA, gndB).groundAnchorB, gndB);
+    EXPECT_EQ(PulleyJointConf(bA, bB, gndA, gndB, locA, locB).localAnchorA, locA);
+    EXPECT_EQ(PulleyJointConf(bA, bB, gndA, gndB, locA, locB).localAnchorB, locB);
+    EXPECT_EQ(PulleyJointConf(bA, bB, gndA, gndB, locA, locB, lenA, lenB).lengthA, lenA);
+    EXPECT_EQ(PulleyJointConf(bA, bB, gndA, gndB, locA, locB, lenA, lenB).lengthB, lenB);
+}
+
+TEST(PulleyJointConf, GetPulleyJointConfForWorld)
+{
+    auto world = World{};
+    const auto posA = Length2{+1_m, +1_m};
+    const auto posB = Length2{-1_m, -1_m};
+    const auto bA = CreateBody(world, BodyConf{}.UseLocation(posA));
+    const auto bB = CreateBody(world, BodyConf{}.UseLocation(posB));
+    const auto gA = Length2{2.2_m, 3.0_m};
+    const auto gB = Length2{-1.0_m, 1_m};
+    const auto aA = Length2{+10_m, 10_m};
+    const auto aB = Length2{-10_m, 10_m};
+    const auto conf = GetPulleyJointConf(world, bA, bB, gA, gB, aA, aB);
+    EXPECT_EQ(conf.bodyA, bA);
+    EXPECT_EQ(conf.bodyB, bB);
+    EXPECT_EQ(conf.groundAnchorA, gA);
+    EXPECT_EQ(conf.groundAnchorB, gB);
+    EXPECT_EQ(conf.localAnchorA, aA - posA);
+    EXPECT_EQ(conf.localAnchorB, aB - posB);
+    EXPECT_NEAR(conf.lengthA, 10.4805_m, 0.0001_m);
+    EXPECT_NEAR(conf.lengthB, 12.7279_m, 0.0001_m);
+}
+
+TEST(PulleyJointConf, GetPulleyJointConfForJoint)
+{
+    const auto bA = BodyID(2u);
+    const auto bB = BodyID(4u);
+    const auto gndA = Length2{-5_m, -4.2_m};
+    const auto gndB = Length2{+2.3_m, +3.1_m};
+    const auto locA = Length2{-1.1_m, +0.2_m};
+    const auto locB = Length2{-1.4_m, +2.9_m};
+    const auto lenA = 2.2_m;
+    const auto lenB = 0.24_m;
+    const auto joint = PulleyJointConf(bA, bB, gndA, gndB, locA, locB, lenA, lenB);
+    const auto conf = GetPulleyJointConf(joint);
+    EXPECT_EQ(conf.bodyA, bA);
+    EXPECT_EQ(conf.bodyB, bB);
+    EXPECT_EQ(conf.groundAnchorA, gndA);
+    EXPECT_EQ(conf.groundAnchorB, gndB);
+    EXPECT_EQ(conf.localAnchorA, locA);
+    EXPECT_EQ(conf.localAnchorB, locB);
+    EXPECT_EQ(conf.lengthA, lenA);
+    EXPECT_EQ(conf.lengthB, lenB);
 }
 
 TEST(PulleyJointConf, UseRatio)
@@ -151,10 +221,11 @@ TEST(PulleyJoint, GetCurrentLength)
     ASSERT_EQ(GetGroundAnchorA(joint), jd.groundAnchorA);
     ASSERT_EQ(GetGroundAnchorB(joint), jd.groundAnchorB);
 
-#if 0
-    const auto lenA = GetMagnitude(GetWorldPoint(*GetBodyA(joint), jd.localAnchorA - jd.groundAnchorA));
-    const auto lenB = GetMagnitude(GetWorldPoint(*GetBodyB(joint), jd.localAnchorB - jd.groundAnchorB));
-    EXPECT_EQ(GetCurrentLengthA(joint), lenA);
-    EXPECT_EQ(GetCurrentLengthB(joint), lenB);
-#endif
+    const auto lenA = GetMagnitude(GetWorldPoint(world, GetBodyA(joint),
+                                                 jd.localAnchorA - jd.groundAnchorA));
+    const auto lenB = GetMagnitude(GetWorldPoint(world, GetBodyB(joint),
+                                                 jd.localAnchorB - jd.groundAnchorB));
+    const auto id = CreateJoint(world, joint);
+    EXPECT_EQ(GetCurrentLengthA(world, id), lenA);
+    EXPECT_EQ(GetCurrentLengthB(world, id), lenB);
 }
