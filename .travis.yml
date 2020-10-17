@@ -64,10 +64,11 @@ addons:
       - libxmu-dev
       - libxi-dev
       - libgl1-mesa-dev
+      - libglu1-mesa-dev
       - libosmesa-dev
       - lcov
       - ggcov
-      - libglfw3
+      - libglfw3-dev
       - libglew2.0
 
 # Seems new way is to call: pip install --user cpp-coveralls
