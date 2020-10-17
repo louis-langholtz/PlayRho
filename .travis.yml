@@ -95,7 +95,7 @@ install:
       mkdir -p /tmp/usr
       make -C lcov-1.14/ PREFIX=/tmp/usr install
     fi
-  - if [ "$CXX" = "clang++" ]; then export CXX="clang++-8.0" CC="clang-8.0"; fi
+  - if [ "$CXX" = "clang++" ]; then export CXX="clang++-8" CC="clang-8"; fi
   - |
     echo CXX=$CXX HOME=$HOME TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR
     cmake --version
@@ -119,7 +119,7 @@ install:
 
 script:
   - |
-    if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-8.0" ]]; then
+    if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-8" ]]; then
       (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld )
     fi
   - |
