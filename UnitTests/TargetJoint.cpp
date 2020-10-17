@@ -217,7 +217,7 @@ TEST(TargetJointConf, GetEffectiveMassMatrix)
     EXPECT_EQ(mass[1][1], 0_kg);
 }
 
-TEST(TargetJointConf, InitVelocity)
+TEST(TargetJointConf, InitVelocityThrows)
 {
     std::vector<BodyConstraint> bodies;
     auto step = StepConf{};
@@ -226,7 +226,36 @@ TEST(TargetJointConf, InitVelocity)
     EXPECT_THROW(InitVelocity(def, bodies, step, conf), std::out_of_range);
 }
 
-TEST(TargetJointConf, SolveVelocity)
+TEST(TargetJointConf, InitVelocityUpdatesGamma)
+{
+    auto invMass = InvMass{};
+    auto invRotI = InvRotInertia{};
+    auto localCenter = Length2{};
+    auto position = Position{};
+    auto velocity = Velocity{};
+
+    std::vector<BodyConstraint> bodies;
+    bodies.push_back(BodyConstraint{invMass, invRotI, localCenter, position, velocity});
+
+    auto step = StepConf{};
+
+    auto conf = ConstraintSolverConf{};
+
+    auto def = TargetJointConf{};
+    def.bodyA = BodyID(0u);
+    def.bodyB = BodyID(0u);
+    def.frequency = 0_Hz;
+    def.gamma = Real(5) / 1_kg;
+    EXPECT_NO_THROW(InitVelocity(def, bodies, step, conf));
+    EXPECT_EQ(def.gamma, Real(0) / 1_kg);
+
+    def.frequency = 1_Hz;
+    def.gamma = Real(5) / 1_kg;
+    EXPECT_NO_THROW(InitVelocity(def, bodies, step, conf));
+    EXPECT_EQ(def.gamma, Real(0) / 1_kg);
+}
+
+TEST(TargetJointConf, SolveVelocityThrows)
 {
     std::vector<BodyConstraint> bodies;
     auto step = StepConf{};
@@ -234,7 +263,7 @@ TEST(TargetJointConf, SolveVelocity)
     EXPECT_THROW(SolveVelocity(def, bodies, step), std::out_of_range);
 }
 
-TEST(TargetJointConf, SolvePosition)
+TEST(TargetJointConf, SolvePositionThrows)
 {
     std::vector<BodyConstraint> bodies;
     auto conf = ConstraintSolverConf{};
