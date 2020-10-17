@@ -172,9 +172,7 @@ template <>
 struct TypeInfo<d2::FrictionJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static const char* name() noexcept {
-        return "d2::FrictionJointConf";
-    }
+    static constexpr const char* name = "d2::FrictionJointConf";
 };
 
 } // namespace playrho

@@ -213,9 +213,7 @@ template <>
 struct TypeInfo<d2::WheelJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static const char* name() noexcept {
-        return "d2::WheelJointConf";
-    }
+    static constexpr const char* name = "d2::WheelJointConf";
 };
 
 } // namespace playrho

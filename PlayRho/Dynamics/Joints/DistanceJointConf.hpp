@@ -191,9 +191,7 @@ template <>
 struct TypeInfo<d2::DistanceJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static const char* name() noexcept {
-        return "d2::DistanceJointConf";
-    }
+    static constexpr const char* name = "d2::DistanceJointConf";
 };
 
 } // namespace playrho

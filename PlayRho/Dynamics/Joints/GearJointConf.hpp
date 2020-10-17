@@ -186,9 +186,7 @@ template <>
 struct TypeInfo<d2::GearJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static const char* name() noexcept {
-        return "d2::GearJointConf";
-    }
+    static constexpr const char* name = "d2::GearJointConf";
 };
 
 } // namespace playrho

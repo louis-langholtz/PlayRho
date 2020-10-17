@@ -38,15 +38,8 @@ using namespace playrho::d2;
 
 namespace {
 
-const char* func1()
-{
-    return "func1";
-}
-
-const char* func2()
-{
-    return "func2";
-}
+const char* name1 = "name1";
+const char* name2 = "name2";
 
 } // namespace
 
@@ -58,22 +51,18 @@ TEST(JointType, ByteSize)
 
 TEST(JointType, EqualsOperator)
 {
-    EXPECT_TRUE(JointType(&func1) == JointType(&func1));
-    EXPECT_TRUE(JointType(&func1) == JointType(func1));
-    EXPECT_TRUE(JointType(&func2) == JointType(&func2));
-    EXPECT_TRUE(JointType(&func2) == JointType(func2));
-    EXPECT_FALSE(JointType(&func1) == JointType(&func2));
-    EXPECT_FALSE(JointType(&func2) == JointType(&func1));
+    EXPECT_TRUE(JointType(&name1) == JointType(&name1));
+    EXPECT_TRUE(JointType(&name2) == JointType(&name2));
+    EXPECT_FALSE(JointType(&name1) == JointType(&name2));
+    EXPECT_FALSE(JointType(&name2) == JointType(&name1));
 }
 
 TEST(JointType, NotEqualsOperator)
 {
-    EXPECT_FALSE(JointType(&func1) != JointType(&func1));
-    EXPECT_FALSE(JointType(&func1) != JointType(func1));
-    EXPECT_FALSE(JointType(&func2) != JointType(&func2));
-    EXPECT_FALSE(JointType(&func2) != JointType(func2));
-    EXPECT_TRUE(JointType(&func1) != JointType(&func2));
-    EXPECT_TRUE(JointType(&func2) != JointType(&func1));
+    EXPECT_FALSE(JointType(&name1) != JointType(&name1));
+    EXPECT_FALSE(JointType(&name2) != JointType(&name2));
+    EXPECT_TRUE(JointType(&name1) != JointType(&name2));
+    EXPECT_TRUE(JointType(&name2) != JointType(&name1));
 }
 
 TEST(JointType, ToString)

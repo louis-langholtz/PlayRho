@@ -176,9 +176,7 @@ template <>
 struct TypeInfo<d2::PulleyJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static const char* name() noexcept {
-        return "d2::PulleyJointConf";
-    }
+    static constexpr const char* name = "d2::PulleyJointConf";
 };
 
 } // namespace playrho

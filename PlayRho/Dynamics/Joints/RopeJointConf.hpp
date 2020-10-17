@@ -155,9 +155,7 @@ template <>
 struct TypeInfo<d2::RopeJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static const char* name() noexcept {
-        return "d2::RopeJointConf";
-    }
+    static constexpr const char* name = "d2::RopeJointConf";
 };
 
 } // namespace playrho

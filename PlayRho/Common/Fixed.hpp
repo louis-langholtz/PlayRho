@@ -797,13 +797,8 @@ constexpr bool operator > (Fixed32 lhs, Fixed32 rhs) noexcept
 template <>
 struct TypeInfo<Fixed32>
 {
-    /// @brief Gets the specialized name for the <code>Fixed32</code> type.
-    /// @details Provides an interface to a specialized function for getting C-style
-    ///   null-terminated array of characters that names the <code>Fixed32</code> type.
-    /// @return Non-null pointer to C-style string name of specified type.
-    static const char* name() noexcept {
-        return "Fixed32";
-    }
+    /// @brief The specialized name for the <code>Fixed32</code> type.
+    static constexpr const char* name = "Fixed32";
 };
 
 #ifdef PLAYRHO_INT128
@@ -909,13 +904,8 @@ template<> struct Wider<Fixed32> {
 template <>
 struct TypeInfo<Fixed64>
 {
-    /// @brief Gets the specialized name for the <code>Fixed64</code> type.
-    /// @details Provides an interface to a specialized function for getting C-style
-    ///   null-terminated array of characters that names the <code>Fixed64</code> type.
-    /// @return Non-null pointer to C-style string name of specified type.
-    static const char* name() noexcept {
-        return "Fixed64";
-    }
+    /// @brief The specialized name for the <code>Fixed64</code> type.
+    static constexpr const char* name = "Fixed64";
 };
 
 #endif /* PLAYRHO_INT128 */

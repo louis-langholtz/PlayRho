@@ -173,9 +173,7 @@ template <>
 struct TypeInfo<d2::WeldJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static const char* name() noexcept {
-        return "d2::WeldJointConf";
-    }
+    static constexpr const char* name = "d2::WeldJointConf";
 };
 
 } // namespace playrho

@@ -237,9 +237,7 @@ template <>
 struct TypeInfo<d2::PrismaticJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static const char* name() noexcept {
-        return "d2::PrismaticJointConf";
-    }
+    static constexpr const char* name = "d2::PrismaticJointConf";
 };
 
 } // namespace playrho
