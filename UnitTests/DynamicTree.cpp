@@ -129,22 +129,33 @@ TEST(DynamicTreeBranchData, Traits)
     EXPECT_TRUE(std::is_default_constructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTree::BranchData>::value);
-    
-    EXPECT_TRUE(std::is_nothrow_constructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_constructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_trivially_constructible<DynamicTree::BranchData>::value);
-    
+
     EXPECT_TRUE(std::is_copy_constructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTree::BranchData>::value);
-    
+
     EXPECT_TRUE(std::is_copy_assignable<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTree::BranchData>::value);
-    
+
     EXPECT_TRUE(std::is_destructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_trivially_destructible<DynamicTree::BranchData>::value);
+}
+
+TEST(DynamicTreeLeafData, Traits)
+{
+    EXPECT_TRUE(std::is_default_constructible<DynamicTree::LeafData>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::LeafData>::value);
+
+    EXPECT_TRUE(std::is_copy_constructible<DynamicTree::LeafData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::LeafData>::value);
+
+    EXPECT_TRUE(std::is_copy_assignable<DynamicTree::LeafData>::value);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::LeafData>::value);
+
+    EXPECT_TRUE(std::is_destructible<DynamicTree::LeafData>::value);
+    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::LeafData>::value);
 }
 
 TEST(DynamicTreeVariantData, Traits)
@@ -371,6 +382,13 @@ TEST(DynamicTree, DefaultConstruction)
     EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
     EXPECT_EQ(foo.FindReference(DynamicTree::GetInvalidSize()), DynamicTree::GetInvalidSize());
     EXPECT_EQ(foo.FindReference(DynamicTree::Size(0)), DynamicTree::GetInvalidSize());
+}
+
+TEST(DynamicTreeLeafData, DefaultConstructor)
+{
+    EXPECT_EQ(DynamicTree::LeafData().body, BodyID(0u));
+    EXPECT_EQ(DynamicTree::LeafData().fixture, FixtureID(0u));
+    EXPECT_EQ(DynamicTree::LeafData().childIndex, ChildCounter(0u));
 }
 
 TEST(DynamicTree, ZeroCapacityConstructionSameAsDefault)
@@ -947,7 +965,7 @@ TEST(DynamicTree, Clear)
     EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::GetInvalidSize());
     EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
 
-    ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData{}));
+    ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData()));
     ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
     ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
@@ -965,7 +983,7 @@ TEST(DynamicTree, Clear)
     auto numLeafs = foo.GetLeafCount();
     while (foo.GetNodeCount() < capacity)
     {
-        ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData{}));
+        ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData()));
         ASSERT_GT(foo.GetLeafCount(), numLeafs);
         ASSERT_GE(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
         numLeafs = foo.GetLeafCount();

@@ -29,17 +29,14 @@
 namespace playrho {
 namespace strongtype {
 
-/// @brief Named "strong type" template class.
+/// @brief An indexable, hashable, named "strong type" template class.
 /// @details A template class for wrapping types into more special-purposed types. Wrapping
 ///   types this way is often referred to as more "strongly typing" the underlying type.
 /// @note This comes from pulling together code found from various sites on the Internet.
 /// @see https://www.fluentcpp.com/2016/12/08/strong-types-for-strong-interfaces/
 /// @see https://foonathan.net/blog/2016/10/19/strong-typedefs.html
-/// @code{.cpp}
-/// using Width = NamedType<double, struct WidthParameter>;
-/// @endcode
 template <typename T, typename Tag>
-class NamedType
+class IndexingNamedType
 {
 public:
     /// @brief Underlying type alias.
@@ -47,15 +44,15 @@ public:
 
     /// @brief Default constructor.
     /// @note This causes default initialization of the underlying type.
-    constexpr explicit NamedType()
+    constexpr explicit IndexingNamedType()
     noexcept(std::is_nothrow_default_constructible<underlying_type>::value): value_{} {}
 
-    /// @brief Copy constructor.
-    constexpr explicit NamedType(const underlying_type& value)
+    /// @brief Copy initializing constructor.
+    constexpr explicit IndexingNamedType(const underlying_type& value)
     noexcept(std::is_nothrow_copy_constructible<underlying_type>::value): value_(value) {}
 
-    /// @brief Move constructor.
-    constexpr explicit NamedType(underlying_type&& value)
+    /// @brief Move initializing constructor.
+    constexpr explicit IndexingNamedType(underlying_type&& value)
     noexcept(std::is_nothrow_move_constructible<underlying_type>::value):
         value_(std::move(value)) {}
 
@@ -71,160 +68,99 @@ public:
         return value_;
     }
 
+    /// @brief Accesses the underlying value.
+    constexpr underlying_type& get() noexcept
+    {
+        return value_;
+    }
+
+    /// @brief Accesses the underlying value.
+    constexpr underlying_type const& get() const noexcept
+    {
+        return value_;
+    }
+
     /// @brief Swap function.
-    friend void swap(NamedType& a, NamedType& b) noexcept
+    friend void swap(IndexingNamedType& a, IndexingNamedType& b) noexcept
     {
         using std::swap;
         swap(static_cast<underlying_type&>(a), static_cast<underlying_type&>(b));
+    }
+
+    /// @brief Equality operator.
+    friend constexpr bool operator== (const IndexingNamedType& lhs, const IndexingNamedType& rhs)
+    {
+        return lhs.get() == rhs.get();
+    }
+
+    /// @brief Inequality operator.
+    friend constexpr bool operator!= (const IndexingNamedType& lhs, const IndexingNamedType& rhs)
+    {
+        return lhs.get() != rhs.get();
+    }
+
+    /// @brief Less-than operator.
+    friend constexpr bool operator< (const IndexingNamedType& lhs, const IndexingNamedType& rhs)
+    {
+        return lhs.get() < rhs.get();
+    }
+
+    /// @brief Greater-than operator.
+    friend constexpr bool operator> (const IndexingNamedType& lhs, const IndexingNamedType& rhs)
+    {
+        return lhs.get() > rhs.get();
+    }
+
+    /// @brief Less-than-or-equal-to operator.
+    friend constexpr bool operator<= (const IndexingNamedType& lhs, const IndexingNamedType& rhs)
+    {
+        return lhs.get() <= rhs.get();
+    }
+
+    /// @brief Greater-than-or-equal-to operator.
+    friend constexpr bool operator>= (const IndexingNamedType& lhs, const IndexingNamedType& rhs)
+    {
+        return lhs.get() >= rhs.get();
+    }
+
+    /// @brief Hashes the value given.
+    friend ::std::size_t hash(const IndexingNamedType& v) noexcept
+    {
+        return ::std::hash(v.get());
     }
 
 private:
     underlying_type value_; ///< Underlying value.
 };
 
+static_assert(std::is_default_constructible<IndexingNamedType<int, struct Test>>::value, "");
+static_assert(std::is_nothrow_copy_constructible<IndexingNamedType<int, struct Test>>::value, "");
+static_assert(std::is_nothrow_move_constructible<IndexingNamedType<int, struct Test>>::value, "");
+
 template <typename T, typename Tag>
-constexpr T UnderlyingTypeImpl(NamedType<T, Tag>);
+constexpr T UnderlyingTypeImpl(IndexingNamedType<T, Tag>);
 
 template <typename T>
 using UnderlyingType = decltype(UnderlyingTypeImpl(std::declval<T>()));
 
 /// @brief Gets the underlying value.
 template <typename T, typename Tag>
-constexpr T& UnderlyingValue(NamedType<T, Tag>& o) noexcept
+constexpr T& UnderlyingValue(IndexingNamedType<T, Tag>& o) noexcept
 {
     return static_cast<T&>(o);
 }
 
 /// @brief Gets the underlying value.
 template <typename T, typename Tag>
-constexpr const T& UnderlyingValue(const NamedType<T, Tag>& o) noexcept
+constexpr const T& UnderlyingValue(const IndexingNamedType<T, Tag>& o) noexcept
 {
     return static_cast<const T&>(o);
 }
-
-/// @brief Equality comparable type.
-template <class NamedType>
-struct EqualityComparable
-{
-    /// @brief Equality operator.
-    friend constexpr bool operator== (const NamedType& lhs, const NamedType& rhs)
-    {
-        using type = UnderlyingType<NamedType>;
-        return static_cast<type>(lhs) == static_cast<type>(rhs);
-    }
-};
-
-/// @brief Inequality comparable type.
-template <class NamedType>
-struct InequalityComparable
-{
-    /// @brief Inequality operator.
-    friend constexpr bool operator!= (const NamedType& lhs, const NamedType& rhs)
-    {
-        using type = UnderlyingType<NamedType>;
-        return static_cast<type>(lhs) != static_cast<type>(rhs);
-    }
-};
-
-/// @brief Less-than comparable type.
-template <class NamedType>
-struct LessThanComparable
-{
-    /// @brief Less-than operator.
-    friend constexpr bool operator< (const NamedType& lhs, const NamedType& rhs)
-    {
-        using type = UnderlyingType<NamedType>;
-        return static_cast<type>(lhs) < static_cast<type>(rhs);
-    }
-};
-
-/// @brief Greater-than comparable type.
-template <class NamedType>
-struct GreaterThanComparable
-{
-    /// @brief Greater-than operator.
-    friend constexpr bool operator> (const NamedType& lhs, const NamedType& rhs)
-    {
-        using type = UnderlyingType<NamedType>;
-        return static_cast<type>(lhs) > static_cast<type>(rhs);
-    }
-};
-
-/// @brief Less-than-or-equal-to comparable type.
-template <class NamedType>
-struct LessThanEqualComparable
-{
-    /// @brief Less-than-or-equal-to operator.
-    friend constexpr bool operator<= (const NamedType& lhs, const NamedType& rhs)
-    {
-        using type = UnderlyingType<NamedType>;
-        return static_cast<type>(lhs) <= static_cast<type>(rhs);
-    }
-};
-
-/// @brief Greater-than-or-equal-to comparable type.
-template <class NamedType>
-struct GreaterThanEqualComparable
-{
-    /// @brief Greater-than-or-equal-to operator.
-    friend constexpr bool operator>= (const NamedType& lhs, const NamedType& rhs)
-    {
-        using type = UnderlyingType<NamedType>;
-        return static_cast<type>(lhs) >= static_cast<type>(rhs);
-    }
-};
-
-/// @brief Support for hashing function.
-template <class NamedType>
-struct Hashable
-{
-    /// @brief Type alias for the underlying type of the template type.
-    using type = UnderlyingType<NamedType>;
-
-    /// @brief Hashes the value given.
-    friend ::std::size_t hash(const NamedType& v) noexcept
-    {
-        return ::std::hash<type>(UnderlyingValue(v));
-    }
-};
-
-// Composite strong types...
-
-template <typename T, typename Tag>
-struct IdentifyingNamedType: NamedType<T, Tag>,
-    EqualityComparable<NamedType<T, Tag>>, InequalityComparable<NamedType<T, Tag>>,
-    Hashable<NamedType<T, Tag>>
-{
-    using NamedType<T, Tag>::NamedType;
-};
-
-template <typename T, typename Tag>
-struct IndexingNamedType:
-    NamedType<T, Tag>,
-    EqualityComparable<NamedType<T, Tag>>, InequalityComparable<NamedType<T, Tag>>,
-    LessThanComparable<NamedType<T, Tag>>, GreaterThanComparable<NamedType<T, Tag>>,
-    LessThanEqualComparable<NamedType<T, Tag>>, GreaterThanEqualComparable<NamedType<T, Tag>>,
-    Hashable<NamedType<T, Tag>>
-{
-    using NamedType<T, Tag>::NamedType;
-};
 
 } // namespace strongtype
 } // namespace playrho
 
 namespace std {
-
-/// @brief Custom specialization of std::hash for <code>::playrho::strongtype::NamedType</code>.
-template <typename T, typename Tag>
-struct hash<::playrho::strongtype::IdentifyingNamedType<T, Tag>>
-{
-    /// @brief Hashing functor operator.
-    ::std::size_t operator()(const ::playrho::strongtype::IdentifyingNamedType<T, Tag>& v) const noexcept
-    {
-        using type = ::playrho::strongtype::UnderlyingType<::playrho::strongtype::IdentifyingNamedType<T, Tag>>;
-        return ::std::hash<type>()(::playrho::strongtype::UnderlyingValue(v));;
-    }
-};
 
 /// @brief Custom specialization of std::hash for <code>::playrho::strongtype::NamedType</code>.
 template <typename T, typename Tag>
@@ -234,7 +170,7 @@ struct hash<::playrho::strongtype::IndexingNamedType<T, Tag>>
     ::std::size_t operator()(const ::playrho::strongtype::IndexingNamedType<T, Tag>& v) const noexcept
     {
         using type = ::playrho::strongtype::UnderlyingType<::playrho::strongtype::IndexingNamedType<T, Tag>>;
-        return ::std::hash<type>()(::playrho::strongtype::UnderlyingValue(v));;
+        return ::std::hash<type>()(v.get());;
     }
 };
 
