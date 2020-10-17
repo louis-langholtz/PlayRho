@@ -91,8 +91,8 @@ TEST(PulleyJointConf, GetPulleyJointConfForWorld)
     EXPECT_EQ(conf.groundAnchorB, gB);
     EXPECT_EQ(conf.localAnchorA, aA - posA);
     EXPECT_EQ(conf.localAnchorB, aB - posB);
-    EXPECT_NEAR(conf.lengthA, 10.4805_m, 0.0001_m);
-    EXPECT_NEAR(conf.lengthB, 12.7279_m, 0.0001_m);
+    EXPECT_NEAR(static_cast<double>(Real(conf.lengthA/1_m)), 10.4805, 0.0001);
+    EXPECT_NEAR(static_cast<double>(Real(conf.lengthB/1_m)), 12.7279, 0.0001);
 }
 
 TEST(PulleyJointConf, GetPulleyJointConfForJoint)
