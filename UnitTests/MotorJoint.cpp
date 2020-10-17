@@ -41,7 +41,7 @@ TEST(MotorJointConf, ByteSize)
 #if defined(_WIN64)
             EXPECT_EQ(sizeof(MotorJointConf), std::size_t(120));
 #elif defined(_WIN32)
-            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(44));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(96));
 #else
             EXPECT_EQ(sizeof(MotorJointConf), std::size_t(104));
 #endif

@@ -139,7 +139,7 @@ void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
     }
     else
     {
-        object.impulse = 0;
+        object.impulse = 0_Ns;
     }
 
     bodyConstraintA.SetVelocity(velA);

@@ -39,7 +39,7 @@ TEST(WheelJointConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(WheelJointConf), std::size_t(64));
+            EXPECT_EQ(sizeof(WheelJointConf), std::size_t(128));
 #else
             EXPECT_EQ(sizeof(WheelJointConf), std::size_t(136));
 #endif

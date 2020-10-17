@@ -30,7 +30,11 @@ using namespace playrho::d2;
 
 TEST(Fixture, ByteSize)
 {
+#if defined(_WIN32) && !defined(_WIN64)
+    EXPECT_EQ(sizeof(Fixture::Proxies), std::size_t(12));
+#else
     EXPECT_EQ(sizeof(Fixture::Proxies), std::size_t(24));
+#endif
     switch (sizeof(Real))
     {
         case  4:

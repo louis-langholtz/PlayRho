@@ -105,9 +105,9 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
     // Solver temp (recalculated every call to InitVelocityConstraints).
     UnitVec uA; ///< Unit vector A.
     UnitVec uB; ///< Unit vector B.
-    Length2 rA; ///< Relative A.
-    Length2 rB; ///< Relative B.
-    Mass mass; ///< Mass.
+    Length2 rA{}; ///< Relative A.
+    Length2 rB{}; ///< Relative B.
+    Mass mass = 0_kg; ///< Mass.
 };
 
 /// @brief Gets the definition data for the given joint.

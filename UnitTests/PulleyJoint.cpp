@@ -51,6 +51,15 @@ TEST(PulleyJointConf, DefaultConstruction)
     EXPECT_EQ(def.lengthA, 0_m);
     EXPECT_EQ(def.lengthB, 0_m);
     EXPECT_EQ(def.ratio, Real(1));
+    EXPECT_EQ(def.constant, 0_m);
+
+    EXPECT_EQ(def.impulse, 0_Ns);
+    ASSERT_EQ(UnitVec(), UnitVec::GetZero());
+    EXPECT_EQ(def.uA, UnitVec());
+    EXPECT_EQ(def.uB, UnitVec());
+    EXPECT_EQ(def.rA, Length2());
+    EXPECT_EQ(def.rB, Length2());
+    EXPECT_EQ(def.mass, 0_kg);
 }
 
 TEST(PulleyJointConf, InitializingConstructor)
@@ -130,7 +139,7 @@ TEST(PulleyJointConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(108));
+            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(100));
 #else
             EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(104));
 #endif
@@ -236,23 +245,96 @@ TEST(PulleyJoint, GetCurrentLength)
     EXPECT_EQ(GetCurrentLengthB(world, id), lenB);
 }
 
-TEST(PulleyJointConf, InitVelocity)
+TEST(PulleyJointConf, InitVelocityThrowsOutOfRange)
 {
     auto jd = PulleyJointConf{};
+    jd.bodyA = BodyID(0u);
+    jd.bodyB = BodyID(0u);
     std::vector<BodyConstraint> bodies;
     EXPECT_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}),
                  std::out_of_range);
+    bodies.push_back(BodyConstraint{});
+    EXPECT_NO_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}));
+}
 
+TEST(PulleyJointConf, InitVelocityWithDefaultConstructed)
+{
+    std::vector<BodyConstraint> bodies;
+    bodies.push_back(BodyConstraint{});
+    bodies.push_back(BodyConstraint{});
+    ASSERT_EQ(bodies.size(), 2u);
+    ASSERT_EQ(bodies[0].GetPosition(), Position());
+    ASSERT_EQ(bodies[0].GetVelocity(), Velocity());
+    ASSERT_EQ(bodies[1].GetPosition(), Position());
+    ASSERT_EQ(bodies[1].GetVelocity(), Velocity());
+
+    auto jd = PulleyJointConf{};
     jd.bodyA = BodyID(0u);
-    jd.bodyB = BodyID(0u);
-    bodies.push_back(BodyConstraint{});
-    EXPECT_NO_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}));
-
     jd.bodyB = BodyID(1u);
-    bodies.push_back(BodyConstraint{});
+    const auto copy = jd;
+    ASSERT_EQ(jd.bodyA, BodyID(0u));
+    ASSERT_EQ(jd.bodyB, BodyID(1u));
+    ASSERT_EQ(jd.mass, 0_kg);
+    ASSERT_EQ(jd.impulse, 0_Ns);
+    ASSERT_EQ(jd.uA, UnitVec());
+    ASSERT_EQ(jd.uB, UnitVec());
+    ASSERT_EQ(jd.rA, Length2());
+    ASSERT_EQ(jd.rB, Length2());
+
     EXPECT_NO_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}));
+    EXPECT_EQ(jd.bodyA, copy.bodyA);
+    EXPECT_EQ(jd.bodyB, copy.bodyB);
+    EXPECT_EQ(jd.collideConnected, copy.collideConnected);
+    EXPECT_EQ(jd.mass, copy.mass);
+    EXPECT_EQ(jd.impulse, copy.impulse);
+    EXPECT_NE(jd.uA, copy.uA);
+    EXPECT_NE(jd.uB, copy.uB);
+    EXPECT_EQ(jd.uA, UnitVec::GetBottom());
+    EXPECT_EQ(jd.uB, UnitVec::GetBottom());
+    EXPECT_NE(jd.rA, copy.rA);
+    EXPECT_NE(jd.rB, copy.rB);
+    EXPECT_EQ(jd.rA, Length2(-1_m, 0_m));
+    EXPECT_EQ(jd.rB, Length2(+1_m, 0_m));
     EXPECT_EQ(bodies[0].GetPosition(), Position());
     EXPECT_EQ(bodies[0].GetVelocity(), Velocity());
+    EXPECT_EQ(bodies[1].GetPosition(), Position());
+    EXPECT_EQ(bodies[1].GetVelocity(), Velocity());
+}
+
+TEST(PulleyJointConf, InitVelocityWarmStartUpdatesImpulse)
+{
+    auto stepConf = StepConf{};
+    auto jd = PulleyJointConf{};
+    jd.bodyA = BodyID(0u);
+    jd.bodyB = BodyID(1u);
+    std::vector<BodyConstraint> bodies;
+    bodies.push_back(BodyConstraint{});
+    bodies.push_back(BodyConstraint{});
+    stepConf.dtRatio = Real(3);
+    stepConf.doWarmStart = true;
+    const auto originalImpulse = 2_Ns;
+    jd.impulse = originalImpulse;
+
+    EXPECT_NO_THROW(InitVelocity(jd, bodies, stepConf, ConstraintSolverConf{}));
+    EXPECT_EQ(jd.impulse, originalImpulse * stepConf.dtRatio);
+}
+
+TEST(PulleyJointConf, InitVelocityColdStartResetsImpulse)
+{
+    auto stepConf = StepConf{};
+    auto jd = PulleyJointConf{};
+    jd.bodyA = BodyID(0u);
+    jd.bodyB = BodyID(1u);
+    std::vector<BodyConstraint> bodies;
+    bodies.push_back(BodyConstraint{});
+    bodies.push_back(BodyConstraint{});
+    stepConf.dtRatio = Real(3);
+    stepConf.doWarmStart = false;
+    const auto originalImpulse = 2_Ns;
+    jd.impulse = originalImpulse;
+
+    EXPECT_NO_THROW(InitVelocity(jd, bodies, stepConf, ConstraintSolverConf{}));
+    EXPECT_EQ(jd.impulse, 0_Ns);
 }
 
 TEST(PulleyJointConf, SolveVelocity)

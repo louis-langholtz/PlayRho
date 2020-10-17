@@ -160,7 +160,7 @@ TEST(Body, ByteSize)
             EXPECT_EQ(sizeof(Body), std::size_t(192));
 #else
             // Win32 release
-            EXPECT_EQ(sizeof(Body), std::size_t(144));
+            EXPECT_EQ(sizeof(Body), std::size_t(140));
 #endif
 #else
             EXPECT_EQ(sizeof(Body), std::size_t(184));

@@ -84,32 +84,39 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
     }
 
     /// @brief Local anchor point relative to body A's origin.
+    /// @note 8-bytes (with 4-byte Real).
     Length2 localAnchorA = Length2{};
     
     /// @brief Local anchor point relative to body B's origin.
+    /// @note 8-bytes (with 4-byte Real).
     Length2 localAnchorB = Length2{};
     
     /// @brief Natural length between the anchor points.
+    /// @note 4-bytes (with 4-byte Real).
     Length length = 1_m;
     
     /// @brief Mass-spring-damper frequency.
     /// @note 0 disables softness.
+    /// @note 4-bytes (with 4-byte Real).
     NonNegative<Frequency> frequency{};
     
     /// @brief Damping ratio.
     /// @note 0 = no damping, 1 = critical damping.
+    /// @note 4-bytes (with 4-byte Real).
     Real dampingRatio = 0;
 
-    // Solver shared
-    Momentum impulse = 0_Ns; ///< Impulse.
+    // Solver shared.
 
-    // Solver temp
-    InvMass invGamma = {}; ///< Inverse gamma.
-    LinearVelocity bias = {}; ///< Bias.
-    Mass mass = 0_kg; ///< Mass.
-    UnitVec u; ///< "u" directional.
-    Length2 rA = {}; ///< Relative A position.
-    Length2 rB = {}; ///< Relative B position.
+    Momentum impulse = 0_Ns; ///< Impulse. 4-bytes (with 4-byte Real).
+
+    // Solver temp (4 * 3 + 8 * 3 = 36 bytes minimally).
+
+    UnitVec u; ///< "u" directional. 8-bytes (with 4-byte Real).
+    Length2 rA = {}; ///< Relative A position. 8-bytes (with 4-byte Real).
+    Length2 rB = {}; ///< Relative B position. 8-bytes (with 4-byte Real).
+    InvMass invGamma = {}; ///< Inverse gamma. 4-bytes (with 4-byte Real).
+    LinearVelocity bias = {}; ///< Bias. 4-bytes (with 4-byte Real).
+    Mass mass = 0_kg; ///< Mass. 4-bytes (with 4-byte Real).
 };
 
 /// @brief Gets the definition data for the given joint.

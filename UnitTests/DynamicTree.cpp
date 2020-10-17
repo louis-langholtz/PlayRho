@@ -51,11 +51,7 @@ TEST(DynamicTree, TreeNodeByteSize)
     {
         case  4:
             EXPECT_EQ(alignof(DynamicTree::TreeNode), 4u);
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(36));
-#else
             EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(32));
-#endif
             break;
         case  8:
             EXPECT_EQ(alignof(DynamicTree::TreeNode), 8u);
