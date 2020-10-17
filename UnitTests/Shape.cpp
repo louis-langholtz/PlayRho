@@ -31,7 +31,7 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-using ShapeType = TypeId;
+using ShapeType = TypeID;
 
 TEST(ShapeType, ByteSize)
 {
