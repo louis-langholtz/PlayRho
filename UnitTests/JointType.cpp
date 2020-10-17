@@ -36,6 +36,46 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+namespace {
+
+const char* func1()
+{
+    return "func1";
+}
+
+const char* func2()
+{
+    return "func2";
+}
+
+} // namespace
+
+TEST(JointType, ByteSize)
+{
+    EXPECT_EQ(sizeof(JointType::underlying_type), sizeof(void*));
+    EXPECT_EQ(sizeof(JointType), sizeof(void*));
+}
+
+TEST(JointType, EqualsOperator)
+{
+    EXPECT_TRUE(JointType(&func1) == JointType(&func1));
+    EXPECT_TRUE(JointType(&func1) == JointType(func1));
+    EXPECT_TRUE(JointType(&func2) == JointType(&func2));
+    EXPECT_TRUE(JointType(&func2) == JointType(func2));
+    EXPECT_FALSE(JointType(&func1) == JointType(&func2));
+    EXPECT_FALSE(JointType(&func2) == JointType(&func1));
+}
+
+TEST(JointType, NotEqualsOperator)
+{
+    EXPECT_FALSE(JointType(&func1) != JointType(&func1));
+    EXPECT_FALSE(JointType(&func1) != JointType(func1));
+    EXPECT_FALSE(JointType(&func2) != JointType(&func2));
+    EXPECT_FALSE(JointType(&func2) != JointType(func2));
+    EXPECT_TRUE(JointType(&func1) != JointType(&func2));
+    EXPECT_TRUE(JointType(&func2) != JointType(&func1));
+}
+
 TEST(JointType, ToString)
 {
     EXPECT_STREQ(ToString(GetTypeID<RevoluteJointConf>()), "d2::RevoluteJointConf");

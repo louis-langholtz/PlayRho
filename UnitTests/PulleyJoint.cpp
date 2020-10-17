@@ -242,6 +242,17 @@ TEST(PulleyJointConf, InitVelocity)
     std::vector<BodyConstraint> bodies;
     EXPECT_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}),
                  std::out_of_range);
+
+    jd.bodyA = BodyID(0u);
+    jd.bodyB = BodyID(0u);
+    bodies.push_back(BodyConstraint{});
+    EXPECT_NO_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}));
+
+    jd.bodyB = BodyID(1u);
+    bodies.push_back(BodyConstraint{});
+    EXPECT_NO_THROW(InitVelocity(jd, bodies, StepConf{}, ConstraintSolverConf{}));
+    EXPECT_EQ(bodies[0].GetPosition(), Position());
+    EXPECT_EQ(bodies[0].GetVelocity(), Velocity());
 }
 
 TEST(PulleyJointConf, SolveVelocity)
@@ -249,6 +260,21 @@ TEST(PulleyJointConf, SolveVelocity)
     auto jd = PulleyJointConf{};
     std::vector<BodyConstraint> bodies;
     EXPECT_THROW(SolveVelocity(jd, bodies, StepConf{}), std::out_of_range);
+
+    jd.bodyA = BodyID(0u);
+    jd.bodyB = BodyID(0u);
+    bodies.push_back(BodyConstraint{});
+    EXPECT_NO_THROW(SolveVelocity(jd, bodies, StepConf{}));
+    EXPECT_EQ(bodies[0].GetPosition(), Position());
+    EXPECT_EQ(bodies[0].GetVelocity(), Velocity());
+
+    jd.bodyB = BodyID(1u);
+    bodies.push_back(BodyConstraint{});
+    EXPECT_NO_THROW(SolveVelocity(jd, bodies, StepConf{}));
+    EXPECT_EQ(bodies[0].GetPosition(), Position());
+    EXPECT_EQ(bodies[1].GetPosition(), Position());
+    EXPECT_EQ(bodies[0].GetVelocity(), Velocity());
+    EXPECT_EQ(bodies[1].GetVelocity(), Velocity());
 }
 
 TEST(PulleyJointConf, SolvePosition)
@@ -256,4 +282,18 @@ TEST(PulleyJointConf, SolvePosition)
     auto jd = PulleyJointConf{};
     std::vector<BodyConstraint> bodies;
     EXPECT_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}), std::out_of_range);
+
+    jd.bodyA = BodyID(0u);
+    jd.bodyB = BodyID(0u);
+    bodies.push_back(BodyConstraint{});
+    EXPECT_NO_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}));
+    EXPECT_EQ(bodies[0].GetPosition(), Position());
+
+    jd.bodyB = BodyID(1u);
+    bodies.push_back(BodyConstraint{});
+    EXPECT_NO_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}));
+    EXPECT_EQ(bodies[0].GetPosition(), Position());
+    EXPECT_EQ(bodies[1].GetPosition(), Position());
+    EXPECT_EQ(bodies[0].GetVelocity(), Velocity());
+    EXPECT_EQ(bodies[1].GetVelocity(), Velocity());
 }

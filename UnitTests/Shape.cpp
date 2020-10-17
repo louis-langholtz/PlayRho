@@ -31,6 +31,14 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+using ShapeType = TypeId;
+
+TEST(ShapeType, ByteSize)
+{
+    EXPECT_EQ(sizeof(ShapeType::underlying_type), sizeof(void*));
+    EXPECT_EQ(sizeof(ShapeType), sizeof(void*));
+}
+
 TEST(Shape, ByteSize)
 {
 #if defined(_WIN32) && !defined(_WIN64)

@@ -86,8 +86,6 @@ struct TypeInfo<long double>
 /// @brief Type identifier.
 using TypeID = strongtype::IndexingNamedType<const char *(*)(), struct TypeIdentifier>;
 
-static_assert(sizeof(TypeID) == sizeof(void*), "TypeID size not that of a pointer?!");
-
 /// @brief Invalid type ID value.
 constexpr auto InvalidTypeID =
     static_cast<TypeID>(static_cast<TypeID::underlying_type>(nullptr));
