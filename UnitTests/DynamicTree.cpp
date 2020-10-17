@@ -29,20 +29,30 @@ using namespace playrho::d2;
 
 TEST(DynamicTree, ByteSize)
 {
-    EXPECT_EQ(alignof(DynamicTree), 8u);
 #if defined(_WIN64)
+    EXPECT_EQ(alignof(DynamicTree), 8u);
     EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
 #elif defined(_WIN32)
+    EXPECT_EQ(alignof(DynamicTree), 4u);
     EXPECT_EQ(sizeof(DynamicTree), std::size_t(24));
 #else
+    EXPECT_EQ(alignof(DynamicTree), 8u);
     EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
 #endif
 }
 
 TEST(DynamicTree, VariantDataByteSize)
 {
+#if defined(_WIN64)
     EXPECT_EQ(alignof(DynamicTree), 8u);
     EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
+#elif defined(_WIN32)
+    EXPECT_EQ(alignof(DynamicTree), 4u);
+    EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
+#else
+    EXPECT_EQ(alignof(DynamicTree), 8u);
+    EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
+#endif
 }
 
 TEST(DynamicTree, TreeNodeByteSize)

@@ -21,7 +21,13 @@
 #include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
+#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+
+#include <stdexcept>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -198,4 +204,42 @@ TEST(TargetJointConf, GetTargetJointDefFreeFunction)
     EXPECT_EQ(def.maxForce, got.maxForce);
     EXPECT_EQ(def.frequency, got.frequency);
     EXPECT_EQ(def.dampingRatio, got.dampingRatio);
+}
+
+TEST(TargetJointConf, GetEffectiveMassMatrix)
+{
+    auto def = TargetJointConf{};
+    auto mass = Mass22{};
+    EXPECT_NO_THROW(mass = GetEffectiveMassMatrix(def, BodyConstraint{}));
+    EXPECT_EQ(mass[0][0], 0_kg);
+    EXPECT_EQ(mass[0][1], 0_kg);
+    EXPECT_EQ(mass[1][0], 0_kg);
+    EXPECT_EQ(mass[1][1], 0_kg);
+}
+
+TEST(TargetJointConf, InitVelocity)
+{
+    std::vector<BodyConstraint> bodies;
+    auto step = StepConf{};
+    auto conf = ConstraintSolverConf{};
+    auto def = TargetJointConf{};
+    EXPECT_THROW(InitVelocity(def, bodies, step, conf), std::out_of_range);
+}
+
+TEST(TargetJointConf, SolveVelocity)
+{
+    std::vector<BodyConstraint> bodies;
+    auto step = StepConf{};
+    auto def = TargetJointConf{};
+    EXPECT_THROW(SolveVelocity(def, bodies, step), std::out_of_range);
+}
+
+TEST(TargetJointConf, SolvePosition)
+{
+    std::vector<BodyConstraint> bodies;
+    auto conf = ConstraintSolverConf{};
+    auto def = TargetJointConf{};
+    auto result = false;
+    EXPECT_NO_THROW(result = SolvePosition(def, bodies, conf));
+    EXPECT_EQ(result, true);
 }
