@@ -36,8 +36,6 @@ struct TypeInfo
     ///   the type T without resorting to using C++ run-time type information (RTTI).
     static constexpr const char* name = nullptr;
 };
-template <class T>
-constexpr const char* TypeInfo<T>::name;
 
 /// @brief Type info specialization for <code>float</code>.
 template <>
