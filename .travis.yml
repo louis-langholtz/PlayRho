@@ -7,7 +7,9 @@ os:
 # For details on building a C++ project see: https://docs.travis-ci.com/user/languages/cpp/
 language: cpp
 
-dist: xenial
+# Choices available now are trusty, xenial, or bionic.
+# Trusty is "EOL" however. bionic appears to be latest Ubunntu release version.
+dist: bionic
 
 # Specifiy which compiler or compilers to test against.
 # For details, see https://docs.travis-ci.com/user/languages/cpp/#Choosing-compilers-to-test-against
