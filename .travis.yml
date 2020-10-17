@@ -113,6 +113,9 @@ install:
     echo $PLAYRHO_BUILD_OPTIONS
   - git clone https://github.com/louis-langholtz/units.git && wget https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2 -O /tmp/boost_1_63_0.tar.bz2 && sha256sum /tmp/boost_1_63_0.tar.bz2 && echo "Expect SHA256 Hash of beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0" && export BOOST_INC_DST=/tmp/boost_1_63_0/include/boost BOOST_SRC=$HOME/boost-src && mkdir -p $BOOST_SRC $BOOST_INC_DST && pushd $BOOST_SRC && tar --bzip2 -xf /tmp/boost_1_63_0.tar.bz2 && cp -a boost_1_63_0/boost/* $BOOST_INC_DST && popd && pushd $BOOST_INC_DST && mv units units.old && ln -s $HOME/units/include/boost/units . && popd
   - |
+    export GLFW_URL=https://github.com/glfw/glfw/releases/download/3.2.1/glfw-3.2.1.zip
+    mkdir /tmp/glfw && pushd /tmp/glfw && curl --location --remote-name $GLFW_URL && md5sum *.zip && echo "Expect MD5 hash of 824c99eea073bdd6d2fec76b538f79af" && unzip -q *.zip && rm *.zip && mkdir ../glfw-build && cd ../glfw-build && cmake -DCMAKE_INSTALL_PREFIX=/tmp/usr ../glfw/* && make && make install && popd
+  - |
     export GLEW_URL=https://sourceforge.net/projects/glew/files/glew/2.0.0/glew-2.0.0.zip
     mkdir /tmp/glew && pushd /tmp/glew && curl --location --remote-name $GLEW_URL && md5sum *.zip && echo "Expect MD5 hash of 54c913d0c00726fb028d089ad1664ede" && unzip -q *.zip && rm *.zip && cd * && make && make DESTDIR=/tmp install && popd
 
