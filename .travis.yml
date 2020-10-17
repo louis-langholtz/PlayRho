@@ -52,7 +52,6 @@ addons:
     sources:
       - deadsnakes
       - ubuntu-toolchain-r-test
-      - george-edison55-precise-backports
       - llvm-toolchain-8
     packages:
       - build-essential
