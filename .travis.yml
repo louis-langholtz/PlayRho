@@ -69,6 +69,8 @@ addons:
       - libosmesa-dev
       - lcov
       - ggcov
+      - libglfw3
+      - libglew2.0
 
 # Seems new way is to call: pip install --user cpp-coveralls
 # That works for installing cpp-coveralls, but haven't figured out how to get cpp-coveralls to work.
