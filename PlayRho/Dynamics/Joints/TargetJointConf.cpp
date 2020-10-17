@@ -87,7 +87,8 @@ void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
 
     const auto qB = UnitVec::Get(posB.angular);
 
-    const auto mass = Real{1} / bodyConstraintB.GetInvMass();
+    const auto mass = (bodyConstraintB.GetInvMass() != InvMass{})
+        ? (Real{1} / bodyConstraintB.GetInvMass()): 0_kg;
 
     // Frequency
     const auto omega = Real{2} * Pi * object.frequency; // T^-1
