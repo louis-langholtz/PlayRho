@@ -170,3 +170,39 @@ TEST(FrictionJoint, WithDynamicCircles)
     EXPECT_EQ(GetAngle(world, b1), 0_deg);
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
 }
+
+TEST(FrictionJointConf, ShiftOrigin)
+{
+    auto def = FrictionJointConf{};
+    def.bodyA = BodyID(1u);
+    def.bodyB = BodyID(2u);
+    def.localAnchorA = Length2{-2_m, +3_m};
+    def.localAnchorB = Length2{+2_m, -3_m};
+    def.maxForce = 2_N;
+    def.maxTorque = 3_Nm;
+    def.linearImpulse = Momentum2{1_Ns, 2_Ns};
+    def.angularImpulse = AngularMomentum{};
+    def.rA = Length2{3_m, 22_m};
+    def.rB = Length2{2_m, 22_m};
+    def.linearMass = Mass22{
+        Vector2<Mass>{1_kg, 2_kg},
+        Vector2<Mass>{3_kg, 4_kg}};
+    def.angularMass = RotInertia{};
+
+    const auto copy = def;
+    const auto amount = Length2{1_m, 2_m};
+    EXPECT_FALSE(ShiftOrigin(def, amount));
+    EXPECT_EQ(def.bodyA, copy.bodyA);
+    EXPECT_EQ(def.bodyB, copy.bodyB);
+    EXPECT_EQ(def.collideConnected, copy.collideConnected);
+    EXPECT_EQ(def.localAnchorA, copy.localAnchorA);
+    EXPECT_EQ(def.localAnchorB, copy.localAnchorB);
+    EXPECT_EQ(def.maxForce, copy.maxForce);
+    EXPECT_EQ(def.maxTorque, copy.maxTorque);
+    EXPECT_EQ(def.linearImpulse, copy.linearImpulse);
+    EXPECT_EQ(def.angularImpulse, copy.angularImpulse);
+    EXPECT_EQ(def.rA, copy.rA);
+    EXPECT_EQ(def.rB, copy.rB);
+    EXPECT_EQ(def.linearMass, copy.linearMass);
+    EXPECT_EQ(def.angularMass, copy.angularMass);
+}

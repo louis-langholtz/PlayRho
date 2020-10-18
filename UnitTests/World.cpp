@@ -307,7 +307,6 @@ TEST(World, IsStepComplete)
     EXPECT_TRUE(world.IsStepComplete());
 }
 
-#if 0
 TEST(World, CopyConstruction)
 {
     auto world = World{};
@@ -378,9 +377,7 @@ TEST(World, CopyConstruction)
         EXPECT_EQ(GetMaxImbalance(world.GetTree()), GetMaxImbalance(copy.GetTree()));
     }
 }
-#endif
 
-#if 0
 TEST(World, CopyAssignment)
 {
     auto world = World{};
@@ -432,7 +429,6 @@ TEST(World, CopyAssignment)
         EXPECT_EQ(GetMaxImbalance(world.GetTree()), GetMaxImbalance(copy.GetTree()));
     }
 }
-#endif
 
 TEST(World, CreateDestroyEmptyStaticBody)
 {

@@ -208,3 +208,42 @@ TEST(WeldJoint, GetAnchorAandB)
     EXPECT_EQ(GetAnchorA(world, joint), loc1 + jd.localAnchorA);
     EXPECT_EQ(GetAnchorB(world, joint), loc2 + jd.localAnchorB);
 }
+
+TEST(WeldJointConf, ShiftOrigin)
+{
+    auto def = WeldJointConf{};
+    def.bodyA = BodyID(1u);
+    def.bodyB = BodyID(2u);
+    def.localAnchorA = Length2{-2_m, +3_m};
+    def.localAnchorB = Length2{+2_m, -3_m};
+    def.referenceAngle = 23_deg;
+    def.frequency = 44_Hz;
+    def.dampingRatio = Real(99);
+    def.impulse = Vec3{Real(1), Real(2), Real(3)};
+    const auto rotInertia = RotInertia{1_kg * 1_m2 / SquareRadian};
+    def.gamma = Real(2) / rotInertia;
+    def.bias = 2_rpm;
+    def.rA = Length2{3_m, 22_m};
+    def.rB = Length2{2_m, 22_m};
+    def.mass = Mat33{
+        Vec3{Real(1), Real(2), Real(3)},
+        Vec3{Real(4), Real(5), Real(6)},
+        Vec3{Real(7), Real(8), Real(9)}};
+    const auto amount = Length2{1_m, 2_m};
+    const auto copy = def;
+    EXPECT_FALSE(ShiftOrigin(def, amount));
+    EXPECT_EQ(def.bodyA, copy.bodyA);
+    EXPECT_EQ(def.bodyB, copy.bodyB);
+    EXPECT_EQ(def.collideConnected, copy.collideConnected);
+    EXPECT_EQ(def.localAnchorA, copy.localAnchorA);
+    EXPECT_EQ(def.localAnchorB, copy.localAnchorB);
+    EXPECT_EQ(def.referenceAngle, copy.referenceAngle);
+    EXPECT_EQ(def.frequency, copy.frequency);
+    EXPECT_EQ(def.dampingRatio, copy.dampingRatio);
+    EXPECT_EQ(def.impulse, copy.impulse);
+    EXPECT_EQ(def.gamma, copy.gamma);
+    EXPECT_EQ(def.bias, copy.bias);
+    EXPECT_EQ(def.rA, copy.rA);
+    EXPECT_EQ(def.rB, copy.rB);
+    EXPECT_EQ(def.mass, copy.mass);
+}
