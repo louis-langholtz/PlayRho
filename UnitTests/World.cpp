@@ -576,6 +576,11 @@ TEST(World, CreateDestroyJoinedBodies)
     auto stepConf = StepConf{};
     world.Step(stepConf);
     ASSERT_EQ(world.GetContacts().size(), ContactCounter(1));
+    const auto contact0 = std::get<ContactID>(*world.GetContacts().begin());
+    const auto contactBodyA = GetBodyA(world, contact0);
+    const auto contactBodyB = GetBodyB(world, contact0);
+    EXPECT_EQ(contactBodyA, body);
+    EXPECT_EQ(contactBodyB, body2);
     const auto c0 = world.GetContacts().begin();
     EXPECT_FALSE(NeedsFiltering(world, c0->second));
 
@@ -712,6 +717,83 @@ TEST(World, CreateDestroyContactingBodies)
     EXPECT_TRUE(contacts.empty());
     EXPECT_EQ(contacts.size(), ContactCounter(0));
     EXPECT_EQ(GetFixtureCount(world), std::size_t(0));
+}
+
+TEST(World, SetUnsetSetImpenetrable)
+{
+    auto world = World{};
+    EXPECT_THROW(SetImpenetrable(world, InvalidBodyID), std::out_of_range);
+    EXPECT_THROW(UnsetImpenetrable(world, InvalidBodyID), std::out_of_range);
+    const auto body = CreateBody(world);
+    EXPECT_NO_THROW(SetImpenetrable(world, body));
+    EXPECT_TRUE(IsImpenetrable(world, body));
+    EXPECT_NO_THROW(UnsetImpenetrable(world, body));
+    EXPECT_FALSE(IsImpenetrable(world, body));
+    EXPECT_NO_THROW(SetImpenetrable(world, body));
+    EXPECT_TRUE(IsImpenetrable(world, body));
+}
+
+TEST(World, SetSleepingAllowed)
+{
+    auto world = World{};
+    EXPECT_THROW(SetSleepingAllowed(world, InvalidBodyID, true), std::out_of_range);
+    const auto body = CreateBody(world);
+
+    SetType(world, body, BodyType::Static);
+    ASSERT_FALSE(IsSpeedable(GetType(world, body)));
+    EXPECT_NO_THROW(SetSleepingAllowed(world, body, true));
+    EXPECT_TRUE(IsSleepingAllowed(world, body));
+    EXPECT_NO_THROW(SetSleepingAllowed(world, body, false));
+    EXPECT_TRUE(IsSleepingAllowed(world, body));
+
+    SetType(world, body, BodyType::Dynamic);
+    ASSERT_TRUE(IsSpeedable(GetType(world, body)));
+    EXPECT_NO_THROW(SetSleepingAllowed(world, body, true));
+    EXPECT_TRUE(IsSleepingAllowed(world, body));
+    EXPECT_NO_THROW(SetSleepingAllowed(world, body, false));
+    EXPECT_FALSE(IsSleepingAllowed(world, body));
+}
+
+TEST(World, SetUserDataOnBody)
+{
+    auto world = World{};
+    auto value = reinterpret_cast<void*>(0u);
+    EXPECT_THROW(SetUserData(world, InvalidBodyID, value), std::out_of_range);
+    const auto body = CreateBody(world);
+    value = reinterpret_cast<void*>(1u);
+    EXPECT_NO_THROW(SetUserData(world, body, value));
+    EXPECT_EQ(GetUserData(world, body), value);
+    value = reinterpret_cast<void*>(2u);
+    EXPECT_NO_THROW(SetUserData(world, body, value));
+    EXPECT_EQ(GetUserData(world, body), value);
+}
+
+TEST(World, SetLinearDamping)
+{
+    auto world = World{};
+    auto value = 1_Hz;
+    EXPECT_THROW(SetLinearDamping(world, InvalidBodyID, value), std::out_of_range);
+    const auto body = CreateBody(world);
+    value = 2_Hz;
+    EXPECT_NO_THROW(SetLinearDamping(world, body, value));
+    EXPECT_EQ(GetLinearDamping(world, body), value);
+    value = 23_Hz;
+    EXPECT_NO_THROW(SetLinearDamping(world, body, value));
+    EXPECT_EQ(GetLinearDamping(world, body), value);
+}
+
+TEST(World, SetAngularDamping)
+{
+    auto world = World{};
+    auto value = 1_Hz;
+    EXPECT_THROW(SetAngularDamping(world, InvalidBodyID, value), std::out_of_range);
+    const auto body = CreateBody(world);
+    value = 2_Hz;
+    EXPECT_NO_THROW(SetAngularDamping(world, body, value));
+    EXPECT_EQ(GetAngularDamping(world, body), value);
+    value = 23_Hz;
+    EXPECT_NO_THROW(SetAngularDamping(world, body, value));
+    EXPECT_EQ(GetAngularDamping(world, body), value);
 }
 
 #if 0
