@@ -39,14 +39,14 @@ TEST(MotorJointConf, ByteSize)
     {
         case  4:
 #if defined(_WIN64)
-            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(104));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(92));
 #elif defined(_WIN32)
-            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(96));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(92));
 #else
             EXPECT_EQ(sizeof(MotorJointConf), std::size_t(92));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(184)); break;
+        case  8: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(176)); break;
         case 16: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(352)); break;
         default: FAIL(); break;
     }

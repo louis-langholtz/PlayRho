@@ -152,7 +152,7 @@ TEST(Body, ByteSize)
 #if !defined(NDEBUG)
             EXPECT_EQ(sizeof(Body), std::size_t(216));
 #else
-            EXPECT_EQ(sizeof(Body), std::size_t(184));
+            EXPECT_EQ(sizeof(Body), std::size_t(176));
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)
@@ -160,14 +160,14 @@ TEST(Body, ByteSize)
             EXPECT_EQ(sizeof(Body), std::size_t(192));
 #else
             // Win32 release
-            EXPECT_EQ(sizeof(Body), std::size_t(140));
+            EXPECT_EQ(sizeof(Body), std::size_t(136));
 #endif
 #else
             EXPECT_EQ(sizeof(Body), std::size_t(176));
 #endif
             break;
         case  8:
-            EXPECT_EQ(sizeof(Body), std::size_t(280));
+            EXPECT_EQ(sizeof(Body), std::size_t(272));
             break;
         case 16:
             EXPECT_EQ(sizeof(Body), std::size_t(480));

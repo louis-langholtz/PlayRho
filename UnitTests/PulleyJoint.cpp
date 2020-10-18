@@ -138,12 +138,12 @@ TEST(PulleyJointConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(100));
+            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(96));
 #else
             EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(96));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(192)); break;
+        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(184)); break;
         case 16: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(368)); break;
         default: FAIL(); break;
     }

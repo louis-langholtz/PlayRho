@@ -40,13 +40,13 @@ TEST(DistanceJointConf, ByteSize)
         case  4:
             // why is there a difference between 32-bit Windows and others?
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(80));
+            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(76));
 #else
             EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(76));
 #endif
             break;
         case  8:
-            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(152));
+            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(144));
             break;
         case 16:
             EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(288));

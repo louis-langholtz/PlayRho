@@ -38,14 +38,14 @@ TEST(FrictionJointConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(84));
+            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(80));
 #elif defined(_WIN64)
-            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(88));
+            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(80));
 #else
             EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(80));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(160)); break;
+        case  8: EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(152)); break;
         case 16: EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(304)); break;
         default: FAIL(); break;
     }
