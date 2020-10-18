@@ -22,7 +22,6 @@
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <array>
-#include <typeinfo>
 
 using namespace playrho;
 using namespace playrho::d2;

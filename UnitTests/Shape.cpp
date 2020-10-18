@@ -26,7 +26,6 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 #include <chrono>
-#include <typeinfo>
 
 using namespace playrho;
 using namespace playrho::d2;

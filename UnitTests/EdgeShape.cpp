@@ -21,7 +21,6 @@
 #include "UnitTests.hpp"
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <typeinfo>
 
 using namespace playrho;
 using namespace playrho::d2;
