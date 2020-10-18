@@ -32,6 +32,8 @@
 namespace playrho {
 namespace d2 {
 
+struct BodyConf;
+
 /// @brief Describes a geometric transformation.
 /// @details A transform contains translation and rotation. It is used to represent
 ///   the position and orientation of rigid frames.
@@ -45,7 +47,7 @@ struct Transformation
 };
 
 /// @brief Identity transformation value.
-constexpr const auto Transform_identity = Transformation{
+constexpr auto Transform_identity = Transformation{
     Length2{0_m, 0_m}, UnitVec::GetRight()
 };
 

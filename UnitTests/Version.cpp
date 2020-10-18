@@ -25,7 +25,7 @@ using namespace playrho;
 
 TEST(Version, GetVersion)
 {
-    const auto version = Version{0, 9, 0};
+    const auto version = Version{0, 10, 0};
     EXPECT_EQ(GetVersion().major, version.major);
     EXPECT_EQ(GetVersion().minor, version.minor);
     EXPECT_EQ(GetVersion().revision, version.revision);

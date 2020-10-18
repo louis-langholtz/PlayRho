@@ -109,28 +109,6 @@ constexpr bool operator>= (const ContactKey lhs, const ContactKey rhs) noexcept
     || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() >= rhs.GetMax()));
 }
 
-namespace d2 {
-
-class Fixture;
-class Contact;
-
-/// @brief Keyed contact pointer.
-using KeyedContactPtr = std::pair<ContactKey, Contact*>;
-
-/// @brief Gets the <code>ContactKey</code> for the given parameters.
-ContactKey GetContactKey(const Fixture& fixtureA, ChildCounter childIndexA,
-                         const Fixture& fixtureB, ChildCounter childIndexB) noexcept;
-
-/// @brief Gets the <code>ContactKey</code> for the given contact.
-ContactKey GetContactKey(const Contact& contact) noexcept;
-
-/// @brief Gets the contact pointer for the given value.
-inline Contact* GetContactPtr(KeyedContactPtr value)
-{
-    return std::get<1>(value);
-}
-
-} // namespace d2
 } // namespace playrho
 
 namespace std

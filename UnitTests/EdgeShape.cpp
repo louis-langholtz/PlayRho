@@ -103,24 +103,14 @@ TEST(EdgeShapeConf, Visit)
     EXPECT_EQ(data.visitedMulti, 0);
 }
 
-TEST(EdgeShapeConf, Accept)
+TEST(EdgeShapeConf, TypeInfo)
 {
-#if 0
-    auto visited = false;
-    auto shapeVisited = false;
     const auto foo = EdgeShapeConf{};
-    ASSERT_FALSE(visited);
-    ASSERT_FALSE(shapeVisited);
-    Accept(Shape(foo), [&](const std::type_info& ti, const void*) {
-        visited = true;
-        if (ti == typeid(EdgeShapeConf))
-        {
-            shapeVisited = true;
-        }
-    });
-    EXPECT_TRUE(visited);
-    EXPECT_TRUE(shapeVisited);
-#endif
+    const auto shape = Shape(foo);
+    EXPECT_EQ(GetType(shape), GetTypeID<EdgeShapeConf>());
+    auto copy = EdgeShapeConf{};
+    EXPECT_NO_THROW(copy = TypeCast<EdgeShapeConf>(shape));
+    EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
 #if 0

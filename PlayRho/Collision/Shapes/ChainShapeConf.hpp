@@ -135,9 +135,6 @@ public:
     NonNegative<Length> vertexRadius = GetDefaultVertexRadius();
 
 private:
-    /// @brief Resets the normals based on the current vertices.
-    void ResetNormals();
-
     std::vector<Length2> m_vertices; ///< Vertices.
     std::vector<UnitVec> m_normals; ///< Normals.
 };

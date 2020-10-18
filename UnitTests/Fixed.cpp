@@ -605,7 +605,7 @@ TEST(Fixed64, hypot)
 
 TEST(Fixed32, sin)
 {
-    constexpr const auto pi = double{3.14159265358979323846264338327950288};
+    constexpr auto pi = double{3.14159265358979323846264338327950288};
     EXPECT_NEAR(static_cast<double>(sin(Fixed32(0))), 0.0, 0.005);
     EXPECT_NEAR(static_cast<double>(sin(Fixed32(+pi/4))), std::sin(+pi/4), 0.015);
     EXPECT_NEAR(static_cast<double>(sin(Fixed32(-pi/4))), std::sin(-pi/4), 0.015);
@@ -634,7 +634,7 @@ TEST(Fixed32, sin)
 #ifdef PLAYRHO_INT128
 TEST(Fixed64, sin)
 {
-    constexpr const auto pi = double{3.14159265358979323846264338327950288};
+    constexpr auto pi = double{3.14159265358979323846264338327950288};
     EXPECT_NEAR(static_cast<double>(sin(Fixed64(0))), 0.0, 0.002);
     EXPECT_NEAR(static_cast<double>(sin(Fixed64(+pi/4))), std::sin(+pi/4), 0.002);
     EXPECT_NEAR(static_cast<double>(sin(Fixed64(-pi/4))), std::sin(-pi/4), 0.002);
@@ -663,7 +663,7 @@ TEST(Fixed64, sin)
 
 TEST(Fixed32, cos)
 {
-    constexpr const auto pi = double{3.14159265358979323846264338327950288};
+    constexpr auto pi = double{3.14159265358979323846264338327950288};
     EXPECT_NEAR(static_cast<double>(cos(Fixed32(0))), 1.0, 0.01);
     EXPECT_NEAR(static_cast<double>(cos(Fixed32(+1))), std::cos(+1.0), 0.015);
     EXPECT_NEAR(static_cast<double>(cos(Fixed32(-1))), std::cos(-1.0), 0.015);
@@ -682,7 +682,7 @@ TEST(Fixed32, cos)
 #ifdef PLAYRHO_INT128
 TEST(Fixed64, cos)
 {
-    constexpr const auto pi = double{3.14159265358979323846264338327950288};
+    constexpr auto pi = double{3.14159265358979323846264338327950288};
     EXPECT_NEAR(static_cast<double>(cos(Fixed64(0))), 1.0, 0.01);
     EXPECT_NEAR(static_cast<double>(cos(Fixed64(+1))), std::cos(+1.0), 0.002);
     EXPECT_NEAR(static_cast<double>(cos(Fixed64(-1))), std::cos(-1.0), 0.002);
@@ -722,7 +722,7 @@ TEST(Fixed32, atan2_specials)
 
 TEST(Fixed32, atan2_angles)
 {
-    constexpr const auto pi = double{3.14159265358979323846264338327950288};
+    constexpr auto pi = double{3.14159265358979323846264338327950288};
     for (auto angleInDegs = -90; angleInDegs < +90; ++angleInDegs)
     {
         const auto angle = angleInDegs * pi / 180;

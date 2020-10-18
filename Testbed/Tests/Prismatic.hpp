@@ -30,8 +30,8 @@ class Prismatic : public Test
 public:
     Prismatic()
     {
-        const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        const auto ground = CreateBody(m_world);
+        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
             BodyConf bd;
@@ -40,12 +40,12 @@ public:
             bd.location = Vec2(-10.0f, 10.0f) * 1_m;
             bd.angle = 0.5_rad * Pi;
             bd.allowSleep = false;
-            const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(2_m, 0.5_m)});
+            const auto body = CreateBody(m_world, bd);
+            CreateFixture(m_world, body, Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(2_m, 0.5_m)});
 
             // Bouncy limit
             const auto axis = GetUnitVector(Vec2(2.0f, 1.0f));
-            PrismaticJointConf pjd(ground, body, Length2{}, axis);
+            auto pjd = GetPrismaticJointConf(m_world, ground, body, Length2{}, axis);
             // Non-bouncy limit
             //pjd.Initialize(ground, body, Vec2(-10.0f, 10.0f), Vec2(1.0f, 0.0f));
             pjd.motorSpeed = 10_rad / 1_s;
@@ -55,23 +55,23 @@ public:
             pjd.upperTranslation = 20_m;
             pjd.enableLimit = true;
 
-            m_joint = (PrismaticJoint*)m_world.CreateJoint(pjd);
+            m_joint = m_world.CreateJoint(pjd);
         }
         
         RegisterForKey(GLFW_KEY_L, GLFW_PRESS, 0, "Limits", [&](KeyActionMods) {
-            m_joint->EnableLimit(!m_joint->IsLimitEnabled());
+            EnableLimit(m_world, m_joint, !IsLimitEnabled(m_world, m_joint));
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Motors", [&](KeyActionMods) {
-            m_joint->EnableMotor(!m_joint->IsMotorEnabled());
+            EnableMotor(m_world, m_joint, !IsMotorEnabled(m_world, m_joint));
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Speed", [&](KeyActionMods) {
-            m_joint->SetMotorSpeed(-m_joint->GetMotorSpeed());
+            SetMotorSpeed(m_world, m_joint, -GetMotorSpeed(m_world, m_joint));
         });
     }
 
     void PostStep(const Settings& settings, Drawer&) override
     {
-        const auto force = GetMotorForce(*m_joint, (1.0f / settings.dt) * 1_Hz);
+        const auto force = GetMotorForce(m_world, m_joint, (1.0f / settings.dt) * 1_Hz);
         std::stringstream stream;
         stream << "Motor Force: ";
         stream << static_cast<double>(Real{force / 1_N});
@@ -79,7 +79,7 @@ public:
         m_status = stream.str();
     }
 
-    PrismaticJoint* m_joint;
+    JointID m_joint; // PrismaticJoint
 };
 
 } // namespace testbed

@@ -20,85 +20,28 @@
  */
 
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/WorldAtty.hpp>
 
-#include <algorithm>
+#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for MixFriction, MixRestitution
+
+#include <type_traits>
 
 namespace playrho {
 namespace d2 {
 
-FixtureProxy Fixture::GetProxy(ChildCounter index) const noexcept
+static_assert(std::is_default_constructible<Fixture>::value, "Fixture must be default constructible!");
+static_assert(std::is_copy_constructible<Fixture>::value, "Fixture must be copy constructible!");
+static_assert(std::is_move_constructible<Fixture>::value, "Fixture must be move constructible!");
+static_assert(std::is_copy_assignable<Fixture>::value, "Fixture must be copy assignable!");
+static_assert(std::is_move_assignable<Fixture>::value, "Fixture must be move assignable!");
+
+Real GetDefaultFriction(const Fixture& fixtureA, const Fixture& fixtureB)
 {
-    assert(index < GetProxyCount());
-    return (GetProxyCount() <= 2)? m_proxies.asArray[index]: m_proxies.asBuffer[index];
+    return MixFriction(fixtureA.GetFriction(), fixtureB.GetFriction());
 }
 
-void Fixture::Refilter()
+Real GetDefaultRestitution(const Fixture& fixtureA, const Fixture& fixtureB)
 {
-    const auto body = GetBody();
-    const auto world = body->GetWorld();
-
-    // Flag associated contacts for filtering.
-    const auto contacts = body->GetContacts();
-    std::for_each(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
-        const auto contact = GetContactPtr(ci);
-        const auto fixtureA = contact->GetFixtureA();
-        const auto fixtureB = contact->GetFixtureB();
-        if ((fixtureA == this) || (fixtureB == this))
-        {
-            contact->FlagForFiltering();
-        }
-    });
-    
-    WorldAtty::TouchProxies(*world, *this);
-}
-
-void Fixture::SetSensor(bool sensor) noexcept
-{
-    if (sensor != m_isSensor)
-    {
-        // sensor state is changing...
-        m_isSensor = sensor;
-        const auto body = GetBody();
-        if (body)
-        {
-            body->SetAwake();
-
-            const auto contacts = body->GetContacts();
-            std::for_each(cbegin(contacts), cend(contacts), [&](KeyedContactPtr ci) {
-                const auto contact = GetContactPtr(ci);
-                contact->FlagForUpdating();
-            });
-        }
-    }
-}
-
-bool TestPoint(const Fixture& f, Length2 p) noexcept
-{
-    return TestPoint(f.GetShape(), InverseTransform(p, GetTransformation(f)));
-}
-
-void SetAwake(const Fixture& f) noexcept
-{
-    f.GetBody()->SetAwake();
-}
-
-Transformation GetTransformation(const Fixture& f) noexcept
-{
-    assert(static_cast<Body*>(f.GetBody()));
-
-    /*
-     * If fixtures have transformations (in addition to the body transformation),
-     * this could be implemented like:
-     *   return Mul(f.GetBody()->GetTransformation(), f.GetTransformation());
-     * Note that adding transformations to fixtures requires work to also be done
-     * to the manifold calculating code to handle that.
-     */
-    return f.GetBody()->GetTransformation();
+    return MixRestitution(fixtureA.GetRestitution(), fixtureB.GetRestitution());
 }
 
 } // namespace d2

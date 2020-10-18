@@ -7,7 +7,9 @@ os:
 # For details on building a C++ project see: https://docs.travis-ci.com/user/languages/cpp/
 language: cpp
 
-dist: trusty
+# Choices available now are trusty, xenial, or bionic.
+# Trusty is "EOL" however. bionic appears to be latest Ubunntu release version.
+dist: bionic
 
 # Specifiy which compiler or compilers to test against.
 # For details, see https://docs.travis-ci.com/user/languages/cpp/#Choosing-compilers-to-test-against
@@ -23,9 +25,9 @@ env:
 
 # Specify explicitly which branches to build or not build
 # For details see: https://docs.travis-ci.com/user/customizing-the-build/#Building-Specific-Branches
-#branches:
-#  only:
-#    - master
+branches:
+  only:
+    - master
 
 # Specify which OS X image to use.
 # "xcode8" is supposed to provide a macosx10.11 SK preinstalled.
@@ -50,13 +52,11 @@ addons:
     sources:
       - deadsnakes
       - ubuntu-toolchain-r-test
-      - george-edison55-precise-backports
-      - llvm-toolchain-trusty-5.0
     packages:
       - build-essential
       - cmake
       - cmake-data
-      - clang-5.0
+      - clang-8
       - g++-8
       - gcc-8
       - xorg-dev
@@ -64,9 +64,12 @@ addons:
       - libxmu-dev
       - libxi-dev
       - libgl1-mesa-dev
+      - libglu1-mesa-dev
       - libosmesa-dev
       - lcov
       - ggcov
+      - libglfw3-dev
+      - libglew2.0
 
 # Seems new way is to call: pip install --user cpp-coveralls
 # That works for installing cpp-coveralls, but haven't figured out how to get cpp-coveralls to work.
@@ -95,7 +98,7 @@ install:
       mkdir -p /tmp/usr
       make -C lcov-1.14/ PREFIX=/tmp/usr install
     fi
-  - if [ "$CXX" = "clang++" ]; then export CXX="clang++-5.0" CC="clang-5.0"; fi
+  - if [ "$CXX" = "clang++" ]; then export CXX="clang++-8" CC="clang-8"; fi
   - |
     echo CXX=$CXX HOME=$HOME TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR
     cmake --version
@@ -119,7 +122,7 @@ install:
 
 script:
   - |
-    if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-5.0" ]]; then
+    if [[ "$TRAVIS_OS_NAME" == "linux" && "$CXX" == "clang++-8" ]]; then
       (pwd && mkdir -p $BUILD_ROOT && cd $BUILD_ROOT && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/tmp/usr -DCMAKE_LIBRARY_PATH=/tmp/usr/lib $PLAYRHO_BUILD_OPTIONS $SOURCE_ROOT && make && cd UnitTests && ./UnitTests --gtest_filter=-Dump.OneBodyWorld )
     fi
   - |

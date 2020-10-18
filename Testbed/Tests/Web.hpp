@@ -37,8 +37,8 @@ public:
     
     Web(): Test(GetTestConf())
     {
-        const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        const auto ground = CreateBody(m_world);
+        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
             const auto shape = Shape{PolygonShapeConf{}.UseDensity(5_kgpm2).SetAsBox(0.5_m, 0.5_m)};
@@ -48,20 +48,20 @@ public:
             bd.linearAcceleration = m_gravity;
 
             bd.location = Vec2(-5.0f, 5.0f) * 1_m;
-            m_bodies[0] = m_world.CreateBody(bd);
-            m_bodies[0]->CreateFixture(shape);
+            m_bodies[0] = CreateBody(m_world, bd);
+            CreateFixture(m_world, m_bodies[0], shape);
 
             bd.location = Vec2(5.0f, 5.0f) * 1_m;
-            m_bodies[1] = m_world.CreateBody(bd);
-            m_bodies[1]->CreateFixture(shape);
+            m_bodies[1] = CreateBody(m_world, bd);
+            CreateFixture(m_world, m_bodies[1], shape);
 
             bd.location = Vec2(5.0f, 15.0f) * 1_m;
-            m_bodies[2] = m_world.CreateBody(bd);
-            m_bodies[2]->CreateFixture(shape);
+            m_bodies[2] = CreateBody(m_world, bd);
+            CreateFixture(m_world, m_bodies[2], shape);
 
             bd.location = Vec2(-5.0f, 15.0f) * 1_m;
-            m_bodies[3] = m_world.CreateBody(bd);
-            m_bodies[3]->CreateFixture(shape);
+            m_bodies[3] = CreateBody(m_world, bd);
+            CreateFixture(m_world, m_bodies[3], shape);
 
             DistanceJointConf jd;
             Length2 p1, p2, d;
@@ -73,8 +73,8 @@ public:
             jd.bodyB = m_bodies[0];
             jd.localAnchorA = Vec2(-10.0f, 0.0f) * 1_m;
             jd.localAnchorB = Vec2(-0.5f, -0.5f) * 1_m;
-            p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
-            p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
+            p1 = GetWorldPoint(m_world, jd.bodyA, jd.localAnchorA);
+            p2 = GetWorldPoint(m_world, jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetMagnitude(d);
             m_joints[0] = m_world.CreateJoint(jd);
@@ -83,8 +83,8 @@ public:
             jd.bodyB = m_bodies[1];
             jd.localAnchorA = Vec2(10.0f, 0.0f) * 1_m;
             jd.localAnchorB = Vec2(0.5f, -0.5f) * 1_m;
-            p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
-            p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
+            p1 = GetWorldPoint(m_world, jd.bodyA, jd.localAnchorA);
+            p2 = GetWorldPoint(m_world, jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetMagnitude(d);
             m_joints[1] = m_world.CreateJoint(jd);
@@ -93,8 +93,8 @@ public:
             jd.bodyB = m_bodies[2];
             jd.localAnchorA = Vec2(10.0f, 20.0f) * 1_m;
             jd.localAnchorB = Vec2(0.5f, 0.5f) * 1_m;
-            p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
-            p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
+            p1 = GetWorldPoint(m_world, jd.bodyA, jd.localAnchorA);
+            p2 = GetWorldPoint(m_world, jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetMagnitude(d);
             m_joints[2] = m_world.CreateJoint(jd);
@@ -103,8 +103,8 @@ public:
             jd.bodyB = m_bodies[3];
             jd.localAnchorA = Vec2(-10.0f, 20.0f) * 1_m;
             jd.localAnchorB = Vec2(-0.5f, 0.5f) * 1_m;
-            p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
-            p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
+            p1 = GetWorldPoint(m_world, jd.bodyA, jd.localAnchorA);
+            p2 = GetWorldPoint(m_world, jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetMagnitude(d);
             m_joints[3] = m_world.CreateJoint(jd);
@@ -113,8 +113,8 @@ public:
             jd.bodyB = m_bodies[1];
             jd.localAnchorA = Vec2(0.5f, 0.0f) * 1_m;
             jd.localAnchorB = Vec2(-0.5f, 0.0f) * 1_m;
-            p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
-            p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
+            p1 = GetWorldPoint(m_world, jd.bodyA, jd.localAnchorA);
+            p2 = GetWorldPoint(m_world, jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetMagnitude(d);
             m_joints[4] = m_world.CreateJoint(jd);
@@ -123,8 +123,8 @@ public:
             jd.bodyB = m_bodies[2];
             jd.localAnchorA = Vec2(0.0f, 0.5f) * 1_m;
             jd.localAnchorB = Vec2(0.0f, -0.5f) * 1_m;
-            p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
-            p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
+            p1 = GetWorldPoint(m_world, jd.bodyA, jd.localAnchorA);
+            p2 = GetWorldPoint(m_world, jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetMagnitude(d);
             m_joints[5] = m_world.CreateJoint(jd);
@@ -133,8 +133,8 @@ public:
             jd.bodyB = m_bodies[3];
             jd.localAnchorA = Vec2(-0.5f, 0.0f) * 1_m;
             jd.localAnchorB = Vec2(0.5f, 0.0f) * 1_m;
-            p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
-            p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
+            p1 = GetWorldPoint(m_world, jd.bodyA, jd.localAnchorA);
+            p2 = GetWorldPoint(m_world, jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetMagnitude(d);
             m_joints[6] = m_world.CreateJoint(jd);
@@ -143,8 +143,8 @@ public:
             jd.bodyB = m_bodies[0];
             jd.localAnchorA = Vec2(0.0f, -0.5f) * 1_m;
             jd.localAnchorB = Vec2(0.0f, 0.5f) * 1_m;
-            p1 = GetWorldPoint(*jd.bodyA, jd.localAnchorA);
-            p2 = GetWorldPoint(*jd.bodyB, jd.localAnchorB);
+            p1 = GetWorldPoint(m_world, jd.bodyA, jd.localAnchorA);
+            p2 = GetWorldPoint(m_world, jd.bodyB, jd.localAnchorB);
             d = p2 - p1;
             jd.length = GetMagnitude(d);
             m_joints[7] = m_world.CreateJoint(jd);
@@ -153,10 +153,10 @@ public:
         RegisterForKey(GLFW_KEY_B, GLFW_PRESS, 0, "Delete a body.", [&](KeyActionMods) {
             for (auto i = 0; i < 4; ++i)
             {
-                if (m_bodies[i])
+                if (IsValid(m_bodies[i]))
                 {
-                    m_world.Destroy(m_bodies[i]);
-                    m_bodies[i] = nullptr;
+                    Destroy(m_world, m_bodies[i]);
+                    m_bodies[i] = InvalidBodyID;
                     break;
                 }
             }
@@ -164,30 +164,30 @@ public:
         RegisterForKey(GLFW_KEY_J, GLFW_PRESS, 0, "Delete a joint.", [&](KeyActionMods) {
             for (auto i = 0; i < 8; ++i)
             {
-                if (m_joints[i])
+                if (IsValid(m_joints[i]))
                 {
-                    m_world.Destroy(m_joints[i]);
-                    m_joints[i] = nullptr;
+                    Destroy(m_world, m_joints[i]);
+                    m_joints[i] = InvalidJointID;
                     break;
                 }
             }
         });
     }
 
-    void JointDestroyed(const Joint* joint) override
+    void JointDestroyed(JointID joint) override
     {
         for (auto i = 0; i < 8; ++i)
         {
             if (m_joints[i] == joint)
             {
-                m_joints[i] = nullptr;
+                m_joints[i] = InvalidJointID;
                 break;
             }
         }
     }
 
-    Body* m_bodies[4];
-    Joint* m_joints[8];
+    BodyID m_bodies[4];
+    JointID m_joints[8];
 };
 
 } // namespace testbed

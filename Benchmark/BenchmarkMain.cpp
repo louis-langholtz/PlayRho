@@ -53,12 +53,19 @@
 #endif // BENCHMARK_GCDISPATCH
 
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/OptionalValue.hpp>
+#include <PlayRho/Common/Intervals.hpp>
+#include <PlayRho/Common/OptionalValue.hpp> // for Optional
+
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp> // for GetAwakeCount
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJoint.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+
+#include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/DynamicTree.hpp>
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/WorldManifold.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
@@ -1942,7 +1949,7 @@ static void DropDisks(benchmark::State& state)
                                            .UseType(playrho::BodyType::Dynamic)
                                            .UseLocation(location)
                                            .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-        body->CreateFixture(shape);
+        world.CreateFixture(body, shape);
     }
 
     const auto stepConf = playrho::StepConf{};
@@ -2004,10 +2011,11 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
                 const auto location = playrho::Vec2(Rand(minX, maxX), Rand(minY, maxY)) * playrho::Meter;
                 // Uses parenthesis here to work around Visual C++'s const propagating of the copy.
                 const auto body = world.CreateBody(playrho::d2::BodyConf(bd).UseLocation(location));
-                body->CreateFixture(diskShape);
+                world.CreateFixture(body, diskShape);
             }
         }
-        world.CreateBody(rectBodyConf)->CreateFixture(rectShape);
+        const auto rectBody = world.CreateBody(rectBodyConf);
+        world.CreateFixture(rectBody, rectShape);
         for (auto i = 0; i < state.range(); ++i)
         {
             world.Step(stepConf);
@@ -2102,7 +2110,7 @@ static void DropTilesPlayRho(int count)
             for (auto i = 0; i < N; ++i)
             {
                 conf.SetAsBox(a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
-                ground->CreateFixture(playrho::d2::Shape{conf});
+                world.CreateFixture(ground, playrho::d2::Shape{conf});
                 GetX(position) += 2.0f * a * playrho::Meter;
             }
             GetY(position) -= 2.0f * a * playrho::Meter;
@@ -2130,7 +2138,7 @@ static void DropTilesPlayRho(int count)
                                                    .UseType(playrho::BodyType::Dynamic)
                                                    .UseLocation(y)
                                                    .UseLinearAcceleration(gravity));
-                body->CreateFixture(shape);
+                world.CreateFixture(body, shape);
                 y += deltaY;
             }
             
@@ -2265,9 +2273,10 @@ public:
     bool IsWithin(const playrho::d2::AABB& aabb) const;
 
 private:
-    static playrho::d2::Body* CreateEnclosure(playrho::d2::World& world);
-    static playrho::d2::RevoluteJoint* CreateRevoluteJoint(playrho::d2::World& world,
-                                                       playrho::d2::Body* stable, playrho::d2::Body* turn);
+    static playrho::BodyID CreateEnclosure(playrho::d2::World& world);
+    static playrho::JointID CreateRevoluteJoint(playrho::d2::World& world,
+                                                playrho::BodyID stable,
+                                                playrho::BodyID turn);
 
     playrho::d2::World m_world;
     playrho::StepConf m_stepConf;
@@ -2284,7 +2293,7 @@ Tumbler::Tumbler()
     CreateRevoluteJoint(m_world, g, b);
 }
 
-playrho::d2::Body* Tumbler::CreateEnclosure(playrho::d2::World& world)
+playrho::BodyID Tumbler::CreateEnclosure(playrho::d2::World& world)
 {
     const auto b = world.CreateBody(playrho::d2::BodyConf{}.UseType(playrho::BodyType::Dynamic)
                                     .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
@@ -2292,18 +2301,19 @@ playrho::d2::Body* Tumbler::CreateEnclosure(playrho::d2::World& world)
     playrho::d2::PolygonShapeConf shape;
     shape.UseDensity(5 * playrho::KilogramPerSquareMeter);
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(playrho::d2::Shape{shape});
+    world.CreateFixture(b, playrho::d2::Shape{shape});
     shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(playrho::d2::Shape{shape});
+    world.CreateFixture(b, playrho::d2::Shape{shape});
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(playrho::d2::Shape{shape});
+    world.CreateFixture(b, playrho::d2::Shape{shape});
     shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
-    b->CreateFixture(playrho::d2::Shape{shape});
+    world.CreateFixture(b, playrho::d2::Shape{shape});
     return b;
 }
 
-playrho::d2::RevoluteJoint* Tumbler::CreateRevoluteJoint(playrho::d2::World& world,
-                                                     playrho::d2::Body* stable, playrho::d2::Body* turn)
+playrho::JointID Tumbler::CreateRevoluteJoint(playrho::d2::World& world,
+                                              playrho::BodyID stable,
+                                              playrho::BodyID turn)
 {
     playrho::d2::RevoluteJointConf jd;
     jd.bodyA = stable;
@@ -2317,7 +2327,7 @@ playrho::d2::RevoluteJoint* Tumbler::CreateRevoluteJoint(playrho::d2::World& wor
 
     jd.maxMotorTorque = 100000 * playrho::NewtonMeter; // 1e8f;
     jd.enableMotor = true;
-    return static_cast<playrho::d2::RevoluteJoint*>(world.CreateJoint(jd));
+    return world.CreateJoint(playrho::d2::Joint(jd));
 }
 
 void Tumbler::Step()
@@ -2331,7 +2341,7 @@ void Tumbler::AddSquare()
                                       .UseType(playrho::BodyType::Dynamic)
                                       .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                       .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-    b->CreateFixture(m_square);
+    m_world.CreateFixture(b, m_square);
 }
 
 bool Tumbler::IsWithin(const playrho::d2::AABB& aabb) const

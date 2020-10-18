@@ -37,22 +37,22 @@ public:
     SensorTest()
     {
         {
-            const auto ground = m_world.CreateBody();
-            ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+            const auto ground = CreateBody(m_world);
+            CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
 #if 0
             {
                 auto sd = FixtureConf{};
                 sd.SetAsBox(10_m, 2_m, Vec2(0.0f, 20.0f) * 1_m, 0.0f);
                 sd.isSensor = true;
-                m_sensor = ground->CreateFixture(sd);
+                m_sensor = CreateFixture(m_world, ground, sd);
             }
 #else
             {
                 auto conf = DiskShapeConf{};
                 conf.vertexRadius = 5_m;
                 conf.location = Vec2(0.0f, 10.0f) * 1_m;
-                m_sensor = ground->CreateFixture(Shape(conf), FixtureConf{}.UseIsSensor(true));
+                m_sensor = CreateFixture(m_world, ground, Shape(conf), FixtureConf{}.UseIsSensor(true));
             }
 #endif
         }
@@ -66,20 +66,20 @@ public:
             bd.location = Vec2(-10.0f + 3.0f * i, 20.0f) * 1_m;
             bd.userData = m_touching + i;
             m_touching[i] = false;
-            m_bodies[i] = m_world.CreateBody(bd);
-            m_bodies[i]->CreateFixture(shape);
+            m_bodies[i] = CreateBody(m_world, bd);
+            CreateFixture(m_world, m_bodies[i], shape);
         }
     }
 
     // Implement contact listener.
-    void BeginContact(Contact& contact) override
+    void BeginContact(ContactID contact) override
     {
-        const auto fixtureA = contact.GetFixtureA();
-        const auto fixtureB = contact.GetFixtureB();
+        const auto fixtureA = GetFixtureA(m_world, contact);
+        const auto fixtureB = GetFixtureB(m_world, contact);
 
         if (fixtureA == m_sensor)
         {
-            const auto userData = fixtureB->GetBody()->GetUserData();
+            const auto userData = GetUserData(m_world, GetBody(m_world, fixtureB));
             if (userData)
             {
                 bool* touching = (bool*)userData;
@@ -89,7 +89,7 @@ public:
 
         if (fixtureB == m_sensor)
         {
-            const auto userData = fixtureA->GetBody()->GetUserData();
+            const auto userData = GetUserData(m_world, GetBody(m_world, fixtureA));
             if (userData)
             {
                 bool* touching = (bool*)userData;
@@ -99,14 +99,14 @@ public:
     }
 
     // Implement contact listener.
-    void EndContact(Contact& contact) override
+    void EndContact(ContactID contact) override
     {
-        const auto fixtureA = contact.GetFixtureA();
-        const auto fixtureB = contact.GetFixtureB();
+        const auto fixtureA = GetFixtureA(m_world, contact);
+        const auto fixtureB = GetFixtureB(m_world, contact);
 
         if (fixtureA == m_sensor)
         {
-            const auto userData = fixtureB->GetBody()->GetUserData();
+            const auto userData = GetUserData(m_world, GetBody(m_world, fixtureB));
             if (userData)
             {
                 bool* touching = (bool*)userData;
@@ -116,7 +116,7 @@ public:
 
         if (fixtureB == m_sensor)
         {
-            const auto userData = fixtureA->GetBody()->GetUserData();
+            const auto userData = GetUserData(m_world, GetBody(m_world, fixtureA));
             if (userData)
             {
                 bool* touching = (bool*)userData;
@@ -137,10 +137,10 @@ public:
             }
 
             const auto body = m_bodies[i];
-            const auto ground = m_sensor->GetBody();
-            const auto circle = static_cast<const DiskShapeConf*>(GetData(m_sensor->GetShape()));
-            const auto center = GetWorldPoint(*ground, circle->GetLocation());
-            const auto position = body->GetLocation();
+            const auto ground = GetBody(m_world, m_sensor);
+            const auto circle = TypeCast<DiskShapeConf>(GetShape(m_world, m_sensor));
+            const auto center = GetWorldPoint(m_world, ground, circle.GetLocation());
+            const auto position = GetLocation(m_world, body);
             const auto d = center - position;
             if (AlmostZero(GetMagnitudeSquared(d) / SquareMeter))
             {
@@ -148,12 +148,12 @@ public:
             }
 
             const auto F = Force2{GetUnitVector(d) * 100_N};
-            playrho::d2::ApplyForce(*body, F, position);
+            playrho::d2::ApplyForce(m_world, body, F, position);
         }
     }
 
-    Fixture* m_sensor;
-    Body* m_bodies[e_count];
+    FixtureID m_sensor;
+    BodyID m_bodies[e_count];
     bool m_touching[e_count];
 };
 

@@ -24,7 +24,6 @@
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
@@ -170,12 +169,10 @@ TEST(WorldManifold, GetForContact)
     auto world = World{};
     const auto bA = world.CreateBody();
     const auto bB = world.CreateBody();
-    const auto fA = bA->CreateFixture(shape);
-    const auto fB = bB->CreateFixture(shape);
-    const auto c = Contact{fA, 0u, fB, 0u};
-
-    const auto wm = GetWorldManifold(c);
-    
+    const auto fA = world.CreateFixture(bA, shape);
+    const auto fB = world.CreateFixture(bB, shape);
+    const auto c = Contact{bA, fA, 0u, bB, fB, 0u};
+    const auto wm = GetWorldManifold(world, c, Manifold{});
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});
     EXPECT_FALSE(IsValid(wm.GetNormal()));
 }

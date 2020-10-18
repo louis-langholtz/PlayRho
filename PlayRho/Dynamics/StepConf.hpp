@@ -48,7 +48,7 @@ public:
     using iteration_type = TimestepIters;
 
     /// @brief Invalid iteration value.
-    static constexpr const auto InvalidIteration = static_cast<iteration_type>(-1);
+    static constexpr auto InvalidIteration = static_cast<iteration_type>(-1);
 
     /// @brief Gets the delta time (time amount for this time step).
     /// @see SetTime(Real).

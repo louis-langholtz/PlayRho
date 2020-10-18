@@ -25,7 +25,7 @@
 namespace playrho {
 
     /// @brief Allocator block sizes array data.
-    constexpr const std::size_t AllocatorBlockSizes[] =
+    constexpr std::size_t AllocatorBlockSizes[] =
     {
         16, 32, 64, 96, 128, 160, 192, 224, 256, 320, 384, 448, 512, 640,
     };
@@ -45,7 +45,7 @@ namespace playrho {
         using size_type = std::size_t;
 
         /// @brief Chunk size.
-        static constexpr const auto ChunkSize = size_type{16 * 1024};
+        static constexpr auto ChunkSize = size_type{16 * 1024};
         
         /// @brief Max block size (before using external allocator).
         static constexpr size_type GetMaxBlockSize() noexcept

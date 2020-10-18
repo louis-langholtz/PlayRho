@@ -31,9 +31,11 @@ namespace playrho {
     class Range
     {
     public:
-        
         /// @brief Iterator type.
         using iterator_type = IT;
+
+        /// @brief Value type alias.
+        using value_type = decltype(*std::declval<iterator_type>());
 
         /// @brief Initializing constructor.
         constexpr Range(iterator_type iter_begin, iterator_type iter_end) noexcept:

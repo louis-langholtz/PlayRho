@@ -84,24 +84,14 @@ TEST(PolygonShapeConf, Visit)
     EXPECT_EQ(data.visitedPolygon, 1);
 }
 
-TEST(PolygonShapeConf, Accept)
+TEST(PolygonShapeConf, TypeInfo)
 {
-#if 0
-    auto visited = false;
-    auto shapeVisited = false;
     const auto foo = PolygonShapeConf{};
-    ASSERT_FALSE(visited);
-    ASSERT_FALSE(shapeVisited);
-    Accept(Shape(foo), [&](const std::type_info& ti, const void*) {
-        visited = true;
-        if (ti == typeid(PolygonShapeConf))
-        {
-            shapeVisited = true;
-        }
-    });
-    EXPECT_TRUE(visited);
-    EXPECT_TRUE(shapeVisited);
-#endif
+    const auto shape = Shape(foo);
+    EXPECT_EQ(GetType(shape), GetTypeID<PolygonShapeConf>());
+    auto copy = PolygonShapeConf{};
+    EXPECT_NO_THROW(copy = TypeCast<PolygonShapeConf>(shape));
+    EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
 TEST(PolygonShapeConf, FindLowestRightMostVertex)
@@ -169,7 +159,7 @@ TEST(PolygonShapeConf, Copy)
 
     const auto copy = shape;
     
-    EXPECT_EQ(typeid(copy), typeid(shape));
+    EXPECT_EQ(GetTypeID(copy), GetTypeID(shape));
     EXPECT_EQ(copy.GetCentroid(), (Length2{}));
     EXPECT_EQ(GetChildCount(copy), ChildCounter(1));
     EXPECT_EQ(GetVertexRadius(copy), PolygonShapeConf::GetDefaultVertexRadius());

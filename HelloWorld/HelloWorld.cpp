@@ -44,7 +44,7 @@ int main()
     const auto box = Shape{PolygonShapeConf{}.SetAsBox(50_m, 10_m)};
 
     // Add the box shape to the ground body.
-    ground->CreateFixture(box);
+    world.CreateFixture(ground, box);
 
     // Define location above ground for a "dynamic" body & call world's body creation method.
     const auto ball = world.CreateBody(BodyConf{}
@@ -53,7 +53,7 @@ int main()
                                        .UseLinearAcceleration(EarthlyGravity));
 
     // Define a disk shape for the ball body and create a fixture to add it.
-    ball->CreateFixture(Shape{DiskShapeConf{}.UseRadius(1_m)});
+    world.CreateFixture(ball, Shape{DiskShapeConf{}.UseRadius(1_m)});
 
     // Prepare for simulation. Typically code uses a time step of 1/60 of a second
     // (60Hz). The defaults are setup for that and to generally provide a high
@@ -69,8 +69,8 @@ int main()
         // Perform a single step of simulation. Keep the time step & iterations fixed.
         world.Step(stepConf);
 
-        const auto location = ball->GetLocation();
-        const auto angle = ball->GetAngle();
+        const auto location = world.GetTransformation(ball).p;
+        const auto angle = world.GetAngle(ball);
 
         // Now print the location and angle of the body.
         std::cout << std::setw(5) << GetX(location);

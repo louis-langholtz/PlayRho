@@ -48,7 +48,7 @@ TEST(DiskShapeConf, DefaultConstruction)
 {
     const auto foo = DiskShapeConf{};
     
-    EXPECT_EQ(typeid(foo), typeid(DiskShapeConf));
+    EXPECT_EQ(GetTypeID(foo), GetTypeID<DiskShapeConf>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_EQ(foo.GetRadius(), DiskShapeConf::GetDefaultRadius());
     EXPECT_EQ(GetX(foo.GetLocation()), 0_m);
@@ -64,7 +64,7 @@ TEST(DiskShapeConf, InitConstruction)
     conf.location = position;
     Shape foo{conf};
     
-    EXPECT_EQ(typeid(foo), typeid(Shape));
+    EXPECT_EQ(GetTypeID(foo), GetTypeID<Shape>());
     EXPECT_EQ(GetChildCount(foo), ChildCounter{1});
     EXPECT_EQ(GetVertexRadius(foo, 0), radius);
     EXPECT_EQ(GetX(conf.GetLocation()), GetX(position));
@@ -121,24 +121,15 @@ TEST(DiskShapeConf, Visit)
     EXPECT_EQ(data.visitedMulti, 0);
 }
 
-TEST(DiskShapeConf, Accept)
+TEST(DiskShapeConf, TypeInfo)
 {
-#if 0
-    auto visited = false;
-    auto diskVisited = false;
-    Shape foo{DiskShapeConf{}};
-    ASSERT_FALSE(visited);
-    ASSERT_FALSE(diskVisited);
-    Accept(foo, [&](const std::type_info &ti, const void *){
-        visited = true;
-        if (ti == typeid(DiskShapeConf))
-        {
-            diskVisited = true;
-        }
-    });
-    EXPECT_TRUE(visited);
-    EXPECT_TRUE(diskVisited);
-#endif
+    const auto foo = DiskShapeConf{};
+    const auto shape = Shape(foo);
+    EXPECT_EQ(GetType(shape), GetTypeID<DiskShapeConf>());
+    auto copy = DiskShapeConf{};
+    EXPECT_NE(TypeCast<const DiskShapeConf*>(&shape), nullptr);
+    EXPECT_NO_THROW(copy = TypeCast<DiskShapeConf>(shape));
+    EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
 #if 0

@@ -68,14 +68,6 @@ TEST(StepConf, maxTranslation)
     EXPECT_LT(max_inc, DefaultLinearSlop / Real{2});
     EXPECT_LT(max_inc, Length{StepConf{}.linearSlop} / Real{2});
     EXPECT_LT(max_inc, Length{StepConf{}.tolerance});
-#if 0
-    std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
-    std::cout << " inc=" << inc;
-    std::cout << " max_inc=" << max_inc;
-    std::cout << " slop=" << DefaultLinearSlop;
-    std::cout << std::endl;
-#endif
-    
     {
         StepConf conf;
         conf.tolerance = 0.0000001_m;
@@ -99,11 +91,4 @@ TEST(StepConf, maxRotation)
     const auto max_inc = inc * StepConf{}.maxRotation;
     EXPECT_GT(max_inc, 0_deg);
     EXPECT_LT(max_inc, DefaultAngularSlop / Real{2});
-#if 0
-    std::cout << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
-    std::cout << " inc=" << inc;
-    std::cout << " max_inc=" << max_inc;
-    std::cout << " slop=" << DefaultAngularSlop;
-    std::cout << std::endl;
-#endif
 }

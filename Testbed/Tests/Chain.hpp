@@ -29,9 +29,9 @@ class Chain : public Test
 public:
     Chain()
     {
-        const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape(GetGroundEdgeConf()));
-        const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).UseFriction(0.2).SetAsBox(0.6_m, 0.125_m)};
+        const auto ground = CreateBody(m_world);
+        CreateFixture(m_world, ground, Shape(GetGroundEdgeConf()));
+        const auto shape = Shape{PolygonShapeConf{}.UseDensity(20_kgpm2).UseFriction(Real(0.2)).SetAsBox(0.6_m, 0.125_m)};
         const auto y = 25.0f;
         auto prevBody = ground;
         for (auto i = 0; i < 30; ++i)
@@ -40,9 +40,10 @@ public:
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(0.5f + i, y) * 1_m;
-            const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(shape);
-            m_world.CreateJoint(RevoluteJointConf(prevBody, body, Vec2(Real(i), y) * 1_m));
+            const auto body = CreateBody(m_world, bd);
+            CreateFixture(m_world, body, shape);
+            m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body,
+                                                     Vec2(Real(i), y) * 1_m));
             prevBody = body;
         }
     }

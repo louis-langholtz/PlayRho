@@ -28,6 +28,9 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/NonNegative.hpp>
 
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
+
 namespace playrho {
 namespace detail {
 
@@ -69,9 +72,6 @@ constexpr bool operator!= (MassData<N> lhs, MassData<N> rhs)
 
 namespace d2 {
 
-class Fixture;
-class Body;
-
 /// @brief Mass data alias for 2-D objects.
 /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 using MassData = detail::MassData<2>;
@@ -97,33 +97,6 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Len
 ///    properties.
 MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
                      Span<const Length2> vertices);
-
-/// @brief Computes the mass data for the given fixture.
-///
-/// @details
-/// The mass data is based on the density and the shape of the fixture.
-/// The rotational inertia is about the shape's origin.
-/// @note This operation may be expensive.
-///
-/// @param f Fixture to compute the mass data for.
-///
-/// @relatedalso Fixture
-///
-MassData GetMassData(const Fixture& f);
-
-/// @brief Computes the body's mass data.
-/// @details This basically accumulates the mass data over all fixtures.
-/// @note The center is the mass weighted sum of all fixture centers. Divide it by the
-///   mass to get the averaged center.
-/// @return accumulated mass data for all fixtures associated with the given body.
-/// @relatedalso Body
-MassData ComputeMassData(const Body& body) noexcept;
-
-
-/// @brief Gets the mass data of the body.
-/// @return Data structure containing the mass, inertia, and center of the body.
-/// @relatedalso Body
-MassData GetMassData(const Body& body) noexcept;
 
 } // namespace d2
 } // namespace playrho

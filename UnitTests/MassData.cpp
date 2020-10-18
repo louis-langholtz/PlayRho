@@ -363,6 +363,32 @@ TEST(MassData, GetForCenteredEdge)
     EXPECT_EQ(GetY(mass_data.center), 0_m);
 }
 
+TEST(MassData, Rectangle)
+{
+    auto massData = MassData{};
+
+    const auto rectangle_4x0 = std::initializer_list<Length2>{
+        {-2_m, 0_m}, {-2_m, 0_m}, {2_m, 0_m}, {2_m, 0_m}
+    };
+    EXPECT_NO_THROW(massData = GetMassData(0_m, 2_kgpm2, rectangle_4x0));
+    EXPECT_EQ(massData.mass, 0_kg);
+    EXPECT_EQ(massData.center, Length2(0_m, 0_m));
+
+    const auto rectangle_1x1 = std::initializer_list<Length2>{
+        {1_m, 1_m}, {0_m, 1_m}, {0_m, 0_m}, {1_m, 0_m}
+    };
+    EXPECT_NO_THROW(massData = GetMassData(0_m, 1_kgpm2, rectangle_1x1));
+    EXPECT_EQ(massData.mass, 1_kg);
+    EXPECT_EQ(massData.center, Length2(0.5_m, 0.5_m));
+
+    const auto rectangle_4x2 = std::initializer_list<Length2>{
+        {-2_m, 1_m}, {-2_m, -1_m}, {2_m, -1_m}, {2_m, 1_m}
+    };
+    EXPECT_NO_THROW(massData = GetMassData(0_m, 2_kgpm2, rectangle_4x2));
+    EXPECT_EQ(massData.mass, 16_kg);
+    EXPECT_EQ(massData.center, Length2(0_m, 0_m));
+}
+
 TEST(MassData, Equals)
 {
     const auto foo = MassData{};

@@ -176,7 +176,7 @@ inline auto Average(const T& span)
 
     // Relies on C++11 zero initialization to zero initialize value_type.
     // See: http://en.cppreference.com/w/cpp/language/zero_initialization
-    constexpr const auto zero = value_type{};
+    constexpr auto zero = value_type{};
     assert(zero * Real{2} == zero);
     
     // For C++17, switch from using std::accumulate to using std::reduce.
@@ -240,7 +240,8 @@ std::enable_if_t<std::is_floating_point<T>::value, bool> AlmostEqual(T x, T y, i
     //    unless the result is subnormal".
     // Where "subnormal" means almost zero.
     //
-    return (abs(x - y) < (std::numeric_limits<T>::epsilon() * abs(x + y) * ulp)) || AlmostZero(x - y);
+    return (abs(x - y) < (std::numeric_limits<T>::epsilon() * abs(x + y) * static_cast<T>(ulp)))
+        || AlmostZero(x - y);
 }
 
 /// @brief Modulo operation using <code>std::fmod</code>.
@@ -270,7 +271,7 @@ inline auto ModuloViaTrunc(T dividend, T divisor) noexcept
 /// @see Atan2
 inline Angle GetNormalized(Angle value) noexcept
 {
-    constexpr const auto oneRotationInRadians = Real{2 * Pi};
+    constexpr auto oneRotationInRadians = Real{2 * Pi};
     auto angleInRadians = Real{value / Radian};
 #if defined(NORMALIZE_ANGLE_VIA_FMOD)
     // Note: std::fmod appears slower than std::trunc.

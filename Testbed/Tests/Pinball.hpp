@@ -32,7 +32,7 @@ public:
     Pinball()
     {
         // Ground body
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
         {
             auto conf = ChainShapeConf{};
             conf.Add(Vec2(0.0f, -2.0f) * 1_m);
@@ -42,7 +42,7 @@ public:
             conf.Add(Vec2(-8.0f, 6.0f) * 1_m);
             conf.Add(conf.GetVertex(0)); // to loop back around completely.
             conf.UseDensity(0_kgpm2);
-            ground->CreateFixture(Shape(conf));
+            CreateFixture(m_world, ground, Shape(conf));
         }
 
         // Flippers
@@ -55,14 +55,14 @@ public:
             bd.linearAcceleration = m_gravity;
 
             bd.location = p1;
-            const auto leftFlipper = m_world.CreateBody(bd);
+            const auto leftFlipper = CreateBody(m_world, bd);
 
             bd.location = p2;
-            const auto rightFlipper = m_world.CreateBody(bd);
+            const auto rightFlipper = CreateBody(m_world, bd);
 
             const auto box = Shape(PolygonShapeConf{}.SetAsBox(1.75_m, 0.1_m).UseDensity(1_kgpm2));
-            leftFlipper->CreateFixture(box);
-            rightFlipper->CreateFixture(box);
+            CreateFixture(m_world, leftFlipper, box);
+            CreateFixture(m_world, rightFlipper, box);
 
             RevoluteJointConf jd;
             jd.bodyA = ground;
@@ -76,14 +76,14 @@ public:
             jd.bodyB = leftFlipper;
             jd.lowerAngle = -30_deg;
             jd.upperAngle = 5_deg;
-            m_leftJoint = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd));
+            m_leftJoint = m_world.CreateJoint(jd);
 
             jd.motorSpeed = 0_rpm;
             jd.localAnchorA = p2;
             jd.bodyB = rightFlipper;
             jd.lowerAngle = -5_deg;
             jd.upperAngle = 30_deg;
-            m_rightJoint = static_cast<RevoluteJoint*>(m_world.CreateJoint(jd));
+            m_rightJoint = m_world.CreateJoint(jd);
         }
 
         // Disk character
@@ -94,12 +94,12 @@ public:
             bd.linearAcceleration = m_gravity;
             bd.bullet = true;
 
-            m_ball = m_world.CreateBody(bd);
+            m_ball = CreateBody(m_world, bd);
 
             auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = 0.2_m;
-            m_ball->CreateFixture(Shape(conf));
+            CreateFixture(m_world, m_ball, Shape(conf));
         }
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "To control the flippers", [&](KeyActionMods) {
@@ -114,19 +114,19 @@ public:
     {
         if (m_button)
         {
-            m_leftJoint->SetMotorSpeed(20_rad / 1_s);
-            m_rightJoint->SetMotorSpeed(-20_rad / 1_s);
+            SetMotorSpeed(m_world, m_leftJoint, 20_rad / 1_s);
+            SetMotorSpeed(m_world, m_rightJoint, -20_rad / 1_s);
         }
         else
         {
-            m_leftJoint->SetMotorSpeed(-10_rad / 1_s);
-            m_rightJoint->SetMotorSpeed(10_rad / 1_s);
+            SetMotorSpeed(m_world, m_leftJoint, -10_rad / 1_s);
+            SetMotorSpeed(m_world, m_rightJoint, 10_rad / 1_s);
         }
     }
 
-    RevoluteJoint* m_leftJoint;
-    RevoluteJoint* m_rightJoint;
-    Body* m_ball;
+    JointID m_leftJoint; // RevoluteJoint
+    JointID m_rightJoint; // RevoluteJoint
+    BodyID m_ball;
     bool m_button = false;
 };
 

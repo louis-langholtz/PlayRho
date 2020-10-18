@@ -44,9 +44,9 @@ namespace testbed {
             bodyConf.bullet = true;
 
             bodyConf.location = Vec2{0, 26} * 1_m;
-            const auto body1 = m_world.CreateBody(bodyConf);
+            const auto body1 = CreateBody(m_world, bodyConf);
             bodyConf.location = Vec2{0, 14} * 1_m;
-            const auto body2 = m_world.CreateBody(bodyConf);
+            const auto body2 = CreateBody(m_world, bodyConf);
             
             auto shapeConf = DiskShapeConf{};
             shapeConf.density = 10_kgpm2;
@@ -62,11 +62,11 @@ namespace testbed {
             shapeConf.location = Vec2{0, -3} * 1_m;
             auto circleB = Shape(shapeConf);
             
-            body1->CreateFixture(circleA);
-            body1->CreateFixture(circleB);
+            CreateFixture(m_world, body1, circleA);
+            CreateFixture(m_world, body1, circleB);
             
-            body2->CreateFixture(circleA);
-            body2->CreateFixture(circleB);
+            CreateFixture(m_world, body2, circleA);
+            CreateFixture(m_world, body2, circleB);
         }
     };
     

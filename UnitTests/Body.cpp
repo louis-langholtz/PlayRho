@@ -22,6 +22,9 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
@@ -149,7 +152,7 @@ TEST(Body, ByteSize)
 #if !defined(NDEBUG)
             EXPECT_EQ(sizeof(Body), std::size_t(216));
 #else
-            EXPECT_EQ(sizeof(Body), std::size_t(192));
+            EXPECT_EQ(sizeof(Body), std::size_t(184));
 #endif
 #elif defined(_WIN32)
 #if !defined(NDEBUG)
@@ -157,102 +160,62 @@ TEST(Body, ByteSize)
             EXPECT_EQ(sizeof(Body), std::size_t(192));
 #else
             // Win32 release
-            EXPECT_EQ(sizeof(Body), std::size_t(144));
+            EXPECT_EQ(sizeof(Body), std::size_t(140));
 #endif
 #else
-            EXPECT_EQ(sizeof(Body), std::size_t(192));
+            EXPECT_EQ(sizeof(Body), std::size_t(184));
 #endif
             break;
         case  8:
-            EXPECT_EQ(sizeof(Body), std::size_t(288));
+            EXPECT_EQ(sizeof(Body), std::size_t(280));
             break;
         case 16:
-            EXPECT_EQ(sizeof(Body), std::size_t(496));
+            EXPECT_EQ(sizeof(Body), std::size_t(480));
             break;
         default: FAIL(); break;
     }
 }
 
-TEST(Body, Traits)
-{
-    using Type = Body;
-    
-    EXPECT_FALSE(IsIterable<Type>::value);
-    EXPECT_FALSE(IsAddable<Type>::value);
-    EXPECT_FALSE((IsAddable<Type, Type>::value));
-
-    EXPECT_FALSE(std::is_default_constructible<Type>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<Type>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<Type>::value);
-    
-    EXPECT_FALSE(std::is_constructible<Type>::value);
-    EXPECT_FALSE(std::is_nothrow_constructible<Type>::value);
-    EXPECT_FALSE(std::is_trivially_constructible<Type>::value);
-    
-    EXPECT_FALSE(std::is_copy_constructible<Type>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<Type>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<Type>::value);
-    
-    EXPECT_FALSE(std::is_copy_assignable<Type>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<Type>::value);
-    EXPECT_FALSE(std::is_trivially_copy_assignable<Type>::value);
-    
-    EXPECT_FALSE(std::is_destructible<Type>::value);
-    EXPECT_FALSE(std::is_nothrow_destructible<Type>::value);
-    EXPECT_FALSE(std::is_trivially_destructible<Type>::value);
-}
-
-TEST(Body, GetFlagsStatic)
-{
-    EXPECT_TRUE(Body::GetFlags(BodyConf{}.UseFixedRotation(true)) & Body::e_fixedRotationFlag);
-    EXPECT_TRUE(Body::GetFlags(BodyConf{}
-                               .UseAwake(false)
-                               .UseAllowSleep(false)
-                               .UseType(BodyType::Dynamic)) & Body::e_awakeFlag);
-}
-
 TEST(Body, WorldCreated)
 {
     auto world = World{};
-    
+
     const auto body = world.CreateBody();
-    ASSERT_NE(body, nullptr);
+    ASSERT_NE(body, InvalidBodyID);
 
-    EXPECT_EQ(body->GetWorld(), &world);
-    EXPECT_EQ(body->GetUserData(), nullptr);
-    EXPECT_TRUE(body->IsEnabled());
-    EXPECT_FALSE(body->IsAwake());
-    EXPECT_FALSE(body->IsSpeedable());
-    EXPECT_FALSE(body->IsAccelerable());
-    
-    EXPECT_FALSE(Awaken(*body));
+    EXPECT_EQ(GetUserData(world, body), nullptr);
+    EXPECT_TRUE(IsEnabled(world, body));
+    EXPECT_FALSE(IsAwake(world, body));
+    EXPECT_FALSE(IsSpeedable(world, body));
+    EXPECT_FALSE(IsAccelerable(world, body));
+    EXPECT_FALSE(Awaken(world, body));
 
-    EXPECT_TRUE(body->GetFixtures().empty());
+    EXPECT_TRUE(GetFixtures(world, body).empty());
     {
         auto i = 0;
-        for (auto&& fixture: body->GetFixtures())
+        for (auto&& fixture: GetFixtures(world, body))
         {
-            EXPECT_EQ(GetRef(fixture).GetBody(), body);
+            EXPECT_EQ(GetBody(world, fixture), body);
             ++i;
         }
         EXPECT_EQ(i, 0);
     }
 
-    EXPECT_TRUE(body->GetJoints().empty());
+    EXPECT_TRUE(GetJoints(world, body).empty());
     {
         auto i = 0;
-        for (auto&& joint: body->GetJoints())
+        for (auto&& joint: GetJoints(world, body))
         {
             NOT_USED(joint);
             ++i;
         }
         EXPECT_EQ(i, 0);        
     }
-    
-    EXPECT_TRUE(body->GetContacts().empty());
+
+    EXPECT_TRUE(GetContacts(world, body).empty());
     {
         auto i = 0;
-        for (auto&& ce: body->GetContacts())
+        for (auto&& ce: GetContacts(world, body))
         {
             NOT_USED(ce);
             ++i;
@@ -271,37 +234,37 @@ TEST(Body, SetVelocityDoesNothingToStatic)
     auto world = World{};
 
     const auto body = world.CreateBody();
-    ASSERT_NE(body, nullptr);
-    ASSERT_FALSE(body->IsAwake());
-    ASSERT_FALSE(body->IsSpeedable());
-    ASSERT_FALSE(body->IsAccelerable());
-    ASSERT_EQ(body->GetVelocity(), zeroVelocity);
-    
+    ASSERT_NE(body, InvalidBodyID);
+    ASSERT_FALSE(IsAwake(world, body));
+    ASSERT_FALSE(IsSpeedable(world, body));
+    ASSERT_FALSE(IsAccelerable(world, body));
+    ASSERT_EQ(GetVelocity(world, body), zeroVelocity);
+
     const auto velocity = Velocity{
         LinearVelocity2{1.1_mps, 1.1_mps},
         AngularVelocity{Real(1.1) * RadianPerSecond}
     };
-    body->SetVelocity(velocity);
-    EXPECT_NE(body->GetVelocity(), velocity);
-    EXPECT_EQ(body->GetVelocity(), zeroVelocity);
+    SetVelocity(world, body, velocity);
+    EXPECT_NE(GetVelocity(world, body), velocity);
+    EXPECT_EQ(GetVelocity(world, body), zeroVelocity);
 }
 
 TEST(Body, CreateFixture)
 {
     auto world = World{};
     const auto body = world.CreateBody();
-    EXPECT_EQ(GetFixtureCount(*body), std::size_t(0));
+    EXPECT_EQ(GetFixtureCount(world, body), std::size_t(0));
 
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
-    EXPECT_NE(body->CreateFixture(valid_shape, FixtureConf{}), nullptr);
+    EXPECT_NE(world.CreateFixture(body, valid_shape, FixtureConf{}), InvalidFixtureID);
 
-    EXPECT_EQ(GetFixtureCount(*body), std::size_t(1));
+    EXPECT_EQ(GetFixtureCount(world, body), std::size_t(1));
     
     const auto minRadius = world.GetMinVertexRadius();
-    EXPECT_THROW(body->CreateFixture(Shape{DiskShapeConf{minRadius / 2}}), InvalidArgument);
+    EXPECT_THROW(world.CreateFixture(body, Shape{DiskShapeConf{minRadius / 2}}), InvalidArgument);
     
     const auto maxRadius = world.GetMaxVertexRadius();
-    EXPECT_THROW(body->CreateFixture(Shape{DiskShapeConf{maxRadius + maxRadius / 10}}), InvalidArgument);
+    EXPECT_THROW(world.CreateFixture(body, Shape{DiskShapeConf{maxRadius + maxRadius / 10}}), InvalidArgument);
 }
 
 TEST(Body, Destroy)
@@ -309,33 +272,30 @@ TEST(Body, Destroy)
     auto world = World{};
     const auto bodyA = world.CreateBody();
     const auto bodyB = world.CreateBody();
-    ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
-    ASSERT_EQ(GetFixtureCount(*bodyB), std::size_t(0));
+    ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
+    ASSERT_EQ(GetFixtureCount(world, bodyB), std::size_t(0));
 
-    const auto fixtureA = bodyA->CreateFixture(Shape{DiskShapeConf(1_m)}, FixtureConf{});
-    ASSERT_NE(fixtureA, nullptr);
-    ASSERT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
+    const auto fixtureA = world.CreateFixture(bodyA, Shape{DiskShapeConf(1_m)}, FixtureConf{});
+    ASSERT_NE(fixtureA, InvalidFixtureID);
+    ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(1));
 
-    EXPECT_FALSE(bodyB->Destroy(fixtureA));
-    EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(1));
-    EXPECT_TRUE(bodyA->Destroy(fixtureA));
-    EXPECT_EQ(GetFixtureCount(*bodyA), std::size_t(0));
+    EXPECT_TRUE(world.Destroy(fixtureA));
+    EXPECT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
 }
-
 
 TEST(Body, SetEnabledCausesIsEnabled)
 {
     auto world = World{};
     const auto body = world.CreateBody();
-    ASSERT_TRUE(body->IsEnabled());
+    ASSERT_TRUE(IsEnabled(world, body));
     auto value = true;
     for (auto i = 0; i < 4; ++i) {
         // Set and check twice to ensure same behavior if state already same.
         // Inlined to help match state with line number of any reports.
-        EXPECT_NO_THROW(body->SetEnabled(value));
-        EXPECT_EQ(body->IsEnabled(), value);
-        EXPECT_NO_THROW(body->SetEnabled(value));
-        EXPECT_EQ(body->IsEnabled(), value);
+        EXPECT_NO_THROW(world.SetEnabled(body, value));
+        EXPECT_EQ(IsEnabled(world, body), value);
+        EXPECT_NO_THROW(world.SetEnabled(body, value));
+        EXPECT_EQ(IsEnabled(world, body), value);
         value = !value;
     }
 }
@@ -343,7 +303,7 @@ TEST(Body, SetEnabledCausesIsEnabled)
 TEST(Body, SetEnabled)
 {
     auto stepConf = StepConf{};
-    
+
     auto world = World{};
     ASSERT_EQ(world.GetFixturesForProxies().size(), 0u);
     ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
@@ -352,66 +312,66 @@ TEST(Body, SetEnabled)
     const auto body1 = world.CreateBody();
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
-    const auto fixture0 = body0->CreateFixture(valid_shape, FixtureConf{});
-    const auto fixture1 = body1->CreateFixture(valid_shape, FixtureConf{});
-    ASSERT_NE(fixture0, nullptr);
-    ASSERT_NE(fixture1, nullptr);
+    const auto fixture0 = world.CreateFixture(body0, valid_shape, FixtureConf{});
+    const auto fixture1 = world.CreateFixture(body1, valid_shape, FixtureConf{});
+    ASSERT_NE(fixture0, InvalidFixtureID);
+    ASSERT_NE(fixture1, InvalidFixtureID);
 
-    ASSERT_TRUE(body0->IsEnabled());
-    ASSERT_EQ(fixture0->GetProxyCount(), 0u);
+    ASSERT_TRUE(IsEnabled(world, body0));
+    ASSERT_EQ(GetProxyCount(world, fixture0), 0u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 2u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     EXPECT_NO_THROW(world.Step(stepConf));
-    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
+    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     // Test that set enabled to flag already set is not a toggle
-    EXPECT_NO_THROW(body0->SetEnabled(true));
-    EXPECT_TRUE(body0->IsEnabled());
-    EXPECT_NO_THROW(body1->SetEnabled(false));
-    EXPECT_FALSE(body1->IsEnabled());
-    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
+    EXPECT_NO_THROW(world.SetEnabled(body0, true));
+    EXPECT_TRUE(IsEnabled(world, body0));
+    EXPECT_NO_THROW(world.SetEnabled(body1, false));
+    EXPECT_FALSE(IsEnabled(world, body1));
+    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    EXPECT_NO_THROW(body0->SetEnabled(false));
-    EXPECT_FALSE(body0->IsEnabled());
-    EXPECT_NO_THROW(body1->SetEnabled(true));
-    EXPECT_TRUE(body1->IsEnabled());
-    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
+    EXPECT_NO_THROW(world.SetEnabled(body0, false));
+    EXPECT_FALSE(IsEnabled(world, body0));
+    EXPECT_NO_THROW(world.SetEnabled(body1, true));
+    EXPECT_TRUE(IsEnabled(world, body1));
+    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 3u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    EXPECT_NO_THROW(body0->SetEnabled(true));
-    EXPECT_TRUE(body0->IsEnabled());
-    EXPECT_NO_THROW(body1->SetEnabled(false));
-    EXPECT_FALSE(body1->IsEnabled());
-    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
+    EXPECT_NO_THROW(world.SetEnabled(body0, true));
+    EXPECT_TRUE(IsEnabled(world, body0));
+    EXPECT_NO_THROW(world.SetEnabled(body1, false));
+    EXPECT_FALSE(IsEnabled(world, body1));
+    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 5u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    EXPECT_NO_THROW(body0->SetEnabled(false));
-    EXPECT_FALSE(body0->IsEnabled());
-    EXPECT_NO_THROW(body1->SetEnabled(true));
-    EXPECT_TRUE(body1->IsEnabled());
-    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
+    EXPECT_NO_THROW(world.SetEnabled(body0, false));
+    EXPECT_FALSE(IsEnabled(world, body0));
+    EXPECT_NO_THROW(world.SetEnabled(body1, true));
+    EXPECT_TRUE(IsEnabled(world, body1));
+    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 7u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     EXPECT_NO_THROW(world.Step(stepConf));
-    EXPECT_EQ(fixture0->GetProxyCount(), 0u);
+    EXPECT_EQ(GetProxyCount(world, fixture0), 0u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
-    EXPECT_NO_THROW(body0->SetEnabled(true));
-    EXPECT_TRUE(body0->IsEnabled());
+    EXPECT_NO_THROW(world.SetEnabled(body0, true));
+    EXPECT_TRUE(IsEnabled(world, body0));
     EXPECT_EQ(world.GetFixturesForProxies().size(), 1u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     EXPECT_NO_THROW(world.Step(stepConf));
-    EXPECT_EQ(fixture0->GetProxyCount(), 1u);
+    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(world.GetFixturesForProxies().size(), 0u);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 0u);
 }
@@ -422,17 +382,17 @@ TEST(Body, SetFixedRotation)
     const auto body = world.CreateBody();
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
 
-    ASSERT_NE(body->CreateFixture(valid_shape, FixtureConf{}), nullptr);
-    ASSERT_FALSE(body->IsFixedRotation());
+    ASSERT_NE(world.CreateFixture(body, valid_shape, FixtureConf{}), InvalidFixtureID);
+    ASSERT_FALSE(IsFixedRotation(world, body));
 
     // Test that set fixed rotation to flag already set is not a toggle
-    body->SetFixedRotation(false);
-    EXPECT_FALSE(body->IsFixedRotation());
+    SetFixedRotation(world, body, false);
+    EXPECT_FALSE(IsFixedRotation(world, body));
 
-    body->SetFixedRotation(true);
-    EXPECT_TRUE(body->IsFixedRotation());
-    body->SetFixedRotation(false);
-    EXPECT_FALSE(body->IsFixedRotation());
+    SetFixedRotation(world, body, true);
+    EXPECT_TRUE(IsFixedRotation(world, body));
+    SetFixedRotation(world, body, false);
+    EXPECT_FALSE(IsFixedRotation(world, body));
 }
 
 TEST(Body, CreateAndDestroyFixture)
@@ -440,9 +400,9 @@ TEST(Body, CreateAndDestroyFixture)
     auto world = World{};
 
     auto body = world.CreateBody();
-    ASSERT_NE(body, nullptr);
-    EXPECT_TRUE(body->GetFixtures().empty());
-    EXPECT_FALSE(body->IsMassDataDirty());
+    ASSERT_NE(body, InvalidBodyID);
+    EXPECT_TRUE(GetFixtures(world, body).empty());
+    EXPECT_FALSE(IsMassDataDirty(world, body));
 
     auto conf = DiskShapeConf{};
     conf.vertexRadius = 2.871_m;
@@ -451,63 +411,62 @@ TEST(Body, CreateAndDestroyFixture)
     const auto shape = Shape(conf);
     
     {
-        auto fixture = body->CreateFixture(shape, FixtureConf{}, false);
-        const auto fshape = fixture->GetShape();
+        auto fixture = world.CreateFixture(body, shape, FixtureConf{}, false);
+        const auto fshape = GetShape(world, fixture);
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
-        EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
-        EXPECT_FALSE(body->GetFixtures().empty());
+        EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
+        EXPECT_FALSE(GetFixtures(world, body).empty());
         {
             auto i = 0;
-            for (auto&& f: body->GetFixtures())
+            for (const auto& f: GetFixtures(world, body))
             {
-                EXPECT_EQ(GetPtr(f), fixture);
+                EXPECT_EQ(f, fixture);
                 ++i;
             }
             EXPECT_EQ(i, 1);
         }
-        EXPECT_TRUE(body->IsMassDataDirty());
-        body->ResetMassData();
-        EXPECT_FALSE(body->IsMassDataDirty());
+        EXPECT_TRUE(IsMassDataDirty(world, body));
+        ResetMassData(world, body);
+        EXPECT_FALSE(IsMassDataDirty(world, body));
 
         ASSERT_EQ(world.GetFixturesForProxies().size(), std::size_t{1});
         EXPECT_EQ(*world.GetFixturesForProxies().begin(), fixture);
 
-        body->Destroy(fixture, false);
-        EXPECT_TRUE(body->GetFixtures().empty());
-        EXPECT_TRUE(body->IsMassDataDirty());
+        EXPECT_TRUE(world.Destroy(fixture, false));
+        EXPECT_TRUE(GetFixtures(world, body).empty());
+        EXPECT_TRUE(IsMassDataDirty(world, body));
 
-        EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
+        EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t(0));
 
-        body->ResetMassData();
-        EXPECT_FALSE(body->IsMassDataDirty());
-        
-        body->DestroyFixtures();
-        EXPECT_TRUE(body->GetFixtures().empty());
+        ResetMassData(world, body);
+        EXPECT_FALSE(IsMassDataDirty(world, body));
+
+        DestroyFixtures(world, body);
+        EXPECT_TRUE(GetFixtures(world, body).empty());
     }
-    
     {
-        auto fixture = body->CreateFixture(shape, FixtureConf{}, false);
-        const auto fshape = fixture->GetShape();
+        auto fixture = world.CreateFixture(body, shape, FixtureConf{}, false);
+        const auto fshape = GetShape(world, fixture);
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
-        EXPECT_EQ(static_cast<const DiskShapeConf*>(GetData(fshape))->GetLocation(), conf.GetLocation());
-        EXPECT_FALSE(body->GetFixtures().empty());
+        EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
+        EXPECT_FALSE(GetFixtures(world, body).empty());
         {
             auto i = 0;
-            for (auto&& f: body->GetFixtures())
+            for (const auto& f: GetFixtures(world, body))
             {
-                EXPECT_EQ(GetPtr(f), fixture);
+                EXPECT_EQ(f, fixture);
                 ++i;
             }
             EXPECT_EQ(i, 1);
         }
-        EXPECT_TRUE(body->IsMassDataDirty());
-        body->ResetMassData();
-        EXPECT_FALSE(body->IsMassDataDirty());
-        EXPECT_FALSE(body->GetFixtures().empty());
+        EXPECT_TRUE(IsMassDataDirty(world, body));
+        ResetMassData(world, body);
+        EXPECT_FALSE(IsMassDataDirty(world, body));
+        EXPECT_FALSE(GetFixtures(world, body).empty());
         
-        body->DestroyFixtures();
-        EXPECT_TRUE(body->GetFixtures().empty());
-        EXPECT_FALSE(body->IsMassDataDirty());
+        world.DestroyFixtures(body);
+        EXPECT_TRUE(GetFixtures(world, body).empty());
+        EXPECT_FALSE(IsMassDataDirty(world, body));
     }
 }
 
@@ -516,21 +475,21 @@ TEST(Body, SetType)
     auto bd = BodyConf{};
     bd.type = BodyType::Dynamic;
     auto world = World{};
-    
+
     const auto body = world.CreateBody(bd);
     ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
-    ASSERT_EQ(body->GetType(), BodyType::Dynamic);
+    ASSERT_EQ(GetType(world, body), BodyType::Dynamic);
 
-    body->SetType(BodyType::Static);
+    SetType(world, body, BodyType::Static);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
-    EXPECT_EQ(body->GetType(), BodyType::Static);
-    
-    body->SetType(BodyType::Kinematic);
+    EXPECT_EQ(GetType(world, body), BodyType::Static);
+
+    SetType(world, body, BodyType::Kinematic);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
-    EXPECT_EQ(body->GetType(), BodyType::Kinematic);
-    
-    body->SetType(BodyType::Dynamic);
-    EXPECT_EQ(body->GetType(), BodyType::Dynamic);
+    EXPECT_EQ(GetType(world, body), BodyType::Kinematic);
+
+    SetType(world, body, BodyType::Dynamic);
+    EXPECT_EQ(GetType(world, body), BodyType::Dynamic);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
 }
 
@@ -538,27 +497,27 @@ TEST(Body, StaticIsExpected)
 {
     auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
-    EXPECT_FALSE(body->IsAccelerable());
-    EXPECT_FALSE(body->IsSpeedable());
-    EXPECT_TRUE( body->IsImpenetrable());
+    EXPECT_FALSE(IsAccelerable(world, body));
+    EXPECT_FALSE(IsSpeedable(world, body));
+    EXPECT_TRUE(IsImpenetrable(world, body));
 }
 
 TEST(Body, KinematicIsExpected)
 {
     auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Kinematic));
-    EXPECT_FALSE(body->IsAccelerable());
-    EXPECT_TRUE( body->IsSpeedable());
-    EXPECT_TRUE( body->IsImpenetrable());
+    EXPECT_FALSE(IsAccelerable(world, body));
+    EXPECT_TRUE( IsSpeedable(world, body));
+    EXPECT_TRUE( IsImpenetrable(world, body));
 }
 
 TEST(Body, DynamicIsExpected)
 {
     auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    EXPECT_TRUE(body->IsAccelerable());
-    EXPECT_TRUE(body->IsSpeedable());
-    EXPECT_FALSE(body->IsImpenetrable());
+    EXPECT_TRUE(IsAccelerable(world, body));
+    EXPECT_TRUE(IsSpeedable(world, body));
+    EXPECT_FALSE(IsImpenetrable(world, body));
 }
 
 TEST(Body, SetMassData)
@@ -573,33 +532,33 @@ TEST(Body, SetMassData)
     {
         auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-        EXPECT_EQ(GetMass(*body), 1_kg);
-        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
-        body->SetMassData(massData);
-        EXPECT_EQ(GetMass(*body), mass);
-        EXPECT_EQ(GetRotInertia(*body), rotInertia);
+        EXPECT_EQ(GetMass(world, body), 1_kg);
+        EXPECT_EQ(GetRotInertia(world, body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+        SetMassData(world, body, massData);
+        EXPECT_EQ(GetMass(world, body), mass);
+        EXPECT_EQ(GetRotInertia(world, body), rotInertia);
     }
     
     // has no rotational effect on fixed rotation dynamic bodies...
     {
         auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseFixedRotation(true));
-        EXPECT_EQ(GetMass(*body), 1_kg);
-        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
-        body->SetMassData(massData);
-        EXPECT_EQ(GetMass(*body), mass);
-        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+        EXPECT_EQ(GetMass(world, body), 1_kg);
+        EXPECT_EQ(GetRotInertia(world, body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+        SetMassData(world, body, massData);
+        EXPECT_EQ(GetMass(world, body), mass);
+        EXPECT_EQ(GetRotInertia(world, body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
     }
 
     // has no effect on static bodies...
     {
         auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
-        EXPECT_EQ(GetMass(*body), 0_kg);
-        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
-        body->SetMassData(massData);
-        EXPECT_EQ(GetMass(*body), 0_kg);
-        EXPECT_EQ(GetRotInertia(*body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+        EXPECT_EQ(GetMass(world, body), 0_kg);
+        EXPECT_EQ(GetRotInertia(world, body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
+        SetMassData(world, body, massData);
+        EXPECT_EQ(GetMass(world, body), 0_kg);
+        EXPECT_EQ(GetRotInertia(world, body), std::numeric_limits<Real>::infinity() * rotInertiaUnits);
     }
 }
 
@@ -612,16 +571,16 @@ TEST(Body, SetTransform)
     
     const auto body = world.CreateBody(bd);
     const auto xfm1 = Transformation{Length2{}, UnitVec::GetRight()};
-    ASSERT_EQ(body->GetTransformation(), xfm1);
+    ASSERT_EQ(GetTransformation(world, body), xfm1);
     ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
 
     const auto xfm2 = Transformation{Vec2(10, -12) * 1_m, UnitVec::GetLeft()};
-    body->SetTransform(xfm2.p, GetAngle(xfm2.q));
-    EXPECT_EQ(body->GetTransformation().p, xfm2.p);
-    EXPECT_NEAR(static_cast<double>(GetX(body->GetTransformation().q)),
+    SetTransform(world, body, xfm2.p, GetAngle(xfm2.q));
+    EXPECT_EQ(GetTransformation(world, body).p, xfm2.p);
+    EXPECT_NEAR(static_cast<double>(GetX(GetTransformation(world, body).q)),
                 static_cast<double>(GetX(xfm2.q)),
                 0.001);
-    EXPECT_NEAR(static_cast<double>(GetY(body->GetTransformation().q)),
+    EXPECT_NEAR(static_cast<double>(GetY(GetTransformation(world, body).q)),
                 static_cast<double>(GetY(xfm2.q)),
                 0.001);
     EXPECT_EQ(world.GetBodiesForProxies().size(), 1u);
@@ -638,123 +597,123 @@ TEST(Body, SetAcceleration)
     {
         auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
-        ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        ASSERT_FALSE(body->IsAwake());
-        body->UnsetAwake();
-        ASSERT_FALSE(body->IsAwake());
+        ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        ASSERT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        ASSERT_FALSE(IsAwake(world, body));
+        UnsetAwake(world, body);
+        ASSERT_FALSE(IsAwake(world, body));
         
-        body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
-        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        EXPECT_FALSE(body->IsAwake());
+        SetAcceleration(world, body, LinearAcceleration2{}, AngularAcceleration{});
+        EXPECT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        EXPECT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(IsAwake(world, body));
 
-        body->SetAcceleration(LinearAcceleration2{}, someAngularAccel);
-        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        EXPECT_FALSE(body->IsAwake());
+        SetAcceleration(world, body, LinearAcceleration2{}, someAngularAccel);
+        EXPECT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        EXPECT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(IsAwake(world, body));
 
-        body->SetAcceleration(someLinearAccel, AngularAcceleration{});
-        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        EXPECT_FALSE(body->IsAwake());
+        SetAcceleration(world, body, someLinearAccel, AngularAcceleration{});
+        EXPECT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        EXPECT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(IsAwake(world, body));
     }
     
     // Kinematic and dynamic bodies awake at creation...
     {
         auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Kinematic));
-        ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        ASSERT_TRUE(body->IsAwake());
-        body->UnsetAwake();
-        ASSERT_FALSE(body->IsAwake());
+        ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        ASSERT_TRUE(IsAwake(world, body));
+        UnsetAwake(world, body);
+        ASSERT_FALSE(IsAwake(world, body));
         
-        body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
-        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        EXPECT_FALSE(body->IsAwake());
+        SetAcceleration(world, body, LinearAcceleration2{}, AngularAcceleration{});
+        EXPECT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        EXPECT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(IsAwake(world, body));
         
-        body->SetAcceleration(LinearAcceleration2{}, someAngularAccel);
-        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        EXPECT_FALSE(body->IsAwake());
+        SetAcceleration(world, body, LinearAcceleration2{}, someAngularAccel);
+        EXPECT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        EXPECT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(IsAwake(world, body));
         
-        body->SetAcceleration(someLinearAccel, AngularAcceleration{});
-        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        EXPECT_FALSE(body->IsAwake());
+        SetAcceleration(world, body, someLinearAccel, AngularAcceleration{});
+        EXPECT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        EXPECT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(IsAwake(world, body));
     }
     
     // Dynamic bodies take a non-zero linear or angular acceleration.
     {
         auto world = World{};
         const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-        ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        ASSERT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        ASSERT_TRUE(body->IsAwake());
-        body->UnsetAwake();
-        ASSERT_FALSE(body->IsAwake());
+        ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        ASSERT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        ASSERT_TRUE(IsAwake(world, body));
+        UnsetAwake(world, body);
+        ASSERT_FALSE(IsAwake(world, body));
         
-        body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
-        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        EXPECT_FALSE(body->IsAwake());
+        SetAcceleration(world, body, LinearAcceleration2{}, AngularAcceleration{});
+        EXPECT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        EXPECT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        EXPECT_FALSE(IsAwake(world, body));
         
-        body->SetAcceleration(LinearAcceleration2{}, someAngularAccel);
-        EXPECT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel);
-        EXPECT_TRUE(body->IsAwake());
+        SetAcceleration(world, body, LinearAcceleration2{}, someAngularAccel);
+        EXPECT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+        EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel);
+        EXPECT_TRUE(IsAwake(world, body));
         
-        body->SetAcceleration(someLinearAccel, AngularAcceleration{});
-        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel);
-        EXPECT_EQ(body->GetAngularAcceleration(), 0 * RadianPerSquareSecond);
-        EXPECT_TRUE(body->IsAwake());
+        SetAcceleration(world, body, someLinearAccel, AngularAcceleration{});
+        EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel);
+        EXPECT_EQ(GetAngularAcceleration(world, body), 0 * RadianPerSquareSecond);
+        EXPECT_TRUE(IsAwake(world, body));
         
-        body->SetAcceleration(someLinearAccel, someAngularAccel);
-        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel);
-        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel);
-        EXPECT_TRUE(body->IsAwake());
+        SetAcceleration(world, body, someLinearAccel, someAngularAccel);
+        EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel);
+        EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel);
+        EXPECT_TRUE(IsAwake(world, body));
 
-        body->UnsetAwake();
-        ASSERT_FALSE(body->IsAwake());
-        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel);
-        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel);
+        UnsetAwake(world, body);
+        ASSERT_FALSE(IsAwake(world, body));
+        EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel);
+        EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel);
         
         // Reseting to same acceleration shouldn't change asleep status...
-        body->SetAcceleration(someLinearAccel, someAngularAccel);
-        EXPECT_FALSE(body->IsAwake());
-        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel);
-        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel);
+        SetAcceleration(world, body, someLinearAccel, someAngularAccel);
+        EXPECT_FALSE(IsAwake(world, body));
+        EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel);
+        EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel);
         
         // Seting to lower acceleration shouldn't change asleep status...
-        body->SetAcceleration(someLinearAccel * 0.5f, someAngularAccel * 0.9f);
-        EXPECT_FALSE(body->IsAwake());
-        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * 0.5f);
-        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 0.9f);
+        SetAcceleration(world, body, someLinearAccel * 0.5f, someAngularAccel * 0.9f);
+        EXPECT_FALSE(IsAwake(world, body));
+        EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel * 0.5f);
+        EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel * 0.9f);
 
         // Seting to higher acceleration or new direction should awaken...
-        body->SetAcceleration(someLinearAccel * 1.5f, someAngularAccel * 1.9f);
-        EXPECT_TRUE(body->IsAwake());
-        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * 1.5f);
-        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 1.9f);
-        body->UnsetAwake();
-        ASSERT_FALSE(body->IsAwake());
-        body->SetAcceleration(someLinearAccel * 1.5f, someAngularAccel * 2.0f);
-        EXPECT_TRUE(body->IsAwake());
-        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * 1.5f);
-        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 2.0f);
-        body->UnsetAwake();
-        ASSERT_FALSE(body->IsAwake());
-        body->SetAcceleration(someLinearAccel * 2.0f, someAngularAccel * 2.0f);
-        EXPECT_TRUE(body->IsAwake());
-        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * 2.0f);
-        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 2.0f);
-        body->UnsetAwake();
-        ASSERT_FALSE(body->IsAwake());
-        body->SetAcceleration(someLinearAccel * -1.0f, someAngularAccel * 2.0f);
-        EXPECT_TRUE(body->IsAwake());
-        EXPECT_EQ(body->GetLinearAcceleration(), someLinearAccel * -1.0f);
-        EXPECT_EQ(body->GetAngularAcceleration(), someAngularAccel * 2.0f);
+        SetAcceleration(world, body, someLinearAccel * 1.5f, someAngularAccel * 1.9f);
+        EXPECT_TRUE(IsAwake(world, body));
+        EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel * 1.5f);
+        EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel * 1.9f);
+        UnsetAwake(world, body);
+        ASSERT_FALSE(IsAwake(world, body));
+        SetAcceleration(world, body, someLinearAccel * 1.5f, someAngularAccel * 2.0f);
+        EXPECT_TRUE(IsAwake(world, body));
+        EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel * 1.5f);
+        EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel * 2.0f);
+        UnsetAwake(world, body);
+        ASSERT_FALSE(IsAwake(world, body));
+        SetAcceleration(world, body, someLinearAccel * 2.0f, someAngularAccel * 2.0f);
+        EXPECT_TRUE(IsAwake(world, body));
+        EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel * 2.0f);
+        EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel * 2.0f);
+        UnsetAwake(world, body);
+        ASSERT_FALSE(IsAwake(world, body));
+        SetAcceleration(world, body, someLinearAccel * -1.0f, someAngularAccel * 2.0f);
+        EXPECT_TRUE(IsAwake(world, body));
+        EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel * -1.0f);
+        EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel * 2.0f);
     }
 }
 
@@ -775,20 +734,20 @@ TEST(Body, CreateLotsOfFixtures)
         auto world = World{};
 
         auto body = world.CreateBody(bd);
-        ASSERT_NE(body, nullptr);
-        EXPECT_TRUE(body->GetFixtures().empty());
+        ASSERT_NE(body, InvalidBodyID);
+        EXPECT_TRUE(GetFixtures(world, body).empty());
         
         for (auto i = decltype(num){0}; i < num; ++i)
         {
-            auto fixture = body->CreateFixture(shape, FixtureConf{}, false);
-            ASSERT_NE(fixture, nullptr);
+            auto fixture = world.CreateFixture(body, shape, FixtureConf{}, false);
+            ASSERT_NE(fixture, InvalidFixtureID);
         }
-        body->ResetMassData();
+        ResetMassData(world, body);
         
-        EXPECT_FALSE(body->GetFixtures().empty());
+        EXPECT_FALSE(GetFixtures(world, body).empty());
         {
             int i = decltype(num){0};
-            for (auto&& f: body->GetFixtures())
+            for (auto&& f: GetFixtures(world, body))
             {
                 NOT_USED(f);
                 ++i;
@@ -804,19 +763,19 @@ TEST(Body, CreateLotsOfFixtures)
         auto world = World{};
         
         auto body = world.CreateBody(bd);
-        ASSERT_NE(body, nullptr);
-        EXPECT_TRUE(body->GetFixtures().empty());
+        ASSERT_NE(body, InvalidBodyID);
+        EXPECT_TRUE(GetFixtures(world, body).empty());
         
         for (auto i = decltype(num){0}; i < num; ++i)
         {
-            auto fixture = body->CreateFixture(shape, FixtureConf{}, true);
-            ASSERT_NE(fixture, nullptr);
+            auto fixture = world.CreateFixture(body, shape, FixtureConf{}, true);
+            ASSERT_NE(fixture, InvalidFixtureID);
         }
         
-        EXPECT_FALSE(body->GetFixtures().empty());
+        EXPECT_FALSE(GetFixtures(world, body).empty());
         {
             auto i = decltype(num){0};
-            for (auto&& f: body->GetFixtures())
+            for (auto&& f: GetFixtures(world, body))
             {
                 NOT_USED(f);
                 ++i;
@@ -836,14 +795,14 @@ TEST(Body, GetWorldIndex)
     ASSERT_EQ(world.GetBodies().size(), std::size_t(0));
     const auto body0 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(1));
-    EXPECT_EQ(GetWorldIndex(body0), BodyCounter(0));
+    EXPECT_EQ(GetWorldIndex(world, body0), BodyCounter(0));
     const auto body1 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(2));
-    EXPECT_EQ(GetWorldIndex(body1), BodyCounter(1));
+    EXPECT_EQ(GetWorldIndex(world, body1), BodyCounter(1));
     const auto body2 = world.CreateBody();
     ASSERT_EQ(world.GetBodies().size(), std::size_t(3));
-    EXPECT_EQ(GetWorldIndex(body2), BodyCounter(2));
-    EXPECT_EQ(GetWorldIndex(static_cast<const Body*>(nullptr)), BodyCounter(-1));
+    EXPECT_EQ(GetWorldIndex(world, body2), BodyCounter(2));
+    EXPECT_EQ(GetWorldIndex(world, InvalidBodyID), BodyCounter(-1));
 }
 
 TEST(Body, ApplyLinearAccelDoesNothingToStatic)
@@ -851,10 +810,10 @@ TEST(Body, ApplyLinearAccelDoesNothingToStatic)
     auto world = World{};
     
     const auto body = world.CreateBody();
-    ASSERT_NE(body, nullptr);
-    ASSERT_FALSE(body->IsAwake());
-    ASSERT_FALSE(body->IsSpeedable());
-    ASSERT_FALSE(body->IsAccelerable());
+    ASSERT_NE(body, InvalidBodyID);
+    ASSERT_FALSE(IsAwake(world, body));
+    ASSERT_FALSE(IsSpeedable(world, body));
+    ASSERT_FALSE(IsAccelerable(world, body));
     
     const auto zeroAccel = LinearAcceleration2{
         Real(0) * MeterPerSquareSecond, Real(0) * MeterPerSquareSecond
@@ -862,37 +821,36 @@ TEST(Body, ApplyLinearAccelDoesNothingToStatic)
     const auto linAccel = LinearAcceleration2{
         Real(2) * MeterPerSquareSecond, Real(2) * MeterPerSquareSecond
     };
-    ApplyLinearAcceleration(*body, linAccel);
-    EXPECT_NE(body->GetLinearAcceleration(), linAccel);
-    EXPECT_EQ(body->GetLinearAcceleration(), zeroAccel);
+    SetAcceleration(world, body, GetLinearAcceleration(world, body) + linAccel);
+    EXPECT_NE(GetLinearAcceleration(world, body), linAccel);
+    EXPECT_EQ(GetLinearAcceleration(world, body), zeroAccel);
 }
 
 TEST(Body, GetAccelerationFF)
 {
     auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
+    SetAcceleration(world, body, LinearAcceleration2{}, AngularAcceleration{});
     
-    ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-    ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
-    
-    EXPECT_EQ(GetAcceleration(*body), Acceleration{});
+    ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+    ASSERT_EQ(GetAngularAcceleration(world, body), AngularAcceleration{});
+    EXPECT_EQ(GetAcceleration(world, body), Acceleration());
 }
 
 TEST(Body, SetAccelerationFF)
 {
     auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    body->SetAcceleration(LinearAcceleration2{}, AngularAcceleration{});
+    SetAcceleration(world, body, LinearAcceleration2{}, AngularAcceleration{});
     
-    ASSERT_EQ(body->GetLinearAcceleration(), LinearAcceleration2{});
-    ASSERT_EQ(body->GetAngularAcceleration(), AngularAcceleration{});
+    ASSERT_EQ(GetLinearAcceleration(world, body), LinearAcceleration2{});
+    ASSERT_EQ(GetAngularAcceleration(world, body), AngularAcceleration{});
  
     const auto newAccel = Acceleration{
         LinearAcceleration2{2_mps2, 3_mps2}, AngularAcceleration{1.2f * RadianPerSquareSecond}
     };
-    SetAcceleration(*body, newAccel);
-    EXPECT_EQ(GetAcceleration(*body), newAccel);
+    SetAcceleration(world, body, newAccel);
+    EXPECT_EQ(GetAcceleration(world, body), newAccel);
 }
 
 TEST(Body, CalcGravitationalAcceleration)
@@ -905,29 +863,30 @@ TEST(Body, CalcGravitationalAcceleration)
     const auto shape = Shape{DiskShapeConf{}.UseRadius(2_m).UseDensity(1e10_kgpm2)};
     
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
-    b1->CreateFixture(shape);
-    EXPECT_EQ(CalcGravitationalAcceleration(*b1), Acceleration{});
-    
+    world.CreateFixture(b1, shape);
+    EXPECT_EQ(CalcGravitationalAcceleration(world, b1).linear, LinearAcceleration2());
+    EXPECT_EQ(CalcGravitationalAcceleration(world, b1).angular, AngularAcceleration());
+
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
-    b2->CreateFixture(shape);
-    const auto accel = CalcGravitationalAcceleration(*b1);
+    world.CreateFixture(b2, shape);
+    const auto accel = CalcGravitationalAcceleration(world, b1);
     EXPECT_NEAR(static_cast<double>(Real(GetX(accel.linear)/MeterPerSquareSecond)),
                 0.032761313021183014, 0.032761313021183014/100);
     EXPECT_EQ(GetY(accel.linear), 0 * MeterPerSquareSecond);
     EXPECT_EQ(accel.angular, 0 * RadianPerSquareSecond);
     
     const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseLocation(l3));
-    EXPECT_EQ(CalcGravitationalAcceleration(*b3), Acceleration{});
+    EXPECT_EQ(CalcGravitationalAcceleration(world, b3), Acceleration{});
 }
 
 TEST(Body, RotateAboutWorldPointFF)
 {
     auto world = World{};
     const auto body = world.CreateBody();
-    const auto locationA = body->GetLocation();
+    const auto locationA = GetLocation(world, body);
     ASSERT_EQ(locationA, Length2(0_m, 0_m));
-    RotateAboutWorldPoint(*body, 90_deg, Length2{2_m, 0_m});
-    const auto locationB = body->GetLocation();
+    RotateAboutWorldPoint(world, body, 90_deg, Length2{2_m, 0_m});
+    const auto locationB = GetLocation(world, body);
     EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.001);
     EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.001);
 }
@@ -936,10 +895,10 @@ TEST(Body, RotateAboutLocalPointFF)
 {
     auto world = World{};
     const auto body = world.CreateBody();
-    const auto locationA = body->GetLocation();
+    const auto locationA = GetLocation(world, body);
     ASSERT_EQ(locationA, Length2(0_m, 0_m));
-    RotateAboutLocalPoint(*body, 90_deg, Length2{2_m, 0_m});
-    const auto locationB = body->GetLocation();
+    RotateAboutLocalPoint(world, body, 90_deg, Length2{2_m, 0_m});
+    const auto locationB = GetLocation(world, body);
     EXPECT_NEAR(static_cast<double>(Real(GetX(locationB)/Meter)), +2.0, 0.001);
     EXPECT_NEAR(static_cast<double>(Real(GetY(locationB)/Meter)), -2.0, 0.001);
 }
@@ -950,11 +909,11 @@ TEST(Body, GetCentripetalForce)
     auto world = World{};
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l1));
     const auto shape = Shape{DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)};
-    body->CreateFixture(shape);
-    SetLinearVelocity(*body, LinearVelocity2{2_mps, 3_mps});
-    EXPECT_EQ(GetLinearVelocity(*body), LinearVelocity2(2_mps, 3_mps));
-    
-    const auto force = GetCentripetalForce(*body, Length2{1_m, 10_m});
+    world.CreateFixture(body, shape);
+    SetVelocity(world, body, LinearVelocity2{2_mps, 3_mps});
+    EXPECT_EQ(GetLinearVelocity(world, body), LinearVelocity2(2_mps, 3_mps));
+
+    const auto force = GetCentripetalForce(world, body, Length2{1_m, 10_m});
     EXPECT_NEAR(static_cast<double>(Real(GetX(force)/Newton)), 8.1230141222476959, 0.01);
     EXPECT_NEAR(static_cast<double>(Real(GetY(force)/Newton)), 9.0255714952945709, 0.01);
 }
@@ -964,10 +923,13 @@ TEST(Body, GetPositionFF)
     const auto position = Position{Length2{-33_m, +4_m}, 10_deg};
     auto world = World{};
     auto body = world.CreateBody();
-    EXPECT_NE(GetPosition(*body), position);
-    SetLocation(*body, position.linear);
-    SetAngle(*body, position.angular);
-    EXPECT_EQ(GetPosition(*body), position);
+    EXPECT_NE(GetPosition(world, body), position);
+    SetLocation(world, body, position.linear);
+    SetAngle(world, body, position.angular);
+    EXPECT_EQ(GetPosition(world, body).linear, position.linear);
+    EXPECT_NEAR(static_cast<double>(Real(GetPosition(world, body).angular / Degree)),
+                static_cast<double>(Real(position.angular / Degree)),
+                0.0001);
 }
 
 TEST(Body, GetSetTransformationFF)
@@ -975,11 +937,10 @@ TEST(Body, GetSetTransformationFF)
     const auto xfm0 = Transformation{Length2{-33_m, +4_m}, UnitVec::GetTopRight()};
     auto world = World{};
     auto body = world.CreateBody();
-    EXPECT_NE(GetTransformation(*body), xfm0);
-    SetTransformation(*body, xfm0);
-    const auto xfm1 = GetTransformation(*body);
+    EXPECT_NE(GetTransformation(world, body), xfm0);
+    SetTransformation(world, body, xfm0);
+    const auto xfm1 = GetTransformation(world, body);
     EXPECT_EQ(xfm1.p, xfm0.p);
     EXPECT_NEAR(static_cast<double>(GetX(xfm1.q)), static_cast<double>(GetX(xfm0.q)), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetY(xfm1.q)), static_cast<double>(GetY(xfm0.q)), 0.0001);
 }
-

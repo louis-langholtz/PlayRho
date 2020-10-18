@@ -36,7 +36,7 @@ namespace playrho {
 using IndexPair = std::pair<VertexCounter, VertexCounter>;
 
 /// @brief Invalid index-pair value.
-constexpr const auto InvalidIndexPair = IndexPair{
+constexpr auto InvalidIndexPair = IndexPair{
     InvalidVertex, InvalidVertex
 };
 
@@ -47,7 +47,7 @@ constexpr const auto InvalidIndexPair = IndexPair{
 using IndexPair3 = std::array<IndexPair, MaxSimplexEdges>;
 
 /// @brief Invalid array of three index-pair elements.
-constexpr const auto InvalidIndexPair3 = IndexPair3{{
+constexpr auto InvalidIndexPair3 = IndexPair3{{
     InvalidIndexPair, InvalidIndexPair, InvalidIndexPair
 }};
 

@@ -24,7 +24,7 @@
 /// @file
 /// Declarations of the WorldConf class.
 
-#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Positive.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -34,13 +34,13 @@ struct WorldConf
 {
     /// @brief Uses the given min vertex radius value.
     constexpr WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
-    
+
     /// @brief Uses the given max vertex radius value.
     constexpr WorldConf& UseMaxVertexRadius(Positive<Length> value) noexcept;
-    
+
     /// @brief Uses the given value as the initial dynamic tree size.
     constexpr WorldConf& UseInitialTreeSize(ContactCounter value) noexcept;
-    
+
     /// @brief Minimum vertex radius.
     /// @details This is the minimum vertex radius that this world establishes which bodies
     ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
@@ -52,14 +52,14 @@ struct WorldConf
     ///    continuous collision.
     /// @note Making it larger may create artifacts for vertex collision.
     Positive<Length> minVertexRadius = DefaultMinVertexRadius;
-    
+
     /// @brief Maximum vertex radius.
     /// @details This is the maximum vertex radius that this world establishes which bodies
     ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
     ///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
     ///    returned value.
     Positive<Length> maxVertexRadius = DefaultMaxVertexRadius;
-    
+
     /// @brief Initial tree size.
     ContactCounter initialTreeSize = 4096;
 };

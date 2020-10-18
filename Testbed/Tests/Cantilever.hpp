@@ -39,10 +39,10 @@ public:
 
     Cantilever()
     {
-        const auto ground = m_world.CreateBody();
+        const auto ground = CreateBody(m_world);
 
         // Creates bottom ground
-        ground->CreateFixture(Shape(GetGroundEdgeConf()));
+        CreateFixture(m_world, ground, Shape(GetGroundEdgeConf()));
 
         // Creates left-end-fixed 8-part plank (below the top one)
         {
@@ -53,12 +53,12 @@ public:
                 auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.5f + 1.0f * i, 5.0f) * 1_m;
-                const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                const auto body = CreateBody(m_world, bd);
+                CreateFixture(m_world, body, shape);
 
-                m_world.CreateJoint(WeldJointConf{
+                m_world.CreateJoint(GetWeldJointConf(m_world,
                     prevBody, body, Vec2(-15.0f + 1.0f * i, 5.0f) * 1_m
-                });
+                ));
 
                 prevBody = body;
             }
@@ -73,10 +73,10 @@ public:
                 auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-14.0f + 2.0f * i, 15.0f) * 1_m;
-                const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                const auto body = CreateBody(m_world, bd);
+                CreateFixture(m_world, body, shape);
 
-                auto jd = WeldJointConf{prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * 1_m};
+                auto jd = GetWeldJointConf(m_world, prevBody, body, Vec2(-15.0f + 2.0f * i, 15.0f) * 1_m);
                 jd.frequency = 5_Hz;
                 jd.dampingRatio = 0.7f;
                 m_world.CreateJoint(jd);
@@ -94,13 +94,13 @@ public:
                 auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(-4.5f + 1.0f * i, 5.0f) * 1_m;
-                const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                const auto body = CreateBody(m_world, bd);
+                CreateFixture(m_world, body, shape);
                 if (i > 0)
                 {
-                    m_world.CreateJoint(WeldJointConf{
+                    m_world.CreateJoint(GetWeldJointConf(m_world,
                         prevBody, body, Vec2(-5.0f + 1.0f * i, 5.0f) * 1_m
-                    });
+                    ));
                 }
                 prevBody = body;
             }
@@ -115,11 +115,11 @@ public:
                 auto bd = BodyConf{};
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(5.5f + 1.0f * i, 10.0f) * 1_m;
-                const auto body = m_world.CreateBody(bd);
-                body->CreateFixture(shape);
+                const auto body = CreateBody(m_world, bd);
+                CreateFixture(m_world, body, shape);
                 if (i > 0)
                 {
-                    auto jd = WeldJointConf{prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * 1_m};
+                    auto jd = GetWeldJointConf(m_world, prevBody, body, Vec2(5.0f + 1.0f * i, 10.0f) * 1_m);
                     jd.frequency = 8_Hz;
                     jd.dampingRatio = 0.7f;
                     m_world.CreateJoint(jd);
@@ -137,8 +137,8 @@ public:
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(polyshape);
+            const auto body = CreateBody(m_world, bd);
+            CreateFixture(m_world, body, polyshape);
         }
 
         // Creates circles
@@ -148,14 +148,14 @@ public:
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m;
-            const auto body = m_world.CreateBody(bd);
-            body->CreateFixture(circleshape);
+            const auto body = CreateBody(m_world, bd);
+            CreateFixture(m_world, body, circleshape);
         }
         
         SetAccelerations(m_world, m_gravity);
     }
 
-    Body* m_middle;
+    BodyID m_middle;
 };
 
 } // namespace testbed

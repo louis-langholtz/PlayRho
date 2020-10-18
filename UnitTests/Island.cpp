@@ -99,39 +99,54 @@ TEST(Island, ByteSize)
 #endif
 }
 
-TEST(Island, NotDefaultConstructible)
-{
-    EXPECT_FALSE(std::is_default_constructible<Island>::value);
-}
-
-TEST(Island, IsCopyConstructible)
-{
-    EXPECT_TRUE(std::is_copy_constructible<Island>::value);
-}
-
-TEST(Island, IsNothrowMoveConstructible)
-{
-    EXPECT_TRUE(std::is_nothrow_move_constructible<Island>::value);
-}
-
-TEST(Island, IsMoveAssignable)
-{
-    EXPECT_TRUE(std::is_move_assignable<Island>::value);
-}
-
-TEST(Island, CopyAssignable)
-{
-    EXPECT_TRUE(std::is_copy_assignable<Island>::value);
-}
-
-TEST(Island, IsNothrowDestructible)
-{
-    EXPECT_TRUE(std::is_nothrow_destructible<Island>::value);
-}
-
 static Island foo()
 {
-    return Island(10, 10, 10);
+    Island island;
+    Reserve(island, 10, 10, 10);
+    return island;
+}
+
+TEST(Island, DefaultConstructor)
+{
+    Island island;
+    EXPECT_EQ(island.bodies.size(), 0u);
+    EXPECT_EQ(island.contacts.size(), 0u);
+    EXPECT_EQ(island.joints.size(), 0u);
+}
+
+TEST(Island, Reserve)
+{
+    const auto bodyCapacity = 2u;
+    const auto contactCapacity = 3u;
+    const auto jointCapacity = 4u;
+    Island island;
+    Reserve(island, bodyCapacity, contactCapacity, jointCapacity);
+    EXPECT_GE(island.bodies.capacity(), bodyCapacity);
+    EXPECT_GE(island.contacts.capacity(), contactCapacity);
+    EXPECT_GE(island.joints.capacity(), jointCapacity);
+}
+
+TEST(Island, Clear)
+{
+    Island island;
+
+    island.bodies.push_back(InvalidBodyID);
+    ASSERT_EQ(island.bodies.size(), 1u);
+    ASSERT_GE(island.bodies.capacity(), 1u);
+    island.contacts.push_back(InvalidContactID);
+    ASSERT_EQ(island.contacts.size(), 1u);
+    ASSERT_GE(island.contacts.capacity(), 1u);
+    island.joints.push_back(InvalidJointID);
+    ASSERT_EQ(island.joints.size(), 1u);
+    ASSERT_GE(island.joints.capacity(), 1u);
+
+    EXPECT_NO_THROW(Clear(island));
+    EXPECT_EQ(island.bodies.size(), 0u);
+    EXPECT_GE(island.bodies.capacity(), 1u);
+    EXPECT_EQ(island.contacts.size(), 0u);
+    EXPECT_GE(island.contacts.capacity(), 1u);
+    EXPECT_EQ(island.joints.size(), 0u);
+    EXPECT_GE(island.joints.capacity(), 1u);
 }
 
 TEST(Island, IsReturnableByValue)
@@ -143,16 +158,17 @@ TEST(Island, IsReturnableByValue)
     {
         const auto island = foo();
         
-        EXPECT_EQ(island.m_bodies.capacity(), decltype(island.m_bodies.max_size()){10});
-        EXPECT_EQ(island.m_contacts.capacity(), decltype(island.m_contacts.max_size()){10});
-        EXPECT_EQ(island.m_joints.capacity(), decltype(island.m_joints.max_size()){10});
+        EXPECT_EQ(island.bodies.capacity(), decltype(island.bodies.max_size()){10});
+        EXPECT_EQ(island.contacts.capacity(), decltype(island.contacts.max_size()){10});
+        EXPECT_EQ(island.joints.capacity(), decltype(island.joints.max_size()){10});
     }
 }
 
 TEST(Island, Count)
 {
-    const auto island = Island(4, 4, 4);
-    EXPECT_EQ(Count(island, static_cast<Body*>(nullptr)), std::size_t(0));
-    EXPECT_EQ(Count(island, static_cast<Contact*>(nullptr)), std::size_t(0));
-    EXPECT_EQ(Count(island, static_cast<Joint*>(nullptr)), std::size_t(0));
+    auto island = Island();
+    Reserve(island, 4, 4, 4);
+    EXPECT_EQ(Count(island, InvalidBodyID), std::size_t(0));
+    EXPECT_EQ(Count(island, InvalidContactID), std::size_t(0));
+    EXPECT_EQ(Count(island, InvalidJointID), std::size_t(0));
 }

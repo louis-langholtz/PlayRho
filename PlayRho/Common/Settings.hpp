@@ -85,10 +85,10 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
 } // namespace detail
 
 /// @brief Maximum number of supportable edges in a simplex.
-constexpr const auto MaxSimplexEdges = std::uint8_t{3};
+constexpr auto MaxSimplexEdges = std::uint8_t{3};
 
 /// @brief Max child count.
-constexpr const auto MaxChildCount = std::numeric_limits<std::uint32_t>::max() >> 6;
+constexpr auto MaxChildCount = std::numeric_limits<std::uint32_t>::max() >> 6;
 
 /// @brief Child counter type.
 /// @details Relating to "children" of shape where each child is a convex shape possibly
@@ -101,7 +101,7 @@ using ChildCounter = std::remove_const<decltype(MaxChildCount)>::type;
 using TimestepIters = std::uint8_t;
 
 /// @brief Maximum float value.
-constexpr const auto MaxFloat = std::numeric_limits<Real>::max(); // FLT_MAX
+constexpr auto MaxFloat = std::numeric_limits<Real>::max(); // FLT_MAX
 
 // Collision
 
@@ -109,12 +109,12 @@ constexpr const auto MaxFloat = std::numeric_limits<Real>::max(); // FLT_MAX
 /// This is the maximum number of contact points between two convex shapes.
 /// Do not change this value.
 /// @note For memory efficiency, uses the smallest integral type that can hold the value. 
-constexpr const auto MaxManifoldPoints = std::uint8_t{2};
+constexpr auto MaxManifoldPoints = std::uint8_t{2};
 
 /// @brief Maximum number of vertices for any shape type.
 /// @note For memory efficiency, uses the smallest integral type that can hold the value minus
 ///   one that's left out as a sentinel value.
-constexpr const auto MaxShapeVertices = std::uint8_t{254};
+constexpr auto MaxShapeVertices = std::uint8_t{254};
 
 /// @brief Vertex count type.
 /// @note This type must not support more than 255 vertices as that would conflict
@@ -122,7 +122,7 @@ constexpr const auto MaxShapeVertices = std::uint8_t{254};
 using VertexCounter = std::remove_const<decltype(MaxShapeVertices)>::type;
 
 /// @brief Invalid vertex index.
-constexpr const auto InvalidVertex = static_cast<VertexCounter>(-1);
+constexpr auto InvalidVertex = static_cast<VertexCounter>(-1);
 
 /// @brief Default linear slop.
 /// @details Length used as a collision and constraint tolerance.
@@ -131,53 +131,53 @@ constexpr const auto InvalidVertex = static_cast<VertexCounter>(-1);
 ///   between bodies at rest.
 /// @note Smaller values relative to sizes of bodies increases the time it takes
 ///   for bodies to come to rest.
-constexpr const auto DefaultLinearSlop = detail::Defaults<Real>::GetLinearSlop();
+constexpr auto DefaultLinearSlop = detail::Defaults<Real>::GetLinearSlop();
 
 /// @brief Default minimum vertex radius.
-constexpr const auto DefaultMinVertexRadius = DefaultLinearSlop * Real{2};
+constexpr auto DefaultMinVertexRadius = DefaultLinearSlop * Real{2};
 
 /// @brief Default maximum vertex radius.
-constexpr const auto DefaultMaxVertexRadius = detail::Defaults<Real>::GetMaxVertexRadius();
+constexpr auto DefaultMaxVertexRadius = detail::Defaults<Real>::GetMaxVertexRadius();
 
 /// @brief Default AABB extension amount.
-constexpr const auto DefaultAabbExtension = DefaultLinearSlop * Real{20};
+constexpr auto DefaultAabbExtension = DefaultLinearSlop * Real{20};
 
 /// @brief Default distance multiplier.
-constexpr const auto DefaultDistanceMultiplier = Real{2};
+constexpr auto DefaultDistanceMultiplier = Real{2};
 
 /// @brief Default angular slop.
 /// @details
 /// A small angle used as a collision and constraint tolerance. Usually it is
 /// chosen to be numerically significant, but visually insignificant.
-constexpr const auto DefaultAngularSlop = (Pi * 2_rad) / Real{180};
+constexpr auto DefaultAngularSlop = (Pi * 2_rad) / Real{180};
 
 /// @brief Default maximum linear correction.
 /// @details The maximum linear position correction used when solving constraints.
 ///   This helps to prevent overshoot.
 /// @note This value should be greater than the linear slop value.
-constexpr const auto DefaultMaxLinearCorrection = 0.2_m;
+constexpr auto DefaultMaxLinearCorrection = 0.2_m;
 
 /// @brief Default maximum angular correction.
 /// @note This value should be greater than the angular slop value.
-constexpr const auto DefaultMaxAngularCorrection = Real(8.0f / 180.0f) * Pi * 1_rad;
+constexpr auto DefaultMaxAngularCorrection = Real(8.0f / 180.0f) * Pi * 1_rad;
 
 /// @brief Default maximum translation amount.
-constexpr const auto DefaultMaxTranslation = 2_m;
+constexpr auto DefaultMaxTranslation = 2_m;
 
 /// @brief Default maximum rotation per world step.
 /// @warning This value should be less than Pi * Radian.
 /// @note This limit is meant to prevent numerical problems. Adjusting this value isn't advised.
 /// @see StepConf::maxRotation.
-constexpr const auto DefaultMaxRotation = Angle{Pi * 1_rad / Real(2)};
+constexpr auto DefaultMaxRotation = Angle{Pi * 1_rad / Real(2)};
 
 /// @brief Default maximum time of impact iterations.
-constexpr const auto DefaultMaxToiIters = std::uint8_t{20};
+constexpr auto DefaultMaxToiIters = std::uint8_t{20};
 
 /// Default maximum time of impact root iterator count.
-constexpr const auto DefaultMaxToiRootIters = std::uint8_t{30};
+constexpr auto DefaultMaxToiRootIters = std::uint8_t{30};
 
 /// Default max number of distance iterations.
-constexpr const auto DefaultMaxDistanceIters = std::uint8_t{20};
+constexpr auto DefaultMaxDistanceIters = std::uint8_t{20};
 
 /// Default maximum number of sub steps.
 /// @details
@@ -185,22 +185,30 @@ constexpr const auto DefaultMaxDistanceIters = std::uint8_t{20};
 /// In other words, this is the default maximum number of times in a world step that a contact will
 /// have continuous collision resolution done for it.
 /// @note Used in the TOI phase of step processing.
-constexpr const auto DefaultMaxSubSteps = std::uint8_t{8};
+constexpr auto DefaultMaxSubSteps = std::uint8_t{8};
     
 // Dynamics
 
 /// @brief Default velocity threshold.
-constexpr const auto DefaultVelocityThreshold = 1_mps;
+constexpr auto DefaultVelocityThreshold = 1_mps;
 
 /// @brief Default regular-phase minimum momentum.
-constexpr const auto DefaultRegMinMomentum = Momentum{0_Ns / 100};
+constexpr auto DefaultRegMinMomentum = Momentum{0_Ns / 100};
 
 /// @brief Default TOI-phase minimum momentum.
-constexpr const auto DefaultToiMinMomentum = Momentum{0_Ns / 100};
+constexpr auto DefaultToiMinMomentum = Momentum{0_Ns / 100};
+
+/// @brief Maximum number of fixtures in a world.
+/// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
+constexpr auto MaxFixtures = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
+                                                        std::uint16_t{1u});
+/// @brief Fixture count type.
+/// @note This type must always be able to contain the <code>MaxFixtures</code> value.
+using FixtureCounter = std::remove_const<decltype(MaxFixtures)>::type;
 
 /// @brief Maximum number of bodies in a world.
 /// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
-constexpr const auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
+constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
 /// @brief Body count type.
@@ -212,17 +220,17 @@ using BodyCounter = std::remove_const<decltype(MaxBodies)>::type;
 using ContactCounter = Wider<BodyCounter>::type;
 
 /// @brief Invalid contact index.
-constexpr const auto InvalidContactIndex = static_cast<ContactCounter>(-1);
+constexpr auto InvalidContactIndex = static_cast<ContactCounter>(-1);
 
 /// @brief Maximum number of contacts in a world (2147319811).
 /// @details Uses the formula for the maximum number of edges in an unidirectional graph of
 ///   <code>MaxBodies</code> nodes.
 /// This occurs when every possible body is connected to every other body.
-constexpr const auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodies - 1} / ContactCounter{2};
+constexpr auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodies - 1} / ContactCounter{2};
 
 /// @brief Maximum number of joints in a world.
 /// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
-constexpr const auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
+constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
                                                       std::uint16_t{1});
 
 /// @brief Joint count type.
@@ -230,29 +238,29 @@ constexpr const auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<
 using JointCounter = std::remove_const<decltype(MaxJoints)>::type;
 
 /// @brief Default step time.
-constexpr const auto DefaultStepTime = Time{1_s / 60};
+constexpr auto DefaultStepTime = Time{1_s / 60};
 
 /// @brief Default step frequency.
-constexpr const auto DefaultStepFrequency = 60_Hz;
+constexpr auto DefaultStepFrequency = 60_Hz;
 
 // Sleep
 
 /// Default minimum still time to sleep.
 /// @details The default minimum time bodies must be still for bodies to be put to sleep.
-constexpr const auto DefaultMinStillTimeToSleep = Time{1_s / 2}; // aka 0.5 secs
+constexpr auto DefaultMinStillTimeToSleep = Time{1_s / 2}; // aka 0.5 secs
 
 /// Default linear sleep tolerance.
 /// @details A body cannot sleep if the magnitude of its linear velocity is above this amount.
-constexpr const auto DefaultLinearSleepTolerance = 0.01_mps; // aka 0.01
+constexpr auto DefaultLinearSleepTolerance = 0.01_mps; // aka 0.01
 
 /// Default angular sleep tolerance.
 /// @details A body cannot sleep if its angular velocity is above this amount.
-constexpr const auto DefaultAngularSleepTolerance = Real{(Pi * 2) / 180} * RadianPerSecond;
+constexpr auto DefaultAngularSleepTolerance = Real{(Pi * 2) / 180} * RadianPerSecond;
 
 /// Default circles ratio.
 /// @details Ratio used for switching between rounded-corner collisions and closest-face
 ///   biased normal collisions.
-constexpr const auto DefaultCirclesRatio = Real{10};
+constexpr auto DefaultCirclesRatio = Real{10};
 
 } // namespace playrho
 

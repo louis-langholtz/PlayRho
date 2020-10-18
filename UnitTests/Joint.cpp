@@ -19,8 +19,13 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
+#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
+
 #include <type_traits>
 
 using namespace playrho;
@@ -28,41 +33,39 @@ using namespace playrho::d2;
 
 TEST(JointBuilder, Construction)
 {
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.type, JointType::Unknown);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.bodyA, nullptr);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.bodyB, nullptr);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.collideConnected, false);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Unknown}.userData, nullptr);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Gear}.type, JointType::Gear);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.type, JointType::Rope);
+    EXPECT_EQ(JointBuilder<JointConf>{}.bodyA, InvalidBodyID);
+    EXPECT_EQ(JointBuilder<JointConf>{}.bodyB, InvalidBodyID);
+    EXPECT_EQ(JointBuilder<JointConf>{}.collideConnected, false);
+    EXPECT_EQ(JointBuilder<JointConf>{}.userData, nullptr);
 }
 
 TEST(JointBuilder, UseBodyA)
 {
-    const auto b = reinterpret_cast<Body*>(2);
-    EXPECT_NE(JointBuilder<JointConf>{JointType::Rope}.bodyA, b);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.UseBodyA(b).bodyA, b);
+    const auto b = static_cast<BodyID>(2);
+    EXPECT_NE(JointBuilder<JointConf>{}.bodyA, b);
+    EXPECT_EQ(JointBuilder<JointConf>{}.UseBodyA(b).bodyA, b);
 }
 
 TEST(JointBuilder, UseBodyB)
 {
-    const auto b = reinterpret_cast<Body*>(77);
-    EXPECT_NE(JointBuilder<JointConf>{JointType::Rope}.bodyB, b);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.UseBodyB(b).bodyB, b);
+    const auto b = static_cast<BodyID>(77);
+    EXPECT_NE(JointBuilder<JointConf>{}.bodyB, b);
+    EXPECT_EQ(JointBuilder<JointConf>{}.UseBodyB(b).bodyB, b);
 }
 
 TEST(JointBuilder, UseCollideConnected)
 {
-    const auto cc = true;
-    EXPECT_NE(JointBuilder<JointConf>{JointType::Rope}.collideConnected, cc);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.UseCollideConnected(cc).collideConnected, cc);
+    const auto value = true;
+    EXPECT_NE(JointBuilder<JointConf>{}.collideConnected, value);
+    EXPECT_EQ(JointBuilder<JointConf>{}.UseCollideConnected(value).collideConnected,
+              value);
 }
 
 TEST(JointBuilder, UseUserData)
 {
     const auto d = reinterpret_cast<void*>(318);
-    EXPECT_NE(JointBuilder<JointConf>{JointType::Rope}.userData, d);
-    EXPECT_EQ(JointBuilder<JointConf>{JointType::Rope}.UseUserData(d).userData, d);
+    EXPECT_NE(JointBuilder<JointConf>{}.userData, d);
+    EXPECT_EQ(JointBuilder<JointConf>{}.UseUserData(d).userData, d);
 }
 
 TEST(Joint, ByteSize)
@@ -70,7 +73,7 @@ TEST(Joint, ByteSize)
     switch (sizeof(void*))
     {
         case 4: break;
-        case 8: EXPECT_EQ(sizeof(Joint), std::size_t(40)); break;
+        case 8: EXPECT_EQ(sizeof(Joint), std::size_t(8)); break;
         default: break;
     }
 }
@@ -81,19 +84,15 @@ TEST(Joint, Traits)
     EXPECT_FALSE((IsAddable<Joint>::value));
     EXPECT_FALSE((IsAddable<Joint,Joint>::value));
 
-    EXPECT_FALSE(std::is_default_constructible<Joint>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<Joint>::value);
+    EXPECT_TRUE(std::is_default_constructible<Joint>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<Joint>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<Joint>::value);
-    
-    EXPECT_FALSE(std::is_constructible<Joint>::value);
-    EXPECT_FALSE(std::is_nothrow_constructible<Joint>::value);
-    EXPECT_FALSE(std::is_trivially_constructible<Joint>::value);
-    
-    EXPECT_FALSE(std::is_copy_constructible<Joint>::value);
+
+    EXPECT_TRUE(std::is_copy_constructible<Joint>::value);
     EXPECT_FALSE(std::is_nothrow_copy_constructible<Joint>::value);
     EXPECT_FALSE(std::is_trivially_copy_constructible<Joint>::value);
     
-    EXPECT_FALSE(std::is_copy_assignable<Joint>::value);
+    EXPECT_TRUE(std::is_copy_assignable<Joint>::value);
     EXPECT_FALSE(std::is_nothrow_copy_assignable<Joint>::value);
     EXPECT_FALSE(std::is_trivially_copy_assignable<Joint>::value);
     
@@ -102,6 +101,7 @@ TEST(Joint, Traits)
     EXPECT_FALSE(std::is_trivially_destructible<Joint>::value);
 }
 
+#if 0
 TEST(Joint, StaticIsOkay)
 {
     using Builder = JointBuilder<JointConf>;
@@ -114,18 +114,20 @@ TEST(Joint, StaticIsOkay)
     EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyB(b1)));
     EXPECT_TRUE(Joint::IsOkay(Builder{JointType::Friction}.UseBodyB(b2)));
 }
+#endif
 
 TEST(Joint, GetWorldIndexFreeFunction)
 {
-    EXPECT_EQ(GetWorldIndex(static_cast<const Joint*>(nullptr)), JointCounter(-1));
+    World world;
+    EXPECT_EQ(GetWorldIndex(world, InvalidJointID), JointCounter(-1));
 }
 
 TEST(Joint, LimitStateToStringFF)
 {
-    const auto equalLimitsString = std::string(ToString(Joint::e_equalLimits));
-    const auto inactiveLimitString = std::string(ToString(Joint::e_inactiveLimit));
-    const auto upperLimitsString = std::string(ToString(Joint::e_atUpperLimit));
-    const auto lowerLimitsString = std::string(ToString(Joint::e_atLowerLimit));
+    const auto equalLimitsString = std::string(ToString(LimitState::e_equalLimits));
+    const auto inactiveLimitString = std::string(ToString(LimitState::e_inactiveLimit));
+    const auto upperLimitsString = std::string(ToString(LimitState::e_atUpperLimit));
+    const auto lowerLimitsString = std::string(ToString(LimitState::e_atLowerLimit));
     
     EXPECT_FALSE(equalLimitsString.empty());
     EXPECT_FALSE(inactiveLimitString.empty());
@@ -137,4 +139,10 @@ TEST(Joint, LimitStateToStringFF)
     names.insert(upperLimitsString);
     names.insert(lowerLimitsString);
     EXPECT_EQ(names.size(), decltype(names.size()){4});
+}
+
+TEST(Joint, TypeCast)
+{
+    const auto joint = Joint{};
+    EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
 }

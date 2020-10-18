@@ -110,7 +110,7 @@ namespace detail {
 
 /// @brief Fixed point pi value.
 template <typename BT, unsigned int FB>
-constexpr const auto FixedPi = Fixed<BT, FB>{3.14159265358979323846264338327950288};
+constexpr auto FixedPi = Fixed<BT, FB>{3.14159265358979323846264338327950288};
 
 /// @brief Computes the factorial.
 constexpr auto factorial(std::int64_t n)
@@ -227,7 +227,7 @@ constexpr Fixed<BT, FB> sin(Fixed<BT, FB> arg)
     // 2 - 8/6 + 32/120 - 128/5040 + 512/362880 = 0.90934744268
     auto res = arg;
     auto sgn = -1;
-    constexpr const auto last = 2 * N + 1;
+    constexpr auto last = 2 * N + 1;
     auto pt = arg;
     auto ft = 1;
     for (auto i = 3; i <= last; i += 2)
@@ -254,7 +254,7 @@ constexpr Fixed<BT, FB> cos(Fixed<BT, FB> arg)
     // 1 - 2^2/2 + 2^4/24 - 2^6/720 = -0.422
     auto res = Fixed<BT, FB>{1};
     auto sgn = -1;
-    constexpr const auto last = 2 * N;
+    constexpr auto last = 2 * N;
     auto ft = 1;
     auto pt = Fixed<BT, FB>{1};
     for (auto i = 2; i <= last; i += 2)
@@ -409,7 +409,7 @@ namespace detail {
 template <typename BT, unsigned int FB>
 inline auto AngularNormalize(Fixed<BT, FB> angleInRadians)
 {
-    constexpr const auto oneRotationInRadians = 2 * FixedPi<BT, FB>;
+    constexpr auto oneRotationInRadians = 2 * FixedPi<BT, FB>;
 
     angleInRadians = fmod(angleInRadians, oneRotationInRadians);
     if (angleInRadians > FixedPi<BT, FB>)

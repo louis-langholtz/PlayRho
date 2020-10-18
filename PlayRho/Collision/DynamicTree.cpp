@@ -34,6 +34,28 @@
 namespace playrho {
 namespace d2 {
 
+static_assert(std::is_nothrow_default_constructible<DynamicTree>::value,
+              "DynamicTree must be nothrow default constructible!");
+static_assert(std::is_copy_constructible<DynamicTree>::value,
+              "DynamicTree must be copy constructible!");
+static_assert(std::is_nothrow_move_constructible<DynamicTree>::value,
+              "DynamicTree must be nothrow move constructible!");
+static_assert(std::is_copy_assignable<DynamicTree>::value,
+              "DynamicTree must be copy assignable!");
+static_assert(std::is_nothrow_move_assignable<DynamicTree>::value,
+              "DynamicTree must be move assignable!");
+
+static_assert(std::is_nothrow_default_constructible<DynamicTree::LeafData>::value,
+              "DynamicTree::LeafData must be nothrow default constructible!");
+static_assert(std::is_copy_constructible<DynamicTree::LeafData>::value,
+              "DynamicTree::LeafData must be copy constructible!");
+static_assert(std::is_nothrow_move_constructible<DynamicTree::LeafData>::value,
+              "DynamicTree::LeafData must be nothrow move constructible!");
+static_assert(std::is_copy_assignable<DynamicTree::LeafData>::value,
+              "DynamicTree::LeafData must be copy assignable!");
+static_assert(std::is_nothrow_move_assignable<DynamicTree::LeafData>::value,
+              "DynamicTree::LeafData must be move assignable!");
+
 namespace {
 
 inline DynamicTree::TreeNode
@@ -494,6 +516,28 @@ void DynamicTree::FreeNode(Size index) noexcept
     m_nodes[index] = TreeNode{m_freeIndex};
     m_freeIndex = index;
     --m_nodeCount;
+}
+
+void DynamicTree::Clear() noexcept
+{
+    m_nodeCount = Size{0u};
+    m_leafCount = Size{0u};
+    m_rootIndex = GetInvalidSize();
+    if (m_nodeCapacity && m_nodes) {
+        m_freeIndex = Size{0u};
+        const auto endCapacity = m_nodeCapacity - 1;
+        for (auto i = Size{0u}; i < endCapacity; ++i)
+        {
+            m_nodes[i] = TreeNode{i + 1};
+        }
+        m_nodes[endCapacity] = TreeNode{};
+    }
+    else {
+        Free(m_nodes);
+        m_nodes = nullptr;
+        m_nodeCapacity = Size{0u};
+        m_freeIndex = GetInvalidSize();
+    }
 }
 
 DynamicTree::Size DynamicTree::FindReference(Size index) const noexcept

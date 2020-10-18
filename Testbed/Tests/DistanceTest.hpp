@@ -45,113 +45,114 @@ public:
             .UseType(BodyType::Dynamic)
             .UseLinearDamping(0.9_Hz)
         	.UseAngularDamping(0.9_Hz);
-        m_bodyA = m_world.CreateBody(def);
-        m_bodyB = m_world.CreateBody(def);
+        m_bodyA = CreateBody(m_world, def);
+        m_bodyB = CreateBody(m_world, def);
 
-        m_bodyA->SetTransform(Vec2(-10.0f, 20.2f) * 1_m, 0_deg);
-        m_bodyB->SetTransform(m_bodyA->GetLocation() + Vec2(19.017401f, 0.13678508f) * 1_m, 0_deg);
+        SetTransform(m_world, m_bodyA, Vec2(-10.0f, 20.2f) * 1_m, 0_deg);
+        SetTransform(m_world, m_bodyB, GetLocation(m_world, m_bodyA) +
+                              Vec2(19.017401f, 0.13678508f) * 1_m, 0_deg);
         
         CreateFixtures();
         
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Move selected shape left.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = size(fixtures) == 1? *(begin(fixtures)): nullptr;
-            const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
-            if (body)
+            const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): InvalidFixtureID;
+            const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
+            if (body != InvalidBodyID)
             {
-                body->SetTransform(body->GetLocation() - Length2(0.1_m, 0_m), body->GetAngle());
-                body->SetAwake();
+                SetTransform(m_world, body, GetLocation(m_world, body) - Length2(0.1_m, 0_m), GetAngle(m_world, body));
+                SetAwake(m_world, body);
             }
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Move selected shape right.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = size(fixtures) == 1? *(begin(fixtures)): nullptr;
-            const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
-            if (body)
+            const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): InvalidFixtureID;
+            const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
+            if (body != InvalidBodyID)
             {
-                body->SetTransform(body->GetLocation() + Length2(0.1_m, 0_m), body->GetAngle());
-                body->SetAwake();
+                SetTransform(m_world, body, GetLocation(m_world, body) + Length2(0.1_m, 0_m), GetAngle(m_world, body));
+                SetAwake(m_world, body);
             }
         });
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Move selected shape up.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = size(fixtures) == 1? *(begin(fixtures)): nullptr;
-            const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
-            if (body)
+            const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): InvalidFixtureID;
+            const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
+            if (body != InvalidBodyID)
             {
-                body->SetTransform(body->GetLocation() + Vec2(0, 0.1) * 1_m, body->GetAngle());
-                body->SetAwake();
+                SetTransform(m_world, body, GetLocation(m_world, body) + Vec2(0, 0.1) * 1_m, GetAngle(m_world, body));
+                SetAwake(m_world, body);
             }
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Move selected shape down.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = size(fixtures) == 1? *(begin(fixtures)): nullptr;
-            const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
-            if (body)
+            const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): InvalidFixtureID;
+            const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
+            if (body != InvalidBodyID)
             {
-                body->SetTransform(body->GetLocation() - Vec2(0, 0.1) * 1_m, body->GetAngle());
-                body->SetAwake();
+                SetTransform(m_world, body, GetLocation(m_world, body) - Vec2(0, 0.1) * 1_m, GetAngle(m_world, body));
+                SetAwake(m_world, body);
             }
         });
         RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Move selected counter-clockwise.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = size(fixtures) == 1? *(begin(fixtures)): nullptr;
-            const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
-            if (body)
+            const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): InvalidFixtureID;
+            const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
+            if (body != InvalidBodyID)
             {
-                body->SetTransform(body->GetLocation(), body->GetAngle() + 5_deg);
-                body->SetAwake();
+                SetTransform(m_world, body, GetLocation(m_world, body), GetAngle(m_world, body) + 5_deg);
+                SetAwake(m_world, body);
             }
         });
         RegisterForKey(GLFW_KEY_E, GLFW_PRESS, 0, "Move selected clockwise.", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = size(fixtures) == 1? *(begin(fixtures)): nullptr;
-            const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
-            if (body)
+            const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): InvalidFixtureID;
+            const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
+            if (body != InvalidBodyID)
             {
-                body->SetTransform(body->GetLocation(), body->GetAngle() - 5_deg);
-                body->SetAwake();
+                SetTransform(m_world, body, GetLocation(m_world, body), GetAngle(m_world, body) - 5_deg);
+                SetAwake(m_world, body);
             }
         });
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "increase vertex radius of selected shape", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = size(fixtures) == 1? *(begin(fixtures)): nullptr;
-            const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
-            if (body && fixture)
+            const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): InvalidFixtureID;
+            const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
+            if (body != InvalidBodyID && fixture != InvalidFixtureID)
             {
-                const auto polygon = static_cast<const PolygonShapeConf*>(GetData(fixture->GetShape()));
+                const auto polygon = TypeCast<PolygonShapeConf>(GetShape(m_world, fixture));
                 auto conf = PolygonShapeConf{};
-                conf.Set(polygon->GetVertices());
-                conf.UseVertexRadius(polygon->vertexRadius + RadiusIncrement);
-                const auto newf = body->CreateFixture(Shape{conf});
+                conf.Set(polygon.GetVertices());
+                conf.UseVertexRadius(polygon.vertexRadius + RadiusIncrement);
+                const auto newf = CreateFixture(m_world, body, Shape{conf});
                 fixtures.erase(begin(fixtures));
                 fixtures.insert(newf);
                 SetSelectedFixtures(fixtures);
-                body->Destroy(fixture);
+                Destroy(m_world, fixture);
             }
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "decrease vertex radius of selected shape", [&](KeyActionMods) {
             auto fixtures = GetSelectedFixtures();
-            const auto fixture = size(fixtures) == 1? *(begin(fixtures)): nullptr;
-            const auto body = fixture? static_cast<Body*>(fixture->GetBody()): nullptr;
-            if (body && fixture)
+            const auto fixture = (size(fixtures) == 1)? *(begin(fixtures)): InvalidFixtureID;
+            const auto body = (fixture != InvalidFixtureID)? GetBody(m_world, fixture): InvalidBodyID;
+            if (body != InvalidBodyID && fixture != InvalidFixtureID)
             {
-                const auto shape = fixture->GetShape();
+                const auto shape = GetShape(m_world, fixture);
                 const auto lastLegitVertexRadius = GetVertexRadius(shape, 0);
                 const auto newVertexRadius = lastLegitVertexRadius - RadiusIncrement;
                 if (newVertexRadius >= 0_m)
                 {
-                    const auto polygon = static_cast<const PolygonShapeConf*>(GetData(shape));
+                    const auto polygon = TypeCast<PolygonShapeConf>(shape);
                     auto conf = PolygonShapeConf{};
-                    conf.Set(polygon->GetVertices());
+                    conf.Set(polygon.GetVertices());
                     conf.UseVertexRadius(newVertexRadius);
-                    auto newf = body->CreateFixture(Shape{conf});
-                    if (newf)
+                    auto newf = CreateFixture(m_world, body, Shape{conf});
+                    if (newf != InvalidFixtureID)
                     {
                         fixtures.erase(begin(fixtures));
                         fixtures.insert(newf);
                         SetSelectedFixtures(fixtures);
-                        body->Destroy(fixture);
+                        Destroy(m_world, fixture);
                     }
                 }
             }
@@ -174,26 +175,26 @@ public:
         auto polygonA = conf;
         //polygonA.SetAsBox(8.0f, 6.0f);
         polygonA.Set({Vec2{-8, -6} * 1_m, Vec2{8, -6} * 1_m, Vec2{0, 6} * 1_m});
-        m_bodyA->CreateFixture(Shape(polygonA));
+        CreateFixture(m_world, m_bodyA, Shape(polygonA));
         
         conf.vertexRadius = radius * Real{2};
         auto polygonB = conf;
         // polygonB.SetAsBox(7.2_m, 0.8_m);
         polygonB.Set({Vec2{-7.2f, 0} * 1_m, Vec2{+7.2f, 0} * 1_m});
         //polygonB.Set({Vec2{float(-7.2), 0}, Vec2{float(7.2), 0}});
-        m_bodyB->CreateFixture(Shape(polygonB));
+        CreateFixture(m_world, m_bodyB, Shape(polygonB));
     }
 
-    static const Fixture* GetFixture(Body* body)
+    static const FixtureID GetFixture(const World& world, BodyID body)
     {
-        const auto& fixtures = body->GetFixtures();
-        return !empty(fixtures)? GetPtr(*begin(fixtures)): nullptr;
+        const auto& fixtures = GetFixtures(world, body);
+        return !empty(fixtures)? *begin(fixtures): InvalidFixtureID;
     }
 
     void DestroyFixtures()
     {
-        m_bodyA->DestroyFixtures();
-        m_bodyB->DestroyFixtures();
+        ::playrho::d2::DestroyFixtures(m_world, m_bodyA);
+        ::playrho::d2::DestroyFixtures(m_world, m_bodyB);
     }
     
     void ShowManifold(Drawer&, const Manifold& manifold, const char* name)
@@ -244,13 +245,13 @@ public:
     {
         m_status.clear();
 
-        const auto shapeA = GetFixture(m_bodyA)->GetShape();
-        const auto shapeB = GetFixture(m_bodyB)->GetShape();
+        const auto shapeA = GetShape(m_world, GetFixture(m_world, m_bodyA));
+        const auto shapeB = GetShape(m_world, GetFixture(m_world, m_bodyB));
 
         const auto proxyA = GetChild(shapeA, 0);
         const auto proxyB = GetChild(shapeB, 0);
-        const auto xfmA = m_bodyA->GetTransformation();
-        const auto xfmB = m_bodyB->GetTransformation();
+        const auto xfmA = GetTransformation(m_world, m_bodyA);
+        const auto xfmB = GetTransformation(m_world, m_bodyB);
 
         const auto maxIndicesAB = GetMaxSeparation(proxyA, xfmA, proxyB, xfmB);
         const auto maxIndicesBA = GetMaxSeparation(proxyB, xfmB, proxyA, xfmA);
@@ -491,8 +492,8 @@ private:
     const Color matchingPointColor = Color{1, 0, 0}; // red
     const Color psmPointColor = Color{0.5f, 1, 1};
 
-    Body* m_bodyA;
-    Body* m_bodyB;
+    BodyID m_bodyA;
+    BodyID m_bodyB;
     bool m_drawSimplexInfo = true;
     bool m_drawManifoldInfo = true;
 };

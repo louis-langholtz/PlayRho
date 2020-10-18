@@ -31,27 +31,28 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+using ShapeType = TypeID;
+
+TEST(ShapeType, ByteSize)
+{
+    EXPECT_EQ(sizeof(ShapeType::underlying_type), sizeof(void*));
+    EXPECT_EQ(sizeof(ShapeType), sizeof(void*));
+}
+
 TEST(Shape, ByteSize)
 {
-    switch (sizeof(Real))
-    {
-        case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(Shape), std::size_t(8));
+    EXPECT_EQ(sizeof(Shape), std::size_t(8));
 #else
-            EXPECT_EQ(sizeof(Shape), std::size_t(16));
+    EXPECT_EQ(sizeof(Shape), std::size_t(16));
 #endif
-            break;
-        case  8: EXPECT_EQ(sizeof(Shape), std::size_t(16)); break;
-        case 16: EXPECT_EQ(sizeof(Shape), std::size_t(16)); break;
-        default: FAIL(); break;
-    }
+    EXPECT_EQ(sizeof(Shape), sizeof(std::shared_ptr<int>));
 }
 
 TEST(Shape, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<Shape>::value);
-    EXPECT_FALSE(std::is_nothrow_default_constructible<Shape>::value);
+    EXPECT_TRUE(std::is_nothrow_default_constructible<Shape>::value);
     EXPECT_FALSE(std::is_trivially_default_constructible<Shape>::value);
     
     // Construction with any 1 supporting argument should succeed...
@@ -100,19 +101,63 @@ TEST(Shape, DefaultConstruction)
     auto t = Shape{};
     EXPECT_TRUE(s == t);
     EXPECT_NO_THROW(Transform(t, Mat22{}));
+    EXPECT_EQ(GetType(s), GetTypeID<void>());
+}
+
+TEST(Shape, Assignment)
+{
+    auto s = Shape{};
+    ASSERT_EQ(GetType(s), GetTypeID<void>());
+    ASSERT_EQ(GetChildCount(s), ChildCounter(0));
+    ASSERT_EQ(GetFriction(s), Real(0));
+    ASSERT_EQ(GetRestitution(s), Real(0));
+    ASSERT_EQ(GetDensity(s), 0_kgpm2);
+
+    const auto friction = Real(0.1);
+    const auto restitution = Real(0.2);
+    const auto density = 0.4_kgpm2;
+    s = DiskShapeConf{1_m}.UseFriction(friction).UseRestitution(restitution).UseDensity(density);
+    EXPECT_NE(GetType(s), GetTypeID<void>());
+    EXPECT_EQ(GetType(s), GetTypeID<DiskShapeConf>());
+    EXPECT_EQ(GetChildCount(s), ChildCounter(1));
+    EXPECT_EQ(GetFriction(s), friction);
+    EXPECT_EQ(GetRestitution(s), restitution);
+    EXPECT_EQ(GetDensity(s), density);
+
+    s = EdgeShapeConf();
+    EXPECT_NE(GetType(s), GetTypeID<void>());
+    EXPECT_EQ(GetType(s), GetTypeID<EdgeShapeConf>());
+}
+
+TEST(Shape, TypeCast)
+{
+    const auto shape = Shape{};
+    EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
 
 TEST(Shape, types)
 {
+    EXPECT_EQ(GetTypeID<DiskShapeConf>(), GetTypeID<DiskShapeConf>());
+
     const auto sc = DiskShapeConf{1_m};
+    EXPECT_EQ(GetTypeID(sc), GetTypeID<DiskShapeConf>());
+    EXPECT_EQ(GetTypeID<DiskShapeConf>(), GetTypeID(sc));
+    EXPECT_EQ(GetTypeID(sc), GetTypeID(sc));
+    EXPECT_NE(GetTypeID<DiskShapeConf>(), GetTypeID<EdgeShapeConf>());
+    EXPECT_NE(GetTypeID(DiskShapeConf{}), GetTypeID(EdgeShapeConf{}));
+    EXPECT_EQ(GetTypeID(DiskShapeConf{}), GetTypeID(DiskShapeConf{}));
+    EXPECT_EQ(GetTypeID(EdgeShapeConf{}), GetTypeID(EdgeShapeConf{}));
+
     const auto s1 = Shape{sc};
-    ASSERT_EQ(typeid(Shape), typeid(s1));
-    const auto& st1 = GetUseTypeInfo(s1);
-    ASSERT_NE(st1, typeid(Shape));
-    EXPECT_EQ(st1, typeid(sc));
+    ASSERT_EQ(GetTypeID<Shape>(), GetTypeID(s1));
+    EXPECT_EQ(GetType(s1), GetTypeID<DiskShapeConf>());
+    const auto& st1 = GetType(s1);
+    ASSERT_NE(st1, GetTypeID<Shape>());
+    EXPECT_EQ(st1, GetTypeID(sc));
+
     const auto s2 = Shape{s1}; // This should copy construct
-    const auto& st2 = GetUseTypeInfo(s2);
-    EXPECT_EQ(st2, typeid(sc)); // Confirm s2 was a copy construction
+    const auto& st2 = GetType(s2);
+    EXPECT_EQ(st2, GetTypeID(sc)); // Confirm s2 was a copy construction
 }
 
 TEST(Shape, TestOverlapSlowerThanCollideShapesForCircles)

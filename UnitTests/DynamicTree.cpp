@@ -30,68 +30,48 @@ using namespace playrho::d2;
 TEST(DynamicTree, ByteSize)
 {
 #if defined(_WIN64)
+    EXPECT_EQ(alignof(DynamicTree), 8u);
     EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
 #elif defined(_WIN32)
+    EXPECT_EQ(alignof(DynamicTree), 4u);
     EXPECT_EQ(sizeof(DynamicTree), std::size_t(24));
 #else
+    EXPECT_EQ(alignof(DynamicTree), 8u);
     EXPECT_EQ(sizeof(DynamicTree), std::size_t(32));
+#endif
+}
+
+TEST(DynamicTree, VariantDataByteSize)
+{
+#if defined(_WIN64)
+    EXPECT_EQ(alignof(DynamicTree), 8u);
+    EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
+#elif defined(_WIN32)
+    EXPECT_EQ(alignof(DynamicTree), 4u);
+    EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
+#else
+    EXPECT_EQ(alignof(DynamicTree), 8u);
+    EXPECT_EQ(sizeof(DynamicTree::VariantData), 8u);
 #endif
 }
 
 TEST(DynamicTree, TreeNodeByteSize)
-{    
+{
     switch (sizeof(Real))
     {
         case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(36));
-#else
-            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(48));
-#endif
+            EXPECT_EQ(alignof(DynamicTree::TreeNode), 4u);
+            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(32));
             break;
-        case  8: EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(64)); break;
-        case 16: EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(112)); break;
+        case  8:
+            EXPECT_EQ(alignof(DynamicTree::TreeNode), 8u);
+            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(48));
+            break;
+        case 16:
+            EXPECT_EQ(alignof(DynamicTree::TreeNode), 16u);
+            EXPECT_EQ(sizeof(DynamicTree::TreeNode), std::size_t(80));
+            break;
     }
-}
-
-TEST(DynamicTree, Traits)
-{
-    EXPECT_FALSE(IsAddable<DynamicTree>::value);
-    EXPECT_FALSE((IsAddable<DynamicTree, DynamicTree>::value));
-    EXPECT_FALSE((IsIterable<DynamicTree>::value));
-    
-    EXPECT_TRUE(std::is_default_constructible<DynamicTree>::value);
-    EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree>::value);
-    EXPECT_FALSE(std::is_trivially_default_constructible<DynamicTree>::value);
-
-    EXPECT_TRUE(std::is_constructible<DynamicTree>::value);
-    EXPECT_TRUE((std::is_nothrow_constructible<DynamicTree>::value));
-    EXPECT_FALSE(std::is_trivially_constructible<DynamicTree>::value);
-
-    EXPECT_TRUE((std::is_constructible<DynamicTree, DynamicTree::Size>::value));
-    EXPECT_FALSE((std::is_nothrow_constructible<DynamicTree, DynamicTree::Size>::value));
-    EXPECT_FALSE((std::is_trivially_constructible<DynamicTree, DynamicTree::Size>::value));
-    
-    EXPECT_TRUE(std::is_copy_constructible<DynamicTree>::value);
-    EXPECT_FALSE(std::is_nothrow_copy_constructible<DynamicTree>::value);
-    EXPECT_FALSE(std::is_trivially_copy_constructible<DynamicTree>::value);
-
-    EXPECT_TRUE((std::is_assignable<DynamicTree, DynamicTree>::value));
-    EXPECT_TRUE((std::is_nothrow_assignable<DynamicTree, DynamicTree>::value));
-    EXPECT_FALSE((std::is_trivially_assignable<DynamicTree, DynamicTree>::value));
-
-    EXPECT_TRUE(std::is_copy_assignable<DynamicTree>::value);
-#if __GNUC__ || __clang__
-    EXPECT_FALSE(std::is_nothrow_copy_assignable<DynamicTree>::value);
-#endif
-#if _MSC_VER
-    EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree>::value);
-#endif
-    EXPECT_FALSE(std::is_trivially_copy_assignable<DynamicTree>::value);
-    
-    EXPECT_TRUE(std::is_destructible<DynamicTree>::value);
-    EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree>::value);
-    EXPECT_FALSE(std::is_trivially_destructible<DynamicTree>::value);
 }
 
 TEST(DynamicTreeNode, Traits)
@@ -155,19 +135,15 @@ TEST(DynamicTreeBranchData, Traits)
     EXPECT_TRUE(std::is_default_constructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTree::BranchData>::value);
-    
-    EXPECT_TRUE(std::is_nothrow_constructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_constructible<DynamicTree::BranchData>::value);
-    EXPECT_TRUE(std::is_trivially_constructible<DynamicTree::BranchData>::value);
-    
+
     EXPECT_TRUE(std::is_copy_constructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTree::BranchData>::value);
-    
+
     EXPECT_TRUE(std::is_copy_assignable<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTree::BranchData>::value);
-    
+
     EXPECT_TRUE(std::is_destructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::BranchData>::value);
     EXPECT_TRUE(std::is_trivially_destructible<DynamicTree::BranchData>::value);
@@ -177,43 +153,35 @@ TEST(DynamicTreeLeafData, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<DynamicTree::LeafData>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTree::LeafData>::value);
-
-    EXPECT_TRUE(std::is_nothrow_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_constructible<DynamicTree::LeafData>::value);
 
     EXPECT_TRUE(std::is_copy_constructible<DynamicTree::LeafData>::value);
     EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTree::LeafData>::value);
-    
+
     EXPECT_TRUE(std::is_copy_assignable<DynamicTree::LeafData>::value);
     EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTree::LeafData>::value);
-    
+
     EXPECT_TRUE(std::is_destructible<DynamicTree::LeafData>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::LeafData>::value);
-    EXPECT_TRUE(std::is_trivially_destructible<DynamicTree::LeafData>::value);
 }
 
 TEST(DynamicTreeVariantData, Traits)
 {
     EXPECT_TRUE(std::is_default_constructible<DynamicTree::VariantData>::value);
     EXPECT_TRUE(std::is_nothrow_default_constructible<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTree::VariantData>::value);
-    
+    //EXPECT_TRUE(std::is_trivially_default_constructible<DynamicTree::VariantData>::value);
+
     EXPECT_TRUE(std::is_nothrow_constructible<DynamicTree::VariantData>::value);
     EXPECT_TRUE(std::is_constructible<DynamicTree::VariantData>::value);
-    EXPECT_TRUE(std::is_trivially_constructible<DynamicTree::VariantData>::value);
-    
+    //EXPECT_TRUE(std::is_trivially_constructible<DynamicTree::VariantData>::value);
+
     EXPECT_TRUE(std::is_copy_constructible<DynamicTree::VariantData>::value);
     EXPECT_TRUE(std::is_nothrow_copy_constructible<DynamicTree::VariantData>::value);
     EXPECT_TRUE(std::is_trivially_copy_constructible<DynamicTree::VariantData>::value);
-    
+
     EXPECT_TRUE(std::is_copy_assignable<DynamicTree::VariantData>::value);
     EXPECT_TRUE(std::is_nothrow_copy_assignable<DynamicTree::VariantData>::value);
     EXPECT_TRUE(std::is_trivially_copy_assignable<DynamicTree::VariantData>::value);
-    
+
     EXPECT_TRUE(std::is_destructible<DynamicTree::VariantData>::value);
     EXPECT_TRUE(std::is_nothrow_destructible<DynamicTree::VariantData>::value);
     EXPECT_TRUE(std::is_trivially_destructible<DynamicTree::VariantData>::value);
@@ -422,6 +390,13 @@ TEST(DynamicTree, DefaultConstruction)
     EXPECT_EQ(foo.FindReference(DynamicTree::Size(0)), DynamicTree::GetInvalidSize());
 }
 
+TEST(DynamicTreeLeafData, DefaultConstructor)
+{
+    EXPECT_EQ(DynamicTree::LeafData().body, BodyID(0u));
+    EXPECT_EQ(DynamicTree::LeafData().fixture, FixtureID(0u));
+    EXPECT_EQ(DynamicTree::LeafData().childIndex, ChildCounter(0u));
+}
+
 TEST(DynamicTree, ZeroCapacityConstructionSameAsDefault)
 {
     EXPECT_EQ((DynamicTree{DynamicTree::Size{0}}.GetNodeCapacity()), DynamicTree{}.GetNodeCapacity());
@@ -432,7 +407,7 @@ TEST(DynamicTree, ZeroCapacityConstructionSameAsDefault)
 
 TEST(DynamicTree, InitializingConstruction)
 {
-    constexpr const auto initCapacity = DynamicTree::GetDefaultInitialNodeCapacity() * 2;
+    constexpr auto initCapacity = DynamicTree::GetDefaultInitialNodeCapacity() * 2;
     DynamicTree foo{initCapacity};
     EXPECT_EQ(foo.GetNodeCapacity(), initCapacity);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
@@ -459,7 +434,7 @@ TEST(DynamicTree, CopyConstruction)
         Length2{0_m, 0_m},
         Length2(1_m, 1_m)
     };
-    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{nullptr, nullptr, 0u});
+    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u});
     {
         DynamicTree copy{orig};
         EXPECT_EQ(copy.GetRootIndex(), orig.GetRootIndex());
@@ -490,7 +465,7 @@ TEST(DynamicTree, CopyAssignment)
         Length2{0_m, 0_m},
         Length2{1_m, 1_m}
     };
-    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{nullptr, nullptr, 0u});
+    const auto pid = orig.CreateLeaf(aabb, DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u});
     EXPECT_EQ(orig.FindReference(pid), DynamicTree::GetInvalidSize());
     {
         DynamicTree copy;
@@ -517,7 +492,7 @@ TEST(DynamicTree, CreateAndDestroyProxy)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto userdata = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto userdata = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
     const auto pid = foo.CreateLeaf(aabb, userdata);
     EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
@@ -558,7 +533,7 @@ TEST(DynamicTree, FourIdenticalProxies)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
     {
         const auto pid = foo.CreateLeaf(aabb, leafData);
@@ -668,8 +643,7 @@ TEST(DynamicTree, MoveConstruction)
         Length2{-5_m, -2_m}
     };
 
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
-
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
     const auto leaf0 = foo.CreateLeaf(aabb, leafData);
     const auto leaf1 = foo.CreateLeaf(aabb, leafData);
@@ -708,9 +682,8 @@ TEST(DynamicTree, MoveAssignment)
         Length2{-5_m, -2_m}
     };
     
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
-    
     const auto leaf0 = foo.CreateLeaf(aabb, leafData);
     const auto leaf1 = foo.CreateLeaf(aabb, leafData);
     const auto leaf2 = foo.CreateLeaf(aabb, leafData);
@@ -753,7 +726,7 @@ TEST(DynamicTree, CreateLeaf)
         Length2{3_m, 1_m},
         Length2{-5_m, -2_m}
     };
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
 
     const auto l1 = foo.CreateLeaf(aabb, leafData);
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
@@ -821,7 +794,7 @@ TEST(DynamicTree, UpdateLeaf)
     ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
     
     const auto aabb = AABB{Length2{3_m, 1_m}, Length2{-5_m, -2_m}};
-    const auto leafData = DynamicTree::LeafData{nullptr, nullptr, 0u};
+    const auto leafData = DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0u};
     
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 1
     leafs.push_back(foo.CreateLeaf(aabb, leafData)); // 2
@@ -982,6 +955,55 @@ TEST(DynamicTree, UpdateLeaf)
     EXPECT_TRUE(ValidateMetrics(foo, foo.GetRootIndex()));
 }
 
+TEST(DynamicTree, Clear)
+{
+    DynamicTree foo{};
+    ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(0));
+    ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    ASSERT_EQ(foo.GetFreeIndex(), DynamicTree::GetInvalidSize());
+    ASSERT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+
+    EXPECT_NO_THROW(foo.Clear());
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::GetInvalidSize());
+    EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+
+    ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData()));
+    ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+    ASSERT_EQ(foo.GetNodeCount(), DynamicTree::Size(1));
+    ASSERT_EQ(foo.GetLeafCount(), DynamicTree::Size(1));
+    ASSERT_EQ(foo.GetFreeIndex(), DynamicTree::Size(1));
+    ASSERT_EQ(foo.GetRootIndex(), DynamicTree::Size(0));
+
+    EXPECT_NO_THROW(foo.Clear());
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+
+    const auto capacity = DynamicTree::GetDefaultInitialNodeCapacity();
+    auto numLeafs = foo.GetLeafCount();
+    while (foo.GetNodeCount() < capacity)
+    {
+        ASSERT_NO_THROW(foo.CreateLeaf(AABB{}, DynamicTree::LeafData()));
+        ASSERT_GT(foo.GetLeafCount(), numLeafs);
+        ASSERT_GE(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity());
+        numLeafs = foo.GetLeafCount();
+    }
+    ASSERT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity() * 2u);
+
+    EXPECT_NO_THROW(foo.Clear());
+    EXPECT_EQ(foo.GetNodeCapacity(), DynamicTree::GetDefaultInitialNodeCapacity() * 2u);
+    EXPECT_EQ(foo.GetNodeCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetLeafCount(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetFreeIndex(), DynamicTree::Size(0));
+    EXPECT_EQ(foo.GetRootIndex(), DynamicTree::GetInvalidSize());
+}
+
 TEST(DynamicTree, QueryFF)
 {
     auto foo = DynamicTree{};
@@ -991,21 +1013,21 @@ TEST(DynamicTree, QueryFF)
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
-    foo.CreateLeaf(AABB{}, DynamicTree::LeafData{nullptr, nullptr, 0});
+    foo.CreateLeaf(AABB{}, DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0});
     Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
     foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
-                   DynamicTree::LeafData{nullptr, nullptr, 0});
+                   DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0});
     Query(foo, AABB{}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;
     });
     EXPECT_EQ(ncalls, 0);
     foo.CreateLeaf(AABB{LengthInterval{-10_m, 10_m}, LengthInterval{-20_m, 20_m}},
-                   DynamicTree::LeafData{nullptr, nullptr, 0});
+                   DynamicTree::LeafData{BodyID(1u), FixtureID(0u), 0});
     Query(foo, AABB{LengthInterval{-20_m, 20_m}, LengthInterval{-20_m, 20_m}}, [&] (DynamicTree::Size) {
         ++ncalls;
         return DynamicTreeOpcode::End;

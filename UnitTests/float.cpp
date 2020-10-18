@@ -19,6 +19,9 @@
  */
 
 #include "UnitTests.hpp"
+
+#include <PlayRho/Common/TypeInfo.hpp> // for GetTypeName
+
 #include <cmath>
 #include <algorithm>
 #include <limits>

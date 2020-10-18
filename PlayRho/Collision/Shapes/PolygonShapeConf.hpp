@@ -56,6 +56,9 @@ public:
     PolygonShapeConf();
     
     /// @brief Initializing constructor for a 4-sided box polygon.
+    /// @param hx Half of the width.
+    /// @param hy Half of the height.
+    /// @see SetAsBox.
     PolygonShapeConf(Length hx, Length hy,
                      const PolygonShapeConf& conf = GetDefaultConf()) noexcept;
     

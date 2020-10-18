@@ -18,9 +18,12 @@
  */
 
 #include <PlayRho/Collision/Distance.hpp>
+
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Simplex.hpp>
 #include <PlayRho/Collision/TimeOfImpact.hpp>
+
+#include <PlayRho/Dynamics/StepConf.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -76,6 +79,13 @@ DistanceConf GetDistanceConf(const ToiConf& conf) noexcept
 {
     auto distanceConf = DistanceConf{};
     distanceConf.maxIterations = conf.maxDistIters;
+    return distanceConf;
+}
+
+DistanceConf GetDistanceConf(const StepConf& conf) noexcept
+{
+    DistanceConf distanceConf;
+    distanceConf.maxIterations = conf.maxDistanceIters;
     return distanceConf;
 }
 

@@ -29,6 +29,8 @@
 #include <PlayRho/Common/Vector.hpp>
 #include <PlayRho/Common/Settings.hpp> // for ChildCounter, etc.
 #include <PlayRho/Common/Templates.hpp>
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
 
 #include <algorithm> // for std::mismatch, lexicographical_compare, etc
 #include <utility> // for std::get
@@ -237,7 +239,7 @@ constexpr Vector<Length, N> GetDimensions(const AABB<N>& aabb) noexcept
 template <std::size_t N>
 constexpr Vector<Length, N> GetExtents(const AABB<N>& aabb) noexcept
 {
-    constexpr const auto RealInverseOfTwo = Real{1} / Real{2};
+    constexpr auto RealInverseOfTwo = Real{1} / Real{2};
     return GetDimensions(aabb) * RealInverseOfTwo;
 }
 
@@ -407,6 +409,7 @@ class Body;
 class Contact;
 class DistanceProxy;
 struct Transformation;
+class World;
 
 using detail::TestOverlap;
 using detail::Contains;
@@ -451,26 +454,29 @@ AABB ComputeAABB(const DistanceProxy& proxy,
 /// @relatedalso Shape
 AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept;
 
-/// @brief Computes the AABB for the given fixture.
-/// @details This is the AABB of the entire shape of the given fixture at the body's
-///   location for the given fixture.
-/// @relatedalso Fixture
-AABB ComputeAABB(const Fixture& fixture) noexcept;
+/// @brief Computes the AABB for the identified fixture within the given world.
+/// @relatedalso World
+AABB ComputeAABB(const World& world, FixtureID id);
 
 /// @brief Computes the AABB for the given body.
-/// @relatedalso Body
-AABB ComputeAABB(const Body& body);
+/// @relatedalso World
+AABB ComputeAABB(const World& world, const Body& body);
+
+/// @brief Computes the AABB for the identified body within the given world.
+/// @relatedalso World
+AABB ComputeAABB(const World& world, BodyID id);
 
 /// @brief Computes the intersecting AABB for the given pair of fixtures and indexes.
 /// @details The intersecting AABB for the given pair of fixtures is the intersection
 ///   of the AABB for child A of the shape of fixture A with the AABB for child B of
 ///   the shape of fixture B.
-AABB ComputeIntersectingAABB(const Fixture& fA, ChildCounter iA,
-                             const Fixture& fB, ChildCounter iB) noexcept;
+AABB ComputeIntersectingAABB(const World& world,
+                             FixtureID fA, ChildCounter iA,
+                             FixtureID fB, ChildCounter iB) noexcept;
 
 /// @brief Computes the intersecting AABB for the given contact.
 /// @relatedalso Contact
-AABB ComputeIntersectingAABB(const Contact& contact);
+AABB ComputeIntersectingAABB(const World& world, const Contact& contact);
     
 /// @brief Gets the AABB for the given ray cast input data.
 /// @relatedalso playrho::detail::RayCastInput<2>

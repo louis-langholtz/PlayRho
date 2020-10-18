@@ -39,7 +39,6 @@ class Fixture;
 ///
 struct FixtureConf
 {
-    
     /// @brief Uses the given user data.
     constexpr FixtureConf& UseUserData(void* value) noexcept;
 

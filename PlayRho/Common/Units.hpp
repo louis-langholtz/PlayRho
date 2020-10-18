@@ -280,112 +280,112 @@ namespace playrho
     /// @note This is the SI base unit of time.
     /// @see Time.
     /// @see https://en.wikipedia.org/wiki/Second
-    constexpr const auto Second = PLAYRHO_UNIT(Time, boost::units::si::second);
+    constexpr auto Second = PLAYRHO_UNIT(Time, boost::units::si::second);
 
     /// @brief Square second unit.
     /// @see Second
-    constexpr const auto SquareSecond = Second * Second;
+    constexpr auto SquareSecond = Second * Second;
 
     /// @brief Hertz unit of Frequency.
     /// @details Represents the hertz unit of frequency (Hz).
     /// @see Frequency.
     /// @see https://en.wikipedia.org/wiki/Hertz
-    constexpr const auto Hertz = PLAYRHO_UNIT(Frequency, boost::units::si::hertz);
+    constexpr auto Hertz = PLAYRHO_UNIT(Frequency, boost::units::si::hertz);
 
     /// @brief Meter unit of Length.
     /// @details A unit of the length quantity.
     /// @note This is the SI base unit of length.
     /// @see Length.
     /// @see https://en.wikipedia.org/wiki/Metre
-    constexpr const auto Meter = PLAYRHO_UNIT(Length, boost::units::si::meter);
+    constexpr auto Meter = PLAYRHO_UNIT(Length, boost::units::si::meter);
 
     /// @brief Meter per second unit of linear velocity.
     /// @see LinearVelocity.
-    constexpr const auto MeterPerSecond = PLAYRHO_UNIT(LinearVelocity,
+    constexpr auto MeterPerSecond = PLAYRHO_UNIT(LinearVelocity,
         boost::units::si::meter_per_second);
 
     /// @brief Meter per square second unit of linear acceleration.
     /// @see LinearAcceleration.
-    constexpr const auto MeterPerSquareSecond = PLAYRHO_UNIT(LinearAcceleration,
+    constexpr auto MeterPerSquareSecond = PLAYRHO_UNIT(LinearAcceleration,
         boost::units::si::meter_per_second_squared);
 
     /// @brief Kilogram unit of mass.
     /// @note This is the SI base unit of mass.
     /// @see Mass.
     /// @see https://en.wikipedia.org/wiki/Kilogram
-    constexpr const auto Kilogram = PLAYRHO_UNIT(Mass, boost::units::si::kilogram);
+    constexpr auto Kilogram = PLAYRHO_UNIT(Mass, boost::units::si::kilogram);
 
     /// @brief Square meter unit of area.
     /// @see Area.
-    constexpr const auto SquareMeter = PLAYRHO_UNIT(Area, boost::units::si::square_meter);
+    constexpr auto SquareMeter = PLAYRHO_UNIT(Area, boost::units::si::square_meter);
 
     /// @brief Cubic meter unit of volume.
-    constexpr const auto CubicMeter = Meter * Meter * Meter;
+    constexpr auto CubicMeter = Meter * Meter * Meter;
 
     /// @brief Kilogram per square meter unit of area density.
     /// @see AreaDensity.
-    constexpr const auto KilogramPerSquareMeter = PLAYRHO_UNIT(AreaDensity,
+    constexpr auto KilogramPerSquareMeter = PLAYRHO_UNIT(AreaDensity,
         boost::units::si::kilogram_per_square_meter);
 
     /// @brief Radian unit of angle.
     /// @see Angle.
     /// @see Degree.
-    constexpr const auto Radian = PLAYRHO_UNIT(Angle, boost::units::si::radian);
+    constexpr auto Radian = PLAYRHO_UNIT(Angle, boost::units::si::radian);
     
     /// @brief Degree unit of angle quantity.
     /// @see Angle.
     /// @see Radian.
-    constexpr const auto Degree = Angle{Radian * Pi / Real{180}};
+    constexpr auto Degree = Angle{Radian * Pi / Real{180}};
     
     /// @brief Square radian unit type.
     /// @see Angle.
     /// @see Radian.
-    constexpr const auto SquareRadian = Radian * Radian;
+    constexpr auto SquareRadian = Radian * Radian;
 
     /// @brief Radian per second unit of angular velocity.
     /// @see AngularVelocity.
     /// @see Radian, Second.
-    constexpr const auto RadianPerSecond = PLAYRHO_UNIT(AngularVelocity,
+    constexpr auto RadianPerSecond = PLAYRHO_UNIT(AngularVelocity,
         boost::units::si::radian_per_second);
     
     /// @brief Degree per second unit of angular velocity.
     /// @see AngularVelocity.
     /// @see Degree, Second.
-    constexpr const auto DegreePerSecond = AngularVelocity{RadianPerSecond * Degree / Radian};
+    constexpr auto DegreePerSecond = AngularVelocity{RadianPerSecond * Degree / Radian};
 
     /// @brief Radian per square second unit of angular acceleration.
     /// @see AngularAcceleration.
     /// @see Radian, Second.
-    constexpr const auto RadianPerSquareSecond = Radian / (Second * Second);
+    constexpr auto RadianPerSquareSecond = Radian / (Second * Second);
 
     /// @brief Degree per square second unit of angular acceleration.
     /// @see AngularAcceleration.
     /// @see Degree, Second.
-    constexpr const auto DegreePerSquareSecond = Degree / (Second * Second);
+    constexpr auto DegreePerSquareSecond = Degree / (Second * Second);
 
     /// @brief Newton unit of force.
     /// @see Force.
-    constexpr const auto Newton = PLAYRHO_UNIT(Force, boost::units::si::newton);
+    constexpr auto Newton = PLAYRHO_UNIT(Force, boost::units::si::newton);
 
     /// @brief Newton meter unit of torque.
     /// @see Torque.
     /// @see Newton, Meter.
-    constexpr const auto NewtonMeter = PLAYRHO_UNIT(Torque, boost::units::si::newton_meter);
+    constexpr auto NewtonMeter = PLAYRHO_UNIT(Torque, boost::units::si::newton_meter);
 
     /// @brief Newton second unit of momentum.
     /// @see Momentum.
     /// @see Newton, Second.
-    constexpr const auto NewtonSecond = Newton * Second;
+    constexpr auto NewtonSecond = Newton * Second;
     
     /// @brief Newton meter second unit of angular momentum.
     /// @see AngularMomentum.
     /// @see Newton, Meter, Second.
-    constexpr const auto NewtonMeterSecond = NewtonMeter * Second;
+    constexpr auto NewtonMeterSecond = NewtonMeter * Second;
     
     /// @brief Revolutions per minute units of angular velocity.
     /// @see AngularVelocity, Time
     /// @see Minute.
-    constexpr const auto RevolutionsPerMinute = 2 * Pi * Radian / (Real{60} * Second);
+    constexpr auto RevolutionsPerMinute = 2 * Pi * Radian / (Real{60} * Second);
     
     /// @}
     
@@ -806,13 +806,13 @@ namespace playrho
     /// @note This constant is only appropriate for use for objects of low mass and close
     ///   distance relative to the Earth.
     /// @see https://en.wikipedia.org/wiki/Gravity_of_Earth
-    constexpr const auto EarthlyLinearAcceleration = Real{-9.8f} * MeterPerSquareSecond;
+    constexpr auto EarthlyLinearAcceleration = Real{-9.8f} * MeterPerSquareSecond;
     
     /// @brief Big "G".
     /// @details Gravitational constant used in calculating the attractive force on a mass
     ///   to another mass at a given distance due to gravity.
     /// @see https://en.wikipedia.org/wiki/Gravitational_constant
-    constexpr const auto BigG = Real{6.67408e-11f} * CubicMeter / (Kilogram * SquareSecond);
+    constexpr auto BigG = Real{6.67408e-11f} * CubicMeter / (Kilogram * SquareSecond);
     
     /// @}
 

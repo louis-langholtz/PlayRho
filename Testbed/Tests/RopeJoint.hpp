@@ -37,8 +37,8 @@ class RopeJointTest : public Test
 public:
     RopeJointTest()
     {
-        const auto ground = m_world.CreateBody();
-        ground->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        const auto ground = CreateBody(m_world);
+        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
             const auto rectangle = Shape{
@@ -72,11 +72,11 @@ public:
                     bd.angularDamping = 0.4_Hz;
                 }
 
-                const auto body = m_world.CreateBody(bd);
+                const auto body = CreateBody(m_world, bd);
 
-                body->CreateFixture(shape, fd);
+                CreateFixture(m_world, body, shape, fd);
 
-                m_world.CreateJoint(RevoluteJointConf{prevBody, body, Vec2(Real(i), y) * 1_m});
+                m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(Real(i), y) * 1_m));
 
                 prevBody = body;
             }
@@ -92,10 +92,10 @@ public:
         m_rope = m_world.CreateJoint(m_ropeConf);
         
         RegisterForKey(GLFW_KEY_J, GLFW_PRESS, 0, "Toggle the rope joint", [&](KeyActionMods) {
-            if (m_rope)
+            if (IsValid(m_rope))
             {
-                m_world.Destroy(m_rope);
-                m_rope = nullptr;
+                Destroy(m_world, m_rope);
+                m_rope = InvalidJointID;
             }
             else
             {
@@ -107,12 +107,12 @@ public:
     void PostStep(const Settings&, Drawer&) override
     {
         std::stringstream stream;
-        stream << (m_rope? "Rope ON.": "Rope OFF.");
+        stream << (IsValid(m_rope)? "Rope ON.": "Rope OFF.");
         m_status = stream.str();
     }
 
     RopeJointConf m_ropeConf;
-    Joint* m_rope;
+    JointID m_rope;
 };
 
 } // namespace testbed

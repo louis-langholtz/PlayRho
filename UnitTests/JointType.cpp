@@ -19,23 +19,63 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
+#include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
 
+namespace {
+
+const char* name1 = "name1";
+const char* name2 = "name2";
+
+} // namespace
+
+TEST(JointType, ByteSize)
+{
+    EXPECT_EQ(sizeof(JointType::underlying_type), sizeof(void*));
+    EXPECT_EQ(sizeof(JointType), sizeof(void*));
+}
+
+TEST(JointType, EqualsOperator)
+{
+    EXPECT_TRUE(JointType(&name1) == JointType(&name1));
+    EXPECT_TRUE(JointType(&name2) == JointType(&name2));
+    EXPECT_FALSE(JointType(&name1) == JointType(&name2));
+    EXPECT_FALSE(JointType(&name2) == JointType(&name1));
+}
+
+TEST(JointType, NotEqualsOperator)
+{
+    EXPECT_FALSE(JointType(&name1) != JointType(&name1));
+    EXPECT_FALSE(JointType(&name2) != JointType(&name2));
+    EXPECT_TRUE(JointType(&name1) != JointType(&name2));
+    EXPECT_TRUE(JointType(&name2) != JointType(&name1));
+}
+
 TEST(JointType, ToString)
 {
-    EXPECT_STREQ(ToString(JointType::Revolute), "Revolute");
-    EXPECT_STREQ(ToString(JointType::Prismatic), "Prismatic");
-    EXPECT_STREQ(ToString(JointType::Distance), "Distance");
-    EXPECT_STREQ(ToString(JointType::Pulley), "Pulley");
-    EXPECT_STREQ(ToString(JointType::Target), "Target");
-    EXPECT_STREQ(ToString(JointType::Gear), "Gear");
-    EXPECT_STREQ(ToString(JointType::Wheel), "Wheel");
-    EXPECT_STREQ(ToString(JointType::Weld), "Weld");
-    EXPECT_STREQ(ToString(JointType::Friction), "Friction");
-    EXPECT_STREQ(ToString(JointType::Rope), "Rope");
-    EXPECT_STREQ(ToString(JointType::Motor), "Motor");
-    EXPECT_STREQ(ToString(JointType::Unknown), "Unknown");
+    EXPECT_STREQ(ToString(GetTypeID<RevoluteJointConf>()), "d2::RevoluteJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<PrismaticJointConf>()), "d2::PrismaticJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<DistanceJointConf>()), "d2::DistanceJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<PulleyJointConf>()), "d2::PulleyJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<TargetJointConf>()), "d2::TargetJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<GearJointConf>()), "d2::GearJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<WheelJointConf>()), "d2::WheelJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<WeldJointConf>()), "d2::WeldJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<FrictionJointConf>()), "d2::FrictionJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<RopeJointConf>()), "d2::RopeJointConf");
+    EXPECT_STREQ(ToString(GetTypeID<MotorJointConf>()), "d2::MotorJointConf");
 }

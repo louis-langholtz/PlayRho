@@ -43,7 +43,7 @@ public:
             const auto a = Real{0.5f};
             BodyConf bd;
             GetY(bd.location) = -a * 1_m;
-            const auto ground = m_world.CreateBody(bd);
+            const auto ground = CreateBody(m_world, bd);
 
             const auto N = 200;
             const auto M = 10;
@@ -54,7 +54,7 @@ public:
                 GetX(position) = -N * a;
                 for (auto i = 0; i < N; ++i)
                 {
-                    ground->CreateFixture(Shape{PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg)});
+                    CreateFixture(m_world, ground, Shape{PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg)});
                     ++m_fixtureCount;
                     GetX(position) += 2.0f * a;
                 }
@@ -82,8 +82,8 @@ public:
                     bd.location = y * 1_m;
                     bd.linearAcceleration = m_gravity;
 
-                    const auto body = m_world.CreateBody(bd);
-                    body->CreateFixture(shape);
+                    const auto body = CreateBody(m_world, bd);
+                    CreateFixture(m_world, body, shape);
                     ++m_fixtureCount;
                     y += deltaY;
                 }

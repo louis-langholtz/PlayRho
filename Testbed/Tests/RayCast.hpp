@@ -48,7 +48,7 @@ public:
     RayCast()
     {
         // Ground body
-        m_world.CreateBody()->CreateFixture(Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, CreateBody(m_world), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
         auto conf = PolygonShapeConf{};
         conf.UseFriction(0.3);
@@ -104,7 +104,7 @@ public:
             Create(kam.key - GLFW_KEY_1);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Destroy Bodies", [&](KeyActionMods) {
-            Destroy();
+            DestroyBodies();
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Change mode of the raycast test", [&](KeyActionMods) {
             if (m_mode == Mode::e_closest)
@@ -124,10 +124,10 @@ public:
 
     void Create(int index)
     {
-        if (m_bodies[m_bodyIndex])
+        if (IsValid(m_bodies[m_bodyIndex]))
         {
-            m_world.Destroy(m_bodies[m_bodyIndex]);
-            m_bodies[m_bodyIndex] = nullptr;
+            Destroy(m_world, m_bodies[m_bodyIndex]);
+            m_bodies[m_bodyIndex] = InvalidBodyID;
         }
 
         BodyConf bd;
@@ -145,32 +145,32 @@ public:
             bd.angularDamping = 0.02_Hz;
         }
 
-        m_bodies[m_bodyIndex] = m_world.CreateBody(bd);
+        m_bodies[m_bodyIndex] = CreateBody(m_world, bd);
 
         if (index < 4)
         {
-            m_bodies[m_bodyIndex]->CreateFixture(m_polygons[index]);
+            CreateFixture(m_world, m_bodies[m_bodyIndex], m_polygons[index]);
         }
         else if (index < 5)
         {
-            m_bodies[m_bodyIndex]->CreateFixture(m_circle);
+            CreateFixture(m_world, m_bodies[m_bodyIndex], m_circle);
         }
         else
         {
-            m_bodies[m_bodyIndex]->CreateFixture(m_edge);
+            CreateFixture(m_world, m_bodies[m_bodyIndex], m_edge);
         }
 
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
     }
 
-    void Destroy()
+    void DestroyBodies()
     {
         for (auto i = 0; i < e_maxBodies; ++i)
         {
-            if (m_bodies[i])
+            if (IsValid(m_bodies[i]))
             {
-                m_world.Destroy(m_bodies[i]);
-                m_bodies[i] = nullptr;
+                Destroy(m_world, m_bodies[i]);
+                m_bodies[i] = InvalidBodyID;
                 return;
             }
         }
@@ -206,11 +206,10 @@ public:
             Length2 point;
             UnitVec normal;
 
-            d2::RayCast(m_world.GetTree(), RayCastInput{point1, point2, Real{1}},
-                    [&](Fixture* f, const ChildCounter, const Length2& p, const UnitVec& n)
+            d2::RayCast(m_world, RayCastInput{point1, point2, Real{1}},
+                        [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
-                const auto body = f->GetBody();
-                const auto userData = body->GetUserData();
+                const auto userData = GetUserData(m_world, b);
                 if (userData)
                 {
                     const auto index = *static_cast<int*>(userData);
@@ -252,11 +251,10 @@ public:
 
             // This callback finds any hit. Polygon 0 is filtered. For this type of query we are
             // just checking for obstruction, so the actual fixture and hit point are irrelevant.
-            d2::RayCast(m_world.GetTree(), RayCastInput{point1, point2, Real{1}},
-                        [&](Fixture* f, const ChildCounter, const Length2& p, const UnitVec& n)
+            d2::RayCast(m_world, RayCastInput{point1, point2, Real{1}},
+                        [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
-                const auto body = f->GetBody();
-                const auto userData = body->GetUserData();
+                const auto userData = GetUserData(m_world, b);
                 if (userData)
                 {
                     const auto index = *static_cast<int*>(userData);
@@ -296,11 +294,10 @@ public:
             // This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
             // The fixtures are not necessary reported in order, so we might not capture
             // the closest fixture.
-            d2::RayCast(m_world.GetTree(), RayCastInput{point1, point2, Real{1}},
-                        [&](Fixture* f, const ChildCounter, const Length2& p, const UnitVec& n)
+            d2::RayCast(m_world, RayCastInput{point1, point2, Real{1}},
+                        [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
-                const auto body = f->GetBody();
-                const auto userData = body->GetUserData();
+                const auto userData = GetUserData(m_world, b);
                 if (userData)
                 {
                     const auto index = *static_cast<int*>(userData);
@@ -370,14 +367,14 @@ public:
     }
 
     int m_bodyIndex = 0;
-    Body* m_bodies[e_maxBodies];
+    BodyID m_bodies[e_maxBodies];
     int m_userData[e_maxBodies];
     Shape m_polygons[4] = {
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}
     };
-    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(0.3)};
-    Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.UseFriction(0.3)};
+    Shape m_circle = Shape{DiskShapeConf{}.UseRadius(0.5_m).UseFriction(Real(0.3))};
+    Shape m_edge = Shape{EdgeShapeConf{Vec2(-1.0f, 0.0f) * 1_m, Vec2(1.0f, 0.0f) * 1_m}.UseFriction(Real(0.3))};
     Real m_angle = 0.0f;
     Mode m_mode = Mode::e_closest;
 };

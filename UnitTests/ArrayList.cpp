@@ -32,7 +32,7 @@ TEST(ArrayList, traits)
 TEST(ArrayList, DefaultConstruction)
 {
     {
-        constexpr const unsigned max_size = 4;
+        constexpr auto max_size = 4u;
         ArrayList<int, max_size> list;
         EXPECT_EQ(list.size(), decltype(list.size()){0});
         EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
@@ -44,9 +44,9 @@ TEST(ArrayList, DefaultConstruction)
 TEST(ArrayList, ArrayConstruction)
 {
     {
-        constexpr const auto array_size = 2;
+        constexpr auto array_size = 2;
         int array[array_size];
-        constexpr const unsigned max_size = 4;
+        constexpr auto max_size = 4u;
         ArrayList<int, max_size> list(array);
         EXPECT_EQ(list.size(), decltype(list.size()){array_size});
         EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
@@ -54,9 +54,9 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(std::distance(list.begin(), list.end()), array_size);
     }
     {
-        constexpr const auto array_size = 6;
+        constexpr auto array_size = 6;
         float array[array_size];
-        constexpr const unsigned max_size = 6;
+        constexpr auto max_size = 6u;
         ArrayList<float, max_size> list(array);
         EXPECT_EQ(list.size(), decltype(list.size()){array_size});
         EXPECT_EQ(list.max_size(), decltype(list.size()){max_size});
@@ -64,14 +64,14 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(std::distance(list.begin(), list.end()), array_size);
     }
     {
-        constexpr const auto maxsize = std::size_t{10};
+        constexpr auto maxsize = std::size_t{10};
         ArrayList<int, maxsize> list = { 1, 2, 3 };
         EXPECT_EQ(list.size(), decltype(list.size()){3});
         EXPECT_EQ(list.max_size(), maxsize);
     }
     {
-        constexpr const auto maxsize = std::size_t{10};
-        constexpr const auto list = std::array<int, maxsize>{{5, 4, 3}};
+        constexpr auto maxsize = std::size_t{10};
+        constexpr auto list = std::array<int, maxsize>{{5, 4, 3}};
         EXPECT_EQ(list.size(), decltype(list.size()){maxsize});
         EXPECT_EQ(list.max_size(), maxsize);
         EXPECT_EQ(list[0], 5);
@@ -79,9 +79,9 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(list[2], 3);
     }
     {
-        constexpr const auto maxsize = std::size_t{10};
+        constexpr auto maxsize = std::size_t{10};
         
-        // Note: list cannot be constexpr const.
+        // Note: list cannot be constexpr.
         const auto list = ArrayList<int, maxsize>{1, 2, 3};
 
         EXPECT_EQ(list.size(), decltype(list.size()){3});
@@ -91,7 +91,7 @@ TEST(ArrayList, ArrayConstruction)
         EXPECT_EQ(list[2], 3);
     }
     {
-        constexpr const auto list = Vector<int, 3>{1, 2, 3};
+        constexpr auto list = Vector<int, 3>{1, 2, 3};
         EXPECT_EQ(list.size(), decltype(list.size()){3});
         EXPECT_EQ(list[0], 1);
         EXPECT_EQ(list[1], 2);
@@ -102,7 +102,7 @@ TEST(ArrayList, ArrayConstruction)
 TEST(ArrayList, add)
 {
     {
-        constexpr const unsigned max_size = 4;
+        constexpr auto max_size = 4u;
         ArrayList<int, max_size> list;
         ASSERT_EQ(list.size(), decltype(list.size()){0});
         ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});
@@ -132,7 +132,7 @@ TEST(ArrayList, add)
 TEST(ArrayList, clear)
 {
     {
-        constexpr const unsigned max_size = 4;
+        constexpr auto max_size = 4u;
         ArrayList<int, max_size> list;
         ASSERT_EQ(list.size(), decltype(list.size()){0});
         ASSERT_EQ(list.max_size(), decltype(list.size()){max_size});

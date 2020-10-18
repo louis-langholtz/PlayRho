@@ -19,10 +19,14 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
+
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldContact.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -34,22 +38,21 @@ TEST(Contact, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(Contact), std::size_t(128)); break;
-        case  8: EXPECT_EQ(sizeof(Contact), std::size_t(192)); break;
-        case 16: EXPECT_EQ(sizeof(Contact), std::size_t(384)); break;
-        default: FAIL(); break;
+        case  4:
+            EXPECT_EQ(alignof(Contact), 4u);
+            EXPECT_EQ(sizeof(Contact), std::size_t(36));
+            break;
+        case  8:
+            EXPECT_EQ(alignof(Contact), 8u);
+            EXPECT_EQ(sizeof(Contact), std::size_t(56));
+            break;
+        case 16:
+            EXPECT_EQ(sizeof(Contact), std::size_t(96));
+            break;
+        default:
+            FAIL();
+            break;
     }
-}
-
-TEST(Contact, Traits)
-{
-    EXPECT_FALSE(std::is_default_constructible<Contact>::value);
-    EXPECT_TRUE(std::is_copy_constructible<Contact>::value);
-    EXPECT_FALSE(std::is_copy_assignable<Contact>::value);
-
-    EXPECT_FALSE(IsAddable<Contact>::value);
-    EXPECT_FALSE((IsAddable<Contact, Contact>::value));
-    EXPECT_FALSE(IsIterable<Contact>::value);
 }
 
 TEST(Contact, Enabled)
@@ -58,9 +61,9 @@ TEST(Contact, Enabled)
     auto world = World{};
     const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = bA->CreateFixture(Shape{shape});
-    const auto fB = bB->CreateFixture(Shape{shape});
-    auto c = Contact{fA, 0u, fB, 0u};
+    const auto fA = world.CreateFixture(bA, Shape{shape});
+    const auto fB = world.CreateFixture(bB, Shape{shape});
+    auto c = Contact{bA, fA, 0u, bB, fB, 0u};
     EXPECT_TRUE(c.IsEnabled());
     c.UnsetEnabled();
     EXPECT_FALSE(c.IsEnabled());
@@ -74,20 +77,28 @@ TEST(Contact, SetAwake)
     auto world = World{};
     const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = bA->CreateFixture(Shape{shape});
-    const auto fB = bB->CreateFixture(Shape{shape});
-    const auto c = Contact{fA, 0u, fB, 0u};
-    
-    bA->UnsetAwake();
-    ASSERT_FALSE(bA->IsAwake());
+    const auto fA = world.CreateFixture(bA, Shape{shape});
+    const auto fB = world.CreateFixture(bB, Shape{shape});
 
-    bB->UnsetAwake();
-    ASSERT_FALSE(bB->IsAwake());
-    
-    SetAwake(c);
+    ASSERT_TRUE(world.GetContacts().empty());
+    world.Step(StepConf{});
+    const auto contacts = world.GetContacts();
+    ASSERT_EQ(contacts.size(), ContactCounter(1));
+    const auto c = contacts.begin()->second;
+    ASSERT_EQ(GetFixtureA(world, c), fA);
+    ASSERT_EQ(GetFixtureB(world, c), fB);
+    ASSERT_TRUE(IsAwake(world, c));
 
-    EXPECT_TRUE(bA->IsAwake());
-    EXPECT_TRUE(bB->IsAwake());
+    ASSERT_NO_THROW(UnsetAwake(world, bA));
+    ASSERT_FALSE(IsAwake(world, bA));
+
+    ASSERT_NO_THROW(UnsetAwake(world, bB));
+    ASSERT_FALSE(IsAwake(world, bB));
+
+    EXPECT_NO_THROW(SetAwake(world, c));
+    EXPECT_TRUE(IsAwake(world, c));
+    EXPECT_TRUE(IsAwake(world, bA));
+    EXPECT_TRUE(IsAwake(world, bB));
 }
 
 TEST(Contact, ResetFriction)
@@ -96,16 +107,27 @@ TEST(Contact, ResetFriction)
     auto world = World{};
     const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = bA->CreateFixture(Shape{shape});
-    const auto fB = bB->CreateFixture(Shape{shape});
-    auto c = Contact{fA, 0u, fB, 0u};
+    const auto fA = world.CreateFixture(bA, Shape{shape});
+    const auto fB = world.CreateFixture(bB, Shape{shape});
+
+    ASSERT_TRUE(world.GetContacts().empty());
+    world.Step(StepConf{});
+    const auto contacts = world.GetContacts();
+    ASSERT_EQ(contacts.size(), ContactCounter(1));
+    const auto c = contacts.begin()->second;
+    ASSERT_EQ(GetFixtureA(world, c), fA);
+    ASSERT_EQ(GetFixtureB(world, c), fB);
 
     ASSERT_GT(GetFriction(shape), Real(0));
-    ASSERT_NEAR(static_cast<double>(c.GetFriction()), static_cast<double>(Real{GetFriction(shape)}), 0.01);
-    c.SetFriction(GetFriction(shape) * Real(2));
-    ASSERT_NE(c.GetFriction(), GetFriction(shape));
-    ResetFriction(c);
-    EXPECT_NEAR(static_cast<double>(c.GetFriction()), static_cast<double>(Real{GetFriction(shape)}), 0.01);
+    ASSERT_NEAR(static_cast<double>(GetFriction(world, c)),
+                static_cast<double>(Real{GetFriction(shape)}),
+                0.01);
+    SetFriction(world, c, GetFriction(shape) * Real(2));
+    ASSERT_NE(GetFriction(world, c), GetFriction(shape));
+    ResetFriction(world, c);
+    EXPECT_NEAR(static_cast<double>(GetFriction(world, c)),
+                static_cast<double>(Real{GetFriction(shape)}),
+                0.01);
 }
 
 TEST(Contact, ResetRestitution)
@@ -114,14 +136,21 @@ TEST(Contact, ResetRestitution)
     auto world = World{};
     const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = bA->CreateFixture(Shape{shape});
-    const auto fB = bB->CreateFixture(Shape{shape});
-    auto c = Contact{fA, 0u, fB, 0u};
+    const auto fA = world.CreateFixture(bA, Shape{shape});
+    const auto fB = world.CreateFixture(bB, Shape{shape});
+
+    ASSERT_TRUE(world.GetContacts().empty());
+    world.Step(StepConf{});
+    const auto contacts = world.GetContacts();
+    ASSERT_EQ(contacts.size(), ContactCounter(1));
+    const auto c = contacts.begin()->second;
+    ASSERT_EQ(GetFixtureA(world, c), fA);
+    ASSERT_EQ(GetFixtureB(world, c), fB);
 
     ASSERT_EQ(GetRestitution(shape), Real(0));
-    ASSERT_EQ(c.GetRestitution(), GetRestitution(shape));
-    c.SetRestitution(Real(2));
-    ASSERT_NE(c.GetRestitution(), GetRestitution(shape));
-    ResetRestitution(c);
-    EXPECT_EQ(c.GetRestitution(), GetRestitution(shape));
+    ASSERT_EQ(GetRestitution(world, c), GetRestitution(shape));
+    SetRestitution(world, c, Real(2));
+    ASSERT_NE(GetRestitution(world, c), GetRestitution(shape));
+    ResetRestitution(world, c);
+    EXPECT_EQ(GetRestitution(world, c), GetRestitution(shape));
 }
