@@ -25,9 +25,9 @@
 #include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>
-#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 
 #include <utility>
 
@@ -296,7 +296,7 @@ bool RayCast(const DynamicTree& tree, RayCastInput input, const DynamicTreeRayCa
 
 bool RayCast(const World& world, const RayCastInput& input, const FixtureRayCastCB& callback)
 {
-    return RayCast(world.GetTree(), input,
+    return RayCast(GetTree(world), input,
                    [&world,&callback](BodyID body, FixtureID fixture, ChildCounter index,
                                       const RayCastInput& rci) {
         const auto output = RayCast(GetChild(GetShape(world, fixture), index), rci,

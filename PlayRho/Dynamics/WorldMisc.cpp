@@ -26,7 +26,6 @@
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 

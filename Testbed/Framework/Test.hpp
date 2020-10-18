@@ -39,6 +39,7 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldContact.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
