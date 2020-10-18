@@ -558,6 +558,7 @@ public:
     /// @see SetSleepingAllowed
     bool IsSleepingAllowed(BodyID id) const;
 
+    /// @brief Sets whether sleeping is allowed for the identified body.
     /// @see IsSleepingAllowed
     void SetSleepingAllowed(BodyID id, bool value);
 
@@ -808,13 +809,17 @@ public:
     /// @brief Gets the collision manifold for the identified contact.
     const Manifold& GetManifold(ContactID id) const;
 
+    /// @brief Gets whether or not the identified contact is enabled.
     bool IsEnabled(ContactID id) const;
 
+    /// @brief Enables the identified contact.
     void SetEnabled(ContactID id);
 
+    /// @brief Disables the identified contact.
     void UnsetEnabled(ContactID id);
 
 private:
+    /// @brief Gets the underlying joint data.
     const void* GetData(JointID id) const;
 
     propagate_const<std::unique_ptr<WorldImpl>> m_impl;
