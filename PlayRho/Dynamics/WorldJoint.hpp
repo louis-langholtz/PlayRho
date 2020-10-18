@@ -74,10 +74,6 @@ bool IsLimitEnabled(const World& world, JointID id);
 /// @relatedalso World
 void EnableLimit(World& world, JointID id, bool value);
 
-/// @copydoc World::GetUserData(JointID)
-/// @relatedalso World
-void* GetUserData(const World& world, JointID id);
-
 BodyID GetBodyA(const World& world, JointID id);
 
 BodyID GetBodyB(const World& world, JointID id);

@@ -299,12 +299,6 @@ public:
     ///   miss some collisions if you don't use <code>ContactListener</code>.
     SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
 
-    /// @brief Gets the user data pointer that was provided in the body definition.
-    void* GetUserData() const noexcept;
-
-    /// @brief Sets the user data. Use this to store your application specific data.
-    void SetUserData(void* data) noexcept;
-
     /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
 
@@ -516,8 +510,6 @@ private:
     mutable Fixtures m_fixtures; ///< Cache of associated fixtures (owned by world).
     mutable Contacts m_contacts; ///< Cache of associated contacts (owned by world).
     mutable Joints m_joints; ///< Cache of associated joints (owned by world).
-
-    void* m_userData = nullptr; ///< User data. 8-bytes.
 
     /// Transformation for body origin.
     /// @note Also availble from <code>GetTransform1(m_sweep)</code>.
@@ -806,16 +798,6 @@ inline SizedRange<Body::Joints::const_iterator> Body::GetJoints() const noexcept
 inline SizedRange<Body::Contacts::const_iterator> Body::GetContacts() const noexcept
 {
     return {begin(m_contacts), end(m_contacts), size(m_contacts)};
-}
-
-inline void Body::SetUserData(void* data) noexcept
-{
-    m_userData = data;
-}
-
-inline void* Body::GetUserData() const noexcept
-{
-    return m_userData;
 }
 
 inline LinearAcceleration2 Body::GetLinearAcceleration() const noexcept

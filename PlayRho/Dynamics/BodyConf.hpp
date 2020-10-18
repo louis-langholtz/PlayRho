@@ -100,9 +100,6 @@ struct BodyConf
     /// @brief Use the given enabled state.
     constexpr BodyConf& UseEnabled(bool value) noexcept;
     
-    /// @brief Use the given user data.
-    constexpr BodyConf& UseUserData(void* value) noexcept;
-    
     // Public member variables...
     
     /// @brief Type of the body: static, kinematic, or dynamic.
@@ -163,9 +160,6 @@ struct BodyConf
     
     /// Does this body start out enabled?
     bool enabled = true;
-    
-    /// Use this to store application specific body data.
-    void* userData = nullptr;
 };
 
 constexpr BodyConf& BodyConf::UseType(BodyType t) noexcept
@@ -269,12 +263,6 @@ constexpr BodyConf& BodyConf::UseBullet(bool value) noexcept
 constexpr BodyConf& BodyConf::UseEnabled(bool value) noexcept
 {
     enabled = value;
-    return *this;
-}
-
-constexpr BodyConf& BodyConf::UseUserData(void* value) noexcept
-{
-    userData = value;
     return *this;
 }
 

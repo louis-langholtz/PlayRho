@@ -366,16 +366,6 @@ GetContacts(const World& world, BodyID id)
     return world.GetContacts(id);
 }
 
-void* GetUserData(const World& world, BodyID id)
-{
-    return world.GetUserData(id);
-}
-
-void SetUserData(World& world, BodyID id, void* value)
-{
-    world.SetUserData(id, value);
-}
-
 bool ShouldCollide(const World& world, BodyID lhs, BodyID rhs)
 {
     // At least one body should be accelerable/dynamic.

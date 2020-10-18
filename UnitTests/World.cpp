@@ -754,20 +754,6 @@ TEST(World, SetSleepingAllowed)
     EXPECT_FALSE(IsSleepingAllowed(world, body));
 }
 
-TEST(World, SetUserDataOnBody)
-{
-    auto world = World{};
-    auto value = reinterpret_cast<void*>(0u);
-    EXPECT_THROW(SetUserData(world, InvalidBodyID, value), std::out_of_range);
-    const auto body = CreateBody(world);
-    value = reinterpret_cast<void*>(1u);
-    EXPECT_NO_THROW(SetUserData(world, body, value));
-    EXPECT_EQ(GetUserData(world, body), value);
-    value = reinterpret_cast<void*>(2u);
-    EXPECT_NO_THROW(SetUserData(world, body, value));
-    EXPECT_EQ(GetUserData(world, body), value);
-}
-
 TEST(World, SetLinearDamping)
 {
     auto world = World{};

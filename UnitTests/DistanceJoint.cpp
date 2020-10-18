@@ -40,13 +40,13 @@ TEST(DistanceJointConf, ByteSize)
         case  4:
             // why is there a difference between 32-bit Windows and others?
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(80));
+            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(76));
 #else
-            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(88));
+            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(76));
 #endif
             break;
         case  8:
-            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(152));
+            EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(144));
             break;
         case 16:
             EXPECT_EQ(sizeof(DistanceJointConf), std::size_t(288));
@@ -64,8 +64,7 @@ TEST(DistanceJointConf, DefaultConstruction)
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
-    EXPECT_EQ(def.userData, nullptr);
-    
+
     EXPECT_EQ(def.localAnchorA, (Length2{}));
     EXPECT_EQ(def.localAnchorB, (Length2{}));
     EXPECT_EQ(def.length, 1_m);
@@ -113,7 +112,6 @@ TEST(DistanceJoint, Construction)
     EXPECT_EQ(GetBodyA(world, joint), def.bodyA);
     EXPECT_EQ(GetBodyB(world, joint), def.bodyB);
     EXPECT_EQ(GetCollideConnected(world, joint), def.collideConnected);
-    EXPECT_EQ(GetUserData(world, joint), def.userData);
     EXPECT_EQ(GetLinearReaction(world, joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(world, joint), AngularMomentum{0});
 
@@ -262,7 +260,6 @@ TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
     def.bodyA = bA;
     def.bodyB = bB;
     def.collideConnected = false;
-    def.userData = reinterpret_cast<void*>(71);
     def.localAnchorA = Length2(21_m, -2_m);
     def.localAnchorB = Length2(13_m, 12_m);
     def.length = 5_m;
@@ -274,7 +271,6 @@ TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
     
     EXPECT_EQ(def.bodyA, got.bodyA);
     EXPECT_EQ(def.bodyB, got.bodyB);
-    EXPECT_EQ(def.userData, got.userData);
     EXPECT_EQ(def.localAnchorA, got.localAnchorA);
     EXPECT_EQ(def.localAnchorB, got.localAnchorB);
     EXPECT_EQ(def.length, got.length);

@@ -61,11 +61,6 @@ bool GetCollideConnected(const World& world, JointID id)
     return world.GetCollideConnected(id);
 }
 
-void* GetUserData(const World& world, JointID id)
-{
-    return world.GetUserData(id);
-}
-
 BodyID GetBodyA(const World& world, JointID id)
 {
     return world.GetBodyA(id);

@@ -70,12 +70,6 @@ void Refilter(World& world, FixtureID id);
 /// @relatedalso World
 BodyID GetBody(const World& world, FixtureID id);
 
-/// @copydoc World::GetUserData(FixtureID)
-/// @relatedalso World
-void* GetUserData(const World& world, FixtureID id);
-
-void SetUserData(World& world, FixtureID id, void* value);
-
 /// @brief Gets the transformation associated with the given fixture.
 /// @warning Behavior is undefined if the fixture doesn't have an associated body - i.e.
 ///   behavior is undefined if the fixture has <code>nullptr</code> as its associated body.

@@ -567,11 +567,6 @@ public:
     ///   miss some collisions if you don't use <code>ContactListener</code>.
     SizedRange<Contacts::const_iterator> GetContacts(BodyID id) const;
 
-    /// @brief Gets the user data associated with the identified body.
-    void* GetUserData(BodyID id) const;
-
-    void SetUserData(BodyID, void* value);
-
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
     ///   These are the joints that had been created from previous calls to the
@@ -627,12 +622,6 @@ public:
         }
         return *static_cast<std::add_pointer_t<std::add_const_t<T>>>(GetData(id));
     }
-
-    /// @brief Gets the user data associated with the identified joint.
-    void* GetUserData(JointID id) const;
-
-    /// @brief Sets the user data associated with the identified joint.
-    void SetUserData(JointID, void* value);
 
     BodyID GetBodyA(JointID id) const;
     BodyID GetBodyB(JointID id) const;
@@ -701,12 +690,6 @@ public:
 
     /// @brief Gets the identifier of the body associated with the specified fixture.
     BodyID GetBody(FixtureID id) const;
-
-    /// @brief Gets the user data associated with the identified fixture.
-    void* GetUserData(FixtureID id) const;
-
-    /// @brief Sets the user data associated with the identified fixture.
-    void SetUserData(FixtureID id, void* value);
 
     Shape GetShape(FixtureID id) const;
 

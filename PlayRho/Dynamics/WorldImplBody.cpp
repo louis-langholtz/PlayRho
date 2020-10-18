@@ -219,16 +219,6 @@ SizedRange<WorldImpl::Contacts::const_iterator> GetContacts(const WorldImpl& wor
     return world.GetBody(id).GetContacts();
 }
 
-void* GetUserData(const WorldImpl& world, BodyID id)
-{
-    return world.GetBody(id).GetUserData();
-}
-
-void SetUserData(WorldImpl& world, BodyID id, void* value)
-{
-    world.GetBody(id).SetUserData(value);
-}
-
 bool IsMassDataDirty(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).IsMassDataDirty();

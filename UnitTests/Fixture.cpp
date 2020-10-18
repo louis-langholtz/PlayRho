@@ -39,12 +39,12 @@ TEST(Fixture, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(Fixture), std::size_t(36));
+            EXPECT_EQ(sizeof(Fixture), std::size_t(32));
 #else
-            EXPECT_EQ(sizeof(Fixture), std::size_t(64));
+            EXPECT_EQ(sizeof(Fixture), std::size_t(56));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(Fixture), std::size_t(64)); break;
+        case  8: EXPECT_EQ(sizeof(Fixture), std::size_t(56)); break;
         case 16: EXPECT_EQ(sizeof(Fixture), std::size_t(64)); break;
         default: FAIL(); break;
     }
@@ -53,8 +53,6 @@ TEST(Fixture, ByteSize)
 TEST(Fixture, CreateMatchesConf)
 {
     const auto density = 2_kgpm2;
-    int variable;
-    const auto userData = &variable;
     const auto friction = Real(0.5);
     const auto restitution = Real(0.4);
     const auto isSensor = true;
@@ -62,7 +60,6 @@ TEST(Fixture, CreateMatchesConf)
     const auto shapeA = Shape(conf);
 
     auto def = FixtureConf{};
-    def.userData = userData;
     def.isSensor = isSensor;
 
     World world;
@@ -74,7 +71,6 @@ TEST(Fixture, CreateMatchesConf)
     EXPECT_EQ(GetDensity(world, fixture), density);
     EXPECT_EQ(GetFriction(world, fixture), friction);
     EXPECT_EQ(GetRestitution(world, fixture), restitution);
-    EXPECT_EQ(GetUserData(world, fixture), userData);
     EXPECT_EQ(IsSensor(world, fixture), isSensor);
     EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
 }
@@ -123,14 +119,11 @@ TEST(Fixture, SetAwakeFreeFunction)
 TEST(Fixture, Proxies)
 {
     const auto density = 2_kgpm2;
-    auto variable = 0;
-    const auto userData = &variable;
     const auto friction = Real(0.5);
     const auto restitution = Real(0.4);
     const auto isSensor = true;
     
     auto def = FixtureConf{};
-    def.userData = userData;
     def.isSensor = isSensor;
     
     {
@@ -146,7 +139,6 @@ TEST(Fixture, Proxies)
         ASSERT_EQ(GetShape(world, fixture), shape);
         ASSERT_EQ(GetDensity(world, fixture), density);
         ASSERT_EQ(GetFriction(world, fixture), friction);
-        ASSERT_EQ(GetUserData(world, fixture), userData);
         ASSERT_EQ(GetRestitution(world, fixture), restitution);
         ASSERT_EQ(IsSensor(world, fixture), isSensor);
         ASSERT_EQ(GetProxyCount(world, fixture), ChildCounter{0});

@@ -26,7 +26,6 @@
 #include <cstdio>
 #include <cstdarg>
 #include <cstdlib>
-#include <typeinfo>
 #include <sstream>
 
 namespace playrho {

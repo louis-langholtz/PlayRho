@@ -61,12 +61,6 @@ bool GetCollideConnected(const Joint& object) noexcept;
 /// @return <code>true</code> if shift done, <code>false</code> otherwise.
 bool ShiftOrigin(Joint& object, Length2 value) noexcept;
 
-/// Gets the user data pointer.
-void* GetUserData(const Joint& object) noexcept;
-
-/// Sets the user data pointer.
-void SetUserData(Joint& object, void* data) noexcept;
-
 /// @brief Initializes velocity constraint data based on the given solver data.
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
@@ -176,16 +170,6 @@ public:
         return object.m_self? object.m_self->GetBodyB_(): InvalidBodyID;
     }
 
-    friend void* GetUserData(const Joint& object) noexcept
-    {
-        return object.m_self? object.m_self->GetUserData_(): nullptr;
-    }
-
-    friend void SetUserData(Joint& object, void* data) noexcept
-    {
-        if (object.m_self) object.m_self->SetUserData_(data);
-    }
-
     friend bool GetCollideConnected(const Joint& object) noexcept
     {
         return object.m_self? object.m_self->GetCollideConnected_(): false;
@@ -247,12 +231,6 @@ private:
 
         /// @brief Call to notify joint of a shift in the world origin.
         virtual bool ShiftOrigin_(Length2 value) noexcept = 0;
-
-        /// @brief Gets the user data for this joint.
-        virtual void* GetUserData_() const noexcept = 0;
-
-        /// @brief Sets the user data for this joint.
-        virtual void SetUserData_(void* value) noexcept = 0;
 
         /// @brief Initializes the velocities for this joint.
         virtual void InitVelocity_(BodyConstraintsMap& bodies,
@@ -321,18 +299,6 @@ private:
         bool ShiftOrigin_(Length2 value) noexcept override
         {
             return ShiftOrigin(data, value);
-        }
-
-        /// @copydoc Concept::GetUserData_
-        void* GetUserData_() const noexcept override
-        {
-            return GetUserData(data);
-        }
-
-        /// @copydoc Concept::SetUserData_
-        void SetUserData_(void* value) noexcept override
-        {
-            SetUserData(data, value);
         }
 
         /// @copydoc Concept::InitVelocity_

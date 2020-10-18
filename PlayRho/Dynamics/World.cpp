@@ -173,16 +173,6 @@ SizedRange<World::Contacts::const_iterator> World::GetContacts(BodyID id) const
     return ::playrho::d2::GetContacts(*m_impl, id);
 }
 
-void* World::GetUserData(BodyID id) const
-{
-    return ::playrho::d2::GetUserData(*m_impl, id);
-}
-
-void World::SetUserData(BodyID id, void* value)
-{
-    return ::playrho::d2::SetUserData(*m_impl, id, value);
-}
-
 SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
 {
     return ::playrho::d2::GetContacts(*m_impl);
@@ -327,16 +317,6 @@ BodyConf World::GetBodyConf(BodyID id) const
 BodyID World::GetBody(FixtureID id) const
 {
     return ::playrho::d2::GetBody(*m_impl, id);
-}
-
-void* World::GetUserData(FixtureID id) const
-{
-    return ::playrho::d2::GetUserData(*m_impl, id);
-}
-
-void World::SetUserData(FixtureID id, void* value)
-{
-    return ::playrho::d2::SetUserData(*m_impl, id, value);
 }
 
 Shape World::GetShape(FixtureID id) const
@@ -507,16 +487,6 @@ void World::SetJoint(JointID id, const Joint& def)
 bool World::GetCollideConnected(JointID id) const
 {
     return ::playrho::d2::GetCollideConnected(*m_impl, id);
-}
-
-void* World::GetUserData(JointID id) const
-{
-    return ::playrho::d2::GetUserData(*m_impl, id);
-}
-
-void World::SetUserData(JointID id, void* value)
-{
-    return ::playrho::d2::SetUserData(*m_impl, id, value);
 }
 
 BodyID World::GetBodyA(JointID id) const

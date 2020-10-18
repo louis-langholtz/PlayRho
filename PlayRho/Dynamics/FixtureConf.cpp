@@ -27,7 +27,7 @@ namespace d2 {
 
 FixtureConf GetFixtureConf(const Fixture& fixture) noexcept
 {
-    return FixtureConf{fixture.GetUserData(), fixture.IsSensor(), fixture.GetFilterData()};
+    return FixtureConf{fixture.IsSensor(), fixture.GetFilterData()};
 }
 
 } // namespace d2

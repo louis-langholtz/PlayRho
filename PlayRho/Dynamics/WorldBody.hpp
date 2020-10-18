@@ -483,13 +483,6 @@ void SetSleepingAllowed(World& world, BodyID, bool value);
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>
 GetContacts(const World& world, BodyID id);
 
-/// @brief Gets the user data associated with the identified body.
-/// @relatedalso World
-void* GetUserData(const World& world, BodyID id);
-
-/// @brief Sets the user data of the identified body.
-void SetUserData(World& world, BodyID id, void* value);
-
 /// @brief Gets the centripetal force necessary to put the body into an orbit having
 ///    the given radius.
 /// @relatedalso World

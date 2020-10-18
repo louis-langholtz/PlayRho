@@ -23,7 +23,6 @@
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Common/VertexSet.hpp>
 #include <array>
-#include <typeinfo>
 
 using namespace playrho;
 using namespace playrho::d2;

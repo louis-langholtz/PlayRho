@@ -42,7 +42,6 @@ TEST(PulleyJointConf, DefaultConstruction)
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, true);
-    EXPECT_EQ(def.userData, nullptr);
     
     EXPECT_EQ(def.groundAnchorA, PulleyJointConf::DefaultGroundAnchorA);
     EXPECT_EQ(def.groundAnchorB, PulleyJointConf::DefaultGroundAnchorB);
@@ -139,12 +138,12 @@ TEST(PulleyJointConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(100));
+            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(96));
 #else
-            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(104));
+            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(96));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(192)); break;
+        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(184)); break;
         case 16: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(368)); break;
         default: FAIL(); break;
     }
@@ -159,7 +158,6 @@ TEST(PulleyJoint, Construction)
     EXPECT_EQ(GetBodyA(joint), def.bodyA);
     EXPECT_EQ(GetBodyB(joint), def.bodyB);
     EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
-    EXPECT_EQ(GetUserData(joint), def.userData);
     EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
 

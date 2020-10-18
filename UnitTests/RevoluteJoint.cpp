@@ -43,12 +43,12 @@ TEST(RevoluteJointConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(132));
+            EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(128));
 #else
-            EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(136));
+            EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(128));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(256)); break;
+        case  8: EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(248)); break;
         case 16: EXPECT_EQ(sizeof(RevoluteJointConf), std::size_t(496)); break;
         default: FAIL(); break;
     }
@@ -65,7 +65,6 @@ TEST(RevoluteJoint, Construction)
     jd.bodyA = b0;
     jd.bodyB = b1;
     jd.collideConnected = true;
-    jd.userData = reinterpret_cast<void*>(0x011);
 
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
@@ -83,7 +82,6 @@ TEST(RevoluteJoint, Construction)
     EXPECT_EQ(GetBodyA(joint), jd.bodyA);
     EXPECT_EQ(GetBodyB(joint), jd.bodyB);
     EXPECT_EQ(GetCollideConnected(joint), jd.collideConnected);
-    EXPECT_EQ(GetUserData(joint), jd.userData);
     EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
     EXPECT_EQ(GetLimitState(joint), LimitState::e_inactiveLimit);

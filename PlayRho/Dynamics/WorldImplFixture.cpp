@@ -49,16 +49,6 @@ Transformation GetTransformation(const WorldImpl& world, FixtureID id)
     return GetTransformation(world, GetBody(world, id));
 }
 
-void* GetUserData(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetUserData();
-}
-
-void SetUserData(WorldImpl& world, FixtureID id, void* value)
-{
-    world.GetFixture(id).SetUserData(value);
-}
-
 Shape GetShape(const WorldImpl& world, FixtureID id)
 {
     return world.GetFixture(id).GetShape();

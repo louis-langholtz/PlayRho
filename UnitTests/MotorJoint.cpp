@@ -39,14 +39,14 @@ TEST(MotorJointConf, ByteSize)
     {
         case  4:
 #if defined(_WIN64)
-            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(104));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(92));
 #elif defined(_WIN32)
-            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(96));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(92));
 #else
-            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(104));
+            EXPECT_EQ(sizeof(MotorJointConf), std::size_t(92));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(184)); break;
+        case  8: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(176)); break;
         case 16: EXPECT_EQ(sizeof(MotorJointConf), std::size_t(352)); break;
         default: FAIL(); break;
     }
@@ -59,8 +59,7 @@ TEST(MotorJointConf, DefaultConstruction)
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
-    EXPECT_EQ(def.userData, nullptr);
-    
+
     EXPECT_EQ(def.linearOffset, (Length2{}));
     EXPECT_EQ(def.angularOffset, 0_deg);
     EXPECT_EQ(def.maxForce, 1_N);
@@ -73,23 +72,20 @@ TEST(MotorJointConf, BuilderConstruction)
     const auto bodyA = static_cast<BodyID>(0x1);
     const auto bodyB = static_cast<BodyID>(0x2);
     const auto collideConnected = true;
-    int tmp;
-    const auto userData = &tmp;
     const auto linearOffset = Length2{2_m, 3_m};
     const auto angularOffset = 33_rad;
     const auto maxForce = 22_N;
     const auto maxTorque = 31_Nm;
     const auto correctionFactor = Real(0.44f);
     const auto def = MotorJointConf{}
-        .UseBodyA(bodyA).UseBodyB(bodyB).UseCollideConnected(collideConnected).UseUserData(userData)
+        .UseBodyA(bodyA).UseBodyB(bodyB).UseCollideConnected(collideConnected)
         .UseLinearOffset(linearOffset).UseAngularOffset(angularOffset)
         .UseMaxForce(maxForce).UseMaxTorque(maxTorque).UseCorrectionFactor(correctionFactor);
     
     EXPECT_EQ(def.bodyA, bodyA);
     EXPECT_EQ(def.bodyB, bodyB);
     EXPECT_EQ(def.collideConnected, collideConnected);
-    EXPECT_EQ(def.userData, userData);
-    
+
     EXPECT_EQ(def.linearOffset, linearOffset);
     EXPECT_EQ(def.angularOffset, angularOffset);
     EXPECT_EQ(def.maxForce, maxForce);
@@ -110,7 +106,6 @@ TEST(MotorJoint, Construction)
     EXPECT_EQ(GetBodyA(world, jointID), def.bodyA);
     EXPECT_EQ(GetBodyB(world, jointID), def.bodyB);
     EXPECT_EQ(GetCollideConnected(world, jointID), def.collideConnected);
-    EXPECT_EQ(GetUserData(world, jointID), def.userData);
     EXPECT_EQ(GetLinearReaction(world, jointID), Momentum2{});
     EXPECT_EQ(GetAngularReaction(world, jointID), AngularMomentum{0});
 
@@ -169,7 +164,6 @@ TEST(MotorJoint, GetMotorJointConf)
     ASSERT_EQ(GetBodyA(world, jointID), def.bodyA);
     ASSERT_EQ(GetBodyB(world, jointID), def.bodyB);
     ASSERT_EQ(GetCollideConnected(world, jointID), def.collideConnected);
-    ASSERT_EQ(GetUserData(world, jointID), def.userData);
     
     ASSERT_EQ(GetLinearOffset(world, jointID), def.linearOffset);
     ASSERT_EQ(GetAngularOffset(world, jointID), def.angularOffset);
@@ -182,7 +176,6 @@ TEST(MotorJoint, GetMotorJointConf)
     EXPECT_EQ(cdef.bodyA, b0);
     EXPECT_EQ(cdef.bodyB, b1);
     EXPECT_EQ(cdef.collideConnected, false);
-    EXPECT_EQ(cdef.userData, nullptr);
     
     EXPECT_EQ(cdef.linearOffset, (Length2{}));
     EXPECT_EQ(cdef.angularOffset, 0_deg);

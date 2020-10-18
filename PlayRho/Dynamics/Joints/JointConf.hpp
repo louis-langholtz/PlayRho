@@ -36,10 +36,6 @@ namespace d2 {
 ///   to be inherited from.
 struct JointConf
 {
-    /// @brief User data.
-    /// @details Use this to attach application specific data to your joints.
-    void* userData = nullptr;
-
     /// @brief 1st attached body.
     BodyID bodyA = InvalidBodyID;
     
@@ -50,16 +46,6 @@ struct JointConf
     /// @details Set this flag to true if the attached bodies should collide.
     bool collideConnected = false;
 };
-
-constexpr void* GetUserData(const JointConf& object) noexcept
-{
-    return object.userData;
-}
-
-constexpr void SetUserData(JointConf& object, void* value) noexcept
-{
-    object.userData = value;
-}
 
 /// @brief Gets the first body attached to this joint.
 constexpr BodyID GetBodyA(const JointConf& object) noexcept
@@ -93,13 +79,6 @@ struct JointBuilder : JointConf
 
     /// @brief Reference type.
     using reference = value_type&;
-
-    /// @brief Use value for user data setting.
-    constexpr reference UseUserData(void* v) noexcept
-    {
-        userData = v;
-        return static_cast<reference>(*this);
-    }
 
     /// @brief Use value for body A setting.
     constexpr reference UseBodyA(BodyID b) noexcept

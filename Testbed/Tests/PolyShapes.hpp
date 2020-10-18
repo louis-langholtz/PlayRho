@@ -24,7 +24,6 @@
 
 #include <vector>
 #include <cstring>
-#include <typeinfo>
 
 /// This tests stacking. It also shows how to use World::Query
 /// and TestOverlap.

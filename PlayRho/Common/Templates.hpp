@@ -27,7 +27,6 @@
 #include <functional>
 #include <iterator>
 #include <limits>
-#include <typeinfo>
 #include <type_traits>
 #include <tuple>
 #include <utility>
