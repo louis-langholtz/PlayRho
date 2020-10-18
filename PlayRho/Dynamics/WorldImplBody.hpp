@@ -294,13 +294,6 @@ bool IsAccelerable(const WorldImpl& world, BodyID id);
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>
 GetContacts(const WorldImpl& world, BodyID id);
 
-/// @brief Gets the user data associated with the identified body.
-/// @relatedalso WorldImpl
-void* GetUserData(const WorldImpl& world, BodyID id);
-
-/// @relatedalso WorldImpl
-void SetUserData(WorldImpl& world, BodyID id, void* value);
-
 /// @brief Gets whether the body's mass-data is dirty.
 /// @relatedalso WorldImpl
 bool IsMassDataDirty(const WorldImpl& world, BodyID id);

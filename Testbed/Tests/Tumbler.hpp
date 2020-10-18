@@ -22,6 +22,8 @@
 
 #include "../Framework/Test.hpp"
 
+#include <vector>
+
 namespace testbed {
 
 class Tumbler : public Test
@@ -65,15 +67,12 @@ public:
         });
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Clear and re-emit shapes.", [&](KeyActionMods) {
             std::vector<BodyID> bodies;
-            for (const auto& b: m_world.GetBodies())
-            {
-                if (GetUserData(m_world, b) == reinterpret_cast<void*>(1))
-                {
+            for (const auto& b: m_world.GetBodies()) {
+                if ((b.get() < m_tumblee.size()) && m_tumblee[b.get()]) {
                     bodies.push_back(b);
                 }
             }
-            for (const auto& b: bodies)
-            {
+            for (const auto& b: bodies) {
                 Destroy(m_world, b);
             }
             m_count = 0;
@@ -128,8 +127,9 @@ public:
     void CreateTumblee(Length2 at)
     {
         const auto b = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
-                                          .UseLinearAcceleration(m_gravity)
-                                          .UseUserData(reinterpret_cast<void*>(1)));
+                                          .UseLinearAcceleration(m_gravity));
+        m_tumblee.resize(b.get() + 1u);
+        m_tumblee[b.get()] = true;
         CreateFixture(m_world, b, m_shape);
     }
 
@@ -152,6 +152,7 @@ public:
     const Shape m_disk = Shape{DiskShapeConf{}.UseRadius(0.125_m).UseFriction(0).UseDensity(0.1_kgpm2)};
     int m_count = 0;
     Shape m_shape = m_square;
+    std::vector<bool> m_tumblee;
 };
 
 } // namespace testbed

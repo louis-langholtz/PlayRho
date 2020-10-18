@@ -49,7 +49,7 @@ TEST(GearJointConf, ByteSize)
             EXPECT_EQ(sizeof(GearJointConf), std::size_t(128));
 #endif
 #else
-            EXPECT_EQ(sizeof(GearJointConf), std::size_t(144));
+            EXPECT_EQ(sizeof(GearJointConf), std::size_t(136));
 #endif
             break;
         case  8:
@@ -106,7 +106,6 @@ TEST(GearJoint, Creation)
     EXPECT_EQ(GetBodyA(world, joint), def.bodyA);
     EXPECT_EQ(GetBodyB(world, joint), def.bodyB);
     EXPECT_EQ(GetCollideConnected(world, joint), def.collideConnected);
-    EXPECT_EQ(GetUserData(world, joint), def.userData);
     EXPECT_EQ(GetLinearReaction(world, joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(world, joint), AngularMomentum{0});
     
@@ -174,7 +173,6 @@ TEST(GearJoint, GetGearJointConf)
     ASSERT_EQ(GetBodyA(world, joint), def.bodyA);
     ASSERT_EQ(GetBodyB(world, joint), def.bodyB);
     ASSERT_EQ(GetCollideConnected(world, joint), def.collideConnected);
-    ASSERT_EQ(GetUserData(world, joint), def.userData);
     
     ASSERT_EQ(GetLocalAnchorA(world, joint), GetLocalAnchorB(world, revJoint1));
     ASSERT_EQ(GetLocalAnchorB(world, joint), GetLocalAnchorB(world, revJoint2));
@@ -187,7 +185,6 @@ TEST(GearJoint, GetGearJointConf)
     EXPECT_EQ(cdef.bodyA, def.bodyA);
     EXPECT_EQ(cdef.bodyB, def.bodyB);
     EXPECT_EQ(cdef.collideConnected, false);
-    EXPECT_EQ(cdef.userData, nullptr);
     
     EXPECT_EQ(cdef.type1, GetType(rdef1));
     EXPECT_EQ(cdef.type2, GetType(rdef2));

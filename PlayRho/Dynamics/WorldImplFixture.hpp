@@ -54,12 +54,6 @@ bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData);
 /// @relatedalso WorldImpl
 BodyID GetBody(const WorldImpl& world, FixtureID id);
 
-/// @brief Gets the user data associated with the identified fixture.
-/// @relatedalso WorldImpl
-void* GetUserData(const WorldImpl& world, FixtureID id);
-
-void SetUserData(WorldImpl& world, FixtureID id, void* value);
-
 /// @relatedalso WorldImpl
 Shape GetShape(const WorldImpl& world, FixtureID id);
 

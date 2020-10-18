@@ -163,7 +163,7 @@ TEST(Body, ByteSize)
             EXPECT_EQ(sizeof(Body), std::size_t(140));
 #endif
 #else
-            EXPECT_EQ(sizeof(Body), std::size_t(184));
+            EXPECT_EQ(sizeof(Body), std::size_t(176));
 #endif
             break;
         case  8:
@@ -183,7 +183,6 @@ TEST(Body, WorldCreated)
     const auto body = world.CreateBody();
     ASSERT_NE(body, InvalidBodyID);
 
-    EXPECT_EQ(GetUserData(world, body), nullptr);
     EXPECT_TRUE(IsEnabled(world, body));
     EXPECT_FALSE(IsAwake(world, body));
     EXPECT_FALSE(IsSpeedable(world, body));

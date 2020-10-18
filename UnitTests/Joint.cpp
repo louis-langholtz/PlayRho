@@ -36,7 +36,6 @@ TEST(JointBuilder, Construction)
     EXPECT_EQ(JointBuilder<JointConf>{}.bodyA, InvalidBodyID);
     EXPECT_EQ(JointBuilder<JointConf>{}.bodyB, InvalidBodyID);
     EXPECT_EQ(JointBuilder<JointConf>{}.collideConnected, false);
-    EXPECT_EQ(JointBuilder<JointConf>{}.userData, nullptr);
 }
 
 TEST(JointBuilder, UseBodyA)
@@ -59,13 +58,6 @@ TEST(JointBuilder, UseCollideConnected)
     EXPECT_NE(JointBuilder<JointConf>{}.collideConnected, value);
     EXPECT_EQ(JointBuilder<JointConf>{}.UseCollideConnected(value).collideConnected,
               value);
-}
-
-TEST(JointBuilder, UseUserData)
-{
-    const auto d = reinterpret_cast<void*>(318);
-    EXPECT_NE(JointBuilder<JointConf>{}.userData, d);
-    EXPECT_EQ(JointBuilder<JointConf>{}.UseUserData(d).userData, d);
 }
 
 TEST(Joint, ByteSize)

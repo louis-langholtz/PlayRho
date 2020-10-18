@@ -77,7 +77,6 @@ public:
     ///    <code>AreaDensity</code> must be greater-than-or-equal-to zero.
     ///
     Fixture(BodyID body, const Shape& shape, const FixtureConf& def = GetDefaultFixtureConf()):
-        m_userData{def.userData},
         m_shape{shape},
         m_body{body},
         m_filter{def.filter},
@@ -110,14 +109,6 @@ public:
     /// @brief Sets the contact filtering data.
     void SetFilterData(Filter filter) noexcept;
 
-    /// Get the user data that was assigned in the fixture definition. Use this to
-    /// store your application specific data.
-    void* GetUserData() const noexcept;
-
-    /// @brief Sets the user data.
-    /// @note Use this to store your application specific data.
-    void SetUserData(void* data) noexcept;
-
     /// @brief Gets the density of this fixture.
     /// @return Non-negative density (in mass per area).
     AreaDensity GetDensity() const noexcept;
@@ -137,8 +128,6 @@ public:
 
 private:
     // Data ordered here for memory compaction.
-
-    void* m_userData = nullptr; ///< User data. 8-bytes.
 
     /// Shape (of fixture).
     /// @note Set on construction.
@@ -172,16 +161,6 @@ inline Filter Fixture::GetFilterData() const noexcept
 inline void Fixture::SetFilterData(Filter filter) noexcept
 {
     m_filter = filter;
-}
-
-inline void* Fixture::GetUserData() const noexcept
-{
-    return m_userData;
-}
-
-inline void Fixture::SetUserData(void* data) noexcept
-{
-    m_userData = data;
 }
 
 inline BodyID Fixture::GetBody() const noexcept

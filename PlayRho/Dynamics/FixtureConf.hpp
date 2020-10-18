@@ -39,18 +39,12 @@ class Fixture;
 ///
 struct FixtureConf
 {
-    /// @brief Uses the given user data.
-    constexpr FixtureConf& UseUserData(void* value) noexcept;
-
     /// @brief Uses the given sensor state value.
     constexpr FixtureConf& UseIsSensor(bool value) noexcept;
     
     /// @brief Uses the given filter value.
     constexpr FixtureConf& UseFilter(Filter value) noexcept;
-    
-    /// Use this to store application specific fixture data.
-    void* userData = nullptr;
-    
+
     /// A sensor shape collects contact information but never generates a collision
     /// response.
     bool isSensor = false;
@@ -58,12 +52,6 @@ struct FixtureConf
     /// Contact filtering data.
     Filter filter;
 };
-
-constexpr FixtureConf& FixtureConf::UseUserData(void* value) noexcept
-{
-    userData = value;
-    return *this;
-}
 
 constexpr FixtureConf& FixtureConf::UseIsSensor(bool value) noexcept
 {

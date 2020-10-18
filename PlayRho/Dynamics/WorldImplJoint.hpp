@@ -70,17 +70,6 @@ void SetAwake(WorldImpl& world, JointID id);
 ///   the flag is only checked when fixture AABBs begin to overlap.
 bool GetCollideConnected(const WorldImpl& world, JointID id);
 
-/// @brief Gets the user data associated with the identified joint.
-/// @relatedalso WorldImpl
-void* GetUserData(const WorldImpl& world, JointID id);
-
-/// @relatedalso WorldImpl
-void SetUserData(WorldImpl& world, JointID id, void* value);
-
-/// @brief Sets the user data associated with the identified joint.
-/// @relatedalso WorldImpl
-void SetUserData(WorldImpl& world, JointID id, void* value);
-
 /// @relatedalso WorldImpl
 BodyID GetBodyA(const WorldImpl& world, JointID id);
 

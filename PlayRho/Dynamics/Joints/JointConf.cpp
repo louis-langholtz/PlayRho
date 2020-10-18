@@ -40,7 +40,6 @@ static_assert(std::is_nothrow_destructible<JointConf>::value,
 
 void Set(JointConf& def, const Joint& joint) noexcept
 {
-    def.userData = GetUserData(joint);
     def.bodyA = GetBodyA(joint);
     def.bodyB = GetBodyB(joint);
     def.collideConnected = GetCollideConnected(joint);

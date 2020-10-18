@@ -21,7 +21,9 @@
 #define PLAYRHO_RAY_CAST_HPP
 
 #include "../Framework/Test.hpp"
+
 #include <cstring>
+#include <vector>
 
 // This test demonstrates how to use the world ray-cast feature.
 // NOTE: we are intentionally filtering one of the polygons, therefore
@@ -32,7 +34,6 @@ namespace testbed {
 class RayCast : public Test
 {
 public:
-
     enum
     {
         e_maxBodies = 256
@@ -51,7 +52,7 @@ public:
         CreateFixture(m_world, CreateBody(m_world), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
         auto conf = PolygonShapeConf{};
-        conf.UseFriction(0.3);
+        conf.UseFriction(Real(0.3));
         conf.Set({
             Vec2(-0.5f, 0.0f) * 1_m,
             Vec2(0.5f, 0.0f) * 1_m,
@@ -68,7 +69,6 @@ public:
             const auto w = 1.0f;
             const auto b = w / (2.0f + sqrt(2.0f));
             const auto s = sqrt(2.0f) * b;
-
             conf.Set({
                 Vec2(0.5f * s, 0.0f) * 1_m,
                 Vec2(0.5f * w, b) * 1_m,
@@ -83,7 +83,7 @@ public:
         m_polygons[2] = Shape(conf);
         conf.SetAsBox(0.5_m, 0.5_m);
         m_polygons[3] = Shape(conf);
-        std::memset(m_bodies, 0, sizeof(m_bodies));
+        std::fill(std::begin(m_bodies), std::end(m_bodies), InvalidBodyID);
         
         RegisterForKey(GLFW_KEY_1, GLFW_PRESS, 0, "drop triangles that should be ignored by the ray.", [&](KeyActionMods kam) {
             Create(kam.key - GLFW_KEY_1);
@@ -122,36 +122,30 @@ public:
         });
     }
 
-    void Create(int index)
+    void Create(int type)
     {
         if (IsValid(m_bodies[m_bodyIndex]))
         {
             Destroy(m_world, m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = InvalidBodyID;
         }
-
-        BodyConf bd;
-
+        auto bd = BodyConf{};
         const auto x = RandomFloat(-10.0f, 10.0f);
         const auto y = RandomFloat(0.0f, 20.0f);
         bd.location = Vec2(x, y) * 1_m;
         bd.angle = 1_rad * RandomFloat(-Pi, Pi);
-
-        m_userData[m_bodyIndex] = index;
-        bd.userData = m_userData + m_bodyIndex;
-
-        if (index == 4)
+        if (type == 4)
         {
             bd.angularDamping = 0.02_Hz;
         }
-
         m_bodies[m_bodyIndex] = CreateBody(m_world, bd);
-
-        if (index < 4)
+        m_userData.resize(m_bodies[m_bodyIndex].get() + 1u, -1);
+        m_userData[m_bodies[m_bodyIndex].get()] = type;
+        if (type < 4)
         {
-            CreateFixture(m_world, m_bodies[m_bodyIndex], m_polygons[index]);
+            CreateFixture(m_world, m_bodies[m_bodyIndex], m_polygons[type]);
         }
-        else if (index < 5)
+        else if (type < 5)
         {
             CreateFixture(m_world, m_bodies[m_bodyIndex], m_circle);
         }
@@ -159,7 +153,6 @@ public:
         {
             CreateFixture(m_world, m_bodies[m_bodyIndex], m_edge);
         }
-
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
     }
 
@@ -209,22 +202,15 @@ public:
             d2::RayCast(m_world, RayCastInput{point1, point2, Real{1}},
                         [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
-                const auto userData = GetUserData(m_world, b);
-                if (userData)
-                {
-                    const auto index = *static_cast<int*>(userData);
-                    if (index == 0)
-                    {
-                        // Instruct the calling code to ignore this fixture and
-                        // continue the ray-cast to the next fixture.
-                        return RayCastOpcode::IgnoreFixture;
-                    }
+                const auto type = m_userData[b.get()];
+                if (type == 0) {
+                    // Instruct the calling code to ignore this fixture and
+                    // continue the ray-cast to the next fixture.
+                    return RayCastOpcode::IgnoreFixture;
                 }
-
                 hit = true;
                 point = p;
                 normal = n;
-                
                 // Instruct the calling code to clip the ray and
                 // continue the ray-cast to the next fixture. WARNING: do not assume that fixtures
                 // are reported in order. However, by clipping, we can always get the closest fixture.
@@ -254,24 +240,17 @@ public:
             d2::RayCast(m_world, RayCastInput{point1, point2, Real{1}},
                         [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
-                const auto userData = GetUserData(m_world, b);
-                if (userData)
-                {
-                    const auto index = *static_cast<int*>(userData);
-                    if (index == 0)
-                    {
-                        // Instruct the calling code to ignore this fixture
-                        // and continue the ray-cast to the next fixture.
-                        return RayCastOpcode::IgnoreFixture;
-                    }
+                const auto type = m_userData[b.get()];
+                if (type == 0) {
+                    // Instruct the calling code to ignore this fixture and
+                    // continue the ray-cast to the next fixture.
+                    return RayCastOpcode::IgnoreFixture;
                 }
-                
+                // At this point we have a hit, so we know the ray is obstructed.
+                // Instruct the calling code to terminate the ray-cast.
                 hit = true;
                 point = p;
                 normal = n;
-                
-                // At this point we have a hit, so we know the ray is obstructed.
-                // Instruct the calling code to terminate the ray-cast.
                 return RayCastOpcode::Terminate;
             });
 
@@ -297,23 +276,16 @@ public:
             d2::RayCast(m_world, RayCastInput{point1, point2, Real{1}},
                         [&](BodyID b, FixtureID, ChildCounter, const Length2& p, const UnitVec& n)
             {
-                const auto userData = GetUserData(m_world, b);
-                if (userData)
-                {
-                    const auto index = *static_cast<int*>(userData);
-                    if (index == 0)
-                    {
-                        // Instruct the calling code to ignore this fixture
-                        // and continue the ray-cast to the next fixture.
-                        return RayCastOpcode::IgnoreFixture;
-                    }
+                const auto type = m_userData[b.get()];
+                if (type == 0) {
+                    // Instruct the calling code to ignore this fixture
+                    // and continue the ray-cast to the next fixture.
+                    return RayCastOpcode::IgnoreFixture;
                 }
-                
                 drawer.DrawPoint(p, 5.0f, Color(0.4f, 0.9f, 0.4f));
                 drawer.DrawSegment(point1, p, Color(0.8f, 0.8f, 0.8f));
                 const auto head = p + Real{0.5f} * n * 1_m;
                 drawer.DrawSegment(p, head, Color(0.9f, 0.9f, 0.4f));
-                
                 // Instruct the caller to continue without clipping the ray.
                 return RayCastOpcode::ResetRay;
             });
@@ -368,7 +340,7 @@ public:
 
     int m_bodyIndex = 0;
     BodyID m_bodies[e_maxBodies];
-    int m_userData[e_maxBodies];
+    std::vector<int> m_userData;
     Shape m_polygons[4] = {
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}},
         Shape{PolygonShapeConf{}}, Shape{PolygonShapeConf{}}

@@ -58,16 +58,6 @@ BodyID GetBody(const World& world, FixtureID id)
     return world.GetBody(id);
 }
 
-void* GetUserData(const World& world, FixtureID id)
-{
-    return world.GetUserData(id);
-}
-
-void SetUserData(World& world, FixtureID id, void* value)
-{
-    return world.SetUserData(id, value);
-}
-
 Transformation GetTransformation(const World& world, FixtureID id)
 {
     return GetTransformation(world, GetBody(world, id));

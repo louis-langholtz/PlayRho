@@ -22,13 +22,14 @@
 
 #include "../Framework/Test.hpp"
 
+#include <vector>
+
 namespace testbed {
 
 // This is used to test sensor shapes.
 class SensorTest : public Test
 {
 public:
-
     enum
     {
         e_count = 7
@@ -39,7 +40,6 @@ public:
         {
             const auto ground = CreateBody(m_world);
             CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
-
 #if 0
             {
                 auto sd = FixtureConf{};
@@ -64,9 +64,9 @@ public:
             bd.type = BodyType::Dynamic;
             bd.linearAcceleration = m_gravity;
             bd.location = Vec2(-10.0f + 3.0f * i, 20.0f) * 1_m;
-            bd.userData = m_touching + i;
-            m_touching[i] = false;
             m_bodies[i] = CreateBody(m_world, bd);
+            m_touching.resize(m_bodies[i].get() + 1);
+            m_touching[m_bodies[i].get()] = false;
             CreateFixture(m_world, m_bodies[i], shape);
         }
     }
@@ -76,25 +76,13 @@ public:
     {
         const auto fixtureA = GetFixtureA(m_world, contact);
         const auto fixtureB = GetFixtureB(m_world, contact);
-
         if (fixtureA == m_sensor)
         {
-            const auto userData = GetUserData(m_world, GetBody(m_world, fixtureB));
-            if (userData)
-            {
-                bool* touching = (bool*)userData;
-                *touching = true;
-            }
+            m_touching[GetBody(m_world, fixtureB).get()] = true;
         }
-
         if (fixtureB == m_sensor)
         {
-            const auto userData = GetUserData(m_world, GetBody(m_world, fixtureA));
-            if (userData)
-            {
-                bool* touching = (bool*)userData;
-                *touching = true;
-            }
+            m_touching[GetBody(m_world, fixtureA).get()] = true;
         }
     }
 
@@ -103,25 +91,13 @@ public:
     {
         const auto fixtureA = GetFixtureA(m_world, contact);
         const auto fixtureB = GetFixtureB(m_world, contact);
-
         if (fixtureA == m_sensor)
         {
-            const auto userData = GetUserData(m_world, GetBody(m_world, fixtureB));
-            if (userData)
-            {
-                bool* touching = (bool*)userData;
-                *touching = false;
-            }
+            m_touching[GetBody(m_world, fixtureB).get()] = false;
         }
-
         if (fixtureB == m_sensor)
         {
-            const auto userData = GetUserData(m_world, GetBody(m_world, fixtureA));
-            if (userData)
-            {
-                bool* touching = (bool*)userData;
-                *touching = false;
-            }
+            m_touching[GetBody(m_world, fixtureA).get()] = false;
         }
     }
 
@@ -131,11 +107,10 @@ public:
         // that overlap the sensor.
         for (auto i = 0; i < e_count; ++i)
         {
-            if (!m_touching[i])
+            if (!m_touching[m_bodies[i].get()])
             {
                 continue;
             }
-
             const auto body = m_bodies[i];
             const auto ground = GetBody(m_world, m_sensor);
             const auto circle = TypeCast<DiskShapeConf>(GetShape(m_world, m_sensor));
@@ -146,7 +121,6 @@ public:
             {
                 continue;
             }
-
             const auto F = Force2{GetUnitVector(d) * 100_N};
             playrho::d2::ApplyForce(m_world, body, F, position);
         }
@@ -154,7 +128,7 @@ public:
 
     FixtureID m_sensor;
     BodyID m_bodies[e_count];
-    bool m_touching[e_count];
+    std::vector<bool> m_touching;
 };
 
 } // namespace testbed

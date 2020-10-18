@@ -42,7 +42,7 @@ TEST(FrictionJointConf, ByteSize)
 #elif defined(_WIN64)
             EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(88));
 #else
-            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(88));
+            EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(80));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(FrictionJointConf), std::size_t(160)); break;
@@ -58,8 +58,7 @@ TEST(FrictionJointConf, DefaultConstruction)
     EXPECT_EQ(def.bodyA, InvalidBodyID);
     EXPECT_EQ(def.bodyB, InvalidBodyID);
     EXPECT_EQ(def.collideConnected, false);
-    EXPECT_EQ(def.userData, nullptr);
-    
+
     EXPECT_EQ(def.localAnchorA, (Length2{}));
     EXPECT_EQ(def.localAnchorB, (Length2{}));
     EXPECT_EQ(def.maxForce, 0_N);
@@ -94,7 +93,6 @@ TEST(FrictionJoint, Construction)
     EXPECT_EQ(GetBodyA(joint), def.bodyA);
     EXPECT_EQ(GetBodyB(joint), def.bodyB);
     EXPECT_EQ(GetCollideConnected(joint), def.collideConnected);
-    EXPECT_EQ(GetUserData(joint), def.userData);
     EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
     
@@ -117,7 +115,6 @@ TEST(FrictionJoint, GetFrictionJointConf)
     ASSERT_EQ(GetBodyA(joint), def.bodyA);
     ASSERT_EQ(GetBodyB(joint), def.bodyB);
     ASSERT_EQ(GetCollideConnected(joint), def.collideConnected);
-    ASSERT_EQ(GetUserData(joint), def.userData);
 
     ASSERT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
@@ -128,7 +125,6 @@ TEST(FrictionJoint, GetFrictionJointConf)
     EXPECT_EQ(cdef.bodyA, b0);
     EXPECT_EQ(cdef.bodyB, b1);
     EXPECT_EQ(cdef.collideConnected, false);
-    EXPECT_EQ(cdef.userData, nullptr);
 
     EXPECT_EQ(cdef.localAnchorA, (Length2{}));
     EXPECT_EQ(cdef.localAnchorB, (Length2{}));

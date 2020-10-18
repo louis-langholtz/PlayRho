@@ -91,7 +91,6 @@ Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
 }
 
 Body::Body(const BodyConf& bd) noexcept:
-    m_userData{bd.userData},
     m_xf{::playrho::d2::GetTransformation(bd)},
     m_sweep{Position{bd.location, bd.angle}},
     m_flags{GetFlags(bd)},

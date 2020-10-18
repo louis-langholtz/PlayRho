@@ -68,7 +68,7 @@ TEST(TargetJointConf, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(TargetJointConf), std::size_t(84));
 #else
-            EXPECT_EQ(sizeof(TargetJointConf), std::size_t(88));
+            EXPECT_EQ(sizeof(TargetJointConf), std::size_t(80));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(TargetJointConf), std::size_t(160)); break;
@@ -106,7 +106,6 @@ TEST(TargetJoint, DefaultInitialized)
     //EXPECT_FALSE(IsValid(joint.GetAnchorB()));
     EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
-    EXPECT_EQ(GetUserData(joint), nullptr);
     EXPECT_FALSE(GetCollideConnected(joint));
     //EXPECT_FALSE(IsValid(GetLocalAnchorB(joint)));
     EXPECT_EQ(GetMaxForce(joint), def.maxForce);
@@ -125,7 +124,6 @@ TEST(TargetJoint, GetLocalAnchorB)
     auto def = TargetJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
-    def.userData = reinterpret_cast<void*>(71);
     def.localAnchorB = Length2(-1.4_m, -2_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
@@ -146,7 +144,6 @@ TEST(TargetJoint, GetAnchorB)
     auto def = TargetJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
-    def.userData = reinterpret_cast<void*>(71);
     def.localAnchorB = Length2(-1.4_m, -2_m);
     def.maxForce = 3_N;
     def.frequency = 67_Hz;
@@ -186,7 +183,6 @@ TEST(TargetJointConf, GetTargetJointDefFreeFunction)
     auto def = TargetJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
-    def.userData = reinterpret_cast<void*>(71);
     def.target = Length2(-1.4_m, -2_m);
     def.localAnchorB = Length2(+2.0_m, -1_m);
     def.maxForce = 3_N;
@@ -198,7 +194,6 @@ TEST(TargetJointConf, GetTargetJointDefFreeFunction)
 
     EXPECT_EQ(def.bodyA, got.bodyA);
     EXPECT_EQ(def.bodyB, got.bodyB);
-    EXPECT_EQ(def.userData, got.userData);
     EXPECT_EQ(def.target, got.target);
     EXPECT_EQ(def.localAnchorB, got.localAnchorB);
     EXPECT_EQ(def.maxForce, got.maxForce);

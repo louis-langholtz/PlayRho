@@ -43,7 +43,6 @@ BodyConf GetBodyConf(const Body& body) noexcept
     def.fixedRotation = body.IsFixedRotation();
     def.bullet = body.IsAccelerable() && body.IsImpenetrable();
     def.enabled = body.IsEnabled();
-    def.userData = body.GetUserData();
     return def;
 }
 
