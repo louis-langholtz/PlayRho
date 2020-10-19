@@ -103,10 +103,6 @@ NonNegative<Length> GetVertexRadius(const Shape& shape, ChildCounter idx);
 /// @throws std::bad_alloc if there's a failure allocating storage.
 void Transform(Shape& shape, const Mat22& m);
 
-/// @brief Visits the given shape with the potentially non-null user data pointer.
-/// @see https://en.wikipedia.org/wiki/Visitor_pattern
-bool Visit(const Shape& shape, void* userData);
-
 /// @brief Gets a pointer to the underlying data.
 /// @note Provided for introspective purposes like visitation.
 const void* GetData(const Shape& shape) noexcept;
@@ -256,11 +252,6 @@ public:
         }
     }
 
-    friend bool Visit(const Shape& shape, void* userData)
-    {
-        return shape.m_self? shape.m_self->Visit_(userData): false;
-    }
-
     friend const void* GetData(const Shape& shape) noexcept
     {
         return shape.m_self? shape.m_self->GetData_(): nullptr;
@@ -329,9 +320,6 @@ private:
         /// @brief Transforms all of the shape's vertices by the given transformation matrix.
         /// @see https://en.wikipedia.org/wiki/Transformation_matrix
         virtual void Transform_(const Mat22& m) = 0;
-        
-        /// @brief Visits the shape.
-        virtual bool Visit_(void* userData) const = 0;
         
         /// @brief Equality checking method.
         virtual bool IsEqual_(const Concept& other) const noexcept = 0;
@@ -412,11 +400,6 @@ private:
             Transform(data, m);
         }
 
-        bool Visit_(void* userData) const override
-        {
-            return ::playrho::Visit(data, userData);
-        }
-        
         bool IsEqual_(const Concept& other) const noexcept override
         {
             // Would be preferable to do this without using any kind of RTTI system.
@@ -467,17 +450,6 @@ inline auto TypeCast(const Shape& shape)
 }
 
 } // namespace d2
-
-/// @brief Visits the given shape with the potentially non-null user data pointer.
-/// @note This is a specialization of the <code>Visit</code> function template for the
-///   <code>d2::Shape</code> class.
-/// @see https://en.wikipedia.org/wiki/Visitor_pattern
-template <>
-inline bool Visit<d2::Shape>(const d2::Shape& shape, void* userData)
-{
-    return d2::Visit(shape, userData);
-}
-
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_SHAPES_SHAPE_HPP

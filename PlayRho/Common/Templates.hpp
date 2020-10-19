@@ -175,19 +175,6 @@ constexpr bool IsValid(const std::size_t& value) noexcept
 
 // Other templates.
 
-/// @brief Template function for visiting objects.
-/// @note Specialize this function to tie in application specific handling for types
-///   which don't already have specialized handling. Specializations should always
-///   return <code>true</code>.
-/// @note First parameter is the object to visit.
-/// @note Second parameter is user data or the <code>nullptr</code>.
-/// @see https://en.wikipedia.org/wiki/Visitor_pattern
-template <typename T>
-bool Visit(const T& /*object*/, void* /*userData*/)
-{
-    return false;
-}
-
 /// @brief Template for determining if the given type is an equality comparable type.
 /// @note This isn't exactly the same as the "EqualityComparable" named requirement.
 /// @see https://en.cppreference.com/w/cpp/named_req/EqualityComparable

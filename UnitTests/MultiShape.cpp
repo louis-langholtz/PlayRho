@@ -146,23 +146,6 @@ TEST(MultiShapeConf, GetInvalidChildThrows)
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
-TEST(MultiShapeConf, Visit)
-{
-    const auto s = Shape{MultiShapeConf{}};
-    auto data = UnitTestsVisitorData{};
-    ASSERT_EQ(data.visitedDisk, 0);
-    ASSERT_EQ(data.visitedEdge, 0);
-    ASSERT_EQ(data.visitedPolygon, 0);
-    ASSERT_EQ(data.visitedChain, 0);
-    ASSERT_EQ(data.visitedMulti, 0);
-    EXPECT_TRUE(Visit(s, &data));
-    EXPECT_EQ(data.visitedDisk, 0);
-    EXPECT_EQ(data.visitedEdge, 0);
-    EXPECT_EQ(data.visitedPolygon, 0);
-    EXPECT_EQ(data.visitedChain, 0);
-    EXPECT_EQ(data.visitedMulti, 1);
-}
-
 TEST(MultiShapeConf, TypeInfo)
 {
     const auto foo = MultiShapeConf{};
@@ -172,17 +155,6 @@ TEST(MultiShapeConf, TypeInfo)
     EXPECT_NO_THROW(copy = TypeCast<MultiShapeConf>(shape));
     EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
-
-#if 0
-TEST(MultiShapeConf, BaseVisitorForDiskShape)
-{
-    const auto shape = MultiShapeConf{};
-    auto visitor = IsVisitedShapeVisitor{};
-    ASSERT_FALSE(visitor.IsVisited());
-    shape.Accept(visitor);
-    EXPECT_TRUE(visitor.IsVisited());
-}
-#endif
 
 TEST(MultiShapeConf, AddConvexHullWithOnePointSameAsDisk)
 {

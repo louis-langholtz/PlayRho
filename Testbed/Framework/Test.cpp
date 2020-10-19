@@ -185,32 +185,29 @@ void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins, 
 static void Draw(Drawer& drawer, const World& world, FixtureID fixture,
                  const Color& color, bool skins)
 {
-    const auto xf = world.GetTransformation(world.GetBody(fixture));
-#if 0
-    auto visitor = FunctionalVisitor{};
-    visitor.visitDisk = [&](const d2::DiskShapeConf& shape) {
-        Draw(drawer, shape, color, xf);
-    };
-    visitor.visitEdge = [&](const d2::EdgeShapeConf& shape) {
-        Draw(drawer, shape, color, skins, xf);
-    };
-    visitor.visitPolygon = [&](const d2::PolygonShapeConf& shape) {
-        Draw(drawer, shape, color, skins, xf);
-    };
-    visitor.visitChain = [&](const d2::ChainShapeConf& shape) {
-        Draw(drawer, shape, color, skins, xf);
-    };
-    visitor.visitMulti = [&](const d2::MultiShapeConf& shape) {
-        Draw(drawer, shape, color, skins, xf);
-    };
-#else
-    auto visitor = VisitorData{};
-    visitor.drawer = &drawer;
-    visitor.xf = xf;
-    visitor.color = color;
-    visitor.skins = skins;
-#endif
-    playrho::Visit(world.GetShape(fixture), &visitor);
+    const auto xf = GetTransformation(world, GetBody(world, fixture));
+    const auto shape = GetShape(world, fixture);
+    const auto type = GetType(shape);
+    if (type == GetTypeID<ChainShapeConf>()) {
+        Draw(drawer, TypeCast<ChainShapeConf>(shape), color, skins, xf);
+        return;
+    }
+    if (type == GetTypeID<DiskShapeConf>()) {
+        Draw(drawer, TypeCast<DiskShapeConf>(shape), color, xf);
+        return;
+    }
+    if (type == GetTypeID<EdgeShapeConf>()) {
+        Draw(drawer, TypeCast<EdgeShapeConf>(shape), color, skins, xf);
+        return;
+    }
+    if (type == GetTypeID<MultiShapeConf>()) {
+        Draw(drawer, TypeCast<MultiShapeConf>(shape), color, skins, xf);
+        return;
+    }
+    if (type == GetTypeID<PolygonShapeConf>()) {
+        Draw(drawer, TypeCast<PolygonShapeConf>(shape), color, skins, xf);
+        return;
+    }
 }
 
 static Color GetColor(const World& world, BodyID body)
@@ -1379,47 +1376,3 @@ Real RandomFloat(Real lo, Real hi)
 }
 
 } // namespace testbed
-
-namespace playrho {
-
-template <>
-bool Visit(const d2::DiskShapeConf& shape, void* userData)
-{
-    const auto data = static_cast<testbed::VisitorData*>(userData);
-    Draw(*(data->drawer), shape, data->color, data->xf);
-    return true;
-}
-
-template <>
-bool Visit(const d2::EdgeShapeConf& shape, void* userData)
-{
-    const auto data = static_cast<testbed::VisitorData*>(userData);
-    Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
-    return true;
-}
-
-template <>
-bool Visit(const d2::PolygonShapeConf& shape, void* userData)
-{
-    const auto data = static_cast<testbed::VisitorData*>(userData);
-    Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
-    return true;
-}
-
-template <>
-bool Visit(const d2::ChainShapeConf& shape, void* userData)
-{
-    const auto data = static_cast<testbed::VisitorData*>(userData);
-    Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
-    return true;
-}
-
-template <>
-bool Visit(const d2::MultiShapeConf& shape, void* userData)
-{
-    const auto data = static_cast<testbed::VisitorData*>(userData);
-    Draw(*(data->drawer), shape, data->color, data->skins, data->xf);
-    return true;
-}
-
-} // namespace playrho
