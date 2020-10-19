@@ -67,11 +67,6 @@ JointType GetType(const WorldImpl& world, JointID id)
     return ::playrho::d2::GetType(world.GetJoint(id));
 }
 
-const void* GetData(const WorldImpl& world, JointID id)
-{
-    return &world.GetJoint(id);
-}
-
 Momentum2 GetLinearReaction(const WorldImpl& world, JointID id)
 {
     return GetLinearReaction(world.GetJoint(id));

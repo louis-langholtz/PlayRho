@@ -614,15 +614,6 @@ public:
 
     JointType GetType(JointID id) const;
 
-    template <typename T>
-    auto TypeCast(JointID id) noexcept
-    {
-        if (GetType(id) != GetTypeID<T>()) {
-            throw std::bad_cast{};
-        }
-        return *static_cast<std::add_pointer_t<std::add_const_t<T>>>(GetData(id));
-    }
-
     BodyID GetBodyA(JointID id) const;
     BodyID GetBodyB(JointID id) const;
     Length2 GetLocalAnchorA(JointID id) const;
@@ -802,9 +793,6 @@ public:
     void UnsetEnabled(ContactID id);
 
 private:
-    /// @brief Gets the underlying joint data.
-    const void* GetData(JointID id) const;
-
     propagate_const<std::unique_ptr<WorldImpl>> m_impl;
 };
 

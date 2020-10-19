@@ -439,11 +439,6 @@ JointType World::GetType(JointID id) const
     return ::playrho::d2::GetType(*m_impl, id);
 }
 
-const void* World::GetData(JointID id) const
-{
-    return ::playrho::d2::GetData(*m_impl, id);
-}
-
 bool World::IsAwake(BodyID id) const
 {
     return ::playrho::d2::IsAwake(*m_impl, id);
