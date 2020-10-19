@@ -10,11 +10,12 @@ PlayRho is a real-time oriented physics engine and library that's currently best
 
 PlayRho started off as a port by Louis Langholtz of the Box2D 2.3.2 physics engine to ["modern C++"](https://msdn.microsoft.com/en-us/library/hh279654.aspx). It's evolved into a derivative work by Louis and other contributors to the code base. Like its predecessor, PlayRho is also [licensed](LICENSE.txt) under a [Zlib License](https://opensource.org/licenses/Zlib).
 
-General goals of this project are:
-- Using and supporting newer features of the C++ language standards, particularly [C++17](https://en.wikipedia.org/wiki/C%2B%2B17);
+Some general goals of this project are:
+- Supporting value semantics over reference semantics. Values are in and pointers are out!
 - Conforming to the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md),
   particularly in regards to things like avoiding global variables,
-  preferring initialization, and preferring pure functions;
+  preferring concrete types, and preferring pure functions.
+- Using and supporting newer features of the C++ language standards up to [C++17](https://en.wikipedia.org/wiki/C%2B%2B17);
 - Openness to contributions including pull requests with new features; and
 - Providing a [continuous integration](https://en.wikipedia.org/wiki/Continuous_integration)
   backed, [build automation](https://en.wikipedia.org/wiki/Build_automation) supported,
