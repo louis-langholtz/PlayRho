@@ -21,6 +21,7 @@
 #define  PLAYRHO_DEBUGDRAW_HPP
 
 #include <PlayRho/PlayRho.hpp>
+
 #include "Drawer.hpp"
 
 namespace testbed {
