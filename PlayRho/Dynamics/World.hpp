@@ -32,6 +32,7 @@
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
+#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
@@ -45,10 +46,9 @@
 
 #include <iterator>
 #include <vector>
-#include <map>
-#include <memory>
+#include <memory> // for std::unique_ptr
 #include <stdexcept>
-#include <functional>
+#include <functional> // for std::function
 #include <type_traits> // for std::add_pointer_t, std::add_const_t
 
 namespace playrho {
@@ -242,7 +242,7 @@ public:
     ///
     /// @see GetBodiesForProxies, GetFixturesForProxies.
     ///
-    StepStats Step(const StepConf& conf);
+    StepStats Step(const StepConf& conf = StepConf{});
 
     /// @brief Whether or not "step" is complete.
     /// @details The "step" is completed when there are no more TOI events for the current time step.
