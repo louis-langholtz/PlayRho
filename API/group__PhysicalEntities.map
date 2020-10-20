@@ -1,4 +1,5 @@
 <map id="Physical Entity Classes" name="Physical Entity Classes">
-<area shape="rect" id="node2" href="$group__JointsGroup.html" title="The user creatable classes that specify constraints on one or more Body instances. " alt="" coords="373,5,474,31"/>
-<area shape="rect" id="node3" href="$group__ConstraintsGroup.html" title="Constraints defined and used by the PlayRho library. " alt="" coords="332,55,515,80"/>
+<area shape="rect" id="node1" title="Classes representing physical entities typically created/destroyed via factory methods." alt="" coords="5,31,168,56"/>
+<area shape="rect" id="node2" href="$group__JointsGroup.html" title="The user creatable classes that specify constraints on one or more body instances." alt="" coords="374,5,477,31"/>
+<area shape="rect" id="node3" href="$group__ConstraintsGroup.html" title="Constraints defined and used by the PlayRho library." alt="" coords="335,55,516,80"/>
 </map>

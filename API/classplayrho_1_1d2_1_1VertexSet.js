@@ -5,6 +5,7 @@ var classplayrho_1_1d2_1_1VertexSet =
     [ "add", "classplayrho_1_1d2_1_1VertexSet.html#ade7534188a8fc91d9837b3e562347a82", null ],
     [ "begin", "classplayrho_1_1d2_1_1VertexSet.html#a3ab60237213bf69d476b637cd2437d57", null ],
     [ "clear", "classplayrho_1_1d2_1_1VertexSet.html#a2db75b4004bb99e8dcd5e275805d158a", null ],
+    [ "data", "classplayrho_1_1d2_1_1VertexSet.html#ad36911307335afc1a9b4e6ddcc33a29a", null ],
     [ "end", "classplayrho_1_1d2_1_1VertexSet.html#a89f55e0a38a5a9d01c8fa5834f62919e", null ],
     [ "find", "classplayrho_1_1d2_1_1VertexSet.html#a1ede2f852e19cf2156350aae630944d0", null ],
     [ "GetDefaultMinSeparationSquared", "classplayrho_1_1d2_1_1VertexSet.html#a5a33cdf5ac70599dfe9d1881b8d58484", null ],

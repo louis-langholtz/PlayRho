@@ -10,10 +10,9 @@ var structplayrho_1_1d2_1_1Shape_1_1Model =
     [ "GetFriction_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a74dba1ac19345274dd2bbc8a2052fba5", null ],
     [ "GetMassData_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a37d395a1bce1c10d82aeef07d94c4273", null ],
     [ "GetRestitution_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a0294e853ae87bae114509d48e0fda45f", null ],
-    [ "GetUseTypeInfo_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a3a0dcf5455848ecbf6dbfbd4bf4f8242", null ],
+    [ "GetType_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#aa907f27217583221569c5faf0516a983", null ],
     [ "GetVertexRadius_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a005f9550517d42ae20fa72b90e69f200", null ],
     [ "IsEqual_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a87f7b8779ca32813f32864187ac4bdd0", null ],
     [ "Transform_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a1c9c6a6d9dcb8d314f36cdd6e7216d59", null ],
-    [ "Visit_", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a6f3a290b10857b4e37409e431166fcfb", null ],
-    [ "data", "structplayrho_1_1d2_1_1Shape_1_1Model.html#ab23b083636faf4fa9e72f384625b8599", null ]
+    [ "data", "structplayrho_1_1d2_1_1Shape_1_1Model.html#a2d9a4367538834b751884590e97c21c3", null ]
 ];

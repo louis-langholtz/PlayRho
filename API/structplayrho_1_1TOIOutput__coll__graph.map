@@ -1,7 +1,11 @@
 <map id="playrho::TOIOutput" name="playrho::TOIOutput">
-<area shape="rect" id="node3" href="$structplayrho_1_1TOIOutput_1_1Statistics.html" title="Time of impact statistics. " alt="" coords="592,98,726,137"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1Wider.html" title="playrho::Wider\&lt; dist\l_iter_type \&gt;" alt="" coords="301,101,440,139"/>
-<area shape="rect" id="node6" href="$structplayrho_1_1Wider.html" title="Wider data type obtainer. " alt="" coords="5,170,143,195"/>
-<area shape="rect" id="node7" href="$structplayrho_1_1Wider.html" title="playrho::Wider\&lt; root\l_iter_type \&gt;" alt="" coords="299,163,441,202"/>
-<area shape="rect" id="node8" href="$structplayrho_1_1Wider.html" title="playrho::Wider\&lt; toi\l_iter_type \&gt;" alt="" coords="304,226,437,265"/>
+<area shape="rect" id="node1" title="Output data for time of impact." alt="" coords="804,107,937,133"/>
+<area shape="rect" id="node2" title=" " alt="" coords="633,48,679,75"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1TOIOutput_1_1Statistics.html" title="Time of impact statistics." alt="" coords="589,99,723,141"/>
+<area shape="rect" id="node4" title=" " alt="" coords="347,39,393,65"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1Wider.html" title=" " alt="" coords="301,102,439,143"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Wider.html" title="Wider data type obtainer." alt="" coords="5,175,144,201"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1Wider.html" title=" " alt="" coords="300,167,440,209"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1Wider.html" title=" " alt="" coords="304,233,436,274"/>
+<area shape="rect" id="node9" title=" " alt="" coords="629,165,683,192"/>
 </map>

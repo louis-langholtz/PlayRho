@@ -1,2 +1,7 @@
 <map id="playrho::ToiStepStats" name="playrho::ToiStepStats">
+<area shape="rect" id="node1" title="TOI&#45;phase per&#45;step statistics." alt="" coords="242,241,388,268"/>
+<area shape="rect" id="node2" title=" " alt="" coords="129,5,176,32"/>
+<area shape="rect" id="node3" title=" " alt="" coords="333,5,401,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="519,5,580,32"/>
+<area shape="rect" id="node5" title=" " alt="" coords="623,5,714,32"/>
 </map>

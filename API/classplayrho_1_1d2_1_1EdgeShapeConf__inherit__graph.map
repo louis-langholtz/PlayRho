@@ -1,5 +1,6 @@
 <map id="playrho::d2::EdgeShapeConf" name="playrho::d2::EdgeShapeConf">
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="playrho::d2::ShapeBuilder\l\&lt; EdgeShapeConf \&gt;" alt="" coords="19,180,194,219"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes. " alt="" coords="5,5,197,31"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure. " alt="" coords="123,80,298,119"/>
+<area shape="rect" id="node1" title="Edge shape configuration." alt="" coords="11,276,200,303"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title=" " alt="" coords="20,185,191,227"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes." alt="" coords="5,5,195,32"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure." alt="" coords="121,81,292,123"/>
 </map>

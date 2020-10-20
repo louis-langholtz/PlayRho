@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bounded_20value_20types',['Bounded Value Types',['../group__BoundedAliases.html',1,'']]]
+  ['checked_20value_20types_3665',['Checked Value Types',['../group__CheckedValues.html',1,'']]]
 ];

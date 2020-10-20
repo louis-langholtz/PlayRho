@@ -1,5 +1,9 @@
 <map id="playrho::d2::Transformation" name="playrho::d2::Transformation">
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="55,179,229,204"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="91,92,248,117"/>
-<area shape="rect" id="node6" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="253,179,393,204"/>
+<area shape="rect" id="node1" title="Describes a geometric transformation." alt="" coords="143,273,324,300"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="56,184,229,211"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,95,67,121"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="91,95,250,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="151,5,190,32"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="253,184,395,211"/>
+<area shape="rect" id="node7" title=" " alt="" coords="301,95,347,121"/>
 </map>

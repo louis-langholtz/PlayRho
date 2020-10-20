@@ -1,4 +1,12 @@
 <map id="playrho::d2::DistanceProxy" name="playrho::d2::DistanceProxy">
-<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="192,92,349,117"/>
-<area shape="rect" id="node6" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="443,92,583,117"/>
+<area shape="rect" id="node1" title="Distance Proxy." alt="" coords="173,303,353,329"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="5,206,164,233"/>
+<area shape="rect" id="node3" title=" " alt="" coords="65,102,104,129"/>
+<area shape="rect" id="node4" title=" " alt="" coords="188,206,235,233"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="259,199,415,240"/>
+<area shape="rect" id="node6" title=" " alt="" coords="178,102,239,129"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1CheckedValue.html" title="Checked value." alt="" coords="264,95,455,136"/>
+<area shape="rect" id="node8" title=" " alt="" coords="318,5,401,32"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="439,206,581,233"/>
+<area shape="rect" id="node10" title=" " alt="" coords="487,102,533,129"/>
 </map>

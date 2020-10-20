@@ -1,4 +1,8 @@
 <map id="playrho::d2::Velocity" name="playrho::d2::Velocity">
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="5,179,222,204"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="146,92,303,117"/>
+<area shape="rect" id="node1" title="2&#45;D velocity related data structure." alt="" coords="139,273,280,300"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="5,184,221,211"/>
+<area shape="rect" id="node3" title=" " alt="" coords="17,95,121,121"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="146,95,305,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="206,5,245,32"/>
+<area shape="rect" id="node6" title=" " alt="" coords="245,184,365,211"/>
 </map>

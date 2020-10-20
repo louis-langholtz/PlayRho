@@ -1,6 +1,11 @@
 <map id="playrho::detail::RayCastInput&lt; N &gt;" name="playrho::detail::RayCastInput&lt; N &gt;">
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length, N \&gt;" alt="" coords="64,199,255,224"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="91,99,248,124"/>
-<area shape="rect" id="node8" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="272,92,431,131"/>
-<area shape="rect" id="node6" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="278,192,437,231"/>
+<area shape="rect" id="node1" title="Ray&#45;cast input data for N&#45;dimensions." alt="" coords="833,87,996,129"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="535,57,691,98"/>
+<area shape="rect" id="node3" title=" " alt="" coords="265,5,312,32"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1CheckedValue.html" title="Checked value." alt="" coords="193,57,384,98"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,64,88,91"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="517,124,708,151"/>
+<area shape="rect" id="node7" title=" " alt="" coords="258,123,319,149"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="209,173,368,200"/>
+<area shape="rect" id="node9" title=" " alt="" coords="27,173,66,200"/>
 </map>

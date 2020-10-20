@@ -1,6 +1,12 @@
 <map id="playrho::d2::WorldManifold" name="playrho::d2::WorldManifold">
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="5,179,179,204"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="119,92,276,117"/>
-<area shape="rect" id="node7" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Momentum \&gt;" alt="" coords="203,179,403,204"/>
-<area shape="rect" id="node9" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="513,179,653,204"/>
+<area shape="rect" id="node1" title="Essentially a Manifold expressed in world coordinate terms." alt="" coords="316,273,492,300"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="5,184,179,211"/>
+<area shape="rect" id="node3" title=" " alt="" coords="17,95,79,121"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="118,95,277,121"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="203,184,402,211"/>
+<area shape="rect" id="node5" title=" " alt="" coords="178,5,217,32"/>
+<area shape="rect" id="node6" title=" " alt="" coords="427,184,488,211"/>
+<area shape="rect" id="node8" title=" " alt="" coords="315,95,402,121"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="512,184,653,211"/>
+<area shape="rect" id="node10" title=" " alt="" coords="559,95,606,121"/>
 </map>

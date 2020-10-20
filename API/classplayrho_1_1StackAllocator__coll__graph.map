@@ -1,3 +1,9 @@
 <map id="playrho::StackAllocator" name="playrho::StackAllocator">
-<area shape="rect" id="node4" href="$structplayrho_1_1StackAllocator_1_1AllocationRecord.html" title="Allocation record. " alt="" coords="255,99,412,138"/>
+<area shape="rect" id="node1" title="Stack allocator." alt="" coords="167,231,324,257"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,111,93,137"/>
+<area shape="rect" id="node3" title=" " alt="" coords="117,111,232,137"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1StackAllocator_1_1AllocationRecord.html" title="Allocation record." alt="" coords="256,103,413,145"/>
+<area shape="rect" id="node5" title=" " alt="" coords="218,5,265,32"/>
+<area shape="rect" id="node6" title=" " alt="" coords="413,5,470,32"/>
+<area shape="rect" id="node7" title=" " alt="" coords="315,5,370,32"/>
 </map>

@@ -1,2 +1,10 @@
 <map id="playrho::ToiConf" name="playrho::ToiConf">
+<area shape="rect" id="node1" title="Time of impact configuration." alt="" coords="229,303,346,329"/>
+<area shape="rect" id="node2" title=" " alt="" coords="102,206,148,233"/>
+<area shape="rect" id="node3" title=" " alt="" coords="309,206,370,233"/>
+<area shape="rect" id="node4" title=" " alt="" coords="420,206,467,233"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="491,199,647,240"/>
+<area shape="rect" id="node6" title=" " alt="" coords="480,102,541,129"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1CheckedValue.html" title="Checked value." alt="" coords="566,95,756,136"/>
+<area shape="rect" id="node8" title=" " alt="" coords="620,5,702,32"/>
 </map>

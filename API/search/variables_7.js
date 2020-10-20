@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['has_5fdenorm',['has_denorm',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a2c7b00eec2803e5d972ed4a13d598792',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
-  ['has_5fdenorm_5floss',['has_denorm_loss',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a562151802cbdd1857f60a8fbac0c7fe8',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
-  ['has_5finfinity',['has_infinity',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a1948a58669b292c0ac2c0ecb8a053fc4',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
-  ['has_5fone',['has_one',['../structplayrho_1_1ValueCheckHelper.html#a0e4576ea05730dfd9c504f09a944a0d8',1,'playrho::ValueCheckHelper::has_one()'],['../structplayrho_1_1ValueCheckHelper_3_01T_00_01std_1_1enable__if__t_3_01HasOne_3_01T_01_4_1_1value_01_4_01_4.html#ade0644b52f76727ccaf9073ddb3a5ca2',1,'playrho::ValueCheckHelper&lt; T, std::enable_if_t&lt; HasOne&lt; T &gt;::value &gt; &gt;::has_one()']]],
-  ['has_5fquiet_5fnan',['has_quiet_NaN',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a893cd3ea7d9771ffbfd9b0d8aa34f8a6',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
-  ['has_5fsignaling_5fnan',['has_signaling_NaN',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#aa81f57a3d509aa817ca703fac76198d9',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
-  ['hertz',['Hertz',['../group__PhysicalUnits.html#gae37ce31a2cc62baade6c44bd04b08543',1,'playrho']]]
+  ['has_5fdenorm_3053',['has_denorm',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#aabd50003ad5c3a08aa73675095632de7',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
+  ['has_5fdenorm_5floss_3054',['has_denorm_loss',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a7456dec892e85ee6d4718f67224342bd',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
+  ['has_5finfinity_3055',['has_infinity',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#a0112163bf4acba951544b1284f476b32',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
+  ['has_5fquiet_5fnan_3056',['has_quiet_NaN',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#adace361d1eaa4ba5a64a3fbd7b596dd9',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
+  ['has_5fsignaling_5fnan_3057',['has_signaling_NaN',['../classstd_1_1numeric__limits_3_01playrho_1_1Fixed_3_01BT_00_01FB_01_4_01_4.html#ab848c0ad3a1509d1bfd3ce1150a2c93d',1,'std::numeric_limits&lt; playrho::Fixed&lt; BT, FB &gt; &gt;']]],
+  ['hertz_3058',['Hertz',['../group__PhysicalUnits.html#gadef54036b9480e0cf730100688e20570',1,'playrho']]]
 ];

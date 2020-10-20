@@ -1,5 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$classstd_1_1tuple__size_3_01playrho_1_1ArrayList_3_01T_00_01N_00_01SIZE__TYPE_01_4_01_4.html" title="Tuple size specialization for ArrayList classes. " alt="" coords="176,5,338,57"/>
-<area shape="rect" id="node3" href="$classstd_1_1tuple__size_3_01playrho_1_1d2_1_1UnitVec_01_4.html" title="Tuple size info for playrho::d2::UnitVec. " alt="" coords="176,81,338,120"/>
-<area shape="rect" id="node4" href="$classstd_1_1tuple__size_3_01playrho_1_1Vector_3_01T_00_01N_01_4_01_4.html" title="Tuple size info for playrho::Vector " alt="" coords="176,144,338,183"/>
+<area shape="rect" id="node1" href="$structplayrho_1_1TypeInfo_3_01d2_1_1TargetJointConf_01_4.html" title="Type info specialization for d2::TargetJointConf." alt="" coords="5,5,157,47"/>
 </map>

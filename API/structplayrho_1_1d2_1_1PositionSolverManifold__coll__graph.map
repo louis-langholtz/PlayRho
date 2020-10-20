@@ -1,5 +1,10 @@
 <map id="playrho::d2::PositionSolverManifold" name="playrho::d2::PositionSolverManifold">
-<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="16,179,190,204"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="91,92,248,117"/>
-<area shape="rect" id="node7" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="301,179,441,204"/>
+<area shape="rect" id="node1" title="Position solver manifold." alt="" coords="155,273,333,315"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="16,184,189,211"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,95,67,121"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="91,95,250,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="151,5,190,32"/>
+<area shape="rect" id="node6" title=" " alt="" coords="213,184,275,211"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector." alt="" coords="299,184,440,211"/>
+<area shape="rect" id="node8" title=" " alt="" coords="346,95,393,121"/>
 </map>

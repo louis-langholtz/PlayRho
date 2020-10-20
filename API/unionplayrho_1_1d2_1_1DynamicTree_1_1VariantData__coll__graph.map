@@ -1,24 +1,14 @@
 <map id="playrho::d2::DynamicTree::VariantData" name="playrho::d2::DynamicTree::VariantData">
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1DynamicTree_1_1BranchData.html" title="Branch data of a tree node. " alt="" coords="977,5,1151,44"/>
-<area shape="rect" id="node29" href="$classplayrho_1_1d2_1_1DynamicTree.html" title="A dynamic AABB tree broad&#45;phase. " alt="" coords="759,584,933,609"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html" title="Leaf data of a tree node. " alt="" coords="1773,1132,1947,1171"/>
-<area shape="rect" id="node5" href="$classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape. " alt="" coords="1550,1265,1685,1291"/>
-<area shape="rect" id="node8" href="$structplayrho_1_1Filter.html" title="A holder for contact filtering data. " alt="" coords="1217,1184,1319,1209"/>
-<area shape="rect" id="node18" href="$classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World. " alt="" coords="1555,737,1680,763"/>
-<area shape="rect" id="node11" href="$classplayrho_1_1d2_1_1Shape.html" title="Shape. " alt="" coords="1202,1233,1335,1259"/>
-<area shape="rect" id="node14" href="$unionplayrho_1_1d2_1_1Fixture_1_1FixtureProxies.html" title="Fixture proxies union. " alt="" coords="1201,1345,1336,1384"/>
-<area shape="rect" id="node21" href="$structplayrho_1_1d2_1_1Velocity.html" title="2&#45;D velocity related data structure. " alt="" coords="776,1072,917,1097"/>
-<area shape="rect" id="node22" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="361,1021,577,1047"/>
-<area shape="rect" id="node23" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="5,893,162,919"/>
-<area shape="rect" id="node40" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="382,893,556,919"/>
-<area shape="rect" id="node42" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="347,796,591,821"/>
-<area shape="rect" id="node25" href="$classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;. " alt="" coords="1204,449,1333,475"/>
-<area shape="rect" id="node27" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Length \&gt;" alt="" coords="767,113,926,152"/>
-<area shape="rect" id="node28" href="$classplayrho_1_1d2_1_1DestructionListener.html" title="Joints and fixtures are destroyed when their associated body is destroyed. Implement this listener so..." alt="" coords="765,176,927,215"/>
-<area shape="rect" id="node35" href="$classplayrho_1_1d2_1_1ContactListener.html" title="A pure&#45;virtual interface for &quot;listeners&quot; for contacts. " alt="" coords="752,436,940,461"/>
-<area shape="rect" id="node39" href="$structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation. " alt="" coords="754,955,938,980"/>
-<area shape="rect" id="node47" href="$classplayrho_1_1d2_1_1Sweep.html" title="Description of a &quot;sweep&quot; of motion in 2&#45;D space. " alt="" coords="1201,849,1336,875"/>
-<area shape="rect" id="node48" href="$structplayrho_1_1d2_1_1Position.html" title="2&#45;D positional data structure. " alt="" coords="775,843,917,868"/>
-<area shape="rect" id="node41" href="$classplayrho_1_1d2_1_1UnitVec.html" title="2&#45;D unit vector. " alt="" coords="399,971,539,996"/>
-<area shape="rect" id="node50" href="$structplayrho_1_1d2_1_1DynamicTree_1_1UnusedData.html" title="Unused data of a tree node. " alt="" coords="1773,1195,1947,1233"/>
+<area shape="rect" id="node1" title="Variant data." alt="" coords="1013,113,1185,154"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1DynamicTree_1_1BranchData.html" title="Branch data of a tree node." alt="" coords="747,18,919,59"/>
+<area shape="rect" id="node3" title=" " alt="" coords="497,17,612,44"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1DynamicTree_1_1LeafData.html" title="Leaf data of a tree node." alt="" coords="747,113,919,154"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="475,119,635,190"/>
+<area shape="rect" id="node6" title=" " alt="" coords="155,99,263,125"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title="An indexable, hashable, named &quot;strong type&quot; template class." alt="" coords="135,167,284,223"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1strongtype_1_1IndexingNamedType.html" title=" " alt="" coords="479,214,630,285"/>
+<area shape="rect" id="node8" title=" " alt="" coords="5,181,44,208"/>
+<area shape="rect" id="node10" title=" " alt="" coords="160,264,259,291"/>
+<area shape="rect" id="node11" title=" " alt="" coords="531,68,578,95"/>
+<area shape="rect" id="node12" href="$structplayrho_1_1d2_1_1DynamicTree_1_1UnusedData.html" title="Unused data of a tree node." alt="" coords="747,178,919,219"/>
 </map>

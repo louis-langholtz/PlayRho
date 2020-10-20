@@ -1,5 +1,10 @@
 <map id="playrho::d2::ShapeBuilder&lt; ConcreteConf &gt;" name="playrho::d2::ShapeBuilder&lt; ConcreteConf &gt;">
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes. " alt="" coords="178,292,370,317"/>
-<area shape="rect" id="node5" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="395,192,554,231"/>
-<area shape="rect" id="node7" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="470,92,629,131"/>
+<area shape="rect" id="node1" title="Builder configuration structure." alt="" coords="87,393,258,435"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes." alt="" coords="78,317,267,344"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="5,199,161,240"/>
+<area shape="rect" id="node4" title=" " alt="" coords="17,102,64,129"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1CheckedValue.html" title="Checked value." alt="" coords="88,95,279,136"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="185,199,341,240"/>
+<area shape="rect" id="node6" title=" " alt="" coords="142,5,225,32"/>
+<area shape="rect" id="node8" title=" " alt="" coords="303,102,397,129"/>
 </map>

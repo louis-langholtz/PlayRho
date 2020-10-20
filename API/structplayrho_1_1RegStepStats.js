@@ -1,6 +1,7 @@
 var structplayrho_1_1RegStepStats =
 [
     [ "counter_type", "structplayrho_1_1RegStepStats.html#a28c54150b3b815b281bf5edeeea9a531", null ],
+    [ "Update", "structplayrho_1_1RegStepStats.html#a3129f24959327f2ae255de4d0b2badba", null ],
     [ "bodiesSlept", "structplayrho_1_1RegStepStats.html#ae8a6352918620a06c09a7801badc8f74", null ],
     [ "contactsAdded", "structplayrho_1_1RegStepStats.html#a4072966f53fbc8629e9ca20f80fbdc3c", null ],
     [ "islandsFound", "structplayrho_1_1RegStepStats.html#ab7d450a02ef4369564d88a69b53cc915", null ],

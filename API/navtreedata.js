@@ -1,3 +1,27 @@
+/*
+ @licstart  The following is the entire license notice for the JavaScript code in this file.
+
+ The MIT License (MIT)
+
+ Copyright (C) 1997-2020 by Dimitri van Heesch
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ and associated documentation files (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all copies or
+ substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ @licend  The above is the entire license notice for the JavaScript code in this file
+*/
 var NAVTREE =
 [
   [ "PlayRho", "index.html", [
@@ -5,9 +29,10 @@ var NAVTREE =
       [ "Overview", "index.html#intro_sec", null ],
       [ "Getting Started", "index.html#coding_sec", null ]
     ] ],
+    [ "Todo List", "todo.html", null ],
     [ "Modules", "modules.html", "modules" ],
-    [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", "namespacemembers_dup" ],
         [ "Functions", "namespacemembers_func.html", "namespacemembers_func" ],
@@ -37,18 +62,20 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Body_8cpp-example.html",
-"classplayrho_1_1OptionalValue.html#ac46d94797fff49c032d74111c3ee54a2",
-"classplayrho_1_1d2_1_1Body.html#acfac2d00a05141d4bcfdd0a3dd443765",
-"classplayrho_1_1d2_1_1Contact.html#acc48e89085110d190dcfa27c91fceac6",
-"classplayrho_1_1d2_1_1Fixture.html#a585e0019655a53829279eceabca4fdd6",
-"classplayrho_1_1d2_1_1JointVisitor.html#a683f8983dc5bea60bad7a6a6ded33b72",
-"classplayrho_1_1d2_1_1RevoluteJoint.html#a4bf19603cf8ee0db7c31f39a88bf257f",
-"classplayrho_1_1d2_1_1UnitVec.html#ade94f7b4d2befdff0a53c65da4bb6162",
-"classplayrho_1_1d2_1_1World.html#ae03044b278e44c753f5c8a2b750c73b2",
-"group__PhysicalQuantities.html#ga3537d441743bb2f96c612296424f1e43",
-"structplayrho_1_1IsVector.html",
-"structplayrho_1_1d2_1_1BodyConf.html#a9ff6df501796f81620a27a612c9cfa8b",
-"structplayrho_1_1d2_1_1RopeJointConf.html#a99f6e04f43dec401dd2428001f67339a"
+"classplayrho_1_1Interval.html#a77a1fefb7913c79056818fb075de8dda",
+"classplayrho_1_1d2_1_1BodyConstraint.html#aa4794ccca1702fce9599a9a160737b4a",
+"classplayrho_1_1d2_1_1DynamicTree.html#a72265a3c2d4511e74df6ab4d13112f6d",
+"classplayrho_1_1d2_1_1Manifold.html",
+"classplayrho_1_1d2_1_1VertexSet.html#a89f55e0a38a5a9d01c8fa5834f62919e",
+"classplayrho_1_1d2_1_1World.html#ac62d6b0d4985566ff6e1ca9d3f1fa1e6",
+"classplayrho_1_1d2_1_1WorldImpl.html#aab550c4e5007ac7087aa6319963e09d0",
+"functions_s.html",
+"modules.html",
+"structplayrho_1_1StepConf.html#a8add4646cce4ae296e2e129b074bc3d0",
+"structplayrho_1_1d2_1_1BodyConf.html#ae9c18c40110df721ad618d3dd0fcc6cb",
+"structplayrho_1_1d2_1_1MotorJointConf.html#a53e7afd4eb1bc197703f3d68c4ffd934",
+"structplayrho_1_1d2_1_1TargetJointConf.html#a0d143822f59e9a0dec84d98dbffdb540",
+"structstd_1_1hash_3_01playrho_1_1ContactKey_01_4.html#ac19c78e4d7df44d45e71d6eaca2235da"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

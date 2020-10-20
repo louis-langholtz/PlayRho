@@ -1,2 +1,6 @@
 <map id="playrho::d2::VelocityConstraint::Conf" name="playrho::d2::VelocityConstraint::Conf">
+<area shape="rect" id="node1" title="Configuration data for velocity constraints." alt="" coords="11,95,212,136"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,5,52,32"/>
+<area shape="rect" id="node3" title=" " alt="" coords="76,5,147,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="225,5,272,32"/>
 </map>

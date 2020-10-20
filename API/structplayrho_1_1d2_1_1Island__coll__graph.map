@@ -1,2 +1,6 @@
 <map id="playrho::d2::Island" name="playrho::d2::Island">
+<area shape="rect" id="node1" title="Definition of a self&#45;contained constraint &quot;island&quot;." alt="" coords="169,95,299,121"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,5,148,32"/>
+<area shape="rect" id="node3" title=" " alt="" coords="172,5,296,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="320,5,447,32"/>
 </map>

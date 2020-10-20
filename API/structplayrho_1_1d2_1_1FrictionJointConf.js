@@ -1,12 +1,28 @@
 var structplayrho_1_1d2_1_1FrictionJointConf =
 [
     [ "super", "structplayrho_1_1d2_1_1FrictionJointConf.html#a7af858d7bbdbc4e1de402f4b315d4f8a", null ],
-    [ "FrictionJointConf", "structplayrho_1_1d2_1_1FrictionJointConf.html#a313a9fecbd53c881deca45bba027ed3a", null ],
-    [ "FrictionJointConf", "structplayrho_1_1d2_1_1FrictionJointConf.html#a6ff0cc975ab2a3425979675907236e76", null ],
-    [ "UseMaxForce", "structplayrho_1_1d2_1_1FrictionJointConf.html#a96cd8b3b9d9cb186259e06224eebbd2d", null ],
-    [ "UseMaxTorque", "structplayrho_1_1d2_1_1FrictionJointConf.html#a26ca93c6ecd2c9285411474daf66a3ef", null ],
+    [ "FrictionJointConf", "structplayrho_1_1d2_1_1FrictionJointConf.html#a3e95865160669c95b469f5e83a1db974", null ],
+    [ "FrictionJointConf", "structplayrho_1_1d2_1_1FrictionJointConf.html#a749d223979ea418dc2a08a640ee5450c", null ],
+    [ "UseMaxForce", "structplayrho_1_1d2_1_1FrictionJointConf.html#a9bc00e6cd5250aab9461ba4058755ca1", null ],
+    [ "UseMaxTorque", "structplayrho_1_1d2_1_1FrictionJointConf.html#ac05a2f4d428a8965302aa50053bd5826", null ],
+    [ "GetAngularReaction", "structplayrho_1_1d2_1_1FrictionJointConf.html#ade895bb6a4e1b45bc803784534f2ffb2", null ],
+    [ "GetLinearReaction", "structplayrho_1_1d2_1_1FrictionJointConf.html#a91ac3d07e13f9277632001e8f02de54f", null ],
+    [ "GetMaxForce", "structplayrho_1_1d2_1_1FrictionJointConf.html#aba8162d50c28927d87bdf7e29aa8afe0", null ],
+    [ "GetMaxTorque", "structplayrho_1_1d2_1_1FrictionJointConf.html#a00b4cc40afea7be207a08ad7c018f3c1", null ],
+    [ "InitVelocity", "structplayrho_1_1d2_1_1FrictionJointConf.html#aa1ee93d27169ffa7e1c194081f1ba5a2", null ],
+    [ "SetMaxForce", "structplayrho_1_1d2_1_1FrictionJointConf.html#afa6324a364b2b89057a749a5032ff720", null ],
+    [ "SetMaxTorque", "structplayrho_1_1d2_1_1FrictionJointConf.html#acfc7a47e907d3aaf399a7919896f3571", null ],
+    [ "ShiftOrigin", "structplayrho_1_1d2_1_1FrictionJointConf.html#a110d0d6a089b3b8883e1f319984774fb", null ],
+    [ "SolvePosition", "structplayrho_1_1d2_1_1FrictionJointConf.html#ad8557c8dfa18bd290b35163d5cf86eba", null ],
+    [ "SolveVelocity", "structplayrho_1_1d2_1_1FrictionJointConf.html#a01d1ba8983bfece5db0f72889182169c", null ],
+    [ "angularImpulse", "structplayrho_1_1d2_1_1FrictionJointConf.html#a4ff93913a610c8efb9f24f48f734c992", null ],
+    [ "angularMass", "structplayrho_1_1d2_1_1FrictionJointConf.html#a61a56cd8cef199ca7396f6b850642a3e", null ],
+    [ "linearImpulse", "structplayrho_1_1d2_1_1FrictionJointConf.html#af4ffe893bedc0ae14ca078e07d5d2a43", null ],
+    [ "linearMass", "structplayrho_1_1d2_1_1FrictionJointConf.html#a0e9abf7dc8a18f5120e06497cea4f3c2", null ],
     [ "localAnchorA", "structplayrho_1_1d2_1_1FrictionJointConf.html#a99fdb13a3f08e267da5d4351e0a82968", null ],
     [ "localAnchorB", "structplayrho_1_1d2_1_1FrictionJointConf.html#ad320a4d48709fed7a9ba8ad7d96b422a", null ],
     [ "maxForce", "structplayrho_1_1d2_1_1FrictionJointConf.html#a951dfd6ab71a10b2bf897c519b486e6a", null ],
-    [ "maxTorque", "structplayrho_1_1d2_1_1FrictionJointConf.html#a0dc172c241a2bd93f84c74c23b80da4b", null ]
+    [ "maxTorque", "structplayrho_1_1d2_1_1FrictionJointConf.html#a0dc172c241a2bd93f84c74c23b80da4b", null ],
+    [ "rA", "structplayrho_1_1d2_1_1FrictionJointConf.html#aa43fa9b599c41c569618a26de255e8b3", null ],
+    [ "rB", "structplayrho_1_1d2_1_1FrictionJointConf.html#a372d0b584a9ca98f99ddcefed5519016", null ]
 ];

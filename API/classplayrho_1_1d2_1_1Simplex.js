@@ -11,10 +11,10 @@ var classplayrho_1_1d2_1_1Simplex =
     [ "Get", "classplayrho_1_1d2_1_1Simplex.html#ab745b96a84c8e8340e8abf7efbfd3c69", null ],
     [ "Get", "classplayrho_1_1d2_1_1Simplex.html#a9c422b7a3f95fe304c3d442350fe2301", null ],
     [ "GetCache", "classplayrho_1_1d2_1_1Simplex.html#ae4e2c906e65ba580c20f5b5fe6d1f37e", null ],
-    [ "GetCoefficient", "classplayrho_1_1d2_1_1Simplex.html#a877d4b165d8b245ac20e2d478ad654a2", null ],
-    [ "GetEdges", "classplayrho_1_1d2_1_1Simplex.html#aacfd525d6824e03d630698580d219598", null ],
+    [ "GetCoefficient", "classplayrho_1_1d2_1_1Simplex.html#a926797bdfce0464e1067ca352486dac1", null ],
+    [ "GetEdges", "classplayrho_1_1d2_1_1Simplex.html#a10ef4ae3f0939a14934d7d96dd78a4e1", null ],
     [ "GetSimplexEdge", "classplayrho_1_1d2_1_1Simplex.html#a84c15cfdf23cccd81f1a3213b1557863", null ],
-    [ "GetSize", "classplayrho_1_1d2_1_1Simplex.html#abb6c8051b7cb94a39aa7d8ac39aaeae6", null ],
+    [ "size", "classplayrho_1_1d2_1_1Simplex.html#a01271aa5f68e6c0360d1b5709128770f", null ],
     [ "m_normalizedWeights", "classplayrho_1_1d2_1_1Simplex.html#a9c4a201ba6c5243dcd5ed03396ed4eaf", null ],
     [ "m_simplexEdges", "classplayrho_1_1d2_1_1Simplex.html#a6b9fc441f6480d43e331c78123eaaf4d", null ]
 ];

@@ -9,7 +9,7 @@ var classplayrho_1_1d2_1_1VelocityConstraint =
     [ "AddPoint", "classplayrho_1_1d2_1_1VelocityConstraint.html#a149f6f811476b024dca1245f57c5aa75", null ],
     [ "GetBodyA", "classplayrho_1_1d2_1_1VelocityConstraint.html#a2110b3f686b74dff6e54af024f8717bc", null ],
     [ "GetBodyB", "classplayrho_1_1d2_1_1VelocityConstraint.html#a6e5dac8eb9c4cef57b7e0aa119e896bf", null ],
-    [ "GetDefaultConf", "classplayrho_1_1d2_1_1VelocityConstraint.html#a63f030de16f96f6f969b17d4d0d665c4", null ],
+    [ "GetDefaultConf", "classplayrho_1_1d2_1_1VelocityConstraint.html#acda9d12d13b5c85da4b395e7d94a96f4", null ],
     [ "GetFriction", "classplayrho_1_1d2_1_1VelocityConstraint.html#ab4aa128a02dd806edc05d3d2cbe2071a", null ],
     [ "GetK", "classplayrho_1_1d2_1_1VelocityConstraint.html#a7b7672fe3674a94c46c62b5840391286", null ],
     [ "GetNormal", "classplayrho_1_1d2_1_1VelocityConstraint.html#ad5201366b8f451d9a90878ecdbb040ff", null ],

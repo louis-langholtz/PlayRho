@@ -1,5 +1,6 @@
 <map id="playrho::d2::Simplex" name="playrho::d2::Simplex">
-<area shape="rect" id="node2" href="$classplayrho_1_1ArrayList.html" title="playrho::ArrayList\l\&lt; Real, MaxSimplexEdges,\l std::remove_const\&lt; decltype\l(MaxSimplexEdges)\&gt;::type \&gt;" alt="" coords="440,5,635,71"/>
-<area shape="rect" id="node3" href="$classplayrho_1_1ArrayList.html" title="Array list. " alt="" coords="5,57,193,109"/>
-<area shape="rect" id="node4" href="$classplayrho_1_1ArrayList.html" title="playrho::ArrayList\l\&lt; SimplexEdge, MaxSimplexEdges,\l std::remove_const\&lt; decltype\l(MaxSimplexEdges)\&gt;::type \&gt;" alt="" coords="421,95,654,160"/>
+<area shape="rect" id="node1" title="An encapsulation of a point, line segment, or triangle." alt="" coords="835,70,976,97"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1ArrayList.html" title=" " alt="" coords="440,5,635,76"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1ArrayList.html" title="Array list." alt="" coords="5,61,195,117"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1ArrayList.html" title=" " alt="" coords="421,100,653,171"/>
 </map>

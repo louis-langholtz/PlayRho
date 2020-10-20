@@ -1,8 +1,11 @@
 var group__DecimalUnitPrefices =
 [
-    [ "Centi", "group__DecimalUnitPrefices.html#ga387ed5b46cb1013ff38c0b32d98f2771", null ],
-    [ "Deci", "group__DecimalUnitPrefices.html#gac718685329c6b54f97b4be173133b3d3", null ],
-    [ "Giga", "group__DecimalUnitPrefices.html#ga272d0509b477a6badd7f175e9598ce8b", null ],
-    [ "Kilo", "group__DecimalUnitPrefices.html#ga8072171d5c45141876d15d6b3d8eaca0", null ],
-    [ "Yotta", "group__DecimalUnitPrefices.html#ga120ec462977c3a766b0c069a4706ffd9", null ]
+    [ "Centi", "group__DecimalUnitPrefices.html#ga0367ca8edd23b32c868e3fe5f79082ef", null ],
+    [ "Deci", "group__DecimalUnitPrefices.html#ga5a49a7e54c1b478f5b1cc882aa55f2d3", null ],
+    [ "Giga", "group__DecimalUnitPrefices.html#ga66ca2124fd143e2433bb2f409dc83f92", null ],
+    [ "Kilo", "group__DecimalUnitPrefices.html#gae537180a6f4ceb3a3192ee623fc2c8bc", null ],
+    [ "Mega", "group__DecimalUnitPrefices.html#gad7b2132b6101f0d7f6b3658147025168", null ],
+    [ "Peta", "group__DecimalUnitPrefices.html#ga590efc6f9c2013056da85de7ab4e84ae", null ],
+    [ "Tera", "group__DecimalUnitPrefices.html#gaf30f732f080ece0b4e695da15e9da2a4", null ],
+    [ "Yotta", "group__DecimalUnitPrefices.html#ga57179cfbd588c3d24609ad449a94bb0a", null ]
 ];

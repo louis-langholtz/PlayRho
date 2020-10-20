@@ -1,6 +1,12 @@
 <map id="playrho::d2::Manifold::PointArray" name="playrho::d2::Manifold::PointArray">
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1Manifold_1_1Point.html" title="Data for a point of collision in a Manifold. " alt="" coords="177,292,322,331"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="5,192,179,217"/>
-<area shape="rect" id="node5" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="102,92,259,117"/>
-<area shape="rect" id="node8" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature. " alt="" coords="320,192,484,217"/>
+<area shape="rect" id="node1" title="Point array structure." alt="" coords="177,407,319,448"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1Manifold_1_1Point.html" title="Data for a point of collision in a Manifold." alt="" coords="177,303,319,344"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="5,199,179,225"/>
+<area shape="rect" id="node4" title=" " alt="" coords="23,95,84,121"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="109,95,267,121"/>
+<area shape="rect" id="node6" title=" " alt="" coords="169,5,207,32"/>
+<area shape="rect" id="node7" title=" " alt="" coords="203,199,293,225"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1ContactFeature.html" title="Contact Feature." alt="" coords="317,199,480,225"/>
+<area shape="rect" id="node9" title=" " alt="" coords="327,95,388,121"/>
+<area shape="rect" id="node10" title=" " alt="" coords="412,95,463,121"/>
 </map>

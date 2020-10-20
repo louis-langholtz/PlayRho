@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['handle',['Handle',['../classplayrho_1_1d2_1_1FunctionalJointVisitor.html#aa1d92f1574c4ccd6bc9f2ea40a4cb923',1,'playrho::d2::FunctionalJointVisitor']]],
-  ['has_5fvalue',['has_value',['../classplayrho_1_1OptionalValue.html#a7b38feb32e81fd67f1b1341b6774dc5f',1,'playrho::OptionalValue']]],
-  ['hasnewfixtures',['HasNewFixtures',['../classplayrho_1_1d2_1_1World.html#aafda618891d37df952cc9865dd350c53',1,'playrho::d2::World']]],
-  ['hassensor',['HasSensor',['../classplayrho_1_1d2_1_1Contact.html#a73cfb2e1e624b31d5f37fb3e2018e901',1,'playrho::d2::Contact::HasSensor()'],['../namespaceplayrho_1_1d2.html#a73cfb2e1e624b31d5f37fb3e2018e901',1,'playrho::d2::HasSensor()']]],
-  ['hasvalidtoi',['HasValidToi',['../classplayrho_1_1d2_1_1Contact.html#a4ebfcc84851d42c9828e244fba58de8f',1,'playrho::d2::Contact']]],
-  ['hypot',['hypot',['../group__FixedMath.html#gafff5f9018a9088992be3c922926aee56',1,'playrho']]]
+  ['has_5fvalue_2525',['has_value',['../classplayrho_1_1OptionalValue.html#ad76bbf666ea6e9aec5e9a8a3188f154d',1,'playrho::OptionalValue']]],
+  ['hasnewfixtures_2526',['HasNewFixtures',['../classplayrho_1_1d2_1_1WorldImpl.html#a6889a7352eecc803037df24b4094b7f0',1,'playrho::d2::WorldImpl']]],
+  ['hasvalidtoi_2527',['HasValidToi',['../classplayrho_1_1d2_1_1Contact.html#a4ebfcc84851d42c9828e244fba58de8f',1,'playrho::d2::Contact::HasValidToi()'],['../classplayrho_1_1d2_1_1World.html#a0c7d8729c25223131150b82e787703ba',1,'playrho::d2::World::HasValidToi(ContactID id) const'],['../classplayrho_1_1d2_1_1World.html#aae57c7aca1c8c840ea8eb1ba1d44ef07',1,'playrho::d2::World::HasValidToi(const World &amp;world, ContactID id)'],['../classplayrho_1_1d2_1_1WorldImpl.html#a3bf6ddf30dea2999e45d940657f4308a',1,'playrho::d2::WorldImpl::HasValidToi()'],['../namespaceplayrho_1_1d2.html#aae57c7aca1c8c840ea8eb1ba1d44ef07',1,'playrho::d2::HasValidToi(const World &amp;world, ContactID id)'],['../namespaceplayrho_1_1d2.html#a3bf6ddf30dea2999e45d940657f4308a',1,'playrho::d2::HasValidToi(const WorldImpl &amp;world, ContactID id)']]],
+  ['hypot_2528',['hypot',['../group__FixedMath.html#gafff5f9018a9088992be3c922926aee56',1,'playrho']]]
 ];

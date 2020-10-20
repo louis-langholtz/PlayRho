@@ -1,7 +1,13 @@
 <map id="playrho::d2::MultiShapeConf" name="playrho::d2::MultiShapeConf">
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="playrho::d2::ShapeBuilder\l\&lt; MultiShapeConf \&gt;" alt="" coords="192,467,367,505"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes. " alt="" coords="178,292,370,317"/>
-<area shape="rect" id="node10" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure. " alt="" coords="296,367,471,405"/>
-<area shape="rect" id="node6" href="$classplayrho_1_1BoundedValue.html" title="playrho::BoundedValue\l\&lt; Real \&gt;" alt="" coords="395,192,554,231"/>
-<area shape="rect" id="node8" href="$classplayrho_1_1BoundedValue.html" title="Bounded value. " alt="" coords="468,92,627,131"/>
+<area shape="rect" id="node1" title="The &quot;multi&#45;shape&quot; shape configuration." alt="" coords="173,601,359,628"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title=" " alt="" coords="93,497,263,539"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1BaseShapeConf.html" title="Base configuration for initializing shapes." alt="" coords="78,317,267,344"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1d2_1_1ShapeBuilder.html" title="Builder configuration structure." alt="" coords="194,393,365,435"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="5,199,161,240"/>
+<area shape="rect" id="node5" title=" " alt="" coords="15,102,61,129"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1CheckedValue.html" title="Checked value." alt="" coords="85,95,276,136"/>
+<area shape="rect" id="node8" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="185,199,341,240"/>
+<area shape="rect" id="node7" title=" " alt="" coords="139,5,222,32"/>
+<area shape="rect" id="node9" title=" " alt="" coords="300,102,395,129"/>
+<area shape="rect" id="node11" title=" " alt="" coords="288,497,423,539"/>
 </map>

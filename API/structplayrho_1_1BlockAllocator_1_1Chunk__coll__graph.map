@@ -1,3 +1,5 @@
 <map id="playrho::BlockAllocator::Chunk" name="playrho::BlockAllocator::Chunk">
-<area shape="rect" id="node2" href="$structplayrho_1_1BlockAllocator_1_1Block.html" title="Block. " alt="" coords="5,5,162,44"/>
+<area shape="rect" id="node1" title="Chunk." alt="" coords="143,109,299,151"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1BlockAllocator_1_1Block.html" title="Block." alt="" coords="5,5,161,47"/>
+<area shape="rect" id="node3" title=" " alt="" coords="239,13,296,39"/>
 </map>

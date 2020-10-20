@@ -1,10 +1,25 @@
 var structplayrho_1_1d2_1_1RopeJointConf =
 [
     [ "super", "structplayrho_1_1d2_1_1RopeJointConf.html#a8602b4d23d1f5952bf35c6cdb4c4885f", null ],
-    [ "RopeJointConf", "structplayrho_1_1d2_1_1RopeJointConf.html#a1a4f6a271713d0f9232ba746262b9bfb", null ],
-    [ "RopeJointConf", "structplayrho_1_1d2_1_1RopeJointConf.html#af6aece5e214ca4dff823c7169dc183a0", null ],
-    [ "UseMaxLength", "structplayrho_1_1d2_1_1RopeJointConf.html#a699afbae729b7b58f5ec6f0a3f6593d5", null ],
+    [ "RopeJointConf", "structplayrho_1_1d2_1_1RopeJointConf.html#a4325e764e8e48a837b1603f9b550a2e7", null ],
+    [ "RopeJointConf", "structplayrho_1_1d2_1_1RopeJointConf.html#ab220ffc4a01507438ba00dcd491baa41", null ],
+    [ "UseMaxLength", "structplayrho_1_1d2_1_1RopeJointConf.html#a8665e7bae650f9d04c8fa2d9edf97026", null ],
+    [ "GetAngularReaction", "structplayrho_1_1d2_1_1RopeJointConf.html#af3c61329399916ae2b063e6ba94ffb6e", null ],
+    [ "GetLinearReaction", "structplayrho_1_1d2_1_1RopeJointConf.html#ac7acc7a694d7729620e48300eb157d7b", null ],
+    [ "GetMaxLength", "structplayrho_1_1d2_1_1RopeJointConf.html#ad5cf9d398d3e370e806a070fdbb8d685", null ],
+    [ "InitVelocity", "structplayrho_1_1d2_1_1RopeJointConf.html#a94620f1488d0e8115ed0b21d89da11e2", null ],
+    [ "SetMaxLength", "structplayrho_1_1d2_1_1RopeJointConf.html#aeeffd09d05131a961e0d3bd87f94c889", null ],
+    [ "ShiftOrigin", "structplayrho_1_1d2_1_1RopeJointConf.html#a1259b960c0c0112346fa02785107cdc9", null ],
+    [ "SolvePosition", "structplayrho_1_1d2_1_1RopeJointConf.html#a14231e4629e5a1cc642aba42a35245a4", null ],
+    [ "SolveVelocity", "structplayrho_1_1d2_1_1RopeJointConf.html#a180620d4fdb4c36cd2a47944af21ba71", null ],
+    [ "impulse", "structplayrho_1_1d2_1_1RopeJointConf.html#a6e5e59377727a518a6946cc6b830625f", null ],
+    [ "length", "structplayrho_1_1d2_1_1RopeJointConf.html#ab87366b4a26de4915c78d9575c0bbcfa", null ],
+    [ "limitState", "structplayrho_1_1d2_1_1RopeJointConf.html#ae485076c7c97334431e7bc8d9118fad6", null ],
     [ "localAnchorA", "structplayrho_1_1d2_1_1RopeJointConf.html#acd5e67cc48836a7f923bc80919896665", null ],
     [ "localAnchorB", "structplayrho_1_1d2_1_1RopeJointConf.html#ae118b073aebd3f30cc2305ab98a00e3b", null ],
-    [ "maxLength", "structplayrho_1_1d2_1_1RopeJointConf.html#a99f6e04f43dec401dd2428001f67339a", null ]
+    [ "mass", "structplayrho_1_1d2_1_1RopeJointConf.html#accff532beebf0e6ea538a5d714fb8f49", null ],
+    [ "maxLength", "structplayrho_1_1d2_1_1RopeJointConf.html#a99f6e04f43dec401dd2428001f67339a", null ],
+    [ "rA", "structplayrho_1_1d2_1_1RopeJointConf.html#a7a1174bb5af831f04e94ff983a6aa642", null ],
+    [ "rB", "structplayrho_1_1d2_1_1RopeJointConf.html#af61dcf4e43d6354a70f942f9769d1560", null ],
+    [ "u", "structplayrho_1_1d2_1_1RopeJointConf.html#a1ab89591502601289dea1121f89af556", null ]
 ];

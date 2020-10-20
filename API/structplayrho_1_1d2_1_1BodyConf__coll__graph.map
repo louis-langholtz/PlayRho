@@ -1,6 +1,21 @@
 <map id="playrho::d2::BodyConf" name="playrho::d2::BodyConf">
-<area shape="rect" id="node4" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; Length \&gt;" alt="" coords="526,123,701,149"/>
-<area shape="rect" id="node6" href="$structplayrho_1_1Vector.html" title="Vector. " alt="" coords="150,170,307,195"/>
-<area shape="rect" id="node8" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearVelocity \&gt;" alt="" coords="505,173,722,198"/>
-<area shape="rect" id="node11" href="$structplayrho_1_1Vector.html" title="playrho::Vector\&lt; LinearAcceleration \&gt;" alt="" coords="492,271,735,297"/>
+<area shape="rect" id="node1" title="Body configuration." alt="" coords="976,263,1128,289"/>
+<area shape="rect" id="node2" title=" " alt="" coords="616,15,761,41"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="602,65,775,92"/>
+<area shape="rect" id="node4" title=" " alt="" coords="258,23,319,49"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1Vector.html" title="Vector." alt="" coords="209,113,368,140"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="581,116,797,143"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1Vector.html" title=" " alt="" coords="568,217,809,244"/>
+<area shape="rect" id="node6" title=" " alt="" coords="27,113,66,140"/>
+<area shape="rect" id="node8" title=" " alt="" coords="237,204,341,231"/>
+<area shape="rect" id="node9" title=" " alt="" coords="649,167,729,193"/>
+<area shape="rect" id="node11" title=" " alt="" coords="224,255,353,281"/>
+<area shape="rect" id="node12" title=" " alt="" coords="665,309,712,336"/>
+<area shape="rect" id="node13" title=" " alt="" coords="663,360,714,387"/>
+<area shape="rect" id="node14" title=" " alt="" coords="629,411,749,437"/>
+<area shape="rect" id="node15" title=" " alt="" coords="641,461,736,488"/>
+<area shape="rect" id="node16" href="$classplayrho_1_1CheckedValue.html" title=" " alt="" coords="611,513,767,554"/>
+<area shape="rect" id="node17" title=" " alt="" coords="247,493,330,520"/>
+<area shape="rect" id="node18" href="$classplayrho_1_1CheckedValue.html" title="Checked value." alt="" coords="193,545,384,586"/>
+<area shape="rect" id="node19" title=" " alt="" coords="5,552,88,579"/>
 </map>

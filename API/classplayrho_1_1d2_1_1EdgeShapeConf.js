@@ -4,7 +4,7 @@ var classplayrho_1_1d2_1_1EdgeShapeConf =
     [ "EdgeShapeConf", "classplayrho_1_1d2_1_1EdgeShapeConf.html#a4411ca2f890e0d98c65db50d25f77948", null ],
     [ "GetChild", "classplayrho_1_1d2_1_1EdgeShapeConf.html#a60b2f40cbcd5bec85036d7f8169b1009", null ],
     [ "GetDefaultConf", "classplayrho_1_1d2_1_1EdgeShapeConf.html#aeaba8cac67b704014d26574a3492bae0", null ],
-    [ "GetDefaultVertexRadius", "classplayrho_1_1d2_1_1EdgeShapeConf.html#a54d089d5ad8e26aac03f2d0d70d84499", null ],
+    [ "GetDefaultVertexRadius", "classplayrho_1_1d2_1_1EdgeShapeConf.html#a2440d2d407850714f6a96134a8cca0fb", null ],
     [ "GetVertexA", "classplayrho_1_1d2_1_1EdgeShapeConf.html#a3affefb1face6109ba0dbf3f2ae1316c", null ],
     [ "GetVertexB", "classplayrho_1_1d2_1_1EdgeShapeConf.html#a4e1dafe1cd7aabc170875038d72b6e76", null ],
     [ "Set", "classplayrho_1_1d2_1_1EdgeShapeConf.html#a3c285199c324b6de0de6ed0ee4c675f9", null ],

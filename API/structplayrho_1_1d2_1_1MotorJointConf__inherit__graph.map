@@ -1,5 +1,6 @@
 <map id="playrho::d2::MotorJointConf" name="playrho::d2::MotorJointConf">
-<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="playrho::d2::JointBuilder\l\&lt; MotorJointConf \&gt;" alt="" coords="16,167,180,205"/>
-<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Abstract base Joint definition class. " alt="" coords="17,5,168,31"/>
-<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure. " alt="" coords="114,80,309,105"/>
+<area shape="rect" id="node1" title="Motor joint definition." alt="" coords="5,261,188,288"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1d2_1_1JointBuilder.html" title=" " alt="" coords="15,171,178,212"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1d2_1_1JointConf.html" title="Abstract base joint definition class." alt="" coords="16,5,167,32"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1d2_1_1JointBuilder.html" title="Joint builder definition structure." alt="" coords="113,81,307,108"/>
 </map>

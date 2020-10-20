@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['negative',['Negative',['../group__BoundedAliases.html#ga0a15a03f8bd917575a6ae1cc06dff112',1,'playrho']]],
-  ['nonnegative',['NonNegative',['../group__BoundedAliases.html#gae872dc540686eb8e626643117f8cb62c',1,'playrho']]],
-  ['nonnull',['NonNull',['../group__BoundedAliases.html#gab64c2bdfe3d8c1c0815013d817b4aa32',1,'playrho']]],
-  ['nonpositive',['NonPositive',['../group__BoundedAliases.html#ga68b6bab2cd78b32dbd643d341f37b8e5',1,'playrho']]],
-  ['nonzero',['NonZero',['../group__BoundedAliases.html#ga6d3eb15a067eb31352543486e8f10f23',1,'playrho']]],
-  ['numeric_5flimits',['numeric_limits',['../classplayrho_1_1Fixed.html#a4787c158e991542cff4acf03b3323d9a',1,'playrho::Fixed']]]
+  ['negative_3532',['Negative',['../group__CheckedValues.html#gab69142355b498ed0ff7ec9ee8aec5d7d',1,'playrho']]],
+  ['nonnegative_3533',['NonNegative',['../group__CheckedValues.html#gac74ec9c65c8f22cefed941aa486af9e3',1,'playrho']]],
+  ['nonnull_3534',['NonNull',['../group__CheckedValues.html#ga6765653a298365f410348651dff5b088',1,'playrho']]],
+  ['nonpositive_3535',['NonPositive',['../group__CheckedValues.html#gae7595073697fcf149a7828d5ea96c23d',1,'playrho']]],
+  ['nonzero_3536',['NonZero',['../group__CheckedValues.html#ga78bf6648df130b547bb5e79e3dcb9a74',1,'playrho']]],
+  ['numeric_5flimits_3537',['numeric_limits',['../classplayrho_1_1Fixed.html#a4787c158e991542cff4acf03b3323d9a',1,'playrho::Fixed']]]
 ];

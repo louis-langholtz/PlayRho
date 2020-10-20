@@ -2,7 +2,7 @@ var modules =
 [
     [ "Ray Casting Functions", "group__RayCastGroup.html", "group__RayCastGroup" ],
     [ "Shape Classes", "group__PartsGroup.html", "group__PartsGroup" ],
-    [ "Bounded Value Types", "group__BoundedAliases.html", "group__BoundedAliases" ],
+    [ "Checked Value Types", "group__CheckedValues.html", "group__CheckedValues" ],
     [ "Math Functions For Fixed Types", "group__FixedMath.html", "group__FixedMath" ],
     [ "Additional Math Functions", "group__Math.html", "group__Math" ],
     [ "Matrix Traits", "group__MatrixTraitsGroup.html", "group__MatrixTraitsGroup" ],
