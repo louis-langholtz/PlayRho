@@ -471,11 +471,9 @@ TEST(Body, CreateAndDestroyFixture)
 
 TEST(Body, SetType)
 {
-    auto bd = BodyConf{};
-    bd.type = BodyType::Dynamic;
     auto world = World{};
 
-    const auto body = world.CreateBody(bd);
+    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_EQ(world.GetBodiesForProxies().size(), 0u);
     ASSERT_EQ(GetType(world, body), BodyType::Dynamic);
 
