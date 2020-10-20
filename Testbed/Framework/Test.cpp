@@ -1175,7 +1175,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
     auto stepConf = StepConf{};
 
-    stepConf.SetTime(settings.dt * Second);
+    stepConf.deltaTime = settings.dt * Second;
 
     stepConf.regVelocityIterations = static_cast<StepConf::iteration_type>(settings.regVelocityIterations);
     stepConf.regPositionIterations = static_cast<StepConf::iteration_type>(settings.regPositionIterations);

@@ -255,7 +255,7 @@ TEST(World, SetSubStepping)
     world.SetSubStepping(true);
     EXPECT_TRUE(world.GetSubStepping());
     auto stepConf = StepConf{};
-    stepConf.SetInvTime(100_Hz);
+    stepConf.deltaTime = Real(1) / 100_Hz;
     world.Step(stepConf);
     EXPECT_TRUE(world.GetSubStepping());
 }
@@ -271,7 +271,7 @@ TEST(World, IsStepComplete)
     EXPECT_TRUE(world.IsStepComplete());
 
     auto stepConf = StepConf{};
-    stepConf.SetInvTime(100_Hz);
+    stepConf.deltaTime = Real(1) / 100_Hz;
     world.Step(stepConf);
     ASSERT_TRUE(world.GetSubStepping());
     EXPECT_TRUE(world.IsStepComplete());
@@ -865,7 +865,7 @@ TEST(World, Query)
     ASSERT_NE(fixture, InvalidFixtureID);
     
     auto stepConf = StepConf{};
-    stepConf.SetTime(0_s);
+    stepConf.deltaTime = 0_s;
     world.Step(stepConf);
 
     {
@@ -923,7 +923,7 @@ TEST(World, RayCast)
     ASSERT_NE(fixture, InvalidFixtureID);
     
     auto stepConf = StepConf{};
-    stepConf.SetTime(0_s);
+    stepConf.deltaTime = 0_s;
     world.Step(stepConf);
     
     {
@@ -1274,7 +1274,7 @@ TEST(World, GetTouchingCountFreeFunction)
     auto stepConf = StepConf{};
     world.Step(stepConf);
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
-    stepConf.SetInvTime(100_Hz);
+    stepConf.deltaTime = Real(1) / 100_Hz;
     world.Step(stepConf);
     EXPECT_EQ(GetTouchingCount(world), ContactCounter(0));
 
@@ -1597,7 +1597,7 @@ TEST(World, BodyAccelRevPerSpecWithNegativeTimeAndNoVelOrPosIterations)
     
     const auto time_inc = -0.01_s;
     auto stepConf = StepConf{};
-    stepConf.SetTime(time_inc);
+    stepConf.deltaTime = time_inc;
     stepConf.dtRatio = -1;
     stepConf.regPositionIterations = 0;
     stepConf.regVelocityIterations = 0;
@@ -1771,7 +1771,7 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     ASSERT_LT(GetX(pos_a), GetX(pos_b));
 
     auto conf = StepConf{};
-    conf.SetTime(time_inc);
+    conf.deltaTime = time_inc;
     conf.regPositionIterations = 0;
     conf.regVelocityIterations = 0;
     conf.toiPositionIterations = 0;
@@ -1827,7 +1827,8 @@ TEST(World, HeavyOnLight)
     const auto biggerDiskConf = DiskShapeConf(diskConf).UseRadius(5.0_m);
     
     const auto baseStepConf = []() {
-        auto step = StepConf{}.SetInvTime(60_Hz);
+        auto step = StepConf{};
+        step.deltaTime = Real(1) / 60_Hz;
         return step;
     }();
     const auto largerStepConf = [=](StepConf step) {
@@ -2226,7 +2227,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
 
     const auto time_inc = .01_s;
     StepConf step;
-    step.SetTime(time_inc);
+    step.deltaTime = time_inc;
 
     // Solver won't separate more than -step.linearSlop.
     const auto full_separation = radius * 2_m - Length{step.linearSlop};
@@ -2312,7 +2313,7 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
 
     auto stepConf = StepConf{};
     const auto time_inc = .01_s;
-    stepConf.SetTime(time_inc);
+    stepConf.deltaTime = time_inc;
     stepConf.maxLinearCorrection = Real{0.0001f * 40} * Meter;
     for (auto i = 0; i < 100; ++i)
     {
@@ -2394,7 +2395,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     
     const auto time_inc = Real(.01);
     StepConf step;
-    step.SetTime(1_s * time_inc);
+    step.deltaTime = 1_s * time_inc;
     // Solver won't separate more than -step.linearSlop.
     const auto full_separation = half_dim * 2_m - Length{step.linearSlop};
     for (auto i = 0; i < 100; ++i)
@@ -2695,7 +2696,7 @@ TEST(World_Longer, TilesComesToRest)
     }
     
     StepConf step;
-    step.SetTime(1_s / 60);
+    step.deltaTime = 1_s / 60;
     step.linearSlop = LinearSlop;
     step.regMinSeparation = -LinearSlop * Real(3);
     step.toiMinSeparation = -LinearSlop * Real(1.5f);
@@ -2939,7 +2940,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
 
     const auto time_inc = .01_s;
     auto step = StepConf{};
-    step.SetTime(time_inc);
+    step.deltaTime = time_inc;
     step.linearSlop = LinearSlop;
     step.regMinSeparation = -LinearSlop * Real(3);
     step.toiMinSeparation = -LinearSlop * Real(1.5f);
@@ -3653,7 +3654,8 @@ public:
         SetAccelerations(world, Acceleration{LinearAcceleration2{
             Real(0) * MeterPerSquareSecond, -Real(10) * MeterPerSquareSecond
         }, 0 * RadianPerSquareSecond});
-        const auto stepConf = StepConf{}.SetTime(1_s / 60);
+        auto stepConf = StepConf{};
+        stepConf.deltaTime = 1_s / 60;
         while (loopsTillSleeping < maxLoops)
         {
             world.Step(stepConf);

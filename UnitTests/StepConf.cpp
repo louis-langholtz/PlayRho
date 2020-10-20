@@ -28,9 +28,9 @@ TEST(StepConf, ByteSize)
 {
     switch (sizeof(Real))
     {
-        case  4: EXPECT_EQ(sizeof(StepConf), std::size_t(108)); break;
-        case  8: EXPECT_EQ(sizeof(StepConf), std::size_t(208)); break;
-        case 16: EXPECT_EQ(sizeof(StepConf), std::size_t(400)); break;
+        case  4: EXPECT_EQ(sizeof(StepConf), std::size_t(104)); break;
+        case  8: EXPECT_EQ(sizeof(StepConf), std::size_t(200)); break;
+        case 16: EXPECT_EQ(sizeof(StepConf), std::size_t(384)); break;
         default: FAIL(); break;
     }
 }
@@ -41,19 +41,16 @@ TEST(StepConf, CopyConstruction)
     const auto displacementMultiplier = Real{3.4f};
 
     StepConf conf;
-    conf.SetTime(dt);
+    conf.deltaTime = dt;
     conf.displaceMultiplier = displacementMultiplier;
 
-    ASSERT_EQ(conf.GetInvTime(), Real{1} / dt);
-    
-    EXPECT_EQ(StepConf{conf}.GetTime(), dt);
-    EXPECT_EQ(StepConf{conf}.GetInvTime(), Real{1} / dt);
+    EXPECT_EQ(StepConf{conf}.deltaTime, dt);
     EXPECT_EQ(StepConf{conf}.displaceMultiplier, displacementMultiplier);
     
-    const auto cdt = conf.GetTime() * Real{0.8f};
-    const auto newConf = StepConf{conf}.SetTime(cdt);
-    
-    EXPECT_EQ(newConf.GetTime(), cdt);
+    const auto cdt = conf.deltaTime * Real{0.8f};
+    auto newConf = StepConf{conf};
+    newConf.deltaTime = cdt;
+    EXPECT_EQ(newConf.deltaTime, cdt);
 }
 
 TEST(StepConf, maxTranslation)

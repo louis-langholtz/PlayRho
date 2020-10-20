@@ -146,8 +146,8 @@ bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
     const auto C = object.length - object.maxLength;
 
     // Predictive constraint.
-    const auto Cdot = LinearVelocity{Dot(object.u, vpB - vpA)}
-    + ((C < 0_m)? LinearVelocity{step.GetInvTime() * C}: 0_mps);
+    const auto inv_h = (step.deltaTime != 0_s)? Real(1) / step.deltaTime: 0_Hz;
+    const auto Cdot = LinearVelocity{Dot(object.u, vpB - vpA) + ((C < 0_m)? inv_h * C: 0_mps)};
 
     auto localImpulse = -object.mass * Cdot;
     const auto oldImpulse = object.impulse;

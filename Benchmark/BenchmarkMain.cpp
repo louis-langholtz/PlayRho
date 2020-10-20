@@ -1982,7 +1982,7 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
 
     const auto worldConf = playrho::d2::WorldConf{/* zero G */}.UseInitialTreeSize(8192);
     auto stepConf = playrho::StepConf{};
-    stepConf.SetTime(playrho::Second / 60);
+    stepConf.deltaTime = playrho::Second / 60;
     stepConf.linearSlop = linearSlop;
     stepConf.angularSlop = angularSlop;
     stepConf.regMinSeparation = -linearSlop * 3;
@@ -2147,7 +2147,7 @@ static void DropTilesPlayRho(int count)
     }
     
     auto step = playrho::StepConf{};
-    step.SetTime(playrho::Second / 60);
+    step.deltaTime = playrho::Second / 60;
     step.linearSlop = linearSlop;
     step.angularSlop = angularSlop;
     step.regMinSeparation = -linearSlop * 3;

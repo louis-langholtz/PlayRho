@@ -53,7 +53,7 @@
 
 namespace playrho {
 
-class StepConf;
+struct StepConf;
 struct Filter;
 struct FixtureProxy;
 

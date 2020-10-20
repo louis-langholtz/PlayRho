@@ -156,7 +156,7 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
             const auto k = object.springMass * omega * omega;
 
             // magic formulas
-            const auto h = step.GetTime();
+            const auto h = step.deltaTime;
 
             const auto invGamma = Mass{h * (d + h * k)};
             object.gamma = (invGamma > 0_kg)? Real{1} / invGamma: 0;
@@ -253,7 +253,7 @@ bool SolveVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
         auto impulse = AngularMomentum{-object.angularMass * Cdot};
 
         const auto oldImpulse = object.angularImpulse;
-        const auto maxImpulse = AngularMomentum{step.GetTime() * object.maxMotorTorque};
+        const auto maxImpulse = AngularMomentum{step.deltaTime * object.maxMotorTorque};
         object.angularImpulse = std::clamp(object.angularImpulse + impulse,
                                            -maxImpulse, maxImpulse);
         impulse = object.angularImpulse - oldImpulse;

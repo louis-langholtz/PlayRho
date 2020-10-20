@@ -35,7 +35,7 @@
 
 namespace playrho {
 
-class StepConf;
+struct StepConf;
 struct ConstraintSolverConf;
 
 namespace d2 {

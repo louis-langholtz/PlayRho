@@ -62,7 +62,7 @@ StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
                TimestepIters positionIterations)
 {
     StepConf conf;
-    conf.SetTime(delta);
+    conf.deltaTime = delta;
     conf.regVelocityIterations = velocityIterations;
     conf.regPositionIterations = positionIterations;
     conf.toiVelocityIterations = velocityIterations;
