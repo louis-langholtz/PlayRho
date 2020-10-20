@@ -44,7 +44,7 @@ std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldImpl& other)
     return std::make_unique<WorldImpl>(other);
 }
 
-void Clear(WorldImpl& world)
+void Clear(WorldImpl& world) noexcept
 {
     world.Clear();
 }

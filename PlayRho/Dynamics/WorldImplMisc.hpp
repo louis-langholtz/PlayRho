@@ -58,7 +58,7 @@ std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldConf& def);
 
 std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldImpl& other);
 
-void Clear(WorldImpl& world);
+void Clear(WorldImpl& world) noexcept;
 
 void SetFixtureDestructionListener(WorldImpl& world,
                                    std::function<void(FixtureID)> listener) noexcept;

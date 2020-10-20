@@ -43,7 +43,7 @@ static_assert(std::is_nothrow_destructible<World>::value, "World must be nothrow
 // Special member functions are off in their own .cpp file to avoid their
 // necessary includes being in this file!!
 
-void World::Clear()
+void World::Clear() noexcept
 {
     ::playrho::d2::Clear(*m_impl);
 }
