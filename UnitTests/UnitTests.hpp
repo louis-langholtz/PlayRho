@@ -25,16 +25,6 @@
 
 #include <PlayRho/Common/Templates.hpp>
 
-struct UnitTestsVisitorData
-{
-    int visitedShape = 0;
-    int visitedDisk = 0;
-    int visitedEdge = 0;
-    int visitedPolygon = 0;
-    int visitedChain = 0;
-    int visitedMulti = 0;
-};
-
 namespace playrho {
 namespace d2 {
 
@@ -45,26 +35,6 @@ class ChainShapeConf;
 struct MultiShapeConf;
 
 } // namespace d2
-
-// Specialize the template Visit function.
-// Note: These should be included by all code (within the UnitTests application)
-//   that uses the Shape class in order to avoid U.B. from O.D.R. violations.
-
-template <>
-bool Visit(const d2::DiskShapeConf&, void* userData);
-
-template <>
-bool Visit(const d2::EdgeShapeConf&, void* userData);
-
-template <>
-bool Visit(const d2::PolygonShapeConf&, void* userData);
-
-template <>
-bool Visit(const d2::ChainShapeConf&, void* userData);
-
-template <>
-bool Visit(const d2::MultiShapeConf&, void* userData);
-
 } // namespace playrho
 
 #endif /* UnitTests_hpp */

@@ -308,7 +308,7 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
         const auto Cdot = vDot + (object.a2 * velB.angular - object.a1 * velA.angular) / Radian;
         auto impulse = Momentum{object.motorMass * (object.motorSpeed * Meter / Radian - Cdot)};
         const auto oldImpulse = object.motorImpulse;
-        const auto maxImpulse = step.GetTime() * object.maxMotorForce;
+        const auto maxImpulse = step.deltaTime * object.maxMotorForce;
         object.motorImpulse = std::clamp(object.motorImpulse + impulse, -maxImpulse, maxImpulse);
         impulse = object.motorImpulse - oldImpulse;
 

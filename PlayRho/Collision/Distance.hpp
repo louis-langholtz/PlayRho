@@ -31,7 +31,7 @@ namespace playrho {
 using PairLength2 = std::pair<Length2, Length2>;
 
 struct ToiConf;
-class StepConf;
+struct StepConf;
 
 namespace d2 {
 

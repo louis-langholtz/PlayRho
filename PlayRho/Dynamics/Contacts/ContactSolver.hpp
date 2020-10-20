@@ -24,7 +24,7 @@
 
 namespace playrho {
 
-class StepConf;
+struct StepConf;
 
 namespace d2 {
 

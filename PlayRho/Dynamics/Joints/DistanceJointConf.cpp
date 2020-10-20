@@ -132,7 +132,7 @@ void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies
         const auto k = object.mass * Square(omega); // M T^-2
 
         // magic formulas
-        const auto h = step.GetTime();
+        const auto h = step.deltaTime;
         const auto gamma = Mass{h * (d + h * k)}; // T (M T^-1 + T M T^-2) = M
         object.invGamma = (gamma != 0_kg)? Real{1} / gamma: 0;
         object.bias = C * h * k * object.invGamma; // L T M T^-2 M^-1 = L T^-1

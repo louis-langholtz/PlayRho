@@ -102,7 +102,7 @@ void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
     // magic formulas
     // gamma has units of inverse mass.
     // beta has units of inverse time.
-    const auto h = step.GetTime();
+    const auto h = step.deltaTime;
     const auto tmp = d + h * k; // M T^-1
     assert(IsValid(Real{tmp * Second / Kilogram}));
     const auto invGamma = Mass{h * tmp}; // M T^-1 * T is simply M.
@@ -149,7 +149,7 @@ bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
     const auto addImpulse = Transform(-ev, object.mass);
     assert(IsValid(addImpulse));
     object.impulse += addImpulse;
-    const auto maxImpulse = step.GetTime() * Force{object.maxForce};
+    const auto maxImpulse = step.deltaTime * Force{object.maxForce};
     if (GetMagnitudeSquared(object.impulse) > Square(maxImpulse))
     {
         object.impulse = GetUnitVector(object.impulse, UnitVec::GetZero()) * maxImpulse;

@@ -19,24 +19,28 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/PlayRho.hpp>
+#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+
 #include <iostream>
 #include <iomanip>
 
-using namespace playrho;
-using namespace playrho::d2;
-
-// This is a simple example of building and running a simulation using PlayRho.
+// This is a simpler example of building and running a simulation using PlayRho.
 // The code creates a large box to be the ground and a small disk to be a ball
 // above the ground. There are no graphics for this example. PlayRho is meant
-// to be used with your rendering engine in your game engine.
+// to be used with the rendering engine of your game engine.
 int main()
 {
-    // Construct a world object, which will hold and simulate bodies.
+    // Bring used namespaces into global namespace to simplify this source code.
+    using namespace playrho;
+    using namespace playrho::d2;
+
+    // Construct a world object which will hold and simulate bodies.
     auto world = World{};
 
-    // Call world's body creation method which allocates memory for ground body.
-    // The body is also added to the world.
+    // Call world's body creation method which allocates memory for ground body and
+    // adds it to the world.
     const auto ground = world.CreateBody(BodyConf{}.UseLocation(Length2{0_m, -10_m}));
 
     // Define the ground shape. Use a polygon configured as a box for this.
@@ -55,19 +59,17 @@ int main()
     // Define a disk shape for the ball body and create a fixture to add it.
     world.CreateFixture(ball, Shape{DiskShapeConf{}.UseRadius(1_m)});
 
-    // Prepare for simulation. Typically code uses a time step of 1/60 of a second
-    // (60Hz). The defaults are setup for that and to generally provide a high
-    // enough quality simulation in most game scenarios.
-    const auto stepConf = StepConf{};
-
     // Setup the C++ stream output format.
     std::cout << std::fixed << std::setprecision(2);
 
     // A little game-like loop.
     for (auto i = 0; i < 60; ++i)
     {
-        // Perform a single step of simulation. Keep the time step & iterations fixed.
-        world.Step(stepConf);
+        // Perform a step of the simulation. Keep the time step & iterations fixed.
+        // Typically code uses a time step of 1/60 of a second (60Hz). The defaults
+        // are setup for that and to generally provide a high enough quality simulation
+        // in most scenarios.
+        world.Step();
 
         const auto location = world.GetTransformation(ball).p;
         const auto angle = world.GetAngle(ball);

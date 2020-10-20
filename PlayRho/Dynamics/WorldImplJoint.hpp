@@ -39,26 +39,32 @@ namespace d2 {
 class WorldImpl;
 class Joint;
 
+/// @brief Creates a new joint.
+/// @relatedalso WorldImpl
 JointID CreateJoint(WorldImpl& world, const Joint& def);
 
 /// @brief Destroys the identified joint.
+/// @relatedalso WorldImpl
 void Destroy(WorldImpl& world, JointID id);
 
 /// @brief Gets the type of the joint.
+/// @relatedalso WorldImpl
 JointType GetType(const WorldImpl& world, JointID id);
 
+/// @brief Gets the identified joint's value.
+/// @relatedalso WorldImpl
 const Joint& GetJoint(const WorldImpl& world, JointID id);
 
+/// @brief Sets the identified joint's new value.
+/// @relatedalso WorldImpl
 void SetJoint(WorldImpl& world, JointID id, const Joint& def);
 
-/// @brief Gets the data of the joint.
-/// @note This is not the user data!
-const void* GetData(const WorldImpl& world, JointID id);
-
 /// @brief Gets the linear reaction on body-B at the joint anchor.
+/// @relatedalso WorldImpl
 Momentum2 GetLinearReaction(const WorldImpl& world, JointID id);
 
 /// @brief Get the angular reaction on body-B for the identified joint.
+/// @relatedalso WorldImpl
 AngularMomentum GetAngularReaction(const WorldImpl& world, JointID id);
 
 /// @brief Wakes up the joined bodies.

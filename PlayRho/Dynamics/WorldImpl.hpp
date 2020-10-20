@@ -58,7 +58,7 @@
 
 namespace playrho {
 
-class StepConf;
+struct StepConf;
 enum class BodyType;
 
 namespace d2 {

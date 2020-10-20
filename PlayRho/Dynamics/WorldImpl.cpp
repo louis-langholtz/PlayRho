@@ -347,7 +347,7 @@ inline Time GetUnderActiveTime(const Body& b, const StepConf& conf) noexcept
     const auto underactive = IsUnderActive(b.GetVelocity(), conf.linearSleepTolerance,
                                            conf.angularSleepTolerance);
     const auto sleepable = b.IsSleepingAllowed();
-    return (sleepable && underactive)? b.GetUnderActiveTime() + conf.GetTime(): 0_s;
+    return (sleepable && underactive)? b.GetUnderActiveTime() + conf.deltaTime: 0_s;
 }
 
 inline Time UpdateUnderActiveTimes(const Island::Bodies& bodies,
@@ -966,7 +966,7 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
     
     auto results = IslandStats{};
     results.positionIterations = conf.regPositionIterations;
-    const auto h = conf.GetTime(); ///< Time step.
+    const auto h = conf.deltaTime; ///< Time step.
 
     // Update bodies' pos0 values.
     for_each(cbegin(island.bodies), cend(island.bodies), [&](const auto& bodyID) {
@@ -1434,13 +1434,9 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
     RemoveUnspeedablesFromIslanded(m_island.bodies, m_bodyBuffer, m_islandedBodies);
 
     // Now solve for remainder of time step.
-    //
-    // Note: subConf is written the way it is because MSVS2017 emitted errors when
-    //   written as:
-    //     SolveToi(StepConf{conf}.SetTime((1 - toi) * conf.GetTime()), island);
-    //
     auto subConf = StepConf{conf};
-    auto results = SolveToiViaGS(m_island, subConf.SetTime((1 - toi) * conf.GetTime()));
+    subConf.deltaTime = (1 - toi) * conf.deltaTime;
+    auto results = SolveToiViaGS(m_island, subConf);
     results.contactsUpdated += contactsUpdated;
     results.contactsSkipped += contactsSkipped;
     return results;
@@ -1560,7 +1556,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 
     // Don't store TOI contact forces for warm starting because they can be quite large.
 
-    IntegratePositions(bodyConstraints, conf.GetTime());
+    IntegratePositions(bodyConstraints, conf.deltaTime);
 
     for (const auto& id: island.bodies)
     {
@@ -1713,9 +1709,9 @@ StepStats WorldImpl::Step(const StepConf& conf)
             stepStats.pre.added = FindNewContacts();
         }
 
-        if (conf.GetTime() != 0_s)
+        if (conf.deltaTime != 0_s)
         {
-            m_inv_dt0 = conf.GetInvTime();
+            m_inv_dt0 = (conf.deltaTime != 0_s)? Real(1) / conf.deltaTime: 0_Hz;
 
             // Could potentially run UpdateContacts multithreaded over split lists...
             const auto updateStats = UpdateContacts(conf);

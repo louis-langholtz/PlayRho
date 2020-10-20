@@ -103,23 +103,6 @@ TEST(DiskShapeConf, GetInvalidChildThrows)
     EXPECT_THROW(GetChild(foo, 1), InvalidArgument);
 }
 
-TEST(DiskShapeConf, Visit)
-{
-    const auto s = Shape{DiskShapeConf{}};
-    auto data = UnitTestsVisitorData{};
-    ASSERT_EQ(data.visitedDisk, 0);
-    ASSERT_EQ(data.visitedEdge, 0);
-    ASSERT_EQ(data.visitedPolygon, 0);
-    ASSERT_EQ(data.visitedChain, 0);
-    ASSERT_EQ(data.visitedMulti, 0);
-    EXPECT_TRUE(Visit(s, &data));
-    EXPECT_EQ(data.visitedDisk, 1);
-    EXPECT_EQ(data.visitedEdge, 0);
-    EXPECT_EQ(data.visitedPolygon, 0);
-    EXPECT_EQ(data.visitedChain, 0);
-    EXPECT_EQ(data.visitedMulti, 0);
-}
-
 TEST(DiskShapeConf, TypeInfo)
 {
     const auto foo = DiskShapeConf{};
@@ -130,17 +113,6 @@ TEST(DiskShapeConf, TypeInfo)
     EXPECT_NO_THROW(copy = TypeCast<DiskShapeConf>(shape));
     EXPECT_THROW(TypeCast<int>(shape), std::bad_cast);
 }
-
-#if 0
-TEST(DiskShapeConf, BaseVisitorForDiskShape)
-{
-    const auto shape = DiskShapeConf{}.UseRadius(2_m);
-    auto visitor = IsVisitedShapeVisitor{};
-    ASSERT_FALSE(visitor.IsVisited());
-    shape.Accept(visitor);
-    EXPECT_TRUE(visitor.IsVisited());
-}
-#endif
 
 TEST(DiskShapeConf, TestPoint)
 {

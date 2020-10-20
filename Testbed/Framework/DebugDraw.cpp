@@ -20,6 +20,7 @@
 #include "DebugDraw.hpp"
 
 #if defined(__APPLE_CC__)
+#define GL_SILENCE_DEPRECATION
 #include <OpenGL/gl3.h>
 #else
 #include <GL/glew.h>

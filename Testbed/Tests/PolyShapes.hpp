@@ -25,53 +25,9 @@
 #include <vector>
 #include <cstring>
 
-/// This tests stacking. It also shows how to use World::Query
-/// and TestOverlap.
-
 namespace testbed {
 
-/// This callback is called by the Query free function. We find all the fixtures
-/// that overlap an AABB. Of those, we use TestOverlap to determine which fixtures
-/// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
-class ShapeDrawer
-{
-public:
-
-    void operator() (const TypeID& ti, const void* data)
-    {
-        if (ti == GetTypeID<DiskShapeConf>())
-        {
-            Visit(*static_cast<const DiskShapeConf*>(data));
-        }
-        else if (ti == GetTypeID<PolygonShapeConf>())
-        {
-            Visit(*static_cast<const PolygonShapeConf*>(data));
-        }
-    }
-
-    void Visit(const DiskShapeConf& shape)
-    {
-        const auto center = Transform(shape.GetLocation(), m_xf);
-        const auto radius = shape.GetRadius();
-        debugDraw->DrawCircle(center, radius, m_color);
-    }
-
-    void Visit(const PolygonShapeConf& shape)
-    {
-        const auto vertexCount = shape.GetVertexCount();
-        auto vertices = std::vector<Length2>(vertexCount);
-        for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
-        {
-            vertices[i] = Transform(shape.GetVertex(i), m_xf);
-        }
-        debugDraw->DrawPolygon(&vertices[0], vertexCount, m_color);
-    }
-    
-    Color m_color = Color(0.95f, 0.95f, 0.6f);
-    Transformation m_xf;
-    Drawer* debugDraw;
-};
-
+/// This tests stacking. It also shows how to use World::Query and TestOverlap.
 class PolyShapes : public Test
 {
 public:
@@ -84,7 +40,9 @@ public:
     PolyShapes()
     {
         // Ground body
-        CreateFixture(m_world, CreateBody(m_world), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        CreateFixture(m_world, CreateBody(m_world), Shape{
+            EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}
+        });
 
         auto conf = PolygonShapeConf{};
         conf.UseDensity(1_kgpm2);
@@ -201,15 +159,14 @@ public:
         circleConf.vertexRadius = 2_m;
 
         const auto transform = Transform_identity;
-
-        ShapeDrawer shapeDrawer;
-        shapeDrawer.debugDraw = &drawer;
-
         constexpr auto e_maxCount = 4;
         int count = 0;
         const auto circleChild = GetChild(circleConf, 0);
         const auto aabb = ComputeAABB(circleChild, transform);
-        Query(m_world.GetTree(), aabb, [&](FixtureID f, ChildCounter) {
+        // Finds all the fixtures that overlap an AABB. Of those, we use TestOverlap to
+        // determine which fixtures overlap a circle. Up to 4 overlapped fixtures will be
+        // highlighted with a yellow border.
+        Query(GetTree(m_world), aabb, [&](FixtureID f, ChildCounter) {
             if (count < e_maxCount)
             {
                 const auto xfm = GetTransformation(m_world, f);
@@ -218,6 +175,24 @@ public:
                 if (overlap >= 0_m2)
                 {
                     ++count;
+                    const auto overlapColor = Color(0.95f, 0.95f, 0.6f);
+                    const auto type = GetType(shape);
+                    const auto body = GetBody(m_world, f);
+                    if (type == GetTypeID<DiskShapeConf>()) {
+                        const auto conf = TypeCast<DiskShapeConf>(shape);
+                        const auto center = Transform(GetLocation(m_world, body), xfm);
+                        drawer.DrawCircle(center, conf.GetRadius(), overlapColor);
+                    }
+                    else if (type == GetTypeID<PolygonShapeConf>()) {
+                        const auto conf = TypeCast<PolygonShapeConf>(shape);
+                        const auto vertexCount = conf.GetVertexCount();
+                        auto vertices = std::vector<Length2>(vertexCount);
+                        for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
+                        {
+                            vertices[i] = Transform(conf.GetVertex(i), xfm);
+                        }
+                        drawer.DrawPolygon(&vertices[0], vertexCount, overlapColor);
+                    }
                 }
                 return true;
             }

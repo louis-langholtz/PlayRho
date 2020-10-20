@@ -43,7 +43,7 @@ static_assert(std::is_nothrow_destructible<World>::value, "World must be nothrow
 // Special member functions are off in their own .cpp file to avoid their
 // necessary includes being in this file!!
 
-void World::Clear()
+void World::Clear() noexcept
 {
     ::playrho::d2::Clear(*m_impl);
 }
@@ -437,11 +437,6 @@ BodyType World::GetType(BodyID id) const
 JointType World::GetType(JointID id) const
 {
     return ::playrho::d2::GetType(*m_impl, id);
-}
-
-const void* World::GetData(JointID id) const
-{
-    return ::playrho::d2::GetData(*m_impl, id);
 }
 
 bool World::IsAwake(BodyID id) const

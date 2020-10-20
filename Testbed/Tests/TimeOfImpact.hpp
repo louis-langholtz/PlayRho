@@ -21,6 +21,9 @@
 #define PLAYRHO_TESTS_TIME_OF_IMPACT_HPP
 
 #include "../Framework/Test.hpp"
+
+#include <PlayRho/Collision/TimeOfImpact.hpp>
+
 #include <vector>
 
 namespace testbed {

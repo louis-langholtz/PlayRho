@@ -28,7 +28,7 @@
 
 namespace playrho {
 
-class StepConf;
+struct StepConf;
     
 /// @brief Time of impact configuration.
 ///

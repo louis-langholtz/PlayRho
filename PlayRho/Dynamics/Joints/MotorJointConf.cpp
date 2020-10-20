@@ -176,8 +176,8 @@ bool SolveVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
     const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
     const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
-    const auto h = step.GetTime();
-    const auto inv_h = step.GetInvTime();
+    const auto h = step.deltaTime;
+    const auto inv_h = (h != 0_s)? Real(1) / h: 0_Hz;
 
     auto solved = true;
 

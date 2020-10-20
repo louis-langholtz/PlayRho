@@ -171,7 +171,7 @@ void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
         const auto k = rotInertia * omega * omega;
 
         // magic formulas
-        const auto h = step.GetTime();
+        const auto h = step.deltaTime;
         const auto invGamma = RotInertia{h * (d + h * k)};
         object.gamma = (invGamma != RotInertia{0})? Real{1} / invGamma: InvRotInertia{0};
         // QP * T * L^2 M QP^-2 T^-2 * L^-2 M^-1 QP^2 is: QP T^-1

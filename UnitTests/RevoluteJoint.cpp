@@ -346,7 +346,7 @@ TEST(RevoluteJoint, MovesDynamicCircles)
     CreateJoint(world, Joint{jd});
 
     auto step = StepConf{};
-    step.SetTime(1_s);
+    step.deltaTime = 1_s;
     step.maxTranslation = Meter * Real(4);
     Step(world, step);
 
@@ -383,7 +383,7 @@ TEST(RevoluteJoint, LimitEnabledDynamicCircles)
     ASSERT_EQ(GetAngle(world, joint), 0_deg);
     
     auto step = StepConf{};
-    step.SetTime(1_s);
+    step.deltaTime = 1_s;
     step.maxTranslation = Meter * Real(4);
     Step(world, step);
 

@@ -39,6 +39,7 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldContact.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
@@ -161,10 +162,9 @@ public:
         NeedMaxTranslation,
         NeedDeltaTime,
     };
-    
+
     using KeyHandlers = std::vector<std::pair<std::string, KeyHandler>>;
     using HandledKeys = std::vector<std::pair<KeyActionMods, KeyHandlerID>>;
-
     using FixtureSet = std::set<FixtureID>;
     using BodySet = std::set<BodyID>;
 
@@ -178,7 +178,7 @@ public:
     /// @see https://en.wikipedia.org/wiki/Non-virtual_interface_pattern
     /// @see https://en.wikipedia.org/wiki/Template_method_pattern
     void Step(const Settings& settings, Drawer& drawer, UiState& ui);
-    
+
     void ShiftMouseDown(const Length2& p);
     void MouseMove(const Length2& p);
     void LaunchBomb();
@@ -230,7 +230,6 @@ public:
     static const LinearAcceleration2 Gravity;
     
 protected:
-    
     EdgeShapeConf GetGroundEdgeConf() const noexcept
     {
         return EdgeShapeConf{Length2{-40_m, 0_m}, Length2{40_m, 0_m}};
@@ -431,14 +430,6 @@ private:
     std::deque<std::size_t> m_numTouchingPerStep;
 };
 
-struct VisitorData
-{
-    Drawer* drawer;
-    Transformation xf;
-    Color color;
-    bool skins;
-};
-
 // Free functions...
 
 /// Random number in range [-1,1]
@@ -463,24 +454,5 @@ void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins, 
 void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins, Transformation xf);
 
 } // namespace testbed
-
-namespace playrho {
-
-template <>
-bool Visit(const d2::DiskShapeConf& shape, void* userData);
-
-template <>
-bool Visit(const d2::EdgeShapeConf& shape, void* userData);
-
-template <>
-bool Visit(const d2::PolygonShapeConf& shape, void* userData);
-
-template <>
-bool Visit(const d2::ChainShapeConf& shape, void* userData);
-
-template <>
-bool Visit(const d2::MultiShapeConf& shape, void* userData);
-
-} // namespace playrho
 
 #endif

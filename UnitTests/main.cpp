@@ -20,50 +20,6 @@
 
 #include "UnitTests.hpp"
 
-namespace playrho {
-
-template <>
-bool Visit(const d2::DiskShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedDisk);
-    return true;
-}
-
-template <>
-bool Visit(const d2::EdgeShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedEdge);
-    return true;
-}
-
-template <>
-bool Visit(const d2::PolygonShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedPolygon);
-    return true;
-}
-
-template <>
-bool Visit(const d2::ChainShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedChain);
-    return true;
-}
-
-template <>
-bool Visit(const d2::MultiShapeConf&, void* userData)
-{
-    const auto data = static_cast<UnitTestsVisitorData*>(userData);
-    ++(data->visitedMulti);
-    return true;
-}
-
-} // namespace playrho
-
 int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

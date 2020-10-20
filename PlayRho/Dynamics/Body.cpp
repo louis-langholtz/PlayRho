@@ -22,10 +22,6 @@
 #include <PlayRho/Dynamics/Body.hpp>
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Common/WrongState.hpp>
 
 #include <iterator>

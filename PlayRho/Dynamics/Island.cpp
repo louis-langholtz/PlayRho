@@ -19,10 +19,6 @@
 
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
 
 #include <algorithm>
 

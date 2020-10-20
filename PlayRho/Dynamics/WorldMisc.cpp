@@ -26,7 +26,6 @@
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 
@@ -63,7 +62,7 @@ StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
                TimestepIters positionIterations)
 {
     StepConf conf;
-    conf.SetTime(delta);
+    conf.deltaTime = delta;
     conf.regVelocityIterations = velocityIterations;
     conf.regPositionIterations = positionIterations;
     conf.toiVelocityIterations = velocityIterations;

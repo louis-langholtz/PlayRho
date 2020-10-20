@@ -166,7 +166,7 @@ bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodie
     auto velB = bodyConstraintB.GetVelocity();
     const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
-    const auto h = step.GetTime();
+    const auto h = step.deltaTime;
 
     auto solved = true;
 

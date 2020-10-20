@@ -266,7 +266,7 @@ bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodie
     {
         const auto impulse = AngularMomentum{-object.angularMass * (velB.angular - velA.angular - object.motorSpeed)};
         const auto oldImpulse = object.angularMotorImpulse;
-        const auto maxImpulse = step.GetTime() * object.maxMotorTorque;
+        const auto maxImpulse = step.deltaTime * object.maxMotorTorque;
         object.angularMotorImpulse = std::clamp(object.angularMotorImpulse + impulse,
                                                 -maxImpulse, maxImpulse);
         const auto incImpulse = object.angularMotorImpulse - oldImpulse;

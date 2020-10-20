@@ -34,7 +34,10 @@ public:
         
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Apply Force", [&](KeyActionMods) {
             const auto lv = Length2{0_m, -200_m};
-            const auto f = Force2{GetWorldVector(m_world, m_body, UnitVec::Get(GetX(lv), GetY(lv)).first) * 1_kg / (1_s * 1_s)};
+            const auto direction = UnitVec::Get(GetX(lv), GetY(lv)).first;
+            const auto f = Force2{
+                GetWorldVector(m_world, m_body, direction) * 1_kg * 1_m / (1_s * 1_s)
+            };
             const auto p = GetWorldPoint(m_world, m_body, Length2{0_m, 2_m});
             playrho::d2::ApplyForce(m_world, m_body, f, p);
         });
