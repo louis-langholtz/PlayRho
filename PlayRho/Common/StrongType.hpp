@@ -162,7 +162,8 @@ constexpr const T& UnderlyingValue(const IndexingNamedType<T, Tag>& o) noexcept
 
 namespace std {
 
-/// @brief Custom specialization of std::hash for <code>::playrho::strongtype::NamedType</code>.
+/// @brief Custom specialization of std::hash for
+///   <code>::playrho::strongtype::IndexingNamedType</code>.
 template <typename T, typename Tag>
 struct hash<::playrho::strongtype::IndexingNamedType<T, Tag>>
 {

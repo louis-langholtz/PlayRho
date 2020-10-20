@@ -46,7 +46,8 @@ struct MotorJointConf : public JointBuilder<MotorJointConf>
 {
     /// @brief Super type.
     using super = JointBuilder<MotorJointConf>;
-    
+
+    /// @brief Default constructor.
     constexpr MotorJointConf() = default;
     
     /// @brief Initialize the bodies and offsets using the current transforms.
@@ -119,21 +120,25 @@ struct MotorJointConf : public JointBuilder<MotorJointConf>
 /// @relatedalso Joint
 MotorJointConf GetMotorJointConf(const Joint& joint) noexcept;
 
+/// @brief Gets the confguration for the given parameters.
 /// @relatedalso World
 MotorJointConf GetMotorJointConf(const World& world, BodyID bA, BodyID bB);
 
+/// @brief Gets the local anchor A.
 /// @relatedalso MotorJointConf
 constexpr auto GetLocalAnchorA(const MotorJointConf&) noexcept
 {
     return Length2{};
 }
 
+/// @brief Gets the local anchor B.
 /// @relatedalso MotorJointConf
 constexpr auto GetLocalAnchorB(const MotorJointConf&) noexcept
 {
     return Length2{};
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto ShiftOrigin(MotorJointConf&, Length2) noexcept
 {
@@ -162,72 +167,84 @@ bool SolveVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const MotorJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for getting the maximum force value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto GetMaxForce(const MotorJointConf& object) noexcept
 {
     return object.maxForce;
 }
 
+/// @brief Free function for setting the maximum force value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto SetMaxForce(MotorJointConf& object, NonNegative<Force> value) noexcept
 {
     object.UseMaxForce(value);
 }
 
+/// @brief Free function for getting the maximum torque value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto GetMaxTorque(const MotorJointConf& object) noexcept
 {
     return object.maxTorque;
 }
 
+/// @brief Free function for setting the maximum torque value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto SetMaxTorque(MotorJointConf& object, NonNegative<Torque> value) noexcept
 {
     object.UseMaxTorque(value);
 }
 
+/// @brief Free function for getting the linear error value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto GetLinearError(const MotorJointConf& object) noexcept
 {
     return object.linearError;
 }
 
+/// @brief Free function for getting the angular error value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto GetAngularError(const MotorJointConf& object) noexcept
 {
     return object.angularError;
 }
 
+/// @brief Free function for getting the linear offset value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto GetLinearOffset(const MotorJointConf& object) noexcept
 {
     return object.linearOffset;
 }
 
+/// @brief Free function for setting the linear offset value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto SetLinearOffset(MotorJointConf& object, Length2 value) noexcept
 {
     object.UseLinearOffset(value);
 }
 
+/// @brief Free function for getting the angular offset value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto GetAngularOffset(const MotorJointConf& object) noexcept
 {
     return object.angularOffset;
 }
 
+/// @brief Free function for setting the angular offset value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto SetAngularOffset(MotorJointConf& object, Angle value) noexcept
 {
     object.UseAngularOffset(value);
 }
 
+/// @brief Free function for getting the correction factor value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto GetCorrectionFactor(const MotorJointConf& object) noexcept
 {
     return object.correctionFactor;
 }
 
+/// @brief Free function for setting the correction factor value of the given configuration.
 /// @relatedalso MotorJointConf
 constexpr auto SetCorrectionFactor(MotorJointConf& object, Real value) noexcept
 {

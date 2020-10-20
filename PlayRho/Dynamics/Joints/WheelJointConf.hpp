@@ -103,9 +103,10 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     /// The local anchor point relative to body B's origin.
     Length2 localAnchorB = Length2{};
 
-    /// The local translation axis in body-A.
+    /// The local X translation axis in body-A.
     UnitVec localXAxisA = UnitVec::GetRight();
 
+    /// The local Y translation axis in body-A.
     UnitVec localYAxisA = GetRevPerpendicular(UnitVec::GetRight());
 
     /// Enable/disable the joint motor.
@@ -147,19 +148,23 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
 /// @relatedalso Joint
 WheelJointConf GetWheelJointConf(const Joint& joint);
 
+/// @brief Gets the definition data for the given parameters.
 /// @relatedalso World
 WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB,
                                  Length2 anchor, UnitVec axis = UnitVec::GetRight());
 
+/// @brief Gets the angular velocity for the given configuration within the specified world.
 /// @relatedalso World
 AngularVelocity GetAngularVelocity(const World& world, const WheelJointConf& conf);
 
+/// @brief Gets the current linear reaction for the given configuration.
 /// @relatedalso WheelJointConf
 constexpr Momentum2 GetLinearReaction(const WheelJointConf& object)
 {
     return object.impulse * object.ay + object.springImpulse * object.ax;
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso WheelJointConf
 constexpr auto ShiftOrigin(WheelJointConf&, Length2)
 {
@@ -188,18 +193,21 @@ bool SolveVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const WheelJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Sets the maximum motor torque for the given configuration.
 /// @relatedalso WheelJointConf
 constexpr void SetMaxMotorTorque(WheelJointConf& object, Torque value) noexcept
 {
     object.UseMaxMotorTorque(value);
 }
 
+/// @brief Free function for setting the frequency of the given configuration.
 /// @relatedalso WheelJointConf
 constexpr void SetFrequency(WheelJointConf& object, NonNegative<Frequency> value) noexcept
 {
     object.UseFrequency(value);
 }
 
+/// @brief Free function for setting the damping ratio of the given configuration.
 /// @relatedalso WheelJointConf
 constexpr void SetDampingRatio(WheelJointConf& object, Real value) noexcept
 {

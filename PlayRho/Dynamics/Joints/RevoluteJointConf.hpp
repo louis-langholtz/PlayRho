@@ -160,39 +160,47 @@ struct RevoluteJointConf : public JointBuilder<RevoluteJointConf>
 /// @relatedalso Joint
 RevoluteJointConf GetRevoluteJointConf(const Joint& joint);
 
+/// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
 RevoluteJointConf GetRevoluteJointConf(const World& world, BodyID bodyA, BodyID bodyB, Length2 anchor);
 
+/// @brief Gets the current angle of the given configuration in the given world.
 /// @relatedalso World
 Angle GetAngle(const World& world, const RevoluteJointConf& conf);
 
+/// @brief Gets the current angular velocity of the given configuration.
 /// @relatedalso World
 AngularVelocity GetAngularVelocity(const World& world, const RevoluteJointConf& conf);
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso RevoluteJointConf
 constexpr auto ShiftOrigin(RevoluteJointConf&, Length2) noexcept
 {
     return false;
 }
 
+/// @brief Free function for getting the angular lower limit value of the given configuration.
 /// @relatedalso RevoluteJointConf
 constexpr Angle GetAngularLowerLimit(const RevoluteJointConf& conf) noexcept
 {
     return conf.lowerAngle;
 }
 
+/// @brief Free function for getting the angular upper limit value of the given configuration.
 /// @relatedalso RevoluteJointConf
 constexpr Angle GetAngularUpperLimit(const RevoluteJointConf& conf) noexcept
 {
     return conf.upperAngle;
 }
 
+/// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso RevoluteJointConf
 constexpr Momentum2 GetLinearReaction(const RevoluteJointConf& conf) noexcept
 {
     return Momentum2{GetX(conf.impulse) * NewtonSecond, GetY(conf.impulse) * NewtonSecond};
 }
 
+/// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso RevoluteJointConf
 constexpr AngularMomentum GetAngularReaction(const RevoluteJointConf& conf) noexcept
 {
@@ -222,11 +230,15 @@ bool SolveVelocity(RevoluteJointConf& object, std::vector<BodyConstraint>& bodie
 bool SolvePosition(const RevoluteJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for setting the angular limits of the given configuration.
+/// @relatedalso RevoluteJointConf
 constexpr void SetAngularLimits(RevoluteJointConf& object, Angle lower, Angle upper) noexcept
 {
     object.UseLowerAngle(lower).UseUpperAngle(upper);
 }
 
+/// @brief Free function for setting the max motor torque of the given configuration.
+/// @relatedalso RevoluteJointConf
 constexpr void SetMaxMotorTorque(RevoluteJointConf& object, Torque value)
 {
     object.UseMaxMotorTorque(value);

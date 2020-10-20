@@ -53,9 +53,16 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
     /// @brief Super type.
     using super = JointBuilder<PulleyJointConf>;
 
+    /// @brief Default ground anchor A.
     static constexpr Length2 DefaultGroundAnchorA = Length2{-1_m, +1_m};
+
+    /// @brief Default ground anchor B.
     static constexpr Length2 DefaultGroundAnchorB = Length2{+1_m, +1_m};
+
+    /// @brief Default local anchor A.
     static constexpr Length2 DefaultLocalAnchorA = Length2{-1_m, 0_m};
+
+    /// @brief Default local anchor B.
     static constexpr Length2 DefaultLocalAnchorB = Length2{+1_m, 0_m};
 
     /// @brief Default constructor.
@@ -114,24 +121,28 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
 /// @relatedalso Joint
 PulleyJointConf GetPulleyJointConf(const Joint& joint);
 
+/// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
 PulleyJointConf GetPulleyJointConf(const World& world,
                                    BodyID bA, BodyID bB,
                                    Length2 groundA, Length2 groundB,
                                    Length2 anchorA, Length2 anchorB);
 
+/// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso PulleyJointConf
 constexpr Momentum2 GetLinearReaction(const PulleyJointConf& object) noexcept
 {
     return object.impulse * object.uB;
 }
 
+/// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso PulleyJointConf
 constexpr AngularMomentum GetAngularReaction(const PulleyJointConf&) noexcept
 {
     return AngularMomentum{0};
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso PulleyJointConf
 bool ShiftOrigin(PulleyJointConf& object, Length2 newOrigin) noexcept;
 
@@ -157,12 +168,14 @@ bool SolveVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for getting the length A value of the given configuration.
 /// @relatedalso PulleyJointConf
 constexpr auto GetLengthA(const PulleyJointConf& object) noexcept
 {
     return object.lengthA;
 }
 
+/// @brief Free function for getting the length B value of the given configuration.
 /// @relatedalso PulleyJointConf
 constexpr auto GetLengthB(const PulleyJointConf& object) noexcept
 {

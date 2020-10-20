@@ -96,18 +96,21 @@ struct RopeJointConf : public JointBuilder<RopeJointConf>
 /// @relatedalso Joint
 RopeJointConf GetRopeJointConf(const Joint& joint) noexcept;
 
+/// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso RopeJointConf
 constexpr Momentum2 GetLinearReaction(const RopeJointConf& object) noexcept
 {
     return object.impulse * object.u;
 }
 
+/// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso RopeJointConf
 constexpr AngularMomentum GetAngularReaction(const RopeJointConf&) noexcept
 {
     return AngularMomentum{0};
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso RopeJointConf
 constexpr auto ShiftOrigin(RopeJointConf&, Length2) noexcept
 {
@@ -136,12 +139,14 @@ bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const RopeJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for getting the maximum length value of the given configuration.
 /// @relatedalso RopeJointConf
 constexpr auto GetMaxLength(const RopeJointConf& object) noexcept
 {
     return object.maxLength;
 }
 
+/// @brief Free function for setting the maximum length value of the given configuration.
 /// @relatedalso RopeJointConf
 constexpr auto SetMaxLength(RopeJointConf& object, Length value) noexcept
 {

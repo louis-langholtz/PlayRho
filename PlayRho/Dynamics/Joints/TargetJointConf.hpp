@@ -132,24 +132,28 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
 /// @relatedalso Joint
 TargetJointConf GetTargetJointConf(const Joint& joint);
 
+/// @brief Gets the local anchar A for the given configuration.
 /// @relatedalso TargetJointConf
 constexpr auto GetLocalAnchorA(const TargetJointConf&) noexcept
 {
     return Length2{};
 }
 
+/// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso TargetJointConf
 constexpr Momentum2 GetLinearReaction(const TargetJointConf& object)
 {
     return object.impulse;
 }
 
+/// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso TargetJointConf
 constexpr AngularMomentum GetAngularReaction(const TargetJointConf&)
 {
     return AngularMomentum{0};
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso TargetJointConf
 constexpr bool ShiftOrigin(TargetJointConf& object, Length2 newOrigin)
 {
@@ -157,12 +161,14 @@ constexpr bool ShiftOrigin(TargetJointConf& object, Length2 newOrigin)
     return true;
 }
 
+/// @brief Free function for getting the target value of the given configuration.
 /// @relatedalso TargetJointConf
 constexpr auto GetTarget(const TargetJointConf& object) noexcept
 {
     return object.target;
 }
 
+/// @brief Gets the effective mass matrix for the given configuration and body information.
 /// @relatedalso TargetJointConf
 Mass22 GetEffectiveMassMatrix(const TargetJointConf& object, const BodyConstraint& body) noexcept;
 
@@ -188,30 +194,35 @@ bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const TargetJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for setting the target value of the given configuration.
 /// @relatedalso TargetJointConf
 constexpr void SetTarget(TargetJointConf& object, Length2 value) noexcept
 {
     object.UseTarget(value);
 }
 
+/// @brief Free function for getting the maximum force value of the given configuration.
 /// @relatedalso TargetJointConf
 constexpr auto GetMaxForce(const TargetJointConf& object) noexcept
 {
     return object.maxForce;
 }
 
+/// @brief Free function for setting the maximum force value of the given configuration.
 /// @relatedalso TargetJointConf
 constexpr auto SetMaxForce(TargetJointConf& object, NonNegative<Force> value) noexcept
 {
     object.UseMaxForce(value);
 }
 
+/// @brief Free function for setting the frequency value of the given configuration.
 /// @relatedalso TargetJointConf
 constexpr void SetFrequency(TargetJointConf& object, NonNegative<Frequency> value) noexcept
 {
     object.UseFrequency(value);
 }
 
+/// @brief Free function for setting the damping ratio value of the given configuration.
 /// @relatedalso TargetJointConf
 constexpr void SetDampingRatio(TargetJointConf& object, Real value) noexcept
 {

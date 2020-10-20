@@ -123,22 +123,26 @@ struct DistanceJointConf : public JointBuilder<DistanceJointConf>
 /// @relatedalso Joint
 DistanceJointConf GetDistanceJointConf(const Joint& joint) noexcept;
 
+/// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
 DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID bodyB,
                                        Length2 anchorA = Length2{}, Length2 anchorB = Length2{});
 
+/// @brief Gets the current linear reaction for the given configuration.
 /// @relatedalso DistanceJointConf
 constexpr Momentum2 GetLinearReaction(const DistanceJointConf& object) noexcept
 {
     return object.impulse * object.u;
 }
 
+/// @brief Gets the current angular reaction for the given configuration.
 /// @relatedalso DistanceJointConf
 constexpr AngularMomentum GetAngularReaction(const DistanceJointConf&) noexcept
 {
     return AngularMomentum{0};
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso DistanceJointConf
 constexpr bool ShiftOrigin(DistanceJointConf&, Length2) noexcept
 {
@@ -167,24 +171,28 @@ bool SolveVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodie
 bool SolvePosition(const DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for setting the frequency value of the given configuration.
 /// @relatedalso DistanceJointConf
 constexpr void SetFrequency(DistanceJointConf& object, NonNegative<Frequency> value) noexcept
 {
     object.UseFrequency(value);
 }
 
+/// @brief Free function for setting the damping ratio value of the given configuration.
 /// @relatedalso DistanceJointConf
 constexpr void SetDampingRatio(DistanceJointConf& object, Real value) noexcept
 {
     object.UseDampingRatio(value);
 }
 
+/// @brief Free function for getting the length value of the given configuration.
 /// @relatedalso DistanceJointConf
 constexpr auto GetLength(const DistanceJointConf& object) noexcept
 {
     return object.length;
 }
 
+/// @brief Free function for setting the length value of the given configuration.
 /// @relatedalso DistanceJointConf
 constexpr auto SetLength(DistanceJointConf& object, Length value) noexcept
 {

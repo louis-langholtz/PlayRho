@@ -97,22 +97,26 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
 /// @relatedalso Joint
 FrictionJointConf GetFrictionJointConf(const Joint& joint) noexcept;
 
+/// @brief Gets the confguration for the given parameters.
 /// @relatedalso World
 FrictionJointConf GetFrictionJointConf(const World& world,
                                        BodyID bodyA, BodyID bodyB, Length2 anchor);
 
+/// @brief Gets the current linear reaction for the given configuration.
 /// @relatedalso FrictionJointConf
 constexpr Momentum2 GetLinearReaction(const FrictionJointConf& object) noexcept
 {
     return object.linearImpulse;
 }
 
+/// @brief Gets the current angular reaction for the given configuration.
 /// @relatedalso FrictionJointConf
 constexpr AngularMomentum GetAngularReaction(const FrictionJointConf& object) noexcept
 {
     return object.angularImpulse;
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso FrictionJointConf
 constexpr bool ShiftOrigin(FrictionJointConf&, Length2) noexcept
 {
@@ -141,24 +145,28 @@ bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodie
 bool SolvePosition(const FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for getting the max force value of the given configuration.
 /// @relatedalso FrictionJointConf
 constexpr auto GetMaxForce(const FrictionJointConf& object) noexcept
 {
     return object.maxForce;
 }
 
+/// @brief Free function for setting the max force value of the given configuration.
 /// @relatedalso FrictionJointConf
 constexpr void SetMaxForce(FrictionJointConf& object, NonNegative<Force> value) noexcept
 {
     object.UseMaxForce(value);
 }
 
+/// @brief Free function for getting the max torque value of the given configuration.
 /// @relatedalso FrictionJointConf
 constexpr auto GetMaxTorque(const FrictionJointConf& object) noexcept
 {
     return object.maxTorque;
 }
 
+/// @brief Free function for setting the max force value of the given configuration.
 /// @relatedalso FrictionJointConf
 constexpr auto SetMaxTorque(FrictionJointConf& object, NonNegative<Torque> value) noexcept
 {
