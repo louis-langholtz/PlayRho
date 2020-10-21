@@ -565,10 +565,6 @@ private:
     Time m_underActiveTime = 0;
 };
 
-/// @example Body.cpp
-/// This is the <code>googletest</code> based unit testing file for the
-///   <code>playrho::d2::Body</code> class.
-
 inline Body::FlagsType Body::GetFlags(BodyType type) noexcept
 {
     auto flags = FlagsType{0};

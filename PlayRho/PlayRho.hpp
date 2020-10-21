@@ -59,7 +59,7 @@ Pragmatists may instead want to begin by including this file, <code>PlayRho.hpp<
 
 @section helloworld_sec An Entire Application
 
-For a more elaborate example of an entire application, see
+For a more elaborate example, that's of an entire application, see
  <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a>.
 
  @see playrho::d2::World, PhysicalEntities

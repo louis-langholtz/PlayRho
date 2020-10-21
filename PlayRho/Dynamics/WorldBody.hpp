@@ -47,6 +47,11 @@ namespace d2 {
 class World;
 class Shape;
 
+/// @example WorldBody.cpp
+/// This is the <code>googletest</code> based unit testing file for the free function
+///   interfaces to <code>playrho::d2::World</code> body member functions and additional
+///   functionality.
+
 /// @brief Creates a rigid body with the given configuration.
 /// @warning This function should not be used while the world is locked &mdash; as it is
 ///   during callbacks. If it is, it will throw an exception or abort your program.
