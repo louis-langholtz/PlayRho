@@ -117,3 +117,72 @@ TEST(WorldContact, ResetRestitution)
     ResetRestitution(world, c);
     EXPECT_EQ(GetRestitution(world, c), GetRestitution(shape));
 }
+
+TEST(WorldContact, SetUnsetEnabled)
+{
+    const auto shape = DiskShapeConf{};
+    auto world = World{};
+    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    CreateFixture(world, bA, Shape{shape});
+    CreateFixture(world, bB, Shape{shape});
+    ASSERT_NO_THROW(Step(world, StepConf{}));
+    const auto contacts = GetContacts(world);
+    ASSERT_EQ(contacts.size(), ContactCounter(1));
+    const auto c = contacts.begin()->second;
+    EXPECT_NO_THROW(SetEnabled(world, c));
+    EXPECT_TRUE(IsEnabled(world, c));
+    EXPECT_NO_THROW(UnsetEnabled(world, c));
+    EXPECT_FALSE(IsEnabled(world, c));
+    EXPECT_NO_THROW(SetEnabled(world, c));
+    EXPECT_TRUE(IsEnabled(world, c));
+}
+
+TEST(WorldContact, SetTangentSpeed)
+{
+    const auto shape = DiskShapeConf{};
+    auto world = World{};
+    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    CreateFixture(world, bA, Shape{shape});
+    CreateFixture(world, bB, Shape{shape});
+    ASSERT_NO_THROW(Step(world, StepConf{}));
+    const auto contacts = GetContacts(world);
+    ASSERT_EQ(contacts.size(), ContactCounter(1));
+    const auto c = contacts.begin()->second;
+    {
+        const auto linearVelocity = LinearVelocity{5.6_mps};
+        EXPECT_NO_THROW(SetTangentSpeed(world, c, linearVelocity));
+        EXPECT_EQ(GetTangentSpeed(world, c), linearVelocity);
+    }
+    {
+        const auto linearVelocity = LinearVelocity{0.2_mps};
+        EXPECT_NO_THROW(SetTangentSpeed(world, c, linearVelocity));
+        EXPECT_EQ(GetTangentSpeed(world, c), linearVelocity);
+    }
+}
+
+TEST(WorldContact, WorldManifoldAndMore)
+{
+    const auto shape = DiskShapeConf{};
+    auto world = World{};
+    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    CreateFixture(world, bA, Shape{shape});
+    CreateFixture(world, bB, Shape{shape});
+    ASSERT_NO_THROW(Step(world, StepConf{}));
+    const auto contacts = GetContacts(world);
+    ASSERT_EQ(contacts.size(), ContactCounter(1));
+
+    const auto c = contacts.begin()->second;
+    {
+        auto manifold = WorldManifold{};
+        EXPECT_NO_THROW(manifold = GetWorldManifold(world, c));
+        EXPECT_EQ(manifold.GetPointCount(), 1u);
+        EXPECT_EQ(manifold.GetNormal(), UnitVec::GetRight());
+    }
+    EXPECT_EQ(GetToiCount(world, c), 0u);
+    EXPECT_FALSE(HasValidToi(world, c));
+    EXPECT_EQ(GetChildIndexA(world, c), ChildCounter(0));
+    EXPECT_EQ(GetChildIndexB(world, c), ChildCounter(0));
+}
