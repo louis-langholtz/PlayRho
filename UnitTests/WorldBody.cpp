@@ -801,3 +801,23 @@ TEST(WorldBody, GetSetTransformationFF)
     EXPECT_NEAR(static_cast<double>(GetX(xfm1.q)), static_cast<double>(GetX(xfm0.q)), 0.0001);
     EXPECT_NEAR(static_cast<double>(GetY(xfm1.q)), static_cast<double>(GetY(xfm0.q)), 0.0001);
 }
+
+TEST(WorldBody, SetAwake)
+{
+    {
+        World world;
+        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+        EXPECT_NO_THROW(UnsetAwake(world, body));
+        EXPECT_FALSE(IsAwake(world, body));
+        EXPECT_NO_THROW(SetAwake(world, body));
+        EXPECT_TRUE(IsAwake(world, body));
+    }
+    {
+        World world;
+        const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Static));
+        EXPECT_NO_THROW(UnsetAwake(world, body));
+        EXPECT_FALSE(IsAwake(world, body));
+        EXPECT_NO_THROW(SetAwake(world, body));
+        EXPECT_FALSE(IsAwake(world, body)); // because Static, !IsSpeedable
+    }
+}

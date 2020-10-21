@@ -1,56 +1,35 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
- * warranty.  In no event will the authors be held liable for any damages
+ * warranty. In no event will the authors be held liable for any damages
  * arising from the use of this software.
+ *
  * Permission is granted to anyone to use this software for any purpose,
  * including commercial applications, and to alter it and redistribute it
  * freely, subject to the following restrictions:
+ *
  * 1. The origin of this software must not be misrepresented; you must not
- * claim that you wrote the original software. If you use this software
- * in a product, an acknowledgment in the product documentation would be
- * appreciated but is not required.
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
  * 2. Altered source versions must be plainly marked as such, and must not be
- * misrepresented as being the original software.
+ *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
+
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
-
-TEST(Fixture, ByteSize)
-{
-#if defined(_WIN32) && !defined(_WIN64)
-    EXPECT_EQ(sizeof(Fixture::Proxies), std::size_t(12));
-#else
-    EXPECT_EQ(sizeof(Fixture::Proxies), std::size_t(24));
-#endif
-    switch (sizeof(Real))
-    {
-        case  4:
-#if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(Fixture), std::size_t(32));
-#else
-            EXPECT_EQ(sizeof(Fixture), std::size_t(56));
-#endif
-            break;
-        case  8: EXPECT_EQ(sizeof(Fixture), std::size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(Fixture), std::size_t(64)); break;
-        default: FAIL(); break;
-    }
-}
 
 TEST(WorldFixture, CreateMatchesConf)
 {
@@ -101,19 +80,6 @@ TEST(WorldFixture, TestPointFreeFunction)
     const auto fixture = CreateFixture(world, body, shapeA);
     EXPECT_TRUE(TestPoint(world, fixture, bodyCtrPos));
     EXPECT_FALSE(TestPoint(world, fixture, Length2{}));
-}
-
-TEST(Fixture, SetAwakeFreeFunction)
-{
-    const auto shapeA = Shape{DiskShapeConf{}};
-
-    World world;
-    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
-    UnsetAwake(world, body);
-    ASSERT_FALSE(IsAwake(world, body));
-    const auto fixture = CreateFixture(world, body, shapeA);
-    SetAwake(world, GetBody(world, fixture));
-    EXPECT_TRUE(IsAwake(world, body));
 }
 
 TEST(WorldFixture, Proxies)
