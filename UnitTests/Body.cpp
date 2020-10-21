@@ -166,7 +166,7 @@ TEST(Body, WorldCreated)
 {
     auto world = World{};
 
-    const auto body = world.CreateBody();
+    const auto body = CreateBody(world);
     ASSERT_NE(body, InvalidBodyID);
 
     EXPECT_TRUE(IsEnabled(world, body));
@@ -218,7 +218,7 @@ TEST(Body, SetVelocityDoesNothingToStatic)
 
     auto world = World{};
 
-    const auto body = world.CreateBody();
+    const auto body = CreateBody(world);
     ASSERT_NE(body, InvalidBodyID);
     ASSERT_FALSE(IsAwake(world, body));
     ASSERT_FALSE(IsSpeedable(world, body));
@@ -237,34 +237,35 @@ TEST(Body, SetVelocityDoesNothingToStatic)
 TEST(Body, CreateFixture)
 {
     auto world = World{};
-    const auto body = world.CreateBody();
+    const auto body = CreateBody(world);
     EXPECT_EQ(GetFixtureCount(world, body), std::size_t(0));
 
     const auto valid_shape = Shape{DiskShapeConf(1_m)};
-    EXPECT_NE(world.CreateFixture(body, valid_shape, FixtureConf{}), InvalidFixtureID);
+    EXPECT_NE(CreateFixture(world, body, valid_shape, FixtureConf{}), InvalidFixtureID);
 
     EXPECT_EQ(GetFixtureCount(world, body), std::size_t(1));
-    
-    const auto minRadius = world.GetMinVertexRadius();
-    EXPECT_THROW(world.CreateFixture(body, Shape{DiskShapeConf{minRadius / 2}}), InvalidArgument);
-    
-    const auto maxRadius = world.GetMaxVertexRadius();
-    EXPECT_THROW(world.CreateFixture(body, Shape{DiskShapeConf{maxRadius + maxRadius / 10}}), InvalidArgument);
+
+    const auto minRadius = GetMinVertexRadius(world);
+    EXPECT_THROW(CreateFixture(world, body, Shape{DiskShapeConf{minRadius / 2}}), InvalidArgument);
+
+    const auto maxRadius = GetMaxVertexRadius(world);
+    EXPECT_THROW(CreateFixture(world, body, Shape{DiskShapeConf{maxRadius + maxRadius / 10}}),
+                 InvalidArgument);
 }
 
 TEST(Body, Destroy)
 {
     auto world = World{};
-    const auto bodyA = world.CreateBody();
-    const auto bodyB = world.CreateBody();
+    const auto bodyA = CreateBody(world);
+    const auto bodyB = CreateBody(world);
     ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
     ASSERT_EQ(GetFixtureCount(world, bodyB), std::size_t(0));
 
-    const auto fixtureA = world.CreateFixture(bodyA, Shape{DiskShapeConf(1_m)}, FixtureConf{});
+    const auto fixtureA = CreateFixture(world, bodyA, Shape{DiskShapeConf(1_m)}, FixtureConf{});
     ASSERT_NE(fixtureA, InvalidFixtureID);
     ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(1));
 
-    EXPECT_TRUE(world.Destroy(fixtureA));
+    EXPECT_TRUE(Destroy(world, fixtureA));
     EXPECT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
 }
 
@@ -479,7 +480,7 @@ TEST(Body, SetType)
 TEST(Body, StaticIsExpected)
 {
     auto world = World{};
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Static));
     EXPECT_FALSE(IsAccelerable(world, body));
     EXPECT_FALSE(IsSpeedable(world, body));
     EXPECT_TRUE(IsImpenetrable(world, body));
@@ -488,7 +489,7 @@ TEST(Body, StaticIsExpected)
 TEST(Body, KinematicIsExpected)
 {
     auto world = World{};
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Kinematic));
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Kinematic));
     EXPECT_FALSE(IsAccelerable(world, body));
     EXPECT_TRUE( IsSpeedable(world, body));
     EXPECT_TRUE( IsImpenetrable(world, body));
@@ -497,7 +498,7 @@ TEST(Body, KinematicIsExpected)
 TEST(Body, DynamicIsExpected)
 {
     auto world = World{};
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_TRUE(IsAccelerable(world, body));
     EXPECT_TRUE(IsSpeedable(world, body));
     EXPECT_FALSE(IsImpenetrable(world, body));
