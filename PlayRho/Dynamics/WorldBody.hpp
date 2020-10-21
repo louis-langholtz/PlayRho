@@ -52,6 +52,14 @@ class Shape;
 ///   interfaces to <code>playrho::d2::World</code> body member functions and additional
 ///   functionality.
 
+/// @brief Gets the bodies of the specified world.
+/// @relatedalso World
+SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world) noexcept;
+
+/// @brief Gets the bodies-for-proxies range for the given world.
+SizedRange<std::vector<BodyID>::const_iterator>
+GetBodiesForProxies(const World& world) noexcept;
+
 /// @brief Creates a rigid body with the given configuration.
 /// @warning This function should not be used while the world is locked &mdash; as it is
 ///   during callbacks. If it is, it will throw an exception or abort your program.
@@ -78,8 +86,13 @@ void Destroy(World& world, BodyID id);
 /// @relatedalso World
 SizedRange<std::vector<FixtureID>::const_iterator> GetFixtures(const World& world, BodyID id);
 
+/// @brief Gets the count of fixtures associated with the identified body.
 /// @relatedalso World
-FixtureCounter GetFixtureCount(const World& world, BodyID id);
+inline FixtureCounter GetFixtureCount(const World& world, BodyID id)
+{
+    using std::size;
+    return static_cast<FixtureCounter>(size(GetFixtures(world, id)));
+}
 
 /// @copydoc World::GetLinearAcceleration
 /// @relatedalso World
@@ -433,7 +446,7 @@ inline void ResetMassData(World& world, BodyID id)
 /// @relatedalso World
 bool ShouldCollide(const World& world, BodyID lhs, BodyID rhs);
 
-/// @brief Gets the range of all joints attached to this body.
+/// @brief Gets the range of all joints attached to the identified body.
 /// @relatedalso World
 SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
 GetJoints(const World& world, BodyID id);
@@ -481,7 +494,7 @@ bool IsSleepingAllowed(const World& world, BodyID id);
 /// @relatedalso World
 void SetSleepingAllowed(World& world, BodyID, bool value);
 
-/// @brief Gets the container of all contacts attached to this body.
+/// @brief Gets the container of all contacts attached to the identified body.
 /// @warning This collection changes during the time step and you may
 ///   miss some collisions if you don't use <code>ContactListener</code>.
 /// @relatedalso World
@@ -579,6 +592,61 @@ Frequency GetAngularDamping(const World& world, BodyID id);
 /// @brief Sets the angular damping of the body.
 /// @relatedalso World
 void SetAngularDamping(World& world, BodyID id, NonNegative<Frequency> angularDamping);
+
+/// @brief Gets the count of awake bodies in the given world.
+/// @relatedalso World
+BodyCounter GetAwakeCount(const World& world) noexcept;
+
+/// @brief Awakens all of the bodies in the given world.
+/// @details Calls all of the world's bodies' <code>SetAwake</code> method.
+/// @return Sum total of calls to bodies' <code>SetAwake</code> method that returned true.
+/// @see Body::SetAwake.
+/// @relatedalso World
+BodyCounter Awaken(World& world) noexcept;
+
+/// @brief Finds body in given world that's closest to the given location.
+/// @relatedalso World
+BodyID FindClosestBody(const World& world, Length2 location) noexcept;
+
+/// @brief Gets the body count in the given world.
+/// @return 0 or higher.
+/// @relatedalso World
+inline BodyCounter GetBodyCount(const World& world) noexcept
+{
+    using std::size;
+    return static_cast<BodyCounter>(size(GetBodies(world)));
+}
+
+/// @brief Sets the accelerations of all the world's bodies to the given value.
+/// @relatedalso World
+void SetAccelerations(World& world, Acceleration acceleration) noexcept;
+
+/// @brief Sets the accelerations of all the world's bodies to the given value.
+/// @note This will leave the angular acceleration alone.
+/// @relatedalso World
+void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept;
+
+/// @brief Clears forces.
+/// @details Manually clear the force buffer on all bodies.
+/// @relatedalso World
+inline void ClearForces(World& world) noexcept
+{
+    SetAccelerations(world, Acceleration{});
+}
+
+/// @brief Sets the accelerations of all the world's bodies.
+/// @param world World instance to set the acceleration of all contained bodies for.
+/// @param fn Function or functor with a signature like:
+///   <code>Acceleration (*fn)(const Body& body)</code>.
+/// @relatedalso World
+template <class F>
+void SetAccelerations(World& world, F fn)
+{
+    const auto bodies = GetBodies(world);
+    std::for_each(begin(bodies), end(bodies), [&](const auto &b) {
+        SetAcceleration(world, b, fn(world, b));
+    });
+}
 
 } // namespace d2
 } // namespace playrho

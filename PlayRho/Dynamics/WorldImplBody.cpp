@@ -256,11 +256,6 @@ void SetEnabled(WorldImpl& world, BodyID body, bool flag)
     world.SetEnabled(body, flag);
 }
 
-FixtureCounter GetFixtureCount(const WorldImpl& world, BodyID id)
-{
-    return world.GetFixtureCount(id);
-}
-
 Frequency GetLinearDamping(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).GetLinearDamping();

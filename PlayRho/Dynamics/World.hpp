@@ -318,7 +318,7 @@ public:
 
     /// @brief Gets the shape count.
     /// @todo Consider removing this function.
-    std::size_t GetShapeCount() const noexcept;
+    FixtureCounter GetShapeCount() const noexcept;
 
     /// @}
 
@@ -448,10 +448,6 @@ public:
     /// @brief Gets the range of all constant fixtures attached to the given body.
     /// @throws std::out_of_range If given an invalid body identifier.
     SizedRange<Fixtures::const_iterator> GetFixtures(BodyID id) const;
-
-    /// @brief Gets the count of fixtures associated with the identifed body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    FixtureCounter GetFixtureCount(BodyID id) const;
 
     /// @brief Get the angle.
     /// @return the current world rotation angle.

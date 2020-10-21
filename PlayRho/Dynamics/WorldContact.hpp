@@ -26,18 +26,27 @@
 /// Declarations of free functions of World for contacts identified by <code>ContactID</code>.
 
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 
 #include <PlayRho/Collision/WorldManifold.hpp>
+
+#include <vector>
 
 namespace playrho {
 namespace d2 {
 
 class World;
 class Manifold;
+
+/// @brief Gets the contacts recognized within the given world.
+/// @relatedalso World
+SizedRange<std::vector<KeyedContactPtr>::const_iterator>
+GetContacts(const World& world) noexcept;
 
 /// @copydoc World::IsTouching
 /// @relatedalso World
@@ -77,6 +86,7 @@ ChildCounter GetChildIndexA(const World& world, ContactID id);
 /// @relatedalso World
 ChildCounter GetChildIndexB(const World& world, ContactID id);
 
+/// @brief Gets the Time Of Impact (TOI) count.
 /// @relatedalso World
 TimestepIters GetToiCount(const World& world, ContactID id);
 
@@ -172,6 +182,10 @@ void SetEnabled(World& world, ContactID id);
 /// @relatedalso World
 void UnsetEnabled(World& world, ContactID id);
 
+/// @brief Gets the touching count for the given world.
+/// @relatedalso World
+ContactCounter GetTouchingCount(const World& world) noexcept;
+
 /// @brief Convenience function for setting/unsetting the enabled status of the identified
 ///   contact based on the value parameter.
 /// @relatedalso World
@@ -183,6 +197,17 @@ inline void SetEnabled(World& world, ContactID id, bool value)
     else {
         UnsetEnabled(world, id);
     }
+}
+
+/// @brief Gets the count of contacts in the given world.
+/// @note Not all contacts are for shapes that are actually touching. Some contacts are for
+///   shapes which merely have overlapping AABBs.
+/// @return 0 or higher.
+/// @relatedalso World
+inline ContactCounter GetContactCount(const World& world) noexcept
+{
+    using std::size;
+    return static_cast<ContactCounter>(size(GetContacts(world)));
 }
 
 } // namespace d2

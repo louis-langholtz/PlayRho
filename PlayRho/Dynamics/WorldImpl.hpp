@@ -458,9 +458,7 @@ public:
     /// @throws WrongState If call would change body's state when world is locked.
     void SetTransformation(BodyID id, Transformation xfm);
 
-    FixtureCounter GetFixtureCount(BodyID id) const;
-
-    std::size_t GetShapeCount() const noexcept;
+    FixtureCounter GetShapeCount() const noexcept;
 
     const Fixture& GetFixture(FixtureID id) const;
     Fixture& GetFixture(FixtureID id);

@@ -22,13 +22,17 @@
 #include <PlayRho/Dynamics/WorldContact.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/WorldFixture.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
 
 namespace playrho {
 namespace d2 {
+
+SizedRange<std::vector<KeyedContactPtr>::const_iterator>
+GetContacts(const World& world) noexcept
+{
+    return world.GetContacts();
+}
 
 bool IsTouching(const World& world, ContactID id)
 {
@@ -144,10 +148,10 @@ WorldManifold GetWorldManifold(const World& world, ContactID id)
     const auto fB = GetFixtureB(world, id);
     const auto iB = GetChildIndexB(world, id);
     const auto manifold = GetManifold(world, id);
-    const auto xfA = GetTransformation(world, bA);
-    const auto radiusA = GetVertexRadius(GetShape(world, fA), iA);
-    const auto xfB = GetTransformation(world, bB);
-    const auto radiusB = GetVertexRadius(GetShape(world, fB), iB);
+    const auto xfA = world.GetTransformation(bA);
+    const auto radiusA = GetVertexRadius(world.GetShape(fA), iA);
+    const auto xfB = world.GetTransformation(bB);
+    const auto radiusB = GetVertexRadius(world.GetShape(fB), iB);
     return GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
 }
 
@@ -174,6 +178,15 @@ void SetEnabled(World& world, ContactID id)
 void UnsetEnabled(World& world, ContactID id)
 {
     world.UnsetEnabled(id);
+}
+
+ContactCounter GetTouchingCount(const World& world) noexcept
+{
+    const auto contacts = world.GetContacts();
+    return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
+                                                [&](const auto &c) {
+        return world.IsTouching(std::get<ContactID>(c));
+    }));
 }
 
 } // namespace d2

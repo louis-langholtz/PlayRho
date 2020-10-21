@@ -38,21 +38,6 @@ namespace d2 {
 
 using playrho::size;
 
-SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world)
-{
-    return world.GetBodies();
-}
-
-SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world)
-{
-    return world.GetJoints();
-}
-
-SizedRange<std::vector<KeyedContactPtr>::const_iterator> GetContacts(const World& world)
-{
-    return world.GetContacts();
-}
-
 Length GetMinVertexRadius(const World& world) noexcept
 {
     return world.GetMinVertexRadius();
@@ -61,12 +46,6 @@ Length GetMinVertexRadius(const World& world) noexcept
 Length GetMaxVertexRadius(const World& world) noexcept
 {
     return world.GetMaxVertexRadius();
-}
-
-SizedRange<std::vector<BodyID>::const_iterator>
-GetBodiesForProxies(const World& world) noexcept
-{
-    return world.GetBodiesForProxies();
 }
 
 StepStats Step(World& world, const StepConf& conf)
@@ -95,90 +74,9 @@ const DynamicTree& GetTree(const World& world) noexcept
     return world.GetTree();
 }
 
-SizedRange<std::vector<FixtureID>::const_iterator>
-GetFixturesForProxies(const World& world) noexcept
-{
-    return world.GetFixturesForProxies();
-}
-
-ContactCounter GetTouchingCount(const World& world) noexcept
-{
-    const auto contacts = world.GetContacts();
-    return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
-                                                [&](const auto &c) {
-        return world.IsTouching(std::get<ContactID>(c));
-    }));
-}
-
-FixtureCounter GetFixtureCount(const World& world) noexcept
-{
-    auto sum = FixtureCounter{0};
-    const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&world,&sum](const auto &b) {
-        sum += GetFixtureCount(world, b);
-    });
-    return sum;
-}
-
-size_t GetShapeCount(const World& world) noexcept
+FixtureCounter GetShapeCount(const World& world) noexcept
 {
     return world.GetShapeCount();
-}
-
-BodyCounter GetAwakeCount(const World& world) noexcept
-{
-    const auto bodies = world.GetBodies();
-    return static_cast<BodyCounter>(count_if(cbegin(bodies), cend(bodies),
-                                             [&](const auto &b) {
-                                                 return IsAwake(world, b); }));
-}
-    
-BodyCounter Awaken(World& world) noexcept
-{
-    // Can't use count_if since body gets modified.
-    auto awoken = BodyCounter{0};
-    const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&world,&awoken](const auto &b) {
-        if (::playrho::d2::Awaken(world, b))
-        {
-            ++awoken;
-        }
-    });
-    return awoken;
-}
-
-void SetAccelerations(World& world, Acceleration acceleration) noexcept
-{
-    const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
-        SetAcceleration(world, b, acceleration);
-    });
-}
-
-void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
-{
-    const auto bodies = world.GetBodies();
-    for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
-        SetAcceleration(world, b, acceleration);
-    });
-}
-
-BodyID FindClosestBody(const World& world, Length2 location) noexcept
-{
-    const auto bodies = world.GetBodies();
-    auto found = InvalidBodyID;
-    auto minLengthSquared = std::numeric_limits<Area>::infinity();
-    for (const auto& body: bodies)
-    {
-        const auto bodyLoc = GetLocation(world, body);
-        const auto lengthSquared = GetMagnitudeSquared(bodyLoc - location);
-        if (minLengthSquared > lengthSquared)
-        {
-            minLengthSquared = lengthSquared;
-            found = body;
-        }
-    }
-    return found;
 }
 
 } // namespace d2

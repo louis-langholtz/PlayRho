@@ -22,7 +22,6 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/BodyConf.hpp>
 
 #include <algorithm>
 #include <functional>
@@ -39,6 +38,17 @@ namespace d2 {
 
 using playrho::size;
 
+SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world) noexcept
+{
+    return world.GetBodies();
+}
+
+SizedRange<std::vector<BodyID>::const_iterator>
+GetBodiesForProxies(const World& world) noexcept
+{
+    return world.GetBodiesForProxies();
+}
+
 BodyID CreateBody(World& world, const BodyConf& def)
 {
     return world.CreateBody(def);
@@ -53,11 +63,6 @@ SizedRange<std::vector<FixtureID>::const_iterator>
 GetFixtures(const World& world, BodyID id)
 {
     return world.GetFixtures(id);
-}
-
-FixtureCounter GetFixtureCount(const World& world, BodyID id)
-{
-    return world.GetFixtureCount(id);
 }
 
 LinearAcceleration2 GetLinearAcceleration(const World& world, BodyID id)
@@ -436,6 +441,62 @@ void ApplyAngularImpulse(World& world, BodyID id, AngularMomentum impulse)
     const auto invRotI = GetInvRotInertia(world, id);
     velocity.angular += AngularVelocity{invRotI * impulse};
     SetVelocity(world, id, velocity);
+}
+
+BodyCounter GetAwakeCount(const World& world) noexcept
+{
+    const auto bodies = world.GetBodies();
+    return static_cast<BodyCounter>(count_if(cbegin(bodies), cend(bodies),
+                                             [&](const auto &b) {
+        return IsAwake(world, b); }));
+}
+
+BodyCounter Awaken(World& world) noexcept
+{
+    // Can't use count_if since body gets modified.
+    auto awoken = BodyCounter{0};
+    const auto bodies = world.GetBodies();
+    for_each(begin(bodies), end(bodies), [&world,&awoken](const auto &b) {
+        if (::playrho::d2::Awaken(world, b))
+        {
+            ++awoken;
+        }
+    });
+    return awoken;
+}
+
+void SetAccelerations(World& world, Acceleration acceleration) noexcept
+{
+    const auto bodies = world.GetBodies();
+    for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
+        SetAcceleration(world, b, acceleration);
+    });
+}
+
+void SetAccelerations(World& world, LinearAcceleration2 acceleration) noexcept
+{
+    const auto bodies = world.GetBodies();
+    for_each(begin(bodies), end(bodies), [&world, acceleration](const auto &b) {
+        SetAcceleration(world, b, acceleration);
+    });
+}
+
+BodyID FindClosestBody(const World& world, Length2 location) noexcept
+{
+    const auto bodies = world.GetBodies();
+    auto found = InvalidBodyID;
+    auto minLengthSquared = std::numeric_limits<Area>::infinity();
+    for (const auto& body: bodies)
+    {
+        const auto bodyLoc = GetLocation(world, body);
+        const auto lengthSquared = GetMagnitudeSquared(bodyLoc - location);
+        if (minLengthSquared > lengthSquared)
+        {
+            minLengthSquared = lengthSquared;
+            found = body;
+        }
+    }
+    return found;
 }
 
 } // namespace d2
