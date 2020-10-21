@@ -53,6 +53,22 @@ SizedRange<std::vector<KeyedContactPtr>::const_iterator> GetContacts(const World
     return world.GetContacts();
 }
 
+Length GetMinVertexRadius(const World& world) noexcept
+{
+    return world.GetMinVertexRadius();
+}
+
+Length GetMaxVertexRadius(const World& world) noexcept
+{
+    return world.GetMaxVertexRadius();
+}
+
+SizedRange<std::vector<BodyID>::const_iterator>
+GetBodiesForProxies(const World& world) noexcept
+{
+    return world.GetBodiesForProxies();
+}
+
 StepStats Step(World& world, const StepConf& conf)
 {
     return world.Step(conf);

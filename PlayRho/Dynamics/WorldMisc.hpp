@@ -204,6 +204,18 @@ inline void ClearForces(World& world) noexcept
 /// @relatedalso World
 BodyID FindClosestBody(const World& world, Length2 location) noexcept;
 
+/// @brief Gets the min vertex radius that shapes for the given world are allowed to be.
+/// @relatedalso World
+Length GetMinVertexRadius(const World& world) noexcept;
+
+/// @brief Gets the max vertex radius that shapes for the given world are allowed to be.
+/// @relatedalso World
+Length GetMaxVertexRadius(const World& world) noexcept;
+
+/// @brief Gets the bodies-for-proxies range for the given world.
+SizedRange<std::vector<BodyID>::const_iterator>
+GetBodiesForProxies(const World& world) noexcept;
+
 } // namespace d2
 } // namespace playrho
 
