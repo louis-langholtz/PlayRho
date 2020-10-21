@@ -31,6 +31,40 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+TEST(WorldFixture, CreateDestroy)
+{
+    auto world = World{};
+    EXPECT_THROW(CreateFixture(world, BodyID(0u), Shape{DiskShapeConf{}}), std::out_of_range);
+    EXPECT_THROW(Destroy(world, FixtureID(0u)), std::out_of_range);
+    const auto body = CreateBody(world);
+    auto fixture = FixtureID(0u);
+    EXPECT_NO_THROW(fixture = CreateFixture(world, body, Shape{DiskShapeConf{}}));
+    const auto fixtures = std::vector<FixtureID>{};
+    auto fixturesRange = SizedRange<std::vector<FixtureID>::const_iterator>(begin(fixtures),
+                                                                            end(fixtures),
+                                                                            0u);
+    EXPECT_NO_THROW(fixturesRange = GetFixtures(world, body));
+    ASSERT_EQ(size(fixturesRange), 1u);
+    EXPECT_EQ(*begin(fixturesRange), fixture);
+    EXPECT_NO_THROW(Destroy(world, fixture));
+    EXPECT_NO_THROW(fixturesRange = GetFixtures(world, body));
+    EXPECT_EQ(size(fixturesRange), 0u);
+}
+
+TEST(WorldFixture, SetFilterData)
+{
+    auto world = World{};
+    const auto body = CreateBody(world);
+    const auto fixture = CreateFixture(world, body, Shape{DiskShapeConf{}});
+    const auto origFilter = Filter{1u, 2u, 3u};
+    auto copyFilter = Filter{};
+    EXPECT_NO_THROW(SetFilterData(world, fixture, origFilter));
+    EXPECT_NO_THROW(copyFilter = GetFilterData(world, fixture));
+    EXPECT_EQ(origFilter.categoryBits, copyFilter.categoryBits);
+    EXPECT_EQ(origFilter.maskBits, copyFilter.maskBits);
+    EXPECT_EQ(origFilter.groupIndex, copyFilter.groupIndex);
+}
+
 TEST(WorldFixture, CreateMatchesConf)
 {
     const auto density = 2_kgpm2;
