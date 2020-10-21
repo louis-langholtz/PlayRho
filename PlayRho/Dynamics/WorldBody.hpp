@@ -57,6 +57,7 @@ class Shape;
 SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world) noexcept;
 
 /// @brief Gets the bodies-for-proxies range for the given world.
+/// @relatedalso World
 SizedRange<std::vector<BodyID>::const_iterator>
 GetBodiesForProxies(const World& world) noexcept;
 
@@ -122,6 +123,7 @@ void SetAcceleration(World& world, BodyID id, AngularAcceleration value);
 /// @brief Sets the accelerations on the given body.
 /// @note This has no effect on non-accelerable bodies.
 /// @note A non-zero acceleration will also awaken the body.
+/// @param world The world in which the identified body's acceleration should be set.
 /// @param id Body whose acceleration should be set.
 /// @param value Acceleration value to set.
 /// @relatedalso World
@@ -136,6 +138,8 @@ void SetTransformation(World& world, BodyID id, Transformation xfm);
 /// @details This instantly adjusts the body to be at the new position and new orientation.
 /// @warning Manipulating a body's transform can cause non-physical behavior!
 /// @note Contacts are updated on the next call to World::Step.
+/// @param world The world in which the identified body's transform should be set.
+/// @param id Body whose transform is to be set.
 /// @param location Valid world location of the body's local origin. Behavior is undefined
 ///   if value is invalid.
 /// @param angle Valid world rotation. Behavior is undefined if value is invalid.
@@ -148,6 +152,7 @@ inline void SetTransform(World& world, BodyID id, Length2 location, Angle angle)
 /// @brief Sets the body's location.
 /// @details This instantly adjusts the body to be at the new location.
 /// @warning Manipulating a body's location this way can cause non-physical behavior!
+/// @param world The world in which the identified body's location should be set.
 /// @param id Body to move.
 /// @param value Valid world location of the body's local origin. Behavior is undefined
 ///   if value is invalid.
@@ -158,6 +163,7 @@ void SetLocation(World& world, BodyID id, Length2 value);
 /// @brief Sets the body's angular orientation.
 /// @details This instantly adjusts the body to be at the new angular orientation.
 /// @warning Manipulating a body's angle this way can cause non-physical behavior!
+/// @param world The world in which the identified body's angle should be set.
 /// @param id Body to move.
 /// @param value Valid world angle of the body's local origin. Behavior is undefined
 ///   if value is invalid.

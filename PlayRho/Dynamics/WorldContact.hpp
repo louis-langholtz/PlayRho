@@ -43,6 +43,11 @@ namespace d2 {
 class World;
 class Manifold;
 
+/// @example WorldContact.cpp
+/// This is the <code>googletest</code> based unit testing file for the free function
+///   interfaces to <code>playrho::d2::World</code> contact member functions and additional
+///   functionality.
+
 /// @brief Gets the contacts recognized within the given world.
 /// @relatedalso World
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>
