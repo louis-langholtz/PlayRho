@@ -17,9 +17,11 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
@@ -50,7 +52,7 @@ TEST(Fixture, ByteSize)
     }
 }
 
-TEST(Fixture, CreateMatchesConf)
+TEST(WorldFixture, CreateMatchesConf)
 {
     const auto density = 2_kgpm2;
     const auto friction = Real(0.5);
@@ -58,14 +60,12 @@ TEST(Fixture, CreateMatchesConf)
     const auto isSensor = true;
     const auto conf = DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density);
     const auto shapeA = Shape(conf);
-
     auto def = FixtureConf{};
     def.isSensor = isSensor;
 
     World world;
-    const auto body = world.CreateBody();
-    const auto fixture = world.CreateFixture(body, shapeA, def);
-
+    const auto body = CreateBody(world);
+    const auto fixture = CreateFixture(world, body, shapeA, def);
     EXPECT_EQ(GetBody(world, fixture), body);
     EXPECT_EQ(GetShape(world, fixture), shapeA);
     EXPECT_EQ(GetDensity(world, fixture), density);
@@ -75,14 +75,14 @@ TEST(Fixture, CreateMatchesConf)
     EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
 }
 
-TEST(Fixture, SetSensor)
+TEST(WorldFixture, SetSensor)
 {
     const auto shapeA = Shape{DiskShapeConf{}};
     const auto bodyCtrPos = Length2(1_m, 2_m);
     
     World world;
-    const auto body = world.CreateBody(BodyConf{}.UseLocation(bodyCtrPos));
-    const auto fixture = world.CreateFixture(body, shapeA);
+    const auto body = CreateBody(world, BodyConf{}.UseLocation(bodyCtrPos));
+    const auto fixture = CreateFixture(world, body, shapeA);
     SetSensor(world, fixture, true);
     EXPECT_TRUE(IsSensor(world, fixture));
     SetSensor(world, fixture, true);
@@ -91,14 +91,14 @@ TEST(Fixture, SetSensor)
     EXPECT_FALSE(IsSensor(world, fixture));
 }
 
-TEST(Fixture, TestPointFreeFunction)
+TEST(WorldFixture, TestPointFreeFunction)
 {
     const auto shapeA = Shape{DiskShapeConf{}};
     const auto bodyCtrPos = Length2(1_m, 2_m);
 
     World world;
-    const auto body = world.CreateBody(BodyConf{}.UseLocation(bodyCtrPos));
-    const auto fixture = world.CreateFixture(body, shapeA);
+    const auto body = CreateBody(world, BodyConf{}.UseLocation(bodyCtrPos));
+    const auto fixture = CreateFixture(world, body, shapeA);
     EXPECT_TRUE(TestPoint(world, fixture, bodyCtrPos));
     EXPECT_FALSE(TestPoint(world, fixture, Length2{}));
 }
@@ -108,15 +108,15 @@ TEST(Fixture, SetAwakeFreeFunction)
     const auto shapeA = Shape{DiskShapeConf{}};
 
     World world;
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     UnsetAwake(world, body);
     ASSERT_FALSE(IsAwake(world, body));
-    const auto fixture = world.CreateFixture(body, shapeA);
+    const auto fixture = CreateFixture(world, body, shapeA);
     SetAwake(world, GetBody(world, fixture));
     EXPECT_TRUE(IsAwake(world, body));
 }
 
-TEST(Fixture, Proxies)
+TEST(WorldFixture, Proxies)
 {
     const auto density = 2_kgpm2;
     const auto friction = Real(0.5);
@@ -132,8 +132,8 @@ TEST(Fixture, Proxies)
         };
 
         auto world = World{};
-        const auto body = world.CreateBody();
-        const auto fixture = world.CreateFixture(body, shape, def);
+        const auto body = CreateBody(world);
+        const auto fixture = CreateFixture(world, body, shape, def);
 
         ASSERT_EQ(GetBody(world, fixture), body);
         ASSERT_EQ(GetShape(world, fixture), shape);
@@ -144,7 +144,7 @@ TEST(Fixture, Proxies)
         ASSERT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
 
         const auto stepConf = StepConf{};
-        world.Step(stepConf);
+        Step(world, stepConf);
         EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{1});
         EXPECT_EQ(GetProxy(world, fixture, 0), FixtureProxy{0});
     }
@@ -155,8 +155,8 @@ TEST(Fixture, Proxies)
         };
         
         auto world = World{};
-        const auto body = world.CreateBody();
-        const auto fixture = world.CreateFixture(body, shape, def);
+        const auto body = CreateBody(world);
+        const auto fixture = CreateFixture(world, body, shape, def);
 
         ASSERT_EQ(GetBody(world, fixture), body);
         ASSERT_EQ(GetShape(world, fixture), shape);
@@ -164,7 +164,7 @@ TEST(Fixture, Proxies)
         ASSERT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
         
         const auto stepConf = StepConf{};
-        world.Step(stepConf);
+        Step(world, stepConf);
         EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{2});
         EXPECT_EQ(GetProxy(world, fixture, 0), FixtureProxy{0});
         EXPECT_EQ(GetProxy(world, fixture, 1), FixtureProxy{1});
@@ -177,8 +177,8 @@ TEST(Fixture, Proxies)
         };
 
         auto world = World{};
-        const auto body = world.CreateBody();
-        const auto fixture = world.CreateFixture(body, shape, def);
+        const auto body = CreateBody(world);
+        const auto fixture = CreateFixture(world, body, shape, def);
 
         ASSERT_EQ(GetBody(world, fixture), body);
         ASSERT_EQ(GetShape(world, fixture), shape);
@@ -186,7 +186,7 @@ TEST(Fixture, Proxies)
         ASSERT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
         
         const auto stepConf = StepConf{};
-        world.Step(stepConf);
+        Step(world, stepConf);
         EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{4});
         EXPECT_EQ(GetProxy(world, fixture, 0), FixtureProxy{0});
         EXPECT_EQ(GetProxy(world, fixture, 1), FixtureProxy{1});
