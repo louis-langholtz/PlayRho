@@ -26,6 +26,7 @@
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldContact.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
@@ -57,12 +58,10 @@ TEST(Contact, ByteSize)
 
 TEST(Contact, Enabled)
 {
-    const auto shape = DiskShapeConf{};
-    auto world = World{};
-    const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = world.CreateFixture(bA, Shape{shape});
-    const auto fB = world.CreateFixture(bB, Shape{shape});
+    const auto bA = BodyID(0u);
+    const auto bB = BodyID(1u);
+    const auto fA = FixtureID(0u);
+    const auto fB = FixtureID(1u);
     auto c = Contact{bA, fA, 0u, bB, fB, 0u};
     EXPECT_TRUE(c.IsEnabled());
     c.UnsetEnabled();
@@ -71,18 +70,18 @@ TEST(Contact, Enabled)
     EXPECT_TRUE(c.IsEnabled());
 }
 
-TEST(Contact, SetAwake)
+TEST(WorldContact, SetAwake)
 {
     const auto shape = DiskShapeConf{};
     auto world = World{};
-    const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = world.CreateFixture(bA, Shape{shape});
-    const auto fB = world.CreateFixture(bB, Shape{shape});
+    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto fA = CreateFixture(world, bA, Shape{shape});
+    const auto fB = CreateFixture(world, bB, Shape{shape});
 
-    ASSERT_TRUE(world.GetContacts().empty());
-    world.Step(StepConf{});
-    const auto contacts = world.GetContacts();
+    ASSERT_TRUE(GetContacts(world).empty());
+    Step(world, StepConf{});
+    const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
     const auto c = contacts.begin()->second;
     ASSERT_EQ(GetFixtureA(world, c), fA);
@@ -101,18 +100,18 @@ TEST(Contact, SetAwake)
     EXPECT_TRUE(IsAwake(world, bB));
 }
 
-TEST(Contact, ResetFriction)
+TEST(WorldContact, ResetFriction)
 {
     const auto shape = DiskShapeConf{};
     auto world = World{};
-    const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = world.CreateFixture(bA, Shape{shape});
-    const auto fB = world.CreateFixture(bB, Shape{shape});
+    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto fA = CreateFixture(world, bA, Shape{shape});
+    const auto fB = CreateFixture(world, bB, Shape{shape});
 
-    ASSERT_TRUE(world.GetContacts().empty());
-    world.Step(StepConf{});
-    const auto contacts = world.GetContacts();
+    ASSERT_TRUE(GetContacts(world).empty());
+    Step(world, StepConf{});
+    const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
     const auto c = contacts.begin()->second;
     ASSERT_EQ(GetFixtureA(world, c), fA);
@@ -130,18 +129,18 @@ TEST(Contact, ResetFriction)
                 0.01);
 }
 
-TEST(Contact, ResetRestitution)
+TEST(WorldContact, ResetRestitution)
 {
     const auto shape = DiskShapeConf{};
     auto world = World{};
-    const auto bA = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto bB = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto fA = world.CreateFixture(bA, Shape{shape});
-    const auto fB = world.CreateFixture(bB, Shape{shape});
+    const auto bA = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto bB = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto fA = CreateFixture(world, bA, Shape{shape});
+    const auto fB = CreateFixture(world, bB, Shape{shape});
 
-    ASSERT_TRUE(world.GetContacts().empty());
-    world.Step(StepConf{});
-    const auto contacts = world.GetContacts();
+    ASSERT_TRUE(GetContacts(world).empty());
+    Step(world, StepConf{});
+    const auto contacts = GetContacts(world);
     ASSERT_EQ(contacts.size(), ContactCounter(1));
     const auto c = contacts.begin()->second;
     ASSERT_EQ(GetFixtureA(world, c), fA);
