@@ -126,7 +126,7 @@
 		475931D01F254DDC009BACA3 /* BenchmarkMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475931CF1F254DDC009BACA3 /* BenchmarkMain.cpp */; };
 		475931D21F26ABBD009BACA3 /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475931D11F26ABBD009BACA3 /* Filter.cpp */; };
 		475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94531D930503000CA9A8 /* BlockAllocator.cpp */; };
-		475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94551D930E6C000CA9A8 /* Fixture.cpp */; };
+		475A94561D930E6C000CA9A8 /* WorldFixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A94551D930E6C000CA9A8 /* WorldFixture.cpp */; };
 		475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945A1D9593A4000CA9A8 /* Shape.cpp */; };
 		475A945D1D959537000CA9A8 /* Joint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945C1D959537000CA9A8 /* Joint.cpp */; };
 		475A945F1D95A15A000CA9A8 /* StackAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */; };
@@ -182,6 +182,7 @@
 		476FBF51253FB9550057D5F3 /* WorldBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476FBF50253FB9550057D5F3 /* WorldBody.cpp */; };
 		476FBF53253FB96E0057D5F3 /* Body.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476FBF52253FB96E0057D5F3 /* Body.cpp */; };
 		476FBF55254015260057D5F3 /* Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476FBF54254015260057D5F3 /* Contact.cpp */; };
+		476FBF572540D6960057D5F3 /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 476FBF562540D6960057D5F3 /* Fixture.cpp */; };
 		4775A9381E05B032001C2332 /* StepConf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4775A9371E05B032001C2332 /* StepConf.cpp */; };
 		47791F801F92DB0700E257AF /* imgui_draw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47791F7A1F92D78F00E257AF /* imgui_draw.cpp */; };
 		47791F811F92DB0D00E257AF /* imgui_impl_glfw_gl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47791F7C1F92D83500E257AF /* imgui_impl_glfw_gl3.cpp */; };
@@ -526,7 +527,7 @@
 		475931CF1F254DDC009BACA3 /* BenchmarkMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BenchmarkMain.cpp; sourceTree = "<group>"; };
 		475931D11F26ABBD009BACA3 /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
 		475A94531D930503000CA9A8 /* BlockAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockAllocator.cpp; sourceTree = "<group>"; };
-		475A94551D930E6C000CA9A8 /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
+		475A94551D930E6C000CA9A8 /* WorldFixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldFixture.cpp; sourceTree = "<group>"; };
 		475A945A1D9593A4000CA9A8 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
 		475A945C1D959537000CA9A8 /* Joint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Joint.cpp; sourceTree = "<group>"; };
 		475A945E1D95A15A000CA9A8 /* StackAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackAllocator.cpp; sourceTree = "<group>"; };
@@ -583,6 +584,7 @@
 		476FBF50253FB9550057D5F3 /* WorldBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldBody.cpp; sourceTree = "<group>"; };
 		476FBF52253FB96E0057D5F3 /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Body.cpp; sourceTree = "<group>"; };
 		476FBF54254015260057D5F3 /* Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Contact.cpp; sourceTree = "<group>"; };
+		476FBF562540D6960057D5F3 /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
 		477329D61F9BEFA200C521B4 /* SolarSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SolarSystem.hpp; sourceTree = "<group>"; };
 		4775A9371E05B032001C2332 /* StepConf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StepConf.cpp; sourceTree = "<group>"; };
 		47791F761F901B8700E257AF /* iforce2d_Trajectories.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = iforce2d_Trajectories.hpp; sourceTree = "<group>"; };
@@ -861,7 +863,7 @@
 				474BC3FA1D41278800447DCD /* Epsilon.cpp */,
 				475931D11F26ABBD009BACA3 /* Filter.cpp */,
 				477D20051E32B6E80069D610 /* Fixed.cpp */,
-				475A94551D930E6C000CA9A8 /* Fixture.cpp */,
+				476FBF562540D6960057D5F3 /* Fixture.cpp */,
 				4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */,
 				47B58F5F1F5B791500354C34 /* FlagGuard.cpp */,
 				472724241E310C7600C64921 /* float.cpp */,
@@ -920,6 +922,7 @@
 				474BC4061D41278800447DCD /* World.cpp */,
 				476FBF50253FB9550057D5F3 /* WorldBody.cpp */,
 				475A94601D9996B6000CA9A8 /* WorldContact.cpp */,
+				475A94551D930E6C000CA9A8 /* WorldFixture.cpp */,
 				47E8416F1DB3FDC400E5F311 /* WorldManifold.cpp */,
 			);
 			name = UnitTests;
@@ -1682,6 +1685,7 @@
 				474BAB2A1E5CBA010058E08A /* Velocity.cpp in Sources */,
 				474BC43A1D413DC200447DCD /* TimeOfImpact.cpp in Sources */,
 				47D61F7A1F20229A00E702BD /* ChainShape.cpp in Sources */,
+				476FBF572540D6960057D5F3 /* Fixture.cpp in Sources */,
 				474B67221E80466D00B6D126 /* functional.cpp in Sources */,
 				476FBF4F253FAD690057D5F3 /* BodyConf.cpp in Sources */,
 				477D20061E32B6E80069D610 /* Fixed.cpp in Sources */,
@@ -1709,7 +1713,7 @@
 				47E841701DB3FDC400E5F311 /* WorldManifold.cpp in Sources */,
 				474BC43D1D413DC200447DCD /* World.cpp in Sources */,
 				479B63C31ED9CAC300D49BC7 /* CheckedValue.cpp in Sources */,
-				475A94561D930E6C000CA9A8 /* Fixture.cpp in Sources */,
+				475A94561D930E6C000CA9A8 /* WorldFixture.cpp in Sources */,
 				4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */,
 				473E01A01F81705100D58CC8 /* Vector.cpp in Sources */,
 				472E24661F82C4EA0051E192 /* Interval.cpp in Sources */,
