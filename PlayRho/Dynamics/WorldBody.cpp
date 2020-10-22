@@ -38,6 +38,11 @@ namespace d2 {
 
 using playrho::size;
 
+BodyCounter GetBodyRange(const World& world) noexcept
+{
+    return world.GetBodyRange();
+}
+
 SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world) noexcept
 {
     return world.GetBodies();

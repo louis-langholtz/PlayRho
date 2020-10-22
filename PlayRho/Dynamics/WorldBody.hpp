@@ -69,6 +69,12 @@ class Shape;
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 /// @{
 
+/// @brief Gets the extent of the currently valid body range.
+/// @note This is one higher than the maxium BodyID that is in range for body related
+///   functions.
+/// @relatedalso World
+BodyCounter GetBodyRange(const World& world) noexcept;
+
 /// @brief Gets the bodies of the specified world.
 /// @relatedalso World
 SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const World& world) noexcept;

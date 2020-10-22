@@ -573,6 +573,11 @@ void WorldImpl::Clear() noexcept
     m_bodyBuffer.clear();
 }
 
+BodyCounter WorldImpl::GetBodyRange() const noexcept
+{
+    return static_cast<BodyCounter>(m_bodyBuffer.size());
+}
+
 BodyID WorldImpl::CreateBody(const BodyConf& def)
 {
     if (IsLocked())

@@ -48,6 +48,11 @@ namespace d2 {
 
 class WorldImpl;
 
+/// @brief Gets the extent of the currently valid body range.
+/// @note This is one higher than the maxium BodyID that is in range for body related
+///   functions.
+BodyCounter GetBodyRange(const WorldImpl& world) noexcept;
+
 /// @brief Destroys the identified body.
 /// @relatedalso WorldImpl
 void Destroy(WorldImpl& world, BodyID id);

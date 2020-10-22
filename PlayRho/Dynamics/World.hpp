@@ -326,6 +326,11 @@ public:
     /// Member functions relating to bodies.
     ///@{
 
+    /// @brief Gets the extent of the currently valid body range.
+    /// @note This is one higher than the maxium BodyID that is in range for body related
+    ///   functions.
+    BodyCounter GetBodyRange() const noexcept;
+
     /// @brief Gets the world body range for this constant world.
     /// @details Gets a range enumerating the bodies currently existing within this world.
     ///   These are the bodies that had been created from previous calls to the
