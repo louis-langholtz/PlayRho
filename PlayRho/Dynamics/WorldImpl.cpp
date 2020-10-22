@@ -2433,7 +2433,7 @@ ContactCounter WorldImpl::Synchronize(const Fixture& fixture,
     const auto shape = fixture.GetShape();
     const auto proxies = fixture.GetProxies();
     auto childIndex = ChildCounter{0};
-    for (auto& proxy: proxies)
+    for (const auto& proxy: proxies)
     {
         const auto treeId = proxy.treeId;
         
