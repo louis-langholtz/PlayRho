@@ -26,11 +26,14 @@
 /// Declarations of free functions of World for joints identified by <code>JointID</code>.
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
 #include <PlayRho/Dynamics/Joints/LimitState.hpp>
+
+#include <vector>
 
 namespace playrho {
 namespace d2 {
@@ -38,6 +41,10 @@ namespace d2 {
 class World;
 class Joint;
 struct JointConf;
+
+/// @brief Gets the joints of the specified world.
+/// @relatedalso World
+SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world);
 
 /// @copydoc World::CreateJoint
 /// @relatedalso World
@@ -51,8 +58,12 @@ void Destroy(World& world, JointID id);
 /// @relatedalso World
 JointType GetType(const World& world, JointID id);
 
+/// @brief Gets the value of the identified joint.
+/// @relatedalso World
 const Joint& GetJoint(const World& world, JointID id);
 
+/// @brief Sets the value of the identified joint.
+/// @relatedalso World
 void SetJoint(World& world, JointID id, const Joint& def);
 
 /// @copydoc World::GetCollideConnected
@@ -68,46 +79,61 @@ bool IsMotorEnabled(const World& world, JointID id);
 /// @relatedalso World
 void EnableMotor(World& world, JointID id, bool value);
 
+/// @brief Gets whether the identified joint's limit is enabled.
 /// @relatedalso World
 bool IsLimitEnabled(const World& world, JointID id);
 
+/// @brief Sets whether the identified joint's limit is enabled or not.
 /// @relatedalso World
 void EnableLimit(World& world, JointID id, bool value);
 
+/// @relatedalso World
 BodyID GetBodyA(const World& world, JointID id);
 
+/// @relatedalso World
 BodyID GetBodyB(const World& world, JointID id);
 
 /// Get the anchor point on body-A in local coordinates.
+/// @relatedalso World
 Length2 GetLocalAnchorA(const World& world, JointID id);
 
 /// Get the anchor point on body-B in local coordinates.
+/// @relatedalso World
 Length2 GetLocalAnchorB(const World& world, JointID id);
 
 /// @copydoc World::GetLinearReaction
+/// @relatedalso World
 Momentum2 GetLinearReaction(const World& world, JointID id);
 
 /// @copydoc World::GetAngularReaction
+/// @relatedalso World
 AngularMomentum GetAngularReaction(const World& world, JointID id);
 
+/// @relatedalso World
 Angle GetReferenceAngle(const World& world, JointID id);
 
+/// @relatedalso World
 UnitVec GetLocalXAxisA(const World& world, JointID id);
 
+/// @relatedalso World
 UnitVec GetLocalYAxisA(const World& world, JointID id);
 
 /// @copydoc World::GetMotorSpeed
+/// @relatedalso World
 /// @see SetMotorSpeed(World& world, JointID id, AngularVelocity value)
 AngularVelocity GetMotorSpeed(const World& world, JointID id);
 
 /// @copydoc World::SetMotorSpeed
+/// @relatedalso World
 /// @see GetMotorSpeed(const World& world, JointID id)
 void SetMotorSpeed(World& world, JointID id, AngularVelocity value);
 
 /// @brief Gets the max motor torque.
+/// @relatedalso World
 Torque GetMaxMotorTorque(const World& world, JointID id);
 
 /// Set the maximum motor torque.
+/// @relatedalso World
 void SetMaxMotorTorque(World& world, JointID id, Torque value);
 
 /// @relatedalso World
@@ -248,6 +274,15 @@ LimitState GetLimitState(const World& world, JointID id);
 /// @copydoc World::SetAwake(JointID)
 /// @relatedalso World
 void SetAwake(World& world, JointID id);
+
+/// Gets the count of joints in the given world.
+/// @return 0 or higher.
+/// @relatedalso World
+inline JointCounter GetJointCount(const World& world) noexcept
+{
+    using std::size;
+    return static_cast<JointCounter>(size(GetJoints(world)));
+}
 
 } // namespace d2
 } // namespace playrho

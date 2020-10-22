@@ -65,11 +65,11 @@ class ContactImpulsesList;
 class DynamicTree;
 struct JointConf;
 
-/// @defgroup PhysicalEntities Physical Entity Classes
+/// @defgroup PhysicalEntities Physical Entities
 ///
-/// @brief Classes representing physical entities typically created/destroyed via factory methods.
+/// @brief Concepts and types associated with physical entities within a world.
 ///
-/// @details Classes of creatable and destroyable managed instances that associate
+/// @details Concepts and types of creatable and destroyable instances that associate
 ///   physical properties to simulations. These instances are typically created via a
 ///   method whose name begins with the prefix of <code>Create</code>. Similarly, these
 ///   instances are typically destroyed using a method whose name begins with the prefix
@@ -106,8 +106,8 @@ struct JointConf;
 ///   <code>ContactID</code>, <code>FixtureID</code>, and <code>JointID</code> values respectively.
 /// @note This class uses the pointer to implementation (PIMPL) technique and non-vitural
 ///   interface (NVI) pattern to provide a complete layer of abstraction from the actual
-///   implementations used. This forms a "compilation firewall" &mdash or application
-///   binary interface (ABI) &mdash to help provide binary stability while facilitating
+///   implementations used. This forms a "compilation firewall" &mdash; or application
+///   binary interface (ABI) &mdash; to help provide binary stability while facilitating
 ///   experimentation and optimization.
 /// @note This data structure is 8-bytes large (on at least one 64-bit platform).
 ///
@@ -318,7 +318,7 @@ public:
 
     /// @brief Gets the shape count.
     /// @todo Consider removing this function.
-    std::size_t GetShapeCount() const noexcept;
+    FixtureCounter GetShapeCount() const noexcept;
 
     /// @}
 
@@ -448,10 +448,6 @@ public:
     /// @brief Gets the range of all constant fixtures attached to the given body.
     /// @throws std::out_of_range If given an invalid body identifier.
     SizedRange<Fixtures::const_iterator> GetFixtures(BodyID id) const;
-
-    /// @brief Gets the count of fixtures associated with the identifed body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    FixtureCounter GetFixtureCount(BodyID id) const;
 
     /// @brief Get the angle.
     /// @return the current world rotation angle.
@@ -963,7 +959,11 @@ private:
 
 /// @example HelloWorld.cpp
 /// This is the source file for the <code>HelloWorld</code> application that demonstrates
-/// use of the playrho::d2::World class and more.
+/// use of the <code>playrho::d2::World</code> class and more.
+/// After instantiating a world, the code creates a body and its fixture to act as the ground,
+/// creates another body and a fixture for it to act like a ball, then steps the world using
+/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates a ball falling to the ground
+/// and outputs the position of the ball after each step.
 
 /// @example World.cpp
 /// This is the <code>googletest</code> based unit testing file for the

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -20,42 +20,28 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Contacts/Contact.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(Contact, ByteSize)
+TEST(BodyConf, UseType)
 {
-    switch (sizeof(Real))
-    {
-        case  4:
-            EXPECT_EQ(alignof(Contact), 4u);
-            EXPECT_EQ(sizeof(Contact), std::size_t(36));
-            break;
-        case  8:
-            EXPECT_EQ(alignof(Contact), 8u);
-            EXPECT_EQ(sizeof(Contact), std::size_t(56));
-            break;
-        case 16:
-            EXPECT_EQ(sizeof(Contact), std::size_t(96));
-            break;
-        default:
-            FAIL();
-            break;
-    }
+    EXPECT_EQ(BodyConf{}.UseType(BodyType::Static).type, BodyType::Static);
+    EXPECT_EQ(BodyConf{}.UseType(BodyType::Dynamic).type, BodyType::Dynamic);
+    EXPECT_EQ(BodyConf{}.UseType(BodyType::Kinematic).type, BodyType::Kinematic);
 }
 
-TEST(Contact, Enabled)
+TEST(BodyConf, UsePosition)
 {
-    const auto bA = BodyID(0u);
-    const auto bB = BodyID(1u);
-    const auto fA = FixtureID(0u);
-    const auto fB = FixtureID(1u);
-    auto c = Contact{bA, fA, 0u, bB, fB, 0u};
-    EXPECT_TRUE(c.IsEnabled());
-    c.UnsetEnabled();
-    EXPECT_FALSE(c.IsEnabled());
-    c.SetEnabled();
-    EXPECT_TRUE(c.IsEnabled());
+    const auto p = Position{Length2{3_m, -4_m}, 22_deg};
+    EXPECT_EQ(BodyConf{}.Use(p).location, p.linear);
+    EXPECT_EQ(BodyConf{}.Use(p).angle, p.angular);
+}
+
+TEST(BodyConf, UseVelocity)
+{
+    const auto v = Velocity{LinearVelocity2{3_mps, -4_mps}, 22_rad / 1_s};
+    EXPECT_EQ(BodyConf{}.Use(v).linearVelocity, v.linear);
+    EXPECT_EQ(BodyConf{}.Use(v).angularVelocity, v.angular);
 }

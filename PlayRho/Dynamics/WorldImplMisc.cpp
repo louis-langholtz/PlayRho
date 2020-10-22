@@ -166,7 +166,7 @@ const DynamicTree& GetTree(const WorldImpl& world) noexcept
     return world.GetTree();
 }
 
-std::size_t GetShapeCount(const WorldImpl& world) noexcept
+FixtureCounter GetShapeCount(const WorldImpl& world) noexcept
 {
     return world.GetShapeCount();
 }

@@ -21,6 +21,7 @@
 #define  PLAYRHO_DISTANCE_TEST_HPP
 
 #include "../Framework/Test.hpp"
+
 #include <sstream>
 #include <utility>
 

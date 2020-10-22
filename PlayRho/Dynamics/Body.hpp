@@ -507,8 +507,16 @@ private:
     //
 
     // These three aren't "essential parts". They don't contribute to this instance's "value".
-    mutable Fixtures m_fixtures; ///< Cache of associated fixtures (owned by world).
+
+    /// Cache of associated fixtures (owned by world).
+    /// @todo Consider eliminating this variable since calling <code>GetFixtures()</code>
+    ///   isn't done within the <code>World::Step</code> except by
+    ///   <code>World::Synchronize</code> which may be replacable with iterating over the
+    ///   entire fixture array.
+    mutable Fixtures m_fixtures;
+
     mutable Contacts m_contacts; ///< Cache of associated contacts (owned by world).
+
     mutable Joints m_joints; ///< Cache of associated joints (owned by world).
 
     /// Transformation for body origin.
@@ -556,10 +564,6 @@ private:
     /// @note 4-bytes.
     Time m_underActiveTime = 0;
 };
-
-/// @example Body.cpp
-/// This is the <code>googletest</code> based unit testing file for the
-///   <code>playrho::d2::Body</code> class.
 
 inline Body::FlagsType Body::GetFlags(BodyType type) noexcept
 {

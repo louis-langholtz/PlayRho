@@ -22,7 +22,6 @@
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 
@@ -30,6 +29,11 @@
 
 namespace playrho {
 namespace d2 {
+
+SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world)
+{
+    return world.GetJoints();
+}
 
 JointID CreateJoint(World& world, const Joint& def)
 {
@@ -159,16 +163,16 @@ void SetFrequency(World& world, JointID id, Frequency value)
 
 AngularVelocity GetAngularVelocity(const World& world, JointID id)
 {
-    return GetVelocity(world, GetBodyB(world, id)).angular
-         - GetVelocity(world, GetBodyA(world, id)).angular;
+    return world.GetVelocity(GetBodyB(world, id)).angular
+         - world.GetVelocity(GetBodyA(world, id)).angular;
 }
 
 bool IsEnabled(const World& world, JointID id)
 {
     const auto bA = GetBodyA(world, id);
     const auto bB = GetBodyB(world, id);
-    return (bA == InvalidBodyID || IsEnabled(world, bA))
-        && (bB == InvalidBodyID || IsEnabled(world, bB));
+    return (bA == InvalidBodyID || world.IsEnabled(bA))
+        && (bB == InvalidBodyID || world.IsEnabled(bB));
 }
 
 JointCounter GetWorldIndex(const World& world, JointID id) noexcept
@@ -184,12 +188,12 @@ JointCounter GetWorldIndex(const World& world, JointID id) noexcept
 
 Length2 GetAnchorA(const World& world, JointID id)
 {
-    return GetWorldPoint(world, GetBodyA(world, id), GetLocalAnchorA(world, id));
+    return Transform(GetLocalAnchorA(world, id), world.GetTransformation(GetBodyA(world, id)));
 }
 
 Length2 GetAnchorB(const World& world, JointID id)
 {
-    return GetWorldPoint(world, GetBodyB(world, id), GetLocalAnchorB(world, id));
+    return Transform(GetLocalAnchorB(world, id), world.GetTransformation(GetBodyB(world, id)));
 }
 
 Real GetRatio(const World& world, JointID id)
@@ -199,15 +203,17 @@ Real GetRatio(const World& world, JointID id)
 
 Length GetJointTranslation(const World& world, JointID id)
 {
-    const auto pA = GetWorldPoint(world, GetBodyA(world, id), GetLocalAnchorA(world, id));
-    const auto pB = GetWorldPoint(world, GetBodyB(world, id), GetLocalAnchorB(world, id));
-    const auto uv = GetWorldVector(world, GetBodyA(world, id), GetLocalXAxisA(world, id));
+    const auto pA = GetAnchorA(world, id);
+    const auto pB = GetAnchorB(world, id);
+    const auto uv = Rotate(GetLocalXAxisA(world, id),
+                           world.GetTransformation(GetBodyA(world, id)).q);
     return Dot(pB - pA, uv);
 }
 
 Angle GetAngle(const World& world, JointID id)
 {
-    return GetAngle(world, GetBodyB(world, id)) - GetAngle(world, GetBodyA(world, id)) - GetReferenceAngle(world, id);
+    return world.GetAngle(GetBodyB(world, id)) - world.GetAngle(GetBodyA(world, id))
+         - GetReferenceAngle(world, id);
 }
 
 bool IsLimitEnabled(const World& world, JointID id)
@@ -275,14 +281,12 @@ Length2 GetGroundAnchorB(const World& world,  JointID id)
 
 Length GetCurrentLengthA(const World& world, JointID id)
 {
-    return GetMagnitude(GetWorldPoint(world, GetBodyA(world, id),
-                                      GetLocalAnchorA(world, id)) - GetGroundAnchorA(world, id));
+    return GetMagnitude(GetAnchorA(world, id) - GetGroundAnchorA(world, id));
 }
 
 Length GetCurrentLengthB(const World& world, JointID id)
 {
-    return GetMagnitude(GetWorldPoint(world, GetBodyB(world, id),
-                                      GetLocalAnchorB(world, id)) - GetGroundAnchorB(world, id));
+    return GetMagnitude(GetAnchorB(world, id) - GetGroundAnchorB(world, id));
 }
 
 Length2 GetTarget(const World& world, JointID id)

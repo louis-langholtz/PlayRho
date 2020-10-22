@@ -2433,7 +2433,7 @@ ContactCounter WorldImpl::Synchronize(const Fixture& fixture,
     const auto shape = fixture.GetShape();
     const auto proxies = fixture.GetProxies();
     auto childIndex = ChildCounter{0};
-    for (auto& proxy: proxies)
+    for (const auto& proxy: proxies)
     {
         const auto treeId = proxy.treeId;
         
@@ -2596,12 +2596,7 @@ void WorldImpl::SetTransformation(BodyID id, Transformation xfm)
     }
 }
 
-FixtureCounter WorldImpl::GetFixtureCount(BodyID id) const
-{
-    return ::playrho::d2::GetFixtureCount(GetBody(id));
-}
-
-std::size_t WorldImpl::GetShapeCount() const noexcept
+FixtureCounter WorldImpl::GetShapeCount() const noexcept
 {
     auto shapes = std::set<const void*>();
     for_each(cbegin(m_bodies), cend(m_bodies), [&](const auto& b) {
@@ -2611,7 +2606,7 @@ std::size_t WorldImpl::GetShapeCount() const noexcept
             shapes.insert(GetData(fixture.GetShape()));
         });
     });
-    return size(shapes);
+    return static_cast<FixtureCounter>(size(shapes));
 }
 
 void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)

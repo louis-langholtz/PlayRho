@@ -299,14 +299,9 @@ SizedRange<World::Fixtures::const_iterator> World::GetFixtures(BodyID id) const
     return ::playrho::d2::GetFixtures(*m_impl, id);
 }
 
-std::size_t World::GetShapeCount() const noexcept
+FixtureCounter World::GetShapeCount() const noexcept
 {
     return ::playrho::d2::GetShapeCount(*m_impl);
-}
-
-FixtureCounter World::GetFixtureCount(BodyID id) const
-{
-    return ::playrho::d2::GetFixtureCount(*m_impl, id);
 }
 
 BodyConf World::GetBodyConf(BodyID id) const

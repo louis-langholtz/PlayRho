@@ -57,7 +57,7 @@
 #include <PlayRho/Common/OptionalValue.hpp> // for Optional
 
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldMisc.hpp> // for GetAwakeCount
+#include <PlayRho/Dynamics/WorldBody.hpp> // for GetAwakeCount
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>

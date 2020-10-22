@@ -1,7 +1,9 @@
 *Note: The text you see here is from the `issue_template.md` file.
-These are some optional guidelines for describing a new issue.
-Replace this text (the star enclosed text, i.e. the italicized text)
-with your own words.*
+These are some optional guidelines for describing a new issue. If you're
+just looking to ask a programming question about PlayRho, consider asking
+on stackoverflow.com with the tag of "playrho". If you're looking to describe
+an issue with PlayRho however, please replace this text (the star enclosed
+text, i.e. the italicized text), with your own words.*
 
 ### Expected/Desired Behavior or Experience:
 *Replace this text with a description of the behavior that you had expected

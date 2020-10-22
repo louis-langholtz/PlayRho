@@ -111,7 +111,7 @@ Frequency GetInvDeltaTime(const WorldImpl& world) noexcept;
 
 const DynamicTree& GetTree(const WorldImpl& world) noexcept;
 
-std::size_t GetShapeCount(const WorldImpl& world) noexcept;
+FixtureCounter GetShapeCount(const WorldImpl& world) noexcept;
 
 } // namespace d2
 } // namespace playrho

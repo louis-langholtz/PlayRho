@@ -346,10 +346,6 @@ private:
     FlagsType m_flags = e_enabledFlag|e_dirtyFlag; ///< Flags.
 };
 
-/// @example Contact.cpp
-/// This is the <code>googletest</code> based unit testing file for the
-///   <code>playrho::d2::Contact</code> class.
-
 inline void Contact::SetEnabled(bool flag) noexcept
 {
     if (flag)

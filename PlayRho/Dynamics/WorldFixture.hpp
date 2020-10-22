@@ -26,6 +26,7 @@
 /// Declarations of free functions of World for fixtures identified by <code>FixtureID</code>.
 
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Range.hpp> // for SizedRange
 
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
@@ -46,6 +47,16 @@ namespace d2 {
 
 class World;
 
+/// @copydoc World::GetFixturesForProxies
+/// @relatedalso World
+SizedRange<std::vector<FixtureID>::const_iterator>
+GetFixturesForProxies(const World& world) noexcept;
+
+/// @brief Gets the count of fixtures in the given world.
+/// @relatedalso World
+FixtureCounter GetFixtureCount(const World& world) noexcept;
+
+/// @brief Creates a fixture within the specified world.
 /// @relatedalso World
 FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
                         const FixtureConf& def = GetDefaultFixtureConf(),

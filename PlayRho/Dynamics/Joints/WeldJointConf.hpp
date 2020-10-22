@@ -109,16 +109,19 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
 /// @relatedalso Joint
 WeldJointConf GetWeldJointConf(const Joint& joint);
 
+/// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
 WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB,
                                const Length2 anchor = Length2{});
 
+/// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso WeldJointConf
 constexpr Momentum2 GetLinearReaction(const WeldJointConf& object) noexcept
 {
     return Momentum2{GetX(object.impulse) * NewtonSecond, GetY(object.impulse) * NewtonSecond};
 }
 
+/// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso WeldJointConf
 constexpr AngularMomentum GetAngularReaction(const WeldJointConf& object) noexcept
 {
@@ -126,6 +129,7 @@ constexpr AngularMomentum GetAngularReaction(const WeldJointConf& object) noexce
     return AngularMomentum{GetZ(object.impulse) * SquareMeter * Kilogram / (Second * Radian)};
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso WeldJointConf
 constexpr auto ShiftOrigin(WeldJointConf&, Length2) noexcept
 {
@@ -154,6 +158,7 @@ bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const WeldJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for setting the frequency of the given configuration.
 /// @relatedalso WeldJointConf
 constexpr void SetFrequency(WeldJointConf& object, NonNegative<Frequency> value) noexcept
 {

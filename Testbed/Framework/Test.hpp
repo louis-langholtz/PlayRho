@@ -29,6 +29,8 @@
 #include <PlayRho/Common/UnitVec.hpp>
 #include <PlayRho/Common/TypeInfo.hpp>
 
+#include <PlayRho/Collision/Collision.hpp>
+#include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Collision/DynamicTree.hpp>

@@ -66,10 +66,16 @@ struct GearJointConf : public JointBuilder<GearJointConf>
         return *this;
     }
 
+    /// @brief Identifier of body C.
     BodyID bodyC = InvalidBodyID;
+
+    /// @brief Identifier of body D.
     BodyID bodyD = InvalidBodyID;
 
+    /// @brief Type of the first joint.
     JointType type1 = GetTypeID<void>();
+
+    /// @brief Type of the second joint.
     JointType type2 = GetTypeID<void>();
 
     // Used when not Revolute...
@@ -85,9 +91,11 @@ struct GearJointConf : public JointBuilder<GearJointConf>
     Angle referenceAngle2 = 0_deg; ///< Reference angle of joint 2. Used when type2 is Revolute.
 
     /// The gear ratio.
-    /// @see GearJoint for explanation.
+    /// @see constant, GearJoint.
     Real ratio = Real{1};
 
+    /// @brief Constant applied with the ratio.
+    /// @see ratio.
     Real constant = Real{0};
 
     Momentum impulse = 0_Ns; ///< Impulse.
@@ -106,21 +114,25 @@ struct GearJointConf : public JointBuilder<GearJointConf>
 /// @relatedalso Joint
 GearJointConf GetGearJointConf(const Joint& joint) noexcept;
 
+/// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
 GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Real ratio = Real{1});
 
+/// @brief Gets the current linear reaction for the given configuration.
 /// @relatedalso GearJointConf
 constexpr Momentum2 GetLinearReaction(const GearJointConf& object)
 {
     return object.impulse * object.JvAC;
 }
 
+/// @brief Gets the current angular reaction for the given configuration.
 /// @relatedalso GearJointConf
 constexpr AngularMomentum GetAngularReaction(const GearJointConf& object)
 {
     return object.impulse * object.JwA / Radian;
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso GearJointConf
 constexpr bool ShiftOrigin(GearJointConf&, Length2) noexcept
 {
@@ -149,30 +161,35 @@ bool SolveVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies,
 bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for getting the ratio value of the given configuration.
 /// @relatedalso GearJointConf
 constexpr auto GetRatio(const GearJointConf& object) noexcept
 {
     return object.ratio;
 }
 
+/// @brief Free function for setting the ratio value of the given configuration.
 /// @relatedalso GearJointConf
 constexpr auto SetRatio(GearJointConf& object, Real value) noexcept
 {
     object.UseRatio(value);
 }
 
+/// @brief Free function for getting the constant value of the given configuration.
 /// @relatedalso GearJointConf
 constexpr auto GetConstant(const GearJointConf& object) noexcept
 {
     return object.constant;
 }
 
+/// @brief Free function for getting joint 1 type value of the given configuration.
 /// @relatedalso GearJointConf
 constexpr auto GetType1(const GearJointConf& object) noexcept
 {
     return object.type1;
 }
 
+/// @brief Free function for getting joint 2 type value of the given configuration.
 /// @relatedalso GearJointConf
 constexpr auto GetType2(const GearJointConf& object) noexcept
 {

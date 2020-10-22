@@ -22,10 +22,27 @@
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
 
 namespace playrho {
 namespace d2 {
+
+using playrho::size;
+
+SizedRange<std::vector<FixtureID>::const_iterator>
+GetFixturesForProxies(const World& world) noexcept
+{
+    return world.GetFixturesForProxies();
+}
+
+FixtureCounter GetFixtureCount(const World& world) noexcept
+{
+    auto sum = FixtureCounter{0};
+    const auto bodies = world.GetBodies();
+    for_each(begin(bodies), end(bodies), [&world,&sum](const auto &b) {
+        sum += static_cast<FixtureCounter>(size(world.GetFixtures(b)));
+    });
+    return sum;
+}
 
 FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
                         const FixtureConf& def, bool resetMassData)
@@ -60,7 +77,7 @@ BodyID GetBody(const World& world, FixtureID id)
 
 Transformation GetTransformation(const World& world, FixtureID id)
 {
-    return GetTransformation(world, GetBody(world, id));
+    return world.GetTransformation(GetBody(world, id));
 }
 
 Shape GetShape(const World& world, FixtureID id)

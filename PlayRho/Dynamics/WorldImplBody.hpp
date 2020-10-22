@@ -309,8 +309,6 @@ bool IsFixedRotation(const WorldImpl& world, BodyID id);
 /// @relatedalso WorldImpl
 void SetFixedRotation(WorldImpl& world, BodyID id, bool value);
 
-FixtureCounter GetFixtureCount(const WorldImpl& world, BodyID id);
-
 } // namespace d2
 } // namespace playrho
 

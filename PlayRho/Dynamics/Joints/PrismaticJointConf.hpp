@@ -163,42 +163,50 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
 /// @relatedalso Joint
 PrismaticJointConf GetPrismaticJointConf(const Joint& joint);
 
+/// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
 PrismaticJointConf GetPrismaticJointConf(const World& world,
                                          BodyID bA, BodyID bB,
                                          const Length2 anchor,
                                          const UnitVec axis);
 
+/// @brief Gets the current linear velocity of the given configuration.
 /// @relatedalso World
 LinearVelocity GetLinearVelocity(const World& world, const PrismaticJointConf& joint) noexcept;
 
+/// @brief Free function for getting the linear lower limit value of the given configuration.
 /// @relatedalso PrismaticJointConf
 constexpr auto GetLinearLowerLimit(const PrismaticJointConf& conf) noexcept
 {
     return conf.lowerTranslation;
 }
 
+/// @brief Free function for getting the linear upper limit value of the given configuration.
 /// @relatedalso PrismaticJointConf
 constexpr auto GetLinearUpperLimit(const PrismaticJointConf& conf) noexcept
 {
     return conf.upperTranslation;
 }
 
+/// @brief Free function for setting the linear limits of the given configuration.
 /// @relatedalso PrismaticJointConf
 constexpr void SetLinearLimits(PrismaticJointConf& conf, Length lower, Length upper) noexcept
 {
     conf.UseLowerLength(lower).UseUpperLength(upper);
 }
 
+/// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso PrismaticJointConf
 constexpr auto ShiftOrigin(PrismaticJointConf&, Length2) noexcept
 {
     return false;
 }
 
+/// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso PrismaticJointConf
 Momentum2 GetLinearReaction(const PrismaticJointConf& conf);
 
+/// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso PrismaticJointConf
 AngularMomentum GetAngularReaction(const PrismaticJointConf& conf);
 
@@ -224,6 +232,7 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
 bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
                    const ConstraintSolverConf& conf);
 
+/// @brief Free function for setting the maximum motor torque value of the given configuration.
 /// @relatedalso PrismaticJointConf
 constexpr void SetMaxMotorForce(PrismaticJointConf& object, Force value)
 {

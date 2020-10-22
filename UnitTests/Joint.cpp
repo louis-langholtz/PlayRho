@@ -108,7 +108,7 @@ TEST(Joint, StaticIsOkay)
 }
 #endif
 
-TEST(Joint, GetWorldIndexFreeFunction)
+TEST(WorldJoint, GetWorldIndexFreeFunction)
 {
     World world;
     EXPECT_EQ(GetWorldIndex(world, InvalidJointID), JointCounter(-1));
