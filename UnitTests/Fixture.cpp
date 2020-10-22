@@ -22,6 +22,8 @@
 
 #include <PlayRho/Dynamics/Fixture.hpp>
 
+#include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
+
 using namespace playrho;
 using namespace playrho::d2;
 
@@ -45,4 +47,42 @@ TEST(Fixture, ByteSize)
         case 16: EXPECT_EQ(sizeof(Fixture), std::size_t(64)); break;
         default: FAIL(); break;
     }
+}
+
+TEST(Fixture, DefaultConstructor)
+{
+    const auto fixture = Fixture{};
+    EXPECT_EQ(fixture.GetBody(), InvalidBodyID);
+    EXPECT_EQ(fixture.GetFilterData().categoryBits, Filter{}.categoryBits);
+    EXPECT_EQ(fixture.GetFilterData().maskBits, Filter{}.maskBits);
+    EXPECT_EQ(fixture.GetFilterData().groupIndex, Filter{}.groupIndex);
+    EXPECT_EQ(fixture.IsSensor(), false);
+    EXPECT_TRUE(fixture.GetProxies().empty());
+    EXPECT_EQ(fixture.GetFriction(), Real(0));
+    EXPECT_EQ(fixture.GetRestitution(), Real(0));
+    EXPECT_EQ(fixture.GetDensity(), 0_kgpm2);
+}
+
+TEST(Fixture, InitializingConstructor)
+{
+    const auto body = BodyID(23u);
+    const auto vertexRadius = 0.26_m;
+    const auto friction = Real(2.5);
+    const auto restitution = Real(0.8);
+    const auto density = 2.3_kgpm2;
+    const auto conf = EdgeShapeConf{}.UseVertexRadius(vertexRadius).UseFriction(friction)
+    .UseRestitution(restitution).UseDensity(density);
+    const auto filter = Filter{};
+    const auto isSensor = true;
+    const auto def = FixtureConf{}.UseIsSensor(isSensor).UseFilter(filter);
+    const auto fixture = Fixture{body, Shape(conf), def};
+    EXPECT_EQ(fixture.GetBody(), body);
+    EXPECT_EQ(fixture.GetFilterData().categoryBits, filter.categoryBits);
+    EXPECT_EQ(fixture.GetFilterData().maskBits, filter.maskBits);
+    EXPECT_EQ(fixture.GetFilterData().groupIndex, Filter{}.groupIndex);
+    EXPECT_EQ(fixture.IsSensor(), isSensor);
+    EXPECT_TRUE(fixture.GetProxies().empty());
+    EXPECT_EQ(fixture.GetFriction(), friction);
+    EXPECT_EQ(fixture.GetRestitution(), restitution);
+    EXPECT_EQ(fixture.GetDensity(), density);
 }
