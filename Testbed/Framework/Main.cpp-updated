@@ -106,6 +106,8 @@ namespace
     auto menuX = 0;
     auto menuHeight = 0;
     auto refreshRate = 0;
+
+    std::vector<float> g_frameBuffer;
 }
 
 class Selection
@@ -365,6 +367,8 @@ static void ResizeWindow(GLFWwindow*, int width, int height)
 {
     g_camera.m_width = width;
     g_camera.m_height = height;
+    g_frameBuffer.resize(static_cast<std::size_t>(g_camera.m_width * g_camera.m_height) *
+                         4u * sizeof(float));
     
     menuX = g_camera.m_width - menuWidth - 10;
     menuHeight = g_camera.m_height - 20;
@@ -2331,6 +2335,11 @@ static void ShowFrameInfo(double frameTime, double fps)
     ImGui::TextUnformatted(stream.str());
 }
 
+bool readFrame()
+{
+    return false;
+}
+
 int main()
 {
 #if defined(_WIN32)
@@ -2345,13 +2354,14 @@ int main()
 
     g_camera.m_width = 1280; // 1152;
     g_camera.m_height = 980; // 864;
+    g_frameBuffer.resize(static_cast<std::size_t>(g_camera.m_width * g_camera.m_height) *
+                         4u * sizeof(float));
     menuX = g_camera.m_width - menuWidth - 10;
     menuHeight = g_camera.m_height - 20;
 
     if (glfwSetErrorCallback(GlfwErrorCallback))
     {
-        std::fprintf(stderr,
-                     "Warning: overriding previously installed GLFW error callback function.\n");
+        std::fprintf(stderr, "Warning: overriding previously installed GLFW error callback function.\n");
     }
 
     if (glfwInit() == 0)
@@ -2446,6 +2456,11 @@ int main()
             glDisable(GL_DEPTH_TEST);
 
             ImGui::Render();
+
+            if (readFrame()) {
+                glReadPixels(0, 0, g_camera.m_width, g_camera.m_height, GL_RGBA, GL_FLOAT,
+                             g_frameBuffer.data());
+            }
 
             glfwSwapBuffers(mainWindow);
             glfwPollEvents();
