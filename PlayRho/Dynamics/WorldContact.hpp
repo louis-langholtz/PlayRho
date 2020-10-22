@@ -48,50 +48,77 @@ class Manifold;
 ///   interfaces to <code>playrho::d2::World</code> contact member functions and additional
 ///   functionality.
 
+/// @defgroup WorldContactFreeFunctions World Contacts Related Free Functions
+/// @brief Collection of "free" functions related to contacts within a <code>World</code>.
+/// @details This is a collection of non-member non-friend functions - also called "free"
+///   functions - that are related to contacts within an instance of a <code>World</code>.
+///   Many are just "wrappers" to similarly named member functions but some are additional
+///   functionality built on those member functions. A benefit to using free functions that
+///   are now just wrappers, is that of helping to isolate your code from future changes that
+///   might occur to the underlying <code>World</code> member functions. Free functions in
+///   this sense are "cheap" abstractions. While using these incurs extra run-time overhead
+///   when compiled without any compiler optimizations enabled, enabling optimizations
+///   should entirely eliminate that overhead.
+/// @note The four basic categories of these functions are "CRUD": create, read, update,
+///   and delete.
+/// @see World, ContactID.
+/// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
+/// @{
+
 /// @brief Gets the contacts recognized within the given world.
 /// @relatedalso World
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>
 GetContacts(const World& world) noexcept;
 
 /// @copydoc World::IsTouching
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 bool IsTouching(const World& world, ContactID id);
 
-/// @copydoc World::IsAwake(ContactID)
+/// @brief Gets the awake status of the specified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 bool IsAwake(const World& world, ContactID id);
 
 /// @brief Sets awake the bodies of the fixtures of the given contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 void SetAwake(World& world, ContactID id);
 
 /// @brief Gets the body-A of the identified contact if it has one.
 /// @return Identification of the body-A or <code>InvalidBodyID</code>.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 BodyID GetBodyA(const World& world, ContactID id);
 
 /// @brief Gets the body-B of the identified contact if it has one.
 /// @return Identification of the body-B or <code>InvalidBodyID</code>.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 BodyID GetBodyB(const World& world, ContactID id);
 
-/// @copydoc World::GetFixtureA
+/// @brief Gets fixture A of the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 FixtureID GetFixtureA(const World& world, ContactID id);
 
-/// @copydoc World::GetFixtureB
+/// @brief Gets fixture B of the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 FixtureID GetFixtureB(const World& world, ContactID id);
 
 /// @brief Get the child primitive index for fixture A.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 ChildCounter GetChildIndexA(const World& world, ContactID id);
 
 /// @brief Get the child primitive index for fixture B.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 ChildCounter GetChildIndexB(const World& world, ContactID id);
 
 /// @brief Gets the Time Of Impact (TOI) count.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 TimestepIters GetToiCount(const World& world, ContactID id);
 
@@ -108,33 +135,41 @@ bool NeedsUpdating(const World& world, ContactID id);
 bool HasValidToi(const World& world, ContactID id);
 
 /// @brief Gets the time of impact associated with the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 Real GetToi(const World& world, ContactID id);
 
 /// @brief Gets the default friction amount for the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 Real GetDefaultFriction(const World& world, ContactID id);
 
 /// @brief Gets the default restitution amount for the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 Real GetDefaultRestitution(const World& world, ContactID id);
 
-/// @copydoc World::GetFriction(ContactID id)
+/// @brief Gets the friction used with the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @see SetFriction(World& world, ContactID id, Real friction)
 /// @relatedalso World
 Real GetFriction(const World& world, ContactID id);
 
-/// @copydoc GetRestitution(ContactID id)
+/// @brief Gets the restitution used with the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @see SetRestitution(World& world, ContactID id, Real restitution)
 /// @relatedalso World
 Real GetRestitution(const World& world, ContactID id);
 
-/// @brief Sets the friction value for the specified contact.
+/// @brief Sets the friction value for the identified contact.
 /// @details Overrides the default friction mixture.
 /// @note You can call this in "pre-solve" listeners.
 /// @note This value persists until set or reset.
 /// @warning Behavior is undefined if given a negative friction value.
+/// @param world The world in which the contact is identified in.
+/// @param id Identifier of the contact whose friction value should be set.
 /// @param friction Co-efficient of friction value of zero or greater.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 void SetFriction(World& world, ContactID id, Real friction);
 
@@ -146,14 +181,17 @@ void SetFriction(World& world, ContactID id, Real friction);
 void SetRestitution(World& world, ContactID id, Real restitution);
 
 /// @brief Gets the manifold for the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 const Manifold& GetManifold(const World& world, ContactID id);
 
 /// @brief Gets the world manifold for the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 WorldManifold GetWorldManifold(const World& world, ContactID id);
 
 /// Resets the friction mixture to the default value.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 inline void ResetFriction(World& world, ContactID id)
 {
@@ -161,6 +199,7 @@ inline void ResetFriction(World& world, ContactID id)
 }
 
 /// Resets the restitution to the default value.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 inline void ResetRestitution(World& world, ContactID id)
 {
@@ -176,14 +215,17 @@ LinearVelocity GetTangentSpeed(const World& world, ContactID id);
 void SetTangentSpeed(World& world, ContactID id, LinearVelocity value);
 
 /// @brief Gets the enabled status of the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 bool IsEnabled(const World& world, ContactID id);
 
 /// @brief Sets the enabled status of the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 void SetEnabled(World& world, ContactID id);
 
 /// @brief Unsets the enabled status of the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 void UnsetEnabled(World& world, ContactID id);
 
@@ -193,6 +235,8 @@ ContactCounter GetTouchingCount(const World& world) noexcept;
 
 /// @brief Convenience function for setting/unsetting the enabled status of the identified
 ///   contact based on the value parameter.
+/// @throws std::out_of_range If given an invalid contact identifier.
+/// @see IsEnabled(const World&, ContactID).
 /// @relatedalso World
 inline void SetEnabled(World& world, ContactID id, bool value)
 {
@@ -214,6 +258,8 @@ inline ContactCounter GetContactCount(const World& world) noexcept
     using std::size;
     return static_cast<ContactCounter>(size(GetContacts(world)));
 }
+
+/// @}
 
 } // namespace d2
 } // namespace playrho
