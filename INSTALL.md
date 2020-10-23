@@ -42,76 +42,20 @@ From a command prompt like a Bash Shell, enter code such as the following where 
 
 This should download the sources into the `${YOUR_CHOSEN_PATH}` directory under the sub-directory of `PlayRho`.
 
-## Building On Linux Systems
+## Building
 
-### Using CMake
+Use `cmake` to build the library and all of the application targets with a C++17-compatible compiler (GCC C++, Clang C++, Visual Studio will suffice). This is the currently suggested way to build things.
 
-This folder contains a CMake configuration file `CMakeLists.txt`. It can be used by `cmake` to build the library and all of the application targets on Linux platforms with either GCC C++ or Clang C++. This is the currently suggested way to build things for Linux. Simply run `cmake . && make`. To install the built targets, then run `make install`. This may require a tool like `sudo` to escalate your privileges in order to be able to install into the established folders. The CMake configuration file has a few options that can be modified to build different targets.
+Simply run
 
-Note: if you have trouble building with these instructions, you can also see how PlayRho gets built on the [Travis](https://travis-ci.org) Continuous Integration (CI) system, by looking at the [`.travis.yml`](.travis.yml) file's `script` definition.
+  cmake -B build -H . && cmake --build build
 
-## Building On Mac OS X
+To install the built targets (on Unix systems), run `make install`.
 
-### Using Xcode
+This may require admin user permissions (e.g. `sudo`) to be able to install into the established folders.
 
-The [`Build/xcode5`](Build/xcode5) folder contains project files for Xcode. The Xcode project file can be used to build the library and all of the application targets on and for the Mac OS X platform.
+The CMake configuration file has a few options that can be modified to build different targets.
 
-### Using CMake
-
-Instructions coming.
-
-## Building On Windows
-
-### Using CMake
-
-Start CMake up with the location of the source code identified for it. By default, only `PLAYRHO_BUILD_STATIC` has a defined value and that should be all that's necessary for simply building the library itself.
-
-Note: if you have trouble building with these instructions, you can also see how PlayRho gets built on the [AppVeyor](https://ci.appveyor.com/) Continuous Integration (CI) system, by looking at the [`appveyor.yml`](appveyor.yml) file's `build_script` definition.
+Note: if you have trouble building with these instructions, you can also see how PlayRho gets built on CI, by checking the [`.travis.yml`](.travis.yml) definition of `script` or [`appveyor.yml`](appveyor.yml) definition of `build_script`.
 
 For the `Testbed` GUI application, see the [`Testbed/` folder's](Testbed/)  `README.md` file.
-
-### Deprecated: Using Project Files
-
-The [`Build/vs2017`](Build/vs2017) folder contains project files for Visual Studio 2017. These project files may be usable to build the library on and for the Windows platform. Note that these are not intended to be used as the primary way to build the project.
-
-## Older Build Instructions
-
-### CMake
-
-PlayRho uses CMake to describe the build in a platform independent manner. First download and install cmake from https://cmake.org/.
-
-For Microsoft Visual Studio:
-- Run the cmake-gui
-- Set the source directory to the path of PlayRho on your PC (the folder that contains this file).
-- Set the build directory to be the path of `PlayRho/Build` on your PC.
-- Press the *Configure* button and select your version of Visual Studio.
-- You may have to press the *Configure* button again.
-- Press the *Generate* button.
-- Open `PlayRho/Build/PlayRho.sln`.
-- Set the `Testbed` or `HelloWorld` as your startup project.
-- Press F5 or Ctrl-F5 to run.
-
-For Unix platforms, enter the following on a terminal (replacing `$PLAYRHOPATH` with the directory
-where this file is located):
-
-    cd $PLAYRHOPATH/Build
-    cmake -DPLAYRHO_INSTALL=ON -DPLAYRHO_BUILD_SHARED=ON ..
-    make
-    make install
-
-You might want to add `-DCMAKE_INSTALL_PREFIX=/opt/PlayRho` or similar to the cmake call to change
-the installation location. make install might need sudo.
-
-### No Longer Supported: premake
-
-For other platforms you may be able to run `premake` in this directory.
-Premake can be obtained from:
-http://industriousone.com/premake
-
-For example, on Linux, you would type:
-
-    premake4 gmake
-
-This will create a gmake folder in the Build directory. From there you can run:
-
-    make config="debug"
