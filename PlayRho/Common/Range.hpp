@@ -24,13 +24,14 @@
 #include <PlayRho/Defines.hpp>
 #include <cstddef>
 
-namespace playrho {
-    
+namespace playrho
+{
+
     /// @brief Template range value class.
-    template <typename IT>
+    template<typename IT>
     class Range
     {
-    public:
+     public:
         /// @brief Iterator type.
         using iterator_type = IT;
 
@@ -38,8 +39,8 @@ namespace playrho {
         using value_type = decltype(*std::declval<iterator_type>());
 
         /// @brief Initializing constructor.
-        constexpr Range(iterator_type iter_begin, iterator_type iter_end) noexcept:
-        	m_begin{iter_begin}, m_end{iter_end}
+        constexpr Range(iterator_type iter_begin, iterator_type iter_end) noexcept
+            : m_begin{iter_begin}, m_end{iter_end}
         {
             // Intentionally empty.
         }
@@ -62,24 +63,24 @@ namespace playrho {
             return m_begin == m_end;
         }
 
-    private:
-        iterator_type m_begin; ///< Begin iterator.
-        iterator_type m_end; ///< End iterator.
+     private:
+        iterator_type m_begin;///< Begin iterator.
+        iterator_type m_end;  ///< End iterator.
     };
 
     /// @brief Template sized range value class.
-    template <typename IT>
-    class SizedRange: public Range<IT>
+    template<typename IT>
+    class SizedRange : public Range<IT>
     {
-    public:
+     public:
         /// @brief Size type.
         using size_type = std::size_t;
 
         /// @brief Initializing constructor.
         constexpr SizedRange(typename Range<IT>::iterator_type iter_begin,
                              typename Range<IT>::iterator_type iter_end,
-                             size_type size) noexcept:
-        	Range<IT>{iter_begin, iter_end}, m_size{size}
+                             size_type size) noexcept
+            : Range<IT>{iter_begin, iter_end}, m_size{size}
         {
             // Intentionally empty.
         }
@@ -90,10 +91,10 @@ namespace playrho {
             return m_size;
         }
 
-    private:
-        size_type m_size; ///< Size in number of elements in the range.
+     private:
+        size_type m_size;///< Size in number of elements in the range.
     };
 
-} // namespace playrho
+}// namespace playrho
 
-#endif // PLAYRHO_COMMON_RANGE_HPP
+#endif// PLAYRHO_COMMON_RANGE_HPP

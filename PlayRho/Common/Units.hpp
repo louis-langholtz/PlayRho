@@ -40,47 +40,69 @@
 
 #include <PlayRho/Common/RealConstants.hpp>
 #include <PlayRho/Common/Templates.hpp>
-#include <type_traits>
 #include <cmath>
+#include <type_traits>
 
 // #define USE_BOOST_UNITS
 #if defined(USE_BOOST_UNITS)
+#include <boost/units/cmath.hpp>
 #include <boost/units/io.hpp>
 #include <boost/units/limits.hpp>
-#include <boost/units/cmath.hpp>
-#include <boost/units/systems/si/length.hpp>
-#include <boost/units/systems/si/time.hpp>
-#include <boost/units/systems/si/velocity.hpp>
+#include <boost/units/systems/angle/degrees.hpp>
 #include <boost/units/systems/si/acceleration.hpp>
-#include <boost/units/systems/si/frequency.hpp>
-#include <boost/units/systems/si/velocity.hpp>
-#include <boost/units/systems/si/mass.hpp>
-#include <boost/units/systems/si/momentum.hpp>
-#include <boost/units/systems/si/inverse_mass.hpp>
-#include <boost/units/systems/si/area.hpp>
-#include <boost/units/systems/si/plane_angle.hpp>
+#include <boost/units/systems/si/angular_acceleration.hpp>
 #include <boost/units/systems/si/angular_momentum.hpp>
 #include <boost/units/systems/si/angular_velocity.hpp>
-#include <boost/units/systems/si/angular_acceleration.hpp>
+#include <boost/units/systems/si/area.hpp>
+#include <boost/units/systems/si/force.hpp>
+#include <boost/units/systems/si/frequency.hpp>
+#include <boost/units/systems/si/inverse_mass.hpp>
+#include <boost/units/systems/si/inverse_moment_of_inertia.hpp>
+#include <boost/units/systems/si/length.hpp>
+#include <boost/units/systems/si/mass.hpp>
+#include <boost/units/systems/si/moment_of_inertia.hpp>
+#include <boost/units/systems/si/momentum.hpp>
+#include <boost/units/systems/si/plane_angle.hpp>
 #include <boost/units/systems/si/second_moment_of_area.hpp>
 #include <boost/units/systems/si/surface_density.hpp>
-#include <boost/units/systems/si/moment_of_inertia.hpp>
-#include <boost/units/systems/si/inverse_moment_of_inertia.hpp>
-#include <boost/units/systems/si/force.hpp>
+#include <boost/units/systems/si/time.hpp>
 #include <boost/units/systems/si/torque.hpp>
-#include <boost/units/systems/angle/degrees.hpp>
-#endif // defined(USE_BOOST_UNITS)
+#include <boost/units/systems/si/velocity.hpp>
+#endif// defined(USE_BOOST_UNITS)
 
 // Define quantity and unit related macros to abstract away C-preprocessor definitions
 #if defined(USE_BOOST_UNITS)
 #define PLAYRHO_QUANTITY(BoostDimension) boost::units::quantity<BoostDimension, Real>
-#define PLAYRHO_UNIT(Quantity, BoostUnit) Quantity{BoostUnit * Real{1}}
-#define PLAYRHO_DERIVED_UNIT(Quantity, BoostUnit, Ratio) Quantity{BoostUnit * Real{Ratio}}
-#else // defined(USE_BOOST_UNITS)
+#define PLAYRHO_UNIT(Quantity, BoostUnit) \
+    Quantity                              \
+    {                                     \
+        BoostUnit* Real                   \
+        {                                 \
+            1                             \
+        }                                 \
+    }
+#define PLAYRHO_DERIVED_UNIT(Quantity, BoostUnit, Ratio) \
+    Quantity                                             \
+    {                                                    \
+        BoostUnit* Real                                  \
+        {                                                \
+            Ratio                                        \
+        }                                                \
+    }
+#else// defined(USE_BOOST_UNITS)
 #define PLAYRHO_QUANTITY(BoostDimension) Real
-#define PLAYRHO_UNIT(Quantity, BoostUnit) Real{1}
-#define PLAYRHO_DERIVED_UNIT(Quantity, BoostUnit, Ratio) Real{Ratio}}
-#endif // defined(USE_BOOST_UNITS)
+#define PLAYRHO_UNIT(Quantity, BoostUnit) \
+    Real                                  \
+    {                                     \
+        1                                 \
+    }
+#define PLAYRHO_DERIVED_UNIT(Quantity, BoostUnit, Ratio) \
+    Real                                                 \
+    {                                                    \
+        Ratio                                            \
+    }                                                    \
+    }
+#endif// defined(USE_BOOST_UNITS)
 
 namespace playrho
 {
@@ -93,7 +115,7 @@ namespace playrho
     /// @see PhysicalUnits
     /// @see https://en.wikipedia.org/wiki/List_of_physical_quantities
     /// @{
-    
+
     /// @brief Time quantity.
     /// @details This is the type alias for the time base quantity.
     /// @note This quantity's dimension is: time (<code>T</code>).
@@ -101,7 +123,7 @@ namespace playrho
     /// @see Second.
     /// @see https://en.wikipedia.org/wiki/Time_in_physics
     using Time = PLAYRHO_QUANTITY(boost::units::si::time);
-    
+
     /// @brief Frequency quantity.
     /// @details This is the type alias for the frequency quantity. It's a derived quantity
     ///   that's the inverse of time.
@@ -111,7 +133,7 @@ namespace playrho
     /// @see Hertz.
     /// @see https://en.wikipedia.org/wiki/Frequency
     using Frequency = PLAYRHO_QUANTITY(boost::units::si::frequency);
-    
+
     /// @brief Length quantity.
     /// @details This is the type alias for the length base quantity.
     /// @note This quantity's dimension is: length (<code>L</code>).
@@ -119,7 +141,7 @@ namespace playrho
     /// @see Meter.
     /// @see https://en.wikipedia.org/wiki/Length
     using Length = PLAYRHO_QUANTITY(boost::units::si::length);
-    
+
     /// @brief Linear velocity quantity.
     /// @details This is the type alias for the linear velocity derived quantity.
     /// @note This quantity's dimensions are: length over time (<code>L T^-1</code>).
@@ -128,7 +150,7 @@ namespace playrho
     /// @see MeterPerSecond.
     /// @see https://en.wikipedia.org/wiki/Speed
     using LinearVelocity = PLAYRHO_QUANTITY(boost::units::si::velocity);
-    
+
     /// @brief Linear acceleration quantity.
     /// @details This is the type alias for the linear acceleration derived quantity.
     /// @note This quantity's dimensions are: length over time squared (<code>L T^-2</code>).
@@ -137,7 +159,7 @@ namespace playrho
     /// @see MeterPerSquareSecond.
     /// @see https://en.wikipedia.org/wiki/Acceleration
     using LinearAcceleration = PLAYRHO_QUANTITY(boost::units::si::acceleration);
-    
+
     /// @brief Mass quantity.
     /// @details This is the type alias for the mass base quantity.
     /// @note This quantity's dimension is: mass (<code>M</code>).
@@ -145,14 +167,14 @@ namespace playrho
     /// @see Kilogram.
     /// @see https://en.wikipedia.org/wiki/Mass
     using Mass = PLAYRHO_QUANTITY(boost::units::si::mass);
-    
+
     /// @brief Inverse mass quantity.
     /// @details This is the type alias for the inverse mass quantity. It's a derived quantity
     ///   that's the inverse of mass.
     /// @note This quantity's dimension is: inverse mass (<code>M^-1</code>).
     /// @see Mass.
     using InvMass = PLAYRHO_QUANTITY(boost::units::si::inverse_mass);
-    
+
     /// @brief Area quantity.
     /// @details This is the type alias for the area quantity. It's a derived quantity.
     /// @note This quantity's dimension is: length squared (<code>L^2</code>).
@@ -161,7 +183,7 @@ namespace playrho
     /// @see SquareMeter.
     /// @see https://en.wikipedia.org/wiki/Area
     using Area = PLAYRHO_QUANTITY(boost::units::si::area);
-    
+
     /// @brief Area (surface) density quantity.
     /// @details This is the type alias for the area density quantity. It's a derived quantity.
     /// @note This quantity's dimensions are: mass per area (<code>M L^-2</code>).
@@ -170,13 +192,13 @@ namespace playrho
     /// @see KilogramPerSquareMeter.
     /// @see https://en.wikipedia.org/wiki/Area_density
     using AreaDensity = PLAYRHO_QUANTITY(boost::units::si::surface_density);
-    
+
     /// @brief Angle quantity.
     /// @details This is the type alias for the plane angle base quantity.
     /// @note This quantity's dimension is: plane angle (<code>QP</code>).
     /// @see Radian, Degree.
     using Angle = PLAYRHO_QUANTITY(boost::units::si::plane_angle);
-    
+
     /// @brief Angular velocity quantity.
     /// @details This is the type alias for the plane angular velocity quantity. It's a
     ///   derived quantity.
@@ -186,7 +208,7 @@ namespace playrho
     /// @see RadianPerSecond, DegreePerSecond.
     /// @see https://en.wikipedia.org/wiki/Angular_velocity
     using AngularVelocity = PLAYRHO_QUANTITY(boost::units::si::angular_velocity);
-    
+
     /// @brief Angular acceleration quantity.
     /// @details This is the type alias for the angular acceleration quantity. It's a
     ///   derived quantity.
@@ -205,7 +227,7 @@ namespace playrho
     /// @see Newton.
     /// @see https://en.wikipedia.org/wiki/Force
     using Force = PLAYRHO_QUANTITY(boost::units::si::force);
-    
+
     /// @brief Torque quantity.
     /// @details This is the type alias for the torque quantity. It's a derived quantity
     ///   that's a rotational force.
@@ -216,7 +238,7 @@ namespace playrho
     /// @see NewtonMeter.
     /// @see https://en.wikipedia.org/wiki/Torque
     using Torque = PLAYRHO_QUANTITY(boost::units::si::torque);
-    
+
     /// @brief Second moment of area quantity.
     /// @details This is the type alias for the second moment of area quantity. It's a
     ///   derived quantity.
@@ -224,7 +246,7 @@ namespace playrho
     /// @see Length.
     /// @see https://en.wikipedia.org/wiki/Second_moment_of_area
     using SecondMomentOfArea = PLAYRHO_QUANTITY(boost::units::si::second_moment_of_area);
-    
+
     /// @brief Rotational inertia quantity.
     /// @details This is the type alias for the rotational inertia quantity. It's a
     ///   derived quantity that's also called the moment of inertia or angular mass.
@@ -235,7 +257,7 @@ namespace playrho
     /// @see Length, Mass, Angle, InvRotInertia.
     /// @see https://en.wikipedia.org/wiki/Moment_of_inertia
     using RotInertia = PLAYRHO_QUANTITY(boost::units::si::moment_of_inertia);
-    
+
     /// @brief Inverse rotational inertia quantity.
     /// @details This is the type alias for the inverse rotational inertia quantity. It's
     ///   a derived quantity.
@@ -243,7 +265,7 @@ namespace playrho
     ///    (<code>L^-2 M^-1 QP^2</code>).
     /// @see Length, Mass, Angle, RotInertia.
     using InvRotInertia = PLAYRHO_QUANTITY(boost::units::si::inverse_moment_of_inertia);
-    
+
     /// @brief Momentum quantity.
     /// @details This is the type alias for the momentum quantity. It's a derived quantity.
     /// @note This quantity's dimensions are: length mass per time (<code>L M T^-1</code>).
@@ -254,7 +276,7 @@ namespace playrho
     /// @see NewtonSecond.
     /// @see https://en.wikipedia.org/wiki/Momentum
     using Momentum = PLAYRHO_QUANTITY(boost::units::si::momentum);
-    
+
     /// @brief Angular momentum quantity.
     /// @details This is the type alias for the angular momentum quantity. It's a derived
     ///   quantity.
@@ -265,7 +287,7 @@ namespace playrho
     /// @see NewtonMeterSecond.
     /// @see https://en.wikipedia.org/wiki/Angular_momentum
     using AngularMomentum = PLAYRHO_QUANTITY(boost::units::si::angular_momentum);
-    
+
     /// @}
 
     /// @defgroup PhysicalUnits Units For Physical Quantities
@@ -302,12 +324,12 @@ namespace playrho
     /// @brief Meter per second unit of linear velocity.
     /// @see LinearVelocity.
     constexpr auto MeterPerSecond = PLAYRHO_UNIT(LinearVelocity,
-        boost::units::si::meter_per_second);
+                                                 boost::units::si::meter_per_second);
 
     /// @brief Meter per square second unit of linear acceleration.
     /// @see LinearAcceleration.
     constexpr auto MeterPerSquareSecond = PLAYRHO_UNIT(LinearAcceleration,
-        boost::units::si::meter_per_second_squared);
+                                                       boost::units::si::meter_per_second_squared);
 
     /// @brief Kilogram unit of mass.
     /// @note This is the SI base unit of mass.
@@ -325,18 +347,18 @@ namespace playrho
     /// @brief Kilogram per square meter unit of area density.
     /// @see AreaDensity.
     constexpr auto KilogramPerSquareMeter = PLAYRHO_UNIT(AreaDensity,
-        boost::units::si::kilogram_per_square_meter);
+                                                         boost::units::si::kilogram_per_square_meter);
 
     /// @brief Radian unit of angle.
     /// @see Angle.
     /// @see Degree.
     constexpr auto Radian = PLAYRHO_UNIT(Angle, boost::units::si::radian);
-    
+
     /// @brief Degree unit of angle quantity.
     /// @see Angle.
     /// @see Radian.
     constexpr auto Degree = Angle{Radian * Pi / Real{180}};
-    
+
     /// @brief Square radian unit type.
     /// @see Angle.
     /// @see Radian.
@@ -346,8 +368,8 @@ namespace playrho
     /// @see AngularVelocity.
     /// @see Radian, Second.
     constexpr auto RadianPerSecond = PLAYRHO_UNIT(AngularVelocity,
-        boost::units::si::radian_per_second);
-    
+                                                  boost::units::si::radian_per_second);
+
     /// @brief Degree per second unit of angular velocity.
     /// @see AngularVelocity.
     /// @see Degree, Second.
@@ -376,19 +398,19 @@ namespace playrho
     /// @see Momentum.
     /// @see Newton, Second.
     constexpr auto NewtonSecond = Newton * Second;
-    
+
     /// @brief Newton meter second unit of angular momentum.
     /// @see AngularMomentum.
     /// @see Newton, Meter, Second.
     constexpr auto NewtonMeterSecond = NewtonMeter * Second;
-    
+
     /// @brief Revolutions per minute units of angular velocity.
     /// @see AngularVelocity, Time
     /// @see Minute.
     constexpr auto RevolutionsPerMinute = 2 * Pi * Radian / (Real{60} * Second);
-    
+
     /// @}
-    
+
     /// @defgroup Unitsymbols Literals For Unit Symbols
     /// @brief User defined literals for more conveniently setting the value of physical
     ///   quantities.
@@ -402,7 +424,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * (Kilogram / Kilo);
     }
-    
+
     /// @brief SI unit symbol for a gram unit of Mass.
     /// @see https://en.wikipedia.org/wiki/Gram
     constexpr Mass operator"" _g(long double v) noexcept
@@ -417,7 +439,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Kilogram;
     }
-    
+
     /// @brief SI unit symbol for a kilogram unit of Mass.
     /// @see Kilogram
     /// @see https://en.wikipedia.org/wiki/Kilogram
@@ -425,7 +447,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Kilogram;
     }
-    
+
     /// @brief SI unit symbol for a petagram unit of Mass.
     /// @see https://en.wikipedia.org/wiki/Orders_of_magnitude_(mass)
     constexpr Mass operator"" _Pg(unsigned long long int v) noexcept
@@ -446,14 +468,14 @@ namespace playrho
     {
         return static_cast<Real>(v) * Yotta * (Kilogram / Kilo);
     }
-    
+
     /// @brief SI unit symbol for a yottagram unit of Mass.
     /// @see https://en.wikipedia.org/wiki/Orders_of_magnitude_(mass)
     constexpr Mass operator"" _Yg(long double v) noexcept
     {
         return static_cast<Real>(v) * Yotta * (Kilogram / Kilo);
     }
-    
+
     /// @brief SI unit symbol for a meter of Length.
     /// @see Meter
     /// @see https://en.wikipedia.org/wiki/Metre
@@ -461,7 +483,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Meter;
     }
-    
+
     /// @brief SI unit symbol for a meter of Length.
     /// @see Meter
     /// @see https://en.wikipedia.org/wiki/Metre
@@ -469,77 +491,77 @@ namespace playrho
     {
         return static_cast<Real>(v) * Meter;
     }
-    
+
     /// @brief SI unit symbol for a decimeter of Length.
     /// @see https://en.wikipedia.org/wiki/Decimetre
     constexpr Length operator"" _dm(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Deci * Meter;
     }
-    
+
     /// @brief SI unit symbol for a decimeter of Length.
     /// @see https://en.wikipedia.org/wiki/Decimetre
     constexpr Length operator"" _dm(long double v) noexcept
     {
         return static_cast<Real>(v) * Deci * Meter;
     }
-    
+
     /// @brief SI unit symbol for a centimeter of Length.
     /// @see https://en.wikipedia.org/wiki/Centimetre
     constexpr Length operator"" _cm(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Centi * Meter;
     }
-    
+
     /// @brief SI unit symbol for a centimeter of Length.
     /// @see https://en.wikipedia.org/wiki/Centimetre
     constexpr Length operator"" _cm(long double v) noexcept
     {
         return static_cast<Real>(v) * Centi * Meter;
     }
-    
+
     /// @brief SI unit symbol for a gigameter unit of Length.
     /// @see https://en.wikipedia.org/wiki/Gigametre
-    constexpr Length operator"" _Gm (unsigned long long int v) noexcept
+    constexpr Length operator"" _Gm(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Giga * Meter;
     }
-    
+
     /// @brief SI unit symbol for a gigameter unit of Length.
     /// @see https://en.wikipedia.org/wiki/Gigametre
-    constexpr Length operator"" _Gm (long double v) noexcept
+    constexpr Length operator"" _Gm(long double v) noexcept
     {
         return static_cast<Real>(v) * Giga * Meter;
     }
-    
+
     /// @brief SI unit symbol for a megameter unit of Length.
     /// @see https://en.wikipedia.org/wiki/Megametre
-    constexpr Length operator"" _Mm (unsigned long long int v) noexcept
+    constexpr Length operator"" _Mm(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Mega * Meter;
     }
 
     /// @brief SI unit symbol for a megameter unit of Length.
     /// @see https://en.wikipedia.org/wiki/Megametre
-    constexpr Length operator"" _Mm (long double v) noexcept
+    constexpr Length operator"" _Mm(long double v) noexcept
     {
         return static_cast<Real>(v) * Mega * Meter;
     }
 
     /// @brief SI symbol for a kilometer unit of Length.
     /// @see https://en.wikipedia.org/wiki/Kilometre
-    constexpr Length operator"" _km (unsigned long long int v) noexcept
+    constexpr Length operator"" _km(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * Kilo * Meter;
     }
-    
+
     /// @brief SI symbol for a kilometer unit of Length.
     /// @see https://en.wikipedia.org/wiki/Kilometre
-    constexpr Length operator"" _km (long double v) noexcept
+    constexpr Length operator"" _km(long double v) noexcept
     {
         return static_cast<Real>(v) * Kilo * Meter;
     }
-    
+
     /// @brief SI symbol for a second unit of Time.
     /// @see Second
     /// @see https://en.wikipedia.org/wiki/Second
@@ -547,7 +569,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Second;
     }
-    
+
     /// @brief SI symbol for a second unit of Time.
     /// @see Second
     /// @see https://en.wikipedia.org/wiki/Second
@@ -555,42 +577,42 @@ namespace playrho
     {
         return static_cast<Real>(v) * Second;
     }
-    
+
     /// @brief SI symbol for a minute unit of Time.
     /// @see https://en.wikipedia.org/wiki/Minute
     constexpr Time operator"" _min(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * 60 * Second;
     }
-    
+
     /// @brief SI symbol for a minute unit of Time.
     /// @see https://en.wikipedia.org/wiki/Minute
     constexpr Time operator"" _min(long double v) noexcept
     {
         return static_cast<Real>(v) * 60 * Second;
     }
-    
+
     /// @brief Symbol for an hour unit of Time.
     /// @see https://en.wikipedia.org/wiki/Hour
     constexpr Time operator"" _h(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * 60 * 60 * Second;
     }
-    
+
     /// @brief Symbol for an hour unit of Time.
     /// @see https://en.wikipedia.org/wiki/Hour
     constexpr Time operator"" _h(long double v) noexcept
     {
         return static_cast<Real>(v) * 60 * 60 * Second;
     }
-    
+
     /// @brief Symbol for a day unit of Time.
     /// @see https://en.wikipedia.org/wiki/Day
     constexpr Time operator"" _d(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * 60 * 60 * 24 * Second;
     }
-    
+
     /// @brief Symbol for a day unit of Time.
     /// @see https://en.wikipedia.org/wiki/Day
     constexpr Time operator"" _d(long double v) noexcept
@@ -621,7 +643,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Degree;
     }
-    
+
     /// @brief Abbreviation for a degree unit of Angle.
     /// @see Degree.
     /// @see https://en.wikipedia.org/wiki/Degree_(angle)
@@ -637,7 +659,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Newton;
     }
-    
+
     /// @brief SI symbol for a newton unit of Force.
     /// @see Newton
     /// @see https://en.wikipedia.org/wiki/Newton_(unit)
@@ -645,21 +667,21 @@ namespace playrho
     {
         return static_cast<Real>(v) * Newton;
     }
-    
+
     /// @brief Abbreviation for meter squared unit of Area.
     /// @see SquareMeter
     constexpr Area operator"" _m2(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * SquareMeter;
     }
-    
+
     /// @brief Abbreviation for meter squared unit of Area.
     /// @see SquareMeter
     constexpr Area operator"" _m2(long double v) noexcept
     {
         return static_cast<Real>(v) * SquareMeter;
     }
-    
+
     /// @brief Abbreviation for meter per second.
     /// @see https://en.wikipedia.org/wiki/Metre_per_second
     /// @see Meter
@@ -679,7 +701,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * MeterPerSecond;
     }
-    
+
     /// @brief Abbreviation for kilometer per second.
     /// @see https://en.wikipedia.org/wiki/Metre_per_second
     /// @see Second
@@ -687,7 +709,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Kilo * MeterPerSecond;
     }
-    
+
     /// @brief Abbreviation for kilometer per second.
     /// @see https://en.wikipedia.org/wiki/Metre_per_second
     /// @see Second
@@ -695,7 +717,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Kilo * MeterPerSecond;
     }
-    
+
     /// @brief Abbreviation for meter per second squared.
     /// @see https://en.wikipedia.org/wiki/Metre_per_second_squared
     /// @see MeterPerSquareSecond
@@ -703,7 +725,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * MeterPerSquareSecond;
     }
-    
+
     /// @brief Abbreviation for meter per second squared.
     /// @see https://en.wikipedia.org/wiki/Metre_per_second_squared
     /// @see MeterPerSquareSecond
@@ -711,7 +733,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * MeterPerSquareSecond;
     }
-    
+
     /// @brief SI symbol for a hertz unit of Frequency.
     /// @see Hertz
     /// @see https://en.wikipedia.org/wiki/Hertz
@@ -719,7 +741,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Hertz;
     }
-    
+
     /// @brief SI symbol for a hertz unit of Frequency.
     /// @see Hertz
     /// @see https://en.wikipedia.org/wiki/Hertz
@@ -727,7 +749,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * Hertz;
     }
-    
+
     /// @brief Abbreviation for newton-meter unit of torque.
     /// @see NewtonMeter
     /// @see https://en.wikipedia.org/wiki/Newton_metre
@@ -735,7 +757,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * NewtonMeter;
     }
-    
+
     /// @brief Abbreviation for newton-meter unit of torque.
     /// @see NewtonMeter
     /// @see https://en.wikipedia.org/wiki/Newton_metre
@@ -743,7 +765,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * NewtonMeter;
     }
-    
+
     /// @brief SI symbol for a newton second of impulse.
     /// @see NewtonSecond
     /// @see https://en.wikipedia.org/wiki/Newton_second
@@ -751,7 +773,7 @@ namespace playrho
     {
         return static_cast<Real>(v) * NewtonSecond;
     }
-    
+
     /// @brief SI symbol for a newton second of impulse.
     /// @see NewtonSecond
     /// @see https://en.wikipedia.org/wiki/Newton_second
@@ -759,13 +781,13 @@ namespace playrho
     {
         return static_cast<Real>(v) * NewtonSecond;
     }
-    
+
     /// @brief Abbreviation for kilogram per square meter.
     constexpr AreaDensity operator"" _kgpm2(unsigned long long int v) noexcept
     {
         return static_cast<Real>(v) * KilogramPerSquareMeter;
     }
-    
+
     /// @brief Abbreviation for kilogram per square meter.
     constexpr AreaDensity operator"" _kgpm2(long double v) noexcept
     {
@@ -787,7 +809,7 @@ namespace playrho
     }
 
     /// @}
-    
+
     /// @brief Strips the units off of the given value.
     constexpr Real StripUnit(const Real value)
     {
@@ -807,36 +829,36 @@ namespace playrho
     ///   distance relative to the Earth.
     /// @see https://en.wikipedia.org/wiki/Gravity_of_Earth
     constexpr auto EarthlyLinearAcceleration = Real{-9.8f} * MeterPerSquareSecond;
-    
+
     /// @brief Big "G".
     /// @details Gravitational constant used in calculating the attractive force on a mass
     ///   to another mass at a given distance due to gravity.
     /// @see https://en.wikipedia.org/wiki/Gravitational_constant
     constexpr auto BigG = Real{6.67408e-11f} * CubicMeter / (Kilogram * SquareSecond);
-    
+
     /// @}
 
 #if defined(USE_BOOST_UNITS)
+    using boost::units::cos;
     using boost::units::isfinite;
     using boost::units::isnormal;
-    using boost::units::cos;
     using boost::units::sin;
-    
+
     // Don't use boost's hypot since it does type promotion which is problematic.
     // using boost::units::hypot;
-    
+
     /// @brief Gets the hypotenuse.
     /// @note Don't use boost's hypot since it does type promotion which is problematic.
     /// @see https://en.cppreference.com/w/cpp/numeric/math/hypot
     /// @see https://en.wikipedia.org/wiki/Hypotenuse
     template<class Unit>
     inline auto
-    hypot(const boost::units::quantity<Unit,Real>& x, const boost::units::quantity<Unit,Real>& y)
+    hypot(const boost::units::quantity<Unit, Real>& x, const boost::units::quantity<Unit, Real>& y)
     {
         using std::hypot;
-        return boost::units::quantity<Unit,Real>::from_value(hypot(x.value(), y.value()));
+        return boost::units::quantity<Unit, Real>::from_value(hypot(x.value(), y.value()));
     }
-    
+
     /// @brief Square roots the given value.
     /// @note Don't use boost's sqrt implementation as it promotes the quantity's given
     ///   underlying floating-point type which seems contrary in this case to the
@@ -844,211 +866,202 @@ namespace playrho
     /// @see https://en.cppreference.com/w/cpp/numeric/math/sqrt
     template<class Unit>
     inline auto
-    sqrt(const boost::units::quantity<Unit,Real>& q)
+    sqrt(const boost::units::quantity<Unit, Real>& q)
     {
         using std::sqrt;
         using quantity_type = typename boost::units::root_typeof_helper<
-            boost::units::quantity<Unit,Real>,
-            boost::units::static_rational<2>
-            >::type;
+            boost::units::quantity<Unit, Real>,
+            boost::units::static_rational<2>>::type;
         using unit_type = typename quantity_type::unit_type;
-        
+
         return boost::units::quantity<unit_type, Real>::from_value(sqrt(q.value()));
     }
-    
+
     /// @brief Almost zero.
-    template <class Y>
+    template<class Y>
     inline auto AlmostZero(const boost::units::quantity<Y, Real> v)
     {
         return abs(v) < std::numeric_limits<boost::units::quantity<Y, Real>>::min();
     }
 
     /// @brief Strips the units off of the given value.
-    template<class Unit,class Y>
+    template<class Unit, class Y>
     constexpr auto StripUnit(const boost::units::quantity<Unit, Y> source)
     {
         return source.value();
     }
 
     /// @brief Gets an invalid value for the Angle type.
-    template <>
+    template<>
     constexpr Angle GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Radian;
     }
-    
+
     /// @brief Gets an invalid value for the Frequency type.
-    template <>
+    template<>
     constexpr Frequency GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Hertz;
     }
-    
+
     /// @brief Gets an invalid value for the AngularVelocity type.
-    template <>
+    template<>
     constexpr AngularVelocity GetInvalid() noexcept
     {
         return GetInvalid<Real>() * RadianPerSecond;
     }
-    
+
     /// @brief Gets an invalid value for the Time type.
-    template <>
+    template<>
     constexpr Time GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Second;
     }
-    
+
     /// @brief Gets an invalid value for the Length type.
-    template <>
+    template<>
     constexpr Length GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Meter;
     }
-    
+
     /// @brief Gets an invalid value for the Mass type.
-    template <>
+    template<>
     constexpr Mass GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Kilogram;
     }
-    
+
     /// @brief Gets an invalid value for the InvMass type.
-    template <>
+    template<>
     constexpr InvMass GetInvalid() noexcept
     {
         return GetInvalid<Real>() / Kilogram;
     }
-    
+
     /// @brief Gets an invalid value for the Momentum type.
-    template <>
+    template<>
     constexpr Momentum GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Kilogram * MeterPerSecond;
     }
-    
+
     /// @brief Gets an invalid value for the Force type.
-    template <>
+    template<>
     constexpr Force GetInvalid() noexcept
     {
         return GetInvalid<Real>() * Newton;
     }
-    
+
     /// @brief Gets an invalid value for the Torque type.
-    template <>
+    template<>
     constexpr Torque GetInvalid() noexcept
     {
         return GetInvalid<Real>() * NewtonMeter;
     }
-    
+
     /// @brief Gets an invalid value for the LinearVelocity type.
-    template <>
+    template<>
     constexpr LinearVelocity GetInvalid() noexcept
     {
         return GetInvalid<Real>() * MeterPerSecond;
     }
-    
+
     /// @brief Gets an invalid value for the LinearAcceleration type.
-    template <>
+    template<>
     constexpr LinearAcceleration GetInvalid() noexcept
     {
         return GetInvalid<Real>() * MeterPerSquareSecond;
     }
-    
+
     /// @brief Gets an invalid value for the AngularAcceleration type.
-    template <>
+    template<>
     constexpr AngularAcceleration GetInvalid() noexcept
     {
         return GetInvalid<Real>() * RadianPerSquareSecond;
     }
-    
+
     /// @brief Gets an invalid value for the RotInertia type.
-    template <>
+    template<>
     constexpr RotInertia GetInvalid() noexcept
     {
         // RotInertia is L^2  M    QP^-2
         return GetInvalid<Real>() * SquareMeter * Kilogram / SquareRadian;
     }
-    
-#endif // defined(USE_BOOST_UNITS)
 
-} // namespace playrho
+#endif// defined(USE_BOOST_UNITS)
+
+}// namespace playrho
 
 #if defined(USE_BOOST_UNITS)
-namespace boost {
-namespace units {
-
-// Define division and multiplication templated operators in boost::units namespace since
-//   boost::units is the consistent namespace of operands for these and this aids with
-//   argument dependent lookup (ADL).
-//
-// Note that while boost::units already defines division and multiplication operator support,
-//   that's only for division or multiplication with the same type that the quantity is based
-//   on. For example when Real is float, Length{0.0f} * 2.0f is already supported but
-//   Length{0.0f} * 2 is not.
-
-/// @brief Division operator.
-///
-/// @details Supports the division of a playrho::Real based boost::units::quantity
-///   by any arithmetic type except playrho::Real.
-/// @note This intentionally excludes the playrho::Real type since the playrho::Real
-///   type is already supported and supporting it again in this template causes
-///   ambiguous overload support.
-///
-template <class Dimension, typename X, typename = std::enable_if_t<
-    playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
-    std::is_same<decltype(playrho::Real{} / X{}), playrho::Real>::value >
->
-constexpr auto operator/ (quantity<Dimension, playrho::Real> lhs, X rhs)
+namespace boost
 {
-    return lhs / playrho::Real(rhs);
-}
+    namespace units
+    {
 
-template <class Dimension, typename X, typename = std::enable_if_t<
-    playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
-    std::is_same<decltype(X{} / playrho::Real{}), playrho::Real>::value >
->
-constexpr auto operator/ (X lhs, quantity<Dimension, playrho::Real> rhs)
-{
-    return playrho::Real(lhs) / rhs;
-}
+        // Define division and multiplication templated operators in boost::units namespace since
+        //   boost::units is the consistent namespace of operands for these and this aids with
+        //   argument dependent lookup (ADL).
+        //
+        // Note that while boost::units already defines division and multiplication operator support,
+        //   that's only for division or multiplication with the same type that the quantity is based
+        //   on. For example when Real is float, Length{0.0f} * 2.0f is already supported but
+        //   Length{0.0f} * 2 is not.
 
-/// @brief Multiplication operator.
-///
-/// @details Supports the multiplication of a playrho::Real based boost::units::quantity
-///   by any arithmetic type except playrho::Real.
-/// @note This intentionally excludes the playrho::Real type since the playrho::Real
-///   type is already supported and supporting it again in this template causes
-///   ambiguous overload support.
-///
-template <class Dimension, typename X, typename = std::enable_if_t<
-    playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
-    std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value> >
-constexpr auto operator* (quantity<Dimension, playrho::Real> lhs, X rhs)
-{
-    return lhs * playrho::Real(rhs);
-}
+        /// @brief Division operator.
+        ///
+        /// @details Supports the division of a playrho::Real based boost::units::quantity
+        ///   by any arithmetic type except playrho::Real.
+        /// @note This intentionally excludes the playrho::Real type since the playrho::Real
+        ///   type is already supported and supporting it again in this template causes
+        ///   ambiguous overload support.
+        ///
+        template<class Dimension, typename X, typename = std::enable_if_t<playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value && std::is_same<decltype(playrho::Real{} / X{}), playrho::Real>::value>>
+        constexpr auto operator/(quantity<Dimension, playrho::Real> lhs, X rhs)
+        {
+            return lhs / playrho::Real(rhs);
+        }
 
-/// @brief Multiplication operator.
-///
-/// @details Supports the multiplication of a playrho::Real based boost::units::quantity
-///   by any arithmetic type except playrho::Real.
-/// @note This intentionally excludes the playrho::Real type since the playrho::Real
-///   type is already supported and supporting it again in this template causes
-///   ambiguous overload support.
-///
-template <class Dimension, typename X, typename = std::enable_if_t<
-    playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value &&
-    std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value> >
-constexpr auto operator* (X lhs, quantity<Dimension, playrho::Real> rhs)
-{
-    return playrho::Real(lhs) * rhs;
-}
+        template<class Dimension, typename X, typename = std::enable_if_t<playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value && std::is_same<decltype(X{} / playrho::Real{}), playrho::Real>::value>>
+        constexpr auto operator/(X lhs, quantity<Dimension, playrho::Real> rhs)
+        {
+            return playrho::Real(lhs) / rhs;
+        }
 
-} // namespace units
-} // namespace boost
-#endif // defined(USE_BOOST_UNITS)
+        /// @brief Multiplication operator.
+        ///
+        /// @details Supports the multiplication of a playrho::Real based boost::units::quantity
+        ///   by any arithmetic type except playrho::Real.
+        /// @note This intentionally excludes the playrho::Real type since the playrho::Real
+        ///   type is already supported and supporting it again in this template causes
+        ///   ambiguous overload support.
+        ///
+        template<class Dimension, typename X, typename = std::enable_if_t<playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value && std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value>>
+        constexpr auto operator*(quantity<Dimension, playrho::Real> lhs, X rhs)
+        {
+            return lhs * playrho::Real(rhs);
+        }
+
+        /// @brief Multiplication operator.
+        ///
+        /// @details Supports the multiplication of a playrho::Real based boost::units::quantity
+        ///   by any arithmetic type except playrho::Real.
+        /// @note This intentionally excludes the playrho::Real type since the playrho::Real
+        ///   type is already supported and supporting it again in this template causes
+        ///   ambiguous overload support.
+        ///
+        template<class Dimension, typename X, typename = std::enable_if_t<playrho::IsArithmetic<X>::value && !std::is_same<X, playrho::Real>::value && std::is_same<decltype(playrho::Real{} * X{}), playrho::Real>::value>>
+        constexpr auto operator*(X lhs, quantity<Dimension, playrho::Real> rhs)
+        {
+            return playrho::Real(lhs) * rhs;
+        }
+
+    }// namespace units
+}// namespace boost
+#endif// defined(USE_BOOST_UNITS)
 
 #undef PLAYRHO_QUANTITY
 #undef PLAYRHO_UNIT
 
-#endif // PLAYRHO_COMMON_UNITS_HPP
+#endif// PLAYRHO_COMMON_UNITS_HPP

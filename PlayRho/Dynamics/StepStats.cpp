@@ -22,19 +22,20 @@
 
 #include <PlayRho/Dynamics/IslandStats.hpp>
 
-#include <algorithm> // for std::min, std::max
+#include <algorithm>// for std::min, std::max
 
-namespace playrho {
-
-RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept
+namespace playrho
 {
-    lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
-    lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);
-    lhs.islandsSolved += rhs.solved;
-    lhs.sumPosIters += rhs.positionIterations;
-    lhs.sumVelIters += rhs.velocityIterations;
-    lhs.bodiesSlept += rhs.bodiesSlept;
-    return lhs;
-}
 
-} // namespace playrho
+    RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept
+    {
+        lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
+        lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);
+        lhs.islandsSolved += rhs.solved;
+        lhs.sumPosIters += rhs.positionIterations;
+        lhs.sumVelIters += rhs.velocityIterations;
+        lhs.bodiesSlept += rhs.bodiesSlept;
+        return lhs;
+    }
+
+}// namespace playrho

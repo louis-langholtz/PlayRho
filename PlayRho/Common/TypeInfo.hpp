@@ -22,93 +22,94 @@
 #define PLAYRHO_COMMON_TYPEID_HPP
 
 #include <PlayRho/Common/StrongType.hpp>
-#include <PlayRho/Common/Templates.hpp> // for GetInvalid, IsValid
+#include <PlayRho/Common/Templates.hpp>// for GetInvalid, IsValid
 
-namespace playrho {
-
-/// @brief Type information.
-/// @note Users may specialize this for their own types.
-template <typename T>
-struct TypeInfo
+namespace playrho
 {
-    /// @brief The name of the templated type.
-    /// @note This is also a static member providing a unique ID, via its address, for
-    ///   the type T without resorting to using C++ run-time type information (RTTI).
-    static constexpr const char* name = nullptr;
-};
 
-/// @brief Type info specialization for <code>float</code>.
-template <>
-struct TypeInfo<float>
-{
-    /// @brief Provides name of the type as a null-terminated string.
-    static constexpr const char* name = "float";
-};
+    /// @brief Type information.
+    /// @note Users may specialize this for their own types.
+    template<typename T>
+    struct TypeInfo
+    {
+        /// @brief The name of the templated type.
+        /// @note This is also a static member providing a unique ID, via its address, for
+        ///   the type T without resorting to using C++ run-time type information (RTTI).
+        static constexpr const char* name = nullptr;
+    };
 
-/// @brief Type info specialization for <code>double</code>.
-template <>
-struct TypeInfo<double>
-{
-    /// @brief Provides name of the type as a null-terminated string.
-    static constexpr const char* name = "double";
-};
+    /// @brief Type info specialization for <code>float</code>.
+    template<>
+    struct TypeInfo<float>
+    {
+        /// @brief Provides name of the type as a null-terminated string.
+        static constexpr const char* name = "float";
+    };
 
-/// @brief Type info specialization for <code>long double</code>.
-template <>
-struct TypeInfo<long double>
-{
-    /// @brief Provides name of the type as a null-terminated string.
-    static constexpr const char* name = "long double";
-};
+    /// @brief Type info specialization for <code>double</code>.
+    template<>
+    struct TypeInfo<double>
+    {
+        /// @brief Provides name of the type as a null-terminated string.
+        static constexpr const char* name = "double";
+    };
 
-/// @brief Type identifier.
-using TypeID = strongtype::IndexingNamedType<const char * const *, struct TypeIdentifier>;
+    /// @brief Type info specialization for <code>long double</code>.
+    template<>
+    struct TypeInfo<long double>
+    {
+        /// @brief Provides name of the type as a null-terminated string.
+        static constexpr const char* name = "long double";
+    };
 
-/// @brief Invalid type ID value.
-constexpr auto InvalidTypeID =
-    static_cast<TypeID>(static_cast<TypeID::underlying_type>(nullptr));
+    /// @brief Type identifier.
+    using TypeID = strongtype::IndexingNamedType<const char* const*, struct TypeIdentifier>;
 
-/// @brief Gets an invalid value for the TypeID type.
-template <>
-constexpr TypeID GetInvalid() noexcept
-{
-    return InvalidTypeID;
-}
+    /// @brief Invalid type ID value.
+    constexpr auto InvalidTypeID =
+        static_cast<TypeID>(static_cast<TypeID::underlying_type>(nullptr));
 
-/// @brief Determines if the given value is valid.
-template <>
-constexpr bool IsValid(const TypeID& value) noexcept
-{
-    return value != GetInvalid<TypeID>();
-}
+    /// @brief Gets an invalid value for the TypeID type.
+    template<>
+    constexpr TypeID GetInvalid() noexcept
+    {
+        return InvalidTypeID;
+    }
 
-/// @brief Gets the type ID for the template parameter type.
-template <typename T>
-constexpr TypeID GetTypeID()
-{
-    return TypeID{&TypeInfo<std::decay_t<T>>::name};
-}
+    /// @brief Determines if the given value is valid.
+    template<>
+    constexpr bool IsValid(const TypeID& value) noexcept
+    {
+        return value != GetInvalid<TypeID>();
+    }
 
-/// @brief Gets the type ID for the function parameter type.
-template <typename T>
-constexpr TypeID GetTypeID(T)
-{
-    return TypeID{&TypeInfo<std::decay_t<T>>::name};
-}
+    /// @brief Gets the type ID for the template parameter type.
+    template<typename T>
+    constexpr TypeID GetTypeID()
+    {
+        return TypeID{&TypeInfo<std::decay_t<T>>::name};
+    }
 
-/// @brief Gets the name associated with the given type ID.
-constexpr const char* GetName(TypeID id) noexcept
-{
-    return *id.get();
-}
+    /// @brief Gets the type ID for the function parameter type.
+    template<typename T>
+    constexpr TypeID GetTypeID(T)
+    {
+        return TypeID{&TypeInfo<std::decay_t<T>>::name};
+    }
 
-/// @brief Gets the name associated with the given template parameter type.
-template <typename T>
-constexpr const char* GetTypeName() noexcept
-{
-    return TypeInfo<T>::name;
-}
+    /// @brief Gets the name associated with the given type ID.
+    constexpr const char* GetName(TypeID id) noexcept
+    {
+        return *id.get();
+    }
 
-} // namespace playrho
+    /// @brief Gets the name associated with the given template parameter type.
+    template<typename T>
+    constexpr const char* GetTypeName() noexcept
+    {
+        return TypeInfo<T>::name;
+    }
 
-#endif // PLAYRHO_COMMON_TYPEID_HPP
+}// namespace playrho
+
+#endif// PLAYRHO_COMMON_TYPEID_HPP

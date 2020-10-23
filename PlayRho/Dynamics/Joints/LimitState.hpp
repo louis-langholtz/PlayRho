@@ -22,32 +22,34 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_LIMITSTATE_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_LIMITSTATE_HPP
 
-namespace playrho {
-namespace d2 {
-
-/// @brief Limit state.
-/// @note Only used by joints that implement some notion of a limited range.
-enum class LimitState
+namespace playrho
 {
-    /// @brief Inactive limit.
-    e_inactiveLimit,
+    namespace d2
+    {
 
-    /// @brief At-lower limit.
-    e_atLowerLimit,
+        /// @brief Limit state.
+        /// @note Only used by joints that implement some notion of a limited range.
+        enum class LimitState
+        {
+            /// @brief Inactive limit.
+            e_inactiveLimit,
 
-    /// @brief At-upper limit.
-    e_atUpperLimit,
+            /// @brief At-lower limit.
+            e_atLowerLimit,
 
-    /// @brief Equal limit.
-    /// @details Equal limit is used to indicate that a joint's upper and lower limits
-    ///   are approximately the same.
-    e_equalLimits
-};
+            /// @brief At-upper limit.
+            e_atUpperLimit,
 
-/// @brief Provides a human readable C-style string uniquely identifying the given limit state.
-const char* ToString(LimitState val) noexcept;
+            /// @brief Equal limit.
+            /// @details Equal limit is used to indicate that a joint's upper and lower limits
+            ///   are approximately the same.
+            e_equalLimits
+        };
 
-} // namespace d2
-} // namespace playrho
+        /// @brief Provides a human readable C-style string uniquely identifying the given limit state.
+        const char* ToString(LimitState val) noexcept;
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_LIMITSTATE_HPP
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_JOINTS_LIMITSTATE_HPP

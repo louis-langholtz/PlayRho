@@ -19,6 +19,7 @@
 
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
-} // namespace playrho
+}// namespace playrho

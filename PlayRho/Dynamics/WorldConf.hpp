@@ -26,74 +26,76 @@
 
 #include <PlayRho/Common/Positive.hpp>
 
-namespace playrho {
-namespace d2 {
-
-/// @brief World configuration data.
-struct WorldConf
+namespace playrho
 {
-    /// @brief Uses the given min vertex radius value.
-    constexpr WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
+    namespace d2
+    {
 
-    /// @brief Uses the given max vertex radius value.
-    constexpr WorldConf& UseMaxVertexRadius(Positive<Length> value) noexcept;
+        /// @brief World configuration data.
+        struct WorldConf
+        {
+            /// @brief Uses the given min vertex radius value.
+            constexpr WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
 
-    /// @brief Uses the given value as the initial dynamic tree size.
-    constexpr WorldConf& UseInitialTreeSize(ContactCounter value) noexcept;
+            /// @brief Uses the given max vertex radius value.
+            constexpr WorldConf& UseMaxVertexRadius(Positive<Length> value) noexcept;
 
-    /// @brief Minimum vertex radius.
-    /// @details This is the minimum vertex radius that this world establishes which bodies
-    ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
-    ///    having a smaller vertex radius shall be rejected with a <code>nullptr</code>
-    ///    returned value.
-    /// @note This value probably should not be changed except to experiment with what
-    ///    can happen.
-    /// @note Making it smaller means some shapes could have insufficient buffer for
-    ///    continuous collision.
-    /// @note Making it larger may create artifacts for vertex collision.
-    Positive<Length> minVertexRadius = DefaultMinVertexRadius;
+            /// @brief Uses the given value as the initial dynamic tree size.
+            constexpr WorldConf& UseInitialTreeSize(ContactCounter value) noexcept;
 
-    /// @brief Maximum vertex radius.
-    /// @details This is the maximum vertex radius that this world establishes which bodies
-    ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
-    ///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
-    ///    returned value.
-    Positive<Length> maxVertexRadius = DefaultMaxVertexRadius;
+            /// @brief Minimum vertex radius.
+            /// @details This is the minimum vertex radius that this world establishes which bodies
+            ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
+            ///    having a smaller vertex radius shall be rejected with a <code>nullptr</code>
+            ///    returned value.
+            /// @note This value probably should not be changed except to experiment with what
+            ///    can happen.
+            /// @note Making it smaller means some shapes could have insufficient buffer for
+            ///    continuous collision.
+            /// @note Making it larger may create artifacts for vertex collision.
+            Positive<Length> minVertexRadius = DefaultMinVertexRadius;
 
-    /// @brief Initial tree size.
-    ContactCounter initialTreeSize = 4096;
-};
+            /// @brief Maximum vertex radius.
+            /// @details This is the maximum vertex radius that this world establishes which bodies
+            ///    shall allow fixtures to be created with. Trying to create a fixture with a shape
+            ///    having a larger vertex radius shall be rejected with a <code>nullptr</code>
+            ///    returned value.
+            Positive<Length> maxVertexRadius = DefaultMaxVertexRadius;
 
-constexpr WorldConf& WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept
-{
-    minVertexRadius = value;
-    return *this;
-}
+            /// @brief Initial tree size.
+            ContactCounter initialTreeSize = 4096;
+        };
 
-constexpr WorldConf& WorldConf::UseMaxVertexRadius(Positive<Length> value) noexcept
-{
-    maxVertexRadius = value;
-    return *this;
-}
+        constexpr WorldConf& WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept
+        {
+            minVertexRadius = value;
+            return *this;
+        }
 
-constexpr WorldConf& WorldConf::UseInitialTreeSize(ContactCounter value) noexcept
-{
-    initialTreeSize = value;
-    return *this;
-}
+        constexpr WorldConf& WorldConf::UseMaxVertexRadius(Positive<Length> value) noexcept
+        {
+            maxVertexRadius = value;
+            return *this;
+        }
 
-/// Gets the default definitions value.
-/// @note This method exists as a work-around for providing the World constructor a default
-///   value without otherwise getting a compiler error such as:
-///     "cannot use defaulted constructor of '<code>Conf</code>' within '<code>World</code>'
-///     outside of member functions because 'gravity' has an initializer"
-/// @relatedalso WorldConf
-constexpr WorldConf GetDefaultWorldConf() noexcept
-{
-    return WorldConf{};
-}
+        constexpr WorldConf& WorldConf::UseInitialTreeSize(ContactCounter value) noexcept
+        {
+            initialTreeSize = value;
+            return *this;
+        }
 
-} // namespace d2
-} // namespace playrho
+        /// Gets the default definitions value.
+        /// @note This method exists as a work-around for providing the World constructor a default
+        ///   value without otherwise getting a compiler error such as:
+        ///     "cannot use defaulted constructor of '<code>Conf</code>' within '<code>World</code>'
+        ///     outside of member functions because 'gravity' has an initializer"
+        /// @relatedalso WorldConf
+        constexpr WorldConf GetDefaultWorldConf() noexcept
+        {
+            return WorldConf{};
+        }
 
-#endif // PLAYRHO_DYNAMICS_WORLDCONF_HPP
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_WORLDCONF_HPP

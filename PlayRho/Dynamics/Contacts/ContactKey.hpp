@@ -25,101 +25,101 @@
 /// Declaration of the <code>ContactKey</code> class.
 
 #include <PlayRho/Common/Settings.hpp>
-#include <utility>
 #include <algorithm>
-#include <functional>
 #include <cassert>
+#include <functional>
+#include <utility>
 
-namespace playrho {
-
-/// @brief Key value class for contacts.
-class ContactKey
+namespace playrho
 {
-public:
-    constexpr ContactKey() noexcept
-    {
-        // Intentionally empty
-    }
-    
-    /// @brief Initializing constructor.
-    constexpr ContactKey(ContactCounter fp1, ContactCounter fp2) noexcept:
-        m_ids{std::minmax(fp1, fp2)}
-    {
-        // Intentionally empty
-    }
 
-    /// @brief Gets the minimum index value.
-    constexpr ContactCounter GetMin() const noexcept
+    /// @brief Key value class for contacts.
+    class ContactKey
     {
-        return std::get<0>(m_ids);
-    }
-    
-    /// @brief Gets the maximum index value.
-    constexpr ContactCounter GetMax() const noexcept
-    {
-        return std::get<1>(m_ids);
-    }
+     public:
+        constexpr ContactKey() noexcept
+        {
+            // Intentionally empty
+        }
 
-private:
-    /// @brief Contact counter ID pair.
-    /// @note Uses <code>std::pair</code> given that <code>std::minmax</code> returns
-    ///   this type making it the most natural type for this class.
-    std::pair<ContactCounter, ContactCounter> m_ids{
-        static_cast<ContactCounter>(-1), static_cast<ContactCounter>(-1)
+        /// @brief Initializing constructor.
+        constexpr ContactKey(ContactCounter fp1, ContactCounter fp2) noexcept
+            : m_ids{std::minmax(fp1, fp2)}
+        {
+            // Intentionally empty
+        }
+
+        /// @brief Gets the minimum index value.
+        constexpr ContactCounter GetMin() const noexcept
+        {
+            return std::get<0>(m_ids);
+        }
+
+        /// @brief Gets the maximum index value.
+        constexpr ContactCounter GetMax() const noexcept
+        {
+            return std::get<1>(m_ids);
+        }
+
+     private:
+        /// @brief Contact counter ID pair.
+        /// @note Uses <code>std::pair</code> given that <code>std::minmax</code> returns
+        ///   this type making it the most natural type for this class.
+        std::pair<ContactCounter, ContactCounter> m_ids{
+            static_cast<ContactCounter>(-1), static_cast<ContactCounter>(-1)};
     };
-};
 
-/// @brief Equality operator.
-constexpr bool operator== (const ContactKey lhs, const ContactKey rhs) noexcept
-{
-    return lhs.GetMin() == rhs.GetMin() && lhs.GetMax() == rhs.GetMax();
-}
+    /// @brief Equality operator.
+    constexpr bool operator==(const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return lhs.GetMin() == rhs.GetMin() && lhs.GetMax() == rhs.GetMax();
+    }
 
-/// @brief Inequality operator.
-constexpr bool operator!= (const ContactKey lhs, const ContactKey rhs) noexcept
-{
-    return !(lhs == rhs);
-}
+    /// @brief Inequality operator.
+    constexpr bool operator!=(const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return !(lhs == rhs);
+    }
 
-/// @brief Less-than operator.
-constexpr bool operator< (const ContactKey lhs, const ContactKey rhs) noexcept
-{
-    return (lhs.GetMin() < rhs.GetMin())
-        || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() < rhs.GetMax()));
-}
+    /// @brief Less-than operator.
+    constexpr bool operator<(const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return (lhs.GetMin() < rhs.GetMin())
+               || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() < rhs.GetMax()));
+    }
 
-/// @brief Less-than or equal-to operator.
-constexpr bool operator<= (const ContactKey lhs, const ContactKey rhs) noexcept
-{
-    return (lhs.GetMin() < rhs.GetMin())
-    || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() <= rhs.GetMax()));
-}
+    /// @brief Less-than or equal-to operator.
+    constexpr bool operator<=(const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return (lhs.GetMin() < rhs.GetMin())
+               || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() <= rhs.GetMax()));
+    }
 
-/// @brief Greater-than operator.
-constexpr bool operator> (const ContactKey lhs, const ContactKey rhs) noexcept
-{
-    return (lhs.GetMin() > rhs.GetMin())
-        || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() > rhs.GetMax()));
-}
+    /// @brief Greater-than operator.
+    constexpr bool operator>(const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return (lhs.GetMin() > rhs.GetMin())
+               || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() > rhs.GetMax()));
+    }
 
-/// @brief Greater-than or equal-to operator.
-constexpr bool operator>= (const ContactKey lhs, const ContactKey rhs) noexcept
-{
-    return (lhs.GetMin() > rhs.GetMin())
-    || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() >= rhs.GetMax()));
-}
+    /// @brief Greater-than or equal-to operator.
+    constexpr bool operator>=(const ContactKey lhs, const ContactKey rhs) noexcept
+    {
+        return (lhs.GetMin() > rhs.GetMin())
+               || ((lhs.GetMin() == rhs.GetMin()) && (lhs.GetMax() >= rhs.GetMax()));
+    }
 
-} // namespace playrho
+}// namespace playrho
 
 namespace std
 {
     /// @brief Hash function object specialization for <code>ContactKey</code>.
-    template <>
+    template<>
     struct hash<playrho::ContactKey>
     {
         /// @brief Argument type.
         using argument_type = playrho::ContactKey;
-        
+
         /// @brief Result type.
         using result_type = std::size_t;
 
@@ -132,6 +132,6 @@ namespace std
             return a ^ b;
         }
     };
-} // namespace std
+}// namespace std
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTKEY_HPP
+#endif// PLAYRHO_DYNAMICS_CONTACTS_CONTACTKEY_HPP

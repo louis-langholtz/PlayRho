@@ -25,59 +25,61 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 
-#include <algorithm> // for std::for_each
+#include <algorithm>// for std::for_each
 
 using std::for_each;
 
-namespace playrho {
-namespace d2 {
-
-using playrho::size;
-
-Length GetMinVertexRadius(const World& world) noexcept
+namespace playrho
 {
-    return world.GetMinVertexRadius();
-}
-
-Length GetMaxVertexRadius(const World& world) noexcept
-{
-    return world.GetMaxVertexRadius();
-}
-
-StepStats Step(World& world, const StepConf& conf)
-{
-    return world.Step(conf);
-}
-
-StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
-               TimestepIters positionIterations)
-{
-    StepConf conf;
-    conf.deltaTime = delta;
-    conf.regVelocityIterations = velocityIterations;
-    conf.regPositionIterations = positionIterations;
-    conf.toiVelocityIterations = velocityIterations;
-    if (positionIterations == 0)
+    namespace d2
     {
-        conf.toiPositionIterations = 0;
-    }
-    conf.dtRatio = delta * world.GetInvDeltaTime();
-    return world.Step(conf);
-}
 
-const DynamicTree& GetTree(const World& world) noexcept
-{
-    return world.GetTree();
-}
+        using playrho::size;
 
-FixtureCounter GetShapeCount(const World& world) noexcept
-{
-    return world.GetShapeCount();
-}
+        Length GetMinVertexRadius(const World& world) noexcept
+        {
+            return world.GetMinVertexRadius();
+        }
 
-} // namespace d2
-} // namespace playrho
+        Length GetMaxVertexRadius(const World& world) noexcept
+        {
+            return world.GetMaxVertexRadius();
+        }
+
+        StepStats Step(World& world, const StepConf& conf)
+        {
+            return world.Step(conf);
+        }
+
+        StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
+                       TimestepIters positionIterations)
+        {
+            StepConf conf;
+            conf.deltaTime = delta;
+            conf.regVelocityIterations = velocityIterations;
+            conf.regPositionIterations = positionIterations;
+            conf.toiVelocityIterations = velocityIterations;
+            if (positionIterations == 0)
+            {
+                conf.toiPositionIterations = 0;
+            }
+            conf.dtRatio = delta * world.GetInvDeltaTime();
+            return world.Step(conf);
+        }
+
+        const DynamicTree& GetTree(const World& world) noexcept
+        {
+            return world.GetTree();
+        }
+
+        FixtureCounter GetShapeCount(const World& world) noexcept
+        {
+            return world.GetShapeCount();
+        }
+
+    }// namespace d2
+}// namespace playrho

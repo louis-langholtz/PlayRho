@@ -20,40 +20,41 @@
 #ifndef PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP
 #define PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP
 
-#include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
-namespace playrho {
-
-/// @brief Fixture proxy.
-/// @details This proxy is used internally to connect fixtures to the broad-phase.
-/// @note This data structure is 4-bytes large (on at least one 64-bit platform).
-struct FixtureProxy
+namespace playrho
 {
-    
-    /// @brief Size type.
-    using size_type = std::remove_const<decltype(MaxContacts)>::type;
 
-    /// @brief Tree ID.
-    /// @details This is the ID of the leaf node in the dynamic tree for this "proxy".
-    /// @note 4-bytes.
-    size_type treeId;
-};
+    /// @brief Fixture proxy.
+    /// @details This proxy is used internally to connect fixtures to the broad-phase.
+    /// @note This data structure is 4-bytes large (on at least one 64-bit platform).
+    struct FixtureProxy
+    {
 
-/// @brief Equality operator
-/// @relatedalso FixtureProxy
-constexpr bool operator== (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
-{
-    return lhs.treeId == rhs.treeId;
-}
+        /// @brief Size type.
+        using size_type = std::remove_const<decltype(MaxContacts)>::type;
 
-/// @brief Inequality operator
-/// @relatedalso FixtureProxy
-constexpr bool operator!= (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
-{
-    return !(lhs.treeId == rhs.treeId);
-}
+        /// @brief Tree ID.
+        /// @details This is the ID of the leaf node in the dynamic tree for this "proxy".
+        /// @note 4-bytes.
+        size_type treeId;
+    };
 
-} // namespace playrho
+    /// @brief Equality operator
+    /// @relatedalso FixtureProxy
+    constexpr bool operator==(const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
+    {
+        return lhs.treeId == rhs.treeId;
+    }
 
-#endif // PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP
+    /// @brief Inequality operator
+    /// @relatedalso FixtureProxy
+    constexpr bool operator!=(const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
+    {
+        return !(lhs.treeId == rhs.treeId);
+    }
+
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP

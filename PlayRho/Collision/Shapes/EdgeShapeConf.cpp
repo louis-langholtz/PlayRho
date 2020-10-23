@@ -19,33 +19,35 @@
 
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 
-namespace playrho {
-namespace d2 {
-
-EdgeShapeConf::EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf) noexcept:
-    ShapeBuilder{conf}, vertexRadius{conf.vertexRadius}, m_vertices{vA, vB}
+namespace playrho
 {
-    const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
-    m_normals[0] = normal;
-    m_normals[1] = -normal;
-}
+    namespace d2
+    {
 
-EdgeShapeConf& EdgeShapeConf::Set(Length2 vA, Length2 vB) noexcept
-{
-    m_vertices[0] = vA;
-    m_vertices[1] = vB;
-    const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
-    m_normals[0] = normal;
-    m_normals[1] = -normal;
-    return *this;
-}
+        EdgeShapeConf::EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf) noexcept
+            : ShapeBuilder{conf}, vertexRadius{conf.vertexRadius}, m_vertices{vA, vB}
+        {
+            const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
+            m_normals[0] = normal;
+            m_normals[1] = -normal;
+        }
 
-EdgeShapeConf& EdgeShapeConf::Transform(const Mat22& m) noexcept
-{
-    const auto newA = m * GetVertexA();
-    const auto newB = m * GetVertexB();
-    return Set(newA, newB);
-}
+        EdgeShapeConf& EdgeShapeConf::Set(Length2 vA, Length2 vB) noexcept
+        {
+            m_vertices[0] = vA;
+            m_vertices[1] = vB;
+            const auto normal = GetUnitVector(GetFwdPerpendicular(vB - vA));
+            m_normals[0] = normal;
+            m_normals[1] = -normal;
+            return *this;
+        }
 
-} // namespace d2
-} // namespace playrho
+        EdgeShapeConf& EdgeShapeConf::Transform(const Mat22& m) noexcept
+        {
+            const auto newA = m * GetVertexA();
+            const auto newB = m * GetVertexB();
+            return Set(newA, newB);
+        }
+
+    }// namespace d2
+}// namespace playrho

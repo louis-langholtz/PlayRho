@@ -23,32 +23,35 @@
 
 #include <PlayRho/Common/CheckedValue.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
-/// @brief Negative constrained value checker.
-template <typename T>
-struct NegativeChecker {
-    /// @brief Exception type possibly thrown by this checker.
-    using exception_type = std::invalid_argument;
-
-    /// @brief Value checking functor.
-    /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(!(v < static_cast<T>(0)), T{v})
+    /// @brief Negative constrained value checker.
+    template<typename T>
+    struct NegativeChecker
     {
-        if (!(v < static_cast<T>(0))) {
-            throw exception_type("value not less than zero");
+        /// @brief Exception type possibly thrown by this checker.
+        using exception_type = std::invalid_argument;
+
+        /// @brief Value checking functor.
+        /// @throws exception_type if given value is not valid.
+        constexpr auto operator()(const T& v) -> decltype(!(v < static_cast<T>(0)), T{v})
+        {
+            if (!(v < static_cast<T>(0)))
+            {
+                throw exception_type("value not less than zero");
+            }
+            return v;
         }
-        return v;
-    }
-};
+    };
 
-/// @ingroup CheckedValues
-/// @brief Negative constrained value type.
-template <typename T>
-using Negative = CheckedValue<T, NegativeChecker<T>>;
+    /// @ingroup CheckedValues
+    /// @brief Negative constrained value type.
+    template<typename T>
+    using Negative = CheckedValue<T, NegativeChecker<T>>;
 
-static_assert(!std::is_default_constructible<Negative<int>>::value);
+    static_assert(!std::is_default_constructible<Negative<int>>::value);
 
-} // namespace playrho
+}// namespace playrho
 
-#endif // PLAYRHO_COMMON_NEGATIVE_HPP
+#endif// PLAYRHO_COMMON_NEGATIVE_HPP

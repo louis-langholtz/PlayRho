@@ -30,68 +30,70 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+    namespace d2
+    {
 
-class World;
-class DynamicTree;
+        class World;
+        class DynamicTree;
 
-/// @brief Steps the given world the specified amount.
-/// @relatedalso World
-StepStats Step(World& world, const StepConf& conf = StepConf{});
+        /// @brief Steps the given world the specified amount.
+        /// @relatedalso World
+        StepStats Step(World& world, const StepConf& conf = StepConf{});
 
-/// @brief Steps the world ahead by a given time amount.
-///
-/// @details Performs position and velocity updating, sleeping of non-moving bodies, updating
-///   of the contacts, and notifying the contact listener of begin-contact, end-contact,
-///   pre-solve, and post-solve events.
-///   If the given velocity and position iterations are more than zero, this method also
-///   respectively performs velocity and position resolution of the contacting bodies.
-///
-/// @note While body velocities are updated accordingly (per the sum of forces acting on them),
-///   body positions (barring any collisions) are updated as if they had moved the entire time
-///   step at those resulting velocities. In other words, a body initially at <code>p0</code>
-///   going <code>v0</code> fast with a sum acceleration of <code>a</code>, after time
-///   <code>t</code> and barring any collisions, will have a new velocity (<code>v1</code>) of
-///   <code>v0 + (a * t)</code> and a new position (<code>p1</code>) of <code>p0 + v1 * t</code>.
-///
-/// @warning Varying the time step may lead to non-physical behaviors.
-///
-/// @post Static bodies are unmoved.
-/// @post Kinetic bodies are moved based on their previous velocities.
-/// @post Dynamic bodies are moved based on their previous velocities, gravity,
-/// applied forces, applied impulses, masses, damping, and the restitution and friction values
-/// of their fixtures when they experience collisions.
-///
-/// @param world World to step.
-/// @param delta Time to simulate as a delta from the current state. This should not vary.
-/// @param velocityIterations Number of iterations for the velocity constraint solver.
-/// @param positionIterations Number of iterations for the position constraint solver.
-///   The position constraint solver resolves the positions of bodies that overlap.
-///
-/// @relatedalso World
-///
-StepStats Step(World& world, Time delta,
-               TimestepIters velocityIterations = 8,
-               TimestepIters positionIterations = 3);
+        /// @brief Steps the world ahead by a given time amount.
+        ///
+        /// @details Performs position and velocity updating, sleeping of non-moving bodies, updating
+        ///   of the contacts, and notifying the contact listener of begin-contact, end-contact,
+        ///   pre-solve, and post-solve events.
+        ///   If the given velocity and position iterations are more than zero, this method also
+        ///   respectively performs velocity and position resolution of the contacting bodies.
+        ///
+        /// @note While body velocities are updated accordingly (per the sum of forces acting on them),
+        ///   body positions (barring any collisions) are updated as if they had moved the entire time
+        ///   step at those resulting velocities. In other words, a body initially at <code>p0</code>
+        ///   going <code>v0</code> fast with a sum acceleration of <code>a</code>, after time
+        ///   <code>t</code> and barring any collisions, will have a new velocity (<code>v1</code>) of
+        ///   <code>v0 + (a * t)</code> and a new position (<code>p1</code>) of <code>p0 + v1 * t</code>.
+        ///
+        /// @warning Varying the time step may lead to non-physical behaviors.
+        ///
+        /// @post Static bodies are unmoved.
+        /// @post Kinetic bodies are moved based on their previous velocities.
+        /// @post Dynamic bodies are moved based on their previous velocities, gravity,
+        /// applied forces, applied impulses, masses, damping, and the restitution and friction values
+        /// of their fixtures when they experience collisions.
+        ///
+        /// @param world World to step.
+        /// @param delta Time to simulate as a delta from the current state. This should not vary.
+        /// @param velocityIterations Number of iterations for the velocity constraint solver.
+        /// @param positionIterations Number of iterations for the position constraint solver.
+        ///   The position constraint solver resolves the positions of bodies that overlap.
+        ///
+        /// @relatedalso World
+        ///
+        StepStats Step(World& world, Time delta,
+                       TimestepIters velocityIterations = 8,
+                       TimestepIters positionIterations = 3);
 
-/// @copydoc World::GetTree
-/// @relatedalso World
-const DynamicTree& GetTree(const World& world) noexcept;
+        /// @copydoc World::GetTree
+        /// @relatedalso World
+        const DynamicTree& GetTree(const World& world) noexcept;
 
-/// @brief Gets the count of unique shapes in the given world.
-/// @relatedalso World
-FixtureCounter GetShapeCount(const World& world) noexcept;
+        /// @brief Gets the count of unique shapes in the given world.
+        /// @relatedalso World
+        FixtureCounter GetShapeCount(const World& world) noexcept;
 
-/// @brief Gets the min vertex radius that shapes for the given world are allowed to be.
-/// @relatedalso World
-Length GetMinVertexRadius(const World& world) noexcept;
+        /// @brief Gets the min vertex radius that shapes for the given world are allowed to be.
+        /// @relatedalso World
+        Length GetMinVertexRadius(const World& world) noexcept;
 
-/// @brief Gets the max vertex radius that shapes for the given world are allowed to be.
-/// @relatedalso World
-Length GetMaxVertexRadius(const World& world) noexcept;
+        /// @brief Gets the max vertex radius that shapes for the given world are allowed to be.
+        /// @relatedalso World
+        Length GetMaxVertexRadius(const World& world) noexcept;
 
-} // namespace d2
-} // namespace playrho
+    }// namespace d2
+}// namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_WORLDMISC_HPP
+#endif// PLAYRHO_DYNAMICS_WORLDMISC_HPP

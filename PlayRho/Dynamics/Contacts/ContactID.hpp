@@ -21,31 +21,32 @@
 #ifndef PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
 #define PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
 
-#include <PlayRho/Common/StrongType.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/StrongType.hpp>
 
-namespace playrho {
-
-/// @brief Contact identifier.
-using ContactID = strongtype::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
-
-/// @brief Invalid contact ID value.
-constexpr auto InvalidContactID = static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
-
-/// @brief Gets an invalid value for the ContactID type.
-template <>
-constexpr ContactID GetInvalid() noexcept
+namespace playrho
 {
-    return InvalidContactID;
-}
 
-/// @brief Determines if the given value is valid.
-template <>
-constexpr bool IsValid(const ContactID& value) noexcept
-{
-    return value != GetInvalid<ContactID>();
-}
+    /// @brief Contact identifier.
+    using ContactID = strongtype::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
 
-} // namespace playrho
+    /// @brief Invalid contact ID value.
+    constexpr auto InvalidContactID = static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP
+    /// @brief Gets an invalid value for the ContactID type.
+    template<>
+    constexpr ContactID GetInvalid() noexcept
+    {
+        return InvalidContactID;
+    }
+
+    /// @brief Determines if the given value is valid.
+    template<>
+    constexpr bool IsValid(const ContactID& value) noexcept
+    {
+        return value != GetInvalid<ContactID>();
+    }
+
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_CONTACTS_CONTACTID_HPP

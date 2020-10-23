@@ -21,190 +21,192 @@
 
 #include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp>// for ConstraintSolverConf
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
-
-static_assert(std::is_default_constructible<RopeJointConf>::value,
-              "RopeJointConf should be default constructible!");
-static_assert(std::is_copy_constructible<RopeJointConf>::value,
-              "RopeJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<RopeJointConf>::value,
-              "RopeJointConf should be copy assignable!");
-static_assert(std::is_move_constructible<RopeJointConf>::value,
-              "RopeJointConf should be move constructible!");
-static_assert(std::is_move_assignable<RopeJointConf>::value,
-              "RopeJointConf should be move assignable!");
-static_assert(std::is_nothrow_destructible<RopeJointConf>::value,
-              "RopeJointConf should be nothrow destructible!");
-
-RopeJointConf GetRopeJointConf(const Joint& joint) noexcept
+namespace playrho
 {
-    return TypeCast<RopeJointConf>(joint);
-}
-
-// Limit:
-// C = norm(pB - pA) - L
-// u = (pB - pA) / norm(pB - pA)
-// Cdot = dot(u, vB + cross(wB, rB) - vA - cross(wA, rA))
-// J = [-u -cross(rA, u) u cross(rB, u)]
-// K = J * invM * JT
-//   = invMassA + invIA * cross(rA, u)^2 + invMassB + invIB * cross(rB, u)^2
-
-void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf)
-{
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
-
-    const auto invMassA = bodyConstraintA.GetInvMass();
-    const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
-    const auto posA = bodyConstraintA.GetPosition();
-    auto velA = bodyConstraintA.GetVelocity();
-
-    const auto invMassB = bodyConstraintB.GetInvMass();
-    const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
-    const auto posB = bodyConstraintB.GetPosition();
-    auto velB = bodyConstraintB.GetVelocity();
-
-    const auto qA = UnitVec::Get(posA.angular);
-    const auto qB = UnitVec::Get(posB.angular);
-
-    object.rA = Rotate(object.localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
-    object.rB = Rotate(object.localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
-    const auto posDelta = Length2{(posB.linear + object.rB) - (posA.linear + object.rA)};
-
-    const auto uvresult = UnitVec::Get(posDelta[0], posDelta[1]);
-    const auto uv = std::get<UnitVec>(uvresult);
-    object.length = std::get<Length>(uvresult);
-
-    const auto C = object.length - object.maxLength;
-    object.limitState = (C > 0_m)? LimitState::e_atUpperLimit: LimitState::e_inactiveLimit;
-
-    if (object.length > conf.linearSlop)
+    namespace d2
     {
-        object.u = uv;
-    }
-    else
-    {
-        object.u = UnitVec::GetZero();
-        object.mass = 0_kg;
-        object.impulse = 0;
-        return;
-    }
 
-    // Compute effective mass.
-    const auto crA = Length{Cross(object.rA, object.u)} / Radian;
-    const auto crB = Length{Cross(object.rB, object.u)} / Radian;
-    const auto invRotMassA = InvMass{invRotInertiaA * Square(crA)};
-    const auto invRotMassB = InvMass{invRotInertiaB * Square(crB)};
-    const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
+        static_assert(std::is_default_constructible<RopeJointConf>::value,
+                      "RopeJointConf should be default constructible!");
+        static_assert(std::is_copy_constructible<RopeJointConf>::value,
+                      "RopeJointConf should be copy constructible!");
+        static_assert(std::is_copy_assignable<RopeJointConf>::value,
+                      "RopeJointConf should be copy assignable!");
+        static_assert(std::is_move_constructible<RopeJointConf>::value,
+                      "RopeJointConf should be move constructible!");
+        static_assert(std::is_move_assignable<RopeJointConf>::value,
+                      "RopeJointConf should be move assignable!");
+        static_assert(std::is_nothrow_destructible<RopeJointConf>::value,
+                      "RopeJointConf should be nothrow destructible!");
 
-    object.mass = (invMass != InvMass{0}) ? Real{1} / invMass : 0_kg;
+        RopeJointConf GetRopeJointConf(const Joint& joint) noexcept
+        {
+            return TypeCast<RopeJointConf>(joint);
+        }
 
-    if (step.doWarmStart)
-    {
-        // Scale the impulse to support a variable time step.
-        object.impulse *= step.dtRatio;
+        // Limit:
+        // C = norm(pB - pA) - L
+        // u = (pB - pA) / norm(pB - pA)
+        // Cdot = dot(u, vB + cross(wB, rB) - vA - cross(wA, rA))
+        // J = [-u -cross(rA, u) u cross(rB, u)]
+        // K = J * invM * JT
+        //   = invMassA + invIA * cross(rA, u)^2 + invMassB + invIB * cross(rB, u)^2
 
-        const auto P = object.impulse * object.u;
+        void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
+                          const StepConf& step,
+                          const ConstraintSolverConf& conf)
+        {
+            auto& bodyConstraintA = At(bodies, GetBodyA(object));
+            auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
-        // L * M * L T^-1 / QP is: L^2 M T^-1 QP^-1 which is: AngularMomentum.
-        // L * M * L T^-1 is: L^2 M T^-1
-        const auto LA = AngularMomentum{Cross(object.rA, P) / Radian};
-        const auto LB = AngularMomentum{Cross(object.rB, P) / Radian};
-        velA -= Velocity{invMassA * P, invRotInertiaA * LA};
-        velB += Velocity{invMassB * P, invRotInertiaB * LB};
-    }
-    else
-    {
-        object.impulse = 0;
-    }
+            const auto invMassA = bodyConstraintA.GetInvMass();
+            const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
+            const auto posA = bodyConstraintA.GetPosition();
+            auto velA = bodyConstraintA.GetVelocity();
 
-    bodyConstraintA.SetVelocity(velA);
-    bodyConstraintB.SetVelocity(velB);
-}
+            const auto invMassB = bodyConstraintB.GetInvMass();
+            const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
+            const auto posB = bodyConstraintB.GetPosition();
+            auto velB = bodyConstraintB.GetVelocity();
 
-bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step)
-{
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+            const auto qA = UnitVec::Get(posA.angular);
+            const auto qB = UnitVec::Get(posB.angular);
 
-    auto velA = bodyConstraintA.GetVelocity();
-    auto velB = bodyConstraintB.GetVelocity();
+            object.rA = Rotate(object.localAnchorA - bodyConstraintA.GetLocalCenter(), qA);
+            object.rB = Rotate(object.localAnchorB - bodyConstraintB.GetLocalCenter(), qB);
+            const auto posDelta = Length2{(posB.linear + object.rB) - (posA.linear + object.rA)};
 
-    // Cdot = dot(u, v + cross(w, r))
-    const auto vpA = velA.linear + GetRevPerpendicular(object.rA) * (velA.angular / Radian);
-    const auto vpB = velB.linear + GetRevPerpendicular(object.rB) * (velB.angular / Radian);
-    const auto C = object.length - object.maxLength;
+            const auto uvresult = UnitVec::Get(posDelta[0], posDelta[1]);
+            const auto uv = std::get<UnitVec>(uvresult);
+            object.length = std::get<Length>(uvresult);
 
-    // Predictive constraint.
-    const auto inv_h = (step.deltaTime != 0_s)? Real(1) / step.deltaTime: 0_Hz;
-    const auto Cdot = LinearVelocity{Dot(object.u, vpB - vpA) + ((C < 0_m)? inv_h * C: 0_mps)};
+            const auto C = object.length - object.maxLength;
+            object.limitState = (C > 0_m) ? LimitState::e_atUpperLimit : LimitState::e_inactiveLimit;
 
-    auto localImpulse = -object.mass * Cdot;
-    const auto oldImpulse = object.impulse;
-    object.impulse = std::min(0_Ns, object.impulse + localImpulse);
-    localImpulse = object.impulse - oldImpulse;
+            if (object.length > conf.linearSlop)
+            {
+                object.u = uv;
+            }
+            else
+            {
+                object.u = UnitVec::GetZero();
+                object.mass = 0_kg;
+                object.impulse = 0;
+                return;
+            }
 
-    // L * M * L T^-1 / QP is: L^2 M T^-1 QP^-1 which is: AngularMomentum.
-    // L * M * L T^-1 is: L^2 M T^-1
-    const auto P = localImpulse * object.u;
-    const auto LA = AngularMomentum{Cross(object.rA, P) / Radian};
-    const auto LB = AngularMomentum{Cross(object.rB, P) / Radian};
+            // Compute effective mass.
+            const auto crA = Length{Cross(object.rA, object.u)} / Radian;
+            const auto crB = Length{Cross(object.rB, object.u)} / Radian;
+            const auto invRotMassA = InvMass{invRotInertiaA * Square(crA)};
+            const auto invRotMassB = InvMass{invRotInertiaB * Square(crB)};
+            const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
 
-    velA -= Velocity{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
-    velB += Velocity{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
+            object.mass = (invMass != InvMass{0}) ? Real{1} / invMass : 0_kg;
 
-    bodyConstraintA.SetVelocity(velA);
-    bodyConstraintB.SetVelocity(velB);
+            if (step.doWarmStart)
+            {
+                // Scale the impulse to support a variable time step.
+                object.impulse *= step.dtRatio;
 
-    return localImpulse == 0_Ns;
-}
+                const auto P = object.impulse * object.u;
 
-bool SolvePosition(const RopeJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf)
-{
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+                // L * M * L T^-1 / QP is: L^2 M T^-1 QP^-1 which is: AngularMomentum.
+                // L * M * L T^-1 is: L^2 M T^-1
+                const auto LA = AngularMomentum{Cross(object.rA, P) / Radian};
+                const auto LB = AngularMomentum{Cross(object.rB, P) / Radian};
+                velA -= Velocity{invMassA * P, invRotInertiaA * LA};
+                velB += Velocity{invMassB * P, invRotInertiaB * LB};
+            }
+            else
+            {
+                object.impulse = 0;
+            }
 
-    auto posA = bodyConstraintA.GetPosition();
-    auto posB = bodyConstraintB.GetPosition();
+            bodyConstraintA.SetVelocity(velA);
+            bodyConstraintB.SetVelocity(velB);
+        }
 
-    const auto qA = UnitVec::Get(posA.angular);
-    const auto qB = UnitVec::Get(posB.angular);
+        bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
+                           const StepConf& step)
+        {
+            auto& bodyConstraintA = At(bodies, GetBodyA(object));
+            auto& bodyConstraintB = At(bodies, GetBodyB(object));
 
-    const auto rA = Length2{Rotate(object.localAnchorA - bodyConstraintA.GetLocalCenter(), qA)};
-    const auto rB = Length2{Rotate(object.localAnchorB - bodyConstraintB.GetLocalCenter(), qB)};
-    const auto posDelta = (posB.linear + rB) - (posA.linear + rA);
+            auto velA = bodyConstraintA.GetVelocity();
+            auto velB = bodyConstraintB.GetVelocity();
 
-    const auto uvresult = UnitVec::Get(posDelta[0], posDelta[1]);
-    const auto uv = std::get<UnitVec>(uvresult);
-    const auto length = std::get<Length>(uvresult);
+            // Cdot = dot(u, v + cross(w, r))
+            const auto vpA = velA.linear + GetRevPerpendicular(object.rA) * (velA.angular / Radian);
+            const auto vpB = velB.linear + GetRevPerpendicular(object.rB) * (velB.angular / Radian);
+            const auto C = object.length - object.maxLength;
 
-    const auto C = std::clamp(length - object.maxLength, 0_m, conf.maxLinearCorrection);
+            // Predictive constraint.
+            const auto inv_h = (step.deltaTime != 0_s) ? Real(1) / step.deltaTime : 0_Hz;
+            const auto Cdot = LinearVelocity{Dot(object.u, vpB - vpA) + ((C < 0_m) ? inv_h * C : 0_mps)};
 
-    const auto localImpulse = -object.mass * C;
+            auto localImpulse = -object.mass * Cdot;
+            const auto oldImpulse = object.impulse;
+            object.impulse = std::min(0_Ns, object.impulse + localImpulse);
+            localImpulse = object.impulse - oldImpulse;
 
-    const auto P = localImpulse * uv;
-    const auto LA = Cross(rA, P) / Radian;
-    const auto LB = Cross(rB, P) / Radian;
+            // L * M * L T^-1 / QP is: L^2 M T^-1 QP^-1 which is: AngularMomentum.
+            // L * M * L T^-1 is: L^2 M T^-1
+            const auto P = localImpulse * object.u;
+            const auto LA = AngularMomentum{Cross(object.rA, P) / Radian};
+            const auto LB = AngularMomentum{Cross(object.rB, P) / Radian};
 
-    posA -= Position{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
-    posB += Position{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
+            velA -= Velocity{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
+            velB += Velocity{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
 
-    bodyConstraintA.SetPosition(posA);
-    bodyConstraintB.SetPosition(posB);
+            bodyConstraintA.SetVelocity(velA);
+            bodyConstraintB.SetVelocity(velB);
 
-    return (length - object.maxLength) < conf.linearSlop;
-}
+            return localImpulse == 0_Ns;
+        }
 
-} // namespace d2
-} // namespace playrho
+        bool SolvePosition(const RopeJointConf& object, std::vector<BodyConstraint>& bodies,
+                           const ConstraintSolverConf& conf)
+        {
+            auto& bodyConstraintA = At(bodies, GetBodyA(object));
+            auto& bodyConstraintB = At(bodies, GetBodyB(object));
+
+            auto posA = bodyConstraintA.GetPosition();
+            auto posB = bodyConstraintB.GetPosition();
+
+            const auto qA = UnitVec::Get(posA.angular);
+            const auto qB = UnitVec::Get(posB.angular);
+
+            const auto rA = Length2{Rotate(object.localAnchorA - bodyConstraintA.GetLocalCenter(), qA)};
+            const auto rB = Length2{Rotate(object.localAnchorB - bodyConstraintB.GetLocalCenter(), qB)};
+            const auto posDelta = (posB.linear + rB) - (posA.linear + rA);
+
+            const auto uvresult = UnitVec::Get(posDelta[0], posDelta[1]);
+            const auto uv = std::get<UnitVec>(uvresult);
+            const auto length = std::get<Length>(uvresult);
+
+            const auto C = std::clamp(length - object.maxLength, 0_m, conf.maxLinearCorrection);
+
+            const auto localImpulse = -object.mass * C;
+
+            const auto P = localImpulse * uv;
+            const auto LA = Cross(rA, P) / Radian;
+            const auto LB = Cross(rB, P) / Radian;
+
+            posA -= Position{bodyConstraintA.GetInvMass() * P, bodyConstraintA.GetInvRotInertia() * LA};
+            posB += Position{bodyConstraintB.GetInvMass() * P, bodyConstraintB.GetInvRotInertia() * LB};
+
+            bodyConstraintA.SetPosition(posA);
+            bodyConstraintB.SetPosition(posB);
+
+            return (length - object.maxLength) < conf.linearSlop;
+        }
+
+    }// namespace d2
+}// namespace playrho

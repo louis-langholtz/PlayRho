@@ -23,38 +23,41 @@
 
 #include <PlayRho/Common/CheckedValue.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
-/// @brief Non-positive constrained value checker.
-template <typename T>
-struct NonPositiveChecker {
-    /// @brief Exception type possibly thrown by this checker.
-    using exception_type = std::invalid_argument;
-
-    /// @brief Valid value supplying functor.
-    constexpr auto operator()() noexcept -> decltype(static_cast<T>(0))
+    /// @brief Non-positive constrained value checker.
+    template<typename T>
+    struct NonPositiveChecker
     {
-        return static_cast<T>(0);
-    }
+        /// @brief Exception type possibly thrown by this checker.
+        using exception_type = std::invalid_argument;
 
-    /// @brief Value checking functor.
-    /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(!(v <= static_cast<T>(0)), T{v})
-    {
-        if (!(v <= static_cast<T>(0))) {
-            throw exception_type("value not lesser than nor equal to zero");
+        /// @brief Valid value supplying functor.
+        constexpr auto operator()() noexcept -> decltype(static_cast<T>(0))
+        {
+            return static_cast<T>(0);
         }
-        return v;
-    }
-};
 
-/// @ingroup CheckedValues
-/// @brief Non-positive constrained value type.
-template <typename T>
-using NonPositive = CheckedValue<T, NonPositiveChecker<T>>;
+        /// @brief Value checking functor.
+        /// @throws exception_type if given value is not valid.
+        constexpr auto operator()(const T& v) -> decltype(!(v <= static_cast<T>(0)), T{v})
+        {
+            if (!(v <= static_cast<T>(0)))
+            {
+                throw exception_type("value not lesser than nor equal to zero");
+            }
+            return v;
+        }
+    };
 
-static_assert(std::is_default_constructible<NonPositive<int>>::value);
+    /// @ingroup CheckedValues
+    /// @brief Non-positive constrained value type.
+    template<typename T>
+    using NonPositive = CheckedValue<T, NonPositiveChecker<T>>;
 
-} // namespace playrho
+    static_assert(std::is_default_constructible<NonPositive<int>>::value);
 
-#endif // PLAYRHO_COMMON_NONPOSITIVE_HPP
+}// namespace playrho
+
+#endif// PLAYRHO_COMMON_NONPOSITIVE_HPP

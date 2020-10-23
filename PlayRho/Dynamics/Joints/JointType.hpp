@@ -22,23 +22,25 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP
 
-#include <PlayRho/Common/TypeInfo.hpp> // for TypeID
+#include <PlayRho/Common/TypeInfo.hpp>// for TypeID
 
 #include <cstdint>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+    namespace d2
+    {
 
-/// @brief Joint type alias.
-/// @note It's unclear whether it'd be better for this to be its own strong type so for
-///   now it's an alias recognizing it as different without the compiler enforcing it.
-using JointType = TypeID;
+        /// @brief Joint type alias.
+        /// @note It's unclear whether it'd be better for this to be its own strong type so for
+        ///   now it's an alias recognizing it as different without the compiler enforcing it.
+        using JointType = TypeID;
 
-/// @brief Provides a C-style (null-terminated) string name for given joint type.
-/// @return C-style English-language human-readable string uniquely identifying the joint type.
-const char* ToString(JointType type) noexcept;
+        /// @brief Provides a C-style (null-terminated) string name for given joint type.
+        /// @return C-style English-language human-readable string uniquely identifying the joint type.
+        const char* ToString(JointType type) noexcept;
 
-} // namespace d2
-} // namespace playrho
+    }// namespace d2
+}// namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP
+#endif// PLAYRHO_DYNAMICS_JOINTS_JOINTTYPE_HPP

@@ -20,46 +20,48 @@
 #ifndef PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
 #define PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
 
-#include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
 
-namespace playrho {
-namespace d2 {
-
-/// Position solver manifold.
-/// @details
-/// This is a normal-point-separation composition of data for position constraint resolution.
-/// @note This data structure is 20-bytes large.
-struct PositionSolverManifold
+namespace playrho
 {
-    /// Normal.
-    /// @details Normal of the contact between two points. This is the axis upon which impulses
-    ///    should be applied to resolve the negative separations of overlapping shapes.
-    /// @note This field is 8-bytes large.
-    UnitVec m_normal;
+    namespace d2
+    {
 
-    /// Point.
-    /// @details Point at which position resolution should be relatively applied.
-    /// @note This field is 8-bytes large.
-    Length2 m_point;
-    
-    /// Separation.
-    /// @details Separation between two points (i.e. penetration if negative).
-    /// @note This field is 4-bytes large.
-    Length m_separation;
-};
+        /// Position solver manifold.
+        /// @details
+        /// This is a normal-point-separation composition of data for position constraint resolution.
+        /// @note This data structure is 20-bytes large.
+        struct PositionSolverManifold
+        {
+            /// Normal.
+            /// @details Normal of the contact between two points. This is the axis upon which impulses
+            ///    should be applied to resolve the negative separations of overlapping shapes.
+            /// @note This field is 8-bytes large.
+            UnitVec m_normal;
 
-/// Gets the normal-point-separation data in world coordinates for the given inputs.
-/// @note The returned normal is in the direction of shape A to shape B.
-/// @note The returned separation distance does not account for vertex radiuses. It's simply
-///   the separation between the points of the manifold. To account for the vertex radiuses,
-///   the total vertex radius must be subtracted from this separation distance.
-PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
-                              const Transformation& xfA, const Transformation& xfB);
+            /// Point.
+            /// @details Point at which position resolution should be relatively applied.
+            /// @note This field is 8-bytes large.
+            Length2 m_point;
 
-} // namespace d2
-} // namespace playrho
+            /// Separation.
+            /// @details Separation between two points (i.e. penetration if negative).
+            /// @note This field is 4-bytes large.
+            Length m_separation;
+        };
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
+        /// Gets the normal-point-separation data in world coordinates for the given inputs.
+        /// @note The returned normal is in the direction of shape A to shape B.
+        /// @note The returned separation distance does not account for vertex radiuses. It's simply
+        ///   the separation between the points of the manifold. To account for the vertex radiuses,
+        ///   the total vertex radius must be subtracted from this separation distance.
+        PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
+                                      const Transformation& xfA, const Transformation& xfB);
+
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP

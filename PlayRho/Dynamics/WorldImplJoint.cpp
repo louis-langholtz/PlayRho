@@ -21,106 +21,108 @@
 
 #include <PlayRho/Dynamics/WorldImplJoint.hpp>
 
+#include <PlayRho/Dynamics/Body.hpp>// for use of GetBody(BodyID)
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/Body.hpp> // for use of GetBody(BodyID)
 
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
-#include <PlayRho/Common/OptionalValue.hpp> // for Optional
+#include <PlayRho/Common/OptionalValue.hpp>// for Optional
 
-namespace playrho {
-namespace d2 {
-
-JointID CreateJoint(WorldImpl& world, const Joint& def)
+namespace playrho
 {
-    return world.CreateJoint(def);
-}
-
-void Destroy(WorldImpl& world, JointID id)
-{
-    world.Destroy(id);
-}
-
-const Joint& GetJoint(const WorldImpl& world, JointID id)
-{
-    return world.GetJoint(id);
-}
-
-void SetJoint(WorldImpl& world, JointID id, const Joint& def)
-{
-    world.SetJoint(id, def);
-}
-
-JointType GetType(const WorldImpl& world, JointID id)
-{
-    return ::playrho::d2::GetType(world.GetJoint(id));
-}
-
-Momentum2 GetLinearReaction(const WorldImpl& world, JointID id)
-{
-    return GetLinearReaction(world.GetJoint(id));
-}
-
-AngularMomentum GetAngularReaction(const WorldImpl& world, JointID id)
-{
-    return GetAngularReaction(world.GetJoint(id));
-}
-
-void SetAwake(WorldImpl& world, JointID id)
-{
-    const auto& joint = world.GetJoint(id);
-    const auto bA = GetBodyA(joint);
-    const auto bB = GetBodyB(joint);
-    if (bA != InvalidBodyID)
+    namespace d2
     {
-        world.GetBody(bA).SetAwake();
-    }
-    if (bB != InvalidBodyID)
-    {
-        world.GetBody(bB).SetAwake();
-    }
-}
 
-bool GetCollideConnected(const WorldImpl& world, JointID id)
-{
-    return GetCollideConnected(world.GetJoint(id));
-}
+        JointID CreateJoint(WorldImpl& world, const Joint& def)
+        {
+            return world.CreateJoint(def);
+        }
 
-BodyID GetBodyA(const WorldImpl& world, JointID id)
-{
-    return GetBodyA(world.GetJoint(id));
-}
+        void Destroy(WorldImpl& world, JointID id)
+        {
+            world.Destroy(id);
+        }
 
-BodyID GetBodyB(const WorldImpl& world, JointID id)
-{
-    return GetBodyB(world.GetJoint(id));
-}
+        const Joint& GetJoint(const WorldImpl& world, JointID id)
+        {
+            return world.GetJoint(id);
+        }
 
-Length2 GetLocalAnchorA(const WorldImpl& world, JointID id)
-{
-    return GetLocalAnchorA(world.GetJoint(id));
-}
+        void SetJoint(WorldImpl& world, JointID id, const Joint& def)
+        {
+            world.SetJoint(id, def);
+        }
 
-Length2 GetLocalAnchorB(const WorldImpl& world, JointID id)
-{
-    return GetLocalAnchorB(world.GetJoint(id));
-}
+        JointType GetType(const WorldImpl& world, JointID id)
+        {
+            return ::playrho::d2::GetType(world.GetJoint(id));
+        }
 
-Angle GetReferenceAngle(const WorldImpl& world, JointID id)
-{
-    return GetReferenceAngle(world.GetJoint(id));
-}
+        Momentum2 GetLinearReaction(const WorldImpl& world, JointID id)
+        {
+            return GetLinearReaction(world.GetJoint(id));
+        }
 
-} // namespace d2
-} // namespace playrho
+        AngularMomentum GetAngularReaction(const WorldImpl& world, JointID id)
+        {
+            return GetAngularReaction(world.GetJoint(id));
+        }
+
+        void SetAwake(WorldImpl& world, JointID id)
+        {
+            const auto& joint = world.GetJoint(id);
+            const auto bA = GetBodyA(joint);
+            const auto bB = GetBodyB(joint);
+            if (bA != InvalidBodyID)
+            {
+                world.GetBody(bA).SetAwake();
+            }
+            if (bB != InvalidBodyID)
+            {
+                world.GetBody(bB).SetAwake();
+            }
+        }
+
+        bool GetCollideConnected(const WorldImpl& world, JointID id)
+        {
+            return GetCollideConnected(world.GetJoint(id));
+        }
+
+        BodyID GetBodyA(const WorldImpl& world, JointID id)
+        {
+            return GetBodyA(world.GetJoint(id));
+        }
+
+        BodyID GetBodyB(const WorldImpl& world, JointID id)
+        {
+            return GetBodyB(world.GetJoint(id));
+        }
+
+        Length2 GetLocalAnchorA(const WorldImpl& world, JointID id)
+        {
+            return GetLocalAnchorA(world.GetJoint(id));
+        }
+
+        Length2 GetLocalAnchorB(const WorldImpl& world, JointID id)
+        {
+            return GetLocalAnchorB(world.GetJoint(id));
+        }
+
+        Angle GetReferenceAngle(const WorldImpl& world, JointID id)
+        {
+            return GetReferenceAngle(world.GetJoint(id));
+        }
+
+    }// namespace d2
+}// namespace playrho

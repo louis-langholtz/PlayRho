@@ -24,64 +24,74 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <algorithm>
 
-namespace playrho {
-namespace d2 {
-
-class VelocityConstraint;
-
-/// Contact Impulse.
-/// @details
-/// Used for reporting. Impulses are used instead of forces because
-/// sub-step forces may approach infinity for rigid body collisions. These
-/// match up one-to-one with the contact points in Manifold.
-class ContactImpulsesList
+namespace playrho
 {
-public:
-    
-    /// @brief Counter type.
-    using Counter = std::remove_const<decltype(MaxManifoldPoints)>::type;
-    
-    /// @brief Gets the count.
-    Counter GetCount() const noexcept { return count; }
-    
-    /// @brief Gets the given indexed entry normal.
-    Momentum GetEntryNormal(Counter index) const noexcept { return normalImpulses[index]; }
-    
-    /// @brief Gets the given indexed entry tangent.
-    Momentum GetEntryTanget(Counter index) const noexcept { return tangentImpulses[index]; }
-    
-    /// @brief Adds an entry of the given data.
-    void AddEntry(Momentum normal, Momentum tangent) noexcept
+    namespace d2
     {
-        assert(count < MaxManifoldPoints);
-        normalImpulses[count] = normal;
-        tangentImpulses[count] = tangent;
-        ++count;
-    }
-    
-private:
-    Momentum normalImpulses[MaxManifoldPoints]; ///< Normal impulses.
-    Momentum tangentImpulses[MaxManifoldPoints]; ///< Tangent impulses.
-    Counter count = 0; ///< Count of entries added.
-};
 
-/// @brief Gets the maximum normal impulse from the given contact impulses list.
-/// @relatedalso ContactImpulsesList
-inline Momentum GetMaxNormalImpulse(const ContactImpulsesList& impulses) noexcept
-{
-    auto maxImpulse = 0_Ns;
-    const auto count = impulses.GetCount();
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
-        maxImpulse = std::max(maxImpulse, impulses.GetEntryNormal(i));
-    }
-    return maxImpulse;
-}
+        class VelocityConstraint;
 
-/// @brief Gets the contact impulses for the given velocity constraint.
-ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc);
+        /// Contact Impulse.
+        /// @details
+        /// Used for reporting. Impulses are used instead of forces because
+        /// sub-step forces may approach infinity for rigid body collisions. These
+        /// match up one-to-one with the contact points in Manifold.
+        class ContactImpulsesList
+        {
+         public:
+            /// @brief Counter type.
+            using Counter = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
-} // namespace d2
-} // namespace playrho
+            /// @brief Gets the count.
+            Counter GetCount() const noexcept
+            {
+                return count;
+            }
 
-#endif // PLAYRHO_DYNAMICS_CONTACTIMPULSESLIST_HPP
+            /// @brief Gets the given indexed entry normal.
+            Momentum GetEntryNormal(Counter index) const noexcept
+            {
+                return normalImpulses[index];
+            }
+
+            /// @brief Gets the given indexed entry tangent.
+            Momentum GetEntryTanget(Counter index) const noexcept
+            {
+                return tangentImpulses[index];
+            }
+
+            /// @brief Adds an entry of the given data.
+            void AddEntry(Momentum normal, Momentum tangent) noexcept
+            {
+                assert(count < MaxManifoldPoints);
+                normalImpulses[count] = normal;
+                tangentImpulses[count] = tangent;
+                ++count;
+            }
+
+         private:
+            Momentum normalImpulses[MaxManifoldPoints]; ///< Normal impulses.
+            Momentum tangentImpulses[MaxManifoldPoints];///< Tangent impulses.
+            Counter count = 0;                          ///< Count of entries added.
+        };
+
+        /// @brief Gets the maximum normal impulse from the given contact impulses list.
+        /// @relatedalso ContactImpulsesList
+        inline Momentum GetMaxNormalImpulse(const ContactImpulsesList& impulses) noexcept
+        {
+            auto maxImpulse = 0_Ns;
+            const auto count = impulses.GetCount();
+            for (auto i = decltype(count){0}; i < count; ++i)
+            {
+                maxImpulse = std::max(maxImpulse, impulses.GetEntryNormal(i));
+            }
+            return maxImpulse;
+        }
+
+        /// @brief Gets the contact impulses for the given velocity constraint.
+        ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc);
+
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_CONTACTIMPULSESLIST_HPP

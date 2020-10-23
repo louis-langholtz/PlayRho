@@ -26,172 +26,177 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
-
-struct ConstraintSolverConf;
-struct StepConf;
-
-namespace d2 {
-
-class Joint;
-class World;
-class BodyConstraint;
-
-/// @brief Pulley joint definition.
-/// @details The pulley joint is connected to two bodies and two fixed ground points.
-///   The pulley supports a ratio such that: <code>length1 + ratio * length2 <= constant</code>.
-/// @note The force transmitted is scaled by the ratio.
-/// @warning the pulley joint can get a bit squirrelly by itself. They often
-///   work better when combined with prismatic joints. You should also cover the
-///   the anchor points with static shapes to prevent one side from going to
-///   zero length.
-/// @ingroup JointsGroup
-/// @image html pulleyJoint.gif
-/// @see Joint, World::CreateJoint
-struct PulleyJointConf : public JointBuilder<PulleyJointConf>
+namespace playrho
 {
-    /// @brief Super type.
-    using super = JointBuilder<PulleyJointConf>;
 
-    /// @brief Default ground anchor A.
-    static constexpr Length2 DefaultGroundAnchorA = Length2{-1_m, +1_m};
+    struct ConstraintSolverConf;
+    struct StepConf;
 
-    /// @brief Default ground anchor B.
-    static constexpr Length2 DefaultGroundAnchorB = Length2{+1_m, +1_m};
-
-    /// @brief Default local anchor A.
-    static constexpr Length2 DefaultLocalAnchorA = Length2{-1_m, 0_m};
-
-    /// @brief Default local anchor B.
-    static constexpr Length2 DefaultLocalAnchorB = Length2{+1_m, 0_m};
-
-    /// @brief Default constructor.
-    PulleyJointConf() noexcept: super{super{}.UseCollideConnected(true)} {}
-
-    /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-    PulleyJointConf(BodyID bodyA, BodyID bodyB,
-                    Length2 groundAnchorA = DefaultGroundAnchorA,
-                    Length2 groundAnchorB = DefaultGroundAnchorB,
-                    Length2 anchorA = DefaultLocalAnchorA,
-                    Length2 anchorB = DefaultLocalAnchorB,
-                    Length lA = 0_m, Length lB = 0_m);
-
-    /// @brief Uses the given ratio value.
-    constexpr auto& UseRatio(Real v) noexcept
+    namespace d2
     {
-        ratio = v;
-        return *this;
-    }
 
-    /// The first ground anchor in world coordinates. This point never moves.
-    Length2 groundAnchorA = DefaultGroundAnchorA;
+        class Joint;
+        class World;
+        class BodyConstraint;
 
-    /// The second ground anchor in world coordinates. This point never moves.
-    Length2 groundAnchorB = DefaultGroundAnchorB;
+        /// @brief Pulley joint definition.
+        /// @details The pulley joint is connected to two bodies and two fixed ground points.
+        ///   The pulley supports a ratio such that: <code>length1 + ratio * length2 <= constant</code>.
+        /// @note The force transmitted is scaled by the ratio.
+        /// @warning the pulley joint can get a bit squirrelly by itself. They often
+        ///   work better when combined with prismatic joints. You should also cover the
+        ///   the anchor points with static shapes to prevent one side from going to
+        ///   zero length.
+        /// @ingroup JointsGroup
+        /// @image html pulleyJoint.gif
+        /// @see Joint, World::CreateJoint
+        struct PulleyJointConf : public JointBuilder<PulleyJointConf>
+        {
+            /// @brief Super type.
+            using super = JointBuilder<PulleyJointConf>;
 
-    /// The local anchor point relative to body A's origin.
-    Length2 localAnchorA = DefaultLocalAnchorA;
+            /// @brief Default ground anchor A.
+            static constexpr Length2 DefaultGroundAnchorA = Length2{-1_m, +1_m};
 
-    /// The local anchor point relative to body B's origin.
-    Length2 localAnchorB = DefaultLocalAnchorB;
+            /// @brief Default ground anchor B.
+            static constexpr Length2 DefaultGroundAnchorB = Length2{+1_m, +1_m};
 
-    /// The a reference length for the segment attached to body-A.
-    Length lengthA = 0_m;
+            /// @brief Default local anchor A.
+            static constexpr Length2 DefaultLocalAnchorA = Length2{-1_m, 0_m};
 
-    /// The a reference length for the segment attached to body-B.
-    Length lengthB = 0_m;
+            /// @brief Default local anchor B.
+            static constexpr Length2 DefaultLocalAnchorB = Length2{+1_m, 0_m};
 
-    /// The pulley ratio, used to simulate a block-and-tackle.
-    Real ratio = 1;
+            /// @brief Default constructor.
+            PulleyJointConf() noexcept
+                : super{super{}.UseCollideConnected(true)}
+            {
+            }
 
-    Length constant = 0_m; ///< Constant.
+            /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
+            PulleyJointConf(BodyID bodyA, BodyID bodyB,
+                            Length2 groundAnchorA = DefaultGroundAnchorA,
+                            Length2 groundAnchorB = DefaultGroundAnchorB,
+                            Length2 anchorA = DefaultLocalAnchorA,
+                            Length2 anchorB = DefaultLocalAnchorB,
+                            Length lA = 0_m, Length lB = 0_m);
 
-    // Solver shared (between calls to InitVelocityConstraints).
-    Momentum impulse = 0_Ns; ///< Impulse.
+            /// @brief Uses the given ratio value.
+            constexpr auto& UseRatio(Real v) noexcept
+            {
+                ratio = v;
+                return *this;
+            }
 
-    // Solver temp (recalculated every call to InitVelocityConstraints).
-    UnitVec uA; ///< Unit vector A.
-    UnitVec uB; ///< Unit vector B.
-    Length2 rA{}; ///< Relative A.
-    Length2 rB{}; ///< Relative B.
-    Mass mass = 0_kg; ///< Mass.
-};
+            /// The first ground anchor in world coordinates. This point never moves.
+            Length2 groundAnchorA = DefaultGroundAnchorA;
 
-/// @brief Gets the definition data for the given joint.
-/// @relatedalso Joint
-PulleyJointConf GetPulleyJointConf(const Joint& joint);
+            /// The second ground anchor in world coordinates. This point never moves.
+            Length2 groundAnchorB = DefaultGroundAnchorB;
 
-/// @brief Gets the configuration for the given parameters.
-/// @relatedalso World
-PulleyJointConf GetPulleyJointConf(const World& world,
-                                   BodyID bA, BodyID bB,
-                                   Length2 groundA, Length2 groundB,
-                                   Length2 anchorA, Length2 anchorB);
+            /// The local anchor point relative to body A's origin.
+            Length2 localAnchorA = DefaultLocalAnchorA;
 
-/// @brief Gets the current linear reaction of the given configuration.
-/// @relatedalso PulleyJointConf
-constexpr Momentum2 GetLinearReaction(const PulleyJointConf& object) noexcept
-{
-    return object.impulse * object.uB;
-}
+            /// The local anchor point relative to body B's origin.
+            Length2 localAnchorB = DefaultLocalAnchorB;
 
-/// @brief Gets the current angular reaction of the given configuration.
-/// @relatedalso PulleyJointConf
-constexpr AngularMomentum GetAngularReaction(const PulleyJointConf&) noexcept
-{
-    return AngularMomentum{0};
-}
+            /// The a reference length for the segment attached to body-A.
+            Length lengthA = 0_m;
 
-/// @brief Shifts the origin notion of the given configuration.
-/// @relatedalso PulleyJointConf
-bool ShiftOrigin(PulleyJointConf& object, Length2 newOrigin) noexcept;
+            /// The a reference length for the segment attached to body-B.
+            Length lengthB = 0_m;
 
-/// @brief Initializes velocity constraint data based on the given solver data.
-/// @note This MUST be called prior to calling <code>SolveVelocity</code>.
-/// @see SolveVelocity.
-/// @relatedalso PulleyJointConf
-void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+            /// The pulley ratio, used to simulate a block-and-tackle.
+            Real ratio = 1;
 
-/// @brief Solves velocity constraint.
-/// @pre <code>InitVelocity</code> has been called.
-/// @see InitVelocity.
-/// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
-/// @relatedalso PulleyJointConf
-bool SolveVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+            Length constant = 0_m;///< Constant.
 
-/// @brief Solves the position constraint.
-/// @return <code>true</code> if the position errors are within tolerance.
-/// @relatedalso PulleyJointConf
-bool SolvePosition(const PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf);
+            // Solver shared (between calls to InitVelocityConstraints).
+            Momentum impulse = 0_Ns;///< Impulse.
 
-/// @brief Free function for getting the length A value of the given configuration.
-/// @relatedalso PulleyJointConf
-constexpr auto GetLengthA(const PulleyJointConf& object) noexcept
-{
-    return object.lengthA;
-}
+            // Solver temp (recalculated every call to InitVelocityConstraints).
+            UnitVec uA;      ///< Unit vector A.
+            UnitVec uB;      ///< Unit vector B.
+            Length2 rA{};    ///< Relative A.
+            Length2 rB{};    ///< Relative B.
+            Mass mass = 0_kg;///< Mass.
+        };
 
-/// @brief Free function for getting the length B value of the given configuration.
-/// @relatedalso PulleyJointConf
-constexpr auto GetLengthB(const PulleyJointConf& object) noexcept
-{
-    return object.lengthB;
-}
+        /// @brief Gets the definition data for the given joint.
+        /// @relatedalso Joint
+        PulleyJointConf GetPulleyJointConf(const Joint& joint);
 
-} // namespace d2
+        /// @brief Gets the configuration for the given parameters.
+        /// @relatedalso World
+        PulleyJointConf GetPulleyJointConf(const World& world,
+                                           BodyID bA, BodyID bB,
+                                           Length2 groundA, Length2 groundB,
+                                           Length2 anchorA, Length2 anchorB);
 
-/// @brief Type info specialization for <code>d2::PulleyJointConf</code>.
-template <>
-struct TypeInfo<d2::PulleyJointConf>
-{
-    /// @brief Provides a null-terminated string name for the type.
-    static constexpr const char* name = "d2::PulleyJointConf";
-};
+        /// @brief Gets the current linear reaction of the given configuration.
+        /// @relatedalso PulleyJointConf
+        constexpr Momentum2 GetLinearReaction(const PulleyJointConf& object) noexcept
+        {
+            return object.impulse * object.uB;
+        }
 
-} // namespace playrho
+        /// @brief Gets the current angular reaction of the given configuration.
+        /// @relatedalso PulleyJointConf
+        constexpr AngularMomentum GetAngularReaction(const PulleyJointConf&) noexcept
+        {
+            return AngularMomentum{0};
+        }
 
-#endif // PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTCONF_HPP
+        /// @brief Shifts the origin notion of the given configuration.
+        /// @relatedalso PulleyJointConf
+        bool ShiftOrigin(PulleyJointConf& object, Length2 newOrigin) noexcept;
+
+        /// @brief Initializes velocity constraint data based on the given solver data.
+        /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
+        /// @see SolveVelocity.
+        /// @relatedalso PulleyJointConf
+        void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
+                          const StepConf& step,
+                          const ConstraintSolverConf& conf);
+
+        /// @brief Solves velocity constraint.
+        /// @pre <code>InitVelocity</code> has been called.
+        /// @see InitVelocity.
+        /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
+        /// @relatedalso PulleyJointConf
+        bool SolveVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
+                           const StepConf& step);
+
+        /// @brief Solves the position constraint.
+        /// @return <code>true</code> if the position errors are within tolerance.
+        /// @relatedalso PulleyJointConf
+        bool SolvePosition(const PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
+                           const ConstraintSolverConf& conf);
+
+        /// @brief Free function for getting the length A value of the given configuration.
+        /// @relatedalso PulleyJointConf
+        constexpr auto GetLengthA(const PulleyJointConf& object) noexcept
+        {
+            return object.lengthA;
+        }
+
+        /// @brief Free function for getting the length B value of the given configuration.
+        /// @relatedalso PulleyJointConf
+        constexpr auto GetLengthB(const PulleyJointConf& object) noexcept
+        {
+            return object.lengthB;
+        }
+
+    }// namespace d2
+
+    /// @brief Type info specialization for <code>d2::PulleyJointConf</code>.
+    template<>
+    struct TypeInfo<d2::PulleyJointConf>
+    {
+        /// @brief Provides a null-terminated string name for the type.
+        static constexpr const char* name = "d2::PulleyJointConf";
+    };
+
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_JOINTS_PULLEYJOINTCONF_HPP

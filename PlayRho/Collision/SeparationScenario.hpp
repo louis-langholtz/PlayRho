@@ -22,76 +22,78 @@
 #ifndef PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
 #define PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
 
-#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
+#include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
-namespace d2 {
-
-class DistanceProxy;
-struct Transformation;
-    
-/// Separation scenario.
-struct SeparationScenario
+namespace playrho
 {
-    /// Separation finder type.
-    enum Type
+    namespace d2
     {
-        e_points,
-        e_faceA,
-        e_faceB,
-    };
-    
-    const DistanceProxy& proxyA; ///< Distance proxy A.
-    const DistanceProxy& proxyB; ///< Distance proxy B.
-    const UnitVec axis; ///< Axis. @details Directional vector of the axis of separation.
 
-    /// @brief Local point.
-    /// @note Only used if type is <code>e_faceA</code> or <code>e_faceB</code>.
-    const Length2 localPoint;
-    
-    const Type type; ///< The type of this scenario.
-};
+        class DistanceProxy;
+        struct Transformation;
 
-// Free functions...
+        /// Separation scenario.
+        struct SeparationScenario
+        {
+            /// Separation finder type.
+            enum Type
+            {
+                e_points,
+                e_faceA,
+                e_faceB,
+            };
 
-/// @brief Gets a separation finder for the given inputs.
-///
-/// @warning Behavior is undefined if given less than one index pair or more than three.
-///
-/// @param indices Collection of 1 to 3 index pairs. A points-type finder will be
-///    returned if given 1 index pair. A face-type finder will be returned otherwise.
-/// @param proxyA Proxy A.
-/// @param xfA Transformation A.
-/// @param proxyB Proxy B.
-/// @param xfB Transformation B.
-///
-SeparationScenario
-GetSeparationScenario(IndexPair3 indices,
-                      const DistanceProxy& proxyA, const Transformation& xfA,
-                      const DistanceProxy& proxyB, const Transformation& xfB);
+            const DistanceProxy& proxyA;///< Distance proxy A.
+            const DistanceProxy& proxyB;///< Distance proxy B.
+            const UnitVec axis;         ///< Axis. @details Directional vector of the axis of separation.
 
-/// @brief Finds the minimum separation.
-/// @return indexes of proxy A's and proxy B's vertices that have the minimum
-///    distance between them and what that distance is.
-LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
-                                  const Transformation& xfA, const Transformation& xfB);
+            /// @brief Local point.
+            /// @note Only used if type is <code>e_faceA</code> or <code>e_faceB</code>.
+            const Length2 localPoint;
 
-/// Evaluates the separation of the identified proxy vertices at the given time factor.
-///
-/// @param scenario Separation scenario to evaluate.
-/// @param indexPair Indexes of the proxy A and proxy B vertexes.
-/// @param xfA Transformation A.
-/// @param xfB Transformation B.
-///
-/// @return Separation distance which will be negative when the given transforms put the
-///    vertices on the opposite sides of the separating axis.
-///
-Length Evaluate(const SeparationScenario& scenario,
-                const Transformation& xfA, const Transformation& xfB,
-                IndexPair indexPair);
+            const Type type;///< The type of this scenario.
+        };
 
-} // namespace d2
-} // namespace playrho
+        // Free functions...
 
-#endif // PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
+        /// @brief Gets a separation finder for the given inputs.
+        ///
+        /// @warning Behavior is undefined if given less than one index pair or more than three.
+        ///
+        /// @param indices Collection of 1 to 3 index pairs. A points-type finder will be
+        ///    returned if given 1 index pair. A face-type finder will be returned otherwise.
+        /// @param proxyA Proxy A.
+        /// @param xfA Transformation A.
+        /// @param proxyB Proxy B.
+        /// @param xfB Transformation B.
+        ///
+        SeparationScenario
+        GetSeparationScenario(IndexPair3 indices,
+                              const DistanceProxy& proxyA, const Transformation& xfA,
+                              const DistanceProxy& proxyB, const Transformation& xfB);
+
+        /// @brief Finds the minimum separation.
+        /// @return indexes of proxy A's and proxy B's vertices that have the minimum
+        ///    distance between them and what that distance is.
+        LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
+                                          const Transformation& xfA, const Transformation& xfB);
+
+        /// Evaluates the separation of the identified proxy vertices at the given time factor.
+        ///
+        /// @param scenario Separation scenario to evaluate.
+        /// @param indexPair Indexes of the proxy A and proxy B vertexes.
+        /// @param xfA Transformation A.
+        /// @param xfB Transformation B.
+        ///
+        /// @return Separation distance which will be negative when the given transforms put the
+        ///    vertices on the opposite sides of the separating axis.
+        ///
+        Length Evaluate(const SeparationScenario& scenario,
+                        const Transformation& xfA, const Transformation& xfB,
+                        IndexPair indexPair);
+
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_COLLISION_SEPARATIONFINDER_HPP

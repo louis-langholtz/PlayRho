@@ -20,86 +20,103 @@
 #ifndef PLAYRHO_COLLISION_SIMPLEXEDGE_HPP
 #define PLAYRHO_COLLISION_SIMPLEXEDGE_HPP
 
-#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
+#include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
-namespace d2 {
-
-/// @brief Simplex edge.
-///
-/// @details This is the locations (in world coordinates) and indices of a pair of vertices
-/// from two shapes (shape A and shape B).
-///
-/// @note This data structure is 20-bytes large (on at least one 64-bit platform).
-///
-class SimplexEdge
+namespace playrho
 {
-public:
-    /// @brief Default constructor.
-    SimplexEdge() = default;
-    
-    /// @brief Copy constructor.
-    constexpr SimplexEdge(const SimplexEdge& copy) = default;
-    
-    /// @brief Initializing constructor.
-    /// @param pA Point A in world coordinates.
-    /// @param iA Index of point A within the shape that it comes from.
-    /// @param pB Point B in world coordinates.
-    /// @param iB Index of point B within the shape that it comes from.
-    constexpr SimplexEdge(Length2 pA, VertexCounter iA,
-                                         Length2 pB, VertexCounter iB) noexcept;
-    
-    /// @brief Gets point A (in world coordinates).
-    constexpr auto GetPointA() const noexcept { return m_wA; }
-    
-    /// @brief Gets point B (in world coordinates).
-    constexpr auto GetPointB() const noexcept { return m_wB; }
+    namespace d2
+    {
 
-    /// @brief Gets index A.
-    constexpr auto GetIndexA() const noexcept { return std::get<0>(m_indexPair); }
-    
-    /// @brief Gets index B.
-    constexpr auto GetIndexB() const noexcept { return std::get<1>(m_indexPair); }
+        /// @brief Simplex edge.
+        ///
+        /// @details This is the locations (in world coordinates) and indices of a pair of vertices
+        /// from two shapes (shape A and shape B).
+        ///
+        /// @note This data structure is 20-bytes large (on at least one 64-bit platform).
+        ///
+        class SimplexEdge
+        {
+         public:
+            /// @brief Default constructor.
+            SimplexEdge() = default;
 
-    /// @brief Gets the index pair.
-    constexpr auto GetIndexPair() const noexcept { return m_indexPair; }
+            /// @brief Copy constructor.
+            constexpr SimplexEdge(const SimplexEdge& copy) = default;
 
-private:
-    Length2 m_wA; ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
-    Length2 m_wB; ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
-    IndexPair m_indexPair; ///< Index pair. @details Indices of points A and B. 2-bytes.
-};
+            /// @brief Initializing constructor.
+            /// @param pA Point A in world coordinates.
+            /// @param iA Index of point A within the shape that it comes from.
+            /// @param pB Point B in world coordinates.
+            /// @param iB Index of point B within the shape that it comes from.
+            constexpr SimplexEdge(Length2 pA, VertexCounter iA,
+                                  Length2 pB, VertexCounter iB) noexcept;
 
-constexpr SimplexEdge::SimplexEdge(Length2 pA, VertexCounter iA,
-                                                  Length2 pB, VertexCounter iB) noexcept:
-    m_wA{pA}, m_wB{pB}, m_indexPair{iA, iB}
-{
-    // Intentionally empty.
-}
+            /// @brief Gets point A (in world coordinates).
+            constexpr auto GetPointA() const noexcept
+            {
+                return m_wA;
+            }
 
-/// @brief Gets "w".
-/// @return 2-dimensional vector value of the simplex edge's point B minus its point A.
-constexpr Length2 GetPointDelta(const SimplexEdge& sv) noexcept
-{
-    return sv.GetPointB() - sv.GetPointA();
-}
+            /// @brief Gets point B (in world coordinates).
+            constexpr auto GetPointB() const noexcept
+            {
+                return m_wB;
+            }
 
-/// @brief Equality operator for <code>SimplexEdge</code>.
-constexpr bool operator== (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
-{
-    return (lhs.GetPointA() == rhs.GetPointA())
-        && (lhs.GetPointB() == rhs.GetPointB())
-        && (lhs.GetIndexPair() == rhs.GetIndexPair());
-}
+            /// @brief Gets index A.
+            constexpr auto GetIndexA() const noexcept
+            {
+                return std::get<0>(m_indexPair);
+            }
 
-/// @brief Inequality operator for <code>SimplexEdge</code>.
-constexpr bool operator!= (const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
-{
-    return !(lhs == rhs);
-}
+            /// @brief Gets index B.
+            constexpr auto GetIndexB() const noexcept
+            {
+                return std::get<1>(m_indexPair);
+            }
 
-} // namespace d2
-} // namespace playrho
+            /// @brief Gets the index pair.
+            constexpr auto GetIndexPair() const noexcept
+            {
+                return m_indexPair;
+            }
 
-#endif // PLAYRHO_COLLISION_SIMPLEXEDGE_HPP
+         private:
+            Length2 m_wA;         ///< Point A in world coordinates. This is the support point in proxy A. 8-bytes.
+            Length2 m_wB;         ///< Point B in world coordinates. This is the support point in proxy B. 8-bytes.
+            IndexPair m_indexPair;///< Index pair. @details Indices of points A and B. 2-bytes.
+        };
+
+        constexpr SimplexEdge::SimplexEdge(Length2 pA, VertexCounter iA,
+                                           Length2 pB, VertexCounter iB) noexcept
+            : m_wA{pA}, m_wB{pB}, m_indexPair{iA, iB}
+        {
+            // Intentionally empty.
+        }
+
+        /// @brief Gets "w".
+        /// @return 2-dimensional vector value of the simplex edge's point B minus its point A.
+        constexpr Length2 GetPointDelta(const SimplexEdge& sv) noexcept
+        {
+            return sv.GetPointB() - sv.GetPointA();
+        }
+
+        /// @brief Equality operator for <code>SimplexEdge</code>.
+        constexpr bool operator==(const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
+        {
+            return (lhs.GetPointA() == rhs.GetPointA())
+                   && (lhs.GetPointB() == rhs.GetPointB())
+                   && (lhs.GetIndexPair() == rhs.GetIndexPair());
+        }
+
+        /// @brief Inequality operator for <code>SimplexEdge</code>.
+        constexpr bool operator!=(const SimplexEdge& lhs, const SimplexEdge& rhs) noexcept
+        {
+            return !(lhs == rhs);
+        }
+
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_COLLISION_SIMPLEXEDGE_HPP

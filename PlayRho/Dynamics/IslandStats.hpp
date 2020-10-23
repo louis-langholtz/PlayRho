@@ -21,24 +21,25 @@
 #ifndef PLAYRHO_DYNAMICS_ISLANDSTATS_HPP
 #define PLAYRHO_DYNAMICS_ISLANDSTATS_HPP
 
-#include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Units.hpp>
 
-namespace playrho {
-
-/// @brief Island solver statistics.
-struct IslandStats
+namespace playrho
 {
-    Length minSeparation = std::numeric_limits<Length>::infinity(); ///< Minimum separation.
-    Momentum maxIncImpulse = 0; ///< Maximum incremental impulse.
-    BodyCounter bodiesSlept = 0; ///< Bodies slept.
-    ContactCounter contactsUpdated = 0; ///< Contacts updated.
-    ContactCounter contactsSkipped = 0; ///< Contacts skipped.
-    bool solved = false; ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
-    TimestepIters positionIterations = 0; ///< Position iterations actually performed.
-    TimestepIters velocityIterations = 0; ///< Velocity iterations actually performed.
-};
 
-} // namespace playrho
+    /// @brief Island solver statistics.
+    struct IslandStats
+    {
+        Length minSeparation = std::numeric_limits<Length>::infinity();///< Minimum separation.
+        Momentum maxIncImpulse = 0;                                    ///< Maximum incremental impulse.
+        BodyCounter bodiesSlept = 0;                                   ///< Bodies slept.
+        ContactCounter contactsUpdated = 0;                            ///< Contacts updated.
+        ContactCounter contactsSkipped = 0;                            ///< Contacts skipped.
+        bool solved = false;                                           ///< Solved. <code>true</code> if position constraints solved, <code>false</code> otherwise.
+        TimestepIters positionIterations = 0;                          ///< Position iterations actually performed.
+        TimestepIters velocityIterations = 0;                          ///< Velocity iterations actually performed.
+    };
 
-#endif // PLAYRHO_DYNAMICS_ISLANDSTATS_HPP
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_ISLANDSTATS_HPP

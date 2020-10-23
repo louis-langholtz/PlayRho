@@ -25,169 +25,171 @@
 
 #include <PlayRho/Collision/Manifold.hpp>
 
-namespace playrho {
-namespace d2 {
-
-SizedRange<std::vector<KeyedContactPtr>::const_iterator>
-GetContacts(const World& world) noexcept
+namespace playrho
 {
-    return world.GetContacts();
-}
+    namespace d2
+    {
 
-bool IsTouching(const World& world, ContactID id)
-{
-    return world.IsTouching(id);
-}
+        SizedRange<std::vector<KeyedContactPtr>::const_iterator>
+        GetContacts(const World& world) noexcept
+        {
+            return world.GetContacts();
+        }
 
-bool IsAwake(const World& world, ContactID id)
-{
-    return world.IsAwake(id);
-}
+        bool IsTouching(const World& world, ContactID id)
+        {
+            return world.IsTouching(id);
+        }
 
-void SetAwake(World& world, ContactID id)
-{
-    world.SetAwake(id);
-}
+        bool IsAwake(const World& world, ContactID id)
+        {
+            return world.IsAwake(id);
+        }
 
-ChildCounter GetChildIndexA(const World& world, ContactID id)
-{
-    return world.GetChildIndexA(id);
-}
+        void SetAwake(World& world, ContactID id)
+        {
+            world.SetAwake(id);
+        }
 
-ChildCounter GetChildIndexB(const World& world, ContactID id)
-{
-    return world.GetChildIndexB(id);
-}
+        ChildCounter GetChildIndexA(const World& world, ContactID id)
+        {
+            return world.GetChildIndexA(id);
+        }
 
-FixtureID GetFixtureA(const World& world, ContactID id)
-{
-    return world.GetFixtureA(id);
-}
+        ChildCounter GetChildIndexB(const World& world, ContactID id)
+        {
+            return world.GetChildIndexB(id);
+        }
 
-FixtureID GetFixtureB(const World& world, ContactID id)
-{
-    return world.GetFixtureB(id);
-}
+        FixtureID GetFixtureA(const World& world, ContactID id)
+        {
+            return world.GetFixtureA(id);
+        }
 
-BodyID GetBodyA(const World& world, ContactID id)
-{
-    return world.GetBodyA(id);
-}
+        FixtureID GetFixtureB(const World& world, ContactID id)
+        {
+            return world.GetFixtureB(id);
+        }
 
-BodyID GetBodyB(const World& world, ContactID id)
-{
-    return world.GetBodyB(id);
-}
+        BodyID GetBodyA(const World& world, ContactID id)
+        {
+            return world.GetBodyA(id);
+        }
 
-TimestepIters GetToiCount(const World& world, ContactID id)
-{
-    return world.GetToiCount(id);
-}
+        BodyID GetBodyB(const World& world, ContactID id)
+        {
+            return world.GetBodyB(id);
+        }
 
-bool NeedsFiltering(const World& world, ContactID id)
-{
-    return world.NeedsFiltering(id);
-}
+        TimestepIters GetToiCount(const World& world, ContactID id)
+        {
+            return world.GetToiCount(id);
+        }
 
-bool NeedsUpdating(const World& world, ContactID id)
-{
-    return world.NeedsUpdating(id);
-}
+        bool NeedsFiltering(const World& world, ContactID id)
+        {
+            return world.NeedsFiltering(id);
+        }
 
-bool HasValidToi(const World& world, ContactID id)
-{
-    return world.HasValidToi(id);
-}
+        bool NeedsUpdating(const World& world, ContactID id)
+        {
+            return world.NeedsUpdating(id);
+        }
 
-Real GetToi(const World& world, ContactID id)
-{
-    return world.GetToi(id);
-}
+        bool HasValidToi(const World& world, ContactID id)
+        {
+            return world.HasValidToi(id);
+        }
 
-Real GetDefaultFriction(const World& world, ContactID id)
-{
-    return world.GetDefaultFriction(id);
-}
+        Real GetToi(const World& world, ContactID id)
+        {
+            return world.GetToi(id);
+        }
 
-Real GetDefaultRestitution(const World& world, ContactID id)
-{
-    return world.GetDefaultRestitution(id);
-}
+        Real GetDefaultFriction(const World& world, ContactID id)
+        {
+            return world.GetDefaultFriction(id);
+        }
 
-Real GetFriction(const World& world, ContactID id)
-{
-    return world.GetFriction(id);
-}
+        Real GetDefaultRestitution(const World& world, ContactID id)
+        {
+            return world.GetDefaultRestitution(id);
+        }
 
-Real GetRestitution(const World& world, ContactID id)
-{
-    return world.GetRestitution(id);
-}
+        Real GetFriction(const World& world, ContactID id)
+        {
+            return world.GetFriction(id);
+        }
 
-void SetFriction(World& world, ContactID id, Real friction)
-{
-    world.SetFriction(id, friction);
-}
+        Real GetRestitution(const World& world, ContactID id)
+        {
+            return world.GetRestitution(id);
+        }
 
-void SetRestitution(World& world, ContactID id, Real restitution)
-{
-    world.SetRestitution(id, restitution);
-}
+        void SetFriction(World& world, ContactID id, Real friction)
+        {
+            world.SetFriction(id, friction);
+        }
 
-const Manifold& GetManifold(const World& world, ContactID id)
-{
-    return world.GetManifold(id);
-}
+        void SetRestitution(World& world, ContactID id, Real restitution)
+        {
+            world.SetRestitution(id, restitution);
+        }
 
-WorldManifold GetWorldManifold(const World& world, ContactID id)
-{
-    const auto bA = GetBodyA(world, id);
-    const auto fA = GetFixtureA(world, id);
-    const auto iA = GetChildIndexA(world, id);
-    const auto bB = GetBodyB(world, id);
-    const auto fB = GetFixtureB(world, id);
-    const auto iB = GetChildIndexB(world, id);
-    const auto manifold = GetManifold(world, id);
-    const auto xfA = world.GetTransformation(bA);
-    const auto radiusA = GetVertexRadius(world.GetShape(fA), iA);
-    const auto xfB = world.GetTransformation(bB);
-    const auto radiusB = GetVertexRadius(world.GetShape(fB), iB);
-    return GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
-}
+        const Manifold& GetManifold(const World& world, ContactID id)
+        {
+            return world.GetManifold(id);
+        }
 
-LinearVelocity GetTangentSpeed(const World& world, ContactID id)
-{
-    return world.GetTangentSpeed(id);
-}
+        WorldManifold GetWorldManifold(const World& world, ContactID id)
+        {
+            const auto bA = GetBodyA(world, id);
+            const auto fA = GetFixtureA(world, id);
+            const auto iA = GetChildIndexA(world, id);
+            const auto bB = GetBodyB(world, id);
+            const auto fB = GetFixtureB(world, id);
+            const auto iB = GetChildIndexB(world, id);
+            const auto manifold = GetManifold(world, id);
+            const auto xfA = world.GetTransformation(bA);
+            const auto radiusA = GetVertexRadius(world.GetShape(fA), iA);
+            const auto xfB = world.GetTransformation(bB);
+            const auto radiusB = GetVertexRadius(world.GetShape(fB), iB);
+            return GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
+        }
 
-void SetTangentSpeed(World& world, ContactID id, LinearVelocity value)
-{
-    world.SetTangentSpeed(id, value);
-}
+        LinearVelocity GetTangentSpeed(const World& world, ContactID id)
+        {
+            return world.GetTangentSpeed(id);
+        }
 
-bool IsEnabled(const World& world, ContactID id)
-{
-    return world.IsEnabled(id);
-}
+        void SetTangentSpeed(World& world, ContactID id, LinearVelocity value)
+        {
+            world.SetTangentSpeed(id, value);
+        }
 
-void SetEnabled(World& world, ContactID id)
-{
-    world.SetEnabled(id);
-}
+        bool IsEnabled(const World& world, ContactID id)
+        {
+            return world.IsEnabled(id);
+        }
 
-void UnsetEnabled(World& world, ContactID id)
-{
-    world.UnsetEnabled(id);
-}
+        void SetEnabled(World& world, ContactID id)
+        {
+            world.SetEnabled(id);
+        }
 
-ContactCounter GetTouchingCount(const World& world) noexcept
-{
-    const auto contacts = world.GetContacts();
-    return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
-                                                [&](const auto &c) {
-        return world.IsTouching(std::get<ContactID>(c));
-    }));
-}
+        void UnsetEnabled(World& world, ContactID id)
+        {
+            world.UnsetEnabled(id);
+        }
 
-} // namespace d2
-} // namespace playrho
+        ContactCounter GetTouchingCount(const World& world) noexcept
+        {
+            const auto contacts = world.GetContacts();
+            return static_cast<ContactCounter>(count_if(cbegin(contacts), cend(contacts),
+                                                        [&](const auto& c) {
+                                                            return world.IsTouching(std::get<ContactID>(c));
+                                                        }));
+        }
+
+    }// namespace d2
+}// namespace playrho

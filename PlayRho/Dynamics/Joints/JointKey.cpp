@@ -18,16 +18,18 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/Joints/JointKey.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/Joints/JointKey.hpp>
 
-namespace playrho {
-namespace d2 {
-
-JointKey GetJointKey(const Joint& joint) noexcept
+namespace playrho
 {
-    return JointKey::Get(GetBodyA(joint), GetBodyB(joint));
-}
+    namespace d2
+    {
 
-} // namespace d2
-} // namespace playrho
+        JointKey GetJointKey(const Joint& joint) noexcept
+        {
+            return JointKey::Get(GetBodyA(joint), GetBodyB(joint));
+        }
+
+    }// namespace d2
+}// namespace playrho

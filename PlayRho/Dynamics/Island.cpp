@@ -117,52 +117,54 @@ arrays to increase the number of cache hits. Linear and angular velocity are
 stored in a single array since multiple arrays lead to multiple misses.
 */
 
-namespace playrho {
-namespace d2 {
-
-using std::count;
-
-static_assert(std::is_default_constructible<Island>::value,
-              "Must be default constructible.");
-static_assert(std::is_copy_constructible<Island>::value,
-              "Must be copy constructible.");
-static_assert(std::is_copy_assignable<Island>::value,
-              "Must be copy assignable.");
-static_assert(std::is_nothrow_move_constructible<Island>::value,
-              "Must be nothrow move constructible.");
-static_assert(std::is_nothrow_move_assignable<Island>::value,
-              "Must be nothrow move assignable.");
-static_assert(std::is_nothrow_destructible<Island>::value,
-              "Must be nothrow destructible.");
-
-void Reserve(Island& island, BodyCounter bodies, ContactCounter contacts, JointCounter joints)
+namespace playrho
 {
-    island.bodies.reserve(bodies);
-    island.contacts.reserve(contacts);
-    island.joints.reserve(joints);
-}
+    namespace d2
+    {
 
-void Clear(Island& island) noexcept
-{
-    island.bodies.clear();
-    island.contacts.clear();
-    island.joints.clear();
-}
+        using std::count;
 
-std::size_t Count(const Island& island, BodyID entry)
-{
-    return MakeUnsigned(count(cbegin(island.bodies), cend(island.bodies), entry));
-}
+        static_assert(std::is_default_constructible<Island>::value,
+                      "Must be default constructible.");
+        static_assert(std::is_copy_constructible<Island>::value,
+                      "Must be copy constructible.");
+        static_assert(std::is_copy_assignable<Island>::value,
+                      "Must be copy assignable.");
+        static_assert(std::is_nothrow_move_constructible<Island>::value,
+                      "Must be nothrow move constructible.");
+        static_assert(std::is_nothrow_move_assignable<Island>::value,
+                      "Must be nothrow move assignable.");
+        static_assert(std::is_nothrow_destructible<Island>::value,
+                      "Must be nothrow destructible.");
 
-std::size_t Count(const Island& island, ContactID entry)
-{
-    return MakeUnsigned(count(cbegin(island.contacts), cend(island.contacts), entry));
-}
+        void Reserve(Island& island, BodyCounter bodies, ContactCounter contacts, JointCounter joints)
+        {
+            island.bodies.reserve(bodies);
+            island.contacts.reserve(contacts);
+            island.joints.reserve(joints);
+        }
 
-std::size_t Count(const Island& island, JointID entry)
-{
-    return MakeUnsigned(count(cbegin(island.joints), cend(island.joints), entry));
-}
+        void Clear(Island& island) noexcept
+        {
+            island.bodies.clear();
+            island.contacts.clear();
+            island.joints.clear();
+        }
 
-} // namespace d2
-} // namespace playrho
+        std::size_t Count(const Island& island, BodyID entry)
+        {
+            return MakeUnsigned(count(cbegin(island.bodies), cend(island.bodies), entry));
+        }
+
+        std::size_t Count(const Island& island, ContactID entry)
+        {
+            return MakeUnsigned(count(cbegin(island.contacts), cend(island.contacts), entry));
+        }
+
+        std::size_t Count(const Island& island, JointID entry)
+        {
+            return MakeUnsigned(count(cbegin(island.joints), cend(island.joints), entry));
+        }
+
+    }// namespace d2
+}// namespace playrho

@@ -19,32 +19,34 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 
-namespace playrho {
-namespace d2 {
-
-BodyConf GetBodyConf(const Body& body) noexcept
+namespace playrho
 {
-    auto def = BodyConf{};
-    def.type = body.GetType();
-    def.location = body.GetLocation();
-    def.angle = body.GetAngle();
-    def.linearVelocity = GetLinearVelocity(body);
-    def.angularVelocity = GetAngularVelocity(body);
-    def.linearAcceleration = body.GetLinearAcceleration();
-    def.angularAcceleration = body.GetAngularAcceleration();
-    def.linearDamping = body.GetLinearDamping();
-    def.angularDamping = body.GetAngularDamping();
-    def.underActiveTime = body.GetUnderActiveTime();
-    def.allowSleep = body.IsSleepingAllowed();
-    def.awake = body.IsAwake();
-    def.fixedRotation = body.IsFixedRotation();
-    def.bullet = body.IsAccelerable() && body.IsImpenetrable();
-    def.enabled = body.IsEnabled();
-    return def;
-}
+    namespace d2
+    {
 
-} // namespace d2
-} // namespace playrho
+        BodyConf GetBodyConf(const Body& body) noexcept
+        {
+            auto def = BodyConf{};
+            def.type = body.GetType();
+            def.location = body.GetLocation();
+            def.angle = body.GetAngle();
+            def.linearVelocity = GetLinearVelocity(body);
+            def.angularVelocity = GetAngularVelocity(body);
+            def.linearAcceleration = body.GetLinearAcceleration();
+            def.angularAcceleration = body.GetAngularAcceleration();
+            def.linearDamping = body.GetLinearDamping();
+            def.angularDamping = body.GetAngularDamping();
+            def.underActiveTime = body.GetUnderActiveTime();
+            def.allowSleep = body.IsSleepingAllowed();
+            def.awake = body.IsAwake();
+            def.fixedRotation = body.IsFixedRotation();
+            def.bullet = body.IsAccelerable() && body.IsImpenetrable();
+            def.enabled = body.IsEnabled();
+            return def;
+        }
+
+    }// namespace d2
+}// namespace playrho

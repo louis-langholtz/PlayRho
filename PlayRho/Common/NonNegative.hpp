@@ -23,38 +23,41 @@
 
 #include <PlayRho/Common/CheckedValue.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
-/// @brief Non-negative constrained value checker.
-template <typename T>
-struct NonNegativeChecker {
-    /// @brief Exception type possibly thrown by this checker.
-    using exception_type = std::invalid_argument;
-
-    /// @brief Valid value supplying functor.
-    constexpr auto operator()() noexcept -> decltype(static_cast<T>(0))
+    /// @brief Non-negative constrained value checker.
+    template<typename T>
+    struct NonNegativeChecker
     {
-        return static_cast<T>(0);
-    }
+        /// @brief Exception type possibly thrown by this checker.
+        using exception_type = std::invalid_argument;
 
-    /// @brief Value checking functor.
-    /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(!(v >= static_cast<T>(0)), T{v})
-    {
-        if (!(v >= static_cast<T>(0))) {
-            throw exception_type("value not greater than nor equal to zero");
+        /// @brief Valid value supplying functor.
+        constexpr auto operator()() noexcept -> decltype(static_cast<T>(0))
+        {
+            return static_cast<T>(0);
         }
-        return v;
-    }
-};
 
-/// @ingroup CheckedValues
-/// @brief Non-negative constrained value type.
-template <typename T>
-using NonNegative = CheckedValue<T, NonNegativeChecker<T>>;
+        /// @brief Value checking functor.
+        /// @throws exception_type if given value is not valid.
+        constexpr auto operator()(const T& v) -> decltype(!(v >= static_cast<T>(0)), T{v})
+        {
+            if (!(v >= static_cast<T>(0)))
+            {
+                throw exception_type("value not greater than nor equal to zero");
+            }
+            return v;
+        }
+    };
 
-static_assert(std::is_default_constructible<NonNegative<int>>::value);
+    /// @ingroup CheckedValues
+    /// @brief Non-negative constrained value type.
+    template<typename T>
+    using NonNegative = CheckedValue<T, NonNegativeChecker<T>>;
 
-} // namespace playrho
+    static_assert(std::is_default_constructible<NonNegative<int>>::value);
 
-#endif // PLAYRHO_COMMON_NONNEGATIVE_HPP
+}// namespace playrho
+
+#endif// PLAYRHO_COMMON_NONNEGATIVE_HPP

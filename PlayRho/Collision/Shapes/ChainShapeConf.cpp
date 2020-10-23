@@ -19,178 +19,181 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <algorithm>
 #include <iterator>
 
-namespace playrho {
-namespace d2 {
-
-namespace {
-
-void ResetNormals(std::vector<UnitVec>& normals, const std::vector<Length2>& vertices)
+namespace playrho
 {
-    normals.clear();
-    if (size(vertices) > std::size_t{1})
+    namespace d2
     {
-        auto vprev = Length2{};
-        auto first = true;
-        for (const auto& v: vertices)
+
+        namespace
         {
-            if (!first)
+
+            void ResetNormals(std::vector<UnitVec>& normals, const std::vector<Length2>& vertices)
             {
-                // Get the normal and push it and its reverse.
-                // This "doubling up" of the normals, makes the GetChild() method work.
-                const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
-                normals.push_back(normal);
-                normals.push_back(-normal);
+                normals.clear();
+                if (size(vertices) > std::size_t{1})
+                {
+                    auto vprev = Length2{};
+                    auto first = true;
+                    for (const auto& v : vertices)
+                    {
+                        if (!first)
+                        {
+                            // Get the normal and push it and its reverse.
+                            // This "doubling up" of the normals, makes the GetChild() method work.
+                            const auto normal = GetUnitVector(GetFwdPerpendicular(v - vprev));
+                            normals.push_back(normal);
+                            normals.push_back(-normal);
+                        }
+                        else
+                        {
+                            first = false;
+                        }
+                        vprev = v;
+                    }
+                }
+            }
+
+        }// anonymous namespace
+
+        ChainShapeConf::ChainShapeConf() = default;
+
+        ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
+        {
+            const auto count = size(vertices);
+            if (count > MaxChildCount)
+            {
+                throw InvalidArgument("too many vertices");
+            }
+
+            m_vertices = vertices;
+            ResetNormals(m_normals, m_vertices);
+            return *this;
+        }
+
+        ChainShapeConf& ChainShapeConf::Transform(const Mat22& m) noexcept
+        {
+            std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v) {
+                v = m * v;
+            });
+            ResetNormals(m_normals, m_vertices);
+            return *this;
+        }
+
+        ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
+        {
+            if (!empty(m_vertices))
+            {
+                auto vprev = m_vertices.back();
+                m_vertices.emplace_back(vertex);
+                const auto normal = GetUnitVector(GetFwdPerpendicular(vertex - vprev));
+                m_normals.push_back(normal);
+                m_normals.push_back(-normal);
             }
             else
             {
-                first = false;
+                m_vertices.emplace_back(vertex);
             }
-            vprev = v;
+            return *this;
         }
-    }
-}
 
-} // anonymous namespace
-
-ChainShapeConf::ChainShapeConf() = default;
-
-ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
-{
-    const auto count = size(vertices);
-    if (count > MaxChildCount)
-    {
-        throw InvalidArgument("too many vertices");
-    }
-
-    m_vertices = vertices;
-    ResetNormals(m_normals, m_vertices);
-    return *this;
-}
-
-ChainShapeConf& ChainShapeConf::Transform(const Mat22& m) noexcept
-{
-    std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v){
-        v = m * v;
-    });
-    ResetNormals(m_normals, m_vertices);
-    return *this;
-}
-
-ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
-{
-    if (!empty(m_vertices))
-    {
-        auto vprev = m_vertices.back();
-        m_vertices.emplace_back(vertex);
-        const auto normal = GetUnitVector(GetFwdPerpendicular(vertex - vprev));
-        m_normals.push_back(normal);
-        m_normals.push_back(-normal);
-    }
-    else
-    {
-        m_vertices.emplace_back(vertex);
-    }
-    return *this;
-}
-
-MassData ChainShapeConf::GetMassData() const noexcept
-{
-    const auto density = this->density;
-    if (density > 0_kgpm2)
-    {
-        const auto vertexCount = GetVertexCount();
-        if (vertexCount > 1)
+        MassData ChainShapeConf::GetMassData() const noexcept
         {
-            // XXX: This overcounts for the overlapping circle shape.
-            auto mass = 0_kg;
-            auto I = RotInertia{0};
-            auto area = 0_m2;
-            auto center = Length2{};
-            auto vprev = GetVertex(0);
-            const auto circle_area = Square(vertexRadius) * Pi;
-            for (auto i = decltype(vertexCount){1}; i < vertexCount; ++i)
+            const auto density = this->density;
+            if (density > 0_kgpm2)
             {
-                const auto v = GetVertex(i);
-                const auto massData = playrho::d2::GetMassData(vertexRadius, density, vprev, v);
-                mass += Mass{massData.mass};
-                center += Real{Mass{massData.mass} / Kilogram} * massData.center;
-                I += RotInertia{massData.I};
-                
-                const auto d = v - vprev;
-                const auto b = GetMagnitude(d);
-                const auto h = vertexRadius * Real{2};
-                area += b * h + circle_area;
+                const auto vertexCount = GetVertexCount();
+                if (vertexCount > 1)
+                {
+                    // XXX: This overcounts for the overlapping circle shape.
+                    auto mass = 0_kg;
+                    auto I = RotInertia{0};
+                    auto area = 0_m2;
+                    auto center = Length2{};
+                    auto vprev = GetVertex(0);
+                    const auto circle_area = Square(vertexRadius) * Pi;
+                    for (auto i = decltype(vertexCount){1}; i < vertexCount; ++i)
+                    {
+                        const auto v = GetVertex(i);
+                        const auto massData = playrho::d2::GetMassData(vertexRadius, density, vprev, v);
+                        mass += Mass{massData.mass};
+                        center += Real{Mass{massData.mass} / Kilogram} * massData.center;
+                        I += RotInertia{massData.I};
 
-                vprev = v;
+                        const auto d = v - vprev;
+                        const auto b = GetMagnitude(d);
+                        const auto h = vertexRadius * Real{2};
+                        area += b * h + circle_area;
+
+                        vprev = v;
+                    }
+                    center /= StripUnit(area);
+                    return MassData{center, mass, I};
+                }
+                if (vertexCount == 1)
+                {
+                    return playrho::d2::GetMassData(vertexRadius, density, GetVertex(0));
+                }
             }
-            center /= StripUnit(area);
-            return MassData{center, mass, I};
+            return MassData{};
         }
-        if (vertexCount == 1)
+
+        DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
         {
-            return playrho::d2::GetMassData(vertexRadius, density, GetVertex(0));
+            if (index >= GetChildCount())
+            {
+                throw InvalidArgument("index out of range");
+            }
+            const auto vertexCount = GetVertexCount();
+            if (vertexCount > 1)
+            {
+                return DistanceProxy{vertexRadius, 2, &m_vertices[index], &m_normals[index * 2]};
+            }
+            return DistanceProxy{vertexRadius, 1, &m_vertices[0], nullptr};
         }
-    }
-    return MassData{};
-}
 
-DistanceProxy ChainShapeConf::GetChild(ChildCounter index) const
-{
-    if (index >= GetChildCount())
-    {
-        throw InvalidArgument("index out of range");
-    }
-    const auto vertexCount = GetVertexCount();
-    if (vertexCount > 1)
-    {
-        return DistanceProxy{vertexRadius, 2, &m_vertices[index], &m_normals[index * 2]};
-    }
-    return DistanceProxy{vertexRadius, 1, &m_vertices[0], nullptr};
-}
+        // Free functions...
 
-// Free functions...
+        ChainShapeConf GetChainShapeConf(Length2 dimensions)
+        {
+            auto conf = ChainShapeConf{};
 
-ChainShapeConf GetChainShapeConf(Length2 dimensions)
-{
-    auto conf = ChainShapeConf{};
+            const auto halfWidth = GetX(dimensions) / Real{2};
+            const auto halfHeight = GetY(dimensions) / Real{2};
 
-    const auto halfWidth = GetX(dimensions) / Real{2};
-    const auto halfHeight = GetY(dimensions) / Real{2};
-    
-    const auto btmLeft  = Length2(-halfWidth, -halfHeight);
-    const auto btmRight = Length2(+halfWidth, -halfHeight);
-    const auto topLeft  = Length2(-halfWidth, +halfHeight);
-    const auto topRight = Length2(+halfWidth, +halfHeight);
-    
-    conf.Add(btmRight);
-    conf.Add(topRight);
-    conf.Add(topLeft);
-    conf.Add(btmLeft);
-    conf.Add(conf.GetVertex(0));
-    
-    return conf;
-}
+            const auto btmLeft = Length2(-halfWidth, -halfHeight);
+            const auto btmRight = Length2(+halfWidth, -halfHeight);
+            const auto topLeft = Length2(-halfWidth, +halfHeight);
+            const auto topRight = Length2(+halfWidth, +halfHeight);
 
-ChainShapeConf GetChainShapeConf(const AABB& arg)
-{
-    auto conf = ChainShapeConf{};
-    
-    const auto rangeX = arg.ranges[0];
-    const auto rangeY = arg.ranges[1];
-    
-    conf.Add(Length2{rangeX.GetMax(), rangeY.GetMin()}); // bottom right
-    conf.Add(Length2{rangeX.GetMax(), rangeY.GetMax()}); // top right
-    conf.Add(Length2{rangeX.GetMin(), rangeY.GetMax()}); // top left
-    conf.Add(Length2{rangeX.GetMin(), rangeY.GetMin()}); // bottom left
-    conf.Add(conf.GetVertex(0)); // close the chain around to first point
-    
-    return conf;
-}
+            conf.Add(btmRight);
+            conf.Add(topRight);
+            conf.Add(topLeft);
+            conf.Add(btmLeft);
+            conf.Add(conf.GetVertex(0));
 
-} // namespace d2
-} // namespace playrho
+            return conf;
+        }
+
+        ChainShapeConf GetChainShapeConf(const AABB& arg)
+        {
+            auto conf = ChainShapeConf{};
+
+            const auto rangeX = arg.ranges[0];
+            const auto rangeY = arg.ranges[1];
+
+            conf.Add(Length2{rangeX.GetMax(), rangeY.GetMin()});// bottom right
+            conf.Add(Length2{rangeX.GetMax(), rangeY.GetMax()});// top right
+            conf.Add(Length2{rangeX.GetMin(), rangeY.GetMax()});// top left
+            conf.Add(Length2{rangeX.GetMin(), rangeY.GetMin()});// bottom left
+            conf.Add(conf.GetVertex(0));                        // close the chain around to first point
+
+            return conf;
+        }
+
+    }// namespace d2
+}// namespace playrho

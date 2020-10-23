@@ -18,17 +18,18 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/UnitVec.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/UnitVec.hpp>
 
-namespace playrho {
-namespace d2 {
-
-UnitVec UnitVec::Get(const Angle angle) noexcept
+namespace playrho
 {
-    return UnitVec{cos(angle), sin(angle)};
-}
+    namespace d2
+    {
 
-} // namespace d2
-} // namespace playrho
+        UnitVec UnitVec::Get(const Angle angle) noexcept
+        {
+            return UnitVec{cos(angle), sin(angle)};
+        }
 
+    }// namespace d2
+}// namespace playrho

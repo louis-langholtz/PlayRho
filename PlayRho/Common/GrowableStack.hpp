@@ -25,113 +25,113 @@
 #include <PlayRho/Common/DynamicMemory.hpp>
 #include <cstring>
 
-namespace playrho {
-
-/// This is a growable LIFO stack with an initial capacity of N.
-/// If the stack size exceeds the initial capacity, the heap is used
-/// to increase the size of the stack.
-template <typename T, std::size_t N>
-class GrowableStack
+namespace playrho
 {
-public:
-    
-    /// @brief Element type.
-    using ElementType = T;
 
-    /// @brief Count type.
-    using CountType = std::size_t;
-
-    /// @brief Gets the initial capacity.
-    static constexpr CountType GetInitialCapacity() noexcept
+    /// This is a growable LIFO stack with an initial capacity of N.
+    /// If the stack size exceeds the initial capacity, the heap is used
+    /// to increase the size of the stack.
+    template<typename T, std::size_t N>
+    class GrowableStack
     {
-        return CountType(N);
-    }
-    
-    /// @brief Gets the buffer growth rate.
-    static constexpr CountType GetBufferGrowthRate() noexcept
-    {
-        return CountType{2};
-    }
+     public:
+        /// @brief Element type.
+        using ElementType = T;
 
-    GrowableStack() = default;
-    
-    GrowableStack(const GrowableStack& other) = delete;
+        /// @brief Count type.
+        using CountType = std::size_t;
 
-    GrowableStack(GrowableStack&& other) = delete;
-
-    ~GrowableStack() noexcept
-    {
-        if (m_stack != m_array)
+        /// @brief Gets the initial capacity.
+        static constexpr CountType GetInitialCapacity() noexcept
         {
-            Free(m_stack);
-            m_stack = nullptr;
+            return CountType(N);
         }
-    }
 
-    GrowableStack& operator= (const GrowableStack& copy) = delete;
-
-    GrowableStack& operator= (GrowableStack&& copy) = delete;
-    
-    /// @brief Pushes the given elements onto this stack.
-    void push(const ElementType& element)
-    {
-        if (m_count == m_capacity)
+        /// @brief Gets the buffer growth rate.
+        static constexpr CountType GetBufferGrowthRate() noexcept
         {
-            const auto old = m_stack;
-            m_capacity *= GetBufferGrowthRate();
-            m_stack = AllocArray<T>(m_capacity);
-            std::memcpy(m_stack, old, m_count * sizeof(T));
-            if (old != m_array)
+            return CountType{2};
+        }
+
+        GrowableStack() = default;
+
+        GrowableStack(const GrowableStack& other) = delete;
+
+        GrowableStack(GrowableStack&& other) = delete;
+
+        ~GrowableStack() noexcept
+        {
+            if (m_stack != m_array)
             {
-                Free(old);
+                Free(m_stack);
+                m_stack = nullptr;
             }
         }
 
-        *(m_stack + m_count) = element;
-        ++m_count;
-    }
+        GrowableStack& operator=(const GrowableStack& copy) = delete;
 
-    /// @brief Accesses the "top" element.
-    /// @warning Behavior is undefined if this stack doesn't already have at least
-    ///   one value pushed onto it.
-    ElementType top() const
-    {
-        assert(m_count > 0);
-        return m_stack[m_count - 1];
-    }
+        GrowableStack& operator=(GrowableStack&& copy) = delete;
 
-    /// @brief Pops the "top" element.
-    void pop() noexcept
-    {
-        assert(m_count > 0);
-        --m_count;
-    }
+        /// @brief Pushes the given elements onto this stack.
+        void push(const ElementType& element)
+        {
+            if (m_count == m_capacity)
+            {
+                const auto old = m_stack;
+                m_capacity *= GetBufferGrowthRate();
+                m_stack = AllocArray<T>(m_capacity);
+                std::memcpy(m_stack, old, m_count * sizeof(T));
+                if (old != m_array)
+                {
+                    Free(old);
+                }
+            }
 
-    /// @brief Gets the current size in numbers of elements.
-    constexpr CountType size() const noexcept
-    {
-        return m_count;
-    }
-    
-    /// @brief Gets the capacity in number of elements.
-    constexpr CountType capacity() const noexcept
-    {
-        return m_capacity;
-    }
+            *(m_stack + m_count) = element;
+            ++m_count;
+        }
 
-    /// @brief Whether this stack is empty.
-    constexpr bool empty() const noexcept
-    {
-        return m_count == 0;
-    }
+        /// @brief Accesses the "top" element.
+        /// @warning Behavior is undefined if this stack doesn't already have at least
+        ///   one value pushed onto it.
+        ElementType top() const
+        {
+            assert(m_count > 0);
+            return m_stack[m_count - 1];
+        }
 
-private:
-    ElementType m_array[N]; ///< Array data.
-    ElementType* m_stack = m_array; ///< Pointer to array of data.
-    CountType m_count = 0; ///< Count of elements.
-    CountType m_capacity = N; ///< Capacity for storing elements.
-};
+        /// @brief Pops the "top" element.
+        void pop() noexcept
+        {
+            assert(m_count > 0);
+            --m_count;
+        }
 
-} // namespace playrho
+        /// @brief Gets the current size in numbers of elements.
+        constexpr CountType size() const noexcept
+        {
+            return m_count;
+        }
 
-#endif // PLAYRHO_COMMON_GROWABLESTACK_HPP
+        /// @brief Gets the capacity in number of elements.
+        constexpr CountType capacity() const noexcept
+        {
+            return m_capacity;
+        }
+
+        /// @brief Whether this stack is empty.
+        constexpr bool empty() const noexcept
+        {
+            return m_count == 0;
+        }
+
+     private:
+        ElementType m_array[N];        ///< Array data.
+        ElementType* m_stack = m_array;///< Pointer to array of data.
+        CountType m_count = 0;         ///< Count of elements.
+        CountType m_capacity = N;      ///< Capacity for storing elements.
+    };
+
+}// namespace playrho
+
+#endif// PLAYRHO_COMMON_GROWABLESTACK_HPP

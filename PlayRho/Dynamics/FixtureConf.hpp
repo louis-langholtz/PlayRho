@@ -27,57 +27,59 @@
 
 #include <PlayRho/Dynamics/Filter.hpp>
 
-namespace playrho {
-namespace d2 {
-
-class Fixture;
-
-/// @brief Fixture definition.
-///
-/// @details A fixture definition is used to create a fixture.
-/// @see Body::CreateFixture.
-///
-struct FixtureConf
+namespace playrho
 {
-    /// @brief Uses the given sensor state value.
-    constexpr FixtureConf& UseIsSensor(bool value) noexcept;
-    
-    /// @brief Uses the given filter value.
-    constexpr FixtureConf& UseFilter(Filter value) noexcept;
+    namespace d2
+    {
 
-    /// A sensor shape collects contact information but never generates a collision
-    /// response.
-    bool isSensor = false;
-    
-    /// Contact filtering data.
-    Filter filter;
-};
+        class Fixture;
 
-constexpr FixtureConf& FixtureConf::UseIsSensor(bool value) noexcept
-{
-    isSensor = value;
-    return *this;
-}
+        /// @brief Fixture definition.
+        ///
+        /// @details A fixture definition is used to create a fixture.
+        /// @see Body::CreateFixture.
+        ///
+        struct FixtureConf
+        {
+            /// @brief Uses the given sensor state value.
+            constexpr FixtureConf& UseIsSensor(bool value) noexcept;
 
-constexpr FixtureConf& FixtureConf::UseFilter(Filter value) noexcept
-{
-    filter = value;
-    return *this;
-}
+            /// @brief Uses the given filter value.
+            constexpr FixtureConf& UseFilter(Filter value) noexcept;
 
-/// @brief Gets the default fixture definition.
-/// @relatedalso FixtureConf
-constexpr FixtureConf GetDefaultFixtureConf() noexcept
-{
-    return FixtureConf{};
-}
+            /// A sensor shape collects contact information but never generates a collision
+            /// response.
+            bool isSensor = false;
 
-/// @brief Gets the fixture definition for the given fixture.
-/// @param fixture Fixture to get the definition for.
-/// @relatedalso Fixture
-FixtureConf GetFixtureConf(const Fixture& fixture) noexcept;
+            /// Contact filtering data.
+            Filter filter;
+        };
 
-} // namespace d2
-} // namespace playrho
+        constexpr FixtureConf& FixtureConf::UseIsSensor(bool value) noexcept
+        {
+            isSensor = value;
+            return *this;
+        }
 
-#endif // PLAYRHO_DYNAMICS_FIXTURECONF_HPP
+        constexpr FixtureConf& FixtureConf::UseFilter(Filter value) noexcept
+        {
+            filter = value;
+            return *this;
+        }
+
+        /// @brief Gets the default fixture definition.
+        /// @relatedalso FixtureConf
+        constexpr FixtureConf GetDefaultFixtureConf() noexcept
+        {
+            return FixtureConf{};
+        }
+
+        /// @brief Gets the fixture definition for the given fixture.
+        /// @param fixture Fixture to get the definition for.
+        /// @relatedalso Fixture
+        FixtureConf GetFixtureConf(const Fixture& fixture) noexcept;
+
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_FIXTURECONF_HPP

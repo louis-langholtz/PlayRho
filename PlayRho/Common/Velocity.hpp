@@ -25,135 +25,137 @@
 #include <PlayRho/Common/Vector2.hpp>
 #include <utility>
 
-namespace playrho {
-namespace d2 {
-
-class VelocityConstraint;
-
-/// @brief 2-D velocity related data structure.
-/// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
-struct Velocity
+namespace playrho
 {
-    LinearVelocity2 linear; ///< Linear velocity.
-    AngularVelocity angular; ///< Angular velocity.
-};
+    namespace d2
+    {
 
-/// @brief Equality operator.
-/// @relatedalso Velocity
-constexpr bool operator==(const Velocity& lhs, const Velocity& rhs)
-{
-    return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
-}
+        class VelocityConstraint;
 
-/// @brief Inequality operator.
-/// @relatedalso Velocity
-constexpr bool operator!=(const Velocity& lhs, const Velocity& rhs)
-{
-    return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
-}
+        /// @brief 2-D velocity related data structure.
+        /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
+        struct Velocity
+        {
+            LinearVelocity2 linear; ///< Linear velocity.
+            AngularVelocity angular;///< Angular velocity.
+        };
 
-/// @brief Multiplication assignment operator.
-/// @relatedalso Velocity
-constexpr Velocity& operator*= (Velocity& lhs, const Real rhs)
-{
-    lhs.linear *= rhs;
-    lhs.angular *= rhs;
-    return lhs;
-}
+        /// @brief Equality operator.
+        /// @relatedalso Velocity
+        constexpr bool operator==(const Velocity& lhs, const Velocity& rhs)
+        {
+            return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
+        }
 
-/// @brief Division assignment operator.
-/// @relatedalso Velocity
-constexpr Velocity& operator/= (Velocity& lhs, const Real rhs)
-{
-    lhs.linear /= rhs;
-    lhs.angular /= rhs;
-    return lhs;
-}
+        /// @brief Inequality operator.
+        /// @relatedalso Velocity
+        constexpr bool operator!=(const Velocity& lhs, const Velocity& rhs)
+        {
+            return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
+        }
 
-/// @brief Addition assignment operator.
-/// @relatedalso Velocity
-constexpr Velocity& operator+= (Velocity& lhs, const Velocity& rhs)
-{
-    lhs.linear += rhs.linear;
-    lhs.angular += rhs.angular;
-    return lhs;
-}
+        /// @brief Multiplication assignment operator.
+        /// @relatedalso Velocity
+        constexpr Velocity& operator*=(Velocity& lhs, const Real rhs)
+        {
+            lhs.linear *= rhs;
+            lhs.angular *= rhs;
+            return lhs;
+        }
 
-/// @brief Addition operator.
-/// @relatedalso Velocity
-constexpr Velocity operator+ (const Velocity& lhs, const Velocity& rhs)
-{
-    return Velocity{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
-}
+        /// @brief Division assignment operator.
+        /// @relatedalso Velocity
+        constexpr Velocity& operator/=(Velocity& lhs, const Real rhs)
+        {
+            lhs.linear /= rhs;
+            lhs.angular /= rhs;
+            return lhs;
+        }
 
-/// @brief Subtraction assignment operator.
-/// @relatedalso Velocity
-constexpr Velocity& operator-= (Velocity& lhs, const Velocity& rhs)
-{
-    lhs.linear -= rhs.linear;
-    lhs.angular -= rhs.angular;
-    return lhs;
-}
+        /// @brief Addition assignment operator.
+        /// @relatedalso Velocity
+        constexpr Velocity& operator+=(Velocity& lhs, const Velocity& rhs)
+        {
+            lhs.linear += rhs.linear;
+            lhs.angular += rhs.angular;
+            return lhs;
+        }
 
-/// @brief Subtraction operator.
-/// @relatedalso Velocity
-constexpr Velocity operator- (const Velocity& lhs, const Velocity& rhs)
-{
-    return Velocity{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
-}
+        /// @brief Addition operator.
+        /// @relatedalso Velocity
+        constexpr Velocity operator+(const Velocity& lhs, const Velocity& rhs)
+        {
+            return Velocity{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
+        }
 
-/// @brief Negation operator.
-/// @relatedalso Velocity
-constexpr Velocity operator- (const Velocity& value)
-{
-    return Velocity{-value.linear, -value.angular};
-}
+        /// @brief Subtraction assignment operator.
+        /// @relatedalso Velocity
+        constexpr Velocity& operator-=(Velocity& lhs, const Velocity& rhs)
+        {
+            lhs.linear -= rhs.linear;
+            lhs.angular -= rhs.angular;
+            return lhs;
+        }
 
-/// @brief Positive operator.
-/// @relatedalso Velocity
-constexpr Velocity operator+ (const Velocity& value)
-{
-    return value;
-}
+        /// @brief Subtraction operator.
+        /// @relatedalso Velocity
+        constexpr Velocity operator-(const Velocity& lhs, const Velocity& rhs)
+        {
+            return Velocity{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
+        }
 
-/// @brief Multiplication operator.
-/// @relatedalso Velocity
-constexpr Velocity operator* (const Velocity& lhs, const Real rhs)
-{
-    return Velocity{lhs.linear * rhs, lhs.angular * rhs};
-}
+        /// @brief Negation operator.
+        /// @relatedalso Velocity
+        constexpr Velocity operator-(const Velocity& value)
+        {
+            return Velocity{-value.linear, -value.angular};
+        }
 
-/// @brief Multiplication operator.
-/// @relatedalso Velocity
-constexpr Velocity operator* (const Real lhs, const Velocity& rhs)
-{
-    return Velocity{rhs.linear * lhs, rhs.angular * lhs};
-}
+        /// @brief Positive operator.
+        /// @relatedalso Velocity
+        constexpr Velocity operator+(const Velocity& value)
+        {
+            return value;
+        }
 
-/// @brief Division operator.
-/// @relatedalso Velocity
-constexpr Velocity operator/ (const Velocity& lhs, const Real rhs)
-{
-    const auto inverseRhs = Real{1} / rhs;
-    return Velocity{lhs.linear * inverseRhs, lhs.angular * inverseRhs};
-}
+        /// @brief Multiplication operator.
+        /// @relatedalso Velocity
+        constexpr Velocity operator*(const Velocity& lhs, const Real rhs)
+        {
+            return Velocity{lhs.linear * rhs, lhs.angular * rhs};
+        }
 
-/// @brief Velocity pair.
-using VelocityPair = std::pair<Velocity, Velocity>;
-    
-/// @brief Calculates the "warm start" velocity deltas for the given velocity constraint.
-VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc);
+        /// @brief Multiplication operator.
+        /// @relatedalso Velocity
+        constexpr Velocity operator*(const Real lhs, const Velocity& rhs)
+        {
+            return Velocity{rhs.linear * lhs, rhs.angular * lhs};
+        }
 
-} // namespace d2
+        /// @brief Division operator.
+        /// @relatedalso Velocity
+        constexpr Velocity operator/(const Velocity& lhs, const Real rhs)
+        {
+            const auto inverseRhs = Real{1} / rhs;
+            return Velocity{lhs.linear * inverseRhs, lhs.angular * inverseRhs};
+        }
 
-/// @brief Determines if the given value is valid.
-/// @relatedalso d2::Velocity
-template <>
-constexpr bool IsValid(const d2::Velocity& value) noexcept
-{
-    return IsValid(value.linear) && IsValid(value.angular);
-}
+        /// @brief Velocity pair.
+        using VelocityPair = std::pair<Velocity, Velocity>;
 
-} // namespace playrho
+        /// @brief Calculates the "warm start" velocity deltas for the given velocity constraint.
+        VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc);
 
-#endif // PLAYRHO_COMMON_VELOCITY_HPP
+    }// namespace d2
+
+    /// @brief Determines if the given value is valid.
+    /// @relatedalso d2::Velocity
+    template<>
+    constexpr bool IsValid(const d2::Velocity& value) noexcept
+    {
+        return IsValid(value.linear) && IsValid(value.angular);
+    }
+
+}// namespace playrho
+
+#endif// PLAYRHO_COMMON_VELOCITY_HPP

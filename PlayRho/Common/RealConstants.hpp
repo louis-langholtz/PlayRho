@@ -29,79 +29,80 @@
 #ifndef PLAYRHO_COMMON_REALCONSTANTS_HPP
 #define PLAYRHO_COMMON_REALCONSTANTS_HPP
 
-#include <PlayRho/Defines.hpp>
 #include <PlayRho/Common/Real.hpp>
+#include <PlayRho/Defines.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
-/// @brief Pi.
-///
-/// @details An "irrational number" that's defined as the ratio of a circle's
-///   circumference to its diameter.
-///
-/// @note While the include file definition of M_PI may be a POSIX compliance requirement
-///   and initially attractive to use, it's apparently not a C++ standards requirement
-///   and casually including it pollutes the name space of all code that uses this library.
-///   Whatever the case, MSVC 2017 doesn't make it part of the <code>cmath</code> include
-///   without enabling <code>_USE_MATH_DEFINES</code>. So rather than add yet more
-///   C preprocessor macros to all sources that this library may be compiled with, it's
-///   simply hard-coded in here instead using a C++ mechanism that also keeps it with the
-///   enclosing name space.
-/// @note Any narrowing is intentional.
-///
-/// @see https://en.wikipedia.org/wiki/Pi
-///
-constexpr auto Pi = Real(3.14159265358979323846264338327950288);
+    /// @brief Pi.
+    ///
+    /// @details An "irrational number" that's defined as the ratio of a circle's
+    ///   circumference to its diameter.
+    ///
+    /// @note While the include file definition of M_PI may be a POSIX compliance requirement
+    ///   and initially attractive to use, it's apparently not a C++ standards requirement
+    ///   and casually including it pollutes the name space of all code that uses this library.
+    ///   Whatever the case, MSVC 2017 doesn't make it part of the <code>cmath</code> include
+    ///   without enabling <code>_USE_MATH_DEFINES</code>. So rather than add yet more
+    ///   C preprocessor macros to all sources that this library may be compiled with, it's
+    ///   simply hard-coded in here instead using a C++ mechanism that also keeps it with the
+    ///   enclosing name space.
+    /// @note Any narrowing is intentional.
+    ///
+    /// @see https://en.wikipedia.org/wiki/Pi
+    ///
+    constexpr auto Pi = Real(3.14159265358979323846264338327950288);
 
-/// @brief Square root of two.
-///
-/// @see https://en.wikipedia.org/wiki/Square_root_of_2
-///
-constexpr auto SquareRootTwo =
-    Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
+    /// @brief Square root of two.
+    ///
+    /// @see https://en.wikipedia.org/wiki/Square_root_of_2
+    ///
+    constexpr auto SquareRootTwo =
+        Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
 
-/// @defgroup DecimalUnitPrefices Decimal Unit Prefices
-/// @brief Decimal unit prefices in the metric system for denoting a multiple, or
-///   a fraction of, a unit.
-/// @note <code>std::ratio</code> doesn't necessarily support larger sizes like Yotta
-///    or bigger so floating-point literal notation is used instead.
-/// @see https://en.wikipedia.org/wiki/Metric_prefix
-/// @{
+    /// @defgroup DecimalUnitPrefices Decimal Unit Prefices
+    /// @brief Decimal unit prefices in the metric system for denoting a multiple, or
+    ///   a fraction of, a unit.
+    /// @note <code>std::ratio</code> doesn't necessarily support larger sizes like Yotta
+    ///    or bigger so floating-point literal notation is used instead.
+    /// @see https://en.wikipedia.org/wiki/Metric_prefix
+    /// @{
 
-/// @brief Centi- (1 x 10^-2).
-/// @see https://en.wikipedia.org/wiki/Centi-
-constexpr auto Centi = Real(1e-2);
+    /// @brief Centi- (1 x 10^-2).
+    /// @see https://en.wikipedia.org/wiki/Centi-
+    constexpr auto Centi = Real(1e-2);
 
-/// @brief Deci- (1 x 10^-1).
-/// @see https://en.wikipedia.org/wiki/Deci-
-constexpr auto Deci = Real(1e-1);
+    /// @brief Deci- (1 x 10^-1).
+    /// @see https://en.wikipedia.org/wiki/Deci-
+    constexpr auto Deci = Real(1e-1);
 
-/// @brief Kilo- (1 x 10^3).
-/// @see https://en.wikipedia.org/wiki/Kilo-
-constexpr auto Kilo = Real(1e3);
+    /// @brief Kilo- (1 x 10^3).
+    /// @see https://en.wikipedia.org/wiki/Kilo-
+    constexpr auto Kilo = Real(1e3);
 
-/// @brief Mega- (1 x 10^6).
-/// @see https://en.wikipedia.org/wiki/Mega-
-constexpr auto Mega = Real(1e6);
+    /// @brief Mega- (1 x 10^6).
+    /// @see https://en.wikipedia.org/wiki/Mega-
+    constexpr auto Mega = Real(1e6);
 
-/// @brief Giga- (1 x 10^9).
-/// @see https://en.wikipedia.org/wiki/Giga-
-constexpr auto Giga = Real(1e9);
+    /// @brief Giga- (1 x 10^9).
+    /// @see https://en.wikipedia.org/wiki/Giga-
+    constexpr auto Giga = Real(1e9);
 
-/// @brief Tera- (1 x 10^12).
-/// @see https://en.wikipedia.org/wiki/Tera-
-constexpr auto Tera = Real(1e12);
+    /// @brief Tera- (1 x 10^12).
+    /// @see https://en.wikipedia.org/wiki/Tera-
+    constexpr auto Tera = Real(1e12);
 
-/// @brief Peta- (1 x 10^15).
-/// @see https://en.wikipedia.org/wiki/Peta-
-constexpr auto Peta = Real(1e15);
+    /// @brief Peta- (1 x 10^15).
+    /// @see https://en.wikipedia.org/wiki/Peta-
+    constexpr auto Peta = Real(1e15);
 
-/// @brief Yotta- (1 x 10^24).
-/// @see https://en.wikipedia.org/wiki/Yotta-
-constexpr auto Yotta = Real(1e24);
+    /// @brief Yotta- (1 x 10^24).
+    /// @see https://en.wikipedia.org/wiki/Yotta-
+    constexpr auto Yotta = Real(1e24);
 
-/// @}
+    /// @}
 
-} // namespace playrho
+}// namespace playrho
 
-#endif // PLAYRHO_COMMON_REALCONSTANTS_HPP
+#endif// PLAYRHO_COMMON_REALCONSTANTS_HPP

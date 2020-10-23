@@ -19,16 +19,18 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/FixtureConf.hpp>
 
-namespace playrho {
-namespace d2 {
-
-FixtureConf GetFixtureConf(const Fixture& fixture) noexcept
+namespace playrho
 {
-    return FixtureConf{fixture.IsSensor(), fixture.GetFilterData()};
-}
+    namespace d2
+    {
 
-} // namespace d2
-} // namespace playrho
+        FixtureConf GetFixtureConf(const Fixture& fixture) noexcept
+        {
+            return FixtureConf{fixture.IsSensor(), fixture.GetFilterData()};
+        }
+
+    }// namespace d2
+}// namespace playrho

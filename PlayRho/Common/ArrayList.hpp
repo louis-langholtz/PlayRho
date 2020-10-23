@@ -30,25 +30,25 @@
 namespace playrho
 {
     /// Array list.
-    template <typename VALUE_TYPE, std::size_t MAXSIZE, typename SIZE_TYPE = std::size_t>
+    template<typename VALUE_TYPE, std::size_t MAXSIZE, typename SIZE_TYPE = std::size_t>
     class ArrayList
     {
-    public:
+     public:
         /// @brief Size type.
         using size_type = SIZE_TYPE;
 
         /// @brief Value type.
         using value_type = VALUE_TYPE;
-        
+
         /// @brief Reference type.
         using reference = value_type&;
-        
+
         /// @brief Constant reference type.
         using const_reference = const value_type&;
-        
+
         /// @brief Pointer type.
         using pointer = value_type*;
-        
+
         /// @brief Constant pointer type.
         using const_pointer = const value_type*;
 
@@ -59,27 +59,27 @@ namespace playrho
             // causes issues with gcc.
         }
 
-        template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
-        constexpr explicit ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy):
-            m_size{size(copy)},
-            m_elements{data(copy)}
+        template<std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t<COPY_MAXSIZE <= MAXSIZE>>
+        constexpr explicit ArrayList(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, SIZE_TYPE>& copy)
+            : m_size{size(copy)},
+              m_elements{data(copy)}
         {
             // Intentionally empty
         }
 
         /// @brief Assignment operator.
-        template <std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t< COPY_MAXSIZE <= MAXSIZE >>
-        ArrayList& operator= (const ArrayList<VALUE_TYPE, COPY_MAXSIZE, COPY_SIZE_TYPE>& copy)
+        template<std::size_t COPY_MAXSIZE, typename COPY_SIZE_TYPE, typename = std::enable_if_t<COPY_MAXSIZE <= MAXSIZE>>
+        ArrayList& operator=(const ArrayList<VALUE_TYPE, COPY_MAXSIZE, COPY_SIZE_TYPE>& copy)
         {
             m_size = static_cast<SIZE_TYPE>(size(copy));
             m_elements = data(copy);
             return *this;
         }
 
-        template <std::size_t SIZE, typename = std::enable_if_t< SIZE <= MAXSIZE >>
+        template<std::size_t SIZE, typename = std::enable_if_t<SIZE <= MAXSIZE>>
         explicit ArrayList(value_type (&value)[SIZE]) noexcept
         {
-            for (auto&& elem: value)
+            for (auto&& elem : value)
             {
                 push_back(elem);
             }
@@ -87,12 +87,12 @@ namespace playrho
 
         ArrayList(std::initializer_list<value_type> list)
         {
-            for (auto&& elem: list)
+            for (auto&& elem : list)
             {
                 push_back(elem);
             }
         }
-        
+
         constexpr ArrayList& Append(const value_type& value)
         {
             push_back(value);
@@ -105,7 +105,7 @@ namespace playrho
             m_elements[m_size] = value;
             ++m_size;
         }
-        
+
         void size(size_type value) noexcept
         {
             assert(value <= MAXSIZE);
@@ -116,8 +116,11 @@ namespace playrho
         {
             m_size = 0;
         }
-        
-        bool empty() const noexcept { return m_size == 0; }
+
+        bool empty() const noexcept
+        {
+            return m_size == 0;
+        }
 
         bool add(value_type value) noexcept
         {
@@ -129,13 +132,13 @@ namespace playrho
             }
             return false;
         }
-        
+
         reference operator[](size_type index) noexcept
         {
             assert(index < MAXSIZE);
             return m_elements[index];
         }
-        
+
         constexpr const_reference operator[](size_type index) const noexcept
         {
             assert(index < MAXSIZE);
@@ -146,36 +149,57 @@ namespace playrho
         /// @details This is the number of elements that have been added to this collection.
         /// @return Value between 0 and the maximum size for this collection.
         /// @see max_size().
-        constexpr size_type size() const noexcept { return m_size; }
-        
+        constexpr size_type size() const noexcept
+        {
+            return m_size;
+        }
+
         /// Gets the maximum size that this collection can be.
         /// @details This is the maximum number of elements that can be contained in this collection.
-        constexpr size_type max_size() const noexcept { return MAXSIZE; }
+        constexpr size_type max_size() const noexcept
+        {
+            return MAXSIZE;
+        }
 
-        auto data() const noexcept { return m_elements.data(); }
+        auto data() const noexcept
+        {
+            return m_elements.data();
+        }
 
-        pointer begin() noexcept { return m_elements.data(); }
-        pointer end() noexcept { return m_elements.data() + m_size; }
-        
-        const_pointer begin() const noexcept { return m_elements.data(); }
-        const_pointer end() const noexcept { return m_elements.data() + m_size; }
-        
-    private:
+        pointer begin() noexcept
+        {
+            return m_elements.data();
+        }
+        pointer end() noexcept
+        {
+            return m_elements.data() + m_size;
+        }
+
+        const_pointer begin() const noexcept
+        {
+            return m_elements.data();
+        }
+        const_pointer end() const noexcept
+        {
+            return m_elements.data() + m_size;
+        }
+
+     private:
         size_type m_size = size_type{0};
-        std::array<value_type,MAXSIZE> m_elements;
+        std::array<value_type, MAXSIZE> m_elements;
     };
-    
+
     /// @brief <code>ArrayList</code> append operator.
-    template <typename T, std::size_t S>
-    ArrayList<T, S>& operator+= (ArrayList<T, S>& lhs, const typename ArrayList<T, S>::data_type& rhs)
+    template<typename T, std::size_t S>
+    ArrayList<T, S>& operator+=(ArrayList<T, S>& lhs, const typename ArrayList<T, S>::data_type& rhs)
     {
         lhs.push_back(rhs);
         return lhs;
     }
 
     /// @brief <code>ArrayList</code> add operator.
-    template <typename T, std::size_t S>
-    ArrayList<T, S> operator+ (ArrayList<T, S> lhs, const typename ArrayList<T, S>::data_type& rhs)
+    template<typename T, std::size_t S>
+    ArrayList<T, S> operator+(ArrayList<T, S> lhs, const typename ArrayList<T, S>::data_type& rhs)
     {
         lhs.push_back(rhs);
         return lhs;
@@ -183,15 +207,16 @@ namespace playrho
 
 } /* namespace playrho */
 
-namespace std {
+namespace std
+{
 
     /// Tuple size specialization for <code>ArrayList</code> classes.
-    template< class T, std::size_t N, typename SIZE_TYPE >
-    class tuple_size< playrho::ArrayList<T, N, SIZE_TYPE> >: public integral_constant<std::size_t, N>
+    template<class T, std::size_t N, typename SIZE_TYPE>
+    class tuple_size<playrho::ArrayList<T, N, SIZE_TYPE>> : public integral_constant<std::size_t, N>
     {
         // Intentionally empty.
     };
 
-} // namespace std
+}// namespace std
 
-#endif // PLAYRHO_COMMON_ARRAYLIST_HPP
+#endif// PLAYRHO_COMMON_ARRAYLIST_HPP

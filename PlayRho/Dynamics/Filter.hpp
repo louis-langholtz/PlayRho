@@ -26,8 +26,9 @@
 #include <PlayRho/Defines.hpp>
 #include <cstdint>
 
-namespace playrho {
-    
+namespace playrho
+{
+
     /// @brief A holder for contact filtering data.
     /// @note This data structure size is 6-bytes.
     struct Filter
@@ -39,19 +40,19 @@ namespace playrho {
         /// @brief Index type definition.
         ///
         using index_type = std::int16_t;
-        
+
         /// @brief The collision category bits.
         ///
         /// @note Normally you would just set one bit.
         ///
         bits_type categoryBits = 0x0001;
-        
+
         /// @brief The collision mask bits.
         ///
         /// @details This states the categories that this shape would accept for collision.
         ///
         bits_type maskBits = 0xFFFF;
-        
+
         /// @brief Group index.
         ///
         /// @details Collision groups allow a certain group of objects to never collide
@@ -60,19 +61,19 @@ namespace playrho {
         ///
         index_type groupIndex = 0;
     };
-    
+
     /// @brief Equality operator.
     /// @relatedalso Filter
-    constexpr bool operator== (const Filter lhs, const Filter rhs) noexcept
+    constexpr bool operator==(const Filter lhs, const Filter rhs) noexcept
     {
         return lhs.categoryBits == rhs.categoryBits
-            && lhs.maskBits == rhs.maskBits
-            && lhs.groupIndex == rhs.groupIndex;
+               && lhs.maskBits == rhs.maskBits
+               && lhs.groupIndex == rhs.groupIndex;
     }
 
     /// @brief Inequality operator.
     /// @relatedalso Filter
-    constexpr bool operator!= (const Filter lhs, const Filter rhs) noexcept
+    constexpr bool operator!=(const Filter lhs, const Filter rhs) noexcept
     {
         return !(lhs == rhs);
     }
@@ -85,10 +86,9 @@ namespace playrho {
         {
             return filterA.groupIndex > 0;
         }
-        return ((filterA.maskBits & filterB.categoryBits) != 0) &&
-               ((filterB.maskBits & filterA.categoryBits) != 0);
+        return ((filterA.maskBits & filterB.categoryBits) != 0) && ((filterB.maskBits & filterA.categoryBits) != 0);
     }
 
-} // namespace playrho
+}// namespace playrho
 
-#endif // PLAYRHO_DYNAMICS_FILTER_HPP
+#endif// PLAYRHO_DYNAMICS_FILTER_HPP

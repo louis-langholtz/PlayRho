@@ -108,4 +108,4 @@ template <> struct make_unsigned<PLAYRHO_INT128> {
 
 // clang-format on
 
-#endif // PLAYRHO_COMMON_WIDER_HPP
+#endif// PLAYRHO_COMMON_WIDER_HPP

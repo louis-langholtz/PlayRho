@@ -32,7 +32,7 @@
 namespace playrho
 {
     // Memory Allocation
-    
+
     /// @brief Allocates memory.
     /// @note One can change this function to use ones own memory allocator. Be sure to conform
     ///   to this function's interface: throw a <code>std::bad_alloc</code> exception if
@@ -44,18 +44,18 @@ namespace playrho
     ///   deallocated with <code>Free(void*)</code> or one of the <code>Realloc</code> functions.
     /// @see Free, Realloc, ReallocArray.
     void* Alloc(std::size_t size);
-    
+
     /// @brief Allocates memory for an array.
     /// @throws std::bad_alloc If unable to allocate non-zero sized memory.
     /// @return Non-null pointer if size is not zero else <code>nullptr</code>. Pointer must be
     ///   deallocated with <code>Free(void*)</code> or one of the <code>Realloc</code> functions.
     /// @see Free, Alloc, ReallocArray.
-    template <typename T>
+    template<typename T>
     T* AllocArray(std::size_t size)
     {
         return static_cast<T*>(Alloc(size * sizeof(T)));
     }
-    
+
     /// @brief Reallocates memory.
     /// @note One can change this function to use ones own memory allocator. Be sure to conform
     ///   to this function's interface: throw a <code>std::bad_alloc</code> exception if
@@ -68,7 +68,7 @@ namespace playrho
     /// @return Non-null pointer if size is not zero else <code>nullptr</code>.
     /// @see Alloc, Free.
     void* Realloc(void* ptr, std::size_t size);
-    
+
     /// @brief Reallocates memory for an array.
     /// @param ptr Pointer to the old memory.
     /// @param count Count of elements to reallocate for. This value must be less than the value
@@ -79,22 +79,23 @@ namespace playrho
     /// @return Non-null pointer if count is not zero else <code>nullptr</code>. Pointer must be
     ///   deallocated with <code>Free(void*)</code> or one of the <code>Realloc</code> functions.
     /// @see Realloc, Free.
-    template <typename T>
+    template<typename T>
     T* ReallocArray(T* ptr, std::size_t count)
     {
         // Ensure no overflow
         constexpr auto maxCount = std::numeric_limits<std::size_t>::max() / sizeof(T);
-        if (count >= maxCount) {
+        if (count >= maxCount)
+        {
             throw std::bad_array_new_length{};
         }
-        return static_cast<T*>(Realloc(static_cast<void *>(ptr), count * sizeof(T)));
+        return static_cast<T*>(Realloc(static_cast<void*>(ptr), count * sizeof(T)));
     }
-    
+
     /// @brief Frees memory.
     /// @note If you change <code>Alloc</code>, consider also changing this function.
     /// @see Alloc, AllocArray, Realloc, ReallocArray.
     void Free(void* mem);
 
-} // namespace playrho
+}// namespace playrho
 
-#endif // PLAYRHO_COMMON_DYNAMICMEMORY_HPP
+#endif// PLAYRHO_COMMON_DYNAMICMEMORY_HPP

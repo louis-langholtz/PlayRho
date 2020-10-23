@@ -21,31 +21,32 @@
 #ifndef PLAYRHO_DYNAMICS_FIXTUREID_HPP
 #define PLAYRHO_DYNAMICS_FIXTUREID_HPP
 
-#include <PlayRho/Common/StrongType.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/StrongType.hpp>
 
-namespace playrho {
-
-/// @brief Fixture identifier.
-using FixtureID = strongtype::IndexingNamedType<FixtureCounter, struct FixtureIdentifier>;
-
-/// @brief Invalid fixture ID value.
-constexpr auto InvalidFixtureID = static_cast<FixtureID>(static_cast<FixtureID::underlying_type>(-1));
-
-/// @brief Gets an invalid value for the FixtureID type.
-template <>
-constexpr FixtureID GetInvalid() noexcept
+namespace playrho
 {
-    return InvalidFixtureID;
-}
 
-/// @brief Determines if the given value is valid.
-template <>
-constexpr bool IsValid(const FixtureID& value) noexcept
-{
-    return value != GetInvalid<FixtureID>();
-}
+    /// @brief Fixture identifier.
+    using FixtureID = strongtype::IndexingNamedType<FixtureCounter, struct FixtureIdentifier>;
 
-}
+    /// @brief Invalid fixture ID value.
+    constexpr auto InvalidFixtureID = static_cast<FixtureID>(static_cast<FixtureID::underlying_type>(-1));
 
-#endif // PLAYRHO_DYNAMICS_FIXTUREID_HPP
+    /// @brief Gets an invalid value for the FixtureID type.
+    template<>
+    constexpr FixtureID GetInvalid() noexcept
+    {
+        return InvalidFixtureID;
+    }
+
+    /// @brief Determines if the given value is valid.
+    template<>
+    constexpr bool IsValid(const FixtureID& value) noexcept
+    {
+        return value != GetInvalid<FixtureID>();
+    }
+
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_FIXTUREID_HPP

@@ -25,128 +25,129 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector2.hpp>
 
-namespace playrho {
-namespace d2 {
-
-    /// @brief 2-D acceleration related data structure.
-    /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
-    struct Acceleration
-    {
-        LinearAcceleration2 linear; ///< Linear acceleration.
-        AngularAcceleration angular; ///< Angular acceleration.
-    };
-    
-    /// @brief Equality operator.
-    /// @relatedalso Acceleration
-    constexpr bool operator==(const Acceleration& lhs, const Acceleration& rhs)
-    {
-        return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
-    }
-    
-    /// @brief Inequality operator.
-    /// @relatedalso Acceleration
-    constexpr bool operator!=(const Acceleration& lhs, const Acceleration& rhs)
-    {
-        return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
-    }
-    
-    /// @brief Multiplication assignment operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration& operator*= (Acceleration& lhs, const Real rhs)
-    {
-        lhs.linear *= rhs;
-        lhs.angular *= rhs;
-        return lhs;
-    }
-    
-    /// @brief Division assignment operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration& operator/= (Acceleration& lhs, const Real rhs)
-    {
-        lhs.linear /= rhs;
-        lhs.angular /= rhs;
-        return lhs;
-    }
-    
-    /// @brief Addition assignment operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration& operator+= (Acceleration& lhs, const Acceleration& rhs)
-    {
-        lhs.linear += rhs.linear;
-        lhs.angular += rhs.angular;
-        return lhs;
-    }
-    
-    /// @brief Addition operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration operator+ (const Acceleration& lhs, const Acceleration& rhs)
-    {
-        return Acceleration{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
-    }
-    
-    /// @brief Subtraction assignment operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration& operator-= (Acceleration& lhs, const Acceleration& rhs)
-    {
-        lhs.linear -= rhs.linear;
-        lhs.angular -= rhs.angular;
-        return lhs;
-    }
-    
-    /// @brief Subtraction operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration operator- (const Acceleration& lhs, const Acceleration& rhs)
-    {
-        return Acceleration{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
-    }
-    
-    /// @brief Negation operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration operator- (const Acceleration& value)
-    {
-        return Acceleration{-value.linear, -value.angular};
-    }
-    
-    /// @brief Positive operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration operator+ (const Acceleration& value)
-    {
-        return value;
-    }
-    
-    /// @brief Multiplication operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration operator* (const Acceleration& lhs, const Real rhs)
-    {
-        return Acceleration{lhs.linear * rhs, lhs.angular * rhs};
-    }
-    
-    /// @brief Multiplication operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration operator* (const Real lhs, const Acceleration& rhs)
-    {
-        return Acceleration{rhs.linear * lhs, rhs.angular * lhs};
-    }
-    
-    /// @brief Division operator.
-    /// @relatedalso Acceleration
-    constexpr Acceleration operator/ (const Acceleration& lhs, const Real rhs)
-    {
-        const auto inverseRhs = Real{1} / rhs;
-        return Acceleration{lhs.linear * inverseRhs, lhs.angular * inverseRhs};
-    }
-    
-} // namespace d2
-
-/// @brief Determines if the given value is valid.
-/// @relatedalso playrho::d2::Acceleration
-template <>
-constexpr bool IsValid(const d2::Acceleration& value) noexcept
+namespace playrho
 {
-    return IsValid(value.linear) && IsValid(value.angular);
-}
+    namespace d2
+    {
 
-} // namespace playrho
+        /// @brief 2-D acceleration related data structure.
+        /// @note This data structure is 12-bytes (with 4-byte Real on at least one 64-bit platform).
+        struct Acceleration
+        {
+            LinearAcceleration2 linear; ///< Linear acceleration.
+            AngularAcceleration angular;///< Angular acceleration.
+        };
 
-#endif // PLAYRHO_COMMON_ACCELERATION_HPP
+        /// @brief Equality operator.
+        /// @relatedalso Acceleration
+        constexpr bool operator==(const Acceleration& lhs, const Acceleration& rhs)
+        {
+            return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
+        }
 
+        /// @brief Inequality operator.
+        /// @relatedalso Acceleration
+        constexpr bool operator!=(const Acceleration& lhs, const Acceleration& rhs)
+        {
+            return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
+        }
+
+        /// @brief Multiplication assignment operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration& operator*=(Acceleration& lhs, const Real rhs)
+        {
+            lhs.linear *= rhs;
+            lhs.angular *= rhs;
+            return lhs;
+        }
+
+        /// @brief Division assignment operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration& operator/=(Acceleration& lhs, const Real rhs)
+        {
+            lhs.linear /= rhs;
+            lhs.angular /= rhs;
+            return lhs;
+        }
+
+        /// @brief Addition assignment operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration& operator+=(Acceleration& lhs, const Acceleration& rhs)
+        {
+            lhs.linear += rhs.linear;
+            lhs.angular += rhs.angular;
+            return lhs;
+        }
+
+        /// @brief Addition operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration operator+(const Acceleration& lhs, const Acceleration& rhs)
+        {
+            return Acceleration{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
+        }
+
+        /// @brief Subtraction assignment operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration& operator-=(Acceleration& lhs, const Acceleration& rhs)
+        {
+            lhs.linear -= rhs.linear;
+            lhs.angular -= rhs.angular;
+            return lhs;
+        }
+
+        /// @brief Subtraction operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration operator-(const Acceleration& lhs, const Acceleration& rhs)
+        {
+            return Acceleration{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
+        }
+
+        /// @brief Negation operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration operator-(const Acceleration& value)
+        {
+            return Acceleration{-value.linear, -value.angular};
+        }
+
+        /// @brief Positive operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration operator+(const Acceleration& value)
+        {
+            return value;
+        }
+
+        /// @brief Multiplication operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration operator*(const Acceleration& lhs, const Real rhs)
+        {
+            return Acceleration{lhs.linear * rhs, lhs.angular * rhs};
+        }
+
+        /// @brief Multiplication operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration operator*(const Real lhs, const Acceleration& rhs)
+        {
+            return Acceleration{rhs.linear * lhs, rhs.angular * lhs};
+        }
+
+        /// @brief Division operator.
+        /// @relatedalso Acceleration
+        constexpr Acceleration operator/(const Acceleration& lhs, const Real rhs)
+        {
+            const auto inverseRhs = Real{1} / rhs;
+            return Acceleration{lhs.linear * inverseRhs, lhs.angular * inverseRhs};
+        }
+
+    }// namespace d2
+
+    /// @brief Determines if the given value is valid.
+    /// @relatedalso playrho::d2::Acceleration
+    template<>
+    constexpr bool IsValid(const d2::Acceleration& value) noexcept
+    {
+        return IsValid(value.linear) && IsValid(value.angular);
+    }
+
+}// namespace playrho
+
+#endif// PLAYRHO_COMMON_ACCELERATION_HPP

@@ -21,152 +21,154 @@
 
 #include <PlayRho/Dynamics/WorldImplContact.hpp>
 
+#include <PlayRho/Dynamics/Body.hpp>   // for use of GetBody
+#include <PlayRho/Dynamics/Fixture.hpp>// for GetDefaultFriction, GetDefaultRestitution
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/Body.hpp> // for use of GetBody
-#include <PlayRho/Dynamics/Fixture.hpp> // for GetDefaultFriction, GetDefaultRestitution
 
-#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for use of GetContact
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>// for use of GetContact
 
-namespace playrho {
-namespace d2 {
-
-bool IsAwake(const WorldImpl& world, ContactID id)
+namespace playrho
 {
-    return world.GetContact(id).IsActive();
-}
+    namespace d2
+    {
 
-void SetAwake(WorldImpl& world, ContactID id)
-{
-    const auto& contact = world.GetContact(id);
-    world.GetBody(contact.GetBodyA()).SetAwake();
-    world.GetBody(contact.GetBodyB()).SetAwake();
-}
+        bool IsAwake(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).IsActive();
+        }
 
-Real GetFriction(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetFriction();
-}
+        void SetAwake(WorldImpl& world, ContactID id)
+        {
+            const auto& contact = world.GetContact(id);
+            world.GetBody(contact.GetBodyA()).SetAwake();
+            world.GetBody(contact.GetBodyB()).SetAwake();
+        }
 
-Real GetRestitution(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetRestitution();
-}
+        Real GetFriction(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetFriction();
+        }
 
-void SetFriction(WorldImpl& world, ContactID id, Real value)
-{
-    world.GetContact(id).SetFriction(value);
-}
+        Real GetRestitution(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetRestitution();
+        }
 
-void SetRestitution(WorldImpl& world, ContactID id, Real value)
-{
-    world.GetContact(id).SetRestitution(value);
-}
+        void SetFriction(WorldImpl& world, ContactID id, Real value)
+        {
+            world.GetContact(id).SetFriction(value);
+        }
 
-const Manifold& GetManifold(const WorldImpl& world, ContactID id)
-{
-    return world.GetManifold(id);
-}
+        void SetRestitution(WorldImpl& world, ContactID id, Real value)
+        {
+            world.GetContact(id).SetRestitution(value);
+        }
 
-Real GetDefaultFriction(const WorldImpl& world, ContactID id)
-{
-    const auto& contact = world.GetContact(id);
-    const auto& fixtureA = world.GetFixture(contact.GetFixtureA());
-    const auto& fixtureB = world.GetFixture(contact.GetFixtureB());
-    return GetDefaultFriction(fixtureA, fixtureB);
-}
+        const Manifold& GetManifold(const WorldImpl& world, ContactID id)
+        {
+            return world.GetManifold(id);
+        }
 
-Real GetDefaultRestitution(const WorldImpl& world, ContactID id)
-{
-    const auto& contact = world.GetContact(id);
-    const auto& fixtureA = world.GetFixture(contact.GetFixtureA());
-    const auto& fixtureB = world.GetFixture(contact.GetFixtureB());
-    return GetDefaultRestitution(fixtureA, fixtureB);
-}
+        Real GetDefaultFriction(const WorldImpl& world, ContactID id)
+        {
+            const auto& contact = world.GetContact(id);
+            const auto& fixtureA = world.GetFixture(contact.GetFixtureA());
+            const auto& fixtureB = world.GetFixture(contact.GetFixtureB());
+            return GetDefaultFriction(fixtureA, fixtureB);
+        }
 
-bool IsTouching(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).IsTouching();
-}
+        Real GetDefaultRestitution(const WorldImpl& world, ContactID id)
+        {
+            const auto& contact = world.GetContact(id);
+            const auto& fixtureA = world.GetFixture(contact.GetFixtureA());
+            const auto& fixtureB = world.GetFixture(contact.GetFixtureB());
+            return GetDefaultRestitution(fixtureA, fixtureB);
+        }
 
-bool NeedsFiltering(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).NeedsFiltering();
-}
+        bool IsTouching(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).IsTouching();
+        }
 
-bool NeedsUpdating(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).NeedsUpdating();
-}
+        bool NeedsFiltering(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).NeedsFiltering();
+        }
 
-bool HasValidToi(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).HasValidToi();
-}
+        bool NeedsUpdating(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).NeedsUpdating();
+        }
 
-Real GetToi(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetToi();
-}
+        bool HasValidToi(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).HasValidToi();
+        }
 
-BodyID GetBodyA(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetBodyA();
-}
+        Real GetToi(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetToi();
+        }
 
-BodyID GetBodyB(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetBodyB();
-}
+        BodyID GetBodyA(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetBodyA();
+        }
 
-FixtureID GetFixtureA(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetFixtureA();
-}
+        BodyID GetBodyB(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetBodyB();
+        }
 
-FixtureID GetFixtureB(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetFixtureB();
-}
+        FixtureID GetFixtureA(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetFixtureA();
+        }
 
-ChildCounter GetChildIndexA(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetChildIndexA();
-}
+        FixtureID GetFixtureB(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetFixtureB();
+        }
 
-ChildCounter GetChildIndexB(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetChildIndexB();
-}
+        ChildCounter GetChildIndexA(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetChildIndexA();
+        }
 
-TimestepIters GetToiCount(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetToiCount();
-}
+        ChildCounter GetChildIndexB(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetChildIndexB();
+        }
 
-LinearVelocity GetTangentSpeed(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).GetTangentSpeed();
-}
+        TimestepIters GetToiCount(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetToiCount();
+        }
 
-void SetTangentSpeed(WorldImpl& world, ContactID id, LinearVelocity value)
-{
-    world.GetContact(id).SetTangentSpeed(value);
-}
+        LinearVelocity GetTangentSpeed(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).GetTangentSpeed();
+        }
 
-bool IsEnabled(const WorldImpl& world, ContactID id)
-{
-    return world.GetContact(id).IsEnabled();
-}
+        void SetTangentSpeed(WorldImpl& world, ContactID id, LinearVelocity value)
+        {
+            world.GetContact(id).SetTangentSpeed(value);
+        }
 
-void SetEnabled(WorldImpl& world, ContactID id)
-{
-    world.GetContact(id).SetEnabled();
-}
+        bool IsEnabled(const WorldImpl& world, ContactID id)
+        {
+            return world.GetContact(id).IsEnabled();
+        }
 
-void UnsetEnabled(WorldImpl& world, ContactID id)
-{
-    world.GetContact(id).UnsetEnabled();
-}
+        void SetEnabled(WorldImpl& world, ContactID id)
+        {
+            world.GetContact(id).SetEnabled();
+        }
 
-} // namespace d2
-} // namespace playrho
+        void UnsetEnabled(WorldImpl& world, ContactID id)
+        {
+            world.GetContact(id).UnsetEnabled();
+        }
+
+    }// namespace d2
+}// namespace playrho

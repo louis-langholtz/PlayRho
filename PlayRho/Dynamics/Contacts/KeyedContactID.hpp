@@ -24,22 +24,24 @@
 /// @file
 /// Declaration of the <code>KeyedContactPtr</code> alias.
 
-#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 
-namespace playrho {
-namespace d2 {
-
-/// @brief Keyed contact pointer.
-using KeyedContactPtr = std::pair<ContactKey, ContactID>;
-
-/// @brief Gets the contact ID for the given value.
-inline ContactID GetContactPtr(KeyedContactPtr value)
+namespace playrho
 {
-    return std::get<1>(value);
-}
+    namespace d2
+    {
 
-} // namespace d2
-} // namespace playrho
+        /// @brief Keyed contact pointer.
+        using KeyedContactPtr = std::pair<ContactKey, ContactID>;
 
-#endif // PLAYRHO_DYNAMICS_CONTACTS_KEYEDCONTACTID_HPP
+        /// @brief Gets the contact ID for the given value.
+        inline ContactID GetContactPtr(KeyedContactPtr value)
+        {
+            return std::get<1>(value);
+        }
+
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_CONTACTS_KEYEDCONTACTID_HPP

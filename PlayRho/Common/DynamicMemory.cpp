@@ -23,37 +23,42 @@
 
 #include <cstdlib>
 
-namespace playrho {
-    
+namespace playrho
+{
+
     // Memory allocators. Modify these to use your own allocator.
     void* Alloc(std::size_t size)
     {
-        if (size) {
+        if (size)
+        {
             const auto memory = std::malloc(size);
-            if (!memory) {
+            if (!memory)
+            {
                 throw std::bad_alloc{};
             }
             return memory;
         }
         return nullptr;
     }
-    
+
     void* Realloc(void* ptr, std::size_t size)
     {
-        if (size) {
+        if (size)
+        {
             const auto memory = std::realloc(ptr, size);
-             if (!memory) {
-                 throw std::bad_alloc{};
-             }
-             return memory;
+            if (!memory)
+            {
+                throw std::bad_alloc{};
+            }
+            return memory;
         }
         Free(ptr);
         return nullptr;
     }
-    
+
     void Free(void* mem)
     {
         std::free(mem);
     }
 
-} // namespace playrho
+}// namespace playrho

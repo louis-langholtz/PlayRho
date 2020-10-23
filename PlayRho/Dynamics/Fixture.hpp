@@ -25,197 +25,199 @@
 /// @file
 /// Declarations of the Fixture class, and free functions associated with it.
 
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Common/NonZero.hpp>
+#include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
 
+#include <array>
 #include <limits>
 #include <memory>
 #include <vector>
-#include <array>
 
-namespace playrho {
-namespace d2 {
-
-/// @brief An association between a body and a shape.
-///
-/// @details A fixture is used to attach a shape to a body for collision detection. A fixture
-/// inherits its transform from its parent. Fixtures hold additional non-geometric data
-/// such as collision filters, etc.
-///
-/// @warning you cannot reuse fixtures.
-/// @note Fixtures should be created using the <code>Body::CreateFixture</code> method.
-/// @note Destroy these using the <code>Body::Destroy(Fixture*, bool)</code> method.
-/// @note This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit
-///   architecture/build).
-///
-/// @ingroup PhysicalEntities
-///
-/// @see Body, Shape
-///
-class Fixture
+namespace playrho
 {
-public:
-    /// @brief Fixture proxies container.
-    using Proxies = std::vector<FixtureProxy>;
-
-    Fixture() = default;
-
-    /// @brief Initializing constructor.
-    ///
-    /// @note This is not meant to be called by normal user code. Use the
-    ///   <code>Body::CreateFixture</code> method instead.
-    ///
-    /// @param body Body the new fixture is to be associated with.
-    /// @param shape Shareable shape to associate fixture with. Must be non-null.
-    /// @param def Initial optional fixture settings.
-    ///    Friction must be greater-than-or-equal-to zero.
-    ///    <code>AreaDensity</code> must be greater-than-or-equal-to zero.
-    ///
-    Fixture(BodyID body, const Shape& shape, const FixtureConf& def = GetDefaultFixtureConf()):
-        m_shape{shape},
-        m_body{body},
-        m_filter{def.filter},
-        m_isSensor{def.isSensor}
+    namespace d2
     {
-        // Intentionally empty.
-    }
 
-    /// @brief Copy constructor (explicitly deleted).
-    Fixture(const Fixture& other) = default;
+        /// @brief An association between a body and a shape.
+        ///
+        /// @details A fixture is used to attach a shape to a body for collision detection. A fixture
+        /// inherits its transform from its parent. Fixtures hold additional non-geometric data
+        /// such as collision filters, etc.
+        ///
+        /// @warning you cannot reuse fixtures.
+        /// @note Fixtures should be created using the <code>Body::CreateFixture</code> method.
+        /// @note Destroy these using the <code>Body::Destroy(Fixture*, bool)</code> method.
+        /// @note This structure is 56-bytes large (using a 4-byte Real on at least one 64-bit
+        ///   architecture/build).
+        ///
+        /// @ingroup PhysicalEntities
+        ///
+        /// @see Body, Shape
+        ///
+        class Fixture
+        {
+         public:
+            /// @brief Fixture proxies container.
+            using Proxies = std::vector<FixtureProxy>;
 
-    /// @brief Gets the parent body of this fixture.
-    /// @return Non-null pointer to the parent body.
-    BodyID GetBody() const noexcept;
+            Fixture() = default;
 
-    /// @brief Gets the child shape.
-    /// @details The shape is not modifiable. Use a new fixture instead.
-    Shape GetShape() const noexcept;
+            /// @brief Initializing constructor.
+            ///
+            /// @note This is not meant to be called by normal user code. Use the
+            ///   <code>Body::CreateFixture</code> method instead.
+            ///
+            /// @param body Body the new fixture is to be associated with.
+            /// @param shape Shareable shape to associate fixture with. Must be non-null.
+            /// @param def Initial optional fixture settings.
+            ///    Friction must be greater-than-or-equal-to zero.
+            ///    <code>AreaDensity</code> must be greater-than-or-equal-to zero.
+            ///
+            Fixture(BodyID body, const Shape& shape, const FixtureConf& def = GetDefaultFixtureConf())
+                : m_shape{shape},
+                  m_body{body},
+                  m_filter{def.filter},
+                  m_isSensor{def.isSensor}
+            {
+                // Intentionally empty.
+            }
 
-    /// @brief Set if this fixture is a sensor.
-    void SetSensor(bool sensor) noexcept;
+            /// @brief Copy constructor (explicitly deleted).
+            Fixture(const Fixture& other) = default;
 
-    /// @brief Is this fixture a sensor (non-solid)?
-    /// @return the true if the shape is a sensor.
-    bool IsSensor() const noexcept;
+            /// @brief Gets the parent body of this fixture.
+            /// @return Non-null pointer to the parent body.
+            BodyID GetBody() const noexcept;
 
-    /// @brief Gets the contact filtering data.
-    Filter GetFilterData() const noexcept;
+            /// @brief Gets the child shape.
+            /// @details The shape is not modifiable. Use a new fixture instead.
+            Shape GetShape() const noexcept;
 
-    /// @brief Sets the contact filtering data.
-    void SetFilterData(Filter filter) noexcept;
+            /// @brief Set if this fixture is a sensor.
+            void SetSensor(bool sensor) noexcept;
 
-    /// @brief Gets the density of this fixture.
-    /// @return Non-negative density (in mass per area).
-    AreaDensity GetDensity() const noexcept;
+            /// @brief Is this fixture a sensor (non-solid)?
+            /// @return the true if the shape is a sensor.
+            bool IsSensor() const noexcept;
 
-    /// @brief Gets the coefficient of friction.
-    /// @return Value of 0 or higher.
-    Real GetFriction() const noexcept;
+            /// @brief Gets the contact filtering data.
+            Filter GetFilterData() const noexcept;
 
-    /// @brief Gets the coefficient of restitution.
-    Real GetRestitution() const noexcept;
+            /// @brief Sets the contact filtering data.
+            void SetFilterData(Filter filter) noexcept;
 
-    /// @brief Gets the proxies associated with this fixture.
-    const Proxies& GetProxies() const noexcept;
+            /// @brief Gets the density of this fixture.
+            /// @return Non-negative density (in mass per area).
+            AreaDensity GetDensity() const noexcept;
 
-    /// @brief Sets the proxies associated with this fixture.
-    void SetProxies(Proxies value) noexcept;
+            /// @brief Gets the coefficient of friction.
+            /// @return Value of 0 or higher.
+            Real GetFriction() const noexcept;
 
-private:
-    // Data ordered here for memory compaction.
+            /// @brief Gets the coefficient of restitution.
+            Real GetRestitution() const noexcept;
 
-    /// Shape (of fixture).
-    /// @note Set on construction.
-    /// @note 16-bytes.
-    Shape m_shape;
+            /// @brief Gets the proxies associated with this fixture.
+            const Proxies& GetProxies() const noexcept;
 
-    Proxies m_proxies; ///< Cache of fixture proxies for the assigned shape. 16+ bytes.
+            /// @brief Sets the proxies associated with this fixture.
+            void SetProxies(Proxies value) noexcept;
 
-    BodyID m_body = InvalidBodyID; ///< Parent body. 2-bytes.
+         private:
+            // Data ordered here for memory compaction.
 
-    Filter m_filter; ///< Filter object. 6-bytes.
+            /// Shape (of fixture).
+            /// @note Set on construction.
+            /// @note 16-bytes.
+            Shape m_shape;
 
-    bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
-};
+            Proxies m_proxies;///< Cache of fixture proxies for the assigned shape. 16+ bytes.
 
-inline Shape Fixture::GetShape() const noexcept
-{
-    return m_shape;
-}
+            BodyID m_body = InvalidBodyID;///< Parent body. 2-bytes.
 
-inline bool Fixture::IsSensor() const noexcept
-{
-    return m_isSensor;
-}
+            Filter m_filter;///< Filter object. 6-bytes.
 
-inline Filter Fixture::GetFilterData() const noexcept
-{
-    return m_filter;
-}
+            bool m_isSensor = false;///< Is/is-not sensor. 1-bytes.
+        };
 
-inline void Fixture::SetFilterData(Filter filter) noexcept
-{
-    m_filter = filter;
-}
+        inline Shape Fixture::GetShape() const noexcept
+        {
+            return m_shape;
+        }
 
-inline BodyID Fixture::GetBody() const noexcept
-{
-    return m_body;
-}
+        inline bool Fixture::IsSensor() const noexcept
+        {
+            return m_isSensor;
+        }
 
-inline const Fixture::Proxies& Fixture::GetProxies() const noexcept
-{
-    return m_proxies;
-}
+        inline Filter Fixture::GetFilterData() const noexcept
+        {
+            return m_filter;
+        }
 
-inline void Fixture::SetProxies(Proxies value) noexcept
-{
-    m_proxies = std::move(value);
-}
+        inline void Fixture::SetFilterData(Filter filter) noexcept
+        {
+            m_filter = filter;
+        }
 
-inline Real Fixture::GetFriction() const noexcept
-{
-    return playrho::d2::GetFriction(m_shape);
-}
+        inline BodyID Fixture::GetBody() const noexcept
+        {
+            return m_body;
+        }
 
-inline Real Fixture::GetRestitution() const noexcept
-{
-    return playrho::d2::GetRestitution(m_shape);
-}
+        inline const Fixture::Proxies& Fixture::GetProxies() const noexcept
+        {
+            return m_proxies;
+        }
 
-inline AreaDensity Fixture::GetDensity() const noexcept
-{
-    return playrho::d2::GetDensity(m_shape);
-}
+        inline void Fixture::SetProxies(Proxies value) noexcept
+        {
+            m_proxies = std::move(value);
+        }
 
-inline void Fixture::SetSensor(bool sensor) noexcept
-{
-    m_isSensor = sensor;
-}
+        inline Real Fixture::GetFriction() const noexcept
+        {
+            return playrho::d2::GetFriction(m_shape);
+        }
 
-// Free functions...
+        inline Real Fixture::GetRestitution() const noexcept
+        {
+            return playrho::d2::GetRestitution(m_shape);
+        }
 
-/// @brief Whether contact calculations should be performed between the two fixtures.
-/// @return <code>true</code> if contact calculations should be performed between these
-///   two fixtures; <code>false</code> otherwise.
-/// @relatedalso Fixture
-inline bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
-{
-    return ShouldCollide(fixtureA.GetFilterData(), fixtureB.GetFilterData());
-}
+        inline AreaDensity Fixture::GetDensity() const noexcept
+        {
+            return playrho::d2::GetDensity(m_shape);
+        }
 
-/// @brief Gets the default friction amount for the given fixtures.
-Real GetDefaultFriction(const Fixture& fixtureA, const Fixture& fixtureB);
+        inline void Fixture::SetSensor(bool sensor) noexcept
+        {
+            m_isSensor = sensor;
+        }
 
-/// @brief Gets the default restitution amount for the given fixtures.
-Real GetDefaultRestitution(const Fixture& fixtureA, const Fixture& fixtureB);
+        // Free functions...
 
-} // namespace d2
-} // namespace playrho
+        /// @brief Whether contact calculations should be performed between the two fixtures.
+        /// @return <code>true</code> if contact calculations should be performed between these
+        ///   two fixtures; <code>false</code> otherwise.
+        /// @relatedalso Fixture
+        inline bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
+        {
+            return ShouldCollide(fixtureA.GetFilterData(), fixtureB.GetFilterData());
+        }
 
-#endif // PLAYRHO_DYNAMICS_FIXTURE_HPP
+        /// @brief Gets the default friction amount for the given fixtures.
+        Real GetDefaultFriction(const Fixture& fixtureA, const Fixture& fixtureB);
+
+        /// @brief Gets the default restitution amount for the given fixtures.
+        Real GetDefaultRestitution(const Fixture& fixtureA, const Fixture& fixtureB);
+
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_DYNAMICS_FIXTURE_HPP

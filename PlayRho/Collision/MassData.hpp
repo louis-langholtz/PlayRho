@@ -31,74 +31,77 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 
-namespace playrho {
-namespace detail {
-
-/// @brief Mass data.
-/// @details This holds the mass data computed for a shape.
-template <std::size_t N>
-struct MassData
+namespace playrho
 {
-    /// @brief Position of the shape's centroid relative to the shape's origin.
-    Vector<Length, N> center = Vector<Length, N>{};
-    
-    /// @brief Mass of the shape in kilograms.
-    NonNegative<Mass> mass = NonNegative<Mass>{0_kg};
-    
-    /// @brief Rotational inertia, a.k.a. moment of inertia.
-    /// @details This is the rotational inertia of the shape about the local origin.
-    /// @see https://en.wikipedia.org/wiki/Moment_of_inertia
-    NonNegative<RotInertia> I = NonNegative<RotInertia>{0 * 1_m2 * 1_kg / SquareRadian};
-};
+    namespace detail
+    {
 
-// Free functions...
+        /// @brief Mass data.
+        /// @details This holds the mass data computed for a shape.
+        template<std::size_t N>
+        struct MassData
+        {
+            /// @brief Position of the shape's centroid relative to the shape's origin.
+            Vector<Length, N> center = Vector<Length, N>{};
 
-/// @brief Equality operator for mass data.
-/// @relatedalso MassData
-template <std::size_t N>
-constexpr bool operator== (MassData<N> lhs, MassData<N> rhs)
-{
-    return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
-}
+            /// @brief Mass of the shape in kilograms.
+            NonNegative<Mass> mass = NonNegative<Mass>{0_kg};
 
-/// @brief Inequality operator for mass data.
-/// @relatedalso MassData
-template <std::size_t N>
-constexpr bool operator!= (MassData<N> lhs, MassData<N> rhs)
-{
-    return !(lhs == rhs);
-}
-} // namespace detail
+            /// @brief Rotational inertia, a.k.a. moment of inertia.
+            /// @details This is the rotational inertia of the shape about the local origin.
+            /// @see https://en.wikipedia.org/wiki/Moment_of_inertia
+            NonNegative<RotInertia> I = NonNegative<RotInertia>{0 * 1_m2 * 1_kg / SquareRadian};
+        };
 
-namespace d2 {
+        // Free functions...
 
-/// @brief Mass data alias for 2-D objects.
-/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
-using MassData = detail::MassData<2>;
+        /// @brief Equality operator for mass data.
+        /// @relatedalso MassData
+        template<std::size_t N>
+        constexpr bool operator==(MassData<N> lhs, MassData<N> rhs)
+        {
+            return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
+        }
 
-/// @brief Computes the mass data for a circular shape.
-///
-/// @param r Radius of the circular shape.
-/// @param density Areal density of mass.
-/// @param location Location of the center of the shape.
-///
-MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location);
+        /// @brief Inequality operator for mass data.
+        /// @relatedalso MassData
+        template<std::size_t N>
+        constexpr bool operator!=(MassData<N> lhs, MassData<N> rhs)
+        {
+            return !(lhs == rhs);
+        }
+    }// namespace detail
 
-/// @brief Computes the mass data for a linear shape.
-///
-/// @param r Radius of the vertices of the linear shape.
-/// @param density Areal density of mass.
-/// @param v0 Location of vertex zero.
-/// @param v1 Location of vertex one.
-///
-MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1);
+    namespace d2
+    {
 
-/// @brief Gets the mass data for the given collection of vertices with the given
-///    properties.
-MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
-                     Span<const Length2> vertices);
+        /// @brief Mass data alias for 2-D objects.
+        /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
+        using MassData = detail::MassData<2>;
 
-} // namespace d2
-} // namespace playrho
+        /// @brief Computes the mass data for a circular shape.
+        ///
+        /// @param r Radius of the circular shape.
+        /// @param density Areal density of mass.
+        /// @param location Location of the center of the shape.
+        ///
+        MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 location);
 
-#endif // PLAYRHO_COLLISION_MASSDATA_HPP
+        /// @brief Computes the mass data for a linear shape.
+        ///
+        /// @param r Radius of the vertices of the linear shape.
+        /// @param density Areal density of mass.
+        /// @param v0 Location of vertex zero.
+        /// @param v1 Location of vertex one.
+        ///
+        MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Length2 v1);
+
+        /// @brief Gets the mass data for the given collection of vertices with the given
+        ///    properties.
+        MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
+                             Span<const Length2> vertices);
+
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_COLLISION_MASSDATA_HPP

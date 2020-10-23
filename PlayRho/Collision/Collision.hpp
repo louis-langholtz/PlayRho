@@ -24,70 +24,72 @@
 /// Structures and functions used for computing contact points, distance
 /// queries, and TOI queries.
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/ArrayList.hpp>
 #include <PlayRho/Collision/ContactFeature.hpp>
+#include <PlayRho/Common/ArrayList.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 #include <array>
 #include <type_traits>
 
-namespace playrho {
-
-/// @brief Point state enumeration.
-/// @note This is used for determining the state of contact points.
-enum class PointState
+namespace playrho
 {
-    NullState, ///< point does not exist
-    AddState, ///< point was added in the update
-    PersistState, ///< point persisted across the update
-    RemoveState ///< point was removed in the update
-};
 
-/// @brief Point states.
-/// @details The states pertain to the transition from an old manifold to a new manifold.
-///   So state 1 is either persist or remove while state 2 is either add or persist.
-struct PointStates
-{
-    /// @brief State 1.
-    PointState state1[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
-    
-    /// @brief State 2.
-    PointState state2[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
-};
+    /// @brief Point state enumeration.
+    /// @note This is used for determining the state of contact points.
+    enum class PointState
+    {
+        NullState,   ///< point does not exist
+        AddState,    ///< point was added in the update
+        PersistState,///< point persisted across the update
+        RemoveState  ///< point was removed in the update
+    };
 
-namespace d2 {
+    /// @brief Point states.
+    /// @details The states pertain to the transition from an old manifold to a new manifold.
+    ///   So state 1 is either persist or remove while state 2 is either add or persist.
+    struct PointStates
+    {
+        /// @brief State 1.
+        PointState state1[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
 
-class Manifold;
+        /// @brief State 2.
+        PointState state2[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
+    };
 
-/// @brief Computes the point states given two manifolds.
-PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept;
+    namespace d2
+    {
 
-/// @brief Clip vertex.
-/// @details Used for computing contact manifolds.
-/// @note This data structure is 12-bytes large (on at least one 64-bit platform).
-struct ClipVertex
-{
-    Length2 v; ///< Vertex of edge or polygon. 8-bytes.
-    ContactFeature cf; ///< Contact feature information. 4-bytes.
-};
+        class Manifold;
 
-/// @brief Clip list for <code>ClipSegmentToLine</code>.
-/// @see ClipSegmentToLine.
-/// @note This data structure is at least 24-bytes large.
-using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
+        /// @brief Computes the point states given two manifolds.
+        PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept;
 
-/// Clipping for contact manifolds.
-/// @details This returns an array of points from the given line that are inside of the plane as
-///   defined by a given normal and offset.
-/// @param vIn Clip list of two points defining the line.
-/// @param normal Normal of the plane with which to determine intersection.
-/// @param offset Offset of the plane with which to determine intersection.
-/// @param indexA Index of vertex A.
-/// @return List of zero one or two clip points.
-ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec& normal, Length offset,
-                           ContactFeature::Index indexA);
+        /// @brief Clip vertex.
+        /// @details Used for computing contact manifolds.
+        /// @note This data structure is 12-bytes large (on at least one 64-bit platform).
+        struct ClipVertex
+        {
+            Length2 v;        ///< Vertex of edge or polygon. 8-bytes.
+            ContactFeature cf;///< Contact feature information. 4-bytes.
+        };
 
-} // namespace d2
-} // namespace playrho
+        /// @brief Clip list for <code>ClipSegmentToLine</code>.
+        /// @see ClipSegmentToLine.
+        /// @note This data structure is at least 24-bytes large.
+        using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 
-#endif // PLAYRHO_COLLISION_COLLISION_HPP
+        /// Clipping for contact manifolds.
+        /// @details This returns an array of points from the given line that are inside of the plane as
+        ///   defined by a given normal and offset.
+        /// @param vIn Clip list of two points defining the line.
+        /// @param normal Normal of the plane with which to determine intersection.
+        /// @param offset Offset of the plane with which to determine intersection.
+        /// @param indexA Index of vertex A.
+        /// @return List of zero one or two clip points.
+        ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec& normal, Length offset,
+                                   ContactFeature::Index indexA);
+
+    }// namespace d2
+}// namespace playrho
+
+#endif// PLAYRHO_COLLISION_COLLISION_HPP

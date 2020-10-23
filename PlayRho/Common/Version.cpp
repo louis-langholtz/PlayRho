@@ -19,22 +19,23 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/Version.hpp>
-#include <PlayRho/Common/TypeInfo.hpp> // for GetTypeName
 #include <PlayRho/Common/Real.hpp>
+#include <PlayRho/Common/TypeInfo.hpp>// for GetTypeName
+#include <PlayRho/Common/Version.hpp>
 
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
 #include <cstdlib>
 #include <sstream>
 
-namespace playrho {
-    
+namespace playrho
+{
+
     Version GetVersion() noexcept
     {
         return Version{0, 10, 0};
     }
-    
+
     std::string GetBuildDetails() noexcept
     {
         std::stringstream stream;
@@ -47,5 +48,5 @@ namespace playrho {
         stream << ", Real='" << GetTypeName<Real>() << "'";
         return stream.str();
     }
-        
-} // namespace playrho
+
+}// namespace playrho

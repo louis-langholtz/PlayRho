@@ -23,13 +23,14 @@
 
 #include <type_traits>
 
-namespace playrho {
-    
+namespace playrho
+{
+
     /// @brief Flag guard type.
-    template <typename T>
+    template<typename T>
     class FlagGuard
     {
-    public:
+     public:
         static_assert(std::is_unsigned<T>::value, "Unsigned type required");
 
         /// @brief Initializing constructor.
@@ -37,11 +38,12 @@ namespace playrho {
         ///   given value and then unsets those bits on destruction of this instance.
         /// @param flag Flag variable to set until the destruction of this instance.
         /// @param value Bit value to or with the flag variable on construction.
-        FlagGuard(T& flag, T value) : m_flag{flag}, m_value{value}
+        FlagGuard(T& flag, T value)
+            : m_flag{flag}, m_value{value}
         {
             m_flag |= m_value;
         }
-        
+
         /// @brief Copy constructor is deleted.
         FlagGuard(const FlagGuard<T>& value) = delete;
 
@@ -49,10 +51,10 @@ namespace playrho {
         FlagGuard(FlagGuard<T>&& value) noexcept = default;
 
         /// @brief Copy assignment operator is deleted.
-        FlagGuard<T>& operator= (const FlagGuard<T>& value) = delete;
+        FlagGuard<T>& operator=(const FlagGuard<T>& value) = delete;
 
         /// @brief Move assignment operator.
-        FlagGuard<T>& operator= (FlagGuard<T>&& value) noexcept = default;
+        FlagGuard<T>& operator=(FlagGuard<T>&& value) noexcept = default;
 
         /// @brief Destructor.
         /// @details Unsets the bits that were set on construction.
@@ -60,14 +62,14 @@ namespace playrho {
         {
             m_flag &= ~m_value;
         }
-        
+
         FlagGuard() = delete;
-        
-    private:
-        T& m_flag; ///< Flag.
-        T m_value; ///< Value.
+
+     private:
+        T& m_flag;///< Flag.
+        T m_value;///< Value.
     };
 
-} // namespace playrho
+}// namespace playrho
 
-#endif // PLAYRHO_COMMON_FLAGGUARD_HPP
+#endif// PLAYRHO_COMMON_FLAGGUARD_HPP

@@ -23,32 +23,35 @@
 
 #include <PlayRho/Common/CheckedValue.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
-/// @brief Positive constrained value checker.
-template <typename T>
-struct PositiveChecker {
-    /// @brief Exception type possibly thrown by this checker.
-    using exception_type = std::invalid_argument;
-
-    /// @brief Value checking functor.
-    /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(!(v > static_cast<T>(0)), T{v})
+    /// @brief Positive constrained value checker.
+    template<typename T>
+    struct PositiveChecker
     {
-        if (!(v > static_cast<T>(0))) {
-            throw exception_type("value not greater than zero");
+        /// @brief Exception type possibly thrown by this checker.
+        using exception_type = std::invalid_argument;
+
+        /// @brief Value checking functor.
+        /// @throws exception_type if given value is not valid.
+        constexpr auto operator()(const T& v) -> decltype(!(v > static_cast<T>(0)), T{v})
+        {
+            if (!(v > static_cast<T>(0)))
+            {
+                throw exception_type("value not greater than zero");
+            }
+            return v;
         }
-        return v;
-    }
-};
+    };
 
-/// @ingroup CheckedValues
-/// @brief Positive constrained value type.
-template <typename T>
-using Positive = CheckedValue<T, PositiveChecker<T>>;
+    /// @ingroup CheckedValues
+    /// @brief Positive constrained value type.
+    template<typename T>
+    using Positive = CheckedValue<T, PositiveChecker<T>>;
 
-static_assert(!std::is_default_constructible<Positive<int>>::value);
+    static_assert(!std::is_default_constructible<Positive<int>>::value);
 
-} // namespace playrho
+}// namespace playrho
 
-#endif // PLAYRHO_COMMON_POSITIVE_HPP
+#endif// PLAYRHO_COMMON_POSITIVE_HPP

@@ -21,68 +21,70 @@
 
 #include <PlayRho/Dynamics/WorldImplFixture.hpp>
 
+#include <PlayRho/Dynamics/Fixture.hpp>// for use of GetFixture
 #include <PlayRho/Dynamics/WorldImpl.hpp>
 #include <PlayRho/Dynamics/WorldImplBody.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp> // for use of GetFixture
 
-namespace playrho {
-namespace d2 {
-
-FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData)
+namespace playrho
 {
-    return world.CreateFixture(id, shape, def, resetMassData);
-}
+    namespace d2
+    {
 
-bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData)
-{
-    return world.Destroy(id, resetMassData);
-}
+        FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
+                                const FixtureConf& def, bool resetMassData)
+        {
+            return world.CreateFixture(id, shape, def, resetMassData);
+        }
 
-BodyID GetBody(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetBody();
-}
+        bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData)
+        {
+            return world.Destroy(id, resetMassData);
+        }
 
-Shape GetShape(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetShape();
-}
+        BodyID GetBody(const WorldImpl& world, FixtureID id)
+        {
+            return world.GetFixture(id).GetBody();
+        }
 
-bool IsSensor(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).IsSensor();
-}
+        Shape GetShape(const WorldImpl& world, FixtureID id)
+        {
+            return world.GetFixture(id).GetShape();
+        }
 
-void SetSensor(WorldImpl& world, FixtureID id, bool value)
-{
-    world.SetSensor(id, value);
-}
+        bool IsSensor(const WorldImpl& world, FixtureID id)
+        {
+            return world.GetFixture(id).IsSensor();
+        }
 
-AreaDensity GetDensity(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetDensity();
-}
+        void SetSensor(WorldImpl& world, FixtureID id, bool value)
+        {
+            world.SetSensor(id, value);
+        }
 
-const WorldImpl::FixtureProxies& GetProxies(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetProxies();
-}
+        AreaDensity GetDensity(const WorldImpl& world, FixtureID id)
+        {
+            return world.GetFixture(id).GetDensity();
+        }
 
-Filter GetFilterData(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetFilterData();
-}
+        const WorldImpl::FixtureProxies& GetProxies(const WorldImpl& world, FixtureID id)
+        {
+            return world.GetFixture(id).GetProxies();
+        }
 
-void Refilter(WorldImpl& world, FixtureID id)
-{
-    world.Refilter(id);
-}
+        Filter GetFilterData(const WorldImpl& world, FixtureID id)
+        {
+            return world.GetFixture(id).GetFilterData();
+        }
 
-void SetFilterData(WorldImpl& world, FixtureID id, const Filter& value)
-{
-    world.SetFilterData(id, value);
-}
+        void Refilter(WorldImpl& world, FixtureID id)
+        {
+            world.Refilter(id);
+        }
 
-} // namespace d2
-} // namespace playrho
+        void SetFilterData(WorldImpl& world, FixtureID id, const Filter& value)
+        {
+            world.SetFilterData(id, value);
+        }
+
+    }// namespace d2
+}// namespace playrho

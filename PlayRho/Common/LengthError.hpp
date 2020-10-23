@@ -23,19 +23,19 @@
 
 #include <stdexcept>
 
-namespace playrho {
-
-/// @brief Length based logic error.
-/// @details The exception used to indicate that an operation would produce a
-///   result that exceeded an object's maximum size.
-/// @ingroup ExceptionsGroup
-class LengthError: public std::length_error
+namespace playrho
 {
-public:
-    using std::length_error::length_error;
-};
 
-} // namespace playrho
+    /// @brief Length based logic error.
+    /// @details The exception used to indicate that an operation would produce a
+    ///   result that exceeded an object's maximum size.
+    /// @ingroup ExceptionsGroup
+    class LengthError : public std::length_error
+    {
+     public:
+        using std::length_error::length_error;
+    };
 
+}// namespace playrho
 
-#endif // PLAYRHO_COMMON_LENGTHERROR_HPP
+#endif// PLAYRHO_COMMON_LENGTHERROR_HPP

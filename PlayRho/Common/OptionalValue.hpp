@@ -25,8 +25,9 @@
 #include <cassert>
 #include <utility>
 
-namespace playrho {
-    
+namespace playrho
+{
+
     /// @brief Optional value template class.
     /// @details An implementation of the optional value type idea.
     /// @note This is meant to be compatible with <code>std::optional</code> from C++ 17.
@@ -34,19 +35,18 @@ namespace playrho {
     template<typename T>
     class OptionalValue
     {
-    public:
-        
+     public:
         /// @brief Value type.
         using value_type = T;
-        
+
         constexpr OptionalValue() = default;
-        
+
         /// @brief Copy constructor.
         constexpr OptionalValue(const OptionalValue& other) = default;
 
         /// @brief Move constructor.
-        constexpr OptionalValue(OptionalValue&& other) noexcept:
-            m_value{std::move(other.m_value)}, m_set{other.m_set}
+        constexpr OptionalValue(OptionalValue&& other) noexcept
+            : m_value{std::move(other.m_value)}, m_set{other.m_set}
         {
             // Intentionally empty.
             // Note that the exception specification of this constructor
@@ -59,28 +59,28 @@ namespace playrho {
         ~OptionalValue() = default;
 
         /// @brief Indirection operator.
-        constexpr const T& operator* () const;
+        constexpr const T& operator*() const;
 
         /// @brief Indirection operator.
-        constexpr T& operator* ();
-        
+        constexpr T& operator*();
+
         /// @brief Member of pointer operator.
-        constexpr const T* operator-> () const;
-        
+        constexpr const T* operator->() const;
+
         /// @brief Member of pointer operator.
-        constexpr T* operator-> ();
+        constexpr T* operator->();
 
         /// @brief Boolean operator.
         constexpr explicit operator bool() const noexcept;
 
         /// @brief Whether this optional value has a value.
         constexpr bool has_value() const noexcept;
-        
+
         /// @brief Assignment operator.
-        OptionalValue& operator= (const OptionalValue& other) = default;
+        OptionalValue& operator=(const OptionalValue& other) = default;
 
         /// @brief Move assignment operator.
-        OptionalValue& operator= (OptionalValue&& other) noexcept
+        OptionalValue& operator=(OptionalValue&& other) noexcept
         {
             // Note that the exception specification of this method
             //   doesn't match the defaulted one (when built with boost units).
@@ -90,44 +90,47 @@ namespace playrho {
         }
 
         /// @brief Assignment operator.
-        OptionalValue& operator= (T v);
+        OptionalValue& operator=(T v);
 
         /// @brief Accesses the value.
         constexpr T& value();
 
         /// @brief Accesses the value.
         constexpr const T& value() const;
-        
+
         /// @brief Gets the value or provides the alternate given value instead.
         constexpr T value_or(const T& alt) const;
-        
+
         /// @brief Resets the optional value back to its default constructed state.
         void reset() noexcept
         {
             m_value = value_type{};
             m_set = false;
         }
-        
-    private:
-        value_type m_value = value_type{}; ///< Underlying value.
-        bool m_set = false; ///< Whether <code>m_value</code> is set.
+
+     private:
+        value_type m_value = value_type{};///< Underlying value.
+        bool m_set = false;               ///< Whether <code>m_value</code> is set.
     };
-    
+
     template<typename T>
-    constexpr OptionalValue<T>::OptionalValue(T v): m_value{v}, m_set{true} {}
-    
+    constexpr OptionalValue<T>::OptionalValue(T v)
+        : m_value{v}, m_set{true}
+    {
+    }
+
     template<typename T>
     constexpr bool OptionalValue<T>::has_value() const noexcept
     {
         return m_set;
     }
-    
+
     template<typename T>
     constexpr OptionalValue<T>::operator bool() const noexcept
     {
         return m_set;
     }
-    
+
     template<typename T>
     OptionalValue<T>& OptionalValue<T>::operator=(T v)
     {
@@ -135,14 +138,14 @@ namespace playrho {
         m_set = true;
         return *this;
     }
-    
+
     template<typename T>
     constexpr const T* OptionalValue<T>::operator->() const
     {
         assert(m_set);
         return &m_value;
     }
-    
+
     template<typename T>
     constexpr T* OptionalValue<T>::operator->()
     {
@@ -156,7 +159,7 @@ namespace playrho {
         assert(m_set);
         return m_value;
     }
-    
+
     template<typename T>
     constexpr T& OptionalValue<T>::operator*()
     {
@@ -169,7 +172,7 @@ namespace playrho {
     {
         return m_value;
     }
-    
+
     template<typename T>
     constexpr const T& OptionalValue<T>::value() const
     {
@@ -179,16 +182,16 @@ namespace playrho {
     template<typename T>
     constexpr T OptionalValue<T>::value_or(const T& alt) const
     {
-        return m_set? m_value: alt;
+        return m_set ? m_value : alt;
     }
-    
+
     /// @brief Optional type alias.
     /// @details An alias setup to facilitate switching between implementations of the
     ///   optional type idea.
     /// @note This is meant to be used directly for optional values.
-    template <typename T>
+    template<typename T>
     using Optional = OptionalValue<T>;
-    
-} // namespace playrho
 
-#endif // PLAYRHO_COMMON_OPTIONALVALUE_HPP
+}// namespace playrho
+
+#endif// PLAYRHO_COMMON_OPTIONALVALUE_HPP

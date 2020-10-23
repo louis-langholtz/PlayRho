@@ -23,58 +23,59 @@
 #define PLAYRHO_COMMON_TRANSFORMATION_HPP
 
 #include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Vector2.hpp>
 #include <PlayRho/Common/UnitVec.hpp>
+#include <PlayRho/Common/Vector2.hpp>
 
 /// @file
 /// Definition of the Transformation class and free functions directly associated with it.
 
-namespace playrho {
-namespace d2 {
-
-struct BodyConf;
-
-/// @brief Describes a geometric transformation.
-/// @details A transform contains translation and rotation. It is used to represent
-///   the position and orientation of rigid frames.
-/// @note The default transformation is the identity transformation - the transformation
-///   which neither translates nor rotates a location.
-/// @note This data structure is 16-bytes large (on at least one 64-bit platform).
-struct Transformation
+namespace playrho
 {
-    Length2 p = Length2{}; ///< Translational portion of the transformation. 8-bytes.
-    UnitVec q = UnitVec::GetRight(); ///< Rotational portion of the transformation. 8-bytes.
-};
+    namespace d2
+    {
 
-/// @brief Identity transformation value.
-constexpr auto Transform_identity = Transformation{
-    Length2{0_m, 0_m}, UnitVec::GetRight()
-};
+        struct BodyConf;
 
-/// @brief Equality operator.
-/// @relatedalso Transformation
-constexpr bool operator== (Transformation lhs, Transformation rhs) noexcept
-{
-    return (lhs.p == rhs.p) && (lhs.q == rhs.q);
-}
+        /// @brief Describes a geometric transformation.
+        /// @details A transform contains translation and rotation. It is used to represent
+        ///   the position and orientation of rigid frames.
+        /// @note The default transformation is the identity transformation - the transformation
+        ///   which neither translates nor rotates a location.
+        /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
+        struct Transformation
+        {
+            Length2 p = Length2{};          ///< Translational portion of the transformation. 8-bytes.
+            UnitVec q = UnitVec::GetRight();///< Rotational portion of the transformation. 8-bytes.
+        };
 
-/// @brief Inequality operator.
-/// @relatedalso Transformation
-constexpr bool operator!= (Transformation lhs, Transformation rhs) noexcept
-{
-    return (lhs.p != rhs.p) || (lhs.q != rhs.q);
-}
+        /// @brief Identity transformation value.
+        constexpr auto Transform_identity = Transformation{
+            Length2{0_m, 0_m}, UnitVec::GetRight()};
 
-} // namespace d2
+        /// @brief Equality operator.
+        /// @relatedalso Transformation
+        constexpr bool operator==(Transformation lhs, Transformation rhs) noexcept
+        {
+            return (lhs.p == rhs.p) && (lhs.q == rhs.q);
+        }
 
-/// @brief Determines if the given value is valid.
-/// @relatedalso d2::Transformation
-template <>
-constexpr bool IsValid(const d2::Transformation& value) noexcept
-{
-    return IsValid(value.p) && IsValid(value.q);
-}
+        /// @brief Inequality operator.
+        /// @relatedalso Transformation
+        constexpr bool operator!=(Transformation lhs, Transformation rhs) noexcept
+        {
+            return (lhs.p != rhs.p) || (lhs.q != rhs.q);
+        }
 
-} // namespace playrho
+    }// namespace d2
 
-#endif // PLAYRHO_COMMON_TRANSFORMATION_HPP
+    /// @brief Determines if the given value is valid.
+    /// @relatedalso d2::Transformation
+    template<>
+    constexpr bool IsValid(const d2::Transformation& value) noexcept
+    {
+        return IsValid(value.p) && IsValid(value.q);
+    }
+
+}// namespace playrho
+
+#endif// PLAYRHO_COMMON_TRANSFORMATION_HPP

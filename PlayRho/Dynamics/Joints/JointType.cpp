@@ -21,13 +21,15 @@
 
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
 
-namespace playrho {
-namespace d2 {
-
-const char* ToString(JointType type) noexcept
+namespace playrho
 {
-    return GetName(type);
-}
+    namespace d2
+    {
 
-} // namespace d2
-} // namespace playrho
+        const char* ToString(JointType type) noexcept
+        {
+            return GetName(type);
+        }
+
+    }// namespace d2
+}// namespace playrho

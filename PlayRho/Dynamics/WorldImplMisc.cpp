@@ -21,155 +21,157 @@
 
 #include <PlayRho/Dynamics/WorldImplMisc.hpp>
 
-#include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/Collision/Manifold.hpp>// for WorldImpl not being incomplete
+#include <PlayRho/Dynamics/Body.hpp>     // for WorldImpl not being incomplete
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
-#include <PlayRho/Dynamics/Body.hpp> // for WorldImpl not being incomplete
-#include <PlayRho/Dynamics/Fixture.hpp> // for WorldImpl not being incomplete
-#include <PlayRho/Dynamics/Joints/Joint.hpp> // for WorldImpl not being incomplete
-#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for WorldImpl not being incomplete
-#include <PlayRho/Collision/Manifold.hpp> // for WorldImpl not being incomplete
+#include <PlayRho/Dynamics/Contacts/Contact.hpp>// for WorldImpl not being incomplete
+#include <PlayRho/Dynamics/Fixture.hpp>         // for WorldImpl not being incomplete
+#include <PlayRho/Dynamics/Joints/Joint.hpp>    // for WorldImpl not being incomplete
+#include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/Dynamics/WorldImpl.hpp>
 
-namespace playrho {
-namespace d2 {
-
-std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldConf& def)
+namespace playrho
 {
-    return std::make_unique<WorldImpl>(def);
-}
+    namespace d2
+    {
 
-std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldImpl& other)
-{
-    return std::make_unique<WorldImpl>(other);
-}
+        std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldConf& def)
+        {
+            return std::make_unique<WorldImpl>(def);
+        }
 
-void Clear(WorldImpl& world) noexcept
-{
-    world.Clear();
-}
+        std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldImpl& other)
+        {
+            return std::make_unique<WorldImpl>(other);
+        }
 
-void SetFixtureDestructionListener(WorldImpl& world,
-                                   std::function<void(FixtureID)> listener) noexcept
-{
-    world.SetFixtureDestructionListener(listener);
-}
+        void Clear(WorldImpl& world) noexcept
+        {
+            world.Clear();
+        }
 
-void SetJointDestructionListener(WorldImpl& world,
-                                 std::function<void(JointID)> listener) noexcept
-{
-    world.SetJointDestructionListener(listener);
-}
+        void SetFixtureDestructionListener(WorldImpl& world,
+                                           std::function<void(FixtureID)> listener) noexcept
+        {
+            world.SetFixtureDestructionListener(listener);
+        }
 
-void SetBeginContactListener(WorldImpl& world, std::function<void(ContactID)> listener) noexcept
-{
-    world.SetBeginContactListener(listener);
-}
+        void SetJointDestructionListener(WorldImpl& world,
+                                         std::function<void(JointID)> listener) noexcept
+        {
+            world.SetJointDestructionListener(listener);
+        }
 
-void SetEndContactListener(WorldImpl& world, std::function<void(ContactID)> listener) noexcept
-{
-    world.SetEndContactListener(listener);
-}
+        void SetBeginContactListener(WorldImpl& world, std::function<void(ContactID)> listener) noexcept
+        {
+            world.SetBeginContactListener(listener);
+        }
 
-void SetPreSolveContactListener(WorldImpl& world,
-                                std::function<void(ContactID, const Manifold&)> listener) noexcept
-{
-    world.SetPreSolveContactListener(listener);
-}
+        void SetEndContactListener(WorldImpl& world, std::function<void(ContactID)> listener) noexcept
+        {
+            world.SetEndContactListener(listener);
+        }
 
-void SetPostSolveContactListener(WorldImpl& world,
-                                 std::function<void(ContactID, const ContactImpulsesList&, unsigned)> listener) noexcept
-{
-    world.SetPostSolveContactListener(listener);
-}
+        void SetPreSolveContactListener(WorldImpl& world,
+                                        std::function<void(ContactID, const Manifold&)> listener) noexcept
+        {
+            world.SetPreSolveContactListener(listener);
+        }
 
-BodyID CreateBody(WorldImpl& world, const BodyConf& def)
-{
-    return world.CreateBody(def);
-}
+        void SetPostSolveContactListener(WorldImpl& world,
+                                         std::function<void(ContactID, const ContactImpulsesList&, unsigned)> listener) noexcept
+        {
+            world.SetPostSolveContactListener(listener);
+        }
 
-StepStats Step(WorldImpl& world, const StepConf& conf)
-{
-    return world.Step(conf);
-}
+        BodyID CreateBody(WorldImpl& world, const BodyConf& def)
+        {
+            return world.CreateBody(def);
+        }
 
-void ShiftOrigin(WorldImpl& world, Length2 newOrigin)
-{
-    world.ShiftOrigin(newOrigin);
-}
+        StepStats Step(WorldImpl& world, const StepConf& conf)
+        {
+            return world.Step(conf);
+        }
 
-SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const WorldImpl& world) noexcept
-{
-    return world.GetBodies();
-}
+        void ShiftOrigin(WorldImpl& world, Length2 newOrigin)
+        {
+            world.ShiftOrigin(newOrigin);
+        }
 
-SizedRange<std::vector<BodyID>::const_iterator>
-GetBodiesForProxies(const WorldImpl& world) noexcept
-{
-    return world.GetBodiesForProxies();
-}
+        SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const WorldImpl& world) noexcept
+        {
+            return world.GetBodies();
+        }
 
-SizedRange<std::vector<FixtureID>::const_iterator>
-GetFixturesForProxies(const WorldImpl& world) noexcept
-{
-    return world.GetFixturesForProxies();
-}
+        SizedRange<std::vector<BodyID>::const_iterator>
+        GetBodiesForProxies(const WorldImpl& world) noexcept
+        {
+            return world.GetBodiesForProxies();
+        }
 
-SizedRange<std::vector<JointID>::const_iterator> GetJoints(const WorldImpl& world) noexcept
-{
-    return world.GetJoints();
-}
+        SizedRange<std::vector<FixtureID>::const_iterator>
+        GetFixturesForProxies(const WorldImpl& world) noexcept
+        {
+            return world.GetFixturesForProxies();
+        }
 
-SizedRange<std::vector<KeyedContactPtr>::const_iterator>
-GetContacts(const WorldImpl& world) noexcept
-{
-    return world.GetContacts();
-}
+        SizedRange<std::vector<JointID>::const_iterator> GetJoints(const WorldImpl& world) noexcept
+        {
+            return world.GetJoints();
+        }
 
-bool IsLocked(const WorldImpl& world) noexcept
-{
-    return world.IsLocked();
-}
+        SizedRange<std::vector<KeyedContactPtr>::const_iterator>
+        GetContacts(const WorldImpl& world) noexcept
+        {
+            return world.GetContacts();
+        }
 
-bool IsStepComplete(const WorldImpl& world) noexcept
-{
-    return world.IsStepComplete();
-}
+        bool IsLocked(const WorldImpl& world) noexcept
+        {
+            return world.IsLocked();
+        }
 
-bool GetSubStepping(const WorldImpl& world) noexcept
-{
-    return world.GetSubStepping();
-}
+        bool IsStepComplete(const WorldImpl& world) noexcept
+        {
+            return world.IsStepComplete();
+        }
 
-void SetSubStepping(WorldImpl& world, bool value) noexcept
-{
-    world.SetSubStepping(value);
-}
+        bool GetSubStepping(const WorldImpl& world) noexcept
+        {
+            return world.GetSubStepping();
+        }
 
-Length GetMinVertexRadius(const WorldImpl& world) noexcept
-{
-    return world.GetMinVertexRadius();
-}
+        void SetSubStepping(WorldImpl& world, bool value) noexcept
+        {
+            world.SetSubStepping(value);
+        }
 
-Length GetMaxVertexRadius(const WorldImpl& world) noexcept
-{
-    return world.GetMaxVertexRadius();
-}
+        Length GetMinVertexRadius(const WorldImpl& world) noexcept
+        {
+            return world.GetMinVertexRadius();
+        }
 
-Frequency GetInvDeltaTime(const WorldImpl& world) noexcept
-{
-    return world.GetInvDeltaTime();
-}
+        Length GetMaxVertexRadius(const WorldImpl& world) noexcept
+        {
+            return world.GetMaxVertexRadius();
+        }
 
-const DynamicTree& GetTree(const WorldImpl& world) noexcept
-{
-    return world.GetTree();
-}
+        Frequency GetInvDeltaTime(const WorldImpl& world) noexcept
+        {
+            return world.GetInvDeltaTime();
+        }
 
-FixtureCounter GetShapeCount(const WorldImpl& world) noexcept
-{
-    return world.GetShapeCount();
-}
+        const DynamicTree& GetTree(const WorldImpl& world) noexcept
+        {
+            return world.GetTree();
+        }
 
-} // namespace d2
-} // namespace playrho
+        FixtureCounter GetShapeCount(const WorldImpl& world) noexcept
+        {
+            return world.GetShapeCount();
+        }
+
+    }// namespace d2
+}// namespace playrho

@@ -18,19 +18,19 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
 #ifndef PLAYRHO_COMMON_INTERVALS_HPP
 #define PLAYRHO_COMMON_INTERVALS_HPP
 
 #include <PlayRho/Common/Interval.hpp>
 #include <PlayRho/Common/Units.hpp>
 
-namespace playrho {
-    
+namespace playrho
+{
+
     /// @brief Length Interval alias.
     /// @relatedalso Interval
     using LengthInterval = Interval<Length>;
 
-} // namespace playrho
+}// namespace playrho
 
-#endif // PLAYRHO_COMMON_INTERVALS_HPP
+#endif// PLAYRHO_COMMON_INTERVALS_HPP
