@@ -24,7 +24,8 @@
 #include <PlayRho/Common/Fixed.hpp>
 #include <cmath>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @defgroup FixedMath Math Functions For Fixed Types
 /// @brief Common Mathematical Functions For Fixed Types.
@@ -44,10 +45,9 @@ namespace playrho {
 
 /// @brief Computes the absolute value.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/fabs
-template <typename BT, unsigned int FB, int N = 5>
-constexpr Fixed<BT, FB> abs(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB, int N = 5> constexpr Fixed<BT, FB> abs(Fixed<BT, FB> arg)
 {
-    return arg >= 0? arg: -arg;
+    return arg >= 0 ? arg : -arg;
 }
 
 /// @brief Computes the value of the given number raised to the given power.
@@ -55,8 +55,7 @@ constexpr Fixed<BT, FB> abs(Fixed<BT, FB> arg)
 ///   This may have significantly different performance than raising a value to a
 ///   non-integer power.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/pow
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> pow(Fixed<BT, FB> value, int n)
+template <typename BT, unsigned int FB> constexpr Fixed<BT, FB> pow(Fixed<BT, FB> value, int n)
 {
     if (!n)
     {
@@ -88,29 +87,29 @@ constexpr Fixed<BT, FB> pow(Fixed<BT, FB> value, int n)
     }
     if (value == Fixed<BT, FB>::GetInfinity())
     {
-        return (n < 0)? Fixed<BT, FB>{0}: Fixed<BT, FB>::GetInfinity();
+        return (n < 0) ? Fixed<BT, FB>{0} : Fixed<BT, FB>::GetInfinity();
     }
-    
+
     const auto doReciprocal = (n < 0);
     if (doReciprocal)
     {
         n = -n;
     }
-    
+
     auto res = value;
     for (; n > 1; --n)
     {
         res *= value;
     }
-    
-    return (doReciprocal)? 1 / res: res;
+
+    return (doReciprocal) ? 1 / res : res;
 }
 
-namespace detail {
+namespace detail
+{
 
 /// @brief Fixed point pi value.
-template <typename BT, unsigned int FB>
-constexpr auto FixedPi = Fixed<BT, FB>{3.14159265358979323846264338327950288};
+template <typename BT, unsigned int FB> constexpr auto FixedPi = Fixed<BT, FB>{3.14159265358979323846264338327950288};
 
 /// @brief Computes the factorial.
 constexpr auto factorial(std::int64_t n)
@@ -130,8 +129,7 @@ constexpr auto factorial(std::int64_t n)
 /// @see https://en.wikipedia.org/wiki/Taylor_series
 /// @see https://en.wikipedia.org/wiki/Exponentiation
 /// @see https://en.wikipedia.org/wiki/Exponential_function
-template <typename BT, unsigned int FB, int N = 6>
-constexpr Fixed<BT, FB> exp(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB, int N = 6> constexpr Fixed<BT, FB> exp(Fixed<BT, FB> arg)
 {
     const auto doReciprocal = (arg < 0);
     if (doReciprocal)
@@ -155,15 +153,14 @@ constexpr Fixed<BT, FB> exp(Fixed<BT, FB> arg)
         last *= arg;
         res += last;
     }
-    return doReciprocal? 1 / res: res;
+    return doReciprocal ? 1 / res : res;
 }
 
 /// @brief Computes the natural logarithm.
 /// @note A better method may be explained in https://math.stackexchange.com/a/61236/408405
 /// @see https://en.cppreference.com/w/cpp/numeric/math/log
 /// @see https://en.wikipedia.org/wiki/Natural_logarithm
-template <typename BT, unsigned int FB, int N = 6>
-Fixed<BT, FB> log(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB, int N = 6> Fixed<BT, FB> log(Fixed<BT, FB> arg)
 {
     if (arg.isnan() || (arg < 0))
     {
@@ -197,7 +194,7 @@ Fixed<BT, FB> log(Fixed<BT, FB> arg)
         }
         return res;
     }
-    
+
     // The following algorithm isn't as accurate as desired.
     // Is there a better one?
     // ln(x) = ((x - 1) / x) + ((x - 1) / x)^2/2 + ((x - 1) / x)^3/3 + ...
@@ -214,8 +211,7 @@ Fixed<BT, FB> log(Fixed<BT, FB> arg)
 
 /// @brief Computes the sine of the given argument via Maclaurin series approximation.
 /// @see https://en.wikipedia.org/wiki/Taylor_series
-template <typename BT, unsigned int FB, int N = 5>
-constexpr Fixed<BT, FB> sin(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB, int N = 5> constexpr Fixed<BT, FB> sin(Fixed<BT, FB> arg)
 {
     // Maclaurin series approximation...
     // sin x = sum((-1^n)*(x^(2n+1))/(2n+1)!)
@@ -243,8 +239,7 @@ constexpr Fixed<BT, FB> sin(Fixed<BT, FB> arg)
 
 /// @brief Computes the cosine of the given argument via Maclaurin series approximation.
 /// @see https://en.wikipedia.org/wiki/Taylor_series
-template <typename BT, unsigned int FB, int N = 5>
-constexpr Fixed<BT, FB> cos(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB, int N = 5> constexpr Fixed<BT, FB> cos(Fixed<BT, FB> arg)
 {
     // Maclaurin series approximation...
     // cos x = sum((-1^n)*(x^(2n))/(2n)!)
@@ -271,8 +266,7 @@ constexpr Fixed<BT, FB> cos(Fixed<BT, FB> arg)
 /// @brief Computes the arctangent of the given argument via Maclaurin series approximation.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/atan
 /// @see https://en.wikipedia.org/wiki/Taylor_series
-template <typename BT, unsigned int FB, int N = 5>
-constexpr Fixed<BT, FB> atan(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB, int N = 5> constexpr Fixed<BT, FB> atan(Fixed<BT, FB> arg)
 {
     // Note: if (x > 0) then arctan(x) ==  Pi/2 - arctan(1/x)
     //       if (x < 0) then arctan(x) == -Pi/2 - arctan(1/x).
@@ -296,24 +290,23 @@ constexpr Fixed<BT, FB> atan(Fixed<BT, FB> arg)
         res += sgn * term;
         sgn = -sgn;
     }
-    
+
     if (doReciprocal)
     {
-        return (arg > 0)? FixedPi<BT, FB> / 2 - res: -FixedPi<BT, FB> / 2 - res;
+        return (arg > 0) ? FixedPi<BT, FB> / 2 - res : -FixedPi<BT, FB> / 2 - res;
     }
     return res;
 }
 
 /// @brief Computes the square root of a non-negative value.
 /// @see https://en.wikipedia.org/wiki/Methods_of_computing_square_roots
-template <typename BT, unsigned int FB>
-constexpr auto ComputeSqrt(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB> constexpr auto ComputeSqrt(Fixed<BT, FB> arg)
 {
     auto temp = Fixed<BT, FB>{1};
     auto tempSquared = Square(temp);
     const auto greaterThanOne = arg > 1;
-    auto lower = greaterThanOne? Fixed<BT, FB>{1}: arg;
-    auto upper = greaterThanOne? arg: Fixed<BT, FB>{1};
+    auto lower = greaterThanOne ? Fixed<BT, FB>{1} : arg;
+    auto upper = greaterThanOne ? arg : Fixed<BT, FB>{1};
     while (arg != tempSquared)
     {
         const auto mid = (lower + upper) / 2;
@@ -339,24 +332,22 @@ constexpr auto ComputeSqrt(Fixed<BT, FB> arg)
 
 /// @brief Truncates the given value.
 /// @see https://en.cppreference.com/w/c/numeric/math/trunc
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> trunc(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB> constexpr Fixed<BT, FB> trunc(Fixed<BT, FB> arg)
 {
     return static_cast<Fixed<BT, FB>>(static_cast<long long>(arg));
 }
 
 /// @brief Next after function for Fixed types.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/nextafter
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> nextafter(Fixed<BT, FB> from, Fixed<BT, FB> to) noexcept
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> nextafter(Fixed<BT, FB> from, Fixed<BT, FB> to) noexcept
 {
     if (from < to)
     {
-        return static_cast<Fixed<BT, FB>>(from + Fixed<BT,FB>::GetMin());
+        return static_cast<Fixed<BT, FB>>(from + Fixed<BT, FB>::GetMin());
     }
     if (from > to)
     {
-        return static_cast<Fixed<BT, FB>>(from - Fixed<BT,FB>::GetMin());
+        return static_cast<Fixed<BT, FB>>(from - Fixed<BT, FB>::GetMin());
     }
     return static_cast<Fixed<BT, FB>>(to);
 }
@@ -380,8 +371,7 @@ inline Fixed<BT, FB> fmod(Fixed<BT, FB> dividend, Fixed<BT, FB> divisor) noexcep
 /// @note "Domain error" occurs if <code>arg</code> is less than zero.
 /// @return Mathematical square root value of the given value or the <code>NaN</code> value.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/sqrt
-template <typename BT, unsigned int FB>
-inline auto sqrt(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB> inline auto sqrt(Fixed<BT, FB> arg)
 {
     if ((arg == Fixed<BT, FB>{1}) || (arg == Fixed<BT, FB>{0}))
     {
@@ -397,17 +387,16 @@ inline auto sqrt(Fixed<BT, FB> arg)
 
 /// @brief Gets whether the given value is normal - i.e. not 0 nor infinite.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/isnormal
-template <typename BT, unsigned int FB>
-inline bool isnormal(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB> inline bool isnormal(Fixed<BT, FB> arg)
 {
     return arg != Fixed<BT, FB>{0} && arg.isfinite();
 }
 
-namespace detail {
+namespace detail
+{
 
 /// @brief Normalizes the given angular argument.
-template <typename BT, unsigned int FB>
-inline auto AngularNormalize(Fixed<BT, FB> angleInRadians)
+template <typename BT, unsigned int FB> inline auto AngularNormalize(Fixed<BT, FB> angleInRadians)
 {
     constexpr auto oneRotationInRadians = 2 * FixedPi<BT, FB>;
 
@@ -429,8 +418,7 @@ inline auto AngularNormalize(Fixed<BT, FB> angleInRadians)
 
 /// @brief Computes the sine of the argument for Fixed types.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/sin
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> sin(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> sin(Fixed<BT, FB> arg)
 {
     arg = detail::AngularNormalize(arg);
     return detail::sin<BT, FB, 5>(arg);
@@ -438,8 +426,7 @@ inline Fixed<BT, FB> sin(Fixed<BT, FB> arg)
 
 /// @brief Computes the cosine of the argument for Fixed types.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/cos
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
 {
     arg = detail::AngularNormalize(arg);
     return detail::cos<BT, FB, 5>(arg);
@@ -448,8 +435,7 @@ inline Fixed<BT, FB> cos(Fixed<BT, FB> arg)
 /// @brief Computes the arc tangent.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/atan
 /// @return Value between <code>-Pi / 2</code> and <code>Pi / 2</code>.
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> atan(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> atan(Fixed<BT, FB> arg)
 {
     if (arg.isnan() || (arg == 0))
     {
@@ -469,8 +455,7 @@ inline Fixed<BT, FB> atan(Fixed<BT, FB> arg)
 /// @brief Computes the multi-valued inverse tangent.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/atan2
 /// @return Value between <code>-Pi</code> and <code>+Pi</code> inclusive.
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> atan2(Fixed<BT, FB> y, Fixed<BT, FB> x)
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> atan2(Fixed<BT, FB> y, Fixed<BT, FB> x)
 {
     // See https://en.wikipedia.org/wiki/Atan2
     // See https://en.wikipedia.org/wiki/Taylor_series
@@ -480,7 +465,7 @@ inline Fixed<BT, FB> atan2(Fixed<BT, FB> y, Fixed<BT, FB> x)
     }
     if (x < 0)
     {
-        return atan(y / x) + ((y >= 0)? +1: -1) * detail::FixedPi<BT, FB>;
+        return atan(y / x) + ((y >= 0) ? +1 : -1) * detail::FixedPi<BT, FB>;
     }
     if (y > 0)
     {
@@ -495,24 +480,21 @@ inline Fixed<BT, FB> atan2(Fixed<BT, FB> y, Fixed<BT, FB> x)
 
 /// @brief Computes the natural logarithm of the given argument.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/log
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> log(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> log(Fixed<BT, FB> arg)
 {
-    return (arg < 8)? detail::log<BT, FB, 36>(arg): detail::log<BT, FB, 96>(arg);
+    return (arg < 8) ? detail::log<BT, FB, 36>(arg) : detail::log<BT, FB, 96>(arg);
 }
 
 /// @brief Computes the Euler number raised to the power of the given argument.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/exp
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> exp(Fixed<BT, FB> arg)
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> exp(Fixed<BT, FB> arg)
 {
-    return (arg <= 2)? detail::exp<BT, FB, 6>(arg): detail::exp<BT, FB, 24>(arg);
+    return (arg <= 2) ? detail::exp<BT, FB, 6>(arg) : detail::exp<BT, FB, 24>(arg);
 }
 
 /// @brief Computes the value of the base number raised to the power of the exponent.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/pow
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> pow(Fixed<BT, FB> base, Fixed<BT, FB> exponent)
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> pow(Fixed<BT, FB> base, Fixed<BT, FB> exponent)
 {
     if (exponent.isfinite())
     {
@@ -523,7 +505,7 @@ inline Fixed<BT, FB> pow(Fixed<BT, FB> base, Fixed<BT, FB> exponent)
             return pow(base, intExp);
         }
     }
-    
+
     if (base < 0)
     {
         return Fixed<BT, FB>::GetNaN();
@@ -536,16 +518,14 @@ inline Fixed<BT, FB> pow(Fixed<BT, FB> base, Fixed<BT, FB> exponent)
 
 /// @brief Computes the square root of the sum of the squares.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/hypot
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> hypot(Fixed<BT, FB> x, Fixed<BT, FB> y)
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> hypot(Fixed<BT, FB> x, Fixed<BT, FB> y)
 {
     return sqrt(x * x + y * y);
 }
 
 /// @brief Rounds the given value.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/round
-template <typename BT, unsigned int FB>
-inline Fixed<BT, FB> round(Fixed<BT, FB> value) noexcept
+template <typename BT, unsigned int FB> inline Fixed<BT, FB> round(Fixed<BT, FB> value) noexcept
 {
     const auto tmp = value + (Fixed<BT, FB>{1} / Fixed<BT, FB>{2});
     const auto truncated = static_cast<typename Fixed<BT, FB>::value_type>(tmp);
@@ -554,27 +534,23 @@ inline Fixed<BT, FB> round(Fixed<BT, FB> value) noexcept
 
 /// @brief Determines whether the given value is negative.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/signbit
-template <typename BT, unsigned int FB>
-inline bool signbit(Fixed<BT, FB> value) noexcept
+template <typename BT, unsigned int FB> inline bool signbit(Fixed<BT, FB> value) noexcept
 {
     return value.getsign() < 0;
 }
 
 /// @brief Gets whether the given value is not-a-number.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/isnan
-template <typename BT, unsigned int FB>
-constexpr bool isnan(Fixed<BT, FB> value) noexcept
+template <typename BT, unsigned int FB> constexpr bool isnan(Fixed<BT, FB> value) noexcept
 {
     return value.Compare(0) == Fixed<BT, FB>::CmpResult::Incomparable;
 }
 
 /// @brief Gets whether the given value is finite.
 /// @see https://en.cppreference.com/w/cpp/numeric/math/isfinite
-template <typename BT, unsigned int FB>
-inline bool isfinite(Fixed<BT, FB> value) noexcept
+template <typename BT, unsigned int FB> inline bool isfinite(Fixed<BT, FB> value) noexcept
 {
-    return (value > Fixed<BT, FB>::GetNegativeInfinity())
-    && (value < Fixed<BT, FB>::GetInfinity());
+    return (value > Fixed<BT, FB>::GetNegativeInfinity()) && (value < Fixed<BT, FB>::GetInfinity());
 }
 
 /// @}

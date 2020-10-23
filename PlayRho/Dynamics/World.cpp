@@ -30,8 +30,10 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 static_assert(std::is_default_constructible<World>::value, "World must be default constructible!");
 static_assert(std::is_copy_constructible<World>::value, "World must be copy constructible!");
@@ -48,12 +50,12 @@ void World::Clear() noexcept
     ::playrho::d2::Clear(*m_impl);
 }
 
-void World::SetFixtureDestructionListener(const FixtureListener& listener) noexcept
+void World::SetFixtureDestructionListener(const FixtureListener &listener) noexcept
 {
     ::playrho::d2::SetFixtureDestructionListener(*m_impl, listener);
 }
 
-void World::SetJointDestructionListener(const JointListener& listener) noexcept
+void World::SetJointDestructionListener(const JointListener &listener) noexcept
 {
     ::playrho::d2::SetJointDestructionListener(*m_impl, listener);
 }
@@ -78,7 +80,7 @@ void World::SetPostSolveContactListener(ImpulsesContactListener listener) noexce
     ::playrho::d2::SetPostSolveContactListener(*m_impl, listener);
 }
 
-BodyID World::CreateBody(const BodyConf& def)
+BodyID World::CreateBody(const BodyConf &def)
 {
     return ::playrho::d2::CreateBody(*m_impl, def);
 }
@@ -88,7 +90,7 @@ void World::Destroy(BodyID id)
     ::playrho::d2::Destroy(*m_impl, id);
 }
 
-JointID World::CreateJoint(const Joint& def)
+JointID World::CreateJoint(const Joint &def)
 {
     return ::playrho::d2::CreateJoint(*m_impl, def);
 }
@@ -97,8 +99,8 @@ void World::Destroy(JointID id)
 {
     ::playrho::d2::Destroy(*m_impl, id);
 }
-    
-StepStats World::Step(const StepConf& conf)
+
+StepStats World::Step(const StepConf &conf)
 {
     return ::playrho::d2::Step(*m_impl, conf);
 }
@@ -218,7 +220,7 @@ Frequency World::GetInvDeltaTime() const noexcept
     return ::playrho::d2::GetInvDeltaTime(*m_impl);
 }
 
-const DynamicTree& World::GetTree() const noexcept
+const DynamicTree &World::GetTree() const noexcept
 {
     return ::playrho::d2::GetTree(*m_impl);
 }
@@ -233,7 +235,7 @@ void World::Refilter(FixtureID id)
     ::playrho::d2::Refilter(*m_impl, id);
 }
 
-void World::SetFilterData(FixtureID id, const Filter& filter)
+void World::SetFilterData(FixtureID id, const Filter &filter)
 {
     ::playrho::d2::SetFilterData(*m_impl, id, filter);
 }
@@ -243,8 +245,7 @@ void World::SetType(BodyID id, BodyType type)
     ::playrho::d2::SetType(*m_impl, id, type);
 }
 
-FixtureID World::CreateFixture(BodyID body, const Shape& shape, const FixtureConf& def,
-                              bool resetMassData)
+FixtureID World::CreateFixture(BodyID body, const Shape &shape, const FixtureConf &def, bool resetMassData)
 {
     return ::playrho::d2::CreateFixture(*m_impl, body, shape, def, resetMassData);
 }
@@ -274,7 +275,7 @@ MassData World::ComputeMassData(BodyID id) const
     return ::playrho::d2::ComputeMassData(*m_impl, id);
 }
 
-void World::SetMassData(BodyID id, const MassData& massData)
+void World::SetMassData(BodyID id, const MassData &massData)
 {
     ::playrho::d2::SetMassData(*m_impl, id, massData);
 }
@@ -339,7 +340,7 @@ AreaDensity World::GetDensity(FixtureID id) const
     return ::playrho::d2::GetDensity(*m_impl, id);
 }
 
-const World::FixtureProxies& World::GetProxies(FixtureID id) const
+const World::FixtureProxies &World::GetProxies(FixtureID id) const
 {
     return ::playrho::d2::GetProxies(*m_impl, id);
 }
@@ -374,7 +375,7 @@ Velocity World::GetVelocity(BodyID id) const
     return ::playrho::d2::GetVelocity(*m_impl, id);
 }
 
-void World::SetVelocity(BodyID id, const Velocity& value)
+void World::SetVelocity(BodyID id, const Velocity &value)
 {
     ::playrho::d2::SetVelocity(*m_impl, id, value);
 }
@@ -469,12 +470,12 @@ InvRotInertia World::GetInvRotInertia(BodyID id) const
     return ::playrho::d2::GetInvRotInertia(*m_impl, id);
 }
 
-const Joint& World::GetJoint(JointID id) const
+const Joint &World::GetJoint(JointID id) const
 {
     return ::playrho::d2::GetJoint(*m_impl, id);
 }
 
-void World::SetJoint(JointID id, const Joint& def)
+void World::SetJoint(JointID id, const Joint &def)
 {
     ::playrho::d2::SetJoint(*m_impl, id, def);
 }
@@ -609,7 +610,7 @@ void World::SetRestitution(ContactID id, Real value)
     ::playrho::d2::SetRestitution(*m_impl, id, value);
 }
 
-const Manifold& World::GetManifold(ContactID id) const
+const Manifold &World::GetManifold(ContactID id) const
 {
     return ::playrho::d2::GetManifold(*m_impl, id);
 }

@@ -31,20 +31,21 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 
-namespace playrho {
-namespace detail {
+namespace playrho
+{
+namespace detail
+{
 
 /// @brief Mass data.
 /// @details This holds the mass data computed for a shape.
-template <std::size_t N>
-struct MassData
+template <std::size_t N> struct MassData
 {
     /// @brief Position of the shape's centroid relative to the shape's origin.
     Vector<Length, N> center = Vector<Length, N>{};
-    
+
     /// @brief Mass of the shape in kilograms.
     NonNegative<Mass> mass = NonNegative<Mass>{0_kg};
-    
+
     /// @brief Rotational inertia, a.k.a. moment of inertia.
     /// @details This is the rotational inertia of the shape about the local origin.
     /// @see https://en.wikipedia.org/wiki/Moment_of_inertia
@@ -55,22 +56,21 @@ struct MassData
 
 /// @brief Equality operator for mass data.
 /// @relatedalso MassData
-template <std::size_t N>
-constexpr bool operator== (MassData<N> lhs, MassData<N> rhs)
+template <std::size_t N> constexpr bool operator==(MassData<N> lhs, MassData<N> rhs)
 {
     return lhs.center == rhs.center && lhs.mass == rhs.mass && lhs.I == rhs.I;
 }
 
 /// @brief Inequality operator for mass data.
 /// @relatedalso MassData
-template <std::size_t N>
-constexpr bool operator!= (MassData<N> lhs, MassData<N> rhs)
+template <std::size_t N> constexpr bool operator!=(MassData<N> lhs, MassData<N> rhs)
 {
     return !(lhs == rhs);
 }
 } // namespace detail
 
-namespace d2 {
+namespace d2
+{
 
 /// @brief Mass data alias for 2-D objects.
 /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
@@ -95,8 +95,7 @@ MassData GetMassData(Length r, NonNegative<AreaDensity> density, Length2 v0, Len
 
 /// @brief Gets the mass data for the given collection of vertices with the given
 ///    properties.
-MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density,
-                     Span<const Length2> vertices);
+MassData GetMassData(Length vertexRadius, NonNegative<AreaDensity> density, Span<const Length2> vertices);
 
 } // namespace d2
 } // namespace playrho

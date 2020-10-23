@@ -27,12 +27,14 @@
 #include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct ConstraintSolverConf;
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class Joint;
 class World;
@@ -60,7 +62,7 @@ struct GearJointConf : public JointBuilder<GearJointConf>
     GearJointConf(BodyID bA, BodyID bB, BodyID bC, BodyID bD) noexcept;
 
     /// @brief Uses the given ratio value.
-    constexpr auto& UseRatio(Real v) noexcept
+    constexpr auto &UseRatio(Real v) noexcept
     {
         ratio = v;
         return *this;
@@ -83,7 +85,7 @@ struct GearJointConf : public JointBuilder<GearJointConf>
     Length2 localAnchorB{}; ///< Local anchor B.
     Length2 localAnchorC{}; ///< Local anchor C.
     Length2 localAnchorD{}; ///< Local anchor D.
-    
+
     UnitVec localAxis1; ///< Local axis 1. Used when type1 is not Revolute.
     UnitVec localAxis2; ///< Local axis 2. Used when type2 is not Revolute.
 
@@ -102,39 +104,39 @@ struct GearJointConf : public JointBuilder<GearJointConf>
 
     // Solver temp
     Vec2 JvAC = Vec2{}; ///< <code>AC Jv</code> data.
-    Vec2 JvBD = {}; ///< <code>BD Jv</code> data.
-    Length JwA = 0_m; ///< A <code>Jw</code> data.
-    Length JwB = 0_m; ///< B <code>Jw</code> data.
-    Length JwC = 0_m; ///< C <code>Jw</code> data.
-    Length JwD = 0_m; ///< D <code>Jw</code> data.
-    Real mass = 0; ///< Either linear mass or angular mass.
+    Vec2 JvBD = {};     ///< <code>BD Jv</code> data.
+    Length JwA = 0_m;   ///< A <code>Jw</code> data.
+    Length JwB = 0_m;   ///< B <code>Jw</code> data.
+    Length JwC = 0_m;   ///< C <code>Jw</code> data.
+    Length JwD = 0_m;   ///< D <code>Jw</code> data.
+    Real mass = 0;      ///< Either linear mass or angular mass.
 };
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
-GearJointConf GetGearJointConf(const Joint& joint) noexcept;
+GearJointConf GetGearJointConf(const Joint &joint) noexcept;
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
-GearJointConf GetGearJointConf(const World& world, JointID id1, JointID id2, Real ratio = Real{1});
+GearJointConf GetGearJointConf(const World &world, JointID id1, JointID id2, Real ratio = Real{1});
 
 /// @brief Gets the current linear reaction for the given configuration.
 /// @relatedalso GearJointConf
-constexpr Momentum2 GetLinearReaction(const GearJointConf& object)
+constexpr Momentum2 GetLinearReaction(const GearJointConf &object)
 {
     return object.impulse * object.JvAC;
 }
 
 /// @brief Gets the current angular reaction for the given configuration.
 /// @relatedalso GearJointConf
-constexpr AngularMomentum GetAngularReaction(const GearJointConf& object)
+constexpr AngularMomentum GetAngularReaction(const GearJointConf &object)
 {
     return object.impulse * object.JwA / Radian;
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso GearJointConf
-constexpr bool ShiftOrigin(GearJointConf&, Length2) noexcept
+constexpr bool ShiftOrigin(GearJointConf &, Length2) noexcept
 {
     return false;
 }
@@ -143,55 +145,52 @@ constexpr bool ShiftOrigin(GearJointConf&, Length2) noexcept
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso GearJointConf
-void InitVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+void InitVelocity(GearJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 /// @relatedalso GearJointConf
-bool SolveVelocity(GearJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+bool SolveVelocity(GearJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step);
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
 /// @relatedalso GearJointConf
-bool SolvePosition(const GearJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf);
+bool SolvePosition(const GearJointConf &object, std::vector<BodyConstraint> &bodies, const ConstraintSolverConf &conf);
 
 /// @brief Free function for getting the ratio value of the given configuration.
 /// @relatedalso GearJointConf
-constexpr auto GetRatio(const GearJointConf& object) noexcept
+constexpr auto GetRatio(const GearJointConf &object) noexcept
 {
     return object.ratio;
 }
 
 /// @brief Free function for setting the ratio value of the given configuration.
 /// @relatedalso GearJointConf
-constexpr auto SetRatio(GearJointConf& object, Real value) noexcept
+constexpr auto SetRatio(GearJointConf &object, Real value) noexcept
 {
     object.UseRatio(value);
 }
 
 /// @brief Free function for getting the constant value of the given configuration.
 /// @relatedalso GearJointConf
-constexpr auto GetConstant(const GearJointConf& object) noexcept
+constexpr auto GetConstant(const GearJointConf &object) noexcept
 {
     return object.constant;
 }
 
 /// @brief Free function for getting joint 1 type value of the given configuration.
 /// @relatedalso GearJointConf
-constexpr auto GetType1(const GearJointConf& object) noexcept
+constexpr auto GetType1(const GearJointConf &object) noexcept
 {
     return object.type1;
 }
 
 /// @brief Free function for getting joint 2 type value of the given configuration.
 /// @relatedalso GearJointConf
-constexpr auto GetType2(const GearJointConf& object) noexcept
+constexpr auto GetType2(const GearJointConf &object) noexcept
 {
     return object.type2;
 }
@@ -199,11 +198,10 @@ constexpr auto GetType2(const GearJointConf& object) noexcept
 } // namespace d2
 
 /// @brief Type info specialization for <code>d2::GearJointConf</code>.
-template <>
-struct TypeInfo<d2::GearJointConf>
+template <> struct TypeInfo<d2::GearJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static constexpr const char* name = "d2::GearJointConf";
+    static constexpr const char *name = "d2::GearJointConf";
 };
 
 } // namespace playrho

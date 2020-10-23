@@ -17,30 +17,31 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/StackAllocator.hpp>
-#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Common/DynamicMemory.hpp>
+#include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/StackAllocator.hpp>
 
 #include <memory>
 
 using namespace playrho;
 
-namespace {
+namespace
+{
 
 inline std::size_t alignment_size(std::size_t size)
 {
     constexpr auto one = static_cast<std::size_t>(1u);
-    return (size < one)? one: (size < sizeof(std::max_align_t))?
-        static_cast<std::size_t>(NextPowerOfTwo(size - one)): alignof(std::max_align_t);
+    return (size < one) ? one
+                        : (size < sizeof(std::max_align_t)) ? static_cast<std::size_t>(NextPowerOfTwo(size - one))
+                                                            : alignof(std::max_align_t);
 };
 
 } // anonymous namespace
 
-StackAllocator::StackAllocator(Conf config):
-    m_data{static_cast<decltype(m_data)>(Alloc(config.preallocation_size))},
-    m_entries{static_cast<AllocationRecord*>(Alloc(config.allocation_records * sizeof(AllocationRecord)))},
-    m_size{config.preallocation_size},
-    m_max_entries{config.allocation_records}
+StackAllocator::StackAllocator(Conf config)
+    : m_data{static_cast<decltype(m_data)>(Alloc(config.preallocation_size))},
+      m_entries{static_cast<AllocationRecord *>(Alloc(config.allocation_records * sizeof(AllocationRecord)))},
+      m_size{config.preallocation_size}, m_max_entries{config.allocation_records}
 {
     // Intentionally empty.
 }
@@ -53,14 +54,14 @@ StackAllocator::~StackAllocator() noexcept
     playrho::Free(m_data);
 }
 
-void* StackAllocator::Allocate(size_type size)
+void *StackAllocator::Allocate(size_type size)
 {
     assert(m_index <= m_size);
 
     if (m_entryCount < m_max_entries)
     {
         auto entry = m_entries + m_entryCount;
-        
+
         const auto available = m_size - m_index;
         if (size > (available / sizeof(std::max_align_t)) * sizeof(std::max_align_t))
         {
@@ -69,7 +70,7 @@ void* StackAllocator::Allocate(size_type size)
         }
         else
         {
-            auto ptr = static_cast<void*>(m_data + m_index);
+            auto ptr = static_cast<void *>(m_data + m_index);
             auto space = available;
             entry->data = std::align(alignment_size(size), size, ptr, space);
             entry->usedMalloc = false;
@@ -87,7 +88,7 @@ void* StackAllocator::Allocate(size_type size)
     return nullptr;
 }
 
-void StackAllocator::Free(void* p) noexcept
+void StackAllocator::Free(void *p) noexcept
 {
     if (p)
     {

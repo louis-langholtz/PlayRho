@@ -20,8 +20,10 @@
 
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 } // namespace d2
 } // namespace playrho

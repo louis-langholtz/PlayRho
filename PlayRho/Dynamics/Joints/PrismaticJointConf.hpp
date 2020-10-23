@@ -24,15 +24,17 @@
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 
-#include <PlayRho/Dynamics/Joints/LimitState.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Dynamics/Joints/LimitState.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct ConstraintSolverConf;
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class World;
 class BodyConstraint;
@@ -59,52 +61,51 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     constexpr PrismaticJointConf() = default;
 
     /// @brief Copy constructor.
-    PrismaticJointConf(const PrismaticJointConf& copy) = default;
+    PrismaticJointConf(const PrismaticJointConf &copy) = default;
 
     /// @brief Initializing constructor.
     /// @details Initializes the bodies, anchors, axis, and reference angle using the world
     ///   anchor and unit world axis.
-    PrismaticJointConf(BodyID bA, BodyID bB,
-                       Length2 laA = Length2{}, Length2 laB = Length2{},
+    PrismaticJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
                        UnitVec axisA = UnitVec::GetRight(), Angle angle = 0_deg) noexcept;
 
     /// @brief Uses the given enable limit state value.
-    constexpr auto& UseEnableLimit(bool v) noexcept
+    constexpr auto &UseEnableLimit(bool v) noexcept
     {
         enableLimit = v;
         return *this;
     }
 
     /// @brief Uses the given lower translation value.
-    constexpr auto& UseLowerLength(Length v) noexcept
+    constexpr auto &UseLowerLength(Length v) noexcept
     {
         lowerTranslation = v;
         return *this;
     }
 
     /// @brief Uses the given upper translation value.
-    constexpr auto& UseUpperLength(Length v) noexcept
+    constexpr auto &UseUpperLength(Length v) noexcept
     {
         upperTranslation = v;
         return *this;
     }
 
     /// @brief Uses the given enable motor state value.
-    constexpr auto& UseEnableMotor(bool v) noexcept
+    constexpr auto &UseEnableMotor(bool v) noexcept
     {
         enableMotor = v;
         return *this;
     }
 
     /// @brief Uses the given motor speed value.
-    constexpr auto& UseMotorSpeed(AngularVelocity v) noexcept
+    constexpr auto &UseMotorSpeed(AngularVelocity v) noexcept
     {
         motorSpeed = v;
         return *this;
     }
 
     /// @brief Uses the given max motor force value.
-    constexpr auto& UseMaxMotorForce(Force v) noexcept
+    constexpr auto &UseMaxMotorForce(Force v) noexcept
     {
         maxMotorForce = v;
         return *this;
@@ -151,90 +152,86 @@ struct PrismaticJointConf : public JointBuilder<PrismaticJointConf>
     // Solver temp
     UnitVec axis = UnitVec::GetZero(); ///< Axis.
     UnitVec perp = UnitVec::GetZero(); ///< Perpendicular.
-    Length s1 = 0_m; ///< Location S-1.
-    Length s2 = 0_m; ///< Location S-2.
-    Length a1 = 0_m; ///< Location A-1.
-    Length a2 = 0_m; ///< Location A-2.
-    Mat33 K = {}; ///< K matrix.
-    Mass motorMass = 0_kg; ///< Motor mass.
+    Length s1 = 0_m;                   ///< Location S-1.
+    Length s2 = 0_m;                   ///< Location S-2.
+    Length a1 = 0_m;                   ///< Location A-1.
+    Length a2 = 0_m;                   ///< Location A-2.
+    Mat33 K = {};                      ///< K matrix.
+    Mass motorMass = 0_kg;             ///< Motor mass.
 };
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
-PrismaticJointConf GetPrismaticJointConf(const Joint& joint);
+PrismaticJointConf GetPrismaticJointConf(const Joint &joint);
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
-PrismaticJointConf GetPrismaticJointConf(const World& world,
-                                         BodyID bA, BodyID bB,
-                                         const Length2 anchor,
+PrismaticJointConf GetPrismaticJointConf(const World &world, BodyID bA, BodyID bB, const Length2 anchor,
                                          const UnitVec axis);
 
 /// @brief Gets the current linear velocity of the given configuration.
 /// @relatedalso World
-LinearVelocity GetLinearVelocity(const World& world, const PrismaticJointConf& joint) noexcept;
+LinearVelocity GetLinearVelocity(const World &world, const PrismaticJointConf &joint) noexcept;
 
 /// @brief Free function for getting the linear lower limit value of the given configuration.
 /// @relatedalso PrismaticJointConf
-constexpr auto GetLinearLowerLimit(const PrismaticJointConf& conf) noexcept
+constexpr auto GetLinearLowerLimit(const PrismaticJointConf &conf) noexcept
 {
     return conf.lowerTranslation;
 }
 
 /// @brief Free function for getting the linear upper limit value of the given configuration.
 /// @relatedalso PrismaticJointConf
-constexpr auto GetLinearUpperLimit(const PrismaticJointConf& conf) noexcept
+constexpr auto GetLinearUpperLimit(const PrismaticJointConf &conf) noexcept
 {
     return conf.upperTranslation;
 }
 
 /// @brief Free function for setting the linear limits of the given configuration.
 /// @relatedalso PrismaticJointConf
-constexpr void SetLinearLimits(PrismaticJointConf& conf, Length lower, Length upper) noexcept
+constexpr void SetLinearLimits(PrismaticJointConf &conf, Length lower, Length upper) noexcept
 {
     conf.UseLowerLength(lower).UseUpperLength(upper);
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso PrismaticJointConf
-constexpr auto ShiftOrigin(PrismaticJointConf&, Length2) noexcept
+constexpr auto ShiftOrigin(PrismaticJointConf &, Length2) noexcept
 {
     return false;
 }
 
 /// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso PrismaticJointConf
-Momentum2 GetLinearReaction(const PrismaticJointConf& conf);
+Momentum2 GetLinearReaction(const PrismaticJointConf &conf);
 
 /// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso PrismaticJointConf
-AngularMomentum GetAngularReaction(const PrismaticJointConf& conf);
+AngularMomentum GetAngularReaction(const PrismaticJointConf &conf);
 
 /// @brief Initializes velocity constraint data based on the given solver data.
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocityConstraints.
 /// @relatedalso PrismaticJointConf
-void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+void InitVelocity(PrismaticJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 /// @relatedalso PrismaticJointConf
-bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+bool SolveVelocity(PrismaticJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step);
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
 /// @relatedalso PrismaticJointConf
-bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf);
+bool SolvePosition(const PrismaticJointConf &object, std::vector<BodyConstraint> &bodies,
+                   const ConstraintSolverConf &conf);
 
 /// @brief Free function for setting the maximum motor torque value of the given configuration.
 /// @relatedalso PrismaticJointConf
-constexpr void SetMaxMotorForce(PrismaticJointConf& object, Force value)
+constexpr void SetMaxMotorForce(PrismaticJointConf &object, Force value)
 {
     object.UseMaxMotorForce(value);
 }
@@ -242,11 +239,10 @@ constexpr void SetMaxMotorForce(PrismaticJointConf& object, Force value)
 } // namespace d2
 
 /// @brief Type info specialization for <code>d2::PrismaticJointConf</code>.
-template <>
-struct TypeInfo<d2::PrismaticJointConf>
+template <> struct TypeInfo<d2::PrismaticJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static constexpr const char* name = "d2::PrismaticJointConf";
+    static constexpr const char *name = "d2::PrismaticJointConf";
 };
 
 } // namespace playrho

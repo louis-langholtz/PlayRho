@@ -24,15 +24,17 @@
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 
-#include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/NonNegative.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct ConstraintSolverConf;
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class World;
 class BodyConstraint;
@@ -49,41 +51,40 @@ struct MotorJointConf : public JointBuilder<MotorJointConf>
 
     /// @brief Default constructor.
     constexpr MotorJointConf() = default;
-    
+
     /// @brief Initialize the bodies and offsets using the current transforms.
-    MotorJointConf(BodyID bA, BodyID bB,
-                   Length2 lo = Length2{}, Angle ao = 0_deg) noexcept;
-    
+    MotorJointConf(BodyID bA, BodyID bB, Length2 lo = Length2{}, Angle ao = 0_deg) noexcept;
+
     /// @brief Uses the given linear offset value.
-    constexpr auto& UseLinearOffset(Length2 v) noexcept
+    constexpr auto &UseLinearOffset(Length2 v) noexcept
     {
         linearOffset = v;
         return *this;
     }
 
     /// @brief Uses the given angular offset value.
-    constexpr auto& UseAngularOffset(Angle v) noexcept
+    constexpr auto &UseAngularOffset(Angle v) noexcept
     {
         angularOffset = v;
         return *this;
     }
 
     /// @brief Uses the given maximum force value.
-    constexpr auto& UseMaxForce(NonNegative<Force> v) noexcept
+    constexpr auto &UseMaxForce(NonNegative<Force> v) noexcept
     {
         maxForce = v;
         return *this;
     }
 
     /// @brief Uses the given max torque value.
-    constexpr auto& UseMaxTorque(NonNegative<Torque> v) noexcept
+    constexpr auto &UseMaxTorque(NonNegative<Torque> v) noexcept
     {
         maxTorque = v;
         return *this;
     }
 
     /// @brief Uses the given correction factor.
-    constexpr auto& UseCorrectionFactor(Real v) noexcept
+    constexpr auto &UseCorrectionFactor(Real v) noexcept
     {
         correctionFactor = v;
         return *this;
@@ -95,52 +96,52 @@ struct MotorJointConf : public JointBuilder<MotorJointConf>
     /// @brief Angle of body-B minus angle of body-A.
     Angle angularOffset = 0_deg;
 
-    Momentum2 linearImpulse{}; ///< Linear impulse.
+    Momentum2 linearImpulse{};        ///< Linear impulse.
     AngularMomentum angularImpulse{}; ///< Angular impulse.
 
     /// @brief Maximum motor force.
     NonNegative<Force> maxForce = NonNegative<Force>(1_N);
-    
+
     /// @brief Maximum motor torque.
     NonNegative<Torque> maxTorque = NonNegative<Torque>(1_Nm);
-    
+
     /// @brief Position correction factor in the range [0,1].
     Real correctionFactor = Real(0.3);
 
     // Solver temp
-    Length2 rA = {}; ///< Relative A.
-    Length2 rB = {}; ///< Relative B.
-    Length2 linearError{}; ///< Linear error.
-    Angle angularError = 0_deg; ///< Angular error.
-    Mass22 linearMass = {}; ///< 2-by-2 linear mass matrix in kilograms.
+    Length2 rA = {};             ///< Relative A.
+    Length2 rB = {};             ///< Relative B.
+    Length2 linearError{};       ///< Linear error.
+    Angle angularError = 0_deg;  ///< Angular error.
+    Mass22 linearMass = {};      ///< 2-by-2 linear mass matrix in kilograms.
     RotInertia angularMass = {}; ///< Angular mass.
 };
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
-MotorJointConf GetMotorJointConf(const Joint& joint) noexcept;
+MotorJointConf GetMotorJointConf(const Joint &joint) noexcept;
 
 /// @brief Gets the confguration for the given parameters.
 /// @relatedalso World
-MotorJointConf GetMotorJointConf(const World& world, BodyID bA, BodyID bB);
+MotorJointConf GetMotorJointConf(const World &world, BodyID bA, BodyID bB);
 
 /// @brief Gets the local anchor A.
 /// @relatedalso MotorJointConf
-constexpr auto GetLocalAnchorA(const MotorJointConf&) noexcept
+constexpr auto GetLocalAnchorA(const MotorJointConf &) noexcept
 {
     return Length2{};
 }
 
 /// @brief Gets the local anchor B.
 /// @relatedalso MotorJointConf
-constexpr auto GetLocalAnchorB(const MotorJointConf&) noexcept
+constexpr auto GetLocalAnchorB(const MotorJointConf &) noexcept
 {
     return Length2{};
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto ShiftOrigin(MotorJointConf&, Length2) noexcept
+constexpr auto ShiftOrigin(MotorJointConf &, Length2) noexcept
 {
     return false;
 }
@@ -149,104 +150,101 @@ constexpr auto ShiftOrigin(MotorJointConf&, Length2) noexcept
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso MotorJointConf
-void InitVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+void InitVelocity(MotorJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 /// @relatedalso MotorJointConf
-bool SolveVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+bool SolveVelocity(MotorJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step);
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
 /// @relatedalso MotorJointConf
-bool SolvePosition(const MotorJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf);
+bool SolvePosition(const MotorJointConf &object, std::vector<BodyConstraint> &bodies, const ConstraintSolverConf &conf);
 
 /// @brief Free function for getting the maximum force value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto GetMaxForce(const MotorJointConf& object) noexcept
+constexpr auto GetMaxForce(const MotorJointConf &object) noexcept
 {
     return object.maxForce;
 }
 
 /// @brief Free function for setting the maximum force value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto SetMaxForce(MotorJointConf& object, NonNegative<Force> value) noexcept
+constexpr auto SetMaxForce(MotorJointConf &object, NonNegative<Force> value) noexcept
 {
     object.UseMaxForce(value);
 }
 
 /// @brief Free function for getting the maximum torque value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto GetMaxTorque(const MotorJointConf& object) noexcept
+constexpr auto GetMaxTorque(const MotorJointConf &object) noexcept
 {
     return object.maxTorque;
 }
 
 /// @brief Free function for setting the maximum torque value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto SetMaxTorque(MotorJointConf& object, NonNegative<Torque> value) noexcept
+constexpr auto SetMaxTorque(MotorJointConf &object, NonNegative<Torque> value) noexcept
 {
     object.UseMaxTorque(value);
 }
 
 /// @brief Free function for getting the linear error value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto GetLinearError(const MotorJointConf& object) noexcept
+constexpr auto GetLinearError(const MotorJointConf &object) noexcept
 {
     return object.linearError;
 }
 
 /// @brief Free function for getting the angular error value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto GetAngularError(const MotorJointConf& object) noexcept
+constexpr auto GetAngularError(const MotorJointConf &object) noexcept
 {
     return object.angularError;
 }
 
 /// @brief Free function for getting the linear offset value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto GetLinearOffset(const MotorJointConf& object) noexcept
+constexpr auto GetLinearOffset(const MotorJointConf &object) noexcept
 {
     return object.linearOffset;
 }
 
 /// @brief Free function for setting the linear offset value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto SetLinearOffset(MotorJointConf& object, Length2 value) noexcept
+constexpr auto SetLinearOffset(MotorJointConf &object, Length2 value) noexcept
 {
     object.UseLinearOffset(value);
 }
 
 /// @brief Free function for getting the angular offset value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto GetAngularOffset(const MotorJointConf& object) noexcept
+constexpr auto GetAngularOffset(const MotorJointConf &object) noexcept
 {
     return object.angularOffset;
 }
 
 /// @brief Free function for setting the angular offset value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto SetAngularOffset(MotorJointConf& object, Angle value) noexcept
+constexpr auto SetAngularOffset(MotorJointConf &object, Angle value) noexcept
 {
     object.UseAngularOffset(value);
 }
 
 /// @brief Free function for getting the correction factor value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto GetCorrectionFactor(const MotorJointConf& object) noexcept
+constexpr auto GetCorrectionFactor(const MotorJointConf &object) noexcept
 {
     return object.correctionFactor;
 }
 
 /// @brief Free function for setting the correction factor value of the given configuration.
 /// @relatedalso MotorJointConf
-constexpr auto SetCorrectionFactor(MotorJointConf& object, Real value) noexcept
+constexpr auto SetCorrectionFactor(MotorJointConf &object, Real value) noexcept
 {
     object.UseCorrectionFactor(value);
 }
@@ -254,11 +252,10 @@ constexpr auto SetCorrectionFactor(MotorJointConf& object, Real value) noexcept
 } // namespace d2
 
 /// @brief Type info specialization for <code>d2::MotorJointConf</code>.
-template <>
-struct TypeInfo<d2::MotorJointConf>
+template <> struct TypeInfo<d2::MotorJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static constexpr const char* name = "d2::MotorJointConf";
+    static constexpr const char *name = "d2::MotorJointConf";
 };
 
 } // namespace playrho

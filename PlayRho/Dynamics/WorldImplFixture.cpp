@@ -21,65 +21,66 @@
 
 #include <PlayRho/Dynamics/WorldImplFixture.hpp>
 
+#include <PlayRho/Dynamics/Fixture.hpp> // for use of GetFixture
 #include <PlayRho/Dynamics/WorldImpl.hpp>
 #include <PlayRho/Dynamics/WorldImplBody.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp> // for use of GetFixture
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData)
+FixtureID CreateFixture(WorldImpl &world, BodyID id, const Shape &shape, const FixtureConf &def, bool resetMassData)
 {
     return world.CreateFixture(id, shape, def, resetMassData);
 }
 
-bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData)
+bool Destroy(WorldImpl &world, FixtureID id, bool resetMassData)
 {
     return world.Destroy(id, resetMassData);
 }
 
-BodyID GetBody(const WorldImpl& world, FixtureID id)
+BodyID GetBody(const WorldImpl &world, FixtureID id)
 {
     return world.GetFixture(id).GetBody();
 }
 
-Shape GetShape(const WorldImpl& world, FixtureID id)
+Shape GetShape(const WorldImpl &world, FixtureID id)
 {
     return world.GetFixture(id).GetShape();
 }
 
-bool IsSensor(const WorldImpl& world, FixtureID id)
+bool IsSensor(const WorldImpl &world, FixtureID id)
 {
     return world.GetFixture(id).IsSensor();
 }
 
-void SetSensor(WorldImpl& world, FixtureID id, bool value)
+void SetSensor(WorldImpl &world, FixtureID id, bool value)
 {
     world.SetSensor(id, value);
 }
 
-AreaDensity GetDensity(const WorldImpl& world, FixtureID id)
+AreaDensity GetDensity(const WorldImpl &world, FixtureID id)
 {
     return world.GetFixture(id).GetDensity();
 }
 
-const WorldImpl::FixtureProxies& GetProxies(const WorldImpl& world, FixtureID id)
+const WorldImpl::FixtureProxies &GetProxies(const WorldImpl &world, FixtureID id)
 {
     return world.GetFixture(id).GetProxies();
 }
 
-Filter GetFilterData(const WorldImpl& world, FixtureID id)
+Filter GetFilterData(const WorldImpl &world, FixtureID id)
 {
     return world.GetFixture(id).GetFilterData();
 }
 
-void Refilter(WorldImpl& world, FixtureID id)
+void Refilter(WorldImpl &world, FixtureID id)
 {
     world.Refilter(id);
 }
 
-void SetFilterData(WorldImpl& world, FixtureID id, const Filter& value)
+void SetFilterData(WorldImpl &world, FixtureID id, const Filter &value)
 {
     world.SetFilterData(id, value);
 }

@@ -24,23 +24,24 @@
 /// Structures and functions used for computing contact points, distance
 /// queries, and TOI queries.
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/ArrayList.hpp>
 #include <PlayRho/Collision/ContactFeature.hpp>
+#include <PlayRho/Common/ArrayList.hpp>
+#include <PlayRho/Common/Math.hpp>
 
 #include <array>
 #include <type_traits>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Point state enumeration.
 /// @note This is used for determining the state of contact points.
 enum class PointState
 {
-    NullState, ///< point does not exist
-    AddState, ///< point was added in the update
+    NullState,    ///< point does not exist
+    AddState,     ///< point was added in the update
     PersistState, ///< point persisted across the update
-    RemoveState ///< point was removed in the update
+    RemoveState   ///< point was removed in the update
 };
 
 /// @brief Point states.
@@ -50,24 +51,25 @@ struct PointStates
 {
     /// @brief State 1.
     PointState state1[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
-    
+
     /// @brief State 2.
     PointState state2[MaxManifoldPoints] = {PointState::NullState, PointState::NullState};
 };
 
-namespace d2 {
+namespace d2
+{
 
 class Manifold;
 
 /// @brief Computes the point states given two manifolds.
-PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept;
+PointStates GetPointStates(const Manifold &manifold1, const Manifold &manifold2) noexcept;
 
 /// @brief Clip vertex.
 /// @details Used for computing contact manifolds.
 /// @note This data structure is 12-bytes large (on at least one 64-bit platform).
 struct ClipVertex
 {
-    Length2 v; ///< Vertex of edge or polygon. 8-bytes.
+    Length2 v;         ///< Vertex of edge or polygon. 8-bytes.
     ContactFeature cf; ///< Contact feature information. 4-bytes.
 };
 
@@ -84,8 +86,7 @@ using ClipList = ArrayList<ClipVertex, MaxManifoldPoints>;
 /// @param offset Offset of the plane with which to determine intersection.
 /// @param indexA Index of vertex A.
 /// @return List of zero one or two clip points.
-ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec& normal, Length offset,
-                           ContactFeature::Index indexA);
+ClipList ClipSegmentToLine(const ClipList &vIn, const UnitVec &normal, Length offset, ContactFeature::Index indexA);
 
 } // namespace d2
 } // namespace playrho

@@ -23,7 +23,8 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Pre-phase per-step statistics.
 /// @note This data structure is 24-bytes large (on at least one 64-bit platform).
@@ -33,11 +34,11 @@ struct PreStepStats
     using counter_type = std::uint32_t;
 
     counter_type proxiesMoved = 0; ///< Proxies moved count.
-    counter_type destroyed = 0; ///< Count of contacts destroyed.
-    counter_type added = 0; ///< Count of contacts added.
-    counter_type ignored = 0; ///< Count of contacts ignored during update processing.
-    counter_type updated = 0; ///< Count of contacts updated (during update processing).
-    counter_type skipped = 0; ///< Count of contacts Skipped (during update processing).
+    counter_type destroyed = 0;    ///< Count of contacts destroyed.
+    counter_type added = 0;        ///< Count of contacts added.
+    counter_type ignored = 0;      ///< Count of contacts ignored during update processing.
+    counter_type updated = 0;      ///< Count of contacts updated (during update processing).
+    counter_type skipped = 0;      ///< Count of contacts Skipped (during update processing).
 };
 
 /// @brief Regular-phase per-step statistics.
@@ -54,13 +55,13 @@ struct RegStepStats
     /// @brief Max incremental impulse.
     Momentum maxIncImpulse = 0;
 
-    BodyCounter islandsFound = 0; ///< Islands found count.
-    BodyCounter islandsSolved = 0; ///< Islands solved count.
+    BodyCounter islandsFound = 0;   ///< Islands found count.
+    BodyCounter islandsSolved = 0;  ///< Islands solved count.
     counter_type contactsAdded = 0; ///< Contacts added count.
-    counter_type bodiesSlept = 0; ///< Bodies slept count.
-    counter_type proxiesMoved = 0; ///< Proxies moved count.
-    counter_type sumPosIters = 0; ///< Sum of the position iterations.
-    counter_type sumVelIters = 0; ///< Sum of the velocity iterations.
+    counter_type bodiesSlept = 0;   ///< Bodies slept count.
+    counter_type proxiesMoved = 0;  ///< Proxies moved count.
+    counter_type sumPosIters = 0;   ///< Sum of the position iterations.
+    counter_type sumVelIters = 0;   ///< Sum of the velocity iterations.
 };
 
 /// @brief TOI-phase per-step statistics.
@@ -77,18 +78,18 @@ struct ToiStepStats
     /// @brief Max incremental impulse.
     Momentum maxIncImpulse = 0;
 
-    counter_type islandsFound = 0; ///< Islands found count.
-    counter_type islandsSolved = 0; ///< Islands solved count.
-    counter_type contactsFound = 0; ///< Contacts found count.
-    counter_type contactsAtMaxSubSteps = 0; ///< Contacts at max substeps count.
-    counter_type contactsUpdatedToi = 0; ///< Contacts updated TOI count.
+    counter_type islandsFound = 0;            ///< Islands found count.
+    counter_type islandsSolved = 0;           ///< Islands solved count.
+    counter_type contactsFound = 0;           ///< Contacts found count.
+    counter_type contactsAtMaxSubSteps = 0;   ///< Contacts at max substeps count.
+    counter_type contactsUpdatedToi = 0;      ///< Contacts updated TOI count.
     counter_type contactsUpdatedTouching = 0; ///< Contacts updated touching count.
     counter_type contactsSkippedTouching = 0; ///< Contacts skipped touching count.
-    counter_type contactsAdded = 0; ///< Contacts added count.
-    counter_type proxiesMoved = 0; ///< Proxies moved count.
-    counter_type sumPosIters = 0; ///< Sum position iterations count.
-    counter_type sumVelIters = 0; ///< Sum velocity iterations count.
-    counter_type maxSimulContacts = 0; ///< Max contacts occurring simultaneously.
+    counter_type contactsAdded = 0;           ///< Contacts added count.
+    counter_type proxiesMoved = 0;            ///< Proxies moved count.
+    counter_type sumPosIters = 0;             ///< Sum position iterations count.
+    counter_type sumVelIters = 0;             ///< Sum velocity iterations count.
+    counter_type maxSimulContacts = 0;        ///< Max contacts occurring simultaneously.
 
     /// @brief Distance iteration type.
     using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
@@ -100,7 +101,7 @@ struct ToiStepStats
     using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
 
     dist_iter_type maxDistIters = 0; ///< Max distance iterations.
-    toi_iter_type maxToiIters = 0; ///< Max TOI iterations.
+    toi_iter_type maxToiIters = 0;   ///< Max TOI iterations.
     root_iter_type maxRootIters = 0; ///< Max root iterations.
 };
 
@@ -127,7 +128,7 @@ struct IslandStats;
 
 /// @brief Updates regular-phase per-step statistics with island statistics.
 /// @relatedalso RegStepStats
-RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept;
+RegStepStats &Update(RegStepStats &lhs, const IslandStats &rhs) noexcept;
 
 } // namespace playrho
 

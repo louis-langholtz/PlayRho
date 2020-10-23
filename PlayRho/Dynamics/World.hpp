@@ -32,32 +32,34 @@
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-#include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
-#include <PlayRho/Dynamics/StepStats.hpp>
+#include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/FixtureConf.hpp>
-#include <PlayRho/Dynamics/WorldConf.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/StepStats.hpp>
+#include <PlayRho/Dynamics/WorldConf.hpp>
 
+#include <functional> // for std::function
 #include <iterator>
-#include <vector>
 #include <memory> // for std::unique_ptr
 #include <stdexcept>
-#include <functional> // for std::function
 #include <type_traits> // for std::add_pointer_t, std::add_const_t
+#include <vector>
 
-namespace playrho {
+namespace playrho
+{
 
 struct StepConf;
 struct Filter;
 struct FixtureProxy;
 
-namespace d2 {
+namespace d2
+{
 
 class WorldImpl;
 class Manifold;
@@ -126,7 +128,7 @@ struct JointConf;
 ///
 class World
 {
-public:
+  public:
     /// @brief Bodies container type.
     using Bodies = std::vector<BodyID>;
 
@@ -156,11 +158,10 @@ public:
     using ContactListener = std::function<void(ContactID)>;
 
     /// @brief Manifold contact listener.
-    using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
+    using ManifoldContactListener = std::function<void(ContactID, const Manifold &)>;
 
     /// @brief Impulses contact listener.
-    using ImpulsesContactListener = std::function<void(ContactID, const ContactImpulsesList&,
-                                                       unsigned)>;
+    using ImpulsesContactListener = std::function<void(ContactID, const ContactImpulsesList &, unsigned)>;
 
     /// @name Special Member Functions
     /// Special member functions that are explicitly defined.
@@ -172,14 +173,14 @@ public:
     ///   data that's given to the world's <code>Step</code> method.
     /// @throws InvalidArgument if the given max vertex radius is less than the min.
     /// @see Step.
-    explicit World(const WorldConf& def = GetDefaultWorldConf());
+    explicit World(const WorldConf &def = GetDefaultWorldConf());
 
     /// @brief Copy constructor.
     /// @details Copy constructs this world with a deep copy of the given world.
     /// @post The state of this world is like that of the given world except this world now
     ///   has deep copies of the given world with pointers having the new addresses of the
     ///   new memory required for those copies.
-    World(const World& other);
+    World(const World &other);
 
     /// @brief Assignment operator.
     /// @details Copy assigns this world with a deep copy of the given world.
@@ -188,7 +189,7 @@ public:
     ///   new memory required for those copies.
     /// @warning This method should not be called while the world is locked!
     /// @throws WrongState if this method is called while the world is locked.
-    World& operator= (const World& other);
+    World &operator=(const World &other);
 
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all allocated memory is released.
@@ -202,10 +203,10 @@ public:
     ///@{
 
     /// @brief Register a destruction listener for fixtures.
-    void SetFixtureDestructionListener(const FixtureListener& listener) noexcept;
+    void SetFixtureDestructionListener(const FixtureListener &listener) noexcept;
 
     /// @brief Register a destruction listener for joints.
-    void SetJointDestructionListener(const JointListener& listener) noexcept;
+    void SetJointDestructionListener(const JointListener &listener) noexcept;
 
     /// @brief Register a begin contact event listener.
     void SetBeginContactListener(ContactListener listener) noexcept;
@@ -269,7 +270,7 @@ public:
     ///
     /// @see GetBodiesForProxies, GetFixturesForProxies.
     ///
-    StepStats Step(const StepConf& conf = StepConf{});
+    StepStats Step(const StepConf &conf = StepConf{});
 
     /// @brief Whether or not "step" is complete.
     /// @details The "step" is completed when there are no more TOI events for the current time step.
@@ -277,7 +278,7 @@ public:
     ///   without finishing all of its sub-steps.
     /// @see GetSubStepping, SetSubStepping.
     bool IsStepComplete() const noexcept;
-    
+
     /// @brief Gets whether or not sub-stepping is enabled.
     /// @see SetSubStepping, IsStepComplete.
     bool GetSubStepping() const noexcept;
@@ -290,7 +291,7 @@ public:
     void SetSubStepping(bool flag) noexcept;
 
     /// @brief Gets access to the broad-phase dynamic tree information.
-    const DynamicTree& GetTree() const noexcept;
+    const DynamicTree &GetTree() const noexcept;
 
     /// @brief Is the world locked (in the middle of a time step).
     bool IsLocked() const noexcept;
@@ -306,7 +307,7 @@ public:
 
     /// @brief Gets the minimum vertex radius that shapes in this world can be.
     Length GetMinVertexRadius() const noexcept;
-    
+
     /// @brief Gets the maximum vertex radius that shapes in this world can be.
     Length GetMaxVertexRadius() const noexcept;
 
@@ -359,7 +360,7 @@ public:
     /// @throws LengthError if this operation would create more than <code>MaxBodies</code>.
     /// @see Destroy(BodyID), GetBodies.
     /// @see PhysicalEntities.
-    BodyID CreateBody(const BodyConf& def = GetDefaultBodyConf());
+    BodyID CreateBody(const BodyConf &def = GetDefaultBodyConf());
 
     /// @brief Destroys the given body.
     /// @details Destroys a given body that had previously been created by a call to this
@@ -445,7 +446,7 @@ public:
     /// @param id Identifier of the body to change.
     /// @param massData the mass properties.
     /// @throws std::out_of_range If given an invalid body identifier.
-    void SetMassData(BodyID id, const MassData& massData);
+    void SetMassData(BodyID id, const MassData &massData);
 
     /// @brief Gets the body configuration for the identified body.
     /// @throws std::out_of_range If given an invalid body identifier.
@@ -491,7 +492,7 @@ public:
     /// @note A non-zero velocity will awaken this body.
     /// @throws std::out_of_range If given an invalid body identifier.
     /// @see GetVelocity(BodyID), SetAwake, SetUnderActiveTime.
-    void SetVelocity(BodyID id, const Velocity& value);
+    void SetVelocity(BodyID id, const Velocity &value);
 
     /// @brief Gets the awake/asleep state of this body.
     /// @warning Being awake may or may not imply being speedable.
@@ -649,8 +650,7 @@ public:
     /// @see Destroy(FixtureID), GetFixtures
     /// @see PhysicalEntities
     ///
-    FixtureID CreateFixture(BodyID body, const Shape& shape,
-                            const FixtureConf& def = GetDefaultFixtureConf(),
+    FixtureID CreateFixture(BodyID body, const Shape &shape, const FixtureConf &def = GetDefaultFixtureConf(),
                             bool resetMassData = true);
 
     /// @brief Destroys the identified fixture.
@@ -701,7 +701,7 @@ public:
     ///    is speedable and awake.
     /// @note This automatically calls <code>Refilter</code>.
     /// @throws std::out_of_range If given an invalid fixture identifier.
-    void SetFilterData(FixtureID id, const Filter& filter);
+    void SetFilterData(FixtureID id, const Filter &filter);
 
     /// @brief Gets the identifier of the body associated with the identified fixture.
     /// @throws std::out_of_range If given an invalid fixture identifier.
@@ -727,7 +727,7 @@ public:
 
     /// @brief Gets the proxies of the identified fixture.
     /// @throws std::out_of_range If given an invalid fixture identifier.
-    const FixtureProxies& GetProxies(FixtureID id) const;
+    const FixtureProxies &GetProxies(FixtureID id) const;
 
     /// @}
 
@@ -753,7 +753,7 @@ public:
     /// @throws LengthError if this operation would create more than <code>MaxJoints</code>.
     /// @see PhysicalEntities.
     /// @see Destroy(JointID), GetJoints.
-    JointID CreateJoint(const Joint& def);
+    JointID CreateJoint(const Joint &def);
 
     /// @brief Destroys the identified joint.
     /// @details Destroys a given joint that had previously been created by a call to this
@@ -771,11 +771,11 @@ public:
 
     /// @brief Gets the value of the identified joint.
     /// @throws std::out_of_range If given an invalid joint identifier.
-    const Joint& GetJoint(JointID id) const;
+    const Joint &GetJoint(JointID id) const;
 
     /// @brief Sets the identified joint to the given value.
     /// @throws std::out_of_range If given an invalid joint identifier.
-    void SetJoint(JointID id, const Joint& def);
+    void SetJoint(JointID id, const Joint &def);
 
     /// @brief Wakes up the joined bodies.
     /// @throws std::out_of_range If given an invalid joint identifier.
@@ -944,7 +944,7 @@ public:
 
     /// @brief Gets the collision manifold for the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
-    const Manifold& GetManifold(ContactID id) const;
+    const Manifold &GetManifold(ContactID id) const;
 
     /// @brief Gets whether or not the identified contact is enabled.
     /// @throws std::out_of_range If given an invalid contact identifier.
@@ -960,7 +960,7 @@ public:
 
     /// @}
 
-private:
+  private:
     /// @brief Pointer to implementation (PIMPL)
     /// @see https://en.cppreference.com/w/cpp/language/pimpl
     propagate_const<std::unique_ptr<WorldImpl>> m_impl;
@@ -971,8 +971,8 @@ private:
 /// use of the <code>playrho::d2::World</code> class and more.
 /// After instantiating a world, the code creates a body and its fixture to act as the ground,
 /// creates another body and a fixture for it to act like a ball, then steps the world using
-/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates a ball falling to the ground
-/// and outputs the position of the ball after each step.
+/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates a ball falling to the
+/// ground and outputs the position of the ball after each step.
 
 /// @example World.cpp
 /// This is the <code>googletest</code> based unit testing file for the

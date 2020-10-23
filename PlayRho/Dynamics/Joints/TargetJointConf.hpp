@@ -26,12 +26,14 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct ConstraintSolverConf;
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class BodyConstraint;
 
@@ -50,14 +52,13 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     constexpr TargetJointConf() = default;
 
     /// @brief Initializing constructor.
-    constexpr TargetJointConf(BodyID b) noexcept:
-        super{super{}.UseBodyB(b)}
+    constexpr TargetJointConf(BodyID b) noexcept : super{super{}.UseBodyB(b)}
     {
         // Intentionally empty.
     }
 
     /// @brief Use value for target.
-    constexpr auto& UseTarget(Length2 v) noexcept
+    constexpr auto &UseTarget(Length2 v) noexcept
     {
         target = v;
         return *this;
@@ -68,28 +69,28 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     ///   <code>bodyB
     ///     ? InverseTransform(target, bodyB->GetTransformation())
     ///     : GetInvalid<Length2>()</code>.
-    constexpr auto& UseAnchor(Length2 v) noexcept
+    constexpr auto &UseAnchor(Length2 v) noexcept
     {
         localAnchorB = v;
         return *this;
     }
 
     /// @brief Use value for max force.
-    constexpr auto& UseMaxForce(NonNegative<Force> v) noexcept
+    constexpr auto &UseMaxForce(NonNegative<Force> v) noexcept
     {
         maxForce = v;
         return *this;
     }
 
     /// @brief Use value for frequency.
-    constexpr auto& UseFrequency(NonNegative<Frequency> v) noexcept
+    constexpr auto &UseFrequency(NonNegative<Frequency> v) noexcept
     {
         frequency = v;
         return *this;
     }
 
     /// @brief Use value for damping ratio.
-    constexpr auto& UseDampingRatio(NonNegative<Real> v) noexcept
+    constexpr auto &UseDampingRatio(NonNegative<Real> v) noexcept
     {
         dampingRatio = v;
         return *this;
@@ -109,12 +110,12 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     /// as some multiple of the weight (multiplier * mass * gravity).
     /// @note This may not be negative.
     NonNegative<Force> maxForce{}; // 0_N
-    
+
     /// Frequency.
     /// @details The has to do with the response speed.
     /// @note This value may not be negative.
     NonNegative<Frequency> frequency = NonNegative<Frequency>(5_Hz);
-    
+
     /// The damping ratio. 0 = no damping, 1 = critical damping.
     NonNegative<Real> dampingRatio = NonNegative<Real>(0.7f);
 
@@ -123,39 +124,39 @@ struct TargetJointConf : public JointBuilder<TargetJointConf>
     Momentum2 impulse = Momentum2{}; ///< Impulse.
 
     // Solver variables. These are only valid after InitVelocityConstraints called.
-    Length2 rB = {}; ///< Relative B.
-    Mass22 mass = {}; ///< 2-by-2 mass matrix in kilograms.
+    Length2 rB = {};        ///< Relative B.
+    Mass22 mass = {};       ///< 2-by-2 mass matrix in kilograms.
     LinearVelocity2 C = {}; ///< Velocity constant.
 };
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
-TargetJointConf GetTargetJointConf(const Joint& joint);
+TargetJointConf GetTargetJointConf(const Joint &joint);
 
 /// @brief Gets the local anchar A for the given configuration.
 /// @relatedalso TargetJointConf
-constexpr auto GetLocalAnchorA(const TargetJointConf&) noexcept
+constexpr auto GetLocalAnchorA(const TargetJointConf &) noexcept
 {
     return Length2{};
 }
 
 /// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr Momentum2 GetLinearReaction(const TargetJointConf& object)
+constexpr Momentum2 GetLinearReaction(const TargetJointConf &object)
 {
     return object.impulse;
 }
 
 /// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr AngularMomentum GetAngularReaction(const TargetJointConf&)
+constexpr AngularMomentum GetAngularReaction(const TargetJointConf &)
 {
     return AngularMomentum{0};
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr bool ShiftOrigin(TargetJointConf& object, Length2 newOrigin)
+constexpr bool ShiftOrigin(TargetJointConf &object, Length2 newOrigin)
 {
     object.target -= newOrigin;
     return true;
@@ -163,68 +164,66 @@ constexpr bool ShiftOrigin(TargetJointConf& object, Length2 newOrigin)
 
 /// @brief Free function for getting the target value of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr auto GetTarget(const TargetJointConf& object) noexcept
+constexpr auto GetTarget(const TargetJointConf &object) noexcept
 {
     return object.target;
 }
 
 /// @brief Gets the effective mass matrix for the given configuration and body information.
 /// @relatedalso TargetJointConf
-Mass22 GetEffectiveMassMatrix(const TargetJointConf& object, const BodyConstraint& body) noexcept;
+Mass22 GetEffectiveMassMatrix(const TargetJointConf &object, const BodyConstraint &body) noexcept;
 
 /// @brief Initializes velocity constraint data based on the given solver data.
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso TargetJointConf
-void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+void InitVelocity(TargetJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 /// @relatedalso TargetJointConf
-bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+bool SolveVelocity(TargetJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step);
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
 /// @relatedalso TargetJointConf
-bool SolvePosition(const TargetJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf);
+bool SolvePosition(const TargetJointConf &object, std::vector<BodyConstraint> &bodies,
+                   const ConstraintSolverConf &conf);
 
 /// @brief Free function for setting the target value of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr void SetTarget(TargetJointConf& object, Length2 value) noexcept
+constexpr void SetTarget(TargetJointConf &object, Length2 value) noexcept
 {
     object.UseTarget(value);
 }
 
 /// @brief Free function for getting the maximum force value of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr auto GetMaxForce(const TargetJointConf& object) noexcept
+constexpr auto GetMaxForce(const TargetJointConf &object) noexcept
 {
     return object.maxForce;
 }
 
 /// @brief Free function for setting the maximum force value of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr auto SetMaxForce(TargetJointConf& object, NonNegative<Force> value) noexcept
+constexpr auto SetMaxForce(TargetJointConf &object, NonNegative<Force> value) noexcept
 {
     object.UseMaxForce(value);
 }
 
 /// @brief Free function for setting the frequency value of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr void SetFrequency(TargetJointConf& object, NonNegative<Frequency> value) noexcept
+constexpr void SetFrequency(TargetJointConf &object, NonNegative<Frequency> value) noexcept
 {
     object.UseFrequency(value);
 }
 
 /// @brief Free function for setting the damping ratio value of the given configuration.
 /// @relatedalso TargetJointConf
-constexpr void SetDampingRatio(TargetJointConf& object, Real value) noexcept
+constexpr void SetDampingRatio(TargetJointConf &object, Real value) noexcept
 {
     object.UseDampingRatio(value);
 }
@@ -232,11 +231,10 @@ constexpr void SetDampingRatio(TargetJointConf& object, Real value) noexcept
 } // namespace d2
 
 /// @brief Type info specialization for <code>d2::TargetJointConf</code>.
-template <>
-struct TypeInfo<d2::TargetJointConf>
+template <> struct TypeInfo<d2::TargetJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static constexpr const char* name = "d2::TargetJointConf";
+    static constexpr const char *name = "d2::TargetJointConf";
 };
 
 } // namespace playrho

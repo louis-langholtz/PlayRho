@@ -25,36 +25,37 @@
 #include <PlayRho/Dynamics/WorldBody.hpp>
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 
 #include <algorithm> // for std::for_each
 
 using std::for_each;
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 using playrho::size;
 
-Length GetMinVertexRadius(const World& world) noexcept
+Length GetMinVertexRadius(const World &world) noexcept
 {
     return world.GetMinVertexRadius();
 }
 
-Length GetMaxVertexRadius(const World& world) noexcept
+Length GetMaxVertexRadius(const World &world) noexcept
 {
     return world.GetMaxVertexRadius();
 }
 
-StepStats Step(World& world, const StepConf& conf)
+StepStats Step(World &world, const StepConf &conf)
 {
     return world.Step(conf);
 }
 
-StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
-               TimestepIters positionIterations)
+StepStats Step(World &world, Time delta, TimestepIters velocityIterations, TimestepIters positionIterations)
 {
     StepConf conf;
     conf.deltaTime = delta;
@@ -69,12 +70,12 @@ StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
     return world.Step(conf);
 }
 
-const DynamicTree& GetTree(const World& world) noexcept
+const DynamicTree &GetTree(const World &world) noexcept
 {
     return world.GetTree();
 }
 
-FixtureCounter GetShapeCount(const World& world) noexcept
+FixtureCounter GetShapeCount(const World &world) noexcept
 {
     return world.GetShapeCount();
 }

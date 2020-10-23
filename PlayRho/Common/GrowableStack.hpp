@@ -25,16 +25,15 @@
 #include <PlayRho/Common/DynamicMemory.hpp>
 #include <cstring>
 
-namespace playrho {
+namespace playrho
+{
 
 /// This is a growable LIFO stack with an initial capacity of N.
 /// If the stack size exceeds the initial capacity, the heap is used
 /// to increase the size of the stack.
-template <typename T, std::size_t N>
-class GrowableStack
+template <typename T, std::size_t N> class GrowableStack
 {
-public:
-    
+  public:
     /// @brief Element type.
     using ElementType = T;
 
@@ -46,7 +45,7 @@ public:
     {
         return CountType(N);
     }
-    
+
     /// @brief Gets the buffer growth rate.
     static constexpr CountType GetBufferGrowthRate() noexcept
     {
@@ -54,10 +53,10 @@ public:
     }
 
     GrowableStack() = default;
-    
-    GrowableStack(const GrowableStack& other) = delete;
 
-    GrowableStack(GrowableStack&& other) = delete;
+    GrowableStack(const GrowableStack &other) = delete;
+
+    GrowableStack(GrowableStack &&other) = delete;
 
     ~GrowableStack() noexcept
     {
@@ -68,12 +67,12 @@ public:
         }
     }
 
-    GrowableStack& operator= (const GrowableStack& copy) = delete;
+    GrowableStack &operator=(const GrowableStack &copy) = delete;
 
-    GrowableStack& operator= (GrowableStack&& copy) = delete;
-    
+    GrowableStack &operator=(GrowableStack &&copy) = delete;
+
     /// @brief Pushes the given elements onto this stack.
-    void push(const ElementType& element)
+    void push(const ElementType &element)
     {
         if (m_count == m_capacity)
         {
@@ -112,7 +111,7 @@ public:
     {
         return m_count;
     }
-    
+
     /// @brief Gets the capacity in number of elements.
     constexpr CountType capacity() const noexcept
     {
@@ -125,11 +124,11 @@ public:
         return m_count == 0;
     }
 
-private:
-    ElementType m_array[N]; ///< Array data.
-    ElementType* m_stack = m_array; ///< Pointer to array of data.
-    CountType m_count = 0; ///< Count of elements.
-    CountType m_capacity = N; ///< Capacity for storing elements.
+  private:
+    ElementType m_array[N];         ///< Array data.
+    ElementType *m_stack = m_array; ///< Pointer to array of data.
+    CountType m_count = 0;          ///< Count of elements.
+    CountType m_capacity = N;       ///< Capacity for storing elements.
 };
 
 } // namespace playrho

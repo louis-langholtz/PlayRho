@@ -26,7 +26,8 @@
 #include <array>
 #include <utility>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Index pair.
 /// @note This data structure is at least 2-bytes large.
@@ -36,9 +37,7 @@ namespace playrho {
 using IndexPair = std::pair<VertexCounter, VertexCounter>;
 
 /// @brief Invalid index-pair value.
-constexpr auto InvalidIndexPair = IndexPair{
-    InvalidVertex, InvalidVertex
-};
+constexpr auto InvalidIndexPair = IndexPair{InvalidVertex, InvalidVertex};
 
 /// @brief Array of three index-pair elements.
 /// @note An element having the <code>InvalidIndexPair</code> value, denotes an
@@ -47,9 +46,7 @@ constexpr auto InvalidIndexPair = IndexPair{
 using IndexPair3 = std::array<IndexPair, MaxSimplexEdges>;
 
 /// @brief Invalid array of three index-pair elements.
-constexpr auto InvalidIndexPair3 = IndexPair3{{
-    InvalidIndexPair, InvalidIndexPair, InvalidIndexPair
-}};
+constexpr auto InvalidIndexPair3 = IndexPair3{{InvalidIndexPair, InvalidIndexPair, InvalidIndexPair}};
 
 static_assert(MaxSimplexEdges == 3, "Invalid assumption about size of MaxSimplexEdges");
 
@@ -59,10 +56,8 @@ static_assert(MaxSimplexEdges == 3, "Invalid assumption about size of MaxSimplex
 /// @return Value between 0 and 3 inclusive.
 constexpr std::size_t GetNumValidIndices(IndexPair3 pairs) noexcept
 {
-    return std::size_t{3}
-    - ((std::get<0>(pairs) == InvalidIndexPair)? 1u: 0u)
-    - ((std::get<1>(pairs) == InvalidIndexPair)? 1u: 0u)
-    - ((std::get<2>(pairs) == InvalidIndexPair)? 1u: 0u);
+    return std::size_t{3} - ((std::get<0>(pairs) == InvalidIndexPair) ? 1u : 0u) -
+           ((std::get<1>(pairs) == InvalidIndexPair) ? 1u : 0u) - ((std::get<2>(pairs) == InvalidIndexPair) ? 1u : 0u);
 }
 
 /// @brief Checks whether the given collection of index pairs is empty.
@@ -87,43 +82,40 @@ constexpr auto max_size(IndexPair3 pairs) -> decltype(pairs.max_size())
 }
 
 /// @brief Vertex counter array template alias.
-template <std::size_t N>
-using VertexCounterArray = std::array<VertexCounter, N>;
+template <std::size_t N> using VertexCounterArray = std::array<VertexCounter, N>;
 
 /// @brief 2-element vertex counter array.
 using VertexCounter2 = VertexCounterArray<2>;
 
-namespace detail {
+namespace detail
+{
 
 /// @brief Length and vertex counter array of indices.
-template <std::size_t N>
-struct LengthIndices
+template <std::size_t N> struct LengthIndices
 {
-    Length distance; ///< Distance.
+    Length distance;               ///< Distance.
     VertexCounterArray<N> indices; ///< Array of vertex indices.
 };
 
 /// @brief Separation information.
-template <std::size_t N>
-struct SeparationInfo
+template <std::size_t N> struct SeparationInfo
 {
-    Length distance; ///< Distance.
-    VertexCounter firstShape; ///< First shape vertex index.
+    Length distance;                   ///< Distance.
+    VertexCounter firstShape;          ///< First shape vertex index.
     VertexCounterArray<N> secondShape; ///< Second shape vertex indices.
 };
 
 } // namespace detail
 
 /// @brief Gets first shape vertex index.
-template <std::size_t N>
-VertexCounter GetFirstShapeVertexIdx(const detail::SeparationInfo<N>& info) noexcept
+template <std::size_t N> VertexCounter GetFirstShapeVertexIdx(const detail::SeparationInfo<N> &info) noexcept
 {
     return info.firstShape;
 }
 
 /// @brief Gets second shape vertex indices.
 template <VertexCounter M, std::size_t N>
-VertexCounter GetSecondShapeVertexIdx(const detail::SeparationInfo<N>& info) noexcept
+VertexCounter GetSecondShapeVertexIdx(const detail::SeparationInfo<N> &info) noexcept
 {
     return std::get<M>(info.secondShape);
 }
@@ -135,10 +127,11 @@ VertexCounter GetSecondShapeVertexIdx(const detail::SeparationInfo<N>& info) noe
 struct LengthIndexPair
 {
     Length distance = GetInvalid<Length>(); ///< Separation.
-    IndexPair indices = InvalidIndexPair; ///< Index pair.
+    IndexPair indices = InvalidIndexPair;   ///< Index pair.
 };
 
-namespace d2 {
+namespace d2
+{
 
 /// @brief Length and vertex counter array of indices for 2-D space.
 using LengthIndices = detail::LengthIndices<2>;
@@ -146,7 +139,7 @@ using LengthIndices = detail::LengthIndices<2>;
 /// @brief Separation information alias for 2-D space.
 using SeparationInfo = detail::SeparationInfo<2>;
 
-} // namespace 2d
+} // namespace d2
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_INDEXPAIR_HPP

@@ -24,8 +24,10 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <algorithm>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 class VelocityConstraint;
 
@@ -36,20 +38,28 @@ class VelocityConstraint;
 /// match up one-to-one with the contact points in Manifold.
 class ContactImpulsesList
 {
-public:
-    
+  public:
     /// @brief Counter type.
     using Counter = std::remove_const<decltype(MaxManifoldPoints)>::type;
-    
+
     /// @brief Gets the count.
-    Counter GetCount() const noexcept { return count; }
-    
+    Counter GetCount() const noexcept
+    {
+        return count;
+    }
+
     /// @brief Gets the given indexed entry normal.
-    Momentum GetEntryNormal(Counter index) const noexcept { return normalImpulses[index]; }
-    
+    Momentum GetEntryNormal(Counter index) const noexcept
+    {
+        return normalImpulses[index];
+    }
+
     /// @brief Gets the given indexed entry tangent.
-    Momentum GetEntryTanget(Counter index) const noexcept { return tangentImpulses[index]; }
-    
+    Momentum GetEntryTanget(Counter index) const noexcept
+    {
+        return tangentImpulses[index];
+    }
+
     /// @brief Adds an entry of the given data.
     void AddEntry(Momentum normal, Momentum tangent) noexcept
     {
@@ -58,16 +68,16 @@ public:
         tangentImpulses[count] = tangent;
         ++count;
     }
-    
-private:
-    Momentum normalImpulses[MaxManifoldPoints]; ///< Normal impulses.
+
+  private:
+    Momentum normalImpulses[MaxManifoldPoints];  ///< Normal impulses.
     Momentum tangentImpulses[MaxManifoldPoints]; ///< Tangent impulses.
-    Counter count = 0; ///< Count of entries added.
+    Counter count = 0;                           ///< Count of entries added.
 };
 
 /// @brief Gets the maximum normal impulse from the given contact impulses list.
 /// @relatedalso ContactImpulsesList
-inline Momentum GetMaxNormalImpulse(const ContactImpulsesList& impulses) noexcept
+inline Momentum GetMaxNormalImpulse(const ContactImpulsesList &impulses) noexcept
 {
     auto maxImpulse = 0_Ns;
     const auto count = impulses.GetCount();
@@ -79,7 +89,7 @@ inline Momentum GetMaxNormalImpulse(const ContactImpulsesList& impulses) noexcep
 }
 
 /// @brief Gets the contact impulses for the given velocity constraint.
-ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc);
+ContactImpulsesList GetContactImpulses(const VelocityConstraint &vc);
 
 } // namespace d2
 } // namespace playrho

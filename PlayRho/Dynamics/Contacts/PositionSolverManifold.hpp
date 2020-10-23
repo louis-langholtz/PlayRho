@@ -20,13 +20,15 @@
 #ifndef PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
 #define PLAYRHO_DYNAMICS_CONTACTS_POSITIONSOLVERMANIFOLD_HPP
 
-#include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// Position solver manifold.
 /// @details
@@ -44,7 +46,7 @@ struct PositionSolverManifold
     /// @details Point at which position resolution should be relatively applied.
     /// @note This field is 8-bytes large.
     Length2 m_point;
-    
+
     /// Separation.
     /// @details Separation between two points (i.e. penetration if negative).
     /// @note This field is 4-bytes large.
@@ -56,8 +58,8 @@ struct PositionSolverManifold
 /// @note The returned separation distance does not account for vertex radiuses. It's simply
 ///   the separation between the points of the manifold. To account for the vertex radiuses,
 ///   the total vertex radius must be subtracted from this separation distance.
-PositionSolverManifold GetPSM(const Manifold& manifold, Manifold::size_type index,
-                              const Transformation& xfA, const Transformation& xfB);
+PositionSolverManifold GetPSM(const Manifold &manifold, Manifold::size_type index, const Transformation &xfA,
+                              const Transformation &xfB);
 
 } // namespace d2
 } // namespace playrho

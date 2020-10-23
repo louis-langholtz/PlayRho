@@ -21,11 +21,13 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief Vertex Set.
 ///
@@ -34,26 +36,27 @@ namespace d2 {
 ///
 class VertexSet
 {
-public:
-    
+  public:
     /// @brief Constant pointer type.
-    using const_pointer = const Length2*;
+    using const_pointer = const Length2 *;
 
     /// @brief Gets the default minimum separation squared value.
     static Area GetDefaultMinSeparationSquared()
     {
         return sqrt(std::numeric_limits<Vec2::value_type>::min()) * SquareMeter;
     }
-    
+
     /// @brief Initializing constructor.
-    explicit VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()):
-        m_minSepSquared{minSepSquared}
+    explicit VertexSet(Area minSepSquared = GetDefaultMinSeparationSquared()) : m_minSepSquared{minSepSquared}
     {
         assert(minSepSquared >= 0_m2);
     }
 
     /// @brief Gets the min separation squared.
-    Area GetMinSeparationSquared() const noexcept { return m_minSepSquared; }
+    Area GetMinSeparationSquared() const noexcept
+    {
+        return m_minSepSquared;
+    }
 
     /// @brief Adds the given vertex into the set if allowed.
     bool add(Length2 value)
@@ -65,7 +68,7 @@ public:
         m_elements.push_back(value);
         return true;
     }
-    
+
     /// @brief Clear this set.
     void clear() noexcept
     {
@@ -77,15 +80,24 @@ public:
     {
         return detail::Size(m_elements);
     }
-    
+
     /// @brief Gets the pointer to the data buffer.
-    const_pointer data() const { return detail::Data(m_elements); }
-    
+    const_pointer data() const
+    {
+        return detail::Data(m_elements);
+    }
+
     /// @brief Gets the "begin" iterator value.
-    const_pointer begin() const { return data(); }
-    
+    const_pointer begin() const
+    {
+        return data();
+    }
+
     /// @brief Gets the "end" iterator value.
-    const_pointer end() const { return data() + size(); }
+    const_pointer end() const
+    {
+        return data() + size();
+    }
 
     /// Finds contained point whose delta with the given point has a squared length less
     /// than or equal to this set's minimum length squared value.
@@ -106,9 +118,9 @@ public:
         return m_elements[index];
     }
 
-private:
+  private:
     std::vector<Length2> m_elements; ///< Elements.
-    const Area m_minSepSquared; ///< Minimum length squared. <code>sizeof(Vec2)/2</code> or 4-bytes.
+    const Area m_minSepSquared;      ///< Minimum length squared. <code>sizeof(Vec2)/2</code> or 4-bytes.
 };
 
 } // namespace d2

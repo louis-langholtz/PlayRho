@@ -25,13 +25,14 @@
 #include <PlayRho/Common/Math.hpp>
 
 #include <PlayRho/Collision/Distance.hpp>
-#include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
+#include <PlayRho/Collision/TimeOfImpact.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Mixes friction.
 ///
@@ -61,7 +62,8 @@ inline Real MixRestitution(Real restitution1, Real restitution2) noexcept
 
 struct ToiConf;
 
-namespace d2 {
+namespace d2
+{
 
 /// @brief A potential contact between the children of two Fixture objects.
 ///
@@ -74,7 +76,7 @@ namespace d2 {
 ///
 class Contact
 {
-public:
+  public:
     /// @brief Substep type.
     using substep_type = TimestepIters;
 
@@ -96,8 +98,7 @@ public:
     /// @warning Behavior is undefined if <code>fA == fB</code>.
     /// @warning Behavior is undefined if both fixture's have the same body.
     ///
-    Contact(BodyID bA, FixtureID fA, ChildCounter iA,
-            BodyID bB, FixtureID fB, ChildCounter iB) noexcept;
+    Contact(BodyID bA, FixtureID fA, ChildCounter iA, BodyID bB, FixtureID fB, ChildCounter iB) noexcept;
 
     /// @brief Is this contact touching?
     /// @details
@@ -238,7 +239,7 @@ public:
     using FlagsType = std::uint8_t;
 
     /// @brief Flags stored in m_flags
-    enum: FlagsType
+    enum : FlagsType
     {
         // Set when the shapes are touching.
         e_touchingFlag = 0x01,
@@ -251,7 +252,7 @@ public:
 
         // This contact has a valid TOI in m_toi
         e_toiFlag = 0x08,
-        
+
         // This contacts needs its touching state updated.
         e_dirtyFlag = 0x10,
 
@@ -264,7 +265,7 @@ public:
         /// Indicates whether the contact is to be treated as between impenetrable bodies.
         e_impenetrableFlag = 0x80,
     };
-    
+
     /// @brief Flags this contact for filtering.
     /// @note Filtering will occur the next time step.
     void UnflagForFiltering() noexcept;
@@ -277,7 +278,8 @@ public:
     /// @note Behavior is undefined if the value assigned is less than 0 or greater than 1.
     /// @see Real GetToi() const.
     /// @see HasValidToi.
-    /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact in the current time slot.
+    /// @param toi Time of impact as a fraction between 0 and 1 where 1 indicates no actual impact in the current time
+    /// slot.
     void SetToi(Real toi) noexcept;
 
     /// @brief Unsets the TOI.
@@ -288,7 +290,7 @@ public:
 
     void IncrementToiCount() noexcept;
 
-private:
+  private:
     // Need to be able to identify two different fixtures, the child shape per fixture,
     // and the two different bodies that each fixture is associated with. This could be
     // done by storing whatever information is needed to lookup this information. For
@@ -331,7 +333,7 @@ private:
 
     /// Tangent speed.
     /// @note Field is 4-bytes (with 4-byte Real).
-   LinearVelocity m_tangentSpeed = 0;
+    LinearVelocity m_tangentSpeed = 0;
 
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
@@ -343,7 +345,7 @@ private:
     /// Count of TOI calculations contact has gone through since last reset.
     substep_type m_toiCount = 0;
 
-    FlagsType m_flags = e_enabledFlag|e_dirtyFlag; ///< Flags.
+    FlagsType m_flags = e_enabledFlag | e_dirtyFlag; ///< Flags.
 };
 
 inline void Contact::SetEnabled(bool flag) noexcept
@@ -568,77 +570,77 @@ inline void Contact::IncrementToiCount() noexcept
 
 /// @brief Gets the body A ID of the given contact.
 /// @relatedalso Contact
-inline BodyID GetBodyA(const Contact& contact) noexcept
+inline BodyID GetBodyA(const Contact &contact) noexcept
 {
     return contact.GetBodyA();
 }
 
 /// @brief Gets the body B ID of the given contact.
 /// @relatedalso Contact
-inline BodyID GetBodyB(const Contact& contact) noexcept
+inline BodyID GetBodyB(const Contact &contact) noexcept
 {
     return contact.GetBodyB();
 }
 
 /// @brief Gets the fixture A associated with the given contact.
 /// @relatedalso Contact
-inline FixtureID GetFixtureA(const Contact& contact) noexcept
+inline FixtureID GetFixtureA(const Contact &contact) noexcept
 {
     return contact.GetFixtureA();
 }
 
 /// @brief Gets the fixture B associated with the given contact.
 /// @relatedalso Contact
-inline FixtureID GetFixtureB(const Contact& contact) noexcept
+inline FixtureID GetFixtureB(const Contact &contact) noexcept
 {
     return contact.GetFixtureB();
 }
 
 /// @brief Gets the child index A of the given contact.
 /// @relatedalso Contact
-inline ChildCounter GetChildIndexA(const Contact& contact) noexcept
+inline ChildCounter GetChildIndexA(const Contact &contact) noexcept
 {
     return contact.GetChildIndexA();
 }
 
 /// @brief Gets the child index B of the given contact.
 /// @relatedalso Contact
-inline ChildCounter GetChildIndexB(const Contact& contact) noexcept
+inline ChildCounter GetChildIndexB(const Contact &contact) noexcept
 {
     return contact.GetChildIndexB();
 }
 
 /// @brief Whether the given contact is "impenetrable".
 /// @relatedalso Contact
-inline bool IsImpenetrable(const Contact& contact) noexcept
+inline bool IsImpenetrable(const Contact &contact) noexcept
 {
     return contact.IsImpenetrable();
 }
 
 /// @brief Determines whether the given contact is "active".
 /// @relatedalso Contact
-inline bool IsActive(const Contact& contact) noexcept
+inline bool IsActive(const Contact &contact) noexcept
 {
     return contact.IsActive();
 }
 
 /// @brief Gets whether the given contact is enabled or not.
 /// @relatedalso Contact
-inline bool IsEnabled(const Contact& contact) noexcept
+inline bool IsEnabled(const Contact &contact) noexcept
 {
     return contact.IsEnabled();
 }
 
 /// @brief Gets whether the given contact is touching or not.
 /// @relatedalso Contact
-inline bool IsTouching(const Contact& contact) noexcept
+inline bool IsTouching(const Contact &contact) noexcept
 {
     return contact.IsTouching();
 }
 
 /// @brief Gets whether the given contact is for sensors or not.
 /// @relatedalso Contact
-inline bool IsSensor(const Contact& contact) noexcept
+inline bool IsSensor(const Contact &contact) noexcept
 {
     return contact.IsSensor();
 }

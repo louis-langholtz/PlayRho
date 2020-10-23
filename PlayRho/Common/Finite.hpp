@@ -25,13 +25,14 @@
 
 #include <cmath>
 
-namespace playrho {
+namespace playrho
+{
 
 using std::isfinite;
 
 /// @brief Finite constrained value checker.
-template <typename T>
-struct FiniteChecker {
+template <typename T> struct FiniteChecker
+{
 
     /// @brief Exception type possibly thrown by this checker.
     using exception_type = std::invalid_argument;
@@ -44,9 +45,10 @@ struct FiniteChecker {
 
     /// @brief Value checking functor.
     /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(isfinite(v), T{v})
+    constexpr auto operator()(const T &v) -> decltype(isfinite(v), T{v})
     {
-        if (!isfinite(v)) {
+        if (!isfinite(v))
+        {
             throw exception_type("value not finite");
         }
         return v;
@@ -55,8 +57,7 @@ struct FiniteChecker {
 
 /// @ingroup CheckedValues
 /// @brief Finite constrained value type.
-template <typename T>
-using Finite = CheckedValue<T, FiniteChecker<T>>;
+template <typename T> using Finite = CheckedValue<T, FiniteChecker<T>>;
 
 static_assert(std::is_default_constructible<Finite<int>>::value);
 

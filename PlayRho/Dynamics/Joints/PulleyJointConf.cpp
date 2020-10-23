@@ -21,27 +21,24 @@
 
 #include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 static_assert(std::is_default_constructible<PulleyJointConf>::value,
               "PulleyJointConf should be default constructible!");
-static_assert(std::is_copy_constructible<PulleyJointConf>::value,
-              "PulleyJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<PulleyJointConf>::value,
-              "PulleyJointConf should be copy assignable!");
-static_assert(std::is_move_constructible<PulleyJointConf>::value,
-              "PulleyJointConf should be move constructible!");
-static_assert(std::is_move_assignable<PulleyJointConf>::value,
-              "PulleyJointConf should be move assignable!");
-static_assert(std::is_nothrow_destructible<PulleyJointConf>::value,
-              "PulleyJointConf should be nothrow destructible!");
+static_assert(std::is_copy_constructible<PulleyJointConf>::value, "PulleyJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<PulleyJointConf>::value, "PulleyJointConf should be copy assignable!");
+static_assert(std::is_move_constructible<PulleyJointConf>::value, "PulleyJointConf should be move constructible!");
+static_assert(std::is_move_assignable<PulleyJointConf>::value, "PulleyJointConf should be move assignable!");
+static_assert(std::is_nothrow_destructible<PulleyJointConf>::value, "PulleyJointConf should be nothrow destructible!");
 
 // Pulley:
 // length1 = norm(p1 - s1)
@@ -55,41 +52,37 @@ static_assert(std::is_nothrow_destructible<PulleyJointConf>::value,
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
-PulleyJointConf::PulleyJointConf(BodyID bA, BodyID bB,
-                                 Length2 groundA, Length2 groundB,
-                                 Length2 anchorA, Length2 anchorB,
-                                 Length lA, Length lB):
-    super{super{}.UseBodyA(bA).UseBodyB(bB).UseCollideConnected(true)},
-    groundAnchorA{groundA}, groundAnchorB{groundB},
-    localAnchorA{anchorA}, localAnchorB{anchorB},
-    lengthA{lA}, lengthB{lB}
+PulleyJointConf::PulleyJointConf(BodyID bA, BodyID bB, Length2 groundA, Length2 groundB, Length2 anchorA,
+                                 Length2 anchorB, Length lA, Length lB)
+    : super{super{}.UseBodyA(bA).UseBodyB(bB).UseCollideConnected(true)}, groundAnchorA{groundA},
+      groundAnchorB{groundB}, localAnchorA{anchorA}, localAnchorB{anchorB}, lengthA{lA}, lengthB{lB}
 {
     // Intentionally empty.
 }
 
-PulleyJointConf GetPulleyJointConf(const Joint& joint)
+PulleyJointConf GetPulleyJointConf(const Joint &joint)
 {
     return TypeCast<PulleyJointConf>(joint);
 }
 
-PulleyJointConf GetPulleyJointConf(const World& world,
-                                   BodyID bA, BodyID bB,
-                                   Length2 groundA, Length2 groundB,
+PulleyJointConf GetPulleyJointConf(const World &world, BodyID bA, BodyID bB, Length2 groundA, Length2 groundB,
                                    Length2 anchorA, Length2 anchorB)
 {
-    return PulleyJointConf{
-        bA, bB, groundA, groundB,
-        GetLocalPoint(world, bA, anchorA), GetLocalPoint(world, bB, anchorB),
-        GetMagnitude(anchorA - groundA), GetMagnitude(anchorB - groundB)
-    };
+    return PulleyJointConf{bA,
+                           bB,
+                           groundA,
+                           groundB,
+                           GetLocalPoint(world, bA, anchorA),
+                           GetLocalPoint(world, bB, anchorB),
+                           GetMagnitude(anchorA - groundA),
+                           GetMagnitude(anchorB - groundB)};
 }
 
-void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf&)
+void InitVelocity(PulleyJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto posA = bodyConstraintA.GetPosition();
     const auto invMassA = bodyConstraintA.GetInvMass();
@@ -123,7 +116,7 @@ void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
 
     const auto totalInvMass = totInvMassA + object.ratio * object.ratio * totInvMassB;
 
-    object.mass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: 0_kg;
+    object.mass = (totalInvMass > InvMass{0}) ? Real{1} / totalInvMass : 0_kg;
 
     if (step.doWarmStart)
     {
@@ -146,11 +139,10 @@ void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
     bodyConstraintB.SetVelocity(velB);
 }
 
-bool SolveVelocity(PulleyJointConf& object,
-                   std::vector<BodyConstraint>& bodies, const StepConf&)
+bool SolveVelocity(PulleyJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto invMassA = bodyConstraintA.GetInvMass();
     const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
@@ -178,12 +170,10 @@ bool SolveVelocity(PulleyJointConf& object,
     return impulse == 0_Ns;
 }
 
-bool SolvePosition(const PulleyJointConf& object,
-                   std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf)
+bool SolvePosition(const PulleyJointConf &object, std::vector<BodyConstraint> &bodies, const ConstraintSolverConf &conf)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto invMassA = bodyConstraintA.GetInvMass();
     const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
@@ -193,10 +183,8 @@ bool SolvePosition(const PulleyJointConf& object,
     const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
     auto posB = bodyConstraintB.GetPosition();
 
-    const auto rA = Rotate(object.localAnchorA - bodyConstraintA.GetLocalCenter(),
-                           UnitVec::Get(posA.angular));
-    const auto rB = Rotate(object.localAnchorB - bodyConstraintB.GetLocalCenter(),
-                           UnitVec::Get(posB.angular));
+    const auto rA = Rotate(object.localAnchorA - bodyConstraintA.GetLocalCenter(), UnitVec::Get(posA.angular));
+    const auto rB = Rotate(object.localAnchorB - bodyConstraintB.GetLocalCenter(), UnitVec::Get(posB.angular));
 
     // Get the pulley axes.
     const auto pA = Length2{posA.linear + rA - object.groundAnchorA};
@@ -217,7 +205,7 @@ bool SolvePosition(const PulleyJointConf& object,
     const auto totalInvMassB = invMassB + invRotInertiaB * ruB * ruB / SquareRadian;
 
     const auto totalInvMass = totalInvMassA + object.ratio * object.ratio * totalInvMassB;
-    const auto mass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: 0_kg;
+    const auto mass = (totalInvMass > InvMass{0}) ? Real{1} / totalInvMass : 0_kg;
 
     const auto C = Length{object.constant - lengthA - (object.ratio * lengthB)};
     const auto linearError = abs(C);
@@ -236,7 +224,7 @@ bool SolvePosition(const PulleyJointConf& object,
     return linearError < conf.linearSlop;
 }
 
-bool ShiftOrigin(PulleyJointConf& object, Length2 newOrigin) noexcept
+bool ShiftOrigin(PulleyJointConf &object, Length2 newOrigin) noexcept
 {
     object.groundAnchorA -= newOrigin;
     object.groundAnchorB -= newOrigin;

@@ -25,63 +25,65 @@
 /// @file
 /// Declarations of free functions of WorldImpl for fixtures.
 
-#include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Transformation.hpp>
+#include <PlayRho/Common/Units.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
-#include <PlayRho/Dynamics/Filter.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
 #include <vector>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 class WorldImpl;
 struct FixtureConf; // for CreateFixture
 
 /// @relatedalso WorldImpl
-FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData = true);
+FixtureID CreateFixture(WorldImpl &world, BodyID id, const Shape &shape, const FixtureConf &def,
+                        bool resetMassData = true);
 
 /// @relatedalso WorldImpl
-bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData);
+bool Destroy(WorldImpl &world, FixtureID id, bool resetMassData);
 
 /// @relatedalso WorldImpl
-BodyID GetBody(const WorldImpl& world, FixtureID id);
+BodyID GetBody(const WorldImpl &world, FixtureID id);
 
 /// @relatedalso WorldImpl
-Shape GetShape(const WorldImpl& world, FixtureID id);
+Shape GetShape(const WorldImpl &world, FixtureID id);
 
 /// @brief Is the specified fixture a sensor (non-solid)?
 /// @return the true if the fixture is a sensor.
 /// @relatedalso WorldImpl
-bool IsSensor(const WorldImpl& world, FixtureID id);
+bool IsSensor(const WorldImpl &world, FixtureID id);
 
 /// @brief Gets the density of this fixture.
 /// @return Non-negative density (in mass per area).
 /// @relatedalso WorldImpl
-AreaDensity GetDensity(const WorldImpl& world, FixtureID id);
+AreaDensity GetDensity(const WorldImpl &world, FixtureID id);
 
 /// @relatedalso WorldImpl
-const std::vector<FixtureProxy>& GetProxies(const WorldImpl& world, FixtureID id);
+const std::vector<FixtureProxy> &GetProxies(const WorldImpl &world, FixtureID id);
 
 /// @brief Sets whether the specified fixture is a sensor or not.
 /// @relatedalso WorldImpl
-void SetSensor(WorldImpl& world, FixtureID id, bool value);
+void SetSensor(WorldImpl &world, FixtureID id, bool value);
 
 /// @relatedalso WorldImpl
-Filter GetFilterData(const WorldImpl& world, FixtureID id);
+Filter GetFilterData(const WorldImpl &world, FixtureID id);
 
 /// @relatedalso WorldImpl
-void Refilter(WorldImpl& world, FixtureID id);
+void Refilter(WorldImpl &world, FixtureID id);
 
 /// @relatedalso WorldImpl
-void SetFilterData(WorldImpl& world, FixtureID id, const Filter& value);
+void SetFilterData(WorldImpl &world, FixtureID id, const Filter &value);
 
 } // namespace d2
 } // namespace playrho

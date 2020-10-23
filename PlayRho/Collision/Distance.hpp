@@ -20,10 +20,11 @@
 #ifndef PLAYRHO_COLLISION_DISTANCE_HPP
 #define PLAYRHO_COLLISION_DISTANCE_HPP
 
-#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/Simplex.hpp>
+#include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Pair of <code>Length2</code> values.
 /// @note Uses <code>std::pair</code> because this is a pair and also because
@@ -33,12 +34,13 @@ using PairLength2 = std::pair<Length2, Length2>;
 struct ToiConf;
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class DistanceProxy;
 
 /// @brief Gets the witness points of the given simplex.
-PairLength2 GetWitnessPoints(const Simplex& simplex) noexcept;
+PairLength2 GetWitnessPoints(const Simplex &simplex) noexcept;
 
 /// @brief Gets the delta to go from the first element to the second.
 constexpr Length2 GetDelta(PairLength2 arg) noexcept
@@ -53,23 +55,23 @@ struct DistanceConf
     /// @brief Iteration type.
     using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
-    Simplex::Cache cache; ///< Cache.
+    Simplex::Cache cache;                                   ///< Cache.
     iteration_type maxIterations = DefaultMaxDistanceIters; ///< Max iterations.
 };
 
 /// @brief Gets the distance configuration for the given time of impact configuration.
 /// @relatedalso DistanceConf
-DistanceConf GetDistanceConf(const ToiConf& conf) noexcept;
+DistanceConf GetDistanceConf(const ToiConf &conf) noexcept;
 
 /// @brief Gets the distance configuration for the given step configuration.
 /// @relatedalso DistanceConf
-DistanceConf GetDistanceConf(const StepConf& conf) noexcept;
+DistanceConf GetDistanceConf(const StepConf &conf) noexcept;
 
 /// @brief Distance Output.
 struct DistanceOutput
 {
     /// @brief State of the distance output.
-    enum State: std::uint8_t
+    enum State : std::uint8_t
     {
         Unknown,
         MaxPoints,
@@ -81,9 +83,9 @@ struct DistanceOutput
     /// @brief Iteration type.
     using iteration_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
 
-    Simplex simplex; ///< Simplex.
+    Simplex simplex;               ///< Simplex.
     iteration_type iterations = 0; ///< Count of iterations performed to return result.
-    State state = Unknown; ///< Termination state.
+    State state = Unknown;         ///< Termination state.
 };
 
 /// @brief Determines the closest points between two shapes.
@@ -99,9 +101,8 @@ struct DistanceOutput
 /// @return Closest points between the two shapes and the count of iterations it took to
 ///   determine them. The iteration count will always be greater than zero unless
 ///   <code>DefaultMaxDistanceIters</code> is zero.
-DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& transformA,
-                        const DistanceProxy& proxyB, const Transformation& transformB,
-                        DistanceConf conf = DistanceConf{});
+DistanceOutput Distance(const DistanceProxy &proxyA, const Transformation &transformA, const DistanceProxy &proxyB,
+                        const Transformation &transformB, DistanceConf conf = DistanceConf{});
 
 /// @brief Determine if two generic shapes overlap.
 ///
@@ -109,9 +110,8 @@ DistanceOutput Distance(const DistanceProxy& proxyA, const Transformation& trans
 ///   the <code>CollideShapes</code> function. This is not always the case however
 ///   especially when the separation or overlap distance is closer to zero.
 ///
-Area TestOverlap(const DistanceProxy& proxyA, const Transformation& xfA,
-                 const DistanceProxy& proxyB, const Transformation& xfB,
-                 DistanceConf conf = DistanceConf{});
+Area TestOverlap(const DistanceProxy &proxyA, const Transformation &xfA, const DistanceProxy &proxyB,
+                 const Transformation &xfB, DistanceConf conf = DistanceConf{});
 
 } // namespace d2
 } // namespace playrho

@@ -24,15 +24,17 @@
 
 #include <PlayRho/Dynamics/Joints/JointConf.hpp>
 
-#include <PlayRho/Common/NonNegative.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/NonNegative.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct ConstraintSolverConf;
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class World;
 class BodyConstraint;
@@ -53,18 +55,17 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
     /// @brief Initializing constructor.
     /// @details Initialize the bodies, anchors, axis, and reference angle using the world
     ///   anchor and world axis.
-    FrictionJointConf(BodyID bodyA, BodyID bodyB,
-                      Length2 laA = Length2{}, Length2 laB = Length2{}) noexcept;
+    FrictionJointConf(BodyID bodyA, BodyID bodyB, Length2 laA = Length2{}, Length2 laB = Length2{}) noexcept;
 
     /// @brief Uses the given maximum force value.
-    constexpr auto& UseMaxForce(NonNegative<Force> v) noexcept
+    constexpr auto &UseMaxForce(NonNegative<Force> v) noexcept
     {
         maxForce = v;
         return *this;
     }
 
     /// @brief Uses the given maximum torque value.
-    constexpr auto& UseMaxTorque(NonNegative<Torque> v) noexcept
+    constexpr auto &UseMaxTorque(NonNegative<Torque> v) noexcept
     {
         maxTorque = v;
         return *this;
@@ -83,42 +84,41 @@ struct FrictionJointConf : public JointBuilder<FrictionJointConf>
     NonNegative<Torque> maxTorque{}; // 0_Nm
 
     // Solver shared data - data saved & updated over multiple InitVelocityConstraints calls.
-    Momentum2 linearImpulse = Momentum2{}; ///< Linear impulse.
+    Momentum2 linearImpulse = Momentum2{};               ///< Linear impulse.
     AngularMomentum angularImpulse = AngularMomentum{0}; ///< Angular impulse.
 
     // Solver temp
-    Length2 rA = {}; ///< Relative A.
-    Length2 rB = {}; ///< Relative B.
-    Mass22 linearMass = {}; ///< 2-by-2 linear mass matrix in kilograms.
+    Length2 rA = {};             ///< Relative A.
+    Length2 rB = {};             ///< Relative B.
+    Mass22 linearMass = {};      ///< 2-by-2 linear mass matrix in kilograms.
     RotInertia angularMass = {}; ///< Angular mass.
 };
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
-FrictionJointConf GetFrictionJointConf(const Joint& joint) noexcept;
+FrictionJointConf GetFrictionJointConf(const Joint &joint) noexcept;
 
 /// @brief Gets the confguration for the given parameters.
 /// @relatedalso World
-FrictionJointConf GetFrictionJointConf(const World& world,
-                                       BodyID bodyA, BodyID bodyB, Length2 anchor);
+FrictionJointConf GetFrictionJointConf(const World &world, BodyID bodyA, BodyID bodyB, Length2 anchor);
 
 /// @brief Gets the current linear reaction for the given configuration.
 /// @relatedalso FrictionJointConf
-constexpr Momentum2 GetLinearReaction(const FrictionJointConf& object) noexcept
+constexpr Momentum2 GetLinearReaction(const FrictionJointConf &object) noexcept
 {
     return object.linearImpulse;
 }
 
 /// @brief Gets the current angular reaction for the given configuration.
 /// @relatedalso FrictionJointConf
-constexpr AngularMomentum GetAngularReaction(const FrictionJointConf& object) noexcept
+constexpr AngularMomentum GetAngularReaction(const FrictionJointConf &object) noexcept
 {
     return object.angularImpulse;
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso FrictionJointConf
-constexpr bool ShiftOrigin(FrictionJointConf&, Length2) noexcept
+constexpr bool ShiftOrigin(FrictionJointConf &, Length2) noexcept
 {
     return false;
 }
@@ -127,48 +127,46 @@ constexpr bool ShiftOrigin(FrictionJointConf&, Length2) noexcept
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso FrictionJointConf
-void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+void InitVelocity(FrictionJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 /// @relatedalso FrictionJointConf
-bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+bool SolveVelocity(FrictionJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step);
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
 /// @relatedalso FrictionJointConf
-bool SolvePosition(const FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf);
+bool SolvePosition(const FrictionJointConf &object, std::vector<BodyConstraint> &bodies,
+                   const ConstraintSolverConf &conf);
 
 /// @brief Free function for getting the max force value of the given configuration.
 /// @relatedalso FrictionJointConf
-constexpr auto GetMaxForce(const FrictionJointConf& object) noexcept
+constexpr auto GetMaxForce(const FrictionJointConf &object) noexcept
 {
     return object.maxForce;
 }
 
 /// @brief Free function for setting the max force value of the given configuration.
 /// @relatedalso FrictionJointConf
-constexpr void SetMaxForce(FrictionJointConf& object, NonNegative<Force> value) noexcept
+constexpr void SetMaxForce(FrictionJointConf &object, NonNegative<Force> value) noexcept
 {
     object.UseMaxForce(value);
 }
 
 /// @brief Free function for getting the max torque value of the given configuration.
 /// @relatedalso FrictionJointConf
-constexpr auto GetMaxTorque(const FrictionJointConf& object) noexcept
+constexpr auto GetMaxTorque(const FrictionJointConf &object) noexcept
 {
     return object.maxTorque;
 }
 
 /// @brief Free function for setting the max force value of the given configuration.
 /// @relatedalso FrictionJointConf
-constexpr auto SetMaxTorque(FrictionJointConf& object, NonNegative<Torque> value) noexcept
+constexpr auto SetMaxTorque(FrictionJointConf &object, NonNegative<Torque> value) noexcept
 {
     object.UseMaxTorque(value);
 }
@@ -176,11 +174,10 @@ constexpr auto SetMaxTorque(FrictionJointConf& object, NonNegative<Torque> value
 } // namespace d2
 
 /// @brief Type info specialization for <code>d2::FrictionJointConf</code>.
-template <>
-struct TypeInfo<d2::FrictionJointConf>
+template <> struct TypeInfo<d2::FrictionJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static constexpr const char* name = "d2::FrictionJointConf";
+    static constexpr const char *name = "d2::FrictionJointConf";
 };
 
 } // namespace playrho

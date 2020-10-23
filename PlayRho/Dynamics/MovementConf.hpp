@@ -23,7 +23,8 @@
 
 #include <PlayRho/Common/Units.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct StepConf;
 
@@ -31,14 +32,14 @@ struct StepConf;
 struct MovementConf
 {
     Length maxTranslation; ///< Maximum translation.
-    Angle maxRotation; ///< Maximum rotation.
+    Angle maxRotation;     ///< Maximum rotation.
 };
 
 /// @brief Gets the movement configuration from the given value.
 /// @return The <code>maxTranslation</code> and <code>maxRotation</code> fields
 ///   of the given value respectively are returned.
 /// @relatedalso StepConf
-MovementConf GetMovementConf(const StepConf& conf) noexcept;
+MovementConf GetMovementConf(const StepConf &conf) noexcept;
 
 } // namespace playrho
 

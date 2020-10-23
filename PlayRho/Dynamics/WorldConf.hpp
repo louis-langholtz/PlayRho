@@ -26,20 +26,22 @@
 
 #include <PlayRho/Common/Positive.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief World configuration data.
 struct WorldConf
 {
     /// @brief Uses the given min vertex radius value.
-    constexpr WorldConf& UseMinVertexRadius(Positive<Length> value) noexcept;
+    constexpr WorldConf &UseMinVertexRadius(Positive<Length> value) noexcept;
 
     /// @brief Uses the given max vertex radius value.
-    constexpr WorldConf& UseMaxVertexRadius(Positive<Length> value) noexcept;
+    constexpr WorldConf &UseMaxVertexRadius(Positive<Length> value) noexcept;
 
     /// @brief Uses the given value as the initial dynamic tree size.
-    constexpr WorldConf& UseInitialTreeSize(ContactCounter value) noexcept;
+    constexpr WorldConf &UseInitialTreeSize(ContactCounter value) noexcept;
 
     /// @brief Minimum vertex radius.
     /// @details This is the minimum vertex radius that this world establishes which bodies
@@ -64,19 +66,19 @@ struct WorldConf
     ContactCounter initialTreeSize = 4096;
 };
 
-constexpr WorldConf& WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept
+constexpr WorldConf &WorldConf::UseMinVertexRadius(Positive<Length> value) noexcept
 {
     minVertexRadius = value;
     return *this;
 }
 
-constexpr WorldConf& WorldConf::UseMaxVertexRadius(Positive<Length> value) noexcept
+constexpr WorldConf &WorldConf::UseMaxVertexRadius(Positive<Length> value) noexcept
 {
     maxVertexRadius = value;
     return *this;
 }
 
-constexpr WorldConf& WorldConf::UseInitialTreeSize(ContactCounter value) noexcept
+constexpr WorldConf &WorldConf::UseInitialTreeSize(ContactCounter value) noexcept
 {
     initialTreeSize = value;
     return *this;

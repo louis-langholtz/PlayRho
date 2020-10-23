@@ -21,10 +21,11 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_JOINTID_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_JOINTID_HPP
 
-#include <PlayRho/Common/StrongType.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/StrongType.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Joint identifier.
 using JointID = strongtype::IndexingNamedType<JointCounter, struct JointIdentifier>;
@@ -33,15 +34,13 @@ using JointID = strongtype::IndexingNamedType<JointCounter, struct JointIdentifi
 constexpr auto InvalidJointID = static_cast<JointID>(static_cast<JointID::underlying_type>(-1));
 
 /// @brief Gets an invalid value for the JointID type.
-template <>
-constexpr JointID GetInvalid() noexcept
+template <> constexpr JointID GetInvalid() noexcept
 {
     return InvalidJointID;
 }
 
 /// @brief Determines if the given value is valid.
-template <>
-constexpr bool IsValid(const JointID& value) noexcept
+template <> constexpr bool IsValid(const JointID &value) noexcept
 {
     return value != GetInvalid<JointID>();
 }

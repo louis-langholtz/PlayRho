@@ -24,9 +24,10 @@
 
 #include <algorithm> // for std::min, std::max
 
-namespace playrho {
+namespace playrho
+{
 
-RegStepStats& Update(RegStepStats& lhs, const IslandStats& rhs) noexcept
+RegStepStats &Update(RegStepStats &lhs, const IslandStats &rhs) noexcept
 {
     lhs.maxIncImpulse = std::max(lhs.maxIncImpulse, rhs.maxIncImpulse);
     lhs.minSeparation = std::min(lhs.minSeparation, rhs.minSeparation);

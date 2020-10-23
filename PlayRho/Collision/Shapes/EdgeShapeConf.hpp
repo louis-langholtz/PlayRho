@@ -20,13 +20,15 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
 #define PLAYRHO_COLLISION_SHAPES_EDGESHAPECONF_HPP
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
+#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
+#include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief Edge shape configuration.
 ///
@@ -38,15 +40,15 @@ namespace d2 {
 ///
 /// @ingroup PartsGroup
 ///
-class EdgeShapeConf: public ShapeBuilder<EdgeShapeConf>
+class EdgeShapeConf : public ShapeBuilder<EdgeShapeConf>
 {
-public:
+  public:
     /// @brief Gets the default vertex radius.
     static constexpr NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
         return NonNegative<Length>{DefaultLinearSlop * Real{2}};
     }
-    
+
     /// @brief Gets the default configuration.
     static inline EdgeShapeConf GetDefaultConf() noexcept
     {
@@ -54,38 +56,38 @@ public:
     }
 
     EdgeShapeConf() = default;
-    
+
     /// @brief Initializing constructor.
-    EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf& conf = GetDefaultConf()) noexcept;
-    
+    EdgeShapeConf(Length2 vA, Length2 vB, const EdgeShapeConf &conf = GetDefaultConf()) noexcept;
+
     /// @brief Sets both vertices in one call.
-    EdgeShapeConf& Set(Length2 vA, Length2 vB) noexcept;
-    
+    EdgeShapeConf &Set(Length2 vA, Length2 vB) noexcept;
+
     /// @brief Uses the given vertex radius.
-    EdgeShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
-    
+    EdgeShapeConf &UseVertexRadius(NonNegative<Length> value) noexcept;
+
     /// @brief Transforms both vertices by the given transformation matrix.
     /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-    EdgeShapeConf& Transform(const Mat22& m) noexcept;
+    EdgeShapeConf &Transform(const Mat22 &m) noexcept;
 
     /// @brief Gets vertex A.
     Length2 GetVertexA() const noexcept
     {
         return m_vertices[0];
     }
-    
+
     /// @brief Gets vertex B.
     Length2 GetVertexB() const noexcept
     {
         return m_vertices[1];
     }
-    
+
     /// @brief Gets the "child" shape.
     DistanceProxy GetChild() const noexcept
     {
         return DistanceProxy{vertexRadius, 2, m_vertices, m_normals};
     }
-    
+
     /// @brief Vertex radius.
     ///
     /// @details This is the radius from the vertex that the shape's "skin" should
@@ -99,12 +101,12 @@ public:
     ///
     NonNegative<Length> vertexRadius = GetDefaultVertexRadius();
 
-private:
+  private:
     Length2 m_vertices[2] = {Length2{}, Length2{}}; ///< Vertices
-    UnitVec m_normals[2] = {UnitVec{}, UnitVec{}}; ///< Normals.
+    UnitVec m_normals[2] = {UnitVec{}, UnitVec{}};  ///< Normals.
 };
 
-inline EdgeShapeConf& EdgeShapeConf::UseVertexRadius(NonNegative<Length> value) noexcept
+inline EdgeShapeConf &EdgeShapeConf::UseVertexRadius(NonNegative<Length> value) noexcept
 {
     vertexRadius = value;
     return *this;
@@ -113,28 +115,27 @@ inline EdgeShapeConf& EdgeShapeConf::UseVertexRadius(NonNegative<Length> value) 
 // Free functions...
 
 /// @brief Equality operator.
-inline bool operator== (const EdgeShapeConf& lhs, const EdgeShapeConf& rhs) noexcept
+inline bool operator==(const EdgeShapeConf &lhs, const EdgeShapeConf &rhs) noexcept
 {
-    return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
-        && lhs.restitution == rhs.restitution && lhs.density == rhs.density
-        && lhs.GetVertexA() == rhs.GetVertexA() && lhs.GetVertexB() == rhs.GetVertexB();
+    return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction && lhs.restitution == rhs.restitution &&
+           lhs.density == rhs.density && lhs.GetVertexA() == rhs.GetVertexA() && lhs.GetVertexB() == rhs.GetVertexB();
 }
 
 /// @brief Inequality operator.
-inline bool operator!= (const EdgeShapeConf& lhs, const EdgeShapeConf& rhs) noexcept
+inline bool operator!=(const EdgeShapeConf &lhs, const EdgeShapeConf &rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
 /// @brief Gets the "child" count for the given shape configuration.
 /// @return 1.
-constexpr ChildCounter GetChildCount(const EdgeShapeConf&) noexcept
+constexpr ChildCounter GetChildCount(const EdgeShapeConf &) noexcept
 {
     return 1;
 }
 
 /// @brief Gets the "child" shape for the given shape configuration.
-inline DistanceProxy GetChild(const EdgeShapeConf& arg, ChildCounter index)
+inline DistanceProxy GetChild(const EdgeShapeConf &arg, ChildCounter index)
 {
     if (index != 0)
     {
@@ -144,27 +145,26 @@ inline DistanceProxy GetChild(const EdgeShapeConf& arg, ChildCounter index)
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-inline NonNegative<Length> GetVertexRadius(const EdgeShapeConf& arg) noexcept
+inline NonNegative<Length> GetVertexRadius(const EdgeShapeConf &arg) noexcept
 {
     return arg.vertexRadius;
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-inline NonNegative<Length> GetVertexRadius(const EdgeShapeConf& arg, ChildCounter) noexcept
+inline NonNegative<Length> GetVertexRadius(const EdgeShapeConf &arg, ChildCounter) noexcept
 {
     return GetVertexRadius(arg);
 }
 
 /// @brief Gets the mass data for the given shape configuration.
-inline MassData GetMassData(const EdgeShapeConf& arg) noexcept
+inline MassData GetMassData(const EdgeShapeConf &arg) noexcept
 {
-    return playrho::d2::GetMassData(arg.vertexRadius, arg.density,
-                                    arg.GetVertexA(), arg.GetVertexB());
+    return playrho::d2::GetMassData(arg.vertexRadius, arg.density, arg.GetVertexA(), arg.GetVertexB());
 }
 
 /// @brief Transforms the given shape configuration's vertices by the given transformation matrix.
 /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-inline void Transform(EdgeShapeConf& arg, const Mat22& m) noexcept
+inline void Transform(EdgeShapeConf &arg, const Mat22 &m) noexcept
 {
     arg.Transform(m);
 }

@@ -25,7 +25,8 @@
 #include <PlayRho/Common/Math.hpp>
 #include <ostream>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Contact Feature.
 /// @details The features that intersect to form the contact point.
@@ -49,40 +50,36 @@ struct ContactFeature
 
     // Fit data into 4-byte large structure...
 
-    Type typeA; ///< The feature type on shape A
+    Type typeA;   ///< The feature type on shape A
     Index indexA; ///< Feature index on shape A
-    Type typeB; ///< The feature type on shape B
+    Type typeB;   ///< The feature type on shape B
     Index indexB; ///< Feature index on shape B
 };
 
 /// @brief Gets the vertex vertex contact feature for the given indices.
 /// @relatedalso ContactFeature
-constexpr ContactFeature GetVertexVertexContactFeature(ContactFeature::Index a,
-                                                       ContactFeature::Index b) noexcept
+constexpr ContactFeature GetVertexVertexContactFeature(ContactFeature::Index a, ContactFeature::Index b) noexcept
 {
     return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_vertex, b};
 }
 
 /// @brief Gets the vertex face contact feature for the given indices.
 /// @relatedalso ContactFeature
-constexpr ContactFeature GetVertexFaceContactFeature(ContactFeature::Index a,
-                                                     ContactFeature::Index b) noexcept
+constexpr ContactFeature GetVertexFaceContactFeature(ContactFeature::Index a, ContactFeature::Index b) noexcept
 {
     return ContactFeature{ContactFeature::e_vertex, a, ContactFeature::e_face, b};
 }
 
 /// @brief Gets the face vertex contact feature for the given indices.
 /// @relatedalso ContactFeature
-constexpr ContactFeature GetFaceVertexContactFeature(ContactFeature::Index a,
-                                                     ContactFeature::Index b) noexcept
+constexpr ContactFeature GetFaceVertexContactFeature(ContactFeature::Index a, ContactFeature::Index b) noexcept
 {
     return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_vertex, b};
 }
 
 /// @brief Gets the face face contact feature for the given indices.
 /// @relatedalso ContactFeature
-constexpr ContactFeature GetFaceFaceContactFeature(ContactFeature::Index a,
-                                                   ContactFeature::Index b) noexcept
+constexpr ContactFeature GetFaceFaceContactFeature(ContactFeature::Index a, ContactFeature::Index b) noexcept
 {
     return ContactFeature{ContactFeature::e_face, a, ContactFeature::e_face, b};
 }
@@ -98,8 +95,8 @@ constexpr ContactFeature Flip(ContactFeature val) noexcept
 /// @relatedalso ContactFeature
 constexpr bool operator==(ContactFeature lhs, ContactFeature rhs) noexcept
 {
-    return (lhs.typeA == rhs.typeA) && (lhs.indexA == rhs.indexA)
-        && (lhs.typeB == rhs.typeB) && (lhs.indexB == rhs.indexB);
+    return (lhs.typeA == rhs.typeA) && (lhs.indexA == rhs.indexA) && (lhs.typeB == rhs.typeB) &&
+           (lhs.indexB == rhs.indexB);
 }
 
 /// @brief Determines if the given two contact features are not equal.
@@ -110,18 +107,20 @@ constexpr bool operator!=(ContactFeature lhs, ContactFeature rhs) noexcept
 }
 
 /// @brief Gets the human readable name for the given contact feature type.
-inline const char* GetName(ContactFeature::Type type) noexcept
+inline const char *GetName(ContactFeature::Type type) noexcept
 {
     switch (type)
     {
-        case ContactFeature::e_face: return "face";
-        case ContactFeature::e_vertex: return "vertex";
+    case ContactFeature::e_face:
+        return "face";
+    case ContactFeature::e_vertex:
+        return "vertex";
     }
     return "unknown";
 }
 
 /// @brief Stream output operator.
-inline ::std::ostream& operator<<(::std::ostream& os, const ContactFeature& value)
+inline ::std::ostream &operator<<(::std::ostream &os, const ContactFeature &value)
 {
     os << "{";
     os << GetName(value.typeA);

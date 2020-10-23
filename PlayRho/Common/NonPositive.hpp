@@ -23,11 +23,12 @@
 
 #include <PlayRho/Common/CheckedValue.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Non-positive constrained value checker.
-template <typename T>
-struct NonPositiveChecker {
+template <typename T> struct NonPositiveChecker
+{
     /// @brief Exception type possibly thrown by this checker.
     using exception_type = std::invalid_argument;
 
@@ -39,9 +40,10 @@ struct NonPositiveChecker {
 
     /// @brief Value checking functor.
     /// @throws exception_type if given value is not valid.
-    constexpr auto operator()(const T& v) -> decltype(!(v <= static_cast<T>(0)), T{v})
+    constexpr auto operator()(const T &v) -> decltype(!(v <= static_cast<T>(0)), T{v})
     {
-        if (!(v <= static_cast<T>(0))) {
+        if (!(v <= static_cast<T>(0)))
+        {
             throw exception_type("value not lesser than nor equal to zero");
         }
         return v;
@@ -50,8 +52,7 @@ struct NonPositiveChecker {
 
 /// @ingroup CheckedValues
 /// @brief Non-positive constrained value type.
-template <typename T>
-using NonPositive = CheckedValue<T, NonPositiveChecker<T>>;
+template <typename T> using NonPositive = CheckedValue<T, NonPositiveChecker<T>>;
 
 static_assert(std::is_default_constructible<NonPositive<int>>::value);
 

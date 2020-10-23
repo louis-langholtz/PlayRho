@@ -25,21 +25,23 @@
 /// @file
 /// Declarations of the Fixture class, and free functions associated with it.
 
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 #include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Common/NonZero.hpp>
+#include <PlayRho/Common/Span.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/FixtureProxy.hpp>
-#include <PlayRho/Collision/Shapes/Shape.hpp>
 
+#include <array>
 #include <limits>
 #include <memory>
 #include <vector>
-#include <array>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief An association between a body and a shape.
 ///
@@ -59,7 +61,7 @@ namespace d2 {
 ///
 class Fixture
 {
-public:
+  public:
     /// @brief Fixture proxies container.
     using Proxies = std::vector<FixtureProxy>;
 
@@ -76,17 +78,14 @@ public:
     ///    Friction must be greater-than-or-equal-to zero.
     ///    <code>AreaDensity</code> must be greater-than-or-equal-to zero.
     ///
-    Fixture(BodyID body, const Shape& shape, const FixtureConf& def = GetDefaultFixtureConf()):
-        m_shape{shape},
-        m_body{body},
-        m_filter{def.filter},
-        m_isSensor{def.isSensor}
+    Fixture(BodyID body, const Shape &shape, const FixtureConf &def = GetDefaultFixtureConf())
+        : m_shape{shape}, m_body{body}, m_filter{def.filter}, m_isSensor{def.isSensor}
     {
         // Intentionally empty.
     }
 
     /// @brief Copy constructor (explicitly deleted).
-    Fixture(const Fixture& other) = default;
+    Fixture(const Fixture &other) = default;
 
     /// @brief Gets the parent body of this fixture.
     /// @return Non-null pointer to the parent body.
@@ -121,12 +120,12 @@ public:
     Real GetRestitution() const noexcept;
 
     /// @brief Gets the proxies associated with this fixture.
-    const Proxies& GetProxies() const noexcept;
+    const Proxies &GetProxies() const noexcept;
 
     /// @brief Sets the proxies associated with this fixture.
     void SetProxies(Proxies value) noexcept;
 
-private:
+  private:
     // Data ordered here for memory compaction.
 
     /// Shape (of fixture).
@@ -168,7 +167,7 @@ inline BodyID Fixture::GetBody() const noexcept
     return m_body;
 }
 
-inline const Fixture::Proxies& Fixture::GetProxies() const noexcept
+inline const Fixture::Proxies &Fixture::GetProxies() const noexcept
 {
     return m_proxies;
 }
@@ -204,16 +203,16 @@ inline void Fixture::SetSensor(bool sensor) noexcept
 /// @return <code>true</code> if contact calculations should be performed between these
 ///   two fixtures; <code>false</code> otherwise.
 /// @relatedalso Fixture
-inline bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
+inline bool ShouldCollide(const Fixture &fixtureA, const Fixture &fixtureB) noexcept
 {
     return ShouldCollide(fixtureA.GetFilterData(), fixtureB.GetFilterData());
 }
 
 /// @brief Gets the default friction amount for the given fixtures.
-Real GetDefaultFriction(const Fixture& fixtureA, const Fixture& fixtureB);
+Real GetDefaultFriction(const Fixture &fixtureA, const Fixture &fixtureB);
 
 /// @brief Gets the default restitution amount for the given fixtures.
-Real GetDefaultRestitution(const Fixture& fixtureA, const Fixture& fixtureB);
+Real GetDefaultRestitution(const Fixture &fixtureA, const Fixture &fixtureB);
 
 } // namespace d2
 } // namespace playrho

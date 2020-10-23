@@ -21,25 +21,23 @@
 
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 static_assert(std::is_default_constructible<DistanceJointConf>::value,
               "DistanceJointConf must be nothrow default constructible!");
-static_assert(std::is_copy_constructible<DistanceJointConf>::value,
-              "DistanceJointConf must be copy constructible!");
-static_assert(std::is_move_constructible<DistanceJointConf>::value,
-              "DistanceJointConf must be move constructible!");
-static_assert(std::is_copy_assignable<DistanceJointConf>::value,
-              "DistanceJointConf must be copy assignable!");
-static_assert(std::is_move_assignable<DistanceJointConf>::value,
-              "DistanceJointConf must be move assignable!");
+static_assert(std::is_copy_constructible<DistanceJointConf>::value, "DistanceJointConf must be copy constructible!");
+static_assert(std::is_move_constructible<DistanceJointConf>::value, "DistanceJointConf must be move constructible!");
+static_assert(std::is_copy_assignable<DistanceJointConf>::value, "DistanceJointConf must be copy assignable!");
+static_assert(std::is_move_assignable<DistanceJointConf>::value, "DistanceJointConf must be move assignable!");
 static_assert(std::is_nothrow_destructible<DistanceJointConf>::value,
               "DistanceJointConf must be nothrow destructible!");
 
@@ -58,36 +56,28 @@ static_assert(std::is_nothrow_destructible<DistanceJointConf>::value,
 // K = J * invM * JT
 //   = invMass1 + invI1 * cross(r1, u)^2 + invMass2 + invI2 * cross(r2, u)^2
 
-DistanceJointConf::DistanceJointConf(BodyID bA, BodyID bB,
-                                     Length2 laA, Length2 laB, Length l) noexcept :
-    super{super{}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{laA}, localAnchorB{laB}, length{l}
+DistanceJointConf::DistanceJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB, Length l) noexcept
+    : super{super{}.UseBodyA(bA).UseBodyB(bB)}, localAnchorA{laA}, localAnchorB{laB}, length{l}
 {
     // Intentionally empty.
 }
 
-DistanceJointConf GetDistanceJointConf(const Joint& joint) noexcept
+DistanceJointConf GetDistanceJointConf(const Joint &joint) noexcept
 {
     return TypeCast<DistanceJointConf>(joint);
 }
 
-DistanceJointConf GetDistanceJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                                       Length2 anchorA, Length2 anchorB)
+DistanceJointConf GetDistanceJointConf(const World &world, BodyID bodyA, BodyID bodyB, Length2 anchorA, Length2 anchorB)
 {
-    return DistanceJointConf{
-        bodyA, bodyB,
-        GetLocalPoint(world, bodyA, anchorA),
-        GetLocalPoint(world, bodyB, anchorB),
-        GetMagnitude(anchorB - anchorA)
-    };
+    return DistanceJointConf{bodyA, bodyB, GetLocalPoint(world, bodyA, anchorA), GetLocalPoint(world, bodyB, anchorB),
+                             GetMagnitude(anchorB - anchorA)};
 }
 
-void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf&)
+void InitVelocity(DistanceJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto invMassA = bodyConstraintA.GetInvMass();
     const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia(); // L^-2 M^-1 QP^2
@@ -116,7 +106,7 @@ void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies
     const auto invRotMassB = InvMass{invRotInertiaB * Square(crBu)};
     auto invMass = invMassA + invRotMassA + invMassB + invRotMassB;
 
-    object.mass = (invMass != InvMass{0}) ? Real{1} / invMass: 0_kg;
+    object.mass = (invMass != InvMass{0}) ? Real{1} / invMass : 0_kg;
 
     if (object.frequency > 0_Hz)
     {
@@ -134,11 +124,11 @@ void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies
         // magic formulas
         const auto h = step.deltaTime;
         const auto gamma = Mass{h * (d + h * k)}; // T (M T^-1 + T M T^-2) = M
-        object.invGamma = (gamma != 0_kg)? Real{1} / gamma: 0;
+        object.invGamma = (gamma != 0_kg) ? Real{1} / gamma : 0;
         object.bias = C * h * k * object.invGamma; // L T M T^-2 M^-1 = L T^-1
 
         invMass += object.invGamma;
-        object.mass = (invMass != InvMass{0}) ? Real{1} / invMass: 0;
+        object.mass = (invMass != InvMass{0}) ? Real{1} / invMass : 0;
     }
     else
     {
@@ -171,11 +161,10 @@ void InitVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies
     bodyConstraintB.SetVelocity(velB);
 }
 
-bool SolveVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf&)
+bool SolveVelocity(DistanceJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto velA = bodyConstraintA.GetVelocity();
     auto velB = bodyConstraintB.GetVelocity();
@@ -201,8 +190,8 @@ bool SolveVelocity(DistanceJointConf& object, std::vector<BodyConstraint>& bodie
     return impulse == 0_Ns;
 }
 
-bool SolvePosition(const DistanceJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf)
+bool SolvePosition(const DistanceJointConf &object, std::vector<BodyConstraint> &bodies,
+                   const ConstraintSolverConf &conf)
 {
     if (object.frequency > 0_Hz)
     {
@@ -210,8 +199,8 @@ bool SolvePosition(const DistanceJointConf& object, std::vector<BodyConstraint>&
         return true;
     }
 
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto posA = bodyConstraintA.GetPosition();
     auto posB = bodyConstraintB.GetPosition();

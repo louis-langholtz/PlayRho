@@ -24,14 +24,15 @@
 #include <PlayRho/Defines.hpp>
 #include <stdexcept>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Invalid argument logic error.
 /// @details Indicates that an argument to a function or method was invalid.
 /// @ingroup ExceptionsGroup
-class InvalidArgument: public std::invalid_argument
+class InvalidArgument : public std::invalid_argument
 {
-public:
+  public:
     using std::invalid_argument::invalid_argument;
 };
 

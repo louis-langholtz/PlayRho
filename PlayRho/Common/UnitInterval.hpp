@@ -23,15 +23,16 @@
 
 #include <PlayRho/Common/CheckedValue.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Unit-interval constrained value checker.
 /// @details Provides functors ensuring values are:
 ///   greater-than or equal-to zero, and less-than or equal-to one.
 /// @note This is meant to be used as a checker with types like <code>CheckedValue</code>.
 /// @see CheckedValue.
-template <typename T>
-struct UnitIntervalChecker {
+template <typename T> struct UnitIntervalChecker
+{
     /// @brief Exception type possibly thrown by this checker.
     using exception_type = std::invalid_argument;
 
@@ -45,12 +46,14 @@ struct UnitIntervalChecker {
     /// @brief Value checking functor.
     /// @throws exception_type if given value is not valid.
     /// @return Value given if greater-than or equal-to zero and less-than or equal-to one.
-    constexpr auto operator()(const T& v) -> decltype((v >= static_cast<T>(0) && v <= static_cast<T>(1)), T(v))
+    constexpr auto operator()(const T &v) -> decltype((v >= static_cast<T>(0) && v <= static_cast<T>(1)), T(v))
     {
-        if (!(v >= static_cast<T>(0))) {
+        if (!(v >= static_cast<T>(0)))
+        {
             throw exception_type("value not greater than nor equal to zero");
         }
-        if (!(v <= static_cast<T>(1))) {
+        if (!(v <= static_cast<T>(1)))
+        {
             throw exception_type("value not less than nor equal to one");
         }
         return v;
@@ -59,8 +62,7 @@ struct UnitIntervalChecker {
 
 /// @ingroup CheckedValues
 /// @brief Unit interval constrained value type.
-template <typename T>
-using UnitInterval = CheckedValue<T, UnitIntervalChecker<T>>;
+template <typename T> using UnitInterval = CheckedValue<T, UnitIntervalChecker<T>>;
 
 static_assert(std::is_default_constructible<UnitInterval<int>>::value);
 

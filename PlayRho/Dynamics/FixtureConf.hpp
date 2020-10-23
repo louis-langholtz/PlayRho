@@ -27,8 +27,10 @@
 
 #include <PlayRho/Dynamics/Filter.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 class Fixture;
 
@@ -40,26 +42,26 @@ class Fixture;
 struct FixtureConf
 {
     /// @brief Uses the given sensor state value.
-    constexpr FixtureConf& UseIsSensor(bool value) noexcept;
-    
+    constexpr FixtureConf &UseIsSensor(bool value) noexcept;
+
     /// @brief Uses the given filter value.
-    constexpr FixtureConf& UseFilter(Filter value) noexcept;
+    constexpr FixtureConf &UseFilter(Filter value) noexcept;
 
     /// A sensor shape collects contact information but never generates a collision
     /// response.
     bool isSensor = false;
-    
+
     /// Contact filtering data.
     Filter filter;
 };
 
-constexpr FixtureConf& FixtureConf::UseIsSensor(bool value) noexcept
+constexpr FixtureConf &FixtureConf::UseIsSensor(bool value) noexcept
 {
     isSensor = value;
     return *this;
 }
 
-constexpr FixtureConf& FixtureConf::UseFilter(Filter value) noexcept
+constexpr FixtureConf &FixtureConf::UseFilter(Filter value) noexcept
 {
     filter = value;
     return *this;
@@ -75,7 +77,7 @@ constexpr FixtureConf GetDefaultFixtureConf() noexcept
 /// @brief Gets the fixture definition for the given fixture.
 /// @param fixture Fixture to get the definition for.
 /// @relatedalso Fixture
-FixtureConf GetFixtureConf(const Fixture& fixture) noexcept;
+FixtureConf GetFixtureConf(const Fixture &fixture) noexcept;
 
 } // namespace d2
 } // namespace playrho

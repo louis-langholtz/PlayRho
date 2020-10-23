@@ -26,8 +26,10 @@
 
 #include <cstdint>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief Joint type alias.
 /// @note It's unclear whether it'd be better for this to be its own strong type so for
@@ -36,7 +38,7 @@ using JointType = TypeID;
 
 /// @brief Provides a C-style (null-terminated) string name for given joint type.
 /// @return C-style English-language human-readable string uniquely identifying the joint type.
-const char* ToString(JointType type) noexcept;
+const char *ToString(JointType type) noexcept;
 
 } // namespace d2
 } // namespace playrho

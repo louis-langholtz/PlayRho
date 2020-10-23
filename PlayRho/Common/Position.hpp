@@ -22,12 +22,14 @@
 #ifndef PLAYRHO_COMMON_POSITION_HPP
 #define PLAYRHO_COMMON_POSITION_HPP
 
-#include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/Vector2.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief 2-D positional data structure.
 /// @details A 2-element length and angle pair suitable for representing a linear and
@@ -36,40 +38,40 @@ namespace d2 {
 struct Position
 {
     Length2 linear; ///< Linear position.
-    Angle angular; ///< Angular position.
+    Angle angular;  ///< Angular position.
 };
 
 /// @brief Equality operator.
 /// @relatedalso Position
-constexpr bool operator==(const Position& lhs, const Position& rhs)
+constexpr bool operator==(const Position &lhs, const Position &rhs)
 {
     return (lhs.linear == rhs.linear) && (lhs.angular == rhs.angular);
 }
 
 /// @brief Inequality operator.
 /// @relatedalso Position
-constexpr bool operator!=(const Position& lhs, const Position& rhs)
+constexpr bool operator!=(const Position &lhs, const Position &rhs)
 {
     return (lhs.linear != rhs.linear) || (lhs.angular != rhs.angular);
 }
 
 /// @brief Negation operator.
 /// @relatedalso Position
-constexpr Position operator- (const Position& value)
+constexpr Position operator-(const Position &value)
 {
     return Position{-value.linear, -value.angular};
 }
 
 /// @brief Positive operator.
 /// @relatedalso Position
-constexpr Position operator+ (const Position& value)
+constexpr Position operator+(const Position &value)
 {
     return value;
 }
 
 /// @brief Addition assignment operator.
 /// @relatedalso Position
-constexpr Position& operator+= (Position& lhs, const Position& rhs)
+constexpr Position &operator+=(Position &lhs, const Position &rhs)
 {
     lhs.linear += rhs.linear;
     lhs.angular += rhs.angular;
@@ -78,14 +80,14 @@ constexpr Position& operator+= (Position& lhs, const Position& rhs)
 
 /// @brief Addition operator.
 /// @relatedalso Position
-constexpr Position operator+ (const Position& lhs, const Position& rhs)
+constexpr Position operator+(const Position &lhs, const Position &rhs)
 {
     return Position{lhs.linear + rhs.linear, lhs.angular + rhs.angular};
 }
 
 /// @brief Subtraction assignment operator.
 /// @relatedalso Position
-constexpr Position& operator-= (Position& lhs, const Position& rhs)
+constexpr Position &operator-=(Position &lhs, const Position &rhs)
 {
     lhs.linear -= rhs.linear;
     lhs.angular -= rhs.angular;
@@ -94,20 +96,20 @@ constexpr Position& operator-= (Position& lhs, const Position& rhs)
 
 /// @brief Subtraction operator.
 /// @relatedalso Position
-constexpr Position operator- (const Position& lhs, const Position& rhs)
+constexpr Position operator-(const Position &lhs, const Position &rhs)
 {
     return Position{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
 }
 
 /// @brief Multiplication operator.
-constexpr Position operator* (const Position& pos, const Real scalar)
+constexpr Position operator*(const Position &pos, const Real scalar)
 {
     return Position{pos.linear * scalar, pos.angular * scalar};
 }
 
 /// @brief Multiplication operator.
 /// @relatedalso Position
-constexpr Position operator* (const Real scalar, const Position& pos)
+constexpr Position operator*(const Real scalar, const Position &pos)
 {
     return Position{pos.linear * scalar, pos.angular * scalar};
 }
@@ -116,14 +118,13 @@ constexpr Position operator* (const Real scalar, const Position& pos)
 
 /// @brief Determines if the given value is valid.
 /// @relatedalso d2::Position
-template <>
-constexpr
-bool IsValid(const d2::Position& value) noexcept
+template <> constexpr bool IsValid(const d2::Position &value) noexcept
 {
     return IsValid(value.linear) && IsValid(value.angular);
 }
 
-namespace d2 {
+namespace d2
+{
 
 /// Gets the position between two positions at a given unit interval.
 /// @param pos0 Position at unit interval value of 0.
@@ -134,8 +135,7 @@ namespace d2 {
 ///   position 1 if <code>beta == 1</code>, or at the given unit interval value
 ///   between position 0 and position 1.
 /// @relatedalso Position
-constexpr Position GetPosition(const Position pos0, const Position pos1,
-                                              const Real beta) noexcept
+constexpr Position GetPosition(const Position pos0, const Position pos1, const Real beta) noexcept
 {
     assert(IsValid(pos0));
     assert(IsValid(pos1));
@@ -145,7 +145,7 @@ constexpr Position GetPosition(const Position pos0, const Position pos1,
     //   If pos0 == pos1 then return value should always be equal to pos0 too.
     //   But if Real is float, pos0 * (1 - beta) + pos1 * beta can fail this requirement.
     //   Meanwhile, pos0 + (pos1 - pos0) * beta always works.
-    
+
     // pos0 * (1 - beta) + pos1 * beta
     // pos0 - pos0 * beta + pos1 * beta
     // pos0 + (pos1 * beta - pos0 * beta)

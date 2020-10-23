@@ -20,17 +20,18 @@
 #ifndef PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP
 #define PLAYRHO_DYNAMICS_FIXTUREPROXY_HPP
 
-#include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Common/Settings.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Fixture proxy.
 /// @details This proxy is used internally to connect fixtures to the broad-phase.
 /// @note This data structure is 4-bytes large (on at least one 64-bit platform).
 struct FixtureProxy
 {
-    
+
     /// @brief Size type.
     using size_type = std::remove_const<decltype(MaxContacts)>::type;
 
@@ -42,14 +43,14 @@ struct FixtureProxy
 
 /// @brief Equality operator
 /// @relatedalso FixtureProxy
-constexpr bool operator== (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
+constexpr bool operator==(const FixtureProxy &lhs, const FixtureProxy &rhs) noexcept
 {
     return lhs.treeId == rhs.treeId;
 }
 
 /// @brief Inequality operator
 /// @relatedalso FixtureProxy
-constexpr bool operator!= (const FixtureProxy& lhs, const FixtureProxy& rhs) noexcept
+constexpr bool operator!=(const FixtureProxy &lhs, const FixtureProxy &rhs) noexcept
 {
     return !(lhs.treeId == rhs.treeId);
 }

@@ -20,15 +20,17 @@
 #ifndef PLAYRHO_COLLISION_MANIFOLD_HPP
 #define PLAYRHO_COLLISION_MANIFOLD_HPP
 
-#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/ContactFeature.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
+#include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class DistanceProxy;
 struct Transformation;
@@ -66,14 +68,13 @@ struct Transformation;
 ///
 class alignas(64) Manifold
 {
-public:
-    
+  public:
     /// @brief Size type.
     using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
 
     /// Contact feature index.
     using CfIndex = ContactFeature::Index;
-    
+
     /// @brief Contact feature type.
     using CfType = ContactFeature::Type;
 
@@ -81,13 +82,13 @@ public:
 
     /// Manifold type.
     /// @note This is by design a 1-byte sized type.
-    enum Type: std::uint8_t
+    enum Type : std::uint8_t
     {
         /// Unset type.
         /// @details Manifold is unset. For manifolds of this type: the point count is zero,
         ///   point data is undefined, and all other properties are invalid.
         e_unset,
-        
+
         /// Circles type.
         /// @details Manifold is for circle-to-circle like collisions.
         /// @note For manifolds of this type: the local point is local center of "circle-A"
@@ -114,7 +115,7 @@ public:
         ///   of shapes A and B respectively.</code>.
         e_faceB
     };
-    
+
     /// @brief Data for a point of collision in a Manifold.
     ///
     /// @details This is a contact point belonging to a contact manifold. It holds details
@@ -144,22 +145,22 @@ public:
         /// @note This field is 4-bytes.
         /// @see GetPointStates.
         ContactFeature contactFeature;
-        
+
         /// @brief Normal impulse.
         /// @details This is the non-penetration impulse.
         /// @note This is only used for velocity constraint resolution.
         /// @note 4-bytes.
         Momentum normalImpulse = 0_Ns;
-        
+
         /// @brief Tangent impulse.
         /// @details This is the friction impulse.
         /// @note This is only used for velocity constraint resolution.
         /// @note 4-bytes.
         Momentum tangentImpulse = 0_Ns;
     };
-    
+
     // For Circles type manifolds...
-    
+
     /// Gets a circles-typed manifold with one point.
     /// @param vA Local center of "circle" A.
     /// @param iA Index of vertex from shape A representing the local center of "circle" A.
@@ -167,13 +168,11 @@ public:
     /// @param iB Index of vertex from shape B representing the local center of "circle" B.
     static inline Manifold GetForCircles(Length2 vA, CfIndex iA, Length2 vB, CfIndex iB) noexcept
     {
-        return Manifold{e_circles, GetInvalid<UnitVec>(), vA, 1, {{
-            Point{vB, GetVertexVertexContactFeature(iA, iB)}
-        }}};
+        return Manifold{e_circles, GetInvalid<UnitVec>(), vA, 1, {{Point{vB, GetVertexVertexContactFeature(iA, iB)}}}};
     }
 
     // For Face A type manifolds...
-    
+
     /// Gets a face A typed manifold.
     /// @param normalA Local normal of the face from polygon A.
     /// @param faceA Any point in local coordinates on the face whose normal was provided.
@@ -181,34 +180,33 @@ public:
     {
         return Manifold{e_faceA, normalA, faceA, 0, {{}}};
     }
-    
+
     /// Gets a face A typed manifold.
     /// @param ln Normal on polygon A.
     /// @param lp Center of face A.
     /// @param mp1 Manifold point 1 (of 1).
-    static inline Manifold GetForFaceA(UnitVec ln, Length2 lp,
-                                       const Point& mp1) noexcept
+    static inline Manifold GetForFaceA(UnitVec ln, Length2 lp, const Point &mp1) noexcept
     {
-        //assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
+        // assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB ==
+        // ContactFeature::e_face);
         return Manifold{e_faceA, ln, lp, 1, {{mp1}}};
     }
-    
+
     /// Gets a face A typed manifold.
     /// @param ln Normal on polygon A.
     /// @param lp Center of face A.
     /// @param mp1 Manifold point 1 (of 2).
     /// @param mp2 Manifold point 2 (of 2).
-    static inline Manifold GetForFaceA(UnitVec ln, Length2 lp,
-                                       const Point& mp1, const Point& mp2) noexcept
+    static inline Manifold GetForFaceA(UnitVec ln, Length2 lp, const Point &mp1, const Point &mp2) noexcept
     {
-        //assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
-        //assert(mp2.contactFeature.typeA == ContactFeature::e_face || mp2.contactFeature.typeB == ContactFeature::e_face);
-        //assert(mp1.contactFeature != mp2.contactFeature);
+        // assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB ==
+        // ContactFeature::e_face); assert(mp2.contactFeature.typeA == ContactFeature::e_face || mp2.contactFeature.typeB
+        // == ContactFeature::e_face); assert(mp1.contactFeature != mp2.contactFeature);
         return Manifold{e_faceA, ln, lp, 2, {{mp1, mp2}}};
     }
-    
+
     // For Face B...
-    
+
     /// Gets a face B typed manifold.
     /// @param ln Normal on polygon B.
     /// @param lp Center of face B.
@@ -216,90 +214,101 @@ public:
     {
         return Manifold{e_faceB, ln, lp, 0, {{}}};
     }
-    
+
     /// Gets a face B typed manifold.
     /// @param ln Normal on polygon B.
     /// @param lp Center of face B.
     /// @param mp1 Manifold point 1.
-    static inline Manifold GetForFaceB(UnitVec ln, Length2 lp,
-                                       const Point& mp1) noexcept
+    static inline Manifold GetForFaceB(UnitVec ln, Length2 lp, const Point &mp1) noexcept
     {
-        //assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
+        // assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB ==
+        // ContactFeature::e_face);
         return Manifold{e_faceB, ln, lp, 1, {{mp1}}};
     }
-    
+
     /// Gets a face B typed manifold.
     /// @param ln Normal on polygon B.
     /// @param lp Center of face B.
     /// @param mp1 Manifold point 1 (of 2).
     /// @param mp2 Manifold point 2 (of 2).
-    static inline Manifold GetForFaceB(UnitVec ln, Length2 lp,
-                                       const Point& mp1, const Point& mp2) noexcept
+    static inline Manifold GetForFaceB(UnitVec ln, Length2 lp, const Point &mp1, const Point &mp2) noexcept
     {
-        //assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB == ContactFeature::e_face);
-        //assert(mp2.contactFeature.typeA == ContactFeature::e_face || mp2.contactFeature.typeB == ContactFeature::e_face);
-        //assert(mp1.contactFeature != mp2.contactFeature);
+        // assert(mp1.contactFeature.typeA == ContactFeature::e_face || mp1.contactFeature.typeB ==
+        // ContactFeature::e_face); assert(mp2.contactFeature.typeA == ContactFeature::e_face || mp2.contactFeature.typeB
+        // == ContactFeature::e_face); assert(mp1.contactFeature != mp2.contactFeature);
         return Manifold{e_faceB, ln, lp, 2, {{mp1, mp2}}};
     }
-    
+
     /// @brief Gets the face A manifold for the given data.
     static inline Manifold GetForFaceA(UnitVec na, CfIndex ia, Length2 pa) noexcept
     {
-        return Manifold{e_faceA, na, pa, 0, {{
-            Point{GetInvalid<Length2>(), ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}},
-            Point{GetInvalid<Length2>(), ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}}
-        }}};
+        return Manifold{
+            e_faceA,
+            na,
+            pa,
+            0,
+            {{Point{GetInvalid<Length2>(), ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}},
+              Point{GetInvalid<Length2>(), ContactFeature{ContactFeature::e_face, ia, ContactFeature::e_face, 0}}}}};
     }
-    
+
     /// @brief Gets the face B manifold for the given data.
     static inline Manifold GetForFaceB(UnitVec nb, CfIndex ib, Length2 pb) noexcept
     {
-        return Manifold{e_faceB, nb, pb, 0, {{
-            Point{GetInvalid<Length2>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}},
-            Point{GetInvalid<Length2>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}}
-        }}};
+        return Manifold{
+            e_faceB,
+            nb,
+            pb,
+            0,
+            {{Point{GetInvalid<Length2>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}},
+              Point{GetInvalid<Length2>(), ContactFeature{ContactFeature::e_face, 0, ContactFeature::e_face, ib}}}}};
     }
 
     /// @brief Gets the face A manifold for the given data.
-    static inline Manifold GetForFaceA(UnitVec na, CfIndex ia, Length2 pa,
-                                          CfType tb0, CfIndex ib0, Length2 pb0) noexcept
+    static inline Manifold GetForFaceA(UnitVec na, CfIndex ia, Length2 pa, CfType tb0, CfIndex ib0,
+                                       Length2 pb0) noexcept
     {
-        return Manifold{e_faceA, na, pa, 1, {{
-            Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}},
-            Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}}
-        }}};
-    }
-    
-    /// @brief Gets the face B manifold for the given data.
-    static inline Manifold GetForFaceB(UnitVec nb, CfIndex ib, Length2 pb,
-                                          CfType ta0, CfIndex ia0, Length2 pa0) noexcept
-    {
-        return Manifold{e_faceB, nb, pb, 1, {{
-            Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
-            Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}}
-        }}};
-    }
-    
-    /// @brief Gets the face A manifold for the given data.
-    static inline Manifold GetForFaceA(UnitVec na, CfIndex ia, Length2 pa,
-                                          CfType tb0, CfIndex ib0, Length2 pb0,
-                                          CfType tb1, CfIndex ib1, Length2 pb1) noexcept
-    {
-        return Manifold{e_faceA, na, pa, 2, {{
-            Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}},
-            Point{pb1, ContactFeature{ContactFeature::e_face, ia, tb1, ib1}}
-        }}};
+        return Manifold{e_faceA,
+                        na,
+                        pa,
+                        1,
+                        {{Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}},
+                          Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}}}}};
     }
 
     /// @brief Gets the face B manifold for the given data.
-    static inline Manifold GetForFaceB(UnitVec nb, CfIndex ib, Length2 pb,
-                                          CfType ta0, CfIndex ia0, Length2 pa0,
-                                          CfType ta1, CfIndex ia1, Length2 pa1) noexcept
+    static inline Manifold GetForFaceB(UnitVec nb, CfIndex ib, Length2 pb, CfType ta0, CfIndex ia0,
+                                       Length2 pa0) noexcept
     {
-        return Manifold{e_faceB, nb, pb, 2, {{
-            Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
-            Point{pa1, ContactFeature{ta1, ia1, ContactFeature::e_face, ib}}
-        }}};
+        return Manifold{e_faceB,
+                        nb,
+                        pb,
+                        1,
+                        {{Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
+                          Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}}}}};
+    }
+
+    /// @brief Gets the face A manifold for the given data.
+    static inline Manifold GetForFaceA(UnitVec na, CfIndex ia, Length2 pa, CfType tb0, CfIndex ib0, Length2 pb0,
+                                       CfType tb1, CfIndex ib1, Length2 pb1) noexcept
+    {
+        return Manifold{e_faceA,
+                        na,
+                        pa,
+                        2,
+                        {{Point{pb0, ContactFeature{ContactFeature::e_face, ia, tb0, ib0}},
+                          Point{pb1, ContactFeature{ContactFeature::e_face, ia, tb1, ib1}}}}};
+    }
+
+    /// @brief Gets the face B manifold for the given data.
+    static inline Manifold GetForFaceB(UnitVec nb, CfIndex ib, Length2 pb, CfType ta0, CfIndex ia0, Length2 pa0,
+                                       CfType ta1, CfIndex ia1, Length2 pa1) noexcept
+    {
+        return Manifold{e_faceB,
+                        nb,
+                        pb,
+                        2,
+                        {{Point{pa0, ContactFeature{ta0, ia0, ContactFeature::e_face, ib}},
+                          Point{pa1, ContactFeature{ta1, ia1, ContactFeature::e_face, ib}}}}};
     }
 
     /// Default constructor.
@@ -308,17 +317,20 @@ public:
     /// For an unset-type manifold:
     /// point count is zero, point data is undefined, and all other properties are invalid.
     Manifold() = default;
-    
+
     /// @brief Copy constructor.
-    Manifold(const Manifold& copy) = default;
-    
+    Manifold(const Manifold &copy) = default;
+
     /// Gets the type of this manifold.
     ///
     /// @note This must be a constant expression in order to use it in the context
     ///   of the <code>IsValid</code> specialized template function for it.
     ///
-    constexpr Type GetType() const noexcept { return m_type; }
-    
+    constexpr Type GetType() const noexcept
+    {
+        return m_type;
+    }
+
     /// Gets the manifold point count.
     ///
     /// @details This is the count of contact points for this manifold.
@@ -332,8 +344,11 @@ public:
     /// @see AddPoint().
     /// @see GetPoint().
     ///
-    constexpr size_type GetPointCount() const noexcept { return m_pointCount; }
-    
+    constexpr size_type GetPointCount() const noexcept
+    {
+        return m_pointCount;
+    }
+
     /// @brief Gets the contact feature for the given index.
     constexpr ContactFeature GetContactFeature(size_type index) const noexcept
     {
@@ -361,12 +376,12 @@ public:
     }
 
     /// @brief Gets the point identified by the given index.
-    const Point& GetPoint(size_type index) const noexcept
+    const Point &GetPoint(size_type index) const noexcept
     {
         assert((0 <= index) && (index < m_pointCount));
         return m_points[index];
     }
-    
+
     /// @brief Sets the point impulses for the given index.
     void SetPointImpulses(size_type index, Momentum n, Momentum t)
     {
@@ -374,14 +389,14 @@ public:
         m_points[index].normalImpulse = n;
         m_points[index].tangentImpulse = t;
     }
-    
+
     /// Adds a new point.
     /// @details This can be called once for circle type manifolds,
     ///   and up to twice for face-A or face-B type manifolds. <code>GetPointCount()</code>
     ///   can be called to find out how many points have already been added.
     /// @warning Behavior is undefined if this object's type is e_unset.
     /// @warning Behavior is undefined if this is called more than twice.
-    void AddPoint(const Point& mp) noexcept;
+    void AddPoint(const Point &mp) noexcept;
 
     /// @brief Adds a new point with the given data.
     void AddPoint(CfType type, CfIndex index, Length2 point) noexcept;
@@ -397,7 +412,7 @@ public:
         assert(m_type != e_circles);
         return m_localNormal;
     }
-    
+
     /// @brief Gets the local point.
     /// @details
     /// This is the: local center of "circle" A for circles-type manifolds;
@@ -411,7 +426,7 @@ public:
         assert(m_type != e_unset);
         return m_localPoint;
     }
-    
+
     /// @brief Gets the opposing point.
     constexpr Length2 GetOpposingPoint(size_type index) const noexcept
     {
@@ -419,18 +434,23 @@ public:
         return m_points[index].localPoint;
     }
 
-private:
-    
+  private:
     /// @brief Point array structure.
     struct PointArray
     {
         Point elements[MaxManifoldPoints]; ///< Elements.
 
         /// @brief Array indexing operator.
-        constexpr Point& operator[](std::size_t i) { return elements[i]; }
-        
+        constexpr Point &operator[](std::size_t i)
+        {
+            return elements[i];
+        }
+
         /// @brief Array indexing operator.
-        constexpr const Point& operator[](std::size_t i) const { return elements[i]; }
+        constexpr const Point &operator[](std::size_t i) const
+        {
+            return elements[i];
+        }
     };
 
     /// Constructs manifold with array of points using the given values.
@@ -439,11 +459,11 @@ private:
     /// @param lp Local point.
     /// @param n number of points defined in array.
     /// @param mpa Manifold point array.
-    constexpr Manifold(Type t, UnitVec ln, Length2 lp, size_type n, const PointArray& mpa) noexcept;
-    
-    Type m_type = e_unset; ///< Type of collision this manifold is associated with (1-byte).
+    constexpr Manifold(Type t, UnitVec ln, Length2 lp, size_type n, const PointArray &mpa) noexcept;
+
+    Type m_type = e_unset;      ///< Type of collision this manifold is associated with (1-byte).
     size_type m_pointCount = 0; ///< Number of defined manifold points (1-byte).
-    
+
     /// Local normal.
     /// @details Exact usage depends on manifold type (8-bytes).
     /// @note Invalid for the unset and circle manifold types.
@@ -453,7 +473,7 @@ private:
     /// @details Exact usage depends on manifold type (8-bytes).
     /// @note Invalid for the unset manifold type.
     Length2 m_localPoint = GetInvalid<Length2>();
-    
+
     PointArray m_points; ///< Points of contact (at least 40-bytes). @see pointCount.
 };
 
@@ -466,10 +486,10 @@ struct Manifold::Conf
     /// @brief Targeted depth of impact.
     /// @note Value must be less than twice the minimum vertex radius of any shape.
     Length targetDepth = DefaultLinearSlop * Real{3};
-    
+
     /// @brief Tolerance.
     Length tolerance = DefaultLinearSlop / Real{4}; ///< Tolerance.
-    
+
     /// Max. circles ratio.
     /// @details When the ratio of the closest face's length to the vertex radius is
     ///   more than this amount, then face-manifolds are forced, else circles-manifolds
@@ -486,28 +506,29 @@ constexpr Manifold::Conf GetDefaultManifoldConf() noexcept
 
 /// @brief Gets the manifold configuration for the given step configuration.
 /// @relatedalso Manifold::Conf
-Manifold::Conf GetManifoldConf(const StepConf& conf) noexcept;
+Manifold::Conf GetManifoldConf(const StepConf &conf) noexcept;
 
-constexpr Manifold::Manifold(Type t, UnitVec ln, Length2 lp, size_type n,
-                                          const PointArray& mpa) noexcept:
-    m_type{t}, m_pointCount{n}, m_localNormal{ln}, m_localPoint{lp}, m_points{mpa}
+constexpr Manifold::Manifold(Type t, UnitVec ln, Length2 lp, size_type n, const PointArray &mpa) noexcept
+    : m_type{t}, m_pointCount{n}, m_localNormal{ln}, m_localPoint{lp}, m_points{mpa}
 {
     assert(t != e_unset || n == 0);
     assert(t == e_unset || IsValid(lp));
     assert((t == e_unset) || (t == e_circles) || IsValid(ln));
     assert((t != e_circles) || (n == 1 && !IsValid(ln)));
-    //assert((t != e_circles) || (n == 1 && !IsValid(ln) && mpa[0].contactFeature.typeA == ContactFeature::e_vertex && mpa[0].contactFeature.typeB == ContactFeature::e_vertex));
+    // assert((t != e_circles) || (n == 1 && !IsValid(ln) && mpa[0].contactFeature.typeA == ContactFeature::e_vertex &&
+    // mpa[0].contactFeature.typeB == ContactFeature::e_vertex));
 }
 
-inline void Manifold::AddPoint(const Point& mp) noexcept
+inline void Manifold::AddPoint(const Point &mp) noexcept
 {
     assert(m_type != e_unset);
     assert(m_type != e_circles || m_pointCount == 0);
     assert(m_pointCount < MaxManifoldPoints);
     // assert((m_pointCount == 0) || (mp.contactFeature != m_points[0].contactFeature));
-    //assert((m_type != e_circles) || (mp.contactFeature.typeA == ContactFeature::e_vertex || mp.contactFeature.typeB == ContactFeature::e_vertex));
-    //assert((m_type != e_faceA) || ((mp.contactFeature.typeA == ContactFeature::e_face) && (m_pointCount == 0 || mp.contactFeature.indexA == m_points[0].contactFeature.indexA)));
-    //assert((m_type != e_faceB) || (mp.contactFeature.typeB == ContactFeature::e_face));
+    // assert((m_type != e_circles) || (mp.contactFeature.typeA == ContactFeature::e_vertex || mp.contactFeature.typeB
+    // == ContactFeature::e_vertex)); assert((m_type != e_faceA) || ((mp.contactFeature.typeA == ContactFeature::e_face)
+    // && (m_pointCount == 0 || mp.contactFeature.indexA == m_points[0].contactFeature.indexA))); assert((m_type !=
+    // e_faceB) || (mp.contactFeature.typeB == ContactFeature::e_face));
     m_points[m_pointCount] = mp;
     ++m_pointCount;
 }
@@ -517,22 +538,22 @@ inline void Manifold::AddPoint(CfType type, CfIndex index, Length2 point) noexce
     assert(m_pointCount < MaxManifoldPoints);
     switch (m_type)
     {
-        case e_unset:
-            break;
-        case e_circles:
-            break;
-        case e_faceA:
-            m_points[m_pointCount].localPoint = point;
-            m_points[m_pointCount].contactFeature.typeB = type;
-            m_points[m_pointCount].contactFeature.indexB = index;
-            ++m_pointCount;
-            break;
-        case e_faceB:
-            m_points[m_pointCount].localPoint = point;
-            m_points[m_pointCount].contactFeature.typeA = type;
-            m_points[m_pointCount].contactFeature.indexA = index;
-            ++m_pointCount;
-            break;
+    case e_unset:
+        break;
+    case e_circles:
+        break;
+    case e_faceA:
+        m_points[m_pointCount].localPoint = point;
+        m_points[m_pointCount].contactFeature.typeB = type;
+        m_points[m_pointCount].contactFeature.indexB = index;
+        ++m_pointCount;
+        break;
+    case e_faceB:
+        m_points[m_pointCount].localPoint = point;
+        m_points[m_pointCount].contactFeature.typeA = type;
+        m_points[m_pointCount].contactFeature.indexA = index;
+        ++m_pointCount;
+        break;
     }
 }
 
@@ -540,22 +561,22 @@ inline void Manifold::AddPoint(CfType type, CfIndex index, Length2 point) noexce
 
 /// @brief Determines whether the two given manifold points are equal.
 /// @relatedalso Manifold::Point
-bool operator==(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
+bool operator==(const Manifold::Point &lhs, const Manifold::Point &rhs) noexcept;
 
 /// @brief Determines whether the two given manifold points are not equal.
 /// @relatedalso Manifold::Point
-bool operator!=(const Manifold::Point& lhs, const Manifold::Point& rhs) noexcept;
+bool operator!=(const Manifold::Point &lhs, const Manifold::Point &rhs) noexcept;
 
 /// @brief Manifold equality operator.
 /// @note In-so-far as manifold points are concerned, order doesn't matter;
 ///    only whether the two manifolds have the same point set.
 /// @relatedalso Manifold
-bool operator==(const Manifold& lhs, const Manifold& rhs) noexcept;
+bool operator==(const Manifold &lhs, const Manifold &rhs) noexcept;
 
 /// @brief Manifold inequality operator.
 /// @details Determines whether the two given manifolds are not equal.
 /// @relatedalso Manifold
-bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
+bool operator!=(const Manifold &lhs, const Manifold &rhs) noexcept;
 
 /// @brief Gets a face-to-face based manifold.
 /// @param flipped Whether to flip the resulting manifold (between face-A and face-B).
@@ -572,21 +593,16 @@ bool operator!=(const Manifold& lhs, const Manifold& rhs) noexcept;
 /// @param indices1 Index 1. This is the first and possibly second index of the vertex of shape1
 ///   that had the maximal separation distance from the edge of shape0 identified by idx0.
 /// @param conf Manifold configuration data.
-Manifold GetManifold(bool flipped,
-                     const DistanceProxy& shape0, const Transformation& xf0,
-                     const VertexCounter idx0,
-                     const DistanceProxy& shape1, const Transformation& xf1,
-                     const VertexCounter2 indices1,
+Manifold GetManifold(bool flipped, const DistanceProxy &shape0, const Transformation &xf0, const VertexCounter idx0,
+                     const DistanceProxy &shape1, const Transformation &xf1, const VertexCounter2 indices1,
                      const Manifold::Conf conf);
 
 /// @brief Computes manifolds for face-to-point collision.
-Manifold GetManifold(bool flipped, Length totalRadius,
-                     const DistanceProxy& shape, const Transformation& sxf,
-                     Length2 point, const Transformation& xfm);
+Manifold GetManifold(bool flipped, Length totalRadius, const DistanceProxy &shape, const Transformation &sxf,
+                     Length2 point, const Transformation &xfm);
 
 /// @brief Gets a point-to-point based manifold.
-Manifold GetManifold(Length2 locationA, const Transformation& xfA,
-                     Length2 locationB, const Transformation& xfB,
+Manifold GetManifold(Length2 locationA, const Transformation &xfA, Length2 locationB, const Transformation &xfB,
                      Length totalRadius) noexcept;
 
 /// @brief Calculates the relevant collision manifold.
@@ -597,9 +613,8 @@ Manifold GetManifold(Length2 locationA, const Transformation& xfA,
 ///
 /// @relatedalso Manifold
 ///
-Manifold CollideShapes(const DistanceProxy& shapeA, const Transformation& xfA,
-                       const DistanceProxy& shapeB, const Transformation& xfB,
-                       Manifold::Conf conf = GetDefaultManifoldConf());
+Manifold CollideShapes(const DistanceProxy &shapeA, const Transformation &xfA, const DistanceProxy &shapeB,
+                       const Transformation &xfB, Manifold::Conf conf = GetDefaultManifoldConf());
 #if 0
 Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
                        const DistanceProxy& shapeB, const Transformation& xfB,
@@ -607,8 +622,8 @@ Manifold CollideCached(const DistanceProxy& shapeA, const Transformation& xfA,
 #endif
 
 #ifdef DEFINE_GET_MANIFOLD
-Manifold GetManifold(const DistanceProxy& proxyA, const Transformation& transformA,
-                     const DistanceProxy& proxyB, const Transformation& transformB);
+Manifold GetManifold(const DistanceProxy &proxyA, const Transformation &transformA, const DistanceProxy &proxyB,
+                     const Transformation &transformB);
 #endif
 
 #if 0
@@ -617,14 +632,13 @@ Length2 GetLocalPoint(const DistanceProxy& proxy, ContactFeature::Type type,
 #endif
 
 /// @brief Gets a unique name for the given manifold type.
-const char* GetName(Manifold::Type type) noexcept;
+const char *GetName(Manifold::Type type) noexcept;
 
 } // namespace d2
 
 /// @brief Gets whether the given manifold is valid.
 /// @relatedalso d2::Manifold
-template <>
-constexpr bool IsValid(const d2::Manifold& value) noexcept
+template <> constexpr bool IsValid(const d2::Manifold &value) noexcept
 {
     return value.GetType() != d2::Manifold::e_unset;
 }

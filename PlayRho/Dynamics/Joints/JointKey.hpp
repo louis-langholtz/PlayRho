@@ -29,40 +29,41 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 
-#include <utility>
 #include <functional>
+#include <utility>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 class Joint;
 
 /// @brief Joint key.
 class JointKey
 {
-public:
+  public:
     /// @brief Gets the <code>JointKey</code> for the given bodies.
     static constexpr JointKey Get(BodyID bodyA, BodyID bodyB) noexcept
     {
-        return (bodyA < bodyB)? JointKey{bodyA, bodyB}: JointKey{bodyB, bodyA};
+        return (bodyA < bodyB) ? JointKey{bodyA, bodyB} : JointKey{bodyB, bodyA};
     }
-    
+
     /// @brief Gets body 1.
     constexpr BodyID GetBody1() const noexcept
     {
         return m_body1;
     }
-    
+
     /// @brief Gets body 2.
     constexpr BodyID GetBody2() const
     {
         return m_body2;
     }
 
-private:
+  private:
     /// @brief Initializing constructor.
-    constexpr JointKey(BodyID body1, BodyID body2):
-        m_body1(body1), m_body2(body2)
+    constexpr JointKey(BodyID body1, BodyID body2) : m_body1(body1), m_body2(body2)
     {
         // Intentionally empty.
     }
@@ -77,10 +78,10 @@ private:
 };
 
 /// @brief Gets the <code>JointKey</code> for the given joint.
-JointKey GetJointKey(const Joint& joint) noexcept;
+JointKey GetJointKey(const Joint &joint) noexcept;
 
 /// @brief Compares the given joint keys.
-constexpr int Compare(const JointKey& lhs, const JointKey& rhs) noexcept
+constexpr int Compare(const JointKey &lhs, const JointKey &rhs) noexcept
 {
     if (lhs.GetBody1() < rhs.GetBody1())
     {
@@ -113,30 +114,26 @@ constexpr bool IsFor(const JointKey key, BodyID body) noexcept
 
 namespace std
 {
-    /// @brief Function object for performing less-than comparisons between two joint keys.
-    template <>
-    struct less<playrho::d2::JointKey>
+/// @brief Function object for performing less-than comparisons between two joint keys.
+template <> struct less<playrho::d2::JointKey>
+{
+    /// @brief Function object operator.
+    constexpr bool operator()(const playrho::d2::JointKey &lhs, const playrho::d2::JointKey &rhs) const
     {
-        /// @brief Function object operator.
-        constexpr
-        bool operator()(const playrho::d2::JointKey& lhs, const playrho::d2::JointKey& rhs) const
-        {
-            return playrho::d2::Compare(lhs, rhs) < 0;
-        }
-    };
-    
-    /// @brief Function object for performing equal-to comparisons between two joint keys.
-    template <>
-    struct equal_to<playrho::d2::JointKey>
+        return playrho::d2::Compare(lhs, rhs) < 0;
+    }
+};
+
+/// @brief Function object for performing equal-to comparisons between two joint keys.
+template <> struct equal_to<playrho::d2::JointKey>
+{
+
+    /// @brief Function object operator.
+    constexpr bool operator()(const playrho::d2::JointKey &lhs, const playrho::d2::JointKey &rhs) const
     {
-        
-        /// @brief Function object operator.
-        constexpr
-        bool operator()( const playrho::d2::JointKey& lhs, const playrho::d2::JointKey& rhs ) const
-        {
-            return playrho::d2::Compare(lhs, rhs) == 0;
-        }
-    };
+        return playrho::d2::Compare(lhs, rhs) == 0;
+    }
+};
 
 } // namespace std
 

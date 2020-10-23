@@ -22,15 +22,17 @@
 #ifndef PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
 #define PLAYRHO_COLLISION_SEPARATIONFINDER_HPP
 
-#include <PlayRho/Common/Math.hpp>
 #include <PlayRho/Collision/IndexPair.hpp>
+#include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 class DistanceProxy;
 struct Transformation;
-    
+
 /// Separation scenario.
 struct SeparationScenario
 {
@@ -41,15 +43,15 @@ struct SeparationScenario
         e_faceA,
         e_faceB,
     };
-    
-    const DistanceProxy& proxyA; ///< Distance proxy A.
-    const DistanceProxy& proxyB; ///< Distance proxy B.
-    const UnitVec axis; ///< Axis. @details Directional vector of the axis of separation.
+
+    const DistanceProxy &proxyA; ///< Distance proxy A.
+    const DistanceProxy &proxyB; ///< Distance proxy B.
+    const UnitVec axis;          ///< Axis. @details Directional vector of the axis of separation.
 
     /// @brief Local point.
     /// @note Only used if type is <code>e_faceA</code> or <code>e_faceB</code>.
     const Length2 localPoint;
-    
+
     const Type type; ///< The type of this scenario.
 };
 
@@ -66,16 +68,14 @@ struct SeparationScenario
 /// @param proxyB Proxy B.
 /// @param xfB Transformation B.
 ///
-SeparationScenario
-GetSeparationScenario(IndexPair3 indices,
-                      const DistanceProxy& proxyA, const Transformation& xfA,
-                      const DistanceProxy& proxyB, const Transformation& xfB);
+SeparationScenario GetSeparationScenario(IndexPair3 indices, const DistanceProxy &proxyA, const Transformation &xfA,
+                                         const DistanceProxy &proxyB, const Transformation &xfB);
 
 /// @brief Finds the minimum separation.
 /// @return indexes of proxy A's and proxy B's vertices that have the minimum
 ///    distance between them and what that distance is.
-LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
-                                  const Transformation& xfA, const Transformation& xfB);
+LengthIndexPair FindMinSeparation(const SeparationScenario &scenario, const Transformation &xfA,
+                                  const Transformation &xfB);
 
 /// Evaluates the separation of the identified proxy vertices at the given time factor.
 ///
@@ -87,8 +87,7 @@ LengthIndexPair FindMinSeparation(const SeparationScenario& scenario,
 /// @return Separation distance which will be negative when the given transforms put the
 ///    vertices on the opposite sides of the separating axis.
 ///
-Length Evaluate(const SeparationScenario& scenario,
-                const Transformation& xfA, const Transformation& xfB,
+Length Evaluate(const SeparationScenario &scenario, const Transformation &xfA, const Transformation &xfB,
                 IndexPair indexPair);
 
 } // namespace d2

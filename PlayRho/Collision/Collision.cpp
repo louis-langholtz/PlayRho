@@ -21,10 +21,12 @@
 #include <PlayRho/Collision/Manifold.hpp>
 #include <cmath>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2) noexcept
+PointStates GetPointStates(const Manifold &manifold1, const Manifold &manifold2) noexcept
 {
     auto retval = PointStates{};
 
@@ -61,12 +63,11 @@ PointStates GetPointStates(const Manifold& manifold1, const Manifold& manifold2)
             }
         }
     }
-    
+
     return retval;
 }
 
-ClipList ClipSegmentToLine(const ClipList& vIn, const UnitVec& normal, Length offset,
-                           ContactFeature::Index indexA)
+ClipList ClipSegmentToLine(const ClipList &vIn, const UnitVec &normal, Length offset, ContactFeature::Index indexA)
 {
     ClipList vOut;
 

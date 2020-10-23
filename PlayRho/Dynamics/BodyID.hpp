@@ -21,10 +21,11 @@
 #ifndef PLAYRHO_DYNAMICS_BODYID_HPP
 #define PLAYRHO_DYNAMICS_BODYID_HPP
 
-#include <PlayRho/Common/StrongType.hpp>
 #include <PlayRho/Common/Settings.hpp>
+#include <PlayRho/Common/StrongType.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Body identifier.
 using BodyID = strongtype::IndexingNamedType<BodyCounter, struct BodyIdentifier>;
@@ -33,19 +34,17 @@ using BodyID = strongtype::IndexingNamedType<BodyCounter, struct BodyIdentifier>
 constexpr auto InvalidBodyID = static_cast<BodyID>(static_cast<BodyID::underlying_type>(-1));
 
 /// @brief Gets an invalid value for the BodyID type.
-template <>
-constexpr BodyID GetInvalid() noexcept
+template <> constexpr BodyID GetInvalid() noexcept
 {
     return InvalidBodyID;
 }
 
 /// @brief Determines if the given value is valid.
-template <>
-constexpr bool IsValid(const BodyID& value) noexcept
+template <> constexpr bool IsValid(const BodyID &value) noexcept
 {
     return value != GetInvalid<BodyID>();
 }
 
-}
+} // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_BODYID_HPP

@@ -26,12 +26,14 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct ConstraintSolverConf;
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class Joint;
 class World;
@@ -66,18 +68,17 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
     static constexpr Length2 DefaultLocalAnchorB = Length2{+1_m, 0_m};
 
     /// @brief Default constructor.
-    PulleyJointConf() noexcept: super{super{}.UseCollideConnected(true)} {}
+    PulleyJointConf() noexcept : super{super{}.UseCollideConnected(true)}
+    {
+    }
 
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-    PulleyJointConf(BodyID bodyA, BodyID bodyB,
-                    Length2 groundAnchorA = DefaultGroundAnchorA,
-                    Length2 groundAnchorB = DefaultGroundAnchorB,
-                    Length2 anchorA = DefaultLocalAnchorA,
-                    Length2 anchorB = DefaultLocalAnchorB,
-                    Length lA = 0_m, Length lB = 0_m);
+    PulleyJointConf(BodyID bodyA, BodyID bodyB, Length2 groundAnchorA = DefaultGroundAnchorA,
+                    Length2 groundAnchorB = DefaultGroundAnchorB, Length2 anchorA = DefaultLocalAnchorA,
+                    Length2 anchorB = DefaultLocalAnchorB, Length lA = 0_m, Length lB = 0_m);
 
     /// @brief Uses the given ratio value.
-    constexpr auto& UseRatio(Real v) noexcept
+    constexpr auto &UseRatio(Real v) noexcept
     {
         ratio = v;
         return *this;
@@ -110,74 +111,70 @@ struct PulleyJointConf : public JointBuilder<PulleyJointConf>
     Momentum impulse = 0_Ns; ///< Impulse.
 
     // Solver temp (recalculated every call to InitVelocityConstraints).
-    UnitVec uA; ///< Unit vector A.
-    UnitVec uB; ///< Unit vector B.
-    Length2 rA{}; ///< Relative A.
-    Length2 rB{}; ///< Relative B.
+    UnitVec uA;       ///< Unit vector A.
+    UnitVec uB;       ///< Unit vector B.
+    Length2 rA{};     ///< Relative A.
+    Length2 rB{};     ///< Relative B.
     Mass mass = 0_kg; ///< Mass.
 };
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
-PulleyJointConf GetPulleyJointConf(const Joint& joint);
+PulleyJointConf GetPulleyJointConf(const Joint &joint);
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
-PulleyJointConf GetPulleyJointConf(const World& world,
-                                   BodyID bA, BodyID bB,
-                                   Length2 groundA, Length2 groundB,
+PulleyJointConf GetPulleyJointConf(const World &world, BodyID bA, BodyID bB, Length2 groundA, Length2 groundB,
                                    Length2 anchorA, Length2 anchorB);
 
 /// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso PulleyJointConf
-constexpr Momentum2 GetLinearReaction(const PulleyJointConf& object) noexcept
+constexpr Momentum2 GetLinearReaction(const PulleyJointConf &object) noexcept
 {
     return object.impulse * object.uB;
 }
 
 /// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso PulleyJointConf
-constexpr AngularMomentum GetAngularReaction(const PulleyJointConf&) noexcept
+constexpr AngularMomentum GetAngularReaction(const PulleyJointConf &) noexcept
 {
     return AngularMomentum{0};
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso PulleyJointConf
-bool ShiftOrigin(PulleyJointConf& object, Length2 newOrigin) noexcept;
+bool ShiftOrigin(PulleyJointConf &object, Length2 newOrigin) noexcept;
 
 /// @brief Initializes velocity constraint data based on the given solver data.
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso PulleyJointConf
-void InitVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+void InitVelocity(PulleyJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 /// @relatedalso PulleyJointConf
-bool SolveVelocity(PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+bool SolveVelocity(PulleyJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step);
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
 /// @relatedalso PulleyJointConf
-bool SolvePosition(const PulleyJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf);
+bool SolvePosition(const PulleyJointConf &object, std::vector<BodyConstraint> &bodies,
+                   const ConstraintSolverConf &conf);
 
 /// @brief Free function for getting the length A value of the given configuration.
 /// @relatedalso PulleyJointConf
-constexpr auto GetLengthA(const PulleyJointConf& object) noexcept
+constexpr auto GetLengthA(const PulleyJointConf &object) noexcept
 {
     return object.lengthA;
 }
 
 /// @brief Free function for getting the length B value of the given configuration.
 /// @relatedalso PulleyJointConf
-constexpr auto GetLengthB(const PulleyJointConf& object) noexcept
+constexpr auto GetLengthB(const PulleyJointConf &object) noexcept
 {
     return object.lengthB;
 }
@@ -185,11 +182,10 @@ constexpr auto GetLengthB(const PulleyJointConf& object) noexcept
 } // namespace d2
 
 /// @brief Type info specialization for <code>d2::PulleyJointConf</code>.
-template <>
-struct TypeInfo<d2::PulleyJointConf>
+template <> struct TypeInfo<d2::PulleyJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static constexpr const char* name = "d2::PulleyJointConf";
+    static constexpr const char *name = "d2::PulleyJointConf";
 };
 
 } // namespace playrho

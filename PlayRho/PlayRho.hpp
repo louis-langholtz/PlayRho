@@ -45,7 +45,7 @@ For coding, purists may want to begin by just including the
  Here's what this might look like:
  @code
  #include <PlayRho/Dynamics/World.hpp>
- 
+
  int main()
  {
      auto world = playrho::d2::World{};
@@ -102,29 +102,29 @@ For a more elaborate example, that's of an entire application, see
 // For pragmatists, add these for free function interfaces to the world and some additional
 // functionality. Note that using these free function interfaces, instead of directly using
 // world member functions, may help isolate your code from changes to the World class.
-#include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldContact.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
-#include <PlayRho/Dynamics/WorldContact.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 
 // For any and all shape configurations, add one or more of the following.
+#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 #include <PlayRho/Collision/Shapes/MultiShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 
 // For any and all joint configurations, add one or more of the following.
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/GearJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RevoluteJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
+#include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
 #include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 

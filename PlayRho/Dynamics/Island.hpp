@@ -20,24 +20,26 @@
 #ifndef PLAYRHO_DYNAMICS_ISLAND_HPP
 #define PLAYRHO_DYNAMICS_ISLAND_HPP
 
+#include <PlayRho/Common/Settings.hpp>  // BodyCounter, ContactCounter, JointCounter
 #include <PlayRho/Common/Templates.hpp> // IsFull
-#include <PlayRho/Common/Settings.hpp> // BodyCounter, ContactCounter, JointCounter
 
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+#include <PlayRho/Dynamics/Joints/JointID.hpp>
 
 #include <vector>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief Definition of a self-contained constraint "island".
 /// @details A container of bodies contacts and joints relevant to handling world dynamics.
 /// @note This is an internal class.
 /// @note This data structure is 72-bytes large (on at least one 64-bit platform).
 struct Island
-{   
+{
     /// @brief Body container type.
     using Bodies = std::vector<BodyID>;
 
@@ -47,44 +49,44 @@ struct Island
     /// @brief Joint container type.
     using Joints = std::vector<JointID>;
 
-    Bodies bodies; ///< Body container.
+    Bodies bodies;     ///< Body container.
     Contacts contacts; ///< Contact container.
-    Joints joints; ///< Joint container.
+    Joints joints;     ///< Joint container.
 };
 
 /// @brief Reserves space ahead of time.
 /// @relatedalso Island
-void Reserve(Island& island, BodyCounter bodies, ContactCounter contacts, JointCounter joints);
+void Reserve(Island &island, BodyCounter bodies, ContactCounter contacts, JointCounter joints);
 
 /// @brief Clears the island containers.
 /// @relatedalso Island
-void Clear(Island& island) noexcept;
+void Clear(Island &island) noexcept;
 
 /// @brief Determines whether the given island is full of bodies.
 /// @relatedalso Island
-inline bool IsFullOfBodies(const Island& island)
+inline bool IsFullOfBodies(const Island &island)
 {
     return IsFull(island.bodies);
 }
 
 /// @brief Determines whether the given island is full of contacts.
 /// @relatedalso Island
-inline bool IsFullOfContacts(const Island& island)
+inline bool IsFullOfContacts(const Island &island)
 {
     return IsFull(island.contacts);
 }
 
 /// @brief Counts the number of occurrences of the given entry in the given island.
 /// @relatedalso Island
-std::size_t Count(const Island& island, BodyID entry);
+std::size_t Count(const Island &island, BodyID entry);
 
 /// @brief Counts the number of occurrences of the given entry in the given island.
 /// @relatedalso Island
-std::size_t Count(const Island& island, ContactID entry);
+std::size_t Count(const Island &island, ContactID entry);
 
 /// @brief Counts the number of occurrences of the given entry in the given island.
 /// @relatedalso Island
-std::size_t Count(const Island& island, JointID entry);
+std::size_t Count(const Island &island, JointID entry);
 
 } // namespace d2
 } // namespace playrho

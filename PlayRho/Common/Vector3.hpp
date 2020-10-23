@@ -25,12 +25,12 @@
 #include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Vector with 3-elements.
 /// @note This is just a C++11 alias template for 3-element uses of the Vector template.
-template <typename T>
-using Vector3 = Vector<T, 3>;
+template <typename T> using Vector3 = Vector<T, 3>;
 
 /// A 3-dimensional column vector with 3 elements.
 /// @note This data structure is 3 times the size of <code>Real</code> -
@@ -44,15 +44,13 @@ using Mass3 = Vector3<Mass>;
 using InvMass3 = Vector3<InvMass>;
 
 /// @brief Gets an invalid value for the 3-element vector of real (<code>Vec3</code>) type.
-template <>
-constexpr Vec3 GetInvalid() noexcept
+template <> constexpr Vec3 GetInvalid() noexcept
 {
     return Vec3{GetInvalid<Real>(), GetInvalid<Real>(), GetInvalid<Real>()};
 }
 
 /// @brief Determines whether the given vector contains finite coordinates.
-template <>
-constexpr bool IsValid(const Vec3& value) noexcept
+template <> constexpr bool IsValid(const Vec3 &value) noexcept
 {
     return IsValid(get<0>(value)) && IsValid(get<1>(value)) && IsValid(get<2>(value));
 }

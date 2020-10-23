@@ -18,20 +18,19 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Common/Velocity.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Common/Velocity.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 
-namespace playrho {
-namespace d2 {
-
-VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
+namespace playrho
 {
-    auto vp = VelocityPair{
-        Velocity{LinearVelocity2{}, 0_rpm},
-        Velocity{LinearVelocity2{}, 0_rpm}
-    };
-    
+namespace d2
+{
+
+VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint &vc)
+{
+    auto vp = VelocityPair{Velocity{LinearVelocity2{}, 0_rpm}, Velocity{LinearVelocity2{}, 0_rpm}};
+
     const auto normal = vc.GetNormal();
     const auto tangent = vc.GetTangent();
     const auto pointCount = vc.GetPointCount();
@@ -40,10 +39,10 @@ VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
 
     const auto invMassA = bodyA->GetInvMass();
     const auto invRotInertiaA = bodyA->GetInvRotInertia();
-    
+
     const auto invMassB = bodyB->GetInvMass();
     const auto invRotInertiaB = bodyB->GetInvRotInertia();
-    
+
     for (auto j = decltype(pointCount){0}; j < pointCount; ++j)
     {
         // inverse moment of inertia : L^-2 M^-1 QP^2
@@ -51,14 +50,14 @@ VelocityPair CalcWarmStartVelocityDeltas(const VelocityConstraint& vc)
         // GetPointRelPosA() is Length2
         // Cross(Length2, P) is: M L^2 T^-2
         // L^-2 M^-1 QP^2 M L^2 T^-2 is: QP^2 T^-2
-        const auto& vcp = vc.GetPointAt(j);
+        const auto &vcp = vc.GetPointAt(j);
         const auto P = vcp.normalImpulse * normal + vcp.tangentImpulse * tangent;
         const auto LA = Cross(vcp.relA, P) / Radian;
         const auto LB = Cross(vcp.relB, P) / Radian;
         std::get<0>(vp) -= Velocity{invMassA * P, invRotInertiaA * LA};
         std::get<1>(vp) += Velocity{invMassB * P, invRotInertiaB * LB};
     }
-    
+
     return vp;
 }
 

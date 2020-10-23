@@ -30,15 +30,17 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 class World;
 class DynamicTree;
 
 /// @brief Steps the given world the specified amount.
 /// @relatedalso World
-StepStats Step(World& world, const StepConf& conf = StepConf{});
+StepStats Step(World &world, const StepConf &conf = StepConf{});
 
 /// @brief Steps the world ahead by a given time amount.
 ///
@@ -71,25 +73,23 @@ StepStats Step(World& world, const StepConf& conf = StepConf{});
 ///
 /// @relatedalso World
 ///
-StepStats Step(World& world, Time delta,
-               TimestepIters velocityIterations = 8,
-               TimestepIters positionIterations = 3);
+StepStats Step(World &world, Time delta, TimestepIters velocityIterations = 8, TimestepIters positionIterations = 3);
 
 /// @copydoc World::GetTree
 /// @relatedalso World
-const DynamicTree& GetTree(const World& world) noexcept;
+const DynamicTree &GetTree(const World &world) noexcept;
 
 /// @brief Gets the count of unique shapes in the given world.
 /// @relatedalso World
-FixtureCounter GetShapeCount(const World& world) noexcept;
+FixtureCounter GetShapeCount(const World &world) noexcept;
 
 /// @brief Gets the min vertex radius that shapes for the given world are allowed to be.
 /// @relatedalso World
-Length GetMinVertexRadius(const World& world) noexcept;
+Length GetMinVertexRadius(const World &world) noexcept;
 
 /// @brief Gets the max vertex radius that shapes for the given world are allowed to be.
 /// @relatedalso World
-Length GetMaxVertexRadius(const World& world) noexcept;
+Length GetMaxVertexRadius(const World &world) noexcept;
 
 } // namespace d2
 } // namespace playrho

@@ -21,34 +21,31 @@
 
 #include <PlayRho/Dynamics/Joints/TargetJointConf.hpp>
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 static_assert(std::is_default_constructible<TargetJointConf>::value,
               "TargetJointConf should be default constructible!");
-static_assert(std::is_copy_constructible<TargetJointConf>::value,
-              "TargetJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<TargetJointConf>::value,
-              "TargetJointConf should be copy assignable!");
-static_assert(std::is_move_constructible<TargetJointConf>::value,
-              "TargetJointConf should be move constructible!");
-static_assert(std::is_move_assignable<TargetJointConf>::value,
-              "TargetJointConf should be move assignable!");
-static_assert(std::is_nothrow_destructible<TargetJointConf>::value,
-              "TargetJointConf should be nothrow destructible!");
+static_assert(std::is_copy_constructible<TargetJointConf>::value, "TargetJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<TargetJointConf>::value, "TargetJointConf should be copy assignable!");
+static_assert(std::is_move_constructible<TargetJointConf>::value, "TargetJointConf should be move constructible!");
+static_assert(std::is_move_assignable<TargetJointConf>::value, "TargetJointConf should be move assignable!");
+static_assert(std::is_nothrow_destructible<TargetJointConf>::value, "TargetJointConf should be nothrow destructible!");
 
-TargetJointConf GetTargetJointConf(const Joint& joint)
+TargetJointConf GetTargetJointConf(const Joint &joint)
 {
     return TypeCast<TargetJointConf>(joint);
 }
 
-Mass22 GetEffectiveMassMatrix(const TargetJointConf& object, const BodyConstraint& body) noexcept
+Mass22 GetEffectiveMassMatrix(const TargetJointConf &object, const BodyConstraint &body) noexcept
 {
     // K    = [(1/m1 + 1/m2) * eye(2) - skew(r1) * invI1 * skew(r1) - skew(r2) * invI2 * skew(r2)]
     //      = [1/m1+1/m2     0    ] + invI1 * [r1.y*r1.y -r1.x*r1.y] + invI2 * [r1.y*r1.y -r1.x*r1.y]
@@ -77,18 +74,17 @@ Mass22 GetEffectiveMassMatrix(const TargetJointConf& object, const BodyConstrain
 // Identity used:
 // w k % (rx i + ry j) = w * (-ry i + rx j)
 
-void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step, const ConstraintSolverConf&)
+void InitVelocity(TargetJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &)
 {
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto posB = bodyConstraintB.GetPosition();
     auto velB = bodyConstraintB.GetVelocity();
 
     const auto qB = UnitVec::Get(posB.angular);
 
-    const auto mass = (bodyConstraintB.GetInvMass() != InvMass{})
-        ? (Real{1} / bodyConstraintB.GetInvMass()): 0_kg;
+    const auto mass = (bodyConstraintB.GetInvMass() != InvMass{}) ? (Real{1} / bodyConstraintB.GetInvMass()) : 0_kg;
 
     // Frequency
     const auto omega = Real{2} * Pi * object.frequency; // T^-1
@@ -106,7 +102,7 @@ void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
     const auto tmp = d + h * k; // M T^-1
     assert(IsValid(Real{tmp * Second / Kilogram}));
     const auto invGamma = Mass{h * tmp}; // M T^-1 * T is simply M.
-    object.gamma = (invGamma != 0_kg)? Real{1} / invGamma: InvMass{0};
+    object.gamma = (invGamma != 0_kg) ? Real{1} / invGamma : InvMass{0};
     const auto beta = Frequency{h * k * object.gamma}; // T * M T^-2 * M^-1 is T^-1
 
     // Compute the effective mass matrix.
@@ -135,10 +131,9 @@ void InitVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
     bodyConstraintB.SetVelocity(velB);
 }
 
-bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step)
+bool SolveVelocity(TargetJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step)
 {
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto velB = bodyConstraintB.GetVelocity();
     assert(IsValid(velB));
@@ -158,18 +153,14 @@ bool SolveVelocity(TargetJointConf& object, std::vector<BodyConstraint>& bodies,
     const auto incImpulse = (object.impulse - oldImpulse);
     const auto angImpulseB = AngularMomentum{Cross(object.rB, incImpulse) / Radian};
 
-    velB += Velocity{
-        bodyConstraintB.GetInvMass() * incImpulse,
-        bodyConstraintB.GetInvRotInertia() * angImpulseB
-    };
+    velB += Velocity{bodyConstraintB.GetInvMass() * incImpulse, bodyConstraintB.GetInvRotInertia() * angImpulseB};
 
     bodyConstraintB.SetVelocity(velB);
 
     return incImpulse == Momentum2{};
 }
 
-bool SolvePosition(const TargetJointConf&, std::vector<BodyConstraint>&,
-                   const ConstraintSolverConf&)
+bool SolvePosition(const TargetJointConf &, std::vector<BodyConstraint> &, const ConstraintSolverConf &)
 {
     return true;
 }

@@ -21,10 +21,12 @@
 
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-bool TestPoint(const Shape& shape, Length2 point) noexcept
+bool TestPoint(const Shape &shape, Length2 point) noexcept
 {
     const auto childCount = GetChildCount(shape);
     for (auto i = decltype(childCount){0}; i < childCount; ++i)

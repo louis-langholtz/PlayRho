@@ -27,24 +27,25 @@
 #ifndef PLAYRHO_COMMON_SETTINGS_HPP
 #define PLAYRHO_COMMON_SETTINGS_HPP
 
-#include <cstddef>
+#include <algorithm>
 #include <cassert>
 #include <cfloat>
 #include <cmath>
+#include <cstddef>
 #include <cstdint>
-#include <algorithm>
 
-#include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/RealConstants.hpp>
+#include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Wider.hpp>
 
-namespace playrho {
-namespace detail {
+namespace playrho
+{
+namespace detail
+{
 
 /// @brief Defaults object for real types.
-template <typename T>
-struct Defaults
+template <typename T> struct Defaults
 {
     /// @brief Gets the linear slop.
     static constexpr auto GetLinearSlop() noexcept
@@ -52,7 +53,7 @@ struct Defaults
         // Return the value used by Box2D 2.3.2 b2_linearSlop define....
         return 0.005_m;
     }
-    
+
     /// @brief Gets the max vertex radius.
     static constexpr auto GetMaxVertexRadius() noexcept
     {
@@ -63,8 +64,7 @@ struct Defaults
 };
 
 /// @brief Specialization of defaults object for fixed point types.
-template <unsigned int FRACTION_BITS>
-struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
+template <unsigned int FRACTION_BITS> struct Defaults<Fixed<std::int32_t, FRACTION_BITS>>
 {
     /// @brief Gets the linear slop.
     static constexpr auto GetLinearSlop() noexcept
@@ -73,7 +73,7 @@ struct Defaults<Fixed<std::int32_t,FRACTION_BITS>>
         // ex: FRACTION_BITS==10, then divisor==256
         return Length{1_m / Real{(1u << (FRACTION_BITS - 2))}};
     }
-    
+
     /// @brief Gets the max vertex radius.
     static constexpr auto GetMaxVertexRadius() noexcept
     {
@@ -108,7 +108,7 @@ constexpr auto MaxFloat = std::numeric_limits<Real>::max(); // FLT_MAX
 /// Maximum manifold points.
 /// This is the maximum number of contact points between two convex shapes.
 /// Do not change this value.
-/// @note For memory efficiency, uses the smallest integral type that can hold the value. 
+/// @note For memory efficiency, uses the smallest integral type that can hold the value.
 constexpr auto MaxManifoldPoints = std::uint8_t{2};
 
 /// @brief Maximum number of vertices for any shape type.
@@ -186,7 +186,7 @@ constexpr auto DefaultMaxDistanceIters = std::uint8_t{20};
 /// have continuous collision resolution done for it.
 /// @note Used in the TOI phase of step processing.
 constexpr auto DefaultMaxSubSteps = std::uint8_t{8};
-    
+
 // Dynamics
 
 /// @brief Default velocity threshold.
@@ -200,16 +200,14 @@ constexpr auto DefaultToiMinMomentum = Momentum{0_Ns / 100};
 
 /// @brief Maximum number of fixtures in a world.
 /// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
-constexpr auto MaxFixtures = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
-                                                        std::uint16_t{1u});
+constexpr auto MaxFixtures = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() - std::uint16_t{1u});
 /// @brief Fixture count type.
 /// @note This type must always be able to contain the <code>MaxFixtures</code> value.
 using FixtureCounter = std::remove_const<decltype(MaxFixtures)>::type;
 
 /// @brief Maximum number of bodies in a world.
 /// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
-constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
-                                                      std::uint16_t{1});
+constexpr auto MaxBodies = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() - std::uint16_t{1});
 
 /// @brief Body count type.
 /// @note This type must always be able to contain the <code>MaxBodies</code> value.
@@ -230,8 +228,7 @@ constexpr auto MaxContacts = ContactCounter{MaxBodies} * ContactCounter{MaxBodie
 
 /// @brief Maximum number of joints in a world.
 /// @note This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid.
-constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() -
-                                                      std::uint16_t{1});
+constexpr auto MaxJoints = static_cast<std::uint16_t>(std::numeric_limits<std::uint16_t>::max() - std::uint16_t{1});
 
 /// @brief Joint count type.
 /// @note This type must be able to contain the <code>MaxJoints</code> value.

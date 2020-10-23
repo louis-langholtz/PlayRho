@@ -21,17 +21,18 @@
 #ifndef PLAYRHO_COMMON_FIXED_HPP
 #define PLAYRHO_COMMON_FIXED_HPP
 
-#include <PlayRho/Common/Wider.hpp>
 #include <PlayRho/Common/Templates.hpp>
 #include <PlayRho/Common/TypeInfo.hpp>
+#include <PlayRho/Common/Wider.hpp>
 
-#include <cstdint>
-#include <limits>
 #include <cassert>
-#include <type_traits>
+#include <cstdint>
 #include <iostream>
+#include <limits>
+#include <type_traits>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Template class for fixed-point numbers.
 ///
@@ -41,11 +42,9 @@ namespace playrho {
 /// @see https://en.wikipedia.org/wiki/Fixed-point_arithmetic
 /// @see https://en.cppreference.com/w/cpp/named_req/LiteralType
 ///
-template <typename BASE_TYPE, unsigned int FRACTION_BITS>
-class Fixed
+template <typename BASE_TYPE, unsigned int FRACTION_BITS> class Fixed
 {
-public:
-
+  public:
     /// @brief Value type.
     using value_type = BASE_TYPE;
 
@@ -111,121 +110,110 @@ public:
     }
 
     /// @brief Gets the value from a floating point value.
-    template <typename T>
-    static constexpr value_type GetFromFloat(T val) noexcept
+    template <typename T> static constexpr value_type GetFromFloat(T val) noexcept
     {
         static_assert(std::is_floating_point<T>::value, "floating point value required");
         // Note: std::isnan(val) *NOT* constant expression, so can't use here!
-        return !(val <= 0 || val >= 0)? GetNaN().m_value:
-            (val > static_cast<long double>(GetMax()))? GetInfinity().m_value:
-            (val < static_cast<long double>(GetLowest()))? GetNegativeInfinity().m_value:
-            static_cast<value_type>(val * ScaleFactor);
+        return !(val <= 0 || val >= 0)
+                   ? GetNaN().m_value
+                   : (val > static_cast<long double>(GetMax()))
+                         ? GetInfinity().m_value
+                         : (val < static_cast<long double>(GetLowest())) ? GetNegativeInfinity().m_value
+                                                                         : static_cast<value_type>(val * ScaleFactor);
     }
 
     /// @brief Gets the value from a signed integral value.
-    template <typename T>
-    static constexpr value_type GetFromSignedInt(T val) noexcept
+    template <typename T> static constexpr value_type GetFromSignedInt(T val) noexcept
     {
         static_assert(std::is_integral<T>::value, "integral value required");
         static_assert(std::is_signed<T>::value, "must be signed");
-        return (val > (GetMax().m_value / ScaleFactor))? GetInfinity().m_value:
-            (val < (GetLowest().m_value / ScaleFactor))? GetNegativeInfinity().m_value:
-            static_cast<value_type>(val * ScaleFactor);
+        return (val > (GetMax().m_value / ScaleFactor))
+                   ? GetInfinity().m_value
+                   : (val < (GetLowest().m_value / ScaleFactor)) ? GetNegativeInfinity().m_value
+                                                                 : static_cast<value_type>(val * ScaleFactor);
     }
 
     /// @brief Gets the value from an unsigned integral value.
-    template <typename T>
-    static constexpr value_type GetFromUnsignedInt(T val) noexcept
+    template <typename T> static constexpr value_type GetFromUnsignedInt(T val) noexcept
     {
         static_assert(std::is_integral<T>::value, "integral value required");
         static_assert(!std::is_signed<T>::value, "must be unsigned");
         const auto max = static_cast<unsigned_wider_type>(GetMax().m_value / ScaleFactor);
-        return (val > max)? GetInfinity().m_value: static_cast<value_type>(val) * ScaleFactor;
+        return (val > max) ? GetInfinity().m_value : static_cast<value_type>(val) * ScaleFactor;
     }
 
     Fixed() = default;
 
     /// @brief Initializing constructor.
-    constexpr Fixed(long double val) noexcept:
-        m_value{GetFromFloat(val)}
+    constexpr Fixed(long double val) noexcept : m_value{GetFromFloat(val)}
     {
         // Intentionally empty
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(double val) noexcept:
-        m_value{GetFromFloat(val)}
+    constexpr Fixed(double val) noexcept : m_value{GetFromFloat(val)}
     {
         // Intentionally empty
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(float val) noexcept:
-        m_value{GetFromFloat(val)}
+    constexpr Fixed(float val) noexcept : m_value{GetFromFloat(val)}
     {
         // Intentionally empty
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(unsigned long long val) noexcept:
-        m_value{GetFromUnsignedInt(val)}
+    constexpr Fixed(unsigned long long val) noexcept : m_value{GetFromUnsignedInt(val)}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(unsigned long val) noexcept:
-        m_value{GetFromUnsignedInt(val)}
+    constexpr Fixed(unsigned long val) noexcept : m_value{GetFromUnsignedInt(val)}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(unsigned int val) noexcept:
-        m_value{GetFromUnsignedInt(val)}
+    constexpr Fixed(unsigned int val) noexcept : m_value{GetFromUnsignedInt(val)}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(long long val) noexcept:
-        m_value{GetFromSignedInt(val)}
+    constexpr Fixed(long long val) noexcept : m_value{GetFromSignedInt(val)}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(long val) noexcept:
-        m_value{GetFromSignedInt(val)}
+    constexpr Fixed(long val) noexcept : m_value{GetFromSignedInt(val)}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(int val) noexcept:
-        m_value{GetFromSignedInt(val)}
+    constexpr Fixed(int val) noexcept : m_value{GetFromSignedInt(val)}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(short val) noexcept:
-        m_value{GetFromSignedInt(val)}
+    constexpr Fixed(short val) noexcept : m_value{GetFromSignedInt(val)}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
-    constexpr Fixed(value_type val, unsigned int fraction) noexcept:
-        m_value{static_cast<value_type>(static_cast<std::uint32_t>(val * ScaleFactor) | fraction)}
+    constexpr Fixed(value_type val, unsigned int fraction) noexcept
+        : m_value{static_cast<value_type>(static_cast<std::uint32_t>(val * ScaleFactor) | fraction)}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
     template <typename BT, unsigned int FB>
-    constexpr Fixed(const Fixed<BT, FB> val) noexcept:
-        Fixed(static_cast<long double>(val))
+    constexpr Fixed(const Fixed<BT, FB> val) noexcept : Fixed(static_cast<long double>(val))
     {
         // Intentionally empty
     }
@@ -233,12 +221,11 @@ public:
     // Methods
 
     /// @brief Converts the value to the expressed type.
-    template <typename T>
-    constexpr T ConvertTo() const noexcept
+    template <typename T> constexpr T ConvertTo() const noexcept
     {
-        return isnan()? std::numeric_limits<T>::signaling_NaN():
-            !isfinite()? std::numeric_limits<T>::infinity() * getsign():
-                m_value / static_cast<T>(ScaleFactor);
+        return isnan() ? std::numeric_limits<T>::signaling_NaN()
+                       : !isfinite() ? std::numeric_limits<T>::infinity() * getsign()
+                                     : m_value / static_cast<T>(ScaleFactor);
     }
 
     /// @brief Compares this value to the given one.
@@ -325,13 +312,13 @@ public:
     }
 
     /// @brief Negation operator.
-    constexpr Fixed operator- () const noexcept
+    constexpr Fixed operator-() const noexcept
     {
-        return (isnan())? *this: Fixed{-m_value, scalar_type{1}};
+        return (isnan()) ? *this : Fixed{-m_value, scalar_type{1}};
     }
 
     /// @brief Positive operator.
-    constexpr Fixed operator+ () const noexcept
+    constexpr Fixed operator+() const noexcept
     {
         return *this;
     }
@@ -343,18 +330,17 @@ public:
     }
 
     /// @brief Logical not operator.
-    constexpr bool operator! () const noexcept
+    constexpr bool operator!() const noexcept
     {
         return m_value == 0;
     }
 
     /// @brief Addition assignment operator.
-    constexpr Fixed& operator+= (Fixed val) noexcept
+    constexpr Fixed &operator+=(Fixed val) noexcept
     {
-        if (isnan() || val.isnan()
-            || ((m_value == GetInfinity().m_value) && (val.m_value == GetNegativeInfinity().m_value))
-            || ((m_value == GetNegativeInfinity().m_value) && (val.m_value == GetInfinity().m_value))
-            )
+        if (isnan() || val.isnan() ||
+            ((m_value == GetInfinity().m_value) && (val.m_value == GetNegativeInfinity().m_value)) ||
+            ((m_value == GetNegativeInfinity().m_value) && (val.m_value == GetInfinity().m_value)))
         {
             *this = GetNaN();
         }
@@ -388,12 +374,10 @@ public:
     }
 
     /// @brief Subtraction assignment operator.
-    constexpr Fixed& operator-= (Fixed val) noexcept
+    constexpr Fixed &operator-=(Fixed val) noexcept
     {
-        if (isnan() || val.isnan()
-            || ((m_value == GetInfinity().m_value) && (val.m_value == GetInfinity().m_value))
-            || ((m_value == GetNegativeInfinity().m_value) && (val.m_value == GetNegativeInfinity().m_value))
-        )
+        if (isnan() || val.isnan() || ((m_value == GetInfinity().m_value) && (val.m_value == GetInfinity().m_value)) ||
+            ((m_value == GetNegativeInfinity().m_value) && (val.m_value == GetNegativeInfinity().m_value)))
         {
             *this = GetNaN();
         }
@@ -427,7 +411,7 @@ public:
     }
 
     /// @brief Multiplication assignment operator.
-    constexpr Fixed& operator*= (Fixed val) noexcept
+    constexpr Fixed &operator*=(Fixed val) noexcept
     {
         if (isnan() || val.isnan())
         {
@@ -441,7 +425,7 @@ public:
             }
             else
             {
-                *this = ((m_value > 0) != (val.m_value > 0))? -GetInfinity(): GetInfinity();
+                *this = ((m_value > 0) != (val.m_value > 0)) ? -GetInfinity() : GetInfinity();
             }
         }
         else
@@ -473,7 +457,7 @@ public:
     }
 
     /// @brief Division assignment operator.
-    constexpr Fixed& operator/= (Fixed val) noexcept
+    constexpr Fixed &operator/=(Fixed val) noexcept
     {
         if (isnan() || val.isnan())
         {
@@ -485,7 +469,7 @@ public:
         }
         else if (!isfinite())
         {
-            *this = ((m_value > 0) != (val.m_value > 0))? -GetInfinity(): GetInfinity();
+            *this = ((m_value > 0) != (val.m_value > 0)) ? -GetInfinity() : GetInfinity();
         }
         else if (!val.isfinite())
         {
@@ -520,7 +504,7 @@ public:
     }
 
     /// @brief Modulo operator.
-    constexpr Fixed& operator%= (Fixed val) noexcept
+    constexpr Fixed &operator%=(Fixed val) noexcept
     {
         assert(!isnan());
         assert(!val.isnan());
@@ -532,8 +516,7 @@ public:
     /// @brief Is finite.
     constexpr bool isfinite() const noexcept
     {
-        return (m_value > GetNegativeInfinity().m_value)
-        && (m_value < GetInfinity().m_value);
+        return (m_value > GetNegativeInfinity().m_value) && (m_value < GetInfinity().m_value);
     }
 
     /// @brief Is NaN.
@@ -545,11 +528,10 @@ public:
     /// @brief Gets this value's sign.
     constexpr int getsign() const noexcept
     {
-        return (m_value >= 0)? +1: -1;
+        return (m_value >= 0) ? +1 : -1;
     }
 
-private:
-
+  private:
     /// @brief Widened type alias.
     using wider_type = typename Wider<value_type>::type;
 
@@ -566,8 +548,7 @@ private:
     using numeric_limits = std::numeric_limits<value_type>;
 
     /// @brief Initializing constructor.
-    constexpr Fixed(value_type val, scalar_type scalar) noexcept:
-        m_value{val * scalar.value}
+    constexpr Fixed(value_type val, scalar_type scalar) noexcept : m_value{val * scalar.value}
     {
         // Intentionally empty.
     }
@@ -576,85 +557,73 @@ private:
 };
 
 /// @brief Equality operator.
-template <typename BT, unsigned int FB>
-constexpr bool operator== (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr bool operator==(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     return lhs.Compare(rhs) == Fixed<BT, FB>::CmpResult::Equal;
 }
 
 /// @brief Inequality operator.
-template <typename BT, unsigned int FB>
-constexpr bool operator!= (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr bool operator!=(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     return lhs.Compare(rhs) != Fixed<BT, FB>::CmpResult::Equal;
 }
 
 /// @brief Less-than operator.
-template <typename BT, unsigned int FB>
-constexpr bool operator< (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr bool operator<(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     return lhs.Compare(rhs) == Fixed<BT, FB>::CmpResult::LessThan;
 }
 
 /// @brief Greater-than operator.
-template <typename BT, unsigned int FB>
-constexpr bool operator> (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr bool operator>(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     return lhs.Compare(rhs) == Fixed<BT, FB>::CmpResult::GreaterThan;
 }
 
 /// @brief Less-than or equal-to operator.
-template <typename BT, unsigned int FB>
-constexpr bool operator<= (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr bool operator<=(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
-    return result == Fixed<BT, FB>::CmpResult::LessThan ||
-           result == Fixed<BT, FB>::CmpResult::Equal;
+    return result == Fixed<BT, FB>::CmpResult::LessThan || result == Fixed<BT, FB>::CmpResult::Equal;
 }
 
 /// @brief Greater-than or equal-to operator.
-template <typename BT, unsigned int FB>
-constexpr bool operator>= (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr bool operator>=(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
     return result == Fixed<BT, FB>::CmpResult::GreaterThan || result == Fixed<BT, FB>::CmpResult::Equal;
 }
 
 /// @brief Addition operator.
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> operator+ (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr Fixed<BT, FB> operator+(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     lhs += rhs;
     return lhs;
 }
 
 /// @brief Subtraction operator.
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> operator- (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr Fixed<BT, FB> operator-(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     lhs -= rhs;
     return lhs;
 }
 
 /// @brief Multiplication operator.
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> operator* (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr Fixed<BT, FB> operator*(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     lhs *= rhs;
     return lhs;
 }
 
 /// @brief Division operator.
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> operator/ (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr Fixed<BT, FB> operator/(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     lhs /= rhs;
     return lhs;
 }
 
 /// @brief Modulo operator.
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> operator% (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
+template <typename BT, unsigned int FB> constexpr Fixed<BT, FB> operator%(Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcept
 {
     lhs %= rhs;
     return lhs;
@@ -664,23 +633,20 @@ constexpr Fixed<BT, FB> operator% (Fixed<BT, FB> lhs, Fixed<BT, FB> rhs) noexcep
 /// @details An almost zero value is "subnormal". Dividing by these values can lead to
 /// odd results like a divide by zero trap occurring.
 /// @return <code>true</code> if the given value is almost zero, <code>false</code> otherwise.
-template <typename BT, unsigned int FB>
-constexpr bool AlmostZero(Fixed<BT, FB> value)
+template <typename BT, unsigned int FB> constexpr bool AlmostZero(Fixed<BT, FB> value)
 {
     return value == 0;
 }
 
 /// @brief Determines whether the given two values are "almost equal".
-template <typename BT, unsigned int FB>
-constexpr bool AlmostEqual(Fixed<BT, FB> x, Fixed<BT, FB> y, int ulp = 2)
+template <typename BT, unsigned int FB> constexpr bool AlmostEqual(Fixed<BT, FB> x, Fixed<BT, FB> y, int ulp = 2)
 {
     return abs(x - y) <= Fixed<BT, FB>{0, static_cast<std::uint32_t>(ulp)};
 }
 
 #ifdef CONFLICT_WITH_GETINVALID
 /// @brief Gets an invalid value.
-template <typename BT, unsigned int FB>
-constexpr Fixed<BT, FB> GetInvalid() noexcept
+template <typename BT, unsigned int FB> constexpr Fixed<BT, FB> GetInvalid() noexcept
 {
     return Fixed<BT, FB>::GetNaN();
 }
@@ -688,7 +654,7 @@ constexpr Fixed<BT, FB> GetInvalid() noexcept
 
 /// @brief Output stream operator.
 template <typename BT, unsigned int FB>
-inline ::std::ostream& operator<<(::std::ostream& os, const Fixed<BT, FB>& value)
+inline ::std::ostream &operator<<(::std::ostream &os, const Fixed<BT, FB> &value)
 {
     return os << static_cast<double>(value);
 }
@@ -707,98 +673,96 @@ inline ::std::ostream& operator<<(::std::ostream& os, const Fixed<BT, FB>& value
 /// @see Fixed, Real
 /// @see https://en.wikipedia.org/wiki/Q_(number_format)
 ///
-using Fixed32 = Fixed<std::int32_t,9>;
+using Fixed32 = Fixed<std::int32_t, 9>;
 
 // Fixed32 free functions.
 
 /// @brief Gets an invalid value.
-template <>
-constexpr Fixed32 GetInvalid() noexcept
+template <> constexpr Fixed32 GetInvalid() noexcept
 {
     return Fixed32::GetNaN();
 }
 
 /// @brief Addition operator.
-constexpr Fixed32 operator+ (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr Fixed32 operator+(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     lhs += rhs;
     return lhs;
 }
 
 /// @brief Subtraction operator.
-constexpr Fixed32 operator- (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr Fixed32 operator-(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     lhs -= rhs;
     return lhs;
 }
 
 /// @brief Multiplication operator.
-constexpr Fixed32 operator* (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr Fixed32 operator*(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     lhs *= rhs;
     return lhs;
 }
 
 /// @brief Division operator.
-constexpr Fixed32 operator/ (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr Fixed32 operator/(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     lhs /= rhs;
     return lhs;
 }
 
 /// @brief Modulo operator.
-constexpr Fixed32 operator% (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr Fixed32 operator%(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     lhs %= rhs;
     return lhs;
 }
 
 /// @brief Equality operator.
-constexpr bool operator== (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr bool operator==(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     return lhs.Compare(rhs) == Fixed32::CmpResult::Equal;
 }
 
 /// @brief Inequality operator.
-constexpr bool operator!= (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr bool operator!=(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     return lhs.Compare(rhs) != Fixed32::CmpResult::Equal;
 }
 
 /// @brief Less-than or equal-to operator.
-constexpr bool operator <= (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr bool operator<=(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
     return (result == Fixed32::CmpResult::LessThan) || (result == Fixed32::CmpResult::Equal);
 }
 
 /// @brief Greater-than or equal-to operator.
-constexpr bool operator >= (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr bool operator>=(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
     return (result == Fixed32::CmpResult::GreaterThan) || (result == Fixed32::CmpResult::Equal);
 }
 
 /// @brief Less-than operator.
-constexpr bool operator < (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr bool operator<(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
     return result == Fixed32::CmpResult::LessThan;
 }
 
 /// @brief Greater-than operator.
-constexpr bool operator > (Fixed32 lhs, Fixed32 rhs) noexcept
+constexpr bool operator>(Fixed32 lhs, Fixed32 rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
     return result == Fixed32::CmpResult::GreaterThan;
 }
 
 /// @brief Type info specialization for <code>Fixed32</code>.
-template <>
-struct TypeInfo<Fixed32>
+template <> struct TypeInfo<Fixed32>
 {
     /// @brief The specialized name for the <code>Fixed32</code> type.
-    static constexpr const char* name = "Fixed32";
+    static constexpr const char *name = "Fixed32";
 };
 
 #ifdef PLAYRHO_INT128
@@ -816,96 +780,95 @@ struct TypeInfo<Fixed32>
 /// @see Fixed, Real
 /// @see https://en.wikipedia.org/wiki/Q_(number_format)
 ///
-using Fixed64 = Fixed<std::int64_t,24>;
+using Fixed64 = Fixed<std::int64_t, 24>;
 
 /// @brief Gets an invalid value.
-template <>
-constexpr Fixed64 GetInvalid() noexcept
+template <> constexpr Fixed64 GetInvalid() noexcept
 {
     return Fixed64::GetNaN();
 }
 
 /// @brief Addition operator.
-constexpr Fixed64 operator+ (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr Fixed64 operator+(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     lhs += rhs;
     return lhs;
 }
 
 /// @brief Subtraction operator.
-constexpr Fixed64 operator- (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr Fixed64 operator-(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     lhs -= rhs;
     return lhs;
 }
 
 /// @brief Multiplication operator.
-constexpr Fixed64 operator* (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr Fixed64 operator*(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     lhs *= rhs;
     return lhs;
 }
 
 /// @brief Division operator.
-constexpr Fixed64 operator/ (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr Fixed64 operator/(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     lhs /= rhs;
     return lhs;
 }
 
-constexpr Fixed64 operator% (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr Fixed64 operator%(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     lhs %= rhs;
     return lhs;
 }
 
 /// @brief Equality operator.
-constexpr bool operator== (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr bool operator==(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     return lhs.Compare(rhs) == Fixed64::CmpResult::Equal;
 }
 
 /// @brief Inequality operator.
-constexpr bool operator!= (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr bool operator!=(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     return lhs.Compare(rhs) != Fixed64::CmpResult::Equal;
 }
 
-constexpr bool operator <= (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr bool operator<=(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
     return (result == Fixed64::CmpResult::LessThan) || (result == Fixed64::CmpResult::Equal);
 }
 
-constexpr bool operator >= (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr bool operator>=(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
     return (result == Fixed64::CmpResult::GreaterThan) || (result == Fixed64::CmpResult::Equal);
 }
 
-constexpr bool operator < (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr bool operator<(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
     return result == Fixed64::CmpResult::LessThan;
 }
 
-constexpr bool operator > (Fixed64 lhs, Fixed64 rhs) noexcept
+constexpr bool operator>(Fixed64 lhs, Fixed64 rhs) noexcept
 {
     const auto result = lhs.Compare(rhs);
     return result == Fixed64::CmpResult::GreaterThan;
 }
 
 /// @brief Specialization of the Wider trait for the <code>Fixed32</code> type.
-template<> struct Wider<Fixed32> {
+template <> struct Wider<Fixed32>
+{
     using type = Fixed64; ///< Wider type.
 };
 
 /// @brief Type info specialization for <code>Fixed64</code>.
-template <>
-struct TypeInfo<Fixed64>
+template <> struct TypeInfo<Fixed64>
 {
     /// @brief The specialized name for the <code>Fixed64</code> type.
-    static constexpr const char* name = "Fixed64";
+    static constexpr const char *name = "Fixed64";
 };
 
 #endif /* PLAYRHO_INT128 */

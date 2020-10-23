@@ -19,24 +19,27 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/Shapes/ChainShapeConf.hpp>
 #include <algorithm>
 #include <iterator>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-namespace {
+namespace
+{
 
-void ResetNormals(std::vector<UnitVec>& normals, const std::vector<Length2>& vertices)
+void ResetNormals(std::vector<UnitVec> &normals, const std::vector<Length2> &vertices)
 {
     normals.clear();
     if (size(vertices) > std::size_t{1})
     {
         auto vprev = Length2{};
         auto first = true;
-        for (const auto& v: vertices)
+        for (const auto &v : vertices)
         {
             if (!first)
             {
@@ -59,7 +62,7 @@ void ResetNormals(std::vector<UnitVec>& normals, const std::vector<Length2>& ver
 
 ChainShapeConf::ChainShapeConf() = default;
 
-ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
+ChainShapeConf &ChainShapeConf::Set(std::vector<Length2> vertices)
 {
     const auto count = size(vertices);
     if (count > MaxChildCount)
@@ -72,16 +75,14 @@ ChainShapeConf& ChainShapeConf::Set(std::vector<Length2> vertices)
     return *this;
 }
 
-ChainShapeConf& ChainShapeConf::Transform(const Mat22& m) noexcept
+ChainShapeConf &ChainShapeConf::Transform(const Mat22 &m) noexcept
 {
-    std::for_each(begin(m_vertices), end(m_vertices), [=](Length2& v){
-        v = m * v;
-    });
+    std::for_each(begin(m_vertices), end(m_vertices), [=](Length2 &v) { v = m * v; });
     ResetNormals(m_normals, m_vertices);
     return *this;
 }
 
-ChainShapeConf& ChainShapeConf::Add(Length2 vertex)
+ChainShapeConf &ChainShapeConf::Add(Length2 vertex)
 {
     if (!empty(m_vertices))
     {
@@ -120,7 +121,7 @@ MassData ChainShapeConf::GetMassData() const noexcept
                 mass += Mass{massData.mass};
                 center += Real{Mass{massData.mass} / Kilogram} * massData.center;
                 I += RotInertia{massData.I};
-                
+
                 const auto d = v - vprev;
                 const auto b = GetMagnitude(d);
                 const auto h = vertexRadius * Real{2};
@@ -161,34 +162,34 @@ ChainShapeConf GetChainShapeConf(Length2 dimensions)
 
     const auto halfWidth = GetX(dimensions) / Real{2};
     const auto halfHeight = GetY(dimensions) / Real{2};
-    
-    const auto btmLeft  = Length2(-halfWidth, -halfHeight);
+
+    const auto btmLeft = Length2(-halfWidth, -halfHeight);
     const auto btmRight = Length2(+halfWidth, -halfHeight);
-    const auto topLeft  = Length2(-halfWidth, +halfHeight);
+    const auto topLeft = Length2(-halfWidth, +halfHeight);
     const auto topRight = Length2(+halfWidth, +halfHeight);
-    
+
     conf.Add(btmRight);
     conf.Add(topRight);
     conf.Add(topLeft);
     conf.Add(btmLeft);
     conf.Add(conf.GetVertex(0));
-    
+
     return conf;
 }
 
-ChainShapeConf GetChainShapeConf(const AABB& arg)
+ChainShapeConf GetChainShapeConf(const AABB &arg)
 {
     auto conf = ChainShapeConf{};
-    
+
     const auto rangeX = arg.ranges[0];
     const auto rangeY = arg.ranges[1];
-    
+
     conf.Add(Length2{rangeX.GetMax(), rangeY.GetMin()}); // bottom right
     conf.Add(Length2{rangeX.GetMax(), rangeY.GetMax()}); // top right
     conf.Add(Length2{rangeX.GetMin(), rangeY.GetMax()}); // top left
     conf.Add(Length2{rangeX.GetMin(), rangeY.GetMin()}); // bottom left
-    conf.Add(conf.GetVertex(0)); // close the chain around to first point
-    
+    conf.Add(conf.GetVertex(0));                         // close the chain around to first point
+
     return conf;
 }
 

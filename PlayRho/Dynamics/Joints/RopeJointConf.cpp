@@ -21,29 +21,25 @@
 
 #include <PlayRho/Dynamics/Joints/RopeJointConf.hpp>
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-static_assert(std::is_default_constructible<RopeJointConf>::value,
-              "RopeJointConf should be default constructible!");
-static_assert(std::is_copy_constructible<RopeJointConf>::value,
-              "RopeJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<RopeJointConf>::value,
-              "RopeJointConf should be copy assignable!");
-static_assert(std::is_move_constructible<RopeJointConf>::value,
-              "RopeJointConf should be move constructible!");
-static_assert(std::is_move_assignable<RopeJointConf>::value,
-              "RopeJointConf should be move assignable!");
-static_assert(std::is_nothrow_destructible<RopeJointConf>::value,
-              "RopeJointConf should be nothrow destructible!");
+static_assert(std::is_default_constructible<RopeJointConf>::value, "RopeJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<RopeJointConf>::value, "RopeJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<RopeJointConf>::value, "RopeJointConf should be copy assignable!");
+static_assert(std::is_move_constructible<RopeJointConf>::value, "RopeJointConf should be move constructible!");
+static_assert(std::is_move_assignable<RopeJointConf>::value, "RopeJointConf should be move assignable!");
+static_assert(std::is_nothrow_destructible<RopeJointConf>::value, "RopeJointConf should be nothrow destructible!");
 
-RopeJointConf GetRopeJointConf(const Joint& joint) noexcept
+RopeJointConf GetRopeJointConf(const Joint &joint) noexcept
 {
     return TypeCast<RopeJointConf>(joint);
 }
@@ -56,12 +52,11 @@ RopeJointConf GetRopeJointConf(const Joint& joint) noexcept
 // K = J * invM * JT
 //   = invMassA + invIA * cross(rA, u)^2 + invMassB + invIB * cross(rB, u)^2
 
-void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf)
+void InitVelocity(RopeJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto invMassA = bodyConstraintA.GetInvMass();
     const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
@@ -85,7 +80,7 @@ void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
     object.length = std::get<Length>(uvresult);
 
     const auto C = object.length - object.maxLength;
-    object.limitState = (C > 0_m)? LimitState::e_atUpperLimit: LimitState::e_inactiveLimit;
+    object.limitState = (C > 0_m) ? LimitState::e_atUpperLimit : LimitState::e_inactiveLimit;
 
     if (object.length > conf.linearSlop)
     {
@@ -131,11 +126,10 @@ void InitVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
     bodyConstraintB.SetVelocity(velB);
 }
 
-bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step)
+bool SolveVelocity(RopeJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto velA = bodyConstraintA.GetVelocity();
     auto velB = bodyConstraintB.GetVelocity();
@@ -146,8 +140,8 @@ bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
     const auto C = object.length - object.maxLength;
 
     // Predictive constraint.
-    const auto inv_h = (step.deltaTime != 0_s)? Real(1) / step.deltaTime: 0_Hz;
-    const auto Cdot = LinearVelocity{Dot(object.u, vpB - vpA) + ((C < 0_m)? inv_h * C: 0_mps)};
+    const auto inv_h = (step.deltaTime != 0_s) ? Real(1) / step.deltaTime : 0_Hz;
+    const auto Cdot = LinearVelocity{Dot(object.u, vpB - vpA) + ((C < 0_m) ? inv_h * C : 0_mps)};
 
     auto localImpulse = -object.mass * Cdot;
     const auto oldImpulse = object.impulse;
@@ -169,11 +163,10 @@ bool SolveVelocity(RopeJointConf& object, std::vector<BodyConstraint>& bodies,
     return localImpulse == 0_Ns;
 }
 
-bool SolvePosition(const RopeJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf)
+bool SolvePosition(const RopeJointConf &object, std::vector<BodyConstraint> &bodies, const ConstraintSolverConf &conf)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto posA = bodyConstraintA.GetPosition();
     auto posB = bodyConstraintB.GetPosition();

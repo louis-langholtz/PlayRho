@@ -19,12 +19,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Common/Math.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
-bool IsMaxTranslationWithinTolerance(const StepConf& conf) noexcept
+bool IsMaxTranslationWithinTolerance(const StepConf &conf) noexcept
 {
     const auto delta = Real{1} - nextafter(Real{1}, Real{0});
     return (conf.maxTranslation * delta) < Length{conf.tolerance};

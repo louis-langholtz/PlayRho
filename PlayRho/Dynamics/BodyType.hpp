@@ -20,7 +20,8 @@
 #ifndef PLAYRHO_DYNAMICS_BODYTYPE_HPP
 #define PLAYRHO_DYNAMICS_BODYTYPE_HPP
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Body Type.
 /// @note static: zero mass, zero velocity, may be manually moved.
@@ -35,14 +36,14 @@ enum class BodyType
     /// physical processes. They are impenetrable.
     /// @note Physics applied: none.
     Static = 0,
-    
+
     /// Kinematic body type.
     /// @details
     /// Kinematic bodies: have no mass, cannot have forces applied to them,
     /// can move at set velocities (they are "speedable"), and are impenetrable.
     /// @note Physics applied: velocity.
     Kinematic,
-    
+
     /// Dynamic body type.
     /// @details
     /// Dynamic bodies are fully simulated bodies - they are "speedable" and "accelerable".

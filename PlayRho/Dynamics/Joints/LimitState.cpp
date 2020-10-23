@@ -23,17 +23,23 @@
 
 #include <cassert>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-const char* ToString(LimitState val) noexcept
+const char *ToString(LimitState val) noexcept
 {
     switch (val)
     {
-        case LimitState::e_atLowerLimit: return "at lower";
-        case LimitState::e_atUpperLimit: return "at upper";
-        case LimitState::e_equalLimits: return "equal";
-        case LimitState::e_inactiveLimit: break;
+    case LimitState::e_atLowerLimit:
+        return "at lower";
+    case LimitState::e_atUpperLimit:
+        return "at upper";
+    case LimitState::e_equalLimits:
+        return "equal";
+    case LimitState::e_inactiveLimit:
+        break;
     }
     assert(val == LimitState::e_inactiveLimit);
     return "inactive";

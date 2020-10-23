@@ -19,38 +19,52 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/SeparationScenario.hpp>
+#include <PlayRho/Collision/TimeOfImpact.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <algorithm>
 
-namespace playrho {
+namespace playrho
+{
 
 const char *GetName(TOIOutput::State state) noexcept
 {
     switch (state)
     {
-        case TOIOutput::e_unknown: break;
-        case TOIOutput::e_touching: return "touching";
-        case TOIOutput::e_separated: return "separated";
-        case TOIOutput::e_overlapped: return "overlapped";
-        case TOIOutput::e_nextAfter: return "next-after";
-        case TOIOutput::e_maxRootIters: return "max-root-iters";
-        case TOIOutput::e_maxToiIters: return "max-toi-iters";
-        case TOIOutput::e_belowMinTarget: return "below-min-target";
-        case TOIOutput::e_maxDistIters: return "max-dist-iters";
-        case TOIOutput::e_targetDepthExceedsTotalRadius: return "target-depth-exceeds-total-radius";
-        case TOIOutput::e_minTargetSquaredOverflow: return "min-target-squared-overflow";
-        case TOIOutput::e_maxTargetSquaredOverflow: return "max-target-squared-overflow";
-        case TOIOutput::e_notFinite: return "not-finite";
+    case TOIOutput::e_unknown:
+        break;
+    case TOIOutput::e_touching:
+        return "touching";
+    case TOIOutput::e_separated:
+        return "separated";
+    case TOIOutput::e_overlapped:
+        return "overlapped";
+    case TOIOutput::e_nextAfter:
+        return "next-after";
+    case TOIOutput::e_maxRootIters:
+        return "max-root-iters";
+    case TOIOutput::e_maxToiIters:
+        return "max-toi-iters";
+    case TOIOutput::e_belowMinTarget:
+        return "below-min-target";
+    case TOIOutput::e_maxDistIters:
+        return "max-dist-iters";
+    case TOIOutput::e_targetDepthExceedsTotalRadius:
+        return "target-depth-exceeds-total-radius";
+    case TOIOutput::e_minTargetSquaredOverflow:
+        return "min-target-squared-overflow";
+    case TOIOutput::e_maxTargetSquaredOverflow:
+        return "max-target-squared-overflow";
+    case TOIOutput::e_notFinite:
+        return "not-finite";
     }
     assert(state == TOIOutput::e_unknown);
     return "unknown";
 }
 
-ToiConf GetToiConf(const StepConf& conf) noexcept
+ToiConf GetToiConf(const StepConf &conf) noexcept
 {
     return ToiConf{}
         .UseTimeMax(1)
@@ -61,32 +75,32 @@ ToiConf GetToiConf(const StepConf& conf) noexcept
         .UseMaxDistIters(conf.maxDistanceIters);
 }
 
-namespace d2 {
+namespace d2
+{
 
-TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
-                       const DistanceProxy& proxyB, const Sweep& sweepB,
-                       ToiConf conf)
+TOIOutput GetToiViaSat(const DistanceProxy &proxyA, const Sweep &sweepA, const DistanceProxy &proxyB,
+                       const Sweep &sweepB, ToiConf conf)
 {
     assert(IsValid(sweepA));
     assert(IsValid(sweepB));
     assert(sweepA.GetAlpha0() == sweepB.GetAlpha0());
-    assert(conf.tMax >= 0 && conf.tMax <=1);
+    assert(conf.tMax >= 0 && conf.tMax <= 1);
 
     // CCD via the local separating axis method. This seeks progression
     // by computing the largest time at which separation is maintained.
-    
+
     auto stats = TOIOutput::Statistics{};
-    
+
     const auto totalRadius = proxyA.GetVertexRadius() + proxyB.GetVertexRadius();
     if (conf.targetDepth > totalRadius)
     {
         return TOIOutput{0, stats, TOIOutput::e_targetDepthExceedsTotalRadius};
     }
-    
+
     const auto target = totalRadius - conf.targetDepth;
     const auto maxTarget = std::max(target + conf.tolerance, 0_m);
     const auto minTarget = std::max(target - conf.tolerance, 0_m);
-    
+
     const auto minTargetSquared = Square(minTarget);
     if (!isfinite(minTargetSquared) && isfinite(minTarget))
     {
@@ -123,7 +137,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         }
         assert(dinfo.state != DistanceOutput::Unknown);
         distanceConf.cache = Simplex::GetCache(dinfo.simplex.GetEdges());
-        
+
         // Get the real distance squared between shapes at the time of timeLo.
         const auto distSquared = GetMagnitudeSquared(GetDelta(GetWitnessPoints(dinfo.simplex)));
 #if 0
@@ -148,8 +162,7 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
         // From here on, the real distance squared at time timeLo is > than maxTargetSquared
 
         // Initialize the separating axis.
-        const auto fcn = GetSeparationScenario(distanceConf.cache.indices,
-                                               proxyA, timeLoXfA, proxyB, timeLoXfB);
+        const auto fcn = GetSeparationScenario(distanceConf.cache.indices, proxyA, timeLoXfA, proxyB, timeLoXfB);
 
         // Compute the TOI on the separating axis. We do this by successively
         // resolving the deepest point. This loop is bounded by the number of vertices.
@@ -207,11 +220,10 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
             // From here on timeHiMinSep.distance is < minTarget; i.e. at timeHi, shapes too close.
 
             // Compute the initial separation of the witness points.
-            const auto timeLoEvalDistance = Evaluate(fcn, timeLoXfA, timeLoXfB,
-                                                     timeHiMinSep.indices);
+            const auto timeLoEvalDistance = Evaluate(fcn, timeLoXfA, timeLoXfB, timeHiMinSep.indices);
 
             // Check for initial overlap. Might happen if root finder runs out of iterations.
-            //assert(s1 >= minTarget);
+            // assert(s1 >= minTarget);
             // Check for touching
             if (timeLoEvalDistance <= maxTarget)
             {
@@ -261,10 +273,10 @@ TOIOutput GetToiViaSat(const DistanceProxy& proxyA, const Sweep& sweepA,
                 }
 
                 // Uses secant to improve convergence & bisection to guarantee progress.
-                t = IsOdd(roots)? Secant(target, a1, s1, a2, s2): Bisect(a1, a2);
-                
+                t = IsOdd(roots) ? Secant(target, a1, s1, a2, s2) : Bisect(a1, a2);
+
                 // Using secant method, t may equal a2 now.
-                //assert(t != a1);
+                // assert(t != a1);
                 ++roots;
 
                 // If t == a1 or t == a2 then, there's a precision/rounding problem.

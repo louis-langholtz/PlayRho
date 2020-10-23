@@ -21,7 +21,8 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 Angle GetDelta(Angle a1, Angle a2) noexcept
 {
@@ -41,13 +42,13 @@ Angle GetDelta(Angle a1, Angle a2) noexcept
     return a12;
 }
 
-Length2 ComputeCentroid(const Span<const Length2>& vertices)
+Length2 ComputeCentroid(const Span<const Length2> &vertices)
 {
     assert(size(vertices) >= 3);
-    
+
     auto c = Length2{} * 0_m2;
     auto area = 0_m2;
-    
+
     // <code>pRef</code> is the reference point for forming triangles.
     // It's location doesn't change the result (except for rounding error).
     const auto pRef = Average(vertices);
@@ -58,20 +59,20 @@ Length2 ComputeCentroid(const Span<const Length2>& vertices)
         const auto p1 = pRef;
         const auto p2 = vertices[i];
         const auto p3 = vertices[GetModuloNext(i, size(vertices))];
-        
+
         const auto e1 = p2 - p1;
         const auto e2 = p3 - p1;
-        
+
         constexpr auto RealInverseOfTwo = Real{1} / Real{2};
         const auto triangleArea = Area{Cross(e1, e2) * RealInverseOfTwo};
         area += triangleArea;
-        
+
         // Area weighted centroid
         constexpr auto RealInverseOfThree = Real{1} / Real{3};
         const auto aveP = (p1 + p2 + p3) * RealInverseOfThree;
         c += triangleArea * aveP;
     }
-    
+
     // Centroid
     assert((area > 0_m2) && !AlmostZero(area / SquareMeter));
     return c / area;
@@ -128,7 +129,7 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
         const auto next_v = vertices[GetModuloNext(i, count)];
         sum += GetX(this_v) * (GetY(next_v) - GetY(last_v));
     }
-    
+
     // Note that using the absolute value isn't necessary for vertices in counter-clockwise
     // ordering; only needed for clockwise ordering.
     constexpr auto RealInverseOfTwo = Real{1} / Real{2};
@@ -138,7 +139,7 @@ NonNegative<Area> GetAreaOfPolygon(Span<const Length2> vertices)
 SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)
 {
     assert(size(vertices) > 2);
-    
+
     // Use formulas Ix and Iy for second moment of area of any simple polygon and apply
     // the perpendicular axis theorem on these to get the desired answer.
     //
@@ -168,10 +169,11 @@ SecondMomentOfArea GetPolarMoment(Span<const Length2> vertices)
     return (secondMomentOfAreaX + secondMomentOfAreaY) * RealInverseOfTwelve;
 }
 
-namespace d2 {
+namespace d2
+{
 
-LinearVelocity2 GetContactRelVelocity(const Velocity velA, const Length2 relA,
-                                      const Velocity velB, const Length2 relB) noexcept
+LinearVelocity2 GetContactRelVelocity(const Velocity velA, const Length2 relA, const Velocity velB,
+                                      const Length2 relB) noexcept
 {
 #if 0 // Using std::fma appears to be slower!
     const auto revPerpRelB = GetRevPerpendicular(relB);

@@ -21,40 +21,33 @@
 
 #include <PlayRho/Dynamics/Joints/WeldJointConf.hpp>
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
-
-namespace {
-
-Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA,
-               InvMass invMassB, Length2 rB, InvRotInertia invRotInertiaB)
+namespace playrho
 {
-    const auto exx = InvMass{
-        invMassA + Square(GetY(rA)) * invRotInertiaA / SquareRadian +
-        invMassB + Square(GetY(rB)) * invRotInertiaB / SquareRadian
-    };
-    const auto eyx = InvMass{
-        -GetY(rA) * GetX(rA) * invRotInertiaA / SquareRadian +
-        -GetY(rB) * GetX(rB) * invRotInertiaB / SquareRadian
-    };
-    const auto ezx = InvMass{
-        -GetY(rA) * invRotInertiaA * Meter / SquareRadian +
-        -GetY(rB) * invRotInertiaB * Meter / SquareRadian
-    };
-    const auto eyy = InvMass{
-        invMassA + Square(GetX(rA)) * invRotInertiaA / SquareRadian +
-        invMassB + Square(GetX(rB)) * invRotInertiaB / SquareRadian
-    };
-    const auto ezy = InvMass{
-        GetX(rA) * invRotInertiaA * Meter / SquareRadian +
-        GetX(rB) * invRotInertiaB * Meter / SquareRadian
-    };
+namespace d2
+{
+
+namespace
+{
+
+Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA, InvMass invMassB, Length2 rB,
+               InvRotInertia invRotInertiaB)
+{
+    const auto exx = InvMass{invMassA + Square(GetY(rA)) * invRotInertiaA / SquareRadian + invMassB +
+                             Square(GetY(rB)) * invRotInertiaB / SquareRadian};
+    const auto eyx = InvMass{-GetY(rA) * GetX(rA) * invRotInertiaA / SquareRadian +
+                             -GetY(rB) * GetX(rB) * invRotInertiaB / SquareRadian};
+    const auto ezx =
+        InvMass{-GetY(rA) * invRotInertiaA * Meter / SquareRadian + -GetY(rB) * invRotInertiaB * Meter / SquareRadian};
+    const auto eyy = InvMass{invMassA + Square(GetX(rA)) * invRotInertiaA / SquareRadian + invMassB +
+                             Square(GetX(rB)) * invRotInertiaB / SquareRadian};
+    const auto ezy =
+        InvMass{GetX(rA) * invRotInertiaA * Meter / SquareRadian + GetX(rB) * invRotInertiaB * Meter / SquareRadian};
     const auto ezz = InvMass{(invRotInertiaA + invRotInertiaB) * SquareMeter / SquareRadian};
 
     Mat33 K;
@@ -72,18 +65,12 @@ Mat33 GetMat33(InvMass invMassA, Length2 rA, InvRotInertia invRotInertiaA,
 
 } // unnamed namespace
 
-static_assert(std::is_default_constructible<WeldJointConf>::value,
-              "WeldJointConf should be default constructible!");
-static_assert(std::is_copy_constructible<WeldJointConf>::value,
-              "WeldJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<WeldJointConf>::value,
-              "WeldJointConf should be copy assignable!");
-static_assert(std::is_move_constructible<WeldJointConf>::value,
-              "WeldJointConf should be move constructible!");
-static_assert(std::is_move_assignable<WeldJointConf>::value,
-              "WeldJointConf should be move assignable!");
-static_assert(std::is_nothrow_destructible<WeldJointConf>::value,
-              "WeldJointConf should be nothrow destructible!");
+static_assert(std::is_default_constructible<WeldJointConf>::value, "WeldJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<WeldJointConf>::value, "WeldJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<WeldJointConf>::value, "WeldJointConf should be copy assignable!");
+static_assert(std::is_move_constructible<WeldJointConf>::value, "WeldJointConf should be move constructible!");
+static_assert(std::is_move_assignable<WeldJointConf>::value, "WeldJointConf should be move assignable!");
+static_assert(std::is_nothrow_destructible<WeldJointConf>::value, "WeldJointConf should be nothrow destructible!");
 
 // Point-to-point constraint
 // C = p2 - p1
@@ -99,33 +86,28 @@ static_assert(std::is_nothrow_destructible<WeldJointConf>::value,
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-WeldJointConf::WeldJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB, Angle ra) noexcept:
-    super{super{}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{laA}, localAnchorB{laB}, referenceAngle{ra}
+WeldJointConf::WeldJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB, Angle ra) noexcept
+    : super{super{}.UseBodyA(bA).UseBodyB(bB)}, localAnchorA{laA}, localAnchorB{laB}, referenceAngle{ra}
 {
     // Intentionally empty.
 }
 
-WeldJointConf GetWeldJointConf(const Joint& joint)
+WeldJointConf GetWeldJointConf(const Joint &joint)
 {
     return TypeCast<WeldJointConf>(joint);
 }
 
-WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB, const Length2 anchor)
+WeldJointConf GetWeldJointConf(const World &world, BodyID bodyA, BodyID bodyB, const Length2 anchor)
 {
-    return WeldJointConf{
-        bodyA, bodyB,
-        GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor),
-        GetAngle(world, bodyB) - GetAngle(world, bodyA)
-    };
+    return WeldJointConf{bodyA, bodyB, GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor),
+                         GetAngle(world, bodyB) - GetAngle(world, bodyA)};
 }
 
-void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf&)
+void InitVelocity(WeldJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto velA = bodyConstraintA.GetVelocity();
     const auto posA = bodyConstraintA.GetPosition();
@@ -148,12 +130,14 @@ void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
     // r_skew = [-ry; rx]
 
     // Matlab
-    // K = [ invMassA+r1y^2*invRotInertiaA+invMassB+r2y^2*invRotInertiaB,  -r1y*invRotInertiaA*r1x-r2y*invRotInertiaB*r2x,          -r1y*invRotInertiaA-r2y*invRotInertiaB]
-    //     [  -r1y*invRotInertiaA*r1x-r2y*invRotInertiaB*r2x, invMassA+r1x^2*invRotInertiaA+invMassB+r2x^2*invRotInertiaB,           r1x*invRotInertiaA+r2x*invRotInertiaB]
-    //     [          -r1y*invRotInertiaA-r2y*invRotInertiaB,           r1x*invRotInertiaA+r2x*invRotInertiaB,                   invRotInertiaA+invRotInertiaB]
+    // K = [ invMassA+r1y^2*invRotInertiaA+invMassB+r2y^2*invRotInertiaB,
+    // -r1y*invRotInertiaA*r1x-r2y*invRotInertiaB*r2x,          -r1y*invRotInertiaA-r2y*invRotInertiaB]
+    //     [  -r1y*invRotInertiaA*r1x-r2y*invRotInertiaB*r2x,
+    //     invMassA+r1x^2*invRotInertiaA+invMassB+r2x^2*invRotInertiaB,           r1x*invRotInertiaA+r2x*invRotInertiaB]
+    //     [          -r1y*invRotInertiaA-r2y*invRotInertiaB,           r1x*invRotInertiaA+r2x*invRotInertiaB,
+    //     invRotInertiaA+invRotInertiaB]
 
-    const auto K = GetMat33(invMassA, object.rA, invRotInertiaA,
-                            invMassB, object.rB, invRotInertiaB);
+    const auto K = GetMat33(invMassA, object.rA, invRotInertiaA, invMassB, object.rB, invRotInertiaB);
     if (object.frequency > 0_Hz)
     {
         object.mass = GetInverse22(K);
@@ -161,7 +145,7 @@ void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
         // InvRotInertia is L^-2 M^-1 QP^2
         //    RotInertia is L^2  M    QP^-2
         auto invRotInertia = InvRotInertia{invRotInertiaA + invRotInertiaB};
-        const auto rotInertia = (invRotInertia > InvRotInertia{0})? Real{1} / invRotInertia: RotInertia{0};
+        const auto rotInertia = (invRotInertia > InvRotInertia{0}) ? Real{1} / invRotInertia : RotInertia{0};
 
         const auto C = Angle{posB.angular - posA.angular - object.referenceAngle};
         const auto omega = Real(2) * Pi * object.frequency; // T^-1
@@ -173,13 +157,13 @@ void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
         // magic formulas
         const auto h = step.deltaTime;
         const auto invGamma = RotInertia{h * (d + h * k)};
-        object.gamma = (invGamma != RotInertia{0})? Real{1} / invGamma: InvRotInertia{0};
+        object.gamma = (invGamma != RotInertia{0}) ? Real{1} / invGamma : InvRotInertia{0};
         // QP * T * L^2 M QP^-2 T^-2 * L^-2 M^-1 QP^2 is: QP T^-1
         object.bias = AngularVelocity{C * h * k * object.gamma};
 
         invRotInertia += object.gamma;
-        GetZ(GetZ(object.mass)) = StripUnit((invRotInertia != InvRotInertia{0}) ?
-                                       Real{1} / invRotInertia : RotInertia{0});
+        GetZ(GetZ(object.mass)) =
+            StripUnit((invRotInertia != InvRotInertia{0}) ? Real{1} / invRotInertia : RotInertia{0});
     }
     else if (GetZ(GetZ(K)) == 0)
     {
@@ -222,11 +206,10 @@ void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
-bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf&)
+bool SolveVelocity(WeldJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto oldVelA = bodyConstraintA.GetVelocity();
     auto velA = oldVelA;
@@ -243,7 +226,8 @@ bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
         const auto Cdot2 = velB.angular - velA.angular;
 
         // InvRotInertia is L^-2 M^-1 QP^2. Angular velocity is QP T^-1
-        const auto gamma = AngularVelocity{object.gamma * GetZ(object.impulse) * SquareMeter * Kilogram / (Radian * Second)};
+        const auto gamma =
+            AngularVelocity{object.gamma * GetZ(object.impulse) * SquareMeter * Kilogram / (Radian * Second)};
 
         // AngularMomentum is L^2 M T^-1 QP^-1.
         const auto impulse2 = -GetZ(GetZ(object.mass)) * StripUnit(Cdot2 + object.bias + gamma);
@@ -302,11 +286,10 @@ bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
-bool SolvePosition(const WeldJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf)
+bool SolvePosition(const WeldJointConf &object, std::vector<BodyConstraint> &bodies, const ConstraintSolverConf &conf)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto posA = bodyConstraintA.GetPosition();
     auto posB = bodyConstraintB.GetPosition();
@@ -325,8 +308,7 @@ bool SolvePosition(const WeldJointConf& object, std::vector<BodyConstraint>& bod
     auto positionError = 0_m;
     auto angularError = 0_deg;
 
-    const auto K = GetMat33(invMassA, rA, invRotInertiaA,
-                            invMassB, rB, invRotInertiaB);
+    const auto K = GetMat33(invMassA, rA, invRotInertiaA, invMassB, rB, invRotInertiaB);
     if (object.frequency > 0_Hz)
     {
         const auto C1 = Length2{(posB.linear + rB) - (posA.linear + rA)};

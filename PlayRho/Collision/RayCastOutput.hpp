@@ -25,18 +25,19 @@
 /// @file
 /// Declaration of the RayCastOutput structure and related free functions.
 
-#include <PlayRho/Common/UnitInterval.hpp>
-#include <PlayRho/Common/OptionalValue.hpp>
 #include <PlayRho/Collision/RayCastInput.hpp>
+#include <PlayRho/Common/OptionalValue.hpp>
+#include <PlayRho/Common/UnitInterval.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 
-namespace playrho {
-namespace detail {
+namespace playrho
+{
+namespace detail
+{
 
-template <std::size_t N>
-struct AABB;
+template <std::size_t N> struct AABB;
 
 } // namespace detail
 
@@ -47,23 +48,24 @@ enum class RayCastOpcode
     /// @brief End the ray-cast search for fixtures.
     /// @details Use this to stop searching for fixtures.
     Terminate,
-    
+
     /// @brief Ignore the current fixture.
     /// @details Use this to continue searching for fixtures along the ray.
     IgnoreFixture,
-    
+
     /// @brief Clip the ray end to the current point.
     /// @details Use this shorten the ray to the current point and to continue searching
     ///   for fixtures now along the newly shortened ray.
     ClipRay,
-    
+
     /// @brief Reset the ray end back to the second point.
     /// @details Use this to restore the ray to its full length and to continue searching
     ///    for fixtures now along the restored full length ray.
     ResetRay
 };
 
-namespace d2 {
+namespace d2
+{
 
 class Shape;
 class DistanceProxy;
@@ -77,7 +79,7 @@ struct RayCastHit
 {
     /// @brief Surface normal in world coordinates at the point of contact.
     UnitVec normal;
-    
+
     /// @brief Fraction.
     /// @note This is a unit interval value - a value between 0 and 1 - or it's invalid.
     UnitInterval<Real> fraction = UnitInterval<Real>{0};
@@ -90,17 +92,12 @@ using RayCastOutput = Optional<RayCastHit>;
 
 /// @brief Ray cast callback function.
 /// @note Return 0 to terminate ray casting, or > 0 to update the segment bounding box.
-using DynamicTreeRayCastCB = std::function<Real(BodyID body,
-                                                FixtureID fixture,
-                                                ChildCounter child,
-                                                const RayCastInput& input)>;
+using DynamicTreeRayCastCB =
+    std::function<Real(BodyID body, FixtureID fixture, ChildCounter child, const RayCastInput &input)>;
 
 /// @brief Ray cast callback function signature.
-using FixtureRayCastCB = std::function<RayCastOpcode(BodyID body,
-                                                     FixtureID fixture,
-                                                     ChildCounter child,
-                                                     Length2 point,
-                                                     UnitVec normal)>;
+using FixtureRayCastCB =
+    std::function<RayCastOpcode(BodyID body, FixtureID fixture, ChildCounter child, Length2 point, UnitVec normal)>;
 
 /// @defgroup RayCastGroup Ray Casting Functions
 /// @brief Collection of functions that do ray casting.
@@ -111,20 +108,19 @@ using FixtureRayCastCB = std::function<RayCastOpcode(BodyID body,
 /// @param radius Radius of the circle.
 /// @param location Location in world coordinates of the circle.
 /// @param input Ray-cast input parameters.
-RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput& input) noexcept;
+RayCastOutput RayCast(Length radius, Length2 location, const RayCastInput &input) noexcept;
 
 /// @brief Cast a ray against the given AABB.
 /// @param aabb Axis Aligned Bounding Box.
 /// @param input the ray-cast input parameters.
-RayCastOutput RayCast(const detail::AABB<2>& aabb, const RayCastInput& input) noexcept;
+RayCastOutput RayCast(const detail::AABB<2> &aabb, const RayCastInput &input) noexcept;
 
 /// @brief Cast a ray against the distance proxy.
 /// @param proxy Distance-proxy object (in local coordinates).
 /// @param input Ray-cast input parameters.
 /// @param transform Transform to be applied to the distance-proxy to get world coordinates.
 /// @relatedalso DistanceProxy
-RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
-                      const Transformation& transform) noexcept;
+RayCastOutput RayCast(const DistanceProxy &proxy, const RayCastInput &input, const Transformation &transform) noexcept;
 
 /// @brief Cast a ray against the child of the given shape.
 /// @note This is a convenience function for calling the ray cast against a distance-proxy.
@@ -133,8 +129,8 @@ RayCastOutput RayCast(const DistanceProxy& proxy, const RayCastInput& input,
 /// @param input the ray-cast input parameters.
 /// @param transform Transform to be applied to the child of the shape.
 /// @relatedalso Shape
-RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
-                      const RayCastInput& input, const Transformation& transform) noexcept;
+RayCastOutput RayCast(const Shape &shape, ChildCounter childIndex, const RayCastInput &input,
+                      const Transformation &transform) noexcept;
 
 /// @brief Cast rays against the leafs in the given tree.
 ///
@@ -154,8 +150,7 @@ RayCastOutput RayCast(const Shape& shape, ChildCounter childIndex,
 /// @return <code>true</code> if terminated at the callback's request,
 ///   <code>false</code> otherwise.
 ///
-bool RayCast(const DynamicTree& tree, RayCastInput input,
-             const DynamicTreeRayCastCB& callback);
+bool RayCast(const DynamicTree &tree, RayCastInput input, const DynamicTreeRayCastCB &callback);
 
 /// @brief Ray-cast the world for all fixtures in the path of the ray.
 ///
@@ -169,7 +164,7 @@ bool RayCast(const DynamicTree& tree, RayCastInput input,
 /// @return <code>true</code> if terminated by callback, <code>false</code> otherwise.
 ///
 /// @relatedalso World
-bool RayCast(const World& world, const RayCastInput& input, const FixtureRayCastCB& callback);
+bool RayCast(const World &world, const RayCastInput &input, const FixtureRayCastCB &callback);
 
 /// @}
 
@@ -177,4 +172,3 @@ bool RayCast(const World& world, const RayCastInput& input, const FixtureRayCast
 } // namespace playrho
 
 #endif // PLAYRHO_COLLISION_RAYCASTOUTPUT_HPP
-

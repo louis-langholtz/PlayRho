@@ -21,25 +21,25 @@
 
 #include <PlayRho/Dynamics/Joints/PrismaticJointConf.hpp>
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 static_assert(std::is_default_constructible<PrismaticJointConf>::value,
               "PrismaticJointConf should be default constructible!");
 static_assert(std::is_copy_constructible<PrismaticJointConf>::value,
               "PrismaticJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<PrismaticJointConf>::value,
-              "PrismaticJointConf should be copy assignable!");
+static_assert(std::is_copy_assignable<PrismaticJointConf>::value, "PrismaticJointConf should be copy assignable!");
 static_assert(std::is_move_constructible<PrismaticJointConf>::value,
               "PrismaticJointConf should be move constructible!");
-static_assert(std::is_move_assignable<PrismaticJointConf>::value,
-              "PrismaticJointConf should be move assignable!");
+static_assert(std::is_move_assignable<PrismaticJointConf>::value, "PrismaticJointConf should be move assignable!");
 static_assert(std::is_nothrow_destructible<PrismaticJointConf>::value,
               "PrismaticJointConf should be nothrow destructible!");
 
@@ -62,7 +62,6 @@ static_assert(std::is_nothrow_destructible<PrismaticJointConf>::value,
 // a = perp
 // s1 = cross(d + r1, a) = cross(p2 - x1, a)
 // s2 = cross(r2, a) = cross(p2 - x2, a)
-
 
 // Motor/Limit linear constraint
 // C = dot(ax1, d)
@@ -110,53 +109,47 @@ static_assert(std::is_nothrow_destructible<PrismaticJointConf>::value,
 // Now compute impulse to be applied:
 // df = f2 - f1
 
-PrismaticJointConf::PrismaticJointConf(BodyID bA, BodyID bB,
-                                       Length2 laA, Length2 laB,
-                                       UnitVec axisA, Angle angle) noexcept:
-    super{super{}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{laA}, localAnchorB{laB},
-    localXAxisA{axisA}, localYAxisA{GetRevPerpendicular(axisA)},
-    referenceAngle{angle}
+PrismaticJointConf::PrismaticJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB, UnitVec axisA,
+                                       Angle angle) noexcept
+    : super{super{}.UseBodyA(bA).UseBodyB(bB)}, localAnchorA{laA}, localAnchorB{laB}, localXAxisA{axisA},
+      localYAxisA{GetRevPerpendicular(axisA)}, referenceAngle{angle}
 {
     // Intentionally empty.
 }
 
-PrismaticJointConf GetPrismaticJointConf(const Joint& joint)
+PrismaticJointConf GetPrismaticJointConf(const Joint &joint)
 {
     return TypeCast<PrismaticJointConf>(joint);
 }
 
-PrismaticJointConf GetPrismaticJointConf(const World& world,
-                                         BodyID bA, BodyID bB,
-                                         const Length2 anchor,
+PrismaticJointConf GetPrismaticJointConf(const World &world, BodyID bA, BodyID bB, const Length2 anchor,
                                          const UnitVec axis)
 {
-    return PrismaticJointConf{
-        bA, bB,
-        GetLocalPoint(world, bA, anchor), GetLocalPoint(world, bB, anchor),
-        GetLocalVector(world, bA, axis),
-        GetAngle(world, bB) - GetAngle(world, bA)
-    };
+    return PrismaticJointConf{bA,
+                              bB,
+                              GetLocalPoint(world, bA, anchor),
+                              GetLocalPoint(world, bB, anchor),
+                              GetLocalVector(world, bA, axis),
+                              GetAngle(world, bB) - GetAngle(world, bA)};
 }
 
-Momentum2 GetLinearReaction(const PrismaticJointConf& conf)
+Momentum2 GetLinearReaction(const PrismaticJointConf &conf)
 {
     const auto ulImpulse = GetX(conf.impulse) * conf.perp;
     const auto impulse = Momentum2{GetX(ulImpulse) * NewtonSecond, GetY(ulImpulse) * NewtonSecond};
     return Momentum2{impulse + (conf.motorImpulse + GetZ(conf.impulse) * NewtonSecond) * conf.axis};
 }
 
-AngularMomentum GetAngularReaction(const PrismaticJointConf& conf)
+AngularMomentum GetAngularReaction(const PrismaticJointConf &conf)
 {
     return GetY(conf.impulse) * SquareMeter * Kilogram / (Second * Radian);
 }
 
-void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf)
+void InitVelocity(PrismaticJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto posA = bodyConstraintA.GetPosition();
     const auto invMassA = bodyConstraintA.GetInvMass();
@@ -174,17 +167,17 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
     // Compute the effective masses.
     const auto rA = Rotate(object.localAnchorA - bodyConstraintA.GetLocalCenter(), qA); // Length2
     const auto rB = Rotate(object.localAnchorB - bodyConstraintB.GetLocalCenter(), qB); // Length2
-    const auto d = (posB.linear - posA.linear) + rB - rA; // Length2
+    const auto d = (posB.linear - posA.linear) + rB - rA;                               // Length2
 
     // Compute motor Jacobian and effective mass.
     object.axis = Rotate(object.localXAxisA, qA);
     object.a1 = Cross(d + rA, object.axis); // Length
-    object.a2 = Cross(rB, object.axis); // Length
+    object.a2 = Cross(rB, object.axis);     // Length
 
     const auto invRotMassA = InvMass{invRotInertiaA * object.a1 * object.a1 / SquareRadian};
     const auto invRotMassB = InvMass{invRotInertiaB * object.a2 * object.a2 / SquareRadian};
     const auto totalInvMass = invMassA + invMassB + invRotMassA + invRotMassB;
-    object.motorMass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: 0_kg;
+    object.motorMass = (totalInvMass > InvMass{0}) ? Real{1} / totalInvMass : 0_kg;
 
     // Prismatic constraint.
     {
@@ -199,10 +192,11 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
 
         // L^-2 M^-1 QP^2 * L is: L^-1 M^-1 QP^2.
         const auto k12 = (invRotInertiaA * object.s1 + invRotInertiaB * object.s2) * Meter * Kilogram / SquareRadian;
-        const auto k13 = StripUnit(InvMass{(invRotInertiaA * object.s1 * object.a1 + invRotInertiaB * object.s2 * object.a2) / SquareRadian});
+        const auto k13 = StripUnit(
+            InvMass{(invRotInertiaA * object.s1 * object.a1 + invRotInertiaB * object.s2 * object.a2) / SquareRadian});
         const auto totalInvRotInertia = invRotInertiaA + invRotInertiaB;
 
-        const auto k22 = (totalInvRotInertia == InvRotInertia{0})? Real{1}: StripUnit(totalInvRotInertia);
+        const auto k22 = (totalInvRotInertia == InvRotInertia{0}) ? Real{1} : StripUnit(totalInvRotInertia);
         const auto k23 = (invRotInertiaA * object.a1 + invRotInertiaB * object.a2) * Meter * Kilogram / SquareRadian;
         const auto k33 = StripUnit(totalInvMass);
 
@@ -285,11 +279,10 @@ void InitVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodie
     bodyConstraintB.SetVelocity(velB);
 }
 
-bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step)
+bool SolveVelocity(PrismaticJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto oldVelA = bodyConstraintA.GetVelocity();
     auto velA = oldVelA;
@@ -324,10 +317,7 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
 
     const auto velDelta = velB.linear - velA.linear;
     const auto sRotSpeed = LinearVelocity{(object.s2 * velB.angular - object.s1 * velA.angular) / Radian};
-    const auto Cdot1 = Vec2{
-        StripUnit(Dot(object.perp, velDelta) + sRotSpeed),
-        StripUnit(velB.angular - velA.angular)
-    };
+    const auto Cdot1 = Vec2{StripUnit(Dot(object.perp, velDelta) + sRotSpeed), StripUnit(velB.angular - velA.angular)};
 
     if (object.enableLimit && (object.limitState != LimitState::e_inactiveLimit))
     {
@@ -359,12 +349,10 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
 
         const auto ulP = GetX(df) * object.perp + GetZ(df) * object.axis;
         const auto P = Momentum2{GetX(ulP) * NewtonSecond, GetY(ulP) * NewtonSecond};
-        const auto LA = AngularMomentum{
-            (GetX(df) * object.s1 + GetY(df) * Meter + GetZ(df) * object.a1) * NewtonSecond / Radian
-        };
-        const auto LB = AngularMomentum{
-            (GetX(df) * object.s2 + GetY(df) * Meter + GetZ(df) * object.a2) * NewtonSecond / Radian
-        };
+        const auto LA =
+            AngularMomentum{(GetX(df) * object.s1 + GetY(df) * Meter + GetZ(df) * object.a1) * NewtonSecond / Radian};
+        const auto LB =
+            AngularMomentum{(GetX(df) * object.s2 + GetY(df) * Meter + GetZ(df) * object.a2) * NewtonSecond / Radian};
 
         velA -= Velocity{invMassA * P, invRotInertiaA * LA};
         velB += Velocity{invMassB * P, invRotInertiaB * LB};
@@ -380,12 +368,8 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
 
         const auto ulP = GetX(df) * object.perp;
         const auto P = Momentum2{GetX(ulP) * NewtonSecond, GetY(ulP) * NewtonSecond};
-        const auto LA = AngularMomentum{
-            (GetX(df) * object.s1 + GetY(df) * Meter) * NewtonSecond / Radian
-        };
-        const auto LB = AngularMomentum{
-            (GetX(df) * object.s2 + GetY(df) * Meter) * NewtonSecond / Radian
-        };
+        const auto LA = AngularMomentum{(GetX(df) * object.s1 + GetY(df) * Meter) * NewtonSecond / Radian};
+        const auto LB = AngularMomentum{(GetX(df) * object.s2 + GetY(df) * Meter) * NewtonSecond / Radian};
 
         velA -= Velocity{invMassA * P, invRotInertiaA * LA};
         velB += Velocity{invMassB * P, invRotInertiaB * LB};
@@ -410,11 +394,11 @@ bool SolveVelocity(PrismaticJointConf& object, std::vector<BodyConstraint>& bodi
 // We could take the active state from the velocity solver. However, the joint might push past the
 // limit when the velocity solver indicates the limit is inactive.
 //
-bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf)
+bool SolvePosition(const PrismaticJointConf &object, std::vector<BodyConstraint> &bodies,
+                   const ConstraintSolverConf &conf)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto posA = bodyConstraintA.GetPosition();
     const auto invMassA = bodyConstraintA.GetInvMass();
@@ -440,10 +424,7 @@ bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>
     const auto s1 = Length{Cross(d + rA, perp)};
     const auto s2 = Length{Cross(rB, perp)};
 
-    const auto C1 = Vec2{
-        Dot(perp, d) / Meter,
-        (posB.angular - posA.angular - object.referenceAngle) / Radian
-    };
+    const auto C1 = Vec2{Dot(perp, d) / Meter, (posB.angular - posA.angular - object.referenceAngle) / Radian};
 
     auto linearError = Length{abs(GetX(C1)) * Meter};
     const auto angularError = Angle{abs(GetY(C1)) * Radian};
@@ -463,14 +444,16 @@ bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>
         else if (translation <= object.lowerTranslation)
         {
             // Prevent large linear corrections and allow some slop.
-            C2 = StripUnit(std::clamp(translation - object.lowerTranslation + conf.linearSlop, -conf.maxLinearCorrection, 0_m));
+            C2 = StripUnit(
+                std::clamp(translation - object.lowerTranslation + conf.linearSlop, -conf.maxLinearCorrection, 0_m));
             linearError = std::max(linearError, object.lowerTranslation - translation);
             active = true;
         }
         else if (translation >= object.upperTranslation)
         {
             // Prevent large linear corrections and allow some slop.
-            C2 = StripUnit(std::clamp(translation - object.upperTranslation - conf.linearSlop, 0_m, conf.maxLinearCorrection));
+            C2 = StripUnit(
+                std::clamp(translation - object.upperTranslation - conf.linearSlop, 0_m, conf.maxLinearCorrection));
             linearError = std::max(linearError, translation - object.upperTranslation);
             active = true;
         }
@@ -479,18 +462,12 @@ bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>
     Vec3 impulse;
     if (active)
     {
-        const auto k11 = StripUnit(InvMass{
-            invMassA + invRotInertiaA * s1 * s1 / SquareRadian +
-            invMassB + invRotInertiaB * s2 * s2 / SquareRadian
-        });
-        const auto k12 = StripUnit(InvMass{
-            invRotInertiaA * s1 * Meter / SquareRadian +
-            invRotInertiaB * s2 * Meter / SquareRadian
-        });
-        const auto k13 = StripUnit(InvMass{
-            invRotInertiaA * s1 * a1 / SquareRadian +
-            invRotInertiaB * s2 * a2 / SquareRadian
-        });
+        const auto k11 = StripUnit(InvMass{invMassA + invRotInertiaA * s1 * s1 / SquareRadian + invMassB +
+                                           invRotInertiaB * s2 * s2 / SquareRadian});
+        const auto k12 =
+            StripUnit(InvMass{invRotInertiaA * s1 * Meter / SquareRadian + invRotInertiaB * s2 * Meter / SquareRadian});
+        const auto k13 =
+            StripUnit(InvMass{invRotInertiaA * s1 * a1 / SquareRadian + invRotInertiaB * s2 * a2 / SquareRadian});
 
         // InvRotInertia is L^-2 M^-1 QP^2
         auto k22 = StripUnit(invRotInertiaA + invRotInertiaB);
@@ -499,14 +476,10 @@ bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>
             // For fixed rotation
             k22 = StripUnit(Real{1} * SquareRadian / (Kilogram * SquareMeter));
         }
-        const auto k23 = StripUnit(InvMass{
-            invRotInertiaA * a1 * Meter / SquareRadian +
-            invRotInertiaB * a2 * Meter / SquareRadian
-        });
-        const auto k33 = StripUnit(InvMass{
-            invMassA + invRotInertiaA * Square(a1) / SquareRadian +
-            invMassB + invRotInertiaB * Square(a2) / SquareRadian
-        });
+        const auto k23 =
+            StripUnit(InvMass{invRotInertiaA * a1 * Meter / SquareRadian + invRotInertiaB * a2 * Meter / SquareRadian});
+        const auto k33 = StripUnit(InvMass{invMassA + invRotInertiaA * Square(a1) / SquareRadian + invMassB +
+                                           invRotInertiaB * Square(a2) / SquareRadian});
 
         const auto K = Mat33{Vec3{k11, k12, k13}, Vec3{k12, k22, k23}, Vec3{k13, k23, k33}};
         const auto C = Vec3{GetX(C1), GetY(C1), C2};
@@ -515,14 +488,10 @@ bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>
     }
     else
     {
-        const auto k11 = StripUnit(InvMass{
-            invMassA + invRotInertiaA * s1 * s1 / SquareRadian +
-            invMassB + invRotInertiaB * s2 * s2 / SquareRadian
-        });
-        const auto k12 = StripUnit(InvMass{
-            invRotInertiaA * s1 * Meter / SquareRadian +
-            invRotInertiaB * s2 * Meter / SquareRadian
-        });
+        const auto k11 = StripUnit(InvMass{invMassA + invRotInertiaA * s1 * s1 / SquareRadian + invMassB +
+                                           invRotInertiaB * s2 * s2 / SquareRadian});
+        const auto k12 =
+            StripUnit(InvMass{invRotInertiaA * s1 * Meter / SquareRadian + invRotInertiaB * s2 * Meter / SquareRadian});
         auto k22 = StripUnit(invRotInertiaA + invRotInertiaB);
         if (k22 == 0)
         {
@@ -550,14 +519,12 @@ bool SolvePosition(const PrismaticJointConf& object, std::vector<BodyConstraint>
     return (linearError <= conf.linearSlop) && (angularError <= conf.angularSlop);
 }
 
-LinearVelocity GetLinearVelocity(const World& world, const PrismaticJointConf& joint) noexcept
+LinearVelocity GetLinearVelocity(const World &world, const PrismaticJointConf &joint) noexcept
 {
     const auto bA = GetBodyA(joint);
     const auto bB = GetBodyB(joint);
-    const auto rA = Rotate(GetLocalAnchorA(joint) - GetLocalCenter(world, bA),
-                           GetTransformation(world, bA).q);
-    const auto rB = Rotate(GetLocalAnchorB(joint) - GetLocalCenter(world, bB),
-                           GetTransformation(world, bB).q);
+    const auto rA = Rotate(GetLocalAnchorA(joint) - GetLocalCenter(world, bA), GetTransformation(world, bA).q);
+    const auto rB = Rotate(GetLocalAnchorB(joint) - GetLocalCenter(world, bB), GetTransformation(world, bB).q);
     const auto p1 = GetWorldCenter(world, bA) + rA;
     const auto p2 = GetWorldCenter(world, bB) + rB;
     const auto d = p2 - p1;
@@ -566,8 +533,8 @@ LinearVelocity GetLinearVelocity(const World& world, const PrismaticJointConf& j
     const auto vB = GetVelocity(world, bB).linear;
     const auto wA = GetVelocity(world, bA).angular;
     const auto wB = GetVelocity(world, bB).angular;
-    const auto vel = (vB + (GetRevPerpendicular(rB) * (wB / Radian))) -
-    (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
+    const auto vel =
+        (vB + (GetRevPerpendicular(rB) * (wB / Radian))) - (vA + (GetRevPerpendicular(rA) * (wA / Radian)));
     return Dot(d, (GetRevPerpendicular(axis) * (wA / Radian))) + Dot(axis, vel);
 }
 

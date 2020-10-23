@@ -35,8 +35,10 @@
 #include <type_traits>
 #include <utility>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief A dynamic AABB tree broad-phase.
 ///
@@ -70,7 +72,7 @@ namespace d2 {
 ///
 class DynamicTree
 {
-public:
+  public:
     /// @brief Size type.
     using Size = ContactCounter;
 
@@ -133,10 +135,10 @@ public:
     ~DynamicTree() noexcept;
 
     /// @brief Copy constructor.
-    DynamicTree(const DynamicTree& other);
+    DynamicTree(const DynamicTree &other);
 
     /// @brief Move constructor.
-    DynamicTree(DynamicTree&& other) noexcept;
+    DynamicTree(DynamicTree &&other) noexcept;
 
     /// @brief Unifying assignment operator.
     /// @note This intentionally takes the argument by-value. Along with the move constructor,
@@ -144,7 +146,7 @@ public:
     ///   assignment support.
     /// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Copy-and-swap
     /// @see https://stackoverflow.com/a/3279550/7410358
-    DynamicTree& operator= (DynamicTree other) noexcept;
+    DynamicTree &operator=(DynamicTree other) noexcept;
 
     /// @brief Clears the dynamic tree.
     /// @details Clears the leafs and branches from this tree. This does not deallocate any
@@ -172,7 +174,7 @@ public:
     /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
     ///   thrown, this function has no effect.
     /// @see GetLeafCount(), GetNodeCount()
-    Size CreateLeaf(const AABB& aabb, const LeafData& data);
+    Size CreateLeaf(const AABB &aabb, const LeafData &data);
 
     /// @brief Destroys a leaf node.
     /// @post The leaf count will be decremented by one.
@@ -183,7 +185,7 @@ public:
     /// @warning Behavior is undefined if the given index is not valid.
     /// @param index Leaf node's ID. Behavior is undefined if this is not a valid ID.
     /// @param aabb New axis aligned bounding box for the leaf node.
-    void UpdateLeaf(Size index, const AABB& aabb);
+    void UpdateLeaf(Size index, const AABB &aabb);
 
     /// @brief Gets the leaf data for the node identified by the given identifier.
     /// @warning Behavior is undefined if the given index is not valid.
@@ -256,10 +258,9 @@ public:
     /// @brief Customized swap function for <code>DynamicTree</code> objects.
     /// @note This satisfies the <code>Swappable</code> named requirement.
     /// @see https://en.cppreference.com/w/cpp/named_req/Swappable
-    friend void swap(DynamicTree& lhs, DynamicTree& rhs) noexcept;
+    friend void swap(DynamicTree &lhs, DynamicTree &rhs) noexcept;
 
-private:
-    
+  private:
     /// @brief Sets the node capacity to the given value.
     /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
     ///   thrown, this function has no effect.
@@ -284,7 +285,7 @@ private:
     /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
     ///   thrown, this function has no effect.
     /// @see GetNodeCount()
-    Size AllocateNode(const LeafData& data, AABB aabb);
+    Size AllocateNode(const LeafData &data, AABB aabb);
 
     /// @brief Allocates a branch node.
     /// @details This allocates a node from the free list as a branch node.
@@ -295,9 +296,8 @@ private:
     /// @throws std::bad_alloc If unable to allocate necessary memory. If this exception is
     ///   thrown, this function has no effect.
     /// @see GetNodeCount()
-    Size AllocateNode(const BranchData& data, AABB aabb, Height height,
-                      Size parent = GetInvalidSize());
- 
+    Size AllocateNode(const BranchData &data, AABB aabb, Height height, Size parent = GetInvalidSize());
+
     /// @brief Frees the specified node.
     ///
     /// @warning Behavior is undefined if the given index is not valid.
@@ -308,13 +308,13 @@ private:
     /// @post The free list links to the given index.
     ///
     void FreeNode(Size index) noexcept;
-    
-    TreeNode* m_nodes{nullptr}; ///< Nodes. @details Initialized on construction.
+
+    TreeNode *m_nodes{nullptr};         ///< Nodes. @details Initialized on construction.
     Size m_rootIndex{GetInvalidSize()}; ///< Index of root element in m_nodes or <code>GetInvalidSize()</code>.
     Size m_freeIndex{GetInvalidSize()}; ///< Free list. @details Index to free nodes.
-    Size m_nodeCount{0u}; ///< Node count. @details Count of currently allocated nodes.
-    Size m_nodeCapacity{0u}; ///< Node capacity. @details Size of buffer allocated for nodes.
-    Size m_leafCount{0u}; ///< Leaf count. @details Count of currently allocated leaf nodes.
+    Size m_nodeCount{0u};               ///< Node count. @details Count of currently allocated nodes.
+    Size m_nodeCapacity{0u};            ///< Node capacity. @details Size of buffer allocated for nodes.
+    Size m_leafCount{0u};               ///< Leaf count. @details Count of currently allocated leaf nodes.
 };
 
 /// @brief Unused data of a tree node.
@@ -350,7 +350,7 @@ struct DynamicTree::LeafData
     /// @note This field serves merely to potentially avoid the lookup of the body through
     ///   the fixture.
     BodyID body;
-    
+
     /// @brief Identifier of the associated Fixture.
     FixtureID fixture;
 
@@ -360,61 +360,66 @@ struct DynamicTree::LeafData
 
 /// @brief Equality operator.
 /// @relatedalso DynamicTree::LeafData
-constexpr bool operator== (const DynamicTree::LeafData& lhs,
-                           const DynamicTree::LeafData& rhs) noexcept
+constexpr bool operator==(const DynamicTree::LeafData &lhs, const DynamicTree::LeafData &rhs) noexcept
 {
     return lhs.fixture == rhs.fixture && lhs.childIndex == rhs.childIndex;
 }
 
 /// @brief Inequality operator.
 /// @relatedalso DynamicTree::LeafData
-constexpr bool operator!= (const DynamicTree::LeafData& lhs,
-                           const DynamicTree::LeafData& rhs) noexcept
+constexpr bool operator!=(const DynamicTree::LeafData &lhs, const DynamicTree::LeafData &rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
 /// @brief Variant data.
 /// @note A union is used intentionally to save space.
-union DynamicTree::VariantData
-{
+union DynamicTree::VariantData {
     /// @brief Unused/free-list specific data.
     UnusedData unused;
-    
+
     /// @brief Leaf specific data.
     LeafData leaf;
-    
+
     /// @brief Branch specific data.
     BranchData branch;
-    
+
     /// @brief Default constructor.
-    VariantData() noexcept {}
-    
+    VariantData() noexcept
+    {
+    }
+
     /// @brief Initializing constructor.
-    constexpr VariantData(UnusedData value) noexcept: unused{value} {}
-    
+    constexpr VariantData(UnusedData value) noexcept : unused{value}
+    {
+    }
+
     /// @brief Initializing constructor.
-    constexpr VariantData(LeafData value) noexcept: leaf{value} {}
-    
+    constexpr VariantData(LeafData value) noexcept : leaf{value}
+    {
+    }
+
     /// @brief Initializing constructor.
-    constexpr VariantData(BranchData value) noexcept: branch{value} {}
+    constexpr VariantData(BranchData value) noexcept : branch{value}
+    {
+    }
 };
 
 /// @brief Is unused.
 /// @details Determines whether the given dynamic tree node is an unused node.
 /// @relatedalso DynamicTree::TreeNode
-constexpr bool IsUnused(const DynamicTree::TreeNode& node) noexcept;
+constexpr bool IsUnused(const DynamicTree::TreeNode &node) noexcept;
 
 /// @brief Is leaf.
 /// @details Determines whether the given dynamic tree node is a leaf node.
 /// @relatedalso DynamicTree::TreeNode
-constexpr bool IsLeaf(const DynamicTree::TreeNode& node) noexcept;
+constexpr bool IsLeaf(const DynamicTree::TreeNode &node) noexcept;
 
 /// @brief Is branch.
 /// @details Determines whether the given dynamic tree node is a branch node.
 ///   Branch nodes have 2 indices to child nodes.
 /// @relatedalso DynamicTree::TreeNode
-constexpr bool IsBranch(const DynamicTree::TreeNode& node) noexcept;
+constexpr bool IsBranch(const DynamicTree::TreeNode &node) noexcept;
 
 /// @brief A node in the dynamic tree.
 /// @note Users do not interact with this directly.
@@ -425,34 +430,32 @@ constexpr bool IsBranch(const DynamicTree::TreeNode& node) noexcept;
 /// @note This data structure is 48-bytes large on at least one 64-bit platform.
 class DynamicTree::TreeNode
 {
-public:
+  public:
     ~TreeNode() = default;
 
     /// @brief Copy constructor.
-    constexpr TreeNode(const TreeNode& other) = default;
+    constexpr TreeNode(const TreeNode &other) = default;
 
     /// @brief Move constructor.
-    constexpr TreeNode(TreeNode&& other) = default;
+    constexpr TreeNode(TreeNode &&other) = default;
 
     /// @brief Initializing constructor.
-    constexpr explicit TreeNode(Size other = DynamicTree::GetInvalidSize()) noexcept:
-        m_other{other}
+    constexpr explicit TreeNode(Size other = DynamicTree::GetInvalidSize()) noexcept : m_other{other}
     {
         assert(IsUnused(m_height));
     }
 
     /// @brief Initializing constructor.
-    constexpr TreeNode(const LeafData& value, AABB aabb,
-                                      Size other = DynamicTree::GetInvalidSize()) noexcept:
-        m_aabb{aabb}, m_variant{value}, m_height{0}, m_other{other}
+    constexpr TreeNode(const LeafData &value, AABB aabb, Size other = DynamicTree::GetInvalidSize()) noexcept
+        : m_aabb{aabb}, m_variant{value}, m_height{0}, m_other{other}
     {
         // Intentionally empty.
     }
 
     /// @brief Initializing constructor.
-    constexpr TreeNode(const BranchData& value, AABB aabb, Height height,
-                       Size other = DynamicTree::GetInvalidSize()) noexcept:
-        m_aabb{aabb}, m_variant{value}, m_height{height}, m_other{other}
+    constexpr TreeNode(const BranchData &value, AABB aabb, Height height,
+                       Size other = DynamicTree::GetInvalidSize()) noexcept
+        : m_aabb{aabb}, m_variant{value}, m_height{height}, m_other{other}
     {
         assert(IsBranch(height));
         assert(value.child1 != GetInvalidSize());
@@ -460,20 +463,20 @@ public:
     }
 
     /// @brief Copy assignment operator.
-    TreeNode& operator= (const TreeNode& other) = default;
+    TreeNode &operator=(const TreeNode &other) = default;
 
     /// @brief Gets the node "height".
     constexpr Height GetHeight() const noexcept
     {
         return m_height;
     }
-    
+
     /// @brief Gets the node's "other" index.
     constexpr Size GetOther() const noexcept
     {
         return m_other;
     }
-                
+
     /// @brief Sets the node's "other" index to the given value.
     constexpr void SetOther(Size other) noexcept
     {
@@ -495,7 +498,7 @@ public:
         assert(!IsUnused(m_height));
         m_aabb = value;
     }
-    
+
     /// @brief Gets the node as an "unused" value.
     /// @warning Behavior is undefined unless called on a free/unused node!
     constexpr UnusedData AsUnused() const noexcept
@@ -503,7 +506,7 @@ public:
         assert(IsUnused(m_height));
         return m_variant.unused;
     }
-    
+
     /// @brief Gets the node as a "leaf" value.
     /// @warning Behavior is undefined unless called on a leaf node!
     constexpr LeafData AsLeaf() const noexcept
@@ -511,7 +514,7 @@ public:
         assert(IsLeaf(m_height));
         return m_variant.leaf;
     }
-    
+
     /// @brief Gets the node as a "branch" value.
     /// @warning Behavior is undefined unless called on a branch node!
     constexpr BranchData AsBranch() const noexcept
@@ -521,21 +524,21 @@ public:
     }
 
     /// @brief Gets the node as an "unused" value.
-    constexpr void Assign(const UnusedData& v) noexcept
+    constexpr void Assign(const UnusedData &v) noexcept
     {
         m_variant.unused = v;
         m_height = static_cast<Height>(-1);
     }
-    
+
     /// @brief Gets the node as a "leaf" value.
-    constexpr void Assign(const LeafData& v) noexcept
+    constexpr void Assign(const LeafData &v) noexcept
     {
         m_variant.leaf = v;
         m_height = 0;
     }
-    
+
     /// @brief Assigns the node as a "branch" value.
-    constexpr void Assign(const BranchData& v, const AABB& bb, Height h) noexcept
+    constexpr void Assign(const BranchData &v, const AABB &bb, Height h) noexcept
     {
         assert(v.child1 != GetInvalidSize());
         assert(v.child2 != GetInvalidSize());
@@ -545,7 +548,7 @@ public:
         m_height = h;
     }
 
-private:
+  private:
     /// @brief AABB.
     /// @note This field is unused for free nodes, else it's the minimally enclosing AABB
     ///   for the node.
@@ -649,17 +652,17 @@ inline void DynamicTree::SetLeafData(Size index, LeafData value) noexcept
 // Free functions...
 
 /// @brief Replaces the old child with the new child.
-constexpr DynamicTree::BranchData
-ReplaceChild(DynamicTree::BranchData bd, DynamicTree::Size oldChild, DynamicTree::Size newChild)
+constexpr DynamicTree::BranchData ReplaceChild(DynamicTree::BranchData bd, DynamicTree::Size oldChild,
+                                               DynamicTree::Size newChild)
 {
     assert(bd.child1 == oldChild || bd.child2 == oldChild);
-    return (bd.child1 == oldChild)?
-        DynamicTree::BranchData{newChild, bd.child2}: DynamicTree::BranchData{bd.child1, newChild};
+    return (bd.child1 == oldChild) ? DynamicTree::BranchData{newChild, bd.child2}
+                                   : DynamicTree::BranchData{bd.child1, newChild};
 }
 
 /// @brief Whether this node is free (or allocated).
 /// @relatedalso DynamicTree::TreeNode
-constexpr bool IsUnused(const DynamicTree::TreeNode& node) noexcept
+constexpr bool IsUnused(const DynamicTree::TreeNode &node) noexcept
 {
     return DynamicTree::IsUnused(node.GetHeight());
 }
@@ -668,7 +671,7 @@ constexpr bool IsUnused(const DynamicTree::TreeNode& node) noexcept
 /// @note This has constant complexity.
 /// @return <code>true</code> if this is a leaf node, <code>false</code> otherwise.
 /// @relatedalso DynamicTree::TreeNode
-constexpr bool IsLeaf(const DynamicTree::TreeNode& node) noexcept
+constexpr bool IsLeaf(const DynamicTree::TreeNode &node) noexcept
 {
     return DynamicTree::IsLeaf(node.GetHeight());
 }
@@ -676,14 +679,14 @@ constexpr bool IsLeaf(const DynamicTree::TreeNode& node) noexcept
 /// @brief Is branch.
 /// @details Determines whether the given node is a "branch" node.
 /// @relatedalso DynamicTree::TreeNode
-constexpr bool IsBranch(const DynamicTree::TreeNode& node) noexcept
+constexpr bool IsBranch(const DynamicTree::TreeNode &node) noexcept
 {
     return DynamicTree::IsBranch(node.GetHeight());
 }
 
 /// @brief Gets the AABB of the given dynamic tree node.
 /// @relatedalso DynamicTree::TreeNode
-constexpr AABB GetAABB(const DynamicTree::TreeNode& node) noexcept
+constexpr AABB GetAABB(const DynamicTree::TreeNode &node) noexcept
 {
     assert(!IsUnused(node));
     return node.GetAABB();
@@ -692,7 +695,7 @@ constexpr AABB GetAABB(const DynamicTree::TreeNode& node) noexcept
 /// @brief Gets the next index of the given node.
 /// @warning Behavior is undefined if the given node is not an "unused" node.
 /// @relatedalso DynamicTree::TreeNode
-constexpr DynamicTree::Size GetNext(const DynamicTree::TreeNode& node) noexcept
+constexpr DynamicTree::Size GetNext(const DynamicTree::TreeNode &node) noexcept
 {
     assert(IsUnused(node));
     return node.GetOther();
@@ -701,10 +704,10 @@ constexpr DynamicTree::Size GetNext(const DynamicTree::TreeNode& node) noexcept
 /// @brief Gets the height of the binary tree.
 /// @return Height of the tree (as stored in the root node) or 0 if the root node is not valid.
 /// @relatedalso DynamicTree
-inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
+inline DynamicTree::Height GetHeight(const DynamicTree &tree) noexcept
 {
     const auto index = tree.GetRootIndex();
-    return (index != DynamicTree::GetInvalidSize())? tree.GetHeight(index): DynamicTree::Height{0};
+    return (index != DynamicTree::GetInvalidSize()) ? tree.GetHeight(index) : DynamicTree::Height{0};
 }
 
 /// @brief Gets the AABB for the given dynamic tree.
@@ -712,16 +715,15 @@ inline DynamicTree::Height GetHeight(const DynamicTree& tree) noexcept
 ///   given dynamic tree.
 /// @return Enclosing AABB or the "unset" AABB.
 /// @relatedalso DynamicTree
-inline AABB GetAABB(const DynamicTree& tree) noexcept
+inline AABB GetAABB(const DynamicTree &tree) noexcept
 {
     const auto index = tree.GetRootIndex();
-    return (index != DynamicTree::GetInvalidSize())? tree.GetAABB(index): AABB{};
+    return (index != DynamicTree::GetInvalidSize()) ? tree.GetAABB(index) : AABB{};
 }
 
 /// @brief Tests for overlap of the elements identified in the given dynamic tree.
 /// @relatedalso DynamicTree
-inline bool TestOverlap(const DynamicTree& tree,
-                        DynamicTree::Size leafIdA, DynamicTree::Size leafIdB) noexcept
+inline bool TestOverlap(const DynamicTree &tree, DynamicTree::Size leafIdA, DynamicTree::Size leafIdB) noexcept
 {
     return TestOverlap(tree.GetAABB(leafIdA), tree.GetAABB(leafIdB));
 }
@@ -729,22 +731,22 @@ inline bool TestOverlap(const DynamicTree& tree,
 /// @brief Gets the sum of the perimeters of nodes.
 /// @note Zero is returned if no proxies exist at the time of the call.
 /// @return Value of zero or more.
-Length ComputeTotalPerimeter(const DynamicTree& tree) noexcept;
+Length ComputeTotalPerimeter(const DynamicTree &tree) noexcept;
 
 /// @brief Gets the ratio of the sum of the perimeters of nodes to the root perimeter.
 /// @note Zero is returned if no proxies exist at the time of the call.
 /// @return Value of zero or more.
-Real ComputePerimeterRatio(const DynamicTree& tree) noexcept;
+Real ComputePerimeterRatio(const DynamicTree &tree) noexcept;
 
 /// @brief Computes the height of the tree from a given node.
 /// @warning Behavior is undefined if the given index is not valid.
 /// @param tree Tree to compute the height at the given node for.
 /// @param index ID of node to compute height from.
 /// @return 0 unless the given index is to a branch node.
-DynamicTree::Height ComputeHeight(const DynamicTree& tree, DynamicTree::Size index) noexcept;
+DynamicTree::Height ComputeHeight(const DynamicTree &tree, DynamicTree::Size index) noexcept;
 
 /// @brief Computes the height of the given dynamic tree.
-inline DynamicTree::Height ComputeHeight(const DynamicTree& tree) noexcept
+inline DynamicTree::Height ComputeHeight(const DynamicTree &tree) noexcept
 {
     return ComputeHeight(tree, tree.GetRootIndex());
 }
@@ -752,17 +754,17 @@ inline DynamicTree::Height ComputeHeight(const DynamicTree& tree) noexcept
 /// @brief Validates the structure of the given tree from the given index.
 /// @note Meant for testing.
 /// @return <code>true</code> if valid, <code>false</code> otherwise.
-bool ValidateStructure(const DynamicTree& tree, DynamicTree::Size index) noexcept;
+bool ValidateStructure(const DynamicTree &tree, DynamicTree::Size index) noexcept;
 
 /// @brief Validates the metrics of the given tree from the given index.
 /// @note Meant for testing.
 /// @return <code>true</code> if valid, <code>false</code> otherwise.
-bool ValidateMetrics(const DynamicTree& tree, DynamicTree::Size index) noexcept;
+bool ValidateMetrics(const DynamicTree &tree, DynamicTree::Size index) noexcept;
 
 /// @brief Gets the maximum imbalance.
 /// @details This gets the maximum imbalance of nodes in the given tree.
 /// @note The imbalance is the difference in height of the two children of a node.
-DynamicTree::Height GetMaxImbalance(const DynamicTree& tree) noexcept;
+DynamicTree::Height GetMaxImbalance(const DynamicTree &tree) noexcept;
 
 /// @brief Opcodes for dynamic tree callbacks.
 enum class DynamicTreeOpcode
@@ -776,8 +778,7 @@ using DynamicTreeSizeCB = std::function<DynamicTreeOpcode(DynamicTree::Size)>;
 
 /// @brief Query the given dynamic tree and find nodes overlapping the given AABB.
 /// @note The callback instance is called for each leaf node that overlaps the supplied AABB.
-void Query(const DynamicTree& tree, const AABB& aabb,
-           const DynamicTreeSizeCB& callback);
+void Query(const DynamicTree &tree, const AABB &aabb, const DynamicTreeSizeCB &callback);
 
 /// @brief Query AABB for fixtures callback function type.
 /// @note Returning true will continue the query. Returning false will terminate the query.
@@ -787,14 +788,14 @@ using QueryFixtureCallback = std::function<bool(FixtureID fixture, ChildCounter 
 /// @param tree Dynamic tree to do the query over.
 /// @param aabb The query box.
 /// @param callback User implemented callback function.
-void Query(const DynamicTree& tree, const AABB& aabb, QueryFixtureCallback callback);
+void Query(const DynamicTree &tree, const AABB &aabb, QueryFixtureCallback callback);
 
 /// @brief Gets the "size" of the given tree.
 /// @note Size in this context is defined as the leaf count.
 /// @note This provides ancillary support for the container named requirement's size method.
 /// @see DynamicTree::GetLeafCount()
 /// @see https://en.cppreference.com/w/cpp/named_req/Container
-inline std::size_t size(const DynamicTree& tree) noexcept
+inline std::size_t size(const DynamicTree &tree) noexcept
 {
     return tree.GetLeafCount();
 }

@@ -26,12 +26,14 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct ConstraintSolverConf;
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class World;
 class BodyConstraint;
@@ -58,40 +60,39 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
-    WheelJointConf(BodyID bA, BodyID bB,
-                   Length2 laA = Length2{}, Length2 laB = Length2{},
+    WheelJointConf(BodyID bA, BodyID bB, Length2 laA = Length2{}, Length2 laB = Length2{},
                    UnitVec axis = UnitVec::GetRight()) noexcept;
 
     /// @brief Uses the given enable motor state value.
-    constexpr auto& UseEnableMotor(bool v) noexcept
+    constexpr auto &UseEnableMotor(bool v) noexcept
     {
         enableMotor = v;
         return *this;
     }
 
     /// @brief Uses the given max motor toque value.
-    constexpr auto& UseMaxMotorTorque(Torque v) noexcept
+    constexpr auto &UseMaxMotorTorque(Torque v) noexcept
     {
         maxMotorTorque = v;
         return *this;
     }
 
     /// @brief Uses the given motor speed value.
-    constexpr auto& UseMotorSpeed(AngularVelocity v) noexcept
+    constexpr auto &UseMotorSpeed(AngularVelocity v) noexcept
     {
         motorSpeed = v;
         return *this;
     }
 
     /// @brief Uses the given frequency value.
-    constexpr auto& UseFrequency(NonNegative<Frequency> v) noexcept
+    constexpr auto &UseFrequency(NonNegative<Frequency> v) noexcept
     {
         frequency = v;
         return *this;
     }
 
     /// @brief Uses the given damping ratio value.
-    constexpr auto& UseDampingRatio(Real v) noexcept
+    constexpr auto &UseDampingRatio(Real v) noexcept
     {
         dampingRatio = v;
         return *this;
@@ -124,9 +125,9 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     /// Suspension damping ratio, one indicates critical damping
     Real dampingRatio = 0.7f;
 
-    Momentum impulse = 0; ///< Impulse.
+    Momentum impulse = 0;               ///< Impulse.
     AngularMomentum angularImpulse = 0; ///< Angular impulse.
-    Momentum springImpulse = 0; ///< Spring impulse.
+    Momentum springImpulse = 0;         ///< Spring impulse.
 
     UnitVec ax; ///< Solver A X directional.
     UnitVec ay; ///< Solver A Y directional.
@@ -136,37 +137,37 @@ struct WheelJointConf : public JointBuilder<WheelJointConf>
     Length sAy = 0_m; ///< Solver A y location.
     Length sBy = 0_m; ///< Solver B y location.
 
-    Mass mass = 0_kg; ///< Mass.
+    Mass mass = 0_kg;                       ///< Mass.
     RotInertia angularMass = RotInertia{0}; ///< Motor mass.
-    Mass springMass = 0_kg; ///< Spring mass.
+    Mass springMass = 0_kg;                 ///< Spring mass.
 
     LinearVelocity bias = 0_mps; ///< Bias.
-    InvMass gamma = InvMass{0}; ///< Gamma.
+    InvMass gamma = InvMass{0};  ///< Gamma.
 };
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
-WheelJointConf GetWheelJointConf(const Joint& joint);
+WheelJointConf GetWheelJointConf(const Joint &joint);
 
 /// @brief Gets the definition data for the given parameters.
 /// @relatedalso World
-WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                                 Length2 anchor, UnitVec axis = UnitVec::GetRight());
+WheelJointConf GetWheelJointConf(const World &world, BodyID bodyA, BodyID bodyB, Length2 anchor,
+                                 UnitVec axis = UnitVec::GetRight());
 
 /// @brief Gets the angular velocity for the given configuration within the specified world.
 /// @relatedalso World
-AngularVelocity GetAngularVelocity(const World& world, const WheelJointConf& conf);
+AngularVelocity GetAngularVelocity(const World &world, const WheelJointConf &conf);
 
 /// @brief Gets the current linear reaction for the given configuration.
 /// @relatedalso WheelJointConf
-constexpr Momentum2 GetLinearReaction(const WheelJointConf& object)
+constexpr Momentum2 GetLinearReaction(const WheelJointConf &object)
 {
     return object.impulse * object.ay + object.springImpulse * object.ax;
 }
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso WheelJointConf
-constexpr auto ShiftOrigin(WheelJointConf&, Length2)
+constexpr auto ShiftOrigin(WheelJointConf &, Length2)
 {
     return false;
 }
@@ -175,41 +176,38 @@ constexpr auto ShiftOrigin(WheelJointConf&, Length2)
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso WheelJointConf
-void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+void InitVelocity(WheelJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 /// @relatedalso WheelJointConf
-bool SolveVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+bool SolveVelocity(WheelJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step);
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
 /// @relatedalso WheelJointConf
-bool SolvePosition(const WheelJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf);
+bool SolvePosition(const WheelJointConf &object, std::vector<BodyConstraint> &bodies, const ConstraintSolverConf &conf);
 
 /// @brief Sets the maximum motor torque for the given configuration.
 /// @relatedalso WheelJointConf
-constexpr void SetMaxMotorTorque(WheelJointConf& object, Torque value) noexcept
+constexpr void SetMaxMotorTorque(WheelJointConf &object, Torque value) noexcept
 {
     object.UseMaxMotorTorque(value);
 }
 
 /// @brief Free function for setting the frequency of the given configuration.
 /// @relatedalso WheelJointConf
-constexpr void SetFrequency(WheelJointConf& object, NonNegative<Frequency> value) noexcept
+constexpr void SetFrequency(WheelJointConf &object, NonNegative<Frequency> value) noexcept
 {
     object.UseFrequency(value);
 }
 
 /// @brief Free function for setting the damping ratio of the given configuration.
 /// @relatedalso WheelJointConf
-constexpr void SetDampingRatio(WheelJointConf& object, Real value) noexcept
+constexpr void SetDampingRatio(WheelJointConf &object, Real value) noexcept
 {
     object.UseDampingRatio(value);
 }
@@ -217,11 +215,10 @@ constexpr void SetDampingRatio(WheelJointConf& object, Real value) noexcept
 } // namespace d2
 
 /// @brief Type info specialization for <code>d2::WheelJointConf</code>.
-template <>
-struct TypeInfo<d2::WheelJointConf>
+template <> struct TypeInfo<d2::WheelJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static constexpr const char* name = "d2::WheelJointConf";
+    static constexpr const char *name = "d2::WheelJointConf";
 };
 
 } // namespace playrho

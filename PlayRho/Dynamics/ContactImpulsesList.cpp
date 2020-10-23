@@ -21,11 +21,13 @@
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Dynamics/Contacts/VelocityConstraint.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief Gets the contact impulses for the given velocity constraint.
-ContactImpulsesList GetContactImpulses(const VelocityConstraint& vc)
+ContactImpulsesList GetContactImpulses(const VelocityConstraint &vc)
 {
     ContactImpulsesList impulse;
     const auto count = vc.GetPointCount();

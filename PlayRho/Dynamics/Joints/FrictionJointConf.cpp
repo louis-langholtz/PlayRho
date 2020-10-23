@@ -21,25 +21,23 @@
 
 #include <PlayRho/Dynamics/Joints/FrictionJointConf.hpp>
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 static_assert(std::is_default_constructible<FrictionJointConf>::value,
               "FrictionJointConf should be default constructible!");
-static_assert(std::is_copy_constructible<FrictionJointConf>::value,
-              "FrictionJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<FrictionJointConf>::value,
-              "FrictionJointConf should be copy assignable!");
-static_assert(std::is_move_constructible<FrictionJointConf>::value,
-              "FrictionJointConf should be move constructible!");
-static_assert(std::is_move_assignable<FrictionJointConf>::value,
-              "FrictionJointConf should be move assignable!");
+static_assert(std::is_copy_constructible<FrictionJointConf>::value, "FrictionJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<FrictionJointConf>::value, "FrictionJointConf should be copy assignable!");
+static_assert(std::is_move_constructible<FrictionJointConf>::value, "FrictionJointConf should be move constructible!");
+static_assert(std::is_move_assignable<FrictionJointConf>::value, "FrictionJointConf should be move assignable!");
 static_assert(std::is_nothrow_destructible<FrictionJointConf>::value,
               "FrictionJointConf should be nothrow destructible!");
 
@@ -55,32 +53,27 @@ static_assert(std::is_nothrow_destructible<FrictionJointConf>::value,
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-FrictionJointConf::FrictionJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB) noexcept:
-    super{super{}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{laA}, localAnchorB{laB}
+FrictionJointConf::FrictionJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB) noexcept
+    : super{super{}.UseBodyA(bA).UseBodyB(bB)}, localAnchorA{laA}, localAnchorB{laB}
 {
     // Intentionally empty.
 }
 
-FrictionJointConf GetFrictionJointConf(const Joint& joint) noexcept
+FrictionJointConf GetFrictionJointConf(const Joint &joint) noexcept
 {
     return TypeCast<FrictionJointConf>(joint);
 }
 
-FrictionJointConf GetFrictionJointConf(const World& world,
-                                       BodyID bodyA, BodyID bodyB, Length2 anchor)
+FrictionJointConf GetFrictionJointConf(const World &world, BodyID bodyA, BodyID bodyB, Length2 anchor)
 {
-    return FrictionJointConf{
-        bodyA, bodyB, GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor)
-    };
+    return FrictionJointConf{bodyA, bodyB, GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor)};
 }
 
-void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf&)
+void InitVelocity(FrictionJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
     const auto posA = bodyConstraintA.GetPosition();
     auto velA = bodyConstraintA.GetVelocity();
     const auto posB = bodyConstraintB.GetPosition();
@@ -105,18 +98,12 @@ void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies
     const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     {
-        const auto exx = InvMass{
-            invMassA + invRotInertiaA * Square(GetY(object.rA)) / SquareRadian +
-            invMassB + invRotInertiaB * Square(GetY(object.rB)) / SquareRadian
-        };
-        const auto exy = InvMass{
-            -invRotInertiaA * GetX(object.rA) * GetY(object.rA) / SquareRadian +
-            -invRotInertiaB * GetX(object.rB) * GetY(object.rB) / SquareRadian
-        };
-        const auto eyy = InvMass{
-            invMassA + invRotInertiaA * Square(GetX(object.rA)) / SquareRadian +
-            invMassB + invRotInertiaB * Square(GetX(object.rB)) / SquareRadian
-        };
+        const auto exx = InvMass{invMassA + invRotInertiaA * Square(GetY(object.rA)) / SquareRadian + invMassB +
+                                 invRotInertiaB * Square(GetY(object.rB)) / SquareRadian};
+        const auto exy = InvMass{-invRotInertiaA * GetX(object.rA) * GetY(object.rA) / SquareRadian +
+                                 -invRotInertiaB * GetX(object.rB) * GetY(object.rB) / SquareRadian};
+        const auto eyy = InvMass{invMassA + invRotInertiaA * Square(GetX(object.rA)) / SquareRadian + invMassB +
+                                 invRotInertiaB * Square(GetX(object.rB)) / SquareRadian};
         InvMass22 K;
         GetX(GetX(K)) = exx;
         GetY(GetX(K)) = exy;
@@ -126,8 +113,7 @@ void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies
     }
 
     const auto invRotInertia = invRotInertiaA + invRotInertiaB;
-    object.angularMass = (invRotInertia > InvRotInertia{0})?
-    RotInertia{Real{1} / invRotInertia}: RotInertia{0};
+    object.angularMass = (invRotInertia > InvRotInertia{0}) ? RotInertia{Real{1} / invRotInertia} : RotInertia{0};
 
     if (step.doWarmStart)
     {
@@ -154,11 +140,10 @@ void InitVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies
     bodyConstraintB.SetVelocity(velB);
 }
 
-bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step)
+bool SolveVelocity(FrictionJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto velA = bodyConstraintA.GetVelocity();
     const auto invRotInertiaA = bodyConstraintA.GetInvRotInertia();
@@ -178,8 +163,8 @@ bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodie
 
         const auto oldAngularImpulse = object.angularImpulse;
         const auto maxAngularImpulse = h * object.maxTorque;
-        object.angularImpulse = std::clamp(object.angularImpulse + angularImpulse,
-                                      -maxAngularImpulse, maxAngularImpulse);
+        object.angularImpulse =
+            std::clamp(object.angularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
         const auto incAngularImpulse = object.angularImpulse - oldAngularImpulse;
 
         if (incAngularImpulse != AngularMomentum{0})
@@ -226,8 +211,7 @@ bool SolveVelocity(FrictionJointConf& object, std::vector<BodyConstraint>& bodie
     return solved;
 }
 
-bool SolvePosition(const FrictionJointConf&, std::vector<BodyConstraint>&,
-                   const ConstraintSolverConf&)
+bool SolvePosition(const FrictionJointConf &, std::vector<BodyConstraint> &, const ConstraintSolverConf &)
 {
     return true;
 }

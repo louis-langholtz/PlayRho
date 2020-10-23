@@ -26,12 +26,14 @@
 
 #include <PlayRho/Common/Math.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 struct ConstraintSolverConf;
 struct StepConf;
 
-namespace d2 {
+namespace d2
+{
 
 class World;
 class BodyConstraint;
@@ -59,18 +61,18 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     /// @param laA Local anchor A location in world coordinates.
     /// @param bodyB Body B.
     /// @param laB Local anchor B location in world coordinates.
-    WeldJointConf(BodyID bodyA, BodyID bodyB,
-                  Length2 laA = Length2{}, Length2 laB = Length2{}, Angle ra = 0_deg) noexcept;
+    WeldJointConf(BodyID bodyA, BodyID bodyB, Length2 laA = Length2{}, Length2 laB = Length2{},
+                  Angle ra = 0_deg) noexcept;
 
     /// @brief Uses the given frequency value.
-    constexpr auto& UseFrequency(NonNegative<Frequency> v) noexcept
+    constexpr auto &UseFrequency(NonNegative<Frequency> v) noexcept
     {
         frequency = v;
         return *this;
     }
 
     /// @brief Uses the given damping ratio.
-    constexpr auto& UseDampingRatio(Real v) noexcept
+    constexpr auto &UseDampingRatio(Real v) noexcept
     {
         dampingRatio = v;
         return *this;
@@ -98,32 +100,31 @@ struct WeldJointConf : public JointBuilder<WeldJointConf>
     Vec3 impulse = Vec3{}; ///< Impulse.
 
     // Solver temp
-    InvRotInertia gamma = {}; ///< Gamma.
+    InvRotInertia gamma = {};  ///< Gamma.
     AngularVelocity bias = {}; ///< Bias.
-    Length2 rA = {}; ///< Relative A.
-    Length2 rB = {}; ///< Relative B.
-    Mat33 mass = {}; ///< Mass.
+    Length2 rA = {};           ///< Relative A.
+    Length2 rB = {};           ///< Relative B.
+    Mat33 mass = {};           ///< Mass.
 };
 
 /// @brief Gets the definition data for the given joint.
 /// @relatedalso Joint
-WeldJointConf GetWeldJointConf(const Joint& joint);
+WeldJointConf GetWeldJointConf(const Joint &joint);
 
 /// @brief Gets the configuration for the given parameters.
 /// @relatedalso World
-WeldJointConf GetWeldJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                               const Length2 anchor = Length2{});
+WeldJointConf GetWeldJointConf(const World &world, BodyID bodyA, BodyID bodyB, const Length2 anchor = Length2{});
 
 /// @brief Gets the current linear reaction of the given configuration.
 /// @relatedalso WeldJointConf
-constexpr Momentum2 GetLinearReaction(const WeldJointConf& object) noexcept
+constexpr Momentum2 GetLinearReaction(const WeldJointConf &object) noexcept
 {
     return Momentum2{GetX(object.impulse) * NewtonSecond, GetY(object.impulse) * NewtonSecond};
 }
 
 /// @brief Gets the current angular reaction of the given configuration.
 /// @relatedalso WeldJointConf
-constexpr AngularMomentum GetAngularReaction(const WeldJointConf& object) noexcept
+constexpr AngularMomentum GetAngularReaction(const WeldJointConf &object) noexcept
 {
     // AngularMomentum is L^2 M T^-1 QP^-1
     return AngularMomentum{GetZ(object.impulse) * SquareMeter * Kilogram / (Second * Radian)};
@@ -131,7 +132,7 @@ constexpr AngularMomentum GetAngularReaction(const WeldJointConf& object) noexce
 
 /// @brief Shifts the origin notion of the given configuration.
 /// @relatedalso WeldJointConf
-constexpr auto ShiftOrigin(WeldJointConf&, Length2) noexcept
+constexpr auto ShiftOrigin(WeldJointConf &, Length2) noexcept
 {
     return false;
 }
@@ -140,33 +141,30 @@ constexpr auto ShiftOrigin(WeldJointConf&, Length2) noexcept
 /// @note This MUST be called prior to calling <code>SolveVelocity</code>.
 /// @see SolveVelocity.
 /// @relatedalso WeldJointConf
-void InitVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf& conf);
+void InitVelocity(WeldJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &conf);
 
 /// @brief Solves velocity constraint.
 /// @pre <code>InitVelocity</code> has been called.
 /// @see InitVelocity.
 /// @return <code>true</code> if velocity is "solved", <code>false</code> otherwise.
 /// @relatedalso WeldJointConf
-bool SolveVelocity(WeldJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step);
+bool SolveVelocity(WeldJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step);
 
 /// @brief Solves the position constraint.
 /// @return <code>true</code> if the position errors are within tolerance.
 /// @relatedalso WeldJointConf
-bool SolvePosition(const WeldJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf);
+bool SolvePosition(const WeldJointConf &object, std::vector<BodyConstraint> &bodies, const ConstraintSolverConf &conf);
 
 /// @brief Free function for setting the frequency of the given configuration.
 /// @relatedalso WeldJointConf
-constexpr void SetFrequency(WeldJointConf& object, NonNegative<Frequency> value) noexcept
+constexpr void SetFrequency(WeldJointConf &object, NonNegative<Frequency> value) noexcept
 {
     object.UseFrequency(value);
 }
 
 /// @relatedalso WeldJointConf
-constexpr void SetDampingRatio(WeldJointConf& object, Real value) noexcept
+constexpr void SetDampingRatio(WeldJointConf &object, Real value) noexcept
 {
     object.UseDampingRatio(value);
 }
@@ -174,11 +172,10 @@ constexpr void SetDampingRatio(WeldJointConf& object, Real value) noexcept
 } // namespace d2
 
 /// @brief Type info specialization for <code>d2::WeldJointConf</code>.
-template <>
-struct TypeInfo<d2::WeldJointConf>
+template <> struct TypeInfo<d2::WeldJointConf>
 {
     /// @brief Provides a null-terminated string name for the type.
-    static constexpr const char* name = "d2::WeldJointConf";
+    static constexpr const char *name = "d2::WeldJointConf";
 };
 
 } // namespace playrho

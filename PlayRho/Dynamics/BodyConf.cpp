@@ -19,13 +19,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-BodyConf GetBodyConf(const Body& body) noexcept
+BodyConf GetBodyConf(const Body &body) noexcept
 {
     auto def = BodyConf{};
     def.type = body.GetType();

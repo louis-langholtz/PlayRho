@@ -19,14 +19,17 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
+#include <PlayRho/Collision/ShapeSeparation.hpp>
 #include <algorithm>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-namespace {
+namespace
+{
 
 /// @brief Gets the minimum separation information for the given vertices from the given
 ///  origin in the given direction.
@@ -44,7 +47,7 @@ LengthIndices GetMinSeparationInfo(Length2 origin, UnitVec direction,
     auto first = InvalidVertex;
     auto second = InvalidVertex;
     auto i = VertexCounter{0};
-    for (const auto& vertex: vertices)
+    for (const auto &vertex : vertices)
     {
         const auto s = Dot(direction, vertex - origin);
         if (minSeparation > s)
@@ -66,8 +69,8 @@ LengthIndices GetMinSeparationInfo(Length2 origin, UnitVec direction,
 
 } // anonymous namespace
 
-SeparationInfo GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation xf1,
-                                   const DistanceProxy& proxy2, Transformation xf2)
+SeparationInfo GetMaxSeparation4x4(const DistanceProxy &proxy1, Transformation xf1, const DistanceProxy &proxy2,
+                                   Transformation xf2)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -108,8 +111,8 @@ SeparationInfo GetMaxSeparation4x4(const DistanceProxy& proxy1, Transformation x
     return SeparationInfo{separation, firstIndex, secondIndices};
 }
 
-SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
-                                const DistanceProxy& proxy2, Transformation xf2)
+SeparationInfo GetMaxSeparation(const DistanceProxy &proxy1, Transformation xf1, const DistanceProxy &proxy2,
+                                Transformation xf2)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -134,9 +137,8 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
     return SeparationInfo{separation, firstIndex, secondIndices};
 }
 
-SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
-                                const DistanceProxy& proxy2, Transformation xf2,
-                                Length stop)
+SeparationInfo GetMaxSeparation(const DistanceProxy &proxy1, Transformation xf1, const DistanceProxy &proxy2,
+                                Transformation xf2, Length stop)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -164,8 +166,7 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, Transformation xf1,
     return SeparationInfo{separation, firstIndex, secondIndices};
 }
 
-SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, const DistanceProxy& proxy2,
-                                Length stop)
+SeparationInfo GetMaxSeparation(const DistanceProxy &proxy1, const DistanceProxy &proxy2, Length stop)
 {
     // Find the max separation between proxy1 and proxy2 using edge normals from proxy1.
     auto separation = -std::numeric_limits<Length>::infinity();
@@ -191,6 +192,6 @@ SeparationInfo GetMaxSeparation(const DistanceProxy& proxy1, const DistanceProxy
     }
     return SeparationInfo{separation, firstIndex, secondIndices};
 }
-    
+
 } // namespace d2
 } // namespace playrho

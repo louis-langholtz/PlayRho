@@ -35,8 +35,10 @@
 
 #include <vector>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 class World;
 class Joint;
@@ -61,191 +63,191 @@ struct JointConf;
 
 /// @brief Gets the joints of the specified world.
 /// @relatedalso World
-SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world) noexcept;
+SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World &world) noexcept;
 
 /// @brief Create a new joint.
 /// @relatedalso World
-JointID CreateJoint(World& world, const Joint& def);
+JointID CreateJoint(World &world, const Joint &def);
 
 /// @brief Destroys the identified joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void Destroy(World& world, JointID id);
+void Destroy(World &world, JointID id);
 
 /// @brief Gets the type of the joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-JointType GetType(const World& world, JointID id);
+JointType GetType(const World &world, JointID id);
 
 /// @brief Gets the value of the identified joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-const Joint& GetJoint(const World& world, JointID id);
+const Joint &GetJoint(const World &world, JointID id);
 
 /// @brief Sets the value of the identified joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void SetJoint(World& world, JointID id, const Joint& def);
+void SetJoint(World &world, JointID id, const Joint &def);
 
 /// @copydoc World::GetCollideConnected
 /// @relatedalso World
-bool GetCollideConnected(const World& world, JointID id);
+bool GetCollideConnected(const World &world, JointID id);
 
 /// Is the joint motor enabled?
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @see EnableMotor(World& world, JointID joint, bool value)
 /// @relatedalso World
-bool IsMotorEnabled(const World& world, JointID id);
+bool IsMotorEnabled(const World &world, JointID id);
 
 /// Enable/disable the joint motor.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void EnableMotor(World& world, JointID id, bool value);
+void EnableMotor(World &world, JointID id, bool value);
 
 /// @brief Gets whether the identified joint's limit is enabled.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-bool IsLimitEnabled(const World& world, JointID id);
+bool IsLimitEnabled(const World &world, JointID id);
 
 /// @brief Sets whether the identified joint's limit is enabled or not.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void EnableLimit(World& world, JointID id, bool value);
+void EnableLimit(World &world, JointID id, bool value);
 
 /// @brief Gets the identifier of body-A of the identified joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-BodyID GetBodyA(const World& world, JointID id);
+BodyID GetBodyA(const World &world, JointID id);
 
 /// @brief Gets the identifier of body-B of the identified joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-BodyID GetBodyB(const World& world, JointID id);
+BodyID GetBodyB(const World &world, JointID id);
 
 /// Get the anchor point on body-A in local coordinates.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length2 GetLocalAnchorA(const World& world, JointID id);
+Length2 GetLocalAnchorA(const World &world, JointID id);
 
 /// Get the anchor point on body-B in local coordinates.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length2 GetLocalAnchorB(const World& world, JointID id);
+Length2 GetLocalAnchorB(const World &world, JointID id);
 
 /// @copydoc World::GetLinearReaction
 /// @relatedalso World
-Momentum2 GetLinearReaction(const World& world, JointID id);
+Momentum2 GetLinearReaction(const World &world, JointID id);
 
 /// @copydoc World::GetAngularReaction
 /// @relatedalso World
-AngularMomentum GetAngularReaction(const World& world, JointID id);
+AngularMomentum GetAngularReaction(const World &world, JointID id);
 
 /// @brief Gets the reference-angle property of the identified joint if it has it.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Angle GetReferenceAngle(const World& world, JointID id);
+Angle GetReferenceAngle(const World &world, JointID id);
 
 /// @brief Gets the local-X-axis-A property of the identified joint if it has it.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-UnitVec GetLocalXAxisA(const World& world, JointID id);
+UnitVec GetLocalXAxisA(const World &world, JointID id);
 
 /// @brief Gets the local-Y-axis-A property of the identified joint if it has it.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-UnitVec GetLocalYAxisA(const World& world, JointID id);
+UnitVec GetLocalYAxisA(const World &world, JointID id);
 
 /// @brief Gets the motor-speed property of the identied joint if it supports it.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 /// @see SetMotorSpeed(World& world, JointID id, AngularVelocity value)
-AngularVelocity GetMotorSpeed(const World& world, JointID id);
+AngularVelocity GetMotorSpeed(const World &world, JointID id);
 
 /// @brief Sets the motor-speed property of the identied joint if it supports it.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 /// @see GetMotorSpeed(const World& world, JointID id)
-void SetMotorSpeed(World& world, JointID id, AngularVelocity value);
+void SetMotorSpeed(World &world, JointID id, AngularVelocity value);
 
 /// @brief Gets the max motor torque.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Torque GetMaxMotorTorque(const World& world, JointID id);
+Torque GetMaxMotorTorque(const World &world, JointID id);
 
 /// Sets the maximum motor torque.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void SetMaxMotorTorque(World& world, JointID id, Torque value);
+void SetMaxMotorTorque(World &world, JointID id, Torque value);
 
 /// @brief Gets the linear motor impulse of the identified joint if it supports that.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Momentum GetLinearMotorImpulse(const World& world, JointID id);
+Momentum GetLinearMotorImpulse(const World &world, JointID id);
 
 /// @brief Gets the angular motor impulse of the identified joint if it has this property.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-AngularMomentum GetAngularMotorImpulse(const World& world, JointID id);
+AngularMomentum GetAngularMotorImpulse(const World &world, JointID id);
 
 /// @brief Gets the computed angular rotational inertia used by the joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-RotInertia GetAngularMass(const World& world, JointID id);
+RotInertia GetAngularMass(const World &world, JointID id);
 
 /// @brief Gets the frequency of the identified joint if it has this property.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Frequency GetFrequency(const World& world, JointID id);
+Frequency GetFrequency(const World &world, JointID id);
 
 /// @brief Sets the frequency of the identified joint if it has this property.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void SetFrequency(World& world, JointID id, Frequency value);
+void SetFrequency(World &world, JointID id, Frequency value);
 
 /// @brief Gets the angular velocity of the identified joint if it has this property.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-AngularVelocity GetAngularVelocity(const World& world, JointID id);
+AngularVelocity GetAngularVelocity(const World &world, JointID id);
 
 /// @brief Gets the enabled/disabled state of the joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-bool IsEnabled(const World& world, JointID id);
+bool IsEnabled(const World &world, JointID id);
 
 /// @brief Gets the world index of the given joint.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-JointCounter GetWorldIndex(const World& world, JointID id) noexcept;
+JointCounter GetWorldIndex(const World &world, JointID id) noexcept;
 
 /// Get the anchor point on body-A in world coordinates.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length2 GetAnchorA(const World& world, JointID id);
+Length2 GetAnchorA(const World &world, JointID id);
 
 /// Get the anchor point on body-B in world coordinates.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length2 GetAnchorB(const World& world, JointID id);
+Length2 GetAnchorB(const World &world, JointID id);
 
 /// @brief Gets the ratio property of the identified joint if it has it.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Real GetRatio(const World& world, JointID id);
+Real GetRatio(const World &world, JointID id);
 
 /// @brief Gets the current joint translation.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length GetJointTranslation(const World& world, JointID id);
+Length GetJointTranslation(const World &world, JointID id);
 
 /// @brief Gets the angle property of the identified joint if it has it.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Angle GetAngle(const World& world, JointID id);
+Angle GetAngle(const World &world, JointID id);
 
 /// @brief Gets the current motor force for the given joint, given the inverse time step.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-inline Force GetMotorForce(const World& world, JointID id, Frequency inv_dt)
+inline Force GetMotorForce(const World &world, JointID id, Frequency inv_dt)
 {
     return GetLinearMotorImpulse(world, id) * inv_dt;
 }
@@ -253,7 +255,7 @@ inline Force GetMotorForce(const World& world, JointID id, Frequency inv_dt)
 /// @brief Gets the current motor torque for the given joint given the inverse time step.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-inline Torque GetMotorTorque(const World& world, JointID id, Frequency inv_dt)
+inline Torque GetMotorTorque(const World &world, JointID id, Frequency inv_dt)
 {
     return GetAngularMotorImpulse(world, id) * inv_dt;
 }
@@ -261,100 +263,100 @@ inline Torque GetMotorTorque(const World& world, JointID id, Frequency inv_dt)
 /// @brief Gets the target linear offset, in frame A.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length2 GetLinearOffset(const World& world, JointID id);
+Length2 GetLinearOffset(const World &world, JointID id);
 
 /// @brief Sets the target linear offset, in frame A.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void SetLinearOffset(World& world, JointID id, Length2 value);
+void SetLinearOffset(World &world, JointID id, Length2 value);
 
 /// @brief Gets the target angular offset.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Angle GetAngularOffset(const World& world, JointID id);
+Angle GetAngularOffset(const World &world, JointID id);
 
 /// @brief Sets the target angular offset.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void SetAngularOffset(World& world, JointID id, Angle value);
+void SetAngularOffset(World &world, JointID id, Angle value);
 
 /// Get the first ground anchor.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length2 GetGroundAnchorA(const World& world, JointID id);
+Length2 GetGroundAnchorA(const World &world, JointID id);
 
 /// Get the second ground anchor.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length2 GetGroundAnchorB(const World& world, JointID id);
+Length2 GetGroundAnchorB(const World &world, JointID id);
 
 /// @brief Get the current length of the segment attached to body-A.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length GetCurrentLengthA(const World& world, JointID id);
+Length GetCurrentLengthA(const World &world, JointID id);
 
 /// @brief Get the current length of the segment attached to body-B.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length GetCurrentLengthB(const World& world, JointID id);
+Length GetCurrentLengthB(const World &world, JointID id);
 
 /// @brief Gets the target point.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Length2 GetTarget(const World& world, JointID id);
+Length2 GetTarget(const World &world, JointID id);
 
 /// @brief Sets the target point.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void SetTarget(World& world, JointID id, Length2 value);
+void SetTarget(World &world, JointID id, Length2 value);
 
 /// Get the lower joint limit.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Angle GetAngularLowerLimit(const World& world, JointID id);
+Angle GetAngularLowerLimit(const World &world, JointID id);
 
 /// Get the upper joint limit.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-Angle GetAngularUpperLimit(const World& world, JointID id);
+Angle GetAngularUpperLimit(const World &world, JointID id);
 
 /// Set the joint limits.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-void SetAngularLimits(World& world, JointID id, Angle lower, Angle upper);
+void SetAngularLimits(World &world, JointID id, Angle lower, Angle upper);
 
 /// @brief Shifts the origin of the identified joint.
 /// @note This only effects joints having points in world coordinates.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
-bool ShiftOrigin(World& world, JointID id, Length2 value);
+bool ShiftOrigin(World &world, JointID id, Length2 value);
 
 /// @brief Gets the damping ratio associated with the identified joint if it has one.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @throws std::invalid_argument If the identified joint's type doesn't support this.
 /// @relatedalso World
-Real GetDampingRatio(const World& world, JointID id);
+Real GetDampingRatio(const World &world, JointID id);
 
 /// @brief Gets the length associated with the identified joint if it has one.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @throws std::invalid_argument If the identified joint's type doesn't support this.
 /// @relatedalso World
-Length GetLength(const World& world, JointID id);
+Length GetLength(const World &world, JointID id);
 
 /// @brief Gets the joint's limit state if it has one.
 /// @throws std::out_of_range If given an invalid joint identifier.
 /// @throws std::invalid_argument If the identified joint's type doesn't support this.
 /// @relatedalso World
-LimitState GetLimitState(const World& world, JointID id);
+LimitState GetLimitState(const World &world, JointID id);
 
 /// @copydoc World::SetAwake(JointID)
 /// @relatedalso World
-void SetAwake(World& world, JointID id);
+void SetAwake(World &world, JointID id);
 
 /// Gets the count of joints in the given world.
 /// @return 0 or higher.
 /// @relatedalso World
-inline JointCounter GetJointCount(const World& world) noexcept
+inline JointCounter GetJointCount(const World &world) noexcept
 {
     using std::size;
     return static_cast<JointCounter>(size(GetJoints(world)));

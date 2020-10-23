@@ -21,27 +21,23 @@
 
 #include <PlayRho/Dynamics/Joints/MotorJointConf.hpp>
 
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-static_assert(std::is_default_constructible<MotorJointConf>::value,
-              "MotorJointConf should be default constructible!");
-static_assert(std::is_copy_constructible<MotorJointConf>::value,
-              "MotorJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<MotorJointConf>::value,
-              "MotorJointConf should be copy assignable!");
-static_assert(std::is_move_constructible<MotorJointConf>::value,
-              "MotorJointConf should be move constructible!");
-static_assert(std::is_move_assignable<MotorJointConf>::value,
-              "MotorJointConf should be move assignable!");
-static_assert(std::is_nothrow_destructible<MotorJointConf>::value,
-              "MotorJointConf should be nothrow destructible!");
+static_assert(std::is_default_constructible<MotorJointConf>::value, "MotorJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<MotorJointConf>::value, "MotorJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<MotorJointConf>::value, "MotorJointConf should be copy assignable!");
+static_assert(std::is_move_constructible<MotorJointConf>::value, "MotorJointConf should be move constructible!");
+static_assert(std::is_move_assignable<MotorJointConf>::value, "MotorJointConf should be move assignable!");
+static_assert(std::is_nothrow_destructible<MotorJointConf>::value, "MotorJointConf should be nothrow destructible!");
 
 // Point-to-point constraint
 // Cdot = v2 - v1
@@ -58,33 +54,28 @@ static_assert(std::is_nothrow_destructible<MotorJointConf>::value,
 // J = [0 0 -1 0 0 1]
 // K = invI1 + invI2
 
-MotorJointConf::MotorJointConf(BodyID bA, BodyID bB, Length2 lo, Angle ao) noexcept:
-    super{super{}.UseBodyA(bA).UseBodyB(bB)},
-    linearOffset{lo}, angularOffset{ao}
+MotorJointConf::MotorJointConf(BodyID bA, BodyID bB, Length2 lo, Angle ao) noexcept
+    : super{super{}.UseBodyA(bA).UseBodyB(bB)}, linearOffset{lo}, angularOffset{ao}
 {
     // Intentionally empty.
 }
 
-MotorJointConf GetMotorJointConf(const Joint& joint) noexcept
+MotorJointConf GetMotorJointConf(const Joint &joint) noexcept
 {
     return TypeCast<MotorJointConf>(joint);
 }
 
-MotorJointConf GetMotorJointConf(const World& world, BodyID bA, BodyID bB)
+MotorJointConf GetMotorJointConf(const World &world, BodyID bA, BodyID bB)
 {
-    return MotorJointConf{
-        bA, bB,
-        GetLocalPoint(world, bA, GetLocation(world, bB)),
-        GetAngle(world, bB) - GetAngle(world, bA)
-    };
+    return MotorJointConf{bA, bB, GetLocalPoint(world, bA, GetLocation(world, bB)),
+                          GetAngle(world, bB) - GetAngle(world, bA)};
 }
 
-void InitVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf&)
+void InitVelocity(MotorJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto posA = bodyConstraintA.GetPosition();
     auto velA = bodyConstraintA.GetVelocity();
@@ -113,27 +104,19 @@ void InitVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
     const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     {
-        const auto exx = InvMass{
-            invMassA + invMassB +
-            invRotInertiaA * Square(GetY(object.rA)) / SquareRadian +
-            invRotInertiaB * Square(GetY(object.rB)) / SquareRadian
-        };
-        const auto exy = InvMass{
-            -invRotInertiaA * GetX(object.rA) * GetY(object.rA) / SquareRadian +
-            -invRotInertiaB * GetX(object.rB) * GetY(object.rB) / SquareRadian
-        };
-        const auto eyy = InvMass{
-            invMassA + invMassB +
-            invRotInertiaA * Square(GetX(object.rA)) / SquareRadian +
-            invRotInertiaB * Square(GetX(object.rB)) / SquareRadian
-        };
+        const auto exx = InvMass{invMassA + invMassB + invRotInertiaA * Square(GetY(object.rA)) / SquareRadian +
+                                 invRotInertiaB * Square(GetY(object.rB)) / SquareRadian};
+        const auto exy = InvMass{-invRotInertiaA * GetX(object.rA) * GetY(object.rA) / SquareRadian +
+                                 -invRotInertiaB * GetX(object.rB) * GetY(object.rB) / SquareRadian};
+        const auto eyy = InvMass{invMassA + invMassB + invRotInertiaA * Square(GetX(object.rA)) / SquareRadian +
+                                 invRotInertiaB * Square(GetX(object.rB)) / SquareRadian};
         // Upper 2 by 2 of K above for point to point
         const auto k22 = InvMass22{Vector<InvMass, 2>{exx, exy}, Vector<InvMass, 2>{exy, eyy}};
         object.linearMass = Invert(k22);
     }
 
     const auto invRotInertia = invRotInertiaA + invRotInertiaB;
-    object.angularMass = (invRotInertia > InvRotInertia{0})? RotInertia{Real{1} / invRotInertia}: RotInertia{0};
+    object.angularMass = (invRotInertia > InvRotInertia{0}) ? RotInertia{Real{1} / invRotInertia} : RotInertia{0};
 
     object.linearError = (posB.linear + object.rB) - (posA.linear + object.rA);
     object.angularError = (posB.angular - posA.angular) - object.angularOffset;
@@ -162,11 +145,10 @@ void InitVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
     bodyConstraintB.SetVelocity(velB);
 }
 
-bool SolveVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step)
+bool SolveVelocity(MotorJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto velA = bodyConstraintA.GetVelocity();
     auto velB = bodyConstraintB.GetVelocity();
@@ -177,20 +159,20 @@ bool SolveVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
     const auto invRotInertiaB = bodyConstraintB.GetInvRotInertia();
 
     const auto h = step.deltaTime;
-    const auto inv_h = (h != 0_s)? Real(1) / h: 0_Hz;
+    const auto inv_h = (h != 0_s) ? Real(1) / h : 0_Hz;
 
     auto solved = true;
 
     // Solve angular friction
     {
-        const auto Cdot = AngularVelocity{(velB.angular - velA.angular)
-            + inv_h * object.correctionFactor * object.angularError};
+        const auto Cdot =
+            AngularVelocity{(velB.angular - velA.angular) + inv_h * object.correctionFactor * object.angularError};
         const auto angularImpulse = AngularMomentum{-object.angularMass * Cdot};
 
         const auto oldAngularImpulse = object.angularImpulse;
         const auto maxAngularImpulse = h * object.maxTorque;
-        const auto newAngularImpulse = std::clamp(oldAngularImpulse + angularImpulse,
-                                                  -maxAngularImpulse, maxAngularImpulse);
+        const auto newAngularImpulse =
+            std::clamp(oldAngularImpulse + angularImpulse, -maxAngularImpulse, maxAngularImpulse);
         object.angularImpulse = newAngularImpulse;
         const auto incAngularImpulse = newAngularImpulse - oldAngularImpulse;
 
@@ -238,8 +220,7 @@ bool SolveVelocity(MotorJointConf& object, std::vector<BodyConstraint>& bodies,
     return solved;
 }
 
-bool SolvePosition(const MotorJointConf&, std::vector<BodyConstraint>&,
-                   const ConstraintSolverConf&)
+bool SolvePosition(const MotorJointConf &, std::vector<BodyConstraint> &, const ConstraintSolverConf &)
 {
     return true;
 }

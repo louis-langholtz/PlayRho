@@ -29,10 +29,11 @@
 #ifndef PLAYRHO_COMMON_REALCONSTANTS_HPP
 #define PLAYRHO_COMMON_REALCONSTANTS_HPP
 
-#include <PlayRho/Defines.hpp>
 #include <PlayRho/Common/Real.hpp>
+#include <PlayRho/Defines.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Pi.
 ///
@@ -57,8 +58,7 @@ constexpr auto Pi = Real(3.14159265358979323846264338327950288);
 ///
 /// @see https://en.wikipedia.org/wiki/Square_root_of_2
 ///
-constexpr auto SquareRootTwo =
-    Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
+constexpr auto SquareRootTwo = Real(1.414213562373095048801688724209698078569671875376948073176679737990732478462);
 
 /// @defgroup DecimalUnitPrefices Decimal Unit Prefices
 /// @brief Decimal unit prefices in the metric system for denoting a multiple, or

@@ -22,71 +22,73 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-    class World;
-    class Body;
-    class Joint;
-    class Fixture;
-    struct DistanceJointConf;
-    struct FrictionJointConf;
-    struct GearJointConf;
-    struct MotorJointConf;
-    struct TargetJointConf;
-    struct PrismaticJointConf;
-    struct PulleyJointConf;
-    struct RevoluteJointConf;
-    struct RopeJointConf;
-    struct WeldJointConf;
-    struct WheelJointConf;
+class World;
+class Body;
+class Joint;
+class Fixture;
+struct DistanceJointConf;
+struct FrictionJointConf;
+struct GearJointConf;
+struct MotorJointConf;
+struct TargetJointConf;
+struct PrismaticJointConf;
+struct PulleyJointConf;
+struct RevoluteJointConf;
+struct RopeJointConf;
+struct WeldJointConf;
+struct WheelJointConf;
 
-    /// Dump the world into the log file.
-    /// @warning this should be called outside of a time step.
-    void Dump(const World& world);
-    
-    /// Dump body to a log file.
-    void Dump(const Body& body, std::size_t bodyIndex);
-    
-    /// Dump joint to the log file.
-    void Dump(const Joint& joint, std::size_t index, const World& world);
+/// Dump the world into the log file.
+/// @warning this should be called outside of a time step.
+void Dump(const World &world);
 
-    /// Dump fixture to log file.
-    void Dump(const Fixture& fixture, std::size_t bodyIndex);
+/// Dump body to a log file.
+void Dump(const Body &body, std::size_t bodyIndex);
 
-    /// Dump joint to log file.
-    void Dump(const DistanceJointConf& joint, std::size_t index, const World& world);
+/// Dump joint to the log file.
+void Dump(const Joint &joint, std::size_t index, const World &world);
 
-    /// Dump joint to the log file.
-    void Dump(const FrictionJointConf& joint, std::size_t index, const World& world);
+/// Dump fixture to log file.
+void Dump(const Fixture &fixture, std::size_t bodyIndex);
 
-    /// @brief Dumps the joint to the log file.
-    void Dump(const GearJointConf& joint, std::size_t index, const World& world);
-    
-    /// @brief Dumps the joint to the log file.
-    void Dump(const MotorJointConf& joint, std::size_t index, const World& world);
+/// Dump joint to log file.
+void Dump(const DistanceJointConf &joint, std::size_t index, const World &world);
 
-    /// @brief Dumps the joint to the log file.
-    void Dump(const TargetJointConf& joint, std::size_t index, const World& world);
+/// Dump joint to the log file.
+void Dump(const FrictionJointConf &joint, std::size_t index, const World &world);
 
-    /// @brief Dumps the joint to the log file.
-    void Dump(const PrismaticJointConf& joint, std::size_t index, const World& world);
+/// @brief Dumps the joint to the log file.
+void Dump(const GearJointConf &joint, std::size_t index, const World &world);
 
-    /// Dump joint to log file.
-    void Dump(const PulleyJointConf& joint, std::size_t index, const World& world);
+/// @brief Dumps the joint to the log file.
+void Dump(const MotorJointConf &joint, std::size_t index, const World &world);
 
-    /// @brief Dumps the joint to the log file.
-    void Dump(const RevoluteJointConf& joint, std::size_t index, const World& world);
+/// @brief Dumps the joint to the log file.
+void Dump(const TargetJointConf &joint, std::size_t index, const World &world);
 
-    /// @brief Dumps the joint to the log file.
-    void Dump(const RopeJointConf& joint, std::size_t index, const World& world);
+/// @brief Dumps the joint to the log file.
+void Dump(const PrismaticJointConf &joint, std::size_t index, const World &world);
 
-    /// @brief Dumps the joint to the log file.
-    void Dump(const WeldJointConf& joint, std::size_t index, const World& world);
+/// Dump joint to log file.
+void Dump(const PulleyJointConf &joint, std::size_t index, const World &world);
 
-    /// @brief Dumps the joint to the log file.
-    void Dump(const WheelJointConf& joint, std::size_t index, const World& world);
-    
+/// @brief Dumps the joint to the log file.
+void Dump(const RevoluteJointConf &joint, std::size_t index, const World &world);
+
+/// @brief Dumps the joint to the log file.
+void Dump(const RopeJointConf &joint, std::size_t index, const World &world);
+
+/// @brief Dumps the joint to the log file.
+void Dump(const WeldJointConf &joint, std::size_t index, const World &world);
+
+/// @brief Dumps the joint to the log file.
+void Dump(const WheelJointConf &joint, std::size_t index, const World &world);
+
 } // namespace d2
 } // namespace playrho
 

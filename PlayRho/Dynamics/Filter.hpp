@@ -26,68 +26,66 @@
 #include <PlayRho/Defines.hpp>
 #include <cstdint>
 
-namespace playrho {
-    
-    /// @brief A holder for contact filtering data.
-    /// @note This data structure size is 6-bytes.
-    struct Filter
-    {
-        /// @brief Bits type definition.
-        ///
-        using bits_type = std::uint16_t;
+namespace playrho
+{
 
-        /// @brief Index type definition.
-        ///
-        using index_type = std::int16_t;
-        
-        /// @brief The collision category bits.
-        ///
-        /// @note Normally you would just set one bit.
-        ///
-        bits_type categoryBits = 0x0001;
-        
-        /// @brief The collision mask bits.
-        ///
-        /// @details This states the categories that this shape would accept for collision.
-        ///
-        bits_type maskBits = 0xFFFF;
-        
-        /// @brief Group index.
-        ///
-        /// @details Collision groups allow a certain group of objects to never collide
-        ///   (negative) or always collide (positive). Zero means no collision group.
-        ///    Non-zero group filtering always wins against the mask bits.
-        ///
-        index_type groupIndex = 0;
-    };
-    
-    /// @brief Equality operator.
-    /// @relatedalso Filter
-    constexpr bool operator== (const Filter lhs, const Filter rhs) noexcept
-    {
-        return lhs.categoryBits == rhs.categoryBits
-            && lhs.maskBits == rhs.maskBits
-            && lhs.groupIndex == rhs.groupIndex;
-    }
+/// @brief A holder for contact filtering data.
+/// @note This data structure size is 6-bytes.
+struct Filter
+{
+    /// @brief Bits type definition.
+    ///
+    using bits_type = std::uint16_t;
 
-    /// @brief Inequality operator.
-    /// @relatedalso Filter
-    constexpr bool operator!= (const Filter lhs, const Filter rhs) noexcept
-    {
-        return !(lhs == rhs);
-    }
+    /// @brief Index type definition.
+    ///
+    using index_type = std::int16_t;
 
-    /// @brief Determines whether collision processing should be performed.
-    /// @relatedalso Filter
-    inline bool ShouldCollide(const Filter filterA, const Filter filterB) noexcept
+    /// @brief The collision category bits.
+    ///
+    /// @note Normally you would just set one bit.
+    ///
+    bits_type categoryBits = 0x0001;
+
+    /// @brief The collision mask bits.
+    ///
+    /// @details This states the categories that this shape would accept for collision.
+    ///
+    bits_type maskBits = 0xFFFF;
+
+    /// @brief Group index.
+    ///
+    /// @details Collision groups allow a certain group of objects to never collide
+    ///   (negative) or always collide (positive). Zero means no collision group.
+    ///    Non-zero group filtering always wins against the mask bits.
+    ///
+    index_type groupIndex = 0;
+};
+
+/// @brief Equality operator.
+/// @relatedalso Filter
+constexpr bool operator==(const Filter lhs, const Filter rhs) noexcept
+{
+    return lhs.categoryBits == rhs.categoryBits && lhs.maskBits == rhs.maskBits && lhs.groupIndex == rhs.groupIndex;
+}
+
+/// @brief Inequality operator.
+/// @relatedalso Filter
+constexpr bool operator!=(const Filter lhs, const Filter rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
+/// @brief Determines whether collision processing should be performed.
+/// @relatedalso Filter
+inline bool ShouldCollide(const Filter filterA, const Filter filterB) noexcept
+{
+    if ((filterA.groupIndex == filterB.groupIndex) && (filterA.groupIndex != 0))
     {
-        if ((filterA.groupIndex == filterB.groupIndex) && (filterA.groupIndex != 0))
-        {
-            return filterA.groupIndex > 0;
-        }
-        return ((filterA.maskBits & filterB.categoryBits) != 0) &&
-               ((filterB.maskBits & filterA.categoryBits) != 0);
+        return filterA.groupIndex > 0;
     }
+    return ((filterA.maskBits & filterB.categoryBits) != 0) && ((filterB.maskBits & filterA.categoryBits) != 0);
+}
 
 } // namespace playrho
 

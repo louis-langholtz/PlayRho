@@ -23,14 +23,16 @@
 #define PLAYRHO_COMMON_TRANSFORMATION_HPP
 
 #include <PlayRho/Common/Settings.hpp>
-#include <PlayRho/Common/Vector2.hpp>
 #include <PlayRho/Common/UnitVec.hpp>
+#include <PlayRho/Common/Vector2.hpp>
 
 /// @file
 /// Definition of the Transformation class and free functions directly associated with it.
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 struct BodyConf;
 
@@ -42,25 +44,23 @@ struct BodyConf;
 /// @note This data structure is 16-bytes large (on at least one 64-bit platform).
 struct Transformation
 {
-    Length2 p = Length2{}; ///< Translational portion of the transformation. 8-bytes.
+    Length2 p = Length2{};           ///< Translational portion of the transformation. 8-bytes.
     UnitVec q = UnitVec::GetRight(); ///< Rotational portion of the transformation. 8-bytes.
 };
 
 /// @brief Identity transformation value.
-constexpr auto Transform_identity = Transformation{
-    Length2{0_m, 0_m}, UnitVec::GetRight()
-};
+constexpr auto Transform_identity = Transformation{Length2{0_m, 0_m}, UnitVec::GetRight()};
 
 /// @brief Equality operator.
 /// @relatedalso Transformation
-constexpr bool operator== (Transformation lhs, Transformation rhs) noexcept
+constexpr bool operator==(Transformation lhs, Transformation rhs) noexcept
 {
     return (lhs.p == rhs.p) && (lhs.q == rhs.q);
 }
 
 /// @brief Inequality operator.
 /// @relatedalso Transformation
-constexpr bool operator!= (Transformation lhs, Transformation rhs) noexcept
+constexpr bool operator!=(Transformation lhs, Transformation rhs) noexcept
 {
     return (lhs.p != rhs.p) || (lhs.q != rhs.q);
 }
@@ -69,8 +69,7 @@ constexpr bool operator!= (Transformation lhs, Transformation rhs) noexcept
 
 /// @brief Determines if the given value is valid.
 /// @relatedalso d2::Transformation
-template <>
-constexpr bool IsValid(const d2::Transformation& value) noexcept
+template <> constexpr bool IsValid(const d2::Transformation &value) noexcept
 {
     return IsValid(value.p) && IsValid(value.q);
 }

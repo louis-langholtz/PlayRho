@@ -22,8 +22,10 @@
 #ifndef PLAYRHO_DYNAMICS_JOINTS_LIMITSTATE_HPP
 #define PLAYRHO_DYNAMICS_JOINTS_LIMITSTATE_HPP
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief Limit state.
 /// @note Only used by joints that implement some notion of a limited range.
@@ -45,7 +47,7 @@ enum class LimitState
 };
 
 /// @brief Provides a human readable C-style string uniquely identifying the given limit state.
-const char* ToString(LimitState val) noexcept;
+const char *ToString(LimitState val) noexcept;
 
 } // namespace d2
 } // namespace playrho

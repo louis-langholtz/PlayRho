@@ -22,7 +22,8 @@
 
 #include <PlayRho/Common/Settings.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// Stack allocator.
 /// @details
@@ -33,8 +34,7 @@ namespace playrho {
 /// @note This data structure is 64-bytes large (on at least one 64-bit platform).
 class StackAllocator
 {
-public:
-
+  public:
     /// @brief Size type.
     using size_type = std::size_t;
 
@@ -42,7 +42,7 @@ public:
     struct Conf
     {
         size_type preallocation_size = 100 * 1024; ///< Preallocation size.
-        size_type allocation_records = 32; ///< Allocation records.
+        size_type allocation_records = 32;         ///< Allocation records.
     };
 
     /// @brief Gets the default configuration.
@@ -57,29 +57,28 @@ public:
     ~StackAllocator() noexcept;
 
     /// @brief Copy constructor.
-    StackAllocator(const StackAllocator& copy) = delete;
+    StackAllocator(const StackAllocator &copy) = delete;
 
-    StackAllocator(StackAllocator&& other) = delete;
+    StackAllocator(StackAllocator &&other) = delete;
 
     /// @brief Copy assignment operator.
-    StackAllocator& operator= (const StackAllocator& other) = delete;
+    StackAllocator &operator=(const StackAllocator &other) = delete;
 
-    StackAllocator& operator= (StackAllocator&& other) = delete;
+    StackAllocator &operator=(StackAllocator &&other) = delete;
 
     /// Allocates an aligned block of memory of the given size.
     /// @return Pointer to memory if the allocator has allocation records left,
     /// <code>nullptr</code> otherwise.
     /// @see GetEntryCount.
-    void* Allocate(size_type size);
+    void *Allocate(size_type size);
 
     /// @brief Frees the given pointer.
-    void Free(void* p) noexcept;
+    void Free(void *p) noexcept;
 
     /// @brief Allocates and array of the given size number of elements.
-    template <typename T>
-    T* AllocateArray(size_type size)
+    template <typename T> T *AllocateArray(size_type size)
     {
-        return static_cast<T*>(Allocate(size * sizeof(T)));
+        return static_cast<T *>(Allocate(size * sizeof(T)));
     }
 
     /// Functional operator for freeing memory allocated by this object.
@@ -119,40 +118,39 @@ public:
     {
         return m_allocation;
     }
-    
+
     /// @brief Gets the preallocated size.
     auto GetPreallocatedSize() const noexcept
     {
         return m_size;
     }
-    
+
     /// @brief Gets the max entries.
     auto GetMaxEntries() const noexcept
     {
         return m_max_entries;
     }
-    
-private:
 
+  private:
     /// @brief Allocation record.
     struct AllocationRecord
     {
-        void* data; ///< Data.
-        size_type size; ///< Size.
+        void *data;      ///< Data.
+        size_type size;  ///< Size.
         bool usedMalloc; ///< Whether <code>malloc</code> was used.
     };
-    
-    char* const m_data; ///< Data.
-    AllocationRecord* const m_entries; ///< Entries.
-    size_type const m_size; ///< Size.
-    size_type const m_max_entries; ///< Max entries.
-    
-    size_type m_index = 0; ///< Index.
-    size_type m_allocation = 0; ///< Allocation.
+
+    char *const m_data;                ///< Data.
+    AllocationRecord *const m_entries; ///< Entries.
+    size_type const m_size;            ///< Size.
+    size_type const m_max_entries;     ///< Max entries.
+
+    size_type m_index = 0;         ///< Index.
+    size_type m_allocation = 0;    ///< Allocation.
     size_type m_maxAllocation = 0; ///< Max allocation.
-    size_type m_entryCount = 0; ///< Entry count.
+    size_type m_entryCount = 0;    ///< Entry count.
 };
-    
+
 } // namespace playrho
 
 #endif // PLAYRHO_COMMON_STACKALLOCATOR_HPP

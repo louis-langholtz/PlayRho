@@ -22,15 +22,17 @@
 #ifndef PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP
 #define PLAYRHO_COLLISION_SHAPES_CHAINSHAPECONF_HPP
 
-#include <PlayRho/Common/Math.hpp>
-#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
+#include <PlayRho/Collision/AABB.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/MassData.hpp>
-#include <PlayRho/Collision/AABB.hpp>
+#include <PlayRho/Collision/Shapes/ShapeConf.hpp>
+#include <PlayRho/Common/Math.hpp>
 #include <vector>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 /// @brief Chain shape configuration.
 ///
@@ -46,9 +48,9 @@ namespace d2 {
 ///
 /// @ingroup PartsGroup
 ///
-class ChainShapeConf: public ShapeBuilder<ChainShapeConf>
+class ChainShapeConf : public ShapeBuilder<ChainShapeConf>
 {
-public:
+  public:
     /// @brief Gets the default vertex radius.
     static constexpr NonNegative<Length> GetDefaultVertexRadius() noexcept
     {
@@ -57,70 +59,69 @@ public:
 
     /// @brief Default constructor.
     ChainShapeConf();
-    
+
     /// @brief Sets the configuration up for representing a chain of vertices as given.
-    ChainShapeConf& Set(std::vector<Length2> arg);
-    
+    ChainShapeConf &Set(std::vector<Length2> arg);
+
     /// @brief Adds the given vertex.
-    ChainShapeConf& Add(Length2 vertex);
-    
+    ChainShapeConf &Add(Length2 vertex);
+
     /// @brief Transforms all the vertices by the given transformation matrix.
     /// @note This updates the normals too.
     /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-    ChainShapeConf& Transform(const Mat22& m) noexcept;
+    ChainShapeConf &Transform(const Mat22 &m) noexcept;
 
     /// @brief Gets the "child" shape count.
     ChildCounter GetChildCount() const noexcept
     {
         // edge count = vertex count - 1
         const auto count = GetVertexCount();
-        return (count > 1)? count - 1: count;
+        return (count > 1) ? count - 1 : count;
     }
 
     /// @brief Gets the "child" shape at the given index.
     DistanceProxy GetChild(ChildCounter index) const;
-    
+
     /// @brief Gets the mass data.
     MassData GetMassData() const noexcept;
-    
+
     /// @brief Uses the given vertex radius.
-    ChainShapeConf& UseVertexRadius(NonNegative<Length> value) noexcept;
+    ChainShapeConf &UseVertexRadius(NonNegative<Length> value) noexcept;
 
     /// @brief Gets the vertex count.
     ChildCounter GetVertexCount() const noexcept
     {
         return static_cast<ChildCounter>(size(m_vertices));
     }
-    
+
     /// @brief Gets a vertex by index.
     Length2 GetVertex(ChildCounter index) const
     {
         assert((0 <= index) && (index < GetVertexCount()));
         return m_vertices[index];
     }
-    
+
     /// @brief Gets the normal at the given index.
     UnitVec GetNormal(ChildCounter index) const
     {
         assert((0 <= index) && (index < GetVertexCount()));
         return m_normals[index];
     }
-    
+
     /// @brief Equality operator.
-    friend bool operator== (const ChainShapeConf& lhs, const ChainShapeConf& rhs) noexcept
+    friend bool operator==(const ChainShapeConf &lhs, const ChainShapeConf &rhs) noexcept
     {
         // Don't need to check normals since normals based on vertices.
-        return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction
-            && lhs.restitution == rhs.restitution && lhs.density == rhs.density
-            && lhs.m_vertices == rhs.m_vertices;
+        return lhs.vertexRadius == rhs.vertexRadius && lhs.friction == rhs.friction &&
+               lhs.restitution == rhs.restitution && lhs.density == rhs.density && lhs.m_vertices == rhs.m_vertices;
     }
-    
+
     /// @brief Inequality operator.
-    friend bool operator!= (const ChainShapeConf& lhs, const ChainShapeConf& rhs) noexcept
+    friend bool operator!=(const ChainShapeConf &lhs, const ChainShapeConf &rhs) noexcept
     {
         return !(lhs == rhs);
     }
-    
+
     /// @brief Vertex radius.
     ///
     /// @details This is the radius from the vertex that the shape's "skin" should
@@ -134,12 +135,12 @@ public:
     ///
     NonNegative<Length> vertexRadius = GetDefaultVertexRadius();
 
-private:
+  private:
     std::vector<Length2> m_vertices; ///< Vertices.
-    std::vector<UnitVec> m_normals; ///< Normals.
+    std::vector<UnitVec> m_normals;  ///< Normals.
 };
 
-inline ChainShapeConf& ChainShapeConf::UseVertexRadius(NonNegative<Length> value) noexcept
+inline ChainShapeConf &ChainShapeConf::UseVertexRadius(NonNegative<Length> value) noexcept
 {
     vertexRadius = value;
     return *this;
@@ -148,44 +149,44 @@ inline ChainShapeConf& ChainShapeConf::UseVertexRadius(NonNegative<Length> value
 // Free functions...
 
 /// @brief Gets the child count for a given chain shape configuration.
-inline ChildCounter GetChildCount(const ChainShapeConf& arg) noexcept
+inline ChildCounter GetChildCount(const ChainShapeConf &arg) noexcept
 {
     return arg.GetChildCount();
 }
 
 /// @brief Gets the "child" shape for a given chain shape configuration.
-inline DistanceProxy GetChild(const ChainShapeConf& arg, ChildCounter index)
+inline DistanceProxy GetChild(const ChainShapeConf &arg, ChildCounter index)
 {
     return arg.GetChild(index);
 }
 
 /// @brief Gets the mass data for a given chain shape configuration.
-inline MassData GetMassData(const ChainShapeConf& arg) noexcept
+inline MassData GetMassData(const ChainShapeConf &arg) noexcept
 {
     return arg.GetMassData();
 }
 
 /// @brief Determines whether the given shape is looped.
-inline bool IsLooped(const ChainShapeConf& shape) noexcept
+inline bool IsLooped(const ChainShapeConf &shape) noexcept
 {
     const auto count = shape.GetVertexCount();
-    return (count > 1)? (shape.GetVertex(count - 1) == shape.GetVertex(0)): false;
+    return (count > 1) ? (shape.GetVertex(count - 1) == shape.GetVertex(0)) : false;
 }
 
 /// @brief Gets the next index after the given index for the given shape.
-inline ChildCounter GetNextIndex(const ChainShapeConf& shape, ChildCounter index) noexcept
+inline ChildCounter GetNextIndex(const ChainShapeConf &shape, ChildCounter index) noexcept
 {
     return GetModuloNext(index, shape.GetVertexCount());
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg)
+inline NonNegative<Length> GetVertexRadius(const ChainShapeConf &arg)
 {
     return arg.vertexRadius;
 }
 
 /// @brief Gets the vertex radius of the given shape configuration.
-inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg, ChildCounter)
+inline NonNegative<Length> GetVertexRadius(const ChainShapeConf &arg, ChildCounter)
 {
     return GetVertexRadius(arg);
 }
@@ -193,7 +194,7 @@ inline NonNegative<Length> GetVertexRadius(const ChainShapeConf& arg, ChildCount
 /// @brief Transforms the given chain shape configuration's vertices by the given
 ///   transformation matrix.
 /// @see https://en.wikipedia.org/wiki/Transformation_matrix
-inline void Transform(ChainShapeConf& arg, const Mat22& m) noexcept
+inline void Transform(ChainShapeConf &arg, const Mat22 &m) noexcept
 {
     arg.Transform(m);
 }
@@ -210,7 +211,7 @@ inline ChainShapeConf GetChainShapeConf(Length dimension)
 }
 
 /// @brief Gets an enclosing chain shape configuration for the given axis aligned box.
-ChainShapeConf GetChainShapeConf(const AABB& arg);
+ChainShapeConf GetChainShapeConf(const AABB &arg);
 
 } // namespace d2
 } // namespace playrho

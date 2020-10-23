@@ -28,11 +28,13 @@
 #include <PlayRho/Common/Real.hpp>
 
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 class WorldImpl;
 class Manifold;
@@ -40,12 +42,12 @@ class Manifold;
 /// @brief Gets the awake status of the specified contact.
 /// @see SetAwake(WorldImpl& world, ContactID id)
 /// @relatedalso WorldImpl
-bool IsAwake(const WorldImpl& world, ContactID id);
+bool IsAwake(const WorldImpl &world, ContactID id);
 
 /// @brief Sets awake the bodies of the fixtures of the given contact.
 /// @see IsAwake(const WorldImpl& world, ContactID id)
 /// @relatedalso WorldImpl
-void SetAwake(WorldImpl& world, ContactID id);
+void SetAwake(WorldImpl &world, ContactID id);
 
 /// @brief Is this contact touching?
 /// @details
@@ -55,61 +57,61 @@ void SetAwake(WorldImpl& world, ContactID id);
 ///      overlapping.
 /// @return true if this contact is said to be touching, false otherwise.
 /// @relatedalso WorldImpl
-bool IsTouching(const WorldImpl& world, ContactID id);
+bool IsTouching(const WorldImpl &world, ContactID id);
 
 /// @brief Whether or not the contact needs filtering.
 /// @relatedalso WorldImpl
-bool NeedsFiltering(const WorldImpl& world, ContactID id);
+bool NeedsFiltering(const WorldImpl &world, ContactID id);
 
 /// @brief Whether or not the contact needs updating.
 /// @relatedalso WorldImpl
-bool NeedsUpdating(const WorldImpl& world, ContactID id);
+bool NeedsUpdating(const WorldImpl &world, ContactID id);
 
 /// @brief Whether or not the contact has a valid TOI.
 /// @relatedalso WorldImpl
-bool HasValidToi(const WorldImpl& world, ContactID id);
+bool HasValidToi(const WorldImpl &world, ContactID id);
 
 /// @brief Gets the time of impact (TOI) as a fraction.
 /// @note This is only valid if a TOI has been set.
 /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
 ///   means no actual impact in current time slot), otherwise undefined.
 /// @relatedalso WorldImpl
-Real GetToi(const WorldImpl& world, ContactID id);
+Real GetToi(const WorldImpl &world, ContactID id);
 
 /// @relatedalso WorldImpl
-BodyID GetBodyA(const WorldImpl& world, ContactID id);
+BodyID GetBodyA(const WorldImpl &world, ContactID id);
 
 /// @relatedalso WorldImpl
-BodyID GetBodyB(const WorldImpl& world, ContactID id);
+BodyID GetBodyB(const WorldImpl &world, ContactID id);
 
 /// @brief Gets fixture A of the given contact.
 /// @relatedalso WorldImpl
-FixtureID GetFixtureA(const WorldImpl& world, ContactID id);
+FixtureID GetFixtureA(const WorldImpl &world, ContactID id);
 
 /// @brief Gets fixture B of the given contact.
 /// @relatedalso WorldImpl
-FixtureID GetFixtureB(const WorldImpl& world, ContactID id);
+FixtureID GetFixtureB(const WorldImpl &world, ContactID id);
 
 /// @brief Get the child primitive index for fixture A.
 /// @relatedalso WorldImpl
-ChildCounter GetChildIndexA(const WorldImpl& world, ContactID id);
+ChildCounter GetChildIndexA(const WorldImpl &world, ContactID id);
 
 /// @brief Get the child primitive index for fixture B.
 /// @relatedalso WorldImpl
-ChildCounter GetChildIndexB(const WorldImpl& world, ContactID id);
+ChildCounter GetChildIndexB(const WorldImpl &world, ContactID id);
 
 /// @relatedalso WorldImpl
-TimestepIters GetToiCount(const WorldImpl& world, ContactID id);
+TimestepIters GetToiCount(const WorldImpl &world, ContactID id);
 
 /// @relatedalso WorldImpl
-Real GetDefaultFriction(const WorldImpl& world, ContactID id);
+Real GetDefaultFriction(const WorldImpl &world, ContactID id);
 
 /// @relatedalso WorldImpl
-Real GetDefaultRestitution(const WorldImpl& world, ContactID id);
+Real GetDefaultRestitution(const WorldImpl &world, ContactID id);
 
 /// @brief Gets the friction used with the specified contact.
 /// @see SetFriction(ContactID id, Real value)
-Real GetFriction(const WorldImpl& world, ContactID id);
+Real GetFriction(const WorldImpl &world, ContactID id);
 
 /// @brief Sets the friction value for the specified contact.
 /// @details Overrides the default friction mixture.
@@ -117,35 +119,35 @@ Real GetFriction(const WorldImpl& world, ContactID id);
 /// @note This value persists until set or reset.
 /// @warning Behavior is undefined if given a negative friction value.
 /// @param value Co-efficient of friction value of zero or greater.
-void SetFriction(WorldImpl& world, ContactID id, Real value);
+void SetFriction(WorldImpl &world, ContactID id, Real value);
 
 /// @brief Gets the restitution used with the specified contact.
 /// @see SetRestitution(ContactID id, Real value)
-Real GetRestitution(const WorldImpl& world, ContactID id);
+Real GetRestitution(const WorldImpl &world, ContactID id);
 
 /// @brief Sets the restitution value for the specified contact.
 /// @details This override the default restitution mixture.
 /// @note You can call this in "pre-solve" listeners.
 /// @note The value persists until you set or reset.
-void SetRestitution(WorldImpl& world, ContactID id, Real value);
+void SetRestitution(WorldImpl &world, ContactID id, Real value);
 
 /// @brief Gets the collision manifold for the identified contact.
-const Manifold& GetManifold(const WorldImpl& world, ContactID id);
+const Manifold &GetManifold(const WorldImpl &world, ContactID id);
 
 /// @relatedalso WorldImpl
-LinearVelocity GetTangentSpeed(const WorldImpl& world, ContactID id);
+LinearVelocity GetTangentSpeed(const WorldImpl &world, ContactID id);
 
 /// @relatedalso WorldImpl
-void SetTangentSpeed(WorldImpl& world, ContactID id, LinearVelocity value);
+void SetTangentSpeed(WorldImpl &world, ContactID id, LinearVelocity value);
 
 /// @relatedalso WorldImpl
-bool IsEnabled(const WorldImpl& world, ContactID id);
+bool IsEnabled(const WorldImpl &world, ContactID id);
 
 /// @relatedalso WorldImpl
-void SetEnabled(WorldImpl& world, ContactID id);
+void SetEnabled(WorldImpl &world, ContactID id);
 
 /// @relatedalso WorldImpl
-void UnsetEnabled(WorldImpl& world, ContactID id);
+void UnsetEnabled(WorldImpl &world, ContactID id);
 
 } // namespace d2
 } // namespace playrho

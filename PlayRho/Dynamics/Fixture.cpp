@@ -25,8 +25,10 @@
 
 #include <type_traits>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
 static_assert(std::is_default_constructible<Fixture>::value, "Fixture must be default constructible!");
 static_assert(std::is_copy_constructible<Fixture>::value, "Fixture must be copy constructible!");
@@ -34,12 +36,12 @@ static_assert(std::is_move_constructible<Fixture>::value, "Fixture must be move 
 static_assert(std::is_copy_assignable<Fixture>::value, "Fixture must be copy assignable!");
 static_assert(std::is_move_assignable<Fixture>::value, "Fixture must be move assignable!");
 
-Real GetDefaultFriction(const Fixture& fixtureA, const Fixture& fixtureB)
+Real GetDefaultFriction(const Fixture &fixtureA, const Fixture &fixtureB)
 {
     return MixFriction(fixtureA.GetFriction(), fixtureB.GetFriction());
 }
 
-Real GetDefaultRestitution(const Fixture& fixtureA, const Fixture& fixtureB)
+Real GetDefaultRestitution(const Fixture &fixtureA, const Fixture &fixtureB)
 {
     return MixRestitution(fixtureA.GetRestitution(), fixtureB.GetRestitution());
 }

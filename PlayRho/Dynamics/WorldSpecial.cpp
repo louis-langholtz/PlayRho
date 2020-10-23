@@ -21,34 +21,37 @@
 
 #include <PlayRho/Dynamics/World.hpp>
 
-#include <PlayRho/Dynamics/WorldImpl.hpp> // for completing WorldImpl type
-#include <PlayRho/Dynamics/WorldImplMisc.hpp>
-#include <PlayRho/Dynamics/Body.hpp> // for completing WorldImpl type
-#include <PlayRho/Dynamics/Fixture.hpp> // for completing WorldImpl type
+#include <PlayRho/Collision/Manifold.hpp>        // for completing WorldImpl type
+#include <PlayRho/Dynamics/Body.hpp>             // for completing WorldImpl type
 #include <PlayRho/Dynamics/Contacts/Contact.hpp> // for completing WorldImpl type
-#include <PlayRho/Collision/Manifold.hpp> // for completing WorldImpl type
+#include <PlayRho/Dynamics/Fixture.hpp>          // for completing WorldImpl type
+#include <PlayRho/Dynamics/WorldImpl.hpp>        // for completing WorldImpl type
+#include <PlayRho/Dynamics/WorldImplMisc.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-World::World(const WorldConf& def): m_impl{CreateWorldImpl(def)}
+World::World(const WorldConf &def) : m_impl{CreateWorldImpl(def)}
 {
 }
 
-World::World(const World& other): m_impl{CreateWorldImpl(*other.m_impl)}
+World::World(const World &other) : m_impl{CreateWorldImpl(*other.m_impl)}
 {
 }
 
 World::~World() noexcept
 {
-    if (m_impl) {
+    if (m_impl)
+    {
         // Call implementation's clear while World still valid to give destruction
         // listening callbacks chance to run while world data is still valid.
         m_impl->Clear();
     }
 }
 
-World& World::operator= (const World& other)
+World &World::operator=(const World &other)
 {
     *m_impl = *other.m_impl;
     return *this;

@@ -24,75 +24,72 @@
 #include <PlayRho/Defines.hpp>
 #include <cstddef>
 
-namespace playrho {
-    
-    /// @brief Template range value class.
-    template <typename IT>
-    class Range
+namespace playrho
+{
+
+/// @brief Template range value class.
+template <typename IT> class Range
+{
+  public:
+    /// @brief Iterator type.
+    using iterator_type = IT;
+
+    /// @brief Value type alias.
+    using value_type = decltype(*std::declval<iterator_type>());
+
+    /// @brief Initializing constructor.
+    constexpr Range(iterator_type iter_begin, iterator_type iter_end) noexcept : m_begin{iter_begin}, m_end{iter_end}
     {
-    public:
-        /// @brief Iterator type.
-        using iterator_type = IT;
+        // Intentionally empty.
+    }
 
-        /// @brief Value type alias.
-        using value_type = decltype(*std::declval<iterator_type>());
-
-        /// @brief Initializing constructor.
-        constexpr Range(iterator_type iter_begin, iterator_type iter_end) noexcept:
-        	m_begin{iter_begin}, m_end{iter_end}
-        {
-            // Intentionally empty.
-        }
-
-        /// @brief Gets the "begin" index value.
-        constexpr iterator_type begin() const noexcept
-        {
-            return m_begin;
-        }
-
-        /// @brief Gets the "end" index value.
-        constexpr iterator_type end() const noexcept
-        {
-            return m_end;
-        }
-
-        /// @brief Whether this range is empty.
-        constexpr bool empty() const noexcept
-        {
-            return m_begin == m_end;
-        }
-
-    private:
-        iterator_type m_begin; ///< Begin iterator.
-        iterator_type m_end; ///< End iterator.
-    };
-
-    /// @brief Template sized range value class.
-    template <typename IT>
-    class SizedRange: public Range<IT>
+    /// @brief Gets the "begin" index value.
+    constexpr iterator_type begin() const noexcept
     {
-    public:
-        /// @brief Size type.
-        using size_type = std::size_t;
+        return m_begin;
+    }
 
-        /// @brief Initializing constructor.
-        constexpr SizedRange(typename Range<IT>::iterator_type iter_begin,
-                             typename Range<IT>::iterator_type iter_end,
-                             size_type size) noexcept:
-        	Range<IT>{iter_begin, iter_end}, m_size{size}
-        {
-            // Intentionally empty.
-        }
+    /// @brief Gets the "end" index value.
+    constexpr iterator_type end() const noexcept
+    {
+        return m_end;
+    }
 
-        /// @brief Gets the size of this range.
-        constexpr size_type size() const noexcept
-        {
-            return m_size;
-        }
+    /// @brief Whether this range is empty.
+    constexpr bool empty() const noexcept
+    {
+        return m_begin == m_end;
+    }
 
-    private:
-        size_type m_size; ///< Size in number of elements in the range.
-    };
+  private:
+    iterator_type m_begin; ///< Begin iterator.
+    iterator_type m_end;   ///< End iterator.
+};
+
+/// @brief Template sized range value class.
+template <typename IT> class SizedRange : public Range<IT>
+{
+  public:
+    /// @brief Size type.
+    using size_type = std::size_t;
+
+    /// @brief Initializing constructor.
+    constexpr SizedRange(typename Range<IT>::iterator_type iter_begin, typename Range<IT>::iterator_type iter_end,
+                         size_type size) noexcept
+        : Range<IT>{iter_begin, iter_end}, m_size{size}
+    {
+        // Intentionally empty.
+    }
+
+    /// @brief Gets the size of this range.
+    constexpr size_type size() const noexcept
+    {
+        return m_size;
+    }
+
+  private:
+    size_type m_size; ///< Size in number of elements in the range.
+};
 
 } // namespace playrho
 

@@ -22,16 +22,16 @@
 #ifndef PLAYRHO_COMMON_VECTOR2_HPP
 #define PLAYRHO_COMMON_VECTOR2_HPP
 
-#include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/InvalidArgument.hpp>
+#include <PlayRho/Common/Settings.hpp>
 #include <PlayRho/Common/Vector.hpp>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Vector with 2-elements.
 /// @note This is just a C++11 alias template for 2-element uses of the Vector template.
-template <typename T>
-using Vector2 = Vector<T, 2>;
+template <typename T> using Vector2 = Vector<T, 2>;
 
 /// @brief Vector with 2 Real elements.
 /// @note This data structure is two-times the size of the <code>Real</code> type
@@ -71,88 +71,70 @@ constexpr Vec2 GetVec2(const Vector2<Real> value)
 }
 
 /// @brief Gets an invalid value for the <code>Vec2</code> type.
-template <>
-constexpr Vec2 GetInvalid() noexcept
+template <> constexpr Vec2 GetInvalid() noexcept
 {
     return Vec2{GetInvalid<Vec2::value_type>(), GetInvalid<Vec2::value_type>()};
 }
 
 /// @brief Determines whether the given vector contains finite coordinates.
-template <typename TYPE>
-constexpr bool IsValid(const Vector2<TYPE>& value) noexcept
+template <typename TYPE> constexpr bool IsValid(const Vector2<TYPE> &value) noexcept
 {
     return IsValid(get<0>(value)) && IsValid(get<1>(value));
 }
 
 #ifdef USE_BOOST_UNITS
 /// @brief Gets an invalid value for the Length2 type.
-template <>
-constexpr Length2 GetInvalid() noexcept
+template <> constexpr Length2 GetInvalid() noexcept
 {
     return Length2{GetInvalid<Length>(), GetInvalid<Length>()};
 }
 
 /// @brief Gets an invalid value for the LinearVelocity2 type.
-template <>
-constexpr LinearVelocity2 GetInvalid() noexcept
+template <> constexpr LinearVelocity2 GetInvalid() noexcept
 {
     return LinearVelocity2{GetInvalid<LinearVelocity>(), GetInvalid<LinearVelocity>()};
 }
 
 /// @brief Gets an invalid value for the Force2 type.
-template <>
-constexpr Force2 GetInvalid() noexcept
+template <> constexpr Force2 GetInvalid() noexcept
 {
     return Force2{GetInvalid<Force>(), GetInvalid<Force>()};
 }
 
 /// @brief Gets an invalid value for the Momentum2 type.
-template <>
-constexpr Momentum2 GetInvalid() noexcept
+template <> constexpr Momentum2 GetInvalid() noexcept
 {
     return Momentum2{GetInvalid<Momentum>(), GetInvalid<Momentum>()};
 }
 
 constexpr Vec2 GetVec2(const Length2 value)
 {
-    return Vec2{
-        get<0>(value) / Meter,
-        get<1>(value) / Meter
-    };
+    return Vec2{get<0>(value) / Meter, get<1>(value) / Meter};
 }
 
 constexpr Vec2 GetVec2(const LinearVelocity2 value)
 {
-    return Vec2{
-        get<0>(value) / MeterPerSecond,
-        get<1>(value) / MeterPerSecond
-    };
+    return Vec2{get<0>(value) / MeterPerSecond, get<1>(value) / MeterPerSecond};
 }
 
 constexpr Vec2 GetVec2(const Momentum2 value)
 {
-    return Vec2{
-        get<0>(value) / (Kilogram * MeterPerSecond),
-        get<1>(value) / (Kilogram * MeterPerSecond)
-    };
+    return Vec2{get<0>(value) / (Kilogram * MeterPerSecond), get<1>(value) / (Kilogram * MeterPerSecond)};
 }
 
 constexpr Vec2 GetVec2(const Force2 value)
 {
-    return Vec2{
-        get<0>(value) / Newton,
-        get<1>(value) / Newton
-    };
+    return Vec2{get<0>(value) / Newton, get<1>(value) / Newton};
 }
 #endif
 
-namespace d2 {
-    
-    /// @brief Earthly gravity in 2-dimensions.
-    /// @details Linear acceleration in 2-dimensions of an earthly object due to Earth's mass.
-    /// @see EarthlyLinearAcceleration
-    constexpr auto EarthlyGravity = LinearAcceleration2{
-        0_mps2, EarthlyLinearAcceleration};
+namespace d2
+{
+
+/// @brief Earthly gravity in 2-dimensions.
+/// @details Linear acceleration in 2-dimensions of an earthly object due to Earth's mass.
+/// @see EarthlyLinearAcceleration
+constexpr auto EarthlyGravity = LinearAcceleration2{0_mps2, EarthlyLinearAcceleration};
 
 } // namespace d2
 } // namespace playrho

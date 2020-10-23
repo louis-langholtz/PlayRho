@@ -21,30 +21,26 @@
 
 #include <PlayRho/Dynamics/Body.hpp>
 
-#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Common/WrongState.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 
 #include <iterator>
 #include <type_traits>
 #include <utility>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-static_assert(std::is_default_constructible<Body>::value,
-              "Body must be default constructible!");
-static_assert(std::is_copy_constructible<Body>::value,
-              "Body must be copy constructible!");
-static_assert(std::is_move_constructible<Body>::value,
-              "Body must be move constructible!");
-static_assert(std::is_copy_assignable<Body>::value,
-              "Body must be copy assignable!");
-static_assert(std::is_move_assignable<Body>::value,
-              "Body must be move assignable!");
-static_assert(std::is_nothrow_destructible<Body>::value,
-              "Body must be nothrow destructible!");
+static_assert(std::is_default_constructible<Body>::value, "Body must be default constructible!");
+static_assert(std::is_copy_constructible<Body>::value, "Body must be copy constructible!");
+static_assert(std::is_move_constructible<Body>::value, "Body must be move constructible!");
+static_assert(std::is_copy_assignable<Body>::value, "Body must be copy assignable!");
+static_assert(std::is_move_assignable<Body>::value, "Body must be move assignable!");
+static_assert(std::is_nothrow_destructible<Body>::value, "Body must be nothrow destructible!");
 
-Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
+Body::FlagsType Body::GetFlags(const BodyConf &bd) noexcept
 {
     // @invariant Only bodies that allow sleeping, can be put to sleep.
     // @invariant Only "speedable" bodies can be awake.
@@ -86,13 +82,10 @@ Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
     return flags;
 }
 
-Body::Body(const BodyConf& bd) noexcept:
-    m_xf{::playrho::d2::GetTransformation(bd)},
-    m_sweep{Position{bd.location, bd.angle}},
-    m_flags{GetFlags(bd)},
-    m_invMass{(bd.type == playrho::BodyType::Dynamic)? InvMass{Real{1} / Kilogram}: InvMass{0}},
-    m_linearDamping{bd.linearDamping},
-    m_angularDamping{bd.angularDamping}
+Body::Body(const BodyConf &bd) noexcept
+    : m_xf{::playrho::d2::GetTransformation(bd)}, m_sweep{Position{bd.location, bd.angle}}, m_flags{GetFlags(bd)},
+      m_invMass{(bd.type == playrho::BodyType::Dynamic) ? InvMass{Real{1} / Kilogram} : InvMass{0}},
+      m_linearDamping{bd.linearDamping}, m_angularDamping{bd.angularDamping}
 {
     assert(IsValid(bd.location));
     assert(IsValid(bd.angle));
@@ -105,7 +98,7 @@ Body::Body(const BodyConf& bd) noexcept:
     SetUnderActiveTime(bd.underActiveTime);
 }
 
-void Body::SetVelocity(const Velocity& velocity) noexcept
+void Body::SetVelocity(const Velocity &velocity) noexcept
 {
     if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm))
     {
@@ -129,7 +122,7 @@ void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angul
         // no change, bail...
         return;
     }
-    
+
     if (!IsAccelerable())
     {
         if ((linear != LinearAcceleration2{}) || (angular != AngularAcceleration{0}))
@@ -150,7 +143,7 @@ void Body::SetAcceleration(LinearAcceleration2 linear, AngularAcceleration angul
             ResetUnderActiveTime();
         }
     }
-    
+
     m_linearAcceleration = linear;
     m_angularAcceleration = angular;
 }
@@ -178,9 +171,8 @@ bool Body::Insert(ContactKey key, ContactID contact)
 {
 #ifndef NDEBUG
     // Prevent the same contact from being added more than once...
-    const auto it = std::find_if(cbegin(m_contacts), cend(m_contacts), [contact](KeyedContactPtr ci) {
-        return std::get<ContactID>(ci) == contact;
-    });
+    const auto it = std::find_if(cbegin(m_contacts), cend(m_contacts),
+                                 [contact](KeyedContactPtr ci) { return std::get<ContactID>(ci) == contact; });
     assert(it == end(m_contacts));
     if (it != end(m_contacts))
     {
@@ -193,9 +185,8 @@ bool Body::Insert(ContactKey key, ContactID contact)
 
 bool Body::Erase(JointID joint)
 {
-    const auto it = std::find_if(begin(m_joints), end(m_joints), [joint](KeyedJointPtr ji) {
-        return std::get<JointID>(ji) == joint;
-    });
+    const auto it = std::find_if(begin(m_joints), end(m_joints),
+                                 [joint](KeyedJointPtr ji) { return std::get<JointID>(ji) == joint; });
     if (it != end(m_joints))
     {
         m_joints.erase(it);
@@ -206,9 +197,8 @@ bool Body::Erase(JointID joint)
 
 bool Body::Erase(ContactID contact)
 {
-    const auto it = std::find_if(begin(m_contacts), end(m_contacts), [contact](KeyedContactPtr ci) {
-        return std::get<ContactID>(ci) == contact;
-    });
+    const auto it = std::find_if(begin(m_contacts), end(m_contacts),
+                                 [contact](KeyedContactPtr ci) { return std::get<ContactID>(ci) == contact; });
     if (it != end(m_contacts))
     {
         m_contacts.erase(it);
@@ -217,7 +207,7 @@ bool Body::Erase(ContactID contact)
     return false;
 }
 
-void Body::Erase(const std::function<bool(ContactID)>& callback)
+void Body::Erase(const std::function<bool(ContactID)> &callback)
 {
     auto last = end(m_contacts);
     auto iter = begin(m_contacts);
@@ -241,7 +231,7 @@ void Body::Erase(const std::function<bool(ContactID)>& callback)
 
 // Free functions...
 
-Velocity GetVelocity(const Body& body, Time h) noexcept
+Velocity GetVelocity(const Body &body, Time h) noexcept
 {
     // Integrate velocity and apply damping.
     auto velocity = body.GetVelocity();
@@ -258,7 +248,7 @@ Velocity GetVelocity(const Body& body, Time h) noexcept
         // v2 = exp(-c * dt) * v1
         // Pade approximation (see https://en.wikipedia.org/wiki/Pad%C3%A9_approximant ):
         // v2 = v1 * 1 / (1 + c * dt)
-        velocity.linear  /= Real{1 + h * body.GetLinearDamping()};
+        velocity.linear /= Real{1 + h * body.GetLinearDamping()};
         velocity.angular /= Real{1 + h * body.GetAngularDamping()};
     }
 
@@ -275,7 +265,7 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
         const auto ratio = conf.maxTranslation / sqrt(lsquared);
         velocity.linear *= ratio;
     }
-    
+
     const auto absRotation = abs(h * velocity.angular);
     if (absRotation > conf.maxRotation)
     {
@@ -283,16 +273,16 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
         const auto ratio = conf.maxRotation / absRotation;
         velocity.angular *= ratio;
     }
-    
+
     return velocity;
 }
 
-FixtureCounter GetFixtureCount(const Body& body) noexcept
+FixtureCounter GetFixtureCount(const Body &body) noexcept
 {
     return static_cast<FixtureCounter>(size(body.GetFixtures()));
 }
 
-Transformation GetTransformation(const BodyConf& conf)
+Transformation GetTransformation(const BodyConf &conf)
 {
     return {conf.location, UnitVec::Get(conf.angle)};
 }

@@ -21,27 +21,23 @@
 
 #include <PlayRho/Dynamics/Joints/WheelJointConf.hpp>
 
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
-#include <PlayRho/Dynamics/WorldBody.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Contacts/BodyConstraint.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactSolver.hpp> // for ConstraintSolverConf
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 
-namespace playrho {
-namespace d2 {
+namespace playrho
+{
+namespace d2
+{
 
-static_assert(std::is_default_constructible<WheelJointConf>::value,
-              "WheelJointConf should be default constructible!");
-static_assert(std::is_copy_constructible<WheelJointConf>::value,
-              "WheelJointConf should be copy constructible!");
-static_assert(std::is_copy_assignable<WheelJointConf>::value,
-              "WheelJointConf should be copy assignable!");
-static_assert(std::is_move_constructible<WheelJointConf>::value,
-              "WheelJointConf should be move constructible!");
-static_assert(std::is_move_assignable<WheelJointConf>::value,
-              "WheelJointConf should be move assignable!");
-static_assert(std::is_nothrow_destructible<WheelJointConf>::value,
-              "WheelJointConf should be nothrow destructible!");
+static_assert(std::is_default_constructible<WheelJointConf>::value, "WheelJointConf should be default constructible!");
+static_assert(std::is_copy_constructible<WheelJointConf>::value, "WheelJointConf should be copy constructible!");
+static_assert(std::is_copy_assignable<WheelJointConf>::value, "WheelJointConf should be copy assignable!");
+static_assert(std::is_move_constructible<WheelJointConf>::value, "WheelJointConf should be move constructible!");
+static_assert(std::is_move_assignable<WheelJointConf>::value, "WheelJointConf should be move assignable!");
+static_assert(std::is_nothrow_destructible<WheelJointConf>::value, "WheelJointConf should be nothrow destructible!");
 
 // Linear constraint (point-to-line)
 // d = pB - pA = xB + rB - xA - rA
@@ -59,41 +55,34 @@ static_assert(std::is_nothrow_destructible<WheelJointConf>::value,
 // Cdot = wB - wA
 // J = [0 0 -1 0 0 1]
 
-WheelJointConf::WheelJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB,
-                               UnitVec axis) noexcept:
-    super{super{}.UseBodyA(bA).UseBodyB(bB)},
-    localAnchorA{laA}, localAnchorB{laB},
-    localXAxisA{axis}, localYAxisA{GetRevPerpendicular(axis)}
+WheelJointConf::WheelJointConf(BodyID bA, BodyID bB, Length2 laA, Length2 laB, UnitVec axis) noexcept
+    : super{super{}.UseBodyA(bA).UseBodyB(bB)}, localAnchorA{laA}, localAnchorB{laB}, localXAxisA{axis},
+      localYAxisA{GetRevPerpendicular(axis)}
 {
     // Intentionally empty.
 }
 
-WheelJointConf GetWheelJointConf(const Joint& joint)
+WheelJointConf GetWheelJointConf(const Joint &joint)
 {
     return TypeCast<WheelJointConf>(joint);
 }
 
-WheelJointConf GetWheelJointConf(const World& world, BodyID bodyA, BodyID bodyB,
-                                 Length2 anchor, UnitVec axis)
+WheelJointConf GetWheelJointConf(const World &world, BodyID bodyA, BodyID bodyB, Length2 anchor, UnitVec axis)
 {
-    return WheelJointConf{
-        bodyA, bodyB,
-        GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor),
-        GetLocalVector(world, bodyA, axis)};
+    return WheelJointConf{bodyA, bodyB, GetLocalPoint(world, bodyA, anchor), GetLocalPoint(world, bodyB, anchor),
+                          GetLocalVector(world, bodyA, axis)};
 }
 
-AngularVelocity GetAngularVelocity(const World& world, const WheelJointConf& conf)
+AngularVelocity GetAngularVelocity(const World &world, const WheelJointConf &conf)
 {
-    return GetVelocity(world, GetBodyB(conf)).angular
-         - GetVelocity(world, GetBodyA(conf)).angular;
+    return GetVelocity(world, GetBodyB(conf)).angular - GetVelocity(world, GetBodyA(conf)).angular;
 }
 
-void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
-                  const StepConf& step,
-                  const ConstraintSolverConf&)
+void InitVelocity(WheelJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step,
+                  const ConstraintSolverConf &)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto posA = bodyConstraintA.GetPosition();
     auto velA = bodyConstraintA.GetVelocity();
@@ -123,7 +112,7 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
         const auto invRotMassB = invRotInertiaB * Square(object.sBy) / SquareRadian;
         const auto invMass = invMassA + invMassB + invRotMassA + invRotMassB;
 
-        object.mass = (invMass > InvMass{0})? Real{1} / invMass: 0;
+        object.mass = (invMass > InvMass{0}) ? Real{1} / invMass : 0;
     }
 
     // Spring constraint
@@ -159,11 +148,11 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
             const auto h = step.deltaTime;
 
             const auto invGamma = Mass{h * (d + h * k)};
-            object.gamma = (invGamma > 0_kg)? Real{1} / invGamma: 0;
+            object.gamma = (invGamma > 0_kg) ? Real{1} / invGamma : 0;
             object.bias = LinearVelocity{C * h * k * object.gamma};
 
             const auto totalInvMass = invMass + object.gamma;
-            object.springMass = (totalInvMass > InvMass{0})? Real{1} / totalInvMass: 0_kg;
+            object.springMass = (totalInvMass > InvMass{0}) ? Real{1} / totalInvMass : 0_kg;
         }
     }
     else
@@ -179,7 +168,7 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
     if (object.enableMotor)
     {
         const auto invRotInertia = invRotInertiaA + invRotInertiaB;
-        object.angularMass = (invRotInertia > InvRotInertia{0})? Real{1} / invRotInertia: RotInertia{0};
+        object.angularMass = (invRotInertia > InvRotInertia{0}) ? Real{1} / invRotInertia : RotInertia{0};
     }
     else
     {
@@ -198,8 +187,10 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
 
         // Momentum is M L T^-1. Length * momentum is L^2 M T^-1
         // Angular momentum is L^2 M T^-1 QP^-1
-        const auto LA = AngularMomentum{(object.impulse * object.sAy + object.springImpulse * object.sAx) / Radian + object.angularImpulse};
-        const auto LB = AngularMomentum{(object.impulse * object.sBy + object.springImpulse * object.sBx) / Radian + object.angularImpulse};
+        const auto LA = AngularMomentum{(object.impulse * object.sAy + object.springImpulse * object.sAx) / Radian +
+                                        object.angularImpulse};
+        const auto LB = AngularMomentum{(object.impulse * object.sBy + object.springImpulse * object.sBx) / Radian +
+                                        object.angularImpulse};
 
         velA -= Velocity{invMassA * P, invRotInertiaA * LA};
         velB += Velocity{invMassB * P, invRotInertiaB * LB};
@@ -215,11 +206,10 @@ void InitVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
     bodyConstraintB.SetVelocity(velB);
 }
 
-bool SolveVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const StepConf& step)
+bool SolveVelocity(WheelJointConf &object, std::vector<BodyConstraint> &bodies, const StepConf &step)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     const auto oldVelA = bodyConstraintA.GetVelocity();
     const auto invMassA = bodyConstraintA.GetInvMass();
@@ -254,8 +244,7 @@ bool SolveVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
 
         const auto oldImpulse = object.angularImpulse;
         const auto maxImpulse = AngularMomentum{step.deltaTime * object.maxMotorTorque};
-        object.angularImpulse = std::clamp(object.angularImpulse + impulse,
-                                           -maxImpulse, maxImpulse);
+        object.angularImpulse = std::clamp(object.angularImpulse + impulse, -maxImpulse, maxImpulse);
         impulse = object.angularImpulse - oldImpulse;
 
         velA.angular -= AngularVelocity{invRotInertiaA * impulse};
@@ -286,11 +275,10 @@ bool SolveVelocity(WheelJointConf& object, std::vector<BodyConstraint>& bodies,
     return true;
 }
 
-bool SolvePosition(const WheelJointConf& object, std::vector<BodyConstraint>& bodies,
-                   const ConstraintSolverConf& conf)
+bool SolvePosition(const WheelJointConf &object, std::vector<BodyConstraint> &bodies, const ConstraintSolverConf &conf)
 {
-    auto& bodyConstraintA = At(bodies, GetBodyA(object));
-    auto& bodyConstraintB = At(bodies, GetBodyB(object));
+    auto &bodyConstraintA = At(bodies, GetBodyA(object));
+    auto &bodyConstraintB = At(bodies, GetBodyB(object));
 
     auto posA = bodyConstraintA.GetPosition();
     const auto invMassA = bodyConstraintA.GetInvMass();
@@ -319,7 +307,7 @@ bool SolvePosition(const WheelJointConf& object, std::vector<BodyConstraint>& bo
 
     const auto k = InvMass{invMassA + invMassB + invRotMassA + invRotMassB};
 
-    const auto impulse = (k != InvMass{0})? -(C / k): 0 * Kilogram * Meter;
+    const auto impulse = (k != InvMass{0}) ? -(C / k) : 0 * Kilogram * Meter;
 
     const auto P = impulse * ay;
     const auto LA = impulse * sAy / Radian;

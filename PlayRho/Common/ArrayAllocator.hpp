@@ -21,17 +21,17 @@
 #ifndef PLAYRHO_COMMON_ARRAYALLOCATOR_HPP
 #define PLAYRHO_COMMON_ARRAYALLOCATOR_HPP
 
+#include <type_traits>
 #include <utility>
 #include <vector>
-#include <type_traits>
 
-namespace playrho {
+namespace playrho
+{
 
 /// @brief Array allocator.
-template <typename T>
-class ArrayAllocator
+template <typename T> class ArrayAllocator
 {
-public:
+  public:
     /// @brief Element type.
     using value_type = T;
 
@@ -47,15 +47,14 @@ public:
     /// @brief Gets the index of the given pointer.
     /// @return -1 if the given pointer is not within the range of the allocator's allocation,
     ///    otherwise return index of pointer within allocator.
-    size_type GetIndex(value_type* ptr) const
+    size_type GetIndex(value_type *ptr) const
     {
         const auto i = ptr - m_data.data();
-        return static_cast<size_type>(((i >= 0) && (static_cast<size_type>(i) < m_data.size()))? i: -1);
+        return static_cast<size_type>(((i >= 0) && (static_cast<size_type>(i) < m_data.size())) ? i : -1);
     }
 
     /// @brief Allocates an entry in the array with the given constructor parameters.
-    template< class... Args >
-    size_type Allocate(Args&&... args)
+    template <class... Args> size_type Allocate(Args &&... args)
     {
         if (!m_free.empty())
         {
@@ -70,7 +69,7 @@ public:
     }
 
     /// @brief Allocates an entry in the array with the given instance.
-    size_type Allocate(const value_type& copy)
+    size_type Allocate(const value_type &copy)
     {
         if (!m_free.empty())
         {
@@ -149,15 +148,14 @@ public:
         m_free.clear();
     }
 
-private:
-    std::vector<value_type> m_data; ///< Array data (both used & free).
+  private:
+    std::vector<value_type> m_data;                                  ///< Array data (both used & free).
     std::vector<typename std::vector<value_type>::size_type> m_free; ///< Indices of free elements.
 };
 
 /// @brief Gets the number of elements that are used in the specified structure.
 /// @return Size of the specified structure minus the size of its free pool.
-template <typename T>
-typename ArrayAllocator<T>::size_type used(const ArrayAllocator<T>& array) noexcept
+template <typename T> typename ArrayAllocator<T>::size_type used(const ArrayAllocator<T> &array) noexcept
 {
     return array.size() - array.free();
 }
