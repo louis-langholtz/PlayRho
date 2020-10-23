@@ -80,7 +80,7 @@ using BodySet = Test::BodySet;
 
 static void EntityUI(World& world, ContactID contact);
 static void EntityUI(World& world, JointID e);
-static void CollectionUI(World& world, const ContactsRange& contacts);
+static void CollectionUI(World& world, const ContactsRange& contacts, bool interactive = true);
 static void CollectionUI(World& world, const JointsRange& joints);
 static void CollectionUI(const BodyJointsRange& joints);
 
@@ -310,7 +310,7 @@ static void CreateUI(GLFWwindow* window)
         assert(false);
         return;
     }
-    
+
     ImGuiStyle& style = ImGui::GetStyle();
     style.FrameRounding = style.GrabRounding = style.ScrollbarRounding = 2.0f;
     style.FramePadding = ImVec2(4, 2);
@@ -320,8 +320,6 @@ static void CreateUI(GLFWwindow* window)
     //ImGuiIO& io = ImGui::GetIO();
     //io.FontGlobalScale = 0.95f;
 }
-
-static constexpr char FmtBodyID[] = "0x%.4x";
 
 static const char* ToString(BodyType type) noexcept
 {
@@ -1347,8 +1345,7 @@ static void EntityUI(const Shape& shape)
 static void EntityUI(World& world, FixtureID fixture)
 {
     ImGui::IdContext idCtx(UnderlyingValue(fixture));
-    //const auto body = fixture.GetBody();
-    
+
     ImGui::Spacing();
 
     {
@@ -1375,7 +1372,7 @@ static void EntityUI(World& world, FixtureID fixture)
         auto cateChanged = false;
         for (auto bit = 15u; bit < 16u; --bit)
         {
-            ImGui::IdContext idCtx(static_cast<int>(bit));
+            ImGui::IdContext subIdCtx(static_cast<int>(bit));
             auto flags = (0x1u << bit);
             cateChanged |= ImGui::CheckboxFlags("##catebits", &cateBits, flags);
             if (bit > 0) ImGui::SameLine();
@@ -1391,7 +1388,7 @@ static void EntityUI(World& world, FixtureID fixture)
         auto maskChanged = false;
         for (auto bit = 15u; bit < 16u; --bit)
         {
-            ImGui::IdContext idCtx(static_cast<int>(bit));
+            ImGui::IdContext subIdCtx(static_cast<int>(bit));
             auto flags = (0x1u << bit);
             maskChanged |= ImGui::CheckboxFlags("##maskbits", &maskBits, flags);
             if (bit > 0) ImGui::SameLine();
@@ -1510,16 +1507,14 @@ static void CollectionUI(World& world,
                          const FixturesRange& fixtures, const FixtureSet& selectedFixtures)
 {
     ImGui::IdContext idCtx("Fixtures");
-    auto fnum = 0;
     for (const auto& f: fixtures)
     {
         const auto flags = IsWithin(selectedFixtures, f)? ImGuiTreeNodeFlags_DefaultOpen: 0;
-        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(fnum), flags, "Fixture %d", fnum))
+        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(f.get()), flags, "Fixture %u", f.get()))
         {
             EntityUI(world, f);
             ImGui::TreePop();
         }
-        ++fnum;
     }
 }
 
@@ -1547,13 +1542,13 @@ static void EntityUI(World& world, BodyID b, const FixtureSet& selectedFixtures)
         const auto contacts = GetContacts(world, b);
         if (ImGui::TreeNodeEx("Contacts", 0, "Contacts (%lu)", size(contacts)))
         {
-            CollectionUI(world, contacts);
+            CollectionUI(world, contacts, false);
             ImGui::TreePop();
         }
     }
 }
 
-static void EntityUI(RevoluteJointConf& conf)
+static void EntityUI(RevoluteJointConf& conf, BodyCounter bodyRange)
 {
     ImGui::IdContext idCtx("RevoluteJointConf");
 
@@ -1604,11 +1599,23 @@ static void EntityUI(RevoluteJointConf& conf)
             SetMaxMotorTorque(conf, v * NewtonMeter);
         }
     }
-    ImGui::LabelText("ID of Body A", FmtBodyID, UnderlyingValue(GetBodyA(conf)));
-    ImGui::LabelText("ID of Body B", FmtBodyID, UnderlyingValue(GetBodyB(conf)));
+    {
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
+        }
+    }
+    {
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
+        }
+    }
 }
 
-static void EntityUI(PrismaticJointConf& conf)
+static void EntityUI(PrismaticJointConf& conf, BodyCounter bodyRange)
 {
     ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(conf)));
     ImGui::LabelText("Motor Impulse (N·s)", "%.1e",
@@ -1657,11 +1664,23 @@ static void EntityUI(PrismaticJointConf& conf)
             SetMaxMotorForce(conf, v * Newton);
         }
     }
-    ImGui::LabelText("ID of Body A", FmtBodyID, UnderlyingValue(GetBodyA(conf)));
-    ImGui::LabelText("ID of Body B", FmtBodyID, UnderlyingValue(GetBodyB(conf)));
+    {
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
+        }
+    }
+    {
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
+        }
+    }
 }
 
-static void EntityUI(DistanceJointConf& conf)
+static void EntityUI(DistanceJointConf& conf, BodyCounter bodyRange)
 {
     // All settings implemented here...
     {
@@ -1685,18 +1704,44 @@ static void EntityUI(DistanceJointConf& conf)
             SetDampingRatio(conf, static_cast<Real>(v));
         }
     }
-    ImGui::LabelText("ID of Body A", FmtBodyID, UnderlyingValue(GetBodyA(conf)));
-    ImGui::LabelText("ID of Body B", FmtBodyID, UnderlyingValue(GetBodyB(conf)));
+    {
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
+        }
+    }
+    {
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
+        }
+    }
 }
 
-static void EntityUI(PulleyJointConf& conf)
+static void EntityUI(PulleyJointConf& conf, BodyCounter bodyRange)
 {
     ImGui::LabelText("Length A (m)", "%f", static_cast<double>(Real{GetLengthA(conf)/Meter}));
     ImGui::LabelText("Length B (m)", "%f", static_cast<double>(Real{GetLengthB(conf)/Meter}));
     ImGui::LabelText("Ratio", "%f", static_cast<double>(GetRatio(conf)));
+    {
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
+        }
+    }
+    {
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
+        }
+    }
 }
 
-static void EntityUI(World& world, TargetJointConf& conf)
+static void EntityUI(TargetJointConf& conf, BodyCounter bodyRange)
 {
     {
         const auto target = GetTarget(conf);
@@ -1733,16 +1778,15 @@ static void EntityUI(World& world, TargetJointConf& conf)
         }
     }
     {
-        const auto b = GetBodyB(conf);
-        if (ImGui::TreeNodeEx("Body B", 0, "Body B: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
         }
     }
 }
 
-static void EntityUI(World& world, GearJointConf& conf)
+static void EntityUI(GearJointConf& conf, BodyCounter bodyRange)
 {
     ImGui::LabelText("Constant", "%.2e", static_cast<double>(GetConstant(conf)));
     {
@@ -1755,24 +1799,22 @@ static void EntityUI(World& world, GearJointConf& conf)
     ImGui::LabelText("Type 1", "%s", ToName(GetType1(conf)));
     ImGui::LabelText("Type 2", "%s", ToName(GetType2(conf)));
     {
-        const auto b = GetBodyA(conf);
-        if (ImGui::TreeNodeEx("Body A", 0, "Body A: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        const auto b = GetBodyB(conf);
-        if (ImGui::TreeNodeEx("Body B", 0, "Body B: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
         }
     }
 }
 
-static void EntityUI(World& world, WheelJointConf& conf)
+static void EntityUI(WheelJointConf& conf, BodyCounter bodyRange)
 {
     {
         auto v = IsMotorEnabled(conf);
@@ -1810,24 +1852,22 @@ static void EntityUI(World& world, WheelJointConf& conf)
         }
     }
     {
-        const auto b = GetBodyA(conf);
-        if (ImGui::TreeNodeEx("Body A", 0, "Body A: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        const auto b = GetBodyB(conf);
-        if (ImGui::TreeNodeEx("Body B", 0, "Body B: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
         }
     }
 }
 
-static void EntityUI(World& world, WeldJointConf& conf)
+static void EntityUI(WeldJointConf& conf, BodyCounter bodyRange)
 {
     ImGui::LabelText("Ref. Angle (°)", "%.1e",
                      static_cast<double>(Real{GetReferenceAngle(conf) / Degree}));
@@ -1846,24 +1886,22 @@ static void EntityUI(World& world, WeldJointConf& conf)
         }
     }
     {
-        const auto b = GetBodyA(conf);
-        if (ImGui::TreeNodeEx("Body A", 0, "Body A: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        const auto b = GetBodyB(conf);
-        if (ImGui::TreeNodeEx("Body B", 0, "Body B: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
         }
     }
 }
 
-static void EntityUI(World& world, FrictionJointConf& conf)
+static void EntityUI(FrictionJointConf& conf, BodyCounter bodyRange)
 {
     {
         auto v = static_cast<float>(Real{GetMaxForce(conf) / Newton});
@@ -1880,24 +1918,22 @@ static void EntityUI(World& world, FrictionJointConf& conf)
         }
     }
     {
-        const auto b = GetBodyA(conf);
-        if (ImGui::TreeNodeEx("Body A", 0, "Body A: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        const auto b = GetBodyB(conf);
-        if (ImGui::TreeNodeEx("Body B", 0, "Body B: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
         }
     }
 }
 
-static void EntityUI(World& world, RopeJointConf& conf)
+static void EntityUI(RopeJointConf& conf, BodyCounter bodyRange)
 {
     ImGui::LabelText("Limit State", "%s", ToString(GetLimitState(conf)));
     {
@@ -1908,24 +1944,22 @@ static void EntityUI(World& world, RopeJointConf& conf)
         }
     }
     {
-        const auto b = GetBodyA(conf);
-        if (ImGui::TreeNodeEx("Body A", 0, "Body A: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        const auto b = GetBodyB(conf);
-        if (ImGui::TreeNodeEx("Body B", 0, "Body B: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
         }
     }
 }
 
-static void EntityUI(World& world, MotorJointConf& conf)
+static void EntityUI(MotorJointConf& conf, BodyCounter bodyRange)
 {
     {
         const auto linearError = GetLinearError(conf);
@@ -1978,27 +2012,27 @@ static void EntityUI(World& world, MotorJointConf& conf)
         }
     }
     {
-        const auto b = GetBodyA(conf);
-        if (ImGui::TreeNodeEx("Body A", 0, "Body A: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
+        ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);
+        if (bodyA >= 0 && bodyA < static_cast<int>(bodyRange)) {
+            conf.bodyA = BodyID(static_cast<BodyID::underlying_type>(bodyA));
         }
     }
     {
-        const auto b = GetBodyB(conf);
-        if (ImGui::TreeNodeEx("Body B", 0, "Body B: %s", ToString(GetType(world, b))))
-        {
-            EntityUI(world, b, FixtureSet{});
-            ImGui::TreePop();
+        auto bodyB = static_cast<int>(UnderlyingValue(GetBodyB(conf)));
+        ImGui::SliderInt("ID of Body B", &bodyB, 0, int(bodyRange) - 1);
+        if (bodyB >= 0 && bodyB < static_cast<int>(bodyRange)) {
+            conf.bodyB = BodyID(static_cast<BodyID::underlying_type>(bodyB));
         }
     }
 }
 
 static void EntityUI(World& world, JointID e)
 {
-    ImGui::ItemWidthContext itemWidthCtx(50);
+    ImGui::ItemWidthContext itemWidthCtx(100);
+    ImGui::IdContext idCtx(static_cast<int>(e.get()));
 
+    const auto bodyRange = GetBodyRange(world);
     const auto& joint = GetJoint(world, e);
     ImGui::LabelText("Collide Connected", "%s", GetCollideConnected(joint)? "true": "false");
     {
@@ -2013,57 +2047,57 @@ static void EntityUI(World& world, JointID e)
     const auto type = world.GetType(e);
     if (type == GetTypeID<DistanceJointConf>()) {
         auto conf = TypeCast<DistanceJointConf>(joint);
-        EntityUI(conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     else if (type == GetTypeID<FrictionJointConf>()) {
         auto conf = TypeCast<FrictionJointConf>(joint);
-        EntityUI(world, conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     else if (type == GetTypeID<GearJointConf>()) {
         auto conf = TypeCast<GearJointConf>(joint);
-        EntityUI(world, conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     else if (type == GetTypeID<MotorJointConf>()) {
         auto conf = TypeCast<MotorJointConf>(joint);
-        EntityUI(world, conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     else if (type == GetTypeID<PrismaticJointConf>()) {
         auto conf = TypeCast<PrismaticJointConf>(joint);
-        EntityUI(conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     else if (type == GetTypeID<PulleyJointConf>()) {
         auto conf = TypeCast<PulleyJointConf>(joint);
-        EntityUI(conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     if (type == GetTypeID<RevoluteJointConf>()) {
         auto conf = TypeCast<RevoluteJointConf>(joint);
-        EntityUI(conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     if (type == GetTypeID<RopeJointConf>()) {
         auto conf = TypeCast<RopeJointConf>(joint);
-        EntityUI(world, conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     else if (type == GetTypeID<TargetJointConf>()) {
         auto conf = TypeCast<TargetJointConf>(joint);
-        EntityUI(world, conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     else if (type == GetTypeID<WheelJointConf>()) {
         auto conf = TypeCast<WheelJointConf>(joint);
-        EntityUI(world, conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
     else if (type == GetTypeID<WeldJointConf>()) {
         auto conf = TypeCast<WeldJointConf>(joint);
-        EntityUI(world, conf);
+        EntityUI(conf, bodyRange);
         SetJoint(world, e, conf);
     }
 }
@@ -2117,23 +2151,12 @@ static void EntityUI(World& world, ContactID c)
     {
         EntityUI(GetManifold(world, c));
     }
-    
-    {
-        const auto f = GetFixtureA(world, c);
-        if (ImGui::TreeNode("Fixture A"))
-        {
-            EntityUI(world, f);
-            ImGui::TreePop();
-        }
-    }
-    {
-        const auto f = GetFixtureB(world, c);
-        if (ImGui::TreeNode("Fixture B"))
-        {
-            EntityUI(world, f);
-            ImGui::TreePop();
-        }
-    }
+
+    ImGui::LabelText("Body A", "%u", GetBodyA(world, c).get());
+    ImGui::LabelText("Body B", "%u", GetBodyB(world, c).get());
+
+    ImGui::LabelText("Fixture A", "%u", GetFixtureA(world, c).get());
+    ImGui::LabelText("Fixture B", "%u", GetFixtureB(world, c).get());
 }
 
 static void CollectionUI(World& world, const BodiesRange& bodies,
@@ -2141,37 +2164,33 @@ static void CollectionUI(World& world, const BodiesRange& bodies,
                      const FixtureSet& selectedFixtures)
 {
     ImGui::IdContext idCtx("Bodies");
-    auto i = 0;
     for (const auto& e: bodies)
     {
         const auto typeName = ToString(GetType(world, e));
         const auto flags = IsWithin(selectedBodies, e)? ImGuiTreeNodeFlags_DefaultOpen: 0;
-        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(i), flags,
-                              "Body %d (Body-ID=0x%.4x,Type=%s)", i, UnderlyingValue(e), typeName))
+        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(e.get()), flags,
+                              "Body %u (Type=%s)", e.get(), typeName))
         {
             EntityUI(world, e, selectedFixtures);
             ImGui::TreePop();
         }
-        ++i;
     }
 }
 
 static void CollectionUI(World& world, const JointsRange& joints)
 {
     ImGui::IdContext idCtx("Joints");
-    auto i = 0;
     for (const auto& jointID: joints)
     {
         ImGui::IdContext ctx(UnderlyingValue(jointID));
         const auto flags = 0;
-        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(i), flags,
-                              "Joint %d (Joint-ID=%d,Type=%s)",
-                              i, UnderlyingValue(jointID), ToName(GetType(world, jointID))))
+        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(jointID.get()), flags,
+                              "Joint %u (Type=%s)",
+                              jointID.get(), ToName(GetType(world, jointID))))
         {
             EntityUI(world, jointID);
             ImGui::TreePop();
         }
-        ++i;
     }
 }
 
@@ -2179,46 +2198,57 @@ static void CollectionUI(const BodyJointsRange& joints)
 {
     ImGui::IdContext idCtx("BodyJointsRange");
     ImGui::ItemWidthContext itemWidthCtx(130);
-    auto i = 0;
     for (const auto& e: joints)
     {
         const auto bodyID = std::get<BodyID>(e);
         const auto jointID = std::get<JointID>(e);
-        char buf[64];
-        std::snprintf(buf, sizeof(buf), "Joint %d", i);
         if (bodyID != InvalidBodyID) {
-            ImGui::LabelText(buf, "ID=0x%.4x, Other=0x%.4x",
-                             UnderlyingValue(jointID), UnderlyingValue(bodyID));
+            ImGui::Text("Joint %u (Other-body=%u)", UnderlyingValue(jointID), UnderlyingValue(bodyID));
             if (ImGui::IsItemHovered())
             {
-                ImGui::SetTooltip("World ID of joint and world ID of any other associated body.");
+                ImGui::SetTooltip("World ID of joint and world ID of other associated body.");
             }
         }
         else {
-            ImGui::LabelText(buf, "ID=0x%.4x", UnderlyingValue(jointID));
+            ImGui::Text("Joint %u", UnderlyingValue(jointID));
             if (ImGui::IsItemHovered())
             {
                 ImGui::SetTooltip("World ID of joint.");
             }
         }
-        ++i;
     }
 }
 
-static void CollectionUI(World& world, const ContactsRange& contacts)
+static void CollectionUI(World& world, const ContactsRange& contacts, bool interactive)
 {
     ImGui::IdContext idCtx("ContactsRange");
-    auto i = 0;
-    for (const auto& ct: contacts)
-    {
-        const auto contactID = std::get<ContactID>(ct);
-        if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(i), 0,
-                              "Contact %d%s", i, (IsTouching(world, contactID)? " (touching)": "")))
+    if (interactive) {
+        for (const auto& ct: contacts)
         {
-            EntityUI(world, contactID);
-            ImGui::TreePop();
+            const auto key = std::get<ContactKey>(ct);
+            const auto contactID = std::get<ContactID>(ct);
+            if (ImGui::TreeNodeEx(reinterpret_cast<const void*>(contactID.get()), 0,
+                                  "Contact %u (%u,%u%s)", contactID.get(),
+                                  key.GetMin(), key.GetMax(),
+                                  (IsTouching(world, contactID)? ",touching": "")))
+            {
+                EntityUI(world, contactID);
+                ImGui::TreePop();
+            }
         }
-        ++i;
+    }
+    else {
+        for (const auto& ct: contacts)
+        {
+            const auto key = std::get<ContactKey>(ct);
+            const auto contactID = std::get<ContactID>(ct);
+            ImGui::Text("Contact %u (%u,%u%s)", contactID.get(), key.GetMin(), key.GetMax(),
+                        IsTouching(world, contactID)? ",touching": "");
+            if (ImGui::IsItemHovered())
+            {
+                ImGui::SetTooltip("World ID of contact (and associated min & max tree keys).");
+            }
+        }
     }
 }
 
