@@ -92,8 +92,10 @@ bool SolvePosition(const Joint& object, std::vector<BodyConstraint>& bodies,
 class Joint
 {
 public:
+    /// @brief Body constraints map type alias.
     using BodyConstraintsMap = std::vector<BodyConstraint>;
 
+    /// @brief Default constructor.
     Joint() noexcept = default;
 
     /// @brief Initializing constructor.
@@ -141,6 +143,7 @@ public:
         return *this;
     }
 
+    /// @brief Swap function.
     void swap(Joint& other) noexcept
     {
         std::swap(m_self, other.m_self);
@@ -151,6 +154,9 @@ public:
         return object.m_self? object.m_self->GetType_(): GetTypeID<void>();
     }
 
+    /// @brief Converts the given joint into its current configuration value.
+    /// @note The design for this was based off the design of the C++17 <code>std::any</code>
+    ///   class and its associated <code>std::any_cast</code> function.
     template <typename T>
     friend auto TypeCast(const Joint* value) noexcept
     {
@@ -180,20 +186,20 @@ public:
         return object.m_self? object.m_self->ShiftOrigin_(value): false;
     }
 
-    friend void InitVelocity(Joint& object, BodyConstraintsMap& bodies,
+    friend void InitVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
                              const playrho::StepConf& step,
                              const ConstraintSolverConf& conf)
     {
         if (object.m_self) object.m_self->InitVelocity_(bodies, step, conf);
     }
 
-    friend bool SolveVelocity(Joint& object, BodyConstraintsMap& bodies,
+    friend bool SolveVelocity(Joint& object, std::vector<BodyConstraint>& bodies,
                               const playrho::StepConf& step)
     {
         return object.m_self? object.m_self->SolveVelocity_(bodies, step): false;
     }
 
-    friend bool SolvePosition(const Joint& object, BodyConstraintsMap& bodies,
+    friend bool SolvePosition(const Joint& object, std::vector<BodyConstraint>& bodies,
                               const ConstraintSolverConf& conf)
     {
         return object.m_self? object.m_self->SolvePosition_(bodies, conf): false;

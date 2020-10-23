@@ -2037,6 +2037,7 @@ bool WorldImpl::Add(ContactKey key)
     }
 #endif
     assert(bodyIdA != bodyIdB);
+    assert(fixtureIdA != fixtureIdB);
 
     auto& bodyA = m_bodyBuffer[UnderlyingValue(bodyIdA)];
     auto& bodyB = m_bodyBuffer[UnderlyingValue(bodyIdB)];

@@ -442,6 +442,7 @@ public:
     /// @note This changes the center of mass position.
     /// @note Creating or destroying fixtures can also alter the mass.
     /// @note This function has no effect if the body isn't dynamic.
+    /// @param id Identifier of the body to change.
     /// @param massData the mass properties.
     /// @throws std::out_of_range If given an invalid body identifier.
     void SetMassData(BodyID id, const MassData& massData);
@@ -627,6 +628,7 @@ public:
     /// @post After creating a new fixture, it will show up in the fixture enumeration
     ///   returned by the <code>GetFixtures()</code> methods.
     ///
+    /// @param body Identifier of the body to associate the new fixture with.
     /// @param shape Shareable shape definition.
     ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
     ///   the body's world.
