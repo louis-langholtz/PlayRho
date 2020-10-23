@@ -30,7 +30,7 @@
 namespace playrho {
 namespace d2 {
 
-SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world)
+SizedRange<std::vector<JointID>::const_iterator> GetJoints(const World& world) noexcept
 {
     return world.GetJoints();
 }

@@ -326,6 +326,11 @@ public:
     /// Member functions relating to bodies.
     ///@{
 
+    /// @brief Gets the extent of the currently valid body range.
+    /// @note This is one higher than the maxium BodyID that is in range for body related
+    ///   functions.
+    BodyCounter GetBodyRange() const noexcept;
+
     /// @brief Gets the world body range for this constant world.
     /// @details Gets a range enumerating the bodies currently existing within this world.
     ///   These are the bodies that had been created from previous calls to the
@@ -437,6 +442,7 @@ public:
     /// @note This changes the center of mass position.
     /// @note Creating or destroying fixtures can also alter the mass.
     /// @note This function has no effect if the body isn't dynamic.
+    /// @param id Identifier of the body to change.
     /// @param massData the mass properties.
     /// @throws std::out_of_range If given an invalid body identifier.
     void SetMassData(BodyID id, const MassData& massData);
@@ -622,6 +628,7 @@ public:
     /// @post After creating a new fixture, it will show up in the fixture enumeration
     ///   returned by the <code>GetFixtures()</code> methods.
     ///
+    /// @param body Identifier of the body to associate the new fixture with.
     /// @param shape Shareable shape definition.
     ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
     ///   the body's world.
@@ -646,7 +653,7 @@ public:
                             const FixtureConf& def = GetDefaultFixtureConf(),
                             bool resetMassData = true);
 
-    /// @brief Destroys a fixture.
+    /// @brief Destroys the identified fixture.
     ///
     /// @details Destroys a fixture previously created by the
     ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code>
@@ -658,7 +665,7 @@ public:
     /// @note Make sure to explicitly call <code>ResetMassData()</code> after fixtures have
     ///   been destroyed if resetting the mass data is not requested via the reset mass data
     ///   parameter.
-    /// @throws WrongState if this method is called while the world is locked.
+    /// @throws WrongState if this function is called while the world is locked.
     /// @throws std::out_of_range If given an invalid fixture identifier.
     ///
     /// @post After destroying a fixture, it will no longer show up in the fixture enumeration
@@ -696,7 +703,7 @@ public:
     /// @throws std::out_of_range If given an invalid fixture identifier.
     void SetFilterData(FixtureID id, const Filter& filter);
 
-    /// @brief Gets the identifier of the body associated with the specified fixture.
+    /// @brief Gets the identifier of the body associated with the identified fixture.
     /// @throws std::out_of_range If given an invalid fixture identifier.
     BodyID GetBody(FixtureID id) const;
 
@@ -748,7 +755,7 @@ public:
     /// @see Destroy(JointID), GetJoints.
     JointID CreateJoint(const Joint& def);
 
-    /// @brief Destroys a joint.
+    /// @brief Destroys the identified joint.
     /// @details Destroys a given joint that had previously been created by a call to this
     ///   world's <code>CreateJoint(const Joint&)</code> method.
     /// @warning This function is locked during callbacks.
@@ -784,9 +791,11 @@ public:
     /// @throws std::out_of_range If given an invalid joint identifier.
     JointType GetType(JointID id) const;
 
+    /// @brief Gets the identifier of body-A of the identified joint.
     /// @throws std::out_of_range If given an invalid joint identifier.
     BodyID GetBodyA(JointID id) const;
 
+    /// @brief Gets the identifier of body-B of the identified joint.
     /// @throws std::out_of_range If given an invalid joint identifier.
     BodyID GetBodyB(JointID id) const;
 
@@ -866,11 +875,11 @@ public:
     /// @throws std::out_of_range If given an invalid contact identifier.
     BodyID GetBodyB(ContactID id) const;
 
-    /// @brief Gets fixture A of the given contact.
+    /// @brief Gets fixture A of the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
     FixtureID GetFixtureA(ContactID id) const;
 
-    /// @brief Gets fixture B of the given contact.
+    /// @brief Gets fixture B of the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
     FixtureID GetFixtureB(ContactID id) const;
 
@@ -906,17 +915,17 @@ public:
     /// @throws std::out_of_range If given an invalid contact identifier.
     Real GetDefaultRestitution(ContactID id) const;
 
-    /// @brief Gets the friction used with the specified contact.
+    /// @brief Gets the friction used with the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
     /// @see SetFriction(ContactID id, Real value)
     Real GetFriction(ContactID id) const;
 
-    /// @brief Gets the restitution used with the specified contact.
+    /// @brief Gets the restitution used with the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
     /// @see SetRestitution(ContactID id, Real value)
     Real GetRestitution(ContactID id) const;
 
-    /// @brief Sets the friction value for the specified contact.
+    /// @brief Sets the friction value for the identified contact.
     /// @details Overrides the default friction mixture.
     /// @note You can call this in "pre-solve" listeners.
     /// @note This value persists until set or reset.
@@ -926,7 +935,7 @@ public:
     /// @throws std::out_of_range If given an invalid contact identifier.
     void SetFriction(ContactID id, Real value);
 
-    /// @brief Sets the restitution value for the specified contact.
+    /// @brief Sets the restitution value for the identified contact.
     /// @details This override the default restitution mixture.
     /// @note You can call this in "pre-solve" listeners.
     /// @note The value persists until you set or reset.

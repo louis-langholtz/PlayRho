@@ -108,6 +108,11 @@ void World::ShiftOrigin(Length2 newOrigin)
     ::playrho::d2::ShiftOrigin(*m_impl, newOrigin);
 }
 
+BodyCounter World::GetBodyRange() const noexcept
+{
+    return ::playrho::d2::GetBodyRange(*m_impl);
+}
+
 SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
 {
     return ::playrho::d2::GetBodies(*m_impl);

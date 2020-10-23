@@ -44,6 +44,11 @@
 namespace playrho {
 namespace d2 {
 
+BodyCounter GetBodyRange(const WorldImpl& world) noexcept
+{
+    return world.GetBodyRange();
+}
+
 void Destroy(WorldImpl& world, BodyID id)
 {
     world.Destroy(id);

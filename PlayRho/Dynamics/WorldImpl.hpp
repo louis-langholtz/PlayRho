@@ -244,15 +244,6 @@ public:
     ///
     StepStats Step(const StepConf& conf);
 
-    /// @brief Gets the world body range for this world.
-    /// @details Gets a range enumerating the bodies currently existing within this world.
-    ///   These are the bodies that had been created from previous calls to the
-    ///   <code>CreateBody(const BodyConf&)</code> method that haven't yet been destroyed.
-    /// @return Body range that can be iterated over using its begin and end methods
-    ///   or using ranged-based for-loops.
-    /// @see CreateBody(const BodyConf&).
-    SizedRange<Bodies::iterator> GetBodies() noexcept;
-
     /// @brief Gets the world body range for this constant world.
     /// @details Gets a range enumerating the bodies currently existing within this world.
     ///   These are the bodies that had been created from previous calls to the
@@ -261,6 +252,11 @@ public:
     ///   or using ranged-based for-loops.
     /// @see CreateBody(const BodyConf&).
     SizedRange<Bodies::const_iterator> GetBodies() const noexcept;
+
+    /// @brief Gets the extent of the currently valid body range.
+    /// @note This is one higher than the maxium BodyID that is in range for body related
+    ///   functions.
+    BodyCounter GetBodyRange() const noexcept;
 
     /// @brief Gets the bodies-for-proxies range for this world.
     /// @details Provides insight on what bodies have been queued for proxy processing
@@ -281,14 +277,6 @@ public:
     /// @return World joints sized-range.
     /// @see CreateJoint(const JointConf&).
     SizedRange<Joints::const_iterator> GetJoints() const noexcept;
-
-    /// @brief Gets the world joint range.
-    /// @details Gets a range enumerating the joints currently existing within this world.
-    ///   These are the joints that had been created from previous calls to the
-    ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
-    /// @return World joints sized-range.
-    /// @see CreateJoint(const JointConf&).
-    SizedRange<Joints::iterator> GetJoints() noexcept;
 
     /// @brief Gets the world contact range.
     /// @warning contacts are created and destroyed in the middle of a time step.
@@ -883,11 +871,6 @@ private:
     Positive<Length> m_maxVertexRadius;
 };
 
-inline SizedRange<WorldImpl::Bodies::iterator> WorldImpl::GetBodies() noexcept
-{
-    return {begin(m_bodies), end(m_bodies), size(m_bodies)};
-}
-
 inline SizedRange<WorldImpl::Bodies::const_iterator> WorldImpl::GetBodies() const noexcept
 {
     return {begin(m_bodies), end(m_bodies), size(m_bodies)};
@@ -904,11 +887,6 @@ inline SizedRange<WorldImpl::Fixtures::const_iterator> WorldImpl::GetFixturesFor
 }
 
 inline SizedRange<WorldImpl::Joints::const_iterator> WorldImpl::GetJoints() const noexcept
-{
-    return {begin(m_joints), end(m_joints), size(m_joints)};
-}
-
-inline SizedRange<WorldImpl::Joints::iterator> WorldImpl::GetJoints() noexcept
 {
     return {begin(m_joints), end(m_joints), size(m_joints)};
 }
