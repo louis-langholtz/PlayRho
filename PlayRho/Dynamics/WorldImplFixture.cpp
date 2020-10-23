@@ -44,11 +44,6 @@ BodyID GetBody(const WorldImpl& world, FixtureID id)
     return world.GetFixture(id).GetBody();
 }
 
-Transformation GetTransformation(const WorldImpl& world, FixtureID id)
-{
-    return GetTransformation(world, GetBody(world, id));
-}
-
 Shape GetShape(const WorldImpl& world, FixtureID id)
 {
     return world.GetFixture(id).GetShape();
@@ -72,16 +67,6 @@ AreaDensity GetDensity(const WorldImpl& world, FixtureID id)
 const WorldImpl::FixtureProxies& GetProxies(const WorldImpl& world, FixtureID id)
 {
     return world.GetFixture(id).GetProxies();
-}
-
-void SetAwake(WorldImpl& world, FixtureID id)
-{
-    SetAwake(world, world.GetFixture(id).GetBody());
-}
-
-MassData GetMassData(const WorldImpl& world, FixtureID id)
-{
-    return GetMassData(GetShape(world, id));
 }
 
 Filter GetFilterData(const WorldImpl& world, FixtureID id)

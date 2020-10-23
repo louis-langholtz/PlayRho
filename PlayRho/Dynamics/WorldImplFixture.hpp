@@ -74,17 +74,6 @@ const std::vector<FixtureProxy>& GetProxies(const WorldImpl& world, FixtureID id
 /// @relatedalso WorldImpl
 void SetSensor(WorldImpl& world, FixtureID id, bool value);
 
-/// @brief Gets the transformation associated with the given fixture.
-/// @relatedalso WorldImpl
-Transformation GetTransformation(const WorldImpl& world, FixtureID id);
-
-/// @brief Wakes up the body of the fixture.
-/// @relatedalso WorldImpl
-void SetAwake(WorldImpl& world, FixtureID id);
-
-/// @relatedalso WorldImpl
-MassData GetMassData(const WorldImpl& world, FixtureID id);
-
 /// @relatedalso WorldImpl
 Filter GetFilterData(const WorldImpl& world, FixtureID id);
 
