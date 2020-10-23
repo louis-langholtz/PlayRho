@@ -29,6 +29,7 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
 
 #include <chrono>
 
@@ -129,8 +130,16 @@ TEST(WorldBody, CreateFixture)
 TEST(WorldBody, Destroy)
 {
     auto world = World{};
+    EXPECT_THROW(Destroy(world, InvalidBodyID), std::out_of_range);
+    auto bodyID = InvalidBodyID;
+    EXPECT_NO_THROW(bodyID = CreateBody(world));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    EXPECT_NO_THROW(Destroy(world, bodyID));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+
     const auto bodyA = CreateBody(world);
     const auto bodyB = CreateBody(world);
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
     ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
     ASSERT_EQ(GetFixtureCount(world, bodyB), std::size_t(0));
 
@@ -572,6 +581,61 @@ TEST(WorldBody, SetAcceleration)
         EXPECT_EQ(GetLinearAcceleration(world, body), someLinearAccel * -1.0f);
         EXPECT_EQ(GetAngularAcceleration(world, body), someAngularAccel * 2.0f);
     }
+}
+
+TEST(WorldBody, SetAngularAcceleration)
+{
+    auto world = World{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    auto acceleration = AngularAcceleration{};
+    acceleration = Real(2) * RadianPerSquareSecond;
+    EXPECT_NO_THROW(SetAcceleration(world, body, acceleration));
+    EXPECT_EQ(GetAngularAcceleration(world, body), acceleration);
+    acceleration = Real(3) * RadianPerSquareSecond;
+    EXPECT_NO_THROW(SetAcceleration(world, body, acceleration));
+    EXPECT_EQ(GetAngularAcceleration(world, body), acceleration);
+}
+
+TEST(WorldBody, SetAngularVelocity)
+{
+    auto world = World{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    auto value = AngularVelocity{};
+    value = Real(4) * RadianPerSecond;
+    EXPECT_NO_THROW(SetVelocity(world, body, value));
+    EXPECT_EQ(GetAngularVelocity(world, body), value);
+    value = Real(5) * RadianPerSecond;
+    EXPECT_NO_THROW(SetVelocity(world, body, value));
+    EXPECT_EQ(GetAngularVelocity(world, body), value);
+}
+
+TEST(WorldBody, ApplyForce)
+{
+    auto world = World{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    ASSERT_EQ(GetMass(world, body), 4_kg);
+    auto value = Force2{};
+    value = Force2{4_N, 4_N};
+    EXPECT_NO_THROW(ApplyForce(world, body, value, GetWorldCenter(world, body)));
+    EXPECT_EQ(GetX(GetAcceleration(world, body).linear), LinearAcceleration(1_mps2));
+    EXPECT_EQ(GetY(GetAcceleration(world, body).linear), LinearAcceleration(1_mps2));
+    EXPECT_EQ(GetAcceleration(world, body).angular, AngularAcceleration());
+}
+
+TEST(WorldBody, ApplyTorque)
+{
+    auto world = World{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    ASSERT_EQ(GetMass(world, body), 4_kg);
+    auto value = Torque{};
+    value = 4_kg * SquareMeter / SquareSecond / Radian;
+    EXPECT_NO_THROW(ApplyTorque(world, body, value));
+    EXPECT_EQ(GetX(GetAcceleration(world, body).linear), LinearAcceleration(0_mps2));
+    EXPECT_EQ(GetY(GetAcceleration(world, body).linear), LinearAcceleration(0_mps2));
+    EXPECT_EQ(GetAcceleration(world, body).angular,
+              AngularAcceleration(Real(1.5) * Radian / SquareSecond));
 }
 
 TEST(WorldBody, CreateLotsOfFixtures)
