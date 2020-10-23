@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"classplayrho_1_1d2_1_1JointKey.html#abac02068bd88fb6f5ae9431aded4ebe7":[4,0,0,0,25,0],
+"classplayrho_1_1d2_1_1JointKey.html#ae6c8f8f9e3a4420f423dbae810ff151b":[4,0,0,0,25,1],
 "classplayrho_1_1d2_1_1Manifold.html":[4,0,0,0,26],
 "classplayrho_1_1d2_1_1Manifold.html#a05380ac6609b4f7b27e4c1ae9e9e7535":[4,0,0,0,26,35],
 "classplayrho_1_1d2_1_1Manifold.html#a05c347426e71c41c3b5cff2ff42fa864":[4,0,0,0,26,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "classplayrho_1_1d2_1_1VertexSet.html#a2db75b4004bb99e8dcd5e275805d158a":[4,0,0,0,51,4],
 "classplayrho_1_1d2_1_1VertexSet.html#a3ab60237213bf69d476b637cd2437d57":[4,0,0,0,51,3],
 "classplayrho_1_1d2_1_1VertexSet.html#a5a33cdf5ac70599dfe9d1881b8d58484":[4,0,0,0,51,8],
-"classplayrho_1_1d2_1_1VertexSet.html#a5f77a68b83bb1bb1f0cca946e51bd153":[4,0,0,0,51,12],
-"classplayrho_1_1d2_1_1VertexSet.html#a6975aa99493c5666ee93ba6c8a6d0d2d":[4,0,0,0,51,0],
-"classplayrho_1_1d2_1_1VertexSet.html#a6cd15a8277866afd8e620c0df9a2fc8d":[4,0,0,0,51,10]
+"classplayrho_1_1d2_1_1VertexSet.html#a5f77a68b83bb1bb1f0cca946e51bd153":[4,0,0,0,51,12]
 };

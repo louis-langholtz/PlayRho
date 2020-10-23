@@ -7826,6 +7826,27 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1DistanceJointConf.html</anchorfile>
+      <anchor>a262919449fdc976d24c1b57d5f764610</anchor>
+      <arglist>(const DistanceJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1DistanceJointConf.html</anchorfile>
+      <anchor>af7938377c565a183168613b640e651e8</anchor>
+      <arglist>(const DistanceJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1DistanceJointConf.html</anchorfile>
+      <anchor>a1086ac024e4e129259c3c1b4f7c5a6c4</anchor>
+      <arglist>(DistanceJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1DistanceJointConf.html</anchorfile>
@@ -7845,6 +7866,34 @@
       <anchorfile>structplayrho_1_1d2_1_1DistanceJointConf.html</anchorfile>
       <anchor>a2c85157ff9400e7126ef9959f062b347</anchor>
       <arglist>(const DistanceJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetFrequency</name>
+      <anchorfile>structplayrho_1_1d2_1_1DistanceJointConf.html</anchorfile>
+      <anchor>ae0cc3578e6f724a74d45e9cfc02d412d</anchor>
+      <arglist>(DistanceJointConf &amp;object, NonNegative&lt; Frequency &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetDampingRatio</name>
+      <anchorfile>structplayrho_1_1d2_1_1DistanceJointConf.html</anchorfile>
+      <anchor>a1f9a4e32b7ca3e69527dca3e2793e1ba</anchor>
+      <arglist>(DistanceJointConf &amp;object, Real value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLength</name>
+      <anchorfile>structplayrho_1_1d2_1_1DistanceJointConf.html</anchorfile>
+      <anchor>a9d8e5d2ecc10f965faa16f74ade58628</anchor>
+      <arglist>(const DistanceJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetLength</name>
+      <anchorfile>structplayrho_1_1d2_1_1DistanceJointConf.html</anchorfile>
+      <anchor>abf156111fddecc740c68f7dbcdaf7ba0</anchor>
+      <arglist>(DistanceJointConf &amp;object, Length value) noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -9404,6 +9453,27 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1FrictionJointConf.html</anchorfile>
+      <anchor>a91ac3d07e13f9277632001e8f02de54f</anchor>
+      <arglist>(const FrictionJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1FrictionJointConf.html</anchorfile>
+      <anchor>ade895bb6a4e1b45bc803784534f2ffb2</anchor>
+      <arglist>(const FrictionJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1FrictionJointConf.html</anchorfile>
+      <anchor>a110d0d6a089b3b8883e1f319984774fb</anchor>
+      <arglist>(FrictionJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1FrictionJointConf.html</anchorfile>
@@ -9423,6 +9493,34 @@
       <anchorfile>structplayrho_1_1d2_1_1FrictionJointConf.html</anchorfile>
       <anchor>ad8557c8dfa18bd290b35163d5cf86eba</anchor>
       <arglist>(const FrictionJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxForce</name>
+      <anchorfile>structplayrho_1_1d2_1_1FrictionJointConf.html</anchorfile>
+      <anchor>aba8162d50c28927d87bdf7e29aa8afe0</anchor>
+      <arglist>(const FrictionJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetMaxForce</name>
+      <anchorfile>structplayrho_1_1d2_1_1FrictionJointConf.html</anchorfile>
+      <anchor>afa6324a364b2b89057a749a5032ff720</anchor>
+      <arglist>(FrictionJointConf &amp;object, NonNegative&lt; Force &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxTorque</name>
+      <anchorfile>structplayrho_1_1d2_1_1FrictionJointConf.html</anchorfile>
+      <anchor>a00b4cc40afea7be207a08ad7c018f3c1</anchor>
+      <arglist>(const FrictionJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxTorque</name>
+      <anchorfile>structplayrho_1_1d2_1_1FrictionJointConf.html</anchorfile>
+      <anchor>acfc7a47e907d3aaf399a7919896f3571</anchor>
+      <arglist>(FrictionJointConf &amp;object, NonNegative&lt; Torque &gt; value) noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -9456,6 +9554,34 @@
       <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
       <anchor>a77274d38c0810e3d78a3f5190ede395b</anchor>
       <arglist>(Real v) noexcept</arglist>
+    </member>
+    <member kind="variable">
+      <type>BodyID</type>
+      <name>bodyC</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>a1d98acaf8f48b7aa1b9d895dfc41f80d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>BodyID</type>
+      <name>bodyD</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>a1da02e5e7815b02f0157b7a014b21e14</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>JointType</type>
+      <name>type1</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>a6cde514684bf9e81106db1afc274e5ef</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>JointType</type>
+      <name>type2</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>a3e8b80f3c5fc6cfab56ae7cf3e8be8bc</anchor>
+      <arglist></arglist>
     </member>
     <member kind="variable">
       <type>Length2</type>
@@ -9521,6 +9647,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>Real</type>
+      <name>constant</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>a57220f1055e1b98694d1588bd544405e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>Momentum</type>
       <name>impulse</name>
       <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
@@ -9577,6 +9710,27 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>aef9ee799e4e668610deb9199d0848153</anchor>
+      <arglist>(const GearJointConf &amp;object)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>af2ce467ab8d8f56bd0cf232fd554e58b</anchor>
+      <arglist>(const GearJointConf &amp;object)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>a086d21b8f77c0782aaaaee20a89aee6c</anchor>
+      <arglist>(GearJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
@@ -9596,6 +9750,41 @@
       <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
       <anchor>a5e4a317737862143d7fe7cb241f4a213</anchor>
       <arglist>(const GearJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetRatio</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>ad6bb4ee45a731f7095f5c052f16e15c0</anchor>
+      <arglist>(const GearJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetRatio</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>a0561c70cfa90284d65bba0a3f59cb62a</anchor>
+      <arglist>(GearJointConf &amp;object, Real value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetConstant</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>ac71c6757a2460462d539185069dd9c4c</anchor>
+      <arglist>(const GearJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetType1</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>ae6d9a2fadb19711e6a7dba77fc7c1b6d</anchor>
+      <arglist>(const GearJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetType2</name>
+      <anchorfile>structplayrho_1_1d2_1_1GearJointConf.html</anchorfile>
+      <anchor>a7bdfada30a9ccbb76361f8554034da92</anchor>
+      <arglist>(const GearJointConf &amp;object) noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -10920,6 +11109,20 @@
     <filename>classplayrho_1_1d2_1_1Joint.html</filename>
     <class kind="struct">playrho::d2::Joint::Concept</class>
     <class kind="struct">playrho::d2::Joint::Model</class>
+    <member kind="typedef">
+      <type>std::vector&lt; BodyConstraint &gt;</type>
+      <name>BodyConstraintsMap</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a2f4a323ae3e657599d2e765d6dadbb57</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>Joint</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a629afbd4f38402a8f5d23a13199642f1</anchor>
+      <arglist>() noexcept=default</arglist>
+    </member>
     <member kind="function">
       <type></type>
       <name>Joint</name>
@@ -10962,6 +11165,13 @@
       <anchor>a79d292f30f9366f3928e02ddec0b5e94</anchor>
       <arglist>(T &amp;&amp;other) noexcept</arglist>
     </member>
+    <member kind="function">
+      <type>void</type>
+      <name>swap</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a686ecf9d5b134af67040d2167eaaacbc</anchor>
+      <arglist>(Joint &amp;other) noexcept</arglist>
+    </member>
     <member kind="variable" protection="private">
       <type>std::unique_ptr&lt; Concept &gt;</type>
       <name>m_self</name>
@@ -10975,6 +11185,13 @@
       <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
       <anchor>a212ab3b036926dc191721116ad3cdb11</anchor>
       <arglist>(const Joint &amp;object) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend auto</type>
+      <name>TypeCast</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a66f97131881a313957aba162ae69ff61</anchor>
+      <arglist>(const Joint *value) noexcept</arglist>
     </member>
     <member kind="friend">
       <type>friend BodyID</type>
@@ -11003,6 +11220,27 @@
       <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
       <anchor>ab1fd942ded9bd44c35ca6b53448853d8</anchor>
       <arglist>(Joint &amp;object, Length2 value) noexcept</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend void</type>
+      <name>InitVelocity</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>aa16d15d5050a08af7aecd5dcd99443fb</anchor>
+      <arglist>(Joint &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const playrho::StepConf &amp;step, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>SolveVelocity</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a1d169bb471d249df8a59a40f281419e0</anchor>
+      <arglist>(Joint &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const playrho::StepConf &amp;step)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend bool</type>
+      <name>SolvePosition</name>
+      <anchorfile>classplayrho_1_1d2_1_1Joint.html</anchorfile>
+      <anchor>a27aed9f55469eccfe93c2ce023e97333</anchor>
+      <arglist>(const Joint &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
       <type>DistanceJointConf</type>
@@ -12756,6 +12994,13 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr</type>
+      <name>MotorJointConf</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>ae537300150f05493b163a0da29a9b1aa</anchor>
+      <arglist>()=default</arglist>
+    </member>
+    <member kind="function">
       <type></type>
       <name>MotorJointConf</name>
       <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
@@ -12889,6 +13134,27 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLocalAnchorA</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>a6bff2eef6c3ab00e21a7a497dfa69b02</anchor>
+      <arglist>(const MotorJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLocalAnchorB</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>aff7518dbaba68503c8534f3aa1bc1baf</anchor>
+      <arglist>(const MotorJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>a859dc8dd3001dc7aa23033f6de17bf97</anchor>
+      <arglist>(MotorJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
@@ -12908,6 +13174,90 @@
       <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
       <anchor>ac8c6b476d51a5fcd897ca16754a841ba</anchor>
       <arglist>(const MotorJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxForce</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>a2316866330d122410cad54477dea24c9</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxForce</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>a309119086874940563a7e3a4b91c9cc2</anchor>
+      <arglist>(MotorJointConf &amp;object, NonNegative&lt; Force &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxTorque</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>addea3c1c41374755038085922785f96d</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxTorque</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>a740454a9bdb11a84bfc34bad37908030</anchor>
+      <arglist>(MotorJointConf &amp;object, NonNegative&lt; Torque &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLinearError</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>ab1e80b7fb2a127c7bef5388890d3ee0e</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetAngularError</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>ac3f517e88d5b384e337d3322881c5886</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLinearOffset</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>a53e7afd4eb1bc197703f3d68c4ffd934</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetLinearOffset</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>a442a2ab7e9ce36a0ea28941056bc8d02</anchor>
+      <arglist>(MotorJointConf &amp;object, Length2 value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetAngularOffset</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>a75db6ad844d4be5361364e49907b24f8</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetAngularOffset</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>ab185fa3719432e9026a44e602279f8d1</anchor>
+      <arglist>(MotorJointConf &amp;object, Angle value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetCorrectionFactor</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>aa5e4489f264227f6c20010c1838248db</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetCorrectionFactor</name>
+      <anchorfile>structplayrho_1_1d2_1_1MotorJointConf.html</anchorfile>
+      <anchor>a5f373e05ffdf359e2f995aec4e5489c0</anchor>
+      <arglist>(MotorJointConf &amp;object, Real value) noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -14338,6 +14688,48 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLinearLowerLimit</name>
+      <anchorfile>structplayrho_1_1d2_1_1PrismaticJointConf.html</anchorfile>
+      <anchor>a2972598e6c903720d93d1aba138ec7b3</anchor>
+      <arglist>(const PrismaticJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLinearUpperLimit</name>
+      <anchorfile>structplayrho_1_1d2_1_1PrismaticJointConf.html</anchorfile>
+      <anchor>a239db9ab5446fbb27eb532c45965cbe4</anchor>
+      <arglist>(const PrismaticJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetLinearLimits</name>
+      <anchorfile>structplayrho_1_1d2_1_1PrismaticJointConf.html</anchorfile>
+      <anchor>ab3e9cb2455b78052970feaabe8cf3b1b</anchor>
+      <arglist>(PrismaticJointConf &amp;conf, Length lower, Length upper) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1PrismaticJointConf.html</anchorfile>
+      <anchor>ab043518c6b8959a7d71cd6325cbf2491</anchor>
+      <arglist>(PrismaticJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1PrismaticJointConf.html</anchorfile>
+      <anchor>a27fc45b373f9d4f6ff5fe190c9343649</anchor>
+      <arglist>(const PrismaticJointConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1PrismaticJointConf.html</anchorfile>
+      <anchor>acf7e81444165613ee2710dfc8804a04a</anchor>
+      <arglist>(const PrismaticJointConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1PrismaticJointConf.html</anchorfile>
@@ -14357,6 +14749,13 @@
       <anchorfile>structplayrho_1_1d2_1_1PrismaticJointConf.html</anchorfile>
       <anchor>a821a6b138deb8b47c6add793e3b8ea17</anchor>
       <arglist>(const PrismaticJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetMaxMotorForce</name>
+      <anchorfile>structplayrho_1_1d2_1_1PrismaticJointConf.html</anchorfile>
+      <anchor>a354d65b6b0cac0916b4788e0ce1a5470</anchor>
+      <arglist>(PrismaticJointConf &amp;object, Force value)</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -15206,6 +15605,55 @@
       <anchor>aaf3ced4d8560e9cd3c06e7c1db092cce</anchor>
       <arglist></arglist>
     </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr Length2</type>
+      <name>DefaultGroundAnchorA</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>a41075cd6efbcadb66a18f637da481eec</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr Length2</type>
+      <name>DefaultGroundAnchorB</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>a339e04304f259e0e6ed66adf5c19314d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr Length2</type>
+      <name>DefaultLocalAnchorA</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>a8482f925cae8e66cf13cbba4eda7b920</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static constexpr Length2</type>
+      <name>DefaultLocalAnchorB</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>af3fbe0b06f27ea75c47d9dece43ced46</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>a587b3fc0018a0aba1d156dcd26147d1d</anchor>
+      <arglist>(const PulleyJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>ad042f7000a43ec5b29154a07465005f6</anchor>
+      <arglist>(const PulleyJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>a900c2f617828c3a70f6b988ac4419b55</anchor>
+      <arglist>(PulleyJointConf &amp;object, Length2 newOrigin) noexcept</arglist>
+    </member>
     <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
@@ -15226,6 +15674,20 @@
       <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
       <anchor>a79e70e2b529615d0765783788b065904</anchor>
       <arglist>(const PulleyJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLengthA</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>a94c0bc2a8291d96ff45e0d157a9d5bf3</anchor>
+      <arglist>(const PulleyJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLengthB</name>
+      <anchorfile>structplayrho_1_1d2_1_1PulleyJointConf.html</anchorfile>
+      <anchor>aac6b715e0df3e5be4be5ccae4ac4fa36</anchor>
+      <arglist>(const PulleyJointConf &amp;object) noexcept</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -15601,6 +16063,41 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1RevoluteJointConf.html</anchorfile>
+      <anchor>ac0a763d149b879a45044edf3c0e513f8</anchor>
+      <arglist>(RevoluteJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Angle</type>
+      <name>GetAngularLowerLimit</name>
+      <anchorfile>structplayrho_1_1d2_1_1RevoluteJointConf.html</anchorfile>
+      <anchor>afd8850ec299f0679c41ca58081408de8</anchor>
+      <arglist>(const RevoluteJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Angle</type>
+      <name>GetAngularUpperLimit</name>
+      <anchorfile>structplayrho_1_1d2_1_1RevoluteJointConf.html</anchorfile>
+      <anchor>a0f475e87122dc3f396a975f55b1c70d0</anchor>
+      <arglist>(const RevoluteJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1RevoluteJointConf.html</anchorfile>
+      <anchor>a2cae96cc4b8f16e7a9ce6abd543f09c1</anchor>
+      <arglist>(const RevoluteJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1RevoluteJointConf.html</anchorfile>
+      <anchor>a4ee40ca4a9dbe09390f0ff493f276dac</anchor>
+      <arglist>(const RevoluteJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1RevoluteJointConf.html</anchorfile>
@@ -15620,6 +16117,20 @@
       <anchorfile>structplayrho_1_1d2_1_1RevoluteJointConf.html</anchorfile>
       <anchor>a24000d24706fa8d93f028b3b8b970a17</anchor>
       <arglist>(const RevoluteJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetAngularLimits</name>
+      <anchorfile>structplayrho_1_1d2_1_1RevoluteJointConf.html</anchorfile>
+      <anchor>ae5635ff98f64bcbf6a31cba670913afc</anchor>
+      <arglist>(RevoluteJointConf &amp;object, Angle lower, Angle upper) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetMaxMotorTorque</name>
+      <anchorfile>structplayrho_1_1d2_1_1RevoluteJointConf.html</anchorfile>
+      <anchor>ac5613ecd1ba9cd47dcfa45191c137dbd</anchor>
+      <arglist>(RevoluteJointConf &amp;object, Torque value)</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -15725,6 +16236,27 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1RopeJointConf.html</anchorfile>
+      <anchor>ac7acc7a694d7729620e48300eb157d7b</anchor>
+      <arglist>(const RopeJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1RopeJointConf.html</anchorfile>
+      <anchor>af3c61329399916ae2b063e6ba94ffb6e</anchor>
+      <arglist>(const RopeJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1RopeJointConf.html</anchorfile>
+      <anchor>a1259b960c0c0112346fa02785107cdc9</anchor>
+      <arglist>(RopeJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1RopeJointConf.html</anchorfile>
@@ -15744,6 +16276,20 @@
       <anchorfile>structplayrho_1_1d2_1_1RopeJointConf.html</anchorfile>
       <anchor>a14231e4629e5a1cc642aba42a35245a4</anchor>
       <arglist>(const RopeJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxLength</name>
+      <anchorfile>structplayrho_1_1d2_1_1RopeJointConf.html</anchorfile>
+      <anchor>ad5cf9d398d3e370e806a070fdbb8d685</anchor>
+      <arglist>(const RopeJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxLength</name>
+      <anchorfile>structplayrho_1_1d2_1_1RopeJointConf.html</anchorfile>
+      <anchor>aeeffd09d05131a961e0d3bd87f94c889</anchor>
+      <arglist>(RopeJointConf &amp;object, Length value) noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -17456,6 +18002,48 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLocalAnchorA</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>a742f3193b44e8038c6e21455f2cc3630</anchor>
+      <arglist>(const TargetJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>a7ec73e83dfde52a4e59c7ef6099e5073</anchor>
+      <arglist>(const TargetJointConf &amp;object)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>afa5cbad1175b924fab7ca3259d3ba8a9</anchor>
+      <arglist>(const TargetJointConf &amp;)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>aa3c8c836af2b8a71674101a3ace0d1bf</anchor>
+      <arglist>(TargetJointConf &amp;object, Length2 newOrigin)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetTarget</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>a643e49fe049c3befd1f928e4d732493c</anchor>
+      <arglist>(const TargetJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Mass22</type>
+      <name>GetEffectiveMassMatrix</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>a6cb7d8c6d0e8773c08196d43f14cc022</anchor>
+      <arglist>(const TargetJointConf &amp;object, const BodyConstraint &amp;body) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
@@ -17475,6 +18063,41 @@
       <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
       <anchor>a04c5b600eda74e0641524a3001e33888</anchor>
       <arglist>(const TargetJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetTarget</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>a0d143822f59e9a0dec84d98dbffdb540</anchor>
+      <arglist>(TargetJointConf &amp;object, Length2 value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxForce</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>a5433a140e014287406113e1ce6508dae</anchor>
+      <arglist>(const TargetJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxForce</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>a26488bda71d5ddb9df78975b2f37cb03</anchor>
+      <arglist>(TargetJointConf &amp;object, NonNegative&lt; Force &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetFrequency</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>ac9971494480e00e4c3fa99cba906339e</anchor>
+      <arglist>(TargetJointConf &amp;object, NonNegative&lt; Frequency &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetDampingRatio</name>
+      <anchorfile>structplayrho_1_1d2_1_1TargetJointConf.html</anchorfile>
+      <anchor>a93ccadc0666446729427c72fbdac4ad4</anchor>
+      <arglist>(TargetJointConf &amp;object, Real value) noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -22852,6 +23475,27 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1WeldJointConf.html</anchorfile>
+      <anchor>a2c609024f0b536db041b19c8f8869479</anchor>
+      <arglist>(const WeldJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1WeldJointConf.html</anchorfile>
+      <anchor>a3739f4255fc019f68cd74d5c21867845</anchor>
+      <arglist>(const WeldJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1WeldJointConf.html</anchorfile>
+      <anchor>a1ca7cf4000562ae2b92cce70e2446dce</anchor>
+      <arglist>(WeldJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1WeldJointConf.html</anchorfile>
@@ -22871,6 +23515,13 @@
       <anchorfile>structplayrho_1_1d2_1_1WeldJointConf.html</anchorfile>
       <anchor>a8866f1e40aceb9eb5d49d7b1031029cb</anchor>
       <arglist>(const WeldJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetFrequency</name>
+      <anchorfile>structplayrho_1_1d2_1_1WeldJointConf.html</anchorfile>
+      <anchor>acafa97d5359a1791ded4ccbc48a0cfaa</anchor>
+      <arglist>(WeldJointConf &amp;object, NonNegative&lt; Frequency &gt; value) noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -22952,6 +23603,13 @@
       <name>localXAxisA</name>
       <anchorfile>structplayrho_1_1d2_1_1WheelJointConf.html</anchorfile>
       <anchor>a46e7ce6bff277ac8f735c202803e7184</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>UnitVec</type>
+      <name>localYAxisA</name>
+      <anchorfile>structplayrho_1_1d2_1_1WheelJointConf.html</anchorfile>
+      <anchor>aa27ff21f996540548aee3217a64d0009</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -23088,6 +23746,20 @@
       <arglist></arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>structplayrho_1_1d2_1_1WheelJointConf.html</anchorfile>
+      <anchor>aef25b1a360e19b38a39af5a4b776eceb</anchor>
+      <arglist>(const WheelJointConf &amp;object)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>structplayrho_1_1d2_1_1WheelJointConf.html</anchorfile>
+      <anchor>a39aeb9ed40d5d141b57b0e2776a3f396</anchor>
+      <arglist>(WheelJointConf &amp;, Length2)</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>structplayrho_1_1d2_1_1WheelJointConf.html</anchorfile>
@@ -23107,6 +23779,27 @@
       <anchorfile>structplayrho_1_1d2_1_1WheelJointConf.html</anchorfile>
       <anchor>a71acdf32b41c7fa92c981ca8dd2db6c6</anchor>
       <arglist>(const WheelJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetMaxMotorTorque</name>
+      <anchorfile>structplayrho_1_1d2_1_1WheelJointConf.html</anchorfile>
+      <anchor>a7f82a394a8c0f5a020f8647ce0a34d39</anchor>
+      <arglist>(WheelJointConf &amp;object, Torque value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetFrequency</name>
+      <anchorfile>structplayrho_1_1d2_1_1WheelJointConf.html</anchorfile>
+      <anchor>adcd79908a087d2c25629aa14895bf49c</anchor>
+      <arglist>(WheelJointConf &amp;object, NonNegative&lt; Frequency &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetDampingRatio</name>
+      <anchorfile>structplayrho_1_1d2_1_1WheelJointConf.html</anchorfile>
+      <anchor>ae7f1530d1c2de2df859dfae6eb23d141</anchor>
+      <arglist>(WheelJointConf &amp;object, Real value) noexcept</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -23446,10 +24139,17 @@
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>std::size_t</type>
+      <type>FixtureCounter</type>
       <name>GetShapeCount</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a296dbeb1ce33c33f2659127e91082bcf</anchor>
+      <anchor>aae9025373446bef79628f537e41cc5dd</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>ac423e891b05839d03616cb46e16cfdb0</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -23548,13 +24248,6 @@
       <name>GetFixtures</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
       <anchor>a2e42754f22a7b0f98f15970f336fdb13</anchor>
-      <arglist>(BodyID id) const</arglist>
-    </member>
-    <member kind="function">
-      <type>FixtureCounter</type>
-      <name>GetFixtureCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aaf82be22b315c64bfaabc88b7d598b16</anchor>
       <arglist>(BodyID id) const</arglist>
     </member>
     <member kind="function">
@@ -24181,794 +24874,1081 @@
       <arglist>(const World &amp;world, const RayCastInput &amp;input, const FixtureRayCastCB &amp;callback)</arglist>
     </member>
     <member kind="function">
-      <type>BodyID</type>
-      <name>CreateBody</name>
+      <type>DistanceJointConf</type>
+      <name>GetDistanceJointConf</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a7a7b3314c3d17fbb49952bdf4fb4ff1a</anchor>
-      <arglist>(World &amp;world, const BodyConf &amp;def=GetDefaultBodyConf())</arglist>
+      <anchor>a6809a5b4f9ba4ad7957553a329fe1994</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, Length2 anchorA=Length2{}, Length2 anchorB=Length2{})</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
-      <name>Destroy</name>
+      <type>FrictionJointConf</type>
+      <name>GetFrictionJointConf</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a5220bddd2803e882d97dfbce54bdceda</anchor>
-      <arglist>(World &amp;world, BodyID id)</arglist>
+      <anchor>a35e8c4e6880befb1f81a4caa3b7914eb</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, Length2 anchor)</arglist>
     </member>
     <member kind="function">
-      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
-      <name>GetFixtures</name>
+      <type>GearJointConf</type>
+      <name>GetGearJointConf</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ae475a107e192ce25ee57d10790805bfc</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
+      <anchor>a2e2f7487e6bca2b26a9dc6779a9bc72b</anchor>
+      <arglist>(const World &amp;world, JointID id1, JointID id2, Real ratio=Real{1})</arglist>
     </member>
     <member kind="function">
-      <type>LinearAcceleration2</type>
-      <name>GetLinearAcceleration</name>
+      <type>MotorJointConf</type>
+      <name>GetMotorJointConf</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ae8ca55fff3e787fcbc3d30fc8f39f49c</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
+      <anchor>abc10ead5563974d639870bb4c9955a51</anchor>
+      <arglist>(const World &amp;world, BodyID bA, BodyID bB)</arglist>
     </member>
     <member kind="function">
-      <type>AngularAcceleration</type>
-      <name>GetAngularAcceleration</name>
+      <type>PrismaticJointConf</type>
+      <name>GetPrismaticJointConf</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a05620c9ad05a74b4cd9799d76f4df0ed</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
+      <anchor>aea5a3b058a514a9dac2a7670be4f37ad</anchor>
+      <arglist>(const World &amp;world, BodyID bA, BodyID bB, const Length2 anchor, const UnitVec axis)</arglist>
     </member>
     <member kind="function">
-      <type>Acceleration</type>
-      <name>GetAcceleration</name>
+      <type>LinearVelocity</type>
+      <name>GetLinearVelocity</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a8c16a3a5c5a313873e82f2a5b3c5a444</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
+      <anchor>ab7b59db43cee6a26c0433b69476b0c9b</anchor>
+      <arglist>(const World &amp;world, const PrismaticJointConf &amp;joint) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
-      <name>SetAcceleration</name>
+      <type>PulleyJointConf</type>
+      <name>GetPulleyJointConf</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a418cd290b6a2d35b2e1714b8ad2b5977</anchor>
-      <arglist>(World &amp;world, BodyID id, LinearAcceleration2 linear, AngularAcceleration angular)</arglist>
+      <anchor>a3addeb61645a20288e22687cbef5c6b3</anchor>
+      <arglist>(const World &amp;world, BodyID bA, BodyID bB, Length2 groundA, Length2 groundB, Length2 anchorA, Length2 anchorB)</arglist>
     </member>
     <member kind="function">
-      <type>void</type>
-      <name>SetAcceleration</name>
+      <type>RevoluteJointConf</type>
+      <name>GetRevoluteJointConf</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ab55a73746131ce67978e1b6525ef2828</anchor>
-      <arglist>(World &amp;world, BodyID id, LinearAcceleration2 value)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAcceleration</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a7d38270de7497d14ebf2dfe48eb64699</anchor>
-      <arglist>(World &amp;world, BodyID id, AngularAcceleration value)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAcceleration</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a38238366981a6ff670b61aef3ec738c0</anchor>
-      <arglist>(World &amp;world, BodyID id, Acceleration value)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetTransformation</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad01a8fe16bba00769e661ac6ea969389</anchor>
-      <arglist>(World &amp;world, BodyID id, Transformation xfm)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetTransform</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>afe96807931f9815ed363951901508f8d</anchor>
-      <arglist>(World &amp;world, BodyID id, Length2 location, Angle angle)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetLocation</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aa31cc6e0438fd8de38fe1eddab503121</anchor>
-      <arglist>(World &amp;world, BodyID id, Length2 value)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAngle</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a245759e710fc195c98621e6d1ceb4433</anchor>
-      <arglist>(World &amp;world, BodyID id, Angle value)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>RotateAboutWorldPoint</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a118f1cd558a4d51a5f7123fcfdcdf5b6</anchor>
-      <arglist>(World &amp;world, BodyID id, Angle amount, Length2 worldPoint)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>RotateAboutLocalPoint</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a3d9fea50aa07339ec50b07d3673a1be7</anchor>
-      <arglist>(World &amp;world, BodyID id, Angle amount, Length2 localPoint)</arglist>
-    </member>
-    <member kind="function">
-      <type>Acceleration</type>
-      <name>CalcGravitationalAcceleration</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a145bc2034162d0e6684d8d606211fb5e</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyCounter</type>
-      <name>GetWorldIndex</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a96cce8e8cf11bdfcb2d834f999744dd3</anchor>
-      <arglist>(const World &amp;world, const BodyID id) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyConf</type>
-      <name>GetBodyConf</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aa4201f28997164f33c2aeeb79bce6f65</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetType</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a225bcf6be6eb93237264075846cdb562</anchor>
-      <arglist>(World &amp;world, BodyID id, BodyType value)</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyType</type>
-      <name>GetType</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a1d049ed1a0633d0c0a7138a2c79823b5</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>Transformation</type>
-      <name>GetTransformation</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ae851807b71a13326be2635fb8af75ab6</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetLocation</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aabf27f5cfd9092be041a781d24cfa9a1</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetWorldPoint</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad52c5cffc4cd82e4cf533db1afcedc93</anchor>
-      <arglist>(const World &amp;world, BodyID id, const Length2 localPoint)</arglist>
-    </member>
-    <member kind="function">
-      <type>UnitVec</type>
-      <name>GetLocalVector</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ac542518f1fbacb567e5b39778de863db</anchor>
-      <arglist>(const World &amp;world, BodyID body, const UnitVec uv)</arglist>
-    </member>
-    <member kind="function">
-      <type>Length2</type>
-      <name>GetLocalPoint</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad432f7c9779ee902b41cdfab944c8885</anchor>
-      <arglist>(const World &amp;world, BodyID body, const Length2 worldPoint)</arglist>
+      <anchor>aebf949d6443b1a6a85ff8a97b65d1b5b</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, Length2 anchor)</arglist>
     </member>
     <member kind="function">
       <type>Angle</type>
       <name>GetAngle</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a65c0c4c3adb519277e5418ec800bb7b3</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>UnitVec</type>
-      <name>GetWorldVector</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>afb57be7efe663810331859b5e0c9a253</anchor>
-      <arglist>(const World &amp;world, BodyID body, UnitVec localVector)</arglist>
-    </member>
-    <member kind="function">
-      <type>Velocity</type>
-      <name>GetVelocity</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>acc05b211fd414f80784e7250c1f0b173</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>LinearVelocity2</type>
-      <name>GetLinearVelocity</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>afb257e46e441021d64884e95c400fa0f</anchor>
-      <arglist>(const World &amp;world, BodyID id)</arglist>
+      <anchor>ab6330d5a0349c5c78357355a05815694</anchor>
+      <arglist>(const World &amp;world, const RevoluteJointConf &amp;conf)</arglist>
     </member>
     <member kind="function">
       <type>AngularVelocity</type>
       <name>GetAngularVelocity</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a116c82c48643c1ef6199d27e9b9dd882</anchor>
+      <anchor>a2103c29612c27b521ec004b60c4b77e5</anchor>
+      <arglist>(const World &amp;world, const RevoluteJointConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>WeldJointConf</type>
+      <name>GetWeldJointConf</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a7a5a52a8c470433ddeb8e44616b0d28a</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, const Length2 anchor=Length2{})</arglist>
+    </member>
+    <member kind="function">
+      <type>WheelJointConf</type>
+      <name>GetWheelJointConf</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>afe5cfdb1c7cdce8f51cd5b5932d9059a</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, Length2 anchor, UnitVec axis=UnitVec::GetRight())</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetAngularVelocity</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>a54073d6bb0b399295ab2b2ce105b02f4</anchor>
+      <arglist>(const World &amp;world, const WheelJointConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe80bceeb031d85076c29f75f0241475</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodies</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga28f809f0951bfb0a97027eaefca55515</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa70eeb7b7e00b3920f4539f569be34d2</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7a7b3314c3d17fbb49952bdf4fb4ff1a</anchor>
+      <arglist>(World &amp;world, const BodyConf &amp;def=GetDefaultBodyConf())</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5220bddd2803e882d97dfbce54bdceda</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
+      <name>GetFixtures</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae475a107e192ce25ee57d10790805bfc</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureCounter</type>
+      <name>GetFixtureCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga20944afa5f0709c73162e7f7bf56e408</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LinearAcceleration2</type>
+      <name>GetLinearAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae8ca55fff3e787fcbc3d30fc8f39f49c</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularAcceleration</type>
+      <name>GetAngularAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga05620c9ad05a74b4cd9799d76f4df0ed</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Acceleration</type>
+      <name>GetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8c16a3a5c5a313873e82f2a5b3c5a444</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga418cd290b6a2d35b2e1714b8ad2b5977</anchor>
+      <arglist>(World &amp;world, BodyID id, LinearAcceleration2 linear, AngularAcceleration angular)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab55a73746131ce67978e1b6525ef2828</anchor>
+      <arglist>(World &amp;world, BodyID id, LinearAcceleration2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7d38270de7497d14ebf2dfe48eb64699</anchor>
+      <arglist>(World &amp;world, BodyID id, AngularAcceleration value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga38238366981a6ff670b61aef3ec738c0</anchor>
+      <arglist>(World &amp;world, BodyID id, Acceleration value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTransformation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad01a8fe16bba00769e661ac6ea969389</anchor>
+      <arglist>(World &amp;world, BodyID id, Transformation xfm)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTransform</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafe96807931f9815ed363951901508f8d</anchor>
+      <arglist>(World &amp;world, BodyID id, Length2 location, Angle angle)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetLocation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa31cc6e0438fd8de38fe1eddab503121</anchor>
+      <arglist>(World &amp;world, BodyID id, Length2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAngle</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga245759e710fc195c98621e6d1ceb4433</anchor>
+      <arglist>(World &amp;world, BodyID id, Angle value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RotateAboutWorldPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga118f1cd558a4d51a5f7123fcfdcdf5b6</anchor>
+      <arglist>(World &amp;world, BodyID id, Angle amount, Length2 worldPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RotateAboutLocalPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga3d9fea50aa07339ec50b07d3673a1be7</anchor>
+      <arglist>(World &amp;world, BodyID id, Angle amount, Length2 localPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>Acceleration</type>
+      <name>CalcGravitationalAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga145bc2034162d0e6684d8d606211fb5e</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetWorldIndex</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga96cce8e8cf11bdfcb2d834f999744dd3</anchor>
+      <arglist>(const World &amp;world, const BodyID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyConf</type>
+      <name>GetBodyConf</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa4201f28997164f33c2aeeb79bce6f65</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetType</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga225bcf6be6eb93237264075846cdb562</anchor>
+      <arglist>(World &amp;world, BodyID id, BodyType value)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyType</type>
+      <name>GetType</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1d049ed1a0633d0c0a7138a2c79823b5</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Transformation</type>
+      <name>GetTransformation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae851807b71a13326be2635fb8af75ab6</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaabf27f5cfd9092be041a781d24cfa9a1</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetWorldPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad52c5cffc4cd82e4cf533db1afcedc93</anchor>
+      <arglist>(const World &amp;world, BodyID id, const Length2 localPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalVector</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gac542518f1fbacb567e5b39778de863db</anchor>
+      <arglist>(const World &amp;world, BodyID body, const UnitVec uv)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad432f7c9779ee902b41cdfab944c8885</anchor>
+      <arglist>(const World &amp;world, BodyID body, const Length2 worldPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga65c0c4c3adb519277e5418ec800bb7b3</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetWorldVector</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb57be7efe663810331859b5e0c9a253</anchor>
+      <arglist>(const World &amp;world, BodyID body, UnitVec localVector)</arglist>
+    </member>
+    <member kind="function">
+      <type>Velocity</type>
+      <name>GetVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gacc05b211fd414f80784e7250c1f0b173</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LinearVelocity2</type>
+      <name>GetLinearVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb257e46e441021d64884e95c400fa0f</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetAngularVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga116c82c48643c1ef6199d27e9b9dd882</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetVelocity</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad96f80e152c8b40ffb278dd171a018fc</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad96f80e152c8b40ffb278dd171a018fc</anchor>
       <arglist>(World &amp;world, BodyID id, const Velocity &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetVelocity</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ab57a90509099257c82af9931964780d0</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab57a90509099257c82af9931964780d0</anchor>
       <arglist>(World &amp;world, BodyID id, const LinearVelocity2 &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetVelocity</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>abe9eb60684f92671b2acf31c20e7bfdb</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe9eb60684f92671b2acf31c20e7bfdb</anchor>
       <arglist>(World &amp;world, BodyID id, AngularVelocity value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>DestroyFixtures</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a1857e5c1478f8297e7eec75bb055d0ce</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1857e5c1478f8297e7eec75bb055d0ce</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsEnabled</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>acf3eb15a8221d495856fd34c831255a1</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gacf3eb15a8221d495856fd34c831255a1</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEnabled</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a36fa18310477a7ab081e0b81425b5bad</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga36fa18310477a7ab081e0b81425b5bad</anchor>
       <arglist>(World &amp;world, BodyID id, bool value)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsAwake</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aa7a828e4da95fbbaffcfc14186e451a1</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa7a828e4da95fbbaffcfc14186e451a1</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAwake</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a67874514581554435fd8065942a33050</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga67874514581554435fd8065942a33050</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>UnsetAwake</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>abb9770df3b38d727d39b7ac13ba4c77b</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabb9770df3b38d727d39b7ac13ba4c77b</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>Awaken</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a4968cdffa51be385b42f978f3226901d</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga4968cdffa51be385b42f978f3226901d</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsMassDataDirty</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a28c9e02154e09942576f0edc8297415c</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga28c9e02154e09942576f0edc8297415c</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsFixedRotation</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a0a234fed595bbb7745f54c0820597260</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0a234fed595bbb7745f54c0820597260</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetFixedRotation</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a1a11e67e4bda096d53e4c6a55272656b</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1a11e67e4bda096d53e4c6a55272656b</anchor>
       <arglist>(World &amp;world, BodyID id, bool value)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetWorldCenter</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a32537729a6c93bba8c9ea99a3bcd737f</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga32537729a6c93bba8c9ea99a3bcd737f</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>InvMass</type>
       <name>GetInvMass</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ae67b1e703960f2ac4bfefc9d38c7a164</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae67b1e703960f2ac4bfefc9d38c7a164</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>InvRotInertia</type>
       <name>GetInvRotInertia</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>adbe356dc1eaa258248d26ba77fc8491f</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadbe356dc1eaa258248d26ba77fc8491f</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Mass</type>
       <name>GetMass</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad51a22660fa68bff534e3ae5bbcaba38</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad51a22660fa68bff534e3ae5bbcaba38</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>RotInertia</type>
       <name>GetRotInertia</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a8cc24a20ec1f33d8e51baf8bc435406a</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8cc24a20ec1f33d8e51baf8bc435406a</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetLocalCenter</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a0d96416fb8a1165678be1c50fce12cc6</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0d96416fb8a1165678be1c50fce12cc6</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>RotInertia</type>
       <name>GetLocalRotInertia</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad374df7cc8d1a5a9a186e0ae8a7c8cb3</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad374df7cc8d1a5a9a186e0ae8a7c8cb3</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>MassData</type>
       <name>GetMassData</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a873904ef02cab072a393ef4554c17ea3</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga873904ef02cab072a393ef4554c17ea3</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>MassData</type>
       <name>ComputeMassData</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a0f6db19ca88cbfda1c130583c367b97e</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0f6db19ca88cbfda1c130583c367b97e</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetMassData</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>abe6b45c9a1aeec496d83c00a6f587740</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe6b45c9a1aeec496d83c00a6f587740</anchor>
       <arglist>(World &amp;world, BodyID id, const MassData &amp;massData)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ResetMassData</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a0f4a5600e14e8a21bdf50bfe3382cb55</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0f4a5600e14e8a21bdf50bfe3382cb55</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>ShouldCollide</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a1119c41348e3ff410831053cb949e0a6</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1119c41348e3ff410831053cb949e0a6</anchor>
       <arglist>(const World &amp;world, BodyID lhs, BodyID rhs)</arglist>
     </member>
     <member kind="function">
       <type>SizedRange&lt; std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;::const_iterator &gt;</type>
       <name>GetJoints</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a0eeb57c8beb84dfbfe470b9707b1fa92</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0eeb57c8beb84dfbfe470b9707b1fa92</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsSpeedable</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a5a9a1e21b5e0f1b2200d902a3f577e6e</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5a9a1e21b5e0f1b2200d902a3f577e6e</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsAccelerable</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ac33af5ec304e45152ffb2d275ba5093c</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gac33af5ec304e45152ffb2d275ba5093c</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsImpenetrable</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a11893b06ac5c981fc1da435d2a07063f</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga11893b06ac5c981fc1da435d2a07063f</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetImpenetrable</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>afb1332e63f530ca56d0efa14deb06bba</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb1332e63f530ca56d0efa14deb06bba</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>UnsetImpenetrable</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a66f55f614954b3969e3fb94733834a61</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga66f55f614954b3969e3fb94733834a61</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetImpenetrable</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>adb8a3d49c66601ec5953d19714aa9759</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadb8a3d49c66601ec5953d19714aa9759</anchor>
       <arglist>(World &amp;world, BodyID id, bool value)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsSleepingAllowed</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>abf1860a0b9cd6de8e35cf3ab3353db31</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabf1860a0b9cd6de8e35cf3ab3353db31</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetSleepingAllowed</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a8f148aa57e72254d95694d31c7b4dbb1</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8f148aa57e72254d95694d31c7b4dbb1</anchor>
       <arglist>(World &amp;world, BodyID, bool value)</arglist>
     </member>
     <member kind="function">
       <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
       <name>GetContacts</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ae5ab8a5162315de2f340bf43b8243e5d</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae5ab8a5162315de2f340bf43b8243e5d</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Force2</type>
       <name>GetCentripetalForce</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a63ff1a3d8b15fd8ab2fc36b475a6b643</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga63ff1a3d8b15fd8ab2fc36b475a6b643</anchor>
       <arglist>(const World &amp;world, BodyID id, Length2 axis)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyForceToCenter</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aff8c388b99a60c431d85dc649786562a</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaff8c388b99a60c431d85dc649786562a</anchor>
       <arglist>(World &amp;world, BodyID id, Force2 force)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyForce</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>af2cf9255dec702ee772907123e23d889</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaf2cf9255dec702ee772907123e23d889</anchor>
       <arglist>(World &amp;world, BodyID id, Force2 force, Length2 point)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyTorque</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a63de8f07f975cb055b0790364f2f6a69</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga63de8f07f975cb055b0790364f2f6a69</anchor>
       <arglist>(World &amp;world, BodyID id, Torque torque)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyLinearImpulse</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a496ed2441dd8b38efd57ca94b2c74a17</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga496ed2441dd8b38efd57ca94b2c74a17</anchor>
       <arglist>(World &amp;world, BodyID id, Momentum2 impulse, Length2 point)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyAngularImpulse</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a1b34b2cc77e2ef64a6155572fc589ead</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1b34b2cc77e2ef64a6155572fc589ead</anchor>
       <arglist>(World &amp;world, BodyID id, AngularMomentum impulse)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetForce</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>adca4e4bff8f8c98a0247a10e9551edca</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadca4e4bff8f8c98a0247a10e9551edca</anchor>
       <arglist>(World &amp;world, BodyID id, Force2 force, Length2 point) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetTorque</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a5800108f6c4be7a8a49d5283aa881616</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5800108f6c4be7a8a49d5283aa881616</anchor>
       <arglist>(World &amp;world, BodyID id, Torque torque) noexcept</arglist>
     </member>
     <member kind="function">
       <type>Frequency</type>
       <name>GetLinearDamping</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad68f40e70485dd95d747d0531f2debad</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad68f40e70485dd95d747d0531f2debad</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetLinearDamping</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a9fd32bf6cda4a42e0b61db21fb7bfe5c</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga9fd32bf6cda4a42e0b61db21fb7bfe5c</anchor>
       <arglist>(World &amp;world, BodyID id, NonNegative&lt; Frequency &gt; linearDamping)</arglist>
     </member>
     <member kind="function">
       <type>Frequency</type>
       <name>GetAngularDamping</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aec885dc5540478cf5ffef4e893e82fcd</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaec885dc5540478cf5ffef4e893e82fcd</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAngularDamping</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a79dbcc9738c04b86acf653b8cab48971</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga79dbcc9738c04b86acf653b8cab48971</anchor>
       <arglist>(World &amp;world, BodyID id, NonNegative&lt; Frequency &gt; angularDamping)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetAwakeCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0812de1607b6656927bc2ad724f1d7c3</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>Awaken</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1539463268cf6db572823eb1a195dc70</anchor>
+      <arglist>(World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>FindClosestBody</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7c37ce126c86487bd78a0b8d6734e182</anchor>
+      <arglist>(const World &amp;world, Length2 location) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga54933e742508cac5c0b219c653c67674</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad85bb4dfbf060d7d28668e4bc2d73a10</anchor>
+      <arglist>(World &amp;world, Acceleration acceleration) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab9dc75916d003478c7004172110b58e2</anchor>
+      <arglist>(World &amp;world, LinearAcceleration2 acceleration) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ClearForces</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa8a757a3ee66fa157cbf1ffafdf556d4</anchor>
+      <arglist>(World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae23446b68b07e35cff2b642c5573acfe</anchor>
+      <arglist>(World &amp;world, F fn)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
+      <name>GetContacts</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga5ba0f1fe0a6e9a140c4d264f61f7440e</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsTouching</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a386a732d954a80f48e6a3ac7beca1237</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga386a732d954a80f48e6a3ac7beca1237</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsAwake</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a89c2757003061a1852f035d352ec68a5</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga89c2757003061a1852f035d352ec68a5</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAwake</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aeaa33fbede9039afb79513b1a7432278</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaeaa33fbede9039afb79513b1a7432278</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
       <name>GetBodyA</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aa8c24669bbb9850b21ef17c5217f0a45</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaa8c24669bbb9850b21ef17c5217f0a45</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
       <name>GetBodyB</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a379c87f1276cec0f81e35942dc144b27</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga379c87f1276cec0f81e35942dc144b27</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>FixtureID</type>
       <name>GetFixtureA</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>afb6a01c31ef63559cf6c5d7892e863d5</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gafb6a01c31ef63559cf6c5d7892e863d5</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>FixtureID</type>
       <name>GetFixtureB</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a697b60b490bbcdae46d962c97d780e07</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga697b60b490bbcdae46d962c97d780e07</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>ChildCounter</type>
       <name>GetChildIndexA</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a24ba41bdcb80e48e4bfebac362eb23db</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga24ba41bdcb80e48e4bfebac362eb23db</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>ChildCounter</type>
       <name>GetChildIndexB</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a708d52132fb3f4ffbd49bf09ebc64740</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga708d52132fb3f4ffbd49bf09ebc64740</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>TimestepIters</type>
+      <name>GetToiCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gab2cf2abf28efb6e6ba368648b49484f0</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>NeedsFiltering</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aadd14b7a073e106ee40d4488d131f673</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaadd14b7a073e106ee40d4488d131f673</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>NeedsUpdating</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aaada9701c50ea1607ecf3ae02c8f72c1</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaaada9701c50ea1607ecf3ae02c8f72c1</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>HasValidToi</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aae57c7aca1c8c840ea8eb1ba1d44ef07</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaae57c7aca1c8c840ea8eb1ba1d44ef07</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetToi</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ac62d6b0d4985566ff6e1ca9d3f1fa1e6</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gac62d6b0d4985566ff6e1ca9d3f1fa1e6</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetDefaultFriction</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad4c197be0402b89a41342cfe51523d45</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gad4c197be0402b89a41342cfe51523d45</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetDefaultRestitution</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad04dd80754bf974462c8796cd3c95b07</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gad04dd80754bf974462c8796cd3c95b07</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetFriction</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a2ada1ba075b82b0e496f2a3a012ab495</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga2ada1ba075b82b0e496f2a3a012ab495</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetRestitution</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ada6f0319b80bd4a62673f539e41d0b86</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gada6f0319b80bd4a62673f539e41d0b86</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetFriction</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a0fbfbb5c2714aac231db6f9b3794d9e4</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga0fbfbb5c2714aac231db6f9b3794d9e4</anchor>
       <arglist>(World &amp;world, ContactID id, Real friction)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetRestitution</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a74f86083992d822f2b6376b98c8e8a79</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga74f86083992d822f2b6376b98c8e8a79</anchor>
       <arglist>(World &amp;world, ContactID id, Real restitution)</arglist>
     </member>
     <member kind="function">
       <type>const Manifold &amp;</type>
       <name>GetManifold</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>af36b360b9ed9ff9e993a1c1a5655e46d</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf36b360b9ed9ff9e993a1c1a5655e46d</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>WorldManifold</type>
       <name>GetWorldManifold</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a9e4fddd252b20dfceb87d93f5ad11087</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga9e4fddd252b20dfceb87d93f5ad11087</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ResetFriction</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a74979affb98f9307f121fd8f4f63910d</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga74979affb98f9307f121fd8f4f63910d</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ResetRestitution</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>af23360c9130e209a06ae0c111f274876</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf23360c9130e209a06ae0c111f274876</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>LinearVelocity</type>
       <name>GetTangentSpeed</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a2a314b9568d6553aaac1df1a0054250e</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga2a314b9568d6553aaac1df1a0054250e</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetTangentSpeed</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>adaae6c7d046c05b5b2f79c2e0d3fedae</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gadaae6c7d046c05b5b2f79c2e0d3fedae</anchor>
       <arglist>(World &amp;world, ContactID id, LinearVelocity value)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsEnabled</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a10fdf8ef9cbd8b1ff7b51334e72a6ef5</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga10fdf8ef9cbd8b1ff7b51334e72a6ef5</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEnabled</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aaccb259506fe50452b035158ec12e47b</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaaccb259506fe50452b035158ec12e47b</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>UnsetEnabled</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a6b1a2071021c814a1ee5bfe54c994287</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga6b1a2071021c814a1ee5bfe54c994287</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetTouchingCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf8aabfb6390fed1c549e81700b0cd80e</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEnabled</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ae6e78139be823080998e2cf046601977</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gae6e78139be823080998e2cf046601977</anchor>
       <arglist>(World &amp;world, ContactID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gac7b6c00fbd4fc40a4957bd082c9437b4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gabb0c6a0197e0622c73a2b518e7901575</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureCounter</type>
+      <name>GetFixtureCount</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gac30f61aacb499241e0bde575efc4b5b4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureID</type>
+      <name>CreateFixture</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gac38ddfb3e74533c5ab45eec0496bf3e3</anchor>
+      <arglist>(World &amp;world, BodyID id, const Shape &amp;shape, const FixtureConf &amp;def=GetDefaultFixtureConf(), bool resetMassData=true)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>Destroy</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aee0269f0a023b2598e8b7286b35519d8</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gaee0269f0a023b2598e8b7286b35519d8</anchor>
       <arglist>(World &amp;world, FixtureID id, bool resetMassData=true)</arglist>
     </member>
     <member kind="function">
       <type>Filter</type>
       <name>GetFilterData</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a1dbda295266109b5cd1cb357124a1d4c</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga1dbda295266109b5cd1cb357124a1d4c</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetFilterData</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a5cda7cbb9a8e263bacaed250c1aea6cd</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga5cda7cbb9a8e263bacaed250c1aea6cd</anchor>
       <arglist>(World &amp;world, FixtureID id, const Filter &amp;filter)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>Refilter</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a7730246c18ade6a11dd03c5d91cf846d</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga7730246c18ade6a11dd03c5d91cf846d</anchor>
       <arglist>(World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBody</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gae41d95c5b1ec79c36e344c95fa884bc1</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>Transformation</type>
       <name>GetTransformation</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>acdfa023334becda826867586a581979d</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gacdfa023334becda826867586a581979d</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Shape</type>
+      <name>GetShape</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga97601c20aaeaeb957df19dd1e50a668d</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetFriction</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga58dc7587cbd5da666f4501eb719b059e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRestitution</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga7fe43c7b209c1aca69358206e4a7a9fa</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSensor</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gab61ecfbbe51f6e7f34db6b35ce15ac1b</anchor>
+      <arglist>(World &amp;world, FixtureID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSensor</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga191f8d94e1733aad171a69519a0ab49e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const std::vector&lt; FixtureProxy &gt; &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gabf1b5092216bb42b162d29c0095d644e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ChildCounter</type>
+      <name>GetProxyCount</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga9ee18a9ab216df6d28e29b65b9ea4434</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const FixtureProxy &amp;</type>
+      <name>GetProxy</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gae760d529f017d02de393e6fe58865ff1</anchor>
+      <arglist>(const World &amp;world, FixtureID id, ChildCounter child)</arglist>
     </member>
     <member kind="function">
       <type>MassData</type>
       <name>GetMassData</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a0f686d9e42eedbadcc373295b380dfa2</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga0f686d9e42eedbadcc373295b380dfa2</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
@@ -24979,304 +25959,409 @@
       <arglist>(const World &amp;world, FixtureID id, Length2 p)</arglist>
     </member>
     <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; JointID &gt;::const_iterator &gt;</type>
+      <name>GetJoints</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac8f6e0a116a71527f6671053e7f8e616</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>JointID</type>
       <name>CreateJoint</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a306ddb4629a63298afd72f849a05bbe5</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga306ddb4629a63298afd72f849a05bbe5</anchor>
       <arglist>(World &amp;world, const Joint &amp;def)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>Destroy</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a806941861724bdba59cbcc6fc0cea61e</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga806941861724bdba59cbcc6fc0cea61e</anchor>
       <arglist>(World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>JointType</type>
       <name>GetType</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a7a5f508e72fff8e0844aff436989a175</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga7a5f508e72fff8e0844aff436989a175</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Joint &amp;</type>
+      <name>GetJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1107e6659ad32e836ad15e04758d15bf</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac4b3a69acd5e4d6ccceda622fd2a3e9a</anchor>
+      <arglist>(World &amp;world, JointID id, const Joint &amp;def)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>GetCollideConnected</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a3b869cbb8b5896ccdf15c66f1d00761a</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3b869cbb8b5896ccdf15c66f1d00761a</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsMotorEnabled</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a9f9bc9518243b79711cd0defe739671c</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga9f9bc9518243b79711cd0defe739671c</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>EnableMotor</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aec28b93da1c0c63493d4a9d05e95eff2</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaec28b93da1c0c63493d4a9d05e95eff2</anchor>
       <arglist>(World &amp;world, JointID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLimitEnabled</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaea48262785f5cc1a4efcb6856e8327f2</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>EnableLimit</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gae88a98bb1700968afaff9b143820e0d1</anchor>
+      <arglist>(World &amp;world, JointID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga75920437a0a87a24443296f1191db23b</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3f6b43a34cbbdbc34530e5513820e2ac</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalAnchorA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gacde3e0a71def1cfceb2c821288555155</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalAnchorB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1aebe08694e219bf5032c3c44c5cc5ab</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3faa14e4c0188345c54d433a877ae01f</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga57bbf093e91c58e3bdf61479c561bee0</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetReferenceAngle</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga902c4e2db9331be98f4150759ed738bd</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalXAxisA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga35b304b54e47447d5277528ad2a9b469</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalYAxisA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf6865d25a20091233c0f8b104c658df2</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetMotorSpeed</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga688c457d004db7df23965d2227f4124e</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetMotorSpeed</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga900537131a6eb2dc318a7990d8c544b8</anchor>
+      <arglist>(World &amp;world, JointID id, AngularVelocity value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Torque</type>
+      <name>GetMaxMotorTorque</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf1b821c24f62a16d978fcce0f6ed0375</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetMaxMotorTorque</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa4a8c62d8ac89a11ae8f6be2e8cded5a</anchor>
+      <arglist>(World &amp;world, JointID id, Torque value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Momentum</type>
+      <name>GetLinearMotorImpulse</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1136742708ea7dc3cfd2ec1fc3435e1b</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>AngularMomentum</type>
       <name>GetAngularMotorImpulse</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a80c87366a9452f7ef76b5474a723e245</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga80c87366a9452f7ef76b5474a723e245</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>RotInertia</type>
       <name>GetAngularMass</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a69407c4afef863d09f490618aa390318</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga69407c4afef863d09f490618aa390318</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Frequency</type>
       <name>GetFrequency</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a72d60d568707d6551e9dedb02c9e2724</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga72d60d568707d6551e9dedb02c9e2724</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetFrequency</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a23e2f1041c3b5a7cbc2c1b1d7f7ff689</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga23e2f1041c3b5a7cbc2c1b1d7f7ff689</anchor>
       <arglist>(World &amp;world, JointID id, Frequency value)</arglist>
     </member>
     <member kind="function">
       <type>AngularVelocity</type>
       <name>GetAngularVelocity</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>af0d81eef4bb9836cfc9afef270a17054</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf0d81eef4bb9836cfc9afef270a17054</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsEnabled</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ac628649081fe495f59e06aff27f3201d</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac628649081fe495f59e06aff27f3201d</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>JointCounter</type>
       <name>GetWorldIndex</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ae1416ad660edc4914c490c7ea156ab93</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gae1416ad660edc4914c490c7ea156ab93</anchor>
       <arglist>(const World &amp;world, JointID id) noexcept</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetAnchorA</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad3c653a34c7a681dbc60ec447225e85f</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gad3c653a34c7a681dbc60ec447225e85f</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetAnchorB</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aa88982e1bd4c8bafe0160cdad5a68a71</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa88982e1bd4c8bafe0160cdad5a68a71</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRatio</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga7089b428b6ec35dc8b4d62396982bbd0</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length</type>
       <name>GetJointTranslation</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a0469ef558d7b14efb4792c7f24084d7e</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga0469ef558d7b14efb4792c7f24084d7e</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga488b1925795688fed10e2f506cda91c5</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Force</type>
       <name>GetMotorForce</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a3e6c752f15d341da441a3b7541bf8791</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3e6c752f15d341da441a3b7541bf8791</anchor>
       <arglist>(const World &amp;world, JointID id, Frequency inv_dt)</arglist>
     </member>
     <member kind="function">
       <type>Torque</type>
       <name>GetMotorTorque</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a2eb6880ff8f81a8555c092138e0c6759</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga2eb6880ff8f81a8555c092138e0c6759</anchor>
       <arglist>(const World &amp;world, JointID id, Frequency inv_dt)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetLinearOffset</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a730510b6851cf86fdc29a007ff3b26f0</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga730510b6851cf86fdc29a007ff3b26f0</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetLinearOffset</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a81d72e02a8cad05f27a97f52ab8fff3d</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga81d72e02a8cad05f27a97f52ab8fff3d</anchor>
       <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
     </member>
     <member kind="function">
       <type>Angle</type>
       <name>GetAngularOffset</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a1671b9e54818077d726f3f6cba342eb4</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1671b9e54818077d726f3f6cba342eb4</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAngularOffset</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>abddeb217913218d82cfb1857fc14e12b</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gabddeb217913218d82cfb1857fc14e12b</anchor>
       <arglist>(World &amp;world, JointID id, Angle value)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetGroundAnchorA</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a5e44d6db77292b823171b97df09a3cd8</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5e44d6db77292b823171b97df09a3cd8</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetGroundAnchorB</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a5011bee6db23c7f1d50cadf00674e692</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5011bee6db23c7f1d50cadf00674e692</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length</type>
       <name>GetCurrentLengthA</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>afd81bf06efee4b29f2490134f52baddc</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gafd81bf06efee4b29f2490134f52baddc</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length</type>
       <name>GetCurrentLengthB</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a11679510e7348f8480d317a02ba3e2aa</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga11679510e7348f8480d317a02ba3e2aa</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetTarget</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a74c3d7ede9ca7f67050e7ef5c109d212</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga74c3d7ede9ca7f67050e7ef5c109d212</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetTarget</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a5c5030bdc9a0a22cf720f3b3b551c6e2</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5c5030bdc9a0a22cf720f3b3b551c6e2</anchor>
       <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
     </member>
     <member kind="function">
       <type>Angle</type>
       <name>GetAngularLowerLimit</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a25c524e133872333f16ba15dec55a23d</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga25c524e133872333f16ba15dec55a23d</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Angle</type>
       <name>GetAngularUpperLimit</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a16abb6c18ad6df80be85a69e6cef496c</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga16abb6c18ad6df80be85a69e6cef496c</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAngularLimits</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aa07553452b8502796da81d8bb81b73d1</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa07553452b8502796da81d8bb81b73d1</anchor>
       <arglist>(World &amp;world, JointID id, Angle lower, Angle upper)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>ShiftOrigin</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a51154f75b56a864d6fd29682a5c16d8a</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga51154f75b56a864d6fd29682a5c16d8a</anchor>
       <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetDampingRatio</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aeb5fc13ad106742d7189897e0a95c2de</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaeb5fc13ad106742d7189897e0a95c2de</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length</type>
       <name>GetLength</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a806d53a54ac5ef05308d51d87cdf0192</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga806d53a54ac5ef05308d51d87cdf0192</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>LimitState</type>
       <name>GetLimitState</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>af0dcaa1775e96d5b8014493d6e3dbc7d</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf0dcaa1775e96d5b8014493d6e3dbc7d</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAwake</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a85c5cee4a3713d3ef248eab7b4d05926</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga85c5cee4a3713d3ef248eab7b4d05926</anchor>
       <arglist>(World &amp;world, JointID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
-      <name>GetBodies</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a07da07353245e09e0d8f84bb827dedd0</anchor>
-      <arglist>(const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>SizedRange&lt; std::vector&lt; JointID &gt;::const_iterator &gt;</type>
-      <name>GetJoints</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a161f3c440523b0b538fc3f978f9920d5</anchor>
-      <arglist>(const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
-      <name>GetContacts</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>abbcd2eb42506ece4c3d8855c4514c3f0</anchor>
-      <arglist>(const World &amp;world)</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyCounter</type>
-      <name>GetBodyCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a54933e742508cac5c0b219c653c67674</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>JointCounter</type>
       <name>GetJointCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a8902de592d92cefc72d2e984d591a27d</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ContactCounter</type>
-      <name>GetContactCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ac7b6c00fbd4fc40a4957bd082c9437b4</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ContactCounter</type>
-      <name>GetTouchingCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>af8aabfb6390fed1c549e81700b0cd80e</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga8902de592d92cefc72d2e984d591a27d</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
@@ -25301,74 +26386,25 @@
       <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
-      <name>GetFixturesForProxies</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>abb0c6a0197e0622c73a2b518e7901575</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>FixtureCounter</type>
-      <name>GetFixtureCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ac30f61aacb499241e0bde575efc4b5b4</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>std::size_t</type>
       <name>GetShapeCount</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a16741ddd7414c860451f4b6ba92d7bf4</anchor>
+      <anchor>a198704845b880c379966e5b79b297527</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>BodyCounter</type>
-      <name>GetAwakeCount</name>
+      <type>Length</type>
+      <name>GetMinVertexRadius</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a0812de1607b6656927bc2ad724f1d7c3</anchor>
+      <anchor>a37fe6b5dbdfa9f4e5b7a09bdcbd4485d</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>BodyCounter</type>
-      <name>Awaken</name>
+      <type>Length</type>
+      <name>GetMaxVertexRadius</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a1539463268cf6db572823eb1a195dc70</anchor>
-      <arglist>(World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAccelerations</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ae23446b68b07e35cff2b642c5573acfe</anchor>
-      <arglist>(World &amp;world, F fn)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAccelerations</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ad85bb4dfbf060d7d28668e4bc2d73a10</anchor>
-      <arglist>(World &amp;world, Acceleration acceleration) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAccelerations</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>ab9dc75916d003478c7004172110b58e2</anchor>
-      <arglist>(World &amp;world, LinearAcceleration2 acceleration) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ClearForces</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aa8a757a3ee66fa157cbf1ffafdf556d4</anchor>
-      <arglist>(World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyID</type>
-      <name>FindClosestBody</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a7c37ce126c86487bd78a0b8d6734e182</anchor>
-      <arglist>(const World &amp;world, Length2 location) noexcept</arglist>
+      <anchor>a33c81759b720514f3666528e7d9f2688</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type></type>
@@ -25518,10 +26554,17 @@
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
-      <type>std::size_t</type>
+      <type>FixtureCounter</type>
       <name>GetShapeCount</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>a296dbeb1ce33c33f2659127e91082bcf</anchor>
+      <anchor>aae9025373446bef79628f537e41cc5dd</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
+      <anchor>ac423e891b05839d03616cb46e16cfdb0</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -25620,13 +26663,6 @@
       <name>GetFixtures</name>
       <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
       <anchor>a2e42754f22a7b0f98f15970f336fdb13</anchor>
-      <arglist>(BodyID id) const</arglist>
-    </member>
-    <member kind="function">
-      <type>FixtureCounter</type>
-      <name>GetFixtureCount</name>
-      <anchorfile>classplayrho_1_1d2_1_1World.html</anchorfile>
-      <anchor>aaf82be22b315c64bfaabc88b7d598b16</anchor>
       <arglist>(BodyID id) const</arglist>
     </member>
     <member kind="function">
@@ -26421,17 +27457,17 @@
       <arglist>(const StepConf &amp;conf)</arglist>
     </member>
     <member kind="function">
-      <type>SizedRange&lt; Bodies::iterator &gt;</type>
-      <name>GetBodies</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a0d998c92a818d9d3ba97fca0c6d5b5fd</anchor>
-      <arglist>() noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>SizedRange&lt; Bodies::const_iterator &gt;</type>
       <name>GetBodies</name>
       <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
       <anchor>a82e38f95aaeee42c0c678ab444650ff1</anchor>
+      <arglist>() const noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
+      <anchor>a8615c541cf6806d7d41d8729dadf9967</anchor>
       <arglist>() const noexcept</arglist>
     </member>
     <member kind="function">
@@ -26454,13 +27490,6 @@
       <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
       <anchor>a84704041d895884748cb013aa32c73c5</anchor>
       <arglist>() const noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>SizedRange&lt; Joints::iterator &gt;</type>
-      <name>GetJoints</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a7f845a3282fb494d0f9e38ceaf0dbbf5</anchor>
-      <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
       <type>SizedRange&lt; Contacts::const_iterator &gt;</type>
@@ -27384,20 +28413,6 @@
       <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
       <anchor>af8a6c14bdd4883704bb1414aff790a12</anchor>
       <arglist>(WorldImpl &amp;world, FixtureID id, bool value)</arglist>
-    </member>
-    <member kind="function">
-      <type>Transformation</type>
-      <name>GetTransformation</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a21ee966bbcad4490685862d6d387f594</anchor>
-      <arglist>(const WorldImpl &amp;world, FixtureID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAwake</name>
-      <anchorfile>classplayrho_1_1d2_1_1WorldImpl.html</anchorfile>
-      <anchor>a7d927c7ccad2359e1b5759de429d698e</anchor>
-      <arglist>(WorldImpl &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>JointID</type>
@@ -33304,6 +34319,13 @@
       <arglist>(const Joint &amp;joint) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>DistanceJointConf</type>
+      <name>GetDistanceJointConf</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6809a5b4f9ba4ad7957553a329fe1994</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, Length2 anchorA=Length2{}, Length2 anchorB=Length2{})</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -33325,11 +34347,67 @@
       <arglist>(const DistanceJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a262919449fdc976d24c1b57d5f764610</anchor>
+      <arglist>(const DistanceJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af7938377c565a183168613b640e651e8</anchor>
+      <arglist>(const DistanceJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1086ac024e4e129259c3c1b4f7c5a6c4</anchor>
+      <arglist>(DistanceJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetFrequency</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae0cc3578e6f724a74d45e9cfc02d412d</anchor>
+      <arglist>(DistanceJointConf &amp;object, NonNegative&lt; Frequency &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetDampingRatio</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1f9a4e32b7ca3e69527dca3e2793e1ba</anchor>
+      <arglist>(DistanceJointConf &amp;object, Real value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLength</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a9d8e5d2ecc10f965faa16f74ade58628</anchor>
+      <arglist>(const DistanceJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetLength</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>abf156111fddecc740c68f7dbcdaf7ba0</anchor>
+      <arglist>(DistanceJointConf &amp;object, Length value) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>FrictionJointConf</type>
       <name>GetFrictionJointConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a6803b46a1d73db03f4a26515460c4880</anchor>
       <arglist>(const Joint &amp;joint) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FrictionJointConf</type>
+      <name>GetFrictionJointConf</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a35e8c4e6880befb1f81a4caa3b7914eb</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, Length2 anchor)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -33353,11 +34431,67 @@
       <arglist>(const FrictionJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a91ac3d07e13f9277632001e8f02de54f</anchor>
+      <arglist>(const FrictionJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ade895bb6a4e1b45bc803784534f2ffb2</anchor>
+      <arglist>(const FrictionJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a110d0d6a089b3b8883e1f319984774fb</anchor>
+      <arglist>(FrictionJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxForce</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aba8162d50c28927d87bdf7e29aa8afe0</anchor>
+      <arglist>(const FrictionJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetMaxForce</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>afa6324a364b2b89057a749a5032ff720</anchor>
+      <arglist>(FrictionJointConf &amp;object, NonNegative&lt; Force &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxTorque</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a00b4cc40afea7be207a08ad7c018f3c1</anchor>
+      <arglist>(const FrictionJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxTorque</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>acfc7a47e907d3aaf399a7919896f3571</anchor>
+      <arglist>(FrictionJointConf &amp;object, NonNegative&lt; Torque &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>GearJointConf</type>
       <name>GetGearJointConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>acfe71a7206e29118d5fc491c30470272</anchor>
       <arglist>(const Joint &amp;joint) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>GearJointConf</type>
+      <name>GetGearJointConf</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a2e2f7487e6bca2b26a9dc6779a9bc72b</anchor>
+      <arglist>(const World &amp;world, JointID id1, JointID id2, Real ratio=Real{1})</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -33379,6 +34513,62 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a5e4a317737862143d7fe7cb241f4a213</anchor>
       <arglist>(const GearJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aef9ee799e4e668610deb9199d0848153</anchor>
+      <arglist>(const GearJointConf &amp;object)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af2ce467ab8d8f56bd0cf232fd554e58b</anchor>
+      <arglist>(const GearJointConf &amp;object)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a086d21b8f77c0782aaaaee20a89aee6c</anchor>
+      <arglist>(GearJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetRatio</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad6bb4ee45a731f7095f5c052f16e15c0</anchor>
+      <arglist>(const GearJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetRatio</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0561c70cfa90284d65bba0a3f59cb62a</anchor>
+      <arglist>(GearJointConf &amp;object, Real value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetConstant</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac71c6757a2460462d539185069dd9c4c</anchor>
+      <arglist>(const GearJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetType1</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae6d9a2fadb19711e6a7dba77fc7c1b6d</anchor>
+      <arglist>(const GearJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetType2</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7bdfada30a9ccbb76361f8554034da92</anchor>
+      <arglist>(const GearJointConf &amp;object) noexcept</arglist>
     </member>
     <member kind="function">
       <type>BodyConstraint &amp;</type>
@@ -33815,6 +35005,13 @@
       <arglist>(const Joint &amp;joint) noexcept</arglist>
     </member>
     <member kind="function">
+      <type>MotorJointConf</type>
+      <name>GetMotorJointConf</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>abc10ead5563974d639870bb4c9955a51</anchor>
+      <arglist>(const World &amp;world, BodyID bA, BodyID bB)</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>InitVelocity</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -33836,11 +35033,137 @@
       <arglist>(const MotorJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLocalAnchorA</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6bff2eef6c3ab00e21a7a497dfa69b02</anchor>
+      <arglist>(const MotorJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLocalAnchorB</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aff7518dbaba68503c8534f3aa1bc1baf</anchor>
+      <arglist>(const MotorJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a859dc8dd3001dc7aa23033f6de17bf97</anchor>
+      <arglist>(MotorJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxForce</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a2316866330d122410cad54477dea24c9</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxForce</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a309119086874940563a7e3a4b91c9cc2</anchor>
+      <arglist>(MotorJointConf &amp;object, NonNegative&lt; Force &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxTorque</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>addea3c1c41374755038085922785f96d</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxTorque</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a740454a9bdb11a84bfc34bad37908030</anchor>
+      <arglist>(MotorJointConf &amp;object, NonNegative&lt; Torque &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLinearError</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab1e80b7fb2a127c7bef5388890d3ee0e</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetAngularError</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac3f517e88d5b384e337d3322881c5886</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLinearOffset</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a53e7afd4eb1bc197703f3d68c4ffd934</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetLinearOffset</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a442a2ab7e9ce36a0ea28941056bc8d02</anchor>
+      <arglist>(MotorJointConf &amp;object, Length2 value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetAngularOffset</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a75db6ad844d4be5361364e49907b24f8</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetAngularOffset</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab185fa3719432e9026a44e602279f8d1</anchor>
+      <arglist>(MotorJointConf &amp;object, Angle value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetCorrectionFactor</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa5e4489f264227f6c20010c1838248db</anchor>
+      <arglist>(const MotorJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetCorrectionFactor</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a5f373e05ffdf359e2f995aec4e5489c0</anchor>
+      <arglist>(MotorJointConf &amp;object, Real value) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>PrismaticJointConf</type>
       <name>GetPrismaticJointConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a35f6f1e912af7403f2fe74281b0e839f</anchor>
       <arglist>(const Joint &amp;joint)</arglist>
+    </member>
+    <member kind="function">
+      <type>PrismaticJointConf</type>
+      <name>GetPrismaticJointConf</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aea5a3b058a514a9dac2a7670be4f37ad</anchor>
+      <arglist>(const World &amp;world, BodyID bA, BodyID bB, const Length2 anchor, const UnitVec axis)</arglist>
+    </member>
+    <member kind="function">
+      <type>Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a27fc45b373f9d4f6ff5fe190c9343649</anchor>
+      <arglist>(const PrismaticJointConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>acf7e81444165613ee2710dfc8804a04a</anchor>
+      <arglist>(const PrismaticJointConf &amp;conf)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -33864,11 +35187,60 @@
       <arglist>(const PrismaticJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>LinearVelocity</type>
+      <name>GetLinearVelocity</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab7b59db43cee6a26c0433b69476b0c9b</anchor>
+      <arglist>(const World &amp;world, const PrismaticJointConf &amp;joint) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLinearLowerLimit</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a2972598e6c903720d93d1aba138ec7b3</anchor>
+      <arglist>(const PrismaticJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLinearUpperLimit</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a239db9ab5446fbb27eb532c45965cbe4</anchor>
+      <arglist>(const PrismaticJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetLinearLimits</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab3e9cb2455b78052970feaabe8cf3b1b</anchor>
+      <arglist>(PrismaticJointConf &amp;conf, Length lower, Length upper) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab043518c6b8959a7d71cd6325cbf2491</anchor>
+      <arglist>(PrismaticJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetMaxMotorForce</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a354d65b6b0cac0916b4788e0ce1a5470</anchor>
+      <arglist>(PrismaticJointConf &amp;object, Force value)</arglist>
+    </member>
+    <member kind="function">
       <type>PulleyJointConf</type>
       <name>GetPulleyJointConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a7844807c1d0889d5dc5cb28bd1a7ae7d</anchor>
       <arglist>(const Joint &amp;joint)</arglist>
+    </member>
+    <member kind="function">
+      <type>PulleyJointConf</type>
+      <name>GetPulleyJointConf</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3addeb61645a20288e22687cbef5c6b3</anchor>
+      <arglist>(const World &amp;world, BodyID bA, BodyID bB, Length2 groundA, Length2 groundB, Length2 anchorA, Length2 anchorB)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -33892,11 +35264,67 @@
       <arglist>(const PulleyJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a900c2f617828c3a70f6b988ac4419b55</anchor>
+      <arglist>(PulleyJointConf &amp;object, Length2 newOrigin) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a587b3fc0018a0aba1d156dcd26147d1d</anchor>
+      <arglist>(const PulleyJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad042f7000a43ec5b29154a07465005f6</anchor>
+      <arglist>(const PulleyJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLengthA</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a94c0bc2a8291d96ff45e0d157a9d5bf3</anchor>
+      <arglist>(const PulleyJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLengthB</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aac6b715e0df3e5be4be5ccae4ac4fa36</anchor>
+      <arglist>(const PulleyJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>RevoluteJointConf</type>
       <name>GetRevoluteJointConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a679b91e916353c9022ebc3cc26f9201c</anchor>
       <arglist>(const Joint &amp;joint)</arglist>
+    </member>
+    <member kind="function">
+      <type>RevoluteJointConf</type>
+      <name>GetRevoluteJointConf</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aebf949d6443b1a6a85ff8a97b65d1b5b</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, Length2 anchor)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ab6330d5a0349c5c78357355a05815694</anchor>
+      <arglist>(const World &amp;world, const RevoluteJointConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetAngularVelocity</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a2103c29612c27b521ec004b60c4b77e5</anchor>
+      <arglist>(const World &amp;world, const RevoluteJointConf &amp;conf)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -33918,6 +35346,55 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a24000d24706fa8d93f028b3b8b970a17</anchor>
       <arglist>(const RevoluteJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac0a763d149b879a45044edf3c0e513f8</anchor>
+      <arglist>(RevoluteJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Angle</type>
+      <name>GetAngularLowerLimit</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>afd8850ec299f0679c41ca58081408de8</anchor>
+      <arglist>(const RevoluteJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Angle</type>
+      <name>GetAngularUpperLimit</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0f475e87122dc3f396a975f55b1c70d0</anchor>
+      <arglist>(const RevoluteJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a2cae96cc4b8f16e7a9ce6abd543f09c1</anchor>
+      <arglist>(const RevoluteJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a4ee40ca4a9dbe09390f0ff493f276dac</anchor>
+      <arglist>(const RevoluteJointConf &amp;conf) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetAngularLimits</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae5635ff98f64bcbf6a31cba670913afc</anchor>
+      <arglist>(RevoluteJointConf &amp;object, Angle lower, Angle upper) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetMaxMotorTorque</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac5613ecd1ba9cd47dcfa45191c137dbd</anchor>
+      <arglist>(RevoluteJointConf &amp;object, Torque value)</arglist>
     </member>
     <member kind="function">
       <type>RopeJointConf</type>
@@ -33948,11 +35425,53 @@
       <arglist>(const RopeJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac7acc7a694d7729620e48300eb157d7b</anchor>
+      <arglist>(const RopeJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>af3c61329399916ae2b063e6ba94ffb6e</anchor>
+      <arglist>(const RopeJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1259b960c0c0112346fa02785107cdc9</anchor>
+      <arglist>(RopeJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxLength</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ad5cf9d398d3e370e806a070fdbb8d685</anchor>
+      <arglist>(const RopeJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxLength</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aeeffd09d05131a961e0d3bd87f94c889</anchor>
+      <arglist>(RopeJointConf &amp;object, Length value) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>TargetJointConf</type>
       <name>GetTargetJointConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a61f1607657e41b75797c28649e818f8e</anchor>
       <arglist>(const Joint &amp;joint)</arglist>
+    </member>
+    <member kind="function">
+      <type>Mass22</type>
+      <name>GetEffectiveMassMatrix</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a6cb7d8c6d0e8773c08196d43f14cc022</anchor>
+      <arglist>(const TargetJointConf &amp;object, const BodyConstraint &amp;body) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -33976,11 +35495,88 @@
       <arglist>(const TargetJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetLocalAnchorA</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a742f3193b44e8038c6e21455f2cc3630</anchor>
+      <arglist>(const TargetJointConf &amp;) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7ec73e83dfde52a4e59c7ef6099e5073</anchor>
+      <arglist>(const TargetJointConf &amp;object)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>afa5cbad1175b924fab7ca3259d3ba8a9</anchor>
+      <arglist>(const TargetJointConf &amp;)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aa3c8c836af2b8a71674101a3ace0d1bf</anchor>
+      <arglist>(TargetJointConf &amp;object, Length2 newOrigin)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetTarget</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a643e49fe049c3befd1f928e4d732493c</anchor>
+      <arglist>(const TargetJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetTarget</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a0d143822f59e9a0dec84d98dbffdb540</anchor>
+      <arglist>(TargetJointConf &amp;object, Length2 value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>GetMaxForce</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a5433a140e014287406113e1ce6508dae</anchor>
+      <arglist>(const TargetJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>SetMaxForce</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a26488bda71d5ddb9df78975b2f37cb03</anchor>
+      <arglist>(TargetJointConf &amp;object, NonNegative&lt; Force &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetFrequency</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ac9971494480e00e4c3fa99cba906339e</anchor>
+      <arglist>(TargetJointConf &amp;object, NonNegative&lt; Frequency &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetDampingRatio</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a93ccadc0666446729427c72fbdac4ad4</anchor>
+      <arglist>(TargetJointConf &amp;object, Real value) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>WeldJointConf</type>
       <name>GetWeldJointConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>a068dc3f2013d3029414eb4d0eaf85f13</anchor>
       <arglist>(const Joint &amp;joint)</arglist>
+    </member>
+    <member kind="function">
+      <type>WeldJointConf</type>
+      <name>GetWeldJointConf</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7a5a52a8c470433ddeb8e44616b0d28a</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, const Length2 anchor=Length2{})</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -34004,11 +35600,53 @@
       <arglist>(const WeldJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a2c609024f0b536db041b19c8f8869479</anchor>
+      <arglist>(const WeldJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a3739f4255fc019f68cd74d5c21867845</anchor>
+      <arglist>(const WeldJointConf &amp;object) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a1ca7cf4000562ae2b92cce70e2446dce</anchor>
+      <arglist>(WeldJointConf &amp;, Length2) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetFrequency</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>acafa97d5359a1791ded4ccbc48a0cfaa</anchor>
+      <arglist>(WeldJointConf &amp;object, NonNegative&lt; Frequency &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>WheelJointConf</type>
       <name>GetWheelJointConf</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>ab455b1a4e3159193b477bef90fa819b4</anchor>
       <arglist>(const Joint &amp;joint)</arglist>
+    </member>
+    <member kind="function">
+      <type>WheelJointConf</type>
+      <name>GetWheelJointConf</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>afe5cfdb1c7cdce8f51cd5b5932d9059a</anchor>
+      <arglist>(const World &amp;world, BodyID bodyA, BodyID bodyB, Length2 anchor, UnitVec axis=UnitVec::GetRight())</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetAngularVelocity</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a54073d6bb0b399295ab2b2ce105b02f4</anchor>
+      <arglist>(const World &amp;world, const WheelJointConf &amp;conf)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -34032,557 +35670,676 @@
       <arglist>(const WheelJointConf &amp;object, std::vector&lt; BodyConstraint &gt; &amp;bodies, const ConstraintSolverConf &amp;conf)</arglist>
     </member>
     <member kind="function">
+      <type>constexpr Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>aef25b1a360e19b38a39af5a4b776eceb</anchor>
+      <arglist>(const WheelJointConf &amp;object)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr auto</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a39aeb9ed40d5d141b57b0e2776a3f396</anchor>
+      <arglist>(WheelJointConf &amp;, Length2)</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetMaxMotorTorque</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>a7f82a394a8c0f5a020f8647ce0a34d39</anchor>
+      <arglist>(WheelJointConf &amp;object, Torque value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetFrequency</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>adcd79908a087d2c25629aa14895bf49c</anchor>
+      <arglist>(WheelJointConf &amp;object, NonNegative&lt; Frequency &gt; value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>constexpr void</type>
+      <name>SetDampingRatio</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>ae7f1530d1c2de2df859dfae6eb23d141</anchor>
+      <arglist>(WheelJointConf &amp;object, Real value) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe80bceeb031d85076c29f75f0241475</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodies</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga28f809f0951bfb0a97027eaefca55515</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa70eeb7b7e00b3920f4539f569be34d2</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>BodyID</type>
       <name>CreateBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7a7b3314c3d17fbb49952bdf4fb4ff1a</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7a7b3314c3d17fbb49952bdf4fb4ff1a</anchor>
       <arglist>(World &amp;world, const BodyConf &amp;def=GetDefaultBodyConf())</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5220bddd2803e882d97dfbce54bdceda</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5220bddd2803e882d97dfbce54bdceda</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
       <name>GetFixtures</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae475a107e192ce25ee57d10790805bfc</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae475a107e192ce25ee57d10790805bfc</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>LinearAcceleration2</type>
       <name>GetLinearAcceleration</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae8ca55fff3e787fcbc3d30fc8f39f49c</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae8ca55fff3e787fcbc3d30fc8f39f49c</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>AngularAcceleration</type>
       <name>GetAngularAcceleration</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a05620c9ad05a74b4cd9799d76f4df0ed</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga05620c9ad05a74b4cd9799d76f4df0ed</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Acceleration</type>
       <name>GetAcceleration</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8c16a3a5c5a313873e82f2a5b3c5a444</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8c16a3a5c5a313873e82f2a5b3c5a444</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAcceleration</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a418cd290b6a2d35b2e1714b8ad2b5977</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga418cd290b6a2d35b2e1714b8ad2b5977</anchor>
       <arglist>(World &amp;world, BodyID id, LinearAcceleration2 linear, AngularAcceleration angular)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAcceleration</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab55a73746131ce67978e1b6525ef2828</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab55a73746131ce67978e1b6525ef2828</anchor>
       <arglist>(World &amp;world, BodyID id, LinearAcceleration2 value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAcceleration</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7d38270de7497d14ebf2dfe48eb64699</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7d38270de7497d14ebf2dfe48eb64699</anchor>
       <arglist>(World &amp;world, BodyID id, AngularAcceleration value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAcceleration</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a38238366981a6ff670b61aef3ec738c0</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga38238366981a6ff670b61aef3ec738c0</anchor>
       <arglist>(World &amp;world, BodyID id, Acceleration value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetTransformation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad01a8fe16bba00769e661ac6ea969389</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad01a8fe16bba00769e661ac6ea969389</anchor>
       <arglist>(World &amp;world, BodyID id, Transformation xfm)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetLocation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa31cc6e0438fd8de38fe1eddab503121</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa31cc6e0438fd8de38fe1eddab503121</anchor>
       <arglist>(World &amp;world, BodyID id, Length2 value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAngle</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a245759e710fc195c98621e6d1ceb4433</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga245759e710fc195c98621e6d1ceb4433</anchor>
       <arglist>(World &amp;world, BodyID id, Angle value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>RotateAboutWorldPoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a118f1cd558a4d51a5f7123fcfdcdf5b6</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga118f1cd558a4d51a5f7123fcfdcdf5b6</anchor>
       <arglist>(World &amp;world, BodyID id, Angle amount, Length2 worldPoint)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>RotateAboutLocalPoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3d9fea50aa07339ec50b07d3673a1be7</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga3d9fea50aa07339ec50b07d3673a1be7</anchor>
       <arglist>(World &amp;world, BodyID id, Angle amount, Length2 localPoint)</arglist>
     </member>
     <member kind="function">
       <type>Acceleration</type>
       <name>CalcGravitationalAcceleration</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a145bc2034162d0e6684d8d606211fb5e</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga145bc2034162d0e6684d8d606211fb5e</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>BodyCounter</type>
       <name>GetWorldIndex</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a96cce8e8cf11bdfcb2d834f999744dd3</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga96cce8e8cf11bdfcb2d834f999744dd3</anchor>
       <arglist>(const World &amp;world, const BodyID id) noexcept</arglist>
     </member>
     <member kind="function">
       <type>BodyConf</type>
       <name>GetBodyConf</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa4201f28997164f33c2aeeb79bce6f65</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa4201f28997164f33c2aeeb79bce6f65</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetType</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a225bcf6be6eb93237264075846cdb562</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga225bcf6be6eb93237264075846cdb562</anchor>
       <arglist>(World &amp;world, BodyID id, BodyType value)</arglist>
     </member>
     <member kind="function">
       <type>BodyType</type>
       <name>GetType</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1d049ed1a0633d0c0a7138a2c79823b5</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1d049ed1a0633d0c0a7138a2c79823b5</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Transformation</type>
       <name>GetTransformation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae851807b71a13326be2635fb8af75ab6</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae851807b71a13326be2635fb8af75ab6</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Angle</type>
       <name>GetAngle</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a65c0c4c3adb519277e5418ec800bb7b3</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga65c0c4c3adb519277e5418ec800bb7b3</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Velocity</type>
       <name>GetVelocity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>acc05b211fd414f80784e7250c1f0b173</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gacc05b211fd414f80784e7250c1f0b173</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetVelocity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad96f80e152c8b40ffb278dd171a018fc</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad96f80e152c8b40ffb278dd171a018fc</anchor>
       <arglist>(World &amp;world, BodyID id, const Velocity &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetVelocity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab57a90509099257c82af9931964780d0</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab57a90509099257c82af9931964780d0</anchor>
       <arglist>(World &amp;world, BodyID id, const LinearVelocity2 &amp;value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetVelocity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abe9eb60684f92671b2acf31c20e7bfdb</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe9eb60684f92671b2acf31c20e7bfdb</anchor>
       <arglist>(World &amp;world, BodyID id, AngularVelocity value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>DestroyFixtures</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1857e5c1478f8297e7eec75bb055d0ce</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1857e5c1478f8297e7eec75bb055d0ce</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsEnabled</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>acf3eb15a8221d495856fd34c831255a1</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gacf3eb15a8221d495856fd34c831255a1</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEnabled</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a36fa18310477a7ab081e0b81425b5bad</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga36fa18310477a7ab081e0b81425b5bad</anchor>
       <arglist>(World &amp;world, BodyID id, bool value)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsAwake</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa7a828e4da95fbbaffcfc14186e451a1</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa7a828e4da95fbbaffcfc14186e451a1</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAwake</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a67874514581554435fd8065942a33050</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga67874514581554435fd8065942a33050</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>UnsetAwake</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abb9770df3b38d727d39b7ac13ba4c77b</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabb9770df3b38d727d39b7ac13ba4c77b</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsMassDataDirty</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a28c9e02154e09942576f0edc8297415c</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga28c9e02154e09942576f0edc8297415c</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsFixedRotation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0a234fed595bbb7745f54c0820597260</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0a234fed595bbb7745f54c0820597260</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetFixedRotation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1a11e67e4bda096d53e4c6a55272656b</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1a11e67e4bda096d53e4c6a55272656b</anchor>
       <arglist>(World &amp;world, BodyID id, bool value)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetWorldCenter</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a32537729a6c93bba8c9ea99a3bcd737f</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga32537729a6c93bba8c9ea99a3bcd737f</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>InvMass</type>
       <name>GetInvMass</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae67b1e703960f2ac4bfefc9d38c7a164</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae67b1e703960f2ac4bfefc9d38c7a164</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>InvRotInertia</type>
       <name>GetInvRotInertia</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>adbe356dc1eaa258248d26ba77fc8491f</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadbe356dc1eaa258248d26ba77fc8491f</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetLocalCenter</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0d96416fb8a1165678be1c50fce12cc6</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0d96416fb8a1165678be1c50fce12cc6</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>MassData</type>
       <name>ComputeMassData</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0f6db19ca88cbfda1c130583c367b97e</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0f6db19ca88cbfda1c130583c367b97e</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetMassData</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abe6b45c9a1aeec496d83c00a6f587740</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe6b45c9a1aeec496d83c00a6f587740</anchor>
       <arglist>(World &amp;world, BodyID id, const MassData &amp;massData)</arglist>
     </member>
     <member kind="function">
       <type>SizedRange&lt; std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;::const_iterator &gt;</type>
       <name>GetJoints</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0eeb57c8beb84dfbfe470b9707b1fa92</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0eeb57c8beb84dfbfe470b9707b1fa92</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsSpeedable</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5a9a1e21b5e0f1b2200d902a3f577e6e</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5a9a1e21b5e0f1b2200d902a3f577e6e</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsAccelerable</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac33af5ec304e45152ffb2d275ba5093c</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gac33af5ec304e45152ffb2d275ba5093c</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsImpenetrable</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a11893b06ac5c981fc1da435d2a07063f</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga11893b06ac5c981fc1da435d2a07063f</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetImpenetrable</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afb1332e63f530ca56d0efa14deb06bba</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb1332e63f530ca56d0efa14deb06bba</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>UnsetImpenetrable</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a66f55f614954b3969e3fb94733834a61</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga66f55f614954b3969e3fb94733834a61</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsSleepingAllowed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abf1860a0b9cd6de8e35cf3ab3353db31</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabf1860a0b9cd6de8e35cf3ab3353db31</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetSleepingAllowed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8f148aa57e72254d95694d31c7b4dbb1</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8f148aa57e72254d95694d31c7b4dbb1</anchor>
       <arglist>(World &amp;world, BodyID, bool value)</arglist>
     </member>
     <member kind="function">
       <type>Frequency</type>
       <name>GetLinearDamping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad68f40e70485dd95d747d0531f2debad</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad68f40e70485dd95d747d0531f2debad</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetLinearDamping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9fd32bf6cda4a42e0b61db21fb7bfe5c</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga9fd32bf6cda4a42e0b61db21fb7bfe5c</anchor>
       <arglist>(World &amp;world, BodyID id, NonNegative&lt; Frequency &gt; linearDamping)</arglist>
     </member>
     <member kind="function">
       <type>Frequency</type>
       <name>GetAngularDamping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aec885dc5540478cf5ffef4e893e82fcd</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaec885dc5540478cf5ffef4e893e82fcd</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAngularDamping</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a79dbcc9738c04b86acf653b8cab48971</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga79dbcc9738c04b86acf653b8cab48971</anchor>
       <arglist>(World &amp;world, BodyID id, NonNegative&lt; Frequency &gt; angularDamping)</arglist>
     </member>
     <member kind="function">
       <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
       <name>GetContacts</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae5ab8a5162315de2f340bf43b8243e5d</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae5ab8a5162315de2f340bf43b8243e5d</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>ShouldCollide</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1119c41348e3ff410831053cb949e0a6</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1119c41348e3ff410831053cb949e0a6</anchor>
       <arglist>(const World &amp;world, BodyID lhs, BodyID rhs)</arglist>
     </member>
     <member kind="function">
       <type>Force2</type>
       <name>GetCentripetalForce</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a63ff1a3d8b15fd8ab2fc36b475a6b643</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga63ff1a3d8b15fd8ab2fc36b475a6b643</anchor>
       <arglist>(const World &amp;world, BodyID id, Length2 axis)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyForce</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af2cf9255dec702ee772907123e23d889</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaf2cf9255dec702ee772907123e23d889</anchor>
       <arglist>(World &amp;world, BodyID id, Force2 force, Length2 point)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyTorque</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a63de8f07f975cb055b0790364f2f6a69</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga63de8f07f975cb055b0790364f2f6a69</anchor>
       <arglist>(World &amp;world, BodyID id, Torque torque)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyLinearImpulse</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a496ed2441dd8b38efd57ca94b2c74a17</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga496ed2441dd8b38efd57ca94b2c74a17</anchor>
       <arglist>(World &amp;world, BodyID id, Momentum2 impulse, Length2 point)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyAngularImpulse</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1b34b2cc77e2ef64a6155572fc589ead</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1b34b2cc77e2ef64a6155572fc589ead</anchor>
       <arglist>(World &amp;world, BodyID id, AngularMomentum impulse)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetAwakeCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0812de1607b6656927bc2ad724f1d7c3</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>Awaken</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1539463268cf6db572823eb1a195dc70</anchor>
+      <arglist>(World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad85bb4dfbf060d7d28668e4bc2d73a10</anchor>
+      <arglist>(World &amp;world, Acceleration acceleration) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab9dc75916d003478c7004172110b58e2</anchor>
+      <arglist>(World &amp;world, LinearAcceleration2 acceleration) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>FindClosestBody</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7c37ce126c86487bd78a0b8d6734e182</anchor>
+      <arglist>(const World &amp;world, Length2 location) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureCounter</type>
+      <name>GetFixtureCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga20944afa5f0709c73162e7f7bf56e408</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetTransform</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afe96807931f9815ed363951901508f8d</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafe96807931f9815ed363951901508f8d</anchor>
       <arglist>(World &amp;world, BodyID id, Length2 location, Angle angle)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetLocation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aabf27f5cfd9092be041a781d24cfa9a1</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaabf27f5cfd9092be041a781d24cfa9a1</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetWorldPoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad52c5cffc4cd82e4cf533db1afcedc93</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad52c5cffc4cd82e4cf533db1afcedc93</anchor>
       <arglist>(const World &amp;world, BodyID id, const Length2 localPoint)</arglist>
     </member>
     <member kind="function">
       <type>UnitVec</type>
       <name>GetLocalVector</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac542518f1fbacb567e5b39778de863db</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gac542518f1fbacb567e5b39778de863db</anchor>
       <arglist>(const World &amp;world, BodyID body, const UnitVec uv)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetLocalPoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad432f7c9779ee902b41cdfab944c8885</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad432f7c9779ee902b41cdfab944c8885</anchor>
       <arglist>(const World &amp;world, BodyID body, const Length2 worldPoint)</arglist>
     </member>
     <member kind="function">
       <type>Position</type>
       <name>GetPosition</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9fe7fe17864539ef49018ae954c9e8b8</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga9fe7fe17864539ef49018ae954c9e8b8</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>UnitVec</type>
       <name>GetWorldVector</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afb57be7efe663810331859b5e0c9a253</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb57be7efe663810331859b5e0c9a253</anchor>
       <arglist>(const World &amp;world, BodyID body, UnitVec localVector)</arglist>
     </member>
     <member kind="function">
       <type>LinearVelocity2</type>
       <name>GetLinearVelocity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afb257e46e441021d64884e95c400fa0f</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb257e46e441021d64884e95c400fa0f</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>AngularVelocity</type>
       <name>GetAngularVelocity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a116c82c48643c1ef6199d27e9b9dd882</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga116c82c48643c1ef6199d27e9b9dd882</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>Awaken</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a4968cdffa51be385b42f978f3226901d</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga4968cdffa51be385b42f978f3226901d</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>Mass</type>
       <name>GetMass</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad51a22660fa68bff534e3ae5bbcaba38</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad51a22660fa68bff534e3ae5bbcaba38</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>RotInertia</type>
       <name>GetRotInertia</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8cc24a20ec1f33d8e51baf8bc435406a</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8cc24a20ec1f33d8e51baf8bc435406a</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>RotInertia</type>
       <name>GetLocalRotInertia</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad374df7cc8d1a5a9a186e0ae8a7c8cb3</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad374df7cc8d1a5a9a186e0ae8a7c8cb3</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>MassData</type>
       <name>GetMassData</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a873904ef02cab072a393ef4554c17ea3</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga873904ef02cab072a393ef4554c17ea3</anchor>
       <arglist>(const World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ResetMassData</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0f4a5600e14e8a21bdf50bfe3382cb55</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0f4a5600e14e8a21bdf50bfe3382cb55</anchor>
       <arglist>(World &amp;world, BodyID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetImpenetrable</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>adb8a3d49c66601ec5953d19714aa9759</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadb8a3d49c66601ec5953d19714aa9759</anchor>
       <arglist>(World &amp;world, BodyID id, bool value)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ApplyForceToCenter</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aff8c388b99a60c431d85dc649786562a</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaff8c388b99a60c431d85dc649786562a</anchor>
       <arglist>(World &amp;world, BodyID id, Force2 force)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetForce</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>adca4e4bff8f8c98a0247a10e9551edca</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadca4e4bff8f8c98a0247a10e9551edca</anchor>
       <arglist>(World &amp;world, BodyID id, Force2 force, Length2 point) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetTorque</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5800108f6c4be7a8a49d5283aa881616</anchor>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5800108f6c4be7a8a49d5283aa881616</anchor>
       <arglist>(World &amp;world, BodyID id, Torque torque) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga54933e742508cac5c0b219c653c67674</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ClearForces</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa8a757a3ee66fa157cbf1ffafdf556d4</anchor>
+      <arglist>(World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae23446b68b07e35cff2b642c5573acfe</anchor>
+      <arglist>(World &amp;world, F fn)</arglist>
     </member>
     <member kind="function">
       <type>constexpr WorldConf</type>
@@ -34592,263 +36349,340 @@
       <arglist>() noexcept</arglist>
     </member>
     <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
+      <name>GetContacts</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga5ba0f1fe0a6e9a140c4d264f61f7440e</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>bool</type>
       <name>IsTouching</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a386a732d954a80f48e6a3ac7beca1237</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga386a732d954a80f48e6a3ac7beca1237</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsAwake</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a89c2757003061a1852f035d352ec68a5</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga89c2757003061a1852f035d352ec68a5</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAwake</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aeaa33fbede9039afb79513b1a7432278</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaeaa33fbede9039afb79513b1a7432278</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>ChildCounter</type>
       <name>GetChildIndexA</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24ba41bdcb80e48e4bfebac362eb23db</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga24ba41bdcb80e48e4bfebac362eb23db</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>ChildCounter</type>
       <name>GetChildIndexB</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a708d52132fb3f4ffbd49bf09ebc64740</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga708d52132fb3f4ffbd49bf09ebc64740</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>FixtureID</type>
       <name>GetFixtureA</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afb6a01c31ef63559cf6c5d7892e863d5</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gafb6a01c31ef63559cf6c5d7892e863d5</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>FixtureID</type>
       <name>GetFixtureB</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a697b60b490bbcdae46d962c97d780e07</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga697b60b490bbcdae46d962c97d780e07</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
       <name>GetBodyA</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa8c24669bbb9850b21ef17c5217f0a45</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaa8c24669bbb9850b21ef17c5217f0a45</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>BodyID</type>
       <name>GetBodyB</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a379c87f1276cec0f81e35942dc144b27</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga379c87f1276cec0f81e35942dc144b27</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>TimestepIters</type>
+      <name>GetToiCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gab2cf2abf28efb6e6ba368648b49484f0</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>NeedsFiltering</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aadd14b7a073e106ee40d4488d131f673</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaadd14b7a073e106ee40d4488d131f673</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>NeedsUpdating</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aaada9701c50ea1607ecf3ae02c8f72c1</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaaada9701c50ea1607ecf3ae02c8f72c1</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>HasValidToi</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aae57c7aca1c8c840ea8eb1ba1d44ef07</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaae57c7aca1c8c840ea8eb1ba1d44ef07</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetToi</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac62d6b0d4985566ff6e1ca9d3f1fa1e6</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gac62d6b0d4985566ff6e1ca9d3f1fa1e6</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetDefaultFriction</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad4c197be0402b89a41342cfe51523d45</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gad4c197be0402b89a41342cfe51523d45</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetDefaultRestitution</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad04dd80754bf974462c8796cd3c95b07</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gad04dd80754bf974462c8796cd3c95b07</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetFriction</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2ada1ba075b82b0e496f2a3a012ab495</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga2ada1ba075b82b0e496f2a3a012ab495</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetRestitution</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ada6f0319b80bd4a62673f539e41d0b86</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gada6f0319b80bd4a62673f539e41d0b86</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetFriction</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0fbfbb5c2714aac231db6f9b3794d9e4</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga0fbfbb5c2714aac231db6f9b3794d9e4</anchor>
       <arglist>(World &amp;world, ContactID id, Real friction)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetRestitution</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a74f86083992d822f2b6376b98c8e8a79</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga74f86083992d822f2b6376b98c8e8a79</anchor>
       <arglist>(World &amp;world, ContactID id, Real restitution)</arglist>
     </member>
     <member kind="function">
       <type>const Manifold &amp;</type>
       <name>GetManifold</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af36b360b9ed9ff9e993a1c1a5655e46d</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf36b360b9ed9ff9e993a1c1a5655e46d</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>WorldManifold</type>
       <name>GetWorldManifold</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9e4fddd252b20dfceb87d93f5ad11087</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga9e4fddd252b20dfceb87d93f5ad11087</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>LinearVelocity</type>
       <name>GetTangentSpeed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2a314b9568d6553aaac1df1a0054250e</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga2a314b9568d6553aaac1df1a0054250e</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetTangentSpeed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>adaae6c7d046c05b5b2f79c2e0d3fedae</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gadaae6c7d046c05b5b2f79c2e0d3fedae</anchor>
       <arglist>(World &amp;world, ContactID id, LinearVelocity value)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsEnabled</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a10fdf8ef9cbd8b1ff7b51334e72a6ef5</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga10fdf8ef9cbd8b1ff7b51334e72a6ef5</anchor>
       <arglist>(const World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEnabled</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aaccb259506fe50452b035158ec12e47b</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaaccb259506fe50452b035158ec12e47b</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>UnsetEnabled</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a6b1a2071021c814a1ee5bfe54c994287</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga6b1a2071021c814a1ee5bfe54c994287</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetTouchingCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf8aabfb6390fed1c549e81700b0cd80e</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ResetFriction</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a74979affb98f9307f121fd8f4f63910d</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga74979affb98f9307f121fd8f4f63910d</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>ResetRestitution</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af23360c9130e209a06ae0c111f274876</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf23360c9130e209a06ae0c111f274876</anchor>
       <arglist>(World &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetEnabled</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae6e78139be823080998e2cf046601977</anchor>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gae6e78139be823080998e2cf046601977</anchor>
       <arglist>(World &amp;world, ContactID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gac7b6c00fbd4fc40a4957bd082c9437b4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gabb0c6a0197e0622c73a2b518e7901575</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureCounter</type>
+      <name>GetFixtureCount</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gac30f61aacb499241e0bde575efc4b5b4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureID</type>
+      <name>CreateFixture</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gac38ddfb3e74533c5ab45eec0496bf3e3</anchor>
+      <arglist>(World &amp;world, BodyID id, const Shape &amp;shape, const FixtureConf &amp;def=GetDefaultFixtureConf(), bool resetMassData=true)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aee0269f0a023b2598e8b7286b35519d8</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gaee0269f0a023b2598e8b7286b35519d8</anchor>
       <arglist>(World &amp;world, FixtureID id, bool resetMassData=true)</arglist>
     </member>
     <member kind="function">
       <type>Filter</type>
       <name>GetFilterData</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1dbda295266109b5cd1cb357124a1d4c</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga1dbda295266109b5cd1cb357124a1d4c</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetFilterData</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5cda7cbb9a8e263bacaed250c1aea6cd</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga5cda7cbb9a8e263bacaed250c1aea6cd</anchor>
       <arglist>(World &amp;world, FixtureID id, const Filter &amp;filter)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>Refilter</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7730246c18ade6a11dd03c5d91cf846d</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga7730246c18ade6a11dd03c5d91cf846d</anchor>
       <arglist>(World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBody</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gae41d95c5b1ec79c36e344c95fa884bc1</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>Transformation</type>
       <name>GetTransformation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>acdfa023334becda826867586a581979d</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gacdfa023334becda826867586a581979d</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Shape</type>
+      <name>GetShape</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga97601c20aaeaeb957df19dd1e50a668d</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetSensor</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a19e2c5b4368754ac7936421d83bf22dc</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gab61ecfbbe51f6e7f34db6b35ce15ac1b</anchor>
       <arglist>(World &amp;world, FixtureID id, bool value)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsSensor</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0c37aba8a58803433c62ee2915b5bec1</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga191f8d94e1733aad171a69519a0ab49e</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>AreaDensity</type>
       <name>GetDensity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a4fbe3677650de30bcd88043d13bed9af</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga4fbe3677650de30bcd88043d13bed9af</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const std::vector&lt; FixtureProxy &gt; &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gabf1b5092216bb42b162d29c0095d644e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const FixtureProxy &amp;</type>
+      <name>GetProxy</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gae760d529f017d02de393e6fe58865ff1</anchor>
+      <arglist>(const World &amp;world, FixtureID id, ChildCounter child)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -34860,23 +36694,37 @@
     <member kind="function">
       <type>Real</type>
       <name>GetFriction</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0a49d8d169af1284583cec1dacd1a6f1</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga58dc7587cbd5da666f4501eb719b059e</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetRestitution</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7af51196f58d0647d54035c25df581e9</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga7fe43c7b209c1aca69358206e4a7a9fa</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ChildCounter</type>
+      <name>GetProxyCount</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga9ee18a9ab216df6d28e29b65b9ea4434</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>MassData</type>
       <name>GetMassData</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0f686d9e42eedbadcc373295b380dfa2</anchor>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga0f686d9e42eedbadcc373295b380dfa2</anchor>
       <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
+      <anchor>afd18500bc914ea0e4bea8ad0b5d4bf7c</anchor>
+      <arglist>(const WorldImpl &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -35229,13 +37077,6 @@
       <arglist>(const WorldImpl &amp;world, ContactID id)</arglist>
     </member>
     <member kind="function">
-      <type>Transformation</type>
-      <name>GetTransformation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a21ee966bbcad4490685862d6d387f594</anchor>
-      <arglist>(const WorldImpl &amp;world, FixtureID id)</arglist>
-    </member>
-    <member kind="function">
       <type>bool</type>
       <name>IsSensor</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
@@ -35255,13 +37096,6 @@
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
       <anchor>aa6100db4ebd3aa99da57e0d194254a85</anchor>
       <arglist>(const WorldImpl &amp;world, FixtureID id)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAwake</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7d927c7ccad2359e1b5759de429d698e</anchor>
-      <arglist>(WorldImpl &amp;world, FixtureID id)</arglist>
     </member>
     <member kind="function">
       <type>JointID</type>
@@ -35327,333 +37161,424 @@
       <arglist>(const WorldImpl &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; JointID &gt;::const_iterator &gt;</type>
+      <name>GetJoints</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac8f6e0a116a71527f6671053e7f8e616</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
       <type>JointID</type>
       <name>CreateJoint</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a306ddb4629a63298afd72f849a05bbe5</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga306ddb4629a63298afd72f849a05bbe5</anchor>
       <arglist>(World &amp;world, const Joint &amp;def)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>Destroy</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a806941861724bdba59cbcc6fc0cea61e</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga806941861724bdba59cbcc6fc0cea61e</anchor>
       <arglist>(World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>JointType</type>
       <name>GetType</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7a5f508e72fff8e0844aff436989a175</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga7a5f508e72fff8e0844aff436989a175</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Joint &amp;</type>
+      <name>GetJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1107e6659ad32e836ad15e04758d15bf</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac4b3a69acd5e4d6ccceda622fd2a3e9a</anchor>
+      <arglist>(World &amp;world, JointID id, const Joint &amp;def)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>GetCollideConnected</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3b869cbb8b5896ccdf15c66f1d00761a</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3b869cbb8b5896ccdf15c66f1d00761a</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga75920437a0a87a24443296f1191db23b</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3f6b43a34cbbdbc34530e5513820e2ac</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetLocalAnchorA</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aeab676a9e447ebb4320d98c1f77f8c83</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gacde3e0a71def1cfceb2c821288555155</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetLocalAnchorB</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aecacf3a817fd4e067aa8f0be9410f26d</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1aebe08694e219bf5032c3c44c5cc5ab</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Momentum2</type>
       <name>GetLinearReaction</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a07b4f8e28195af1a6d2f6f417934896e</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3faa14e4c0188345c54d433a877ae01f</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>AngularMomentum</type>
       <name>GetAngularReaction</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7bb53ab723d5ccfbd11f4bd4479c3e45</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga57bbf093e91c58e3bdf61479c561bee0</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetReferenceAngle</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga902c4e2db9331be98f4150759ed738bd</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAwake</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a85c5cee4a3713d3ef248eab7b4d05926</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga85c5cee4a3713d3ef248eab7b4d05926</anchor>
       <arglist>(World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalXAxisA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga35b304b54e47447d5277528ad2a9b469</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalYAxisA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf6865d25a20091233c0f8b104c658df2</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>AngularVelocity</type>
       <name>GetMotorSpeed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a24212189ddc5e89f33e4dd824f6ba2cd</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga688c457d004db7df23965d2227f4124e</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetMotorSpeed</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a80007981c3345c9dba4b22d67a1c8c18</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga900537131a6eb2dc318a7990d8c544b8</anchor>
       <arglist>(World &amp;world, JointID id, AngularVelocity value)</arglist>
     </member>
     <member kind="function">
       <type>AngularMomentum</type>
       <name>GetAngularMotorImpulse</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a80c87366a9452f7ef76b5474a723e245</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga80c87366a9452f7ef76b5474a723e245</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>RotInertia</type>
       <name>GetAngularMass</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a69407c4afef863d09f490618aa390318</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga69407c4afef863d09f490618aa390318</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Torque</type>
       <name>GetMaxMotorTorque</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a02ad4a3b9d6a550e5c89bd4f524b3035</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf1b821c24f62a16d978fcce0f6ed0375</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetMaxMotorTorque</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a97d4ebbad7ada4326fa315f5b1a6862b</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa4a8c62d8ac89a11ae8f6be2e8cded5a</anchor>
       <arglist>(World &amp;world, JointID id, Torque value)</arglist>
     </member>
     <member kind="function">
       <type>Frequency</type>
       <name>GetFrequency</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a72d60d568707d6551e9dedb02c9e2724</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga72d60d568707d6551e9dedb02c9e2724</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetFrequency</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a23e2f1041c3b5a7cbc2c1b1d7f7ff689</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga23e2f1041c3b5a7cbc2c1b1d7f7ff689</anchor>
       <arglist>(World &amp;world, JointID id, Frequency value)</arglist>
     </member>
     <member kind="function">
       <type>AngularVelocity</type>
       <name>GetAngularVelocity</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0d81eef4bb9836cfc9afef270a17054</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf0d81eef4bb9836cfc9afef270a17054</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>IsEnabled</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac628649081fe495f59e06aff27f3201d</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac628649081fe495f59e06aff27f3201d</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>JointCounter</type>
       <name>GetWorldIndex</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae1416ad660edc4914c490c7ea156ab93</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gae1416ad660edc4914c490c7ea156ab93</anchor>
       <arglist>(const World &amp;world, JointID id) noexcept</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetAnchorA</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad3c653a34c7a681dbc60ec447225e85f</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gad3c653a34c7a681dbc60ec447225e85f</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetAnchorB</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa88982e1bd4c8bafe0160cdad5a68a71</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa88982e1bd4c8bafe0160cdad5a68a71</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRatio</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga7089b428b6ec35dc8b4d62396982bbd0</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length</type>
       <name>GetJointTranslation</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0469ef558d7b14efb4792c7f24084d7e</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga0469ef558d7b14efb4792c7f24084d7e</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga488b1925795688fed10e2f506cda91c5</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
+      <name>IsLimitEnabled</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaea48262785f5cc1a4efcb6856e8327f2</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>EnableLimit</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gae88a98bb1700968afaff9b143820e0d1</anchor>
+      <arglist>(World &amp;world, JointID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
       <name>IsMotorEnabled</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a9f9bc9518243b79711cd0defe739671c</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga9f9bc9518243b79711cd0defe739671c</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>EnableMotor</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aec28b93da1c0c63493d4a9d05e95eff2</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaec28b93da1c0c63493d4a9d05e95eff2</anchor>
       <arglist>(World &amp;world, JointID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Momentum</type>
+      <name>GetLinearMotorImpulse</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1136742708ea7dc3cfd2ec1fc3435e1b</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetLinearOffset</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a730510b6851cf86fdc29a007ff3b26f0</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga730510b6851cf86fdc29a007ff3b26f0</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetLinearOffset</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a81d72e02a8cad05f27a97f52ab8fff3d</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga81d72e02a8cad05f27a97f52ab8fff3d</anchor>
       <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
     </member>
     <member kind="function">
       <type>Angle</type>
       <name>GetAngularOffset</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1671b9e54818077d726f3f6cba342eb4</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1671b9e54818077d726f3f6cba342eb4</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAngularOffset</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abddeb217913218d82cfb1857fc14e12b</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gabddeb217913218d82cfb1857fc14e12b</anchor>
       <arglist>(World &amp;world, JointID id, Angle value)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetGroundAnchorA</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5e44d6db77292b823171b97df09a3cd8</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5e44d6db77292b823171b97df09a3cd8</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetGroundAnchorB</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5011bee6db23c7f1d50cadf00674e692</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5011bee6db23c7f1d50cadf00674e692</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length</type>
       <name>GetCurrentLengthA</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>afd81bf06efee4b29f2490134f52baddc</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gafd81bf06efee4b29f2490134f52baddc</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length</type>
       <name>GetCurrentLengthB</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a11679510e7348f8480d317a02ba3e2aa</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga11679510e7348f8480d317a02ba3e2aa</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length2</type>
       <name>GetTarget</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a74c3d7ede9ca7f67050e7ef5c109d212</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga74c3d7ede9ca7f67050e7ef5c109d212</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetTarget</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a5c5030bdc9a0a22cf720f3b3b551c6e2</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5c5030bdc9a0a22cf720f3b3b551c6e2</anchor>
       <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
     </member>
     <member kind="function">
       <type>Angle</type>
       <name>GetAngularLowerLimit</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a25c524e133872333f16ba15dec55a23d</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga25c524e133872333f16ba15dec55a23d</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Angle</type>
       <name>GetAngularUpperLimit</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a16abb6c18ad6df80be85a69e6cef496c</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga16abb6c18ad6df80be85a69e6cef496c</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
       <name>SetAngularLimits</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa07553452b8502796da81d8bb81b73d1</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa07553452b8502796da81d8bb81b73d1</anchor>
       <arglist>(World &amp;world, JointID id, Angle lower, Angle upper)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
       <name>ShiftOrigin</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a51154f75b56a864d6fd29682a5c16d8a</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga51154f75b56a864d6fd29682a5c16d8a</anchor>
       <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
     </member>
     <member kind="function">
       <type>Real</type>
       <name>GetDampingRatio</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aeb5fc13ad106742d7189897e0a95c2de</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaeb5fc13ad106742d7189897e0a95c2de</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Length</type>
       <name>GetLength</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a806d53a54ac5ef05308d51d87cdf0192</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga806d53a54ac5ef05308d51d87cdf0192</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>LimitState</type>
       <name>GetLimitState</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af0dcaa1775e96d5b8014493d6e3dbc7d</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf0dcaa1775e96d5b8014493d6e3dbc7d</anchor>
       <arglist>(const World &amp;world, JointID id)</arglist>
     </member>
     <member kind="function">
       <type>Force</type>
       <name>GetMotorForce</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a3e6c752f15d341da441a3b7541bf8791</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3e6c752f15d341da441a3b7541bf8791</anchor>
       <arglist>(const World &amp;world, JointID id, Frequency inv_dt)</arglist>
     </member>
     <member kind="function">
       <type>Torque</type>
       <name>GetMotorTorque</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a2eb6880ff8f81a8555c092138e0c6759</anchor>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga2eb6880ff8f81a8555c092138e0c6759</anchor>
       <arglist>(const World &amp;world, JointID id, Frequency inv_dt)</arglist>
     </member>
     <member kind="function">
-      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
-      <name>GetBodies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a07da07353245e09e0d8f84bb827dedd0</anchor>
-      <arglist>(const World &amp;world)</arglist>
+      <type>JointCounter</type>
+      <name>GetJointCount</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga8902de592d92cefc72d2e984d591a27d</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>SizedRange&lt; std::vector&lt; JointID &gt;::const_iterator &gt;</type>
-      <name>GetJoints</name>
+      <type>Length</type>
+      <name>GetMinVertexRadius</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a161f3c440523b0b538fc3f978f9920d5</anchor>
-      <arglist>(const World &amp;world)</arglist>
+      <anchor>a37fe6b5dbdfa9f4e5b7a09bdcbd4485d</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
-      <name>GetContacts</name>
+      <type>Length</type>
+      <name>GetMaxVertexRadius</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abbcd2eb42506ece4c3d8855c4514c3f0</anchor>
-      <arglist>(const World &amp;world)</arglist>
+      <anchor>a33c81759b720514f3666528e7d9f2688</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
       <type>StepStats</type>
@@ -35677,102 +37602,11 @@
       <arglist>(const World &amp;world) noexcept</arglist>
     </member>
     <member kind="function">
-      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
-      <name>GetFixturesForProxies</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>abb0c6a0197e0622c73a2b518e7901575</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ContactCounter</type>
-      <name>GetTouchingCount</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>af8aabfb6390fed1c549e81700b0cd80e</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
       <type>FixtureCounter</type>
-      <name>GetFixtureCount</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac30f61aacb499241e0bde575efc4b5b4</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>size_t</type>
       <name>GetShapeCount</name>
       <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a16741ddd7414c860451f4b6ba92d7bf4</anchor>
+      <anchor>a198704845b880c379966e5b79b297527</anchor>
       <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyCounter</type>
-      <name>GetAwakeCount</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a0812de1607b6656927bc2ad724f1d7c3</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyCounter</type>
-      <name>Awaken</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a1539463268cf6db572823eb1a195dc70</anchor>
-      <arglist>(World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAccelerations</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ad85bb4dfbf060d7d28668e4bc2d73a10</anchor>
-      <arglist>(World &amp;world, Acceleration acceleration) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAccelerations</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ab9dc75916d003478c7004172110b58e2</anchor>
-      <arglist>(World &amp;world, LinearAcceleration2 acceleration) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyID</type>
-      <name>FindClosestBody</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a7c37ce126c86487bd78a0b8d6734e182</anchor>
-      <arglist>(const World &amp;world, Length2 location) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>BodyCounter</type>
-      <name>GetBodyCount</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a54933e742508cac5c0b219c653c67674</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>JointCounter</type>
-      <name>GetJointCount</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>a8902de592d92cefc72d2e984d591a27d</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>ContactCounter</type>
-      <name>GetContactCount</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ac7b6c00fbd4fc40a4957bd082c9437b4</anchor>
-      <arglist>(const World &amp;world) noexcept</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>SetAccelerations</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>ae23446b68b07e35cff2b642c5573acfe</anchor>
-      <arglist>(World &amp;world, F fn)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ClearForces</name>
-      <anchorfile>namespaceplayrho_1_1d2.html</anchorfile>
-      <anchor>aa8a757a3ee66fa157cbf1ffafdf556d4</anchor>
-      <arglist>(World &amp;world) noexcept</arglist>
     </member>
     <member kind="variable">
       <type>constexpr auto</type>
@@ -37484,12 +39318,2832 @@
   </compound>
   <compound kind="group">
     <name>PhysicalEntities</name>
-    <title>Physical Entity Classes</title>
+    <title>Physical Entities</title>
     <filename>group__PhysicalEntities.html</filename>
     <class kind="class">playrho::d2::Body</class>
     <class kind="class">playrho::d2::Contact</class>
     <class kind="class">playrho::d2::Fixture</class>
     <class kind="class">playrho::d2::Joint</class>
+  </compound>
+  <compound kind="group">
+    <name>WorldBodyFreeFunctions</name>
+    <title>World Body Related Free Functions</title>
+    <filename>group__WorldBodyFreeFunctions.html</filename>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe80bceeb031d85076c29f75f0241475</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodies</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga28f809f0951bfb0a97027eaefca55515</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa70eeb7b7e00b3920f4539f569be34d2</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7a7b3314c3d17fbb49952bdf4fb4ff1a</anchor>
+      <arglist>(World &amp;world, const BodyConf &amp;def=GetDefaultBodyConf())</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5220bddd2803e882d97dfbce54bdceda</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
+      <name>GetFixtures</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae475a107e192ce25ee57d10790805bfc</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureCounter</type>
+      <name>GetFixtureCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga20944afa5f0709c73162e7f7bf56e408</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LinearAcceleration2</type>
+      <name>GetLinearAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae8ca55fff3e787fcbc3d30fc8f39f49c</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularAcceleration</type>
+      <name>GetAngularAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga05620c9ad05a74b4cd9799d76f4df0ed</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Acceleration</type>
+      <name>GetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8c16a3a5c5a313873e82f2a5b3c5a444</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga418cd290b6a2d35b2e1714b8ad2b5977</anchor>
+      <arglist>(World &amp;world, BodyID id, LinearAcceleration2 linear, AngularAcceleration angular)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab55a73746131ce67978e1b6525ef2828</anchor>
+      <arglist>(World &amp;world, BodyID id, LinearAcceleration2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7d38270de7497d14ebf2dfe48eb64699</anchor>
+      <arglist>(World &amp;world, BodyID id, AngularAcceleration value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga38238366981a6ff670b61aef3ec738c0</anchor>
+      <arglist>(World &amp;world, BodyID id, Acceleration value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTransformation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad01a8fe16bba00769e661ac6ea969389</anchor>
+      <arglist>(World &amp;world, BodyID id, Transformation xfm)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTransform</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafe96807931f9815ed363951901508f8d</anchor>
+      <arglist>(World &amp;world, BodyID id, Length2 location, Angle angle)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetLocation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa31cc6e0438fd8de38fe1eddab503121</anchor>
+      <arglist>(World &amp;world, BodyID id, Length2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAngle</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga245759e710fc195c98621e6d1ceb4433</anchor>
+      <arglist>(World &amp;world, BodyID id, Angle value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RotateAboutWorldPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga118f1cd558a4d51a5f7123fcfdcdf5b6</anchor>
+      <arglist>(World &amp;world, BodyID id, Angle amount, Length2 worldPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RotateAboutLocalPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga3d9fea50aa07339ec50b07d3673a1be7</anchor>
+      <arglist>(World &amp;world, BodyID id, Angle amount, Length2 localPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>Acceleration</type>
+      <name>CalcGravitationalAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga145bc2034162d0e6684d8d606211fb5e</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetWorldIndex</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga96cce8e8cf11bdfcb2d834f999744dd3</anchor>
+      <arglist>(const World &amp;world, const BodyID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyConf</type>
+      <name>GetBodyConf</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa4201f28997164f33c2aeeb79bce6f65</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetType</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga225bcf6be6eb93237264075846cdb562</anchor>
+      <arglist>(World &amp;world, BodyID id, BodyType value)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyType</type>
+      <name>GetType</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1d049ed1a0633d0c0a7138a2c79823b5</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Transformation</type>
+      <name>GetTransformation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae851807b71a13326be2635fb8af75ab6</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaabf27f5cfd9092be041a781d24cfa9a1</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetWorldPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad52c5cffc4cd82e4cf533db1afcedc93</anchor>
+      <arglist>(const World &amp;world, BodyID id, const Length2 localPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalVector</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gac542518f1fbacb567e5b39778de863db</anchor>
+      <arglist>(const World &amp;world, BodyID body, const UnitVec uv)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad432f7c9779ee902b41cdfab944c8885</anchor>
+      <arglist>(const World &amp;world, BodyID body, const Length2 worldPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga65c0c4c3adb519277e5418ec800bb7b3</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Position</type>
+      <name>GetPosition</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga9fe7fe17864539ef49018ae954c9e8b8</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetWorldVector</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb57be7efe663810331859b5e0c9a253</anchor>
+      <arglist>(const World &amp;world, BodyID body, UnitVec localVector)</arglist>
+    </member>
+    <member kind="function">
+      <type>Velocity</type>
+      <name>GetVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gacc05b211fd414f80784e7250c1f0b173</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LinearVelocity2</type>
+      <name>GetLinearVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb257e46e441021d64884e95c400fa0f</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetAngularVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga116c82c48643c1ef6199d27e9b9dd882</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad96f80e152c8b40ffb278dd171a018fc</anchor>
+      <arglist>(World &amp;world, BodyID id, const Velocity &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab57a90509099257c82af9931964780d0</anchor>
+      <arglist>(World &amp;world, BodyID id, const LinearVelocity2 &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe9eb60684f92671b2acf31c20e7bfdb</anchor>
+      <arglist>(World &amp;world, BodyID id, AngularVelocity value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>DestroyFixtures</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1857e5c1478f8297e7eec75bb055d0ce</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEnabled</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gacf3eb15a8221d495856fd34c831255a1</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEnabled</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga36fa18310477a7ab081e0b81425b5bad</anchor>
+      <arglist>(World &amp;world, BodyID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsAwake</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa7a828e4da95fbbaffcfc14186e451a1</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAwake</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga67874514581554435fd8065942a33050</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>UnsetAwake</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabb9770df3b38d727d39b7ac13ba4c77b</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>Awaken</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga4968cdffa51be385b42f978f3226901d</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsMassDataDirty</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga28c9e02154e09942576f0edc8297415c</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsFixedRotation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0a234fed595bbb7745f54c0820597260</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFixedRotation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1a11e67e4bda096d53e4c6a55272656b</anchor>
+      <arglist>(World &amp;world, BodyID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetWorldCenter</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga32537729a6c93bba8c9ea99a3bcd737f</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>InvMass</type>
+      <name>GetInvMass</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae67b1e703960f2ac4bfefc9d38c7a164</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>InvRotInertia</type>
+      <name>GetInvRotInertia</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadbe356dc1eaa258248d26ba77fc8491f</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Mass</type>
+      <name>GetMass</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad51a22660fa68bff534e3ae5bbcaba38</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>RotInertia</type>
+      <name>GetRotInertia</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8cc24a20ec1f33d8e51baf8bc435406a</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalCenter</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0d96416fb8a1165678be1c50fce12cc6</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>RotInertia</type>
+      <name>GetLocalRotInertia</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad374df7cc8d1a5a9a186e0ae8a7c8cb3</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>MassData</type>
+      <name>GetMassData</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga873904ef02cab072a393ef4554c17ea3</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>MassData</type>
+      <name>ComputeMassData</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0f6db19ca88cbfda1c130583c367b97e</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetMassData</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe6b45c9a1aeec496d83c00a6f587740</anchor>
+      <arglist>(World &amp;world, BodyID id, const MassData &amp;massData)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResetMassData</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0f4a5600e14e8a21bdf50bfe3382cb55</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>ShouldCollide</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1119c41348e3ff410831053cb949e0a6</anchor>
+      <arglist>(const World &amp;world, BodyID lhs, BodyID rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;::const_iterator &gt;</type>
+      <name>GetJoints</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0eeb57c8beb84dfbfe470b9707b1fa92</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSpeedable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5a9a1e21b5e0f1b2200d902a3f577e6e</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsAccelerable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gac33af5ec304e45152ffb2d275ba5093c</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsImpenetrable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga11893b06ac5c981fc1da435d2a07063f</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetImpenetrable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb1332e63f530ca56d0efa14deb06bba</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>UnsetImpenetrable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga66f55f614954b3969e3fb94733834a61</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetImpenetrable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadb8a3d49c66601ec5953d19714aa9759</anchor>
+      <arglist>(World &amp;world, BodyID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSleepingAllowed</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabf1860a0b9cd6de8e35cf3ab3353db31</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSleepingAllowed</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8f148aa57e72254d95694d31c7b4dbb1</anchor>
+      <arglist>(World &amp;world, BodyID, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
+      <name>GetContacts</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae5ab8a5162315de2f340bf43b8243e5d</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Force2</type>
+      <name>GetCentripetalForce</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga63ff1a3d8b15fd8ab2fc36b475a6b643</anchor>
+      <arglist>(const World &amp;world, BodyID id, Length2 axis)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyForceToCenter</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaff8c388b99a60c431d85dc649786562a</anchor>
+      <arglist>(World &amp;world, BodyID id, Force2 force)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyForce</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaf2cf9255dec702ee772907123e23d889</anchor>
+      <arglist>(World &amp;world, BodyID id, Force2 force, Length2 point)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyTorque</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga63de8f07f975cb055b0790364f2f6a69</anchor>
+      <arglist>(World &amp;world, BodyID id, Torque torque)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyLinearImpulse</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga496ed2441dd8b38efd57ca94b2c74a17</anchor>
+      <arglist>(World &amp;world, BodyID id, Momentum2 impulse, Length2 point)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyAngularImpulse</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1b34b2cc77e2ef64a6155572fc589ead</anchor>
+      <arglist>(World &amp;world, BodyID id, AngularMomentum impulse)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetForce</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadca4e4bff8f8c98a0247a10e9551edca</anchor>
+      <arglist>(World &amp;world, BodyID id, Force2 force, Length2 point) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTorque</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5800108f6c4be7a8a49d5283aa881616</anchor>
+      <arglist>(World &amp;world, BodyID id, Torque torque) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetLinearDamping</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad68f40e70485dd95d747d0531f2debad</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetLinearDamping</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga9fd32bf6cda4a42e0b61db21fb7bfe5c</anchor>
+      <arglist>(World &amp;world, BodyID id, NonNegative&lt; Frequency &gt; linearDamping)</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetAngularDamping</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaec885dc5540478cf5ffef4e893e82fcd</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAngularDamping</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga79dbcc9738c04b86acf653b8cab48971</anchor>
+      <arglist>(World &amp;world, BodyID id, NonNegative&lt; Frequency &gt; angularDamping)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetAwakeCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0812de1607b6656927bc2ad724f1d7c3</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>Awaken</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1539463268cf6db572823eb1a195dc70</anchor>
+      <arglist>(World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>FindClosestBody</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7c37ce126c86487bd78a0b8d6734e182</anchor>
+      <arglist>(const World &amp;world, Length2 location) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga54933e742508cac5c0b219c653c67674</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad85bb4dfbf060d7d28668e4bc2d73a10</anchor>
+      <arglist>(World &amp;world, Acceleration acceleration) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab9dc75916d003478c7004172110b58e2</anchor>
+      <arglist>(World &amp;world, LinearAcceleration2 acceleration) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ClearForces</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa8a757a3ee66fa157cbf1ffafdf556d4</anchor>
+      <arglist>(World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae23446b68b07e35cff2b642c5573acfe</anchor>
+      <arglist>(World &amp;world, F fn)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyRange</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe80bceeb031d85076c29f75f0241475</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodies</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga28f809f0951bfb0a97027eaefca55515</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; BodyID &gt;::const_iterator &gt;</type>
+      <name>GetBodiesForProxies</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa70eeb7b7e00b3920f4539f569be34d2</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>CreateBody</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7a7b3314c3d17fbb49952bdf4fb4ff1a</anchor>
+      <arglist>(World &amp;world, const BodyConf &amp;def=GetDefaultBodyConf())</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5220bddd2803e882d97dfbce54bdceda</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
+      <name>GetFixtures</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae475a107e192ce25ee57d10790805bfc</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureCounter</type>
+      <name>GetFixtureCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga20944afa5f0709c73162e7f7bf56e408</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LinearAcceleration2</type>
+      <name>GetLinearAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae8ca55fff3e787fcbc3d30fc8f39f49c</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularAcceleration</type>
+      <name>GetAngularAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga05620c9ad05a74b4cd9799d76f4df0ed</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Acceleration</type>
+      <name>GetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8c16a3a5c5a313873e82f2a5b3c5a444</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga418cd290b6a2d35b2e1714b8ad2b5977</anchor>
+      <arglist>(World &amp;world, BodyID id, LinearAcceleration2 linear, AngularAcceleration angular)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab55a73746131ce67978e1b6525ef2828</anchor>
+      <arglist>(World &amp;world, BodyID id, LinearAcceleration2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7d38270de7497d14ebf2dfe48eb64699</anchor>
+      <arglist>(World &amp;world, BodyID id, AngularAcceleration value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga38238366981a6ff670b61aef3ec738c0</anchor>
+      <arglist>(World &amp;world, BodyID id, Acceleration value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTransformation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad01a8fe16bba00769e661ac6ea969389</anchor>
+      <arglist>(World &amp;world, BodyID id, Transformation xfm)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTransform</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafe96807931f9815ed363951901508f8d</anchor>
+      <arglist>(World &amp;world, BodyID id, Length2 location, Angle angle)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetLocation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa31cc6e0438fd8de38fe1eddab503121</anchor>
+      <arglist>(World &amp;world, BodyID id, Length2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAngle</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga245759e710fc195c98621e6d1ceb4433</anchor>
+      <arglist>(World &amp;world, BodyID id, Angle value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RotateAboutWorldPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga118f1cd558a4d51a5f7123fcfdcdf5b6</anchor>
+      <arglist>(World &amp;world, BodyID id, Angle amount, Length2 worldPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>RotateAboutLocalPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga3d9fea50aa07339ec50b07d3673a1be7</anchor>
+      <arglist>(World &amp;world, BodyID id, Angle amount, Length2 localPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>Acceleration</type>
+      <name>CalcGravitationalAcceleration</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga145bc2034162d0e6684d8d606211fb5e</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetWorldIndex</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga96cce8e8cf11bdfcb2d834f999744dd3</anchor>
+      <arglist>(const World &amp;world, const BodyID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyConf</type>
+      <name>GetBodyConf</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa4201f28997164f33c2aeeb79bce6f65</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetType</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga225bcf6be6eb93237264075846cdb562</anchor>
+      <arglist>(World &amp;world, BodyID id, BodyType value)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyType</type>
+      <name>GetType</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1d049ed1a0633d0c0a7138a2c79823b5</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Transformation</type>
+      <name>GetTransformation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae851807b71a13326be2635fb8af75ab6</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaabf27f5cfd9092be041a781d24cfa9a1</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetWorldPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad52c5cffc4cd82e4cf533db1afcedc93</anchor>
+      <arglist>(const World &amp;world, BodyID id, const Length2 localPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalVector</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gac542518f1fbacb567e5b39778de863db</anchor>
+      <arglist>(const World &amp;world, BodyID body, const UnitVec uv)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalPoint</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad432f7c9779ee902b41cdfab944c8885</anchor>
+      <arglist>(const World &amp;world, BodyID body, const Length2 worldPoint)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga65c0c4c3adb519277e5418ec800bb7b3</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetWorldVector</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb57be7efe663810331859b5e0c9a253</anchor>
+      <arglist>(const World &amp;world, BodyID body, UnitVec localVector)</arglist>
+    </member>
+    <member kind="function">
+      <type>Velocity</type>
+      <name>GetVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gacc05b211fd414f80784e7250c1f0b173</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LinearVelocity2</type>
+      <name>GetLinearVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb257e46e441021d64884e95c400fa0f</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetAngularVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga116c82c48643c1ef6199d27e9b9dd882</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad96f80e152c8b40ffb278dd171a018fc</anchor>
+      <arglist>(World &amp;world, BodyID id, const Velocity &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab57a90509099257c82af9931964780d0</anchor>
+      <arglist>(World &amp;world, BodyID id, const LinearVelocity2 &amp;value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetVelocity</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe9eb60684f92671b2acf31c20e7bfdb</anchor>
+      <arglist>(World &amp;world, BodyID id, AngularVelocity value)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>DestroyFixtures</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1857e5c1478f8297e7eec75bb055d0ce</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEnabled</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gacf3eb15a8221d495856fd34c831255a1</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEnabled</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga36fa18310477a7ab081e0b81425b5bad</anchor>
+      <arglist>(World &amp;world, BodyID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsAwake</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa7a828e4da95fbbaffcfc14186e451a1</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAwake</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga67874514581554435fd8065942a33050</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>UnsetAwake</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabb9770df3b38d727d39b7ac13ba4c77b</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>Awaken</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga4968cdffa51be385b42f978f3226901d</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsMassDataDirty</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga28c9e02154e09942576f0edc8297415c</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsFixedRotation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0a234fed595bbb7745f54c0820597260</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFixedRotation</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1a11e67e4bda096d53e4c6a55272656b</anchor>
+      <arglist>(World &amp;world, BodyID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetWorldCenter</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga32537729a6c93bba8c9ea99a3bcd737f</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>InvMass</type>
+      <name>GetInvMass</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae67b1e703960f2ac4bfefc9d38c7a164</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>InvRotInertia</type>
+      <name>GetInvRotInertia</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadbe356dc1eaa258248d26ba77fc8491f</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Mass</type>
+      <name>GetMass</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad51a22660fa68bff534e3ae5bbcaba38</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>RotInertia</type>
+      <name>GetRotInertia</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8cc24a20ec1f33d8e51baf8bc435406a</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalCenter</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0d96416fb8a1165678be1c50fce12cc6</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>RotInertia</type>
+      <name>GetLocalRotInertia</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad374df7cc8d1a5a9a186e0ae8a7c8cb3</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>MassData</type>
+      <name>GetMassData</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga873904ef02cab072a393ef4554c17ea3</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>MassData</type>
+      <name>ComputeMassData</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0f6db19ca88cbfda1c130583c367b97e</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetMassData</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabe6b45c9a1aeec496d83c00a6f587740</anchor>
+      <arglist>(World &amp;world, BodyID id, const MassData &amp;massData)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResetMassData</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0f4a5600e14e8a21bdf50bfe3382cb55</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>ShouldCollide</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1119c41348e3ff410831053cb949e0a6</anchor>
+      <arglist>(const World &amp;world, BodyID lhs, BodyID rhs)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; std::pair&lt; BodyID, JointID &gt; &gt;::const_iterator &gt;</type>
+      <name>GetJoints</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0eeb57c8beb84dfbfe470b9707b1fa92</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSpeedable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5a9a1e21b5e0f1b2200d902a3f577e6e</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsAccelerable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gac33af5ec304e45152ffb2d275ba5093c</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsImpenetrable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga11893b06ac5c981fc1da435d2a07063f</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetImpenetrable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gafb1332e63f530ca56d0efa14deb06bba</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>UnsetImpenetrable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga66f55f614954b3969e3fb94733834a61</anchor>
+      <arglist>(World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetImpenetrable</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadb8a3d49c66601ec5953d19714aa9759</anchor>
+      <arglist>(World &amp;world, BodyID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSleepingAllowed</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gabf1860a0b9cd6de8e35cf3ab3353db31</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSleepingAllowed</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga8f148aa57e72254d95694d31c7b4dbb1</anchor>
+      <arglist>(World &amp;world, BodyID, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
+      <name>GetContacts</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae5ab8a5162315de2f340bf43b8243e5d</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Force2</type>
+      <name>GetCentripetalForce</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga63ff1a3d8b15fd8ab2fc36b475a6b643</anchor>
+      <arglist>(const World &amp;world, BodyID id, Length2 axis)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyForceToCenter</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaff8c388b99a60c431d85dc649786562a</anchor>
+      <arglist>(World &amp;world, BodyID id, Force2 force)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyForce</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaf2cf9255dec702ee772907123e23d889</anchor>
+      <arglist>(World &amp;world, BodyID id, Force2 force, Length2 point)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyTorque</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga63de8f07f975cb055b0790364f2f6a69</anchor>
+      <arglist>(World &amp;world, BodyID id, Torque torque)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyLinearImpulse</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga496ed2441dd8b38efd57ca94b2c74a17</anchor>
+      <arglist>(World &amp;world, BodyID id, Momentum2 impulse, Length2 point)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyAngularImpulse</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1b34b2cc77e2ef64a6155572fc589ead</anchor>
+      <arglist>(World &amp;world, BodyID id, AngularMomentum impulse)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetForce</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gadca4e4bff8f8c98a0247a10e9551edca</anchor>
+      <arglist>(World &amp;world, BodyID id, Force2 force, Length2 point) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTorque</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga5800108f6c4be7a8a49d5283aa881616</anchor>
+      <arglist>(World &amp;world, BodyID id, Torque torque) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetLinearDamping</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad68f40e70485dd95d747d0531f2debad</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetLinearDamping</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga9fd32bf6cda4a42e0b61db21fb7bfe5c</anchor>
+      <arglist>(World &amp;world, BodyID id, NonNegative&lt; Frequency &gt; linearDamping)</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetAngularDamping</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaec885dc5540478cf5ffef4e893e82fcd</anchor>
+      <arglist>(const World &amp;world, BodyID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAngularDamping</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga79dbcc9738c04b86acf653b8cab48971</anchor>
+      <arglist>(World &amp;world, BodyID id, NonNegative&lt; Frequency &gt; angularDamping)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetAwakeCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga0812de1607b6656927bc2ad724f1d7c3</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>Awaken</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga1539463268cf6db572823eb1a195dc70</anchor>
+      <arglist>(World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>FindClosestBody</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga7c37ce126c86487bd78a0b8d6734e182</anchor>
+      <arglist>(const World &amp;world, Length2 location) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyCounter</type>
+      <name>GetBodyCount</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>ga54933e742508cac5c0b219c653c67674</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gad85bb4dfbf060d7d28668e4bc2d73a10</anchor>
+      <arglist>(World &amp;world, Acceleration acceleration) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gab9dc75916d003478c7004172110b58e2</anchor>
+      <arglist>(World &amp;world, LinearAcceleration2 acceleration) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ClearForces</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gaa8a757a3ee66fa157cbf1ffafdf556d4</anchor>
+      <arglist>(World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAccelerations</name>
+      <anchorfile>group__WorldBodyFreeFunctions.html</anchorfile>
+      <anchor>gae23446b68b07e35cff2b642c5573acfe</anchor>
+      <arglist>(World &amp;world, F fn)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>WorldContactFreeFunctions</name>
+    <title>World Contacts Related Free Functions</title>
+    <filename>group__WorldContactFreeFunctions.html</filename>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
+      <name>GetContacts</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga5ba0f1fe0a6e9a140c4d264f61f7440e</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsTouching</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga386a732d954a80f48e6a3ac7beca1237</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsAwake</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga89c2757003061a1852f035d352ec68a5</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAwake</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaeaa33fbede9039afb79513b1a7432278</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyA</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaa8c24669bbb9850b21ef17c5217f0a45</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyB</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga379c87f1276cec0f81e35942dc144b27</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureID</type>
+      <name>GetFixtureA</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gafb6a01c31ef63559cf6c5d7892e863d5</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureID</type>
+      <name>GetFixtureB</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga697b60b490bbcdae46d962c97d780e07</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ChildCounter</type>
+      <name>GetChildIndexA</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga24ba41bdcb80e48e4bfebac362eb23db</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ChildCounter</type>
+      <name>GetChildIndexB</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga708d52132fb3f4ffbd49bf09ebc64740</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>TimestepIters</type>
+      <name>GetToiCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gab2cf2abf28efb6e6ba368648b49484f0</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>NeedsFiltering</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaadd14b7a073e106ee40d4488d131f673</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>NeedsUpdating</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaaada9701c50ea1607ecf3ae02c8f72c1</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>HasValidToi</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaae57c7aca1c8c840ea8eb1ba1d44ef07</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetToi</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gac62d6b0d4985566ff6e1ca9d3f1fa1e6</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetDefaultFriction</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gad4c197be0402b89a41342cfe51523d45</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetDefaultRestitution</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gad04dd80754bf974462c8796cd3c95b07</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetFriction</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga2ada1ba075b82b0e496f2a3a012ab495</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRestitution</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gada6f0319b80bd4a62673f539e41d0b86</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFriction</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga0fbfbb5c2714aac231db6f9b3794d9e4</anchor>
+      <arglist>(World &amp;world, ContactID id, Real friction)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetRestitution</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga74f86083992d822f2b6376b98c8e8a79</anchor>
+      <arglist>(World &amp;world, ContactID id, Real restitution)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Manifold &amp;</type>
+      <name>GetManifold</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf36b360b9ed9ff9e993a1c1a5655e46d</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>WorldManifold</type>
+      <name>GetWorldManifold</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga9e4fddd252b20dfceb87d93f5ad11087</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResetFriction</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga74979affb98f9307f121fd8f4f63910d</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResetRestitution</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf23360c9130e209a06ae0c111f274876</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LinearVelocity</type>
+      <name>GetTangentSpeed</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga2a314b9568d6553aaac1df1a0054250e</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTangentSpeed</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gadaae6c7d046c05b5b2f79c2e0d3fedae</anchor>
+      <arglist>(World &amp;world, ContactID id, LinearVelocity value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEnabled</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga10fdf8ef9cbd8b1ff7b51334e72a6ef5</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEnabled</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaaccb259506fe50452b035158ec12e47b</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>UnsetEnabled</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga6b1a2071021c814a1ee5bfe54c994287</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetTouchingCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf8aabfb6390fed1c549e81700b0cd80e</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEnabled</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gae6e78139be823080998e2cf046601977</anchor>
+      <arglist>(World &amp;world, ContactID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gac7b6c00fbd4fc40a4957bd082c9437b4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; KeyedContactPtr &gt;::const_iterator &gt;</type>
+      <name>GetContacts</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga5ba0f1fe0a6e9a140c4d264f61f7440e</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsTouching</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga386a732d954a80f48e6a3ac7beca1237</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsAwake</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga89c2757003061a1852f035d352ec68a5</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAwake</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaeaa33fbede9039afb79513b1a7432278</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyA</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaa8c24669bbb9850b21ef17c5217f0a45</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyB</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga379c87f1276cec0f81e35942dc144b27</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureID</type>
+      <name>GetFixtureA</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gafb6a01c31ef63559cf6c5d7892e863d5</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureID</type>
+      <name>GetFixtureB</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga697b60b490bbcdae46d962c97d780e07</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ChildCounter</type>
+      <name>GetChildIndexA</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga24ba41bdcb80e48e4bfebac362eb23db</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ChildCounter</type>
+      <name>GetChildIndexB</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga708d52132fb3f4ffbd49bf09ebc64740</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>TimestepIters</type>
+      <name>GetToiCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gab2cf2abf28efb6e6ba368648b49484f0</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>NeedsFiltering</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaadd14b7a073e106ee40d4488d131f673</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>NeedsUpdating</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaaada9701c50ea1607ecf3ae02c8f72c1</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>HasValidToi</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaae57c7aca1c8c840ea8eb1ba1d44ef07</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetToi</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gac62d6b0d4985566ff6e1ca9d3f1fa1e6</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetDefaultFriction</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gad4c197be0402b89a41342cfe51523d45</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetDefaultRestitution</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gad04dd80754bf974462c8796cd3c95b07</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetFriction</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga2ada1ba075b82b0e496f2a3a012ab495</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRestitution</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gada6f0319b80bd4a62673f539e41d0b86</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFriction</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga0fbfbb5c2714aac231db6f9b3794d9e4</anchor>
+      <arglist>(World &amp;world, ContactID id, Real friction)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetRestitution</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga74f86083992d822f2b6376b98c8e8a79</anchor>
+      <arglist>(World &amp;world, ContactID id, Real restitution)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Manifold &amp;</type>
+      <name>GetManifold</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf36b360b9ed9ff9e993a1c1a5655e46d</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>WorldManifold</type>
+      <name>GetWorldManifold</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga9e4fddd252b20dfceb87d93f5ad11087</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResetFriction</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga74979affb98f9307f121fd8f4f63910d</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResetRestitution</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf23360c9130e209a06ae0c111f274876</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LinearVelocity</type>
+      <name>GetTangentSpeed</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga2a314b9568d6553aaac1df1a0054250e</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTangentSpeed</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gadaae6c7d046c05b5b2f79c2e0d3fedae</anchor>
+      <arglist>(World &amp;world, ContactID id, LinearVelocity value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEnabled</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga10fdf8ef9cbd8b1ff7b51334e72a6ef5</anchor>
+      <arglist>(const World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEnabled</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaaccb259506fe50452b035158ec12e47b</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>UnsetEnabled</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>ga6b1a2071021c814a1ee5bfe54c994287</anchor>
+      <arglist>(World &amp;world, ContactID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetTouchingCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gaf8aabfb6390fed1c549e81700b0cd80e</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetEnabled</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gae6e78139be823080998e2cf046601977</anchor>
+      <arglist>(World &amp;world, ContactID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>ContactCounter</type>
+      <name>GetContactCount</name>
+      <anchorfile>group__WorldContactFreeFunctions.html</anchorfile>
+      <anchor>gac7b6c00fbd4fc40a4957bd082c9437b4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>WorldFixtureFreeFunctions</name>
+    <title>World Fixture Related Free Functions</title>
+    <filename>group__WorldFixtureFreeFunctions.html</filename>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gabb0c6a0197e0622c73a2b518e7901575</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureCounter</type>
+      <name>GetFixtureCount</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gac30f61aacb499241e0bde575efc4b5b4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureID</type>
+      <name>CreateFixture</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gac38ddfb3e74533c5ab45eec0496bf3e3</anchor>
+      <arglist>(World &amp;world, BodyID id, const Shape &amp;shape, const FixtureConf &amp;def=GetDefaultFixtureConf(), bool resetMassData=true)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>Destroy</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gaee0269f0a023b2598e8b7286b35519d8</anchor>
+      <arglist>(World &amp;world, FixtureID id, bool resetMassData=true)</arglist>
+    </member>
+    <member kind="function">
+      <type>Filter</type>
+      <name>GetFilterData</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga1dbda295266109b5cd1cb357124a1d4c</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFilterData</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga5cda7cbb9a8e263bacaed250c1aea6cd</anchor>
+      <arglist>(World &amp;world, FixtureID id, const Filter &amp;filter)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Refilter</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga7730246c18ade6a11dd03c5d91cf846d</anchor>
+      <arglist>(World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBody</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gae41d95c5b1ec79c36e344c95fa884bc1</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Transformation</type>
+      <name>GetTransformation</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gacdfa023334becda826867586a581979d</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Shape</type>
+      <name>GetShape</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga97601c20aaeaeb957df19dd1e50a668d</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetFriction</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga58dc7587cbd5da666f4501eb719b059e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRestitution</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga7fe43c7b209c1aca69358206e4a7a9fa</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSensor</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gab61ecfbbe51f6e7f34db6b35ce15ac1b</anchor>
+      <arglist>(World &amp;world, FixtureID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSensor</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga191f8d94e1733aad171a69519a0ab49e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AreaDensity</type>
+      <name>GetDensity</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga4fbe3677650de30bcd88043d13bed9af</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const std::vector&lt; FixtureProxy &gt; &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gabf1b5092216bb42b162d29c0095d644e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ChildCounter</type>
+      <name>GetProxyCount</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga9ee18a9ab216df6d28e29b65b9ea4434</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const FixtureProxy &amp;</type>
+      <name>GetProxy</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gae760d529f017d02de393e6fe58865ff1</anchor>
+      <arglist>(const World &amp;world, FixtureID id, ChildCounter child)</arglist>
+    </member>
+    <member kind="function">
+      <type>MassData</type>
+      <name>GetMassData</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga0f686d9e42eedbadcc373295b380dfa2</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; FixtureID &gt;::const_iterator &gt;</type>
+      <name>GetFixturesForProxies</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gabb0c6a0197e0622c73a2b518e7901575</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureCounter</type>
+      <name>GetFixtureCount</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gac30f61aacb499241e0bde575efc4b5b4</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>FixtureID</type>
+      <name>CreateFixture</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gac38ddfb3e74533c5ab45eec0496bf3e3</anchor>
+      <arglist>(World &amp;world, BodyID id, const Shape &amp;shape, const FixtureConf &amp;def=GetDefaultFixtureConf(), bool resetMassData=true)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>Destroy</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gaee0269f0a023b2598e8b7286b35519d8</anchor>
+      <arglist>(World &amp;world, FixtureID id, bool resetMassData=true)</arglist>
+    </member>
+    <member kind="function">
+      <type>Filter</type>
+      <name>GetFilterData</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga1dbda295266109b5cd1cb357124a1d4c</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFilterData</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga5cda7cbb9a8e263bacaed250c1aea6cd</anchor>
+      <arglist>(World &amp;world, FixtureID id, const Filter &amp;filter)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Refilter</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga7730246c18ade6a11dd03c5d91cf846d</anchor>
+      <arglist>(World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBody</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gae41d95c5b1ec79c36e344c95fa884bc1</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Transformation</type>
+      <name>GetTransformation</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gacdfa023334becda826867586a581979d</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Shape</type>
+      <name>GetShape</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga97601c20aaeaeb957df19dd1e50a668d</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetFriction</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga58dc7587cbd5da666f4501eb719b059e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRestitution</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga7fe43c7b209c1aca69358206e4a7a9fa</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetSensor</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gab61ecfbbe51f6e7f34db6b35ce15ac1b</anchor>
+      <arglist>(World &amp;world, FixtureID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsSensor</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga191f8d94e1733aad171a69519a0ab49e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const std::vector&lt; FixtureProxy &gt; &amp;</type>
+      <name>GetProxies</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gabf1b5092216bb42b162d29c0095d644e</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>ChildCounter</type>
+      <name>GetProxyCount</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga9ee18a9ab216df6d28e29b65b9ea4434</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const FixtureProxy &amp;</type>
+      <name>GetProxy</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>gae760d529f017d02de393e6fe58865ff1</anchor>
+      <arglist>(const World &amp;world, FixtureID id, ChildCounter child)</arglist>
+    </member>
+    <member kind="function">
+      <type>MassData</type>
+      <name>GetMassData</name>
+      <anchorfile>group__WorldFixtureFreeFunctions.html</anchorfile>
+      <anchor>ga0f686d9e42eedbadcc373295b380dfa2</anchor>
+      <arglist>(const World &amp;world, FixtureID id)</arglist>
+    </member>
+  </compound>
+  <compound kind="group">
+    <name>WorldJointFreeFunctions</name>
+    <title>World Joint Related Free Functions</title>
+    <filename>group__WorldJointFreeFunctions.html</filename>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; JointID &gt;::const_iterator &gt;</type>
+      <name>GetJoints</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac8f6e0a116a71527f6671053e7f8e616</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga306ddb4629a63298afd72f849a05bbe5</anchor>
+      <arglist>(World &amp;world, const Joint &amp;def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga806941861724bdba59cbcc6fc0cea61e</anchor>
+      <arglist>(World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointType</type>
+      <name>GetType</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga7a5f508e72fff8e0844aff436989a175</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Joint &amp;</type>
+      <name>GetJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1107e6659ad32e836ad15e04758d15bf</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac4b3a69acd5e4d6ccceda622fd2a3e9a</anchor>
+      <arglist>(World &amp;world, JointID id, const Joint &amp;def)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetCollideConnected</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3b869cbb8b5896ccdf15c66f1d00761a</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsMotorEnabled</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga9f9bc9518243b79711cd0defe739671c</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>EnableMotor</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaec28b93da1c0c63493d4a9d05e95eff2</anchor>
+      <arglist>(World &amp;world, JointID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLimitEnabled</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaea48262785f5cc1a4efcb6856e8327f2</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>EnableLimit</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gae88a98bb1700968afaff9b143820e0d1</anchor>
+      <arglist>(World &amp;world, JointID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga75920437a0a87a24443296f1191db23b</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3f6b43a34cbbdbc34530e5513820e2ac</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalAnchorA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gacde3e0a71def1cfceb2c821288555155</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalAnchorB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1aebe08694e219bf5032c3c44c5cc5ab</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3faa14e4c0188345c54d433a877ae01f</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga57bbf093e91c58e3bdf61479c561bee0</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetReferenceAngle</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga902c4e2db9331be98f4150759ed738bd</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalXAxisA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga35b304b54e47447d5277528ad2a9b469</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalYAxisA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf6865d25a20091233c0f8b104c658df2</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetMotorSpeed</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga688c457d004db7df23965d2227f4124e</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetMotorSpeed</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga900537131a6eb2dc318a7990d8c544b8</anchor>
+      <arglist>(World &amp;world, JointID id, AngularVelocity value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Torque</type>
+      <name>GetMaxMotorTorque</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf1b821c24f62a16d978fcce0f6ed0375</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetMaxMotorTorque</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa4a8c62d8ac89a11ae8f6be2e8cded5a</anchor>
+      <arglist>(World &amp;world, JointID id, Torque value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Momentum</type>
+      <name>GetLinearMotorImpulse</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1136742708ea7dc3cfd2ec1fc3435e1b</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularMomentum</type>
+      <name>GetAngularMotorImpulse</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga80c87366a9452f7ef76b5474a723e245</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>RotInertia</type>
+      <name>GetAngularMass</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga69407c4afef863d09f490618aa390318</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetFrequency</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga72d60d568707d6551e9dedb02c9e2724</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFrequency</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga23e2f1041c3b5a7cbc2c1b1d7f7ff689</anchor>
+      <arglist>(World &amp;world, JointID id, Frequency value)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetAngularVelocity</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf0d81eef4bb9836cfc9afef270a17054</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEnabled</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac628649081fe495f59e06aff27f3201d</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetWorldIndex</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gae1416ad660edc4914c490c7ea156ab93</anchor>
+      <arglist>(const World &amp;world, JointID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetAnchorA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gad3c653a34c7a681dbc60ec447225e85f</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetAnchorB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa88982e1bd4c8bafe0160cdad5a68a71</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRatio</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga7089b428b6ec35dc8b4d62396982bbd0</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetJointTranslation</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga0469ef558d7b14efb4792c7f24084d7e</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga488b1925795688fed10e2f506cda91c5</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Force</type>
+      <name>GetMotorForce</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3e6c752f15d341da441a3b7541bf8791</anchor>
+      <arglist>(const World &amp;world, JointID id, Frequency inv_dt)</arglist>
+    </member>
+    <member kind="function">
+      <type>Torque</type>
+      <name>GetMotorTorque</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga2eb6880ff8f81a8555c092138e0c6759</anchor>
+      <arglist>(const World &amp;world, JointID id, Frequency inv_dt)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLinearOffset</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga730510b6851cf86fdc29a007ff3b26f0</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetLinearOffset</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga81d72e02a8cad05f27a97f52ab8fff3d</anchor>
+      <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngularOffset</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1671b9e54818077d726f3f6cba342eb4</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAngularOffset</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gabddeb217913218d82cfb1857fc14e12b</anchor>
+      <arglist>(World &amp;world, JointID id, Angle value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetGroundAnchorA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5e44d6db77292b823171b97df09a3cd8</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetGroundAnchorB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5011bee6db23c7f1d50cadf00674e692</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetCurrentLengthA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gafd81bf06efee4b29f2490134f52baddc</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetCurrentLengthB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga11679510e7348f8480d317a02ba3e2aa</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetTarget</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga74c3d7ede9ca7f67050e7ef5c109d212</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTarget</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5c5030bdc9a0a22cf720f3b3b551c6e2</anchor>
+      <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngularLowerLimit</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga25c524e133872333f16ba15dec55a23d</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngularUpperLimit</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga16abb6c18ad6df80be85a69e6cef496c</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAngularLimits</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa07553452b8502796da81d8bb81b73d1</anchor>
+      <arglist>(World &amp;world, JointID id, Angle lower, Angle upper)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga51154f75b56a864d6fd29682a5c16d8a</anchor>
+      <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetDampingRatio</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaeb5fc13ad106742d7189897e0a95c2de</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetLength</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga806d53a54ac5ef05308d51d87cdf0192</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LimitState</type>
+      <name>GetLimitState</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf0dcaa1775e96d5b8014493d6e3dbc7d</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAwake</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga85c5cee4a3713d3ef248eab7b4d05926</anchor>
+      <arglist>(World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetJointCount</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga8902de592d92cefc72d2e984d591a27d</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>SizedRange&lt; std::vector&lt; JointID &gt;::const_iterator &gt;</type>
+      <name>GetJoints</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac8f6e0a116a71527f6671053e7f8e616</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>JointID</type>
+      <name>CreateJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga306ddb4629a63298afd72f849a05bbe5</anchor>
+      <arglist>(World &amp;world, const Joint &amp;def)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Destroy</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga806941861724bdba59cbcc6fc0cea61e</anchor>
+      <arglist>(World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointType</type>
+      <name>GetType</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga7a5f508e72fff8e0844aff436989a175</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>const Joint &amp;</type>
+      <name>GetJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1107e6659ad32e836ad15e04758d15bf</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetJoint</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac4b3a69acd5e4d6ccceda622fd2a3e9a</anchor>
+      <arglist>(World &amp;world, JointID id, const Joint &amp;def)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>GetCollideConnected</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3b869cbb8b5896ccdf15c66f1d00761a</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsMotorEnabled</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga9f9bc9518243b79711cd0defe739671c</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>EnableMotor</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaec28b93da1c0c63493d4a9d05e95eff2</anchor>
+      <arglist>(World &amp;world, JointID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsLimitEnabled</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaea48262785f5cc1a4efcb6856e8327f2</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>EnableLimit</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gae88a98bb1700968afaff9b143820e0d1</anchor>
+      <arglist>(World &amp;world, JointID id, bool value)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga75920437a0a87a24443296f1191db23b</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>BodyID</type>
+      <name>GetBodyB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3f6b43a34cbbdbc34530e5513820e2ac</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalAnchorA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gacde3e0a71def1cfceb2c821288555155</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLocalAnchorB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1aebe08694e219bf5032c3c44c5cc5ab</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Momentum2</type>
+      <name>GetLinearReaction</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3faa14e4c0188345c54d433a877ae01f</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularMomentum</type>
+      <name>GetAngularReaction</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga57bbf093e91c58e3bdf61479c561bee0</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetReferenceAngle</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga902c4e2db9331be98f4150759ed738bd</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalXAxisA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga35b304b54e47447d5277528ad2a9b469</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>UnitVec</type>
+      <name>GetLocalYAxisA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf6865d25a20091233c0f8b104c658df2</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetMotorSpeed</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga688c457d004db7df23965d2227f4124e</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetMotorSpeed</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga900537131a6eb2dc318a7990d8c544b8</anchor>
+      <arglist>(World &amp;world, JointID id, AngularVelocity value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Torque</type>
+      <name>GetMaxMotorTorque</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf1b821c24f62a16d978fcce0f6ed0375</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetMaxMotorTorque</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa4a8c62d8ac89a11ae8f6be2e8cded5a</anchor>
+      <arglist>(World &amp;world, JointID id, Torque value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Momentum</type>
+      <name>GetLinearMotorImpulse</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1136742708ea7dc3cfd2ec1fc3435e1b</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularMomentum</type>
+      <name>GetAngularMotorImpulse</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga80c87366a9452f7ef76b5474a723e245</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>RotInertia</type>
+      <name>GetAngularMass</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga69407c4afef863d09f490618aa390318</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Frequency</type>
+      <name>GetFrequency</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga72d60d568707d6551e9dedb02c9e2724</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetFrequency</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga23e2f1041c3b5a7cbc2c1b1d7f7ff689</anchor>
+      <arglist>(World &amp;world, JointID id, Frequency value)</arglist>
+    </member>
+    <member kind="function">
+      <type>AngularVelocity</type>
+      <name>GetAngularVelocity</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf0d81eef4bb9836cfc9afef270a17054</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>IsEnabled</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gac628649081fe495f59e06aff27f3201d</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetWorldIndex</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gae1416ad660edc4914c490c7ea156ab93</anchor>
+      <arglist>(const World &amp;world, JointID id) noexcept</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetAnchorA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gad3c653a34c7a681dbc60ec447225e85f</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetAnchorB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa88982e1bd4c8bafe0160cdad5a68a71</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetRatio</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga7089b428b6ec35dc8b4d62396982bbd0</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetJointTranslation</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga0469ef558d7b14efb4792c7f24084d7e</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngle</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga488b1925795688fed10e2f506cda91c5</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Force</type>
+      <name>GetMotorForce</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga3e6c752f15d341da441a3b7541bf8791</anchor>
+      <arglist>(const World &amp;world, JointID id, Frequency inv_dt)</arglist>
+    </member>
+    <member kind="function">
+      <type>Torque</type>
+      <name>GetMotorTorque</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga2eb6880ff8f81a8555c092138e0c6759</anchor>
+      <arglist>(const World &amp;world, JointID id, Frequency inv_dt)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetLinearOffset</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga730510b6851cf86fdc29a007ff3b26f0</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetLinearOffset</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga81d72e02a8cad05f27a97f52ab8fff3d</anchor>
+      <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngularOffset</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga1671b9e54818077d726f3f6cba342eb4</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAngularOffset</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gabddeb217913218d82cfb1857fc14e12b</anchor>
+      <arglist>(World &amp;world, JointID id, Angle value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetGroundAnchorA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5e44d6db77292b823171b97df09a3cd8</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetGroundAnchorB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5011bee6db23c7f1d50cadf00674e692</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetCurrentLengthA</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gafd81bf06efee4b29f2490134f52baddc</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetCurrentLengthB</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga11679510e7348f8480d317a02ba3e2aa</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length2</type>
+      <name>GetTarget</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga74c3d7ede9ca7f67050e7ef5c109d212</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetTarget</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga5c5030bdc9a0a22cf720f3b3b551c6e2</anchor>
+      <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngularLowerLimit</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga25c524e133872333f16ba15dec55a23d</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Angle</type>
+      <name>GetAngularUpperLimit</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga16abb6c18ad6df80be85a69e6cef496c</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAngularLimits</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaa07553452b8502796da81d8bb81b73d1</anchor>
+      <arglist>(World &amp;world, JointID id, Angle lower, Angle upper)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>ShiftOrigin</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga51154f75b56a864d6fd29682a5c16d8a</anchor>
+      <arglist>(World &amp;world, JointID id, Length2 value)</arglist>
+    </member>
+    <member kind="function">
+      <type>Real</type>
+      <name>GetDampingRatio</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaeb5fc13ad106742d7189897e0a95c2de</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>Length</type>
+      <name>GetLength</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga806d53a54ac5ef05308d51d87cdf0192</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>LimitState</type>
+      <name>GetLimitState</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>gaf0dcaa1775e96d5b8014493d6e3dbc7d</anchor>
+      <arglist>(const World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetAwake</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga85c5cee4a3713d3ef248eab7b4d05926</anchor>
+      <arglist>(World &amp;world, JointID id)</arglist>
+    </member>
+    <member kind="function">
+      <type>JointCounter</type>
+      <name>GetJointCount</name>
+      <anchorfile>group__WorldJointFreeFunctions.html</anchorfile>
+      <anchor>ga8902de592d92cefc72d2e984d591a27d</anchor>
+      <arglist>(const World &amp;world) noexcept</arglist>
+    </member>
   </compound>
   <compound kind="group">
     <name>TestPointGroup</name>
@@ -37559,5 +42213,6 @@
     <filename>index.html</filename>
     <docanchor file="index.html" title="Overview">intro_sec</docanchor>
     <docanchor file="index.html" title="Getting Started">coding_sec</docanchor>
+    <docanchor file="index.html" title="An Entire Application">helloworld_sec</docanchor>
   </compound>
 </tagfile>

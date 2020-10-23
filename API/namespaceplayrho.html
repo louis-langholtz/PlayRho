@@ -2190,7 +2190,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 <p>Body count type. </p>
 <dl class="section note"><dt>Note</dt><dd>This type must always be able to contain the <code>MaxBodies</code> value. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a8">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a8">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a29">WorldBody.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2209,7 +2209,7 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 <p>Child counter type. </p>
 <p>Relating to "children" of shape where each child is a convex shape possibly comprising a concave shape. </p><dl class="section note"><dt>Note</dt><dd>This type must always be able to contain the <code>MaxChildCount</code> value. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a31">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a31">World.cpp</a>, and <a class="el" href="WorldContact_8cpp-example.html#a34">WorldContact.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2400,7 +2400,7 @@ This data type is 6-bytes large (on at least one 64-bit platform). </dd></dl>
 
 <p>2-element vector of Length quantities. </p>
 <dl class="section note"><dt>Note</dt><dd>Often used as a 2-dimensional distance or location vector. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a32">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a32">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a93">WorldBody.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a28">WorldFixture.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2419,6 +2419,8 @@ This data type is 6-bytes large (on at least one 64-bit platform). </dd></dl>
 
 <p>2-element vector of linear acceleration (<code>LinearAcceleration</code>) quantities. </p>
 <dl class="section note"><dt>Note</dt><dd>Often used as a 2-dimensional linear acceleration vector. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldBody_8cpp-example.html#a92">WorldBody.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -2436,6 +2438,8 @@ This data type is 6-bytes large (on at least one 64-bit platform). </dd></dl>
 
 <p>2-element vector of linear velocity (<code>LinearVelocity</code>) quantities. </p>
 <dl class="section note"><dt>Note</dt><dd>Often used as a 2-dimensional speed vector. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldBody_8cpp-example.html#a99">WorldBody.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -2549,7 +2553,7 @@ The note regarding division applies even more so when using a fixed-point type (
 <a href="https://en.cppreference.com/w/cpp/types/is_floating_point">https://en.cppreference.com/w/cpp/types/is_floating_point</a> </dd>
 <dd>
 <a href="https://en.cppreference.com/w/cpp/named_req/LiteralType">https://en.cppreference.com/w/cpp/named_req/LiteralType</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a22">Body.cpp</a>, <a class="el" href="Contact_8cpp-example.html#a16">Contact.cpp</a>, and <a class="el" href="World_8cpp-example.html#a4">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a4">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a16">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#a18">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a14">WorldFixture.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2605,6 +2609,8 @@ template&lt;typename T , typename Tuple &gt; </div>
 
 <p><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a> with 2 Real elements. </p>
 <dl class="section note"><dt>Note</dt><dd>This data structure is two-times the size of the <code>Real</code> type (or 8 using Real of float). </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldBody_8cpp-example.html#a63">WorldBody.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -6437,7 +6443,7 @@ Any narrowing is intentional.</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li>
-    <li class="footer">Generated on Tue Oct 20 2020 09:33:37 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Thu Oct 22 2020 21:57:27 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

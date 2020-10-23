@@ -100,20 +100,23 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="textblock"><h1><a class="anchor" id="intro_sec"></a>
 Overview</h1>
 <p>Hello and welcome to PlayRho's API documentation!</p>
-<p>PlayRho is an interactive, real-time oriented, C++14 based, physics engine and library currently best suited for 2-dimensional games. To view its source code, please see: <a href="https://github.com/louis-langholtz/PlayRho">https://github.com/louis-langholtz/PlayRho</a> . For issues, visit: <a href="https://github.com/louis-langholtz/PlayRho/issues">https://github.com/louis-langholtz/PlayRho/issues</a> . For mathemtical insight into how a physics engine works, see: <a href="http://box2d.org/files/GDC2009/GDC2009_Catto_Erin_Solver.ppt">Erin Catto's 2009 Modeling and Solving Constraints slides</a>.</p>
+<p>PlayRho is an interactive, real-time oriented, C++ based, physics engine and library currently best suited for 2-dimensional games. To view its source code, please see: <a href="https://github.com/louis-langholtz/PlayRho">https://github.com/louis-langholtz/PlayRho</a>. For issues, visit: <a href="https://github.com/louis-langholtz/PlayRho/issues">https://github.com/louis-langholtz/PlayRho/issues</a>. For mathematical insight into how a physics engine works, see: <a href="http://box2d.org/files/GDC2009/GDC2009_Catto_Erin_Solver.ppt">Erin Catto's 2009 Modeling and Solving Constraints slides</a>.</p>
 <h1><a class="anchor" id="coding_sec"></a>
 Getting Started</h1>
-<p>For coding, begin simply by including the <code>PlayRho/PlayRho.hpp</code> header file and making an instance of the <a href="classplayrho_1_1d2_1_1World.html"><code>playrho::d2::World</code></a> class. Here's what this might look like: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;PlayRho/PlayRho.hpp&gt;</span></div>
+<p>For coding, purists may want to begin by just including the <code>World.hpp</code> header file and making an instance of the <a href="classplayrho_1_1d2_1_1World.html"><code>playrho::d2::World</code></a> class. Here's what this might look like: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;PlayRho/Dynamics/World.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main()</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">auto</span> world = <a class="code" href="classplayrho_1_1d2_1_1World.html">playrho::d2::World</a>{};</div>
 <div class="line">    <span class="keyword">const</span> <span class="keyword">auto</span> body = world.<a class="code" href="classplayrho_1_1d2_1_1World.html#a06a02a3c719ec0f20c5d2c43f5894bd9">CreateBody</a>();</div>
-<div class="line">    <span class="comment">// do more things with the world instance and body pointer</span></div>
+<div class="line">    <span class="comment">// do more things with the world instance and body identifier.</span></div>
 <div class="line">    <span class="keywordflow">return</span> 0; <span class="comment">// world and associated resources go away automatically</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><p> For a more elaborate example, see <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">playrho::d2::World</a>, <a class="el" href="group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods.">Physical Entity Classes</a> </dd></dl>
+</div><!-- fragment --><p> Pragmatists may instead want to begin by including this file, <code>PlayRho.hpp</code>, which includes headers for most of the entire PlayRho public API.</p>
+<h1><a class="anchor" id="helloworld_sec"></a>
+An Entire Application</h1>
+<p>For a more elaborate example, that's of an entire application, see <a href="HelloWorld_8cpp-example.html"><code>HelloWorld.cpp</code></a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">playrho::d2::World</a>, <a class="el" href="group__PhysicalEntities.html" title="Concepts and types associated with physical entities within a world.">Physical Entities</a> </dd></dl>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -122,7 +125,7 @@ Getting Started</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 20 2020 09:33:38 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Thu Oct 22 2020 21:57:29 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

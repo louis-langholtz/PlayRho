@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PlayRho: Physical Entity Classes</title>
+<title>PlayRho: Physical Entities</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -96,16 +96,16 @@ $(document).ready(function(){initNavTree('group__PhysicalEntities.html',''); ini
   <div class="summary">
 <a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
-<div class="title">Physical Entity Classes</div>  </div>
+<div class="title">Physical Entities</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Classes representing physical entities typically created/destroyed via factory methods.  
+<p>Concepts and types associated with physical entities within a world.  
 <a href="#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for Physical Entity Classes:</div>
+Collaboration diagram for Physical Entities:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="group__PhysicalEntities.svg" width="522" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="group__PhysicalEntities.svg" width="479" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <table class="memberdecls">
@@ -125,8 +125,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Classes representing physical entities typically created/destroyed via factory methods. </p>
-<p>Classes of creatable and destroyable managed instances that associate physical properties to simulations. These instances are typically created via a method whose name begins with the prefix of <code>Create</code>. Similarly, these instances are typically destroyed using a method whose name begins with the prefix of <code>Destroy</code>.</p>
+<p>Concepts and types associated with physical entities within a world. </p>
+<p>Concepts and types of creatable and destroyable instances that associate physical properties to simulations. These instances are typically created via a method whose name begins with the prefix of <code>Create</code>. Similarly, these instances are typically destroyed using a method whose name begins with the prefix of <code>Destroy</code>.</p>
 <dl class="section note"><dt>Note</dt><dd>For example, the following could be used to create a dynamic body having a one meter radius disk shape: <div class="fragment"><div class="line"><span class="keyword">auto</span> world = World{};</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> body = world.CreateBody(BodyConf{}.UseType(<a class="code" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7a84a8921b25f505d0d2077aeb5db4bc16">BodyType::Dynamic</a>));</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> fixture = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});</div>
@@ -137,7 +137,7 @@ Classes</h2></td></tr>
 <dd>
 <a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a" title="Fixture identifier.">FixtureID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a4e611d4cf7172edf4ecb744069e98655" title="Creates a fixture and attaches it to the given body.">World::CreateFixture</a>, World::Destroy(FixtureID). </dd>
 <dd>
-<a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34" title="Joint identifier.">JointID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a88b81cc647667c20613706d08ef3f213" title="Creates a joint to constrain one or more bodies.">World::CreateJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa8bb1c42524152358896de8eb2a89cb2" title="Destroys a joint.">World::Destroy(JointID)</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae84632604a8a5712afeaec510ebeb1ca" title="Gets the range of all joints attached to this body.">World::GetJoints()</a>. </dd>
+<a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34" title="Joint identifier.">JointID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a88b81cc647667c20613706d08ef3f213" title="Creates a joint to constrain one or more bodies.">World::CreateJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa8bb1c42524152358896de8eb2a89cb2" title="Destroys the identified joint.">World::Destroy(JointID)</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae84632604a8a5712afeaec510ebeb1ca" title="Gets the range of all joints attached to this body.">World::GetJoints()</a>. </dd>
 <dd>
 <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d" title="Contact identifier.">ContactID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae4666f5e4af331e62731cf71d91a0b4e" title="Gets the container of all contacts attached to the body.">World::GetContacts()</a>. </dd>
 <dd>
@@ -148,7 +148,7 @@ Classes</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 20 2020 09:33:37 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Thu Oct 22 2020 21:57:27 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

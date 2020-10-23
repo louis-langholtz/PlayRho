@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1Joint.html','');
 <a href="#related">Related Functions</a> &#124;
 <a href="classplayrho_1_1d2_1_1Joint-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">playrho::d2::Joint Class Reference<div class="ingroups"><a class="el" href="group__ConstraintsGroup.html">Library Defined Constraints</a> &raquo; <a class="el" href="group__JointsGroup.html">Joint Classes</a> &#124; <a class="el" href="group__PhysicalEntities.html">Physical Entity Classes</a></div></div>  </div>
+<div class="title">playrho::d2::Joint Class Reference<div class="ingroups"><a class="el" href="group__ConstraintsGroup.html">Library Defined Constraints</a> &raquo; <a class="el" href="group__JointsGroup.html">Joint Classes</a> &#124; <a class="el" href="group__PhysicalEntities.html">Physical Entities</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -129,11 +129,16 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a2f4a323ae3e657599d2e765d6dadbb57"><td class="memItemLeft" align="right" valign="top"><a id="a2f4a323ae3e657599d2e765d6dadbb57"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>BodyConstraintsMap</b> = std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html">BodyConstraint</a> &gt;</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a2f4a323ae3e657599d2e765d6dadbb57">BodyConstraintsMap</a> = std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html">BodyConstraint</a> &gt;</td></tr>
+<tr class="memdesc:a2f4a323ae3e657599d2e765d6dadbb57"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> constraints map type alias. <br /></td></tr>
 <tr class="separator:a2f4a323ae3e657599d2e765d6dadbb57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a629afbd4f38402a8f5d23a13199642f1"><td class="memItemLeft" align="right" valign="top"><a id="a629afbd4f38402a8f5d23a13199642f1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a629afbd4f38402a8f5d23a13199642f1">Joint</a> () noexcept=default</td></tr>
+<tr class="memdesc:a629afbd4f38402a8f5d23a13199642f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a629afbd4f38402a8f5d23a13199642f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a811a89730dc9e587dac821c78ba1afea"><td class="memTemplParams" colspan="2"><a id="a811a89730dc9e587dac821c78ba1afea"></a>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a811a89730dc9e587dac821c78ba1afea"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a811a89730dc9e587dac821c78ba1afea">Joint</a> (T arg)</td></tr>
@@ -161,7 +166,8 @@ template&lt;typename T , typename Tp  = std::decay_t&lt;T&gt;, typename  = std::
 <tr class="memdesc:a79d292f30f9366f3928e02ddec0b5e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment support for any valid underlying configuration. <br /></td></tr>
 <tr class="separator:a79d292f30f9366f3928e02ddec0b5e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a686ecf9d5b134af67040d2167eaaacbc"><td class="memItemLeft" align="right" valign="top"><a id="a686ecf9d5b134af67040d2167eaaacbc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;other) noexcept</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a686ecf9d5b134af67040d2167eaaacbc">swap</a> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;other) noexcept</td></tr>
+<tr class="memdesc:a686ecf9d5b134af67040d2167eaaacbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap function. <br /></td></tr>
 <tr class="separator:a686ecf9d5b134af67040d2167eaaacbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
@@ -177,9 +183,9 @@ Friends</h2></td></tr>
 <a class="el" href="namespaceplayrho_1_1d2.html#a8cae6324b65f4e37feb72a496827c985">JointType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a212ab3b036926dc191721116ad3cdb11">GetType</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;object) noexcept</td></tr>
 <tr class="memdesc:a212ab3b036926dc191721116ad3cdb11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identifier of the type of data this can be casted to. <br /></td></tr>
 <tr class="separator:a212ab3b036926dc191721116ad3cdb11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66f97131881a313957aba162ae69ff61"><td class="memTemplParams" colspan="2"><a id="a66f97131881a313957aba162ae69ff61"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a66f97131881a313957aba162ae69ff61"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>TypeCast</b> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *value) noexcept</td></tr>
+<tr class="memitem:a66f97131881a313957aba162ae69ff61"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a66f97131881a313957aba162ae69ff61"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a66f97131881a313957aba162ae69ff61">TypeCast</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *value) noexcept</td></tr>
+<tr class="memdesc:a66f97131881a313957aba162ae69ff61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the given joint into its current configuration value.  <a href="classplayrho_1_1d2_1_1Joint.html#a66f97131881a313957aba162ae69ff61">More...</a><br /></td></tr>
 <tr class="separator:a66f97131881a313957aba162ae69ff61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77014275fd3396814dca3cb040531a93"><td class="memItemLeft" align="right" valign="top"><a id="a77014275fd3396814dca3cb040531a93"></a>
 <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a77014275fd3396814dca3cb040531a93">GetBodyA</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;object) noexcept</td></tr>
@@ -195,15 +201,15 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ab1fd942ded9bd44c35ca6b53448853d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#ab1fd942ded9bd44c35ca6b53448853d8">ShiftOrigin</a> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;object, <a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a> value) noexcept</td></tr>
 <tr class="memdesc:ab1fd942ded9bd44c35ca6b53448853d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shifts the origin for any points stored in world coordinates.  <a href="classplayrho_1_1d2_1_1Joint.html#ab1fd942ded9bd44c35ca6b53448853d8">More...</a><br /></td></tr>
 <tr class="separator:ab1fd942ded9bd44c35ca6b53448853d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a047649869b4c0ef9814659719d46799d"><td class="memItemLeft" align="right" valign="top"><a id="a047649869b4c0ef9814659719d46799d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InitVelocity</b> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;object, BodyConstraintsMap &amp;bodies, const <a class="el" href="structplayrho_1_1StepConf.html">playrho::StepConf</a> &amp;step, const <a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a> &amp;conf)</td></tr>
-<tr class="separator:a047649869b4c0ef9814659719d46799d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cd6bd486766bb5aa10e09ff8cd9647b"><td class="memItemLeft" align="right" valign="top"><a id="a1cd6bd486766bb5aa10e09ff8cd9647b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SolveVelocity</b> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;object, BodyConstraintsMap &amp;bodies, const <a class="el" href="structplayrho_1_1StepConf.html">playrho::StepConf</a> &amp;step)</td></tr>
-<tr class="separator:a1cd6bd486766bb5aa10e09ff8cd9647b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91bec21925865bdcef6e9ff096714bb4"><td class="memItemLeft" align="right" valign="top"><a id="a91bec21925865bdcef6e9ff096714bb4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SolvePosition</b> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;object, BodyConstraintsMap &amp;bodies, const <a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a> &amp;conf)</td></tr>
-<tr class="separator:a91bec21925865bdcef6e9ff096714bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa16d15d5050a08af7aecd5dcd99443fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#aa16d15d5050a08af7aecd5dcd99443fb">InitVelocity</a> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;object, std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html">BodyConstraint</a> &gt; &amp;bodies, const <a class="el" href="structplayrho_1_1StepConf.html">playrho::StepConf</a> &amp;step, const <a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a> &amp;conf)</td></tr>
+<tr class="memdesc:aa16d15d5050a08af7aecd5dcd99443fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes velocity constraint data based on the given solver data.  <a href="classplayrho_1_1d2_1_1Joint.html#aa16d15d5050a08af7aecd5dcd99443fb">More...</a><br /></td></tr>
+<tr class="separator:aa16d15d5050a08af7aecd5dcd99443fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d169bb471d249df8a59a40f281419e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a1d169bb471d249df8a59a40f281419e0">SolveVelocity</a> (<a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;object, std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html">BodyConstraint</a> &gt; &amp;bodies, const <a class="el" href="structplayrho_1_1StepConf.html">playrho::StepConf</a> &amp;step)</td></tr>
+<tr class="memdesc:a1d169bb471d249df8a59a40f281419e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves velocity constraint.  <a href="classplayrho_1_1d2_1_1Joint.html#a1d169bb471d249df8a59a40f281419e0">More...</a><br /></td></tr>
+<tr class="separator:a1d169bb471d249df8a59a40f281419e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27aed9f55469eccfe93c2ce023e97333"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a27aed9f55469eccfe93c2ce023e97333">SolvePosition</a> (const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;object, std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html">BodyConstraint</a> &gt; &amp;bodies, const <a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a> &amp;conf)</td></tr>
+<tr class="memdesc:a27aed9f55469eccfe93c2ce023e97333"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves the position constraint.  <a href="classplayrho_1_1d2_1_1Joint.html#a27aed9f55469eccfe93c2ce023e97333">More...</a><br /></td></tr>
+<tr class="separator:a27aed9f55469eccfe93c2ce023e97333"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
 Related Functions</h2></td></tr>
@@ -1397,8 +1403,62 @@ Related Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a218">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a228">World.cpp</a>.</dd>
 </dl>
+
+</div>
+</div>
+<a id="aa16d15d5050a08af7aecd5dcd99443fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa16d15d5050a08af7aecd5dcd99443fb">&#9670;&nbsp;</a></span>InitVelocity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InitVelocity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html">BodyConstraint</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bodies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1StepConf.html">playrho::StepConf</a> &amp;&#160;</td>
+          <td class="paramname"><em>step</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a> &amp;&#160;</td>
+          <td class="paramname"><em>conf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initializes velocity constraint data based on the given solver data. </p>
+<dl class="section note"><dt>Note</dt><dd>This MUST be called prior to calling <code>SolveVelocity</code>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Joint.html#a1d169bb471d249df8a59a40f281419e0" title="Solves velocity constraint.">SolveVelocity</a>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#afc05c90150269264477f915b28698482">playrho::d2::Joint::Model&lt; T &gt;::InitVelocity_()</a>.</p>
 
 </div>
 </div>
@@ -1875,7 +1935,7 @@ Related Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a216">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a226">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -1921,8 +1981,104 @@ Related Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a27aed9f55469eccfe93c2ce023e97333"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27aed9f55469eccfe93c2ce023e97333">&#9670;&nbsp;</a></span>SolvePosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SolvePosition </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html">BodyConstraint</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bodies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1ConstraintSolverConf.html">ConstraintSolverConf</a> &amp;&#160;</td>
+          <td class="paramname"><em>conf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solves the position constraint. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if the position errors are within tolerance. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#a0161d4a1c8ddb22dff00f0d349b6fa9d">playrho::d2::Joint::Model&lt; T &gt;::SolvePosition_()</a>.</p>
+
+</div>
+</div>
+<a id="a1d169bb471d249df8a59a40f281419e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d169bb471d249df8a59a40f281419e0">&#9670;&nbsp;</a></span>SolveVelocity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SolveVelocity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> &amp;&#160;</td>
+          <td class="paramname"><em>object</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1BodyConstraint.html">BodyConstraint</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bodies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1StepConf.html">playrho::StepConf</a> &amp;&#160;</td>
+          <td class="paramname"><em>step</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solves velocity constraint. </p>
+<dl class="section pre"><dt>Precondition</dt><dd><code>InitVelocity</code> has been called. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Joint.html#aa16d15d5050a08af7aecd5dcd99443fb" title="Initializes velocity constraint data based on the given solver data.">InitVelocity</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if velocity is "solved", <code>false</code> otherwise. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="structplayrho_1_1d2_1_1Joint_1_1Model.html#ac2dacee0484554a039ffadaa85213c72">playrho::d2::Joint::Model&lt; T &gt;::SolveVelocity_()</a>.</p>
+
+</div>
+</div>
 <a id="a85cd017ec5a3f06435a68ce526845e52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85cd017ec5a3f06435a68ce526845e52">&#9670;&nbsp;</a></span>TypeCast()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a85cd017ec5a3f06435a68ce526845e52">&#9670;&nbsp;</a></span>TypeCast() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1958,6 +2114,37 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a66f97131881a313957aba162ae69ff61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66f97131881a313957aba162ae69ff61">&#9670;&nbsp;</a></span>TypeCast <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto TypeCast </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a> *&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts the given joint into its current configuration value. </p>
+<dl class="section note"><dt>Note</dt><dd>The design for this was based off the design of the C++17 <code>std::any</code> class and its associated <code>std::any_cast</code> function. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Joint.hpp</li>
 <li>DistanceJointConf.hpp</li>
@@ -1978,7 +2165,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">Joint</a></li>
-    <li class="footer">Generated on Tue Oct 20 2020 09:33:37 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Thu Oct 22 2020 21:57:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

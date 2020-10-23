@@ -261,7 +261,7 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 <p>A body configuration holds all the data needed to construct a rigid body. You can safely re-use body configurations.</p>
 <dl class="section note"><dt>Note</dt><dd>This is a value class meant for passing in to the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#a06a02a3c719ec0f20c5d2c43f5894bd9" title="Creates a rigid body with the given configuration.">World::CreateBody</a></code> method.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#_a0">Body.cpp</a>, <a class="el" href="Contact_8cpp-example.html#_a4">Contact.cpp</a>, <a class="el" href="HelloWorld_8cpp-example.html#_a2">HelloWorld.cpp</a>, and <a class="el" href="World_8cpp-example.html#_a57">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a2">HelloWorld.cpp</a>, <a class="el" href="World_8cpp-example.html#_a57">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#_a46">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#_a4">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#_a29">WorldFixture.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a79881dcf474db656032f5834391c1e32"></a>
@@ -295,7 +295,7 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 
 <p>Is this a fast moving body that should be prevented from tunneling through other moving bodies? Note that all bodies are prevented from tunneling through kinematic and static bodies. This setting is only considered on dynamic bodies. </p>
 <dl class="section note"><dt>Note</dt><dd>Use this flag sparingly since it increases processing time. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a201">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a210">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -314,7 +314,7 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 
 <p>Initial linear acceleration of the body. </p>
 <dl class="section note"><dt>Note</dt><dd>Usually this should be 0. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a147">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a148">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -333,7 +333,7 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 
 <p>Type of the body: static, kinematic, or dynamic. </p>
 <dl class="section note"><dt>Note</dt><dd>If a dynamic body would have zero mass, the mass is set to one. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Body_8cpp-example.html#a47">Body.cpp</a>, and <a class="el" href="World_8cpp-example.html#a136">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a137">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a59">WorldBody.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a0e940544a56fe840424f880106fcd842">playrho::d2::GetBodyConf()</a>.</p>
@@ -367,7 +367,7 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a></li>
-    <li class="footer">Generated on Tue Oct 20 2020 09:33:37 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Thu Oct 22 2020 21:57:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

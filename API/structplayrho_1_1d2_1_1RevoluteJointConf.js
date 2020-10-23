@@ -14,6 +14,8 @@ var structplayrho_1_1d2_1_1RevoluteJointConf =
     [ "GetAngularUpperLimit", "structplayrho_1_1d2_1_1RevoluteJointConf.html#a0f475e87122dc3f396a975f55b1c70d0", null ],
     [ "GetLinearReaction", "structplayrho_1_1d2_1_1RevoluteJointConf.html#a2cae96cc4b8f16e7a9ce6abd543f09c1", null ],
     [ "InitVelocity", "structplayrho_1_1d2_1_1RevoluteJointConf.html#a2fad23f6f66a16325e21b0faadf26d9b", null ],
+    [ "SetAngularLimits", "structplayrho_1_1d2_1_1RevoluteJointConf.html#ae5635ff98f64bcbf6a31cba670913afc", null ],
+    [ "SetMaxMotorTorque", "structplayrho_1_1d2_1_1RevoluteJointConf.html#ac5613ecd1ba9cd47dcfa45191c137dbd", null ],
     [ "ShiftOrigin", "structplayrho_1_1d2_1_1RevoluteJointConf.html#ac0a763d149b879a45044edf3c0e513f8", null ],
     [ "SolvePosition", "structplayrho_1_1d2_1_1RevoluteJointConf.html#a24000d24706fa8d93f028b3b8b970a17", null ],
     [ "SolveVelocity", "structplayrho_1_1d2_1_1RevoluteJointConf.html#a87db3ef3ad61289604c8085c1b330e67", null ],

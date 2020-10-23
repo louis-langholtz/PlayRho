@@ -1,5 +1,5 @@
 <map id="Joint Classes" name="Joint Classes">
-<area shape="rect" id="node1" href="$group__PhysicalEntities.html" title="Classes representing physical entities typically created/destroyed via factory methods." alt="" coords="488,7,651,33"/>
+<area shape="rect" id="node1" href="$group__PhysicalEntities.html" title="Concepts and types associated with physical entities within a world." alt="" coords="488,7,608,33"/>
 <area shape="rect" id="node2" title="The user creatable classes that specify constraints on one or more body instances." alt="" coords="236,7,339,33"/>
 <area shape="rect" id="node3" href="$group__ConstraintsGroup.html" title="Constraints defined and used by the PlayRho library." alt="" coords="5,7,187,33"/>
 </map>
