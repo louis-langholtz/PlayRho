@@ -686,14 +686,14 @@ public:
     SizedRange<Fixtures::const_iterator> GetFixturesForProxies() const noexcept;
 
     /// @brief Re-filter the fixture.
-    /// @note Call this if you want to establish collision that was previously disabled by
-    ///   <code>ShouldCollide(const Fixture&, const Fixture&)</code>.
+    /// @note Call this if you want to establish collision that was previously disabled.
     /// @throws std::out_of_range If given an invalid fixture identifier.
-    /// @see bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
+    /// @see SetFilterData, GetFilterData.
     void Refilter(FixtureID id);
 
     /// @brief Gets the filter data for the identified fixture.
     /// @throws std::out_of_range If given an invalid fixture identifier.
+    /// @see SetFilterData.
     Filter GetFilterData(FixtureID id) const;
 
     /// @brief Sets the contact filtering data.
@@ -701,6 +701,7 @@ public:
     ///    is speedable and awake.
     /// @note This automatically calls <code>Refilter</code>.
     /// @throws std::out_of_range If given an invalid fixture identifier.
+    /// @see GetFilterData.
     void SetFilterData(FixtureID id, const Filter& filter);
 
     /// @brief Gets the identifier of the body associated with the identified fixture.
