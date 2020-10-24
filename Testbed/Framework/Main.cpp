@@ -2044,7 +2044,7 @@ static void EntityUI(World& world, JointID e)
     }
     ImGui::LabelText("Ang. Reaction (N·m·s)", "%.2e",
                      static_cast<double>(Real{GetAngularReaction(joint) / NewtonMeterSecond}));
-    const auto type = world.GetType(e);
+    const auto type = GetType(world, e);
     if (type == GetTypeID<DistanceJointConf>()) {
         auto conf = TypeCast<DistanceJointConf>(joint);
         EntityUI(conf, bodyRange);

@@ -1156,7 +1156,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     {
         if ((settings.dt == 0) && m_targetJoint != InvalidJointID)
         {
-            const auto bodyB = m_world.GetBodyB(m_targetJoint);
+            const auto bodyB = GetBodyB(m_world, m_targetJoint);
             const auto anchorB = GetAnchorB(m_world, m_targetJoint);
             const auto centerB = GetLocation(m_world, bodyB);
             const auto destB = GetTarget(m_world, m_targetJoint);
