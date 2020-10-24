@@ -244,13 +244,6 @@ void SetFixedRotation(WorldImpl& world, BodyID id, bool value)
     }
 }
 
-#if 0
-bool ShouldCollide(const WorldImpl& world, BodyID lhs, BodyID rhs)
-{
-    return ShouldCollide(world.GetBody(lhs), world.GetBody(rhs), rhs);
-}
-#endif
-
 bool IsEnabled(const WorldImpl& world, BodyID id)
 {
     return world.GetBody(id).IsEnabled();
