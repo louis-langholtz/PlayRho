@@ -228,7 +228,7 @@ public:
     /// @note This calls the joint and fixture destruction listeners (if they're set)
     ///   before clearing anything.
     /// @post The contents of this world have all been destroyed and this world's internal
-    ///   state reset as though it had just been constructed.
+    ///   state is reset as though it had just been constructed.
     void Clear() noexcept;
 
     /// @brief Steps the world simulation according to the given configuration.

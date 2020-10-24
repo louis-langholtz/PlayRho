@@ -36,6 +36,13 @@ namespace d2 {
 class World;
 class DynamicTree;
 
+/// @brief Clears this world.
+/// @note This calls the joint and fixture destruction listeners (if they're set)
+///   before clearing anything.
+/// @post The contents of this world have all been destroyed and this world's internal
+///   state is reset as though it had just been constructed.
+void Clear(World& world) noexcept;
+
 /// @brief Steps the given world the specified amount.
 /// @relatedalso World
 StepStats Step(World& world, const StepConf& conf = StepConf{});

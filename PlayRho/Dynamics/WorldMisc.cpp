@@ -38,6 +38,11 @@ namespace d2 {
 
 using playrho::size;
 
+void Clear(World& world) noexcept
+{
+    world.Clear();
+}
+
 Length GetMinVertexRadius(const World& world) noexcept
 {
     return world.GetMinVertexRadius();
