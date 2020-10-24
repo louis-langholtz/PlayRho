@@ -17,6 +17,9 @@ Write code to the C++17 standard. Try to document any changes recommended for C+
 - Just because a guideline is listed in this document, does not mean that it's a *good* guideline (or a *bad* one for that matter).
 - Some of the guidelines described herein are established primarily by precedence from the history of this code.
 
+### Use of `auto`
+Prefer to use `auto` **unless** it makes it harder for you to do what you're trying to do. Don't remove the use of `auto` from code unless it's code you've contributed.
+
 ## Formatting
 
 ### General Formatting Guideline For Pre-existing Code
@@ -25,11 +28,104 @@ Generally speaking, don't change the formatting of pre-existing code.
 ### Indentation
 Indent code using 4-spaces for every level of code indentation desired. Tabs may not be used for this.
 
-Don't add any levels of indentation for declarations within name spaces.
+#### Namespaces
+Don't add any levels of indentation within namespaces. For example, use the following style for namespaces and any declarations within them:
+```
+namespace playrho {
+
+struct MyData;
+
+namespace d2 {
+
+int MyNewFunctionForD2(const MyData& arg);
+
+} // namespace d2
+} // namespace playrho
+```
+
+#### Class Definitions
+Don't indent class access specifiers (`public:`, `protected:`, and `private:`).
+I.e., use the following formatting style:
+```
+class MyNewClass {
+public:
+    MyNewClass() = default;
+    // ... whatever
+private:
+    int m_data;
+};
+```
+
+### Line Wrapping
+This speaks to when to wrap source code to the next line.
+Use a column width of 100.
+
+For namespaces, if-statements, switch-statements, case-labels, and class definitions,
+wrap to the next line **after** the `{` character.
+For function definitions, prefer to wrap to the next line **before** the `{` character.
+
+Here's what this looks like:
+```
+namespace Test { // ClangFormat: "AfterNamespace: false"
+
+class MyClass { // ClangFormat: "AfterClass: true"
+public:
+    MyClass(int foo): m_data{foo}
+    {
+        // Nothing done here in function block.
+    }
+private:
+    int m_data;
+};
+
+struct MyStruct { // ClangFormat: "AfterStruct: false"
+  int wow;
+};
+
+void DoSomething(bool someBool, int val) // ClangFormat: "AfterFunction: true"
+{
+    if (someBool) {
+        myFunction();
+    } // ClangFormat: "BeforeElse: true"
+    else {
+        someOtherFunction();
+    }
+    switch (val) {
+    case 0: { // ClangFormat: "AfterCaseLabel: false"
+        int foo = 2;
+        doIt(foo);
+        break;
+    }
+    case 1:
+        break;
+    default:
+        break;
+    }
+}
+
+} // namespace Test
+```
+
+### Spaces
+
+#### Operator Overloads
+Make operator overload definitions look like function definitions.
+Don't put any spaces between the specification of the operator and its parameters:
+```
+constexpr Acceleration operator-(const Acceleration& lhs, const Acceleration& rhs)
+{
+    return Acceleration{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
+}
+
+constexpr Acceleration Subtract(const Acceleration& lhs, const Acceleration& rhs)
+{
+    return Acceleration{lhs.linear - rhs.linear, lhs.angular - rhs.angular};
+}
+```
 
 ### Available Tools
 
-Here are some links to available tools to help with formatting. Unfortunately they don't seem perfectly up to the job by themselves so it's still necessary to be aware of the guidelines:
+Here are some links to available tools to help with formatting. Unfortunately they don't seem perfectly up to the job by themselves so it's still necessary to be aware of these guidelines:
 
 - [`.editorconfig`](../.editorconfig): Configuration file for [EditorConfig](http://editorconfig.org).
 - [`.clang-format`](../.clang-format): Configuration file for [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html). From a POSIX shell, ClangFormat can be run as: `clang-format -i PlayRho/**/*.cpp PlayRho/**/*.hpp`.

@@ -50,15 +50,15 @@ public:
     size_type GetIndex(value_type* ptr) const
     {
         const auto i = ptr - m_data.data();
-        return static_cast<size_type>(((i >= 0) && (static_cast<size_type>(i) < m_data.size()))? i: -1);
+        return static_cast<size_type>(
+            ((i >= 0) && (static_cast<size_type>(i) < m_data.size())) ? i : -1);
     }
 
     /// @brief Allocates an entry in the array with the given constructor parameters.
-    template< class... Args >
+    template <class... Args>
     size_type Allocate(Args&&... args)
     {
-        if (!m_free.empty())
-        {
+        if (!m_free.empty()) {
             const auto index = m_free.back();
             m_data[index] = value_type{std::forward<Args>(args)...};
             m_free.pop_back();
@@ -72,8 +72,7 @@ public:
     /// @brief Allocates an entry in the array with the given instance.
     size_type Allocate(const value_type& copy)
     {
-        if (!m_free.empty())
-        {
+        if (!m_free.empty()) {
             const auto index = m_free.back();
             m_data[index] = copy;
             m_free.pop_back();
@@ -87,8 +86,7 @@ public:
     /// @brief Frees the specified index entry.
     void Free(size_type index)
     {
-        if (index != static_cast<size_type>(-1))
-        {
+        if (index != static_cast<size_type>(-1)) {
             m_data[index] = value_type{};
             m_free.push_back(index);
         }
