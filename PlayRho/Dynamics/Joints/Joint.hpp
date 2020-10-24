@@ -1,6 +1,7 @@
 /*
  * Original work Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * TypeCast code derived from the LLVM Project https://llvm.org/LICENSE.txt
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -45,6 +46,20 @@ class BodyConstraint;
 
 /// @brief Gets the identifier of the type of data this can be casted to.
 JointType GetType(const Joint& object) noexcept;
+
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> code from the LLVM Project.
+template <typename T>
+std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noexcept;
+
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
+template <typename T>
+std::add_pointer_t<T> TypeCast(Joint* value) noexcept;
 
 /// @brief Gets the first body attached to this joint.
 BodyID GetBodyA(const Joint& object) noexcept;
@@ -154,17 +169,11 @@ public:
         return object.m_self? object.m_self->GetType_(): GetTypeID<void>();
     }
 
-    /// @brief Converts the given joint into its current configuration value.
-    /// @note The design for this was based off the design of the C++17 <code>std::any</code>
-    ///   class and its associated <code>std::any_cast</code> function.
     template <typename T>
-    friend auto TypeCast(const Joint* value) noexcept
-    {
-        if (!value || (GetType(*value) != GetTypeID<std::remove_pointer_t<T>>())) {
-            return static_cast<T>(nullptr);
-        }
-        return static_cast<T>(value->m_self->GetData_());
-    }
+    friend std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noexcept;
+
+    template <typename T>
+    friend std::add_pointer_t<T> TypeCast(Joint* value) noexcept;
 
     friend BodyID GetBodyA(const Joint& object) noexcept
     {
@@ -226,6 +235,9 @@ private:
         /// @brief Gets the data for the underlying configuration.
         virtual const void* GetData_() const noexcept = 0;
 
+        /// @brief Gets the data for the underlying configuration.
+        virtual void* GetData_() noexcept = 0;
+
         /// @brief Gets the ID of body-A.
         virtual BodyID GetBodyA_() const noexcept = 0;
 
@@ -277,6 +289,14 @@ private:
 
         /// @copydoc Concept::GetData_
         const void* GetData_() const noexcept override
+        {
+            // Note address of "data" not necessarily same as address of "this" since
+            // base class is virtual.
+            return &data;
+        }
+
+        /// @copydoc Concept::GetData_
+        void* GetData_() noexcept override
         {
             // Note address of "data" not necessarily same as address of "this" since
             // base class is virtual.
@@ -342,17 +362,82 @@ BodyConstraint& At(std::vector<BodyConstraint>& container, BodyID key);
 
 /// @brief Converts the given joint into its current configuration value.
 /// @note The design for this was based off the design of the C++17 <code>std::any</code>
-///   type and its associated <code>std::any_cast</code> function.
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
 /// @throws std::bad_cast If the given template parameter type isn't the type of this
 ///   joint's configuration value.
 /// @relatedalso Joint
 template <typename T>
-inline auto TypeCast(const Joint& value)
+inline T TypeCast(const Joint& value)
 {
-    auto tmp = TypeCast<std::add_pointer_t<std::add_const_t<T>>>(&value);
+    using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
+    static_assert(std::is_constructible<T, RawType const &>::value,
+                  "T is required to be a const lvalue reference "
+                  "or a CopyConstructible type");
+    auto tmp = ::playrho::d2::TypeCast<std::add_const_t<RawType>>(&value);
     if (tmp == nullptr)
         throw std::bad_cast();
-    return *tmp;
+    return static_cast<T>(*tmp);
+}
+
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
+template <typename T>
+inline T TypeCast(Joint& value)
+{
+    using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
+    static_assert(std::is_constructible<T, RawType &>::value,
+                  "T is required to be a const lvalue reference "
+                  "or a CopyConstructible type");
+    auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
+    if (tmp == nullptr)
+        throw std::bad_cast();
+    return static_cast<T>(*tmp);
+}
+
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
+template <typename T>
+inline T TypeCast(Joint&& value)
+{
+    using RawType = std::remove_cv_t<std::remove_reference_t<T>>;
+    static_assert(std::is_constructible<T, RawType>::value,
+                  "T is required to be a const lvalue reference "
+                  "or a CopyConstructible type");
+    auto tmp = ::playrho::d2::TypeCast<RawType>(&value);
+    if (tmp == nullptr)
+        throw std::bad_cast();
+    return static_cast<T>(std::move(*tmp));
+}
+
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
+template <typename T>
+inline std::add_pointer_t<std::add_const_t<T>> TypeCast(const Joint* value) noexcept
+{
+    static_assert(!std::is_reference<T>::value, "T may not be a reference.");
+    return ::playrho::d2::TypeCast<T>(const_cast<Joint*>(value));
+}
+
+/// @brief Converts the given joint into its current configuration value.
+/// @note The design for this was based off the design of the C++17 <code>std::any</code>
+///   class and its associated <code>std::any_cast</code> function. The code for this is based
+///   off of the <code>std::any</code> implementation from the LLVM Project.
+template <typename T>
+inline std::add_pointer_t<T> TypeCast(Joint* value) noexcept
+{
+    static_assert(!std::is_reference<T>::value, "T may not be a reference.");
+    using ReturnType = std::add_pointer_t<T>;
+    if (value && value->m_self && (GetType(*value) == GetTypeID<T>())) {
+        return static_cast<ReturnType>(value->m_self->GetData_());
+    }
+    return nullptr;
 }
 
 /// Get the anchor point on body-A in local coordinates.
