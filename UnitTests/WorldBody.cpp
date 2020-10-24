@@ -638,6 +638,32 @@ TEST(WorldBody, ApplyTorque)
               AngularAcceleration(Real(1.5) * Radian / SquareSecond));
 }
 
+TEST(WorldBody, ApplyLinearImpulse)
+{
+    auto world = World{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    ASSERT_EQ(GetMass(world, body), 4_kg);
+    auto value = Momentum2{40_Ns, 0_Ns};
+    EXPECT_NO_THROW(ApplyLinearImpulse(world, body, value, GetWorldCenter(world, body)));
+    EXPECT_EQ(GetX(GetVelocity(world, body).linear), LinearVelocity(10_mps));
+    EXPECT_EQ(GetY(GetVelocity(world, body).linear), LinearVelocity(0_mps));
+    EXPECT_EQ(GetVelocity(world, body).angular, AngularVelocity(0_rpm));
+}
+
+TEST(WorldBody, ApplyAngularImpulse)
+{
+    auto world = World{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    ASSERT_EQ(GetMass(world, body), 4_kg);
+    auto value = AngularMomentum{Real(8) * NewtonMeterSecond};
+    EXPECT_NO_THROW(ApplyAngularImpulse(world, body, value));
+    EXPECT_EQ(GetX(GetVelocity(world, body).linear), LinearVelocity(0_mps));
+    EXPECT_EQ(GetY(GetVelocity(world, body).linear), LinearVelocity(0_mps));
+    EXPECT_EQ(GetVelocity(world, body).angular, AngularVelocity(Real(3) * RadianPerSecond));
+}
+
 TEST(WorldBody, CreateLotsOfFixtures)
 {
     auto bd = BodyConf{};
