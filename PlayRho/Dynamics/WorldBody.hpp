@@ -522,13 +522,6 @@ inline void ResetMassData(World& world, BodyID id)
     SetMassData(world, id, ComputeMassData(world, id));
 }
 
-/// @brief Should collide.
-/// @details Determines whether a body should possibly be able to collide with the other body.
-/// @return true if either body is dynamic and no joint prevents collision, false otherwise.
-/// @throws std::out_of_range If given an invalid body identifier.
-/// @relatedalso World
-bool ShouldCollide(const World& world, BodyID lhs, BodyID rhs);
-
 /// @brief Gets the range of all joints attached to the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World

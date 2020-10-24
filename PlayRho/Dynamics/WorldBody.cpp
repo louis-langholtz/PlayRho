@@ -376,22 +376,6 @@ GetContacts(const World& world, BodyID id)
     return world.GetContacts(id);
 }
 
-bool ShouldCollide(const World& world, BodyID lhs, BodyID rhs)
-{
-    // At least one body should be accelerable/dynamic.
-    if (!IsAccelerable(GetType(world, lhs)) && !IsAccelerable(GetType(world, rhs)))
-    {
-        return false;
-    }
-
-    // Does a joint prevent collision?
-    const auto joints = GetJoints(world, lhs);
-    const auto it = std::find_if(cbegin(joints), cend(joints), [&](const auto& ji) {
-        return (std::get<BodyID>(ji) == rhs) && !world.GetCollideConnected(std::get<JointID>(ji));
-    });
-    return it == end(joints);
-}
-
 Force2 GetCentripetalForce(const World& world, BodyID id, Length2 axis)
 {
     // For background on centripetal force, see:
