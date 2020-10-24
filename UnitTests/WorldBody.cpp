@@ -885,3 +885,38 @@ TEST(WorldBody, SetAwake)
         EXPECT_FALSE(IsAwake(world, body)); // because Static, !IsSpeedable
     }
 }
+
+TEST(WorldBody, GetBodyRange)
+{
+    auto world = World{};
+    auto body = InvalidBodyID;
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(0));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+
+    ASSERT_NO_THROW(body = CreateBody(world));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(1));
+    for (auto i = 1; i < 10; ++i) {
+        ASSERT_NO_THROW(CreateBody(world));
+    }
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(10));
+
+    ASSERT_NO_THROW(Destroy(world, body));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(10));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(9));
+
+    ASSERT_NO_THROW(body = CreateBody(world));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(10));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(10));
+
+    ASSERT_NO_THROW(Clear(world));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(0));
+
+    ASSERT_NO_THROW(body = CreateBody(world));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(1));
+
+    ASSERT_NO_THROW(Destroy(world, body));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(1));
+}
