@@ -45,11 +45,6 @@ void Destroy(World& world, JointID id)
     world.Destroy(id);
 }
 
-JointType GetType(const World& world, JointID id)
-{
-    return world.GetType(id);
-}
-
 const Joint& GetJoint(const World& world, JointID id)
 {
     return world.GetJoint(id);
@@ -60,49 +55,64 @@ void SetJoint(World& world, JointID id, const Joint& def)
     world.SetJoint(id, def);
 }
 
+JointType GetType(const World& world, JointID id)
+{
+    return GetType(world.GetJoint(id));
+}
+
 bool GetCollideConnected(const World& world, JointID id)
 {
-    return world.GetCollideConnected(id);
+    return GetCollideConnected(world.GetJoint(id));
 }
 
 BodyID GetBodyA(const World& world, JointID id)
 {
-    return world.GetBodyA(id);
+    return GetBodyA(world.GetJoint(id));
 }
 
 BodyID GetBodyB(const World& world, JointID id)
 {
-    return world.GetBodyB(id);
+    return GetBodyB(world.GetJoint(id));
 }
 
 Length2 GetLocalAnchorA(const World& world, JointID id)
 {
-    return world.GetLocalAnchorA(id);
+    return GetLocalAnchorA(world.GetJoint(id));
 }
 
 Length2 GetLocalAnchorB(const World& world, JointID id)
 {
-    return world.GetLocalAnchorB(id);
+    return GetLocalAnchorB(world.GetJoint(id));
 }
 
 Momentum2 GetLinearReaction(const World& world, JointID id)
 {
-    return world.GetLinearReaction(id);
+    return GetLinearReaction(world.GetJoint(id));
 }
 
 AngularMomentum GetAngularReaction(const World& world, JointID id)
 {
-    return world.GetAngularReaction(id);
+    return GetAngularReaction(world.GetJoint(id));
 }
 
 Angle GetReferenceAngle(const World& world, JointID id)
 {
-    return world.GetReferenceAngle(id);
+    return GetReferenceAngle(world.GetJoint(id));
 }
 
 void SetAwake(World& world, JointID id)
 {
-    world.SetAwake(id);
+    const auto& joint = world.GetJoint(id);
+    const auto bA = GetBodyA(joint);
+    const auto bB = GetBodyB(joint);
+    if (bA != InvalidBodyID)
+    {
+        world.SetAwake(bA);
+    }
+    if (bB != InvalidBodyID)
+    {
+        world.SetAwake(bB);
+    }
 }
 
 UnitVec GetLocalXAxisA(const World& world, JointID id)

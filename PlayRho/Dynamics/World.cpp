@@ -389,11 +389,6 @@ void World::SetAwake(BodyID id)
     ::playrho::d2::SetAwake(*m_impl, id);
 }
 
-void World::SetAwake(JointID id)
-{
-    ::playrho::d2::SetAwake(*m_impl, id);
-}
-
 bool World::IsAwake(ContactID id) const
 {
     return ::playrho::d2::IsAwake(*m_impl, id);
@@ -430,11 +425,6 @@ void World::SetFixedRotation(BodyID id, bool value)
 }
 
 BodyType World::GetType(BodyID id) const
-{
-    return ::playrho::d2::GetType(*m_impl, id);
-}
-
-JointType World::GetType(JointID id) const
 {
     return ::playrho::d2::GetType(*m_impl, id);
 }
@@ -477,46 +467,6 @@ const Joint& World::GetJoint(JointID id) const
 void World::SetJoint(JointID id, const Joint& def)
 {
     ::playrho::d2::SetJoint(*m_impl, id, def);
-}
-
-bool World::GetCollideConnected(JointID id) const
-{
-    return ::playrho::d2::GetCollideConnected(*m_impl, id);
-}
-
-BodyID World::GetBodyA(JointID id) const
-{
-    return ::playrho::d2::GetBodyA(*m_impl, id);
-}
-
-BodyID World::GetBodyB(JointID id) const
-{
-    return ::playrho::d2::GetBodyB(*m_impl, id);
-}
-
-Length2 World::GetLocalAnchorA(JointID id) const
-{
-    return ::playrho::d2::GetLocalAnchorA(*m_impl, id);
-}
-
-Length2 World::GetLocalAnchorB(JointID id) const
-{
-    return ::playrho::d2::GetLocalAnchorB(*m_impl, id);
-}
-
-Momentum2 World::GetLinearReaction(JointID id) const
-{
-    return ::playrho::d2::GetLinearReaction(*m_impl, id);
-}
-
-AngularMomentum World::GetAngularReaction(JointID id) const
-{
-    return ::playrho::d2::GetAngularReaction(*m_impl, id);
-}
-
-Angle World::GetReferenceAngle(JointID id) const
-{
-    return ::playrho::d2::GetReferenceAngle(*m_impl, id);
 }
 
 bool World::IsTouching(ContactID id) const

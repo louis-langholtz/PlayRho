@@ -47,10 +47,6 @@ JointID CreateJoint(WorldImpl& world, const Joint& def);
 /// @relatedalso WorldImpl
 void Destroy(WorldImpl& world, JointID id);
 
-/// @brief Gets the type of the joint.
-/// @relatedalso WorldImpl
-JointType GetType(const WorldImpl& world, JointID id);
-
 /// @brief Gets the identified joint's value.
 /// @relatedalso WorldImpl
 const Joint& GetJoint(const WorldImpl& world, JointID id);
@@ -58,38 +54,6 @@ const Joint& GetJoint(const WorldImpl& world, JointID id);
 /// @brief Sets the identified joint's new value.
 /// @relatedalso WorldImpl
 void SetJoint(WorldImpl& world, JointID id, const Joint& def);
-
-/// @brief Gets the linear reaction on body-B at the joint anchor.
-/// @relatedalso WorldImpl
-Momentum2 GetLinearReaction(const WorldImpl& world, JointID id);
-
-/// @brief Get the angular reaction on body-B for the identified joint.
-/// @relatedalso WorldImpl
-AngularMomentum GetAngularReaction(const WorldImpl& world, JointID id);
-
-/// @brief Wakes up the joined bodies.
-/// @relatedalso WorldImpl
-void SetAwake(WorldImpl& world, JointID id);
-
-/// @brief Gets collide connected for the specified joint.
-/// @note Modifying the collide connect flag won't work correctly because
-///   the flag is only checked when fixture AABBs begin to overlap.
-bool GetCollideConnected(const WorldImpl& world, JointID id);
-
-/// @relatedalso WorldImpl
-BodyID GetBodyA(const WorldImpl& world, JointID id);
-
-/// @relatedalso WorldImpl
-BodyID GetBodyB(const WorldImpl& world, JointID id);
-
-/// @relatedalso WorldImpl
-Length2 GetLocalAnchorA(const WorldImpl& world, JointID id);
-
-/// @relatedalso WorldImpl
-Length2 GetLocalAnchorB(const WorldImpl& world, JointID id);
-
-/// @relatedalso WorldImpl
-Angle GetReferenceAngle(const WorldImpl& world, JointID id);
 
 } // namespace d2
 } // namespace playrho

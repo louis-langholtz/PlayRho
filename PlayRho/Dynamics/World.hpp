@@ -164,7 +164,7 @@ public:
 
     /// @name Special Member Functions
     /// Special member functions that are explicitly defined.
-    ///@{
+    /// @{
 
     /// @brief Constructs a world object.
     /// @param def A customized world configuration or its default value.
@@ -199,7 +199,7 @@ public:
     /// @}
 
     /// @name Listener Member Functions
-    ///@{
+    /// @{
 
     /// @brief Register a destruction listener for fixtures.
     void SetFixtureDestructionListener(const FixtureListener& listener) noexcept;
@@ -324,7 +324,7 @@ public:
 
     /// @name Body Member Functions
     /// Member functions relating to bodies.
-    ///@{
+    /// @{
 
     /// @brief Gets the extent of the currently valid body range.
     /// @note This is one higher than the maxium BodyID that is in range for body related
@@ -610,11 +610,11 @@ public:
     /// @throws std::out_of_range If given an invalid body identifier.
     SizedRange<Contacts::const_iterator> GetContacts(BodyID id) const;
 
-    ///@}
+    /// @}
 
     /// @name Fixture Member Functions
     /// Member functions relating to fixtures.
-    ///@{
+    /// @{
 
     /// @brief Creates a fixture and attaches it to the given body.
     /// @details Creates a fixture for attaching a shape and other characteristics to this
@@ -734,7 +734,7 @@ public:
 
     /// @name Joint Member Functions
     /// Member functions relating to joints.
-    ///@{
+    /// @{
 
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
@@ -778,51 +778,11 @@ public:
     /// @throws std::out_of_range If given an invalid joint identifier.
     void SetJoint(JointID id, const Joint& def);
 
-    /// @brief Wakes up the joined bodies.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    void SetAwake(JointID id);
-
-    /// @brief Gets collide connected for the specified joint.
-    /// @note Modifying the collide connect flag won't work correctly because
-    ///   the flag is only checked when fixture AABBs begin to overlap.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    bool GetCollideConnected(JointID id) const;
-
-    /// @brief Gets the type of the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    JointType GetType(JointID id) const;
-
-    /// @brief Gets the identifier of body-A of the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    BodyID GetBodyA(JointID id) const;
-
-    /// @brief Gets the identifier of body-B of the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    BodyID GetBodyB(JointID id) const;
-
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    Length2 GetLocalAnchorA(JointID id) const;
-
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    Length2 GetLocalAnchorB(JointID id) const;
-
-    /// Gets the linear reaction on body-B at the joint anchor.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    Momentum2 GetLinearReaction(JointID id) const;
-
-    /// @brief Get the angular reaction on body-B for the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    AngularMomentum GetAngularReaction(JointID id) const;
-
-    /// @brief Gets the reference angle of the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    Angle GetReferenceAngle(JointID id) const;
-
     /// @}
 
     /// @name Contact Member Functions
     /// Member functions relating to contacts.
-    ///@{
+    /// @{
 
     /// @brief Gets the world contact range.
     /// @warning contacts are created and destroyed in the middle of a time step.
