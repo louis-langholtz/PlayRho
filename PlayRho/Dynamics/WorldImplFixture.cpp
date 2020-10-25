@@ -64,7 +64,7 @@ AreaDensity GetDensity(const WorldImpl& world, FixtureID id)
     return world.GetFixture(id).GetDensity();
 }
 
-const WorldImpl::FixtureProxies& GetProxies(const WorldImpl& world, FixtureID id)
+const WorldImpl::Proxies& GetProxies(const WorldImpl& world, FixtureID id)
 {
     return world.GetFixture(id).GetProxies();
 }

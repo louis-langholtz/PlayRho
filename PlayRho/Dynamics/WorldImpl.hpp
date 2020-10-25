@@ -91,7 +91,11 @@ public:
     /// @brief Fixtures container type.
     using Fixtures = std::vector<FixtureID>;
 
-    using FixtureProxies = std::vector<ContactCounter>;
+    /// @brief Proxy ID type alias.
+    using ProxyId = DynamicTree::Size;
+
+    /// @brief Proxy container type alias.
+    using Proxies = std::vector<ProxyId>;
 
     using FixtureListener = std::function<void(FixtureID)>;
     using JointListener = std::function<void(JointID)>;
@@ -474,16 +478,10 @@ public:
 private:
     /// @brief Flags type data type.
     using FlagsType = std::uint32_t;
-    
-    /// @brief Proxy ID type alias.
-    using ProxyId = DynamicTree::Size;
-    
+
     /// @brief Contact key queue type alias.
     using ContactKeyQueue = std::vector<ContactKey>;
-    
-    /// @brief Proxy queue type alias.
-    using ProxyQueue = std::vector<ProxyId>;
-    
+
     /// @brief Flag enumeration.
     enum Flag: FlagsType
     {
@@ -769,13 +767,13 @@ private:
 
     /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.
-    static FixtureProxies CreateProxies(FixtureID id, BodyID body, const Shape& shape,
-                                        const Transformation& xfm, ProxyQueue& proxies,
+    static Proxies CreateProxies(FixtureID id, BodyID body, const Shape& shape,
+                                        const Transformation& xfm, Proxies& proxies,
                                         DynamicTree& tree, Length aabbExtension);
 
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    static void InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture) noexcept;
+    static void InternalTouchProxies(Proxies& proxies, const Fixture& fixture) noexcept;
 
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the given
@@ -824,7 +822,7 @@ private:
     DynamicTree m_tree; ///< Dynamic tree.
 
     ContactKeyQueue m_proxyKeys; ///< Proxy keys.
-    ProxyQueue m_proxies; ///< Proxies queue.
+    Proxies m_proxies; ///< Proxies queue.
     Fixtures m_fixturesForProxies; ///< Fixtures for proxies queue.
     Bodies m_bodiesForProxies; ///< Bodies for proxies queue.
     

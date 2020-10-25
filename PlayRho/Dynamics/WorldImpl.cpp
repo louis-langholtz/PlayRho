@@ -2376,9 +2376,9 @@ void WorldImpl::DestroyFixtures(BodyID id)
     SetMassData(id, ComputeMassData(id));
 }
 
-WorldImpl::FixtureProxies
+WorldImpl::Proxies
 WorldImpl::CreateProxies(FixtureID fixtureID, BodyID bodyID, const Shape& shape,
-                         const Transformation& xfm, ProxyQueue& proxies,
+                         const Transformation& xfm, Proxies& proxies,
                          DynamicTree& tree, Length aabbExtension)
 {
     // Reserve proxy space and create proxies in the broad-phase.
@@ -2400,7 +2400,7 @@ WorldImpl::CreateProxies(FixtureID fixtureID, BodyID bodyID, const Shape& shape,
     return fixtureProxies;
 }
 
-void WorldImpl::InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture) noexcept
+void WorldImpl::InternalTouchProxies(Proxies& proxies, const Fixture& fixture) noexcept
 {
     for (const auto& proxy: fixture.GetProxies()) {
         proxies.push_back(proxy);
