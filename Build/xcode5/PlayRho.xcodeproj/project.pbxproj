@@ -50,8 +50,6 @@
 		47315E041E28A66100DDA856 /* RevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47315E031E28A66100DDA856 /* RevoluteJoint.cpp */; };
 		4731DDFA1DC7C9B000E7F931 /* Simplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DDF91DC7C9B000E7F931 /* Simplex.cpp */; };
 		4731DDFC1DC8FBEE00E7F931 /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DDFB1DC8FBEE00E7F931 /* Island.cpp */; };
-		4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */; };
-		4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */; };
 		4731DE1E1DDD0B8700E7F931 /* DynamicTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */; };
 		4731DE231DDF83A600E7F931 /* RayCastOutput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */; };
 		4731DE291DDF84A900E7F931 /* RayCastInput.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4731DE261DDF84A900E7F931 /* RayCastInput.hpp */; };
@@ -445,8 +443,6 @@
 		47315E031E28A66100DDA856 /* RevoluteJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RevoluteJoint.cpp; sourceTree = "<group>"; };
 		4731DDF91DC7C9B000E7F931 /* Simplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Simplex.cpp; sourceTree = "<group>"; };
 		4731DDFB1DC8FBEE00E7F931 /* Island.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Island.cpp; sourceTree = "<group>"; };
-		4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FixtureProxy.cpp; sourceTree = "<group>"; };
-		4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FixtureProxy.hpp; sourceTree = "<group>"; };
 		4731DE1D1DDD0B8700E7F931 /* DynamicTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicTree.cpp; sourceTree = "<group>"; };
 		4731DE201DDF83A500E7F931 /* RayCastOutput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastOutput.hpp; sourceTree = "<group>"; };
 		4731DE261DDF84A900E7F931 /* RayCastInput.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RayCastInput.hpp; sourceTree = "<group>"; };
@@ -864,7 +860,6 @@
 				475931D11F26ABBD009BACA3 /* Filter.cpp */,
 				477D20051E32B6E80069D610 /* Fixed.cpp */,
 				476FBF562540D6960057D5F3 /* Fixture.cpp */,
-				4731DE151DDCD00100E7F931 /* FixtureProxy.cpp */,
 				47B58F5F1F5B791500354C34 /* FlagGuard.cpp */,
 				472724241E310C7600C64921 /* float.cpp */,
 				474FDB521E72643D00F401AF /* forward_list.cpp */,
@@ -1101,7 +1096,6 @@
 				470F9B4E1EF0C8B8007EF7B6 /* FixtureConf.cpp */,
 				470F94AB1EC4CAE600AA3C82 /* FixtureConf.hpp */,
 				4764086C250E9E2B0090F711 /* FixtureID.hpp */,
-				4731DE181DDCD0E100E7F931 /* FixtureProxy.hpp */,
 				80BB8953141C3E5900F1753A /* Island.cpp */,
 				80BB8954141C3E5900F1753A /* Island.hpp */,
 				47B490D5201E6C3000AB07A0 /* IslandStats.hpp */,
@@ -1488,7 +1482,6 @@
 				4764087C251EA80D0090F711 /* WorldImplContact.hpp in Headers */,
 				475039921D2180D600D32047 /* DistanceProxy.hpp in Headers */,
 				470F9B1E1EDF2B8A007EF7B6 /* Sweep.hpp in Headers */,
-				4731DE1B1DDCD0E100E7F931 /* FixtureProxy.hpp in Headers */,
 				47440F0D1EDA365400AB3F51 /* WorldConf.hpp in Headers */,
 				472E301B1DBA925500DA821D /* VertexSet.hpp in Headers */,
 				4751C34B1EC18A11006D9E69 /* Profile.hpp in Headers */,
@@ -1714,7 +1707,6 @@
 				474BC43D1D413DC200447DCD /* World.cpp in Sources */,
 				479B63C31ED9CAC300D49BC7 /* CheckedValue.cpp in Sources */,
 				475A94561D930E6C000CA9A8 /* WorldFixture.cpp in Sources */,
-				4731DE161DDCD00100E7F931 /* FixtureProxy.cpp in Sources */,
 				473E01A01F81705100D58CC8 /* Vector.cpp in Sources */,
 				472E24661F82C4EA0051E192 /* Interval.cpp in Sources */,
 				4775A9381E05B032001C2332 /* StepConf.cpp in Sources */,
