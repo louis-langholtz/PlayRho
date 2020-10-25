@@ -25,6 +25,7 @@
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
@@ -95,8 +96,8 @@ TEST(WeldJoint, Construction)
 TEST(WeldJoint, GetWeldJointConf)
 {
     auto world = World{};
-    const auto bodyA = world.CreateBody();
-    const auto bodyB = world.CreateBody();
+    const auto bodyA = CreateBody(world);
+    const auto bodyB = CreateBody(world);
     const auto anchor = Length2(2_m, 1_m);
     const auto def = GetWeldJointConf(world, bodyA, bodyB, anchor);
     Joint joint{def};
@@ -130,13 +131,13 @@ TEST(WeldJoint, WithDynamicCircles)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(b1, circle);
-    world.CreateFixture(b2, circle);
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    CreateFixture(world, b1, circle);
+    CreateFixture(world, b2, circle);
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetWeldJointConf(world, b1, b2, anchor);
-    world.CreateJoint(Joint{jd});
+    CreateJoint(world, Joint{jd});
     Step(world, 1_s);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
@@ -152,19 +153,19 @@ TEST(WeldJoint, WithDynamicCircles2)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(b1, circle);
-    world.CreateFixture(b2, circle);
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    CreateFixture(world, b1, circle);
+    CreateFixture(world, b2, circle);
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetWeldJointConf(world, b1, b2, anchor).UseFrequency(10_Hz);
-    const auto joint = world.CreateJoint(Joint{jd});
+    const auto joint = CreateJoint(world, Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
     ASSERT_EQ(GetFrequency(world, joint), 10_Hz);
     auto stepConf = StepConf{};
 
     stepConf.doWarmStart = true;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
@@ -173,7 +174,7 @@ TEST(WeldJoint, WithDynamicCircles2)
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
 
     stepConf.doWarmStart = false;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
@@ -190,13 +191,13 @@ TEST(WeldJoint, GetAnchorAandB)
     const auto loc2 = Length2{-2_m, Real(+1.2f) * Meter};
     const auto anchor = Length2(2_m, 1_m);
 
-    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseLocation(loc2));
+    const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseLocation(loc2));
 
     auto jd = GetWeldJointConf(world, b1, b2, anchor);
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
-    const auto joint = world.CreateJoint(Joint{jd});
+    const auto joint = CreateJoint(world, Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
 
     ASSERT_EQ(GetLocalAnchorA(world, joint), jd.localAnchorA);

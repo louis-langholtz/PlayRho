@@ -210,13 +210,13 @@ TEST(World, Clear)
 
     const auto b0 = world.CreateBody();
     ASSERT_NE(b0, InvalidBodyID);
-    const auto f0 = world.CreateFixture(b0, Shape{DiskShapeConf{}});
+    const auto f0 = CreateFixture(world, b0, Shape{DiskShapeConf{}});
     ASSERT_NE(f0, InvalidFixtureID);
     ASSERT_EQ(world.GetFixtures(b0).size(), std::size_t(1));;
 
     const auto b1 = world.CreateBody();
     ASSERT_NE(b1, InvalidBodyID);
-    const auto f1 = world.CreateFixture(b1, Shape{DiskShapeConf{}});
+    const auto f1 = CreateFixture(world, b1, Shape{DiskShapeConf{}});
     ASSERT_NE(f1, InvalidFixtureID);
     ASSERT_EQ(world.GetFixtures(b1).size(), std::size_t(1));;
 
@@ -240,7 +240,7 @@ TEST(World, Clear)
 
     const auto b2 = world.CreateBody();
     EXPECT_LE(b2, b1);
-    const auto f2 = world.CreateFixture(b2, Shape{DiskShapeConf{}});
+    const auto f2 = CreateFixture(world, b2, Shape{DiskShapeConf{}});
     EXPECT_LE(f2, f1);
 }
 
@@ -282,7 +282,7 @@ TEST(World, IsStepComplete)
                                      .UseLinearAcceleration(EarthlyGravity));
     ASSERT_NE(b0, InvalidBodyID);
 
-    ASSERT_NE(world.CreateFixture(b0, Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)}),
+    ASSERT_NE(CreateFixture(world, b0, Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)}),
               InvalidFixtureID);
 
     const auto b1 = world.CreateBody(BodyConf{}
@@ -290,11 +290,11 @@ TEST(World, IsStepComplete)
                                      .UseLocation(Length2{+2_m, 2_m})
                                      .UseLinearAcceleration(EarthlyGravity));
     ASSERT_NE(b1, InvalidBodyID);
-    ASSERT_NE(world.CreateFixture(b1, Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)}),
+    ASSERT_NE(CreateFixture(world, b1, Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)}),
               InvalidFixtureID);
 
     const auto stabody = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
-    world.CreateFixture(stabody, Shape{EdgeShapeConf{Length2{-10_m, 0_m}, Length2{+10_m, 0_m}}});
+    CreateFixture(world, stabody, Shape{EdgeShapeConf{Length2{-10_m, 0_m}, Length2{+10_m, 0_m}}});
 
     while (world.IsStepComplete())
     {
@@ -324,18 +324,18 @@ TEST(World, CopyConstruction)
     
     const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    world.CreateFixture(b1, shape);
+    CreateFixture(world, b1, shape);
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    world.CreateFixture(b2, shape);
+    CreateFixture(world, b2, shape);
     
     // Add another body on top of previous and that's not part of any joints to ensure at 1 contact
     const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    world.CreateFixture(b3, shape);
+    CreateFixture(world, b3, shape);
 
     const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    world.CreateFixture(b4, shape);
+    CreateFixture(world, b4, shape);
     const auto b5 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    world.CreateFixture(b5, shape);
+    CreateFixture(world, b5, shape);
 
     const auto rj1 = world.CreateJoint(RevoluteJointConf{b1, b2});
     const auto rj2 = world.CreateJoint(RevoluteJointConf{b3, b4});
@@ -396,9 +396,9 @@ TEST(World, CopyAssignment)
 
     const auto shape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(1_m)};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    world.CreateFixture(b1, shape);
+    CreateFixture(world, b1, shape);
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    world.CreateFixture(b2, shape);
+    CreateFixture(world, b2, shape);
 
     world.CreateJoint(RevoluteJointConf{b1, b2, Length2{}});
     world.CreateJoint(GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetRight()));
@@ -525,7 +525,7 @@ TEST(World, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
     EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
     
-    const auto fixture = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});
+    const auto fixture = CreateFixture(world, body, Shape{DiskShapeConf{1_m}});
     ASSERT_NE(fixture, InvalidFixtureID);
     
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
@@ -568,8 +568,8 @@ TEST(World, CreateDestroyJoinedBodies)
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
 
-    const auto f0 = world.CreateFixture(body, Shape{DiskShapeConf{1_m}});
-    const auto f1 = world.CreateFixture(body2, Shape{DiskShapeConf{1_m}});
+    const auto f0 = CreateFixture(world, body, Shape{DiskShapeConf{1_m}});
+    const auto f1 = CreateFixture(world, body2, Shape{DiskShapeConf{1_m}});
 
     EXPECT_EQ(world.GetContacts().size(), ContactCounter(0));
     
@@ -632,8 +632,8 @@ TEST(World, CreateDestroyContactingBodies)
     EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
 
-    EXPECT_NE(world.CreateFixture(body1, Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), InvalidFixtureID);
-    EXPECT_NE(world.CreateFixture(body2, Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), InvalidFixtureID);
+    EXPECT_NE(CreateFixture(world, body1, Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), InvalidFixtureID);
+    EXPECT_NE(CreateFixture(world, body2, Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), InvalidFixtureID);
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
     EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(2));
     EXPECT_EQ(GetFixtureCount(world), std::size_t(2));
@@ -793,10 +793,10 @@ TEST(World, CreateAndDestroyFixture)
     ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
     ASSERT_EQ(GetFixtureCount(world, bodyB), std::size_t(0));
     
-    EXPECT_THROW(world.CreateFixture(bodyA, Shape{DiskShapeConf(0_m)}), InvalidArgument);
-    EXPECT_THROW(world.CreateFixture(bodyA, Shape{DiskShapeConf(WorldConf{}.maxVertexRadius * 2)}), InvalidArgument);
+    EXPECT_THROW(CreateFixture(world, bodyA, Shape{DiskShapeConf(0_m)}), InvalidArgument);
+    EXPECT_THROW(CreateFixture(world, bodyA, Shape{DiskShapeConf(WorldConf{}.maxVertexRadius * 2)}), InvalidArgument);
 
-    const auto fixtureA = world.CreateFixture(bodyA, Shape{DiskShapeConf(1_m)});
+    const auto fixtureA = CreateFixture(world, bodyA, Shape{DiskShapeConf(1_m)});
     ASSERT_NE(fixtureA, InvalidFixtureID);
     ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(1));
     EXPECT_FALSE(other.TouchProxies(*fixtureA));
@@ -812,7 +812,7 @@ TEST(World, CreateAndDestroyFixture)
     ASSERT_NE(fixtureC, InvalidFixtureID);
     EXPECT_FALSE(world.Destroy(fixtureC));
     
-    EXPECT_THROW(world.CreateFixture(bodyC, Shape{DiskShapeConf(1_m)}), InvalidArgument);
+    EXPECT_THROW(CreateFixture(world, bodyC, Shape{DiskShapeConf(1_m)}), InvalidArgument);
 }
 #endif
 
@@ -823,7 +823,7 @@ TEST(World, SynchronizeProxies)
     
     EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
     const auto bodyA = world.CreateBody();
-    world.CreateFixture(bodyA, Shape{DiskShapeConf(1_m)});
+    CreateFixture(world, bodyA, Shape{DiskShapeConf(1_m)});
     EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(0));
     SetLocation(world, bodyA, Length2{10_m, -4_m});
     EXPECT_EQ(world.Step(stepConf).pre.proxiesMoved, PreStepStats::counter_type(1));
@@ -861,7 +861,7 @@ TEST(World, Query)
     const auto v2 = Length2{+1_m, 0_m};
     const auto conf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
     ASSERT_EQ(GetChildCount(conf), ChildCounter(1));
-    const auto fixture = world.CreateFixture(body, Shape{conf});
+    const auto fixture = CreateFixture(world, body, Shape{conf});
     ASSERT_NE(fixture, InvalidFixtureID);
     
     auto stepConf = StepConf{};
@@ -894,14 +894,14 @@ TEST(World, RayCast)
 
     const auto p0 = Length2{-10_m, +3_m};
     const auto b0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p0));
-    ASSERT_NE(world.CreateFixture(b0, Shape{DiskShapeConf{1_m}}), InvalidFixtureID);
+    ASSERT_NE(CreateFixture(world, b0, Shape{DiskShapeConf{1_m}}), InvalidFixtureID);
 
     const auto p1 = Length2{+1_m, 0_m};
     const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    ASSERT_NE(world.CreateFixture(b1, Shape{DiskShapeConf{0.1_m}}), InvalidFixtureID);
+    ASSERT_NE(CreateFixture(world, b1, Shape{DiskShapeConf{0.1_m}}), InvalidFixtureID);
 
     const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Static).UseLocation(Length2{-100_m, -100_m}));
-    ASSERT_NE(world.CreateFixture(b2, Shape{EdgeShapeConf{Length2{}, Length2{-20_m, -20_m}}}), InvalidFixtureID);
+    ASSERT_NE(CreateFixture(world, b2, Shape{EdgeShapeConf{Length2{}, Length2{-20_m, -20_m}}}), InvalidFixtureID);
 
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_NE(body, InvalidBodyID);
@@ -919,7 +919,7 @@ TEST(World, RayCast)
     const auto conf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
     const auto shape = Shape{conf};
     ASSERT_EQ(GetChildCount(shape), ChildCounter(1));
-    const auto fixture = world.CreateFixture(body, shape);
+    const auto fixture = CreateFixture(world, body, shape);
     ASSERT_NE(fixture, InvalidFixtureID);
     
     auto stepConf = StepConf{};
@@ -1094,7 +1094,7 @@ TEST(World, ClearForcesFreeFunction)
     const auto v2 = Length2{+1_m, 0_m};
     const auto conf = EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2);
     const auto shape = Shape{conf};
-    const auto fixture = world.CreateFixture(body, shape);
+    const auto fixture = CreateFixture(world, body, shape);
     ASSERT_NE(fixture, InvalidFixtureID);
 
     ApplyForceToCenter(world, body, Force2(2_N, 4_N));
@@ -1193,17 +1193,17 @@ TEST(World, GetShapeCountFreeFunction)
 
     const auto shape1 = Shape{shapeConf};
     
-    const auto fixture1 = world.CreateFixture(body, shape1);
+    const auto fixture1 = CreateFixture(world, body, shape1);
     ASSERT_NE(fixture1, InvalidFixtureID);
     EXPECT_EQ(GetShapeCount(world), std::size_t(1));
 
-    const auto fixture2 = world.CreateFixture(body, shape1);
+    const auto fixture2 = CreateFixture(world, body, shape1);
     ASSERT_NE(fixture2, InvalidFixtureID);
     EXPECT_EQ(GetShapeCount(world), std::size_t(1));
     
     const auto shape2 = Shape{shapeConf};
 
-    const auto fixture3 = world.CreateFixture(body, shape2);
+    const auto fixture3 = CreateFixture(world, body, shape2);
     ASSERT_NE(fixture3, InvalidFixtureID);
     EXPECT_EQ(GetShapeCount(world), std::size_t(2));
 }
@@ -1224,15 +1224,15 @@ TEST(World, GetFixtureCountFreeFunction)
     
     const auto shape = Shape{shapeConf};
     
-    const auto fixture1 = world.CreateFixture(body, shape);
+    const auto fixture1 = CreateFixture(world, body, shape);
     ASSERT_NE(fixture1, InvalidFixtureID);
     EXPECT_EQ(GetFixtureCount(world), std::size_t(1));
     
-    const auto fixture2 = world.CreateFixture(body, shape);
+    const auto fixture2 = CreateFixture(world, body, shape);
     ASSERT_NE(fixture2, InvalidFixtureID);
     EXPECT_EQ(GetFixtureCount(world), std::size_t(2));
     
-    const auto fixture3 = world.CreateFixture(body, shape);
+    const auto fixture3 = CreateFixture(world, body, shape);
     ASSERT_NE(fixture3, InvalidFixtureID);
     EXPECT_EQ(GetFixtureCount(world), std::size_t(3));
 }
@@ -1254,7 +1254,7 @@ TEST(World, AwakenFreeFunction)
     const auto v1 = Length2{-1_m, 0_m};
     const auto v2 = Length2{+1_m, 0_m};
     const auto shape = Shape{EdgeShapeConf{}.UseVertexRadius(1_m).UseDensity(1_kgpm2).Set(v1, v2)};
-    const auto fixture = world.CreateFixture(body, shape);
+    const auto fixture = CreateFixture(world, body, shape);
     ASSERT_NE(fixture, InvalidFixtureID);
     
     ASSERT_TRUE(IsAwake(world, body));
@@ -1281,13 +1281,13 @@ TEST(World, GetTouchingCountFreeFunction)
     const auto groundConf = EdgeShapeConf{}
         .Set(Vec2(-40.0f, 0.0f) * Meter, Vec2(40.0f, 0.0f) * Meter);
     const auto ground = world.CreateBody();
-    world.CreateFixture(ground, Shape(groundConf));
+    CreateFixture(world, ground, Shape(groundConf));
 
     const auto lowerBodyConf = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0.0f, 0.5f) * Meter);
     const auto diskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
     const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
     const auto lowerBody = world.CreateBody(lowerBodyConf);
-    world.CreateFixture(lowerBody, Shape(smallerDiskConf));
+    CreateFixture(world, lowerBody, Shape(smallerDiskConf));
     
     ASSERT_EQ(GetAwakeCount(world), 1);
     while (GetAwakeCount(world) > 0)
@@ -1331,7 +1331,7 @@ TEST(World, DynamicEdgeBodyHasCorrectMass)
     const auto shape = Shape{conf};
     ASSERT_EQ(GetVertexRadius(shape, 0), 1_m);
 
-    const auto fixture = world.CreateFixture(body, shape);
+    const auto fixture = CreateFixture(world, body, shape);
     ASSERT_NE(fixture, InvalidFixtureID);
     ASSERT_EQ(GetDensity(world, fixture), 1_kgpm2);
 
@@ -1507,7 +1507,7 @@ TEST(World, ComputeMassData)
     EXPECT_EQ(massData.I, RotInertia(0));
 
     // Creates a 4x2 rectangular shape with 8_m2 area of 8_kg
-    world.CreateFixture(body, Shape{PolygonShapeConf{2_m, 1_m}.UseDensity(1_kgpm2)});
+    CreateFixture(world, body, Shape{PolygonShapeConf{2_m, 1_m}.UseDensity(1_kgpm2)});
     EXPECT_NO_THROW(massData = world.ComputeMassData(body));
     EXPECT_EQ(massData.center, Length2{});
     EXPECT_EQ(massData.mass, 8_kg);
@@ -1657,7 +1657,7 @@ struct MyContactListener
         EXPECT_THROW(world.CreateJoint(Joint{DistanceJointConf{bA, bB}}), WrongState);
         EXPECT_THROW(world.Step(stepConf), WrongState);
         EXPECT_THROW(world.ShiftOrigin(Length2{}), WrongState);
-        EXPECT_THROW(world.CreateFixture(bA, Shape{DiskShapeConf{}}), WrongState);
+        EXPECT_THROW(CreateFixture(world, bA, Shape{DiskShapeConf{}}), WrongState);
         EXPECT_THROW(world.Destroy(fA), WrongState);
     }
 
@@ -1746,14 +1746,14 @@ TEST(World, NoCorrectionsWithNoVelOrPosIterations)
     EXPECT_EQ(GetType(world, body_a), BodyType::Dynamic);
     EXPECT_TRUE(IsSpeedable(world, body_a));
     EXPECT_TRUE(IsAccelerable(world, body_a));
-    const auto fixture1 = world.CreateFixture(body_a, shape);
+    const auto fixture1 = CreateFixture(world, body_a, shape);
     ASSERT_NE(fixture1, InvalidFixtureID);
     
     body_def.location = Length2{+x * Meter, 0_m};
     body_def.linearVelocity = LinearVelocity2{-x * 1_mps, 0_mps};
     const auto body_b = world.CreateBody(body_def);
     ASSERT_NE(body_b, InvalidBodyID);
-    const auto fixture2 = world.CreateFixture(body_b, shape);
+    const auto fixture2 = CreateFixture(world, body_b, shape);
     ASSERT_NE(fixture2, InvalidFixtureID);
     EXPECT_EQ(GetType(world, body_b), BodyType::Dynamic);
     EXPECT_TRUE(IsSpeedable(world, body_b));
@@ -1864,14 +1864,14 @@ TEST(World, HeavyOnLight)
     {
         auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
         const auto ground = world.CreateBody();
-        world.CreateFixture(ground, Shape(groundConf));
+        CreateFixture(world, ground, Shape(groundConf));
 
         const auto lowerBody = world.CreateBody(lowerBodyConf);
         const auto upperBody = world.CreateBody(upperBodyConf);
         ASSERT_LT(GetY(GetLocation(world, lowerBody)), GetY(GetLocation(world, upperBody)));
 
-        world.CreateFixture(lowerBody, Shape(smallerDiskConf));
-        world.CreateFixture(upperBody, Shape(biggerDiskConf));
+        CreateFixture(world, lowerBody, Shape(smallerDiskConf));
+        CreateFixture(world, upperBody, Shape(biggerDiskConf));
         ASSERT_LT(GetMass(world, lowerBody), GetMass(world, upperBody));
 
         auto upperBodysLowestPoint = GetY(GetLocation(world, upperBody));
@@ -1896,14 +1896,14 @@ TEST(World, HeavyOnLight)
     {
         auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
         const auto ground = world.CreateBody();
-        world.CreateFixture(ground, Shape(groundConf));
+        CreateFixture(world, ground, Shape(groundConf));
 
         const auto upperBody = world.CreateBody(upperBodyConf);
         const auto lowerBody = world.CreateBody(lowerBodyConf);
         ASSERT_LT(GetY(GetLocation(world, lowerBody)), GetY(GetLocation(world, upperBody)));
 
-        world.CreateFixture(lowerBody, Shape(smallerDiskConf));
-        world.CreateFixture(upperBody, Shape(biggerDiskConf));
+        CreateFixture(world, lowerBody, Shape(smallerDiskConf));
+        CreateFixture(world, upperBody, Shape(biggerDiskConf));
         ASSERT_LT(GetMass(world, lowerBody), GetMass(world, upperBody));
 
         auto upperBodysLowestPoint = GetY(GetLocation(world, upperBody));
@@ -1925,14 +1925,14 @@ TEST(World, HeavyOnLight)
     {
         auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
         const auto ground = world.CreateBody();
-        world.CreateFixture(ground, Shape(groundConf));
+        CreateFixture(world, ground, Shape(groundConf));
 
         const auto lowerBody = world.CreateBody(lowerBodyConf);
         const auto upperBody = world.CreateBody(upperBodyConf);
         ASSERT_LT(GetY(GetLocation(world, lowerBody)), GetY(GetLocation(world, upperBody)));
 
-        world.CreateFixture(lowerBody, Shape(smallerDiskConf));
-        world.CreateFixture(upperBody, Shape(biggerDiskConf));
+        CreateFixture(world, lowerBody, Shape(smallerDiskConf));
+        CreateFixture(world, upperBody, Shape(biggerDiskConf));
         ASSERT_LT(GetMass(world, lowerBody), GetMass(world, upperBody));
 
         auto upperBodysLowestPoint = GetY(GetLocation(world, upperBody));
@@ -1960,14 +1960,14 @@ TEST(World, HeavyOnLight)
     {
         auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
         const auto ground = world.CreateBody();
-        world.CreateFixture(ground, Shape(groundConf));
+        CreateFixture(world, ground, Shape(groundConf));
 
         const auto upperBody = world.CreateBody(upperBodyConf);
         const auto lowerBody = world.CreateBody(lowerBodyConf);
         ASSERT_LT(GetY(GetLocation(world, lowerBody)), GetY(GetLocation(world, upperBody)));
 
-        world.CreateFixture(lowerBody, Shape(smallerDiskConf));
-        world.CreateFixture(upperBody, Shape(biggerDiskConf));
+        CreateFixture(world, lowerBody, Shape(smallerDiskConf));
+        CreateFixture(world, upperBody, Shape(biggerDiskConf));
         ASSERT_LT(GetMass(world, lowerBody), GetMass(world, upperBody));
 
         auto upperBodysLowestPoint = GetY(GetLocation(world, upperBody));
@@ -1999,14 +1999,14 @@ TEST(World, HeavyOnLight)
     {
         auto world = World{WorldConf{}.UseMinVertexRadius(SmallerLinearSlop)};
         const auto ground = world.CreateBody();
-        world.CreateFixture(ground, Shape(groundConf));
+        CreateFixture(world, ground, Shape(groundConf));
 
         const auto upperBody = world.CreateBody(upperBodyConf);
         const auto lowerBody = world.CreateBody(lowerBodyConf);
         ASSERT_LT(GetY(GetLocation(world, lowerBody)), GetY(GetLocation(world, upperBody)));
         
-        world.CreateFixture(lowerBody, Shape(smallerDiskConf), FixtureConf{}.UseIsSensor(true));
-        world.CreateFixture(upperBody, Shape(biggerDiskConf), FixtureConf{}.UseIsSensor(true));
+        CreateFixture(world, lowerBody, Shape(smallerDiskConf), FixtureConf{}.UseIsSensor(true));
+        CreateFixture(world, upperBody, Shape(biggerDiskConf), FixtureConf{}.UseIsSensor(true));
         ASSERT_LT(GetMass(world, lowerBody), GetMass(world, upperBody));
 
         EXPECT_EQ(GetAwakeCount(world), BodyCounter(2));
@@ -2029,14 +2029,14 @@ TEST(World, PerfectlyOverlappedSameCirclesStayPut)
 
     const auto body1 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body1, shape);
+        const auto fixture = CreateFixture(world, body1, shape);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body1), body_def.location);
     
     const auto body2 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body2, shape);
+        const auto fixture = CreateFixture(world, body2, shape);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body2), body_def.location);
@@ -2066,14 +2066,14 @@ TEST(World, PerfectlyOverlappedConcentricCirclesStayPut)
     
     const auto body1 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body1, shape1);
+        const auto fixture = CreateFixture(world, body1, shape1);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body1), body_def.location);
     
     const auto body2 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body2, shape2);
+        const auto fixture = CreateFixture(world, body2, shape2);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body2), body_def.location);
@@ -2119,7 +2119,7 @@ TEST(World, ListenerCalledForCircleBodyWithinCircleBody)
     {
         const auto body = world.CreateBody(body_def);
         ASSERT_NE(body, InvalidBodyID);
-        ASSERT_NE(world.CreateFixture(body, shape), InvalidFixtureID);
+        ASSERT_NE(CreateFixture(world, body, shape), InvalidFixtureID);
     }
 
     ASSERT_EQ(listener.begin_contacts, 0u);
@@ -2172,7 +2172,7 @@ TEST(World, ListenerCalledForSquareBodyWithinSquareBody)
     {
         const auto body = world.CreateBody(body_def);
         ASSERT_NE(body, InvalidBodyID);
-        ASSERT_NE(world.CreateFixture(body, shape), InvalidFixtureID);
+        ASSERT_NE(CreateFixture(world, body, shape), InvalidFixtureID);
     }
     
     ASSERT_EQ(listener.begin_contacts, 0u);
@@ -2202,7 +2202,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     body_def.location = body1pos;
     const auto body1 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body1, shape);
+        const auto fixture = CreateFixture(world, body1, shape);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body1), body_def.location);
@@ -2211,7 +2211,7 @@ TEST(World, PartiallyOverlappedSameCirclesSeparate)
     body_def.location = body2pos;
     const auto body2 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body2, shape);
+        const auto fixture = CreateFixture(world, body2, shape);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body2), body_def.location);
@@ -2296,14 +2296,14 @@ TEST(World, PerfectlyOverlappedSameSquaresSeparateHorizontally)
     
     const auto body1 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body1, shape);
+        const auto fixture = CreateFixture(world, body1, shape);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body1), body_def.location);
     
     const auto body2 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body2, shape);
+        const auto fixture = CreateFixture(world, body2, shape);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body2), body_def.location);
@@ -2359,7 +2359,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     body_def.location = body1pos;
     const auto body1 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body1, shape);
+        const auto fixture = CreateFixture(world, body1, shape);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body1), body1pos);
@@ -2368,7 +2368,7 @@ TEST(World, PartiallyOverlappedSquaresSeparateProperly)
     body_def.location = body2pos;
     const auto body2 = world.CreateBody(body_def);
     {
-        const auto fixture = world.CreateFixture(body2, shape);
+        const auto fixture = CreateFixture(world, body2, shape);
         ASSERT_NE(fixture, InvalidFixtureID);
     }
     ASSERT_EQ(GetLocation(world, body2), body2pos);
@@ -2527,7 +2527,7 @@ TEST(World, CollidingDynamicBodies)
     ASSERT_TRUE(IsSpeedable(world, body_a));
     ASSERT_TRUE(IsAccelerable(world, body_a));
     
-    const auto fixture1 = world.CreateFixture(body_a, shape);
+    const auto fixture1 = CreateFixture(world, body_a, shape);
     ASSERT_NE(fixture1, InvalidFixtureID);
 
     body_def.location = Length2{+(x + 1) * Meter, 0_m};
@@ -2538,7 +2538,7 @@ TEST(World, CollidingDynamicBodies)
     ASSERT_TRUE(IsSpeedable(world, body_b));
     ASSERT_TRUE(IsAccelerable(world, body_b));
 
-    const auto fixture2 = world.CreateFixture(body_b, shape);
+    const auto fixture2 = CreateFixture(world, body_b, shape);
     ASSERT_NE(fixture2, InvalidFixtureID);
 
     EXPECT_EQ(GetX(GetLinearVelocity(world, body_a)), +x * 1_mps);
@@ -2662,7 +2662,7 @@ TEST(World_Longer, TilesComesToRest)
             for (auto i = 0; i < N; ++i)
             {
                 conf.SetAsBox(a * Meter, a * Meter, position, 0_deg);
-                world->CreateFixture(ground, Shape{conf});
+                CreateFixture(*world, ground, Shape{conf});
                 GetX(position) += 2.0f * a * Meter;
             }
             GetY(position) -= 2.0f * a * Meter;
@@ -2687,7 +2687,7 @@ TEST(World_Longer, TilesComesToRest)
             for (auto j = i; j < e_count; ++j)
             {
                 const auto body = world->CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(y).UseLinearAcceleration(EarthlyGravity));
-                world->CreateFixture(body, shape);
+                CreateFixture(*world, body, shape);
                 y += deltaY;
             }
             
@@ -2910,7 +2910,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto left_wall_body = world.CreateBody(body_def);
     ASSERT_NE(left_wall_body, InvalidBodyID);
     {
-        const auto wall_fixture = world.CreateFixture(left_wall_body, edge_shape);
+        const auto wall_fixture = CreateFixture(world, left_wall_body, edge_shape);
         ASSERT_NE(wall_fixture, InvalidFixtureID);
     }
 
@@ -2918,7 +2918,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     const auto right_wall_body = world.CreateBody(body_def);
     ASSERT_NE(right_wall_body, InvalidBodyID);
     {
-        const auto wall_fixture = world.CreateFixture(right_wall_body, edge_shape);
+        const auto wall_fixture = CreateFixture(world, right_wall_body, edge_shape);
         ASSERT_NE(wall_fixture, InvalidFixtureID);
     }
     
@@ -2932,7 +2932,7 @@ TEST(World, SpeedingBulletBallWontTunnel)
     
     const auto ball_radius = 0.01_m;
     const auto circle_shape = Shape(DiskShapeConf{}.UseDensity(1_kgpm2).UseRestitution(Real(1)).UseRadius(ball_radius));
-    const auto ball_fixture = world.CreateFixture(ball_body, circle_shape);
+    const auto ball_fixture = CreateFixture(world, ball_body, circle_shape);
     ASSERT_NE(ball_fixture, InvalidFixtureID);
 
     const auto velocity = LinearVelocity2{+1_mps, 0_mps};
@@ -3088,7 +3088,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         const auto left_wall_body = world.CreateBody(body_def);
         ASSERT_NE(left_wall_body, InvalidBodyID);
         {
-            const auto wall_fixture = world.CreateFixture(left_wall_body, Shape(edgeConf));
+            const auto wall_fixture = CreateFixture(world, left_wall_body, Shape(edgeConf));
             ASSERT_NE(wall_fixture, InvalidFixtureID);
         }
         Include(container_aabb, ComputeAABB(world, left_wall_body));
@@ -3099,7 +3099,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         const auto right_wall_body = world.CreateBody(body_def);
         ASSERT_NE(right_wall_body, InvalidBodyID);
         {
-            const auto wall_fixture = world.CreateFixture(right_wall_body, Shape(edgeConf));
+            const auto wall_fixture = CreateFixture(world, right_wall_body, Shape(edgeConf));
             ASSERT_NE(wall_fixture, InvalidFixtureID);
         }
         Include(container_aabb, ComputeAABB(world, right_wall_body));
@@ -3113,7 +3113,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         const auto btm_wall_body = world.CreateBody(body_def);
         ASSERT_NE(btm_wall_body, InvalidBodyID);
         {
-            const auto wall_fixture = world.CreateFixture(btm_wall_body, Shape(edgeConf));
+            const auto wall_fixture = CreateFixture(world, btm_wall_body, Shape(edgeConf));
             ASSERT_NE(wall_fixture, InvalidFixtureID);
         }
         Include(container_aabb, ComputeAABB(world, btm_wall_body));
@@ -3124,7 +3124,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         const auto top_wall_body = world.CreateBody(body_def);
         ASSERT_NE(top_wall_body, InvalidBodyID);
         {
-            const auto wall_fixture = world.CreateFixture(top_wall_body, Shape(edgeConf));
+            const auto wall_fixture = CreateFixture(world, top_wall_body, Shape(edgeConf));
             ASSERT_NE(wall_fixture, InvalidFixtureID);
         }
         Include(container_aabb, ComputeAABB(world, top_wall_body));
@@ -3142,7 +3142,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
     const auto ball_radius = Real(half_box_width / 4) * Meter;
     const auto object_shape = Shape(PolygonShapeConf{}.UseDensity(10_kgpm2).SetAsBox(ball_radius, ball_radius));
     {
-        const auto ball_fixture = world.CreateFixture(ball_body, object_shape);
+        const auto ball_fixture = CreateFixture(world, ball_body, object_shape);
         ASSERT_NE(ball_fixture, InvalidFixtureID);
     }
 
@@ -3161,7 +3161,7 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
         ASSERT_EQ(GetY(GetLocation(world, bodies[i])), y);
         last_opos[i] = GetLocation(world, bodies[i]);
         {
-            const auto fixture = world.CreateFixture(bodies[i], object_shape);
+            const auto fixture = CreateFixture(world, bodies[i], object_shape);
             ASSERT_NE(fixture, InvalidFixtureID);
         }
     }
@@ -3637,7 +3637,7 @@ public:
     {
         const auto hw_ground = 40.0_m;
         const auto ground = world.CreateBody();
-        world.CreateFixture(ground, Shape{EdgeShapeConf{}.Set(Length2{-hw_ground, 0_m}, Length2{hw_ground, 0_m})});
+        CreateFixture(world, ground, Shape{EdgeShapeConf{}.Set(Length2{-hw_ground, 0_m}, Length2{hw_ground, 0_m})});
         const auto numboxes = boxes.size();
         original_x = GetParam();
         
@@ -3647,7 +3647,7 @@ public:
             // (hdim + 0.05f) + (hdim * 2 + 0.1f) * i
             const auto location = Length2{original_x * Meter, (i + Real{1}) * hdim * Real{4}};
             const auto box = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location));
-            world.CreateFixture(box, boxShape);
+            CreateFixture(world, box, boxShape);
             boxes[i] = box;
         }
         

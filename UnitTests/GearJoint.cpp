@@ -30,6 +30,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <type_traits>
@@ -73,10 +74,10 @@ TEST(GearJointConf, ConstructionRequiresNonNullJoints)
 TEST(GearJoint, IsOkay)
 {
     auto world = World{};
-    const auto b1 = world.CreateBody();
-    const auto b2 = world.CreateBody();
-    const auto b3 = world.CreateBody();
-    const auto b4 = world.CreateBody();
+    const auto b1 = CreateBody(world);
+    const auto b2 = CreateBody(world);
+    const auto b3 = CreateBody(world);
+    const auto b4 = CreateBody(world);
     const auto dj = CreateJoint(world, DistanceJointConf{b1, b2});
     EXPECT_FALSE(GearJoint::IsOkay(GearJointConf{dj, dj}));
     const auto rj1 = CreateJoint(world, GetRevoluteJointConf(world, b1, b2, Length2{}));
@@ -199,12 +200,12 @@ TEST(GearJoint, WithDynamicCirclesAndRevoluteJoints)
     const auto p2 = Length2{+1_m, 0_m};
     const auto p3 = Length2{+2_m, 0_m};
     const auto p4 = Length2{+3_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
-    const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
-    world.CreateFixture(b1, circle);
-    world.CreateFixture(b2, circle);
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b3 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
+    const auto b4 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
+    CreateFixture(world, b1, circle);
+    CreateFixture(world, b2, circle);
     const auto def = GetGearJointConf(world,
                                       CreateJoint(world, GetRevoluteJointConf(world, b1, b2, Length2{})),
                                       CreateJoint(world, GetRevoluteJointConf(world, b4, b3, Length2{})));
@@ -227,12 +228,12 @@ TEST(GearJoint, WithDynamicCirclesAndPrismaticJoints)
     const auto p2 = Length2{+1_m, 0_m};
     const auto p3 = Length2{+2_m, 0_m};
     const auto p4 = Length2{+3_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
-    const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
-    world.CreateFixture(b1, circle);
-    world.CreateFixture(b2, circle);
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b3 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
+    const auto b4 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
+    CreateFixture(world, b1, circle);
+    CreateFixture(world, b2, circle);
     const auto def = GetGearJointConf(world,
         CreateJoint(world, GetPrismaticJointConf(world, b1, b2, Length2{}, UnitVec::GetTop())),
         CreateJoint(world, GetPrismaticJointConf(world, b4, b3, Length2{}, UnitVec::GetTop()))
@@ -256,12 +257,12 @@ TEST(GearJoint, GetAnchorAandB)
     const auto p2 = Length2{+1_m, 0_m};
     const auto p3 = Length2{+2_m, 0_m};
     const auto p4 = Length2{+3_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    const auto b3 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
-    const auto b4 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
-    world.CreateFixture(b1, circle);
-    world.CreateFixture(b2, circle);
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b3 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p3));
+    const auto b4 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p4));
+    CreateFixture(world, b1, circle);
+    CreateFixture(world, b2, circle);
     const auto def = GetGearJointConf(world,
         CreateJoint(world, GetRevoluteJointConf(world, b1, b2, Length2{})),
         CreateJoint(world, GetRevoluteJointConf(world, b4, b3, Length2{}))

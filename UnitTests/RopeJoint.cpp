@@ -27,6 +27,8 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
@@ -66,8 +68,8 @@ TEST(RopeJointConf, DefaultConstruction)
 TEST(RopeJoint, Construction)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     auto def = RopeJointConf{b0, b1};
     Joint joint{def};
@@ -79,7 +81,7 @@ TEST(RopeJoint, Construction)
     EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
 
-    const auto id = world.CreateJoint(joint);
+    const auto id = CreateJoint(world, joint);
     EXPECT_EQ(GetLocalAnchorA(joint), def.localAnchorA);
     EXPECT_EQ(GetLocalAnchorB(joint), def.localAnchorB);
     EXPECT_EQ(GetAnchorA(world, id), Length2(-1_m, 0_m));
@@ -92,8 +94,8 @@ TEST(RopeJoint, Construction)
 TEST(RopeJoint, GetRopeJointConf)
 {
     auto world = World{};
-    const auto bodyA = world.CreateBody();
-    const auto bodyB = world.CreateBody();
+    const auto bodyA = CreateBody(world);
+    const auto bodyB = CreateBody(world);
     auto def = RopeJointConf{bodyA, bodyB};
     const auto localAnchorA = Length2{-2_m, 0_m};
     const auto localAnchorB = Length2{+2_m, 0_m};
@@ -127,17 +129,17 @@ TEST(RopeJoint, WithDynamicCircles)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(b1, circle);
-    world.CreateFixture(b2, circle);
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    CreateFixture(world, b1, circle);
+    CreateFixture(world, b2, circle);
     const auto jd = RopeJointConf{b1, b2};
-    ASSERT_NE(world.CreateJoint(jd), InvalidJointID);
+    ASSERT_NE(CreateJoint(world, jd), InvalidJointID);
 
     auto stepConf = StepConf{};
 
     stepConf.doWarmStart = true;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_GT(GetX(GetLocation(world, b1)), -1_m);
     EXPECT_EQ(GetY(GetLocation(world, b1)), 0_m);
     EXPECT_LT(GetX(GetLocation(world, b2)), +1_m);
@@ -146,7 +148,7 @@ TEST(RopeJoint, WithDynamicCircles)
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
     
     stepConf.doWarmStart = false;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_GT(GetX(GetLocation(world, b1)), -1_m);
     EXPECT_EQ(GetY(GetLocation(world, b1)), 0_m);
     EXPECT_LT(GetX(GetLocation(world, b2)), +1_m);
@@ -156,7 +158,7 @@ TEST(RopeJoint, WithDynamicCircles)
     
     stepConf.doWarmStart = true;
     stepConf.linearSlop = 10_m;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_GT(GetX(GetLocation(world, b1)), -1_m);
     EXPECT_EQ(GetY(GetLocation(world, b1)), 0_m);
     EXPECT_LT(GetX(GetLocation(world, b2)), +1_m);

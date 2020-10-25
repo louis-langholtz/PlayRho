@@ -25,6 +25,7 @@
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
@@ -103,10 +104,10 @@ TEST(DistanceJoint, TypeCast)
 TEST(DistanceJoint, Construction)
 {
     auto world = World{};
-    const auto body0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body0 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     auto def = DistanceJointConf{body0, body1};
-    const auto joint = world.CreateJoint(Joint{def});
+    const auto joint = CreateJoint(world, Joint{def});
 
     EXPECT_EQ(GetType(world, joint), GetTypeID<DistanceJointConf>());
     EXPECT_EQ(GetBodyA(world, joint), def.bodyA);
@@ -126,10 +127,10 @@ TEST(DistanceJoint, Construction)
 TEST(DistanceJoint, ShiftOrigin)
 {
     auto world = World{};
-    const auto body0 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body0 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     auto def = DistanceJointConf{body0, body1};
-    const auto joint = world.CreateJoint(def);
+    const auto joint = CreateJoint(world, def);
     const auto newOrigin = Length2{1_m, 1_m};
     EXPECT_FALSE(ShiftOrigin(world, joint, newOrigin));
 }
@@ -141,14 +142,14 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     const auto shape = Shape{DiskShapeConf{}.UseRadius(0.2_m)};
     
     const auto location1 = Length2{-1_m, 0_m};
-    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
+    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(GetLocation(world, body1), location1);
-    ASSERT_NE(world.CreateFixture(body1, shape), InvalidFixtureID);
+    ASSERT_NE(CreateFixture(world, body1, shape), InvalidFixtureID);
     
     const auto location2 = Length2{+1_m, 0_m};
-    const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
+    const auto body2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(GetLocation(world, body2), location2);
-    ASSERT_NE(world.CreateFixture(body2, shape), InvalidFixtureID);
+    ASSERT_NE(CreateFixture(world, body2, shape), InvalidFixtureID);
     
     auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;
@@ -159,7 +160,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     jointdef.length = 5_m;
     jointdef.frequency = 0_Hz;
     jointdef.dampingRatio = 0;
-    EXPECT_NE(world.CreateJoint(Joint{jointdef}), InvalidJointID);
+    EXPECT_NE(CreateJoint(world, Joint{jointdef}), InvalidJointID);
     
     auto oldDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
     
@@ -167,7 +168,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveOutToLength)
     auto stepConf = StepConf{};
     for (auto i = 0u; !distanceMet || i < distanceMet + 100; ++i)
     {
-        world.Step(stepConf);
+        Step(world, stepConf);
 
         const auto newDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
         if (distanceMet)
@@ -194,14 +195,14 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     
     const auto shape = Shape{DiskShapeConf{}.UseRadius(0.2_m).UseDensity(1_kgpm2)};
     const auto location1 = Length2{-10_m, 10_m};
-    const auto body1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
+    const auto body1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location1));
     ASSERT_EQ(GetLocation(world, body1), location1);
-    ASSERT_NE(world.CreateFixture(body1, shape), InvalidFixtureID);
+    ASSERT_NE(CreateFixture(world, body1, shape), InvalidFixtureID);
     
     const auto location2 = Length2{+10_m, -10_m};
-    const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
+    const auto body2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(location2));
     ASSERT_EQ(GetLocation(world, body2), location2);
-    ASSERT_NE(world.CreateFixture(body2, shape), InvalidFixtureID);
+    ASSERT_NE(CreateFixture(world, body2, shape), InvalidFixtureID);
     
     auto jointdef = DistanceJointConf{};
     jointdef.bodyA = body1;
@@ -212,7 +213,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     jointdef.length = 5_m;
     jointdef.frequency = 60_Hz;
     jointdef.dampingRatio = 0;
-    EXPECT_NE(world.CreateJoint(Joint{jointdef}), InvalidJointID);
+    EXPECT_NE(CreateJoint(world, Joint{jointdef}), InvalidJointID);
     
     auto oldDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
     
@@ -223,7 +224,7 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
     });
     for (auto i = 0u; !distanceMet || i < distanceMet + 1000; ++i)
     {
-        world.Step(stepConf);
+        Step(world, stepConf);
         
         const auto newDistance = GetMagnitude(GetLocation(world, body1) - GetLocation(world, body2));
         if (!distanceMet && (newDistance - oldDistance) >= 0_m)
@@ -250,12 +251,12 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
 {
     auto world = World{};
-    
-    const auto bA = world.CreateBody();
+
+    const auto bA = CreateBody(world);
     ASSERT_NE(bA, InvalidBodyID);
-    const auto bB = world.CreateBody();
+    const auto bB = CreateBody(world);
     ASSERT_NE(bB, InvalidBodyID);
-    
+
     auto def = DistanceJointConf{};
     def.bodyA = bA;
     def.bodyB = bB;
@@ -265,10 +266,10 @@ TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
     def.length = 5_m;
     def.frequency = 67_Hz;
     def.dampingRatio = Real(0.8);
-    
-    const auto joint = world.CreateJoint(def);
+
+    const auto joint = CreateJoint(world, def);
     const auto got = GetDistanceJointConf(GetJoint(world, joint));
-    
+
     EXPECT_EQ(def.bodyA, got.bodyA);
     EXPECT_EQ(def.bodyB, got.bodyB);
     EXPECT_EQ(def.localAnchorA, got.localAnchorA);

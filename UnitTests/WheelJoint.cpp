@@ -26,7 +26,9 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
@@ -102,8 +104,8 @@ TEST(WheelJoint, Construction)
 TEST(WheelJoint, EnableMotor)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
@@ -122,8 +124,8 @@ TEST(WheelJoint, EnableMotor)
 TEST(WheelJoint, MotorSpeed)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
@@ -142,8 +144,8 @@ TEST(WheelJoint, MotorSpeed)
 TEST(WheelJoint, MaxMotorTorque)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
@@ -166,8 +168,8 @@ TEST(WheelJoint, GetAnchorAandB)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
     
-    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
+    const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
+    const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
     
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
@@ -175,7 +177,7 @@ TEST(WheelJoint, GetAnchorAandB)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = world.CreateJoint(Joint{jd});
+    auto joint = CreateJoint(world, Joint{jd});
     ASSERT_EQ(GetLocalAnchorA(world, joint), jd.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(world, joint), jd.localAnchorB);
     EXPECT_EQ(GetAnchorA(world, joint), loc0 + jd.localAnchorA);
@@ -189,8 +191,8 @@ TEST(WheelJoint, GetJointTranslation)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{+1_m, +3_m};
     
-    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
+    const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
+    const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
     
     auto jd = WheelJointConf{};
     jd.bodyA = b0;
@@ -198,7 +200,7 @@ TEST(WheelJoint, GetJointTranslation)
     jd.localAnchorA = Length2(-1_m, 5_m);
     jd.localAnchorB = Length2(+1_m, 5_m);
     
-    auto joint = world.CreateJoint(Joint{jd});
+    auto joint = CreateJoint(world, Joint{jd});
     EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
 
@@ -242,18 +244,18 @@ TEST(WheelJoint, WithDynamicCircles)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(b1, Shape{circle});
-    world.CreateFixture(b2, Shape{circle});
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    CreateFixture(world, b1, Shape{circle});
+    CreateFixture(world, b2, Shape{circle});
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetWheelJointConf(world, b1, b2, anchor);
-    const auto joint = world.CreateJoint(Joint{jd});
+    const auto joint = CreateJoint(world, Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
     auto stepConf = StepConf{};
     
     stepConf.doWarmStart = true;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
@@ -264,7 +266,7 @@ TEST(WheelJoint, WithDynamicCircles)
     EXPECT_EQ(GetAngularMass(world, joint), RotInertia(0));
     
     SetFrequency(world, joint, 0_Hz);
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_FALSE(IsMotorEnabled(world, joint));
     EXPECT_EQ(GetFrequency(world, joint), 0_Hz);
     EXPECT_EQ(GetLinearReaction(world, joint), Momentum2{});
@@ -272,12 +274,12 @@ TEST(WheelJoint, WithDynamicCircles)
 
     EnableMotor(world, joint, true);
     EXPECT_TRUE(IsMotorEnabled(world, joint));
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_NEAR(static_cast<double>(StripUnit(GetAngularMass(world, joint))),
                 125.66370391845703, 0.1);
     
     stepConf.doWarmStart = false;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);

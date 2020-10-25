@@ -24,6 +24,7 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp> // for Step
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
@@ -52,8 +53,8 @@ TEST(PrismaticJointConf, ByteSize)
 TEST(PrismaticJoint, Construction)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -73,8 +74,8 @@ TEST(PrismaticJoint, Construction)
 TEST(PrismaticJoint, EnableLimit)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -90,15 +91,15 @@ TEST(PrismaticJoint, EnableLimit)
     EXPECT_TRUE(IsLimitEnabled(joint));
     EXPECT_EQ(GetLinearMotorImpulse(joint), 0_Ns);
 
-    const auto id = world.CreateJoint(joint);
+    const auto id = CreateJoint(world, joint);
     EXPECT_EQ(GetMotorForce(world, id, 1_Hz), 0 * Newton);
 }
 
 TEST(PrismaticJoint, ShiftOrigin)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -115,8 +116,8 @@ TEST(PrismaticJoint, ShiftOrigin)
 TEST(PrismaticJoint, EnableMotor)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -135,8 +136,8 @@ TEST(PrismaticJoint, EnableMotor)
 TEST(PrismaticJoint, SetMaxMotorForce)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -153,8 +154,8 @@ TEST(PrismaticJoint, SetMaxMotorForce)
 TEST(PrismaticJoint, MotorSpeed)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -173,8 +174,8 @@ TEST(PrismaticJoint, MotorSpeed)
 TEST(PrismaticJoint, SetLinearLimits)
 {
     World world;
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -199,8 +200,8 @@ TEST(PrismaticJoint, GetAnchorAandB)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{-2_m, Real(+1.2f) * Meter};
 
-    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
+    const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
+    const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -208,7 +209,7 @@ TEST(PrismaticJoint, GetAnchorAandB)
     jd.localAnchorA = Length2(4_m, 5_m);
     jd.localAnchorB = Length2(6_m, 7_m);
     
-    auto joint = world.CreateJoint(Joint{jd});
+    auto joint = CreateJoint(world, Joint{jd});
     ASSERT_EQ(GetLocalAnchorA(world, joint), jd.localAnchorA);
     ASSERT_EQ(GetLocalAnchorB(world, joint), jd.localAnchorB);
     EXPECT_EQ(GetAnchorA(world, joint), loc0 + jd.localAnchorA);
@@ -222,8 +223,8 @@ TEST(PrismaticJoint, GetJointTranslation)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{+1_m, +3_m};
     
-    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
+    const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
+    const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -231,7 +232,7 @@ TEST(PrismaticJoint, GetJointTranslation)
     jd.localAnchorA = Length2(-1_m, 5_m);
     jd.localAnchorB = Length2(+1_m, 5_m);
     
-    auto joint = world.CreateJoint(Joint{jd});
+    auto joint = CreateJoint(world, Joint{jd});
     EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
 
@@ -242,8 +243,8 @@ TEST(PrismaticJoint, GetLinearVelocity)
     const auto loc0 = Length2{+1_m, -3_m};
     const auto loc1 = Length2{+1_m, +3_m};
     
-    const auto b0 = world.CreateBody(BodyConf{}.UseLocation(loc0));
-    const auto b1 = world.CreateBody(BodyConf{}.UseLocation(loc1));
+    const auto b0 = CreateBody(world, BodyConf{}.UseLocation(loc0));
+    const auto b1 = CreateBody(world, BodyConf{}.UseLocation(loc1));
     
     auto jd = PrismaticJointConf{};
     jd.bodyA = b0;
@@ -260,13 +261,13 @@ TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(b1, Shape{circle});
-    world.CreateFixture(b2, Shape{circle});
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    CreateFixture(world, b1, Shape{circle});
+    CreateFixture(world, b2, Shape{circle});
     const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetPrismaticJointConf(world, b1, b2, anchor, UnitVec::GetRight()).UseEnableLimit(true);
-    const auto joint = world.CreateJoint(Joint{jd});
+    const auto joint = CreateJoint(world, Joint{jd});
     ASSERT_NE(joint, InvalidJointID);
     {
         const auto conf = TypeCast<PrismaticJointConf>(GetJoint(world, joint));
