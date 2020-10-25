@@ -770,8 +770,9 @@ private:
 
     /// @brief Creates proxies for every child of the given fixture's shape.
     /// @note This sets the proxy count to the child count of the shape.
-    static void CreateProxies(FixtureID id, Fixture& fixture, const Transformation& xfm,
-                              ProxyQueue& proxies, DynamicTree& tree, Length aabbExtension);
+    static FixtureProxies CreateProxies(FixtureID id, BodyID body, const Shape& shape,
+                                        const Transformation& xfm, ProxyQueue& proxies,
+                                        DynamicTree& tree, Length aabbExtension);
 
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.

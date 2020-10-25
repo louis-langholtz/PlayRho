@@ -94,7 +94,7 @@ public:
 
     /// @brief Gets the child shape.
     /// @details The shape is not modifiable. Use a new fixture instead.
-    Shape GetShape() const noexcept;
+    const Shape& GetShape() const noexcept;
 
     /// @brief Set if this fixture is a sensor.
     void SetSensor(bool sensor) noexcept;
@@ -143,7 +143,7 @@ private:
     bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
 };
 
-inline Shape Fixture::GetShape() const noexcept
+inline const Shape& Fixture::GetShape() const noexcept
 {
     return m_shape;
 }

@@ -2166,14 +2166,15 @@ void WorldImpl::CreateAndDestroyProxies(Length extension)
 {
     for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](const auto& fixtureID) {
         auto& fixture = m_fixtureBuffer[UnderlyingValue(fixtureID)];
-        auto& body = m_bodyBuffer[UnderlyingValue(fixture.GetBody())];
+        const auto bodyID = fixture.GetBody();
+        auto& body = m_bodyBuffer[UnderlyingValue(bodyID)];
         const auto enabled = body.IsEnabled();
 
         if (fixture.GetProxies().empty())
         {
             if (enabled)
             {
-                CreateProxies(fixtureID, fixture, body.GetTransformation(), m_proxies, m_tree, extension);
+                fixture.SetProxies(CreateProxies(fixtureID, bodyID, fixture.GetShape(), body.GetTransformation(), m_proxies, m_tree, extension));
             }
         }
         else
@@ -2376,17 +2377,14 @@ void WorldImpl::DestroyFixtures(BodyID id)
     SetMassData(id, ComputeMassData(id));
 }
 
-void WorldImpl::CreateProxies(FixtureID fixtureID, Fixture& fixture, const Transformation& xfm,
-                              ProxyQueue& proxies, DynamicTree& tree, Length aabbExtension)
+WorldImpl::FixtureProxies
+WorldImpl::CreateProxies(FixtureID fixtureID, BodyID bodyID, const Shape& shape,
+                         const Transformation& xfm, ProxyQueue& proxies,
+                         DynamicTree& tree, Length aabbExtension)
 {
-    assert(fixture.GetProxies().empty());
-
-    const auto bodyID = fixture.GetBody();
-    const auto shape = fixture.GetShape();
-
     // Reserve proxy space and create proxies in the broad-phase.
-    const auto childCount = GetChildCount(shape);
     auto fixtureProxies = std::vector<FixtureProxy>{};
+    const auto childCount = GetChildCount(shape);
     fixtureProxies.reserve(childCount);
     for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
     {
@@ -2400,8 +2398,7 @@ void WorldImpl::CreateProxies(FixtureID fixtureID, Fixture& fixture, const Trans
         proxies.push_back(treeId);
         fixtureProxies.push_back(FixtureProxy{treeId});
     }
-
-    fixture.SetProxies(fixtureProxies);
+    return fixtureProxies;
 }
 
 void WorldImpl::InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture) noexcept
@@ -2436,7 +2433,7 @@ ContactCounter WorldImpl::Synchronize(const Fixture& fixture,
     assert(::playrho::IsValid(xfm2));
     
     auto updatedCount = ContactCounter{0};
-    const auto shape = fixture.GetShape();
+    const auto& shape = fixture.GetShape();
     const auto proxies = fixture.GetProxies();
     auto childIndex = ChildCounter{0};
     for (const auto& proxy: proxies)
@@ -2633,11 +2630,11 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
     const auto indexB = c.GetChildIndexB();
     const auto& fixtureA = m_fixtureBuffer[UnderlyingValue(fixtureIdA)];
     const auto& fixtureB = m_fixtureBuffer[UnderlyingValue(fixtureIdB)];
-    const auto shapeA = fixtureA.GetShape();
+    const auto& shapeA = fixtureA.GetShape();
     const auto& bodyA = m_bodyBuffer[UnderlyingValue(bodyIdA)];
     const auto& bodyB = m_bodyBuffer[UnderlyingValue(bodyIdB)];
     const auto xfA = bodyA.GetTransformation();
-    const auto shapeB = fixtureB.GetShape();
+    const auto& shapeB = fixtureB.GetShape();
     const auto xfB = bodyB.GetTransformation();
     const auto childA = GetChild(shapeA, indexA);
     const auto childB = GetChild(shapeB, indexB);
