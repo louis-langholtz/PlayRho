@@ -60,22 +60,18 @@ public:
     /// @brief Fixture proxies container.
     using Proxies = std::vector<ContactCounter>;
 
-    Fixture() = default;
-
     /// @brief Initializing constructor.
     ///
     /// @note This is not meant to be called by normal user code. Use the
     ///   <code>Body::CreateFixture</code> method instead.
     ///
-    /// @param body Body the new fixture is to be associated with.
-    /// @param shape Shareable shape to associate fixture with. Must be non-null.
-    /// @param def Initial optional fixture settings.
+    /// @param def Initial fixture settings.
     ///    Friction must be greater-than-or-equal-to zero.
     ///    <code>AreaDensity</code> must be greater-than-or-equal-to zero.
     ///
-    Fixture(BodyID body, const Shape& shape, const FixtureConf& def = GetDefaultFixtureConf()):
-        m_shape{shape},
-        m_body{body},
+    Fixture(const FixtureConf& def = FixtureConf{}):
+        m_shape{def.shape},
+        m_body{def.body},
         m_filter{def.filter},
         m_isSensor{def.isSensor}
     {
@@ -117,12 +113,6 @@ public:
     /// @brief Gets the coefficient of restitution.
     Real GetRestitution() const noexcept;
 
-    /// @brief Gets the proxies associated with this fixture.
-    const Proxies& GetProxies() const noexcept;
-
-    /// @brief Sets the proxies associated with this fixture.
-    void SetProxies(Proxies value) noexcept;
-
 private:
     // Data ordered here for memory compaction.
 
@@ -130,8 +120,6 @@ private:
     /// @note Set on construction.
     /// @note 16-bytes.
     Shape m_shape;
-
-    Proxies m_proxies; ///< Cache of fixture proxies for the assigned shape. 16+ bytes.
 
     BodyID m_body = InvalidBodyID; ///< Parent body. 2-bytes.
 
@@ -163,16 +151,6 @@ inline void Fixture::SetFilterData(Filter filter) noexcept
 inline BodyID Fixture::GetBody() const noexcept
 {
     return m_body;
-}
-
-inline const Fixture::Proxies& Fixture::GetProxies() const noexcept
-{
-    return m_proxies;
-}
-
-inline void Fixture::SetProxies(Proxies value) noexcept
-{
-    m_proxies = std::move(value);
 }
 
 inline Real Fixture::GetFriction() const noexcept

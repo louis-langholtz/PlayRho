@@ -57,7 +57,6 @@ TEST(Fixture, DefaultConstructor)
     EXPECT_EQ(fixture.GetFilterData().maskBits, Filter{}.maskBits);
     EXPECT_EQ(fixture.GetFilterData().groupIndex, Filter{}.groupIndex);
     EXPECT_EQ(fixture.IsSensor(), false);
-    EXPECT_TRUE(fixture.GetProxies().empty());
     EXPECT_EQ(fixture.GetFriction(), Real(0));
     EXPECT_EQ(fixture.GetRestitution(), Real(0));
     EXPECT_EQ(fixture.GetDensity(), 0_kgpm2);
@@ -74,14 +73,13 @@ TEST(Fixture, InitializingConstructor)
     .UseRestitution(restitution).UseDensity(density);
     const auto filter = Filter{};
     const auto isSensor = true;
-    const auto def = FixtureConf{}.UseIsSensor(isSensor).UseFilter(filter);
-    const auto fixture = Fixture{body, Shape(conf), def};
+    const auto def = FixtureConf{}.UseIsSensor(isSensor).UseFilter(filter).UseBody(body).UseShape(Shape(conf));
+    const auto fixture = Fixture{def};
     EXPECT_EQ(fixture.GetBody(), body);
     EXPECT_EQ(fixture.GetFilterData().categoryBits, filter.categoryBits);
     EXPECT_EQ(fixture.GetFilterData().maskBits, filter.maskBits);
     EXPECT_EQ(fixture.GetFilterData().groupIndex, Filter{}.groupIndex);
     EXPECT_EQ(fixture.IsSensor(), isSensor);
-    EXPECT_TRUE(fixture.GetProxies().empty());
     EXPECT_EQ(fixture.GetFriction(), friction);
     EXPECT_EQ(fixture.GetRestitution(), restitution);
     EXPECT_EQ(fixture.GetDensity(), density);

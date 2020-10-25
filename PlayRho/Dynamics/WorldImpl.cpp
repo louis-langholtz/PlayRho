@@ -504,10 +504,10 @@ void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
 }
 
 /// @brief Destroys all of the given fixture's proxies.
-void DestroyProxies(DynamicTree& tree, Fixture& fixture,
+void DestroyProxies(DynamicTree& tree,
+                    std::vector<DynamicTree::Size>& fixtureProxies,
                     std::vector<DynamicTree::Size>& proxies) noexcept
 {
-    const auto fixtureProxies = fixture.GetProxies();
     const auto childCount = size(fixtureProxies);
     if (childCount > 0) {
         // Destroy proxies in reverse order from what they were created in.
@@ -517,7 +517,7 @@ void DestroyProxies(DynamicTree& tree, Fixture& fixture,
             tree.DestroyLeaf(treeId);
         }
     }
-    fixture.SetProxies(std::vector<ContactCounter>{});
+    fixtureProxies.clear();
 }
 
 std::vector<DynamicTree::Size>
@@ -589,6 +589,7 @@ void WorldImpl::Clear() noexcept
     m_contactBuffer.clear();
     m_jointBuffer.clear();
     m_fixtureBuffer.clear();
+    m_fixtureProxies.clear();
     m_bodyBuffer.clear();
 }
 
@@ -665,8 +666,9 @@ void WorldImpl::Destroy(BodyID id)
             m_fixtureDestructionListener(fixtureID);
         }
         EraseAll(m_fixturesForProxies, fixtureID);
-        DestroyProxies(m_tree, m_fixtureBuffer[UnderlyingValue(fixtureID)], m_proxies);
-        m_fixtureBuffer.Free(UnderlyingValue(fixtureID));
+        DestroyProxies(m_tree, m_fixtureProxies[UnderlyingValue(fixtureID)], m_proxies);
+        m_fixtureBuffer.Free(fixtureID.get());
+        m_fixtureProxies.Free(fixtureID.get());
     });
     body.ClearFixtures();
 
@@ -2185,25 +2187,26 @@ void WorldImpl::CreateAndDestroyProxies(Length extension)
 {
     for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](const auto& fixtureID) {
         auto& fixture = m_fixtureBuffer[UnderlyingValue(fixtureID)];
+        auto& fixtureProxies = m_fixtureProxies[fixtureID.get()];
         const auto bodyID = fixture.GetBody();
         auto& body = m_bodyBuffer[UnderlyingValue(bodyID)];
         const auto enabled = body.IsEnabled();
 
-        if (fixture.GetProxies().empty())
+        if (fixtureProxies.empty())
         {
             if (enabled)
             {
                 auto proxies = CreateProxies(m_tree, bodyID, fixtureID, fixture.GetShape(),
                                              body.GetTransformation(), extension);
                 m_proxies.insert(end(m_proxies), begin(proxies), end(proxies));
-                fixture.SetProxies(std::move(proxies));
+                fixtureProxies = std::move(proxies);
             }
         }
         else
         {
             if (!enabled)
             {
-                DestroyProxies(m_tree, fixture, m_proxies);
+                DestroyProxies(m_tree, fixtureProxies, m_proxies);
 
                 // Destroy any contacts associated with the fixture.
                 body.Erase([&](ContactID contactID) {
@@ -2271,9 +2274,14 @@ void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
         body.SetAwake();
         const auto fixtures = body.GetFixtures();
         for_each(begin(fixtures), end(fixtures), [&](const auto& fixtureID) {
-            InternalTouchProxies(m_proxies, m_fixtureBuffer[UnderlyingValue(fixtureID)]);
+            InternalTouchProxies(m_proxies, m_fixtureProxies[UnderlyingValue(fixtureID)]);
         });
     }
+}
+
+const WorldImpl::Proxies& WorldImpl::GetProxies(FixtureID id) const
+{
+    return m_fixtureProxies.at(id.get());
 }
 
 FixtureID WorldImpl::CreateFixture(BodyID bodyID, const Shape& shape,
@@ -2308,9 +2316,11 @@ FixtureID WorldImpl::CreateFixture(BodyID bodyID, const Shape& shape,
     }
 
     auto& body = GetBody(bodyID); // must be called before any mutating actions to validate bodyID!
+    const auto fixtureConf = FixtureConf{def}.UseBody(bodyID).UseShape(shape);
 
     const auto fixtureID = static_cast<FixtureID>(
-        static_cast<FixtureID::underlying_type>(m_fixtureBuffer.Allocate(bodyID, shape, def)));
+        static_cast<FixtureID::underlying_type>(m_fixtureBuffer.Allocate(fixtureConf)));
+    m_fixtureProxies.Allocate();
     body.AddFixture(fixtureID);
 
     if (body.IsEnabled())
@@ -2371,7 +2381,7 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
     });
 
     EraseAll(m_fixturesForProxies, id);
-    DestroyProxies(m_tree, fixture, m_proxies);
+    DestroyProxies(m_tree, m_fixtureProxies[id.get()], m_proxies);
 
     if (!body.RemoveFixture(id))
     {
@@ -2379,6 +2389,7 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
         return false;
     }
     m_fixtureBuffer.Free(UnderlyingValue(id));
+    m_fixtureProxies.Free(UnderlyingValue(id));
 
     body.SetMassDataDirty();
     if (resetMassData)
@@ -2399,11 +2410,9 @@ void WorldImpl::DestroyFixtures(BodyID id)
     SetMassData(id, ComputeMassData(id));
 }
 
-void WorldImpl::InternalTouchProxies(Proxies& proxies, const Fixture& fixture) noexcept
+void WorldImpl::InternalTouchProxies(Proxies& proxies, const Proxies& fixtureProxies) noexcept
 {
-    for (const auto& proxy: fixture.GetProxies()) {
-        proxies.push_back(proxy);
-    }
+    proxies.insert(end(proxies), begin(fixtureProxies), end(fixtureProxies));
 }
 
 ContactCounter WorldImpl::Synchronize(const Body& body,
@@ -2417,13 +2426,14 @@ ContactCounter WorldImpl::Synchronize(const Body& body,
     const auto displacement = multiplier * (xfm2.p - xfm1.p);
     const auto fixtures = body.GetFixtures();
     for_each(cbegin(fixtures), cend(fixtures), [&](const auto& fixtureID) {
-        updatedCount += Synchronize(m_fixtureBuffer[UnderlyingValue(fixtureID)],
+        updatedCount += Synchronize(m_fixtureProxies[fixtureID.get()],
+                                    m_fixtureBuffer[fixtureID.get()].GetShape(),
                                     xfm1, xfm2, displacement, extension);
     });
     return updatedCount;
 }
 
-ContactCounter WorldImpl::Synchronize(const Fixture& fixture,
+ContactCounter WorldImpl::Synchronize(const Proxies& proxies, const Shape& shape,
                                       const Transformation& xfm1, const Transformation& xfm2,
                                       Length2 displacement, Length extension)
 {
@@ -2431,8 +2441,6 @@ ContactCounter WorldImpl::Synchronize(const Fixture& fixture,
     assert(::playrho::IsValid(xfm2));
     
     auto updatedCount = ContactCounter{0};
-    const auto& shape = fixture.GetShape();
-    const auto& proxies = fixture.GetProxies();
     auto childIndex = ChildCounter{0};
     for (const auto& treeId: proxies) {
         // Compute an AABB that covers the swept shape (may miss some rotation effect).
@@ -2468,7 +2476,7 @@ void WorldImpl::Refilter(FixtureID id)
             contact.FlagForFiltering();
         }
     });
-    InternalTouchProxies(m_proxies, fixture);
+    InternalTouchProxies(m_proxies, m_fixtureProxies[id.get()]);
 }
 
 void WorldImpl::SetFilterData(FixtureID id, Filter filter)

@@ -649,7 +649,7 @@ public:
     /// @see PhysicalEntities
     ///
     FixtureID CreateFixture(BodyID body, const Shape& shape,
-                            const FixtureConf& def = GetDefaultFixtureConf(),
+                            const FixtureConf& def = FixtureConf{},
                             bool resetMassData = true);
 
     /// @brief Destroys the identified fixture.

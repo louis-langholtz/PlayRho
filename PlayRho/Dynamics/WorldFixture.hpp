@@ -83,7 +83,7 @@ FixtureCounter GetFixtureCount(const World& world) noexcept;
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
 FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def = GetDefaultFixtureConf(),
+                        const FixtureConf& def = FixtureConf{},
                         bool resetMassData = true);
 
 /// @brief Destroys the identified fixture.

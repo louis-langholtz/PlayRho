@@ -37,7 +37,7 @@
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
-#include <PlayRho/Dynamics/FixtureConf.hpp> // for GetDefaultFixtureConf
+#include <PlayRho/Dynamics/FixtureConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
@@ -349,6 +349,9 @@ public:
     /// @throws WrongState if this method is called while the world is locked.
     void SetType(BodyID id, playrho::BodyType type);
 
+    /// @brief Gets the proxies for the identified fixture.
+    const Proxies& GetProxies(FixtureID id) const;
+
     /// @brief Creates a fixture with the given parameters.
     /// @details Creates a fixture for attaching a shape and other characteristics to the
     ///   given body. Fixtures automatically go away when the body is destroyed. Fixtures can
@@ -382,7 +385,7 @@ public:
     /// @see PhysicalEntities
     ///
     FixtureID CreateFixture(BodyID body, const Shape& shape,
-                            const FixtureConf& def = GetDefaultFixtureConf(),
+                            const FixtureConf& def = FixtureConf{},
                             bool resetMassData = true);
 
     /// @brief Destroys a fixture.
@@ -767,7 +770,7 @@ private:
 
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
-    static void InternalTouchProxies(Proxies& proxies, const Fixture& fixture) noexcept;
+    static void InternalTouchProxies(Proxies& proxies, const Proxies& fixtureProxies) noexcept;
 
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the given
@@ -779,7 +782,7 @@ private:
     /// @brief Synchronizes the given fixture.
     /// @details This updates the broad phase dynamic tree data for all of the given
     ///   fixture shape's children.
-    ContactCounter Synchronize(const Fixture& fixture,
+    ContactCounter Synchronize(const Proxies& fixtureProxies, const Shape& shape,
                                const Transformation& xfm1, const Transformation& xfm2,
                                Length2 displacement, Length extension);
 
@@ -809,6 +812,7 @@ private:
 
     ArrayAllocator<Body> m_bodyBuffer;
     ArrayAllocator<Fixture> m_fixtureBuffer;
+    ArrayAllocator<Proxies> m_fixtureProxies;
     ArrayAllocator<Joint> m_jointBuffer;
     ArrayAllocator<Contact> m_contactBuffer;
     ArrayAllocator<Manifold> m_manifoldBuffer;

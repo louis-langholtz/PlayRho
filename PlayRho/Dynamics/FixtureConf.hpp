@@ -26,6 +26,8 @@
 /// Declarations of the FixtureConf struct and any free functions associated with it.
 
 #include <PlayRho/Dynamics/Filter.hpp>
+#include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Collision/Shapes/Shape.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -39,38 +41,43 @@ class Fixture;
 ///
 struct FixtureConf
 {
+    FixtureConf& UseShape(Shape value) noexcept
+    {
+        shape = std::move(value);
+        return *this;
+    }
+
+    FixtureConf& UseBody(BodyID value) noexcept
+    {
+        body = value;
+        return *this;
+    }
+
     /// @brief Uses the given sensor state value.
-    constexpr FixtureConf& UseIsSensor(bool value) noexcept;
+    FixtureConf& UseIsSensor(bool value) noexcept
+    {
+        isSensor = value;
+        return *this;
+    }
     
     /// @brief Uses the given filter value.
-    constexpr FixtureConf& UseFilter(Filter value) noexcept;
+    FixtureConf& UseFilter(Filter value) noexcept
+    {
+        filter = value;
+        return *this;
+    }
+
+    Shape shape;
+
+    /// Contact filtering data.
+    Filter filter;
+
+    BodyID body = InvalidBodyID;
 
     /// A sensor shape collects contact information but never generates a collision
     /// response.
     bool isSensor = false;
-    
-    /// Contact filtering data.
-    Filter filter;
 };
-
-constexpr FixtureConf& FixtureConf::UseIsSensor(bool value) noexcept
-{
-    isSensor = value;
-    return *this;
-}
-
-constexpr FixtureConf& FixtureConf::UseFilter(Filter value) noexcept
-{
-    filter = value;
-    return *this;
-}
-
-/// @brief Gets the default fixture definition.
-/// @relatedalso FixtureConf
-constexpr FixtureConf GetDefaultFixtureConf() noexcept
-{
-    return FixtureConf{};
-}
 
 /// @brief Gets the fixture definition for the given fixture.
 /// @param fixture Fixture to get the definition for.
