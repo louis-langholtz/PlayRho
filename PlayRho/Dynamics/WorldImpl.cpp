@@ -504,22 +504,42 @@ void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
 }
 
 /// @brief Destroys all of the given fixture's proxies.
-void DestroyProxies(Fixture& fixture,
-                    std::vector<DynamicTree::Size>& proxies, DynamicTree& tree) noexcept
+void DestroyProxies(DynamicTree& tree, Fixture& fixture,
+                    std::vector<DynamicTree::Size>& proxies) noexcept
 {
     const auto fixtureProxies = fixture.GetProxies();
     const auto childCount = size(fixtureProxies);
-    if (childCount > 0)
-    {
+    if (childCount > 0) {
         // Destroy proxies in reverse order from what they were created in.
-        for (auto i = childCount - 1; i < childCount; --i)
-        {
+        for (auto i = childCount - 1; i < childCount; --i) {
             const auto treeId = fixtureProxies[i];
             EraseFirst(proxies, treeId);
             tree.DestroyLeaf(treeId);
         }
     }
     fixture.SetProxies(std::vector<ContactCounter>{});
+}
+
+std::vector<DynamicTree::Size>
+CreateProxies(DynamicTree& tree, BodyID bodyID, FixtureID fixtureID,
+              const Shape& shape, const Transformation& xfm, Length aabbExtension)
+{
+    // Reserve proxy space and create proxies in the broad-phase.
+    auto fixtureProxies = std::vector<DynamicTree::Size>{};
+    const auto childCount = GetChildCount(shape);
+    fixtureProxies.reserve(childCount);
+    for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
+    {
+        const auto dp = GetChild(shape, childIndex);
+        const auto aabb = playrho::d2::ComputeAABB(dp, xfm);
+
+        // Note: treeId from CreateLeaf can be higher than the number of fixture proxies.
+        const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
+        const auto treeId = tree.CreateLeaf(fattenedAABB, DynamicTree::LeafData{
+            bodyID, fixtureID, childIndex});
+        fixtureProxies.push_back(treeId);
+    }
+    return fixtureProxies;
 }
 
 } // anonymous namespace
@@ -645,7 +665,7 @@ void WorldImpl::Destroy(BodyID id)
             m_fixtureDestructionListener(fixtureID);
         }
         EraseAll(m_fixturesForProxies, fixtureID);
-        DestroyProxies(m_fixtureBuffer[UnderlyingValue(fixtureID)], m_proxies, m_tree);
+        DestroyProxies(m_tree, m_fixtureBuffer[UnderlyingValue(fixtureID)], m_proxies);
         m_fixtureBuffer.Free(UnderlyingValue(fixtureID));
     });
     body.ClearFixtures();
@@ -2173,14 +2193,17 @@ void WorldImpl::CreateAndDestroyProxies(Length extension)
         {
             if (enabled)
             {
-                fixture.SetProxies(CreateProxies(fixtureID, bodyID, fixture.GetShape(), body.GetTransformation(), m_proxies, m_tree, extension));
+                auto proxies = CreateProxies(m_tree, bodyID, fixtureID, fixture.GetShape(),
+                                             body.GetTransformation(), extension);
+                m_proxies.insert(end(m_proxies), begin(proxies), end(proxies));
+                fixture.SetProxies(std::move(proxies));
             }
         }
         else
         {
             if (!enabled)
             {
-                DestroyProxies(fixture, m_proxies, m_tree);
+                DestroyProxies(m_tree, fixture, m_proxies);
 
                 // Destroy any contacts associated with the fixture.
                 body.Erase([&](ContactID contactID) {
@@ -2348,7 +2371,7 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
     });
 
     EraseAll(m_fixturesForProxies, id);
-    DestroyProxies(fixture, m_proxies, m_tree);
+    DestroyProxies(m_tree, fixture, m_proxies);
 
     if (!body.RemoveFixture(id))
     {
@@ -2374,30 +2397,6 @@ void WorldImpl::DestroyFixtures(BodyID id)
         Destroy(fixtureID, false);
     }
     SetMassData(id, ComputeMassData(id));
-}
-
-WorldImpl::Proxies
-WorldImpl::CreateProxies(FixtureID fixtureID, BodyID bodyID, const Shape& shape,
-                         const Transformation& xfm, Proxies& proxies,
-                         DynamicTree& tree, Length aabbExtension)
-{
-    // Reserve proxy space and create proxies in the broad-phase.
-    auto fixtureProxies = std::vector<ContactCounter>{};
-    const auto childCount = GetChildCount(shape);
-    fixtureProxies.reserve(childCount);
-    for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
-    {
-        const auto dp = GetChild(shape, childIndex);
-        const auto aabb = playrho::d2::ComputeAABB(dp, xfm);
-
-        // Note: treeId from CreateLeaf can be higher than the number of fixture proxies.
-        const auto fattenedAABB = GetFattenedAABB(aabb, aabbExtension);
-        const auto treeId = tree.CreateLeaf(fattenedAABB, DynamicTree::LeafData{
-            bodyID, fixtureID, childIndex});
-        proxies.push_back(treeId);
-        fixtureProxies.push_back(treeId);
-    }
-    return fixtureProxies;
 }
 
 void WorldImpl::InternalTouchProxies(Proxies& proxies, const Fixture& fixture) noexcept

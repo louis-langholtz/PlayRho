@@ -765,12 +765,6 @@ private:
                                 ArrayAllocator<Manifold>& manifoldBuffer,
                                 ContactListener listener, Body* from = nullptr);
 
-    /// @brief Creates proxies for every child of the given fixture's shape.
-    /// @note This sets the proxy count to the child count of the shape.
-    static Proxies CreateProxies(FixtureID id, BodyID body, const Shape& shape,
-                                        const Transformation& xfm, Proxies& proxies,
-                                        DynamicTree& tree, Length aabbExtension);
-
     /// @brief Touches each proxy of the given fixture.
     /// @note This sets things up so that pairs may be created for potentially new contacts.
     static void InternalTouchProxies(Proxies& proxies, const Fixture& fixture) noexcept;
