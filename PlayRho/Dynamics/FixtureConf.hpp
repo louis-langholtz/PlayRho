@@ -29,6 +29,8 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
+#include <utility> // for std::move
+
 namespace playrho {
 namespace d2 {
 
