@@ -2424,15 +2424,15 @@ ContactCounter WorldImpl::Synchronize(const Body& body,
 }
 
 ContactCounter WorldImpl::Synchronize(const Fixture& fixture,
-                                        const Transformation& xfm1, const Transformation& xfm2,
-                                        Length2 displacement, Length extension)
+                                      const Transformation& xfm1, const Transformation& xfm2,
+                                      Length2 displacement, Length extension)
 {
     assert(::playrho::IsValid(xfm1));
     assert(::playrho::IsValid(xfm2));
     
     auto updatedCount = ContactCounter{0};
     const auto& shape = fixture.GetShape();
-    const auto proxies = fixture.GetProxies();
+    const auto& proxies = fixture.GetProxies();
     auto childIndex = ChildCounter{0};
     for (const auto& treeId: proxies) {
         // Compute an AABB that covers the swept shape (may miss some rotation effect).
