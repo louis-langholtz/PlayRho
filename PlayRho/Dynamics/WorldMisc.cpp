@@ -37,6 +37,39 @@ namespace d2 {
 
 using playrho::size;
 
+void SetFixtureDestructionListener(World& world, std::function<void(FixtureID)> listener) noexcept
+{
+    world.SetFixtureDestructionListener(listener);
+}
+
+void SetJointDestructionListener(World& world, std::function<void(JointID)> listener) noexcept
+{
+    world.SetJointDestructionListener(listener);
+}
+
+void SetBeginContactListener(World& world, std::function<void(ContactID)> listener) noexcept
+{
+    world.SetBeginContactListener(listener);
+}
+
+void SetEndContactListener(World& world, std::function<void(ContactID)> listener) noexcept
+{
+    world.SetEndContactListener(listener);
+}
+
+void SetPreSolveContactListener(World& world,
+                                std::function<void(ContactID, const Manifold&)> listener) noexcept
+{
+    world.SetPreSolveContactListener(listener);
+}
+
+void SetPostSolveContactListener(World& world,
+                                 std::function<void(ContactID, const ContactImpulsesList&,
+                                                    unsigned)> listener) noexcept
+{
+    world.SetPostSolveContactListener(listener);
+}
+
 void Clear(World& world) noexcept
 {
     world.Clear();
