@@ -42,7 +42,6 @@
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
@@ -92,7 +91,7 @@ public:
     /// @brief Fixtures container type.
     using Fixtures = std::vector<FixtureID>;
 
-    using FixtureProxies = std::vector<FixtureProxy>;
+    using FixtureProxies = std::vector<ContactCounter>;
 
     using FixtureListener = std::function<void(FixtureID)>;
     using JointListener = std::function<void(JointID)>;

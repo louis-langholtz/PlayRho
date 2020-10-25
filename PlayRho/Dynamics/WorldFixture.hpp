@@ -34,7 +34,6 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 
 #include <iterator>
 #include <vector>
@@ -160,7 +159,7 @@ AreaDensity GetDensity(const World& world, FixtureID id);
 /// @brief Gets the proxies of the identified fixture.
 /// @throws std::out_of_range If given an invalid fixture identifier.
 /// @relatedalso World
-const std::vector<FixtureProxy>& GetProxies(const World& world, FixtureID id);
+const std::vector<ContactCounter>& GetProxies(const World& world, FixtureID id);
 
 /// @brief Gets the count of proxies of the identified fixture.
 /// @throws std::out_of_range If given an invalid fixture identifier.
@@ -173,7 +172,7 @@ inline ChildCounter GetProxyCount(const World& world, FixtureID id)
 /// @brief Gets the specified proxy of the identified fixture.
 /// @throws std::out_of_range If given an invalid fixture identifier.
 /// @relatedalso World
-const FixtureProxy& GetProxy(const World& world, FixtureID id, ChildCounter child);
+ContactCounter GetProxy(const World& world, FixtureID id, ChildCounter child);
 
 /// @brief Gets the mass data for the identified fixture in the given world.
 /// @throws std::out_of_range If given an invalid fixture identifier.

@@ -100,12 +100,12 @@ AreaDensity GetDensity(const World& world, FixtureID id)
     return world.GetDensity(id);
 }
 
-const std::vector<FixtureProxy>& GetProxies(const World& world, FixtureID id)
+const std::vector<ContactCounter>& GetProxies(const World& world, FixtureID id)
 {
     return world.GetProxies(id);
 }
 
-const FixtureProxy& GetProxy(const World& world, FixtureID id, ChildCounter child)
+ContactCounter GetProxy(const World& world, FixtureID id, ChildCounter child)
 {
     return GetProxies(world, id).at(child);
 }

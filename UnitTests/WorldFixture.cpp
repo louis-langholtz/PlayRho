@@ -146,7 +146,7 @@ TEST(WorldFixture, Proxies)
         const auto stepConf = StepConf{};
         Step(world, stepConf);
         EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{1});
-        EXPECT_EQ(GetProxy(world, fixture, 0), FixtureProxy{0});
+        EXPECT_EQ(GetProxy(world, fixture, 0), ContactCounter{0});
     }
     
     {
@@ -166,8 +166,8 @@ TEST(WorldFixture, Proxies)
         const auto stepConf = StepConf{};
         Step(world, stepConf);
         EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{2});
-        EXPECT_EQ(GetProxy(world, fixture, 0), FixtureProxy{0});
-        EXPECT_EQ(GetProxy(world, fixture, 1), FixtureProxy{1});
+        EXPECT_EQ(GetProxy(world, fixture, 0), ContactCounter{0});
+        EXPECT_EQ(GetProxy(world, fixture, 1), ContactCounter{1});
     }
     
     {
@@ -188,9 +188,9 @@ TEST(WorldFixture, Proxies)
         const auto stepConf = StepConf{};
         Step(world, stepConf);
         EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{4});
-        EXPECT_EQ(GetProxy(world, fixture, 0), FixtureProxy{0});
-        EXPECT_EQ(GetProxy(world, fixture, 1), FixtureProxy{1});
-        EXPECT_EQ(GetProxy(world, fixture, 2), FixtureProxy{3});
-        EXPECT_EQ(GetProxy(world, fixture, 3), FixtureProxy{5});
+        EXPECT_EQ(GetProxy(world, fixture, 0), ContactCounter{0});
+        EXPECT_EQ(GetProxy(world, fixture, 1), ContactCounter{1});
+        EXPECT_EQ(GetProxy(world, fixture, 2), ContactCounter{3});
+        EXPECT_EQ(GetProxy(world, fixture, 3), ContactCounter{5});
     }
 }

@@ -55,7 +55,6 @@ namespace playrho {
 
 struct StepConf;
 struct Filter;
-struct FixtureProxy;
 
 namespace d2 {
 
@@ -144,7 +143,7 @@ public:
     using Fixtures = std::vector<FixtureID>;
 
     /// @brief Fixture proxies.
-    using FixtureProxies = std::vector<FixtureProxy>;
+    using FixtureProxies = std::vector<ContactCounter>;
 
     /// @brief Fixture listener.
     using FixtureListener = std::function<void(FixtureID)>;

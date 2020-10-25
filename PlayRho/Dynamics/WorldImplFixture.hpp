@@ -30,7 +30,6 @@
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 
 #include <PlayRho/Collision/MassData.hpp>
@@ -68,7 +67,7 @@ bool IsSensor(const WorldImpl& world, FixtureID id);
 AreaDensity GetDensity(const WorldImpl& world, FixtureID id);
 
 /// @relatedalso WorldImpl
-const std::vector<FixtureProxy>& GetProxies(const WorldImpl& world, FixtureID id);
+const std::vector<ContactCounter>& GetProxies(const WorldImpl& world, FixtureID id);
 
 /// @brief Sets whether the specified fixture is a sensor or not.
 /// @relatedalso WorldImpl

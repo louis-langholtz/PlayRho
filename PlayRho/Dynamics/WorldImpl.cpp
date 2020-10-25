@@ -25,7 +25,6 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/Island.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
@@ -515,12 +514,12 @@ void DestroyProxies(Fixture& fixture,
         // Destroy proxies in reverse order from what they were created in.
         for (auto i = childCount - 1; i < childCount; --i)
         {
-            const auto treeId = fixtureProxies[i].treeId;
+            const auto treeId = fixtureProxies[i];
             EraseFirst(proxies, treeId);
             tree.DestroyLeaf(treeId);
         }
     }
-    fixture.SetProxies(std::vector<FixtureProxy>{});
+    fixture.SetProxies(std::vector<ContactCounter>{});
 }
 
 } // anonymous namespace
@@ -2383,7 +2382,7 @@ WorldImpl::CreateProxies(FixtureID fixtureID, BodyID bodyID, const Shape& shape,
                          DynamicTree& tree, Length aabbExtension)
 {
     // Reserve proxy space and create proxies in the broad-phase.
-    auto fixtureProxies = std::vector<FixtureProxy>{};
+    auto fixtureProxies = std::vector<ContactCounter>{};
     const auto childCount = GetChildCount(shape);
     fixtureProxies.reserve(childCount);
     for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
@@ -2396,7 +2395,7 @@ WorldImpl::CreateProxies(FixtureID fixtureID, BodyID bodyID, const Shape& shape,
         const auto treeId = tree.CreateLeaf(fattenedAABB, DynamicTree::LeafData{
             bodyID, fixtureID, childIndex});
         proxies.push_back(treeId);
-        fixtureProxies.push_back(FixtureProxy{treeId});
+        fixtureProxies.push_back(treeId);
     }
     return fixtureProxies;
 }
@@ -2404,7 +2403,7 @@ WorldImpl::CreateProxies(FixtureID fixtureID, BodyID bodyID, const Shape& shape,
 void WorldImpl::InternalTouchProxies(ProxyQueue& proxies, const Fixture& fixture) noexcept
 {
     for (const auto& proxy: fixture.GetProxies()) {
-        proxies.push_back(proxy.treeId);
+        proxies.push_back(proxy);
     }
 }
 
@@ -2436,10 +2435,7 @@ ContactCounter WorldImpl::Synchronize(const Fixture& fixture,
     const auto& shape = fixture.GetShape();
     const auto proxies = fixture.GetProxies();
     auto childIndex = ChildCounter{0};
-    for (const auto& proxy: proxies)
-    {
-        const auto treeId = proxy.treeId;
-        
+    for (const auto& treeId: proxies) {
         // Compute an AABB that covers the swept shape (may miss some rotation effect).
         const auto aabb = ComputeAABB(GetChild(shape, childIndex), xfm1, xfm2);
         if (!Contains(m_tree.GetAABB(treeId), aabb))

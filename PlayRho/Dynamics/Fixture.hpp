@@ -30,13 +30,10 @@
 #include <PlayRho/Common/NonZero.hpp>
 #include <PlayRho/Dynamics/Filter.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
 #include <limits>
-#include <memory>
 #include <vector>
-#include <array>
 
 namespace playrho {
 namespace d2 {
@@ -61,7 +58,7 @@ class Fixture
 {
 public:
     /// @brief Fixture proxies container.
-    using Proxies = std::vector<FixtureProxy>;
+    using Proxies = std::vector<ContactCounter>;
 
     Fixture() = default;
 
