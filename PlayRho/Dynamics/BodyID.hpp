@@ -46,6 +46,6 @@ constexpr bool IsValid(const BodyID& value) noexcept
     return value != GetInvalid<BodyID>();
 }
 
-}
+} // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_BODYID_HPP

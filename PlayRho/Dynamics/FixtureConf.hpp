@@ -42,8 +42,7 @@ class Fixture;
 ///   such as collision filters, etc.
 /// @ingroup PhysicalEntities
 /// @see World::CreateFixture, World::GetFixture, World::SetFixture, World::Destroy.
-struct FixtureConf
-{
+struct FixtureConf {
     FixtureConf& UseShape(Shape value) noexcept
     {
         shape = std::move(value);
@@ -62,7 +61,7 @@ struct FixtureConf
         isSensor = value;
         return *this;
     }
-    
+
     /// @brief Uses the given filter value.
     FixtureConf& UseFilter(Filter value) noexcept
     {

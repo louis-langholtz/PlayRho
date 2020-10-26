@@ -155,8 +155,8 @@ public:
     using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
 
     /// @brief Impulses contact listener.
-    using ImpulsesContactListener = std::function<void(ContactID, const ContactImpulsesList&,
-                                                       unsigned)>;
+    using ImpulsesContactListener =
+        std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
     /// @name Special Member Functions
     /// Special member functions that are explicitly defined.
@@ -184,7 +184,7 @@ public:
     ///   new memory required for those copies.
     /// @warning This method should not be called while the world is locked!
     /// @throws WrongState if this method is called while the world is locked.
-    World& operator= (const World& other);
+    World& operator=(const World& other);
 
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all allocated memory is released.
@@ -266,12 +266,13 @@ public:
     StepStats Step(const StepConf& conf = StepConf{});
 
     /// @brief Whether or not "step" is complete.
-    /// @details The "step" is completed when there are no more TOI events for the current time step.
+    /// @details The "step" is completed when there are no more TOI events for the current time
+    /// step.
     /// @return <code>true</code> unless sub-stepping is enabled and the step method returned
     ///   without finishing all of its sub-steps.
     /// @see GetSubStepping, SetSubStepping.
     bool IsStepComplete() const noexcept;
-    
+
     /// @brief Gets whether or not sub-stepping is enabled.
     /// @see SetSubStepping, IsStepComplete.
     bool GetSubStepping() const noexcept;
@@ -300,7 +301,7 @@ public:
 
     /// @brief Gets the minimum vertex radius that shapes in this world can be.
     Length GetMinVertexRadius() const noexcept;
-    
+
     /// @brief Gets the maximum vertex radius that shapes in this world can be.
     Length GetMaxVertexRadius() const noexcept;
 
@@ -639,8 +640,7 @@ public:
     /// @see Destroy(FixtureID), GetFixtures
     /// @see PhysicalEntities
     ///
-    FixtureID CreateFixture(const FixtureConf& def = FixtureConf{},
-                            bool resetMassData = true);
+    FixtureID CreateFixture(const FixtureConf& def = FixtureConf{}, bool resetMassData = true);
 
     /// @brief Gets the identified fixture state.
     /// @throws std::out_of_range If given an invalid fixture identifier.
@@ -884,8 +884,8 @@ private:
 /// use of the <code>playrho::d2::World</code> class and more.
 /// After instantiating a world, the code creates a body and its fixture to act as the ground,
 /// creates another body and a fixture for it to act like a ball, then steps the world using
-/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates a ball falling to the ground
-/// and outputs the position of the ball after each step.
+/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates a ball
+/// falling to the ground and outputs the position of the ball after each step.
 
 /// @example World.cpp
 /// This is the <code>googletest</code> based unit testing file for the

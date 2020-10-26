@@ -97,7 +97,7 @@ void World::Destroy(JointID id)
 {
     ::playrho::d2::Destroy(*m_impl, id);
 }
-    
+
 StepStats World::Step(const StepConf& conf)
 {
     return ::playrho::d2::Step(*m_impl, conf);

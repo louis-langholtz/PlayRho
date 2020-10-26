@@ -30,8 +30,7 @@ namespace playrho {
 
 /// @brief A holder for contact filtering data.
 /// @note This data structure size is 6-bytes.
-struct Filter
-{
+struct Filter {
     /// @brief Bits type definition.
     ///
     using bits_type = std::uint16_t;
@@ -63,16 +62,15 @@ struct Filter
 
 /// @brief Equality operator.
 /// @relatedalso Filter
-constexpr bool operator== (const Filter lhs, const Filter rhs) noexcept
+constexpr bool operator==(const Filter lhs, const Filter rhs) noexcept
 {
-    return lhs.categoryBits == rhs.categoryBits
-        && lhs.maskBits == rhs.maskBits
-        && lhs.groupIndex == rhs.groupIndex;
+    return lhs.categoryBits == rhs.categoryBits && lhs.maskBits == rhs.maskBits &&
+           lhs.groupIndex == rhs.groupIndex;
 }
 
 /// @brief Inequality operator.
 /// @relatedalso Filter
-constexpr bool operator!= (const Filter lhs, const Filter rhs) noexcept
+constexpr bool operator!=(const Filter lhs, const Filter rhs) noexcept
 {
     return !(lhs == rhs);
 }
@@ -81,8 +79,7 @@ constexpr bool operator!= (const Filter lhs, const Filter rhs) noexcept
 /// @relatedalso Filter
 inline bool ShouldCollide(const Filter filterA, const Filter filterB) noexcept
 {
-    if ((filterA.groupIndex == filterB.groupIndex) && (filterA.groupIndex != 0))
-    {
+    if ((filterA.groupIndex == filterB.groupIndex) && (filterA.groupIndex != 0)) {
         return filterA.groupIndex > 0;
     }
     return ((filterA.maskBits & filterB.categoryBits) != 0) &&
