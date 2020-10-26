@@ -57,7 +57,7 @@ TEST(GearJointConf, ByteSize)
             EXPECT_EQ(sizeof(GearJointConf), std::size_t(240));
             break;
         case 16:
-            EXPECT_EQ(sizeof(GearJointConf), std::size_t(464));
+            EXPECT_EQ(sizeof(GearJointConf), std::size_t(448));
             break;
         default:
             FAIL();

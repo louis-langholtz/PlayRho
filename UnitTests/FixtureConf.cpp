@@ -38,8 +38,8 @@ TEST(FixtureConf, ByteSize)
             EXPECT_EQ(sizeof(FixtureConf), std::size_t(32));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(FixtureConf), std::size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(FixtureConf), std::size_t(64)); break;
+        case  8: EXPECT_EQ(sizeof(FixtureConf), std::size_t(32)); break;
+        case 16: EXPECT_EQ(sizeof(FixtureConf), std::size_t(32)); break;
         default: FAIL(); break;
     }
 }

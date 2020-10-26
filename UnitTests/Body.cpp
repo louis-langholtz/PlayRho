@@ -50,10 +50,10 @@ TEST(Body, ByteSize)
 #endif
             break;
         case  8:
-            EXPECT_EQ(sizeof(Body), std::size_t(272));
+            EXPECT_EQ(sizeof(Body), std::size_t(200));
             break;
         case 16:
-            EXPECT_EQ(sizeof(Body), std::size_t(480));
+            EXPECT_EQ(sizeof(Body), std::size_t(400));
             break;
         default: FAIL(); break;
     }
