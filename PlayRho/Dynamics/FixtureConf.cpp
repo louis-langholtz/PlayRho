@@ -21,18 +21,10 @@
 
 #include <PlayRho/Dynamics/FixtureConf.hpp>
 
-#include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp> // for MixFriction, MixRestitution
 
 namespace playrho {
 namespace d2 {
-
-FixtureConf GetFixtureConf(const Fixture& fixture) noexcept
-{
-    return FixtureConf{
-        fixture.GetShape(), fixture.GetFilterData(), fixture.GetBody(), fixture.IsSensor()
-    };
-}
 
 Real GetDefaultFriction(const FixtureConf& fixtureA, const FixtureConf& fixtureB)
 {

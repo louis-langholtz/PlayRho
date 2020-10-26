@@ -23,7 +23,6 @@
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
 #include <PlayRho/Dynamics/Body.hpp> // for use of GetBody
-#include <PlayRho/Dynamics/Fixture.hpp> // for GetDefaultFriction, GetDefaultRestitution
 
 #include <PlayRho/Dynamics/Contacts/Contact.hpp> // for use of GetContact
 

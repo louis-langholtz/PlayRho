@@ -81,11 +81,6 @@ struct FixtureConf
     bool isSensor = false;
 };
 
-/// @brief Gets the fixture definition for the given fixture.
-/// @param fixture Fixture to get the definition for.
-/// @relatedalso Fixture
-FixtureConf GetFixtureConf(const Fixture& fixture) noexcept;
-
 /// @brief Gets the body associated with the given value.
 inline BodyID GetBody(const FixtureConf& conf) noexcept
 {

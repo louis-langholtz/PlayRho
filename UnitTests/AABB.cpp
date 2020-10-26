@@ -27,7 +27,6 @@
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
-#include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>

@@ -22,7 +22,6 @@
 #include <PlayRho/Dynamics/WorldImplFixture.hpp>
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp> // for use of GetFixture
 #include <PlayRho/Dynamics/Body.hpp> // for use of WorldImpl::GetBody
 #include <PlayRho/Dynamics/Contacts/Contact.hpp> // for use of WorldImpl::GetBody
 

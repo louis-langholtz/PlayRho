@@ -27,7 +27,6 @@
 #include <PlayRho/Dynamics/WorldImplJoint.hpp>
 #include <PlayRho/Dynamics/WorldImplContact.hpp>
 #include <PlayRho/Dynamics/WorldImplFixture.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
