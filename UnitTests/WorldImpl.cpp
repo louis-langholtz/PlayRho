@@ -157,14 +157,14 @@ TEST(WorldImpl, Clear)
 
     const auto b0 = world.CreateBody();
     ASSERT_NE(b0, InvalidBodyID);
-    const auto fixtureConf0 = FixtureConf{}.UseBody(b0).UseShape(Shape{DiskShapeConf{}});
+    const auto fixtureConf0 = FixtureConf{}.UseBody(b0).UseShape(DiskShapeConf{});
     const auto f0 = world.CreateFixture(fixtureConf0);
     ASSERT_NE(f0, InvalidFixtureID);
     ASSERT_EQ(GetFixtures(world, b0).size(), std::size_t(1));;
 
     const auto b1 = world.CreateBody();
     ASSERT_NE(b1, InvalidBodyID);
-    const auto fixtureConf1 = FixtureConf{}.UseBody(b1).UseShape(Shape{DiskShapeConf{}});
+    const auto fixtureConf1 = FixtureConf{}.UseBody(b1).UseShape(DiskShapeConf{});
     const auto f1 = CreateFixture(world, fixtureConf1);
     ASSERT_NE(f1, InvalidFixtureID);
     ASSERT_EQ(GetFixtures(world, b1).size(), std::size_t(1));;
@@ -189,7 +189,7 @@ TEST(WorldImpl, Clear)
 
     const auto b2 = world.CreateBody();
     EXPECT_LE(b2, b1);
-    const auto fixtureConf2 = FixtureConf{}.UseBody(b2).UseShape(Shape{DiskShapeConf{}});
+    const auto fixtureConf2 = FixtureConf{}.UseBody(b2).UseShape(DiskShapeConf{});
     const auto f2 = CreateFixture(world, fixtureConf2);
     EXPECT_LE(f2, f1);
 }
@@ -289,7 +289,7 @@ TEST(WorldImpl, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
     EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
 
-    const auto fixtureConf = FixtureConf{}.UseBody(body).UseShape(Shape{DiskShapeConf{1_m}});
+    const auto fixtureConf = FixtureConf{}.UseBody(body).UseShape(DiskShapeConf{1_m});
     const auto fixture = CreateFixture(world, fixtureConf);
     ASSERT_NE(fixture, InvalidFixtureID);
     
@@ -332,9 +332,9 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
     EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
 
-    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body1).UseShape(Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)})),
+    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body1).UseShape(DiskShapeConf{1_m}.UseDensity(1_kgpm2))),
               InvalidFixtureID);
-    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body2).UseShape(Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)})),
+    EXPECT_NE(world.CreateFixture(FixtureConf{}.UseBody(body2).UseShape(DiskShapeConf{1_m}.UseDensity(1_kgpm2))),
               InvalidFixtureID);
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
     EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(2));

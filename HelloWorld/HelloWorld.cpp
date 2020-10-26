@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -48,7 +48,7 @@ int main()
     const auto box = Shape{PolygonShapeConf{}.SetAsBox(50_m, 10_m)};
 
     // Add the box shape to the ground body.
-    world.CreateFixture(ground, box);
+    world.CreateFixture(FixtureConf{}.UseBody(ground).UseShape(box));
 
     // Define location above ground for a "dynamic" body & call world's body creation method.
     const auto ball = world.CreateBody(BodyConf{}
@@ -57,7 +57,7 @@ int main()
                                        .UseLinearAcceleration(EarthlyGravity));
 
     // Define a disk shape for the ball body and create a fixture to add it.
-    world.CreateFixture(ball, Shape{DiskShapeConf{}.UseRadius(1_m)});
+    world.CreateFixture(FixtureConf{}.UseBody(ball).UseShape(DiskShapeConf{}.UseRadius(1_m)));
 
     // Setup the C++ stream output format.
     std::cout << std::fixed << std::setprecision(2);

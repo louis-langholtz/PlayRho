@@ -69,7 +69,7 @@ TEST(FixtureConf, InitializingConstructor)
     const auto filter = Filter{};
     const auto isSensor = true;
     const auto fixture =
-        FixtureConf{}.UseIsSensor(isSensor).UseFilter(filter).UseBody(body).UseShape(Shape(conf));
+        FixtureConf{}.UseIsSensor(isSensor).UseFilter(filter).UseBody(body).UseShape(conf);
     EXPECT_EQ(GetBody(fixture), body);
     EXPECT_EQ(GetFilterData(fixture).categoryBits, filter.categoryBits);
     EXPECT_EQ(GetFilterData(fixture).maskBits, filter.maskBits);

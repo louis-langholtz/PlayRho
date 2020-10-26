@@ -167,7 +167,7 @@ public:
     /// @see GetRestitution
     /// @throws std::bad_alloc if there's a failure allocating storage.
     template <typename T>
-    explicit Shape(T arg): m_self{std::make_shared<Model<T>>(std::move(arg))}
+    Shape(T arg): m_self{std::make_shared<Model<T>>(std::move(arg))}
     {
         // Intentionally empty.
     }

@@ -178,8 +178,8 @@ TEST(GearJoint, GetGearJointConf)
     ASSERT_EQ(GetLocalAnchorA(world, joint), GetLocalAnchorB(world, revJoint1));
     ASSERT_EQ(GetLocalAnchorB(world, joint), GetLocalAnchorB(world, revJoint2));
     auto conf = TypeCast<GearJointConf>(GetJoint(world, joint));
-    ASSERT_EQ(GetType1(conf), GetType(rdef1));
-    ASSERT_EQ(GetType2(conf), GetType(rdef2));
+    ASSERT_EQ(GetType1(conf), GetTypeID<decltype(rdef1)>());
+    ASSERT_EQ(GetType2(conf), GetTypeID<decltype(rdef2)>());
     ASSERT_EQ(GetRatio(world, joint), def.ratio);
     
     const auto cdef = GetGearJointConf(GetJoint(world, joint));
@@ -187,8 +187,8 @@ TEST(GearJoint, GetGearJointConf)
     EXPECT_EQ(cdef.bodyB, def.bodyB);
     EXPECT_EQ(cdef.collideConnected, false);
     
-    EXPECT_EQ(cdef.type1, GetType(rdef1));
-    EXPECT_EQ(cdef.type2, GetType(rdef2));
+    EXPECT_EQ(cdef.type1, GetTypeID<decltype(rdef1)>());
+    EXPECT_EQ(cdef.type2, GetTypeID<decltype(rdef2)>());
     EXPECT_EQ(cdef.ratio, Real(1));
 }
 
