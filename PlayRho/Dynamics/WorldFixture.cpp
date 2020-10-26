@@ -58,12 +58,14 @@ bool Destroy(World& world, FixtureID id, bool resetMassData)
 
 Filter GetFilterData(const World& world, FixtureID id)
 {
-    return world.GetFilterData(id);
+    return GetFilterData(world.GetFixture(id));
 }
 
 void SetFilterData(World& world, FixtureID id, const Filter& value)
 {
-    world.SetFilterData(id, value);
+    auto fixture = world.GetFixture(id);
+    SetFilterData(fixture, value);
+    world.SetFixture(id, fixture);
     world.Refilter(id);
 }
 
@@ -74,7 +76,7 @@ void Refilter(World& world, FixtureID id)
 
 BodyID GetBody(const World& world, FixtureID id)
 {
-    return world.GetBody(id);
+    return GetBody(world.GetFixture(id));
 }
 
 Transformation GetTransformation(const World& world, FixtureID id)
@@ -84,22 +86,24 @@ Transformation GetTransformation(const World& world, FixtureID id)
 
 Shape GetShape(const World& world, FixtureID id)
 {
-    return world.GetShape(id);
-}
-
-void SetSensor(World& world, FixtureID id, bool value)
-{
-    world.SetSensor(id, value);
+    return GetShape(world.GetFixture(id));
 }
 
 bool IsSensor(const World& world, FixtureID id)
 {
-    return world.IsSensor(id);
+    return IsSensor(world.GetFixture(id));
+}
+
+void SetSensor(World& world, FixtureID id, bool value)
+{
+    auto fixture = world.GetFixture(id);
+    SetSensor(fixture, value);
+    world.SetFixture(id, fixture);
 }
 
 AreaDensity GetDensity(const World& world, FixtureID id)
 {
-    return world.GetDensity(id);
+    return GetDensity(world.GetFixture(id));
 }
 
 bool TestPoint(const World& world, FixtureID id, Length2 p)

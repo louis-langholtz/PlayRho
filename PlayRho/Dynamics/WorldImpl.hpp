@@ -436,12 +436,15 @@ public:
     /// @param resetMassData Whether or not to reset the mass data of the associated body.
     /// @see Body::ResetMassData.
     /// @throws WrongState if this method is called while the world is locked.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
     bool Destroy(FixtureID fixture, bool resetMassData = true);
 
     /// @brief Gets the identified fixture state.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
     const FixtureConf& GetFixture(FixtureID id) const;
 
     /// @brief Sets the identified fixture's state.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
     void SetFixture(FixtureID id, const FixtureConf& value);
 
     /// @brief Gets the fixtures-for-proxies range for this world.
@@ -451,6 +454,7 @@ public:
     SizedRange<Fixtures::const_iterator> GetFixturesForProxies() const noexcept;
 
     /// @brief Gets the proxies for the identified fixture.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
     const Proxies& GetProxies(FixtureID id) const;
 
     /// @}

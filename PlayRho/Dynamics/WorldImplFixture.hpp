@@ -47,43 +47,28 @@ struct FixtureConf; // for CreateFixture
 /// @relatedalso WorldImpl
 FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def, bool resetMassData = true);
 
+/// @brief Gets the identified fixture state.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @relatedalso WorldImpl
+const FixtureConf& GetFixture(const WorldImpl& world, FixtureID id);
+
+/// @brief Sets the identified fixture's state.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @relatedalso WorldImpl
+void SetFixture(WorldImpl& world, FixtureID id, const FixtureConf& value);
+
 /// @relatedalso WorldImpl
 bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData);
 
 /// @relatedalso WorldImpl
-BodyID GetBody(const WorldImpl& world, FixtureID id);
-
-/// @relatedalso WorldImpl
-Shape GetShape(const WorldImpl& world, FixtureID id);
-
-/// @brief Is the specified fixture a sensor (non-solid)?
-/// @return the true if the fixture is a sensor.
-/// @relatedalso WorldImpl
-bool IsSensor(const WorldImpl& world, FixtureID id);
-
-/// @brief Gets the density of this fixture.
-/// @return Non-negative density (in mass per area).
-/// @relatedalso WorldImpl
-AreaDensity GetDensity(const WorldImpl& world, FixtureID id);
-
-/// @relatedalso WorldImpl
-const std::vector<ContactCounter>& GetProxies(const WorldImpl& world, FixtureID id);
-
-/// @brief Sets whether the specified fixture is a sensor or not.
-/// @relatedalso WorldImpl
-void SetSensor(WorldImpl& world, FixtureID id, bool value);
-
-/// @relatedalso WorldImpl
-Filter GetFilterData(const WorldImpl& world, FixtureID id);
-
-/// @relatedalso WorldImpl
 void Refilter(WorldImpl& world, FixtureID id);
-
-/// @relatedalso WorldImpl
-void SetFilterData(WorldImpl& world, FixtureID id, const Filter& value);
 
 /// @brief Flags the contacts of the identifed fixture for filtering.
 void FlagContactsForFiltering(WorldImpl& world, FixtureID id);
+
+/// @brief Gets the dynamic tree leaves awaiting processing for the finding of new contacts.
+/// @relatedalso WorldImpl
+const std::vector<ContactCounter>& GetProxies(const WorldImpl& world, FixtureID id);
 
 /// @brief Gets the count of proxies of the identified fixture.
 /// @throws std::out_of_range If given an invalid fixture identifier.

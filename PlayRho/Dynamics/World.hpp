@@ -642,6 +642,14 @@ public:
     FixtureID CreateFixture(const FixtureConf& def = FixtureConf{},
                             bool resetMassData = true);
 
+    /// @brief Gets the identified fixture state.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
+    const FixtureConf& GetFixture(FixtureID id) const;
+
+    /// @brief Sets the identified fixture's state.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
+    void SetFixture(FixtureID id, const FixtureConf& value);
+
     /// @brief Destroys the identified fixture.
     ///
     /// @details Destroys a fixture previously created by the
@@ -673,41 +681,6 @@ public:
     /// @throws std::out_of_range If given an invalid fixture identifier.
     /// @see SetFilterData, GetFilterData.
     void Refilter(FixtureID id);
-
-    /// @brief Gets the filter data for the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    /// @see SetFilterData.
-    Filter GetFilterData(FixtureID id) const;
-
-    /// @brief Sets the contact filtering data.
-    /// @note This won't update contacts until the next time step when either parent body
-    ///    is speedable and awake.
-    /// @note This automatically calls <code>Refilter</code>.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    /// @see GetFilterData.
-    void SetFilterData(FixtureID id, const Filter& filter);
-
-    /// @brief Gets the identifier of the body associated with the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    BodyID GetBody(FixtureID id) const;
-
-    /// @brief Gets the shape associated with the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    Shape GetShape(FixtureID id) const;
-
-    /// @brief Is the specified fixture a sensor (non-solid)?
-    /// @return the true if the fixture is a sensor.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    bool IsSensor(FixtureID id) const;
-
-    /// @brief Sets whether the fixture is a sensor or not.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    /// @see IsSensor(FixtureID id).
-    void SetSensor(FixtureID id, bool value);
-
-    /// @brief Gets the density value associated with the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    AreaDensity GetDensity(FixtureID id) const;
 
     /// @}
 

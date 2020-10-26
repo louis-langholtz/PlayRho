@@ -218,19 +218,9 @@ const DynamicTree& World::GetTree() const noexcept
     return ::playrho::d2::GetTree(*m_impl);
 }
 
-Filter World::GetFilterData(FixtureID id) const
-{
-    return ::playrho::d2::GetFilterData(*m_impl, id);
-}
-
 void World::Refilter(FixtureID id)
 {
     ::playrho::d2::Refilter(*m_impl, id);
-}
-
-void World::SetFilterData(FixtureID id, const Filter& filter)
-{
-    ::playrho::d2::SetFilterData(*m_impl, id, filter);
 }
 
 void World::SetType(BodyID id, BodyType type)
@@ -241,6 +231,16 @@ void World::SetType(BodyID id, BodyType type)
 FixtureID World::CreateFixture(const FixtureConf& def, bool resetMassData)
 {
     return ::playrho::d2::CreateFixture(*m_impl, def, resetMassData);
+}
+
+const FixtureConf& World::GetFixture(FixtureID id) const
+{
+    return ::playrho::d2::GetFixture(*m_impl, id);
+}
+
+void World::SetFixture(FixtureID id, const FixtureConf& value)
+{
+    ::playrho::d2::SetFixture(*m_impl, id, value);
 }
 
 bool World::Destroy(FixtureID id, bool resetMassData)
@@ -306,31 +306,6 @@ FixtureCounter World::GetShapeCount() const noexcept
 BodyConf World::GetBodyConf(BodyID id) const
 {
     return ::playrho::d2::GetBodyConf(*m_impl, id);
-}
-
-BodyID World::GetBody(FixtureID id) const
-{
-    return ::playrho::d2::GetBody(*m_impl, id);
-}
-
-Shape World::GetShape(FixtureID id) const
-{
-    return ::playrho::d2::GetShape(*m_impl, id);
-}
-
-void World::SetSensor(FixtureID id, bool value)
-{
-    ::playrho::d2::SetSensor(*m_impl, id, value);
-}
-
-bool World::IsSensor(FixtureID id) const
-{
-    return ::playrho::d2::IsSensor(*m_impl, id);
-}
-
-AreaDensity World::GetDensity(FixtureID id) const
-{
-    return ::playrho::d2::GetDensity(*m_impl, id);
 }
 
 Angle World::GetAngle(BodyID id) const

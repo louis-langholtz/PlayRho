@@ -93,11 +93,18 @@ FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
 /// @relatedalso World
 bool Destroy(World& world, FixtureID id, bool resetMassData = true);
 
-/// @copydoc World::GetFilterData
+/// @brief Gets the filter data for the identified fixture.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @see SetFilterData.
 /// @relatedalso World
 Filter GetFilterData(const World& world, FixtureID id);
 
-/// @copydoc World::SetFilterData
+/// @brief Sets the contact filtering data.
+/// @note This won't update contacts until the next time step when either parent body
+///    is speedable and awake.
+/// @note This automatically calls <code>Refilter</code>.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @see GetFilterData.
 /// @relatedalso World
 void SetFilterData(World& world, FixtureID id, const Filter& filter);
 
@@ -139,12 +146,6 @@ inline Real GetRestitution(const World& world, FixtureID id)
     return GetRestitution(GetShape(world, id));
 }
 
-/// @brief Sets whether the fixture is a sensor or not.
-/// @throws std::out_of_range If given an invalid fixture identifier.
-/// @see IsSensor.
-/// @relatedalso World
-void SetSensor(World& world, FixtureID id, bool value);
-
 /// @brief Is the specified fixture a sensor (non-solid)?
 /// @return the true if the fixture is a sensor.
 /// @throws std::out_of_range If given an invalid fixture identifier.
@@ -152,9 +153,16 @@ void SetSensor(World& world, FixtureID id, bool value);
 /// @relatedalso World
 bool IsSensor(const World& world, FixtureID id);
 
+/// @brief Sets whether the fixture is a sensor or not.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @see IsSensor.
+/// @relatedalso World
+void SetSensor(World& world, FixtureID id, bool value);
+
 /// @brief Gets the density of this fixture.
 /// @return Non-negative density (in mass per area).
 /// @throws std::out_of_range If given an invalid fixture identifier.
+/// @relatedalso World
 AreaDensity GetDensity(const World& world, FixtureID id);
 
 /// @brief Gets the mass data for the identified fixture in the given world.

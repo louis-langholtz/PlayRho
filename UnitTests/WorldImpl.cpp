@@ -607,7 +607,7 @@ TEST(WorldImpl, CreateAndDestroyFixture)
 
     {
         auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape), false);
-        const auto fshape = GetShape(world, fixture);
+        const auto fshape = GetShape(world.GetFixture(fixture));
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
         EXPECT_FALSE(GetFixtures(world, body).empty());
@@ -641,7 +641,7 @@ TEST(WorldImpl, CreateAndDestroyFixture)
     }
     {
         auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape), false);
-        const auto fshape = GetShape(world, fixture);
+        const auto fshape = GetShape(world.GetFixture(fixture));
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
         EXPECT_FALSE(GetFixtures(world, body).empty());

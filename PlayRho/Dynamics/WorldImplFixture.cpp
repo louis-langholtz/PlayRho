@@ -34,46 +34,19 @@ FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def, bool resetMass
     return world.CreateFixture(def, resetMassData);
 }
 
+const FixtureConf& GetFixture(const WorldImpl& world, FixtureID id)
+{
+    return world.GetFixture(id);
+}
+
+void SetFixture(WorldImpl& world, FixtureID id, const FixtureConf& value)
+{
+    world.SetFixture(id, value);
+}
+
 bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData)
 {
     return world.Destroy(id, resetMassData);
-}
-
-BodyID GetBody(const WorldImpl& world, FixtureID id)
-{
-    return GetBody(world.GetFixture(id));
-}
-
-Shape GetShape(const WorldImpl& world, FixtureID id)
-{
-    return GetShape(world.GetFixture(id));
-}
-
-bool IsSensor(const WorldImpl& world, FixtureID id)
-{
-    return IsSensor(world.GetFixture(id));
-}
-
-void SetSensor(WorldImpl& world, FixtureID id, bool value)
-{
-    auto fixture = world.GetFixture(id);
-    SetSensor(fixture, value);
-    world.SetFixture(id, fixture);
-}
-
-AreaDensity GetDensity(const WorldImpl& world, FixtureID id)
-{
-    return GetDensity(world.GetFixture(id));
-}
-
-const std::vector<ContactCounter>& GetProxies(const WorldImpl& world, FixtureID id)
-{
-    return world.GetProxies(id);
-}
-
-Filter GetFilterData(const WorldImpl& world, FixtureID id)
-{
-    return GetFilterData(world.GetFixture(id));
 }
 
 void FlagContactsForFiltering(WorldImpl& world, FixtureID id)
@@ -93,11 +66,9 @@ void Refilter(WorldImpl& world, FixtureID id)
     world.AddProxies(world.GetProxies(id));
 }
 
-void SetFilterData(WorldImpl& world, FixtureID id, const Filter& value)
+const std::vector<ContactCounter>& GetProxies(const WorldImpl& world, FixtureID id)
 {
-    auto fixture = world.GetFixture(id);
-    SetFilterData(fixture, value);
-    world.SetFixture(id, fixture);
+    return world.GetProxies(id);
 }
 
 ContactCounter GetProxy(const WorldImpl& world, FixtureID id, ChildCounter child)
