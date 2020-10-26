@@ -237,7 +237,7 @@ static bool Draw(Drawer& drawer, const World& world, BodyID body,
     auto found = false;
     const auto bodyColor = GetColor(world, body);
     const auto selectedColor = Brighten(bodyColor, 1.3f);
-    for (const auto& fixtureID: world.GetFixtures(body))
+    for (const auto& fixtureID: GetFixtures(world, body))
     {
         auto color = bodyColor;
         if (Test::Contains(selected, fixtureID))

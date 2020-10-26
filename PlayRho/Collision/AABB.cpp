@@ -75,17 +75,6 @@ AABB ComputeAABB(const World& world, FixtureID id)
     return ComputeAABB(GetShape(world, id), GetTransformation(world, GetBody(world, id)));
 }
 
-AABB ComputeAABB(const World& world, const Body& body)
-{
-    auto sum = AABB{};
-    const auto xf = body.GetTransformation();
-    for (auto&& f: body.GetFixtures())
-    {
-        Include(sum, ComputeAABB(GetShape(world, f), xf));
-    }
-    return sum;
-}
-
 AABB ComputeAABB(const World& world, BodyID id)
 {
     auto sum = AABB{};

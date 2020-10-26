@@ -440,9 +440,9 @@ bool ShouldCollide(const ArrayAllocator<Joint>& jointBuffer,
 }
 
 /// @brief Executes function for all the fixtures of the given body.
-void ForallFixtures(Body& b, std::function<void(FixtureID)> callback)
+void ForallFixtures(const WorldImpl::Fixtures& fixtures, std::function<void(FixtureID)> callback)
 {
-    for (const auto& f: b.GetFixtures()) {
+    for (const auto& f: fixtures) {
         callback(f);
     }
 }
@@ -584,8 +584,7 @@ void WorldImpl::Clear() noexcept
     }
     if (m_fixtureDestructionListener) {
         for_each(cbegin(m_bodies), cend(m_bodies), [this](const auto& id) {
-            const auto& b = m_bodyBuffer[UnderlyingValue(id)];
-            for (const auto& fixture: b.GetFixtures()) {
+            for (const auto& fixture: m_bodyFixtures[id.get()]) {
                 m_fixtureDestructionListener(fixture);
             }
         });
@@ -606,6 +605,7 @@ void WorldImpl::Clear() noexcept
     m_bodyBuffer.clear();
     m_bodyContacts.clear();
     m_bodyJoints.clear();
+    m_bodyFixtures.clear();
 }
 
 BodyCounter WorldImpl::GetBodyRange() const noexcept
@@ -625,6 +625,7 @@ BodyID WorldImpl::CreateBody(const BodyConf& def)
         static_cast<BodyID::underlying_type>(m_bodyBuffer.Allocate(def)));
     m_bodyContacts.Allocate();
     m_bodyJoints.Allocate();
+    m_bodyFixtures.Allocate();
     m_bodies.push_back(id);
     return id;
 }
@@ -639,6 +640,7 @@ void WorldImpl::Remove(BodyID id) noexcept
         m_bodyBuffer.Free(id.get());
         m_bodyContacts.Free(id.get());
         m_bodyJoints.Free(id.get());
+        m_bodyFixtures.Free(id.get());
     }
 }
 
@@ -673,7 +675,7 @@ void WorldImpl::Destroy(BodyID id)
     });
 
     // Delete the attached fixtures. This destroys broad-phase proxies.
-    ForallFixtures(body, [this](FixtureID fixtureID) {
+    ForallFixtures(m_bodyFixtures[id.get()], [this](FixtureID fixtureID) {
         if (m_fixtureDestructionListener) {
             m_fixtureDestructionListener(fixtureID);
         }
@@ -682,7 +684,7 @@ void WorldImpl::Destroy(BodyID id)
         m_fixtureBuffer.Free(fixtureID.get());
         m_fixtureProxies.Free(fixtureID.get());
     });
-    body.ClearFixtures();
+    m_bodyFixtures[id.get()].clear();
 
     Remove(id);
 }
@@ -941,13 +943,11 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     futures.reserve(remNumBodies);
 #endif
     // Build and simulate all awake islands.
-    for (const auto& b: m_bodies)
-    {
+    for (const auto& b: m_bodies) {
         if (!m_islandedBodies[UnderlyingValue(b)]) {
             auto& body = m_bodyBuffer[UnderlyingValue(b)];
             assert(!body.IsAwake() || body.IsSpeedable());
-            if (body.IsAwake() && body.IsEnabled())
-            {
+            if (body.IsAwake() && body.IsEnabled()) {
                 ++stats.islandsFound;
                 ::playrho::d2::Clear(m_island);
                 // Size the island for the remaining un-evaluated bodies, contacts, and joints.
@@ -968,22 +968,20 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
     }
 
 #if defined(DO_THREADED)
-    for (auto&& future: futures)
-    {
+    for (auto&& future: futures) {
         const auto solverResults = future.get();
         ::playrho::Update(stats, solverResults);
     }
 #endif
 
-    for (const auto& b: m_bodies)
-    {
+    for (const auto& b: m_bodies) {
         if (m_islandedBodies[UnderlyingValue(b)]) {
             // A non-static body that was in an island may have moved.
             auto& body = m_bodyBuffer[UnderlyingValue(b)];
-            if (body.IsSpeedable())
-            {
+            if (body.IsSpeedable()) {
                 // Update fixtures (for broad-phase).
-                stats.proxiesMoved += Synchronize(body, GetTransform0(body.GetSweep()),
+                stats.proxiesMoved += Synchronize(m_bodyFixtures[b.get()],
+                                                  GetTransform0(body.GetSweep()),
                                                   body.GetTransformation(),
                                                   conf.displaceMultiplier, conf.aabbExtension);
             }
@@ -1306,11 +1304,10 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
             if (m_islandedBodies[UnderlyingValue(b)]) {
                 m_islandedBodies[UnderlyingValue(b)] = false;
                 auto& body = m_bodyBuffer[UnderlyingValue(b)];
-                if (body.IsAccelerable())
-                {
+                if (body.IsAccelerable()) {
                     const auto xfm0 = GetTransform0(body.GetSweep());
                     const auto xfm1 = body.GetTransformation();
-                    stats.proxiesMoved += Synchronize(body, xfm0, xfm1,
+                    stats.proxiesMoved += Synchronize(m_bodyFixtures[b.get()], xfm0, xfm1,
                                                       conf.displaceMultiplier, conf.aabbExtension);
                     const auto& bodyContacts = m_bodyContacts[b.get()];
                     ResetBodyContactsForSolveTOI(m_contactBuffer, bodyContacts);
@@ -2193,7 +2190,8 @@ PreStepStats::counter_type WorldImpl::SynchronizeProxies(const StepConf& conf)
         const auto& b = m_bodyBuffer[UnderlyingValue(bodyID)];
         const auto xfm = b.GetTransformation();
         // Not always true: assert(GetTransform0(b->GetSweep()) == xfm);
-        proxiesMoved += Synchronize(b, xfm, xfm, conf.displaceMultiplier, conf.aabbExtension);
+        proxiesMoved += Synchronize(m_bodyFixtures[bodyID.get()], xfm, xfm,
+                                    conf.displaceMultiplier, conf.aabbExtension);
     });
     m_bodiesForProxies.clear();
     return proxiesMoved;
@@ -2202,13 +2200,11 @@ PreStepStats::counter_type WorldImpl::SynchronizeProxies(const StepConf& conf)
 void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
 {
     auto& body = GetBody(bodyID);
-    if (body.GetType() == type)
-    {
+    if (body.GetType() == type) {
         return;
     }
 
-    if (IsLocked())
-    {
+    if (IsLocked()) {
         throw WrongState("SetType: world is locked");
     }
 
@@ -2221,8 +2217,7 @@ void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
         return true;
     });
 
-    if (type == BodyType::Static)
-    {
+    if (type == BodyType::Static) {
 #ifndef NDEBUG
         const auto xfm1 = GetTransform0(body.GetSweep());
         const auto xfm2 = body.GetTransformation();
@@ -2230,10 +2225,9 @@ void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
 #endif
         m_bodiesForProxies.push_back(bodyID);
     }
-    else
-    {
+    else {
         body.SetAwake();
-        const auto fixtures = body.GetFixtures();
+        const auto& fixtures = m_bodyFixtures[bodyID.get()];
         for_each(begin(fixtures), end(fixtures), [this](const auto& fixtureID) {
             AddProxies(m_fixtureProxies[UnderlyingValue(fixtureID)]);
         });
@@ -2272,7 +2266,7 @@ FixtureID WorldImpl::CreateFixture(const FixtureConf& def, bool resetMassData)
     const auto fixtureID = static_cast<FixtureID>(
         static_cast<FixtureID::underlying_type>(m_fixtureBuffer.Allocate(def)));
     m_fixtureProxies.Allocate();
-    body.AddFixture(fixtureID);
+    AddFixture(def.body, fixtureID);
     if (body.IsEnabled()) {
         m_fixturesForProxies.push_back(fixtureID);
     }
@@ -2337,6 +2331,32 @@ SizedRange<WorldImpl::BodyJoints::const_iterator> WorldImpl::GetJoints(BodyID id
     };
 }
 
+SizedRange<WorldImpl::Fixtures::const_iterator> WorldImpl::GetFixtures(BodyID id) const
+{
+    const auto& container = m_bodyFixtures.at(id.get());
+    return SizedRange<WorldImpl::Fixtures::const_iterator>{
+        begin(container), end(container), size(container)
+    };
+}
+
+void WorldImpl::AddFixture(BodyID id, FixtureID fixture)
+{
+    m_bodyFixtures.at(id.get()).push_back(fixture);
+}
+
+bool WorldImpl::RemoveFixture(BodyID id, FixtureID fixture)
+{
+    auto& fixtures = m_bodyFixtures.at(id.get());
+    const auto begIter = begin(fixtures);
+    const auto endIter = end(fixtures);
+    const auto it = std::find(begIter, endIter, fixture);
+    if (it != endIter) {
+        fixtures.erase(it);
+        return true;
+    }
+    return false;
+}
+
 bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
 {
     if (IsLocked()) {
@@ -2366,7 +2386,7 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
     });
     EraseAll(m_fixturesForProxies, id);
     DestroyProxies(m_tree, m_fixtureProxies[id.get()], m_proxies);
-    if (!body.RemoveFixture(id)) {
+    if (!RemoveFixture(bodyID, id)) {
         // Fixture probably destroyed already.
         return false;
     }
@@ -2381,16 +2401,13 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
 
 void WorldImpl::DestroyFixtures(BodyID id)
 {
-    auto& body = GetBody(id);
-    while (!empty(body.GetFixtures()))
-    {
-        const auto fixtureID = *body.GetFixtures().begin();
-        Destroy(fixtureID, false);
+    while (!empty(GetFixtures(id))) {
+        Destroy(*GetFixtures(id).begin(), false);
     }
     SetMassData(id, ComputeMassData(id));
 }
 
-ContactCounter WorldImpl::Synchronize(const Body& body,
+ContactCounter WorldImpl::Synchronize(const Fixtures& fixtures,
                                       const Transformation& xfm1, const Transformation& xfm2,
                                       Real multiplier, Length extension)
 {
@@ -2399,7 +2416,6 @@ ContactCounter WorldImpl::Synchronize(const Body& body,
 
     auto updatedCount = ContactCounter{0};
     const auto displacement = multiplier * (xfm2.p - xfm1.p);
-    const auto fixtures = body.GetFixtures();
     for_each(cbegin(fixtures), cend(fixtures), [&](const auto& fixtureID) {
         updatedCount += Synchronize(m_fixtureProxies[fixtureID.get()],
                                     GetShape(m_fixtureBuffer[fixtureID.get()]),
@@ -2452,7 +2468,7 @@ void WorldImpl::SetEnabled(BodyID id, bool flag)
     }
 
     // Register for proxies so contacts created or destroyed the next time step.
-    ForallFixtures(body, [this](const auto& fixtureID) {
+    ForallFixtures(m_bodyFixtures[id.get()], [this](const auto& fixtureID) {
         m_fixturesForProxies.push_back(fixtureID);
     });
 }
@@ -2462,8 +2478,7 @@ MassData WorldImpl::ComputeMassData(BodyID id) const
     auto mass = 0_kg;
     auto I = RotInertia{0};
     auto weightedCenter = Length2{};
-    const auto& body = GetBody(id);
-    for (const auto& f: body.GetFixtures()) {
+    for (const auto& f: GetFixtures(id)) {
         const auto& fixture = m_fixtureBuffer[UnderlyingValue(f)];
         if (GetDensity(fixture) > 0_kgpm2) {
             const auto massData = GetMassData(GetShape(fixture));
@@ -2542,7 +2557,7 @@ FixtureCounter WorldImpl::GetShapeCount() const noexcept
 {
     auto shapes = std::set<const void*>();
     for_each(cbegin(m_bodies), cend(m_bodies), [&](const auto& b) {
-        const auto fixtures = m_bodyBuffer[UnderlyingValue(b)].GetFixtures();
+        const auto& fixtures = m_bodyFixtures[UnderlyingValue(b)];
         for_each(cbegin(fixtures), cend(fixtures), [&](const auto& f) {
             shapes.insert(GetData(GetShape(m_fixtureBuffer[UnderlyingValue(f)])));
         });

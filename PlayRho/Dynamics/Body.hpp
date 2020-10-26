@@ -1,6 +1,6 @@
 /*
  * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -30,16 +30,11 @@
 #include <PlayRho/Dynamics/BodyType.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 
-#include <vector>
-#include <memory>
 #include <cassert>
 #include <utility>
-#include <iterator>
-#include <functional> // for std::function
 
 namespace playrho {
 namespace d2 {
@@ -71,9 +66,6 @@ class Shape;
 class Body
 {
 public:
-    /// @brief Container type for fixtures.
-    using Fixtures = std::vector<FixtureID>;
-
     /// @brief Initializing constructor.
     explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
 
@@ -276,9 +268,6 @@ public:
     /// @brief Does this body have fixed rotation?
     bool IsFixedRotation() const noexcept;
 
-    /// @brief Gets the range of all constant fixtures attached to this body.
-    SizedRange<Fixtures::const_iterator> GetFixtures() const noexcept;
-
     /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
 
@@ -302,12 +291,6 @@ public:
 
     /// @brief Unsets the enabled flag.
     void UnsetEnabledFlag() noexcept;
-
-    /// @brief Clears the fixtures.
-    void ClearFixtures() noexcept
-    {
-        m_fixtures.clear();
-    }
 
     /// @brief Sets the inverse rotational inertia.
     void SetInvRotI(InvRotInertia v) noexcept
@@ -389,26 +372,6 @@ public:
         m_xf = GetTransform1(m_sweep);
     }
 
-    /// @brief Adds the given fixture to the given body.
-    void AddFixture(FixtureID fixture)
-    {
-        m_fixtures.push_back(fixture);
-    }
-
-    /// @brief Removes the given fixture from the given body.
-    bool RemoveFixture(FixtureID fixture)
-    {
-        const auto begIter = begin(m_fixtures);
-        const auto endIter = end(m_fixtures);
-        const auto it = std::find(begIter, endIter, fixture);
-        if (it != endIter)
-        {
-            m_fixtures.erase(it);
-            return true;
-        }
-        return false;
-    }
-
 private:
     /// @brief Flags type.
     /// @note For internal use. Made public to facilitate unit testing.
@@ -458,15 +421,6 @@ private:
     //
     // Member variables. Try to keep total size small.
     //
-
-    // These three aren't "essential parts". They don't contribute to this instance's "value".
-
-    /// Cache of associated fixtures (owned by world).
-    /// @todo Consider eliminating this variable since calling <code>GetFixtures()</code>
-    ///   isn't done within the <code>World::Step</code> except by
-    ///   <code>World::Synchronize</code> which may be replacable with iterating over the
-    ///   entire fixture array.
-    mutable Fixtures m_fixtures;
 
     /// Transformation for body origin.
     /// @note Also availble from <code>GetTransform1(m_sweep)</code>.
@@ -736,11 +690,6 @@ inline void Body::SetSleepingAllowed(bool flag) noexcept
         SetAwakeFlag();
         ResetUnderActiveTime();
     }
-}
-
-inline SizedRange<Body::Fixtures::const_iterator> Body::GetFixtures() const noexcept
-{
-    return {begin(m_fixtures), end(m_fixtures), size(m_fixtures)};
 }
 
 inline LinearAcceleration2 Body::GetLinearAcceleration() const noexcept
@@ -1053,10 +1002,6 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept;
 /// @param h Time elapsed to get velocity for. Behavior is undefined if this value is invalid.
 /// @relatedalso Body
 Velocity GetVelocity(const Body& body, Time h) noexcept;
-
-/// @brief Gets the fixture count of the given body.
-/// @relatedalso Body
-FixtureCounter GetFixtureCount(const Body& body) noexcept;
 
 /// @brief Gets the body's origin location.
 /// @details This is the location of the body's origin relative to its world.

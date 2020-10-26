@@ -395,6 +395,9 @@ public:
     /// @throws std::out_of_range if given an invalid id.
     SizedRange<WorldImpl::BodyJoints::const_iterator> GetJoints(BodyID id) const;
 
+    /// @brief Gets the range of all constant fixtures attached to this body.
+    SizedRange<WorldImpl::Fixtures::const_iterator> GetFixtures(BodyID id) const;
+
     /// @}
 
     /// @name Fixture Member Functions
@@ -688,6 +691,12 @@ private:
     /// @brief Removes the given body from this world.
     void Remove(BodyID id) noexcept;
 
+    /// @brief Adds the given fixture to the given body.
+    void AddFixture(BodyID id, FixtureID fixture);
+
+    /// @brief Removes the given fixture from the given body.
+    bool RemoveFixture(BodyID id, FixtureID fixture);
+
     /// @brief Updates associated bodies and contacts for specified joint's addition.
     void Add(JointID j, bool flagForFiltering = false);
 
@@ -812,9 +821,8 @@ private:
     void InternalDestroy(ContactID contact, Body* from = nullptr);
 
     /// @brief Synchronizes the given body.
-    /// @details This updates the broad phase dynamic tree data for all of the given
-    ///   body's fixtures.
-    ContactCounter Synchronize(const Body& body,
+    /// @details This updates the broad phase dynamic tree data for all of the given fixtures.
+    ContactCounter Synchronize(const Fixtures& fixtures,
                                const Transformation& xfm1, const Transformation& xfm2,
                                Real multiplier, Length extension);
     
@@ -852,6 +860,14 @@ private:
     ArrayAllocator<Body> m_bodyBuffer;
     ArrayAllocator<Contacts> m_bodyContacts; ///< Cache of contacts associated with body.
     ArrayAllocator<BodyJoints> m_bodyJoints; ///< Cache of joints associated with body.
+
+    /// Cache of fixtures associated with body.
+    /// @todo Consider eliminating this variable since calling <code>GetFixtures()</code>
+    ///   isn't done within the <code>World::Step</code> except by
+    ///   <code>World::Synchronize</code> which may be replacable with iterating over the
+    ///   entire fixture array.
+    ArrayAllocator<Fixtures> m_bodyFixtures;
+
     ArrayAllocator<FixtureConf> m_fixtureBuffer;
     ArrayAllocator<Proxies> m_fixtureProxies;
     ArrayAllocator<Joint> m_jointBuffer;

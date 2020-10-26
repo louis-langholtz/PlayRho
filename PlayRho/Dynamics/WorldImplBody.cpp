@@ -200,7 +200,7 @@ GetJoints(const WorldImpl& world, BodyID id)
 
 SizedRange<WorldImpl::Fixtures::const_iterator> GetFixtures(const WorldImpl& world, BodyID id)
 {
-    return world.GetBody(id).GetFixtures();
+    return world.GetFixtures(id);
 }
 
 void DestroyFixtures(WorldImpl& world, BodyID id)

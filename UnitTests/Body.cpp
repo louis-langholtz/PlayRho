@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -25,31 +25,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(Body, FixturesByteSize)
-{
-    // Size is arch, os, or library dependent.
-#ifdef __APPLE__
-    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
-#elif __linux__
-    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
-#elif _WIN64
-#if !defined(NDEBUG)
-    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(32));
-#else
-    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(24));
-#endif
-#elif _WIN32
-#if !defined(NDEBUG)
-    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(16));
-#else
-    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(12));
-#endif
-#else
-    // Intentionally fail for unknown platform...
-    EXPECT_EQ(sizeof(Body::Fixtures), std::size_t(0));
-#endif
-}
-
 TEST(Body, ByteSize)
 {
     // architecture dependent...
@@ -71,7 +46,7 @@ TEST(Body, ByteSize)
             EXPECT_EQ(sizeof(Body), std::size_t(136));
 #endif
 #else
-            EXPECT_EQ(sizeof(Body), std::size_t(128));
+            EXPECT_EQ(sizeof(Body), std::size_t(100));
 #endif
             break;
         case  8:

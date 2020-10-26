@@ -216,11 +216,6 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
     return velocity;
 }
 
-FixtureCounter GetFixtureCount(const Body& body) noexcept
-{
-    return static_cast<FixtureCounter>(size(body.GetFixtures()));
-}
-
 Transformation GetTransformation(const BodyConf& conf)
 {
     return {conf.location, UnitVec::Get(conf.angle)};
