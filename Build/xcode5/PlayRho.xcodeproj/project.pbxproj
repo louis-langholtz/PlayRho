@@ -302,8 +302,6 @@
 		80BB89A8141C3E5900F1753A /* StackAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8949141C3E5900F1753A /* StackAllocator.hpp */; };
 		80BB89AB141C3E5900F1753A /* Body.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB894D141C3E5900F1753A /* Body.cpp */; };
 		80BB89AC141C3E5900F1753A /* Body.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB894E141C3E5900F1753A /* Body.hpp */; };
-		80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8951141C3E5900F1753A /* Fixture.cpp */; };
-		80BB89B0141C3E5900F1753A /* Fixture.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8952141C3E5900F1753A /* Fixture.hpp */; };
 		80BB89B1141C3E5900F1753A /* Island.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BB8953141C3E5900F1753A /* Island.cpp */; };
 		80BB89B2141C3E5900F1753A /* Island.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8954141C3E5900F1753A /* Island.hpp */; };
 		80BB89B3141C3E5900F1753A /* StepConf.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 80BB8955141C3E5900F1753A /* StepConf.hpp */; };
@@ -718,8 +716,6 @@
 		80BB8949141C3E5900F1753A /* StackAllocator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StackAllocator.hpp; sourceTree = "<group>"; };
 		80BB894D141C3E5900F1753A /* Body.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Body.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		80BB894E141C3E5900F1753A /* Body.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 2; path = Body.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		80BB8951141C3E5900F1753A /* Fixture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fixture.cpp; sourceTree = "<group>"; };
-		80BB8952141C3E5900F1753A /* Fixture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Fixture.hpp; sourceTree = "<group>"; };
 		80BB8953141C3E5900F1753A /* Island.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Island.cpp; sourceTree = "<group>"; };
 		80BB8954141C3E5900F1753A /* Island.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Island.hpp; sourceTree = "<group>"; };
 		80BB8955141C3E5900F1753A /* StepConf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StepConf.hpp; sourceTree = "<group>"; };
@@ -1094,8 +1090,6 @@
 				47363E8420027FE2005912B1 /* ContactImpulsesList.cpp */,
 				47363E8520027FE2005912B1 /* ContactImpulsesList.hpp */,
 				470F94B11EC4CB6C00AA3C82 /* Filter.hpp */,
-				80BB8951141C3E5900F1753A /* Fixture.cpp */,
-				80BB8952141C3E5900F1753A /* Fixture.hpp */,
 				470F9B4E1EF0C8B8007EF7B6 /* FixtureConf.cpp */,
 				470F94AB1EC4CAE600AA3C82 /* FixtureConf.hpp */,
 				4764086C250E9E2B0090F711 /* FixtureID.hpp */,
@@ -1424,7 +1418,6 @@
 				4764087D251EA80D0090F711 /* WorldImplFixture.hpp in Headers */,
 				80BB89AC141C3E5900F1753A /* Body.hpp in Headers */,
 				4764085725047C090090F711 /* Finite.hpp in Headers */,
-				80BB89B0141C3E5900F1753A /* Fixture.hpp in Headers */,
 				47640862250807720090F711 /* WorldImpl.hpp in Headers */,
 				476408952522698E0090F711 /* WorldContact.hpp in Headers */,
 				4726DD0F1D3014990012A882 /* IndexPair.hpp in Headers */,
@@ -1787,7 +1780,6 @@
 				47363E8620027FE2005912B1 /* ContactImpulsesList.cpp in Sources */,
 				80BB89A7141C3E5900F1753A /* StackAllocator.cpp in Sources */,
 				80BB89AB141C3E5900F1753A /* Body.cpp in Sources */,
-				80BB89AF141C3E5900F1753A /* Fixture.cpp in Sources */,
 				4787D6BE1F2E968E008C115E /* JointConf.cpp in Sources */,
 				4731DE671DF0A73000E7F931 /* Manifold.cpp in Sources */,
 				47E841721DB4018D00E5F311 /* VelocityConstraint.cpp in Sources */,

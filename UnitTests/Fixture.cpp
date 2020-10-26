@@ -20,49 +20,44 @@
 
 #include "UnitTests.hpp"
 
-#include <PlayRho/Dynamics/Fixture.hpp>
+#include <PlayRho/Dynamics/FixtureConf.hpp>
 
 #include <PlayRho/Collision/Shapes/EdgeShapeConf.hpp>
 
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(Fixture, ByteSize)
+TEST(FixtureConf, ByteSize)
 {
-#if defined(_WIN32) && !defined(_WIN64)
-    EXPECT_EQ(sizeof(Fixture::Proxies), std::size_t(12));
-#else
-    EXPECT_EQ(sizeof(Fixture::Proxies), std::size_t(24));
-#endif
     switch (sizeof(Real))
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(Fixture), std::size_t(32));
+            EXPECT_EQ(sizeof(FixtureConf), std::size_t(32));
 #else
-            EXPECT_EQ(sizeof(Fixture), std::size_t(32));
+            EXPECT_EQ(sizeof(FixtureConf), std::size_t(32));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(Fixture), std::size_t(56)); break;
-        case 16: EXPECT_EQ(sizeof(Fixture), std::size_t(64)); break;
+        case  8: EXPECT_EQ(sizeof(FixtureConf), std::size_t(56)); break;
+        case 16: EXPECT_EQ(sizeof(FixtureConf), std::size_t(64)); break;
         default: FAIL(); break;
     }
 }
 
-TEST(Fixture, DefaultConstructor)
+TEST(FixtureConf, DefaultConstructor)
 {
-    const auto fixture = Fixture{};
-    EXPECT_EQ(fixture.GetBody(), InvalidBodyID);
-    EXPECT_EQ(fixture.GetFilterData().categoryBits, Filter{}.categoryBits);
-    EXPECT_EQ(fixture.GetFilterData().maskBits, Filter{}.maskBits);
-    EXPECT_EQ(fixture.GetFilterData().groupIndex, Filter{}.groupIndex);
-    EXPECT_EQ(fixture.IsSensor(), false);
-    EXPECT_EQ(fixture.GetFriction(), Real(0));
-    EXPECT_EQ(fixture.GetRestitution(), Real(0));
-    EXPECT_EQ(fixture.GetDensity(), 0_kgpm2);
+    const auto fixture = FixtureConf{};
+    EXPECT_EQ(GetBody(fixture), InvalidBodyID);
+    EXPECT_EQ(GetFilterData(fixture).categoryBits, Filter{}.categoryBits);
+    EXPECT_EQ(GetFilterData(fixture).maskBits, Filter{}.maskBits);
+    EXPECT_EQ(GetFilterData(fixture).groupIndex, Filter{}.groupIndex);
+    EXPECT_EQ(IsSensor(fixture), false);
+    EXPECT_EQ(GetFriction(fixture), Real(0));
+    EXPECT_EQ(GetRestitution(fixture), Real(0));
+    EXPECT_EQ(GetDensity(fixture), 0_kgpm2);
 }
 
-TEST(Fixture, InitializingConstructor)
+TEST(FixtureConf, InitializingConstructor)
 {
     const auto body = BodyID(23u);
     const auto vertexRadius = 0.26_m;
@@ -73,14 +68,14 @@ TEST(Fixture, InitializingConstructor)
     .UseRestitution(restitution).UseDensity(density);
     const auto filter = Filter{};
     const auto isSensor = true;
-    const auto def = FixtureConf{}.UseIsSensor(isSensor).UseFilter(filter).UseBody(body).UseShape(Shape(conf));
-    const auto fixture = Fixture{def};
-    EXPECT_EQ(fixture.GetBody(), body);
-    EXPECT_EQ(fixture.GetFilterData().categoryBits, filter.categoryBits);
-    EXPECT_EQ(fixture.GetFilterData().maskBits, filter.maskBits);
-    EXPECT_EQ(fixture.GetFilterData().groupIndex, Filter{}.groupIndex);
-    EXPECT_EQ(fixture.IsSensor(), isSensor);
-    EXPECT_EQ(fixture.GetFriction(), friction);
-    EXPECT_EQ(fixture.GetRestitution(), restitution);
-    EXPECT_EQ(fixture.GetDensity(), density);
+    const auto fixture =
+        FixtureConf{}.UseIsSensor(isSensor).UseFilter(filter).UseBody(body).UseShape(Shape(conf));
+    EXPECT_EQ(GetBody(fixture), body);
+    EXPECT_EQ(GetFilterData(fixture).categoryBits, filter.categoryBits);
+    EXPECT_EQ(GetFilterData(fixture).maskBits, filter.maskBits);
+    EXPECT_EQ(GetFilterData(fixture).groupIndex, Filter{}.groupIndex);
+    EXPECT_EQ(IsSensor(fixture), isSensor);
+    EXPECT_EQ(GetFriction(fixture), friction);
+    EXPECT_EQ(GetRestitution(fixture), restitution);
+    EXPECT_EQ(GetDensity(fixture), density);
 }
