@@ -43,12 +43,14 @@ class Fixture;
 /// @ingroup PhysicalEntities
 /// @see World::CreateFixture, World::GetFixture, World::SetFixture, World::Destroy.
 struct FixtureConf {
+    /// @brief Uses the given value for the shape member variable.
     FixtureConf& UseShape(Shape value) noexcept
     {
         shape = std::move(value);
         return *this;
     }
 
+    /// @brief Uses the given value for the body member variable.
     FixtureConf& UseBody(BodyID value) noexcept
     {
         body = value;
@@ -69,11 +71,13 @@ struct FixtureConf {
         return *this;
     }
 
+    /// @brief Shape to give the fixture.
     Shape shape;
 
     /// Contact filtering data.
     Filter filter;
 
+    /// @brief Body to associate the fixture with.
     BodyID body = InvalidBodyID;
 
     /// A sensor shape collects contact information but never generates a collision
@@ -82,54 +86,63 @@ struct FixtureConf {
 };
 
 /// @brief Gets the body of the given configuration.
+/// @relatedalso FixtureConf
 inline BodyID GetBody(const FixtureConf& conf) noexcept
 {
     return conf.body;
 }
 
 /// @brief Gets the shape of the given configuration.
+/// @relatedalso FixtureConf
 inline const Shape& GetShape(const FixtureConf& conf) noexcept
 {
     return conf.shape;
 }
 
 /// @brief Gets the density of the given configuration.
+/// @relatedalso FixtureConf
 inline NonNegative<AreaDensity> GetDensity(const FixtureConf& conf) noexcept
 {
     return GetDensity(GetShape(conf));
 }
 
 /// @brief Gets the friction of the given configuration.
+/// @relatedalso FixtureConf
 inline Real GetFriction(const FixtureConf& conf) noexcept
 {
     return GetFriction(GetShape(conf));
 }
 
 /// @brief Gets the restitution of the given configuration.
+/// @relatedalso FixtureConf
 inline Real GetRestitution(const FixtureConf& conf) noexcept
 {
     return GetRestitution(GetShape(conf));
 }
 
 /// @brief Gets whether or not the given configuration is a sensor.
+/// @relatedalso FixtureConf
 inline bool IsSensor(const FixtureConf& conf) noexcept
 {
     return conf.isSensor;
 }
 
 /// @brief Sets whether or not the given configuration is a sensor.
+/// @relatedalso FixtureConf
 inline void SetSensor(FixtureConf& conf, bool value) noexcept
 {
     conf.isSensor = value;
 }
 
 /// @brief Gets the filter-data of the given configuration.
+/// @relatedalso FixtureConf
 inline Filter GetFilterData(const FixtureConf& conf) noexcept
 {
     return conf.filter;
 }
 
 /// @brief Sets the filter-data of the given configuration.
+/// @relatedalso FixtureConf
 inline void SetFilterData(FixtureConf& conf, Filter value) noexcept
 {
     conf.filter = value;
@@ -138,16 +151,18 @@ inline void SetFilterData(FixtureConf& conf, Filter value) noexcept
 /// @brief Whether contact calculations should be performed between the two fixtures.
 /// @return <code>true</code> if contact calculations should be performed between these
 ///   two fixtures; <code>false</code> otherwise.
-/// @relatedalso Fixture
+/// @relatedalso FixtureConf
 inline bool ShouldCollide(const FixtureConf& fixtureA, const FixtureConf& fixtureB) noexcept
 {
     return ShouldCollide(GetFilterData(fixtureA), GetFilterData(fixtureB));
 }
 
 /// @brief Gets the default friction amount for the given fixtures.
+/// @relatedalso FixtureConf
 Real GetDefaultFriction(const FixtureConf& fixtureA, const FixtureConf& fixtureB);
 
 /// @brief Gets the default restitution amount for the given fixtures.
+/// @relatedalso FixtureConf
 Real GetDefaultRestitution(const FixtureConf& fixtureA, const FixtureConf& fixtureB);
 
 } // namespace d2
