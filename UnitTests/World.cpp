@@ -430,40 +430,6 @@ TEST(World, CopyAssignment)
     }
 }
 
-TEST(World, CreateDestroyEmptyStaticBody)
-{
-    auto world = World{};
-    ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
-    ASSERT_NE(body, InvalidBodyID);
-
-    EXPECT_EQ(GetType(world, body), BodyType::Static);
-    EXPECT_FALSE(IsSpeedable(world, body));
-    EXPECT_FALSE(IsAccelerable(world, body));
-    EXPECT_TRUE(IsImpenetrable(world, body));
-    EXPECT_EQ(GetFixtures(world, body).size(), std::size_t{0});
-
-    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
-    const auto bodies1 = world.GetBodies();
-    EXPECT_FALSE(bodies1.empty());
-    EXPECT_EQ(bodies1.size(), BodyCounter(1));
-    EXPECT_NE(bodies1.begin(), bodies1.end());
-    const auto first = bodies1.begin();
-    EXPECT_EQ(body, *first);
-
-    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
-    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
-
-    world.Destroy(body);
-    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
-    const auto& bodies2 = world.GetBodies();
-    EXPECT_TRUE(bodies2.empty());
-    EXPECT_EQ(bodies2.size(), BodyCounter(0));
-
-    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
-    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
-}
-
 TEST(World, CreateDestroyEmptyDynamicBody)
 {
     auto world = World{};
@@ -484,18 +450,12 @@ TEST(World, CreateDestroyEmptyDynamicBody)
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
     EXPECT_EQ(body, *first);
-    
-    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
-    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
-    
+
     world.Destroy(body);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
     const auto& bodies2 = world.GetBodies();
     EXPECT_TRUE(bodies2.empty());
     EXPECT_EQ(bodies2.size(), BodyCounter(0));
-    
-    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
-    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
 }
 
 TEST(World, CreateDestroyDynamicBodyAndFixture)
@@ -521,17 +481,12 @@ TEST(World, CreateDestroyDynamicBodyAndFixture)
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
     EXPECT_EQ(body, *first);
-    
-    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
-    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
-    
+
     const auto fixture = CreateFixture(world, body, Shape{DiskShapeConf{1_m}});
     ASSERT_NE(fixture, InvalidFixtureID);
     
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
     EXPECT_EQ(GetFixtures(world, body).size(), std::size_t{1});
-    ASSERT_EQ(world.GetFixturesForProxies().size(), std::size_t{1});
-    EXPECT_EQ(*world.GetFixturesForProxies().begin(), fixture);
 
     world.Destroy(body); // should clear fixtures for proxies!
     
@@ -539,9 +494,6 @@ TEST(World, CreateDestroyDynamicBodyAndFixture)
     const auto& bodies2 = world.GetBodies();
     EXPECT_TRUE(bodies2.empty());
     EXPECT_EQ(bodies2.size(), BodyCounter(0));
-    
-    EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
-    EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
 }
 
 TEST(World, CreateDestroyJoinedBodies)
@@ -615,7 +567,6 @@ TEST(World, CreateDestroyContactingBodies)
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetJointCount(world), JointCounter(0));
     ASSERT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    ASSERT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
     ASSERT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
 
     auto contacts = world.GetContacts();
@@ -629,13 +580,11 @@ TEST(World, CreateDestroyContactingBodies)
     const auto body2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(l2));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(2));
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
 
     EXPECT_NE(CreateFixture(world, body1, Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), InvalidFixtureID);
     EXPECT_NE(CreateFixture(world, body2, Shape{DiskShapeConf{1_m}.UseDensity(1_kgpm2)}), InvalidFixtureID);
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(2));
     EXPECT_EQ(GetFixtureCount(world), std::size_t(2));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(0));
 
@@ -644,7 +593,6 @@ TEST(World, CreateDestroyContactingBodies)
     const auto stats0 = world.Step(stepConf);
 
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(3));
 
     EXPECT_EQ(stats0.pre.proxiesMoved, static_cast<decltype(stats0.pre.proxiesMoved)>(0));
@@ -699,12 +647,10 @@ TEST(World, CreateDestroyContactingBodies)
     world.Destroy(body1);
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(1));
 
     world.Step(stepConf);
     EXPECT_EQ(world.GetBodiesForProxies().size(), static_cast<decltype(world.GetBodiesForProxies().size())>(0));
-    EXPECT_EQ(world.GetFixturesForProxies().size(), static_cast<decltype(world.GetFixturesForProxies().size())>(0));
     EXPECT_EQ(world.GetTree().GetNodeCount(), static_cast<decltype(world.GetTree().GetNodeCount())>(1));
     contacts = world.GetContacts();
     EXPECT_TRUE(contacts.empty());

@@ -123,11 +123,6 @@ SizedRange<World::Bodies::const_iterator> World::GetBodiesForProxies() const noe
     return ::playrho::d2::GetBodiesForProxies(*m_impl);
 }
 
-SizedRange<World::Fixtures::const_iterator> World::GetFixturesForProxies() const noexcept
-{
-    return ::playrho::d2::GetFixturesForProxies(*m_impl);
-}
-
 SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
 {
     return ::playrho::d2::GetJoints(*m_impl);
@@ -243,10 +238,9 @@ void World::SetType(BodyID id, BodyType type)
     ::playrho::d2::SetType(*m_impl, id, type);
 }
 
-FixtureID World::CreateFixture(BodyID body, const Shape& shape, const FixtureConf& def,
-                              bool resetMassData)
+FixtureID World::CreateFixture(const FixtureConf& def, bool resetMassData)
 {
-    return ::playrho::d2::CreateFixture(*m_impl, body, shape, def, resetMassData);
+    return ::playrho::d2::CreateFixture(*m_impl, def, resetMassData);
 }
 
 bool World::Destroy(FixtureID id, bool resetMassData)
@@ -337,11 +331,6 @@ bool World::IsSensor(FixtureID id) const
 AreaDensity World::GetDensity(FixtureID id) const
 {
     return ::playrho::d2::GetDensity(*m_impl, id);
-}
-
-const World::FixtureProxies& World::GetProxies(FixtureID id) const
-{
-    return ::playrho::d2::GetProxies(*m_impl, id);
 }
 
 Angle World::GetAngle(BodyID id) const

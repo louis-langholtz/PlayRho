@@ -109,12 +109,6 @@ GetBodiesForProxies(const WorldImpl& world) noexcept
     return world.GetBodiesForProxies();
 }
 
-SizedRange<std::vector<FixtureID>::const_iterator>
-GetFixturesForProxies(const WorldImpl& world) noexcept
-{
-    return world.GetFixturesForProxies();
-}
-
 SizedRange<std::vector<JointID>::const_iterator> GetJoints(const WorldImpl& world) noexcept
 {
     return world.GetJoints();
@@ -169,6 +163,12 @@ const DynamicTree& GetTree(const WorldImpl& world) noexcept
 FixtureCounter GetShapeCount(const WorldImpl& world) noexcept
 {
     return world.GetShapeCount();
+}
+
+SizedRange<std::vector<FixtureID>::const_iterator>
+GetFixturesForProxies(const WorldImpl& world) noexcept
+{
+    return world.GetFixturesForProxies();
 }
 
 } // namespace d2

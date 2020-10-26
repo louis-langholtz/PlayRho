@@ -21,6 +21,7 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldImpl.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
@@ -85,7 +86,6 @@ TEST(WorldFixture, CreateMatchesConf)
     EXPECT_EQ(GetFriction(world, fixture), friction);
     EXPECT_EQ(GetRestitution(world, fixture), restitution);
     EXPECT_EQ(IsSensor(world, fixture), isSensor);
-    EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
 }
 
 TEST(WorldFixture, SetSensor)
@@ -114,83 +114,4 @@ TEST(WorldFixture, TestPointFreeFunction)
     const auto fixture = CreateFixture(world, body, shapeA);
     EXPECT_TRUE(TestPoint(world, fixture, bodyCtrPos));
     EXPECT_FALSE(TestPoint(world, fixture, Length2{}));
-}
-
-TEST(WorldFixture, Proxies)
-{
-    const auto density = 2_kgpm2;
-    const auto friction = Real(0.5);
-    const auto restitution = Real(0.4);
-    const auto isSensor = true;
-    
-    auto def = FixtureConf{};
-    def.isSensor = isSensor;
-    
-    {
-        const auto shape = Shape{
-            DiskShapeConf{}.UseFriction(friction).UseRestitution(restitution).UseDensity(density)
-        };
-
-        auto world = World{};
-        const auto body = CreateBody(world);
-        const auto fixture = CreateFixture(world, body, shape, def);
-
-        ASSERT_EQ(GetBody(world, fixture), body);
-        ASSERT_EQ(GetShape(world, fixture), shape);
-        ASSERT_EQ(GetDensity(world, fixture), density);
-        ASSERT_EQ(GetFriction(world, fixture), friction);
-        ASSERT_EQ(GetRestitution(world, fixture), restitution);
-        ASSERT_EQ(IsSensor(world, fixture), isSensor);
-        ASSERT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
-
-        const auto stepConf = StepConf{};
-        Step(world, stepConf);
-        EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{1});
-        EXPECT_EQ(GetProxy(world, fixture, 0), ContactCounter{0});
-    }
-    
-    {
-        const auto shape = Shape{
-            ChainShapeConf{}.Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
-        };
-        
-        auto world = World{};
-        const auto body = CreateBody(world);
-        const auto fixture = CreateFixture(world, body, shape, def);
-
-        ASSERT_EQ(GetBody(world, fixture), body);
-        ASSERT_EQ(GetShape(world, fixture), shape);
-        ASSERT_EQ(IsSensor(world, fixture), isSensor);
-        ASSERT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
-        
-        const auto stepConf = StepConf{};
-        Step(world, stepConf);
-        EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{2});
-        EXPECT_EQ(GetProxy(world, fixture, 0), ContactCounter{0});
-        EXPECT_EQ(GetProxy(world, fixture, 1), ContactCounter{1});
-    }
-    
-    {
-        const auto shape = Shape{
-            ChainShapeConf{}.Add(Length2{-2_m, -3_m}).Add(Length2{-2_m, 0_m}).Add(Length2{0_m, 0_m})
-            .Add(Length2{0_m, +2_m}).Add(Length2{2_m, 2_m})
-        };
-
-        auto world = World{};
-        const auto body = CreateBody(world);
-        const auto fixture = CreateFixture(world, body, shape, def);
-
-        ASSERT_EQ(GetBody(world, fixture), body);
-        ASSERT_EQ(GetShape(world, fixture), shape);
-        ASSERT_EQ(IsSensor(world, fixture), isSensor);
-        ASSERT_EQ(GetProxyCount(world, fixture), ChildCounter{0});
-        
-        const auto stepConf = StepConf{};
-        Step(world, stepConf);
-        EXPECT_EQ(GetProxyCount(world, fixture), ChildCounter{4});
-        EXPECT_EQ(GetProxy(world, fixture, 0), ContactCounter{0});
-        EXPECT_EQ(GetProxy(world, fixture, 1), ContactCounter{1});
-        EXPECT_EQ(GetProxy(world, fixture, 2), ContactCounter{3});
-        EXPECT_EQ(GetProxy(world, fixture, 3), ContactCounter{5});
-    }
 }

@@ -31,6 +31,7 @@
 
 #include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
+#include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 #include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
@@ -48,7 +49,6 @@ namespace d2 {
 
 class WorldImpl;
 class Manifold;
-struct BodyConf;
 struct JointConf;
 class DynamicTree;
 struct WorldConf;
@@ -76,7 +76,7 @@ void SetPreSolveContactListener(WorldImpl& world,
 void SetPostSolveContactListener(WorldImpl& world,
                                  std::function<void(ContactID, const ContactImpulsesList&, unsigned)> listener) noexcept;
 
-BodyID CreateBody(WorldImpl& world, const BodyConf& def);
+BodyID CreateBody(WorldImpl& world, const BodyConf& def = GetDefaultBodyConf());
 
 StepStats Step(WorldImpl& world, const StepConf& conf);
 
@@ -87,6 +87,8 @@ SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const WorldImpl& world
 SizedRange<std::vector<BodyID>::const_iterator>
 GetBodiesForProxies(const WorldImpl& world) noexcept;
 
+/// @copydoc WorldImpl::GetFixturesForProxies
+/// @relatedalso WorldImpl
 SizedRange<std::vector<FixtureID>::const_iterator>
 GetFixturesForProxies(const WorldImpl& world) noexcept;
 

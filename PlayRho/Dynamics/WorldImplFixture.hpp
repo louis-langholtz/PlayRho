@@ -27,6 +27,7 @@
 
 #include <PlayRho/Common/Units.hpp>
 #include <PlayRho/Common/Transformation.hpp>
+#include <PlayRho/Common/Settings.hpp> // for ChildCounter
 
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
@@ -44,8 +45,7 @@ class WorldImpl;
 struct FixtureConf; // for CreateFixture
 
 /// @relatedalso WorldImpl
-FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData = true);
+FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def, bool resetMassData = true);
 
 /// @relatedalso WorldImpl
 bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData);
@@ -81,6 +81,22 @@ void Refilter(WorldImpl& world, FixtureID id);
 
 /// @relatedalso WorldImpl
 void SetFilterData(WorldImpl& world, FixtureID id, const Filter& value);
+
+/// @brief Flags the contacts of the identifed fixture for filtering.
+void FlagContactsForFiltering(WorldImpl& world, FixtureID id);
+
+/// @brief Gets the count of proxies of the identified fixture.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @relatedalso World
+inline ChildCounter GetProxyCount(const WorldImpl& world, FixtureID id)
+{
+    return static_cast<ChildCounter>(std::size(GetProxies(world, id)));
+}
+
+/// @brief Gets the specified proxy of the identified fixture.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @relatedalso World
+ContactCounter GetProxy(const WorldImpl& world, FixtureID id, ChildCounter child);
 
 } // namespace d2
 } // namespace playrho

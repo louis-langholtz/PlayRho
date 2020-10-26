@@ -69,17 +69,20 @@ public:
     ///    Friction must be greater-than-or-equal-to zero.
     ///    <code>AreaDensity</code> must be greater-than-or-equal-to zero.
     ///
-    Fixture(const FixtureConf& def = FixtureConf{}):
-        m_shape{def.shape},
-        m_body{def.body},
-        m_filter{def.filter},
-        m_isSensor{def.isSensor}
+    Fixture(FixtureConf def = FixtureConf{}) noexcept:
+        m_conf{std::move(def)}
     {
         // Intentionally empty.
     }
 
-    /// @brief Copy constructor (explicitly deleted).
+    /// @brief Copy constructor.
     Fixture(const Fixture& other) = default;
+
+    /// @brief Access to the underlying configuration of this fixture.
+    const FixtureConf& Conf() const noexcept;
+
+    /// @brief Access to the underlying configuration of this fixture.
+    FixtureConf& Conf() noexcept;
 
     /// @brief Gets the parent body of this fixture.
     /// @return Non-null pointer to the parent body.
@@ -114,66 +117,101 @@ public:
     Real GetRestitution() const noexcept;
 
 private:
-    // Data ordered here for memory compaction.
-
-    /// Shape (of fixture).
-    /// @note Set on construction.
-    /// @note 16-bytes.
-    Shape m_shape;
-
-    BodyID m_body = InvalidBodyID; ///< Parent body. 2-bytes.
-
-    Filter m_filter; ///< Filter object. 6-bytes.
-
-    bool m_isSensor = false; ///< Is/is-not sensor. 1-bytes.
+    FixtureConf m_conf;
 };
 
 inline const Shape& Fixture::GetShape() const noexcept
 {
-    return m_shape;
+    return m_conf.shape;
 }
 
 inline bool Fixture::IsSensor() const noexcept
 {
-    return m_isSensor;
+    return m_conf.isSensor;
 }
 
 inline Filter Fixture::GetFilterData() const noexcept
 {
-    return m_filter;
+    return m_conf.filter;
 }
 
 inline void Fixture::SetFilterData(Filter filter) noexcept
 {
-    m_filter = filter;
+    m_conf.filter = filter;
 }
 
 inline BodyID Fixture::GetBody() const noexcept
 {
-    return m_body;
+    return m_conf.body;
 }
 
 inline Real Fixture::GetFriction() const noexcept
 {
-    return playrho::d2::GetFriction(m_shape);
+    return playrho::d2::GetFriction(m_conf.shape);
 }
 
 inline Real Fixture::GetRestitution() const noexcept
 {
-    return playrho::d2::GetRestitution(m_shape);
+    return playrho::d2::GetRestitution(m_conf.shape);
 }
 
 inline AreaDensity Fixture::GetDensity() const noexcept
 {
-    return playrho::d2::GetDensity(m_shape);
+    return playrho::d2::GetDensity(m_conf.shape);
 }
 
 inline void Fixture::SetSensor(bool sensor) noexcept
 {
-    m_isSensor = sensor;
+    m_conf.isSensor = sensor;
 }
 
 // Free functions...
+
+/// @brief Gets the body associated with the given value.
+inline BodyID GetBody(const Fixture& fixture) noexcept
+{
+    return fixture.GetBody();
+}
+
+inline const Shape& GetShape(const Fixture& fixture) noexcept
+{
+    return fixture.GetShape();
+}
+
+inline NonNegative<AreaDensity> GetDensity(const Fixture& fixture) noexcept
+{
+    return GetDensity(fixture.GetShape());
+}
+
+inline Real GetFriction(const Fixture& fixture) noexcept
+{
+    return GetFriction(fixture.GetShape());
+}
+
+inline Real GetRestitution(const Fixture& fixture) noexcept
+{
+    return GetRestitution(fixture.GetShape());
+}
+
+inline bool IsSensor(const Fixture& fixture) noexcept
+{
+    return fixture.IsSensor();
+}
+
+inline void SetSensor(Fixture& fixture, bool value) noexcept
+{
+    fixture.SetSensor(value);
+}
+
+inline Filter GetFilterData(const Fixture& fixture) noexcept
+{
+    return fixture.GetFilterData();
+}
+
+inline void SetFilterData(Fixture& fixture, Filter value) noexcept
+{
+    fixture.SetFilterData(value);
+}
 
 /// @brief Whether contact calculations should be performed between the two fixtures.
 /// @return <code>true</code> if contact calculations should be performed between these

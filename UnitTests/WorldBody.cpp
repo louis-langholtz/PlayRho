@@ -168,82 +168,6 @@ TEST(WorldBody, SetEnabledCausesIsEnabled)
     }
 }
 
-TEST(WorldBody, SetEnabled)
-{
-    auto stepConf = StepConf{};
-
-    auto world = World{};
-    ASSERT_EQ(GetFixturesForProxies(world).size(), 0u);
-    ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    const auto body0 = CreateBody(world);
-    const auto body1 = CreateBody(world);
-    const auto valid_shape = Shape{DiskShapeConf(1_m)};
-
-    const auto fixture0 = CreateFixture(world, body0, valid_shape, FixtureConf{});
-    const auto fixture1 = CreateFixture(world, body1, valid_shape, FixtureConf{});
-    ASSERT_NE(fixture0, InvalidFixtureID);
-    ASSERT_NE(fixture1, InvalidFixtureID);
-
-    ASSERT_TRUE(IsEnabled(world, body0));
-    ASSERT_EQ(GetProxyCount(world, fixture0), 0u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 2u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(Step(world, stepConf));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    // Test that set enabled to flag already set is not a toggle
-    EXPECT_NO_THROW(SetEnabled(world, body0, true));
-    EXPECT_TRUE(IsEnabled(world, body0));
-    EXPECT_NO_THROW(SetEnabled(world, body1, false));
-    EXPECT_FALSE(IsEnabled(world, body1));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(SetEnabled(world, body0, false));
-    EXPECT_FALSE(IsEnabled(world, body0));
-    EXPECT_NO_THROW(SetEnabled(world, body1, true));
-    EXPECT_TRUE(IsEnabled(world, body1));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 3u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(SetEnabled(world, body0, true));
-    EXPECT_TRUE(IsEnabled(world, body0));
-    EXPECT_NO_THROW(SetEnabled(world, body1, false));
-    EXPECT_FALSE(IsEnabled(world, body1));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 5u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(SetEnabled(world, body0, false));
-    EXPECT_FALSE(IsEnabled(world, body0));
-    EXPECT_NO_THROW(SetEnabled(world, body1, true));
-    EXPECT_TRUE(IsEnabled(world, body1));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 7u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(Step(world, stepConf));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 0u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(SetEnabled(world, body0, true));
-    EXPECT_TRUE(IsEnabled(world, body0));
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(Step(world, stepConf));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-}
-
 TEST(WorldBody, SetFixedRotation)
 {
     auto world = World{};
@@ -297,14 +221,9 @@ TEST(WorldBody, CreateAndDestroyFixture)
         ResetMassData(world, body);
         EXPECT_FALSE(IsMassDataDirty(world, body));
 
-        ASSERT_EQ(GetFixturesForProxies(world).size(), std::size_t{1});
-        EXPECT_EQ(*GetFixturesForProxies(world).begin(), fixture);
-
         EXPECT_TRUE(world.Destroy(fixture, false));
         EXPECT_TRUE(GetFixtures(world, body).empty());
         EXPECT_TRUE(IsMassDataDirty(world, body));
-
-        EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t(0));
 
         ResetMassData(world, body);
         EXPECT_FALSE(IsMassDataDirty(world, body));

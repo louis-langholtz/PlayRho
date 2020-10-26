@@ -142,9 +142,6 @@ public:
     /// @brief Fixtures container type.
     using Fixtures = std::vector<FixtureID>;
 
-    /// @brief Fixture proxies.
-    using FixtureProxies = std::vector<ContactCounter>;
-
     /// @brief Fixture listener.
     using FixtureListener = std::function<void(FixtureID)>;
 
@@ -266,8 +263,6 @@ public:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    /// @see GetBodiesForProxies, GetFixturesForProxies.
-    ///
     StepStats Step(const StepConf& conf = StepConf{});
 
     /// @brief Whether or not "step" is complete.
@@ -375,7 +370,7 @@ public:
     /// @param id Body to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies.
+    /// @see CreateBody(const BodyConf&), GetBodies.
     /// @see PhysicalEntities.
     void Destroy(BodyID id);
 
@@ -627,10 +622,6 @@ public:
     /// @post After creating a new fixture, it will show up in the fixture enumeration
     ///   returned by the <code>GetFixtures()</code> methods.
     ///
-    /// @param body Identifier of the body to associate the new fixture with.
-    /// @param shape Shareable shape definition.
-    ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
-    ///   the body's world.
     /// @param def Initial fixture settings.
     ///   Friction and density must be >= 0.
     ///   Restitution must be > -infinity and < infinity.
@@ -648,8 +639,7 @@ public:
     /// @see Destroy(FixtureID), GetFixtures
     /// @see PhysicalEntities
     ///
-    FixtureID CreateFixture(BodyID body, const Shape& shape,
-                            const FixtureConf& def = FixtureConf{},
+    FixtureID CreateFixture(const FixtureConf& def = FixtureConf{},
                             bool resetMassData = true);
 
     /// @brief Destroys the identified fixture.
@@ -678,13 +668,7 @@ public:
     ///
     bool Destroy(FixtureID id, bool resetMassData = true);
 
-    /// @brief Gets the fixtures-for-proxies range for this world.
-    /// @details Provides insight on what fixtures have been queued for proxy processing
-    ///   during the next call to the world step method.
-    /// @see Step.
-    SizedRange<Fixtures::const_iterator> GetFixturesForProxies() const noexcept;
-
-    /// @brief Re-filter the fixture.
+    /// @brief Re-filter contacts and proxies for the identified fixture.
     /// @note Call this if you want to establish collision that was previously disabled.
     /// @throws std::out_of_range If given an invalid fixture identifier.
     /// @see SetFilterData, GetFilterData.
@@ -724,10 +708,6 @@ public:
     /// @brief Gets the density value associated with the identified fixture.
     /// @throws std::out_of_range If given an invalid fixture identifier.
     AreaDensity GetDensity(FixtureID id) const;
-
-    /// @brief Gets the proxies of the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    const FixtureProxies& GetProxies(FixtureID id) const;
 
     /// @}
 

@@ -198,12 +198,18 @@ JointCounter GetWorldIndex(const World& world, JointID id) noexcept
 
 Length2 GetAnchorA(const World& world, JointID id)
 {
-    return Transform(GetLocalAnchorA(world, id), world.GetTransformation(GetBodyA(world, id)));
+    const auto& joint = world.GetJoint(id);
+    const auto la = GetLocalAnchorA(joint);
+    const auto body = GetBodyA(joint);
+    return (body != InvalidBodyID)? Transform(la, world.GetTransformation(body)): la;
 }
 
 Length2 GetAnchorB(const World& world, JointID id)
 {
-    return Transform(GetLocalAnchorB(world, id), world.GetTransformation(GetBodyB(world, id)));
+    const auto& joint = world.GetJoint(id);
+    const auto la = GetLocalAnchorB(joint);
+    const auto body = GetBodyB(joint);
+    return (body != InvalidBodyID)? Transform(la, world.GetTransformation(body)): la;
 }
 
 Real GetRatio(const World& world, JointID id)

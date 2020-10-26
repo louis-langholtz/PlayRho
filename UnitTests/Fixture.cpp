@@ -40,7 +40,7 @@ TEST(Fixture, ByteSize)
 #if defined(_WIN32) && !defined(_WIN64)
             EXPECT_EQ(sizeof(Fixture), std::size_t(32));
 #else
-            EXPECT_EQ(sizeof(Fixture), std::size_t(56));
+            EXPECT_EQ(sizeof(Fixture), std::size_t(32));
 #endif
             break;
         case  8: EXPECT_EQ(sizeof(Fixture), std::size_t(56)); break;

@@ -68,11 +68,6 @@ class World;
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 /// @{
 
-/// @copydoc World::GetFixturesForProxies
-/// @relatedalso World
-SizedRange<std::vector<FixtureID>::const_iterator>
-GetFixturesForProxies(const World& world) noexcept;
-
 /// @brief Gets the count of fixtures in the given world.
 /// @throws WrongState if called while the world is "locked".
 /// @relatedalso World
@@ -80,10 +75,16 @@ FixtureCounter GetFixtureCount(const World& world) noexcept;
 
 /// @brief Creates a fixture within the specified world.
 /// @throws WrongState if called while the world is "locked".
+/// @throws std::out_of_range If given an invalid body identifier in the configuration.
+/// @relatedalso World
+FixtureID CreateFixture(World& world, FixtureConf def = FixtureConf{}, bool resetMassData = true);
+
+/// @brief Creates a fixture within the specified world.
+/// @throws WrongState if called while the world is "locked".
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
 FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def = FixtureConf{},
+                        FixtureConf def = FixtureConf{},
                         bool resetMassData = true);
 
 /// @brief Destroys the identified fixture.
@@ -155,24 +156,6 @@ bool IsSensor(const World& world, FixtureID id);
 /// @return Non-negative density (in mass per area).
 /// @throws std::out_of_range If given an invalid fixture identifier.
 AreaDensity GetDensity(const World& world, FixtureID id);
-
-/// @brief Gets the proxies of the identified fixture.
-/// @throws std::out_of_range If given an invalid fixture identifier.
-/// @relatedalso World
-const std::vector<ContactCounter>& GetProxies(const World& world, FixtureID id);
-
-/// @brief Gets the count of proxies of the identified fixture.
-/// @throws std::out_of_range If given an invalid fixture identifier.
-/// @relatedalso World
-inline ChildCounter GetProxyCount(const World& world, FixtureID id)
-{
-    return static_cast<ChildCounter>(std::size(GetProxies(world, id)));
-}
-
-/// @brief Gets the specified proxy of the identified fixture.
-/// @throws std::out_of_range If given an invalid fixture identifier.
-/// @relatedalso World
-ContactCounter GetProxy(const World& world, FixtureID id, ChildCounter child);
 
 /// @brief Gets the mass data for the identified fixture in the given world.
 /// @throws std::out_of_range If given an invalid fixture identifier.

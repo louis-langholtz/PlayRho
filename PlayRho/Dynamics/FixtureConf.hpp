@@ -39,7 +39,7 @@ class Fixture;
 /// @brief Fixture definition.
 ///
 /// @details A fixture definition is used to create a fixture.
-/// @see Body::CreateFixture.
+/// @see World::CreateFixture.
 ///
 struct FixtureConf
 {
@@ -85,6 +85,67 @@ struct FixtureConf
 /// @param fixture Fixture to get the definition for.
 /// @relatedalso Fixture
 FixtureConf GetFixtureConf(const Fixture& fixture) noexcept;
+
+/// @brief Gets the body associated with the given value.
+inline BodyID GetBody(const FixtureConf& conf) noexcept
+{
+    return conf.body;
+}
+
+inline const Shape& GetShape(const FixtureConf& conf) noexcept
+{
+    return conf.shape;
+}
+
+inline NonNegative<AreaDensity> GetDensity(const FixtureConf& conf) noexcept
+{
+    return GetDensity(GetShape(conf));
+}
+
+inline Real GetFriction(const FixtureConf& conf) noexcept
+{
+    return GetFriction(GetShape(conf));
+}
+
+inline Real GetRestitution(const FixtureConf& conf) noexcept
+{
+    return GetRestitution(GetShape(conf));
+}
+
+inline bool IsSensor(const FixtureConf& conf) noexcept
+{
+    return conf.isSensor;
+}
+
+inline void SetSensor(FixtureConf& conf, bool value) noexcept
+{
+    conf.isSensor = value;
+}
+
+inline Filter GetFilterData(const FixtureConf& conf) noexcept
+{
+    return conf.filter;
+}
+
+inline void SetFilterData(FixtureConf& conf, Filter value) noexcept
+{
+    conf.filter = value;
+}
+
+/// @brief Whether contact calculations should be performed between the two fixtures.
+/// @return <code>true</code> if contact calculations should be performed between these
+///   two fixtures; <code>false</code> otherwise.
+/// @relatedalso Fixture
+inline bool ShouldCollide(const FixtureConf& fixtureA, const FixtureConf& fixtureB) noexcept
+{
+    return ShouldCollide(GetFilterData(fixtureA), GetFilterData(fixtureB));
+}
+
+/// @brief Gets the default friction amount for the given fixtures.
+Real GetDefaultFriction(const FixtureConf& fixtureA, const FixtureConf& fixtureB);
+
+/// @brief Gets the default restitution amount for the given fixtures.
+Real GetDefaultRestitution(const FixtureConf& fixtureA, const FixtureConf& fixtureB);
 
 } // namespace d2
 } // namespace playrho

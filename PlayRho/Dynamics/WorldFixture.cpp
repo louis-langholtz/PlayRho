@@ -28,12 +28,6 @@ namespace d2 {
 
 using playrho::size;
 
-SizedRange<std::vector<FixtureID>::const_iterator>
-GetFixturesForProxies(const World& world) noexcept
-{
-    return world.GetFixturesForProxies();
-}
-
 FixtureCounter GetFixtureCount(const World& world) noexcept
 {
     auto sum = FixtureCounter{0};
@@ -44,10 +38,17 @@ FixtureCounter GetFixtureCount(const World& world) noexcept
     return sum;
 }
 
-FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData)
+FixtureID CreateFixture(World& world, FixtureConf def, bool resetMassData)
 {
-    return world.CreateFixture(id, shape, def, resetMassData);
+    return world.CreateFixture(def, resetMassData);
+}
+
+FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
+                        FixtureConf def, bool resetMassData)
+{
+    def.body = id;
+    def.shape = shape;
+    return CreateFixture(world, def, resetMassData);
 }
 
 bool Destroy(World& world, FixtureID id, bool resetMassData)
@@ -63,6 +64,7 @@ Filter GetFilterData(const World& world, FixtureID id)
 void SetFilterData(World& world, FixtureID id, const Filter& value)
 {
     world.SetFilterData(id, value);
+    world.Refilter(id);
 }
 
 void Refilter(World& world, FixtureID id)
@@ -98,16 +100,6 @@ bool IsSensor(const World& world, FixtureID id)
 AreaDensity GetDensity(const World& world, FixtureID id)
 {
     return world.GetDensity(id);
-}
-
-const std::vector<ContactCounter>& GetProxies(const World& world, FixtureID id)
-{
-    return world.GetProxies(id);
-}
-
-ContactCounter GetProxy(const World& world, FixtureID id, ChildCounter child)
-{
-    return GetProxies(world, id).at(child);
 }
 
 bool TestPoint(const World& world, FixtureID id, Length2 p)
