@@ -1949,7 +1949,7 @@ static void DropDisks(benchmark::State& state)
                                            .UseType(playrho::BodyType::Dynamic)
                                            .UseLocation(location)
                                            .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-        world.CreateFixture(body, shape);
+        world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(shape));
     }
 
     const auto stepConf = playrho::StepConf{};
@@ -2006,16 +2006,15 @@ static void AddPairStressTestPlayRho(benchmark::State& state, int count)
         state.PauseTiming();
         auto world = playrho::d2::World{worldConf};
         {
-            for (auto i = 0; i < count; ++i)
-            {
+            for (auto i = 0; i < count; ++i) {
                 const auto location = playrho::Vec2(Rand(minX, maxX), Rand(minY, maxY)) * playrho::Meter;
                 // Uses parenthesis here to work around Visual C++'s const propagating of the copy.
                 const auto body = world.CreateBody(playrho::d2::BodyConf(bd).UseLocation(location));
-                world.CreateFixture(body, diskShape);
+                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(diskShape));
             }
         }
         const auto rectBody = world.CreateBody(rectBodyConf);
-        world.CreateFixture(rectBody, rectShape);
+        world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(rectBody).UseShape(rectShape));
         for (auto i = 0; i < state.range(); ++i)
         {
             world.Step(stepConf);
@@ -2110,7 +2109,7 @@ static void DropTilesPlayRho(int count)
             for (auto i = 0; i < N; ++i)
             {
                 conf.SetAsBox(a * playrho::Meter, a * playrho::Meter, position, playrho::Angle{0});
-                world.CreateFixture(ground, playrho::d2::Shape{conf});
+                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(ground).UseShape(conf));
                 GetX(position) += 2.0f * a * playrho::Meter;
             }
             GetY(position) -= 2.0f * a * playrho::Meter;
@@ -2138,7 +2137,7 @@ static void DropTilesPlayRho(int count)
                                                    .UseType(playrho::BodyType::Dynamic)
                                                    .UseLocation(y)
                                                    .UseLinearAcceleration(gravity));
-                world.CreateFixture(body, shape);
+                world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(body).UseShape(shape));
                 y += deltaY;
             }
             
@@ -2300,14 +2299,18 @@ playrho::BodyID Tumbler::CreateEnclosure(playrho::d2::World& world)
                                     .UseAllowSleep(false));
     playrho::d2::PolygonShapeConf shape;
     shape.UseDensity(5 * playrho::KilogramPerSquareMeter);
-    shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(b, playrho::d2::Shape{shape});
-    shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter, playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(b, playrho::d2::Shape{shape});
-    shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(b, playrho::d2::Shape{shape});
-    shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter, playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
-    world.CreateFixture(b, playrho::d2::Shape{shape});
+    shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter,
+                   playrho::Vec2( 10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
+    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shape));
+    shape.SetAsBox(0.5f * playrho::Meter, 10.0f * playrho::Meter,
+                   playrho::Vec2(-10.0f, 0.0f) * playrho::Meter, playrho::Angle{0});
+    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shape));
+    shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter,
+                   playrho::Vec2(0.0f, 10.0f) * playrho::Meter, playrho::Angle{0});
+    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shape));
+    shape.SetAsBox(10.0f * playrho::Meter, 0.5f * playrho::Meter,
+                   playrho::Vec2(0.0f, -10.0f) * playrho::Meter, playrho::Angle{0});
+    world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(shape));
     return b;
 }
 
@@ -2341,7 +2344,7 @@ void Tumbler::AddSquare()
                                       .UseType(playrho::BodyType::Dynamic)
                                       .UseLocation(playrho::Vec2(0, 10) * playrho::Meter)
                                       .UseLinearAcceleration(playrho::d2::EarthlyGravity));
-    m_world.CreateFixture(b, m_square);
+    m_world.CreateFixture(playrho::d2::FixtureConf{}.UseBody(b).UseShape(m_square));
 }
 
 bool Tumbler::IsWithin(const playrho::d2::AABB& aabb) const
