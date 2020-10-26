@@ -60,7 +60,7 @@ public:
     {
         if (!m_free.empty()) {
             const auto index = m_free.back();
-            m_data[index] = value_type{std::forward<Args>(args)...};
+            m_data[index] = value_type(std::forward<Args>(args)...);
             m_free.pop_back();
             return index;
         }

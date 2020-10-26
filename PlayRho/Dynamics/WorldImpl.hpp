@@ -388,6 +388,13 @@ public:
     ///   for updating in the next step.
     void FlagContactsForUpdating(BodyID id);
 
+    /// @brief Gets the contacts associated with the identified body.
+    /// @throws std::out_of_range if given an invalid id.
+    SizedRange<WorldImpl::Contacts::const_iterator> GetContacts(BodyID id) const;
+
+    /// @throws std::out_of_range if given an invalid id.
+    SizedRange<WorldImpl::BodyJoints::const_iterator> GetJoints(BodyID id) const;
+
     /// @}
 
     /// @name Fixture Member Functions
@@ -594,13 +601,11 @@ private:
                      JointCounter& remNumJoints);
     
     /// @brief Adds contacts to the island.
-    void AddContactsToIsland(Island& island, BodyStack& stack,
-                             SizedRange<Contacts::const_iterator> contacts,
+    void AddContactsToIsland(Island& island, BodyStack& stack, const Contacts& contacts,
                              BodyID bodyID);
 
     /// @brief Adds joints to the island.
-    void AddJointsToIsland(Island& island, BodyStack& stack,
-                           SizedRange<BodyJoints::const_iterator> joints);
+    void AddJointsToIsland(Island& island, BodyStack& stack, const BodyJoints& joints);
     
     /// @brief Removes <em>unspeedables</em> from the is <em>is-in-island</em> state.
     static Bodies::size_type RemoveUnspeedablesFromIslanded(const std::vector<BodyID>& bodies,
@@ -804,11 +809,7 @@ private:
     bool Add(ContactKey key);
 
     /// @brief Destroys the given contact.
-    static void InternalDestroy(ContactID contact,
-                                ArrayAllocator<Body>& bodyBuffer,
-                                ArrayAllocator<Contact>& contactBuffer,
-                                ArrayAllocator<Manifold>& manifoldBuffer,
-                                ContactListener listener, Body* from = nullptr);
+    void InternalDestroy(ContactID contact, Body* from = nullptr);
 
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the given
@@ -849,6 +850,8 @@ private:
     /******** Member variables. ********/
 
     ArrayAllocator<Body> m_bodyBuffer;
+    ArrayAllocator<Contacts> m_bodyContacts; ///< Cache of contacts associated with body.
+    ArrayAllocator<BodyJoints> m_bodyJoints; ///< Cache of joints associated with body.
     ArrayAllocator<FixtureConf> m_fixtureBuffer;
     ArrayAllocator<Proxies> m_fixtureProxies;
     ArrayAllocator<Joint> m_jointBuffer;

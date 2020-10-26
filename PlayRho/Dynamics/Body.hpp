@@ -31,9 +31,6 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 
@@ -76,15 +73,6 @@ class Body
 public:
     /// @brief Container type for fixtures.
     using Fixtures = std::vector<FixtureID>;
-
-    /// @brief Keyed joint pointer.
-    using KeyedJointPtr = std::pair<BodyID, JointID>;
-
-    /// @brief Container type for joints.
-    using Joints = std::vector<KeyedJointPtr>;
-
-    /// @brief Container type for contacts.
-    using Contacts = std::vector<KeyedContactPtr>;
 
     /// @brief Initializing constructor.
     explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
@@ -291,14 +279,6 @@ public:
     /// @brief Gets the range of all constant fixtures attached to this body.
     SizedRange<Fixtures::const_iterator> GetFixtures() const noexcept;
 
-    /// @brief Gets the range of all joints attached to this body.
-    SizedRange<Joints::const_iterator> GetJoints() const noexcept;
-
-    /// @brief Gets the container of all contacts attached to this body.
-    /// @warning This collection changes during the time step and you may
-    ///   miss some collisions if you don't use <code>ContactListener</code>.
-    SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
-
     /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
 
@@ -322,33 +302,6 @@ public:
 
     /// @brief Unsets the enabled flag.
     void UnsetEnabledFlag() noexcept;
-
-    /// @brief Inserts the given key and contact.
-    bool Insert(ContactKey key, ContactID contact);
-
-    /// @brief Inserts the given joint into this body's joints list.
-    bool Insert(JointID joint, BodyID other);
-
-    /// @brief Erases the given contact from this body's contacts list.
-    bool Erase(ContactID contact);
-
-    /// @brief Erases the contacts that the given function returns true for.
-    void Erase(const std::function<bool(ContactID)>& callback);
-
-    /// @brief Erases the given joint from this body's joints list.
-    bool Erase(JointID joint);
-
-    /// @brief Clears this body's contacts list.
-    void ClearContacts() noexcept
-    {
-        m_contacts.clear();
-    }
-
-    /// @brief Clears this body's joints list.
-    void ClearJoints() noexcept
-    {
-        m_joints.clear();
-    }
 
     /// @brief Clears the fixtures.
     void ClearFixtures() noexcept
@@ -514,10 +467,6 @@ private:
     ///   <code>World::Synchronize</code> which may be replacable with iterating over the
     ///   entire fixture array.
     mutable Fixtures m_fixtures;
-
-    mutable Contacts m_contacts; ///< Cache of associated contacts (owned by world).
-
-    mutable Joints m_joints; ///< Cache of associated joints (owned by world).
 
     /// Transformation for body origin.
     /// @note Also availble from <code>GetTransform1(m_sweep)</code>.
@@ -792,16 +741,6 @@ inline void Body::SetSleepingAllowed(bool flag) noexcept
 inline SizedRange<Body::Fixtures::const_iterator> Body::GetFixtures() const noexcept
 {
     return {begin(m_fixtures), end(m_fixtures), size(m_fixtures)};
-}
-
-inline SizedRange<Body::Joints::const_iterator> Body::GetJoints() const noexcept
-{
-    return {begin(m_joints), end(m_joints), size(m_joints)};
-}
-
-inline SizedRange<Body::Contacts::const_iterator> Body::GetContacts() const noexcept
-{
-    return {begin(m_contacts), end(m_contacts), size(m_contacts)};
 }
 
 inline LinearAcceleration2 Body::GetLinearAcceleration() const noexcept

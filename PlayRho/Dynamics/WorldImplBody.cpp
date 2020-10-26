@@ -192,9 +192,10 @@ InvRotInertia GetInvRotInertia(const WorldImpl& world, BodyID id)
     return world.GetBody(id).GetInvRotInertia();
 }
 
-SizedRange<WorldImpl::BodyJoints::const_iterator> GetJoints(const WorldImpl& world, BodyID id)
+SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
+GetJoints(const WorldImpl& world, BodyID id)
 {
-    return world.GetBody(id).GetJoints();
+    return world.GetJoints(id);
 }
 
 SizedRange<WorldImpl::Fixtures::const_iterator> GetFixtures(const WorldImpl& world, BodyID id)
@@ -217,9 +218,10 @@ bool IsAccelerable(const WorldImpl& world, BodyID id)
     return world.GetBody(id).IsAccelerable();
 }
 
-SizedRange<WorldImpl::Contacts::const_iterator> GetContacts(const WorldImpl& world, BodyID id)
+SizedRange<std::vector<KeyedContactPtr>::const_iterator>
+GetContacts(const WorldImpl& world, BodyID id)
 {
-    return world.GetBody(id).GetContacts();
+    return world.GetContacts(id);
 }
 
 bool IsMassDataDirty(const WorldImpl& world, BodyID id)

@@ -370,10 +370,8 @@ inline BodyCounter Sleepem(const Island::Bodies& bodies,
                            ArrayAllocator<Body>& bodyBuffer)
 {
     auto unawoken = BodyCounter{0};
-    for_each(cbegin(bodies), cend(bodies), [&](const auto& bodyID)
-    {
-        if (Unawaken(bodyBuffer[UnderlyingValue(bodyID)]))
-        {
+    for_each(cbegin(bodies), cend(bodies), [&](const auto& bodyID) {
+        if (Unawaken(bodyBuffer[UnderlyingValue(bodyID)])) {
             ++unawoken;
         }
     });
@@ -386,17 +384,15 @@ inline bool IsValidForTime(TOIOutput::State state) noexcept
 }
 
 void FlagContactsForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bodyA,
-                              const SizedRange<Body::Contacts::const_iterator>& contactsBodyB,
+                              const std::vector<KeyedContactPtr>& contactsBodyB,
                               BodyID bodyB) noexcept
 {
-    for (auto& ci: contactsBodyB)
-    {
-        auto& contact = contactBuffer[UnderlyingValue(GetContactPtr(ci))];
+    for (const auto& ci: contactsBodyB) {
+        auto& contact = contactBuffer[UnderlyingValue(std::get<ContactID>(ci))];
         const auto bA = contact.GetBodyA();
         const auto bB = contact.GetBodyB();
         const auto other = (bA != bodyB)? bA: bB;
-        if (other == bodyA)
-        {
+        if (other == bodyA) {
             // Flag the contact for filtering at the next time step (where either
             // body is awake).
             contact.FlagForFiltering();
@@ -417,28 +413,28 @@ bool HasSensor(const ArrayAllocator<FixtureConf>& fixtures, const Contact& c)
         || IsSensor(fixtures[UnderlyingValue(c.GetFixtureB())]);
 }
 
-void FlagForUpdating(ArrayAllocator<Contact>& contactsBuffer,
-                     SizedRange<Body::Contacts::const_iterator> contacts)
+template <typename T>
+void FlagForUpdating(ArrayAllocator<Contact>& contactsBuffer, const T& contacts)
 {
     std::for_each(begin(contacts), end(contacts), [&](const auto& ci) {
         contactsBuffer[UnderlyingValue(std::get<ContactID>(ci))].FlagForUpdating();
     });
 }
 
-bool ShouldCollide(const ArrayAllocator<Joint>& jointBuffer,
-                   const Body& lhs, const Body& rhs, BodyID rhsID)
+inline bool EitherIsAccelerable(const Body& lhs, const Body& rhs) noexcept
 {
-    // At least one body should be accelerable/dynamic.
-    if (!lhs.IsAccelerable() && !rhs.IsAccelerable())
-    {
-        return false;
-    }
+    return lhs.IsAccelerable() || rhs.IsAccelerable();
+}
 
+bool ShouldCollide(const ArrayAllocator<Joint>& jointBuffer,
+                   const ArrayAllocator<WorldImpl::BodyJoints>& bodyJoints,
+                   BodyID lhs, BodyID rhs)
+{
     // Does a joint prevent collision?
-    const auto joints = lhs.GetJoints();
+    const auto& joints = bodyJoints[lhs.get()];
     const auto it = std::find_if(cbegin(joints), cend(joints), [&](const auto& ji) {
-        return (std::get<BodyID>(ji) == rhsID) &&
-            !GetCollideConnected(jointBuffer[UnderlyingValue(std::get<JointID>(ji))]);
+        return (std::get<BodyID>(ji) == rhs) &&
+            !GetCollideConnected(jointBuffer[std::get<JointID>(ji).get()]);
     });
     return it == end(joints);
 }
@@ -458,13 +454,6 @@ void Unset(std::vector<bool>& islanded, const WorldImpl::Bodies& elements)
     }
 }
 
-void Unset(std::vector<bool>& islanded, const SizedRange<Body::Contacts::const_iterator>& elements)
-{
-    for (const auto& element: elements) {
-        islanded[UnderlyingValue(std::get<ContactID>(element))] = false;
-    }
-}
-
 void Unset(std::vector<bool>& islanded, const WorldImpl::Contacts& elements)
 {
     for (const auto& element: elements) {
@@ -481,11 +470,10 @@ void ResetBodiesForSolveTOI(WorldImpl::Bodies& bodies, ArrayAllocator<Body>& buf
 }
 
 /// @brief Reset contacts for solve TOI.
-void ResetContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
-                              const Body& body) noexcept
+void ResetBodyContactsForSolveTOI(ArrayAllocator<Contact>& buffer,
+                                  const std::vector<KeyedContactPtr>& contacts) noexcept
 {
     // Invalidate all contact TOIs on this displaced body.
-    const auto contacts = body.GetContacts();
     for_each(cbegin(contacts), cend(contacts), [&buffer](const auto& ci) {
         auto& contact = buffer[UnderlyingValue(std::get<ContactID>(ci))];
         contact.UnsetToi();
@@ -540,6 +528,33 @@ void CreateProxies(DynamicTree& tree, WorldImpl::Proxies& fixtureProxies,
     }
 }
 
+template <typename Element, typename Value>
+auto FindTypeValue(const std::vector<Element>& container, const Value& value)
+{
+    return std::find_if(begin(container), end(container), [value](const auto& elem) {
+        return std::get<Value>(elem) == value;
+    });
+}
+
+void Erase(std::vector<KeyedContactPtr>& contacts, const std::function<bool(ContactID)>& callback)
+{
+    auto last = end(contacts);
+    auto iter = begin(contacts);
+    auto index = std::vector<KeyedContactPtr>::difference_type(0);
+    while (iter != last) {
+        const auto contact = std::get<ContactID>(*iter);
+        if (callback(contact)) {
+            contacts.erase(iter);
+            iter = begin(contacts) + index;
+            last = end(contacts);
+        }
+        else {
+            iter = std::next(iter);
+            ++index;
+        }
+    }
+}
+
 } // anonymous namespace
 
 WorldImpl::WorldImpl(const WorldConf& def):
@@ -589,6 +604,8 @@ void WorldImpl::Clear() noexcept
     m_fixtureBuffer.clear();
     m_fixtureProxies.clear();
     m_bodyBuffer.clear();
+    m_bodyContacts.clear();
+    m_bodyJoints.clear();
 }
 
 BodyCounter WorldImpl::GetBodyRange() const noexcept
@@ -598,16 +615,16 @@ BodyCounter WorldImpl::GetBodyRange() const noexcept
 
 BodyID WorldImpl::CreateBody(const BodyConf& def)
 {
-    if (IsLocked())
-    {
+    if (IsLocked()) {
         throw WrongState("CreateBody: world is locked");
     }
-    if (size(m_bodies) >= MaxBodies)
-    {
+    if (size(m_bodies) >= MaxBodies) {
         throw LengthError("CreateBody: operation would exceed MaxBodies");
     }
     const auto id = static_cast<BodyID>(
         static_cast<BodyID::underlying_type>(m_bodyBuffer.Allocate(def)));
+    m_bodyContacts.Allocate();
+    m_bodyJoints.Allocate();
     m_bodies.push_back(id);
     return id;
 }
@@ -617,24 +634,24 @@ void WorldImpl::Remove(BodyID id) noexcept
     m_bodiesForProxies.erase(remove(begin(m_bodiesForProxies), end(m_bodiesForProxies), id),
                              end(m_bodiesForProxies));
     const auto it = find(cbegin(m_bodies), cend(m_bodies), id);
-    if (it != cend(m_bodies))
-    {
+    if (it != cend(m_bodies)) {
         m_bodies.erase(it);
-        m_bodyBuffer.Free(UnderlyingValue(id));
+        m_bodyBuffer.Free(id.get());
+        m_bodyContacts.Free(id.get());
+        m_bodyJoints.Free(id.get());
     }
 }
 
 void WorldImpl::Destroy(BodyID id)
 {
-    if (IsLocked())
-    {
+    if (IsLocked()) {
         throw WrongState("Destroy: world is locked");
     }
 
     auto& body = GetBody(id);
 
     // Delete the attached joints.
-    auto joints = body.GetJoints();
+    auto& joints = m_bodyJoints[id.get()];
     while (!joints.empty()) {
         const auto jointID = std::get<JointID>(*begin(joints));
         if (m_jointDestructionListener) {
@@ -647,19 +664,17 @@ void WorldImpl::Destroy(BodyID id)
             m_joints.erase(iter);
             m_jointBuffer.Free(jointID.get());
         }
-        joints = body.GetJoints();
     }
 
     // Destroy the attached contacts.
-    body.Erase([this,&body](ContactID contactID) {
+    Erase(m_bodyContacts[id.get()], [this,&body](ContactID contactID) {
         Destroy(contactID, &body);
         return true;
     });
 
     // Delete the attached fixtures. This destroys broad-phase proxies.
     ForallFixtures(body, [this](FixtureID fixtureID) {
-        if (m_fixtureDestructionListener)
-        {
+        if (m_fixtureDestructionListener) {
             m_fixtureDestructionListener(fixtureID);
         }
         EraseAll(m_fixturesForProxies, fixtureID);
@@ -674,14 +689,12 @@ void WorldImpl::Destroy(BodyID id)
 
 void WorldImpl::SetJoint(JointID id, const Joint& def)
 {
-    if (IsLocked())
-    {
+    if (IsLocked()) {
         throw WrongState("SetJoint: world is locked");
     }
     const auto endIter = cend(m_joints);
     const auto iter = find(cbegin(m_joints), endIter, id);
-    if (iter != endIter)
-    {
+    if (iter != endIter) {
         Remove(id);
         m_jointBuffer[UnderlyingValue(id)] = def;
         Add(id, !GetCollideConnected(def));
@@ -690,13 +703,11 @@ void WorldImpl::SetJoint(JointID id, const Joint& def)
 
 JointID WorldImpl::CreateJoint(const Joint& def)
 {
-    if (IsLocked())
-    {
+    if (IsLocked()) {
         throw WrongState("CreateJoint: world is locked");
     }
     
-    if (size(m_joints) >= MaxJoints)
-    {
+    if (size(m_joints) >= MaxJoints) {
         throw LengthError("CreateJoint: operation would exceed MaxJoints");
     }
 
@@ -713,18 +724,14 @@ void WorldImpl::Add(JointID id, bool flagForFiltering)
     const auto& joint = m_jointBuffer[UnderlyingValue(id)];
     const auto bodyA = GetBodyA(joint);
     const auto bodyB = GetBodyB(joint);
-    if (bodyA != InvalidBodyID)
-    {
-        m_bodyBuffer[UnderlyingValue(bodyA)].Insert(id, bodyB);
+    if (bodyA != InvalidBodyID) {
+        m_bodyJoints[bodyA.get()].push_back(std::make_pair(bodyB, id));
     }
-    if (bodyB != InvalidBodyID)
-    {
-        m_bodyBuffer[UnderlyingValue(bodyB)].Insert(id, bodyA);
+    if (bodyB != InvalidBodyID) {
+        m_bodyJoints[bodyB.get()].push_back(std::make_pair(bodyA, id));
     }
     if (flagForFiltering && (bodyA != InvalidBodyID) && (bodyB != InvalidBodyID)) {
-        FlagContactsForFiltering(m_contactBuffer, bodyA,
-                                 m_bodyBuffer[UnderlyingValue(bodyB)].GetContacts(),
-                                 bodyB);
+        FlagContactsForFiltering(m_contactBuffer, bodyA, m_bodyContacts[bodyB.get()], bodyB);
     }
 }
 
@@ -738,23 +745,29 @@ void WorldImpl::Remove(JointID id) noexcept
 
     // If the joint prevented collisions, then flag any contacts for filtering.
     if ((!collideConnected) && (bodyIdA != InvalidBodyID) && (bodyIdB != InvalidBodyID)) {
-        FlagContactsForFiltering(m_contactBuffer, bodyIdA,
-                                 m_bodyBuffer[UnderlyingValue(bodyIdB)].GetContacts(),
-                                 bodyIdB);
+        FlagContactsForFiltering(m_contactBuffer, bodyIdA, m_bodyContacts[bodyIdB.get()], bodyIdB);
     }
 
     // Wake up connected bodies.
     if (bodyIdA != InvalidBodyID) {
         auto& bodyA = m_bodyBuffer[UnderlyingValue(bodyIdA)];
         bodyA.SetAwake();
-        [[maybe_unused]] const auto erased = bodyA.Erase(id);
-        assert(erased);
+        auto& bodyJoints = m_bodyJoints[bodyIdA.get()];
+        const auto it = FindTypeValue(bodyJoints, id);
+        assert(it != end(bodyJoints));
+        if (it != end(bodyJoints)) {
+            bodyJoints.erase(it);
+        }
     }
     if (bodyIdB != InvalidBodyID) {
         auto& bodyB = m_bodyBuffer[UnderlyingValue(bodyIdB)];
         bodyB.SetAwake();
-        [[maybe_unused]] const auto erased = bodyB.Erase(id);
-        assert(erased);
+        auto& bodyJoints = m_bodyJoints[bodyIdB.get()];
+        const auto it = FindTypeValue(bodyJoints, id);
+        assert(it != end(bodyJoints));
+        if (it != end(bodyJoints)) {
+            bodyJoints.erase(it);
+        }
     }
 }
 
@@ -826,7 +839,7 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
 
         const auto oldNumContacts = size(island.contacts);
         // Adds appropriate contacts of current body and appropriate 'other' bodies of those contacts.
-        AddContactsToIsland(island, stack, body.GetContacts(), bodyID);
+        AddContactsToIsland(island, stack, m_bodyContacts[bodyID.get()], bodyID);
 
         const auto newNumContacts = size(island.contacts);
         assert(newNumContacts >= oldNumContacts);
@@ -836,14 +849,14 @@ void WorldImpl::AddToIsland(Island& island, BodyStack& stack,
         
         const auto numJoints = size(island.joints);
         // Adds appropriate joints of current body and appropriate 'other' bodies of those joint.
-        AddJointsToIsland(island, stack, body.GetJoints());
+        AddJointsToIsland(island, stack, m_bodyJoints[bodyID.get()]);
 
         remNumJoints -= size(island.joints) - numJoints;
     }
 }
 
 void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
-                                    SizedRange<Contacts::const_iterator> contacts, BodyID bodyID)
+                                    const Contacts& contacts, BodyID bodyID)
 {
     for_each(cbegin(contacts), cend(contacts), [&](const KeyedContactPtr& ci) {
         const auto contactID = std::get<ContactID>(ci);
@@ -866,10 +879,9 @@ void WorldImpl::AddContactsToIsland(Island& island, BodyStack& stack,
     });
 }
 
-void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack,
-                                  SizedRange<BodyJoints::const_iterator> joints)
+void WorldImpl::AddJointsToIsland(Island& island, BodyStack& stack, const BodyJoints& joints)
 {
-    for_each(cbegin(joints), cend(joints), [&](const Body::KeyedJointPtr& ji) {
+    for_each(cbegin(joints), cend(joints), [this,&island,&stack](const auto& ji) {
         const auto jointID = std::get<JointID>(ji);
         assert(jointID != InvalidJointID);
         if (!m_islandedJoints[UnderlyingValue(jointID)]) {
@@ -1086,17 +1098,15 @@ IslandStats WorldImpl::SolveRegIslandViaGS(const StepConf& conf, const Island& i
         AssignImpulses(manifold, vc);
     });
 
-    for (const auto& id: island.bodies)
-    {
+    for (const auto& id: island.bodies) {
         const auto i = UnderlyingValue(id);
         const auto& bc = bodyConstraints[i];
         auto& body = m_bodyBuffer[i];
         // Could normalize position here to avoid unbounded angles but angular
         // normalization isn't handled correctly by joints that constrain rotation.
         body.JustSetVelocity(bc.GetVelocity());
-        if (UpdateBody(body, bc.GetPosition()))
-        {
-            FlagForUpdating(m_contactBuffer, body.GetContacts());
+        if (UpdateBody(body, bc.GetPosition())) {
+            FlagForUpdating(m_contactBuffer, m_bodyContacts[i]);
         }
     }
 
@@ -1302,8 +1312,9 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
                     const auto xfm1 = body.GetTransformation();
                     stats.proxiesMoved += Synchronize(body, xfm0, xfm1,
                                                       conf.displaceMultiplier, conf.aabbExtension);
-                    ResetContactsForSolveTOI(m_contactBuffer, body);
-                    Unset(m_islandedContacts, body.GetContacts());
+                    const auto& bodyContacts = m_bodyContacts[b.get()];
+                    ResetBodyContactsForSolveTOI(m_contactBuffer, bodyContacts);
+                    Unset(m_islandedContacts, bodyContacts);
                 }
             }
         }
@@ -1361,9 +1372,9 @@ IslandStats WorldImpl::SolveToi(ContactID contactID, const StepConf& conf)
         // Advance the bodies to the TOI.
         assert(toi != 0 || (bA.GetSweep().GetAlpha0() == 0 && bB.GetSweep().GetAlpha0() == 0));
         bA.Advance(toi);
-        FlagForUpdating(m_contactBuffer, bA.GetContacts());
+        FlagForUpdating(m_contactBuffer, m_bodyContacts[bodyIdA.get()]);
         bB.Advance(toi);
-        FlagForUpdating(m_contactBuffer, bB.GetContacts());
+        FlagForUpdating(m_contactBuffer, m_bodyContacts[bodyIdB.get()]);
 
         // The TOI contact likely has some new contact points.
         contact.SetEnabled();
@@ -1496,8 +1507,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
 
     // Initialize the body state.
 #if 0
-    for (auto&& contact: island.m_contacts)
-    {
+    for (auto&& contact: island.m_contacts) {
         const auto fixtureA = contact->GetFixtureA();
         const auto fixtureB = contact->GetFixtureB();
         const auto bodyA = fixtureA->GetBody();
@@ -1533,8 +1543,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
             //
             const auto minSeparation = SolvePositionConstraintsViaGS(posConstraints, psConf);
             results.minSeparation = std::min(results.minSeparation, minSeparation);
-            if (minSeparation >= conf.toiMinSeparation)
-            {
+            if (minSeparation >= conf.toiMinSeparation) {
                 // Reached tolerance, early out...
                 results.positionIterations = i + 1;
                 results.solved = true;
@@ -1547,8 +1556,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     // Not doing this results in slower simulations.
     // Originally this update was only done to island.bodies 0 and 1.
     // Unclear whether rest of bodies should also be updated. No difference noticed.
-    for (const auto& id: island.bodies)
-    {
+    for (const auto& id: island.bodies) {
         const auto& bc = bodyConstraints[UnderlyingValue(id)];
         m_bodyBuffer[UnderlyingValue(id)].SetPosition0(bc.GetPosition());
     }
@@ -1564,8 +1572,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
     // Solve velocity constraints.
     assert(results.maxIncImpulse == 0_Ns);
     results.velocityIterations = conf.toiVelocityIterations;
-    for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i)
-    {
+    for (auto i = decltype(conf.toiVelocityIterations){0}; i < conf.toiVelocityIterations; ++i) {
         const auto newIncImpulse = SolveVelocityConstraintsViaGS(velConstraints);
         if (newIncImpulse <= conf.toiMinMomentum) {
             // No body related velocity constraints were out of tolerance.
@@ -1588,7 +1595,7 @@ IslandStats WorldImpl::SolveToiViaGS(const Island& island, const StepConf& conf)
         auto& bc = bodyConstraints[i];
         body.JustSetVelocity(bc.GetVelocity());
         if (UpdateBody(body, bc.GetPosition())) {
-            FlagForUpdating(m_contactBuffer, body.GetContacts());
+            FlagForUpdating(m_contactBuffer, m_bodyContacts[id.get()]);
         }
     }
 
@@ -1616,67 +1623,56 @@ WorldImpl::ProcessContactsForTOI(BodyID id, Island& island, Real toi, const Step
 
     // Note: the original contact (for body of which this method was called) already is-in-island.
     const auto bodyImpenetrable = body.IsImpenetrable();
-    for (const auto& ci: body.GetContacts())
-    {
+    for (const auto& ci: m_bodyContacts[id.get()]) {
         const auto contactID = std::get<ContactID>(ci);
         if (!m_islandedContacts[UnderlyingValue(contactID)]) {
             auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
-            if (!contact.IsSensor())
-            {
+            if (!contact.IsSensor()) {
                 const auto bodyIdA = contact.GetBodyA();
                 const auto bodyIdB = contact.GetBodyB();
                 const auto otherId = (bodyIdA != id)? bodyIdA: bodyIdB;
                 auto& other = m_bodyBuffer[UnderlyingValue(otherId)];
-                if (bodyImpenetrable || other.IsImpenetrable())
-                {
+                if (bodyImpenetrable || other.IsImpenetrable()) {
                     const auto otherIslanded = m_islandedBodies[UnderlyingValue(otherId)];
                     {
                         const auto backup = other.GetSweep();
-                        if (!otherIslanded /* && other->GetSweep().GetAlpha0() != toi */)
-                        {
+                        if (!otherIslanded /* && other->GetSweep().GetAlpha0() != toi */) {
                             other.Advance(toi);
-                            FlagForUpdating(m_contactBuffer, other.GetContacts());
+                            FlagForUpdating(m_contactBuffer, m_bodyContacts[otherId.get()]);
                         }
 
                         // Update the contact points
                         contact.SetEnabled();
-                        if (contact.NeedsUpdating())
-                        {
+                        if (contact.NeedsUpdating()) {
                             Update(contactID, updateConf);
                             ++results.contactsUpdated;
                         }
-                        else
-                        {
+                        else {
                             ++results.contactsSkipped;
                         }
 
                         // Revert and skip if contact disabled by user or not touching anymore (very possible).
-                        if (!contact.IsEnabled() || !contact.IsTouching())
-                        {
+                        if (!contact.IsEnabled() || !contact.IsTouching()) {
                             other.Restore(backup);
                             continue;
                         }
                     }
                     island.contacts.push_back(contactID);
                     m_islandedContacts[UnderlyingValue(contactID)] = true;
-                    if (!otherIslanded)
-                    {
-                        if (other.IsSpeedable())
-                        {
+                    if (!otherIslanded) {
+                        if (other.IsSpeedable()) {
                             other.SetAwakeFlag();
                         }
                         island.bodies.push_back(otherId);
                         m_islandedBodies[UnderlyingValue(otherId)] = true;
 #if 0
-                        if (other.IsAccelerable())
-                        {
+                        if (other.IsAccelerable()) {
                             contactsUpdated += ProcessContactsForTOI(island, other, toi);
                         }
 #endif
                     }
 #ifndef NDEBUG
-                    else
-                    {
+                    else {
                         /*
                          * If other is-in-island but not in current island, then something's gone wrong.
                          * Other needs to be in current island but was already in the island.
@@ -1771,7 +1767,7 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
         auto transformation = b.GetTransformation();
         transformation.p -= newOrigin;
         b.SetTransformation(transformation);
-        FlagForUpdating(m_contactBuffer, b.GetContacts());
+        FlagForUpdating(m_contactBuffer, m_bodyContacts[body.get()]);
         auto sweep = b.GetSweep();
         sweep.pos0.linear -= newOrigin;
         sweep.pos1.linear -= newOrigin;
@@ -1786,56 +1782,51 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
     m_tree.ShiftOrigin(newOrigin);
 }
 
-void WorldImpl::InternalDestroy(ContactID contactID,
-                                ArrayAllocator<Body>& bodyBuffer,
-                                ArrayAllocator<Contact>& contactBuffer,
-                                ArrayAllocator<Manifold>& manifoldBuffer,
-                                ContactListener listener, Body* from)
+void WorldImpl::InternalDestroy(ContactID contactID, Body* from)
 {
     assert(contactID != InvalidContactID);
-    auto& contact = contactBuffer[UnderlyingValue(contactID)];
-    if (listener && contact.IsTouching())
-    {
+    auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
+    if (m_endContactListener && contact.IsTouching()) {
         // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching, so call it now
-        listener(contactID);
+        m_endContactListener(contactID);
     }
     const auto bodyIdA = contact.GetBodyA();
     const auto bodyIdB = contact.GetBodyB();
-    const auto bodyA = &bodyBuffer[UnderlyingValue(bodyIdA)];
-    const auto bodyB = &bodyBuffer[UnderlyingValue(bodyIdB)];
-    if (bodyA != from)
-    {
-        bodyA->Erase(contactID);
+    const auto bodyA = &m_bodyBuffer[UnderlyingValue(bodyIdA)];
+    const auto bodyB = &m_bodyBuffer[UnderlyingValue(bodyIdB)];
+    if (bodyA != from) {
+        auto& bodyContacts = m_bodyContacts[bodyIdA.get()];
+        const auto it = FindTypeValue(bodyContacts, contactID);
+        if (it != end(bodyContacts)) {
+            bodyContacts.erase(it);
+        }
     }
-    if (bodyB != from)
-    {
-        bodyB->Erase(contactID);
+    if (bodyB != from) {
+        auto& bodyContacts = m_bodyContacts[bodyIdB.get()];
+        const auto it = FindTypeValue(bodyContacts, contactID);
+        if (it != end(bodyContacts)) {
+            bodyContacts.erase(it);
+        }
     }
-    auto& manifold = manifoldBuffer[UnderlyingValue(contactID)];
-    if ((manifold.GetPointCount() > 0) && !contact.IsSensor())
-    {
+    auto& manifold = m_manifoldBuffer[UnderlyingValue(contactID)];
+    if ((manifold.GetPointCount() > 0) && !contact.IsSensor()) {
         // Contact may have been keeping accelerable bodies of fixture A or B from moving.
         // Need to awaken those bodies now in case they are again movable.
         bodyA->SetAwake();
         bodyB->SetAwake();
     }
-    contactBuffer.Free(UnderlyingValue(contactID));
-    manifoldBuffer.Free(UnderlyingValue(contactID));
+    m_contactBuffer.Free(UnderlyingValue(contactID));
+    m_manifoldBuffer.Free(UnderlyingValue(contactID));
 }
 
 void WorldImpl::Destroy(ContactID contactID, Body* from)
 {
     assert(contactID != InvalidContactID);
-    const auto it = find_if(cbegin(m_contacts), cend(m_contacts),
-                            [&](const Contacts::value_type& c) {
-        return std::get<ContactID>(c) == contactID;
-    });
-    if (it != cend(m_contacts))
-    {
+    const auto it = FindTypeValue(m_contacts, contactID);
+    if (it != cend(m_contacts)) {
         m_contacts.erase(it);
     }
-    InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, m_manifoldBuffer,
-                    m_endContactListener, from);
+    InternalDestroy(contactID, from);
 }
 
 WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts)
@@ -1849,8 +1840,7 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts)
         if (!TestOverlap(m_tree, key.GetMin(), key.GetMax()))
         {
             // Destroy contacts that cease to overlap in the broad-phase.
-            InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, m_manifoldBuffer,
-                            m_endContactListener);
+            InternalDestroy(contactID);
             return true;
         }
 
@@ -1859,15 +1849,16 @@ WorldImpl::DestroyContactsStats WorldImpl::DestroyContacts(Contacts& contacts)
         if (contact.NeedsFiltering())
         {
             const auto bodyIdA = contact.GetBodyA();
+            const auto bodyIdB = contact.GetBodyB();
             const auto& bodyA = m_bodyBuffer[UnderlyingValue(bodyIdA)];
-            const auto& bodyB = m_bodyBuffer[UnderlyingValue(contact.GetBodyB())];
+            const auto& bodyB = m_bodyBuffer[UnderlyingValue(bodyIdB)];
             const auto& fixtureA = m_fixtureBuffer[UnderlyingValue(contact.GetFixtureA())];
             const auto& fixtureB = m_fixtureBuffer[UnderlyingValue(contact.GetFixtureB())];
-            if (!ShouldCollide(m_jointBuffer, bodyB, bodyA, bodyIdA)
-                || !ShouldCollide(fixtureA, fixtureB))
+            if (!EitherIsAccelerable(bodyA, bodyB) ||
+                !ShouldCollide(m_jointBuffer, m_bodyJoints, bodyIdA, bodyIdB) ||
+                !ShouldCollide(fixtureA, fixtureB))
             {
-                InternalDestroy(contactID, m_bodyBuffer, m_contactBuffer, m_manifoldBuffer,
-                                m_endContactListener);
+                InternalDestroy(contactID);
                 return true;
             }
             contact.UnflagForFiltering();
@@ -2061,7 +2052,9 @@ bool WorldImpl::Add(ContactKey key)
     auto& fixtureB = m_fixtureBuffer[UnderlyingValue(fixtureIdB)];
 
     // Does a joint override collision? Is at least one body dynamic?
-    if (!ShouldCollide(m_jointBuffer, bodyB, bodyA, bodyIdA) || !ShouldCollide(fixtureA, fixtureB))
+    if (!EitherIsAccelerable(bodyA, bodyB) ||
+        !ShouldCollide(m_jointBuffer, m_bodyJoints, bodyIdA, bodyIdB) ||
+        !ShouldCollide(fixtureA, fixtureB))
     {
         return false;
     }
@@ -2100,19 +2093,15 @@ bool WorldImpl::Add(ContactKey key)
     // NOTE: Time trial testing found the following rough ordering of data structures, to be
     // fastest to slowest: vector, list, unorderered_set, unordered_map,
     //     set, map.
-    const auto contactsA = bodyA.GetContacts();
-    const auto contactsB = bodyB.GetContacts();
+    auto& contactsA = m_bodyContacts[bodyIdA.get()];
+    auto& contactsB = m_bodyContacts[bodyIdB.get()];
     const auto& bodyContacts = (size(contactsA) < size(contactsB))? contactsA: contactsB;
-    const auto it = find_if(cbegin(bodyContacts), cend(bodyContacts), [&](KeyedContactPtr ci) {
-        return std::get<ContactKey>(ci) == key;
-    });
-    if (it != cend(bodyContacts))
-    {
+    const auto it = FindTypeValue(bodyContacts, key);
+    if (it != cend(bodyContacts)) {
         return false;
     }
 
-    if (size(m_contacts) >= MaxContacts)
-    {
+    if (size(m_contacts) >= MaxContacts) {
         // New contact was needed, but denied due to MaxContacts count being reached.
         return false;
     }
@@ -2121,16 +2110,13 @@ bool WorldImpl::Add(ContactKey key)
         m_contactBuffer.Allocate(bodyIdA, fixtureIdA, indexA, bodyIdB, fixtureIdB, indexB)));
     m_manifoldBuffer.Allocate();
     auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
-    if (bodyA.IsImpenetrable() || bodyB.IsImpenetrable())
-    {
+    if (bodyA.IsImpenetrable() || bodyB.IsImpenetrable()) {
         contact.SetImpenetrable();
     }
-    if (bodyA.IsAwake() || bodyB.IsAwake())
-    {
+    if (bodyA.IsAwake() || bodyB.IsAwake()) {
         contact.SetIsActive();
     }
-    if (IsSensor(fixtureA) || IsSensor(fixtureB))
-    {
+    if (IsSensor(fixtureA) || IsSensor(fixtureB)) {
         contact.SetIsSensor();
     }
     contact.SetFriction(GetDefaultFriction(fixtureA, fixtureB));
@@ -2145,18 +2131,16 @@ bool WorldImpl::Add(ContactKey key)
     //
     m_contacts.push_back(KeyedContactPtr{key, contactID});
 
-    bodyA.Insert(key, contactID);
-    bodyB.Insert(key, contactID);
+    // TODO: check contactID unique in contacts containers if !NDEBUG
+    contactsA.emplace_back(key, contactID);
+    contactsB.emplace_back(key, contactID);
 
     // Wake up the bodies
-    if (!contact.IsSensor())
-    {
-        if (bodyA.IsSpeedable())
-        {
+    if (!contact.IsSensor()) {
+        if (bodyA.IsSpeedable()) {
             bodyA.SetAwakeFlag();
         }
-        if (bodyB.IsSpeedable())
-        {
+        if (bodyB.IsSpeedable()) {
             bodyB.SetAwakeFlag();
         }
     }
@@ -2187,7 +2171,7 @@ void WorldImpl::CreateAndDestroyProxies(Length extension)
             if (!enabled) {
                 DestroyProxies(m_tree, fixtureProxies, m_proxies);
                 // Destroy any contacts associated with the fixture.
-                body.Erase([&](ContactID contactID) {
+                Erase(m_bodyContacts[bodyID.get()], [this,fixtureID,&body](ContactID contactID) {
                     const auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
                     const auto fixtureA = contact.GetFixtureA();
                     const auto fixtureB = contact.GetFixtureB();
@@ -2232,7 +2216,7 @@ void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
     SetMassData(bodyID, ComputeMassData(bodyID));
 
     // Destroy the attached contacts.
-    body.Erase([&](ContactID contactID) {
+    Erase(m_bodyContacts[bodyID.get()], [this,&body](ContactID contactID) {
         Destroy(contactID, &body);
         return true;
     });
@@ -2334,7 +2318,23 @@ const FixtureConf& WorldImpl::GetFixture(FixtureID id) const
 
 void WorldImpl::FlagContactsForUpdating(BodyID id)
 {
-    FlagForUpdating(m_contactBuffer, GetBody(id).GetContacts());
+    FlagForUpdating(m_contactBuffer, GetContacts(id));
+}
+
+SizedRange<WorldImpl::Contacts::const_iterator> WorldImpl::GetContacts(BodyID id) const
+{
+    const auto& container =  m_bodyContacts.at(id.get());;
+    return SizedRange<WorldImpl::Contacts::const_iterator>{
+        begin(container), end(container), size(container)
+    };
+}
+
+SizedRange<WorldImpl::BodyJoints::const_iterator> WorldImpl::GetJoints(BodyID id) const
+{
+    const auto& container = m_bodyJoints.at(id.get());
+    return SizedRange<WorldImpl::BodyJoints::const_iterator>{
+        begin(container), end(container), size(container)
+    };
 }
 
 bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
@@ -2354,7 +2354,7 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
     const auto bodyID = ::playrho::d2::GetBody(GetFixture(id));
     auto& body = m_bodyBuffer[UnderlyingValue(bodyID)];
     // Destroy any contacts associated with the fixture.
-    body.Erase([&](ContactID contactID) {
+    Erase(m_bodyContacts[bodyID.get()], [this,id,&body](ContactID contactID) {
         auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
         const auto fixtureA = contact.GetFixtureA();
         const auto fixtureB = contact.GetFixtureB();
@@ -2436,22 +2436,18 @@ ContactCounter WorldImpl::Synchronize(const Proxies& proxies, const Shape& shape
 void WorldImpl::SetEnabled(BodyID id, bool flag)
 {
     auto& body = GetBody(id);
-    if (body.IsEnabled() == flag)
-    {
+    if (body.IsEnabled() == flag) {
         return;
     }
 
-    if (IsLocked())
-    {
+    if (IsLocked()) {
         throw WrongState("Body::SetEnabled: world is locked");
     }
 
-    if (flag)
-    {
+    if (flag) {
         body.SetEnabledFlag();
     }
-    else
-    {
+    else {
         body.UnsetEnabledFlag();
     }
 
@@ -2467,11 +2463,9 @@ MassData WorldImpl::ComputeMassData(BodyID id) const
     auto I = RotInertia{0};
     auto weightedCenter = Length2{};
     const auto& body = GetBody(id);
-    for (const auto& f: body.GetFixtures())
-    {
+    for (const auto& f: body.GetFixtures()) {
         const auto& fixture = m_fixtureBuffer[UnderlyingValue(f)];
-        if (GetDensity(fixture) > 0_kgpm2)
-        {
+        if (GetDensity(fixture) > 0_kgpm2) {
             const auto massData = GetMassData(GetShape(fixture));
             mass += Mass{massData.mass};
             weightedCenter += Real{massData.mass / Kilogram} * massData.center;
@@ -2484,14 +2478,12 @@ MassData WorldImpl::ComputeMassData(BodyID id) const
 
 void WorldImpl::SetMassData(BodyID id, const MassData& massData)
 {
-    if (IsLocked())
-    {
+    if (IsLocked()) {
         throw WrongState("SetMassData: world is locked");
     }
 
     auto& body = GetBody(id);
-    if (!body.IsAccelerable())
-    {
+    if (!body.IsAccelerable()) {
         body.SetInvMass(InvMass{});
         body.SetInvRotI(InvRotInertia{});
         body.SetSweep(Sweep{Position{body.GetLocation(), body.GetAngle()}});
@@ -2502,16 +2494,14 @@ void WorldImpl::SetMassData(BodyID id, const MassData& massData)
     const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
     body.SetInvMass(Real{1} / mass);
 
-    if ((massData.I > RotInertia{0}) && (!body.IsFixedRotation()))
-    {
+    if ((massData.I > RotInertia{0}) && (!body.IsFixedRotation())) {
         const auto lengthSquared = GetMagnitudeSquared(massData.center);
         // L^2 M QP^-2
         const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};
         assert(I > RotInertia{0});
         body.SetInvRotI(Real{1} / I);
     }
-    else
-    {
+    else {
         body.SetInvRotI(0);
     }
 
@@ -2534,14 +2524,12 @@ void WorldImpl::SetMassData(BodyID id, const MassData& massData)
 void WorldImpl::SetTransformation(BodyID id, Transformation xfm)
 {
     assert(IsValid(xfm));
-    if (IsLocked())
-    {
+    if (IsLocked()) {
         throw WrongState("SetTransformation: world is locked");
     }
     auto& body = GetBody(id);
-    if (body.GetTransformation() != xfm)
-    {
-        FlagForUpdating(m_contactBuffer, body.GetContacts());
+    if (body.GetTransformation() != xfm) {
+        FlagForUpdating(m_contactBuffer, m_bodyContacts[id.get()]);
         body.SetTransformation(xfm);
         body.SetSweep(Sweep{
             Position{Transform(body.GetLocalCenter(), xfm), GetAngle(xfm.q)}, body.GetLocalCenter()

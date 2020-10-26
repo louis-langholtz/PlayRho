@@ -1524,24 +1524,21 @@ static void EntityUI(World& world, BodyID b, const FixtureSet& selectedFixtures)
     EntityUI(world, b);
     {
         const auto fixtures = GetFixtures(world, b);
-        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", size(fixtures)))
-        {
+        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", size(fixtures))) {
             CollectionUI(world, fixtures, selectedFixtures);
             ImGui::TreePop();
         }
     }
     {
         const auto joints = GetJoints(world, b);
-        if (ImGui::TreeNodeEx("Joints", 0, "Joints (%lu)", size(joints)))
-        {
+        if (ImGui::TreeNodeEx("Joints", 0, "Joints (%lu)", size(joints))) {
             CollectionUI(joints);
             ImGui::TreePop();
         }
     }
     {
         const auto contacts = GetContacts(world, b);
-        if (ImGui::TreeNodeEx("Contacts", 0, "Contacts (%lu)", size(contacts)))
-        {
+        if (ImGui::TreeNodeEx("Contacts", 0, "Contacts (%lu)", size(contacts))) {
             CollectionUI(world, contacts, false);
             ImGui::TreePop();
         }

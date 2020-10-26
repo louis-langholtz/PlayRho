@@ -50,7 +50,7 @@ bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData)
 
 void FlagContactsForFiltering(WorldImpl& world, FixtureID id)
 {
-    const auto contacts = world.GetBody(GetBody(world.GetFixture(id))).GetContacts();
+    const auto& contacts = world.GetContacts(GetBody(world.GetFixture(id)));
     std::for_each(cbegin(contacts), cend(contacts), [&world, id](const auto& ci) {
         auto& contact = world.GetContact(std::get<ContactID>(ci));
         if ((contact.GetFixtureA() == id) || (contact.GetFixtureB() == id)) {

@@ -25,54 +25,6 @@
 using namespace playrho;
 using namespace playrho::d2;
 
-TEST(Body, ContactsByteSize)
-{
-#if defined(__APPLE__)
-    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(24));
-#elif defined(__linux__)
-    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(24));
-#elif defined(_WIN64)
-#if !defined(NDEBUG)
-    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(32));
-#else
-    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(24));
-#endif
-#elif defined(_WIN32)
-#if !defined(NDEBUG)
-    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(16));
-#else
-    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(12));
-#endif
-#else
-    // Intentionally fail for unknown platform...
-    EXPECT_EQ(sizeof(Body::Contacts), std::size_t(0));
-#endif
-}
-
-TEST(Body, JointsByteSize)
-{
-#ifdef __APPLE__
-    EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
-#elif __linux__
-    EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
-#elif _WIN64
-#if defined(NDEBUG)
-    EXPECT_EQ(sizeof(Body::Joints), std::size_t(24));
-#else
-    EXPECT_EQ(sizeof(Body::Joints), std::size_t(32));
-#endif
-#elif _WIN32
-#if defined(NDEBUG)
-    EXPECT_EQ(sizeof(Body::Joints), std::size_t(12));
-#else
-    EXPECT_EQ(sizeof(Body::Joints), std::size_t(16));
-#endif
-#else // !__APPLE__ && !__linux__ && !_WIN64 && !_WIN32
-    // Intentionally fail for unknown platform...
-    EXPECT_EQ(sizeof(Body::Joints), std::size_t(0));
-#endif
-}
-
 TEST(Body, FixturesByteSize)
 {
     // Size is arch, os, or library dependent.
@@ -100,27 +52,6 @@ TEST(Body, FixturesByteSize)
 
 TEST(Body, ByteSize)
 {
-    const auto contactsSize = sizeof(Body::Contacts);
-    const auto jointsSize = sizeof(Body::Joints);
-    const auto fixturesSize = sizeof(Body::Fixtures);
-    const auto allSize = contactsSize + jointsSize + fixturesSize;
-
-#if defined(_WIN64)
-#if !defined(NDEBUG)
-    EXPECT_EQ(allSize, std::size_t(96));
-#else
-    EXPECT_EQ(allSize, std::size_t(72));
-#endif
-#elif defined(_WIN32)
-#if !defined(NDEBUG)
-    EXPECT_EQ(allSize, std::size_t(48));
-#else
-    EXPECT_EQ(allSize, std::size_t(36));
-#endif
-#else
-    EXPECT_EQ(allSize, std::size_t(72));
-#endif
-
     // architecture dependent...
     switch (sizeof(Real))
     {
@@ -140,7 +71,7 @@ TEST(Body, ByteSize)
             EXPECT_EQ(sizeof(Body), std::size_t(136));
 #endif
 #else
-            EXPECT_EQ(sizeof(Body), std::size_t(176));
+            EXPECT_EQ(sizeof(Body), std::size_t(128));
 #endif
             break;
         case  8:

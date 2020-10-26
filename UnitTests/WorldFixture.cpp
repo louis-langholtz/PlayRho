@@ -41,9 +41,8 @@ TEST(WorldFixture, CreateDestroy)
     auto fixture = FixtureID(0u);
     EXPECT_NO_THROW(fixture = CreateFixture(world, body, Shape{DiskShapeConf{}}));
     const auto fixtures = std::vector<FixtureID>{};
-    auto fixturesRange = SizedRange<std::vector<FixtureID>::const_iterator>(begin(fixtures),
-                                                                            end(fixtures),
-                                                                            0u);
+    using ValueType = std::remove_cv_t<std::remove_reference_t<decltype(GetFixtures(world, body))>>;
+    auto fixturesRange = ValueType();
     EXPECT_NO_THROW(fixturesRange = GetFixtures(world, body));
     ASSERT_EQ(size(fixturesRange), 1u);
     EXPECT_EQ(*begin(fixturesRange), fixture);

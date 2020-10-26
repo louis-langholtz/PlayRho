@@ -424,7 +424,7 @@ public:
 
     /// @brief Gets the range of all joints attached to this body.
     /// @throws std::out_of_range If given an invalid body identifier.
-    SizedRange<BodyJoints::const_iterator> GetJoints(BodyID id) const;
+    SizedRange<World::BodyJoints::const_iterator> GetJoints(BodyID id) const;
 
     /// @brief Computes the body's mass data.
     /// @details This basically accumulates the mass data over all fixtures.
@@ -602,7 +602,7 @@ public:
     /// @warning This collection changes during the time step and you may
     ///   miss some collisions if you don't use <code>ContactListener</code>.
     /// @throws std::out_of_range If given an invalid body identifier.
-    SizedRange<Contacts::const_iterator> GetContacts(BodyID id) const;
+    SizedRange<World::Contacts::const_iterator> GetContacts(BodyID id) const;
 
     /// @}
 
