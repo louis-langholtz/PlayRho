@@ -528,24 +528,24 @@ private:
     /// @brief Flags type data type.
     using FlagsType = std::uint32_t;
 
-    /// @brief Contact key queue type alias.
-    using ContactKeyQueue = std::vector<ContactKey>;
-
     /// @brief Flag enumeration.
     enum Flag: FlagsType
     {
         /// New fixture.
         e_newFixture    = 0x0001,
-        
+
         /// Locked.
         e_locked        = 0x0002,
-        
+
         /// Sub-stepping.
         e_substepping   = 0x0020,
-        
+
         /// Step complete. @details Used for sub-stepping. @see e_substepping.
         e_stepComplete  = 0x0040,
     };
+
+    /// @brief Contact key queue type alias.
+    using ContactKeyQueue = std::vector<ContactKey>;
 
     /// @brief Solves the step.
     /// @details Finds islands, integrates and solves constraints, solves position constraints.
