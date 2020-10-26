@@ -520,14 +520,13 @@ void DestroyProxies(DynamicTree& tree,
     fixtureProxies.clear();
 }
 
-std::vector<DynamicTree::Size>
-CreateProxies(DynamicTree& tree, BodyID bodyID, FixtureID fixtureID,
-              const Shape& shape, const Transformation& xfm, Length aabbExtension)
+void CreateProxies(DynamicTree& tree, WorldImpl::Proxies& fixtureProxies,
+                   BodyID bodyID, FixtureID fixtureID, const Shape& shape,
+                   const Transformation& xfm, Length aabbExtension)
 {
     // Reserve proxy space and create proxies in the broad-phase.
-    auto fixtureProxies = std::vector<DynamicTree::Size>{};
     const auto childCount = GetChildCount(shape);
-    fixtureProxies.reserve(childCount);
+    fixtureProxies.reserve(size(fixtureProxies) + childCount);
     for (auto childIndex = decltype(childCount){0}; childIndex < childCount; ++childIndex)
     {
         const auto dp = GetChild(shape, childIndex);
@@ -539,7 +538,6 @@ CreateProxies(DynamicTree& tree, BodyID bodyID, FixtureID fixtureID,
             bodyID, fixtureID, childIndex});
         fixtureProxies.push_back(treeId);
     }
-    return fixtureProxies;
 }
 
 } // anonymous namespace
@@ -2169,36 +2167,31 @@ bool WorldImpl::Add(ContactKey key)
 
 void WorldImpl::CreateAndDestroyProxies(Length extension)
 {
-    for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies), [&](const auto& fixtureID) {
+    for_each(begin(m_fixturesForProxies), end(m_fixturesForProxies),
+             [this,extension](const auto& fixtureID) {
         auto& fixture = m_fixtureBuffer[UnderlyingValue(fixtureID)];
         auto& fixtureProxies = m_fixtureProxies[fixtureID.get()];
         const auto bodyID = ::playrho::d2::GetBody(fixture);
         auto& body = m_bodyBuffer[UnderlyingValue(bodyID)];
         const auto enabled = body.IsEnabled();
 
-        if (fixtureProxies.empty())
-        {
-            if (enabled)
-            {
-                auto proxies = CreateProxies(m_tree, bodyID, fixtureID, GetShape(fixture),
-                                             body.GetTransformation(), extension);
-                AddProxies(proxies);
-                fixtureProxies = std::move(proxies);
+        if (fixtureProxies.empty()) {
+            if (enabled) {
+                CreateProxies(m_tree, fixtureProxies,
+                              bodyID, fixtureID, GetShape(fixture),
+                              body.GetTransformation(), extension);
+                AddProxies(fixtureProxies);
             }
         }
-        else
-        {
-            if (!enabled)
-            {
+        else {
+            if (!enabled) {
                 DestroyProxies(m_tree, fixtureProxies, m_proxies);
-
                 // Destroy any contacts associated with the fixture.
                 body.Erase([&](ContactID contactID) {
                     const auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
                     const auto fixtureA = contact.GetFixtureA();
                     const auto fixtureB = contact.GetFixtureB();
-                    if ((fixtureA == fixtureID) || (fixtureB == fixtureID))
-                    {
+                    if ((fixtureA == fixtureID) || (fixtureB == fixtureID)) {
                         Destroy(contactID, &body);
                         return true;
                     }
