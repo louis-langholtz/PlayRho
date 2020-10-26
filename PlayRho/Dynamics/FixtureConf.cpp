@@ -1,6 +1,6 @@
 /*
  * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -25,6 +25,20 @@
 
 namespace playrho {
 namespace d2 {
+
+// Check that type is regular...
+static_assert(std::is_default_constructible<FixtureConf>::value,
+              "FixtureConf must be default constructible!");
+static_assert(std::is_copy_constructible<FixtureConf>::value,
+              "FixtureConf must be copy constructible!");
+static_assert(std::is_move_constructible<FixtureConf>::value,
+              "FixtureConf must be move constructible!");
+static_assert(std::is_copy_assignable<FixtureConf>::value,
+              "FixtureConf must be copy assignable!");
+static_assert(std::is_move_assignable<FixtureConf>::value,
+              "FixtureConf must be move assignable!");
+static_assert(std::is_nothrow_destructible<FixtureConf>::value,
+              "FixtureConf must be nothrow destructible!");
 
 Real GetDefaultFriction(const FixtureConf& fixtureA, const FixtureConf& fixtureB)
 {

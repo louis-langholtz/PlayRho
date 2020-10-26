@@ -1,6 +1,6 @@
 /*
  * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -37,10 +37,11 @@ namespace d2 {
 class Fixture;
 
 /// @brief Fixture definition.
-///
-/// @details A fixture definition is used to create a fixture.
-/// @see World::CreateFixture.
-///
+/// @details A fixture is used to attach a shape to a body for collision detection. A fixture
+///   inherits its transform from its body. Fixtures hold additional non-geometric data
+///   such as collision filters, etc.
+/// @ingroup PhysicalEntities
+/// @see World::CreateFixture, World::GetFixture, World::SetFixture, World::Destroy.
 struct FixtureConf
 {
     FixtureConf& UseShape(Shape value) noexcept
@@ -81,47 +82,55 @@ struct FixtureConf
     bool isSensor = false;
 };
 
-/// @brief Gets the body associated with the given value.
+/// @brief Gets the body of the given configuration.
 inline BodyID GetBody(const FixtureConf& conf) noexcept
 {
     return conf.body;
 }
 
+/// @brief Gets the shape of the given configuration.
 inline const Shape& GetShape(const FixtureConf& conf) noexcept
 {
     return conf.shape;
 }
 
+/// @brief Gets the density of the given configuration.
 inline NonNegative<AreaDensity> GetDensity(const FixtureConf& conf) noexcept
 {
     return GetDensity(GetShape(conf));
 }
 
+/// @brief Gets the friction of the given configuration.
 inline Real GetFriction(const FixtureConf& conf) noexcept
 {
     return GetFriction(GetShape(conf));
 }
 
+/// @brief Gets the restitution of the given configuration.
 inline Real GetRestitution(const FixtureConf& conf) noexcept
 {
     return GetRestitution(GetShape(conf));
 }
 
+/// @brief Gets whether or not the given configuration is a sensor.
 inline bool IsSensor(const FixtureConf& conf) noexcept
 {
     return conf.isSensor;
 }
 
+/// @brief Sets whether or not the given configuration is a sensor.
 inline void SetSensor(FixtureConf& conf, bool value) noexcept
 {
     conf.isSensor = value;
 }
 
+/// @brief Gets the filter-data of the given configuration.
 inline Filter GetFilterData(const FixtureConf& conf) noexcept
 {
     return conf.filter;
 }
 
+/// @brief Sets the filter-data of the given configuration.
 inline void SetFilterData(FixtureConf& conf, Filter value) noexcept
 {
     conf.filter = value;
