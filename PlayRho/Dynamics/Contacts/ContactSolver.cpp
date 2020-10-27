@@ -515,7 +515,7 @@ d2::PositionSolution SolvePositionConstraint(const d2::PositionConstraint& pc,
     const auto invMassTotal = invMassA + invMassB;
     assert(invMassTotal >= InvMass{0});
     
-    const auto totalRadius = pc.GetRadiusA() + pc.GetRadiusB();
+    const auto totalRadius = pc.GetTotalRadius();
     
     const auto solver_fn = [&](const d2::PositionSolverManifold psm,
                                const Length2 pA, const Length2 pB) {

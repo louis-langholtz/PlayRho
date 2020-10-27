@@ -211,7 +211,7 @@ PositionConstraints GetPositionConstraints(const Island::Contacts& contacts,
         const auto radiusA = GetVertexRadius(shapeA, indexA);
         const auto radiusB = GetVertexRadius(shapeB, indexB);
         return PositionConstraint{
-            manifold, bodyConstraintA, radiusA, bodyConstraintB, radiusB
+            manifold, bodyConstraintA, bodyConstraintB, radiusA + radiusB
         };
     });
     return constraints;

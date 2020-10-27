@@ -56,7 +56,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorTouchingDoesntMove)
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
-    const auto pc = PositionConstraint{manifold, bA, 0_m, bB, 0_m};
+    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
     
     const auto conf = ConstraintSolverConf{};
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
@@ -99,7 +99,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerTouchingDoesntMove)
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
-    const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
+    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
     
     const auto conf = ConstraintSolverConf{};
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
@@ -141,7 +141,7 @@ TEST(ContactSolver, SolvePosConstraintsForOverlappingZeroRateDoesntMove)
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
-    const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
+    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
 
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(0).UseMaxLinearCorrection(maxLinearCorrection);
@@ -196,7 +196,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly1)
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
-    const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
+    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
     
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
@@ -250,7 +250,7 @@ TEST(ContactSolver, SolvePosConstraintsForHorOverlappingMovesHorOnly2)
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
-    const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
+    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
     
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
@@ -304,7 +304,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly1)
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
-    const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
+    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
     
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
@@ -371,7 +371,7 @@ TEST(ContactSolver, SolvePosConstraintsForVerOverlappingMovesVerOnly2)
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
-    const auto pc = PositionConstraint{manifold, bA, 0, bB, 0};
+    const auto pc = PositionConstraint{manifold, bA, bB, 0_m};
 
     const auto maxLinearCorrection = std::numeric_limits<Real>::infinity() * Meter;
     const auto conf = ConstraintSolverConf{}.UseResolutionRate(Baumgarte).UseMaxLinearCorrection(maxLinearCorrection);
@@ -429,7 +429,8 @@ TEST(ContactSolver, SolvePosConstraintsForPerfectlyOverlappingSquares)
         InvRotInertia{Real{1} * SquareRadian / (SquareMeter * 1_kg)},
         lcB, old_pB, old_vB
     };
-    const auto pc = PositionConstraint{manifold, bA, GetVertexRadius(shape), bB, GetVertexRadius(shape)};
+    const auto pc = PositionConstraint{manifold, bA, bB,
+        GetVertexRadius(shape) + GetVertexRadius(shape)};
     
     const auto conf = ConstraintSolverConf{};
     const auto solution = GaussSeidel::SolvePositionConstraint(pc, true, true, conf);
