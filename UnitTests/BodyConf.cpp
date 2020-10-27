@@ -27,6 +27,21 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+TEST(BodyConf, ByteSize)
+{
+    switch (sizeof(Real)) {
+    case 4:
+        EXPECT_EQ(sizeof(BodyConf), 60u);
+        break;
+    case 8:
+        EXPECT_EQ(sizeof(BodyConf), 112u);
+        break;
+    case 16:
+        EXPECT_EQ(sizeof(BodyConf), 224u);
+        break;
+    }
+}
+
 TEST(BodyConf, UseType)
 {
     EXPECT_EQ(BodyConf{}.UseType(BodyType::Static).type, BodyType::Static);

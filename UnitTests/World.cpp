@@ -1457,7 +1457,7 @@ TEST(World, ComputeMassData)
     EXPECT_NO_THROW(massData = world.ComputeMassData(body));
     EXPECT_EQ(massData.center, Length2{});
     EXPECT_EQ(massData.mass, 8_kg);
-    EXPECT_NEAR(StripUnit(massData.I), 13.3333, 0.0001);
+    EXPECT_NEAR(static_cast<double>(StripUnit(massData.I)), 13.3333, 0.0001);
 }
 
 #if defined(BODY_DOESNT_GROW_UNBOUNDED)
@@ -1834,6 +1834,7 @@ TEST(World, HeavyOnLight)
         {
             case 4: EXPECT_EQ(numSteps, 175ul /* 145ul */); break; // TODO: figure out why changed
             case 8: EXPECT_EQ(numSteps, 176ul); break;
+            case 16: EXPECT_EQ(numSteps, 175ul); break;
         }
         EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9475154876708984, 0.001);
     }
@@ -1896,6 +1897,7 @@ TEST(World, HeavyOnLight)
         {
             case 4: EXPECT_EQ(numSteps, 766ul /* 736ul */); break; // TODO: figure out why changed
             case 8: EXPECT_EQ(numSteps, 767ul /* 736ul */); break; // TODO: figure out why changed
+            case 16: EXPECT_EQ(numSteps, 766ul); break;
         }
 
         // Here we see that the upper body at some point sunk into most of the lower body.
@@ -1936,6 +1938,7 @@ TEST(World, HeavyOnLight)
         {
             case 4: EXPECT_EQ(numSteps, 724ul); break;
             case 8: EXPECT_EQ(numSteps, 724ul); break;
+            case 16: EXPECT_EQ(numSteps, 724ul); break;
         }
 
         EXPECT_NEAR(static_cast<double>(Real(upperBodysLowestPoint / Meter)), 5.9476470947265625, 0.001);
