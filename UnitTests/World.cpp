@@ -505,8 +505,8 @@ TEST(World, CreateDestroyJoinedBodies)
     ASSERT_EQ(GetBodyCount(world), BodyCounter(0));
     ASSERT_EQ(GetJointCount(world), JointCounter(0));
 
-    world.SetJointDestructionListener(std::ref(jointListener));
-    world.SetFixtureDestructionListener(std::ref(fixtureListener));
+    SetJointDestructionListener(world, std::ref(jointListener));
+    SetFixtureDestructionListener(world, std::ref(fixtureListener));
 
     const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
     EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
@@ -3315,16 +3315,16 @@ TEST(World_Longer, TargetJointWontCauseTunnelling)
     };
     ASSERT_EQ(listener.begin_contacts, unsigned{0});
 
-    world.SetBeginContactListener([&listener](ContactID id) {
+    SetBeginContactListener(world, [&listener](ContactID id) {
         listener.BeginContact(id);
     });
-    world.SetEndContactListener([&listener](ContactID id) {
+    SetEndContactListener(world, [&listener](ContactID id) {
         listener.EndContact(id);
     });
-    world.SetPreSolveContactListener([&listener](ContactID id, const Manifold& manifold) {
+    SetPreSolveContactListener(world, [&listener](ContactID id, const Manifold& manifold) {
         listener.PreSolve(id, manifold);
     });
-    world.SetPostSolveContactListener([&listener](ContactID id,
+    SetPostSolveContactListener(world, [&listener](ContactID id,
                                                   const ContactImpulsesList& impulses,
                                                   unsigned count){
         listener.PostSolve(id, impulses, count);
@@ -3487,7 +3487,7 @@ static void smaller_still_conserves_momentum(bool bullet, Real multiplier, Real 
             [=](Contact&) {
             }
         };
-        world.SetContactListener(&listener);
+        SetContactListener(world, &listener);
 
         const auto shape = DiskShapeConf{}.UseRadius(scale * radius * Meter);
         ASSERT_EQ(shape->GetRadius(), scale * radius);

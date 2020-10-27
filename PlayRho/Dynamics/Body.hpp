@@ -468,18 +468,6 @@ private:
     Time m_underActiveTime = 0;
 };
 
-inline Body::FlagsType Body::GetFlags(BodyType type) noexcept
-{
-    auto flags = FlagsType{0};
-    switch (type)
-    {
-        case BodyType::Dynamic:   flags |= (e_velocityFlag|e_accelerationFlag); break;
-        case BodyType::Kinematic: flags |= (e_impenetrableFlag|e_velocityFlag); break;
-        case BodyType::Static:    flags |= (e_impenetrableFlag); break;
-    }
-    return flags;
-}
-
 inline BodyType Body::GetType() const noexcept
 {
     switch (m_flags & (e_accelerationFlag|e_velocityFlag))

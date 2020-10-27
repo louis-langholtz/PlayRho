@@ -19,8 +19,8 @@
 #include "UnitTests.hpp"
 
 #include <PlayRho/Dynamics/Joints/DistanceJointConf.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
 
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
@@ -29,6 +29,8 @@
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+
+#include <stdexcept> // for std::invalid_argument
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -250,7 +252,6 @@ TEST(DistanceJoint, InZeroGravBodiesMoveInToLength)
 TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
 {
     auto world = World{};
-
     const auto bA = CreateBody(world);
     ASSERT_NE(bA, InvalidBodyID);
     const auto bB = CreateBody(world);
@@ -276,4 +277,66 @@ TEST(DistanceJointConf, GetDistanceJointDefFreeFunction)
     EXPECT_EQ(def.length, got.length);
     EXPECT_EQ(def.frequency, got.frequency);
     EXPECT_EQ(def.dampingRatio, got.dampingRatio);
+}
+
+TEST(DistanceJointConf, GetReferenceAngleThrows)
+{
+    auto world = World{};
+    const auto bA = CreateBody(world);
+    ASSERT_NE(bA, InvalidBodyID);
+    const auto bB = CreateBody(world);
+    ASSERT_NE(bB, InvalidBodyID);
+    auto def = DistanceJointConf{};
+    def.bodyA = bA;
+    def.bodyB = bB;
+    def.collideConnected = false;
+    def.localAnchorA = Length2(21_m, -2_m);
+    def.localAnchorB = Length2(13_m, 12_m);
+    def.length = 5_m;
+    def.frequency = 67_Hz;
+    def.dampingRatio = Real(0.8);
+    const auto joint = CreateJoint(world, def);
+    EXPECT_THROW(GetReferenceAngle(GetJoint(world, joint)), std::invalid_argument);
+}
+
+TEST(DistanceJointConf, GetMotorSpeedThrows)
+{
+    auto world = World{};
+    const auto bA = CreateBody(world);
+    ASSERT_NE(bA, InvalidBodyID);
+    const auto bB = CreateBody(world);
+    ASSERT_NE(bB, InvalidBodyID);
+    auto def = DistanceJointConf{};
+    def.bodyA = bA;
+    def.bodyB = bB;
+    def.collideConnected = false;
+    def.localAnchorA = Length2(21_m, -2_m);
+    def.localAnchorB = Length2(13_m, 12_m);
+    def.length = 5_m;
+    def.frequency = 67_Hz;
+    def.dampingRatio = Real(0.8);
+    const auto joint = CreateJoint(world, def);
+    EXPECT_THROW(GetMotorSpeed(GetJoint(world, joint)), std::invalid_argument);
+}
+
+TEST(DistanceJointConf, SetFrequencyFreeFunction)
+{
+    auto world = World{};
+    const auto bA = CreateBody(world);
+    ASSERT_NE(bA, InvalidBodyID);
+    const auto bB = CreateBody(world);
+    ASSERT_NE(bB, InvalidBodyID);
+    auto def = DistanceJointConf{};
+    def.bodyA = bA;
+    def.bodyB = bB;
+    def.collideConnected = false;
+    def.localAnchorA = Length2(21_m, -2_m);
+    def.localAnchorB = Length2(13_m, 12_m);
+    def.length = 5_m;
+    def.frequency = 67_Hz;
+    def.dampingRatio = Real(0.8);
+    auto joint = Joint(def);
+    EXPECT_EQ(GetFrequency(joint), 67_Hz);
+    EXPECT_NO_THROW(SetFrequency(joint, 2_Hz));
+    EXPECT_EQ(GetFrequency(joint), 2_Hz);
 }

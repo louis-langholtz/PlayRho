@@ -44,6 +44,17 @@ static_assert(std::is_move_assignable<Body>::value,
 static_assert(std::is_nothrow_destructible<Body>::value,
               "Body must be nothrow destructible!");
 
+Body::FlagsType Body::GetFlags(BodyType type) noexcept
+{
+    auto flags = FlagsType{0};
+    switch (type) {
+        case BodyType::Dynamic:   flags |= (e_velocityFlag|e_accelerationFlag); break;
+        case BodyType::Kinematic: flags |= (e_impenetrableFlag|e_velocityFlag); break;
+        case BodyType::Static:    flags |= (e_impenetrableFlag); break;
+    }
+    return flags;
+}
+
 Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
 {
     // @invariant Only bodies that allow sleeping, can be put to sleep.
@@ -107,10 +118,8 @@ Body::Body(const BodyConf& bd) noexcept:
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-    if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm))
-    {
-        if (!IsSpeedable())
-        {
+    if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm)) {
+        if (!IsSpeedable()) {
             return;
         }
         SetAwakeFlag();
