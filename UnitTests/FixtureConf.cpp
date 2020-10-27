@@ -33,7 +33,7 @@ TEST(FixtureConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(FixtureConf), std::size_t(32));
+            EXPECT_EQ(sizeof(FixtureConf), std::size_t(20));
 #else
             EXPECT_EQ(sizeof(FixtureConf), std::size_t(32));
 #endif
