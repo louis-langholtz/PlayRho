@@ -134,19 +134,21 @@ bool operator!= (const Shape& lhs, const Shape& rhs) noexcept;
 ///   where each child shape is made up of zero or more vertices and an associated radius
 ///   called its "vertex radius".
 ///
-/// @note This class implements polymorphism without inheritance. This is based on a technique
-///   that's described by Sean Parent in his January 2017 Norwegian Developers Conference
-///   London talk "Better Code: Runtime Polymorphism". With this implementation, different
-///   shapes types can be had by constructing instances of this class with the different types
-///   that provide the required support. Different shapes of a given type meanwhile are had by
-///   providing different values for the type.
+/// @note This class's design provides a "polymorphic value type" offering polymorphism
+///   without public inheritance. This is based on a technique that's described by Sean Parent
+///   in his January 2017 Norwegian Developers Conference London talk "Better Code: Runtime
+///   Polymorphism". With this implementation, different shapes types can be had by constructing
+///   instances of this class with the different types that provide the required support.
+///   Different shapes of a given type meanwhile are had by providing different values for the
+///   type.
 ///
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform).
 ///
 /// @ingroup PartsGroup
 ///
-/// @see Fixture
+/// @see FixtureConf
 /// @see https://youtu.be/QGcVXgEVMJg
+/// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types
 ///
 class Shape
 {

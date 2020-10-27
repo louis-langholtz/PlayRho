@@ -62,7 +62,6 @@ class WorldImpl;
 class Manifold;
 class ContactImpulsesList;
 class DynamicTree;
-struct JointConf;
 
 /// @defgroup PhysicalEntities Physical Entities
 ///
@@ -339,6 +338,7 @@ public:
     /// @details Provides insight on what bodies have been queued for proxy processing
     ///   during the next call to the world step method.
     /// @see Step.
+    /// @todo Remove this function from this class - access from implementation instead.
     SizedRange<Bodies::const_iterator> GetBodiesForProxies() const noexcept;
 
     /// @brief Creates a rigid body with the given configuration.
@@ -691,9 +691,9 @@ public:
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
     ///   These are the joints that had been created from previous calls to the
-    ///   <code>CreateJoint(const JointConf&)</code> method that haven't yet been destroyed.
+    ///   <code>CreateJoint</code> method that haven't yet been destroyed.
     /// @return World joints sized-range.
-    /// @see CreateJoint(const JointConf&).
+    /// @see CreateJoint.
     SizedRange<Joints::const_iterator> GetJoints() const noexcept;
 
     /// @brief Creates a joint to constrain one or more bodies.
