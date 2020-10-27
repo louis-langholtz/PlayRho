@@ -31,9 +31,6 @@ namespace d2 {
 class PositionConstraint
 {
 public:
-    /// @brief Size type.
-    using size_type = std::remove_const<decltype(MaxManifoldPoints)>::type;
-
     PositionConstraint() = default;
 
     /// @brief Initializing constructor.
