@@ -20,6 +20,7 @@
  */
 
 #include <PlayRho/Dynamics/BodyConf.hpp>
+
 #include <PlayRho/Dynamics/Body.hpp>
 
 namespace playrho {
@@ -44,6 +45,11 @@ BodyConf GetBodyConf(const Body& body) noexcept
     def.bullet = body.IsAccelerable() && body.IsImpenetrable();
     def.enabled = body.IsEnabled();
     return def;
+}
+
+Transformation GetTransformation(const BodyConf& conf)
+{
+    return {conf.location, UnitVec::Get(conf.angle)};
 }
 
 } // namespace d2

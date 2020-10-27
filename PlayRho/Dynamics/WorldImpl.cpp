@@ -982,7 +982,7 @@ RegStepStats WorldImpl::SolveReg(const StepConf& conf)
                 // Update fixtures (for broad-phase).
                 stats.proxiesMoved += Synchronize(m_bodyFixtures[b.get()],
                                                   GetTransform0(body.GetSweep()),
-                                                  body.GetTransformation(),
+                                                  GetTransformation(body),
                                                   conf.displaceMultiplier, conf.aabbExtension);
             }
         }
@@ -1306,7 +1306,7 @@ ToiStepStats WorldImpl::SolveToi(const StepConf& conf)
                 auto& body = m_bodyBuffer[UnderlyingValue(b)];
                 if (body.IsAccelerable()) {
                     const auto xfm0 = GetTransform0(body.GetSweep());
-                    const auto xfm1 = body.GetTransformation();
+                    const auto xfm1 = GetTransformation(body);
                     stats.proxiesMoved += Synchronize(m_bodyFixtures[b.get()], xfm0, xfm1,
                                                       conf.displaceMultiplier, conf.aabbExtension);
                     const auto& bodyContacts = m_bodyContacts[b.get()];
@@ -1479,10 +1479,9 @@ bool WorldImpl::UpdateBody(Body& body, const Position& pos)
 {
     assert(IsValid(pos));
     body.SetPosition1(pos);
-    const auto oldXfm = body.GetTransformation();
+    const auto oldXfm = GetTransformation(body);
     const auto newXfm = GetTransformation(GetPosition1(body), body.GetLocalCenter());
-    if (newXfm != oldXfm)
-    {
+    if (newXfm != oldXfm) {
         body.SetTransformation(newXfm);
         return true;
     }
@@ -1761,7 +1760,7 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
     for (const auto& body: bodies)
     {
         auto& b = m_bodyBuffer[UnderlyingValue(body)];
-        auto transformation = b.GetTransformation();
+        auto transformation = GetTransformation(b);
         transformation.p -= newOrigin;
         b.SetTransformation(transformation);
         FlagForUpdating(m_contactBuffer, m_bodyContacts[body.get()]);
@@ -2160,7 +2159,7 @@ void WorldImpl::CreateAndDestroyProxies(Length extension)
             if (enabled) {
                 CreateProxies(m_tree, fixtureProxies,
                               bodyID, fixtureID, GetShape(fixture),
-                              body.GetTransformation(), extension);
+                              GetTransformation(body), extension);
                 AddProxies(fixtureProxies);
             }
         }
@@ -2188,7 +2187,7 @@ PreStepStats::counter_type WorldImpl::SynchronizeProxies(const StepConf& conf)
     auto proxiesMoved = PreStepStats::counter_type{0};
     for_each(begin(m_bodiesForProxies), end(m_bodiesForProxies), [&](const auto& bodyID) {
         const auto& b = m_bodyBuffer[UnderlyingValue(bodyID)];
-        const auto xfm = b.GetTransformation();
+        const auto xfm = GetTransformation(b);
         // Not always true: assert(GetTransform0(b->GetSweep()) == xfm);
         proxiesMoved += Synchronize(m_bodyFixtures[bodyID.get()], xfm, xfm,
                                     conf.displaceMultiplier, conf.aabbExtension);
@@ -2220,7 +2219,7 @@ void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
     if (type == BodyType::Static) {
 #ifndef NDEBUG
         const auto xfm1 = GetTransform0(body.GetSweep());
-        const auto xfm2 = body.GetTransformation();
+        const auto xfm2 = GetTransformation(body);
         assert(xfm1 == xfm2);
 #endif
         m_bodiesForProxies.push_back(bodyID);
@@ -2523,7 +2522,7 @@ void WorldImpl::SetMassData(BodyID id, const MassData& massData)
     // Move center of mass.
     const auto oldCenter = body.GetWorldCenter();
     body.SetSweep(Sweep{
-        Position{Transform(massData.center, body.GetTransformation()), body.GetAngle()},
+        Position{Transform(massData.center, GetTransformation(body)), body.GetAngle()},
         massData.center
     });
 
@@ -2543,7 +2542,7 @@ void WorldImpl::SetTransformation(BodyID id, Transformation xfm)
         throw WrongState("SetTransformation: world is locked");
     }
     auto& body = GetBody(id);
-    if (body.GetTransformation() != xfm) {
+    if (GetTransformation(body) != xfm) {
         FlagForUpdating(m_contactBuffer, m_bodyContacts[id.get()]);
         body.SetTransformation(xfm);
         body.SetSweep(Sweep{
@@ -2586,9 +2585,9 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
     const auto& shapeA = GetShape(fixtureA);
     const auto& bodyA = m_bodyBuffer[UnderlyingValue(bodyIdA)];
     const auto& bodyB = m_bodyBuffer[UnderlyingValue(bodyIdB)];
-    const auto xfA = bodyA.GetTransformation();
+    const auto xfA = GetTransformation(bodyA);
     const auto& shapeB = GetShape(fixtureB);
-    const auto xfB = bodyB.GetTransformation();
+    const auto xfB = GetTransformation(bodyB);
     const auto childA = GetChild(shapeA, indexA);
     const auto childB = GetChild(shapeB, indexB);
 

@@ -216,10 +216,5 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
     return velocity;
 }
 
-Transformation GetTransformation(const BodyConf& conf)
-{
-    return {conf.location, UnitVec::Get(conf.angle)};
-}
-
 } // namespace d2
 } // namespace playrho

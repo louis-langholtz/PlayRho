@@ -1042,10 +1042,6 @@ inline Position GetPosition(const Body& body) noexcept
     return Position{body.GetLocation(), body.GetAngle()};
 }
 
-/// @brief Gets the transformation associated with the given configuration.
-/// @relatedalso BodyConf
-Transformation GetTransformation(const BodyConf& conf);
-
 } // namespace d2
 } // namespace playrho
 
