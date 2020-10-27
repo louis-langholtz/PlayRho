@@ -37,9 +37,6 @@ class BodyConstraint
 public:
     // Note: Seeing World.TilesComesToRest times of around 5686 ms with this setup.
 
-    /// @brief Index type.
-    using index_type = std::remove_const<decltype(MaxBodies)>::type;
-
     BodyConstraint() = default;
 
     /// @brief Initializing constructor.
