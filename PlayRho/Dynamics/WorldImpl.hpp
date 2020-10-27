@@ -825,13 +825,6 @@ private:
     ContactCounter Synchronize(const Fixtures& fixtures,
                                const Transformation& xfm1, const Transformation& xfm2,
                                Real multiplier, Length extension);
-    
-    /// @brief Synchronizes the given fixture.
-    /// @details This updates the broad phase dynamic tree data for all of the given
-    ///   fixture shape's children.
-    ContactCounter Synchronize(const Proxies& fixtureProxies, const Shape& shape,
-                               const Transformation& xfm1, const Transformation& xfm2,
-                               Length2 displacement, Length extension);
 
     /// @brief Creates and destroys proxies.
     void CreateAndDestroyProxies(Length extension);
