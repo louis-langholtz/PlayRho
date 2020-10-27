@@ -275,15 +275,15 @@ void SetMotorSpeed(Joint& object, AngularVelocity value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<RevoluteJointConf>()) {
-        object = TypeCast<RevoluteJointConf>(object).UseMotorSpeed(value);
+        TypeCast<RevoluteJointConf&>(object).UseMotorSpeed(value);
         return;
     }
     if (type == GetTypeID<PrismaticJointConf>()) {
-        object = TypeCast<PrismaticJointConf>(object).UseMotorSpeed(value);
+        TypeCast<PrismaticJointConf&>(object).UseMotorSpeed(value);
         return;
     }
     if (type == GetTypeID<WheelJointConf>()) {
-        object = TypeCast<WheelJointConf>(object).UseMotorSpeed(value);
+        TypeCast<WheelJointConf&>(object).UseMotorSpeed(value);
         return;
     }
     throw std::invalid_argument("SetMotorSpeed not supported by joint type!");
@@ -347,7 +347,7 @@ void SetMaxMotorForce(Joint& object, Force value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<PrismaticJointConf>()) {
-        object = TypeCast<PrismaticJointConf>(object).UseMaxMotorForce(value);
+        TypeCast<PrismaticJointConf&>(object).UseMaxMotorForce(value);
         return;
     }
     throw std::invalid_argument("SetMaxMotorForce not supported by joint type!");
@@ -369,11 +369,11 @@ void SetMaxMotorTorque(Joint& object, Torque value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<RevoluteJointConf>()) {
-        object = TypeCast<RevoluteJointConf>(object).UseMaxMotorTorque(value);
+        TypeCast<RevoluteJointConf&>(object).UseMaxMotorTorque(value);
         return;
     }
     if (type == GetTypeID<WheelJointConf>()) {
-        object = TypeCast<WheelJointConf>(object).UseMaxMotorTorque(value);
+        TypeCast<WheelJointConf&>(object).UseMaxMotorTorque(value);
         return;
     }
     throw std::invalid_argument("SetMaxMotorTorque not supported by joint type!");
@@ -431,19 +431,19 @@ void SetFrequency(Joint& object, Frequency value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<DistanceJointConf>()) {
-        object = TypeCast<DistanceJointConf>(object).UseFrequency(value);
+        TypeCast<DistanceJointConf&>(object).UseFrequency(value);
         return;
     }
     if (type == GetTypeID<TargetJointConf>()) {
-        object = TypeCast<TargetJointConf>(object).UseFrequency(value);
+        TypeCast<TargetJointConf&>(object).UseFrequency(value);
         return;
     }
     if (type == GetTypeID<WeldJointConf>()) {
-        object = TypeCast<WeldJointConf>(object).UseFrequency(value);
+        TypeCast<WeldJointConf&>(object).UseFrequency(value);
         return;
     }
     if (type == GetTypeID<WheelJointConf>()) {
-        object = TypeCast<WheelJointConf>(object).UseFrequency(value);
+        TypeCast<WheelJointConf&>(object).UseFrequency(value);
         return;
     }
     throw std::invalid_argument("SetFrequency not supported by joint type!");
@@ -474,7 +474,7 @@ void SetTarget(Joint& object, Length2 value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<TargetJointConf>()) {
-        object = TypeCast<TargetJointConf>(object).UseTarget(value);
+        TypeCast<TargetJointConf&>(object).UseTarget(value);
         return;
     }
     throw std::invalid_argument("SetTarget not supported by joint type");
@@ -502,7 +502,7 @@ void SetLinearLimits(Joint& object, Length lower, Length upper)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<PrismaticJointConf>()) {
-        object = TypeCast<PrismaticJointConf>(object).UseLowerLength(lower).UseUpperLength(upper);
+        TypeCast<PrismaticJointConf&>(object).UseLowerLength(lower).UseUpperLength(upper);
         return;
     }
     throw std::invalid_argument("SetLinearLimits not supported by joint type!");
@@ -530,7 +530,7 @@ void SetAngularLimits(Joint& object, Angle lower, Angle upper)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<RevoluteJointConf>()) {
-        object = TypeCast<RevoluteJointConf>(object).UseLowerAngle(lower).UseUpperAngle(upper);
+        TypeCast<RevoluteJointConf&>(object).UseLowerAngle(lower).UseUpperAngle(upper);
         return;
     }
     throw std::invalid_argument("SetAngularLimits not supported by joint type!");
@@ -552,11 +552,11 @@ void EnableLimit(Joint& object, bool value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<RevoluteJointConf>()) {
-        object = TypeCast<RevoluteJointConf>(object).UseEnableLimit(value);
+        TypeCast<RevoluteJointConf&>(object).UseEnableLimit(value);
         return;
     }
     if (type == GetTypeID<PrismaticJointConf>()) {
-        object = TypeCast<PrismaticJointConf>(object).UseEnableLimit(value);
+        TypeCast<PrismaticJointConf&>(object).UseEnableLimit(value);
         return;
     }
     throw std::invalid_argument("EnableLimit not supported by joint type!");
@@ -581,15 +581,15 @@ void EnableMotor(Joint& object, bool value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<RevoluteJointConf>()) {
-        object = TypeCast<RevoluteJointConf>(object).UseEnableMotor(value);
+        TypeCast<RevoluteJointConf&>(object).UseEnableMotor(value);
         return;
     }
     if (type == GetTypeID<PrismaticJointConf>()) {
-        object = TypeCast<PrismaticJointConf>(object).UseEnableMotor(value);
+        TypeCast<PrismaticJointConf&>(object).UseEnableMotor(value);
         return;
     }
     if (type == GetTypeID<WheelJointConf>()) {
-        object = TypeCast<WheelJointConf>(object).UseEnableMotor(value);
+        TypeCast<WheelJointConf&>(object).UseEnableMotor(value);
         return;
     }
     throw std::invalid_argument("EnableMotor not supported by joint type!");
@@ -608,7 +608,7 @@ void SetLinearOffset(Joint& object, Length2 value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<MotorJointConf>()) {
-        object = TypeCast<MotorJointConf>(object).UseLinearOffset(value);
+        TypeCast<MotorJointConf&>(object).UseLinearOffset(value);
         return;
     }
     throw std::invalid_argument("SetLinearOffset not supported by joint type!");
@@ -627,7 +627,7 @@ void SetAngularOffset(Joint& object, Angle value)
 {
     const auto type = GetType(object);
     if (type == GetTypeID<MotorJointConf>()) {
-        object = TypeCast<MotorJointConf>(object).UseAngularOffset(value);
+        TypeCast<MotorJointConf&>(object).UseAngularOffset(value);
         return;
     }
     throw std::invalid_argument("SetAngularOffset not supported by joint type!");

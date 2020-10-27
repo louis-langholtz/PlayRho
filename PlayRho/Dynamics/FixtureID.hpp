@@ -30,7 +30,8 @@ namespace playrho {
 using FixtureID = strongtype::IndexingNamedType<FixtureCounter, struct FixtureIdentifier>;
 
 /// @brief Invalid fixture ID value.
-constexpr auto InvalidFixtureID = static_cast<FixtureID>(static_cast<FixtureID::underlying_type>(-1));
+constexpr auto InvalidFixtureID =
+    static_cast<FixtureID>(static_cast<FixtureID::underlying_type>(-1));
 
 /// @brief Gets an invalid value for the FixtureID type.
 template <>
@@ -46,6 +47,6 @@ constexpr bool IsValid(const FixtureID& value) noexcept
     return value != GetInvalid<FixtureID>();
 }
 
-}
+} // namespace playrho
 
 #endif // PLAYRHO_DYNAMICS_FIXTUREID_HPP

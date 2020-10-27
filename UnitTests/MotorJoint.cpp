@@ -27,6 +27,8 @@
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 
@@ -121,8 +123,8 @@ TEST(MotorJoint, Construction)
 TEST(MotorJoint, ShiftOrigin)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     auto def = GetMotorJointConf(world, b0, b1);
     const auto joint = CreateJoint(world, def);
@@ -133,8 +135,8 @@ TEST(MotorJoint, ShiftOrigin)
 TEST(MotorJoint, SetCorrectionFactor)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto def = GetMotorJointConf(world, b0, b1);
     const auto jointID = CreateJoint(world, def);
@@ -154,8 +156,8 @@ TEST(MotorJoint, SetCorrectionFactor)
 TEST(MotorJoint, GetMotorJointConf)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
     
     auto def = GetMotorJointConf(world, b0, b1);
     const auto jointID = CreateJoint(world, def);
@@ -190,10 +192,10 @@ TEST(MotorJoint, WithDynamicCircles)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(b1, circle);
-    world.CreateFixture(b2, circle);
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    CreateFixture(world, b1, circle);
+    CreateFixture(world, b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetMotorJointConf(world, b1, b2);
     const auto joint = CreateJoint(world, jd);
@@ -203,7 +205,7 @@ TEST(MotorJoint, WithDynamicCircles)
 
     auto stepConf = StepConf{};
     
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
@@ -212,7 +214,7 @@ TEST(MotorJoint, WithDynamicCircles)
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
     
     stepConf.doWarmStart = false;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / Meter}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / Meter}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / Meter}), +1.0, 0.01);
@@ -227,10 +229,10 @@ TEST(MotorJoint, SetLinearOffset)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(b1, circle);
-    world.CreateFixture(b2, circle);
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    CreateFixture(world, b1, circle);
+    CreateFixture(world, b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetMotorJointConf(world, b1, b2);
     const auto joint = CreateJoint(world, jd);
@@ -251,10 +253,10 @@ TEST(MotorJoint, SetAngularOffset)
     auto world = World{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(b1, circle);
-    world.CreateFixture(b2, circle);
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    CreateFixture(world, b1, circle);
+    CreateFixture(world, b2, circle);
     //const auto anchor = Length2(2_m, 1_m);
     const auto jd = GetMotorJointConf(world, b1, b2);
     const auto joint = CreateJoint(world, jd);

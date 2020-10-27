@@ -24,7 +24,6 @@
 
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
 
 #include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/PulleyJointConf.hpp>
@@ -170,20 +169,20 @@ void Dump(const Joint& joint, std::size_t index, const World& world)
     }
 }
 
-void Dump(const Fixture& fixture, std::size_t bodyIndex)
+void Dump(const FixtureConf& fixture, std::size_t bodyIndex)
 {
     log("    FixtureConf fd;\n");
-    log("    fd.friction = %.15lef;\n", static_cast<double>(fixture.GetFriction()));
-    log("    fd.restitution = %.15lef;\n", static_cast<double>(fixture.GetRestitution()));
+    log("    fd.friction = %.15lef;\n", static_cast<double>(GetFriction(fixture)));
+    log("    fd.restitution = %.15lef;\n", static_cast<double>(GetRestitution(fixture)));
     log("    fd.density = %.15lef;\n",
-        static_cast<double>(Real{fixture.GetDensity() * SquareMeter / Kilogram}));
-    log("    fd.isSensor = bool(%d);\n", fixture.IsSensor());
+        static_cast<double>(Real{GetDensity(fixture) * SquareMeter / Kilogram}));
+    log("    fd.isSensor = bool(%d);\n", IsSensor(fixture));
     log("    fd.filter.categoryBits = Filter::bits_type(%u);\n",
-        fixture.GetFilterData().categoryBits);
+        GetFilterData(fixture).categoryBits);
     log("    fd.filter.maskBits = Filter::bits_type(%u);\n",
-        fixture.GetFilterData().maskBits);
+        GetFilterData(fixture).maskBits);
     log("    fd.filter.groupIndex = Filter::index_type(%d);\n",
-        fixture.GetFilterData().groupIndex);
+        GetFilterData(fixture).groupIndex);
 #if 0
     const auto shape = fixture.GetShape();
     std::ostringstream os;

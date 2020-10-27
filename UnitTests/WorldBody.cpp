@@ -168,82 +168,6 @@ TEST(WorldBody, SetEnabledCausesIsEnabled)
     }
 }
 
-TEST(WorldBody, SetEnabled)
-{
-    auto stepConf = StepConf{};
-
-    auto world = World{};
-    ASSERT_EQ(GetFixturesForProxies(world).size(), 0u);
-    ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    const auto body0 = CreateBody(world);
-    const auto body1 = CreateBody(world);
-    const auto valid_shape = Shape{DiskShapeConf(1_m)};
-
-    const auto fixture0 = CreateFixture(world, body0, valid_shape, FixtureConf{});
-    const auto fixture1 = CreateFixture(world, body1, valid_shape, FixtureConf{});
-    ASSERT_NE(fixture0, InvalidFixtureID);
-    ASSERT_NE(fixture1, InvalidFixtureID);
-
-    ASSERT_TRUE(IsEnabled(world, body0));
-    ASSERT_EQ(GetProxyCount(world, fixture0), 0u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 2u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(Step(world, stepConf));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    // Test that set enabled to flag already set is not a toggle
-    EXPECT_NO_THROW(SetEnabled(world, body0, true));
-    EXPECT_TRUE(IsEnabled(world, body0));
-    EXPECT_NO_THROW(SetEnabled(world, body1, false));
-    EXPECT_FALSE(IsEnabled(world, body1));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(SetEnabled(world, body0, false));
-    EXPECT_FALSE(IsEnabled(world, body0));
-    EXPECT_NO_THROW(SetEnabled(world, body1, true));
-    EXPECT_TRUE(IsEnabled(world, body1));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 3u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(SetEnabled(world, body0, true));
-    EXPECT_TRUE(IsEnabled(world, body0));
-    EXPECT_NO_THROW(SetEnabled(world, body1, false));
-    EXPECT_FALSE(IsEnabled(world, body1));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 5u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(SetEnabled(world, body0, false));
-    EXPECT_FALSE(IsEnabled(world, body0));
-    EXPECT_NO_THROW(SetEnabled(world, body1, true));
-    EXPECT_TRUE(IsEnabled(world, body1));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 7u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(Step(world, stepConf));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 0u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(SetEnabled(world, body0, true));
-    EXPECT_TRUE(IsEnabled(world, body0));
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-
-    EXPECT_NO_THROW(Step(world, stepConf));
-    EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
-    EXPECT_EQ(GetFixturesForProxies(world).size(), 0u);
-    EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
-}
-
 TEST(WorldBody, SetFixedRotation)
 {
     auto world = World{};
@@ -297,14 +221,9 @@ TEST(WorldBody, CreateAndDestroyFixture)
         ResetMassData(world, body);
         EXPECT_FALSE(IsMassDataDirty(world, body));
 
-        ASSERT_EQ(GetFixturesForProxies(world).size(), std::size_t{1});
-        EXPECT_EQ(*GetFixturesForProxies(world).begin(), fixture);
-
         EXPECT_TRUE(world.Destroy(fixture, false));
         EXPECT_TRUE(GetFixtures(world, body).empty());
         EXPECT_TRUE(IsMassDataDirty(world, body));
-
-        EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t(0));
 
         ResetMassData(world, body);
         EXPECT_FALSE(IsMassDataDirty(world, body));
@@ -638,6 +557,32 @@ TEST(WorldBody, ApplyTorque)
               AngularAcceleration(Real(1.5) * Radian / SquareSecond));
 }
 
+TEST(WorldBody, ApplyLinearImpulse)
+{
+    auto world = World{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    ASSERT_EQ(GetMass(world, body), 4_kg);
+    auto value = Momentum2{40_Ns, 0_Ns};
+    EXPECT_NO_THROW(ApplyLinearImpulse(world, body, value, GetWorldCenter(world, body)));
+    EXPECT_EQ(GetX(GetVelocity(world, body).linear), LinearVelocity(10_mps));
+    EXPECT_EQ(GetY(GetVelocity(world, body).linear), LinearVelocity(0_mps));
+    EXPECT_EQ(GetVelocity(world, body).angular, AngularVelocity(0_rpm));
+}
+
+TEST(WorldBody, ApplyAngularImpulse)
+{
+    auto world = World{};
+    const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
+    CreateFixture(world, body, Shape{PolygonShapeConf(1_m, 1_m).UseDensity(1_kgpm2)}, FixtureConf{});
+    ASSERT_EQ(GetMass(world, body), 4_kg);
+    auto value = AngularMomentum{Real(8) * NewtonMeterSecond};
+    EXPECT_NO_THROW(ApplyAngularImpulse(world, body, value));
+    EXPECT_EQ(GetX(GetVelocity(world, body).linear), LinearVelocity(0_mps));
+    EXPECT_EQ(GetY(GetVelocity(world, body).linear), LinearVelocity(0_mps));
+    EXPECT_EQ(GetVelocity(world, body).angular, AngularVelocity(Real(3) * RadianPerSecond));
+}
+
 TEST(WorldBody, CreateLotsOfFixtures)
 {
     auto bd = BodyConf{};
@@ -884,4 +829,39 @@ TEST(WorldBody, SetAwake)
         EXPECT_NO_THROW(SetAwake(world, body));
         EXPECT_FALSE(IsAwake(world, body)); // because Static, !IsSpeedable
     }
+}
+
+TEST(WorldBody, GetBodyRange)
+{
+    auto world = World{};
+    auto body = InvalidBodyID;
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(0));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+
+    ASSERT_NO_THROW(body = CreateBody(world));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(1));
+    for (auto i = 1; i < 10; ++i) {
+        ASSERT_NO_THROW(CreateBody(world));
+    }
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(10));
+
+    ASSERT_NO_THROW(Destroy(world, body));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(10));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(9));
+
+    ASSERT_NO_THROW(body = CreateBody(world));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(10));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(10));
+
+    ASSERT_NO_THROW(Clear(world));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(0));
+
+    ASSERT_NO_THROW(body = CreateBody(world));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(1));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(1));
+
+    ASSERT_NO_THROW(Destroy(world, body));
+    EXPECT_EQ(GetBodyCount(world), BodyCounter(0));
+    EXPECT_EQ(GetBodyRange(world), BodyCounter(1));
 }

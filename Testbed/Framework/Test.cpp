@@ -237,7 +237,7 @@ static bool Draw(Drawer& drawer, const World& world, BodyID body,
     auto found = false;
     const auto bodyColor = GetColor(world, body);
     const auto selectedColor = Brighten(bodyColor, 1.3f);
-    for (const auto& fixtureID: world.GetFixtures(body))
+    for (const auto& fixtureID: GetFixtures(world, body))
     {
         auto color = bodyColor;
         if (Test::Contains(selected, fixtureID))
@@ -300,8 +300,7 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
 {
     auto found = false;
 
-    if (settings.drawShapes)
-    {
+    if (settings.drawShapes) {
         const auto drawLabels = [&]() {
             const auto useField = m_neededSettings & (1u << NeedDrawLabelsField);
             return useField? m_settings.drawLabels: settings.drawLabels;
@@ -311,14 +310,11 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
             return useField? m_settings.drawSkins: settings.drawSkins;
         }();
         
-        for (const auto& b: world.GetBodies())
-        {
-            if (Draw(drawer, world, b, drawSkins, selected))
-            {
+        for (const auto& b: world.GetBodies()) {
+            if (Draw(drawer, world, b, drawSkins, selected)) {
                 found = true;
             }
-            if (drawLabels)
-            {
+            if (drawLabels) {
                 // Use center of mass instead of body center since body center may not
                 drawer.DrawString(GetWorldCenter(world, b), Drawer::Center, "%d",
                                   GetWorldIndex(world, b));
@@ -326,20 +322,16 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
         }
     }
 
-    if (settings.drawJoints)
-    {
-        for (const auto& j: world.GetJoints())
-        {
+    if (settings.drawJoints) {
+        for (const auto& j: world.GetJoints()) {
             Draw(drawer, world, j);
         }
     }
 
-    if (settings.drawAABBs)
-    {
+    if (settings.drawAABBs) {
         const auto color = Color{0.9f, 0.3f, 0.9f};
         const auto root = world.GetTree().GetRootIndex();
-        if (root != DynamicTree::GetInvalidSize())
-        {
+        if (root != DynamicTree::GetInvalidSize()) {
             const auto worldAabb = world.GetTree().GetAABB(root);
             Draw(drawer, worldAabb, color);
             Query(world.GetTree(), worldAabb, [&](DynamicTree::Size id) {
@@ -349,13 +341,11 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
         }
     }
 
-    if (settings.drawCOMs)
-    {
+    if (settings.drawCOMs) {
         const auto k_axisScale = 0.4_m;
         const auto red = Color{1.0f, 0.0f, 0.0f};
         const auto green = Color{0.0f, 1.0f, 0.0f};
-        for (const auto& b: world.GetBodies())
-        {
+        for (const auto& b: world.GetBodies()) {
             const auto massScale = std::pow(static_cast<float>(StripUnit(GetMass(world, b))), 1.0f/3);
             auto xf = GetTransformation(world, b);
             xf.p = GetWorldCenter(world, b);
@@ -1156,7 +1146,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     {
         if ((settings.dt == 0) && m_targetJoint != InvalidJointID)
         {
-            const auto bodyB = m_world.GetBodyB(m_targetJoint);
+            const auto bodyB = GetBodyB(m_world, m_targetJoint);
             const auto anchorB = GetAnchorB(m_world, m_targetJoint);
             const auto centerB = GetLocation(m_world, bodyB);
             const auto destB = GetTarget(m_world, m_targetJoint);

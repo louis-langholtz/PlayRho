@@ -19,12 +19,16 @@
  */
 
 #include "UnitTests.hpp"
+
 #include <PlayRho/Collision/WorldManifold.hpp>
+
 #include <PlayRho/Collision/Manifold.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
 
@@ -167,10 +171,10 @@ TEST(WorldManifold, GetForContact)
 {
     const auto shape = Shape{DiskShapeConf{}};
     auto world = World{};
-    const auto bA = world.CreateBody();
-    const auto bB = world.CreateBody();
-    const auto fA = world.CreateFixture(bA, shape);
-    const auto fB = world.CreateFixture(bB, shape);
+    const auto bA = CreateBody(world);
+    const auto bB = CreateBody(world);
+    const auto fA = CreateFixture(world, bA, shape);
+    const auto fB = CreateFixture(world, bB, shape);
     const auto c = Contact{bA, fA, 0u, bB, fB, 0u};
     const auto wm = GetWorldManifold(world, c, Manifold{});
     EXPECT_EQ(wm.GetPointCount(), decltype(wm.GetPointCount()){0});

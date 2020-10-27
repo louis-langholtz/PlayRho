@@ -27,6 +27,7 @@
 #include <PlayRho/Dynamics/WorldJoint.hpp>
 
 #include <type_traits>
+#include <any>
 
 using namespace playrho;
 using namespace playrho::d2;
@@ -133,8 +134,73 @@ TEST(Joint, LimitStateToStringFF)
     EXPECT_EQ(names.size(), decltype(names.size()){4});
 }
 
+namespace {
+
+struct JointTester {
+    int number = 0;
+};
+
+bool ShiftOrigin(JointTester&, Length2) noexcept
+{
+    return false;
+}
+
+void InitVelocity(JointTester&, std::vector<BodyConstraint>&, const StepConf&,
+                  const ConstraintSolverConf&)
+{
+}
+
+bool SolveVelocity(JointTester&, std::vector<BodyConstraint>&, const StepConf&)
+{
+    return true;
+}
+
+bool SolvePosition(const JointTester&, std::vector<BodyConstraint>&, const ConstraintSolverConf&)
+{
+    return true;
+}
+
+} // namespace
+
 TEST(Joint, TypeCast)
 {
-    const auto joint = Joint{};
-    EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
+    std::any test;
+    {
+        const auto joint = Joint{};
+        auto value = static_cast<const int*>(nullptr);
+        EXPECT_NO_THROW(value = TypeCast<const int>(&joint));
+        EXPECT_EQ(value, nullptr);
+    }
+    {
+        auto joint = Joint{};
+        auto value = static_cast<int*>(nullptr);
+        EXPECT_NO_THROW(value = TypeCast<int>(&joint));
+        EXPECT_EQ(value, nullptr);
+    }
+    {
+        const auto joint = Joint{};
+        EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
+        EXPECT_THROW(TypeCast<const int>(joint), std::bad_cast);
+    }
+    {
+        auto joint = Joint{};
+        EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
+        EXPECT_THROW(TypeCast<const int>(joint), std::bad_cast);
+    }
+    {
+        auto number = 10;
+        const auto original = JointTester{number};
+        EXPECT_EQ(original.number, number);
+        auto joint = Joint{original};
+        EXPECT_THROW(TypeCast<int>(joint), std::bad_cast);
+        auto value = JointTester{};
+        EXPECT_NO_THROW(value = TypeCast<JointTester>(joint));
+        EXPECT_EQ(value.number, number);
+        EXPECT_NO_THROW(TypeCast<JointTester&>(joint).number = 3);
+        EXPECT_EQ(TypeCast<const JointTester&>(joint).number, 3);
+        EXPECT_NO_THROW(value = TypeCast<JointTester>(joint));
+        EXPECT_EQ(value.number, 3);
+        EXPECT_NO_THROW(TypeCast<JointTester>(&joint)->number = 4);
+        EXPECT_EQ(TypeCast<const JointTester>(joint).number, 4);
+    }
 }

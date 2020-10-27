@@ -26,7 +26,6 @@
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Dynamics/Body.hpp> // for WorldImpl not being incomplete
-#include <PlayRho/Dynamics/Fixture.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Dynamics/Joints/Joint.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Dynamics/Contacts/Contact.hpp> // for WorldImpl not being incomplete
 #include <PlayRho/Collision/Manifold.hpp> // for WorldImpl not being incomplete
@@ -109,12 +108,6 @@ GetBodiesForProxies(const WorldImpl& world) noexcept
     return world.GetBodiesForProxies();
 }
 
-SizedRange<std::vector<FixtureID>::const_iterator>
-GetFixturesForProxies(const WorldImpl& world) noexcept
-{
-    return world.GetFixturesForProxies();
-}
-
 SizedRange<std::vector<JointID>::const_iterator> GetJoints(const WorldImpl& world) noexcept
 {
     return world.GetJoints();
@@ -169,6 +162,12 @@ const DynamicTree& GetTree(const WorldImpl& world) noexcept
 FixtureCounter GetShapeCount(const WorldImpl& world) noexcept
 {
     return world.GetShapeCount();
+}
+
+SizedRange<std::vector<FixtureID>::const_iterator>
+GetFixturesForProxies(const WorldImpl& world) noexcept
+{
+    return world.GetFixturesForProxies();
 }
 
 } // namespace d2

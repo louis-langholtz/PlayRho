@@ -37,6 +37,9 @@ namespace playrho {
         /// @brief Value type alias.
         using value_type = decltype(*std::declval<iterator_type>());
 
+        /// @brief Default constructor.
+        constexpr Range() noexcept = default;
+
         /// @brief Initializing constructor.
         constexpr Range(iterator_type iter_begin, iterator_type iter_end) noexcept:
         	m_begin{iter_begin}, m_end{iter_end}
@@ -63,8 +66,8 @@ namespace playrho {
         }
 
     private:
-        iterator_type m_begin; ///< Begin iterator.
-        iterator_type m_end; ///< End iterator.
+        iterator_type m_begin{}; ///< Begin iterator.
+        iterator_type m_end{}; ///< End iterator.
     };
 
     /// @brief Template sized range value class.
@@ -74,6 +77,9 @@ namespace playrho {
     public:
         /// @brief Size type.
         using size_type = std::size_t;
+
+        /// @brief Default constructor.
+        constexpr SizedRange() noexcept = default;
 
         /// @brief Initializing constructor.
         constexpr SizedRange(typename Range<IT>::iterator_type iter_begin,
@@ -91,7 +97,7 @@ namespace playrho {
         }
 
     private:
-        size_type m_size; ///< Size in number of elements in the range.
+        size_type m_size{}; ///< Size in number of elements in the range.
     };
 
 } // namespace playrho

@@ -1524,24 +1524,21 @@ static void EntityUI(World& world, BodyID b, const FixtureSet& selectedFixtures)
     EntityUI(world, b);
     {
         const auto fixtures = GetFixtures(world, b);
-        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", size(fixtures)))
-        {
+        if (ImGui::TreeNodeEx("Fixtures", 0, "Fixtures (%lu)", size(fixtures))) {
             CollectionUI(world, fixtures, selectedFixtures);
             ImGui::TreePop();
         }
     }
     {
         const auto joints = GetJoints(world, b);
-        if (ImGui::TreeNodeEx("Joints", 0, "Joints (%lu)", size(joints)))
-        {
+        if (ImGui::TreeNodeEx("Joints", 0, "Joints (%lu)", size(joints))) {
             CollectionUI(joints);
             ImGui::TreePop();
         }
     }
     {
         const auto contacts = GetContacts(world, b);
-        if (ImGui::TreeNodeEx("Contacts", 0, "Contacts (%lu)", size(contacts)))
-        {
+        if (ImGui::TreeNodeEx("Contacts", 0, "Contacts (%lu)", size(contacts))) {
             CollectionUI(world, contacts, false);
             ImGui::TreePop();
         }
@@ -2044,7 +2041,7 @@ static void EntityUI(World& world, JointID e)
     }
     ImGui::LabelText("Ang. Reaction (N·m·s)", "%.2e",
                      static_cast<double>(Real{GetAngularReaction(joint) / NewtonMeterSecond}));
-    const auto type = world.GetType(e);
+    const auto type = GetType(world, e);
     if (type == GetTypeID<DistanceJointConf>()) {
         auto conf = TypeCast<DistanceJointConf>(joint);
         EntityUI(conf, bodyRange);

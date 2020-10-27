@@ -97,7 +97,7 @@ void World::Destroy(JointID id)
 {
     ::playrho::d2::Destroy(*m_impl, id);
 }
-    
+
 StepStats World::Step(const StepConf& conf)
 {
     return ::playrho::d2::Step(*m_impl, conf);
@@ -121,11 +121,6 @@ SizedRange<World::Bodies::const_iterator> World::GetBodies() const noexcept
 SizedRange<World::Bodies::const_iterator> World::GetBodiesForProxies() const noexcept
 {
     return ::playrho::d2::GetBodiesForProxies(*m_impl);
-}
-
-SizedRange<World::Fixtures::const_iterator> World::GetFixturesForProxies() const noexcept
-{
-    return ::playrho::d2::GetFixturesForProxies(*m_impl);
 }
 
 SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
@@ -223,19 +218,9 @@ const DynamicTree& World::GetTree() const noexcept
     return ::playrho::d2::GetTree(*m_impl);
 }
 
-Filter World::GetFilterData(FixtureID id) const
-{
-    return ::playrho::d2::GetFilterData(*m_impl, id);
-}
-
 void World::Refilter(FixtureID id)
 {
     ::playrho::d2::Refilter(*m_impl, id);
-}
-
-void World::SetFilterData(FixtureID id, const Filter& filter)
-{
-    ::playrho::d2::SetFilterData(*m_impl, id, filter);
 }
 
 void World::SetType(BodyID id, BodyType type)
@@ -243,10 +228,19 @@ void World::SetType(BodyID id, BodyType type)
     ::playrho::d2::SetType(*m_impl, id, type);
 }
 
-FixtureID World::CreateFixture(BodyID body, const Shape& shape, const FixtureConf& def,
-                              bool resetMassData)
+FixtureID World::CreateFixture(const FixtureConf& def, bool resetMassData)
 {
-    return ::playrho::d2::CreateFixture(*m_impl, body, shape, def, resetMassData);
+    return ::playrho::d2::CreateFixture(*m_impl, def, resetMassData);
+}
+
+const FixtureConf& World::GetFixture(FixtureID id) const
+{
+    return ::playrho::d2::GetFixture(*m_impl, id);
+}
+
+void World::SetFixture(FixtureID id, const FixtureConf& value)
+{
+    ::playrho::d2::SetFixture(*m_impl, id, value);
 }
 
 bool World::Destroy(FixtureID id, bool resetMassData)
@@ -314,36 +308,6 @@ BodyConf World::GetBodyConf(BodyID id) const
     return ::playrho::d2::GetBodyConf(*m_impl, id);
 }
 
-BodyID World::GetBody(FixtureID id) const
-{
-    return ::playrho::d2::GetBody(*m_impl, id);
-}
-
-Shape World::GetShape(FixtureID id) const
-{
-    return ::playrho::d2::GetShape(*m_impl, id);
-}
-
-void World::SetSensor(FixtureID id, bool value)
-{
-    ::playrho::d2::SetSensor(*m_impl, id, value);
-}
-
-bool World::IsSensor(FixtureID id) const
-{
-    return ::playrho::d2::IsSensor(*m_impl, id);
-}
-
-AreaDensity World::GetDensity(FixtureID id) const
-{
-    return ::playrho::d2::GetDensity(*m_impl, id);
-}
-
-const World::FixtureProxies& World::GetProxies(FixtureID id) const
-{
-    return ::playrho::d2::GetProxies(*m_impl, id);
-}
-
 Angle World::GetAngle(BodyID id) const
 {
     return ::playrho::d2::GetAngle(*m_impl, id);
@@ -389,11 +353,6 @@ void World::SetAwake(BodyID id)
     ::playrho::d2::SetAwake(*m_impl, id);
 }
 
-void World::SetAwake(JointID id)
-{
-    ::playrho::d2::SetAwake(*m_impl, id);
-}
-
 bool World::IsAwake(ContactID id) const
 {
     return ::playrho::d2::IsAwake(*m_impl, id);
@@ -430,11 +389,6 @@ void World::SetFixedRotation(BodyID id, bool value)
 }
 
 BodyType World::GetType(BodyID id) const
-{
-    return ::playrho::d2::GetType(*m_impl, id);
-}
-
-JointType World::GetType(JointID id) const
 {
     return ::playrho::d2::GetType(*m_impl, id);
 }
@@ -477,46 +431,6 @@ const Joint& World::GetJoint(JointID id) const
 void World::SetJoint(JointID id, const Joint& def)
 {
     ::playrho::d2::SetJoint(*m_impl, id, def);
-}
-
-bool World::GetCollideConnected(JointID id) const
-{
-    return ::playrho::d2::GetCollideConnected(*m_impl, id);
-}
-
-BodyID World::GetBodyA(JointID id) const
-{
-    return ::playrho::d2::GetBodyA(*m_impl, id);
-}
-
-BodyID World::GetBodyB(JointID id) const
-{
-    return ::playrho::d2::GetBodyB(*m_impl, id);
-}
-
-Length2 World::GetLocalAnchorA(JointID id) const
-{
-    return ::playrho::d2::GetLocalAnchorA(*m_impl, id);
-}
-
-Length2 World::GetLocalAnchorB(JointID id) const
-{
-    return ::playrho::d2::GetLocalAnchorB(*m_impl, id);
-}
-
-Momentum2 World::GetLinearReaction(JointID id) const
-{
-    return ::playrho::d2::GetLinearReaction(*m_impl, id);
-}
-
-AngularMomentum World::GetAngularReaction(JointID id) const
-{
-    return ::playrho::d2::GetAngularReaction(*m_impl, id);
-}
-
-Angle World::GetReferenceAngle(JointID id) const
-{
-    return ::playrho::d2::GetReferenceAngle(*m_impl, id);
 }
 
 bool World::IsTouching(ContactID id) const

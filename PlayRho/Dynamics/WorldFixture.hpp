@@ -34,7 +34,6 @@
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 
 #include <iterator>
 #include <vector>
@@ -69,11 +68,6 @@ class World;
 /// @see https://en.wikipedia.org/wiki/Create,_read,_update_and_delete.
 /// @{
 
-/// @copydoc World::GetFixturesForProxies
-/// @relatedalso World
-SizedRange<std::vector<FixtureID>::const_iterator>
-GetFixturesForProxies(const World& world) noexcept;
-
 /// @brief Gets the count of fixtures in the given world.
 /// @throws WrongState if called while the world is "locked".
 /// @relatedalso World
@@ -81,10 +75,16 @@ FixtureCounter GetFixtureCount(const World& world) noexcept;
 
 /// @brief Creates a fixture within the specified world.
 /// @throws WrongState if called while the world is "locked".
+/// @throws std::out_of_range If given an invalid body identifier in the configuration.
+/// @relatedalso World
+FixtureID CreateFixture(World& world, FixtureConf def = FixtureConf{}, bool resetMassData = true);
+
+/// @brief Creates a fixture within the specified world.
+/// @throws WrongState if called while the world is "locked".
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
 FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def = GetDefaultFixtureConf(),
+                        FixtureConf def = FixtureConf{},
                         bool resetMassData = true);
 
 /// @brief Destroys the identified fixture.
@@ -93,11 +93,18 @@ FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
 /// @relatedalso World
 bool Destroy(World& world, FixtureID id, bool resetMassData = true);
 
-/// @copydoc World::GetFilterData
+/// @brief Gets the filter data for the identified fixture.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @see SetFilterData.
 /// @relatedalso World
 Filter GetFilterData(const World& world, FixtureID id);
 
-/// @copydoc World::SetFilterData
+/// @brief Sets the contact filtering data.
+/// @note This won't update contacts until the next time step when either parent body
+///    is speedable and awake.
+/// @note This automatically calls <code>Refilter</code>.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @see GetFilterData.
 /// @relatedalso World
 void SetFilterData(World& world, FixtureID id, const Filter& filter);
 
@@ -120,7 +127,7 @@ Transformation GetTransformation(const World& world, FixtureID id);
 /// @brief Gets the shape associated with the identified fixture.
 /// @throws std::out_of_range If given an invalid fixture identifier.
 /// @relatedalso World
-Shape GetShape(const World& world, FixtureID id);
+const Shape& GetShape(const World& world, FixtureID id);
 
 /// @brief Gets the coefficient of friction of the specified fixture.
 /// @return Value of 0 or higher.
@@ -139,12 +146,6 @@ inline Real GetRestitution(const World& world, FixtureID id)
     return GetRestitution(GetShape(world, id));
 }
 
-/// @brief Sets whether the fixture is a sensor or not.
-/// @throws std::out_of_range If given an invalid fixture identifier.
-/// @see IsSensor.
-/// @relatedalso World
-void SetSensor(World& world, FixtureID id, bool value);
-
 /// @brief Is the specified fixture a sensor (non-solid)?
 /// @return the true if the fixture is a sensor.
 /// @throws std::out_of_range If given an invalid fixture identifier.
@@ -152,28 +153,17 @@ void SetSensor(World& world, FixtureID id, bool value);
 /// @relatedalso World
 bool IsSensor(const World& world, FixtureID id);
 
+/// @brief Sets whether the fixture is a sensor or not.
+/// @throws std::out_of_range If given an invalid fixture identifier.
+/// @see IsSensor.
+/// @relatedalso World
+void SetSensor(World& world, FixtureID id, bool value);
+
 /// @brief Gets the density of this fixture.
 /// @return Non-negative density (in mass per area).
 /// @throws std::out_of_range If given an invalid fixture identifier.
+/// @relatedalso World
 AreaDensity GetDensity(const World& world, FixtureID id);
-
-/// @brief Gets the proxies of the identified fixture.
-/// @throws std::out_of_range If given an invalid fixture identifier.
-/// @relatedalso World
-const std::vector<FixtureProxy>& GetProxies(const World& world, FixtureID id);
-
-/// @brief Gets the count of proxies of the identified fixture.
-/// @throws std::out_of_range If given an invalid fixture identifier.
-/// @relatedalso World
-inline ChildCounter GetProxyCount(const World& world, FixtureID id)
-{
-    return static_cast<ChildCounter>(std::size(GetProxies(world, id)));
-}
-
-/// @brief Gets the specified proxy of the identified fixture.
-/// @throws std::out_of_range If given an invalid fixture identifier.
-/// @relatedalso World
-const FixtureProxy& GetProxy(const World& world, FixtureID id, ChildCounter child);
 
 /// @brief Gets the mass data for the identified fixture in the given world.
 /// @throws std::out_of_range If given an invalid fixture identifier.

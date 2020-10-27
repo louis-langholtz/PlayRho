@@ -30,7 +30,8 @@ namespace playrho {
 using ContactID = strongtype::IndexingNamedType<ContactCounter, struct ContactIdentifier>;
 
 /// @brief Invalid contact ID value.
-constexpr auto InvalidContactID = static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
+constexpr auto InvalidContactID =
+    static_cast<ContactID>(static_cast<ContactID::underlying_type>(-1));
 
 /// @brief Gets an invalid value for the ContactID type.
 template <>

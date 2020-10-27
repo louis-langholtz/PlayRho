@@ -179,7 +179,7 @@ public:
     iforce2d_TopdownCar(): Test(GetTestConf())
     {
         m_gravity = LinearAcceleration2{};
-        m_world.SetFixtureDestructionListener([this](FixtureID id){
+        SetFixtureDestructionListener(m_world, [this](FixtureID id){
             if (id.get() < m_fixtureData.size()) {
                 delete m_fixtureData[id.get()];
                 m_fixtureData[id.get()] = nullptr;
@@ -294,11 +294,11 @@ public:
 
 inline TDTire::TDTire(iforce2d_TopdownCar& parent, Shape tireShape): m_parent{parent}
 {
-    m_body = m_parent.m_world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    m_body = CreateBody(m_parent.m_world, BodyConf{}.UseType(BodyType::Dynamic));
     m_parent.m_bodyData.resize(m_body.get() + 1u);
     m_parent.m_bodyData[m_body.get()] = this;
 
-    const auto fixture = m_parent.m_world.CreateFixture(m_body, tireShape);
+    const auto fixture = CreateFixture(m_parent.m_world, m_body, tireShape);
     m_parent.m_fixtureData.resize(fixture.get() + 1u);
     m_parent.m_fixtureData[fixture.get()] = new CarTireFUD();
 }
@@ -386,7 +386,7 @@ inline TDCar::TDCar(iforce2d_TopdownCar& parent): m_parent{parent}
     //create car body
     BodyConf bodyConf;
     bodyConf.type = BodyType::Dynamic;
-    m_body = m_parent.m_world.CreateBody(bodyConf);
+    m_body = CreateBody(m_parent.m_world, bodyConf);
     SetAngularDamping(m_parent.m_world, m_body, 3_Hz);
 
     Length2 vertices[8];
@@ -401,7 +401,7 @@ inline TDCar::TDCar(iforce2d_TopdownCar& parent): m_parent{parent}
     auto polygonShape = PolygonShapeConf{};
     polygonShape.Set(vertices);
     polygonShape.UseDensity(0.1_kgpm2);
-    m_parent.m_world.CreateFixture(m_body, Shape(polygonShape));
+    CreateFixture(m_parent.m_world, m_body, Shape(polygonShape));
 
     //prepare common joint parameters
     RevoluteJointConf jointConf;
@@ -430,7 +430,7 @@ inline TDCar::TDCar(iforce2d_TopdownCar& parent): m_parent{parent}
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
     jointConf.bodyB = tire->GetBody();
     jointConf.localAnchorA = Vec2(-3, 0.75f) * 1_m; // sets car relative location of tire
-    m_parent.m_world.CreateJoint(jointConf);
+    CreateJoint(m_parent.m_world, jointConf);
     m_tires.push_back(tire);
 
     //back right tire (starts at absolute 0, 0 but pulled into place by joint)
@@ -438,7 +438,7 @@ inline TDCar::TDCar(iforce2d_TopdownCar& parent): m_parent{parent}
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
     jointConf.bodyB = tire->GetBody();
     jointConf.localAnchorA = Vec2(+3, 0.75f) * 1_m; // sets car relative location of tire
-    m_parent.m_world.CreateJoint(jointConf);
+    CreateJoint(m_parent.m_world, jointConf);
     m_tires.push_back(tire);
 
     //front left tire (starts at absolute 0, 0 but pulled into place by joint)
@@ -446,7 +446,7 @@ inline TDCar::TDCar(iforce2d_TopdownCar& parent): m_parent{parent}
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
     jointConf.bodyB = tire->GetBody();
     jointConf.localAnchorA = Vec2(-3, 8.5f) * 1_m; // sets car relative location of tire
-    flJoint = m_parent.m_world.CreateJoint(jointConf);
+    flJoint = CreateJoint(m_parent.m_world, jointConf);
     m_tires.push_back(tire);
 
     //front right tire (starts at absolute 0, 0 but pulled into place by joint)
@@ -454,7 +454,7 @@ inline TDCar::TDCar(iforce2d_TopdownCar& parent): m_parent{parent}
     tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
     jointConf.bodyB = tire->GetBody();
     jointConf.localAnchorA = Vec2(+3, 8.5f) * 1_m; // sets car relative location of tire
-    frJoint = m_parent.m_world.CreateJoint(jointConf);
+    frJoint = CreateJoint(m_parent.m_world, jointConf);
     m_tires.push_back(tire);
 }
 

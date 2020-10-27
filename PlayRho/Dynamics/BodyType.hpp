@@ -27,22 +27,21 @@ namespace playrho {
 /// @note kinematic: zero mass, non-zero velocity set by user, moved by solver.
 /// @note dynamic: positive mass, non-zero velocity determined by forces, moved by solver.
 /// @see IsSpeedable(BodyType), IsAccelerable(BodyType).
-enum class BodyType
-{
+enum class BodyType {
     /// Static body type.
     /// @details
     /// Static bodies have no mass, have no forces applied to them, and aren't moved by
     /// physical processes. They are impenetrable.
     /// @note Physics applied: none.
     Static = 0,
-    
+
     /// Kinematic body type.
     /// @details
     /// Kinematic bodies: have no mass, cannot have forces applied to them,
     /// can move at set velocities (they are "speedable"), and are impenetrable.
     /// @note Physics applied: velocity.
     Kinematic,
-    
+
     /// Dynamic body type.
     /// @details
     /// Dynamic bodies are fully simulated bodies - they are "speedable" and "accelerable".

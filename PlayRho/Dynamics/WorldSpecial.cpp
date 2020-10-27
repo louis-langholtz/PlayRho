@@ -24,7 +24,6 @@
 #include <PlayRho/Dynamics/WorldImpl.hpp> // for completing WorldImpl type
 #include <PlayRho/Dynamics/WorldImplMisc.hpp>
 #include <PlayRho/Dynamics/Body.hpp> // for completing WorldImpl type
-#include <PlayRho/Dynamics/Fixture.hpp> // for completing WorldImpl type
 #include <PlayRho/Dynamics/Contacts/Contact.hpp> // for completing WorldImpl type
 #include <PlayRho/Collision/Manifold.hpp> // for completing WorldImpl type
 

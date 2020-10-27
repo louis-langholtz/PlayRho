@@ -22,16 +22,25 @@
 #include <PlayRho/Dynamics/WorldImplFixture.hpp>
 
 #include <PlayRho/Dynamics/WorldImpl.hpp>
-#include <PlayRho/Dynamics/WorldImplBody.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp> // for use of GetFixture
+#include <PlayRho/Dynamics/Body.hpp> // for use of WorldImpl::GetBody
+#include <PlayRho/Dynamics/Contacts/Contact.hpp> // for use of WorldImpl::GetBody
 
 namespace playrho {
 namespace d2 {
 
-FixtureID CreateFixture(WorldImpl& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData)
+FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def, bool resetMassData)
 {
-    return world.CreateFixture(id, shape, def, resetMassData);
+    return world.CreateFixture(def, resetMassData);
+}
+
+const FixtureConf& GetFixture(const WorldImpl& world, FixtureID id)
+{
+    return world.GetFixture(id);
+}
+
+void SetFixture(WorldImpl& world, FixtureID id, const FixtureConf& value)
+{
+    world.SetFixture(id, value);
 }
 
 bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData)
@@ -39,49 +48,31 @@ bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData)
     return world.Destroy(id, resetMassData);
 }
 
-BodyID GetBody(const WorldImpl& world, FixtureID id)
+void FlagContactsForFiltering(WorldImpl& world, FixtureID id)
 {
-    return world.GetFixture(id).GetBody();
-}
-
-Shape GetShape(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetShape();
-}
-
-bool IsSensor(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).IsSensor();
-}
-
-void SetSensor(WorldImpl& world, FixtureID id, bool value)
-{
-    world.SetSensor(id, value);
-}
-
-AreaDensity GetDensity(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetDensity();
-}
-
-const WorldImpl::FixtureProxies& GetProxies(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetProxies();
-}
-
-Filter GetFilterData(const WorldImpl& world, FixtureID id)
-{
-    return world.GetFixture(id).GetFilterData();
+    const auto& contacts = world.GetContacts(GetBody(world.GetFixture(id)));
+    std::for_each(cbegin(contacts), cend(contacts), [&world, id](const auto& ci) {
+        auto& contact = world.GetContact(std::get<ContactID>(ci));
+        if ((contact.GetFixtureA() == id) || (contact.GetFixtureB() == id)) {
+            contact.FlagForFiltering();
+        }
+    });
 }
 
 void Refilter(WorldImpl& world, FixtureID id)
 {
-    world.Refilter(id);
+    FlagContactsForFiltering(world, id);
+    world.AddProxies(world.GetProxies(id));
 }
 
-void SetFilterData(WorldImpl& world, FixtureID id, const Filter& value)
+const std::vector<ContactCounter>& GetProxies(const WorldImpl& world, FixtureID id)
 {
-    world.SetFilterData(id, value);
+    return world.GetProxies(id);
+}
+
+ContactCounter GetProxy(const WorldImpl& world, FixtureID id, ChildCounter child)
+{
+    return GetProxies(world, id).at(child);
 }
 
 } // namespace d2

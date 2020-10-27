@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -23,11 +23,14 @@
 #include <PlayRho/Collision/AABB.hpp>
 
 #include <PlayRho/Common/Vector2.hpp>
+
 #include <PlayRho/Collision/DistanceProxy.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+
+#include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
 
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 
@@ -430,8 +433,8 @@ TEST(AABB, ComputeAabbForFixtureAtBodyOrigin)
     const auto shape = DiskShapeConf{};
     const auto shapeAabb = ComputeAABB(Shape(shape), Transformation{});
     World world;
-    const auto body = world.CreateBody();
-    const auto fixture = world.CreateFixture(body, Shape{shape});
+    const auto body = CreateBody(world);
+    const auto fixture = CreateFixture(world, body, Shape{shape});
     const auto fixtureAabb = ComputeAABB(world, fixture);
     ASSERT_NE(shapeAabb, AABB{});
     EXPECT_EQ(shapeAabb, fixtureAabb);
@@ -443,8 +446,8 @@ TEST(AABB, ComputeAabbForFixtureOffFromBodyOrigin)
     const auto shapeAabb = ComputeAABB(Shape{shape}, Transformation{});
     const auto bodyLocation = Length2{2_m, 3_m};
     World world;
-    const auto body = world.CreateBody(BodyConf{}.UseLocation(bodyLocation));
-    const auto fixture = world.CreateFixture(body, Shape{shape});
+    const auto body = CreateBody(world, BodyConf{}.UseLocation(bodyLocation));
+    const auto fixture = CreateFixture(world, body, Shape{shape});
     const auto fixtureAabb = ComputeAABB(world, fixture);
     ASSERT_NE(shapeAabb, AABB{});
     ASSERT_NE(shapeAabb, fixtureAabb);
@@ -456,8 +459,8 @@ TEST(AABB, ComputeIntersectingAABBForSameFixture)
     const auto shape = DiskShapeConf{};
     const auto shapeAabb = ComputeAABB(Shape{shape}, Transformation{});
     World world;
-    const auto body = world.CreateBody();
-    const auto fixture = world.CreateFixture(body, Shape{shape});
+    const auto body = CreateBody(world);
+    const auto fixture = CreateFixture(world, body, Shape{shape});
     const auto fixtureAabb = ComputeAABB(world, fixture);
     const auto intersectingAabb = ComputeIntersectingAABB(world, fixture, 0, fixture, 0);
     ASSERT_NE(shapeAabb, AABB{});
@@ -476,10 +479,10 @@ TEST(AABB, ComputeIntersectingAABBForTwoFixtures)
     const auto bodyLocation1 = Length2{-1_m, 0_m};
 
     World world;
-    const auto body0 = world.CreateBody(BodyConf{}.UseLocation(bodyLocation0));
-    const auto body1 = world.CreateBody(BodyConf{}.UseLocation(bodyLocation1));
-    const auto fixture0 = world.CreateFixture(body0, Shape{shape});
-    const auto fixture1 = world.CreateFixture(body1, Shape{shape});
+    const auto body0 = CreateBody(world, BodyConf{}.UseLocation(bodyLocation0));
+    const auto body1 = CreateBody(world, BodyConf{}.UseLocation(bodyLocation1));
+    const auto fixture0 = CreateFixture(world, body0, Shape{shape});
+    const auto fixture1 = CreateFixture(world, body1, Shape{shape});
 
     const auto fixtureAabb0 = ComputeAABB(world, fixture0);
     const auto fixtureAabb1 = ComputeAABB(world, fixture1);
@@ -503,11 +506,11 @@ TEST(AABB, ComputeIntersectingAABBForContact)
     const auto bodyLocation1 = Length2{-1_m, 0_m};
 
     World world;
-    const auto body0 = world.CreateBody(BodyConf{}.UseLocation(bodyLocation0));
-    const auto body1 = world.CreateBody(BodyConf{}.UseLocation(bodyLocation1));
+    const auto body0 = CreateBody(world, BodyConf{}.UseLocation(bodyLocation0));
+    const auto body1 = CreateBody(world, BodyConf{}.UseLocation(bodyLocation1));
 
-    const auto fixture0 = world.CreateFixture(body0, Shape{shape});
-    const auto fixture1 = world.CreateFixture(body1, Shape{shape});
+    const auto fixture0 = CreateFixture(world, body0, Shape{shape});
+    const auto fixture1 = CreateFixture(world, body1, Shape{shape});
 
     const auto fixtureAabb0 = ComputeAABB(world, fixture0);
     const auto fixtureAabb1 = ComputeAABB(world, fixture1);

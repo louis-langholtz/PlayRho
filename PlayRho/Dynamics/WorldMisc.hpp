@@ -27,6 +27,9 @@
 
 #include <PlayRho/Common/Math.hpp>
 
+#include <PlayRho/Dynamics/FixtureID.hpp>
+#include <PlayRho/Dynamics/Joints/JointID.hpp>
+#include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/StepStats.hpp>
 
@@ -35,6 +38,42 @@ namespace d2 {
 
 class World;
 class DynamicTree;
+class Manifold;
+class ContactImpulsesList;
+
+/// @brief Sets the fixture destruction lister.
+/// @relatedalso World
+void SetFixtureDestructionListener(World& world, std::function<void(FixtureID)> listener) noexcept;
+
+/// @brief Sets the joint destruction lister.
+/// @relatedalso World
+void SetJointDestructionListener(World& world, std::function<void(JointID)> listener) noexcept;
+
+/// @brief Sets the begin-contact lister.
+/// @relatedalso World
+void SetBeginContactListener(World& world, std::function<void(ContactID)> listener) noexcept;
+
+/// @brief Sets the end-contact lister.
+/// @relatedalso World
+void SetEndContactListener(World& world, std::function<void(ContactID)> listener) noexcept;
+
+/// @brief Sets the pre-solve-contact lister.
+/// @relatedalso World
+void SetPreSolveContactListener(World& world,
+                                std::function<void(ContactID, const Manifold&)> listener) noexcept;
+
+/// @brief Sets the post-solve-contact lister.
+/// @relatedalso World
+void SetPostSolveContactListener(World& world,
+                                 std::function<void(ContactID, const ContactImpulsesList&,
+                                                    unsigned)> listener) noexcept;
+
+/// @brief Clears this world.
+/// @note This calls the joint and fixture destruction listeners (if they're set)
+///   before clearing anything.
+/// @post The contents of this world have all been destroyed and this world's internal
+///   state is reset as though it had just been constructed.
+void Clear(World& world) noexcept;
 
 /// @brief Steps the given world the specified amount.
 /// @relatedalso World

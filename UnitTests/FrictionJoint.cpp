@@ -26,6 +26,9 @@
 #include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/WorldFixture.hpp>
+#include <PlayRho/Dynamics/WorldJoint.hpp>
+#include <PlayRho/Dynamics/WorldMisc.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 
@@ -70,8 +73,8 @@ TEST(FrictionJointConf, InitializingConstructor)
     World world{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
     const auto anchor = Length2{0_m, 0_m};
     const auto def = GetFrictionJointConf(world, b1, b2, anchor);
     EXPECT_EQ(def.bodyA, b1);
@@ -83,8 +86,8 @@ TEST(FrictionJointConf, InitializingConstructor)
 TEST(FrictionJoint, Construction)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     auto def = GetFrictionJointConf(world, b0, b1, Length2{});
     const auto joint = Joint{def};
@@ -105,8 +108,8 @@ TEST(FrictionJoint, Construction)
 TEST(FrictionJoint, GetFrictionJointConf)
 {
     auto world = World{};
-    const auto b0 = world.CreateBody();
-    const auto b1 = world.CreateBody();
+    const auto b0 = CreateBody(world);
+    const auto b1 = CreateBody(world);
 
     auto def = GetFrictionJointConf(world, b0, b1, Length2{});
     const auto joint = Joint{def};
@@ -138,18 +141,18 @@ TEST(FrictionJoint, WithDynamicCircles)
     World world{};
     const auto p1 = Length2{-1_m, 0_m};
     const auto p2 = Length2{+1_m, 0_m};
-    const auto b1 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
-    const auto b2 = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
-    world.CreateFixture(b1, Shape{circle});
-    world.CreateFixture(b2, Shape{circle});
+    const auto b1 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p1));
+    const auto b2 = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(p2));
+    CreateFixture(world, b1, Shape{circle});
+    CreateFixture(world, b2, Shape{circle});
     auto jd = FrictionJointConf{};
     jd.bodyA = b1;
     jd.bodyB = b2;
-    ASSERT_NE(world.CreateJoint(Joint{jd}), InvalidJointID);
+    ASSERT_NE(CreateJoint(world, Joint{jd}), InvalidJointID);
     auto stepConf = StepConf{};
  
     stepConf.doWarmStart = true;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / 1_m}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / 1_m}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / 1_m}), +1.0, 0.01);
@@ -158,7 +161,7 @@ TEST(FrictionJoint, WithDynamicCircles)
     EXPECT_EQ(GetAngle(world, b2), 0_deg);
 
     stepConf.doWarmStart = false;
-    world.Step(stepConf);
+    Step(world, stepConf);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b1)) / 1_m}), -1.0, 0.001);
     EXPECT_NEAR(double(Real{GetY(GetLocation(world, b1)) / 1_m}), 0.0, 0.001);
     EXPECT_NEAR(double(Real{GetX(GetLocation(world, b2)) / 1_m}), +1.0, 0.01);

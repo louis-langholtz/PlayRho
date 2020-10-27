@@ -23,7 +23,6 @@
 #include <PlayRho/Collision/RayCastInput.hpp>
 #include <PlayRho/Collision/DistanceProxy.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
-#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
@@ -75,17 +74,6 @@ AABB ComputeAABB(const World& world, FixtureID id)
     return ComputeAABB(GetShape(world, id), GetTransformation(world, GetBody(world, id)));
 }
 
-AABB ComputeAABB(const World& world, const Body& body)
-{
-    auto sum = AABB{};
-    const auto xf = body.GetTransformation();
-    for (auto&& f: body.GetFixtures())
-    {
-        Include(sum, ComputeAABB(GetShape(world, f), xf));
-    }
-    return sum;
-}
-
 AABB ComputeAABB(const World& world, BodyID id)
 {
     auto sum = AABB{};
@@ -101,8 +89,8 @@ AABB ComputeIntersectingAABB(const World& world,
                              FixtureID fA, ChildCounter iA,
                              FixtureID fB, ChildCounter iB) noexcept
 {
-    const auto xA = GetTransformation(GetBodyConf(world, GetBody(world, fA)));
-    const auto xB = GetTransformation(GetBodyConf(world, GetBody(world, fB)));
+    const auto xA = GetTransformation(world, GetBody(world, fA));
+    const auto xB = GetTransformation(world, GetBody(world, fB));
     const auto childA = GetChild(GetShape(world, fA), iA);
     const auto childB = GetChild(GetShape(world, fB), iB);
     const auto aabbA = ComputeAABB(childA, xA);

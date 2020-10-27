@@ -149,9 +149,9 @@ WorldManifold GetWorldManifold(const World& world, ContactID id)
     const auto iB = GetChildIndexB(world, id);
     const auto manifold = GetManifold(world, id);
     const auto xfA = world.GetTransformation(bA);
-    const auto radiusA = GetVertexRadius(world.GetShape(fA), iA);
+    const auto radiusA = GetVertexRadius(GetShape(world.GetFixture(fA)), iA);
     const auto xfB = world.GetTransformation(bB);
-    const auto radiusB = GetVertexRadius(world.GetShape(fB), iB);
+    const auto radiusB = GetVertexRadius(GetShape(world.GetFixture(fB)), iB);
     return GetWorldManifold(manifold, xfA, radiusA, xfB, radiusB);
 }
 

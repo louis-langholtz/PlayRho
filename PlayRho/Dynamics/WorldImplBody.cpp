@@ -26,8 +26,6 @@
 #include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/Fixture.hpp>
-#include <PlayRho/Dynamics/FixtureProxy.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
@@ -194,14 +192,15 @@ InvRotInertia GetInvRotInertia(const WorldImpl& world, BodyID id)
     return world.GetBody(id).GetInvRotInertia();
 }
 
-SizedRange<WorldImpl::BodyJoints::const_iterator> GetJoints(const WorldImpl& world, BodyID id)
+SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>
+GetJoints(const WorldImpl& world, BodyID id)
 {
-    return world.GetBody(id).GetJoints();
+    return world.GetJoints(id);
 }
 
 SizedRange<WorldImpl::Fixtures::const_iterator> GetFixtures(const WorldImpl& world, BodyID id)
 {
-    return world.GetBody(id).GetFixtures();
+    return world.GetFixtures(id);
 }
 
 void DestroyFixtures(WorldImpl& world, BodyID id)
@@ -219,9 +218,10 @@ bool IsAccelerable(const WorldImpl& world, BodyID id)
     return world.GetBody(id).IsAccelerable();
 }
 
-SizedRange<WorldImpl::Contacts::const_iterator> GetContacts(const WorldImpl& world, BodyID id)
+SizedRange<std::vector<KeyedContactPtr>::const_iterator>
+GetContacts(const WorldImpl& world, BodyID id)
 {
-    return world.GetBody(id).GetContacts();
+    return world.GetContacts(id);
 }
 
 bool IsMassDataDirty(const WorldImpl& world, BodyID id)
@@ -243,13 +243,6 @@ void SetFixedRotation(WorldImpl& world, BodyID id, bool value)
         ResetMassData(world, id);
     }
 }
-
-#if 0
-bool ShouldCollide(const WorldImpl& world, BodyID lhs, BodyID rhs)
-{
-    return ShouldCollide(world.GetBody(lhs), world.GetBody(rhs), rhs);
-}
-#endif
 
 bool IsEnabled(const WorldImpl& world, BodyID id)
 {

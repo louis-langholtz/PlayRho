@@ -1,6 +1,6 @@
 /*
  * Original work Copyright (c) 2006-2011 Erin Catto http://www.box2d.org
- * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * Modified work Copyright (c) 2020 Louis Langholtz https://github.com/louis-langholtz/PlayRho
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -30,19 +30,11 @@
 #include <PlayRho/Dynamics/BodyType.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
-#include <PlayRho/Dynamics/Contacts/ContactKey.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp>
-#include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/MovementConf.hpp>
 #include <PlayRho/Collision/MassData.hpp>
 
-#include <vector>
-#include <memory>
 #include <cassert>
 #include <utility>
-#include <iterator>
-#include <functional> // for std::function
 
 namespace playrho {
 namespace d2 {
@@ -74,18 +66,6 @@ class Shape;
 class Body
 {
 public:
-    /// @brief Container type for fixtures.
-    using Fixtures = std::vector<FixtureID>;
-
-    /// @brief Keyed joint pointer.
-    using KeyedJointPtr = std::pair<BodyID, JointID>;
-
-    /// @brief Container type for joints.
-    using Joints = std::vector<KeyedJointPtr>;
-
-    /// @brief Container type for contacts.
-    using Contacts = std::vector<KeyedContactPtr>;
-
     /// @brief Initializing constructor.
     explicit Body(const BodyConf& bd = GetDefaultBodyConf()) noexcept;
 
@@ -288,17 +268,6 @@ public:
     /// @brief Does this body have fixed rotation?
     bool IsFixedRotation() const noexcept;
 
-    /// @brief Gets the range of all constant fixtures attached to this body.
-    SizedRange<Fixtures::const_iterator> GetFixtures() const noexcept;
-
-    /// @brief Gets the range of all joints attached to this body.
-    SizedRange<Joints::const_iterator> GetJoints() const noexcept;
-
-    /// @brief Gets the container of all contacts attached to this body.
-    /// @warning This collection changes during the time step and you may
-    ///   miss some collisions if you don't use <code>ContactListener</code>.
-    SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
-
     /// @brief Gets whether the mass data for this body is "dirty".
     bool IsMassDataDirty() const noexcept;
 
@@ -322,39 +291,6 @@ public:
 
     /// @brief Unsets the enabled flag.
     void UnsetEnabledFlag() noexcept;
-
-    /// @brief Inserts the given key and contact.
-    bool Insert(ContactKey key, ContactID contact);
-
-    /// @brief Inserts the given joint into this body's joints list.
-    bool Insert(JointID joint, BodyID other);
-
-    /// @brief Erases the given contact from this body's contacts list.
-    bool Erase(ContactID contact);
-
-    /// @brief Erases the contacts that the given function returns true for.
-    void Erase(const std::function<bool(ContactID)>& callback);
-
-    /// @brief Erases the given joint from this body's joints list.
-    bool Erase(JointID joint);
-
-    /// @brief Clears this body's contacts list.
-    void ClearContacts() noexcept
-    {
-        m_contacts.clear();
-    }
-
-    /// @brief Clears this body's joints list.
-    void ClearJoints() noexcept
-    {
-        m_joints.clear();
-    }
-
-    /// @brief Clears the fixtures.
-    void ClearFixtures() noexcept
-    {
-        m_fixtures.clear();
-    }
 
     /// @brief Sets the inverse rotational inertia.
     void SetInvRotI(InvRotInertia v) noexcept
@@ -436,26 +372,6 @@ public:
         m_xf = GetTransform1(m_sweep);
     }
 
-    /// @brief Adds the given fixture to the given body.
-    void AddFixture(FixtureID fixture)
-    {
-        m_fixtures.push_back(fixture);
-    }
-
-    /// @brief Removes the given fixture from the given body.
-    bool RemoveFixture(FixtureID fixture)
-    {
-        const auto begIter = begin(m_fixtures);
-        const auto endIter = end(m_fixtures);
-        const auto it = std::find(begIter, endIter, fixture);
-        if (it != endIter)
-        {
-            m_fixtures.erase(it);
-            return true;
-        }
-        return false;
-    }
-
 private:
     /// @brief Flags type.
     /// @note For internal use. Made public to facilitate unit testing.
@@ -506,19 +422,6 @@ private:
     // Member variables. Try to keep total size small.
     //
 
-    // These three aren't "essential parts". They don't contribute to this instance's "value".
-
-    /// Cache of associated fixtures (owned by world).
-    /// @todo Consider eliminating this variable since calling <code>GetFixtures()</code>
-    ///   isn't done within the <code>World::Step</code> except by
-    ///   <code>World::Synchronize</code> which may be replacable with iterating over the
-    ///   entire fixture array.
-    mutable Fixtures m_fixtures;
-
-    mutable Contacts m_contacts; ///< Cache of associated contacts (owned by world).
-
-    mutable Joints m_joints; ///< Cache of associated joints (owned by world).
-
     /// Transformation for body origin.
     /// @note Also availble from <code>GetTransform1(m_sweep)</code>.
     /// @note 16-bytes.
@@ -564,18 +467,6 @@ private:
     /// @note 4-bytes.
     Time m_underActiveTime = 0;
 };
-
-inline Body::FlagsType Body::GetFlags(BodyType type) noexcept
-{
-    auto flags = FlagsType{0};
-    switch (type)
-    {
-        case BodyType::Dynamic:   flags |= (e_velocityFlag|e_accelerationFlag); break;
-        case BodyType::Kinematic: flags |= (e_impenetrableFlag|e_velocityFlag); break;
-        case BodyType::Static:    flags |= (e_impenetrableFlag); break;
-    }
-    return flags;
-}
 
 inline BodyType Body::GetType() const noexcept
 {
@@ -787,21 +678,6 @@ inline void Body::SetSleepingAllowed(bool flag) noexcept
         SetAwakeFlag();
         ResetUnderActiveTime();
     }
-}
-
-inline SizedRange<Body::Fixtures::const_iterator> Body::GetFixtures() const noexcept
-{
-    return {begin(m_fixtures), end(m_fixtures), size(m_fixtures)};
-}
-
-inline SizedRange<Body::Joints::const_iterator> Body::GetJoints() const noexcept
-{
-    return {begin(m_joints), end(m_joints), size(m_joints)};
-}
-
-inline SizedRange<Body::Contacts::const_iterator> Body::GetContacts() const noexcept
-{
-    return {begin(m_contacts), end(m_contacts), size(m_contacts)};
 }
 
 inline LinearAcceleration2 Body::GetLinearAcceleration() const noexcept
@@ -1115,10 +991,6 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept;
 /// @relatedalso Body
 Velocity GetVelocity(const Body& body, Time h) noexcept;
 
-/// @brief Gets the fixture count of the given body.
-/// @relatedalso Body
-FixtureCounter GetFixtureCount(const Body& body) noexcept;
-
 /// @brief Gets the body's origin location.
 /// @details This is the location of the body's origin relative to its world.
 /// The location of the body after stepping the world's physics simulations is dependent on
@@ -1157,10 +1029,6 @@ inline Position GetPosition(const Body& body) noexcept
 {
     return Position{body.GetLocation(), body.GetAngle()};
 }
-
-/// @brief Gets the transformation associated with the given configuration.
-/// @relatedalso BodyConf
-Transformation GetTransformation(const BodyConf& conf);
 
 } // namespace d2
 } // namespace playrho

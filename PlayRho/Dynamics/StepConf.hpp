@@ -39,8 +39,7 @@ namespace playrho {
 ///   is correct for your use.
 /// @note This data structure is 104-bytes large (with 4-byte Real on at least one 64-bit platform).
 /// @see World::Step.
-struct StepConf
-{
+struct StepConf {
     /// @brief Step iterations type.
     /// @details A type for counting iterations per-step.
     /// @note The special value of -1 is reserved for signifying an invalid iteration value.

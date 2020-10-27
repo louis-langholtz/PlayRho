@@ -55,7 +55,6 @@ namespace playrho {
 
 struct StepConf;
 struct Filter;
-struct FixtureProxy;
 
 namespace d2 {
 
@@ -143,9 +142,6 @@ public:
     /// @brief Fixtures container type.
     using Fixtures = std::vector<FixtureID>;
 
-    /// @brief Fixture proxies.
-    using FixtureProxies = std::vector<FixtureProxy>;
-
     /// @brief Fixture listener.
     using FixtureListener = std::function<void(FixtureID)>;
 
@@ -159,12 +155,12 @@ public:
     using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
 
     /// @brief Impulses contact listener.
-    using ImpulsesContactListener = std::function<void(ContactID, const ContactImpulsesList&,
-                                                       unsigned)>;
+    using ImpulsesContactListener =
+        std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
     /// @name Special Member Functions
     /// Special member functions that are explicitly defined.
-    ///@{
+    /// @{
 
     /// @brief Constructs a world object.
     /// @param def A customized world configuration or its default value.
@@ -188,7 +184,7 @@ public:
     ///   new memory required for those copies.
     /// @warning This method should not be called while the world is locked!
     /// @throws WrongState if this method is called while the world is locked.
-    World& operator= (const World& other);
+    World& operator=(const World& other);
 
     /// @brief Destructor.
     /// @details All physics entities are destroyed and all allocated memory is released.
@@ -199,7 +195,7 @@ public:
     /// @}
 
     /// @name Listener Member Functions
-    ///@{
+    /// @{
 
     /// @brief Register a destruction listener for fixtures.
     void SetFixtureDestructionListener(const FixtureListener& listener) noexcept;
@@ -228,7 +224,7 @@ public:
     /// @note This calls the joint and fixture destruction listeners (if they're set)
     ///   before clearing anything.
     /// @post The contents of this world have all been destroyed and this world's internal
-    ///   state reset as though it had just been constructed.
+    ///   state is reset as though it had just been constructed.
     void Clear() noexcept;
 
     /// @brief Steps the world simulation according to the given configuration.
@@ -267,17 +263,16 @@ public:
     ///
     /// @throws WrongState if this method is called while the world is locked.
     ///
-    /// @see GetBodiesForProxies, GetFixturesForProxies.
-    ///
     StepStats Step(const StepConf& conf = StepConf{});
 
     /// @brief Whether or not "step" is complete.
-    /// @details The "step" is completed when there are no more TOI events for the current time step.
+    /// @details The "step" is completed when there are no more TOI events for the current time
+    /// step.
     /// @return <code>true</code> unless sub-stepping is enabled and the step method returned
     ///   without finishing all of its sub-steps.
     /// @see GetSubStepping, SetSubStepping.
     bool IsStepComplete() const noexcept;
-    
+
     /// @brief Gets whether or not sub-stepping is enabled.
     /// @see SetSubStepping, IsStepComplete.
     bool GetSubStepping() const noexcept;
@@ -306,7 +301,7 @@ public:
 
     /// @brief Gets the minimum vertex radius that shapes in this world can be.
     Length GetMinVertexRadius() const noexcept;
-    
+
     /// @brief Gets the maximum vertex radius that shapes in this world can be.
     Length GetMaxVertexRadius() const noexcept;
 
@@ -324,7 +319,7 @@ public:
 
     /// @name Body Member Functions
     /// Member functions relating to bodies.
-    ///@{
+    /// @{
 
     /// @brief Gets the extent of the currently valid body range.
     /// @note This is one higher than the maxium BodyID that is in range for body related
@@ -376,7 +371,7 @@ public:
     /// @param id Body to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies.
+    /// @see CreateBody(const BodyConf&), GetBodies.
     /// @see PhysicalEntities.
     void Destroy(BodyID id);
 
@@ -430,7 +425,7 @@ public:
 
     /// @brief Gets the range of all joints attached to this body.
     /// @throws std::out_of_range If given an invalid body identifier.
-    SizedRange<BodyJoints::const_iterator> GetJoints(BodyID id) const;
+    SizedRange<World::BodyJoints::const_iterator> GetJoints(BodyID id) const;
 
     /// @brief Computes the body's mass data.
     /// @details This basically accumulates the mass data over all fixtures.
@@ -608,13 +603,13 @@ public:
     /// @warning This collection changes during the time step and you may
     ///   miss some collisions if you don't use <code>ContactListener</code>.
     /// @throws std::out_of_range If given an invalid body identifier.
-    SizedRange<Contacts::const_iterator> GetContacts(BodyID id) const;
+    SizedRange<World::Contacts::const_iterator> GetContacts(BodyID id) const;
 
-    ///@}
+    /// @}
 
     /// @name Fixture Member Functions
     /// Member functions relating to fixtures.
-    ///@{
+    /// @{
 
     /// @brief Creates a fixture and attaches it to the given body.
     /// @details Creates a fixture for attaching a shape and other characteristics to this
@@ -628,10 +623,6 @@ public:
     /// @post After creating a new fixture, it will show up in the fixture enumeration
     ///   returned by the <code>GetFixtures()</code> methods.
     ///
-    /// @param body Identifier of the body to associate the new fixture with.
-    /// @param shape Shareable shape definition.
-    ///   Its vertex radius must be less than the minimum or more than the maximum allowed by
-    ///   the body's world.
     /// @param def Initial fixture settings.
     ///   Friction and density must be >= 0.
     ///   Restitution must be > -infinity and < infinity.
@@ -649,9 +640,15 @@ public:
     /// @see Destroy(FixtureID), GetFixtures
     /// @see PhysicalEntities
     ///
-    FixtureID CreateFixture(BodyID body, const Shape& shape,
-                            const FixtureConf& def = GetDefaultFixtureConf(),
-                            bool resetMassData = true);
+    FixtureID CreateFixture(const FixtureConf& def = FixtureConf{}, bool resetMassData = true);
+
+    /// @brief Gets the identified fixture state.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
+    const FixtureConf& GetFixture(FixtureID id) const;
+
+    /// @brief Sets the identified fixture's state.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
+    void SetFixture(FixtureID id, const FixtureConf& value);
 
     /// @brief Destroys the identified fixture.
     ///
@@ -679,61 +676,17 @@ public:
     ///
     bool Destroy(FixtureID id, bool resetMassData = true);
 
-    /// @brief Gets the fixtures-for-proxies range for this world.
-    /// @details Provides insight on what fixtures have been queued for proxy processing
-    ///   during the next call to the world step method.
-    /// @see Step.
-    SizedRange<Fixtures::const_iterator> GetFixturesForProxies() const noexcept;
-
-    /// @brief Re-filter the fixture.
-    /// @note Call this if you want to establish collision that was previously disabled by
-    ///   <code>ShouldCollide(const Fixture&, const Fixture&)</code>.
+    /// @brief Re-filter contacts and proxies for the identified fixture.
+    /// @note Call this if you want to establish collision that was previously disabled.
     /// @throws std::out_of_range If given an invalid fixture identifier.
-    /// @see bool ShouldCollide(const Fixture& fixtureA, const Fixture& fixtureB) noexcept
+    /// @see SetFilterData, GetFilterData.
     void Refilter(FixtureID id);
-
-    /// @brief Gets the filter data for the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    Filter GetFilterData(FixtureID id) const;
-
-    /// @brief Sets the contact filtering data.
-    /// @note This won't update contacts until the next time step when either parent body
-    ///    is speedable and awake.
-    /// @note This automatically calls <code>Refilter</code>.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    void SetFilterData(FixtureID id, const Filter& filter);
-
-    /// @brief Gets the identifier of the body associated with the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    BodyID GetBody(FixtureID id) const;
-
-    /// @brief Gets the shape associated with the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    Shape GetShape(FixtureID id) const;
-
-    /// @brief Is the specified fixture a sensor (non-solid)?
-    /// @return the true if the fixture is a sensor.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    bool IsSensor(FixtureID id) const;
-
-    /// @brief Sets whether the fixture is a sensor or not.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    /// @see IsSensor(FixtureID id).
-    void SetSensor(FixtureID id, bool value);
-
-    /// @brief Gets the density value associated with the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    AreaDensity GetDensity(FixtureID id) const;
-
-    /// @brief Gets the proxies of the identified fixture.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    const FixtureProxies& GetProxies(FixtureID id) const;
 
     /// @}
 
     /// @name Joint Member Functions
     /// Member functions relating to joints.
-    ///@{
+    /// @{
 
     /// @brief Gets the world joint range.
     /// @details Gets a range enumerating the joints currently existing within this world.
@@ -777,51 +730,11 @@ public:
     /// @throws std::out_of_range If given an invalid joint identifier.
     void SetJoint(JointID id, const Joint& def);
 
-    /// @brief Wakes up the joined bodies.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    void SetAwake(JointID id);
-
-    /// @brief Gets collide connected for the specified joint.
-    /// @note Modifying the collide connect flag won't work correctly because
-    ///   the flag is only checked when fixture AABBs begin to overlap.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    bool GetCollideConnected(JointID id) const;
-
-    /// @brief Gets the type of the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    JointType GetType(JointID id) const;
-
-    /// @brief Gets the identifier of body-A of the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    BodyID GetBodyA(JointID id) const;
-
-    /// @brief Gets the identifier of body-B of the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    BodyID GetBodyB(JointID id) const;
-
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    Length2 GetLocalAnchorA(JointID id) const;
-
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    Length2 GetLocalAnchorB(JointID id) const;
-
-    /// Gets the linear reaction on body-B at the joint anchor.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    Momentum2 GetLinearReaction(JointID id) const;
-
-    /// @brief Get the angular reaction on body-B for the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    AngularMomentum GetAngularReaction(JointID id) const;
-
-    /// @brief Gets the reference angle of the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    Angle GetReferenceAngle(JointID id) const;
-
     /// @}
 
     /// @name Contact Member Functions
     /// Member functions relating to contacts.
-    ///@{
+    /// @{
 
     /// @brief Gets the world contact range.
     /// @warning contacts are created and destroyed in the middle of a time step.
@@ -971,8 +884,8 @@ private:
 /// use of the <code>playrho::d2::World</code> class and more.
 /// After instantiating a world, the code creates a body and its fixture to act as the ground,
 /// creates another body and a fixture for it to act like a ball, then steps the world using
-/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates a ball falling to the ground
-/// and outputs the position of the ball after each step.
+/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates a ball
+/// falling to the ground and outputs the position of the ball after each step.
 
 /// @example World.cpp
 /// This is the <code>googletest</code> based unit testing file for the

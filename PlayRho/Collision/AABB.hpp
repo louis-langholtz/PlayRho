@@ -458,10 +458,6 @@ AABB ComputeAABB(const Shape& shape, const Transformation& xf) noexcept;
 /// @relatedalso World
 AABB ComputeAABB(const World& world, FixtureID id);
 
-/// @brief Computes the AABB for the given body.
-/// @relatedalso World
-AABB ComputeAABB(const World& world, const Body& body);
-
 /// @brief Computes the AABB for the identified body within the given world.
 /// @relatedalso World
 AABB ComputeAABB(const World& world, BodyID id);

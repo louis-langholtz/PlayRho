@@ -28,12 +28,6 @@ namespace d2 {
 
 using playrho::size;
 
-SizedRange<std::vector<FixtureID>::const_iterator>
-GetFixturesForProxies(const World& world) noexcept
-{
-    return world.GetFixturesForProxies();
-}
-
 FixtureCounter GetFixtureCount(const World& world) noexcept
 {
     auto sum = FixtureCounter{0};
@@ -44,10 +38,17 @@ FixtureCounter GetFixtureCount(const World& world) noexcept
     return sum;
 }
 
-FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
-                        const FixtureConf& def, bool resetMassData)
+FixtureID CreateFixture(World& world, FixtureConf def, bool resetMassData)
 {
-    return world.CreateFixture(id, shape, def, resetMassData);
+    return world.CreateFixture(def, resetMassData);
+}
+
+FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
+                        FixtureConf def, bool resetMassData)
+{
+    def.body = id;
+    def.shape = shape;
+    return CreateFixture(world, def, resetMassData);
 }
 
 bool Destroy(World& world, FixtureID id, bool resetMassData)
@@ -57,12 +58,15 @@ bool Destroy(World& world, FixtureID id, bool resetMassData)
 
 Filter GetFilterData(const World& world, FixtureID id)
 {
-    return world.GetFilterData(id);
+    return GetFilterData(world.GetFixture(id));
 }
 
 void SetFilterData(World& world, FixtureID id, const Filter& value)
 {
-    world.SetFilterData(id, value);
+    auto fixture = world.GetFixture(id);
+    SetFilterData(fixture, value);
+    world.SetFixture(id, fixture);
+    world.Refilter(id);
 }
 
 void Refilter(World& world, FixtureID id)
@@ -72,7 +76,7 @@ void Refilter(World& world, FixtureID id)
 
 BodyID GetBody(const World& world, FixtureID id)
 {
-    return world.GetBody(id);
+    return GetBody(world.GetFixture(id));
 }
 
 Transformation GetTransformation(const World& world, FixtureID id)
@@ -80,34 +84,26 @@ Transformation GetTransformation(const World& world, FixtureID id)
     return world.GetTransformation(GetBody(world, id));
 }
 
-Shape GetShape(const World& world, FixtureID id)
+const Shape& GetShape(const World& world, FixtureID id)
 {
-    return world.GetShape(id);
-}
-
-void SetSensor(World& world, FixtureID id, bool value)
-{
-    world.SetSensor(id, value);
+    return GetShape(world.GetFixture(id));
 }
 
 bool IsSensor(const World& world, FixtureID id)
 {
-    return world.IsSensor(id);
+    return IsSensor(world.GetFixture(id));
+}
+
+void SetSensor(World& world, FixtureID id, bool value)
+{
+    auto fixture = world.GetFixture(id);
+    SetSensor(fixture, value);
+    world.SetFixture(id, fixture);
 }
 
 AreaDensity GetDensity(const World& world, FixtureID id)
 {
-    return world.GetDensity(id);
-}
-
-const std::vector<FixtureProxy>& GetProxies(const World& world, FixtureID id)
-{
-    return world.GetProxies(id);
-}
-
-const FixtureProxy& GetProxy(const World& world, FixtureID id, ChildCounter child)
-{
-    return GetProxies(world, id).at(child);
+    return GetDensity(world.GetFixture(id));
 }
 
 bool TestPoint(const World& world, FixtureID id, Length2 p)

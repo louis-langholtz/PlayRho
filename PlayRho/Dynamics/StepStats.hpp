@@ -27,8 +27,7 @@ namespace playrho {
 
 /// @brief Pre-phase per-step statistics.
 /// @note This data structure is 24-bytes large (on at least one 64-bit platform).
-struct PreStepStats
-{
+struct PreStepStats {
     /// @brief Counter type.
     using counter_type = std::uint32_t;
 
@@ -43,8 +42,7 @@ struct PreStepStats
 /// @brief Regular-phase per-step statistics.
 /// @note This data structure is 32-bytes large (on at least one 64-bit platform with
 ///   4-byte Real type).
-struct RegStepStats
-{
+struct RegStepStats {
     /// @brief Counter type.
     using counter_type = std::uint32_t;
 
@@ -66,8 +64,7 @@ struct RegStepStats
 /// @brief TOI-phase per-step statistics.
 /// @note This data structure is 60-bytes large (on at least one 64-bit platform with
 ///   4-byte Real type).
-struct ToiStepStats
-{
+struct ToiStepStats {
     /// @brief Counter type.
     using counter_type = std::uint32_t;
 
@@ -116,8 +113,7 @@ struct ToiStepStats
 /// @see https://en.wikipedia.org/wiki/Return_value_optimization
 /// @see https://en.cppreference.com/w/cpp/language/copy_elision
 ///
-struct StepStats
-{
+struct StepStats {
     PreStepStats pre; ///< Pre-phase step statistics.
     RegStepStats reg; ///< Reg-phase step statistics.
     ToiStepStats toi; ///< TOI-phase step statistics.

@@ -87,7 +87,10 @@ const Joint& GetJoint(const World& world, JointID id);
 /// @relatedalso World
 void SetJoint(World& world, JointID id, const Joint& def);
 
-/// @copydoc World::GetCollideConnected
+/// @brief Gets collide connected for the specified joint.
+/// @note Modifying the collide connect flag won't work correctly because
+///   the flag is only checked when fixture AABBs begin to overlap.
+/// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 bool GetCollideConnected(const World& world, JointID id);
 
@@ -132,11 +135,13 @@ Length2 GetLocalAnchorA(const World& world, JointID id);
 /// @relatedalso World
 Length2 GetLocalAnchorB(const World& world, JointID id);
 
-/// @copydoc World::GetLinearReaction
+/// @brief Gets the linear reaction on body-B at the joint anchor.
+/// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 Momentum2 GetLinearReaction(const World& world, JointID id);
 
-/// @copydoc World::GetAngularReaction
+/// @brief Get the angular reaction on body-B for the identified joint.
+/// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 AngularMomentum GetAngularReaction(const World& world, JointID id);
 
@@ -347,7 +352,8 @@ Length GetLength(const World& world, JointID id);
 /// @relatedalso World
 LimitState GetLimitState(const World& world, JointID id);
 
-/// @copydoc World::SetAwake(JointID)
+/// @brief Wakes up the joined bodies.
+/// @throws std::out_of_range If given an invalid joint identifier.
 /// @relatedalso World
 void SetAwake(World& world, JointID id);
 

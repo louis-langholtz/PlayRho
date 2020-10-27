@@ -44,6 +44,17 @@ static_assert(std::is_move_assignable<Body>::value,
 static_assert(std::is_nothrow_destructible<Body>::value,
               "Body must be nothrow destructible!");
 
+Body::FlagsType Body::GetFlags(BodyType type) noexcept
+{
+    auto flags = FlagsType{0};
+    switch (type) {
+        case BodyType::Dynamic:   flags |= (e_velocityFlag|e_accelerationFlag); break;
+        case BodyType::Kinematic: flags |= (e_impenetrableFlag|e_velocityFlag); break;
+        case BodyType::Static:    flags |= (e_impenetrableFlag); break;
+    }
+    return flags;
+}
+
 Body::FlagsType Body::GetFlags(const BodyConf& bd) noexcept
 {
     // @invariant Only bodies that allow sleeping, can be put to sleep.
@@ -107,10 +118,8 @@ Body::Body(const BodyConf& bd) noexcept:
 
 void Body::SetVelocity(const Velocity& velocity) noexcept
 {
-    if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm))
-    {
-        if (!IsSpeedable())
-        {
+    if ((velocity.linear != LinearVelocity2{}) || (velocity.angular != 0_rpm)) {
+        if (!IsSpeedable()) {
             return;
         }
         SetAwakeFlag();
@@ -168,77 +177,6 @@ void Body::SetFixedRotation(bool flag)
     m_angularVelocity = 0_rpm;
 }
 
-bool Body::Insert(JointID joint, BodyID other)
-{
-    m_joints.push_back(std::make_pair(other, joint));
-    return true;
-}
-
-bool Body::Insert(ContactKey key, ContactID contact)
-{
-#ifndef NDEBUG
-    // Prevent the same contact from being added more than once...
-    const auto it = std::find_if(cbegin(m_contacts), cend(m_contacts), [contact](KeyedContactPtr ci) {
-        return std::get<ContactID>(ci) == contact;
-    });
-    assert(it == end(m_contacts));
-    if (it != end(m_contacts))
-    {
-        return false;
-    }
-#endif
-    m_contacts.emplace_back(key, contact);
-    return true;
-}
-
-bool Body::Erase(JointID joint)
-{
-    const auto it = std::find_if(begin(m_joints), end(m_joints), [joint](KeyedJointPtr ji) {
-        return std::get<JointID>(ji) == joint;
-    });
-    if (it != end(m_joints))
-    {
-        m_joints.erase(it);
-        return true;
-    }
-    return false;
-}
-
-bool Body::Erase(ContactID contact)
-{
-    const auto it = std::find_if(begin(m_contacts), end(m_contacts), [contact](KeyedContactPtr ci) {
-        return std::get<ContactID>(ci) == contact;
-    });
-    if (it != end(m_contacts))
-    {
-        m_contacts.erase(it);
-        return true;
-    }
-    return false;
-}
-
-void Body::Erase(const std::function<bool(ContactID)>& callback)
-{
-    auto last = end(m_contacts);
-    auto iter = begin(m_contacts);
-    auto index = Body::Contacts::difference_type{0};
-    while (iter != last)
-    {
-        const auto contact = GetContactPtr(*iter);
-        if (callback(contact))
-        {
-            m_contacts.erase(iter);
-            iter = begin(m_contacts) + index;
-            last = end(m_contacts);
-        }
-        else
-        {
-            iter = std::next(iter);
-            ++index;
-        }
-    }
-}
-
 // Free functions...
 
 Velocity GetVelocity(const Body& body, Time h) noexcept
@@ -285,16 +223,6 @@ Velocity Cap(Velocity velocity, Time h, MovementConf conf) noexcept
     }
     
     return velocity;
-}
-
-FixtureCounter GetFixtureCount(const Body& body) noexcept
-{
-    return static_cast<FixtureCounter>(size(body.GetFixtures()));
-}
-
-Transformation GetTransformation(const BodyConf& conf)
-{
-    return {conf.location, UnitVec::Get(conf.angle)};
 }
 
 } // namespace d2
