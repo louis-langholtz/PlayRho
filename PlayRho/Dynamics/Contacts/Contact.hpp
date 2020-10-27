@@ -83,10 +83,12 @@ public:
 
     /// @brief Initializing constructor.
     ///
-    /// @param fA Non-null pointer to fixture A that must have a shape
+    /// @param bA Body-A identifier.
+    /// @param fA Non-invalid identifier to fixture A that must have a shape
     ///   and may not be the same or have the same body as the other fixture.
     /// @param iA Child index A.
-    /// @param fB Non-null pointer to fixture B that must have a shape
+    /// @param bB Body-B identifier.
+    /// @param fB Non-invalid identifier to fixture B that must have a shape
     ///   and may not be the same or have the same body as the other fixture.
     /// @param iB Child index B.
     ///
@@ -133,6 +135,7 @@ public:
     /// @brief Disables this contact.
     void UnsetEnabled() noexcept;
 
+    /// @brief Gets the body-A identifier.
     BodyID GetBodyA() const noexcept;
 
     /// @brief Gets fixture A in this contact.
@@ -141,6 +144,7 @@ public:
     /// @brief Get the child primitive index for fixture A.
     ChildCounter GetChildIndexA() const noexcept;
 
+    /// @brief Gets the body-B identifier.
     BodyID GetBodyB() const noexcept;
 
     /// @brief Gets fixture B in this contact.
@@ -212,6 +216,7 @@ public:
     /// @attention Call this if fixture A or fixture B is a sensor.
     void SetIsSensor() noexcept;
 
+    /// @brief Unsets the sensor state of this contact.
     void UnsetIsSensor() noexcept;
 
     /// @brief Whether or not this contact is "impenetrable".
@@ -222,6 +227,7 @@ public:
     /// @attention Call this if body A or body B are impenetrable.
     void SetImpenetrable() noexcept;
 
+    /// @brief Unsets the impenetrability of this contact.
     void UnsetImpenetrable() noexcept;
 
     /// @brief Whether or not this contact is "active".
@@ -232,6 +238,7 @@ public:
     /// @attention Call this if body A or body B are "awake".
     void SetIsActive() noexcept;
 
+    /// @brief Unsets the active state of this contact.
     void UnsetIsActive() noexcept;
 
     /// Flags type data type.
@@ -286,6 +293,7 @@ public:
     /// @brief Sets the TOI count to the given value.
     void SetToiCount(substep_type value) noexcept;
 
+    /// @brief Increments the TOI count.
     void IncrementToiCount() noexcept;
 
 private:
