@@ -93,9 +93,6 @@ static_assert(std::is_nothrow_destructible<WorldImpl>::value,
 
 using playrho::size;
 
-/// @brief A body pointer and body constraint pointer pair.
-using BodyConstraintsPair = std::pair<const Body* const, BodyConstraint*>;
-
 /// @brief Collection of body constraints.
 using BodyConstraints = std::vector<BodyConstraint>;
 
