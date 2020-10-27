@@ -127,7 +127,7 @@ Transformation GetTransformation(const World& world, FixtureID id);
 /// @brief Gets the shape associated with the identified fixture.
 /// @throws std::out_of_range If given an invalid fixture identifier.
 /// @relatedalso World
-Shape GetShape(const World& world, FixtureID id);
+const Shape& GetShape(const World& world, FixtureID id);
 
 /// @brief Gets the coefficient of friction of the specified fixture.
 /// @return Value of 0 or higher.

@@ -84,7 +84,7 @@ Transformation GetTransformation(const World& world, FixtureID id)
     return world.GetTransformation(GetBody(world, id));
 }
 
-Shape GetShape(const World& world, FixtureID id)
+const Shape& GetShape(const World& world, FixtureID id)
 {
     return GetShape(world.GetFixture(id));
 }
