@@ -37,6 +37,13 @@ public:
 
     SensorTest()
     {
+        SetBeginContactListener(GetWorld(), [this](ContactID id){
+            BeginContact(id);
+        });
+        SetEndContactListener(GetWorld(), [this](ContactID id){
+            EndContact(id);
+        });
+
         {
             const auto ground = CreateBody(GetWorld());
             CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
@@ -72,7 +79,7 @@ public:
     }
 
     // Implement contact listener.
-    void BeginContact(ContactID contact) override
+    void BeginContact(ContactID contact)
     {
         const auto fixtureA = GetFixtureA(GetWorld(), contact);
         const auto fixtureB = GetFixtureB(GetWorld(), contact);
@@ -87,7 +94,7 @@ public:
     }
 
     // Implement contact listener.
-    void EndContact(ContactID contact) override
+    void EndContact(ContactID contact)
     {
         const auto fixtureA = GetFixtureA(GetWorld(), contact);
         const auto fixtureB = GetFixtureB(GetWorld(), contact);

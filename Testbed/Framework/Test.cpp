@@ -843,12 +843,6 @@ Test::Test(Conf conf):
     m_world.SetJointDestructionListener([this](JointID id){
         m_destructionListener.SayGoodbye(id);
     });
-    m_world.SetBeginContactListener([this](ContactID id){
-        BeginContact(id);
-    });
-    m_world.SetEndContactListener([this](ContactID id){
-        EndContact(id);
-    });
     m_world.SetPreSolveContactListener([this](ContactID id, const Manifold& manifold) {
         PreSolve(id, manifold);
     });

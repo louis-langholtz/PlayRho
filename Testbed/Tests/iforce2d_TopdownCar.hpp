@@ -178,6 +178,13 @@ public:
 
     iforce2d_TopdownCar(): Test(GetTestConf())
     {
+        SetBeginContactListener(GetWorld(), [this](ContactID id){
+            BeginContact(id);
+        });
+        SetEndContactListener(GetWorld(), [this](ContactID id){
+            EndContact(id);
+        });
+
         SetGravity(LinearAcceleration2{});
         SetFixtureDestructionListener(GetWorld(), [this](FixtureID id){
             if (id.get() < m_fixtureData.size()) {
@@ -262,8 +269,8 @@ public:
             tire_vs_groundArea(fB, fA, began);
     }
 
-    void BeginContact(ContactID contact) override { handleContact(contact, true); }
-    void EndContact(ContactID contact) override { handleContact(contact, false); }
+    void BeginContact(ContactID contact) { handleContact(contact, true); }
+    void EndContact(ContactID contact) { handleContact(contact, false); }
 
     void tire_vs_groundArea(FixtureID tireFixture, FixtureID groundAreaFixture, bool began)
     {

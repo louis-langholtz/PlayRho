@@ -270,8 +270,6 @@ public:
     virtual void JointDestroyed(JointID joint) { NOT_USED(joint); }
 
     // Callbacks for derived classes.
-    virtual void BeginContact(ContactID) { }
-    virtual void EndContact(ContactID) { }
     virtual void PreSolve(ContactID contact, const Manifold& oldManifold);
     virtual void PostSolve(ContactID, const ContactImpulsesList&, unsigned) { }
 
