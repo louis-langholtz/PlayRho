@@ -771,6 +771,7 @@ static void AboutTestUI()
     }
 }
 
+#if 0
 static std::pair<float,int> ToScientific(float val)
 {
     std::ostringstream os;
@@ -785,6 +786,7 @@ static std::pair<float,int> ToScientific(float val)
     }
     return std::make_pair(0.0f, 0);
 }
+#endif
 
 static void BasicStepOptionsUI()
 {
@@ -2260,7 +2262,7 @@ static void ModelEntitiesUI()
 
     ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
     {
-        const auto bodies = test->GetWorld().GetBodies();
+        const auto bodies = GetBodies(test->GetWorld());
         if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Bodies (%lu)", size(bodies)))
         {
@@ -2269,7 +2271,7 @@ static void ModelEntitiesUI()
         }
     }
     {
-        const auto joints = test->GetWorld().GetJoints();
+        const auto joints = GetJoints(test->GetWorld());
         if (ImGui::TreeNodeEx("Joints", selJoints? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Joints (%lu)", size(joints)))
         {
@@ -2278,7 +2280,7 @@ static void ModelEntitiesUI()
         }
     }
     {
-        const auto contacts = test->GetWorld().GetContacts();
+        const auto contacts = GetContacts(test->GetWorld());
         if (ImGui::TreeNodeEx("Contacts", selContacts? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Contacts (%lu)", size(contacts)))
         {
