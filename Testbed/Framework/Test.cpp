@@ -136,19 +136,19 @@ void Draw(Drawer& drawer, const Shape& shape, const Color& color, bool skins,
 
 Color GetColor(const World& world, BodyID body)
 {
-    if (!world.IsEnabled(body))
+    if (!IsEnabled(world, body))
     {
         return Color{0.5f, 0.5f, 0.3f};
     }
-    if (world.GetType(body) == BodyType::Static)
+    if (GetType(world, body) == BodyType::Static)
     {
         return Color{0.5f, 0.9f, 0.5f};
     }
-    if (world.GetType(body) == BodyType::Kinematic)
+    if (GetType(world, body) == BodyType::Kinematic)
     {
         return Color{0.5f, 0.5f, 0.9f};
     }
-    if (!world.IsAwake(body))
+    if (!IsAwake(world, body))
     {
         return Color{0.75f, 0.75f, 0.75f};
     }
@@ -202,8 +202,8 @@ void Draw(Drawer& drawer, const World& world, JointID id)
         const auto p2 = GetAnchorB(world, id);
         const auto bodyA = GetBodyA(joint);
         const auto bodyB = GetBodyB(joint);
-        const auto x1 = world.GetTransformation(bodyA).p;
-        const auto x2 = world.GetTransformation(bodyB).p;
+        const auto x1 = GetTransformation(world, bodyA).p;
+        const auto x2 = GetTransformation(world, bodyB).p;
         drawer.DrawSegment(x1, p1, color);
         drawer.DrawSegment(p1, p2, color);
         drawer.DrawSegment(x2, p2, color);
@@ -637,12 +637,12 @@ void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const 
     }
 
     {
-        const auto leafCount = world.GetTree().GetLeafCount();
-        const auto nodeCount = world.GetTree().GetNodeCount();
-        const auto height = GetHeight(world.GetTree());
-        const auto imbalance = GetMaxImbalance(world.GetTree());
-        const auto quality = ComputePerimeterRatio(world.GetTree());
-        const auto capacity = world.GetTree().GetNodeCapacity();
+        const auto leafCount = GetTree(world).GetLeafCount();
+        const auto nodeCount = GetTree(world).GetNodeCount();
+        const auto height = GetHeight(GetTree(world));
+        const auto imbalance = GetMaxImbalance(GetTree(world));
+        const auto quality = ComputePerimeterRatio(GetTree(world));
+        const auto capacity = GetTree(world).GetNodeCapacity();
 
         ImGui::ColumnsContext cc(2, nullptr, false);
         ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
@@ -754,7 +754,7 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
     if (stepSettings.drawShapes) {
         const auto drawLabels = ShouldDrawLabels(needed, testSettings, stepSettings);
         const auto drawSkins = ShouldDrawSkins(needed, testSettings, stepSettings);
-        for (const auto& b: world.GetBodies()) {
+        for (const auto& b: GetBodies(world)) {
             if (Draw(drawer, world, b, drawSkins, selected)) {
                 found = true;
             }
@@ -767,19 +767,19 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
     }
 
     if (stepSettings.drawJoints) {
-        for (const auto& j: world.GetJoints()) {
+        for (const auto& j: GetJoints(world)) {
             Draw(drawer, world, j);
         }
     }
 
     if (stepSettings.drawAABBs) {
         const auto color = Color{0.9f, 0.3f, 0.9f};
-        const auto root = world.GetTree().GetRootIndex();
+        const auto root = GetTree(world).GetRootIndex();
         if (root != DynamicTree::GetInvalidSize()) {
-            const auto worldAabb = world.GetTree().GetAABB(root);
+            const auto worldAabb = GetTree(world).GetAABB(root);
             Draw(drawer, worldAabb, color);
-            Query(world.GetTree(), worldAabb, [&](DynamicTree::Size id) {
-                Draw(drawer, world.GetTree().GetAABB(id), color);
+            Query(GetTree(world), worldAabb, [&](DynamicTree::Size id) {
+                Draw(drawer, GetTree(world).GetAABB(id), color);
                 return DynamicTreeOpcode::Continue;
             });
         }
@@ -789,7 +789,7 @@ bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selec
         const auto k_axisScale = 0.4_m;
         const auto red = Color{1.0f, 0.0f, 0.0f};
         const auto green = Color{0.0f, 1.0f, 0.0f};
-        for (const auto& b: world.GetBodies()) {
+        for (const auto& b: GetBodies(world)) {
             const auto massScale = std::pow(static_cast<float>(StripUnit(GetMass(world, b))), 1.0f/3);
             auto xf = GetTransformation(world, b);
             xf.p = GetWorldCenter(world, b);
@@ -837,13 +837,13 @@ Test::Test(Conf conf):
     m_numTouchingPerStep(m_maxHistory, 0u)
 {
     m_destructionListener.test = this;
-    m_world.SetFixtureDestructionListener([this](FixtureID id){
+    SetFixtureDestructionListener(m_world, [this](FixtureID id){
         m_destructionListener.SayGoodbye(id);
     });
-    m_world.SetJointDestructionListener([this](JointID id){
+    SetJointDestructionListener(m_world, [this](JointID id){
         m_destructionListener.SayGoodbye(id);
     });
-    m_world.SetPreSolveContactListener([this](ContactID id, const Manifold& manifold) {
+    SetPreSolveContactListener(m_world, [this](ContactID id, const Manifold& manifold) {
         PreSolve(id, manifold);
     });
 }
@@ -856,11 +856,11 @@ void Test::ResetWorld(const World &saved)
 {
     ClearSelectedFixtures();
 
-    auto bombIndex = static_cast<decltype(size(m_world.GetBodies()))>(-1);
+    auto bombIndex = static_cast<decltype(size(GetBodies(m_world)))>(-1);
 
     {
-        auto i = decltype(size(m_world.GetBodies())){0};
-        for (const auto& b: m_world.GetBodies())
+        auto i = decltype(size(GetBodies(m_world))){0};
+        for (const auto& b: GetBodies(m_world))
         {
             if (b == m_bomb)
             {
@@ -873,8 +873,8 @@ void Test::ResetWorld(const World &saved)
     m_world = saved;
 
     {
-        auto i = decltype(size(m_world.GetBodies())){0};
-        for (const auto& b: m_world.GetBodies())
+        auto i = decltype(size(GetBodies(m_world))){0};
+        for (const auto& b: GetBodies(m_world))
         {
             if (i == bombIndex)
             {
@@ -929,7 +929,7 @@ void Test::MouseDown(const Length2& p)
     auto fixtures = FixtureSet{};
 
     // Query the world for overlapping shapes.
-    Query(m_world.GetTree(), aabb, [&](FixtureID f, const ChildCounter) {
+    Query(GetTree(m_world), aabb, [&](FixtureID f, const ChildCounter) {
         if (TestPoint(m_world, f, p))
         {
             fixtures.insert(f);
@@ -947,7 +947,7 @@ void Test::MouseDown(const Length2& p)
             md.bodyB = body;
             md.target = p;
             md.maxForce = Real(10000) * GetMass(m_world, body) * MeterPerSquareSecond;
-            m_targetJoint = m_world.CreateJoint(md);
+            m_targetJoint = CreateJoint(m_world, md);
             SetAwake(m_world, body);
         }
     }
@@ -1069,7 +1069,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
         m_points.clear();
     }
 
-    m_world.SetSubStepping(settings.enableSubStepping);
+    SetSubStepping(m_world, settings.enableSubStepping);
 
     auto stepConf = StepConf{};
 
@@ -1108,10 +1108,10 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     stepConf.doWarmStart = settings.enableWarmStarting;
 
     const auto start = std::chrono::system_clock::now();
-    const auto stepStats = m_world.Step(stepConf);
+    const auto stepStats = ::playrho::d2::Step(m_world, stepConf);
     const auto end = std::chrono::system_clock::now();
 
-    m_stats.m_maxAABB = GetEnclosingAABB(m_stats.m_maxAABB, GetAABB(m_world.GetTree()));
+    m_stats.m_maxAABB = GetEnclosingAABB(m_stats.m_maxAABB, GetAABB(GetTree(m_world)));
     
     m_stats.m_sumContactsUpdatedPre += stepStats.pre.updated;
     m_stats.m_sumContactsIgnoredPre += stepStats.pre.ignored;
@@ -1234,7 +1234,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
 void Test::ShiftOrigin(const Length2& newOrigin)
 {
-    m_world.ShiftOrigin(newOrigin);
+    ::playrho::d2::ShiftOrigin(m_world, newOrigin);
 }
 
 void Test::KeyboardHandler(KeyID key, KeyAction action, KeyMods mods)

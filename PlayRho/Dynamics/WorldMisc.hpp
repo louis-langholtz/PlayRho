@@ -114,6 +114,17 @@ StepStats Step(World& world, Time delta,
                TimestepIters velocityIterations = 8,
                TimestepIters positionIterations = 3);
 
+/// @brief Gets whether or not sub-stepping is enabled.
+/// @see SetSubStepping, IsStepComplete.
+bool GetSubStepping(const World& world) noexcept;
+
+/// @brief Enables/disables single stepped continuous physics.
+/// @note This is not normally used. Enabling sub-stepping is meant for testing.
+/// @post The <code>GetSubStepping()</code> method will return the value this method was
+///   called with.
+/// @see IsStepComplete, GetSubStepping.
+void SetSubStepping(World& world, bool flag) noexcept;
+
 /// @copydoc World::GetTree
 /// @relatedalso World
 const DynamicTree& GetTree(const World& world) noexcept;
@@ -129,6 +140,15 @@ Length GetMinVertexRadius(const World& world) noexcept;
 /// @brief Gets the max vertex radius that shapes for the given world are allowed to be.
 /// @relatedalso World
 Length GetMaxVertexRadius(const World& world) noexcept;
+
+/// @brief Shifts the world origin.
+/// @note Useful for large worlds.
+/// @note The body shift formula is: <code>position -= newOrigin</code>.
+/// @post The "origin" of this world's bodies, joints, and the board-phase dynamic tree
+///   have been translated per the shift amount and direction.
+/// @param newOrigin the new origin with respect to the old origin
+/// @throws WrongState if this method is called while the world is locked.
+void ShiftOrigin(World& world, Length2 newOrigin);
 
 } // namespace d2
 } // namespace playrho

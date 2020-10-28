@@ -106,6 +106,16 @@ StepStats Step(World& world, Time delta, TimestepIters velocityIterations,
     return world.Step(conf);
 }
 
+bool GetSubStepping(const World& world) noexcept
+{
+    return world.GetSubStepping();
+}
+
+void SetSubStepping(World& world, bool flag) noexcept
+{
+    world.SetSubStepping(flag);
+}
+
 const DynamicTree& GetTree(const World& world) noexcept
 {
     return world.GetTree();
@@ -114,6 +124,11 @@ const DynamicTree& GetTree(const World& world) noexcept
 FixtureCounter GetShapeCount(const World& world) noexcept
 {
     return world.GetShapeCount();
+}
+
+void ShiftOrigin(World& world, Length2 newOrigin)
+{
+    world.ShiftOrigin(newOrigin);
 }
 
 } // namespace d2
