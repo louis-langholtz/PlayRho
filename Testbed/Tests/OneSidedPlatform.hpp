@@ -37,6 +37,11 @@ public:
 
     OneSidedPlatform()
     {
+        SetPreSolveContactListener(GetWorld(), [this](ContactID id, const Manifold& manifold) {
+            Test::PreSolve(id, manifold);
+            OneSidedPlatform::PreSolve(id, manifold);
+        });
+
         // Ground
         CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
@@ -65,23 +70,18 @@ public:
         }
     }
 
-    void PreSolve(ContactID contact, const Manifold& oldManifold) override
+    void PreSolve(ContactID contact, const Manifold&)
     {
-        Test::PreSolve(contact, oldManifold);
-
         const auto fixtureA = GetFixtureA(GetWorld(), contact);
         const auto fixtureB = GetFixtureB(GetWorld(), contact);
-
         if (fixtureA != m_platform && fixtureA != m_character)
         {
             return;
         }
-
         if (fixtureB != m_platform && fixtureB != m_character)
         {
             return;
         }
-
 #if 1
         const auto position = GetLocation(GetWorld(), GetBody(GetWorld(), m_character));
         if (GetY(position) < m_top + m_radius - GetVertexRadius(GetShape(GetWorld(), m_platform), 0))

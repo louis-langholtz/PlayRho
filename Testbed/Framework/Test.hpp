@@ -270,7 +270,7 @@ public:
     virtual void JointDestroyed(JointID joint) { NOT_USED(joint); }
 
     // Callbacks for derived classes.
-    virtual void PreSolve(ContactID contact, const Manifold& oldManifold);
+    void PreSolve(ContactID contact, const Manifold& oldManifold);
 
     static bool Contains(const FixtureSet& fixtures, FixtureID f) noexcept;
 

@@ -30,6 +30,11 @@ public:
 
     ConveyorBelt()
     {
+        SetPreSolveContactListener(GetWorld(), [this](ContactID id, const Manifold& manifold) {
+            Test::PreSolve(id, manifold);
+            ConveyorBelt::PreSolve(id, manifold);
+        });
+
         // Ground
         CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{
             EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
@@ -59,10 +64,8 @@ public:
         }
     }
 
-    void PreSolve(ContactID contact, const Manifold& oldManifold) override
+    void PreSolve(ContactID contact, const Manifold& oldManifold)
     {
-        Test::PreSolve(contact, oldManifold);
-
         const auto fixtureA = GetFixtureA(GetWorld(), contact);
         const auto fixtureB = GetFixtureB(GetWorld(), contact);
         if (fixtureA == m_platform)
