@@ -295,21 +295,27 @@ static void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
     drawer.DrawPolygon(vs, 4, color);
 }
 
-bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
-                     const FixtureSet& selected)
+inline bool ShouldDrawLabels(const Test::NeededSettings& needed,
+                             const Settings& test, const Settings& step)
+{
+    return (needed & (1u << Test::NeedDrawLabelsField))? test.drawLabels: step.drawLabels;
+}
+
+inline bool ShouldDrawSkins(const Test::NeededSettings& needed,
+                            const Settings& test, const Settings& step)
+{
+    return (needed & (1u << Test::NeedDrawSkinsField))? test.drawSkins: step.drawSkins;
+}
+
+bool Test::DrawWorld(Drawer& drawer, const World& world, const FixtureSet& selected,
+                     const NeededSettings& needed,
+                     const Settings& testSettings, const Settings& stepSettings)
 {
     auto found = false;
 
-    if (settings.drawShapes) {
-        const auto drawLabels = [&]() {
-            const auto useField = m_neededSettings & (1u << NeedDrawLabelsField);
-            return useField? m_settings.drawLabels: settings.drawLabels;
-        }();
-        const auto drawSkins = [&]() {
-            const auto useField = m_neededSettings & (0x1u << NeedDrawSkinsField);
-            return useField? m_settings.drawSkins: settings.drawSkins;
-        }();
-        
+    if (stepSettings.drawShapes) {
+        const auto drawLabels = ShouldDrawLabels(needed, testSettings, stepSettings);
+        const auto drawSkins = ShouldDrawSkins(needed, testSettings, stepSettings);
         for (const auto& b: world.GetBodies()) {
             if (Draw(drawer, world, b, drawSkins, selected)) {
                 found = true;
@@ -322,13 +328,13 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
         }
     }
 
-    if (settings.drawJoints) {
+    if (stepSettings.drawJoints) {
         for (const auto& j: world.GetJoints()) {
             Draw(drawer, world, j);
         }
     }
 
-    if (settings.drawAABBs) {
+    if (stepSettings.drawAABBs) {
         const auto color = Color{0.9f, 0.3f, 0.9f};
         const auto root = world.GetTree().GetRootIndex();
         if (root != DynamicTree::GetInvalidSize()) {
@@ -341,7 +347,7 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& setting
         }
     }
 
-    if (settings.drawCOMs) {
+    if (stepSettings.drawCOMs) {
         const auto k_axisScale = 0.4_m;
         const auto red = Color{1.0f, 0.0f, 0.0f};
         const auto green = Color{0.0f, 1.0f, 0.0f};
@@ -627,7 +633,7 @@ static void ShowHelpMarker(const char* desc)
     }
 }
 
-void Test::DrawStats(const StepConf& stepConf, UiState& ui)
+void Test::ShowStats(const StepConf& stepConf, UiState& ui)
 {
     const auto bodyCount = GetBodyCount(m_world);
     const auto awakeCount = GetAwakeCount(m_world);
@@ -692,7 +698,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
             ImGui::SetTooltip("Counts of awake bodies over total bodies.");
         }
         ImGui::NextColumn();
-        ImGui::Text("Fixtures: %lu/%u", shapeCount, fixtureCount);
+        ImGui::Text("Fixtures: %u/%u", shapeCount, fixtureCount);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Counts of shapes over fixtures.");
@@ -1060,7 +1066,9 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
     }
 }
 
-void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
+void Test::DrawContactInfo(Drawer& drawer, const Settings& settings,
+                           const Test::FixtureSet& selectedFixtures,
+                           SizedRange<ContactPoints::const_iterator> points)
 {
     const auto k_impulseScale = 0.1_s / 1_kg;
     const auto k_axisScale = 0.3_m;
@@ -1069,15 +1077,11 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
     const auto contactNormalColor = Color{0.7f, 0.7f, 0.7f}; // light gray
     const auto normalImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
     const auto frictionImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
-
-    const auto selectedFixtures = GetSelectedFixtures();
     const auto lighten = 1.3f;
     const auto darken = 0.9f;
-
-    for (auto& point: m_points)
+    for (const auto& point: points)
     {
         const auto selected = HasFixture(point, selectedFixtures);
-
         if (settings.drawContactPoints)
         {
             if (point.state == PointState::AddState)
@@ -1092,7 +1096,6 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
                                  Brighten(persistStateColor, selected? lighten: darken));
             }
         }
-
         if (settings.drawContactImpulse)
         {
             const auto length = k_impulseScale * point.normalImpulse;
@@ -1105,7 +1108,6 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
             drawer.DrawSegment(p2, p2_left, Brighten(normalImpulseColor, selected? lighten: darken));
             drawer.DrawSegment(p2, p2_right, Brighten(normalImpulseColor, selected? lighten: darken));
         }
-
         if (settings.drawFrictionImpulse)
         {
             const auto tangent = GetFwdPerpendicular(point.normal);
@@ -1113,7 +1115,6 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
             const auto p2 = p1 + k_impulseScale * point.tangentImpulse * tangent;
             drawer.DrawSegment(p1, p2, Brighten(frictionImpulseColor, selected? lighten: darken));
         }
-
         if (settings.drawContactNormals)
         {
             const auto p1 = point.position;
@@ -1263,7 +1264,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
         ImGui::SetNextWindowPos(ImVec2(10, 200), ImGuiCond_Appearing);
         ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_Appearing);
         ImGui::WindowContext wc("Step Statistics", &ui.showStats, ImGuiWindowFlags_NoCollapse);
-        DrawStats(stepConf, ui);
+        ShowStats(stepConf, ui);
     }
     
     if (ui.showContactsHistory)
@@ -1301,12 +1302,13 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
         drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, Color{0.8f, 0.8f, 0.8f});
     }
 
-    DrawContactInfo(settings, drawer);
+    DrawContactInfo(drawer, settings, GetSelectedFixtures(), GetPoints());
 
     PostStep(settings, drawer);
 
     const auto selectedFixtures = GetSelectedFixtures();
-    const auto selectedFound = DrawWorld(drawer, m_world, settings, selectedFixtures);
+    const auto selectedFound = DrawWorld(drawer, m_world, selectedFixtures,
+                                         GetNeededSettings(), GetSettings(), settings);
     if (!empty(selectedFixtures) && !selectedFound)
     {
         ClearSelectedFixtures();

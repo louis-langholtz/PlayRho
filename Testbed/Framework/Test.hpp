@@ -361,10 +361,12 @@ protected:
     LinearAcceleration2 m_gravity = Gravity;
 
 private:
-    void DrawStats(const StepConf& stepConf, UiState& ui);
-    void DrawContactInfo(const Settings& settings, Drawer& drawer);
-    bool DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
-                   const FixtureSet& selected);
+    void ShowStats(const StepConf& stepConf, UiState& ui);
+    static void DrawContactInfo(Drawer& drawer, const Settings& settings,
+                                const Test::FixtureSet& selectedFixtures,
+                                SizedRange<ContactPoints::const_iterator> points);
+    static bool DrawWorld(Drawer& drawer, const World& world, const FixtureSet& selected,
+                          const NeededSettings& needed, const Settings& test, const Settings& step);
 
     const Settings m_settings;
     const NeededSettings m_neededSettings;
