@@ -563,7 +563,7 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
     CreateFixture(m_world, m_bomb, Shape{conf});
 }
 
-void Test::ShowStats(const StepConf& stepConf, UiState& ui)
+void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
 {
     const auto bodyCount = GetBodyCount(m_world);
     const auto awakeCount = GetAwakeCount(m_world);
@@ -572,13 +572,6 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui)
     const auto fixtureCount = GetFixtureCount(m_world);
     const auto shapeCount = GetShapeCount(m_world);
     const auto touchingCount = GetTouchingCount(m_world);
- 
-    if (size(m_numTouchingPerStep) >= m_maxHistory)
-    {
-        m_numTouchingPerStep.pop_front();
-    }
-    m_numTouchingPerStep.push_back(touchingCount);
-    m_maxTouching = std::max(m_maxTouching, touchingCount);
 
     ImGuiStyle& style = ImGui::GetStyle();
     const auto totalWidth = ImGui::GetWindowWidth() - style.FramePadding.x * 2;
@@ -1182,6 +1175,13 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
         ImGui::SetNextWindowPos(ImVec2(10, 200), ImGuiCond_Appearing);
         ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_Appearing);
         ImGui::WindowContext wc("Step Statistics", &ui.showStats, ImGuiWindowFlags_NoCollapse);
+        if (size(m_numTouchingPerStep) >= m_maxHistory)
+        {
+            m_numTouchingPerStep.pop_front();
+        }
+        const auto touchingCount = GetTouchingCount(m_world);
+        m_numTouchingPerStep.push_back(touchingCount);
+        m_maxTouching = std::max(m_maxTouching, touchingCount);
         ShowStats(stepConf, ui);
     }
     

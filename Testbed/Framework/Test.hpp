@@ -361,7 +361,7 @@ protected:
     LinearAcceleration2 m_gravity = Gravity;
 
 private:
-    void ShowStats(const StepConf& stepConf, UiState& ui);
+    void ShowStats(const StepConf& stepConf, UiState& ui) const;
     static void DrawContactInfo(Drawer& drawer, const Settings& settings,
                                 const Test::FixtureSet& selectedFixtures,
                                 SizedRange<ContactPoints::const_iterator> points);
