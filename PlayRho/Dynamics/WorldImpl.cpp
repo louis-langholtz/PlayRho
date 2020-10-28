@@ -1780,7 +1780,8 @@ void WorldImpl::InternalDestroy(ContactID contactID, Body* from)
     assert(contactID != InvalidContactID);
     auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
     if (m_endContactListener && contact.IsTouching()) {
-        // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching, so call it now
+        // EndContact hadn't been called in DestroyOrUpdateContacts() since is-touching,
+        //  so call it now
         m_endContactListener(contactID);
     }
     const auto bodyIdA = contact.GetBodyA();
