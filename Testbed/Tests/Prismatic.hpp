@@ -36,7 +36,7 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             bd.location = Vec2(-10.0f, 10.0f) * 1_m;
             bd.angle = 0.5_rad * Pi;
             bd.allowSleep = false;
@@ -76,7 +76,7 @@ public:
         stream << "Motor Force: ";
         stream << static_cast<double>(Real{force / 1_N});
         stream << " N.";
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     JointID m_joint; // PrismaticJoint

@@ -117,7 +117,7 @@ namespace testbed {
                 
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
-                bd.linearAcceleration = m_gravity;
+                bd.linearAcceleration = GetGravity();
                 bd.bullet = m_bullet_mode;
                 bd.location = Length2{x, frame_height - (arm_length / 2)};
                 
@@ -253,7 +253,7 @@ namespace testbed {
         {
             std::stringstream stream;
             stream << "Bullet mode currently " << (m_bullet_mode? "on": "off") << ".";
-            m_status = stream.str();
+            SetStatus(stream.str());
         }
 
         int m_num_arms = default_num_arms;

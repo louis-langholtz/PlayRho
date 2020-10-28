@@ -237,7 +237,7 @@ public:
             CreateFixture(m_world, m_character, Shape(conf));
         }
         
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(m_world, GetGravity());
     }
 
     void PreStep(const Settings&, Drawer&) override

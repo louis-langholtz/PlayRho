@@ -42,7 +42,7 @@ namespace testbed {
         
         FifteenPuzzle(): Test(GetTestConf())
         {
-            m_gravity = LinearAcceleration2{};
+            SetGravity(LinearAcceleration2{});
             auto conf = GetChainShapeConf(16_m + 2 * GetVertexRadius());
             conf.UseVertexRadius(GetVertexRadius());
             const auto enclosure = CreateBody(m_world);

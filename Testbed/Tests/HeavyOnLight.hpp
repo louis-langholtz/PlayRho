@@ -30,7 +30,7 @@ public:
     
     HeavyOnLight()
     {
-        const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
+        const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
         const auto upperBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 6.0f) * 1_m);
         const auto lowerBodyConf = BodyConf(bd).UseLocation(Vec2(0.0f, 0.5f) * 1_m);
         
@@ -88,7 +88,7 @@ public:
         stream << "Area density of top shape: ";
         stream << double(Real{GetDensity(m_world, m_top) / 1_kgpm2});
         stream << " kg/m^2.";
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     FixtureID m_top = InvalidFixtureID;

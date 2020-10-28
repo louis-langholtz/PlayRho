@@ -38,7 +38,7 @@ namespace testbed {
             const auto ballBody = CreateBody(m_world, BodyConf{}
                                                       .UseType(BodyType::Dynamic)
                                                       .UseLocation(Vec2(-19, 28) * 1_m)
-                                                     .UseLinearAcceleration(m_gravity));
+                                                     .UseLinearAcceleration(GetGravity()));
             CreateFixture(m_world, ballBody, Shape{
                 DiskShapeConf{}.UseDensity(0.01_kgpm2).UseRadius(1_m).UseFriction(Real(1))
             });

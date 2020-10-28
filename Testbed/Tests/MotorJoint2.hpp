@@ -63,7 +63,7 @@ public:
         if (IsValid(m_bodyA)) Destroy(m_world, m_bodyA);
         if (IsValid(m_bodyB)) Destroy(m_world, m_bodyB);
 
-        const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
+        const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
         const auto locations = m_reversedBody?
             std::make_pair(m_locationB, m_locationA): std::make_pair(m_locationA, m_locationB);
         m_bodyA = CreateBody(m_world, BodyConf(bd).UseLocation(std::get<0>(locations)));

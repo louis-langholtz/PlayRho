@@ -178,7 +178,7 @@ public:
 
     iforce2d_TopdownCar(): Test(GetTestConf())
     {
-        m_gravity = LinearAcceleration2{};
+        SetGravity(LinearAcceleration2{});
         SetFixtureDestructionListener(m_world, [this](FixtureID id){
             if (id.get() < m_fixtureData.size()) {
                 delete m_fixtureData[id.get()];

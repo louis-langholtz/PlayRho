@@ -45,7 +45,7 @@ public:
             {
                 const auto body = CreateBody(m_world, BodyConf{}
                                                      .UseType(BodyType::Dynamic)
-                                                     .UseLinearAcceleration(m_gravity)
+                                                     .UseLinearAcceleration(GetGravity())
                                                      .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
                 CreateFixture(m_world, body, shape);
                 m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(-15.0f + i, 5.0f) * 1_m));
@@ -69,7 +69,7 @@ public:
         {
             const auto body = CreateBody(m_world, BodyConf{}
                                                  .UseType(BodyType::Dynamic)
-                                                 .UseLinearAcceleration(m_gravity)
+                                                 .UseLinearAcceleration(GetGravity())
                                                  .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m));
             CreateFixture(m_world, body, polyshape);
         }
@@ -79,7 +79,7 @@ public:
         {
             const auto body = CreateBody(m_world, BodyConf{}
                                                  .UseType(BodyType::Dynamic)
-                                                 .UseLinearAcceleration(m_gravity)
+                                                 .UseLinearAcceleration(GetGravity())
                                                  .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m));
             CreateFixture(m_world, body, diskShape);
         }

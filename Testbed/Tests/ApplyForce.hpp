@@ -30,8 +30,8 @@ public:
     
     ApplyForce()
     {
-        m_gravity = LinearAcceleration2{};
-        
+        SetGravity(LinearAcceleration2{});
+
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Apply Force", [&](KeyActionMods) {
             const auto lv = Length2{0_m, -200_m};
             const auto direction = UnitVec::Get(GetX(lv), GetY(lv)).first;

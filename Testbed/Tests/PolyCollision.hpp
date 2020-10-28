@@ -73,7 +73,7 @@ public:
 
         std::stringstream stream;
         stream << "Point count: " << unsigned{pointCount} << ".";
-        m_status = stream.str();
+        SetStatus(stream.str());
 
         {
             const auto color = Color(0.9f, 0.9f, 0.9f);

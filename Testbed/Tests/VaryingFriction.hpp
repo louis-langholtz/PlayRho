@@ -57,7 +57,7 @@ public:
         {
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             bd.location = Vec2(-15.0f + 4.0f * i, 28.0f) * 1_m;
             const auto body = CreateBody(m_world, bd);
             shape.UseFriction(friction[i]);

@@ -62,7 +62,7 @@ public:
                 auto shape = rectangle;
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
-                bd.linearAcceleration = m_gravity;
+                bd.linearAcceleration = GetGravity();
                 bd.location = Vec2(0.5f + 1.0f * i, y) * 1_m;
                 if (i == N - 1)
                 {
@@ -108,7 +108,7 @@ public:
     {
         std::stringstream stream;
         stream << (IsValid(m_rope)? "Rope ON.": "Rope OFF.");
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     RopeJointConf m_ropeConf;

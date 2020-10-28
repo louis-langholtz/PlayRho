@@ -99,7 +99,7 @@ public:
     {
         const auto b = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic)
                                           .UseLocation(at).UseAllowSleep(false)
-                                          .UseLinearAcceleration(m_gravity));
+                                          .UseLinearAcceleration(GetGravity()));
         auto shape = PolygonShapeConf{}.UseDensity(5_kgpm2);
         shape.SetAsBox(0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
         CreateFixture(m_world, b, Shape(shape));
@@ -127,7 +127,7 @@ public:
     void CreateTumblee(Length2 at)
     {
         const auto b = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
-                                          .UseLinearAcceleration(m_gravity));
+                                          .UseLinearAcceleration(GetGravity()));
         m_tumblee.resize(b.get() + 1u);
         m_tumblee[b.get()] = true;
         CreateFixture(m_world, b, m_shape);
@@ -143,7 +143,7 @@ public:
                 }
             }
             ++m_count;
-            m_status = std::string("Count = ") + std::to_string(m_count);
+            SetStatus(std::string("Count = ") + std::to_string(m_count));
         }
     }
 

@@ -93,7 +93,7 @@ public:
                 CreateFixture(m_world, CreateBody(m_world, bd), Shape{PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(1.5_m, 1.5_m)});
             }
         }
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(m_world, GetGravity());
         RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "toggle friction", [&](KeyActionMods) {
             EnableMotor(m_world, m_joint2, !IsMotorEnabled(m_world, m_joint2));
             SetAwake(m_world, GetBodyB(m_world, m_joint2));
@@ -111,7 +111,7 @@ public:
         stream << "Motor Torque = ";
         stream << static_cast<double>(Real{torque / 1_Nm});
         stream << " Nm.";
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     JointID m_joint1; // RevoluteJoint

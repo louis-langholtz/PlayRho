@@ -186,13 +186,10 @@ class Test
 {
 public:
     using KeyHandlerID = std::size_t;
-    
     using KeyID = int;
-    
     using KeyMods = int;
-    
     using KeyAction = int;
-    
+
     struct KeyActionMods
     {
         KeyID key;
@@ -231,6 +228,8 @@ public:
 
     using ContactPoints = std::vector<ContactPoint>;
 
+    static const LinearAcceleration2 Gravity;
+
     virtual ~Test();
 
     /// @brief Steps this test's world forward and visualizes what's going on.
@@ -249,14 +248,14 @@ public:
     void SpawnBomb(const Length2& worldPt);
     void CompleteBombSpawn(const Length2& p);
     void ShiftOrigin(const Length2& newOrigin);
-    
+
     void KeyboardHandler(KeyID key, KeyAction action, KeyMods mods);
-    
+
     const std::string& GetKeyHandlerInfo(KeyHandlerID id) const
     {
         return std::get<0>(m_keyHandlers[id]);
     }
-    
+
     SizedRange<HandledKeys::const_iterator> GetHandledKeys() const
     {
         return SizedRange<HandledKeys::const_iterator>(cbegin(m_handledKeys),
@@ -266,7 +265,7 @@ public:
 
     void MouseDown(const Length2& p);
     void MouseUp(const Length2& p);
-    
+
     // Let derived tests know that a joint was destroyed.
     virtual void JointDestroyed(JointID joint) { NOT_USED(joint); }
 
@@ -277,7 +276,7 @@ public:
     virtual void PostSolve(ContactID, const ContactImpulsesList&, unsigned) { }
 
     static bool Contains(const FixtureSet& fixtures, FixtureID f) noexcept;
-    
+
     const std::string& GetDescription() const noexcept { return m_description; }
     NeededSettings GetNeededSettings() const noexcept { return m_neededSettings; }
     const Settings& GetSettings() const noexcept { return m_settings; }
@@ -297,8 +296,6 @@ public:
 
     World m_world;
 
-    static const LinearAcceleration2 Gravity;
-    
 protected:
     EdgeShapeConf GetGroundEdgeConf() const noexcept
     {
@@ -389,13 +386,53 @@ protected:
         RegisterForKey(key, action, mods, RegisterKeyHandler(info, handler));
     }
 
+    void SetStatus(std::string value) noexcept
+    {
+        m_status = std::move(value);
+    }
+
+    void ClearStatus() noexcept
+    {
+        m_status.clear();
+    }
+
+    LinearAcceleration2 GetGravity() const noexcept
+    {
+        return m_gravity;
+    }
+
+    void SetGravity(LinearAcceleration2 value) noexcept
+    {
+        m_gravity = value;
+    }
+
+    Length GetBombRadius() const noexcept
+    {
+        return m_bombRadius;
+    }
+
+    void SetBombRadius(Length value) noexcept
+    {
+        m_bombRadius = value;
+    }
+
+    AreaDensity GetBombDensity() const noexcept
+    {
+        return m_bombDensity;
+    }
+
+    void SetBombDensity(AreaDensity value) noexcept
+    {
+        m_bombDensity = value;
+    }
+
+private:
     std::string m_status;
     TextLinePos m_textLine = TextLinePos{30};
     AreaDensity m_bombDensity = 20_kgpm2;
     Length m_bombRadius = 0.3_m;
     LinearAcceleration2 m_gravity = Gravity;
 
-private:
     const Settings m_settings;
     const NeededSettings m_neededSettings;
     const std::string m_description;

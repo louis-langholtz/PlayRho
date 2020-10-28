@@ -57,7 +57,7 @@ public:
 
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
-        bodyConf.linearAcceleration = m_gravity;
+        bodyConf.linearAcceleration = GetGravity();
         bodyConf.location = p;
         const auto body = CreateBody(m_world, bodyConf);
 

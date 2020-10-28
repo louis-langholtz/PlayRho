@@ -56,7 +56,7 @@ public:
 
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
-        bodyConf.linearAcceleration = m_gravity;
+        bodyConf.linearAcceleration = GetGravity();
         bodyConf.location = GetLocation(m_world, parent) + localAnchor - h;
         const auto body = CreateBody(m_world, bodyConf);
         CreateFixture(m_world, body, shape);

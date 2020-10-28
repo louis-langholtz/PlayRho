@@ -152,7 +152,7 @@ public:
             CreateFixture(m_world, body, circleshape);
         }
         
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(m_world, GetGravity());
     }
 
     BodyID m_middle;

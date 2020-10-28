@@ -186,7 +186,7 @@ public:
         stream << "Mode of the raycast test currently: ";
         stream << GetModeName(m_mode);
         stream << ".";
-        m_status = stream.str();
+        SetStatus(stream.str());
 
         const auto L = 11.0f;
         const auto point1 = Vec2(0.0f, 10.0f) * 1_m;

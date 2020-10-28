@@ -39,7 +39,7 @@ public:
 
     Confined()
     {
-        m_gravity = LinearAcceleration2{};
+        SetGravity(LinearAcceleration2{});
         m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
 
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Create Circle", [&](KeyActionMods) {
@@ -198,7 +198,7 @@ public:
     {
         std::stringstream stream;
         stream << "Bullet mode currently " << (m_bullet_mode? "on": "off") << ".";
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
     
     bool m_bullet_mode = false;

@@ -40,7 +40,7 @@ public:
     
     DistanceTest(): Test(GetTestConf())
     {
-        m_gravity = LinearAcceleration2{};
+        SetGravity(LinearAcceleration2{});
 
         const auto def = BodyConf{}
             .UseType(BodyType::Dynamic)
@@ -239,12 +239,12 @@ public:
             default:
                 break;
         }
-        m_status += stream.str();
+        SetStatus(GetStatus() + stream.str());
     }
 
     void PostStep(const Settings&, Drawer& drawer) override
     {
-        m_status.clear();
+        ClearStatus();
 
         const auto shapeA = GetShape(m_world, GetFixture(m_world, m_bodyA));
         const auto shapeB = GetShape(m_world, GetFixture(m_world, m_bodyB));
@@ -385,7 +385,7 @@ public:
             }
             os << "\n";
         }
-        m_status += os.str();
+        SetStatus(GetStatus() + os.str());
 
         ShowManifold(drawer, manifold, "manifold");
 #ifdef DEFINE_GET_MANIFOLD

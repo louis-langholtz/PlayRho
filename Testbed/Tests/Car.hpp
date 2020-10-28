@@ -142,7 +142,7 @@ public:
         }
 
         CreateCar();
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(m_world, GetGravity());
     }
 
     void CreateCar(bool flip = false)
@@ -166,7 +166,7 @@ public:
             Vec2(-1.5f, 0.2f) * 1_m  /* top left of car body */
         }).Transform(transmat);
 
-        auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
+        auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
         m_car = CreateBody(m_world, bd.Use(carPosition).Use(carVelocity));
         CreateFixture(m_world, m_car, Shape{carShapeConf});
         
@@ -220,7 +220,7 @@ public:
         std::stringstream stream;
         stream << "Frequency = " << static_cast<double>(Real{m_hz / 1_Hz}) << " hz, ";
         stream << "damping ratio = " << m_zeta;
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     const Real m_zeta = 0.7f;

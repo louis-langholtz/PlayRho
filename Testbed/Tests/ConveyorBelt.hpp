@@ -52,7 +52,7 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * 1_m;
             const auto body = CreateBody(m_world, bd);
             CreateFixture(m_world, body, boxshape);

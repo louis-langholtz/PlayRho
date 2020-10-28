@@ -99,7 +99,7 @@ public:
         const auto body6 = CreateBody(m_world, circleBodyConf);
         CreateFixture(m_world, body6, Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
         
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(m_world, GetGravity());
     }
 
     void PostStep(const Settings&, Drawer&) override

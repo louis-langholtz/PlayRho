@@ -110,7 +110,7 @@ public:
             m_joint5 = m_world.CreateJoint(jd5);
         }
         
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(m_world, GetGravity());
     }
 
     void PostStep(const Settings&, Drawer&) override
@@ -130,7 +130,7 @@ public:
             stream << " * theta2 = " << static_cast<double>(Real{value / 1_m});
             stream << " m.";
         }
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     JointID m_joint1; // Revolute joint.

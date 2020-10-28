@@ -34,7 +34,7 @@ public:
         
         BodyConf bd;
         bd.type = BodyType::Dynamic;
-        bd.linearAcceleration = m_gravity;
+        bd.linearAcceleration = GetGravity();
         bd.location = Vec2(0.0f, 10.0f) * 1_m;
         m_body = CreateBody(m_world, bd);
 
@@ -79,7 +79,7 @@ public:
     {
         std::stringstream stream;
         stream << "Sensor is " << (m_sensor? "on": "off") << ".";
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     BodyID m_body;

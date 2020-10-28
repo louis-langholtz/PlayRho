@@ -80,7 +80,7 @@ public:
                     BodyConf bd;
                     bd.type = BodyType::Dynamic;
                     bd.location = y * 1_m;
-                    bd.linearAcceleration = m_gravity;
+                    bd.linearAcceleration = GetGravity();
 
                     const auto body = CreateBody(m_world, bd);
                     CreateFixture(m_world, body, shape);
@@ -115,7 +115,7 @@ public:
         stream << " ms, fixture count = ";
         stream << m_fixtureCount;
         stream << ".";
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
     
     int m_fixtureCount;

@@ -85,7 +85,7 @@ public:
                                                      .UseBullet(true)
                                                      .UseLocation(midPoint + vertexOffset)
                                                      .UseAngle(angle)
-                                                     .UseLinearAcceleration(m_gravity));
+                                                     .UseLinearAcceleration(GetGravity()));
                 CreateFixture(m_world, body, shape);
                 if (prevBody != InvalidBodyID)
                 {
@@ -117,7 +117,7 @@ public:
             const auto body = CreateBody(m_world, BodyConf{}
                                                  .UseType(BodyType::Dynamic)
                                                  .UseLocation(location + vertexOffset)
-                                                 .UseLinearAcceleration(m_gravity));
+                                                 .UseLinearAcceleration(GetGravity()));
             CreateFixture(m_world, body, diskShape);
             angle += angleIncrement;
             angleIncrement *= 0.999f;

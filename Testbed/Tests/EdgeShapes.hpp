@@ -130,7 +130,7 @@ public:
         bd.location = Vec2(x, y) * 1_m;
         bd.angle = 1_rad * RandomFloat(-Pi, Pi);
         bd.type = BodyType::Dynamic;
-        bd.linearAcceleration = m_gravity;
+        bd.linearAcceleration = GetGravity();
 
         if (index == 4)
         {

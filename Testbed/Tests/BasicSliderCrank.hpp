@@ -38,7 +38,7 @@ public:
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-8.0f, 20.0f) * 1_m;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             const auto body = CreateBody(m_world, bd);
             auto conf = PolygonShapeConf{};
             conf.density = 2_kgpm2;
@@ -53,7 +53,7 @@ public:
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(4.0f, 20.0f) * 1_m;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             const auto body = CreateBody(m_world, bd);
             auto conf = PolygonShapeConf{};
             conf.density = 2_kgpm2;
@@ -69,7 +69,7 @@ public:
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = true;
             bd.location = Vec2(12.0f, 20.0f) * 1_m;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             const auto body = CreateBody(m_world, bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(3_m, 3_m);
             CreateFixture(m_world, body, Shape(conf));

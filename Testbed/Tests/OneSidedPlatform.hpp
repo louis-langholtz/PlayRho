@@ -54,7 +54,7 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             bd.location = Vec2(0.0f, 12.0f) * 1_m;
             const auto body = CreateBody(m_world, bd);
             auto conf = DiskShapeConf{};
@@ -104,7 +104,7 @@ public:
         stream << "Character linear velocity: ";
         stream << static_cast<double>(Real{GetY(v) / 1_mps});
         stream << " m/s.";
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     Length m_radius = 0.5_m;

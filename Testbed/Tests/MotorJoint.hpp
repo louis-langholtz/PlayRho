@@ -50,7 +50,7 @@ public:
         const auto body = CreateBody(m_world, BodyConf{}
                                              .UseType(BodyType::Dynamic)
                                              .UseLocation(Vec2(0.0f, 8.0f) * 1_m)
-                                             .UseLinearAcceleration(m_gravity));
+                                             .UseLinearAcceleration(GetGravity()));
         CreateFixture(m_world, body, Shape{
             PolygonShapeConf{}.SetAsBox(2_m, 0.5_m).UseFriction(Real(0.6)).UseDensity(2_kgpm2)
         });
@@ -66,18 +66,14 @@ public:
 
     void PreStep(const Settings& settings, Drawer& drawer) override
     {
-        m_status = m_go? "Motor going.": "Motor paused.";
-
+        SetStatus(m_go? "Motor going.": "Motor paused.");
         if (m_go && settings.dt > 0)
         {
             m_time += settings.dt;
         }
-
         const auto linearOffset = Vec2{6 * sin(2 * m_time), 8 + 4 * sin(m_time)} * 1_m;
-
         SetLinearOffset(m_world, m_joint, linearOffset);
         SetAngularOffset(m_world, m_joint, 4_rad * m_time);
-
         drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
     }
 

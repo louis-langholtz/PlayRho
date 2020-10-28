@@ -55,7 +55,7 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             bd.location = Length2{0_m, 40_m};
             bd.angle = Pi * 0.25_rad;
             m_body1 = CreateBody(m_world, bd);
@@ -100,7 +100,7 @@ public:
 
         BodyConf bd;
         bd.type = BodyType::Dynamic;
-        bd.linearAcceleration = m_gravity;
+        bd.linearAcceleration = GetGravity();
         bd.location = GetLocation(m_world, body1);
         bd.angle = GetAngle(m_world, body1);
 

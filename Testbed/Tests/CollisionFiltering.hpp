@@ -154,7 +154,7 @@ public:
         circleConf.vertexRadius = circleConf.vertexRadius * 2;
         CreateFixture(m_world, body6, Shape(circleConf), circleShapeConf);
         
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(m_world, GetGravity());
     }
 };
     

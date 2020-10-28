@@ -50,7 +50,7 @@ public:
 
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
 
             //bd.fixedRotation = true;
             bd.location = Vec2(-10.0f, y) * 1_m;
@@ -83,7 +83,7 @@ public:
         stream << " * L2 = ";
         stream << static_cast<double>(Real{L / 1_m});
         stream << "m.";
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     JointID m_joint1; // PulleyJoint

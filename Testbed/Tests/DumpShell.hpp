@@ -43,7 +43,7 @@ public:
         //  a World for use as the 'm_world' variable in the code below.
 
         LinearAcceleration2 g(Real{0.000000000000000e+00f} * MeterPerSquareSecond, Real{-1.000000000000000e+01f} * MeterPerSquareSecond);
-        m_gravity = g;
+        SetGravity(g);
         BodyID* bodies = (BodyID*)Alloc(3 * sizeof(BodyID));
         JointID* joints = (JointID*)Alloc(0 * sizeof(JointID));
         {
@@ -154,7 +154,7 @@ public:
             }
         }
 
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(m_world, GetGravity());
         Free(joints);
         Free(bodies);
         joints = nullptr;

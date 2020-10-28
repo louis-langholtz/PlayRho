@@ -41,7 +41,7 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             bd.location = Vec2(0, 4.0f + 3.0f * i) * 1_m;
             m_bodies[i] = CreateBody(m_world, bd);
             CreateFixture(m_world, m_bodies[i], shape);

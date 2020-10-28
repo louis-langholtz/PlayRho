@@ -36,7 +36,7 @@ public:
     
     AddPair(): Test(GetTestConf())
     {
-        m_gravity = LinearAcceleration2{};
+        SetGravity(LinearAcceleration2{});
         {
             const auto minX = -6.0f;
             const auto maxX = 0.0f;

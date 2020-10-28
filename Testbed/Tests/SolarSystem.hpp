@@ -111,8 +111,8 @@ public:
     
     SolarSystem(): Test(GetTestConf())
     {
-        m_bombRadius = 100_km;
-        m_bombDensity = 2e12_kgpm2;
+        SetBombRadius(100_km);
+        SetBombDensity(2e12_kgpm2);
         const auto DynamicBD = BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true);
         for (auto& sso: SolarSystemBodies)
         {
@@ -144,22 +144,22 @@ public:
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, GLFW_MOD_SHIFT,
                        "Increases bomb size.",
                        [&](KeyActionMods) {
-                           m_bombRadius *= 2;
+                           SetBombRadius(GetBombRadius() * 2);
                        });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0,
                        "Decreases bomb size.",
                        [&](KeyActionMods) {
-                           m_bombRadius /= 2;;
+                           SetBombRadius(GetBombRadius() / 2);
                        });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, GLFW_MOD_SHIFT,
                        "Increases bomb density.",
                        [&](KeyActionMods) {
-                           m_bombDensity *= 2;
+                           SetBombDensity(GetBombDensity() * 2);
                        });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0,
                        "Decreases bomb density.",
                        [&](KeyActionMods) {
-                           m_bombDensity /= 2;;
+                           SetBombDensity(GetBombDensity() / 2);
                        });
     }
     
@@ -182,9 +182,9 @@ public:
         {
             os << "Camera unlocked from following any planet.";
         }
-        os << " 'Bomb' size (radial) is now at " << Real{m_bombRadius/1_km} << "km.";
-        os << " 'Bomb' density (areal) is now at " << Real{m_bombDensity/1_kgpm2} << "kg/m^2.";
-        m_status = os.str();
+        os << " 'Bomb' size (radial) is now at " << Real{GetBombRadius()/1_km} << "km.";
+        os << " 'Bomb' density (areal) is now at " << Real{GetBombDensity()/1_kgpm2} << "kg/m^2.";
+        SetStatus(os.str());
     }
     
     BodyID m_focalBody = InvalidBodyID;

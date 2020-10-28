@@ -56,7 +56,7 @@ public:
             {
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
-                bd.linearAcceleration = m_gravity;
+                bd.linearAcceleration = GetGravity();
 
                 const auto x = 0.0f;
                 //const auto x = RandomFloat(-0.02f, 0.02f);
@@ -79,7 +79,7 @@ public:
             {
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
-                bd.linearAcceleration = m_gravity;
+                bd.linearAcceleration = GetGravity();
                 bd.bullet = true;
                 bd.location = Vec2(-31.0f, 5.0f) * 1_m;
                 

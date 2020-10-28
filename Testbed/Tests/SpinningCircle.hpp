@@ -34,7 +34,7 @@ namespace testbed {
         
         SpinningCircle()
         {
-            m_gravity = LinearAcceleration2{};
+            SetGravity(LinearAcceleration2{});
 
             auto bodyConf = BodyConf{};
             bodyConf.type = BodyType::Dynamic;

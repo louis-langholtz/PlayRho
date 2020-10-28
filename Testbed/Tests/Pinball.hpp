@@ -52,7 +52,7 @@ public:
 
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
 
             bd.location = p1;
             const auto leftFlipper = CreateBody(m_world, bd);
@@ -91,7 +91,7 @@ public:
             BodyConf bd;
             bd.location = Vec2(1.0f, 15.0f) * 1_m;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             bd.bullet = true;
 
             m_ball = CreateBody(m_world, bd);

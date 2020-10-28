@@ -135,7 +135,7 @@ public:
             CreateFixture(m_world, body, right);
         }
         
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(m_world, GetGravity());
     }
 };
 

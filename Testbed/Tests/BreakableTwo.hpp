@@ -37,7 +37,7 @@ public:
 
     BreakableTwo(): Test(GetTestConf())
     {
-        m_gravity = LinearAcceleration2{};
+        SetGravity(LinearAcceleration2{});
 
         BodyID bodies[20 * 20];
         const auto startLoc = Length2{-10_m, 10_m};
