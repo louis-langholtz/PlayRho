@@ -294,7 +294,15 @@ public:
                                                          size(m_points));
     }
 
-    World m_world;
+    const World& GetWorld() const noexcept
+    {
+        return m_world;
+    }
+
+    World& GetWorld() noexcept
+    {
+        return m_world;
+    }
 
 protected:
     EdgeShapeConf GetGroundEdgeConf() const noexcept
@@ -427,6 +435,8 @@ protected:
     }
 
 private:
+    World m_world;
+
     std::string m_status;
     TextLinePos m_textLine = TextLinePos{30};
     AreaDensity m_bombDensity = 20_kgpm2;

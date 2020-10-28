@@ -41,13 +41,13 @@ public:
         const auto smallerDiskConf = DiskShapeConf(diskConf).UseRadius(0.5_m);
         const auto biggerDiskConf = DiskShapeConf(diskConf).UseRadius(5_m);
 
-        CreateFixture(m_world, CreateBody(m_world), Shape(groundConf));
+        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape(groundConf));
         
-        const auto lowerBody = CreateBody(m_world, lowerBodyConf);
-        const auto upperBody = CreateBody(m_world, upperBodyConf);
+        const auto lowerBody = CreateBody(GetWorld(), lowerBodyConf);
+        const auto upperBody = CreateBody(GetWorld(), upperBodyConf);
 
-        CreateFixture(m_world, lowerBody, Shape(smallerDiskConf));
-        m_top = CreateFixture(m_world, upperBody, Shape(biggerDiskConf));
+        CreateFixture(GetWorld(), lowerBody, Shape(smallerDiskConf));
+        m_top = CreateFixture(GetWorld(), upperBody, Shape(biggerDiskConf));
         
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "increase density of top shape", [&](KeyActionMods) {
             ChangeDensity(+1_kgpm2);
@@ -59,7 +59,7 @@ public:
 
     void ChangeDensity(AreaDensity change)
     {
-        const auto oldDensity = GetDensity(m_world, m_top);
+        const auto oldDensity = GetDensity(GetWorld(), m_top);
         const auto newDensity = std::max(oldDensity + change, 1_kgpm2);
         if (newDensity != oldDensity)
         {
@@ -67,12 +67,12 @@ public:
             const auto selectedFixture = (size(selectedFixtures) == 1)
                 ? *(begin(selectedFixtures)): InvalidFixtureID;
             const auto wasSelected = selectedFixture == m_top;
-            const auto body = GetBody(m_world, m_top);
-            Destroy(m_world, m_top);
+            const auto body = GetBody(GetWorld(), m_top);
+            Destroy(GetWorld(), m_top);
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 5_m;
             conf.density = newDensity;
-            m_top = CreateFixture(m_world, body, Shape(conf));
+            m_top = CreateFixture(GetWorld(), body, Shape(conf));
             if (wasSelected)
             {
                 selectedFixtures.erase(begin(selectedFixtures));
@@ -86,7 +86,7 @@ public:
     {
         std::stringstream stream;
         stream << "Area density of top shape: ";
-        stream << double(Real{GetDensity(m_world, m_top) / 1_kgpm2});
+        stream << double(Real{GetDensity(GetWorld(), m_top) / 1_kgpm2});
         stream << " kg/m^2.";
         SetStatus(stream.str());
     }

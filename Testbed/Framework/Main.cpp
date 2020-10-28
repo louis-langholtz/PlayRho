@@ -2260,29 +2260,29 @@ static void ModelEntitiesUI()
 
     ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
     {
-        const auto bodies = test->m_world.GetBodies();
+        const auto bodies = test->GetWorld().GetBodies();
         if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Bodies (%lu)", size(bodies)))
         {
-            CollectionUI(test->m_world, bodies, selectedBodies, selectedFixtures);
+            CollectionUI(test->GetWorld(), bodies, selectedBodies, selectedFixtures);
             ImGui::TreePop();
         }
     }
     {
-        const auto joints = test->m_world.GetJoints();
+        const auto joints = test->GetWorld().GetJoints();
         if (ImGui::TreeNodeEx("Joints", selJoints? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Joints (%lu)", size(joints)))
         {
-            CollectionUI(test->m_world, joints);
+            CollectionUI(test->GetWorld(), joints);
             ImGui::TreePop();
         }
     }
     {
-        const auto contacts = test->m_world.GetContacts();
+        const auto contacts = test->GetWorld().GetContacts();
         if (ImGui::TreeNodeEx("Contacts", selContacts? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Contacts (%lu)", size(contacts)))
         {
-            CollectionUI(test->m_world, contacts);
+            CollectionUI(test->GetWorld(), contacts);
             ImGui::TreePop();
         }
     }

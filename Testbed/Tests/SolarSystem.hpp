@@ -123,18 +123,18 @@ public:
             const auto l = Length2{odds? -sso.aveDist: sso.aveDist, 0_m};
             const auto v = (p != 0_s)? (c / p) * (odds? -1: +1): 0_mps;
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-            const auto b = CreateBody(m_world, BodyConf(DynamicBD).UseLocation(l));
+            const auto b = CreateBody(GetWorld(), BodyConf(DynamicBD).UseLocation(l));
             const auto a = 2 * Pi * 1_rad / sso.rotationalPeriod;
-            SetVelocity(m_world, b, Velocity{LinearVelocity2{0_mps, v}, a});
+            SetVelocity(GetWorld(), b, Velocity{LinearVelocity2{0_mps, v}, a});
             const auto d = sso.mass / (Pi * Square(sso.radius));
             const auto sconf = DiskShapeConf{}.UseRadius(sso.radius).UseDensity(d);
             const auto shape = Shape(sconf);
-            CreateFixture(m_world, b, shape);
+            CreateFixture(GetWorld(), b, shape);
         }
         RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0,
                        "Locks camera to following planet nearest mouse.",
                        [&](KeyActionMods) {
-                           m_focalBody = FindClosestBody(m_world, GetMouseWorld());
+                           m_focalBody = FindClosestBody(GetWorld(), GetMouseWorld());
                        });
         RegisterForKey(GLFW_KEY_BACKSPACE, GLFW_PRESS, 0,
                        "Unlock camera from following planet.",
@@ -165,15 +165,15 @@ public:
     
     void PreStep(const Settings&, Drawer& drawer) override
     {
-        SetAccelerations(m_world, CalcGravitationalAcceleration);
+        SetAccelerations(GetWorld(), CalcGravitationalAcceleration);
 
         std::ostringstream os;
         if (IsValid(m_focalBody))
         {
-            const auto location = GetLocation(m_world, m_focalBody);
+            const auto location = GetLocation(GetWorld(), m_focalBody);
             drawer.SetTranslation(location);
             
-            const auto index = GetWorldIndex(m_world, m_focalBody);
+            const auto index = GetWorldIndex(GetWorld(), m_focalBody);
             os << "Camera locked on body " << index << ": ";
             os << SolarSystemBodies[index].name;
             os << ".";

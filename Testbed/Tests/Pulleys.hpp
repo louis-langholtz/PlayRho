@@ -34,14 +34,14 @@ public:
         const auto a = Real{1.0f};
         const auto b = Real{2.0f};
 
-        const auto ground = CreateBody(m_world);
+        const auto ground = CreateBody(GetWorld());
         {
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 2_m;
             conf.location = Vec2(-10.0f, y + b + L) * 1_m;
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
             conf.location = Vec2(+10.0f, y + b + L) * 1_m;
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
         }
 
         {
@@ -54,29 +54,29 @@ public:
 
             //bd.fixedRotation = true;
             bd.location = Vec2(-10.0f, y) * 1_m;
-            const auto body1 = CreateBody(m_world, bd);
-            CreateFixture(m_world, body1, shape);
+            const auto body1 = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), body1, shape);
 
             bd.location = Vec2(10.0f, y) * 1_m;
-            const auto body2 = CreateBody(m_world, bd);
-            CreateFixture(m_world, body2, shape);
+            const auto body2 = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), body2, shape);
 
             const auto anchor1 = Vec2(-10.0f, y + b) * 1_m;
             const auto anchor2 = Vec2(10.0f, y + b) * 1_m;
             const auto groundAnchor1 = Vec2(-10.0f, y + b + L) * 1_m;
             const auto groundAnchor2 = Vec2(10.0f, y + b + L) * 1_m;
-            const auto pulleyConf = GetPulleyJointConf(m_world, body1, body2,
+            const auto pulleyConf = GetPulleyJointConf(GetWorld(), body1, body2,
                 groundAnchor1, groundAnchor2, anchor1, anchor2).UseRatio(1.5f);
 
-            m_joint1 = m_world.CreateJoint(pulleyConf);
+            m_joint1 = CreateJoint(GetWorld(), pulleyConf);
         }
     }
 
     void PostStep(const Settings&, Drawer&) override
     {
-        const auto ratio = GetRatio(m_world, m_joint1);
-        const auto L = GetCurrentLengthA(m_world, m_joint1) +
-            ratio * GetCurrentLengthB(m_world, m_joint1);
+        const auto ratio = GetRatio(GetWorld(), m_joint1);
+        const auto L = GetCurrentLengthA(GetWorld(), m_joint1) +
+            ratio * GetCurrentLengthB(GetWorld(), m_joint1);
         std::stringstream stream;
         stream << "L1 + ";
         stream << static_cast<float>(ratio);

@@ -43,7 +43,7 @@ public:
             const auto a = Real{0.5f};
             BodyConf bd;
             GetY(bd.location) = -a * 1_m;
-            const auto ground = CreateBody(m_world, bd);
+            const auto ground = CreateBody(GetWorld(), bd);
 
             const auto N = 200;
             const auto M = 10;
@@ -54,7 +54,7 @@ public:
                 GetX(position) = -N * a;
                 for (auto i = 0; i < N; ++i)
                 {
-                    CreateFixture(m_world, ground, Shape{PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg)});
+                    CreateFixture(GetWorld(), ground, Shape{PolygonShapeConf{}.SetAsBox(a * 1_m, a * 1_m, position * 1_m, 0_deg)});
                     ++m_fixtureCount;
                     GetX(position) += 2.0f * a;
                 }
@@ -82,8 +82,8 @@ public:
                     bd.location = y * 1_m;
                     bd.linearAcceleration = GetGravity();
 
-                    const auto body = CreateBody(m_world, bd);
-                    CreateFixture(m_world, body, shape);
+                    const auto body = CreateBody(GetWorld(), bd);
+                    CreateFixture(GetWorld(), body, shape);
                     ++m_fixtureCount;
                     y += deltaY;
                 }
@@ -97,7 +97,7 @@ public:
         m_createTime = elapsed_secs.count();
         
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Make a snapshot.", [&](KeyActionMods) {
-            m_snapshot = m_world;
+            m_snapshot = GetWorld();
         });
         RegisterForKey(GLFW_KEY_BACKSPACE, GLFW_PRESS, 0, "Restore to snapshot.", [&](KeyActionMods) {
             if (!empty(m_snapshot.GetBodies()))

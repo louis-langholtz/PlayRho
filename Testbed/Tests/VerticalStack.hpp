@@ -39,9 +39,9 @@ public:
 
     VerticalStack()
     {
-        const auto ground = CreateBody(m_world);
-        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
-        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(20.0f, 0.0f) * 1_m, Vec2(20.0f, 20.0f) * 1_m}});
+        const auto ground = CreateBody(GetWorld());
+        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(20.0f, 0.0f) * 1_m, Vec2(20.0f, 20.0f) * 1_m}});
 
         const float xs[] = {0.0f, -10.0f, -5.0f, 5.0f, 10.0f};
         assert(e_columnCount <= sizeof(xs)/sizeof(xs[0]));
@@ -63,7 +63,7 @@ public:
                 //const auto x = i % 2 == 0 ? -0.01f : 0.01f;
                 //bd.position = Vec2(xs[j] + x, (hdim - hdim/20) + (hdim * 2 - hdim / 20) * i);
                 bd.location = Vec2(xs[j] + x, (i + 1) * hdim * 4) * 1_m;
-                CreateFixture(m_world, CreateBody(m_world, bd), shape);
+                CreateFixture(GetWorld(), CreateBody(GetWorld(), bd), shape);
             }
         }
 
@@ -72,7 +72,7 @@ public:
         RegisterForKey(GLFW_KEY_COMMA, GLFW_PRESS, 0, "Launch a bullet.", [&](KeyActionMods) {
             if (IsValid(m_bullet))
             {
-                Destroy(m_world, m_bullet);
+                Destroy(GetWorld(), m_bullet);
                 m_bullet = InvalidBodyID;
             }
             
@@ -83,9 +83,9 @@ public:
                 bd.bullet = true;
                 bd.location = Vec2(-31.0f, 5.0f) * 1_m;
                 
-                m_bullet = CreateBody(m_world, bd);
-                CreateFixture(m_world, m_bullet, m_bulletshape);
-                SetVelocity(m_world, m_bullet, Velocity{Vec2(400.0f, 0.0f) * 1_mps, 0_rpm});
+                m_bullet = CreateBody(GetWorld(), bd);
+                CreateFixture(GetWorld(), m_bullet, m_bulletshape);
+                SetVelocity(GetWorld(), m_bullet, Velocity{Vec2(400.0f, 0.0f) * 1_mps, 0_rpm});
             }
         });
     }

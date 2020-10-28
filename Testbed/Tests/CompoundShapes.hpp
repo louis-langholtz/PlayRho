@@ -30,7 +30,7 @@ class CompoundShapes : public Test
 public:
     CompoundShapes()
     {
-        CreateFixture(m_world, CreateBody(m_world),
+        CreateFixture(GetWorld(), CreateBody(GetWorld()),
                               Shape{EdgeShapeConf{Vec2(50.0f, 0.0f) * 1_m, Vec2(-50.0f, 0.0f) * 1_m}});
         
         {
@@ -48,9 +48,9 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x + 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
-                const auto body = CreateBody(m_world, bd);
-                CreateFixture(m_world, body, circle1);
-                CreateFixture(m_world, body, circle2);
+                const auto body = CreateBody(GetWorld(), bd);
+                CreateFixture(GetWorld(), body, circle1);
+                CreateFixture(GetWorld(), body, circle2);
             }
         }
 
@@ -69,9 +69,9 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x - 5.0f, 1.05f + 2.5f * i) * 1_m;
                 bd.angle = 1_rad * RandomFloat(-Pi, Pi);
-                const auto body = CreateBody(m_world, bd);
-                CreateFixture(m_world, body, polygon1);
-                CreateFixture(m_world, body, polygon2);
+                const auto body = CreateBody(GetWorld(), bd);
+                CreateFixture(GetWorld(), body, polygon1);
+                CreateFixture(GetWorld(), body, polygon2);
             }
         }
 
@@ -109,9 +109,9 @@ public:
                 bd.type = BodyType::Dynamic;
                 bd.location = Vec2(x, 2.05f + 2.5f * i) * 1_m;
                 bd.angle = 0_rad;
-                const auto body = CreateBody(m_world, bd);
-                CreateFixture(m_world, body, triangle1);
-                CreateFixture(m_world, body, triangle2);
+                const auto body = CreateBody(GetWorld(), bd);
+                CreateFixture(GetWorld(), body, triangle1);
+                CreateFixture(GetWorld(), body, triangle2);
             }
         }
 
@@ -129,13 +129,13 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = Vec2( 0.0f, 2.0f ) * 1_m;
-            const auto body = CreateBody(m_world, bd);
-            CreateFixture(m_world, body, bottom);
-            CreateFixture(m_world, body, left);
-            CreateFixture(m_world, body, right);
+            const auto body = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), body, bottom);
+            CreateFixture(GetWorld(), body, left);
+            CreateFixture(GetWorld(), body, right);
         }
         
-        SetAccelerations(m_world, GetGravity());
+        SetAccelerations(GetWorld(), GetGravity());
     }
 };
 

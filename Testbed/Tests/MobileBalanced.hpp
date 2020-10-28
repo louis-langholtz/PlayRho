@@ -34,7 +34,7 @@ public:
 
     MobileBalanced()
     {
-        const auto ground = CreateBody(m_world, BodyConf{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
+        const auto ground = CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
 
         const auto a = 0.5_m;
         const auto h = Length2{0_m, a};
@@ -46,22 +46,22 @@ public:
         jointConf.bodyB = root;
         jointConf.localAnchorA = Length2{};
         jointConf.localAnchorB = h;
-        m_world.CreateJoint(jointConf);
+        CreateJoint(GetWorld(), jointConf);
     }
 
     BodyID AddNode(const BodyID parent, const Length2 localAnchor, const int depth,
                   const Real offset, const Length a, Shape shape)
     {
         const auto h = Length2{0_m, a};
-        const auto p = GetLocation(m_world, parent) + localAnchor - h;
+        const auto p = GetLocation(GetWorld(), parent) + localAnchor - h;
 
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
         bodyConf.linearAcceleration = GetGravity();
         bodyConf.location = p;
-        const auto body = CreateBody(m_world, bodyConf);
+        const auto body = CreateBody(GetWorld(), bodyConf);
 
-        CreateFixture(m_world, body, shape);
+        CreateFixture(GetWorld(), body, shape);
 
         if (depth == MaxDepth)
         {
@@ -71,7 +71,7 @@ public:
         auto shape2 = PolygonShapeConf{};
         shape2.UseDensity(density);
         shape2.SetAsBox(offset * 1_m, a / 4, Length2{0_m, -a}, 0_rad);
-        CreateFixture(m_world, body, Shape(shape2));
+        CreateFixture(GetWorld(), body, Shape(shape2));
 
         const auto a1 = Length2{offset * 1_m, -a};
         const auto a2 = Length2{-offset * 1_m, -a};
@@ -84,11 +84,11 @@ public:
 
         jointConf.localAnchorA = a1;
         jointConf.bodyB = body1;
-        m_world.CreateJoint(jointConf);
+        CreateJoint(GetWorld(), jointConf);
 
         jointConf.localAnchorA = a2;
         jointConf.bodyB = body2;
-        m_world.CreateJoint(jointConf);
+        CreateJoint(GetWorld(), jointConf);
 
         return body;
     }

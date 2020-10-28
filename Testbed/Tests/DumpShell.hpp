@@ -40,7 +40,7 @@ public:
         //
         //  This code is originally intended for use in the Box testbed,
         //  but you can easily use it in other applications by providing
-        //  a World for use as the 'm_world' variable in the code below.
+        //  a World for use as the 'GetWorld()' variable in the code below.
 
         LinearAcceleration2 g(Real{0.000000000000000e+00f} * MeterPerSquareSecond, Real{-1.000000000000000e+01f} * MeterPerSquareSecond);
         SetGravity(g);
@@ -60,7 +60,7 @@ public:
             bd.fixedRotation = bool(0);
             bd.bullet = bool(0);
             bd.enabled = bool(32);
-            bodies[0] = CreateBody(m_world, bd);
+            bodies[0] = CreateBody(GetWorld(), bd);
 
             {
                 auto shape = PolygonShapeConf{};
@@ -79,7 +79,7 @@ public:
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(0);
 
-                CreateFixture(m_world, bodies[0], Shape(shape), fd);
+                CreateFixture(GetWorld(), bodies[0], Shape(shape), fd);
             }
         }
         {
@@ -96,7 +96,7 @@ public:
             bd.fixedRotation = bool(0);
             bd.bullet = bool(0);
             bd.enabled = bool(32);
-            bodies[1] = CreateBody(m_world, bd);
+            bodies[1] = CreateBody(GetWorld(), bd);
 
             {
                 auto shape = PolygonShapeConf{};
@@ -116,7 +116,7 @@ public:
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(0);
-                CreateFixture(m_world, bodies[1], Shape(shape), fd);
+                CreateFixture(GetWorld(), bodies[1], Shape(shape), fd);
             }
         }
         {
@@ -133,7 +133,7 @@ public:
             bd.fixedRotation = bool(0);
             bd.bullet = bool(0);
             bd.enabled = bool(32);
-            bodies[2] = CreateBody(m_world, bd);
+            bodies[2] = CreateBody(GetWorld(), bd);
             {
                 auto shape = PolygonShapeConf{};
                 Length2 vs[4];
@@ -150,11 +150,11 @@ public:
                 fd.filter.categoryBits = Filter::bits_type(1);
                 fd.filter.maskBits = Filter::bits_type(65535);
                 fd.filter.groupIndex = Filter::index_type(-3);
-                CreateFixture(m_world, bodies[2], Shape(shape), fd);
+                CreateFixture(GetWorld(), bodies[2], Shape(shape), fd);
             }
         }
 
-        SetAccelerations(m_world, GetGravity());
+        SetAccelerations(GetWorld(), GetGravity());
         Free(joints);
         Free(bodies);
         joints = nullptr;

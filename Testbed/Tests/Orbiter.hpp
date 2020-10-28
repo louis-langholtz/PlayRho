@@ -36,20 +36,20 @@ namespace testbed {
 
             bd.type = BodyType::Static;
             bd.location = m_center;
-            const auto ctrBody = CreateBody(m_world, bd);
-            CreateFixture(m_world, ctrBody, Shape{DiskShapeConf{}.UseRadius(3_m)});
+            const auto ctrBody = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), ctrBody, Shape{DiskShapeConf{}.UseRadius(3_m)});
 
             bd.type = BodyType::Dynamic;
             bd.location = Length2{GetX(m_center), GetY(m_center) + radius * 1_m};
-            m_orbiter = CreateBody(m_world, bd);
-            CreateFixture(m_world, m_orbiter,
+            m_orbiter = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), m_orbiter,
                           Shape{DiskShapeConf{}.UseRadius(0.5_m).UseDensity(1_kgpm2)});
             
             const auto velocity = Velocity{
                 Vec2{Pi * radius / 2, 0} * 1_mps,
                 360_deg / 1_s
             };
-            SetVelocity(m_world, m_orbiter, velocity);
+            SetVelocity(GetWorld(), m_orbiter, velocity);
             
             auto conf = ChainShapeConf{};
             conf.Set(GetCircleVertices(20_m, 180));
@@ -60,16 +60,16 @@ namespace testbed {
             bd.type = BodyType::Dynamic;
             bd.location = m_center;
             bd.bullet = true;
-            const auto dysonSphere = CreateBody(m_world, bd);
-            CreateFixture(m_world, dysonSphere, outerCicle);
+            const auto dysonSphere = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), dysonSphere, outerCicle);
         }
         
         void PreStep(const Settings&, Drawer&) override
         {
-            const auto force = GetCentripetalForce(m_world, m_orbiter, m_center);
-            const auto linAccel = force * GetInvMass(m_world, m_orbiter);
+            const auto force = GetCentripetalForce(GetWorld(), m_orbiter, m_center);
+            const auto linAccel = force * GetInvMass(GetWorld(), m_orbiter);
             const auto angAccel = 0 * RadianPerSquareSecond;
-            SetAcceleration(m_world, m_orbiter, linAccel, angAccel);
+            SetAcceleration(GetWorld(), m_orbiter, linAccel, angAccel);
         }
         
     private:

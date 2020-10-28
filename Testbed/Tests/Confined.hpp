@@ -55,12 +55,12 @@ public:
             ToggleBulletMode();
         });
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Thicken The Walls", [&](KeyActionMods) {
-            Destroy(m_world, m_enclosure);
+            Destroy(GetWorld(), m_enclosure);
             m_enclosureVertexRadius += vertexRadiusIncrement;
             m_enclosure = CreateEnclosure(m_enclosureVertexRadius, wall_length);
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Thin The Walls", [&](KeyActionMods) {
-            Destroy(m_world, m_enclosure);
+            Destroy(GetWorld(), m_enclosure);
             m_enclosureVertexRadius -= vertexRadiusIncrement;
             if (m_enclosureVertexRadius < 0_m)
             {
@@ -86,18 +86,18 @@ public:
                     -10.0f + (2.1f * j + 1.0f + 0.01f * i) * (radius / 1_m),
                     (2.0f * i + 1.0f) * (radius/ 1_m)
                 } * 1_m;
-                const auto body = CreateBody(m_world, bd);
-                CreateFixture(m_world, body, shape);
+                const auto body = CreateBody(GetWorld(), bd);
+                CreateFixture(GetWorld(), body, shape);
             }
         }
     }
     
     BodyID CreateEnclosure(Length vertexRadius, Length wallLength)
     {
-        const auto body = CreateBody(m_world);
-        CreateFixture(m_world, body, Shape{GetChainShapeConf(wallLength)
+        const auto body = CreateBody(GetWorld());
+        CreateFixture(GetWorld(), body, Shape{GetChainShapeConf(wallLength)
             .UseRestitution(0).UseVertexRadius(vertexRadius)});
-        SetLocation(m_world, body, Length2{0_m, 20_m});
+        SetLocation(GetWorld(), body, Length2{0_m, 20_m});
         return body;
     }
 
@@ -121,7 +121,7 @@ public:
         conf.density = 1_kgpm2;
         conf.restitution = 0.8f;
         conf.vertexRadius = radius;
-        CreateFixture(m_world, CreateBody(m_world, bd), Shape(conf));
+        CreateFixture(GetWorld(), CreateBody(GetWorld(), bd), Shape(conf));
     }
 
     void CreateBox()
@@ -132,7 +132,7 @@ public:
         bd.type = BodyType::Dynamic;
         bd.bullet = m_bullet_mode;
         bd.location = Vec2{0, 20} * 1_m + GetRandomOffset();
-        CreateFixture(m_world, CreateBody(m_world, bd), Shape{
+        CreateFixture(GetWorld(), CreateBody(GetWorld(), bd), Shape{
             PolygonShapeConf{}.UseDensity(1_kgpm2).UseRestitution(0).SetAsBox(side_length/2, side_length/2)
         });
     }
@@ -140,34 +140,34 @@ public:
     void ToggleBulletMode()
     {
         m_bullet_mode = !m_bullet_mode;
-        for (const auto& b: m_world.GetBodies())
+        for (const auto& b: GetBodies(GetWorld()))
         {
-            if (GetType(m_world, b) == BodyType::Dynamic)
+            if (GetType(GetWorld(), b) == BodyType::Dynamic)
             {
                 if (m_bullet_mode)
-                    SetImpenetrable(m_world, b);
+                    SetImpenetrable(GetWorld(), b);
                 else
-                    UnsetImpenetrable(m_world, b);
+                    UnsetImpenetrable(GetWorld(), b);
             }
         }
     }
 
     void ImpartRandomImpulses()
     {
-        for (const auto& b: m_world.GetBodies())
+        for (const auto& b: GetBodies(GetWorld()))
         {
-            if (GetType(m_world, b) == BodyType::Dynamic)
+            if (GetType(GetWorld(), b) == BodyType::Dynamic)
             {
-                const auto position = GetLocation(m_world, b);
+                const auto position = GetLocation(GetWorld(), b);
                 const auto centerPos = Length2{
                     GetX(position), GetY(position) - (wall_length / Real{2})
                 };
                 const auto angle_from_center = GetAngle(centerPos);
                 const auto direction = angle_from_center + Pi * 1_rad;
                 const auto magnitude = sqrt(Square(StripUnit(wall_length)) * 2) *
-                	GetMass(m_world, b) * 20_mps;
+                	GetMass(GetWorld(), b) * 20_mps;
                 const auto impulse = Momentum2{magnitude * UnitVec::Get(direction)};
-                ApplyLinearImpulse(m_world, b, impulse, GetWorldCenter(m_world, b));
+                ApplyLinearImpulse(GetWorld(), b, impulse, GetWorldCenter(GetWorld(), b));
             }
         }
     }
@@ -175,14 +175,14 @@ public:
     void PreStep(const Settings&, Drawer&) override
     {
         auto sleeping = true;
-        for (const auto& b: m_world.GetBodies())
+        for (const auto& b: GetBodies(GetWorld()))
         {
-            if (GetType(m_world, b) != BodyType::Dynamic)
+            if (GetType(GetWorld(), b) != BodyType::Dynamic)
             {
                 continue;
             }
 
-            if (IsAwake(m_world, b))
+            if (IsAwake(GetWorld(), b))
             {
                 sleeping = false;
             }

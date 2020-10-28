@@ -39,14 +39,14 @@ public:
     {
         // Ground body
         {
-            const auto ground = CreateBody(m_world);
+            const auto ground = CreateBody(GetWorld());
             auto x1 = -20.0f;
             auto y1 = 2.0f * std::cos(x1 / 10.0f * static_cast<float>(Pi));
             for (auto i = 0; i < 80; ++i)
             {
                 const auto x2 = x1 + 0.5f;
                 const auto y2 = 2.0f * std::cos(x2 / 10.0f * static_cast<float>(Pi));
-                CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}});
+                CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(x1, y1) * 1_m, Vec2(x2, y2) * 1_m}});
                 x1 = x2;
                 y1 = y2;
             }
@@ -119,7 +119,7 @@ public:
     {
         if (m_bodies[m_bodyIndex] != InvalidBodyID)
         {
-            Destroy(m_world, m_bodies[m_bodyIndex]);
+            Destroy(GetWorld(), m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = InvalidBodyID;
         }
 
@@ -137,15 +137,15 @@ public:
             bd.angularDamping = 0.02_Hz;
         }
 
-        m_bodies[m_bodyIndex] = CreateBody(m_world, bd);
+        m_bodies[m_bodyIndex] = CreateBody(GetWorld(), bd);
 
         if (index < 4)
         {
-            CreateFixture(m_world, m_bodies[m_bodyIndex], m_polygons[index]);
+            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_polygons[index]);
         }
         else
         {
-            CreateFixture(m_world, m_bodies[m_bodyIndex], m_circle);
+            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_circle);
         }
 
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -157,7 +157,7 @@ public:
         {
             if (m_bodies[i] != InvalidBodyID)
             {
-                Destroy(m_world, m_bodies[i]);
+                Destroy(GetWorld(), m_bodies[i]);
                 m_bodies[i] = InvalidBodyID;
                 return;
             }
@@ -175,7 +175,7 @@ public:
         Length2 point;
         UnitVec normal;
 
-        RayCast(m_world, RayCastInput{point1, point2, Real{1}},
+        RayCast(GetWorld(), RayCastInput{point1, point2, Real{1}},
                 [&](BodyID, FixtureID f, ChildCounter, Length2 p, UnitVec n) {
             fixture = f;
             point = p;

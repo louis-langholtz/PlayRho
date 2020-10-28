@@ -36,23 +36,23 @@ public:
             const auto lv = Length2{0_m, -200_m};
             const auto direction = UnitVec::Get(GetX(lv), GetY(lv)).first;
             const auto f = Force2{
-                GetWorldVector(m_world, m_body, direction) * 1_kg * 1_m / (1_s * 1_s)
+                GetWorldVector(GetWorld(), m_body, direction) * 1_kg * 1_m / (1_s * 1_s)
             };
-            const auto p = GetWorldPoint(m_world, m_body, Length2{0_m, 2_m});
-            playrho::d2::ApplyForce(m_world, m_body, f, p);
+            const auto p = GetWorldPoint(GetWorld(), m_body, Length2{0_m, 2_m});
+            playrho::d2::ApplyForce(GetWorld(), m_body, f, p);
         });
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Apply Counter-Clockwise Torque", [&](KeyActionMods) {
-            ApplyTorque(m_world, m_body, 50_Nm);
+            ApplyTorque(GetWorld(), m_body, 50_Nm);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Apply Clockwise Torque", [&](KeyActionMods) {
-            ApplyTorque(m_world, m_body, -50_Nm);
+            ApplyTorque(GetWorld(), m_body, -50_Nm);
         });
 
         const auto k_restitution = Real(0.4);
 
         BodyID ground;
         {
-            ground = CreateBody(m_world, BodyConf{}.UseLocation(Length2(0_m, 20_m)));
+            ground = CreateBody(GetWorld(), BodyConf{}.UseLocation(Length2(0_m, 20_m)));
 
             auto conf = EdgeShapeConf{};
             conf.density = 0_kgpm2;
@@ -60,19 +60,19 @@ public:
 
             // Left vertical
             conf.Set(Length2{-20_m, -20_m}, Length2{-20_m, 20_m});
-            CreateFixture(m_world, ground, Shape{conf});
+            CreateFixture(GetWorld(), ground, Shape{conf});
 
             // Right vertical
             conf.Set(Length2{20_m, -20_m}, Length2{20_m, 20_m});
-            CreateFixture(m_world, ground, Shape{conf});
+            CreateFixture(GetWorld(), ground, Shape{conf});
 
             // Top horizontal
             conf.Set(Length2{-20_m, 20_m}, Length2{20_m, 20_m});
-            CreateFixture(m_world, ground, Shape{conf});
+            CreateFixture(GetWorld(), ground, Shape{conf});
 
             // Bottom horizontal
             conf.Set(Length2{-20_m, -20_m}, Length2{20_m, -20_m});
-            CreateFixture(m_world, ground, Shape{conf});
+            CreateFixture(GetWorld(), ground, Shape{conf});
         }
 
         {
@@ -108,9 +108,9 @@ public:
             bd.location = Length2{0_m, 2_m};
             bd.angle = Pi * 1_rad;
             bd.allowSleep = false;
-            m_body = CreateBody(m_world, bd);
-            CreateFixture(m_world, m_body, Shape(poly1));
-            CreateFixture(m_world, m_body, Shape(poly2));
+            m_body = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), m_body, Shape(poly1));
+            CreateFixture(GetWorld(), m_body, Shape(poly2));
         }
 
         {
@@ -124,12 +124,12 @@ public:
             for (auto i = 0; i < 10; ++i)
             {
                 const auto location = Length2{0_m, (5.0f + 1.54f * i) * 1_m};
-                const auto body = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic)
+                const auto body = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic)
                                                      .UseLocation(location));
-                CreateFixture(m_world, body, shape);
+                CreateFixture(GetWorld(), body, shape);
 
-                const auto I = GetLocalRotInertia(m_world, body); // RotInertia: M * L^2 QP^-2
-                const auto invMass = m_world.GetInvMass(body); // InvMass: M^-1
+                const auto I = GetLocalRotInertia(GetWorld(), body); // RotInertia: M * L^2 QP^-2
+                const auto invMass = GetInvMass(GetWorld(), body); // InvMass: M^-1
                 const auto mass = (invMass != InvMass{0})? Mass{1 / invMass}: 0_kg;
 
                 // For a circle: I = 0.5 * m * r * r ==> r = sqrt(2 * I / m)
@@ -144,7 +144,7 @@ public:
                 jd.collideConnected = true;
                 jd.maxForce = mass * gravity;
                 jd.maxTorque = mass * radius * gravity / 1_rad;
-                m_world.CreateJoint(jd);
+                CreateJoint(GetWorld(), jd);
             }
         }
     }

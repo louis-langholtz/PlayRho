@@ -37,8 +37,8 @@ class RopeJointTest : public Test
 public:
     RopeJointTest()
     {
-        const auto ground = CreateBody(m_world);
-        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        const auto ground = CreateBody(GetWorld());
+        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
 
         {
             const auto rectangle = Shape{
@@ -72,11 +72,12 @@ public:
                     bd.angularDamping = 0.4_Hz;
                 }
 
-                const auto body = CreateBody(m_world, bd);
+                const auto body = CreateBody(GetWorld(), bd);
 
-                CreateFixture(m_world, body, shape, fd);
+                CreateFixture(GetWorld(), body, shape, fd);
 
-                m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(Real(i), y) * 1_m));
+                CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body,
+                                                          Vec2(Real(i), y) * 1_m));
 
                 prevBody = body;
             }
@@ -89,17 +90,17 @@ public:
         }
 
         m_ropeConf.bodyA = ground;
-        m_rope = m_world.CreateJoint(m_ropeConf);
+        m_rope = CreateJoint(GetWorld(), m_ropeConf);
         
         RegisterForKey(GLFW_KEY_J, GLFW_PRESS, 0, "Toggle the rope joint", [&](KeyActionMods) {
             if (IsValid(m_rope))
             {
-                Destroy(m_world, m_rope);
+                Destroy(GetWorld(), m_rope);
                 m_rope = InvalidJointID;
             }
             else
             {
-                m_rope = m_world.CreateJoint(m_ropeConf);
+                m_rope = CreateJoint(GetWorld(), m_ropeConf);
             }
         });
     }

@@ -48,27 +48,27 @@ public:
             {
                 const auto location = startLoc + Length2{x * 1_m, y * 1_m};
                 // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-                bodies[y * 20 + x] = CreateBody(m_world, BodyConf(bd).UseLocation(location));
-                CreateFixture(m_world, bodies[y * 20 + x], m_shape);
+                bodies[y * 20 + x] = CreateBody(GetWorld(), BodyConf(bd).UseLocation(location));
+                CreateFixture(GetWorld(), bodies[y * 20 + x], m_shape);
                 if (x > 0)
                 {
                     const auto jd = GetWeldJointConf(
-                        m_world,
+                        GetWorld(),
                         bodies[y * 20 + x - 1],
                         bodies[y * 20 + x],
                         location + Length2{-0.5_m, 0_m}
                     );
-                    m_world.CreateJoint(jd);
+                    CreateJoint(GetWorld(), jd);
                 }
                 if (y > 0)
                 {
                     const auto jd = GetWeldJointConf(
-                        m_world,
+                        GetWorld(),
                         bodies[(y - 1) * 20 + x],
                         bodies[(y + 0) * 20 + x],
                         location + Length2{0_m, -0.5_m}
                     );
-                    m_world.CreateJoint(jd);
+                    CreateJoint(GetWorld(), jd);
                 }
             }
         }
@@ -82,15 +82,15 @@ public:
             auto maxImpulse = GetMaxNormalImpulse(impulses);
             if (maxImpulse > 60_Ns)
             {
-                const auto fA = GetFixtureA(m_world, contact);
-                const auto fB = GetFixtureB(m_world, contact);
-                if (GetShape(m_world, fA) == m_shape)
+                const auto fA = GetFixtureA(GetWorld(), contact);
+                const auto fB = GetFixtureB(GetWorld(), contact);
+                if (GetShape(GetWorld(), fA) == m_shape)
                 {
-                    m_body = GetBody(m_world, fA);
+                    m_body = GetBody(GetWorld(), fA);
                 }
-                else if (GetShape(m_world, fB) == m_shape)
+                else if (GetShape(GetWorld(), fB) == m_shape)
                 {
-                    m_body = GetBody(m_world, fB);
+                    m_body = GetBody(GetWorld(), fB);
                 }
             }
         }
@@ -100,7 +100,7 @@ public:
     {
         if (m_body != InvalidBodyID)
         {
-            Destroy(m_world, m_body);
+            Destroy(GetWorld(), m_body);
             m_body = InvalidBodyID;
         }
     }

@@ -40,85 +40,85 @@ public:
     CharacterCollision(): Test(GetTestConf())
     {
         // Ground body
-        const auto ground = CreateBody(m_world);
-        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m}});
+        const auto ground = CreateBody(GetWorld());
+        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m}});
 
         {
             auto shape = PolygonShapeConf{};
 
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 0.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 1.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 2.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 3.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 4.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 5.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(20.015f, 6.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
 
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 0.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 1.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 2.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 3.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 4.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 5.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(0.5_m, 0.5_m, Vec2(17.985f, 6.545f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
         }
 
         // Collinear edges.
         {
             auto conf = EdgeShapeConf{};
             conf.Set(Vec2(-8.0f, 1.0f) * 1_m, Vec2(-6.0f, 1.0f) * 1_m);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
             conf.Set(Vec2(-6.0f, 1.0f) * 1_m, Vec2(-4.0f, 1.0f) * 1_m);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
             conf.Set(Vec2(-4.0f, 1.0f) * 1_m, Vec2(-2.0f, 1.0f) * 1_m);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
         }
 
         // Collinear 2-gons.
         {
             auto conf = PolygonShapeConf{};
             conf.UseVertices({Vec2(-8.0f, 20.0f) * 1_m, Vec2(-6.0f, 20.0f) * 1_m});
-            CreateFixture(m_world, ground, Shape{conf});
+            CreateFixture(GetWorld(), ground, Shape{conf});
             conf.UseVertices({Vec2(-6.0f, 20.0f) * 1_m, Vec2(-4.0f, 20.0f) * 1_m});
-            CreateFixture(m_world, ground, Shape{conf});
+            CreateFixture(GetWorld(), ground, Shape{conf});
             conf.UseVertices({Vec2(-4.0f, 20.0f) * 1_m, Vec2(-2.0f, 20.0f) * 1_m});
-            CreateFixture(m_world, ground, Shape{conf});
+            CreateFixture(GetWorld(), ground, Shape{conf});
         }
 
         // Chain shape
         {
-            const auto body = CreateBody(m_world, BodyConf{}.UseAngle(45_deg));
+            const auto body = CreateBody(GetWorld(), BodyConf{}.UseAngle(45_deg));
             auto conf = ChainShapeConf{};
             conf.Add(Vec2(5.0f, 7.0f) * 1_m);
             conf.Add(Vec2(6.0f, 8.0f) * 1_m);
             conf.Add(Vec2(7.0f, 8.0f) * 1_m);
             conf.Add(Vec2(8.0f, 7.0f) * 1_m);
-            CreateFixture(m_world, body, Shape(conf));
+            CreateFixture(GetWorld(), body, Shape(conf));
         }
 
         // Square tiles.
         {
             auto shape = PolygonShapeConf{};
             shape.SetAsBox(1_m, 1_m, Vec2(4.0f, 3.0f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(1_m, 1_m, Vec2(6.0f, 3.0f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
             shape.SetAsBox(1_m, 1_m, Vec2(8.0f, 3.0f) * 1_m, 0_rad);
-            CreateFixture(m_world, ground, Shape(shape));
+            CreateFixture(GetWorld(), ground, Shape(shape));
         }
 
         // Square made from an edge loop. Collision should be smooth.
@@ -129,12 +129,12 @@ public:
             conf.Add(Vec2(1.0f, 5.0f) * 1_m);
             conf.Add(Vec2(-1.0f, 5.0f) * 1_m);
             conf.Add(conf.GetVertex(0)); // to loop chain shape around
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
         }
 
         // Edge loop. Collision should be smooth.
         {
-            const auto body = CreateBody(m_world, BodyConf{}.UseLocation(Vec2(-10.0f, 4.0f) * 1_m));
+            const auto body = CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(-10.0f, 4.0f) * 1_m));
             auto conf = ChainShapeConf{};
             conf.Add(Length2{});
             conf.Add(Vec2(6.0f, 0.0f) * 1_m);
@@ -147,7 +147,7 @@ public:
             conf.Add(Vec2(-6.0f, 2.0f) * 1_m);
             conf.Add(Vec2(-6.0f, 0.0f) * 1_m);
             conf.Add(conf.GetVertex(0)); // to loop back completely.
-            CreateFixture(m_world, body, Shape(conf));
+            CreateFixture(GetWorld(), body, Shape(conf));
         }
 
         // Square character 1
@@ -158,16 +158,16 @@ public:
             bd.allowSleep = false;
 
             bd.location = Vec2(-3.0f, 8.0f) * 1_m;
-            const auto body = CreateBody(m_world, bd);
+            const auto body = CreateBody(GetWorld(), bd);
             
             const auto square = Shape{
                 PolygonShapeConf{}.UseFriction(0).UseDensity(20_kgpm2).SetAsBox(0.5_m, 0.5_m)
             };
-            CreateFixture(m_world, body, square);
+            CreateFixture(GetWorld(), body, square);
             
             bd.location = Vec2(19.0f, 7.0f) * 1_m;
-            const auto body2 = CreateBody(m_world, bd);
-            CreateFixture(m_world, body2, square);
+            const auto body2 = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), body2, square);
         }
 
         // Square character 2
@@ -178,7 +178,7 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            CreateFixture(m_world, CreateBody(m_world, bd), Shape{
+            CreateFixture(GetWorld(), CreateBody(GetWorld(), bd), Shape{
                 PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(0.25_m, 0.25_m)
             });
         }
@@ -191,7 +191,7 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            const auto body = CreateBody(m_world, bd);
+            const auto body = CreateBody(GetWorld(), bd);
 
             auto angle = Real{0.0f};
             const auto delta = Real{Pi / 3.0f};
@@ -203,7 +203,7 @@ public:
             }
 
             auto conf = PolygonShapeConf{}.UseDensity(20_kgpm2).UseVertices(vertices);
-            CreateFixture(m_world, body, Shape{conf});
+            CreateFixture(GetWorld(), body, Shape{conf});
         }
 
         // Disk character
@@ -214,11 +214,11 @@ public:
             bd.fixedRotation = true;
             bd.allowSleep = false;
 
-            const auto body = CreateBody(m_world, bd);
+            const auto body = CreateBody(GetWorld(), bd);
             auto conf = DiskShapeConf{};
             conf.density = 20_kgpm2;
             conf.vertexRadius = 0.5_m;
-            CreateFixture(m_world, body, Shape(conf));
+            CreateFixture(GetWorld(), body, Shape(conf));
         }
 
         // Disk character
@@ -228,23 +228,23 @@ public:
             bd.type = BodyType::Dynamic;
             bd.allowSleep = false;
 
-            m_character = CreateBody(m_world, bd);
+            m_character = CreateBody(GetWorld(), bd);
 
             auto conf = DiskShapeConf{};
             conf.density = 20_kgpm2;
             conf.friction = 1.0f;
             conf.vertexRadius = 0.25_m;
-            CreateFixture(m_world, m_character, Shape(conf));
+            CreateFixture(GetWorld(), m_character, Shape(conf));
         }
         
-        SetAccelerations(m_world, GetGravity());
+        SetAccelerations(GetWorld(), GetGravity());
     }
 
     void PreStep(const Settings&, Drawer&) override
     {
-        auto velocity = GetVelocity(m_world, m_character);
+        auto velocity = GetVelocity(GetWorld(), m_character);
         GetX(velocity.linear) = -5_mps;
-        SetVelocity(m_world, m_character, velocity);
+        SetVelocity(GetWorld(), m_character, velocity);
     }
 
     BodyID m_character;

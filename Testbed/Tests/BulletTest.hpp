@@ -33,9 +33,9 @@ public:
         {
             BodyConf bd;
             bd.location = Length2{};
-            const auto body = CreateBody(m_world, bd);
-            CreateFixture(m_world, body, Shape(EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
-            CreateFixture(m_world, body, Shape{PolygonShapeConf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)});
+            const auto body = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), body, Shape(EdgeShapeConf{Vec2(-10.0f, 0.0f) * 1_m, Vec2(10.0f, 0.0f) * 1_m}));
+            CreateFixture(GetWorld(), body, Shape{PolygonShapeConf{}.SetAsBox(0.2_m, 1_m, Vec2(0.5f, 1.0f) * 1_m, 0_rad)});
         }
 
         {
@@ -48,8 +48,8 @@ public:
             conf.UseDensity(1_kgpm2);
             conf.SetAsBox(2_m, 0.1_m);
 
-            m_body = CreateBody(m_world, bd);
-            CreateFixture(m_world, m_body, Shape{conf});
+            m_body = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), m_body, Shape{conf});
 
             conf.UseDensity(100_kgpm2);
             conf.SetAsBox(0.25_m, 0.25_m);
@@ -59,21 +59,21 @@ public:
             bd.location = Vec2(m_x, 10.0f) * 1_m;
             bd.bullet = true;
 
-            m_bullet = CreateBody(m_world, bd);
-            CreateFixture(m_world, m_bullet, Shape{conf});
+            m_bullet = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), m_bullet, Shape{conf});
 
-            SetVelocity(m_world, m_bullet, Velocity{Vec2{0.0f, -50.0f} * 1_mps, 0_rpm});
+            SetVelocity(GetWorld(), m_bullet, Velocity{Vec2{0.0f, -50.0f} * 1_mps, 0_rpm});
         }
     }
 
     void Launch()
     {
-        SetTransform(m_world, m_body, Vec2(0.0f, 4.0f) * 1_m, 0_rad);
-        SetVelocity(m_world, m_body, Velocity{LinearVelocity2{}, 0_rpm});
+        SetTransform(GetWorld(), m_body, Vec2(0.0f, 4.0f) * 1_m, 0_rad);
+        SetVelocity(GetWorld(), m_body, Velocity{LinearVelocity2{}, 0_rpm});
 
         m_x = RandomFloat(-1.0f, 1.0f);
-        SetTransform(m_world, m_bullet, Vec2(m_x, 10.0f) * 1_m, 0_rad);
-        SetVelocity(m_world, m_bullet, Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
+        SetTransform(GetWorld(), m_bullet, Vec2(m_x, 10.0f) * 1_m, 0_rad);
+        SetVelocity(GetWorld(), m_bullet, Velocity{Vec2(0.0f, -50.0f) * 1_mps, 0_rpm});
     }
 
     void PostStep(const Settings&, Drawer&) override
