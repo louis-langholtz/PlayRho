@@ -271,7 +271,6 @@ public:
 
     // Callbacks for derived classes.
     virtual void PreSolve(ContactID contact, const Manifold& oldManifold);
-    virtual void PostSolve(ContactID, const ContactImpulsesList&, unsigned) { }
 
     static bool Contains(const FixtureSet& fixtures, FixtureID f) noexcept;
 

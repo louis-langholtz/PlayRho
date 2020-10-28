@@ -37,6 +37,12 @@ public:
 
     BreakableTwo(): Test(GetTestConf())
     {
+        SetPostSolveContactListener(GetWorld(), [this](ContactID id,
+                                                       const ContactImpulsesList& impulses,
+                                                       unsigned count){
+            PostSolve(id, impulses, count);
+        });
+
         SetGravity(LinearAcceleration2{});
 
         BodyID bodies[20 * 20];
@@ -74,7 +80,7 @@ public:
         }
     }
 
-    void PostSolve(ContactID contact, const ContactImpulsesList& impulses, unsigned) override
+    void PostSolve(ContactID contact, const ContactImpulsesList& impulses, unsigned)
     {
         if (m_body == InvalidBodyID)
         {

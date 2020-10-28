@@ -48,6 +48,12 @@ public:
     
     Breakable(): m_shape1{GetShapeConf1()}, m_shape2{GetShapeConf2()}
     {
+        SetPostSolveContactListener(GetWorld(), [this](ContactID id,
+                                                       const ContactImpulsesList& impulses,
+                                                       unsigned count){
+            PostSolve(id, impulses, count);
+        });
+
         // Ground body
         CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{GetGroundEdgeConf()});
 
@@ -64,7 +70,7 @@ public:
         }
     }
 
-    void PostSolve(ContactID, const ContactImpulsesList& impulse, unsigned) override
+    void PostSolve(ContactID, const ContactImpulsesList& impulse, unsigned)
     {
         if (m_broke)
         {
