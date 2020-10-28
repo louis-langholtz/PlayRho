@@ -135,6 +135,53 @@ struct Settings
     bool singleStep = false;
 };
 
+struct Stats
+{
+    AABB m_maxAABB;
+
+    double m_sumDeltaTime = 0.0;
+
+    int m_stepCount = 0;
+    StepStats m_stepStats;
+    ContactCounter m_numContacts = 0;
+    ContactCounter m_maxContacts = 0;
+    ContactCounter m_maxTouching = 0;
+    std::uint64_t m_sumContactsUpdatedPre = 0;
+    std::uint64_t m_sumContactsSkippedPre = 0;
+    std::uint64_t m_sumContactsIgnoredPre = 0;
+    std::uint64_t m_sumContactsUpdatedToi = 0;
+    std::uint64_t m_sumContactsAtMaxSubSteps = 0;
+    std::uint64_t m_sumRegIslandsFound = 0;
+    std::uint64_t m_sumRegIslandsSolved = 0;
+    std::uint64_t m_sumToiIslandsFound = 0;
+    std::uint64_t m_sumToiIslandsSolved = 0;
+    std::uint64_t m_sumRegPosIters = 0;
+    std::uint64_t m_sumRegVelIters = 0;
+    std::uint64_t m_sumToiPosIters = 0;
+    std::uint64_t m_sumToiVelIters = 0;
+    std::uint64_t m_sumToiContactsUpdatedTouching = 0;
+    std::uint64_t m_sumToiContactsSkippedTouching = 0;
+    std::uint64_t m_sumRegProxiesMoved = 0;
+    std::uint64_t m_sumToiProxiesMoved = 0;
+    Length m_minRegSep = std::numeric_limits<Length>::infinity();
+    Length m_maxRegSep = -std::numeric_limits<Length>::infinity();
+    Length m_minToiSep = 0;
+
+    std::uint32_t m_maxSimulContacts = 0;
+
+    using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+    using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+    using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+
+    dist_iter_type m_maxDistIters = 0;
+    toi_iter_type m_maxToiIters = 0;
+    root_iter_type m_maxRootIters = 0;
+
+    std::chrono::duration<double> m_curStepDuration{0};
+    std::chrono::duration<double> m_maxStepDuration{0};
+    std::chrono::duration<double> m_sumStepDuration{0};
+};
+
 class Test
 {
 public:
@@ -322,7 +369,7 @@ protected:
 
     void ResetWorld(const World& saved);
 
-    int GetStepCount() const noexcept { return m_stepCount; }
+    int GetStepCount() const noexcept { return m_stats.m_stepCount; }
 
     SizedRange<ContactPoints::const_iterator> GetPoints() const noexcept
     {
@@ -361,7 +408,8 @@ protected:
     LinearAcceleration2 m_gravity = Gravity;
 
 private:
-    void ShowStats(const StepConf& stepConf, UiState& ui) const;
+    static void ShowStats(const StepConf& stepConf, UiState& ui, const World& world,
+                          const Stats& stats);
     static void DrawContactInfo(Drawer& drawer, const Settings& settings,
                                 const Test::FixtureSet& selectedFixtures,
                                 SizedRange<ContactPoints::const_iterator> points);
@@ -376,7 +424,6 @@ private:
 
     FixtureSet m_selectedFixtures;
     BodySet m_selectedBodies;
-    AABB m_maxAABB;
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
     BodyID m_bomb = InvalidBodyID;
@@ -385,46 +432,8 @@ private:
     bool m_bombSpawning = false;
     Length2 m_mouseWorld = Length2{};
     Time m_lastDeltaTime = 0 * Second;
-    double m_sumDeltaTime = 0.0;
-    int m_stepCount = 0;
-    StepStats m_stepStats;
-    ContactCounter m_numContacts = 0;
-    ContactCounter m_maxContacts = 0;
-    ContactCounter m_maxTouching = 0;
-    std::uint64_t m_sumContactsUpdatedPre = 0;
-    std::uint64_t m_sumContactsSkippedPre = 0;
-    std::uint64_t m_sumContactsIgnoredPre = 0;
-    std::uint64_t m_sumContactsUpdatedToi = 0;
-    std::uint64_t m_sumContactsAtMaxSubSteps = 0;
-    std::uint64_t m_sumRegIslandsFound = 0;
-    std::uint64_t m_sumRegIslandsSolved = 0;
-    std::uint64_t m_sumToiIslandsFound = 0;
-    std::uint64_t m_sumToiIslandsSolved = 0;
-    std::uint64_t m_sumRegPosIters = 0;
-    std::uint64_t m_sumRegVelIters = 0;
-    std::uint64_t m_sumToiPosIters = 0;
-    std::uint64_t m_sumToiVelIters = 0;
-    std::uint64_t m_sumToiContactsUpdatedTouching = 0;
-    std::uint64_t m_sumToiContactsSkippedTouching = 0;
-    std::uint64_t m_sumRegProxiesMoved = 0;
-    std::uint64_t m_sumToiProxiesMoved = 0;
-    Length m_minRegSep = std::numeric_limits<Length>::infinity();
-    Length m_maxRegSep = -std::numeric_limits<Length>::infinity();
-    Length m_minToiSep = 0;
-    
-    std::uint32_t m_maxSimulContacts = 0;
-    
-    using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-    using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
-    using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
-    
-    dist_iter_type m_maxDistIters = 0;
-    toi_iter_type m_maxToiIters = 0;
-    root_iter_type m_maxRootIters = 0;
 
-    std::chrono::duration<double> m_curStepDuration{0};
-    std::chrono::duration<double> m_maxStepDuration{0};
-    std::chrono::duration<double> m_sumStepDuration{0};
+    Stats m_stats;
     
     KeyHandlers m_keyHandlers;
     HandledKeys m_handledKeys;

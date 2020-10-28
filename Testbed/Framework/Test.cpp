@@ -563,21 +563,22 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
     CreateFixture(m_world, m_bomb, Shape{conf});
 }
 
-void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
+void Test::ShowStats(const StepConf& stepConf, UiState& ui, const World& world,
+                     const Stats& stats)
 {
-    const auto bodyCount = GetBodyCount(m_world);
-    const auto awakeCount = GetAwakeCount(m_world);
+    const auto bodyCount = GetBodyCount(world);
+    const auto awakeCount = GetAwakeCount(world);
     const auto sleepCount = bodyCount - awakeCount;
-    const auto jointCount = GetJointCount(m_world);
-    const auto fixtureCount = GetFixtureCount(m_world);
-    const auto shapeCount = GetShapeCount(m_world);
-    const auto touchingCount = GetTouchingCount(m_world);
+    const auto jointCount = GetJointCount(world);
+    const auto fixtureCount = GetFixtureCount(world);
+    const auto shapeCount = GetShapeCount(world);
+    const auto touchingCount = GetTouchingCount(world);
 
     const ImGuiStyle& style = ImGui::GetStyle();
     const auto totalWidth = ImGui::GetWindowWidth() - style.FramePadding.x * 2;
     const auto firstColumnWidth = 65.0f;
 
-    ImGui::Text("Step #=%d (@%fs):", m_stepCount, m_sumDeltaTime);
+    ImGui::Text("Step #=%d (@%fs):", stats.m_stepCount, stats.m_sumDeltaTime);
     if (ImGui::IsItemHovered())
     {
         ImGui::SetTooltip("# of steps performed so far for the current test "
@@ -590,19 +591,19 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::SetColumnWidth(0, firstColumnWidth);
         ImGui::TextUnformatted("Times:");
         ImGui::NextColumn();
-        ImGui::Value("Current", m_curStepDuration.count(), "%f");
+        ImGui::Value("Current", stats.m_curStepDuration.count(), "%f");
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Compute time of last step.");
         }
         ImGui::NextColumn();
-        ImGui::Value("Max", m_maxStepDuration.count(), "%f");
+        ImGui::Value("Max", stats.m_maxStepDuration.count(), "%f");
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Maximum compute time of all steps so far for the current test.");
         }
         ImGui::NextColumn();
-        ImGui::Value("Sum", m_sumStepDuration.count(), "%f");
+        ImGui::Value("Sum", stats.m_sumStepDuration.count(), "%f");
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Sum compute time of all steps so far for the current test.");
@@ -627,7 +628,7 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
             ImGui::SetTooltip("Counts of shapes over fixtures.");
         }
         ImGui::NextColumn();
-        ImGui::Text("Contacts: %u/%u", touchingCount, m_numContacts);
+        ImGui::Text("Contacts: %u/%u", touchingCount, stats.m_numContacts);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Counts of touching contacts over total contacts. Click to toggle histogram.");
@@ -646,7 +647,7 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::SetColumnWidth(0, firstColumnWidth);
         ImGui::TextUnformatted("Pre-step:");
         ImGui::NextColumn();
-        ImGui::Value("cts-add", m_stepStats.pre.added);
+        ImGui::Value("cts-add", stats.m_stepStats.pre.added);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Contacts added.");
@@ -654,7 +655,8 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
-            os << "c-ign: " << m_stepStats.pre.ignored << "/" << m_sumContactsIgnoredPre;
+            os << "c-ign: " << stats.m_stepStats.pre.ignored << "/"
+                << stats.m_sumContactsIgnoredPre;
             return os.str();
         }());
         if (ImGui::IsItemHovered())
@@ -664,7 +666,8 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
-            os << "c-skip: " << m_stepStats.pre.skipped << "/" << m_sumContactsSkippedPre;
+            os << "c-skip: " << stats.m_stepStats.pre.skipped << "/"
+                << stats.m_sumContactsSkippedPre;
             return os.str();
         }());
         if (ImGui::IsItemHovered())
@@ -672,7 +675,7 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
             ImGui::SetTooltip("Contacts skipped over running total skipped.");
         }
         ImGui::NextColumn();
-        ImGui::Value("c-del", m_stepStats.pre.destroyed);
+        ImGui::Value("c-del", stats.m_stepStats.pre.destroyed);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Contacts deleted.");
@@ -680,7 +683,8 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
-            os << "c-upd: " << m_stepStats.pre.updated << "/" << m_sumContactsUpdatedPre;
+            os << "c-upd: " << stats.m_stepStats.pre.updated << "/" <<
+                stats.m_sumContactsUpdatedPre;
             return os.str();
         }());
         if (ImGui::IsItemHovered())
@@ -787,23 +791,24 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("Reg. step:");
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.contactsAdded);
+        ImGui::Text("%u", stats.m_stepStats.reg.contactsAdded);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.islandsFound);
+        ImGui::Text("%u", stats.m_stepStats.reg.islandsFound);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.islandsSolved);
+        ImGui::Text("%u", stats.m_stepStats.reg.islandsSolved);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.sumPosIters);
+        ImGui::Text("%u", stats.m_stepStats.reg.sumPosIters);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.sumVelIters);
+        ImGui::Text("%u", stats.m_stepStats.reg.sumVelIters);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.proxiesMoved);
+        ImGui::Text("%u", stats.m_stepStats.toi.proxiesMoved);
         ImGui::NextColumn();
-        ImGui::Text("%f", static_cast<double>(Real{m_stepStats.reg.minSeparation / Meter}));
+        ImGui::Text("%f", static_cast<double>(Real{stats.m_stepStats.reg.minSeparation / Meter}));
         ImGui::NextColumn();
-        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.reg.maxIncImpulse / NewtonSecond}));
+        ImGui::Text("%.2f", static_cast<double>(Real{
+            stats.m_stepStats.reg.maxIncImpulse / NewtonSecond}));
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.bodiesSlept);
+        ImGui::Text("%u", stats.m_stepStats.reg.bodiesSlept);
         ImGui::NextColumn();
     }
 
@@ -812,33 +817,35 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("TOI step:");
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.contactsAdded);
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsAdded);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.islandsFound);
+        ImGui::Text("%u", stats.m_stepStats.toi.islandsFound);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.islandsSolved);
+        ImGui::Text("%u", stats.m_stepStats.toi.islandsSolved);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.sumPosIters);
+        ImGui::Text("%u", stats.m_stepStats.toi.sumPosIters);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.sumVelIters);
+        ImGui::Text("%u", stats.m_stepStats.toi.sumVelIters);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.proxiesMoved);
+        ImGui::Text("%u", stats.m_stepStats.toi.proxiesMoved);
         ImGui::NextColumn();
-        ImGui::Text("%f", static_cast<double>(Real{m_stepStats.toi.minSeparation / Meter}));
+        ImGui::Text("%f", static_cast<double>(Real{
+            stats.m_stepStats.toi.minSeparation / Meter}));
         ImGui::NextColumn();
-        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.toi.maxIncImpulse / NewtonSecond}));
+        ImGui::Text("%.2f", static_cast<double>(Real{
+            stats.m_stepStats.toi.maxIncImpulse / NewtonSecond}));
         ImGui::NextColumn();
         // Skip bodies slept column
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.contactsFound);
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsFound);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.contactsAtMaxSubSteps);
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsAtMaxSubSteps);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.contactsUpdatedToi);
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsUpdatedToi);
         ImGui::NextColumn();
-        ImGui::Text("%u", unsigned{m_stepStats.toi.maxDistIters});
+        ImGui::Text("%u", unsigned{stats.m_stepStats.toi.maxDistIters});
         ImGui::NextColumn();
-        ImGui::Text("%u", unsigned{m_stepStats.toi.maxToiIters});
+        ImGui::Text("%u", unsigned{stats.m_stepStats.toi.maxToiIters});
         ImGui::NextColumn();
     }
 
@@ -853,15 +860,15 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::NextColumn();
         // Skip c-add column
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegIslandsFound));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegIslandsFound));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegIslandsSolved));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegIslandsSolved));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegPosIters));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegPosIters));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegVelIters));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegVelIters));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegProxiesMoved));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegProxiesMoved));
         ImGui::NextColumn();
     }
 
@@ -876,15 +883,15 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::NextColumn();
         // Skip c-add column
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiIslandsFound));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiIslandsFound));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiIslandsSolved));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiIslandsSolved));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiPosIters));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiPosIters));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiVelIters));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiVelIters));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiProxiesMoved));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiProxiesMoved));
         ImGui::NextColumn();
         // Skip minSeparation column
         ImGui::NextColumn();
@@ -894,9 +901,9 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::NextColumn();
         // Skip contacts found column
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumContactsAtMaxSubSteps));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumContactsAtMaxSubSteps));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumContactsUpdatedToi));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumContactsUpdatedToi));
         ImGui::NextColumn();
         
 #if 0
@@ -915,8 +922,8 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::TextUnformatted("Reg ranges:");
         ImGui::NextColumn();
         std::ostringstream stream;
-        stream << "min-sep=" << static_cast<double>(Real{m_minRegSep / Meter});
-        stream << ", max-sep=" << static_cast<double>(Real{m_maxRegSep / Meter});
+        stream << "min-sep=" << static_cast<double>(Real{stats.m_minRegSep / Meter});
+        stream << ", max-sep=" << static_cast<double>(Real{stats.m_maxRegSep / Meter});
         stream << ".";
         ImGui::TextUnformatted(stream.str());
         ImGui::NextColumn();
@@ -928,23 +935,23 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         ImGui::TextUnformatted("TOI ranges:");
         ImGui::NextColumn();
         std::ostringstream stream;
-        stream << "min-sep=" << static_cast<double>(Real{m_minToiSep / Meter});
-        stream << ", max-dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
-        stream << ", max-toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
-        stream << ", max-root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
-        stream << ", max-simul-cts=" << m_maxSimulContacts;
+        stream << "min-sep=" << static_cast<double>(Real{stats.m_minToiSep / Meter});
+        stream << ", max-dist-iter=" << unsigned{stats.m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
+        stream << ", max-toi-iter=" << unsigned{stats.m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
+        stream << ", max-root-iter=" << unsigned{stats.m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
+        stream << ", max-simul-cts=" << stats.m_maxSimulContacts;
         stream << ".";
         ImGui::TextUnformatted(stream.str());
         ImGui::NextColumn();
     }
 
     {
-        const auto leafCount = m_world.GetTree().GetLeafCount();
-        const auto nodeCount = m_world.GetTree().GetNodeCount();
-        const auto height = GetHeight(m_world.GetTree());
-        const auto imbalance = GetMaxImbalance(m_world.GetTree());
-        const auto quality = ComputePerimeterRatio(m_world.GetTree());
-        const auto capacity = m_world.GetTree().GetNodeCapacity();
+        const auto leafCount = world.GetTree().GetLeafCount();
+        const auto nodeCount = world.GetTree().GetNodeCount();
+        const auto height = GetHeight(world.GetTree());
+        const auto imbalance = GetMaxImbalance(world.GetTree());
+        const auto quality = ComputePerimeterRatio(world.GetTree());
+        const auto capacity = world.GetTree().GetNodeCapacity();
 
         ImGui::ColumnsContext cc(2, nullptr, false);
         ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
@@ -979,7 +986,7 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
         }
         ImGui::SameLine(0, 0);
         std::ostringstream stream;
-        stream << m_maxAABB;
+        stream << stats.m_maxAABB;
         ImGui::Text("max-aabb=%s.", stream.str().c_str());
         if (ImGui::IsItemHovered())
         {
@@ -1115,60 +1122,61 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     const auto stepStats = m_world.Step(stepConf);
     const auto end = std::chrono::system_clock::now();
 
-    m_maxAABB = GetEnclosingAABB(m_maxAABB, GetAABB(m_world.GetTree()));
+    m_stats.m_maxAABB = GetEnclosingAABB(m_stats.m_maxAABB, GetAABB(m_world.GetTree()));
     
-    m_sumContactsUpdatedPre += stepStats.pre.updated;
-    m_sumContactsIgnoredPre += stepStats.pre.ignored;
-    m_sumContactsSkippedPre += stepStats.pre.skipped;
+    m_stats.m_sumContactsUpdatedPre += stepStats.pre.updated;
+    m_stats.m_sumContactsIgnoredPre += stepStats.pre.ignored;
+    m_stats.m_sumContactsSkippedPre += stepStats.pre.skipped;
 
-    m_sumRegIslandsFound += stepStats.reg.islandsFound;
-    m_sumRegIslandsSolved += stepStats.reg.islandsSolved;
-    m_sumRegPosIters += stepStats.reg.sumPosIters;
-    m_sumRegVelIters += stepStats.reg.sumVelIters;
-    m_sumRegProxiesMoved += stepStats.reg.proxiesMoved;
+    m_stats.m_sumRegIslandsFound += stepStats.reg.islandsFound;
+    m_stats.m_sumRegIslandsSolved += stepStats.reg.islandsSolved;
+    m_stats.m_sumRegPosIters += stepStats.reg.sumPosIters;
+    m_stats.m_sumRegVelIters += stepStats.reg.sumVelIters;
+    m_stats.m_sumRegProxiesMoved += stepStats.reg.proxiesMoved;
 
-    m_sumToiIslandsFound += stepStats.toi.islandsFound;
-    m_sumToiIslandsSolved += stepStats.toi.islandsSolved;
-    m_sumToiPosIters += stepStats.toi.sumPosIters;
-    m_sumToiVelIters += stepStats.toi.sumVelIters;
-    m_sumToiProxiesMoved += stepStats.toi.proxiesMoved;
-    m_sumContactsUpdatedToi += stepStats.toi.contactsUpdatedToi;
-    m_sumToiContactsUpdatedTouching += stepStats.toi.contactsUpdatedTouching;
-    m_sumToiContactsSkippedTouching += stepStats.toi.contactsSkippedTouching;
-    m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
+    m_stats.m_sumToiIslandsFound += stepStats.toi.islandsFound;
+    m_stats.m_sumToiIslandsSolved += stepStats.toi.islandsSolved;
+    m_stats.m_sumToiPosIters += stepStats.toi.sumPosIters;
+    m_stats.m_sumToiVelIters += stepStats.toi.sumVelIters;
+    m_stats.m_sumToiProxiesMoved += stepStats.toi.proxiesMoved;
+    m_stats.m_sumContactsUpdatedToi += stepStats.toi.contactsUpdatedToi;
+    m_stats.m_sumToiContactsUpdatedTouching += stepStats.toi.contactsUpdatedTouching;
+    m_stats.m_sumToiContactsSkippedTouching += stepStats.toi.contactsSkippedTouching;
+    m_stats.m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
 
-    m_maxSimulContacts = std::max(m_maxSimulContacts, stepStats.toi.maxSimulContacts);
-    m_maxDistIters = std::max(m_maxDistIters, stepStats.toi.maxDistIters);
-    m_maxRootIters = std::max(m_maxRootIters, stepStats.toi.maxRootIters);
-    m_maxToiIters = std::max(m_maxToiIters, stepStats.toi.maxToiIters);
+    m_stats.m_maxSimulContacts = std::max(m_stats.m_maxSimulContacts,
+                                          stepStats.toi.maxSimulContacts);
+    m_stats.m_maxDistIters = std::max(m_stats.m_maxDistIters, stepStats.toi.maxDistIters);
+    m_stats.m_maxRootIters = std::max(m_stats.m_maxRootIters, stepStats.toi.maxRootIters);
+    m_stats.m_maxToiIters = std::max(m_stats.m_maxToiIters, stepStats.toi.maxToiIters);
 
     if (stepStats.reg.minSeparation < std::numeric_limits<Length>::infinity())
     {
-        m_minRegSep = std::min(m_minRegSep, stepStats.reg.minSeparation);
-        m_maxRegSep = std::max(m_maxRegSep, stepStats.reg.minSeparation);
+        m_stats.m_minRegSep = std::min(m_stats.m_minRegSep, stepStats.reg.minSeparation);
+        m_stats.m_maxRegSep = std::max(m_stats.m_maxRegSep, stepStats.reg.minSeparation);
     }
 
     if (settings.dt != 0)
     {
-        m_sumDeltaTime += settings.dt;
+        m_stats.m_sumDeltaTime += settings.dt;
 
-        ++m_stepCount;
-        m_stepStats = stepStats;
-        m_minToiSep = std::min(m_minToiSep, stepStats.toi.minSeparation);
+        ++m_stats.m_stepCount;
+        m_stats.m_stepStats = stepStats;
+        m_stats.m_minToiSep = std::min(m_stats.m_minToiSep, stepStats.toi.minSeparation);
 
-        m_curStepDuration = end - start;
-        m_maxStepDuration = std::max(m_maxStepDuration, m_curStepDuration);
-        m_sumStepDuration += m_curStepDuration;
+        m_stats.m_curStepDuration = end - start;
+        m_stats.m_maxStepDuration = std::max(m_stats.m_maxStepDuration, m_stats.m_curStepDuration);
+        m_stats.m_sumStepDuration += m_stats.m_curStepDuration;
     }
 
-    m_numContacts = GetContactCount(m_world);
-    m_maxContacts = std::max(m_maxContacts, m_numContacts);
+    m_stats.m_numContacts = GetContactCount(m_world);
+    m_stats.m_maxContacts = std::max(m_stats.m_maxContacts, m_stats.m_numContacts);
     
     if (size(m_numContactsPerStep) >= m_maxHistory)
     {
         m_numContactsPerStep.pop_front();
     }
-    m_numContactsPerStep.push_back(m_numContacts);
+    m_numContactsPerStep.push_back(m_stats.m_numContacts);
 
     if (ui.showStats)
     {
@@ -1181,8 +1189,8 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
         }
         const auto touchingCount = GetTouchingCount(m_world);
         m_numTouchingPerStep.push_back(touchingCount);
-        m_maxTouching = std::max(m_maxTouching, touchingCount);
-        ShowStats(stepConf, ui);
+        m_stats.m_maxTouching = std::max(m_stats.m_maxTouching, touchingCount);
+        ShowStats(stepConf, ui, m_world, m_stats);
     }
     
     if (ui.showContactsHistory)
@@ -1192,16 +1200,16 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
                                 ImGuiWindowFlags_NoCollapse);
         char buffer[40];
         
-        std::sprintf(buffer, "Max of %u", m_maxTouching);
+        std::sprintf(buffer, "Max of %u", m_stats.m_maxTouching);
         ImGui::PlotHistogram("# Touching", DequeValuesGetter<std::size_t>::Func,
                              &m_numTouchingPerStep, static_cast<int>(size(m_numTouchingPerStep)),
-                             0, buffer, 0.0f, static_cast<float>(m_maxContacts),
+                             0, buffer, 0.0f, static_cast<float>(m_stats.m_maxContacts),
                              ImVec2(600, 100));
 
-        std::sprintf(buffer, "Max of %u", m_maxContacts);
+        std::sprintf(buffer, "Max of %u", m_stats.m_maxContacts);
         ImGui::PlotHistogram("# Contacts", DequeValuesGetter<std::size_t>::Func,
                              &m_numContactsPerStep, static_cast<int>(size(m_numContactsPerStep)),
-                             0, buffer, 0.0f, static_cast<float>(m_maxContacts),
+                             0, buffer, 0.0f, static_cast<float>(m_stats.m_maxContacts),
                              ImVec2(600, 100));
     }
 
