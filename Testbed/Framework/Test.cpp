@@ -255,11 +255,499 @@ struct DequeValuesGetter
     }
 };
 
-} // namespace
+void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const Stats& stats)
+{
+    const auto bodyCount = GetBodyCount(world);
+    const auto awakeCount = GetAwakeCount(world);
+    const auto sleepCount = bodyCount - awakeCount;
+    const auto jointCount = GetJointCount(world);
+    const auto fixtureCount = GetFixtureCount(world);
+    const auto shapeCount = GetShapeCount(world);
+    const auto touchingCount = GetTouchingCount(world);
 
-bool Test::DrawWorld(Drawer& drawer, const World& world, const FixtureSet& selected,
-                     const NeededSettings& needed,
-                     const Settings& testSettings, const Settings& stepSettings)
+    const ImGuiStyle& style = ImGui::GetStyle();
+    const auto totalWidth = ImGui::GetWindowWidth() - style.FramePadding.x * 2;
+    const auto firstColumnWidth = 65.0f;
+
+    ImGui::Text("Step #=%d (@%fs):", stats.m_stepCount, stats.m_sumDeltaTime);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("# of steps performed so far for the current test "
+                          "and the elapsed simulated time.");
+    }
+    ImGui::Separator();
+
+    {
+        ImGui::ColumnsContext cc(4, "TimesColumns", false);
+        ImGui::SetColumnWidth(0, firstColumnWidth);
+        ImGui::TextUnformatted("Times:");
+        ImGui::NextColumn();
+        ImGui::Value("Current", stats.m_curStepDuration.count(), "%f");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Compute time of last step.");
+        }
+        ImGui::NextColumn();
+        ImGui::Value("Max", stats.m_maxStepDuration.count(), "%f");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Maximum compute time of all steps so far for the current test.");
+        }
+        ImGui::NextColumn();
+        ImGui::Value("Sum", stats.m_sumStepDuration.count(), "%f");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Sum compute time of all steps so far for the current test.");
+        }
+        ImGui::NextColumn();
+    }
+
+    {
+        ImGui::ColumnsContext cc(5, "NumObjectsColumns", false);
+        ImGui::SetColumnWidth(0, firstColumnWidth);
+        ImGui::TextUnformatted("# Objects:");
+        ImGui::NextColumn();
+        ImGui::Text("Bodies: %u/%u", bodyCount - sleepCount, bodyCount);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Counts of awake bodies over total bodies.");
+        }
+        ImGui::NextColumn();
+        ImGui::Text("Fixtures: %u/%u", shapeCount, fixtureCount);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Counts of shapes over fixtures.");
+        }
+        ImGui::NextColumn();
+        ImGui::Text("Contacts: %u/%u", touchingCount, stats.m_numContacts);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Counts of touching contacts over total contacts. Click to toggle histogram.");
+        }
+        if (ImGui::IsItemClicked())
+        {
+            ui.showContactsHistory = !ui.showContactsHistory;
+        }
+        ImGui::NextColumn();
+        ImGui::Value("Joints", jointCount);
+        ImGui::NextColumn();
+    }
+
+    {
+        ImGui::ColumnsContext cc(6, "PreStepColumns", false);
+        ImGui::SetColumnWidth(0, firstColumnWidth);
+        ImGui::TextUnformatted("Pre-step:");
+        ImGui::NextColumn();
+        ImGui::Value("cts-add", stats.m_stepStats.pre.added);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Contacts added.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted([=]() {
+            std::ostringstream os;
+            os << "c-ign: " << stats.m_stepStats.pre.ignored << "/"
+            << stats.m_sumContactsIgnoredPre;
+            return os.str();
+        }());
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Contacts ignored over running total ignored.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted([=]() {
+            std::ostringstream os;
+            os << "c-skip: " << stats.m_stepStats.pre.skipped << "/"
+            << stats.m_sumContactsSkippedPre;
+            return os.str();
+        }());
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Contacts skipped over running total skipped.");
+        }
+        ImGui::NextColumn();
+        ImGui::Value("c-del", stats.m_stepStats.pre.destroyed);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Contacts deleted.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted([=]() {
+            std::ostringstream os;
+            os << "c-upd: " << stats.m_stepStats.pre.updated << "/" <<
+            stats.m_sumContactsUpdatedPre;
+            return os.str();
+        }());
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Contacts updated over running total updated.");
+        }
+        ImGui::NextColumn();
+    }
+
+    ImGui::Separator();
+
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("c-add");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Contacts added.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("i-find");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Islands found.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("i-solv");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Islands solved.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("posit");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Position iterations.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("velit");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Velocity iterations.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("pmov");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Proxies moved.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("minsep");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Minimum separation.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("maxP");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Max incremental impulse.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("b-slept");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Bodies slept.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("c-find");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Contacts found.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("c-@maxs");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Contacts at max substeps.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("c-upd");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Contacts whose TOI was updated.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("max-d-it");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Max distance iterations.");
+        }
+        ImGui::NextColumn();
+        ImGui::TextUnformatted("max-t-it");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Max TOI iterations.");
+        }
+        ImGui::NextColumn();
+    }
+
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("Reg. step:");
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.reg.contactsAdded);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.reg.islandsFound);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.reg.islandsSolved);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.reg.sumPosIters);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.reg.sumVelIters);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.proxiesMoved);
+        ImGui::NextColumn();
+        ImGui::Text("%f", static_cast<double>(Real{stats.m_stepStats.reg.minSeparation / Meter}));
+        ImGui::NextColumn();
+        ImGui::Text("%.2f", static_cast<double>(Real{
+            stats.m_stepStats.reg.maxIncImpulse / NewtonSecond}));
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.reg.bodiesSlept);
+        ImGui::NextColumn();
+    }
+
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("TOI step:");
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsAdded);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.islandsFound);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.islandsSolved);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.sumPosIters);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.sumVelIters);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.proxiesMoved);
+        ImGui::NextColumn();
+        ImGui::Text("%f", static_cast<double>(Real{
+            stats.m_stepStats.toi.minSeparation / Meter}));
+        ImGui::NextColumn();
+        ImGui::Text("%.2f", static_cast<double>(Real{
+            stats.m_stepStats.toi.maxIncImpulse / NewtonSecond}));
+        ImGui::NextColumn();
+        // Skip bodies slept column
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsFound);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsAtMaxSubSteps);
+        ImGui::NextColumn();
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsUpdatedToi);
+        ImGui::NextColumn();
+        ImGui::Text("%u", unsigned{stats.m_stepStats.toi.maxDistIters});
+        ImGui::NextColumn();
+        ImGui::Text("%u", unsigned{stats.m_stepStats.toi.maxToiIters});
+        ImGui::NextColumn();
+    }
+
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("Reg. sums:");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Regular step sums.");
+        }
+        ImGui::NextColumn();
+        // Skip c-add column
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegIslandsFound));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegIslandsSolved));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegPosIters));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegVelIters));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegProxiesMoved));
+        ImGui::NextColumn();
+    }
+
+    {
+        ImGui::ColumnsContext cc(15, nullptr, false);
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("TOI sums:");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("TOI step sums.");
+        }
+        ImGui::NextColumn();
+        // Skip c-add column
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiIslandsFound));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiIslandsSolved));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiPosIters));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiVelIters));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiProxiesMoved));
+        ImGui::NextColumn();
+        // Skip minSeparation column
+        ImGui::NextColumn();
+        // Skip maxIncImpulse column
+        ImGui::NextColumn();
+        // Skip bodies slept column
+        ImGui::NextColumn();
+        // Skip contacts found column
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumContactsAtMaxSubSteps));
+        ImGui::NextColumn();
+        ImGui::TextUnformatted(std::to_string(stats.m_sumContactsUpdatedToi));
+        ImGui::NextColumn();
+
+#if 0
+        stream = std::ostringstream();
+        stream << "  TOI sums:";
+        stream << " cts-touch-upd=" << m_sumToiContactsUpdatedTouching;
+        stream << " cts-touch-skipped=" << m_sumToiContactsSkippedTouching;
+#endif
+    }
+
+    ImGui::Separator();
+
+    {
+        ImGui::ColumnsContext cc(2, nullptr, false);
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("Reg ranges:");
+        ImGui::NextColumn();
+        std::ostringstream stream;
+        stream << "min-sep=" << static_cast<double>(Real{stats.m_minRegSep / Meter});
+        stream << ", max-sep=" << static_cast<double>(Real{stats.m_maxRegSep / Meter});
+        stream << ".";
+        ImGui::TextUnformatted(stream.str());
+        ImGui::NextColumn();
+    }
+
+    {
+        ImGui::ColumnsContext cc(2, nullptr, false);
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("TOI ranges:");
+        ImGui::NextColumn();
+        std::ostringstream stream;
+        stream << "min-sep=" << static_cast<double>(Real{stats.m_minToiSep / Meter});
+        stream << ", max-dist-iter=" << unsigned{stats.m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
+        stream << ", max-toi-iter=" << unsigned{stats.m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
+        stream << ", max-root-iter=" << unsigned{stats.m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
+        stream << ", max-simul-cts=" << stats.m_maxSimulContacts;
+        stream << ".";
+        ImGui::TextUnformatted(stream.str());
+        ImGui::NextColumn();
+    }
+
+    {
+        const auto leafCount = world.GetTree().GetLeafCount();
+        const auto nodeCount = world.GetTree().GetNodeCount();
+        const auto height = GetHeight(world.GetTree());
+        const auto imbalance = GetMaxImbalance(world.GetTree());
+        const auto quality = ComputePerimeterRatio(world.GetTree());
+        const auto capacity = world.GetTree().GetNodeCapacity();
+
+        ImGui::ColumnsContext cc(2, nullptr, false);
+        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
+        ImGui::TextUnformatted("Dyn. tree:");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Broad-phase dynamic tree statistics.");
+        }
+        ImGui::NextColumn();
+        ImGui::Text("nodes=%u/%u/%u, ", leafCount, nodeCount, capacity);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Leaf/node/capacity counts.");
+        }
+        ImGui::SameLine(0, 0);
+        ImGui::Text("height=%u, ", height);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Height of the tree (lower is better).");
+        }
+        ImGui::SameLine(0, 0);
+        ImGui::Text("imbal=%u, ", imbalance);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Maximum imbalance of branch nodes (lower is better).");
+        }
+        ImGui::SameLine(0, 0);
+        ImGui::Text("p-rat=%.2f, ", static_cast<double>(quality));
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Perimeter ratio (lower is better).");
+        }
+        ImGui::SameLine(0, 0);
+        std::ostringstream stream;
+        stream << stats.m_maxAABB;
+        ImGui::Text("max-aabb=%s.", stream.str().c_str());
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("Maximum Axis Aligned Bounding Box (AABB).");
+        }
+        ImGui::NextColumn();
+    }
+}
+
+void DrawContactInfo(Drawer& drawer, const Settings& settings,
+                     const Test::FixtureSet& selectedFixtures,
+                     SizedRange<Test::ContactPoints::const_iterator> points)
+{
+    const auto k_impulseScale = 0.1_s / 1_kg;
+    const auto k_axisScale = 0.3_m;
+    const auto addStateColor = Color{0.3f, 0.9f, 0.3f}; // greenish
+    const auto persistStateColor = Color{0.3f, 0.3f, 0.9f}; // blueish
+    const auto contactNormalColor = Color{0.7f, 0.7f, 0.7f}; // light gray
+    const auto normalImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
+    const auto frictionImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
+    const auto lighten = 1.3f;
+    const auto darken = 0.9f;
+    for (const auto& point: points)
+    {
+        const auto selected = HasFixture(point, selectedFixtures);
+        if (settings.drawContactPoints)
+        {
+            if (point.state == PointState::AddState)
+            {
+                drawer.DrawPoint(point.position, 7.0f,
+                                 Brighten(addStateColor, selected? lighten: darken));
+            }
+            else if (point.state == PointState::PersistState)
+            {
+                // Persist
+                drawer.DrawPoint(point.position, 5.0f,
+                                 Brighten(persistStateColor, selected? lighten: darken));
+            }
+        }
+        if (settings.drawContactImpulse)
+        {
+            const auto length = k_impulseScale * point.normalImpulse;
+            const auto headLength = length / Real(10);
+            const auto p1 = point.position;
+            const auto p2 = p1 + length * point.normal;
+            const auto p2_left = p2 - headLength * Rotate(point.normal, UnitVec::GetTopRight());
+            const auto p2_right = p2 - headLength * Rotate(point.normal, UnitVec::GetBottomRight());
+            drawer.DrawSegment(p1, p2, Brighten(normalImpulseColor, selected? lighten: darken));
+            drawer.DrawSegment(p2, p2_left, Brighten(normalImpulseColor, selected? lighten: darken));
+            drawer.DrawSegment(p2, p2_right, Brighten(normalImpulseColor, selected? lighten: darken));
+        }
+        if (settings.drawFrictionImpulse)
+        {
+            const auto tangent = GetFwdPerpendicular(point.normal);
+            const auto p1 = point.position;
+            const auto p2 = p1 + k_impulseScale * point.tangentImpulse * tangent;
+            drawer.DrawSegment(p1, p2, Brighten(frictionImpulseColor, selected? lighten: darken));
+        }
+        if (settings.drawContactNormals)
+        {
+            const auto p1 = point.position;
+            const auto p2 = p1 + k_axisScale * point.normal;
+            drawer.DrawSegment(p1, p2, Brighten(contactNormalColor, selected? lighten: darken));
+        }
+    }
+}
+
+bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selected,
+               const Test::NeededSettings& needed,
+               const Settings& testSettings, const Settings& stepSettings)
 {
     auto found = false;
 
@@ -313,6 +801,8 @@ bool Test::DrawWorld(Drawer& drawer, const World& world, const FixtureSet& selec
 
     return found;
 }
+
+} // namespace
 
 const LinearAcceleration2 Test::Gravity = LinearAcceleration2{
     Real(0.0f) * MeterPerSquareSecond,
@@ -561,497 +1051,6 @@ void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
     conf.density = m_bombDensity;
     conf.restitution = 0.0f;
     CreateFixture(m_world, m_bomb, Shape{conf});
-}
-
-void Test::ShowStats(const StepConf& stepConf, UiState& ui, const World& world,
-                     const Stats& stats)
-{
-    const auto bodyCount = GetBodyCount(world);
-    const auto awakeCount = GetAwakeCount(world);
-    const auto sleepCount = bodyCount - awakeCount;
-    const auto jointCount = GetJointCount(world);
-    const auto fixtureCount = GetFixtureCount(world);
-    const auto shapeCount = GetShapeCount(world);
-    const auto touchingCount = GetTouchingCount(world);
-
-    const ImGuiStyle& style = ImGui::GetStyle();
-    const auto totalWidth = ImGui::GetWindowWidth() - style.FramePadding.x * 2;
-    const auto firstColumnWidth = 65.0f;
-
-    ImGui::Text("Step #=%d (@%fs):", stats.m_stepCount, stats.m_sumDeltaTime);
-    if (ImGui::IsItemHovered())
-    {
-        ImGui::SetTooltip("# of steps performed so far for the current test "
-                          "and the elapsed simulated time.");
-    }
-    ImGui::Separator();
-
-    {
-        ImGui::ColumnsContext cc(4, "TimesColumns", false);
-        ImGui::SetColumnWidth(0, firstColumnWidth);
-        ImGui::TextUnformatted("Times:");
-        ImGui::NextColumn();
-        ImGui::Value("Current", stats.m_curStepDuration.count(), "%f");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Compute time of last step.");
-        }
-        ImGui::NextColumn();
-        ImGui::Value("Max", stats.m_maxStepDuration.count(), "%f");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Maximum compute time of all steps so far for the current test.");
-        }
-        ImGui::NextColumn();
-        ImGui::Value("Sum", stats.m_sumStepDuration.count(), "%f");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Sum compute time of all steps so far for the current test.");
-        }
-        ImGui::NextColumn();
-    }
-
-    {
-        ImGui::ColumnsContext cc(5, "NumObjectsColumns", false);
-        ImGui::SetColumnWidth(0, firstColumnWidth);
-        ImGui::TextUnformatted("# Objects:");
-        ImGui::NextColumn();
-        ImGui::Text("Bodies: %u/%u", bodyCount - sleepCount, bodyCount);
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Counts of awake bodies over total bodies.");
-        }
-        ImGui::NextColumn();
-        ImGui::Text("Fixtures: %u/%u", shapeCount, fixtureCount);
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Counts of shapes over fixtures.");
-        }
-        ImGui::NextColumn();
-        ImGui::Text("Contacts: %u/%u", touchingCount, stats.m_numContacts);
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Counts of touching contacts over total contacts. Click to toggle histogram.");
-        }
-        if (ImGui::IsItemClicked())
-        {
-            ui.showContactsHistory = !ui.showContactsHistory;
-        }
-        ImGui::NextColumn();
-        ImGui::Value("Joints", jointCount);
-        ImGui::NextColumn();
-    }
-    
-    {
-        ImGui::ColumnsContext cc(6, "PreStepColumns", false);
-        ImGui::SetColumnWidth(0, firstColumnWidth);
-        ImGui::TextUnformatted("Pre-step:");
-        ImGui::NextColumn();
-        ImGui::Value("cts-add", stats.m_stepStats.pre.added);
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts added.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted([=]() {
-            std::ostringstream os;
-            os << "c-ign: " << stats.m_stepStats.pre.ignored << "/"
-                << stats.m_sumContactsIgnoredPre;
-            return os.str();
-        }());
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts ignored over running total ignored.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted([=]() {
-            std::ostringstream os;
-            os << "c-skip: " << stats.m_stepStats.pre.skipped << "/"
-                << stats.m_sumContactsSkippedPre;
-            return os.str();
-        }());
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts skipped over running total skipped.");
-        }
-        ImGui::NextColumn();
-        ImGui::Value("c-del", stats.m_stepStats.pre.destroyed);
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts deleted.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted([=]() {
-            std::ostringstream os;
-            os << "c-upd: " << stats.m_stepStats.pre.updated << "/" <<
-                stats.m_sumContactsUpdatedPre;
-            return os.str();
-        }());
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts updated over running total updated.");
-        }
-        ImGui::NextColumn();
-    }
-
-    ImGui::Separator();
-
-    {
-        ImGui::ColumnsContext cc(15, nullptr, false);
-        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("c-add");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts added.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("i-find");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Islands found.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("i-solv");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Islands solved.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("posit");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Position iterations.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("velit");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Velocity iterations.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("pmov");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Proxies moved.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("minsep");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Minimum separation.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("maxP");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Max incremental impulse.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("b-slept");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Bodies slept.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("c-find");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts found.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("c-@maxs");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts at max substeps.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("c-upd");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Contacts whose TOI was updated.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("max-d-it");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Max distance iterations.");
-        }
-        ImGui::NextColumn();
-        ImGui::TextUnformatted("max-t-it");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Max TOI iterations.");
-        }
-        ImGui::NextColumn();
-    }
-
-    {
-        ImGui::ColumnsContext cc(15, nullptr, false);
-        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
-        ImGui::TextUnformatted("Reg. step:");
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.reg.contactsAdded);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.reg.islandsFound);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.reg.islandsSolved);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.reg.sumPosIters);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.reg.sumVelIters);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.proxiesMoved);
-        ImGui::NextColumn();
-        ImGui::Text("%f", static_cast<double>(Real{stats.m_stepStats.reg.minSeparation / Meter}));
-        ImGui::NextColumn();
-        ImGui::Text("%.2f", static_cast<double>(Real{
-            stats.m_stepStats.reg.maxIncImpulse / NewtonSecond}));
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.reg.bodiesSlept);
-        ImGui::NextColumn();
-    }
-
-    {
-        ImGui::ColumnsContext cc(15, nullptr, false);
-        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
-        ImGui::TextUnformatted("TOI step:");
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.contactsAdded);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.islandsFound);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.islandsSolved);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.sumPosIters);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.sumVelIters);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.proxiesMoved);
-        ImGui::NextColumn();
-        ImGui::Text("%f", static_cast<double>(Real{
-            stats.m_stepStats.toi.minSeparation / Meter}));
-        ImGui::NextColumn();
-        ImGui::Text("%.2f", static_cast<double>(Real{
-            stats.m_stepStats.toi.maxIncImpulse / NewtonSecond}));
-        ImGui::NextColumn();
-        // Skip bodies slept column
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.contactsFound);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.contactsAtMaxSubSteps);
-        ImGui::NextColumn();
-        ImGui::Text("%u", stats.m_stepStats.toi.contactsUpdatedToi);
-        ImGui::NextColumn();
-        ImGui::Text("%u", unsigned{stats.m_stepStats.toi.maxDistIters});
-        ImGui::NextColumn();
-        ImGui::Text("%u", unsigned{stats.m_stepStats.toi.maxToiIters});
-        ImGui::NextColumn();
-    }
-
-    {
-        ImGui::ColumnsContext cc(15, nullptr, false);
-        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
-        ImGui::TextUnformatted("Reg. sums:");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Regular step sums.");
-        }
-        ImGui::NextColumn();
-        // Skip c-add column
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumRegIslandsFound));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumRegIslandsSolved));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumRegPosIters));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumRegVelIters));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumRegProxiesMoved));
-        ImGui::NextColumn();
-    }
-
-    {
-        ImGui::ColumnsContext cc(15, nullptr, false);
-        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
-        ImGui::TextUnformatted("TOI sums:");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("TOI step sums.");
-        }
-        ImGui::NextColumn();
-        // Skip c-add column
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumToiIslandsFound));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumToiIslandsSolved));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumToiPosIters));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumToiVelIters));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumToiProxiesMoved));
-        ImGui::NextColumn();
-        // Skip minSeparation column
-        ImGui::NextColumn();
-        // Skip maxIncImpulse column
-        ImGui::NextColumn();
-        // Skip bodies slept column
-        ImGui::NextColumn();
-        // Skip contacts found column
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumContactsAtMaxSubSteps));
-        ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(stats.m_sumContactsUpdatedToi));
-        ImGui::NextColumn();
-        
-#if 0
-        stream = std::ostringstream();
-        stream << "  TOI sums:";
-        stream << " cts-touch-upd=" << m_sumToiContactsUpdatedTouching;
-        stream << " cts-touch-skipped=" << m_sumToiContactsSkippedTouching;
-#endif
-    }
-
-    ImGui::Separator();
-
-    {
-        ImGui::ColumnsContext cc(2, nullptr, false);
-        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
-        ImGui::TextUnformatted("Reg ranges:");
-        ImGui::NextColumn();
-        std::ostringstream stream;
-        stream << "min-sep=" << static_cast<double>(Real{stats.m_minRegSep / Meter});
-        stream << ", max-sep=" << static_cast<double>(Real{stats.m_maxRegSep / Meter});
-        stream << ".";
-        ImGui::TextUnformatted(stream.str());
-        ImGui::NextColumn();
-    }
-
-    {
-        ImGui::ColumnsContext cc(2, nullptr, false);
-        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
-        ImGui::TextUnformatted("TOI ranges:");
-        ImGui::NextColumn();
-        std::ostringstream stream;
-        stream << "min-sep=" << static_cast<double>(Real{stats.m_minToiSep / Meter});
-        stream << ", max-dist-iter=" << unsigned{stats.m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
-        stream << ", max-toi-iter=" << unsigned{stats.m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
-        stream << ", max-root-iter=" << unsigned{stats.m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
-        stream << ", max-simul-cts=" << stats.m_maxSimulContacts;
-        stream << ".";
-        ImGui::TextUnformatted(stream.str());
-        ImGui::NextColumn();
-    }
-
-    {
-        const auto leafCount = world.GetTree().GetLeafCount();
-        const auto nodeCount = world.GetTree().GetNodeCount();
-        const auto height = GetHeight(world.GetTree());
-        const auto imbalance = GetMaxImbalance(world.GetTree());
-        const auto quality = ComputePerimeterRatio(world.GetTree());
-        const auto capacity = world.GetTree().GetNodeCapacity();
-
-        ImGui::ColumnsContext cc(2, nullptr, false);
-        ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
-        ImGui::TextUnformatted("Dyn. tree:");
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Broad-phase dynamic tree statistics.");
-        }
-        ImGui::NextColumn();
-        ImGui::Text("nodes=%u/%u/%u, ", leafCount, nodeCount, capacity);
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Leaf/node/capacity counts.");
-        }
-        ImGui::SameLine(0, 0);
-        ImGui::Text("height=%u, ", height);
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Height of the tree (lower is better).");
-        }
-        ImGui::SameLine(0, 0);
-        ImGui::Text("imbal=%u, ", imbalance);
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Maximum imbalance of branch nodes (lower is better).");
-        }
-        ImGui::SameLine(0, 0);
-        ImGui::Text("p-rat=%.2f, ", static_cast<double>(quality));
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Perimeter ratio (lower is better).");
-        }
-        ImGui::SameLine(0, 0);
-        std::ostringstream stream;
-        stream << stats.m_maxAABB;
-        ImGui::Text("max-aabb=%s.", stream.str().c_str());
-        if (ImGui::IsItemHovered())
-        {
-            ImGui::SetTooltip("Maximum Axis Aligned Bounding Box (AABB).");
-        }
-        ImGui::NextColumn();
-    }
-}
-
-void Test::DrawContactInfo(Drawer& drawer, const Settings& settings,
-                           const Test::FixtureSet& selectedFixtures,
-                           SizedRange<ContactPoints::const_iterator> points)
-{
-    const auto k_impulseScale = 0.1_s / 1_kg;
-    const auto k_axisScale = 0.3_m;
-    const auto addStateColor = Color{0.3f, 0.9f, 0.3f}; // greenish
-    const auto persistStateColor = Color{0.3f, 0.3f, 0.9f}; // blueish
-    const auto contactNormalColor = Color{0.7f, 0.7f, 0.7f}; // light gray
-    const auto normalImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
-    const auto frictionImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
-    const auto lighten = 1.3f;
-    const auto darken = 0.9f;
-    for (const auto& point: points)
-    {
-        const auto selected = HasFixture(point, selectedFixtures);
-        if (settings.drawContactPoints)
-        {
-            if (point.state == PointState::AddState)
-            {
-                drawer.DrawPoint(point.position, 7.0f,
-                                 Brighten(addStateColor, selected? lighten: darken));
-            }
-            else if (point.state == PointState::PersistState)
-            {
-                // Persist
-                drawer.DrawPoint(point.position, 5.0f,
-                                 Brighten(persistStateColor, selected? lighten: darken));
-            }
-        }
-        if (settings.drawContactImpulse)
-        {
-            const auto length = k_impulseScale * point.normalImpulse;
-            const auto headLength = length / Real(10);
-            const auto p1 = point.position;
-            const auto p2 = p1 + length * point.normal;
-            const auto p2_left = p2 - headLength * Rotate(point.normal, UnitVec::GetTopRight());
-            const auto p2_right = p2 - headLength * Rotate(point.normal, UnitVec::GetBottomRight());
-            drawer.DrawSegment(p1, p2, Brighten(normalImpulseColor, selected? lighten: darken));
-            drawer.DrawSegment(p2, p2_left, Brighten(normalImpulseColor, selected? lighten: darken));
-            drawer.DrawSegment(p2, p2_right, Brighten(normalImpulseColor, selected? lighten: darken));
-        }
-        if (settings.drawFrictionImpulse)
-        {
-            const auto tangent = GetFwdPerpendicular(point.normal);
-            const auto p1 = point.position;
-            const auto p2 = p1 + k_impulseScale * point.tangentImpulse * tangent;
-            drawer.DrawSegment(p1, p2, Brighten(frictionImpulseColor, selected? lighten: darken));
-        }
-        if (settings.drawContactNormals)
-        {
-            const auto p1 = point.position;
-            const auto p2 = p1 + k_axisScale * point.normal;
-            drawer.DrawSegment(p1, p2, Brighten(contactNormalColor, selected? lighten: darken));
-        }
-    }
 }
 
 void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
@@ -1373,6 +1372,18 @@ void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins,
     {
         Draw(drawer, GetChild(shape, i), color, skins, xf);
     }
+}
+
+bool HasFixture(const Test::ContactPoint& cp, const Test::FixtureSet& fixtures) noexcept
+{
+    for (auto fixture: fixtures)
+    {
+        if (fixture == cp.fixtureA || fixture == cp.fixtureB)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 } // namespace testbed

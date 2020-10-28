@@ -217,6 +217,20 @@ public:
     using FixtureSet = std::set<FixtureID>;
     using BodySet = std::set<BodyID>;
 
+    struct ContactPoint
+    {
+        FixtureID fixtureA;
+        FixtureID fixtureB;
+        UnitVec normal;
+        Length2 position;
+        PointState state;
+        Momentum normalImpulse;
+        Momentum tangentImpulse;
+        Length separation;
+    };
+
+    using ContactPoints = std::vector<ContactPoint>;
+
     virtual ~Test();
 
     /// @brief Steps this test's world forward and visualizes what's going on.
@@ -274,6 +288,13 @@ public:
     FixtureSet GetSelectedFixtures() const noexcept { return m_selectedFixtures; }
     BodySet GetSelectedBodies() const noexcept { return m_selectedBodies; }
 
+    SizedRange<ContactPoints::const_iterator> GetPoints() const noexcept
+    {
+        return SizedRange<ContactPoints::const_iterator>(cbegin(m_points),
+                                                         cend(m_points),
+                                                         size(m_points));
+    }
+
     World m_world;
 
     static const LinearAcceleration2 Gravity;
@@ -307,30 +328,6 @@ protected:
 
     Test(Conf config = GetDefaultConf());
 
-    struct ContactPoint
-    {
-        FixtureID fixtureA;
-        FixtureID fixtureB;
-        UnitVec normal;
-        Length2 position;
-        PointState state;
-        Momentum normalImpulse;
-        Momentum tangentImpulse;
-        Length separation;
-    };
-    
-    static inline bool HasFixture(const ContactPoint& cp, const FixtureSet& fixtures) noexcept
-    {
-        for (auto fixture: fixtures)
-        {
-            if (fixture == cp.fixtureA || fixture == cp.fixtureB)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    
     void SetSelectedFixtures(FixtureSet value) noexcept;
     
     void ClearSelectedFixtures()
@@ -338,8 +335,6 @@ protected:
         m_selectedFixtures.clear();
         m_selectedBodies.clear();
     }
-    
-    using ContactPoints = std::vector<ContactPoint>;
 
     // This is called when a joint in the world is implicitly destroyed
     // because an attached body is destroyed. This gives us a chance to
@@ -371,13 +366,6 @@ protected:
 
     int GetStepCount() const noexcept { return m_stats.m_stepCount; }
 
-    SizedRange<ContactPoints::const_iterator> GetPoints() const noexcept
-    {
-        return SizedRange<ContactPoints::const_iterator>(cbegin(m_points),
-                                                         cend(m_points),
-                                                         size(m_points));
-    }
-
     BodyID GetBomb() const noexcept { return m_bomb; }
     
     void SetBomb(BodyID body) noexcept { m_bomb = body; }
@@ -408,14 +396,6 @@ protected:
     LinearAcceleration2 m_gravity = Gravity;
 
 private:
-    static void ShowStats(const StepConf& stepConf, UiState& ui, const World& world,
-                          const Stats& stats);
-    static void DrawContactInfo(Drawer& drawer, const Settings& settings,
-                                const Test::FixtureSet& selectedFixtures,
-                                SizedRange<ContactPoints::const_iterator> points);
-    static bool DrawWorld(Drawer& drawer, const World& world, const FixtureSet& selected,
-                          const NeededSettings& needed, const Settings& test, const Settings& step);
-
     const Settings m_settings;
     const NeededSettings m_neededSettings;
     const std::string m_description;
@@ -432,12 +412,9 @@ private:
     bool m_bombSpawning = false;
     Length2 m_mouseWorld = Length2{};
     Time m_lastDeltaTime = 0 * Second;
-
     Stats m_stats;
-    
     KeyHandlers m_keyHandlers;
     HandledKeys m_handledKeys;
-    
     std::size_t m_maxHistory = std::size_t{600u};
     std::deque<std::size_t> m_numContactsPerStep;
     std::deque<std::size_t> m_numTouchingPerStep;
@@ -469,6 +446,8 @@ void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins,
           const Transformation& xf);
 void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins,
           const Transformation& xf);
+
+bool HasFixture(const Test::ContactPoint& cp, const Test::FixtureSet& fixtures) noexcept;
 
 } // namespace testbed
 
