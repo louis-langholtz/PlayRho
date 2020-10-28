@@ -303,7 +303,7 @@ static void CreateUI(GLFWwindow* window)
         std::fprintf(stderr, "Unable to use embedded font. GUI text support disabled.\n");
     }
 #endif
-    
+
     if (!ImGui_ImplGlfwGL3_Init(window, false))
     {
         std::fprintf(stderr, "Could not init GUI renderer.\n");
@@ -2439,7 +2439,8 @@ int main()
         exit(EXIT_FAILURE);
     }
 #endif
-    
+
+    const auto imguiContext = ImGui::CreateContext();
     CreateUI(mainWindow);
     
     auto time1 = glfwGetTime();
@@ -2482,6 +2483,8 @@ int main()
     }
 
     ImGui_ImplGlfwGL3_Shutdown();
+    ImGui::DestroyContext(imguiContext);
+
     glfwTerminate();
 
     return 0;
