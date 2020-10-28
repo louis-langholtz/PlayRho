@@ -294,11 +294,13 @@ public:
                                                          size(m_points));
     }
 
+    /// @brief Gets the world.
     const World& GetWorld() const noexcept
     {
         return m_world;
     }
 
+    /// @brief Gets the world.
     World& GetWorld() noexcept
     {
         return m_world;
