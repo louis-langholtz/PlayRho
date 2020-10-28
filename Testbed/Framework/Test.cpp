@@ -573,7 +573,7 @@ void Test::ShowStats(const StepConf& stepConf, UiState& ui) const
     const auto shapeCount = GetShapeCount(m_world);
     const auto touchingCount = GetTouchingCount(m_world);
 
-    ImGuiStyle& style = ImGui::GetStyle();
+    const ImGuiStyle& style = ImGui::GetStyle();
     const auto totalWidth = ImGui::GetWindowWidth() - style.FramePadding.x * 2;
     const auto firstColumnWidth = 65.0f;
 
