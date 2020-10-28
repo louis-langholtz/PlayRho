@@ -356,6 +356,10 @@ public:
     /// @see PhysicalEntities.
     BodyID CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
+    /// @brief Gets the body configuration for the identified body.
+    /// @throws std::out_of_range If given an invalid body identifier.
+    BodyConf GetBodyConf(BodyID id) const;
+
     /// @brief Destroys the given body.
     /// @details Destroys a given body that had previously been created by a call to this
     ///   world's <code>CreateBody(const BodyConf&)</code> method.
@@ -441,10 +445,6 @@ public:
     /// @param massData the mass properties.
     /// @throws std::out_of_range If given an invalid body identifier.
     void SetMassData(BodyID id, const MassData& massData);
-
-    /// @brief Gets the body configuration for the identified body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    BodyConf GetBodyConf(BodyID id) const;
 
     /// @brief Gets the range of all constant fixtures attached to the given body.
     /// @throws std::out_of_range If given an invalid body identifier.
