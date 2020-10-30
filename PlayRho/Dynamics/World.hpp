@@ -498,6 +498,14 @@ public:
     /// @see Destroy(JointID), GetJoints.
     JointID CreateJoint(const Joint& def);
 
+    /// @brief Gets the value of the identified joint.
+    /// @throws std::out_of_range If given an invalid joint identifier.
+    const Joint& GetJoint(JointID id) const;
+
+    /// @brief Sets the identified joint to the given value.
+    /// @throws std::out_of_range If given an invalid joint identifier.
+    void SetJoint(JointID id, const Joint& def);
+
     /// @brief Destroys the identified joint.
     /// @details Destroys a given joint that had previously been created by a call to this
     ///   world's <code>CreateJoint(const Joint&)</code> method.
@@ -511,14 +519,6 @@ public:
     /// @see CreateJoint(const Joint&), GetJoints.
     /// @see PhysicalEntities.
     void Destroy(JointID id);
-
-    /// @brief Gets the value of the identified joint.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    const Joint& GetJoint(JointID id) const;
-
-    /// @brief Sets the identified joint to the given value.
-    /// @throws std::out_of_range If given an invalid joint identifier.
-    void SetJoint(JointID id, const Joint& def);
 
     /// @}
 
