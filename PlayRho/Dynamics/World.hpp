@@ -670,8 +670,8 @@ private:
 /// use of the <code>playrho::d2::World</code> class and more.
 /// After instantiating a world, the code creates a body and its fixture to act as the ground,
 /// creates another body and a fixture for it to act like a ball, then steps the world using
-/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates a ball
-/// falling to the ground and outputs the position of the ball after each step.
+/// the world <code>playrho::d2::World::Step(const StepConf&)</code> function which simulates
+/// a ball falling to the ground and outputs the position of the ball after each step.
 
 /// @example World.cpp
 /// This is the <code>googletest</code> based unit testing file for the
