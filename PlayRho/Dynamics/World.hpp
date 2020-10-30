@@ -32,15 +32,14 @@
 #include <PlayRho/Collision/MassData.hpp>
 #include <PlayRho/Collision/Shapes/Shape.hpp>
 
-#include <PlayRho/Dynamics/StepConf.hpp>
-#include <PlayRho/Dynamics/BodyID.hpp>
-#include <PlayRho/Dynamics/FixtureID.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp> // for GetDefaultBodyConf
-#include <PlayRho/Dynamics/StepStats.hpp>
-#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
+#include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureConf.hpp>
+#include <PlayRho/Dynamics/FixtureID.hpp>
+#include <PlayRho/Dynamics/StepConf.hpp>
+#include <PlayRho/Dynamics/StepStats.hpp>
 #include <PlayRho/Dynamics/WorldConf.hpp>
-#include <PlayRho/Dynamics/Joints/Joint.hpp>
+#include <PlayRho/Dynamics/Contacts/KeyedContactID.hpp> // for KeyedContactPtr
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/Joints/JointType.hpp>
 
@@ -59,6 +58,8 @@ struct Filter;
 namespace d2 {
 
 class WorldImpl;
+class Body;
+class Joint;
 class Manifold;
 class ContactImpulsesList;
 class DynamicTree;
