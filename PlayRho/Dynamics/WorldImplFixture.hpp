@@ -60,12 +60,6 @@ void SetFixture(WorldImpl& world, FixtureID id, const FixtureConf& value);
 /// @relatedalso WorldImpl
 bool Destroy(WorldImpl& world, FixtureID id);
 
-/// @relatedalso WorldImpl
-void Refilter(WorldImpl& world, FixtureID id);
-
-/// @brief Flags the contacts of the identifed fixture for filtering.
-void FlagContactsForFiltering(WorldImpl& world, FixtureID id);
-
 /// @brief Gets the dynamic tree leaves awaiting processing for the finding of new contacts.
 /// @relatedalso WorldImpl
 const std::vector<ContactCounter>& GetProxies(const WorldImpl& world, FixtureID id);

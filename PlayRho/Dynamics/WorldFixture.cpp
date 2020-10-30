@@ -77,12 +77,6 @@ void SetFilterData(World& world, FixtureID id, const Filter& value)
     auto fixture = world.GetFixture(id);
     SetFilterData(fixture, value);
     world.SetFixture(id, fixture);
-    world.Refilter(id);
-}
-
-void Refilter(World& world, FixtureID id)
-{
-    world.Refilter(id);
 }
 
 BodyID GetBody(const World& world, FixtureID id)

@@ -329,11 +329,6 @@ public:
     /// @throws std::out_of_range if given an invalid id.
     void SetBody(BodyID id, const Body& value);
 
-    /// @brief Flags the contacts of the identified body for updating.
-    /// @details Calling this function will flag every contact of the identified body
-    ///   for updating in the next step.
-    void FlagContactsForUpdating(BodyID id);
-
     /// @brief Gets the contacts associated with the identified body.
     /// @throws std::out_of_range if given an invalid id.
     SizedRange<WorldImpl::Contacts::const_iterator> GetContacts(BodyID id) const;
@@ -466,9 +461,11 @@ public:
     /// @return World contacts sized-range.
     SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
 
+    /// @brief Gets the identified contact.
     const Contact& GetContact(ContactID id) const;
     Contact& GetContact(ContactID id);
 
+    /// @brief Gets the identified manifold.
     const Manifold& GetManifold(ContactID id) const;
     Manifold& GetManifold(ContactID id);
 

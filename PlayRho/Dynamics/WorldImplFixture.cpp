@@ -48,23 +48,6 @@ bool Destroy(WorldImpl& world, FixtureID id)
     return world.Destroy(id);
 }
 
-void FlagContactsForFiltering(WorldImpl& world, FixtureID id)
-{
-    const auto& contacts = world.GetContacts(GetBody(world.GetFixture(id)));
-    std::for_each(cbegin(contacts), cend(contacts), [&world, id](const auto& ci) {
-        auto& contact = world.GetContact(std::get<ContactID>(ci));
-        if ((contact.GetFixtureA() == id) || (contact.GetFixtureB() == id)) {
-            contact.FlagForFiltering();
-        }
-    });
-}
-
-void Refilter(WorldImpl& world, FixtureID id)
-{
-    FlagContactsForFiltering(world, id);
-    world.AddProxies(world.GetProxies(id));
-}
-
 const std::vector<ContactCounter>& GetProxies(const WorldImpl& world, FixtureID id)
 {
     return world.GetProxies(id);

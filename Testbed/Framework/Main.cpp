@@ -1424,11 +1424,6 @@ static void EntityUI(World& world, FixtureID fixture)
     
     ImGui::Spacing();
     ImGui::Spacing();
-
-    if (ImGui::Button("Refilter"))
-    {
-        Refilter(world, fixture);
-    }
     
     {
         const auto& shape = GetShape(world, fixture);

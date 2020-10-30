@@ -203,11 +203,6 @@ bool World::Destroy(FixtureID id)
     return ::playrho::d2::Destroy(*m_impl, id);
 }
 
-void World::Refilter(FixtureID id)
-{
-    ::playrho::d2::Refilter(*m_impl, id);
-}
-
 SizedRange<World::Joints::const_iterator> World::GetJoints() const noexcept
 {
     return ::playrho::d2::GetJoints(*m_impl);

@@ -2465,24 +2465,24 @@ TEST(World, CollidingDynamicBodies)
     const auto time_inc = Real(.01);
     
     auto elapsed_time = Real(0);
-    for (;;)
-    {
+    for (;;) {
         Step(world, 1_s * time_inc);
         elapsed_time += time_inc;
-        if (listener.contacting)
-        {
+        if (listener.contacting) {
             break;
         }
     }
     
-    // Call Refilter and SetSensor to add some unit test coverage of these Fixture methods.
+    // Call SetSensor to add some unit test coverage of these Fixture methods.
     EXPECT_FALSE(GetContacts(world, body_a).empty());
     for (const auto& ci: GetContacts(world, body_a))
     {
         EXPECT_FALSE(NeedsFiltering(world, ci.second));
         EXPECT_TRUE(NeedsUpdating(world, ci.second));
     }
-    world.Refilter(fixture1);
+    auto filter = GetFilterData(world, fixture1);
+    filter.categoryBits = ~filter.categoryBits;
+    EXPECT_NO_THROW(SetFilterData(world, fixture1, filter));
     EXPECT_FALSE(IsSensor(world, fixture1));
     SetSensor(world, fixture1, true);
     EXPECT_TRUE(IsSensor(world, fixture1));

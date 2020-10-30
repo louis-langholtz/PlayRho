@@ -467,12 +467,6 @@ public:
     ///
     bool Destroy(FixtureID id);
 
-    /// @brief Re-filter contacts and proxies for the identified fixture.
-    /// @note Call this if you want to establish collision that was previously disabled.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    /// @see SetFilterData, GetFilterData.
-    void Refilter(FixtureID id);
-
     /// @}
 
     /// @name Joint Member Functions

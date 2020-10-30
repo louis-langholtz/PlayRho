@@ -380,9 +380,9 @@ inline bool IsValidForTime(TOIOutput::State state) noexcept
     return state == TOIOutput::e_touching;
 }
 
-void FlagContactsForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bodyA,
-                              const std::vector<KeyedContactPtr>& contactsBodyB,
-                              BodyID bodyB) noexcept
+void FlagForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bodyA,
+                      const std::vector<KeyedContactPtr>& contactsBodyB,
+                      BodyID bodyB) noexcept
 {
     for (const auto& ci: contactsBodyB) {
         auto& contact = contactBuffer[UnderlyingValue(std::get<ContactID>(ci))];
@@ -395,6 +395,18 @@ void FlagContactsForFiltering(ArrayAllocator<Contact>& contactBuffer, BodyID bod
             contact.FlagForFiltering();
         }
     }
+}
+
+void FlagForFiltering(ArrayAllocator<Contact>& contactBuffer,
+                      const std::vector<KeyedContactPtr>& contacts,
+                      FixtureID id) noexcept
+{
+    std::for_each(cbegin(contacts), cend(contacts), [&contactBuffer, id](const auto& ci) {
+        auto& contact = contactBuffer[std::get<ContactID>(ci).get()];
+        if ((contact.GetFixtureA() == id) || (contact.GetFixtureB() == id)) {
+            contact.FlagForFiltering();
+        }
+    });
 }
 
 /// @brief Gets the update configuration from the given step configuration data.
@@ -411,7 +423,7 @@ bool HasSensor(const ArrayAllocator<FixtureConf>& fixtures, const Contact& c)
 }
 
 template <typename T>
-void FlagForUpdating(ArrayAllocator<Contact>& contactsBuffer, const T& contacts)
+void FlagForUpdating(ArrayAllocator<Contact>& contactsBuffer, const T& contacts) noexcept
 {
     std::for_each(begin(contacts), end(contacts), [&](const auto& ci) {
         contactsBuffer[UnderlyingValue(std::get<ContactID>(ci))].FlagForUpdating();
@@ -730,7 +742,7 @@ void WorldImpl::Add(JointID id, bool flagForFiltering)
         m_bodyJoints[bodyB.get()].push_back(std::make_pair(bodyA, id));
     }
     if (flagForFiltering && (bodyA != InvalidBodyID) && (bodyB != InvalidBodyID)) {
-        FlagContactsForFiltering(m_contactBuffer, bodyA, m_bodyContacts[bodyB.get()], bodyB);
+        FlagForFiltering(m_contactBuffer, bodyA, m_bodyContacts[bodyB.get()], bodyB);
     }
 }
 
@@ -744,7 +756,7 @@ void WorldImpl::Remove(JointID id) noexcept
 
     // If the joint prevented collisions, then flag any contacts for filtering.
     if ((!collideConnected) && (bodyIdA != InvalidBodyID) && (bodyIdB != InvalidBodyID)) {
-        FlagContactsForFiltering(m_contactBuffer, bodyIdA, m_bodyContacts[bodyIdB.get()], bodyIdB);
+        FlagForFiltering(m_contactBuffer, bodyIdA, m_bodyContacts[bodyIdB.get()], bodyIdB);
     }
 
     // Wake up connected bodies.
@@ -2243,24 +2255,25 @@ FixtureID WorldImpl::CreateFixture(const FixtureConf& def)
 void WorldImpl::SetFixture(FixtureID id, const FixtureConf& value)
 {
     auto& variable = m_fixtureBuffer.at(UnderlyingValue(id));
-    if (GetShape(variable) != GetShape(value)) {
-        // TODO
-        throw std::invalid_argument("changing shapes not supported");
-    }
-    if (::playrho::d2::GetBody(variable) != ::playrho::d2::GetBody(value)) {
+    if ((::playrho::d2::GetBody(variable) != ::playrho::d2::GetBody(value)) ||
+        (GetShape(variable) != GetShape(value))) {
         if (::playrho::d2::GetBody(value).get() >= m_bodyBuffer.size()) {
-            throw std::invalid_argument("new body for fixture does not exist!");
+            throw std::invalid_argument("body for fixture does not exist!");
         }
-        // TODO
-        throw std::invalid_argument("changing bodies not supported");
+        Destroy(id);
+        [[maybe_unused]] const auto newId = CreateFixture(value);
+        assert(id == newId);
+        return;
+    }
+    const auto bodyID = ::playrho::d2::GetBody(value);
+    assert(bodyID == ::playrho::d2::GetBody(variable));
+    m_bodyBuffer[bodyID.get()].SetAwake();
+    if (GetFilterData(variable) != GetFilterData(value)) {
+        FlagForFiltering(m_contactBuffer, m_bodyContacts[bodyID.get()], id);
+        AddProxies(m_fixtureProxies[id.get()]); // not end of world if this throws
     }
     if (IsSensor(variable) != IsSensor(value)) {
-        const auto oldBodyID = ::playrho::d2::GetBody(variable);
-        m_bodyBuffer[oldBodyID.get()].SetAwake();
-        FlagContactsForUpdating(oldBodyID);
-        const auto newBodyID = ::playrho::d2::GetBody(value);
-        m_bodyBuffer[newBodyID.get()].SetAwake();
-        FlagContactsForUpdating(newBodyID);
+        FlagForUpdating(m_contactBuffer, m_bodyContacts[bodyID.get()]);
     }
     variable = value;
 }
@@ -2270,14 +2283,9 @@ const FixtureConf& WorldImpl::GetFixture(FixtureID id) const
     return m_fixtureBuffer.at(UnderlyingValue(id));
 }
 
-void WorldImpl::FlagContactsForUpdating(BodyID id)
-{
-    FlagForUpdating(m_contactBuffer, GetContacts(id));
-}
-
 SizedRange<WorldImpl::Contacts::const_iterator> WorldImpl::GetContacts(BodyID id) const
 {
-    const auto& container =  m_bodyContacts.at(id.get());;
+    const auto& container =  m_bodyContacts.at(id.get());
     return SizedRange<WorldImpl::Contacts::const_iterator>{
         begin(container), end(container), size(container)
     };
