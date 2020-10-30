@@ -431,6 +431,14 @@ public:
     /// @see Destroy(JointID), GetJoints.
     JointID CreateJoint(const Joint& def);
 
+    /// @brief Gets the identified joint.
+    /// @throws std::invalid_argument If given an invalid identifier.
+    const Joint& GetJoint(JointID id) const;
+
+    /// @brief Sets the identified joint.
+    /// @throws std::invalid_argument If given an invalid identifier.
+    void SetJoint(JointID id, const Joint& def);
+
     /// @brief Destroys a joint.
     /// @details Destroys a given joint that had previously been created by a call to this
     ///   world's <code>CreateJoint(const JointConf&)</code> method.
@@ -441,14 +449,10 @@ public:
     ///   <code>GetJoints()</code> method.
     /// @param joint Joint to destroy that had been created by this world.
     /// @throws WrongState if this method is called while the world is locked.
+    /// @throws std::invalid_argument If given an invalid identifier.
     /// @see CreateJoint(const JointConf&), GetJoints.
     /// @see PhysicalEntities.
     void Destroy(JointID joint);
-
-    const Joint& GetJoint(JointID id) const;
-    Joint& GetJoint(JointID id);
-
-    void SetJoint(JointID id, const Joint& def);
 
     /// @}
 

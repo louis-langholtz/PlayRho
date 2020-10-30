@@ -2621,11 +2621,6 @@ const Joint& WorldImpl::GetJoint(JointID id) const
     return m_jointBuffer.at(UnderlyingValue(id));
 }
 
-Joint& WorldImpl::GetJoint(JointID id)
-{
-    return m_jointBuffer.at(UnderlyingValue(id));
-}
-
 const Contact& WorldImpl::GetContact(ContactID id) const
 {
     return m_contactBuffer.at(UnderlyingValue(id));
