@@ -327,9 +327,6 @@ public:
     const Body& GetBody(BodyID id) const;
 
     /// @throws std::out_of_range if given an invalid id.
-    Body& GetBody(BodyID id);
-
-    /// @throws std::out_of_range if given an invalid id.
     void SetBody(BodyID id, const Body& value);
 
     /// @brief Flags the contacts of the identified body for updating.
@@ -393,6 +390,7 @@ public:
 
     /// @brief Sets the identified fixture's state.
     /// @throws std::out_of_range If given an invalid fixture identifier.
+    /// @throws std::invalid_argument If given an invalid fixture state.
     void SetFixture(FixtureID id, const FixtureConf& value);
 
     /// @brief Gets the fixtures-for-proxies range for this world.

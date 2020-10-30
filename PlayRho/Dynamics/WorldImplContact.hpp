@@ -42,11 +42,6 @@ class Manifold;
 /// @relatedalso WorldImpl
 bool IsAwake(const WorldImpl& world, ContactID id);
 
-/// @brief Sets awake the bodies of the fixtures of the given contact.
-/// @see IsAwake(const WorldImpl& world, ContactID id)
-/// @relatedalso WorldImpl
-void SetAwake(WorldImpl& world, ContactID id);
-
 /// @brief Is this contact touching?
 /// @details
 /// Touching is defined as either:

@@ -2221,7 +2221,8 @@ FixtureID WorldImpl::CreateFixture(const FixtureConf& def)
     if (size(m_fixtureBuffer) >= MaxFixtures) {
         throw LengthError("CreateFixture: operation would exceed MaxFixtures");
     }
-    auto& body = GetBody(def.body); // must be called before any mutating actions to validate bodyID!
+    // The following must be called before any mutating actions to validate def.body!
+    auto& body = m_bodyBuffer.at(def.body.get());
     const auto fixtureID = static_cast<FixtureID>(
         static_cast<FixtureID::underlying_type>(m_fixtureBuffer.Allocate(def)));
     m_fixtureProxies.Allocate();
@@ -2242,21 +2243,24 @@ FixtureID WorldImpl::CreateFixture(const FixtureConf& def)
 void WorldImpl::SetFixture(FixtureID id, const FixtureConf& value)
 {
     auto& variable = m_fixtureBuffer.at(UnderlyingValue(id));
-    if (IsSensor(variable) != IsSensor(value)) {
-        const auto oldBodyID = ::playrho::d2::GetBody(variable);
-        GetBody(oldBodyID).SetAwake();
-        FlagContactsForUpdating(oldBodyID);
-        const auto newBodyID = ::playrho::d2::GetBody(value);
-        GetBody(newBodyID).SetAwake();
-        FlagContactsForUpdating(newBodyID);
-    }
     if (GetShape(variable) != GetShape(value)) {
         // TODO
         throw std::invalid_argument("changing shapes not supported");
     }
     if (::playrho::d2::GetBody(variable) != ::playrho::d2::GetBody(value)) {
+        if (::playrho::d2::GetBody(value).get() >= m_bodyBuffer.size()) {
+            throw std::invalid_argument("new body for fixture does not exist!");
+        }
         // TODO
         throw std::invalid_argument("changing bodies not supported");
+    }
+    if (IsSensor(variable) != IsSensor(value)) {
+        const auto oldBodyID = ::playrho::d2::GetBody(variable);
+        m_bodyBuffer[oldBodyID.get()].SetAwake();
+        FlagContactsForUpdating(oldBodyID);
+        const auto newBodyID = ::playrho::d2::GetBody(value);
+        m_bodyBuffer[newBodyID.get()].SetAwake();
+        FlagContactsForUpdating(newBodyID);
     }
     variable = value;
 }
@@ -2554,8 +2558,8 @@ void WorldImpl::SetBody(BodyID id, const Body& value)
         throw WrongState("SetBody: world is locked");
     }
     // handle state changes that other data needs to stay in sync with
-    auto body = GetBody(id);
-    if (body.GetType() != value.GetType()) {
+    const auto& body = GetBody(id);
+    if (GetType(body) != GetType(value)) {
         // Destroy the attached contacts.
         Erase(m_bodyContacts[id.get()], [this,&body](ContactID contactID) {
             Destroy(contactID, &body);
@@ -2576,7 +2580,7 @@ void WorldImpl::SetBody(BodyID id, const Body& value)
             });
         }
     }
-    if (body.IsEnabled() != value.IsEnabled()) {
+    if (IsEnabled(body) != IsEnabled(value)) {
         // Register for proxies so contacts created or destroyed the next time step.
         ForallFixtures(m_bodyFixtures[id.get()], [this](const auto& fixtureID) {
             m_fixturesForProxies.push_back(fixtureID);
@@ -2586,15 +2590,28 @@ void WorldImpl::SetBody(BodyID id, const Body& value)
         FlagForUpdating(m_contactBuffer, m_bodyContacts[id.get()]);
         m_bodiesForProxies.push_back(id);
     }
+    if (IsAwake(body) != IsAwake(value)) {
+        // Update associated contacts
+        if (IsAwake(value)) {
+            for (const auto& elem: m_bodyContacts[id.get()]) {
+                m_contactBuffer[std::get<ContactID>(elem).get()].SetIsActive();
+            }
+        }
+        else { // sleep associated contacts whose other body is also asleep
+            for (const auto& elem: m_bodyContacts[id.get()]) {
+                auto& contact = m_contactBuffer[std::get<ContactID>(elem).get()];
+                const auto otherID = (contact.GetBodyA() != id)
+                    ? contact.GetBodyA(): contact.GetBodyB();
+                if (!m_bodyBuffer[otherID.get()].IsAwake()) {
+                    contact.UnsetIsActive();
+                }
+            }
+        }
+    }
     m_bodyBuffer[id.get()] = value;
 }
 
 const Body& WorldImpl::GetBody(BodyID id) const
-{
-    return m_bodyBuffer.at(UnderlyingValue(id));
-}
-
-Body& WorldImpl::GetBody(BodyID id)
 {
     return m_bodyBuffer.at(UnderlyingValue(id));
 }

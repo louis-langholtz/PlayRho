@@ -34,13 +34,6 @@ bool IsAwake(const WorldImpl& world, ContactID id)
     return world.GetContact(id).IsActive();
 }
 
-void SetAwake(WorldImpl& world, ContactID id)
-{
-    const auto& contact = world.GetContact(id);
-    world.GetBody(contact.GetBodyA()).SetAwake();
-    world.GetBody(contact.GetBodyB()).SetAwake();
-}
-
 Real GetFriction(const WorldImpl& world, ContactID id)
 {
     return world.GetContact(id).GetFriction();

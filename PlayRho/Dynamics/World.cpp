@@ -243,11 +243,6 @@ bool World::IsAwake(ContactID id) const
     return ::playrho::d2::IsAwake(*m_impl, id);
 }
 
-void World::SetAwake(ContactID id)
-{
-    ::playrho::d2::SetAwake(*m_impl, id);
-}
-
 LinearVelocity World::GetTangentSpeed(ContactID id) const
 {
     return ::playrho::d2::GetTangentSpeed(*m_impl, id);

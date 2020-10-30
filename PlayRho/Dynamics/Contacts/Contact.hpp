@@ -239,6 +239,7 @@ public:
     void SetIsActive() noexcept;
 
     /// @brief Unsets the active state of this contact.
+    /// @attention Call this if neither body A nor body B are "awake".
     void UnsetIsActive() noexcept;
 
     /// Flags type data type.

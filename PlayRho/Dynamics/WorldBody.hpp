@@ -368,11 +368,13 @@ void SetVelocity(World& world, BodyID id, const Velocity& value);
 bool IsAwake(const World& world, BodyID id);
 
 /// @brief Wakes up the identified body.
+/// @note This wakes up any associated contacts that had been asleep.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso World
 void SetAwake(World& world, BodyID id);
 
 /// @brief Sleeps the identified body.
+/// @note This sleeps any associated contacts whose other body is also asleep.
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @see IsAwake(BodyID id), SetAwake(BodyID id).
 /// @relatedalso World

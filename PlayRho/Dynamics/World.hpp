@@ -537,11 +537,6 @@ public:
     /// @see SetAwake(ContactID id)
     bool IsAwake(ContactID id) const;
 
-    /// @brief Sets the awake status of the specified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    /// @see IsAwake(ContactID id)
-    void SetAwake(ContactID id);
-
     /// @brief Gets the desired tangent speed.
     /// @throws std::out_of_range If given an invalid contact identifier.
     /// @see SetTangentSpeed(ContactID id, LinearVelocity value).

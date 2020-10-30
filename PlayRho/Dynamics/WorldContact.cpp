@@ -22,6 +22,7 @@
 #include <PlayRho/Dynamics/WorldContact.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
 #include <PlayRho/Dynamics/Body.hpp>
 
 #include <PlayRho/Collision/Manifold.hpp>
@@ -47,7 +48,9 @@ bool IsAwake(const World& world, ContactID id)
 
 void SetAwake(World& world, ContactID id)
 {
-    world.SetAwake(id);
+    // Note awakening bodies wakens the contact.
+    SetAwake(world, GetBodyA(world, id));
+    SetAwake(world, GetBodyB(world, id));
 }
 
 ChildCounter GetChildIndexA(const World& world, ContactID id)
