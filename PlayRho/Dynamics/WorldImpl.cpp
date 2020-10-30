@@ -647,7 +647,7 @@ void WorldImpl::Destroy(BodyID id)
         throw WrongState("Destroy: world is locked");
     }
 
-    auto& body = GetBody(id);
+    const auto& body = GetBody(id);
 
     // Delete the attached joints.
     auto& joints = m_bodyJoints[id.get()];
@@ -1775,7 +1775,7 @@ void WorldImpl::ShiftOrigin(Length2 newOrigin)
     m_tree.ShiftOrigin(newOrigin);
 }
 
-void WorldImpl::InternalDestroy(ContactID contactID, Body* from)
+void WorldImpl::InternalDestroy(ContactID contactID, const Body* from)
 {
     assert(contactID != InvalidContactID);
     auto& contact = m_contactBuffer[UnderlyingValue(contactID)];
@@ -1813,7 +1813,7 @@ void WorldImpl::InternalDestroy(ContactID contactID, Body* from)
     m_manifoldBuffer.Free(UnderlyingValue(contactID));
 }
 
-void WorldImpl::Destroy(ContactID contactID, Body* from)
+void WorldImpl::Destroy(ContactID contactID, const Body* from)
 {
     assert(contactID != InvalidContactID);
     const auto it = FindTypeValue(m_contacts, contactID);

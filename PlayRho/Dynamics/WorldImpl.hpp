@@ -737,7 +737,7 @@ private:
     ///   and decrements the contact manager's contact count.
     /// @param contact Contact to destroy.
     /// @param from From body.
-    void Destroy(ContactID contact, Body* from);
+    void Destroy(ContactID contact, const Body* from);
 
     /// @brief Adds a contact for the proxies identified by the key if appropriate.
     /// @details Adds a new contact object to represent a contact between proxy A and proxy B
@@ -756,7 +756,7 @@ private:
     bool Add(ContactKey key);
 
     /// @brief Destroys the given contact.
-    void InternalDestroy(ContactID contact, Body* from = nullptr);
+    void InternalDestroy(ContactID contact, const Body* from = nullptr);
 
     /// @brief Synchronizes the given body.
     /// @details This updates the broad phase dynamic tree data for all of the given fixtures.
