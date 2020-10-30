@@ -1205,7 +1205,7 @@ Velocity GetVelocity(const Body& body, Time h) noexcept;
 /// @relatedalso Body
 inline Length2 GetLocation(const Body& body) noexcept
 {
-    return body.GetTransformation().p;
+    return GetLocation(body.GetTransformation());
 }
 
 /// @brief Gets the body's sweep.
