@@ -2443,10 +2443,10 @@ void WorldImpl::SetEnabled(BodyID id, bool flag)
     }
 
     if (flag) {
-        body.SetEnabledFlag();
+        body.SetEnabled();
     }
     else {
-        body.UnsetEnabledFlag();
+        body.UnsetEnabled();
     }
 
     // Register for proxies so contacts created or destroyed the next time step.
