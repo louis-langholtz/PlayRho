@@ -22,6 +22,8 @@
 #include <PlayRho/Dynamics/WorldFixture.hpp>
 
 #include <PlayRho/Dynamics/World.hpp>
+#include <PlayRho/Dynamics/WorldBody.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 
 namespace playrho {
 namespace d2 {
@@ -40,7 +42,11 @@ FixtureCounter GetFixtureCount(const World& world) noexcept
 
 FixtureID CreateFixture(World& world, FixtureConf def, bool resetMassData)
 {
-    return world.CreateFixture(def, resetMassData);
+    const auto result = world.CreateFixture(def);
+    if (resetMassData) {
+        SetMassData(world, def.body, ComputeMassData(world, def.body));
+    }
+    return result;
 }
 
 FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
@@ -53,7 +59,12 @@ FixtureID CreateFixture(World& world, BodyID id, const Shape& shape,
 
 bool Destroy(World& world, FixtureID id, bool resetMassData)
 {
-    return world.Destroy(id, resetMassData);
+    const auto bodyID = GetBody(world, id);
+    const auto result = world.Destroy(id);
+    if (result && resetMassData) {
+        SetMassData(world, bodyID, ComputeMassData(world, bodyID));
+    }
+    return result;
 }
 
 Filter GetFilterData(const World& world, FixtureID id)
@@ -81,7 +92,7 @@ BodyID GetBody(const World& world, FixtureID id)
 
 Transformation GetTransformation(const World& world, FixtureID id)
 {
-    return world.GetTransformation(GetBody(world, id));
+    return GetTransformation(world.GetBody(GetBody(world, id)));
 }
 
 const Shape& GetShape(const World& world, FixtureID id)

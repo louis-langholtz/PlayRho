@@ -323,65 +323,14 @@ public:
     /// @see PhysicalEntities.
     void Destroy(BodyID id);
 
-    /// @brief Sets the type of the given body.
-    /// @note This may alter the body's mass and velocity.
-    /// @throws WrongState if this method is called while the world is locked.
-    void SetType(BodyID id, playrho::BodyType type);
-
-    /// @brief Destroys fixtures of the given body.
-    /// @details Destroys all of the fixtures previously created for this body by the
-    ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code> method.
-    /// @note This unconditionally calls the <code>ResetMassData()</code> method.
-    /// @post After this call, no fixtures will show up in the fixture enumeration
-    ///   returned by the <code>GetFixtures()</code> methods.
-    /// @see CreateFixture, GetFixtures, ResetMassData.
-    /// @see PhysicalEntities
-    void DestroyFixtures(BodyID id);
-
-    /// @brief Sets the enabled state of the body.
-    ///
-    /// @details A disabled body is not simulated and cannot be collided with or woken up.
-    ///   If you pass a flag of true, all fixtures will be added to the broad-phase.
-    ///   If you pass a flag of false, all fixtures will be removed from the broad-phase
-    ///   and all contacts will be destroyed. Fixtures and joints are otherwise unaffected.
-    ///
-    /// @note A disabled body is still owned by a World object and remains in the world's
-    ///   body container.
-    /// @note You may continue to create/destroy fixtures and joints on disabled bodies.
-    /// @note Fixtures on a disabled body are implicitly disabled and will not participate in
-    ///   collisions, ray-casts, or queries.
-    /// @note Joints connected to a disabled body are implicitly disabled.
-    ///
-    /// @throws WrongState If call would change body's state when world is locked.
-    ///
-    /// @post <code>IsEnabled()</code> returns the state given to this function.
-    ///
-    void SetEnabled(BodyID id, bool flag);
-
-    /// @brief Computes the mass data of the identified body.
-    MassData ComputeMassData(BodyID id) const;
-
-    /// @brief Set the mass properties to override the mass properties of the fixtures.
-    /// @note This changes the center of mass position.
-    /// @note Creating or destroying fixtures can also alter the mass.
-    /// @note This function has no effect if the body isn't dynamic.
-    /// @param id Body to set mass data for.
-    /// @param massData the mass properties.
-    void SetMassData(BodyID id, const MassData& massData);
-
-    /// @brief Sets the transformation of the body.
-    /// @details This instantly adjusts the body to have the new transformation.
-    /// @warning Manipulating a body's transform can cause non-physical behavior!
-    /// @warning Behavior is undefined if the value is invalid.
-    /// @note Associated contacts may be flagged for updating on the next call to WorldImpl::Step.
-    /// @throws WrongState If call would change body's state when world is locked.
-    void SetTransformation(BodyID id, Transformation xfm);
-
     /// @throws std::out_of_range if given an invalid id.
     const Body& GetBody(BodyID id) const;
 
     /// @throws std::out_of_range if given an invalid id.
     Body& GetBody(BodyID id);
+
+    /// @throws std::out_of_range if given an invalid id.
+    void SetBody(BodyID id, const Body& value);
 
     /// @brief Flags the contacts of the identified body for updating.
     /// @details Calling this function will flag every contact of the identified body
@@ -409,45 +358,34 @@ public:
     ///   given body. Fixtures automatically go away when the body is destroyed. Fixtures can
     ///   also be manually removed and destroyed using the
     ///   <code>Destroy(FixtureID, bool)</code>, or <code>DestroyFixtures()</code> methods.
-    ///
     /// @note This function should not be called if the world is locked.
+    /// @note This function does not reset the body's mass data.
     /// @warning This function is locked during callbacks.
-    ///
     /// @post After creating a new fixture, it will show up in the fixture enumeration
     ///   returned by the <code>GetFixtures()</code> methods.
-    ///
     /// @param def Initial fixture settings.
     ///   Friction and density must be >= 0.
     ///   Restitution must be > -infinity and < infinity.
-    /// @param resetMassData Whether or not to reset the mass data of the body.
-    ///
     /// @return Identifier for the created fixture.
-    ///
     /// @throws WrongState if called while the world is "locked".
     /// @throws InvalidArgument if called for a shape with a vertex radius less than the
     ///    minimum vertex radius.
     /// @throws InvalidArgument if called for a shape with a vertex radius greater than the
     ///    maximum vertex radius.
-    ///
     /// @see Destroy, GetFixtures
     /// @see PhysicalEntities
-    ///
-    FixtureID CreateFixture(const FixtureConf& def = FixtureConf{},
-                            bool resetMassData = true);
+    FixtureID CreateFixture(const FixtureConf& def = FixtureConf{});
 
     /// @brief Destroys a fixture.
     /// @details This removes the fixture from the broad-phase and destroys all contacts
     ///   associated with this fixture.
     ///   All fixtures attached to a body are implicitly destroyed when the body is destroyed.
     /// @warning This function is locked during callbacks.
-    /// @note Make sure to explicitly call <code>Body::ResetMassData</code> after fixtures have
-    ///   been destroyed.
+    /// @note This function does not reset the body's mass data.
     /// @param fixture the fixture to be removed.
-    /// @param resetMassData Whether or not to reset the mass data of the associated body.
-    /// @see Body::ResetMassData.
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws std::out_of_range If given an invalid fixture identifier.
-    bool Destroy(FixtureID fixture, bool resetMassData = true);
+    bool Destroy(FixtureID fixture);
 
     /// @brief Gets the identified fixture state.
     /// @throws std::out_of_range If given an invalid fixture identifier.

@@ -146,6 +146,7 @@ Length GetMaxVertexRadius(const World& world) noexcept;
 /// @note The body shift formula is: <code>position -= newOrigin</code>.
 /// @post The "origin" of this world's bodies, joints, and the board-phase dynamic tree
 ///   have been translated per the shift amount and direction.
+/// @param world The world whose origin should be shifted.
 /// @param newOrigin the new origin with respect to the old origin
 /// @throws WrongState if this method is called while the world is locked.
 void ShiftOrigin(World& world, Length2 newOrigin);

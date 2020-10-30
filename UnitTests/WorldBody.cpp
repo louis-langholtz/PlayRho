@@ -221,7 +221,7 @@ TEST(WorldBody, CreateAndDestroyFixture)
         ResetMassData(world, body);
         EXPECT_FALSE(IsMassDataDirty(world, body));
 
-        EXPECT_TRUE(world.Destroy(fixture, false));
+        EXPECT_TRUE(world.Destroy(fixture));
         EXPECT_TRUE(GetFixtures(world, body).empty());
         EXPECT_TRUE(IsMassDataDirty(world, body));
 
@@ -251,7 +251,7 @@ TEST(WorldBody, CreateAndDestroyFixture)
         EXPECT_FALSE(IsMassDataDirty(world, body));
         EXPECT_FALSE(GetFixtures(world, body).empty());
         
-        world.DestroyFixtures(body);
+        DestroyFixtures(world, body);
         EXPECT_TRUE(GetFixtures(world, body).empty());
         EXPECT_FALSE(IsMassDataDirty(world, body));
     }

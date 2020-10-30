@@ -356,9 +356,13 @@ public:
     /// @see PhysicalEntities.
     BodyID CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
-    /// @brief Gets the body configuration for the identified body.
+    /// @brief Gets the state of the identified body.
     /// @throws std::out_of_range If given an invalid body identifier.
-    BodyConf GetBodyConf(BodyID id) const;
+    const Body& GetBody(BodyID id) const;
+
+    /// @brief Sets the state of the identified body.
+    /// @throws std::out_of_range If given an invalid body identifier.
+    void SetBody(BodyID id, const Body& value);
 
     /// @brief Destroys the given body.
     /// @details Destroys a given body that had previously been created by a call to this
@@ -379,225 +383,13 @@ public:
     /// @see PhysicalEntities.
     void Destroy(BodyID id);
 
-    /// @brief Gets the type of this body.
-    BodyType GetType(BodyID id) const;
-
-    /// @brief Sets the type of the given body.
-    /// @note This may alter the body's mass and velocity.
-    /// @throws WrongState if this method is called while the world is locked.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    void SetType(BodyID id, BodyType type);
-
-    /// @brief Destroys fixtures of the given body.
-    /// @details Destroys all of the fixtures previously created for this body by the
-    ///   <code>CreateFixture(const Shape&, const FixtureConf&, bool)</code> method.
-    /// @note This unconditionally calls the <code>ResetMassData()</code> method.
-    /// @post After this call, no fixtures will show up in the fixture enumeration
-    ///   returned by the <code>GetFixtures()</code> methods.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see CreateFixture, GetFixtures, ResetMassData.
-    /// @see PhysicalEntities
-    void DestroyFixtures(BodyID id);
-
-    /// @brief Gets the enabled/disabled state of the body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see SetEnabled(BodyID).
-    bool IsEnabled(BodyID id) const;
-
-    /// @brief Sets the enabled state of the body.
-    ///
-    /// @details A disabled body is not simulated and cannot be collided with or woken up.
-    ///   If you pass a flag of true, all fixtures will be added to the broad-phase.
-    ///   If you pass a flag of false, all fixtures will be removed from the broad-phase
-    ///   and all contacts will be destroyed. Fixtures and joints are otherwise unaffected.
-    ///
-    /// @note A disabled body is still owned by a World object and remains in the world's
-    ///   body container.
-    /// @note You may continue to create/destroy fixtures and joints on disabled bodies.
-    /// @note Fixtures on a disabled body are implicitly disabled and will not participate in
-    ///   collisions, ray-casts, or queries.
-    /// @note Joints connected to a disabled body are implicitly disabled.
-    ///
-    /// @throws WrongState If call would change body's state when world is locked.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    ///
-    /// @post <code>IsEnabled()</code> returns the state given to this function.
-    ///
-    /// @see IsEnabled(BodyID).
-    ///
-    void SetEnabled(BodyID id, bool flag);
-
-    /// @brief Gets the range of all joints attached to this body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    SizedRange<World::BodyJoints::const_iterator> GetJoints(BodyID id) const;
-
-    /// @brief Computes the body's mass data.
-    /// @details This basically accumulates the mass data over all fixtures.
-    /// @return accumulated mass data for all fixtures associated with the given body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    MassData ComputeMassData(BodyID id) const;
-
-    /// @brief Set the mass properties to override the mass properties of the fixtures.
-    /// @note This changes the center of mass position.
-    /// @note Creating or destroying fixtures can also alter the mass.
-    /// @note This function has no effect if the body isn't dynamic.
-    /// @param id Identifier of the body to change.
-    /// @param massData the mass properties.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    void SetMassData(BodyID id, const MassData& massData);
-
     /// @brief Gets the range of all constant fixtures attached to the given body.
     /// @throws std::out_of_range If given an invalid body identifier.
     SizedRange<Fixtures::const_iterator> GetFixtures(BodyID id) const;
 
-    /// @brief Get the angle.
-    /// @return the current world rotation angle.
+    /// @brief Gets the range of all joints attached to this body.
     /// @throws std::out_of_range If given an invalid body identifier.
-    Angle GetAngle(BodyID id) const;
-
-    /// @brief Gets the body's transformation.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see SetTransformation(BodyID id, Transformation xfm).
-    Transformation GetTransformation(BodyID id) const;
-
-    /// @brief Sets the transformation of the body.
-    /// @details This instantly adjusts the body to be at the new transformation.
-    /// @warning Manipulating a body's transformation can cause non-physical behavior!
-    /// @note Contacts are updated on the next call to World::Step.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see GetTransformation(BodyID id).
-    void SetTransformation(BodyID id, Transformation xfm);
-
-    /// @brief Gets the local position of the center of mass of the specified body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    Length2 GetLocalCenter(BodyID id) const;
-
-    /// @brief Gets the world position of the center of mass of the specified body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    Length2 GetWorldCenter(BodyID id) const;
-
-    /// @brief Gets the velocity of the identified body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see SetVelocity(BodyID id, const Velocity& value).
-    Velocity GetVelocity(BodyID id) const;
-
-    /// @brief Sets the body's velocity (linear and angular velocity).
-    /// @note This method does nothing if this body is not speedable.
-    /// @note A non-zero velocity will awaken this body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see GetVelocity(BodyID), SetAwake, SetUnderActiveTime.
-    void SetVelocity(BodyID id, const Velocity& value);
-
-    /// @brief Gets the awake/asleep state of this body.
-    /// @warning Being awake may or may not imply being speedable.
-    /// @return true if the body is awake.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    bool IsAwake(BodyID id) const;
-
-    /// @brief Wakes up the identified body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    void SetAwake(BodyID id);
-
-    /// @brief Sleeps the identified body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see IsAwake(BodyID id), SetAwake(BodyID id).
-    void UnsetAwake(BodyID id);
-
-    /// @brief Gets this body's linear acceleration.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    LinearAcceleration2 GetLinearAcceleration(BodyID id) const;
-
-    /// @brief Gets this body's angular acceleration.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    AngularAcceleration GetAngularAcceleration(BodyID id) const;
-
-    /// @brief Sets the linear and rotational accelerations on the body.
-    /// @note This has no effect on non-accelerable bodies.
-    /// @note A non-zero acceleration will also awaken the body.
-    /// @param id Body whose acceleration should be set.
-    /// @param linear Linear acceleration.
-    /// @param angular Angular acceleration.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    void SetAcceleration(BodyID id, LinearAcceleration2 linear, AngularAcceleration angular);
-
-    /// @brief Gets the linear damping of the body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    Frequency GetLinearDamping(BodyID id) const;
-
-    /// @brief Sets the linear damping of the body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    void SetLinearDamping(BodyID id, NonNegative<Frequency> value);
-
-    /// @brief Gets the angular damping of the body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    Frequency GetAngularDamping(BodyID id) const;
-
-    /// @brief Sets the angular damping of the body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    void SetAngularDamping(BodyID id, NonNegative<Frequency> angularDamping);
-
-    /// @brief Gets whether the body's mass-data is dirty.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    bool IsMassDataDirty(BodyID id) const;
-
-    /// @brief Gets whether the body has fixed rotation.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see SetFixedRotation(BodyID id, bool value).
-    bool IsFixedRotation(BodyID id) const;
-
-    /// @brief Sets the body to have fixed rotation.
-    /// @note This causes the mass to be reset.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see IsFixedRotation(BodyID id).
-    void SetFixedRotation(BodyID id, bool value);
-
-    /// @brief Gets the inverse total mass of the body.
-    /// @return Value of zero or more representing the body's inverse mass (in 1/kg).
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see SetMassData.
-    InvMass GetInvMass(BodyID id) const;
-
-    /// @brief Gets the inverse rotational inertia of the body.
-    /// @return Inverse rotational inertia (in 1/kg-m^2).
-    /// @throws std::out_of_range If given an invalid body identifier.
-    InvRotInertia GetInvRotInertia(BodyID id) const;
-
-    /// @brief Is identified body "speedable".
-    /// @details Is the body able to have a non-zero speed associated with it.
-    /// Kinematic and Dynamic bodies are speedable. Static bodies are not.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    bool IsSpeedable(BodyID id) const;
-
-    /// @brief Is identified body "accelerable"?
-    /// @details Indicates whether the body is accelerable, i.e. whether it is effected by
-    ///   forces. Only Dynamic bodies are accelerable.
-    /// @return true if the body is accelerable, false otherwise.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    bool IsAccelerable(BodyID id) const;
-
-    /// @brief Is the body treated like a bullet for continuous collision detection?
-    /// @throws std::out_of_range If given an invalid body identifier.
-    bool IsImpenetrable(BodyID id) const;
-
-    /// @brief Sets the bullet status of this body.
-    /// @details Sets that the body should be treated like a bullet for continuous
-    ///   collision detection.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    void SetImpenetrable(BodyID id);
-
-    /// @brief Unsets the bullet status of this body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    void UnsetImpenetrable(BodyID id);
-
-    /// @brief Gets whether or not the identified body allowed to sleep.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see SetSleepingAllowed
-    bool IsSleepingAllowed(BodyID id) const;
-
-    /// @brief Sets whether sleeping is allowed for the identified body.
-    /// @throws std::out_of_range If given an invalid body identifier.
-    /// @see IsSleepingAllowed
-    void SetSleepingAllowed(BodyID id, bool value);
+    SizedRange<World::BodyJoints::const_iterator> GetJoints(BodyID id) const;
 
     /// @brief Gets the container of all contacts attached to the body.
     /// @warning This collection changes during the time step and you may
@@ -617,8 +409,9 @@ public:
     ///   also be manually removed and destroyed using the
     ///   <code>Destroy(FixtureID, bool)</code>, or <code>DestroyFixtures()</code> methods.
     ///
-    /// @note This function should not be called if the world is locked.
     /// @warning This function is locked during callbacks.
+    /// @note This function should not be called if the world is locked.
+    /// @note This does not reset the associated body's mass data.
     ///
     /// @post After creating a new fixture, it will show up in the fixture enumeration
     ///   returned by the <code>GetFixtures()</code> methods.
@@ -626,7 +419,6 @@ public:
     /// @param def Initial fixture settings.
     ///   Friction and density must be >= 0.
     ///   Restitution must be > -infinity and < infinity.
-    /// @param resetMassData Whether or not to reset the mass data of the body.
     ///
     /// @return Identifier for the created fixture.
     ///
@@ -640,7 +432,7 @@ public:
     /// @see Destroy(FixtureID), GetFixtures
     /// @see PhysicalEntities
     ///
-    FixtureID CreateFixture(const FixtureConf& def = FixtureConf{}, bool resetMassData = true);
+    FixtureID CreateFixture(const FixtureConf& def = FixtureConf{});
 
     /// @brief Gets the identified fixture state.
     /// @throws std::out_of_range If given an invalid fixture identifier.
@@ -660,8 +452,7 @@ public:
     ///
     /// @warning This function is locked during callbacks.
     /// @note Make sure to explicitly call <code>ResetMassData()</code> after fixtures have
-    ///   been destroyed if resetting the mass data is not requested via the reset mass data
-    ///   parameter.
+    ///   been destroyed.
     /// @throws WrongState if this function is called while the world is locked.
     /// @throws std::out_of_range If given an invalid fixture identifier.
     ///
@@ -669,12 +460,11 @@ public:
     ///   returned by the <code>GetFixtures()</code> methods.
     ///
     /// @param id the fixture to be removed.
-    /// @param resetMassData Whether or not to reset the mass data of the associated body.
     ///
     /// @see CreateFixture, Body::GetFixtures, Body::ResetMassData.
     /// @see PhysicalEntities
     ///
-    bool Destroy(FixtureID id, bool resetMassData = true);
+    bool Destroy(FixtureID id);
 
     /// @brief Re-filter contacts and proxies for the identified fixture.
     /// @note Call this if you want to establish collision that was previously disabled.

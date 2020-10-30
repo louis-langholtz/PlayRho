@@ -45,7 +45,7 @@ class WorldImpl;
 struct FixtureConf; // for CreateFixture
 
 /// @relatedalso WorldImpl
-FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def, bool resetMassData = true);
+FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def);
 
 /// @brief Gets the identified fixture state.
 /// @throws std::out_of_range If given an invalid fixture identifier.
@@ -58,7 +58,7 @@ const FixtureConf& GetFixture(const WorldImpl& world, FixtureID id);
 void SetFixture(WorldImpl& world, FixtureID id, const FixtureConf& value);
 
 /// @relatedalso WorldImpl
-bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData);
+bool Destroy(WorldImpl& world, FixtureID id);
 
 /// @relatedalso WorldImpl
 void Refilter(WorldImpl& world, FixtureID id);

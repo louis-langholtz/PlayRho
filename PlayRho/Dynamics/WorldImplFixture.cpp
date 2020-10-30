@@ -28,9 +28,9 @@
 namespace playrho {
 namespace d2 {
 
-FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def, bool resetMassData)
+FixtureID CreateFixture(WorldImpl& world, const FixtureConf& def)
 {
-    return world.CreateFixture(def, resetMassData);
+    return world.CreateFixture(def);
 }
 
 const FixtureConf& GetFixture(const WorldImpl& world, FixtureID id)
@@ -43,9 +43,9 @@ void SetFixture(WorldImpl& world, FixtureID id, const FixtureConf& value)
     world.SetFixture(id, value);
 }
 
-bool Destroy(WorldImpl& world, FixtureID id, bool resetMassData)
+bool Destroy(WorldImpl& world, FixtureID id)
 {
-    return world.Destroy(id, resetMassData);
+    return world.Destroy(id);
 }
 
 void FlagContactsForFiltering(WorldImpl& world, FixtureID id)

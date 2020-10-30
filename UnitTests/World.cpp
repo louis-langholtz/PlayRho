@@ -728,40 +728,6 @@ TEST(World, SetAngularDamping)
     EXPECT_EQ(GetAngularDamping(world, body), value);
 }
 
-#if 0
-TEST(World, CreateAndDestroyFixture)
-{
-    auto world = World{};
-    auto other = World{};
-
-    const auto bodyA = world.CreateBody();
-    const auto bodyB = world.CreateBody();
-    ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
-    ASSERT_EQ(GetFixtureCount(world, bodyB), std::size_t(0));
-    
-    EXPECT_THROW(CreateFixture(world, bodyA, Shape{DiskShapeConf(0_m)}), InvalidArgument);
-    EXPECT_THROW(CreateFixture(world, bodyA, Shape{DiskShapeConf(WorldConf{}.maxVertexRadius * 2)}), InvalidArgument);
-
-    const auto fixtureA = CreateFixture(world, bodyA, Shape{DiskShapeConf(1_m)});
-    ASSERT_NE(fixtureA, InvalidFixtureID);
-    ASSERT_EQ(GetFixtureCount(world, bodyA), std::size_t(1));
-    EXPECT_FALSE(other.TouchProxies(*fixtureA));
-    
-    EXPECT_TRUE(world.Destroy(fixtureA));
-    EXPECT_EQ(GetFixtureCount(world, bodyA), std::size_t(0));
-    
-    EXPECT_FALSE(world.Destroy(InvalidFixtureID));
-    
-    const auto bodyC = other.CreateBody();
-    ASSERT_NE(bodyC, InvalidBodyID);
-    const auto fixtureC = other.CreateFixture(bodyC, Shape{DiskShapeConf(1_m)});
-    ASSERT_NE(fixtureC, InvalidFixtureID);
-    EXPECT_FALSE(world.Destroy(fixtureC));
-    
-    EXPECT_THROW(CreateFixture(world, bodyC, Shape{DiskShapeConf(1_m)}), InvalidArgument);
-}
-#endif
-
 TEST(World, SynchronizeProxies)
 {
     auto world = World{};
@@ -1444,17 +1410,17 @@ TEST(World, ComputeMassData)
     auto world = World{};
     auto massData = MassData{};
 
-    EXPECT_THROW(massData = world.ComputeMassData(InvalidBodyID), std::out_of_range);
+    EXPECT_THROW(massData = ComputeMassData(world, InvalidBodyID), std::out_of_range);
 
     const auto body = world.CreateBody();
-    EXPECT_NO_THROW(massData = world.ComputeMassData(body));
+    EXPECT_NO_THROW(massData = ComputeMassData(world, body));
     EXPECT_EQ(massData.center, Length2{});
     EXPECT_EQ(massData.mass, 0_kg);
     EXPECT_EQ(massData.I, RotInertia(0));
 
     // Creates a 4x2 rectangular shape with 8_m2 area of 8_kg
     CreateFixture(world, body, Shape{PolygonShapeConf{2_m, 1_m}.UseDensity(1_kgpm2)});
-    EXPECT_NO_THROW(massData = world.ComputeMassData(body));
+    EXPECT_NO_THROW(massData = ComputeMassData(world, body));
     EXPECT_EQ(massData.center, Length2{});
     EXPECT_EQ(massData.mass, 8_kg);
     EXPECT_NEAR(static_cast<double>(StripUnit(massData.I)), 13.3333, 0.0001);

@@ -2194,49 +2194,12 @@ PreStepStats::counter_type WorldImpl::SynchronizeProxies(const StepConf& conf)
     return proxiesMoved;
 }
 
-void WorldImpl::SetType(BodyID bodyID, playrho::BodyType type)
-{
-    auto& body = GetBody(bodyID);
-    if (body.GetType() == type) {
-        return;
-    }
-
-    if (IsLocked()) {
-        throw WrongState("SetType: world is locked");
-    }
-
-    body.SetType(type);
-    SetMassData(bodyID, ComputeMassData(bodyID));
-
-    // Destroy the attached contacts.
-    Erase(m_bodyContacts[bodyID.get()], [this,&body](ContactID contactID) {
-        Destroy(contactID, &body);
-        return true;
-    });
-
-    if (type == BodyType::Static) {
-#ifndef NDEBUG
-        const auto xfm1 = GetTransform0(body.GetSweep());
-        const auto xfm2 = GetTransformation(body);
-        assert(xfm1 == xfm2);
-#endif
-        m_bodiesForProxies.push_back(bodyID);
-    }
-    else {
-        body.SetAwake();
-        const auto& fixtures = m_bodyFixtures[bodyID.get()];
-        for_each(begin(fixtures), end(fixtures), [this](const auto& fixtureID) {
-            AddProxies(m_fixtureProxies[UnderlyingValue(fixtureID)]);
-        });
-    }
-}
-
 const WorldImpl::Proxies& WorldImpl::GetProxies(FixtureID id) const
 {
     return m_fixtureProxies.at(id.get());
 }
 
-FixtureID WorldImpl::CreateFixture(const FixtureConf& def, bool resetMassData)
+FixtureID WorldImpl::CreateFixture(const FixtureConf& def)
 {
     {
         const auto childCount = GetChildCount(def.shape);
@@ -2258,7 +2221,6 @@ FixtureID WorldImpl::CreateFixture(const FixtureConf& def, bool resetMassData)
     if (size(m_fixtureBuffer) >= MaxFixtures) {
         throw LengthError("CreateFixture: operation would exceed MaxFixtures");
     }
-
     auto& body = GetBody(def.body); // must be called before any mutating actions to validate bodyID!
     const auto fixtureID = static_cast<FixtureID>(
         static_cast<FixtureID::underlying_type>(m_fixtureBuffer.Allocate(def)));
@@ -2270,9 +2232,6 @@ FixtureID WorldImpl::CreateFixture(const FixtureConf& def, bool resetMassData)
     // Adjust mass properties if needed.
     if (GetDensity(m_fixtureBuffer[UnderlyingValue(fixtureID)]) > 0_kgpm2) {
         body.SetMassDataDirty();
-        if (resetMassData) {
-            SetMassData(def.body, ComputeMassData(def.body));
-        }
     }
     // Let the world know we have a new fixture. This will cause new contacts
     // to be created at the beginning of the next time step.
@@ -2354,7 +2313,7 @@ bool WorldImpl::RemoveFixture(BodyID id, FixtureID fixture)
     return false;
 }
 
-bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
+bool WorldImpl::Destroy(FixtureID id)
 {
     if (IsLocked()) {
         throw WrongState("Destroy: world is locked");
@@ -2390,18 +2349,7 @@ bool WorldImpl::Destroy(FixtureID id, bool resetMassData)
     m_fixtureBuffer.Free(UnderlyingValue(id));
     m_fixtureProxies.Free(UnderlyingValue(id));
     body.SetMassDataDirty();
-    if (resetMassData) {
-        SetMassData(bodyID, ComputeMassData(bodyID));
-    }
     return true;
-}
-
-void WorldImpl::DestroyFixtures(BodyID id)
-{
-    while (!empty(GetFixtures(id))) {
-        Destroy(*GetFixtures(id).begin(), false);
-    }
-    SetMassData(id, ComputeMassData(id));
 }
 
 ContactCounter WorldImpl::Synchronize(const Fixtures& fixtures,
@@ -2429,110 +2377,6 @@ ContactCounter WorldImpl::Synchronize(const Fixtures& fixtures,
         }
     });
     return updatedCount;
-}
-
-void WorldImpl::SetEnabled(BodyID id, bool flag)
-{
-    auto& body = GetBody(id);
-    if (body.IsEnabled() == flag) {
-        return;
-    }
-
-    if (IsLocked()) {
-        throw WrongState("Body::SetEnabled: world is locked");
-    }
-
-    if (flag) {
-        body.SetEnabled();
-    }
-    else {
-        body.UnsetEnabled();
-    }
-
-    // Register for proxies so contacts created or destroyed the next time step.
-    ForallFixtures(m_bodyFixtures[id.get()], [this](const auto& fixtureID) {
-        m_fixturesForProxies.push_back(fixtureID);
-    });
-}
-
-MassData WorldImpl::ComputeMassData(BodyID id) const
-{
-    auto mass = 0_kg;
-    auto I = RotInertia{0};
-    auto weightedCenter = Length2{};
-    for (const auto& f: GetFixtures(id)) {
-        const auto& fixture = m_fixtureBuffer[UnderlyingValue(f)];
-        if (GetDensity(fixture) > 0_kgpm2) {
-            const auto massData = GetMassData(GetShape(fixture));
-            mass += Mass{massData.mass};
-            weightedCenter += Real{massData.mass / Kilogram} * massData.center;
-            I += RotInertia{massData.I};
-        }
-    }
-    const auto center = (mass > 0_kg)? (weightedCenter / (Real{mass/1_kg})): Length2{};
-    return MassData{center, mass, I};
-}
-
-void WorldImpl::SetMassData(BodyID id, const MassData& massData)
-{
-    if (IsLocked()) {
-        throw WrongState("SetMassData: world is locked");
-    }
-
-    auto& body = GetBody(id);
-    if (!body.IsAccelerable()) {
-        body.SetInvMass(InvMass{});
-        body.SetInvRotI(InvRotInertia{});
-        body.SetSweep(Sweep{Position{body.GetLocation(), body.GetAngle()}});
-        body.UnsetMassDataDirty();
-        return;
-    }
-
-    const auto mass = (massData.mass > 0_kg)? Mass{massData.mass}: 1_kg;
-    body.SetInvMass(Real{1} / mass);
-
-    if ((massData.I > RotInertia{0}) && (!body.IsFixedRotation())) {
-        const auto lengthSquared = GetMagnitudeSquared(massData.center);
-        // L^2 M QP^-2
-        const auto I = RotInertia{massData.I} - RotInertia{(mass * lengthSquared) / SquareRadian};
-        assert(I > RotInertia{0});
-        body.SetInvRotI(Real{1} / I);
-    }
-    else {
-        body.SetInvRotI(0);
-    }
-
-    // Move center of mass.
-    const auto oldCenter = body.GetWorldCenter();
-    body.SetSweep(Sweep{
-        Position{Transform(massData.center, GetTransformation(body)), body.GetAngle()},
-        massData.center
-    });
-
-    // Update center of mass velocity.
-    const auto newCenter = body.GetWorldCenter();
-    const auto deltaCenter = newCenter - oldCenter;
-    auto newVelocity = body.GetVelocity();
-    newVelocity.linear += GetRevPerpendicular(deltaCenter) * (newVelocity.angular / Radian);
-    body.JustSetVelocity(newVelocity);
-    body.UnsetMassDataDirty();
-}
-
-void WorldImpl::SetTransformation(BodyID id, Transformation xfm)
-{
-    assert(IsValid(xfm));
-    if (IsLocked()) {
-        throw WrongState("SetTransformation: world is locked");
-    }
-    auto& body = GetBody(id);
-    if (GetTransformation(body) != xfm) {
-        FlagForUpdating(m_contactBuffer, m_bodyContacts[id.get()]);
-        body.SetTransformation(xfm);
-        body.SetSweep(Sweep{
-            Position{Transform(body.GetLocalCenter(), xfm), GetAngle(xfm.q)}, body.GetLocalCenter()
-        });
-        m_bodiesForProxies.push_back(id);
-    }
 }
 
 FixtureCounter WorldImpl::GetShapeCount() const noexcept
@@ -2702,6 +2546,47 @@ void WorldImpl::Update(ContactID contactID, const ContactUpdateConf& conf)
             m_preSolveContactListener(contactID, oldManifold);
         }
     }
+}
+
+void WorldImpl::SetBody(BodyID id, const Body& value)
+{
+    if (IsLocked()) {
+        throw WrongState("SetBody: world is locked");
+    }
+    // handle state changes that other data needs to stay in sync with
+    auto body = GetBody(id);
+    if (body.GetType() != value.GetType()) {
+        // Destroy the attached contacts.
+        Erase(m_bodyContacts[id.get()], [this,&body](ContactID contactID) {
+            Destroy(contactID, &body);
+            return true;
+        });
+        if (value.GetType() == BodyType::Static) {
+#ifndef NDEBUG
+            const auto xfm1 = GetTransform0(value.GetSweep());
+            const auto xfm2 = GetTransformation(value);
+            assert(xfm1 == xfm2);
+#endif
+            m_bodiesForProxies.push_back(id);
+        }
+        else {
+            const auto& fixtures = m_bodyFixtures[id.get()];
+            for_each(begin(fixtures), end(fixtures), [this](const auto& fixtureID) {
+                AddProxies(m_fixtureProxies[UnderlyingValue(fixtureID)]);
+            });
+        }
+    }
+    if (body.IsEnabled() != value.IsEnabled()) {
+        // Register for proxies so contacts created or destroyed the next time step.
+        ForallFixtures(m_bodyFixtures[id.get()], [this](const auto& fixtureID) {
+            m_fixturesForProxies.push_back(fixtureID);
+        });
+    }
+    if (GetTransformation(body) != GetTransformation(value)) {
+        FlagForUpdating(m_contactBuffer, m_bodyContacts[id.get()]);
+        m_bodiesForProxies.push_back(id);
+    }
+    m_bodyBuffer[id.get()] = value;
 }
 
 const Body& WorldImpl::GetBody(BodyID id) const
