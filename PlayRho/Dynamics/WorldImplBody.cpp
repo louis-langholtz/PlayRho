@@ -47,9 +47,9 @@ BodyCounter GetBodyRange(const WorldImpl& world) noexcept
     return world.GetBodyRange();
 }
 
-void Destroy(WorldImpl& world, BodyID id)
+BodyID CreateBody(WorldImpl& world, const BodyConf& def)
 {
-    world.Destroy(id);
+    return world.CreateBody(def);
 }
 
 const Body& GetBody(const WorldImpl& world, BodyID id)
@@ -60,6 +60,11 @@ const Body& GetBody(const WorldImpl& world, BodyID id)
 void SetBody(WorldImpl& world, BodyID id, const Body& value)
 {
     world.SetBody(id, value);
+}
+
+void Destroy(WorldImpl& world, BodyID id)
+{
+    world.Destroy(id);
 }
 
 SizedRange<std::vector<std::pair<BodyID, JointID>>::const_iterator>

@@ -125,7 +125,7 @@ bool GetSubStepping(const World& world) noexcept;
 /// @see IsStepComplete, GetSubStepping.
 void SetSubStepping(World& world, bool flag) noexcept;
 
-/// @copydoc World::GetTree
+/// @brief Gets the dynamic tree of the given world.
 /// @relatedalso World
 const DynamicTree& GetTree(const World& world) noexcept;
 

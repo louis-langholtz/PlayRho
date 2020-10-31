@@ -82,11 +82,6 @@ void SetPostSolveContactListener(WorldImpl& world,
     world.SetPostSolveContactListener(listener);
 }
 
-BodyID CreateBody(WorldImpl& world, const BodyConf& def)
-{
-    return world.CreateBody(def);
-}
-
 StepStats Step(WorldImpl& world, const StepConf& conf)
 {
     return world.Step(conf);

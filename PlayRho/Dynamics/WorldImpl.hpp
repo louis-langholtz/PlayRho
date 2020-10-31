@@ -305,6 +305,14 @@ public:
     /// @see PhysicalEntities.
     BodyID CreateBody(const BodyConf& def = GetDefaultBodyConf());
 
+    /// @brief Gets the identified body.
+    /// @throws std::out_of_range if given an invalid id.
+    const Body& GetBody(BodyID id) const;
+
+    /// @brief Sets the identified body.
+    /// @throws std::out_of_range if given an invalid id.
+    void SetBody(BodyID id, const Body& value);
+
     /// @brief Destroys the given body.
     /// @details Destroys a given body that had previously been created by a call to this
     ///   world's <code>CreateBody(const BodyConf&)</code> method.
@@ -322,12 +330,6 @@ public:
     /// @see CreateBody(const BodyConf&), GetBodies, GetFixturesForProxies.
     /// @see PhysicalEntities.
     void Destroy(BodyID id);
-
-    /// @throws std::out_of_range if given an invalid id.
-    const Body& GetBody(BodyID id) const;
-
-    /// @throws std::out_of_range if given an invalid id.
-    void SetBody(BodyID id, const Body& value);
 
     /// @brief Gets the contacts associated with the identified body.
     /// @throws std::out_of_range if given an invalid id.
@@ -368,6 +370,15 @@ public:
     /// @see PhysicalEntities
     FixtureID CreateFixture(const FixtureConf& def = FixtureConf{});
 
+    /// @brief Gets the identified fixture state.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
+    const FixtureConf& GetFixture(FixtureID id) const;
+
+    /// @brief Sets the identified fixture's state.
+    /// @throws std::out_of_range If given an invalid fixture identifier.
+    /// @throws std::invalid_argument If given an invalid fixture state.
+    void SetFixture(FixtureID id, const FixtureConf& value);
+
     /// @brief Destroys a fixture.
     /// @details This removes the fixture from the broad-phase and destroys all contacts
     ///   associated with this fixture.
@@ -378,15 +389,6 @@ public:
     /// @throws WrongState if this method is called while the world is locked.
     /// @throws std::out_of_range If given an invalid fixture identifier.
     bool Destroy(FixtureID fixture);
-
-    /// @brief Gets the identified fixture state.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    const FixtureConf& GetFixture(FixtureID id) const;
-
-    /// @brief Sets the identified fixture's state.
-    /// @throws std::out_of_range If given an invalid fixture identifier.
-    /// @throws std::invalid_argument If given an invalid fixture state.
-    void SetFixture(FixtureID id, const FixtureConf& value);
 
     /// @brief Gets the fixtures-for-proxies range for this world.
     /// @details Provides insight on what fixtures have been queued for proxy processing

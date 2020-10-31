@@ -55,9 +55,9 @@ class Body;
 /// @relatedalso WorldImpl
 BodyCounter GetBodyRange(const WorldImpl& world) noexcept;
 
-/// @brief Destroys the identified body.
+/// @brief Creates a body with the given configuration within the given world.
 /// @relatedalso WorldImpl
-void Destroy(WorldImpl& world, BodyID id);
+BodyID CreateBody(WorldImpl& world, const BodyConf& def = GetDefaultBodyConf());
 
 /// @brief Gets the body configuration for the identified body.
 /// @throws std::out_of_range If given an invalid body identifier.
@@ -68,6 +68,10 @@ const Body& GetBody(const WorldImpl& world, BodyID id);
 /// @throws std::out_of_range If given an invalid body identifier.
 /// @relatedalso WorldImpl
 void SetBody(WorldImpl& world, BodyID id, const Body& value);
+
+/// @brief Destroys the identified body.
+/// @relatedalso WorldImpl
+void Destroy(WorldImpl& world, BodyID id);
 
 /// @brief Gets the range of all joints attached to this body.
 /// @throws std::out_of_range If given an invalid body identifier.

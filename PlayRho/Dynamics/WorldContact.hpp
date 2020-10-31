@@ -233,7 +233,7 @@ inline void ResetRestitution(World& world, ContactID id)
     SetRestitution(world, id, GetDefaultRestitution(world, id));
 }
 
-/// @copydoc World::GetTangentSpeed
+/// @brief Gets the tangent speed of the identified contact.
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @relatedalso World
 LinearVelocity GetTangentSpeed(const World& world, ContactID id);

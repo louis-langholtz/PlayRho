@@ -54,65 +54,94 @@ class DynamicTree;
 struct WorldConf;
 class ContactImpulsesList;
 
+/// @brief Creates a new world with the given configuration.
 std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldConf& def);
 
+/// @brief Creates a new world that's a copy of the given world.
 std::unique_ptr<WorldImpl> CreateWorldImpl(const WorldImpl& other);
 
+/// @brief Clears the given world.
+/// @relatedalso WorldImpl
 void Clear(WorldImpl& world) noexcept;
 
+/// @brief Registers a destruction listener for fixtures.
+/// @relatedalso WorldImpl
 void SetFixtureDestructionListener(WorldImpl& world,
                                    std::function<void(FixtureID)> listener) noexcept;
 
+/// @brief Registers a destruction listener for joints.
+/// @relatedalso WorldImpl
 void SetJointDestructionListener(WorldImpl& world,
                                  std::function<void(JointID)> listener) noexcept;
 
+/// @brief Registers a begin contact event listener.
+/// @relatedalso WorldImpl
 void SetBeginContactListener(WorldImpl& world, std::function<void(ContactID)> listener) noexcept;
 
+/// @brief Registers an end contact event listener.
+/// @relatedalso WorldImpl
 void SetEndContactListener(WorldImpl& world, std::function<void(ContactID)> listener) noexcept;
 
+/// @brief Registers a pre-solve contact event listener.
+/// @relatedalso WorldImpl
 void SetPreSolveContactListener(WorldImpl& world,
                                 std::function<void(ContactID, const Manifold&)> listener) noexcept;
 
+/// @brief Registers a post-solve contact event listener.
+/// @relatedalso WorldImpl
 void SetPostSolveContactListener(WorldImpl& world,
                                  std::function<void(ContactID, const ContactImpulsesList&, unsigned)> listener) noexcept;
 
-BodyID CreateBody(WorldImpl& world, const BodyConf& def = GetDefaultBodyConf());
-
+/// @relatedalso WorldImpl
 StepStats Step(WorldImpl& world, const StepConf& conf);
 
+/// @relatedalso WorldImpl
 void ShiftOrigin(WorldImpl& world, Length2 newOrigin);
 
+/// @relatedalso WorldImpl
 SizedRange<std::vector<BodyID>::const_iterator> GetBodies(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 SizedRange<std::vector<BodyID>::const_iterator>
 GetBodiesForProxies(const WorldImpl& world) noexcept;
 
-/// @copydoc WorldImpl::GetFixturesForProxies
+/// @relatedalso WorldImpl
 /// @relatedalso WorldImpl
 SizedRange<std::vector<FixtureID>::const_iterator>
 GetFixturesForProxies(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 SizedRange<std::vector<JointID>::const_iterator> GetJoints(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 SizedRange<std::vector<KeyedContactPtr>::const_iterator>
 GetContacts(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 bool IsLocked(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 bool IsStepComplete(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 bool GetSubStepping(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 void SetSubStepping(WorldImpl& world, bool value) noexcept;
 
+/// @relatedalso WorldImpl
 Length GetMinVertexRadius(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 Length GetMaxVertexRadius(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 Frequency GetInvDeltaTime(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 const DynamicTree& GetTree(const WorldImpl& world) noexcept;
 
+/// @relatedalso WorldImpl
 FixtureCounter GetShapeCount(const WorldImpl& world) noexcept;
 
 } // namespace d2

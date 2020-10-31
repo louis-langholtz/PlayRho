@@ -198,22 +198,22 @@ public:
     /// @name Listener Member Functions
     /// @{
 
-    /// @brief Register a destruction listener for fixtures.
+    /// @brief Registers a destruction listener for fixtures.
     void SetFixtureDestructionListener(const FixtureListener& listener) noexcept;
 
-    /// @brief Register a destruction listener for joints.
+    /// @brief Registers a destruction listener for joints.
     void SetJointDestructionListener(const JointListener& listener) noexcept;
 
-    /// @brief Register a begin contact event listener.
+    /// @brief Registers a begin contact event listener.
     void SetBeginContactListener(ContactListener listener) noexcept;
 
-    /// @brief Register an end contact event listener.
+    /// @brief Registers an end contact event listener.
     void SetEndContactListener(ContactListener listener) noexcept;
 
-    /// @brief Register a pre-solve contact event listener.
+    /// @brief Registers a pre-solve contact event listener.
     void SetPreSolveContactListener(ManifoldContactListener listener) noexcept;
 
-    /// @brief Register a post-solve contact event listener.
+    /// @brief Registers a post-solve contact event listener.
     void SetPostSolveContactListener(ImpulsesContactListener listener) noexcept;
 
     /// @}
@@ -535,10 +535,6 @@ public:
     /// @brief Sets the identified contact's state.
     /// @throws std::out_of_range If given an invalid contact identifier.
     void SetContact(ContactID id, const Contact& value);
-
-    /// @brief Gets the time of impact count of the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    TimestepIters GetToiCount(ContactID id) const;
 
     /// @brief Gets the collision manifold for the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
