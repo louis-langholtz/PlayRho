@@ -480,7 +480,6 @@ public:
     /// @throws std::out_of_range If given an invalid contact identifier.
     /// @see SetContact.
     const Contact& GetContact(ContactID id) const;
-    Contact& GetContact(ContactID id);
 
     /// @brief Sets the identified contact's state.
     /// @throws std::out_of_range If given an invalid contact identifier.

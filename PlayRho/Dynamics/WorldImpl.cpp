@@ -2639,11 +2639,6 @@ const Contact& WorldImpl::GetContact(ContactID id) const
     return m_contactBuffer.at(UnderlyingValue(id));
 }
 
-Contact& WorldImpl::GetContact(ContactID id)
-{
-    return m_contactBuffer.at(UnderlyingValue(id));
-}
-
 const Manifold& WorldImpl::GetManifold(ContactID id) const
 {
     return m_manifoldBuffer.at(UnderlyingValue(id));
