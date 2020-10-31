@@ -29,23 +29,23 @@
 #include <sstream>
 
 namespace playrho {
-    
-    Version GetVersion() noexcept
-    {
-        return Version{0, 11, 0};
-    }
-    
-    std::string GetBuildDetails() noexcept
-    {
-        std::stringstream stream;
-        stream << "asserts=";
+
+Version GetVersion() noexcept
+{
+    return Version{0, 11, 0};
+}
+
+std::string GetBuildDetails() noexcept
+{
+    std::stringstream stream;
+    stream << "asserts=";
 #ifdef NDEBUG
-        stream << "off";
+    stream << "off";
 #else
-        stream << "on";
+    stream << "on";
 #endif
-        stream << ", Real='" << GetTypeName<Real>() << "'";
-        return stream.str();
-    }
-        
+    stream << ", Real='" << GetTypeName<Real>() << "'";
+    return stream.str();
+}
+
 } // namespace playrho
