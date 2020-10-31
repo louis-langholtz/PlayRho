@@ -926,10 +926,9 @@ void Test::MouseDown(const Length2& p)
     // Make a small box.
     const auto aabb = GetFattenedAABB(AABB{p}, 1_m / 1000);
 
-    auto fixtures = FixtureSet{};
-
     // Query the world for overlapping shapes.
-    Query(GetTree(m_world), aabb, [&](FixtureID f, const ChildCounter) {
+    auto fixtures = FixtureSet{};
+    Query(aabb, [this,&p,&fixtures](FixtureID f, const ChildCounter) {
         if (TestPoint(m_world, f, p))
         {
             fixtures.insert(f);
@@ -1262,6 +1261,11 @@ void Test::KeyboardHandler(KeyID key, KeyAction action, KeyMods mods)
 void Test::RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerID id)
 {
     m_handledKeys.push_back(std::make_pair(KeyActionMods{key, action, mods}, id));
+}
+
+void Test::Query(const AABB& aabb, QueryFixtureCallback callback)
+{
+    ::playrho::d2::Query(GetTree(m_world), aabb, callback);
 }
 
 // Exported free functions...

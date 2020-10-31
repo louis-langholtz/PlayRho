@@ -33,7 +33,6 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
-#include <PlayRho/Collision/DynamicTree.hpp>
 
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
@@ -303,6 +302,11 @@ public:
     {
         return m_world;
     }
+
+    using QueryFixtureCallback = std::function<bool(FixtureID fixture, ChildCounter child)>;
+
+    /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
+    void Query(const AABB& aabb, QueryFixtureCallback callback);
 
 protected:
     EdgeShapeConf GetGroundEdgeConf() const noexcept

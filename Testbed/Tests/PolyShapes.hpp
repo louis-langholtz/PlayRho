@@ -166,7 +166,7 @@ public:
         // Finds all the fixtures that overlap an AABB. Of those, we use TestOverlap to
         // determine which fixtures overlap a circle. Up to 4 overlapped fixtures will be
         // highlighted with a yellow border.
-        Query(GetTree(GetWorld()), aabb, [&](FixtureID f, ChildCounter) {
+        Query(aabb, [&](FixtureID f, ChildCounter) {
             if (count < e_maxCount)
             {
                 const auto xfm = GetTransformation(GetWorld(), f);
