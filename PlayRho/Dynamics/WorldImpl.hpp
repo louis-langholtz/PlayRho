@@ -489,7 +489,6 @@ public:
     /// @brief Gets the identified manifold.
     /// @throws std::out_of_range If given an invalid contact identifier.
     const Manifold& GetManifold(ContactID id) const;
-    Manifold& GetManifold(ContactID id);
 
     /// @}
 

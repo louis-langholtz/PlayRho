@@ -2644,10 +2644,5 @@ const Manifold& WorldImpl::GetManifold(ContactID id) const
     return m_manifoldBuffer.at(UnderlyingValue(id));
 }
 
-Manifold& WorldImpl::GetManifold(ContactID id)
-{
-    return m_manifoldBuffer.at(UnderlyingValue(id));
-}
-
 } // namespace d2
 } // namespace playrho
