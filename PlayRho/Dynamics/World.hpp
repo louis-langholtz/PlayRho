@@ -60,6 +60,7 @@ namespace d2 {
 class WorldImpl;
 class Body;
 class Joint;
+class Contact;
 class Manifold;
 class ContactImpulsesList;
 class DynamicTree;
@@ -527,129 +528,21 @@ public:
     /// @return World contacts sized-range.
     SizedRange<Contacts::const_iterator> GetContacts() const noexcept;
 
-    /// @brief Gets the awake status of the specified contact.
+    /// @brief Gets the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
-    /// @see SetAwake(ContactID id)
-    bool IsAwake(ContactID id) const;
+    const Contact& GetContact(ContactID id) const;
 
-    /// @brief Gets the desired tangent speed.
+    /// @brief Sets the identified contact's state.
     /// @throws std::out_of_range If given an invalid contact identifier.
-    /// @see SetTangentSpeed(ContactID id, LinearVelocity value).
-    LinearVelocity GetTangentSpeed(ContactID id) const;
-
-    /// @brief Sets the desired tangent speed for a conveyor belt behavior.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    /// @see GetTangentSpeed(ContactID id) const.
-    void SetTangentSpeed(ContactID id, LinearVelocity value);
-
-    /// @brief Is this contact touching?
-    /// @details
-    /// Touching is defined as either:
-    ///   1. This contact's manifold has more than 0 contact points, or
-    ///   2. This contact has sensors and the two shapes of this contact are found to be
-    ///      overlapping.
-    /// @return true if this contact is said to be touching, false otherwise.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    bool IsTouching(ContactID id) const;
-
-    /// @brief Whether or not the contact needs filtering.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    bool NeedsFiltering(ContactID id) const;
-
-    /// @brief Whether or not the contact needs updating.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    bool NeedsUpdating(ContactID id) const;
-
-    /// @brief Gets body-A of the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    BodyID GetBodyA(ContactID id) const;
-
-    /// @brief Gets body-B of the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    BodyID GetBodyB(ContactID id) const;
-
-    /// @brief Gets fixture A of the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    FixtureID GetFixtureA(ContactID id) const;
-
-    /// @brief Gets fixture B of the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    FixtureID GetFixtureB(ContactID id) const;
-
-    /// @brief Get the child primitive index for fixture A.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    ChildCounter GetChildIndexA(ContactID id) const;
-
-    /// @brief Get the child primitive index for fixture B.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    ChildCounter GetChildIndexB(ContactID id) const;
-
-    /// @brief Whether or not the contact has a valid TOI.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    /// @see GetToi.
-    bool HasValidToi(ContactID id) const;
-
-    /// @brief Gets the time of impact (TOI) as a fraction.
-    /// @note This is only valid if a TOI has been set.
-    /// @return Time of impact fraction in the range of 0 to 1 if set (where 1
-    ///   means no actual impact in current time slot), otherwise undefined.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    Real GetToi(ContactID id) const;
+    void SetContact(ContactID id, const Contact& value);
 
     /// @brief Gets the time of impact count of the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
     TimestepIters GetToiCount(ContactID id) const;
 
-    /// @brief Gets the default friction value for the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    Real GetDefaultFriction(ContactID id) const;
-
-    /// @brief Gets the default restitution value for the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    Real GetDefaultRestitution(ContactID id) const;
-
-    /// @brief Gets the friction used with the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    /// @see SetFriction(ContactID id, Real value)
-    Real GetFriction(ContactID id) const;
-
-    /// @brief Gets the restitution used with the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    /// @see SetRestitution(ContactID id, Real value)
-    Real GetRestitution(ContactID id) const;
-
-    /// @brief Sets the friction value for the identified contact.
-    /// @details Overrides the default friction mixture.
-    /// @note You can call this in "pre-solve" listeners.
-    /// @note This value persists until set or reset.
-    /// @warning Behavior is undefined if given a negative friction value.
-    /// @param id Contact identifier.
-    /// @param value Co-efficient of friction value of zero or greater.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    void SetFriction(ContactID id, Real value);
-
-    /// @brief Sets the restitution value for the identified contact.
-    /// @details This override the default restitution mixture.
-    /// @note You can call this in "pre-solve" listeners.
-    /// @note The value persists until you set or reset.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    void SetRestitution(ContactID id, Real value);
-
     /// @brief Gets the collision manifold for the identified contact.
     /// @throws std::out_of_range If given an invalid contact identifier.
     const Manifold& GetManifold(ContactID id) const;
-
-    /// @brief Gets whether or not the identified contact is enabled.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    bool IsEnabled(ContactID id) const;
-
-    /// @brief Enables the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    void SetEnabled(ContactID id);
-
-    /// @brief Disables the identified contact.
-    /// @throws std::out_of_range If given an invalid contact identifier.
-    void UnsetEnabled(ContactID id);
 
     /// @}
 

@@ -2619,6 +2619,11 @@ void WorldImpl::SetBody(BodyID id, const Body& value)
     m_bodyBuffer[id.get()] = value;
 }
 
+void WorldImpl::SetContact(ContactID id, const Contact& value)
+{
+    m_contactBuffer.at(id.get()) = value;
+}
+
 const Body& WorldImpl::GetBody(BodyID id) const
 {
     return m_bodyBuffer.at(UnderlyingValue(id));

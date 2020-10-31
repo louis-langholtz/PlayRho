@@ -413,9 +413,9 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
                   static_cast<decltype(contacts.begin()->first.GetMin())>(0));
         EXPECT_EQ(contacts.begin()->first.GetMax(),
                   static_cast<decltype(contacts.begin()->first.GetMax())>(1));
-        EXPECT_EQ(GetFixtureA(world, contacts.begin()->second),
+        EXPECT_EQ(GetFixtureA(world.GetContact(contacts.begin()->second)),
                   *GetFixtures(world, body1).begin());
-        EXPECT_EQ(GetFixtureB(world, contacts.begin()->second),
+        EXPECT_EQ(GetFixtureB(world.GetContact(contacts.begin()->second)),
                   *GetFixtures(world, body2).begin());
     }
 

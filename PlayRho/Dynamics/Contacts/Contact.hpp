@@ -159,12 +159,13 @@ public:
     /// @note This value persists until set or reset.
     /// @warning Behavior is undefined if given a negative friction value.
     /// @param friction Co-efficient of friction value of zero or greater.
+    /// @see GetFriction.
     void SetFriction(Real friction) noexcept;
 
     /// @brief Gets the coefficient of friction.
     /// @details Gets the combined friction of the two fixtures associated with this contact.
     /// @return Value of 0 or higher.
-    /// @see MixFriction.
+    /// @see SetFriction.
     Real GetFriction() const noexcept;
 
     /// @brief Sets the restitution.
@@ -324,6 +325,7 @@ private:
     FixtureID m_fixtureB = InvalidFixtureID;
 
     ChildCounter m_indexA; ///< Index A. 4-bytes.
+
     ChildCounter m_indexB; ///< Index B. 4-bytes.
 
     // initialized on construction (construction-time depedent)
@@ -340,7 +342,7 @@ private:
 
     /// Tangent speed.
     /// @note Field is 4-bytes (with 4-byte Real).
-   LinearVelocity m_tangentSpeed = 0;
+    LinearVelocity m_tangentSpeed = 0;
 
     /// Time of impact.
     /// @note This is a unit interval of time (a value between 0 and 1).
@@ -638,6 +640,20 @@ inline bool IsEnabled(const Contact& contact) noexcept
     return contact.IsEnabled();
 }
 
+/// @brief Enables the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
+inline void SetEnabled(Contact& contact) noexcept
+{
+    contact.SetEnabled();
+}
+
+/// @brief Disables the identified contact.
+/// @throws std::out_of_range If given an invalid contact identifier.
+inline void UnsetEnabled(Contact& contact) noexcept
+{
+    contact.UnsetEnabled();
+}
+
 /// @brief Gets whether the given contact is touching or not.
 /// @relatedalso Contact
 inline bool IsTouching(const Contact& contact) noexcept
@@ -650,6 +666,106 @@ inline bool IsTouching(const Contact& contact) noexcept
 inline bool IsSensor(const Contact& contact) noexcept
 {
     return contact.IsSensor();
+}
+
+/// @brief Gets the time of impact count.
+/// @relatedalso Contact
+inline auto GetToiCount(const Contact& contact) noexcept
+{
+    return contact.GetToiCount();
+}
+
+/// @brief Whether or not the contact needs filtering.
+/// @relatedalso Contact
+inline auto NeedsFiltering(const Contact& contact) noexcept
+{
+    return contact.NeedsFiltering();
+}
+
+/// @brief Whether or not the contact needs updating.
+/// @relatedalso Contact
+inline auto NeedsUpdating(const Contact& contact) noexcept
+{
+    return contact.NeedsUpdating();
+}
+
+/// @brief Gets whether a TOI is set.
+/// @see GetToi.
+/// @relatedalso Contact
+inline auto HasValidToi(const Contact& contact) noexcept
+{
+    return contact.HasValidToi();
+}
+
+/// @brief Gets the time of impact (TOI) as a fraction.
+/// @note This is only valid if a TOI has been set.
+/// @see void SetToi(Real toi).
+/// @return Time of impact fraction in the range of 0 to 1 if set (where 1
+///   means no actual impact in current time slot), otherwise undefined.
+/// @see HasValidToi
+/// @relatedalso Contact
+inline Real GetToi(const Contact& contact) noexcept
+{
+    return contact.GetToi();
+}
+
+/// @brief Gets the coefficient of friction.
+/// @see SetFriction.
+/// @relatedalso Contact
+inline auto GetFriction(const Contact& contact) noexcept
+{
+    return contact.GetFriction();
+}
+
+/// @brief Sets the friction value for the identified contact.
+/// @details Overrides the default friction mixture.
+/// @note This value persists until set or reset.
+/// @warning Behavior is undefined if given a negative friction value.
+/// @param value Co-efficient of friction value of zero or greater.
+/// @throws std::out_of_range If given an invalid contact identifier.
+/// @see GetFriction.
+/// @relatedalso Contact
+inline void SetFriction(Contact& contact, Real value) noexcept
+{
+    contact.SetFriction(value);
+}
+
+/// @brief Gets the coefficient of restitution.
+/// @see SetRestitution.
+/// @relatedalso Contact
+inline auto GetRestitution(const Contact& contact) noexcept
+{
+    return contact.GetRestitution();
+}
+
+/// @brief Sets the restitution value for the identified contact.
+/// @details This override the default restitution mixture.
+/// @note You can call this in "pre-solve" listeners.
+/// @note The value persists until you set or reset.
+/// @throws std::out_of_range If given an invalid contact identifier.
+/// @see GetRestitution.
+/// @relatedalso Contact
+inline void SetRestitution(Contact& contact, Real value)
+{
+    contact.SetRestitution(value);
+}
+
+/// @brief Gets the desired tangent speed.
+/// @throws std::out_of_range If given an invalid contact identifier.
+/// @see SetTangentSpeed.
+/// @relatedalso Contact
+inline auto GetTangentSpeed(const Contact& contact) noexcept
+{
+    return contact.GetTangentSpeed();
+}
+
+/// @brief Sets the desired tangent speed for a conveyor belt behavior.
+/// @throws std::out_of_range If given an invalid contact identifier.
+/// @see GetTangentSpeed.
+/// @relatedalso Contact
+inline void SetTangentSpeed(Contact& contact, LinearVelocity value) noexcept
+{
+    contact.SetTangentSpeed(value);
 }
 
 } // namespace d2

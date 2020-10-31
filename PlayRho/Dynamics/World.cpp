@@ -233,129 +233,19 @@ SizedRange<World::Contacts::const_iterator> World::GetContacts() const noexcept
     return ::playrho::d2::GetContacts(*m_impl);
 }
 
-bool World::IsAwake(ContactID id) const
+const Contact& World::GetContact(ContactID id) const
 {
-    return ::playrho::d2::IsAwake(*m_impl, id);
+    return ::playrho::d2::GetContact(*m_impl, id);
 }
 
-LinearVelocity World::GetTangentSpeed(ContactID id) const
+void World::SetContact(ContactID id, const Contact& value)
 {
-    return ::playrho::d2::GetTangentSpeed(*m_impl, id);
-}
-
-void World::SetTangentSpeed(ContactID id, LinearVelocity value)
-{
-    ::playrho::d2::SetTangentSpeed(*m_impl, id, value);
-}
-
-bool World::IsTouching(ContactID id) const
-{
-    return ::playrho::d2::IsTouching(*m_impl, id);
-}
-
-bool World::NeedsFiltering(ContactID id) const
-{
-    return ::playrho::d2::NeedsFiltering(*m_impl, id);
-}
-
-bool World::NeedsUpdating(ContactID id) const
-{
-    return ::playrho::d2::NeedsUpdating(*m_impl, id);
-}
-
-bool World::HasValidToi(ContactID id) const
-{
-    return ::playrho::d2::HasValidToi(*m_impl, id);
-}
-
-Real World::GetToi(ContactID id) const
-{
-    return ::playrho::d2::GetToi(*m_impl, id);
-}
-
-FixtureID World::GetFixtureA(ContactID id) const
-{
-    return ::playrho::d2::GetFixtureA(*m_impl, id);
-}
-
-FixtureID World::GetFixtureB(ContactID id) const
-{
-    return ::playrho::d2::GetFixtureB(*m_impl, id);
-}
-
-BodyID World::GetBodyA(ContactID id) const
-{
-    return ::playrho::d2::GetBodyA(*m_impl, id);
-}
-
-BodyID World::GetBodyB(ContactID id) const
-{
-    return ::playrho::d2::GetBodyB(*m_impl, id);
-}
-
-ChildCounter World::GetChildIndexA(ContactID id) const
-{
-    return ::playrho::d2::GetChildIndexA(*m_impl, id);
-}
-
-ChildCounter World::GetChildIndexB(ContactID id) const
-{
-    return ::playrho::d2::GetChildIndexB(*m_impl, id);
-}
-
-TimestepIters World::GetToiCount(ContactID id) const
-{
-    return ::playrho::d2::GetToiCount(*m_impl, id);
-}
-
-Real World::GetDefaultFriction(ContactID id) const
-{
-    return ::playrho::d2::GetDefaultFriction(*m_impl, id);
-}
-
-Real World::GetDefaultRestitution(ContactID id) const
-{
-    return ::playrho::d2::GetDefaultRestitution(*m_impl, id);
-}
-
-Real World::GetFriction(ContactID id) const
-{
-    return ::playrho::d2::GetFriction(*m_impl, id);
-}
-
-Real World::GetRestitution(ContactID id) const
-{
-    return ::playrho::d2::GetRestitution(*m_impl, id);
-}
-
-void World::SetFriction(ContactID id, Real value)
-{
-    ::playrho::d2::SetFriction(*m_impl, id, value);
-}
-
-void World::SetRestitution(ContactID id, Real value)
-{
-    ::playrho::d2::SetRestitution(*m_impl, id, value);
+    ::playrho::d2::SetContact(*m_impl, id, value);
 }
 
 const Manifold& World::GetManifold(ContactID id) const
 {
     return ::playrho::d2::GetManifold(*m_impl, id);
-}
-
-bool World::IsEnabled(ContactID id) const
-{
-    return ::playrho::d2::IsEnabled(*m_impl, id);
-}
-
-void World::SetEnabled(ContactID id)
-{
-    ::playrho::d2::SetEnabled(*m_impl, id);
-}
-
-void World::UnsetEnabled(ContactID id)
-{
-    ::playrho::d2::UnsetEnabled(*m_impl, id);
 }
 
 } // namespace d2
