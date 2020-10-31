@@ -1,6 +1,7 @@
 /*
  * Original work Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
  * Modified work Copyright (c) 2017 Louis Langholtz https://github.com/louis-langholtz/PlayRho
+ * TypeCast code derived from the LLVM Project https://llvm.org/LICENSE.txt
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -264,6 +265,10 @@ public:
         return shape.m_self? shape.m_self->GetType_(): GetTypeID<void>();
     }
 
+    /// @brief Converts the given shape into its current configuration value.
+    /// @note The design for this was based off the design of the C++17 <code>std::any</code>
+    ///   class and its associated <code>std::any_cast</code> function. The code for this is based
+    ///   off of the <code>std::any</code> code from the LLVM Project.
     template <typename T>
     friend auto TypeCast(const Shape* value) noexcept
     {

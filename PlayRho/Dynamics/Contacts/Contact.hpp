@@ -721,6 +721,7 @@ inline auto GetFriction(const Contact& contact) noexcept
 /// @details Overrides the default friction mixture.
 /// @note This value persists until set or reset.
 /// @warning Behavior is undefined if given a negative friction value.
+/// @param contact The contact whose friction should be set.
 /// @param value Co-efficient of friction value of zero or greater.
 /// @throws std::out_of_range If given an invalid contact identifier.
 /// @see GetFriction.

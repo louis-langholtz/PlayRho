@@ -96,10 +96,19 @@ public:
     /// @brief Proxy container type alias.
     using Proxies = std::vector<ProxyId>;
 
+    /// @brief Fixture listener.
     using FixtureListener = std::function<void(FixtureID)>;
+
+    /// @brief Joint listener.
     using JointListener = std::function<void(JointID)>;
+
+    /// @brief Contact listener.
     using ContactListener = std::function<void(ContactID)>;
+
+    /// @brief Manifold contact listener.
     using ManifoldContactListener = std::function<void(ContactID, const Manifold&)>;
+
+    /// @brief Impulses contact listener.
     using ImpulsesContactListener = std::function<void(ContactID, const ContactImpulsesList&, unsigned)>;
 
     struct ContactUpdateConf;
@@ -117,13 +126,17 @@ public:
     explicit WorldImpl(const WorldConf& def = GetDefaultWorldConf());
 
     /// @brief Copy constructor.
+    /// @details Copy constructs this world with a deep copy of the given world.
     WorldImpl(const WorldImpl& other) = default;
 
+    /// @brief Assignment operator.
+    /// @details Copy assigns this world with a deep copy of the given world.
     WorldImpl& operator=(const WorldImpl& other) = default;
 
     /// @brief Destructor.
-    /// @details All physics entities are destroyed and all dynamically allocated memory
-    ///    is released.
+    /// @details All physics entities are destroyed and all memory is released.
+    /// @note This will call the <code>Clear()</code> function.
+    /// @see Clear.
     ~WorldImpl() noexcept;
 
     /// @}

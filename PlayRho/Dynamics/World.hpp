@@ -173,22 +173,14 @@ public:
 
     /// @brief Copy constructor.
     /// @details Copy constructs this world with a deep copy of the given world.
-    /// @post The state of this world is like that of the given world except this world now
-    ///   has deep copies of the given world with pointers having the new addresses of the
-    ///   new memory required for those copies.
     World(const World& other);
 
     /// @brief Assignment operator.
     /// @details Copy assigns this world with a deep copy of the given world.
-    /// @post The state of this world is like that of the given world except this world now
-    ///   has deep copies of the given world with pointers having the new addresses of the
-    ///   new memory required for those copies.
-    /// @warning This method should not be called while the world is locked!
-    /// @throws WrongState if this method is called while the world is locked.
     World& operator=(const World& other);
 
     /// @brief Destructor.
-    /// @details All physics entities are destroyed and all allocated memory is released.
+    /// @details All physics entities are destroyed and all memory is released.
     /// @note This will call the <code>Clear()</code> function.
     /// @see Clear.
     ~World() noexcept;
