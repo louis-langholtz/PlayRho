@@ -336,6 +336,26 @@ TEST(PulleyJointConf, InitVelocityColdStartResetsImpulse)
     EXPECT_EQ(jd.impulse, 0_Ns);
 }
 
+TEST(PulleyJointConf, InitVelocitySetsMass)
+{
+    auto stepConf = StepConf{};
+    auto jd = PulleyJointConf{};
+    jd.bodyA = BodyID(0u);
+    jd.bodyB = BodyID(1u);
+    std::vector<BodyConstraint> bodies;
+    bodies.push_back(BodyConstraint{
+        Real(1)/4_kg, InvRotInertia{}, Length2{}, Position{}, Velocity{}
+    });
+    bodies.push_back(BodyConstraint{
+        Real(1)/4_kg, InvRotInertia{}, Length2{}, Position{}, Velocity{}
+    });
+    stepConf.dtRatio = Real(1);
+    stepConf.doWarmStart = false;
+    ASSERT_EQ(jd.mass, 0_kg);
+    EXPECT_NO_THROW(InitVelocity(jd, bodies, stepConf, ConstraintSolverConf{}));
+    EXPECT_EQ(jd.mass, 2_kg);
+}
+
 TEST(PulleyJointConf, SolveVelocity)
 {
     auto jd = PulleyJointConf{};
