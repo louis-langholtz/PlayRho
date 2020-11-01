@@ -203,7 +203,7 @@ private:
             CreateFixture(GetWorld(), body2, shape);
             
             const auto pulleyConf = GetPulleyJointConf(GetWorld(), body1, body2, ganchor1, ganchor2,
-                anchor1, anchor2).UseRatio(1.3f);
+                                                       anchor1, anchor2).UseRatio(1.3f);
             m_pulleyJoint = CreateJoint(GetWorld(), pulleyConf);
         }
     }
