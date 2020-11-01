@@ -1,8 +1,12 @@
 <map id="playrho::ArrayAllocator&lt; T &gt;" name="playrho::ArrayAllocator&lt; T &gt;">
-<area shape="rect" id="node1" title="Array allocator." alt="" coords="5,143,192,170"/>
-<area shape="rect" id="node2" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="395,5,550,47"/>
-<area shape="rect" id="node3" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="391,71,555,112"/>
-<area shape="rect" id="node4" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="393,136,552,177"/>
-<area shape="rect" id="node5" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="395,201,550,243"/>
-<area shape="rect" id="node6" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="389,267,556,308"/>
+<area shape="rect" id="node1" title="Array allocator." alt="" coords="5,274,192,301"/>
+<area shape="rect" id="node2" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="425,5,580,47"/>
+<area shape="rect" id="node3" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="421,71,585,112"/>
+<area shape="rect" id="node4" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="409,136,596,177"/>
+<area shape="rect" id="node5" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="425,201,580,243"/>
+<area shape="rect" id="node6" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="425,267,580,308"/>
+<area shape="rect" id="node7" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="425,332,580,373"/>
+<area shape="rect" id="node8" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="425,397,580,439"/>
+<area shape="rect" id="node9" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="425,463,580,504"/>
+<area shape="rect" id="node10" href="$classplayrho_1_1ArrayAllocator.html" title=" " alt="" coords="419,528,586,569"/>
 </map>

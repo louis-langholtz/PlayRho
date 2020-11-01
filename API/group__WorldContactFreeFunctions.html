@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">0.11.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -109,6 +109,12 @@ Functions</h2></td></tr>
 <a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho_1_1d2.html#acd3332ed6985dc65c60e8e6ea41c898b">KeyedContactPtr</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#ga5ba0f1fe0a6e9a140c4d264f61f7440e">playrho::d2::GetContacts</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world) noexcept</td></tr>
 <tr class="memdesc:ga5ba0f1fe0a6e9a140c4d264f61f7440e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the contacts recognized within the given world. <br /></td></tr>
 <tr class="separator:ga5ba0f1fe0a6e9a140c4d264f61f7440e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac283a088c9613f5ac5470c1d2f6c94a7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gac283a088c9613f5ac5470c1d2f6c94a7">playrho::d2::GetContact</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
+<tr class="memdesc:gac283a088c9613f5ac5470c1d2f6c94a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identified contact.  <a href="group__WorldContactFreeFunctions.html#gac283a088c9613f5ac5470c1d2f6c94a7">More...</a><br /></td></tr>
+<tr class="separator:gac283a088c9613f5ac5470c1d2f6c94a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf66ef8ef333d03072a9a9fe66cc0309a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gaf66ef8ef333d03072a9a9fe66cc0309a">playrho::d2::SetContact</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id, const <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp;value)</td></tr>
+<tr class="memdesc:gaf66ef8ef333d03072a9a9fe66cc0309a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified contact's state.  <a href="group__WorldContactFreeFunctions.html#gaf66ef8ef333d03072a9a9fe66cc0309a">More...</a><br /></td></tr>
+<tr class="separator:gaf66ef8ef333d03072a9a9fe66cc0309a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga386a732d954a80f48e6a3ac7beca1237"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#ga386a732d954a80f48e6a3ac7beca1237">playrho::d2::IsTouching</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
 <tr class="memdesc:ga386a732d954a80f48e6a3ac7beca1237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this contact touching?  <a href="group__WorldContactFreeFunctions.html#ga386a732d954a80f48e6a3ac7beca1237">More...</a><br /></td></tr>
 <tr class="separator:ga386a732d954a80f48e6a3ac7beca1237"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,7 +155,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaae57c7aca1c8c840ea8eb1ba1d44ef07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the contact has a valid TOI.  <a href="group__WorldContactFreeFunctions.html#gaae57c7aca1c8c840ea8eb1ba1d44ef07">More...</a><br /></td></tr>
 <tr class="separator:gaae57c7aca1c8c840ea8eb1ba1d44ef07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac62d6b0d4985566ff6e1ca9d3f1fa1e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gac62d6b0d4985566ff6e1ca9d3f1fa1e6">playrho::d2::GetToi</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
-<tr class="memdesc:gac62d6b0d4985566ff6e1ca9d3f1fa1e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact associated with the identified contact.  <a href="group__WorldContactFreeFunctions.html#gac62d6b0d4985566ff6e1ca9d3f1fa1e6">More...</a><br /></td></tr>
+<tr class="memdesc:gac62d6b0d4985566ff6e1ca9d3f1fa1e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact (TOI) as a fraction.  <a href="group__WorldContactFreeFunctions.html#gac62d6b0d4985566ff6e1ca9d3f1fa1e6">More...</a><br /></td></tr>
 <tr class="separator:gac62d6b0d4985566ff6e1ca9d3f1fa1e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad4c197be0402b89a41342cfe51523d45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gad4c197be0402b89a41342cfe51523d45">playrho::d2::GetDefaultFriction</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
 <tr class="memdesc:gad4c197be0402b89a41342cfe51523d45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default friction amount for the identified contact.  <a href="group__WorldContactFreeFunctions.html#gad4c197be0402b89a41342cfe51523d45">More...</a><br /></td></tr>
@@ -182,7 +188,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaf23360c9130e209a06ae0c111f274876"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the restitution to the default value.  <a href="group__WorldContactFreeFunctions.html#gaf23360c9130e209a06ae0c111f274876">More...</a><br /></td></tr>
 <tr class="separator:gaf23360c9130e209a06ae0c111f274876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2a314b9568d6553aaac1df1a0054250e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga6e944c18ed210626b5829b8ad2813fde">LinearVelocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#ga2a314b9568d6553aaac1df1a0054250e">playrho::d2::GetTangentSpeed</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
-<tr class="memdesc:ga2a314b9568d6553aaac1df1a0054250e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the desired tangent speed.  <a href="group__WorldContactFreeFunctions.html#ga2a314b9568d6553aaac1df1a0054250e">More...</a><br /></td></tr>
+<tr class="memdesc:ga2a314b9568d6553aaac1df1a0054250e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the tangent speed of the identified contact.  <a href="group__WorldContactFreeFunctions.html#ga2a314b9568d6553aaac1df1a0054250e">More...</a><br /></td></tr>
 <tr class="separator:ga2a314b9568d6553aaac1df1a0054250e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadaae6c7d046c05b5b2f79c2e0d3fedae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gadaae6c7d046c05b5b2f79c2e0d3fedae">playrho::d2::SetTangentSpeed</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id, <a class="el" href="group__PhysicalQuantities.html#ga6e944c18ed210626b5829b8ad2813fde">LinearVelocity</a> value)</td></tr>
 <tr class="memdesc:gadaae6c7d046c05b5b2f79c2e0d3fedae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the desired tangent speed for a conveyor belt behavior.  <a href="group__WorldContactFreeFunctions.html#gadaae6c7d046c05b5b2f79c2e0d3fedae">More...</a><br /></td></tr>
@@ -210,6 +216,12 @@ Functions</h2></td></tr>
 <a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; std::vector&lt; <a class="el" href="namespaceplayrho_1_1d2.html#acd3332ed6985dc65c60e8e6ea41c898b">KeyedContactPtr</a> &gt;::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#ga5ba0f1fe0a6e9a140c4d264f61f7440e">GetContacts</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world) noexcept</td></tr>
 <tr class="memdesc:ga5ba0f1fe0a6e9a140c4d264f61f7440e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the contacts recognized within the given world. <br /></td></tr>
 <tr class="separator:ga5ba0f1fe0a6e9a140c4d264f61f7440e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac283a088c9613f5ac5470c1d2f6c94a7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gac283a088c9613f5ac5470c1d2f6c94a7">GetContact</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
+<tr class="memdesc:gac283a088c9613f5ac5470c1d2f6c94a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the identified contact.  <a href="group__WorldContactFreeFunctions.html#gac283a088c9613f5ac5470c1d2f6c94a7">More...</a><br /></td></tr>
+<tr class="separator:gac283a088c9613f5ac5470c1d2f6c94a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf66ef8ef333d03072a9a9fe66cc0309a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gaf66ef8ef333d03072a9a9fe66cc0309a">SetContact</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id, const <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp;value)</td></tr>
+<tr class="memdesc:gaf66ef8ef333d03072a9a9fe66cc0309a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the identified contact's state.  <a href="group__WorldContactFreeFunctions.html#gaf66ef8ef333d03072a9a9fe66cc0309a">More...</a><br /></td></tr>
+<tr class="separator:gaf66ef8ef333d03072a9a9fe66cc0309a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga386a732d954a80f48e6a3ac7beca1237"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#ga386a732d954a80f48e6a3ac7beca1237">IsTouching</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
 <tr class="memdesc:ga386a732d954a80f48e6a3ac7beca1237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this contact touching?  <a href="group__WorldContactFreeFunctions.html#ga386a732d954a80f48e6a3ac7beca1237">More...</a><br /></td></tr>
 <tr class="separator:ga386a732d954a80f48e6a3ac7beca1237"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -250,7 +262,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaae57c7aca1c8c840ea8eb1ba1d44ef07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the contact has a valid TOI.  <a href="group__WorldContactFreeFunctions.html#gaae57c7aca1c8c840ea8eb1ba1d44ef07">More...</a><br /></td></tr>
 <tr class="separator:gaae57c7aca1c8c840ea8eb1ba1d44ef07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac62d6b0d4985566ff6e1ca9d3f1fa1e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gac62d6b0d4985566ff6e1ca9d3f1fa1e6">GetToi</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
-<tr class="memdesc:gac62d6b0d4985566ff6e1ca9d3f1fa1e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact associated with the identified contact.  <a href="group__WorldContactFreeFunctions.html#gac62d6b0d4985566ff6e1ca9d3f1fa1e6">More...</a><br /></td></tr>
+<tr class="memdesc:gac62d6b0d4985566ff6e1ca9d3f1fa1e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the time of impact (TOI) as a fraction.  <a href="group__WorldContactFreeFunctions.html#gac62d6b0d4985566ff6e1ca9d3f1fa1e6">More...</a><br /></td></tr>
 <tr class="separator:gac62d6b0d4985566ff6e1ca9d3f1fa1e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad4c197be0402b89a41342cfe51523d45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gad4c197be0402b89a41342cfe51523d45">GetDefaultFriction</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
 <tr class="memdesc:gad4c197be0402b89a41342cfe51523d45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default friction amount for the identified contact.  <a href="group__WorldContactFreeFunctions.html#gad4c197be0402b89a41342cfe51523d45">More...</a><br /></td></tr>
@@ -283,7 +295,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaf23360c9130e209a06ae0c111f274876"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the restitution to the default value.  <a href="group__WorldContactFreeFunctions.html#gaf23360c9130e209a06ae0c111f274876">More...</a><br /></td></tr>
 <tr class="separator:gaf23360c9130e209a06ae0c111f274876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2a314b9568d6553aaac1df1a0054250e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga6e944c18ed210626b5829b8ad2813fde">LinearVelocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#ga2a314b9568d6553aaac1df1a0054250e">GetTangentSpeed</a> (const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id)</td></tr>
-<tr class="memdesc:ga2a314b9568d6553aaac1df1a0054250e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the desired tangent speed.  <a href="group__WorldContactFreeFunctions.html#ga2a314b9568d6553aaac1df1a0054250e">More...</a><br /></td></tr>
+<tr class="memdesc:ga2a314b9568d6553aaac1df1a0054250e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the tangent speed of the identified contact.  <a href="group__WorldContactFreeFunctions.html#ga2a314b9568d6553aaac1df1a0054250e">More...</a><br /></td></tr>
 <tr class="separator:ga2a314b9568d6553aaac1df1a0054250e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadaae6c7d046c05b5b2f79c2e0d3fedae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__WorldContactFreeFunctions.html#gadaae6c7d046c05b5b2f79c2e0d3fedae">SetTangentSpeed</a> (<a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;world, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> id, <a class="el" href="group__PhysicalQuantities.html#ga6e944c18ed210626b5829b8ad2813fde">LinearVelocity</a> value)</td></tr>
 <tr class="memdesc:gadaae6c7d046c05b5b2f79c2e0d3fedae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the desired tangent speed for a conveyor belt behavior.  <a href="group__WorldContactFreeFunctions.html#gadaae6c7d046c05b5b2f79c2e0d3fedae">More...</a><br /></td></tr>
@@ -349,8 +361,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a925a0dd688f2918c07c62621049deeac">playrho::d2::World::GetBodyA()</a>.</p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a151">World.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -433,8 +445,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a90fe53a38d71efa6b111e415c63eb86d">playrho::d2::World::GetBodyB()</a>.</p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a152">World.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -517,8 +529,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a000c7daef2e94d74cf5cb7afedc9080e">playrho::d2::World::GetChildIndexA()</a>.</p>
-
 </div>
 </div>
 <a id="ga24ba41bdcb80e48e4bfebac362eb23db"></a>
@@ -599,8 +609,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a11320574af97901c8c4821e713a0bb74">playrho::d2::World::GetChildIndexB()</a>.</p>
-
 </div>
 </div>
 <a id="ga708d52132fb3f4ffbd49bf09ebc64740"></a>
@@ -638,6 +646,88 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get the child primitive index for fixture B. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gac283a088c9613f5ac5470c1d2f6c94a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac283a088c9613f5ac5470c1d2f6c94a7">&#9670;&nbsp;</a></span>GetContact() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp; GetContact </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a>&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the identified contact. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="reference">Referenced by <a class="el" href="group__WorldContactFreeFunctions.html#gaa8c24669bbb9850b21ef17c5217f0a45">playrho::d2::GetBodyA()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga379c87f1276cec0f81e35942dc144b27">playrho::d2::GetBodyB()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga24ba41bdcb80e48e4bfebac362eb23db">playrho::d2::GetChildIndexA()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga708d52132fb3f4ffbd49bf09ebc64740">playrho::d2::GetChildIndexB()</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a3c98acce7c7db7424044b9e29d198474">playrho::d2::World::GetContact()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gafb6a01c31ef63559cf6c5d7892e863d5">playrho::d2::GetFixtureA()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga697b60b490bbcdae46d962c97d780e07">playrho::d2::GetFixtureB()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga2ada1ba075b82b0e496f2a3a012ab495">playrho::d2::GetFriction()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gada6f0319b80bd4a62673f539e41d0b86">playrho::d2::GetRestitution()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga2a314b9568d6553aaac1df1a0054250e">playrho::d2::GetTangentSpeed()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gac62d6b0d4985566ff6e1ca9d3f1fa1e6">playrho::d2::GetToi()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gab2cf2abf28efb6e6ba368648b49484f0">playrho::d2::GetToiCount()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gaae57c7aca1c8c840ea8eb1ba1d44ef07">playrho::d2::HasValidToi()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga89c2757003061a1852f035d352ec68a5">playrho::d2::IsAwake()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga10fdf8ef9cbd8b1ff7b51334e72a6ef5">playrho::d2::IsEnabled()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga386a732d954a80f48e6a3ac7beca1237">playrho::d2::IsTouching()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gaadd14b7a073e106ee40d4488d131f673">playrho::d2::NeedsFiltering()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gaaada9701c50ea1607ecf3ae02c8f72c1">playrho::d2::NeedsUpdating()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gaaccb259506fe50452b035158ec12e47b">playrho::d2::SetEnabled()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga0fbfbb5c2714aac231db6f9b3794d9e4">playrho::d2::SetFriction()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga74f86083992d822f2b6376b98c8e8a79">playrho::d2::SetRestitution()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gadaae6c7d046c05b5b2f79c2e0d3fedae">playrho::d2::SetTangentSpeed()</a>, and <a class="el" href="group__WorldContactFreeFunctions.html#ga6b1a2071021c814a1ee5bfe54c994287">playrho::d2::UnsetEnabled()</a>.</p>
+
+</div>
+</div>
+<a id="gac283a088c9613f5ac5470c1d2f6c94a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac283a088c9613f5ac5470c1d2f6c94a7">&#9670;&nbsp;</a></span>GetContact() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp; GetContact </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a>&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the identified contact. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
@@ -742,8 +832,9 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a7650ec005ac318672148b287439f5adc" title="Sets the friction value for the identified contact.">SetFriction</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a7ef29daf86837d7a5db8333064299230">playrho::d2::WorldImpl::Add()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#a1245ee878eb351026699ccf10a41ab99">playrho::d2::World::GetDefaultFriction()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a7ef29daf86837d7a5db8333064299230">playrho::d2::WorldImpl::Add()</a>.</p>
 
 </div>
 </div>
@@ -788,6 +879,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldContactFreeFunctions.html#ga0fbfbb5c2714aac231db6f9b3794d9e4" title="Sets the friction value for the identified contact.">SetFriction</a>. </dd></dl>
 
 </div>
 </div>
@@ -824,8 +916,9 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a0ae0edd25827c1833828e25242fa98b3" title="Sets the restitution value for the identified contact.">SetRestitution</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a7ef29daf86837d7a5db8333064299230">playrho::d2::WorldImpl::Add()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#aadbf32e848d2c71d2a5aee88d8d04deb">playrho::d2::World::GetDefaultRestitution()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a7ef29daf86837d7a5db8333064299230">playrho::d2::WorldImpl::Add()</a>.</p>
 
 </div>
 </div>
@@ -870,6 +963,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldContactFreeFunctions.html#ga74f86083992d822f2b6376b98c8e8a79" title="Sets the restitution value for the specified contact.">SetRestitution</a>. </dd></dl>
 
 </div>
 </div>
@@ -906,10 +1000,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a164">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a180">World.cpp</a>.</dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ac7eeca74297845cb019bd5bbb888497a">playrho::d2::World::GetFixtureA()</a>.</p>
 
 </div>
 </div>
@@ -990,10 +1082,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a165">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a181">World.cpp</a>.</dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aa6d726438c3c7c4bdbce9eed83603246">playrho::d2::World::GetFixtureB()</a>.</p>
 
 </div>
 </div>
@@ -1074,9 +1164,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldContactFreeFunctions.html#ga0fbfbb5c2714aac231db6f9b3794d9e4" title="Sets the friction value for the identified contact.">SetFriction(World&amp; world, ContactID id, Real friction)</a> </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ad5c7f898484b7f3d34aaea61114163e2">playrho::d2::World::GetFriction()</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a7650ec005ac318672148b287439f5adc" title="Sets the friction value for the identified contact.">SetFriction</a>. </dd></dl>
 
 </div>
 </div>
@@ -1121,7 +1209,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldContactFreeFunctions.html#ga0fbfbb5c2714aac231db6f9b3794d9e4" title="Sets the friction value for the identified contact.">SetFriction(World&amp; world, ContactID id, Real friction)</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldContactFreeFunctions.html#ga0fbfbb5c2714aac231db6f9b3794d9e4" title="Sets the friction value for the identified contact.">SetFriction</a>. </dd></dl>
 
 </div>
 </div>
@@ -1204,7 +1292,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a188">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a208">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -1243,8 +1331,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldContactFreeFunctions.html#ga74f86083992d822f2b6376b98c8e8a79" title="Sets the restitution value for the specified contact.">SetRestitution(World&amp; world, ContactID id, Real restitution)</a> </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ad9d0776d5c8847f6a075cb13a09465d9">playrho::d2::World::GetRestitution()</a>.</p>
 
 </div>
 </div>
@@ -1319,18 +1405,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets the desired tangent speed. </p>
+<p>Gets the tangent speed of the identified contact. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd>SetTangentSpeed(ContactID id, LinearVelocity value). </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldContact_8cpp-example.html#a27">WorldContact.cpp</a>.</dd>
-</dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a91a0155a2ab363d43250426a70b8195c">playrho::d2::World::GetTangentSpeed()</a>.</p>
 
 </div>
 </div>
@@ -1368,14 +1449,13 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the desired tangent speed. </p>
+<p>Gets the tangent speed of the identified contact. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#ad3ed60bf5a81563abe1cd44021fd9299" title="Sets the desired tangent speed for a conveyor belt behavior.">SetTangentSpeed(ContactID id, LinearVelocity value)</a>. </dd></dl>
 
 </div>
 </div>
@@ -1405,15 +1485,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets the time of impact associated with the identified contact. </p>
+<p>Gets the time of impact (TOI) as a fraction. </p>
+<dl class="section note"><dt>Note</dt><dd>This is only valid if a TOI has been set. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Time of impact fraction in the range of 0 to 1 if set (where 1 means no actual impact in current time slot), otherwise undefined. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a942895f1fe21020a89e85b1d1082faf3">playrho::d2::World::GetToi()</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#ad1892c3cba1a2956c9b812b72c704793" title="Gets whether a TOI is set.">HasValidToi</a>. </dd></dl>
 
 </div>
 </div>
@@ -1451,13 +1532,16 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the time of impact associated with the identified contact. </p>
+<p>Gets the time of impact (TOI) as a fraction. </p>
+<dl class="section note"><dt>Note</dt><dd>This is only valid if a TOI has been set. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Time of impact fraction in the range of 0 to 1 if set (where 1 means no actual impact in current time slot), otherwise undefined. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldContactFreeFunctions.html#gaae57c7aca1c8c840ea8eb1ba1d44ef07" title="Whether or not the contact has a valid TOI.">HasValidToi</a>. </dd></dl>
 
 </div>
 </div>
@@ -1494,10 +1578,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldContact_8cpp-example.html#a31">WorldContact.cpp</a>.</dd>
-</dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a209b682bcc6992524f9bede0851feff3">playrho::d2::World::GetToiCount()</a>.</p>
 
 </div>
 </div>
@@ -1541,8 +1621,6 @@ Functions</h2></td></tr>
     <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a224">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -1660,11 +1738,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldContactFreeFunctions.html#gac62d6b0d4985566ff6e1ca9d3f1fa1e6" title="Gets the time of impact associated with the identified contact.">GetToi</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldContact_8cpp-example.html#a32">WorldContact.cpp</a>.</dd>
-</dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a0c7d8729c25223131150b82e787703ba">playrho::d2::World::HasValidToi()</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a81d39ed1266907d4ef7cb7ebff3fd83b" title="Gets the time of impact (TOI) as a fraction.">GetToi</a>. </dd></dl>
 
 </div>
 </div>
@@ -1709,9 +1783,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#a942895f1fe21020a89e85b1d1082faf3" title="Gets the time of impact (TOI) as a fraction.">GetToi</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a225">World.cpp</a>.</dd>
-</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldContactFreeFunctions.html#gac62d6b0d4985566ff6e1ca9d3f1fa1e6" title="Gets the time of impact (TOI) as a fraction.">GetToi</a>. </dd></dl>
 
 </div>
 </div>
@@ -1748,6 +1820,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho_1_1d2.html#a60201ffd45e0d810ff5d4fb90fd0bc4b" title="Awakens this body.">SetAwake</a>. </dd></dl>
 
 </div>
 </div>
@@ -1792,6 +1865,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldBodyFreeFunctions.html#ga67874514581554435fd8065942a33050" title="Wakes up the identified body.">SetAwake</a>. </dd></dl>
 
 </div>
 </div>
@@ -1908,16 +1982,13 @@ Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
-    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
   </table>
   </dd>
 </dl>
 </li>
 </ol>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a163">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a179">World.cpp</a>.</dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a8732375c0ae46b0334fda3c9c3837eb5">playrho::d2::World::IsTouching()</a>.</p>
 
 </div>
 </div>
@@ -1962,7 +2033,6 @@ Functions</h2></td></tr>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
-    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2004,8 +2074,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a4b2b46417f4cfe7d804efece8cec9ec1">playrho::d2::World::NeedsFiltering()</a>.</p>
 
 </div>
 </div>
@@ -2050,8 +2118,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a90">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -2088,8 +2154,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a9bb8d1cf212fd7ce905c8021153c97f0">playrho::d2::World::NeedsUpdating()</a>.</p>
 
 </div>
 </div>
@@ -2134,13 +2198,55 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a193">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
 <a id="ga74979affb98f9307f121fd8f4f63910d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga74979affb98f9307f121fd8f4f63910d">&#9670;&nbsp;</a></span>ResetFriction() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ResetFriction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a>&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets the friction mixture to the default value. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga74979affb98f9307f121fd8f4f63910d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga74979affb98f9307f121fd8f4f63910d">&#9670;&nbsp;</a></span>ResetFriction() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2181,50 +2287,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldContact_8cpp-example.html#a16">WorldContact.cpp</a>.</dd>
-</dl>
-
-</div>
-</div>
-<a id="ga74979affb98f9307f121fd8f4f63910d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga74979affb98f9307f121fd8f4f63910d">&#9670;&nbsp;</a></span>ResetFriction() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ResetFriction </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
-          <td class="paramname"><em>world</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a>&#160;</td>
-          <td class="paramname"><em>id</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Resets the friction mixture to the default value. </p>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
-  </table>
-  </dd>
 </dl>
 
 </div>
@@ -2399,6 +2461,100 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="gaf66ef8ef333d03072a9a9fe66cc0309a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf66ef8ef333d03072a9a9fe66cc0309a">&#9670;&nbsp;</a></span>SetContact() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetContact </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the identified contact's state. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#aaffdab67636a0117a8159117c5fec962">playrho::d2::World::SetContact()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gaaccb259506fe50452b035158ec12e47b">playrho::d2::SetEnabled()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga0fbfbb5c2714aac231db6f9b3794d9e4">playrho::d2::SetFriction()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#ga74f86083992d822f2b6376b98c8e8a79">playrho::d2::SetRestitution()</a>, <a class="el" href="group__WorldContactFreeFunctions.html#gadaae6c7d046c05b5b2f79c2e0d3fedae">playrho::d2::SetTangentSpeed()</a>, and <a class="el" href="group__WorldContactFreeFunctions.html#ga6b1a2071021c814a1ee5bfe54c994287">playrho::d2::UnsetEnabled()</a>.</p>
+
+</div>
+</div>
+<a id="gaf66ef8ef333d03072a9a9fe66cc0309a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf66ef8ef333d03072a9a9fe66cc0309a">&#9670;&nbsp;</a></span>SetContact() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetContact </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Contact.html">Contact</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the identified contact's state. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>If given an invalid contact identifier. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="gaaccb259506fe50452b035158ec12e47b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaaccb259506fe50452b035158ec12e47b">&#9670;&nbsp;</a></span>SetEnabled() <span class="overload">[1/4]</span></h2>
 
@@ -2514,7 +2670,7 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2565,7 +2721,7 @@ Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2632,10 +2788,6 @@ This value persists until set or reset. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldContact_8cpp-example.html#a19">WorldContact.cpp</a>.</dd>
-</dl>
-
-<p class="reference">Referenced by <a class="el" href="group__WorldContactFreeFunctions.html#ga74979affb98f9307f121fd8f4f63910d">playrho::d2::ResetFriction()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ab4b6a5117bd393e02626edc85270f207">playrho::d2::World::SetFriction()</a>.</p>
 
 </div>
 </div>
@@ -2737,10 +2889,6 @@ This value persists until set or reset. </dd></dl>
 <p>This override the default restitution mixture. </p><dl class="section note"><dt>Note</dt><dd>You can call this in "pre-solve" listeners. </dd>
 <dd>
 The value persists until you set or reset. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldContact_8cpp-example.html#a22">WorldContact.cpp</a>.</dd>
-</dl>
-
-<p class="reference">Referenced by <a class="el" href="group__WorldContactFreeFunctions.html#gaf23360c9130e209a06ae0c111f274876">playrho::d2::ResetRestitution()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#ae62bd0391fc476b7910c7f40e113c6fc">playrho::d2::World::SetRestitution()</a>.</p>
 
 </div>
 </div>
@@ -2830,11 +2978,6 @@ The value persists until you set or reset. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd>GetTangentSpeed(ContactID id) const. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldContact_8cpp-example.html#a26">WorldContact.cpp</a>.</dd>
-</dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#ad3ed60bf5a81563abe1cd44021fd9299">playrho::d2::World::SetTangentSpeed()</a>.</p>
 
 </div>
 </div>
@@ -2885,7 +3028,6 @@ The value persists until you set or reset. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html#a91a0155a2ab363d43250426a70b8195c" title="Gets the desired tangent speed.">GetTangentSpeed(ContactID id) const</a>. </dd></dl>
 
 </div>
 </div>
@@ -2922,10 +3064,6 @@ The value persists until you set or reset. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldContact_8cpp-example.html#a25">WorldContact.cpp</a>.</dd>
-</dl>
-
-<p class="reference">Referenced by <a class="el" href="group__WorldContactFreeFunctions.html#gae6e78139be823080998e2cf046601977">playrho::d2::SetEnabled()</a>, and <a class="el" href="classplayrho_1_1d2_1_1World.html#acaf915e877e7f4d6810787bfbb9a27b8">playrho::d2::World::UnsetEnabled()</a>.</p>
 
 </div>
 </div>
@@ -2978,7 +3116,7 @@ The value persists until you set or reset. </dd></dl>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 22 2020 21:57:27 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Oct 31 2020 21:08:04 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

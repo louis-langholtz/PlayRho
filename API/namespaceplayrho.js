@@ -17,7 +17,6 @@ var namespaceplayrho =
     [ "Filter", "structplayrho_1_1Filter.html", "structplayrho_1_1Filter" ],
     [ "FiniteChecker", "structplayrho_1_1FiniteChecker.html", "structplayrho_1_1FiniteChecker" ],
     [ "Fixed", "classplayrho_1_1Fixed.html", "classplayrho_1_1Fixed" ],
-    [ "FixtureProxy", "structplayrho_1_1FixtureProxy.html", "structplayrho_1_1FixtureProxy" ],
     [ "FlagGuard", "classplayrho_1_1FlagGuard.html", "classplayrho_1_1FlagGuard" ],
     [ "GrowableStack", "classplayrho_1_1GrowableStack.html", "classplayrho_1_1GrowableStack" ],
     [ "HasFunctor", "structplayrho_1_1HasFunctor.html", null ],

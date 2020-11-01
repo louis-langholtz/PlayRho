@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">0.11.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -585,7 +585,7 @@ template&lt;class T &gt; </div>
 <p>Gets the angle. </p>
 <dl class="section return"><dt>Returns</dt><dd>Angular value in the range of -Pi to +Pi radians. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1World.html#a26f53f3cef5fbc678cf653f0c5dc27c4">playrho::d2::World::GetAngle()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae216d87f0c3ab4660646133f58f3fb30">playrho::d2::Body::SetAcceleration()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae98a0cb0d1e3a1587d87f9b2d5cc7837">playrho::d2::WorldImpl::SetTransformation()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae216d87f0c3ab4660646133f58f3fb30">playrho::d2::Body::SetAcceleration()</a>.</p>
 
 </div>
 </div>
@@ -751,7 +751,7 @@ template&lt;typename T &gt; </div>
 
 <p>Gets the magnitude of the given value. </p>
 <dl class="section note"><dt>Note</dt><dd>Works for any type for which <code>GetMagnitudeSquared</code> also works. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a140">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a149">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Simplex.html#a21f4fbe4f435a497f723ba4692745d13">playrho::d2::Simplex::CalcMetric()</a>, <a class="el" href="group__WorldBodyFreeFunctions.html#ga63ff1a3d8b15fd8ab2fc36b475a6b643">playrho::d2::GetCentripetalForce()</a>, <a class="el" href="group__WorldJointFreeFunctions.html#gafd81bf06efee4b29f2490134f52baddc">playrho::d2::GetCurrentLengthA()</a>, <a class="el" href="group__WorldJointFreeFunctions.html#ga11679510e7348f8480d317a02ba3e2aa">playrho::d2::GetCurrentLengthB()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a6809a5b4f9ba4ad7957553a329fe1994">playrho::d2::GetDistanceJointConf()</a>, <a class="el" href="classplayrho_1_1d2_1_1ChainShapeConf.html#a212282d094f3bb26c9182f72eac6319d">playrho::d2::ChainShapeConf::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a4dab8e154250f9c2698059b6d28f75eb">playrho::d2::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a3addeb61645a20288e22687cbef5c6b3">playrho::d2::GetPulleyJointConf()</a>, <a class="el" href="group__Math.html#ga0c7d2525a406c1f83c0574e46a2cee32">playrho::Normalize()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a8866f1e40aceb9eb5d49d7b1031029cb">playrho::d2::SolvePosition()</a>.</p>
@@ -788,7 +788,7 @@ template&lt;typename T &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>For performance, use this instead of <code><a class="el" href="group__Math.html#ga85c114f129eeee63e60ec7d4703bbd65" title="Gets the magnitude of the given value.">GetMagnitude(T value)</a></code> (if possible). </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Non-negative value from 0 to infinity, or NaN. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="group__WorldBodyFreeFunctions.html#ga145bc2034162d0e6684d8d606211fb5e">playrho::d2::CalcGravitationalAcceleration()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a9d42f6f1b9cc7b4c13cb4a9b7f656f8e">playrho::d2::Cap()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::Distance()</a>, <a class="el" href="classplayrho_1_1d2_1_1VertexSet.html#a1ede2f852e19cf2156350aae630944d0">playrho::d2::VertexSet::find()</a>, <a class="el" href="group__WorldBodyFreeFunctions.html#ga7c37ce126c86487bd78a0b8d6734e182">playrho::d2::FindClosestBody()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ae1538594ce2f0d86da70bf832c0327bb">playrho::d2::GetConvexHullAsVector()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#accc0736257251f381353661320af972e">playrho::d2::GetLocalRotInertia()</a>, <a class="el" href="group__Math.html#ga85c114f129eeee63e60ec7d4703bbd65">playrho::GetMagnitude()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a01cc67c9aa01c505ed34fe9cdf0f6242">playrho::d2::GetManifold()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a9b3b93dcaddc83a77e35b87b54960d5e">playrho::d2::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a9be9a0a2f7a01c1e06d84cd092778883">playrho::d2::IsUnderActive()</a>, <a class="el" href="group__RayCastGroup.html#gad7a1b955a57a2bb043750bf32cde2549">playrho::d2::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae216d87f0c3ab4660646133f58f3fb30">playrho::d2::Body::SetAcceleration()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea0355003b79dd34492a714a7c08d025">playrho::d2::WorldImpl::SetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a24000d24706fa8d93f028b3b8b970a17">playrho::d2::SolvePosition()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a01d1ba8983bfece5db0f72889182169c">playrho::d2::SolveVelocity()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad5a1ff6589dc30ed3f9f7ee881f17bb2">playrho::d2::TestOverlap()</a>, <a class="el" href="group__TestPointGroup.html#gac9da7b3dd9e1dc5532a0f3c47f31f22e">playrho::d2::TestPoint()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aebd7935e321a9f4beaabe0dc49e56641">playrho::d2::WorldImpl::Update()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="group__WorldBodyFreeFunctions.html#ga145bc2034162d0e6684d8d606211fb5e">playrho::d2::CalcGravitationalAcceleration()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a9d42f6f1b9cc7b4c13cb4a9b7f656f8e">playrho::d2::Cap()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad01443fd4ea346d550ece90f7f92b1f4">playrho::d2::Distance()</a>, <a class="el" href="classplayrho_1_1d2_1_1VertexSet.html#a1ede2f852e19cf2156350aae630944d0">playrho::d2::VertexSet::find()</a>, <a class="el" href="group__WorldBodyFreeFunctions.html#ga7c37ce126c86487bd78a0b8d6734e182">playrho::d2::FindClosestBody()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ae1538594ce2f0d86da70bf832c0327bb">playrho::d2::GetConvexHullAsVector()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#accc0736257251f381353661320af972e">playrho::d2::GetLocalRotInertia()</a>, <a class="el" href="group__Math.html#ga85c114f129eeee63e60ec7d4703bbd65">playrho::GetMagnitude()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a01cc67c9aa01c505ed34fe9cdf0f6242">playrho::d2::GetManifold()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a9b3b93dcaddc83a77e35b87b54960d5e">playrho::d2::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad3851d0c3b764c9fe4dbaad8268ea201">playrho::d2::GetToiViaSat()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a9be9a0a2f7a01c1e06d84cd092778883">playrho::d2::IsUnderActive()</a>, <a class="el" href="group__RayCastGroup.html#gad7a1b955a57a2bb043750bf32cde2549">playrho::d2::RayCast()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae216d87f0c3ab4660646133f58f3fb30">playrho::d2::Body::SetAcceleration()</a>, <a class="el" href="group__WorldBodyFreeFunctions.html#gabe6b45c9a1aeec496d83c00a6f587740">playrho::d2::SetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a24000d24706fa8d93f028b3b8b970a17">playrho::d2::SolvePosition()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a01d1ba8983bfece5db0f72889182169c">playrho::d2::SolveVelocity()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#ad5a1ff6589dc30ed3f9f7ee881f17bb2">playrho::d2::TestOverlap()</a>, <a class="el" href="group__TestPointGroup.html#gac9da7b3dd9e1dc5532a0f3c47f31f22e">playrho::d2::TestPoint()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aebd7935e321a9f4beaabe0dc49e56641">playrho::d2::WorldImpl::Update()</a>.</p>
 
 </div>
 </div>
@@ -820,7 +820,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>Angle between -Pi and Pi radians inclusively where 0 represents the positive X-axis. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Math.html#gab870a9188fcc77c905807fa718a8268d" title="Computes the arc-tangent of the given y and x values.">Atan2</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="group__Math.html#ga8c036532db1260373b97c1d85360894c">playrho::GetDelta()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a5955bf7b1c0cdfa36d11adea236d9af4">playrho::d2::GetNormalized()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a08d262ca6ab57fd2ce3cd21ea8a1fb0f">playrho::d2::WorldImpl::UpdateContactTOIs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="group__Math.html#ga8c036532db1260373b97c1d85360894c">playrho::GetDelta()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a5955bf7b1c0cdfa36d11adea236d9af4">playrho::d2::GetNormalized()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a5c38917b15d28c3a98a2b84d121dbbb2">playrho::d2::WorldImpl::UpdateContactTOIs()</a>.</p>
 
 </div>
 </div>
@@ -888,8 +888,6 @@ template&lt;class T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A counter-clockwise 90-degree rotation of the given vector. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Math.html#ga87b57d633b625c58f9200a201e4664a7" title="Gets a vector clockwise (forward-clockwise) perpendicular to the given vector.">GetFwdPerpendicular</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea0355003b79dd34492a714a7c08d025">playrho::d2::WorldImpl::SetMassData()</a>.</p>
 
 </div>
 </div>
@@ -1349,8 +1347,6 @@ template&lt;std::size_t M, typename T1 , std::size_t N, typename T2 &gt; </div>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Transformation_matrix">https://en.wikipedia.org/wiki/Transformation_matrix</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aea0355003b79dd34492a714a7c08d025">playrho::d2::WorldImpl::SetMassData()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae98a0cb0d1e3a1587d87f9b2d5cc7837">playrho::d2::WorldImpl::SetTransformation()</a>.</p>
-
 </div>
 </div>
 </div><!-- contents -->
@@ -1358,7 +1354,7 @@ template&lt;std::size_t M, typename T1 , std::size_t N, typename T2 &gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 22 2020 21:57:27 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Oct 31 2020 21:08:04 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

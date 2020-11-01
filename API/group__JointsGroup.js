@@ -105,6 +105,7 @@ var group__JointsGroup =
         [ "GetBodyB_", "structplayrho_1_1d2_1_1Joint_1_1Concept.html#aaa29d4f68fdafe579328dcf064b7aea6", null ],
         [ "GetCollideConnected_", "structplayrho_1_1d2_1_1Joint_1_1Concept.html#aada82adff6890c399062f0ad3de3abac", null ],
         [ "GetData_", "structplayrho_1_1d2_1_1Joint_1_1Concept.html#a65729397f7b8d67f829a2f9ba059266c", null ],
+        [ "GetData_", "structplayrho_1_1d2_1_1Joint_1_1Concept.html#a280fc1a78054f51b2ccd555ca0ae11a0", null ],
         [ "GetType_", "structplayrho_1_1d2_1_1Joint_1_1Concept.html#ac15106beeb39fde087b92a1c17d3c205", null ],
         [ "InitVelocity_", "structplayrho_1_1d2_1_1Joint_1_1Concept.html#a76fbd3d470eec3bd0bbcc0f72ff6b905", null ],
         [ "ShiftOrigin_", "structplayrho_1_1d2_1_1Joint_1_1Concept.html#a610b2ae2830f054c211b53dae3b7f77d", null ],
@@ -119,6 +120,7 @@ var group__JointsGroup =
         [ "GetBodyB_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#a0a40d146cc208ef04cf5d345dceddb09", null ],
         [ "GetCollideConnected_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#a89c669a5776db8ecfd88bd8e54885d92", null ],
         [ "GetData_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#a548dfd242a7d9bb051a0f18b5df7d973", null ],
+        [ "GetData_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#aa86e32ce29035b1bd241f52b5be968a8", null ],
         [ "GetType_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#a2e625884f5d79423a66bdde8d92e6a22", null ],
         [ "InitVelocity_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#afc05c90150269264477f915b28698482", null ],
         [ "ShiftOrigin_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#afc132f0ed4b9742e35ff784d60a2bf82", null ],
@@ -197,8 +199,9 @@ var group__JointsGroup =
       [ "ShiftOrigin", "classplayrho_1_1d2_1_1Joint.html#ab1fd942ded9bd44c35ca6b53448853d8", null ],
       [ "SolvePosition", "classplayrho_1_1d2_1_1Joint.html#a27aed9f55469eccfe93c2ce023e97333", null ],
       [ "SolveVelocity", "classplayrho_1_1d2_1_1Joint.html#a1d169bb471d249df8a59a40f281419e0", null ],
-      [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#a85cd017ec5a3f06435a68ce526845e52", null ],
-      [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#a66f97131881a313957aba162ae69ff61", null ],
+      [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#af04a40472f1b7576171f3132305ce7a2", null ],
+      [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#afbe06ff8376003dcba368f69191b97fd", null ],
+      [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#acd73f8a32384e237c826c5d2f7c60cce", null ],
       [ "m_self", "classplayrho_1_1d2_1_1Joint.html#a82f04fcd5147affc2cdd86604c3c7758", null ]
     ] ],
     [ "MotorJointConf", "structplayrho_1_1d2_1_1MotorJointConf.html", [

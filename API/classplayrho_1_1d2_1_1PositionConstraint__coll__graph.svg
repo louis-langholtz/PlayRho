@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 1441;
+var viewWidth = 1458;
 var viewHeight = 404;
 var sectionId = 'dynsection-0';
 </script>
@@ -54,13 +54,13 @@ var sectionId = 'dynsection-0';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>playrho::d2::PositionConstraint</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-400 1437,-400 1437,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-400 1454,-400 1454,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title="Contact Position Constraint.">
-<polygon fill="#bfbfbf" stroke="black" points="1282,-183.5 1282,-202.5 1433,-202.5 1433,-183.5 1282,-183.5"/>
-<text text-anchor="middle" x="1357.5" y="-190.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::PositionConstraint</text>
+<polygon fill="#bfbfbf" stroke="black" points="1299,-188.5 1299,-207.5 1450,-207.5 1450,-188.5 1299,-188.5"/>
+<text text-anchor="middle" x="1374.5" y="-195.5" font-family="Helvetica,sans-Serif" font-size="10.00">playrho::d2::PositionConstraint</text>
 </a>
 </g>
 </g>
@@ -76,9 +76,9 @@ var sectionId = 'dynsection-0';
 <!-- Node2&#45;&gt;Node1 -->
 <g id="edge1" class="edge">
 <title>Node2&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1180.98,-253.15C1223.21,-238.68 1290.85,-215.5 1328.65,-202.55"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1179.67,-249.9 1171.35,-256.46 1181.94,-256.53 1179.67,-249.9"/>
-<text text-anchor="middle" x="1239" y="-243" font-family="Helvetica,sans-Serif" font-size="10.00"> manifold</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1185.69,-253.53C1230.55,-240.26 1300.53,-219.57 1341.2,-207.55"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1184.56,-250.21 1175.97,-256.4 1186.55,-256.92 1184.56,-250.21"/>
+<text text-anchor="middle" x="1247.5" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00"> manifold</text>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
@@ -127,7 +127,7 @@ var sectionId = 'dynsection-0';
 <title>Node3&#45;&gt;Node17</title>
 <path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M502.38,-168.79C583.46,-166.08 716.53,-157.54 828,-131 848.62,-126.09 871.41,-118.57 888.34,-112.56"/>
 <polygon fill="#9a32cd" stroke="#9a32cd" points="502.16,-165.29 492.27,-169.11 502.38,-172.29 502.16,-165.29"/>
-<text text-anchor="middle" x="681.5" y="-165" font-family="Helvetica,sans-Serif" font-size="10.00"> m_localCenter</text>
+<text text-anchor="middle" x="681.5" y="-166" font-family="Helvetica,sans-Serif" font-size="10.00"> m_localCenter</text>
 </g>
 <!-- Node22 -->
 <g id="node22" class="node">
@@ -359,26 +359,25 @@ var sectionId = 'dynsection-0';
 <g id="node16" class="node">
 <title>Node16</title>
 <g id="a_node16"><a xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="1119.5,-183.5 1119.5,-202.5 1165.5,-202.5 1165.5,-183.5 1119.5,-183.5"/>
-<text text-anchor="middle" x="1142.5" y="-190.5" font-family="Helvetica,sans-Serif" font-size="10.00">length)</text>
+<polygon fill="white" stroke="#bfbfbf" points="1119.5,-188.5 1119.5,-207.5 1165.5,-207.5 1165.5,-188.5 1119.5,-188.5"/>
+<text text-anchor="middle" x="1142.5" y="-195.5" font-family="Helvetica,sans-Serif" font-size="10.00">length)</text>
 </a>
 </g>
 </g>
 <!-- Node16&#45;&gt;Node1 -->
 <g id="edge17" class="edge">
 <title>Node16&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1175.93,-193C1203.94,-193 1245.51,-193 1281.7,-193"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="1175.89,-189.5 1165.89,-193 1175.89,-196.5 1175.89,-189.5"/>
-<text text-anchor="middle" x="1239" y="-207" font-family="Helvetica,sans-Serif" font-size="10.00"> m_radiusA</text>
-<text text-anchor="middle" x="1239" y="-196" font-family="Helvetica,sans-Serif" font-size="10.00">m_radiusB</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1175.6,-198C1207.39,-198 1257.21,-198 1298.91,-198"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1175.55,-194.5 1165.55,-198 1175.55,-201.5 1175.55,-194.5"/>
+<text text-anchor="middle" x="1247.5" y="-201" font-family="Helvetica,sans-Serif" font-size="10.00"> m_totalRadius</text>
 </g>
 <!-- Node17&#45;&gt;Node1 -->
 <g id="edge18" class="edge">
 <title>Node17&#45;&gt;Node1</title>
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M988.49,-114.12C1045.19,-123.19 1125.91,-136.94 1196,-152 1239.86,-161.43 1289.87,-174.59 1322.24,-183.43"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="988.97,-110.65 978.54,-112.53 987.87,-117.56 988.97,-110.65"/>
-<text text-anchor="middle" x="1142.5" y="-166" font-family="Helvetica,sans-Serif" font-size="10.00"> m_bodyA</text>
-<text text-anchor="middle" x="1142.5" y="-155" font-family="Helvetica,sans-Serif" font-size="10.00">m_bodyB</text>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M978.4,-114.36C1035.24,-124.87 1121.41,-141.2 1196,-157 1243.65,-167.09 1298.2,-179.88 1334.11,-188.47"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="978.96,-110.9 968.49,-112.53 977.69,-117.79 978.96,-110.9"/>
+<text text-anchor="middle" x="1142.5" y="-171" font-family="Helvetica,sans-Serif" font-size="10.00"> m_bodyA</text>
+<text text-anchor="middle" x="1142.5" y="-160" font-family="Helvetica,sans-Serif" font-size="10.00">m_bodyB</text>
 </g>
 <!-- Node18 -->
 <g id="node18" class="node">

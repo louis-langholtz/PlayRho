@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">0.11.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -259,7 +259,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <dd>
 This data structure is 104-bytes large (with 4-byte Real on at least one 64-bit platform). </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>World::Step. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a3">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#_a31">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#_a11">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#_a33">WorldFixture.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a3">World.cpp</a>, and <a class="el" href="WorldContact_8cpp-example.html#_a11">WorldContact.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a8e5a2fa02589f5bdd860ce232242cdc5"></a>
@@ -324,7 +324,7 @@ This data structure is 104-bytes large (with 4-byte Real on at least one 64-bit 
 
 <p>AABB extension. </p>
 <p>This is the extension that will be applied to Axis Aligned Bounding Box objects used in broad phase collision detection. This fattens AABBs in the dynamic tree. This allows proxies to move by a small amount without triggering a tree adjustment. </p><dl class="section note"><dt>Note</dt><dd>Should be greater than 0. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a203">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a225">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ad713a4babfc5defee138076b69dc372d">playrho::d2::WorldImpl::SolveReg()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a470ba039f845cd981e31584f37c1f1bf">playrho::d2::WorldImpl::SolveToi()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b">playrho::d2::WorldImpl::Step()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aa30a33558a9a9753b84fe65fca9068ba">playrho::d2::WorldImpl::SynchronizeProxies()</a>.</p>
@@ -478,7 +478,7 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 <p>Linear slop for position resolution. </p><dl class="section note"><dt>Note</dt><dd>Must be greater than 0. </dd>
 <dd>
 Used in both the regular and TOI phases of step processing. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a185">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a205">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a221c003be264927ac01d690712b4551b">playrho::d2::WorldImpl::Step()</a>.</p>
@@ -499,7 +499,7 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 
 <p>Maximum angular correction. </p>
 <dl class="section note"><dt>Note</dt><dd>Used in both the regular and TOI phases of step processing. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a202">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a224">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -556,7 +556,7 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 This value should be greater than the linear slop value. </dd>
 <dd>
 Used in both the regular and TOI phases of step processing. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a201">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a223">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -600,10 +600,10 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 
 <p>Maximum sub steps. </p>
 <p>This is the maximum number of sub-steps per contact in continuous physics simulation. In other words, this is the maximum number of times in a world step that a contact will have continuous collision resolution done for it. </p><dl class="section note"><dt>Note</dt><dd>Used in the TOI phase of step processing. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a206">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a228">World.cpp</a>.</dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a08d262ca6ab57fd2ce3cd21ea8a1fb0f">playrho::d2::WorldImpl::UpdateContactTOIs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a5c38917b15d28c3a98a2b84d121dbbb2">playrho::d2::WorldImpl::UpdateContactTOIs()</a>.</p>
 
 </div>
 </div>
@@ -660,7 +660,7 @@ Used in both the regular and TOI phases of step processing. </dd></dl>
 This limit is meant to prevent numerical problems. Adjusting this value isn't advised. </dd>
 <dd>
 Used in both the regular and TOI phases of step processing. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a204">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a226">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -699,7 +699,7 @@ Used in the regular phase processing of the step. </dd></dl>
 <p>Regular minimum separation. </p>
 <p>This is the minimum amount of separation there must be between regular-phase interacting bodies for intra-step position resolution to be considered successful and end before all of the regular position iterations have been done. </p><dl class="section note"><dt>Note</dt><dd>Used in the regular phase of step processing. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1StepConf.html#a03001af44bdce6e20979ccc98db4506b" title="Regular position iterations.">regPositionIterations</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a197">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a219">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -778,7 +778,7 @@ Used in the regular phase of step processing. </dd></dl>
 <p>Target depth of overlap for calculating the TOI for CCD eligible bodies. </p><dl class="section note"><dt>Note</dt><dd>Recommend value that's less than twice the world's minimum vertex radius. </dd>
 <dd>
 Used in the TOI phase of step processing. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a199">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a221">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -798,7 +798,7 @@ Used in the TOI phase of step processing. </dd></dl>
 <p>Time of impact minimum separation. </p>
 <p>This is the minimum amount of separation there must be between TOI-phase interacting bodies for intra-step position resolution to be considered successful and end before all of the TOI position iterations have been done. </p><dl class="section note"><dt>Note</dt><dd>Used in the TOI phase of step processing. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1StepConf.html#a86822faef8e85cdf0ec7e48a7a6b4721" title="TOI position iterations.">toiPositionIterations</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a198">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a220">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a8bdf8dc97f575361394a47d4f53c0146">playrho::d2::WorldImpl::SolveToiViaGS()</a>.</p>
@@ -883,7 +883,7 @@ Must not be subnormal. </dd>
 Must be less than the target depth. </dd>
 <dd>
 Used in the TOI phase of step processing. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a200">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a222">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -902,7 +902,7 @@ Used in the TOI phase of step processing. </dd></dl>
 
 <p>Velocity threshold. </p>
 <p>A velocity threshold for elastic collisions. Any collision with a relative linear velocity below this threshold will be treated as inelastic. </p><dl class="section note"><dt>Note</dt><dd>Used in both the regular and TOI phases of step processing. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a205">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a227">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -917,7 +917,7 @@ Used in the TOI phase of step processing. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="structplayrho_1_1StepConf.html">StepConf</a></li>
-    <li class="footer">Generated on Thu Oct 22 2020 21:57:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Oct 31 2020 21:08:04 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

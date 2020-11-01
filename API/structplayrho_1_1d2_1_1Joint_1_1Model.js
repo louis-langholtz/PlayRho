@@ -7,6 +7,7 @@ var structplayrho_1_1d2_1_1Joint_1_1Model =
     [ "GetBodyB_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#a0a40d146cc208ef04cf5d345dceddb09", null ],
     [ "GetCollideConnected_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#a89c669a5776db8ecfd88bd8e54885d92", null ],
     [ "GetData_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#a548dfd242a7d9bb051a0f18b5df7d973", null ],
+    [ "GetData_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#aa86e32ce29035b1bd241f52b5be968a8", null ],
     [ "GetType_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#a2e625884f5d79423a66bdde8d92e6a22", null ],
     [ "InitVelocity_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#afc05c90150269264477f915b28698482", null ],
     [ "ShiftOrigin_", "structplayrho_1_1d2_1_1Joint_1_1Model.html#afc132f0ed4b9742e35ff784d60a2bf82", null ],

@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">0.11.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -201,9 +201,9 @@ Friends</h2></td></tr>
 <tr class="memitem:aa0874edd64ea7ae7e3dc4a49f88cd15f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#aaf1da887137ee44e568f98dbc3944fdb">TypeID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Shape.html#aa0874edd64ea7ae7e3dc4a49f88cd15f">GetType</a> (const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> &amp;shape) noexcept</td></tr>
 <tr class="memdesc:aa0874edd64ea7ae7e3dc4a49f88cd15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the type info of the use of the given shape.  <a href="classplayrho_1_1d2_1_1Shape.html#aa0874edd64ea7ae7e3dc4a49f88cd15f">More...</a><br /></td></tr>
 <tr class="separator:aa0874edd64ea7ae7e3dc4a49f88cd15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5cc2677acebab1f72a7ad5f1f136e2b"><td class="memTemplParams" colspan="2"><a id="ab5cc2677acebab1f72a7ad5f1f136e2b"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ab5cc2677acebab1f72a7ad5f1f136e2b"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>TypeCast</b> (const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> *value) noexcept</td></tr>
+<tr class="memitem:ab5cc2677acebab1f72a7ad5f1f136e2b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab5cc2677acebab1f72a7ad5f1f136e2b"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Shape.html#ab5cc2677acebab1f72a7ad5f1f136e2b">TypeCast</a> (const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> *value) noexcept</td></tr>
+<tr class="memdesc:ab5cc2677acebab1f72a7ad5f1f136e2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the given shape into its current configuration value.  <a href="classplayrho_1_1d2_1_1Shape.html#ab5cc2677acebab1f72a7ad5f1f136e2b">More...</a><br /></td></tr>
 <tr class="separator:ab5cc2677acebab1f72a7ad5f1f136e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab78335ce5150860eca7156ef23cc6c4"><td class="memItemLeft" align="right" valign="top"><a id="aab78335ce5150860eca7156ef23cc6c4"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Shape.html#aab78335ce5150860eca7156ef23cc6c4">operator==</a> (const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> &amp;lhs, const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> &amp;rhs) noexcept</td></tr>
@@ -232,12 +232,15 @@ Related Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classplayrho_1_1d2_1_1Shape.html" title="Shape.">Shape</a>. </p>
 <p>A shape is used for collision detection. You can create a shape from any supporting type. Shapes are conceptually made up of zero or more convex child shapes where each child shape is made up of zero or more vertices and an associated radius called its "vertex radius".</p>
-<dl class="section note"><dt>Note</dt><dd>This class implements polymorphism without inheritance. This is based on a technique that's described by Sean Parent in his January 2017 Norwegian Developers Conference London talk "Better Code: Runtime Polymorphism". With this implementation, different shapes types can be had by constructing instances of this class with the different types that provide the required support. Different shapes of a given type meanwhile are had by providing different values for the type.</dd>
+<dl class="section note"><dt>Note</dt><dd>This class's design provides a "polymorphic value type" offering polymorphism without public inheritance. This is based on a technique that's described by Sean Parent in his January 2017 Norwegian Developers Conference London talk "Better Code: Runtime
+  Polymorphism". With this implementation, different shapes types can be had by constructing instances of this class with the different types that provide the required support. Different shapes of a given type meanwhile are had by providing different values for the type.</dd>
 <dd>
 This data structure is 32-bytes large (on at least one 64-bit platform).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape.">Fixture</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html" title="Fixture definition.">FixtureConf</a> </dd>
 <dd>
-<a href="https://youtu.be/QGcVXgEVMJg">https://youtu.be/QGcVXgEVMJg</a> </dd></dl>
+<a href="https://youtu.be/QGcVXgEVMJg">https://youtu.be/QGcVXgEVMJg</a> </dd>
+<dd>
+<a href="https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types">https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types</a> </dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a5">HelloWorld.cpp</a>, <a class="el" href="World_8cpp-example.html#_a44">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#_a22">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#_a8">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#_a3">WorldFixture.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -262,7 +265,7 @@ template&lt;typename T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -643,6 +646,37 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ab5cc2677acebab1f72a7ad5f1f136e2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5cc2677acebab1f72a7ad5f1f136e2b">&#9670;&nbsp;</a></span>TypeCast</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto TypeCast </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a> *&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts the given shape into its current configuration value. </p>
+<dl class="section note"><dt>Note</dt><dd>The design for this was based off the design of the C++17 <code>std::any</code> class and its associated <code>std::any_cast</code> function. The code for this is based off of the <code>std::any</code> code from the LLVM Project. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Shape.hpp</li>
 <li>AABB.hpp</li>
@@ -654,7 +688,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Shape.html">Shape</a></li>
-    <li class="footer">Generated on Thu Oct 22 2020 21:57:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Oct 31 2020 21:08:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

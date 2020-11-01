@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">0.11.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -154,9 +154,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1Fixed.html">Fixed</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Template class for fixed-point numbers.  <a href="classplayrho_1_1Fixed.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1FixtureProxy.html">FixtureProxy</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixture proxy.  <a href="structplayrho_1_1FixtureProxy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1FlagGuard.html">FlagGuard</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag guard type.  <a href="classplayrho_1_1FlagGuard.html#details">More...</a><br /></td></tr>
@@ -1887,14 +1884,6 @@ template&lt;&gt; </td></tr>
 <tr class="memitem:af39223a08030d99fb1c58ca8635e8cc3"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#af39223a08030d99fb1c58ca8635e8cc3">IsValid</a> (const <a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a> &amp;value) noexcept</td></tr>
 <tr class="memdesc:af39223a08030d99fb1c58ca8635e8cc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given value is valid. <br /></td></tr>
 <tr class="separator:af39223a08030d99fb1c58ca8635e8cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50d3e9b26987680aaa7841832ff2b6e8"><td class="memItemLeft" align="right" valign="top"><a id="a50d3e9b26987680aaa7841832ff2b6e8"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a50d3e9b26987680aaa7841832ff2b6e8">operator==</a> (const <a class="el" href="structplayrho_1_1FixtureProxy.html">FixtureProxy</a> &amp;lhs, const <a class="el" href="structplayrho_1_1FixtureProxy.html">FixtureProxy</a> &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:a50d3e9b26987680aaa7841832ff2b6e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
-<tr class="separator:a50d3e9b26987680aaa7841832ff2b6e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a863cc743bcca8462b6e1e8dfca2dd700"><td class="memItemLeft" align="right" valign="top"><a id="a863cc743bcca8462b6e1e8dfca2dd700"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a863cc743bcca8462b6e1e8dfca2dd700">operator!=</a> (const <a class="el" href="structplayrho_1_1FixtureProxy.html">FixtureProxy</a> &amp;lhs, const <a class="el" href="structplayrho_1_1FixtureProxy.html">FixtureProxy</a> &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:a863cc743bcca8462b6e1e8dfca2dd700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
-<tr class="separator:a863cc743bcca8462b6e1e8dfca2dd700"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7144be2e84f00033cbbadfae783092ed"><td class="memItemLeft" align="right" valign="top"><a id="a7144be2e84f00033cbbadfae783092ed"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:a7144be2e84f00033cbbadfae783092ed"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a7144be2e84f00033cbbadfae783092ed">IsValid</a> (const <a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34">JointID</a> &amp;value) noexcept</td></tr>
@@ -2160,13 +2149,11 @@ constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a38fa6c4a45ec8fd218dc962396685c3f">InvalidBodyID</a> = static_cast&lt;<a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a>&gt;(static_cast&lt;<a class="el" href="classplayrho_1_1strongtype_1_1IndexingNamedType.html#a26c321e7af854d857b43b4e4a2cd1a5f">BodyID::underlying_type</a>&gt;(-1))</td></tr>
 <tr class="memdesc:a38fa6c4a45ec8fd218dc962396685c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid body ID value. <br /></td></tr>
 <tr class="separator:a38fa6c4a45ec8fd218dc962396685c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a7a2c4f0ce447813c94060e1ea4c0f9"><td class="memItemLeft" align="right" valign="top"><a id="a1a7a2c4f0ce447813c94060e1ea4c0f9"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a1a7a2c4f0ce447813c94060e1ea4c0f9">InvalidContactID</a> = static_cast&lt;<a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a>&gt;(static_cast&lt;<a class="el" href="classplayrho_1_1strongtype_1_1IndexingNamedType.html#a26c321e7af854d857b43b4e4a2cd1a5f">ContactID::underlying_type</a>&gt;(-1))</td></tr>
-<tr class="memdesc:a1a7a2c4f0ce447813c94060e1ea4c0f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid contact ID value. <br /></td></tr>
+<tr class="memitem:a1a7a2c4f0ce447813c94060e1ea4c0f9"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a1a7a2c4f0ce447813c94060e1ea4c0f9">InvalidContactID</a></td></tr>
+<tr class="memdesc:a1a7a2c4f0ce447813c94060e1ea4c0f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid contact ID value.  <a href="namespaceplayrho.html#a1a7a2c4f0ce447813c94060e1ea4c0f9">More...</a><br /></td></tr>
 <tr class="separator:a1a7a2c4f0ce447813c94060e1ea4c0f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7fdab88f7f4e1fdf64360e3d9501fa1"><td class="memItemLeft" align="right" valign="top"><a id="ad7fdab88f7f4e1fdf64360e3d9501fa1"></a>
-constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad7fdab88f7f4e1fdf64360e3d9501fa1">InvalidFixtureID</a> = static_cast&lt;<a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a>&gt;(static_cast&lt;<a class="el" href="classplayrho_1_1strongtype_1_1IndexingNamedType.html#a26c321e7af854d857b43b4e4a2cd1a5f">FixtureID::underlying_type</a>&gt;(-1))</td></tr>
-<tr class="memdesc:ad7fdab88f7f4e1fdf64360e3d9501fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid fixture ID value. <br /></td></tr>
+<tr class="memitem:ad7fdab88f7f4e1fdf64360e3d9501fa1"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#ad7fdab88f7f4e1fdf64360e3d9501fa1">InvalidFixtureID</a></td></tr>
+<tr class="memdesc:ad7fdab88f7f4e1fdf64360e3d9501fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid fixture ID value.  <a href="namespaceplayrho.html#ad7fdab88f7f4e1fdf64360e3d9501fa1">More...</a><br /></td></tr>
 <tr class="separator:ad7fdab88f7f4e1fdf64360e3d9501fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67d10419efd6effdd41617992a76cbcd"><td class="memItemLeft" align="right" valign="top"><a id="a67d10419efd6effdd41617992a76cbcd"></a>
 constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceplayrho.html#a67d10419efd6effdd41617992a76cbcd">InvalidJointID</a> = static_cast&lt;<a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34">JointID</a>&gt;(static_cast&lt;<a class="el" href="classplayrho_1_1strongtype_1_1IndexingNamedType.html#a26c321e7af854d857b43b4e4a2cd1a5f">JointID::underlying_type</a>&gt;(-1))</td></tr>
@@ -2288,6 +2275,8 @@ Minimum value (with 9 fraction bits) is approximately 0.001953125.</dd></dl>
 
 <p>2-element vector of Force quantities. </p>
 <dl class="section note"><dt>Note</dt><dd>Often used as a 2-dimensional force vector. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a126">World.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -2400,7 +2389,7 @@ This data type is 6-bytes large (on at least one 64-bit platform). </dd></dl>
 
 <p>2-element vector of Length quantities. </p>
 <dl class="section note"><dt>Note</dt><dd>Often used as a 2-dimensional distance or location vector. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a32">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a93">WorldBody.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a28">WorldFixture.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a32">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a95">WorldBody.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a26">WorldFixture.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2419,7 +2408,7 @@ This data type is 6-bytes large (on at least one 64-bit platform). </dd></dl>
 
 <p>2-element vector of linear acceleration (<code>LinearAcceleration</code>) quantities. </p>
 <dl class="section note"><dt>Note</dt><dd>Often used as a 2-dimensional linear acceleration vector. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldBody_8cpp-example.html#a92">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldBody_8cpp-example.html#a94">WorldBody.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2438,7 +2427,7 @@ This data type is 6-bytes large (on at least one 64-bit platform). </dd></dl>
 
 <p>2-element vector of linear velocity (<code>LinearVelocity</code>) quantities. </p>
 <dl class="section note"><dt>Note</dt><dd>Often used as a 2-dimensional speed vector. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldBody_8cpp-example.html#a99">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldBody_8cpp-example.html#a101">WorldBody.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2553,7 +2542,7 @@ The note regarding division applies even more so when using a fixed-point type (
 <a href="https://en.cppreference.com/w/cpp/types/is_floating_point">https://en.cppreference.com/w/cpp/types/is_floating_point</a> </dd>
 <dd>
 <a href="https://en.cppreference.com/w/cpp/named_req/LiteralType">https://en.cppreference.com/w/cpp/named_req/LiteralType</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a4">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a16">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#a18">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a14">WorldFixture.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a4">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#a16">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#a18">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#a13">WorldFixture.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2609,7 +2598,7 @@ template&lt;typename T , typename Tuple &gt; </div>
 
 <p><a class="el" href="structplayrho_1_1Vector.html" title="Vector.">Vector</a> with 2 Real elements. </p>
 <dl class="section note"><dt>Note</dt><dd>This data structure is two-times the size of the <code>Real</code> type (or 8 using Real of float). </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="WorldBody_8cpp-example.html#a63">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a140">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a60">WorldBody.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -3268,6 +3257,8 @@ template&lt;typename T &gt; </div>
 <p>Whether or not the given type value is for a body which can have a non-zero acceleration associated with it. </p><dl class="section return"><dt>Returns</dt><dd><code>true</code> if the given type value represents an "accelerable" type value, <code>false</code> otherwise. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Would be nice if the Doxygen "relatedalso BodyType" command worked for this but seems that doesn't work for scoped enumeration. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a76e2dcc5aeb221351e51ad965e9de893" title="Is &quot;speedable&quot;.">IsSpeedable(BodyType)</a>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a120">World.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -3299,6 +3290,8 @@ template&lt;typename T &gt; </div>
 <p>Whether or not the given type value is for a body which can have a non-zero speed associated with it. </p><dl class="section return"><dt>Returns</dt><dd><code>true</code> if the given type value represents a "speedable" type value, <code>false</code> otherwise. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Would be nice if the Doxygen "relatedalso BodyType" command worked for this but seems that doesn't work for scoped enumeration. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#a6514752c0838613cfaf76ea7e03581cd" title="Is &quot;accelerable&quot;.">IsAccelerable(BodyType)</a>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a119">World.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -3472,7 +3465,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#aa3dff460d012f468637db6cd13c547d1">playrho::d2::GetDefaultFriction()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a6e6f412c2af9722fd3bc32527459feba">playrho::d2::GetDefaultFriction()</a>.</p>
 
 </div>
 </div>
@@ -3513,7 +3506,7 @@ template&lt;typename T &gt; </div>
 <p>Mixes restitution. </p>
 <p>Restitution mixing law. The idea is allow for anything to bounce off an inelastic surface. For example, a super ball bounces on anything. </p>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#aff608b7aa75d74b931045894e389718e">playrho::d2::GetDefaultRestitution()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#ab39f3148c511e1a82d6d23701423da43">playrho::d2::GetDefaultRestitution()</a>.</p>
 
 </div>
 </div>
@@ -5748,7 +5741,7 @@ template&lt;typename T &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>This just calls <code>GetNumValidIndices</code>. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceplayrho.html#ad136f8db9fd6c0c583c1890b8a3cc504" title="Gets the number of valid indices in the given collection of index pairs.">GetNumValidIndices</a> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a7ef29daf86837d7a5db8333064299230">playrho::d2::WorldImpl::Add()</a>, <a class="el" href="namespaceplayrho.html#a516a3bbb73371cdc53f348b67f43bb1f">Alloc()</a>, <a class="el" href="namespaceplayrho.html#a2943dd9a79b7fc1fa196af1208b00388">AllocArray()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#abbb25555e5d25ed67a4748136ff7b8ed">playrho::BlockAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1StackAllocator.html#a1ecbcaa8d549ffa1522e7128fc8a684d">playrho::StackAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1StackAllocator.html#a1902b15365c55a19c21e9103565e3447">playrho::StackAllocator::AllocateArray()</a>, <a class="el" href="group__Math.html#ga8b2133f1c2e5299035bb059d2d2706cd">Average()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">ComputeCentroid()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a2f8783a6e4bc66fa79b7543bfa9d4aa6">playrho::d2::WorldImpl::CreateFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a202439718913778688275f902686b76b">playrho::d2::WorldImpl::DestroyContacts()</a>, <a class="el" href="group__Math.html#ga451c8554a408d41df85a41650e0ada93">Dot()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a670e49e479c383fbbac52e1817883864">playrho::d2::WorldImpl::FindNewContacts()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a06536ee49cdb1a8c2f79de7522c8bd33">playrho::BlockAllocator::Free()</a>, <a class="el" href="classplayrho_1_1d2_1_1ConvexHull.html#a678ba0811f2975d1cdba6bfca49005eb">playrho::d2::ConvexHull::Get()</a>, <a class="el" href="group__Math.html#ga118f8284073d2638e48ef8f13177e1d9">GetAreaOfPolygon()</a>, <a class="el" href="namespaceplayrho.html#a8d45df992becf6fd54bb224344dcfd82">GetBlockSizeIndex()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a5aa7655c98fb927d7bc7a2fc936ec6cc">playrho::BlockAllocator::GetMaxBlockSize()</a>, <a class="el" href="group__Math.html#ga760adfdd1cb30bdae8cd37c1ae5da485">GetPolarMoment()</a>, <a class="el" href="namespaceplayrho_1_1detail.html#a9c6ef61517707043fb5fd0891647687f">playrho::detail::IsFull()</a>, <a class="el" href="namespaceplayrho.html#adb651f620aefb4ee65ec0cc8c10b27b0">Realloc()</a>, <a class="el" href="namespaceplayrho_1_1detail.html#aa36e925a21b13b0e209f0d29e350ac83">playrho::detail::Size()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae196693ff57c316f63922e0ab78f1f4b">playrho::d2::WorldImpl::UpdateContacts()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a7ef29daf86837d7a5db8333064299230">playrho::d2::WorldImpl::Add()</a>, <a class="el" href="namespaceplayrho.html#a516a3bbb73371cdc53f348b67f43bb1f">Alloc()</a>, <a class="el" href="namespaceplayrho.html#a2943dd9a79b7fc1fa196af1208b00388">AllocArray()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#abbb25555e5d25ed67a4748136ff7b8ed">playrho::BlockAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1StackAllocator.html#a1ecbcaa8d549ffa1522e7128fc8a684d">playrho::StackAllocator::Allocate()</a>, <a class="el" href="classplayrho_1_1StackAllocator.html#a1902b15365c55a19c21e9103565e3447">playrho::StackAllocator::AllocateArray()</a>, <a class="el" href="group__Math.html#ga8b2133f1c2e5299035bb059d2d2706cd">Average()</a>, <a class="el" href="group__Math.html#gae769785f0540a4b8960b282f6b105c14">ComputeCentroid()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a202439718913778688275f902686b76b">playrho::d2::WorldImpl::DestroyContacts()</a>, <a class="el" href="group__Math.html#ga451c8554a408d41df85a41650e0ada93">Dot()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a670e49e479c383fbbac52e1817883864">playrho::d2::WorldImpl::FindNewContacts()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a06536ee49cdb1a8c2f79de7522c8bd33">playrho::BlockAllocator::Free()</a>, <a class="el" href="classplayrho_1_1d2_1_1ConvexHull.html#a678ba0811f2975d1cdba6bfca49005eb">playrho::d2::ConvexHull::Get()</a>, <a class="el" href="group__Math.html#ga118f8284073d2638e48ef8f13177e1d9">GetAreaOfPolygon()</a>, <a class="el" href="namespaceplayrho.html#a8d45df992becf6fd54bb224344dcfd82">GetBlockSizeIndex()</a>, <a class="el" href="classplayrho_1_1BlockAllocator.html#a5aa7655c98fb927d7bc7a2fc936ec6cc">playrho::BlockAllocator::GetMaxBlockSize()</a>, <a class="el" href="group__Math.html#ga760adfdd1cb30bdae8cd37c1ae5da485">GetPolarMoment()</a>, <a class="el" href="namespaceplayrho_1_1detail.html#a9c6ef61517707043fb5fd0891647687f">playrho::detail::IsFull()</a>, <a class="el" href="namespaceplayrho.html#adb651f620aefb4ee65ec0cc8c10b27b0">Realloc()</a>, <a class="el" href="namespaceplayrho_1_1detail.html#aa36e925a21b13b0e209f0d29e350ac83">playrho::detail::Size()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae196693ff57c316f63922e0ab78f1f4b">playrho::d2::WorldImpl::UpdateContacts()</a>.</p>
 
 </div>
 </div>
@@ -6070,6 +6063,62 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a1a7a2c4f0ce447813c94060e1ea4c0f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a7a2c4f0ce447813c94060e1ea4c0f9">&#9670;&nbsp;</a></span>InvalidContactID</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto playrho::InvalidContactID</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>ContactID::underlying_type<span class="keyword">&gt;</span>(-1))</div>
+</div><!-- fragment -->
+<p>Invalid contact ID value. </p>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a16d79d6bcaf6a2c59f269d8587b83c72">playrho::d2::WorldImpl::Destroy()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a94672b3b074267dea80f38ea49cba7e2">playrho::d2::WorldImpl::GetSoonestContact()</a>, <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#ae007d8ebcdf237028b261cd99053f54a">playrho::d2::WorldImpl::InternalDestroy()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a470ba039f845cd981e31584f37c1f1bf">playrho::d2::WorldImpl::SolveToi()</a>.</p>
+
+</div>
+</div>
+<a id="ad7fdab88f7f4e1fdf64360e3d9501fa1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7fdab88f7f4e1fdf64360e3d9501fa1">&#9670;&nbsp;</a></span>InvalidFixtureID</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto playrho::InvalidFixtureID</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>FixtureID::underlying_type<span class="keyword">&gt;</span>(-1))</div>
+</div><!-- fragment -->
+<p>Invalid fixture ID value. </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a46">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a25">WorldBody.cpp</a>.</dd>
+</dl>
+
+</div>
+</div>
 <a id="a6fb9d11a6fadb62b0e68aee9797059ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6fb9d11a6fadb62b0e68aee9797059ad">&#9670;&nbsp;</a></span>InvalidIndexPair</h2>
 
@@ -6176,6 +6225,8 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p>Maximum number of bodies in a world. </p>
 <dl class="section note"><dt>Note</dt><dd>This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a156">World.cpp</a>.</dd>
+</dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a0ee4c488eef9a3c16977b7fc06b5dceb">playrho::d2::WorldImpl::AddToIsland()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a56f095fe60a50b47f9aa2f3d6664e3f2">playrho::d2::WorldImpl::CreateBody()</a>.</p>
 
@@ -6233,7 +6284,7 @@ template&lt;typename T &gt; </div>
 <p>Maximum number of fixtures in a world. </p>
 <dl class="section note"><dt>Note</dt><dd>This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a2f8783a6e4bc66fa79b7543bfa9d4aa6">playrho::d2::WorldImpl::CreateFixture()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a5c2c258e0632e2daa11c2f5e042eaa99">playrho::d2::WorldImpl::CreateFixture()</a>.</p>
 
 </div>
 </div>
@@ -6261,6 +6312,8 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p>Maximum number of joints in a world. </p>
 <dl class="section note"><dt>Note</dt><dd>This is 65534 based off <code>std::uint16_t</code> and eliminating one value for invalid. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a158">World.cpp</a>.</dd>
+</dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a3dbfa1501f8c3051e3cf96bc2304c3cb">playrho::d2::WorldImpl::CreateJoint()</a>.</p>
 
@@ -6346,6 +6399,8 @@ template&lt;typename T &gt; </div>
 <dd>
 Any narrowing is intentional.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://en.wikipedia.org/wiki/Pi">https://en.wikipedia.org/wiki/Pi</a> </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a147">World.cpp</a>.</dd>
+</dl>
 
 <p class="reference">Referenced by <a class="el" href="group__Math.html#ga0eb57dabfe8d3db9e509a6b493173358">GetAreaOfCircle()</a>, <a class="el" href="group__Math.html#ga3b8e8abc999b0c63cf1921b0edcf0b36">GetCircleVertices()</a>, <a class="el" href="group__Math.html#ga8c036532db1260373b97c1d85360894c">GetDelta()</a>, <a class="el" href="classplayrho_1_1d2_1_1ChainShapeConf.html#a212282d094f3bb26c9182f72eac6319d">playrho::d2::ChainShapeConf::GetMassData()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a9b3b93dcaddc83a77e35b87b54960d5e">playrho::d2::GetMassData()</a>, <a class="el" href="group__Math.html#ga156a2abff11f978a8df25efbf0c10147">GetNormalized()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#af55559c8bf6c930582040cf3321b691f">playrho::d2::InitVelocity()</a>.</p>
 
@@ -6438,12 +6493,14 @@ Any narrowing is intentional.</dd></dl>
 <div class="ttc" id="anamespaceplayrho_html_a7d449e0a1528c10ae0f241713fb69b40"><div class="ttname"><a href="namespaceplayrho.html#a7d449e0a1528c10ae0f241713fb69b40">playrho::IndexPair</a></div><div class="ttdeci">std::pair&lt; VertexCounter, VertexCounter &gt; IndexPair</div><div class="ttdoc">Index pair.</div><div class="ttdef"><b>Definition:</b> IndexPair.hpp:36</div></div>
 <div class="ttc" id="anamespaceplayrho_html_aaf1da887137ee44e568f98dbc3944fdb"><div class="ttname"><a href="namespaceplayrho.html#aaf1da887137ee44e568f98dbc3944fdb">playrho::TypeID</a></div><div class="ttdeci">strongtype::IndexingNamedType&lt; const char *const *, struct TypeIdentifier &gt; TypeID</div><div class="ttdoc">Type identifier.</div><div class="ttdef"><b>Definition:</b> TypeInfo.hpp:65</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a1fc125070a08100d083a1360f7167f87"><div class="ttname"><a href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">playrho::Real</a></div><div class="ttdeci">float Real</div><div class="ttdoc">Real-number type.</div><div class="ttdef"><b>Definition:</b> Real.hpp:69</div></div>
+<div class="ttc" id="anamespaceplayrho_html_aed10ace7e6267068035ed85c63b8a70a"><div class="ttname"><a href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">playrho::FixtureID</a></div><div class="ttdeci">strongtype::IndexingNamedType&lt; FixtureCounter, struct FixtureIdentifier &gt; FixtureID</div><div class="ttdoc">Fixture identifier.</div><div class="ttdef"><b>Definition:</b> FixtureID.hpp:30</div></div>
+<div class="ttc" id="anamespaceplayrho_html_a336c4ca7544bb36a0d3fe8eed609dd0d"><div class="ttname"><a href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">playrho::ContactID</a></div><div class="ttdeci">strongtype::IndexingNamedType&lt; ContactCounter, struct ContactIdentifier &gt; ContactID</div><div class="ttdoc">Contact identifier.</div><div class="ttdef"><b>Definition:</b> ContactID.hpp:30</div></div>
 <div class="ttc" id="anamespaceplayrho_html_a49c511e18a6b72260126cf763c1cd8df"><div class="ttname"><a href="namespaceplayrho.html#a49c511e18a6b72260126cf763c1cd8df">playrho::InvalidVertex</a></div><div class="ttdeci">constexpr auto InvalidVertex</div><div class="ttdoc">Invalid vertex index.</div><div class="ttdef"><b>Definition:</b> Settings.hpp:125</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li>
-    <li class="footer">Generated on Thu Oct 22 2020 21:57:27 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Oct 31 2020 21:08:04 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

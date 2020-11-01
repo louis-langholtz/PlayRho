@@ -1,3 +1,15 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structplayrho_1_1detail_1_1RayCastInput.html" title="Ray&#45;cast input data for N&#45;dimensions." alt="" coords="5,5,168,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,549,81,575"/>
+<area shape="rect" id="node2" href="$structplayrho_1_1detail_1_1IsIterableImpl_3_01T_00_01VoidT_3_01decltype_07begin_07std_1_1declval03f33fab2e1cfd99f2050523d9c757b5.html" title="Low&#45;level implementation of the is&#45;iterable true value trait." alt="" coords="129,5,344,135"/>
+<area shape="rect" id="node3" href="$structplayrho_1_1HasType_3_01T_00_01std_1_1tuple_3_01T_00_01Ts_8_8_8_01_4_01_4.html" title="Has&#45;type trait true class." alt="" coords="159,159,314,200"/>
+<area shape="rect" id="node4" href="$structplayrho_1_1IsAddable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_09T2_02_03_08_4_01_4.html" title="Template specializing for addable types." alt="" coords="154,225,319,281"/>
+<area shape="rect" id="node5" href="$structplayrho_1_1IsArithmetic_3_01T_00_01detail_1_1VoidT_3_01decltype_07T_02_03_09T_02_03_08_00_b814cc2528bb42392f7873932bc0c2c9.html" title="Template specialization for valid/acceptable &quot;arithmetic&quot; types." alt="" coords="145,305,328,390"/>
+<area shape="rect" id="node6" href="$structplayrho_1_1IsDivisable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_2T2_02_03_08_4_01_4.html" title="Template specializing for divisable types." alt="" coords="156,414,317,470"/>
+<area shape="rect" id="node7" href="$structplayrho_1_1IsEqualityComparable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_0a_0aT2_02_03_08_4_01_4.html" title="Template specialization for equality comparable types." alt="" coords="137,494,337,550"/>
+<area shape="rect" id="node8" href="$structplayrho_1_1IsInequalityComparable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_01_9_0aT2_02_03_08_4_01_4.html" title="Template specialization for inequality comparable types." alt="" coords="129,574,344,630"/>
+<area shape="rect" id="node9" href="$structplayrho_1_1IsMatrix_3_01Vector_3_01Vector_3_01T_00_01N_01_4_00_01M_01_4_01_4.html" title="Trait class specialization for checking if type is a matrix type." alt="" coords="169,654,305,710"/>
+<area shape="rect" id="node10" href="$structplayrho_1_1IsMultipliable_3_01T1_00_01T2_00_01detail_1_1VoidT_3_01decltype_07T1_02_03_01_5T2_02_03_08_4_01_4.html" title="Template specializing for multipliable types." alt="" coords="153,734,320,790"/>
+<area shape="rect" id="node11" href="$structplayrho_1_1IsSquareMatrix_3_01Vector_3_01Vector_3_01T_00_01M_01_4_00_01M_01_4_01_4.html" title="Trait class specialization for checking if type is a square matrix type." alt="" coords="157,814,317,870"/>
+<area shape="rect" id="node12" href="$structplayrho_1_1IsVector_3_01Vector_3_01T_00_01N_01_4_01_4.html" title="Trait class specialization for checking if type is a Vector type.." alt="" coords="172,895,301,936"/>
+<area shape="rect" id="node13" href="$structplayrho_1_1propagate__const_1_1is__propagate__const_3_01propagate__const_3_01U_01_4_01_4.html" title="Trait for detecting that the given type is this one." alt="" coords="129,961,344,1017"/>
 </map>

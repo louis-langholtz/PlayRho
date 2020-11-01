@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">0.11.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -115,10 +115,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Physical entity that exists within a <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>.  <a href="classplayrho_1_1d2_1_1Body.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Contact.html">playrho::d2::Contact</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A potential contact between the children of two <a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape.">Fixture</a> objects.  <a href="classplayrho_1_1d2_1_1Contact.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A potential contact between the children of two Fixture objects.  <a href="classplayrho_1_1d2_1_1Contact.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Fixture.html">playrho::d2::Fixture</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An association between a body and a shape.  <a href="classplayrho_1_1d2_1_1Fixture.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1FixtureConf.html">playrho::d2::FixtureConf</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixture definition.  <a href="structplayrho_1_1d2_1_1FixtureConf.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Joint.html">playrho::d2::Joint</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classplayrho_1_1d2_1_1Joint.html" title="Joint class.">Joint</a> class.  <a href="classplayrho_1_1d2_1_1Joint.html#details">More...</a><br /></td></tr>
@@ -135,7 +135,7 @@ Classes</h2></td></tr>
 <dd>
 <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480" title="Body identifier.">BodyID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a06a02a3c719ec0f20c5d2c43f5894bd9" title="Creates a rigid body with the given configuration.">World::CreateBody</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a093fe75c15777dfd466fc98f7496ef4a" title="Destroys the given body.">World::Destroy(BodyID)</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a27ef923d7f9f12cbede89dfd4c956847" title="Gets the world body range for this constant world.">World::GetBodies()</a>. </dd>
 <dd>
-<a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a" title="Fixture identifier.">FixtureID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a4e611d4cf7172edf4ecb744069e98655" title="Creates a fixture and attaches it to the given body.">World::CreateFixture</a>, World::Destroy(FixtureID). </dd>
+<a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a" title="Fixture identifier.">FixtureID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a393eb225bc5bc87c1538d894843855c2" title="Creates a fixture and attaches it to the given body.">World::CreateFixture</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ade8aa516e6338f48963952312e38397f" title="Destroys the identified fixture.">World::Destroy(FixtureID)</a>. </dd>
 <dd>
 <a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34" title="Joint identifier.">JointID</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#a88b81cc647667c20613706d08ef3f213" title="Creates a joint to constrain one or more bodies.">World::CreateJoint</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#aa8bb1c42524152358896de8eb2a89cb2" title="Destroys the identified joint.">World::Destroy(JointID)</a>, <a class="el" href="classplayrho_1_1d2_1_1World.html#ae84632604a8a5712afeaec510ebeb1ca" title="Gets the range of all joints attached to this body.">World::GetJoints()</a>. </dd>
 <dd>
@@ -148,7 +148,7 @@ Classes</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 22 2020 21:57:27 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Oct 31 2020 21:08:04 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

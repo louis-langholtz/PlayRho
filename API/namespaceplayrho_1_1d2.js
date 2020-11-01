@@ -17,7 +17,6 @@ var namespaceplayrho_1_1d2 =
     [ "DistanceProxy", "classplayrho_1_1d2_1_1DistanceProxy.html", "classplayrho_1_1d2_1_1DistanceProxy" ],
     [ "DynamicTree", "classplayrho_1_1d2_1_1DynamicTree.html", "classplayrho_1_1d2_1_1DynamicTree" ],
     [ "EdgeShapeConf", "classplayrho_1_1d2_1_1EdgeShapeConf.html", "classplayrho_1_1d2_1_1EdgeShapeConf" ],
-    [ "Fixture", "classplayrho_1_1d2_1_1Fixture.html", "classplayrho_1_1d2_1_1Fixture" ],
     [ "FixtureConf", "structplayrho_1_1d2_1_1FixtureConf.html", "structplayrho_1_1d2_1_1FixtureConf" ],
     [ "FrictionJointConf", "structplayrho_1_1d2_1_1FrictionJointConf.html", "structplayrho_1_1d2_1_1FrictionJointConf" ],
     [ "GearJointConf", "structplayrho_1_1d2_1_1GearJointConf.html", "structplayrho_1_1d2_1_1GearJointConf" ],

@@ -73,7 +73,8 @@ var classplayrho_1_1d2_1_1Joint =
     [ "ShiftOrigin", "classplayrho_1_1d2_1_1Joint.html#ab1fd942ded9bd44c35ca6b53448853d8", null ],
     [ "SolvePosition", "classplayrho_1_1d2_1_1Joint.html#a27aed9f55469eccfe93c2ce023e97333", null ],
     [ "SolveVelocity", "classplayrho_1_1d2_1_1Joint.html#a1d169bb471d249df8a59a40f281419e0", null ],
-    [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#a85cd017ec5a3f06435a68ce526845e52", null ],
-    [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#a66f97131881a313957aba162ae69ff61", null ],
+    [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#af04a40472f1b7576171f3132305ce7a2", null ],
+    [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#afbe06ff8376003dcba368f69191b97fd", null ],
+    [ "TypeCast", "classplayrho_1_1d2_1_1Joint.html#acd73f8a32384e237c826c5d2f7c60cce", null ],
     [ "m_self", "classplayrho_1_1d2_1_1Joint.html#a82f04fcd5147affc2cdd86604c3c7758", null ]
 ];

@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">0.11.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -94,7 +94,6 @@ $(document).ready(function(){initNavTree('classplayrho_1_1d2_1_1Body.html',''); 
 
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
@@ -117,25 +116,6 @@ Collaboration diagram for playrho::d2::Body:</div>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:af01bb0873b03733989811fd329b77a8a"><td class="memItemLeft" align="right" valign="top"><a id="af01bb0873b03733989811fd329b77a8a"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#af01bb0873b03733989811fd329b77a8a">Fixtures</a> = std::vector&lt; <a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a> &gt;</td></tr>
-<tr class="memdesc:af01bb0873b03733989811fd329b77a8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container type for fixtures. <br /></td></tr>
-<tr class="separator:af01bb0873b03733989811fd329b77a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a639cf6ae4c97fc6b35bede37f7898530"><td class="memItemLeft" align="right" valign="top"><a id="a639cf6ae4c97fc6b35bede37f7898530"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a639cf6ae4c97fc6b35bede37f7898530">KeyedJointPtr</a> = std::pair&lt; <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a>, <a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34">JointID</a> &gt;</td></tr>
-<tr class="memdesc:a639cf6ae4c97fc6b35bede37f7898530"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keyed joint pointer. <br /></td></tr>
-<tr class="separator:a639cf6ae4c97fc6b35bede37f7898530"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a657fd78d921a36fffb9f8b918f059042"><td class="memItemLeft" align="right" valign="top"><a id="a657fd78d921a36fffb9f8b918f059042"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a657fd78d921a36fffb9f8b918f059042">Joints</a> = std::vector&lt; <a class="el" href="classplayrho_1_1d2_1_1Body.html#a639cf6ae4c97fc6b35bede37f7898530">KeyedJointPtr</a> &gt;</td></tr>
-<tr class="memdesc:a657fd78d921a36fffb9f8b918f059042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container type for joints. <br /></td></tr>
-<tr class="separator:a657fd78d921a36fffb9f8b918f059042"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ba88ece0a09c327f597ffb3262195c6"><td class="memItemLeft" align="right" valign="top"><a id="a4ba88ece0a09c327f597ffb3262195c6"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a4ba88ece0a09c327f597ffb3262195c6">Contacts</a> = std::vector&lt; <a class="el" href="namespaceplayrho_1_1d2.html#acd3332ed6985dc65c60e8e6ea41c898b">KeyedContactPtr</a> &gt;</td></tr>
-<tr class="memdesc:a4ba88ece0a09c327f597ffb3262195c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container type for contacts. <br /></td></tr>
-<tr class="separator:a4ba88ece0a09c327f597ffb3262195c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac5e27cc11b54440d88a89c02c76a554d"><td class="memItemLeft" align="right" valign="top"><a id="ac5e27cc11b54440d88a89c02c76a554d"></a>
@@ -239,15 +219,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a96bfa8ab63b3246ed714573661ea3618">SetSleepingAllowed</a> (bool flag) noexcept</td></tr>
 <tr class="memdesc:a96bfa8ab63b3246ed714573661ea3618"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can disable sleeping on this body. If you disable sleeping, the body will be woken. <br /></td></tr>
 <tr class="separator:a96bfa8ab63b3246ed714573661ea3618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7abc6b8d4f50e3e3e703f53f66ecc035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7abc6b8d4f50e3e3e703f53f66ecc035">IsAwake</a> () const noexcept</td></tr>
+<tr class="memdesc:a7abc6b8d4f50e3e3e703f53f66ecc035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the awake/asleep state of this body.  <a href="classplayrho_1_1d2_1_1Body.html#a7abc6b8d4f50e3e3e703f53f66ecc035">More...</a><br /></td></tr>
+<tr class="separator:a7abc6b8d4f50e3e3e703f53f66ecc035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a794c4c1b8c24aedb959c5031a5ecde69"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69">SetAwake</a> () noexcept</td></tr>
 <tr class="memdesc:a794c4c1b8c24aedb959c5031a5ecde69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awakens this body.  <a href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69">More...</a><br /></td></tr>
 <tr class="separator:a794c4c1b8c24aedb959c5031a5ecde69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7821d9464b36b49ddb893ef9c2c262fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">UnsetAwake</a> () noexcept</td></tr>
 <tr class="memdesc:a7821d9464b36b49ddb893ef9c2c262fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this body to asleep if sleeping is allowed.  <a href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">More...</a><br /></td></tr>
 <tr class="separator:a7821d9464b36b49ddb893ef9c2c262fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7abc6b8d4f50e3e3e703f53f66ecc035"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a7abc6b8d4f50e3e3e703f53f66ecc035">IsAwake</a> () const noexcept</td></tr>
-<tr class="memdesc:a7abc6b8d4f50e3e3e703f53f66ecc035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the awake/asleep state of this body.  <a href="classplayrho_1_1d2_1_1Body.html#a7abc6b8d4f50e3e3e703f53f66ecc035">More...</a><br /></td></tr>
-<tr class="separator:a7abc6b8d4f50e3e3e703f53f66ecc035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc897bc2cda122d02fccdb3c5c11049d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#abc897bc2cda122d02fccdb3c5c11049d">GetUnderActiveTime</a> () const noexcept</td></tr>
 <tr class="memdesc:abc897bc2cda122d02fccdb3c5c11049d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets this body's under-active time value.  <a href="classplayrho_1_1d2_1_1Body.html#abc897bc2cda122d02fccdb3c5c11049d">More...</a><br /></td></tr>
 <tr class="separator:abc897bc2cda122d02fccdb3c5c11049d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,24 +240,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae12e0fe1aeb00907e47aba6d4edd0746"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae12e0fe1aeb00907e47aba6d4edd0746">IsEnabled</a> () const noexcept</td></tr>
 <tr class="memdesc:ae12e0fe1aeb00907e47aba6d4edd0746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the enabled/disabled state of the body.  <a href="classplayrho_1_1d2_1_1Body.html#ae12e0fe1aeb00907e47aba6d4edd0746">More...</a><br /></td></tr>
 <tr class="separator:ae12e0fe1aeb00907e47aba6d4edd0746"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad73e9bd7dbdeaaaa4618cbb06559dd34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ad73e9bd7dbdeaaaa4618cbb06559dd34">SetFixedRotation</a> (bool flag)</td></tr>
-<tr class="memdesc:ad73e9bd7dbdeaaaa4618cbb06559dd34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this body to have fixed rotation.  <a href="classplayrho_1_1d2_1_1Body.html#ad73e9bd7dbdeaaaa4618cbb06559dd34">More...</a><br /></td></tr>
-<tr class="separator:ad73e9bd7dbdeaaaa4618cbb06559dd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0fdff8babc197f1a75794e4fb822343"><td class="memItemLeft" align="right" valign="top"><a id="ab0fdff8babc197f1a75794e4fb822343"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab0fdff8babc197f1a75794e4fb822343">IsFixedRotation</a> () const noexcept</td></tr>
 <tr class="memdesc:ab0fdff8babc197f1a75794e4fb822343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this body have fixed rotation? <br /></td></tr>
 <tr class="separator:ab0fdff8babc197f1a75794e4fb822343"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae059618bbfd4b357f27fe4ac386481bf"><td class="memItemLeft" align="right" valign="top"><a id="ae059618bbfd4b357f27fe4ac386481bf"></a>
-<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; Fixtures::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae059618bbfd4b357f27fe4ac386481bf">GetFixtures</a> () const noexcept</td></tr>
-<tr class="memdesc:ae059618bbfd4b357f27fe4ac386481bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the range of all constant fixtures attached to this body. <br /></td></tr>
-<tr class="separator:ae059618bbfd4b357f27fe4ac386481bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37df2e2dbffffcd11c88e556ea74310c"><td class="memItemLeft" align="right" valign="top"><a id="a37df2e2dbffffcd11c88e556ea74310c"></a>
-<a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; Joints::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a37df2e2dbffffcd11c88e556ea74310c">GetJoints</a> () const noexcept</td></tr>
-<tr class="memdesc:a37df2e2dbffffcd11c88e556ea74310c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the range of all joints attached to this body. <br /></td></tr>
-<tr class="separator:a37df2e2dbffffcd11c88e556ea74310c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a163dc94f3a556f214725ecbf079abad2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; Contacts::const_iterator &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a163dc94f3a556f214725ecbf079abad2">GetContacts</a> () const noexcept</td></tr>
-<tr class="memdesc:a163dc94f3a556f214725ecbf079abad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the container of all contacts attached to this body.  <a href="classplayrho_1_1d2_1_1Body.html#a163dc94f3a556f214725ecbf079abad2">More...</a><br /></td></tr>
-<tr class="separator:a163dc94f3a556f214725ecbf079abad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad73e9bd7dbdeaaaa4618cbb06559dd34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ad73e9bd7dbdeaaaa4618cbb06559dd34">SetFixedRotation</a> (bool flag)</td></tr>
+<tr class="memdesc:ad73e9bd7dbdeaaaa4618cbb06559dd34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this body to have fixed rotation.  <a href="classplayrho_1_1d2_1_1Body.html#ad73e9bd7dbdeaaaa4618cbb06559dd34">More...</a><br /></td></tr>
+<tr class="separator:ad73e9bd7dbdeaaaa4618cbb06559dd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac24b9d27e4778ea7942c89ef793d9eea"><td class="memItemLeft" align="right" valign="top"><a id="ac24b9d27e4778ea7942c89ef793d9eea"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ac24b9d27e4778ea7942c89ef793d9eea">IsMassDataDirty</a> () const noexcept</td></tr>
 <tr class="memdesc:ac24b9d27e4778ea7942c89ef793d9eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the mass data for this body is "dirty". <br /></td></tr>
@@ -297,53 +266,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a5b9292b31662dc542896a8f471e82e43">UnsetMassDataDirty</a> () noexcept</td></tr>
 <tr class="memdesc:a5b9292b31662dc542896a8f471e82e43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the body from being in the mass data dirty state. <br /></td></tr>
 <tr class="separator:a5b9292b31662dc542896a8f471e82e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16f490bfafe795832bbcf78020e215c6"><td class="memItemLeft" align="right" valign="top"><a id="a16f490bfafe795832bbcf78020e215c6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a16f490bfafe795832bbcf78020e215c6">SetEnabledFlag</a> () noexcept</td></tr>
-<tr class="memdesc:a16f490bfafe795832bbcf78020e215c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the enabled flag. <br /></td></tr>
-<tr class="separator:a16f490bfafe795832bbcf78020e215c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4251b5b60cb7de096e02ac7bb77dcd02"><td class="memItemLeft" align="right" valign="top"><a id="a4251b5b60cb7de096e02ac7bb77dcd02"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a4251b5b60cb7de096e02ac7bb77dcd02">UnsetEnabledFlag</a> () noexcept</td></tr>
-<tr class="memdesc:a4251b5b60cb7de096e02ac7bb77dcd02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the enabled flag. <br /></td></tr>
-<tr class="separator:a4251b5b60cb7de096e02ac7bb77dcd02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac82707b99df77bb1f9f408d9a6f04338"><td class="memItemLeft" align="right" valign="top"><a id="ac82707b99df77bb1f9f408d9a6f04338"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ac82707b99df77bb1f9f408d9a6f04338">Insert</a> (<a class="el" href="classplayrho_1_1ContactKey.html">ContactKey</a> key, <a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> contact)</td></tr>
-<tr class="memdesc:ac82707b99df77bb1f9f408d9a6f04338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts the given key and contact. <br /></td></tr>
-<tr class="separator:ac82707b99df77bb1f9f408d9a6f04338"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1b3cbf185007537d170094c59313633"><td class="memItemLeft" align="right" valign="top"><a id="ab1b3cbf185007537d170094c59313633"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab1b3cbf185007537d170094c59313633">Insert</a> (<a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34">JointID</a> joint, <a class="el" href="namespaceplayrho.html#a7eca3bae90f8196745191dc0e4c78480">BodyID</a> other)</td></tr>
-<tr class="memdesc:ab1b3cbf185007537d170094c59313633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts the given joint into this body's joints list. <br /></td></tr>
-<tr class="separator:ab1b3cbf185007537d170094c59313633"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04e255e0ff077e99a37d7aca819acbe6"><td class="memItemLeft" align="right" valign="top"><a id="a04e255e0ff077e99a37d7aca819acbe6"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a04e255e0ff077e99a37d7aca819acbe6">Erase</a> (<a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a> contact)</td></tr>
-<tr class="memdesc:a04e255e0ff077e99a37d7aca819acbe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erases the given contact from this body's contacts list. <br /></td></tr>
-<tr class="separator:a04e255e0ff077e99a37d7aca819acbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96e3e2e79f1aced9501b8c193696c049"><td class="memItemLeft" align="right" valign="top"><a id="a96e3e2e79f1aced9501b8c193696c049"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a96e3e2e79f1aced9501b8c193696c049">Erase</a> (const std::function&lt; bool(<a class="el" href="namespaceplayrho.html#a336c4ca7544bb36a0d3fe8eed609dd0d">ContactID</a>)&gt; &amp;callback)</td></tr>
-<tr class="memdesc:a96e3e2e79f1aced9501b8c193696c049"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erases the contacts that the given function returns true for. <br /></td></tr>
-<tr class="separator:a96e3e2e79f1aced9501b8c193696c049"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed7f36bb05d13ef0e07edace84c2671c"><td class="memItemLeft" align="right" valign="top"><a id="aed7f36bb05d13ef0e07edace84c2671c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aed7f36bb05d13ef0e07edace84c2671c">Erase</a> (<a class="el" href="namespaceplayrho.html#a429482b9caddf0eca0531edcf62deb34">JointID</a> joint)</td></tr>
-<tr class="memdesc:aed7f36bb05d13ef0e07edace84c2671c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erases the given joint from this body's joints list. <br /></td></tr>
-<tr class="separator:aed7f36bb05d13ef0e07edace84c2671c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07aec23c7028b1d0a9b42ee4f49651a4"><td class="memItemLeft" align="right" valign="top"><a id="a07aec23c7028b1d0a9b42ee4f49651a4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a07aec23c7028b1d0a9b42ee4f49651a4">ClearContacts</a> () noexcept</td></tr>
-<tr class="memdesc:a07aec23c7028b1d0a9b42ee4f49651a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears this body's contacts list. <br /></td></tr>
-<tr class="separator:a07aec23c7028b1d0a9b42ee4f49651a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a168a877156cb60daaebc9905a8544991"><td class="memItemLeft" align="right" valign="top"><a id="a168a877156cb60daaebc9905a8544991"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a168a877156cb60daaebc9905a8544991">ClearJoints</a> () noexcept</td></tr>
-<tr class="memdesc:a168a877156cb60daaebc9905a8544991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears this body's joints list. <br /></td></tr>
-<tr class="separator:a168a877156cb60daaebc9905a8544991"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd77a8eabf6be865c42544c955de0d9c"><td class="memItemLeft" align="right" valign="top"><a id="afd77a8eabf6be865c42544c955de0d9c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#afd77a8eabf6be865c42544c955de0d9c">ClearFixtures</a> () noexcept</td></tr>
-<tr class="memdesc:afd77a8eabf6be865c42544c955de0d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the fixtures. <br /></td></tr>
-<tr class="separator:afd77a8eabf6be865c42544c955de0d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f3382a712a5573c2a476050d60513a3"><td class="memItemLeft" align="right" valign="top"><a id="a2f3382a712a5573c2a476050d60513a3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a2f3382a712a5573c2a476050d60513a3">SetEnabled</a> () noexcept</td></tr>
+<tr class="memdesc:a2f3382a712a5573c2a476050d60513a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the enabled state. <br /></td></tr>
+<tr class="separator:a2f3382a712a5573c2a476050d60513a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0caf1447c287fcfa4833726acd263439"><td class="memItemLeft" align="right" valign="top"><a id="a0caf1447c287fcfa4833726acd263439"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a0caf1447c287fcfa4833726acd263439">UnsetEnabled</a> () noexcept</td></tr>
+<tr class="memdesc:a0caf1447c287fcfa4833726acd263439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the enabled flag. <br /></td></tr>
+<tr class="separator:a0caf1447c287fcfa4833726acd263439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05e6b63238fde68c2ca037bb3861f421"><td class="memItemLeft" align="right" valign="top"><a id="a05e6b63238fde68c2ca037bb3861f421"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a05e6b63238fde68c2ca037bb3861f421">SetInvRotI</a> (<a class="el" href="group__PhysicalQuantities.html#gafa6edf71110d3eef58f39dcbb8067ef4">InvRotInertia</a> v) noexcept</td></tr>
 <tr class="memdesc:a05e6b63238fde68c2ca037bb3861f421"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the inverse rotational inertia. <br /></td></tr>
 <tr class="separator:a05e6b63238fde68c2ca037bb3861f421"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa406549b09f4fc750af6b7d5667ec91a"><td class="memItemLeft" align="right" valign="top"><a id="aa406549b09f4fc750af6b7d5667ec91a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa406549b09f4fc750af6b7d5667ec91a">SetInvMass</a> (<a class="el" href="group__PhysicalQuantities.html#ga370c2a37515b6a8e79468113554f8ba9">InvMass</a> v) noexcept</td></tr>
-<tr class="memdesc:aa406549b09f4fc750af6b7d5667ec91a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the inverse mass. <br /></td></tr>
+<tr class="memitem:aa406549b09f4fc750af6b7d5667ec91a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa406549b09f4fc750af6b7d5667ec91a">SetInvMass</a> (<a class="el" href="group__PhysicalQuantities.html#ga370c2a37515b6a8e79468113554f8ba9">InvMass</a> v) noexcept</td></tr>
+<tr class="memdesc:aa406549b09f4fc750af6b7d5667ec91a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the inverse mass.  <a href="classplayrho_1_1d2_1_1Body.html#aa406549b09f4fc750af6b7d5667ec91a">More...</a><br /></td></tr>
 <tr class="separator:aa406549b09f4fc750af6b7d5667ec91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfb1bae5be9d852331ba9177950c46b1"><td class="memItemLeft" align="right" valign="top"><a id="acfb1bae5be9d852331ba9177950c46b1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#acfb1bae5be9d852331ba9177950c46b1">SetPosition0</a> (const <a class="el" href="structplayrho_1_1d2_1_1Position.html">Position</a> value) noexcept</td></tr>
@@ -371,14 +307,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a85808c07bc6d71dcfd8188456dcf91b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a85808c07bc6d71dcfd8188456dcf91b1">Advance</a> (<a class="el" href="namespaceplayrho.html#a1fc125070a08100d083a1360f7167f87">Real</a> value) noexcept</td></tr>
 <tr class="memdesc:a85808c07bc6d71dcfd8188456dcf91b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advances the body by a given time ratio.  <a href="classplayrho_1_1d2_1_1Body.html#a85808c07bc6d71dcfd8188456dcf91b1">More...</a><br /></td></tr>
 <tr class="separator:a85808c07bc6d71dcfd8188456dcf91b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54571d8181eec3e4843aa273c0c97fd0"><td class="memItemLeft" align="right" valign="top"><a id="a54571d8181eec3e4843aa273c0c97fd0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a54571d8181eec3e4843aa273c0c97fd0">AddFixture</a> (<a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a> fixture)</td></tr>
-<tr class="memdesc:a54571d8181eec3e4843aa273c0c97fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the given fixture to the given body. <br /></td></tr>
-<tr class="separator:a54571d8181eec3e4843aa273c0c97fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a253ccc02ac021b4e74270ade83624caf"><td class="memItemLeft" align="right" valign="top"><a id="a253ccc02ac021b4e74270ade83624caf"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a253ccc02ac021b4e74270ade83624caf">RemoveFixture</a> (<a class="el" href="namespaceplayrho.html#aed10ace7e6267068035ed85c63b8a70a">FixtureID</a> fixture)</td></tr>
-<tr class="memdesc:a253ccc02ac021b4e74270ade83624caf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the given fixture from the given body. <br /></td></tr>
-<tr class="separator:a253ccc02ac021b4e74270ade83624caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-types"></a>
 Private Types</h2></td></tr>
@@ -413,17 +341,6 @@ static <a class="el" href="classplayrho_1_1d2_1_1Body.html#a14412adef52584335909
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a0e1882846b47d2b591f3d74bb6b9f42a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classplayrho_1_1d2_1_1Body.html#af01bb0873b03733989811fd329b77a8a">Fixtures</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a0e1882846b47d2b591f3d74bb6b9f42a">m_fixtures</a></td></tr>
-<tr class="memdesc:a0e1882846b47d2b591f3d74bb6b9f42a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache of associated fixtures (owned by world).  <a href="classplayrho_1_1d2_1_1Body.html#a0e1882846b47d2b591f3d74bb6b9f42a">More...</a><br /></td></tr>
-<tr class="separator:a0e1882846b47d2b591f3d74bb6b9f42a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03e05c704e8a2c79e35472beaca11c84"><td class="memItemLeft" align="right" valign="top"><a id="a03e05c704e8a2c79e35472beaca11c84"></a>
-<a class="el" href="classplayrho_1_1d2_1_1Body.html#a4ba88ece0a09c327f597ffb3262195c6">Contacts</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a03e05c704e8a2c79e35472beaca11c84">m_contacts</a></td></tr>
-<tr class="memdesc:a03e05c704e8a2c79e35472beaca11c84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache of associated contacts (owned by world). <br /></td></tr>
-<tr class="separator:a03e05c704e8a2c79e35472beaca11c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16e33d957143cbbdf34a7207c57e5f49"><td class="memItemLeft" align="right" valign="top"><a id="a16e33d957143cbbdf34a7207c57e5f49"></a>
-<a class="el" href="classplayrho_1_1d2_1_1Body.html#a657fd78d921a36fffb9f8b918f059042">Joints</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a16e33d957143cbbdf34a7207c57e5f49">m_joints</a></td></tr>
-<tr class="memdesc:a16e33d957143cbbdf34a7207c57e5f49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache of associated joints (owned by world). <br /></td></tr>
-<tr class="separator:a16e33d957143cbbdf34a7207c57e5f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c701dabeb187c6ef4f6e8c5bec02d11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a2c701dabeb187c6ef4f6e8c5bec02d11">m_xf</a></td></tr>
 <tr class="memdesc:a2c701dabeb187c6ef4f6e8c5bec02d11"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html" title="Describes a geometric transformation.">Transformation</a> for body origin.  <a href="classplayrho_1_1d2_1_1Body.html#a2c701dabeb187c6ef4f6e8c5bec02d11">More...</a><br /></td></tr>
 <tr class="separator:a2c701dabeb187c6ef4f6e8c5bec02d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -469,12 +386,108 @@ Private Attributes</h2></td></tr>
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
 </td></tr>
+<tr class="memitem:a421d2110404320428fd02b2d0b70a062"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7">BodyType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a421d2110404320428fd02b2d0b70a062">GetType</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a421d2110404320428fd02b2d0b70a062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the type of this body.  <a href="classplayrho_1_1d2_1_1Body.html#a421d2110404320428fd02b2d0b70a062">More...</a><br /></td></tr>
+<tr class="separator:a421d2110404320428fd02b2d0b70a062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a12afea1828cb69ef94cbfa86018069"><td class="memItemLeft" align="right" valign="top"><a id="a2a12afea1828cb69ef94cbfa86018069"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a2a12afea1828cb69ef94cbfa86018069">SetType</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7">BodyType</a> value) noexcept</td></tr>
+<tr class="memdesc:a2a12afea1828cb69ef94cbfa86018069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type of this body. <br /></td></tr>
+<tr class="separator:a2a12afea1828cb69ef94cbfa86018069"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81c7a4d7696e9cb367f241afdbbe2727"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a81c7a4d7696e9cb367f241afdbbe2727">IsSpeedable</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a81c7a4d7696e9cb367f241afdbbe2727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is "speedable".  <a href="classplayrho_1_1d2_1_1Body.html#a81c7a4d7696e9cb367f241afdbbe2727">More...</a><br /></td></tr>
+<tr class="separator:a81c7a4d7696e9cb367f241afdbbe2727"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1f05a05c6dd9eb2a1564cc10032f16c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ad1f05a05c6dd9eb2a1564cc10032f16c">IsAccelerable</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:ad1f05a05c6dd9eb2a1564cc10032f16c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is "accelerable".  <a href="classplayrho_1_1d2_1_1Body.html#ad1f05a05c6dd9eb2a1564cc10032f16c">More...</a><br /></td></tr>
+<tr class="separator:ad1f05a05c6dd9eb2a1564cc10032f16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c4170f49badbf1881f371cfb5f466a7"><td class="memItemLeft" align="right" valign="top"><a id="a8c4170f49badbf1881f371cfb5f466a7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a8c4170f49badbf1881f371cfb5f466a7">IsImpenetrable</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a8c4170f49badbf1881f371cfb5f466a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this body treated like a bullet for continuous collision detection? <br /></td></tr>
+<tr class="separator:a8c4170f49badbf1881f371cfb5f466a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf57ca63655e6eaeac4d9e65a8e7be4a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aaf57ca63655e6eaeac4d9e65a8e7be4a">SetImpenetrable</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:aaf57ca63655e6eaeac4d9e65a8e7be4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the impenetrable status of this body.  <a href="classplayrho_1_1d2_1_1Body.html#aaf57ca63655e6eaeac4d9e65a8e7be4a">More...</a><br /></td></tr>
+<tr class="separator:aaf57ca63655e6eaeac4d9e65a8e7be4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ba4e5cbd12444be971a3ef0a09e9931"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a2ba4e5cbd12444be971a3ef0a09e9931">UnsetImpenetrable</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a2ba4e5cbd12444be971a3ef0a09e9931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the impenetrable status of this body.  <a href="classplayrho_1_1d2_1_1Body.html#a2ba4e5cbd12444be971a3ef0a09e9931">More...</a><br /></td></tr>
+<tr class="separator:a2ba4e5cbd12444be971a3ef0a09e9931"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cde4db895479e9ddd34c70425811699"><td class="memItemLeft" align="right" valign="top"><a id="a1cde4db895479e9ddd34c70425811699"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a1cde4db895479e9ddd34c70425811699">IsSleepingAllowed</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a1cde4db895479e9ddd34c70425811699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether or not this body allowed to sleep. <br /></td></tr>
+<tr class="separator:a1cde4db895479e9ddd34c70425811699"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54802d32ec837cdf5669744c20dca3df"><td class="memItemLeft" align="right" valign="top"><a id="a54802d32ec837cdf5669744c20dca3df"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a54802d32ec837cdf5669744c20dca3df">SetSleepingAllowed</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, bool value) noexcept</td></tr>
+<tr class="memdesc:a54802d32ec837cdf5669744c20dca3df"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can disable sleeping on this body. If you disable sleeping, the body will be woken. <br /></td></tr>
+<tr class="separator:a54802d32ec837cdf5669744c20dca3df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab930c47cedb9dc4fe0d6e178e7651d54"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab930c47cedb9dc4fe0d6e178e7651d54">IsEnabled</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:ab930c47cedb9dc4fe0d6e178e7651d54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the enabled/disabled state of the body.  <a href="classplayrho_1_1d2_1_1Body.html#ab930c47cedb9dc4fe0d6e178e7651d54">More...</a><br /></td></tr>
+<tr class="separator:ab930c47cedb9dc4fe0d6e178e7651d54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfae76ec0240c61e85bed996119d130e"><td class="memItemLeft" align="right" valign="top"><a id="abfae76ec0240c61e85bed996119d130e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#abfae76ec0240c61e85bed996119d130e">SetEnabled</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:abfae76ec0240c61e85bed996119d130e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the enabled state. <br /></td></tr>
+<tr class="separator:abfae76ec0240c61e85bed996119d130e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f8f4bd2d2daa7bbd38dbe9b0919f08e"><td class="memItemLeft" align="right" valign="top"><a id="a5f8f4bd2d2daa7bbd38dbe9b0919f08e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a5f8f4bd2d2daa7bbd38dbe9b0919f08e">UnsetEnabled</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a5f8f4bd2d2daa7bbd38dbe9b0919f08e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets the enabled state. <br /></td></tr>
+<tr class="separator:a5f8f4bd2d2daa7bbd38dbe9b0919f08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88826de33b9ad1fe847120458fe3a836"><td class="memItemLeft" align="right" valign="top"><a id="a88826de33b9ad1fe847120458fe3a836"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a88826de33b9ad1fe847120458fe3a836">SetEnabled</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, bool value) noexcept</td></tr>
+<tr class="memdesc:a88826de33b9ad1fe847120458fe3a836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the enabled state to the given value. <br /></td></tr>
+<tr class="separator:a88826de33b9ad1fe847120458fe3a836"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a139df81757401545db36e6fc6f030d75"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a139df81757401545db36e6fc6f030d75">IsAwake</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a139df81757401545db36e6fc6f030d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the awake/asleep state of this body.  <a href="classplayrho_1_1d2_1_1Body.html#a139df81757401545db36e6fc6f030d75">More...</a><br /></td></tr>
+<tr class="separator:a139df81757401545db36e6fc6f030d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60201ffd45e0d810ff5d4fb90fd0bc4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a60201ffd45e0d810ff5d4fb90fd0bc4b">SetAwake</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a60201ffd45e0d810ff5d4fb90fd0bc4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awakens this body.  <a href="classplayrho_1_1d2_1_1Body.html#a60201ffd45e0d810ff5d4fb90fd0bc4b">More...</a><br /></td></tr>
+<tr class="separator:a60201ffd45e0d810ff5d4fb90fd0bc4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce7db62d828a84a94e8c6222d9111a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#afce7db62d828a84a94e8c6222d9111a6">UnsetAwake</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:afce7db62d828a84a94e8c6222d9111a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this body to asleep if sleeping is allowed.  <a href="classplayrho_1_1d2_1_1Body.html#afce7db62d828a84a94e8c6222d9111a6">More...</a><br /></td></tr>
+<tr class="separator:afce7db62d828a84a94e8c6222d9111a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91940e85abf08596f625348315452e3d"><td class="memItemLeft" align="right" valign="top"><a id="a91940e85abf08596f625348315452e3d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a91940e85abf08596f625348315452e3d">IsFixedRotation</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a91940e85abf08596f625348315452e3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this body have fixed rotation? <br /></td></tr>
+<tr class="separator:a91940e85abf08596f625348315452e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a546de4c838854e1d2bee174a4cf264e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a546de4c838854e1d2bee174a4cf264e5">SetFixedRotation</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, bool value)</td></tr>
+<tr class="memdesc:a546de4c838854e1d2bee174a4cf264e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this body to have fixed rotation.  <a href="classplayrho_1_1d2_1_1Body.html#a546de4c838854e1d2bee174a4cf264e5">More...</a><br /></td></tr>
+<tr class="separator:a546de4c838854e1d2bee174a4cf264e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3540987384e881f23e28f5a9c710ae1"><td class="memItemLeft" align="right" valign="top"><a id="af3540987384e881f23e28f5a9c710ae1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#af3540987384e881f23e28f5a9c710ae1">IsMassDataDirty</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:af3540987384e881f23e28f5a9c710ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets whether the mass data for this body is "dirty". <br /></td></tr>
+<tr class="separator:af3540987384e881f23e28f5a9c710ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a628126b03bd99f5df5f08a047692b9da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga370c2a37515b6a8e79468113554f8ba9">InvMass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a628126b03bd99f5df5f08a047692b9da">GetInvMass</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a628126b03bd99f5df5f08a047692b9da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse total mass of the body.  <a href="classplayrho_1_1d2_1_1Body.html#a628126b03bd99f5df5f08a047692b9da">More...</a><br /></td></tr>
+<tr class="separator:a628126b03bd99f5df5f08a047692b9da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4fac5901e03845d72a94de4e7bb92d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#gafa6edf71110d3eef58f39dcbb8067ef4">InvRotInertia</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#af4fac5901e03845d72a94de4e7bb92d0">GetInvRotInertia</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:af4fac5901e03845d72a94de4e7bb92d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the inverse rotational inertia of the body.  <a href="classplayrho_1_1d2_1_1Body.html#af4fac5901e03845d72a94de4e7bb92d0">More...</a><br /></td></tr>
+<tr class="separator:af4fac5901e03845d72a94de4e7bb92d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aada2f9ed5beeb4a88ec917bf1c7d70df"><td class="memItemLeft" align="right" valign="top"><a id="aada2f9ed5beeb4a88ec917bf1c7d70df"></a>
+<a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aada2f9ed5beeb4a88ec917bf1c7d70df">GetLinearDamping</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:aada2f9ed5beeb4a88ec917bf1c7d70df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the linear damping of the body. <br /></td></tr>
+<tr class="separator:aada2f9ed5beeb4a88ec917bf1c7d70df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9901b5b3ddb898a60f216007adace0de"><td class="memItemLeft" align="right" valign="top"><a id="a9901b5b3ddb898a60f216007adace0de"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a9901b5b3ddb898a60f216007adace0de">SetLinearDamping</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="group__CheckedValues.html#gac74ec9c65c8f22cefed941aa486af9e3">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; value) noexcept</td></tr>
+<tr class="memdesc:a9901b5b3ddb898a60f216007adace0de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the linear damping of the body. <br /></td></tr>
+<tr class="separator:a9901b5b3ddb898a60f216007adace0de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf0e49b67ddcd89f15a4224e0acf10a3"><td class="memItemLeft" align="right" valign="top"><a id="abf0e49b67ddcd89f15a4224e0acf10a3"></a>
+<a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#abf0e49b67ddcd89f15a4224e0acf10a3">GetAngularDamping</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:abf0e49b67ddcd89f15a4224e0acf10a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the angular damping of the body. <br /></td></tr>
+<tr class="separator:abf0e49b67ddcd89f15a4224e0acf10a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a344a9753e8cd6fb046a57e82d2206d60"><td class="memItemLeft" align="right" valign="top"><a id="a344a9753e8cd6fb046a57e82d2206d60"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a344a9753e8cd6fb046a57e82d2206d60">SetAngularDamping</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="group__CheckedValues.html#gac74ec9c65c8f22cefed941aa486af9e3">NonNegative</a>&lt; <a class="el" href="group__PhysicalQuantities.html#gad39135cf298be76964c70829ec84a51e">Frequency</a> &gt; value) noexcept</td></tr>
+<tr class="memdesc:a344a9753e8cd6fb046a57e82d2206d60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the angular damping of the body. <br /></td></tr>
+<tr class="separator:a344a9753e8cd6fb046a57e82d2206d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acafaac4ef15f7416f464dff9b19780fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1Acceleration.html">Acceleration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#acafaac4ef15f7416f464dff9b19780fa">GetAcceleration</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:acafaac4ef15f7416f464dff9b19780fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the given body's acceleration.  <a href="classplayrho_1_1d2_1_1Body.html#acafaac4ef15f7416f464dff9b19780fa">More...</a><br /></td></tr>
 <tr class="separator:acafaac4ef15f7416f464dff9b19780fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a438e172db303ae0ab53263bc6af419ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a438e172db303ae0ab53263bc6af419ad">SetAcceleration</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="structplayrho_1_1d2_1_1Acceleration.html">Acceleration</a> value) noexcept</td></tr>
 <tr class="memdesc:a438e172db303ae0ab53263bc6af419ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the accelerations on the given body.  <a href="classplayrho_1_1d2_1_1Body.html#a438e172db303ae0ab53263bc6af419ad">More...</a><br /></td></tr>
 <tr class="separator:a438e172db303ae0ab53263bc6af419ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef76fc5d7813af886e28e8033e9d019d"><td class="memItemLeft" align="right" valign="top"><a id="aef76fc5d7813af886e28e8033e9d019d"></a>
+<a class="el" href="namespaceplayrho.html#a5822921028100052d4c6dfb43c7f6c4b">LinearAcceleration2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aef76fc5d7813af886e28e8033e9d019d">GetLinearAcceleration</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:aef76fc5d7813af886e28e8033e9d019d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets this body's linear acceleration. <br /></td></tr>
+<tr class="separator:aef76fc5d7813af886e28e8033e9d019d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a986b11edba421b23879fa363c557f1e5"><td class="memItemLeft" align="right" valign="top"><a id="a986b11edba421b23879fa363c557f1e5"></a>
+<a class="el" href="group__PhysicalQuantities.html#gafcce543a0d59f313adb801e2e18ede86">AngularAcceleration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a986b11edba421b23879fa363c557f1e5">GetAngularAcceleration</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a986b11edba421b23879fa363c557f1e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets this body's angular acceleration. <br /></td></tr>
+<tr class="separator:a986b11edba421b23879fa363c557f1e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4834708af29bcc9ae39ebfc2b9f580f6"><td class="memItemLeft" align="right" valign="top"><a id="a4834708af29bcc9ae39ebfc2b9f580f6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a4834708af29bcc9ae39ebfc2b9f580f6">Awaken</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a4834708af29bcc9ae39ebfc2b9f580f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awakens the body if it's asleep. <br /></td></tr>
@@ -490,6 +503,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a3c355eb58981b97e5901fa7d04052507"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga5edfc295416b7690b4f949223b551bc1">Mass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a3c355eb58981b97e5901fa7d04052507">GetMass</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a3c355eb58981b97e5901fa7d04052507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the mass of the body.  <a href="classplayrho_1_1d2_1_1Body.html#a3c355eb58981b97e5901fa7d04052507">More...</a><br /></td></tr>
 <tr class="separator:a3c355eb58981b97e5901fa7d04052507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb983c0ee834bdbf4f969e6bd23be27e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#aeb983c0ee834bdbf4f969e6bd23be27e">SetAcceleration</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#a5822921028100052d4c6dfb43c7f6c4b">LinearAcceleration2</a> linear, <a class="el" href="group__PhysicalQuantities.html#gafcce543a0d59f313adb801e2e18ede86">AngularAcceleration</a> angular) noexcept</td></tr>
+<tr class="memdesc:aeb983c0ee834bdbf4f969e6bd23be27e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the linear and rotational accelerations on this body.  <a href="classplayrho_1_1d2_1_1Body.html#aeb983c0ee834bdbf4f969e6bd23be27e">More...</a><br /></td></tr>
+<tr class="separator:aeb983c0ee834bdbf4f969e6bd23be27e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e3e03457d4d04d1aa19e5f850caee4a"><td class="memItemLeft" align="right" valign="top"><a id="a2e3e03457d4d04d1aa19e5f850caee4a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a2e3e03457d4d04d1aa19e5f850caee4a">SetAcceleration</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="namespaceplayrho.html#a5822921028100052d4c6dfb43c7f6c4b">LinearAcceleration2</a> value) noexcept</td></tr>
 <tr class="memdesc:a2e3e03457d4d04d1aa19e5f850caee4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the given linear acceleration of the given body. <br /></td></tr>
@@ -510,6 +526,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:accc0736257251f381353661320af972e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#ga67bbb3e4938321efec8d939636bf988e">RotInertia</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#accc0736257251f381353661320af972e">GetLocalRotInertia</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:accc0736257251f381353661320af972e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the rotational inertia of the body about the local origin.  <a href="classplayrho_1_1d2_1_1Body.html#accc0736257251f381353661320af972e">More...</a><br /></td></tr>
 <tr class="separator:accc0736257251f381353661320af972e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13ee26a73a0987dbb7c825539590719d"><td class="memItemLeft" align="right" valign="top"><a id="a13ee26a73a0987dbb7c825539590719d"></a>
+<a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a13ee26a73a0987dbb7c825539590719d">GetVelocity</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a13ee26a73a0987dbb7c825539590719d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the velocity. <br /></td></tr>
+<tr class="separator:a13ee26a73a0987dbb7c825539590719d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adddd763be5890fad18f5a3dd9d2b4d38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#adddd763be5890fad18f5a3dd9d2b4d38">SetVelocity</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, const <a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a> &amp;value) noexcept</td></tr>
+<tr class="memdesc:adddd763be5890fad18f5a3dd9d2b4d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the body's velocity (linear and angular velocity).  <a href="classplayrho_1_1d2_1_1Body.html#adddd763be5890fad18f5a3dd9d2b4d38">More...</a><br /></td></tr>
+<tr class="separator:adddd763be5890fad18f5a3dd9d2b4d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3802163b90f631b001eaa0201be419c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a2faa31bff8794a0c4191d8b042f7deeb">LinearVelocity2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a3802163b90f631b001eaa0201be419c9">GetLinearVelocity</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a3802163b90f631b001eaa0201be419c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the linear velocity of the center of mass.  <a href="classplayrho_1_1d2_1_1Body.html#a3802163b90f631b001eaa0201be419c9">More...</a><br /></td></tr>
 <tr class="separator:a3802163b90f631b001eaa0201be419c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -555,13 +578,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ab873f18f1e540da43881e7f2dadeb7b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#ab873f18f1e540da43881e7f2dadeb7b1">GetVelocity</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="group__PhysicalQuantities.html#ga250898c9929b0e6eaf56a1967c568888">Time</a> h) noexcept</td></tr>
 <tr class="memdesc:ab873f18f1e540da43881e7f2dadeb7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the velocity of the body after the given time accounting for the body's acceleration and capped by the given configuration.  <a href="classplayrho_1_1d2_1_1Body.html#ab873f18f1e540da43881e7f2dadeb7b1">More...</a><br /></td></tr>
 <tr class="separator:ab873f18f1e540da43881e7f2dadeb7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf21d80435881ecd9ee4976592b7d2c3"><td class="memItemLeft" align="right" valign="top"><a id="abf21d80435881ecd9ee4976592b7d2c3"></a>
-<a class="el" href="namespaceplayrho.html#a15fb4e1b050424d59666b3b2b7b6c935">FixtureCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#abf21d80435881ecd9ee4976592b7d2c3">GetFixtureCount</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
-<tr class="memdesc:abf21d80435881ecd9ee4976592b7d2c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the fixture count of the given body. <br /></td></tr>
-<tr class="separator:abf21d80435881ecd9ee4976592b7d2c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a6f694cab71d0db91049dc0908de63f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceplayrho.html#a7dc68cd0ce177e175ae0bb6c39db158d">Length2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a8a6f694cab71d0db91049dc0908de63f">GetLocation</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a8a6f694cab71d0db91049dc0908de63f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body's origin location.  <a href="classplayrho_1_1d2_1_1Body.html#a8a6f694cab71d0db91049dc0908de63f">More...</a><br /></td></tr>
 <tr class="separator:a8a6f694cab71d0db91049dc0908de63f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83c03ab97ee5e1a0cdb1a41a62050ccc"><td class="memItemLeft" align="right" valign="top"><a id="a83c03ab97ee5e1a0cdb1a41a62050ccc"></a>
+const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a83c03ab97ee5e1a0cdb1a41a62050ccc">GetSweep</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
+<tr class="memdesc:a83c03ab97ee5e1a0cdb1a41a62050ccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body's sweep. <br /></td></tr>
+<tr class="separator:a83c03ab97ee5e1a0cdb1a41a62050ccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f30cb6266cb2f950ea5fdb5aae58d1b"><td class="memItemLeft" align="right" valign="top"><a id="a1f30cb6266cb2f950ea5fdb5aae58d1b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a1f30cb6266cb2f950ea5fdb5aae58d1b">SetSweep</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, const <a class="el" href="classplayrho_1_1d2_1_1Sweep.html">Sweep</a> &amp;value) noexcept</td></tr>
+<tr class="memdesc:a1f30cb6266cb2f950ea5fdb5aae58d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the sweep value of the given body. <br /></td></tr>
+<tr class="separator:a1f30cb6266cb2f950ea5fdb5aae58d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93f21ae0c92245d912cb91a99e756946"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__PhysicalQuantities.html#gab999341c050df340ff56a65816a63da9">Angle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a93f21ae0c92245d912cb91a99e756946">GetAngle</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a93f21ae0c92245d912cb91a99e756946"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body's angle.  <a href="classplayrho_1_1d2_1_1Body.html#a93f21ae0c92245d912cb91a99e756946">More...</a><br /></td></tr>
 <tr class="separator:a93f21ae0c92245d912cb91a99e756946"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -569,6 +596,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a6a06b90c7f93f0e33be41db39562af4d">GetTransformation</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a6a06b90c7f93f0e33be41db39562af4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body's transformation. <br /></td></tr>
 <tr class="separator:a6a06b90c7f93f0e33be41db39562af4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af681bc41595979454a24df12369e97a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#af681bc41595979454a24df12369e97a9">SetTransformation</a> (<a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body, <a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a> value) noexcept</td></tr>
+<tr class="memdesc:af681bc41595979454a24df12369e97a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the body's transformation.  <a href="classplayrho_1_1d2_1_1Body.html#af681bc41595979454a24df12369e97a9">More...</a><br /></td></tr>
+<tr class="separator:af681bc41595979454a24df12369e97a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ee2be09f607ec37050c91dc3a5d0f92"><td class="memItemLeft" align="right" valign="top"><a id="a1ee2be09f607ec37050c91dc3a5d0f92"></a>
 <a class="el" href="structplayrho_1_1d2_1_1Position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classplayrho_1_1d2_1_1Body.html#a1ee2be09f607ec37050c91dc3a5d0f92">GetPosition</a> (const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;body) noexcept</td></tr>
 <tr class="memdesc:a1ee2be09f607ec37050c91dc3a5d0f92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the body's position. <br /></td></tr>
@@ -593,10 +623,10 @@ Only "accelerable" bodies can have non-zero "under-active" times.</dd></dl>
 <dd>
 Destroy these using the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#a093fe75c15777dfd466fc98f7496ef4a" title="Destroys the given body.">World::Destroy(BodyID)</a></code> method. </dd>
 <dd>
-From a memory management perspective, bodies own <a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape.">Fixture</a> instances. </dd>
+From a memory management perspective, bodies own Fixture instances. </dd>
 <dd>
 On a 64-bit architecture with 4-byte Real, this data structure is at least 192-bytes large.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>, <a class="el" href="classplayrho_1_1d2_1_1Fixture.html" title="An association between a body and a shape.">Fixture</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>, Fixture </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a14412adef525843359094736776c0cc1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14412adef525843359094736776c0cc1">&#9670;&nbsp;</a></span>FlagsType</h2>
@@ -740,36 +770,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 </div>
 </div>
-<a id="a163dc94f3a556f214725ecbf079abad2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a163dc94f3a556f214725ecbf079abad2">&#9670;&nbsp;</a></span>GetContacts()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1SizedRange.html">SizedRange</a>&lt; Body::Contacts::const_iterator &gt; playrho::d2::Body::GetContacts </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the container of all contacts attached to this body. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This collection changes during the time step and you may miss some collisions if you don't use <code>ContactListener</code>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a592fb5e510f53e11c60b73f452164e47">playrho::d2::GetContacts()</a>.</p>
-
-</div>
-</div>
 <a id="a479319dda79903324ef520ae21c7ca56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a479319dda79903324ef520ae21c7ca56">&#9670;&nbsp;</a></span>GetInvMass()</h2>
 
@@ -795,9 +795,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 <p>Gets the inverse total mass of the body. </p>
 <p>This is the cached result of dividing 1 by the body's mass. Often floating division is much slower than multiplication. As such, it's likely faster to multiply values by this inverse value than to redivide them all the time by the mass. </p><dl class="section return"><dt>Returns</dt><dd>Value of zero or more representing the body's inverse mass (in 1/kg). </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldBodyFreeFunctions.html#gabe6b45c9a1aeec496d83c00a6f587740" title="Sets the mass properties to override the mass properties of the fixtures.">SetMassData</a>. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a7bf7b7785f1130c9a257b6fe2c8fc2af">playrho::d2::GetInvMass()</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa406549b09f4fc750af6b7d5667ec91a" title="Sets the inverse mass.">SetInvMass</a>. </dd></dl>
 
 </div>
 </div>
@@ -826,8 +824,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 <p>Gets the inverse rotational inertia of the body. </p>
 <p>This is the cached result of dividing 1 by the body's rotational inertia. Often floating division is much slower than multiplication. As such, it's likely faster to multiply values by this inverse value than to redivide them all the time by the rotational inertia. </p><dl class="section return"><dt>Returns</dt><dd>Inverse rotational inertia (in 1/kg-m^2). </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#aab550c4e5007ac7087aa6319963e09d0">playrho::d2::GetInvRotInertia()</a>.</p>
 
 </div>
 </div>
@@ -896,7 +892,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <dl class="section return"><dt>Returns</dt><dd>the world transform of the body's origin. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d" title="Gets the world body origin location.">GetLocation</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7c2bb05f34ad19f785a9cf88d5920b77" title="Sets the body&#39;s transformation.">Body::SetTransformation</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a7c273e22b7d4619fe12fb063e9af43c9">playrho::d2::ComputeAABB()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d">GetLocation()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#acb80b2ba6380510777cbf95efa83b9de">playrho::d2::WorldImpl::UpdateBody()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d">GetLocation()</a>.</p>
 
 </div>
 </div>
@@ -918,7 +914,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -926,7 +922,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>Gets the type of this body. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea" title="Sets the type of this body.">SetType</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#af21aeda10f9afca65d6e6df63a78cd28">playrho::d2::GetType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a41cc43a409194b7cbab845f8bae69f95">playrho::d2::WorldImpl::SetBody()</a>.</p>
 
 </div>
 </div>
@@ -983,8 +979,6 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 
 <p>Is "accelerable". </p>
 <p>Indicates whether this body is accelerable, i.e. whether it is effected by forces. Only Dynamic bodies are accelerable. </p><dl class="section return"><dt>Returns</dt><dd>true if the body is accelerable, false otherwise. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#aa75ca48286b11e45eeb8c4fa0c23d260">playrho::d2::IsAccelerable()</a>.</p>
 
 </div>
 </div>
@@ -1043,9 +1037,9 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 </div><div class="memdoc">
 
 <p>Gets the enabled/disabled state of the body. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WorldBodyFreeFunctions.html#ga36fa18310477a7ab081e0b81425b5bad" title="Sets the enabled state of the body.">SetEnabled</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a2f3382a712a5573c2a476050d60513a3" title="Sets the enabled state.">SetEnabled</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>, and <a class="el" href="namespaceplayrho_1_1d2.html#a8d8906d07a12109c6193279b14639848">playrho::d2::IsEnabled()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#adaf7c703a4ec7a32807da277c8b57a63">playrho::d2::Dump()</a>.</p>
 
 </div>
 </div>
@@ -1075,7 +1069,7 @@ On a 64-bit architecture with 4-byte Real, this data structure is at least 192-b
 <p>Is "speedable". </p>
 <p>Is this body able to have a non-zero speed associated with it. Kinematic and Dynamic bodies are speedable. Static bodies are not. </p>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a85808c07bc6d71dcfd8188456dcf91b1">Advance()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a928fcdf5f5573d43dc8cc354ac143aa8">Advance0()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#aaf124241a3debcd286f8c935203e99b8">playrho::d2::IsSpeedable()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69">SetAwake()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae06b70496e35fc753fab2733824f76eb">SetAwakeFlag()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#acfb1bae5be9d852331ba9177950c46b1">SetPosition0()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ad77d221221eb0f4dc4f6fc2e42e362c8">SetPosition1()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac645b1b0083f9e8da4898492bfd476d9">SetSweep()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">UnsetAwake()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a93a71d2a1b85e02d33548c6672437599">UnsetAwakeFlag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a85808c07bc6d71dcfd8188456dcf91b1">Advance()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a928fcdf5f5573d43dc8cc354ac143aa8">Advance0()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69">SetAwake()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae06b70496e35fc753fab2733824f76eb">SetAwakeFlag()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#acfb1bae5be9d852331ba9177950c46b1">SetPosition0()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ad77d221221eb0f4dc4f6fc2e42e362c8">SetPosition1()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac645b1b0083f9e8da4898492bfd476d9">SetSweep()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">UnsetAwake()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a93a71d2a1b85e02d33548c6672437599">UnsetAwakeFlag()</a>.</p>
 
 </div>
 </div>
@@ -1205,7 +1199,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1215,8 +1209,6 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 <dl class="section post"><dt>Postcondition</dt><dd>If this body is a "speedable" body, then this body's <code>IsAwake</code> method returns true. </dd>
 <dd>
 If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code> method returns zero. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a2a3bdc5fbaf90e90b0183c62a769139d">playrho::d2::SetAwake()</a>.</p>
 
 </div>
 </div>
@@ -1270,7 +1262,7 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 <p>Sets this body to have fixed rotation. </p>
 <dl class="section note"><dt>Note</dt><dd>This causes the mass to be reset. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a8b329d49b6a8c54c35ee36d6b1215fea">playrho::d2::SetFixedRotation()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a546de4c838854e1d2bee174a4cf264e5">playrho::d2::SetFixedRotation()</a>.</p>
 
 </div>
 </div>
@@ -1299,6 +1291,35 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 
 <p>Sets the impenetrable status of this body. </p>
 <p>Sets whether or not this body should be treated like a bullet for continuous collision detection. </p>
+
+</div>
+</div>
+<a id="aa406549b09f4fc750af6b7d5667ec91a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa406549b09f4fc750af6b7d5667ec91a">&#9670;&nbsp;</a></span>SetInvMass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void playrho::d2::Body::SetInvMass </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__PhysicalQuantities.html#ga370c2a37515b6a8e79468113554f8ba9">InvMass</a>&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the inverse mass. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a479319dda79903324ef520ae21c7ca56" title="Gets the inverse total mass of the body.">GetInvMass</a> </dd></dl>
 
 </div>
 </div>
@@ -1359,8 +1380,11 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 </div><div class="memdoc">
 
 <p>Sets the body's transformation. </p>
-<dl class="section note"><dt>Note</dt><dd>This sets what <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d" title="Gets the world body origin location.">Body::GetLocation</a></code> returns. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d" title="Gets the world body origin location.">Body::GetLocation</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a6831cb0077f88907a3c4c28ae398515d" title="Gets the body transform for the body&#39;s origin.">Body::GetTransformation</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This sets what <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d" title="Gets the world body origin location.">Body::GetLocation</a></code> returns. </dd>
+<dd>
+<code>SetSweep</code> may also need to be called. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><code>GetTransformation</code> will return the value set. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a63db5146e976e495518b850c37be060d" title="Gets the world body origin location.">Body::GetLocation</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a6831cb0077f88907a3c4c28ae398515d" title="Gets the body transform for the body&#39;s origin.">Body::GetTransformation</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac645b1b0083f9e8da4898492bfd476d9" title="Sets the sweep value of the given body.">SetSweep</a> </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#ac6076f65771ce91e3195524342be07f6">Restore()</a>, and <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#acb80b2ba6380510777cbf95efa83b9de">playrho::d2::WorldImpl::UpdateBody()</a>.</p>
 
@@ -1385,7 +1409,7 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1456,8 +1480,6 @@ If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</c
 A non-zero velocity will awaken this body. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69" title="Awakens this body.">SetAwake</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a0a6f3e57e6a9b132f30f3d3f85ca5802" title="Sets the &quot;under-active&quot; time to the given value.">SetUnderActiveTime</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#afdc386958ba673d6c8039b3f5acc1c02">playrho::d2::SetVelocity()</a>.</p>
-
 </div>
 </div>
 <a id="a7821d9464b36b49ddb893ef9c2c262fb"></a>
@@ -1478,7 +1500,7 @@ A non-zero velocity will awaken this body. </dd></dl>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1490,8 +1512,6 @@ A non-zero velocity will awaken this body. </dd></dl>
 This body's <code>GetUnderActiveTime</code> method returns zero. </dd>
 <dd>
 This body's <code>GetVelocity</code> method returns zero linear and zero angular speed. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a455ce02abd15f9fa288e863337e285bf">playrho::d2::UnsetAwake()</a>.</p>
 
 </div>
 </div>
@@ -1657,8 +1677,6 @@ Non-zero impulses wakes up the body. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a123">World.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -1688,7 +1706,7 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 <p>Gets the body's angle. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a>'s angle relative to its <a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a158">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a174">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -1762,6 +1780,65 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 </div>
 </div>
+<a id="a628126b03bd99f5df5f08a047692b9da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a628126b03bd99f5df5f08a047692b9da">&#9670;&nbsp;</a></span>GetInvMass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__PhysicalQuantities.html#ga370c2a37515b6a8e79468113554f8ba9">InvMass</a> GetInvMass </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the inverse total mass of the body. </p>
+<p>This is the cached result of dividing 1 by the body's mass. Often floating division is much slower than multiplication. As such, it's likely faster to multiply values by this inverse value than to redivide them all the time by the mass. </p><dl class="section return"><dt>Returns</dt><dd>Value of zero or more representing the body's inverse mass (in 1/kg). </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#aa406549b09f4fc750af6b7d5667ec91a" title="Sets the inverse mass.">SetInvMass</a>. </dd></dl>
+
+</div>
+</div>
+<a id="af4fac5901e03845d72a94de4e7bb92d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4fac5901e03845d72a94de4e7bb92d0">&#9670;&nbsp;</a></span>GetInvRotInertia()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__PhysicalQuantities.html#gafa6edf71110d3eef58f39dcbb8067ef4">InvRotInertia</a> GetInvRotInertia </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the inverse rotational inertia of the body. </p>
+<p>This is the cached result of dividing 1 by the body's rotational inertia. Often floating division is much slower than multiplication. As such, it's likely faster to multiply values by this inverse value than to redivide them all the time by the rotational inertia. </p><dl class="section return"><dt>Returns</dt><dd>Inverse rotational inertia (in 1/kg-m^2). </dd></dl>
+
+</div>
+</div>
 <a id="a3802163b90f631b001eaa0201be419c9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3802163b90f631b001eaa0201be419c9">&#9670;&nbsp;</a></span>GetLinearVelocity()</h2>
 
@@ -1794,7 +1871,7 @@ Non-zero impulses wakes up the body. </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the linear velocity of the center of mass. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a149">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a162">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2046,7 +2123,7 @@ Non-zero impulses wakes up the body. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#afc2d114f23cc621756f6e9363bc74f2a" title="Get the angle.">GetAngle</a>. </dd></dl>
 </li>
 </ol>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a111">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a161">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2078,8 +2155,8 @@ Non-zero impulses wakes up the body. </dd></dl>
 <p>Gets the mass of the body. </p>
 <dl class="section note"><dt>Note</dt><dd>This may be the total calculated mass or it may be the set mass of the body. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Value of zero or more representing the body's mass. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a479319dda79903324ef520ae21c7ca56" title="Gets the inverse total mass of the body.">GetInvMass</a>, <a class="el" href="group__WorldBodyFreeFunctions.html#gabe6b45c9a1aeec496d83c00a6f587740" title="Sets the mass properties to override the mass properties of the fixtures.">SetMassData</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a179">World.cpp</a>.</dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a479319dda79903324ef520ae21c7ca56" title="Gets the inverse total mass of the body.">GetInvMass</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#aa406549b09f4fc750af6b7d5667ec91a" title="Sets the inverse mass.">SetInvMass</a> </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a197">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2116,6 +2193,39 @@ Non-zero impulses wakes up the body. </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the rotational inertia. </dd></dl>
+
+</div>
+</div>
+<a id="a421d2110404320428fd02b2d0b70a062"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a421d2110404320428fd02b2d0b70a062">&#9670;&nbsp;</a></span>GetType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceplayrho.html#a098b0ef528e3b728af8e3e17873963f7">BodyType</a> GetType </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the type of this body. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a18dac43bb044e0d0f5b5dc461a7b9bea" title="Sets the type of this body.">SetType</a>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a167">World.cpp</a>.</dd>
+</dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a41cc43a409194b7cbab845f8bae69f95">playrho::d2::WorldImpl::SetBody()</a>.</p>
 
 </div>
 </div>
@@ -2161,8 +2271,6 @@ Non-zero impulses wakes up the body. </dd></dl>
     <tr><td class="paramname">h</td><td>Time elapsed to get velocity for. Behavior is undefined if this value is invalid. </td></tr>
   </table>
   </dd>
-</dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a191">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -2259,8 +2367,133 @@ Non-zero impulses wakes up the body. </dd></dl>
 
 </div>
 </div>
+<a id="ad1f05a05c6dd9eb2a1564cc10032f16c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1f05a05c6dd9eb2a1564cc10032f16c">&#9670;&nbsp;</a></span>IsAccelerable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IsAccelerable </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is "accelerable". </p>
+<p>Indicates whether this body is accelerable, i.e. whether it is effected by forces. Only Dynamic bodies are accelerable. </p><dl class="section return"><dt>Returns</dt><dd>true if the body is accelerable, false otherwise. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a195">World.cpp</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a139df81757401545db36e6fc6f030d75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a139df81757401545db36e6fc6f030d75">&#9670;&nbsp;</a></span>IsAwake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IsAwake </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the awake/asleep state of this body. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Being awake may or may not imply being speedable. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the body is awake. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a41cc43a409194b7cbab845f8bae69f95">playrho::d2::WorldImpl::SetBody()</a>.</p>
+
+</div>
+</div>
+<a id="ab930c47cedb9dc4fe0d6e178e7651d54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab930c47cedb9dc4fe0d6e178e7651d54">&#9670;&nbsp;</a></span>IsEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IsEnabled </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the enabled/disabled state of the body. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a2f3382a712a5573c2a476050d60513a3" title="Sets the enabled state.">SetEnabled</a>. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#a41cc43a409194b7cbab845f8bae69f95">playrho::d2::WorldImpl::SetBody()</a>.</p>
+
+</div>
+</div>
+<a id="a81c7a4d7696e9cb367f241afdbbe2727"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81c7a4d7696e9cb367f241afdbbe2727">&#9670;&nbsp;</a></span>IsSpeedable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IsSpeedable </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is "speedable". </p>
+<p>Is this body able to have a non-zero speed associated with it. Kinematic and Dynamic bodies are speedable. Static bodies are not. </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a194">World.cpp</a>.</dd>
+</dl>
+
+</div>
+</div>
 <a id="a438e172db303ae0ab53263bc6af419ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a438e172db303ae0ab53263bc6af419ad">&#9670;&nbsp;</a></span>SetAcceleration()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a438e172db303ae0ab53263bc6af419ad">&#9670;&nbsp;</a></span>SetAcceleration() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2304,13 +2537,207 @@ A non-zero acceleration will also awaken the body. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a122">World.cpp</a>.</dd>
+
+</div>
+</div>
+<a id="aeb983c0ee834bdbf4f969e6bd23be27e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb983c0ee834bdbf4f969e6bd23be27e">&#9670;&nbsp;</a></span>SetAcceleration() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetAcceleration </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceplayrho.html#a5822921028100052d4c6dfb43c7f6c4b">LinearAcceleration2</a>&#160;</td>
+          <td class="paramname"><em>linear</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__PhysicalQuantities.html#gafcce543a0d59f313adb801e2e18ede86">AngularAcceleration</a>&#160;</td>
+          <td class="paramname"><em>angular</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the linear and rotational accelerations on this body. </p>
+<dl class="section note"><dt>Note</dt><dd>This has no effect on non-accelerable bodies. </dd>
+<dd>
+A non-zero acceleration will also awaken the body. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">body</td><td><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> to set the acceleration of. </td></tr>
+    <tr><td class="paramname">linear</td><td>Linear acceleration. </td></tr>
+    <tr><td class="paramname">angular</td><td>Angular acceleration. </td></tr>
+  </table>
+  </dd>
 </dl>
 
 </div>
 </div>
+<a id="a60201ffd45e0d810ff5d4fb90fd0bc4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60201ffd45e0d810ff5d4fb90fd0bc4b">&#9670;&nbsp;</a></span>SetAwake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetAwake </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Awakens this body. </p>
+<p>Sets this body to awake and resets its under-active time if it's a "speedable" body. This method has no effect otherwise. </p><dl class="section post"><dt>Postcondition</dt><dd>If this body is a "speedable" body, then this body's <code>IsAwake</code> method returns true. </dd>
+<dd>
+If this body is a "speedable" body, then this body's <code>GetUnderActiveTime</code> method returns zero. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a244">World.cpp</a>.</dd>
+</dl>
+
+</div>
+</div>
+<a id="a546de4c838854e1d2bee174a4cf264e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a546de4c838854e1d2bee174a4cf264e5">&#9670;&nbsp;</a></span>SetFixedRotation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetFixedRotation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets this body to have fixed rotation. </p>
+<dl class="section note"><dt>Note</dt><dd>This causes the mass to be reset. </dd></dl>
+
+</div>
+</div>
+<a id="aaf57ca63655e6eaeac4d9e65a8e7be4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf57ca63655e6eaeac4d9e65a8e7be4a">&#9670;&nbsp;</a></span>SetImpenetrable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetImpenetrable </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the impenetrable status of this body. </p>
+<p>Sets whether or not this body should be treated like a bullet for continuous collision detection. </p>
+
+</div>
+</div>
+<a id="af681bc41595979454a24df12369e97a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af681bc41595979454a24df12369e97a9">&#9670;&nbsp;</a></span>SetTransformation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetTransformation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the body's transformation. </p>
+<dl class="section note"><dt>Note</dt><dd>This sets what <code>GetLocation</code> returns. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a6831cb0077f88907a3c4c28ae398515d" title="Gets the body transform for the body&#39;s origin.">GetTransformation</a>. </dd></dl>
+
+</div>
+</div>
 <a id="adc771e5dfb30f44b8b71f15cd9e5f950"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc771e5dfb30f44b8b71f15cd9e5f950">&#9670;&nbsp;</a></span>SetVelocity() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adc771e5dfb30f44b8b71f15cd9e5f950">&#9670;&nbsp;</a></span>SetVelocity() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2354,8 +2781,52 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 
 </div>
 </div>
+<a id="adddd763be5890fad18f5a3dd9d2b4d38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adddd763be5890fad18f5a3dd9d2b4d38">&#9670;&nbsp;</a></span>SetVelocity() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetVelocity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structplayrho_1_1d2_1_1Velocity.html">Velocity</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the body's velocity (linear and angular velocity). </p>
+<dl class="section note"><dt>Note</dt><dd>This method does nothing if this body is not speedable. </dd>
+<dd>
+A non-zero velocity will awaken this body. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1Body.html#a794c4c1b8c24aedb959c5031a5ecde69" title="Awakens this body.">SetAwake</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a0a6f3e57e6a9b132f30f3d3f85ca5802" title="Sets the &quot;under-active&quot; time to the given value.">SetUnderActiveTime</a>. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a233">World.cpp</a>.</dd>
+</dl>
+
+</div>
+</div>
 <a id="a0ed659e8f39ec9b4215123dc0a2b8581"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ed659e8f39ec9b4215123dc0a2b8581">&#9670;&nbsp;</a></span>SetVelocity() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ed659e8f39ec9b4215123dc0a2b8581">&#9670;&nbsp;</a></span>SetVelocity() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2396,8 +2867,68 @@ A non-zero acceleration will also awaken the body. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a211">World.cpp</a>.</dd>
-</dl>
+
+</div>
+</div>
+<a id="afce7db62d828a84a94e8c6222d9111a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce7db62d828a84a94e8c6222d9111a6">&#9670;&nbsp;</a></span>UnsetAwake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void UnsetAwake </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets this body to asleep if sleeping is allowed. </p>
+<p>If this body is allowed to sleep, this: sets the sleep state of the body to asleep, resets this body's under active time, and resets this body's velocity (linear and angular). </p><dl class="section post"><dt>Postcondition</dt><dd>This body's <code>IsAwake</code> method returns false. </dd>
+<dd>
+This body's <code>GetUnderActiveTime</code> method returns zero. </dd>
+<dd>
+This body's <code>GetVelocity</code> method returns zero linear and zero angular speed. </dd></dl>
+
+</div>
+</div>
+<a id="a2ba4e5cbd12444be971a3ef0a09e9931"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ba4e5cbd12444be971a3ef0a09e9931">&#9670;&nbsp;</a></span>UnsetImpenetrable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void UnsetImpenetrable </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a> &amp;&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Unsets the impenetrable status of this body. </p>
+<p>Sets whether or not this body should be treated like a bullet for continuous collision detection. </p>
 
 </div>
 </div>
@@ -2453,33 +2984,6 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>4-bytes. </dd></dl>
 
 <p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a60d609b9f5c0a1d568b3fc42d169c428">GetVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a00314ef442a112b29a7030087a14ee82">JustSetVelocity()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ad73e9bd7dbdeaaaa4618cbb06559dd34">SetFixedRotation()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7821d9464b36b49ddb893ef9c2c262fb">UnsetAwake()</a>.</p>
-
-</div>
-</div>
-<a id="a0e1882846b47d2b591f3d74bb6b9f42a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e1882846b47d2b591f3d74bb6b9f42a">&#9670;&nbsp;</a></span>m_fixtures</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classplayrho_1_1d2_1_1Body.html#af01bb0873b03733989811fd329b77a8a">Fixtures</a> playrho::d2::Body::m_fixtures</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Cache of associated fixtures (owned by world). </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Consider eliminating this variable since calling <code><a class="el" href="classplayrho_1_1d2_1_1Body.html#ae059618bbfd4b357f27fe4ac386481bf" title="Gets the range of all constant fixtures attached to this body.">GetFixtures()</a></code> isn't done within the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#aa6773aff74b9341a9eb58c7bca925cda" title="Steps the world simulation according to the given configuration.">World::Step</a></code> except by <code>World::Synchronize</code> which may be replacable with iterating over the entire fixture array. </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a54571d8181eec3e4843aa273c0c97fd0">AddFixture()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#afd77a8eabf6be865c42544c955de0d9c">ClearFixtures()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#ae059618bbfd4b357f27fe4ac386481bf">GetFixtures()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a253ccc02ac021b4e74270ade83624caf">RemoveFixture()</a>.</p>
 
 </div>
 </div>
@@ -2643,7 +3147,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 <dd>
 16-bytes. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a85808c07bc6d71dcfd8188456dcf91b1">Advance()</a>, <a class="el" href="classplayrho_1_1d2_1_1Body.html#a6831cb0077f88907a3c4c28ae398515d">GetTransformation()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a7c2bb05f34ad19f785a9cf88d5920b77">SetTransformation()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1Body.html#a85808c07bc6d71dcfd8188456dcf91b1">Advance()</a>, and <a class="el" href="classplayrho_1_1d2_1_1Body.html#a6831cb0077f88907a3c4c28ae398515d">GetTransformation()</a>.</p>
 
 </div>
 </div>
@@ -2658,7 +3162,7 @@ A non-zero acceleration will also awaken the body. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Body.html">Body</a></li>
-    <li class="footer">Generated on Thu Oct 22 2020 21:57:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Oct 31 2020 21:08:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

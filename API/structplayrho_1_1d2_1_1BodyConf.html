@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">0.11.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -247,21 +247,25 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 Related Functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
 </td></tr>
-<tr class="memitem:a6fbabc2f3fccd7dca995e88f44a7f92c"><td class="memItemLeft" align="right" valign="top"><a id="a6fbabc2f3fccd7dca995e88f44a7f92c"></a>
-<a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#a6fbabc2f3fccd7dca995e88f44a7f92c">GetTransformation</a> (const <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;conf)</td></tr>
-<tr class="memdesc:a6fbabc2f3fccd7dca995e88f44a7f92c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the transformation associated with the given configuration. <br /></td></tr>
-<tr class="separator:a6fbabc2f3fccd7dca995e88f44a7f92c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6c1034a2366e6ef466253aea8a13829"><td class="memItemLeft" align="right" valign="top"><a id="af6c1034a2366e6ef466253aea8a13829"></a>
 constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#af6c1034a2366e6ef466253aea8a13829">GetDefaultBodyConf</a> () noexcept</td></tr>
 <tr class="memdesc:af6c1034a2366e6ef466253aea8a13829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the default body definition. <br /></td></tr>
 <tr class="separator:af6c1034a2366e6ef466253aea8a13829"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a178733ef87c116856614750d49785cd5"><td class="memItemLeft" align="right" valign="top"><a id="a178733ef87c116856614750d49785cd5"></a>
+<a class="el" href="structplayrho_1_1d2_1_1Transformation.html">Transformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#a178733ef87c116856614750d49785cd5">GetTransformation</a> (const <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;conf) noexcept</td></tr>
+<tr class="memdesc:a178733ef87c116856614750d49785cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the transformation associated with the given configuration. <br /></td></tr>
+<tr class="separator:a178733ef87c116856614750d49785cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad6493c0704a18da5f611717a6aff844"><td class="memItemLeft" align="right" valign="top"><a id="aad6493c0704a18da5f611717a6aff844"></a>
+constexpr <a class="el" href="group__PhysicalQuantities.html#gab999341c050df340ff56a65816a63da9">Angle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html#aad6493c0704a18da5f611717a6aff844">GetAngle</a> (const <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a> &amp;conf) noexcept</td></tr>
+<tr class="memdesc:aad6493c0704a18da5f611717a6aff844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the angle of the given configuration. <br /></td></tr>
+<tr class="separator:aad6493c0704a18da5f611717a6aff844"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classplayrho_1_1d2_1_1Body.html" title="Physical entity that exists within a World.">Body</a> configuration. </p>
 <p>A body configuration holds all the data needed to construct a rigid body. You can safely re-use body configurations.</p>
 <dl class="section note"><dt>Note</dt><dd>This is a value class meant for passing in to the <code><a class="el" href="classplayrho_1_1d2_1_1World.html#a06a02a3c719ec0f20c5d2c43f5894bd9" title="Creates a rigid body with the given configuration.">World::CreateBody</a></code> method.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classplayrho_1_1d2_1_1World.html" title="Definition of an independent and simulatable &quot;world&quot;.">World</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a2">HelloWorld.cpp</a>, <a class="el" href="World_8cpp-example.html#_a57">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#_a46">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#_a4">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#_a29">WorldFixture.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="HelloWorld_8cpp-example.html#_a2">HelloWorld.cpp</a>, <a class="el" href="World_8cpp-example.html#_a57">World.cpp</a>, <a class="el" href="WorldBody_8cpp-example.html#_a41">WorldBody.cpp</a>, <a class="el" href="WorldContact_8cpp-example.html#_a4">WorldContact.cpp</a>, and <a class="el" href="WorldFixture_8cpp-example.html#_a27">WorldFixture.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a79881dcf474db656032f5834391c1e32"></a>
@@ -295,7 +299,7 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 
 <p>Is this a fast moving body that should be prevented from tunneling through other moving bodies? Note that all bodies are prevented from tunneling through kinematic and static bodies. This setting is only considered on dynamic bodies. </p>
 <dl class="section note"><dt>Note</dt><dd>Use this flag sparingly since it increases processing time. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a210">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a232">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -314,7 +318,7 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 
 <p>Initial linear acceleration of the body. </p>
 <dl class="section note"><dt>Note</dt><dd>Usually this should be 0. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a148">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a160">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -333,7 +337,7 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 
 <p>Type of the body: static, kinematic, or dynamic. </p>
 <dl class="section note"><dt>Note</dt><dd>If a dynamic body would have zero mass, the mass is set to one. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a137">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a59">WorldBody.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a145">World.cpp</a>, and <a class="el" href="WorldBody_8cpp-example.html#a56">WorldBody.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#a0e940544a56fe840424f880106fcd842">playrho::d2::GetBodyConf()</a>.</p>
@@ -357,9 +361,8 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following files:<ul>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>BodyConf.hpp</li>
-<li>Body.hpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -367,7 +370,7 @@ constexpr <a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="structplayrho_1_1d2_1_1BodyConf.html">BodyConf</a></li>
-    <li class="footer">Generated on Thu Oct 22 2020 21:57:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Oct 31 2020 21:08:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>

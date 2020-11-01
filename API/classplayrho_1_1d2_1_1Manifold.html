@@ -31,7 +31,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PlayRho
-   &#160;<span id="projectnumber">0.10.0</span>
+   &#160;<span id="projectnumber">0.11.0</span>
    </div>
    <div id="projectbrief">An Interactive Real-Time-Oriented C++ Physics Engine &amp; Library</div>
   </td>
@@ -317,7 +317,7 @@ While this data structure is at least 58-bytes large (60-bytes on one 64-bit pla
 <a href="https://en.wikipedia.org/wiki/Convex_set">https://en.wikipedia.org/wiki/Convex_set</a> </dd>
 <dd>
 <a href="http://box2d.org/files/GDC2007/GDC2007_Catto_Erin_Physics2.ppt">http://box2d.org/files/GDC2007/GDC2007_Catto_Erin_Physics2.ppt</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a161">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#_a177">World.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a7ff238fab84e4d9dc478205840bd2b4a"></a>
@@ -945,7 +945,7 @@ Behavior is undefined for circles (e_circles) type manifolds. </dd></dl>
 <p>This is the: local center of "circle" A for circles-type manifolds; the center of face A for face-A-type manifolds; or the center of face B for face-B-type manifolds. </p><dl class="section note"><dt>Note</dt><dd>Only valid for circle, face-A, or face-B type manifolds. </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Behavior is undefined for unset (e_unset) type manifolds. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Local point. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a232">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a258">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#aa9987f7f8471dbe26d486e2602661e78">playrho::d2::GetPSM()</a>.</p>
@@ -983,7 +983,7 @@ Behavior is undefined for circles (e_circles) type manifolds. </dd></dl>
 <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#a1399ecf9d6951ca8b72dd34dc66d1e75" title="Adds a new point.">AddPoint()</a>. </dd>
 <dd>
 <a class="el" href="classplayrho_1_1d2_1_1Manifold.html#afc69f25e15e201ca7db3fd75e9c04ac3" title="Gets the point identified by the given index.">GetPoint()</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a190">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a210">World.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -1013,7 +1013,7 @@ Behavior is undefined for circles (e_circles) type manifolds. </dd></dl>
 
 <p>Gets the type of this manifold. </p>
 <dl class="section note"><dt>Note</dt><dd>This must be a constant expression in order to use it in the context of the <code>IsValid</code> specialized template function for it. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a189">World.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="World_8cpp-example.html#a209">World.cpp</a>.</dd>
 </dl>
 
 <p class="reference">Referenced by <a class="el" href="namespaceplayrho_1_1d2.html#aa9987f7f8471dbe26d486e2602661e78">playrho::d2::GetPSM()</a>, <a class="el" href="namespaceplayrho_1_1d2.html#a54c453e054f0b9692dc3300e5861f42c">playrho::d2::GetWorldManifold()</a>, and <a class="el" href="namespaceplayrho.html#ab903c93dd80fcff6148a66dbc7c89687">playrho::IsValid()</a>.</p>
@@ -1114,6 +1114,8 @@ Behavior is undefined for circles (e_circles) type manifolds. </dd></dl>
 
 <p>Calculates the relevant collision manifold. </p>
 <dl class="section note"><dt>Note</dt><dd>The returned touching state information typically agrees with that returned from the distance-proxy-based <code>TestOverlap</code> function. This is not always the case however especially when the separation or overlap distance is closer to zero. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classplayrho_1_1d2_1_1WorldImpl.html#aebd7935e321a9f4beaabe0dc49e56641">playrho::d2::WorldImpl::Update()</a>.</p>
 
 </div>
 </div>
@@ -1355,7 +1357,7 @@ Behavior is undefined for circles (e_circles) type manifolds. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceplayrho.html">playrho</a></li><li class="navelem"><a class="el" href="namespaceplayrho_1_1d2.html">d2</a></li><li class="navelem"><a class="el" href="classplayrho_1_1d2_1_1Manifold.html">Manifold</a></li>
-    <li class="footer">Generated on Thu Oct 22 2020 21:57:28 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
+    <li class="footer">Generated on Sat Oct 31 2020 21:08:05 for PlayRho by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
 </body>
