@@ -100,10 +100,17 @@ bool SolvePosition(const Joint& object, std::vector<BodyConstraint>& bodies,
 /// @ingroup ConstraintsGroup
 
 /// @brief Joint class.
-/// @details Joints are constraints that are used to constrain one or more bodies in various
-///   fashions. Some joints also feature limits and motors.
+/// @details This is a concrete manifestation of the joint concept. Joints are constraints
+///   that are used to constrain one or more bodies in various fashions. Some joints also
+///   feature limits and motors.
+/// @note This class's design provides a "polymorphic value type" offering polymorphism
+///   without public inheritance. This is based on a technique that's described by Sean Parent
+///   in his January 2017 Norwegian Developers Conference London talk "Better Code: Runtime
+///   Polymorphism".
 /// @ingroup JointsGroup
 /// @ingroup PhysicalEntities
+/// @see https://youtu.be/QGcVXgEVMJg
+/// @see https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Polymorphic_Value_Types
 class Joint
 {
 public:

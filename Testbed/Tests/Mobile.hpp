@@ -36,7 +36,7 @@ public:
     Mobile()
     {
         // Create ground body.
-        const auto ground = CreateBody(m_world, BodyConf{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
+        const auto ground = CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(0.0f, 20.0f) * 1_m));
 
         const auto a = Real{0.5f};
         const auto shape = Shape(PolygonShapeConf{}.UseDensity(20_kgpm2).SetAsBox(Real{0.25f} * a * 1_m, a * 1_m));
@@ -46,7 +46,7 @@ public:
         jointConf.bodyB = AddNode(ground, Length2{}, 0, 3.0f, static_cast<float>(a), shape);
         jointConf.localAnchorA = Length2{};
         jointConf.localAnchorB = Vec2(0, a) * 1_m;
-        m_world.CreateJoint(jointConf);
+        CreateJoint(GetWorld(), jointConf);
     }
 
     BodyID AddNode(BodyID parent, Length2 localAnchor, int depth, float offset, float a,
@@ -56,10 +56,10 @@ public:
 
         BodyConf bodyConf;
         bodyConf.type = BodyType::Dynamic;
-        bodyConf.linearAcceleration = m_gravity;
-        bodyConf.location = GetLocation(m_world, parent) + localAnchor - h;
-        const auto body = CreateBody(m_world, bodyConf);
-        CreateFixture(m_world, body, shape);
+        bodyConf.linearAcceleration = GetGravity();
+        bodyConf.location = GetLocation(GetWorld(), parent) + localAnchor - h;
+        const auto body = CreateBody(GetWorld(), bodyConf);
+        CreateFixture(GetWorld(), body, shape);
 
         if (depth == e_depth)
         {
@@ -75,11 +75,11 @@ public:
 
         jointConf.localAnchorA = a1;
         jointConf.bodyB = AddNode(body, a1, depth + 1, 0.5f * offset, a, shape);
-        m_world.CreateJoint(jointConf);
+        CreateJoint(GetWorld(), jointConf);
 
         jointConf.localAnchorA = a2;
         jointConf.bodyB = AddNode(body, a2, depth + 1, 0.5f * offset, a, shape);
-        m_world.CreateJoint(jointConf);
+        CreateJoint(GetWorld(), jointConf);
 
         return body;
     }

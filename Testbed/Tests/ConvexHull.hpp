@@ -81,7 +81,7 @@ public:
 
         if (!Validate(shape.GetVertices()))
         {
-            m_status = "Note: Invalid convex hull";
+            SetStatus("Note: Invalid convex hull");
         }
 
         if (m_auto)

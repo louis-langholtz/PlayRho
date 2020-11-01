@@ -111,8 +111,8 @@ public:
     
     SolarSystem(): Test(GetTestConf())
     {
-        m_bombRadius = 100_km;
-        m_bombDensity = 2e12_kgpm2;
+        SetBombRadius(100_km);
+        SetBombDensity(2e12_kgpm2);
         const auto DynamicBD = BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true);
         for (auto& sso: SolarSystemBodies)
         {
@@ -123,18 +123,18 @@ public:
             const auto l = Length2{odds? -sso.aveDist: sso.aveDist, 0_m};
             const auto v = (p != 0_s)? (c / p) * (odds? -1: +1): 0_mps;
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-            const auto b = CreateBody(m_world, BodyConf(DynamicBD).UseLocation(l));
+            const auto b = CreateBody(GetWorld(), BodyConf(DynamicBD).UseLocation(l));
             const auto a = 2 * Pi * 1_rad / sso.rotationalPeriod;
-            SetVelocity(m_world, b, Velocity{LinearVelocity2{0_mps, v}, a});
+            SetVelocity(GetWorld(), b, Velocity{LinearVelocity2{0_mps, v}, a});
             const auto d = sso.mass / (Pi * Square(sso.radius));
             const auto sconf = DiskShapeConf{}.UseRadius(sso.radius).UseDensity(d);
             const auto shape = Shape(sconf);
-            CreateFixture(m_world, b, shape);
+            CreateFixture(GetWorld(), b, shape);
         }
         RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0,
                        "Locks camera to following planet nearest mouse.",
                        [&](KeyActionMods) {
-                           m_focalBody = FindClosestBody(m_world, GetMouseWorld());
+                           m_focalBody = FindClosestBody(GetWorld(), GetMouseWorld());
                        });
         RegisterForKey(GLFW_KEY_BACKSPACE, GLFW_PRESS, 0,
                        "Unlock camera from following planet.",
@@ -144,36 +144,36 @@ public:
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, GLFW_MOD_SHIFT,
                        "Increases bomb size.",
                        [&](KeyActionMods) {
-                           m_bombRadius *= 2;
+                           SetBombRadius(GetBombRadius() * 2);
                        });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0,
                        "Decreases bomb size.",
                        [&](KeyActionMods) {
-                           m_bombRadius /= 2;;
+                           SetBombRadius(GetBombRadius() / 2);
                        });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, GLFW_MOD_SHIFT,
                        "Increases bomb density.",
                        [&](KeyActionMods) {
-                           m_bombDensity *= 2;
+                           SetBombDensity(GetBombDensity() * 2);
                        });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0,
                        "Decreases bomb density.",
                        [&](KeyActionMods) {
-                           m_bombDensity /= 2;;
+                           SetBombDensity(GetBombDensity() / 2);
                        });
     }
     
     void PreStep(const Settings&, Drawer& drawer) override
     {
-        SetAccelerations(m_world, CalcGravitationalAcceleration);
+        SetAccelerations(GetWorld(), CalcGravitationalAcceleration);
 
         std::ostringstream os;
         if (IsValid(m_focalBody))
         {
-            const auto location = GetLocation(m_world, m_focalBody);
+            const auto location = GetLocation(GetWorld(), m_focalBody);
             drawer.SetTranslation(location);
             
-            const auto index = GetWorldIndex(m_world, m_focalBody);
+            const auto index = GetWorldIndex(GetWorld(), m_focalBody);
             os << "Camera locked on body " << index << ": ";
             os << SolarSystemBodies[index].name;
             os << ".";
@@ -182,9 +182,9 @@ public:
         {
             os << "Camera unlocked from following any planet.";
         }
-        os << " 'Bomb' size (radial) is now at " << Real{m_bombRadius/1_km} << "km.";
-        os << " 'Bomb' density (areal) is now at " << Real{m_bombDensity/1_kgpm2} << "kg/m^2.";
-        m_status = os.str();
+        os << " 'Bomb' size (radial) is now at " << Real{GetBombRadius()/1_km} << "km.";
+        os << " 'Bomb' density (areal) is now at " << Real{GetBombDensity()/1_kgpm2} << "kg/m^2.";
+        SetStatus(os.str());
     }
     
     BodyID m_focalBody = InvalidBodyID;

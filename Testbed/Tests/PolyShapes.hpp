@@ -40,7 +40,7 @@ public:
     PolyShapes()
     {
         // Ground body
-        CreateFixture(m_world, CreateBody(m_world), Shape{
+        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{
             EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}
         });
 
@@ -94,8 +94,8 @@ public:
             {
                 if (IsValid(m_bodies[i]))
                 {
-                    const auto enabled = IsEnabled(m_world, m_bodies[i]);
-                    SetEnabled(m_world, m_bodies[i], !enabled);
+                    const auto enabled = IsEnabled(GetWorld(), m_bodies[i]);
+                    SetEnabled(GetWorld(), m_bodies[i], !enabled);
                 }
             }
         });
@@ -108,13 +108,13 @@ public:
     {
         if (IsValid(m_bodies[m_bodyIndex]))
         {
-            Destroy(m_world, m_bodies[m_bodyIndex]);
+            Destroy(GetWorld(), m_bodies[m_bodyIndex]);
             m_bodies[m_bodyIndex] = InvalidBodyID;
         }
 
         BodyConf bd;
         bd.type = BodyType::Dynamic;
-        bd.linearAcceleration = m_gravity;
+        bd.linearAcceleration = GetGravity();
 
         const auto x = RandomFloat(-2.0f, 2.0f);
         bd.location = Vec2(x, 10.0f) * 1_m;
@@ -125,15 +125,15 @@ public:
             bd.angularDamping = 0.02_Hz;
         }
 
-        m_bodies[m_bodyIndex] = CreateBody(m_world, bd);
+        m_bodies[m_bodyIndex] = CreateBody(GetWorld(), bd);
 
         if (index < 4)
         {
-            CreateFixture(m_world, m_bodies[m_bodyIndex], m_polygons[index]);
+            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_polygons[index]);
         }
         else
         {
-            CreateFixture(m_world, m_bodies[m_bodyIndex], m_circle);
+            CreateFixture(GetWorld(), m_bodies[m_bodyIndex], m_circle);
         }
 
         m_bodyIndex = GetModuloNext(m_bodyIndex, static_cast<decltype(m_bodyIndex)>(e_maxBodies));
@@ -145,7 +145,7 @@ public:
         {
             if (IsValid(m_bodies[i]))
             {
-                Destroy(m_world, m_bodies[i]);
+                Destroy(GetWorld(), m_bodies[i]);
                 m_bodies[i] = InvalidBodyID;
                 return;
             }
@@ -166,21 +166,21 @@ public:
         // Finds all the fixtures that overlap an AABB. Of those, we use TestOverlap to
         // determine which fixtures overlap a circle. Up to 4 overlapped fixtures will be
         // highlighted with a yellow border.
-        Query(GetTree(m_world), aabb, [&](FixtureID f, ChildCounter) {
+        Query(aabb, [&](FixtureID f, ChildCounter) {
             if (count < e_maxCount)
             {
-                const auto xfm = GetTransformation(m_world, f);
-                const auto shape = GetShape(m_world, f);
+                const auto xfm = GetTransformation(GetWorld(), f);
+                const auto shape = GetShape(GetWorld(), f);
                 const auto overlap = TestOverlap(GetChild(shape, 0), xfm, circleChild, transform);
                 if (overlap >= 0_m2)
                 {
                     ++count;
                     const auto overlapColor = Color(0.95f, 0.95f, 0.6f);
                     const auto type = GetType(shape);
-                    const auto body = GetBody(m_world, f);
+                    const auto body = GetBody(GetWorld(), f);
                     if (type == GetTypeID<DiskShapeConf>()) {
                         const auto conf = TypeCast<DiskShapeConf>(shape);
-                        const auto center = Transform(GetLocation(m_world, body), xfm);
+                        const auto center = Transform(GetLocation(GetWorld(), body), xfm);
                         drawer.DrawCircle(center, conf.GetRadius(), overlapColor);
                     }
                     else if (type == GetTypeID<PolygonShapeConf>()) {

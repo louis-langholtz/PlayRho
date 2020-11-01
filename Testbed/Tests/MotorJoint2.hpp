@@ -59,30 +59,30 @@ public:
 
     void Setup()
     {
-        if (IsValid(m_joint)) Destroy(m_world, m_joint);
-        if (IsValid(m_bodyA)) Destroy(m_world, m_bodyA);
-        if (IsValid(m_bodyB)) Destroy(m_world, m_bodyB);
+        if (IsValid(m_joint)) Destroy(GetWorld(), m_joint);
+        if (IsValid(m_bodyA)) Destroy(GetWorld(), m_bodyA);
+        if (IsValid(m_bodyB)) Destroy(GetWorld(), m_bodyB);
 
-        const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
+        const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
         const auto locations = m_reversedBody?
             std::make_pair(m_locationB, m_locationA): std::make_pair(m_locationA, m_locationB);
-        m_bodyA = CreateBody(m_world, BodyConf(bd).UseLocation(std::get<0>(locations)));
-        m_bodyB = CreateBody(m_world, BodyConf(bd).UseLocation(std::get<1>(locations)));
-        CreateFixture(m_world, m_bodyA, m_diskShape);
-        CreateFixture(m_world, m_bodyB, m_diskShape);
+        m_bodyA = CreateBody(GetWorld(), BodyConf(bd).UseLocation(std::get<0>(locations)));
+        m_bodyB = CreateBody(GetWorld(), BodyConf(bd).UseLocation(std::get<1>(locations)));
+        CreateFixture(GetWorld(), m_bodyA, m_diskShape);
+        CreateFixture(GetWorld(), m_bodyB, m_diskShape);
 
         const auto jc = MotorJointConf{
             m_reversedJoint
-                ? GetMotorJointConf(m_world, m_bodyB, m_bodyA)
-                : GetMotorJointConf(m_world, m_bodyA, m_bodyB)
+                ? GetMotorJointConf(GetWorld(), m_bodyB, m_bodyA)
+                : GetMotorJointConf(GetWorld(), m_bodyA, m_bodyB)
         }.UseMaxForce(1000_N).UseMaxTorque(1000_Nm);
-        m_joint = m_world.CreateJoint(jc);
+        m_joint = CreateJoint(GetWorld(), jc);
     }
     
     MotorJoint2(): Test(GetTestConf())
     {
-        const auto ground = CreateBody(m_world);
-        CreateFixture(m_world, ground, Shape{GetGroundEdgeConf()});
+        const auto ground = CreateBody(GetWorld());
+        CreateFixture(GetWorld(), ground, Shape{GetGroundEdgeConf()});
         
         Setup();
         

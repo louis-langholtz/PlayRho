@@ -35,23 +35,23 @@ public:
     {
         SetupTumblers(1);
         RegisterForKey(GLFW_KEY_KP_ADD, GLFW_PRESS, 0, "Speed up rotation.", [&](KeyActionMods) {
-            for (const auto& id: GetJoints(m_world)) {
-                if (GetType(m_world, id) == GetTypeID<RevoluteJointConf>()) {
-                    SetMotorSpeed(m_world, id, GetMotorSpeed(m_world, id) + MotorInc);
+            for (const auto& id: GetJoints(GetWorld())) {
+                if (GetType(GetWorld(), id) == GetTypeID<RevoluteJointConf>()) {
+                    SetMotorSpeed(GetWorld(), id, GetMotorSpeed(GetWorld(), id) + MotorInc);
                 }
             }
         });
         RegisterForKey(GLFW_KEY_KP_SUBTRACT, GLFW_PRESS, 0, "Slow down rotation.", [&](KeyActionMods) {
-            for (const auto& id: GetJoints(m_world)) {
-                if (GetType(m_world, id) == GetTypeID<RevoluteJointConf>()) {
-                    SetMotorSpeed(m_world, id, GetMotorSpeed(m_world, id) - MotorInc);
+            for (const auto& id: GetJoints(GetWorld())) {
+                if (GetType(GetWorld(), id) == GetTypeID<RevoluteJointConf>()) {
+                    SetMotorSpeed(GetWorld(), id, GetMotorSpeed(GetWorld(), id) - MotorInc);
                 }
             }
         });
         RegisterForKey(GLFW_KEY_EQUAL, GLFW_PRESS, 0, "Stop rotation.", [&](KeyActionMods) {
-            for (const auto& id: GetJoints(m_world)) {
-                if (GetType(m_world, id) == GetTypeID<RevoluteJointConf>()) {
-                    SetMotorSpeed(m_world, id, 0_rpm);
+            for (const auto& id: GetJoints(GetWorld())) {
+                if (GetType(GetWorld(), id) == GetTypeID<RevoluteJointConf>()) {
+                    SetMotorSpeed(GetWorld(), id, 0_rpm);
                 }
             }
         });
@@ -67,13 +67,13 @@ public:
         });
         RegisterForKey(GLFW_KEY_C, GLFW_PRESS, 0, "Clear and re-emit shapes.", [&](KeyActionMods) {
             std::vector<BodyID> bodies;
-            for (const auto& b: m_world.GetBodies()) {
+            for (const auto& b: GetBodies(GetWorld())) {
                 if ((b.get() < m_tumblee.size()) && m_tumblee[b.get()]) {
                     bodies.push_back(b);
                 }
             }
             for (const auto& b: bodies) {
-                Destroy(m_world, b);
+                Destroy(GetWorld(), b);
             }
             m_count = 0;
         });
@@ -81,7 +81,7 @@ public:
 
     void SetupTumblers(unsigned int num)
     {
-        m_world.Clear();
+        Clear(GetWorld());
         m_count = 0;
 
         const auto width = 30_m;
@@ -97,53 +97,53 @@ public:
 
     BodyID CreateEnclosure(Length2 at)
     {
-        const auto b = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic)
+        const auto b = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic)
                                           .UseLocation(at).UseAllowSleep(false)
-                                          .UseLinearAcceleration(m_gravity));
+                                          .UseLinearAcceleration(GetGravity()));
         auto shape = PolygonShapeConf{}.UseDensity(5_kgpm2);
         shape.SetAsBox(0.5_m, 10_m, Vec2( 10,   0) * 1_m, 0_rad);
-        CreateFixture(m_world, b, Shape(shape));
+        CreateFixture(GetWorld(), b, Shape(shape));
         shape.SetAsBox(0.5_m, 10_m, Vec2(-10,   0) * 1_m, 0_rad);
-        CreateFixture(m_world, b, Shape(shape));
+        CreateFixture(GetWorld(), b, Shape(shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0,  10) * 1_m, 0_rad);
-        CreateFixture(m_world, b, Shape(shape));
+        CreateFixture(GetWorld(), b, Shape(shape));
         shape.SetAsBox(10_m, 0.5_m, Vec2(  0, -10) * 1_m, 0_rad);
-        CreateFixture(m_world, b, Shape(shape));
+        CreateFixture(GetWorld(), b, Shape(shape));
         return b;
     }
 
     JointID CreateRevoluteJoint(BodyID turn)
     {
         RevoluteJointConf jd;
-        jd.bodyA = CreateBody(m_world, BodyConf{}.UseLocation(GetLocation(m_world, turn)));
+        jd.bodyA = CreateBody(GetWorld(), BodyConf{}.UseLocation(GetLocation(GetWorld(), turn)));
         jd.bodyB = turn;
         jd.referenceAngle = 0_rad;
         jd.motorSpeed = 1.5_rpm; // same as Pi*0.05_rad/s = 0.025 rev/s
         jd.maxMotorTorque = 100000_Nm; // 1e8f;
         jd.enableMotor = true;
-        return m_world.CreateJoint(jd);
+        return CreateJoint(GetWorld(), jd);
     }
 
     void CreateTumblee(Length2 at)
     {
-        const auto b = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
-                                          .UseLinearAcceleration(m_gravity));
+        const auto b = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic).UseLocation(at)
+                                          .UseLinearAcceleration(GetGravity()));
         m_tumblee.resize(b.get() + 1u);
         m_tumblee[b.get()] = true;
-        CreateFixture(m_world, b, m_shape);
+        CreateFixture(GetWorld(), b, m_shape);
     }
 
     void PostStep(const Settings& settings, Drawer&) override
     {
         if ((!settings.pause || settings.singleStep) && (m_count < Count))
         {
-            for (const auto& id: GetJoints(m_world)) {
-                if (GetType(m_world, id) == GetTypeID<RevoluteJointConf>()) {
-                    CreateTumblee(GetLocation(m_world, GetBodyB(m_world, id)));
+            for (const auto& id: GetJoints(GetWorld())) {
+                if (GetType(GetWorld(), id) == GetTypeID<RevoluteJointConf>()) {
+                    CreateTumblee(GetLocation(GetWorld(), GetBodyB(GetWorld(), id)));
                 }
             }
             ++m_count;
-            m_status = std::string("Count = ") + std::to_string(m_count);
+            SetStatus(std::string("Count = ") + std::to_string(m_count));
         }
     }
 

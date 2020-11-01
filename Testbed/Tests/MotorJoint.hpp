@@ -43,21 +43,21 @@ public:
     
     MotorJointTest(): Test(GetTestConf())
     {
-        const auto ground = CreateBody(m_world);
-        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
+        const auto ground = CreateBody(GetWorld());
+        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Define motorized body
-        const auto body = CreateBody(m_world, BodyConf{}
+        const auto body = CreateBody(GetWorld(), BodyConf{}
                                              .UseType(BodyType::Dynamic)
                                              .UseLocation(Vec2(0.0f, 8.0f) * 1_m)
-                                             .UseLinearAcceleration(m_gravity));
-        CreateFixture(m_world, body, Shape{
+                                             .UseLinearAcceleration(GetGravity()));
+        CreateFixture(GetWorld(), body, Shape{
             PolygonShapeConf{}.SetAsBox(2_m, 0.5_m).UseFriction(Real(0.6)).UseDensity(2_kgpm2)
         });
-        auto mjd = GetMotorJointConf(m_world, ground, body);
+        auto mjd = GetMotorJointConf(GetWorld(), ground, body);
         mjd.maxForce = 1000_N;
         mjd.maxTorque = 1000_Nm;
-        m_joint = m_world.CreateJoint(mjd);
+        m_joint = CreateJoint(GetWorld(), mjd);
         
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Pause Motor", [&](KeyActionMods) {
             m_go = !m_go;
@@ -66,18 +66,14 @@ public:
 
     void PreStep(const Settings& settings, Drawer& drawer) override
     {
-        m_status = m_go? "Motor going.": "Motor paused.";
-
+        SetStatus(m_go? "Motor going.": "Motor paused.");
         if (m_go && settings.dt > 0)
         {
             m_time += settings.dt;
         }
-
         const auto linearOffset = Vec2{6 * sin(2 * m_time), 8 + 4 * sin(m_time)} * 1_m;
-
-        SetLinearOffset(m_world, m_joint, linearOffset);
-        SetAngularOffset(m_world, m_joint, 4_rad * m_time);
-
+        SetLinearOffset(GetWorld(), m_joint, linearOffset);
+        SetAngularOffset(GetWorld(), m_joint, 4_rad * m_time);
         drawer.DrawPoint(linearOffset, 4.0f, Color(0.9f, 0.9f, 0.9f));
     }
 

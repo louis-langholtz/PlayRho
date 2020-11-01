@@ -30,20 +30,25 @@ public:
 
     ConveyorBelt()
     {
+        SetPreSolveContactListener(GetWorld(), [this](ContactID id, const Manifold& manifold) {
+            Test::PreSolve(id, manifold);
+            ConveyorBelt::PreSolve(id, manifold);
+        });
+
         // Ground
-        CreateFixture(m_world, CreateBody(m_world), Shape{
+        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{
             EdgeShapeConf{Vec2(-20.0f, 0.0f) * 1_m, Vec2(20.0f, 0.0f) * 1_m}});
 
         // Platform
         {
             BodyConf bd;
             bd.location = Vec2(-5.0f, 5.0f) * 1_m;
-            const auto body = CreateBody(m_world, bd);
+            const auto body = CreateBody(GetWorld(), bd);
 
             auto conf = PolygonShapeConf{};
             conf.friction = 0.8f;
             conf.SetAsBox(10_m, 0.5_m);
-            m_platform = CreateFixture(m_world, body, Shape{conf});
+            m_platform = CreateFixture(GetWorld(), body, Shape{conf});
         }
 
         // Boxes
@@ -52,26 +57,24 @@ public:
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             bd.location = Vec2(-10.0f + 2.0f * i, 7.0f) * 1_m;
-            const auto body = CreateBody(m_world, bd);
-            CreateFixture(m_world, body, boxshape);
+            const auto body = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), body, boxshape);
         }
     }
 
-    void PreSolve(ContactID contact, const Manifold& oldManifold) override
+    void PreSolve(ContactID contact, const Manifold& oldManifold)
     {
-        Test::PreSolve(contact, oldManifold);
-
-        const auto fixtureA = GetFixtureA(m_world, contact);
-        const auto fixtureB = GetFixtureB(m_world, contact);
+        const auto fixtureA = GetFixtureA(GetWorld(), contact);
+        const auto fixtureB = GetFixtureB(GetWorld(), contact);
         if (fixtureA == m_platform)
         {
-            SetTangentSpeed(m_world, contact, 5_mps);
+            SetTangentSpeed(GetWorld(), contact, 5_mps);
         }
         if (fixtureB == m_platform)
         {
-            SetTangentSpeed(m_world, contact, -5_mps);
+            SetTangentSpeed(GetWorld(), contact, -5_mps);
         }
     }
 

@@ -48,23 +48,29 @@ public:
     
     Breakable(): m_shape1{GetShapeConf1()}, m_shape2{GetShapeConf2()}
     {
+        SetPostSolveContactListener(GetWorld(), [this](ContactID id,
+                                                       const ContactImpulsesList& impulses,
+                                                       unsigned count){
+            PostSolve(id, impulses, count);
+        });
+
         // Ground body
-        CreateFixture(m_world, CreateBody(m_world), Shape{GetGroundEdgeConf()});
+        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{GetGroundEdgeConf()});
 
         // Breakable dynamic body
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
-            bd.linearAcceleration = m_gravity;
+            bd.linearAcceleration = GetGravity();
             bd.location = Length2{0_m, 40_m};
             bd.angle = Pi * 0.25_rad;
-            m_body1 = CreateBody(m_world, bd);
-            m_piece1 = CreateFixture(m_world, m_body1, m_shape1);
-            m_piece2 = CreateFixture(m_world, m_body1, m_shape2);
+            m_body1 = CreateBody(GetWorld(), bd);
+            m_piece1 = CreateFixture(GetWorld(), m_body1, m_shape1);
+            m_piece2 = CreateFixture(GetWorld(), m_body1, m_shape2);
         }
     }
 
-    void PostSolve(ContactID, const ContactImpulsesList& impulse, unsigned) override
+    void PostSolve(ContactID, const ContactImpulsesList& impulse, unsigned)
     {
         if (m_broke)
         {
@@ -92,31 +98,31 @@ public:
     void Break()
     {        
         // Create two bodies from one.
-        const auto body1 = GetBody(m_world, m_piece1);
-        const auto center = GetWorldCenter(m_world, body1);
+        const auto body1 = GetBody(GetWorld(), m_piece1);
+        const auto center = GetWorldCenter(GetWorld(), body1);
 
-        Destroy(m_world, m_piece2);
+        Destroy(GetWorld(), m_piece2);
         m_piece2 = InvalidFixtureID;
 
         BodyConf bd;
         bd.type = BodyType::Dynamic;
-        bd.linearAcceleration = m_gravity;
-        bd.location = GetLocation(m_world, body1);
-        bd.angle = GetAngle(m_world, body1);
+        bd.linearAcceleration = GetGravity();
+        bd.location = GetLocation(GetWorld(), body1);
+        bd.angle = GetAngle(GetWorld(), body1);
 
-        const auto body2 = CreateBody(m_world, bd);
-        m_piece2 = CreateFixture(m_world, body2, m_shape2);
+        const auto body2 = CreateBody(GetWorld(), bd);
+        m_piece2 = CreateFixture(GetWorld(), body2, m_shape2);
 
         // Compute consistent velocities for new bodies based on
         // cached velocity.
-        const auto center1 = GetWorldCenter(m_world, body1);
-        const auto center2 = GetWorldCenter(m_world, body2);
+        const auto center1 = GetWorldCenter(GetWorld(), body1);
+        const auto center2 = GetWorldCenter(GetWorld(), body2);
         
         const auto velocity1 = m_velocity + GetRevPerpendicular(center1 - center) * m_angularVelocity / 1_rad;
         const auto velocity2 = m_velocity + GetRevPerpendicular(center2 - center) * m_angularVelocity / 1_rad;
 
-        SetVelocity(m_world, body1, Velocity{velocity1, m_angularVelocity});
-        SetVelocity(m_world, body2, Velocity{velocity2, m_angularVelocity});
+        SetVelocity(GetWorld(), body1, Velocity{velocity1, m_angularVelocity});
+        SetVelocity(GetWorld(), body2, Velocity{velocity2, m_angularVelocity});
     }
 
     void PreStep(const Settings&, Drawer&) override
@@ -131,7 +137,7 @@ public:
         // Cache velocities to improve movement on breakage.
         if (!m_broke)
         {
-            const auto velocity = GetVelocity(m_world, m_body1);
+            const auto velocity = GetVelocity(GetWorld(), m_body1);
             m_velocity = velocity.linear;
             m_angularVelocity = velocity.angular;
         }

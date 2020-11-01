@@ -29,26 +29,26 @@ class Revolute : public Test
 public:
     Revolute()
     {
-        const auto ground = CreateBody(m_world);
-        CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
+        const auto ground = CreateBody(GetWorld());
+        CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2( 40.0f, 0.0f) * 1_m}});
 
         {
             BodyConf bd;
             bd.type = BodyType::Dynamic;
 
             bd.location = Vec2(-10.0f, 20.0f) * 1_m;
-            const auto body = CreateBody(m_world, bd);
+            const auto body = CreateBody(GetWorld(), bd);
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 0.5_m;
             circleConf.density = 5_kgpm2;
-            CreateFixture(m_world, body, Shape(circleConf));
+            CreateFixture(GetWorld(), body, Shape(circleConf));
 
             const auto w = 100.0f;
-            SetVelocity(m_world, body, Velocity{
+            SetVelocity(GetWorld(), body, Velocity{
                 Vec2(-8.0f * w, 0.0f) * 1_mps, w * 1_rad / 1_s
             });
             
-            auto rjd = GetRevoluteJointConf(m_world, ground, body, Vec2(-10.0f, 12.0f) * 1_m);
+            auto rjd = GetRevoluteJointConf(GetWorld(), ground, body, Vec2(-10.0f, 12.0f) * 1_m);
             rjd.motorSpeed = Pi * 1_rad / 1_s;
             rjd.maxMotorTorque = 10000_Nm;
             rjd.enableMotor = false;
@@ -57,7 +57,7 @@ public:
             rjd.enableLimit = true;
             rjd.collideConnected = true;
 
-            m_joint = m_world.CreateJoint(rjd);
+            m_joint = CreateJoint(GetWorld(), rjd);
         }
 
         {
@@ -68,11 +68,11 @@ public:
             FixtureConf fd;
             fd.filter.maskBits = 1;
 
-            m_ball = CreateBody(m_world, circle_bd);
+            m_ball = CreateBody(GetWorld(), circle_bd);
             auto circleConf = DiskShapeConf{};
             circleConf.vertexRadius = 3_m;
             circleConf.density = 5_kgpm2;
-            CreateFixture(m_world, m_ball, Shape(circleConf), fd);
+            CreateFixture(GetWorld(), m_ball, Shape(circleConf), fd);
 
             auto polygon_shape = PolygonShapeConf{};
             polygon_shape.SetAsBox(10_m, 0.2_m, Vec2(-10.0f, 0.0f) * 1_m, 0_rad);
@@ -82,14 +82,14 @@ public:
             polygon_bd.location = Vec2(20.0f, 10.0f) * 1_m;
             polygon_bd.type = BodyType::Dynamic;
             polygon_bd.bullet = true;
-            const auto polygon_body = CreateBody(m_world, polygon_bd);
-            CreateFixture(m_world, polygon_body, Shape(polygon_shape));
+            const auto polygon_body = CreateBody(GetWorld(), polygon_bd);
+            CreateFixture(GetWorld(), polygon_body, Shape(polygon_shape));
 
-            auto rjd = GetRevoluteJointConf(m_world, ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
+            auto rjd = GetRevoluteJointConf(GetWorld(), ground, polygon_body, Vec2(20.0f, 10.0f) * 1_m);
             rjd.lowerAngle = -0.25_rad * Pi;
             rjd.upperAngle = 0_rad * Pi;
             rjd.enableLimit = true;
-            m_world.CreateJoint(rjd);
+            CreateJoint(GetWorld(), rjd);
         }
 
         // Tests mass computation of a small object far from the origin
@@ -100,17 +100,17 @@ public:
                 Vec2(17.19f, 36.36f) * 1_m
             }).UseDensity(1_kgpm2);
 
-            const auto body = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic));
-            CreateFixture(m_world, body, Shape(polyShape));
+            const auto body = CreateBody(GetWorld(), BodyConf{}.UseType(BodyType::Dynamic));
+            CreateFixture(GetWorld(), body, Shape(polyShape));
         }
 
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(GetWorld(), GetGravity());
 
         RegisterForKey(GLFW_KEY_L, GLFW_PRESS, 0, "Limits", [&](KeyActionMods) {
-            EnableLimit(m_world, m_joint, !IsLimitEnabled(m_world, m_joint));
+            EnableLimit(GetWorld(), m_joint, !IsLimitEnabled(GetWorld(), m_joint));
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Motor", [&](KeyActionMods) {
-            EnableMotor(m_world, m_joint, !IsMotorEnabled(m_world, m_joint));
+            EnableMotor(GetWorld(), m_joint, !IsMotorEnabled(GetWorld(), m_joint));
         });
     }
 

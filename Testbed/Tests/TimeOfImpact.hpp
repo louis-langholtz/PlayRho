@@ -57,7 +57,7 @@ public:
         stream << ". TOI iterations is " << unsigned{output.stats.toi_iters};
         stream << ", max root iterations is " << unsigned{output.stats.max_root_iters};
         stream << ".";
-        m_status = stream.str();
+        SetStatus(stream.str());
 
         {
             const auto vertexCount = m_shapeA.GetVertexCount();

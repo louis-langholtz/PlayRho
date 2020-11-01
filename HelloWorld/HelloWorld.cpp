@@ -19,9 +19,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-#include <PlayRho/Dynamics/World.hpp>
-#include <PlayRho/Collision/Shapes/PolygonShapeConf.hpp>
-#include <PlayRho/Collision/Shapes/DiskShapeConf.hpp>
+#include <PlayRho/PlayRho.hpp>
 
 #include <iostream>
 #include <iomanip>
@@ -41,23 +39,23 @@ int main()
 
     // Call world's body creation method which allocates memory for ground body and
     // adds it to the world.
-    const auto ground = world.CreateBody(BodyConf{}.UseLocation(Length2{0_m, -10_m}));
+    const auto ground = CreateBody(world, BodyConf{}.UseLocation(Length2{0_m, -10_m}));
 
     // Define the ground shape. Use a polygon configured as a box for this.
     // The extents are the half-width and half-height of the box.
     const auto box = Shape{PolygonShapeConf{}.SetAsBox(50_m, 10_m)};
 
     // Add the box shape to the ground body.
-    world.CreateFixture(FixtureConf{}.UseBody(ground).UseShape(box));
+    CreateFixture(world, FixtureConf{}.UseBody(ground).UseShape(box));
 
-    // Define location above ground for a "dynamic" body & call world's body creation method.
-    const auto ball = world.CreateBody(BodyConf{}
-                                       .UseLocation(Length2{0_m, 4_m})
-                                       .UseType(BodyType::Dynamic)
-                                       .UseLinearAcceleration(EarthlyGravity));
+    // Define location above ground for a "dynamic" body & create this body within world.
+    const auto ball = CreateBody(world, BodyConf{}
+                                        .UseLocation(Length2{0_m, 4_m})
+                                        .UseType(BodyType::Dynamic)
+                                        .UseLinearAcceleration(EarthlyGravity));
 
     // Define a disk shape for the ball body and create a fixture to add it.
-    world.CreateFixture(FixtureConf{}.UseBody(ball).UseShape(DiskShapeConf{}.UseRadius(1_m)));
+    CreateFixture(world, FixtureConf{}.UseBody(ball).UseShape(DiskShapeConf{}.UseRadius(1_m)));
 
     // Setup the C++ stream output format.
     std::cout << std::fixed << std::setprecision(2);
@@ -69,10 +67,11 @@ int main()
         // Typically code uses a time step of 1/60 of a second (60Hz). The defaults
         // are setup for that and to generally provide a high enough quality simulation
         // in most scenarios.
-        world.Step();
+        Step(world);
 
-        const auto location = world.GetTransformation(ball).p;
-        const auto angle = world.GetAngle(ball);
+        const auto transformation = GetTransformation(world, ball);
+        const auto location = GetLocation(transformation);
+        const auto angle = GetAngle(transformation);
 
         // Now print the location and angle of the body.
         std::cout << std::setw(5) << GetX(location);

@@ -34,8 +34,8 @@ public:
     {
         // Ground body
         {
-            const auto ground = CreateBody(m_world);
-            CreateFixture(m_world, ground, Shape{EdgeShapeConf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}});
+            const auto ground = CreateBody(GetWorld());
+            CreateFixture(GetWorld(), ground, Shape{EdgeShapeConf{Vec2(-50, 0) * 1_m, Vec2(50, 0) * 1_m}});
         }
 
         auto xLo = -5.0f, xHi = 5.0f;
@@ -55,8 +55,8 @@ public:
         triangleBodyConf.type = BodyType::Dynamic;
         triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body1 = CreateBody(m_world, triangleBodyConf);
-        CreateFixture(m_world, body1, Shape(polygon));
+        const auto body1 = CreateBody(GetWorld(), triangleBodyConf);
+        CreateFixture(GetWorld(), body1, Shape(polygon));
 
         // Large triangle (recycle definitions)
         vertices[0] *= 2.0f;
@@ -66,8 +66,8 @@ public:
 
         triangleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body2 = CreateBody(m_world, triangleBodyConf);
-        CreateFixture(m_world, body2, Shape(polygon));
+        const auto body2 = CreateBody(GetWorld(), triangleBodyConf);
+        CreateFixture(GetWorld(), body2, Shape(polygon));
         
         // Small box
         polygon.SetAsBox(1_m, 0.5_m);
@@ -76,30 +76,30 @@ public:
         boxBodyConf.type = BodyType::Dynamic;
         boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body3 = CreateBody(m_world, boxBodyConf);
-        CreateFixture(m_world, body3, Shape(polygon));
+        const auto body3 = CreateBody(GetWorld(), boxBodyConf);
+        CreateFixture(GetWorld(), body3, Shape(polygon));
 
         // Large box (recycle definitions)
         polygon.SetAsBox(2_m, 1_m);
         boxBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
 
-        const auto body4 = CreateBody(m_world, boxBodyConf);
-        CreateFixture(m_world, body4, Shape(polygon));
+        const auto body4 = CreateBody(GetWorld(), boxBodyConf);
+        CreateFixture(GetWorld(), body4, Shape(polygon));
 
         BodyConf circleBodyConf;
         circleBodyConf.type = BodyType::Dynamic;
 
         // Small circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
-        const auto body5 = CreateBody(m_world, circleBodyConf);
-        CreateFixture(m_world, body5, Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
+        const auto body5 = CreateBody(GetWorld(), circleBodyConf);
+        CreateFixture(GetWorld(), body5, Shape(DiskShapeConf{}.UseRadius(1_m).UseDensity(1_kgpm2)));
 
         // Large circle
         circleBodyConf.location = Vec2(RandomFloat(xLo, xHi), RandomFloat(yLo, yHi)) * 1_m;
-        const auto body6 = CreateBody(m_world, circleBodyConf);
-        CreateFixture(m_world, body6, Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
+        const auto body6 = CreateBody(GetWorld(), circleBodyConf);
+        CreateFixture(GetWorld(), body6, Shape(DiskShapeConf{}.UseRadius(2_m).UseDensity(1_kgpm2)));
         
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(GetWorld(), GetGravity());
     }
 
     void PostStep(const Settings&, Drawer&) override
@@ -115,10 +115,10 @@ public:
         // are touching heavier bodies.
         for (auto& point: GetPoints())
         {
-            const auto body1 = GetBody(m_world, point.fixtureA);
-            const auto body2 = GetBody(m_world, point.fixtureB);
-            const auto mass1 = GetMass(m_world, body1);
-            const auto mass2 = GetMass(m_world, body2);
+            const auto body1 = GetBody(GetWorld(), point.fixtureA);
+            const auto body2 = GetBody(GetWorld(), point.fixtureB);
+            const auto mass1 = GetMass(GetWorld(), body1);
+            const auto mass2 = GetMass(GetWorld(), body2);
 
             if (mass1 > 0_kg && mass2 > 0_kg)
             {
@@ -153,7 +153,7 @@ public:
 
             if (b != GetBomb())
             {
-                Destroy(m_world, b);
+                Destroy(GetWorld(), b);
             }
         }
     }

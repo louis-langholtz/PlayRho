@@ -30,18 +30,18 @@ public:
 
     ShapeEditing()
     {
-        CreateFixture(m_world, CreateBody(m_world), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
+        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape{EdgeShapeConf{Vec2(-40.0f, 0.0f) * 1_m, Vec2(40.0f, 0.0f) * 1_m}});
         
         BodyConf bd;
         bd.type = BodyType::Dynamic;
-        bd.linearAcceleration = m_gravity;
+        bd.linearAcceleration = GetGravity();
         bd.location = Vec2(0.0f, 10.0f) * 1_m;
-        m_body = CreateBody(m_world, bd);
+        m_body = CreateBody(GetWorld(), bd);
 
         auto shape = PolygonShapeConf{};
         shape.SetAsBox(4_m, 4_m, Length2{}, 0_deg);
         shape.UseDensity(10_kgpm2);
-        m_fixture1 = CreateFixture(m_world, m_body, Shape(shape));
+        m_fixture1 = CreateFixture(GetWorld(), m_body, Shape(shape));
 
         m_fixture2 = InvalidFixtureID;
 
@@ -54,23 +54,23 @@ public:
                 conf.vertexRadius = 3_m;
                 conf.location = Vec2(0.5f, -4.0f) * 1_m;
                 conf.density = 10_kgpm2;
-                m_fixture2 = CreateFixture(m_world, m_body, Shape(conf));
-                SetAwake(m_world, m_body);
+                m_fixture2 = CreateFixture(GetWorld(), m_body, Shape(conf));
+                SetAwake(GetWorld(), m_body);
             }
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Destroy a shape.", [&](KeyActionMods) {
             if (IsValid(m_fixture2))
             {
-                Destroy(m_world, m_fixture2);
+                Destroy(GetWorld(), m_fixture2);
                 m_fixture2 = InvalidFixtureID;
-                SetAwake(m_world, m_body);
+                SetAwake(GetWorld(), m_body);
             }
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Toggle Sensor.", [&](KeyActionMods) {
             if (IsValid(m_fixture2))
             {
                 m_sensor = !m_sensor;
-                SetSensor(m_world, m_fixture2, m_sensor);
+                SetSensor(GetWorld(), m_fixture2, m_sensor);
             }
         });
     }
@@ -79,7 +79,7 @@ public:
     {
         std::stringstream stream;
         stream << "Sensor is " << (m_sensor? "on": "off") << ".";
-        m_status = stream.str();
+        SetStatus(stream.str());
     }
 
     BodyID m_body;

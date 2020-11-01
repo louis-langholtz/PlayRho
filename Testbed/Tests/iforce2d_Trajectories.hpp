@@ -39,51 +39,51 @@ public:
         return conf;
     }
     
-    iforce2d_Trajectories(): Test(GetTestConf()), m_groundBody{CreateBody(m_world)}
+    iforce2d_Trajectories(): Test(GetTestConf()), m_groundBody{CreateBody(GetWorld())}
     {
         //add four walls to the ground body
         FixtureConf myFixtureConf;
         auto polygonShape = PolygonShapeConf{};
         polygonShape.SetAsBox(20_m, 1_m); //ground
-        CreateFixture(m_world, m_groundBody, Shape(polygonShape), myFixtureConf);
+        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
         polygonShape.SetAsBox(20_m, 1_m, Vec2(0, 40) * 1_m, 0_rad); //ceiling
-        CreateFixture(m_world, m_groundBody, Shape(polygonShape), myFixtureConf);
+        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
         polygonShape.SetAsBox(1_m, 20_m, Vec2(-20, 20) * 1_m, 0_rad); //left wall
-        CreateFixture(m_world, m_groundBody, Shape(polygonShape), myFixtureConf);
+        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
         polygonShape.SetAsBox(1_m, 20_m, Vec2(20, 20) * 1_m, 0_rad); //right wall
-        CreateFixture(m_world, m_groundBody, Shape(polygonShape), myFixtureConf);
+        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
         
         //small ledges for target practice
         polygonShape.UseFriction(Real(0.95));
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(3, 35) * 1_m, 0_rad);
-        CreateFixture(m_world, m_groundBody, Shape(polygonShape), myFixtureConf);
+        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
         polygonShape.SetAsBox(1.5_m, 0.25_m, Vec2(13, 30) * 1_m, 0_rad);
-        CreateFixture(m_world, m_groundBody, Shape(polygonShape), myFixtureConf);
+        CreateFixture(GetWorld(), m_groundBody, Shape(polygonShape), myFixtureConf);
         
         //another ledge which we can move with the mouse
         BodyConf kinematicBody;
         kinematicBody.type = BodyType::Kinematic;
         kinematicBody.location = Length2{11_m, 22_m};
-        m_targetBody = CreateBody(m_world, kinematicBody);
+        m_targetBody = CreateBody(GetWorld(), kinematicBody);
         const auto w = BallSize * 1_m;
         Length2 verts[3];
         verts[0] = Length2(  0_m, -2*w);
         verts[1] = Length2(  w,    0_m);
         verts[2] = Length2(  0_m,   -w);
         polygonShape.Set(verts);
-        CreateFixture(m_world, m_targetBody, Shape(polygonShape), myFixtureConf);
+        CreateFixture(GetWorld(), m_targetBody, Shape(polygonShape), myFixtureConf);
         verts[0] = Length2(  0_m, -2*w);
         verts[2] = Length2(  0_m,   -w);
         verts[1] = Length2( -w,    0_m);
         polygonShape.Set(verts);
-        CreateFixture(m_world, m_targetBody, Shape(polygonShape), myFixtureConf);
+        CreateFixture(GetWorld(), m_targetBody, Shape(polygonShape), myFixtureConf);
         
         //create dynamic circle body
         BodyConf myBodyConf;
         myBodyConf.type = BodyType::Dynamic;
         myBodyConf.location = Vec2(-15, 5) * 1_m;
-        m_launcherBody = CreateBody(m_world, myBodyConf);
-        CreateFixture(m_world, m_launcherBody, Shape{DiskShapeConf{}.UseRadius(2_m)
+        m_launcherBody = CreateBody(GetWorld(), myBodyConf);
+        CreateFixture(GetWorld(), m_launcherBody, Shape{DiskShapeConf{}.UseRadius(2_m)
             .UseFriction(Real(0.95)).UseDensity(1_kgpm2)}, myFixtureConf);
         
         //pin the circle in place
@@ -95,46 +95,46 @@ public:
         revoluteJointConf.enableMotor = true;
         revoluteJointConf.maxMotorTorque = 250_Nm;
         revoluteJointConf.motorSpeed = 0;
-        m_world.CreateJoint( revoluteJointConf );
+        CreateJoint(GetWorld(), revoluteJointConf);
         
         //create dynamic box body to fire
         myBodyConf.location = Length2(0_m, -5_m);//will be positioned later
-        m_littleBox = CreateBody(m_world, myBodyConf);
+        m_littleBox = CreateBody(GetWorld(), myBodyConf);
         polygonShape.SetAsBox( 0.5_m, 0.5_m );
         polygonShape.UseDensity(1_kgpm2);
-        CreateFixture(m_world, m_littleBox, Shape(polygonShape), myFixtureConf);
+        CreateFixture(GetWorld(), m_littleBox, Shape(polygonShape), myFixtureConf);
         
         //ball for computer 'player' to fire
-        m_littleBox2 = CreateBody(m_world, myBodyConf);
-        CreateFixture(m_world, m_littleBox2, Shape{DiskShapeConf{}.UseRadius(BallSize * 1_m)
+        m_littleBox2 = CreateBody(GetWorld(), myBodyConf);
+        CreateFixture(GetWorld(), m_littleBox2, Shape{DiskShapeConf{}.UseRadius(BallSize * 1_m)
             .UseFriction(Real(0.95)).UseDensity(1_kgpm2)}, myFixtureConf);
         
         m_firing = false;
-        SetAcceleration(m_world, m_littleBox, LinearAcceleration2{}, AngularAcceleration{});
+        SetAcceleration(GetWorld(), m_littleBox, LinearAcceleration2{}, AngularAcceleration{});
         m_launchSpeed = 10_mps;
         
         m_firing2 = false;
-        SetAcceleration(m_world, m_littleBox2, LinearAcceleration2{}, AngularAcceleration{});
-        SetVelocity(m_world, m_littleBox2, Velocity{});
+        SetAcceleration(GetWorld(), m_littleBox2, LinearAcceleration2{}, AngularAcceleration{});
+        SetVelocity(GetWorld(), m_littleBox2, Velocity{});
 
         SetMouseWorld(Vec2(11,22) * 1_m);//sometimes is not set
         
         RegisterForKey(GLFW_KEY_Q, GLFW_PRESS, 0, "Launch projectile.", [&](KeyActionMods) {
             const auto launchSpeed = LinearVelocity2(m_launchSpeed, 0_mps);
-            SetAwake(m_world, m_littleBox);
-            SetAcceleration(m_world, m_littleBox, m_gravity, AngularAcceleration{});
-            SetVelocity(m_world, m_littleBox, Velocity{});
-            SetTransform(m_world, m_littleBox,
-                         GetWorldPoint(m_world, m_launcherBody, Vec2(3,0) * 1_m),
-                         GetAngle(m_world, m_launcherBody));
-            const auto rotVec = GetWorldVector(m_world, m_launcherBody, UnitVec::GetRight());
+            SetAwake(GetWorld(), m_littleBox);
+            SetAcceleration(GetWorld(), m_littleBox, m_gravity, AngularAcceleration{});
+            SetVelocity(GetWorld(), m_littleBox, Velocity{});
+            SetTransform(GetWorld(), m_littleBox,
+                         GetWorldPoint(GetWorld(), m_launcherBody, Vec2(3,0) * 1_m),
+                         GetAngle(GetWorld(), m_launcherBody));
+            const auto rotVec = GetWorldVector(GetWorld(), m_launcherBody, UnitVec::GetRight());
             const auto speed = Rotate(launchSpeed, rotVec);
-            SetVelocity(m_world, m_littleBox, speed);
+            SetVelocity(GetWorld(), m_littleBox, speed);
             m_firing = true;
         });
         RegisterForKey(GLFW_KEY_W, GLFW_PRESS, 0, "Reset projectile.", [&](KeyActionMods) {
-            SetAcceleration(m_world, m_littleBox, LinearAcceleration2{}, AngularAcceleration{});
-            SetVelocity(m_world, m_littleBox, Velocity{});
+            SetAcceleration(GetWorld(), m_littleBox, LinearAcceleration2{}, AngularAcceleration{});
+            SetVelocity(GetWorld(), m_littleBox, Velocity{});
             m_firing = false;
         });
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Increase launch speed.", [&](KeyActionMods) {
@@ -144,29 +144,29 @@ public:
             m_launchSpeed *= 0.98f;
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Launch computer controlled projectile.", [&](KeyActionMods) {
-            SetAwake(m_world, m_littleBox2);
-            SetAcceleration(m_world, m_littleBox2, m_gravity, AngularAcceleration{});
-            SetVelocity(m_world, m_littleBox2, Velocity{});
+            SetAwake(GetWorld(), m_littleBox2);
+            SetAcceleration(GetWorld(), m_littleBox2, m_gravity, AngularAcceleration{});
+            SetVelocity(GetWorld(), m_littleBox2, Velocity{});
             const auto launchVel = getComputerLaunchVelocity();
             const auto computerStartingPosition = Vec2(15,5) * 1_m;
-            SetTransform(m_world, m_littleBox2, computerStartingPosition, 0_rad);
-            SetVelocity(m_world, m_littleBox2, launchVel);
+            SetTransform(GetWorld(), m_littleBox2, computerStartingPosition, 0_rad);
+            SetVelocity(GetWorld(), m_littleBox2, launchVel);
             m_firing2 = true;
         });
         RegisterForKey(GLFW_KEY_F, GLFW_PRESS, 0, "Reset computer controlled projectile.", [&](KeyActionMods) {
-            SetAcceleration(m_world, m_littleBox2, LinearAcceleration2{}, AngularAcceleration{});
-            SetVelocity(m_world, m_littleBox2, Velocity{});
+            SetAcceleration(GetWorld(), m_littleBox2, LinearAcceleration2{}, AngularAcceleration{});
+            SetVelocity(GetWorld(), m_littleBox2, Velocity{});
             m_firing2 = false;
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Hold down & use left mouse button to move the computer's target", [&](KeyActionMods) {
-            SetTransform(m_world, m_targetBody, GetMouseWorld(), 0_rad);
+            SetTransform(GetWorld(), m_targetBody, GetMouseWorld(), 0_rad);
         });
     }
     
     //this just returns the current top edge of the golf-tee thingy
     Length2 getComputerTargetPosition()
     {
-        return GetLocation(m_world, m_targetBody) + Vec2(0, BallSize + 0.01f ) * 1_m;
+        return GetLocation(GetWorld(), m_targetBody) + Vec2(0, BallSize + 0.01f ) * 1_m;
     }
     
     //basic trajectory 'point at timestep n' formula
@@ -235,7 +235,7 @@ public:
         const auto verticalVelocity = calculateVerticalVelocityForHeight(GetY(targetLocation) - 5_m);//computer projectile starts at y = 5
         const auto startingVelocity = LinearVelocity2(0,verticalVelocity);//only interested in vertical here
         const auto timestepsToTop = getTimestepsToTop(startingVelocity);
-        auto targetEdgePos = GetX(GetLocation(m_world, m_targetBody));
+        auto targetEdgePos = GetX(GetLocation(GetWorld(), m_targetBody));
         if ( targetEdgePos > 15_m )
             targetEdgePos -= BallSize * 1_m;
         else
@@ -247,13 +247,13 @@ public:
     
     void PreStep(const Settings&, Drawer& drawer) override
     {
-        const auto startingPosition = GetWorldPoint(m_world, m_launcherBody, Vec2(3,0) * 1_m);
-        const auto rotVec = GetWorldVector(m_world, m_launcherBody, UnitVec::GetRight());
+        const auto startingPosition = GetWorldPoint(GetWorld(), m_launcherBody, Vec2(3,0) * 1_m);
+        const auto rotVec = GetWorldVector(GetWorld(), m_launcherBody, UnitVec::GetRight());
         const auto startingVelocity = Rotate(LinearVelocity2(m_launchSpeed, 0_mps), rotVec);
         
         if ( !m_firing )
-            SetTransform(m_world, m_littleBox, startingPosition,
-                         GetAngle(m_world, m_launcherBody));
+            SetTransform(GetWorld(), m_littleBox, startingPosition,
+                         GetAngle(GetWorld(), m_launcherBody));
 
         auto hit = false;
         auto point = Length2{};
@@ -265,7 +265,7 @@ public:
             
             if (i > 0)
             {
-                d2::RayCast(m_world, RayCastInput{lastTP, trajectoryPosition, Real{1}},
+                d2::RayCast(GetWorld(), RayCastInput{lastTP, trajectoryPosition, Real{1}},
                             [&](BodyID b, FixtureID, ChildCounter, Length2 p, UnitVec) {
                     if (b == m_littleBox)
                     {
@@ -298,7 +298,7 @@ public:
         }
         
         //draw dot in center of fired box
-        const auto littleBoxPos = GetLocation(m_world, m_littleBox);
+        const auto littleBoxPos = GetLocation(GetWorld(), m_littleBox);
         drawer.DrawPoint(littleBoxPos, 5, Color(0, 1, 0));
         
         //draw maximum height line
@@ -314,7 +314,7 @@ public:
                            displayVelEndPoint, Color(0, 1, 0));
         
         if (!m_firing2)
-            SetTransform(m_world, m_littleBox2, computerStartingPosition, 0_rad);
+            SetTransform(GetWorld(), m_littleBox2, computerStartingPosition, 0_rad);
     }
     
     static Test* Create()

@@ -30,7 +30,7 @@ class BasicSliderCrank : public Test
 public:
     BasicSliderCrank()
     {        
-        const auto ground = CreateBody(m_world, BodyConf{}.UseLocation(Vec2(0.0f, 17.0f) * 1_m));
+        const auto ground = CreateBody(GetWorld(), BodyConf{}.UseLocation(Vec2(0.0f, 17.0f) * 1_m));
         auto prevBody = ground;
         
         // Define crank.
@@ -38,13 +38,13 @@ public:
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-8.0f, 20.0f) * 1_m;
-            bd.linearAcceleration = m_gravity;
-            const auto body = CreateBody(m_world, bd);
+            bd.linearAcceleration = GetGravity();
+            const auto body = CreateBody(GetWorld(), bd);
             auto conf = PolygonShapeConf{};
             conf.density = 2_kgpm2;
             conf.SetAsBox(4_m, 1_m);
-            CreateFixture(m_world, body, Shape(conf));
-            m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(-12.0f, 20.0f) * 1_m));
+            CreateFixture(GetWorld(), body, Shape(conf));
+            CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body, Vec2(-12.0f, 20.0f) * 1_m));
             prevBody = body;
         }
         
@@ -53,13 +53,13 @@ public:
             auto bd = BodyConf{};
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(4.0f, 20.0f) * 1_m;
-            bd.linearAcceleration = m_gravity;
-            const auto body = CreateBody(m_world, bd);
+            bd.linearAcceleration = GetGravity();
+            const auto body = CreateBody(GetWorld(), bd);
             auto conf = PolygonShapeConf{};
             conf.density = 2_kgpm2;
             conf.SetAsBox(8_m, 1_m);
-            CreateFixture(m_world, body, Shape(conf));
-            m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(-4.0f, 20.0f) * 1_m));
+            CreateFixture(GetWorld(), body, Shape(conf));
+            CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body, Vec2(-4.0f, 20.0f) * 1_m));
             prevBody = body;
         }
         
@@ -69,13 +69,13 @@ public:
             bd.type = BodyType::Dynamic;
             bd.fixedRotation = true;
             bd.location = Vec2(12.0f, 20.0f) * 1_m;
-            bd.linearAcceleration = m_gravity;
-            const auto body = CreateBody(m_world, bd);
+            bd.linearAcceleration = GetGravity();
+            const auto body = CreateBody(GetWorld(), bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(3_m, 3_m);
-            CreateFixture(m_world, body, Shape(conf));
-            m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(12.0f, 20.0f) * 1_m));
-            const PrismaticJointConf pjd = GetPrismaticJointConf(m_world, ground, body, Vec2(12.0f, 17.0f) * 1_m, UnitVec::GetRight());
-            m_world.CreateJoint(pjd);
+            CreateFixture(GetWorld(), body, Shape(conf));
+            CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body, Vec2(12.0f, 20.0f) * 1_m));
+            const PrismaticJointConf pjd = GetPrismaticJointConf(GetWorld(), ground, body, Vec2(12.0f, 17.0f) * 1_m, UnitVec::GetRight());
+            CreateJoint(GetWorld(), pjd);
         }
     }
 };

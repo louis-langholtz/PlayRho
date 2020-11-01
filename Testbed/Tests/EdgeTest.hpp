@@ -31,7 +31,7 @@ public:
     EdgeTest()
     {
         {
-            const auto ground = CreateBody(m_world);
+            const auto ground = CreateBody(GetWorld());
 
             const auto v1 = Vec2(-10.0f, 0.0f) * 1_m;
             const auto v2 = Vec2(-7.0f, -2.0f) * 1_m;
@@ -43,17 +43,17 @@ public:
 
             auto conf = EdgeShapeConf{};
             conf.Set(v1, v2);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
             conf.Set(v2, v3);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
             conf.Set(v3, v4);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
             conf.Set(v4, v5);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
             conf.Set(v5, v6);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
             conf.Set(v6, v7);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
         }
 
         {
@@ -61,12 +61,12 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-0.5f, 0.6f) * 1_m;
             bd.allowSleep = false;
-            const auto body = CreateBody(m_world, bd);
+            const auto body = CreateBody(GetWorld(), bd);
 
             auto conf = DiskShapeConf{};
             conf.density = 1_kgpm2;
             conf.vertexRadius = 0.5_m;
-            CreateFixture(m_world, body, Shape(conf));
+            CreateFixture(GetWorld(), body, Shape(conf));
         }
 
         {
@@ -74,16 +74,16 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(1.0f, 0.6f) * 1_m;
             bd.allowSleep = false;
-            const auto body = CreateBody(m_world, bd);
+            const auto body = CreateBody(GetWorld(), bd);
 
             auto shape = PolygonShapeConf{};
             shape.UseVertexRadius(1_m);
             shape.SetAsBox(0.5_m, 0.5_m);
             shape.UseDensity(1_kgpm2);
-            CreateFixture(m_world, body, Shape(shape));
+            CreateFixture(GetWorld(), body, Shape(shape));
         }
         
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(GetWorld(), GetGravity());
     }
 };
 

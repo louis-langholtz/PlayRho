@@ -303,7 +303,7 @@ static void CreateUI(GLFWwindow* window)
         std::fprintf(stderr, "Unable to use embedded font. GUI text support disabled.\n");
     }
 #endif
-    
+
     if (!ImGui_ImplGlfwGL3_Init(window, false))
     {
         std::fprintf(stderr, "Could not init GUI renderer.\n");
@@ -771,6 +771,7 @@ static void AboutTestUI()
     }
 }
 
+#if 0
 static std::pair<float,int> ToScientific(float val)
 {
     std::ostringstream os;
@@ -785,6 +786,7 @@ static std::pair<float,int> ToScientific(float val)
     }
     return std::make_pair(0.0f, 0);
 }
+#endif
 
 static void BasicStepOptionsUI()
 {
@@ -1422,11 +1424,6 @@ static void EntityUI(World& world, FixtureID fixture)
     
     ImGui::Spacing();
     ImGui::Spacing();
-
-    if (ImGui::Button("Refilter"))
-    {
-        Refilter(world, fixture);
-    }
     
     {
         const auto& shape = GetShape(world, fixture);
@@ -2260,29 +2257,29 @@ static void ModelEntitiesUI()
 
     ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize()*1);
     {
-        const auto bodies = test->m_world.GetBodies();
+        const auto bodies = GetBodies(test->GetWorld());
         if (ImGui::TreeNodeEx("Bodies", selBodies? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Bodies (%lu)", size(bodies)))
         {
-            CollectionUI(test->m_world, bodies, selectedBodies, selectedFixtures);
+            CollectionUI(test->GetWorld(), bodies, selectedBodies, selectedFixtures);
             ImGui::TreePop();
         }
     }
     {
-        const auto joints = test->m_world.GetJoints();
+        const auto joints = GetJoints(test->GetWorld());
         if (ImGui::TreeNodeEx("Joints", selJoints? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Joints (%lu)", size(joints)))
         {
-            CollectionUI(test->m_world, joints);
+            CollectionUI(test->GetWorld(), joints);
             ImGui::TreePop();
         }
     }
     {
-        const auto contacts = test->m_world.GetContacts();
+        const auto contacts = GetContacts(test->GetWorld());
         if (ImGui::TreeNodeEx("Contacts", selContacts? ImGuiTreeNodeFlags_DefaultOpen: 0,
                               "Contacts (%lu)", size(contacts)))
         {
-            CollectionUI(test->m_world, contacts);
+            CollectionUI(test->GetWorld(), contacts);
             ImGui::TreePop();
         }
     }
@@ -2437,7 +2434,8 @@ int main()
         exit(EXIT_FAILURE);
     }
 #endif
-    
+
+    const auto imguiContext = ImGui::CreateContext();
     CreateUI(mainWindow);
     
     auto time1 = glfwGetTime();
@@ -2480,6 +2478,8 @@ int main()
     }
 
     ImGui_ImplGlfwGL3_Shutdown();
+    ImGui::DestroyContext(imguiContext);
+
     glfwTerminate();
 
     return 0;

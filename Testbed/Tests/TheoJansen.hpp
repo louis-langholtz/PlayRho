@@ -68,25 +68,30 @@ public:
         bd1.angularDamping = 10_Hz;
         bd2.angularDamping = 10_Hz;
 
-        const auto body1 = CreateBody(m_world, bd1);
-        const auto body2 = CreateBody(m_world, bd2);
+        const auto body1 = CreateBody(GetWorld(), bd1);
+        const auto body2 = CreateBody(GetWorld(), bd2);
 
-        CreateFixture(m_world, body1, Shape(poly1), fd1);
-        CreateFixture(m_world, body2, Shape(poly2), fd2);
+        CreateFixture(GetWorld(), body1, Shape(poly1), fd1);
+        CreateFixture(GetWorld(), body2, Shape(poly2), fd2);
 
         // Using a soft distance constraint can reduce some jitter.
         // It also makes the structure seem a bit more fluid by
         // acting like a suspension system.
 
-        m_world.CreateJoint(GetDistanceJointConf(m_world, body1, body2, p2 + m_offset, p5 + m_offset)
+        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body1, body2,
+                                                  p2 + m_offset, p5 + m_offset)
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(GetDistanceJointConf(m_world, body1, body2, p3 + m_offset, p4 + m_offset)
+        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body1, body2,
+                                                  p3 + m_offset, p4 + m_offset)
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(GetDistanceJointConf(m_world, body1, m_wheel, p3 + m_offset, wheelAnchor + m_offset)
+        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body1, m_wheel,
+                                                  p3 + m_offset, wheelAnchor + m_offset)
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(GetDistanceJointConf(m_world, body2, m_wheel, p6 + m_offset, wheelAnchor + m_offset)
+        CreateJoint(GetWorld(), GetDistanceJointConf(GetWorld(), body2, m_wheel,
+                                                  p6 + m_offset, wheelAnchor + m_offset)
                              .UseFrequency(10_Hz).UseDampingRatio(Real(0.5)));
-        m_world.CreateJoint(GetRevoluteJointConf(m_world, body2, m_chassis, p4 + m_offset));
+        CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), body2, m_chassis,
+                                                  p4 + m_offset));
     }
 
     TheoJansen()
@@ -99,18 +104,18 @@ public:
         // Ground
         {
             BodyConf bd;
-            const auto ground = CreateBody(m_world, bd);
+            const auto ground = CreateBody(GetWorld(), bd);
 
             auto conf = EdgeShapeConf{};
  
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(50.0f, 0.0f) * 1_m);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
 
             conf.Set(Vec2(-50.0f, 0.0f) * 1_m, Vec2(-50.0f, 10.0f) * 1_m);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
 
             conf.Set(Vec2(50.0f, 0.0f) * 1_m, Vec2(50.0f, 10.0f) * 1_m);
-            CreateFixture(m_world, ground, Shape(conf));
+            CreateFixture(GetWorld(), ground, Shape(conf));
         }
 
         // Balls
@@ -124,8 +129,8 @@ public:
             bd.type = BodyType::Dynamic;
             bd.location = Vec2(-40.0f + 2.0f * i, 0.5f) * 1_m;
 
-            const auto body = CreateBody(m_world, bd);
-            CreateFixture(m_world, body, circle);
+            const auto body = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), body, circle);
         }
 
         // Chassis
@@ -135,8 +140,8 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
-            m_chassis = CreateBody(m_world, bd);
-            CreateFixture(m_world, m_chassis,
+            m_chassis = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), m_chassis,
                           Shape{PolygonShapeConf{}.UseDensity(1_kgpm2).SetAsBox(2.5_m, 1_m)}, sd);
         }
 
@@ -146,20 +151,20 @@ public:
             BodyConf bd;
             bd.type = BodyType::Dynamic;
             bd.location = pivot + m_offset;
-            m_wheel = CreateBody(m_world, bd);
+            m_wheel = CreateBody(GetWorld(), bd);
             auto conf = DiskShapeConf{};
             conf.vertexRadius = 1.6_m;
             conf.density = 1_kgpm2;
-            CreateFixture(m_world, m_wheel, Shape(conf), sd);
+            CreateFixture(GetWorld(), m_wheel, Shape(conf), sd);
         }
 
         {
-            auto jd = GetRevoluteJointConf(m_world, m_wheel, m_chassis, pivot + m_offset);
+            auto jd = GetRevoluteJointConf(GetWorld(), m_wheel, m_chassis, pivot + m_offset);
             jd.collideConnected = false;
             jd.motorSpeed = m_motorSpeed;
             jd.maxMotorTorque = 400_Nm;
             jd.enableMotor = m_motorOn;
-            m_motorJoint = m_world.CreateJoint(jd);
+            m_motorJoint = CreateJoint(GetWorld(), jd);
         }
 
         const auto wheelAnchor = pivot + Vec2(0.0f, -0.8f) * 1_m;
@@ -167,27 +172,27 @@ public:
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
 
-        SetTransform(m_world, m_wheel, GetLocation(m_world, m_wheel), 120_deg);
+        SetTransform(GetWorld(), m_wheel, GetLocation(GetWorld(), m_wheel), 120_deg);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
 
-        SetTransform(m_world, m_wheel, GetLocation(m_world, m_wheel), -120_deg);
+        SetTransform(GetWorld(), m_wheel, GetLocation(GetWorld(), m_wheel), -120_deg);
         CreateLeg(-1.0f, wheelAnchor);
         CreateLeg(1.0f, wheelAnchor);
         
-        SetAccelerations(m_world, m_gravity);
+        SetAccelerations(GetWorld(), GetGravity());
 
         RegisterForKey(GLFW_KEY_A, GLFW_PRESS, 0, "Left", [&](KeyActionMods) {
-            SetMotorSpeed(m_world, m_motorJoint, -m_motorSpeed);
+            SetMotorSpeed(GetWorld(), m_motorJoint, -m_motorSpeed);
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Brake", [&](KeyActionMods) {
-            SetMotorSpeed(m_world, m_motorJoint, 0_rad / 1_s);
+            SetMotorSpeed(GetWorld(), m_motorJoint, 0_rad / 1_s);
         });
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Right", [&](KeyActionMods) {
-            SetMotorSpeed(m_world, m_motorJoint, m_motorSpeed);
+            SetMotorSpeed(GetWorld(), m_motorJoint, m_motorSpeed);
         });
         RegisterForKey(GLFW_KEY_M, GLFW_PRESS, 0, "Toggle Motor", [&](KeyActionMods) {
-            EnableMotor(m_world, m_motorJoint, !IsMotorEnabled(m_world, m_motorJoint));
+            EnableMotor(GetWorld(), m_motorJoint, !IsMotorEnabled(GetWorld(), m_motorJoint));
         });
     }
 

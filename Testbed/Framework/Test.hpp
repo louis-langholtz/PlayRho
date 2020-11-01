@@ -33,13 +33,13 @@
 #include <PlayRho/Collision/Distance.hpp>
 #include <PlayRho/Collision/RayCastOutput.hpp>
 #include <PlayRho/Collision/ShapeSeparation.hpp>
-#include <PlayRho/Collision/DynamicTree.hpp>
 
 #include <PlayRho/Dynamics/Contacts/PositionSolverManifold.hpp>
 #include <PlayRho/Dynamics/Contacts/ContactID.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 #include <PlayRho/Dynamics/BodyID.hpp>
 #include <PlayRho/Dynamics/FixtureID.hpp>
+#include <PlayRho/Dynamics/Joints/Joint.hpp>
 #include <PlayRho/Dynamics/Joints/JointID.hpp>
 #include <PlayRho/Dynamics/World.hpp>
 #include <PlayRho/Dynamics/WorldBody.hpp>
@@ -135,17 +135,61 @@ struct Settings
     bool singleStep = false;
 };
 
+struct Stats
+{
+    AABB m_maxAABB;
+
+    double m_sumDeltaTime = 0.0;
+
+    int m_stepCount = 0;
+    StepStats m_stepStats;
+    ContactCounter m_numContacts = 0;
+    ContactCounter m_maxContacts = 0;
+    ContactCounter m_maxTouching = 0;
+    std::uint64_t m_sumContactsUpdatedPre = 0;
+    std::uint64_t m_sumContactsSkippedPre = 0;
+    std::uint64_t m_sumContactsIgnoredPre = 0;
+    std::uint64_t m_sumContactsUpdatedToi = 0;
+    std::uint64_t m_sumContactsAtMaxSubSteps = 0;
+    std::uint64_t m_sumRegIslandsFound = 0;
+    std::uint64_t m_sumRegIslandsSolved = 0;
+    std::uint64_t m_sumToiIslandsFound = 0;
+    std::uint64_t m_sumToiIslandsSolved = 0;
+    std::uint64_t m_sumRegPosIters = 0;
+    std::uint64_t m_sumRegVelIters = 0;
+    std::uint64_t m_sumToiPosIters = 0;
+    std::uint64_t m_sumToiVelIters = 0;
+    std::uint64_t m_sumToiContactsUpdatedTouching = 0;
+    std::uint64_t m_sumToiContactsSkippedTouching = 0;
+    std::uint64_t m_sumRegProxiesMoved = 0;
+    std::uint64_t m_sumToiProxiesMoved = 0;
+    Length m_minRegSep = std::numeric_limits<Length>::infinity();
+    Length m_maxRegSep = -std::numeric_limits<Length>::infinity();
+    Length m_minToiSep = 0;
+
+    std::uint32_t m_maxSimulContacts = 0;
+
+    using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
+    using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
+    using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
+
+    dist_iter_type m_maxDistIters = 0;
+    toi_iter_type m_maxToiIters = 0;
+    root_iter_type m_maxRootIters = 0;
+
+    std::chrono::duration<double> m_curStepDuration{0};
+    std::chrono::duration<double> m_maxStepDuration{0};
+    std::chrono::duration<double> m_sumStepDuration{0};
+};
+
 class Test
 {
 public:
     using KeyHandlerID = std::size_t;
-    
     using KeyID = int;
-    
     using KeyMods = int;
-    
     using KeyAction = int;
-    
+
     struct KeyActionMods
     {
         KeyID key;
@@ -170,6 +214,22 @@ public:
     using FixtureSet = std::set<FixtureID>;
     using BodySet = std::set<BodyID>;
 
+    struct ContactPoint
+    {
+        FixtureID fixtureA;
+        FixtureID fixtureB;
+        UnitVec normal;
+        Length2 position;
+        PointState state;
+        Momentum normalImpulse;
+        Momentum tangentImpulse;
+        Length separation;
+    };
+
+    using ContactPoints = std::vector<ContactPoint>;
+
+    static const LinearAcceleration2 Gravity;
+
     virtual ~Test();
 
     /// @brief Steps this test's world forward and visualizes what's going on.
@@ -188,14 +248,14 @@ public:
     void SpawnBomb(const Length2& worldPt);
     void CompleteBombSpawn(const Length2& p);
     void ShiftOrigin(const Length2& newOrigin);
-    
+
     void KeyboardHandler(KeyID key, KeyAction action, KeyMods mods);
-    
+
     const std::string& GetKeyHandlerInfo(KeyHandlerID id) const
     {
         return std::get<0>(m_keyHandlers[id]);
     }
-    
+
     SizedRange<HandledKeys::const_iterator> GetHandledKeys() const
     {
         return SizedRange<HandledKeys::const_iterator>(cbegin(m_handledKeys),
@@ -205,18 +265,15 @@ public:
 
     void MouseDown(const Length2& p);
     void MouseUp(const Length2& p);
-    
+
     // Let derived tests know that a joint was destroyed.
     virtual void JointDestroyed(JointID joint) { NOT_USED(joint); }
 
     // Callbacks for derived classes.
-    virtual void BeginContact(ContactID) { }
-    virtual void EndContact(ContactID) { }
-    virtual void PreSolve(ContactID contact, const Manifold& oldManifold);
-    virtual void PostSolve(ContactID, const ContactImpulsesList&, unsigned) { }
+    void PreSolve(ContactID contact, const Manifold& oldManifold);
 
     static bool Contains(const FixtureSet& fixtures, FixtureID f) noexcept;
-    
+
     const std::string& GetDescription() const noexcept { return m_description; }
     NeededSettings GetNeededSettings() const noexcept { return m_neededSettings; }
     const Settings& GetSettings() const noexcept { return m_settings; }
@@ -227,10 +284,30 @@ public:
     FixtureSet GetSelectedFixtures() const noexcept { return m_selectedFixtures; }
     BodySet GetSelectedBodies() const noexcept { return m_selectedBodies; }
 
-    World m_world;
+    SizedRange<ContactPoints::const_iterator> GetPoints() const noexcept
+    {
+        return SizedRange<ContactPoints::const_iterator>(cbegin(m_points),
+                                                         cend(m_points),
+                                                         size(m_points));
+    }
 
-    static const LinearAcceleration2 Gravity;
-    
+    /// @brief Gets the world.
+    const World& GetWorld() const noexcept
+    {
+        return m_world;
+    }
+
+    /// @brief Gets the world.
+    World& GetWorld() noexcept
+    {
+        return m_world;
+    }
+
+    using QueryFixtureCallback = std::function<bool(FixtureID fixture, ChildCounter child)>;
+
+    /// @brief Queries the world for all fixtures that potentially overlap the provided AABB.
+    void Query(const AABB& aabb, QueryFixtureCallback callback);
+
 protected:
     EdgeShapeConf GetGroundEdgeConf() const noexcept
     {
@@ -260,30 +337,6 @@ protected:
 
     Test(Conf config = GetDefaultConf());
 
-    struct ContactPoint
-    {
-        FixtureID fixtureA;
-        FixtureID fixtureB;
-        UnitVec normal;
-        Length2 position;
-        PointState state;
-        Momentum normalImpulse;
-        Momentum tangentImpulse;
-        Length separation;
-    };
-    
-    static inline bool HasFixture(const ContactPoint& cp, const FixtureSet& fixtures) noexcept
-    {
-        for (auto fixture: fixtures)
-        {
-            if (fixture == cp.fixtureA || fixture == cp.fixtureB)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    
     void SetSelectedFixtures(FixtureSet value) noexcept;
     
     void ClearSelectedFixtures()
@@ -291,8 +344,6 @@ protected:
         m_selectedFixtures.clear();
         m_selectedBodies.clear();
     }
-    
-    using ContactPoints = std::vector<ContactPoint>;
 
     // This is called when a joint in the world is implicitly destroyed
     // because an attached body is destroyed. This gives us a chance to
@@ -322,14 +373,7 @@ protected:
 
     void ResetWorld(const World& saved);
 
-    int GetStepCount() const noexcept { return m_stepCount; }
-
-    SizedRange<ContactPoints::const_iterator> GetPoints() const noexcept
-    {
-        return SizedRange<ContactPoints::const_iterator>(cbegin(m_points),
-                                                         cend(m_points),
-                                                         size(m_points));
-    }
+    int GetStepCount() const noexcept { return m_stats.m_stepCount; }
 
     BodyID GetBomb() const noexcept { return m_bomb; }
     
@@ -354,17 +398,54 @@ protected:
         RegisterForKey(key, action, mods, RegisterKeyHandler(info, handler));
     }
 
+    void SetStatus(std::string value) noexcept
+    {
+        m_status = std::move(value);
+    }
+
+    void ClearStatus() noexcept
+    {
+        m_status.clear();
+    }
+
+    LinearAcceleration2 GetGravity() const noexcept
+    {
+        return m_gravity;
+    }
+
+    void SetGravity(LinearAcceleration2 value) noexcept
+    {
+        m_gravity = value;
+    }
+
+    Length GetBombRadius() const noexcept
+    {
+        return m_bombRadius;
+    }
+
+    void SetBombRadius(Length value) noexcept
+    {
+        m_bombRadius = value;
+    }
+
+    AreaDensity GetBombDensity() const noexcept
+    {
+        return m_bombDensity;
+    }
+
+    void SetBombDensity(AreaDensity value) noexcept
+    {
+        m_bombDensity = value;
+    }
+
+private:
+    World m_world;
+
     std::string m_status;
     TextLinePos m_textLine = TextLinePos{30};
     AreaDensity m_bombDensity = 20_kgpm2;
     Length m_bombRadius = 0.3_m;
     LinearAcceleration2 m_gravity = Gravity;
-
-private:
-    void DrawStats(const StepConf& stepConf, UiState& ui);
-    void DrawContactInfo(const Settings& settings, Drawer& drawer);
-    bool DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
-                   const FixtureSet& selected);
 
     const Settings m_settings;
     const NeededSettings m_neededSettings;
@@ -374,7 +455,6 @@ private:
 
     FixtureSet m_selectedFixtures;
     BodySet m_selectedBodies;
-    AABB m_maxAABB;
     ContactPoints m_points;
     DestructionListenerImpl m_destructionListener;
     BodyID m_bomb = InvalidBodyID;
@@ -383,56 +463,15 @@ private:
     bool m_bombSpawning = false;
     Length2 m_mouseWorld = Length2{};
     Time m_lastDeltaTime = 0 * Second;
-    double m_sumDeltaTime = 0.0;
-    int m_stepCount = 0;
-    StepStats m_stepStats;
-    ContactCounter m_numContacts = 0;
-    ContactCounter m_maxContacts = 0;
-    ContactCounter m_maxTouching = 0;
-    std::uint64_t m_sumContactsUpdatedPre = 0;
-    std::uint64_t m_sumContactsSkippedPre = 0;
-    std::uint64_t m_sumContactsIgnoredPre = 0;
-    std::uint64_t m_sumContactsUpdatedToi = 0;
-    std::uint64_t m_sumContactsAtMaxSubSteps = 0;
-    std::uint64_t m_sumRegIslandsFound = 0;
-    std::uint64_t m_sumRegIslandsSolved = 0;
-    std::uint64_t m_sumToiIslandsFound = 0;
-    std::uint64_t m_sumToiIslandsSolved = 0;
-    std::uint64_t m_sumRegPosIters = 0;
-    std::uint64_t m_sumRegVelIters = 0;
-    std::uint64_t m_sumToiPosIters = 0;
-    std::uint64_t m_sumToiVelIters = 0;
-    std::uint64_t m_sumToiContactsUpdatedTouching = 0;
-    std::uint64_t m_sumToiContactsSkippedTouching = 0;
-    std::uint64_t m_sumRegProxiesMoved = 0;
-    std::uint64_t m_sumToiProxiesMoved = 0;
-    Length m_minRegSep = std::numeric_limits<Length>::infinity();
-    Length m_maxRegSep = -std::numeric_limits<Length>::infinity();
-    Length m_minToiSep = 0;
-    
-    std::uint32_t m_maxSimulContacts = 0;
-    
-    using dist_iter_type = std::remove_const<decltype(DefaultMaxDistanceIters)>::type;
-    using toi_iter_type = std::remove_const<decltype(DefaultMaxToiIters)>::type;
-    using root_iter_type = std::remove_const<decltype(DefaultMaxToiRootIters)>::type;
-    
-    dist_iter_type m_maxDistIters = 0;
-    toi_iter_type m_maxToiIters = 0;
-    root_iter_type m_maxRootIters = 0;
-
-    std::chrono::duration<double> m_curStepDuration{0};
-    std::chrono::duration<double> m_maxStepDuration{0};
-    std::chrono::duration<double> m_sumStepDuration{0};
-    
+    Stats m_stats;
     KeyHandlers m_keyHandlers;
     HandledKeys m_handledKeys;
-    
     std::size_t m_maxHistory = std::size_t{600u};
     std::deque<std::size_t> m_numContactsPerStep;
     std::deque<std::size_t> m_numTouchingPerStep;
 };
 
-// Free functions...
+// Exported free functions...
 
 /// Random number in range [-1,1]
 Real RandomFloat();
@@ -449,11 +488,17 @@ inline bool IsWithin(const Container& container, const T& element) noexcept
     return it != last;
 }
 
-void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, Transformation xf);
-void Draw(Drawer& drawer, const EdgeShapeConf& shape, Color color, bool skins, Transformation xf);
-void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins, Transformation xf);
-void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins, Transformation xf);
-void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins, Transformation xf);
+void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, const Transformation& xf);
+void Draw(Drawer& drawer, const EdgeShapeConf& shape, Color color, bool skins,
+          const Transformation& xf);
+void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins,
+          const Transformation& xf);
+void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins,
+          const Transformation& xf);
+void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins,
+          const Transformation& xf);
+
+bool HasFixture(const Test::ContactPoint& cp, const Test::FixtureSet& fixtures) noexcept;
 
 } // namespace testbed
 

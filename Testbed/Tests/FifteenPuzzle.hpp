@@ -42,12 +42,12 @@ namespace testbed {
         
         FifteenPuzzle(): Test(GetTestConf())
         {
-            m_gravity = LinearAcceleration2{};
+            SetGravity(LinearAcceleration2{});
             auto conf = GetChainShapeConf(16_m + 2 * GetVertexRadius());
             conf.UseVertexRadius(GetVertexRadius());
-            const auto enclosure = CreateBody(m_world);
-            CreateFixture(m_world, enclosure, Shape{conf});
-            SetLocation(m_world, enclosure, GetCenter());
+            const auto enclosure = CreateBody(GetWorld());
+            CreateFixture(GetWorld(), enclosure, Shape{conf});
+            SetLocation(GetWorld(), enclosure, GetCenter());
             for (auto i = 0; i < 15; ++i)
             {
                 const auto row = 3 - i / 4;
@@ -83,8 +83,8 @@ namespace testbed {
             bd.bullet = true;
             bd.location = GetCenter() + relPos + Length2{sideLength / 2, sideLength / 2};
             bd.linearDamping = 20_Hz;
-            const auto body = CreateBody(m_world, bd);
-            CreateFixture(m_world, body, Shape{conf});
+            const auto body = CreateBody(GetWorld(), bd);
+            CreateFixture(GetWorld(), body, Shape{conf});
             
             return body;
         }

@@ -37,7 +37,11 @@ using namespace playrho::d2;
 
 namespace testbed {
 
-static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
+namespace {
+
+constexpr auto RandLimit = 32767;
+
+void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, Color color)
 {
     const auto angleDiff = GetRevRotationalAngle(a0, a1);
     auto lastAngle = 0_deg;
@@ -55,7 +59,7 @@ static void DrawCorner(Drawer& drawer, Length2 p, Length r, Angle a0, Angle a1, 
     }
 }
 
-static void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, Transformation xf)
+void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool skins, Transformation xf)
 {
     const auto vertexCount = shape.GetVertexCount();
     auto vertices = std::vector<Length2>(vertexCount);
@@ -66,12 +70,12 @@ static void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool s
     const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
     drawer.DrawSolidPolygon(&vertices[0], vertexCount, fillColor);
     drawer.DrawPolygon(&vertices[0], vertexCount, color);
-    
+
     if (!skins)
     {
         return;
     }
-    
+
     const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
     const auto r = GetVertexRadius(shape);
     for (auto i = decltype(vertexCount){0}; i < vertexCount; ++i)
@@ -104,89 +108,9 @@ static void Draw(Drawer& drawer, const DistanceProxy& shape, Color color, bool s
     }
 }
 
-void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, Transformation xf)
+void Draw(Drawer& drawer, const Shape& shape, const Color& color, bool skins,
+          const Transformation& xf)
 {
-    const auto center = Transform(shape.GetLocation(), xf);
-    const auto radius = shape.GetRadius();
-    const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
-    drawer.DrawSolidCircle(center, radius, fillColor);
-    drawer.DrawCircle(center, radius, color);
-
-    // Draw a line fixed in the circle to animate rotation.
-    const auto axis = Rotate(Vec2{1, 0}, xf.q);
-    drawer.DrawSegment(center, center + radius * axis, color);
-}
-
-void Draw(Drawer& drawer, const EdgeShapeConf& shape, Color color, bool skins, Transformation xf)
-{
-    const auto v1 = Transform(shape.GetVertexA(), xf);
-    const auto v2 = Transform(shape.GetVertexB(), xf);
-    drawer.DrawSegment(v1, v2, color);
-
-    if (skins)
-    {
-        const auto r = GetVertexRadius(shape);
-        if (r > 0_m)
-        {
-            const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
-            const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
-            const auto offset = worldNormal0 * r;
-            drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
-            drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
-
-            const auto angle0 = GetAngle(worldNormal0);
-            const auto angle1 = GetAngle(-worldNormal0);
-            DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
-            DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
-        }
-    }
-}
-
-void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins, Transformation xf)
-{
-    const auto count = shape.GetVertexCount();
-    const auto r = GetVertexRadius(shape);
-    const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
-
-    auto v1 = Transform(shape.GetVertex(0), xf);
-    for (auto i = decltype(count){1}; i < count; ++i)
-    {
-        const auto v2 = Transform(shape.GetVertex(i), xf);
-        drawer.DrawSegment(v1, v2, color);
-        if (skins && r > 0_m)
-        {
-            const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
-            const auto offset = worldNormal0 * r;
-            drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
-            drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
-            const auto angle0 = GetAngle(worldNormal0);
-            const auto angle1 = GetAngle(-worldNormal0);
-            DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
-            DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
-        }
-        v1 = v2;
-    }
-}
-
-void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins, Transformation xf)
-{
-    Draw(drawer, GetChild(shape, 0), color, skins, xf);
-}
-
-void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins, Transformation xf)
-{
-    const auto count = GetChildCount(shape);
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
-        Draw(drawer, GetChild(shape, i), color, skins, xf);
-    }
-}
-
-static void Draw(Drawer& drawer, const World& world, FixtureID fixture,
-                 const Color& color, bool skins)
-{
-    const auto xf = GetTransformation(world, GetBody(world, fixture));
-    const auto shape = GetShape(world, fixture);
     const auto type = GetType(shape);
     if (type == GetTypeID<ChainShapeConf>()) {
         Draw(drawer, TypeCast<ChainShapeConf>(shape), color, skins, xf);
@@ -210,33 +134,34 @@ static void Draw(Drawer& drawer, const World& world, FixtureID fixture,
     }
 }
 
-static Color GetColor(const World& world, BodyID body)
+Color GetColor(const World& world, BodyID body)
 {
-    if (!world.IsEnabled(body))
+    if (!IsEnabled(world, body))
     {
         return Color{0.5f, 0.5f, 0.3f};
     }
-    if (world.GetType(body) == BodyType::Static)
+    if (GetType(world, body) == BodyType::Static)
     {
         return Color{0.5f, 0.9f, 0.5f};
     }
-    if (world.GetType(body) == BodyType::Kinematic)
+    if (GetType(world, body) == BodyType::Kinematic)
     {
         return Color{0.5f, 0.5f, 0.9f};
     }
-    if (!world.IsAwake(body))
+    if (!IsAwake(world, body))
     {
         return Color{0.75f, 0.75f, 0.75f};
     }
     return Color{0.9f, 0.7f, 0.7f};
 }
 
-static bool Draw(Drawer& drawer, const World& world, BodyID body,
-                 bool skins, const Test::FixtureSet& selected)
+bool Draw(Drawer& drawer, const World& world, BodyID body,
+          bool skins, const Test::FixtureSet& selected)
 {
     auto found = false;
     const auto bodyColor = GetColor(world, body);
     const auto selectedColor = Brighten(bodyColor, 1.3f);
+    const auto xf = GetTransformation(world, body);
     for (const auto& fixtureID: GetFixtures(world, body))
     {
         auto color = bodyColor;
@@ -245,12 +170,12 @@ static bool Draw(Drawer& drawer, const World& world, BodyID body,
             color = selectedColor;
             found = true;
         }
-        Draw(drawer, world, fixtureID, color, skins);
+        Draw(drawer, GetShape(world, fixtureID), color, skins, xf);
     }
     return found;
 }
 
-static void Draw(Drawer& drawer, const World& world, JointID id)
+void Draw(Drawer& drawer, const World& world, JointID id)
 {
     const Color color{0.5f, 0.8f, 0.8f};
     const auto& joint = GetJoint(world, id);
@@ -277,15 +202,15 @@ static void Draw(Drawer& drawer, const World& world, JointID id)
         const auto p2 = GetAnchorB(world, id);
         const auto bodyA = GetBodyA(joint);
         const auto bodyB = GetBodyB(joint);
-        const auto x1 = world.GetTransformation(bodyA).p;
-        const auto x2 = world.GetTransformation(bodyB).p;
+        const auto x1 = GetTransformation(world, bodyA).p;
+        const auto x2 = GetTransformation(world, bodyB).p;
         drawer.DrawSegment(x1, p1, color);
         drawer.DrawSegment(p1, p2, color);
         drawer.DrawSegment(x2, p2, color);
     }
 }
 
-static void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
+void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
 {
     Length2 vs[4];
     vs[0] = Length2{aabb.ranges[0].GetMin(), aabb.ranges[1].GetMin()};
@@ -295,185 +220,20 @@ static void Draw(Drawer& drawer, const AABB& aabb, const Color& color)
     drawer.DrawPolygon(vs, 4, color);
 }
 
-bool Test::DrawWorld(Drawer& drawer, const World& world, const Settings& settings,
-                     const FixtureSet& selected)
+inline bool ShouldDrawLabels(const Test::NeededSettings& needed,
+                             const Settings& test, const Settings& step)
 {
-    auto found = false;
-
-    if (settings.drawShapes) {
-        const auto drawLabels = [&]() {
-            const auto useField = m_neededSettings & (1u << NeedDrawLabelsField);
-            return useField? m_settings.drawLabels: settings.drawLabels;
-        }();
-        const auto drawSkins = [&]() {
-            const auto useField = m_neededSettings & (0x1u << NeedDrawSkinsField);
-            return useField? m_settings.drawSkins: settings.drawSkins;
-        }();
-        
-        for (const auto& b: world.GetBodies()) {
-            if (Draw(drawer, world, b, drawSkins, selected)) {
-                found = true;
-            }
-            if (drawLabels) {
-                // Use center of mass instead of body center since body center may not
-                drawer.DrawString(GetWorldCenter(world, b), Drawer::Center, "%d",
-                                  GetWorldIndex(world, b));
-            }
-        }
-    }
-
-    if (settings.drawJoints) {
-        for (const auto& j: world.GetJoints()) {
-            Draw(drawer, world, j);
-        }
-    }
-
-    if (settings.drawAABBs) {
-        const auto color = Color{0.9f, 0.3f, 0.9f};
-        const auto root = world.GetTree().GetRootIndex();
-        if (root != DynamicTree::GetInvalidSize()) {
-            const auto worldAabb = world.GetTree().GetAABB(root);
-            Draw(drawer, worldAabb, color);
-            Query(world.GetTree(), worldAabb, [&](DynamicTree::Size id) {
-                Draw(drawer, world.GetTree().GetAABB(id), color);
-                return DynamicTreeOpcode::Continue;
-            });
-        }
-    }
-
-    if (settings.drawCOMs) {
-        const auto k_axisScale = 0.4_m;
-        const auto red = Color{1.0f, 0.0f, 0.0f};
-        const auto green = Color{0.0f, 1.0f, 0.0f};
-        for (const auto& b: world.GetBodies()) {
-            const auto massScale = std::pow(static_cast<float>(StripUnit(GetMass(world, b))), 1.0f/3);
-            auto xf = GetTransformation(world, b);
-            xf.p = GetWorldCenter(world, b);
-            const auto p1 = xf.p;
-            drawer.DrawSegment(p1, p1 + massScale * k_axisScale * GetXAxis(xf.q), red);
-            drawer.DrawSegment(p1, p1 + massScale * k_axisScale * GetYAxis(xf.q), green);
-        }
-    }
-
-    return found;
+    return (needed & (1u << Test::NeedDrawLabelsField))? test.drawLabels: step.drawLabels;
 }
 
-const LinearAcceleration2 Test::Gravity = LinearAcceleration2{
-    Real(0.0f) * MeterPerSquareSecond,
-    -Real(10.0f) * MeterPerSquareSecond
-};
-
-bool Test::Contains(const FixtureSet& fixtures, FixtureID f) noexcept
+inline bool ShouldDrawSkins(const Test::NeededSettings& needed,
+                            const Settings& test, const Settings& step)
 {
-    return fixtures.find(f) != std::end(fixtures);
-}
-
-void Test::DestructionListenerImpl::SayGoodbye(JointID joint) noexcept
-{
-    if (test->m_targetJoint == joint)
-    {
-        test->m_targetJoint = InvalidJointID;
-    }
-    else
-    {
-        test->JointDestroyed(joint);
-    }
-}
-
-Test::Test(Conf conf):
-    m_world(conf.worldConf),
-    m_neededSettings(conf.neededSettings),
-    m_settings(conf.settings),
-    m_description(conf.description),
-    m_credits(conf.credits),
-    m_seeAlso(conf.seeAlso),
-    m_numContactsPerStep(m_maxHistory, 0u),
-    m_numTouchingPerStep(m_maxHistory, 0u)
-{
-    m_destructionListener.test = this;
-    m_world.SetFixtureDestructionListener([this](FixtureID id){
-        m_destructionListener.SayGoodbye(id);
-    });
-    m_world.SetJointDestructionListener([this](JointID id){
-        m_destructionListener.SayGoodbye(id);
-    });
-    m_world.SetBeginContactListener([this](ContactID id){
-        BeginContact(id);
-    });
-    m_world.SetEndContactListener([this](ContactID id){
-        EndContact(id);
-    });
-    m_world.SetPreSolveContactListener([this](ContactID id, const Manifold& manifold) {
-        PreSolve(id, manifold);
-    });
-    m_world.SetPostSolveContactListener([this](ContactID id, const ContactImpulsesList& impulses,
-                                               unsigned count){
-        PostSolve(id, impulses, count);
-    });
-}
-
-Test::~Test()
-{
-}
-
-void Test::ResetWorld(const World &saved)
-{
-    ClearSelectedFixtures();
-
-    auto bombIndex = static_cast<decltype(size(m_world.GetBodies()))>(-1);
-
-    {
-        auto i = decltype(size(m_world.GetBodies())){0};
-        for (const auto& b: m_world.GetBodies())
-        {
-            if (b == m_bomb)
-            {
-                bombIndex = i;
-            }
-            ++i;
-        }
-    }
-
-    m_world = saved;
-
-    {
-        auto i = decltype(size(m_world.GetBodies())){0};
-        for (const auto& b: m_world.GetBodies())
-        {
-            if (i == bombIndex)
-            {
-                m_bomb = b;
-            }
-            ++i;
-        }
-    }
-}
-
-void Test::PreSolve(ContactID contact, const Manifold& oldManifold)
-{
-    const auto pointStates = GetPointStates(oldManifold, GetManifold(m_world, contact));
-    const auto worldManifold = GetWorldManifold(m_world, contact);
-
-    ContactPoint cp;
-    cp.fixtureA = GetFixtureA(m_world, contact);
-    cp.fixtureB = GetFixtureB(m_world, contact);
-    cp.normal = worldManifold.GetNormal();
-
-    const auto count = worldManifold.GetPointCount();
-    for (auto i = decltype(count){0}; i < count; ++i)
-    {
-        const auto ci = worldManifold.GetImpulses(i);
-        cp.normalImpulse = get<0>(ci);
-        cp.tangentImpulse = get<1>(ci);
-        cp.state = pointStates.state2[i];
-        cp.position = worldManifold.GetPoint(i);
-        cp.separation = worldManifold.GetSeparation(i);
-        m_points.push_back(cp);
-    }
+    return (needed & (1u << Test::NeedDrawSkinsField))? test.drawSkins: step.drawSkins;
 }
 
 template <class T>
-static std::set<BodyID> GetBodySetFromFixtures(const World& world, const T& fixtures)
+std::set<BodyID> GetBodySetFromFixtures(const World& world, const T& fixtures)
 {
     auto collection = std::set<BodyID>();
     for (const auto& f: fixtures)
@@ -483,172 +243,33 @@ static std::set<BodyID> GetBodySetFromFixtures(const World& world, const T& fixt
     return collection;
 }
 
-void Test::SetSelectedFixtures(FixtureSet value) noexcept
+template <typename T>
+struct DequeValuesGetter
 {
-    m_selectedFixtures = value;
-    m_selectedBodies = GetBodySetFromFixtures(m_world, value);
-}
-
-void Test::MouseDown(const Length2& p)
-{
-    m_mouseWorld = p;
-
-    if (m_targetJoint != InvalidJointID)
+    static float Func(void* data, int idx)
     {
-        return;
+        const std::deque<T>& deque = *static_cast<std::deque<T>*>(data);
+        const auto numElements = size(deque);
+        return (idx >= 0 && static_cast<decltype(numElements)>(idx) < numElements)?
+        static_cast<float>(deque[static_cast<decltype(numElements)>(idx)]): 0.0f;
     }
+};
 
-    // Make a small box.
-    const auto aabb = GetFattenedAABB(AABB{p}, 1_m / 1000);
-
-    auto fixtures = FixtureSet{};
-
-    // Query the world for overlapping shapes.
-    Query(m_world.GetTree(), aabb, [&](FixtureID f, const ChildCounter) {
-        if (TestPoint(m_world, f, p))
-        {
-            fixtures.insert(f);
-        }
-        return true; // Continue the query.
-    });
-
-    SetSelectedFixtures(fixtures);
-    if (size(fixtures) == 1)
-    {
-        const auto body = GetBody(m_world, *(begin(fixtures)));
-        if (GetType(m_world, body) == BodyType::Dynamic)
-        {
-            auto md = TargetJointConf{};
-            md.bodyB = body;
-            md.target = p;
-            md.maxForce = Real(10000) * GetMass(m_world, body) * MeterPerSquareSecond;
-            m_targetJoint = m_world.CreateJoint(md);
-            SetAwake(m_world, body);
-        }
-    }
-}
-
-void Test::SpawnBomb(const Length2& worldPt)
+void ShowStats(const StepConf& stepConf, UiState& ui, const World& world, const Stats& stats)
 {
-    m_bombSpawnPoint = worldPt;
-    m_bombSpawning = true;
-}
-
-void Test::CompleteBombSpawn(const Length2& p)
-{
-    if (!m_bombSpawning)
-    {
-        return;
-    }
-
-    const auto deltaTime = m_lastDeltaTime;
-    const auto relP = m_bombSpawnPoint - p;
-    const auto vel = (deltaTime != 0_s)? LinearVelocity2{
-        Real{0.25f} * GetX(relP) / deltaTime,
-        Real{0.25f} * GetY(relP) / deltaTime
-    }: LinearVelocity2{};
-    LaunchBomb(m_bombSpawnPoint, vel);
-    m_bombSpawning = false;
-}
-
-void Test::ShiftMouseDown(const Length2& p)
-{
-    m_mouseWorld = p;
-
-    if (m_targetJoint != InvalidJointID)
-    {
-        return;
-    }
-
-    SpawnBomb(p);
-}
-
-void Test::MouseUp(const Length2& p)
-{
-    if (m_targetJoint != InvalidJointID)
-    {
-        Destroy(m_world, m_targetJoint);
-        m_targetJoint = InvalidJointID;
-    }
-
-    if (m_bombSpawning)
-    {
-        CompleteBombSpawn(p);
-    }
-}
-
-void Test::MouseMove(const Length2& p)
-{
-    m_mouseWorld = p;
-
-    if (m_targetJoint != InvalidJointID)
-    {
-        SetTarget(m_world, m_targetJoint, p);
-    }
-}
-
-void Test::LaunchBomb()
-{
-    const auto deltaTime = m_lastDeltaTime;
-    const auto viewport = ConvertScreenToWorld();
-    const auto worldX = RandomFloat(viewport.ranges[0].GetMin()/1_m, viewport.ranges[0].GetMax()/1_m);
-    const auto atA = Length2{worldX * 1_m, viewport.ranges[1].GetMax()};
-    const auto centerX = GetCenter(viewport.ranges[0]);
-    const auto height = GetSize(viewport.ranges[1]);
-    const auto atB = Length2{centerX, viewport.ranges[1].GetMax() - (height * 9.0f / 10.0f)};
-    const auto v = (deltaTime != 0_s)? (atB - atA) / (deltaTime * 30): LinearVelocity2{};
-    LaunchBomb(atA, v);
-}
-
-void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
-{
-    if (m_bomb != InvalidBodyID)
-    {
-        Destroy(m_world, m_bomb);
-    }
-
-    m_bomb = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
-                                .UseLocation(at).UseLinearVelocity(v)
-                                .UseLinearAcceleration(m_gravity));
-
-    auto conf = DiskShapeConf{};
-    conf.vertexRadius = m_bombRadius;
-    conf.density = m_bombDensity;
-    conf.restitution = 0.0f;
-    CreateFixture(m_world, m_bomb, Shape{conf});
-}
-
-static void ShowHelpMarker(const char* desc)
-{
-    ImGui::TextDisabled("(?)");
-    if (ImGui::IsItemHovered())
-    {
-        ImGui::ShowTooltip(desc, 400);
-    }
-}
-
-void Test::DrawStats(const StepConf& stepConf, UiState& ui)
-{
-    const auto bodyCount = GetBodyCount(m_world);
-    const auto awakeCount = GetAwakeCount(m_world);
+    const auto bodyCount = GetBodyCount(world);
+    const auto awakeCount = GetAwakeCount(world);
     const auto sleepCount = bodyCount - awakeCount;
-    const auto jointCount = GetJointCount(m_world);
-    const auto fixtureCount = GetFixtureCount(m_world);
-    const auto shapeCount = GetShapeCount(m_world);
-    const auto touchingCount = GetTouchingCount(m_world);
- 
-    if (size(m_numTouchingPerStep) >= m_maxHistory)
-    {
-        m_numTouchingPerStep.pop_front();
-    }
-    m_numTouchingPerStep.push_back(touchingCount);
-    m_maxTouching = std::max(m_maxTouching, touchingCount);
+    const auto jointCount = GetJointCount(world);
+    const auto fixtureCount = GetFixtureCount(world);
+    const auto shapeCount = GetShapeCount(world);
+    const auto touchingCount = GetTouchingCount(world);
 
-    ImGuiStyle& style = ImGui::GetStyle();
+    const ImGuiStyle& style = ImGui::GetStyle();
     const auto totalWidth = ImGui::GetWindowWidth() - style.FramePadding.x * 2;
     const auto firstColumnWidth = 65.0f;
 
-    ImGui::Text("Step #=%d (@%fs):", m_stepCount, m_sumDeltaTime);
+    ImGui::Text("Step #=%d (@%fs):", stats.m_stepCount, stats.m_sumDeltaTime);
     if (ImGui::IsItemHovered())
     {
         ImGui::SetTooltip("# of steps performed so far for the current test "
@@ -661,19 +282,19 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::SetColumnWidth(0, firstColumnWidth);
         ImGui::TextUnformatted("Times:");
         ImGui::NextColumn();
-        ImGui::Value("Current", m_curStepDuration.count(), "%f");
+        ImGui::Value("Current", stats.m_curStepDuration.count(), "%f");
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Compute time of last step.");
         }
         ImGui::NextColumn();
-        ImGui::Value("Max", m_maxStepDuration.count(), "%f");
+        ImGui::Value("Max", stats.m_maxStepDuration.count(), "%f");
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Maximum compute time of all steps so far for the current test.");
         }
         ImGui::NextColumn();
-        ImGui::Value("Sum", m_sumStepDuration.count(), "%f");
+        ImGui::Value("Sum", stats.m_sumStepDuration.count(), "%f");
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Sum compute time of all steps so far for the current test.");
@@ -692,13 +313,13 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
             ImGui::SetTooltip("Counts of awake bodies over total bodies.");
         }
         ImGui::NextColumn();
-        ImGui::Text("Fixtures: %lu/%u", shapeCount, fixtureCount);
+        ImGui::Text("Fixtures: %u/%u", shapeCount, fixtureCount);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Counts of shapes over fixtures.");
         }
         ImGui::NextColumn();
-        ImGui::Text("Contacts: %u/%u", touchingCount, m_numContacts);
+        ImGui::Text("Contacts: %u/%u", touchingCount, stats.m_numContacts);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Counts of touching contacts over total contacts. Click to toggle histogram.");
@@ -711,13 +332,13 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::Value("Joints", jointCount);
         ImGui::NextColumn();
     }
-    
+
     {
         ImGui::ColumnsContext cc(6, "PreStepColumns", false);
         ImGui::SetColumnWidth(0, firstColumnWidth);
         ImGui::TextUnformatted("Pre-step:");
         ImGui::NextColumn();
-        ImGui::Value("cts-add", m_stepStats.pre.added);
+        ImGui::Value("cts-add", stats.m_stepStats.pre.added);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Contacts added.");
@@ -725,7 +346,8 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
-            os << "c-ign: " << m_stepStats.pre.ignored << "/" << m_sumContactsIgnoredPre;
+            os << "c-ign: " << stats.m_stepStats.pre.ignored << "/"
+            << stats.m_sumContactsIgnoredPre;
             return os.str();
         }());
         if (ImGui::IsItemHovered())
@@ -735,7 +357,8 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
-            os << "c-skip: " << m_stepStats.pre.skipped << "/" << m_sumContactsSkippedPre;
+            os << "c-skip: " << stats.m_stepStats.pre.skipped << "/"
+            << stats.m_sumContactsSkippedPre;
             return os.str();
         }());
         if (ImGui::IsItemHovered())
@@ -743,7 +366,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
             ImGui::SetTooltip("Contacts skipped over running total skipped.");
         }
         ImGui::NextColumn();
-        ImGui::Value("c-del", m_stepStats.pre.destroyed);
+        ImGui::Value("c-del", stats.m_stepStats.pre.destroyed);
         if (ImGui::IsItemHovered())
         {
             ImGui::SetTooltip("Contacts deleted.");
@@ -751,7 +374,8 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         ImGui::TextUnformatted([=]() {
             std::ostringstream os;
-            os << "c-upd: " << m_stepStats.pre.updated << "/" << m_sumContactsUpdatedPre;
+            os << "c-upd: " << stats.m_stepStats.pre.updated << "/" <<
+            stats.m_sumContactsUpdatedPre;
             return os.str();
         }());
         if (ImGui::IsItemHovered())
@@ -858,23 +482,24 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("Reg. step:");
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.contactsAdded);
+        ImGui::Text("%u", stats.m_stepStats.reg.contactsAdded);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.islandsFound);
+        ImGui::Text("%u", stats.m_stepStats.reg.islandsFound);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.islandsSolved);
+        ImGui::Text("%u", stats.m_stepStats.reg.islandsSolved);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.sumPosIters);
+        ImGui::Text("%u", stats.m_stepStats.reg.sumPosIters);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.sumVelIters);
+        ImGui::Text("%u", stats.m_stepStats.reg.sumVelIters);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.proxiesMoved);
+        ImGui::Text("%u", stats.m_stepStats.toi.proxiesMoved);
         ImGui::NextColumn();
-        ImGui::Text("%f", static_cast<double>(Real{m_stepStats.reg.minSeparation / Meter}));
+        ImGui::Text("%f", static_cast<double>(Real{stats.m_stepStats.reg.minSeparation / Meter}));
         ImGui::NextColumn();
-        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.reg.maxIncImpulse / NewtonSecond}));
+        ImGui::Text("%.2f", static_cast<double>(Real{
+            stats.m_stepStats.reg.maxIncImpulse / NewtonSecond}));
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.reg.bodiesSlept);
+        ImGui::Text("%u", stats.m_stepStats.reg.bodiesSlept);
         ImGui::NextColumn();
     }
 
@@ -883,33 +508,35 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
         ImGui::TextUnformatted("TOI step:");
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.contactsAdded);
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsAdded);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.islandsFound);
+        ImGui::Text("%u", stats.m_stepStats.toi.islandsFound);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.islandsSolved);
+        ImGui::Text("%u", stats.m_stepStats.toi.islandsSolved);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.sumPosIters);
+        ImGui::Text("%u", stats.m_stepStats.toi.sumPosIters);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.sumVelIters);
+        ImGui::Text("%u", stats.m_stepStats.toi.sumVelIters);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.proxiesMoved);
+        ImGui::Text("%u", stats.m_stepStats.toi.proxiesMoved);
         ImGui::NextColumn();
-        ImGui::Text("%f", static_cast<double>(Real{m_stepStats.toi.minSeparation / Meter}));
+        ImGui::Text("%f", static_cast<double>(Real{
+            stats.m_stepStats.toi.minSeparation / Meter}));
         ImGui::NextColumn();
-        ImGui::Text("%.2f", static_cast<double>(Real{m_stepStats.toi.maxIncImpulse / NewtonSecond}));
+        ImGui::Text("%.2f", static_cast<double>(Real{
+            stats.m_stepStats.toi.maxIncImpulse / NewtonSecond}));
         ImGui::NextColumn();
         // Skip bodies slept column
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.contactsFound);
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsFound);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.contactsAtMaxSubSteps);
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsAtMaxSubSteps);
         ImGui::NextColumn();
-        ImGui::Text("%u", m_stepStats.toi.contactsUpdatedToi);
+        ImGui::Text("%u", stats.m_stepStats.toi.contactsUpdatedToi);
         ImGui::NextColumn();
-        ImGui::Text("%u", unsigned{m_stepStats.toi.maxDistIters});
+        ImGui::Text("%u", unsigned{stats.m_stepStats.toi.maxDistIters});
         ImGui::NextColumn();
-        ImGui::Text("%u", unsigned{m_stepStats.toi.maxToiIters});
+        ImGui::Text("%u", unsigned{stats.m_stepStats.toi.maxToiIters});
         ImGui::NextColumn();
     }
 
@@ -924,15 +551,15 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         // Skip c-add column
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegIslandsFound));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegIslandsFound));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegIslandsSolved));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegIslandsSolved));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegPosIters));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegPosIters));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegVelIters));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegVelIters));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumRegProxiesMoved));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumRegProxiesMoved));
         ImGui::NextColumn();
     }
 
@@ -947,15 +574,15 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         // Skip c-add column
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiIslandsFound));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiIslandsFound));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiIslandsSolved));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiIslandsSolved));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiPosIters));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiPosIters));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiVelIters));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiVelIters));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumToiProxiesMoved));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumToiProxiesMoved));
         ImGui::NextColumn();
         // Skip minSeparation column
         ImGui::NextColumn();
@@ -965,11 +592,11 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::NextColumn();
         // Skip contacts found column
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumContactsAtMaxSubSteps));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumContactsAtMaxSubSteps));
         ImGui::NextColumn();
-        ImGui::TextUnformatted(std::to_string(m_sumContactsUpdatedToi));
+        ImGui::TextUnformatted(std::to_string(stats.m_sumContactsUpdatedToi));
         ImGui::NextColumn();
-        
+
 #if 0
         stream = std::ostringstream();
         stream << "  TOI sums:";
@@ -986,8 +613,8 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::TextUnformatted("Reg ranges:");
         ImGui::NextColumn();
         std::ostringstream stream;
-        stream << "min-sep=" << static_cast<double>(Real{m_minRegSep / Meter});
-        stream << ", max-sep=" << static_cast<double>(Real{m_maxRegSep / Meter});
+        stream << "min-sep=" << static_cast<double>(Real{stats.m_minRegSep / Meter});
+        stream << ", max-sep=" << static_cast<double>(Real{stats.m_maxRegSep / Meter});
         stream << ".";
         ImGui::TextUnformatted(stream.str());
         ImGui::NextColumn();
@@ -999,23 +626,23 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         ImGui::TextUnformatted("TOI ranges:");
         ImGui::NextColumn();
         std::ostringstream stream;
-        stream << "min-sep=" << static_cast<double>(Real{m_minToiSep / Meter});
-        stream << ", max-dist-iter=" << unsigned{m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
-        stream << ", max-toi-iter=" << unsigned{m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
-        stream << ", max-root-iter=" << unsigned{m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
-        stream << ", max-simul-cts=" << m_maxSimulContacts;
+        stream << "min-sep=" << static_cast<double>(Real{stats.m_minToiSep / Meter});
+        stream << ", max-dist-iter=" << unsigned{stats.m_maxDistIters} << "/" << unsigned{stepConf.maxDistanceIters};
+        stream << ", max-toi-iter=" << unsigned{stats.m_maxToiIters} << "/" << unsigned{stepConf.maxToiIters};
+        stream << ", max-root-iter=" << unsigned{stats.m_maxRootIters} << "/" << unsigned{stepConf.maxToiRootIters};
+        stream << ", max-simul-cts=" << stats.m_maxSimulContacts;
         stream << ".";
         ImGui::TextUnformatted(stream.str());
         ImGui::NextColumn();
     }
 
     {
-        const auto leafCount = m_world.GetTree().GetLeafCount();
-        const auto nodeCount = m_world.GetTree().GetNodeCount();
-        const auto height = GetHeight(m_world.GetTree());
-        const auto imbalance = GetMaxImbalance(m_world.GetTree());
-        const auto quality = ComputePerimeterRatio(m_world.GetTree());
-        const auto capacity = m_world.GetTree().GetNodeCapacity();
+        const auto leafCount = GetTree(world).GetLeafCount();
+        const auto nodeCount = GetTree(world).GetNodeCount();
+        const auto height = GetHeight(GetTree(world));
+        const auto imbalance = GetMaxImbalance(GetTree(world));
+        const auto quality = ComputePerimeterRatio(GetTree(world));
+        const auto capacity = GetTree(world).GetNodeCapacity();
 
         ImGui::ColumnsContext cc(2, nullptr, false);
         ImGui::SetColumnWidths(totalWidth, {firstColumnWidth});
@@ -1050,7 +677,7 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
         }
         ImGui::SameLine(0, 0);
         std::ostringstream stream;
-        stream << m_maxAABB;
+        stream << stats.m_maxAABB;
         ImGui::Text("max-aabb=%s.", stream.str().c_str());
         if (ImGui::IsItemHovered())
         {
@@ -1060,7 +687,9 @@ void Test::DrawStats(const StepConf& stepConf, UiState& ui)
     }
 }
 
-void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
+void DrawContactInfo(Drawer& drawer, const Settings& settings,
+                     const Test::FixtureSet& selectedFixtures,
+                     SizedRange<Test::ContactPoints::const_iterator> points)
 {
     const auto k_impulseScale = 0.1_s / 1_kg;
     const auto k_axisScale = 0.3_m;
@@ -1069,15 +698,11 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
     const auto contactNormalColor = Color{0.7f, 0.7f, 0.7f}; // light gray
     const auto normalImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
     const auto frictionImpulseColor = Color{0.9f, 0.9f, 0.3f}; // yellowish
-
-    const auto selectedFixtures = GetSelectedFixtures();
     const auto lighten = 1.3f;
     const auto darken = 0.9f;
-
-    for (auto& point: m_points)
+    for (const auto& point: points)
     {
         const auto selected = HasFixture(point, selectedFixtures);
-
         if (settings.drawContactPoints)
         {
             if (point.state == PointState::AddState)
@@ -1092,7 +717,6 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
                                  Brighten(persistStateColor, selected? lighten: darken));
             }
         }
-
         if (settings.drawContactImpulse)
         {
             const auto length = k_impulseScale * point.normalImpulse;
@@ -1105,7 +729,6 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
             drawer.DrawSegment(p2, p2_left, Brighten(normalImpulseColor, selected? lighten: darken));
             drawer.DrawSegment(p2, p2_right, Brighten(normalImpulseColor, selected? lighten: darken));
         }
-
         if (settings.drawFrictionImpulse)
         {
             const auto tangent = GetFwdPerpendicular(point.normal);
@@ -1113,7 +736,6 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
             const auto p2 = p1 + k_impulseScale * point.tangentImpulse * tangent;
             drawer.DrawSegment(p1, p2, Brighten(frictionImpulseColor, selected? lighten: darken));
         }
-
         if (settings.drawContactNormals)
         {
             const auto p1 = point.position;
@@ -1123,17 +745,302 @@ void Test::DrawContactInfo(const Settings& settings, Drawer& drawer)
     }
 }
 
-template <typename T>
-struct DequeValuesGetter
+bool DrawWorld(Drawer& drawer, const World& world, const Test::FixtureSet& selected,
+               const Test::NeededSettings& needed,
+               const Settings& testSettings, const Settings& stepSettings)
 {
-    static float Func(void* data, int idx)
-    {
-        const std::deque<T>& deque = *static_cast<std::deque<T>*>(data);
-        const auto numElements = size(deque);
-        return (idx >= 0 && static_cast<decltype(numElements)>(idx) < numElements)?
-            static_cast<float>(deque[static_cast<decltype(numElements)>(idx)]): 0.0f;
+    auto found = false;
+
+    if (stepSettings.drawShapes) {
+        const auto drawLabels = ShouldDrawLabels(needed, testSettings, stepSettings);
+        const auto drawSkins = ShouldDrawSkins(needed, testSettings, stepSettings);
+        for (const auto& b: GetBodies(world)) {
+            if (Draw(drawer, world, b, drawSkins, selected)) {
+                found = true;
+            }
+            if (drawLabels) {
+                // Use center of mass instead of body center since body center may not
+                drawer.DrawString(GetWorldCenter(world, b), Drawer::Center, "%d",
+                                  GetWorldIndex(world, b));
+            }
+        }
     }
+
+    if (stepSettings.drawJoints) {
+        for (const auto& j: GetJoints(world)) {
+            Draw(drawer, world, j);
+        }
+    }
+
+    if (stepSettings.drawAABBs) {
+        const auto color = Color{0.9f, 0.3f, 0.9f};
+        const auto root = GetTree(world).GetRootIndex();
+        if (root != DynamicTree::GetInvalidSize()) {
+            const auto worldAabb = GetTree(world).GetAABB(root);
+            Draw(drawer, worldAabb, color);
+            Query(GetTree(world), worldAabb, [&](DynamicTree::Size id) {
+                Draw(drawer, GetTree(world).GetAABB(id), color);
+                return DynamicTreeOpcode::Continue;
+            });
+        }
+    }
+
+    if (stepSettings.drawCOMs) {
+        const auto k_axisScale = 0.4_m;
+        const auto red = Color{1.0f, 0.0f, 0.0f};
+        const auto green = Color{0.0f, 1.0f, 0.0f};
+        for (const auto& b: GetBodies(world)) {
+            const auto massScale = std::pow(static_cast<float>(StripUnit(GetMass(world, b))), 1.0f/3);
+            auto xf = GetTransformation(world, b);
+            xf.p = GetWorldCenter(world, b);
+            const auto p1 = xf.p;
+            drawer.DrawSegment(p1, p1 + massScale * k_axisScale * GetXAxis(xf.q), red);
+            drawer.DrawSegment(p1, p1 + massScale * k_axisScale * GetYAxis(xf.q), green);
+        }
+    }
+
+    return found;
+}
+
+} // namespace
+
+const LinearAcceleration2 Test::Gravity = LinearAcceleration2{
+    Real(0.0f) * MeterPerSquareSecond,
+    -Real(10.0f) * MeterPerSquareSecond
 };
+
+bool Test::Contains(const FixtureSet& fixtures, FixtureID f) noexcept
+{
+    return fixtures.find(f) != std::end(fixtures);
+}
+
+void Test::DestructionListenerImpl::SayGoodbye(JointID joint) noexcept
+{
+    if (test->m_targetJoint == joint)
+    {
+        test->m_targetJoint = InvalidJointID;
+    }
+    else
+    {
+        test->JointDestroyed(joint);
+    }
+}
+
+Test::Test(Conf conf):
+    m_world(conf.worldConf),
+    m_neededSettings(conf.neededSettings),
+    m_settings(conf.settings),
+    m_description(conf.description),
+    m_credits(conf.credits),
+    m_seeAlso(conf.seeAlso),
+    m_numContactsPerStep(m_maxHistory, 0u),
+    m_numTouchingPerStep(m_maxHistory, 0u)
+{
+    m_destructionListener.test = this;
+    SetFixtureDestructionListener(m_world, [this](FixtureID id){
+        m_destructionListener.SayGoodbye(id);
+    });
+    SetJointDestructionListener(m_world, [this](JointID id){
+        m_destructionListener.SayGoodbye(id);
+    });
+    SetPreSolveContactListener(m_world, [this](ContactID id, const Manifold& manifold) {
+        PreSolve(id, manifold);
+    });
+}
+
+Test::~Test()
+{
+}
+
+void Test::ResetWorld(const World &saved)
+{
+    ClearSelectedFixtures();
+
+    auto bombIndex = static_cast<decltype(size(GetBodies(m_world)))>(-1);
+
+    {
+        auto i = decltype(size(GetBodies(m_world))){0};
+        for (const auto& b: GetBodies(m_world))
+        {
+            if (b == m_bomb)
+            {
+                bombIndex = i;
+            }
+            ++i;
+        }
+    }
+
+    m_world = saved;
+
+    {
+        auto i = decltype(size(GetBodies(m_world))){0};
+        for (const auto& b: GetBodies(m_world))
+        {
+            if (i == bombIndex)
+            {
+                m_bomb = b;
+            }
+            ++i;
+        }
+    }
+}
+
+void Test::PreSolve(ContactID contact, const Manifold& oldManifold)
+{
+    const auto pointStates = GetPointStates(oldManifold, GetManifold(m_world, contact));
+    const auto worldManifold = GetWorldManifold(m_world, contact);
+
+    ContactPoint cp;
+    cp.fixtureA = GetFixtureA(m_world, contact);
+    cp.fixtureB = GetFixtureB(m_world, contact);
+    cp.normal = worldManifold.GetNormal();
+
+    const auto count = worldManifold.GetPointCount();
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        const auto ci = worldManifold.GetImpulses(i);
+        cp.normalImpulse = get<0>(ci);
+        cp.tangentImpulse = get<1>(ci);
+        cp.state = pointStates.state2[i];
+        cp.position = worldManifold.GetPoint(i);
+        cp.separation = worldManifold.GetSeparation(i);
+        m_points.push_back(cp);
+    }
+}
+
+void Test::SetSelectedFixtures(FixtureSet value) noexcept
+{
+    m_selectedFixtures = value;
+    m_selectedBodies = GetBodySetFromFixtures(m_world, value);
+}
+
+void Test::MouseDown(const Length2& p)
+{
+    m_mouseWorld = p;
+
+    if (m_targetJoint != InvalidJointID)
+    {
+        return;
+    }
+
+    // Make a small box.
+    const auto aabb = GetFattenedAABB(AABB{p}, 1_m / 1000);
+
+    // Query the world for overlapping shapes.
+    auto fixtures = FixtureSet{};
+    Query(aabb, [this,&p,&fixtures](FixtureID f, const ChildCounter) {
+        if (TestPoint(m_world, f, p))
+        {
+            fixtures.insert(f);
+        }
+        return true; // Continue the query.
+    });
+
+    SetSelectedFixtures(fixtures);
+    if (size(fixtures) == 1)
+    {
+        const auto body = GetBody(m_world, *(begin(fixtures)));
+        if (GetType(m_world, body) == BodyType::Dynamic)
+        {
+            auto md = TargetJointConf{};
+            md.bodyB = body;
+            md.target = p;
+            md.maxForce = Real(10000) * GetMass(m_world, body) * MeterPerSquareSecond;
+            m_targetJoint = CreateJoint(m_world, md);
+            SetAwake(m_world, body);
+        }
+    }
+}
+
+void Test::SpawnBomb(const Length2& worldPt)
+{
+    m_bombSpawnPoint = worldPt;
+    m_bombSpawning = true;
+}
+
+void Test::CompleteBombSpawn(const Length2& p)
+{
+    if (!m_bombSpawning)
+    {
+        return;
+    }
+
+    const auto deltaTime = m_lastDeltaTime;
+    const auto relP = m_bombSpawnPoint - p;
+    const auto vel = (deltaTime != 0_s)? LinearVelocity2{
+        Real{0.25f} * GetX(relP) / deltaTime,
+        Real{0.25f} * GetY(relP) / deltaTime
+    }: LinearVelocity2{};
+    LaunchBomb(m_bombSpawnPoint, vel);
+    m_bombSpawning = false;
+}
+
+void Test::ShiftMouseDown(const Length2& p)
+{
+    m_mouseWorld = p;
+
+    if (m_targetJoint != InvalidJointID)
+    {
+        return;
+    }
+
+    SpawnBomb(p);
+}
+
+void Test::MouseUp(const Length2& p)
+{
+    if (m_targetJoint != InvalidJointID)
+    {
+        Destroy(m_world, m_targetJoint);
+        m_targetJoint = InvalidJointID;
+    }
+
+    if (m_bombSpawning)
+    {
+        CompleteBombSpawn(p);
+    }
+}
+
+void Test::MouseMove(const Length2& p)
+{
+    m_mouseWorld = p;
+
+    if (m_targetJoint != InvalidJointID)
+    {
+        SetTarget(m_world, m_targetJoint, p);
+    }
+}
+
+void Test::LaunchBomb()
+{
+    const auto deltaTime = m_lastDeltaTime;
+    const auto viewport = ConvertScreenToWorld();
+    const auto worldX = RandomFloat(viewport.ranges[0].GetMin()/1_m, viewport.ranges[0].GetMax()/1_m);
+    const auto atA = Length2{worldX * 1_m, viewport.ranges[1].GetMax()};
+    const auto centerX = GetCenter(viewport.ranges[0]);
+    const auto height = GetSize(viewport.ranges[1]);
+    const auto atB = Length2{centerX, viewport.ranges[1].GetMax() - (height * 9.0f / 10.0f)};
+    const auto v = (deltaTime != 0_s)? (atB - atA) / (deltaTime * 30): LinearVelocity2{};
+    LaunchBomb(atA, v);
+}
+
+void Test::LaunchBomb(const Length2& at, const LinearVelocity2 v)
+{
+    if (m_bomb != InvalidBodyID)
+    {
+        Destroy(m_world, m_bomb);
+    }
+
+    m_bomb = CreateBody(m_world, BodyConf{}.UseType(BodyType::Dynamic).UseBullet(true)
+                                .UseLocation(at).UseLinearVelocity(v)
+                                .UseLinearAcceleration(m_gravity));
+
+    auto conf = DiskShapeConf{};
+    conf.vertexRadius = m_bombRadius;
+    conf.density = m_bombDensity;
+    conf.restitution = 0.0f;
+    CreateFixture(m_world, m_bomb, Shape{conf});
+}
 
 void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 {
@@ -1161,7 +1068,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
         m_points.clear();
     }
 
-    m_world.SetSubStepping(settings.enableSubStepping);
+    SetSubStepping(m_world, settings.enableSubStepping);
 
     auto stepConf = StepConf{};
 
@@ -1200,70 +1107,78 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
     stepConf.doWarmStart = settings.enableWarmStarting;
 
     const auto start = std::chrono::system_clock::now();
-    const auto stepStats = m_world.Step(stepConf);
+    const auto stepStats = ::playrho::d2::Step(m_world, stepConf);
     const auto end = std::chrono::system_clock::now();
 
-    m_maxAABB = GetEnclosingAABB(m_maxAABB, GetAABB(m_world.GetTree()));
+    m_stats.m_maxAABB = GetEnclosingAABB(m_stats.m_maxAABB, GetAABB(GetTree(m_world)));
     
-    m_sumContactsUpdatedPre += stepStats.pre.updated;
-    m_sumContactsIgnoredPre += stepStats.pre.ignored;
-    m_sumContactsSkippedPre += stepStats.pre.skipped;
+    m_stats.m_sumContactsUpdatedPre += stepStats.pre.updated;
+    m_stats.m_sumContactsIgnoredPre += stepStats.pre.ignored;
+    m_stats.m_sumContactsSkippedPre += stepStats.pre.skipped;
 
-    m_sumRegIslandsFound += stepStats.reg.islandsFound;
-    m_sumRegIslandsSolved += stepStats.reg.islandsSolved;
-    m_sumRegPosIters += stepStats.reg.sumPosIters;
-    m_sumRegVelIters += stepStats.reg.sumVelIters;
-    m_sumRegProxiesMoved += stepStats.reg.proxiesMoved;
+    m_stats.m_sumRegIslandsFound += stepStats.reg.islandsFound;
+    m_stats.m_sumRegIslandsSolved += stepStats.reg.islandsSolved;
+    m_stats.m_sumRegPosIters += stepStats.reg.sumPosIters;
+    m_stats.m_sumRegVelIters += stepStats.reg.sumVelIters;
+    m_stats.m_sumRegProxiesMoved += stepStats.reg.proxiesMoved;
 
-    m_sumToiIslandsFound += stepStats.toi.islandsFound;
-    m_sumToiIslandsSolved += stepStats.toi.islandsSolved;
-    m_sumToiPosIters += stepStats.toi.sumPosIters;
-    m_sumToiVelIters += stepStats.toi.sumVelIters;
-    m_sumToiProxiesMoved += stepStats.toi.proxiesMoved;
-    m_sumContactsUpdatedToi += stepStats.toi.contactsUpdatedToi;
-    m_sumToiContactsUpdatedTouching += stepStats.toi.contactsUpdatedTouching;
-    m_sumToiContactsSkippedTouching += stepStats.toi.contactsSkippedTouching;
-    m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
+    m_stats.m_sumToiIslandsFound += stepStats.toi.islandsFound;
+    m_stats.m_sumToiIslandsSolved += stepStats.toi.islandsSolved;
+    m_stats.m_sumToiPosIters += stepStats.toi.sumPosIters;
+    m_stats.m_sumToiVelIters += stepStats.toi.sumVelIters;
+    m_stats.m_sumToiProxiesMoved += stepStats.toi.proxiesMoved;
+    m_stats.m_sumContactsUpdatedToi += stepStats.toi.contactsUpdatedToi;
+    m_stats.m_sumToiContactsUpdatedTouching += stepStats.toi.contactsUpdatedTouching;
+    m_stats.m_sumToiContactsSkippedTouching += stepStats.toi.contactsSkippedTouching;
+    m_stats.m_sumContactsAtMaxSubSteps += stepStats.toi.contactsAtMaxSubSteps;
 
-    m_maxSimulContacts = std::max(m_maxSimulContacts, stepStats.toi.maxSimulContacts);
-    m_maxDistIters = std::max(m_maxDistIters, stepStats.toi.maxDistIters);
-    m_maxRootIters = std::max(m_maxRootIters, stepStats.toi.maxRootIters);
-    m_maxToiIters = std::max(m_maxToiIters, stepStats.toi.maxToiIters);
+    m_stats.m_maxSimulContacts = std::max(m_stats.m_maxSimulContacts,
+                                          stepStats.toi.maxSimulContacts);
+    m_stats.m_maxDistIters = std::max(m_stats.m_maxDistIters, stepStats.toi.maxDistIters);
+    m_stats.m_maxRootIters = std::max(m_stats.m_maxRootIters, stepStats.toi.maxRootIters);
+    m_stats.m_maxToiIters = std::max(m_stats.m_maxToiIters, stepStats.toi.maxToiIters);
 
     if (stepStats.reg.minSeparation < std::numeric_limits<Length>::infinity())
     {
-        m_minRegSep = std::min(m_minRegSep, stepStats.reg.minSeparation);
-        m_maxRegSep = std::max(m_maxRegSep, stepStats.reg.minSeparation);
+        m_stats.m_minRegSep = std::min(m_stats.m_minRegSep, stepStats.reg.minSeparation);
+        m_stats.m_maxRegSep = std::max(m_stats.m_maxRegSep, stepStats.reg.minSeparation);
     }
 
     if (settings.dt != 0)
     {
-        m_sumDeltaTime += settings.dt;
+        m_stats.m_sumDeltaTime += settings.dt;
 
-        ++m_stepCount;
-        m_stepStats = stepStats;
-        m_minToiSep = std::min(m_minToiSep, stepStats.toi.minSeparation);
+        ++m_stats.m_stepCount;
+        m_stats.m_stepStats = stepStats;
+        m_stats.m_minToiSep = std::min(m_stats.m_minToiSep, stepStats.toi.minSeparation);
 
-        m_curStepDuration = end - start;
-        m_maxStepDuration = std::max(m_maxStepDuration, m_curStepDuration);
-        m_sumStepDuration += m_curStepDuration;
+        m_stats.m_curStepDuration = end - start;
+        m_stats.m_maxStepDuration = std::max(m_stats.m_maxStepDuration, m_stats.m_curStepDuration);
+        m_stats.m_sumStepDuration += m_stats.m_curStepDuration;
     }
 
-    m_numContacts = GetContactCount(m_world);
-    m_maxContacts = std::max(m_maxContacts, m_numContacts);
+    m_stats.m_numContacts = GetContactCount(m_world);
+    m_stats.m_maxContacts = std::max(m_stats.m_maxContacts, m_stats.m_numContacts);
     
     if (size(m_numContactsPerStep) >= m_maxHistory)
     {
         m_numContactsPerStep.pop_front();
     }
-    m_numContactsPerStep.push_back(m_numContacts);
+    m_numContactsPerStep.push_back(m_stats.m_numContacts);
 
     if (ui.showStats)
     {
         ImGui::SetNextWindowPos(ImVec2(10, 200), ImGuiCond_Appearing);
         ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_Appearing);
         ImGui::WindowContext wc("Step Statistics", &ui.showStats, ImGuiWindowFlags_NoCollapse);
-        DrawStats(stepConf, ui);
+        if (size(m_numTouchingPerStep) >= m_maxHistory)
+        {
+            m_numTouchingPerStep.pop_front();
+        }
+        const auto touchingCount = GetTouchingCount(m_world);
+        m_numTouchingPerStep.push_back(touchingCount);
+        m_stats.m_maxTouching = std::max(m_stats.m_maxTouching, touchingCount);
+        ShowStats(stepConf, ui, m_world, m_stats);
     }
     
     if (ui.showContactsHistory)
@@ -1273,16 +1188,16 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
                                 ImGuiWindowFlags_NoCollapse);
         char buffer[40];
         
-        std::sprintf(buffer, "Max of %u", m_maxTouching);
+        std::sprintf(buffer, "Max of %u", m_stats.m_maxTouching);
         ImGui::PlotHistogram("# Touching", DequeValuesGetter<std::size_t>::Func,
                              &m_numTouchingPerStep, static_cast<int>(size(m_numTouchingPerStep)),
-                             0, buffer, 0.0f, static_cast<float>(m_maxContacts),
+                             0, buffer, 0.0f, static_cast<float>(m_stats.m_maxContacts),
                              ImVec2(600, 100));
 
-        std::sprintf(buffer, "Max of %u", m_maxContacts);
+        std::sprintf(buffer, "Max of %u", m_stats.m_maxContacts);
         ImGui::PlotHistogram("# Contacts", DequeValuesGetter<std::size_t>::Func,
                              &m_numContactsPerStep, static_cast<int>(size(m_numContactsPerStep)),
-                             0, buffer, 0.0f, static_cast<float>(m_maxContacts),
+                             0, buffer, 0.0f, static_cast<float>(m_stats.m_maxContacts),
                              ImVec2(600, 100));
     }
 
@@ -1301,12 +1216,13 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
         drawer.DrawSegment(m_mouseWorld, m_bombSpawnPoint, Color{0.8f, 0.8f, 0.8f});
     }
 
-    DrawContactInfo(settings, drawer);
+    DrawContactInfo(drawer, settings, GetSelectedFixtures(), GetPoints());
 
     PostStep(settings, drawer);
 
     const auto selectedFixtures = GetSelectedFixtures();
-    const auto selectedFound = DrawWorld(drawer, m_world, settings, selectedFixtures);
+    const auto selectedFound = DrawWorld(drawer, m_world, selectedFixtures,
+                                         GetNeededSettings(), GetSettings(), settings);
     if (!empty(selectedFixtures) && !selectedFound)
     {
         ClearSelectedFixtures();
@@ -1317,7 +1233,7 @@ void Test::Step(const Settings& settings, Drawer& drawer, UiState& ui)
 
 void Test::ShiftOrigin(const Length2& newOrigin)
 {
-    m_world.ShiftOrigin(newOrigin);
+    ::playrho::d2::ShiftOrigin(m_world, newOrigin);
 }
 
 void Test::KeyboardHandler(KeyID key, KeyAction action, KeyMods mods)
@@ -1347,22 +1263,121 @@ void Test::RegisterForKey(KeyID key, KeyAction action, KeyMods mods, KeyHandlerI
     m_handledKeys.push_back(std::make_pair(KeyActionMods{key, action, mods}, id));
 }
 
-constexpr auto RAND_LIMIT = 32767;
+void Test::Query(const AABB& aabb, QueryFixtureCallback callback)
+{
+    ::playrho::d2::Query(GetTree(m_world), aabb, callback);
+}
+
+// Exported free functions...
 
 Real RandomFloat()
 {
-    auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
-    r /= RAND_LIMIT;
+    auto r = static_cast<Real>(std::rand() & RandLimit);
+    r /= RandLimit;
     r = 2.0f * r - 1.0f;
     return r;
 }
 
 Real RandomFloat(Real lo, Real hi)
 {
-    auto r = static_cast<Real>(std::rand() & (RAND_LIMIT));
-    r /= RAND_LIMIT;
+    auto r = static_cast<Real>(std::rand() & RandLimit);
+    r /= RandLimit;
     r = (hi - lo) * r + lo;
     return r;
+}
+
+void Draw(Drawer& drawer, const DiskShapeConf& shape, Color color, const Transformation& xf)
+{
+    const auto center = Transform(shape.GetLocation(), xf);
+    const auto radius = shape.GetRadius();
+    const auto fillColor = Color{0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f};
+    drawer.DrawSolidCircle(center, radius, fillColor);
+    drawer.DrawCircle(center, radius, color);
+
+    // Draw a line fixed in the circle to animate rotation.
+    const auto axis = Rotate(Vec2{1, 0}, xf.q);
+    drawer.DrawSegment(center, center + radius * axis, color);
+}
+
+void Draw(Drawer& drawer, const EdgeShapeConf& shape, Color color, bool skins,
+          const Transformation& xf)
+{
+    const auto v1 = Transform(shape.GetVertexA(), xf);
+    const auto v2 = Transform(shape.GetVertexB(), xf);
+    drawer.DrawSegment(v1, v2, color);
+
+    if (skins)
+    {
+        const auto r = GetVertexRadius(shape);
+        if (r > 0_m)
+        {
+            const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
+            const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
+            const auto offset = worldNormal0 * r;
+            drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
+            drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
+
+            const auto angle0 = GetAngle(worldNormal0);
+            const auto angle1 = GetAngle(-worldNormal0);
+            DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
+            DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
+        }
+    }
+}
+
+void Draw(Drawer& drawer, const ChainShapeConf& shape, Color color, bool skins,
+          const Transformation& xf)
+{
+    const auto count = shape.GetVertexCount();
+    const auto r = GetVertexRadius(shape);
+    const auto skinColor = Color{color.r * 0.6f, color.g * 0.6f, color.b * 0.6f};
+
+    auto v1 = Transform(shape.GetVertex(0), xf);
+    for (auto i = decltype(count){1}; i < count; ++i)
+    {
+        const auto v2 = Transform(shape.GetVertex(i), xf);
+        drawer.DrawSegment(v1, v2, color);
+        if (skins && r > 0_m)
+        {
+            const auto worldNormal0 = GetFwdPerpendicular(GetUnitVector(v2 - v1));
+            const auto offset = worldNormal0 * r;
+            drawer.DrawSegment(v1 + offset, v2 + offset, skinColor);
+            drawer.DrawSegment(v1 - offset, v2 - offset, skinColor);
+            const auto angle0 = GetAngle(worldNormal0);
+            const auto angle1 = GetAngle(-worldNormal0);
+            DrawCorner(drawer, v2, r, angle0, angle1, skinColor);
+            DrawCorner(drawer, v1, r, angle1, angle0, skinColor);
+        }
+        v1 = v2;
+    }
+}
+
+void Draw(Drawer& drawer, const PolygonShapeConf& shape, Color color, bool skins,
+          const Transformation& xf)
+{
+    Draw(drawer, GetChild(shape, 0), color, skins, xf);
+}
+
+void Draw(Drawer& drawer, const MultiShapeConf& shape, Color color, bool skins,
+          const Transformation& xf)
+{
+    const auto count = GetChildCount(shape);
+    for (auto i = decltype(count){0}; i < count; ++i)
+    {
+        Draw(drawer, GetChild(shape, i), color, skins, xf);
+    }
+}
+
+bool HasFixture(const Test::ContactPoint& cp, const Test::FixtureSet& fixtures) noexcept
+{
+    for (auto fixture: fixtures)
+    {
+        if (fixture == cp.fixtureA || fixture == cp.fixtureB)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 } // namespace testbed

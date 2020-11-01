@@ -29,75 +29,75 @@ class BodyTypes : public Test
 public:
     BodyTypes()
     {
-        const auto ground = CreateBody(m_world);
-        CreateFixture(m_world, ground, Shape(EdgeShapeConf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
+        const auto ground = CreateBody(GetWorld());
+        CreateFixture(GetWorld(), ground, Shape(EdgeShapeConf{}.Set(Vec2(-20, 0) * 1_m, Vec2(20, 0) * 1_m)));
 
         RegisterForKey(GLFW_KEY_D, GLFW_PRESS, 0, "Dynamic", [&](KeyActionMods) {
-            m_world.SetType(m_platform, BodyType::Dynamic);
+            SetType(GetWorld(), m_platform, BodyType::Dynamic);
         });
         RegisterForKey(GLFW_KEY_S, GLFW_PRESS, 0, "Static", [&](KeyActionMods) {
-            m_world.SetType(m_platform, BodyType::Static);
+            SetType(GetWorld(), m_platform, BodyType::Static);
         });
         RegisterForKey(GLFW_KEY_K, GLFW_PRESS, 0, "Kinematic", [&](KeyActionMods) {
-            m_world.SetType(m_platform, BodyType::Kinematic);
-            m_world.SetVelocity(m_platform, Velocity{Vec2(-m_speed, 0) * 1_mps, 0_rpm});
+            SetType(GetWorld(), m_platform, BodyType::Kinematic);
+            SetVelocity(GetWorld(), m_platform, Velocity{Vec2(-m_speed, 0) * 1_mps, 0_rpm});
         });
 
         // Define attachment
         {
-            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m).UseLinearAcceleration(m_gravity);
-            m_attachment = CreateBody(m_world, bd);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 3) * 1_m).UseLinearAcceleration(GetGravity());
+            m_attachment = CreateBody(GetWorld(), bd);
             const auto conf = PolygonShapeConf{}.UseDensity(2_kgpm2).SetAsBox(0.5_m, 2_m);
-            CreateFixture(m_world, m_attachment, Shape(conf));
+            CreateFixture(GetWorld(), m_attachment, Shape(conf));
         }
 
         // Define platform
         {
-            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(-4, 5) * 1_m).UseLinearAcceleration(m_gravity);
-            m_platform = CreateBody(m_world, bd);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(-4, 5) * 1_m).UseLinearAcceleration(GetGravity());
+            m_platform = CreateBody(GetWorld(), bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6)).UseDensity(2_kgpm2)
                 .SetAsBox(0.5_m, 4_m, Vec2(4, 0) * 1_m, Pi * 0.5_rad);
-            CreateFixture(m_world, m_platform, Shape{conf});
+            CreateFixture(GetWorld(), m_platform, Shape{conf});
 
-            auto rjd = GetRevoluteJointConf(m_world, m_attachment, m_platform, Vec2(0, 5) * 1_m);
+            auto rjd = GetRevoluteJointConf(GetWorld(), m_attachment, m_platform, Vec2(0, 5) * 1_m);
             rjd.maxMotorTorque = 50_Nm;
             rjd.enableMotor = true;
-            m_world.CreateJoint(rjd);
+            CreateJoint(GetWorld(), rjd);
 
-            PrismaticJointConf pjd = GetPrismaticJointConf(m_world, ground, m_platform, Vec2(0, 5) * 1_m, UnitVec::GetRight());
+            PrismaticJointConf pjd = GetPrismaticJointConf(GetWorld(), ground, m_platform, Vec2(0, 5) * 1_m, UnitVec::GetRight());
             pjd.maxMotorForce = 1000_N;
             pjd.enableMotor = true;
             pjd.lowerTranslation = -10_m;
             pjd.upperTranslation = 10_m;
             pjd.enableLimit = true;
-            m_world.CreateJoint(pjd);
+            CreateJoint(GetWorld(), pjd);
 
             m_speed = 3.0f;
         }
 
         // Create a payload
         {
-            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 8) * 1_m).UseLinearAcceleration(m_gravity);
-            const auto body = CreateBody(m_world, bd);
+            const auto bd = BodyConf{}.UseType(BodyType::Dynamic).UseLocation(Vec2(0, 8) * 1_m).UseLinearAcceleration(GetGravity());
+            const auto body = CreateBody(GetWorld(), bd);
 
             const auto conf = PolygonShapeConf{}.UseFriction(Real(0.6)).UseDensity(2_kgpm2).SetAsBox(0.75_m, 0.75_m);
-            CreateFixture(m_world, body, Shape(conf));
+            CreateFixture(GetWorld(), body, Shape(conf));
         }
     }
 
     void PreStep(const Settings&, Drawer&) override
     {        
         // Drive the kinematic body.
-        if (GetType(m_world, m_platform) == BodyType::Kinematic)
+        if (GetType(GetWorld(), m_platform) == BodyType::Kinematic)
         {
-            const auto p = GetLocation(m_world, m_platform);
-            const auto velocity = GetVelocity(m_world, m_platform);
+            const auto p = GetLocation(GetWorld(), m_platform);
+            const auto velocity = GetVelocity(GetWorld(), m_platform);
 
             if ((GetX(p) < -10_m && GetX(velocity.linear) < 0_mps) ||
                 (GetX(p) > +10_m && GetX(velocity.linear) > 0_mps))
             {
-                SetVelocity(m_world, m_platform, Velocity{
+                SetVelocity(GetWorld(), m_platform, Velocity{
                     LinearVelocity2{-GetX(velocity.linear), GetY(velocity.linear)},
                     velocity.angular
                 });

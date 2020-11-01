@@ -103,45 +103,45 @@ namespace testbed {
                 BodyConf bd;
                 bd.type = BodyType::Static;
                 bd.location = Length2{0, frame_height};
-                const auto body = CreateBody(m_world, bd);
+                const auto body = CreateBody(GetWorld(), bd);
                 
                 const auto frame_width = frame_width_per_arm * static_cast<Real>(m_num_arms);
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 2, frame_width / 24).UseDensity(20_kgpm2);
-                CreateFixture(m_world, body, Shape(shape));
+                CreateFixture(GetWorld(), body, Shape(shape));
                 return body;
             }();
-            
+
             for (auto i = decltype(m_num_arms){0}; i < m_num_arms; ++i)
             {
                 const auto x = (((i + Real(0.5f)) - Real(m_num_arms) / 2) * frame_width_per_arm);
-                
+
                 BodyConf bd;
                 bd.type = BodyType::Dynamic;
-                bd.linearAcceleration = m_gravity;
+                bd.linearAcceleration = GetGravity();
                 bd.bullet = m_bullet_mode;
                 bd.location = Length2{x, frame_height - (arm_length / 2)};
-                
-                m_swings[i] = CreateBody(m_world, bd);
+
+                m_swings[i] = CreateBody(GetWorld(), bd);
                 CreateArm(m_swings[i], arm_length);
                 CreateBall(m_swings[i], Length2{0, -arm_length / 2}, ball_radius);
-                
-                m_world.CreateJoint(GetRevoluteJointConf(m_world, m_frame, m_swings[i],
-                                                         Length2{x, frame_height}));
-            }            
+
+                CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), m_frame, m_swings[i],
+                                                          Length2{x, frame_height}));
+            }
         }
 
         void DestroyCradle()
         {
             if (IsValid(m_frame))
             {
-                Destroy(m_world, m_frame);
+                Destroy(GetWorld(), m_frame);
                 m_frame = InvalidBodyID;
             }
             for (auto& body: m_swings)
             {
                 if (body != InvalidBodyID)
                 {
-                    Destroy(m_world, body);
+                    Destroy(GetWorld(), body);
                     body = InvalidBodyID;
                 }
             }
@@ -157,10 +157,10 @@ namespace testbed {
                 BodyConf def;
                 def.type = BodyType::Static;
                 def.location = Length2{frame_width / 2 + frame_width / 24, frame_height - (arm_length / 2)};
-                const auto body = CreateBody(m_world, def);
+                const auto body = CreateBody(GetWorld(), def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width / 24, arm_length / 2 + frame_width / 24).UseDensity(20_kgpm2);
-                CreateFixture(m_world, body, Shape(shape));
+                CreateFixture(GetWorld(), body, Shape(shape));
                 
                 m_right_side_wall = body;
             }
@@ -177,10 +177,10 @@ namespace testbed {
                     -(frame_width / Real{2} + frame_width / Real{24}),
                     frame_height - (arm_length / Real{2})
                 };
-                const auto body = CreateBody(m_world, def);
+                const auto body = CreateBody(GetWorld(), def);
                 
                 const auto shape = PolygonShapeConf{}.SetAsBox(frame_width/Real{24}, (arm_length / Real{2} + frame_width / Real{24})).UseDensity(20_kgpm2);
-                CreateFixture(m_world, body, Shape(shape));
+                CreateFixture(GetWorld(), body, Shape(shape));
                 
                 m_left_side_wall = body;
             }
@@ -190,7 +190,7 @@ namespace testbed {
         {
             if (IsValid(m_right_side_wall))
             {
-                Destroy(m_world, m_right_side_wall);
+                Destroy(GetWorld(), m_right_side_wall);
                 m_right_side_wall = InvalidBodyID;
             }
         }
@@ -199,7 +199,7 @@ namespace testbed {
         {
             if (IsValid(m_left_side_wall))
             {
-                Destroy(m_world, m_left_side_wall);
+                Destroy(GetWorld(), m_left_side_wall);
                 m_left_side_wall = InvalidBodyID;
             }
         }
@@ -212,13 +212,13 @@ namespace testbed {
             conf.density = 20_kgpm2;
             conf.restitution = 1;
             conf.friction = 0;
-            return CreateFixture(m_world, body, Shape(conf));
+            return CreateFixture(GetWorld(), body, Shape(conf));
         }
 
         FixtureID CreateArm(BodyID body, Length length = 10_m)
         {
             const auto shape = PolygonShapeConf{}.SetAsBox(length / Real{2000}, length / Real{2}).UseDensity(20_kgpm2);
-            return CreateFixture(m_world, body, Shape(shape));
+            return CreateFixture(GetWorld(), body, Shape(shape));
         }
 
         void ToggleRightSideWall()
@@ -240,11 +240,11 @@ namespace testbed {
         void ToggleBulletMode()
         {
             m_bullet_mode = !m_bullet_mode;
-            for (const auto& b: m_world.GetBodies())
+            for (const auto& b: GetBodies(GetWorld()))
             {
-                if (GetType(m_world, b) == BodyType::Dynamic)
+                if (GetType(GetWorld(), b) == BodyType::Dynamic)
                 {
-                    SetImpenetrable(m_world, b, m_bullet_mode);
+                    SetImpenetrable(GetWorld(), b, m_bullet_mode);
                 }
             }
         }
@@ -253,7 +253,7 @@ namespace testbed {
         {
             std::stringstream stream;
             stream << "Bullet mode currently " << (m_bullet_mode? "on": "off") << ".";
-            m_status = stream.str();
+            SetStatus(stream.str());
         }
 
         int m_num_arms = default_num_arms;

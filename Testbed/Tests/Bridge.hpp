@@ -32,8 +32,8 @@ public:
 
     Bridge()
     {        
-        const auto ground = CreateBody(m_world);
-        CreateFixture(m_world, ground, Shape(GetGroundEdgeConf()));
+        const auto ground = CreateBody(GetWorld());
+        CreateFixture(GetWorld(), ground, Shape(GetGroundEdgeConf()));
         {
             auto conf = PolygonShapeConf{};
             conf.density = 20_kgpm2;
@@ -43,12 +43,13 @@ public:
             auto prevBody = ground;
             for (auto i = 0; i < Count; ++i)
             {
-                const auto body = CreateBody(m_world, BodyConf{}
+                const auto body = CreateBody(GetWorld(), BodyConf{}
                                                      .UseType(BodyType::Dynamic)
-                                                     .UseLinearAcceleration(m_gravity)
+                                                     .UseLinearAcceleration(GetGravity())
                                                      .UseLocation(Vec2(-14.5f + i, 5.0f) * 1_m));
-                CreateFixture(m_world, body, shape);
-                m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, body, Vec2(-15.0f + i, 5.0f) * 1_m));
+                CreateFixture(GetWorld(), body, shape);
+                CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, body,
+                                                          Vec2(-15.0f + i, 5.0f) * 1_m));
                 if (i == (Count >> 1))
                 {
                     m_middle = body;
@@ -56,7 +57,8 @@ public:
                 prevBody = body;
             }
 
-            m_world.CreateJoint(GetRevoluteJointConf(m_world, prevBody, ground, Vec2(-15.0f + Count, 5.0f) * 1_m));
+            CreateJoint(GetWorld(), GetRevoluteJointConf(GetWorld(), prevBody, ground,
+                                                      Vec2(-15.0f + Count, 5.0f) * 1_m));
         }
 
         const auto conf = PolygonShapeConf{}.UseDensity(1_kgpm2).UseVertices({
@@ -67,21 +69,21 @@ public:
         const auto polyshape = Shape(conf);
         for (auto i = 0; i < 2; ++i)
         {
-            const auto body = CreateBody(m_world, BodyConf{}
+            const auto body = CreateBody(GetWorld(), BodyConf{}
                                                  .UseType(BodyType::Dynamic)
-                                                 .UseLinearAcceleration(m_gravity)
+                                                 .UseLinearAcceleration(GetGravity())
                                                  .UseLocation(Vec2(-8.0f + 8.0f * i, 12.0f) * 1_m));
-            CreateFixture(m_world, body, polyshape);
+            CreateFixture(GetWorld(), body, polyshape);
         }
 
         const auto diskShape = Shape{DiskShapeConf{}.UseDensity(1_kgpm2).UseRadius(0.5_m)};
         for (auto i = 0; i < 3; ++i)
         {
-            const auto body = CreateBody(m_world, BodyConf{}
+            const auto body = CreateBody(GetWorld(), BodyConf{}
                                                  .UseType(BodyType::Dynamic)
-                                                 .UseLinearAcceleration(m_gravity)
+                                                 .UseLinearAcceleration(GetGravity())
                                                  .UseLocation(Vec2(-6.0f + 6.0f * i, 10.0f) * 1_m));
-            CreateFixture(m_world, body, diskShape);
+            CreateFixture(GetWorld(), body, diskShape);
         }
     }
 

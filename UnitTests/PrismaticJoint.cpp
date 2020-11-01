@@ -50,7 +50,7 @@ TEST(PrismaticJointConf, ByteSize)
     }
 }
 
-TEST(PrismaticJoint, Construction)
+TEST(PrismaticJointConf, Construction)
 {
     auto world = World{};
     const auto b0 = CreateBody(world);
@@ -69,9 +69,33 @@ TEST(PrismaticJoint, Construction)
     EXPECT_EQ(GetLocalAnchorB(joint), jd.localAnchorB);
     EXPECT_EQ(GetLinearReaction(joint), Momentum2{});
     EXPECT_EQ(GetAngularReaction(joint), AngularMomentum{0});
+    EXPECT_EQ(GetReferenceAngle(joint), 0_deg);
+    EXPECT_EQ(GetLocalXAxisA(joint), UnitVec::GetRight());
+    EXPECT_EQ(GetLocalYAxisA(joint), GetRevPerpendicular(UnitVec::GetRight()));
+    EXPECT_EQ(GetLimitState(joint), LimitState::e_inactiveLimit);
+    EXPECT_THROW(GetAngularMass(joint), std::invalid_argument);
+    EXPECT_THROW(GetMaxForce(joint), std::invalid_argument);
+    EXPECT_THROW(GetMaxTorque(joint), std::invalid_argument);
+    EXPECT_THROW(GetMaxMotorTorque(joint), std::invalid_argument);
+    EXPECT_THROW(GetRatio(joint), std::invalid_argument);
+    EXPECT_THROW(GetDampingRatio(joint), std::invalid_argument);
+    EXPECT_THROW(GetFrequency(joint), std::invalid_argument);
+    EXPECT_THROW(SetFrequency(joint, 2_Hz), std::invalid_argument);
+    EXPECT_THROW(GetAngularMotorImpulse(joint), std::invalid_argument);
+    EXPECT_THROW(GetTarget(joint), std::invalid_argument);
+    EXPECT_THROW(SetTarget(joint, Length2{1_m, 1_m}), std::invalid_argument);
+    EXPECT_THROW(GetAngularLowerLimit(joint), std::invalid_argument);
+    EXPECT_THROW(GetAngularUpperLimit(joint), std::invalid_argument);
+    EXPECT_THROW(GetLinearOffset(joint), std::invalid_argument);
+    EXPECT_THROW(SetLinearOffset(joint, Length2{1_m, 1_m}), std::invalid_argument);
+    EXPECT_THROW(GetAngularOffset(joint), std::invalid_argument);
+    EXPECT_THROW(SetAngularOffset(joint, 10_deg), std::invalid_argument);
+    EXPECT_THROW(GetGroundAnchorA(joint), std::invalid_argument);
+    EXPECT_THROW(GetGroundAnchorB(joint), std::invalid_argument);
+    EXPECT_THROW(GetLength(joint), std::invalid_argument);
 }
 
-TEST(PrismaticJoint, EnableLimit)
+TEST(PrismaticJointConf, EnableLimit)
 {
     auto world = World{};
     const auto b0 = CreateBody(world);
@@ -95,7 +119,7 @@ TEST(PrismaticJoint, EnableLimit)
     EXPECT_EQ(GetMotorForce(world, id, 1_Hz), 0 * Newton);
 }
 
-TEST(PrismaticJoint, ShiftOrigin)
+TEST(PrismaticJointConf, ShiftOrigin)
 {
     auto world = World{};
     const auto b0 = CreateBody(world);
@@ -113,7 +137,7 @@ TEST(PrismaticJoint, ShiftOrigin)
     EXPECT_FALSE(ShiftOrigin(joint, newOrigin));
 }
 
-TEST(PrismaticJoint, EnableMotor)
+TEST(PrismaticJointConf, EnableMotor)
 {
     World world;
     const auto b0 = CreateBody(world);
@@ -133,7 +157,7 @@ TEST(PrismaticJoint, EnableMotor)
     EXPECT_TRUE(IsMotorEnabled(joint));
 }
 
-TEST(PrismaticJoint, SetMaxMotorForce)
+TEST(PrismaticJointConf, SetMaxMotorForce)
 {
     World world;
     const auto b0 = CreateBody(world);
@@ -151,7 +175,7 @@ TEST(PrismaticJoint, SetMaxMotorForce)
     EXPECT_EQ(GetMaxMotorForce(joint), 2_N);
 }
 
-TEST(PrismaticJoint, MotorSpeed)
+TEST(PrismaticJointConf, MotorSpeed)
 {
     World world;
     const auto b0 = CreateBody(world);
@@ -171,7 +195,7 @@ TEST(PrismaticJoint, MotorSpeed)
     EXPECT_EQ(GetMotorSpeed(joint), newValue);
 }
 
-TEST(PrismaticJoint, SetLinearLimits)
+TEST(PrismaticJointConf, SetLinearLimits)
 {
     World world;
     const auto b0 = CreateBody(world);
@@ -193,7 +217,7 @@ TEST(PrismaticJoint, SetLinearLimits)
     EXPECT_EQ(GetLinearLowerLimit(joint), lowerValue);
 }
 
-TEST(PrismaticJoint, GetAnchorAandB)
+TEST(PrismaticJointConf, GetAnchorAandB)
 {
     World world;
     
@@ -216,7 +240,7 @@ TEST(PrismaticJoint, GetAnchorAandB)
     EXPECT_EQ(GetAnchorB(world, joint), loc1 + jd.localAnchorB);
 }
 
-TEST(PrismaticJoint, GetJointTranslation)
+TEST(PrismaticJointConf, GetJointTranslation)
 {
     World world;
     
@@ -236,7 +260,7 @@ TEST(PrismaticJoint, GetJointTranslation)
     EXPECT_EQ(GetJointTranslation(world, joint), Length(2_m));
 }
 
-TEST(PrismaticJoint, GetLinearVelocity)
+TEST(PrismaticJointConf, GetLinearVelocity)
 {
     World world;
     
@@ -255,7 +279,7 @@ TEST(PrismaticJoint, GetLinearVelocity)
     EXPECT_EQ(GetLinearVelocity(world, jd), LinearVelocity(0));
 }
 
-TEST(PrismaticJoint, WithDynamicCirclesAndLimitEnabled)
+TEST(PrismaticJointConf, WithDynamicCirclesAndLimitEnabled)
 {
     const auto circle = DiskShapeConf{}.UseRadius(0.2_m);
     auto world = World{};

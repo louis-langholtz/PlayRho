@@ -29,6 +29,7 @@
 #include <PlayRho/Dynamics/WorldImplFixture.hpp>
 #include <PlayRho/Dynamics/StepConf.hpp>
 #include <PlayRho/Dynamics/BodyConf.hpp>
+#include <PlayRho/Dynamics/Body.hpp>
 #include <PlayRho/Dynamics/Contacts/Contact.hpp>
 #include <PlayRho/Dynamics/ContactImpulsesList.hpp>
 
@@ -64,6 +65,8 @@
 using namespace playrho;
 using namespace playrho::d2;
 
+namespace {
+
 template <typename T>
 struct PushBackListener
 {
@@ -73,6 +76,22 @@ struct PushBackListener
         ids.push_back(id);
     }
 };
+
+void SetEnabled(WorldImpl& world, BodyID id, bool value)
+{
+    auto copy = world.GetBody(id);
+    SetEnabled(copy, value);
+    world.SetBody(id, copy);
+}
+
+void SetType(WorldImpl& world, BodyID id, BodyType value)
+{
+    auto body = world.GetBody(id);
+    SetType(body, value);
+    world.SetBody(id, body);
+}
+
+} // namespace
 
 TEST(WorldImpl, ByteSize)
 {
@@ -198,14 +217,15 @@ TEST(WorldImpl, CreateDestroyEmptyStaticBody)
 {
     auto world = WorldImpl{};
     ASSERT_EQ(world.GetBodies().size(), BodyCounter(0));
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
-    ASSERT_NE(body, InvalidBodyID);
+    const auto bodyID = world.CreateBody(BodyConf{}.UseType(BodyType::Static));
+    ASSERT_NE(bodyID, InvalidBodyID);
 
-    EXPECT_EQ(GetType(world, body), BodyType::Static);
-    EXPECT_FALSE(IsSpeedable(world, body));
-    EXPECT_FALSE(IsAccelerable(world, body));
-    EXPECT_TRUE(IsImpenetrable(world, body));
-    EXPECT_EQ(GetFixtures(world, body).size(), std::size_t{0});
+    const auto& body = world.GetBody(bodyID);
+    EXPECT_EQ(GetType(body), BodyType::Static);
+    EXPECT_FALSE(IsSpeedable(body));
+    EXPECT_FALSE(IsAccelerable(body));
+    EXPECT_TRUE(IsImpenetrable(body));
+    EXPECT_EQ(GetFixtures(world, bodyID).size(), std::size_t{0});
 
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(1));
     const auto bodies1 = world.GetBodies();
@@ -213,12 +233,12 @@ TEST(WorldImpl, CreateDestroyEmptyStaticBody)
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
-    EXPECT_EQ(body, *first);
+    EXPECT_EQ(bodyID, *first);
 
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
     EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
 
-    world.Destroy(body);
+    world.Destroy(bodyID);
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(0));
     const auto& bodies2 = world.GetBodies();
     EXPECT_TRUE(bodies2.empty());
@@ -232,14 +252,15 @@ TEST(WorldImpl, CreateDestroyEmptyDynamicBody)
 {
     auto world = WorldImpl{};
     ASSERT_EQ(world.GetBodies().size(), BodyCounter(0));
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    ASSERT_NE(body, InvalidBodyID);
-    
-    EXPECT_EQ(GetType(world, body), BodyType::Dynamic);
-    EXPECT_TRUE(IsSpeedable(world, body));
-    EXPECT_TRUE(IsAccelerable(world, body));
-    EXPECT_FALSE(IsImpenetrable(world, body));
-    EXPECT_EQ(GetFixtures(world, body).size(), std::size_t{0});
+    const auto bodyID = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(bodyID, InvalidBodyID);
+
+    const auto& body = world.GetBody(bodyID);
+    EXPECT_EQ(GetType(body), BodyType::Dynamic);
+    EXPECT_TRUE(IsSpeedable(body));
+    EXPECT_TRUE(IsAccelerable(body));
+    EXPECT_FALSE(IsImpenetrable(body));
+    EXPECT_EQ(GetFixtures(world, bodyID).size(), std::size_t{0});
 
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(1));
     const auto bodies1 = world.GetBodies();
@@ -247,12 +268,12 @@ TEST(WorldImpl, CreateDestroyEmptyDynamicBody)
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
-    EXPECT_EQ(body, *first);
+    EXPECT_EQ(bodyID, *first);
     
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
     EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
     
-    world.Destroy(body);
+    world.Destroy(bodyID);
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(0));
     const auto& bodies2 = world.GetBodies();
     EXPECT_TRUE(bodies2.empty());
@@ -269,14 +290,15 @@ TEST(WorldImpl, CreateDestroyDynamicBodyAndFixture)
     
     auto world = WorldImpl{};
     ASSERT_EQ(world.GetBodies().size(), BodyCounter(0));
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    ASSERT_NE(body, InvalidBodyID);
-    
-    EXPECT_EQ(GetType(world, body), BodyType::Dynamic);
-    EXPECT_TRUE(IsSpeedable(world, body));
-    EXPECT_TRUE(IsAccelerable(world, body));
-    EXPECT_FALSE(IsImpenetrable(world, body));
-    EXPECT_EQ(GetFixtures(world, body).size(), std::size_t{0});
+    const auto bodyID = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    ASSERT_NE(bodyID, InvalidBodyID);
+
+    const auto& body = world.GetBody(bodyID);
+    EXPECT_EQ(GetType(body), BodyType::Dynamic);
+    EXPECT_TRUE(IsSpeedable(body));
+    EXPECT_TRUE(IsAccelerable(body));
+    EXPECT_FALSE(IsImpenetrable(body));
+    EXPECT_EQ(GetFixtures(world, bodyID).size(), std::size_t{0});
 
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(1));
     const auto bodies1 = world.GetBodies();
@@ -284,21 +306,21 @@ TEST(WorldImpl, CreateDestroyDynamicBodyAndFixture)
     EXPECT_EQ(bodies1.size(), BodyCounter(1));
     EXPECT_NE(bodies1.begin(), bodies1.end());
     const auto first = bodies1.begin();
-    EXPECT_EQ(body, *first);
+    EXPECT_EQ(bodyID, *first);
     
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
     EXPECT_EQ(world.GetFixturesForProxies().size(), std::size_t{0});
 
-    const auto fixtureConf = FixtureConf{}.UseBody(body).UseShape(DiskShapeConf{1_m});
+    const auto fixtureConf = FixtureConf{}.UseBody(bodyID).UseShape(DiskShapeConf{1_m});
     const auto fixture = CreateFixture(world, fixtureConf);
     ASSERT_NE(fixture, InvalidFixtureID);
     
     EXPECT_EQ(world.GetBodiesForProxies().size(), std::size_t{0});
-    EXPECT_EQ(GetFixtures(world, body).size(), std::size_t{1});
+    EXPECT_EQ(GetFixtures(world, bodyID).size(), std::size_t{1});
     ASSERT_EQ(world.GetFixturesForProxies().size(), std::size_t{1});
     EXPECT_EQ(*world.GetFixturesForProxies().begin(), fixture);
 
-    world.Destroy(body); // should clear fixtures for proxies!
+    world.Destroy(bodyID); // should clear fixtures for proxies!
     
     EXPECT_EQ(world.GetBodies().size(), BodyCounter(0));
     const auto& bodies2 = world.GetBodies();
@@ -391,9 +413,9 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
                   static_cast<decltype(contacts.begin()->first.GetMin())>(0));
         EXPECT_EQ(contacts.begin()->first.GetMax(),
                   static_cast<decltype(contacts.begin()->first.GetMax())>(1));
-        EXPECT_EQ(GetFixtureA(world, contacts.begin()->second),
+        EXPECT_EQ(GetFixtureA(world.GetContact(contacts.begin()->second)),
                   *GetFixtures(world, body1).begin());
-        EXPECT_EQ(GetFixtureB(world, contacts.begin()->second),
+        EXPECT_EQ(GetFixtureB(world.GetContact(contacts.begin()->second)),
                   *GetFixtures(world, body2).begin());
     }
 
@@ -422,13 +444,16 @@ TEST(WorldImpl, CreateDestroyContactingBodies)
 TEST(WorldImpl, SetTypeOfBody)
 {
     auto world = WorldImpl{};
-    const auto body = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
-    ASSERT_EQ(GetType(world, body), BodyType::Dynamic);
+    const auto bodyID = world.CreateBody(BodyConf{}.UseType(BodyType::Dynamic));
+    const auto& body = world.GetBody(bodyID);
+    ASSERT_EQ(GetType(body), BodyType::Dynamic);
     auto other = WorldImpl{};
-    EXPECT_THROW(SetType(other, body, BodyType::Static), std::out_of_range);
-    EXPECT_EQ(GetType(world, body), BodyType::Dynamic);
-    SetType(world, body, BodyType::Static);
-    EXPECT_EQ(GetType(world, body), BodyType::Static);
+    EXPECT_THROW(SetBody(other, bodyID, body), std::out_of_range);
+    EXPECT_EQ(GetType(body), BodyType::Dynamic);
+    auto body2 = body;
+    SetType(body2, BodyType::Static);
+    world.SetBody(bodyID, body2);
+    EXPECT_EQ(GetType(world.GetBody(bodyID)), BodyType::Static);
 }
 
 TEST(WorldImpl, Proxies)
@@ -530,7 +555,7 @@ TEST(WorldImpl, SetEnabledBody)
     ASSERT_NE(fixture0, InvalidFixtureID);
     ASSERT_NE(fixture1, InvalidFixtureID);
 
-    ASSERT_TRUE(IsEnabled(world, body0));
+    ASSERT_TRUE(IsEnabled(world.GetBody(body0)));
     ASSERT_EQ(GetProxyCount(world, fixture0), 0u);
     EXPECT_EQ(GetFixturesForProxies(world).size(), 2u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
@@ -541,34 +566,42 @@ TEST(WorldImpl, SetEnabledBody)
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     // Test that set enabled to flag already set is not a toggle
-    EXPECT_NO_THROW(SetEnabled(world, body0, true));
-    EXPECT_TRUE(IsEnabled(world, body0));
-    EXPECT_NO_THROW(SetEnabled(world, body1, false));
-    EXPECT_FALSE(IsEnabled(world, body1));
+    {
+        auto copyBody0 = world.GetBody(body0);
+        EXPECT_NO_THROW(SetEnabled(copyBody0, true));
+        EXPECT_NO_THROW(world.SetBody(body0, copyBody0));
+        EXPECT_TRUE(IsEnabled(world.GetBody(body0)));
+    }
+    {
+        auto copyBody1 = world.GetBody(body1);
+        EXPECT_NO_THROW(SetEnabled(copyBody1, false));
+        EXPECT_NO_THROW(world.SetBody(body1, copyBody1));
+        EXPECT_FALSE(IsEnabled(world.GetBody(body1)));
+    }
     EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(SetEnabled(world, body0, false));
-    EXPECT_FALSE(IsEnabled(world, body0));
+    EXPECT_FALSE(IsEnabled(world.GetBody(body0)));
     EXPECT_NO_THROW(SetEnabled(world, body1, true));
-    EXPECT_TRUE(IsEnabled(world, body1));
+    EXPECT_TRUE(IsEnabled(world.GetBody(body1)));
     EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(GetFixturesForProxies(world).size(), 3u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(SetEnabled(world, body0, true));
-    EXPECT_TRUE(IsEnabled(world, body0));
+    EXPECT_TRUE(IsEnabled(world.GetBody(body0)));
     EXPECT_NO_THROW(SetEnabled(world, body1, false));
-    EXPECT_FALSE(IsEnabled(world, body1));
+    EXPECT_FALSE(IsEnabled(world.GetBody(body1)));
     EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(GetFixturesForProxies(world).size(), 5u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(SetEnabled(world, body0, false));
-    EXPECT_FALSE(IsEnabled(world, body0));
+    EXPECT_FALSE(IsEnabled(world.GetBody(body0)));
     EXPECT_NO_THROW(SetEnabled(world, body1, true));
-    EXPECT_TRUE(IsEnabled(world, body1));
+    EXPECT_TRUE(IsEnabled(world.GetBody(body1)));
     EXPECT_EQ(GetProxyCount(world, fixture0), 1u);
     EXPECT_EQ(GetFixturesForProxies(world).size(), 7u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
@@ -579,7 +612,7 @@ TEST(WorldImpl, SetEnabledBody)
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
     EXPECT_NO_THROW(SetEnabled(world, body0, true));
-    EXPECT_TRUE(IsEnabled(world, body0));
+    EXPECT_TRUE(IsEnabled(world.GetBody(body0)));
     EXPECT_EQ(GetFixturesForProxies(world).size(), 1u);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 0u);
 
@@ -596,7 +629,7 @@ TEST(WorldImpl, CreateAndDestroyFixture)
     auto body = CreateBody(world);
     ASSERT_NE(body, InvalidBodyID);
     EXPECT_TRUE(GetFixtures(world, body).empty());
-    EXPECT_FALSE(IsMassDataDirty(world, body));
+    EXPECT_FALSE(IsMassDataDirty(world.GetBody(body)));
 
     auto conf = DiskShapeConf{};
     conf.vertexRadius = 2.871_m;
@@ -605,7 +638,7 @@ TEST(WorldImpl, CreateAndDestroyFixture)
     const auto shape = Shape(conf);
 
     {
-        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape), false);
+        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape));
         const auto fshape = GetShape(world.GetFixture(fixture));
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
@@ -619,27 +652,19 @@ TEST(WorldImpl, CreateAndDestroyFixture)
             }
             EXPECT_EQ(i, 1);
         }
-        EXPECT_TRUE(IsMassDataDirty(world, body));
-        ResetMassData(world, body);
-        EXPECT_FALSE(IsMassDataDirty(world, body));
+        EXPECT_TRUE(IsMassDataDirty(world.GetBody(body)));
 
         ASSERT_EQ(GetFixturesForProxies(world).size(), std::size_t{1});
         EXPECT_EQ(*GetFixturesForProxies(world).begin(), fixture);
 
-        EXPECT_TRUE(world.Destroy(fixture, false));
+        EXPECT_TRUE(world.Destroy(fixture));
         EXPECT_TRUE(GetFixtures(world, body).empty());
-        EXPECT_TRUE(IsMassDataDirty(world, body));
+        EXPECT_TRUE(IsMassDataDirty(world.GetBody(body)));
 
         EXPECT_EQ(GetFixturesForProxies(world).size(), std::size_t(0));
-
-        ResetMassData(world, body);
-        EXPECT_FALSE(IsMassDataDirty(world, body));
-
-        DestroyFixtures(world, body);
-        EXPECT_TRUE(GetFixtures(world, body).empty());
     }
     {
-        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape), false);
+        auto fixture = CreateFixture(world, FixtureConf{}.UseBody(body).UseShape(shape));
         const auto fshape = GetShape(world.GetFixture(fixture));
         EXPECT_EQ(GetVertexRadius(fshape, 0), GetVertexRadius(shape, 0));
         EXPECT_EQ(TypeCast<DiskShapeConf>(fshape).GetLocation(), conf.GetLocation());
@@ -653,14 +678,8 @@ TEST(WorldImpl, CreateAndDestroyFixture)
             }
             EXPECT_EQ(i, 1);
         }
-        EXPECT_TRUE(IsMassDataDirty(world, body));
-        ResetMassData(world, body);
-        EXPECT_FALSE(IsMassDataDirty(world, body));
+        EXPECT_TRUE(IsMassDataDirty(world.GetBody(body)));
         EXPECT_FALSE(GetFixtures(world, body).empty());
-
-        world.DestroyFixtures(body);
-        EXPECT_TRUE(GetFixtures(world, body).empty());
-        EXPECT_FALSE(IsMassDataDirty(world, body));
     }
 }
 
@@ -670,17 +689,17 @@ TEST(WorldImpl, SetTypeBody)
 
     const auto body = CreateBody(world, BodyConf{}.UseType(BodyType::Dynamic));
     ASSERT_EQ(GetBodiesForProxies(world).size(), 0u);
-    ASSERT_EQ(GetType(world, body), BodyType::Dynamic);
+    ASSERT_EQ(GetType(world.GetBody(body)), BodyType::Dynamic);
 
     SetType(world, body, BodyType::Static);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 1u);
-    EXPECT_EQ(GetType(world, body), BodyType::Static);
+    EXPECT_EQ(GetType(world.GetBody(body)), BodyType::Static);
 
     SetType(world, body, BodyType::Kinematic);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 1u);
-    EXPECT_EQ(GetType(world, body), BodyType::Kinematic);
+    EXPECT_EQ(GetType(world.GetBody(body)), BodyType::Kinematic);
 
     SetType(world, body, BodyType::Dynamic);
-    EXPECT_EQ(GetType(world, body), BodyType::Dynamic);
+    EXPECT_EQ(GetType(world.GetBody(body)), BodyType::Dynamic);
     EXPECT_EQ(GetBodiesForProxies(world).size(), 1u);
 }

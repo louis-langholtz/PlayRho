@@ -31,13 +31,13 @@ class HeavyOnLightTwo : public Test
 public:
     HeavyOnLightTwo()
     {
-        CreateFixture(m_world, CreateBody(m_world), Shape(GetGroundEdgeConf()));
+        CreateFixture(GetWorld(), CreateBody(GetWorld()), Shape(GetGroundEdgeConf()));
         // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-        CreateFixture(m_world,
-                      CreateBody(m_world, BodyConf(DynBD).UseLocation(Length2{0_m, 2.5_m})),
+        CreateFixture(GetWorld(),
+                      CreateBody(GetWorld(), BodyConf(DynBD).UseLocation(Length2{0_m, 2.5_m})),
                       lilDisk);
-        CreateFixture(m_world,
-                      CreateBody(m_world, BodyConf(DynBD).UseLocation(Length2{0_m, 3.5_m})),
+        CreateFixture(GetWorld(),
+                      CreateBody(GetWorld(), BodyConf(DynBD).UseLocation(Length2{0_m, 3.5_m})),
                       lilDisk);
         RegisterForKey(GLFW_KEY_H, GLFW_PRESS, 0, "Toggle Heavy", [&](KeyActionMods) {
             ToggleHeavy();
@@ -48,18 +48,18 @@ public:
     {
         if (m_heavy != InvalidBodyID)
         {
-            Destroy(m_world, m_heavy);
+            Destroy(GetWorld(), m_heavy);
             m_heavy = InvalidBodyID;
         }
         else
         {
             // Use () instead of {} to avoid MSVC++ doing const preserving copy elision.
-            m_heavy = CreateBody(m_world, BodyConf(DynBD).UseLocation(Length2{0_m, 9_m}));
-            CreateFixture(m_world, m_heavy, bigDisk);
+            m_heavy = CreateBody(GetWorld(), BodyConf(DynBD).UseLocation(Length2{0_m, 9_m}));
+            CreateFixture(GetWorld(), m_heavy, bigDisk);
         }
     }
     
-    const BodyConf DynBD = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(m_gravity);
+    const BodyConf DynBD = BodyConf{}.UseType(BodyType::Dynamic).UseLinearAcceleration(GetGravity());
     const DiskShapeConf DiskConf = DiskShapeConf{}.UseDensity(10_kgpm2);
     const Shape lilDisk = Shape{DiskShapeConf(DiskConf).UseRadius(0.5_m)};
     const Shape bigDisk = Shape{DiskShapeConf(DiskConf).UseRadius(5.0_m)};
