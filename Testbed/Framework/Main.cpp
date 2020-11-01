@@ -932,6 +932,8 @@ static void AdvancedStepOptionsUI()
     
     if (ImGui::CollapsingHeader("Reg-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
     {
+        ImGui::IdContext idContext{"Reg-Phase Processing"};
+
         ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
         if (ImGui::IsItemHovered())
         {
@@ -964,6 +966,8 @@ static void AdvancedStepOptionsUI()
     }
     if (ImGui::CollapsingHeader("TOI-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
     {
+        ImGui::IdContext idContext{"TOI-Phase Processing"};
+
         ImGui::Checkbox("Perform Continuous", &settings.enableContinuous);
 
         ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
