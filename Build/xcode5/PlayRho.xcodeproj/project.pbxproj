@@ -63,8 +63,6 @@
 		4731DE641DEF841600E7F931 /* SeparationScenario.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE631DEF841600E7F931 /* SeparationScenario.cpp */; };
 		4731DE671DF0A73000E7F931 /* Manifold.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4731DE661DF0A73000E7F931 /* Manifold.cpp */; };
 		473273211F44AB9B00E22AE2 /* ContactImpulsesList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473273201F44AB9B00E22AE2 /* ContactImpulsesList.cpp */; };
-		473273251F476C1D00E22AE2 /* OptionalValue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 473273231F476C1D00E22AE2 /* OptionalValue.hpp */; };
-		473273271F47760D00E22AE2 /* OptionalValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 473273261F47760D00E22AE2 /* OptionalValue.cpp */; };
 		47327E751E9F1E2A0048FCD8 /* TargetJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47327E741E9F1E2A0048FCD8 /* TargetJoint.cpp */; };
 		47327E801EA585790048FCD8 /* Defines.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 47327E7D1EA585790048FCD8 /* Defines.hpp */; };
 		4734B2191DC00AFD00F15E29 /* ArrayList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4734B2161DC00AFD00F15E29 /* ArrayList.hpp */; };
@@ -455,8 +453,6 @@
 		4731DE631DEF841600E7F931 /* SeparationScenario.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SeparationScenario.cpp; sourceTree = "<group>"; };
 		4731DE661DF0A73000E7F931 /* Manifold.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Manifold.cpp; sourceTree = "<group>"; };
 		473273201F44AB9B00E22AE2 /* ContactImpulsesList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContactImpulsesList.cpp; sourceTree = "<group>"; };
-		473273231F476C1D00E22AE2 /* OptionalValue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OptionalValue.hpp; sourceTree = "<group>"; };
-		473273261F47760D00E22AE2 /* OptionalValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionalValue.cpp; sourceTree = "<group>"; };
 		47327E741E9F1E2A0048FCD8 /* TargetJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TargetJoint.cpp; sourceTree = "<group>"; };
 		47327E7D1EA585790048FCD8 /* Defines.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Defines.hpp; sourceTree = "<group>"; };
 		4734B2161DC00AFD00F15E29 /* ArrayList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArrayList.hpp; sourceTree = "<group>"; };
@@ -878,7 +874,6 @@
 				473971A71D9D9B4C00F7137F /* Math.cpp */,
 				470F9B531EF9666B007EF7B6 /* MotorJoint.cpp */,
 				47D61F7B1F21112000E702BD /* MultiShape.cpp */,
-				473273261F47760D00E22AE2 /* OptionalValue.cpp */,
 				474BC3FF1D41278800447DCD /* PolygonShape.cpp */,
 				47FFD0FC1DAC6235000D6D0E /* PositionConstraint.cpp */,
 				47AFC3041DAEBC120023E9D1 /* PositionSolverManifold.cpp */,
@@ -1042,7 +1037,6 @@
 				4764085025042BD00090F711 /* NonNegative.hpp */,
 				4764085825047FA10090F711 /* NonPositive.hpp */,
 				47640854250475860090F711 /* NonZero.hpp */,
-				473273231F476C1D00E22AE2 /* OptionalValue.hpp */,
 				470F9B0F1EDF2890007EF7B6 /* Position.hpp */,
 				4764085A2504822F0090F711 /* Positive.hpp */,
 				4764085E2507FBFF0090F711 /* propagate_const.hpp */,
@@ -1410,7 +1404,6 @@
 				47E36F501FE8477000C10B79 /* FixedLimits.hpp in Headers */,
 				47E36F541FE8534500C10B79 /* FixedMath.hpp in Headers */,
 				470F9B301EDF5165007EF7B6 /* Velocity.hpp in Headers */,
-				473273251F476C1D00E22AE2 /* OptionalValue.hpp in Headers */,
 				4764086D250E9E2B0090F711 /* FixtureID.hpp in Headers */,
 				80BB89A6141C3E5900F1753A /* Settings.hpp in Headers */,
 				4764085D250484830090F711 /* Negative.hpp in Headers */,
@@ -1656,7 +1649,6 @@
 				475A94541D930503000CA9A8 /* BlockAllocator.cpp in Sources */,
 				47B58F601F5B791500354C34 /* FlagGuard.cpp in Sources */,
 				4731DDFC1DC8FBEE00E7F931 /* Island.cpp in Sources */,
-				473273271F47760D00E22AE2 /* OptionalValue.cpp in Sources */,
 				474BC4341D413DC200447DCD /* Manifold.cpp in Sources */,
 				475A945B1D9593A4000CA9A8 /* Shape.cpp in Sources */,
 				474BC4351D413DC200447DCD /* Mat33.cpp in Sources */,
