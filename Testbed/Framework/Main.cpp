@@ -932,6 +932,8 @@ static void AdvancedStepOptionsUI()
     
     if (ImGui::CollapsingHeader("Reg-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
     {
+        ImGui::IdContext idContext{"Reg-Phase Processing"};
+
         ImGui::SliderInt("Vel Iters", &settings.regVelocityIterations, 0, 100);
         if (ImGui::IsItemHovered())
         {
@@ -964,6 +966,8 @@ static void AdvancedStepOptionsUI()
     }
     if (ImGui::CollapsingHeader("TOI-Phase Processing", ImGuiTreeNodeFlags_DefaultOpen))
     {
+        ImGui::IdContext idContext{"TOI-Phase Processing"};
+
         ImGui::Checkbox("Perform Continuous", &settings.enableContinuous);
 
         ImGui::SliderInt("Vel Iters", &settings.toiVelocityIterations, 0, 100);
@@ -1718,7 +1722,12 @@ static void EntityUI(PulleyJointConf& conf, BodyCounter bodyRange)
 {
     ImGui::LabelText("Length A (m)", "%f", static_cast<double>(Real{GetLengthA(conf)/Meter}));
     ImGui::LabelText("Length B (m)", "%f", static_cast<double>(Real{GetLengthB(conf)/Meter}));
-    ImGui::LabelText("Ratio", "%f", static_cast<double>(GetRatio(conf)));
+    {
+        auto v = static_cast<float>(GetRatio(conf));
+        if (ImGui::InputFloat("Ratio", &v)) {
+            SetRatio(conf, static_cast<Real>(v));
+        }
+    }
     {
         auto bodyA = static_cast<int>(UnderlyingValue(GetBodyA(conf)));
         ImGui::SliderInt("ID of Body A", &bodyA, 0, int(bodyRange) - 1);

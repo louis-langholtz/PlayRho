@@ -51,7 +51,6 @@ TEST(PulleyJointConf, DefaultConstruction)
     EXPECT_EQ(def.lengthA, 0_m);
     EXPECT_EQ(def.lengthB, 0_m);
     EXPECT_EQ(def.ratio, Real(1));
-    EXPECT_EQ(def.constant, 0_m);
 
     EXPECT_EQ(def.impulse, 0_Ns);
     ASSERT_EQ(UnitVec(), UnitVec::GetZero());
@@ -139,13 +138,13 @@ TEST(PulleyJointConf, ByteSize)
     {
         case  4:
 #if defined(_WIN32) && !defined(_WIN64)
-            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(96));
+            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(92));
 #else
-            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(96));
+            EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(92));
 #endif
             break;
-        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(184)); break;
-        case 16: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(368)); break;
+        case  8: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(176)); break;
+        case 16: EXPECT_EQ(sizeof(PulleyJointConf), std::size_t(352)); break;
         default: FAIL(); break;
     }
 }
@@ -336,6 +335,26 @@ TEST(PulleyJointConf, InitVelocityColdStartResetsImpulse)
     EXPECT_EQ(jd.impulse, 0_Ns);
 }
 
+TEST(PulleyJointConf, InitVelocitySetsMass)
+{
+    auto stepConf = StepConf{};
+    auto jd = PulleyJointConf{};
+    jd.bodyA = BodyID(0u);
+    jd.bodyB = BodyID(1u);
+    std::vector<BodyConstraint> bodies;
+    bodies.push_back(BodyConstraint{
+        Real(1)/4_kg, InvRotInertia{}, Length2{}, Position{}, Velocity{}
+    });
+    bodies.push_back(BodyConstraint{
+        Real(1)/4_kg, InvRotInertia{}, Length2{}, Position{}, Velocity{}
+    });
+    stepConf.dtRatio = Real(1);
+    stepConf.doWarmStart = false;
+    ASSERT_EQ(jd.mass, 0_kg);
+    EXPECT_NO_THROW(InitVelocity(jd, bodies, stepConf, ConstraintSolverConf{}));
+    EXPECT_EQ(jd.mass, 2_kg);
+}
+
 TEST(PulleyJointConf, SolveVelocity)
 {
     auto jd = PulleyJointConf{};
@@ -361,20 +380,38 @@ TEST(PulleyJointConf, SolveVelocity)
 TEST(PulleyJointConf, SolvePosition)
 {
     auto jd = PulleyJointConf{};
+    jd.localAnchorA = Length2{};
+    jd.localAnchorB = Length2{};
     std::vector<BodyConstraint> bodies;
     EXPECT_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}), std::out_of_range);
 
+    const auto posA = Position{Length2{-5_m, 0_m}, 0_deg};
+    const auto posB = Position{Length2{+5_m, 0_m}, 0_deg};
+    jd.groundAnchorA = posA.linear + Length2{0_m, 8_m};
+    jd.groundAnchorB = posB.linear + Length2{0_m, 8_m};
     jd.bodyA = BodyID(0u);
-    jd.bodyB = BodyID(0u);
-    bodies.push_back(BodyConstraint{});
-    EXPECT_NO_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}));
-    EXPECT_EQ(bodies[0].GetPosition(), Position());
-
     jd.bodyB = BodyID(1u);
-    bodies.push_back(BodyConstraint{});
-    EXPECT_NO_THROW(SolvePosition(jd, bodies, ConstraintSolverConf{}));
-    EXPECT_EQ(bodies[0].GetPosition(), Position());
-    EXPECT_EQ(bodies[1].GetPosition(), Position());
-    EXPECT_EQ(bodies[0].GetVelocity(), Velocity());
-    EXPECT_EQ(bodies[1].GetVelocity(), Velocity());
+    bodies.push_back(BodyConstraint{Real(1)/4_kg, InvRotInertia{}, Length2{}, posA, Velocity{}});
+    bodies.push_back(BodyConstraint{Real(1)/4_kg, InvRotInertia{}, Length2{}, posB, Velocity{}});
+
+    auto solved = false;
+    jd.ratio = Real(1);
+    EXPECT_NO_THROW(solved = SolvePosition(jd, bodies, ConstraintSolverConf{}));
+    EXPECT_FALSE(solved);
+    EXPECT_EQ(GetX(bodies[0].GetPosition().linear), GetX(posA.linear));
+    EXPECT_EQ(GetY(bodies[0].GetPosition().linear), GetY(posA.linear) + 8_m);
+    EXPECT_EQ(bodies[0].GetPosition().angular, posA.angular);
+    EXPECT_EQ(GetX(bodies[1].GetPosition().linear), GetX(posB.linear));
+    EXPECT_EQ(GetY(bodies[1].GetPosition().linear), GetY(posB.linear) + 8_m);
+    EXPECT_EQ(bodies[1].GetPosition().angular, posB.angular);
+
+    jd.ratio = Real(1.2);
+    EXPECT_NO_THROW(solved = SolvePosition(jd, bodies, ConstraintSolverConf{}));
+    EXPECT_TRUE(solved);
+    EXPECT_EQ(GetX(bodies[0].GetPosition().linear), GetX(posA.linear));
+    EXPECT_EQ(GetY(bodies[0].GetPosition().linear), GetY(posA.linear) + 8_m);
+    EXPECT_EQ(bodies[0].GetPosition().angular, posA.angular);
+    EXPECT_EQ(GetX(bodies[1].GetPosition().linear), GetX(posB.linear));
+    EXPECT_EQ(GetY(bodies[1].GetPosition().linear), GetY(posB.linear) + 8_m);
+    EXPECT_EQ(bodies[1].GetPosition().angular, posB.angular);
 }

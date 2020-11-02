@@ -32,7 +32,7 @@ namespace playrho {
 
 Version GetVersion() noexcept
 {
-    return Version{0, 11, 0};
+    return Version{0, 11, 1};
 }
 
 std::string GetBuildDetails() noexcept
